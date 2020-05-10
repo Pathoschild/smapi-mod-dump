@@ -5,9 +5,12 @@ mods:
    Spenny
 
 latest commit:
-   commit 71b6fc66231788bcc8e1c63f92640c6ce371df97
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:58:14 2019 -0500
+   commit a8e4c219de74600f9baf61cbabc33ccce2f446d5
+   Merge: 71b6fc6 7a24b58
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:10:59 2020 -0400
    
-       Spenny 1.0.2 - SDV 1.4
+       Merge pull request #3 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/shanks3042/stardewvalleyeasyprairieking.git
+
+mods:
+   Difficulty Changer for Journey of the Prairie King
+
+latest commit:
+   commit a7943842da369971012943b622dfab2c0eb84bf9
+   Author: Kilian Payer <kilian.payer@student.tugraz.at>
+   Date:   Sat Apr 18 01:38:24 2020 +0200
+   
+       added more options to change for the minigame
+   

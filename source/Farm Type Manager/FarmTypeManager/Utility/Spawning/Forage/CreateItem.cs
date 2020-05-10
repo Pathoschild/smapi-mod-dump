@@ -106,6 +106,13 @@ namespace FarmTypeManager
                         }
                         item = new BreakableContainerFTM(tile, contents, barrel); //create a mineshaft-style breakable container with the given contents
                         break;
+                    case "buried":
+                    case "burieditem":
+                    case "burieditems":
+                    case "buried item":
+                    case "buried items":
+                        item = new BuriedItems(tile, contents); //create an item burial location with the given contents
+                        break;
                     case "chest":
                     case "chests":
                         item = new Chest(0, contents, tile, false, 0); //create a mineshaft-style chest with the given contents

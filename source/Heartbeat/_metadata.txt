@@ -1,0 +1,13 @@
+url:
+   https://github.com/embolden/Heartbeat.git
+
+mods:
+   Heartbeat
+
+latest commit:
+   commit d1ace112ffa3d77f3af2f2c18fa441a64f84692e
+   Author: Matt <matthewkeehner@gmail.com>
+   Date:   Sat May 2 00:15:31 2020 -0500
+   
+       Add the txt README back again.  Figured out its for Nexus.
+   

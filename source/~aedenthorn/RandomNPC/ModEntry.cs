@@ -167,7 +167,8 @@ namespace RandomNPC
 					return;
 				int resp = (int)typeof(DialogueBox).GetField("selectedResponse", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(menu);
 				List<Response> resps = (List<Response>)typeof(DialogueBox).GetField("responses", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(menu);
-				if (resp >= resps.Count || resps[resp] == null)
+				
+				if (resp < 0 || resp >= resps.Count || resps[resp] == null)
 					return;
 				string key = resps[resp].responseKey;
 				if (key.StartsWith("accept_npc_quest"))
@@ -1123,7 +1124,7 @@ namespace RandomNPC
 						int match = greyMatches[rnd];
 						hairRBG = hairRBGs[match].Split(' '); // turns single grey into set of colours
 
-						data[i] = new Color(byte.Parse(hairRBG[0]), byte.Parse(hairRBG[1]), byte.Parse(hairRBG[2]), 255);
+						data[i] = new Color(byte.Parse(hairRBG[0]), byte.Parse(hairRBG[1]), byte.Parse(hairRBG[2]), dataH[i].A);
 					}
 					else // ignore already coloured parts
 					{
@@ -1193,7 +1194,7 @@ namespace RandomNPC
 				R = (byte)(greyMap.R - Math.Round((255 - double.Parse(baseColour[0])) * greyMap.R / 255)),
 				G = (byte)(greyMap.G - Math.Round((255 - double.Parse(baseColour[1])) * greyMap.G / 255)),
 				B = (byte)(greyMap.B - Math.Round((255 - double.Parse(baseColour[2])) * greyMap.B / 255)),
-				A = 255
+				A = greyMap.A
 			};
 			return outColour;
 		}

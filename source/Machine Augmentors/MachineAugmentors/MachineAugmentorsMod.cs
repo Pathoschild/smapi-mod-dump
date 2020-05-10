@@ -20,7 +20,7 @@ namespace MachineAugmentors
 {
     public class MachineAugmentorsMod : Mod
     {
-        public static Version CurrentVersion = new Version(1, 0, 5); // Last updated 3/27/2020 (Don't forget to update manifest.json)
+        public static Version CurrentVersion = new Version(1, 0, 6); // Last updated 4/22/2020 (Don't forget to update manifest.json)
         public const string ModUniqueId = "SlayerDharok.MachineAugmentors";
 
         private const string UserConfigFilename = "config.json";
@@ -59,34 +59,7 @@ namespace MachineAugmentors
         {
             ModInstance = this;
 
-            //  Load global user settings into memory
-            UserConfig GlobalUserConfig = helper.Data.ReadJsonFile<UserConfig>(UserConfigFilename);
-#if DEBUG
-            //GlobalUserConfig = null; // Force full refresh of config file for testing purposes
-#endif
-            if (GlobalUserConfig != null)
-            {
-                bool RewriteConfig = false;
-
-                //  Version 1.0.5 added additional settings to augmentor formulas
-                if (GlobalUserConfig.CreatedByVersion < new Version(1, 0, 5))
-                {
-                    RewriteConfig = true;
-                }
-
-                if (RewriteConfig)
-                {
-                    GlobalUserConfig.CreatedByVersion = CurrentVersion;
-                    helper.Data.WriteJsonFile(UserConfigFilename, GlobalUserConfig);
-                }
-            }
-            else
-            {
-                GlobalUserConfig = new UserConfig() { CreatedByVersion = CurrentVersion };
-                helper.Data.WriteJsonFile(UserConfigFilename, GlobalUserConfig);
-            }
-            GlobalUserConfig.AfterLoaded();
-            UserConfig = GlobalUserConfig;
+            LoadUserConfig();
 
             //  Load custom machine settings
             MachineConfig GlobalMachineConfig = helper.Data.ReadJsonFile<MachineConfig>(Path.Combine("assets", MachineConfigFilename));
@@ -143,6 +116,38 @@ namespace MachineAugmentors
 #endregion Game Patches
 
             RegisterConsoleCommands();
+        }
+
+        internal static void LoadUserConfig()
+        {
+            //  Load global user settings into memory
+            UserConfig GlobalUserConfig = ModInstance.Helper.Data.ReadJsonFile<UserConfig>(UserConfigFilename);
+#if DEBUG
+            //GlobalUserConfig = null; // Force full refresh of config file for testing purposes
+#endif
+            if (GlobalUserConfig != null)
+            {
+                bool RewriteConfig = false;
+
+                //  Version 1.0.5 added additional settings to augmentor formulas
+                if (GlobalUserConfig.CreatedByVersion < new Version(1, 0, 5))
+                {
+                    RewriteConfig = true;
+                }
+
+                if (RewriteConfig)
+                {
+                    GlobalUserConfig.CreatedByVersion = CurrentVersion;
+                    ModInstance.Helper.Data.WriteJsonFile(UserConfigFilename, GlobalUserConfig);
+                }
+            }
+            else
+            {
+                GlobalUserConfig = new UserConfig() { CreatedByVersion = CurrentVersion };
+                ModInstance.Helper.Data.WriteJsonFile(UserConfigFilename, GlobalUserConfig);
+            }
+            GlobalUserConfig.AfterLoaded();
+            UserConfig = GlobalUserConfig;
         }
 
         private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
@@ -223,7 +228,7 @@ namespace MachineAugmentors
                     Dictionary<ISalable, int[]> Stock = NewShop.itemPriceAndStock;
                     foreach (KeyValuePair<ISalable, int[]> Item in TodaysStock)
                     {
-                        if (Item.Value[1] > 0)
+                        if (Item.Value[1] > 0 && !Stock.ContainsKey(Item.Key))
                             Stock.Add(Item.Key, Item.Value);
                     }
 
@@ -278,6 +283,23 @@ namespace MachineAugmentors
                             Game1.player.addItemToInventory(SpawnedItem);
                         }
                     }
+                }
+            });
+
+            //Possible TODO: Add translation support for this command
+            CommandName = "machine_augmentors_reload_config";
+            CommandHelp = "Reloads configuration settings from this mod's config.json file. Normally this file's settings are only loaded once when the game is started."
+                + " Use this command if you've made changes to the config during this game session.";
+            Helper.ConsoleCommands.Add(CommandName, CommandHelp, (string Name, string[] Args) =>
+            {
+                try
+                {
+                    LoadUserConfig();
+                    Monitor.Log("config.json settings were successfully reloaded.", LogLevel.Alert);
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Log(string.Format("Machine Augmentors: Unhandled error while executing command: {0}", ex.Message), LogLevel.Error);
                 }
             });
         }

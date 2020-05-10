@@ -1,0 +1,15 @@
+{
+  "ChangeModeButton": "F5",
+  "MaxCastPowerButton": "F6",
+  "CatchTreasureButton": "F7",
+  "MinimumEnergy": 15,
+  "SkipFishBiteWaiting": false,
+  "SkipMiniGame": false,
+  "AlwayTreasure": false,
+  "InstantCatchTreasure": false,
+  "AlwayHighQualityFish": false,
+  "HighQualityFishPond": false,
+  "AlwayCatchDoubleFish": false,
+  "CatchDoubleFishBait": 2,
+  "PauseFishTime": 24
+}

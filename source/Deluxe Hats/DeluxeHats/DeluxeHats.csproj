@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <EnableHarmony>true</EnableHarmony>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{78CBAD09-1277-48A8-A2E2-65DD106F7F6B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DeluxeHats</RootNamespace>
+    <AssemblyName>DeluxeHats</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HatService.cs" />
+    <Compile Include="Hats\ArcaneHat.cs" />
+    <Compile Include="Hats\ArchersCap.cs" />
+    <Compile Include="Hats\Beanie.cs" />
+    <Compile Include="Hats\BlobfishMask.cs" />
+    <Compile Include="Hats\BlueBonnet.cs" />
+    <Compile Include="Hats\BlueCowboyHat.cs" />
+    <Compile Include="Hats\BowlerHat.cs" />
+    <Compile Include="Hats\BridalVeil.cs" />
+    <Compile Include="Hats\ButterflyBow.cs" />
+    <Compile Include="Hats\CatEars.cs" />
+    <Compile Include="Hats\ChefHat.cs" />
+    <Compile Include="Hats\ChickenMask.cs" />
+    <Compile Include="Hats\ConeHat.cs" />
+    <Compile Include="Hats\CoolCap.cs" />
+    <Compile Include="Hats\CopperPan.cs" />
+    <Compile Include="Hats\CowboyHat.cs" />
+    <Compile Include="Hats\CowgalHat.cs" />
+    <Compile Include="Hats\CowpokeHat.cs" />
+    <Compile Include="Hats\Daisy.cs" />
+    <Compile Include="Hats\DelicateBow.cs" />
+    <Compile Include="Hats\DinosaurHat.cs" />
+    <Compile Include="Hats\Earmuffs.cs" />
+    <Compile Include="Hats\ElegantTurban.cs" />
+    <Compile Include="Hats\EmilysMagicHat.cs" />
+    <Compile Include="Hats\EyePatch.cs" />
+    <Compile Include="Hats\FashionHat.cs" />
+    <Compile Include="Hats\Fedora.cs" />
+    <Compile Include="Hats\FishingHat.cs" />
+    <Compile Include="Hats\FlatToppedHat.cs" />
+    <Compile Include="Hats\FloppyBeanie.cs" />
+    <Compile Include="Hats\GarbageHat.cs" />
+    <Compile Include="Hats\GnomesCap.cs" />
+    <Compile Include="Hats\GoblinMask.cs" />
+    <Compile Include="Hats\GoldenMask.cs" />
+    <Compile Include="Hats\GoodOlCap.cs" />
+    <Compile Include="Hats\GreenTurban.cs" />
+    <Compile Include="Hats\HairBone.cs" />
+    <Compile Include="Hats\HardHat.cs" />
+    <Compile Include="Hats\HuntersCap.cs" />
+    <Compile Include="Hats\KnightsHelmet.cs" />
+    <Compile Include="Hats\LivingHat.cs" />
+    <Compile Include="Hats\LogoCap.cs" />
+    <Compile Include="Hats\LuckyBow.cs" />
+    <Compile Include="Hats\MagicCowboyHat.cs" />
+    <Compile Include="Hats\MagicTurban.cs" />
+    <Compile Include="Hats\MouseEars.cs" />
+    <Compile Include="Hats\MushroomCap.cs" />
+    <Compile Include="Hats\OfficialCap.cs" />
+    <Compile Include="Hats\PandaHat.cs" />
+    <Compile Include="Hats\PartyHat.cs" />
+    <Compile Include="Hats\PirateHat.cs" />
+    <Compile Include="Hats\PlumChapeau.cs" />
+    <Compile Include="Hats\PolkaBow.cs" />
+    <Compile Include="Hats\PropellerHat.cs" />
+    <Compile Include="Hats\PumpkinMask.cs" />
+    <Compile Include="Hats\RedCowboyHat.cs" />
+    <Compile Include="Hats\SailorsCap.cs" />
+    <Compile Include="Hats\SantaHat.cs" />
+    <Compile Include="Hats\SkeletonMask.cs" />
+    <Compile Include="Hats\Sombrero.cs" />
+    <Compile Include="Hats\Souwester.cs" />
+    <Compile Include="Hats\SpottedHeadscarf.cs" />
+    <Compile Include="Hats\SquiresHelmet.cs" />
+    <Compile Include="Hats\StrawHat.cs" />
+    <Compile Include="Hats\Tiara.cs" />
+    <Compile Include="Hats\TopHat.cs" />
+    <Compile Include="Hats\TotemMask.cs" />
+    <Compile Include="Hats\Tropiclip.cs" />
+    <Compile Include="Hats\TruckerHat.cs" />
+    <Compile Include="Hats\WatermelonBand.cs" />
+    <Compile Include="Hats\WearableDwarfHelm.cs" />
+    <Compile Include="Hats\WhiteTurban.cs" />
+    <Compile Include="Hats\WitchHat.cs" />
+    <Compile Include="ModEntry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="manifest.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+</Project>

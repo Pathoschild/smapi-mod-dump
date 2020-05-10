@@ -1,0 +1,10 @@
+{
+	"Name": "JoJa84+",
+	"Author": "k4rakara",
+	"Version": "1.1.0",
+	"Description": "A handy in-game calculator.",
+	"UniqueID": "k4rakara.JoJa84Plus",
+	"EntryDll": "JoJa84Plus.dll",
+	"MinimumApiVersion": "2.10.0",
+	"UpdateKeys": [ "Nexus:5803" ]
+}

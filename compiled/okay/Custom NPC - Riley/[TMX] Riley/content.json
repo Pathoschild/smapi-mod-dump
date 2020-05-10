@@ -1,0 +1,72 @@
+{
+  "addMaps":
+  [  
+    {
+      "name": "RileyHouse", 
+      "file": "RileyHouse.tbin",
+    },
+    {
+      "name": "RileyHouseEvent", 
+      "file": "RileyHouseEvent.tbin",
+    },
+  ],
+  "spouseRooms": [
+	{
+      "name": "Riley",
+	  "file": "RileySpouseRoom.tbin",
+    }
+  ],
+	"festivalSpots": [  
+        {
+        "name": "Riley",
+        "map": "Town-EggFestival", 
+        "position": [21, 72],
+        "direction": 1
+        },
+	{
+        "name": "Riley",
+        "map": "Forest-FlowerFestival", 
+        "position": [6, 38],
+        "direction": 3
+        },
+	{
+        "name": "Riley",
+        "map": "Beach-Luau", 
+        "position": [27, 19],
+        "direction": 3
+        },
+	{
+        "name": "Riley",
+        "map": "Beach-Jellies", 
+        "position": [10, 39],
+        "direction": 2
+        },
+	{
+        "name": "Riley",
+        "map": "Town-Fair", 
+        "position": [31, 74],
+        "direction": 0
+        },
+	{
+        "name": "Riley",
+        "map": "Town-Halloween", 
+        "position": [25, 59],
+        "direction": 1
+        },
+	{
+        "name": "Riley",
+        "map": "Forest-IceFestival", 
+        "position": [65, 14],
+        "direction": 1
+        },
+	 {
+        "name": "Riley",
+        "map": "Town-Christmas", 
+        "position": [22, 57],
+        "direction": 0
+        }
+
+    ]
+}
+    
+  

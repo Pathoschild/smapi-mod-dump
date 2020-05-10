@@ -6,11 +6,12 @@ namespace ScryingOrb
 	{
 		protected override bool check ()
 		{
-			showRejection ("rejection.unrecognized");
 			return true;
 		}
 
 		protected override void doRun ()
-		{}
+		{
+			showRejection ("rejection.unrecognized");
+		}
 	}
 }

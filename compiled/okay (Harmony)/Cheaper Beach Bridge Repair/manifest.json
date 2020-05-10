@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Cheaper Beach Bridge Repair",
+  "Author": "Annosz",
+  "Version": "1.0.1",
+  "Description": "Makes repairing the bridge on the beach cheaper.",
+  "UniqueID": "Annosz.CheaperBeachBridgeRepair",
+  "EntryDll": "CheaperBeachBridgeRepair.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:5826" ]
+}

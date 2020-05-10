@@ -1,0 +1,46 @@
+﻿[
+	{//Spring Seeds
+		"ProducerName": "Seed Maker",
+		"InputIdentifier": "495",
+		"InputStack": 2,
+		"MinutesUntilReady": 20,
+		"OutputIdentifier": "770",
+		"OutputStack": 2,
+		"OutputMaxStack": 4,
+		"Sounds": ["Ship"],
+		"DelayedSounds":  [{"dirtyHit": 250}]
+	},
+	{//Summer Seeds
+		"ProducerName": "Seed Maker",
+		"InputIdentifier": "496",
+		"InputStack": 2,
+		"MinutesUntilReady": 20,
+		"OutputIdentifier": "770",
+		"OutputStack": 2,
+		"OutputMaxStack": 4,
+		"Sounds": ["Ship"],
+		"DelayedSounds":  [{"dirtyHit": 250}]
+	},
+	{//Fall Seeds
+		"ProducerName": "Seed Maker",
+		"InputIdentifier": "497",
+		"InputStack": 2,
+		"MinutesUntilReady": 20,
+		"OutputIdentifier": "770",
+		"OutputStack": 2,
+		"OutputMaxStack": 4,
+		"Sounds": ["Ship"],
+		"DelayedSounds":  [{"dirtyHit": 250}]
+	},
+	{//Winter Seeds
+		"ProducerName": "Seed Maker",
+		"InputIdentifier": "498",
+		"InputStack": 2,
+		"MinutesUntilReady": 20,
+		"OutputIdentifier": "770",
+		"OutputStack": 2,
+		"OutputMaxStack": 4,
+		"Sounds": ["Ship"],
+		"DelayedSounds":  [{"dirtyHit": 250}]
+	}
+]

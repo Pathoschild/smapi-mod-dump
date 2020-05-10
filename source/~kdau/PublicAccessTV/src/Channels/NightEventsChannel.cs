@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PredictiveCore;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 using System;
@@ -20,19 +21,19 @@ namespace PublicAccessTV
 
 		internal override bool isAvailable =>
 			base.isAvailable && NightEvents.IsAvailable &&
-			getCurrentEvent () != NightEventType.None;
+			getCurrentEvent () != NightEvents.Event.None;
 
 		internal override void show (TV tv)
 		{
-			NightEventType currentEvent = getCurrentEvent ();
-			if (currentEvent == NightEventType.None)
+			NightEvents.Event currentEvent = getCurrentEvent ();
+			if (currentEvent == NightEvents.Event.None)
 			{
 				throw new Exception ("No night event found.");
 			}
 
 			TemporaryAnimatedSprite background = loadBackground (tv, 0);
 			TemporaryAnimatedSprite portrait = loadPortrait (tv, "Governor", 1, 0);
-			bool newYear = currentEvent == NightEventType.NewYear;
+			bool newYear = currentEvent == NightEvents.Event.NewYear;
 
 			// Opening scene: the governor greets the viewer.
 			queueScene (new Scene
@@ -45,7 +46,7 @@ namespace PublicAccessTV
 			TemporaryAnimatedSprite reactionBackground = background;
 			string reactionSound = null;
 			Point reactionIndex = new Point (0, newYear ? 0 : 1);
-			if (currentEvent == NightEventType.StrangeCapsule)
+			if (currentEvent == NightEvents.Event.StrangeCapsule)
 			{
 				reactionBackground = loadBackground (tv, 0, 1);
 				reactionSound = "UFO";
@@ -62,28 +63,26 @@ namespace PublicAccessTV
 			runProgram (tv);
 		}
 
-		private NightEventType getCurrentEvent ()
+		private NightEvents.Event getCurrentEvent ()
 		{
-			WorldDate tonight = Utilities.Now ();
+			SDate tonight = SDate.Now ();
 
-			List<NightEventPrediction> predictions =
-				NightEvents.ListNextEventsForDate (tonight, 1);
+			List<NightEvents.Prediction> predictions =
+				NightEvents.ListNextEventsFromDate (tonight, 1);
 			if (predictions.Count >= 1 && predictions[0].date == tonight)
 			{
-				switch (predictions[0].type)
+				switch (predictions[0].@event)
 				{
-				case NightEventType.Meteorite:
-				case NightEventType.StrangeCapsule:
-					return predictions[0].type;
+				case NightEvents.Event.Meteorite:
+				case NightEvents.Event.StrangeCapsule:
+					return predictions[0].@event;
 				}
 			}
 
-			if (tonight.Season == "winter" && tonight.DayOfMonth == 28)
-			{
-				return NightEventType.NewYear;
-			}
+			if (tonight.Season == "winter" && tonight.Day == 28)
+				return NightEvents.Event.NewYear;
 
-			return NightEventType.None;
+			return NightEvents.Event.None;
 		}
 	}
 }

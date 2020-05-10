@@ -5,9 +5,12 @@ mods:
    Bow
 
 latest commit:
-   commit 044ec62065f8b11030876c51af1329d12edb2122
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 16:45:15 2019 -0500
+   commit d66ecd644cdc9ed3d2b1b09d75a388f6d85da671
+   Merge: 044ec62 a79130e
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:13:14 2020 -0400
    
-       1.0.2 - SDV 1.4
+       Merge pull request #2 from Pathoschild/update-project
+       
+       Update & standardise project structure
    

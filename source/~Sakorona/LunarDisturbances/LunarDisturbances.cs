@@ -96,7 +96,13 @@ namespace TwilightShards.LunarDisturbances
 
             helper.ConsoleCommands.Add("force_bloodmoon", "Forces a bloodmoon", ForceBloodMoon)
                                   .Add("force_bloodmoonoff", "Turns bloodmoon off.", TurnBloodMoonOff)
+                                  .Add("show_mooninfo", "Show moon info", ShowMoonInfo)
 								  .Add("force_eclipseOn", "Turns eclipse on.", TurnEclipseOn);
+        }
+
+        private void ShowMoonInfo(string arg1, string[] arg2)
+        {
+            Monitor.Log($"Moon phase according to end of night: {OurMoon.GetLunarPhaseForDay(SDate.Now())}, with coords: { Sprites.Icons.GetNightMoonSprite(OurMoon.GetLunarPhaseForDay(SDate.Now())).ToString()}. According to normal phrasing: Phase is {OurMoon.DescribeMoonPhase()}, with rise {OurMoon.GetMoonRiseTime()} and set {OurMoon.GetMoonSetTime()}", LogLevel.Info);
         }
 
         private void SpaceEvents_ChooseNightlyFarmEvent(object sender, EventArgsChooseNightlyFarmEvent e)

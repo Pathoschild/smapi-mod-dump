@@ -13,6 +13,6 @@ namespace Cobalt.Framework
         public const int CATEGORY = SObject.metalResources;
         public const int EDIBILITY = -300;
 
-        private Texture2D icon = ModEntry.instance.Helper.Content.Load<Texture2D>("items/cobalt-bar.png");
+        private Texture2D icon = ModEntry.instance.Helper.Content.Load<Texture2D>("assets/cobalt-bar.png");
     }
 }

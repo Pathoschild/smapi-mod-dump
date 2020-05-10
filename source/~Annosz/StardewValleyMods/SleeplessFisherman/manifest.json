@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Sleepless Fisherman",
+  "Author": "Annosz",
+  "Version": "1.0.1",
+  "Description": "Disables sleep emote at 12AM and 1AM if the player is fishing.",
+  "UniqueID": "Annosz.SleeplessFisherman",
+  "EntryDll": "SleeplessFisherman.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:5915" ]
+}

@@ -4,11 +4,12 @@
 
 ## 1.2.0
 
-*Release pending.*
+*Released April 28, 2020.*
 
 * Also activate Portable TV with configurable keybinding
 * On Android, look for taps in world instead of double-taps on inventory item
 * Add `reset_portable_tv` console command
+* Add French translation by Inu'tile
 
 ## 1.1.0
 

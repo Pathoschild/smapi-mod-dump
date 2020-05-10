@@ -1,0 +1,13 @@
+url:
+   https://github.com/jamespfluger/Stardew-EqualMoneySplit.git
+
+mods:
+   Equal Money Split
+
+latest commit:
+   commit c9e7c55278e95d449c3e2b9316d7998f8da6a540
+   Author: james.pfluger <me@jamespfluger.com>
+   Date:   Sun Apr 26 12:08:46 2020 -0500
+   
+       updated for Nexus release
+   

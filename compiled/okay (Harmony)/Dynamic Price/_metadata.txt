@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5831
+IDs: ZaneYork.DynamicPrice
+update keys: Nexus:5831, GitHub:ZaneYork/SDV_Mods

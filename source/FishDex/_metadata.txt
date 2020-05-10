@@ -5,9 +5,9 @@ mods:
    FishDex
 
 latest commit:
-   commit 4e2645da646225ed8194c5af5cab813bb746cf67
+   commit 8f8f88732c3b5387e30cfaeadc8f4cbb09ebeac5
    Author: Rupak Das <rupak0577@gmail.com>
-   Date:   Sat Dec 14 22:15:12 2019 +0530
+   Date:   Mon Apr 27 22:13:17 2020 +0530
    
-       Update readme
+       Update release notes
    

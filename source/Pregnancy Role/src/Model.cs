@@ -103,16 +103,13 @@ namespace PregnancyRole
 			if (NpcData.ContainsKey (npc.Name))
 				return NpcData[npc.Name];
 
-			switch (npc.Gender)
+			return npc.Gender switch
 			{
-			case 0:
-				return Role.Make;
-			case 1:
-				return Role.Become;
-			case 2:
-			default:
-				return Role.Adopt;
-			}
+				NPC.male      => Role.Make,
+				NPC.female    => Role.Become,
+				NPC.undefined => Role.Adopt,
+				_             => Role.Adopt,
+			};
 		}
 
 		public static void SetPregnancyRole (NPC npc, Role role,

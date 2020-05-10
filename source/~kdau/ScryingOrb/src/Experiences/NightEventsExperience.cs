@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using PredictiveCore;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -20,16 +21,16 @@ namespace ScryingOrb
 			{ 795, 1 }, // Void Salmon
 		};
 
-		public static readonly Dictionary<string, NightEventType?> Types =
-			new Dictionary<string, NightEventType?>
+		public static readonly Dictionary<string, NightEvents.Event?> Types =
+			new Dictionary<string, NightEvents.Event?>
 		{
 			{ "any", null },
-			{ "Fairy", NightEventType.Fairy },
-			{ "Witch", NightEventType.Witch },
-			{ "Meteorite", NightEventType.Meteorite },
-			{ "StrangeCapsule", NightEventType.StrangeCapsule },
-			{ "StoneOwl", NightEventType.StoneOwl },
-			{ "leave", NightEventType.None }
+			{ "Fairy", NightEvents.Event.Fairy },
+			{ "Witch", NightEvents.Event.Witch },
+			{ "Meteorite", NightEvents.Event.Meteorite },
+			{ "StrangeCapsule", NightEvents.Event.StrangeCapsule },
+			{ "StoneOwl", NightEvents.Event.StoneOwl },
+			{ "leave", NightEvents.Event.None }
 		};
 
 		protected override bool check ()
@@ -77,8 +78,8 @@ namespace ScryingOrb
 				}
 
 				// Gather the appropriate predictions.
-				List<NightEventPrediction> predictions =
-					NightEvents.ListNextEventsForDate (Utilities.Now (), 3,
+				List<NightEvents.Prediction> predictions =
+					NightEvents.ListNextEventsFromDate (SDate.Now (), 3,
 						Types[type]);
 				if (predictions.Count == 0)
 				{
@@ -87,8 +88,8 @@ namespace ScryingOrb
 
 				// Show a list of the predictions.
 				List<string> predictionStrings = predictions.Select ((p) =>
-					unbreak (Helper.Translation.Get ($"nightEvents.prediction.{p.type}",
-						new { date = p.date.Localize () }).ToString ())).ToList ();
+					unbreak (Helper.Translation.Get ($"nightEvents.prediction.{p.@event}",
+						new { date = p.date.ToLocaleString () }).ToString ())).ToList ();
 				showDialogues (new List<string>
 				{
 					string.Join ("^", predictionStrings),

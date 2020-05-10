@@ -6,9 +6,9 @@ mods:
    Send Items to Other Farmers
 
 latest commit:
-   commit 6c067d1d32a8042198ce65c6d2c6a6eb0705b0d4
+   commit 4d622f16d96b2f7c9a8c8cefaed2add3a57e913a
    Author: Denifia <mr.l.wale@gmail.com>
-   Date:   Wed Nov 27 18:27:35 2019 +0800
+   Date:   Sat May 9 11:26:16 2020 +0800
    
-       bump: version 2.1.0
+       feat: added azure functions to replace api
    

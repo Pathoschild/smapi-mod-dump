@@ -1,4 +1,4 @@
-# ![[icon]](assets/icon.png) Pregnancy Role
+# ![[icon]](promo/icon.png) Pregnancy Role
 
 *a [Stardew Valley](http://stardewvalley.net/) mod by [kdau](https://kdau.gitlab.io)*
 
@@ -73,15 +73,17 @@ Your contribution would be welcome. Please see the [details on the wiki](https:/
 ## See also
 
 * [Release notes](doc/RELEASE-NOTES.md) from existing versions
+* [Discord channel](https://discord.gg/Bs8fQYW) for discussing this mod
 * [Issue tracker](https://gitlab.com/kdau/pregnancyrole/-/issues) for bug reports and feature plans
 * [MIT license](LICENSE) (TLDR: do whatever, but credit me)
 * [My other mods](https://kdau.gitlab.io)
 
 Mirrors:
 
+* [This mod on GitLab](https://gitlab.com/kdau/pregnancyrole)
 * [This mod on Nexus](https://www.nexusmods.com/stardewvalley/mods/5762)
 * [This mod on ModDrop](https://www.moddrop.com/stardew-valley/mods/768494-pregnancy-role)
-* [This mod on GitLab](https://gitlab.com/kdau/pregnancyrole)
+* [This mod on the forums](https://forums.stardewvalley.net/index.php?resources/pregnancy-role.53/)
 
 Other mods to consider:
 

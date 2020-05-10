@@ -9,6 +9,14 @@
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Sprites.cs~RF4b5f6016.TMP" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Enums.NET" Version="3.0.3" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />

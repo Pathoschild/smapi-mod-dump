@@ -1,0 +1,10 @@
+﻿{
+  "Name": "FightingWithNPCs",
+  "Author": "EduAnttunes",
+  "Version": "1.2.0",
+  "Description": "Now you can fight with some NPCs like Mayor Lewis and Pierre. Prepare your sword.",
+  "UniqueID": "EduAnttunes.FightingWithNPCs",
+  "EntryDll": "FightingWithNPCs.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:5865" ]
+}

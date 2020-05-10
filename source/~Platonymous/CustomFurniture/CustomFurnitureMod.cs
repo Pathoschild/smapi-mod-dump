@@ -35,10 +35,21 @@ namespace CustomFurniture
             {
                 Monitor.Log("Harmony Error: Custom deco won't work on tables." + e.StackTrace, LogLevel.Error);
             }
-            loadPacks();
+            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
             helper.ConsoleCommands.Add("replace_custom_furniture", "Triggers Custom Furniture Replacement", replaceCustomFurniture);
+        }
+
+        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+        }
+
+        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            loadPacks();
+            helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
         }
 
         public void harmonyFix()
@@ -149,10 +160,10 @@ namespace CustomFurniture
                         CustomFurnitureMod.log("Load:" + objectID);
                         string tkey = $"{data.folderName}/{ data.texture}";
                         if (!CustomFurniture.Textures.ContainsKey(tkey))
-                            CustomFurniture.Textures.Add(tkey, cpack.LoadAsset<Texture2D>(data.texture));
+                            CustomFurniture.Textures.Add(tkey, data.fromContent ? data.texture : cpack.GetActualAssetKey(data.texture));
                         CustomFurniture f = new CustomFurniture(data, objectID, Vector2.Zero);
-                        furniturePile.Add(pileID, f);
-                        furniture.Add(objectID, f);
+                        furniturePile.AddOrReplace(pileID, f);
+                        furniture.AddOrReplace(objectID, f);
                     }
                 }
 

@@ -1,5 +1,5 @@
 {
-  "CreatedByVersionString": "1.4.5",
+  "CreatedByVersionString": "1.4.7",
   "GlobalPriceModifier": 1.0,
   "GlobalCapacityModifier": 1.0,
   "StandardBagSettings": [
@@ -54,7 +54,7 @@
       "Size": "Small",
       "PriceModifier": 1.0,
       "CapacityModifier": 1.0,
-      "BasePrice": 24000,
+      "BasePrice": 10000,
       "BaseCapacity": 30,
       "Slots": 6,
       "MenuColumns": 12,
@@ -67,7 +67,7 @@
       "Size": "Medium",
       "PriceModifier": 1.0,
       "CapacityModifier": 1.0,
-      "BasePrice": 65000,
+      "BasePrice": 30000,
       "BaseCapacity": 99,
       "Slots": 12,
       "MenuColumns": 12,
@@ -80,7 +80,7 @@
       "Size": "Large",
       "PriceModifier": 1.0,
       "CapacityModifier": 1.0,
-      "BasePrice": 175000,
+      "BasePrice": 90000,
       "BaseCapacity": 300,
       "Slots": 24,
       "MenuColumns": 12,
@@ -93,7 +93,7 @@
       "Size": "Giant",
       "PriceModifier": 1.0,
       "CapacityModifier": 1.0,
-      "BasePrice": 350000,
+      "BasePrice": 200000,
       "BaseCapacity": 999,
       "Slots": 36,
       "MenuColumns": 12,
@@ -106,7 +106,7 @@
       "Size": "Massive",
       "PriceModifier": 1.0,
       "CapacityModifier": 1.0,
-      "BasePrice": 1000000,
+      "BasePrice": 500000,
       "BaseCapacity": 9999,
       "Slots": 72,
       "MenuColumns": 12,
@@ -120,7 +120,7 @@
     {
       "Size": "Small",
       "PriceModifier": 1.0,
-      "BasePrice": 12000,
+      "BasePrice": 5000,
       "MenuColumns": 8,
       "MenuSlotSize": 64,
       "Sellers": [
@@ -130,7 +130,7 @@
     {
       "Size": "Medium",
       "PriceModifier": 1.0,
-      "BasePrice": 25000,
+      "BasePrice": 20000,
       "MenuColumns": 8,
       "MenuSlotSize": 64,
       "Sellers": [
@@ -140,7 +140,7 @@
     {
       "Size": "Large",
       "PriceModifier": 1.0,
-      "BasePrice": 75000,
+      "BasePrice": 50000,
       "MenuColumns": 8,
       "MenuSlotSize": 64,
       "Sellers": [
@@ -150,7 +150,7 @@
     {
       "Size": "Giant",
       "PriceModifier": 1.0,
-      "BasePrice": 300000,
+      "BasePrice": 250000,
       "MenuColumns": 8,
       "MenuSlotSize": 64,
       "Sellers": [
@@ -160,7 +160,7 @@
     {
       "Size": "Massive",
       "PriceModifier": 1.0,
-      "BasePrice": 1500000,
+      "BasePrice": 1000000,
       "MenuColumns": 8,
       "MenuSlotSize": 64,
       "Sellers": [
@@ -177,38 +177,38 @@
   "MonsterLootSettings": {
     "LogDropChancesToConsole": false,
     "CanReceiveBagsAsDrops": true,
-    "ForceNewBagTypeChance": 0.4,
-    "BaseDropChance": 0.004,
-    "MineDepthBonusPerLevel": 0.004,
+    "ForceNewBagTypeChance": 0.35,
+    "BaseDropChance": 0.0066,
+    "MineDepthBonusPerLevel": 0.005,
     "MaxMineDepth": 220,
-    "QuarryLocationBonus": 0.3,
-    "ForestLocationBonus": 0.2,
-    "OtherLocationBonus": 0.1,
+    "QuarryLocationBonus": 0.4,
+    "ForestLocationBonus": 0.3,
+    "OtherLocationBonus": 0.2,
     "BaseExperience": 8,
     "MaxExperience": 15,
     "MaxExperienceMultiplier": 1.25,
     "MinExperience": 4,
     "MinExperienceMultiplier": 0.75,
-    "BonusPer10HP": 0.015,
-    "MaxHP": 200,
+    "BonusPer10HP": 0.012,
+    "MaxHP": 250,
     "RucksackDropSettings": {
       "TypeWeight": 10,
       "SizeWeights": {
-        "Small": 56,
-        "Medium": 30,
-        "Large": 10,
-        "Giant": 3,
-        "Massive": 1
+        "Small": 42,
+        "Medium": 35,
+        "Large": 15,
+        "Giant": 6,
+        "Massive": 2
       }
     },
     "OmniBagDropSettings": {
       "TypeWeight": 4,
       "SizeWeights": {
-        "Small": 45,
-        "Medium": 32,
-        "Large": 20,
-        "Giant": 2,
-        "Massive": 1
+        "Small": 40,
+        "Medium": 30,
+        "Large": 10,
+        "Giant": 4,
+        "Massive": 2
       }
     },
     "BundleBagDropSettings": {
@@ -221,11 +221,11 @@
     "StandardBagDropSettings": {
       "TypeWeight": 60,
       "SizeWeights": {
-        "Small": 62,
-        "Medium": 30,
-        "Large": 8,
-        "Giant": 0,
-        "Massive": 0
+        "Small": 30,
+        "Medium": 52,
+        "Large": 12,
+        "Giant": 4,
+        "Massive": 2
       }
     }
   }

@@ -1,0 +1,14 @@
+url:
+   https://github.com/super-aardvark/AardvarkMods-SDV.git
+
+mods:
+   Anti-Social NPCs
+   SDV Game of Life
+
+latest commit:
+   commit 890f5af8b4fe4ace1568a885d95d73b87a35b059
+   Author: Jacob Finn <super.aardvark@gmail.com>
+   Date:   Wed Apr 15 12:53:21 2020 -0700
+   
+       initial commit
+   

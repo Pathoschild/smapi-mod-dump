@@ -5,9 +5,12 @@ mods:
    Jump Over
 
 latest commit:
-   commit 71c4c0d7c6bd93c0e5e67b86885922d8aa032a3d
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:33:28 2019 -0500
+   commit eab48bc6c3a28b270d0d06aa513b8aeb7f7f05d2
+   Merge: 71c4c0d dffb353
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:10:07 2020 -0400
    
-       1.1.3 - SDV 1.4, sync jumps across MP, GMCM support
+       Merge pull request #2 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

@@ -100,5 +100,15 @@
 	"trains.next.thisWeek": "Нам не нужно долго ждать. {{dayOfWeek}}, поезд пройдет в {{time}}.",
 	"trains.next.later": "К сожалению, следующего поезда не будет до {{date}}, {{time}}. Мы должны быть терпеливы.",
 	"trains.later": "Заглядывая дальше по расписанию, я вижу, что поезда также запланированы к проезду к {{date1}}, и {{date2}}.",
-	"trains.closing": "Помните, что вы, вероятно, опоздаете на поезд, если будете отсутствовать в долине всю ночь. Счастливый поездки!"
+	"trains.closing": "Помните, что вы, вероятно, опоздаете на поезд, если будете отсутствовать в долине всю ночь. Счастливый поездки!",
+
+	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+
+	"InaccuratePredictions.name": "Inaccurate Predictions",
+	"InaccuratePredictions.description": "Reveal channels whose information is inaccurate due to the presence of conflicting mods. For entertainment purposes only.",
+
+	"Cheats.name": "Cheat Options",
+
+	"BypassFriendships.name": "Bypass Friendships",
+	"BypassFriendships.description": "Put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player."
 }

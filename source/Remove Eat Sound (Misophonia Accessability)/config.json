@@ -1,8 +1,0 @@
-{
-  "PlayerSettings": {
-    "ShowMoneyReceivedNotification": true,
-    "ShowShippingBinMoneySentNotification": true,
-    "ShowShopMoneySentNotification": true,
-    "ShowZeroMoneyReceivedNotification": false
-  }
-}

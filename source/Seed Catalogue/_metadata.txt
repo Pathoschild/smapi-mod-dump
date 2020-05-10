@@ -5,9 +5,12 @@ mods:
    Seed Catalogue
 
 latest commit:
-   commit 9335b50146ca57d93b949e11bb4b7138589d2760
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:53:09 2019 -0500
+   commit b986c47899b0070f436a355fc02b4272c525640d
+   Merge: 9335b50 bb90cfa
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:10:53 2020 -0400
    
-       1.0.4 - SDV 1.4
+       Merge pull request #2 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

@@ -1,7 +1,7 @@
 {
 	"Name": "Mega Storage",
 	"Author": "Alek and furyx639",
-	"Version": "1.4.4",
+	"Version": "2.0.0-beta.4",
 	"Description": "Adds Mega Storage Chests to the game.",
 	"UniqueID": "Alek.MegaStorage",
 	"EntryDll": "MegaStorage.dll",
@@ -10,7 +10,7 @@
 	"Dependencies": [
 		{
 			"UniqueID":  "spacechase0.JsonAssets",
-			"MinimumVersion":  "1.6.1",
+			"MinimumVersion":  "1.6.2",
 			"IsRequired":  true
 		},
 		{

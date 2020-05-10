@@ -1,0 +1,16 @@
+{
+    "Name": "East Scarpe",
+    "Author": "LemurKat",
+    "Version": "1.2.1",
+    "Description": "Adds an area east of town.",
+    "UniqueID": "LemurKat.EastScarpe.CP",
+    "MinimumApiVersion": "1.0.0",
+    "UpdateKeys": [ "Nexus:5787" ],
+"Dependencies": [
+  	{ "UniqueID": "LemurKat.EastScarpe.TMX" }
+			],
+    "ContentPackFor": {
+   "UniqueID": "Pathoschild.ContentPatcher"	
+}
+      
+    }

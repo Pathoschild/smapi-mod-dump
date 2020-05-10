@@ -73,6 +73,12 @@
       "UpdateWhenViewChange": true,
       "ShortcutKey": null
     },
+    "TileGrid": {
+      "Enabled": true,
+      "UpdatesPerSecond": 1.0,
+      "UpdateWhenViewChange": true,
+      "ShortcutKey": null
+    },
     "Tillable": {
       "Enabled": true,
       "UpdatesPerSecond": 2.0,

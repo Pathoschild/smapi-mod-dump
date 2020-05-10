@@ -1,10 +1,10 @@
-{
-  "Name": "AmbientLight",
-  "Author": "SixthTitan",
-  "Version": "1.0.0",
-  "Description": "Ambient Light - Light up your world",
-  "UniqueID": "SixthTitan.AmbientLight",
-  "EntryDll": "AmbientLight.dll",
-  "MinimumApiVersion": "2.10.0",
-  "UpdateKeys": [ "Nexus:4639" ]
+﻿{
+   "Name": "SDVWM_AmbientLight",
+   "Author": "SixthTitan",
+   "Version": "1.8.1",
+   "Description": "Light Up your World",
+   "UniqueID": "SixthTitan.SDVWM_AmbientLight",
+   "EntryDll": "SDVWM_AmbientLight.dll",
+   "MinimumApiVersion": "2.9",
+   "UpdateKeys": ["Nexus:4639" ]
 }

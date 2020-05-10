@@ -1,76 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B6405042-723E-40D3-BF94-51D93C16B076}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ToolGeodes</RootNamespace>
     <AssemblyName>ToolGeodes</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <RootNamespace>ToolGeodes</RootNamespace>
+    <Version>1.1.6</Version>
+    <TargetFramework>net452</TargetFramework>
+    <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>
+
+    <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>$(GamePath)\smapi-internal\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AdornMenu.cs" />
-    <Compile Include="AdornMenu_PickTool.cs" />
-    <Compile Include="Configuration.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Mod.cs" />
-    <Compile Include="Overrides\Game1.cs" />
-    <Compile Include="Overrides\Hoe.cs" />
-    <Compile Include="Overrides\GameLocation.cs" />
-    <Compile Include="Overrides\Bug.cs" />
-    <Compile Include="Overrides\MeleeWeapon.cs" />
-    <Compile Include="Overrides\Mummy.cs" />
-    <Compile Include="Overrides\RockCrab.cs" />
-    <Compile Include="Overrides\Tool.cs" />
-    <Compile Include="Overrides\WateringCan.cs" />
-    <Compile Include="Overrides\Axe.cs" />
-    <Compile Include="Overrides\Pickaxe.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaveData.cs" />
-    <Compile Include="ToolType.cs" />
-    <Compile Include="TrueSight.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="manifest.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0-beta.7" />
-  </ItemGroup>
+
+  <Import Project="$(SolutionDir)\common.targets" />
   <Import Project="..\SpaceShared\SpaceShared.projitems" Label="Shared" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

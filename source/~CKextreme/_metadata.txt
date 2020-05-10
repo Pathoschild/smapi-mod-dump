@@ -6,9 +6,11 @@ mods:
    Time Notifier
 
 latest commit:
-   commit c0e95eb75f7a9a2f089b1ebb225323754f41ac65
-   Author: CKextreme <CKextreme@users.noreply.github.com>
-   Date:   Sun Mar 31 22:04:29 2019 +0200
+   commit 60b7afed89c3bcffd37d6442f8910778154eaafc
+   Author: Conny Karras <CKextreme@users.noreply.github.com>
+   Date:   Wed Apr 22 12:02:36 2020 +0200
    
-       Update README.md
+       Create new License file
+       
+       changed nickname to fullname + nickname
    

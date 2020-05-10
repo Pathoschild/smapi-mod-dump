@@ -1,0 +1,13 @@
+url:
+   https://github.com/iSkLz/ExperienceMultiplier.git
+
+mods:
+   Experience Rate Multiplier
+
+latest commit:
+   commit 4a8f1a1c303f56315f846943e65ff50501f2a75d
+   Author: iSkLz <54770295+iSkLz@users.noreply.github.com>
+   Date:   Sat Apr 25 18:40:21 2020 +0100
+   
+       Create README.md
+   

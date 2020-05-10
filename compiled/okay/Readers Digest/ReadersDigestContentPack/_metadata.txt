@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3040
-IDs: remybach.readersdigestcontent
-update keys: Nexus:3040

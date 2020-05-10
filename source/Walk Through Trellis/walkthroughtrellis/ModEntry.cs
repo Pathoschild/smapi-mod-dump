@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 
 namespace walkthroughtrellis
 {
@@ -16,8 +15,7 @@ namespace walkthroughtrellis
         public override void Entry(IModHelper helper)
         {
             //implementing the event
-            PlayerEvents.Warped += PlayerEvents_Warped;
-            //was current location and now that's different?
+            helper.Events.Player.Warped += PlayerEvents_Warped;
         }
         //location change event
         public void PlayerEvents_Warped(object sender, EventArgs e)

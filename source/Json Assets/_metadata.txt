@@ -5,12 +5,12 @@ mods:
    Json Assets
 
 latest commit:
-   commit c8504fb6128fc8af521b2a6421503503cd52cbb7
-   Merge: b02e241 7460ddb
+   commit 7abbbb178437123e4535d64d61e2b4fe951fb8e6
+   Merge: 67edae3 9748c5f
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Apr 13 18:09:48 2020 -0400
+   Date:   Tue May 5 19:54:36 2020 -0400
    
-       Merge pull request #50 from paradigmnomad/patch-9
+       Merge pull request #53 from kdau/patch-1
        
-       Updates README
+       README: Remove references to Space Core
    

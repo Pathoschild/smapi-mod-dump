@@ -365,14 +365,14 @@ namespace IndustrialFurnace
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             // Integration for Generic Mod Config Menu by spacechase0
-            var api = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+            var GMCMApi = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
 
-            if (api != null)
+            if (GMCMApi != null)
             {
-                api.RegisterModConfig(ModManifest, () => config = new ModConfig(), () => Helper.WriteConfig(config));
-                api.RegisterLabel(ModManifest, i18n.Get("gmcm.main-label"), "");
-                api.RegisterClampedOption(ModManifest, i18n.Get("gmcm.coal-amount-label"), i18n.Get("gmcm.coal-amount-description"), () => config.CoalAmount, (int val) => config.CoalAmount = val, 1, 100);
-                api.RegisterSimpleOption(ModManifest, i18n.Get("gmcm.instant-smelting-label"), i18n.Get("gmcm.instant-smelting-description"), () => config.InstantSmelting, (bool val) => config.InstantSmelting = val);
+                GMCMApi.RegisterModConfig(ModManifest, () => config = new ModConfig(), () => Helper.WriteConfig(config));
+                GMCMApi.RegisterLabel(ModManifest, i18n.Get("gmcm.main-label"), "");
+                GMCMApi.RegisterClampedOption(ModManifest, i18n.Get("gmcm.coal-amount-label"), i18n.Get("gmcm.coal-amount-description"), () => config.CoalAmount, (int val) => config.CoalAmount = val, 1, 100);
+                GMCMApi.RegisterSimpleOption(ModManifest, i18n.Get("gmcm.instant-smelting-label"), i18n.Get("gmcm.instant-smelting-description"), () => config.InstantSmelting, (bool val) => config.InstantSmelting = val);
             }
         }
 

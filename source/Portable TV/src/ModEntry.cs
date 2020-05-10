@@ -156,7 +156,6 @@ namespace PortableTV
 						return;
 				}
 			}
-			
 
 			// Activate the TV. Don't do anything else with this click.
 			tv.turnOnTV ();
@@ -173,6 +172,9 @@ namespace PortableTV
 		{
 			try
 			{
+				if (tv == null || !Context.IsWorldReady || !Context.IsPlayerFree ||
+						Game1.player.UsingTool || Game1.IsChatting)
+					throw new Exception ("Not ready to show Portable TV right now.");
 				tv.turnOnTV ();
 			}
 			catch (Exception e)
@@ -185,6 +187,8 @@ namespace PortableTV
 		{
 			try
 			{
+				if (!Context.IsWorldReady)
+					throw new Exception ("Cannot reset Portable TV without an active save.");
 				tv = new PortableTV ();
 			}
 			catch (Exception e)

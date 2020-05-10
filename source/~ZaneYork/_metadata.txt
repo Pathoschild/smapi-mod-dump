@@ -1,0 +1,14 @@
+url:
+   https://github.com/ZaneYork/SDV_Mods.git
+
+mods:
+   Custom Crops Decay
+   Dynamic Price
+
+latest commit:
+   commit 9ef35938b6f5d35193732f82ce509fee1e3a34ee
+   Author: ZaneYork <ZaneYork@qq.com>
+   Date:   Sat Apr 18 20:24:31 2020 +0800
+   
+       Initial commit
+   

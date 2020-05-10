@@ -1,0 +1,260 @@
+{
+	"$schema": "https://raw.githubusercontent.com/K4rakara/schema-valley/master/schema_valley.schema.json",
+	"Format": "1.13.0",
+	"DynamicTokens": [
+		// ========================================================================================
+		// Standard dynamic tokens, directly lifted from SVO.
+		// ========================================================================================
+		{
+			"Name": "IndoorVariant",
+			"Value": "_Indoor",
+			"When": {
+				"IsOutdoors": "false"
+			}
+		},
+		{
+			"Name": "IndoorVariant",
+			"Value": "_Outdoor",
+			"When": {
+				"IsOutdoors": "true"
+			}
+		},
+		{
+			"Name": "WeatherVariant",
+			"Value": "_Sun",
+			"When": {
+				"Season": "spring, summer, fall, winter",
+				"Weather": "sun, wind"
+			}
+		},
+		{
+			"Name": "WeatherVariant",
+			"Value": "_Rain",
+			"When": {
+				"Season": "spring, summer, fall",
+				"Weather": "rain, storm"
+			}
+		},
+		{
+			"Name": "WeatherVariant",
+			"Value": "_Snow",
+			"When": {
+				"Season": "winter",
+				"Weather": "snow"
+			}
+		},
+		{
+			"Name": "Festival",
+			"Value": "EggFestival",
+			"When": {
+				"DayEvent": "egg festival",
+				"LocationName": "Town"
+			}
+		},
+		{
+			"Name": "Festival",
+			"Value": "FlowerDance",
+			"When": {
+				"DayEvent": "flower dance",
+				"LocationName": "Forest"
+			}
+		},
+		{
+			"Name": "Festival",
+			"Value": "IceFestival",
+			"When": {
+				"DayEvent": "festival of ice",
+				"LocationName": "Forest"
+			}
+		},
+		{
+			"Name": "Festival",
+			"Value": "Luau",
+			"When": {
+				"DayEvent": "luau",
+				"LocationName": "Beach"
+			}
+		},
+		{
+			"Name": "Festival",
+			"Value": "MoonlightJellies",
+			"When": {
+				"DayEvent": "dance of the moonlight jellies",
+				"LocationName": "Beach"
+			}
+		},
+		{
+			"Name": "Festival",
+			"Value": "SpiritsEve",
+			"When": {
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town"
+			}
+		},
+		{
+			"Name": "Festival",
+			"Value": "SVFair",
+			"When": {
+				"DayEvent": "stardew valley fair",
+				"LocationName": "Town"
+			}
+		},
+		{
+			"Name": "Festival",
+			"Value": "WinterStar",
+			"When": {
+				"DayEvent": "feast of the winter star",
+				"LocationName": "Town"
+			}
+		},
+		{
+			"Name": "Wedding",
+			"Value": "WeddingOutfits",
+			"When": {
+				"DayEvent": "wedding"
+			}
+		},
+		{
+			"Name": "Swimsuits",
+			"Value": "Swimsuits",
+			"When": {
+				"LocationName": "beach",
+				"Season": "summer",
+				"DayEvent:Luau": false,
+				"DayEvent:Dance of the Moonlight Jellies": false,
+				"SwimSuitsEnabled": "true"
+			}
+		},
+		{
+			"Name": "MermaidPendantOverlay",
+			"Value": "MermaidPendantOverlay",
+			"When": {
+				"EnableMermaidPendants": "true"
+			}
+		},
+		{
+            "Name": "WizardFamiliar_HatJunimoDT",
+            "Value": "Hat_Junimo_{{Random:Blank, Blue, Cyan, Green, Orange, Pink, Purple, Red, Yellow | HatJunimoColors}}"
+        },
+        {
+            "Name": "WizardFamiliar_ShoulderJunimo",
+            "Value": "Shoulder_Junimo_{{Season}}"
+        },
+        {
+            "Name": "WizardFamiliar_SpiritCreatures",
+            "Value": "Spirit_Creature_{{Random:Blank, Bird, Butterfly, Dragon, Dragonfly, Flower, Frog, Ice, Solar, Void | SpiritCreaturesAnimals}}"
+		},
+		{
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Abigail",
+            "When": {
+                "Relationship:Abigail": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Alex",
+            "When": {
+                "Relationship:Alex": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Elliott",
+            "When": {
+                "Relationship:Elliott": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Emily",
+            "When": {
+                "Relationship:Emily": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Haley",
+            "When": {
+                "Relationship:Haley": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Leah",
+            "When": {
+                "Relationship:Leah": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Maru",
+            "When": {
+                "Relationship:Maru": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Penny",
+            "When": {
+                "Relationship:Penny": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Sam",
+            "When": {
+                "Relationship:Sam": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Sebastian",
+            "When": {
+                "Relationship:Sebastian": "Married, Engaged"
+            }
+        },
+        {
+            "Name": "MermaidPendantOverlay_Relationship",
+            "Value": "Shane",
+            "When": {
+                "Relationship:Shane": "Married, Engaged"
+            }
+		},
+		{
+            "Name": "FlowerQueen",
+            "Value": "{{Random: Abigail, Abigail, Emily, Emily, Haley, Leah, Leah, Maru, Maru, Penny, Penny | RandomFlowerQueen}}",
+            "When": {
+                "AllowBachelorsToBeFlowerKing": "false"
+            }
+        },
+        {
+            "Name": "FlowerQueen",
+            "Value": "{{Random: Abigail, Emily, Haley, Leah, Maru, Penny, Alex, Elliott, Harvey, Sam, Sebastian, Shane | RandomFlowerQueenKing}}",
+            "When": {
+                "AllowBachelorsToBeFlowerKing": "true"
+            }
+        }
+	],
+	"Changes": [
+		
+		// ========================================================================================
+		// Begin character edits.
+		// ========================================================================================
+
+		// Abigail
+		{
+			"LogName": "Abigail Default",
+			"Target": "Characters/Abigail",
+			"Action": "EditImage",
+			"FromFile": "Characters/Abigail/Abigail_{{Season}}{{IndoorVariant}}{{WeatherVariant}}.png",
+			"PatchMode": "Replace"
+		},
+		{
+			"LogName": "Abigail Summer -- Rain",
+			"Target": "Characters/Abigail",
+			"Action": "EditImage",
+			"FromFile": "Characters/Abigail/Abigail_{{Season}}{{IndoorVariant}}{{WeatherVariant}}_"
+		}
+	]
+}

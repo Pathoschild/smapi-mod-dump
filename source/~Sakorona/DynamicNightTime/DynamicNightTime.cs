@@ -107,7 +107,8 @@ namespace DynamicNightTime
             {
                 if (Game1.getMusicTrackName(Game1.MusicContext.Default).StartsWith(Game1.currentSeason) && !Game1.getMusicTrackName(Game1.MusicContext.Default).Contains("ambient") && (!Game1.eventUp && Game1.isDarkOut()))
                     Game1.changeMusicTrack("none", true, Game1.MusicContext.Default);
-                if (Game1.currentLocation.IsOutdoors && !Game1.isRaining && (!Game1.eventUp && Game1.getMusicTrackName(Game1.MusicContext.Default).Contains("day")) && Game1.isDarkOut())
+                if (Game1.currentLocation != null && Game1.currentLocation.IsOutdoors && !Game1.isRaining && (!Game1.eventUp &&
+                    Game1.getMusicTrackName(Game1.MusicContext.Default) != null && Game1.getMusicTrackName(Game1.MusicContext.Default).Contains("day")) && Game1.isDarkOut())
                     Game1.changeMusicTrack("none", true, Game1.MusicContext.Default);
                 Game1.currentLocation.checkForMusic(Game1.currentGameTime);
             }

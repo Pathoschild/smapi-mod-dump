@@ -45,9 +45,12 @@ mods:
    Visualize
 
 latest commit:
-   commit 6ae3e9e80a23e63cbc37bfa145bf8d133ac1b309
+   commit 4c71fad8f1fe557dd148395b5a521bae148b6ef9
+   Merge: 2c0132b 27a9324
    Author: David <david@millionideas.de>
-   Date:   Mon Apr 13 23:08:40 2020 +0200
+   Date:   Thu Apr 23 15:05:16 2020 +0200
    
-       added persistent locks and crop layers
+       Merge pull request #100 from kdau/master
+       
+       TMXL: compatibility with Save Anywhere
    

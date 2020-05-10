@@ -11,6 +11,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FruitTreeShaker", "FruitTre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomNPC", "RandomNPC\RandomNPC.csproj", "{E9D6D62B-0006-4CC9-A094-8D8944DBF8F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaceShaft", "PlaceShaft\PlaceShaft.csproj", "{FE7693E0-1239-4BA5-89EA-979A090FE223}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacifistValley", "PacifistValley\PacifistValley.csproj", "{C24A056E-001F-4EB6-8D66-2B287EC24E1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitcherMod", "WitcherMod\WitcherMod.csproj", "{AD598A93-4EAE-4672-83CD-C7D5DCA4925F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BossCreatures", "BossCreatures\BossCreatures.csproj", "{189F99D8-9BF1-4FDC-9A53-33A97ACD86D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomMonsterFloors", "CustomMonsterFloors\CustomMonsterFloors.csproj", "{0C291A20-8560-4D6A-AB96-3AEE72E30B29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomOreNodes", "CustomOreNodes\CustomOreNodes.csproj", "{80AA7B9A-03DE-4B2C-BB26-9F9514127A2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LooseAudioFiles", "LooseAudioFiles\LooseAudioFiles.csproj", "{433F98A0-8055-41CA-A109-9A8ADEE74615}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +47,34 @@ Global
 		{E9D6D62B-0006-4CC9-A094-8D8944DBF8F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9D6D62B-0006-4CC9-A094-8D8944DBF8F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9D6D62B-0006-4CC9-A094-8D8944DBF8F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE7693E0-1239-4BA5-89EA-979A090FE223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE7693E0-1239-4BA5-89EA-979A090FE223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE7693E0-1239-4BA5-89EA-979A090FE223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE7693E0-1239-4BA5-89EA-979A090FE223}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24A056E-001F-4EB6-8D66-2B287EC24E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24A056E-001F-4EB6-8D66-2B287EC24E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24A056E-001F-4EB6-8D66-2B287EC24E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24A056E-001F-4EB6-8D66-2B287EC24E1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD598A93-4EAE-4672-83CD-C7D5DCA4925F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD598A93-4EAE-4672-83CD-C7D5DCA4925F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD598A93-4EAE-4672-83CD-C7D5DCA4925F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD598A93-4EAE-4672-83CD-C7D5DCA4925F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{189F99D8-9BF1-4FDC-9A53-33A97ACD86D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{189F99D8-9BF1-4FDC-9A53-33A97ACD86D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{189F99D8-9BF1-4FDC-9A53-33A97ACD86D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{189F99D8-9BF1-4FDC-9A53-33A97ACD86D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C291A20-8560-4D6A-AB96-3AEE72E30B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C291A20-8560-4D6A-AB96-3AEE72E30B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C291A20-8560-4D6A-AB96-3AEE72E30B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C291A20-8560-4D6A-AB96-3AEE72E30B29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80AA7B9A-03DE-4B2C-BB26-9F9514127A2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80AA7B9A-03DE-4B2C-BB26-9F9514127A2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80AA7B9A-03DE-4B2C-BB26-9F9514127A2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80AA7B9A-03DE-4B2C-BB26-9F9514127A2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{433F98A0-8055-41CA-A109-9A8ADEE74615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{433F98A0-8055-41CA-A109-9A8ADEE74615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{433F98A0-8055-41CA-A109-9A8ADEE74615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{433F98A0-8055-41CA-A109-9A8ADEE74615}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

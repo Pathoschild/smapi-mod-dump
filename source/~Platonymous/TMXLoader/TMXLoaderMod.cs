@@ -32,6 +32,7 @@ using StardewValley.Buildings;
 using TMXTile;
 using StardewValley.Network;
 using StardewValley.Characters;
+using StardewValley.Tools;
 
 namespace TMXLoader
 {
@@ -157,62 +158,11 @@ namespace TMXLoader
 
             helper.Events.Player.Warped += Player_Warped;
 
+            helper.Events.GameLoop.SaveCreating += (s, e) => beforeSave();
+            helper.Events.GameLoop.Saving += (s, e) => beforeSave();
 
-            helper.Events.GameLoop.Saving += (s, e) =>
-            {
-
-                if (Game1.IsMasterGame)
-                {
-                    saveData = new SaveData();
-                    saveData.Locations = new List<SaveLocation>();
-                    saveData.Buildables = new List<SaveBuildable>();
-                    saveData.Data = new List<PersistentData>();
-
-                    foreach (var l in addedLocations)
-                        if (Game1.getLocationFromName(l.name) is GameLocation location && getLocationSaveData(location) is SaveLocation sav)
-                            saveData.Locations.Add(sav);
-
-                    foreach (var b in buildablesBuild)
-                    {
-                        BuildableEdit edit = buildables.Find(be => be.id == b.Id);
-
-                        if (edit.indoorsFile != null && Game1.getLocationFromName(getLocationName(b.UniqueId)) is GameLocation location && getLocationSaveData(location) is SaveLocation sav)
-                            b.Indoors = sav;
-
-                        saveData.Buildables.Add(b);
-                    }
-
-                    foreach (GameLocation location in Game1.locations)
-                        if (location.Map.Properties.TryGetValue("PersistentData", out PropertyValue dataString)
-                        && dataString != null
-                        && dataString.ToString().Split(':') is string[] data && data.Length == 3)
-                            saveData.Data.Add(new PersistentData(data[0], data[1], data[2]));
-
-                    Helper.Data.WriteSaveData<SaveData>("Locations", saveData);
-                }
-
-                locationStorage.Clear();
-
-                foreach (var l in addedLocations)
-                    if (Game1.getLocationFromName(l.name) is GameLocation location)
-                    {
-                        Game1.locations.Remove(location);
-                        locationStorage.Add(location);
-                    }
-
-                foreach (var b in buildablesBuild)
-                    if (buildables.Find(be => be.id == b.Id) is BuildableEdit edit && edit.indoorsFile != null && Game1.getLocationFromName(getLocationName(b.UniqueId)) is GameLocation location)
-                    {
-                        Game1.locations.Remove(location);
-                        locationStorage.Add(location);
-                    }
-
-            };
-
-            helper.Events.GameLoop.Saved += (s, e) => {
-                foreach (var loc in locationStorage)
-                    Game1.locations.Add(loc);
-            };
+            helper.Events.GameLoop.SaveCreated += (s, e) => afterSave();
+            helper.Events.GameLoop.Saved += (s, e) => afterSave();
 
             helper.Events.GameLoop.DayStarted += (s, e) =>
             {
@@ -230,6 +180,61 @@ namespace TMXLoader
             };
 
             helper.Events.Display.MenuChanged += TMXActions.updateItemListAfterShop;
+        }
+
+        private void beforeSave()
+        {
+            if (Game1.IsMasterGame)
+            {
+                saveData = new SaveData();
+                saveData.Locations = new List<SaveLocation>();
+                saveData.Buildables = new List<SaveBuildable>();
+                saveData.Data = new List<PersistentData>();
+
+                foreach (var l in addedLocations)
+                    if (Game1.getLocationFromName(l.name) is GameLocation location && getLocationSaveData(location) is SaveLocation sav)
+                        saveData.Locations.Add(sav);
+
+                foreach (var b in buildablesBuild)
+                {
+                    BuildableEdit edit = buildables.Find(be => be.id == b.Id);
+
+                    if (edit.indoorsFile != null && Game1.getLocationFromName(getLocationName(b.UniqueId)) is GameLocation location && getLocationSaveData(location) is SaveLocation sav)
+                        b.Indoors = sav;
+
+                    saveData.Buildables.Add(b);
+                }
+
+                foreach (GameLocation location in Game1.locations)
+                    if (location.Map.Properties.TryGetValue("PersistentData", out PropertyValue dataString)
+                    && dataString != null
+                    && dataString.ToString().Split(':') is string[] data && data.Length == 3)
+                        saveData.Data.Add(new PersistentData(data[0], data[1], data[2]));
+
+                Helper.Data.WriteSaveData<SaveData>("Locations", saveData);
+            }
+
+            locationStorage.Clear();
+
+            foreach (var l in addedLocations)
+                if (Game1.getLocationFromName(l.name) is GameLocation location)
+                {
+                    Game1.locations.Remove(location);
+                    locationStorage.Add(location);
+                }
+
+            foreach (var b in buildablesBuild)
+                if (buildables.Find(be => be.id == b.Id) is BuildableEdit edit && edit.indoorsFile != null && Game1.getLocationFromName(getLocationName(b.UniqueId)) is GameLocation location)
+                {
+                    Game1.locations.Remove(location);
+                    locationStorage.Add(location);
+                }
+        }
+
+        private void afterSave()
+        {
+            foreach (var loc in locationStorage)
+                Game1.locations.Add(loc);
         }
 
         private void restoreAllSavedBuildables()
@@ -255,7 +260,7 @@ namespace TMXLoader
                 {
                     Monitor.Log("Restore Location objects: " + loc.Name);
 
-                    setLocationObejcts(loc);
+                    setLocationObjects(loc);
                     try
                     {
                         if (ja != null && Game1.getLocationFromName(loc.Name) is GameLocation location)
@@ -363,7 +368,7 @@ namespace TMXLoader
 
                 buildBuildableEdit(false, edit, location, new Point(b.Position[0], b.Position[1]), b.Colors, b.UniqueId, b.PlayerName, b.PlayerId, false);
                 if (b.Indoors != null)
-                    setLocationObejcts(b.Indoors);
+                    setLocationObjects(b.Indoors);
 
             }
         }
@@ -516,7 +521,7 @@ namespace TMXLoader
                     {
                         var locSaveData = savd;
                         locSaveData.Name = getLocationName(uniqueId);
-                        setLocationObejcts(locSaveData);
+                        setLocationObjects(locSaveData);
                     }
 
                     removeSavedBuildable(sb, pay, distribute);
@@ -666,7 +671,7 @@ namespace TMXLoader
             return map;
         }
 
-        private bool setLocationObejcts(SaveLocation loc)
+        private bool setLocationObjects(SaveLocation loc)
         {
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.ConformanceLevel = ConformanceLevel.Auto;
@@ -687,8 +692,8 @@ namespace TMXLoader
                 }
                 catch (Exception e)
                 {
-                    Monitor.Log("Failed to deserialize: " + loc.Name, LogLevel.Trace);
-                    Monitor.Log(e.Message);
+                    Monitor.Log("Failed to deserialize: " + loc.Name, LogLevel.Warn);
+                    Monitor.Log(e.Message, LogLevel.Info);
                     monitor.Log(e.StackTrace);
                     return false;
                 }
@@ -745,13 +750,12 @@ namespace TMXLoader
             {
                 try
                 {
-
-                    SaveGame.locationSerializer.Serialize(writer, location);
+                    SerializationFix.SafeSerialize(writer, location);
                 }
                 catch (Exception e)
                 {
-                    Monitor.Log("Failed to serialize: " + location.Name, LogLevel.Trace);
-                    Monitor.Log(e.Message);
+                    Monitor.Log("Failed to serialize: " + location.Name, LogLevel.Warn);
+                    Monitor.Log(e.Message, LogLevel.Info);
                     monitor.Log(e.StackTrace);
                     return null;
                 }
@@ -839,8 +843,10 @@ namespace TMXLoader
 
         private static void loadPersistentDataToLocation(GameLocation location)
         {
-            foreach (var d in saveData.Data.Where(p => p.Key == location.Name))
-                try
+            try
+            {
+                if(location is GameLocation)
+                foreach (var d in saveData.Data.Where(p => p.Key == location.Name))
                 {
                     if (!location.Map.Properties.ContainsKey("PersistentData"))
                         location.Map.Properties.Add("PersistentData", d.Type + ":" + d.Key + ":" + d.Value);
@@ -881,13 +887,13 @@ namespace TMXLoader
                                 TileAction.invokeCustomTileActions("Success", location, new Vector2(x, y), lockData[0]);
                         }
                     }
-
-                    
                 }
-                catch
-                {
 
-                }
+            }
+            catch
+            {
+
+            }
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -939,6 +945,14 @@ namespace TMXLoader
             harmonyFix();
 
             helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+
+            var SaveAnywhere = helper.ModRegistry.GetApi<Omegasis.SaveAnywhere.Framework.ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
+            if (SaveAnywhere != null)
+            {
+                SaveAnywhere.BeforeSave += (_s, _e) => beforeSave();
+                SaveAnywhere.AfterSave += (_s, _e) => afterSave();
+                SaveAnywhere.AfterLoad += (_s, _e) => SavePatch();
+            }
         }
 
         private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -982,13 +996,21 @@ namespace TMXLoader
 
             instance.Patch(
                 original: AccessTools.Method(typeof(Crop), "harvest"),
-                prefix: new HarmonyMethod(AccessTools.Method(this.GetType(), "harvest"))
+                prefix: new HarmonyMethod(AccessTools.Method(this.GetType(), "harvest")),
+                postfix: new HarmonyMethod(AccessTools.Method(this.GetType(), "harvestPost"))
                 );
+
 
             instance.Patch(
                 original: AccessTools.Method(typeof(HoeDirt), "performToolAction"),
                 prefix: new HarmonyMethod(AccessTools.Method(this.GetType(), "performToolAction"))
                 );
+
+            instance.Patch(
+               original: AccessTools.Method(typeof(HoeDirt), "draw", new Type[] { typeof(SpriteBatch),typeof(Vector2) }),
+               prefix: new HarmonyMethod(AccessTools.Method(this.GetType(), "drawHoeDirt")),
+               postfix: new HarmonyMethod(AccessTools.Method(this.GetType(), "drawHoeDirtPost"))
+               );
 
             if (!helper.ModRegistry.IsLoaded("Entoarox.FurnitureAnywhere"))
                 return;
@@ -998,9 +1020,27 @@ namespace TMXLoader
 
         private static bool skipTrySetMapTile = false;
 
+        public static void drawHoeDirt(HoeDirt __instance, ref int __state)
+        {
+            __state = -1;
+
+            if (__instance.crop is Crop crop && !crop.forageCrop.Value && (crop.whichForageCrop.Value == -91 || crop.whichForageCrop.Value == -101))
+            {
+                __state = __instance.state.Value;
+                __instance.state.Value = 2;
+            }
+        }
+
+        public static void drawHoeDirtPost(HoeDirt __instance, ref int __state)
+        {
+            if (__state != -1)
+                __instance.state.Value = __state;
+        }
+
         public static bool performToolAction(HoeDirt __instance, ref bool __result)
         {
-            if (__instance.crop is Crop crop && !crop.forageCrop.Value && crop.whichForageCrop.Value == 99)
+            if (__instance.crop is Crop crop && !crop.forageCrop.Value && 
+                (crop.whichForageCrop.Value == -90 || crop.whichForageCrop.Value == -91 || crop.whichForageCrop.Value == -100 || crop.whichForageCrop.Value == -101))
             {
                 __result = false;
                 return false;
@@ -1009,32 +1049,47 @@ namespace TMXLoader
             return true;
         }
 
-                public static bool harvest(Crop __instance, int xTile, int yTile, JunimoHarvester junimoHarvester, ref bool __result)
+        public static bool harvest(Crop __instance, int xTile, int yTile, JunimoHarvester junimoHarvester, ref bool __result)
         {
-            if (!__instance.forageCrop.Value && __instance.whichForageCrop.Value == 99)
+            if (!__instance.forageCrop.Value && (__instance.whichForageCrop.Value == -91 || __instance.whichForageCrop.Value == -90))
             {
                 __result = false;
 
                 Vector2 pos = new Vector2(xTile, yTile);
 
-                if(junimoHarvester == null 
-                    && Game1.currentLocation.terrainFeatures.TryGetValue(pos, out TerrainFeature f) 
-                    && f is HoeDirt h 
+                if (junimoHarvester == null
+                    && Game1.currentLocation.terrainFeatures.TryGetValue(pos, out TerrainFeature f)
+                    && f is HoeDirt h
                     && h.crop == __instance)
-                    foreach(Layer layer in Game1.currentLocation.Map.Layers.Where(l => l.Id.ToLower().StartsWith(Game1.currentSeason.ToLower() + "_crops")))
-                        if(layer.Tiles[xTile,yTile] is Tile tile && layer.Properties.ContainsKey("HarvestAction"))
+                    foreach (Layer layer in Game1.currentLocation.Map.Layers.Where(l => l.Id.ToLower().StartsWith(Game1.currentSeason.ToLower() + "_crops")))
+                        if (layer.Tiles[xTile, yTile] is Tile tile && layer.Properties.ContainsKey("HarvestAction"))
                         {
                             tile.Properties["HarvestAction"] = layer.Properties["HarvestAction"];
                             TileAction.invokeCustomTileActions("HarvestAction", Game1.currentLocation, pos, layer.Id);
                             break;
                         }
 
-
                 return false;
             }
 
             return true;
         }
+
+        public static void harvestPost(Crop __instance, int xTile, int yTile, JunimoHarvester junimoHarvester, ref bool __result)
+        {
+            if (!__instance.forageCrop.Value &&
+                (__instance.whichForageCrop.Value == -90 || __instance.whichForageCrop.Value == -91 || __instance.whichForageCrop.Value == -100 || __instance.whichForageCrop.Value == -101))
+            {
+
+                Vector2 pos = new Vector2(xTile, yTile);
+
+                if (Game1.currentLocation.terrainFeatures.TryGetValue(pos, out TerrainFeature f)
+                    && f is HoeDirt h
+                    && (h.crop == null || (h.crop == __instance && __instance.regrowAfterHarvest.Value == -1)))
+                    Game1.currentLocation.terrainFeatures.Remove(pos);
+            }
+        }
+
 
         public static bool trySetMapTile(GameLocation __instance, int tileX, int tileY, int index, string layer, string action, int whichTileSheet = 0)
         {
@@ -1221,11 +1276,13 @@ namespace TMXLoader
         public static void setupCrops(GameLocation location)
         {
             Dictionary<int, string> cropsDict = Game1.content.Load<Dictionary<int, string>>("Data\\Crops");
-            Dictionary<int, string> fruitsDict = Game1.content.Load<Dictionary<int, string>>("Data\\fruitTrees");
 
             foreach (Layer layer in location.Map.Layers)
-                if (layer.Id.ToLower().StartsWith(Game1.currentSeason.ToLower() + "_crops"))
+                if (layer.Id.ToLower().StartsWith(Game1.currentSeason.ToLower() + "_crops") || layer.Id.ToLower().StartsWith("all_crops"))
                 {
+                    if (layer.Properties.ContainsKey("Conditions") && !PyUtils.checkEventConditions(layer.Properties["Conditions"].ToString()))
+                        continue;
+
                     int startPhase = 0;
 
                     if (layer.Properties.TryGetValue("StartPhase", out PropertyValue sp))
@@ -1234,6 +1291,14 @@ namespace TMXLoader
                     bool canBeHarvested =
                             layer.Properties.TryGetValue("CanBeHarvested", out PropertyValue ch)
                             && (ch.ToString().ToLower() == "t" || ch.ToString().ToLower() == "true");
+
+                    bool hideSoil =
+                            layer.Properties.TryGetValue("HideSoil", out PropertyValue hs)
+                            && (hs.ToString().ToLower() == "t" || hs.ToString().ToLower() == "true");
+
+                    bool ignoreSeason =
+                            layer.Properties.TryGetValue("IgnoreSeason", out PropertyValue ise)
+                            && (ise.ToString().ToLower() == "t" || ise.ToString().ToLower() == "true");
 
                     bool autoWater =
                             layer.Properties.TryGetValue("AutoWater", out PropertyValue aw)
@@ -1253,6 +1318,10 @@ namespace TMXLoader
                                 if (name != null)
                                     index = Game1.objectInformation.getIndexByName(name.ToString());
 
+                            if (tile.Properties.TryGetValue("Name", out PropertyValue name2))
+                                if (name2 != null)
+                                    index = Game1.objectInformation.getIndexByName(name2.ToString());
+
                             Vector2 pos = new Vector2(x, y);
                             Crop crop = null;
 
@@ -1269,11 +1338,13 @@ namespace TMXLoader
 
                                 if (crop != null)
                             {
-                                if (!crop.seasonsToGrowIn.Contains(Game1.currentSeason))
+                                if (!crop.seasonsToGrowIn.Contains(Game1.currentSeason) && !ignoreSeason)
                                     continue;
 
                                 if (!canBeHarvested)
-                                    crop.whichForageCrop.Value = 99;
+                                    crop.whichForageCrop.Value = hideSoil ? -91 : -90;
+                                else
+                                    crop.whichForageCrop.Value = hideSoil ? -101 : -100;
 
                                 if (startPhase >= crop.phaseDays.Count - 1)
                                     crop.growCompletely();
@@ -1281,15 +1352,11 @@ namespace TMXLoader
                                     crop.currentPhase.Value = startPhase;
 
                                 HoeDirt hoedirt = new HoeDirt(Game1.isRaining ? 1 : 0, location);
-
+                                
                                 if (location.terrainFeatures.ContainsKey(pos))
                                 {
                                     if (location.terrainFeatures[pos] is HoeDirt h && h.crop is Crop c && !c.dead.Value && (c.indexOfHarvest.Value == crop.indexOfHarvest.Value || (index == 770 && Game1.dayOfMonth != 1)))
                                     {
-                                        h.dayUpdate(location, pos);
-                                        if (Game1.dayOfMonth == 1)
-                                            h.seasonUpdate(false);
-
                                         if(c.dead.Value)
                                             location.terrainFeatures.Remove(pos);
                                         else if (c.currentPhase.Value < startPhase)
@@ -1298,6 +1365,11 @@ namespace TMXLoader
                                                 c.growCompletely();
                                             else
                                                 c.currentPhase.Value = startPhase;
+
+                                            if (!canBeHarvested)
+                                                c.whichForageCrop.Value = hideSoil ? -91 : -90;
+                                            else
+                                                c.whichForageCrop.Value = hideSoil ? -101 : -100;
                                         }
                                     }
                                     else
@@ -1310,7 +1382,7 @@ namespace TMXLoader
                                     hoedirt.crop = crop;
                                 }
 
-                                if (location.terrainFeatures[pos] is HoeDirt hd && (Game1.isRaining || autoWater))
+                                if (location.terrainFeatures.ContainsKey(pos) && location.terrainFeatures[pos] is HoeDirt hd && (Game1.isRaining || autoWater))
                                     hd.state.Value = 1;
                             }
                             
@@ -1378,6 +1450,8 @@ namespace TMXLoader
                 {
                     spouseRoomMaps.Add(new MapEdit() { info = room.name, name = "FarmHouse1_marriage", file = room.file, position = new[] { 29, 1 } });
                     spouseRoomMaps.Add(new MapEdit() { info = room.name, name = "FarmHouse2_marriage", file = room.file, position = new[] { 35, 10 } });
+                    spouseRoomMaps.Add(new MapEdit() { info = room.name, name = "Cabin1_marriage", file = room.file, position = new[] { 29, 1 } });
+                    spouseRoomMaps.Add(new MapEdit() { info = room.name, name = "Cabin2_marriage", file = room.file, position = new[] { 35, 10 } });
                 }
             }
 

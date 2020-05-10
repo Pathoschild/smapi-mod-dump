@@ -1,0 +1,17 @@
+﻿{
+	"Name": "[PFM] Seed Shortage",
+	"Author": "Xynerorias",
+	"Version": "1.4.0",
+	"Description": "Adds producing rules for my mod.",
+	"UniqueID": "xynerorias.seedshortagePFM",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [],
+	"Dependencies": [
+		{
+			"UniqueID": "xynerorias.seedshortage"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.ProducerFrameworkMod"
+	}
+}

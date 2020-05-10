@@ -5,9 +5,12 @@ mods:
    Cooking Skill
 
 latest commit:
-   commit 9a4ee01eb3efde26848be04b45a04661ac111cc1
+   commit 8e1d47f10b15e1b32bba9ed078e4f57d219b66b7
+   Merge: 9a4ee01 2a0d485
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Fri Jan 17 19:05:14 2020 -0500
+   Date:   Mon Apr 27 12:13:37 2020 -0400
    
-       1.1.6
+       Merge pull request #6 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

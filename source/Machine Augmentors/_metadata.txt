@@ -5,10 +5,9 @@ mods:
    Machine Augmentors
 
 latest commit:
-   commit dbf752fa941a58961b746b25ca71c6b7af036e83
-   Merge: 5a5b661 2f8b812
+   commit f1fb41b31b218d72f7d0d80ac1b991b9ef9a6c72
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Mon Apr 6 10:47:43 2020 -0400
+   Date:   Wed Apr 22 15:20:57 2020 -0400
    
-       Merge branch 'master' of https://github.com/Videogamers0/SDV-MachineAugmentors
+       Fixed duplication augmentor scaling formula. Changed production to linear formula.
    

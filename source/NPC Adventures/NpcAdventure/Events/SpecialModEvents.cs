@@ -31,7 +31,7 @@ namespace NpcAdventure.Events
             this.MailboxOpen?.Invoke(sender, e);
         }
 
-        internal void FireQuestRealoadObjective(object sender, QuestReloadObjectiveArgs e)
+        internal void FireQuestReloadObjective(object sender, QuestReloadObjectiveArgs e)
         {
             this.ReloadObjective?.Invoke(sender, e);
         }

@@ -32,13 +32,7 @@ namespace ClimatesOfFerngillRebuild
             {
                 LeafSprites = helper.Load<Texture2D>(Path.Combine("assets","DebrisSpritesFull.png"));
                 WeatherSource = helper.Load<Texture2D>(Path.Combine("assets","WeatherIcons.png"));
-                
-                //windows is *maybe* having some issues with the .xnb
-                if (Constants.TargetPlatform == "Windows")
-                    FogTexture = helper.Load<Texture2D>(Path.Combine("assets", "PastelFogTexture.png"));
-                else
-                FogTexture = helper.Load<Texture2D>(Path.Combine("assets", "ThickerFog.xnb"));
-                
+                FogTexture = helper.Load<Texture2D>(Path.Combine("assets", "ThickerFog.png"));
                 DarudeTexture = helper.Load<Texture2D>(Path.Combine("assets", "low_sand.png"));
                 source2 = Game1.mouseCursors;
             }

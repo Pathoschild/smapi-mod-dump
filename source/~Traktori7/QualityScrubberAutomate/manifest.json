@@ -1,7 +1,7 @@
 {
 	"Name": "Quality Scrubber for Automate",
 	"Author": "Traktori",
-	"Version": "1.0.0",
+	"Version": "1.1.0",
 	"Description": "Integrates the Quality Scrubber with Automate.",
 	"UniqueID": "Traktori.AM.QualityScrubber",
 	"EntryDll": "QualityScrubberAutomate.dll",

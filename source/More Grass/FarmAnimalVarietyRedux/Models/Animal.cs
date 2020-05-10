@@ -47,7 +47,7 @@ namespace FarmAnimalVarietyRedux.Models
 
             if (string.IsNullOrEmpty(Name))
             {
-                ModEntry.ModMonitor.Log("Animal Validation failed, Name was not valid.", LogLevel.Error);
+                ModEntry.ModMonitor.Log($"Animal Validation failed, Name was not valid on Animal: {Name}.", LogLevel.Error);
                 isValid = false;
             }
 
@@ -57,7 +57,7 @@ namespace FarmAnimalVarietyRedux.Models
                 isValid = false;
             }
 
-            if (ShopIcon == null)
+            if (Data.Buyable && ShopIcon == null)
             {
                 ModEntry.ModMonitor.Log($"Animal Validation failed, Shop Icon was not valid on Animal: {Name}.", LogLevel.Error);
                 isValid = false;

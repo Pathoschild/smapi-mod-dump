@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using PredictiveCore;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.GameData.Movies;
 using StardewValley.Objects;
@@ -23,23 +24,36 @@ namespace PublicAccessTV
 
 		internal override void show (TV tv)
 		{
-			MoviePrediction prediction = Movies.PredictForDate (Utilities.Now ());
+			Movies.Prediction prediction = Movies.PredictForDate (SDate.Now ());
 
 			TemporaryAnimatedSprite screenBackground = loadSprite (tv,
 				"MovieTheaterScreen_TileSheet", new Rectangle (31, 0, 162, 108));
-			TemporaryAnimatedSprite hostOverlay = loadSprite (tv,
+
+			string hostName = null;
+			TemporaryAnimatedSprite portrait = null;
+
+			if (Helper.ModRegistry.IsLoaded ("Lemurkat.NPCJuliet"))
+			{
+				hostName = "Juliet";
+				// TODO: Load appropriate portrait.
+			}
+			else if (Helper.ModRegistry.IsLoaded
+				("FlashShifter.StardewValleyExpandedCP"))
+			{
+				hostName = "Claire";
+				// The Claire_Joja sheet is patched over with Claire_Theater
+				// when the theater opens, so it will always be valid here.
+				portrait = loadPortrait (tv, "Claire_Joja", 1, 0);
+			}
+
+			hostName ??= Helper.Translation.Get ("movies.host.generic");
+			portrait ??= loadSprite (tv,
 				"MovieTheater_TileSheet", new Rectangle (240, 160, 16, 26),
 				positionOffset: new Vector2 (18f, 2f), overlay: true);
 
 			// Opening scene: the concessionaire greets the viewer.
-			string hostName =
-				Helper.ModRegistry.IsLoaded ("Lemurkat.NPCJuliet")
-					? "Juliet"
-					: Helper.ModRegistry.IsLoaded ("FlashShifter.StardewValleyExpandedCP")
-						? "Claire"
-						: Helper.Translation.Get ("movies.host.generic");
 			queueScene (new Scene (Helper.Translation.Get ("movies.opening",
-				new { host = hostName }), screenBackground, hostOverlay)
+				new { host = hostName }), screenBackground, portrait)
 				{ soundCue = "Cowboy_Secret" });
 
 			// Current movie poster, title and description
@@ -67,8 +81,8 @@ namespace PublicAccessTV
 			else
 			{
 				queueScene (new Scene (Helper.Translation.Get ("movies.lobby.concession"),
-					loadSprite (tv, "MovieTheater_TileSheet", new Rectangle (2, 3, 84, 56)))
-					{ soundAsset = "movies_concession", musicTrack =
+					loadSprite (tv, "MovieTheater_TileSheet", new Rectangle (2, 3, 84, 56)),
+					portrait) { soundAsset = "movies_concession", musicTrack =
 						(Constants.TargetPlatform == GamePlatform.Android)
 							? "movieTheater" : null });
 			}
@@ -85,7 +99,7 @@ namespace PublicAccessTV
 
 			// Closing scene: the concessionaire signs off.
 			queueScene (new Scene (Helper.Translation.Get ("movies.closing"),
-				screenBackground, hostOverlay));
+				screenBackground, portrait));
 
 			runProgram (tv);
 		}

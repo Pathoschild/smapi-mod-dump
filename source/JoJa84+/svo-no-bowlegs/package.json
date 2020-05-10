@@ -1,0 +1,14 @@
+{
+  "name": "svo-no-bowlegs",
+  "version": "1.0.0",
+  "description": "A mod for Stardew Valley",
+  "author": "Jack Johannesen",
+  "license": "MIT",
+  "scripts": {
+	"make": "bash ./tools/make.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "typescript": "^3.8.3"
+  }
+}

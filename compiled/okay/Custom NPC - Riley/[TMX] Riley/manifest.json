@@ -1,0 +1,12 @@
+{
+  "Name": "Riley Map Stuff",
+  "Author": "SG",
+  "Version": "1.2.2",
+  "Description": "House, festival locations, and spouse room for Riley",
+  "UniqueID": "SG.RileyMapStuff",
+  "ContentPackFor": {
+    "UniqueID": "Platonymous.TMXLoader",
+    "MinimumVersion": "1.4.0"
+            }
+ 
+}

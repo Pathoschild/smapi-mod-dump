@@ -2,13 +2,21 @@ url:
    https://github.com/aedenthorn/StardewValleyMods.git
 
 mods:
+   Boss Creatures
+   Custom Dungeon Floors
+   Custom Ore Nodes
    Enhanced Loot Magnet
+   Fruit Tree Shaker
+   Loose Audio Files
+   Pacifist Valley
+   Placeable Mine Shafts
    Random NPCs
+   Witcher Mod
 
 latest commit:
-   commit 239d3ce4d4952fb6b88df450cbcb58ef6f9fe112
+   commit bc3e6ef23745c9a6881cb9496dd9ba708546354d
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Thu Dec 26 13:14:40 2019 -0500
+   Date:   Thu May 7 12:49:57 2020 -0400
    
-       fix for missing visitors
+       boss for android, new npc assets
    

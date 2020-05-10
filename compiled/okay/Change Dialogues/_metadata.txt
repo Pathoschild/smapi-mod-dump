@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5335
+IDs: mardrest.ChangeDialoguesEn
+update keys: Nexus:5335

@@ -21,9 +21,9 @@ namespace NpcAdventure.Patches
             Events.FireQuestCompleted(__instance, new QuestCompletedArgs(__instance));
         }
 
-        internal static void After_reloadObjective(ref Quest __instance)
+        private static void After_get_currentObjective(ref Quest __instance, ref string __result)
         {
-            Events.FireQuestRealoadObjective(__instance, new QuestReloadObjectiveArgs(__instance));
+            Events.FireQuestReloadObjective(__instance, new QuestReloadObjectiveArgs(__instance));
         }
 
         internal static void Setup(HarmonyInstance harmony, SpecialModEvents events)
@@ -35,8 +35,8 @@ namespace NpcAdventure.Patches
                 postfix: new HarmonyMethod(typeof(QuestPatch), nameof(QuestPatch.After_questComplete))
             );
             harmony.Patch(
-                original: AccessTools.Method(typeof(Quest), nameof(Quest.reloadObjective)),
-                postfix: new HarmonyMethod(typeof(QuestPatch), nameof(QuestPatch.After_reloadObjective))
+                original: AccessTools.Property(typeof(Quest), nameof(Quest.currentObjective)).GetGetMethod(),
+                postfix: new HarmonyMethod(typeof(QuestPatch), nameof(QuestPatch.After_get_currentObjective))
             );
         }
     }

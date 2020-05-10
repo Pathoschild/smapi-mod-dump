@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StardewHypnos</name>
+    </assembly>
+    <members>
+        <member name="T:StardewHypnos.MinimumRelationshipType">
+            <summary>
+            Represents the minimum relationship types.
+            </summary>
+        </member>
+        <member name="F:StardewHypnos.MinimumRelationshipType.OnlyPartners">
+            <summary>
+            NPC must be dating, engaged or married with the Farmer
+            </summary>
+        </member>
+        <member name="F:StardewHypnos.MinimumRelationshipType.Friends">
+            <summary>
+            NPC must be friends with the Farmer
+            </summary>
+        </member>
+        <member name="F:StardewHypnos.MinimumRelationshipType.Everyone">
+            <summary>
+            NPC must have no bond with the Farmer
+            </summary>
+        </member>
+        <member name="T:StardewHypnos.ModConfig">
+            <summary>
+            The mod configuration.
+            </summary>
+        </member>
+        <member name="P:StardewHypnos.ModConfig.MinimumRelationship">
+            <summary>
+            Gets or sets the "minimum" relationship type to use new features.
+            </summary>
+        </member>
+        <member name="P:StardewHypnos.ModConfig.MinimumFriendshipHearts">
+            <summary>
+            Gets or sets the minimum amount of hearts with a NPC to enter their houses and sleep there.
+            </summary>
+        </member>
+        <member name="P:StardewHypnos.ModConfig.KeepFriendDoorsOpen">
+            <summary>
+            Gets or sets a value indicating whether doors should be open at all times for locations owned by allowed NPCs.
+            </summary>
+        </member>
+        <member name="P:StardewHypnos.ModConfig.NPCsByWarp">
+            <summary>
+            Gets or sets a collection of possible allowed NPCs in certain location.
+            </summary>
+        </member>
+        <member name="P:StardewHypnos.ModConfig.BedTileIndexes">
+            <summary>
+            Gets or sets a collection of bed TileIndexes by map names.
+            </summary>
+        </member>
+        <member name="P:StardewHypnos.ModConfig.BlacklistedBedTiles">
+            <summary>
+            Gets or sets a collection of blacklisted bed locations by map names.
+            </summary>
+        </member>
+        <member name="T:StardewHypnos.ModEntry">
+            <summary>
+            The mod entry point.
+            </summary>
+        </member>
+        <member name="F:StardewHypnos.ModEntry.config">
+            <summary>
+            The mod configuration.
+            </summary>
+        </member>
+        <member name="F:StardewHypnos.ModEntry.shouldAsk">
+            <summary>
+            Indicates whether the "Sleep" GUI should open.
+            </summary>
+        </member>
+        <member name="M:StardewHypnos.ModEntry.Entry(StardewModdingAPI.IModHelper)">
+            <summary>
+            The mod entry point, called after the mod is first loaded.
+            </summary>
+            <param name="helper">Provides simplified APIs for writing mods.</param>
+        </member>
+        <member name="M:StardewHypnos.ModEntry.TileSheetNameFromImageSource(System.String)">
+            <summary>
+            Gets the TileSheet name associated with the specified ImageSource.
+            </summary>
+            <param name="imageSource">The tile's ImageSource.</param>
+            <returns>A string with the  TileSheet's name.</returns>
+        </member>
+        <member name="M:StardewHypnos.ModEntry.IsAllowedBedLocation(System.String,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Verifies whether the specified tile location isn't a blacklisted bed tile.
+            </summary>
+            <param name="mapName">The Map name.</param>
+            <param name="location">The tile location.</param>
+            <returns>A bool indicating if the location is allowed.</returns>
+        </member>
+        <member name="M:StardewHypnos.ModEntry.IsBedTile(xTile.Tiles.Tile)">
+            <summary>
+            Verifies whether the specified tile is a bed.
+            </summary>
+            <param name="tile">The tile.</param>
+            <returns>A bool indicating if the tile is a bed.</returns>
+        </member>
+        <member name="M:StardewHypnos.ModEntry.IsFarmerInFriendship(System.Collections.Generic.List{System.String})">
+            <summary>
+            Verifies whether the Farmer is friends with any NPC inside the specified NPCs collection.
+            </summary>
+            <param name="npcs">The NPCs collection.</param>
+            <returns>A bool indicating if the Farmer is friends with any collection NPC.</returns>
+        </member>
+        <member name="M:StardewHypnos.ModEntry.IsFarmerInRomanticRelationship(System.Collections.Generic.List{System.String})">
+            <summary>
+            Verifies whether the Farmer is in a romantic relationship (dating, engaged, married)
+            with any NPC inside the specified NPCs collection.
+            </summary>
+            <param name="npcs">The NPCs collection.</param>
+            <returns>A bool indicating if the Farmer is romantically engaged with any collection NPC.</returns>
+        </member>
+        <member name="M:StardewHypnos.ModEntry.OnUpdateTicked(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <summary>
+            The method invoked after the game state is updated.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:StardewHypnos.ModEntry.OnPlayerWarped(System.Object,StardewModdingAPI.Events.WarpedEventArgs)">
+            <summary>
+            The method invoked after the current player moves to a new location.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:StardewHypnos.ModEntry.OnButtonPressed(System.Object,StardewModdingAPI.Events.ButtonPressedEventArgs)">
+            <summary>
+            The method invoked after the player pressed a keyboard, mouse, or controller button.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event data.</param>
+        </member>
+    </members>
+</doc>

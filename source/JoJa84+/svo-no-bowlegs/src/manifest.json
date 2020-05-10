@@ -1,0 +1,9 @@
+{
+	"Name": "Seasonal Villager Outfits -- No Bowlegs Patch",
+	"Version": "1.0.0",
+	"MinimumApiVersion": "3.2.0",
+	"Author": "k4rakara",
+	"UniqueID": "k4rakara.SVONoBowlegs",
+	"Description": "View metadata about anything by pressing a button.",
+	"ContentPackFor": { "UniqueID": "Pathoschild.ContentPatcher" }
+}

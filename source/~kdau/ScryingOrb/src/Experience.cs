@@ -18,6 +18,7 @@ namespace ScryingOrb
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
 
 		public SObject orb { get; internal set; }
+		public bool illuminated { get; private set; }
 		public Item offering { get; internal set; }
 
 		// Whether the experience should be available to players at present.
@@ -194,66 +195,110 @@ namespace ScryingOrb
 			Rectangle sourceRect, float interval, int length, int loops,
 			int delay = 0)
 		{
+			if (orb == null) return null;
+
 			Vector2 position = new Vector2 (orb.TileLocation.X,
 				orb.TileLocation.Y - (sourceRect.Height / (float) sourceRect.Width));
 			position *= Game1.tileSize;
+
 			float layerDepth = (float) (((orb.TileLocation.Y + 1.0) * 64.0 / 10000.0)
 				+ 9.99999974737875E-05);
+
 			TemporaryAnimatedSprite sprite = new TemporaryAnimatedSprite
 				(textureName, sourceRect, interval, length, loops, position,
 				false, false, layerDepth, 0f, Color.White, 64f / sourceRect.Width,
 				0f, 0f, 0f, false);
 			DelayedAction.addTemporarySpriteAfterDelay (sprite,
 				Game1.currentLocation, delay);
+
 			return sprite;
 		}
 
 		protected LightSource illuminate (int r = 153, int g = 217, int b = 234)
 		{
-			if (orb == null)
-				return null;
+			// Update the status.
+			if (illuminated)
+				return orb?.lightSource;
+			illuminated = true;
 
 			// Switch to the special mouse cursor.
 			++ModEntry.Instance.OrbsIlluminated;
 
-			// Replace any existing light source.
-			extinguish ();
+			// The rest requires an actual orb positioned in the world.
+			if (orb == null || orb.TileLocation.Equals (Vector2.Zero))
+				return null;
 
-			// Calculate the light source properties.
+			// Replace any existing light source.
+			removeLightSource ();
+
+			// Calculate and create the light source.
 			Vector2 position = new Vector2 ((orb.TileLocation.X * 64f) + 32f,
 				(orb.TileLocation.Y * 64f) - 32f);
 			Color color = new Color (255 - r, 255 - g, 255 - b) * 2f;
 			int identifier = (int) ((orb.TileLocation.X * 2000f) +
 				orb.TileLocation.Y);
-
-			// Switch the orb to its illuminated sprite, unless not lit blue.
-			if (b > r && b > g)
-			{
-				TemporaryAnimatedSprite sprite = showAnimation
-					(Helper.Content.GetActualAssetKey
-						(Path.Combine ("assets", "illumination.png")),
-					new Rectangle (0, 0, 16, 16), 200f, 5, 9999);
-				sprite.id = identifier;
-			}
-			
-			// Construct and apply the light source.
 			orb.lightSource = new LightSource (LightSource.cauldronLight,
 				position, 1f, color, identifier);
+
+			// If a real Scrying Orb, the light source is now effective.
+			if (ModEntry.Instance.IsScryingOrb (orb))
+			{
+				// Switch the orb to its illuminated sprite, unless the lighting
+				// is not in the blue range.
+				if (b > r && b > g)
+				{
+					TemporaryAnimatedSprite sprite = showAnimation
+						(Helper.Content.GetActualAssetKey
+							(Path.Combine ("assets", "illumination.png")),
+						new Rectangle (0, 0, 16, 16), 200f, 5, 9999);
+					sprite.id = identifier;
+				}
+			}
+			else
+			{
+				// If not a real orb, add the light source directly to the game.
+				Game1.currentLightSources.Add (orb.lightSource);
+			}
+
 			return orb.lightSource;
 		}
 
 		protected void extinguish ()
 		{
-			if (orb == null || orb.lightSource == null)
+			// Update the status.
+			if (!illuminated)
 				return;
+			illuminated = false;
 
 			// Restore the regular mouse cursor.
 			--ModEntry.Instance.OrbsIlluminated;
 
-			// Remove the illumination light source and animation.
-			Game1.currentLocation.removeTemporarySpritesWithID
-				(orb.lightSource.Identifier);
-			Game1.currentLocation.removeLightSource (orb.lightSource.Identifier);
+			// Remove any light source from any actual orb.
+			removeLightSource ();
+		}
+
+		internal void transferIllumination (Experience from)
+		{
+			if (!from.illuminated || illuminated)
+				return;
+			from.extinguish ();
+			illuminate ();
+		}
+
+		private void removeLightSource ()
+		{
+			if (orb?.lightSource == null)
+				return;
+			if (ModEntry.Instance.IsScryingOrb (orb))
+			{
+				Game1.currentLocation.removeTemporarySpritesWithID
+					(orb.lightSource.Identifier);
+				Game1.currentLocation.removeLightSource (orb.lightSource.Identifier);
+			}
+			else
+			{
+				Game1.currentLightSources.Remove (orb.lightSource);
+			}
 			orb.lightSource = null;
 		}
 	}

@@ -1,0 +1,15 @@
+url:
+   https://github.com/Annosz/StardewValleyModding.git
+
+mods:
+   Cheaper Beach Bridge Repair
+   Krobus Sells Larger Stacks
+   Sleepless Fisherman
+
+latest commit:
+   commit e1032bc47670f4e2de837a6a3ddd46a1dbdd8d13
+   Author: Annosz <tadamleanyfalu@gmail.com>
+   Date:   Tue May 5 20:00:29 2020 +0200
+   
+       KrobusSellsLargerStacks - Publication
+   

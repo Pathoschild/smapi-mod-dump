@@ -5,12 +5,12 @@ mods:
    Magic
 
 latest commit:
-   commit f2d3a065402d9e198b4ff1d2b94dd4e349478bb3
-   Merge: 30781ce b94787b
+   commit 67407afe9923ff0c55df1a663cf0cb8828f706e1
+   Merge: f3e9e73 a2792d0
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Feb 17 10:21:06 2020 -0500
+   Date:   Mon Apr 27 12:10:16 2020 -0400
    
-       Merge pull request #10 from Elec0/master
+       Merge pull request #14 from Pathoschild/update-project
        
-       Moving spell name translator call into a virtual method
+       Update & standardize project structure
    

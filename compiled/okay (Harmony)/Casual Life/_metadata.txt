@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6011
+IDs: Adverserath.CasualLife
+update keys: Nexus:6011

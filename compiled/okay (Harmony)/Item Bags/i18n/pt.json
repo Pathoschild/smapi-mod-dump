@@ -41,6 +41,9 @@
   "FarmersBagDescription": "Uma bolsa para estocar aspersores, espantalhos e fertilizantes.",
   "FoodBagName": "Bolsa de Comida",
   "FoodBagDescription": "Uma bolsa para estocar pratos cozidos e seus ingredientes.",
+  "CropBagName": "Bolsa de Colheita",
+  "CropBagDescription": "Uma bolsa para estocar frutas, vegetais e flores colhidas.",
+
   "BundleBagName": "Bolsa Comunitária",
   "BundleBagDescription": "Uma bolsa para estocar ítens faltantes\npara o centro comunitário.",
   "RucksackName": "Bolsa de Explorador",

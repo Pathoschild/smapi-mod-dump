@@ -5,9 +5,12 @@ mods:
    Object Time Left
 
 latest commit:
-   commit 0a7ac8e952c31b62cce08f9236e3082638cb32f6
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:43:21 2019 -0500
+   commit 7011d88c5594c850f09164633201134a66e1176b
+   Merge: 0a7ac8e 6c62791
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:10:46 2020 -0400
    
-       1.0.4 - SDV 1.4, GMCM support
+       Merge pull request #2 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

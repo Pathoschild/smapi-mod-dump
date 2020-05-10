@@ -5,9 +5,12 @@ mods:
    Luck Skill
 
 latest commit:
-   commit 0453c57723a997209dcfa0a42eaf74774f9a5a7a
+   commit e440adafe85e707c00bd79bbffc4b812e9d75d88
+   Merge: ecccba6 2817270
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sun Jan 12 22:55:48 2020 -0500
+   Date:   Mon Apr 27 12:10:12 2020 -0400
    
-       Fixes
+       Merge pull request #4 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

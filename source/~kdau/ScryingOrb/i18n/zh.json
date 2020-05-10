@@ -27,6 +27,7 @@
 	"luckyPurple.initial": "水晶球向你传达一种嗔怨的情绪,不要再尝试了.",
 	"luckyPurple.following": "圣灵很不高兴.^水晶球不是你装袜子的抽匣！^今天不是你的幸运日.",
 
+	"//Note on meta.initial": "Sorry about this next line. It's a joke referencing an English meme about putting something on itself. It is shown when you try to give one Scrying Orb to another Scrying Orb. A simpler form to translate would be: You're giving the Scrying Orb another Scrying Orb? The spirits think you must really like scrying!",
 	"meta.initial": "圣灵们感知到你喜欢占卜.希望你把一个水晶放在水晶球上.你可以占卜,当你期望占卜的时候",
 	"meta.following": "什么也没发生,但你感觉像是在空中看着自己感觉很奇怪.",
 
@@ -63,6 +64,7 @@
 	"geodes.header.Magma": "如破开岩浆晶石,未来{{count}}个可能发现:",
 	"geodes.header.Omni": "如破开万像晶石,未来{{count}}个可能发现:",
 	"geodes.header.Trove": "如开启古物宝箱,未来{{count}}个可能发现:",
+	"// Note on geodes.footer": "The $ and = symbols in the next line are turned into coin and star icons by the game. Treat them as adjectives modifying the word 'treasures'. The 'another' being referred to is Gunther in the museum.",
 	"geodes.footer": "$珠宝更有价值.^=村民中有人正在寻觅的珠宝.",
 	"geodes.closing.progress": "你到矿井深处的旅程是不完整的,孩子.如果你更深的探索,^这些岩石可能会揭示不同的,更大的宝藏.",
 
@@ -112,5 +114,21 @@
 
 	"rejection.nothing": "圣灵们耐心地等待着献祭.",
 	"rejection.unrecognized": "圣灵不认识你拿出的这奇怪供品.",
-	"rejection.insufficient": "圣灵需要品质更多更优秀的供品."
+	"rejection.insufficient": "圣灵需要品质更多更优秀的供品.",
+
+	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+
+	"InaccuratePredictions.name": "Inaccurate Predictions",
+	"InaccuratePredictions.description": "Let the spirits make predictions that are inaccurate due to the presence of conflicting mods. For entertainment purposes only.",
+
+	"Cheats.name": "Cheat Options",
+
+	"InstantRecipe.name": "Instant Recipe",
+	"InstantRecipe.description": "Give the Scrying Orb crafting recipe immediately instead of needing two hearts with the Wizard.",
+
+	"UnlimitedUse.name": "Unlimited Use",
+	"UnlimitedUse.description": "Have the Scrying Orb work without taking offerings permanently.",
+
+	"ActivateKey.name": "Activate Key",
+	"ActivateKey.description": "A key to activate the Scrying Orb unlimited use menu without any orb or offering."
 }

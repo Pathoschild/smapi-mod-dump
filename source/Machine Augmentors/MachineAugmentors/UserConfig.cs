@@ -134,11 +134,11 @@ namespace MachineAugmentors
                 {
                     AugmentorType = AugmentorType.Production,
                     BasePrice = 8000,
-                    ShopAppearanceWeight = 10,
-                    ShopStockMultiplier = 1.60,
-                    MaxAttachmentsPerMachine = 100,
-                    UseLinearFormula = false,
-                    MaxEffectPerStandardMachine = 7.5, // Recommended: 5.0-10.0
+                    ShopAppearanceWeight = 12,
+                    ShopStockMultiplier = 2.5,
+                    MaxAttachmentsPerMachine = 200,
+                    UseLinearFormula = true,
+                    MaxEffectPerStandardMachine = 100.0,
                     MaxEffectPerInputlessMachine = 1.0, // Recommended: 0.5-1.5
                     StandardDecayRate = 0.04, // Recommended: 0.03-0.06
                     InputlessDecayRate = 0.04 // Recommended: 0.03-0.06
@@ -149,17 +149,17 @@ namespace MachineAugmentors
                     BasePrice = 17500,
                     ShopAppearanceWeight = 5,
                     ShopStockMultiplier = 1.2,
-                    MaxAttachmentsPerMachine = 25,
+                    MaxAttachmentsPerMachine = 10,
                     UseLinearFormula = false,
-                    MaxEffectPerStandardMachine = 0.95, // Recommended: 0.90-0.99
-                    MaxEffectPerInputlessMachine = 0.95, // Recommended: 0.9-0.99
-                    StandardDecayRate = 0.2, // Recommended: 0.1-0.25
-                    InputlessDecayRate = 0.2 // Recommended: 0.1-0.25
+                    MaxEffectPerStandardMachine = 0.98, // Recommended: 0.90-0.99
+                    MaxEffectPerInputlessMachine = 0.98, // Recommended: 0.9-0.99
+                    StandardDecayRate = 0.35, // Recommended: 0.2-0.35
+                    InputlessDecayRate = 0.35 // Recommended: 0.2-0.35
                 },
             };
 
             this.DaysPerStandardDuplicate = 10.0;
-            this.DaysPerInputlessDuplicate = 25.0;
+            this.DaysPerInputlessDuplicate = 20.0;
 
             this.ShopSettings = new TravellingMerchantSettings();
             this.MonsterLootSettings = new MonsterLootSettings();
@@ -297,7 +297,7 @@ namespace MachineAugmentors
 
         private void InitializeDefaults()
         {
-            this.PriceDeviation = 0.4;
+            this.PriceDeviation = 0.6;
             this.PriceDeviationRolls = 2;
             this.NumAugmentorTypesInShop = 2.5;
             this.BaseQuantityInStock = 1.25;

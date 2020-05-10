@@ -1,7 +1,7 @@
 {
   "Name": "GoToBed",
   "Author": "Candidus42",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Farmer and spouse go to bed at the same time",
   "UniqueID": "Candidus42.GoToBed",
   "EntryDll": "GoToBed.dll",

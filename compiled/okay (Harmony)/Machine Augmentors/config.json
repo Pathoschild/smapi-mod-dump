@@ -1,9 +1,9 @@
 {
-  "CreatedByVersionString": "1.0.5",
+  "CreatedByVersionString": "1.0.6",
   "IconOpacity": 0.75,
   "GlobalPriceMultiplier": 1.0,
   "DaysPerStandardDuplicate": 10.0,
-  "DaysPerInputlessDuplicate": 25.0,
+  "DaysPerInputlessDuplicate": 20.0,
   "AugmentorConfigs": [
     {
       "AugmentorType": "Output",
@@ -56,12 +56,12 @@
     {
       "AugmentorType": "Production",
       "BasePrice": 8000,
-      "ShopAppearanceWeight": 10,
-      "ShopStockMultiplier": 1.6,
-      "MaxAttachmentsPerMachine": 100,
-      "MaxEffectPerStandardMachine": 7.5,
+      "ShopAppearanceWeight": 12,
+      "ShopStockMultiplier": 2.5,
+      "MaxAttachmentsPerMachine": 200,
+      "MaxEffectPerStandardMachine": 100.0,
       "MaxEffectPerInputlessMachine": 1.0,
-      "UseLinearFormula": false,
+      "UseLinearFormula": true,
       "StandardDecayRate": 0.04,
       "InputlessDecayRate": 0.04
     },
@@ -70,16 +70,16 @@
       "BasePrice": 17500,
       "ShopAppearanceWeight": 5,
       "ShopStockMultiplier": 1.2,
-      "MaxAttachmentsPerMachine": 25,
-      "MaxEffectPerStandardMachine": 0.95,
-      "MaxEffectPerInputlessMachine": 0.95,
+      "MaxAttachmentsPerMachine": 10,
+      "MaxEffectPerStandardMachine": 0.98,
+      "MaxEffectPerInputlessMachine": 0.98,
       "UseLinearFormula": false,
-      "StandardDecayRate": 0.2,
-      "InputlessDecayRate": 0.2
+      "StandardDecayRate": 0.35,
+      "InputlessDecayRate": 0.35
     }
   ],
   "ShopSettings": {
-    "PriceDeviation": 0.4,
+    "PriceDeviation": 0.6,
     "PriceDeviationRolls": 2,
     "NumAugmentorTypesInShop": 2.5,
     "BaseQuantityInStock": 1.25,

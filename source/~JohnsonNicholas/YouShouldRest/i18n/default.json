@@ -1,3 +1,4 @@
 ﻿{
-  "default": "You look tired. I think you should rest."
+  "default": "You look tired. I think you should rest.",
+  "dupAddMsg": "WARNING: Content pack {{addingMod}} tried to add key {{key}}, which was already added by {{orgMod}}. Neither shall be added"
 }

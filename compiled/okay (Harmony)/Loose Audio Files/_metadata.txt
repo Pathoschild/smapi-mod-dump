@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5999
+IDs: aedenthorn.LooseAudioFiles
+update keys: Nexus:5999, GitHub:aedenthorn/StardewValleyMods

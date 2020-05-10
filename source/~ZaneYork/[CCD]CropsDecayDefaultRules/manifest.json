@@ -1,0 +1,10 @@
+{
+   "Name": "[CCD]CropsDecayDefaultRules",
+   "Author": "ZaneYork",
+   "Description": "Crops decay default rules.",
+   "Version": "0.1.1",
+   "UniqueID": "ZaneYork.CropsDecayDefaultRules",
+   "ContentPackFor": {
+       "UniqueID": "ZaneYork.CustomCropsDecay"
+    }
+}

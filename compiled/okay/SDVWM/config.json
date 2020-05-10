@@ -2,5 +2,7 @@
   "tempType": "F",
   "WindSpeed": 6.0,
   "HUDMode": "Normal",
+  "EnableSeasonalConditions": true,
+  "PrecipitationAmount": 25,
   "EnableLogging": false
 }

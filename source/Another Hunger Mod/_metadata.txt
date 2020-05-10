@@ -5,9 +5,12 @@ mods:
    Another Hunger Mod
 
 latest commit:
-   commit bd6f90ab30b38f48588d2f9bdf12c9baed48ad19
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 16:40:09 2019 -0500
+   commit fe9ac8ffac066f0a0aa9585c69aa2f8673e4c830
+   Merge: bd6f90a 4ca5ae0
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:13:06 2020 -0400
    
-       1.1.0 - SDV 1.4, GMCM support, removed defense buff
+       Merge pull request #2 from Pathoschild/update-project
+       
+       Update & standardise project structure
    

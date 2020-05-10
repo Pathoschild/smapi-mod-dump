@@ -22,7 +22,7 @@ namespace ColorfulChests
         {
             Log.Monitor = Monitor;
 
-            hsl = Helper.Content.Load<Texture2D>("hsl.png");
+            hsl = Helper.Content.Load<Texture2D>("assets/hsl.png");
 
             helper.Events.Display.MenuChanged += onMenuChanged;
         }

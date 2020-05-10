@@ -1,0 +1,555 @@
+{
+  "Format": "1.13",
+
+  "ConfigSchema": {
+	"TownMap": {
+			"AllowValues": "reimagined, karmylla, vanilla",
+			"Default": "reimagined"
+                },
+    "River": {
+        "AllowValues": "true, false",
+        "Default": "false"
+            }		
+     },
+
+
+
+
+
+"DynamicTokens": [           
+    {
+        "Name": "birdVar",
+        "Value": "0"
+        },
+
+    {
+        "Name": "birdVar",
+        "Value": "32",
+        "When": {
+            "Season": "fall",
+            "DayofWeek": "friday, saturday, sunday"
+        }   
+    },
+    {
+        "Name": "birdVar",
+        "Value": "64",
+        "When": {
+            "Season": "fall",
+            "DayofWeek": "monday, tuesday, wednesday, thursday"}
+    },
+    {
+        "Name": "birdVar",
+        "Value": "96",
+        "When": {
+            "Season": "winter"
+        }
+    }
+
+],
+
+
+"Changes": [
+
+    {
+        "Action": "EditMap",
+        "Target": "Maps/EastScarpe",
+        "FromFile": "assets/EastScarpe_River1.tmx",
+        "ToArea": { "X": 19, "Y": 0, "Width": 58, "Height": 33  },
+        "When": { 
+            "River":true
+                        }
+        
+            },
+
+
+ {
+        "Action": "EditMap",
+        "Target": "Maps/Mountain",
+        "FromFile": "assets/MountainEastScarpe.tmx",
+        "ToArea": { "X": 86, "Y": 35, "Width": 9, "Height": 6  }
+        
+            },
+{
+    "Action": "EditMap",
+    "Target": "Maps/Mountain",
+    "FromFile": "assets/MountainEastScarpeSDR2.tmx",
+    "ToArea": { "X": 85, "Y": 35, "Width": 10, "Height": 6  },
+    "When": { 
+        "HasMod:DaisyNiko.SVR2":true
+                    }
+        },
+{
+    "Action": "EditMap",
+    "Target": "Maps/Mountain",
+    "FromFile": "assets/MountainEastScarpeSVE.tmx",
+    "ToArea": { "X": 86, "Y": 35, "Width": 9, "Height": 6  },
+    "When": {
+        "HasMod:FlashShifter.StardewValleyExpandedALL":true
+        
+                }
+        },
+
+
+   /*
+   ///Removes van on Tuesdays so the Vet Dr can be doing his rounds
+   {
+        "Action": "EditMap",
+        "Target": "Maps/EastScarpe",
+        "FromFile": "assets/VanGone.tmx",
+        "ToArea": { "X": 28, "Y": 27, "Width": 6, "Height": 9  },
+        "When": { 
+            "DayofWeek":"Tue"
+                        }
+        
+            },*/
+
+
+{
+    "Action": "EditMap",
+    "Target": "Maps/Town",
+    "FromFile": "assets/EastScarpeEntrance-Core.tmx",
+    "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  }
+        },
+    {
+        "Action": "EditMap",
+        "Target": "Maps/Town",
+        "FromFile": "assets/EastScarpeEntrance-SVE.tmx",
+        "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
+    "When": {
+        "HasMod:FlashShifter.StardewValleyExpandedALL":true
+        
+                }
+},
+{
+    "Action": "EditMap",
+    "Target": "Maps/Town",
+    "FromFile": "assets/EastScarpeEntrance-KIM.tmx",
+    "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
+    "When": {
+        "HasMod:DaisyNiko.SVR2":false,
+        "HasMod:Karmylla.ImmersiveMaps":true
+                }
+        },
+    {
+        "Action": "EditMap",
+        "Target": "Maps/Town",
+        "FromFile": "assets/EastScarpeEntrance-SDR2.tmx",
+        "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
+    "When": {
+        "HasMod:DaisyNiko.SVR2":true,
+        "HasMod:Karmylla.ImmersiveMaps":false
+                }
+},
+
+{
+    "Action": "EditMap",
+    "Target": "Maps/Town",
+    "FromFile": "assets/EastScarpeEntrance-KIM.tmx",
+    "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
+    "When": {
+        "HasMod:DaisyNiko.SVR2":true,
+        "HasMod:Karmylla.ImmersiveMaps":true,
+        "TownMap": "karmylla"
+                }
+        },
+    {
+        "Action": "EditMap",
+        "Target": "Maps/Town",
+        "FromFile": "assets/EastScarpeEntrance-SDR2.tmx",
+        "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
+    "When": {
+        "HasMod:DaisyNiko.SVR2":true,
+        "HasMod:Karmylla.ImmersiveMaps":true,
+        "TownMap": "reimagined"
+                }
+},
+{
+
+"Action": "EditMap",
+"Target": "Maps/Town",
+"FromFile": "assets/EastScarpeEntrance-Core.tmx",
+"ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
+"When": {
+    "TownMap": "vanilla"
+            }
+    },
+
+{
+    "Action": "EditMap",
+    "Target": "Maps/EastScarpe",
+    "FromFile": "assets/EastScarpeDemarc.tmx",
+    "ToArea": { "X": 0, "Y": 101, "Width": 28, "Height": 1  },
+    "When": {
+        "HasMod": "Lita.StarblueValley"
+        }
+    },
+    {
+        "Action": "EditMap",
+        "Target": "Maps/EastScarpe",
+        "MapProperties": {
+        "Warp": "-1 91 Town 117 94 -1 92 Town 117 94 -1 93 Town 117 95 -1 94 Town 117 96 0 91 Town 118 94 0 92 Town 118 94 0 93 Town 118 95 0 94 Town 118 96 3 -1 Mountain 89 39 4 -1 Mountain 90 39"
+        },
+        "When": {
+            "HasMod:DaisyNiko.SVR2":true
+            }
+    
+     },
+
+
+//Remove tree from museum
+
+{ 
+    "LogName": "Removes tree from KIM",
+    "Action": "EditMap",
+    "Target": "Maps/Town",
+    "MapTiles": [
+    {
+        "Position": { "X": 108, "Y": 88 },
+        "Layer": "AlwaysFront",
+        "Remove":true
+        },
+    {
+        "Position": { "X": 109, "Y": 88 },
+        "Layer": "AlwaysFront",
+        "Remove":true
+        },
+    {
+    "Position": { "X": 110, "Y": 88 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    },
+    {
+    "Position": { "X": 111, "Y": 88 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    },
+    {
+    "Position": { "X": 108, "Y": 89 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    },
+    {
+    "Position": { "X": 109, "Y": 89 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    },
+    {
+    "Position": { "X": 110, "Y": 89 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    },
+    {
+    "Position": { "X": 111, "Y": 89 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    },
+    {
+    "Position": { "X": 108, "Y": 90 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    },
+    {
+    "Position": { "X": 109, "Y": 90 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    },
+    {
+    "Position": { "X": 110, "Y": 90 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    },
+    {
+    "Position": { "X": 111, "Y": 90 },
+    "Layer": "AlwaysFront",
+    "Remove":true
+    }
+        
+        
+            ],
+        "When": {
+        "HasMod":"Karmylla.ImmersiveMaps, FlashShifter.StardewValleyExpandedALL"
+                        }
+        },
+{
+    "Action": "EditData",
+    "Target": "Data/Locations",
+    "Entries": {
+        "EastScarpe": "-1/-1/-1/-1/153 -1 142 0 152 -1 129 1 147 1 131 2 148 2 708 2/153 -1 142 0 144 0 152 -1 154 1 128 2 130 2 146 2 149 2 150 2 155 2 708 2 701 2 267 2/153 -1 142 0 269 0 152 -1 129 1 154 1 155 1 131 2 148 2 150 2 705 2 701 2/153 -1 142 0 269 0 152 -1 147 1 155 1 708 2 130 2 131 2 146 2 150 2 151 2 154 2 705 2/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1 102 .15 390 .25 330 1"
+                    },
+        "When": {
+            "HasMod:MoreFish": false
+                    }
+    },
+{
+    "Action": "EditData",
+    "Target": "Data/Locations",
+    "Entries": {
+        "EastScarpe": "1096 .4 1097 .3/1096 .5 1098 .1/1096 .5 1099 .1/1096 .5 1100 .1/ 153 -1 142 0 1123 0 1124 0 1146 0 1147 0 152 -1 129 1 147 1 1071 1 1088 1 1075 1 131 2 148 2 708 2 1120 2 1137 2 1139 2 1143 2 1058 2 1076 2 267 2/153 -1 142 0 144 0 1122 0 1124 0 1148 0 1082 0 1146 0 152 -1 154 1 1071 1 1075 1 128 2 130 2 146 2 149 2 150 2 155 2 708 2 267 2 1120 2 1129 2 1143 2 1068 2 1070 2/153 -1 142 0 269 0 1121 0 1146 0 1149 0 152 -1 129 1 154 1 155 1 1075 1 131 2 148 2 150 2 705 2 1135 2 1136 2 1059 2 1069 2/153 -1 142 0 269 0 1146 0 1079 0 1081 0 152 -1 147 1 155 1 1075 1 708 2 130 2 131 2 146 2 150 2 151 2 154 2 705 2 1135 2 1138 2 1126 2 1060 2 1061 2 1072 2 1080 2 1109 2/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1 102 .15 390 .25 330 1"
+                },
+        "When": {
+            "HasMod:MoreFish": true
+                        }
+    
+    },
+    {   "LogName": "Pelicans for Pelican Town part 1",
+        "Action": "EditImage",
+        "Target": "TileSheets/Critters",
+        "FromFile": "assets/Pelican.png",
+        "FromArea": { "X": 0, "Y": 0, "Width": 320, "Height": 32},
+        "ToArea":   { "X": 0, "Y": 0, "Width": 320, "Height": 32},
+            "When":{ 
+                "LocationName": "EastScarpe"
+             }
+    },
+    {  "LogName": "Pelicans for Pelican Town part 2",
+        "Action": "EditImage",
+        "Target": "TileSheets/Critters",
+        "FromFile": "assets/Pelican.png",
+        "FromArea": { "X": 0, "Y": 32, "Width": 128, "Height": 32},
+        "ToArea":   { "X": 0, "Y": 32, "Width": 128, "Height": 32},
+        "When":{ 
+            "LocationName": "EastScarpe"
+         }
+    },
+    {   "LogName": "Pink Wader Migration part 1",
+        "Action": "EditImage",
+        "Target": "TileSheets/Critters",
+        "FromFile": "assets/PinkWader.png",
+        "FromArea": { "X": 0, "Y": 0, "Width": 320, "Height": 32},
+        "ToArea":   { "X": 0, "Y": 0, "Width": 320, "Height": 32},
+            "When":{ 
+                "Season": "Summer",
+                "Day": "12, 13, 14"
+             }
+    },
+    {  "LogName": "Pink Wader Migration part 2",
+        "Action": "EditImage",
+        "Target": "TileSheets/Critters",
+        "FromFile": "assets/PinkWader.png",
+        "FromArea": { "X": 0, "Y": 32, "Width": 128, "Height": 32},
+        "ToArea":   { "X": 0, "Y": 32, "Width": 128, "Height": 32},
+            "When":{ 
+            "Season": "Summer",
+            "Day": "12, 13, 14"
+         }
+    },
+    {   "LogName": "Add bird part 1",
+        "Action": "EditImage",
+        "Target": "TileSheets/Critters",
+        "FromFile": "assets/EastScarpeBirds.png",
+        "FromArea": { "X": 0, "Y": "{{birdVar}}", "Width": 160, "Height": 32},
+        "ToArea":   { "X": 160, "Y": 64, "Width": 160, "Height": 32},
+        "When":{ 
+            "LocationName": "EastScarpe"
+         }
+            
+    },
+    {  "LogName": "Add bird part 2",
+        "Action": "EditImage",
+        "Target": "TileSheets/Critters",
+        "FromFile": "assets/EastScarpeBirds.png",
+        "FromArea": { "X": 160, "Y": "{{birdVar}}", "Width": 128, "Height": 32},
+        "ToArea":   { "X": 0, "Y": 96, "Width": 128, "Height": 32},
+        "When":{ 
+            "LocationName": "EastScarpe"
+         }
+                  },
+
+    {   "LogName": "Replace crested blue bird part 1",
+        "Action": "EditImage",
+        "Target": "TileSheets/Critters",
+        "FromFile": "assets/EastScarpeBirds.png",
+        "FromArea": { "X": 0, "Y": "{{birdVar}}", "Width": 160, "Height": 32},
+        "ToArea":   { "X": 160, "Y": 128, "Width": 160, "Height": 32},
+        "When":{ 
+            "LocationName": "EastScarpe"
+         }
+           
+    },
+    {  "LogName": "Replace crested blue bird part 2",
+        "Action": "EditImage",
+        "Target": "TileSheets/Critters",
+        "FromFile": "assets/EastScarpeBirds.png",
+        "FromArea": { "X": 160, "Y": "{{birdVar}}", "Width": 128, "Height": 32},
+        "ToArea":   { "X": 0, "Y": 160, "Width": 128, "Height": 32},
+        "When":{ 
+            "LocationName": "EastScarpe"
+         }
+          
+    },
+
+    { "LogName": "Events for East Scarpe",
+        "Action": "Load",
+        "Target": "Data/Events/EastScarpe",
+        "FromFile": "assets/EastScarpeEvents.json"
+    },
+
+                   
+
+{
+    "Action": "EditData",
+    "Target": "Strings/StringsFromMaps",
+    "Entries": {
+                "EastScarpe.00": "@ Pelican Town Center^East Scarpe >",
+                "EastScarpe.1": "Residence of Dr. Jacob Trenton, DVM.",
+                "EastScarpe.2": "\"Dearest Delilah, taken too soon, forever in our hearts.\" It looks well tended.",
+                "EastScarpe.3": "A strange and unpleasant smell wafts out from the depths: a mixture of shadows, smoke and something deeper, something darker. You decide it's safest not to venture further",
+                "EastScarpe.4": "Yuck! It's half full of bits of fish and a disgusting oozy liquid.",
+                "EastScarpe.5": "It's an older boat, but very well cared for. There are fish heads in the bottom.",
+                "EastScarpe.6": "This bridge looks pretty precarious and it's a long way down... are you sure you want to cross it?",
+                "EastScarpe.7": "You cast your eyes out across the shimmering waters, somewhere out there are the Fern Islands. Perhaps one day you'll get to visit them.",
+                "EastScarpe.8": "A tabby cat glares at you. She looks frightened. Better leave her alone.",
+                "EastScarpe.9": "You push open the door and peer in. There's nothing inside except a chair, a tattered notebook and a pair of binoculars. There's a long narrow opening facing out into the forest.",
+                "EastScarpe.10": "It's an old silo, converted into a house. Who could live here? Sadly, the door is locked.",
+                "EloiseFall.1": "Eloise's Diary: \"I love fall! It's so pretty.\"",
+                "EloiseFall.2": "\"I saw a toucan! He cracked pinenuts with his big beak! I wish I had a proper camera.\"",
+                "EloiseFall.3": "Between 'Birds of the Ferngill Republic' and 'Our feathered frieds', you find a battered paperback.",
+                "EloiseWinter.1": "Eloise's Diary: \"Winter is cold! I hope Sora is keeping warm. I should send him something for Winter Star, but they don't celebrate it in GR.\"",
+                "EloiseWinter.2": "\"The cardinals are very noisy! They travel in big flocks. I saw heaps on the beach yesterday!",
+                "EloiseWinter.3": "Mostly field guides to birds of the Ferngill region, and a battered book about a girl and a forgotten garden.",
+                "EloiseSpring.1": "\"I got a letter from Sora! He's fine but his family had to leave their home. He's staying with his aunt. I wish he could come stay with me. We've got heaps of space! And papa wouldn't mind.\"",
+                "EloiseSpring.2": "\"I love blue jays! They're so naughty! One stole Papa's sandwich right out of his hand!\"",
+                "EloiseSpring.3": "Mostly field guides to birds of the Ferngill region, and a battered book about a girl and a forgotten garden.",
+                "EloiseSummer.1": "Eloise's Diary: \" I wrote a letter to Sora. I hope he writes back soon!\"",
+                "EloiseSummer.2": "\"No birds today :( I was hoping to see a woodpecker.\"",
+                "EloiseSummer.3": "Mostly field guides to birds of the Ferngill region, and a battered book about a girl and a forgotten garden.",
+                "VetHouse.01": "Sir Flufflekins the first wrinkles his nose and regards you suspiciously.",
+			   "VetHouse.02": "\"Rawk! Who's a pretty boy then?\"",
+			   "VetHouse.03": "They're all postmarked from the Gotoro Republic. Eloise must write to a friend there.",
+			   "VetHouse.04": "A selection of beautifully illustrated books about the flora and fauna of Stardew Valley.",
+			   "VetHouse.05": "Looks like this chair's taken! Her Ladyship Princess Midnight the Third eyes you regally. You feel judged, and found wanting.",
+			   "VetHouse.06": "Tiny colorful fish. It's very clean, but perhaps a little small? The fish seem restless.",
+			   "VetHouse.07": "It's tuned to the natural history channel. There's a documentary playing on birds of the rainforest.",
+			   "VetHouse.08": "It's filled with women's clothing, all neatly folded and packed with tissue paper. Either Dr. Jacob has diverse tastes, or they belonged to his wife.",
+			   "VetHouse.09": "Very neatly organized, there's a full set of the Ferngill enclyopedias, plus textbooks on animal anatomy and behaviour.",
+			   "VetHouse.10": "Ah, here's where all the paperbacks are hiding: From trillers, to horror, historic fiction and even a couple of romances; it's an eclectic range.",
+			   "VetHouse.11": "Eloise's taste range from animal stories to tales of children solving mysteries. They're in surprisingly good condition.",
+			   "VetHouse.12": "'The Mona Lisa Smile': obviously Dr Jacob indulges in fast-paced crime thrillers.",
+			   "VetHouse.13": "The plants all look well cared for. And what was that skittering across the soil, a lizard?"
+
+                  }
+},
+
+/*
+{	"Action": "EditData",
+    "Target": "Strings/schedules/Richie",
+    "Entries": {
+        "sleep.000": "%Richie is sleeping."
+    }
+},*/
+
+//Compatibility Patches
+
+
+
+{
+"Action": "EditMap",
+"Target": "Maps/Town",
+"FromFile": "assets/TownHerbert-Core.tmx",
+"ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
+"When": {
+      "HasMod:tiger.herbmapss":true,
+      "HasMod:FlashShifter.StardewValleyExpandedALL":false
+
+    
+            }
+    },
+{
+    "Action": "EditMap",
+    "Target": "Maps/Town",
+    "FromFile": "assets/TownHerbert-SVE.tmx",
+    "ToArea": { "X": 112, "Y": 95, "Width": 8, "Height": 9  },
+"When": {
+    "HasMod:FlashShifter.StardewValleyExpandedALL":true,
+    "HasMod:tiger.herbmapss":true
+    
+            }
+},
+{
+"Action": "EditMap",
+"Target": "Maps/Town",
+"FromFile": "assets/TownHerbert-KIM.tmx",
+"ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
+"When": {
+    "HasMod:DaisyNiko.SVR2":false,
+    "HasMod:Karmylla.ImmersiveMaps":true,
+    "HasMod:tiger.herbmapss":true
+            }
+    },
+{
+    "Action": "EditMap",
+    "Target": "Maps/Town",
+    "FromFile": "assets/TownHerbert-SDR2.tmx",
+    "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
+"When": {
+    "HasMod:DaisyNiko.SVR2":true,
+    "HasMod:Karmylla.ImmersiveMaps":false,
+    "HasMod:tiger.herbmapss":true
+            }
+},
+
+{
+    "Action": "EditMap",
+    "Target": "Maps/Town",
+    "FromFile": "assets/TownHerbert-KIM.tmx",
+    "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
+    "When": {
+    "HasMod:DaisyNiko.SVR2":true,
+    "HasMod:Karmylla.ImmersiveMaps":true,
+    "HasMod:tiger.herbmapss":true,
+    "TownMap": "karmylla"
+            }
+    },
+{
+    "Action": "EditMap",
+    "Target": "Maps/Town",
+    "FromFile": "assets/TownHerbert-SDR2.tmx",
+    "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
+"When": {
+    "HasMod:DaisyNiko.SVR2":true,
+    "HasMod:Karmylla.ImmersiveMaps":true,
+    "HasMod:tiger.herbmapss":true,
+    "TownMap": "reimagined"
+            }
+},
+
+{
+    "Action": "EditMap",
+    "Target": "Maps/Town",
+    "FromFile": "assets/TownHerbert-core.tmx",
+    "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
+"When": {
+    "HasMod:tiger.herbmapss":true,
+     "TownMap": "vanilla"
+            }
+},
+
+{
+    "Action": "EditMap",
+    "Target": "Maps/HerbertsProperty",
+    "MapProperties": {
+       "Warp": "-1 30 Town 119 100 -1 31 Town 119 101 "
+    },
+    "When": {
+        "HasMod:tiger.herbmapss":true
+        }
+
+ }
+
+
+
+	  
+ 
+	
+
+
+
+
+
+	
+
+
+
+
+]			
+}

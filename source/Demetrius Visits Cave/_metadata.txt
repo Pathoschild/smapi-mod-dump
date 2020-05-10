@@ -5,9 +5,12 @@ mods:
    Demetrius Visits Cave
 
 latest commit:
-   commit 08d20b6d515159261579532814dec2d6461c9c58
-   Author: Kichjo <keelan@keelanrosa.com>
-   Date:   Mon Mar 30 17:21:48 2020 -0400
+   commit 60e49569ffca6b88a154aa163b88822bb1ccdb64
+   Merge: 08d20b6 f4ee961
+   Author: KeelanRosa <keelan@keelanrosa.com>
+   Date:   Sat Apr 18 18:53:59 2020 -0400
    
-       Direction added to config
+       Merge pull request #2 from LyaVanLou/master
+       
+       German Translation
    

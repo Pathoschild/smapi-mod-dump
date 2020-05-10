@@ -1,0 +1,14 @@
+ {
+    "Name": "NPC Riley",
+   "Author": "SG",
+   "Description": "Adds Riley as an NPC",
+   "Version": "1.2.2",
+   "UniqueID": "SG.Riley",
+   "Dependencies": [ { "UniqueID": "kdau.PregnancyRole" }, { "UniqueID": "spacechase0.CustomNPCFixes" }, ],
+   "UpdateKeys": [ "Nexus:5811" ],
+   "ContentPackFor": {
+       "UniqueID": "Pathoschild.ContentPatcher"
+    }
+   
+   
+}

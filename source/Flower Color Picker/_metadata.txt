@@ -5,9 +5,12 @@ mods:
    Flower Color Picker
 
 latest commit:
-   commit 05b61a97f138d2a98ddf47186af41565fe09826a
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:05:33 2019 -0500
+   commit cd9025e19542cfdbf0589194e090e61bcd3d467b
+   Merge: 05b61a9 a0e7b8a
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:09:47 2020 -0400
    
-       1.0.3 - SDV 1.4
+       Merge pull request #2 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

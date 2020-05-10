@@ -1,7 +1,7 @@
 ﻿{
   "Name": "FishDex",
   "Author": "rupak0577",
-  "Version": "1.2.0",
+  "Version": "1.3.0",
   "Description": "Records data of fish caught",
   "UniqueID": "rupak0577.FishDex",
   "EntryDll": "FishDex.dll",

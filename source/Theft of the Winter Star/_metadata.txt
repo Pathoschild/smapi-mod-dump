@@ -5,9 +5,12 @@ mods:
    Theft of the Winter Star
 
 latest commit:
-   commit a89625a150e7be7907c04410887e9dd01cdd334b
+   commit 8b6bb10ee02ebad7c2cb15b64887c1f2d241e298
+   Merge: a89625a 1ac7d0d
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Jan 4 18:42:07 2020 -0500
+   Date:   Mon Apr 27 12:11:04 2020 -0400
    
-       Initial commit
+       Merge pull request #1 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

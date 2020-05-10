@@ -1,13 +1,14 @@
 using System.Linq;
 using System.Collections.Generic;
 
+using Microsoft.Xna.Framework;
+
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
-
-using Harmony;
+using StardewValley.Objects;
 
 using GoToBed.Framework;
 
@@ -24,10 +25,17 @@ namespace GoToBed {
                 Stardew13SpouseSleepPatch.Create(this.ModManifest.UniqueID, this.Monitor);
             }
 
+            // Put hat on.
+            this.Helper.Events.GameLoop.DayStarted += OnDayStarted;
             // Hook into MenuChanged event to intercept dialogues.
             this.Helper.Events.Display.MenuChanged += OnMenuChanged;
             // Enable controls at the end of day.
             this.Helper.Events.GameLoop.DayEnding += OnDayEndingEnableInput;
+        }
+
+        private void OnDayStarted(object sender, DayStartedEventArgs e) {
+            // We changed into swimsuit during the night.
+            Game1.player.changeOutOfSwimSuit();
         }
 
         private void OnMenuChanged(object sender, MenuChangedEventArgs e) {
@@ -47,6 +55,15 @@ namespace GoToBed {
             if (whichAnswer.Equals("Yes")) {
                 this.Monitor.Log($"Farmer {Game1.player.Name} goes to bed", LogLevel.Debug);
 
+                // Take hat off. We could check for a hat and store it in the inventory
+                // overnight but this requires a free inventory slot and causes its own
+                // problems (you always have to put your hat on if you load a game...)
+                // so we move the farmer under the blanket and change into swimsuit.
+                // Simple and reliable.
+                FarmHouse farmHouse = Game1.player.currentLocation as FarmHouse;
+                Game1.player.position.Y = farmHouse.getBedSpot().Y * 64f + 24f;
+                Game1.player.changeIntoSwimsuit();
+
                 // Player is not married or spouse is in bed already.
                 if (!Game1.player.isMarried() || Game1.timeOfDay > 2200) {
                     FarmerSleep();
@@ -54,10 +71,8 @@ namespace GoToBed {
                     return;
                 }
 
-                NPC spouse = Game1.player.getSpouse();
-                FarmHouse farmHouse = Game1.player.currentLocation as FarmHouse;
-
                 // If spouse isn't in the farm house player has to sleep alone.
+                NPC spouse = Game1.player.getSpouse();
                 if (spouse.currentLocation != farmHouse) {
                     this.Monitor.Log($"Spouse {spouse.Name} isn't in the farm house", LogLevel.Info);
 

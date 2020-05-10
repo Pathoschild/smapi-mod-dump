@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 78f0f411dae4596a69288f3bbe7493baa1b15b47
+   commit 4985377ceecd703a2f7114de077a6851bc182a06
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun Apr 12 07:01:52 2020 -0500
+   Date:   Sat Apr 25 01:13:15 2020 -0500
    
-       Fix Android-specific issues with debris items
+       Increment manifest to v1.10.0
    

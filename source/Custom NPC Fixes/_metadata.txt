@@ -5,9 +5,12 @@ mods:
    Custom NPC Fixes
 
 latest commit:
-   commit 547c358f78ac85cad3780d38ac55be8cc1c8a1e7
+   commit a330f3787254090da2abd5997d15d955757ea443
+   Merge: 547c358 d2c58f1
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Dec 21 16:36:40 2019 -0500
+   Date:   Mon Apr 27 12:09:29 2020 -0400
    
-       Only use the NPC spawning code instead of the whole Game1.fixProblems()
+       Merge pull request #1 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

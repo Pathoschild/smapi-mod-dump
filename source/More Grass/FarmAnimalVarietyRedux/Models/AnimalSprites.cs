@@ -115,23 +115,49 @@ namespace FarmAnimalVarietyRedux.Models
         public bool IsValid()
         {
             // non seasonal
-            if (AdultSpriteSheet != null && BabySpriteSheet != null)
+            if (AdultSpriteSheet != null)
                 return true;
             
-            // spring
-            if ((SpringAdultSpriteSheet != null || AdultSpriteSheet != null) && (SpringBabySpriteSheet != null || BabySpriteSheet != null))
+            // seasonal
+            if (SpringAdultSpriteSheet != null && SummerAdultSpriteSheet != null && FallAdultSpriteSheet != null && WinterAdultSpriteSheet != null)
                 return true;
 
-            // summer
-            if ((SummerAdultSpriteSheet != null || AdultSpriteSheet != null) && (SummerBabySpriteSheet != null || BabySpriteSheet != null))
+            return false;
+        }
+
+        /// <summary>Get a valid sprite sheet.</summary>
+        /// <param name="isBaby">Whether the sprite sheet should be the baby version.</param>
+        /// <param name="isHarvested">Whether the sprite sheet should be the harvested version.</param>
+        /// <param name="season">The season the sprite sheet should be in.</param>
+        /// <returns>The sprite sheet </returns>
+        public Texture2D GetSpriteSheet(bool isBaby, bool isHarvested, Season season)
+        {
+            return (isBaby, isHarvested, season) switch
+            {
+                (false, false, Season.Spring) => SpringAdultSpriteSheet ?? AdultSpriteSheet,
+                (false, false, Season.Summer) => SummerAdultSpriteSheet ?? AdultSpriteSheet,
+                (false, false, Season.Fall) => FallAdultSpriteSheet ?? AdultSpriteSheet,
+                (false, false, Season.Winter) => WinterAdultSpriteSheet ?? AdultSpriteSheet,
+                (false, true, Season.Spring) => SpringHarvestedSpriteSheet ?? HarvestedSpriteSheet ?? SpringAdultSpriteSheet ?? AdultSpriteSheet,
+                (false, true, Season.Summer) => SummerHarvestedSpriteSheet ?? HarvestedSpriteSheet ?? SummerAdultSpriteSheet ?? AdultSpriteSheet,
+                (false, true, Season.Fall) => FallHarvestedSpriteSheet ?? HarvestedSpriteSheet ?? FallAdultSpriteSheet ?? AdultSpriteSheet,
+                (false, true, Season.Winter) => WinterHarvestedSpriteSheet ?? HarvestedSpriteSheet ?? WinterAdultSpriteSheet ?? AdultSpriteSheet,
+                (true, false, Season.Spring) => SpringBabySpriteSheet ?? BabySpriteSheet ?? SpringAdultSpriteSheet ?? AdultSpriteSheet,
+                (true, false, Season.Summer) => SummerBabySpriteSheet ?? BabySpriteSheet ?? SummerAdultSpriteSheet ?? AdultSpriteSheet,
+                (true, false, Season.Fall) => FallBabySpriteSheet ?? BabySpriteSheet ?? FallAdultSpriteSheet ?? AdultSpriteSheet,
+                (true, false, Season.Winter) => WinterBabySpriteSheet ?? BabySpriteSheet ?? WinterAdultSpriteSheet ?? AdultSpriteSheet,
+                (true, _, _) => BabySpriteSheet ?? AdultSpriteSheet
+            };
+        }
+
+        /// <summary>Get whether the animal has valid harvested sprite sheets.</summary>
+        /// <returns>Whether the animal has valid harvested sprite sheets.</returns>
+        public bool HasDifferentSpriteSheetWhenHarvested()
+        {
+            if (HarvestedSpriteSheet != null)
                 return true;
 
-            // fall
-            if ((FallAdultSpriteSheet != null || AdultSpriteSheet != null) && (FallBabySpriteSheet != null || BabySpriteSheet != null))
-                return true;
-
-            // winter
-            if ((WinterAdultSpriteSheet != null || AdultSpriteSheet != null) && (WinterBabySpriteSheet != null || BabySpriteSheet != null))
+            if (SpringHarvestedSpriteSheet != null && SummerHarvestedSpriteSheet != null && FallHarvestedSpriteSheet != null && WinterHarvestedSpriteSheet != null)
                 return true;
 
             return false;

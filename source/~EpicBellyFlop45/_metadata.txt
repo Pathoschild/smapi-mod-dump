@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit 7ac5066839e130f44e4e288726a8cf426b2f7ca0
+   commit b542a0a5a949af33dd81b70a5abb7ef44c556e82
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Mon Apr 6 13:13:11 2020 +0100
+   Date:   Mon May 4 20:09:23 2020 +0100
    
-       [FarmAnimalVarietyRedux] Add initial project files
+       [BFAVToFAVRModConverter] Add support for creating the updated versions of FAVR's content file
    

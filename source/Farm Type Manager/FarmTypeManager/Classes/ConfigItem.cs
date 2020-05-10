@@ -41,6 +41,11 @@ namespace FarmTypeManager
                         case "barrels":
                         case "breakable":
                         case "breakables":
+                        case "buried":
+                        case "burieditem":
+                        case "burieditems":
+                        case "buried item":
+                        case "buried items":
                         case "chest":
                         case "chests":
                         case "crate":

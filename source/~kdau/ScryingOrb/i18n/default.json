@@ -64,7 +64,7 @@
 	"geodes.header.Magma": "If they be Magma Geodes, the next {{count}} geodes^rived promise to reveal:",
 	"geodes.header.Omni": "If they be Omni Geodes, the next {{count}} geodes^split are sure to offer:",
 	"geodes.header.Trove": "If they be Artifact Troves, the next {{count}} geodes^shattered shall manifest:",
-	"// Note on geodes.footer": "The $ and = symbols in the next line are turned into coin and star icons by the game. Treat them as adjectives modifying the word 'treasures'.",
+	"// Note on geodes.footer": "The $ and = symbols in the next line are turned into coin and star icons by the game. Treat them as adjectives modifying the word 'treasures'. The 'another' being referred to is Gunther in the museum.",
 	"geodes.footer": "$ treasures are deemed more valuable by mortals.^= treasures are sought by another in your village.",
 	"geodes.closing.progress": "Your journey to the depths of the mines is^incomplete, child. Should you explore further,^these rocks may reveal different, greater treasures.",
 
@@ -114,5 +114,21 @@
 
 	"rejection.nothing": "The spirits wait patiently for an offering.",
 	"rejection.unrecognized": "The spirits do not recognize your strange offering.",
-	"rejection.insufficient": "The spirits require a more generous offering."
+	"rejection.insufficient": "The spirits require a more generous offering.",
+
+	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+
+	"InaccuratePredictions.name": "Inaccurate Predictions",
+	"InaccuratePredictions.description": "Let the spirits make predictions that are inaccurate due to the presence of conflicting mods. For entertainment purposes only.",
+
+	"Cheats.name": "Cheat Options",
+
+	"InstantRecipe.name": "Instant Recipe",
+	"InstantRecipe.description": "Give the Scrying Orb crafting recipe immediately instead of needing two hearts with the Wizard.",
+
+	"UnlimitedUse.name": "Unlimited Use",
+	"UnlimitedUse.description": "Have the Scrying Orb work without taking offerings permanently.",
+
+	"ActivateKey.name": "Activate Key",
+	"ActivateKey.description": "A key to activate the Scrying Orb unlimited use menu without any orb or offering."
 }

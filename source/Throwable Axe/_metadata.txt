@@ -5,9 +5,12 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 92b7fe7e0c20c9ecd7c9687b15e963c70bae56fa
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:58:41 2019 -0500
+   commit 4be77e862d818a53c49f3ab69d95509f251c063d
+   Merge: 10428ef 31e8094
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:11:09 2020 -0400
    
-       Initial commit
+       Merge pull request #1 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

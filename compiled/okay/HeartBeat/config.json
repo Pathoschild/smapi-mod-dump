@@ -1,0 +1,5 @@
+{
+  "HeartBeatEnabled": true,
+  "HeartBeatAlertPercent": 45.0,
+  "HeartBeatHeartRate": 80.0
+}

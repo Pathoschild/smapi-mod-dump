@@ -5,9 +5,12 @@ mods:
    Console Code
 
 latest commit:
-   commit d95cf73040bcb1b2f1b6a420fcadf1ef0e048af1
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 16:55:21 2019 -0500
+   commit a74b5fd155f20f189828f8ca7c7e2711c14972d7
+   Merge: d95cf73 2a20467
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:13:33 2020 -0400
    
-       1.0.2 - SDV 1.4, Mac/Linux support
+       Merge pull request #2 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

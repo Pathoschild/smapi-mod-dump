@@ -5,9 +5,9 @@ mods:
    Go To Bed
 
 latest commit:
-   commit be8dd7ccaf1ebb7795d408506b569e04c00477f2
+   commit 55206127f16c22fedc8f10dd7f5c9a4479cc1bf3
    Author: Candidus <candidus@xmail.net>
-   Date:   Sat Mar 28 22:15:22 2020 +0100
+   Date:   Wed Apr 15 20:58:07 2020 +0200
    
-       Add configuration option and Harmony patch to provide Stardew13 spouse sleeping behavior
+       New feature: Farmer takes hat off when going to bed
    

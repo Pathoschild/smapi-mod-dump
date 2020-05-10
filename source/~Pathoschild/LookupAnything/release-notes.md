@@ -1,13 +1,28 @@
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Added datamining field formatter for `npc.currentMarriageDialogue`.
+## 1.27.1
+Released 02 May 2020.
+
+* Fixed compatibility issue with Mega Storage in 1.27.
+
+## 1.27
+Released 02 May 2020.
+
+* The lookup menu is now centered again. (It will fallback to non-centered mode only if needed for compatibility.)
+* Improved compatibility with custom NPC mods (including mods which replace non-social NPCs with social ones).
+* Improved item scanning (used for 'number owned' and gift taste fields):
+  * now includes nested items (e.g. chests in chests in chests);
+  * now includes tool attachments;
+  * now searches within some mod containers (e.g. bags);
+  * fixed some spawned items incorrectly counted as owned (e.g. weeds and stones).
+* Improved debug field formatting for `npc.currentMarriageDialogue`.
 * Fixed 'number crafted' including some incorrect recipes.
-* Fixed some spawned items incorrectly counted as owned (e.g. weeds and stones).
 * Fixed placed and held torches counted as different items.
 * Fixed cursor incorrectly detected on Android in some cases.
-* Improved translations. Thanks to niniack (updated Chinese)!
+* Fixed rare 'scissor rectangle is invalid' error with search menu.
+* Fixed issue where closing the search menu with the default key bindings could trigger a lookup after the menu closes.
+* Improved translations. Thanks to Andites (updated Russian) and niniack (updated Chinese)!
 
 ## 1.26
 Released 09 March 2020.

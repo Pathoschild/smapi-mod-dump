@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Heartbeat</AssemblyName>
+    <RootNamespace>Heartbeat</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
+  </ItemGroup>
+
+</Project>

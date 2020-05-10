@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5826
+IDs: Annosz.CheaperBeachBridgeRepair
+update keys: Nexus:5826, GitHub:Annosz/StardewValleyModding

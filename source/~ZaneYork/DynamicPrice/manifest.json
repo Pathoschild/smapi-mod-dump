@@ -1,0 +1,16 @@
+{
+   "Name": "Dynamic Price",
+   "Author": "ZaneYork",
+   "Version": "0.1.1",
+   "Description": "Crops sell price changes dynamically",
+   "UniqueID": "ZaneYork.DynamicPrice",
+   "EntryDll": "DynamicPrice.dll",
+   "MinimumApiVersion": "3.0.0",
+   "UpdateKeys": [ "Nexus:5831" ],
+   "Dependencies": [
+      {
+        "UniqueID": "ZaneYork.CustomCropsDecay",
+        "IsRequired": false
+      }
+   ]
+}

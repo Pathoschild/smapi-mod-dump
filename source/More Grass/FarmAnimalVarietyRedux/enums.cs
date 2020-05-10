@@ -4,8 +4,7 @@
     public enum HarvestType
     {
         Lay,
-        Tool,
-        Scavenge
+        Tool
     }
 
     /// <summary>A valid ingame season.</summary>
@@ -15,5 +14,17 @@
         Summer,
         Fall,
         Winter
+    }
+
+    /// <summary>A valid mood for a farm animal.</summary>
+    public enum Mood
+    {
+        NewHome,
+        Happy,
+        Neutral,
+        Unhappy,
+        Hungry,
+        DisturbedByDog,
+        LeftOutAtNight
     }
 }

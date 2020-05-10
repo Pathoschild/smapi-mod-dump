@@ -21,7 +21,7 @@ namespace Bow
 
             helper.Events.Display.MenuChanged += onMenuChanged;
 
-            BowTool.Texture = helper.Content.Load<Texture2D>("bow.png");
+            BowTool.Texture = helper.Content.Load<Texture2D>("assets/bow.png");
         }
 
         /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>

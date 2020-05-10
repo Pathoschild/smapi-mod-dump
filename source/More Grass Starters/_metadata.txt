@@ -5,9 +5,12 @@ mods:
    More Grass Starters
 
 latest commit:
-   commit b4c80fbf183f86d2a36846fd12a0987ad97683b1
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:41:11 2019 -0500
+   commit 65e24a48f668e6fe7ad17cfe3c3dc0ca9f1a8247
+   Merge: b4c80fb d0328a3
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:10:33 2020 -0400
    
-       1.0.4 - SDV 1.4
+       Merge pull request #3 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

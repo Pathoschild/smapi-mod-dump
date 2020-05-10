@@ -5,9 +5,9 @@ mods:
    Cellar Available
 
 latest commit:
-   commit b5a099df1e6590ec447233e8c19eff47771ebd07
+   commit 937a2b9be70265945d6c24f61848fb40878647d1
    Author: Candidus <candidus@xmail.net>
-   Date:   Sat Jan 4 15:54:23 2020 +0100
+   Date:   Thu Apr 16 21:48:08 2020 +0200
    
-       Add Nexus update key
+       New feature: Casks can be removed to start with an empty cellar
    

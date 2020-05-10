@@ -6,31 +6,78 @@ using System.IO;
 
 namespace TwilightShards.YouShouldRest
 {
-    //public class YouShouldRest : Mod, IAssetEditor
-    public class YouShouldRest : Mod
+    public class YouShouldConfig
     {
-        internal Dictionary<string, string> ModDialogues;
-        private readonly IModHelper helper;
+        public double CommentChance = .35;
+        public double StaminaThreshold = .785;
+        public double HealthThreshold = .785;
+    }
 
-        public override void Entry(IModHelper helper)
+    public class DialogueText
+    {
+        public string OriginMod { get; set; }
+        public string Text { get; set; }
+
+        public DialogueText()
         {
-            ModDialogues = new Dictionary<string, string>();
 
-            helper.Events.GameLoop.SaveLoaded += LoadPacksOnLoad;
-            helper.Events.Display.MenuChanged += OnMenuChanged;
         }
 
-        private void LoadPacksOnLoad(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
+        public DialogueText(string origin, string text)
         {
+            OriginMod = origin;
+            Text = text;
+        }
+    }
+
+    public class YouShouldRest : Mod
+    {
+        internal Dictionary<string,DialogueText> ModDialogues;
+        private IModHelper helper;
+        private YouShouldConfig ModConfig;
+        private List<string> NPCCommenters;
+
+        public override void Entry(IModHelper Helper)
+        {
+            NPCCommenters = new List<string>();
+            ModDialogues = new Dictionary<string, DialogueText>();
+            ModConfig = Helper.ReadConfig<YouShouldConfig>();
+            helper = Helper;
+            LoadPacksOnLoad();
+
+            Helper.Events.GameLoop.ReturnedToTitle += OnReturnToTitle;
+            Helper.Events.GameLoop.DayStarted += OnDayStarted;
+            Helper.Events.Display.MenuChanged += OnMenuChanged;
+        }
+
+        private void OnDayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
+        {
+            NPCCommenters.Clear();
+        }
+
+        private void OnReturnToTitle(object sender, StardewModdingAPI.Events.ReturnedToTitleEventArgs e)
+        {
+            NPCCommenters.Clear();
+        }
+
+        private void LoadPacksOnLoad()
+        {
+            Monitor.Log("Scanning for content packs", LogLevel.Info);
             foreach (IContentPack contentPack in helper.ContentPacks.GetOwned())
             {
                 if (File.Exists(Path.Combine(contentPack.DirectoryPath, "dialogue.json")))
                 {
-                    Monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version}");
-                    var rawData = contentPack.ReadJsonFile<List<RestModel>>("dialogue.json");
+                    Monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version}", LogLevel.Info);
+                    var rawData = contentPack.ReadJsonFile<Dictionary<string,string>>("dialogue.json");
                     foreach (var r in rawData)
                     {
-                        ModDialogues.Add(r.Conditions, r.Dialogue);
+                        if (ModDialogues.ContainsKey(r.Key))
+                        {
+                            Monitor.Log(Helper.Translation.Get("dupAddMsg", new { addingMod = contentPack.Manifest.Name, key = r.Key, orgMod = ModDialogues[r.Key].OriginMod }), LogLevel.Warn);
+                            ModDialogues.Remove(r.Key);
+                        }
+                        else
+                            ModDialogues.Add(r.Key, new DialogueText(contentPack.Manifest.Name,r.Value));
                     }
                 }
                 else
@@ -42,9 +89,9 @@ namespace TwilightShards.YouShouldRest
 
         private bool StaminaCheck()
         {
-            if (Game1.player.Stamina / Game1.player.MaxStamina <= .825)
+            if (Game1.player.Stamina / Game1.player.MaxStamina <= ModConfig.StaminaThreshold)
                 return true;
-            else if (Game1.player.health / Game1.player.maxHealth <= .825)
+            else if (Game1.player.health / Game1.player.maxHealth <= ModConfig.HealthThreshold)
                 return true;
 
             return false;
@@ -52,7 +99,7 @@ namespace TwilightShards.YouShouldRest
 
         private int GetLevelOnScale(float val, float maxVal)
         {
-            //0 - 5 scale; 0 > 98%, 1 80-99%, 2 50 - 80%, 3 20-50%, 4 2-20%, 5 <2%
+            //0 - 5 scale; 0 > 98%, 1 80-98%, 2 50 - 80%, 3 20-50%, 4 2-20%, 5 <2%
             float valPercent = val / maxVal;
             if (valPercent >= .98f)
                 return 0;
@@ -103,6 +150,8 @@ namespace TwilightShards.YouShouldRest
             int TimeOfDay = GetTimeOfDay(Game1.timeOfDay);
             string SpouseStatus = Game1.player.friendshipData[character.Name].IsMarried() ? "spouse" : "";
             string seasonDay = string.Concat(Game1.currentSeason, Game1.dayOfMonth);
+
+            Monitor.Log($"Talking to {character.Name}, with heartLevel {HeartLevel}, and StaminaStatus {StaminaStatus} and HealthStatus {HealthStatus} with Time Of Day {TimeOfDay}, spouse status {SpouseStatus}, seasonDay {seasonDay}, fall back season {Game1.currentSeason}.", LogLevel.Info);
 
             string s = character.Name + "[" + HeartLevel + "]_" + seasonDay + "_" + HealthStatus + "_" + StaminaStatus + "_" + TimeOfDay;
             if (!string.IsNullOrEmpty(SpouseStatus))
@@ -185,20 +234,173 @@ namespace TwilightShards.YouShouldRest
             //format is:
             //age_manners_social_timeofday_optimism
             // it tries to find the longest one first, then works backwards
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + character.Optimism + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
 
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay + "_" + character.Optimism + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + character.Optimism + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay + "_" + character.Optimism + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + character.Optimism + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay + "_" + character.Optimism + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+            // - Optimism
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay +  "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay +  "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            // -Time Of Day
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_"  + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            // -Social -Seasonday! :D
+            s = character.Age + "_" + character.Manners + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_"  + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + character.Manners + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            //seasonday
+            s = character.Age + "_" + seasonDay + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + Game1.currentSeason + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + seasonDay + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + Game1.currentSeason + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + seasonDay + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + Game1.currentSeason + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            //timeOfDay
+            s = character.Age + "_" + TimeOfDay + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + TimeOfDay + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + TimeOfDay + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+            
+            //just age
+            s = character.Age + "_" + HealthStatus + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + StaminaStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
+
+            s = character.Age + "_" + HealthStatus;
+            if (ModDialogues.ContainsKey(s))
+                return s;
 
             //fallback to default if EVERYTHING's missing.
-            return "default";
+            return "";
         }
 
         private void OnMenuChanged(object sender, StardewModdingAPI.Events.MenuChangedEventArgs e)
         {
-            if (e.NewMenu is DialogueBox dBox && !Game1.eventUp && StaminaCheck())
+            if (e.NewMenu is DialogueBox dBox && !Game1.eventUp && StaminaCheck() && Game1.random.NextDouble() < ModConfig.CommentChance)
             {
                 var cDBU = Helper.Reflection.GetField<Stack<string>>(dBox, "characterDialoguesBrokenUp").GetValue();
                 Dialogue diag = Helper.Reflection.GetField<Dialogue>(dBox, "characterDialogue").GetValue();
-                cDBU.Push(Helper.Translation.Get(GetDialogueForConditions(diag.speaker)));
-                Helper.Reflection.GetField<Stack<string>>(dBox, "characterDialoguesBrokenUp").SetValue(cDBU);
+                if (diag != null && diag.speaker != null && !NPCCommenters.Contains(diag.speaker.Name))
+                {
+                    if (diag.temporaryDialogue == Helper.Translation.Get("Strings\\UI:Carpenter_DemolishCabinConfirm") ||
+                        diag.temporaryDialogue == Helper.Translation.Get("Data\\ExtraDialogue:Robin_Instant") ||
+                        diag.temporaryDialogue == Helper.Translation.Get("Data\\ExtraDialogue:Robin_UpgradeConstruction") ||
+                        diag.temporaryDialogue == Helper.Translation.Get("Data\\ExtraDialogue:Robin_NewConstruction") ||
+                        diag.temporaryDialogue == Helper.Translation.Get("Data\\ExtraDialogue:Robin_UpgradeConstructionFestival") || diag.temporaryDialogue == Helper.Translation.Get("Data\\ExtraDialogue:Robin_NewConstructionFestival")
+                        ) { 
+                        return;
+                        }
+                    NPCCommenters.Add(diag.speaker.Name);
+                    string key = GetDialogueForConditions(diag.speaker);
+                    string ret;
+                    if (!string.IsNullOrEmpty(key) && ModDialogues.ContainsKey(key))
+                    {
+                        ret = ModDialogues[key].Text;
+                        cDBU.Push(ret);
+                    }
+                    Helper.Reflection.GetField<Stack<string>>(dBox, "characterDialoguesBrokenUp").SetValue(cDBU);
+                }
             }
         }
     }

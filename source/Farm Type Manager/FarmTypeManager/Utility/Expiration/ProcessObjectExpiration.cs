@@ -214,6 +214,16 @@ namespace FarmTypeManager
                                         sameContainerCategory = true;
                                     }
                                     break;
+                                case "buried":
+                                case "burieditem":
+                                case "burieditems":
+                                case "buried item":
+                                case "buried items":
+                                    if (realObject is BuriedItems)
+                                    {
+                                        sameContainerCategory = true;
+                                    }
+                                    break;
                                 case "chest":
                                 case "chests":
                                     if (realObject is Chest)
@@ -240,7 +250,7 @@ namespace FarmTypeManager
                                 {
                                     if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                                     {
-                                        Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+                                        Monitor.VerboseLog($"Removing expired container. Type: {saved.Type.ToString()}. Category: {saved.ConfigItem?.Category}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
 
                                         objectsToRemove.Add(saved); //mark object for removal from save
                                     }
@@ -252,13 +262,13 @@ namespace FarmTypeManager
                             }
                             else //if the real object does NOT match the saved object's category
                             {
-                                Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                                Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. Category: {saved.ConfigItem?.Category}. Location: {saved.MapName}.");
                                 objectsToRemove.Add(saved); //mark object for removal from save
                             }
                         }
                         else //if the object no longer exists
                         {
-                            Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                            Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. Category: {saved.ConfigItem?.Category}. Location: {saved.MapName}.");
                             objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }

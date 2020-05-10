@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5691
-IDs: TheFluffyRobot.RemoveEatSound
-update keys: Nexus:5691

@@ -1,0 +1,13 @@
+url:
+   https://github.com/eduanttunes/sv_fighting_with_npcs.git
+
+mods:
+   Fighting With NPCs
+
+latest commit:
+   commit 6ddec9158da015ce801fcccf7cf44bd7b2e109cf
+   Author: Eduardo Antunes <eduanttunes@gmail.com>
+   Date:   Sun Apr 26 13:33:11 2020 -0300
+   
+       Update keys for Nexus Mods
+   

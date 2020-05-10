@@ -5,9 +5,12 @@ mods:
    Extended Reach
 
 latest commit:
-   commit a830b05f5f359384a41fcb18a8b9de98faa14d16
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:04:58 2019 -0500
+   commit 8aae7e728d9ea4b57e3942f7fdaa3bcfac679c21
+   Merge: 1c3771d 3d2ca0c
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:09:42 2020 -0400
    
-       1.0.3 - SDV 1.4
+       Merge pull request #4 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

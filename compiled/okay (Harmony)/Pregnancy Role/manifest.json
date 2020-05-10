@@ -1,14 +1,15 @@
 ﻿{
-  "Name": "Pregnancy Role",
-  "Author": "kdau",
-  "Version": "1.0.0",
-  "Description": "Set pregnancy role for farmers and NPCs separate from gender",
-  "UniqueID": "kdau.PregnancyRole",
-  "EntryDll": "PregnancyRole.dll",
-  "MinimumApiVersion": "3.4.0",
-  "Dependencies": [
-  ],
-  "UpdateKeys": [
-    "Nexus:5762"
-  ]
+	"Name": "Pregnancy Role",
+	"Author": "kdau",
+	"Version": "1.1.0",
+	"Description": "Set pregnancy role for farmers and NPCs separate from gender",
+	"UniqueID": "kdau.PregnancyRole",
+	"EntryDll": "PregnancyRole.dll",
+	"MinimumApiVersion": "3.4.0",
+	"Dependencies": [
+	],
+	"UpdateKeys": [
+		"Nexus:5762",
+		"ModDrop:768494"
+	]
 }

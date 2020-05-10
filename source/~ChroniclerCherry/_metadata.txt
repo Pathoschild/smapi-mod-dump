@@ -14,10 +14,12 @@ mods:
    Upgrade Empty Cabins
 
 latest commit:
-   commit 461d9ab16dd923cb9c182f9aa4f0959fdc47b67b
-   Merge: f7cb236 c344279
-   Author: Cherry <yiminxuezheng@gmail.com>
-   Date:   Thu Jan 23 15:18:58 2020 -0500
+   commit 059aa4894569782071bd8c21a7354b67eddc3d99
+   Merge: 461d9ab 3b6027c
+   Author: Yiminxue Zheng <33401364+ChroniclerCherry@users.noreply.github.com>
+   Date:   Tue May 5 19:24:00 2020 -0400
    
-       Merge branch 'master' of https://github.com/ChroniclerCherry/stardew-valley-mods
+       Merge pull request #25 from LyaVanLou/master
+       
+       German Translation
    

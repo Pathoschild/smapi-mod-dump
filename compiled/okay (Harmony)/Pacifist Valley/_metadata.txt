@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/5464
 IDs: Aedenthorn.PacifistValley
-update keys: Nexus:5464
+update keys: Nexus:5464, GitHub:aedenthorn/StardewValleyMods

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using PredictiveCore;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 using System;
@@ -74,7 +75,7 @@ namespace ScryingOrb
 			Game1.currentLocation.afterQuestion = (Farmer _who, string mode) =>
 			{
 				Game1.currentLocation.afterQuestion = null;
-				WorldDate today = Utilities.Now ();
+				SDate today = SDate.Now ();
 
 				switch (mode)
 				{
@@ -87,9 +88,9 @@ namespace ScryingOrb
 							showPredictions (date, Garbage.ListLootForDate (date), mode));
 					break;
 				case "hat":
-					GarbagePrediction? hat = Garbage.FindGarbageHat (today);
-					List<GarbagePrediction> predictions =
-						new List<GarbagePrediction> ();
+					Garbage.Prediction? hat = Garbage.FindGarbageHat (today);
+					List<Garbage.Prediction> predictions =
+						new List<Garbage.Prediction> ();
 					if (hat.HasValue)
 						predictions.Add (hat.Value);
 					showPredictions (hat.HasValue ? hat.Value.date : today,
@@ -103,10 +104,10 @@ namespace ScryingOrb
 			};
 		}
 
-		private void showPredictions (WorldDate date,
-			List<GarbagePrediction> predictions, string mode)
+		private void showPredictions (SDate date,
+			List<Garbage.Prediction> predictions, string mode)
 		{
-			bool today = date == Utilities.Now ();
+			bool today = date == SDate.Now ();
 			List<string> pages = new List<string> ();
 
 			// Show a special message for all cans being empty.
@@ -114,7 +115,7 @@ namespace ScryingOrb
 			{
 				pages.Add (Helper.Translation.Get ($"garbage.none.{mode}", new
 				{
-					date = date.Localize (),
+					date = date.ToLocaleString (),
 				}));
 			}
 			else
@@ -124,16 +125,16 @@ namespace ScryingOrb
 				{
 					Helper.Translation.Get ($"garbage.header.{(today ? "today" : "later")}", new
 					{
-						date = date.Localize (),
+						date = date.ToLocaleString (),
 					})
 				};
 
 				// Randomize the order of predictions for variety.
 				Random rng = new Random ((int) Game1.uniqueIDForThisGame +
-					date.TotalDays);
+					date.DaysSinceStart);
 
-				foreach (GarbagePrediction prediction in
-					predictions.OrderBy ((GarbagePrediction a) => rng.Next ()))
+				foreach (Garbage.Prediction prediction in
+					predictions.OrderBy ((Garbage.Prediction a) => rng.Next ()))
 				{
 					string can = prediction.can.ToString ().Replace ("SVE_", "");
 					lines.Add (Helper.Translation.Get ($"garbage.prediction.{can}", new

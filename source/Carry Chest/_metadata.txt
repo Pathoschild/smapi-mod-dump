@@ -5,9 +5,12 @@ mods:
    Carry Chest
 
 latest commit:
-   commit 44eaea9000fc2c4020c3330c037957ff879f1319
+   commit 3415b045f955be6f5e324aebb6f53e1a39cb027b
+   Merge: 44eaea9 5663901
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Dec 7 18:04:31 2019 -0500
+   Date:   Mon Apr 27 12:13:26 2020 -0400
    
-       Forgot to include these
+       Merge pull request #4 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

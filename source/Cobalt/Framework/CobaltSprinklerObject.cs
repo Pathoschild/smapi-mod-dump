@@ -18,7 +18,7 @@ namespace Cobalt.Framework
         public const int CATEGORY = CraftingCategory;
         public const int EDIBILITY = -300;
 
-        private Texture2D icon = ModEntry.instance.Helper.Content.Load<Texture2D>("cobalt-sprinkler.png");
+        private Texture2D icon = ModEntry.instance.Helper.Content.Load<Texture2D>("assets/cobalt-sprinkler.png");
 
         public CobaltSprinklerObject()
         {

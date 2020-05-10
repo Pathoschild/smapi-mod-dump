@@ -205,7 +205,7 @@ namespace CustomFarmTypes
         private void compileChoices()
         {
             Log.info("Creating list of custom farm types...");
-            var farmTypeDirs = Directory.GetDirectories(Path.Combine(Helper.DirectoryPath, "FarmTypes"));
+            var farmTypeDirs = Directory.GetDirectories(Path.Combine(Helper.DirectoryPath, "assets", "FarmTypes"));
             foreach (var folderPath in farmTypeDirs)
             {
                 IContentPack contentPack = this.Helper.ContentPacks.CreateFake(folderPath);
@@ -222,7 +222,7 @@ namespace CustomFarmTypes
                     continue;
                 }
 
-                type.Folder = Path.Combine("FarmTypes", Path.GetFileName(folderPath));
+                type.Folder = Path.Combine("assets", "FarmTypes", Path.GetFileName(folderPath));
                 FarmType.register(type);
                 Log.info($"\tFarm type: {type.Name} ({type.ID})");
             }

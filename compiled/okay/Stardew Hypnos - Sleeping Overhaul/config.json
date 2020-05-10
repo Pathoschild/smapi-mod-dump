@@ -1,0 +1,86 @@
+{
+  "MinimumRelationship": "OnlyPartners",
+  "MinimumFriendshipHearts": 6,
+  "KeepFriendDoorsOpen": true,
+  "NPCsByWarp": {
+    "AnimalShop": [
+      "Marnie",
+      "Shane"
+    ],
+    "SeedShop": [
+      "Abigail",
+      "Pierre",
+      "Caroline"
+    ],
+    "Trailer": [
+      "Penny",
+      "Pam"
+    ],
+    "HaleyHouse": [
+      "Haley",
+      "Emily"
+    ],
+    "LeahHouse": [
+      "Leah"
+    ],
+    "ScienceHouse": [
+      "Maru",
+      "Robin",
+      "Demetrius",
+      "Sebastian"
+    ],
+    "JoshHouse": [
+      "Alex"
+    ],
+    "ElliottHouse": [
+      "Elliott"
+    ],
+    "SamHouse": [
+      "Sam",
+      "Kent",
+      "Jodi"
+    ],
+    "ManorHouse": [
+      "Lewis"
+    ],
+    "SebastianRoom": [
+      "Sebastian"
+    ],
+    "HarveyRoom": [
+      "Harvey"
+    ],
+    "Saloon": [
+      "Gus"
+    ],
+    "Tent": [
+      "Linus"
+    ],
+    "Blacksmith": [
+      "Clint"
+    ]
+  },
+  "BedTileIndexes": {
+    "townInterior": [
+      384,
+      386,
+      390,
+      448,
+      450,
+      454,
+      836,
+      1123,
+      1294
+    ],
+    "ElliottHouseTiles": [
+      25
+    ]
+  },
+  "BlacklistedBedTiles": {
+    "AnimalShop": [
+      "1, 7"
+    ],
+    "SamHouse": [
+      "8, 22"
+    ]
+  }
+}

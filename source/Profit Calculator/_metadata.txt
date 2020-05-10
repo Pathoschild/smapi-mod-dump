@@ -5,9 +5,12 @@ mods:
    Profit Calculator
 
 latest commit:
-   commit 45b77bfbfa22acac0dda2dd898ff6c861e8b437e
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:44:14 2019 -0500
+   commit b5c587a1287c2a2691a4c89f5f1a30ffa4a3588d
+   Merge: eb11ca7 5d944e2
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:10:51 2020 -0400
    
-       1.0.1 - SDV 1.4
+       Merge pull request #1 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

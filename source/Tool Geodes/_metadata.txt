@@ -5,9 +5,12 @@ mods:
    Tool Geodes
 
 latest commit:
-   commit c257f3b0bd305e52e0843ac0a6800473bd43e853
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 18:09:55 2019 -0500
+   commit 5b6b1e2717b8dceb338dfb0cfefbb9d8503ca5b0
+   Merge: c257f3b 6c5d562
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:11:12 2020 -0400
    
-       1.1.6 - SDV 1.4, GMCM support
+       Merge pull request #3 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

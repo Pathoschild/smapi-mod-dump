@@ -156,9 +156,8 @@ These settings are in the **config.json** file, which is in the mod's main folde
 
 Name | Valid settings | Description
 -----|----------------|------------
-EnableWhereAmICommand | **true**, false | Enables or disables the `whereami` console command.
-EnableContentPacks | **true**, false | Enables or disables any installed content packs for Farm Type Manager.
-EnableContentPackFileChanges | **true**, false | Enables or disables special file changes by content packs, such as resetting the `FarmTypeManager\data` folder.
+EnableConsoleCommands | **true**, false | Enables or disables this mod's commands in the SMAPI console. This may be helpful if other mods use similar command names.
+EnableContentPacks | **true**, false | Enables or disables any installed content packs for Farm Type Manager. If disabled, only "personal" config files in the `FarmTypeManager/data` folder will be used.
 EnableTraceLogMessages | **true**, false | Enables or disables `[TRACE]`-level messages in the SMAPI error log.
 MonsterLimitPerLocation | An integer (minimum 0), or **null** | If a single map already contains this number of monsters, the mod will skip spawning any additional monsters there. Use this setting if your content packs are spawning too many monsters, causing Stardew to run slowly.
 
@@ -210,7 +209,7 @@ For a more detailed description of the complex item settings, see the table belo
 
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
-Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Chest", "Clothing", "Crate", "Furniture", "Hat", "Object", "Item", "Ring", "Weapon" | The category of the spawned item.| This setting is required by all items. The "item" category (and several others) will "drop" items on the ground, but the "object" category will place them like normal forage objects. Using "breakable" will randomly generate a barrel or crate.
+Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Clothing", "Crate", "Furniture", "Hat", "Object", "Item", "Ring", "Weapon" | The category of the spawned item.| This setting is required by all items. The "item" category (and several others) will "drop" items on the ground, but the "object" category will place them like normal forage objects. Using "breakable" will randomly generate a barrel or crate.
 Name | An item name, e.g. `"Red Mushroom"` | The name of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
 Stack | An integer (minimum 1) | The number of items spawned, a.k.a. the "stack size". | Currently, these item categories can be stacked: "object", "item", and "big craftable". Items with other categories will ignore this setting.
 PercentChanceToSpawn | An integer (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.

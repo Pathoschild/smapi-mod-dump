@@ -5,9 +5,12 @@ mods:
    Experience Bars
 
 latest commit:
-   commit dcad17da49d160cc0cdb7d917ad3f99da8bb86a7
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:03:59 2019 -0500
+   commit f9210df5001606fac41db9753c269c3191215b3f
+   Merge: dcad17d 405bfe7
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:09:35 2020 -0400
    
-       1.2.1 - SDV 1.4, GMCM support
+       Merge pull request #5 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

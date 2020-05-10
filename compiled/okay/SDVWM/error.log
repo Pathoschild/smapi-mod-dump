@@ -1,3 +1,0 @@
-Object reference not set to an instance of an object.
-   at StarDewValleyWeatherMachine.Extension.Extension_Writer.Write_AWS_API_Gateway() in C:\Users\laurensarah2022\Downloads\StardewValleyWeatherMachine-2.0\StardewValleyWeatherMachine-2.0\SDVWM\Extension\Extension_Writer.cs:line 114
-SDVWM

@@ -1,0 +1,15 @@
+{
+    "Name": "East Scarpe",
+    "Author": "LemurKat",
+    "Version": "1.2.1",
+    "Description": "Adds an area east of town.",
+    "UniqueID": "LemurKat.EastScarpe.TMX",
+    "Dependencies": [
+  	{ "UniqueID": "LemurKat.EastScarpe.SMAPI" }
+			],
+   "ContentPackFor": {
+      "UniqueID": "Platonymous.TMXLoader",
+      "MinimumVersion": "1.13.0"
+              }
+      
+    }

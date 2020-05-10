@@ -102,5 +102,15 @@
 	"trains.next.thisWeek": "Nous n'avons pas à attendre longtemps. Ce {{dayOfWeek}}, un train passera à {{time}}.",
 	"trains.next.later": "Désolé, le prochain train ne passera pas avant {{date}}, à {{time}}. Nous devons être patients.",
 	"trains.later": "En regardant plus loin dans le trafic, je vois que des trains sont également prévus pour passer le {{date1}}, et le {{date2}}.",
-	"trains.closing": "N'oubliez pas que vous manquerez probablement le train si vous avez passé la nuit loin de la vallée. Bonne chasses aux trains !"
+	"trains.closing": "N'oubliez pas que vous manquerez probablement le train si vous avez passé la nuit loin de la vallée. Bonne chasses aux trains !",
+
+	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+
+	"InaccuratePredictions.name": "Inaccurate Predictions",
+	"InaccuratePredictions.description": "Reveal channels whose information is inaccurate due to the presence of conflicting mods. For entertainment purposes only.",
+
+	"Cheats.name": "Cheat Options",
+
+	"BypassFriendships.name": "Bypass Friendships",
+	"BypassFriendships.description": "Put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player."
 }

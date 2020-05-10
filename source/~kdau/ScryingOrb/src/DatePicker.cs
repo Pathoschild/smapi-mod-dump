@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using PredictiveCore;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
@@ -16,16 +16,16 @@ namespace ScryingOrb
 	{
 		protected static IModHelper Helper => ModEntry.Instance.Helper;
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
-		
-		private readonly WorldDate initialDate;
-		private WorldDate date;
+
+		private readonly SDate initialDate;
+		private SDate date;
 
 		private readonly string promptMessage;
-		private readonly Action<WorldDate> onConfirm;
+		private readonly Action<SDate> onConfirm;
 
 		private readonly Texture2D calendarTile;
 		private readonly Texture2D dayButtonTiles;
-		
+
 		private string hoverText;
 		private int hoverButton = -999;
 		private int selectedDay = -1;
@@ -101,15 +101,15 @@ namespace ScryingOrb
 			new SeasonDatum (new Color ( 12, 130, 181), new Rectangle (-239, -239, 48, 48), "Maps\\winter_town", new Rectangle (288, 384, 48, 48), SpriteText.color_Blue),
 		};
 
-		public DatePicker (WorldDate initialDate, string promptMessage,
-			Action<WorldDate> onConfirm)
+		public DatePicker (SDate initialDate, string promptMessage,
+			Action<SDate> onConfirm)
 			: base (X, Y, Width, Height)
 		{
 			this.initialDate = initialDate;
 			date = initialDate;
 
-			int initialYearStart = (this.initialDate.Year - 1) * 112;
-			selectedDay = this.initialDate.TotalDays - initialYearStart;
+			int initialYearStart = (this.initialDate.Year - 1) * 112 + 1;
+			selectedDay = this.initialDate.DaysSinceStart - initialYearStart;
 
 			this.promptMessage = promptMessage;
 			this.onConfirm = onConfirm;
@@ -121,7 +121,7 @@ namespace ScryingOrb
 
 			arrangeInterface ();
 		}
-		
+
 		public override void gameWindowSizeChanged (Rectangle oldBounds, Rectangle newBounds)
 		{
 			base.gameWindowSizeChanged (oldBounds, newBounds);
@@ -176,14 +176,14 @@ namespace ScryingOrb
 			double dayRadius = 220.0 * CalendarScale;
 			for (int i = 0; i < 112; ++i)
 			{
-				WorldDate date = dayToWorldDate (i);
+				SDate date = dayToSDate (i);
 
 				double angle = 2 * Math.PI * (i + 0.5) / 112.0;
 				int x = (int) (xCenter + dayRadius * Math.Sin (angle));
 				int y = (int) (yCenter - dayRadius * Math.Cos (angle));
 
 				dayButtons.Add (new ClickableTextureComponent ($"Day{i}",
-					new Rectangle (x, y, 12, 52), null, date.Localize (),
+					new Rectangle (x, y, 12, 52), null, date.ToLocaleString (),
 					dayButtonTiles, new Rectangle (36 * (i / 28), 0, 12, 52),
 					CalendarScale));
 			}
@@ -304,7 +304,7 @@ namespace ScryingOrb
 		private void selectDay (int day)
 		{
 			selectedDay = day;
-			date = dayToWorldDate (day);
+			date = dayToSDate (day);
 			Rectangle bounds = new Rectangle (
 				dayButtons[day].bounds.X - 30,
 				dayButtons[day].bounds.Y - 10, 20, 20);
@@ -312,12 +312,12 @@ namespace ScryingOrb
 				SeasonData[day / 28].mainColor, 50);
 		}
 
-		private WorldDate dayToWorldDate (int day)
+		private SDate dayToSDate (int day)
 		{
-			int initialYearStart = (initialDate.Year - 1) * 112;
-			int initialDay = initialDate.TotalDays - initialYearStart;
+			int initialYearStart = (initialDate.Year - 1) * 112 + 1;
+			int initialDay = initialDate.DaysSinceStart - initialYearStart;
 			int offset = (day < initialDay) ? 112 : 0;
-			return Utilities.TotalDaysToWorldDate (initialYearStart + day + offset);
+			return SDate.FromDaysSinceStart (initialYearStart + day + offset);
 		}
 
 		private void selectPrev ()
@@ -345,7 +345,6 @@ namespace ScryingOrb
 			Random rng = new Random ();
 			Rectangle spriteBounds = seasonSprites[seasonIndex].bounds;
 
-			seasonDebris.Clear ();
 			int debrisCount = ((seasonIndex == 3) ? 3 : 1) * (5 + rng.Next (0, 5));
 			for (int i = 0; i < debrisCount; ++i)
 			{
@@ -412,8 +411,12 @@ namespace ScryingOrb
 					daySparkles.RemoveAt (i);
 			}
 
-			foreach (WeatherDebris debris in seasonDebris)
-				debris.update ();
+			for (int i = seasonDebris.Count - 1; i >= 0; --i)
+			{
+				seasonDebris[i].update ();
+				if (!Utility.isOnScreen (seasonDebris[i].position, 64))
+					seasonDebris.RemoveAt (i);
+			}
 		}
 
 		public override void draw (SpriteBatch b)
@@ -430,7 +433,7 @@ namespace ScryingOrb
 				Game1.textColor);
 
 			// DateLabel
-			string dateText = date.Localize ();
+			string dateText = date.ToLocaleString ();
 			float dateWidth = DateFont.MeasureString (dateText).X;
 			float dateOffset = (dateLabel.bounds.Width - dateWidth) / 2;
 			Utility.drawTextWithShadow (b, dateText, DateFont,

@@ -5,12 +5,12 @@ mods:
    More Rings
 
 latest commit:
-   commit d4fe6bba2b9a7ae4601b16eae7981680b1621202
-   Merge: 81e2293 323dc08
+   commit 814a65af6c6a622cf8e98b51058221b693674c5c
+   Merge: d4fe6bb 616f631
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Jan 18 16:37:56 2020 -0500
+   Date:   Mon Apr 27 12:10:38 2020 -0400
    
-       Merge pull request #2 from asqwedcxz741/master
+       Merge pull request #3 from Pathoschild/update-project
        
-       Add Chinese Translations
+       Update & standardize project structure
    

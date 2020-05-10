@@ -1,7 +1,7 @@
 {
   "Name": "SDVWM_RealWeather",
   "Author": "SixthTitan",
-  "Version": "1.0.0",
+  "Version": "1.0.2",
   "Description": "Providing farmers with a Real-time Weather Experience",
   "UniqueID": "SixthTitan.SDVWM_RealWeather",
   "EntryDll": "SDVWM_RealWeather.dll",

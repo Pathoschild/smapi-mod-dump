@@ -1,4 +1,4 @@
-# ![[icon]](assets/icon.png) Public Access TV
+# ![[icon]](promo/icon.png) Public Access TV
 
 *a [Stardew Valley](http://stardewvalley.net/) mod by [kdau](https://kdau.gitlab.io)*
 
@@ -28,7 +28,7 @@ There are no known conflicts with other mods. Public Access TV fully supports th
 
 * [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753) (different arrangement of garbage cans)
 
-When one of the following mods is installed, the related channel is disabled because it would not be accurate:
+When one of the following mods is installed, the related channel is hidden because it would not be accurate:
 
 * [Better Garbage Cans](https://www.nexusmods.com/stardewvalley/mods/4171)
 * [Better Train Loot](https://www.nexusmods.com/stardewvalley/mods/4234)
@@ -39,6 +39,7 @@ If any of your other mods affect the areas this mod covers, the TV may make inco
 
 1. Install the latest version of [SMAPI](https://smapi.io/).
 1. Install the latest version of the [PyTK](https://www.nexusmods.com/stardewvalley/mods/1726) mod.
+1. To configure this mod without editing a JSON file, optionally install the [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) mod.
 1. Download this mod from its [Nexus page](https://www.nexusmods.com/stardewvalley/mods/5605?tab=files) or [ModDrop page](https://www.moddrop.com/stardew-valley/mods/757967-public-access-tv).
 1. Unzip the mod and place the `PublicAccessTV` folder inside your `Mods` folder.
 1. Run the game using SMAPI.
@@ -81,14 +82,16 @@ Once the movie theater opens, your friendly concessionaire will announce the fea
 
 ## Configuration
 
-The first time you run the mod, it will generate a `config.json` file in its main folder (`Mods/PublicAccessTV`). Two options are available:
+If you have installed Generic Mod Config Menu, you can access this mod's configuration by clicking the cogwheel button at the lower left corner of the Stardew Valley title screen and then choosing "Public Access TV".
 
+Otherwise, you can edit the mod's `config.json` file; it will be generated in the mod's main folder (`Mods/PublicAccessTV`) the first time you run it. These options are available:
+
+* `InaccuratePredictions`: Set this to `true` to reveal channels whose information is inaccurate due to the presence of conflicting mods. For entertainment purposes only.
 * `BypassFriendships`: Set this to `true` to put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player.
-* `InaccuratePredictions`: Set this to `true` to enable channels whose information is inaccurate due to the presence of conflicting mods. For entertainment purposes only.
 
 ## Translation
 
-This mod can be translated into any language supported by Stardew Valley. It is currently available in English, French and Russian.
+This mod can be translated into any language supported by Stardew Valley. It is currently available in English, French, Korean, Portuguese, Russian and Simplified Chinese.
 
 Your contribution would be welcome. Please see the [details on the wiki](https://stardewvalleywiki.com/Modding:Translations) for help. You can send me your work in an issue [on GitLab](https://gitlab.com/kdau/predictivemods/-/issues), [on Nexus](https://www.nexusmods.com/stardewvalley/mods/5605?tab=bugs) or by DM on Discord.
 
@@ -100,7 +103,10 @@ Your contribution would be welcome. Please see the [details on the wiki](https:/
 * Coding of this mod relied on [Climates of Ferngill](http://www.nexusmods.com/stardewvalley/mods/604) by Sakorona as a key example.
 * The #making-mods channel on the [Stardew Valley Discord](https://discordapp.com/invite/StardewValley) offered valuable guidance and feedback.
 * The French translation was prepared by Inu'tile.
+* The Korean translation was prepared by lando793.
+* The Portuguese translation was prepared by Ertila007.
 * The Russian translation was prepared by Ghost3lboom.
+* The Simplified Chinese translation was prepared by caisijing.
 * The "Governor's Message" channel's opening jingles are clipped from [News jingle](https://freesound.org/people/jobro/sounds/169214/) by [jobro](https://freesound.org/people/jobro/), used under [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/), and [jingle news](https://freesound.org/people/Jay_You/sounds/460424/) by [Stonefree](http://www.stonefree.de/), used under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 
 <details>
@@ -113,16 +119,17 @@ Your contribution would be welcome. Please see the [details on the wiki](https:/
 ## See also
 
 * [Release notes](RELEASE-NOTES.md) for existing versions
-* [Issue tracker](https://gitlab.com/kdau/predictivemods/-/issues) for bug fixes and minor enhancements
-* [Roadmap](../ROADMAP.md) of major development plans
+* [Discord channel](https://discord.gg/vUGR4Y4) to discuss this mod
+* [Issue tracker](https://gitlab.com/kdau/predictivemods/-/issues) for bug reports and feature plans
 * [MIT license](../LICENSE) (TLDR: do whatever, but credit me)
 * [My other mods](https://kdau.gitlab.io)
 
 Mirrors:
 
+* [This mod on GitLab](https://gitlab.com/kdau/predictivemods/-/tree/master/PublicAccessTV)
 * [This mod on Nexus](https://www.nexusmods.com/stardewvalley/mods/5605)
 * [This mod on ModDrop](https://www.moddrop.com/stardew-valley/mods/757967-public-access-tv)
-* [This mod on GitLab](https://gitlab.com/kdau/predictivemods/-/tree/master/PublicAccessTV)
+* [This mod on the forums](https://forums.stardewvalley.net/index.php?resources/public-access-tv.55/)
 
 Other things you may enjoy:
 

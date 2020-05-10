@@ -27,6 +27,7 @@
 	"luckyPurple.initial": "Шар, кажется, смотрит на тебя с упрёком.^Больше не делай этого",
 	"luckyPurple.following": "Духи не в восторге.^Шар - это не ящик для белья!^Сегодня у тебя будет плохой день.",
 
+	"//Note on meta.initial": "Sorry about this next line. It's a joke referencing an English meme about putting something on itself. It is shown when you try to give one Scrying Orb to another Scrying Orb. A simpler form to translate would be: You're giving the Scrying Orb another Scrying Orb? The spirits think you must really like scrying!",
 	"meta.initial": "Ты хочешь предложить шар для предсказаний,шару для предсказаний?^Духи думают, что ты действительно любишь предсказывать",
 	"meta.following": "Ничего не происходит, но вы чувствуете странное чувство, думая как глупо вы выглядите со стороны.",
 
@@ -45,7 +46,7 @@
 	"mining.prediction.PepperRex": "> Под подвижными песками древние рептилии могут бродить на {{floors}}.",
 	"mining.prediction.none": "> Никакие конкретные явления не проявят себя.",
 	"mining.closing.progress": "Вы еще не достигли конца своего^подземного квеста. Больше сюрпризов ждут вас в темных глубинах.",
-	
+
 	"geodes.opening": "Духи хрустальных жеод принимают твои каменные приношения.",
 	"geodes.type.question": "В какие странные камни вы хотите заглянуть?",
 	"geodes.type.any": "Следующие три жеоды любого типа",
@@ -63,6 +64,7 @@
 	"geodes.header.Magma": "Следующие {{count}} магма-жеод^должны содержать:",
 	"geodes.header.Omni": "Следующие {{count}} омнижеод^должны содержать:",
 	"geodes.header.Trove": "Следующие {{count}} древних кладов^должны содержать:",
+	"// Note on geodes.footer": "The $ and = symbols in the next line are turned into coin and star icons by the game. Treat them as adjectives modifying the word 'treasures'. The 'another' being referred to is Gunther in the museum.",
 	"geodes.footer": "$ Сокровища считаются ценными у смертных.^= Другие смертные тоже ищут такие сокровища в вашей деревне.",
 	"geodes.closing.progress": "Ваше путешествие в глубины шахт^не завершено, юноша. Если вы продолжите исследовать,^эти камни могут раскрыть другие, более ценные сокровища.",
 
@@ -112,5 +114,21 @@
 
 	"rejection.nothing": "Духи терпеливо ждут вашего пожертвования.",
 	"rejection.unrecognized": "Духи не признают твоего странного предложения.",
-	"rejection.insufficient": "Духи требуют более щедрого предложения."
+	"rejection.insufficient": "Духи требуют более щедрого предложения.",
+
+	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+
+	"InaccuratePredictions.name": "Неточные прогнозы",
+	"InaccuratePredictions.description": "Пусть духи делают неточные прогнозы из-за наличия конфликтующих модов. Только для развлекательных целей.",
+
+	"Cheats.name": "Читы",
+
+	"InstantRecipe.name": "Мгновенное получение рецепта",
+	"InstantRecipe.description": "Мгновенно получить рецепт шара для предсказаний, вместо того, чтобы зарабатывать два сердца с Волшебником.",
+
+	"UnlimitedUse.name": "Неограниченное использование",
+	"UnlimitedUse.description": "Сделайте так, чтобы шар для предсказаний работал без приношений.",
+
+	"ActivateKey.name": "Кнопка активации",
+	"ActivateKey.description": "Кнопка для активации меню неограниченного использования шара для предсказаний без каких-либо сфер или предложений."
 }

@@ -20,7 +20,7 @@ namespace Cobalt.Framework
         public void Edit<T>(IAssetData asset)
         {
             if ( asset.AssetNameEquals( "TileSheets\\tools" ) )
-                asset.AsImage().PatchImage(ModEntry.instance.Helper.Content.Load<Texture2D>("cobalt-tools.png"), null, null, PatchMode.Overlay);
+                asset.AsImage().PatchImage(ModEntry.instance.Helper.Content.Load<Texture2D>("assets/cobalt-tools.png"), null, null, PatchMode.Overlay);
         }
     }
 

@@ -1,0 +1,12 @@
+{
+    "Name": "Misophonia Accessibility",
+    "Author": "The Fluffy Robot",
+    "Version": "2.0.0",
+    "Description": "Removes the sound played when eating, along with other sounds if configured.",
+    "UniqueID": "TheFluffyRobot.MisophoniaAccessibility",
+    "EntryDll": "MisophoniaAccessibility.dll",
+    "MinimumApiVersion": "3.4.1",
+    "UpdateKeys": [
+        "Nexus:5691"
+    ]
+}

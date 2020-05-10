@@ -5,9 +5,12 @@ mods:
    Combat Level Damage Scaler
 
 latest commit:
-   commit 3a801382c17b23699fc411bf8bd06b951ab27cb5
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 16:50:37 2019 -0500
+   commit 344208a31acb2a628a2ededa8102acfb9fe86c8d
+   Merge: 3a80138 ce4c2d1
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:13:30 2020 -0400
    
-       1.0.1 - SDV 1.4, GMCM support
+       Merge pull request #1 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

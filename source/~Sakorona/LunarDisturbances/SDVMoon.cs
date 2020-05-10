@@ -473,6 +473,12 @@ namespace TwilightShards.LunarDisturbances
                     return Helper.Get("moon-text.phase-waxinggibb");
                 case MoonPhase.BloodMoon:
                     return Helper.Get("moon-text.phase-blood");
+                case MoonPhase.BlueMoon:
+                    return Helper.Get("moon-text.blue-moon");
+                case MoonPhase.HarvestMoon:
+                    return Helper.Get("moon-text.harvest-moon");
+                case MoonPhase.SpiritsMoon:
+                    return Helper.Get("moon-text.spirits-moon");
                 default:
                     return Helper.Get("moon-text.error");
             }
@@ -502,6 +508,12 @@ namespace TwilightShards.LunarDisturbances
                     return "WaxingGibbous";
                 case MoonPhase.BloodMoon:
                     return "BloodMoon";
+                case MoonPhase.BlueMoon:
+                    return "BlueMoon";
+                case MoonPhase.HarvestMoon:
+                    return "HarvestMoon";
+                case MoonPhase.SpiritsMoon:
+                    return "SpiritsMoon";
                 default:
                     return "ErrorMoon";
             }
@@ -524,6 +536,7 @@ namespace TwilightShards.LunarDisturbances
             switch (this.CurrentPhase())
             {
                 case MoonPhase.BloodMoon:
+                case MoonPhase.HarvestMoon:
                     return 0600;
                 case MoonPhase.FullMoon:
                 case MoonPhase.BlueMoon:
@@ -532,9 +545,10 @@ namespace TwilightShards.LunarDisturbances
                     return 2000;
                 case MoonPhase.ThirdQuarter:
                     return 2320;
-                case MoonPhase.WaningCrescent:
+                case MoonPhase.WaningCrescent:                
                     return 2630;
                 case MoonPhase.NewMoon:
+                case MoonPhase.SpiritsMoon:
                     return 0640;
                 case MoonPhase.WaxingCrescent:
                     return 1040;
@@ -562,6 +576,8 @@ namespace TwilightShards.LunarDisturbances
             switch (this.CurrentPhase())
             {
                 case MoonPhase.BloodMoon:
+                case MoonPhase.HarvestMoon:
+                case MoonPhase.SpiritsMoon:
                     return 2700;
                 case MoonPhase.FullMoon:
                 case MoonPhase.BlueMoon:

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "You Should Rest",
+  "Author": "Sakorona",
+  "Version": "1.0",
+  "Description": "Adds the ability to add stamina or health dependent dialogue.",
+  "UniqueID": "KoihimeNakamura.YouShouldRest",
+  "EntryDll": "YouShouldRest.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ "Nexus:null" ]
+}

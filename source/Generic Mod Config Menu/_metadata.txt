@@ -5,12 +5,12 @@ mods:
    Generic Mod Config Menu
 
 latest commit:
-   commit 767cb2c79dba1e22e25123757ca8b1b17a94c1e3
-   Merge: f069170 e36018c
+   commit 85ab0d94553f18cf02ce70ae57d8aa0d420879cf
+   Merge: cf61421 083d394
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Feb 11 12:03:16 2020 -0500
+   Date:   Mon Apr 27 12:09:59 2020 -0400
    
-       Merge pull request #1 from Platonymous/master
+       Merge pull request #3 from Pathoschild/update-project
        
-       Interval for Clamped Mod Options, Change Handler, Scrollable Dropdown
+       Update & standardize project structure
    

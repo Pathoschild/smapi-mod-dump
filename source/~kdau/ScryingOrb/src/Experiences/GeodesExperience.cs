@@ -18,15 +18,15 @@ namespace ScryingOrb
 			{ 574, 2 }, // Mudstone
 		};
 
-		public static readonly Dictionary<string, GeodeType?> Types =
-			new Dictionary<string, GeodeType?>
+		public static readonly Dictionary<string, Geodes.GeodeType?> Types =
+			new Dictionary<string, Geodes.GeodeType?>
 		{
 			{ "any", null },
-			{ "Regular", GeodeType.Regular },
-			{ "Frozen", GeodeType.Frozen },
-			{ "Magma", GeodeType.Magma },
-			{ "Omni", GeodeType.Omni },
-			{ "Trove", GeodeType.Trove },
+			{ "Regular", Geodes.GeodeType.Regular },
+			{ "Frozen", Geodes.GeodeType.Frozen },
+			{ "Magma", Geodes.GeodeType.Magma },
+			{ "Omni", Geodes.GeodeType.Omni },
+			{ "Trove", Geodes.GeodeType.Trove },
 			{ "leave", null }
 		};
 
@@ -85,9 +85,9 @@ namespace ScryingOrb
 				}
 
 				// Gather the appropriate predictions.
-				List<GeodePrediction> predictions =
-				Geodes.ListTreasures (Game1.player.stats.GeodesCracked + 1,
-					(type == "any") ? 3u : TypedCount);
+				List<Geodes.Prediction> predictions =
+					Geodes.ListTreasures (Game1.player.stats.GeodesCracked + 1,
+						(type == "any") ? 3u : TypedCount);
 				if (predictions.Count == 0)
 				{
 					throw new Exception ("Could not predict geode treasures.");
@@ -100,14 +100,14 @@ namespace ScryingOrb
 				// with a list of types.
 				if (type == "any")
 				{
-					foreach (GeodePrediction p in predictions)
+					foreach (Geodes.Prediction p in predictions)
 					{
 						uint num = p.number - Game1.player.stats.GeodesCracked;
 						string header = unbreak (Helper.Translation.Get ($"geodes.header.any{num}"));
 
 						List<string> lines = p.treasures.Select ((tt) =>
 						{
-							Treasure t = tt.Value;
+							Geodes.Treasure t = tt.Value;
 							return string.Join (" ", new string[]
 							{
 								">",
@@ -133,7 +133,8 @@ namespace ScryingOrb
 
 					List<string> lines = predictions.Select ((p) =>
 					{
-						Treasure t = p.treasures[Types[type] ?? GeodeType.Regular];
+						Geodes.Treasure t =
+							p.treasures[Types[type] ?? Geodes.GeodeType.Regular];
 						uint num = p.number - Game1.player.stats.GeodesCracked;
 						return string.Join (" ", new string[]
 						{

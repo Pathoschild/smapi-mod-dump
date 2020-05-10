@@ -35,7 +35,7 @@ namespace PublicAccessTV
 				(_command, _args) => updateChannels (true));
 			Helper.ConsoleCommands.Add ("reset_patv_channels",
 				"Resets the custom channels to their unlaunched states (before letters, events, etc.).",
-				cmdResetChannels);
+				(_command, _args) => resetChannels (true));
 
 			// Listen for game events.
 			Helper.Events.GameLoop.GameLaunched += onGameLaunched;
@@ -43,6 +43,8 @@ namespace PublicAccessTV
 				(_sender, _e) => updateChannels ();
 			Helper.Events.GameLoop.OneSecondUpdateTicked +=
 				(_sender, _e) => GarbageChannel.CheckEvent ();
+			Helper.Events.Player.Warped +=
+				(_sender, _e) => TrainsChannel.CheckEvent ();
 		}
 
 		private void onGameLaunched (object _sender, GameLaunchedEventArgs _e)
@@ -67,8 +69,11 @@ namespace PublicAccessTV
 				new GarbageChannel (),
 				// TODO: new TailoringChannel (),
 				new TrainsChannel (),
-				new MoviesChannel ()
+				new MoviesChannel (),
 			};
+
+			// Set up Generic Mod Config Menu, if it is available.
+			ModConfig.SetUpMenu ();
 		}
 
 		private void updateChannels (bool isCommand = false)
@@ -91,15 +96,18 @@ namespace PublicAccessTV
 			}
 		}
 
-		private void cmdResetChannels (string _command, string[] _args)
+		private void resetChannels (bool isCommand = false)
 		{
 			try
 			{
 				Utilities.CheckWorldReady ();
 				foreach (Channel channel in channels)
 					channel.reset ();
-				Monitor.Log ("Channels reset to initial states.",
-					LogLevel.Info);
+				if (isCommand)
+				{
+					Monitor.Log ("Channels reset to initial states.",
+						LogLevel.Info);
+				}
 			}
 			catch (Exception e)
 			{

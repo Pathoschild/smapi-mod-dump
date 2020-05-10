@@ -5,9 +5,12 @@ mods:
    Custom Farm Types
 
 latest commit:
-   commit 7125f97865add9047b7fe5af66043d669d53c458
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Jul 8 21:06:10 2019 -0400
+   commit e08d5ce95bc4358173f012ef1caeb473d337a86a
+   Merge: 7125f97 6c89c5f
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:12:46 2020 -0400
    
-       Fix reference to SpaceCore
+       Merge pull request #8 from Pathoschild/update-code
+       
+       Update & standardise project structure
    

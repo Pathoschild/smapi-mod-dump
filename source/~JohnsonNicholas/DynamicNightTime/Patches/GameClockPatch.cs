@@ -12,8 +12,9 @@ namespace DynamicNightTime.Patches
             int sunriseTime = DynamicNightTime.GetSunrise().ReturnIntTime();
             int astronTime = DynamicNightTime.GetMorningAstroTwilight().ReturnIntTime();
 
-            //sunrise colors
+            //colors
             Color sunrise = new Color(0, 96, 175);
+            Color preSunrise = new Color()
 
             if (DynamicNightTime.LunarDisturbancesLoaded && DynamicNightTime.MoonAPI.IsSolarEclipse())
             {

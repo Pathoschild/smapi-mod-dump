@@ -29,8 +29,8 @@ namespace Cobalt.Framework
                 asset.ReplaceWith(newTex);
                 asset.AsImage().PatchImage(oldTex);
 
-                asset.AsImage().PatchImage(ModEntry.instance.Helper.Content.Load<Texture2D>("cobalt-bar.png"), null, imageRect(CobaltBarItem.INDEX));
-                asset.AsImage().PatchImage(ModEntry.instance.Helper.Content.Load<Texture2D>("cobalt-sprinkler.png"), null, imageRect(CobaltSprinklerObject.INDEX));
+                asset.AsImage().PatchImage(ModEntry.instance.Helper.Content.Load<Texture2D>("assets/cobalt-bar.png"), null, imageRect(CobaltBarItem.INDEX));
+                asset.AsImage().PatchImage(ModEntry.instance.Helper.Content.Load<Texture2D>("assets/cobalt-sprinkler.png"), null, imageRect(CobaltSprinklerObject.INDEX));
             }
             else if (asset.AssetNameEquals("Data\\ObjectInformation"))
             {

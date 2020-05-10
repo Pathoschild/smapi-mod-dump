@@ -5,9 +5,12 @@ mods:
    Customize Exterior
 
 latest commit:
-   commit dce8879a4a535598e807bc0d7311f5c93a5cb5f4
+   commit 8a8fe59fdcf3c7f6f1f32c625084fc2d211fd390
+   Merge: dce8879 b1fd7ea
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sun Jan 12 22:56:49 2020 -0500
+   Date:   Mon Apr 27 12:09:27 2020 -0400
    
-       Move most logging to trace
+       Merge pull request #3 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

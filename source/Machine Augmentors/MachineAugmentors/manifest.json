@@ -1,7 +1,7 @@
 {
   "Name": "Machine Augmentors",
   "Author": "SlayerDharok",
-  "Version": "1.0.5",
+  "Version": "1.0.6",
   "Description": "Adds augmentor items that can be attached to machines to upgrade them",
   "UniqueID": "SlayerDharok.MachineAugmentors",
   "EntryDll": "MachineAugmentors.dll",

@@ -1,19 +1,22 @@
-﻿namespace TwilightShards.YouShouldRest
+﻿using System.Collections.Generic;
+
+namespace TwilightShards.YouShouldRest
 {
     public class RestModel
     {
-        public string Conditions;
-        public string Dialogue;
+        public Dictionary<string, string> Keys;
 
         public RestModel()
         {
 
         }
 
-        public RestModel(string c, string d)
+        public RestModel(Dictionary<string,string> otherKeys)
         {
-            Conditions = c;
-            Dialogue = d;
+            foreach (var k in otherKeys)
+            {
+                Keys.Add(k.Key, k.Value);
+            }
         }
     }
 }

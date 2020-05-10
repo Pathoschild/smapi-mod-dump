@@ -1,0 +1,7 @@
+{
+  "Enabled": true,
+  "SoundsToDisable": {
+    "DisableEatSound": true,
+    "DisableDrinkSound": false
+  }
+}

@@ -2,6 +2,23 @@
 
 [Scrying Orb](./)
 
+## 1.3.1
+
+*Release pending.*
+
+* More natural format for dates thanks to Pathoschild
+* Updated Russian translation by DanyaKirichenko1
+
+## 1.3.0
+
+*Released April 23, 2020.*
+
+* Add support for Scrying Orb on Witchy Crystal Farm by TerraBubbles
+* Add optional activation keybinding and `scrying_orb` console command
+* Fix handling of offerings for geodes topic, especially Limestone and Mudstone
+* Add support for Generic Mod Config Menu
+* Add Portuguese translation by Ertila007
+
 ## 1.2.0
 
 *Released April 8, 2020.*
@@ -16,7 +33,7 @@
 
 * Fix lagging/low FPS when moving cursor over the orb
 * Add Simplified Chinese translation by liayyMK
-* Add Russian translation by DanyaKirichenko1
+* Add Russian translation by cccccc
 * Add `IncorrectPredictions` option (for entertainment purposes only)
 
 ## 1.0.0

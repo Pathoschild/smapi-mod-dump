@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5526
+IDs: TheFluffyRobot.EqualMoneySplit
+update keys: Nexus:5526, GitHub:jamespfluger/EqualMoneySplit, GitHub:jamespfluger/Stardew-EqualMoneySplit

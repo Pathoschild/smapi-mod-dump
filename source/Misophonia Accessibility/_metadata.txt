@@ -1,0 +1,13 @@
+url:
+   https://github.com/jamespfluger/Stardew-MisophoniaAccessibility.git
+
+mods:
+   Misophonia Accessibility
+
+latest commit:
+   commit 34a07a1006fcf2228045f8baa111295fa4f5c942
+   Author: james.pfluger <me@jamespfluger.com>
+   Date:   Sat Apr 25 15:46:17 2020 -0500
+   
+       Initial commit
+   

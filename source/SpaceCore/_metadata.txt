@@ -5,12 +5,12 @@ mods:
    SpaceCore
 
 latest commit:
-   commit 99021349d055340996481b36f3bd3cc3df1da210
-   Merge: b776735 d3515e1
+   commit c59413cd8da21a79ba48c4b751a68e09f0370578
+   Merge: ba31896 4dda4c4
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Feb 11 12:02:23 2020 -0500
+   Date:   Mon Apr 27 12:10:57 2020 -0400
    
-       Merge pull request #10 from ZaneYork/master
+       Merge pull request #11 from Pathoschild/update-project
        
-       Fix for android platform
+       Update & standardize project structure
    

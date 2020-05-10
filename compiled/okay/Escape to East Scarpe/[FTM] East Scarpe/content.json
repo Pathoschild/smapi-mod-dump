@@ -1,0 +1,229 @@
+{
+  "ForageSpawnEnabled": true,
+  "LargeObjectSpawnEnabled": false,
+  "OreSpawnEnabled": false,
+  "MonsterSpawnEnabled": true,
+  "Forage_Spawn_Settings": {
+    "Areas": [
+      {
+        "SpringItemIndex": [
+          16,
+          20,
+          22,
+          257
+        ],
+        "SummerItemIndex": [
+          396,
+          398,
+          402,
+          404
+        ],
+        "FallItemIndex": [
+          281,
+          404,
+          420,
+          422
+        ],
+        "WinterItemIndex": [],
+        "UniqueAreaID": "EastScarpeLand",
+        "MapName": "EastScarpe",
+        "MinimumSpawnsPerDay": 1,
+        "MaximumSpawnsPerDay": 3,
+        "IncludeTerrainTypes": [
+          "Diggable",
+          "Grass"
+        ],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "0,0/76,79"
+        ],
+        "ExcludeCoordinates": [
+          "0,53/12,89"
+        ],
+        "StrictTileChecking": "High",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 600,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": null,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 7
+      },
+      {
+        "SpringItemIndex": [
+          372,
+          718,
+          719,
+          723
+        ],
+        "SummerItemIndex": [
+          372,
+          394,
+          718,
+          719,
+          723
+        ],
+        "FallItemIndex": [
+          372,
+          718,
+          719,
+          723
+        ],
+        "WinterItemIndex": [
+          392,
+          718,
+          719,
+          723
+        ],
+        "UniqueAreaID": "EastScarpeBeach",
+        "MapName": "EastScarpe",
+        "MinimumSpawnsPerDay": -1,
+        "MaximumSpawnsPerDay": 3,
+        "IncludeTerrainTypes": [
+          "Diggable",
+          "Grass"
+        ],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "0,98/66,123",
+          "40,79/67,103"
+        ],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 600,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": null,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [
+            "Rain",
+            "Storm"
+          ],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 7
+      }
+    ],
+    "PercentExtraSpawnsPerForagingLevel": 1,
+    "SpringItemIndex": [
+      16,
+      20,
+      22,
+      257
+    ],
+    "SummerItemIndex": [
+      396,
+      398,
+      402,
+      404
+    ],
+    "FallItemIndex": [
+      281,
+      404,
+      420,
+      422
+    ],
+    "WinterItemIndex": [],
+    "CustomTileIndex": []
+  },
+  "Large_Object_Spawn_Settings": {
+    "Areas": [],
+    "CustomTileIndex": []
+  },
+  "Ore_Spawn_Settings": {
+    "Areas": [],
+    "PercentExtraSpawnsPerMiningLevel": 0,
+    "MiningLevelRequired": {},
+    "StartingSpawnChance": {},
+    "LevelTenSpawnChance": {},
+    "CustomTileIndex": []
+  },
+  "Monster_Spawn_Settings": {
+    "Areas": [
+      {
+        "MonsterTypes": [
+          {
+            "MonsterName": "Rock Crab",
+            "Settings": {}
+          },
+          {
+            "MonsterName": "Lava Crab",
+            "Settings": {}
+          }
+        ],
+        "UniqueAreaID": "EastScarpe monster area 1",
+        "MapName": "EastScarpe",
+        "MinimumSpawnsPerDay": 5,
+        "MaximumSpawnsPerDay": 20,
+        "IncludeTerrainTypes": [
+          "All"
+        ],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "39,81/66,124"
+        ],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 1800,
+          "EndTime": 2600,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": 3,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": null
+      }
+    ],
+    "CustomTileIndex": []
+  },
+  "QuarryTileIndex": [
+    556,
+    558,
+    583,
+    606,
+    607,
+    608,
+    630,
+    635,
+    636,
+    680,
+    681,
+    685
+  ],
+  "File_Conditions": {
+    "FarmTypes": [],
+    "FarmerNames": [],
+    "SaveFileNames": [],
+    "OtherMods": {}
+  }
+}

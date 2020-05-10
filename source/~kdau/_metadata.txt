@@ -6,9 +6,9 @@ mods:
    Scrying Orb
 
 latest commit:
-   commit c68c6c34dfff4773080764329b9906a74c963daa
+   commit 9316f307eb4ae04ee9a01de47a87050f218c42ec
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Sun Apr 12 16:16:01 2020 -0700
+   Date:   Tue Apr 28 17:03:32 2020 -0700
    
-       GarbageChannel.CheckEvent: fix rare null reference
+       SO: Updated Russian translation by DanyaKirichenko1
    

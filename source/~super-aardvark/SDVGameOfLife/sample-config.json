@@ -1,0 +1,39 @@
+﻿{
+  // Hold this key and press 'P' to play/pause, '+' to speed up, and '-' to slow down
+  // Press it alone for a reminder.
+  "ModKey": "L",
+
+  // The initial speed.  Ranges from 0 (10 seconds per tick) to 12 (20 ticks per second)
+  // Adjustable in game
+  "Speed": 3,
+
+  // Whether to spread into untilled dirt, leaving it tilled
+  "HoeDirt": false,
+
+  // Whether to destroy certain types of things that get in the way.
+  // Resources may be generated from immature trees and stumps.
+  "DestroyGrass": false,
+  "DestroyStumps": false,
+  "DestroyImmatureTrees": false,
+  // No resources from mature trees.
+  // Tapped trees are not destroyed.
+  "DestroyMatureTrees": false,
+
+  // Objects that you probably don't mind destroying.  
+  // No resources will be generated.
+  "DestroyWeeds": false,
+  "DestroyTwigs": false,
+  "DestroyRocks": false,
+
+  // Whether to till dirt under objects that can't be destroyed.
+  // Grass and Trees are not objects.
+  // This can leave things in a funny state (e.g. artifact spots that can't be dug up).
+  "HoeUnderObjects": false,
+
+  // ALL OBJECTS and terrain features (trees, grass, etc) can be destroyed.
+  // Chests and all contents will be LOST.
+  // Other crafted objects can probably be picked up again.
+  // This overrides all the above flags.
+  // USE AT YOUR OWN RISK.
+  "DestroyEverything": false
+}

@@ -9,8 +9,6 @@
 	"UpdateKeys": [ "Nexus:5663" ],
 	"Dependencies":
 	[
-		{
-			"UniqueID": "Traktori.JA.QualityScrubber"
-		}
+		// { "UniqueID": "Traktori.JA.QualityScrubber" } // disabled for compatilibity list testing
 	]
 }

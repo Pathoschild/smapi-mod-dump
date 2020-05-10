@@ -95,10 +95,19 @@ namespace MachineAugmentors.Items
             //  Processing order dependencies:
             //  1. SpeedAugmentors must be processed before DuplicationAugmentors, since the chance of duplication depends on MinutesUntilReady, which is modified by SpeedAugmentors.
             //  If we process Duplication first, then you'd have a higher chance of duplication to occur, even if the MinutesUntilReady got reduced to a small value.
-            //  2. EfficiencyAugmentors must be processed before ProductionAugmentors, since ProductionAugmentors need to look at how many more of the input item you own,
-            //  to determine how much it can increase Input and Output by. The EfficiencyAugmentor will first refund input items, and reduce the required input item count.
+            //  2. ProductionAugmentors must be processed before EfficiencyAugmentors, so that the efficiency affects the entire stack after it's been increased by production.
+            //      EX: If 50% efficiency and x10 production, we want to save 50% of x10, rather than 50% of x1
             //  3. QualityAugmentors must be processed last, since they may completely change the Output Item.
-            IOrderedEnumerable<KeyValuePair<AugmentorType, int>> OrderedPairs = PlacedQuantities.OrderBy(x => { return x.Key == AugmentorType.Quality ? int.MaxValue : (int)x.Key; });
+            IOrderedEnumerable<KeyValuePair<AugmentorType, int>> OrderedPairs = PlacedQuantities.OrderBy(x => 
+            {
+                if (x.Key == AugmentorType.Quality)
+                    return int.MaxValue;
+                else if (x.Key == AugmentorType.Efficiency)
+                    return int.MaxValue - 1;
+                else
+                    return (int)x.Key;
+                //return x.Key == AugmentorType.Quality ? int.MaxValue : (int)x.Key;
+            });
             return OrderedPairs;
         }
 

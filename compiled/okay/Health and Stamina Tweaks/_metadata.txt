@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/5630
 IDs: Kiddles.HASTweaks
-update keys: Nexus:5630
+update keys: Nexus:5630, GitHub:SvardXI/HAS_Tweaks

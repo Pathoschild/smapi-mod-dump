@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5830
+IDs: ZaneYork.CustomCropsDecay
+update keys: Nexus:5830, GitHub:ZaneYork/SDV_Mods

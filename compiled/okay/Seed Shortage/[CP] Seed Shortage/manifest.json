@@ -1,10 +1,10 @@
 {
   "Name": "[CP] Seed Shortage",
   "Author": "Xynerorias",
-  "Version": "1.2.3",
+  "Version": "1.4.0",
   "Description": "Content Pack for Seed Shortage. Changes dialogues and seed maker recipe.",
   "UniqueID": "xynerorias.seedshortageCP",
-  "UpdateKeys": [ "Nexus:5614" ],
+  "UpdateKeys": [],
   "ContentPackFor": 
     {
       "UniqueID": "Pathoschild.ContentPatcher",

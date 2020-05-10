@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.5.8
+ - Updated for SMAPI 3.4.1 (reverts a fix)
+
 ### 1.5.7
 - Fixes to a bad descriptor (dry thunder)
 - A lot of experimental work (temporarily disabled)

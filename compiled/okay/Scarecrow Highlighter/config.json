@@ -1,6 +1,14 @@
 {
-  "SearchString": "crow",
-  "Radius": 8,
+  "SearchItems": [
+    {
+      "SearchString": "crow",
+      "Radius": 8
+    },
+    {
+      "SearchString": "Deluxe Scarecrow",
+      "Radius": 16
+    }
+  ],
   "TexturePath": "LooseSprites/buildingPlacementTiles.xnb",
   "TextureSourceRectangle": "{X:0 Y:0 Width:64 Height:64}",
   "ToggleHighlightButton": "L",

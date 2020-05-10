@@ -5,9 +5,12 @@ mods:
    Weapon Reskinner
 
 latest commit:
-   commit 57000dcb14f5ac672141f83bdb05602d55f7e912
+   commit e5e3e0778fb70d4d0677211d357198ff713aa258
+   Merge: 57000dc e53cbd1
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Jan 4 18:43:07 2020 -0500
+   Date:   Mon Apr 27 12:08:47 2020 -0400
    
-       Initial commit
+       Merge pull request #1 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

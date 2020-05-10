@@ -1,79 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<AssemblyName>PublicAccessTV</AssemblyName>
 		<RootNamespace>PublicAccessTV</RootNamespace>
-		<ReleaseVersion>1.2.0</ReleaseVersion>
-		<LangVersion>8.0</LangVersion>
-		<TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-		<OutputType>Library</OutputType>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<Version>1.3.0</Version>
 		<ProjectGuid>{A1BDBE8B-E5D8-4EA8-A008-CBD57DB1ADDB}</ProjectGuid>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
-		<OutputPath>bin\Debug</OutputPath>
-		<DefineConstants>DEBUG;</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<ConsolePause>false</ConsolePause>
-		<DeployDir>bin\Mods</DeployDir>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<Optimize>true</Optimize>
-		<OutputPath>bin\Release</OutputPath>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<ConsolePause>false</ConsolePause>
-		<DeployDir>-</DeployDir>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="System" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="src\Channel.cs" />
-		<Compile Include="src\DialogueEditor.cs" />
-		<Compile Include="src\EventsEditor.cs" />
-		<Compile Include="src\MailEditor.cs" />
-		<Compile Include="src\ModConfig.cs" />
-		<Compile Include="src\ModEntry.cs" />
-		<Compile Include="src\Scene.cs" />
-		<Compile Include="src\Channels\GarbageChannel.cs" />
-		<Compile Include="src\Channels\MiningChannel.cs" />
-		<Compile Include="src\Channels\MoviesChannel.cs" />
-		<Compile Include="src\Channels\NightEventsChannel.cs" />
-		<Compile Include="src\Channels\TrainsChannel.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="manifest.json" />
-		<None Include="assets\garbage_backgrounds.png" />
-		<None Include="assets\mining_backgrounds.png" />
-		<None Include="assets\movies_concession.wav" />
-		<None Include="assets\movies_craneGame.png" />
-		<None Include="assets\nightEvents_backgrounds.png" />
-		<None Include="assets\nightEvents_newYear.wav" />
-		<None Include="assets\nightEvents_opening.wav" />
-		<None Include="assets\trains_backgrounds.png" />
-		<None Include="i18n\default.json" />
-		<None Include="i18n\fr.json" />
-		<None Include="i18n\ru.json" />
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="assets\" />
-		<Folder Include="i18n\" />
-		<Folder Include="src\" />
-		<Folder Include="src\Channels\" />
-	</ItemGroup>
-	<Import Project="..\PredictiveCore\PredictiveCore.projitems" Label="Shared" Condition="Exists('..\PredictiveCore\PredictiveCore.projitems')" />
-	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-	<Target Name="AfterBuild">
-		<DeployModTask ModFolderName="$(ModFolderName)" ModZipPath="$(ModZipPath)" EnableModDeploy="false" EnableModZip="true" ProjectDir="$(ProjectDir)" TargetDir="$(TargetDir)" GameDir="$(GamePath)" IgnoreModFilePatterns="$(IgnoreModFilePatterns)" />
-		<FixZipAndDeploySafely ModZipPath="$(ModZipPath)" ModFolderName="$(ModFolderName)" DeployDir="$(DeployDir)" />
-	</Target>
+	<Import Project="..\common.projitems" Label="Shared" />
+	<Import Project="..\Common\PredictiveCore.projitems" Label="Shared" />
 </Project>

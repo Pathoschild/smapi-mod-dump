@@ -8,9 +8,9 @@ mods:
    Quality Scrubber for Automate
 
 latest commit:
-   commit d846248b40e5f40725d6b6f46abb9d4d462dcb29
+   commit 8a1b5d810224b5dc06b740ecbe900444a0b72138
    Author: KiviKivi9133 <salonenkyosti@gmail.com>
-   Date:   Mon Apr 13 03:31:09 2020 +0300
+   Date:   Wed Apr 15 05:00:08 2020 +0300
    
-       1.4.5 release. Fixes the possible multiplayer desync issue using automate + android.
+       Changed automate integration mods' version numbers to match the main mods' to stop SMAPI from notifying of updates that don't exist.
    

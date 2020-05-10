@@ -5,11 +5,12 @@ mods:
    Walk Through Trellis
 
 latest commit:
-   commit e055457053027eef660e0400951b7b45b01f001b
+   commit eddd4c539b12cc692560617df86a8b80ed6a511a
    Author: TheOfficialTab <OfficialTabArtist@gmail.com>
-   Date:   Tue Nov 27 05:47:33 2018 -0500
+   Date:   Wed Apr 22 22:49:19 2020 -0400
    
-       1.0.4
+       1.0.5 for 3.0
        
-       Fixed project formalities conflicting with new version of SMAPI
+       Got rid of useless comments and got rid of changing the XNB via code, instead only using live property changes to existing crops only with one more event trigger.
+       In otherwords, got rid of a useless portion of code, and made the rest of it more useful.
    

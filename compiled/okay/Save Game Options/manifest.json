@@ -6,5 +6,5 @@
   "UniqueID": "SorryLate.SaveGameOptions",
   "EntryDll": "SaveGameOptions.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:5150" ]
+  "UpdateKeys": [ "Nexus:5190" ] // fixed locally
 }

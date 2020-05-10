@@ -5,9 +5,12 @@ mods:
    Better Meteorites
 
 latest commit:
-   commit 79e9e1ebf2bfef79a6561479c05eb291f543272c
+   commit 3e9ca105d7f8f8df40bd2fb3ff5fdfe28c3247a9
+   Merge: 79e9e1e 316303a
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Jan 4 18:44:58 2020 -0500
+   Date:   Mon Apr 27 12:13:08 2020 -0400
    
-       Initial commit
+       Merge pull request #1 from Pathoschild/update-project
+       
+       Update & standardise project structure
    

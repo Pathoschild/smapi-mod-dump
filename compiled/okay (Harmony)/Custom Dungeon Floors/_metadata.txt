@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5894
+IDs: Aedenthorn.CustomMonsterFloors
+update keys: Nexus:5894, GitHub:aedenthorn/StardewValleyMods

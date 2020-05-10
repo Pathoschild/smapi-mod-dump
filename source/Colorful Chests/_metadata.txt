@@ -5,9 +5,12 @@ mods:
    Colorful Chests
 
 latest commit:
-   commit 6cd15cd129509e512c14e2f3e74aa5cfa0c8efdd
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 16:49:47 2019 -0500
+   commit 7c192b5fb16e6de9a2d4888a0c549e20ade97274
+   Merge: 6cd15cd 6f403e0
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:13:28 2020 -0400
    
-       1.2.4 - SDV 1.4
+       Merge pull request #2 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

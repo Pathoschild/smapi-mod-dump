@@ -1,4 +1,8 @@
 ## Changelog
+
+### 1.3.4
+ - fixes a null bug that seems to occur randomly when location or music is null
+
 ### 1.3.3
  - More bug fixing
 

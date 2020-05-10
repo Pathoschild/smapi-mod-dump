@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PredictiveCore", "PredictiveCore\PredictiveCore.shproj", "{B910A4B7-B0C6-4A80-8613-1311C136D001}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PredictiveCore", "Common\PredictiveCore.shproj", "{B910A4B7-B0C6-4A80-8613-1311C136D001}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicAccessTV", "PublicAccessTV\PublicAccessTV.csproj", "{A1BDBE8B-E5D8-4EA8-A008-CBD57DB1ADDB}"
 EndProject

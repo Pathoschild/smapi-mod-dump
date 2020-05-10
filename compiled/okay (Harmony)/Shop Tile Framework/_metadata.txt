@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5005
-IDs: Cherry.ShopTileFramework
-update keys: Nexus:5005, GitHub:ChroniclerCherry/stardew-valley-mods

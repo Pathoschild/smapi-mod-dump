@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5816
+IDs: shanks3042.StardewValleyEasyPrairieKing
+update keys: Nexus:5816

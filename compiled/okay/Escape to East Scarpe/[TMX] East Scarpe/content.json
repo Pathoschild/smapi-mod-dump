@@ -1,0 +1,90 @@
+{
+
+
+"addMaps": [   
+     
+       {
+      "name": "EastScarpe",
+      "file": "assets/EastScarpe1.tmx",
+      "type": "Custom:EastScarpe.EastScarpe, EastScarpe, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+       {
+        "name": "House1",
+        "file": "assets/House1.tmx"
+      },
+      {
+        "name": "House2",
+        "file": "assets/House2.tmx"
+      },
+      {
+        "name": "House3",
+        "file": "assets/House3.tmx"
+      },
+      {
+        "name": "House4",
+        "file": "assets/House4.tmx"
+      },
+      {
+        "name": "FishingCabin",
+        "file": "assets/FishingCabin.tmx"
+      },
+      {
+      "name": "BirdHide",
+      "file": "assets/BirdHide-Spring.tmx"
+      },
+      {
+        "name": "VetHouse",
+        "file": "assets/VetHouse.tmx"
+      },
+     {
+        "name": "JacobOffice",
+        "file": "assets/JacobOffice.tmx"
+      },  
+
+    ],
+
+  "mergeMaps": [
+      {
+        "name": "EastScarpe",
+        "file": "assets/VanGone.tmx",
+        "sourceArea": [ 0, 0, 6, 9 ],
+        "position": [ 28, 27 ],
+        "Conditions": "d Mon Wed Thu Fri Sat Sun/t 1100 1800/w sunny"
+      }
+    ],
+
+
+    
+    "replaceMaps": 
+  [  
+   {
+      "name": "BirdHide",
+  "file": "assets/BirdHide-Summer.tmx", 
+  "Conditions": "z spring/z fall/z winter"
+    },
+    {
+      "name": "BirdHide",
+  "file": "assets/BirdHide-Winter.tmx", 
+  "Conditions": "z spring/z fall/z summer"
+    },
+    {
+      "name": "BirdHide",
+  "file": "assets/BirdHide-Fall.tmx", 
+  "Conditions": "z spring/z summer/z winter"
+    }
+  ],
+ 
+   "onlyWarps":[
+      {  "name": "Town", 
+         "addWarps": [
+          "120 93 EastScarpe 1 91 120 94 EastScarpe 1 92 120 95 EastScarpe 1 93 120 96 EastScarpe 1 94 121 93 EastScarpe 2 91 121 94 EastScarpe 2 92 121 95 EastScarpe 2 93 121 96 EastScarpe 2 94"
+        ]
+      },
+	{ "name": "Mountain",
+	"addWarps": [
+	"89 41 EastScarpe 3 1 90 41 EastScarpe 4 1"
+			]
+		}
+    ]
+  }
+  

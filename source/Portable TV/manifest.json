@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Portable TV",
 	"Author": "kdau",
-	"Version": "1.1.0",
+	"Version": "1.2.0",
 	"Description": "It's little! It's lovely! It shows Livin' Off The Land!",
 	"UniqueID": "kdau.PortableTV",
 	"EntryDll": "PortableTV.dll",

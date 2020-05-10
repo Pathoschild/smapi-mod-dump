@@ -1,0 +1,13 @@
+url:
+   https://github.com/davicr/StardewHypnos.git
+
+mods:
+   Stardew Hypnos - Sleeping Overhaul
+
+latest commit:
+   commit ec914f48bbc69a9840f2608cf686180af0100cc7
+   Author: Davi <davicr38@gmail.com>
+   Date:   Tue Apr 28 21:12:38 2020 -0300
+   
+       Add Update Key to Manifest
+   

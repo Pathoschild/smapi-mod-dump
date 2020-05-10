@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Readers Digest",
   "Author": "Remy Bach",
-  "Version": "1.1.0",
+  "Version": "2.0.1", // fixed locally
   "Description": "Receive the Cooking or Tips Channel info as a mailbox message.",
   "UniqueID": "remybach.readersdigest",
   "EntryDll": "readersdigest.dll",

@@ -49,6 +49,7 @@ Your contribution would be welcome. Please see the [details on the wiki](https:/
 ## ![[Acknowledgments]](https://kdau.gitlab.io/headers/acknowledgments.png)
 
 * Like all mods, this one is indebted to ConcernedApe, particularly for the vanilla assets it adapts.
+* This mod is an implementation of an [idea from HoustoCo](https://github.com/StardewModders/mod-ideas/issues/268).
 * This mod would not function without [SMAPI](https://smapi.io/) by Pathoschild and [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) by spacechase0.
 * This mod works best with [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) by spacechase0.
 * Coding of this mod relied on [PyTK](https://www.nexusmods.com/stardewvalley/mods/1726) by Platonymous as a key example.
@@ -61,15 +62,17 @@ Your contribution would be welcome. Please see the [details on the wiki](https:/
 ## ![[See also]](https://kdau.gitlab.io/headers/see-also.png)
 
 * [Release notes](https://gitlab.com/kdau/portabletv/-/blob/master/doc/RELEASE-NOTES.md) from existing versions
+* [Discord channel](https://discord.gg/vchhV9D) for discussing this mod
 * [Issue tracker](https://gitlab.com/kdau/portabletv/-/issues) for bug reports and feature plans
 * [MIT license](https://gitlab.com/kdau/portabletv/-/blob/master/LICENSE) (TLDR: do whatever, but credit me)
 * [My other mods](https://kdau.gitlab.io)
 
 Mirrors:
 
+* [This mod on GitLab](https://gitlab.com/kdau/portabletv)
 * [This mod on Nexus](https://www.nexusmods.com/stardewvalley/mods/5674)
 * **This mod on ModDrop**
-* [This mod on GitLab](https://gitlab.com/kdau/portabletv)
+* [This mod on the forums](https://forums.stardewvalley.net/index.php?resources/portable-tv.52/)
 
 Other TV mods you may enjoy:
 

@@ -1,5 +1,6 @@
 {
   "Animate": true,
   "Static": true,
-  "Music": true
+  "Music": true,
+  "ActivateKey": "R"
 }

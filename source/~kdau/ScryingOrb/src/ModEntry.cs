@@ -3,10 +3,8 @@ using Microsoft.Xna.Framework;
 using PredictiveCore;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using SObject = StardewValley.Object;
 
 namespace ScryingOrb
@@ -88,21 +86,20 @@ namespace ScryingOrb
 			Helper.Content.AssetEditors.Add (new MailEditor ());
 
 			// Add console commands.
-			Helper.ConsoleCommands.Add ("reset_scrying_orbs",
-				"Resets the state of Scrying Orbs to default values.",
-				cmdResetScryingOrbs);
-			Helper.ConsoleCommands.Add ("test_scrying_orb",
-				"Puts a Scrying Orb and all types of offering into inventory.",
-				cmdTestScryingOrb);
-			Helper.ConsoleCommands.Add ("test_date_picker",
-				"Runs a DatePicker dialog for testing use.",
-				cmdTestDatePicker);
+			ConsoleCommands.Initialize ();
 
 			// Listen for game events.
+			Helper.Events.GameLoop.GameLaunched += onGameLaunched;
 			Helper.Events.GameLoop.SaveLoaded += onSaveLoaded;
 			Helper.Events.GameLoop.DayStarted += onDayStarted;
 			Helper.Events.Input.CursorMoved += onCursorMoved;
 			Helper.Events.Input.ButtonPressed += onButtonPressed;
+		}
+
+		private void onGameLaunched (object _sender, GameLaunchedEventArgs _e)
+		{
+			// Set up Generic Mod Config Menu, if it is available.
+			ModConfig.SetUpMenu ();
 		}
 
 		private void onSaveLoaded (object _sender, SaveLoadedEventArgs _e)
@@ -116,13 +113,13 @@ namespace ScryingOrb
 				if (parentSheetIndex == -1)
 				{
 					Monitor.Log ("Could not find the ID of the Scrying Orb big craftable. The Scrying Orb content pack for Json Assets may not be installed.",
-						LogLevel.Error);
+						(Config.ActivateKey != SButton.None) ? LogLevel.Warn : LogLevel.Error);
 				}
 			}
 			else
 			{
 				Monitor.LogOnce ("Could not connect to Json Assets. It may not be installed or working properly.",
-					LogLevel.Error);
+					(Config.ActivateKey != SButton.None) ? LogLevel.Warn : LogLevel.Error);
 			}
 
 			// Migrate data from older formats.
@@ -135,7 +132,7 @@ namespace ScryingOrb
 			if (Game1.player.craftingRecipes.ContainsKey ("Scrying Orb"))
 				return;
 
-			// If the instant recipe cheat is enabled, add the recipe now.
+			// If the instant recipe cheat is active, add the recipe now.
 			if (Config.InstantRecipe)
 			{
 				Game1.player.craftingRecipes.Add ("Scrying Orb", 0);
@@ -159,9 +156,8 @@ namespace ScryingOrb
 			}
 
 			// Only hovering when a Scrying Orb is pointed at.
-			SObject obj = Game1.currentLocation.getObjectAtTile
-				((int) e.NewPosition.Tile.X, (int) e.NewPosition.Tile.Y);
-			OrbHovered = IsScryingOrb (obj);
+			OrbHovered = getScryingOrbAt (Game1.currentLocation,
+				e.NewPosition.Tile) != null;
 		}
 
 		private void onButtonPressed (object _sender, ButtonPressedEventArgs e)
@@ -171,11 +167,12 @@ namespace ScryingOrb
 			if (!Context.IsWorldReady || !Context.IsPlayerFree)
 				return;
 
-			// Only respond when a Scrying Orb is interacted with.
-			SObject orb = Game1.currentLocation.getObjectAtTile
-				((int) e.Cursor.GrabTile.X, (int) e.Cursor.GrabTile.Y);
-			if (!IsScryingOrb (orb))
+			// Accept the configured keybinding, if any.
+			if (e.Button == Config.ActivateKey)
+			{
+				Experience.Run<UnlimitedExperience> (null);
 				return;
+			}
 
 			if (Constants.TargetPlatform == GamePlatform.Android)
 			{
@@ -190,99 +187,65 @@ namespace ScryingOrb
 					return;
 			}
 
+			// Only respond when a Scrying Orb is interacted with.
+			SObject orb = getScryingOrbAt (Game1.currentLocation,
+				e.Cursor.GrabTile);
+			if (orb == null)
+				return;
+
 			// Suppress the button so it won't cause any other effects.
 			Helper.Input.Suppress (e.Button);
 
-			// If the unlimited use cheat is enabled, skip to the menu.
+			// If the unlimited use cheat is active, skip to the menu.
 			if (Config.UnlimitedUse)
 			{
 				Experience.Run<UnlimitedExperience> (orb);
 				return;
 			}
 
-			if (Experience.Check<UnlimitedExperience> (orb) ||
-				Experience.Check<NothingExperience> (orb) ||
-				Experience.Check<LuckyPurpleExperience> (orb) ||
-				Experience.Check<MetaExperience> (orb) ||
-				Experience.Check<MiningExperience> (orb) ||
-				Experience.Check<GeodesExperience> (orb) ||
-				Experience.Check<NightEventsExperience> (orb) ||
-				// TODO: Experience.Try<ShoppingExperience> (orb) ||
-				Experience.Check<GarbageExperience> (orb) ||
-				// TODO: Experience.Try<ItemFinderExperience> (orb) ||
-				Experience.Check<FallbackExperience> (orb))
-			{} // (if-block used to allow boolean fallback)
-		}
-
-		private void cmdResetScryingOrbs (string _command, string[] _args)
-		{
-			try
+			// Otherwise, try each of the experiences in turn.
+			if (!Experience.Check<UnlimitedExperience> (orb) &&
+				!Experience.Check<NothingExperience> (orb) &&
+				!Experience.Check<LuckyPurpleExperience> (orb) &&
+				!Experience.Check<MetaExperience> (orb) &&
+				!Experience.Check<MiningExperience> (orb) &&
+				!Experience.Check<GeodesExperience> (orb) &&
+				!Experience.Check<NightEventsExperience> (orb) &&
+				// TODO: !Experience.Try<ShoppingExperience> (orb) &&
+				!Experience.Check<GarbageExperience> (orb))
+				// TODO: !Experience.Try<ItemFinderExperience> (orb)
 			{
-				Utilities.CheckWorldReady ();
-				UnlimitedExperience.Reset ();
-				LuckyPurpleExperience.Reset ();
-				MetaExperience.Reset ();
-				Monitor.Log ("Scrying Orb state reset to defaults.",
-					LogLevel.Info);
-			}
-			catch (Exception e)
-			{
-				Monitor.Log ($"Could not reset Scrying Orbs: {e.Message}", LogLevel.Error);
+				Experience.Run<FallbackExperience> (orb);
 			}
 		}
 
-		private void cmdTestScryingOrb (string _command, string[] _args)
+		private SObject getScryingOrbAt (GameLocation location,
+			Vector2 tileLocation)
 		{
-			try
+			// Check for the relevant tiles on the Witchy Crystal Farm.
+			if (Helper.ModRegistry.IsLoaded ("TerraBubbles.WC") &&
+				Game1.whichFarm == 0 && location is Farm)
 			{
-				IDictionary<int, string> bci = Game1.bigCraftablesInformation;
-				int orbID = bci.First ((kp) => kp.Value.StartsWith ("Scrying Orb/",
-					StringComparison.Ordinal)).Key;
+				Point tilePoint = Utility.Vector2ToPoint (tileLocation);
+				if (location.getTileSheetIDAt (tilePoint.X, tilePoint.Y, "Front")
+						== "z_untitled tile sheet" &&
+					location.getTileIndexAt (tilePoint.X, tilePoint.Y, "Front")
+						== 244)
+					return new SObject (tileLocation + new Vector2 (0f, 1f), 0); // FIXME: ???
+				if (location.getTileSheetIDAt (tilePoint.X, tilePoint.Y, "Buildings")
+						== "z_untitled tile sheet" &&
+					location.getTileIndexAt (tilePoint.X, tilePoint.Y, "Buildings")
+						== 269)
+					return new SObject (tileLocation, 0); // FIXME: ???
+			}
 
-				Game1.player.addItemsByMenuIfNecessary (new List<Item>
-				{
-					new SObject (74, 50), // Prismatic Shard for UnlimitedExperience
-					new SObject (789, 1), // Lucky Purple Shorts for LuckyPurpleExperience
-					// TODO: item for ItemFinderExperience
-					new SObject (168, 150), // 3 Trash for GarbageExperience
-					// TODO: item for ShoppingExperience
-					new SObject (767, 150), // 3 Bat Wing for NightEventsExperience
-					new SObject (541, 50), // Aerinite for GeodesExperience
-					new SObject (382, 100), // 2 Coal for MiningExperience
-					new SObject (Vector2.Zero, orbID), // Scrying Orb
-					new SObject (Vector2.Zero, orbID), // Scrying Orb
-					new SObject (Vector2.Zero, orbID) // Scrying Orb
-				});
+			// Check for a regular Scrying Orb object on the tile.
+			SObject @object = location.getObjectAtTile
+				((int) tileLocation.X, (int) tileLocation.Y);
+			if (IsScryingOrb (@object))
+				return @object;
 
-				Monitor.Log ("Scrying Orb test kit placed in inventory.",
-					LogLevel.Info);
-			}
-			catch (Exception e)
-			{
-				Monitor.Log ($"Could not create test kit: {e.Message}", LogLevel.Error);
-			}
-		}
-
-		private void cmdTestDatePicker (string _command, string[] _args)
-		{
-			try
-			{
-				WorldDate initialDate = new WorldDate (2, "spring", 15);
-				string prompt = "Where on the wheel of the year do you seek?";
-				if (Context.IsWorldReady)
-					++OrbsIlluminated; // use the special cursor in the dialog
-				Game1.activeClickableMenu = new DatePicker (initialDate, prompt,
-					(date) =>
-					{
-						if (Context.IsWorldReady)
-							--OrbsIlluminated;
-						Monitor.Log ($"DatePicker chose {date}", LogLevel.Info);
-					});
-			}
-			catch (Exception e)
-			{
-				Monitor.Log ($"Could not test date picker: {e.Message}", LogLevel.Error);
-			}
+			return null;
 		}
 	}
 }

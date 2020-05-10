@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Krobus Sells Larger Stacks",
+  "Author": "Annosz",
+  "Version": "1.0.0",
+  "Description": "Krobus's shop sells items in larger stacks, making it easier to buy large quantities of the same products.",
+  "UniqueID": "Annosz.KrobusSellsLargerStacks",
+  "EntryDll": "KrobusSellsLargerStacks.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:5993" ]
+}

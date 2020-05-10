@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\In-Game\Forage\BreakableContainerFTM.cs" />
+    <Compile Include="Classes\In-Game\Forage\BuriedItems.cs" />
     <Compile Include="Classes\In-Game\Large Objects\LargeResourceClump.cs" />
     <Compile Include="Classes\In-Game\Monsters\MummyFTM.cs" />
     <Compile Include="Classes\MonsterTracker.cs" />
@@ -92,8 +93,8 @@
     <Compile Include="Classes\Config\FarmConfig\ForageSettings.cs" />
     <Compile Include="Classes\Config\ModConfig.cs" />
     <Compile Include="Classes\MonsterType.cs" />
+    <Compile Include="Events\Compatibility\GenericModConfigMenu\GenericModConfigMenu.cs" />
     <Compile Include="Events\Compatibility\SaveAnywhere\SaveAnywhere.cs" />
-    <Compile Include="Events\GameLaunched.cs" />
     <Compile Include="Events\Saved.cs" />
     <Compile Include="Events\Saving.cs" />
     <Compile Include="Events\ReturnedToTitle.cs" />

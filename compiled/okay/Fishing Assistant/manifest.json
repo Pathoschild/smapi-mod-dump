@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Fishing Assistant",
+  "Author": "KilZenc",
+  "Version": "1.1.4",
+  "Description": "Personal Fishing Assistant For You",
+  "UniqueID": "KilZenc.FishingAssistant",
+  "EntryDll": "FishingAssistant.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5815" ]
+}

@@ -1,65 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<AssemblyName>PregnancyRole</AssemblyName>
 		<RootNamespace>PregnancyRole</RootNamespace>
-		<ReleaseVersion>1.0.0</ReleaseVersion>
-		<LangVersion>8.0</LangVersion>
-		<TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-		<OutputType>Library</OutputType>
+		<Version>1.1.0</Version>
 		<EnableHarmony>true</EnableHarmony>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProjectGuid>{BD6A143B-3085-4983-8148-046E776225B6}</ProjectGuid>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
-		<OutputPath>bin\Debug</OutputPath>
-		<DefineConstants>DEBUG;</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<ConsolePause>false</ConsolePause>
-		<DeployDir>bin\Mods</DeployDir>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<Optimize>true</Optimize>
-		<OutputPath>bin\Release</OutputPath>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<ConsolePause>false</ConsolePause>
-		<DeployDir>-</DeployDir>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="System" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="src\Api.cs" />
-		<Compile Include="src\PregnancyRolePatches.cs" />
-		<Compile Include="src\DialogueEditor.cs" />
-		<Compile Include="src\DropdownOverlay.cs" />
-		<Compile Include="src\ModEntry.cs" />
-		<Compile Include="src\Model.cs" />
-		<Compile Include="src\ProfileMenuOverlay.cs" />
-		<Compile Include="src\SkillsPageOverlay.cs" />
-		<Compile Include="src\WouldNeedAdoptionPatches.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="manifest.json" />
-		<None Include="i18n\default.json" />
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="i18n\" />
-		<Folder Include="src\" />
-	</ItemGroup>
-	<Import Project="common.projitems" Label="Shared" Condition="Exists('common.projitems')" />
-	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-	<Target Name="AfterBuild">
-		<DeployModTask ModFolderName="$(ModFolderName)" ModZipPath="$(ModZipPath)" EnableModDeploy="false" EnableModZip="true" ProjectDir="$(ProjectDir)" TargetDir="$(TargetDir)" GameDir="$(GamePath)" IgnoreModFilePatterns="$(IgnoreModFilePatterns)" />
-		<FixZipAndDeploySafely ModZipPath="$(ModZipPath)" ModFolderName="$(ModFolderName)" DeployDir="$(DeployDir)" />
-	</Target>
+	<Import Project="common.projitems" Label="Shared" />
 </Project>

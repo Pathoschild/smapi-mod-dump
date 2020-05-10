@@ -5,9 +5,12 @@ mods:
    Bug Net
 
 latest commit:
-   commit 51e7784d85114d93a62101c2f459aa28fa89f764
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Sat Dec 7 17:27:51 2019 -0500
+   commit 2c57a29c662896e1c0b53ead8f413ef831ac78b5
+   Merge: f9dbe5a 74da62d
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:13:21 2020 -0400
    
-       Add deps and stuff
+       Merge pull request #1 from Pathoschild/update-project
+       
+       Update & standardise project structure
    

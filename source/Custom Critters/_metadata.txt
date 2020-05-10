@@ -5,9 +5,12 @@ mods:
    Custom Critters
 
 latest commit:
-   commit 4e99b54772fdc476cf7713220e06861ba46f33c6
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 16:58:03 2019 -0500
+   commit 92acd95541e76fa2795256af410eca4497c885df
+   Merge: 4e99b54 02f50b3
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Apr 27 12:13:39 2020 -0400
    
-       1.2.7 - SDV 1.4
+       Merge pull request #9 from Pathoschild/update-project
+       
+       Update & standardize project structure
    

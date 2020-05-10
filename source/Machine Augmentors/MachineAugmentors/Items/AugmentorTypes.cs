@@ -551,7 +551,8 @@ namespace MachineAugmentors.Items
 
                 //  Compute the maximum multiplier we can apply to the input and output based on how many more of the inputs the player has
                 int PreviousInputQuantityUsed = PODIData.PreviousInputQuantity - PODIData.CurrentInputQuantity;
-                double MaxMultiplier = PreviousInputQuantityUsed == 0 ? int.MaxValue : Math.Abs(PODIData.PreviousInputQuantity * 1.0 / PreviousInputQuantityUsed);
+                //double MaxMultiplier = PreviousInputQuantityUsed == 0 ? int.MaxValue : Math.Abs(PODIData.PreviousInputQuantity * 1.0 / PreviousInputQuantityUsed);
+                double MaxMultiplier = PreviousInputQuantityUsed == 0 ? PODIData.CurrentInputQuantity : Math.Abs(PODIData.PreviousInputQuantity * 1.0 / PreviousInputQuantityUsed);
 
                 //  Modify the output
                 int PreviousOutputStack = PODIData.CurrentHeldObjectQuantity;

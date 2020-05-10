@@ -60,15 +60,17 @@ Your contribution would be welcome. Please see the [details on the wiki](https:/
 ## ![[See also]](https://kdau.gitlab.io/headers/see-also.png)
 
 * [Release notes](https://gitlab.com/kdau/pregnancyrole/-/blob/master/doc/RELEASE-NOTES.md) from existing versions
+* [Discord channel](https://discord.gg/Bs8fQYW) for discussing this mod
 * [Issue tracker](https://gitlab.com/kdau/pregnancyrole/-/issues) for bug reports and feature plans
 * [MIT license](https://gitlab.com/kdau/pregnancyrole/-/blob/master/LICENSE) (TLDR: do whatever, but credit me)
 * [My other mods](https://kdau.gitlab.io)
 
 Mirrors:
 
+* [This mod on GitLab](https://gitlab.com/kdau/pregnancyrole)
 * [This mod on Nexus](https://www.nexusmods.com/stardewvalley/mods/5762)
 * **This mod on ModDrop**
-* [This mod on GitLab](https://gitlab.com/kdau/pregnancyrole)
+* [This mod on the forums](https://forums.stardewvalley.net/index.php?resources/pregnancy-role.53/)
 
 Other mods to consider:
 
