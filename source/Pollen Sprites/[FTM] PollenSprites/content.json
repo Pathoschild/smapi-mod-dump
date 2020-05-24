@@ -1,0 +1,219 @@
+{
+  "ForageSpawnEnabled": false,
+  "LargeObjectSpawnEnabled": false,
+  "OreSpawnEnabled": false,
+  "MonsterSpawnEnabled": true,
+  "Forage_Spawn_Settings": null,
+  "Large_Object_Spawn_Settings": null,
+  "Ore_Spawn_Settings": null,
+  "Monster_Spawn_Settings": {
+    "Areas": [
+      {
+        "MonsterTypes": [
+          {
+            "MonsterName": "PollenSprites.PollenSprite",
+            "Settings": {}
+          }
+        ],
+        "UniqueAreaID": "Pollen Sprites (Farm)",
+        "MapName": "Farm",
+        "MinimumSpawnsPerDay": 5,
+        "MaximumSpawnsPerDay": 15,
+        "IncludeTerrainTypes": [
+          "All"
+        ],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 1800,
+          "MinimumTimeBetweenSpawns": 30,
+          "MaximumSimultaneousSpawns": 3,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": ["Spring"],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": ["Windy"],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 1
+      },
+	  {
+        "MonsterTypes": [
+          {
+            "MonsterName": "PollenSprites.PollenSprite",
+            "Settings": {}
+          }
+        ],
+        "UniqueAreaID": "Pollen Sprites (Backwoods)",
+        "MapName": "Backwoods",
+        "MinimumSpawnsPerDay": 3,
+        "MaximumSpawnsPerDay": 9,
+        "IncludeTerrainTypes": [
+          "All"
+        ],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 1800,
+          "MinimumTimeBetweenSpawns": 30,
+          "MaximumSimultaneousSpawns": 2,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": ["Spring"],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": ["Windy"],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 1
+      },
+	  {
+        "MonsterTypes": [
+          {
+            "MonsterName": "PollenSprites.PollenSprite",
+            "Settings": {}
+          }
+        ],
+        "UniqueAreaID": "Pollen Sprites (Forest)",
+        "MapName": "Forest",
+        "MinimumSpawnsPerDay": 10,
+        "MaximumSpawnsPerDay": 20,
+        "IncludeTerrainTypes": [
+          "All"
+        ],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 1800,
+          "MinimumTimeBetweenSpawns": 30,
+          "MaximumSimultaneousSpawns": 3,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": ["Spring"],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": ["Windy"],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 1
+      },
+	  {
+        "MonsterTypes": [
+          {
+            "MonsterName": "PollenSprites.PollenSprite",
+            "Settings": {}
+          }
+        ],
+        "UniqueAreaID": "Pollen Sprites (Mountain)",
+        "MapName": "Mountain",
+        "MinimumSpawnsPerDay": 8,
+        "MaximumSpawnsPerDay": 16,
+        "IncludeTerrainTypes": [
+          "All"
+        ],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 1800,
+          "MinimumTimeBetweenSpawns": 30,
+          "MaximumSimultaneousSpawns": 3,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": ["Spring"],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": ["Windy"],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 1
+      },
+	  {
+        "MonsterTypes": [
+          {
+            "MonsterName": "PollenSprites.PollenSprite",
+            "Settings": {}
+          }
+        ],
+        "UniqueAreaID": "Pollen Sprites (Railroad)",
+        "MapName": "Railroad",
+        "MinimumSpawnsPerDay": 4,
+        "MaximumSpawnsPerDay": 8,
+        "IncludeTerrainTypes": [
+          "All"
+        ],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 1800,
+          "MinimumTimeBetweenSpawns": 30,
+          "MaximumSimultaneousSpawns": 1,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": ["Spring"],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": ["Windy"],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 1
+      }
+    ],
+    "CustomTileIndex": []
+  },
+  "QuarryTileIndex": [
+    556,
+    558,
+    583,
+    606,
+    607,
+    608,
+    630,
+    635,
+    636,
+    680,
+    681,
+    685
+  ],
+  "File_Conditions": {
+    "FarmTypes": [],
+    "FarmerNames": [],
+    "SaveFileNames": [],
+    "OtherMods": {}
+  }
+}

@@ -157,7 +157,7 @@ namespace NPCMapLocations
           if (Game1.getMouseX() >= npcLocation.X && Game1.getMouseX() <= npcLocation.X + markerWidth &&
               Game1.getMouseY() >= npcLocation.Y && Game1.getMouseY() <= npcLocation.Y + markerHeight)
           {
-            if (!npcMarker.IsHidden && !npcMarker.MapLocation.Equals(Vector2.Zero) && !(npcMarker.Npc is Horse))
+            if (!npcMarker.IsHidden && !(npcMarker.Npc is Horse))
               hoveredList.Add(npcMarker.Name);
 
             if (!npcMarker.IsOutdoors && !hasIndoorCharacter)
@@ -340,7 +340,7 @@ namespace NPCMapLocations
       if (drawPamHouseUpgrade)
       {
         var houseLoc = ModMain.LocationToMap("Trailer_Big");
-        b.Draw(ModMain.Map, new Vector2(houseLoc.X + 24, houseLoc.Y - 11),
+        b.Draw(ModMain.Map, new Vector2(mapX + houseLoc.X - 16, mapY + houseLoc.Y - 11),
           new Rectangle(263, 181, 8, 8), Color.White,
           0f, Vector2.Zero, 4f, SpriteEffects.None, 0.861f);
       }
@@ -348,7 +348,7 @@ namespace NPCMapLocations
       if (drawMovieTheater || drawMovieTheaterJoja)
       {
         var theaterLoc = ModMain.LocationToMap("JojaMart");
-        b.Draw(ModMain.Map, new Vector2(theaterLoc.X + 20, theaterLoc.Y - 11),
+        b.Draw(ModMain.Map, new Vector2(mapX + theaterLoc.X - 20, mapY + theaterLoc.Y - 11),
           new Rectangle(275, 181, 15, 11), Color.White,
           0f, Vector2.Zero, 4f, SpriteEffects.None, 0.861f);
         
@@ -411,7 +411,7 @@ namespace NPCMapLocations
         foreach (CharacterMarker npcMarker in sortedMarkers)
         {
           // Skip if no specified location
-          if (npcMarker.MapLocation.Equals(Vector2.Zero) || npcMarker.Marker == null)
+          if (npcMarker.Marker == null)
           {
             continue;
           }
@@ -461,7 +461,7 @@ namespace NPCMapLocations
         {
           // Temporary solution to handle desync of farmhand location/tile position when changing location
           if (FarmerMarkers.TryGetValue(farmer.UniqueMultiplayerID, out CharacterMarker farMarker))
-            if (farMarker == null || farMarker.MapLocation.Equals(Vector2.Zero))
+            if (farMarker == null)
               continue;
           if (farMarker != null && farMarker.DrawDelay == 0)
           {
@@ -476,12 +476,9 @@ namespace NPCMapLocations
         Vector2 playerLoc = ModMain.LocationToMap(Game1.player.currentLocation.uniqueName.Value ?? Game1.player.currentLocation.Name, Game1.player.getTileX(),
           Game1.player.getTileY(), Customizations.MapVectors, true);
 
-        if (!playerLoc.Equals(Vector2.Zero))
-        {
-          Game1.player.FarmerRenderer.drawMiniPortrat(b,
-            new Vector2(mapX + playerLoc.X - 16, mapY + playerLoc.Y - 15), 0.00011f, 2f, 1,
-            Game1.player);
-        }
+        Game1.player.FarmerRenderer.drawMiniPortrat(b,
+          new Vector2(mapX + playerLoc.X - 16, mapY + playerLoc.Y - 15), 0.00011f, 2f, 1,
+          Game1.player);
       }
     }
 
@@ -490,7 +487,7 @@ namespace NPCMapLocations
     {
       if (hoveredNames.Equals("")) return;
 
-      indoorIconVector = Vector2.Zero;
+      indoorIconVector = ModMain.UNKNOWN;
       var lines = names.Split('\n');
       int height = (int)Math.Max(60, Game1.smallFont.MeasureString(names).Y + Game1.tileSize / 2);
       int width = (int)Game1.smallFont.MeasureString(names).X + Game1.tileSize / 2;

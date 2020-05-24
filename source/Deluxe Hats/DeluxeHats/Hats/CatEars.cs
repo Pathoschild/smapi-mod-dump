@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using StardewValley;
 
 namespace DeluxeHats.Hats
@@ -7,6 +6,7 @@ namespace DeluxeHats.Hats
     public static class CatEars
     {
         public const string Name = "Cat Ears";
+        public const string Description = "When you are hit, meow and gain Skittish Kitty buff:\n+3 Speed";
         public static int PlayerOldHP = 0;
         public static void Activate()
         {

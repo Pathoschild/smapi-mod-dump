@@ -6,6 +6,5 @@
 		<Version>1.3.0</Version>
 		<ProjectGuid>{A1BDBE8B-E5D8-4EA8-A008-CBD57DB1ADDB}</ProjectGuid>
 	</PropertyGroup>
-	<Import Project="..\common.projitems" Label="Shared" />
 	<Import Project="..\Common\PredictiveCore.projitems" Label="Shared" />
 </Project>

@@ -1,16 +1,16 @@
 ﻿{
   "Name": "ChangeDialoguesEn",
   "Author": "mardrest",
-  "Version": "1.8.5",
+  "Version": "1.8.6",
   "Description": "Replaces the character sprites and dialogues",
   "UniqueID": "mardrest.ChangeDialoguesEn",
   "EntryDll": "ChangeDialoguesEn.dll",
   "MinimumApiVersion": "3.4.1",
-  "UpdateKeys": [ "Nexus: 5335" ], // fixed locally
+  "UpdateKeys": [ "Nexus: 5335" ],
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.ContentPatcher",
-      "IsRequired": false
+      "IsRequired": true
     }
   ]
 }

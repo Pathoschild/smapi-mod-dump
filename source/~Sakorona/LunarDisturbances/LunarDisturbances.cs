@@ -102,7 +102,7 @@ namespace TwilightShards.LunarDisturbances
 
         private void ShowMoonInfo(string arg1, string[] arg2)
         {
-            Monitor.Log($"Moon phase according to end of night: {OurMoon.GetLunarPhaseForDay(SDate.Now())}, with coords: { Sprites.Icons.GetNightMoonSprite(OurMoon.GetLunarPhaseForDay(SDate.Now())).ToString()}. According to normal phrasing: Phase is {OurMoon.DescribeMoonPhase()}, with rise {OurMoon.GetMoonRiseTime()} and set {OurMoon.GetMoonSetTime()}", LogLevel.Info);
+            Monitor.Log($"Moon phase according to end of night: {OurMoon.GetLunarPhaseForDay(SDate.Now())}, with coords: { Sprites.Icons.GetNightMoonSprite(OurMoon.GetLunarPhaseForDay(SDate.Now()))}. According to normal phrasing: Phase is {OurMoon.DescribeMoonPhase()}, with rise {OurMoon.GetMoonRiseTime()} and set {OurMoon.GetMoonSetTime()}", LogLevel.Info);
         }
 
         private void SpaceEvents_ChooseNightlyFarmEvent(object sender, EventArgsChooseNightlyFarmEvent e)

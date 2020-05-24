@@ -8,6 +8,7 @@ namespace DeluxeHats.Hats
     public static class WitchHat
     {
         public const string Name = "Witch Hat";
+        public const string Description = "When sleeping, increase chance for the witch farm event.";
         public static void Activate()
         {
             HatService.Harmony.Patch(

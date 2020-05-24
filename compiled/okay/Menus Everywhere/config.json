@@ -1,0 +1,8 @@
+{
+  "CalendarKey": "F1",
+  "RequestKey": "F2",
+  "MonsterEradicationKey": "F3",
+  "BinKey": "F4",
+  "CanAccessBundles": true,
+  "CanAccessBin": false
+}

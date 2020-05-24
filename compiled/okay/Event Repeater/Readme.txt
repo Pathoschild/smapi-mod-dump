@@ -206,6 +206,11 @@ This is for Advanced Modders who know how to find specific [ResponseIDs].  It wi
 
 This is a Manual forget command to remove a [ResponseID] from the list.  
 
+	{responseadd}
+
+This is for Debugging!  Adds a response ID.  It will not know if the ID is a valid one.. so be careful!
+
+
 -=+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=-
 [D. Tips for Modders:]
 

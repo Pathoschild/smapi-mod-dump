@@ -8,6 +8,8 @@ namespace NpcAdventure.Story
     {
         GameMasterMode Mode { get; }
         GameMasterState Data { get; }
+        IGameMasterEvents Events { get; }
+
         event EventHandler<IGameMasterEventArgs> MessageReceived;
         void RegisterScenario(IScenario scenario);
         void SyncData();

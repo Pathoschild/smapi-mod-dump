@@ -7,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class HardHat
     {
         public const string Name = "Hard Hat";
+        public const string Description = "Reduce damage done by flying monsters by 25%.";
         public static void Activate()
         {
             HatService.OnUpdateTicked = (e) =>

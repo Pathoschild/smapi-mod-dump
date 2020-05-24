@@ -1,9 +1,9 @@
-﻿using Harmony;
+﻿using System.IO;
+using Harmony;
 using Microsoft.Xna.Framework;
 using PredictiveCore;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using SObject = StardewValley.Object;
 
@@ -14,6 +14,7 @@ namespace ScryingOrb
 		internal static ModEntry Instance { get; private set; }
 
 		internal HarmonyInstance harmony { get; private set; }
+		internal JsonAssets.IApi jsonAssets { get; private set; }
 
 		protected ModConfig Config => ModConfig.Instance;
 
@@ -98,6 +99,20 @@ namespace ScryingOrb
 
 		private void onGameLaunched (object _sender, GameLaunchedEventArgs _e)
 		{
+			// Load the Json Assets content pack.
+			jsonAssets = Helper.ModRegistry.GetApi<JsonAssets.IApi>
+				("spacechase0.JsonAssets");
+			if (jsonAssets != null)
+			{
+				jsonAssets.LoadAssets (Path.Combine (Helper.DirectoryPath,
+					"assets", "JA"));
+			}
+			else
+			{
+				Monitor.LogOnce ("Could not connect to Json Assets. It may not be installed or working properly.",
+					(Config.ActivateKey != SButton.None) ? LogLevel.Warn : LogLevel.Error);
+			}
+
 			// Set up Generic Mod Config Menu, if it is available.
 			ModConfig.SetUpMenu ();
 		}
@@ -105,21 +120,14 @@ namespace ScryingOrb
 		private void onSaveLoaded (object _sender, SaveLoadedEventArgs _e)
 		{
 			// Discover the object ID of the "Scrying Orb" inventory object.
-			var JsonAssets = Helper.ModRegistry.GetApi<JsonAssets.IApi>
-				("spacechase0.JsonAssets");
-			if (JsonAssets != null)
+			if (jsonAssets != null)
 			{
-				parentSheetIndex = JsonAssets.GetBigCraftableId ("Scrying Orb");
+				parentSheetIndex = jsonAssets.GetBigCraftableId ("Scrying Orb");
 				if (parentSheetIndex == -1)
 				{
-					Monitor.Log ("Could not find the ID of the Scrying Orb big craftable. The Scrying Orb content pack for Json Assets may not be installed.",
+					Monitor.Log ("Could not find the ID of the Scrying Orb big craftable. The Json Assets content pack may not have loaded correctly.",
 						(Config.ActivateKey != SButton.None) ? LogLevel.Warn : LogLevel.Error);
 				}
-			}
-			else
-			{
-				Monitor.LogOnce ("Could not connect to Json Assets. It may not be installed or working properly.",
-					(Config.ActivateKey != SButton.None) ? LogLevel.Warn : LogLevel.Error);
 			}
 
 			// Migrate data from older formats.

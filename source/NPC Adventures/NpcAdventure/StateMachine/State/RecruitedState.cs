@@ -1,5 +1,4 @@
 ﻿using NpcAdventure.StateMachine.StateFeatures;
-using NpcAdventure.Utils;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System.Collections.Generic;
@@ -13,7 +12,8 @@ using NpcAdventure.Buffs;
 using StardewModdingAPI;
 using NpcAdventure.AI;
 using NpcAdventure.Events;
-using NpcAdventure.Internal;
+using NpcAdventure.Dialogues;
+using NpcAdventure.Utils;
 
 namespace NpcAdventure.StateMachine.State
 {
@@ -29,11 +29,13 @@ namespace NpcAdventure.StateMachine.State
         public bool CanPerformAction { get; private set; }
         private BuffManager BuffManager { get; set; }
         public ISpecialModEvents SpecialEvents { get; }
+        public int TimeToBye { get; private set; }
 
         public RecruitedState(CompanionStateMachine stateMachine, IModEvents events, ISpecialModEvents specialEvents, IMonitor monitor) : base(stateMachine, events, monitor)
         {
             this.BuffManager = new BuffManager(stateMachine.Companion, stateMachine.CompanionManager.Farmer, stateMachine.ContentLoader, this.monitor);
             this.SpecialEvents = specialEvents;
+            this.TimeToBye = 2200; // Companions auto-dismiss at 10pm, except married (see end of Entry() method)
         }
 
         public override void Entry()
@@ -44,14 +46,7 @@ namespace NpcAdventure.StateMachine.State
             if (this.StateMachine.Companion.doingEndOfRouteAnimation.Value)
                 this.FinishScheduleAnimation();
 
-            this.StateMachine.Companion.faceTowardFarmerTimer = 0;
-            this.StateMachine.Companion.movementPause = 0;
-            this.StateMachine.Companion.followSchedule = false;
-            this.StateMachine.Companion.Schedule = null;
-            this.StateMachine.Companion.controller = null;
-            this.StateMachine.Companion.temporaryController = null;
-            this.StateMachine.Companion.eventActor = true;
-            this.StateMachine.Companion.farmerPassesThrough = true;
+            this.FixProblemsWithNPC();
 
             this.Events.GameLoop.UpdateTicked += this.GameLoop_UpdateTicked;
             this.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
@@ -59,7 +54,7 @@ namespace NpcAdventure.StateMachine.State
             this.Events.Input.ButtonPressed += this.Input_ButtonPressed;
             this.SpecialEvents.RenderedLocation += this.SpecialEvents_RenderedLocation;
 
-            this.recruitedDialogue = DialogueHelper.GenerateDialogue(this.StateMachine.Companion, "companionRecruited");
+            this.recruitedDialogue = this.StateMachine.Dialogues.GenerateDialogue("companionRecruited");
             this.CanPerformAction = true;
 
             if (this.recruitedDialogue != null)
@@ -84,6 +79,10 @@ namespace NpcAdventure.StateMachine.State
                 this.StateMachine.CompanionManager.Hud.AddKey(key, desc);
             }
 
+            if (Helper.IsSpouseMarriedToFarmer(this.StateMachine.Companion, this.StateMachine.CompanionManager.Farmer))
+            {
+                this.TimeToBye = 2400; // Extend adventuring time to midnight for Wife/Husband
+            }
         }
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -134,18 +133,20 @@ namespace NpcAdventure.StateMachine.State
             this.StateMachine.CompanionManager.Hud.Reset();
         }
 
-        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
-        {
+        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e) 
+        { 
             this.StateMachine.Companion.clearSchedule();
 
-            if (e.NewTime >= 2200)
+            if (e.NewTime >= this.TimeToBye)
             {
                 NPC companion = this.StateMachine.Companion;
-                Dialogue dismissalDialogue = new Dialogue(DialogueHelper.GetSpecificDialogueText(companion, this.StateMachine.CompanionManager.Farmer, "companionDismissAuto"), companion);
+                Dialogue dismissalDialogue = new Dialogue(
+                    this.StateMachine.Dialogues.GetFriendSpecificDialogueText(
+                        this.StateMachine.CompanionManager.Farmer, "companionDismissAuto"), companion);
                 this.dismissalDialogue = dismissalDialogue;
                 this.StateMachine.Companion.doEmote(24);
                 this.StateMachine.Companion.updateEmote(Game1.currentGameTime);
-                DialogueHelper.DrawDialogue(dismissalDialogue);
+                DialogueProvider.DrawDialogue(dismissalDialogue);
             }
 
             // Fix spawn ladder if area is infested and all monsters is killed but NPC following us
@@ -161,7 +162,7 @@ namespace NpcAdventure.StateMachine.State
             }
 
             // Try to push new or change location dialogue randomly until or no location dialogue was pushed
-            int until = this.dialoguePushTime + (Game1.random.Next(1, 3) * 10);
+            int until = this.dialoguePushTime + (Game1.random.Next(1, 5) * 10);
             if ((e.NewTime > until || this.currentLocationDialogue == null))
                 this.TryPushLocationDialogue(this.StateMachine.Companion.currentLocation);
 
@@ -194,14 +195,20 @@ namespace NpcAdventure.StateMachine.State
             this.ai.Update(e);
         }
 
+        /// <summary>
+        /// Fix a problems with companion while follows farmer.
+        /// </summary>
         private void FixProblemsWithNPC()
         {
             this.StateMachine.Companion.movementPause = 0;
             this.StateMachine.Companion.followSchedule = false;
+            this.StateMachine.Companion.ignoreScheduleToday = true;
             this.StateMachine.Companion.Schedule = null;
             this.StateMachine.Companion.controller = null;
             this.StateMachine.Companion.temporaryController = null;
             this.StateMachine.Companion.eventActor = true;
+            this.StateMachine.Companion.faceTowardFarmerTimer = 0;
+            this.StateMachine.Companion.farmerPassesThrough = true;
         }
 
         private void Player_Warped(object sender, WarpedEventArgs e)
@@ -214,13 +221,18 @@ namespace NpcAdventure.StateMachine.State
                 this.ai.ChangeLocation(e.NewLocation);
 
             // Show above head bubble text for location
-            if (Game1.random.NextDouble() > .66f && DialogueHelper.GetBubbleString(bubbles, companion, e.NewLocation, out string bubble))
+            if (Game1.random.NextDouble() > .66f && DialogueProvider.GetAmbientBubbleString(bubbles, companion, e.NewLocation, out string bubble))
                 companion.showTextAboveHead(bubble, preTimer: 250);
 
             // Push new location dialogue
             this.TryPushLocationDialogue(e.NewLocation, true);
         }
 
+        /// <summary>
+        /// Try push location based companion dialogue to companion's dialogue stack
+        /// </summary>
+        /// <param name="location">Current location</param>
+        /// <param name="warped">Warped right now to this location?</param>
         private void TryPushLocationDialogue(GameLocation location, bool warped = false)
         {
             Stack<Dialogue> temp = new Stack<Dialogue>(this.StateMachine.Companion.CurrentDialogue.Count);
@@ -263,6 +275,12 @@ namespace NpcAdventure.StateMachine.State
             }
         }
 
+        /// <summary>
+        /// Perform player's (inter)action with Companion
+        /// </summary>
+        /// <param name="who">Player</param>
+        /// <param name="location">Current location mastered an action</param>
+        /// <returns></returns>
         public bool PerformAction(Farmer who, GameLocation location)
         {
             if (this.ai != null && this.ai.PerformAction())
@@ -288,24 +306,40 @@ namespace NpcAdventure.StateMachine.State
             return true;
         }
 
+        /// <summary>
+        /// Companion reacts on player's ask
+        /// </summary>
+        /// <param name="companion"></param>
+        /// <param name="leader"></param>
+        /// <param name="action"></param>
         private void ReactOnAsk(NPC companion, Farmer leader, string action)
         {
             switch (action)
             {
                 case "dismiss":
-                    Dialogue dismissalDialogue = new Dialogue(DialogueHelper.GetSpecificDialogueText(companion, leader, "companionDismiss"), companion);
+                    Dialogue dismissalDialogue = new Dialogue(
+                        this.StateMachine.Dialogues.GetFriendSpecificDialogueText(leader, "companionDismiss"), companion);
                     this.dismissalDialogue = dismissalDialogue;
-                    DialogueHelper.DrawDialogue(dismissalDialogue);
+                    DialogueProvider.DrawDialogue(dismissalDialogue);
                     break;
                 case "bag":
                     Chest bag = this.StateMachine.Bag;
                     this.StateMachine.Companion.currentLocation.playSound("openBox");
-                    Game1.activeClickableMenu = new ItemGrabMenu(bag.items, false, true, new InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems), new ItemGrabMenu.behaviorOnItemSelect(bag.grabItemFromInventory), this.StateMachine.Companion.displayName, new ItemGrabMenu.behaviorOnItemSelect(bag.grabItemFromChest), false, true, true, true, true, 1, null, -1, this.StateMachine.Companion);
+                    Game1.activeClickableMenu = new ItemGrabMenu(
+                        bag.items, false, true, new InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems),
+                        new ItemGrabMenu.behaviorOnItemSelect(bag.grabItemFromInventory),
+                        this.StateMachine.Companion.displayName,
+                        new ItemGrabMenu.behaviorOnItemSelect(bag.grabItemFromChest), false, true, true, true, true, 1,
+                        null, -1, this.StateMachine.Companion);
                     break;
             }
         }
 
-        public void OnDialogueSpeaked(Dialogue speakedDialogue)
+        /// <summary>
+        /// Handles after companion's dialogue was spoken.
+        /// </summary>
+        /// <param name="speakedDialogue"></param>
+        public void OnDialogueSpoken(Dialogue speakedDialogue)
         {
             if (speakedDialogue == this.dismissalDialogue)
             {

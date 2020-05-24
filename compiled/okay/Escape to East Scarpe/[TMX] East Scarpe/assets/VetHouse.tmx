@@ -266,14 +266,9 @@
     <property name="Action" value="Message &quot;VetHouse.13&quot;"/>
    </properties>
   </object>
-  <object id="2" name="TileData" x="80" y="128" width="16" height="16">
+  <object id="2" name="TileData" x="80" y="144" width="16" height="16">
    <properties>
-    <property name="Action" value="Warp 3 6 JacobAwayRoom"/>
-   </properties>
-  </object>
-  <object id="3" name="TileData" x="80" y="144" width="16" height="16">
-   <properties>
-    <property name="NPCPassable" value="T"/>
+    <property name="Action" value="Warp 3 6 JacobOffice"/>
    </properties>
   </object>
   <object id="4" name="TileData" x="304" y="176" width="16" height="16">

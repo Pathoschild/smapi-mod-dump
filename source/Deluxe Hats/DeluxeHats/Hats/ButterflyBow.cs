@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
@@ -9,6 +8,7 @@ namespace DeluxeHats.Hats
     public static class ButterflyBow
     {
         public const string Name = "Butterfly Bow";
+        public const string Description = "Spawns Butterflies around you while outside.\nPeople in the same outdoor area as you will gain 5 friendship every 7 seconds.";
         public static void Activate()
         {
             

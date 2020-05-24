@@ -4,5 +4,12 @@
   "HeartSuggestThreshold": 7,
   "ShowHUD": true,
   "EnableDebug": false,
-  "AdventureMode": true
+  "AdventureMode": true,
+  "AvoidSayHiToMonsters": true,
+  "RequestsWithShift": false,
+  "RequestsShiftButton": "LeftShift",
+  "Experimental": {
+    "FightThruCompanion": false,
+    "UseCheckForEventsPatch": false
+  }
 }

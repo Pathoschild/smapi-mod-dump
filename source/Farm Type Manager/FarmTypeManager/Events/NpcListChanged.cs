@@ -32,7 +32,7 @@ namespace FarmTypeManager
 
                     foreach (SavedObject loot in lootList) //for each loot object
                     {
-                        int? spawnChance = loot.ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                        double? spawnChance = loot.ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
                         if (spawnChance.HasValue && spawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
                         {
                             continue; //skip to the next item
@@ -45,7 +45,7 @@ namespace FarmTypeManager
                             {
                                 List<SavedObject> contentSave = Utility.ParseSavedObjectsFromItemList(new object[] { loot.ConfigItem.Contents[content] }, $"[unknown: monster loot dropped at {monster.currentLocation.Name}]"); //parse this into a saved object
 
-                                int? contentSpawnChance = contentSave[0].ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                                double? contentSpawnChance = contentSave[0].ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
                                 if (contentSpawnChance.HasValue && contentSpawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
                                 {
                                     loot.ConfigItem.Contents.RemoveAt(content); //remove this content from the loot

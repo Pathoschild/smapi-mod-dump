@@ -4,7 +4,8 @@
     public enum HarvestType
     {
         Lay,
-        Tool
+        Tool,
+        Forage
     }
 
     /// <summary>A valid ingame season.</summary>

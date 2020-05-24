@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
-using StardewValley.Monsters;
-using StardewValley.Network;
 using System;
 
 namespace DeluxeHats.Hats
@@ -9,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class GoldenMask
     {
         public const string Name = "Golden Mask";
+        public const string Description = "Damage enemies near you every 3 seconds, the damage can kill mummies.";
         public static void Activate()
         {
             HatService.OnUpdateTicked = (e) =>

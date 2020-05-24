@@ -33,19 +33,9 @@ namespace FarmAnimalVarietyRedux.Patches
                 var isCustomAnimal = false;
                 AnimalSubType customAnimalSubType = null;
 
-                // check if it's a custom animal
-                foreach (var animal in ModEntry.Animals)
-                {
-                    var subType = animal.SubTypes.Where(subType => animalName.Contains(subType.Name)).FirstOrDefault();
-                    if (subType == null)
-                        continue;
-
-                    customAnimalSubType = subType;
-                    isCustomAnimal = true;
-                    break;
-                }
-
-                if (isCustomAnimal)
+                // check if it's a custom animal 
+                var subType = ModEntry.Instance.Api.GetAnimalSubTypeByName(animalName);
+                if (subType != null)
                 {
                     var currentSeason = Season.Spring;
                     switch (Game1.currentSeason)
@@ -64,6 +54,7 @@ namespace FarmAnimalVarietyRedux.Patches
                             break;
                     }
 
+                    // load the texture through FAVR, not the content pipeline
                     spriteTexture = customAnimalSubType.Sprites.GetSpriteSheet(
                         isBaby: animalName.Contains("Baby"),
                         isHarvested: animalName.Contains("Sheared"),

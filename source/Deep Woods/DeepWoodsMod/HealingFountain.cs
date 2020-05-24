@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System;
+using static DeepWoodsMod.DeepWoodsSettings;
 
 namespace DeepWoodsMod
 {
@@ -49,6 +50,11 @@ namespace DeepWoodsMod
             Game1.player.health = Game1.player.maxHealth;
             Game1.player.Stamina = Game1.player.MaxStamina;
             Game1.player.addedLuckLevel.Value = Math.Max(10, Game1.player.addedLuckLevel.Value);
+
+            location.playSoundAt("gulp", tileLocation);
+            DelayedAction.playSoundAfterDelay("yoba", 800, location, -1);
+            Game1.addHUDMessage(new HUDMessage(I18N.HealingFountainDrinkMessage) { noIcon = true });
+
             return true;
         }
     }

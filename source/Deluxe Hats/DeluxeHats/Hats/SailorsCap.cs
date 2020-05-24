@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
@@ -8,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class SailorsCap
     {
         public const string Name = "Sailor's Cap";
+        public const string Description = "When tipsy gain the Drunken Sailor Buff:\n+10 Attack";
         public static void Activate()
         {
             HatService.OnUpdateTicked = (e) =>

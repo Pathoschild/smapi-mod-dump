@@ -1,0 +1,27 @@
+{
+  //Lunar Messages
+  "moon-text.phase-new": "新月",
+  "moon-text.phase-waxingcres": "三日月",
+  "moon-text.phase-firstqrt": "上弦の月",
+  "moon-text.phase-waxinggibb": "満月手前の月",
+  "moon-text.phase-full": "満月",
+  "moon-text.phase-waninggibb": "満月過ぎの月",
+  "moon-text.phase-thirdqrt": "下弦の月",
+  "moon-text.phase-waningcres": "有明の月",
+  "moon-text.error": "エラー",
+  "moon-text.phase-blood": "血の満月",
+
+  "moon-text.solareclipse": "皆既日食が起きています！どうやら今日はずっと真っ暗のようです。",
+
+  "moon-text.moonrise": "東の空に月が昇りました。今日は{{moonPhase}}です。",
+  "moon-text.moonriseBefore6": "{{moonPhase}}が昇っています。今日の月の出は{{riseTime}}でした。",
+  "moon-text.moonset": "月が沈みました。今日は{{moonPhase}}です。",
+  "moon-text.hud_message_full": "満月です！浜辺には多くのものが打ち上がっていそうですが、幽霊たちも現れるかもしれません…。",
+  "moon-text.hud_message_bloodMoon": "血の満月がやってきた！気をつけて。みんな気が立っていて、モンスターもうろうろしています。",
+  "moon-text.hud_message_new": "今日は新月です。浜辺に打ち上がっているアイテムは普段より少ないでしょう…。",
+  "moon-text.fullmoon_eff": "満月の力で、{{cropsAffected}}がぐんぐん育っています！",
+  "moon-text.newmoon_eff": "新月によって、{{cropsAffected}}の成長が遅くなっているようです…。",
+  "moon-desc.desc_moonphase": "今日は{{moonPhase}}です。",
+
+  "moon-text.bloodmoon_villager_generic": "血の満月だぜ。なんでオレに話しかけてるんだい、イカれてんのか？"
+}

@@ -14,9 +14,9 @@ mods:
    Witcher Mod
 
 latest commit:
-   commit bc3e6ef23745c9a6881cb9496dd9ba708546354d
+   commit ff7a4c425230d4c60979d4f5bc7eae9f83f54ee4
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Thu May 7 12:49:57 2020 -0400
+   Date:   Mon May 11 23:02:18 2020 -0400
    
-       boss for android, new npc assets
+       monster floors, witcher mod
    

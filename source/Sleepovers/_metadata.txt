@@ -5,9 +5,9 @@ mods:
    Sleepovers
 
 latest commit:
-   commit 2bdcd3e31d7ab2300223987e3ef44e8dd3a0b38d
+   commit ff1353ab09716e544a6e9f442d358d1ddc8416b5
    Author: Glitchfinder <glitchkey@gmail.com>
-   Date:   Sat Jan 25 10:35:50 2020 -0800
+   Date:   Thu May 21 16:26:33 2020 -0700
    
-       Updates readme.
+       NPCs no longer accidentally tie the player to the bed when sleeping in the same spot.
    

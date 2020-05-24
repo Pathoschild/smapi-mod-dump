@@ -91,6 +91,35 @@ namespace TwilightShards.LunarDisturbances
             }
         }
 
+        public float GetBrightnessQuotient()
+        {
+            switch (CurrentPhase())
+            {
+                case MoonPhase.BloodMoon:
+                case MoonPhase.BlueMoon:
+                    return 2f;
+                case MoonPhase.HarvestMoon:
+                    return 1.55f;
+                case MoonPhase.SpiritsMoon:
+                    return 1.15f;
+                case MoonPhase.FullMoon:
+                    return 1f;
+                case MoonPhase.ThirdQuarter:
+                case MoonPhase.FirstQuarter:
+                    return .5f;
+                case MoonPhase.WaxingCrescent:
+                case MoonPhase.WaningCrescent:
+                    return .15f;
+                case MoonPhase.WaningGibbeous:
+                case MoonPhase.WaxingGibbeous:
+                    return .65f;
+                case MoonPhase.NewMoon:
+                    return 0.02f;
+                default:
+                    return 0.0f;
+            }
+        }
+
         public void Reset()
         {
             MoonTracker = null;

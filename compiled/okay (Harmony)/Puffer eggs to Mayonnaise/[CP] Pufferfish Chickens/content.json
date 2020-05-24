@@ -1,0 +1,81 @@
+{
+  "Format": "1.14.0",
+  
+  "ConfigSchema": 
+   {
+       "DoReplaceMarnieShopIcon": {
+        "AllowValues" : "true, false",
+        "Default": "true"
+       }
+   },
+	
+  "Changes": 
+   [
+       //Replacing Brown chickens.
+       {
+        "Action": "Load",
+        "Target": "Animals/Brown Chicken",
+        "FromFile": "assets/BrownPuffChick.png"
+       },
+       
+       //Replacing Baby brown chickens.
+       {
+        "Action": "Load",
+        "Target": "Animals/BabyBrown Chicken",
+        "FromFile": "assets/BabyBrownPuffChick.png"
+       },
+	   
+       //Editing Marnie's shop icon.
+       {
+        "Action": "EditImage",
+        "Target": "LooseSprites/Cursors",
+        "FromFile": "assets/MarnieShopIcon.png",
+        "ToArea": { "X": 3, "Y": 448, "Width": 26, "Height": 16 },
+    	"When": 
+    	{
+            "DoReplaceMarnieShopIcon": "true"
+        }
+       },
+	   
+       //Replacing Brown eggs.
+       {
+        "Action": "EditImage",
+        "Target": "Maps/springobjects",
+        "FromFile": "assets/PufferEgg.png",
+        "ToArea": { "X": 192, "Y": 112, "Width": 16, "Height": 16 }
+       },
+	   
+       //Replacing Large brown eggs.
+       {
+        "Action": "EditImage",
+        "Target": "Maps/springobjects",
+        "FromFile": "assets/LargePufferEgg.png",
+        "ToArea": { "X": 224, "Y": 112, "Width": 16, "Height": 16 }
+       },
+	   
+       //Editing both regular and large Brown egg's information.
+       {
+        "Action": "EditData",
+        "Target": "Data/ObjectInformation",
+        "Fields": 
+        {
+            "182": 
+            {
+                0: "Large Pufferfish Egg",
+                1: 110,
+                2: -300,
+                4: "Large Pufferfish Egg",
+                5: "A large yellow egg. It has some spikes on it."
+            },
+            "180": 
+            {
+                0: "Pufferfish Egg",
+                1: 75,
+                2: -300,
+                4: "Pufferfish Egg",
+                5: "A small yellow egg. It has some tiny spikes on it."
+            }
+        }
+       }
+   ]
+}

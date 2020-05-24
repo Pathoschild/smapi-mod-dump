@@ -14,8 +14,19 @@
   "skillDescription.doctor": "Pode te curar quando sua vida está abaixo de  30%.",
   "skill.fighter": "Lutador (habilidade de {0})",
   "skillDescription.fighter": "Luta com espadas.",
+  "skill.forager": "Coletor (Habilidade de {0})",
+  "skillDescription.forager": "Irá fazer coletas enquanto te acompanha, e compartilha com você quando falar com ele(a).",
+  "skill.scared": "Pé frio (Habilidade de {0})",
+  "skillDescription.scared": "Ocasionalmente se assusta com monstros ao seu redor.",
   "recruitedCompanionHint": "Companhias recrutadas: {0}",
   "companionState_follow": "Status: Seguindo",
   "companionState_idle": "Status: Parado",
-  "companionState_fight": "Status: Lutando"
+  "companionState_fight": "Status: Lutando",
+  "spouseWife": "esposa",
+  "spouseHusband": "marido",
+  "hudSkillUsed": "(Efito de habilidade sendo usada)",
+  "newObjective": "Nova entrada no Diario!",
+  "objectiveUpdate": "Diario Atualizado!",
+  "questObjective.recruitment": "{0}/{1} pessoas recrutadas",
+  "prosteticsChangeButton": "Aperte '{0}' para mudar o aprimoramento sintético de {1} ."
 }

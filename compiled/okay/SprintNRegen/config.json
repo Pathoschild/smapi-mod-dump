@@ -11,7 +11,7 @@
   "StaminaRegenerationPerSecond": 5.0,
   "FoodNeededToRegenStamina": true,
   "RegenPercentajeOfFood": true,
-  "PercentajeOfFoodStatsRegenerated": 10,
+  "PercentageOfFoodStatsRegenerated": 5.0,
   "RemoveHealthRegenerationAfterGettingHit": true,
   "FoodNeededToRegenHealth": true,
   "HoursRegeneratingStaminaAfterEating": 1,

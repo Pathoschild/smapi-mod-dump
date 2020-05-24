@@ -53,67 +53,63 @@
     {
         "Action": "EditMap",
         "Target": "Maps/EastScarpe",
-        "FromFile": "assets/EastScarpe_River1.tmx",
-        "ToArea": { "X": 19, "Y": 0, "Width": 58, "Height": 33  },
+        "FromFile": "assets/EastScarpeRiverPatch1.tmx",
+        "ToArea": { "X": 19, "Y": 0, "Width": 19, "Height": 26  },
         "When": { 
             "River":true
                         }
         
             },
+            {
+                "Action": "EditMap",
+                "Target": "Maps/EastScarpe",
+                "FromFile": "assets/EastScarpeRiverPatch2.tmx",
+                "ToArea": { "X": 38, "Y": 15, "Width": 39, "Height": 17  },
+                "When": { 
+                    "River":true
+                                }
+                
+                    },
 
 
- {
-        "Action": "EditMap",
-        "Target": "Maps/Mountain",
-        "FromFile": "assets/MountainEastScarpe.tmx",
-        "ToArea": { "X": 86, "Y": 35, "Width": 9, "Height": 6  }
-        
-            },
 {
     "Action": "EditMap",
     "Target": "Maps/Mountain",
-    "FromFile": "assets/MountainEastScarpeSDR2.tmx",
-    "ToArea": { "X": 85, "Y": 35, "Width": 10, "Height": 6  },
-    "When": { 
-        "HasMod:DaisyNiko.SVR2":true
-                    }
+    "FromFile": "assets/Patches/MountainEastScarpe.tmx",
+    "ToArea": { "X": 86, "Y": 35, "Width": 9, "Height": 6  }
+    
         },
 {
-    "Action": "EditMap",
-    "Target": "Maps/Mountain",
-    "FromFile": "assets/MountainEastScarpeSVE.tmx",
-    "ToArea": { "X": 86, "Y": 35, "Width": 9, "Height": 6  },
-    "When": {
-        "HasMod:FlashShifter.StardewValleyExpandedALL":true
-        
+"Action": "EditMap",
+"Target": "Maps/Mountain",
+"FromFile": "assets/Patches/MountainEastScarpeSDR2.tmx",
+"ToArea": { "X": 85, "Y": 35, "Width": 10, "Height": 6  },
+"When": { 
+    "HasMod:DaisyNiko.SVR2":true
                 }
-        },
-
-
-   /*
-   ///Removes van on Tuesdays so the Vet Dr can be doing his rounds
-   {
-        "Action": "EditMap",
-        "Target": "Maps/EastScarpe",
-        "FromFile": "assets/VanGone.tmx",
-        "ToArea": { "X": 28, "Y": 27, "Width": 6, "Height": 9  },
-        "When": { 
-            "DayofWeek":"Tue"
-                        }
-        
-            },*/
-
-
+    },
 {
+"Action": "EditMap",
+"Target": "Maps/Mountain",
+"FromFile": "assets/Patches/MountainEastScarpeSVE.tmx",
+"ToArea": { "X": 86, "Y": 35, "Width": 9, "Height": 6  },
+"When": {
+    "HasMod:FlashShifter.StardewValleyExpandedALL":true
+    
+            }
+                        },
+
+
+  {
     "Action": "EditMap",
     "Target": "Maps/Town",
-    "FromFile": "assets/EastScarpeEntrance-Core.tmx",
+    "FromFile": "assets/Patches/EastScarpeEntrance-Core.tmx",
     "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  }
         },
     {
         "Action": "EditMap",
         "Target": "Maps/Town",
-        "FromFile": "assets/EastScarpeEntrance-SVE.tmx",
+        "FromFile": "assets/Patches/EastScarpeEntrance-SVE.tmx",
         "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
     "When": {
         "HasMod:FlashShifter.StardewValleyExpandedALL":true
@@ -123,7 +119,7 @@
 {
     "Action": "EditMap",
     "Target": "Maps/Town",
-    "FromFile": "assets/EastScarpeEntrance-KIM.tmx",
+    "FromFile": "assets/Patches/EastScarpeEntrance-KIM.tmx",
     "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
     "When": {
         "HasMod:DaisyNiko.SVR2":false,
@@ -133,7 +129,7 @@
     {
         "Action": "EditMap",
         "Target": "Maps/Town",
-        "FromFile": "assets/EastScarpeEntrance-SDR2.tmx",
+        "FromFile": "assets/Patches/EastScarpeEntrance-SDR2.tmx",
         "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
     "When": {
         "HasMod:DaisyNiko.SVR2":true,
@@ -144,7 +140,7 @@
 {
     "Action": "EditMap",
     "Target": "Maps/Town",
-    "FromFile": "assets/EastScarpeEntrance-KIM.tmx",
+    "FromFile": "assets/Patches/EastScarpeEntrance-KIM.tmx",
     "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
     "When": {
         "HasMod:DaisyNiko.SVR2":true,
@@ -155,7 +151,7 @@
     {
         "Action": "EditMap",
         "Target": "Maps/Town",
-        "FromFile": "assets/EastScarpeEntrance-SDR2.tmx",
+        "FromFile": "assets/Patches/EastScarpeEntrance-SDR2.tmx",
         "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
     "When": {
         "HasMod:DaisyNiko.SVR2":true,
@@ -167,7 +163,18 @@
 
 "Action": "EditMap",
 "Target": "Maps/Town",
-"FromFile": "assets/EastScarpeEntrance-Core.tmx",
+"FromFile": "assets/Patches/EastScarpeEntrance-SEcuts.tmx",
+"ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
+"When": {
+    "HasMod:SEnhanced.Shortcuts":true
+            }
+    },
+
+{
+
+"Action": "EditMap",
+"Target": "Maps/Town",
+"FromFile": "assets/Patches/EastScarpeEntrance-Core.tmx",
 "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
 "When": {
     "TownMap": "vanilla"
@@ -180,14 +187,14 @@
     "FromFile": "assets/EastScarpeDemarc.tmx",
     "ToArea": { "X": 0, "Y": 101, "Width": 28, "Height": 1  },
     "When": {
-        "HasMod": "Lita.StarblueValley"
+        "HasMod": "Lita.StarblueValley, minervamaga.CP.eemieMapRecolour, Acerbicon.Recolor, stardewfoliageredone, stardewfoliageredonereshade, DaisyNiko.EarthyRecolour"
         }
     },
     {
         "Action": "EditMap",
         "Target": "Maps/EastScarpe",
         "MapProperties": {
-        "Warp": "-1 91 Town 117 94 -1 92 Town 117 94 -1 93 Town 117 95 -1 94 Town 117 96 0 91 Town 118 94 0 92 Town 118 94 0 93 Town 118 95 0 94 Town 118 96 3 -1 Mountain 89 39 4 -1 Mountain 90 39"
+        "Warp": "-1 91 Town 117 94 -1 92 Town 117 94 -1 93 Town 117 95 -1 94 Town 117 96 0 91 Town 118 94 0 92 Town 118 94 0 93 Town 118 95 0 94 Town 118 96"
         },
         "When": {
             "HasMod:DaisyNiko.SVR2":true
@@ -270,11 +277,39 @@
         "HasMod":"Karmylla.ImmersiveMaps, FlashShifter.StardewValleyExpandedALL"
                         }
         },
+
+{ 
+    "LogName": "Adds warp to caves",
+    "Action": "EditMap",
+    "Target": "Maps/EastScarpe",
+    "MapTiles": [
+        {
+        "Position": { "X": 43, "Y": 84 },
+        "Layer": "Back",
+        "SetProperties": {
+                "TouchAction": "LoadMap Underground1 14 67"
+                    }
+            },
+        {
+            "Position": { "X": 44, "Y": 84 },
+        "Layer": "Back",
+        "SetProperties": {
+                "TouchAction": "LoadMap Underground1 14 67"
+            }
+            }	
+        
+        ],
+        "When": { 
+            "HasMod": "DaisyNiko.Tilesheets"
+                }
+            },
+
 {
     "Action": "EditData",
     "Target": "Data/Locations",
     "Entries": {
-        "EastScarpe": "-1/-1/-1/-1/153 -1 142 0 152 -1 129 1 147 1 131 2 148 2 708 2/153 -1 142 0 144 0 152 -1 154 1 128 2 130 2 146 2 149 2 150 2 155 2 708 2 701 2 267 2/153 -1 142 0 269 0 152 -1 129 1 154 1 155 1 131 2 148 2 150 2 705 2 701 2/153 -1 142 0 269 0 152 -1 147 1 155 1 708 2 130 2 131 2 146 2 150 2 151 2 154 2 705 2/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1 102 .15 390 .25 330 1"
+        "EastScarpe": "-1/-1/-1/-1/153 -1 142 0 152 -1 129 1 147 1 131 2 148 2 708 2/153 -1 142 0 144 0 152 -1 154 1 128 2 130 2 146 2 149 2 150 2 155 2 708 2 701 2 267 2/153 -1 142 0 269 0 152 -1 129 1 154 1 155 1 131 2 148 2 150 2 705 2 701 2/153 -1 142 0 269 0 152 -1 147 1 155 1 708 2 130 2 131 2 146 2 150 2 151 2 154 2 705 2/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1 102 .15 390 .25 330 1",
+        "Underground1": "-1/-1/-1/-1/153 -1 156 -1 157 -1/153 -1 156 -1 157 -1/153 -1 156 -1 157 -1/153 -1 156 -1 157 -1/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1"
                     },
         "When": {
             "HasMod:MoreFish": false
@@ -284,13 +319,32 @@
     "Action": "EditData",
     "Target": "Data/Locations",
     "Entries": {
-        "EastScarpe": "1096 .4 1097 .3/1096 .5 1098 .1/1096 .5 1099 .1/1096 .5 1100 .1/ 153 -1 142 0 1123 0 1124 0 1146 0 1147 0 152 -1 129 1 147 1 1071 1 1088 1 1075 1 131 2 148 2 708 2 1120 2 1137 2 1139 2 1143 2 1058 2 1076 2 267 2/153 -1 142 0 144 0 1122 0 1124 0 1148 0 1082 0 1146 0 152 -1 154 1 1071 1 1075 1 128 2 130 2 146 2 149 2 150 2 155 2 708 2 267 2 1120 2 1129 2 1143 2 1068 2 1070 2/153 -1 142 0 269 0 1121 0 1146 0 1149 0 152 -1 129 1 154 1 155 1 1075 1 131 2 148 2 150 2 705 2 1135 2 1136 2 1059 2 1069 2/153 -1 142 0 269 0 1146 0 1079 0 1081 0 152 -1 147 1 155 1 1075 1 708 2 130 2 131 2 146 2 150 2 151 2 154 2 705 2 1135 2 1138 2 1126 2 1060 2 1061 2 1072 2 1080 2 1109 2/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1 102 .15 390 .25 330 1"
+        "EastScarpe": "1096 .4 1097 .3/1096 .5 1098 .1/1096 .5 1099 .1/1096 .5 1100 .1/153 -1 142 0 1123 0 1124 0 1146 0 1147 0 152 -1 129 1 147 1 1071 1 1088 1 1075 1 131 2 148 2 708 2 1120 2 1137 2 1139 2 1143 2 1058 2 1076 2 267 2/153 -1 142 0 144 0 1122 0 1124 0 1148 0 1082 0 1146 0 152 -1 154 1 1071 1 1075 1 128 2 130 2 146 2 149 2 150 2 155 2 708 2 267 2 1120 2 1129 2 1143 2 1068 2 1070 2/153 -1 142 0 269 0 1121 0 1146 0 1149 0 152 -1 129 1 154 1 155 1 1075 1 131 2 148 2 150 2 705 2 1135 2 1136 2 1059 2 1069 2/153 -1 142 0 269 0 1146 0 1079 0 1081 0 152 -1 147 1 155 1 1075 1 708 2 130 2 131 2 146 2 150 2 151 2 154 2 705 2 1135 2 1138 2 1126 2 1060 2 1061 2 1072 2 1080 2 1109 2/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1 102 .15 390 .25 330 1",
+        "Underground1": "-1/-1/-1/-1/153 -1 156 -1 157 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/153 -1 156 -1 157 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/153 -1 156 -1 157 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/153 -1 156 -1 157 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/107 .01"
                 },
         "When": {
             "HasMod:MoreFish": true
                         }
     
     },
+    {
+        "Action": "EditData",
+        "Target": "Data/Locations",
+        "Fields": { 
+            "EastScarpe": { "5": "142 0 144 0 1122 0 1124 0 1148 0 1082 0 1146 0 138 0 132 0 145 0 153 0 706 0 701 0 1073 0 154 1 1075 1 1168 2 1171 2 1173 2 1175 2 1159 2 1158 2 1166 2 1160 2 1177 2 1068 2 1071 2"} 
+                   },
+            "When": {
+                "HasMod:MoreFish": true,
+                "Season": "summer",
+                "Day": "12, 13, 14"
+                            }
+        
+        },
+
+
+
+
+
     {   "LogName": "Pelicans for Pelican Town part 1",
         "Action": "EditImage",
         "Target": "TileSheets/Critters",
@@ -425,10 +479,19 @@
 			   "VetHouse.10": "Ah, here's where all the paperbacks are hiding: From trillers, to horror, historic fiction and even a couple of romances; it's an eclectic range.",
 			   "VetHouse.11": "Eloise's taste range from animal stories to tales of children solving mysteries. They're in surprisingly good condition.",
 			   "VetHouse.12": "'The Mona Lisa Smile': obviously Dr Jacob indulges in fast-paced crime thrillers.",
-			   "VetHouse.13": "The plants all look well cared for. And what was that skittering across the soil, a lizard?"
+               "VetHouse.13": "The plants all look well cared for. And what was that skittering across the soil, a lizard?",
+               "VetHouse.14": "A large raccoon studies you warily. Its ears are tattered, like it's been in a fight with something.",
+			   "VetHouse.15": "The screensaver shows a dark-haired woman and a toddler with pigtails. His wife and Eloise, you assume.",
+			   "VetHouse.16": "Dr. Jacob's workbook:^There has been an increase in small animals brought in with contusions and crushed bones, suggesting the presence of predators in the area.",
+                "DeepDark.0": "The chest contains neatly folded children's clothing and an array of toys and books, all placed with loving care.",
+                "DeepDark.1": "\"Friends are the family we choose\"",
+                "DeepDark.2": "The ladder looks worn, the wood gouged with claw marks.",
+                "DeepDark.3": "This garden bed looks well tended, as though someone takes great pride in attending to it.",
+                "DeepDark.4": "A battered journal. The writing within is sloppy and almost impossible to read."
 
                   }
-},
+                
+    },
 
 /*
 {	"Action": "EditData",
@@ -445,7 +508,7 @@
 {
 "Action": "EditMap",
 "Target": "Maps/Town",
-"FromFile": "assets/TownHerbert-Core.tmx",
+"FromFile": "assets/Patches/TownHerbert-Core.tmx",
 "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
 "When": {
       "HasMod:tiger.herbmapss":true,
@@ -457,7 +520,7 @@
 {
     "Action": "EditMap",
     "Target": "Maps/Town",
-    "FromFile": "assets/TownHerbert-SVE.tmx",
+    "FromFile": "assets/Patches/TownHerbert-SVE.tmx",
     "ToArea": { "X": 112, "Y": 95, "Width": 8, "Height": 9  },
 "When": {
     "HasMod:FlashShifter.StardewValleyExpandedALL":true,
@@ -468,7 +531,7 @@
 {
 "Action": "EditMap",
 "Target": "Maps/Town",
-"FromFile": "assets/TownHerbert-KIM.tmx",
+"FromFile": "assets/Patches/TownHerbert-KIM.tmx",
 "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
 "When": {
     "HasMod:DaisyNiko.SVR2":false,
@@ -479,7 +542,7 @@
 {
     "Action": "EditMap",
     "Target": "Maps/Town",
-    "FromFile": "assets/TownHerbert-SDR2.tmx",
+    "FromFile": "assets/Patches/TownHerbert-SDR2.tmx",
     "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
 "When": {
     "HasMod:DaisyNiko.SVR2":true,
@@ -491,7 +554,7 @@
 {
     "Action": "EditMap",
     "Target": "Maps/Town",
-    "FromFile": "assets/TownHerbert-KIM.tmx",
+    "FromFile": "assets/Patches/TownHerbert-KIM.tmx",
     "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
     "When": {
     "HasMod:DaisyNiko.SVR2":true,
@@ -503,7 +566,7 @@
 {
     "Action": "EditMap",
     "Target": "Maps/Town",
-    "FromFile": "assets/TownHerbert-SDR2.tmx",
+    "FromFile": "assets/Patches/TownHerbert-SDR2.tmx",
     "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
 "When": {
     "HasMod:DaisyNiko.SVR2":true,
@@ -516,7 +579,7 @@
 {
     "Action": "EditMap",
     "Target": "Maps/Town",
-    "FromFile": "assets/TownHerbert-core.tmx",
+    "FromFile": "assets/Patches/TownHerbert-core.tmx",
     "ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 13  },
 "When": {
     "HasMod:tiger.herbmapss":true,

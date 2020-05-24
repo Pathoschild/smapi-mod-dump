@@ -7,6 +7,7 @@ In this file you can define which idle activities is declared for an NPC compani
 **Format**
 
 ```js
+// Data/IdleNPCDefinitions
 {
   "<NPC_name>": "<behaviors>/<tendencies>/<duration range>"
 }
@@ -31,6 +32,7 @@ After generated duration timed out, then game try to change behavior. When is ch
 **Example**
 
 ```js
+// Data/IdleNPCDefinitions
 {
   "Abigail": "Abigail_animate Abigail_lookaround/5 2/10 30",
   "Alex": "Alex_animate Alex_lookaround/2.5 2.5/10 30",
@@ -47,10 +49,22 @@ After generated duration timed out, then game try to change behavior. When is ch
 }
 ```
 
+### None idle behavior
+
+Every companion MUST HAVE to defined an idle behavior in `Data/IdleNPCDefinitions`. If you don't want to define idle animations or other behaviors, just set up `everybody_idle`.
+
+```js
+// Data/IdleNPCDefinitions
+{
+  "MyNPC": "everybody_idle/1/100 100/"
+}
+```
+
 ## Define behavior instances
 
 **Format**
 ```js
+// Data/IdleBehaviors
 {
   "<NameYOurBehaviorInstanceHere>": "<behaviorKind>/<parameters>"
 }
@@ -91,6 +105,7 @@ Definition line: `idle`
 **Example**
 
 ```js
+// Data/IdleBehaviors
 {
   "Abigail_animate": "animate/abigail_sitting abigail_flute",
   "Abigail_lookaround": "lookaround/2 5",
@@ -125,6 +140,7 @@ You can define idle animation frames in `Data/animationDescriptions`
 
 **Format**
 ```js
+// Data/AnimationDescriptions
 {
   "<animationName>": "<introFrames>/<loopFrames>/<outroFrames>"
 }
@@ -138,6 +154,7 @@ Find a spritesheet of your NPC and look to animation frames. May be hard to find
 **Example**
 
 ```js
+// Data/AnimationDescriptions
 {
   "abigail_flute": "0/16 16 17 17 18 18 19 19/0",
   "abigail_sitting": "26 26 26 26/27/26 26 26 26",

@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Greenhouse Entry Mod",
+    "Author": "Pancham138",
+    "Version": "1.0.0",
+    "Description": "Allows to set custom entry point of Greenhouse.",
+    "UniqueID": "Pancham138.GreenhouseEntryMod",
+    "EntryDll": "GreenhouseEntryMod.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:6150" ]
+}

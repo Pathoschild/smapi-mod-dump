@@ -92,6 +92,7 @@ namespace NpcAdventure
                 && this.CanRecruit()
                 && csm.Name == e.Npc?.Name
                 && csm.CanPerformAction()
+                && !this.Config.RequestsWithShift
                 && e.Npc.CurrentDialogue.Count == 0
                 && Helper.CanRequestDialog(this.Farmer, e.Npc, csm.CurrentStateFlag == StateFlag.RECRUITED))
             {

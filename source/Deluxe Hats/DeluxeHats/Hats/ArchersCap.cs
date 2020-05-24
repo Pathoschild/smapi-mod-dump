@@ -1,16 +1,14 @@
 ﻿using Netcode;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Network;
 using System;
-using System.Diagnostics;
-using System.Linq;
 
 namespace DeluxeHats.Hats
 {
     public static class ArchersCap
     {
         public const string Name = "Archer's Cap";
+        public const string Description = "Shots from slingshot deal more damage the further they travel.";
         public const double a = 1.0f;
         public static void Activate()
         {

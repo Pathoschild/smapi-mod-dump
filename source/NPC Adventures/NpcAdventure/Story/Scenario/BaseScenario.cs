@@ -7,5 +7,10 @@
 
         public abstract void Dispose();
         public abstract void Initialize();
+
+        internal GameMaster GetGameMaster()
+        {
+            return this.GameMaster as GameMaster;
+        }
     }
 }

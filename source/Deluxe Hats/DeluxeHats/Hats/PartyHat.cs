@@ -10,6 +10,7 @@ namespace DeluxeHats.Hats
     public static class PartyHat
     {
         public const string Name = "Party Hat";
+        public const string Description = "Gifts given on a birthdays give even more friendship.";
         public static void Activate()
         {
             HatService.Harmony.Patch(

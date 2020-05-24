@@ -25,7 +25,7 @@ namespace FarmAnimalVarietyRedux
         public static IMonitor ModMonitor { get; private set; }
 
         /// <summary>A list of all the animals.</summary>
-        public static List<Animal> Animals { get; private set; } = new List<Animal>();
+        public List<Animal> Animals { get; private set; } = new List<Animal>();
 
         /// <summary>The custom animal data for the custom farm animals.</summary>
         public Dictionary<string, string> DataStrings { get; private set; } = new Dictionary<string, string>();
@@ -35,6 +35,9 @@ namespace FarmAnimalVarietyRedux
 
         /// <summary>The singleton instance of the <see cref="ModEntry"/>.</summary>
         public static ModEntry Instance { get; set; }
+
+        /// <summary>Provides basic FAVR apis.</summary>
+        public IApi Api { get; private set; }
 
 
         /*********
@@ -47,9 +50,17 @@ namespace FarmAnimalVarietyRedux
             ModHelper = this.Helper;
             ModMonitor = this.Monitor;
             Instance = this;
+            Api = new Api();
 
             ApplyHarmonyPatches();
+
+            // add the default animals to the data strings
+            LoadDefaultAnimals();
         }
+
+        /// <summary>Expose the Api to other mods.</summary>
+        /// <returns>An instance of the <see cref="Api"/>.</returns>
+        public override object GetApi() => new Api();
 
         /// <summary>This will call when loading each asset, if the mail asset is being loaded, return true as we want to edit this.</summary>
         /// <typeparam name="T">The type of the assets being loaded.</typeparam>
@@ -63,8 +74,7 @@ namespace FarmAnimalVarietyRedux
         public void Edit<T>(IAssetData asset)
         {
             var data = asset.AsDictionary<string, string>().Data;
-            foreach (var dataString in DataStrings)
-                data.Add(dataString);
+            data = DataStrings;
         }
 
         /// <summary>Load all the sprites for the new animals from the loaded content packs.</summary>
@@ -170,8 +180,7 @@ namespace FarmAnimalVarietyRedux
             }
 
             // print all added farm animals to trace
-            foreach (var animalDataString in DataStrings)
-                this.Monitor.Log($"{animalDataString.Key}: {animalDataString.Value}");
+            PrintAnimalData();
 
             // invalidate farm animal cache to add the new data strings to it
             this.Helper.Content.InvalidateCache("Data/FarmAnimals");
@@ -204,6 +213,21 @@ namespace FarmAnimalVarietyRedux
             );
 
             harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.FarmAnimal), nameof(FarmAnimal.updateWhenNotCurrentLocation)),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(FarmAnimalPatch), nameof(FarmAnimalPatch.UpdateWhenNotCurrentLocationPrefix)))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.FarmAnimal), "behaviors"),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(FarmAnimalPatch), nameof(FarmAnimalPatch.BehaviorsPrefix)))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.FarmAnimal), "findTruffle"),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(FarmAnimalPatch), nameof(FarmAnimalPatch.FindTrufflePrefix)))
+            );
+
+            harmony.Patch(
                 original: AccessTools.Constructor(typeof(StardewValley.Menus.PurchaseAnimalsMenu), new Type[] { typeof(List<StardewValley.Object>) }),
                 prefix: new HarmonyMethod(AccessTools.Method(typeof(PurchaseAnimalsMenuPatch), nameof(PurchaseAnimalsMenuPatch.ConstructorPrefix)))
             );
@@ -211,6 +235,16 @@ namespace FarmAnimalVarietyRedux
             harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Menus.PurchaseAnimalsMenu), nameof(PurchaseAnimalsMenu.getAnimalDescription)),
                 postfix: new HarmonyMethod(AccessTools.Method(typeof(PurchaseAnimalsMenuPatch), nameof(PurchaseAnimalsMenuPatch.GetAnimalDescriptionPostFix)))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Menus.PurchaseAnimalsMenu), nameof(PurchaseAnimalsMenu.receiveKeyPress)),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(PurchaseAnimalsMenuPatch), nameof(PurchaseAnimalsMenuPatch.ReceiveKeyPressPrefix)))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Menus.PurchaseAnimalsMenu), nameof(PurchaseAnimalsMenu.receiveGamePadButton)),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(PurchaseAnimalsMenuPatch), nameof(PurchaseAnimalsMenuPatch.ReceiveGamePadButtonPrefix)))
             );
 
             harmony.Patch(
@@ -284,6 +318,81 @@ namespace FarmAnimalVarietyRedux
             var jaModData = this.Helper.ModRegistry.Get("spacechase0.JsonAssets");
             var jaInstance = (Mod)jaModData.GetType().GetProperty("Mod", BindingFlags.Public | BindingFlags.Instance).GetValue(jaModData);
             jaInstance.GetType().GetMethod("initStuff", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(jaInstance, new object[] { false });
+        }
+
+        /// <summary>Print all the custom animal data.</summary>
+        private void PrintAnimalData()
+        {
+            // print data string
+            foreach (var animalDataString in DataStrings)
+                this.Monitor.Log($"{animalDataString.Key}: {animalDataString.Value}");
+
+            // print animal objects
+            foreach (var animal in Animals)
+            {
+                this.Monitor.Log($"ANIMALDATA FOR: {animal.Name}\nBuyable: {animal.Data.Buyable}\tDaysToProduce: {animal.Data.DaysToProduce}\tDaysTillMature: {animal.Data.DaysTillMature}\tSoundId: {animal.Data.SoundId}\tFrontAndBackSpriteWidth: {animal.Data.FrontAndBackSpriteWidth}\tFrontAndBackSpriteHeight: {animal.Data.FrontAndBackSpriteHeight}\tSideSpriteWidth: {animal.Data.SideSpriteWidth}\tSideSpriteHeight: {animal.Data.SideSpriteHeight}\tFullnessDrain: {animal.Data.FullnessDrain}\tHappinessDrain: {animal.Data.HappinessDrain}\tWalkSpeed: {animal.Data.WalkSpeed}\tBedTime: {animal.Data.BedTime}\tBuildings: [{string.Join(",", animal.Data.Buildings ?? default)}]\tSeasonsAllowedOutdoors: [{string.Join(",", animal.Data.SeasonsAllowedOutdoors ?? default)}]\tShopDescription: {animal.Data.AnimalShopInfo?.Description}\tShopBuyPrice: {animal.Data.AnimalShopInfo?.BuyPrice}");
+                this.Monitor.Log($"SUBTYPES FOR: {animal.Name}");
+                foreach (var subType in animal.SubTypes)
+                {
+                    this.Monitor.Log($"Name: {subType.Name}");
+                    PrintAnimalProduce(subType.Produce);
+                }
+            }
+        }
+
+        /// <summary>Print the passed <see cref="AnimalProduce"/>.</summary>
+        /// <param name="animalProduce">The <see cref="AnimalProduce"/> to print.</param>
+        private void PrintAnimalProduce(AnimalProduce animalProduce)
+        {
+            if (animalProduce.AllSeasons != null)
+                PrintAnimalProduceSeason(animalProduce.AllSeasons);
+            if (animalProduce.Spring != null)
+                PrintAnimalProduceSeason(animalProduce.Spring);
+            if (animalProduce.Summer != null)
+                PrintAnimalProduceSeason(animalProduce.Summer);
+            if (animalProduce.Fall != null)
+                PrintAnimalProduceSeason(animalProduce.Fall);
+            if (animalProduce.Winter != null)
+                PrintAnimalProduceSeason(animalProduce.Winter);
+        }
+
+        /// <summary>Print the passed <see cref="AnimalProduceSeason"/>.</summary>
+        /// <param name="animalProduceSeason">The <see cref="AnimalProduceSeason"/> to print.</param>
+        private void PrintAnimalProduceSeason(AnimalProduceSeason animalProduceSeason)
+        {
+            if (animalProduceSeason.Products != null)
+            {
+                this.Monitor.Log("Products:");
+                foreach (var product in animalProduceSeason.Products)
+                    this.Monitor.Log($"Id: {product?.Id}\tHarvestType: {product?.HarvestType}\tToolName: {product?.ToolName}");
+            }
+
+            if (animalProduceSeason.DeluxeProducts != null)
+            {
+                this.Monitor.Log("DeluxeProducts:");
+                foreach (var deluxeProduct in animalProduceSeason.DeluxeProducts)
+                    this.Monitor.Log($"Id: {deluxeProduct?.Id}\tHarvestType: {deluxeProduct?.HarvestType}\tToolName: {deluxeProduct?.ToolName}");
+            }
+        }
+
+        /// <summary>Load all the default animals into the datastrings. This is so content packs can also edit default animals.</summary>
+        private void LoadDefaultAnimals()
+        {
+            // TODO: chicken
+
+            // TODO: duck
+
+            // TODO: rabbit
+
+            // TODO: dinosaur
+
+            // TODO: cow
+
+            // TODO: goat
+
+            // TODO: pig
+
+            // TODO: sheep
         }
     }
 }

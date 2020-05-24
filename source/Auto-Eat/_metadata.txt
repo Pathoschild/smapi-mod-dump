@@ -5,12 +5,10 @@ mods:
    Auto-Eat
 
 latest commit:
-   commit 2192e1da0bb595e59812e070056bf593a3458d10
-   Merge: 74c4b13 d0e6d98
+   commit 7af3acffc2194cdc7fb4d1051ed1eb7d7d8fc48b
+   Merge: b8738db d67d164
    Author: Permamiss <39325797+Permamiss@users.noreply.github.com>
-   Date:   Wed Mar 27 20:16:56 2019 -0700
+   Date:   Sat May 23 01:40:47 2020 -0700
    
-       Merge pull request #2 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Merge branch 'master' of https://github.com/Permamiss/Auto-Eat
    

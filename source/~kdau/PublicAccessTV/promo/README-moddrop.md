@@ -6,7 +6,7 @@ This mod is largely based on the [Stardew Predictor](https://mouseypounds.github
 
 This version of Public Access TV is compatible with **Stardew Valley 1.4.x**. When SDV 1.5 is released, some of this mod's predictions will start being wrong. I'll put out a new version at that point.
 
-This mod should work on **Linux, Mac, Windows and Android**.
+This mod should work on **Linux, macOS, Windows and Android**.
 
 There are no known problems with multiplayer use. Only players with the mod installed will see the new channels.
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
-using NpcAdventure.Internal;
-using NpcAdventure.Utils;
+using NpcAdventure.Dialogues;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;

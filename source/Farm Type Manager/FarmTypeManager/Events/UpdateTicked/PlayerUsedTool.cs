@@ -7,7 +7,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-
+using StardewValley.Tools;
 
 namespace FarmTypeManager
 {
@@ -22,7 +22,7 @@ namespace FarmTypeManager
             {
                 UsingToolOnPreviousTick = Game1.player.UsingTool; //update the "last tick" value
 
-                if (Game1.player.UsingTool) //if the player started using a tool on this tick
+                if (Game1.player.UsingTool && !(Game1.player.CurrentTool is Axe)) //if the player stopped using a tool on this tick
                 {
                     Vector2 targetTile = new Vector2((int)(Game1.player.GetToolLocation().X / Game1.tileSize), (int)(Game1.player.GetToolLocation().Y / Game1.tileSize)); //get the tile on which the tool was used
                     Rectangle targetBox = new Rectangle(((int)targetTile.X) * 64, ((int)targetTile.Y) * 64, Game1.tileSize, Game1.tileSize); //get a rectangle representing the target tile
@@ -39,12 +39,7 @@ namespace FarmTypeManager
                                 IReflectedField<Farmer> lastUser = Utility.Helper.Reflection.GetField<Farmer>(Game1.player.CurrentTool, "lastUser", false); //get the protected "lastUser" field of this tool
                                 lastUser?.SetValue(Game1.player); //set "lastUser" to the player
 
-                                bool destroyed = clump.Clump.Value.performToolAction(Game1.player.CurrentTool, 0, targetTile, Game1.currentLocation); //make the inner ResourceClump react to being hit by the tool
-
-                                if (destroyed) //if this clump was "destroyed" by this tool hit
-                                {
-                                    ltf.RemoveAt(x); //remove it from the list
-                                }
+                                clump.performToolAction(Game1.player.CurrentTool, 0, targetTile, Game1.currentLocation); //make the inner ResourceClump react to being hit by the tool
                             }
                         }
                     }

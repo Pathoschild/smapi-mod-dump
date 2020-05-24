@@ -7,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class PumpkinMask
     {
         public const string Name = "Pumpkin Mask";
+        public const string Description = "Spawn a horse and mount it.\nThe horse will disappear when you unmount it.";
         private static Horse daredevil;
         public static void Activate()
         {

@@ -1,7 +1,7 @@
 {
   "Name": "Gardening TV Channel",
   "Author": "HisameArtWork&FallToot",
-  "Version": "1.0.0",
+  "Version": "1.1.1", // fixed locally
   "Description": "New TV channel that shows gardening tips",
   "UniqueID": "HisameArtwork.GardeningChannel",
   "EntryDll": "GardeningChannel.dll",

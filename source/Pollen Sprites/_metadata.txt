@@ -1,0 +1,13 @@
+url:
+   https://github.com/Esca-MMC/PollenSprites.git
+
+mods:
+   Pollen Sprites
+
+latest commit:
+   commit 8601695a8a9e7bc3c0834f4b01f13434e4638670
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Sat May 23 08:42:47 2020 -0500
+   
+       Improve comments in PollenSprite class
+   

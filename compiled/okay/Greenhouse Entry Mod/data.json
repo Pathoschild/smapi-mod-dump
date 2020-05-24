@@ -1,0 +1,24 @@
+{
+  "Mods": [
+    {
+      "Name": "Oasis Greenhouse",
+      "Author": "DaisyNiko",
+      "UniqueID": "DaisyNiko.OasisGreenhouse",
+      "MinimumVersion": "1.0.0",
+      "MaximumVersion": null,
+      "EntryX": 10,
+      "EntryY": 26,
+      "FacingDirection": "Up"
+    },
+    {
+      "Name": "Custom Greenhouse",
+      "Author": "Forkmaster",
+      "UniqueID": "Forkmaster.CustomGreenhouse",
+      "MinimumVersion": "1.0.0",
+      "MaximumVersion": null,
+      "EntryX": 14,
+      "EntryY": 31,
+      "FacingDirection": "Up"
+    }
+  ]
+}

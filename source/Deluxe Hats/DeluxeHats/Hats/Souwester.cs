@@ -7,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class Souwester
     {
         public const string Name = "Sou'wester";
+        public const string Description = "While outside in the rain, gain the Fishing in the Rain Buff:\n+4 Fishing";
         public static void Activate()
         {
             HatService.OnUpdateTicked = (e) =>

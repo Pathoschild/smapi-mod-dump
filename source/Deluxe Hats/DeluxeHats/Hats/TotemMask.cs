@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -8,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class TotemMask
     {
         public const string Name = "Totem Mask";
+        public const string Description = "Chance not to consume totem on use.";
 
         private const float saveTotemChance = 0.40f;
         public static void Activate()

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "RunningKey",
   "Author": "Strato35",
-  "Version": "1.0.1", // fixed locally
+  "Version": "1.0.2",
   "Description": "Running by pressing a key",
   "UniqueID": "Strato35.RunningKey",
   "EntryDll": "RunningKey.dll",

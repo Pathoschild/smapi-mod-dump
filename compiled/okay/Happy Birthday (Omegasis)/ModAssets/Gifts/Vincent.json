@@ -44,6 +44,13 @@
   {
     "minRequiredHearts": 0,
     "maxRequiredHearts": 20,
+    "objectID": "StardewValley.Object.Sap",
+    "minAmount": 1,
+    "maxAmount": 1
+  },
+  {
+    "minRequiredHearts": 0,
+    "maxRequiredHearts": 20,
     "objectID": "StardewValley.Object.Morel",
     "minAmount": 1,
     "maxAmount": 1

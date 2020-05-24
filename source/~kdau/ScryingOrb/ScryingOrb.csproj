@@ -7,17 +7,5 @@
 		<EnableHarmony>true</EnableHarmony>
 		<ProjectGuid>{6B2D3929-4EFB-46AC-88C1-D0FAEED7AAC0}</ProjectGuid>
 	</PropertyGroup>
-	<ItemGroup>
-		<None Include="[JA]ScryingOrb\manifest.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Include="[JA]ScryingOrb\BigCraftables\ScryingOrb\big-craftable.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Include="[JA]ScryingOrb\BigCraftables\ScryingOrb\big-craftable.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<Import Project="..\common.projitems" Label="Shared" />
 	<Import Project="..\Common\PredictiveCore.projitems" Label="Shared" />
 </Project>

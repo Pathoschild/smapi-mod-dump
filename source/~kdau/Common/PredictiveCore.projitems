@@ -17,6 +17,7 @@
 		<Compile Include="$(MSBuildThisFileDirectory)src\Trains.cs" />
 		<Compile Include="$(MSBuildThisFileDirectory)src\Utilities.cs" />
 		<Compile Include="$(MSBuildThisFileDirectory)src\APIs\GMCM.cs" />
-		<Compile Include="$(MSBuildThisFileDirectory)src\APIs\JA.cs" />
+		<Compile Include="$(MSBuildThisFileDirectory)src\APIs\JsonAssets.cs" />
 	</ItemGroup>
+	<Import Project="common.projitems" Label="Shared" />
 </Project>

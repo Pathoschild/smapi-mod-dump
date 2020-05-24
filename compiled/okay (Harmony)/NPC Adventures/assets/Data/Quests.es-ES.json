@@ -1,0 +1,6 @@
+﻿{
+  "1": "Location/Comienza una nueva aventura/Marlon quiere hablar contigo sobre los residentes del pueblo. Entra al gremio de aventureros entre las 14 hrs y las 22 hrs para reunirte con él./Entra en el gremio de aventureros/AdventureGuild/0/false",
+  "2": "Basic/Invita a alguien que te acompañe/Marlon te ha contado algo especial de los residentes del pueblo. Preguntale a un soltero o soltera que te acompañe y ve qué es lo que te dicen. Quizás no te acompañen hasta que te conozcan mejor./Reclutar un compañero/recruit/250/true/3",
+  "3": "Recruitment/Recluta a 5 compañeros/Te juntaste con tu primer compañero, pero hay más. Recluta exitosamente a un total de 5 compañeros./null/5/1000/true/4",
+  "4": "Recruitment/Cuantos más, mejor/Conoce aún mejor a tus compañeros. Invita exitosamente a 10 compañeros a seguirte./null/10/1250/true"
+}

@@ -1,10 +1,8 @@
-﻿using System;
-using Harmony;
-using Microsoft.Xna.Framework;
+﻿using Harmony;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Objects;
 
 namespace DeluxeHats
 {
@@ -29,6 +27,10 @@ namespace DeluxeHats
             helper.Events.Player.InventoryChanged += HatService.InventoryChanged;
             helper.Events.Input.ButtonPressed += HatService.ButtonPressed;
             helper.Events.GameLoop.DayEnding += HatService.DayEnding;
+
+            HatService.Harmony.Patch(
+                original: AccessTools.Method(typeof(Hat), "loadDisplayFields"),
+                prefix: new HarmonyMethod(typeof(HatService), nameof(HatService.LoadDisplayFields_Prefix)));
         }
 
         private void SaveLoaded(object sender, SaveLoadedEventArgs e)

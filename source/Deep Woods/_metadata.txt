@@ -5,14 +5,9 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 7c642bc6b6c00acaf82b10043a9375448571019b
+   commit 0e6157cf3d8c6b89d6d754ad7d3f49bf7801132d
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Wed Dec 18 21:55:20 2019 +0100
+   Date:   Sun May 24 21:42:25 2020 +0200
    
-       Compatibility with SDV1.4:
-       * Fixed method signatures
-       * Remove DeepWoods locations from cache when removing the from game
-       * Updated some of the logic to fit changes in game (daily luck, animation rendering, draw logic)
-       
-       Thanks to Mizzion for the preliminary patch!
+       Fixed crash bug caused by too early i18n initialization.
    

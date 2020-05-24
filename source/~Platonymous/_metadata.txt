@@ -45,12 +45,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 4c71fad8f1fe557dd148395b5a521bae148b6ef9
-   Merge: 2c0132b 27a9324
+   commit 8fc9d7193ed131a580dcd230287fd15f23813126
    Author: David <david@millionideas.de>
-   Date:   Thu Apr 23 15:05:16 2020 +0200
+   Date:   Tue May 12 13:32:58 2020 +0200
    
-       Merge pull request #100 from kdau/master
-       
-       TMXL: compatibility with Save Anywhere
+       update for SMAPI 3.6
    

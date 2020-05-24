@@ -30,6 +30,21 @@ namespace FarmAnimalVarietyRedux.Models
         /*********
         ** Public Methods
         *********/
+        /// <summary>Construct an instance.</summary>
+        /// <param name="allSeasons">The items the animal can produce all year round.</param>
+        /// <param name="spring">The items the animal can produce in spring.</param>
+        /// <param name="summer">The items the animal can produce in summer.</param>
+        /// <param name="fall">The items the animal can produce in fall.</param>
+        /// <param name="winter">The items the animal can produce in winter.</param>
+        public AnimalProduce(AnimalProduceSeason allSeasons = null, AnimalProduceSeason spring = null, AnimalProduceSeason summer = null, AnimalProduceSeason fall = null, AnimalProduceSeason winter = null)
+        {
+            AllSeasons = allSeasons;
+            Spring = spring;
+            Summer = summer;
+            Fall = fall;
+            Winter = winter;
+        }
+
         /// <summary>Get a random product id.</summary>
         /// <param name="harvestType">The harvest type of the item.</param>
         /// <returns>A random product id.</returns>

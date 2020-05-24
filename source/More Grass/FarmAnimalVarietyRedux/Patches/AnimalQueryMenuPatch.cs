@@ -37,8 +37,8 @@ namespace FarmAnimalVarietyRedux.Patches
                     building.color.Value = Color.White;
 
                 // check the building the player is currently hovering on
-                Building buildingAt = farm.getBuildingAt(tile);
-                if (buildingAt != null)
+                Building hoveredBuilding = farm.getBuildingAt(tile);
+                if (hoveredBuilding != null)
                 {
                     // set the highlight color of the currently hovered building based on if the animal can live in the building
                     var highLightColor = Color.Red * .8f; ;
@@ -46,28 +46,24 @@ namespace FarmAnimalVarietyRedux.Patches
                     // if 'buildingTypeILiveIn' is used, it's a default game animal
                     if (!string.IsNullOrEmpty(animal.buildingTypeILiveIn.Value))
                     {
-                        if (buildingAt.buildingType.Value.Contains(animal.buildingTypeILiveIn.Value) && !(buildingAt.indoors.Value as AnimalHouse).isFull())
+                        if (hoveredBuilding.buildingType.Value.Contains(animal.buildingTypeILiveIn.Value) && !(hoveredBuilding.indoors.Value as AnimalHouse).isFull())
                             highLightColor = Color.LightGreen * .8f;
                     }
                     else // animal is a custom animal
                     {
                         // get animal data
-                        foreach (var newAnimal in ModEntry.Animals)
+                        var customAnimal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animal.type);
+                        if (customAnimal != null)
                         {
-                            if (!newAnimal.SubTypes.Where(subType => subType.Name == animal.type).Any())
-                                continue;
-
-                            foreach (var building in newAnimal.Data.Buildings)
+                            foreach (var building in customAnimal.Data.Buildings)
                             {
-                                if (buildingAt.buildingType.Value.ToLower() == building.ToLower() && !(buildingAt.indoors.Value as AnimalHouse).isFull())
+                                if (hoveredBuilding.buildingType.Value.ToLower() == building.ToLower() && !(hoveredBuilding.indoors.Value as AnimalHouse).isFull())
                                     highLightColor = Color.LightGreen * .8f;
                             }
-
-                            break;
                         }
                     }
 
-                    buildingAt.color.Value = highLightColor;
+                    hoveredBuilding.color.Value = highLightColor;
                 }
             }
 
@@ -193,14 +189,12 @@ namespace FarmAnimalVarietyRedux.Patches
                 }
                 else // animal being moved is a custom animal
                 {
-                    foreach (var newAnimal in ModEntry.Animals)
+                    var customAnimal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animal.type);
+                    if (customAnimal != null)
                     {
-                        if (!newAnimal.SubTypes.Where(subType => subType.Name == animal.type).Any())
-                            continue;
-
                         // keep track of whether the animal can live in the building to determine whether to display the 'I Can't Live Here' message
                         var canAnimalLiveHere = false;
-                        foreach (var building in newAnimal.Data.Buildings)
+                        foreach (var building in customAnimal.Data.Buildings)
                         {
                             if (buildingAt.buildingType.Value.ToLower() == building.ToLower())
                             {
@@ -223,8 +217,6 @@ namespace FarmAnimalVarietyRedux.Patches
                             Game1.showRedMessage(Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_CantLiveThere", animal.shortDisplayType()));
                             isBuildingValid = false;
                         }
-
-                        break;
                     }
                 }
 
@@ -579,23 +571,20 @@ namespace FarmAnimalVarietyRedux.Patches
                 var housingString = Game1.content.LoadString("Strings\\UI:AnimalQuery_ChooseBuilding", animal.displayHouse, animal.displayType);
 
                 // if the animal is a custom animal construct a different string to accomodate more than 1 possible building
-                foreach (var customAnimal in ModEntry.Animals)
+                var customAnimal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animal.type);
+                if (customAnimal != null)
                 {
-                    if (customAnimal.SubTypes.Where(subType => subType.Name == animal.type).Any())
+                    var buildingsString = "";
+
+                    for (var i = 0; i < customAnimal.Data.Buildings.Count; i++)
                     {
-                        var buildingsString = "";
-
-                        for (var i = 0; i < customAnimal.Data.Buildings.Count; i++)
-                        {
-                            var building = customAnimal.Data.Buildings[i];
-                            buildingsString += building;
-                            if (i != customAnimal.Data.Buildings.Count - 1)
-                                buildingsString += ", ";
-                        }
-
-                        housingString = $"Please choose a: {buildingsString} for your {animal.type}";
-                        break;
+                        var building = customAnimal.Data.Buildings[i];
+                        buildingsString += building;
+                        if (i != customAnimal.Data.Buildings.Count - 1)
+                            buildingsString += ", ";
                     }
+
+                    housingString = $"Please choose a: {buildingsString} for your {animal.type}";
                 }
 
                 // housing string background

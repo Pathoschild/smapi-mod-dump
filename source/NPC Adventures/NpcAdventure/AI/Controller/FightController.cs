@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NpcAdventure.Dialogues;
 using NpcAdventure.Loader;
 using NpcAdventure.Utils;
 using StardewModdingAPI;
@@ -10,17 +11,21 @@ using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace NpcAdventure.AI.Controller
 {
     internal class FightController : FollowController, Internal.IDrawable
     {
+        public const float DEFEND_TILE_RADIUS = 6f;
+        public const float DEFEND_TILE_RADIUS_WARRIOR = 9f;
+
         private const int COOLDOWN_EFFECTIVE_THRESHOLD = 36;
         private const int COOLDOWN_INITAL = 50;
         private const int COOLDOWN_MINIMUM = COOLDOWN_INITAL - COOLDOWN_EFFECTIVE_THRESHOLD;
-        private const float DEFEND_TILE_RADIUS = 7f;
-        private bool potentialIddle = false;
+        private const float FARMER_AGGRO_RADIUS = 48f;
+        private const float RETURN_RADIUS = 11f * Game1.tileSize;
+        private const float PATH_NULL_RETURN_RADIUS = 4f * Game1.tileSize;
+        private bool potentialIdle = false;
         private readonly IModEvents events;
         private readonly MeleeWeapon weapon;
         private readonly Dictionary<string, string> bubbles;
@@ -28,14 +33,12 @@ namespace NpcAdventure.AI.Controller
         private readonly float attackRadius;
         private readonly float backupRadius;
         private readonly double fightSpeechTriggerThres;
+        private readonly List<FarmerSprite.AnimationFrame>[] attackAnimation;
         private int weaponSwingCooldown = 0;
         private int fightBubbleCooldown = 0;
+        private int fistCoolDown = 0;
         private bool defendFistUsed;
-        private List<FarmerSprite.AnimationFrame>[] attackAnimation;
         private int attackSpeedPitch = 0;
-
-        public event EventHandler<EventArgs> VisibleChanged;
-        public event EventHandler<EventArgs> DrawOrderChanged;
 
         public int SwingThreshold {
             get {
@@ -68,7 +71,7 @@ namespace NpcAdventure.AI.Controller
             this.events = events;
             this.weapon = this.GetSword(sword);
             this.bubbles = content.LoadStrings("Strings/SpeechBubbles");
-            this.fightSpeechTriggerThres = ai.Csm.HasSkill("warrior") ? 0.33 : 0.15;
+            this.fightSpeechTriggerThres = ai.Csm.HasSkill("warrior") ? 0.25 : 0.7;
 
             this.attackAnimation = new List<FarmerSprite.AnimationFrame>[4]
             {
@@ -143,65 +146,85 @@ namespace NpcAdventure.AI.Controller
 
         public override bool IsIdle => this.CheckIdleState();
 
-        public bool Visible => throw new NotImplementedException();
-
-        public int DrawOrder => throw new NotImplementedException();
-
         /// <summary>
-        /// Checks if spoted monster is a valid monster
+        /// Check aggro fight/defend radius for 
+        /// a valid monster for fight or returns companion to farmer
+        /// if no valid monster in specified fight/defend radius.
         /// </summary>
-        /// <param name="monster"></param>
-        /// <returns></returns>
-        private bool IsValidMonster(Monster monster)
+        private void CheckLeaderRadius()
         {
-            // Invisible monsters are invalid
-            if (monster.IsInvisible)
-                return false;
+            Vector2 i = this.follower.GetBoundingBox().Center.ToVector2();
+            Vector2 l = this.realLeader.GetBoundingBox().Center.ToVector2();
+            float distance = (l - i).Length();
+            float retRadius = this.joystick.pathToFollow != null ? RETURN_RADIUS : PATH_NULL_RETURN_RADIUS;
 
-            // Only moving rock crab is valid
-            if (monster is RockCrab crab)
-                return crab.isMoving();
-
-            // Only unarmored bug is valid
-            if (monster is Bug bug)
-                return !bug.isArmoredBug.Value;
-
-            // Only live mummy is valid
-            if (monster is Mummy mummy)
-                return mummy.reviveTimer.Value <= 0;
-
-            // All other monsters all valid
-            return true;
+            if (distance >= retRadius && this.leader is Monster)
+            {
+                // move back towards leader
+                this.potentialIdle = true;
+                this.leader = null;
+                this.pathFinder.GoalCharacter = null;
+            }
+            else if (distance < RETURN_RADIUS && this.leader == null)
+            {
+                this.leader = this.SearchForNewTarget();
+                if (this.leader != null)
+                {
+                    this.pathFinder.GoalCharacter = this.leader;
+                    this.PathfindingRemakeCheck(); // Force find path to monster immediatelly
+                }
+                else
+                {
+                    this.potentialIdle = true;
+                    this.pathFinder.GoalCharacter = null;
+                }
+            }
         }
 
         /// <summary>
         /// Check if is here any monster to fight
         /// </summary>
-        private void CheckMonsterToFight()
+        private Monster SearchForNewTarget()
         {
-            Monster monster = Helper.GetNearestMonsterToCharacter(this.follower, DEFEND_TILE_RADIUS);
+            float defendRadius = this.ai.Csm.HasSkill("warrior") ? DEFEND_TILE_RADIUS_WARRIOR : DEFEND_TILE_RADIUS;
+            Monster monster = this.FindMonster(defendRadius);
 
-            if (monster == null || !this.IsValidMonster(monster))
+            if (monster != null && Helper.IsValidMonster(monster))
             {
-                this.potentialIddle = true;
-                this.leader = null;
-                this.pathFinder.GoalCharacter = null;
-                return;
+                if (Game1.random.NextDouble() < .3f)
+                    this.DoFightSpeak(true);
+                this.ai.Monitor.Log("Found valid monster to defeat");
+                return monster;
             }
 
-            this.potentialIddle = false;
-            this.leader = monster;
-            this.pathFinder.GoalCharacter = this.leader;
-            this.DoFightSpeak();
+            return null;   
         }
 
-        private void DoFightSpeak()
+        /// <summary>
+        /// Find a monster in defined radius. 
+        /// </summary>
+        /// <param name="defendRadius"></param>
+        /// <returns>Null if no monster found, otherwise the monster</returns>
+        private Monster FindMonster(float defendRadius)
+        {
+            return Helper.GetNearestMonsterToCharacter(this.follower, defendRadius,
+                m => Vector2.Distance(
+                    m.GetBoundingBox()
+                        .Center
+                        .ToVector2(),
+                    this.realLeader
+                        .GetBoundingBox()
+                        .Center
+                        .ToVector2()) >= FARMER_AGGRO_RADIUS);
+        }
+
+        private void DoFightSpeak(bool onlyEmote = false)
         {
             // Cooldown not expired? Say nothing
             if (this.fightBubbleCooldown != 0)
                 return;
 
-            if (Game1.random.NextDouble() < this.fightSpeechTriggerThres && DialogueHelper.GetBubbleString(this.bubbles, this.follower, "fight", out string text))
+            if (!onlyEmote && Game1.random.NextDouble() < this.fightSpeechTriggerThres && DialogueProvider.GetBubbleString(this.bubbles, this.follower, "fight", out string text))
             {
                 bool isRed = this.ai.Csm.HasSkill("warrior") && Game1.random.NextDouble() < 0.1;
                 this.follower.showTextAboveHead(text, isRed ? 2 : -1);
@@ -231,15 +254,11 @@ namespace NpcAdventure.AI.Controller
             if (this.weaponSwingCooldown > this.SwingThreshold)
                 return false;
 
-            // Go iddle instantly when farmer is too far
-            if (Helper.Distance(this.realLeader.getTileLocationPoint(), this.follower.getTileLocationPoint()) > 11f)
-                return true;
-
             // Go iddle instantly when potential monster is not valid
-            if (this.leader is Monster && !this.IsValidMonster(this.leader as Monster))
+            if (this.leader is Monster && !Helper.IsValidMonster(this.leader as Monster))
                 return true;
 
-            return this.potentialIddle; // By default propagate potential iddle state as iddle state
+            return this.potentialIdle; // By default propagate potential iddle state as iddle state
         }
 
         public void DoWeaponSwing()
@@ -247,6 +266,11 @@ namespace NpcAdventure.AI.Controller
             if (this.weaponSwingCooldown > 0)
             {
                 this.weaponSwingCooldown--;
+            }
+
+            if (this.fistCoolDown > 0)
+            {
+                --this.fistCoolDown;
             }
 
             if (this.weaponSwingCooldown > this.SwingThreshold && !this.defendFistUsed)
@@ -260,8 +284,14 @@ namespace NpcAdventure.AI.Controller
             if (this.IsIdle || (!Context.IsPlayerFree && !Context.IsMultiplayer))
                 return;
 
-            if (this.leader == null)
-                this.CheckMonsterToFight();
+            this.CheckLeaderRadius();
+
+            if (e.IsOneSecond && !Helper.IsValidMonster(this.leader as Monster))
+            {
+                this.leader = null;
+                this.potentialIdle = true;
+                return;
+            }
 
             if (this.fightBubbleCooldown > 0)
                 --this.fightBubbleCooldown;
@@ -292,6 +322,7 @@ namespace NpcAdventure.AI.Controller
             {
                 attrs.knockBack *= 3.6f;
                 attrs.smashAround /= 2f;
+                this.fistCoolDown = 240;
             }
 
             if (this.ai.Csm.HasSkill("warrior"))
@@ -311,24 +342,23 @@ namespace NpcAdventure.AI.Controller
             companionBox.Inflate(4, 4); // Personal space
             effectiveArea.Inflate((int)(effectiveArea.Width * attrs.smashAround + attrs.addedEffectiveArea), (int)(effectiveArea.Height * attrs.smashAround + attrs.addedEffectiveArea));
 
-            if (!criticalFist && !this.defendFistUsed && this.ai.Csm.HasSkill("warrior") && companionBox.Intersects(enemyBox) && this.weaponSwingCooldown == this.CooldownTimeout)
+            if (!criticalFist && !this.defendFistUsed && this.ai.Csm.HasSkill("warrior") && companionBox.Intersects(enemyBox) && this.weaponSwingCooldown == this.CooldownTimeout && this.fistCoolDown <= 0)
             {
                 this.ai.Monitor.Log("Critical dangerous: Using defense fists!");
                 this.defendFistUsed = true;
-                this.DoDamage(true); // Force fist when no damage given to a monster with weapon
+                this.DoDamage(true); // Force fist when monster is too close
                 return;
             }
 
-            if (this.follower.currentLocation.damageMonster(effectiveArea, attrs.minDamage, attrs.maxDamage, false, attrs.knockBack, attrs.addedPrecision, attrs.critChance, attrs.critMultiplier, !criticalFist, this.realLeader as Farmer))
+            if (this.follower.currentLocation.DamageMonsterByCompanion(effectiveArea, attrs.minDamage, attrs.maxDamage,
+                attrs.knockBack, attrs.addedPrecision, attrs.critChance, attrs.critMultiplier, !criticalFist,
+                this.follower, this.realLeader as Farmer))
             {
                 if (criticalFist)
                 {
                     this.follower.currentLocation.playSound("clubSmash");
                     this.ai.Csm.CompanionManager.Hud.GlowSkill("warrior", Color.Red, 1);
-                }
-                else
-                {
-                    this.follower.currentLocation.playSound("clubhit");
+                    this.fistCoolDown = 1200;
                 }
 
                 if (criticalFist || (Game1.random.NextDouble() > .7f && Game1.random.NextDouble() < .3f))
@@ -391,10 +421,17 @@ namespace NpcAdventure.AI.Controller
 
         private int GetAttackPitch()
         {
-            Farmer farmer = this.ai.player as Farmer;
+            Farmer farmer = this.ai.player;
             int weaponSpeed = this.weapon?.speed.Value ?? 400;
             int swipeDelay = (400 - weaponSpeed) / 4;
-            int combatLevel = farmer?.combatLevel ?? 0;
+            int combatLevel = farmer.CombatLevel;
+
+            if (this.ai.Csm.HasSkill("warrior"))
+            {
+                // Warriors are more skilled
+                combatLevel += farmer.combatLevel >= 5 ? 2 : 1;
+            }
+
             double skill = combatLevel * Math.Log(Math.Pow(combatLevel, 2) + 1) + Math.Pow(combatLevel, 2) + combatLevel;
 
             return (int)Math.Round(skill) + Game1.random.Next(-10, 10) - swipeDelay + (int)Math.Round(Game1.player.DailyLuck);
@@ -429,6 +466,7 @@ namespace NpcAdventure.AI.Controller
                     this.AnimateMe();
                 }
 
+                this.joystick.NoCharging = true;
                 return -0.65f;
             }
             else if (distanceFromTarget <= this.attackRadius)
@@ -438,10 +476,17 @@ namespace NpcAdventure.AI.Controller
                     this.AnimateMe();
                 }
 
+                if (this.ai.Csm.HasSkill("scared"))
+                {
+                    this.follower.shake(100);
+                }
+
+                this.joystick.NoCharging = true;
                 return Math.Max(this.joystick.Speed - 0.1f, 0.1f);
             }
 
-            return 5.28f;
+            this.joystick.NoCharging = false;
+            return 6.11f;
         }
 
         protected override void PathfindingRemakeCheck()
@@ -450,7 +495,7 @@ namespace NpcAdventure.AI.Controller
 
             if (this.pathToFollow == null)
             {
-                this.potentialIddle = true;
+                this.potentialIdle = true;
                 this.ai.Monitor.Log($"Fight controller iddle, because can't find a path to monster '{this.leader?.Name}'");
             }
         }
@@ -458,9 +503,12 @@ namespace NpcAdventure.AI.Controller
         public override void Activate()
         {
             this.events.World.NpcListChanged += this.World_NpcListChanged;
+            this.joystick.BlockedTimer = 30;
             this.weaponSwingCooldown = 0;
             this.fightBubbleCooldown = 0;
-            this.potentialIddle = false;
+            this.potentialIdle = false;
+            this.fistCoolDown = 0;
+            this.CheckLeaderRadius();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -487,7 +535,7 @@ namespace NpcAdventure.AI.Controller
             this.events.World.NpcListChanged -= this.World_NpcListChanged;
             this.leader = null;
             this.pathFinder.GoalCharacter = null;
-            this.potentialIddle = true;
+            this.potentialIdle = true;
         }
 
         private class WeaponAttributes

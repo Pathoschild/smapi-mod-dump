@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6069
+IDs: Cherry.MultiYieldCrops
+update keys: Nexus:6069

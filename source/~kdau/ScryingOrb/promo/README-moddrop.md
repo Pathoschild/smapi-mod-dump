@@ -6,7 +6,7 @@ This mod is based on the [Stardew Predictor](https://mouseypounds.github.io/star
 
 This version of Scrying Orb is compatible with **Stardew Valley 1.4.x**. When SDV 1.5 is released, some of this mod's predictions will start being wrong. I'll put out a new version at that point.
 
-This mod should work on **Linux, Mac, Windows and Android**.
+This mod should work on **Linux, macOS, Windows and Android**.
 
 There are no known problems with multiplayer use. Every player should install the mod, even if they are not using the Scrying Orb.
 
@@ -28,7 +28,8 @@ If any of your other mods affect the areas this mod covers, the orb may make inc
 1. Install the [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) mod.
 1. To configure this mod without editing a JSON file, optionally install the [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) mod.
 1. Download this mod from the link in the header above.
-1. Unzip the mod and place *both* the `ScryingOrb` and `[JA]ScryingOrb` folders inside your `Mods` folder.
+1. Unzip the mod and place the `ScryingOrb` folder inside your `Mods` folder.
+1. If upgrading from 1.3.0 or earlier, remove the `[JA]ScryingOrb` folder from your `Mods` folder.
 1. Run the game using SMAPI.
 
 ## ![[Use]](https://kdau.gitlab.io/headers/use.png)

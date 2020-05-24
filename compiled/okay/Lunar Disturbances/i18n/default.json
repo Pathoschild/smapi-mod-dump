@@ -5,12 +5,15 @@
   "moon-text.phase-thirdqrt": "Third Quarter",
   "moon-text.phase-waningcres": "Waning Crescent",
   "moon-text.phase-waxingcres": "Waxing Crescent",
-  "moon-text.phase-waninggibb": "Waning Gibbeous",
-  "moon-text.phase-waxinggibb": "Waxing Gibbeous",
+  "moon-text.phase-waninggibb": "Waning Gibbous",
+  "moon-text.phase-waxinggibb": "Waxing Gibbous",
   "moon-text.phase-new": "New Moon",
   "moon-text.error": "Error",
   "moon-text.phase-blood": "Blood Moon",
-  
+  "moon-text.blue-moon": "Blue Moon",
+  "moon-text.harvest-moon": "Harvest Moon",
+  "moon-text.spirits-moon": "Spirits Moon",
+
   "moon-text.solareclipse": "It looks like a rare solar eclipse will darken the sky all day!",
 
   "moon-text.moonrise": "The moon rises! Today's phase is {{moonPhase}}.",
@@ -23,5 +26,9 @@
   "moon-text.newmoon_eff": "The powers of the new moon have caused {{cropsAffected}} crops to grow more slower...",
   "moon-desc.desc_moonphase": "Current Moon Phase: {{moonPhase}}",
 
+  "moon-text.supermoon": "The moon seems larger and more powerful today. It's a Super moon!",
+  "moon-text.bluemoon": "The moon seems quite blue tonight.",
+  "moon-text.harvestmoon": "The harvest moon rises, and you feel the power of the earth increase.",
+  "moon-text.spiritmoon": "A spooky moon for a spooky day rises! Strange, the phase isn't quite right eitehr..",
   "moon-text.bloodmoon_villager_generic": "It's a blood moon, what'cha doing talking to me, you crazy?!"
 }

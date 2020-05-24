@@ -2,14 +2,27 @@
 using NpcAdventure.Events;
 using NpcAdventure.Internal;
 using StardewValley;
+using System;
 using System.Linq;
 
 namespace NpcAdventure.Patches
 {
-    internal class MailBoxPatch
+    internal class MailBoxPatch : Patch<MailBoxPatch>
     {
-        private static readonly SetOnce<SpecialModEvents> events = new SetOnce<SpecialModEvents>();
-        private static SpecialModEvents Events { get => events.Value; set => events.Value = value; }
+        private SpecialModEvents Events { get; set; }
+        public override string Name => nameof(MailBoxPatch);
+
+        /// <summary>
+        /// Creates instance of mailbox game patch
+        /// </summary>
+        /// <param name="events"></param>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        public MailBoxPatch(SpecialModEvents events)
+        {
+            this.Events = events ?? throw new ArgumentNullException(nameof(events));
+            Instance = this;
+        }
 
         /// <summary>
         /// This patches mailbox read method on gamelocation and allow call custom logic 
@@ -17,10 +30,15 @@ namespace NpcAdventure.Patches
         /// </summary>
         /// <param name="__instance">Game location</param>
         /// <returns></returns>
-        internal static bool Before_mailbox(ref GameLocation __instance)
+        private static bool Before_mailbox(ref GameLocation __instance)
         {
-            if (Game1.mailbox.Count > 0)
+            try
             {
+                if (Game1.mailbox.Count <= 0)
+                {
+                    return true;
+                }
+
                 var letter = Game1.mailbox.First();
 
                 if (letter != null && letter.StartsWith("npcAdventures."))
@@ -34,19 +52,21 @@ namespace NpcAdventure.Patches
                         Player = Game1.player,
                     };
 
-                    Events.FireMailOpen(__instance, args);
+                    Instance.Events.FireMailOpen(__instance, args);
 
                     return false;
                 }
+            }
+            catch (Exception ex)
+            {
+                Instance.LogFailure(ex, nameof(Before_mailbox));
             }
 
             return true;
         }
 
-        internal static void Setup(HarmonyInstance harmony, SpecialModEvents events)
+        protected override void Apply(HarmonyInstance harmony)
         {
-            Events = events;
-
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
                 prefix: new HarmonyMethod(typeof(MailBoxPatch), nameof(MailBoxPatch.Before_mailbox))

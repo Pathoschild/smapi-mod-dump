@@ -151,7 +151,7 @@ namespace FarmTypeManager
                                 spawnCount--;
                                 SavedObject randomForage = forageObjects[Utility.RNG.Next(forageObjects.Count)]; //select a random object from the forage list
 
-                                int? spawnChance = randomForage.ConfigItem?.PercentChanceToSpawn; //get this object's spawn chance, if provided
+                                double? spawnChance = randomForage.ConfigItem?.PercentChanceToSpawn; //get this object's spawn chance, if provided
                                 if (spawnChance.HasValue && spawnChance.Value < Utility.RNG.Next(100)) //if this object "fails" its chance to spawn
                                 {
                                     skippedSpawns++; //increment skip counter
@@ -181,7 +181,7 @@ namespace FarmTypeManager
                                     {
                                         List<SavedObject> contentSave = Utility.ParseSavedObjectsFromItemList(new object[] { forage.ConfigItem.Contents[content] }, area.UniqueAreaID); //parse this into a saved object
 
-                                        int? contentSpawnChance = contentSave[0].ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                                        double? contentSpawnChance = contentSave[0].ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
                                         if (contentSpawnChance.HasValue && contentSpawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
                                         {
                                             forage.ConfigItem.Contents.RemoveAt(content); //remove this content from the forage object

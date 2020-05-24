@@ -1,0 +1,14 @@
+{
+  "SpawnOnAnyFarm": false,
+  "AllowSimultaneous": false,
+  "OutdoorSpawnLimit": 5,
+  "IndoorSpawnLimit": 2,
+  "WickedStatueRange": 9,
+  "WitchFlyovers": true,
+  "HighContrast": false,
+  "TrackingArrows": false,
+  "ExcludedBeasts": [],
+  "BerrybeastFace": "Random",
+  "CactusbeastSandblast": true,
+  "RootbeastHiding": true
+}

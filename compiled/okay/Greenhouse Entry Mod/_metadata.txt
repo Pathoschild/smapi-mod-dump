@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6150
+IDs: Pancham138.GreenhouseEntryMod
+update keys: Nexus:6150

@@ -7,6 +7,7 @@ mods:
    Farm Rearranger
    Hay Bales as Silos
    Limited Campfire Cooking
+   Multi Yield Crops
    Platonic Relationships
    Profit Margins
    Shop Tile Framework
@@ -14,12 +15,25 @@ mods:
    Upgrade Empty Cabins
 
 latest commit:
-   commit 059aa4894569782071bd8c21a7354b67eddc3d99
-   Merge: 461d9ab 3b6027c
+   commit 8646486c5d114165f1b85386c9874cd4840b7cfc
    Author: Yiminxue Zheng <33401364+ChroniclerCherry@users.noreply.github.com>
-   Date:   Tue May 5 19:24:00 2020 -0400
+   Date:   Sat May 23 19:34:17 2020 -0400
    
-       Merge pull request #25 from LyaVanLou/master
+       Develop (#27)
        
-       German Translation
+       * Overhauled the organization of the project
+       
+       * Refactored item creation to a builder design pattern, split logic for each itemstock to their own class, and all logic pertaining to itempriceandstock put ito its own class as well
+       
+       * Added documentation to all methods
+       
+       * Added config for verbose logging
+       
+       * Added update key and added harcoded ID for stone due to multiple invalid stone items in hobject information
+       
+       * Added vanilla shops to the content model and added them to inventory management. Supports multiple content packs targetting the same store
+       
+       * Added patches for vanilla shop stocks
+       
+       * Can remove specified JA packs from vanilla stores
    

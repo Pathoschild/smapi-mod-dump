@@ -1,0 +1,6 @@
+    {
+    	"label.message_Player_Walk_Through_ON": "Le joueur parcourt les animaux est ACTIVÉ",
+    	"label.message_Player_Walk_Through_OFF": "Le joueur parcourt les animaux est DÉSACTIVÉ",
+    	"label.message_Pets_Collide_With_Others_ON": "Les animaux entrent en collision avec les autres est ACTIVÉ",
+    	"label.message_Pets_Collide_With_Others_OFF": "Les animaux entrent en collision avec les autres est DÉSACTIVÉ"
+    }

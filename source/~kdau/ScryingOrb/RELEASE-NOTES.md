@@ -2,12 +2,13 @@
 
 [Scrying Orb](./)
 
-## 1.3.1
+## 1.4.0
 
 *Release pending.*
 
+* Consolidate mod folders, removing `[JA]ScryingOrb`
 * More natural format for dates thanks to Pathoschild
-* Updated Russian translation by DanyaKirichenko1
+* Update to Russian translation by DanyaKirichenko1
 
 ## 1.3.0
 

@@ -5,11 +5,9 @@ mods:
    Deluxe Hats
 
 latest commit:
-   commit e22bbcdb71b26bac6f24f357e88deb854331512e
+   commit 169eade376fd67079c52942c92fb3fe747342954
    Author: Domenic Simone <domenicsim1@gmail.com>
-   Date:   Sun May 3 21:04:10 2020 +1000
+   Date:   Sun May 24 19:58:59 2020 +1000
    
-       version 1.0.3
-       
-       Fedora, Fishing Hat, Official Cap, Sou'Wester.
+       version 1.0.5
    

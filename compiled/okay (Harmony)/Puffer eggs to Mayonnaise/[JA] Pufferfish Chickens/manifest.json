@@ -1,0 +1,11 @@
+{
+  "Name": "Pufferfish Mayonnaise for Pufferfish Chickens",
+  "Author": "GZhynko",
+  "Description": "Adds pufferfish mayonnaise.",
+  "Version": "1.0.0",
+  "UniqueID": "GZhynko.JsonAssets.Pufferfish_Chickens",
+  "UpdateKeys": ["Nexus:???"],
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.JsonAssets"
+  }
+}

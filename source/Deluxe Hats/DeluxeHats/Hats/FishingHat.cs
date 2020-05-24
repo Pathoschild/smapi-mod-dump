@@ -7,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class FishingHat
     {
         public const string Name = "Fishing Hat";
+        public const string Description = "While outside and not on the beach get the Shaded Buff:\n+2 Fishing";
         public static void Activate()
         {
             HatService.OnUpdateTicked = (e) =>

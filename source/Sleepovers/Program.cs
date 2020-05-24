@@ -18,8 +18,6 @@ namespace Sleepovers
         public static Random RNG = new Random(Guid.NewGuid().GetHashCode());
         public static NPC LastSleepoverNPC = null;
         public static bool SleepPrimed = false;
-        public static Warp WarpThere = new Warp(2, 2, "Town", 2, 2, false);
-        public static Warp WarpBack = null;
         
 
         public override void Entry(IModHelper helper)
@@ -43,9 +41,18 @@ namespace Sleepovers
             if (SleepPrimed)
             {
                 SleepPrimed = false;
-                WarpBack = new Warp(Game1.player.getTileX(), Game1.player.getTileY(), Game1.currentLocation.Name, Game1.player.getTileX(), Game1.player.getTileY(), false);
-                Game1.player.warpFarmer(WarpThere);
-                Game1.player.warpFarmer(WarpBack);
+                LastSleepoverNPC.farmerPassesThrough = true;
+            }
+            if (LastSleepoverNPC == null) return;
+            else if (LastSleepoverNPC.currentLocation != Game1.player.currentLocation)
+            {
+                LastSleepoverNPC.farmerPassesThrough = false;
+                LastSleepoverNPC = null;
+            }
+            else if (Math.Max(Math.Abs(Game1.player.Position.X - LastSleepoverNPC.Position.X), Math.Abs(Game1.player.Position.Y - LastSleepoverNPC.Position.Y)) > 64)
+            {
+                LastSleepoverNPC.farmerPassesThrough = false;
+                LastSleepoverNPC = null;
             }
         }
 
@@ -109,6 +116,7 @@ namespace Sleepovers
             Game1.player.mostRecentBed = Game1.player.Position;
             Game1.player.doEmote(24);
             Game1.player.freezePause = 2000;
+            LastSleepoverNPC = npc;
         }
 
         public void QuestionCallback(Farmer who, string npc)

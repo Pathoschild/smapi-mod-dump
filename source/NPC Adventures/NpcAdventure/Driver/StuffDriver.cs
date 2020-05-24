@@ -49,7 +49,6 @@ namespace NpcAdventure.Driver
                 if (!(objKv.Value is Package bag))
                     continue;
 
-                Vector2 chestPosition = bag.TileLocation;
                 BagDumpInfo bagInfo = new BagDumpInfo()
                 {
                     source = bag.GivenFrom,

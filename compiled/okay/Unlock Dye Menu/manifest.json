@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Unlock Dye Menu",
+  "Author": "Shaklin",
+  "Version": "1.0",
+  "Description": "Unlock Dye Menu",
+  "UniqueID": "shaklin.unlockdyemenu",
+  "EntryDll": "UnlockDyeMenu.dll",
+  "UpdateKeys": [ "Nexus: 6156" ],
+  "MinimumApiVersion": "2.10.1",
+}

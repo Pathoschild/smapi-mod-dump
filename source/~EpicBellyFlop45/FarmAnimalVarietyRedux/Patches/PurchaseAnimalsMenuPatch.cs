@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Buildings;
@@ -25,6 +26,13 @@ namespace FarmAnimalVarietyRedux.Patches
 
         /// <summary>The width of an animal clickable component.</summary>
         private const int IconWidth = 32;
+
+        /// <summary>A list of buildings that are valid for the animal to live in.</summary>
+        /// <remarks>This is used for the camera panning feature.</remarks>
+        private static List<Building> ValidBuildings = new List<Building>();
+
+        /// <summary>The current valid building the player is panned to.</summary>
+        private static int CurrentValidBuildingIndex;
 
 
         /*********
@@ -60,11 +68,9 @@ namespace FarmAnimalVarietyRedux.Patches
                 Rectangle shopIconSourceRectangle = new Rectangle(i % 3 * 16 * 2, 448 + i / 3 * 16, 32, 16);
 
                 // check if it's a custom animal
-                foreach (var animal in ModEntry.Animals)
+                var animal = ModEntry.Instance.Api.GetAnimalByName(stock[i].Name);
+                if (animal != null)
                 {
-                    if (animal.Name != stock[i].name)
-                        continue;
-
                     shopIconTexture = animal.ShopIcon;
                     shopIconSourceRectangle = new Rectangle(
                         x: 0,
@@ -76,6 +82,7 @@ namespace FarmAnimalVarietyRedux.Patches
                     break;
                 }
 
+                // create animal button
                 var animalComponent = new ClickableTextureComponent(
                     name: stock[i].salePrice().ToString(),
                     bounds: new Rectangle(
@@ -194,11 +201,11 @@ namespace FarmAnimalVarietyRedux.Patches
             if (__result != "")
                 return;
 
-            var animalData = ModEntry.Animals.Where(animal => animal.Name == name).Select(animal => animal.Data).FirstOrDefault();
-            if (animalData == null)
+            var animal = ModEntry.Instance.Api.GetAnimalByName(name);
+            if (animal == null)
                 return;
 
-            __result = animalData.AnimalShopInfo.Description;
+            __result = animal.Data.AnimalShopInfo.Description;
         }
 
         /// <summary>The prefix for the PerformHoverAction method.</summary>
@@ -236,14 +243,14 @@ namespace FarmAnimalVarietyRedux.Patches
                     );
 
                     // get farm location to highlight buildings
-                    Farm locationFromName = Game1.getLocationFromName("Farm") as Farm;
+                    Farm farm = Game1.getLocationFromName("Farm") as Farm;
 
                     // color all buildings white
-                    foreach (Building building in locationFromName.buildings)
+                    foreach (Building building in farm.buildings)
                         building.color.Value = Color.White;
 
                     // if the player is hovering over a building highlight it in red or green depending if it's a valid house
-                    Building buildingAt = locationFromName.getBuildingAt(tile);
+                    Building buildingAt = farm.getBuildingAt(tile);
                     if (buildingAt != null)
                     {
                         var highLightColor = Color.Red * .8f; ;
@@ -257,18 +264,14 @@ namespace FarmAnimalVarietyRedux.Patches
                         else // animal is a custom animal
                         {
                             // get animal data
-                            foreach (var animal in ModEntry.Animals)
+                            var animal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animalBeingPurchased.type);
+                            if (animal != null)
                             {
-                                if (!animal.SubTypes.Where(subType => subType.Name == animalBeingPurchased.type).Any())
-                                    continue;
-
                                 foreach (var building in animal.Data.Buildings)
                                 {
                                     if (buildingAt.buildingType.Value.ToLower() == building.ToLower() && !(buildingAt.indoors.Value as AnimalHouse).isFull())
                                         highLightColor = Color.LightGreen * .8f;
                                 }
-
-                                break;
                             }
                         }
 
@@ -302,6 +305,78 @@ namespace FarmAnimalVarietyRedux.Patches
             }
 
             return false;
+        }
+
+        /// <summary>The prefix for the ReceiveKeyPress method.</summary>
+        /// <param name="key">The key that has been pressed.</param>
+        /// <returns>True meaning the original method will get ran.</returns>
+        internal static bool ReceiveKeyPressPrefix(Keys key)
+        {
+            if (key != Keys.Left && key != Keys.Right ||
+                (key == Keys.Left && Game1.oldKBState.IsKeyDown(Keys.Left)) ||
+                (key == Keys.Right && Game1.oldKBState.IsKeyDown(Keys.Right))) // ensure either the left or right arrow has been pressed and that it's not being held
+                return true;
+
+            // ensure there are valid buildings
+            if (ValidBuildings == null || ValidBuildings.Count == 0)
+                return true;
+
+            // get the new CurrentValidBuildingIndex
+            if (key == Keys.Left)
+            {
+                // go to preveious valid buuilding in list
+                if (CurrentValidBuildingIndex - 1 < 0) // if we are at the beginnning of the list, loop back to the end
+                    CurrentValidBuildingIndex = ValidBuildings.Count - 1;
+                else
+                    CurrentValidBuildingIndex--;
+            }
+            else if (key == Keys.Right)
+            {
+                // go to next valid building in list
+                if (CurrentValidBuildingIndex + 1 >= ValidBuildings.Count)
+                    CurrentValidBuildingIndex = 0;
+                else
+                    CurrentValidBuildingIndex++;
+            }
+
+            // pan the screen to the new building
+            PanCameraToBuilding(ValidBuildings[CurrentValidBuildingIndex]);
+            return true;
+        }
+
+        /// <summary>The prefix for the ReceiveGamePadButton method.</summary>
+        /// <param name="b">The button that has been pressed.</param>
+        /// <returns>True meaning the original method will get ran.</returns>
+        internal static bool ReceiveGamePadButtonPrefix(Buttons b)
+        {
+            if (b != Buttons.LeftShoulder && b != Buttons.RightShoulder)
+                return true;
+
+            // ensure there are valid buildings
+            if (ValidBuildings == null || ValidBuildings.Count == 0)
+                return true;
+
+            // get the new CurrentValidBuildingIndex
+            if (b == Buttons.LeftShoulder)
+            {
+                // go to preveious valid buuilding in list
+                if (CurrentValidBuildingIndex - 1 < 0) // if we are at the beginnning of the list, loop back to the end
+                    CurrentValidBuildingIndex = ValidBuildings.Count - 1;
+                else
+                    CurrentValidBuildingIndex--;
+            }
+            else if (b == Buttons.RightShoulder)
+            {
+                // go to next valid building in list
+                if (CurrentValidBuildingIndex + 1 >= ValidBuildings.Count)
+                    CurrentValidBuildingIndex = 0;
+                else
+                    CurrentValidBuildingIndex++;
+            }
+
+            // pan the screen to the new building
+            PanCameraToBuilding(ValidBuildings[CurrentValidBuildingIndex]);
+            return true;
         }
 
         /// <summary>The prefix for the ReceiveLieftClick method.</summary>
@@ -342,15 +417,15 @@ namespace FarmAnimalVarietyRedux.Patches
             if (onFarm) // player is picking a house for the animal or naming the animal
             {
                 Building buildingAt = (Game1.getLocationFromName("Farm") as Farm).getBuildingAt(new Vector2(
-                    (x + Game1.viewport.X) / 64, 
+                    (x + Game1.viewport.X) / 64,
                     (y + Game1.viewport.Y) / 64
                 ));
-                
+
                 if (buildingAt != null && !namingAnimal) // picking a house for the animal and a building has been clicked
                 {
                     var buildingValid = false;
 
-                    // determine is building is valid
+                    // determine if building is valid
                     if (!string.IsNullOrEmpty(animalBeingPurchased.buildingTypeILiveIn.Value)) // if 'buildingTypeILiveIn' is used, it's a default game animal
                     {
                         if (buildingAt.buildingType.Value.Contains(animalBeingPurchased.buildingTypeILiveIn.Value))
@@ -359,25 +434,20 @@ namespace FarmAnimalVarietyRedux.Patches
                     else // animal is a custom animal
                     {
                         // get animal data
-                        foreach (var animal in ModEntry.Animals)
+                        var animal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animalBeingPurchased.type);
+                        if (animal != null)
                         {
-                            if (!animal.SubTypes.Where(subType => subType.Name == animalBeingPurchased.type).Any())
-                                continue;
-
                             foreach (var building in animal.Data.Buildings)
                             {
                                 if (buildingAt.buildingType.Value.ToLower() == building.ToLower())
                                     buildingValid = true;
                             }
-
-                            break;
                         }
                     }
 
-                    // That Building Is Full
-
                     if (buildingValid)
                     {
+                        // ensure building has space for animal
                         if ((buildingAt.indoors.Value as AnimalHouse).isFull())
                         {
                             // show 'That Building Is Full' message
@@ -467,6 +537,45 @@ namespace FarmAnimalVarietyRedux.Patches
                             onFarm = true;
                             animalBeingPurchased = new FarmAnimal(textureComponent.hoverText, multiplayer.getNewID(), Game1.player.UniqueMultiplayerID);
                             priceOfAnimal = num;
+
+                            // calculate all the valid builds for the camera panning feature
+                            ValidBuildings = new List<Building>();
+                            foreach (var building in Game1.getFarm().buildings)
+                            {
+                                // ensure the animal can live in the building
+                                var buildingValid = false;
+                                if (!string.IsNullOrEmpty(animalBeingPurchased.buildingTypeILiveIn.Value)) // if 'buildingTypeILiveIn' is used, it's a default game animal
+                                {
+                                    if (building.buildingType.Value.Contains(animalBeingPurchased.buildingTypeILiveIn.Value))
+                                        buildingValid = true;
+                                }
+                                else // animal is a custom animal
+                                {
+                                    // get animal data
+                                    var animal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animalBeingPurchased.type);
+                                    if (animal != null)
+                                    {
+                                        foreach (var animalBuilding in animal.Data.Buildings)
+                                        {
+                                            if (building.buildingType.Value.ToLower() == animalBuilding.ToLower())
+                                                buildingValid = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                // ensure the animal can live in the building
+                                if (!buildingValid)
+                                    continue;
+
+                                // ensure the building isn't full
+                                var animalHouse = building.indoors.Value as AnimalHouse;
+                                if (animalHouse == null || animalHouse.isFull())
+                                    continue;
+
+                                ValidBuildings.Add(building);
+                            }
                         }
                         else
                             Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11325"), Color.Red, 3500f));
@@ -537,23 +646,20 @@ namespace FarmAnimalVarietyRedux.Patches
                 string housingAnimalString = Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11355", animalBeingPurchased.displayHouse, animalBeingPurchased.displayType);
 
                 // if the animal is a custom animal construct a different string to accomodate more than 1 possible building
-                foreach (var animal in ModEntry.Animals)
+                var animal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animalBeingPurchased.type);
+                if (animal != null)
                 {
-                    if (animal.SubTypes.Where(subType => subType.Name == animalBeingPurchased.type).Any())
+                    var buildingsString = "";
+
+                    for (var i = 0; i < animal.Data.Buildings.Count; i++)
                     {
-                        var buildingsString = "";
-
-                        for (var i = 0; i < animal.Data.Buildings.Count; i++)
-                        {
-                            var building = animal.Data.Buildings[i];
-                            buildingsString += building;
-                            if (i != animal.Data.Buildings.Count - 1)
-                                buildingsString += ", ";
-                        }
-
-                        housingAnimalString = $"Choose a: {buildingsString} for your new {animalBeingPurchased.type}";
-                        break;
+                        var building = animal.Data.Buildings[i];
+                        buildingsString += building;
+                        if (i != animal.Data.Buildings.Count - 1)
+                            buildingsString += ", ";
                     }
+
+                    housingAnimalString = $"Choose a: {buildingsString} for your new {animalBeingPurchased.type}";
                 }
 
                 // draw housing animal string;
@@ -651,6 +757,22 @@ namespace FarmAnimalVarietyRedux.Patches
             __instance.drawMouse(b);
 
             return false;
+        }
+
+
+        /*********
+        ** Private Methods
+        *********/
+        /// <summary>Pan the camera to the passed building.</summary>
+        /// <param name="building">The building to pan the camera to.</param>
+        private static void PanCameraToBuilding(Building building)
+        {
+            var panAmount = new Point(
+                x: building.tileX * 64 - Game1.viewport.X - Game1.viewport.Width / 2 + building.tilesWide * 64 / 2,
+                y: building.tileY * 64 - Game1.viewport.Y - Game1.viewport.Height / 2 + building.tilesHigh * 64 / 2
+            ); // *64 is the tile width (16) * the game scale (4)
+
+            Game1.panScreen(panAmount.X, panAmount.Y);
         }
     }
 }

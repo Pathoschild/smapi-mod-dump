@@ -1,7 +1,7 @@
 {
   "ForageSpawnEnabled": true,
   "LargeObjectSpawnEnabled": false,
-  "OreSpawnEnabled": false,
+  "OreSpawnEnabled": true,
   "MonsterSpawnEnabled": true,
   "Forage_Spawn_Settings": {
     "Areas": [
@@ -10,29 +10,29 @@
           16,
           20,
           22,
-          257
+          18
         ],
         "SummerItemIndex": [
           396,
           398,
-          402,
-          404
+          402
         ],
         "FallItemIndex": [
           281,
-          404,
+          406,
           420,
-          422
+          408
         ],
-        "WinterItemIndex": [],
+        "WinterItemIndex": [
+          283,
+          412,
+          418
+        ],
         "UniqueAreaID": "EastScarpeLand",
         "MapName": "EastScarpe",
         "MinimumSpawnsPerDay": 1,
         "MaximumSpawnsPerDay": 3,
-        "IncludeTerrainTypes": [
-          "Diggable",
-          "Grass"
-        ],
+        "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
           "0,0/76,79"
@@ -90,10 +90,7 @@
         "MapName": "EastScarpe",
         "MinimumSpawnsPerDay": -1,
         "MaximumSpawnsPerDay": 3,
-        "IncludeTerrainTypes": [
-          "Diggable",
-          "Grass"
-        ],
+        "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
           "0,98/66,123",
@@ -113,15 +110,360 @@
           "Years": [],
           "Seasons": [],
           "Days": [],
-          "WeatherYesterday": [
-            "Rain",
-            "Storm"
-          ],
+          "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 7
+      },
+      {
+        "SpringItemIndex": null,
+        "SummerItemIndex": [
+          372,
+          394,
+          718,
+          719,
+          723
+        ],
+        "FallItemIndex": null,
+        "WinterItemIndex": null,
+        "UniqueAreaID": "EastScarpe (summer extras)",
+        "MapName": "EastScarpe",
+        "MinimumSpawnsPerDay": 4,
+        "MaximumSpawnsPerDay": 10,
+        "IncludeTerrainTypes": [],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "0,98/66,123",
+          "40,79/67,103"
+        ],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 600,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": null,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [
+            "Summer"
+          ],
+          "Days": [
+            "12-14"
+          ],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": null
+      },
+      {
+        "SpringItemIndex": [
+          404,
+          80
+        ],
+        "SummerItemIndex": [
+          404,
+          80
+        ],
+        "FallItemIndex": [
+          404,
+          80
+        ],
+        "WinterItemIndex": [
+          404,
+          80
+        ],
+        "UniqueAreaID": "DeepDark Foraging Area 1",
+        "MapName": "Underground1",
+        "MinimumSpawnsPerDay": -2,
+        "MaximumSpawnsPerDay": 6,
+        "IncludeTerrainTypes": [],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "33,31/39,44"
+        ],
+        "ExcludeCoordinates": [
+          "38,34/38,44"
+        ],
+        "StrictTileChecking": "High",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 600,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": null,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 3
+      },
+      {
+        "SpringItemIndex": [
+          {
+            "category": "breakable",
+            "contents": [
+              {
+                "Category": "Object",
+                "Name": "Sap",
+                "Stack": 8,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Sap",
+                "Stack": 3,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Wood",
+                "Stack": 5,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Wood",
+                "Stack": 5,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Wine",
+                "Stack": 1,
+                "PercentChanceToSpawn": 1
+              },
+              {
+                "Category": "Object",
+                "Name": "Mixed Seeds",
+                "Stack": 1,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Mixed Seeds",
+                "Stack": 2,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Cave Carrot",
+                "Stack": 1,
+                "PercentChanceToSpawn": 5
+              }
+            ]
+          }
+        ],
+        "SummerItemIndex": [
+          {
+            "category": "breakable",
+            "contents": [
+              {
+                "Category": "Object",
+                "Name": "Sap",
+                "Stack": 8,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Sap",
+                "Stack": 3,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Wood",
+                "Stack": 5,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Wood",
+                "Stack": 5,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Lobster",
+                "Stack": 1,
+                "PercentChanceToSpawn": 1
+              },
+              {
+                "Category": "Object",
+                "Name": "Mixed Seeds",
+                "Stack": 1,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Mixed Seeds",
+                "Stack": 2,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Cave Carrot",
+                "Stack": 1,
+                "PercentChanceToSpawn": 5
+              }
+            ]
+          }
+        ],
+        "FallItemIndex": [
+          {
+            "category": "breakable",
+            "contents": [
+              {
+                "Category": "Object",
+                "Name": "Sap",
+                "Stack": 8,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Sap",
+                "Stack": 3,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Wood",
+                "Stack": 5,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Wood",
+                "Stack": 5,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Cloth",
+                "Stack": 1,
+                "PercentChanceToSpawn": 1
+              },
+              {
+                "Category": "Object",
+                "Name": "Mixed Seeds",
+                "Stack": 1,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Mixed Seeds",
+                "Stack": 2,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Cave Carrot",
+                "Stack": 1,
+                "PercentChanceToSpawn": 5
+              }
+            ]
+          }
+        ],
+        "WinterItemIndex": [
+          {
+            "category": "breakable",
+            "contents": [
+              {
+                "Category": "Object",
+                "Name": "Sap",
+                "Stack": 8,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Sap",
+                "Stack": 3,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Wood",
+                "Stack": 5,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Wood",
+                "Stack": 5,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Mead",
+                "Stack": 1,
+                "PercentChanceToSpawn": 1
+              },
+              {
+                "Category": "Object",
+                "Name": "Mixed Seeds",
+                "Stack": 1,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Mixed Seeds",
+                "Stack": 2,
+                "PercentChanceToSpawn": 5
+              },
+              {
+                "Category": "Object",
+                "Name": "Cave Carrot",
+                "Stack": 1,
+                "PercentChanceToSpawn": 5
+              }
+            ]
+          }
+        ],
+        "UniqueAreaID": "Underground1 forage area 1",
+        "MapName": "Underground1",
+        "MinimumSpawnsPerDay": -2,
+        "MaximumSpawnsPerDay": 8,
+        "IncludeTerrainTypes": [],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "34,18/40,24",
+          "42,36/46,40",
+          "41,48/45,52"
+        ],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "High",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 600,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": null,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 5
       }
     ],
     "PercentExtraSpawnsPerForagingLevel": 1,
@@ -151,11 +493,102 @@
     "CustomTileIndex": []
   },
   "Ore_Spawn_Settings": {
-    "Areas": [],
+    "Areas": [
+      {
+        "MiningLevelRequired": null,
+        "StartingSpawnChance": null,
+        "LevelTenSpawnChance": null,
+        "UniqueAreaID": "DeepDark Ore Area 1",
+        "MapName": "Underground1",
+        "MinimumSpawnsPerDay": 10,
+        "MaximumSpawnsPerDay": 20,
+        "IncludeTerrainTypes": [],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "1,9/31,54"
+        ],
+        "ExcludeCoordinates": [
+          "16,15/31,34"
+        ],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 600,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": null,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": 3
+      }
+    ],
     "PercentExtraSpawnsPerMiningLevel": 0,
-    "MiningLevelRequired": {},
-    "StartingSpawnChance": {},
-    "LevelTenSpawnChance": {},
+    "MiningLevelRequired": {
+      "Stone": 0,
+      "Geode": 0,
+      "FrozenGeode": 0,
+      "MagmaGeode": 0,
+      "Gem": 0,
+      "Copper": 0,
+      "Iron": 0,
+      "Gold": 0,
+      "Iridium": 0,
+      "Mystic": 0,
+      "Diamond": 0,
+      "Ruby": 0,
+      "Jade": 0,
+      "Amethyst": 0,
+      "Topaz": 0,
+      "Emerald": 0,
+      "Aquamarine": 0
+    },
+    "StartingSpawnChance": {
+      "Stone": 76,
+      "Geode": 6,
+      "FrozenGeode": 0,
+      "MagmaGeode": 0,
+      "Gem": 1,
+      "Copper": 12,
+      "Iron": 1,
+      "Gold": 0,
+      "Iridium": 0,
+      "Mystic": 0,
+      "Diamond": 0,
+      "Ruby": 0,
+      "Jade": 1,
+      "Amethyst": 1,
+      "Topaz": 1,
+      "Emerald": 0,
+      "Aquamarine": 1
+    },
+    "LevelTenSpawnChance": {
+      "Stone": 68,
+      "Geode": 10,
+      "FrozenGeode": 0,
+      "MagmaGeode": 0,
+      "Gem": 1,
+      "Copper": 5,
+      "Iron": 5,
+      "Gold": 1,
+      "Iridium": 0,
+      "Mystic": 0,
+      "Diamond": 0,
+      "Ruby": 0,
+      "Jade": 2,
+      "Amethyst": 2,
+      "Topaz": 2,
+      "Emerald": 2,
+      "Aquamarine": 2
+    },
     "CustomTileIndex": []
   },
   "Monster_Spawn_Settings": {
@@ -189,6 +622,55 @@
           "EndTime": 2600,
           "MinimumTimeBetweenSpawns": 10,
           "MaximumSimultaneousSpawns": 3,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": null
+      },
+      {
+        "MonsterTypes": [
+          {
+            "MonsterName": "Rock Crab",
+            "Settings": {}
+          },
+          {
+            "MonsterName": "Wilderness Golem",
+            "Settings": {}
+          },
+          {
+            "MonsterName": "Bat",
+            "Settings": {}
+          }
+        ],
+        "UniqueAreaID": "Underground Monster Area",
+        "MapName": "Underground1",
+        "MinimumSpawnsPerDay": 10,
+        "MaximumSpawnsPerDay": 20,
+        "IncludeTerrainTypes": [
+          "All"
+        ],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "1,9/46,59"
+        ],
+        "ExcludeCoordinates": [
+          "16,16/32,45"
+        ],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 2400,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": 12,
           "OnlySpawnIfAPlayerIsPresent": false,
           "SpawnSound": ""
         },

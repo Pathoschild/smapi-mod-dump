@@ -13,5 +13,18 @@ namespace FarmAnimalVarietyRedux.Models
 
         /// <summary>The amount the animal costs.</summary>
         public int BuyPrice { get; set; }
+
+
+        /*********
+        ** Public Methods
+        *********/
+        /// <summary>Construct an instance.</summary>
+        /// <param name="description">The description of the animal.</param>
+        /// <param name="buyPrice">The amount the animal costs.</param>
+        public AnimalShopInfo(string description, int buyPrice)
+        {
+            Description = description;
+            BuyPrice = buyPrice;
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class Fedora
     {
         public const string Name = "Fedora";
+        public const string Description = "When in the Mines or Skull Cavern gain the \"Fortune and glory, kid.\" Buff:\n+2 Luck";
         public static void Activate()
         {
             HatService.OnUpdateTicked = (e) =>
@@ -42,7 +43,7 @@ namespace DeluxeHats.Hats
                         which = HatService.BuffId,
                     };
                     Game1.buffsDisplay.addOtherBuff(luckBuff);
-                    luckBuff.description = "Fortune and glory, kid.\n+2 Luck";
+                    luckBuff.description = "\"Fortune and glory, kid.\"\n+2 Luck";
                     luckBuff.millisecondsDuration = Convert.ToInt32((20f - ((Game1.timeOfDay - 600f) / 100f)) * 43000);
                 }
             };

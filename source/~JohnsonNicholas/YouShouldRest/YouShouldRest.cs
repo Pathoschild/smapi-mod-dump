@@ -135,6 +135,102 @@ namespace TwilightShards.YouShouldRest
             return 5;            
         }
 
+        private IEnumerable<string> GetKeys(CharacterDetails detailSet)
+        {
+            //specific to inspecific tied to specific NPCs
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.SeasonDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}_{detailSet.TimeOfDay}_{detailSet.SpouseStatus}";
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.SeasonDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}_{detailSet.TimeOfDay}";
+                      
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.SeasonDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.SeasonDayFB}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.SeasonDay}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.SeasonDayFB}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.SeasonDay}_{detailSet.HealthStatus}";
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.SeasonDayFB}_{detailSet.HealthStatus}";
+
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Name}[{detailSet.HeartLevel}]_{detailSet.HealthStatus}";
+
+
+            yield return $"{detailSet.Name}_{detailSet.SeasonDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Name}_{detailSet.SeasonDayFB}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Name}_{detailSet.SeasonDay}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Name}_{detailSet.SeasonDayFB}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Name}_{detailSet.SeasonDay}_{detailSet.HealthStatus}";
+            yield return $"{detailSet.Name}_{detailSet.SeasonDayFB}_{detailSet.HealthStatus}";
+
+            //fallback to disposition text
+            //age, manners?,social anxiety, optimism
+            //format is:
+            //age_manners_social_timeofday_optimism
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDay}_{detailSet.TimeOfDay}_{detailSet.Optimism}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDayFB}_{detailSet.TimeOfDay}_{detailSet.Optimism}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDay}_{detailSet.TimeOfDay}_{detailSet.Optimism}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDayFB}_{detailSet.TimeOfDay}_{detailSet.Optimism}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDay}_{detailSet.TimeOfDay}_{detailSet.Optimism}_{detailSet.HealthStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDayFB}_{detailSet.TimeOfDay}_{detailSet.Optimism}_{detailSet.HealthStatus}";
+
+            //-Optimism
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDay}_{detailSet.TimeOfDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDayFB}_{detailSet.TimeOfDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDay}_{detailSet.TimeOfDay}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDayFB}_{detailSet.TimeOfDay}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDay}_{detailSet.TimeOfDay}_{detailSet.HealthStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDayFB}_{detailSet.TimeOfDay}_{detailSet.HealthStatus}";
+
+            //-Time Of Day
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDayFB}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDay}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDayFB}_{detailSet.StaminaStatus}";
+
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDay}_{detailSet.HealthStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.SocialAnxiety}_{detailSet.SeasonDayFB}_{detailSet.HealthStatus}";
+
+            // -Social -Seasonday! :D
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.Manners}_{detailSet.HealthStatus}";
+
+            //+SeasonDay. -Manners :v
+            yield return $"{detailSet.Age}_{detailSet.SeasonDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.SeasonDayFB}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.SeasonDay}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.SeasonDayFB}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.SeasonDay}_{detailSet.HealthStatus}";
+            yield return $"{detailSet.Age}_{detailSet.SeasonDayFB}_{detailSet.HealthStatus}";
+
+            //just timeOfDay + Manners
+            yield return $"{detailSet.Manners}_{detailSet.TimeOfDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Manners}_{detailSet.TimeOfDay}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Manners}_{detailSet.TimeOfDay}_{detailSet.HealthStatus}";
+
+            //just timeOfDay + Age
+            yield return $"{detailSet.Age}_{detailSet.TimeOfDay}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.TimeOfDay}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.TimeOfDay}_{detailSet.HealthStatus}";
+
+            //just age
+            yield return $"{detailSet.Age}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Age}_{detailSet.HealthStatus}";
+
+            //just manners
+            yield return $"{detailSet.Manners}_{detailSet.HealthStatus}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Manners}_{detailSet.StaminaStatus}";
+            yield return $"{detailSet.Manners}_{detailSet.HealthStatus}";
+        }
+
         /// <summary>
         /// This function returns the key for a given dialogue. 
         /// </summary>
@@ -144,232 +240,29 @@ namespace TwilightShards.YouShouldRest
         {
             //json format ex: abigail[10]summer_4_4_spouse
             // name[heartlevel]season_healthstatus_staminastatus_timeofday_spousestatus
-            int HeartLevel = Game1.player.getFriendshipHeartLevelForNPC(character.Name);
-            int HealthStatus = GetLevelOnScale((float)Game1.player.health, (float)Game1.player.maxHealth);
-            int StaminaStatus = Game1.player.exhausted ? 5 : GetLevelOnScale(Game1.player.Stamina, (float)Game1.player.MaxStamina);
-            int TimeOfDay = GetTimeOfDay(Game1.timeOfDay);
-            string SpouseStatus = Game1.player.friendshipData[character.Name].IsMarried() ? "spouse" : "";
-            string seasonDay = string.Concat(Game1.currentSeason, Game1.dayOfMonth);
+            CharacterDetails newDetails = new CharacterDetails
+            {
+                Name = character.Name,
+                Age = character.Age,
+                Manners = character.Manners,
+                SocialAnxiety = character.SocialAnxiety,
+                Optimism = character.Optimism,
+                HeartLevel = Game1.player.getFriendshipHeartLevelForNPC(character.Name),
+                HealthStatus = GetLevelOnScale((float)Game1.player.health, (float)Game1.player.maxHealth),
+                StaminaStatus = Game1.player.exhausted ? 5 : GetLevelOnScale(Game1.player.Stamina, (float)Game1.player.MaxStamina),
+                TimeOfDay = GetTimeOfDay(Game1.timeOfDay),
+                SpouseStatus = Game1.player.friendshipData[character.Name].IsMarried() ? "spouse" : "",
+                SeasonDay = string.Concat(Game1.currentSeason, Game1.dayOfMonth),
+                SeasonDayFB = Game1.currentSeason
+            };
 
-            Monitor.Log($"Talking to {character.Name}, with heartLevel {HeartLevel}, and StaminaStatus {StaminaStatus} and HealthStatus {HealthStatus} with Time Of Day {TimeOfDay}, spouse status {SpouseStatus}, seasonDay {seasonDay}, fall back season {Game1.currentSeason}.", LogLevel.Info);
+            Monitor.Log(newDetails.ToString(), LogLevel.Info);
 
-            string s = character.Name + "[" + HeartLevel + "]_" + seasonDay + "_" + HealthStatus + "_" + StaminaStatus + "_" + TimeOfDay;
-            if (!string.IsNullOrEmpty(SpouseStatus))
-                s += "_" + SpouseStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + Game1.currentSeason + "_" + HealthStatus + "_" + StaminaStatus + "_" + TimeOfDay;
-            if (!string.IsNullOrEmpty(SpouseStatus))
-                s += "_" + SpouseStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + seasonDay + "_" + HealthStatus + "_" + StaminaStatus + "_" + TimeOfDay;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + Game1.currentSeason + "_" + HealthStatus + "_" + StaminaStatus + "_" + TimeOfDay;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + seasonDay + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + Game1.currentSeason + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + seasonDay + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + Game1.currentSeason + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + seasonDay + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + Game1.currentSeason + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + seasonDay + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + Game1.currentSeason + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + seasonDay + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "[" + HeartLevel + "]_" + Game1.currentSeason + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "_" + Game1.currentSeason + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "_" + seasonDay + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "_" + Game1.currentSeason + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Name + "_" + seasonDay + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            //fallback to disposition text
-            //age, manners?,social anxiety, optimism
-            //format is:
-            //age_manners_social_timeofday_optimism
-            // it tries to find the longest one first, then works backwards
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + character.Optimism + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay + "_" + character.Optimism + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + character.Optimism + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay + "_" + character.Optimism + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + character.Optimism + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay + "_" + character.Optimism + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-            // - Optimism
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay +  "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + TimeOfDay + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + TimeOfDay +  "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            // -Time Of Day
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_"  + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + seasonDay + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + character.SocialAnxiety + "_" + Game1.currentSeason + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            // -Social -Seasonday! :D
-            s = character.Age + "_" + character.Manners + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_"  + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + character.Manners + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            //seasonday
-            s = character.Age + "_" + seasonDay + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + Game1.currentSeason + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + seasonDay + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + Game1.currentSeason + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + seasonDay + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + Game1.currentSeason + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            //timeOfDay
-            s = character.Age + "_" + TimeOfDay + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + TimeOfDay + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + TimeOfDay + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-            
-            //just age
-            s = character.Age + "_" + HealthStatus + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + StaminaStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
-
-            s = character.Age + "_" + HealthStatus;
-            if (ModDialogues.ContainsKey(s))
-                return s;
+            foreach (string key in this.GetKeys(newDetails))
+            {
+                if (ModDialogues.ContainsKey(key))
+                    return key;
+            }
 
             //fallback to default if EVERYTHING's missing.
             return "";

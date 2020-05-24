@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Highlighted Jars",
+  "Author": "Annosz",
+  "Version": "1.0.0",
+  "Description": "Highlight unused jars to be easily recognizable.",
+  "UniqueID": "Annosz.HighlightedJars",
+  "EntryDll": "HighlightedJars.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:0000" ]
+}

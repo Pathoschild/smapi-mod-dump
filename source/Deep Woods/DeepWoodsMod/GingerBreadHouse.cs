@@ -131,13 +131,17 @@ namespace DeepWoodsMod
 
         public static WeightedInt CreateWeightedValueForFootType(int type)
         {
-            int price = 0;
-            if (Game1.objectInformation.ContainsKey(type))
+            int price = 1;
+            try
             {
-                price = Convert.ToInt32(Game1.objectInformation[type].Split('/')[StardewValley.Object.objectInfoPriceIndex]);
+                if (Game1.objectInformation != null && Game1.objectInformation.ContainsKey(type))
+                {
+                    price = Convert.ToInt32(Game1.objectInformation[type].Split('/')[StardewValley.Object.objectInfoPriceIndex]);
+                }
             }
+            catch (Exception) { /*i dont know i dont care*/ }
             // We invert the price to get higher weights for cheaper items and vice versa.
-            return new WeightedInt(type, 100000 / price);
+            return new WeightedInt(type, 100000 / Math.Max(1, price));
         }
 
         private void SpawnFoodItems(DeepWoods deepWoods, Tool t, int x, int y)

@@ -21,7 +21,7 @@ namespace FarmTypeManager
             public int? Stack { get; set; }
             /// <summary>The percent chance that the item will actually be spawned.</summary>
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-            public int? PercentChanceToSpawn { get; set; }
+            public double? PercentChanceToSpawn { get; set; }
             /// <summary>A list of other items contained within this item. Only supported by certain categories.</summary>
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public List<object> Contents { get; set; }

@@ -474,7 +474,11 @@ namespace DeepWoodsMod
                     && exitDeepWoods.hasEverBeenVisited.Value
                     && exitDeepWoods.CanGetLost)
                 {
-                    exit.TargetLocationName = null;
+                    // Don't randomize if there's a player here AND in the child level (don't separate multiplayer groups)
+                    if (this.farmers.Count == 0 || exitDeepWoods.farmers.Count == 0)
+                    {
+                        exit.TargetLocationName = null;
+                    }
                 }
             }
 
@@ -585,14 +589,30 @@ namespace DeepWoodsMod
         // This is the default day update method of GameLocation, called only on the server
         public override void DayUpdate(int dayOfMonth)
         {
+            // we don't do day updates on any deeper levels (they get cleared out anyways)
+            if (this.level.Value != 1)
+                return;
+
+            // remove all fruit trees, as they do all kinds of nonsense we don't want them to do in their day update method
+            var terrainFeaturesCopy = new List<KeyValuePair<Vector2, TerrainFeature>>(this.terrainFeatures.Pairs);
+            foreach (var terrainFeature in terrainFeaturesCopy)
+            {
+                if (terrainFeature.Value is FruitTree)
+                {
+                    this.terrainFeatures.Remove(terrainFeature.Key);
+                }
+            }
+
+            // do normal day update
             base.DayUpdate(dayOfMonth);
 
-            if (this.level.Value < Settings.Level.MinLevelForFruits)
+            // re-add fruit trees (and make sure they don't have fruits)
+            foreach (var terrainFeature in terrainFeaturesCopy)
             {
-                foreach (TerrainFeature terrainFeature in this.terrainFeatures.Values)
+                if (terrainFeature.Value is FruitTree fruitTree)
                 {
-                    if (terrainFeature is FruitTree fruitTree)
-                        fruitTree.fruitsOnTree.Value = 0;
+                    fruitTree.fruitsOnTree.Value = 0;
+                    this.terrainFeatures[terrainFeature.Key] = fruitTree;
                 }
             }
         }

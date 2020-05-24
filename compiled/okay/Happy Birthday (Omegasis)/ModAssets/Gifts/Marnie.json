@@ -138,12 +138,5 @@
     "objectID": "StardewValley.Object.GreenTea",
     "minAmount": 1,
     "maxAmount": 1
-  },
-  {
-    "minRequiredHearts": 0,
-    "maxRequiredHearts": 20,
-    "objectID": "StardewValley.Object.DinosaurMayonnaise",
-    "minAmount": 1,
-    "maxAmount": 1
   }
 ]

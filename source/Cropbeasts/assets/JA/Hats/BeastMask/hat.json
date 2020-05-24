@@ -1,0 +1,35 @@
+{
+	"Name": "Beast Mask",
+	"Description": "It's still juicy. Yum!",
+	"PurchasePrice": 1000,
+	"ShowHair": false,
+	"IgnoreHairstyleOffset": true,
+    "NameLocalization":
+    {
+        "es": "", // Spanish
+        "ko": "", // Korean
+        "de": "", // German
+        "fr": "", // French
+        "hu": "", // Hungarian
+        "it": "", // Italian
+        "ja": "", // Japanese
+        "pt": "", // Portuguese
+        "ru": "", // Russian
+        "tr": "", // Turkish
+        "zh": "", // Chinese (Simplified)
+    },
+    "DescriptionLocalization":
+    {
+        "es": "", // Spanish
+        "ko": "", // Korean
+        "de": "", // German
+        "fr": "", // French
+        "hu": "", // Hungarian
+        "it": "", // Italian
+        "ja": "", // Japanese
+        "pt": "", // Portuguese
+        "ru": "", // Russian
+        "tr": "", // Turkish
+        "zh": "", // Chinese (Simplified)
+    }
+}

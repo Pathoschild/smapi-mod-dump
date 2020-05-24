@@ -1,0 +1,12 @@
+﻿{
+  "Format": "1.14.0",
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/ObjectInformation",
+      "Entries": {
+        "900": "Crimson Jade/400/-300/Minerals -2/Crimson Jade/A pale green ornamental stone with a strange crimson sheen."
+      }
+    }
+  ]
+}

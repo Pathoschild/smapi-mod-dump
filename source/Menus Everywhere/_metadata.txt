@@ -1,0 +1,13 @@
+url:
+   https://github.com/nman130/Stardew-Mods.git
+
+mods:
+   Menus Everywhere
+
+latest commit:
+   commit 5ebb655b6e2cb26bc58f79e6d44608aa257a994e
+   Author: Nolan Wheeler <nolanwheeler@yahoo.com>
+   Date:   Fri May 22 18:06:36 2020 -0400
+   
+       Began Store Module.
+   

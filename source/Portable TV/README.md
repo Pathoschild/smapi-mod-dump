@@ -18,7 +18,7 @@ It's little! It's lovely! It shows Livin' Off The Land! The Portable TV is a cra
 
 This version of Portable TV is compatible with **Stardew Valley 1.4+**.
 
-The mod should work on **Linux, Mac, Windows and Android**. On Android, the sounds when the TV turns on and off are not supported.
+The mod should work on **Linux, macOS, Windows and Android**. On Android, the sounds when the TV turns on and off are not supported.
 
 There are no known problems with multiplayer use. Every player should install the mod, even if they are not using the Portable TV.
 
@@ -30,14 +30,15 @@ There are no known conflicts with other mods. Custom TV channels should display 
 1. Install the [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) mod.
 1. To configure this mod without editing a JSON file, optionally install the [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) mod.
 1. Download this mod from its [Nexus page](https://www.nexusmods.com/stardewvalley/mods/5674?tab=files) or [ModDrop page](https://www.moddrop.com/stardew-valley/mods/761325-portable-tv).
-1. Unzip the mod and place *both* the `PortableTV` and `[JA]PortableTV` folders inside your `Mods` folder.
+1. Unzip the mod and place the `PortableTV` folder inside your `Mods` folder.
+1. If upgrading from 1.2.0 or earlier, remove the `[JA]PortableTV` folder from your `Mods` folder.
 1. Run the game using SMAPI.
 
 ## Use
 
 The Portable TV is a resource item that can be carried in your inventory. Its crafting recipe is available immediately and requires a Gold Bar, 2 Refined Quartz and a Battery Pack.
 
-To use the TV on Linux, Mac or Windows, select it in your inventory and right-click in an open part of the world. You can press "R" on your keyboard (or another key that you configure; see below) to activate any Portable TV in your inventory.
+To use the TV on Linux, macOS or Windows, select it in your inventory and right-click in an open part of the world. You can press "R" on your keyboard (or another key that you configure; see below) to activate any Portable TV in your inventory.
 
 To use the TV on Android, select it in your inventory and tap anywhere in the world. You can also configure the Virtual Keyboard mod to add an "R" button; tapping it will activate any Portable TV in your inventory.
 

@@ -171,20 +171,19 @@ namespace NpcAdventure.Utils
             location.addCharacter(follower);
         }
 
-        public static Monster GetNearestMonsterToCharacter(Character me, float tileDistance)
+        public static Monster GetNearestMonsterToCharacter(Character me, float tileDistance, Func<Monster, bool> extraCondition)
         {
+            float thresDistance = tileDistance * 64f;
             SortedDictionary<float, Monster> nearestMonsters = new SortedDictionary<float, Monster>();
 
             foreach (Character c in me.currentLocation.characters)
             {
-                Monster monster = c as Monster;
-
-                if (monster == null)
+                if (!(c is Monster monster))
                     continue;
 
-                float monsterDistance = Helper.Distance(me.getTileLocationPoint(), monster.getTileLocationPoint());
+                float monsterDistance = Helper.Distance(me.GetBoundingBox().Center, monster.GetBoundingBox().Center);
 
-                if (monsterDistance < tileDistance && !nearestMonsters.ContainsKey(monsterDistance))
+                if (monsterDistance < thresDistance && !nearestMonsters.ContainsKey(monsterDistance) && extraCondition(monster))
                 {
                     nearestMonsters.Add(monsterDistance, monster);
                 }
@@ -194,6 +193,53 @@ namespace NpcAdventure.Utils
                 return nearestMonsters.Values.First();
 
             return null;
+        }
+
+        public static Monster GetNearestMonsterToCharacter(Character me, float tileDistance)
+        {
+            return GetNearestMonsterToCharacter(me, tileDistance, (m) => true);
+        }
+
+        /// <summary>
+        /// Checks if spoted monster is a valid monster
+        /// </summary>
+        /// <param name="monster"></param>
+        /// <returns></returns>
+        public static bool IsValidMonster(Monster monster)
+        {
+            if (monster == null)
+                return false;
+
+            // Invisible monsters are invalid
+            if (monster.IsInvisible)
+                return false;
+
+            // Only moving rock crab is valid
+            if (monster is RockCrab crab)
+                return crab.isMoving();
+
+            // Only unarmored bug is valid
+            if (monster is Bug bug)
+                return !bug.isArmoredBug.Value;
+
+            // Only live mummy is valid
+            if (monster is Mummy mummy)
+                return mummy.reviveTimer.Value <= 0;
+
+            // All other monsters all valid
+            return true;
+        }
+
+        public static Vector2 GetAwayFromCharacterTrajectory(Microsoft.Xna.Framework.Rectangle monsterBox, Character who)
+        {
+            Microsoft.Xna.Framework.Rectangle boundingBox = who.GetBoundingBox();
+            double num1 = (double)-(boundingBox.Center.X - monsterBox.Center.X);
+            boundingBox = who.GetBoundingBox();
+            float num2 = (float)(boundingBox.Center.Y - monsterBox.Center.Y);
+            float num3 = Math.Abs((float)num1) + Math.Abs(num2);
+            if ((double)num3 < 1.0)
+                num3 = 5f;
+            return new Vector2((float)num1 / num3 * (float)(50 + Game1.random.Next(-20, 20)), num2 / num3 * (float)(50 + Game1.random.Next(-20, 20)));
         }
 
         public static string[] GetSegments(string path, int? limit = null)

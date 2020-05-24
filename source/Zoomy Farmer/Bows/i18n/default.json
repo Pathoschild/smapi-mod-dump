@@ -1,0 +1,9 @@
+﻿{
+  "name_bow": "Bow",
+  "name_arrow": "Arrow",
+  "desc_bow": "A bow",
+  "desc_arrow": "Sharp and pointy",
+  "bow_level_0": "Training",
+  "bow_level_1": "Short",
+  "bow_level_2": "Compound"
+}

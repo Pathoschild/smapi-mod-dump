@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Geko's Bows",
+  "Author": "Geko_X",
+  "Version": "0.0.1",
+  "Description": "Adds bows and arrows to Stardew Valley",
+  "UniqueID": "gekox.bows",
+  "EntryDll": "GekosBows.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "MinimumVersion": "1.5.1"
+    }
+  ]
+}

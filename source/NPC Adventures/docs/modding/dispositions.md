@@ -46,7 +46,7 @@ Definition structure is a dictionary of NPC, where key is NPC name and value rep
 | Section | Allowed values | Description |
 | ------- | -------------- | ----------- |
 | recruitable | `recruitable` | Is this NPC recruitable, rentable or unavailable for asks and suggestions, but available in quests only? Only recruitable value is implemented in mod. |
-| skills | `warrior, fighter` | One or more presonal skills. Defines which persoinal skills companion has. |
+| skills | `warrior, fighter, doctor, forager, scared` | One or more presonal skills. Defines which persoinal skills companion has. |
 | availability | NOT USED! | |
 | minimum_hearts | NOT USED! | |
 | price | NOT USED! |

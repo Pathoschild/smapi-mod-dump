@@ -16,18 +16,27 @@ namespace FarmTypeManager
         /// <summary>A SMAPI GameLaunched event that enables GMCM support if that mod is available.</summary>
         public void EnableGMCM(object sender, GameLaunchedEventArgs e)
         {
-            GenericModConfigMenuAPI api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu"); //attempt to get GMCM's API instance
+            try
+            {
+                GenericModConfigMenuAPI api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu"); //attempt to get GMCM's API instance
 
-            if (api == null) //if the API is not available
-                return;
-            
-            api.RegisterModConfig(ModManifest, () => Utility.MConfig = new ModConfig(), () => Helper.WriteConfig(Utility.MConfig)); //register "revert to default" and "write" methods for this mod's config
+                if (api == null) //if the API is not available
+                    return;
 
-            //register an option for each of this mod's config settings
-            api.RegisterSimpleOption(ModManifest, "Enable console commands", "Uncheck this box to disable FTM's console commands, e.g. for mod compatibility.\nNOTE: This will not take effect until Stardew Valley is restarted.", () => Utility.MConfig.EnableConsoleCommands, (bool val) => Utility.MConfig.EnableConsoleCommands = val);
-            api.RegisterSimpleOption(ModManifest, "Enable content packs", "Uncheck this box to disable all FTM content packs.\nOnly the \"personal\" files in FarmTypeManager/data will be used.", () => Utility.MConfig.EnableContentPacks, (bool val) => Utility.MConfig.EnableContentPacks = val);
-            api.RegisterSimpleOption(ModManifest, "Enable trace log messages", "Uncheck this box to disable FTM's [TRACE] message type in SMAPI's log files.\nLogs will be smaller but provide less info.", () => Utility.MConfig.EnableTraceLogMessages, (bool val) => Utility.MConfig.EnableTraceLogMessages = val);
-            api.RegisterSimpleOption(ModManifest, "Monster limit per location", "The maximum number of monsters FTM will spawn on a single map.\nEnter NULL for unlimited monsters.", () => MonsterLimitAsString, (string val) => MonsterLimitAsString = val);
+                api.RegisterModConfig(ModManifest, () => Utility.MConfig = new ModConfig(), () => Helper.WriteConfig(Utility.MConfig)); //register "revert to default" and "write" methods for this mod's config
+
+                //register an option for each of this mod's config settings
+                api.RegisterSimpleOption(ModManifest, "Enable console commands", "Uncheck this box to disable FTM's console commands, e.g. for mod compatibility.\nNOTE: This will not take effect until Stardew Valley is restarted.", () => Utility.MConfig.EnableConsoleCommands, (bool val) => Utility.MConfig.EnableConsoleCommands = val);
+                api.RegisterSimpleOption(ModManifest, "Enable content packs", "Uncheck this box to disable all FTM content packs.\nOnly the \"personal\" files in FarmTypeManager/data will be used.", () => Utility.MConfig.EnableContentPacks, (bool val) => Utility.MConfig.EnableContentPacks = val);
+                api.RegisterSimpleOption(ModManifest, "Enable trace log messages", "Uncheck this box to disable FTM's [TRACE] message type in SMAPI's log files.\nLogs will be smaller but provide less info.", () => Utility.MConfig.EnableTraceLogMessages, (bool val) => Utility.MConfig.EnableTraceLogMessages = val);
+                api.RegisterSimpleOption(ModManifest, "Monster limit per location", "The maximum number of monsters FTM will spawn on a single map.\nEnter NULL for unlimited monsters.", () => MonsterLimitAsString, (string val) => MonsterLimitAsString = val);
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"An error happened while loading FTM's GMCM options menu. That menu might be missing or fail to work. The auto-generated error message has been added to the log.", LogLevel.Warn);
+                Monitor.Log($"----------", LogLevel.Trace);
+                Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+            }
         }
 
         private string MonsterLimitAsString

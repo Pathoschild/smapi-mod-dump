@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using StardewValley;
 
 namespace DeluxeHats.Hats
@@ -7,6 +6,7 @@ namespace DeluxeHats.Hats
     public static class ChefHat
     {
         public const string Name = "Chef Hat";
+        public const string Description = "Double the buff from eating food.";
         public static void Activate()
         {
             HatService.OnUpdateTicked = (e) =>

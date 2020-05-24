@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Calendar Notes",
+  "Author": "nman130",
+  "Version": "0.1.0",
+  "Description": "Adds notes to the days on the calendar.",
+  "UniqueID": "nman130.CalendarNotes",
+  "EntryDll": "CalendarNotes.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

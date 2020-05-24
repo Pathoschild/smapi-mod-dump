@@ -1,0 +1,12 @@
+{
+   "Name": "Pufferfish Chickens",
+   "Author": "GZhynko",
+   "Version": "1.0.0",
+   "Description": "Replaces brown chickens with pufferfish ones.",
+   "UniqueID": "GZhynko.Pufferfish_Chickens",
+   "MinimumApiVersion": "3.0.0",
+   "UpdateKeys": [ "Nexus:6162" ],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher"
+   }
+}

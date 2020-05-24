@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using StardewValley;
 using StardewValley.Locations;
@@ -9,6 +8,7 @@ namespace DeluxeHats.Hats
     public static class WearableDwarfHelm
     {
         public const string Name = "Wearable Dwarf Helm";
+        public const string Description = "You can Understand Dwarves.\nWhen entering a new level of a mine gain Mad Dwarf King buff:\n+4 Mining\n+2 Speed\n+1 Attack.";
         private static string locaction;
         public static void Activate()
         {
@@ -52,12 +52,12 @@ namespace DeluxeHats.Hats
                     source: "Deluxe Hats",
                     displaySource: Name)
                     {
-                        which = 6284,
+                        which = HatService.BuffId,
                     };
                     dwarfBuff.description = "Mad Dwarf King\n+4 Mining\n+2 Speed\n+1 Attack";
                     Game1.buffsDisplay.addOtherBuff(dwarfBuff);
                 }
-                dwarfBuff.millisecondsDuration = 7170;
+                dwarfBuff.millisecondsDuration = 21510;
             };
         }
 

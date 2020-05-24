@@ -1,4 +1,16 @@
 ﻿{
   "adventureBegins": "Bom dia, @.^^Eu estive monitorando seu progresso nas minas, e eu gostaria de te parabenizar pelo seu sucesso. Talvez você estaria interessado(a) em saber que você não é a única pessoa com o espírito de aventureiro. Por favor venha até a Guilda dos Aventureiros, eu tenho informações que gostaria de discutir em pessoa.^^-Marlon",
-  "adventureContinue": "Olá, @,^^Eu fiquei impressionado em saber sobre suas pequenas aventuras com as pessoas da vila. Faz bem ao meu coração em saber que ainda existem pessoas que querem se aventurar e se apoiar em momentos difíceis. A comunidade é importante, principalmente em uma vila desse tamanho.^^Eu espero que você e seus amigos mantenham o espírito de aventura mesmo quando eu for embora. Venha para a guilda a qualquer hora, talvez tenha uma ou duas histórias para contar para mim e o velho Gil.^^-Marlon"
+  "adventureContinue": "Olá, @,^^Eu fiquei impressionado em saber sobre suas pequenas aventuras com as pessoas da vila. Faz bem ao meu coração em saber que ainda existem pessoas que querem se aventurar e se apoiar em momentos difíceis. A comunidade é importante, principalmente em uma vila desse tamanho.^^Eu espero que você e seus amigos mantenham o espírito de aventura mesmo quando eu for embora. Venha para a guilda a qualquer hora, talvez tenha uma ou duas histórias para contar para mim e o velho Gil.^^-Marlon",
+  "bagItemsSentLetter.Abigail": "Oi {0},^^Você esqueçeu umas coisas na minha mochila.^Espero que possamos fazer isso novamente!^^    - {1}",
+  "bagItemsSentLetter.Maru": "Oi {0},^^Você deveria estar meio destraido ontem, que esqueçeu umas coisas comigo!^Tenha certeza que está tudo aí!^^    - {1}",
+  "bagItemsSentLetter.Harvey": "Olá {0},^^Como está a sua saúde? Estou escrevendo pois esqueçeu umas coisas comigo.^Gostei do nosso passeio ontem, espero ver você de novo.^^    - {1}",
+  "bagItemsSentLetter.Sam": "Ei {0}!^^Você devia estar no embalo ontem, que por Yoba! Você deixou suas coisas comigo!^Elas estão aí!^^    - {1}",
+  "bagItemsSentLetter.Sebastian": "Oi {0},^^Aqui estão as coisas que você deixou comigo.^De qualquer forma, te vejo por ai, esquecido.^^    - {1}",
+  "bagItemsSentLetter.Shane": "Ei {0},^^Ontem foi ok, e lembrei que deixou umas coisas comigo.^Obrigado por fazer isso comigo, até.^^    - {1}",
+  "bagItemsSentLetter.Penny": "Oi {0},^^Você deixou seus pertences comigo ontem.^Eu tenho certeza que embaeli tudo ai, espero que esteja bem.^^     - {1}",
+  "bagItemsSentLetter.Leah": "Ei {0},^^Você equeceu as suas coisas comigo!^Não se preocupe, eu embalei tudo em plático bolha!^^     - {1}",
+  "bagItemsSentLetter.Haley": "Ei {0},^^Você você deixou as suas tralhas comigo.^Tenta não esquecer de novo tá, não sou suas bábá^^     - {1}",
+  "bagItemsSentLetter.Elliott": "Olá {0},^^Espero que você esteja bem.^Eu me lembrei das coisas que você deixou comigo na nossa aventura.^Não se preocupe, eu mandei elas de volta!^^    - {1}",
+  "bagItemsSentLetter.Emily": "Oi {0},^^Minha mochila estava meio pesada, então eu me lembrei das suas coisas!^Elas estão ai, espero que os espiritos fiquem felizes conosco!^^    - {1}",
+  "bagItemsSentLetter.Alex": "Ei {0},^^Tinha um cheiro estranho vindo da minha mochila, aí vi que suas coisas estavam lá.^Não tem problema se precisar de mim, nem todos nós somos naturalmente atléticos.^^    - {1}"
 }

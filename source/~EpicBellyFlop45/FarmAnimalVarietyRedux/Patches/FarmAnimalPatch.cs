@@ -1,7 +1,10 @@
-﻿using Harmony;
+﻿using FarmAnimalVarietyRedux.Models;
+using Harmony;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Network;
 using StardewValley.Objects;
 using System;
@@ -67,7 +70,7 @@ namespace FarmAnimalVarietyRedux.Patches
         internal static void ConstructorPostFix(string type, FarmAnimal __instance)
         {
             // check if the type is custom
-            var animal = ModEntry.Animals.Where(animal => animal.Name == type).FirstOrDefault();
+            var animal = ModEntry.Instance.Api.GetAnimalByName(type);
             if (animal != null)
             {
                 var subType = animal.SubTypes[Game1.random.Next(animal.SubTypes.Count())];
@@ -123,17 +126,458 @@ namespace FarmAnimalVarietyRedux.Patches
             __instance.price.Value = Convert.ToInt32(dataSplit[24]);
 
             // get the animal data to set the custom walk speed
-            foreach (var animal in ModEntry.Animals)
+            var animal = ModEntry.Instance.Api.GetAnimalBySubTypeName(__instance.type.Value);
+            if (animal != null)
             {
-                if (animal.SubTypes.Where(subType => subType.Name.ToLower() == __instance.type.Value.ToLower()).Any())
-                {
-                    __instance.Speed = animal.Data.WalkSpeed;
-                }
+                __instance.Speed = animal.Data.WalkSpeed;
             }
 
             if (!__instance.isCoopDweller())
                 __instance.Sprite.textureUsesFlippedRightForLeft = true;
 
+            return false;
+        }
+
+        /// <summary>The prefix for the Behaviors method.</summary>
+        /// <param name="time">The GameTime object that contains time data about the game's frame time.</param>
+        /// <param name="location">The current location of the <see cref="FarmAnimal"/> being patched.</param>
+        /// <param name="__result">The return value of the original Bahaviors method.</param>
+        /// <param name="__instance">The current <see cref="FarmAnimal"/> instance being patched.</param>
+        /// <returns>False meaning the original method won't get ran.</returns>
+        public static bool BehaviorsPrefix(GameTime time, GameLocation location, ref bool __result, FarmAnimal __instance)
+        {
+            // ensure animal has a house
+            if (__instance.home == null)
+            {
+                __result = false;
+                return false;
+            }
+
+            // get isEating memeber
+            var isEating = (NetBool)typeof(FarmAnimal).GetField("isEating", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
+
+            if (isEating)
+            {
+                if (__instance.home != null && __instance.home.getRectForAnimalDoor().Intersects(__instance.GetBoundingBox()))
+                {
+                    FarmAnimal.behaviorAfterFindingGrassPatch(__instance, location);
+                    isEating.Value = false;
+                    __instance.Halt();
+                    __result = false;
+                    return false;
+                }
+
+                // sort out animation
+                if (__instance.buildingTypeILiveIn.Contains("Barn"))
+                {
+                    __instance.Sprite.Animate(time, 16, 4, 100f);
+                    if (__instance.Sprite.currentFrame >= 20)
+                    {
+                        isEating.Value = false;
+                        __instance.Sprite.loop = true;
+                        __instance.Sprite.currentFrame = 0;
+                        __instance.faceDirection(2);
+                    }
+                }
+                else
+                {
+                    __instance.Sprite.Animate(time, 24, 4, 100f);
+                    if (__instance.Sprite.currentFrame >= 28)
+                    {
+                        isEating.Value = false;
+                        __instance.Sprite.loop = true;
+                        __instance.Sprite.currentFrame = 0;
+                        __instance.faceDirection(2);
+                    }
+                }
+
+                // set isEating member
+                typeof(FarmAnimal).GetField("isEating", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, isEating);
+
+                __result = true;
+                return false;
+            }
+
+            // only let the main behavior code be ran by the host
+            if (Game1.IsClient)
+            {
+                __result = false;
+                return false;
+            }
+
+            // ensure animal isn't currently on a path
+            if (__instance.controller != null)
+            {
+                __result = true;
+                return false;
+            }
+
+            // make animal go to grass if it's hungry
+            if (location.IsOutdoors && __instance.fullness < 195 && (Game1.random.NextDouble() < 0.002 && FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick))
+            {
+                FarmAnimal.NumPathfindingThisTick++;
+                __instance.controller = new PathFindController(__instance, location, new PathFindController.isAtEnd(FarmAnimal.grassEndPointFunction), -1, false, new PathFindController.endBehavior(FarmAnimal.behaviorAfterFindingGrassPatch), 200, Point.Zero, true);
+            }
+
+            // teleport the animals inside at night
+            if (Game1.timeOfDay >= 1700 && location.IsOutdoors && (__instance.controller == null && Game1.random.NextDouble() < 0.002))
+            {
+                if (location.farmers.Count == 0)
+                {
+                    (location as Farm).animals.Remove(__instance.myID);
+                    (__instance.home.indoors.Value as AnimalHouse).animals.Add(__instance.myID, __instance);
+                    __instance.setRandomPosition(__instance.home.indoors);
+                    __instance.faceDirection(Game1.random.Next(4));
+                    __instance.controller = null;
+
+                    __result = true;
+                    return false;
+                }
+
+                if (FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick)
+                {
+                    ++FarmAnimal.NumPathfindingThisTick;
+                    __instance.controller = new PathFindController(__instance, location, new PathFindController.isAtEnd(PathFindController.isAtEndPoint), 0, false, null, 200, new Point(__instance.home.tileX + __instance.home.animalDoor.X, __instance.home.tileY + __instance.home.animalDoor.Y), true);
+                }
+            }
+
+            // check if animal can forage for produce
+            if (location.IsOutdoors && !Game1.isRaining && __instance.currentProduce != -1 && !__instance.isBaby() && Game1.random.NextDouble() < 0.0002)
+            {
+                // check if animal has produce that can be foraged
+                var subType = ModEntry.Instance.Api.GetAnimalSubTypeByName(__instance.type);
+                if (subType != null)
+                {
+                    // get the forage items count
+                    var productCount = subType.Produce?.AllSeasons?.Products.Where(product => product.HarvestType == HarvestType.Forage).Select(product => product.Id).Count() ?? 0;
+                    switch (Game1.currentSeason)
+                    {
+                        case "spring":
+                            {
+                                productCount += subType.Produce?.Spring?.Products.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).Count() ?? 0;
+                                productCount += subType.Produce?.Spring?.DeluxeProducts.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).Count() ?? 0;
+                                break;
+                            }
+                        case "summer":
+                            {
+                                productCount = subType.Produce?.Spring?.Products.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).Count() ?? 0;
+                                productCount = subType.Produce?.Spring?.DeluxeProducts.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).Count() ?? 0;
+                                break;
+                            }
+                        case "fall":
+                            {
+                                productCount = subType.Produce?.Spring?.Products.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).Count() ?? 0;
+                                productCount = subType.Produce?.Spring?.DeluxeProducts.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).Count() ?? 0;
+                                break;
+                            }
+                        case "winter":
+                            {
+                                productCount = subType.Produce?.Spring?.Products.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).Count() ?? 0;
+                                productCount = subType.Produce?.Spring?.DeluxeProducts.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).Count() ?? 0;
+                                break;
+                            }
+                    }
+
+                    // ensure there is a valid product for the animal
+                    if (productCount == 0)
+                    {
+                        __result = false;
+                        return false;
+                    }
+                }
+
+                // amke sure the place is blank for spawning the foraged item
+                var boundingBox = __instance.GetBoundingBox();
+                for (int corner = 0; corner < 4; ++corner)
+                {
+                    var cornersOfThisRectangle = Utility.getCornersOfThisRectangle(ref boundingBox, corner);
+                    var position = new Vector2(cornersOfThisRectangle.X / 64f, cornersOfThisRectangle.Y / 64f);
+                    if (location.terrainFeatures.ContainsKey(position) || location.objects.ContainsKey(position))
+                    {
+                        __result = false;
+                        return false;
+                    }
+                }
+
+                // play forage sounds
+                if (Game1.player.currentLocation.Equals(location))
+                {
+                    DelayedAction.playSoundAfterDelay("dirtyHit", 450, null, -1);
+                    DelayedAction.playSoundAfterDelay("dirtyHit", 900, null, -1);
+                    DelayedAction.playSoundAfterDelay("dirtyHit", 1350, null, -1);
+                }
+
+                // animate the animal is the player is there
+                var findTruffle = typeof(FarmAnimal).GetMethod("findTruffle", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (location.Equals(Game1.currentLocation))
+                {
+                    switch (__instance.FacingDirection)
+                    {
+                        case 0:
+                            __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>()
+                                {
+                                    new FarmerSprite.AnimationFrame(9, 250),
+                                    new FarmerSprite.AnimationFrame(11, 250),
+                                    new FarmerSprite.AnimationFrame(9, 250),
+                                    new FarmerSprite.AnimationFrame(11, 250),
+                                    new FarmerSprite.AnimationFrame(9, 250),
+                                    new FarmerSprite.AnimationFrame(11, 250, false, false, new AnimatedSprite.endOfAnimationBehavior((farmer) => { findTruffle.Invoke(__instance, new object[] { farmer }); }), false)
+                                });
+                            break;
+                        case 1:
+                            __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>()
+                                {
+                                    new FarmerSprite.AnimationFrame(5, 250),
+                                    new FarmerSprite.AnimationFrame(7, 250),
+                                    new FarmerSprite.AnimationFrame(5, 250),
+                                    new FarmerSprite.AnimationFrame(7, 250),
+                                    new FarmerSprite.AnimationFrame(5, 250),
+                                    new FarmerSprite.AnimationFrame(7, 250, false, false, new AnimatedSprite.endOfAnimationBehavior((farmer) => { findTruffle.Invoke(__instance, new object[] { farmer }); }), false)
+                                });
+                            break;
+                        case 2:
+                            __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>()
+                                {
+                                    new FarmerSprite.AnimationFrame(1, 250),
+                                    new FarmerSprite.AnimationFrame(3, 250),
+                                    new FarmerSprite.AnimationFrame(1, 250),
+                                    new FarmerSprite.AnimationFrame(3, 250),
+                                    new FarmerSprite.AnimationFrame(1, 250),
+                                    new FarmerSprite.AnimationFrame(3, 250, false, false, new AnimatedSprite.endOfAnimationBehavior((farmer) => { findTruffle.Invoke(__instance, new object[] { farmer }); }), false)
+                                });
+                            break;
+                        case 3:
+                            __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>()
+                                {
+                                    new FarmerSprite.AnimationFrame(5, 250, false, true, (AnimatedSprite.endOfAnimationBehavior)null, false),
+                                    new FarmerSprite.AnimationFrame(7, 250, false, true, (AnimatedSprite.endOfAnimationBehavior)null, false),
+                                    new FarmerSprite.AnimationFrame(5, 250, false, true, (AnimatedSprite.endOfAnimationBehavior)null, false),
+                                    new FarmerSprite.AnimationFrame(7, 250, false, true, (AnimatedSprite.endOfAnimationBehavior)null, false),
+                                    new FarmerSprite.AnimationFrame(5, 250, false, true, (AnimatedSprite.endOfAnimationBehavior)null, false),
+                                    new FarmerSprite.AnimationFrame(7, 250, false, true, new AnimatedSprite.endOfAnimationBehavior((farmer) => { findTruffle.Invoke(__instance, new object[] { farmer }); }), false)
+                                });
+                            break;
+                    }
+
+                    __instance.Sprite.loop = false;
+                }
+                else
+                {
+                    findTruffle.Invoke(__instance, new object[] { Game1.player });
+                }
+            }
+
+            __result = false;
+            return false;
+        }
+
+        /// <summary>The prefix for the FindTruffle method.</summary>
+        /// <remarks>Although the method is called 'FindTruffle' it's responsible for all produce that is foraged.</remarks>
+        /// <param name="__instance">The current <see cref="FarmAnimal"/> instance being patched.</param>
+        /// <returns>False meaning the original method won't get ran.</returns>
+        public static bool FindTrufflePrefix(FarmAnimal __instance)
+        {
+            // detemine the item to drop
+            var productId = -1;
+            var subType = ModEntry.Instance.Api.GetAnimalSubTypeByName(__instance.type);
+            if (subType != null)
+            {
+                // get all the foragable items
+                var foragableItems = subType.Produce?.AllSeasons?.Products?.Where(product => product.HarvestType == HarvestType.Forage).Select(product => product.Id).ToList();
+                switch (Game1.currentSeason)
+                {
+                    case "spring":
+                        {
+                            var products = subType.Produce?.Spring?.Products?.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).ToList();
+                            if (products != null)
+                                foragableItems.AddRange(products);
+
+                            break;
+                        }
+                    case "summer":
+                        {
+                            var products = subType.Produce?.Summer?.Products?.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).ToList();
+                            if (products != null)
+                                foragableItems.AddRange(products);
+
+                            break;
+                        }
+                    case "fall":
+                        {
+                            var products = subType.Produce?.Fall?.Products?.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).ToList();
+                            if (products != null)
+                                foragableItems.AddRange(products);
+
+                            break;
+                        }
+                    case "winter":
+                        {
+                            var products = subType.Produce?.Winter?.Products?.Where(produce => produce.HarvestType == HarvestType.Forage).Select(produce => produce.Id).ToList();
+                            if (products != null)
+                                foragableItems.AddRange(products);
+
+                            break;
+                        }
+                }
+
+                if (foragableItems.Count == 0)
+                    return false;
+
+                var productStringId = foragableItems[Game1.random.Next(foragableItems.Count)];
+                if (!int.TryParse(productStringId, out productId))
+                    return false;
+            }
+
+            // try to spawn the product around the animal
+            if (Utility.spawnObjectAround(Utility.getTranslatedVector2(__instance.getTileLocation(), __instance.FacingDirection, 1f), new SObject(__instance.getTileLocation(), productId, 1), Game1.getFarm(), true))
+            {
+                if (productId == 430)
+                    ++Game1.stats.TrufflesFound;
+            }
+
+            // if the player is a high friendship, increase the possiblility of skipping resetting the currentProduce - this means high friendshipped animals produce more
+            if (Game1.random.NextDouble() <= __instance.friendshipTowardFarmer / 1500.0)
+                return false;
+
+            __instance.currentProduce.Value = -1;
+            return false;
+        }
+
+        /// <summary>The prefix for the UpdateWhenNotCurrentLocation method.</summary>
+        /// <param name="currentBuilding">The current building the animal is in.</param>
+        /// <param name="time">The GameTime object that contains time data about the game's frame time.</param>
+        /// <param name="environment">The <see cref="GameLocation"/> of the animal.</param>
+        /// <returns>False meaning the original method won't get ran.</returns>
+        public static bool UpdateWhenNotCurrentLocationPrefix(Building currentBuilding, GameTime time, GameLocation environment, FarmAnimal __instance)
+        {
+            var behaviors = typeof(FarmAnimal).GetMethod("behaviors", BindingFlags.NonPublic | BindingFlags.Instance);
+            var doFarmerPushEvent = (NetEvent1Field<int, NetInt>)typeof(FarmAnimal).GetField("doFarmerPushEvent", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
+            var doBuildingPokeEvent = (NetEvent0)typeof(FarmAnimal).GetField("doBuildingPokeEvent", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
+
+            doFarmerPushEvent.Poll();
+            doBuildingPokeEvent.Poll();
+
+            // skip if time is paused
+            if (!Game1.shouldTimePass())
+                return false;
+
+            __instance.update(time, environment, __instance.myID, false);
+
+            // ensure this is the game host (not the farmhands)
+            if (!Game1.IsMasterGame)
+                return false;
+
+            // check if the animal is able to go outside
+            if (currentBuilding == null || Game1.random.NextDouble() > .002 || !currentBuilding.animalDoorOpen || Game1.timeOfDay >= 1630 || Game1.isRaining || environment.farmers.Count > 0)
+            {
+                behaviors.Invoke(__instance, new object[] { time, environment });
+                return false;
+            }
+
+            // check for special season conditions on the animal
+            var animal = ModEntry.Instance.Api.GetAnimalBySubTypeName(__instance.type);
+            if (animal != null)
+            {
+                // convert season string value into enum
+                Season season = Season.Spring;
+                switch (Game1.currentSeason)
+                {
+                    case "summer":
+                        season = Season.Summer;
+                        break;
+                    case "fall":
+                        season = Season.Fall;
+                        break;
+                    case "winter":
+                        season = Season.Winter;
+                        break;
+                }
+
+                if (!animal.Data.SeasonsAllowedOutdoors.Contains(season))
+                {
+                    behaviors.Invoke(__instance, new object[] { time, environment });
+                    return false;
+                }
+            }
+
+            // get the farm location to spawn the animal in
+            Farm farm = (Farm)Game1.getLocationFromName("Farm");
+
+            // ensure the animal won't be colliding with anything when they leave the house
+            var exitCollisionBox = new Rectangle(
+                x: (currentBuilding.tileX + currentBuilding.animalDoor.X) * 64 + 2,
+                y: (currentBuilding.tileY + currentBuilding.animalDoor.Y) * 64 + 2,
+                width: __instance.isCoopDweller() ? 60 : 124,
+                height: 60
+            );
+
+            if (farm.isCollidingPosition(exitCollisionBox, Game1.viewport, false, 0, false, __instance, false, false, false))
+                return false;
+
+            // remove animal from farm
+            if (farm.animals.ContainsKey(__instance.myID))
+            {
+                for (int index = farm.animals.Count() - 1; index >= 0; --index)
+                {
+                    if (farm.animals.Pairs.ElementAt(index).Key.Equals(__instance.myID))
+                    {
+                        farm.animals.Remove(__instance.myID);
+                        break;
+                    }
+                }
+            }
+
+            // remove animal from building
+            (currentBuilding.indoors.Value as AnimalHouse).animals.Remove(__instance.myID);
+
+            // add animal to farm, initial values
+            farm.animals.Add(__instance.myID, __instance);
+            __instance.faceDirection(2);
+            __instance.SetMovingDown(true);
+            __instance.Position = new Vector2((float)currentBuilding.getRectForAnimalDoor().X, (float)((currentBuilding.tileY + currentBuilding.animalDoor.Y) * 64 - (__instance.Sprite.getHeight() * 4 - __instance.GetBoundingBox().Height) + 32));
+
+            // sort out path finding
+            if (FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick)
+            {
+                ++FarmAnimal.NumPathfindingThisTick;
+                __instance.controller = new PathFindController(
+                    c: __instance,
+                    location: farm,
+                    endFunction: new PathFindController.isAtEnd(FarmAnimal.grassEndPointFunction),
+                    finalFacingDirection: Game1.random.Next(4),
+                    eraseOldPathController: false,
+                    endBehaviorFunction: new PathFindController.endBehavior(FarmAnimal.behaviorAfterFindingGrassPatch),
+                    limit: 200,
+                    endPoint: Point.Zero
+                );
+            }
+
+            if (__instance.controller == null || __instance.controller.pathToEndPoint == null || __instance.controller.pathToEndPoint.Count < 3)
+            {
+                __instance.SetMovingDown(true);
+                __instance.controller = null;
+            }
+            else
+            {
+                __instance.faceDirection(2);
+                __instance.Position = new Vector2(
+                    x: __instance.controller.pathToEndPoint.Peek().X * 64,
+                    y: (__instance.controller.pathToEndPoint.Peek().Y * 64 - (__instance.Sprite.getHeight() * 4 - __instance.GetBoundingBox().Height) + 16)
+                );
+
+                if (!__instance.isCoopDweller())
+                    __instance.position.X -= 32f;
+            }
+
+            __instance.noWarpTimer = 3000;
+            currentBuilding.currentOccupants.Value--;
+            if (Utility.isOnScreen(__instance.getTileLocationPoint(), 192, farm))
+                farm.localSound("sandyStep");
+
+            if (environment.isTileOccupiedByFarmer(__instance.getTileLocation()) != null)
+                environment.isTileOccupiedByFarmer(__instance.getTileLocation()).TemporaryPassableTiles.Add(__instance.GetBoundingBox());
+
+            behaviors.Invoke(__instance, new object[] { time, environment });
             return false;
         }
 
@@ -237,15 +681,11 @@ namespace FarmAnimalVarietyRedux.Patches
                 producedItemId = __instance.defaultProduceIndex.Value;
                 if (producedItemId == -1) // animal is a custom animal
                 {
-                    foreach (var animal in ModEntry.Animals)
+                    var subType = ModEntry.Instance.Api.GetAnimalSubTypeByName(__instance.type.Value);
+                    if (subType != null)
                     {
-                        var subType = animal.SubTypes.Where(subType => subType.Name.ToLower() == __instance.type.Value.ToLower()).FirstOrDefault();
-                        if (subType != null)
-                        {
-                            producedItemId = subType.Produce.GetRandomDefault(out var harvestType);
-                            __instance.harvestType.Value = (byte)harvestType;
-                            break;
-                        }
+                        producedItemId = subType.Produce.GetRandomDefault(out var harvestType);
+                        __instance.harvestType.Value = (byte)harvestType;
                     }
                 }
 
@@ -286,17 +726,14 @@ namespace FarmAnimalVarietyRedux.Patches
                         {
                             if (__instance.deluxeProduceIndex == -1) // animal is a custom animal
                             {
-                                foreach (var animal in ModEntry.Animals)
+                                var subType = ModEntry.Instance.Api.GetAnimalSubTypeByName(__instance.type.Value);
+                                if (subType != null)
                                 {
-                                    var subType = animal.SubTypes.Where(subType => subType.Name.ToLower() == __instance.type.Value.ToLower()).FirstOrDefault();
-                                    if (subType != null)
+                                    var deluxeId = subType.Produce.GetRandomDeluxe(out var harvestType);
+                                    if (deluxeId != -1) // only change to a deluxe product if one could be found (not all animals have deluxe produce)
                                     {
-                                        var deluxeId = subType.Produce.GetRandomDeluxe(out var harvestType);
-                                        if (deluxeId != -1) // only change to a deluxe product if one could be found (not all animals have deluxe produce)
-                                        {
-                                            producedItemId = deluxeId;
-                                            __instance.harvestType.Value = (byte)harvestType;
-                                        }
+                                        producedItemId = deluxeId;
+                                        __instance.harvestType.Value = (byte)harvestType;
                                     }
                                 }
                             }
@@ -332,13 +769,13 @@ namespace FarmAnimalVarietyRedux.Patches
             if (producedItemId != -1 && __instance.home != null)
             {
                 var needsToPlaceProduce = true; // whether the animal needs to place there object - used for determining the the produce has been placed in an autograbber
-                var producedItem = new SObject(Vector2.Zero, producedItemId, null, false, true, false, false) { Quality = __instance.produceQuality };
 
                 // check if the animal house has an auto grabber, if so spawn the item in there
                 foreach (SObject environmentObject in __instance.home.indoors.Value.objects.Values)
                 {
                     if (environmentObject.bigCraftable && environmentObject.parentSheetIndex == 165 && environmentObject.heldObject.Value != null)
                     {
+                        var producedItem = new SObject(Vector2.Zero, producedItemId, null, false, true, false, false) { Quality = __instance.produceQuality };
                         if ((environmentObject.heldObject.Value as Chest).addItem(producedItem) == null) // if addItem returns null it mean's all the items could be placed in the autograbber
                         {
                             environmentObject.showNextIndex.Value = true;
@@ -350,7 +787,10 @@ namespace FarmAnimalVarietyRedux.Patches
 
                 // spawn the object if there was no valid auto grabber and there is a valid space under the animal
                 if (needsToPlaceProduce && !__instance.home.indoors.Value.Objects.ContainsKey(__instance.getTileLocation()))
+                {
+                    var producedItem = new SObject(Vector2.Zero, producedItemId, null, false, true, false, true) { Quality = __instance.produceQuality };
                     __instance.home.indoors.Value.Objects.Add(__instance.getTileLocation(), producedItem);
+                }
             }
 
             // calculate the mood message for the animal

@@ -1,0 +1,64 @@
+﻿{
+    "Shops":[
+        {
+            "name":"Marnie's Ranch",
+            "openDays":[0,0,1,1,1,1,1],
+            "specialClosures":[
+                {"date":"3|18", "reason":"Marnie has her doctor's appointment today."},
+                {"date":"4|18", "reason":"Jas has her doctor's appointment today."}
+            ],
+            "stock":null,
+            "open":"0900|1600"
+        }
+        {
+            "name":"The Carpenter's Shop",
+            "openDays":[1,0,1,1,1,1,1],
+            "specialClosures":[
+                {"date":"2|18", "reason":"Robin has her doctor's appointment today."}
+            ],
+            "stock":null,
+            "open":"0900|1700"
+		}
+        {
+            "name":"Pierre's General Store",
+            "openDays":[1,1,0,1,1,1,1],
+            "specialClosures":[],
+            "stock":null,
+            "open":"0900|1700"
+		}
+        {
+            "name":"Krobus' Shop",
+            "openDays":[1,1,1,1,1,1,1],
+            "specialClosures":[],
+            "stock":[
+                "50 Slime for 10g each.",
+                "1 Omnigeode for 300g.",
+                "5 Fish or 5 Magnets for 200g each.",
+                "10 Mixed Seeds for 30g each.",
+                "1 Iridium Sprinkler for 10,000g.",
+                "5 Cooked Dishes for 50-500g each.",
+                "10 Bat Wings for 30g each."
+            ],
+            "open":"0600|2600"
+		}
+        {
+            "name":"The Desert Trader",
+            "openDays":[1,1,1,1,1,1,1],
+            "specialClosures":[
+                {"date":"4|15", "reason":"The Desert Trader is at the Night Market."},
+                {"date":"4|16", "reason":"The Desert Trader is at the Night Market."},
+                {"date":"4|17", "reason":"The Desert Trader is at the Night Market."}
+            ],
+            "stock":[
+                "3 Hay for 1 Omnigeode.",
+                "1 Fiber for 5 Stone.",
+                "1 Cloth for 3 Aquamarine.",
+                "1 Magic Rock Candy for 3 Prismatic Shards.",
+                "1 Cheese for 1 Emerald.",
+                "1 Seasonal Seed for 2 of the Next Season's Seeds.",
+                "1 Staircase for 1 Jade."
+			],
+            "open":"0600|2600"
+		}
+    ]
+}

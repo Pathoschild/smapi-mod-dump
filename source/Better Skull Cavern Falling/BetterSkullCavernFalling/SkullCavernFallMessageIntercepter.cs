@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
 
 namespace BetterSkullCavernFalling
@@ -21,7 +22,10 @@ namespace BetterSkullCavernFalling
             Game1.enterMine(mineLevel + levelsDownFallen);
             Game1.player.faceDirection(2);
             Game1.player.showFrame(5, false);
-            Game1.globalFadeToClear(null, 0.01f);
+            Game1.player.forceCanMove();
+            Game1.messagePause = true;
+            Game1.fadeToBlackAlpha = 1f;
+            Game1.globalFadeToClear(null, 0.1f);
         }
 
         private SkullCavernFallMessageIntercepter(MineShaft mineShaft, IReflectionHelper reflection)
@@ -32,12 +36,22 @@ namespace BetterSkullCavernFalling
 
         internal static void Intercept(IReflectionHelper reflection)
         {
-            if (Game1.afterFade != null
-                && Game1.afterFade.Target is MineShaft mineShaft
-                && Game1.afterFade.Method == MINESHAFT_AFTERFALL_METHOD)
+            Game1.afterFade = Intercept(Game1.afterFade, reflection);
+
+            FieldInfo screenFadeFieldInfo = typeof(Game1).GetField("screenFade", BindingFlags.Static | BindingFlags.NonPublic);
+            FieldInfo afterFadeFieldInfo = typeof(ScreenFade).GetField("afterFade", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            ScreenFade game1ScreenFade = (screenFadeFieldInfo.GetValue(null) as ScreenFade);
+            afterFadeFieldInfo.SetValue(game1ScreenFade, Intercept(afterFadeFieldInfo.GetValue(game1ScreenFade) as Game1.afterFadeFunction, reflection));
+        }
+
+        private static Game1.afterFadeFunction Intercept(Game1.afterFadeFunction afterFade, IReflectionHelper reflection)
+        {
+            if (afterFade != null && afterFade.Target is MineShaft mineShaft && afterFade.Method == MINESHAFT_AFTERFALL_METHOD)
             {
-                Game1.afterFade = new SkullCavernFallMessageIntercepter(mineShaft, reflection).AfterFall;
+                return new SkullCavernFallMessageIntercepter(mineShaft, reflection).AfterFall;
             }
+            return afterFade;
         }
     }
 }

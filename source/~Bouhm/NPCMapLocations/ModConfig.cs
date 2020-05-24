@@ -32,12 +32,11 @@ namespace NPCMapLocations
     public string TooltipKey { get; set; } = "Space";
     public bool ShowFarmBuildings { get; set; } = true;
 
-    public string MinimapDragKey { get; set; } = "LeftControl";
     public string MinimapToggleKey { get; set; } = "OemPipe";
     public HashSet<string> MinimapBlacklist { get; set; } = new HashSet<string>() { };
 
     public bool UseSeasonalMaps { get; set; } = true;
-    // public bool ShowChildren { get; set; } = true;
+    public bool ShowChildren { get; set; } = true;
     public bool ShowHorse { get; set; } = true;
     public Dictionary<string, int> CustomNpcMarkerOffsets { get; set; } = new Dictionary<string, int>();
     public HashSet<string> NpcBlacklist { get; set; } = new HashSet<string>() { };

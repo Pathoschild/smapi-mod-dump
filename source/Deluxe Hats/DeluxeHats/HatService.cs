@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Characters;
 using DeluxeHats.Hats;
 using Harmony;
+using System.Collections.Generic;
+using StardewValley.Objects;
 
 namespace DeluxeHats
 {
@@ -394,6 +393,259 @@ namespace DeluxeHats
                         break;
                 }
             }
+        }
+
+        public static bool LoadDisplayFields_Prefix(ref Hat __instance, ref bool __result)
+        {
+            try
+            {
+                if (__instance.Name == null) 
+                {
+                    __result = false;
+                    return false;
+                }
+                foreach (KeyValuePair<int, string> keyValuePair in Game1.content.Load<Dictionary<int, string>>("Data\\hats"))
+                {
+                    string[] strArray = keyValuePair.Value.Split('/');
+                    if (strArray[0] == __instance.Name)
+                    {
+                        __instance.displayName = __instance.Name;
+                        if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
+                            __instance.displayName = strArray[strArray.Length - 1];
+                        __instance.description = $"{strArray[1]}\n\nDeluxe Hats:\n";
+                        __result = true;
+                        switch (strArray[0])
+                        {
+                            case CowboyHat.Name:
+                                __instance.description += CowboyHat.Description;
+                                break;
+                            case BowlerHat.Name:
+                                __instance.description += BowlerHat.Description;
+                                break;
+                            case TopHat.Name:
+                                __instance.description += TopHat.Description;
+                                break;
+                            case Sombrero.Name:
+                                __instance.description += Sombrero.Description;
+                                break;
+                            case StrawHat.Name:
+                                __instance.description += StrawHat.Description;
+                                break;
+                            case OfficialCap.Name:
+                                __instance.description += OfficialCap.Description;
+                                break;
+                            case BlueBonnet.Name:
+                                __instance.description += BlueBonnet.Description;
+                                break;
+                            case PlumChapeau.Name:
+                                __instance.description += PlumChapeau.Description;
+                                break;
+                            case SkeletonMask.Name:
+                                __instance.description += SkeletonMask.Description;
+                                break;
+                            case GoblinMask.Name:
+                                __instance.description += GoblinMask.Description;
+                                break;
+                            case ChickenMask.Name:
+                                __instance.description += ChickenMask.Description;
+                                break;
+                            case Earmuffs.Name:
+                                __instance.description += Earmuffs.Description;
+                                break;
+                            case DelicateBow.Name:
+                                __instance.description += DelicateBow.Description;
+                                break;
+                            case Tropiclip.Name:
+                                __instance.description += Tropiclip.Description;
+                                break;
+                            case ButterflyBow.Name:
+                                __instance.description += ButterflyBow.Description;
+                                break;
+                            case HuntersCap.Name:
+                                __instance.description += HuntersCap.Description;
+                                break;
+                            case TruckerHat.Name:
+                                __instance.description += TruckerHat.Description;
+                                break;
+                            case SailorsCap.Name:
+                                __instance.description += SailorsCap.Description;
+                                break;
+                            case GoodOlCap.Name:
+                                __instance.description += GoodOlCap.Description;
+                                break;
+                            case Fedora.Name:
+                                __instance.description += Fedora.Description;
+                                break;
+                            case CoolCap.Name:
+                                __instance.description += CoolCap.Description;
+                                break;
+                            case LuckyBow.Name:
+                                __instance.description += LuckyBow.Description;
+                                break;
+                            case PolkaBow.Name:
+                                __instance.description += PolkaBow.Description;
+                                break;
+                            case GnomesCap.Name:
+                                __instance.description += GnomesCap.Description;
+                                break;
+                            case EyePatch.Name:
+                                __instance.description += EyePatch.Description;
+                                break;
+                            case SantaHat.Name:
+                                __instance.description += SantaHat.Description;
+                                break;
+                            case Tiara.Name:
+                                __instance.description += Tiara.Description;
+                                break;
+                            case HardHat.Name:
+                                __instance.description += HardHat.Description;
+                                break;
+                            case Souwester.Name:
+                                __instance.description += Souwester.Description;
+                                break;
+                            case Daisy.Name:
+                                __instance.description += Daisy.Description;
+                                break;
+                            case WatermelonBand.Name:
+                                __instance.description += WatermelonBand.Description;
+                                break;
+                            case MouseEars.Name:
+                                __instance.description += MouseEars.Description;
+                                break;
+                            case CatEars.Name:
+                                __instance.description += CatEars.Description;
+                                break;
+                            case CowgalHat.Name:
+                                __instance.description += CowgalHat.Description;
+                                break;
+                            case CowpokeHat.Name:
+                                __instance.description += CowpokeHat.Description;
+                                break;
+                            case ArchersCap.Name:
+                                __instance.description += ArchersCap.Description;
+                                break;
+                            case PandaHat.Name:
+                                __instance.description += PandaHat.Description;
+                                break;
+                            case BlueCowboyHat.Name:
+                                __instance.description += BlueCowboyHat.Description;
+                                break;
+                            case RedCowboyHat.Name:
+                                __instance.description += RedCowboyHat.Description;
+                                break;
+                            case ConeHat.Name:
+                                __instance.description += ConeHat.Description;
+                                break;
+                            case LivingHat.Name:
+                                __instance.description += LivingHat.Description;
+                                break;
+                            case EmilysMagicHat.Name:
+                                __instance.description += EmilysMagicHat.Description;
+                                break;
+                            case MushroomCap.Name:
+                                __instance.description += MushroomCap.Description;
+                                break;
+                            case DinosaurHat.Name:
+                                __instance.description += DinosaurHat.Description;
+                                break;
+                            case TotemMask.Name:
+                                __instance.description += TotemMask.Description;
+                                break;
+                            case LogoCap.Name:
+                                __instance.description += LogoCap.Description;
+                                break;
+                            case WearableDwarfHelm.Name:
+                                __instance.description += WearableDwarfHelm.Description;
+                                break;
+                            case FashionHat.Name:
+                                __instance.description += FashionHat.Description;
+                                break;
+                            case PumpkinMask.Name:
+                                __instance.description += PumpkinMask.Description;
+                                break;
+                            case HairBone.Name:
+                                __instance.description += HairBone.Description;
+                                break;
+                            case KnightsHelmet.Name:
+                                __instance.description += KnightsHelmet.Description;
+                                break;
+                            case SquiresHelmet.Name:
+                                __instance.description += SquiresHelmet.Description;
+                                break;
+                            case SpottedHeadscarf.Name:
+                                __instance.description += SpottedHeadscarf.Description;
+                                break;
+                            case Beanie.Name:
+                                __instance.description += Beanie.Description;
+                                break;
+                            case FishingHat.Name:
+                                __instance.description += FishingHat.Description;
+                                break;
+                            case BlobfishMask.Name:
+                                __instance.description += BlobfishMask.Description;
+                                break;
+                            case PartyHat.Name:
+                                __instance.description += PartyHat.Description;
+                                break;
+                            case ArcaneHat.Name:
+                                __instance.description += ArcaneHat.Description;
+                                break;
+                            case ChefHat.Name:
+                                __instance.description += ChefHat.Description;
+                                break;
+                            case PirateHat.Name:
+                                __instance.description += PirateHat.Description;
+                                break;
+                            case FlatToppedHat.Name:
+                                __instance.description += FlatToppedHat.Description;
+                                break;
+                            case ElegantTurban.Name:
+                                __instance.description += ElegantTurban.Description;
+                                break;
+                            case WhiteTurban.Name:
+                                __instance.description += WhiteTurban.Description;
+                                break;
+                            case GarbageHat.Name:
+                                __instance.description += GarbageHat.Description;
+                                break;
+                            case GoldenMask.Name:
+                                __instance.description += GoldenMask.Description;
+                                break;
+                            case PropellerHat.Name:
+                                __instance.description += PropellerHat.Description;
+                                break;
+                            case BridalVeil.Name:
+                                __instance.description += BridalVeil.Description;
+                                break;
+                            case WitchHat.Name:
+                                __instance.description += WitchHat.Description;
+                                break;
+                            case CopperPan.Name:
+                                __instance.description += CopperPan.Description;
+                                break;
+                            case GreenTurban.Name:
+                                __instance.description += GreenTurban.Description;
+                                break;
+                            case MagicCowboyHat.Name:
+                                __instance.description += MagicCowboyHat.Description;
+                                break;
+                            case MagicTurban.Name:
+                                __instance.description += MagicTurban.Description;
+                                break;
+                            default:
+                                __instance.description += "No effect.";
+                                break;
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                HatService.Monitor.Log($"Failed in {nameof(LoadDisplayFields_Prefix)}:\n{ex}");
+                return true;
+            }
+
         }
     }
 }

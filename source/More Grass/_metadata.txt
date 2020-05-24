@@ -5,9 +5,9 @@ mods:
    More Grass
 
 latest commit:
-   commit b542a0a5a949af33dd81b70a5abb7ef44c556e82
+   commit 120bd42e54d4d36462c4471cd295f3b3f31ac8a9
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Mon May 4 20:09:23 2020 +0100
+   Date:   Wed May 20 14:50:18 2020 +0100
    
-       [BFAVToFAVRModConverter] Add support for creating the updated versions of FAVR's content file
+       [FarmAnimalVarietyRedux] Add api, add initial code for adding default animals
    

@@ -35,8 +35,8 @@ namespace NpcAdventure.Story.Scenario
         {
             this.modEvents.MailboxOpen -= this.Events_MailboxOpen;
             this.modEvents.QuestCompleted -= this.ModEvents_QuestCompleted;
-            this.gameEvents.Player.Warped -= this.Player_Warped;
             this.gameEvents.GameLoop.DayStarted -= this.GameLoop_DayStarted;
+            this.GameMaster.Events.CheckEvent -= this.Events_CheckEvent;
         }
 
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
@@ -47,7 +47,11 @@ namespace NpcAdventure.Story.Scenario
             // We check all players if we can add Maron's invitation letter to their mailbox
             foreach (Farmer player in Game1.getAllFarmers())
             {
-                if (player.mailReceived.Contains("guildMember") && player.deepestMineLevel >= 20 && !player.mailReceived.Contains(LETTER_KEY) && this.PlayerHasRequiredFriendship(player))
+                if (player.mailReceived.Contains("guildMember")
+                    && player.eventsSeen.Contains(100162)
+                    && player.deepestMineLevel >= 20
+                    && !player.mailReceived.Contains(LETTER_KEY)
+                    && this.PlayerHasRequiredFriendship(player))
                 {
                     if (player.mailForTomorrow.Contains(LETTER_KEY) || player.mailbox.Contains(LETTER_KEY))
                         return; // Don't send letter again when it's in mailbox or it's ready to be placed in tomorrow
@@ -63,8 +67,8 @@ namespace NpcAdventure.Story.Scenario
         {
             this.modEvents.MailboxOpen += this.Events_MailboxOpen;
             this.modEvents.QuestCompleted += this.ModEvents_QuestCompleted;
-            this.gameEvents.Player.Warped += this.Player_Warped;
             this.gameEvents.GameLoop.DayStarted += this.GameLoop_DayStarted;
+            this.GameMaster.Events.CheckEvent += this.Events_CheckEvent;
         }
 
         private bool PlayerHasRequiredFriendship(Farmer farmer)
@@ -114,16 +118,29 @@ namespace NpcAdventure.Story.Scenario
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Player_Warped(object sender, WarpedEventArgs e)
+        private void Events_CheckEvent(object sender, ICheckEventEventArgs e)
         {
-            if (e.NewLocation.Name.Equals("AdventureGuild") && e.Player.mailReceived.Contains(LETTER_KEY) && !this.GameMaster.Data.GetPlayerState(e.Player).isEligible)
+            if (e.Location.Name.Equals("AdventureGuild") && e.Player.mailReceived.Contains(LETTER_KEY) && !this.GameMaster.Data.GetPlayerState(e.Player).isEligible)
             {
-                if (this.contentLoader.LoadStrings("Data/Events").TryGetValue("adventureBegins", out string eventData))
+                if (this.contentLoader.LoadStrings("Data/Events").TryGetValue("adventureBegins", out string eventData) && !Game1.eventUp)
                 {
-                    e.NewLocation.startEvent(new Event(eventData));
-                    this.GameMaster.Data.GetPlayerState().isEligible = true;
-                    this.GameMaster.SyncData();
-                    this.monitor.Log($"Player {e.Player.Name} is now eligible to recruit companions!", LogLevel.Info);
+                    Event marlonEvent = new Event(eventData);
+
+                    marlonEvent.onEventFinished += new Action(() => {
+                        Quest nextQuest = this.StoryHelper.GetQuestById(2);
+                        
+                        nextQuest.showNew.Value = true;
+                        nextQuest.accept();
+
+                        this.GameMaster.Data.GetPlayerState().isEligible = true;
+                        this.GameMaster.SyncData();
+                        this.monitor.Log($"Player {e.Player.Name} is now eligible to recruit companions!", LogLevel.Info);
+
+                        Game1.player.questLog.Add(nextQuest);
+                        Game1.addHUDMessage(new HUDMessage(this.contentLoader.LoadString("Strings/Strings:objectiveUpdate"), 2));
+                    });
+
+                    e.Location.startEvent(marlonEvent);
                 }
             }
         }

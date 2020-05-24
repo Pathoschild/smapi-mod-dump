@@ -6,7 +6,7 @@ Pregnancy Role does not change the chance or timing of baby proposals between sp
 
 This version of Pregnancy Role is compatible with **Stardew Valley 1.4+**.
 
-The mod should work on **Linux, Mac, Windows and Android**.
+The mod should work on **Linux, macOS, Windows and Android**.
 
 There are no known problems with multiplayer use. The mod will only apply to players who install it and their spouses. If two players marry in-game, they must both have the mod installed.
 
@@ -23,13 +23,13 @@ Other mods that affect the pregnancy and adoption features may or may not be com
 
 For **farmers and farmhands** (players), you can change the pregnancy role as follows:
 
-1. Open the pause menu. (On Linux/Mac/Windows, press Escape. On Android, tap the menu icon.)
+1. Open the pause menu. (On Linux/macOS/Windows, press Escape. On Android, tap the menu icon.)
 1. Go to the Skills tab (the tab whose icon is your farmer's face).
 1. Choose a value in the "Pregnancy Role" dropdown.
 
 For **vanilla NPC spouses** (characters from the base game), you can change the pregnancy role as follows:
 
-1. Open the pause menu. (On Linux/Mac/Windows, press Escape. On Android, tap the menu icon.)
+1. Open the pause menu. (On Linux/macOS/Windows, press Escape. On Android, tap the menu icon.)
 1. Go to the Social tab (the tab whose icon is a heart).
 1. Choose your spouse in the list.
 1. Choose a value in the "Pregnancy Role" dropdown.

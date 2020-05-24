@@ -22,6 +22,7 @@ namespace NpcAdventure.AI.Controller
 
         #region events
         public event EventHandler<MoveEventArgs> Move;
+        public event EventHandler<EndOfRouteReachedEventArgs> EndOfRouteReached;
         #endregion
 
         #region protected fields
@@ -43,6 +44,8 @@ namespace NpcAdventure.AI.Controller
         private Vector2 lastFramePosition;
         private Vector2 lastMovementDirection;
         private Vector2 animationUpdateSum;
+        private float lastNodeDiffLen;
+        private int timeout;
         #endregion
 
         /// <summary>
@@ -55,12 +58,16 @@ namespace NpcAdventure.AI.Controller
         /// </summary>
         public float Speed { get; set; }
 
+        public int BlockedTimer { get; set; } = 90;
+
+        public bool NoCharging { get; set; } = false;
+
         /// <summary>
         /// Create a new instance of follow path to tile joystick
         /// </summary>
         /// <param name="follower">An NPC who follows a path</param>
         /// <param name="pathFinder">Path finder for find a path to target tile</param>
-        public FollowJoystick(ref NPC follower, PathFinder pathFinder)
+        public FollowJoystick(NPC follower, PathFinder pathFinder)
         {
             this.follower = follower;
             this.pathFinder = pathFinder;
@@ -78,10 +85,12 @@ namespace NpcAdventure.AI.Controller
         /// </summary>
         public void Reset()
         {
+            this.timeout = this.BlockedTimer;
             this.pathToFollow = new Queue<Vector2>();
             this.pathFinder.GameLocation = this.follower.currentLocation;
             this.currentFollowedPoint = this.negativeOne;
             this.gatesInThisLocation = this.CheckForGatesInLocation(this.follower.currentLocation);
+            this.follower.Halt();
         }
 
         /// <summary>
@@ -91,7 +100,9 @@ namespace NpcAdventure.AI.Controller
         /// <returns></returns>
         public bool AcquireTarget(Vector2 targetTile)
         {
+            this.follower.isCharging = false;
             this.pathToFollow = this.pathFinder.Pathfind(this.follower.getTileLocation(), targetTile);
+            this.timeout = this.BlockedTimer;
 
             if (this.pathToFollow != null && this.pathToFollow.Count > 0 && this.follower.getTileLocation() != this.pathToFollow.Peek())
             {
@@ -166,7 +177,8 @@ namespace NpcAdventure.AI.Controller
                 this.animationUpdateSum += new Vector2(this.follower.xVelocity, -this.follower.yVelocity);
                 this.AnimationSubUpdate();
 
-                this.follower.MovePosition(Game1.currentGameTime, Game1.viewport, this.follower.currentLocation); // Update follower movement
+                //this.follower.MovePosition(Game1.currentGameTime, Game1.viewport, this.follower.currentLocation); // Update follower movement
+                this.ApplyVelocity(this.follower.currentLocation);
                 this.lastMovementDirection = this.lastFrameVelocity / this.lastFrameVelocity.Length();
 
                 this.movedLastFrame = true;
@@ -186,6 +198,29 @@ namespace NpcAdventure.AI.Controller
             }
         }
 
+        protected void ApplyVelocity(GameLocation currentLocation)
+        {
+            if (currentLocation == null)
+                return;
+
+            Rectangle boundingBox = this.follower.GetBoundingBox();
+            boundingBox.X += (int)this.follower.xVelocity;
+            boundingBox.Y -= (int)this.follower.yVelocity;
+
+            NPC collidingNpc = currentLocation?.isCollidingWithCharacter(boundingBox);
+            bool collidingWithVillagerOrMonster = collidingNpc != null && (collidingNpc.isVillager() || collidingNpc.IsMonster);
+
+            if (collidingWithVillagerOrMonster
+                || !currentLocation.isCollidingPosition(boundingBox, Game1.viewport, true, 0, false, this.follower)
+                || this.follower.isCharging)
+            {
+                this.follower.position.X += this.follower.xVelocity;
+                this.follower.position.Y -= this.follower.yVelocity;
+            }
+            this.follower.xVelocity = (int)(this.follower.xVelocity - this.follower.xVelocity / 2.0);
+            this.follower.yVelocity = (int)(this.follower.yVelocity - this.follower.yVelocity / 2.0);
+        }
+
         private void PathfindingNodeUpdateCheck()
         {
             if (this.currentFollowedPoint != this.negativeOne && this.pathToFollow != null)
@@ -200,12 +235,29 @@ namespace NpcAdventure.AI.Controller
                     if (this.pathToFollow.Count == 0)
                     {
                         this.follower.Sprite.StopAnimation();
+                        this.follower.Halt();
                         this.pathToFollow = null;
+                        this.EndOfRouteReached?.Invoke(this, new EndOfRouteReachedEventArgs(this.currentFollowedPoint));
                         this.currentFollowedPoint = this.negativeOne;
+                        this.lastNodeDiffLen = 0;
+                        this.timeout = this.BlockedTimer;
+                        this.follower.isCharging = false;
                         return;
                     }
                     this.currentFollowedPoint = this.pathToFollow.Dequeue();
                 }
+
+                if (nodeDiffLen == this.lastNodeDiffLen && nodeDiffLen > tolerance && this.follower.isMoving() && this.Speed > 0)
+                {
+                    if (!this.NoCharging && --this.timeout <= 0)
+                    {
+                        if (Game1.random.Next(1, 4) == 1)
+                            this.follower.doEmote(8);
+                        this.follower.isCharging = true;
+                    }
+                }
+
+                this.lastNodeDiffLen = nodeDiffLen;
             }
         }
 
@@ -286,7 +338,6 @@ namespace NpcAdventure.AI.Controller
                 (this.follower.xVelocity != 0 || this.follower.yVelocity != 0))
             {
                 Rectangle wbBB = this.follower.GetBoundingBox();
-                GameLocation location = this.follower.currentLocation;
                 int ts = Game1.tileSize;
                 bool xBlocked, yBlocked;
                 xBlocked = yBlocked = false;
@@ -349,7 +400,7 @@ namespace NpcAdventure.AI.Controller
                 Vector2 tileAhead = (bbVector + velocity) / 64;
                 Vector2 tileBehind = (bbVector - velocity) / 64;
                 Vector2 tileBehindNeighbor1, tileBehindNeighbor2;
-                bool neighborsUpDown = Math.Abs(velocity.X) > Math.Abs(velocity.Y);
+
                 if (Math.Abs(velocity.X) > Math.Abs(velocity.Y))
                 {
                     tileBehindNeighbor1 = tileBehind + new Vector2(-Math.Sign(velocity.X), 1);
@@ -412,6 +463,16 @@ namespace NpcAdventure.AI.Controller
             }
 
             public bool IsLastFrame { get; }
+        }
+
+        public class EndOfRouteReachedEventArgs
+        {
+            public EndOfRouteReachedEventArgs(Vector2 endTile)
+            {
+                this.EndTile = endTile;
+            }
+
+            public Vector2 EndTile { get; }
         }
     }
 }

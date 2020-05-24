@@ -2,6 +2,12 @@
 
 [Portable TV](../)
 
+## 2.0.0
+
+*Release pending.*
+
+* Consolidate mod folders, removing `[JA]PortableTV`
+
 ## 1.2.0
 
 *Released April 28, 2020.*

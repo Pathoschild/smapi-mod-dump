@@ -1,14 +1,18 @@
-# Shop Tile Framework
+﻿# Shop Tile Framework
 
 ## Navigation
 - [Intro](#intro)
 - [Requirements](#requirements)
 - [Create a Content Pack](#create-a-content-pack)
+    * [JA Integration](#ja-integration)
     * [Regular shops](#regular-shops)
       * [Item Types](#itemtypes)
+    * [Vanilla shops](#vanilla-shops)
     * [Animal Shops](#animal-shops)
     * [Condition Checking](#condition-checking)
       * [Available Conditions](#available-conditions)
+    * [Translations](#translations)
+    * [Portrait](#portrait)
 - [Example](#example)
 - [Adding shops to the game](#adding-shops-to-the-game)
 - [Placing Vanilla Shops](#placing-vanilla-shops)
@@ -41,8 +45,17 @@ Then from there, you need to make a `shops.json` file to define the properties o
 
 Field | Optional | Format | Description
 ------------ | ------------- | ------------- | -------------
+RemovePacksFromVanilla | Optional | An array of strings | Takes a list of Unique IDs of Json Asset packs. Will remove all items from these packs from vanilla shops. **Warning:** This includes any items from these packs added to vanilla shops using this mod!
 Shops | Optional | An array of Shops | You can add as many shops as you want, as long as they have unique `ShopName`among Shops.
 AnimalShops | Optional | An array of AnimalShops | You can add as many animal shops as you want, as long as they have unique `ShopName` among AnimalShops.
+VanillaShops | Optional | An array of VanillaShops | You can add as many of these as you want. Multiple mods can target the same vanilla shops.
+
+### JA Integration
+There are a few ways of selling custom JA items in the store. JA items or packs can be included in the shop.json as described below.
+
+STF shops can also be targetted in the Json Assets's json file, by setting the `PurchaseFrom` or `SeedPurchaseFrom` field to `"STF.<ShopName>"`. Anything added to the shop from JA will always be added to the shop under the conditions specified by `PurchaseRequirements` in the JA json. It will not be subject to the conditions set in the STF shops.json, including shop-global settings such as price, and maximum items. The exception is currency: money/festival score/casino points, which will always apply to the entire store.
+
+Note: Due to how it is implemented, only stores with a portrait image can be targetted by json assets
 
 ### Regular Shops
 Each Shop contains:
@@ -59,6 +72,9 @@ MaxNumItemsSoldInStore | Optional | int | The number of different items availabl
 ItemStocks | Mandatory | An array of `ItemStocks` | The items sold at this store. Each `ItemStocks` can contain one or more item of a single type
 When | Optional | Array of strings | The conditions for this store to open, checked each time a player interacts with it. More info can be found under [Condition Checking](#condition-checking)
 ClosedMessage | Optional | string | The message that displays if a user interacts with the store when conditions are not met. If not set, no message will be displayed.
+LocalizedQuote | Optional | Dictionary<string,string> | Translations for the store quote. Refer to [Translations](#translations) for details.
+LocalizedClosedMessage | Optional | Dictionary<string,string> | Translations for the closed message. Refer to [Translations](#translations) for details.
+
 
 An `ItemStock` is used to define a group of properties --things like price, conditions, the number sold-- that is applied to one or more items of a single ItemType. There are three ways to specify items ( ID, Name, or JA Pack) and all three can be used at once in a single item stock. You can have as many ItemStocks as you need
 
@@ -71,6 +87,7 @@ IsRecipe | Optional | boolean | Only works for Objects and BigCraftables. If set
 StockPrice | Optional | int | Sets the price for all items in this ItemStock. Overrides ShopPrice. If neither price fields are given, default item sell prices are used
 StockItemCurrency | Optional | string | You can specify an `Object` by name as trading currency. Note: this will charge both the specified item as well as the `StoreCurrency` unless the price is set to 0. These can include JA Objects.
 StockCurrencyStack | Optional | int | The number of the `StockItemCurrency` it costs for each item. Defaults to 1
+Quality | Optional | int | The quality of the sold items. 0  for normal, 1 for silver, 2 for gold, and 4 for iridium. 3 is not a valid quality.
 ItemIDs | Optional | Array of ints | Adds a list of items by their IDS. One or more of `ItemIDs`,`ItemNames` or `JAPacks` is needed in order to add an item.
 ItemNames | Optional | Array of strings | Adds a list of items by their internal names. One or more of `ItemIDs`,`ItemNames` or `JAPacks` is needed in order to add an item.
 JAPacks | Optional | Array of strings | Adds all items of `ItemType` from the specified JA Packs, identified by their `UniqueID`. Crops and Trees added through `JAPacks` specified with `Object` will sell the products, while `Seed` will sell the seeds/saplings.
@@ -83,7 +100,7 @@ Possible `ItemType` determine which file from the game's `Contents` folder the i
 
 ItemType | Source | Notes
 ------------ | ------------- | -------------
-"Object" | [`data/ObjectInformation.json`](https://stardewvalleywiki.com/Modding:Object_data) | Contains most objects in the game not covered by the other categories
+"Object" | [`data/ObjectInformation.json`](https://stardewvalleywiki.com/Modding:Object_data) | Contains most objects in the game not covered by the other categories. Note: Rings will be created without errors using the Object category. however this creates an Object version of the rings and it will not be wearable.
 "Ring" | [`data/ObjectInformation.json`](https://stardewvalleywiki.com/Modding:Object_data) | While sharing the same data file as most objects, it requires a unique constructor and thus is separate
 "BigCraftable" | [`data/BigCraftablesInformation.json`](https://stardewvalleywiki.com/Modding:Big_Craftables_data) | 
 "Clothing" | `data/ClothingInformation.json` | This contains all shirts and pants
@@ -95,6 +112,19 @@ ItemType | Source | Notes
 "Floors" | Maps/walls_and_floors.png | Floors have no name and thus have to be specified by `ItemIDs`
 "Seed" | JA Packs Only | Use this ItemType if adding custom crops through `JAPacks` and you want the seeds/saplings instead of the produce
 
+### Vanilla Shops
+Using the VanillaShops section allows you to add to, or completely replace vanilla item shops. It has similar fields to custom item shops.
+
+Multiple mods can edit the same vanilla store. Each mod's stocks will be calculated independently of each other and not affected by fields such as `MaxNumItemsSoldInStore` from other mods, and added to the vanilla stock this way.
+
+Field | Optional | Format | Description
+------------ | ------------- | ------------- | -------------
+ReplaceInsteadOfAdd | Optional | boolean | Defaults to false. If true, the original vanilla stock will be removed.
+ShopName | Mandatory | string | The vanilla store this stock is targetting. Valid options are: `PierreShop`, `JojaShop`, `RobinShop`, `ClintShop`, `MarlonShop`, `MarnieShop`, `TravellingMerchant`, `HarveyShop`, `SandyShop`, `DesertTrader`, `KrobusShop`, `DwarfShop`, `GusShop`, `QiShop`, `WillyShop`
+ShopPrice | Optional | int | Sets the price of every item added to the store from this content pack ( and not of the whole store )
+MaxNumItemsSoldInStore | Optional | int | The number of different items available. If there is more items within all the `ItemStocks` than this number, they will be randomly picked at the beginning of each day so that the total number of items match this. This is how to randomize the stock of all items added from this content pack ( and not of the whole store ).
+ItemStocks | Mandatory | An array of `ItemStocks` | The items sold at this store. Each `ItemStocks` can contain one or more item of a single type. Identical to those in ItemShops
+
 ### Animal Shops
 
 Field | Optional | Format | Description
@@ -104,6 +134,7 @@ AnimalStock | Mandatory | array of strings | A list of animals by name that are 
 ExcludeFromMarnies | Optional | array of strings | A list of animals to remove from Marnie's shop. This is a way to have the animal exclusively sold by your custom shop
 When | Optional | Array of strings | The conditions for this store to open, checked each time a player interacts with it. More info can be found under [Condition Checking](#condition-checking)
 ClosedMessage | Optional | string | The message that displays if a user interacts with the store when conditions are not met. If not set, no message will be displayed.
+LocalizedClosedMessage | Optional | Dictionary<string,string> | Translations for the closed message. Refer to [Translations](#translations) for details.
 
 ### Condition Checking
 All `When` fields used for various condition checking uses vanilla [event preconditions](https://stardewvalleywiki.com/Modding:Event_data#Event_preconditions) as well as several custom ones. `When` conditions can be used to determine conditions for a shop opening ( such as hours, or when an NPC is nearby ) as well as for setting conditions for ItemStocks to be added to stores or not when stocks are refreshed.
@@ -129,10 +160,11 @@ When multiple fields are provided, the condition will work if _any_ of the strin
         }
       ],
       "When": [
-        "!z spring/t 600 1000", //in spring, only opens between 6am and 10am
-        "!z summer/t 1000 1400", //in summer only opens from 10am to 2pm
-        "z spring/z summer/t 1800 20000", //in fall and winter, only open from 6pm to 10pm
-        "f Linus 2500" //is always open if player has 2500 friendship points / 10 hearts with linus
+        "!z spring/t 600 1000", //open if it's `During Spring` AND `The time is between 6AM to 10AM`
+        //OR
+        "f Linus 1000/w rainy/z spring" //opens if `Player has at least 1000 friendship points with Linus' AND 'It is rainy` AND `It's not Spring`,
+        //OR
+        "f Linus 2500" //opens if `Player has at least 2500 friendship points with Linus`
       ],
       "ClosedMessage": "This shop is closed."
     }
@@ -166,9 +198,35 @@ Syntax | Description
 `p <name>` | Specified NPC is in the current player's location. ( useful for having your shop open only when the NPC is near the shop, without specifying every tile )
 `f <name> <number>` | Current player has at least `number` friendship points with the `name` NPC. Can specify multiple name and number pairs, in which case the player must meet all of them.
 
+### Translations
+Each store has localization fields that can be used to translate the message displayed when closed, or the shop quote. To add a translation, use the language code as the key and then the translation as the value. for example:
+```js
+    "LocalizedQuote": { "zh": "你好，世界" },
+    "LocalizedClosedMessage": { "zh": "再见" }
+```
 
+The available language codes supported by the game are `zh` (Chinese), `fr` (French), `de` (German), `hu`(Hungarian), `it` (Italian), `ja` (Japanese), `ko`(Korean), `pt` Portuguese, `ru` (Russian), `es` (Spanish), and `tr` (Turkish).
+
+Any languages not provided will default to english
+
+### Portrait
+Similar to content patcher, the shop portrait can be made seasonal by adding the season to the end of the file name. For example, you have a portrait for your shop in `assets/Bob.png`. To make the portrait different during the Summer, you'd add the summer portrait to the same folder but name it `Bob_summer.png`
+
+```
+YourMod
+    manifest.json
+    shops.json
+    assets
+        Bob.png
+        Bob_summer.png
+```
+
+The result would be for spring, fall, and winter, `Bob.png` will be the portrait used, but during summer, `Bob_summer.png` will be used instead
 
 ## Example
+There is a full template found [here](https://github.com/ChroniclerCherry/stardew-valley-mods/blob/Master/ShopTileFramework/TEMPLATE.md)
+
+The below example still works but is outdated in that it's missing newer features
 Example shops.json:
 ```js
 {

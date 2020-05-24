@@ -10,22 +10,25 @@ namespace NpcAdventure.Story
     {
         private readonly IDataHelper dataHelper;
 
-        public event EventHandler<IGameMasterEventArgs> MessageReceived;
-
         private List<IScenario> Scenarios { get; set; }
 
         internal IMonitor Monitor { get; }
+        internal GameMasterEvents.EventManager EventManager { get; }
 
+        public IGameMasterEvents Events { get; }
         public GameMasterState Data { get; private set; }
-
         public GameMasterMode Mode { get; private set; }
         public StoryHelper StoryHelper { get; private set; }
+
+        public event EventHandler<IGameMasterEventArgs> MessageReceived;
 
         public GameMaster(IModHelper helper, StoryHelper storyHelper, IMonitor monitor)
         {
             this.dataHelper = helper.Data;
             this.StoryHelper = storyHelper;
             this.Monitor = monitor;
+            this.EventManager = new GameMasterEvents.EventManager();
+            this.Events = new GameMasterEvents(this.EventManager);
             this.Scenarios = new List<IScenario>();
         }
 
@@ -44,6 +47,7 @@ namespace NpcAdventure.Story
 
             this.Mode = Context.IsMainPlayer ? GameMasterMode.MASTER : GameMasterMode.SLAVE;
             this.Monitor.Log($"Game master initialized in mode: {this.Mode.ToString()}", LogLevel.Info);
+            this.Monitor.Log($"Player is eligible to recruit companions: {(this.Data.GetPlayerState().isEligible ? "Yes" : "No")}", LogLevel.Info);
         }
 
         public void RegisterScenario(IScenario scenario)
@@ -118,6 +122,11 @@ namespace NpcAdventure.Story
             {
                 // TODO: Write logic to send it to server through net
             }
+        }
+
+        internal void CheckForEvents(GameLocation location, Farmer player)
+        {
+            this.EventManager.CheckEvent.Fire(new GameMasterEvents.CheckEventEventArgs(location, player), this);
         }
 
         private class GameMasterEventArgs : IGameMasterEventArgs

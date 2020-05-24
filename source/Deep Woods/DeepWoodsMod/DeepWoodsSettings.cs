@@ -446,25 +446,6 @@ namespace DeepWoodsMod
         public FishiesLuckSettings Fishies { get; set; } = new FishiesLuckSettings();
     }
 
-    public class I18NData
-    {
-        private readonly ITranslationHelper I18n;
-
-        public string ExcaliburDisplayName => this.I18n.Get("excalibur.name");
-        public string ExcaliburDescription => this.I18n.Get("excalibur.description");
-        public string WoodsObeliskDisplayName => this.I18n.Get("woods-obelisk.name");
-        public string WoodsObeliskDescription => this.I18n.Get("woods-obelisk.description");
-        public string EasterEggDisplayName => this.I18n.Get("easter-egg.name");
-        public string EasterEggHatchedMessage => this.I18n.Get("easter-egg.hatched-message");
-        public string LostMessage => this.I18n.Get("lost-message");
-        public string WoodsObeliskWizardMailMessage => this.I18n.Get("woods-obelisk.wizard-mail");
-
-        public I18NData(ITranslationHelper i18n)
-        {
-            this.I18n = i18n;
-        }
-    }
-
     class DeepWoodsStateData
     {
         private int lowestLevelReached = 0;
@@ -498,9 +479,6 @@ namespace DeepWoodsMod
 
     class DeepWoodsSettings
     {
-        // I18N
-        public static I18NData I18N { get; private set; }
-
         // Save stuff
         public static DeepWoodsStateData DeepWoodsState { get; set; } = new DeepWoodsStateData();
 
@@ -514,11 +492,6 @@ namespace DeepWoodsMod
         public ObjectsSettings Objects { get; set; } = new ObjectsSettings();
         public LuckSettings Luck { get; set; } = new LuckSettings();
         public MonstersSettings Monsters { get; set; } = new MonstersSettings();
-
-        public static void Init(ITranslationHelper i18n)
-        {
-            DeepWoodsSettings.I18N = new I18NData(i18n);
-        }
 
         public static void DoSave()
         {

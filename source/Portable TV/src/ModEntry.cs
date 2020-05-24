@@ -4,6 +4,7 @@ using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace PortableTV
@@ -11,6 +12,8 @@ namespace PortableTV
 	public class ModEntry : Mod
 	{
 		internal static ModEntry Instance { get; private set; }
+
+		internal JsonAssets.IApi jsonAssets { get; private set; }
 
 		protected static ModConfig Config => ModConfig.Instance;
 
@@ -44,6 +47,18 @@ namespace PortableTV
 
 		private void onGameLaunched (object _sender, GameLaunchedEventArgs _e)
 		{
+			// Load the Json Assets content pack.
+			jsonAssets = Helper.ModRegistry.GetApi<JsonAssets.IApi>
+				("spacechase0.JsonAssets");
+			if (jsonAssets == null)
+			{
+				Monitor.LogOnce ("Could not connect to Json Assets. It may not be installed or working properly.",
+					LogLevel.Error);
+				return;
+			}
+			jsonAssets.LoadAssets (Path.Combine (Helper.DirectoryPath,
+				"assets", "JA"));
+
 			// Set up Generic Mod Config Menu, if it is available.
 			ModConfig.SetUpMenu ();
 		}
@@ -51,21 +66,14 @@ namespace PortableTV
 		private void onSaveLoaded (object _sender, SaveLoadedEventArgs _e)
 		{
 			// Discover the object ID of the "Portable TV" inventory object.
-			var JsonAssets = Helper.ModRegistry.GetApi<JsonAssets.IApi>
-				("spacechase0.JsonAssets");
-			if (JsonAssets != null)
+			if (jsonAssets != null)
 			{
-				parentSheetIndex = JsonAssets.GetObjectId ("Portable TV");
+				parentSheetIndex = jsonAssets.GetObjectId ("Portable TV");
 				if (parentSheetIndex == -1)
 				{
-					Monitor.Log ("Could not find the ID of the Portable TV inventory object. The Portable TV content pack for Json Assets may not be installed.",
+					Monitor.Log ("Could not find the ID of the Portable TV inventory object. The Json Assets content pack may not have loaded correctly.",
 						LogLevel.Error);
 				}
-			}
-			else
-			{
-				Monitor.LogOnce ("Could not connect to Json Assets. It may not be installed or working properly.",
-					LogLevel.Error);
 			}
 		}
 
@@ -123,7 +131,7 @@ namespace PortableTV
 			}
 			else
 			{
-				// On Linux/Mac/Windows, only respond to the use button.
+				// On Linux/macOS/Windows, only respond to the use button.
 				if (!e.Button.IsActionButton ())
 					return;
 

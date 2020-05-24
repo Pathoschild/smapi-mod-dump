@@ -1,7 +1,7 @@
 ﻿{
   "Name": "AutoQualityPatch",
   "Author": "SilentOak",
-  "Version": "2.1.2",
+  "Version": "2.2.0-unstable",
   "Description": "Patch for integration with Automate",
   "UniqueID": "SilentOak.AutoQualityPatch",
   "EntryDll": "AutoQualityPatch.dll",

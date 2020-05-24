@@ -1,13 +1,13 @@
 {
     "Name":  "Equal Money Split",
     "Author":  "The Fluffy Robot",
-    "Version":  "1.0.0",
+    "Version":  "1.0.1",
     "Description":  "Splits each the earnings of every item between all connected players.",
     "UniqueID":  "TheFluffyRobot.EqualMoneySplit",
     "EntryDll":  "EqualMoneySplit.dll",
     "MinimumApiVersion":  "3.4.1",
     "UpdateKeys": [
         "Nexus:5526",
-        "GitHub:jamespfluger/Stardew-EqualMoneySplit" // fixed locally
+        "GitHub:jamespfluger/Stardew-EqualMoneySplit"
     ]
 }

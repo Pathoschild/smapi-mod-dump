@@ -1,0 +1,6 @@
+    {
+    	"label.message_Player_Walk_Through_ON": "Spieler läuft durch Haustiere ist AN",
+    	"label.message_Player_Walk_Through_OFF": "Spieler läuft durch Haustiere ist AUS",
+    	"label.message_Pets_Collide_With_Others_ON": "Haustiere kollidieren mit anderen ist AN",
+    	"label.message_Pets_Collide_With_Others_OFF": "Haustiere kollidieren mit anderen ist AUS"
+    }

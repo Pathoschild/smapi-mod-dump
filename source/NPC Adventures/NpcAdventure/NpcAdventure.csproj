@@ -15,6 +15,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -72,10 +73,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="SMAPI.Toolkit.CoreInterfaces, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null">
       <Private>False</Private>
     </Reference>
@@ -93,6 +90,7 @@
     <Compile Include="AI\AI_StateMachine.doctor.cs" />
     <Compile Include="AI\Controller\FightController.cs" />
     <Compile Include="AI\Controller\FollowJoystick.cs" />
+    <Compile Include="AI\Controller\ForageController.cs" />
     <Compile Include="AI\Controller\IdleController.AnimateBehavior.cs" />
     <Compile Include="AI\Controller\IdleController.cs" />
     <Compile Include="AI\Controller\IdleController.LookAroundBehavior.cs" />
@@ -108,11 +106,14 @@
     <Compile Include="Driver\HintDriver.cs" />
     <Compile Include="Driver\MailDriver.cs" />
     <Compile Include="Driver\StuffDriver.cs" />
+    <Compile Include="Events\IManagedEvent.cs" />
     <Compile Include="Events\ISpecialModEvents.cs" />
+    <Compile Include="Events\ManagedEvent.cs" />
     <Compile Include="Events\SpecialModEvents.cs" />
     <Compile Include="HUD\CompanionDisplay.cs" />
     <Compile Include="HUD\CompanionSkill.cs" />
-    <Compile Include="Internal\CompanionDialogue.cs" />
+    <Compile Include="Dialogues\CompanionDialogue.cs" />
+    <Compile Include="Internal\Countdown.cs" />
     <Compile Include="Internal\IDrawable.cs" />
     <Compile Include="Loader\ContentPacks\AssetPatch.cs" />
     <Compile Include="Loader\AssetsManager.cs" />
@@ -124,8 +125,13 @@
     <Compile Include="Loader\IContentLoader.cs" />
     <Compile Include="Model\BagDumpInfo.cs" />
     <Compile Include="Model\CompanionMetaData.cs" />
+    <Compile Include="Internal\Patching\GamePatcher.cs" />
+    <Compile Include="Patches\CheckEventPatch.cs" />
+    <Compile Include="Patches\GameUseToolPatch.cs" />
     <Compile Include="Patches\GetCharacterPatch.cs" />
+    <Compile Include="Internal\Patching\IPatch.cs" />
     <Compile Include="Patches\NpcCheckActionPatch.cs" />
+    <Compile Include="Patches\Patch.cs" />
     <Compile Include="Patches\QuestPatch.cs" />
     <Compile Include="Internal\SetOnce.cs" />
     <Compile Include="Story\Messaging\GameMasterMessage.cs" />
@@ -147,14 +153,16 @@
     <Compile Include="Story\IScenario.cs" />
     <Compile Include="Story\Scenario\AdventureBegins.cs" />
     <Compile Include="Story\Scenario\BaseScenario.cs" />
+    <Compile Include="Story\GameMasterEvents.cs" />
+    <Compile Include="Story\IGameMasterEvents.cs" />
     <Compile Include="Story\Scenario\QuestScenario.cs" />
     <Compile Include="Story\StoryHelper.cs" />
-    <Compile Include="Utils\DialogueHelper.VariousKeyGenerator.cs" />
+    <Compile Include="Dialogues\VariousKeyGenerator.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\Helper.cs" />
     <Compile Include="Internal\IUpdateable.cs" />
     <Compile Include="Loader\ContentLoader.cs" />
-    <Compile Include="Utils\DialogueHelper.cs" />
+    <Compile Include="Dialogues\DialogueProvider.cs" />
     <Compile Include="NpcAdventureMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateMachine\CompanionStateMachine.cs" />
@@ -191,19 +199,10 @@
     <None Include="assets\Data\Quests.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\Abigail.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Dialogue\Abigail.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Abigail.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Abigail.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Alex.fr-FR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Alex.json">
@@ -212,22 +211,10 @@
     <None Include="assets\Dialogue\Alex.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\Elliott.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Alex.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Dialogue\Elliott.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Elliott.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Emily.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Elliott.zh-CN.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Emily.json">
@@ -236,22 +223,10 @@
     <None Include="assets\Dialogue\Emily.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\Haley.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Emily.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Dialogue\Haley.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Haley.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Haley.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Harvey.fr-FR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Harvey.json">
@@ -260,22 +235,10 @@
     <None Include="assets\Dialogue\Harvey.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\Harvey.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Leah.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Dialogue\Leah.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Leah.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Leah.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Maru.fr-FR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Maru.json">
@@ -284,22 +247,10 @@
     <None Include="assets\Dialogue\Maru.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\Maru.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Dialogue\Penny.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Penny.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Penny.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Penny.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Sam.fr-FR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Sam.json">
@@ -308,22 +259,10 @@
     <None Include="assets\Dialogue\Sam.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\Sebastian.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Sam.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Dialogue\Sebastian.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Sebastian.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Sebastian.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Shane.fr-FR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Shane.json">
@@ -332,17 +271,11 @@
     <None Include="assets\Dialogue\Shane.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\Shane.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Strings\Buffs.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Strings\Buffs.pt-BR.json" />
     <None Include="assets\Strings\Mail.pt-BR.json" />
-    <None Include="assets\Strings\SpeechBubbles.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Strings\Mail.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -352,19 +285,10 @@
     <None Include="assets\Strings\SpeechBubbles.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Strings\SpeechBubbles.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Strings\Strings.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Strings\Strings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Strings\Strings.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Strings\Strings.zh-CN.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="manifest.json" />

@@ -52,13 +52,13 @@ namespace FarmAnimalVarietyRedux.Models
         public List<string> Buildings { get; set; }
 
         /// <summary>The walk speed of the animal.</summary>
-        public int WalkSpeed { get; set; } = 2;
+        public int WalkSpeed { get; set; }
 
         /// <summary>The time the animal will go to sleep.</summary>
-        public int BedTime { get; set; } = 1900;
+        public int BedTime { get; set; }
 
         /// <summary>The seasons the animal is able to go outside.</summary>
-        public List<Season> SeasonsAllowedOutdoors { get; set; } = new List<Season> { Season.Spring, Season.Summer, Season.Fall };
+        public List<Season> SeasonsAllowedOutdoors { get; set; }
 
 
         /*********
@@ -193,15 +193,15 @@ namespace FarmAnimalVarietyRedux.Models
 
             //if (BedTime < 0)
             //{
-                //ModEntry.ModMonitor.Log($"Animal Data Validation failed, BedTime was not valid on Animal: {animalName}.", LogLevel.Error);
-                //isValid = false;
+            //ModEntry.ModMonitor.Log($"Animal Data Validation failed, BedTime was not valid on Animal: {animalName}.", LogLevel.Error);
+            //isValid = false;
             //}
 
-            //if (SeasonsAllowedOutdoors == null)
-            //{
-                //ModEntry.ModMonitor.Log($"Animal Data Validation failed, SeasonsAllowedOutdoors was not valid on Animal: {animalName}.", LogLevel.Error);
-                //isValid = false;
-            //}
+            if (SeasonsAllowedOutdoors == null)
+            {
+                ModEntry.ModMonitor.Log($"Animal Data Validation failed, SeasonsAllowedOutdoors was not valid on Animal: {animalName}.", LogLevel.Error);
+                isValid = false;
+            }
 
             return isValid;
         }

@@ -27,15 +27,22 @@ namespace MayonnaisePlusPlus
 
 		public static bool PerformObjectDropInAction(ref SObject __instance, ref Item dropInItem, ref bool probe, ref Farmer who, ref bool __result) {
 			__result = false;
-			if (dropInItem is SObject object1) {
-				if (__instance.name.Equals("Mayonnaise Machine")) {
-					
+			if (__instance.isTemporarilyInvisible || !(dropInItem is SObject))
+				return false;
+			SObject object1 = dropInItem as SObject;
+			if (dropInItem is Wallpaper || __instance.heldObject.Value != null && !__instance.name.Equals("Recycling Machine") && !__instance.name.Equals("Crystalarium") || object1 != null && object1.bigCraftable)
+				return false;
+			if (__instance.bigCraftable && !probe && (object1 != null && __instance.heldObject.Value == null))
+				__instance.scale.X = 5f;
+			if (probe && __instance.minutesUntilReady.Value > 0)
+				return false;
+			if (__instance.name.Equals("Mayonnaise Machine")) {
 					switch (object1.ParentSheetIndex) {
 						case 107: // dinosaur egg!
+							// only accept fertile eggs if the infertile eggs option is off
 							if (Loader.CONFIG.InfertileEggs) {
 								return false;
 							}
-							// only accept fertile eggs if the infertile eggs option is off
 							__instance.heldObject.Value = new SObject(Vector2.Zero, 807, null, false, true, false, false) {
 								Quality = CalculateQualityLevel(who, object1.Quality)
 							};
@@ -110,14 +117,14 @@ namespace MayonnaisePlusPlus
 							break;
 					}
 				}
-				if (__instance.name.Equals("Incubator")) {
-					if (__instance.heldObject.Value == null && (object1.Category == -5 || Utility.IsNormalObjectAtParentSheetIndex((Item)object1, 107)) && object1.ParentSheetIndex != Loader.DATA["Dino Egg"]) {
+			else if (__instance.name.Equals("Incubator")) {
+					if (__instance.heldObject.Value == null && (object1.Category == -5 || Utility.IsNormalObjectAtParentSheetIndex(object1, 107)) && object1.ParentSheetIndex != Loader.DATA["Dino Egg"]) {
 						__instance.heldObject.Value = new SObject(object1.ParentSheetIndex, 1, false, -1, 0);
 						if (!probe) {
 							who.currentLocation.playSound("coin");
-							__instance.MinutesUntilReady = 9000 * object1.ParentSheetIndex == 107 ? 2 : 1;
+							__instance.minutesUntilReady.Value = 9000 * object1.parentSheetIndex == 107 ? 2 : 1;
 							if (who.professions.Contains(2))
-								__instance.MinutesUntilReady /= 2;
+								__instance.minutesUntilReady.Value /= 2;
 							if (object1.ParentSheetIndex == 180 || object1.ParentSheetIndex == 182 || object1.ParentSheetIndex == 305)
 								__instance.ParentSheetIndex += 2;
 							else
@@ -126,16 +133,15 @@ namespace MayonnaisePlusPlus
 						__result = true;
 					}
 				}
-			}
 
 			return !__result;
 		}
 
 		public static bool FarmAnimalDayUpdate(ref FarmAnimal __instance, GameLocation environtment) {
-			__instance.controller = (PathFindController)null;
+			__instance.controller = null;
 			__instance.health.Value = 3;
 			bool flag1 = false;
-			if (__instance.home != null && !(__instance.home.indoors.Value as AnimalHouse).animals.ContainsKey((long)__instance.myID) && environtment is Farm) {
+			if (__instance.home != null && !(__instance.home.indoors.Value as AnimalHouse).animals.ContainsKey(__instance.myID) && environtment is Farm) {
 				if (!__instance.home.animalDoorOpen.Value) {
 					__instance.moodMessage.Value = 6;
 					flag1 = true;
@@ -189,15 +195,15 @@ namespace MayonnaisePlusPlus
 			if (!flag2 || __instance.age.Value < __instance.ageWhenMature.Value) {
 				parentSheetIndex = -1;
 			} else {
+					__instance.daysSinceLastLay.Value = 0;
 				parentSheetIndex = __instance.defaultProduceIndex.Value;
 				if (parentSheetIndex == 107 && Loader.CONFIG.InfertileEggs) parentSheetIndex = Loader.DATA["Dino Egg"];
 				if (random.NextDouble() < __instance.happiness.Value / 150.0) {
 					float num1 = __instance.happiness.Value > 200 ? __instance.happiness.Value * 1.5f : (__instance.happiness.Value <= 100 ? __instance.happiness.Value - 100 : 0.0f);
-					if (__instance.type.Value.Equals("Duck") && random.NextDouble() < (__instance.friendshipTowardFarmer.Value + num1) / 5000.0 + Game1.player.team.AverageDailyLuck((GameLocation)null) + Game1.player.team.AverageLuckLevel((GameLocation)null) * 0.01) {
+					if (__instance.type.Value.Equals("Duck") && random.NextDouble() < (__instance.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.player.team.AverageDailyLuck(null) + Game1.player.team.AverageLuckLevel(null) * 0.01) {
 						parentSheetIndex = __instance.deluxeProduceIndex.Value;
-					} else if (__instance.type.Value.Equals("Rabbit") && random.NextDouble() < (__instance.friendshipTowardFarmer.Value + num1) / 5000.0 + Game1.player.team.AverageDailyLuck((GameLocation)null) + Game1.player.team.AverageLuckLevel((GameLocation)null) * 0.02) {
+					} else if (__instance.type.Value.Equals("Rabbit") && random.NextDouble() < (__instance.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.player.team.AverageDailyLuck(null) + Game1.player.team.AverageLuckLevel(null) * 0.02) {
 						parentSheetIndex = __instance.deluxeProduceIndex.Value;
-						__instance.daysSinceLastLay.Value = 0;
 					} else if (__instance.type.Value.Equals("Blue Chicken") && random.NextDouble() < (__instance.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.player.team.AverageDailyLuck() + Game1.player.team.AverageLuckLevel() * 0.01) {
 						parentSheetIndex = Loader.DATA["Blue Chicken Egg"];
 					}
@@ -274,7 +280,7 @@ namespace MayonnaisePlusPlus
 		public static bool AddHatchedAnimal(ref AnimalHouse __instance, ref string name) {
 			if (__instance.getBuilding() is Coop) {
 				foreach (SObject obj in __instance.objects.Values) {
-					if (obj.bigCraftable.Value && obj.Name.Contains("Incubator") && (obj.heldObject.Value != null && obj.MinutesUntilReady <= 0) && !__instance.isFull()) {
+					if (obj.bigCraftable.Value && obj.Name.Contains("Incubator") && (obj.heldObject.Value != null && obj.minutesUntilReady.Value <= 0) && !__instance.isFull()) {
 						string type = "??";
 						if (obj.heldObject.Value == null) {
 							type = "White Chicken";
@@ -321,7 +327,8 @@ namespace MayonnaisePlusPlus
 						break;
 					}
 				}
-			} else if (Game1.farmEvent != null && Game1.farmEvent is QuestionEvent) {
+			} 
+			else if (Game1.farmEvent != null && Game1.farmEvent is QuestionEvent) {
 				var qe = Game1.farmEvent as QuestionEvent;
 				FarmAnimal farmAnimal = new FarmAnimal(qe.animal.type.Value, Loader.HELPER.Multiplayer.GetNewID(), Game1.player.UniqueMultiplayerID);
 				farmAnimal.Name = name;

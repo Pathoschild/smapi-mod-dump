@@ -6,9 +6,9 @@ mods:
    Scrying Orb
 
 latest commit:
-   commit 9316f307eb4ae04ee9a01de47a87050f218c42ec
+   commit b91f1980426a4591d034649bb63c874594da3e0f
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Tue Apr 28 17:03:32 2020 -0700
+   Date:   Sat May 23 21:55:20 2020 -0700
    
-       SO: Updated Russian translation by DanyaKirichenko1
+       s/Mac/macOS/g
    

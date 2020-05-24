@@ -5,16 +5,5 @@
 		<RootNamespace>PortableTV</RootNamespace>
 		<Version>1.2.0</Version>
 	</PropertyGroup>
-	<ItemGroup>
-		<None Include="[JA]PortableTV\manifest.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Include="[JA]PortableTV\Objects\PortableTV\object.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Include="[JA]PortableTV\Objects\PortableTV\object.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
 	<Import Project="common.projitems" Label="Shared" />
 </Project>

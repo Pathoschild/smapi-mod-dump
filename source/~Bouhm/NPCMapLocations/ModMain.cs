@@ -24,6 +24,7 @@ namespace NPCMapLocations
     public static SButton HeldKey;
     public static Texture2D Map;
     public static int mapTab;
+    public static Vector2 UNKNOWN = new Vector2(-9999, -9999); 
 
     private const int DRAW_DELAY = 3;
     private Texture2D BuildingMarkers;
@@ -132,9 +133,6 @@ namespace NPCMapLocations
       DEBUG_MODE = Globals.DEBUG_MODE && !Context.IsMultiplayer;
       shouldShowMinimap = Config.ShowMinimap;
 
-      // Get context of all locations (indoor, outdoor, relativity)
-      LocationUtil.GetLocationContexts();
-
       // NPCs should be unlocked before showing
       ConditionalNpcs = new Dictionary<string, bool>
       {
@@ -158,8 +156,30 @@ namespace NPCMapLocations
           MapVectors.Add(locVectors.Key, locVectors.Value);
       }
 
-      UpdateFarmBuildingLocs();
+      // Get context of all locations (indoor, outdoor, relativity)
+      LocationUtil.GetLocationContexts();
       alertFlags = new List<string>();
+
+      // Log any custom locations not in customlocations.json
+      foreach (var locCtx in LocationUtil.LocationContexts)
+      {
+        if (
+          locCtx.Value.Root == null
+          || ((!locCtx.Key.Equals("FarmHouse")
+          && !locCtx.Key.Contains("Cabin")
+          && !locCtx.Key.Contains("UndergroundMine"))
+          && !MapVectors.TryGetValue(locCtx.Value.Root, out var loc))
+        )
+        {
+          if (!alertFlags.Contains("UnknownLocation:" + locCtx.Key))
+          {
+            Monitor.Log($"Unknown location: {locCtx.Key}", LogLevel.Debug);
+            alertFlags.Add("UnknownLocation:" + locCtx.Key);
+          }
+        }
+      }
+
+      UpdateFarmBuildingLocs();
 
       // Find index of MapPage since it's a different value for SDV mobile
       var pages = Helper.Reflection.GetField<List<IClickableMenu>>(new GameMenu(false), "pages").GetValue();
@@ -194,10 +214,12 @@ namespace NPCMapLocations
     {
       return
         !ModConstants.ExcludedNpcs.Contains(npc.Name)
+        && npc.GetType().GetProperty("ExcludeFromMap") == null // For other developers to always exclude an npc
         && (
           npc.isVillager()
           | npc.isMarried()
           | (Globals.ShowHorse && npc is Horse)
+          | (Globals.ShowChildren && npc is Child)
         );
     }
 
@@ -288,17 +310,9 @@ namespace NPCMapLocations
       // Minimap dragging
       if (Config.ShowMinimap && Minimap != null)
       {
-        if (e.Button.ToString().Equals(Globals.MinimapDragKey))
-        {
-          HeldKey = e.Button;
-        }
-        else if (HeldKey.ToString().Equals(Globals.MinimapDragKey) &&
-                 (e.Button == SButton.MouseLeft || e.Button == SButton.ControllerA) &&
-                 Game1.activeClickableMenu == null)
+        if (Minimap.isHoveringDragZone() && e.Button == SButton.MouseRight)
         {
           MouseUtil.HandleMouseDown(() => Minimap.HandleMouseDown());
-          if (MouseUtil.IsMouseHeldDown)
-            Helper.Input.Suppress(e.Button);
         }
       }
 
@@ -307,8 +321,6 @@ namespace NPCMapLocations
         (DEBUG_MODE && e.Button == SButton.MouseRight && isModMapOpen)
       {
         MouseUtil.HandleMouseDown();
-        if (MouseUtil.IsMouseHeldDown)
-          Helper.Input.Suppress(e.Button);
       }
 
       // Minimap toggle
@@ -331,19 +343,18 @@ namespace NPCMapLocations
     private void Input_ButtonReleased(object sender, ButtonReleasedEventArgs e)
     {
       if (!Context.IsWorldReady) return;
-      if (HeldKey.ToString().Equals(Globals.MinimapDragKey) && e.Button.ToString().Equals(Globals.MinimapDragKey) ||
-          HeldKey == SButton.LeftControl && e.Button != SButton.MouseRight)
-        HeldKey = SButton.None;
 
-      if (Minimap != null && Context.IsWorldReady && e.Button == SButton.MouseLeft)
+      if (Minimap != null)
       {
-        if (Game1.activeClickableMenu == null)
-          MouseUtil.HandleMouseRelease(() => Minimap.HandleMouseRelease());
-        else if (Game1.activeClickableMenu is ModMenu)
+        if (Game1.activeClickableMenu is ModMenu && e.Button == SButton.MouseLeft) { 
           Minimap.Resize();
+        }
+        else if (Game1.activeClickableMenu == null && e.Button == SButton.MouseRight)
+        {
+          MouseUtil.HandleMouseRelease(() => Minimap.HandleMouseRelease());
+        }
       }
-      else if
-        (DEBUG_MODE && e.Button == SButton.MouseRight && isModMapOpen)
+      else if (DEBUG_MODE && e.Button == SButton.MouseRight && isModMapOpen)
       {
         MouseUtil.HandleMouseRelease();
       }
@@ -492,6 +503,7 @@ namespace NPCMapLocations
         // Sync multiplayer data
         if (Context.IsMainPlayer && Context.IsMultiplayer)
         {
+
           var message = new SyncedLocationData();
           foreach (var npc in GetVillagers())
           {
@@ -549,6 +561,12 @@ namespace NPCMapLocations
       }
 
       // Update tick
+      // If minimap is being dragged, suppress mouse behavior
+      if (Config.ShowMinimap && Minimap != null && Minimap.isHoveringDragZone() && Helper.Input.GetState(SButton.MouseRight) == SButtonState.Held)
+      {
+        Minimap.HandleMouseDrag();
+      }
+
       if (Game1.activeClickableMenu == null || !(Game1.activeClickableMenu is GameMenu gameMenu))
       {
         isModMapOpen = false;
@@ -584,7 +602,7 @@ namespace NPCMapLocations
 
           else
           {
-            marker.MapLocation = Vector2.Zero;
+            marker.MapLocation = UNKNOWN;
           }
         }
       }
@@ -634,11 +652,11 @@ namespace NPCMapLocations
 
         if (npcMarker.SyncedLocationName == null)
         {
-          // Handle null locations at beginning of new day
+          // Skip if no location
           if (npc.currentLocation == null)
-            locationName = npc.DefaultMap;
-          else
-            locationName = npc.currentLocation.uniqueName.Value ?? npc.currentLocation.Name;
+            continue;
+
+          locationName = npc.currentLocation.uniqueName.Value ?? npc.currentLocation.Name;
         }
         else
         {
@@ -717,7 +735,7 @@ namespace NPCMapLocations
           // Establish draw order, higher number infront
           // Layers 4 - 7: Outdoor NPCs in order of hidden, hidden w/ quest/birthday, standard, standard w/ quest/birthday
           // Layers 0 - 3: Indoor NPCs in order of hidden, hidden w/ quest/birthday, standard, standard w/ quest/birthday
-          if (npcMarker.Npc is Horse | npcMarker.Npc is Child)
+          if (npcMarker.Npc is Horse || npcMarker.Npc is Child)
           {
             npcMarker.Layer = 0;
           }
@@ -742,16 +760,17 @@ namespace NPCMapLocations
 
           if (npcMarker.SyncedLocationName == null)
           {
-            // Get center of NPC marker 
-            var x = (int)LocationToMap(locationName, npc.getTileX(), npc.getTileY(), Customizations.MapVectors).X - 16;
-            var y = (int)LocationToMap(locationName, npc.getTileX(), npc.getTileY(), Customizations.MapVectors).Y - 15;
+            // Get center of NPC marker
+            var npcLocation = LocationToMap(locationName, npc.getTileX(), npc.getTileY(), Customizations.MapVectors);
+            var x = (int)npcLocation.X - 16;
+            var y = (int)npcLocation.Y - 15;
             npcMarker.MapLocation = new Vector2(x, y);
           }
         }
         else
         {
           // Set no location so they don't get drawn
-          npcMarker.MapLocation = Vector2.Zero;
+          npcMarker.MapLocation = UNKNOWN;
         }
       }
     }
@@ -765,16 +784,6 @@ namespace NPCMapLocations
 
         if (locationName.Contains("UndergroundMine"))
           locationName = LocationUtil.GetMinesLocationName(locationName);
-
-        if ((!locationName.Equals("FarmHouse") && !locationName.Contains("Cabin") && !locationName.Contains("UndergroundMine")) &&
-            !MapVectors.TryGetValue(locationName, out var loc))
-        {
-          if (!alertFlags.Contains("UnknownLocation:" + locationName))
-          {
-            Monitor.Log($"Unknown location: {locationName}.", LogLevel.Debug);
-            alertFlags.Add("UnknownLocation:" + locationName);
-          }
-        }
 
         var farmerId = farmer.UniqueMultiplayerID;
         var farmerLocationName = farmer.currentLocation.uniqueName.Value ?? farmer.currentLocation.Name;
@@ -879,7 +888,7 @@ namespace NPCMapLocations
         locationNotFound = !ModConstants.MapVectors.TryGetValue(locationName, out locVectors);
       }
 
-      if (locVectors == null || locationNotFound) return Vector2.Zero;
+      if (locVectors == null || locationNotFound) return UNKNOWN;
 
       int x;
       int y;
@@ -1034,7 +1043,7 @@ namespace NPCMapLocations
           new Vector2(Game1.tileSize / 4, Game1.tileSize / 4), Color.White);
 
         // Draw drag and drop area
-        if (MouseUtil.IsMouseHeldDown)
+        if (Helper.Input.GetState(SButton.MouseLeft) == SButtonState.Held)
         {
           // Draw dragging box
           DrawBorder(tex,

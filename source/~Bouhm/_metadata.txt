@@ -6,12 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 277661f6e89a8c2ab2989db2cc11a390d5bc63ce
-   Merge: 6e62139 0c793cc
-   Author: Brian Pak <bbouhm@gmail.com>
-   Date:   Sat Mar 21 18:45:52 2020 -0700
+   commit 1b045843ef6b234b3ba751816db2d7e6b486967f
+   Author: Bouhm <bbouhm@gmail.com>
+   Date:   Sat May 23 21:35:39 2020 -0700
    
-       Merge pull request #60 from D0n-A/patch-1
-       
-       Update ru.json
+       wording
    

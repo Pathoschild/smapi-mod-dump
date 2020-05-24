@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
-using StardewModdingAPI;
 using StardewValley;
 
 namespace DeluxeHats.Hats
@@ -9,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class StrawHat
     {
         public const string Name = "Straw Hat";
+        public const string Description = "When it's dawn and sunny, gain Dawn Farming Buff:\n+3 Farming";
         public static void Activate()
         {
             HatService.OnUpdateTicked = (e) =>

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6156
+IDs: shaklin.unlockdyemenu
+update keys: Nexus:6156

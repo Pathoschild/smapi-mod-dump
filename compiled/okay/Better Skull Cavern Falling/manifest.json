@@ -1,10 +1,10 @@
 ﻿{
   "Name": "BetterSkullCavernFalling",
   "Author": "Max Vollmer",
-  "Version": "1.0.2",
+  "Version": "1.1.0",
   "Description": "Replaces the disruptive 'you've fallen x levels' popups with non-disruptive HUD messages.",
   "UniqueID": "maxvollmer.betterskullcavernfalling",
   "EntryDll": "BetterSkullCavernFalling.dll",
-  "MinimumApiVersion": "2.10.2",
+  "MinimumApiVersion": "3.5.0",
   "UpdateKeys": [ "Nexus:2558" ]
 }

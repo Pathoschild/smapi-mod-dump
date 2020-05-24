@@ -7,6 +7,7 @@ namespace DeluxeHats.Hats
     public static class OfficialCap
     {
         public const string Name = "Official Cap";
+        public const string Description = "While on the Beach gain the Ol' Mariner Buff:\n+2 Fishing";
         public static void Activate()
         {
             HatService.OnUpdateTicked = (e) =>

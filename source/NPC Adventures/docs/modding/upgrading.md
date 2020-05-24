@@ -1,5 +1,13 @@
 # Upgrade your content pack
 
+## Update to version 0.12.0 beta
+
+### Bag delivery content source changed
+
+Text source for bag delivery letters is now in `Strings/Mail` under key `bagItemsSentLetter.<NPC_name>`. As a content pack author you must define string for bag delivery letter for each custom NPC which you have in your content pack. See [How to define bag delivery letters](bag-letters.md)
+
+**NOTE:** If you don't define custom bag letters for your custom NPC companions, delivered package with bag items will be without any message letter for farmer. If farmer try to open it, the on't see a letter and open the box immediatelly instead of show the letter.
+
 ## Update to version 0.10.0 beta
 
 ### Content Pack format version changed

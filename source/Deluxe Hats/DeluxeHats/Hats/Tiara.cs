@@ -11,6 +11,7 @@ namespace DeluxeHats.Hats
     public static class Tiara
     {
         public const string Name = "Tiara";
+        public const string Description = "When sleeping increase the chance for the fairy farm event.";
         public static void Activate()
         {
             HatService.Harmony.Patch(

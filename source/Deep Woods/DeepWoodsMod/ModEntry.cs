@@ -70,6 +70,7 @@ namespace DeepWoodsMod
         public override void Entry(IModHelper helper)
         {
             ModEntry.mod = this;
+            I18N.Init(helper.Translation);
             RegisterEvents(helper.Events);
         }
 
@@ -82,6 +83,8 @@ namespace DeepWoodsMod
         {
             return api;
         }
+
+        public static bool IsDeepWoodsGameRunning { get => ModEntry.mod.isDeepWoodsGameRunning; }
 
         private void RegisterEvents(IModEvents events)
         {
@@ -100,7 +103,6 @@ namespace DeepWoodsMod
         private void OnGameLaunched(object sender, GameLaunchedEventArgs args)
         {
             ModEntry.multiplayer = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
-            DeepWoodsSettings.Init(Helper.Translation);
             DeepWoodsTextures.Textures.LoadAll();
             if (Helper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere"))
             {
@@ -315,11 +317,6 @@ namespace DeepWoodsMod
             if (prevLocation is DeepWoods dw1 && newLocation is DeepWoods dw2 && dw1.Name == dw2.Name)
                 return;
 
-            if (newLocation is Woods woods)
-            {
-                OpenPassageInSecretWoods(woods);
-            }
-
             DeepWoodsManager.PlayerWarped(who, prevLocation, newLocation);
 
             if (newLocation is AnimalHouse animalHouse)
@@ -429,80 +426,9 @@ namespace DeepWoodsMod
 
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            return asset.AssetNameEquals("Data/mail");
+            return asset.AssetNameEquals("Data/mail") || asset.AssetNameEquals("Data/Blueprints");
         }
 
-        private void OpenPassageInSecretWoods(Woods woods)
-        {
-            // TODO: Configurable (and moddable!) locations to modify Woods
-
-            // Game isn't running
-            if (!isDeepWoodsGameRunning)
-            {
-                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, mod not initialized.", LogLevel.Trace);
-                return;
-            }
-
-            // Already patched
-            if (woods.warps.Where(warp => "DeepWoods".Equals(warp.TargetName)).Any())
-            {
-                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, map already patched.", LogLevel.Trace);
-                return;
-            }
-
-            Layer buildingsLayer = woods.map.GetLayer("Buildings");
-
-            // Just to be sure
-            if (buildingsLayer == null)
-            {
-                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, invalid map (buildingsLayer is null).", LogLevel.Trace);
-                return;
-            }
-
-            ModEntry.Log("OpenPassageInSecretWoods:", LogLevel.Trace);
-
-            TileSheet borderTileSheet = woods.map.TileSheets.First();
-            int borderTileIndex = 0;
-
-            int removed = 0;
-            int added = 0;
-
-            foreach (var location in Settings.WoodsPassage.DeleteBuildingTiles)
-            {
-                if (buildingsLayer.Tiles[location.X, location.Y] == null)
-                {
-                    ModEntry.Log($"    Can't remove tile from building layer at {location.X}, {location.Y}, there is no tile here! (Custom Woods map? Please modify WoodsPassage settings in the DeepWoods config file for custom Woods maps.)", LogLevel.Trace);
-                }
-                else
-                {
-                    ModEntry.Log($"    Removing tile from building layer at {location.X}, {location.Y}.", LogLevel.Trace);
-                    buildingsLayer.Tiles[location.X, location.Y] = null;
-                    removed++;
-                }
-            }
-
-            foreach (var location in Settings.WoodsPassage.AddBuildingTiles)
-            {
-                if (buildingsLayer.Tiles[location.X, location.Y] == null)
-                {
-                    ModEntry.Log($"    Adding tile to building layer at {location.X}, {location.Y}.", LogLevel.Trace);
-                    buildingsLayer.Tiles[location.X, location.Y] = new StaticTile(buildingsLayer, borderTileSheet, BlendMode.Alpha, borderTileIndex);
-                    added++;
-                }
-                else
-                {
-                    ModEntry.Log($"    Can't add tile to building layer at {location.X}, {location.Y}, already have a tile there! (Custom Woods map? Please modify WoodsPassage settings in the DeepWoods config file for custom Woods maps.)", LogLevel.Trace);
-                }
-            }
-
-            foreach (var location in Settings.WoodsPassage.WarpLocations)
-            {
-                ModEntry.Log($"    Adding warp to DeepWoods at {location.X}, {location.Y}.", LogLevel.Trace);
-                woods.warps.Add(new Warp(location.X, location.Y, "DeepWoods", Settings.Map.RootLevelEnterLocation.X, Settings.Map.RootLevelEnterLocation.Y + 1, false));
-            }
-
-            ModEntry.Log($"OpenPassageInSecretWoods done. (Added {added}/{Settings.WoodsPassage.AddBuildingTiles.Length} tiles, removed {removed}/{Settings.WoodsPassage.DeleteBuildingTiles.Length} tiles, added {Settings.WoodsPassage.WarpLocations.Length} warps.)", LogLevel.Trace);
-        }
 
         public void Edit<T>(IAssetData asset)
         {
@@ -510,6 +436,11 @@ namespace DeepWoodsMod
             {
                 EditMail(asset.GetData<Dictionary<string, string>>());
                 Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            }
+            else if (asset.AssetNameEquals("Data/Blueprints"))
+            {
+                EditBlueprints(asset.GetData<Dictionary<string, string>>());
+                Game1.content.Load<Dictionary<string, string>>("Data\\Blueprints");
             }
             else
             {
@@ -520,6 +451,21 @@ namespace DeepWoodsMod
         private void EditMail(Dictionary<string, string> mailData)
         {
             mailData.Add(WOODS_OBELISK_WIZARD_MAIL_ID, I18N.WoodsObeliskWizardMailMessage);
+        }
+
+        private void EditBlueprints(Dictionary<string, string> bluePrintsData)
+        {
+            string itemsRequired = "";
+
+            foreach (var item in Settings.Objects.WoodsObelisk.ItemsRequired)
+            {
+                itemsRequired += item.Key + " " + item.Value + " ";
+            }
+
+            bluePrintsData.Add(
+                WOODS_OBELISK_BUILDING_NAME,
+                "" + itemsRequired.Trim() + "/3/2/-1/-1/-2/-1/null/"+ I18N.WoodsObeliskDisplayName + "/"+ I18N.WoodsObeliskDescription + "/Buildings/none/48/128/-1/null/Farm/" + Settings.Objects.WoodsObelisk.MoneyRequired + "/true"
+            );
         }
 
         public bool CanLoad<T>(IAssetInfo asset)
@@ -543,5 +489,6 @@ namespace DeepWoodsMod
                 throw new ArgumentException("Can't load " + asset.AssetName);
             }
         }
+
     }
 }

@@ -7,9 +7,12 @@ mods:
    Time Reminder
 
 latest commit:
-   commit 8745ad61c2ad4d6202a99789067e6ea46281a943
-   Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
-   Date:   Thu May 7 12:28:27 2020 -0700
+   commit ca8ba2c348c79827182040f172b2fe40fb32b6b0
+   Merge: 8936337 ed3566a
+   Author: Sakorona <7285555+Sakorona@users.noreply.github.com>
+   Date:   Wed May 20 05:47:36 2020 -0700
    
-       I should really commit more often
+       Merge pull request #96 from Windmill-City/develop
+       
+       Create zh.json
    

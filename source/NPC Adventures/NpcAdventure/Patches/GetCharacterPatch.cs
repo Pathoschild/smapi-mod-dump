@@ -1,6 +1,7 @@
 ﻿using Harmony;
 using NpcAdventure.Internal;
 using StardewValley;
+using System;
 using System.Reflection;
 
 namespace NpcAdventure.Patches
@@ -13,32 +14,43 @@ namespace NpcAdventure.Patches
     /// like can't walk through invisible NPC barrier and etc. We want avoid this functionality but keep the vanilla functionality 
     /// of getCharacterFromName because companion is not real event actor it's fake event actor. They are still regular villager NPC.
     /// </summary>
-    internal class GetCharacterPatch
+    internal class GetCharacterPatch : Patch<GetCharacterPatch>
     {
-        private static readonly SetOnce<CompanionManager> manager = new SetOnce<CompanionManager>();
-        private static CompanionManager Manager { get => manager.Value; set => manager.Value = value; }
+        private CompanionManager Manager { get; set; }
+        public override string Name => nameof(GetCharacterPatch);
 
-        internal static void After_getCharacterFromName(ref NPC __result, string name)
+        public GetCharacterPatch(CompanionManager manager) 
         {
-            if (__result == null && Manager.PossibleCompanions.TryGetValue(name, out var csm) && csm.Companion?.currentLocation != null)
-            {
-                __result = csm.Companion;
-            }
+            this.Manager = manager;
+            Instance = this;
         }
 
-        internal static void Setup(HarmonyInstance harmony, CompanionManager manager)
+        private static void After_getCharacterFromName(ref NPC __result, string name)
         {
-            Manager = manager;
-            
-            harmony.Patch(
-                original: AccessTools.GetDeclaredMethods(typeof(Game1)).Find(MatchGetCharacterFromNameMethod),
-                postfix: new HarmonyMethod(typeof(GetCharacterPatch), nameof(GetCharacterPatch.After_getCharacterFromName))
-            );
+            try
+            {
+                if (__result == null && Instance.Manager.PossibleCompanions.TryGetValue(name, out var csm) && csm.Companion?.currentLocation != null)
+                {
+                    __result = csm.Companion;
+                }
+            } 
+            catch (Exception ex)
+            {
+                Instance.LogFailure(ex, nameof(After_getCharacterFromName));
+            }
         }
 
         private static bool MatchGetCharacterFromNameMethod(MethodInfo m)
         {
             return m.Name == nameof(Game1.getCharacterFromName) && m.ReturnType == typeof(NPC) && !m.IsGenericMethod;
+        }
+
+        protected override void Apply(HarmonyInstance harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.GetDeclaredMethods(typeof(Game1)).Find(MatchGetCharacterFromNameMethod),
+                postfix: new HarmonyMethod(typeof(GetCharacterPatch), nameof(GetCharacterPatch.After_getCharacterFromName))
+            );
         }
     }
 }

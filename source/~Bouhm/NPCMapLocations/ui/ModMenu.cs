@@ -46,6 +46,8 @@ namespace NPCMapLocations
 					0, 0);
 			mapX = (int) topLeftPositionForCenteringOnScreen.X;
 			mapY = (int) topLeftPositionForCenteringOnScreen.Y;
+
+      // Most of this mess is straight from the game code just... just give it space
 			okButton = new ClickableTextureComponent("OK",
 				new Rectangle(xPositionOnScreen + width - Game1.tileSize * 2,
 					yPositionOnScreen + height - 7 * Game1.tileSize / 4, Game1.tileSize, Game1.tileSize), null, null,
@@ -71,54 +73,48 @@ namespace NPCMapLocations
 						yPositionOnScreen + Game1.tileSize * 5 / 4 + Game1.pixelZoom + i * ((height - Game1.tileSize * 2) / 7),
 						width - Game1.tileSize / 2, (height - Game1.tileSize * 2) / 7 + Game1.pixelZoom), string.Concat(i)));
 
-			// Translate labels and initialize buttons to handle button press
-			string minimapLabel = ModMain.Helper.Translation.Get("minimap.label");
-			string immersionLabel = ModMain.Helper.Translation.Get("immersion.label");
-			string villagersLabel = ModMain.Helper.Translation.Get("villagers.label");
-			immersionButton1 = new MapModButton("immersion.option1", 4, -1, -1, -1, -1);
-			immersionButton2 = new MapModButton("immersion.option2", 5, -1, -1, -1, -1);
-			immersionButton3 = new MapModButton("immersion.option3", 6, -1, -1, -1, -1);
-
-			//this.options.Add(new OptionsElement("Menu Key:"));
-			//this.options.Add(new MapModInputListener("Change menu key", 37, this.optionSlots[0].bounds.Width, -1, -1));
 			options.Add(new OptionsElement("NPC Map Locations"));
 
-			var widths = new List<int>();
-			for (var i = 0; i < 16; i++)
-				widths.Add(75 + i * 15);
+      var widths = new List<int>();
+      for (var i = 0; i < 16; i++)
+        widths.Add(75 + i * 15);
 
-			var heights = new List<int>();
-			for (var j = 0; j < 10; j++)
-				heights.Add(45 + j * 15);
+      var heights = new List<int>();
+      for (var j = 0; j < 10; j++)
+        heights.Add(45 + j * 15);
 
-			var percentages = new List<int>();
-			for (var k = 0; k < 11; k++)
-				percentages.Add(50 + k * 5);
+      string minimapLabel = ModMain.Helper.Translation.Get("minimap.label");
+      options.Add(new OptionsElement(minimapLabel));
+      options.Add(new ModCheckbox("minimap.option1", 0, -1, -1, customizations));
+      options.Add(new ModPlusMinus("minimap.plusMinus1", 1, widths));
+      options.Add(new ModPlusMinus("minimap.plusMinus2", 2, heights));
 
-			options.Add(new OptionsElement(minimapLabel));
-			options.Add(new ModCheckbox("minimap.option1", 54, -1, -1, customizations));
-			options.Add(new ModPlusMinus("minimap.plusMinus1", 55, widths));
-			options.Add(new ModPlusMinus("minimap.plusMinus2", 56, heights));
-			//options.Add(new ModPlusMinus("minimap.plusMinus3", 57, percentages));
+      // Translate labels and initialize buttons to handle button press
+      string immersionLabel = ModMain.Helper.Translation.Get("immersion.label");
+      options.Add(new OptionsElement(immersionLabel));
+      immersionButton1 = new MapModButton("immersion.option1", 3, -1, -1, -1, -1);
+      immersionButton2 = new MapModButton("immersion.option2", 4, -1, -1, -1, -1);
+      immersionButton3 = new MapModButton("immersion.option3", 5, -1, -1, -1, -1);
+      options.Add(immersionButton1);
+      options.Add(immersionButton2);
+      options.Add(immersionButton3);
 
-			options.Add(new OptionsElement(immersionLabel));
-			options.Add(immersionButton1);
-			options.Add(immersionButton2);
-			options.Add(immersionButton3);
-			options.Add(new ModCheckbox("immersion.option4", 49, -1, -1, customizations));
-			options.Add(new ModCheckbox("immersion.option5", 50, -1, -1, customizations));
-			options.Add(new MapModSlider("immersion.slider1", 0, -1, -1, 0, 12));
-			options.Add(new MapModSlider("immersion.slider2", 1, -1, -1, 0, 12));
+			options.Add(new ModCheckbox("immersion.option4", 6, -1, -1, customizations));
+			options.Add(new ModCheckbox("immersion.option5", 7, -1, -1, customizations));
+			options.Add(new MapModSlider("immersion.slider1", 8, -1, -1, 0, 12));
+			options.Add(new MapModSlider("immersion.slider2", 9, -1, -1, 0, 12));
 
-			options.Add(new ModCheckbox("extra.option1", 51, -1, -1, customizations));
-			options.Add(new ModCheckbox("extra.option2", 52, -1, -1, customizations));
-			options.Add(new ModCheckbox("extra.option3", 53, -1, -1, customizations));
+			options.Add(new ModCheckbox("extra.option1", 10, -1, -1, customizations));
+			options.Add(new ModCheckbox("extra.option2", 11, -1, -1, customizations));
+			options.Add(new ModCheckbox("extra.option3", 12, -1, -1, customizations));
+
+      string villagersLabel = ModMain.Helper.Translation.Get("villagers.label");
 			options.Add(new OptionsElement(villagersLabel));
 
-			// Villagers + up to 10 custom NPCs
-			var orderedNames = customizations.Names.Keys.ToList();
+      var orderedNames = customizations.Names.Keys.ToList();
 			orderedNames.Sort();
-			var idx = 7;
+
+      var idx = 13;
       foreach (var name in orderedNames)
       {
         if (conditionalNpcs.ContainsKey(name))
@@ -133,7 +129,7 @@ namespace NPCMapLocations
           options.Add(new ModCheckbox(name, idx++, -1, -1, customizations));
         }
       }
-		}
+    }
 
 		// Override snappy controls on controller
 		public override bool overrideSnappyMenuCursorMovementBan()
@@ -374,13 +370,13 @@ namespace NPCMapLocations
 							var bounds = new Rectangle(x + 28, y, buttonWidth + Game1.tileSize + 8, Game1.tileSize + 8);
 							switch (options[currentItemIndex + i].whichOption)
 							{
-								case 4:
+								case 3:
 									immersionButton1.rect = bounds;
 									break;
-								case 5:
+								case 4:
 									immersionButton2.rect = bounds;
 									break;
-								case 6:
+								case 5:
 									immersionButton3.rect = bounds;
 									break;
 							}
@@ -425,7 +421,7 @@ namespace NPCMapLocations
 			this.label = ModMain.Helper.Translation.Get(label);
 			rect = new Rectangle(x, y, width, height);
 
-			if (ModMain.Config.ImmersionOption == whichOption - 3)
+			if (ModMain.Config.ImmersionOption == whichOption - 2)
 				greyedOut = false;
 			else
 				greyedOut = true;
@@ -434,13 +430,13 @@ namespace NPCMapLocations
 		public override void receiveLeftClick(int x, int y)
 		{
 			if (!isActive)
-				if (whichOption > 3)
+				if (whichOption == 3 || whichOption == 4 || whichOption == 5)
 				{
 					Game1.playSound("drumkit6");
 					base.receiveLeftClick(x, y);
 					isActive = true;
 					greyedOut = false;
-				  ModMain.Config.ImmersionOption = whichOption - 3;
+				  ModMain.Config.ImmersionOption = whichOption - 2;
 				}
 		}
 
@@ -474,41 +470,42 @@ namespace NPCMapLocations
 		  Customizations = customizations;
 			this.label = label;
 
-			if (whichOption < 49)
+      // Villager names
+			if (whichOption > 12)
 			{
-				orderedNames = customizations.Names.Keys.ToList();
-				orderedNames.Sort();
+        orderedNames = customizations.Names.Keys.ToList();
+        orderedNames.Sort();
 
-				if (whichOption > 6 && whichOption < 49)
-				{
-					isChecked = !ModMain.Globals.NpcBlacklist.Contains(orderedNames[whichOption - 7]);
-					return;
-				}
-			}
-			else if (whichOption > 48)
+        isChecked = !ModMain.Globals.NpcBlacklist.Contains(orderedNames[whichOption - 13]);
+        return;
+      }
+      else
 			{
-				this.label = ModMain.Helper.Translation.Get(label);
-			}
+        this.label = ModMain.Helper.Translation.Get(label);
+      }
 
-			switch (whichOption)
+      switch (whichOption)
 			{
-				case 49:
+        case 0:
+          isChecked = ModMain.Config.ShowMinimap;
+          return;
+        case 6:
 					isChecked = ModMain.Config.OnlySameLocation;
 					return;
-				case 50:
+				case 7:
 					isChecked = ModMain.Config.ByHeartLevel;
 					return;
-				case 51:
+        case 8:
+          isChecked = ModMain.Config.ShowMinimap;
+          return;
+        case 10:
 					isChecked = ModMain.Config.MarkQuests;
 					return;
-				case 52:
+				case 11:
 					isChecked = ModMain.Config.ShowHiddenVillagers;
 					return;
-				case 53:
+				case 12:
 					isChecked = ModMain.Config.ShowTravelingMerchant;
-					return;
-				case 54:
-					isChecked = ModMain.Config.ShowMinimap;
 					return;
 				default:
 					return;
@@ -519,39 +516,42 @@ namespace NPCMapLocations
 		{
 			if (greyedOut) return;
 
-			//Game1.soundBank.PlayCue("drumkit6");
 			base.receiveLeftClick(x, y);
 			isChecked = !isChecked;
 			var whichOption = this.whichOption;
 
-			if (whichOption > 6 && whichOption < 49)
+      // Show/hide villager options
+			if (whichOption > 12)
 			{
 				if (isChecked)
-          ModMain.Globals.NpcBlacklist.Remove(orderedNames[whichOption - 7]);
+          ModMain.Globals.NpcBlacklist.Remove(orderedNames[whichOption - 13]);
 				else
-          ModMain.Globals.NpcBlacklist.Add(orderedNames[whichOption - 7]);
+          ModMain.Globals.NpcBlacklist.Add(orderedNames[whichOption - 13]);
 			}
 			else
 			{
 				switch (whichOption)
 				{
-					case 49:
+          case 0:
+            ModMain.Config.ShowMinimap = isChecked;
+            break;
+          case 6:
 					  ModMain.Config.OnlySameLocation = isChecked;
 						break;
-					case 50:
+					case 7:
 					  ModMain.Config.ByHeartLevel = isChecked;
 						break;
-					case 51:
+          case 8:
+            ModMain.Config.ShowMinimap = isChecked;
+            break;
+          case 10:
 					  ModMain.Config.MarkQuests = isChecked;
 						break;
-					case 52:
+					case 11:
 					  ModMain.Config.ShowHiddenVillagers = isChecked;
 						break;
-					case 53:
+					case 12:
 					  ModMain.Config.ShowTravelingMerchant = isChecked;
-						break;
-					case 54:
-					  ModMain.Config.ShowMinimap = isChecked;
 						break;
 					default:
 						break;
@@ -568,7 +568,7 @@ namespace NPCMapLocations
 				isChecked ? OptionsCheckbox.sourceRectChecked : OptionsCheckbox.sourceRectUnchecked,
 				Color.White * (greyedOut ? 0.33f : 1f), 0f, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None,
 				0.4f);
-			if (whichOption > 6 && whichOption < 49)
+			if (whichOption > 12)
 			{
 				var npc = Game1.getCharacterFromName(label);
 				if (npc == null || (npc != null && !Customizations.NpcMarkerOffsets.ContainsKey(npc.Name))) return;
@@ -618,15 +618,15 @@ namespace NPCMapLocations
 		{
 			this.min = min;
 			this.max = max;
-			if (whichOption != 0 && whichOption != 1) bounds.Width = bounds.Width * 2;
+			if (whichOption != 8 && whichOption != 9) bounds.Width = bounds.Width * 2;
 			valueLabel = ModMain.Helper.Translation.Get(label);
 
 			switch (whichOption)
 			{
-				case 0:
+				case 8:
 					value = ModMain.Config.HeartLevelMin;
 					break;
-				case 1:
+				case 9:
 					value = ModMain.Config.HeartLevelMax;
 					break;
 				default:
@@ -648,10 +648,10 @@ namespace NPCMapLocations
 
 			switch (whichOption)
 			{
-				case 0:
+				case 8:
 				  ModMain.Config.HeartLevelMin = (int) value;
 					break;
-				case 1:
+				case 9:
 				  ModMain.Config.HeartLevelMax = (int) value;
 					break;
 				default:
@@ -673,7 +673,7 @@ namespace NPCMapLocations
 		{
 			label = valueLabel + ": " + value;
 			greyedOut = false;
-			if (whichOption == 0 || whichOption == 1) greyedOut = !ModMain.Config.ByHeartLevel;
+			if (whichOption == 8 || whichOption == 9) greyedOut = !ModMain.Config.ByHeartLevel;
 
 			base.draw(b, slotX, slotY);
 			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, OptionsSlider.sliderBGSource, slotX + bounds.X,
@@ -710,11 +710,10 @@ namespace NPCMapLocations
 			if (y == -1) y = 16;
 
 			txtSize = (int) Game1.dialogueFont.MeasureString($"options[0]").X + 28;
-			var addString = whichOption == 57 ? "%" : "px";
 			foreach (var displayOption in options)
 			{
-				txtSize = Math.Max((int) Game1.dialogueFont.MeasureString($"{displayOption}{addString}").X + 28, txtSize);
-				displayOptions.Add($"{displayOption}{addString}");
+				txtSize = Math.Max((int) Game1.dialogueFont.MeasureString($"{displayOption}px").X + 28, txtSize);
+				displayOptions.Add($"{displayOption}px");
 			}
 
 			bounds = new Rectangle(x, y, (int) (1.5 * txtSize), 32);
@@ -725,22 +724,16 @@ namespace NPCMapLocations
 
 			switch (whichOption)
 			{
-				case 55:
+				case 1:
 					selected = (int) MathHelper.Clamp(((int) Math.Floor((ModMain.Config.MinimapWidth - 75) / 15.0)), 0,
 						options.Count - 1);
 					options[selected] = ModMain.Config.MinimapWidth;
 					break;
-				case 56:
+				case 2:
 					selected = (int) MathHelper.Clamp(((int) Math.Floor((ModMain.Config.MinimapHeight - 45) / 15.0)), 0,
 						options.Count - 1);
 					options[selected] = ModMain.Config.MinimapHeight;
 					break;
-				/*
-				case 57:
-					selected = (int)MathHelper.Clamp(((int)Math.Floor((Config.MinimapOpacity - 50) / 5.0)), 0, options.Count - 1);
-					options[selected] = Config.MinimapOpacity;
-					break;
-				*/
 				default:
 					break;
 			}
@@ -771,17 +764,12 @@ namespace NPCMapLocations
 
 			switch (whichOption)
 			{
-				case 55:
+				case 1:
 				  ModMain.Config.MinimapWidth = options[selected];
 					break;
-				case 56:
+				case 2:
 				  ModMain.Config.MinimapHeight = options[selected];
 					break;
-      /*
-      case 57:
-      Config.MinimapOpacity = options[selected];
-      break;
-      */
 				default:
 					break;
 			}

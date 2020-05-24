@@ -1,0 +1,17 @@
+{
+   "Format": "1.10",
+   "Changes": [
+	{
+          "Action": "Load",
+          "Target": "Characters/Monsters/Pollen Sprite",
+          "FromFile": "assets/Pollen Sprite.png"
+    },
+	{
+		"Action": "EditData",
+		"Target": "Data/Monsters",
+		"Entries": {
+			"Pollen Sprite": "8/0/0/1/false/0/770 .45/0/.01/12/4/.0/true/1/Pollen Sprite"
+		}
+	}
+    ]
+}

@@ -4,7 +4,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewModdingAPI;
 using System.Collections.Generic;
-using System;
+using NpcAdventure.Dialogues;
 
 namespace NpcAdventure.StateMachine.State
 {
@@ -19,7 +19,7 @@ namespace NpcAdventure.StateMachine.State
 
         private int doNotAskUntil;
 
-        public AvailableState(CompanionStateMachine stateMachine, IModEvents events, IMonitor monitor) : base(stateMachine, events, monitor) {}
+        public AvailableState(CompanionStateMachine stateMachine, IModEvents events, IMonitor monitor) : base(stateMachine, events, monitor) { }
 
         public override void Entry()
         {
@@ -57,7 +57,7 @@ namespace NpcAdventure.StateMachine.State
                 && heartLevel >= threshold
                 && Game1.random.NextDouble() < this.GetSuggestChance())
             {
-                Dialogue d = DialogueHelper.GenerateDialogue(this.StateMachine.Companion, "companionSuggest");
+                Dialogue d = this.StateMachine.Dialogues.GenerateDialogue("companionSuggest");
                 Farmer f = this.StateMachine.CompanionManager.Farmer;
 
                 if (d == null)
@@ -72,14 +72,17 @@ namespace NpcAdventure.StateMachine.State
                     if (opts[whichResponse].responseKey == "Yes")
                     {
                         // Farmer accepted suggestion of adventure. Let's go to find a some trouble!
-                        this.acceptalDialogue = new Dialogue(DialogueHelper.GetSpecificDialogueText(n, f, "companionSuggest_Yes"), n);
-                        DialogueHelper.DrawDialogue(this.acceptalDialogue);
-                    } else
+                        this.acceptalDialogue = new Dialogue(this.StateMachine.Dialogues.GetFriendSpecificDialogueText(f, "companionSuggest_Yes"), n);
+                        DialogueProvider.DrawDialogue(this.acceptalDialogue);
+                    }
+                    else
                     {
                         // Farmer not accepted for this time. Farmer can't ask to follow next 2 hours
                         this.recruitRequestsEnabled = false;
                         this.doNotAskUntil = Game1.timeOfDay + 200;
-                        DialogueHelper.DrawDialogue(new Dialogue(DialogueHelper.GetSpecificDialogueText(n, f, "companionSuggest_No"), n));
+                        DialogueProvider.DrawDialogue(
+                            new Dialogue(this.StateMachine.Dialogues.GetFriendSpecificDialogueText(f, "companionSuggest_No"), n)
+                        );
                     }
 
                     this.suggestionDialogue = null;
@@ -90,12 +93,13 @@ namespace NpcAdventure.StateMachine.State
 
                 this.suggestionDialogue = d;
                 this.monitor.Log($"Added adventure suggest dialogue to {this.StateMachine.Companion.Name}");
-            } else if (this.suggestionDialogue != null)
+            }
+            else if (this.suggestionDialogue != null)
             {
                 if (e.NewTime >= 2200 || heartLevel <= 4)
                 {
                     // Remove suggestion dialogue when it'S over 22:00 or friendship heart level decreased under recruit heart threshold
-                    DialogueHelper.RemoveDialogueFromStack(this.StateMachine.Companion, this.suggestionDialogue);
+                    DialogueProvider.RemoveDialogueFromStack(this.StateMachine.Companion, this.suggestionDialogue);
                     this.suggestionDialogue = null;
                     this.monitor.Log($"Removed adventure suggest dialogue from {this.StateMachine.Companion.Name}");
                 }
@@ -120,7 +124,7 @@ namespace NpcAdventure.StateMachine.State
         {
             if (this.StateMachine.Companion.CurrentDialogue.Contains(this.suggestionDialogue))
             {
-                DialogueHelper.RemoveDialogueFromStack(this.StateMachine.Companion, this.suggestionDialogue);
+                DialogueProvider.RemoveDialogueFromStack(this.StateMachine.Companion, this.suggestionDialogue);
                 this.monitor.Log($"EXIT STATE: Removed adventure suggest dialogue from {this.StateMachine.Companion.Name}'s stack.");
             }
 
@@ -137,18 +141,19 @@ namespace NpcAdventure.StateMachine.State
             if (leader.getFriendshipHeartLevelForNPC(n.Name) < this.StateMachine.CompanionManager.Config.HeartThreshold || Game1.timeOfDay >= 2200)
             {
                 Dialogue rejectionDialogue = new Dialogue(
-                    DialogueHelper.GetSpecificDialogueText(
-                        n, leader, Game1.timeOfDay >= 2200 ? "companionRejectedNight" : "companionRejected"), n);
+                    this.StateMachine.Dialogues.GetFriendSpecificDialogueText(
+                        leader, Game1.timeOfDay >= 2200 ? "companionRejectedNight" : "companionRejected"), n);
 
                 this.rejectionDialogue = rejectionDialogue;
-                DialogueHelper.DrawDialogue(rejectionDialogue);
+                DialogueProvider.DrawDialogue(rejectionDialogue);
             }
             else
             {
-                Dialogue acceptalDialogue = new Dialogue(DialogueHelper.GetSpecificDialogueText(n, leader, "companionAccepted"), n);
+                Dialogue acceptalDialogue = new Dialogue(
+                    this.StateMachine.Dialogues.GetFriendSpecificDialogueText(leader, "companionAccepted"), n);
 
                 this.acceptalDialogue = acceptalDialogue;
-                DialogueHelper.DrawDialogue(acceptalDialogue);
+                DialogueProvider.DrawDialogue(acceptalDialogue);
             }
         }
 
@@ -179,7 +184,7 @@ namespace NpcAdventure.StateMachine.State
             return true;
         }
 
-        public void OnDialogueSpeaked(Dialogue speakedDialogue)
+        public void OnDialogueSpoken(Dialogue speakedDialogue)
         {
             if (speakedDialogue == this.acceptalDialogue)
             {

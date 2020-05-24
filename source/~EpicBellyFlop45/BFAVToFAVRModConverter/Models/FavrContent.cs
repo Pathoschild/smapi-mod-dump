@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 namespace BFAVToFAVRModConverter.Models
 {
@@ -52,6 +53,9 @@ namespace BFAVToFAVRModConverter.Models
 
         /// <summary>The walk speed of the animal.</summary>
         public int WalkSpeed { get; set; } = 2;
+
+        /// <summary>The seasons the animal is able to go outside.</summary>
+        public List<Season> SeasonsAllowedOutdoors { get; set; } = new List<Season> { Season.Spring, Season.Summer, Season.Fall };
 
 
         /*********

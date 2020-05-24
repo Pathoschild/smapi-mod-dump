@@ -123,13 +123,13 @@ namespace NpcAdventure.HUD
                     float xOffset = 50;
                     float iconOffset = 16;
                     float iconGrid = 68;
-                    float xIP = position.X - xOffset + iconOffset + (i * iconGrid);
-                    float xFP = position.X - xOffset + (i * iconGrid);
+                    float xIP = position.X - xOffset + iconOffset + (10 - skill.Rectangle.Width) + (i * iconGrid);
+                    float xFP = position.X - xOffset + (10 - skill.Rectangle.Height) + (i * iconGrid);
 
                     if (Constants.TargetPlatform != GamePlatform.Android)
                     {
-                        xIP = position.X - xOffset + iconOffset - (i * iconGrid);
-                        xFP = position.X - xOffset - (i * iconGrid);
+                        xIP = position.X - xOffset + iconOffset + (10 - skill.Rectangle.Width) - (i * iconGrid);
+                        xFP = position.X - xOffset + (10 - skill.Rectangle.Height) - (i * iconGrid);
                     }
 
                     Vector2 iconPosition = new Vector2(xIP, position.Y);
@@ -143,7 +143,7 @@ namespace NpcAdventure.HUD
 
                     skill.UpdatePosition(framePosition, iconPosition);
                     skill.Draw(spriteBatch);
-                    skillSize = position.X + (i * iconGrid) + 5;                   
+                    this.skillSize = position.X + (i * iconGrid) + 5;                   
                 }       
             
         }
@@ -175,6 +175,9 @@ namespace NpcAdventure.HUD
                 case AI_StateMachine.State.FIGHT:
                     icon = new Rectangle(120, 428, 9, 9);
                     break;
+                case AI_StateMachine.State.FORAGE:
+                    icon = new Rectangle(60, 428, 10, 10);
+                    break;
                 default:
                     return;
             }
@@ -184,7 +187,7 @@ namespace NpcAdventure.HUD
 
         public void DrawKeysHelp(SpriteBatch spriteBatch)
         {
-            float vX = skillSize;
+            float vX = this.skillSize;
             float vY = 37;
 
             if (Constants.TargetPlatform != GamePlatform.Android)

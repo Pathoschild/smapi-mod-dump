@@ -1,8 +1,8 @@
 DeepWoodsMod for Stardew Valley
 Author: Max Vollmer
-Version: 1.7.0-beta
+Version: 1.8.2-beta
 
-Needs SMAPI v3.0.0 or higher: https://smapi.io/
+Needs SMAPI v3.5.0 or higher: https://smapi.io/
 
 Web: https://www.nexusmods.com/stardewvalley/mods/2571
 Sourcecode: https://github.com/maxvollmer/DeepWoodsMod
@@ -41,3 +41,5 @@ fr.json by AresRyu (https://forums.nexusmods.com/index.php?/user/31452340-aresry
 ko.json by S2SKY (https://github.com/S2SKY)
 ru.json by FixThisPlz (https://github.com/FixThisPlz)
 pt.json by shiro2579 (https://github.com/shiro2579)
+zh.json by q847633684 (https://forums.nexusmods.com/index.php?showuser=76028173)
+es.json by skullSG (https://forums.nexusmods.com/index.php?showuser=55091432)

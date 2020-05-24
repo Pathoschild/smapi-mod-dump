@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6031
+IDs: gekox.zoomyFarmer
+update keys: Nexus:6031

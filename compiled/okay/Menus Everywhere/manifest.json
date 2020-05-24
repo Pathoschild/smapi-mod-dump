@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Menus Everywhere",
+  "Author": "nman130",
+  "Version": "0.1.1", // fixed locally
+  "Description": "Allows the player to access various menus anywhere.",
+  "UniqueID": "nman130.MenusEverywhere",
+  "EntryDll": "MenusEverywhere.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6119" ]
+}

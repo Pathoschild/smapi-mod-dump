@@ -5,9 +5,9 @@ mods:
    Equal Money Split
 
 latest commit:
-   commit c9e7c55278e95d449c3e2b9316d7998f8da6a540
+   commit 4db2bd6729a507ed2c2dcfbec9de230e30a3811e
    Author: james.pfluger <me@jamespfluger.com>
-   Date:   Sun Apr 26 12:08:46 2020 -0500
+   Date:   Sun May 17 12:17:53 2020 -0500
    
-       updated for Nexus release
+       hotfix: updated GitHub update key
    

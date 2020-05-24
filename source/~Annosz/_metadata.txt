@@ -7,9 +7,9 @@ mods:
    Sleepless Fisherman
 
 latest commit:
-   commit e1032bc47670f4e2de837a6a3ddd46a1dbdd8d13
+   commit 50e4693e2dafc45f7f3093d4293a68a879cc1d71
    Author: Annosz <tadamleanyfalu@gmail.com>
-   Date:   Tue May 5 20:00:29 2020 +0200
+   Date:   Mon May 11 20:46:59 2020 +0200
    
-       KrobusSellsLargerStacks - Publication
+       HighlightedJars - Initialization and technology test
    

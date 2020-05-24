@@ -5,9 +5,13 @@ mods:
    Mayonnaise++
 
 latest commit:
-   commit f5c3f5d2ff57e814499d9cc996065a2b66c220c8
-   Author: xirsoi <chevalierAdam2@gmail.com>
-   Date:   Thu Feb 13 20:07:34 2020 -0600
+   commit 214602cd12f400adba0e894648dfa99c053903d8
+   Author: Adam Chevalier <chevalierAdam2@gmail.com>
+   Date:   Mon May 18 07:21:19 2020 -0600
    
-       rebuilds FarmAnimalDayUpdate and adds default config file
+       1.1.2 (#1)
+       
+       * update to latest sdv modding api version
+       
+       * fixes problems with incubation time and daysSinceLastLay
    

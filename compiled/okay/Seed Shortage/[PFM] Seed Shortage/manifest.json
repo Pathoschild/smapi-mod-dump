@@ -1,8 +1,8 @@
 ﻿{
 	"Name": "[PFM] Seed Shortage",
 	"Author": "Xynerorias",
-	"Version": "1.4.0",
-	"Description": "Adds producing rules for my mod.",
+	"Version": "1.4.1",
+	"Description": "Adds producing rules for Seed Shortage.",
 	"UniqueID": "xynerorias.seedshortagePFM",
 	"MinimumApiVersion": "3.0.0",
 	"UpdateKeys": [],

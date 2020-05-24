@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DeepWoodsMod.Framework.Messages;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using xTile.Dimensions;
+using xTile.Layers;
+using xTile.Tiles;
 using static DeepWoodsMod.DeepWoodsEnterExit;
 using static DeepWoodsMod.DeepWoodsGlobals;
 using static DeepWoodsMod.DeepWoodsSettings;
@@ -289,7 +292,7 @@ namespace DeepWoodsMod
 
                     // e.g. 1250 + 30 gives 1280, but we want 1320
                     if (nextRandomizeTime % 100 >= 60)
-                        timeTillNextRandomization += 40;
+                        nextRandomizeTime += 40;
                 }
             }
         }
@@ -362,10 +365,22 @@ namespace DeepWoodsMod
             if (from != null && to != null && from.Name == to.Name)
                 return;
 
-            ModEntry.Log("PlayerWarped from: " + rawFrom?.Name + ", to: " + rawTo?.Name, LogLevel.Trace);
-
             from?.RemovePlayer(who);
             to?.AddPlayer(who);
+
+            // everything that follows should only be done if this is the local player
+            if (who != Game1.player)
+            {
+                ModEntry.Log("Player (" + who.UniqueMultiplayerID + ") warped from: " + rawFrom?.Name + ", to: " + rawTo?.Name, LogLevel.Trace);
+                return;
+            }
+
+            ModEntry.Log("Local Player (" + who.UniqueMultiplayerID + ") warped from: " + rawFrom?.Name + ", to: " + rawTo?.Name, LogLevel.Trace);
+
+            if (rawTo is Woods woods)
+            {
+                OpenPassageInSecretWoods(woods);
+            }
 
             if (from != null && to == null)
             {
@@ -377,14 +392,13 @@ namespace DeepWoodsMod
                 Game1.updateMusic();
 
                 // Workaround for bug where players are warped to [0,0] for some reason
-                if (rawTo is Woods && who == Game1.player)
+                if (rawTo is Woods)
                 {
                     who.Position = new Vector2(WOODS_WARP_LOCATION.X * 64, WOODS_WARP_LOCATION.Y * 64);
                 }
             }
 
-            if (who == Game1.player
-                && from != null
+            if (from != null
                 && to != null
                 && from.Parent == null
                 && to.Parent == from
@@ -396,13 +410,95 @@ namespace DeepWoodsMod
                 lostMessageDisplayedToday = true;
             }
 
-            if (who == Game1.player
-                && to != null
+            if (to != null
                 && to.level.Value >= Settings.Level.MinLevelForWoodsObelisk
                 && !Game1.player.hasOrWillReceiveMail(WOODS_OBELISK_WIZARD_MAIL_ID)
                 && (Game1.player.mailReceived.Contains("hasPickedUpMagicInk") || Game1.player.hasMagicInk))
             {
                 Game1.addMailForTomorrow(WOODS_OBELISK_WIZARD_MAIL_ID);
+            }
+        }
+
+
+        private static void OpenPassageInSecretWoods(Woods woods)
+        {
+            // Game isn't running
+            if (!ModEntry.IsDeepWoodsGameRunning)
+            {
+                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, mod not initialized.", LogLevel.Trace);
+                return;
+            }
+
+            // If warps exist, the map might be patched already, but we can't be 100% sure
+            // So we just use this as an indicator not to print any warnings about stuff already being patched we might encounter further down.
+            var existingWarpLocations = woods.warps.Where(warp => "DeepWoods".Equals(warp.TargetName)).Select(warp => new SimpleCoord(warp.X, warp.Y));
+            bool possiblyPatchedAlready = existingWarpLocations.Any();
+
+            Layer buildingsLayer = woods.map.GetLayer("Buildings");
+
+            // Just to be sure
+            if (buildingsLayer == null)
+            {
+                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, invalid map (buildingsLayer is null).", LogLevel.Trace);
+                return;
+            }
+
+            ModEntry.Log("OpenPassageInSecretWoods:", LogLevel.Trace);
+
+            TileSheet borderTileSheet = woods.map.TileSheets.First();
+            int borderTileIndex = 0;
+
+            int removed = 0;
+            int added = 0;
+            int warpsAdded = 0;
+
+            foreach (var location in Settings.WoodsPassage.DeleteBuildingTiles)
+            {
+                if (buildingsLayer.Tiles[location.X, location.Y] == null)
+                {
+                    if (!possiblyPatchedAlready)
+                        ModEntry.Log($"    Can't remove tile from building layer at {location.X}, {location.Y}, there is no tile here! (Custom Woods map? Please modify WoodsPassage settings in the DeepWoods config file for custom Woods maps.)", LogLevel.Trace);
+                }
+                else
+                {
+                    ModEntry.Log($"    Removing tile from building layer at {location.X}, {location.Y}.", LogLevel.Trace);
+                    buildingsLayer.Tiles[location.X, location.Y] = null;
+                    removed++;
+                }
+            }
+
+            foreach (var location in Settings.WoodsPassage.AddBuildingTiles)
+            {
+                if (buildingsLayer.Tiles[location.X, location.Y] == null)
+                {
+                    ModEntry.Log($"    Adding tile to building layer at {location.X}, {location.Y}.", LogLevel.Trace);
+                    buildingsLayer.Tiles[location.X, location.Y] = new StaticTile(buildingsLayer, borderTileSheet, BlendMode.Alpha, borderTileIndex);
+                    added++;
+                }
+                else
+                {
+                    if (!possiblyPatchedAlready)
+                        ModEntry.Log($"    Can't add tile to building layer at {location.X}, {location.Y}, already have a tile there! (Custom Woods map? Please modify WoodsPassage settings in the DeepWoods config file for custom Woods maps.)", LogLevel.Trace);
+                }
+            }
+
+            foreach (var location in Settings.WoodsPassage.WarpLocations)
+            {
+                if (!existingWarpLocations.Contains(location))
+                {
+                    ModEntry.Log($"    Adding warp to DeepWoods at {location.X}, {location.Y}.", LogLevel.Trace);
+                    woods.warps.Add(new Warp(location.X, location.Y, "DeepWoods", Settings.Map.RootLevelEnterLocation.X, Settings.Map.RootLevelEnterLocation.Y + 1, false));
+                    warpsAdded++;
+                }
+            }
+
+            if (possiblyPatchedAlready && added == 0 && removed == 0 && warpsAdded == 0)
+            {
+                ModEntry.Log($"OpenPassageInSecretWoods skipped. Map was already patched.", LogLevel.Trace);
+            }
+            else
+            {
+                ModEntry.Log($"OpenPassageInSecretWoods done. (Added {added}/{Settings.WoodsPassage.AddBuildingTiles.Length} tiles, removed {removed}/{Settings.WoodsPassage.DeleteBuildingTiles.Length} tiles, added {warpsAdded}/{Settings.WoodsPassage.WarpLocations.Length} warps.)", LogLevel.Trace);
             }
         }
     }

@@ -29,6 +29,7 @@ namespace NpcAdventure.StateMachine.State
             NPC companion = this.StateMachine.Companion;
             Farmer farmer = this.StateMachine.CompanionManager.Farmer;
 
+            companion.ignoreScheduleToday = this.StateMachine.BackedUpIgnoreScheduleToday;
             companion.Schedule = this.GetCompanionSchedule(Game1.dayOfMonth);
             companion.controller = null;
             companion.temporaryController = null;

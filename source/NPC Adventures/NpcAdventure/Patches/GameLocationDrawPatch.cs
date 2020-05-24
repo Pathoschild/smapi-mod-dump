@@ -1,29 +1,47 @@
 ﻿using Harmony;
 using Microsoft.Xna.Framework.Graphics;
 using NpcAdventure.Events;
-using NpcAdventure.Internal;
 using StardewValley;
+using System;
 
 namespace NpcAdventure.Patches
 {
-    internal class GameLocationDrawPatch
+    internal class GameLocationDrawPatch : Patch<GameLocationDrawPatch>
     {
-        private static readonly SetOnce<SpecialModEvents> events = new SetOnce<SpecialModEvents>();
-        private static SpecialModEvents Events { get => events.Value; set => events.Value = value; }
+        private SpecialModEvents Events { get; set; }
 
-        internal static void After_draw(ref GameLocation __instance, SpriteBatch b)
+        public override string Name => nameof(GameLocationDrawPatch);
+
+        /// <summary>
+        /// Creates instance of location draw game patch
+        /// </summary>
+        /// <param name="events"></param>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        public GameLocationDrawPatch(SpecialModEvents events)
         {
-            Events.FireRenderedLocation(__instance, new LocationRenderedEventArgs(b));
+            this.Events = events ?? throw new ArgumentNullException(nameof(events));
+            Instance = this;
         }
 
-        internal static void Setup(HarmonyInstance harmony, ISpecialModEvents events)
+        private static void After_draw(ref GameLocation __instance, SpriteBatch b)
+        {
+            try
+            {
+                Instance.Events.FireRenderedLocation(__instance, new LocationRenderedEventArgs(b));
+            }
+            catch (Exception ex)
+            {
+                Instance.LogFailure(ex, nameof(After_draw));
+            }
+        }
+
+        protected override void Apply(HarmonyInstance harmony)
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.draw)),
                 postfix: new HarmonyMethod(typeof(GameLocationDrawPatch), nameof(GameLocationDrawPatch.After_draw))
             );
-
-            Events = events as SpecialModEvents;
         }
     }
 }

@@ -19,12 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 6523cbada0975d22e6837f991eac3d54510f8a07
-   Merge: debfd2cd abcf0e72
+   commit d119129bdeaa1710a98b6cfc01c687bc93c2d0cc
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed May 6 15:42:47 2020 -0400
+   Date:   Tue May 19 19:28:29 2020 -0400
    
-       Merge pull request #548 from kdau/patch-1
-       
-       author-tokens-guide: fix link to extensibility
+       fix spawn rules not showing mine level matched (#549)
    

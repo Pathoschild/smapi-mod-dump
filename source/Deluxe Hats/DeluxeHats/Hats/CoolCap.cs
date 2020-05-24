@@ -1,10 +1,9 @@
-﻿using System;
-
-namespace DeluxeHats.Hats
+﻿namespace DeluxeHats.Hats
 {
     public static class CoolCap
     {
         public const string Name = "Cool Cap";
+        public const string Description = "No effect.";
         public static void Activate()
         {
         }

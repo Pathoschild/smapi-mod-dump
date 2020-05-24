@@ -8,6 +8,12 @@
       "file": "assets/EastScarpe1.tmx",
       "type": "Custom:EastScarpe.EastScarpe, EastScarpe, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
     },
+
+    {
+      "name": "Lighthouse",
+      "file": "assets/Lighthouse_interior.tmx"
+    },
+
        {
         "name": "House1",
         "file": "assets/House1.tmx"
@@ -39,7 +45,7 @@
      {
         "name": "JacobOffice",
         "file": "assets/JacobOffice.tmx"
-      },  
+      }  
 
     ],
 
@@ -58,33 +64,51 @@
     "replaceMaps": 
   [  
    {
-      "name": "BirdHide",
-  "file": "assets/BirdHide-Summer.tmx", 
-  "Conditions": "z spring/z fall/z winter"
+    "name": "BirdHide",
+    "file": "assets/BirdHide-Summer.tmx", 
+    "Conditions": "z spring/z fall/z winter"
     },
     {
-      "name": "BirdHide",
-  "file": "assets/BirdHide-Winter.tmx", 
-  "Conditions": "z spring/z fall/z summer"
+    "name": "BirdHide",
+    "file": "assets/BirdHide-Winter.tmx", 
+    "Conditions": "z spring/z fall/z summer"
     },
     {
-      "name": "BirdHide",
-  "file": "assets/BirdHide-Fall.tmx", 
-  "Conditions": "z spring/z summer/z winter"
+    "name": "BirdHide",
+    "file": "assets/BirdHide-Fall.tmx", 
+    "Conditions": "z spring/z summer/z winter"
     }
   ],
- 
+
    "onlyWarps":[
+ 
       {  "name": "Town", 
          "addWarps": [
           "120 93 EastScarpe 1 91 120 94 EastScarpe 1 92 120 95 EastScarpe 1 93 120 96 EastScarpe 1 94 121 93 EastScarpe 2 91 121 94 EastScarpe 2 92 121 95 EastScarpe 2 93 121 96 EastScarpe 2 94"
         ]
-      },
-	{ "name": "Mountain",
-	"addWarps": [
-	"89 41 EastScarpe 3 1 90 41 EastScarpe 4 1"
-			]
-		}
+      }
+    ],
+
+"festivalSpots": [
+  {
+    "name": "Jacob",
+    "map": "Beach-Luau",
+    "position": [31, 34],
+    "direction": 2,
+    "position2": [31, 34],
+    "direction2": 3
+          },
+  {
+    "name": "Eloise",
+    "map": "Beach-Luau",
+    "position": [13, 14],
+    "direction": 1,
+    "position2": [23, 23],
+    "direction2": 0
+          }
+
+
+	
     ]
   }
   

@@ -26,7 +26,7 @@ Target mod id `purrplingcat.npcadventure`. Optional we can define a minimum vers
   "UpdateKeys": [],
   "ContentPackFor": {
     "UniqueID": "purrplingcat.npcadventure",
-    "MinimumVersion": "0.11.0"
+    "MinimumVersion": "0.12.0"
   }
 }
 ```
@@ -49,11 +49,19 @@ In your content pack folder create file `content.json` and we can define custom 
       "Action": "Load",
       "Target": "Dialogue/Ashley",
       "FromFile": "assets/dialogues/ashley.json",
-      "LogName": "Ashley's dialogue" // optional. Can be used for action edit too
+      "LogName": "Ashley's dialogue" // Optional. Can be used for edit action too
     }
   ]
 }
 ```
+
+### Content pack patches load stack
+
+Before load content pack assets all base mod's assets are loaded.
+
+1. Try load full replacement assets (Action *Load*)
+2. Try load and apply edit/patche assets (Action *Edit*)
+3. Try to load and apply locale based edits/patches for assets (Action *Edit*, with set field `Locale`)
 
 ### Content definition file fields
 
@@ -84,12 +92,15 @@ Under key `Changes` we must define content definitions. It's a list of dicts wit
       "FromFile": "assets/data/companionDispositions.json"
     },
     {
+      // Load asset to content target `Dialogue/Ashley`
       "Action": "Load",
       "Target": "Dialogue/Ashley",
       "FromFile": "assets/dialogues/ashley.json",
       "LogName": "Ashley's dialogue",
     },
     {
+      // Patch content target `Dialogue/Ashley` with own string only if game's locale is `pt-BR`
+      // Missing keys still will be uset of previous `assets/dialogues/ashley.json`
       "Action": "Edit",
       "Target": "Dialogue/Ashley",
       "FromFile": "assets/dialogues/ashley.pt-BR.json"

@@ -12,15 +12,24 @@ Bellow you can see a configuration schema with default values
 
 ```js
 {
-  "ChangeBuffButton": "G", // {string} Key for change prostetics buff (like Maru's)
-  "HeartThreshold": 5, // {int} Minimum of friendship hearts to companion agree with invitation to adventure (recruitment by player)
-  "HeartSuggestThreshold": 7, // {int} Minimum of friendship to companion can suggest (invite) you to adventure (recruitment by NPC)
+  "ChangeBuffButton": "G", // {string} Key to change prosthetics buff (like Maru's)
+  "HeartThreshold": 5, // {int} Minimum amount of friendship hearts required to successfully recruit a companion (by player)
+  "HeartSuggestThreshold": 7, // {int} Minimum amount of friendship hearts required to be offered a recruitment (by an NPC)
   "ShowHUD": true, // {boolean} Show companion HUD?
-  "EnableDebug": true, // {boolean} Allows debug (cheat) commands in SMAPI console. Of course, only for development purposes :)
-  "AdventureMode": true // {boolean} Enables an adventure mode. If this is false then mod has a same usage as version 0.9 and older.
+  "EnableDebug": false, // {boolean} Allows debug (cheat) commands in SMAPI console. Of course, only for development purposes :)
+  "AdventureMode": true, // {boolean} Enables an adventure mode. If this is false then mod has the same usage as version 0.9 and older.
+  "AvoidSayHiToMonsters": true, // {boolean} Disables/Enables the bubble speech above companions saying "Hi" to the monsters while fighting
+  "RequestsWithShift": false, // {boolean} Enables/Disables "ask to follow" dialogs with shift key. If it's enabled, player must hold a shift key before right-click for ask to follow or show companions's choices dialog. Shift key can be user-defined. (disabled by default)
+  "RequestsShiftButton": "LeftShift", // {string} Which key is a shift key for hold to recruit
+  "Experimental": { // WARNING! This section enables experimental features which can affect gameplay and cause errors or unstability.
+    "FightThruCompanion": false, // {boolean} Disable showing companion dialogue while fighting (on left-click). If the player wants to show it, they must do a right-click on a companion (this feature is disabled by default)
+    "UseCheckForEventsPatch": false // {boolean} Use patched SDV method `GameLocation.checkForEvents()` for check NPC Adventures events instead of SMAPI's player warped event. (disabled by default)
+  }
 }
 ```
 
 ## See also
 
 - [Getting started](getting-started.md)
+- [Experimental features](experimental.md)
+- [Requests with shift key](requests.with-shift.md)
