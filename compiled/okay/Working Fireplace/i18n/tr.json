@@ -1,0 +1,13 @@
+{
+	"msg.warm": "Şömine ateşi bu gece seni sıcak tuttu.",
+	"msg.cold": "Soğuk bir gecede enerjilerinizi tüketti.",
+	"msg.spousecold": "Ailen bu gece donuyordu.",
+	"dia.spousecold": "Bu gece soğuktan ölüyordum.",
+	"dia.spousecold_child": "{{child1}} donuyor.",
+	"dia.spousecold_children": "{{child1}} ve {{child2}} donuyorlar.",
+	"dia.please": "Şömineyi aç lütfen.",
+	"msg.nowood": "Gerek {{wood_pieces}} ateş yakmak için odun parçaları.",
+	"msg.temp": "sıcaklık: ",
+	"msg.tempwarm": "sıcak",
+	"msg.tempcold": "soğuk"
+}

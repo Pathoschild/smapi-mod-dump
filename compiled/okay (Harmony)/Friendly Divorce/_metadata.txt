@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6241
+IDs: aedenthorn.FriendlyDivorce
+update keys: Nexus:6241, GitHub:aedenthorn/StardewValleyMods

@@ -1,4 +1,7 @@
 {
+  "EnableMod": true,
+  "EnableFloorTypeChanges": true,
+  "EnableTileChanges": true,
   "PercentChanceMonsterFloor": 20,
   "SlimeDinoMonsterSplitPercents": "33:33:34",
   "SlimeMonsterSplitPercents": "50:50",
@@ -22,6 +25,8 @@
   "ChanceForIronMultiplier": 1.0,
   "PurpleStoneMultiplier": 1.0,
   "MysticStoneMultiplier": 1.0,
+  "WeedsChance": 0.1,
+  "WeedsMultiplier": 1.0,
   "ChanceForLadderInStoneMultiplier": 1.0,
   "ChanceLadderIsShaftMultiplier": 1.0
 }

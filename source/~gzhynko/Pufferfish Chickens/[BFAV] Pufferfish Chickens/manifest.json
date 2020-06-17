@@ -1,0 +1,11 @@
+{
+  "Name": "Pufferfish Chickens",
+  "Author": "GZhynko",
+  "Version": "1.0.2",
+  "Description": "Adds the pufferfish chicken as a new coop animal.",
+  "UniqueID": "GZhynko.Pufferfish_Chickens",
+  "UpdateKeys": [ "Nexus:6162" ],
+  "ContentPackFor": {
+    "UniqueID": "Paritee.BetterFarmAnimalVariety"
+  }
+}

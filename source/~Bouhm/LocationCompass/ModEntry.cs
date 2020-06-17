@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using Netcode;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Quests;
@@ -23,7 +22,7 @@ namespace LocationCompass
     private static Texture2D pointer;
     private static ModData constants;
     private static List<Character> characters;
-    private static SyncedLocationData syncedLocationData;
+    private static SyncedNpcLocationData syncedLocationData;
     private static Dictionary<string, List<Locator>> locators;
     private static Dictionary<string, LocatorScroller> activeWarpLocators; // Active indices of locators of doors
     private ModConfig config;
@@ -60,8 +59,6 @@ namespace LocationCompass
 
       UpdateLocators();
     }
-
-   
 
     private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
     {
@@ -118,7 +115,7 @@ namespace LocationCompass
     private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
     {
       activeWarpLocators = new Dictionary<string, LocatorScroller>();
-      syncedLocationData = new SyncedLocationData();
+      syncedLocationData = new SyncedNpcLocationData();
       GetLocationContexts();
 
       // Log warning if host does not have mod installed
@@ -143,7 +140,7 @@ namespace LocationCompass
     private void Multiplayer_ModMessageReceived(object sender, ModMessageReceivedEventArgs e)
     {
       if (e.FromModID == ModManifest.UniqueID && e.Type == "SyncedLocationData")
-        syncedLocationData = e.ReadAs<SyncedLocationData>();
+        syncedLocationData = e.ReadAs<SyncedNpcLocationData>();
     }
 
     // Get only relevant villagers for map
@@ -191,8 +188,8 @@ namespace LocationCompass
       if (!Context.IsWorldReady)
         return;
 
-      // One-second tick
-      if (e.IsOneSecond)
+      // Quarter-second tick
+      if (e.IsMultipleOf(15))
       {
         if (characters != null && Context.IsMultiplayer)
         {
@@ -227,14 +224,13 @@ namespace LocationCompass
       foreach (var npc in GetVillagers())
       {
         if (npc == null || npc.currentLocation == null) continue;
-        if (syncedLocationData.SyncedLocations.TryGetValue(npc.Name, out var locationData))
+        if (syncedLocationData.Locations.TryGetValue(npc.Name, out var locationData))
         {
-          syncedLocationData.SyncedLocations[npc.Name] = new LocationData(npc.currentLocation.uniqueName.Value ?? npc.currentLocation.Name, npc.Position.X, npc.Position.Y);
+          syncedLocationData.Locations[npc.Name] = new LocationData(npc.currentLocation.uniqueName.Value ?? npc.currentLocation.Name, npc.Position.X, npc.Position.Y);
         }
         else
         {
-
-          syncedLocationData.AddNpcLocation(npc.Name,
+          syncedLocationData.AddLocation(npc.Name,
             new LocationData(npc.currentLocation.uniqueName.Value ?? npc.currentLocation.Name, npc.Position.X, npc.Position.Y));
         }
       }
@@ -261,7 +257,7 @@ namespace LocationCompass
       {
         if (character.currentLocation == null) continue;
         if (!config.ShowHorses && character is Horse || config.ShowFarmersOnly && (character is NPC && !(character is Horse))) continue;
-        if (!syncedLocationData.SyncedLocations.TryGetValue(character.Name, out var npcLoc) && character is NPC) continue;
+        if (!syncedLocationData.Locations.TryGetValue(character.Name, out var npcLoc) && character is NPC) continue;
         if (character is NPC npc && config.ShowQuestsAndBirthdaysOnly) {
           var isBirthday = false;
           var hasQuest = false;
@@ -376,7 +372,7 @@ namespace LocationCompass
             if (indoor == null) continue;
             if (playerLocName != characterLocCtx.Root && playerLocName != indoor) continue;
           }
-          charLocName = (isPlayerLocOutdoors || characterLocCtx.Type != "room") ? indoor : charLocName;
+          charLocName = (isPlayerLocOutdoors || characterLocCtx.Type != LocationType.Room) ? indoor : charLocName;
 
 
           // Neighboring outdoor warps

@@ -1,7 +1,7 @@
 {
   "Name": "Mayonnaise++",
   "Author": "Adam 'theStormWeaver' Chevalier",
-  "Version": "1.1.2",
+  "Version": "1.1.3",
   "Description": "A mod that expands on mayonnaise.",
   "UniqueID": "xirsoi.mayonnaiseplusplus",
   "EntryDll": "MayonnaisePlusPlus.dll",
@@ -12,5 +12,5 @@
       "IsRequired": true
     }
   ],
-  "UpdateKeys": [ "GitHub:xirsoi/MayonnaisePlusPlus", "Nexus:4634" ]
+  "UpdateKeys": [ "Nexus:4634" ]
 }

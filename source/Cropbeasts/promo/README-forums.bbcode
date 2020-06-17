@@ -6,72 +6,87 @@ Why just harvest your crops when you could do battle with them? Cropbeasts are c
 
 [size=4][b][img alt="Compatibility"]https://kdau.gitlab.io/headers/compatibility.png[/img][/b][/size]
 
-This version of Cropbeasts is compatible with [b]Stardew Valley 1.4+[/b].
+[b]Game:[/b] Stardew Valley 1.4+
 
-This mod should work on [b]Linux, macOS or Windows[/b]. Android is not yet supported.
+[b]Platform:[/b] Linux, macOS or Windows (Android not yet supported)
 
-There are no known problems with multiplayer use. Every player must install the mod, but only the farmer (host) will control the spawning of cropbeasts.
+[b]Multiplayer:[/b] works; every player must install
+[i](Only the farmer/host will control the spawning of cropbeasts.)[/i]
 
-This mod is partially incompatible with the Save Anywhere mod because cropbeasts are not designed to be persisted in save files. Saving with that mod should still be safe while no cropbeasts are active in any location.
-
-There are no other known conflicts with other mods. Custom crops added by other mods can be set up to become cropbeasts; see "Customization" below.
+[b]Other mods:[/b]
+[list]
+[*]Save Anywhere: don't save while cropbeasts are active
+[*]custom crops: can be set up to become cropbeasts; see "Customization" below
+[/list]
 
 [size=4][b][img alt="Installation"]https://kdau.gitlab.io/headers/installation.png[/img][/b][/size]
 
 [list=1]
-[*]Install the latest version of [url=https://smapi.io/]SMAPI[/url].
-[*]To unlock the Beast Mask for this mod's achievement, optionally install the [url=https://www.nexusmods.com/stardewvalley/mods/1720]Json Assets[/url] mod.
-[*]To configure this mod without editing a JSON file, optionally install the [url=https://www.nexusmods.com/stardewvalley/mods/5098]Generic Mod Config Menu[/url] mod.
-[*]Download this mod from the link in the header above.
-[*]Unzip the mod and place the [icode]Cropbeasts[/icode] folder inside your [icode]Mods[/icode] folder.
-[*]Run the game using SMAPI.
+[*][url=https://smapi.io/]SMAPI[/url]
+[*][url=https://www.nexusmods.com/stardewvalley/mods/1720]Json Assets[/url] (optional, to unlock the Beast Mask with the achievement)
+[*][url=https://www.nexusmods.com/stardewvalley/mods/5098]Generic Mod Config Menu[/url] (optional, for easier configuration)
+[*]Unzip and put the [icode]Cropbeasts[/icode] folder inside your [icode]Mods[/icode] folder
+[*]Run the game using SMAPI
 [/list]
 
 [size=4][b][img alt="Use"]https://kdau.gitlab.io/headers/use.png[/img][/b][/size]
 
-Cropbeasts spawn on farms with the [b]Wilderness Farm[/b] layout*. If you want cropbeasts to spawn on [b]other farms[/b] as well, you can configure the mod to do so (see "Configuration" below).
-
-[spoiler]
-* ...or on any farm that has been set to have nighttime monsters at the Dark Shrine of Night Terrors.
-[/spoiler]
-
-While you are outdoors [b]on the farm[/b] or indoors [b]in the greenhouse[/b], cropbeasts can spawn at any time before sunset. They spawn randomly, but only up to a configurable limit per day. By default, new cropbeasts do not spawn while existing ones are still active.
-
-Only "regular" [b]fruit and vegetable crops[/b] and coffee plants can become cropbeasts by default. Flowers, wild/forage crops, fruit trees, Tea Bushes, Sweet Gem Berries and anything planted in a Garden Pot are exempt.
-
-After its brief transformation, you can fight a cropbeast like any other monster. The challenge scales up with your Combat skill level. See the [url=https://gitlab.com/kdau/cropbeasts/-/blob/master/doc/BEASTS.md][b]list of cropbeasts[/b][/url] for details about each type's special attributes.
-
-When you slay a cropbeast, it will drop the [b]original crop[/b] with at least its original quantity and quality. You will get the [b]experience points[/b] that you would get for harvesting the crop, split between the Farming and Combat skills. You could also get any of the following bonuses:
-
+[b]How:[/b]
 [list]
-[*]Skilful combat has a good chance of increasing the [b]crop quality[/b] one level. You can even get iridium crops!
-[*]The usual chance of a [b]double harvest[/b] is slightly increased, particularly at higher combat levels.
-[*]Most cropbeasts have a small chance of dropping a packet of [b]seeds[/b] for the same crop (Wheat and Coffee Beans excepted).
-[*]Certain cropbeasts have [b]special loot drops[/b] as well; see the [url=https://gitlab.com/kdau/cropbeasts/-/blob/master/doc/BEASTS.md]list[/url] for details.
+[*]Crops randomly transform into cropbeasts
+[*]Fight a cropbeast like any other monster
+[*]Challenge scales up with Combat skill level
+[*][url=https://gitlab.com/kdau/cropbeasts/-/blob/main/doc/BEASTS.md][b]Meet the various cropbeasts[/b][/url]
 [/list]
-
-Slaying at least one of every type of cropbeast will attain the [b]Tamer of Beasts achievement[/b] and unlock the Beast Mask for purchase from the Hat Mouse.
+[b]Why:[/b]
+[list]
+[*]Original crop with at least the original quantity and quality
+[*]Experience points split between Farming and Combat skills
+[*]Skilful combat may increase [b]crop quality[/b] one level, even to iridium
+[*]Increased chance of a [b]double harvest[/b]
+[*]Small chance of dropping a [b]seed packet[/b] for the same crop
+[*][b]Special loot drops[/b] (see the [url=https://gitlab.com/kdau/cropbeasts/-/blob/main/doc/BEASTS.md]list of cropbeasts[/url])
+[*]Tamer of Beasts achievement unlocks the [b]Beast Mask[/b] for purchase
+[/list]
+[b]Where:[/b]
+[list]
+[*]Outdoors on farms with the Wilderness Farm layout
+[*][spoiler]Outdoors on any farm that has been set to have nighttime monsters at the Dark Shrine of Night Terrors[/spoiler]
+[*]Outdoors on any other farm, if so configured (see below)
+[*]In the greenhouse for any of these farms (configurable)
+[/list]
+[b]When:[/b]
+[list]
+[*]Any time before sunset
+[*]Randomly, up to a daily limit (configurable)
+[*]Not while other cropbeasts are active (configurable)
+[/list]
+[b]What:[/b]
+[list]
+[*]Fruit and vegetable crops, plus coffee plants
+[*]Excludes crops planted in Garden Pots
+[*]Excludes flowers, wild/forage crops and fruit trees
+[*]Excludes Tea Bushes and Sweet Gem Berries
+[/list]
 
 [size=4][b][img alt="Configuration"]https://kdau.gitlab.io/headers/configuration.png[/img][/b][/size]
 
-If you have installed Generic Mod Config Menu, you can configure this mod by clicking the cogwheel button at the lower left corner of the Stardew Valley title screen and then choosing "Cropbeasts". Otherwise, see [url=https://gitlab.com/kdau/cropbeasts/-/blob/master/doc/CONFIGURING.md]Configuring Cropbeasts[/url] for details.
+With Generic Mod Config Menu, click the cogwheel button in the lower left corner of the Stardew Valley title screen and choose "Cropbeasts". See [url=https://gitlab.com/kdau/cropbeasts/-/blob/main/doc/CONFIGURING.md]Configuring Cropbeasts[/url] for details.
 
 [size=4][b][img alt="Customization"]https://kdau.gitlab.io/headers/customization.png[/img][/b][/size]
 
-Additional crops, including custom crops added by Json Assets or otherwise, can be made eligible to become cropbeasts. See [url=https://gitlab.com/kdau/cropbeasts/-/blob/master/doc/CUSTOMIZING.md]Customizing Cropbeasts[/url] for details.
+More crops, including custom crops added by Json Assets, can be set up to become cropbeasts. See [url=https://gitlab.com/kdau/cropbeasts/-/blob/main/doc/CUSTOMIZING.md]Customizing Cropbeasts[/url] for details.
 
 [size=4][b][img alt="Translation"]https://kdau.gitlab.io/headers/translation.png[/img][/b][/size]
 
-This mod can be translated into any language supported by Stardew Valley. No translations are currently available.
+No translations are available yet.
 
-Your contribution would be welcome. Please see the [url=https://stardewvalleywiki.com/Modding:Translations]details on the wiki[/url] for help. You can send me your work in an issue [url=https://gitlab.com/kdau/cropbeasts/-/issues]on GitLab[/url] or by DM on Discord.
+This mod can be translated into any language supported by the game. Your contribution would be welcome. Please see the [url=https://stardewvalleywiki.com/Modding:Translations]instructions on the wiki[/url]. You can send me your work in a message here, [url=https://gitlab.com/kdau/cropbeasts/-/issues]a GitLab issue[/url] or [url=https://discord.gg/SjjMuyR]the Discord channel[/url].
 
 [size=4][b][img alt="Acknowledgments"]https://kdau.gitlab.io/headers/acknowledgments.png[/img][/b][/size]
 
 [list]
-[*]Like all mods, this one is indebted to ConcernedApe, particularly for the vanilla assets it adapts.
-[*]This mod would not function without [url=https://smapi.io/]SMAPI[/url] by Pathoschild.
-[*]This mod works best with [url=https://www.nexusmods.com/stardewvalley/mods/1720]Json Assets[/url] and [url=https://www.nexusmods.com/stardewvalley/mods/5098]Generic Mod Config Menu[/url] by spacechase0.
+[*]Like all mods, this one is indebted to ConcernedApe, Pathoschild and the various framework modders.
 [*]The #making-mods channel on the [url=https://discordapp.com/invite/StardewValley]Stardew Valley Discord[/url] offered valuable guidance and feedback.
 [*]In particular, the Starbeast sprite was designed with the help of [url=https://www.nexusmods.com/stardewvalley/users/83595503]EssGee[/url].
 [/list]
@@ -79,17 +94,10 @@ Your contribution would be welcome. Please see the [url=https://stardewvalleywik
 [size=4][b][img alt="See also"]https://kdau.gitlab.io/headers/see-also.png[/img][/b][/size]
 
 [list]
-[*][url=https://gitlab.com/kdau/cropbeasts/-/blob/master/doc/RELEASE-NOTES.md]Release notes[/url] from existing versions
-[*][url=https://discord.gg/SjjMuyR]Discord channel[/url] for discussing this mod
-[*][url=https://gitlab.com/kdau/cropbeasts/-/issues]Issue tracker[/url] for bug reports and feature plans
-[*][url=https://gitlab.com/kdau/cropbeasts/-/blob/master/LICENSE]MIT license[/url] (TLDR: do whatever, but credit me)
+[*][url=https://gitlab.com/kdau/cropbeasts/-/blob/main/doc/RELEASE-NOTES.md]Release notes[/url]
+[*][url=https://gitlab.com/kdau/cropbeasts]Source code[/url]
+[*][url=https://discord.gg/SjjMuyR]Discuss on Discord[/url]
+[*][url=https://gitlab.com/kdau/cropbeasts/-/issues]Report bugs[/url]
 [*][url=https://kdau.gitlab.io]My other mods[/url]
-[/list]
-Mirrors:
-
-[list]
-[*][url=https://gitlab.com/kdau/cropbeasts]This mod on GitLab[/url]
-[*][url=https://www.nexusmods.com/stardewvalley/mods/6030]This mod on Nexus[/url]
-[*][url=https://www.moddrop.com/stardew-valley/mods/784523-cropbeasts]This mod on ModDrop[/url]
-[*][b]This mod on the forums[/b]
+[*]Mirrors: [url=https://www.nexusmods.com/stardewvalley/mods/6030]Nexus[/url], [url=https://www.moddrop.com/stardew-valley/mods/784523-cropbeasts]ModDrop[/url], [b]forums[/b]
 [/list]

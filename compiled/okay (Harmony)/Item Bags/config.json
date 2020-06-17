@@ -1,5 +1,5 @@
 {
-  "CreatedByVersionString": "1.4.7",
+  "CreatedByVersionString": "1.5.0",
   "GlobalPriceModifier": 1.0,
   "GlobalCapacityModifier": 1.0,
   "StandardBagSettings": [
@@ -228,5 +228,29 @@
         "Massive": 2
       }
     }
+  },
+  "AllowAutofillInsideChest": true,
+  "GamepadSettings": {
+    "OpenBagFromInventory": "Start, B, X",
+    "OpenBagFromChest": "Start, B, X",
+    "OpenBagFromToolbar": "X",
+    "CloseBag": "Start, B, Y",
+    "NavigationRepeatFrequency": 5,
+    "NavigationRepeatInitialDelay": 180,
+    "NavigateSingleLeft": "DPadLeft, LeftThumbstickLeft",
+    "NavigateSingleUp": "DPadUp, LeftThumbstickUp",
+    "NavigateSingleRight": "DPadRight, LeftThumbstickRight",
+    "NavigateSingleDown": "DPadDown, LeftThumbstickDown",
+    "NavigateMultipleLeft": "RightThumbstickLeft",
+    "NavigateMultipleUp": "RightThumbstickUp",
+    "NavigateMultipleRight": "RightThumbstickRight",
+    "NavigateMultipleDown": "RightThumbstickDown",
+    "TransferMultipleModifier": "LeftTrigger",
+    "TransferHalfModifier": "RightTrigger",
+    "PrimaryAction": "A",
+    "SecondaryAction": "X",
+    "RucksackCycleSortProperty": "LeftShoulder",
+    "RucksackCycleSortOrder": "RightShoulder",
+    "BoundedBagToggleAutofill": "LeftShoulder, RightShoulder"
   }
 }

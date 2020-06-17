@@ -80,10 +80,6 @@ namespace FarmTypeManager
                     case "big craftable":
                     case "big craftables":
                         item = new StardewValley.Object(tile, save.ID.Value, false); //create an object as a "big craftable" item
-                        if (configItem?.Stack > 1) //if this item has a valid stack setting
-                        {
-                            item.Stack = configItem.Stack.Value; //apply it
-                        }
                         break;
                     case "boot":
                     case "boots":
@@ -134,18 +130,11 @@ namespace FarmTypeManager
                     case "hats":
                         item = new Hat(save.ID.Value);
                         break;
-                    case "object":
+                    case "object": //treat objects as items when creating them as Items
                     case "objects":
-                        item = new StardewValley.Object(tile, save.ID.Value, null, false, true, false, true); //create an object with the preferred constructor for "placed" objects
-                        break;
                     case "item":
                     case "items":
-                        int stackSize = 1;
-                        if (configItem?.Stack > 1) //if this item has a valid stack setting
-                        {
-                            stackSize = configItem.Stack.Value; //apply it
-                        }
-                        item = new StardewValley.Object(tile, save.ID.Value, stackSize); //create an object with the preferred constructor for "held" or "dropped" items
+                        item = new StardewValley.Object(tile, save.ID.Value, 1); //create an object with the preferred constructor for "held" or "dropped" items
                         break;
                     case "ring":
                     case "rings":
@@ -162,6 +151,11 @@ namespace FarmTypeManager
                     Monitor.Log("Failed to create an item. Category setting was not recognized.", LogLevel.Debug);
                     Monitor.Log($"Item Category: {category}", LogLevel.Debug);
                     return null;
+                }
+
+                if (configItem?.Stack > 1) //if this item has a custom stack setting
+                {
+                    item.Stack = configItem.Stack.Value; //apply it
                 }
 
                 if (save.ID.HasValue) //if this object type uses an ID

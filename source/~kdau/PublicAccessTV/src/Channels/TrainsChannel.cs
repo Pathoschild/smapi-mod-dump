@@ -87,14 +87,16 @@ namespace PublicAccessTV
 					Game1.player.getFriendshipHeartLevelForNPC ("Demetrius") < 2 ||
 					// Must be on the Railroad map.
 					Game1.currentLocation?.Name != "Railroad" ||
+					!(Game1.currentLocation is Railroad rr) ||
 					// Must be before sunset.
 					Game1.timeOfDay >= 1900 ||
 					// Must not have another event starting.
-					Game1.eventUp)
+					Game1.eventUp ||
+					// Must not already have a train active or imminent.
+					rr.train.Value != null || rr.trainTimer.Value > 0)
 				return;
 
 			// Summon a train that the player will just miss.
-			Railroad rr = Game1.currentLocation as Railroad;
 			Train train = new HeritageTrain ();
 			train.position.X = (train.cars.Count - 3.5f) * 128 * 4 + 4480;
 			rr.train.Value = train;

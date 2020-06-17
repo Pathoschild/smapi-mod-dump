@@ -393,6 +393,25 @@ namespace TwilightShards.LunarDisturbances
             return Translations.Get("moon-desc.desc_moonphase", new { moonPhase = SDVMoon.DescribeMoonPhase(CurrentPhase(), Translations) });
         }
 
+        public float GetTrackPosition()
+        {
+            int moonDuration = SDVTime.MinutesBetweenTwoIntTimes(GetMoonSetTime(), GetMoonRiseTime());
+            int timeSinceRise = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, GetMoonRiseTime());
+
+            if (Game1.timeOfDay < GetMoonRiseTime() || Game1.timeOfDay > GetMoonSetTime())
+                return 0f;
+
+            return (timeSinceRise / moonDuration);            
+        }
+
+        public int GetMoonZenith()
+        {
+            int moonDuration = SDVTime.MinutesBetweenTwoIntTimes(GetMoonSetTime(), GetMoonRiseTime());
+            SDVTime mr = new SDVTime(GetMoonRiseTime());
+            mr.AddTime(moonDuration / 2);
+            return mr.ReturnIntTime();
+        }
+
         public void HandleMoonAfterWake()
         {
             Beach b = Game1.getLocationFromName("Beach") as Beach;
@@ -569,22 +588,22 @@ namespace TwilightShards.LunarDisturbances
                     return 0600;
                 case MoonPhase.FullMoon:
                 case MoonPhase.BlueMoon:
-                    return 1650;
+                    return 2040;
                 case MoonPhase.WaningGibbeous:
-                    return 2000;
+                    return 2200;
                 case MoonPhase.ThirdQuarter:
-                    return 2320;
+                    return 2310;
                 case MoonPhase.WaningCrescent:                
-                    return 2630;
+                    return 2430;
                 case MoonPhase.NewMoon:
                 case MoonPhase.SpiritsMoon:
-                    return 0640;
+                    return 0600;
                 case MoonPhase.WaxingCrescent:
-                    return 1040;
+                    return 1130;
                 case MoonPhase.FirstQuarter:
-                    return 1330;
+                    return 1500;
                 case MoonPhase.WaxingGibbeous:
-                    return 1510;
+                    return 1340;
                 case MoonPhase.ErrorPhase:
                 default:
                     return 2700;
@@ -610,21 +629,21 @@ namespace TwilightShards.LunarDisturbances
                     return 2700;
                 case MoonPhase.FullMoon:
                 case MoonPhase.BlueMoon:
-                    return 0620;
+                    return 2830;
                 case MoonPhase.WaningGibbeous:
-                    return 1030;
+                    return 1020;
                 case MoonPhase.ThirdQuarter:
-                    return 1300;
+                    return 1420;
                 case MoonPhase.WaningCrescent:
-                    return 1540;
-                case MoonPhase.NewMoon:
                     return 1800;
+                case MoonPhase.NewMoon:
+                    return 2020;
                 case MoonPhase.WaxingCrescent:
-                    return 2100;
+                    return 2130;
                 case MoonPhase.FirstQuarter:
-                    return 2430;
+                    return 2250;
                 case MoonPhase.WaxingGibbeous:
-                    return 2720;
+                    return 2320;
                 case MoonPhase.ErrorPhase:
                 default:
                     return 0700;

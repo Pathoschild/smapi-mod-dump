@@ -287,7 +287,6 @@ namespace TwilightShards.LunarDisturbances
 
                 if (!Game1.eventUp)
                 {
-
                     var cDBU = Helper.Reflection.GetField<Stack<string>>(dBox, "characterDialoguesBrokenUp").GetValue();
                     cDBU.Clear();
                     Helper.Reflection.GetField<Stack<string>>(dBox, "characterDialoguesBrokenUp").SetValue(cDBU);
@@ -303,21 +302,32 @@ namespace TwilightShards.LunarDisturbances
             {
                 if (e.NewMenu is ShopMenu menu && menu.portraitPerson != null)
                 {
-                    if (OurMoon.CurrentPhase() == MoonPhase.BloodMoon)
+                    float sellPrice, buyPrice;
+                    switch (OurMoon.CurrentPhase())
                     {
-                        Helper.Reflection.GetField<float>(menu, "sellPercentage").SetValue(.75f);
-                        var itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(menu, "itemPriceAndStock").GetValue();
-                        foreach (KeyValuePair<Item, int[]> kvp in itemPriceAndStock)
-                        {
-                            kvp.Value[0] = (int)Math.Floor(kvp.Value[0] * 1.85);
-                        }
+                        case MoonPhase.BloodMoon:
+                            sellPrice = .75f;
+                            buyPrice = 1.85f;
+                            break;
+                        case MoonPhase.BlueMoon:
+                            sellPrice = 1.175f;
+                            buyPrice = .825f;
+                            break;
+                        case MoonPhase.HarvestMoon:
+                            sellPrice = 1.1f;
+                            buyPrice = .9f;
+                            break;
+                        default:
+                            sellPrice = 1f;
+                            buyPrice = 1f;
+                            break;
                     }
-                    else
+                    Helper.Reflection.GetField<float>(menu, "sellPercentage").SetValue(Helper.Reflection.GetField<float>(menu, "sellPercentage").GetValue() * sellPrice);
+                    
+                    var itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(menu, "itemPriceAndStock").GetValue();
+                    foreach (KeyValuePair<Item, int[]> kvp in itemPriceAndStock)
                     {
-                        if (Helper.Reflection.GetField<float>(menu, "sellPercentage").GetValue() != 1f)
-                        {
-                            Helper.Reflection.GetField<float>(menu, "sellPercentage").SetValue(1f);
-                        }
+                        kvp.Value[0] = (int)Math.Floor(kvp.Value[0] * buyPrice);
                     }
                 }
             }
@@ -523,7 +533,6 @@ namespace TwilightShards.LunarDisturbances
             {
                 UseJsonAssetsApi = true;
                 JAAPi.AddedItemsToShop += JAAPi_AddedItemsToShop;
-                //Monitor.Log("JsonAssets Integration enabled", LogLevel.Info);
             }
 
             var api = Helper.ModRegistry.GetApi<Integrations.GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
@@ -558,24 +567,34 @@ namespace TwilightShards.LunarDisturbances
         
         private void JAAPi_AddedItemsToShop(object sender, EventArgs e)
         {
-            if (Game1.activeClickableMenu is ShopMenu menu)
+            if (Game1.activeClickableMenu is ShopMenu menu && menu.portraitPerson != null)
             {
-                if (OurMoon.CurrentPhase() == MoonPhase.BloodMoon)
+                float sellPrice, buyPrice;
+                switch (OurMoon.CurrentPhase())
                 {
-                    //Monitor.Log("Firing off replacement...");
-                    Helper.Reflection.GetField<float>(menu, "sellPercentage").SetValue(.75f);
-                    var itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(menu, "itemPriceAndStock").GetValue();
-                    foreach (KeyValuePair<Item, int[]> kvp in itemPriceAndStock)
-                    {
-                        kvp.Value[0] = (int)Math.Floor(kvp.Value[0] * 1.85);
-                    }
+                    case MoonPhase.BloodMoon:
+                        sellPrice = .75f;
+                        buyPrice = 1.85f;
+                        break;
+                    case MoonPhase.BlueMoon:
+                        sellPrice = 1.175f;
+                        buyPrice = .825f;
+                        break;
+                    case MoonPhase.HarvestMoon:
+                        sellPrice = 1.1f;
+                        buyPrice = .9f;
+                        break;
+                    default:
+                        sellPrice = 1f;
+                        buyPrice = 1f;
+                        break;
                 }
-                else
+                Helper.Reflection.GetField<float>(menu, "sellPercentage").SetValue(Helper.Reflection.GetField<float>(menu, "sellPercentage").GetValue() * sellPrice);
+
+                var itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(menu, "itemPriceAndStock").GetValue();
+                foreach (KeyValuePair<Item, int[]> kvp in itemPriceAndStock)
                 {
-                    if (Helper.Reflection.GetField<float>(menu, "sellPercentage").GetValue() != 1f)
-                    {
-                        Helper.Reflection.GetField<float>(menu, "sellPercentage").SetValue(1f);
-                    }
+                    kvp.Value[0] = (int)Math.Floor(kvp.Value[0] * buyPrice);
                 }
             }
         }

@@ -17,6 +17,15 @@
     <ProjectReference Include="..\PyTK\PyTK.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="i18n\de.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="i18n\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Import Project="$(SolutionDir)\common.targets" />
 
 </Project>

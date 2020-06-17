@@ -154,11 +154,11 @@ namespace ClimatesOfFerngillRebuild.Weathers
         public void MoveWeather()
         {
             UpdateRaindropPosition();
-           
-            TimeSpan timeSpan;
+
             if (Game1.currentLocation.IsOutdoors)
                 for (int index = 0; index < this.rainDrops.Length; ++index)
                 {
+                    TimeSpan timeSpan;
                     if (this.rainDrops[index].frame == 0)
                     {
                         ref int local = ref this.rainDrops[index].accumulator;
@@ -169,12 +169,12 @@ namespace ClimatesOfFerngillRebuild.Weathers
                         if (this.rainDrops[index].accumulator >= 70)
                         {
                             this.rainDrops[index].position += new Vector2(
-                                (float) (index * 8 / this.rainDrops.Length - 16),
-                                (float) (32 - index * 8 / this.rainDrops.Length));
+                                index * 8 / this.rainDrops.Length - 16,
+                                32 - index * 8 / this.rainDrops.Length);
                             this.rainDrops[index].accumulator = 0;
                             if (ClimatesOfFerngill.Dice.NextDouble() < 0.1)
                                 ++this.rainDrops[index].frame;
-                            if ((double) this.rainDrops[index].position.Y > (double) (Game1.viewport.Height + 64))
+                            if (this.rainDrops[index].position.Y > (double) (Game1.viewport.Height + 64))
                                 this.rainDrops[index].position.Y = -64f;
                         }
                     }

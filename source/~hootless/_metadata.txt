@@ -6,12 +6,12 @@ mods:
    Line Sprinklers
 
 latest commit:
-   commit 50428ffd622901c037fb1b31c225188f6ffcdcdc
-   Merge: 316eec0 71d3a1f
-   Author: hootless <jmsjunior96@gmail.com>
-   Date:   Mon Mar 11 23:37:28 2019 -0700
+   commit 2934f1c0de1d94d2157875db113a08a9d13f9b2a
+   Merge: 50428ff 7b6d526
+   Author: James Sanders <jmsjunior96@gmail.com>
+   Date:   Sun May 24 18:31:33 2020 -0500
    
-       Merge pull request #3 from Pathoschild/add-bus-locations
+       Merge pull request #4 from ChroniclerCherry/master
        
-       Add Bus Locations code
+       Added support for mobile input
    

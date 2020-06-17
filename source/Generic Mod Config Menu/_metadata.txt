@@ -5,12 +5,12 @@ mods:
    Generic Mod Config Menu
 
 latest commit:
-   commit 85ab0d94553f18cf02ce70ae57d8aa0d420879cf
-   Merge: cf61421 083d394
+   commit 7aa00a90d7b43697eeb2e84ae3349c4054fc7b2a
+   Merge: 85ab0d9 d64cc6f
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Apr 27 12:09:59 2020 -0400
+   Date:   Sun May 31 13:10:45 2020 -0400
    
-       Merge pull request #3 from Pathoschild/update-project
+       Merge pull request #4 from kdau/master
        
-       Update & standardize project structure
+       Wrap titles and text in tooltips
    

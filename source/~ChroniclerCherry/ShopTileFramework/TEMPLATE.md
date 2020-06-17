@@ -1,12 +1,20 @@
 ﻿A template of the full `shops.json` format
 
-Please refer to the README to learn the function of each of these fields and which ones are mandatory vs optional
+Full description of each field can be found in the README
 
 ```js
 {
   "RemovePacksFromVanilla": [
         "JAPack.UniqueID1",
         "JAPack.UniqueID2"
+      ],
+  "RemovePackRecipesFromVanilla": [
+        "JAPack.UniqueID1",
+        "JAPack.UniqueID2"
+      ],
+   "RemoveItemsFromVanilla": [
+        "Item1",
+        "Item2"
       ],
   "Shops": [
 
@@ -22,6 +30,17 @@ Please refer to the README to learn the function of each of these fields and whi
       "Quote": "Quote1",
       "ShopPrice": -1,
       "MaxNumItemsSoldInStore": 2147483647,
+      "DefaultSellPriceMultiplier": 1.0,
+      "PriceMultiplierWhen": {
+        "0.5": [
+          "condition1",
+          "condition1"
+        ],
+        "2": [
+          "condition3",
+          "condition4"
+        ]
+      },
       "ItemStocks": [
 
       ///start of block for each itemstock. Each shop can have as many of these as you want

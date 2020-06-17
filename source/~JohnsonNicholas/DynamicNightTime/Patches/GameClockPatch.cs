@@ -9,12 +9,19 @@ namespace DynamicNightTime.Patches
     {
         public static void Postfix()
         {
-            int sunriseTime = DynamicNightTime.GetSunrise().ReturnIntTime();
+            SDVTime sunriseSTime = DynamicNightTime.GetSunrise();
+            sunriseSTime.AddTime(-10);
+            int sunriseTime = sunriseSTime.ReturnIntTime();
+            SDVTime sunsetT = DynamicNightTime.GetSunset();
+            sunsetT.AddTime(-20);
+            
+
             int astronTime = DynamicNightTime.GetMorningAstroTwilight().ReturnIntTime();
 
             //colors
+            //sunrise 255,159,80
             Color sunrise = new Color(0, 96, 175);
-            Color preSunrise = new Color()
+            //preSunrise - 200, 205, 227 - mask (55,50,28);
 
             if (DynamicNightTime.LunarDisturbancesLoaded && DynamicNightTime.MoonAPI.IsSolarEclipse())
             {
@@ -38,7 +45,7 @@ namespace DynamicNightTime.Patches
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
             {
-               DynamicNightTime.Logger.Log($"Exception encountered when trying to get weather in API call. Exception text is as follows {ex.ToString()}.", StardewModdingAPI.LogLevel.Error);
+               DynamicNightTime.Logger.Log($"Exception encountered when trying to get weather in API call. Exception text is as follows {ex}.", StardewModdingAPI.LogLevel.Error);
                 weather = "error";                
             }
 #pragma warning restore CA1031 // Do not catch general exception types
@@ -70,10 +77,30 @@ namespace DynamicNightTime.Patches
                     float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunriseTime, astronTime));
                     //means delta r is -255, delta g is -159, delta b is +175 from evening to sunrise
                     //Normal sunrise is 0,96,175. Rainy sunrises are.. 0,50,148?
-
-                    Color destColor = new Color((byte)(255 - (255 * percentage)), (byte)(255 - (159 * percentage)), (byte)(175 * percentage));
+                    //However, this is set to a light blue-gray
+                    
+                    Color destColor = new Color((byte)(255 - (200 * percentage)), (byte)(255 - (205 * percentage)), (byte)(28 * percentage));
                     Game1.outdoorLight = destColor;
                 }
+
+                /*
+                else if (Game1.timeOfDay >= sunriseTime && Game1.timeOfDay < sunriseEnd)
+                {
+                if (ShouldDarken)
+                {
+                    Game1.outdoorLight = Game1.ambientLight * 0.3f;
+                }
+                else
+                {
+                    float minEff = SDVTime.MinutesBetweenTwoIntTimes(astronTime, Game1.timeOfDay) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
+                    float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunriseTime, astronTime));
+                    //means delta r is -255, delta g is -159, delta b is +175 from evening to sunrise
+                    //Normal sunrise is 0,96,175. Rainy sunrises are.. 0,50,148?
+                    //We're coming from 55 50 28 to 0 96 175
+                    Color destColor = new Color(55 + (200 * percentage), 50 + (109 * percentage), 28 + (62* percentage));
+                    //Color destColor = sunrise;
+                    Game1.outdoorLight = destColor;
+                }*/
             }
             else if (Game1.timeOfDay >= sunriseTime && Game1.timeOfDay <= Game1.getStartingToGetDarkTime())
             {
@@ -82,17 +109,24 @@ namespace DynamicNightTime.Patches
                     Game1.outdoorLight = Game1.ambientLight * 0.3f;
                 }
                 else 
-                { 
+                {
+                    //
+                    //preSunrise - 200, 205, 227 - mask (55,50,28); 
+                    //flips to orange (243,206,155) then fades to noon - mask (9, 49, 100)
                     //Goes from [0,96,175] to [0,5,1] to [0,98,193]
                     int solarNoon = DynamicNightTime.GetSolarNoon().ReturnIntTime();
                     if (Game1.timeOfDay < solarNoon)
                     {
+                        //this is really the mask color, tho.
+                        //Color newSunrise = new Color(12,49,100);
+                        Color newSunrise = new Color(9,49,100);
                         float minEff = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, sunriseTime) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
                         float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunriseTime, solarNoon));
-                        float tgtColorR = sunrise.R - 0;
-                        float tgtColorG = sunrise.G - 5;
-                        float tgtColorB = sunrise.B - 1;
-                        Color destColor = new Color((byte)(0 - (tgtColorR*percentage)), (byte)(96 -(tgtColorG*percentage)),(byte)(175 -(tgtColorB*percentage)));
+
+                        float tgtColorR = newSunrise.R - 0;
+                        float tgtColorG = newSunrise.G - 5;
+                        float tgtColorB = newSunrise.B - 1;
+                        Color destColor = new Color((byte)(9 - (tgtColorR*percentage)), (byte)(49 -(tgtColorG*percentage)),(byte)(100 -(tgtColorB*percentage)));
                         Game1.outdoorLight = destColor;
                     }
                     if (Game1.timeOfDay == solarNoon)
@@ -112,7 +146,8 @@ namespace DynamicNightTime.Patches
             else if (Game1.timeOfDay >= Game1.getStartingToGetDarkTime())
             {
                 //Goes from [0,98,193] to [255,255,0]. We should probably space this out so that civil is still fairly bright.
-                int sunset = DynamicNightTime.GetSunset().ReturnIntTime();
+                int sunset = sunsetT.ReturnIntTime();
+                int sunsetEnding = DynamicNightTime.GetSunset().ReturnIntTime();
                 int astroTwilight = DynamicNightTime.GetAstroTwilight().ReturnIntTime();
                 //Color navalColor = new Color(120,178,113);
                 if (ShouldDarken)
@@ -132,7 +167,7 @@ namespace DynamicNightTime.Patches
                 {
                     //civil
                     //if (Game1.timeOfDay > sunset && Game1.timeOfDay < astroTwilight)
-                    if (Game1.timeOfDay > sunset)
+                    if (Game1.timeOfDay > sunsetEnding)
                     {
                         float minEff = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, sunset) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
                         float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunset, astroTwilight));

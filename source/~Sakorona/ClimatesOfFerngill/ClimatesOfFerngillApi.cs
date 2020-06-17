@@ -27,15 +27,15 @@ namespace ClimatesOfFerngillRebuild
         private WeatherConditions CurrentConditions;
         private WeatherConfig Options;
 
-        public void LoadData(WeatherConditions Cond, WeatherConfig Opt)
+        public void LoadData(WeatherConditions cond, WeatherConfig opt)
         {
-            CurrentConditions = Cond;
-            Options = Opt;
+            CurrentConditions = cond;
+            Options = opt;
         }
 
-        public ClimatesOfFerngillAPI(WeatherConditions cond, WeatherConfig Opt)
+        public ClimatesOfFerngillAPI(WeatherConditions cond, WeatherConfig opt)
         {
-            LoadData(cond, Opt);
+            LoadData(cond, opt);
         }
 
         public string GetCurrentClimateName()

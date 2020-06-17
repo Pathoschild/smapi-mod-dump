@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6215
+IDs: Dem1se.CustomReminders
+update keys: Nexus:6215, GitHub:Dem1se/CustomReminders

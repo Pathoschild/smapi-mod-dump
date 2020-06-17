@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/kdau/cropbeasts.git
+
+mods:
+   Cropbeasts
+
+latest commit:
+   commit 7ee1ebf78d7e6b3a527915e883dd44ed38767786
+   Author: Kevin Daughtridge <kevin@kdau.com>
+   Date:   Tue Jun 16 14:41:40 2020 -0700
+   
+       rename default branch to main
+   

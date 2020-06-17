@@ -1,0 +1,10 @@
+﻿{
+  "Name": "LeftyMode",
+  "Author": "Max Vollmer",
+  "Version": "1.0.0-beta",
+  "Description": "Switches the right and left mouse buttons.",
+  "UniqueID": "maxvollmer.leftymode",
+  "EntryDll": "LeftyMode.dll",
+  "MinimumApiVersion": "3.5.0",
+  "UpdateKeys": [ "Nexus:6199" ]
+}

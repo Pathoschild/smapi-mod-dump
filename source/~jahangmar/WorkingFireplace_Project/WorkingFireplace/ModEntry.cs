@@ -1,4 +1,4 @@
-﻿//Copyright (c) 2019 Jahangmar
+﻿//Copyright (c) 2020 Jahangmar
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,12 @@ using StardewValley.Objects;
 using StardewValley.Characters;
 using StardewValley.BellsAndWhistles;
 
+#if Harmony
+using Harmony;
+using System.Threading;
+using System.Runtime.CompilerServices;
+#endif
+
 //using StardewValley.Menus;
 //using System.Collections.Generic;
 
@@ -36,6 +42,8 @@ namespace WorkingFireplace
         private WorkingFireplaceConfig Config;
 
         private const double defaultYesterdayCOFLow = 1000;
+        private const string COFModID = "KoihimeNakamura.ClimatesOfFerngill";
+
         private double yesterdayCOFLow = defaultYesterdayCOFLow;
         private bool tooColdToday = false;
         private double tempToday = defaultYesterdayCOFLow;
@@ -44,12 +52,93 @@ namespace WorkingFireplace
         {
             Config = helper.ReadConfig<WorkingFireplaceConfig>();
 
+#if !Harmony
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+#else
+            Monitor.Log("This is the android version of the mod using harmony", LogLevel.Debug);
+            FurniturePatch.Initialize(Monitor, Config, Helper);
+            ApplyHarmonyPatches();
+#endif
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.Display.MenuChanged += Display_MenuChanged;
         }
 
-        void Display_MenuChanged(object sender, MenuChangedEventArgs e)
+#if Harmony
+        /// <summary>Apply harmony patches for turning the fireplace on and off.</summary>
+        private void ApplyHarmonyPatches()
+        {
+            // create a new Harmony instance for patching source code
+            HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+
+            // apply the patch
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Objects.Furniture), "checkForAction"),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(FurniturePatch), nameof(FurniturePatch.checkForAction_Prefix)))
+            );
+        }
+
+        internal class FurniturePatch
+        {
+            private static IMonitor Monitor;
+            private static WorkingFireplaceConfig Config;
+            private static IModHelper Helper;
+
+            // call this method from the Entry class
+            public static void Initialize(IMonitor monitor, WorkingFireplaceConfig config, IModHelper helper)
+            {
+                Monitor = monitor;
+                Config = config;
+                Helper = helper;
+            }
+
+
+            /// <summary>This code replaces game code, it runs when the game checks for possible player actions on an item of furniture.</summary>
+            /// <param name="who">The current player.</param>
+            /// <param name="__instance">Furniture object the player is interacting with.</param>
+            /// <returns>If not a fireplace, returns true (This means the actual game code will run). If a fireplace set to off, with sufficient wood to light a fire, it will subtract wood from inventory and return true (Game code will run). If a fireplace set to on, or insufficient wood to light a fire, return false (Actual game code will not run.)</returns>
+            internal static bool checkForAction_Prefix(Farmer who, StardewValley.Objects.Furniture __instance)
+            {
+                try
+                {
+                    if (__instance.furniture_type == Furniture.fireplace) // is Fireplace
+                    {
+                        if (__instance.isOn) // fireplace is on
+                        {
+                            Monitor.Log("Action to turn fireplace off was suppressed.", LogLevel.Trace);
+                            return false; // Suppress action to turn the fireplace off.
+                        }
+                        else
+                        {
+                            Item item = who.CurrentItem;
+                            if (item != null && item.Name == "Wood" && item.Stack >= Config.wood_pieces) // At least X wood in inventory
+                            {
+                                who.removeItemsFromInventory(item.ParentSheetIndex, Config.wood_pieces);
+                                Monitor.Log("Fireplace turned on.", LogLevel.Trace);
+                                return true; // Allow action to light the fireplace.
+                            }
+                            else
+                            {
+                                Game1.showRedMessage(Helper.Translation.Get("msg.nowood", new { Config.wood_pieces }));
+                                Monitor.Log("No wood; fireplace could not be turned on.", LogLevel.Trace);
+                                return false; // Insufficient wood; suppress action to light the fireplace.
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return true; // Not a fireplace; run original logic
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Log($"Failed in {nameof(checkForAction_Prefix)}:\n{ex}", LogLevel.Error);
+                    return true; // run original logic
+                }
+            }
+        }
+#endif
+
+            void Display_MenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (e.NewMenu is StardewValley.Menus.DialogueBox && Game1.player.isInBed && Config.show_temperature_in_bed)
             {
@@ -177,7 +266,6 @@ namespace WorkingFireplace
 
         private bool WarmInside(bool changeFireplace)
         {
-
             bool warmth = false;
 
             if (Config.warm_on_day_one && Game1.Date.TotalDays == 0)
@@ -208,9 +296,9 @@ namespace WorkingFireplace
         private bool TooColdYesterday()
         {
             bool tooColdOutside = false;
-            if (Config.COFIntegration && Helper.ModRegistry.IsLoaded("KoihimeNakamura.ClimatesOfFerngill")) //check if ClimatesOfFerngill is loaded and integration is activated
+            if (Config.COFIntegration && Helper.ModRegistry.IsLoaded(COFModID)) //check if ClimatesOfFerngill is loaded and integration is activated
             {
-                double todayCOFLow = Helper.Reflection.GetMethod(Helper.ModRegistry.GetApi("KoihimeNakamura.ClimatesOfFerngill"), "GetTodaysLow").Invoke<double>(Array.Empty<object>());
+                double todayCOFLow = Helper.Reflection.GetMethod(Helper.ModRegistry.GetApi(COFModID), "GetTodaysLow").Invoke<double>(Array.Empty<object>());
                 tooColdOutside = (((int)yesterdayCOFLow == (int)defaultYesterdayCOFLow) ? todayCOFLow : yesterdayCOFLow) - (Game1.wasRainingYesterday ? Config.COFRainImpact : 0) <= Config.COFMinTemp;
                 Monitor.Log("Climates of Ferngill integration is active. Temperature is " + (tooColdOutside ? "cold" : "warm"), LogLevel.Trace);
                 yesterdayCOFLow = todayCOFLow;
@@ -232,9 +320,9 @@ namespace WorkingFireplace
         private void SetTemperatureToday()
         {
             bool tooColdOutside = false;
-            if (Config.COFIntegration && Helper.ModRegistry.IsLoaded("KoihimeNakamura.ClimatesOfFerngill")) //check if ClimatesOfFerngill is loaded and integration is activated
+            if (Config.COFIntegration && Helper.ModRegistry.IsLoaded(COFModID)) //check if ClimatesOfFerngill is loaded and integration is activated
             {
-                double todayCOFLow = Helper.Reflection.GetMethod(Helper.ModRegistry.GetApi("KoihimeNakamura.ClimatesOfFerngill"), "GetTodaysLow").Invoke<double>(Array.Empty<object>());
+                double todayCOFLow = Helper.Reflection.GetMethod(Helper.ModRegistry.GetApi(COFModID), "GetTodaysLow").Invoke<double>(Array.Empty<object>());
                 tooColdOutside = todayCOFLow - (Game1.isRaining ? Config.COFRainImpact : 0) <= Config.COFMinTemp;
                 tempToday = todayCOFLow;
 

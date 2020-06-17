@@ -104,8 +104,6 @@ NPC Map Locations will try its best to figure out where custom locations are. Ea
 [NPC Map Locations] Unknown location: TreasureCave
 ```
 
-A video tutorial is available for how I add tracking for these SVE custom locations below.
-
 ## Adding points
 
 Any custom locations that need tracking need to be included in `maps\customlocations.json`. The format for adding one location is as shown:
@@ -169,6 +167,14 @@ For tracking, we add an entry for `"TownEast"` in `"CustomMapLocations"`. We inp
   ]
 },
 ```
+
+### A video tutorial is available here:
+https://streamable.com/x439m5
+
+Tips:
+- In config/globals.json, set "DEBUG_MODE" to true.
+- In the SMAPI console, use `debug warp [locationname] to quickly move to the map.
+- Use control + right click to move the player around the map in debug mode.
 
 #### Farm types
 

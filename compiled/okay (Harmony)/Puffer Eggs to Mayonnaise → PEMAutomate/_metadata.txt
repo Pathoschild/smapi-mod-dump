@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6162
+IDs: GZhynko.PufferEggsToMayonnaise.Automate
+update keys: Nexus:???, Nexus:6162, GitHub:gzhynko/StardewMods

@@ -28,6 +28,7 @@ namespace FarmTypeManager
             }
 
             AddSMAPIEvents(helper); //pass any necessary event methods to SMAPI
+            ApplyHarmonyPatches(); //pass any necessary patches to Harmony
         }
     }
 }

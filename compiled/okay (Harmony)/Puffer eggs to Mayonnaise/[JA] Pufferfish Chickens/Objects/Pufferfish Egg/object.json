@@ -1,0 +1,13 @@
+{
+	"Name": "Pufferfish Egg",
+	"Description": "A small yellow egg. It has some tiny spikes on it.",
+	"Category": "AnimalGoods",
+	"Edibility": -300,
+	"CanSell": true,
+	"EdibleBuffs": null,
+	"Price": 75,
+	"IsColored": false,
+	"GiftTastes": {},
+	"NameLocalization": {},
+	"DescriptionLocalization": {}
+}

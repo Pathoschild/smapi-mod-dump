@@ -1,0 +1,8 @@
+﻿{
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Male": "{{firstAnimalName}}昨天被渴坏了。",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Female": "{{firstAnimalName}}昨天被渴坏了。",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_UnknownGender": "{{firstAnimalName}}昨天被渴坏了。",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.twoAnimals": "{{firstAnimalName}}和{{secondAnimalName}}昨天都渴坏了。",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.threeAnimals": "{{firstAnimalName}}，{{secondAnimalName}}和{{thirdAnimalName}}昨天都渴坏了。",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.multipleAnimals": "{{firstAnimalName}}，{{secondAnimalName}}, {{thirdAnimalName}}和其它{{totalAmountExcludingFirstThree}}只动物昨天都渴坏了。"
+}

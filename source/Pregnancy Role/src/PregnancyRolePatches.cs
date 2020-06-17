@@ -7,11 +7,12 @@ using System.Collections.Generic;
 
 namespace PregnancyRole
 {
-	internal class PregnancyRolePatches
+	internal static class PregnancyRolePatches
 	{
-		protected static IModHelper Helper => ModEntry.Instance.Helper;
-		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
-		protected static HarmonyInstance Harmony => ModEntry.Instance.harmony;
+		private static IModHelper Helper => ModEntry.Instance.Helper;
+		private static IMonitor Monitor => ModEntry.Instance.Monitor;
+		private static HarmonyInstance Harmony => ModEntry.Instance.harmony;
+		private static ModConfig Config => ModConfig.Instance;
 
 		private static Dictionary<Farmer, bool> GenderOverrides =
 			new Dictionary<Farmer, bool> ();
@@ -106,11 +107,14 @@ namespace PregnancyRole
 			}
 		}
 
-		protected static void OverrideFarmers (Farmer farmer1, Farmer farmer2)
+		private static void OverrideFarmers (Farmer farmer1, Farmer farmer2)
 		{
 			if (GenderOverrides.ContainsKey (farmer1) ||
 					GenderOverrides.ContainsKey (farmer2))
 				return;
+
+			if (Config.VerboseLogging)
+				Monitor.Log ($"Overriding farmer genders for pregnancy event", LogLevel.Debug);
 
 			Role role1 = Model.GetPregnancyRole (farmer1);
 			Role role2 = Model.GetPregnancyRole (farmer2);
@@ -133,8 +137,11 @@ namespace PregnancyRole
 			farmer.IsMale = isMale;
 		}
 
-		protected static void ClearOverrides ()
+		private static void ClearOverrides ()
 		{
+			if (Config.VerboseLogging)
+				Monitor.Log ($"Resetting farmer genders", LogLevel.Debug);
+
 			foreach (Farmer farmer in GenderOverrides.Keys)
 				farmer.IsMale = GenderOverrides[farmer];
 			GenderOverrides.Clear ();

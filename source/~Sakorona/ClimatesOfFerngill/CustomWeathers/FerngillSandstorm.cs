@@ -25,7 +25,7 @@ namespace ClimatesOfFerngillRebuild.Weathers
         public string WeatherType => "Sandstorm";
         private bool FadeOutSandstorm { get; set; }
         private bool FadeInSandstorm { get; set; }
-        private Stopwatch SandstormElapsed { get; set; }
+        private Stopwatch SandstormElapsed { get; }
         public SDVTime WeatherExpirationTime => (ExpirTime ?? new SDVTime(0600));
         public SDVTime WeatherBeginTime => (BeginTime ?? new SDVTime(0600));
 

@@ -8,10 +8,10 @@ namespace ContentPatcher.Framework.Tokens
     internal class TokenPosition : IContextual
     {
         /*********
-        ** Accessors
+        ** Fields
         *********/
         /// <summary>The underlying contextual values.</summary>
-        private readonly AggregateContextual Contextuals = new AggregateContextual();
+        protected readonly AggregateContextual Contextuals = new AggregateContextual();
 
 
         /*********

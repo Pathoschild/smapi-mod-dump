@@ -12,6 +12,8 @@ namespace ScryingOrb
 		protected static IModHelper Helper => ModEntry.Instance.Helper;
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
 
+		public static readonly int TilePosition = 49;
+
 		protected Texture2D cursor;
 
 		public CursorEditor ()
@@ -34,7 +36,9 @@ namespace ScryingOrb
 		public void Edit<_T> (IAssetData asset)
 		{
 			IAssetDataForImage editor = asset.AsImage ();
-			editor.PatchImage (cursor, targetArea: new Rectangle (112, 0, 16, 16));
+			editor.PatchImage (cursor, targetArea:
+				Game1.getSourceRectForStandardTileSheet (editor.Data,
+					TilePosition, 16, 16));
 		}
 
 		public bool active =>
@@ -43,8 +47,8 @@ namespace ScryingOrb
 		public void apply ()
 		{
 			if (active)
-				Game1.mouseCursor = 7;
-			else if (Game1.mouseCursor == 7)
+				Game1.mouseCursor = TilePosition;
+			else if (Game1.mouseCursor == TilePosition)
 				Game1.mouseCursor = 0;
 		}
 
@@ -67,7 +71,7 @@ namespace ScryingOrb
 				e.SpriteBatch.Draw (Game1.mouseCursors,
 					new Vector2 (Game1.getMouseX (), Game1.getMouseY ()),
 					Game1.getSourceRectForStandardTileSheet
-						(Game1.mouseCursors, 7, 16, 16),
+						(Game1.mouseCursors, TilePosition, 16, 16),
 					Color.White, 0f, Vector2.Zero,
 					4f + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f);
 			}

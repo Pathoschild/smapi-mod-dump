@@ -1,0 +1,13 @@
+url:
+   https://github.com/mrveress/SDVMods.git
+
+mods:
+   Seed Machines
+
+latest commit:
+   commit 661c9c8c1b7692ba4f49dab6af3112f6a571e00b
+   Author: Veress <veress.honaht@gmail.com>
+   Date:   Tue Jun 9 13:53:26 2020 +0300
+   
+       Fix Seed Machines link in README
+   

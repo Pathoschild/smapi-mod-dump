@@ -1,0 +1,8 @@
+{
+  "Enabled": true,
+  "AllowSeedShopWed": true,
+  "AllowOutsideTime": true,
+  "AllowStrangerHomeEntry": false,
+  "AllowStrangerRoomEntry": false,
+  "IgnoreEvents": false
+}

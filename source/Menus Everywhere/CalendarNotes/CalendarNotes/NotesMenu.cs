@@ -10,6 +10,7 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using Newtonsoft.Json;
 
 namespace CalendarNotes
 {
@@ -37,7 +38,7 @@ namespace CalendarNotes
             if (!Game1.options.showMenuBackground)
                 SB.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
             Game1.drawDialogueBox(this.xPositionOnScreen, this.yPositionOnScreen, this.width, this.height, false, true);
-            SB.DrawString(Game1.dialogueFont, this.ConstructNote(Game1.year, Utility.getSeasonNameFromNumber(Utility.getSeasonNumber(Game1.currentSeason)), Game1.dayOfMonth), new Vector2((float)(this.xPositionOnScreen + Game1.tileSize * 3 / 4), (float)(this.yPositionOnScreen + Game1.tileSize * 8 / 5)), Game1.textColor);
+            SB.DrawString(Game1.dialogueFont, this.ConstructNote(Game1.year, Utility.getSeasonNumber(Game1.currentSeason), Game1.dayOfMonth), new Vector2((float)(this.xPositionOnScreen + Game1.tileSize * 3 / 4), (float)(this.yPositionOnScreen + Game1.tileSize * 8 / 5)), Game1.textColor);
             base.draw(SB);
         }
 
@@ -59,17 +60,18 @@ namespace CalendarNotes
         /// <param name="Month"> The Month of the day. </param>
         /// <param name="Day"> The Day. </param>
         /// <returns> The note. </returns>
-        private String ConstructNote(int Year, String Month, int Day)
+        private String ConstructNote(int Year, int Month, int Day)
         {
-            String output = "Year " + Year.ToString() + " " + Month + " " + Day.ToString() + " Notes:\n\n";
+            String output = "Year " + Year.ToString() + " " + Month.ToString() + " " + Day.ToString() + " Notes:\n\n";
 
             return output;
         }
 
-        /// <summary> This method constructs the portion of the note containing the rotating stock of the various stores. </summary>
+        /// <summary> This method constructs the portion of the note containing the various stores. </summary>
+        /// <param name="Month"> The Month. </param>
         /// <param name="Day"> The Day. </param>
-        /// <returns> The portion of the note containing the stock for a given day. </returns>
-        private String ConstructRotatingStock(int Day)
+        /// <returns> The portion of the note containing the various stores for a given day. </returns>
+        private String ConstructShopNote(int Month, int Day)
         {
             return "";
         }

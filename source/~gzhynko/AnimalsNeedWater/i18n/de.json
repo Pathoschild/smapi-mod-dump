@@ -1,0 +1,8 @@
+﻿{
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Male": "{{firstAnimalName}} ist gestern durstig geblieben.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Female": "{{firstAnimalName}} ist gestern durstig geblieben.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_UnknownGender": "{{firstAnimalName}} ist gestern durstig geblieben.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.twoAnimals": "{{firstAnimalName}} und {{secondAnimalName}} sind gestern durstig geblieben.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.threeAnimals": "{{firstAnimalName}}, {{secondAnimalName}} und {{thirdAnimalName}} sind gestern durstig geblieben.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.multipleAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} und {{totalAmountExcludingFirstThree}} weitere Tiere sind gestern durstig geblieben."
+}

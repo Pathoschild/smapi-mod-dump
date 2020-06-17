@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/kdau/flowerbombs.git
+
+mods:
+   Flower Bombs
+
+latest commit:
+   commit 98773b4899c719612d73adbf25f4c56210d8b917
+   Author: Kevin Daughtridge <kevin@kdau.com>
+   Date:   Fri Jun 5 11:56:49 2020 -0700
+   
+       v1.0.1
+   

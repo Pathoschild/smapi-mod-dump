@@ -51,50 +51,11 @@ namespace FarmTypeManager
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
             public static bool SpawnForage(SavedObject forage, GameLocation location, Vector2 tile)
             {
-                if (forage.Type == SavedObject.ObjectType.Object)
+                if (forage.Type == SavedObject.ObjectType.Object) //if this is a basic object
                 {
                     return SpawnForage(forage.ID.Value, location, tile); //call the object ID version of this method
                 }
-
-                if (forage.Type == SavedObject.ObjectType.Item)
-                {
-                    Item forageItem = CreateItem(forage, tile); //create the item to be spawned
-
-                    if (forageItem == null) //if the item couldn't be created
-                    {
-                        Monitor.Log("The SpawnForage method failed to generate an item. This may be caused by a problem with this mod's logic. Please report this to the developer if possible.", LogLevel.Warn);
-                        Monitor.Log($"Item name: {forage.Name}", LogLevel.Warn);
-                        Monitor.Log($"Item ID: {forage.ID}", LogLevel.Warn);
-                        return false;
-                    }
-
-                    Monitor.VerboseLog($"Spawning forage item. Type: {forageItem.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-
-                    Vector2 pixel = new Vector2((int)tile.X * Game1.tileSize, (int)tile.Y * Game1.tileSize); //get the "pixel" location of the item, rather than the "tile" location
-
-                    if (Constants.TargetPlatform == GamePlatform.Android) //if this is the Android version of SDV
-                    {
-                        //spawn a "debris item" with a method that avoids Android-specific bugs (e.g. players being unable to pick up the item)
-
-                        Debris itemDebris = Game1.createItemDebris(forageItem, pixel, 1, location); //create "debris" containing the forage item (Game1 method)
-                        itemDebris.Chunks[0].bounces = 3; //prevent the debris bouncing when spawned by incrementing the "number of bounces so far" counter
-                    }
-                    else //if this is any other version of SDV
-                    {
-                        //spawn a "debris item" with a method that causes its position to "drift" less when spawned
-
-                        Debris itemDebris = new Debris(-2, 1, pixel, pixel, 0.1f) //create "debris" to contain the forage item
-                        {
-                            item = forageItem
-                        };
-                        itemDebris.Chunks[0].bounces = 3; //prevent the debris bouncing when spawned by increasing its "number of bounces so far" counter
-                        location.debris.Add(itemDebris); //place the debris at the the location
-                    }
-
-                    return true;
-                }
-
-                if (forage.Type == SavedObject.ObjectType.Container)
+                else if (forage.Type == SavedObject.ObjectType.Container) //if this is a container
                 {
                     Item container = CreateItem(forage, tile); //create the container to be spawned
 
@@ -115,8 +76,26 @@ namespace FarmTypeManager
                     location.objects.Add(tile, (StardewValley.Object)container); //add the container to the location's object array
                     return true;
                 }
+                else //if this is an item
+                {
+                    if (location.terrainFeatures.ContainsKey(tile)) //if a terrain feature already exists on this tile
+                        return false; //fail to spawn
 
-                return false; //TODO: error message for unsupported forage types (should be unreachable, however)
+                    Item forageItem = CreateItem(forage, tile); //create the item to be spawned
+
+                    if (forageItem == null) //if the item couldn't be created
+                    {
+                        Monitor.Log("The SpawnForage method failed to generate an item. This may be caused by a problem with this mod's logic. Please report this to the developer if possible.", LogLevel.Warn);
+                        Monitor.Log($"Item name: {forage.Name}", LogLevel.Warn);
+                        Monitor.Log($"Item ID: {forage.ID}", LogLevel.Warn);
+                        return false;
+                    }
+
+                    Monitor.VerboseLog($"Spawning forage item. Type: {forageItem.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                    PlacedItem placed = new PlacedItem(tile, forageItem); //create a terrainfeature containing the item
+                    location.terrainFeatures.Add(tile, placed); //add the placed item to this location
+                    return true;
+                }
             }
         }
     }

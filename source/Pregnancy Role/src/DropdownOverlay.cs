@@ -12,12 +12,12 @@ namespace PregnancyRole
 	{
 		protected static IModHelper Helper => ModEntry.Instance.Helper;
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
+		protected static ModConfig Config => ModConfig.Instance;
 
 		protected static readonly bool IsAndroid =
 			Constants.TargetPlatform == GamePlatform.Android;
 
-		protected int xOffset { get; private set; }
-		protected int yOffset { get; private set; }
+		protected Point offset { get; private set; }
 
 		private readonly OptionsDropDown dropdown;
 		private readonly int dropdownBaseWidth;
@@ -45,16 +45,15 @@ namespace PregnancyRole
 			Helper.Events.Input.ButtonReleased += onButtonReleased;
 		}
 
-		protected void setOffset (int xOffset, int yOffset)
+		protected void setOffset (Point offset)
 		{
-			this.xOffset = xOffset;
-			this.yOffset = yOffset;
+			this.offset = offset;
 
 			// Update the position of the control proper.
-			dropdown.bounds.X = xOffset - 52;
-			dropdown.bounds.Y = yOffset;
+			dropdown.bounds.X = offset.X - 52;
+			dropdown.bounds.Y = offset.Y;
 			if (IsAndroid)
-				dropdown.bounds.Width = dropdownBaseWidth - xOffset;
+				dropdown.bounds.Width = dropdownBaseWidth - offset.X;
 
 			// Update the bounds of the expanded menu through reflection, since
 			// the Android port makes this field private for some reason.
@@ -98,9 +97,9 @@ namespace PregnancyRole
 			// Draw the label.
 			string label = Helper.Translation.Get ("PregnancyRole");
 			Vector2 position = new Vector2
-				(trueMenu.xPositionOnScreen + xOffset -
+				(trueMenu.xPositionOnScreen + offset.X -
 					Game1.smallFont.MeasureString (label).X + 4 - 64,
-				trueMenu.yPositionOnScreen + yOffset + 8);
+				trueMenu.yPositionOnScreen + offset.Y + 8);
 			e.SpriteBatch.DrawString (Game1.smallFont, label, position,
 				Game1.textColor);
 
@@ -144,16 +143,20 @@ namespace PregnancyRole
 			dropdown.receiveLeftClick (x, y);
 			roleIndex = dropdown.selectedOption;
 		}
-		
+
 		private void onUpdateTicked (object _sender, UpdateTickedEventArgs _e)
 		{
 			if (!shouldRender)
 			{
+				if (isRendering && Config.VerboseLogging)
+					Monitor.Log ($"Stopping {GetType ().Name} rendering", LogLevel.Debug);
 				isRendering = false;
 				return;
 			}
 			if (!isRendering)
 			{
+				if (Config.VerboseLogging)
+					Monitor.Log ($"Starting {GetType ().Name} rendering", LogLevel.Debug);
 				isRendering = true;
 				if (OptionsDropDown.selected != dropdown)
 					dropdown.selectedOption = roleIndex;

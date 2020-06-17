@@ -178,8 +178,8 @@ namespace PetInteraction
                 pet.lastPetDay[Game1.player.UniqueMultiplayerID] = days;
         }
 
-        public static bool Compare(double a, double b) => System.Math.Abs(a - b) < 0.01;
-        public static bool Compare(Vector2 v1, Vector2 v2) => Compare(v1.X, v2.X) && Compare(v1.Y, v2.Y);
+        public static bool Compare(double a, double b, double epsilon = 0.01) => System.Math.Abs(a - b) < epsilon;
+        public static bool Compare(Vector2 v1, Vector2 v2, double epsilon = 0.01) => Compare(v1.X, v2.X, epsilon) && Compare(v1.Y, v2.Y, epsilon);
 
         /// <summary>
         /// Returns distance (in pixels) from pet position to current goal of the path. 
@@ -363,7 +363,8 @@ namespace PetInteraction
         }
 
         //static int last_dir = 0;
-
+        //public static int PetBehaviorFacingDir = 0;
+        public static int PetBeahviorCurrentBehavior = 0;
         public static void CatchUp(int oldFacingDir)
         {
             GetPet();
@@ -380,16 +381,18 @@ namespace PetInteraction
 
             velocity = new Vector2((int)System.Math.Round(velocity.X), (int)System.Math.Round(velocity.Y));
 
-            if (!Compare(velocity, new Vector2(0,0)))
+            if (!Compare(velocity, new Vector2(0, 0)))
             {
                 if (System.Math.Abs(velocity.X) > System.Math.Abs(velocity.Y))
                     pet.FacingDirection = velocity.X >= 0 ? 1 : 3;
                 else
                     pet.FacingDirection = velocity.Y >= 0 ? 2 : 0;
 
-                //ModEntry.Log("Dir changed by mod");
+                //ModEntry.Log("Dir changed by mod to "+pet.FacingDirection);
+                //PetBehaviorFacingDir = pet.FacingDirection;
             }
-
+           // else
+           //     pet.FacingDirection = PetBehaviorFacingDir;
             /*
             if (pet.FacingDirection != last_dir)
             {

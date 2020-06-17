@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -7,11 +8,15 @@ namespace PregnancyRole
 	{
 		public ProfileMenuOverlay ()
 		{
-			// Align the label and dropdown below the favorite items.
-			int xOffset = 64 - 12 + 400 + 125 + (IsAndroid ? 150 : 200);
-			int yOffset = IClickableMenu.borderWidth + 32 + Game1.daybg.Height +
-				32 + 96 + 56 + 48 + (IsAndroid ? -32 : 64 + 48);
-			setOffset (xOffset, yOffset);
+			Point offset = Config.SpouseDropdownOrigin;
+			if (offset.Equals (Point.Zero))
+			{
+				// Align the label and dropdown below the favorite items.
+				offset.X = 64 - 12 + 400 + 125 + (IsAndroid ? 150 : 200);
+				offset.Y = IClickableMenu.borderWidth + 32 + Game1.daybg.Height +
+					32 + 96 + 56 + 48 + (IsAndroid ? -32 : 64 + 48);
+			}
+			setOffset (offset);
 		}
 
 		protected override int roleIndex
@@ -30,11 +35,14 @@ namespace PregnancyRole
 		{
 			get
 			{
+				if (!Config.ShowSpouseDropdown)
+					return false;
+
 				NPC npc = getTarget ();
 				if (npc == null || npc.getSpouse () != Game1.player ||
 						!Model.BaseGameNPCs.Contains (npc.Name))
 					return false;
-				
+
 				return Helper.Reflection.GetField<int>
 					(Game1.activeClickableMenu, "_currentCategory", false)
 					?.GetValue () == 0; // "<Name>'s Favorites" page

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6203
+IDs: cat.flowerytools
+update keys: Nexus:6203, GitHub:danvolchek/StardewMods

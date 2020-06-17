@@ -44,5 +44,6 @@
 	-fixed stick throw distance and added config option for distance
 	-fixed trash shaming
 
-next:
+1.1.2:
 	-fixed English text (thanks to overwritten)
+	-fixed walking animation. (Pet behavior was reset too often)

@@ -58,6 +58,20 @@ namespace FarmTypeManager
                     }
                 }
 
+                /// <summary>Log a message for the player or developer, but only if the message has not been logged already this session.</summary>
+                /// <param name="message">The message to log.</param>
+                /// <param name="level">The log severity level.</param>
+                public static void LogOnce(string message, LogLevel level = LogLevel.Debug)
+                {
+                    if (monitor != null) //if the monitor is ready
+                    {
+                        if (MConfig.EnableTraceLogMessages || level != LogLevel.Trace) //if trace messages are enabled OR this isn't a trace message
+                        {
+                            monitor.LogOnce(message, level);
+                        }
+                    }
+                }
+
                 /// <summary>Log a message that only appears when IMonitor.IsVerbose is enabled.</summary>
                 /// <param name="message">The message to log.</param>
                 public static void VerboseLog(string message)
@@ -80,9 +94,6 @@ namespace FarmTypeManager
 
             /// <summary>A series of object lists to be spawned during the current in-game day.</summary>
             public static List<List<TimedSpawn>> TimedSpawns = new List<List<TimedSpawn>>();
-
-            /// <summary>A list of dynamically accessed class types (e.g. classes from other mods) used by this mod, stored here for more efficient reuse.</summary>
-            public static List<Type> DynamicTypes = new List<Type>();
 
             /// <summary>The global settings for this mod. Should be set during mod startup.</summary>
             public static ModConfig MConfig { get; set; }

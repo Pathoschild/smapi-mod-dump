@@ -1,0 +1,74 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build (Debug)",
+			"type": "shell",
+			"command": "msbuild",
+			"args": [
+				"/property:GenerateFullPaths=true",
+				"/t:build",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"group": { "kind": "build", "isDefault": true },
+			"presentation": { "reveal": "silent", "panel": "dedicated", "clear": true },
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Rebuild (Debug)",
+			"type": "shell",
+			"command": "msbuild",
+			"args": [
+				"/property:GenerateFullPaths=true",
+				"/t:rebuild",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"group": "build",
+			"presentation": { "reveal": "silent", "panel": "dedicated", "clear": true },
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Build (Release)",
+			"type": "shell",
+			"command": "msbuild",
+			"args": [
+				"/property:GenerateFullPaths=true",
+				"/property:Configuration=release",
+				"/t:build",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"group": "build",
+			"presentation": { "reveal": "silent", "panel": "dedicated", "clear": true },
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Rebuild (Release)",
+			"type": "shell",
+			"command": "msbuild",
+			"args": [
+				"/property:GenerateFullPaths=true",
+				"/property:Configuration=release",
+				"/t:rebuild",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"group": "build",
+			"presentation": { "reveal": "silent", "panel": "dedicated", "clear": true },
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Clean",
+			"type": "shell",
+			"command": "msbuild",
+			"args": [
+				"/property:GenerateFullPaths=true",
+				"/t:clean",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"group": "build",
+			"presentation": { "reveal": "silent", "panel": "dedicated", "clear": true },
+			"problemMatcher": "$msCompile"
+		}
+	]
+}

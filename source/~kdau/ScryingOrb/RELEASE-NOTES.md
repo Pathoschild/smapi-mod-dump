@@ -7,6 +7,7 @@
 *Release pending.*
 
 * Consolidate mod folders, removing `[JA]ScryingOrb`
+* Fix visual glitch with recolor mods that modify game cursors
 * More natural format for dates thanks to Pathoschild
 * Update to Russian translation by DanyaKirichenko1
 

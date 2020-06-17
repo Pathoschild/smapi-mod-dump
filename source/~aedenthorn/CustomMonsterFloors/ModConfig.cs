@@ -8,6 +8,9 @@ namespace CustomMonsterFloors
 {
     public class ModConfig 
     {
+        public bool EnableMod { get; set; } = true;
+        public bool EnableFloorTypeChanges { get; set; } = true;
+        public bool EnableTileChanges { get; set; } = true;
         public int PercentChanceMonsterFloor { get; set; } = 20;
         public string SlimeDinoMonsterSplitPercents { get; set; } = "33:33:34";
         public string SlimeMonsterSplitPercents { get; set; } = "50:50";
@@ -31,6 +34,8 @@ namespace CustomMonsterFloors
         public float ChanceForIronMultiplier { get; set; } = 1f;
         public float PurpleStoneMultiplier { get; set; } = 1f;
         public float MysticStoneMultiplier { get; set; } = 1f;
+        public double WeedsChance { get; set; } = 0.1;
+        public double WeedsMultiplier { get; set; } = 1.0;
         public float ChanceForLadderInStoneMultiplier { get; set; } = 1f;
         public float ChanceLadderIsShaftMultiplier { get; set; } = 1f;
     }

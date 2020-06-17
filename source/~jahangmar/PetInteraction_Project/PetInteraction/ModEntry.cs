@@ -399,6 +399,7 @@ namespace PetInteraction
                 case PetState.Waiting:
                 case PetState.Retrieve:
 
+                    //handle cases where the pet gets stuck but should move. This resets the "stuck timer" every time the pet moved.
                     if (petState == PetState.Waiting || !Compare(pet.Position, oldPetPos))
                     {
                         oldPetPos = pet.Position;
@@ -465,8 +466,8 @@ namespace PetInteraction
             if (!CanUpdatePet())
                 return;
 
-            if (petState != PetState.Vanilla)
-                GetPet().CurrentBehavior = -1;
+           // if (petState != PetState.Vanilla)
+           //     GetPet().CurrentBehavior = -1;
 
             FacingDirectionBeforeUpdate = GetPet().FacingDirection;
         }
@@ -477,8 +478,8 @@ namespace PetInteraction
             if (!CanUpdatePet())
                 return;
 
-            //if (pet.FacingDirection != petFace)
-            //    Monitor.Log("Game changed FacingDirection: " + petFace + " -> " + GetPet().FacingDirection);
+            //if (pet.FacingDirection != PetBehaviorFacingDir)
+            //    Monitor.Log("Game changed FacingDirection: " + PetBehaviorFacingDir + " -> " + GetPet().FacingDirection);
 
             if (TempRemovedTrashPet && GetPet() != null && !Game1.currentLocation.characters.Contains(pet))
             {

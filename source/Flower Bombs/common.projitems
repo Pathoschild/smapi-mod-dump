@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<TargetFramework>net452</TargetFramework>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<Platforms>x86</Platforms>
+		<PlatformTarget>x86</PlatformTarget>
+		<EnableModDeploy>false</EnableModDeploy>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\Debug</OutputPath>
+		<DefineConstants>DEBUG;</DefineConstants>
+		<DeployDir>bin\Mods</DeployDir>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<DebugSymbols>false</DebugSymbols>
+		<DebugType>none</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\Release</OutputPath>
+		<DeployDir>-</DeployDir>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
+	</ItemGroup>
+	<UsingTask TaskName="FixZipAndDeploySafely" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<ModZipFile Required="true" />
+			<ModFolderName Required="true" />
+			<DeployDir Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Reference Include="System.IO.Compression" />
+			<Reference Include="System.IO.Compression.FileSystem" />
+			<Using Namespace="System.Collections.Generic" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.IO.Compression" />
+			<Using Namespace="System.Linq" />
+			<Code Type="Fragment" Language="cs">
+			<![CDATA[
+				try
+				{
+					Log.LogMessage (MessageImportance.High,
+						$"Fixing file structure in ZIP file at {ModZipFile}...");
+					if (!File.Exists (ModZipFile))
+						throw new Exception ("The ZIP file does not exist.");
+					ZipArchive zip = ZipFile.Open (ModZipFile, ZipArchiveMode.Update);
+					List<string> oldFullNames = zip.Entries
+						.Select ((e) => e.FullName).ToList ();
+					foreach (string oldFullName in oldFullNames)
+					{
+						if (oldFullName.EndsWith (".xcf",
+								System.StringComparison.Ordinal) ||
+							oldFullName.EndsWith (".svg",
+								System.StringComparison.Ordinal))
+						{
+							Log.LogMessage (MessageImportance.Low,
+								$"...removing working file {oldFullName}");
+							zip.GetEntry (oldFullName).Delete ();
+							continue;
+						}
+
+						if (oldFullName.StartsWith ($"{ModFolderName}/[",
+							System.StringComparison.Ordinal))
+						{
+							Log.LogMessage (MessageImportance.Low,
+								$"...fixing entry {oldFullName}");
+							ZipArchiveEntry oldEntry = zip.GetEntry (oldFullName);
+							ZipArchiveEntry newEntry = zip.CreateEntry (oldFullName
+								.Substring (ModFolderName.Length + 1));
+							using (Stream oldStream = oldEntry.Open ())
+							using (Stream newStream = newEntry.Open ())
+							{
+								oldStream.CopyTo (newStream);
+							}
+							oldEntry.Delete ();
+						}
+					}
+					zip.Dispose ();
+
+					if (DeployDir != "-")
+					{
+						Log.LogMessage (MessageImportance.High,
+							$"Deploy safely to {DeployDir} from from ZIP file at {ModZipFile}...");
+						if (Directory.Exists (DeployDir))
+							Directory.Delete (DeployDir, true);
+						ZipFile.ExtractToDirectory (ModZipFile, DeployDir);
+					}
+				}
+				catch (Exception ex)
+				{
+					Log.LogErrorFromException (ex);
+				}
+			]]>
+			</Code>
+		</Task>
+	</UsingTask>
+	<Target Name="FixAndDeploy" AfterTargets="AfterBuild">
+		<FixZipAndDeploySafely ModZipFile="$(ModZipPath)$(ModFolderName) $(Version).zip" ModFolderName="$(ModFolderName)" DeployDir="$(DeployDir)" />
+	</Target>
+</Project>

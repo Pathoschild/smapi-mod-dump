@@ -79,9 +79,9 @@ namespace SailorStyles_Clothing
 			}
 			
 			foreach (var pack in Const.HatPacks)
-				_ja.LoadAssets(Path.Combine(Helper.DirectoryPath, "Assets", Const.HatsDir, pack));
+				_ja.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets", Const.HatsDir, pack));
 			foreach (var pack in Const.ClothingPacks)
-				_ja.LoadAssets(Path.Combine(Helper.DirectoryPath, "Assets", Const.ClothingDir, pack));
+				_ja.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets", Const.ClothingDir, pack));
 		}
 		
 		private void OnDayStarted(object sender, DayStartedEventArgs e)
@@ -117,7 +117,9 @@ namespace SailorStyles_Clothing
 
 		private void TryGrabTileAction()
 		{
-			var grabTile = new Vector2(Game1.getOldMouseX() + Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y)
+			var grabTile = new Vector2(
+				               Game1.getOldMouseX() + Game1.viewport.X,
+				               Game1.getOldMouseY() + Game1.viewport.Y)
 			               / Game1.tileSize;
 			if (!Utility.tileWithinRadiusOfPlayer((int)grabTile.X, (int)grabTile.Y, 1, Game1.player))
 				grabTile = Game1.player.GetGrabTile();
@@ -145,11 +147,12 @@ namespace SailorStyles_Clothing
 			return false;
 		}
 
-		public static bool ShouldAddCatShop()
+		public bool ShouldAddCatShop()
 		{
 			var facts = Game1.dayOfMonth % 7 <= 1 || 
 			            (Instance.Config.DebugMode && Instance.Config.DebugAlwaysCaturday);
-			Log.D($"Cat should be added: {(facts ? "yes!" : "no..")}");
+			Log.D($"Cat should be added: {(facts ? "yes!" : "no..")}",
+				Config.DebugMode);
 			return facts;
 		}
 
@@ -203,7 +206,8 @@ namespace SailorStyles_Clothing
 			var sheet = map.GetTileSheet("outdoors");
 			var layer = map.GetLayer("Buildings");
 			if (layer.Tiles[Const.CatX, Const.CatY] == null)
-				// Adds a magic blank buildings tile to hold the CatShop property if none is there (there usually isnt)
+				// Adds a magic blank buildings tile to hold the CatShop property if none is there
+				// (there usually isnt, and its probably a problem for the cat if there is)
 				layer.Tiles[Const.CatX, Const.CatY] = new StaticTile(layer, sheet, mode, Const.DummyTileIndex);
 			layer.Tiles[Const.CatX, Const.CatY].Properties["Action"] = new PropertyValue(Const.CatId);
 		}
@@ -289,10 +293,12 @@ namespace SailorStyles_Clothing
 						Log.D($"CatShop: Adding {name}",
 							Config.DebugMode);
 						if (isHat)
-							_catShopStock.Add(new StardewValley.Objects.Hat(_ja.GetHatId(name)), new[]
+							_catShopStock.Add(new StardewValley.Objects.Hat(
+								_ja.GetHatId(name)), new[]
 								{ Const.PackCosts[contentPack], 1 });
 						else
-							_catShopStock.Add(new StardewValley.Objects.Clothing(_ja.GetClothingId(name)), new[]
+							_catShopStock.Add(new StardewValley.Objects.Clothing(
+								_ja.GetClothingId(name)), new[]
 								{ Const.PackCosts[contentPack], 1 });
 					}
 				}

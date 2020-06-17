@@ -1,0 +1,10 @@
+{
+    "Name": "TestMod",
+    "Author": "Raik",
+    "Version": "1.1.0",
+    "Description": "None",
+    "UniqueID": "raik.testmod",
+    "EntryDll": "SDVMod.dll",
+    "MinimumApiVersion": "2.10.0",
+    "UpdateKeys": []
+}

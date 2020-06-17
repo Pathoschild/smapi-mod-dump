@@ -10,6 +10,8 @@
         bool IsMoonUp(int time);
         int GetCycleLength();
         float GetBrightnessQuotient();
+        int GetMoonZenith();
+        float GetTrackPosition();
     }
 
     public class LunarDisturbancesAPI : ILunarDisturbancesAPI
@@ -19,6 +21,16 @@
         public LunarDisturbancesAPI(SDVMoon OurMoon)
         {
             IntMoon = OurMoon;
+        }
+
+        public int GetMoonZenith()
+        {
+            return IntMoon.GetMoonZenith();
+        }
+
+        public float GetTrackPosition()
+        {
+            return IntMoon.GetTrackPosition();
         }
 
         public string GetPlainCurrMoonPhase()

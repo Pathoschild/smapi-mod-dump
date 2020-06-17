@@ -6,6 +6,7 @@
 
 *Release pending.*
 
+* Don't run the event at the railroad when a train is coming
 * More natural format for dates thanks to Pathoschild
 * Improvements to Korean translation by lando793
 

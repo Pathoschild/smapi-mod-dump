@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Peaceful Mining",
+  "Author": "nman130",
+  "Version": "0.1.0",
+  "Description": "This mod either removes the monster's ability to move in the mines or stops them from appearing entirely.",
+  "UniqueID": "nman130.PeacefulMining",
+  "EntryDll": "PeacefulMining.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [  ]
+}

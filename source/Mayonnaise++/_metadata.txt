@@ -5,13 +5,15 @@ mods:
    Mayonnaise++
 
 latest commit:
-   commit 214602cd12f400adba0e894648dfa99c053903d8
+   commit 1deb9f6d728dc874b0fe0815ad410a855a7f4d90
    Author: Adam Chevalier <chevalierAdam2@gmail.com>
-   Date:   Mon May 18 07:21:19 2020 -0600
+   Date:   Sun Jun 14 11:55:03 2020 -0600
    
-       1.1.2 (#1)
+       change update key (#2)
        
        * update to latest sdv modding api version
        
        * fixes problems with incubation time and daysSinceLastLay
+       
+       * changes update key to be easier for users
    

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6265
+IDs: Veress.SeedMachines
+update keys: Nexus:6265, GitHub:mrveress/SDVMods

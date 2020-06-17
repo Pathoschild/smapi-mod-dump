@@ -18,6 +18,7 @@ mods:
    Custom Warp Locations
    Customizable Death Penalty
    Desert Obelisk
+   Flowery Tools
    Geode Info Menu
    Giant Crop Ring
    Hold to Break Geodes
@@ -32,9 +33,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit eb86dd7c8b94b2ec461db29dd291d6e2d6c39106
+   commit 13b093d587915d197103d79089d6e7e50157aac7
    Author: danvolchek <danvnad@gmail.com>
-   Date:   Thu Mar 26 19:39:21 2020 -0700
+   Date:   Sun Jun 14 16:24:36 2020 -0700
    
-       [Casks Everywhere] recompile for latest SDV
+       [Hats On Cats] change folder name so debug helper isn't ignored by git
    

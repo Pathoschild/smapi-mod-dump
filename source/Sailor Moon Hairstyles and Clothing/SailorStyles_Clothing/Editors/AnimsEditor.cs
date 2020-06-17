@@ -21,9 +21,10 @@ namespace SailorStyles_Clothing.Editors
 		public void Edit<T>(IAssetData asset)
 		{
 			var json = _helper.Content.Load<Dictionary<string, string>>(
-				System.IO.Path.Combine("Assets", Const.CatDir, Const.AnimDescs + Const.JsonExt));
+				System.IO.Path.Combine("assets", Const.CatDir, Const.AnimDescs + Const.JsonExt));
 			foreach (var line in json)
-				asset.AsDictionary<string, string>().Data.Add(line);
+				if (!asset.AsDictionary<string, string>().Data.ContainsKey(line.Key))
+					asset.AsDictionary<string, string>().Data.Add(line);
 		}
 	}
 }

@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Teh's Fishing Overhaul",
+  "Author": "TehPers",
+  "Version": "2.1.5-unofficial.1-Mendaere",
+  "Description": "A complete overhaul of vanilla fishing, with a huge amount of customization.",
+  "UniqueID": "TehPers.FishingOverhaul",
+  "EntryDll": "TehPers.FishingOverhaul.dll",
+  "MinimumApiVersion": "2.10",
+  "UpdateKeys": [ "Nexus:866" ],
+  "Dependencies": [
+    {
+      "UniqueID": "TehPers.CoreMod",
+      "IsRequired": false
+    }
+  ]
+}

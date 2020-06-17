@@ -7,11 +7,12 @@ mods:
    Level Extender
 
 latest commit:
-   commit 7df986b17e353d609f0bab71ba5f8914e29f981f
-   Author: unidarkshin <devinlematty@gmail.com>
-   Date:   Tue Apr 16 14:08:53 2019 -0400
+   commit 3a04028fde35231d1bdc5980255e3f62f0c33cd0
+   Merge: 7df986b 838ef89
+   Author: F1r3w477 <grillwar@gmail.com>
+   Date:   Fri Jun 5 20:38:21 2020 -0500
    
-       FISHING OVERHAUL UPDATE
+       Merge pull request #21 from yanggao1898/master
        
-       --
+       Bug fixes for Fishing with Cork Bobber, and gaining xp with skill buff food.
    

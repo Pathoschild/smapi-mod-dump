@@ -18,9 +18,9 @@ namespace MenusEverywhere
         /// <summary>The default values.</summary>
         public static ModConfig Defaults { get; } = new ModConfig();
 
-        /****
+        /*********
         ** Keyboard buttons
-        ****/
+        *********/
         /// <summary>The button which opens the calendar.</summary>
         public SButton CalendarKey { get; set; } = SButton.F1;
 
@@ -31,7 +31,11 @@ namespace MenusEverywhere
         public SButton MonsterEradicationKey { get; set; } = SButton.F3;
 
         /// <summary>The button which opens the shipping bin.</summary>
-        public SButton BinKey { get; set; } = SButton.F4;
+        public SButton BinKey { get; set; } = SButton.F5;
+
+        /*********
+        ** Toggleables
+        **********/
 
         /// <summary>Whether the bundles can be accessed from outside the community center.</summary>
         public bool CanAccessBundles { get; set; } = true;

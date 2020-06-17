@@ -1,0 +1,8 @@
+{
+	"default": true,
+	"ul-indent": { "indent": 1 },
+	"no-hard-tabs": false,
+	"line-length": false,
+	"no-duplicate-heading": { "siblings_only": true },
+	"no-inline-html": { "allowed_elements": [ "details", "summary", "small" ] }
+}

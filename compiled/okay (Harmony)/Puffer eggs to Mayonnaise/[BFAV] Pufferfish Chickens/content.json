@@ -1,0 +1,30 @@
+{
+	"Format": "1.0",
+	"Categories": [
+		{
+			"Action": "Create",
+			"Category": "Pufferfish Chicken",
+			"Types": [
+				{
+					"Type": "Pufferfish Chicken",
+					"DeluxeProduceLuck": 0.02,
+					"Data": "1/3/Pufferfish Egg/Large Pufferfish Egg/none/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/4/7/null/641/1000/Pufferfish Chicken/Coop",
+					"Sprites": {
+						"Adult": "Assets/PufferChick.png",
+						"Baby": "Assets/BabyPufferChick.png"
+					}
+				}
+			],
+			"Buildings": [
+				"Coop",
+				"Big Coop",
+				"Deluxe Coop"
+			],
+			"AnimalShop": null,
+			"ForceRemoveFromShop": true,
+			"ForceOverrideTypes": true,
+			"ForceOverrideBuildings": true,
+			"ForceOverrideExclude": true
+		}
+	]
+}

@@ -116,7 +116,7 @@ namespace FarmTypeManager
                         missing++; //increment missing tracker (note: items should always be removed overnight)
 
                         //this mod should remove all of its forage items overnight, so respawn this item without checking for its existence
-                        if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the item's tile is clear enough to respawn
+                        if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium") && !location.terrainFeatures.ContainsKey(saved.Tile)) //if the item's tile is clear enough to respawn
                         {
                             //update this item's ID, in case it changed due to other mods
                             string[] categoryAndName = saved.Name.Split(':');
@@ -168,10 +168,18 @@ namespace FarmTypeManager
                                 {
                                     if (saved.Name != null) //if this forage was originally assigned a name
                                     {
-                                        saved.ID = GetItemID("object", saved.Name); //update this forage's ID, in case it changed due to other mods
+                                        //update this forage's ID, in case it changed due to other mods
+
+                                        if (saved.Name.Contains(':')) //if this is "category:name"
+                                        {
+                                            string[] categoryAndName = saved.Name.Split(':');
+                                            int? newID = GetItemID(categoryAndName[0], categoryAndName[1]);
+                                        }
+                                        else //if this is just an object name
+                                            saved.ID = GetItemID("object", saved.Name); 
                                     }
 
-                                    SpawnForage(saved.ID.Value, location, saved.Tile); //respawn it
+                                    SpawnForage(saved, location, saved.Tile); //respawn it
                                 }
                                 else //if this is ore
                                 {

@@ -12,6 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CHANGELOG.md~RF5ba1bfa7.TMP" />
+    <None Remove="manifest.json~RF5b85f95d.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
   </ItemGroup>
 

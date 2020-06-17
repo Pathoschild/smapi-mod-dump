@@ -1,0 +1,24 @@
+﻿{
+	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work. In line with the purpose of this mod, please avoid gender-specific words and inflection where possible.",
+
+	"FlowerBomb.name": "Flower Bomb",
+	"FlowerBomb.description": "Generates an explosion of seasonal color overnight. Have fun!",
+	"FlowerBomb.empty": "No seeds (Weeds only)",
+
+	"ClintMudstone.name": "Mudstone Sold by Clint",
+	"ClintMudstone.description": "Whether to add some Mudstone to Clint's shop to make crafting easier",
+
+	"KentGifts.name": "Nicer Gifts from Kent",
+	"KentGifts.description": "Whether to replace the regular bombs in letters from Kent with Flower Bombs",
+
+	"LeahRecipe.name": "Receive Recipe from Leah",
+	"LeahRecipe.description": "Whether to deliver the Flower Bomb recipe in a letter from Leah\ninstead of instantly unlocking it (or in an event if married to her)",
+
+	"leahLetter.title": "Leah's Gardening Hint",
+	"leahLetter.content": "Dear @,^I've enjoyed our chats about foraging. I thought you might like to try this fun guerrilla gardening idea. I used a lot of flower bombs when I lived in the city. Talk to you soon!  ^   -Leah",
+
+	"leahEvent.leah1": "Don't the wildflowers behind the house look lovely today?",
+	"leahEvent.leah2": "I was thinking back to my days in the city and the guerrilla gardening that I used to do.",
+	"leahEvent.leah3": "I'm going to show you how to make a flower bomb. This will be so much fun!",
+	"leahEvent.message": "Learned how to craft 'Flower Bomb'"
+}

@@ -5,9 +5,10 @@ mods:
    More Grass
 
 latest commit:
-   commit 120bd42e54d4d36462c4471cd295f3b3f31ac8a9
-   Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Wed May 20 14:50:18 2020 +0100
+   commit 8d20a04a3a71258193232403c63dfa0510eecc8d
+   Merge: 120bd42 57adabc
+   Author: Andy Crocker <40639866+AndyCrocker@users.noreply.github.com>
+   Date:   Thu May 28 12:06:18 2020 +0100
    
-       [FarmAnimalVarietyRedux] Add api, add initial code for adding default animals
+       [BetterMixedSeeds] Fiber drop chance bugfix and Android patch
    

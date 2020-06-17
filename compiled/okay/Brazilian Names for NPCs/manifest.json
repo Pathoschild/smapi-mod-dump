@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Nomes Brasileiros",
+  "Author": "Charles Bonnevialle",
+  "Version": "1.0.0",
+  "Description": "Muda os nomes para coisas mais brasileiras.",
+  "UniqueID": "Charles.NomesBrasileiros",
+  "EntryDll": "NomesBrasileiros.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

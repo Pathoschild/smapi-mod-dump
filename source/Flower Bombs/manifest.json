@@ -1,0 +1,17 @@
+﻿{
+	"Name": "Flower Bombs",
+	"Author": "kdau",
+	"Version": "1.0.1",
+	"Description": "Make blooms, not war. Guerrilla gardening throughout the Valley",
+	"UniqueID": "kdau.FlowerBombs",
+	"EntryDll": "FlowerBombs.dll",
+	"MinimumApiVersion": "3.5.0",
+	"Dependencies": [
+		{ "UniqueID": "Platonymous.Toolkit", "MinimumVersion": "1.14.11" },
+		{ "UniqueID": "spacechase0.GenericModConfigMenu", "IsRequired": false }
+	],
+	"UpdateKeys": [
+		"Nexus:6228",
+		"ModDrop:794657"
+	]
+}

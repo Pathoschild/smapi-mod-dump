@@ -1,0 +1,13 @@
+url:
+   https://github.com/Dem1se/CustomReminders.git
+
+mods:
+   Custom Reminders
+
+latest commit:
+   commit 4c84b78919ee5aa588516eeb35d6c10fbddd19f7
+   Author: Dem1se <danksepticeye@protonmail.com>
+   Date:   Mon Jun 15 05:37:11 2020 +0530
+   
+       Update README
+   

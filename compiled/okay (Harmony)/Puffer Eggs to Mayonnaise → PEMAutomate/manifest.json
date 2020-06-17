@@ -1,0 +1,18 @@
+﻿{
+  "Name": "PEMAutomate",
+  "Author": "GZhynko",
+  "Version": "1.0.0",
+  "Description": "Adds support for Automate.",
+  "UniqueID": "GZhynko.PufferEggsToMayonnaise.Automate",
+  "EntryDll": "PEMAutomate.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:???" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.Automate"
+    },
+    {
+      "UniqueID": "GZhynko.PufferEggsToMayonnaise"
+    }
+  ]
+}

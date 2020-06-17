@@ -1,0 +1,13 @@
+{
+	"Name": "Large Pufferfish Egg",
+	"Description": "A large yellow egg. It has some spikes on it.",
+	"Category": "AnimalGoods",
+	"Edibility": -300,
+	"CanSell": true,
+	"EdibleBuffs": null,
+	"Price": 110,
+	"IsColored": false,
+	"GiftTastes": {},
+	"NameLocalization": {},
+	"DescriptionLocalization": {}
+}

@@ -1,0 +1,10 @@
+{
+    "Name": "TestMod",
+    "Author": "Raik",
+    "Version": "1.0.0",
+    "Description": "None",
+    "UniqueID": "raik.jatestmod",
+    "ContentPackFor": { "UniqueID": "spacechase0.JsonAssets" },
+    "MinimumApiVersion": "2.10.0",
+    "UpdateKeys": []
+}

@@ -1,0 +1,13 @@
+{
+  "TrainStops": [
+    {
+      "TargetMapName": "Railroad",
+      "LocalizedDisplayName": null,
+      "TargetX": 32,
+      "TargetY": 42,
+      "Cost": 0,
+      "FacingDirectionAfterWarp": 2,
+      "Conditions": null
+    }
+  ]
+}

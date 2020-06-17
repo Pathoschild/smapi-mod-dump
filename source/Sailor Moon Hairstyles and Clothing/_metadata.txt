@@ -5,9 +5,9 @@ mods:
    Sailor Moon Hairstyles and Clothing
 
 latest commit:
-   commit 20013b42a5f3b0a5a49ee7b1f0fb71da1289ea00
+   commit 81ce2c32c06df6b0f9974cbd722123ca7f18be25
    Author: razikh-git <pocketsathome@gmail.com>
-   Date:   Tue Mar 10 22:12:34 2020 +1100
+   Date:   Wed Jun 17 00:39:44 2020 +1000
    
-       Resolved invisible cat/out of stock from map edits only being applied once per game session
+       Updated csproj file to SDK format, and corrected capitalisation for "assets" to stop breaking Linux installs.
    

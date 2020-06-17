@@ -5,9 +5,9 @@ mods:
    Menus Everywhere
 
 latest commit:
-   commit 5ebb655b6e2cb26bc58f79e6d44608aa257a994e
+   commit b86a977b5dee8df28eeace546f3e4e35d5da30b4
    Author: Nolan Wheeler <nolanwheeler@yahoo.com>
-   Date:   Fri May 22 18:06:36 2020 -0400
+   Date:   Fri May 29 15:46:14 2020 -0400
    
-       Began Store Module.
+       Updated configs and began Peaceful Mining mod.
    

@@ -5,9 +5,9 @@ mods:
    Zoomy Farmer
 
 latest commit:
-   commit 582b712579726df48f37a86a8f12efcbeadd5f1f
+   commit 66b88e2de3d994f3fc3a8341922136b6370ff8b2
    Author: Geko_X <xavhunt@gmail.com>
-   Date:   Tue May 12 20:41:05 2020 +1000
+   Date:   Mon May 25 11:40:12 2020 +1000
    
-       + (ZF) Updated manifest with correct version string
+       + Code dump because I'm lazy and don't commit often sometimes
    

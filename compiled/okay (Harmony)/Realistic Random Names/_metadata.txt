@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6269
+IDs: aedenthorn.RealNames
+update keys: Nexus:6269, GitHub:aedenthorn/StardewValleyMods

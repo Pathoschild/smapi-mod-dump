@@ -149,7 +149,31 @@ namespace FarmTypeManager
                             while (spawnCount > 0) //while more forage should be spawned
                             {
                                 spawnCount--;
-                                SavedObject randomForage = forageObjects[Utility.RNG.Next(forageObjects.Count)]; //select a random object from the forage list
+
+                                //get the total spawn weight of available forage types
+                                int totalWeight = 0;
+
+                                foreach (SavedObject obj in forageObjects) //for each object in the forage list
+                                {
+                                    totalWeight += obj.ConfigItem?.SpawnWeight ?? 1; //increment total weight by this object's spawn weight (default 1)
+                                }
+
+                                //select a random forage type
+                                SavedObject randomForage = null;
+
+                                int random = Utility.RNG.Next(0, totalWeight); //get a random integer from 0 to (totalWeight - 1)
+                                for (int f = 0; f < forageObjects.Count; f++) //for each object in the forage list
+                                {
+                                    int spawnWeight = forageObjects[f].ConfigItem?.SpawnWeight ?? 1; //get this object's spawn weight (default 1)
+
+                                    if (random < spawnWeight) //if the random number is "within" this object's spawn weight
+                                    {
+                                        randomForage = forageObjects[f]; //select this object
+                                        break; //skip the remaining objects
+                                    }
+                                    else
+                                        random -= spawnWeight; //subtract this object's weight from the random number (then check the next object)
+                                }
 
                                 double? spawnChance = randomForage.ConfigItem?.PercentChanceToSpawn; //get this object's spawn chance, if provided
                                 if (spawnChance.HasValue && spawnChance.Value < Utility.RNG.Next(100)) //if this object "fails" its chance to spawn

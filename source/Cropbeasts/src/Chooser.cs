@@ -209,11 +209,18 @@ namespace Cropbeasts
 
 		// Lists all the tiles in the given location with crops
 		// on them that are candidates for becoming cropbeasts.
-		protected virtual List<CropTile> findCandidateCropTiles
-			(GameLocation location, string filter = null, bool console = false)
+		protected virtual List<CropTile> findCandidateCropTiles (GameLocation location,
+			string filter = null, bool console = false)
 		{
 			List<SObject> wickedStatues = Utilities.FindWickedStatues (location);
 			List<JunimoHut> junimoHuts = Utilities.FindActiveJunimoHuts (location);
+
+			// For IF2R, avoid cropbeast-spawning special giant crops in an area
+			// of the map that is initially inaccessible.
+			List<Point> exemptTiles = new List<Point> ();
+			if (location is Farm && Game1.whichFarm == Farm.default_layout &&
+					Helper.ModRegistry.IsLoaded ("flashshifter.immersivefarm2remastered"))
+				exemptTiles.Add (new Point (79, 99));
 
 			return CropTile.FindAll (location).Where ((tile) =>
 			{
@@ -229,9 +236,17 @@ namespace Cropbeasts
 					return false;
 				}
 
+				// The crop's tile must not be on the exempt list for the map.
+				Point tileLoc = tile.tileLocation;
+				if (exemptTiles.Contains (tileLoc))
+				{
+					if (console)
+						Monitor.Log ($"Excluded a {tile.logDescription} because its tile is exempt on this map.");
+					return false;
+				}
+
 				// The crop must not have already been chosen by another
 				// in-progress cropbeast spawn.
-				Point tileLoc = tile.tileLocation;
 				if (chosenTiles.ContainsKey (tileLoc))
 				{
 					if (console)

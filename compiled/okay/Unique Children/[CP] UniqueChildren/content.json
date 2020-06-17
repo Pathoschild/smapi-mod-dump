@@ -1,0 +1,5316 @@
+{
+	"Format": "1.14.0",
+	"Changes": [
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Body sprites of a Child must be set as "Load" to initialize it!
+	// All other parts, like clothes, hair and eyes, can be set as "EditImage" (Overlay).
+	// Babies are now separated in boys and girls.
+	// If you have custom spouse(s), you can add them (Natural & Adopted sprites)
+	//
+	//
+	// Target Example for Abigail:
+	//
+	// "Characters/Natural/Abigail/Baby"
+	// "Characters/Natural/Abigail/Baby_dark"
+	// "Characters/Natural/Abigail/Baby_girl"
+	// "Characters/Natural/Abigail/Baby_girl_dark"
+	// "Characters/Natural/Abigail/Toddler"
+	// "Characters/Natural/Abigail/Toddler_dark"
+	// "Characters/Natural/Abigail/Toddler_girl"
+	// "Characters/Natural/Abigail/Toddler_girl_dark"
+	//
+	// "Characters/Adopted/Abigail/Baby"
+	// "Characters/Adopted/Abigail/Baby_dark"
+	// "Characters/Adopted/Abigail/Baby_girl"
+	// "Characters/Adopted/Abigail/Baby_girl_dark"
+	// "Characters/Adopted/Abigail/Toddler"
+	// "Characters/Adopted/Abigail/Toddler_dark"
+	// "Characters/Adopted/Abigail/Toddler_girl"
+	// "Characters/Adopted/Abigail/Toddler_girl_dark"
+	//
+	//
+	// More Info:
+	// Please avoid 'Random' settings, otherwise every player sees something different.
+	// Use 'Day' instead, for example for clothes (if you have 2 clothes you can set it for every second day):
+	//
+	// {
+	//  	"LogName": "Toddler Boy Clothes",
+	//      "Action": "EditImage",
+	//      "Target": "Characters/Natural/Abigail/Toddler",
+	//      "FromFile": "assets/Natural/Abigail/Toddler/Boy/Clothes.png",
+	//      "PatchMode": "Overlay",
+	//      "When": {  "Day": "1,3,5,7,9,11,13,15,17,19,21,23,25,27" }, 
+	// },
+	//
+	// {
+	//      "LogName": "Toddler Boy Clothes",
+	//      "Action": "EditImage",
+	//      "Target": "Characters/Natural/Abigail/Toddler",
+	//      "FromFile": "assets/Natural/Abigail/Toddler/Boy/Clothes_b.png",
+	//      "PatchMode": "Overlay",
+	//      "When": {  "Day": "2,4,6,8,10,12,14,16,18,20,22,24,26,28" },
+	// },
+	//
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+	////////NATURAL CHILDREN
+	
+	//Natural Abigail
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Abigail/Baby",
+            "FromFile": "assets/Natural/Abigail/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Baby",
+            "FromFile": "assets/Natural/Abigail/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Baby",
+            "FromFile": "assets/Natural/Abigail/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Abigail/Baby_dark",
+            "FromFile": "assets/Natural/Abigail/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Baby_dark",
+            "FromFile": "assets/Natural/Abigail/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Baby_dark",
+            "FromFile": "assets/Natural/Abigail/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Abigail/Baby_girl",
+            "FromFile": "assets/Natural/Abigail/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Baby_girl",
+            "FromFile": "assets/Natural/Abigail/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Baby_girl",
+            "FromFile": "assets/Natural/Abigail/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Abigail/Baby_girl_dark",
+            "FromFile": "assets/Natural/Abigail/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Baby_girl_dark",
+            "FromFile": "assets/Natural/Abigail/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Baby_girl_dark",
+            "FromFile": "assets/Natural/Abigail/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Abigail
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Abigail/Toddler",
+            "FromFile": "assets/Natural/Abigail/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler",
+            "FromFile": "assets/Natural/Abigail/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler",
+            "FromFile": "assets/Natural/Abigail/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler",
+            "FromFile": "assets/Natural/Abigail/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Abigail/Toddler_dark",
+            "FromFile": "assets/Natural/Abigail/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler_dark",
+            "FromFile": "assets/Natural/Abigail/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler_dark",
+            "FromFile": "assets/Natural/Abigail/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler_dark",
+            "FromFile": "assets/Natural/Abigail/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Abigail
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Abigail/Toddler_girl",
+            "FromFile": "assets/Natural/Abigail/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler_girl",
+            "FromFile": "assets/Natural/Abigail/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler_girl",
+            "FromFile": "assets/Natural/Abigail/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler_girl",
+            "FromFile": "assets/Natural/Abigail/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Abigail/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Abigail/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Abigail/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Abigail/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Abigail/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Abigail/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+	
+	
+	//Natural Alex
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Alex/Baby",
+            "FromFile": "assets/Natural/Alex/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Baby",
+            "FromFile": "assets/Natural/Alex/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Baby",
+            "FromFile": "assets/Natural/Alex/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Alex/Baby_dark",
+            "FromFile": "assets/Natural/Alex/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Baby_dark",
+            "FromFile": "assets/Natural/Alex/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Baby_dark",
+            "FromFile": "assets/Natural/Alex/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Alex/Baby_girl",
+            "FromFile": "assets/Natural/Alex/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Baby_girl",
+            "FromFile": "assets/Natural/Alex/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Baby_girl",
+            "FromFile": "assets/Natural/Alex/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Alex/Baby_girl_dark",
+            "FromFile": "assets/Natural/Alex/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Baby_girl_dark",
+            "FromFile": "assets/Natural/Alex/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Baby_girl_dark",
+            "FromFile": "assets/Natural/Alex/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Alex
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Alex/Toddler",
+            "FromFile": "assets/Natural/Alex/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler",
+            "FromFile": "assets/Natural/Alex/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler",
+            "FromFile": "assets/Natural/Alex/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler",
+            "FromFile": "assets/Natural/Alex/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Alex/Toddler_dark",
+            "FromFile": "assets/Natural/Alex/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler_dark",
+            "FromFile": "assets/Natural/Alex/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler_dark",
+            "FromFile": "assets/Natural/Alex/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler_dark",
+            "FromFile": "assets/Natural/Alex/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Alex
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Alex/Toddler_girl",
+            "FromFile": "assets/Natural/Alex/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler_girl",
+            "FromFile": "assets/Natural/Alex/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler_girl",
+            "FromFile": "assets/Natural/Alex/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler_girl",
+            "FromFile": "assets/Natural/Alex/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Alex/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Alex/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Alex/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Alex/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Alex/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Alex/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Default
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Default/Baby",
+            "FromFile": "assets/Natural/Default/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Baby",
+            "FromFile": "assets/Natural/Default/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Baby",
+            "FromFile": "assets/Natural/Default/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Default/Baby_dark",
+            "FromFile": "assets/Natural/Default/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Baby_dark",
+            "FromFile": "assets/Natural/Default/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Baby_dark",
+            "FromFile": "assets/Natural/Default/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Default/Baby_girl",
+            "FromFile": "assets/Natural/Default/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Baby_girl",
+            "FromFile": "assets/Natural/Default/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Baby_girl",
+            "FromFile": "assets/Natural/Default/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Default/Baby_girl_dark",
+            "FromFile": "assets/Natural/Default/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Baby_girl_dark",
+            "FromFile": "assets/Natural/Default/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Baby_girl_dark",
+            "FromFile": "assets/Natural/Default/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Default
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Default/Toddler",
+            "FromFile": "assets/Natural/Default/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler",
+            "FromFile": "assets/Natural/Default/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler",
+            "FromFile": "assets/Natural/Default/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler",
+            "FromFile": "assets/Natural/Default/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Default/Toddler_dark",
+            "FromFile": "assets/Natural/Default/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler_dark",
+            "FromFile": "assets/Natural/Default/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler_dark",
+            "FromFile": "assets/Natural/Default/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler_dark",
+            "FromFile": "assets/Natural/Default/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Default
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Default/Toddler_girl",
+            "FromFile": "assets/Natural/Default/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler_girl",
+            "FromFile": "assets/Natural/Default/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler_girl",
+            "FromFile": "assets/Natural/Default/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler_girl",
+            "FromFile": "assets/Natural/Default/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Default/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Default/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Default/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Default/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Default/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Default/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Elliott
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Elliott/Baby",
+            "FromFile": "assets/Natural/Elliott/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Baby",
+            "FromFile": "assets/Natural/Elliott/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Baby",
+            "FromFile": "assets/Natural/Elliott/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Elliott/Baby_dark",
+            "FromFile": "assets/Natural/Elliott/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Baby_dark",
+            "FromFile": "assets/Natural/Elliott/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Baby_dark",
+            "FromFile": "assets/Natural/Elliott/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Elliott/Baby_girl",
+            "FromFile": "assets/Natural/Elliott/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Baby_girl",
+            "FromFile": "assets/Natural/Elliott/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Baby_girl",
+            "FromFile": "assets/Natural/Elliott/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Elliott/Baby_girl_dark",
+            "FromFile": "assets/Natural/Elliott/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Baby_girl_dark",
+            "FromFile": "assets/Natural/Elliott/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Baby_girl_dark",
+            "FromFile": "assets/Natural/Elliott/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Elliott
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Elliott/Toddler",
+            "FromFile": "assets/Natural/Elliott/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler",
+            "FromFile": "assets/Natural/Elliott/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler",
+            "FromFile": "assets/Natural/Elliott/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler",
+            "FromFile": "assets/Natural/Elliott/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Elliott/Toddler_dark",
+            "FromFile": "assets/Natural/Elliott/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler_dark",
+            "FromFile": "assets/Natural/Elliott/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler_dark",
+            "FromFile": "assets/Natural/Elliott/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler_dark",
+            "FromFile": "assets/Natural/Elliott/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Elliott
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Elliott/Toddler_girl",
+            "FromFile": "assets/Natural/Elliott/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler_girl",
+            "FromFile": "assets/Natural/Elliott/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler_girl",
+            "FromFile": "assets/Natural/Elliott/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler_girl",
+            "FromFile": "assets/Natural/Elliott/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Elliott/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Elliott/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Elliott/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Elliott/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Elliott/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Elliott/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Emily
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Emily/Baby",
+            "FromFile": "assets/Natural/Emily/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Baby",
+            "FromFile": "assets/Natural/Emily/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Baby",
+            "FromFile": "assets/Natural/Emily/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Emily/Baby_dark",
+            "FromFile": "assets/Natural/Emily/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Baby_dark",
+            "FromFile": "assets/Natural/Emily/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Baby_dark",
+            "FromFile": "assets/Natural/Emily/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Emily/Baby_girl",
+            "FromFile": "assets/Natural/Emily/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Baby_girl",
+            "FromFile": "assets/Natural/Emily/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Baby_girl",
+            "FromFile": "assets/Natural/Emily/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Emily/Baby_girl_dark",
+            "FromFile": "assets/Natural/Emily/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Baby_girl_dark",
+            "FromFile": "assets/Natural/Emily/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Baby_girl_dark",
+            "FromFile": "assets/Natural/Emily/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Emily
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Emily/Toddler",
+            "FromFile": "assets/Natural/Emily/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler",
+            "FromFile": "assets/Natural/Emily/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler",
+            "FromFile": "assets/Natural/Emily/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler",
+            "FromFile": "assets/Natural/Emily/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Emily/Toddler_dark",
+            "FromFile": "assets/Natural/Emily/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler_dark",
+            "FromFile": "assets/Natural/Emily/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler_dark",
+            "FromFile": "assets/Natural/Emily/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler_dark",
+            "FromFile": "assets/Natural/Emily/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Emily
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Emily/Toddler_girl",
+            "FromFile": "assets/Natural/Emily/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler_girl",
+            "FromFile": "assets/Natural/Emily/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler_girl",
+            "FromFile": "assets/Natural/Emily/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler_girl",
+            "FromFile": "assets/Natural/Emily/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Emily/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Emily/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Emily/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Emily/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Emily/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Emily/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Haley
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Haley/Baby",
+            "FromFile": "assets/Natural/Haley/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Baby",
+            "FromFile": "assets/Natural/Haley/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Baby",
+            "FromFile": "assets/Natural/Haley/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Haley/Baby_dark",
+            "FromFile": "assets/Natural/Haley/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Baby_dark",
+            "FromFile": "assets/Natural/Haley/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Baby_dark",
+            "FromFile": "assets/Natural/Haley/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Haley/Baby_girl",
+            "FromFile": "assets/Natural/Haley/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Baby_girl",
+            "FromFile": "assets/Natural/Haley/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Baby_girl",
+            "FromFile": "assets/Natural/Haley/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Haley/Baby_girl_dark",
+            "FromFile": "assets/Natural/Haley/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Baby_girl_dark",
+            "FromFile": "assets/Natural/Haley/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Baby_girl_dark",
+            "FromFile": "assets/Natural/Haley/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Haley
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Haley/Toddler",
+            "FromFile": "assets/Natural/Haley/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler",
+            "FromFile": "assets/Natural/Haley/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler",
+            "FromFile": "assets/Natural/Haley/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler",
+            "FromFile": "assets/Natural/Haley/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Haley/Toddler_dark",
+            "FromFile": "assets/Natural/Haley/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler_dark",
+            "FromFile": "assets/Natural/Haley/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler_dark",
+            "FromFile": "assets/Natural/Haley/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler_dark",
+            "FromFile": "assets/Natural/Haley/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Haley
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Haley/Toddler_girl",
+            "FromFile": "assets/Natural/Haley/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler_girl",
+            "FromFile": "assets/Natural/Haley/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler_girl",
+            "FromFile": "assets/Natural/Haley/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler_girl",
+            "FromFile": "assets/Natural/Haley/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Haley/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Haley/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Haley/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Haley/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Haley/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Haley/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Harvey
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Harvey/Baby",
+            "FromFile": "assets/Natural/Harvey/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Baby",
+            "FromFile": "assets/Natural/Harvey/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Baby",
+            "FromFile": "assets/Natural/Harvey/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Harvey/Baby_dark",
+            "FromFile": "assets/Natural/Harvey/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Baby_dark",
+            "FromFile": "assets/Natural/Harvey/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Baby_dark",
+            "FromFile": "assets/Natural/Harvey/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Harvey/Baby_girl",
+            "FromFile": "assets/Natural/Harvey/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Baby_girl",
+            "FromFile": "assets/Natural/Harvey/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Baby_girl",
+            "FromFile": "assets/Natural/Harvey/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Harvey/Baby_girl_dark",
+            "FromFile": "assets/Natural/Harvey/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Baby_girl_dark",
+            "FromFile": "assets/Natural/Harvey/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Baby_girl_dark",
+            "FromFile": "assets/Natural/Harvey/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Harvey
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Harvey/Toddler",
+            "FromFile": "assets/Natural/Harvey/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler",
+            "FromFile": "assets/Natural/Harvey/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler",
+            "FromFile": "assets/Natural/Harvey/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler",
+            "FromFile": "assets/Natural/Harvey/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Harvey/Toddler_dark",
+            "FromFile": "assets/Natural/Harvey/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler_dark",
+            "FromFile": "assets/Natural/Harvey/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler_dark",
+            "FromFile": "assets/Natural/Harvey/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler_dark",
+            "FromFile": "assets/Natural/Harvey/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Harvey
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Harvey/Toddler_girl",
+            "FromFile": "assets/Natural/Harvey/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler_girl",
+            "FromFile": "assets/Natural/Harvey/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler_girl",
+            "FromFile": "assets/Natural/Harvey/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler_girl",
+            "FromFile": "assets/Natural/Harvey/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Harvey/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Harvey/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Harvey/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Harvey/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Harvey/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Harvey/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Leah
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Leah/Baby",
+            "FromFile": "assets/Natural/Leah/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Baby",
+            "FromFile": "assets/Natural/Leah/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Baby",
+            "FromFile": "assets/Natural/Leah/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Leah/Baby_dark",
+            "FromFile": "assets/Natural/Leah/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Baby_dark",
+            "FromFile": "assets/Natural/Leah/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Baby_dark",
+            "FromFile": "assets/Natural/Leah/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Leah/Baby_girl",
+            "FromFile": "assets/Natural/Leah/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Baby_girl",
+            "FromFile": "assets/Natural/Leah/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Baby_girl",
+            "FromFile": "assets/Natural/Leah/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Leah/Baby_girl_dark",
+            "FromFile": "assets/Natural/Leah/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Baby_girl_dark",
+            "FromFile": "assets/Natural/Leah/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Baby_girl_dark",
+            "FromFile": "assets/Natural/Leah/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Leah
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Leah/Toddler",
+            "FromFile": "assets/Natural/Leah/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler",
+            "FromFile": "assets/Natural/Leah/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler",
+            "FromFile": "assets/Natural/Leah/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler",
+            "FromFile": "assets/Natural/Leah/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Leah/Toddler_dark",
+            "FromFile": "assets/Natural/Leah/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler_dark",
+            "FromFile": "assets/Natural/Leah/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler_dark",
+            "FromFile": "assets/Natural/Leah/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler_dark",
+            "FromFile": "assets/Natural/Leah/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Leah
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Leah/Toddler_girl",
+            "FromFile": "assets/Natural/Leah/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler_girl",
+            "FromFile": "assets/Natural/Leah/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler_girl",
+            "FromFile": "assets/Natural/Leah/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler_girl",
+            "FromFile": "assets/Natural/Leah/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Leah/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Leah/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Leah/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Leah/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Leah/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Leah/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Maru
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Maru/Baby",
+            "FromFile": "assets/Natural/Maru/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Baby",
+            "FromFile": "assets/Natural/Maru/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Baby",
+            "FromFile": "assets/Natural/Maru/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Maru/Baby_dark",
+            "FromFile": "assets/Natural/Maru/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Baby_dark",
+            "FromFile": "assets/Natural/Maru/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Baby_dark",
+            "FromFile": "assets/Natural/Maru/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Maru/Baby_girl",
+            "FromFile": "assets/Natural/Maru/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Baby_girl",
+            "FromFile": "assets/Natural/Maru/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Baby_girl",
+            "FromFile": "assets/Natural/Maru/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Maru/Baby_girl_dark",
+            "FromFile": "assets/Natural/Maru/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Baby_girl_dark",
+            "FromFile": "assets/Natural/Maru/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Baby_girl_dark",
+            "FromFile": "assets/Natural/Maru/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Maru
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Maru/Toddler",
+            "FromFile": "assets/Natural/Maru/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler",
+            "FromFile": "assets/Natural/Maru/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler",
+            "FromFile": "assets/Natural/Maru/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler",
+            "FromFile": "assets/Natural/Maru/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Maru/Toddler_dark",
+            "FromFile": "assets/Natural/Maru/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler_dark",
+            "FromFile": "assets/Natural/Maru/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler_dark",
+            "FromFile": "assets/Natural/Maru/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler_dark",
+            "FromFile": "assets/Natural/Maru/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Maru
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Maru/Toddler_girl",
+            "FromFile": "assets/Natural/Maru/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler_girl",
+            "FromFile": "assets/Natural/Maru/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler_girl",
+            "FromFile": "assets/Natural/Maru/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler_girl",
+            "FromFile": "assets/Natural/Maru/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Maru/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Maru/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Maru/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Maru/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Maru/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Maru/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Penny
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Penny/Baby",
+            "FromFile": "assets/Natural/Penny/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Baby",
+            "FromFile": "assets/Natural/Penny/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Baby",
+            "FromFile": "assets/Natural/Penny/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Penny/Baby_dark",
+            "FromFile": "assets/Natural/Penny/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Baby_dark",
+            "FromFile": "assets/Natural/Penny/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Baby_dark",
+            "FromFile": "assets/Natural/Penny/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Penny/Baby_girl",
+            "FromFile": "assets/Natural/Penny/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Baby_girl",
+            "FromFile": "assets/Natural/Penny/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Baby_girl",
+            "FromFile": "assets/Natural/Penny/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Penny/Baby_girl_dark",
+            "FromFile": "assets/Natural/Penny/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Baby_girl_dark",
+            "FromFile": "assets/Natural/Penny/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Baby_girl_dark",
+            "FromFile": "assets/Natural/Penny/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Penny
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Penny/Toddler",
+            "FromFile": "assets/Natural/Penny/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler",
+            "FromFile": "assets/Natural/Penny/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler",
+            "FromFile": "assets/Natural/Penny/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler",
+            "FromFile": "assets/Natural/Penny/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Penny/Toddler_dark",
+            "FromFile": "assets/Natural/Penny/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler_dark",
+            "FromFile": "assets/Natural/Penny/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler_dark",
+            "FromFile": "assets/Natural/Penny/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler_dark",
+            "FromFile": "assets/Natural/Penny/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Penny
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Penny/Toddler_girl",
+            "FromFile": "assets/Natural/Penny/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler_girl",
+            "FromFile": "assets/Natural/Penny/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler_girl",
+            "FromFile": "assets/Natural/Penny/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler_girl",
+            "FromFile": "assets/Natural/Penny/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Penny/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Penny/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Penny/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Penny/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Penny/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Penny/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Sam
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sam/Baby",
+            "FromFile": "assets/Natural/Sam/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Baby",
+            "FromFile": "assets/Natural/Sam/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Baby",
+            "FromFile": "assets/Natural/Sam/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sam/Baby_dark",
+            "FromFile": "assets/Natural/Sam/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Baby_dark",
+            "FromFile": "assets/Natural/Sam/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Baby_dark",
+            "FromFile": "assets/Natural/Sam/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sam/Baby_girl",
+            "FromFile": "assets/Natural/Sam/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Baby_girl",
+            "FromFile": "assets/Natural/Sam/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Baby_girl",
+            "FromFile": "assets/Natural/Sam/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sam/Baby_girl_dark",
+            "FromFile": "assets/Natural/Sam/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Baby_girl_dark",
+            "FromFile": "assets/Natural/Sam/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Baby_girl_dark",
+            "FromFile": "assets/Natural/Sam/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Sam
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sam/Toddler",
+            "FromFile": "assets/Natural/Sam/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler",
+            "FromFile": "assets/Natural/Sam/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler",
+            "FromFile": "assets/Natural/Sam/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler",
+            "FromFile": "assets/Natural/Sam/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sam/Toddler_dark",
+            "FromFile": "assets/Natural/Sam/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler_dark",
+            "FromFile": "assets/Natural/Sam/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler_dark",
+            "FromFile": "assets/Natural/Sam/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler_dark",
+            "FromFile": "assets/Natural/Sam/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Sam
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sam/Toddler_girl",
+            "FromFile": "assets/Natural/Sam/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler_girl",
+            "FromFile": "assets/Natural/Sam/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler_girl",
+            "FromFile": "assets/Natural/Sam/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler_girl",
+            "FromFile": "assets/Natural/Sam/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sam/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Sam/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Sam/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Sam/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sam/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Sam/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Sebastian
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sebastian/Baby",
+            "FromFile": "assets/Natural/Sebastian/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Baby",
+            "FromFile": "assets/Natural/Sebastian/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Baby",
+            "FromFile": "assets/Natural/Sebastian/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sebastian/Baby_dark",
+            "FromFile": "assets/Natural/Sebastian/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Baby_dark",
+            "FromFile": "assets/Natural/Sebastian/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Baby_dark",
+            "FromFile": "assets/Natural/Sebastian/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sebastian/Baby_girl",
+            "FromFile": "assets/Natural/Sebastian/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Baby_girl",
+            "FromFile": "assets/Natural/Sebastian/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Baby_girl",
+            "FromFile": "assets/Natural/Sebastian/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sebastian/Baby_girl_dark",
+            "FromFile": "assets/Natural/Sebastian/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Baby_girl_dark",
+            "FromFile": "assets/Natural/Sebastian/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Baby_girl_dark",
+            "FromFile": "assets/Natural/Sebastian/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Sebastian
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sebastian/Toddler",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sebastian/Toddler_dark",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler_dark",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler_dark",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler_dark",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Sebastian
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sebastian/Toddler_girl",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler_girl",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler_girl",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler_girl",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Sebastian/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Sebastian/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Sebastian/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Natural Shane
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Shane/Baby",
+            "FromFile": "assets/Natural/Shane/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Baby",
+            "FromFile": "assets/Natural/Shane/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Baby",
+            "FromFile": "assets/Natural/Shane/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Shane/Baby_dark",
+            "FromFile": "assets/Natural/Shane/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Baby_dark",
+            "FromFile": "assets/Natural/Shane/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Baby_dark",
+            "FromFile": "assets/Natural/Shane/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Shane/Baby_girl",
+            "FromFile": "assets/Natural/Shane/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Baby_girl",
+            "FromFile": "assets/Natural/Shane/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Baby_girl",
+            "FromFile": "assets/Natural/Shane/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Shane/Baby_girl_dark",
+            "FromFile": "assets/Natural/Shane/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Baby_girl_dark",
+            "FromFile": "assets/Natural/Shane/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Baby_girl_dark",
+            "FromFile": "assets/Natural/Shane/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Shane
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Shane/Toddler",
+            "FromFile": "assets/Natural/Shane/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler",
+            "FromFile": "assets/Natural/Shane/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler",
+            "FromFile": "assets/Natural/Shane/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler",
+            "FromFile": "assets/Natural/Shane/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Shane/Toddler_dark",
+            "FromFile": "assets/Natural/Shane/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler_dark",
+            "FromFile": "assets/Natural/Shane/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler_dark",
+            "FromFile": "assets/Natural/Shane/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler_dark",
+            "FromFile": "assets/Natural/Shane/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Natural Shane
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Shane/Toddler_girl",
+            "FromFile": "assets/Natural/Shane/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler_girl",
+            "FromFile": "assets/Natural/Shane/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler_girl",
+            "FromFile": "assets/Natural/Shane/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler_girl",
+            "FromFile": "assets/Natural/Shane/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Natural/Shane/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Shane/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Shane/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Shane/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Natural/Shane/Toddler_girl_dark",
+            "FromFile": "assets/Natural/Shane/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////ADOPTED CHILDREN
+	
+	//Adopted Abigail
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Abigail/Baby",
+            "FromFile": "assets/Adopted/Abigail/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Baby",
+            "FromFile": "assets/Adopted/Abigail/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Baby",
+            "FromFile": "assets/Adopted/Abigail/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Abigail/Baby_dark",
+            "FromFile": "assets/Adopted/Abigail/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Baby_dark",
+            "FromFile": "assets/Adopted/Abigail/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Baby_dark",
+            "FromFile": "assets/Adopted/Abigail/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Abigail/Baby_girl",
+            "FromFile": "assets/Adopted/Abigail/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Baby_girl",
+            "FromFile": "assets/Adopted/Abigail/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Baby_girl",
+            "FromFile": "assets/Adopted/Abigail/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Abigail/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Abigail/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Abigail/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Abigail/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Abigail
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Abigail/Toddler",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Abigail/Toddler_dark",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler_dark",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler_dark",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler_dark",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Abigail
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Abigail/Toddler_girl",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler_girl",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler_girl",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler_girl",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Abigail/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Abigail/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Abigail/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+	
+	
+	//Adopted Alex
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Alex/Baby",
+            "FromFile": "assets/Adopted/Alex/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Baby",
+            "FromFile": "assets/Adopted/Alex/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Baby",
+            "FromFile": "assets/Adopted/Alex/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Alex/Baby_dark",
+            "FromFile": "assets/Adopted/Alex/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Baby_dark",
+            "FromFile": "assets/Adopted/Alex/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Baby_dark",
+            "FromFile": "assets/Adopted/Alex/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Alex/Baby_girl",
+            "FromFile": "assets/Adopted/Alex/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Baby_girl",
+            "FromFile": "assets/Adopted/Alex/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Baby_girl",
+            "FromFile": "assets/Adopted/Alex/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Alex/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Alex/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Alex/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Alex/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Alex
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Alex/Toddler",
+            "FromFile": "assets/Adopted/Alex/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler",
+            "FromFile": "assets/Adopted/Alex/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler",
+            "FromFile": "assets/Adopted/Alex/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler",
+            "FromFile": "assets/Adopted/Alex/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Alex/Toddler_dark",
+            "FromFile": "assets/Adopted/Alex/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler_dark",
+            "FromFile": "assets/Adopted/Alex/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler_dark",
+            "FromFile": "assets/Adopted/Alex/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler_dark",
+            "FromFile": "assets/Adopted/Alex/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Alex
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Alex/Toddler_girl",
+            "FromFile": "assets/Adopted/Alex/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler_girl",
+            "FromFile": "assets/Adopted/Alex/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler_girl",
+            "FromFile": "assets/Adopted/Alex/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler_girl",
+            "FromFile": "assets/Adopted/Alex/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Alex/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Alex/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Alex/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Alex/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Alex/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Alex/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Default
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Default/Baby",
+            "FromFile": "assets/Adopted/Default/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Baby",
+            "FromFile": "assets/Adopted/Default/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Baby",
+            "FromFile": "assets/Adopted/Default/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Default/Baby_dark",
+            "FromFile": "assets/Adopted/Default/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Baby_dark",
+            "FromFile": "assets/Adopted/Default/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Baby_dark",
+            "FromFile": "assets/Adopted/Default/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Default/Baby_girl",
+            "FromFile": "assets/Adopted/Default/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Baby_girl",
+            "FromFile": "assets/Adopted/Default/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Baby_girl",
+            "FromFile": "assets/Adopted/Default/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Default/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Default/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Default/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Default/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Default
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Default/Toddler",
+            "FromFile": "assets/Adopted/Default/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler",
+            "FromFile": "assets/Adopted/Default/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler",
+            "FromFile": "assets/Adopted/Default/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler",
+            "FromFile": "assets/Adopted/Default/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Default/Toddler_dark",
+            "FromFile": "assets/Adopted/Default/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler_dark",
+            "FromFile": "assets/Adopted/Default/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler_dark",
+            "FromFile": "assets/Adopted/Default/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler_dark",
+            "FromFile": "assets/Adopted/Default/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Default
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Default/Toddler_girl",
+            "FromFile": "assets/Adopted/Default/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler_girl",
+            "FromFile": "assets/Adopted/Default/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler_girl",
+            "FromFile": "assets/Adopted/Default/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler_girl",
+            "FromFile": "assets/Adopted/Default/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Default/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Default/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Default/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Default/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Default/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Default/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Elliott
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Elliott/Baby",
+            "FromFile": "assets/Adopted/Elliott/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Baby",
+            "FromFile": "assets/Adopted/Elliott/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Baby",
+            "FromFile": "assets/Adopted/Elliott/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Elliott/Baby_dark",
+            "FromFile": "assets/Adopted/Elliott/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Baby_dark",
+            "FromFile": "assets/Adopted/Elliott/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Baby_dark",
+            "FromFile": "assets/Adopted/Elliott/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Elliott/Baby_girl",
+            "FromFile": "assets/Adopted/Elliott/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Baby_girl",
+            "FromFile": "assets/Adopted/Elliott/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Baby_girl",
+            "FromFile": "assets/Adopted/Elliott/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Elliott/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Elliott/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Elliott/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Elliott/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Elliott
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Elliott/Toddler",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Elliott/Toddler_dark",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler_dark",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler_dark",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler_dark",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Elliott
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Elliott/Toddler_girl",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler_girl",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler_girl",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler_girl",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Elliott/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Elliott/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Elliott/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Emily
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Emily/Baby",
+            "FromFile": "assets/Adopted/Emily/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Baby",
+            "FromFile": "assets/Adopted/Emily/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Baby",
+            "FromFile": "assets/Adopted/Emily/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Emily/Baby_dark",
+            "FromFile": "assets/Adopted/Emily/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Baby_dark",
+            "FromFile": "assets/Adopted/Emily/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Baby_dark",
+            "FromFile": "assets/Adopted/Emily/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Emily/Baby_girl",
+            "FromFile": "assets/Adopted/Emily/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Baby_girl",
+            "FromFile": "assets/Adopted/Emily/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Baby_girl",
+            "FromFile": "assets/Adopted/Emily/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Emily/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Emily/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Emily/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Emily/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Emily
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Emily/Toddler",
+            "FromFile": "assets/Adopted/Emily/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler",
+            "FromFile": "assets/Adopted/Emily/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler",
+            "FromFile": "assets/Adopted/Emily/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler",
+            "FromFile": "assets/Adopted/Emily/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Emily/Toddler_dark",
+            "FromFile": "assets/Adopted/Emily/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler_dark",
+            "FromFile": "assets/Adopted/Emily/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler_dark",
+            "FromFile": "assets/Adopted/Emily/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler_dark",
+            "FromFile": "assets/Adopted/Emily/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Emily
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Emily/Toddler_girl",
+            "FromFile": "assets/Adopted/Emily/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler_girl",
+            "FromFile": "assets/Adopted/Emily/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler_girl",
+            "FromFile": "assets/Adopted/Emily/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler_girl",
+            "FromFile": "assets/Adopted/Emily/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Emily/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Emily/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Emily/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Emily/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Emily/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Emily/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Haley
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Haley/Baby",
+            "FromFile": "assets/Adopted/Haley/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Baby",
+            "FromFile": "assets/Adopted/Haley/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Baby",
+            "FromFile": "assets/Adopted/Haley/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Haley/Baby_dark",
+            "FromFile": "assets/Adopted/Haley/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Baby_dark",
+            "FromFile": "assets/Adopted/Haley/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Baby_dark",
+            "FromFile": "assets/Adopted/Haley/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Haley/Baby_girl",
+            "FromFile": "assets/Adopted/Haley/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Baby_girl",
+            "FromFile": "assets/Adopted/Haley/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Baby_girl",
+            "FromFile": "assets/Adopted/Haley/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Haley/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Haley/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Haley/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Haley/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Haley
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Haley/Toddler",
+            "FromFile": "assets/Adopted/Haley/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler",
+            "FromFile": "assets/Adopted/Haley/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler",
+            "FromFile": "assets/Adopted/Haley/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler",
+            "FromFile": "assets/Adopted/Haley/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Haley/Toddler_dark",
+            "FromFile": "assets/Adopted/Haley/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler_dark",
+            "FromFile": "assets/Adopted/Haley/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler_dark",
+            "FromFile": "assets/Adopted/Haley/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler_dark",
+            "FromFile": "assets/Adopted/Haley/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Haley
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Haley/Toddler_girl",
+            "FromFile": "assets/Adopted/Haley/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler_girl",
+            "FromFile": "assets/Adopted/Haley/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler_girl",
+            "FromFile": "assets/Adopted/Haley/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler_girl",
+            "FromFile": "assets/Adopted/Haley/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Haley/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Haley/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Haley/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Haley/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Haley/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Haley/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Harvey
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Harvey/Baby",
+            "FromFile": "assets/Adopted/Harvey/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Baby",
+            "FromFile": "assets/Adopted/Harvey/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Baby",
+            "FromFile": "assets/Adopted/Harvey/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Harvey/Baby_dark",
+            "FromFile": "assets/Adopted/Harvey/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Baby_dark",
+            "FromFile": "assets/Adopted/Harvey/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Baby_dark",
+            "FromFile": "assets/Adopted/Harvey/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Harvey/Baby_girl",
+            "FromFile": "assets/Adopted/Harvey/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Baby_girl",
+            "FromFile": "assets/Adopted/Harvey/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Baby_girl",
+            "FromFile": "assets/Adopted/Harvey/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Harvey/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Harvey/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Harvey/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Harvey/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Harvey
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Harvey/Toddler",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Harvey/Toddler_dark",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler_dark",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler_dark",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler_dark",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Harvey
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Harvey/Toddler_girl",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler_girl",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler_girl",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler_girl",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Harvey/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Harvey/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Harvey/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Leah
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Leah/Baby",
+            "FromFile": "assets/Adopted/Leah/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Baby",
+            "FromFile": "assets/Adopted/Leah/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Baby",
+            "FromFile": "assets/Adopted/Leah/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Leah/Baby_dark",
+            "FromFile": "assets/Adopted/Leah/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Baby_dark",
+            "FromFile": "assets/Adopted/Leah/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Baby_dark",
+            "FromFile": "assets/Adopted/Leah/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Leah/Baby_girl",
+            "FromFile": "assets/Adopted/Leah/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Baby_girl",
+            "FromFile": "assets/Adopted/Leah/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Baby_girl",
+            "FromFile": "assets/Adopted/Leah/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Leah/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Leah/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Leah/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Leah/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Leah
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Leah/Toddler",
+            "FromFile": "assets/Adopted/Leah/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler",
+            "FromFile": "assets/Adopted/Leah/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler",
+            "FromFile": "assets/Adopted/Leah/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler",
+            "FromFile": "assets/Adopted/Leah/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Leah/Toddler_dark",
+            "FromFile": "assets/Adopted/Leah/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler_dark",
+            "FromFile": "assets/Adopted/Leah/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler_dark",
+            "FromFile": "assets/Adopted/Leah/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler_dark",
+            "FromFile": "assets/Adopted/Leah/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Leah
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Leah/Toddler_girl",
+            "FromFile": "assets/Adopted/Leah/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler_girl",
+            "FromFile": "assets/Adopted/Leah/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler_girl",
+            "FromFile": "assets/Adopted/Leah/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler_girl",
+            "FromFile": "assets/Adopted/Leah/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Leah/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Leah/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Leah/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Leah/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Leah/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Leah/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Maru
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Maru/Baby",
+            "FromFile": "assets/Adopted/Maru/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Baby",
+            "FromFile": "assets/Adopted/Maru/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Baby",
+            "FromFile": "assets/Adopted/Maru/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Maru/Baby_dark",
+            "FromFile": "assets/Adopted/Maru/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Baby_dark",
+            "FromFile": "assets/Adopted/Maru/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Baby_dark",
+            "FromFile": "assets/Adopted/Maru/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Maru/Baby_girl",
+            "FromFile": "assets/Adopted/Maru/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Baby_girl",
+            "FromFile": "assets/Adopted/Maru/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Baby_girl",
+            "FromFile": "assets/Adopted/Maru/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Maru/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Maru/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Maru/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Maru/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Maru
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Maru/Toddler",
+            "FromFile": "assets/Adopted/Maru/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler",
+            "FromFile": "assets/Adopted/Maru/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler",
+            "FromFile": "assets/Adopted/Maru/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler",
+            "FromFile": "assets/Adopted/Maru/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Maru/Toddler_dark",
+            "FromFile": "assets/Adopted/Maru/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler_dark",
+            "FromFile": "assets/Adopted/Maru/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler_dark",
+            "FromFile": "assets/Adopted/Maru/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler_dark",
+            "FromFile": "assets/Adopted/Maru/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Maru
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Maru/Toddler_girl",
+            "FromFile": "assets/Adopted/Maru/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler_girl",
+            "FromFile": "assets/Adopted/Maru/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler_girl",
+            "FromFile": "assets/Adopted/Maru/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler_girl",
+            "FromFile": "assets/Adopted/Maru/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Maru/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Maru/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Maru/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Maru/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Maru/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Maru/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Penny
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Penny/Baby",
+            "FromFile": "assets/Adopted/Penny/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Baby",
+            "FromFile": "assets/Adopted/Penny/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Baby",
+            "FromFile": "assets/Adopted/Penny/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Penny/Baby_dark",
+            "FromFile": "assets/Adopted/Penny/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Baby_dark",
+            "FromFile": "assets/Adopted/Penny/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Baby_dark",
+            "FromFile": "assets/Adopted/Penny/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Penny/Baby_girl",
+            "FromFile": "assets/Adopted/Penny/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Baby_girl",
+            "FromFile": "assets/Adopted/Penny/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Baby_girl",
+            "FromFile": "assets/Adopted/Penny/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Penny/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Penny/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Penny/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Penny/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Penny
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Penny/Toddler",
+            "FromFile": "assets/Adopted/Penny/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler",
+            "FromFile": "assets/Adopted/Penny/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler",
+            "FromFile": "assets/Adopted/Penny/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler",
+            "FromFile": "assets/Adopted/Penny/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Penny/Toddler_dark",
+            "FromFile": "assets/Adopted/Penny/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler_dark",
+            "FromFile": "assets/Adopted/Penny/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler_dark",
+            "FromFile": "assets/Adopted/Penny/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler_dark",
+            "FromFile": "assets/Adopted/Penny/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Penny
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Penny/Toddler_girl",
+            "FromFile": "assets/Adopted/Penny/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler_girl",
+            "FromFile": "assets/Adopted/Penny/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler_girl",
+            "FromFile": "assets/Adopted/Penny/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler_girl",
+            "FromFile": "assets/Adopted/Penny/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Penny/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Penny/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Penny/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Penny/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Penny/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Penny/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Sam
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sam/Baby",
+            "FromFile": "assets/Adopted/Sam/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Baby",
+            "FromFile": "assets/Adopted/Sam/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Baby",
+            "FromFile": "assets/Adopted/Sam/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sam/Baby_dark",
+            "FromFile": "assets/Adopted/Sam/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Baby_dark",
+            "FromFile": "assets/Adopted/Sam/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Baby_dark",
+            "FromFile": "assets/Adopted/Sam/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sam/Baby_girl",
+            "FromFile": "assets/Adopted/Sam/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Baby_girl",
+            "FromFile": "assets/Adopted/Sam/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Baby_girl",
+            "FromFile": "assets/Adopted/Sam/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sam/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Sam/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Sam/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Sam/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Sam
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sam/Toddler",
+            "FromFile": "assets/Adopted/Sam/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler",
+            "FromFile": "assets/Adopted/Sam/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler",
+            "FromFile": "assets/Adopted/Sam/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler",
+            "FromFile": "assets/Adopted/Sam/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sam/Toddler_dark",
+            "FromFile": "assets/Adopted/Sam/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler_dark",
+            "FromFile": "assets/Adopted/Sam/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler_dark",
+            "FromFile": "assets/Adopted/Sam/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler_dark",
+            "FromFile": "assets/Adopted/Sam/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Sam
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sam/Toddler_girl",
+            "FromFile": "assets/Adopted/Sam/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler_girl",
+            "FromFile": "assets/Adopted/Sam/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler_girl",
+            "FromFile": "assets/Adopted/Sam/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler_girl",
+            "FromFile": "assets/Adopted/Sam/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sam/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Sam/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Sam/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Sam/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sam/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Sam/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Sebastian
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sebastian/Baby",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Baby",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Baby",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sebastian/Baby_dark",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Baby_dark",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Baby_dark",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sebastian/Baby_girl",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Baby_girl",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Baby_girl",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sebastian/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Sebastian/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Sebastian
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sebastian/Toddler",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sebastian/Toddler_dark",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler_dark",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler_dark",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler_dark",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Sebastian
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sebastian/Toddler_girl",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler_girl",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler_girl",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler_girl",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Sebastian/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Sebastian/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Sebastian/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+		
+		
+		
+	//Adopted Shane
+	//Baby Boy
+		{
+            "LogName": "Baby Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Shane/Baby",
+            "FromFile": "assets/Adopted/Shane/Baby/Boy/Body.png",
+        },
+		{
+            "LogName": "Baby Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Baby",
+            "FromFile": "assets/Adopted/Shane/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Baby",
+            "FromFile": "assets/Adopted/Shane/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Boy Dark
+		{
+            "LogName": "Baby Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Shane/Baby_dark",
+            "FromFile": "assets/Adopted/Shane/Baby/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Baby_dark",
+            "FromFile": "assets/Adopted/Shane/Baby/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Baby_dark",
+            "FromFile": "assets/Adopted/Shane/Baby/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl
+		{
+            "LogName": "Baby Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Shane/Baby_girl",
+            "FromFile": "assets/Adopted/Shane/Baby/Girl/Body.png",
+        },
+		{
+            "LogName": "Baby Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Baby_girl",
+            "FromFile": "assets/Adopted/Shane/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Baby_girl",
+            "FromFile": "assets/Adopted/Shane/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Baby Girl Dark
+		{
+            "LogName": "Baby Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Shane/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Shane/Baby/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Baby Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Shane/Baby/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Baby Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Baby_girl_dark",
+            "FromFile": "assets/Adopted/Shane/Baby/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Shane
+	//Toddler Boy
+		{
+            "LogName": "Toddler Boy Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Shane/Toddler",
+            "FromFile": "assets/Adopted/Shane/Toddler/Boy/Body.png",
+        },
+		{
+            "LogName": "Toddler Boy Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler",
+            "FromFile": "assets/Adopted/Shane/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler",
+            "FromFile": "assets/Adopted/Shane/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler",
+            "FromFile": "assets/Adopted/Shane/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Boy Dark
+		{
+            "LogName": "Toddler Boy Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Shane/Toddler_dark",
+            "FromFile": "assets/Adopted/Shane/Toddler/Boy/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Boy Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler_dark",
+            "FromFile": "assets/Adopted/Shane/Toddler/Boy/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler_dark",
+            "FromFile": "assets/Adopted/Shane/Toddler/Boy/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Boy Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler_dark",
+            "FromFile": "assets/Adopted/Shane/Toddler/Boy/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Adopted Shane
+	//Toddler Girl
+		{
+            "LogName": "Toddler Girl Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Shane/Toddler_girl",
+            "FromFile": "assets/Adopted/Shane/Toddler/Girl/Body.png",
+        },
+		{
+            "LogName": "Toddler Girl Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler_girl",
+            "FromFile": "assets/Adopted/Shane/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler_girl",
+            "FromFile": "assets/Adopted/Shane/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler_girl",
+            "FromFile": "assets/Adopted/Shane/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	//Toddler Girl Dark
+		{
+            "LogName": "Toddler Girl Dark Body",
+            "Action": "Load",
+            "Target": "Characters/Adopted/Shane/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Shane/Toddler/Girl/Body_dark.png",
+        },
+		{
+            "LogName": "Toddler Girl Dark Clothes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Shane/Toddler/Girl/Clothes.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Hair",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Shane/Toddler/Girl/Hair.png",
+            "PatchMode": "Overlay",
+        },
+		{
+            "LogName": "Toddler Girl Dark Eyes",
+            "Action": "EditImage",
+            "Target": "Characters/Adopted/Shane/Toddler_girl_dark",
+            "FromFile": "assets/Adopted/Shane/Toddler/Girl/Eyes.png",
+            "PatchMode": "Overlay",
+        },
+	]
+		
+}

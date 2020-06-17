@@ -18,6 +18,7 @@
 - [Placing Vanilla Shops](#placing-vanilla-shops)
 - [Console Commands](#console-commands)
 - [Contact the dev](#contact-the-dev)
+- [More](#more)
 
 ## Intro
 
@@ -41,11 +42,13 @@ The same with BFAV animals-- if the specific animals ( or the BFAV mod ) are not
 ## Create a content pack
 To make a content pack for Shop Tile Framework, add `Cherry.ShopTileFramework` to the `ContentPackFor` section of your mod's [manifest file](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest).
 
-Then from there, you need to make a `shops.json` file to define the properties of your shops. You can find an example [here](#adding-store-to-the-game), and each field is described below:
+Then from there, you need to make a `shops.json` file to define the properties of your shops. You can find an example [here](#adding-shops-to-the-game), and each field is described below:
 
 Field | Optional | Format | Description
 ------------ | ------------- | ------------- | -------------
 RemovePacksFromVanilla | Optional | An array of strings | Takes a list of Unique IDs of Json Asset packs. Will remove all items from these packs from vanilla shops. **Warning:** This includes any items from these packs added to vanilla shops using this mod!
+RemovePackRecipesFromVanilla | Optional | An array of strings | Takes a list of Unique IDs of Json Asset packs. Will remove all recipes from these packs from vanilla shops. **Warning:** This includes any items from these packs added to vanilla shops using this mod!
+RemoveItemsFromVanilla | Optional | An array of strings | Takes a list of Item names. Will remove all of those items from vanilla shops. For recipes, use "<item name> Recipe" **Warning:** This includes any items from these packs added to vanilla shops using this mod!
 Shops | Optional | An array of Shops | You can add as many shops as you want, as long as they have unique `ShopName`among Shops.
 AnimalShops | Optional | An array of AnimalShops | You can add as many animal shops as you want, as long as they have unique `ShopName` among AnimalShops.
 VanillaShops | Optional | An array of VanillaShops | You can add as many of these as you want. Multiple mods can target the same vanilla shops.
@@ -69,6 +72,8 @@ PortraitPath | Optional | string | The relative path to the image used as the po
 Quote | Optional | string | A quote displayed on the shop menu screen. If not provided, no quote will appear
 ShopPrice | Optional | int | Sets the price of every item in the store to this if set.
 MaxNumItemsSoldInStore | Optional | int | The number of different items available. If there is more items within all the `ItemStocks` than this number, they will be randomly picked at the beginning of each day so that the total number of items match this. This is how to randomize the stock of the entire store.
+DefaultSellPriceMultiplier| Optional | decimal | Defaults to 1. If no ShopPrice or StockPrice is given, item prices default to their sell price. This will be a multiplier on top of that. e.g an Emerald will yield 250g if sold by the player. If this field is set to 2, then Emerald will be sold for 500g if no other price is given. This is a quick way to price large batches of items without individually giving them prices
+PriceMultiplierWhen | Optional | Dictionary<decimal,string array> | A dictionary of price multipliers to apply if the conditions are satisfied, with the second field being an array of conditions. The first multiplier to meet conditions will be the one used. 0.5 would be half the price, 2 would be double. More info can be found under [Condition Checking](#condition-checking)
 ItemStocks | Mandatory | An array of `ItemStocks` | The items sold at this store. Each `ItemStocks` can contain one or more item of a single type
 When | Optional | Array of strings | The conditions for this store to open, checked each time a player interacts with it. More info can be found under [Condition Checking](#condition-checking)
 ClosedMessage | Optional | string | The message that displays if a user interacts with the store when conditions are not met. If not set, no message will be displayed.
@@ -117,12 +122,17 @@ Using the VanillaShops section allows you to add to, or completely replace vanil
 
 Multiple mods can edit the same vanilla store. Each mod's stocks will be calculated independently of each other and not affected by fields such as `MaxNumItemsSoldInStore` from other mods, and added to the vanilla stock this way.
 
+Note that the shop-global fields used by custom ItemShops here will only affect the items added by the content pack adding it, and won't affect items added by other mods or the vanilla stock
+
 Field | Optional | Format | Description
 ------------ | ------------- | ------------- | -------------
-ReplaceInsteadOfAdd | Optional | boolean | Defaults to false. If true, the original vanilla stock will be removed.
 ShopName | Mandatory | string | The vanilla store this stock is targetting. Valid options are: `PierreShop`, `JojaShop`, `RobinShop`, `ClintShop`, `MarlonShop`, `MarnieShop`, `TravellingMerchant`, `HarveyShop`, `SandyShop`, `DesertTrader`, `KrobusShop`, `DwarfShop`, `GusShop`, `QiShop`, `WillyShop`
-ShopPrice | Optional | int | Sets the price of every item added to the store from this content pack ( and not of the whole store )
-MaxNumItemsSoldInStore | Optional | int | The number of different items available. If there is more items within all the `ItemStocks` than this number, they will be randomly picked at the beginning of each day so that the total number of items match this. This is how to randomize the stock of all items added from this content pack ( and not of the whole store ).
+ReplaceInsteadOfAdd | Optional | boolean | Defaults to false. If true, the original vanilla stock will be removed.
+AddStockAboveVanilla | Optional | boolean | Defaults to false. If true, the custom stock will be added at the top of the shop menu rather than the bottom. This will affect all custom stocks for this vanilla shop, not just the current mod's
+ShopPrice | Optional | int | Sets the price of every item added to the store from this content pack
+MaxNumItemsSoldInStore | Optional | int | The number of different items available. If there is more items within all the `ItemStocks` than this number, they will be randomly picked at the beginning of each day so that the total number of items match this. This is how to randomize the stock of all items added from this content pack.
+DefaultSellPriceMultiplier| Optional | decimal | Defaults to 1. If no ShopPrice or StockPrice is given, item prices default to their sell price. This will be a multiplier on top of that. e.g an Emerald will yield 250g if sold by the player. If this field is set to 2, then Emerald will be sold for 500g if no other price is given. This is a quick way to price large batches of items without individually giving them prices
+PriceMultiplierWhen | Optional | A dictionary of price multipliers to apply if the conditions are satisfied, with the second field being an array of conditions. The first multiplier to meet conditions will be the one used. 0.5 would be half the price, 2 would be double. More info can be found under [Condition Checking](#condition-checking)
 ItemStocks | Mandatory | An array of `ItemStocks` | The items sold at this store. Each `ItemStocks` can contain one or more item of a single type. Identical to those in ItemShops
 
 ### Animal Shops
@@ -182,6 +192,7 @@ Syntax | Description | Example
 `SkillLevel [<s:SkillName> <i:SkillLevel>]` | This will check if the player has at least the given skill level for named skills. Multiple skill-level pairs can be provided, and returns true if all of them are matched. Valid skills are: `combat`, `farming`, `fishing`, `foraging`, `luck` (unsued in vanilla), and `mining` | `SkillLevel farming 5 fishing 3` Would return true if the player has at least level 5 farm and level 3 fishing
 `CommunityCenterComplete` | Returns true if the Community center is completed on this save file| 
 `JojaMartComplete` | Returns true if the joja mart route was completed on this save file |
+`SeededRandom <i:offset> <i:timeInterval/s:timeInterval> <f:random lower bounds> <f: random upper bounds>`| Used to make synchronized random checks, which can be used across different stocks/stores and remain constant over given periods of time | `SeededRandom 123 Season 0.5 1` [Find more detailed explanation here](CONDITIONS.md)
 
 I am always taking requests for more conditions as they are needed! Open an issue any time
 
@@ -224,7 +235,7 @@ YourMod
 The result would be for spring, fall, and winter, `Bob.png` will be the portrait used, but during summer, `Bob_summer.png` will be used instead
 
 ## Example
-There is a full template found [here](https://github.com/ChroniclerCherry/stardew-valley-mods/blob/Master/ShopTileFramework/TEMPLATE.md)
+There is a full template found [here](https://github.com/ChroniclerCherry/stardew-valley-mods/blob/master/ShopTileFramework/TEMPLATE.md)
 
 The below example still works but is outdated in that it's missing newer features
 Example shops.json:
@@ -362,8 +373,12 @@ Command | Description
  `reset_shop <ShopName>` | Will reset the stock of the specified `ShopName`, which usually happens at the start of each day. Useful for checking that your conditions are applying / stock is randomizing as you'd like'
  `list_shops` | Lists all of the `ShopName`s registered with Shop Tile Framework
  
- ## Contact The Dev
+## Contact The Dev
 If you need to find me, the following methods are your best bets:
 - Bug reports can be made by submitting an issue on this repositiory, or use the [bugs tab](https://www.nexusmods.com/stardewvalley/mods/5005?tab=bugs) on the Nexus mod page. Please provide a [log](https://smapi.io/log/) with all bug reports and as much information about the circumstances of the bug as possible.
 - Suggestions should be submitted through an issue on this repository
 - If you have questions that aren't answered here or requires clarification, you can DM me on discord at `Chronicler#9318`
+
+## More
+* [Find a full template of the shops.json as an example here](TEMPLATE.md)
+* [Find examples and explanations of more complex conditions here](CONDITIONS.md)

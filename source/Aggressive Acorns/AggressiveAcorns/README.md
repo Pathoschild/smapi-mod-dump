@@ -1,17 +1,83 @@
-# Aggressive Acorns
+# Aggressive Acorns - *Yet Another Tree Configurator*
 
-__Aggressive Acorns__ allow high customisation of tree behavior.
-The main features are that spreading trees can replace long grass, and that immature trees cannot be destroyed by melee weapons.
+__Aggressive Acorns__ is a highly configurable overhaul for Stardew Valley's tree growth.
+It adds new mechanics and fixes bugs, in addition to allowing thorough customisation of the vanilla mechanics.
 
-Also fixes some of vanilla's oversights such as stumps shading adjacent saplings, stumps spreading seeds, and a graphical error that affects mushroom stumps that were cut then regrew within the same game session.
+Notable features of the mod are:
+* Allows the user to configure many aspects of the vanilla mechanics.
+* Spreading trees replace grass (the eponymous feature).
+* Immature trees are not destroyed by melee weapons.
 
-[TOC]: #
 
-# Table of Contents
-- [Features](#features)
+Also fixes some of vanilla's oversights such as stumps shading adjacent saplings, stumps spreading seeds,
+and a graphical error that affects mushroom stumps that were cut then regrew within the same game session.
+
+<!-- =============================================================================================================== -->
+
+## Contents
 - [Installation](#installation)
+- [Compatibility](#compatibility)
 - [Configuration](#configuration)
+- [Features](#features)
 - [Future plans](#future)
+- [Acknowledgements](#acknowledgements)
+- [Complementing Mods](#complementing-mods)
+- [See Also](#see-also)
+
+<!-- =============================================================================================================== -->
+
+## Installation
+
+1. Install [SMAPI](https://smapi.io/).
+2. Download this mod from the [releases page]() or from [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3661).
+3. (Manual installation) Extract the contents of the zip file to `Stardew Valley\Mods`. 
+4. Start the game once to create the configuration file.<br />
+   Quit, edit the file (`Stardew Valley\Mods\Aggressive Acorns\config.json`), then play.<br />
+   *All options default to vanilla, so make sure to enable any features you want*.
+
+## Compatibility
+For up-to-date compatibility information visit the community database <https://mods.smapi.io/#Aggressive_Acorns>.
+
+The latest version of Aggressive Acorns is compatible with **Stardew Valley 1.4**. 
+Previous versions are available for Stardew Valley 1.3.
+
+Aggressive Acorns works in **multiplayer**, however, all players must have the mod installed.
+
+Aggressive Acorns versions &ge;1.2.0 are compatible with [TMX Loader](nexusmods.com/stardewvalley/mods/1820),
+including its dependent [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753).
+
+<!-- =============================================================================================================== -->
+
+## Configuration
+
+| **Name** | **Type** | Default | **Description** |
+| -------- | -------- | ------- | --------------- |
+|`PreventScythe`| boolean (`true`, `false`) | `false` | Whether immature trees are destroyed by melee weapons. |
+|`SeedsReplaceGrass`| boolean | `false` | Whether trees are able to replace long grass when they spread by dropping seeds. |
+|`MaxShadedGrowthStage`| integer (`0` - `4`)| `4` | The highest stage of growth for trees next to any mature tree. Also effect the regrowth of stumps. |
+|`MaxPassibleGrowthStage`| integer (`0` - `4`) | `0` | The highest stage of growth without collision. **Visually broken**|
+|`DailyGrowthChance`| float (`0.0` - `1.0`) | `0.20` | Daily chance for a tree to mature by one stage. |
+|`DoGrowInWinter`| boolean | `false` | Whether trees grow normally in winter. |
+|`DailySpreadChance`| float (`0.0` - `1.0`) | `0.15` | Daily chance to plant a seed nearby. |
+|`DoTappedSpread`| boolean | `true` | Whether tapped trees will spread. |
+|`DoSpreadInWinter`| boolean | `true` | Whether trees will spread in winter |
+|`DoGrowInstantly`| boolean | `false` | Whether immature trees (of any stage) grow to full maturity overnight. |
+|`DoSeedsPersist`| boolean | `false` | Whether a tree keeps its seed if not shaken the previous day. |
+|`DailySeedChance`| float (`0.0` - `1.0`) | `0.15` | Daily chance for a tree to gain a seed. |
+|`DoMushroomTreesHibernate`| boolean | `true` | Whether mushroom trees will hibernate over winter. |
+|`DoMushroomTreesRegrow`| boolean | `false` | Whether mushroom tree stumps will regrow. Daily regrowth chance is half the daily growth chance. |
+
+#### Growth stages
+| **Index** | Description| **[Stage as per wiki](https://stardewvalleywiki.com/Trees#Maple_Tree)** |
+| --- | --- | --- |
+| `0` | Seed | 1 |
+| `1` | Sprout | 2 |
+| `2` | Sapling | 3 |
+| `3`, `4` | Bush | 4 |
+| `5` | Mature | 5 |
+| *Use these values <br> in the config* | | |
+
+<!-- =============================================================================================================== -->
 
 ## Features
 Features are classified as either:
@@ -53,55 +119,41 @@ Features are classified as either:
 * Mushroom stumps will always respect the setting for max shaded growth, whether regrowing from hibernation on Spring 1st or using the daily regrowth feature. This means that if a normal tree grows next to a hibernating stump, it would block the regrowth on Spring 1st.
 * In vanilla, there is an error if a mushroom tree is chopped down, then regrows on Spring 1st, without exiting/reopening the save. The (non-serialized) rotation value is not reset after the falling animation, so the top of the tree reappears fallen over. This has been fixed.
 
-## Installation
-
-1. Install [SMAPI](https://smapi.io/) (>3.0.0)
-2. Get this mod from Nexus Mods.
-3. (Manual installation) Extract the contents of the zip file to `Stardew Valley\Mods`. 
-4. Start the game once to create the configuration file. Quit, edit the file (`Stardew Valley\Mods\Aggressive Acorns\config.json`), then play. *All options default to vanilla, so make sure to enable any features you want*.
-
-
-Compatible with version 1.4 of Stardew Valley. Must be installed for all players in multiplayer.
-* Compatible with Stardew Valley Extended as of Aggressive Acorns v1.2.0.
-
-For the latest compatibility information visit https://smapi.io/compat
-
-
-## Configuration
-
-| **Name** | **Type** | Default | **Description** |
-| -------- | -------- | ------- | --------------- |
-|`PreventScythe`| boolean (`true`, `false`) | `false` | Whether immature trees are destroyed by melee weapons. |
-|`SeedsReplaceGrass`| boolean | `false` | Whether trees are able to replace long grass when they spread by dropping seeds. |
-|`MaxShadedGrowthStage`| integer (`0` - `4`)| `4` | The highest stage of growth for trees next to any mature tree. Also effect the regrowth of stumps. |
-|`MaxPassibleGrowthStage`| integer (`0` - `4`) | `0` | The highest stage of growth without collision. **Visually broken**|
-|`DailyGrowthChance`| float (`0.0` - `1.0`) | `0.20` | Daily chance for a tree to mature by one stage. |
-|`DoGrowInWinter`| boolean | `false` | Whether trees grow normally in winter. |
-|`DailySpreadChance`| float (`0.0` - `1.0`) | `0.15` | Daily chance to plant a seed nearby. |
-|`DoTappedSpread`| boolean | `true` | Whether tapped trees will spread. |
-|`DoSpreadInWinter`| boolean | `true` | Whether trees will spread in winter |
-|`DoGrowInstantly`| boolean | `false` | Whether immature trees (of any stage) grow to full maturity overnight. |
-|`DoSeedsPersist`| boolean | `false` | Whether a tree keeps its seed if not shaken the previous day. |
-|`DailySeedChance`| float (`0.0` - `1.0`) | `0.15` | Daily chance for a tree to gain a seed. |
-|`DoMushroomTreesHibernate`| boolean | `true` | Whether mushroom trees will hibernate over winter. |
-|`DoMushroomTreesRegrow`| boolean | `false` | Whether mushroom tree stumps will regrow. Daily regrowth chance is half the daily growth chance. |
-
-#### Growth stages
-| **Index** | Description| **[Stage as per wiki](https://stardewvalleywiki.com/Trees#Maple_Tree)** |
-| --- | --- | --- |
-| `0` | Seed | 1 |
-| `1` | Sprout | 2 |
-| `2` | Sapling | 3 |
-| `3`, `4` | Bush | 4 |
-| &ge;`5` | Mature | 5 |
-| *Must use these<br>values in config* | | |
+<!-- =============================================================================================================== -->
 
 ## Future
 
 Future plans and features I'm considering:
  * Fix graphical errors when walking over &gt; stage-0 trees.
- * Mushrooms spread by root-like systems right? Maybe revert the stumps-spread-seeds fix but only for mushroom stumps?
- * Do fruit trees shade normal trees? Should they?
+ * Revert the stumps-spread-seeds fix for mushroom stumps.
  * Make companion mod for fruit trees. Include random-er fruit tree growth.
- * Look at fix growth for trees (emulating vanilla fruit tree growth) - look at SMAPI data API.
- * Look at adding sprites for trees with seeds.
+ * Fixed/periodic growth for trees (emulating vanilla fruit tree growth).
+ * Adding sprites for trees with seeds.
+
+<!-- =============================================================================================================== -->
+
+## Acknowledgements
+
+* Pathoschild: SMAPI, immeasurable services to the SDV community.
+* Minervamaga: help updating to SDV 1.4.
+* Wren2012, Skybellrock: reporting bugs.
+
+This mod was influenced by:
+* [A Tapper's Dream](https://www.nexusmods.com/stardewvalley/mods/260) by GoldenRevolver (Broken since SDV 1.3).
+* [Consistent Tree Growth Speed](https://www.nexusmods.com/stardewvalley/mods/1799) by asrdfsdvs  (Broken since SDV 1.3.29).
+* [Instant Grow Trees](https://www.nexusmods.com/stardewvalley/mods/173) by Cantorsdust.
+* [Tree Spread](https://www.nexusmods.com/stardewvalley/mods/3183) by bcmpinc.
+
+<!-- =============================================================================================================== -->
+
+## Complementing Mods:
+These mods work well with Aggressive Acorns to improve your silvicultural experience:
+* [Plantable Palm Trees](https://mods.smapi.io/#Plantable_Palm_Trees) by MouseyPounds
+* [Plantable Mushroom Trees](https://mods.smapi.io/#Plantable_Mushroom_Trees) by f4iTh
+* [Tree Transplant](https://mods.smapi.io/#Tree_Transplant) by LeonBlade
+
+<!-- =============================================================================================================== -->
+
+## See Also
+
+* [Release Notes](release-notes.md)

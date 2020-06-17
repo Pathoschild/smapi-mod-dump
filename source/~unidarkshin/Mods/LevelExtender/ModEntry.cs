@@ -87,7 +87,7 @@ namespace LevelExtender
                 string[] fields = pair.Value.Split('/');
                 if (int.TryParse(fields[1], out int val))
                 {
-                    int x = (val - rand.Next(0, (int)(Game1.player.FishingLevel / 4)));
+                    int x = (val - rand.Next(0, (int)(Game1.player.fishingLevel.Value / 4)));
                     if (x < 1)
                         x = rand.Next(1, val);
                     fields[1] = x.ToString();
@@ -177,7 +177,7 @@ namespace LevelExtender
         private void TellXP(string command, string[] args)
         {
 
-            int[] temp = { Game1.player.FarmingLevel, Game1.player.FishingLevel, Game1.player.ForagingLevel, Game1.player.MiningLevel, Game1.player.CombatLevel };
+            int[] temp = { Game1.player.farmingLevel.Value, Game1.player.fishingLevel.Value, Game1.player.foragingLevel.Value, Game1.player.miningLevel.Value, Game1.player.combatLevel.Value };
             this.Monitor.Log($"XP: Farming  Fishing  Foraging  Mining  Combat |");
             for (int i = 0; i < addedXP.Length; i++)
             {
@@ -216,7 +216,7 @@ namespace LevelExtender
 
             if (args[0].ToLower() == "farming")
             {
-                Game1.player.FarmingLevel = n;
+                Game1.player.farmingLevel.Value = n;
                 if (n < 10)
                 {
                     sLevs[0] = 10;
@@ -238,7 +238,7 @@ namespace LevelExtender
             }
             else if (args[0].ToLower() == "fishing")
             {
-                Game1.player.FishingLevel = n;
+                Game1.player.fishingLevel.Value = n;
                 if (n < 10)
                 {
                     sLevs[1] = 10;
@@ -260,7 +260,7 @@ namespace LevelExtender
             }
             else if (args[0].ToLower() == "foraging")
             {
-                Game1.player.ForagingLevel = n;
+                Game1.player.foragingLevel.Value = n;
                 if (n < 10)
                 {
                     sLevs[2] = 10;
@@ -282,7 +282,7 @@ namespace LevelExtender
             }
             else if (args[0].ToLower() == "mining")
             {
-                Game1.player.MiningLevel = n;
+                Game1.player.miningLevel.Value = n;
                 if (n < 10)
                 {
                     sLevs[3] = 10;
@@ -304,7 +304,7 @@ namespace LevelExtender
             }
             else if (args[0].ToLower() == "combat")
             {
-                Game1.player.CombatLevel = n;
+                Game1.player.combatLevel.Value = n;
                 if (n < 10)
                 {
                     sLevs[4] = 10;
@@ -380,9 +380,9 @@ namespace LevelExtender
         public void Closing()
         {
 
-            if (Game1.player.FarmingLevel >= 10 && shLev[0])
+            if (Game1.player.farmingLevel.Value >= 10 && shLev[0])
             {
-                Game1.player.FarmingLevel = origLevs[0];
+                Game1.player.farmingLevel.Value = origLevs[0];
 
             }
             else if (!shLev[0])
@@ -391,16 +391,16 @@ namespace LevelExtender
                     sLevs[0] = origLevs[0] - 10;
                 else
                     sLevs[0] = 10;
-                Game1.player.FarmingLevel = origLevs[0] - 10;
+                Game1.player.farmingLevel.Value = origLevs[0] - 10;
                 addedXP[0] = 0;
                 oldXP[0] = 0;
                 newXP[0] = 0;
                 old[0] = false;
 
             }
-            if (Game1.player.FishingLevel >= 10 && shLev[1])
+            if (Game1.player.fishingLevel.Value >= 10 && shLev[1])
             {
-                Game1.player.FishingLevel = origLevs[1];
+                Game1.player.fishingLevel.Value = origLevs[1];
 
             }
             else if (!shLev[1])
@@ -410,16 +410,16 @@ namespace LevelExtender
                     sLevs[1] = origLevs[1] - 10;
                 else
                     sLevs[1] = 10;
-                Game1.player.FishingLevel = origLevs[1] - 10;
+                Game1.player.fishingLevel.Value = origLevs[1] - 10;
                 addedXP[1] = 0;
                 oldXP[1] = 0;
                 newXP[1] = 0;
                 old[1] = false;
 
             }
-            if (Game1.player.ForagingLevel >= 10 && shLev[2])
+            if (Game1.player.foragingLevel.Value >= 10 && shLev[2])
             {
-                Game1.player.ForagingLevel = origLevs[2];
+                Game1.player.foragingLevel.Value = origLevs[2];
 
             }
             else if (!shLev[2])
@@ -428,16 +428,16 @@ namespace LevelExtender
                     sLevs[2] = origLevs[2] - 10;
                 else
                     sLevs[2] = 10;
-                Game1.player.ForagingLevel = origLevs[2] - 10;
+                Game1.player.foragingLevel.Value = origLevs[2] - 10;
                 addedXP[2] = 0;
                 oldXP[2] = 0;
                 newXP[2] = 0;
                 old[2] = false;
 
             }
-            if (Game1.player.MiningLevel >= 10 && shLev[3])
+            if (Game1.player.miningLevel.Value >= 10 && shLev[3])
             {
-                Game1.player.MiningLevel = origLevs[3];
+                Game1.player.miningLevel.Value = origLevs[3];
 
             }
             else if (!shLev[3])
@@ -446,16 +446,16 @@ namespace LevelExtender
                     sLevs[3] = origLevs[3] - 10;
                 else
                     sLevs[3] = 10;
-                Game1.player.MiningLevel = origLevs[3] - 10;
+                Game1.player.miningLevel.Value = origLevs[3] - 10;
                 addedXP[3] = 0;
                 oldXP[3] = 0;
                 newXP[3] = 0;
                 old[3] = false;
 
             }
-            if (Game1.player.CombatLevel >= 10 && shLev[4])
+            if (Game1.player.combatLevel.Value >= 10 && shLev[4])
             {
-                Game1.player.CombatLevel = origLevs[4];
+                Game1.player.combatLevel.Value = origLevs[4];
 
             }
             else if (!shLev[4])
@@ -464,7 +464,7 @@ namespace LevelExtender
                     sLevs[4] = origLevs[4] - 10;
                 else
                     sLevs[4] = 10;
-                Game1.player.CombatLevel = origLevs[4] - 10;
+                Game1.player.combatLevel.Value = origLevs[4] - 10;
                 addedXP[4] = 0;
                 oldXP[4] = 0;
                 newXP[4] = 0;
@@ -523,41 +523,41 @@ namespace LevelExtender
             {
                 //this.Monitor.Log($"{Game1.player.name} pressed P--.");
                 pres_comp = true;
-                if (Game1.player.FarmingLevel > 10)
+                if (Game1.player.farmingLevel.Value > 10)
                 {
-                    origLevs[0] = Game1.player.FarmingLevel;
-                    Game1.player.FarmingLevel = 10;
+                    origLevs[0] = Game1.player.farmingLevel.Value;
+                    Game1.player.farmingLevel.Value = 10;
 
                 }
-                if (Game1.player.FishingLevel > 10)
+                if (Game1.player.fishingLevel.Value > 10)
                 {
-                    origLevs[1] = Game1.player.FishingLevel;
-                    Game1.player.FishingLevel = 10;
+                    origLevs[1] = Game1.player.fishingLevel.Value;
+                    Game1.player.fishingLevel.Value = 10;
 
                 }
-                if (Game1.player.ForagingLevel > 10)
+                if (Game1.player.foragingLevel.Value > 10)
                 {
-                    origLevs[2] = Game1.player.ForagingLevel;
-                    Game1.player.ForagingLevel = 10;
+                    origLevs[2] = Game1.player.foragingLevel.Value;
+                    Game1.player.foragingLevel.Value = 10;
 
                 }
-                if (Game1.player.MiningLevel > 10)
+                if (Game1.player.miningLevel.Value > 10)
                 {
-                    origLevs[3] = Game1.player.MiningLevel;
-                    Game1.player.MiningLevel = 10;
+                    origLevs[3] = Game1.player.miningLevel.Value;
+                    Game1.player.miningLevel.Value = 10;
 
                 }
-                if (Game1.player.CombatLevel > 10)
+                if (Game1.player.combatLevel.Value > 10)
                 {
-                    origLevs[4] = Game1.player.CombatLevel;
-                    Game1.player.CombatLevel = 10;
+                    origLevs[4] = Game1.player.combatLevel.Value;
+                    Game1.player.combatLevel.Value = 10;
 
                 }
             }
         }
         private void GameEvents_OneSecondTick(object sender, EventArgs e)
         {
-            int[] temp = { Game1.player.FarmingLevel, Game1.player.FishingLevel, Game1.player.ForagingLevel, Game1.player.MiningLevel, Game1.player.CombatLevel };
+            int[] temp = { Game1.player.farmingLevel.Value, Game1.player.fishingLevel.Value, Game1.player.foragingLevel.Value, Game1.player.miningLevel.Value, Game1.player.combatLevel.Value };
             if (Context.IsWorldReady) // save is loaded
             {
 
@@ -641,13 +641,13 @@ namespace LevelExtender
                     tier = 1;
                 }
 
-                m.DamageToFarmer = (int)(m.DamageToFarmer / 1.5) + (int)(Game1.player.CombatLevel / 3);
-                m.Health = (int)(m.Health / 1.5) + ((Game1.player.CombatLevel / 2) * (m.Health / 10));
+                m.DamageToFarmer = (int)(m.DamageToFarmer / 1.5) + (int)(Game1.player.combatLevel.Value / 3);
+                m.Health = (int)(m.Health / 1.5) + ((Game1.player.combatLevel.Value / 2) * (m.Health / 10));
                 m.focusedOnFarmers = true;
                 m.wildernessFarmMonster = true;
-                m.Speed += rand.Next(3 + Game1.player.CombatLevel);
-                m.resilience.Set(m.resilience.Value + (Game1.player.CombatLevel / 10));
-                m.ExperienceGained += ((10 + (Game1.player.CombatLevel * 2)) * tier);
+                m.Speed += rand.Next(3 + Game1.player.combatLevel.Value);
+                m.resilience.Set(m.resilience.Value + (Game1.player.combatLevel.Value / 10));
+                m.ExperienceGained += ((10 + (Game1.player.combatLevel.Value * 2)) * tier);
 
                 IList<NPC> characters = Game1.currentLocation.characters;
                 characters.Add((NPC)m);
@@ -658,7 +658,7 @@ namespace LevelExtender
         }
         public double S_R()
         {
-            if (Game1.player.CombatLevel == 0)
+            if (Game1.player.combatLevel.Value == 0)
             {
                 return 0.0;
             }
@@ -674,25 +674,41 @@ namespace LevelExtender
 
             if (Game1.isDarkOut() || Game1.isRaining)
             {
-                return (0.010 + (Game1.player.CombatLevel * 0.0001)) * 2;
+                return (0.010 + (Game1.player.combatLevel.Value * 0.0001)) * 2;
             }
 
-            return (0.010 + (Game1.player.CombatLevel * 0.0001));
+            return (0.010 + (Game1.player.combatLevel.Value * 0.0001));
 
         }
         private void GameEvents_QuarterSecondTick(object sender, UpdateTickedEventArgs e)
         {
-            
             if (Context.IsWorldReady && e.IsMultipleOf(8) && Game1.player.FishingLevel > 10)
             {
                 if (Game1.activeClickableMenu is BobberBar && !firstFade)
                 {
-
-
+                    this.Monitor.Log($"Fishing Level:  {Game1.player.fishingLevel.Value}");
+                    this.Monitor.Log($"Modified Fishing Level:  {Game1.player.FishingLevel}");
+                    //this.Monitor.Log($"Buffs: {this.Helper.Reflection.GetField<string>(Game1.buffsDisplay, "buffs").GetValue()}");
+                    int bobberBonus = 0;
+                    Tool tool = Game1.player.CurrentTool;
+                    //this.Monitor.Log($"{tool.Name}");
+                    //this.Monitor.Log($"{tool.attachmentSlots()}");
+                    for(int i = 0; i < tool.attachmentSlots(); i++)
+                    {
+                        
+                        StardewValley.Object attachment = tool.attachments[i];
+                        this.Monitor.Log($"{attachment.name}");
+                        if (attachment.name == "Cork Bobber")
+                        {
+                            bobberBonus = 24;
+                        }
+                    }
+                    //Item check = this.Helper.Reflection.
+                    int bobberBarSize = 176 + bobberBonus;
                     firstFade = true;
                     this.Monitor.Log($"{this.Helper.Reflection.GetField<int>(Game1.activeClickableMenu, "bobberBarHeight").GetValue()} -SIZE.");
-                    this.Helper.Reflection.GetField<int>(Game1.activeClickableMenu, "bobberBarHeight").SetValue(176);
-                    this.Helper.Reflection.GetField<float>(Game1.activeClickableMenu, "bobberBarPos").SetValue((float)(568 - 176));
+                    this.Helper.Reflection.GetField<int>(Game1.activeClickableMenu, "bobberBarHeight").SetValue(bobberBarSize);
+                    this.Helper.Reflection.GetField<float>(Game1.activeClickableMenu, "bobberBarPos").SetValue((float)(568 - bobberBarSize));
 
 
                 }
@@ -812,7 +828,7 @@ namespace LevelExtender
         }
         private void SaveEvents_AfterLoad(object sender, EventArgs e)
         {
-            //object[] temp = { Game1.player.FarmingLevel, Game1.player.FishingLevel, Game1.player.ForagingLevel, Game1.player.MiningLevel, Game1.player.CombatLevel };
+            //object[] temp = { Game1.player.farmingLevel.Value, Game1.player.fishingLevel.Value, Game1.player.foragingLevel.Value, Game1.player.miningLevel.Value, Game1.player.combatLevel.Value };
             var config_t = this.Helper.Data.ReadJsonFile<ModData>($"data/{Constants.SaveFolderName}.json") ?? new ModData();
             addedXP[0] = config_t.FaXP;
             sLevs[0] = config_t.FaLV;
@@ -829,35 +845,35 @@ namespace LevelExtender
 
             config = config_t;
 
-            if (Game1.player.FarmingLevel >= 10)
+            if (Game1.player.farmingLevel.Value >= 10)
             {
-                Game1.player.FarmingLevel = sLevs[0];
+                Game1.player.farmingLevel.Value = sLevs[0];
 
-                this.Monitor.Log($"{Game1.player.Name} loaded farming level {Game1.player.FarmingLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} loaded farming level {Game1.player.farmingLevel.Value}!");
             }
-            if (Game1.player.FishingLevel >= 10)
+            if (Game1.player.fishingLevel.Value >= 10)
             {
-                Game1.player.FishingLevel = sLevs[1];
+                Game1.player.fishingLevel.Value = sLevs[1];
 
-                this.Monitor.Log($"{Game1.player.Name} loaded fishing level {Game1.player.FishingLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} loaded fishing level {Game1.player.fishingLevel.Value}!");
             }
-            if (Game1.player.ForagingLevel >= 10)
+            if (Game1.player.foragingLevel.Value >= 10)
             {
-                Game1.player.ForagingLevel = sLevs[2];
+                Game1.player.foragingLevel.Value = sLevs[2];
 
-                this.Monitor.Log($"{Game1.player.Name} loaded foraging level {Game1.player.ForagingLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} loaded foraging level {Game1.player.foragingLevel.Value}!");
             }
-            if (Game1.player.MiningLevel >= 10)
+            if (Game1.player.miningLevel.Value >= 10)
             {
-                Game1.player.MiningLevel = sLevs[3];
+                Game1.player.miningLevel.Value = sLevs[3];
 
-                this.Monitor.Log($"{Game1.player.Name} loaded mining level {Game1.player.MiningLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} loaded mining level {Game1.player.miningLevel.Value}!");
             }
-            if (Game1.player.CombatLevel >= 10)
+            if (Game1.player.combatLevel.Value >= 10)
             {
-                Game1.player.CombatLevel = sLevs[4];
+                Game1.player.combatLevel.Value = sLevs[4];
 
-                this.Monitor.Log($"{Game1.player.Name} loaded combat level {Game1.player.CombatLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} loaded combat level {Game1.player.combatLevel.Value}!");
             }
 
             this.Helper.Content.InvalidateCache("Data/Fish");
@@ -865,50 +881,50 @@ namespace LevelExtender
         private void SaveEvents_BeforeSave(object sender, EventArgs e)
         {
 
-            if (Game1.player.FarmingLevel >= 10)
+            if (Game1.player.farmingLevel.Value >= 10)
             {
 
-                Game1.player.FarmingLevel = sLevs[0];
+                Game1.player.farmingLevel.Value = sLevs[0];
                 config.FaXP = addedXP[0];
                 config.FaLV = sLevs[0];
 
-                this.Monitor.Log($"{Game1.player.Name} saved farming level {Game1.player.FarmingLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} saved farming level {Game1.player.farmingLevel.Value}!");
             }
-            if (Game1.player.FishingLevel >= 10)
+            if (Game1.player.fishingLevel.Value >= 10)
             {
 
-                Game1.player.FishingLevel = sLevs[1];
+                Game1.player.fishingLevel.Value = sLevs[1];
                 config.FXP = addedXP[1];
                 config.FLV = sLevs[1];
 
-                this.Monitor.Log($"{Game1.player.Name} saved fishing level {Game1.player.FishingLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} saved fishing level {Game1.player.fishingLevel.Value}!");
             }
-            if (Game1.player.ForagingLevel >= 10)
+            if (Game1.player.foragingLevel.Value >= 10)
             {
 
-                Game1.player.ForagingLevel = sLevs[2];
+                Game1.player.foragingLevel.Value = sLevs[2];
                 config.FoXP = addedXP[2];
                 config.FoLV = sLevs[2];
 
-                this.Monitor.Log($"{Game1.player.Name} saved foraging level {Game1.player.ForagingLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} saved foraging level {Game1.player.foragingLevel.Value}!");
             }
-            if (Game1.player.MiningLevel >= 10)
+            if (Game1.player.miningLevel.Value >= 10)
             {
 
-                Game1.player.MiningLevel = sLevs[3];
+                Game1.player.miningLevel.Value = sLevs[3];
                 config.MXP = addedXP[3];
                 config.MLV = sLevs[3];
 
-                this.Monitor.Log($"{Game1.player.Name} saved mining level {Game1.player.MiningLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} saved mining level {Game1.player.miningLevel.Value}!");
             }
-            if (Game1.player.CombatLevel >= 10)
+            if (Game1.player.combatLevel.Value >= 10)
             {
 
-                Game1.player.CombatLevel = sLevs[4];
+                Game1.player.combatLevel.Value = sLevs[4];
                 config.CXP = addedXP[4];
                 config.CLV = sLevs[4];
 
-                this.Monitor.Log($"{Game1.player.Name} saved combat level {Game1.player.CombatLevel}!");
+                this.Monitor.Log($"{Game1.player.Name} saved combat level {Game1.player.combatLevel.Value}!");
             }
             config.WorldMonsters = wm;
             config.Xp_modifier = xp_mod;
@@ -947,7 +963,7 @@ namespace LevelExtender
         }
         private void AddFishingXP(int xp, int i)
         {
-            int[] temp = { Game1.player.FarmingLevel, Game1.player.FishingLevel, Game1.player.ForagingLevel, Game1.player.MiningLevel, Game1.player.CombatLevel };
+            int[] temp = { Game1.player.farmingLevel.Value, Game1.player.fishingLevel.Value, Game1.player.foragingLevel.Value, Game1.player.miningLevel.Value, Game1.player.combatLevel.Value };
             this.Monitor.Log($"Adding XP: {xp * mpMult}");
             addedXP[i] += (int)(xp * mpMult);
             if ((addedXP[i] >= Math.Round((1000 * temp[i] + (temp[i] * temp[i] * temp[i] * 0.33)) * xp_mod)) && sLevs[i] < max[i])
@@ -957,23 +973,23 @@ namespace LevelExtender
 
                 if (i == 0)
                 {
-                    Game1.player.FarmingLevel = sLevs[i];
+                    Game1.player.farmingLevel.Value = sLevs[i];
                 }
                 else if (i == 1)
                 {
-                    Game1.player.FishingLevel = sLevs[i];
+                    Game1.player.fishingLevel.Value = sLevs[i];
                 }
                 else if (i == 2)
                 {
-                    Game1.player.ForagingLevel = sLevs[i];
+                    Game1.player.foragingLevel.Value = sLevs[i];
                 }
                 else if (i == 3)
                 {
-                    Game1.player.MiningLevel = sLevs[i];
+                    Game1.player.miningLevel.Value = sLevs[i];
                 }
                 else if (i == 4)
                 {
-                    Game1.player.CombatLevel = sLevs[i];
+                    Game1.player.combatLevel.Value = sLevs[i];
                 }
 
                 this.Monitor.Log($"{Game1.player.Name} leveled {i}(index) to {sLevs[i]}!");
@@ -982,23 +998,23 @@ namespace LevelExtender
             {
                 if (i == 0)
                 {
-                    Game1.player.FarmingLevel = sLevs[i];
+                    Game1.player.farmingLevel.Value = sLevs[i];
                 }
                 else if (i == 1)
                 {
-                    Game1.player.FishingLevel = sLevs[i];
+                    Game1.player.fishingLevel.Value = sLevs[i];
                 }
                 else if (i == 2)
                 {
-                    Game1.player.ForagingLevel = sLevs[i];
+                    Game1.player.foragingLevel.Value = sLevs[i];
                 }
                 else if (i == 3)
                 {
-                    Game1.player.MiningLevel = sLevs[i];
+                    Game1.player.miningLevel.Value = sLevs[i];
                 }
                 else if (i == 4)
                 {
-                    Game1.player.CombatLevel = sLevs[i];
+                    Game1.player.combatLevel.Value = sLevs[i];
                 }
                 this.Monitor.Log($"{Game1.player.Name} retained {i}(index) at {sLevs[i]}.");
             }
@@ -1024,7 +1040,7 @@ namespace LevelExtender
 
         public int[] GetReqXP()
         {
-            int[] temp = { Game1.player.FarmingLevel, Game1.player.FishingLevel, Game1.player.ForagingLevel, Game1.player.MiningLevel, Game1.player.CombatLevel };
+            int[] temp = { Game1.player.farmingLevel.Value, Game1.player.fishingLevel.Value, Game1.player.foragingLevel.Value, Game1.player.miningLevel.Value, Game1.player.combatLevel.Value };
             int[] xTemp = { 0, 0, 0, 0, 0 };
 
             for (int i = 0; i < temp.Length; i++)

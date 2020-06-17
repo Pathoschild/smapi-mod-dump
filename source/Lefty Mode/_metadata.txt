@@ -1,0 +1,13 @@
+url:
+   https://github.com/maxvollmer/LeftyMode.git
+
+mods:
+   Lefty Mode
+
+latest commit:
+   commit fddcc25c7ee52b2d04cfd3ba321dad61f3a78f57
+   Author: maxvollmer <maxvollmer@users.noreply.github.com>
+   Date:   Sat May 30 16:52:20 2020 +0200
+   
+       Initial commit
+   

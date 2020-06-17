@@ -76,7 +76,7 @@ namespace FarmTypeManager
                     && !assembly.FullName.StartsWith("System")
                     && !assembly.FullName.StartsWith("Microsoft")
                 ) 
-                .SelectMany(assembly => assembly.GetTypes()) //get all types from each assembly as a single sequence
+                .SelectMany(assembly => Utility.TryGetTypes(assembly)) //get all types from each assembly as a single sequence
                 .Where(filterSubclass) //ignore any types that are not subclasses of baseClass
             );
 

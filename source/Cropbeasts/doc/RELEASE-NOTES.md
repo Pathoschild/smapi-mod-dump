@@ -2,6 +2,15 @@
 
 [Cropbeasts](../)
 
+## 1.0.1
+
+*Released June 8, 2020.*
+
+* Fix rare slowdowns due to sound timing problem
+* Fix blank name and description for Beast Hat in some languages
+* Exempt special giant crops on IF2R from spawning as cropbeasts
+* Streamline documentation
+
 ## 1.0.0
 
 *Released May 10, 2020.*

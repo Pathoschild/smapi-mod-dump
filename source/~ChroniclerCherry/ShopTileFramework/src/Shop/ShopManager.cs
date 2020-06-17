@@ -76,8 +76,7 @@ namespace ShopTileFramework.Shop
         /// <param name="contentPack"></param>
         public static void RegisterShops(ContentPack data, IContentPack contentPack)
         {
-            if (data.RemovePacksFromVanilla != null)
-                ItemsUtil.RegisterPacksToRemove(data.RemovePacksFromVanilla);
+            ItemsUtil.RegisterPacksToRemove(data.RemovePacksFromVanilla, data.RemovePackRecipesFromVanilla, data.RemoveItemsFromVanilla);
 
             if (data.Shops != null)
             {
@@ -123,14 +122,18 @@ namespace ShopTileFramework.Shop
 
                     if (VanillaShops.ContainsKey(vanillaShopPack.ShopName))
                     {
-                        VanillaShops[vanillaShopPack.ShopName].StockManagers.Add(new ItemPriceAndStockManager(vanillaShopPack.ItemStocks, vanillaShopPack));
+                        VanillaShops[vanillaShopPack.ShopName].StockManagers.Add(new ItemPriceAndStockManager(vanillaShopPack));
 
                         if (vanillaShopPack.ReplaceInsteadOfAdd)
                             VanillaShops[vanillaShopPack.ShopName].ReplaceInsteadOfAdd = true;
+
+                        if (vanillaShopPack.AddStockAboveVanilla)
+                            VanillaShops[vanillaShopPack.ShopName].AddStockAboveVanilla = true;
+
                     } else
                     {
                         vanillaShopPack.Initialize();
-                        vanillaShopPack.StockManagers.Add(new ItemPriceAndStockManager(vanillaShopPack.ItemStocks, vanillaShopPack));
+                        vanillaShopPack.StockManagers.Add(new ItemPriceAndStockManager(vanillaShopPack));
                         VanillaShops.Add(vanillaShopPack.ShopName, vanillaShopPack);
                     }
                 }
@@ -190,10 +193,10 @@ namespace ShopTileFramework.Shop
             if (ItemShops.Count > 0)
                 ModEntry.monitor.Log($"Refreshing stock for all custom shops...", LogLevel.Debug);
 
-            foreach (ItemShop Store in ItemShops.Values)
+            foreach (ItemShop store in ItemShops.Values)
             {
-                Store.UpdateItemPriceAndStock();
-                Store.UpdatePortrait();
+                store.UpdateItemPriceAndStock();
+                store.UpdatePortrait();
             }
 
             if (VanillaShops.Count > 0)

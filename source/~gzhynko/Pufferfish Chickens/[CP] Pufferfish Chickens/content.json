@@ -1,0 +1,24 @@
+{
+  "Format": "1.14.0",
+	
+  "Changes": 
+   [
+   
+     // Adding a new event featuring Willy, who gives player the Pufferfish egg.
+	 /* Trigger conditions: 
+	    Map: Farm;
+	    Weather: Sunny;
+	    At least one free inventory slot available;
+		At least 50 friendship points with Willy;
+		Played for at least 42 days.
+	 */ 
+	 
+     {
+       "Action": "EditData",
+       "Target": "Data/Events/Farm",
+       "Entries": {
+         "6162290/w sunny/c 1/j 42/f Willy 50":"continue/64 15/farmer 64 16 2 Willy 66 15 2/broadcastEvent/pause 1000/showFrame Willy 8/pause 1000/speak Willy \"Ahoy there, @! How's your farm goin'?\"/pause 1200/showFrame Willy 4/pause 1200/showFrame Willy 0/pause 1000/showFrame Willy 12/pause 1200/showFrame Willy 8/speak Willy \"Oh, you're doing a great job here!$h#\"/pause 600/showFrame Willy 0/pause 1100/showFrame Willy 8/speak Willy \"Anyway, dropped by to say that I caught a strange egg while fishing this morning.$0#$b#Here, take a look.$b#[{{spacechase0.JsonAssets/ObjectId:Pufferfish Egg}}]\"/playSound reward/message \"Received a 'Pufferfish Egg'!\"/pause 1300/showFrame Willy 8/speak Willy \"As you can see, it's kinda strange. But i guess you can do something with it, right?\"/pause 1000/showFrame Willy 4/pause 1500/showFrame Willy 8/pause 600/speak Willy \"Gotta go and continue fishing now.#$b#See ya later, son.#$h#^See ya later, miss.#$h#\"/pause 800/end"
+       }
+     }
+   ]
+}

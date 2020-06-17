@@ -7,6 +7,7 @@ mods:
    Arcade Snake
    ATM
    Chess
+   Comics
    Crop Extension
    Custom Element Handler
    Custom Farming Redux
@@ -45,9 +46,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 8fc9d7193ed131a580dcd230287fd15f23813126
+   commit 6f1179b93c23e4b2c08837524deffb3fd120741b
    Author: David <david@millionideas.de>
-   Date:   Tue May 12 13:32:58 2020 +0200
+   Date:   Sat Jun 13 19:42:19 2020 +0200
    
-       update for SMAPI 3.6
+       Added Comic Mod
    

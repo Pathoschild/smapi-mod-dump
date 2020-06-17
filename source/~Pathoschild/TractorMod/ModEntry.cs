@@ -90,28 +90,8 @@ namespace Pathoschild.Stardew.TractorMod
             this.Keys = this.Config.Controls.ParseControls(helper.Input, this.Monitor);
 
             // init tractor logic
-            {
-                IModRegistry modRegistry = this.Helper.ModRegistry;
-                IReflectionHelper reflection = this.Helper.Reflection;
-                StandardAttachmentsConfig toolConfig = this.Config.StandardAttachments;
-                this.TractorManager = new TractorManager(this.Config, this.Keys, this.Helper.Translation, this.Helper.Reflection, attachments: new IAttachment[]
-                {
-                    new CustomAttachment(this.Config.CustomAttachments, modRegistry, reflection), // should be first so it can override default attachments
-                    new AxeAttachment(toolConfig.Axe, modRegistry, reflection),
-                    new FertilizerAttachment(toolConfig.Fertilizer, modRegistry, reflection),
-                    new GrassStarterAttachment(toolConfig.GrassStarter, modRegistry, reflection),
-                    new HoeAttachment(toolConfig.Hoe, modRegistry, reflection),
-                    new MeleeWeaponAttachment(toolConfig.MeleeWeapon, modRegistry, reflection),
-                    new MilkPailAttachment(toolConfig.MilkPail, modRegistry, reflection),
-                    new PickaxeAttachment(toolConfig.PickAxe, modRegistry, reflection),
-                    new ScytheAttachment(toolConfig.Scythe, modRegistry, reflection),
-                    new SeedAttachment(toolConfig.Seeds, modRegistry, reflection),
-                    new SeedBagAttachment(toolConfig.SeedBagMod, modRegistry, reflection),
-                    new ShearsAttachment(toolConfig.Shears, modRegistry, reflection),
-                    new SlingshotAttachment(toolConfig.Slingshot, modRegistry, reflection),
-                    new WateringCanAttachment(toolConfig.WateringCan, modRegistry, reflection)
-                });
-            }
+            this.TractorManager = new TractorManager(this.Config, this.Keys, this.Helper.Translation, this.Helper.Reflection);
+            this.UpdateConfig();
 
             // hook events
             IModEvents events = helper.Events;
@@ -120,8 +100,7 @@ namespace Pathoschild.Stardew.TractorMod
             events.GameLoop.DayStarted += this.OnDayStarted;
             events.GameLoop.DayEnding += this.OnDayEnding;
             events.GameLoop.Saving += this.OnSaving;
-            if (this.Config.HighlightRadius)
-                events.Display.Rendered += this.OnRendered;
+            events.Display.Rendered += this.OnRendered;
             events.Display.MenuChanged += this.OnMenuChanged;
             events.Input.ButtonPressed += this.OnButtonPressed;
             events.World.NpcListChanged += this.OnNpcListChanged;
@@ -169,6 +148,26 @@ namespace Pathoschild.Stardew.TractorMod
                 farmExpansion.AddFarmBluePrint(this.GetBlueprint());
                 farmExpansion.AddExpansionBluePrint(this.GetBlueprint());
             }
+
+            // add Generic Mod Config Menu integration
+            new GenericModConfigMenuIntegrationForTractor(
+                getConfig: () => this.Config,
+                getKeys: () => this.Keys,
+                reset: () =>
+                {
+                    this.Config = new ModConfig();
+                    this.Helper.WriteConfig(this.Config);
+                    this.UpdateConfig();
+                },
+                saveAndApply: () =>
+                {
+                    this.Helper.WriteConfig(this.Config);
+                    this.UpdateConfig();
+                },
+                modRegistry: this.Helper.ModRegistry,
+                monitor: this.Monitor,
+                manifest: this.ModManifest
+            ).Register();
         }
 
         /// <summary>The event called after a save slot is loaded.</summary>
@@ -466,6 +465,33 @@ namespace Pathoschild.Stardew.TractorMod
         /****
         ** Helper methods
         ****/
+        /// <summary>Apply the mod configuration if it changed.</summary>
+        private void UpdateConfig()
+        {
+            this.Keys = this.Config.Controls.ParseControls(this.Helper.Input, this.Monitor);
+
+            var modRegistry = this.Helper.ModRegistry;
+            var reflection = this.Helper.Reflection;
+            var toolConfig = this.Config.StandardAttachments;
+            this.TractorManager.UpdateConfig(this.Config, this.Keys, new IAttachment[]
+            {
+                new CustomAttachment(this.Config.CustomAttachments, modRegistry, reflection), // should be first so it can override default attachments
+                new AxeAttachment(toolConfig.Axe, modRegistry, reflection),
+                new FertilizerAttachment(toolConfig.Fertilizer, modRegistry, reflection),
+                new GrassStarterAttachment(toolConfig.GrassStarter, modRegistry, reflection),
+                new HoeAttachment(toolConfig.Hoe, modRegistry, reflection),
+                new MeleeWeaponAttachment(toolConfig.MeleeWeapon, modRegistry, reflection),
+                new MilkPailAttachment(toolConfig.MilkPail, modRegistry, reflection),
+                new PickaxeAttachment(toolConfig.PickAxe, modRegistry, reflection),
+                new ScytheAttachment(toolConfig.Scythe, modRegistry, reflection),
+                new SeedAttachment(toolConfig.Seeds, modRegistry, reflection),
+                modRegistry.IsLoaded(SeedBagAttachment.ModId) ? new SeedBagAttachment(toolConfig.SeedBagMod, modRegistry, reflection) : null,
+                new ShearsAttachment(toolConfig.Shears, modRegistry, reflection),
+                new SlingshotAttachment(toolConfig.Slingshot, modRegistry, reflection),
+                new WateringCanAttachment(toolConfig.WateringCan, modRegistry, reflection)
+            });
+        }
+
         /// <summary>Summon an unused tractor to the player's current position, if any are available.</summary>
         private void SummonTractor()
         {

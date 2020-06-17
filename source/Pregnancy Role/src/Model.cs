@@ -9,6 +9,7 @@ namespace PregnancyRole
 	{
 		private static IModHelper Helper => ModEntry.Instance.Helper;
 		private static IMonitor Monitor => ModEntry.Instance.Monitor;
+		private static ModConfig Config => ModConfig.Instance;
 
 		public static readonly List<string> BaseGameNPCs = new List<string>
 		{
@@ -73,7 +74,7 @@ namespace PregnancyRole
 				return;
 
 			Monitor.Log ($"Setting pregnancy role for farmer {farmer.Name} to {role}.",
-				LogLevel.Debug);
+				Config.VerboseLogging ? LogLevel.Info : LogLevel.Debug);
 
 			farmer.mailReceived.Remove ("kdau.PregnancyRole.become");
 			farmer.mailReceived.Remove ("kdau.PregnancyRole.make");
@@ -130,7 +131,7 @@ namespace PregnancyRole
 				return;
 
 			Monitor.Log ($"Setting pregnancy role for NPC {npc.Name} to {role} when married to {spouse.Name}.",
-				LogLevel.Debug);
+				Config.VerboseLogging ? LogLevel.Info : LogLevel.Debug);
 
 			spouse.mailReceived.Remove ($"kdau.PregnancyRole.{npc.Name}.become");
 			spouse.mailReceived.Remove ($"kdau.PregnancyRole.{npc.Name}.make");
@@ -169,7 +170,7 @@ namespace PregnancyRole
 						GetPregnancyRole (fSpouse));
 				}
 			}
-		
+
 			return false;
 		}
 

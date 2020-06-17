@@ -1,0 +1,15 @@
+url:
+   https://github.com/gzhynko/StardewMods.git
+
+mods:
+   Animals Need Water
+   Puffer Eggs to Mayonnaise
+   Puffer Eggs to Mayonnaise → PEMAutomate
+
+latest commit:
+   commit 74021c04b1436da7ba19576882775d21d5a7126f
+   Author: Gleb Zhynko <gleb.zhinko@gmail.com>
+   Date:   Thu Jun 4 14:01:17 2020 +0300
+   
+       update API documentation
+   

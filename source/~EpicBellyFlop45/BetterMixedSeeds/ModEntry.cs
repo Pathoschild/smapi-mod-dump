@@ -83,10 +83,14 @@ namespace BetterMixedSeeds
                 prefix: new HarmonyMethod(AccessTools.Method(typeof(CropPatch), nameof(CropPatch.RandomCropPrefix)))
             );
 
-            harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.Object), "cutWeed"),
-                prefix: new HarmonyMethod(AccessTools.Method(typeof(ObjectPatch), nameof(ObjectPatch.CutWeedPrefix)))
-            );
+            // omit the troublesome cutweeds patch on Android devices
+            if (!(Constants.TargetPlatform == GamePlatform.Android))
+            {
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(StardewValley.Object), "cutWeed"),
+                    prefix: new HarmonyMethod(AccessTools.Method(typeof(ObjectPatch), nameof(ObjectPatch.CutWeedPrefix)))
+                );
+            }
         }
 
         /// <summary>Calculates what seeds should dropped from mixed seeds. This is dependant on the config and installed mods.</summary>

@@ -16,13 +16,15 @@ namespace ChildToNPC.Patches
         {
             if (!ModEntry.IsChildNPC(__instance))
                 return true;
+            
+            var scheduleTimeToTry = ModEntry.helper.Reflection.GetField<int>(__instance, "scheduleTimeToTry");
 
             __instance.updatedDialogueYet = false;
             ___extraDialogueMessageToAddThisMorning = null;
             if (__instance.ignoreScheduleToday || __instance.Schedule == null)
                 return false;
 
-            __instance.Schedule.TryGetValue(__instance.scheduleTimeToTry == 9999999 ? timeOfDay : __instance.scheduleTimeToTry, out SchedulePathDescription schedulePathDescription);
+            __instance.Schedule.TryGetValue(scheduleTimeToTry.GetValue() == 9999999 ? timeOfDay : scheduleTimeToTry.GetValue(), out SchedulePathDescription schedulePathDescription);
 
             //If I have curfew, override the normal behavior
             if (ModEntry.Config.DoChildrenHaveCurfew && !__instance.currentLocation.Equals(Game1.getLocationFromName("FarmHouse")))
@@ -49,8 +51,8 @@ namespace ChildToNPC.Patches
             {
                 if (!___previousEndPoint.Equals(Point.Zero) && !___previousEndPoint.Equals(__instance.getTileLocationPoint()))
                 {
-                    if (__instance.scheduleTimeToTry == 9999999)
-                        __instance.scheduleTimeToTry = timeOfDay;
+                    if (scheduleTimeToTry.GetValue() == 9999999)
+                        scheduleTimeToTry.SetValue(timeOfDay);
                     return false;
                 }
             }
@@ -65,7 +67,7 @@ namespace ChildToNPC.Patches
 
             if (___directionsToNewLocation != null && ___directionsToNewLocation.route != null && ___directionsToNewLocation.route.Count > 0 && (Math.Abs(__instance.getTileLocationPoint().X - ___directionsToNewLocation.route.Peek().X) > 1 || Math.Abs(__instance.getTileLocationPoint().Y - ___directionsToNewLocation.route.Peek().Y) > 1) && __instance.temporaryController == null)
             {
-                __instance.scheduleTimeToTry = 9999999;
+                scheduleTimeToTry.SetValue(9999999);
                 return false;
             }
 
@@ -75,7 +77,7 @@ namespace ChildToNPC.Patches
                 //endBehaviorFunction = this.getRouteEndBehaviorFunction(this.directionsToNewLocation.endOfRouteBehavior, this.directionsToNewLocation.endOfRouteMessage)
                 endBehaviorFunction = ModEntry.helper.Reflection.GetMethod(__instance, "getRouteEndBehaviorFunction", true).Invoke<PathFindController.endBehavior>(new object[] { __instance.DirectionsToNewLocation.endOfRouteBehavior, __instance.DirectionsToNewLocation.endOfRouteMessage })
             };
-            __instance.scheduleTimeToTry = 9999999;
+            scheduleTimeToTry.SetValue(9999999);
 
             if (___directionsToNewLocation != null && ___directionsToNewLocation.route != null)
                 ___previousEndPoint = ___directionsToNewLocation.route.Count > 0 ? ___directionsToNewLocation.route.Last() : Point.Zero;

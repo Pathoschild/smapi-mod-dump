@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.3.1
+- API now also gives more details about location on the arc.
+- Blue Moons and Harvest Moons also affect prices
+- Blue Moons and Harvest Moons do not have to be up to affect prices
+- The prices set by LD are now multipliers, allowing other mods to also act on the prices
+- The moonrise and set times are set against August 2006 in Seattle, WA.
+
 ### 1.3
 - API updates for updating compatibility
 

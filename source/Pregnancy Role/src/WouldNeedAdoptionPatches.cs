@@ -5,11 +5,12 @@ using System;
 
 namespace PregnancyRole
 {
-	internal class WouldNeedAdoptionPatches
+	internal static class WouldNeedAdoptionPatches
 	{
-		protected static IModHelper Helper => ModEntry.Instance.Helper;
-		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
-		protected static HarmonyInstance Harmony => ModEntry.Instance.harmony;
+		private static IModHelper Helper => ModEntry.Instance.Helper;
+		private static IMonitor Monitor => ModEntry.Instance.Monitor;
+		private static HarmonyInstance Harmony => ModEntry.Instance.harmony;
+		private static ModConfig Config => ModConfig.Instance;
 
 		public static void Apply ()
 		{
@@ -26,6 +27,8 @@ namespace PregnancyRole
 		{
 			try
 			{
+				if (Config.VerboseLogging)
+					Monitor.Log ($"Overriding adoption status for pregnancy event", LogLevel.Debug);
 				__result = Model.WouldNeedAdoption (__instance);
 				return false;
 			}

@@ -46,7 +46,7 @@ namespace ClimatesOfFerngillRebuild
         public SDVTimePeriods FogTimeSpan { get; set;}
         private bool FadeOutFog { get; set; }
         private bool FadeInFog { get; set; }
-        private Stopwatch FogElapsed { get; set; }
+        private Stopwatch FogElapsed { get; }
         public void SetFogTargetAlpha()
         {
             if (ClimatesOfFerngill.WeatherOpt.ShowLighterFog)
@@ -248,11 +248,10 @@ namespace ClimatesOfFerngillRebuild
         
         internal void SetEveningFog()
         {
-            SDVTime STime, ETime;
-            STime = new SDVTime(Game1.getStartingToGetDarkTime());
+            var STime = new SDVTime(Game1.getStartingToGetDarkTime());
             STime.AddTime(ClimatesOfFerngill.Dice.Next(-25, 80));
 
-            ETime = new SDVTime(STime);
+            var ETime = new SDVTime(STime);
             ETime.AddTime(ClimatesOfFerngill.Dice.Next(120, 310));
 
             STime.ClampToTenMinutes();

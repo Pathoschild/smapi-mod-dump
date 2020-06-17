@@ -209,13 +209,14 @@ For a more detailed description of the complex item settings, see the table belo
 
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
-Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Clothing", "Crate", "Furniture", "Hat", "Object", "Item", "Ring", "Weapon" | The category of the spawned item.| This setting is required by all items. The "item" category (and several others) will "drop" items on the ground, but the "object" category will place them like normal forage objects. Using "breakable" will randomly generate a barrel or crate.
+Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Clothing", "Crate", "Furniture", "Hat", "Object", "Ring", "Weapon" | The category of the spawned item.| This setting is required. "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
 Name | An item name, e.g. `"Red Mushroom"` | The name of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
-Stack | An integer (minimum 1) | The number of items spawned, a.k.a. the "stack size". | Currently, these item categories can be stacked: "object", "item", and "big craftable". Items with other categories will ignore this setting.
+Stack | An integer (minimum 1) | The number of items "stacked" together in this single object. | This setting should affect any categories capable of stacking. Others, such as furniture and clothing, will ignore this value.
 PercentChanceToSpawn | An integer or decimal (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
+SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this forage type. | Increases the odds of spawning this forage type instead of others, similar to adding multiple copies of it to a forage list. Has no effect in "loot" or "contents" lists. Example: If this forage type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
 Contents | A list of other items, e.g. `[16, "joja cola"]` | A list of items within this container. | This setting will be ignored by non-container item categories. It uses the same formatting as other item lists, so it can use complex item definitions as well.
 
-Here is an example loot list that uses all three formats:
+Here is an example loot list that uses all three formats. It would cause a defeated monster to drop Wild Horseradish, Joja Cola, and a Galaxy Sword.
 ```
 "Loot":
 [
@@ -227,7 +228,7 @@ Here is an example loot list that uses all three formats:
   }
 ],
 ```
-Here is an example forage list that spawns a chest with those items inside it:
+Here is an example forage list that spawns a chest containing Wild Horseradish, Joja Cola, and a Galaxy Sword.
 ```
 "SpringItemIndex":
 [
@@ -329,7 +330,7 @@ Loot | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | A lis
 PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings.
 CurrentHP | An integer (minimum 1) | The monster's current (not maximum) health at spawn. | This is mainly useful for "themed" monsters to spawn with injuries, or monsters capable of healing themselves.
 SeesPlayersAtSpawn | true, **false** | Whether the monster will immediately "spot" players at spawn. | If true, this causes most monster types to immediately approach and attack the nearest player, rather than waiting for players to approach. Slimes will have red eyes and behave aggressively.
-SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this monster type. | Increasing this will incease the odds of spawning this monster type instead of others, similar to the ``SpawnChance`` settings for the ore spawner. Example: if this monster type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
+SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this monster type. | Increases the odds of spawning this monster type instead of others, similar to adding multiple copies of it to the list. Example: If this monster type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
 Sprite | The "address" of a loaded asset | A loaded spritesheet to replace this monster's default sprite. | These can be default assests in Stardew or those loaded by a mod like Content Patcher. Examples: `"Characters/Monsters/Skeleton"` or `"Animals/horse"`
 Color | A string of RGB or RGBA values, e.g. `"255 0 0"` | The monster's color and transparency level. | This setting overrides MinColor and Maxcolor. It currently only applies to slimes, big slimes, and metal heads. Values can range from 0 to 255 and optionally include alpha transparency, e.g.: `"0 0 0"` or `"0 0 0 127"`
 MinColor | A string of RGB or RGBA values, e.g. `"0 0 0"` | The minimum color and transparency randomly applied to this monster. | This setting will be ignored unless MaxColor is also provided. See `Color` above for formatting.

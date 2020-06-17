@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AuroraGSI for Stardew Valley",
+  "Author": "macer/Tim Oberle",
+  "Version": "1.0.0",
+  "Description": "This mod sends game variables like Health to Aurora to change the lighting of your compatible devices.",
+  "UniqueID": "macer.AuroraGSI",
+  "EntryDll": "AuroraGSI for Stardew Valley.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6088" ]
+}

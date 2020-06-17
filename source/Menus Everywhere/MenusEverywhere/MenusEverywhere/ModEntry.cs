@@ -42,10 +42,11 @@ namespace MenusEverywhere
         /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            // ignore if player hasn't loaded a save yet
+            // Ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady)
                 return;
 
+            // Only opens a menu if the player isn't in an animation
             if (Game1.player.canMove)
             {
                 if (e.Button == this.Config.CalendarKey)
@@ -66,9 +67,13 @@ namespace MenusEverywhere
                 }
                 else if (this.Config.CanAccessBin && e.Button == this.Config.BinKey)
                 {
+                    // To open the shipping bin, a click is simulated on the bin on the farm
                     Game1.getFarm().checkAction(new xTile.Dimensions.Location(71, 13), Game1.viewport, Game1.player);
+                    return;
                 }
             }
+
+            // Changes the bundles to allow deposits from anywhere when the menu is open
             if (this.Config.CanAccessBundles && Game1.activeClickableMenu is JunimoNoteMenu menu)
             {
                 menu.bundles.ForEach(

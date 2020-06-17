@@ -1,0 +1,44 @@
+{
+    "Name": "Seasonal Salad (Summer)",
+    "Description": ".",
+    "Category": "Cooking",
+    "Edibility": 90,
+    "EdibleIsDrink": false,
+     "EdibleBuffs": {
+    "Farming": 0,
+    "Fishing": 0,
+    "Mining": 2,
+    "Luck": 3,
+    "Foraging": 1,
+    "MaxStamina": 40,
+    "MagnetRadius": 5,
+    "Speed": 2,
+    "Defense": 0,
+    "Attack": 2,
+    "Duration": 540,
+  },
+    "Price": 400,
+    "IsColored": false,
+    "Recipe":
+    {
+        "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": 268,
+            "Count": 1,
+        },
+        {
+            "Object": 250,
+            "Count": 1,
+        },
+        {
+            "Object": 248,
+            "Count": 1,
+        },
+        {
+            "Object": 190,
+            "Count": 1,
+        }],
+        "CanPurchase": false,
+    },
+}

@@ -3,6 +3,7 @@ url:
 
 mods:
    Catalogues Anywhere
+   Custom Crafting Stations
    Customize Anywhere
    Farm Rearranger
    Hay Bales as Silos
@@ -12,28 +13,13 @@ mods:
    Profit Margins
    Shop Tile Framework
    Snack Anything
+   Train Station
    Upgrade Empty Cabins
 
 latest commit:
-   commit 8646486c5d114165f1b85386c9874cd4840b7cfc
+   commit 8dfb0c82b772f7d9a7204a965b8d9dc4920dec58
    Author: Yiminxue Zheng <33401364+ChroniclerCherry@users.noreply.github.com>
-   Date:   Sat May 23 19:34:17 2020 -0400
+   Date:   Sun Jun 14 22:14:23 2020 -0400
    
-       Develop (#27)
-       
-       * Overhauled the organization of the project
-       
-       * Refactored item creation to a builder design pattern, split logic for each itemstock to their own class, and all logic pertaining to itempriceandstock put ito its own class as well
-       
-       * Added documentation to all methods
-       
-       * Added config for verbose logging
-       
-       * Added update key and added harcoded ID for stone due to multiple invalid stone items in hobject information
-       
-       * Added vanilla shops to the content model and added them to inventory management. Supports multiple content packs targetting the same store
-       
-       * Added patches for vanilla shop stocks
-       
-       * Can remove specified JA packs from vanilla stores
+       Update CONDITIONS.md
    

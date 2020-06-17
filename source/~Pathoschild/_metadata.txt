@@ -19,9 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit d119129bdeaa1710a98b6cfc01c687bc93c2d0cc
+   commit 88ebfd20051787f79bc09895281f42decd20d53b
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue May 19 19:28:29 2020 -0400
+   Date:   Sun Jun 14 00:32:41 2020 -0400
    
-       fix spawn rules not showing mine level matched (#549)
+       add token guide link to CP readme for convenience
    

@@ -1,0 +1,549 @@
+﻿using StardewValley;
+using System;
+
+namespace TwilightShards.Stardew.Common
+{
+    public enum SDVTimeOptions
+    {
+        TimeNormal,
+        TimePlayable
+    }
+
+    public enum SDVTimePeriods
+    {
+        Morning,
+        Afternoon,
+        Evening,
+        Night,
+        LateNight,
+        Noon,
+        Midnight
+    }
+
+    public class SDVTime
+    {
+        public static bool IsNight => Game1.isDarkOut();
+        private readonly SDVTime _Time; 
+        
+        public static SDVTimePeriods CurrentTimePeriod
+        {
+            get
+            {
+                return CurrentTime.TimePeriod;
+            }
+        }
+
+        public SDVTimePeriods TimePeriod
+        {
+            get
+            {
+                if (this.ReturnIntTime() < 1200)
+                {
+                    return SDVTimePeriods.Morning;
+                }
+                if (this.ReturnIntTime() == 1200) { 
+                    return SDVTimePeriods.Noon;
+                }
+                if (this.ReturnIntTime() > 1200 && this.ReturnIntTime() < Game1.getStartingToGetDarkTime())
+                {
+                    return SDVTimePeriods.Afternoon;
+                }
+                if (this.ReturnIntTime() >= Game1.getStartingToGetDarkTime() &&
+                    this.ReturnIntTime() < (Game1.getTrulyDarkTime() + 30))
+                {
+                    return SDVTimePeriods.Evening;
+                }
+                if (this.ReturnIntTime() >= (Game1.getTrulyDarkTime() + 30) &&
+                    this.ReturnIntTime() < 2300)
+                {
+                    return SDVTimePeriods.Night;
+                }
+                if (this.ReturnIntTime() == 2400)
+                {
+                    return SDVTimePeriods.Midnight;
+                }
+                else
+                {
+                    return SDVTimePeriods.LateNight;
+                }
+            }
+        } 
+
+        public static SDVTime CurrentTime => new SDVTime(Game1.timeOfDay);
+        public static int CurrentIntTime => new SDVTime(Game1.timeOfDay).ReturnIntTime();
+
+        private const int MAXHOUR = 28;
+        private const int MINPERHR = 60;
+
+        int hour;
+        int minute;
+
+        //******************************* CONSTRUCTORS
+
+        /// <summary>
+        /// Constructor with an int time.
+        /// </summary>
+        /// <param name="t">Int time</param>
+        public SDVTime(int t)
+        {
+            hour = t / 100;
+
+            if (hour < 0)
+                throw new ArgumentException("You cannot have a time value of less than 0 seconds");
+
+            if (hour > MAXHOUR) { 
+                hour = MAXHOUR;
+                minute = 0;
+            }
+            else { 
+
+                t -= (hour * 100);
+
+                if (t < MINPERHR)
+                    minute = t;
+                else
+                {
+                    hour++;
+                    if (hour > MAXHOUR)
+                    {
+                        hour = MAXHOUR;
+                        minute = 0;
+                    }
+                    else
+                    { 
+                       minute = t - MINPERHR;
+                    }
+                }
+            }
+
+            _Time = new SDVTime(hour, minute);
+        }
+
+        /// <summary>
+        /// Constructor for an time in hours minutes (i.e (10,30)
+        /// </summary>
+        /// <param name="h">The current hour</param>
+        /// <param name="m">The current minute</param>
+        public SDVTime(int h, int m)
+        {
+            hour = h;
+            if (hour > MAXHOUR)
+                throw new ArgumentOutOfRangeException($"Invalid Time passed to the constructor. Hour value more than {MAXHOUR}");
+            if (hour < 0)
+                throw new ArgumentOutOfRangeException("Invalid Time passed to the constructor. Hour value less than 0.");
+
+            minute = m;
+
+            if (m >= MINPERHR)
+                throw new ArgumentOutOfRangeException("There are only 60 minutes in an hour.");
+
+            _Time = new SDVTime(hour, minute);
+        }
+
+
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        /// <param name="c">Time being copied</param>
+        public SDVTime(SDVTime c)
+        {
+            hour = c.hour;
+            minute = c.minute;
+            _Time = new SDVTime(hour, minute);
+        }
+
+        /// <summary>
+        /// This function takes two integer times and returns minutes between. Note: this returns an absolute value.
+        /// </summary>
+        /// <param name="t1">The first int time.</param>
+        /// <param name="t2">The second int time</param>
+        /// <returns>Amount of minutes between the two times</returns>
+        public static int MinutesBetweenTwoIntTimes(int t1, int t2)
+        {
+            return Math.Abs(SDVTime.ConvertTimeToMinutes(t1) - SDVTime.ConvertTimeToMinutes(t2));
+        }
+
+        /// <summary>
+        /// This function updates the internal time object
+        /// </summary>
+        /// <param name="h">The new hour</param>
+        /// <param name="m">The new minute</param>
+        private void Update(int h, int m)
+        {
+            _Time.hour = h;
+            _Time.minute = m;
+        }
+
+        /// <summary>
+        /// This function clamps the time to a ten minute interval, since SDV works in a ten-minute interval.
+        /// </summary>
+        public SDVTime ClampToTenMinutes()
+        {
+            if (minute % 10 >= 5)
+            {
+                minute = ((minute / 10) + 1) * 10;
+
+                if (minute >= 60)
+                {
+                    hour++;
+                    minute -= 60;
+                }
+
+                if (hour > MAXHOUR)
+                    hour -= MAXHOUR;
+            }
+            if (minute % 10 < 5 && (minute % 10 != 0))
+            {
+                    minute = ((minute / 10) - 1) * 10;
+
+                    if (minute < 0)
+                    {
+                        hour--;
+                        minute += 60;
+                    }
+            }
+
+            Update(hour, minute);
+
+            return this;
+        }
+
+        /// <summary>
+        /// This function adds minutes. Can be negative to represent removing minutes. 
+        /// </summary>
+        /// <param name="time">The amount of minutes being added</param>
+        /// <returns>The new time</returns>
+        public SDVTime AddMinutes(int time)
+        {
+            _Time.AddTime(time);
+            return this;
+        }
+
+        /// <summary>
+        /// This function adds a time. Can be negative to represent removing minutes
+        /// </summary>
+        /// <param name="hour">The hours being added</param>
+        /// <param name="minute">The minutes being added</param>
+        public void AddTime(int hour, int minute)
+        {
+            this.hour += hour;
+            this.minute += minute;
+            while (minute > 59)
+            {
+                this.hour++;
+                this.minute -= MINPERHR;
+            }
+
+            while (minute < 0)
+            {
+                hour--;
+                minute += 60;
+            }
+
+            if (hour > MAXHOUR)
+                this.hour -= 28;
+        }
+
+        /// <summary>
+        /// This function adds an int time.
+        /// </summary>
+        /// <param name="time">The int time being added</param>
+        public void AddTime(int time)
+        {
+            int addhr = time / MINPERHR;
+            int addmin = time - (MINPERHR * addhr);
+
+            hour += addhr;
+
+            minute += addmin;
+            while (minute > 59)
+            {
+                hour++;
+                minute -= MINPERHR;
+            }
+
+            while (minute < 0)
+            {
+                hour--;
+                minute += MINPERHR;
+            }
+
+            if (hour > MAXHOUR)
+                hour -= MAXHOUR;
+        }
+
+        /// <summary>
+        /// This function adds another SDVTime object
+        /// </summary>
+        /// <param name="sTime">The time being added in SDVTime format</param>
+        public void AddTime(SDVTime sTime)
+        {
+            hour += sTime.hour;
+            minute += sTime.minute;
+
+            while (minute > 59)
+            {
+                hour++;
+                minute -= MINPERHR;
+            }
+
+            while (minute < 0)
+            {
+                hour--;
+                minute += MINPERHR;
+            }
+
+            if (hour >= MAXHOUR)
+            {
+                hour -= MAXHOUR;
+            }
+        }
+
+        //operator functions
+        public static SDVTime operator +(SDVTime s1, SDVTime s2)
+        {
+            SDVTime ret = new SDVTime(s1);
+            ret.AddTime(s2);
+            return ret;
+        }
+
+        public static SDVTime operator -(SDVTime s1, SDVTime s2)
+        {
+            SDVTime ret = new SDVTime(s1);
+            s1.hour += s2.hour;
+            s1.minute += s2.minute;
+
+            while (s1.minute > 59)
+            {
+                s1.hour++;
+                s1.minute -= MINPERHR;
+            }
+
+            while (s1.minute < 0)
+            {
+                s1.hour--;
+                s1.minute += 60;
+            }
+
+            if (s1.hour >= MAXHOUR)
+            {
+                s1.hour -= MAXHOUR;
+            }
+            return ret;
+        }
+
+        public static SDVTime operator -(SDVTime s1, int time)
+        {
+            SDVTime ret = new SDVTime(s1);
+            ret.AddTime(time * -1);
+            return ret;
+        }
+
+        public static SDVTime operator +(SDVTime s1, int time)
+        {
+            SDVTime ret = new SDVTime(s1);
+            ret.AddTime(time);
+            return ret;
+        }
+
+        public static bool operator ==(SDVTime s1, SDVTime s2)
+        {
+            if ((s1.hour == s2.hour) && (s1.minute == s2.minute))
+                return true;
+            else
+                return false;
+        }
+
+        public static bool operator !=(SDVTime s1, SDVTime s2)
+        {
+            if ((s1.hour == s2.hour) && (s1.minute == s2.minute))
+                return false;
+            else
+                return true;
+        }
+
+        public static bool operator ==(SDVTime s1, int s2)
+        {
+            if ((s1.hour == (s2 / 100)) && (s1.minute == (s2 % 100)))
+                return true;
+            else
+                return false;
+        }
+        
+        public static bool operator !=(SDVTime s1, int s2)
+        {
+            return !(s1 == s2);
+        }
+
+        public static bool operator >(SDVTime s1, SDVTime s2)
+        {
+            if (s1.hour > s2.hour)
+                return true;
+            else if (s1.hour == s2.hour && s1.minute > s2.minute)
+                return true;
+
+            return false;
+        }
+
+        public static bool operator <(SDVTime s1, SDVTime s2)
+        {
+            if (s1.hour < s2.hour)
+                return true;
+            else if (s1.hour == s2.hour && s1.minute < s2.minute)
+                return true;
+
+            return false;
+        }
+
+        public static bool operator >=(SDVTime s1, SDVTime s2)
+        {
+            if (s1 == s2)
+                return true;
+            if (s1.hour > s2.hour)
+                return true;
+            else if (s1.hour == s2.hour && s1.minute > s2.minute)
+                return true;
+
+            return false;
+        }
+
+        public static bool operator <=(SDVTime s1, SDVTime s2)
+        {
+            if (s1 == s2)
+                return true;
+            if (s1.hour < s2.hour)
+                return true;
+            else if (s1.hour == s2.hour && s1.minute < s2.minute)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// This function gets the number of minutes from midnight. Supports times beyond 2400 (note that 1am (2500) returns 60)
+        /// </summary>
+        /// <returns>The number of minutes from midnight</returns>
+        public int GetNumberOfMinutesFromMidnight()
+        {
+           if (hour > 24)
+           {
+                return (((hour - 24) * MINPERHR) + minute);
+           }
+           else
+           {
+                return (hour * MINPERHR) + minute;
+           }
+        }
+
+        /// <summary>
+        /// This function gets the number of minutes from day start. 
+        /// </summary>
+        /// <returns>The number of minutes from day start</returns>
+        public int GetNumberOfMinutesFromDayStart()
+        {
+            return  ((hour - 6) * MINPERHR) + minute;
+        }
+
+        //description and return functions
+        /// <summary>
+        /// This function returns the integer time 
+        /// </summary>
+        /// <returns>The time in integer format (i.e 1034, 934, 2510)</returns>
+        public int ReturnIntTime()
+        {
+            return (hour * 100) + minute;
+        }
+
+        /// <summary>
+        /// A basic function to validate the time is within a valid base-game SDV format
+        /// </summary>
+        /// <param name="time">The time being validated</param>
+        /// <returns>Whether or not it is valid</returns>
+        public static bool VerifyValidIntTime(int time)
+        {
+            //basic bounds first
+            if (time < 0600 || time > 2800)
+                return false;
+            if ((time % 100) > 59)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Format the time in 12 hours.
+        /// </summary>
+        /// <returns>The time in 00:00 xm format</returns>
+        public string Get12HourTime()
+        {
+            if (hour < 12)
+                return $"{hour.ToString().PadLeft(2, '0')}:{minute.ToString().PadLeft(2, '0')} am";
+            else if (hour >= 12 && hour < 24)
+                return $"{(hour - 12).ToString().PadLeft(2, '0')}:{minute.ToString().PadLeft(2, '0')} pm";
+            else if (hour > 24)
+                return $"{(hour - 24).ToString().PadLeft(2, '0')}:{minute.ToString().PadLeft(2, '0')} am";
+
+            return "99:99 99";
+        }
+
+        /// <summary>
+        /// Returns a 24-hour formatted time string
+        /// </summary>
+        /// <returns>The time in 24 hour format</returns>
+        public override string ToString()
+        {
+            if (hour < 24)
+                return $"{hour.ToString().PadLeft(2,'0')}:{minute.ToString().PadLeft(2, '0')}";
+            else
+                return $"{(hour - 24).ToString().PadLeft(2,'0')}:{minute.ToString().PadLeft(2, '0')}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            SDVTime time = (SDVTime)obj;
+
+            return time != null &&
+                   hour == time.hour &&
+                   minute == time.minute;
+        }
+
+        public bool Equals(SDVTime other)
+        {
+            return other != null &&
+                   hour == other.hour &&
+                   minute == other.minute;
+        }
+
+        /// <summary>
+        /// Convert the time to minutes from integer. 
+        /// </summary>
+        /// <param name="time">The number of minutes from 0000 previous day.</param>
+        /// <returns></returns>
+        public static int ConvertTimeToMinutes(int time)
+        {
+            int hour = time / 100;
+            int min = time % 100;
+
+            return ((hour * 60) + min);
+        }
+
+        /// <summary>
+        /// Convert the time to minutes from SDVTime
+        /// </summary>
+        /// <param name="time">The number of minutes from 0000 previous day.</param>
+        /// <returns></returns>
+        public static int ConvertTimeToMinutes(SDVTime time)
+        {
+            return ((time.hour * 60) + time.minute);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1190848304;
+            hashCode = hashCode * -1521134295 + hour.GetHashCode();
+            hashCode = hashCode * -1521134295 + minute.GetHashCode();
+            return hashCode;
+        }
+    }
+}
+

@@ -163,28 +163,23 @@ namespace FarmTypeManager
                     {
                         bool stillExists = false; //does this item still exist?
 
-                        for (int x = 0; x < location.debris.Count; x++) //for each piece of debris at this location
+                        //if a PlacedItem terrain feature exists at the saved tile & contains an item with a matching name
+                        if (location.terrainFeatures.ContainsKey(saved.Tile) && location.terrainFeatures[saved.Tile] is PlacedItem placedItem && placedItem.Item?.ParentSheetIndex == saved.ID.Value)
                         {
-                            //if this debris wasn't dropped by a player AND has an item matching this saved object's name & ID
-                            if (location.debris[x].item != null && location.debris[x].DroppedByPlayerID.Value == 0 && location.debris[x].item.ParentSheetIndex == saved.ID && location.debris[x].item.Name.Equals(saved.Name.Split(':')[1], StringComparison.OrdinalIgnoreCase))
+                            stillExists = true;
+                            location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
+
+                            if (endOfDay) //if expirations should be processed
                             {
-                                stillExists = true;
-                                location.debris.RemoveAt(x); //remove this debris, regardless of expiration
-
-                                if (endOfDay) //if expirations should be processed
+                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
                                 {
-                                    if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
-                                    {
-                                        Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
-                                        objectsToRemove.Add(saved); //mark this for removal from save
-                                    }
-                                    else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
-                                    {
-                                        saved.DaysUntilExpire--; //decrease counter by 1
-                                    }
+                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. Name: {placedItem.Item?.Name}. Location: {saved.MapName}.");
+                                    objectsToRemove.Add(saved); //mark this for removal from save
                                 }
-
-                                break;
+                                else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                {
+                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                }
                             }
                         }
 

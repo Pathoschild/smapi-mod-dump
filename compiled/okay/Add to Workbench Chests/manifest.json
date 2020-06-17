@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Add to Workbench Chests",
+  "Author": "Rui3",
+  "Version": "1.0.1",
+  "Description": "Like add to existing stacks, but with all chests connected to your Workbench!",
+  "UniqueID": "Rui3.AddToWorkbenchChests",
+  "EntryDll": "AddToWorkbenchChests.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:5713" ]
+}

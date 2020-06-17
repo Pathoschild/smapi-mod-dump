@@ -1,12 +1,12 @@
 ﻿{
   "Name": "Pollen Sprites",
   "Author": "Esca",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Adds a new type of monster called a Pollen Sprite.",
   "UniqueID": "Esca.PollenSprites",
   "EntryDll": "PollenSprites.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": ["Nexus:6419", "GitHub:Esca-MMC/PollenSprites", "ModDrop:790268"],
+  "UpdateKeys": ["Nexus:6149", "GitHub:Esca-MMC/PollenSprites", "ModDrop:790268"],
   "Dependencies": [
 	   // { "UniqueID": "Esca.PollenSpritesCP" } // disabled locally
    ]

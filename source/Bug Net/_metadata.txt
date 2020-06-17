@@ -5,12 +5,9 @@ mods:
    Bug Net
 
 latest commit:
-   commit 2c57a29c662896e1c0b53ead8f413ef831ac78b5
-   Merge: f9dbe5a 74da62d
+   commit 87c37697a70ba413dec7a15acfe1470bfb6a1a9b
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Apr 27 12:13:21 2020 -0400
+   Date:   Sun May 31 21:18:40 2020 -0400
    
-       Merge pull request #1 from Pathoschild/update-project
-       
-       Update & standardise project structure
+       Move critter items to JA so they can be sold
    

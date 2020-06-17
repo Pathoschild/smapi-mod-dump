@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6199
+IDs: maxvollmer.leftymode
+update keys: Nexus:6199, GitHub:maxvollmer/LeftyMode

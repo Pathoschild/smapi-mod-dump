@@ -1,13 +1,13 @@
 ﻿{
-    "msg.warm": "Il calore del fuoco ti ha tenuto al caldo durante la notte.",
-    "msg.cold": "Il freddo ha prosciugato la tua energia durante la notte.",
-    "msg.spousecold": "La tua famiglia era fredda quella notte.",
-    "dia.spousecold": "Quella notte avevo freddo.",
-    "dia.spousecold_child": "{{child1}} era fredda.",
-    "dia.spousecold_children": "{{child1}} e {{child2}} sono freddi.",
+    "msg.warm": "Il fuoco del camino ti ha tenuto al caldo questa notte.",
+    "msg.cold": "Il freddo ha prosciugato le tue energie durante la notte.",
+    "msg.spousecold": "La tua famiglia stava congelando stanotte.",
+    "dia.spousecold": "Morivo dal freddo stanotte.",
+    "dia.spousecold_child": "{{child1}} sta congelando.",
+    "dia.spousecold_children": "{{child1}} e {{child2}} stanno congelando.",
     "dia.please": "Accendi il camino, per favore.",
     "msg.nowood": "Hai bisogno di {{wood_pieces}} pezzi di legno per accendere il fuoco.",
     "msg.temp": "Temperatura: ",
-    "msg.tempwarm": "caloroso",
-    "msg.tempcold": "fredde"
+    "msg.tempwarm": "caldo",
+    "msg.tempcold": "freddo"
 }

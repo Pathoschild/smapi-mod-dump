@@ -1,0 +1,13 @@
+url:
+   https://github.com/Esca-MMC/DestroyableBushes.git
+
+mods:
+   Destroyable Bushes
+
+latest commit:
+   commit 801f19d0d632d074fe0a3062da7659d7b37e38d4
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Tue Jun 16 04:21:11 2020 -0500
+   
+       Add update keys to manifest, tweak readme.md
+   

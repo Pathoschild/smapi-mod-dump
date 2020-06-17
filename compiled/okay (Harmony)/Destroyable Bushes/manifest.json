@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Destroyable Bushes",
+  "Author": "Esca",
+  "Version": "1.0.0",
+  "Description": "Allows the player to destroy any type of bush with an upgraded axe.",
+  "UniqueID": "Esca.DestroyableBushes",
+  "EntryDll": "DestroyableBushes.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:6304", "GitHub:Esca-MMC/DestroyableBushes", "ModDrop:798245"]
+}

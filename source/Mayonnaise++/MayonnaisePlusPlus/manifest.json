@@ -12,5 +12,5 @@
       "IsRequired": true
     }
   ],
-  "UpdateKeys": [ "GitHub:xirsoi/MayonnaisePlusPlus", "Nexus:4634" ]
+  "UpdateKeys": [ "Nexus:4634" ]
 }

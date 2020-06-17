@@ -5,12 +5,12 @@ mods:
    Child to NPC
 
 latest commit:
-   commit 1bec9a676d9cf2ca43f818ee414561d4cb57456f
-   Merge: f418e20 f39934c
+   commit 876e0424622d879434cd83eb2f1a17a3e1c0aa6d
+   Merge: 1bec9a6 1bb8dcf
    Author: loe2run <55768216+loe2run@users.noreply.github.com>
-   Date:   Mon Jan 20 17:39:31 2020 -0500
+   Date:   Wed Jun 10 11:17:06 2020 -0400
    
-       Merge pull request #16 from loe2run/loe2run-minor
+       Merge pull request #19 from kdau/patch-1
        
-       Minor Changes
+       Fix crashes on Android
    

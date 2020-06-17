@@ -1,0 +1,7 @@
+{
+	"seed-machine.label": "Seed Machine",
+	"seed-machine.description": "Buy seeds. Right here. Right now. Any of them.",
+	"seed-bandit.label": "Seed Bandit",
+	"seed-bandit.description": "You give me some money - I give you some seeds. Simple deal.",
+	"seed-bandit.not-enough-money": "You have no money to play."
+}

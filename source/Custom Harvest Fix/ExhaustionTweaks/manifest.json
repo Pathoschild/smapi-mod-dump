@@ -1,0 +1,10 @@
+{
+  "Name": "Exhaustion Tweaks",
+  "Author": "mytigio",
+  "Version": "1.0.1",
+  "Description": "Slightly alters the exhaustion mechanics.",
+  "UniqueID": "mytigio.exhaustiontweaks",
+  "EntryDll": "ExhaustionTweaks.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6247" ]
+}

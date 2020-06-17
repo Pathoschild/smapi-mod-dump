@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6228
+IDs: kdau.FlowerBombs
+update keys: Nexus:6228, ModDrop:794657

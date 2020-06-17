@@ -13,7 +13,7 @@ namespace ClimatesOfFerngillRebuild
 {
     internal static class WeatherUtilities
     {
-        internal readonly static Dictionary<RainLevels, StaticRange> RainCategories = new Dictionary<RainLevels, StaticRange>{
+        internal static readonly Dictionary<RainLevels, StaticRange> RainCategories = new Dictionary<RainLevels, StaticRange>{
                 { RainLevels.None,new StaticRange(0, 0, 0)},
                 { RainLevels.Sunshower, new StaticRange(0, 17.5, 9)},
                 { RainLevels.Light, new StaticRange(17.5, 52.5, 35)},
@@ -36,7 +36,7 @@ namespace ClimatesOfFerngillRebuild
 		   {
                 if (ClimatesOfFerngill.WeatherOpt.Verbose)
                 {
-                    ClimatesOfFerngill.Logger.Log($"outputting: {rl.Value.ToString()}");
+                    ClimatesOfFerngill.Logger.Log($"outputting: {rl.Value}");
                     ClimatesOfFerngill.Logger.Log($"test: Is {rain} within key?: Lower Half: {rl.Value.IsWithinLowerRange(rain)}, Upper Half: {rl.Value.IsWithinUpperRange(rain)}, Full Range: {rl.Value.IsWithinUpperRange(rain)}");
                 }
 

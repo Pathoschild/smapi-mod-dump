@@ -10,15 +10,22 @@ namespace WitcherMod
 {
     public class ModEntry : Mod, IAssetEditor, IAssetLoader
     {
+        private static ModConfig config;
+
         public override void Entry(IModHelper helper)
         {
+            config = Helper.ReadConfig<ModConfig>();
+
         }
 
         /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
         /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public bool CanLoad<T>(IAssetInfo asset)
         {
-            if (asset.AssetNameEquals("Characters/Dialogue/Elliott") ||asset.AssetNameEquals("Portraits/Abigail") || asset.AssetNameEquals("Portraits/Elliott") || asset.AssetNameEquals("Portraits/Penny") || asset.AssetNameEquals("Characters/Abigail") || asset.AssetNameEquals("Characters/Elliott") || asset.AssetNameEquals("Characters/Penny"))
+            if (!config.EnableMod)
+                return false;
+
+            if (asset.AssetNameEquals("Characters/Dialogue/Elliott") || asset.AssetNameEquals("Portraits/Abigail") || asset.AssetNameEquals("Portraits/Elliott") || asset.AssetNameEquals("Portraits/Penny") || asset.AssetNameEquals("Characters/Abigail") || asset.AssetNameEquals("Characters/Elliott") || asset.AssetNameEquals("Characters/Penny"))
             {
                 return true;
             }
@@ -46,9 +53,11 @@ namespace WitcherMod
         /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            if (asset.DataType == typeof(Dictionary<int,string>) || asset.DataType == typeof(Dictionary<string,string>))
-            {
+            if (!config.EnableMod)
                 return false;
+            if (asset.DataType == typeof(Dictionary<int, string>) || asset.DataType == typeof(Dictionary<string, string>))
+            {
+                return true;
             }
 
             return false;
@@ -58,28 +67,23 @@ namespace WitcherMod
         /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
         public void Edit<T>(IAssetData asset)
         {
-            if (asset.DataType == typeof(Dictionary<int, string>) && !asset.AssetNameEquals("Data/Events/ElliottHouse")) 
+            if (asset.AssetNameEquals("Data/NPCDispositions"))
             {
-                IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
-                List<int> keys = new List<int>(data.Keys);
-                foreach (int key in keys)
-                {
-                    data[key] = Regex.Replace(data[key], @"\bElliott\b", "Geralt");
-                    data[key] = Regex.Replace(data[key], @"\bAbigail\b", "Yennifer");
-                    data[key] = Regex.Replace(data[key], @"\bAbby\b", "Yenn");
-                    data[key] = Regex.Replace(data[key], @"\bPenny\b", "Triss");
-                }
+                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                data["Elliott"] = Regex.Replace(data["Elliott"],@"/[^/]+$", "/Geralt");
+                data["Abigail"] = Regex.Replace(data["Abigail"],@"/[^/]+$", "/Yennifer");
+                data["Penny"] = Regex.Replace(data["Penny"],@"/[^/]+$", "/Triss");
             }
-            else if (asset.DataType == typeof(Dictionary<string, string>))
+            else if (asset.AssetName.StartsWith("Characters/Dialogue/") || asset.AssetName.StartsWith("Characters\\Dialogue\\"))
             {
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
                 List<string> keys = new List<string>(data.Keys);
                 foreach (string key in keys)
                 {
-                    data[key] = Regex.Replace(data[key], @"\bElliott\b", "Geralt");
-                    data[key] = Regex.Replace(data[key], @"\bAbigail\b", "Yennifer");
-                    data[key] = Regex.Replace(data[key], @"\bAbby\b", "Yenn");
-                    data[key] = Regex.Replace(data[key], @"\bPenny\b", "Triss");
+                    data[key] = Regex.Replace(data[key], @"Elliott", "Geralt");
+                    data[key] = Regex.Replace(data[key], @"Abigail", "Yennifer");
+                    data[key] = Regex.Replace(data[key], @"Abby", "Yenn");
+                    data[key] = Regex.Replace(data[key], @"Penny", "Triss");
                 }
             }
         }

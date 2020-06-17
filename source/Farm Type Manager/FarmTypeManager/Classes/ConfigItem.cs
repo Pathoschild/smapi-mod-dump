@@ -16,12 +16,17 @@ namespace FarmTypeManager
             /// <summary>The item's name, e.g. "Galaxy Sword".</summary>
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public string Name { get; set; }
-            /// <summary>The item's stack size. Only supported by certain categories.</summary>
+            /// <summary>The item's stack size.</summary>
+            /// <remarks>This is only supported by categories that implement stack sizes.</remarks>
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public int? Stack { get; set; }
             /// <summary>The percent chance that the item will actually be spawned.</summary>
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public double? PercentChanceToSpawn { get; set; }
+            /// <summary>The weighted chance that this item will be selected in a forage area's item list.</summary>
+            /// <remarks>This setting is equivalent to adding multiple copies of the item to its forage list. It has no effect in "contents" or "loot" lists, which spawn all items.</remarks>
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public int? SpawnWeight { get; set; }
             /// <summary>A list of other items contained within this item. Only supported by certain categories.</summary>
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public List<object> Contents { get; set; }
@@ -36,7 +41,10 @@ namespace FarmTypeManager
                     {
                         case "object":
                         case "objects":
-                            return SavedObject.ObjectType.Object;
+                            if (Stack > 1) //if this has a custom stack size
+                                return SavedObject.ObjectType.Item; //treat it as an item
+                            else
+                                return SavedObject.ObjectType.Object;
                         case "barrel":
                         case "barrels":
                         case "breakable":

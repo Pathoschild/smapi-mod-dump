@@ -5,9 +5,9 @@ mods:
    Pollen Sprites
 
 latest commit:
-   commit 8601695a8a9e7bc3c0834f4b01f13434e4638670
-   Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sat May 23 08:42:47 2020 -0500
+   commit b7dcf60104d281cfb80b8eb2432773a59612947d
+   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
+   Date:   Tue Jun 16 02:52:41 2020 -0500
    
-       Improve comments in PollenSprite class
+       Fix (auto-corrected) numbering error in readme.md
    

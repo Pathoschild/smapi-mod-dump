@@ -121,7 +121,7 @@ namespace JoysOfEfficiency.Huds
                     {
                         for (int i = 0; i < array.Length; i += 2)
                         {
-                            dictionary2.Add(array[i], array[i + 1]);
+                            dictionary2[array[i]] = array[i + 1];
                         }
                     }
 

@@ -834,6 +834,8 @@ namespace RandomNPC
 					quizq += "#$r 4343 " + quiza[i];
 				}
 
+				Alert("NPC quiz: fquest_"+quizq);
+
 				data.Add("fquest_" + (fqi), quizq);
 
 				data.Add("quiz_right", quizRight);
@@ -873,7 +875,7 @@ namespace RandomNPC
 
 		private void Alert(string alert)
 		{
-			base.Monitor.Log(alert, LogLevel.Alert);
+			base.Monitor.Log(alert, LogLevel.Trace);
 		}
 
 		private string GetRandomDialogue(RNPC rnpc, List<string> dialogues)
@@ -896,9 +898,14 @@ namespace RandomNPC
 			}
 
 			string[] morning = MakeRandomAppointment(npc, "morning");
+			string[] afternoon = MakeRandomAppointment(npc, schedule.morningLoc);
+			if (morning.Length != 2 || afternoon.Length != 2)
+			{
+				data.Add("spring", "");
+				return data;
+			}
 			schedule.morningEarliest = morning[0];
 			schedule.morningLoc = morning[1];
-			string[] afternoon = MakeRandomAppointment(npc, schedule.morningLoc);
 			schedule.afternoonEarliest = afternoon[0];
 			schedule.afternoonLoc = afternoon[1];
 
@@ -946,7 +953,11 @@ namespace RandomNPC
 					}
 				}
 			}
-
+			if(potentialApps.Count == 0)
+            {
+				Monitor.Log("No available schedule for " + npc.nameID, LogLevel.Warn);
+				return new string[0];
+            }
 			return potentialApps[Game1.random.Next(0, potentialApps.Count)];
 
 		}
@@ -984,6 +995,7 @@ namespace RandomNPC
 				List<string> potentialClothes = GetHighestRankedStrings(npcString, RNPCclothes.data, 8);
 
 				clothes = potentialClothes[Game1.random.Next(0, potentialClothes.Count)].Split('^');
+				//base.Monitor.Log(string.Join(" | ", clothes), LogLevel.Debug);
 				npc.clothes = clothes;
 				npc.topRandomColour = new string[] { Game1.random.Next(0, 255).ToString(), Game1.random.Next(0, 255).ToString(), Game1.random.Next(0, 255).ToString() };
 			}

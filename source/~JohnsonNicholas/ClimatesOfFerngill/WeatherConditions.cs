@@ -324,7 +324,7 @@ namespace ClimatesOfFerngillRebuild
         {
             double temp;
             //first, we should get the cyclic times.
-            int highMin = SDVTime.ConvertIntTimeToMinutes(1530), currMin = SDVTime.ConvertIntTimeToMinutes(timeOfDay), lowMin, nextLowMin;
+            int highMin = SDVTime.ConvertTimeToMinutes(1530), currMin = SDVTime.ConvertTimeToMinutes(timeOfDay), lowMin, nextLowMin;
             int highTime = 1530, lowTime, nextLowTime;
 
             //first, get the time the high will peak. This generally will be 3-4pm. Changes are due to location.
@@ -332,14 +332,14 @@ namespace ClimatesOfFerngillRebuild
             {
                 lowTime = ClimatesOfFerngill.DynamicNightAPI.GetSunriseTime() - 100;
                 nextLowTime = ClimatesOfFerngill.DynamicNightAPI.GetAnySunriseTime(SDate.Now().AddDays(1)) + 2300;
-                nextLowMin = SDVTime.ConvertIntTimeToMinutes(nextLowTime);
+                nextLowMin = SDVTime.ConvertTimeToMinutes(nextLowTime);
             }
             else
             {
                 lowTime = 0500;
                 nextLowMin = 2900;
             }
-            lowMin = SDVTime.ConvertIntTimeToMinutes(lowTime);
+            lowMin = SDVTime.ConvertTimeToMinutes(lowTime);
 
             if (ClimatesOfFerngill.WeatherOpt.Verbose)
             {

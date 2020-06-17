@@ -17,18 +17,48 @@ namespace PollenSprites
     /// <remarks> This subclass copies all of its contents from Ghost, except those added/overridden inside this class.</remarks>
     public class PollenSprite : Ghost
     {
-        /// <summary>The readable version of this monster's name. Needs to match the address of its spritesheet, as in "Characters/Monsters/Pollen Sprite".</summary>
-        private static readonly string customName = "Pollen Sprite";
+        /// <summary>If true, this monster will apply a debuff on contact with players.</summary>
+        public bool EnableDebuff
+        {
+            get
+            {
+                return ModEntry.ModConfig.EnableSlowDebuff; //use the local player's config.json setting
+            }
+        }
+
+        /// <summary>The monster will reduce a player's energy by this amount on contact.</summary>
+        public int EnergyDamage
+        {
+            get
+            {
+                if (ModEntry.ModConfig.EnableEnergyDrain) //if the local player's config.json setting is enabled
+                    return 2; //use the preset damage amount
+                else
+                    return 0; //don't damage energy
+            }
+        }
 
         /// <summary>The color used by some of this monster's visual effects.</summary>
-        public static Color effectColor = new Color(255, 183, 255);
+        public Color EffectColor { get; set; } = new Color(255, 183, 255); //a shade of pink similar to this monster's modded sprite
+
+        /// <summary>The readable version of this monster's name. Needs to match the name used by its spritesheet, as in "Characters/Monsters/Pollen Sprite".</summary>
+        protected static string customName = "Pollen Sprite";
 
         /// <summary>The total game time (in milliseconds) when this monster last used the "sprinkles" visual effect.</summary>
         protected double timeOfLastSprinkle = 0;
 
+        /// <summary>The approximate amount of time (in milliseconds) between this monster's "sprinkle" visual effects.</summary>
+        protected double sprinkleCooldown = 2000;
+
+        /// <summary>The total game time (in milliseconds) when this monster last harmed a player.</summary>
+        protected double timeOfLastPlayerHarm = 0;
+
+        /// <summary>The approximate amount of time (in milliseconds) between this monster's attempts to harm the player.</summary>
+        protected double playerHarmCooldown = 1000;
+
         /// <summary>True if this monster is currently turning right.</summary>
         /// <remarks>This is a more accessible duplicate of Ghost.turningRight for use in the updateAnimation override method.</remarks>
-        protected bool turningRight = default(bool);
+        protected bool turningRight = false;
 
         /// <summary>Creates an non-functional instance of this monster for use by certain Stardew methods.</summary>
         /// <remarks>This should not be used by mods to create new monsters, as it avoids some necessary settings and methods.</remarks>
@@ -48,29 +78,21 @@ namespace PollenSprites
             HideShadow = true; //hide this monster's shadow, preventing a "double shadow" bug in most game locations
             Scale = (float)Game1.random.Next(70, 91) / 100; //randomly choose a size from 70-90%
 
-            if (Game1.random.NextDouble() < 0.1) //10% chance
+            if (Game1.random.NextDouble() < ModEntry.ModConfig.SeedDropChances.MixedSeeds) //if mixed seeds should be dropped
             {
-                switch (Game1.random.Next(0, 6)) //based on a random number
-                {
-                    case 0:
-                        objectsToDrop.Add(429); //jazz seeds
-                        break;
-                    case 1:
-                        objectsToDrop.Add(427); //tulip bulb
-                        break;
-                    case 2:
-                        objectsToDrop.Add(453); //poppy seeds
-                        break;
-                    case 3:
-                        objectsToDrop.Add(455); //spangle seeds
-                        break;
-                    case 4:
-                        objectsToDrop.Add(431); //sunflower seeds
-                        break;
-                    case 5:
-                        objectsToDrop.Add(425); //fairy seeds
-                        break;
-                }
+                objectsToDrop.Add(SeedManager.MixedSeeds); //add mixed seeds to this monster's drop list
+            }
+
+            if (Game1.random.NextDouble() < ModEntry.ModConfig.SeedDropChances.FlowerSeeds) //if flower seeds should be dropped
+            {
+                int randomFlowerSeed = SeedManager.FlowerSeeds[Game1.random.Next(0, SeedManager.FlowerSeeds.Count)]; //get a random flower seed ID
+                objectsToDrop.Add(randomFlowerSeed); //add the flower seed to this monster's drop list
+            }
+
+            if (Game1.random.NextDouble() < ModEntry.ModConfig.SeedDropChances.AllSeeds) //if entirely random seeds should be dropped
+            {
+                int randomSeed = SeedManager.AllSeeds[Game1.random.Next(0, SeedManager.AllSeeds.Count)]; //get a random seed ID
+                objectsToDrop.Add(randomSeed); //add the random seed to this monster's drop list
             }
         }
 
@@ -109,22 +131,23 @@ namespace PollenSprites
         /// <remarks>
         /// * A leaf rustle sound was added.
         /// * The temporary sprites were modified to use this monster's preset effect color.
+        /// * The temporary sprites' texture row numbers were changed to use a leaf animation.
         /// </remarks>
         protected override void localDeathAnimation()
         {
             this.currentLocation.localSound("leafrustle"); //play the leaf rustling sound effect
-            this.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(50, this.Position, effectColor, 10, false, 100f, 0, -1, -1f, -1, 0));
-            this.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(50, this.Position + new Vector2((float)Game1.random.Next(-32, 32), (float)Game1.random.Next(-32, 32)), effectColor, 10, false, 100f, 0, -1, -1f, -1, 0)
+            this.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(50, this.Position, EffectColor, 10, false, 100f, 0, -1, -1f, -1, 0)); //use animation row 50 (leaf animation used by weeds) for each sprite
+            this.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(50, this.Position + new Vector2((float)Game1.random.Next(-32, 32), (float)Game1.random.Next(-32, 32)), EffectColor, 10, false, 100f, 0, -1, -1f, -1, 0)
             {
                 delayBeforeAnimationStart = 150,
                 scale = 0.5f
             });
-            this.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(50, this.Position + new Vector2((float)Game1.random.Next(-32, 32), (float)Game1.random.Next(-32, 32)), effectColor, 10, false, 100f, 0, -1, -1f, -1, 0)
+            this.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(50, this.Position + new Vector2((float)Game1.random.Next(-32, 32), (float)Game1.random.Next(-32, 32)), EffectColor, 10, false, 100f, 0, -1, -1f, -1, 0)
             {
                 delayBeforeAnimationStart = 300,
                 scale = 0.5f
             });
-            this.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(50, this.Position + new Vector2((float)Game1.random.Next(-32, 32), (float)Game1.random.Next(-32, 32)), effectColor, 10, false, 100f, 0, -1, -1f, -1, 0)
+            this.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(50, this.Position + new Vector2((float)Game1.random.Next(-32, 32), (float)Game1.random.Next(-32, 32)), EffectColor, 10, false, 100f, 0, -1, -1f, -1, 0)
             {
                 delayBeforeAnimationStart = 450,
                 scale = 0.5f
@@ -162,10 +185,10 @@ namespace PollenSprites
         /// </remarks>
         protected override void updateAnimation(GameTime time)
         {
-            if (time.TotalGameTime.TotalMilliseconds - timeOfLastSprinkle > 2000) //if it's been over 2 seconds since the previous sprinkle
+            if (time.TotalGameTime.TotalMilliseconds - timeOfLastSprinkle > sprinkleCooldown) //if this monster should use another sprinkle effect
             {
                 timeOfLastSprinkle = time.TotalGameTime.TotalMilliseconds + Game1.random.Next(-500, 501); //record the current time, randomly offset by up to 0.5 seconds
-                Color color = (Game1.random.NextDouble() < 0.5 ? effectColor : Color.White); //randomly choose between the monster's effect color or white
+                Color color = (Game1.random.NextDouble() < 0.5 ? EffectColor : Color.White); //randomly choose between the monster's effect color or white
                 Utility.addSprinklesToLocation(this.currentLocation, this.getTileX(), this.getTileY(), 2, 2, 101, 50, color, (string)null, false); //display a new sprinkle effect
             }
 
@@ -215,7 +238,7 @@ namespace PollenSprites
         {
             int num = Math.Max(1, damage - (int)(NetFieldBase<int, NetInt>)this.resilience);
             this.Slipperiness = 8;
-            Color color = (Game1.random.NextDouble() < 0.5 ? effectColor : Color.White); //randomly choose between the monster's effect color or white
+            Color color = (Game1.random.NextDouble() < 0.5 ? EffectColor : Color.White); //randomly choose between the monster's effect color or white
             Utility.addSprinklesToLocation(this.currentLocation, this.getTileX(), this.getTileY(), 2, 2, 101, 50, color, (string)null, false); //use the selected color
             if (Game1.random.NextDouble() < (double)(NetFieldBase<double, NetDouble>)this.missChance - (double)(NetFieldBase<double, NetDouble>)this.missChance * addedPrecision)
             {
@@ -232,6 +255,48 @@ namespace PollenSprites
             this.addedSpeed = -1;
             //remove lightsource removal code
             return num;
+        }
+
+        /// <summary>This override adds a "damage" check for debuffs and stamina drain when this monster touches the player.</summary>
+        /// <remarks>In multiplayer, this method seems to be executed by the local player, i.e. whichever player was touched.
+        /// The stamina drain and debuff effects are only effective on the local player, so this particular method was necessary; some others are only executed by the host.</remarks>
+        public override void collisionWithFarmerBehavior()
+        {
+            if (!Context.IsMultiplayer || Game1.player.UniqueMultiplayerID == Player.UniqueMultiplayerID) //if this is single-player OR the monster is targeting the local player
+            {
+                GameTime time = Game1.currentGameTime; //get the local player's current time
+
+                if (time?.TotalGameTime.TotalMilliseconds - timeOfLastPlayerHarm > playerHarmCooldown) //if this monster should try to harm the player again
+                {
+                    if (GetBoundingBox().Intersects(Game1.player.GetBoundingBox())) //if the monster is actually touching the player
+                    {
+                        timeOfLastPlayerHarm = time.TotalGameTime.TotalMilliseconds; //update the "last harm attempt" time
+
+                        //if the player isn't invincible & the player isn't wearing the Slime Charmer ring & the player doesn't resist the effect (mimicking the immunity check from DebuffProjectile)
+                        if (!Game1.player.temporarilyInvincible && !Game1.player.isWearingRing(520) && Game1.random.Next(10) > Player.immunity)
+                        {
+                            Game1.player.Stamina = Math.Max(10, Game1.player.Stamina - EnergyDamage); //reduce the player's energy by this monster's energy damage (but not below 10)
+
+                            if (EnableDebuff) //if this monster's debuff is enabled
+                            {
+                                Buff debuff = new Buff(13); //create a new buff effect based on the "Slimed" debuff
+                                debuff.glow = EffectColor; //use this monster's effect color
+                                var buffAttributesField = ModEntry.Instance.Helper.Reflection.GetField<int[]>(debuff, "buffAttributes", false); //get the debuff's private "buffAttributes" field
+                                if (buffAttributesField != null) //if reflection succeeded
+                                {
+                                    int[] attributes = buffAttributesField.GetValue(); //get the debuff's current values
+                                    attributes[9] = -2; //drain less speed (original value: -4)
+                                    buffAttributesField.SetValue(attributes); //set the debuff's values
+                                }
+
+                                Game1.buffsDisplay.addOtherBuff(debuff); //apply the debuff to the player
+                            }
+                        }
+                    }
+                }
+            }
+
+            base.collisionWithFarmerBehavior(); //call the base method, if any (this method is usually empty)
         }
     }
 }

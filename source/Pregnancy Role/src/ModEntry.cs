@@ -17,6 +17,7 @@ namespace PregnancyRole
 		{
 			// Make resources available.
 			Instance = this;
+			ModConfig.Load ();
 
 			// Apply Harmony patches to pregnancy-related methods.
 			harmony = HarmonyInstance.Create (ModManifest.UniqueID);

@@ -1,10 +1,8 @@
-﻿using Harmony;
-using ShopTileFramework.Data;
+﻿using ShopTileFramework.Shop;
 using ShopTileFramework.Utility;
 using StardewModdingAPI;
 using StardewValley;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ShopTileFramework.ItemPriceAndStock
 {
@@ -14,17 +12,18 @@ namespace ShopTileFramework.ItemPriceAndStock
     class ItemPriceAndStockManager
     {
         public Dictionary<ISalable, int[]> ItemPriceAndStock { get; set; }
-        private ItemStock[] itemStocks;
-        private readonly int maxNumItemsSoldInStore;
-        private readonly string shopName;
-        private readonly int shopPrice;
+        private readonly ItemStock[] _itemStocks;
+        private readonly double _defaultSellPriceMultipler;
+        private readonly Dictionary<double, string[]> _priceMultiplierWhen;
+        private readonly int _maxNumItemsSoldInStore;
+        private readonly string _shopName;
+        private readonly int _shopPrice;
 
         /// <summary>
         /// Initializes the manager with the itemstocks, and how many items max this shop will contain
         /// </summary>
-        /// <param name="ItemStocks"></param>
         /// <param name="data"></param>
-        public ItemPriceAndStockManager(ItemStock[] ItemStocks, ItemShopModel data)
+        public ItemPriceAndStockManager(ItemShop data)
         {
             if (ModEntry.VerboseLogging)
                 ModEntry.monitor.Log($"Initializing Shop:" +
@@ -38,30 +37,34 @@ namespace ShopTileFramework.ItemPriceAndStock
                     $" | When: {data.When}" +
                     $" | ClosedMessage: {data.ClosedMessage}\n", LogLevel.Debug);
 
-            itemStocks = ItemStocks;
-            maxNumItemsSoldInStore = data.MaxNumItemsSoldInStore;
-            shopName = data.ShopName;
-            shopPrice = data.ShopPrice;
+            _defaultSellPriceMultipler = data.DefaultSellPriceMultiplier;
+            _priceMultiplierWhen = data.PriceMultiplierWhen;
+            _itemStocks = data.ItemStocks;
+            _maxNumItemsSoldInStore = data.MaxNumItemsSoldInStore;
+            _shopName = data.ShopName;
+            _shopPrice = data.ShopPrice;
         }
-        public ItemPriceAndStockManager(ItemStock[] ItemStocks, VanillaShopModel data)
+        public ItemPriceAndStockManager(VanillaShop data)
         {
             if (ModEntry.VerboseLogging)
                 ModEntry.monitor.Log($"Initializing Vanilla shop:" +
                     $" ShopName: {data.ShopName}",
                     LogLevel.Debug);
 
-            itemStocks = ItemStocks;
-            maxNumItemsSoldInStore = data.MaxNumItemsSoldInStore;
-            shopName = data.ShopName;
-            shopPrice = data.ShopPrice;
+            _defaultSellPriceMultipler = data.DefaultSellPriceMultiplier;
+            _priceMultiplierWhen = data.PriceMultiplierWhen;
+            _itemStocks = data.ItemStocks;
+            _maxNumItemsSoldInStore = data.MaxNumItemsSoldInStore;
+            _shopName = data.ShopName;
+            _shopPrice = data.ShopPrice;
         }
 
         public void Initialize()
         {
             //initialize each stock
-            foreach (ItemStock stock in itemStocks)
+            foreach (ItemStock stock in _itemStocks)
             {
-                stock.Initialize(shopName, shopPrice);
+                stock.Initialize(_shopName, _shopPrice,_defaultSellPriceMultipler,_priceMultiplierWhen);
             }
         }
 
@@ -72,25 +75,25 @@ namespace ShopTileFramework.ItemPriceAndStock
         {
             ItemPriceAndStock = new Dictionary<ISalable, int[]>();
             if (ModEntry.VerboseLogging)
-                ModEntry.monitor.Log($"---------updating {shopName}--------------");
+                ModEntry.monitor.Log($"---------updating {_shopName}--------------");
 
-            foreach (ItemStock stock in itemStocks)
+            foreach (ItemStock stock in _itemStocks)
             {
-                var PriceAndStock = stock.Update();
+                var priceAndStock = stock.Update();
                 //null is returned if conhditions aren't met, skip adding this stock
-                if (PriceAndStock == null) 
+                if (priceAndStock == null) 
                     continue;
 
-                Add(PriceAndStock);
+                Add(priceAndStock);
             }
 
             if (ModEntry.VerboseLogging)
-                ModEntry.monitor.Log($"Reducing shop stock down to {maxNumItemsSoldInStore} items");
+                ModEntry.monitor.Log($"Reducing shop stock down to {_maxNumItemsSoldInStore} items");
             //randomly reduces the stock of the whole store down to maxNumItemsSoldInStore
-            ItemsUtil.RandomizeStock(ItemPriceAndStock,maxNumItemsSoldInStore);
+            ItemsUtil.RandomizeStock(ItemPriceAndStock,_maxNumItemsSoldInStore);
 
             if (ModEntry.VerboseLogging)
-                ModEntry.monitor.Log($"---------finished updating {shopName}--------------");
+                ModEntry.monitor.Log($"---------finished updating {_shopName}--------------");
 
         }
 

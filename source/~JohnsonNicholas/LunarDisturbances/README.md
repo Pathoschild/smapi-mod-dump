@@ -2,11 +2,11 @@
 
 ## Current Version:
 
-1.2
+1.3.1
 
 ## Requirements
 
-- SMAPI 3.0+
+- SMAPI 3.5+
 - SpaceCore
 - Stardew Valley 1.4+
 
@@ -42,4 +42,5 @@ Price alterations under the blood moon may be incompatible with other mods that 
 - Sky for the Korean translation
 - FarAways for the Chinese? translation
 - LeeCanIt for the Italian translation
+- Sho Iwamoto for the Japanese translation
 - Some sprites based on sprites from [https://www.deviantart.com/sushiman0001/art/Man-in-the-Moon-56693518] by Sushiman0001

@@ -1,0 +1,10 @@
+{
+  "ShowLoveBubblesOverAnimalsWhenWateredTrough": true,
+  "WateringSystemInDeluxeBuildings": true,
+  "ReplaceCoopTextureIfTroughIsEmpty": true,
+  "FriendshipPointsForWateredTrough": 15,
+  "AdditionalFriendshipPointsForWateredTroughWithAnimalsInsideBuilding": 15,
+  "NegativeFriendshipPointsForNotWateredTrough": 20,
+  "AnimalsCanDrinkOutside": true,
+  "AnimalsCanOnlyDrinkFromWaterBodies": true
+}

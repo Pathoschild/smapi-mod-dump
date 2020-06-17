@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>PregnancyRole</AssemblyName>
 		<RootNamespace>PregnancyRole</RootNamespace>
-		<Version>1.1.0</Version>
+		<Version>1.2.0</Version>
 		<EnableHarmony>true</EnableHarmony>
 	</PropertyGroup>
 	<Import Project="common.projitems" Label="Shared" />

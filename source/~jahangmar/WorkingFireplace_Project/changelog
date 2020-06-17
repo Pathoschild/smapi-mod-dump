@@ -7,9 +7,11 @@
 	-added configuration option (true by default) that lights the
 	fireplace in the first night on the farm
 
-next:
+1.5.2:
+	-updated for Android compatibility (thanks to Logofe)
 	-updated Italian translation (thanks to S-zombie)
 	-added Korean translation (thanks to overwritten)
 	-added Hungarian translation (thanks to Annosz)
 	-added French translation (thanks to mael-belval)
+	-added Turkish translation (thanks to BURAKMESE)
 

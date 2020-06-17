@@ -5,10 +5,9 @@ mods:
    Auto-Eat
 
 latest commit:
-   commit 7af3acffc2194cdc7fb4d1051ed1eb7d7d8fc48b
-   Merge: b8738db d67d164
+   commit 5aa30abb8dbc856cc41a16a13b2a0e09170fea49
    Author: Permamiss <39325797+Permamiss@users.noreply.github.com>
-   Date:   Sat May 23 01:40:47 2020 -0700
+   Date:   Tue Jun 16 18:18:21 2020 -0700
    
-       Merge branch 'master' of https://github.com/Permamiss/Auto-Eat
+       Update for current version
    

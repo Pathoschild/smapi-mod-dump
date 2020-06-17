@@ -3,20 +3,25 @@ url:
 
 mods:
    Boss Creatures
+   Craftable Butterfly Hutches
    Custom Dungeon Floors
+   Custom Locks
    Custom Ore Nodes
    Enhanced Loot Magnet
+   Friendly Divorce
    Fruit Tree Shaker
    Loose Audio Files
+   Multiple Spouses
    Pacifist Valley
    Placeable Mine Shafts
    Random NPCs
+   Realistic Random Names
    Witcher Mod
 
 latest commit:
-   commit ff7a4c425230d4c60979d4f5bc7eae9f83f54ee4
+   commit a7159f8f9b7ba167a8c254a9302c89dec33f439f
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Mon May 11 23:02:18 2020 -0400
+   Date:   Tue Jun 16 16:44:56 2020 -0400
    
-       monster floors, witcher mod
+       spouses
    

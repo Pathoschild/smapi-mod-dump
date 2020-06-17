@@ -7,12 +7,10 @@ mods:
    Time Reminder
 
 latest commit:
-   commit ca8ba2c348c79827182040f172b2fe40fb32b6b0
-   Merge: 8936337 ed3566a
-   Author: Sakorona <7285555+Sakorona@users.noreply.github.com>
-   Date:   Wed May 20 05:47:36 2020 -0700
+   commit c117e8a384d66ffe8f9127efe229311ab89cdff9
+   Merge: 0d960b1 ca8ba2c
+   Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
+   Date:   Sun Jun 14 16:21:24 2020 -0700
    
-       Merge pull request #96 from Windmill-City/develop
-       
-       Create zh.json
+       Merge branch 'develop' of github.com:Sakorona/SDVMods into develop
    

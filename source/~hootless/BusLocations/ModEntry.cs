@@ -59,7 +59,27 @@ namespace BusLocations
         /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!(Context.IsWorldReady && (e.Button.IsActionButton() || !Game1.currentLocation.Name.Contains("BusStop")) && Game1.currentLocation.doesTileHaveProperty(7, 11, "Action", "Buildings") == "BusTicket" && (e.Cursor.GrabTile.X == 7 && (e.Cursor.GrabTile.Y == 11 || e.Cursor.GrabTile.Y == 10))))
+
+            if (!Context.IsWorldReady)
+                return;
+
+            if (Constants.TargetPlatform == GamePlatform.Android)
+            {
+                if (e.Button != SButton.MouseLeft)
+                    return;
+                if (e.Cursor.GrabTile != e.Cursor.Tile)
+                    return;
+            }
+            else if (!e.Button.IsActionButton())
+                return;
+
+            if (!Game1.currentLocation.Name.Contains("BusStop"))
+                return;
+
+            if (Game1.currentLocation.doesTileHaveProperty(7, 11, "Action", "Buildings") != "BusTicket")
+                return;
+
+            if (!(e.Cursor.GrabTile.X == 7 && (e.Cursor.GrabTile.Y == 11 || e.Cursor.GrabTile.Y == 10)))
                 return;
 
             this.Helper.Input.Suppress(e.Button);

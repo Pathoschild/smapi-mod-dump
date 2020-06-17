@@ -55,10 +55,19 @@
     <Compile Include="ModEntry.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Stardew Valley">
+      <HintPath>D:\SteamLibrary\steamapps\common\Stardew Valley\Stardew Valley.exe</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>D:\SteamLibrary\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,0 +1,10 @@
+{
+  "AllBushesAreDestroyable": true,
+  "DestroyableBushLocations": [],
+  "AmountOfWoodDropped": {
+    "SmallBushes": 2,
+    "MediumBushes": 4,
+    "LargeBushes": 8,
+    "GreenTeaBushes": 0
+  }
+}

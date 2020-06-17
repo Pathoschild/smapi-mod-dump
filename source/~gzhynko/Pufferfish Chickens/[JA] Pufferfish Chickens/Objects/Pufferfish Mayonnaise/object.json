@@ -1,0 +1,26 @@
+{
+	"Name": "Pufferfish Mayonnaise",
+	"Description": "A thick yellow paste. Smells disgusting.",
+	"Category": "ArtisanGoods",
+	"Edibility": -15,
+	"CanSell": true,
+	"EdibleBuffs": null,
+	"Price": 200,
+	"IsColored": false,
+	"GiftTastes":
+	{
+		"Love": ,
+		"Like": [],
+		"Neutral": ["Wizard"],
+	        "Dislike": [],
+		"Hate": ["Sophia", "Sebastian", "Maru", "Andy", "Jas", "Vincent", "Olivia", "Victor", "Gus", "MarlonFay", "Susan", "MorrisTod", "Elliott", "Lewis", "Harvey", "Leah", "Alex", "Sam", "Shane", "Abigail", "Emily", "Haley", "Caroline", "Clint", "Demetrius", "Evelyn", "George", "Jodi", "Kent", "Linus", "Marnie", "Pam", "Pierre", "Robin", "Sandy", "Willy"]
+	},
+	"NameLocalization":
+	{
+		
+	},
+	"DescriptionLocalization":
+	{
+		
+	}
+}

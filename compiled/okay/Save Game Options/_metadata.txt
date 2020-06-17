@@ -1,3 +1,3 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5150
+page URL: https://www.nexusmods.com/stardewvalley/mods/5190
 IDs: SorryLate.SaveGameOptions
-update keys: Nexus:5150, Nexus:5190
+update keys: Nexus:5190

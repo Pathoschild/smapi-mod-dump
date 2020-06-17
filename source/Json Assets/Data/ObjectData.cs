@@ -58,6 +58,7 @@ namespace JsonAssets.Data
             public int PurchasePrice { get; set; }
             public string PurchaseFrom { get; set; } = "Gus";
             public IList<string> PurchaseRequirements { get; set; } = new List<string>();
+            public IList<PurchaseData> AdditionalPurchaseData { get; set; } = new List<PurchaseData>();
 
             internal string GetRecipeString( ObjectData parent )
             {
@@ -79,6 +80,8 @@ namespace JsonAssets.Data
 
             internal string GetPurchaseRequirementString()
             {
+                if ( PurchaseRequirements == null )
+                    return "";
                 var str = $"1234567890";
                 foreach (var cond in PurchaseRequirements)
                     str += $"/{cond}";
@@ -123,6 +126,7 @@ namespace JsonAssets.Data
         public int PurchasePrice { get; set; }
         public string PurchaseFrom { get; set; } = "Pierre";
         public IList<string> PurchaseRequirements { get; set; } = new List<string>();
+        public IList<PurchaseData> AdditionalPurchaseData { get; set; } = new List<PurchaseData>();
 
         public class GiftTastes_
         {
@@ -182,6 +186,8 @@ namespace JsonAssets.Data
 
         internal string GetPurchaseRequirementString()
         {
+            if ( PurchaseRequirements == null )
+                return "";
             var str = $"1234567890";
             foreach (var cond in PurchaseRequirements)
                 str += $"/{cond}";

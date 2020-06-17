@@ -1,10 +1,10 @@
 ﻿{
   "Name": "NiceMessages",
   "Author": "Nori",
-  "Version": "1.0.0",
+  "Version": "1.2.1",
   "Description": "Flavour text for when you wake up in the morning.",
   "UniqueID": "nori.NiceMessages",
   "EntryDll": "Nice Messages.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": ["Nexus:6160"]
 }

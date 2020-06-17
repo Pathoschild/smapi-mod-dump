@@ -1,0 +1,11 @@
+﻿{
+  //"Entries": {
+  //  "900": "Crimson Jade/400/-300/Minerals -2/Crimson Jade/A pale green ornamental stone with a strange crimson sheen."
+  //},
+  "Fields": {
+    "2": {
+      4: "{{gekox.bows/testToken}}",
+      5: "A new desciption"
+    }
+  }
+}
