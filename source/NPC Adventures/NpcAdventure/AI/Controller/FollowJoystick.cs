@@ -245,6 +245,7 @@ namespace NpcAdventure.AI.Controller
                         return;
                     }
                     this.currentFollowedPoint = this.pathToFollow.Dequeue();
+                    this.follower.stopWithoutChangingFrame();
                 }
 
                 if (nodeDiffLen == this.lastNodeDiffLen && nodeDiffLen > tolerance && this.follower.isMoving() && this.Speed > 0)

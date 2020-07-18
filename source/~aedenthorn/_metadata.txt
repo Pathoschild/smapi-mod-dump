@@ -5,9 +5,11 @@ mods:
    Boss Creatures
    Craftable Butterfly Hutches
    Custom Dungeon Floors
+   Custom Fixed Dialogue
    Custom Locks
    Custom Ore Nodes
    Enhanced Loot Magnet
+   Familiars
    Friendly Divorce
    Fruit Tree Shaker
    Loose Audio Files
@@ -16,12 +18,14 @@ mods:
    Placeable Mine Shafts
    Random NPCs
    Realistic Random Names
+   Swim
+   Transparent Objects
    Witcher Mod
 
 latest commit:
-   commit a7159f8f9b7ba167a8c254a9302c89dec33f439f
+   commit 0f9364ef44dbda2be0e7df617536a7e9bf649e02
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Tue Jun 16 16:44:56 2020 -0400
+   Date:   Fri Jul 17 10:58:14 2020 -0400
    
-       spouses
+       swim
    

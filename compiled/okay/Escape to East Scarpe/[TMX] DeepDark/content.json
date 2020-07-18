@@ -3,11 +3,39 @@
 
 
 "addMaps": [   
-     
+   {
+      "name": "ESOrchard",
+      "file": "assets/Orchard.tmx"
+    },
        {
       "name": "Underground1",
       "file": "assets/Underground1.tmx"
 		}
+],
 
-]
+"mergeMaps": [
+   {
+      "name": "ESOrchard",
+      "file": "assets/Orchard-river.tmx",
+      "sourceArea": [ 0, 0, 10, 32 ],
+      "position": [ 4, 0 ],
+"conditions": "LC Luau.getMapProperty('EastScarpe','CanyonWater') == 'T'"
+    },
+ {
+      "name": "ESOrchard",
+      "file": "assets/Orchard-river.tmx",
+      "sourceArea": [ 0, 0, 6, 1 ],
+      "position": [ 5, 18 ],
+"conditions": "t 1800 2600/LC not Luau.getMapProperty('EastScarpe','CanyonWater') == 'T'"
+    },
+  {
+      "name": "ESOrchard",
+      "file": "assets/Orchard-river.tmx",
+      "sourceArea": [ 0, 0, 6, 1 ],
+      "position": [ 5, 18 ],
+"conditions": "t 1800 2600/LC Luau.getMapProperty('EastScarpe','CanyonWater') == 'T'"
+    }
+ 
+      
+   ]
 }

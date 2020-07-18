@@ -304,20 +304,17 @@ For create or edit dialogues via content packs, add to your content.json file in
 
 ```json
 {
-  "Format": "1.0",
+  "Format": "1.3",
   "Changes": [
     {
-      "Action": "Edit",
       "Target": "Dialogue/Elliott",
       "FromFile": "assets/dialogue/elliott.json"
     },
     {
-      "Action": "Load",
       "Target": "Dialogue/MyOwnNpc",
       "FromFile": "assets/dialogue/myownnpc.json"
     },
     {
-      "Action": "Edit",
       "Target": "Strings/SpeechBubbles",
       "FromFile": "assets/strings/mybubbles.json"
     }

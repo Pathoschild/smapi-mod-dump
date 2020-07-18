@@ -5,9 +5,9 @@ mods:
    Lockpicks
 
 latest commit:
-   commit 32f30bc1578a28ca10dfc519561f4aac3da5cb11
+   commit af53749d2bf97a914f850abbaa2408b684efe519
    Author: bwdy <47769190+bwdymods@users.noreply.github.com>
-   Date:   Sat May 23 09:41:57 2020 -0800
+   Date:   Tue Jun 16 21:31:46 2020 -0800
    
-       Better temp map handling, sewer grate support, refactoring
+       fix temp maps for multiplayer
    

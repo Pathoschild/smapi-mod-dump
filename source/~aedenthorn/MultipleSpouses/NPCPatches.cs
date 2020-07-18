@@ -164,14 +164,73 @@ namespace MultipleSpouses
             },
         };
 
+        public static Dictionary<string, int[]> spousePatioLocations = new Dictionary<string, int[]>()
+        {
+            {"Sam", new int[]{2,2}},
+            {"Penny", new int[]{2,2}},
+            {"Sebastian", new int[]{2,3}},
+            {"Shane", new int[]{0,3}},
+            {"Alex", new int[]{2,2}},
+            {"Maru", new int[]{1,2}},
+            {"Emily", new int[]{1,3}},
+            {"Haley", new int[]{1,2}},
+            {"Harvey", new int[]{2,2}},
+            {"Elliott", new int[]{2,2}},
+            {"Leah", new int[]{2,2}},
+            {"Abigail", new int[]{2,2}},
+
+        };
+
         public static bool NPC_setUpForOutdoorPatioActivity_Prefix(NPC __instance)
         {
-            if (ModEntry.outdoorSpouse != __instance.Name)
+            try
             {
+                if (ModEntry.outdoorAreaData.areas.ContainsKey(__instance.Name))
+                {
+                    Game1.warpCharacter(__instance, "Farm", ModEntry.outdoorAreaData.areas[__instance.Name].NpcPos(__instance.Name));
+                }
+                else if (Game1.player.spouse.Equals(__instance.Name) && ModEntry.outdoorAreaData.areas.Count == 0)
+                {
+                    Point point = new Point(71, 10);
+                    if (spousePatioLocations.ContainsKey(__instance.Name))
+                    {
+                        point = new Point(69 + spousePatioLocations[__instance.Name][0], 6 + spousePatioLocations[__instance.Name][1]);
+                    }
+
+                    Game1.warpCharacter(__instance, "Farm", point);
+                }
+                else
+                {
+                    __instance.shouldPlaySpousePatioAnimation.Value = false;
+                    return false;
+                }
+                __instance.popOffAnyNonEssentialItems();
+                __instance.currentMarriageDialogue.Clear();
+                __instance.addMarriageDialogue("MarriageDialogue", "patio_" + __instance.Name, false, new string[0]);
+                __instance.shouldPlaySpousePatioAnimation.Value = true;
                 return false;
             }
-            ModEntry.PMonitor.Log("is outdoor spouse: " + __instance.Name);
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_setUpForOutdoorPatioActivity_Prefix)}:\n{ex}", LogLevel.Error);
+            }
             return true;
+        }
+
+        public static void NPC_doPlaySpousePatioAnimation_Postfix(NPC __instance)
+        {
+            try
+            {
+                if (ModEntry.outdoorAreaData.areas.ContainsKey(__instance.Name) && ModEntry.outdoorAreaData.areas[__instance.Name].npcAnimation != null)
+                {
+                    Monitor.Log($"got animation for {__instance.Name}");
+                    Misc.NPCDoAnimation(__instance, ModEntry.outdoorAreaData.areas[__instance.Name].npcAnimation);
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_doPlaySpousePatioAnimation_Postfix)}:\n{ex}", LogLevel.Error);
+            }
         }
 
         public static bool NPC_checkAction_Prefix(ref NPC __instance, ref Farmer who, ref bool __result)
@@ -180,7 +239,7 @@ namespace MultipleSpouses
             {
                 Misc.ResetSpouses(who);
 
-                if ((__instance.Name.Equals(who.spouse) || ModEntry.spouses.ContainsKey(__instance.Name)) && who.IsLocalPlayer)
+                if ((__instance.Name.Equals(who.spouse) || Misc.GetSpouses(who,1).ContainsKey(__instance.Name)) && who.IsLocalPlayer)
                 {
                     int timeOfDay = Game1.timeOfDay;
                     if (__instance.Sprite.CurrentAnimation == null)
@@ -197,7 +256,7 @@ namespace MultipleSpouses
                         __result = true;
                         return false;
                     }
-                    if (__instance.Sprite.CurrentAnimation == null && !__instance.hasTemporaryMessageAvailable() && __instance.currentMarriageDialogue.Count == 0 && __instance.CurrentDialogue.Count == 0 && Game1.timeOfDay < 2200 && !__instance.isMoving() && who.ActiveObject == null)
+                    if (__instance.Sprite.CurrentAnimation == null && !__instance.hasTemporaryMessageAvailable() && __instance.currentMarriageDialogue.Count == 0 && __instance.CurrentDialogue.Count == 0 && Game1.timeOfDay < 2200 && !__instance.isMoving() && who.ActiveObject == null && (!__instance.hasBeenKissedToday || ModEntry.config.UnlimitedDailyKisses))
                     {
                         __instance.faceGeneralDirection(who.getStandingPosition(), 0, false);
                         who.faceGeneralDirection(__instance.getStandingPosition(), 0, false);
@@ -267,14 +326,14 @@ namespace MultipleSpouses
                                 facingRight = false;
                             }
                             bool flip = (facingRight && __instance.FacingDirection == 3) || (!facingRight && __instance.FacingDirection == 1);
-                            if (who.getFriendshipHeartLevelForNPC(__instance.Name) > 9)
+                            if (who.getFriendshipHeartLevelForNPC(__instance.Name) >= ModEntry.config.MinHeartsForKiss)
                             {
                                 int delay = Game1.IsMultiplayer ? 1000 : 10;
                                 __instance.movementPause = delay;
                                 __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
-                            {
-                                new FarmerSprite.AnimationFrame(spouseFrame, delay, false, flip, new AnimatedSprite.endOfAnimationBehavior(__instance.haltMe), true)
-                            });
+                                {
+                                    new FarmerSprite.AnimationFrame(spouseFrame, delay, false, flip, new AnimatedSprite.endOfAnimationBehavior(__instance.haltMe), true)
+                                });
                                 if (!__instance.hasBeenKissedToday.Value)
                                 {
                                     who.changeFriendship(10, __instance);
@@ -302,7 +361,7 @@ namespace MultipleSpouses
                                         }
                                     });
                                 }
-                                if (ModEntry.config.RealKissSound && Kissing.kissEffect != null)
+                                if (ModEntry.config.RealKissSound && Kissing.kissEffect != null && (ModEntry.config.RoommateRomance || !who.friendshipData[__instance.Name].RoommateMarriage))
                                 {
                                     Kissing.kissEffect.Play();
                                 }
@@ -328,10 +387,10 @@ namespace MultipleSpouses
                             who.CanMove = false;
                             who.FarmerSprite.PauseForSingleAnimation = false;
                             who.FarmerSprite.animateOnce(new List<FarmerSprite.AnimationFrame>
-                        {
-                            new FarmerSprite.AnimationFrame(101, 1000, 0, false, who.FacingDirection == 3, null, false, 0),
-                            new FarmerSprite.AnimationFrame(6, 1, false, who.FacingDirection == 3, new AnimatedSprite.endOfAnimationBehavior(Farmer.completelyStopAnimating), false)
-                        }.ToArray(), null);
+                            {
+                                new FarmerSprite.AnimationFrame(101, 1000, 0, false, who.FacingDirection == 3, null, false, 0),
+                                new FarmerSprite.AnimationFrame(6, 1, false, who.FacingDirection == 3, new AnimatedSprite.endOfAnimationBehavior(Farmer.completelyStopAnimating), false)
+                            }.ToArray(), null);
                             __result = true;
                             return false;
                         }
@@ -345,6 +404,18 @@ namespace MultipleSpouses
             return true;
         }
 
+        public static void NPC_marriageDuties_Prefix(NPC __instance)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_marriageDuties_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+        
         public static void NPC_marriageDuties_Postfix(NPC __instance)
         {
             try
@@ -451,6 +522,15 @@ namespace MultipleSpouses
                         }
                     }
                 }
+                if (ModEntry.config.RemoveSpouseOrdinaryDialogue && __instance.Name != Game1.player.spouse && __instance.currentMarriageDialogue.Count > 0)
+                {
+                    __instance.CurrentDialogue.Clear();
+                    foreach (MarriageDialogueReference mdr in __instance.currentMarriageDialogue)
+                    {
+                        __instance.CurrentDialogue.Push(mdr.GetDialogue(__instance));
+                        __instance.currentMarriageDialogue.Clear();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -470,7 +550,7 @@ namespace MultipleSpouses
                     int offset = 0;
                     if (spouse.spouse != __instance.Name)
                     {
-                        int idx = ModEntry.spouses.Keys.ToList().IndexOf(__instance.Name);
+                        int idx = Misc.GetSpouses(spouse,0).Keys.ToList().IndexOf(__instance.Name);
                         offset = 7 * (idx + 1);
                     }
                     Vector2 spot = ((__instance.currentLocation as FarmHouse).upgradeLevel == 1) ? new Vector2(32f, 5f) : new Vector2(38f, 14f);
@@ -577,12 +657,46 @@ namespace MultipleSpouses
             return true;
         }
 
+        public static void NPC_loadCurrentDialogue_Postfix(NPC __instance, ref Stack<Dialogue> __result)
+        {
+            try
+            {
+                if (Misc.GetSpouses(Game1.player, 0).ContainsKey(__instance.Name))
+                {
+                    if (!Game1.newDay && __instance.marriageDefaultDialogue.Value != null && !__instance.shouldSayMarriageDialogue.Value)
+                    {
+                        __result.Push(__instance.marriageDefaultDialogue.Value.GetDialogue(__instance));
+                        __instance.marriageDefaultDialogue.Value = null;
+                    }
+                    if (__instance.marriageDefaultDialogue.Value.GetDialogue(__instance).getCurrentDialogue() == "")
+                    {
+                        Monitor.Log($"missing marriage dialogue for {__instance.Name}");
+                        Friendship friends;
+                        int heartLevel = Game1.player.friendshipData.TryGetValue(__instance.Name, out friends) ? (friends.Points / 250) : 0;
+                        Dialogue d = __instance.tryToRetrieveDialogue(Game1.currentSeason + "_", heartLevel, "");
+                        if (d == null)
+                        {
+                            d = __instance.tryToRetrieveDialogue("", heartLevel, "");
+                        }
+                        if (d != null)
+                        {
+                            __result.Push(d);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_loadCurrentDialogue_Postfix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+
 
         public static bool NPC_tryToReceiveActiveObject_Prefix(NPC __instance, ref Farmer who, Dictionary<string, string> ___dialogue, ref List<int> __state)
         {
             try
             {
-                if (Misc.GetAllSpouses().ContainsKey(__instance.Name))
+                if (Misc.GetSpouses(who,1).ContainsKey(__instance.Name))
                 {
                     __state = new List<int> { 
                         who.friendshipData[__instance.Name].GiftsThisWeek,
@@ -610,16 +724,15 @@ namespace MultipleSpouses
                 }
                 if (who.ActiveObject.ParentSheetIndex == 458)
                 {
-                    if (Misc.GetAllSpouses().ContainsKey(__instance.Name))
+                    if (Misc.GetSpouses(who, 1).ContainsKey(__instance.Name))
                     {
                         who.spouse = __instance.Name;
                         Misc.ResetSpouses(who);
-                        GameLocation l = Game1.currentLocation;
-                        l.playSound("dwop", NetAudio.SoundContext.NPC);
-                        Utility.getHomeOfFarmer(who).showSpouseRoom();
+                        Game1.currentLocation.playSound("dwop", NetAudio.SoundContext.NPC);
+                        FarmHouse fh = Utility.getHomeOfFarmer(who);
                         if (ModEntry.config.BuildAllSpousesRooms)
                         {
-                            Maps.BuildSpouseRooms(Utility.getHomeOfFarmer(Game1.player));
+                            Maps.BuildSpouseRooms(fh);
                         }
                         return false;
                     }
@@ -675,7 +788,7 @@ namespace MultipleSpouses
                             Multiplayer mp = ModEntry.PHelper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
                             mp.globalChatInfoMessage("Dating", new string[]
                             {
-                                    Game1.player.Name,
+                                    who.Name,
                                     __instance.displayName
                             });
                         }
@@ -750,7 +863,7 @@ namespace MultipleSpouses
                 else if (who.ActiveObject.parentSheetIndex == 809 && !who.ActiveObject.bigCraftable)
                 {
                     Monitor.Log($"Tried to give movie ticket");
-                    if (Misc.GetAllSpouses().ContainsKey(__instance.Name) && Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && !__instance.Name.Equals("Krobus") && who.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && !Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason) && Game1.timeOfDay <= 2100 && __instance.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && MovieTheater.GetResponseForMovie(__instance) != "reject")
+                    if (Misc.GetSpouses(who, 1).ContainsKey(__instance.Name) && Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && !__instance.Name.Equals("Krobus") && who.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && !Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason) && Game1.timeOfDay <= 2100 && __instance.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && MovieTheater.GetResponseForMovie(__instance) != "reject")
                     {
                         Monitor.Log($"Tried to give movie ticket to spouse");
                         foreach (MovieInvitation invitation in who.team.movieInvitations)
@@ -859,7 +972,7 @@ namespace MultipleSpouses
         {
             try
             {
-                if (__instance.Name == null)
+                if (__instance.Name == null || !ModEntry.config.ChildrenHaveHairOfSpouse)
                     return;
                 string[] names = __instance.Name.Split(' ');
                 if (names.Length < 2 || names[names.Length - 1].Length < 3)

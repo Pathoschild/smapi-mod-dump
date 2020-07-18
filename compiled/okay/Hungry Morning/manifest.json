@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Hungry Morning",
+  "Author": "lech43",
+  "Version": "1.0.6",
+  "Description": "Your stamina is 15(default) in the morning. Your stemina can be adjusted up to half.",
+  "UniqueID": "lech43.HungryMorning",
+  "EntryDll": "HungryMorning.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:6391" ],
+}

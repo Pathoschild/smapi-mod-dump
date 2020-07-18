@@ -68,4 +68,6 @@ My big plans:
 
 ## Release Notes
 
- - **0.0.1-beta** - **current version** - Added base functionality for Seed Machine and Seed Bandit.
+ - **0.0.3-beta** - **current version** - Quick changes for parameterless constructors fix (v1)
+ - **0.0.2-beta** - Fixed issue with loading of the assets on Android devices. Added compatilibty-fix for JsonAssets mod from spacechase0 (if it installed)
+ - **0.0.1-beta** - Added base functionality for Seed Machine and Seed Bandit.

@@ -21,7 +21,7 @@ namespace NpcAdventure.Story
 
         private Dictionary<int, string> GetQuestsSource()
         {
-            return this.contentLoader.Load<Dictionary<int, string>>("Data/Quests");
+            return this.contentLoader.LoadData<int, string>("Data/Quests");
         }
 
         public string[] GetRawQuestData(int id)

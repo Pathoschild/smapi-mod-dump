@@ -1,7 +1,7 @@
 {
   "Name": "Exhaustion Tweaks",
   "Author": "mytigio",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Slightly alters the exhaustion mechanics.",
   "UniqueID": "mytigio.exhaustiontweaks",
   "EntryDll": "ExhaustionTweaks.dll",

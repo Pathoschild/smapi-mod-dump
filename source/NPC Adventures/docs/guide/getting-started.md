@@ -20,21 +20,29 @@ Beginning with version *0.11.0* there's an experimental support for Android SMAP
 
 ### Note for SVE players
 
-If you play this mod together with StardewValley Expanded, it's recommended to enable `Experimental.UseCheckForEventsPatch` in `config.json`. This feature is experimental, but fixes some problems with trig Marlon's invitation event in Adventurer's guild before or after SVE event played.
+If you play this mod together with StardewValley Expanded, it's recommended to enable `UseCheckForEventsPatch` in `config.json`. This feature fixes some problems with trig Marlon's invitation event in Adventurer's guild before or after SVE event played. This feature is enabled by default and not recommended to disable it when you use SVE.
 
 ## Experimental features
 
 **NOTE:** Remember that these features are experimental and can negativelly affect gameplay and game stability and may cause bugs. All experimental features are disabled by default and must be explicitly enabled in [configuration](configuration.md). See the `Experimental` section in `config.json`. For more info read [about experimental features](experimental.md).
 
-### Allow fight through companion (without annyoing dialogue)
+### Companion swimsuits
 
-Fight togehther with your companion with monsters without showing annoying companion dialogue. You can enable this experimental feature in configuration by switch option `Experimental.FightThruCompanion` to `true`. When this feature is enabled and you want to show companion dialogue, you must do right-click on companion.
+You can enable swimsuit support for companions if they enter the pool with you. Some companions not own swimsuits and they are still enter the pool in their daily clothes.
 
-### Check NPC Adventures events by patched SDV check for events method.
+**Companions supports swimsuits**
 
-This feature enables event checking of mod's event cutscenes by SDV's method `GameLocation.checkForEvents()` instead of SMAPI's player warped method. This feature fixes some problems with playing NA's events (like player must re-enter to play NA event when vanilla or other event played and finished on the location before NA event cutscene). It's recommended to enable this experimental function if you are playing NPC Adventures together with StardewValley Expanded.
+- Abigail
+- Alex
+- Haley
+- Emily
+- Sam
 
-You can enable this feature by set `Experimental.UseCheckForEventsPatch` to `true` in `config.json`.
+You can enable this experimental feature be set `true` for `Experimental.UseSwimsuits` in `config.json`.
+
+## Upgrading to 0.13.0 and newer (from 0.12.0 and older)
+
+Before you replace your old files with files from `0.13.0` and newer, it's recommended to delete `assets` folder and all files included in this directory and then copy new files.
 
 ## Upgrading from 0.11.0 beta to 0.12.0 and newer
 

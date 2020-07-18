@@ -5,9 +5,9 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit 988411f93555d9606aab364b2c87590154373525
+   commit ebe4402cc320fcdc829d8a8e2489e9388d8c4163
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Tue Apr 7 19:31:35 2020 -0400
+   Date:   Sun Jul 12 18:43:35 2020 -0400
    
-       Hopefully made it compatible with the ItemBags mod. Also changed the errors to warnings and gave the option to ignore warnings
+       Fixed a couple small things. It will no longer show the meat errror items, it will properly show the money, the time to grow seeds now actually works so it will not show you things you can't finish growing.
    

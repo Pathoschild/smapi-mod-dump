@@ -5,12 +5,9 @@ mods:
    Better Shop Menu
 
 latest commit:
-   commit d074f646e87467c8eb0ee78115360bc7aac95a55
-   Merge: 3016232 39b115d
+   commit edfd40ce5d6e33ddeec0b19e7819e69988f97b4f
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Apr 27 12:13:11 2020 -0400
+   Date:   Fri Jul 17 15:13:14 2020 -0400
    
-       Merge pull request #5 from Pathoschild/update-project
-       
-       Update & standardise project structure
+       Search box
    

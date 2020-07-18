@@ -5,12 +5,10 @@ mods:
    Magic
 
 latest commit:
-   commit 67407afe9923ff0c55df1a663cf0cb8828f706e1
-   Merge: f3e9e73 a2792d0
+   commit 344410b0e9c941c26dda91603576438785af1145
+   Merge: c008b6a 67407af
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Apr 27 12:10:16 2020 -0400
+   Date:   Wed Jun 17 13:13:27 2020 -0400
    
-       Merge pull request #14 from Pathoschild/update-project
-       
-       Update & standardize project structure
+       Merge
    

@@ -1,3 +1,6 @@
 {
-  "ChangeDwarfAssets": true
+  "ChangeDwarfAssets": true,
+  "NudeHeartLevel": 2,
+  "LetterHeartLevel": 6,
+  "DynamicReload": true
 }

@@ -1,4 +1,5 @@
 {
+  "EnableMod": true,
   "MillisecondsPerLove": 300,
   "DeviceSpeedFactor": 2,
   "AreaOfKissEffectModifier": 20,

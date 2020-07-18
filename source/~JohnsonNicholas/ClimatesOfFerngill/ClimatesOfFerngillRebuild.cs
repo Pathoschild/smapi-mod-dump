@@ -607,8 +607,8 @@ namespace ClimatesOfFerngillRebuild
 
             if (WeatherOpt.Verbose)
             {
-                Monitor.Log($"Weather Odds are Rain: {rainDays.ToString("N3")}, Windy: {windyDays.ToString("N3")}, and Storm {stormDays.ToString("N3")}");
-                Monitor.Log($"Weather System Odds are Rain: {rainSystem.ToString("N3")}, Windy: {windSystem.ToString("N3")}, and Storm {sunSystem.ToString("N3")}");
+                Monitor.Log($"Weather Odds are Rain: {rainDays:N3}, Windy: {windyDays:N3}, and Storm {stormDays:N3}");
+                Monitor.Log($"Weather System Odds are Rain: {rainSystem:N3}, Windy: {windSystem:N3}, and Storm {sunSystem:N3}");
             }
 
             //set tomorrow's weather
@@ -616,7 +616,7 @@ namespace ClimatesOfFerngillRebuild
             {
                 double SystemContinuesOdds = WeatherProcessing.GetWeatherSystemOddsForNewDay(Conditions);
                 if (WeatherOpt.Verbose)
-                    Monitor.Log($"Rolling system odds against {SystemContinuesOdds.ToString("N3")}");
+                    Monitor.Log($"Rolling system odds against {SystemContinuesOdds:N3}");
 
                 if (Dice.NextDouble() < SystemContinuesOdds)
                 {
@@ -639,7 +639,7 @@ namespace ClimatesOfFerngillRebuild
                 if (Dice.NextDouble() < WeatherOpt.WeatherSystemChance)
                 {
                     if (WeatherOpt.Verbose)
-                        Monitor.Log($"Rolling system odds against {WeatherOpt.WeatherSystemChance.ToString("N3")}, created system.");
+                        Monitor.Log($"Rolling system odds against {WeatherOpt.WeatherSystemChance:N3}, created system.");
 
                     ProbabilityDistribution<string> SystemDist = new ProbabilityDistribution<string>();
 

@@ -11,10 +11,9 @@ mods:
    Weather Illnesses
 
 latest commit:
-   commit c117e8a384d66ffe8f9127efe229311ab89cdff9
-   Merge: 0d960b1 ca8ba2c
+   commit af70c3e504b37a165725b3635d83f81620e6aa9e
    Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
-   Date:   Sun Jun 14 16:21:24 2020 -0700
+   Date:   Tue Jul 14 17:43:23 2020 -0700
    
-       Merge branch 'develop' of github.com:Sakorona/SDVMods into develop
+       Updating WI to 1.1.2 (new icon, some fixes)
    

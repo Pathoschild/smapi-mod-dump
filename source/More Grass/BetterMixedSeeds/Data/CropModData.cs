@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BetterMixedSeeds.Models;
+using System.Collections.Generic;
 
 namespace BetterMixedSeeds.Data
 {

@@ -1,4 +1,10 @@
 ## Changelog
+### 1.5.11
+ - fix for seasonal limits. (patch-fix)
+
+### 1.5.10
+ - fix on typo of key
+ - added key for radio for languages to force a new line. This key is '[NLK]'
 
 ### 1.5.8
  - Updated for SMAPI 3.4.1 (reverts a fix)

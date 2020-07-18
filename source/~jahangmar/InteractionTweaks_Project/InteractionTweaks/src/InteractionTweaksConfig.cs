@@ -4,6 +4,9 @@ namespace InteractionTweaks
     public class InteractionTweaksConfig
     {
         public bool EatingFeature { get; set; } = true;
+        public bool EatingWithoutWaste { get; set; } = false;
+        public bool EatingTopHealth { get; set; } = true;
+        public bool EatingTopStamina { get; set; } = true;
         //public bool ToolsFeature { get; set; } = true;
         //public bool SlingshotFeature { get; set; } = true;
         public bool AdventurersGuildShopFeature { get; set; } = true;

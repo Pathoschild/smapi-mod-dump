@@ -1112,7 +1112,50 @@ namespace ClimatesOfFerngillRebuild
 
         /// <summary> This sets the temperatures from outside for today </summary>
         /// <param name="a">The RangePair that contains the generated temperatures</param>
-        public void SetTodayTemps(RangePair a) => TodayTemps = new RangePair(a, EnforceHigherOverLower: true);
+        public void SetTodayTemps(RangePair a)
+        {
+            TodayTemps = new RangePair(a, EnforceHigherOverLower: true);
+            SeasonalBound(TodayTemps);
+        }
+
+        private void SeasonalBound(RangePair a)
+        {
+
+            //seasonal check
+            if (Game1.currentSeason == "spring")
+            {
+                if (a.LowerBound < -10)
+                    a.LowerBound = -10;
+                if (a.HigherBound > 30)
+                    a.HigherBound = 30;
+            }
+
+            if (Game1.currentSeason == "summer")
+            {
+                if (a.LowerBound < 10)
+                    a.LowerBound = 10;
+                if (a.HigherBound > 60)
+                    a.HigherBound = 60;
+            }
+
+            
+            if (Game1.currentSeason == "fall")
+            {
+                if (a.LowerBound < -15)
+                    a.LowerBound = 15;
+                if (a.HigherBound > 32)
+                    a.HigherBound = 32;
+            }
+
+            
+            if (Game1.currentSeason == "winter")
+            {
+                if (a.LowerBound < -20)
+                    a.LowerBound = -20;
+                if (a.HigherBound > 18)
+                    a.HigherBound = 18;
+            }
+        }
 
         /// <summary> This sets the temperatures from outside for tomorrow</summary>
         /// <param name="a">The RangePair that contains the generated temperatures</param>
@@ -1122,6 +1165,8 @@ namespace ClimatesOfFerngillRebuild
 				trackerModel.TempsOnNextDay = new RangePair(TomorrowTemps);
 			else
 				trackerModel.TempsOnNextDay.UpdateRangePair(TomorrowTemps.LowerBound, TomorrowTemps.HigherBound);
+
+            SeasonalBound(TomorrowTemps);
 		}
 
         /// ***************************************************************************

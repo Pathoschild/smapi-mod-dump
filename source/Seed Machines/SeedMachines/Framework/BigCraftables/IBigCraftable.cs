@@ -19,6 +19,11 @@ namespace SeedMachines.Framework.BigCraftables
         public StardewValley.Object baseObject;
         public IBigCraftableWrapper wrapper;
 
+        public IBigCraftable() : base()
+        {
+            this.baseObject = this;
+        }
+
         public IBigCraftable(StardewValley.Object baseObject, IBigCraftableWrapper wrapper)
             : base(
                     baseObject.TileLocation,
@@ -31,7 +36,7 @@ namespace SeedMachines.Framework.BigCraftables
             this.animate();
         }
 
-        private void animate()
+        protected void animate()
         {
             if (timestampPreviousAnimation == -1)
             {

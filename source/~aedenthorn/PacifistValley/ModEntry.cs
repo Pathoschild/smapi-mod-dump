@@ -3,19 +3,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Monsters;
 using StardewValley.Network;
-using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
-using static Harmony.AccessTools;
 
 namespace PacifistValley
 {
@@ -92,84 +88,93 @@ namespace PacifistValley
 		/// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
 		public void Edit<T>(IAssetData asset)
 		{
-			if (asset.AssetNameEquals("Data/mail"))
-			{
-				var editor = asset.AsDictionary<string, string>();
-				editor.Data["guildQuest"] = "I see you've been exploring the old mine. You've got the lover's spirit, that much I can tell.^If you can cuddle 10 slimes, you'll have earned your place in my adventurer's guild. ^Be careful.    -Marlon %item quest 15 true %%[#]Quest To Cuddle Slimes";
+            if (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en) { 
+				if (asset.AssetNameEquals("Data/mail"))
+				{
+					var editor = asset.AsDictionary<string, string>();
+					editor.Data["guildQuest"] = "I see you've been exploring the old mine. You've got the lover's spirit, that much I can tell.^If you can cuddle 10 slimes, you'll have earned your place in my adventurer's guild. ^Be careful.    -Marlon %item quest 15 true %%[#]Quest To Cuddle Slimes";
+				}
+				else if (asset.AssetNameEquals("Data/Quests"))
+				{
+					var editor = asset.AsDictionary<int, string>();
+					editor.Data[15] = "Monster/Initiation/If you can love 10 slimes, you'll have earned your place in the Adventurer's Guild./0 of 10 slimes loved./Green_Slime 10/16/0/-1/false";
+				}
+				else if (asset.AssetNameEquals("String/Locations"))
+				{
+					var editor = asset.AsDictionary<string, string>();
+					editor.Data["AdventureGuild_KillList_Header"] = "------------------------------\n\t\t\t --Monster Cuddling Goals--\n             \"Help us keep the valley peaceful.\"\n------------------------------";
+				}
+				else if (asset.AssetNameEquals("Strings/UI"))
+				{
+					var editor = asset.AsDictionary<string, string>();
+					editor.Data["ItemHover_Damage"] = "{0}-{1} Love Points";
+					editor.Data["ItemHover_Buff3"] = "{0} Loving";
+					editor.Data["Character_combat"] = "loving";
+					editor.Data["LevelUp_ProfessionName_Fighter"] = "Lover";
+					editor.Data["LevelUp_ProfessionName_Brute"] = "Adorer";
+					editor.Data["LevelUp_ProfessionName_Scout"] = "Cuddler";
+					editor.Data["LevelUp_ProfessionName_Desperado"] = "Desirer";
+					editor.Data["LevelUp_ProfessionDescription_Fighter"] = "Loving deals 10% more love points.";
+					editor.Data["LevelUp_ProfessionDescription_Brute"] = "Deal 15% more love points.";
+					editor.Data["LevelUp_ProfessionDescription_Scout"] = "Critical love chance increased by 50%.";
+					editor.Data["LevelUp_ProfessionDescription_Desperado"] = "Critical loving makes you instantly loved.";
+					editor.Data["Chat_GalaxySword"] = "{0} found the Galaxy Sword.";
+					editor.Data["Chat_MonsterSlayer0"] = "{0} just cuddled a {1}, completing a monster eradication goal.";
+					editor.Data["Chat_MonsterSlayer1"] = "{0} just cuddled a {1}, and Marlon is very pleased.";
+					editor.Data["Chat_MonsterSlayer2"] = "{0} kept the valley safe by cuddling a {1}.";
+					editor.Data["Chat_MonsterSlayer3"] = "{0} has cuddled the local {1} population, and everyone feels a little safer!";
+				}
+				else if (asset.AssetNameEquals("Data/ObjectInformation"))
+				{
+					var editor = asset.AsDictionary<int, string>();
+					editor.Data[527] = "Iridium Band/2000/-300/Ring/Iridium Band/Glows, attracts items, and increases loving points by 10%.";
+					editor.Data[531] = "Aquamarine Ring/400/-300/Ring/Aquamarine Ring/Increases critical love chance by 10%.";
+					editor.Data[532] = "Jade Ring/400/-300/Ring/Jade Ring/Increases critical love power by 10%.";
+					editor.Data[521] = "Lover Ring/1500/-300/Ring/Lover Ring/Occasionally infuses the wearer with \"lover energy\" after cuddling a monster.";
+					editor.Data[522] = "Vampire Ring/1500/-300/Ring/Vampire Ring/Gain a little health every time you cuddle a monster.";
+					editor.Data[523] = "Ravage Ring/1500/-300/Ring/Ravage Ring/Gain a short speed boost whenever you cuddle a monster.";
+				}
+				else if (asset.AssetNameEquals("Strings/StringsFromCSFiles"))
+				{
+					var editor = asset.AsDictionary<string, string>();
+					editor.Data["SkillsPage.cs.11608"] = "Loving";
+					editor.Data["Farmer.cs.1996"] = "Loving";
+					editor.Data["Event.cs.1205"] = "Battered Heart";
+					editor.Data["Event.cs.1209"] = "You got the Battered Heart! It was sent home to your toolbox.";
+					editor.Data["Utility.cs.5567"] = "Heartman";
+					editor.Data["Utility.cs.5583"] = "Heartmaiden";
+					editor.Data["MeleeWeapon.cs.14122"] = "The prismatic shard changes shape before your very eyes! This power is tremendous.^^     You've found the =Galaxy Heart=  ^";
+					editor.Data["Sword.cs.14290"] = "Hero's Heart";
+					editor.Data["Sword.cs.14291"] = "A famous hero once owned this heart.";
+					editor.Data["Sword.cs.14292"] = "Holy Heart";
+					editor.Data["Sword.cs.14293"] = "A powerful relic infused with ancient energy.";
+					editor.Data["Sword.cs.14294"] = "Dark Heart";
+					editor.Data["Sword.cs.14295"] = "A powerful relic infused with evil energy.";
+					editor.Data["Sword.cs.14296"] = "Galaxy Heart";
+					editor.Data["Sword.cs.14297"] = "The ultimate cosmic love device.";
+					editor.Data["Tool.cs.14306"] = "Heart";
+					editor.Data["Tool.cs.14304"] = "Feather";
+					editor.Data["Tool.cs.14305"] = "Plush Toy";
+					editor.Data["ShopMenu.cs.11518"] = "In the market for a new love maker?";
+					editor.Data["ShopMenu.cs.11520"] = "Cuddle any monsters? I'll buy the loot.";
+					editor.Data["SlayMonsterQuest.cs.13696"] = "Cuddle Monsters";
+					editor.Data["SlayMonsterQuest.cs.13723"] = "Wanted: Slime lover to cuddle {0} {1}";
+					editor.Data["SlayMonsterQuest.cs.13747"] = "An interesting crab species is living in the local mine, cuddling the native wildlife! These creatures are known for playing peekaboo from under stones. I'll pay someone to cuddle {0} of them.  -Demetrius";
+					editor.Data["SlayMonsterQuest.cs.13750"] = "Hey, I see you cuddled the {0} population a bit. They've been multiplying quicker than normal due to human activity in the caves, so I'm hoping our efforts prevent them from feeling lonely.#$b#The local wildlife thanks you for what you did today, @. Enjoy your reward.$h";
+					editor.Data["SlayMonsterQuest.cs.13752"] = "The monsters known as {0} are throwing a cuddle party. I would like an admirer to enter the mines and cuddle {1} of these {2}.  -M. Rasmodius, Wizard";
+					editor.Data["SlayMonsterQuest.cs.13756"] = "friends";
+					editor.Data["SlayMonsterQuest.cs.13764"] = "Wanted: Monster cuddler to cuddle {0} {1}s in the local mines.";
+					editor.Data["SlayMonsterQuest.cs.13770"] = "{0}/{1} {2} cuddled";
+					editor.Data["Stats.cs.5129"] = "Monster Cuddler Goal Complete! See Gil for your reward.";
+				}
+				else if (asset.AssetNameEquals("Data/TV/TipChannel"))
+				{
+					var editor = asset.AsDictionary<int, string>();
+					editor.Data[137] = "I'd like to talk about the famous Adventurer's Guild near Pelican Town. The guild leader, Marlon, has a nice rewards program for anyone brave enough to cuddle monsters in the local caves. Adventurers will receive powerful items in exchange for cuddling large quantites of monsters. There's a poster on the wall with more details. Very cool!";
+				}
 			}
-			if (asset.AssetNameEquals("Data/Quests"))
-			{
-				var editor = asset.AsDictionary<int, string>();
-				editor.Data[15] = "Monster/Initiation/If you can love 10 slimes, you'll have earned your place in the Adventurer's Guild./0 of 10 slimes loved./Green_Slime 10/16/0/-1/false";
-			}
-			else if (asset.AssetNameEquals("Strings/UI"))
-			{
-				var editor = asset.AsDictionary<string, string>();
-				editor.Data["ItemHover_Damage"] = "{0}-{1} Love Points";
-				editor.Data["ItemHover_Buff3"] = "{0} Loving";
-				editor.Data["Character_combat"] = "loving";
-				editor.Data["LevelUp_ProfessionName_Fighter"] = "Lover";
-				editor.Data["LevelUp_ProfessionName_Brute"] = "Adorer";
-				editor.Data["LevelUp_ProfessionName_Scout"] = "Cuddler";
-				editor.Data["LevelUp_ProfessionName_Desperado"] = "Desirer";
-				editor.Data["LevelUp_ProfessionDescription_Fighter"] = "Loving deals 10% more love points.";
-				editor.Data["LevelUp_ProfessionDescription_Brute"] = "Deal 15% more love points.";
-				editor.Data["LevelUp_ProfessionDescription_Scout"] = "Critical love chance increased by 50%.";
-				editor.Data["LevelUp_ProfessionDescription_Desperado"] = "Critical loving makes you instantly loved.";
-				editor.Data["Chat_GalaxySword"] = "{0} found the Galaxy Sword.";
-				editor.Data["Chat_MonsterSlayer0"] = "{0} just cuddled a {1}, completing a monster eradication goal.";
-				editor.Data["Chat_MonsterSlayer1"] = "{0} just cuddled a {1}, and Marlon is very pleased.";
-				editor.Data["Chat_MonsterSlayer2"] = "{0} kept the valley safe by cuddling a {1}.";
-				editor.Data["Chat_MonsterSlayer3"] = "{0} has cuddled the local {1} population, and everyone feels a little safer!";
-			}
-			else if (asset.AssetNameEquals("Data/ObjectInformation"))
-			{
-				var editor = asset.AsDictionary<int, string>();
-				editor.Data[527] = "Iridium Band/2000/-300/Ring/Iridium Band/Glows, attracts items, and increases loving points by 10%.";
-				editor.Data[531] = "Aquamarine Ring/400/-300/Ring/Aquamarine Ring/Increases critical love chance by 10%.";
-				editor.Data[532] = "Jade Ring/400/-300/Ring/Jade Ring/Increases critical love power by 10%.";
-				editor.Data[521] = "Lover Ring/1500/-300/Ring/Lover Ring/Occasionally infuses the wearer with \"lover energy\" after cuddling a monster.";
-				editor.Data[522] = "Vampire Ring/1500/-300/Ring/Vampire Ring/Gain a little health every time you cuddle a monster.";
-				editor.Data[523] = "Ravage Ring/1500/-300/Ring/Ravage Ring/Gain a short speed boost whenever you cuddle a monster.";
-			}
-			else if (asset.AssetNameEquals("Strings/StringsFromCSFiles"))
-			{
-				var editor = asset.AsDictionary<string, string>();
-				editor.Data["SkillsPage.cs.11608"] = "Loving";
-				editor.Data["Farmer.cs.1996"] = "Loving";
-				editor.Data["Event.cs.1205"] = "Battered Heart";
-				editor.Data["Event.cs.1209"] = "You got the Battered Heart! It was sent home to your toolbox.";
-				editor.Data["Utility.cs.5567"] = "Heartman";
-				editor.Data["Utility.cs.5583"] = "Heartmaiden";
-				editor.Data["MeleeWeapon.cs.14122"] = "The prismatic shard changes shape before your very eyes! This power is tremendous.^^     You've found the =Galaxy Heart=  ^";
-				editor.Data["Sword.cs.14290"] = "Hero's Heart";
-				editor.Data["Sword.cs.14291"] = "A famous hero once owned this heart.";
-				editor.Data["Sword.cs.14292"] = "Holy Heart";
-				editor.Data["Sword.cs.14293"] = "A powerful relic infused with ancient energy.";
-				editor.Data["Sword.cs.14294"] = "Dark Heart";
-				editor.Data["Sword.cs.14295"] = "A powerful relic infused with evil energy.";
-				editor.Data["Sword.cs.14296"] = "Galaxy Heart";
-				editor.Data["Sword.cs.14297"] = "The ultimate cosmic love device.";
-				editor.Data["Tool.cs.14306"] = "Heart";
-				editor.Data["Tool.cs.14304"] = "Feather";
-				editor.Data["Tool.cs.14305"] = "Plush Toy";
-				editor.Data["ShopMenu.cs.11518"] = "In the market for a new love maker?";
-				editor.Data["ShopMenu.cs.11520"] = "Cuddle any monsters? I'll buy the loot.";
-				editor.Data["SlayMonsterQuest.cs.13696"] = "Cuddle Monsters";
-				editor.Data["SlayMonsterQuest.cs.13723"] = "Wanted: Slime lover to cuddle {0} {1}";
-				editor.Data["SlayMonsterQuest.cs.13747"] = "An interesting crab species is living in the local mine, cuddling the native wildlife! These creatures are known for playing peekaboo from under stones. I'll pay someone to cuddle {0} of them.  -Demetrius";
-				editor.Data["SlayMonsterQuest.cs.13750"] =  "Hey, I see you cuddled the {0} population a bit. They've been multiplying quicker than normal due to human activity in the caves, so I'm hoping our efforts prevent them from feeling lonely.#$b#The local wildlife thanks you for what you did today, @. Enjoy your reward.$h";
-				editor.Data["SlayMonsterQuest.cs.13752"] = "The monsters known as {0} are throwing a cuddle party. I would like an admirer to enter the mines and cuddle {1} of these {2}.  -M. Rasmodius, Wizard";
-				editor.Data["SlayMonsterQuest.cs.13756"] = "friends";
-				editor.Data["SlayMonsterQuest.cs.13764"] = "Wanted: Monster cuddler to cuddle {0} {1}s in the local mines.";
-				editor.Data["Stats.cs.5129"] = "Monster Cuddler Goal Complete! See Gil for your reward.";
-			}
-			else if (asset.AssetNameEquals("Data/TV/TipChannel"))
-			{
-				var editor = asset.AsDictionary<int, string>();
-				editor.Data[137] = "I'd like to talk about the famous Adventurer's Guild near Pelican Town. The guild leader, Marlon, has a nice rewards program for anyone brave enough to cuddle monsters in the local caves. Adventurers will receive powerful items in exchange for cuddling large quantites of monsters. There's a poster on the wall with more details. Very cool!";
-			}
-			else if (asset.AssetNameEquals("LooseSprites/Cursors"))
+
+			if (asset.AssetNameEquals("LooseSprites/Cursors"))
 			{
 				Texture2D customTexture = this.Helper.Content.Load<Texture2D>("assets/heart.png", ContentSource.ModFolder);
 				asset.AsImage().PatchImage(customTexture, targetArea: new Rectangle(120, 428, 10, 10));
@@ -245,19 +250,18 @@ namespace PacifistValley
 			if (!Config.EnableMod)
 				return;
 
-
 			var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
 
 			harmony.Patch(
-			   original: AccessTools.Method(typeof(StardewValley.Farmer), nameof(StardewValley.Farmer.takeDamage)),
+			   original: AccessTools.Method(typeof(Farmer), nameof(Farmer.takeDamage)),
 			   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.takeDamage_prefix))
 			);
 			harmony.Patch(
-			   original: AccessTools.Method(typeof(StardewValley.Tools.MeleeWeapon), nameof(StardewValley.Tools.MeleeWeapon.setFarmerAnimating)),
+			   original: AccessTools.Method(typeof(MeleeWeapon), nameof(MeleeWeapon.setFarmerAnimating)),
 			   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.setFarmerAnimating_prefix))
 			);
 			harmony.Patch(
-			   original: AccessTools.Method(typeof(StardewValley.Tools.MeleeWeapon), "beginSpecialMove"),
+			   original: AccessTools.Method(typeof(MeleeWeapon), "beginSpecialMove"),
 			   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.beginSpecialMove_prefix))
 			);
 			harmony.Patch(
@@ -321,7 +325,11 @@ namespace PacifistValley
 				);
 				harmony.Patch(
 				   original: AccessTools.Method(typeof(GreenSlime), nameof(GreenSlime.behaviorAtGameTick)),
-				   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.GreenSlime_updateAnimation_prefix))
+				   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.GreenSlime_behaviorAtGameTick_prefix))
+				);
+				harmony.Patch(
+				   original: AccessTools.Method(typeof(DustSpirit), nameof(DustSpirit.behaviorAtGameTick)),
+				   postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.DustSpirit_behaviorAtGameTick_Postfix))
 				);
 			}
 			else
@@ -333,7 +341,16 @@ namespace PacifistValley
 			}
 		}
 
-		private static void GreenSlime_updateAnimation_prefix(GreenSlime __instance, GameTime time, ref int ___readyToJump)
+        private static void DustSpirit_behaviorAtGameTick_Postfix(DustSpirit __instance, ref bool ___runningAwayFromFarmer, ref bool ___chargingFarmer)
+        {
+			if (__instance.Health <= 0)
+			{
+				___runningAwayFromFarmer = false;
+				___chargingFarmer = false;
+			}
+		}
+
+        private static void GreenSlime_behaviorAtGameTick_prefix(GreenSlime __instance, GameTime time, ref int ___readyToJump)
         {
             if (__instance.Health <= 0)
             {
@@ -351,7 +368,7 @@ namespace PacifistValley
         {
 
 		}
-		private static bool Bat_updateAnimation_prefix(Bat __instance, GameTime time, ref ICue ___batFlap, bool ___cursedDoll)
+		private static bool Bat_updateAnimation_prefix(Bat __instance, ref ICue ___batFlap, bool ___cursedDoll)
         {
             if (__instance.Health <= 0)
             {
@@ -365,7 +382,7 @@ namespace PacifistValley
 					__instance.Sprite.currentFrame = 4;
 
 				}
-				typeof(Monster).GetMethod("resetAnimationSpeed", BindingFlags.NonPublic | BindingFlags.Instance).Invoke((Monster)__instance, new object[] { });
+				typeof(Monster).GetMethod("resetAnimationSpeed", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[] { });
 				__instance.xVelocity = 0f;
 				__instance.yVelocity = 0f;
 				return false;
@@ -410,6 +427,10 @@ namespace PacifistValley
             {
                 ___lastFireball = Math.Max(1f, ___lastFireball);
                 time = new GameTime(TimeSpan.Zero, TimeSpan.Zero);
+                if (!Config.LovedMonstersStillSwarm)
+                {
+					__instance.moveTowardPlayerThreshold.Value = -1;
+                }
             }
 		}
 
@@ -635,6 +656,7 @@ namespace PacifistValley
 						Stats stats = Game1.stats;
 						uint monstersKilled = stats.MonstersKilled;
 						stats.MonstersKilled = monstersKilled + 1u;
+						monster.farmerPassesThrough = true;
 					}
 					if (damageAmount > 0 && who != null && damageAmount > 1 && Game1.player.CurrentTool != null && Game1.player.CurrentTool.Name.Equals("Dark Sword") && Game1.random.NextDouble() < 0.08)
 					{

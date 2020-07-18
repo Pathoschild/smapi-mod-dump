@@ -38,5 +38,7 @@ namespace StardewValleyEasyPrairieKing
         public int fire_speed_level_ { get; set; } = 5;
         public int run_speed_level_ { get; set; } = 2;
         public bool spread_pistol_ { get; set; } = false;
+        public int waveTimer { get; set; } = 60;
+
     }
 }

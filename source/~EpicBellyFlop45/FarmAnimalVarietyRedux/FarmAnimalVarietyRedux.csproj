@@ -49,8 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Api.cs" />
-    <Compile Include="Enums.cs" />
     <Compile Include="Api\IApi.cs" />
+    <Compile Include="Enums\HarvestType.cs" />
+    <Compile Include="Enums\Season.cs" />
     <Compile Include="Models\Animal.cs" />
     <Compile Include="Models\AnimalData.cs" />
     <Compile Include="Models\AnimalProduce.cs" />
@@ -72,6 +73,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

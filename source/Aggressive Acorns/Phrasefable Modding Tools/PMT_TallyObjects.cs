@@ -22,7 +22,7 @@ namespace Phrasefable_Modding_Tools
             desc.AppendLine("Usage: count-objects [all|start|stop]");
             desc.AppendLine("    all   - count the objects in every location");
             desc.AppendLine("    start - start counting each time a location is entered");
-            desc.AppendLine("    stop  - stop counting each time a location is entered");
+            desc.Append("    stop  - stop counting each time a location is entered");
             Helper.ConsoleCommands.Add("count-objects", desc.ToString(), TallyObjectCommand);
             Helper.ConsoleCommands.Add("count-terrain", "counts terrain features", CountTerrainFeatures);
         }

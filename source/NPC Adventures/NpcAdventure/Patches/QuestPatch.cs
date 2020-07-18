@@ -13,7 +13,7 @@ namespace NpcAdventure.Patches
 
         public QuestPatch(SpecialModEvents events)
         {
-            this.Events = events ?? throw new System.ArgumentNullException(nameof(events));
+            this.Events = events ?? throw new ArgumentNullException(nameof(events));
             Instance = this;
         }
 

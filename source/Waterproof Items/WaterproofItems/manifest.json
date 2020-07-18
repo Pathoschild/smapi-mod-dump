@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Waterproof Items",
+  "Author": "Esca",
+  "Version": "1.0.0",
+  "Description": "Prevents items disappearing when falling into water and optionally teleports them to players.",
+  "UniqueID": "Esca.WaterproofItems",
+  "EntryDll": "WaterproofItems.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["GitHub:Esca-MMC/WaterproofItems", "Nexus:6460", "ModDrop:807393"]
+}

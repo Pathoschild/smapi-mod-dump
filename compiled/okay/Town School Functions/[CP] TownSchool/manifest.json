@@ -1,0 +1,22 @@
+{
+  "Name": "TownSchool.CP",
+  "Author": "EduAnttunes",
+  "Description": "Now we have a School for Penny, Vincent and Jas! Content Patcher mod.",
+  "Version": "1.0.0",
+  "UniqueID": "EduAnttunes.TownSchool.CP",
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher",
+    "MinimumVersion": "1.14.1"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "IsRequired": true,
+    },
+    {
+      "UniqueID": "spacechase0.CustomNPCFixes",
+      "IsRequired": true,
+    }
+  ],
+  "UpdateKeys": [ "Nexus:???" ],
+}

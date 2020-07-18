@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using xTile;
 
 namespace MultipleSpouses
 {
@@ -22,20 +23,12 @@ namespace MultipleSpouses
         public static IModHelper PHelper;
         public static ModConfig config;
 
-        public static Dictionary<string, NPC> spouses { get; private set; } = new Dictionary<string, NPC>();
-        public static string outdoorSpouse = null;
-        public static string kitchenSpouse = null;
-        public static string bedSpouse = null;
         public static string spouseToDivorce = null;
-        public static int spouseRolesDate = -1;
         public static Multiplayer mp;
         public static Random myRand;
-        public static List<string> allRandomSpouses;
-        public static int bedSleepOffset = 48;
-        public static List<string> allBedmates;
-        public static bool bedMadeToday = false;
-        public static bool kidsRoomExpandedToday = false;
-        public static string officialSpouse = null;
+        public static int bedSleepOffset = 140;
+        public static int divorceHeartsLost;
+        public static OutdoorAreaData outdoorAreaData = new OutdoorAreaData();
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -61,7 +54,7 @@ namespace MultipleSpouses
 
             NPCPatches.Initialize(Monitor);
             LocationPatches.Initialize(Monitor);
-            FarmerPatches.Initialize(Monitor);
+            FarmerPatches.Initialize(Monitor, Helper);
             Maps.Initialize(Monitor);
             Kissing.Initialize(Monitor);
             UIPatches.Initialize(Monitor);
@@ -78,6 +71,11 @@ namespace MultipleSpouses
             harmony.Patch(
                original: AccessTools.Method(typeof(NPC), nameof(NPC.setUpForOutdoorPatioActivity)),
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_setUpForOutdoorPatioActivity_Prefix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(NPC), nameof(NPC.marriageDuties)),
+               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_marriageDuties_Postfix))
             );
 
             harmony.Patch(
@@ -113,13 +111,13 @@ namespace MultipleSpouses
             );
 
             harmony.Patch(
-               original: AccessTools.Method(typeof(NPC), nameof(NPC.marriageDuties)),
-               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_marriageDuties_Postfix))
+               original: AccessTools.Method(typeof(NPC), nameof(NPC.spouseObstacleCheck)),
+               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_spouseObstacleCheck_Postfix))
             );
 
             harmony.Patch(
-               original: AccessTools.Method(typeof(NPC), nameof(NPC.spouseObstacleCheck)),
-               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_spouseObstacleCheck_Postfix))
+               original: AccessTools.Method(typeof(NPC), "doPlaySpousePatioAnimation"),
+               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_doPlaySpousePatioAnimation_Postfix))
             );
 
             harmony.Patch(
@@ -199,6 +197,11 @@ namespace MultipleSpouses
                postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_performTenMinuteUpdate_Postfix))
             );
             
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Desert), nameof(Desert.getDesertMerchantTradeStock)),
+               postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.Desert_getDesertMerchantTradeStock_Postfix))
+            );
+            
             
 
             // pregnancy patches
@@ -235,6 +238,11 @@ namespace MultipleSpouses
                prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_isMarried_Prefix))
             );
 
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Farmer), nameof(Farmer.checkAction)),
+               prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_checkAction_Prefix))
+            );
+
             // UI patches
 
             harmony.Patch(
@@ -257,6 +265,12 @@ namespace MultipleSpouses
             harmony.Patch(
                original: AccessTools.Method(typeof(Event), "setUpCharacters"),
                postfix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_setUpCharacters_Postfix))
+            );
+
+            // HelperEvent patches
+            harmony.Patch(
+               original: AccessTools.Method(typeof(SaveGame), nameof(SaveGame.Load)),
+               prefix: new HarmonyMethod(typeof(HelperEvents), nameof(HelperEvents.SaveGame_Load_prefix))
             );
 
         }
@@ -283,6 +297,7 @@ namespace MultipleSpouses
         public T Load<T>(IAssetInfo asset)
         {
             Monitor.Log($"loading asset for {asset.AssetName}");
+
             if (asset.AssetName.StartsWith("Characters\\Baby") || asset.AssetName.StartsWith("Characters\\Toddler") || asset.AssetName.StartsWith("Characters/Baby") || asset.AssetName.StartsWith("Characters/Toddler"))
             {
                 if(asset.AssetNameEquals("Characters\\Baby") || asset.AssetNameEquals("Characters\\Baby_dark") || asset.AssetNameEquals("Characters\\Toddler") || asset.AssetNameEquals("Characters\\Toddler_dark") || asset.AssetNameEquals("Characters\\Toddler_girl") || asset.AssetNameEquals("Characters\\Toddler_girl_dark"))
@@ -428,9 +443,28 @@ namespace MultipleSpouses
             if (!config.EnableMod)
                 return false;
 
-            if (asset.AssetNameEquals("Data/Events/HaleyHouse") || asset.AssetNameEquals("Data/Events/Saloon") || asset.AssetNameEquals("Data/EngagementDialogue") || asset.AssetNameEquals("Strings/StringsFromCSFiles"))
+            if (asset.AssetNameEquals("Data/Events/HaleyHouse") || asset.AssetNameEquals("Data/Events/Saloon") || asset.AssetNameEquals("Data/EngagementDialogue") || asset.AssetNameEquals("Strings/StringsFromCSFiles") || asset.AssetNameEquals("Data/animationDescriptions"))
             {
                 return true;
+            }
+            if (config.CustomBed && asset.AssetNameEquals("Maps/farmhouse_tiles"))
+            {
+                Monitor.Log($"can edit farmhouse tiles");
+                return true;
+            }
+            if (config.RomanceAllVillagers && (asset.AssetName.StartsWith("Characters/schedules") || asset.AssetName.StartsWith("Characters\\schedules")))
+            {
+                string name = asset.AssetName.Replace("Characters/schedules/","").Replace("Characters\\schedules\\","");
+                NPC npc = Game1.getCharacterFromName(name);
+                if (npc != null && npc.Age < 2 && !(npc is Child))
+                {
+                    string dispo = Helper.Content.Load<Dictionary<string, string>>("Data/NPCDispositions", ContentSource.GameContent)[name];
+                    if(dispo.Split('/')[5] != "datable")
+                    {
+                        Monitor.Log($"can edit schedule for {name}");
+                        return true;
+                    }
+                }
             }
 
             return false;
@@ -440,26 +474,38 @@ namespace MultipleSpouses
         /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
         public void Edit<T>(IAssetData asset)
         {
+            Monitor.Log("Editing asset" + asset.AssetName);
             if (asset.AssetNameEquals("Data/Events/HaleyHouse"))
             {
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
-                data["195012/f Haley 2500/f Emily 2500/f Penny 2500/f Abigail 2500/f Leah 2500/f Maru 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 38/e 2123343/e 10/e 901756/e 54/e 15/k 195019"] = Regex.Replace(data["195012/f Haley 2500/f Emily 2500/f Penny 2500/f Abigail 2500/f Leah 2500/f Maru 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 38/e 2123343/e 10/e 901756/e 54/e 15/k 195019"], "(pause 1000/speak Maru \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-female")}$h\"/emote Haley 21/emote Emily 21/emote Penny 21/emote Maru 21/emote Leah 21/emote Abigail 21").Replace("/dump girls 3", "");
-                data["choseToExplain"] = Regex.Replace(data["choseToExplain"], "(pause 1000/speak Maru \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-female")}$h\"/emote Haley 21/emote Emily 21/emote Penny 21/emote Maru 21/emote Leah 21/emote Abigail 21").Replace("/dump girls 4", "");
-                data["lifestyleChoice"] = Regex.Replace(data["lifestyleChoice"], "(pause 1000/speak Maru \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-female")}$h\"/emote Haley 21/emote Emily 21/emote Penny 21/emote Maru 21/emote Leah 21/emote Abigail 21").Replace("/dump girls 4", "");
+                data["195012/f Haley 2500/f Emily 2500/f Penny 2500/f Abigail 2500/f Leah 2500/f Maru 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 38/e 2123343/e 10/e 901756/e 54/e 15/k 195019"] = Regex.Replace(data["195012/f Haley 2500/f Emily 2500/f Penny 2500/f Abigail 2500/f Leah 2500/f Maru 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 38/e 2123343/e 10/e 901756/e 54/e 15/k 195019"], "(pause 1000/speak Maru \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-female")}$h\"/emote Haley 21 true/emote Emily 21 true/emote Penny 21 true/emote Maru 21 true/emote Leah 21 true/emote Abigail 21").Replace("/dump girls 3", "");
+                data["choseToExplain"] = Regex.Replace(data["choseToExplain"], "(pause 1000/speak Maru \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-female")}$h\"/emote Haley 21 true/emote Emily 21 true/emote Penny 21 true/emote Maru 21 true/emote Leah 21 true/emote Abigail 21").Replace("/dump girls 4", "");
+                data["lifestyleChoice"] = Regex.Replace(data["lifestyleChoice"], "(pause 1000/speak Maru \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-female")}$h\"/emote Haley 21 true/emote Emily 21 true/emote Penny 21 true/emote Maru 21 true/emote Leah 21 true/emote Abigail 21").Replace("/dump girls 4", "");
             }
             else if (asset.AssetNameEquals("Data/Events/Saloon"))
             {
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
-                data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"] = Regex.Replace(data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"], "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21/emote Sebastian 21/emote Sam 21/emote Harvey 21/emote Alex 21/emote Elliott 21").Replace("/dump guys 3", "");
-                data["choseToExplain"] = Regex.Replace(data["choseToExplain"], "(pause 1000/speak Sam \\\")[^$]+.a\\\"", $"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21/emote Sebastian 21/emote Sam 21/emote Harvey 21/emote Alex 21/emote Elliott 21").Replace("/dump guys 4", "");
-                data["crying"] = Regex.Replace(data["crying"], "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21/emote Sebastian 21/emote Sam 21/emote Harvey 21/emote Alex 21/emote Elliott 21").Replace("/dump guys 4", "");
+                data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"] = Regex.Replace(data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"], "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 3", "");
+                data["choseToExplain"] = Regex.Replace(data["choseToExplain"], "(pause 1000/speak Sam \\\")[^$]+.a\\\"", $"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 4", "");
+                data["crying"] = Regex.Replace(data["crying"], "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 4", "");
             }
             else if (asset.AssetNameEquals("Strings/StringsFromCSFiles"))
             {
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-                data["NPC.cs.3985"] = Regex.Replace(data["NPC.cs.3985"],  @"\$s.+", $"$n#$e#$c 0.5#{data["ResourceCollectionQuest.cs.13681"]}#{data["ResourceCollectionQuest.cs.13683"]}");
+                data["NPC.cs.3985"] = Regex.Replace(data["NPC.cs.3985"],  @"\.\.\.\$s.+", $"$n#$b#$c 0.5#{data["ResourceCollectionQuest.cs.13681"]}#{data["ResourceCollectionQuest.cs.13683"]}");
+                Monitor.Log($"New NPC.cs.3985 jealousy dialogue: {data["NPC.cs.3985"]}");
+            }
+            else if (asset.AssetNameEquals("Data/animationDescriptions"))
+            {
+                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                List<string> sleepKeys = data.Keys.ToList().FindAll((s) => s.EndsWith("_Sleep"));
+                foreach(string key in sleepKeys)
+                {
+                    if (!data.ContainsKey(key.ToLower()))
+                        data.Add(key.ToLower(), data[key]);
+                }
             }
             else if (asset.AssetNameEquals("Data/EngagementDialogue"))
             {
@@ -481,6 +527,21 @@ namespace MultipleSpouses
                     {
                         data[friend + "1"] = "";
                     }
+                }
+            }
+            else if (asset.AssetNameEquals("Maps/farmhouse_tiles"))
+            {
+                asset.AsImage().PatchImage(Helper.Content.Load<Texture2D>("assets/beds.png"), new Rectangle(!config.TransparentSheets && config.SleepOnCovers ? 48 : config.TransparentSheets? 96 : 0, 0, 48, 96), new Rectangle(128, 192, 48, 96));
+            }
+            else if (asset.AssetName.StartsWith("Characters/schedules") || asset.AssetName.StartsWith("Characters\\schedules"))
+            {
+
+
+                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                List<string> keys = new List<string>(data.Keys);
+                foreach (string key in keys)
+                {
+                    data.Add($"marriage_{key}", data[key]);
                 }
             }
         }

@@ -1,108 +1,131 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewConfigFramework;
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using StardewConfigFramework.Options;
 
 namespace SCFTester {
 	public class ModEntry: Mod {
-		internal static IModSettingsFramework Settings;
+		internal static IConfigMenu Settings;
+		internal static TabbedOptionsPackage Package;
 		/*********
 		** Public methods
 		*********/
 		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper) {
-			Settings = IModSettingsFramework.Instance;
-			//var options = new ModOptions(this);
-			var config = this.Helper.ReadConfig<ModConfig>();
-			var options = new ModOptions(this);
-			Settings.AddModOptions(options);
-
-			GenerateOptions(options, config);
+			GameEvents.FirstUpdateTick += GameEvents_FirstUpdateTick;
 		}
 
-		private void GenerateOptions(ModOptions options, ModConfig config) {
-			var enableDrop = new ModOptionToggle("toggle", "Checkbox", config.enableDropdown);
-			options.AddModOption(enableDrop);
+		void GameEvents_FirstUpdateTick(object sender, System.EventArgs e) {
+			Settings = Helper.ModRegistry.GetApi<IConfigMenu>("Juice805.StardewConfigMenu");
+			Package = new TabbedOptionsPackage(this);
+			var config = Helper.ReadConfig<ModConfig>();
+			GenerateOptions(Package, config);
+			Settings.AddOptionsPackage(Package);
+		}
 
-			enableDrop.ValueChanged += DisableDrop_ValueChanged;
+		private void GenerateOptions(TabbedOptionsPackage options, ModConfig config) {
+			var firstTab = new OptionsTab("main", "Main");
+			options.Tabs.Add(firstTab);
 
-			var choices = new ModSelectionOptionChoices();
-			choices.Add("toggle", "Toggle");
-			choices.Add("on", "Always On");
-			choices.Add("off", "Always Off");
+			var enableDrop = new ConfigToggle("enableDrop", "Enable Dropdown", config.enableDropdown);
+			firstTab.Options.Add(enableDrop);
 
-			dropdown = new ModOptionSelection("drop", "Dropdown", choices, config.dropdownChoice, config.enableDropdown) {
-				hoverTextDictionary = new Dictionary<string, string>
-				{
-					{ "on", "Hover text for Always On" },
-					{ "off", "Hover text for Always Off" }
-				}
+			var choices = new List<ISelectionChoice> {
+				new SelectionChoice("none", "None"),
+				new SelectionChoice("5", "Checkbox 5", "Hover text for Checkbox 5"),
+				new SelectionChoice("6", "Checkbox 6", "Hover text for Checkbox 6"),
+				new SelectionChoice("7", "Checkbox 7", "Hover text for Checkbox 7")
 			};
 
-			options.AddModOption(dropdown);
+			var dropdown = new ConfigSelection("drop", "Disable Another Option", choices, config.dropdownChoice, config.enableDropdown);
+			dropdown.SelectionDidChange += Dropdown_SelectionDidChange; ;
+			firstTab.Options.Add(dropdown);
 
-			dropdown.ValueChanged += Dropdown_ValueChanged;
-
-			var checkbox2 = new ModOptionToggle("toggle2", "Checkbox2", config.checkbox2);
-			options.AddModOption(checkbox2);
-
-			options.AddModOption(new ModOptionToggle("toggle3", "Always On", false));
-
-			var slider = new ModOptionRange("range", "Slider", 10, 25, 1, config.rangeValue, true);
-
-			var stepper = new ModOptionStepper("stepper", "Plus/Minus Controls", (decimal) 5.0, (decimal) 105.0, (decimal) 1.5, config.stepperValue, DisplayType.PERCENT);
-
-			options.AddModOption(slider);
-			options.AddModOption(stepper);
-
-			options.AddModOption(new ModOptionToggle("stepperCheck", "Show Stepper Value", false));
-
-			options.AddModOption(new ModOptionToggle("toggle5", "Checkbox5"));
-			options.AddModOption(new ModOptionToggle("toggle6", "Checkbox6"));
-			options.AddModOption(new ModOptionToggle("toggle7", "Checkbox7"));
-			options.AddModOption(new ModOptionToggle("toggle8", "Checkbox8"));
-
-			var saveButton = new ModOptionTrigger("okButton", "OK Button", OptionActionType.OK);
-			options.AddModOption(saveButton);
-
-			saveButton.ActionTriggered += (id) => {
-				config.dropdownChoice = dropdown.Selection;
-				config.enableDropdown = enableDrop.IsOn;
-				this.Helper.WriteConfig<ModConfig>(config);
+			enableDrop.StateDidChange += (toggle) => {
+				dropdown.Enabled = toggle.IsOn;
 			};
+
+			var checkbox2 = new ConfigToggle("toggle2", "Add checkbox 9", config.checkbox2);
+			firstTab.Options.Add(checkbox2);
+			checkbox2.StateDidChange += AddDynamicOption;
+
+			firstTab.Options.Add(new ConfigToggle("toggle3", "Checkbox 3", false));
+
+			var slider = new ConfigRange("range", "Slider", 10, 25, 1, config.rangeValue, true);
+
+			var stepper = new ConfigStepper("stepper", "Plus/Minus Controls", (decimal) 5.0, (decimal) 105.0, (decimal) 1.5, config.stepperValue, RangeDisplayType.PERCENT);
+
+			firstTab.Options.Add(slider);
+			firstTab.Options.Add(stepper);
+
+			firstTab.Options.Add(new ConfigToggle("stepperCheck", "Show Stepper Value", false));
+
+			firstTab.Options.Add(new ConfigToggle("toggle5", "Checkbox 5"));
+			firstTab.Options.Add(new ConfigToggle("toggle6", "Checkbox 6"));
+			firstTab.Options.Add(new ConfigToggle("toggle7", "Checkbox 7"));
+			firstTab.Options.Add(new ConfigToggle("toggle8", "Checkbox 8"));
+
+			var saveButton = new ConfigAction("okButton", "OK Button", ButtonType.OK);
+			firstTab.Options.Add(saveButton);
+
+			saveButton.ActionWasTriggered += SaveButton_ActionWasTriggered;
 
 			GraphicsEvents.OnPostRenderEvent += (sender, e) => {
+				if (firstTab.GetOption<IConfigToggle>("toggle3").IsOn)
+					Game1.spriteBatch.DrawString(Game1.dialogueFont, "Cool!", new Vector2(Game1.getMouseX(), Game1.getMouseY()), Color.Black);
 
-				if (dropdown.Selection == "off")
-					checkbox2.IsOn = false;
-				if (dropdown.Selection == "on" || (options.GetOptionWithIdentifier("toggle3") as ModOptionToggle).IsOn)
-					Game1.spriteBatch.DrawString(Game1.dialogueFont, dropdown.Choices.LabelOf("on"), new Vector2(Game1.getMouseX(), Game1.getMouseY()), Color.Black);
-				if (toggledOn)
-					Game1.spriteBatch.DrawString(Game1.dialogueFont, dropdown.Choices.LabelOf("toggle"), new Vector2(Game1.getMouseX(), Game1.getMouseY() + 12 * Game1.pixelZoom), Color.Black);
-
-				if ((options.GetOptionWithIdentifier("stepperCheck") as ModOptionToggle).IsOn) {
+				if (firstTab.GetOption<IConfigToggle>("stepperCheck").IsOn) {
 					Game1.spriteBatch.DrawString(Game1.dialogueFont, stepper.Value.ToString(), new Vector2(Game1.getMouseX(), Game1.getMouseY() + 12 * Game1.pixelZoom), Color.Black);
 				}
 			};
+
+			var secondTab = new OptionsTab("second", "Second");
+			secondTab.Options.Add(new ConfigHeader("secondTabHeader", "Second Tab!"));
+			options.Tabs.Add(secondTab);
 		}
 
-		private ModOptionSelection dropdown;
-
-		private void DisableDrop_ValueChanged(string identifier, bool isOn) {
-			dropdown.enabled = isOn;
+		void AddDynamicOption(IConfigToggle toggle) {
+			if (toggle.IsOn) {
+				var targetIndex = Package.Tabs[0].Options.IndexOf("toggle8") + 1;
+				var dynamicOption = new ConfigToggle("toggle9", "Added dynamically!", false);
+				Package.Tabs[0].Options.Insert(targetIndex, dynamicOption);
+				dynamicOption.StateDidChange += AddDynamicTab;
+			} else {
+				Package.Tabs[0].Options.Remove("toggle9");
+			}
 		}
 
-		private bool toggledOn = false;
-
-		private void Dropdown_ValueChanged(string identifier, string selection) {
-			if (selection == "toggle")
-				toggledOn = !toggledOn;
+		void AddDynamicTab(IConfigToggle toggle) {
+			if (toggle.IsOn) {
+				var dynamicTab = new OptionsTab("dynamic", "Dynamic");
+				dynamicTab.Options.Add(new ConfigHeader("header", "Dynamically Added Tab!"));
+				Package.Tabs.Add(dynamicTab);
+			} else {
+				Package.Tabs.Remove("dynamic");
+			}
 		}
+
+		void Dropdown_SelectionDidChange(IConfigSelection selection) {
+			var selected = selection.SelectedIdentifier;
+			Package.Tabs[0].GetOption<IConfigToggle>("toggle5").Enabled = !("5" == selected);
+			Package.Tabs[0].GetOption<IConfigToggle>("toggle6").Enabled = !("6" == selected);
+			Package.Tabs[0].GetOption<IConfigToggle>("toggle7").Enabled = !("7" == selected);
+		}
+
+		void SaveButton_ActionWasTriggered(IConfigAction action) {
+			var config = new ModConfig() {
+				dropdownChoice = Package.Tabs[0].GetOption<IConfigSelection>("drop").SelectedIdentifier,
+				enableDropdown = Package.Tabs[0].GetOption<IConfigToggle>("enableDrop").IsOn,
+				checkbox2 = Package.Tabs[0].GetOption<IConfigToggle>("toggle2").IsOn
+			};
+			this.Helper.WriteConfig<ModConfig>(config);
+		}
+
 
 		/*********
 		** Private methods

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6460
+IDs: Esca.WaterproofItems
+update keys: GitHub:Esca-MMC/WaterproofItems, Nexus:6460, ModDrop:807393

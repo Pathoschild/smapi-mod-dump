@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6363
+IDs: itslittany.ChummyFix
+update keys: Nexus:6363

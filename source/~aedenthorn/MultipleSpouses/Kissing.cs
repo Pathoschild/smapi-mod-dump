@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Network;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,11 @@ namespace MultipleSpouses
         {
 			GameLocation location = Game1.currentLocation;
 
+			if (location == null || !ReferenceEquals(location.GetType(), typeof(FarmHouse)))
+				return;
+
+			Farmer owner = (location as FarmHouse).owner;
+
 			lastKissTime++;
 
 			if (location == null || location.characters == null)
@@ -41,10 +47,10 @@ namespace MultipleSpouses
 
 			foreach (NPC npc1 in list)
 			{
-				if (!Game1.player.friendshipData.ContainsKey(npc1.Name))
+				if (!owner.friendshipData.ContainsKey(npc1.Name))
 					continue;
 
-				if (!ModEntry.config.RoommateRomance && Game1.player.friendshipData[npc1.Name].RoommateMarriage)
+				if (!ModEntry.config.RoommateRomance && owner.friendshipData[npc1.Name].RoommateMarriage)
                 {
 					continue;
                 }
@@ -52,10 +58,10 @@ namespace MultipleSpouses
 
 				foreach (NPC npc2 in list)
 				{
-					if (!Game1.player.friendshipData.ContainsKey(npc2.Name))
+					if (!owner.friendshipData.ContainsKey(npc2.Name))
 						continue;
 
-					if (npc1.Name == npc2.Name || (!ModEntry.config.RoommateRomance && Game1.player.friendshipData[npc2.Name].RoommateMarriage))
+					if (npc1.Name == npc2.Name || (!ModEntry.config.RoommateRomance && owner.friendshipData[npc2.Name].RoommateMarriage))
 					{
 						continue;
 					}
@@ -71,8 +77,11 @@ namespace MultipleSpouses
 						&& distance < ModEntry.config.MaxDistanceToKiss 
 						&& !kissingSpouses.Contains(npc1.Name) 
 						&& !kissingSpouses.Contains(npc2.Name) 
+						&& owner.getFriendshipHeartLevelForNPC(npc1.Name) >= ModEntry.config.MinHeartsForKiss
+						&& owner.getFriendshipHeartLevelForNPC(npc2.Name) >= ModEntry.config.MinHeartsForKiss
 						&& lastKissTime > ModEntry.config.MinSpouseKissInterval 
 						&& ModEntry.myRand.NextDouble() < ModEntry.config.SpouseKissChance
+						&& (!ModEntry.config.PreventRelativesFromKissing || !Misc.AreSpousesRelated(npc1.Name, npc2.Name))
 					)
                     {
 						kissingSpouses.Add(npc1.Name);
@@ -197,7 +206,7 @@ namespace MultipleSpouses
 				float distance = 1f / ((Vector2.Distance(midpoint, Game1.player.position) / 256) + 1);
 				float pan = (float)(Math.Atan((midpoint.X - Game1.player.position.X) / Math.Abs(midpoint.Y - Game1.player.position.Y)) /(Math.PI/2));
 				//ModEntry.PMonitor.Log($"kiss distance: {distance} pan: {pan}");
-				kissEffect.Play(distance, 0, pan);
+				kissEffect.Play(distance * Game1.options.soundVolumeLevel, 0, pan);
 			}
 			else
             {

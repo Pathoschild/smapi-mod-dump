@@ -1,0 +1,15 @@
+url:
+   https://github.com/Jonqora/StardewMods.git
+
+mods:
+   Angry Grandpa
+   Fish Preview
+   Show Item Quality
+
+latest commit:
+   commit 3ce7666ab5de141245e90da34f998e17bfab6d98
+   Author: Ellen Lloyd <ellen.lloyd@usask.ca>
+   Date:   Thu Jul 16 13:35:43 2020 -0400
+   
+       [AngryGrandpa] Update README and other docs for v1.1.0 release
+   

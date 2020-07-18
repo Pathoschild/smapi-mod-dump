@@ -24,7 +24,38 @@ namespace Lockpicks
             JA = new JsonAssets(this);
             if (!JA.IsHappy) return;
             JA.RegisterObject(Helper.Translation.Get("tool"), Helper.Translation.Get("tooltip"), "lockpick.png", "Pierre", StardewValley.Object.junkCategory, 15, 500);
-            Helper.Events.GameLoop.SaveLoaded += (s,e) => { LockpickItemId = JA.GetObjectId("Lockpick").Value; };
+            Helper.Events.GameLoop.SaveLoaded += (s,e) => { 
+                LockpickItemId = JA.GetObjectId("Lockpick").Value;
+                // add darkroom
+                if (Game1.getLocationFromName("Darkroom") == null)
+                {
+                    Game1.content.Load<xTile.Map>("Maps\\Darkroom");
+                    Game1.locations.Add(new GameLocation("Maps\\Darkroom", "Darkroom"));
+                    var darkroom = Game1.getLocationFromName("Darkroom");
+                    darkroom.resetForPlayerEntry();
+                    darkroom.warps.Add(new Warp(3, 8, "HaleyHouse", 4, 4, false));
+                }
+                //add marniebarn
+                if (Game1.getLocationFromName("MarnieBarn") == null)
+                {
+                    Game1.content.Load<xTile.Map>("Maps\\MarnieBarn");
+                    Game1.locations.Add(new GameLocation("Maps\\MarnieBarn", "MarnieBarn"));
+                    var marniebarn = Game1.getLocationFromName("MarnieBarn");
+                    marniebarn.resetForPlayerEntry();
+                    //this map has a bugged warp in it that needs to be replaced
+                    var buggedwarp = marniebarn.warps.First();
+                    buggedwarp.TargetName = "Forest";
+                    buggedwarp.TargetX = 97;
+                    buggedwarp.TargetY = 16;
+                    //and lets add a warp from the yard back inside
+                    var forest = Game1.getLocationFromName("Forest") as Forest;
+                    forest.warps.Add(new StardewValley.Warp(96, 15, "MarnieBarn", 11, 13, false));
+                    forest.warps.Add(new StardewValley.Warp(97, 15, "MarnieBarn", 11, 13, false));
+                    forest.warps.Add(new StardewValley.Warp(98, 15, "MarnieBarn", 11, 13, false));
+                    forest.warps.Add(new StardewValley.Warp(99, 15, "MarnieBarn", 11, 13, false));
+                    marniebarn.warps.Add(new Warp(3, 9, "AnimalShop", 30, 14, false));
+                }
+            };
             Helper.Events.GameLoop.DayStarted += (s,e) => { LockCache.Clear(); };
             Helper.Events.Input.ButtonPressed += (s,e) => { OnInput(e); };
             Helper.Events.Multiplayer.ModMessageReceived += OnMultiplayerPacket;
@@ -194,40 +225,11 @@ namespace Lockpicks
                     if (Lock[1] == "\"HaleyHouse.1\"")
                     {
                         if (!picked) Game1.playSound("doorClose");
-                        if(Game1.getLocationFromName("Darkroom") == null)
-                        {
-                            //add the darkroom
-                            Game1.content.Load<xTile.Map>("Maps\\Darkroom");
-                            Game1.locations.Add(new GameLocation("Maps\\Darkroom", "Darkroom"));
-                            var darkroom = Game1.getLocationFromName("Darkroom");
-                            darkroom.resetForPlayerEntry();
-                            darkroom.warps.Add(new Warp(3, 8, "HaleyHouse", 4, 4, false));
-                        }
                         Warp(picked, "doorClose", "Darkroom", 192 / Game1.tileSize, 384 / Game1.tileSize);
                     }
                     else if (Lock[1] == "\"AnimalShop.17\"")
                     {
                         if (!picked) Game1.playSound("doorClose");
-                        if (Game1.getLocationFromName("MarnieBarn") == null)
-                        {
-                            //add the darkroom
-                            Game1.content.Load<xTile.Map>("Maps\\MarnieBarn");
-                            Game1.locations.Add(new GameLocation("Maps\\MarnieBarn", "MarnieBarn"));
-                            var marniebarn = Game1.getLocationFromName("MarnieBarn");
-                            marniebarn.resetForPlayerEntry();
-                            //this map has a bugged warp in it that needs to be replaced
-                            var buggedwarp = marniebarn.warps.First();
-                            buggedwarp.TargetName = "Forest";
-                            buggedwarp.TargetX = 97;
-                            buggedwarp.TargetY = 16;
-                            //and lets add a warp from the yard back inside
-                            var forest = Game1.getLocationFromName("Forest") as Forest;
-                            forest.warps.Add(new StardewValley.Warp(96, 15, "MarnieBarn", 11, 13, false));
-                            forest.warps.Add(new StardewValley.Warp(97, 15, "MarnieBarn", 11, 13, false));
-                            forest.warps.Add(new StardewValley.Warp(98, 15, "MarnieBarn", 11, 13, false));
-                            forest.warps.Add(new StardewValley.Warp(99, 15, "MarnieBarn", 11, 13, false));
-                            marniebarn.warps.Add(new Warp(3, 9, "AnimalShop", 30, 14, false));
-                        }
                         Warp(picked, "doorClose", "MarnieBarn", 192 / Game1.tileSize, 448 / Game1.tileSize);
                     }
                     break;

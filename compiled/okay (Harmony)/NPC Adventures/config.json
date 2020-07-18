@@ -9,7 +9,9 @@
   "RequestsWithShift": false,
   "RequestsShiftButton": "LeftShift",
   "Experimental": {
-    "FightThruCompanion": false,
-    "UseCheckForEventsPatch": false
-  }
+    "UseSwimsuits": false
+  },
+  "AllowGainFriendship": true,
+  "FightThruCompanion": true,
+  "UseCheckForEventsPatch": true
 }

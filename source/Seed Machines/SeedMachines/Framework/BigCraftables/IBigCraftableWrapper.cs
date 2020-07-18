@@ -13,7 +13,6 @@ namespace SeedMachines.Framework.BigCraftables
 {
     public abstract class IBigCraftableWrapper
     {
-        public static int initialAbsoluteID;
         private static Dictionary<String, IBigCraftableWrapper> wrappers = new Dictionary<String, IBigCraftableWrapper>();
 
         static IBigCraftableWrapper()
@@ -30,6 +29,11 @@ namespace SeedMachines.Framework.BigCraftables
         public static IBigCraftableWrapper getWrapper(String name)
         {
             return wrappers[name];
+        }
+
+        public static Dictionary<String, IBigCraftableWrapper> getAllWrappers()
+        {
+            return wrappers;
         }
 
         public static void addAllRecipies()
@@ -75,7 +79,7 @@ namespace SeedMachines.Framework.BigCraftables
 
         //-----------------
 
-        public int relativeID;
+        public int itemID;
         public String name;
         public int price;
         public bool availableOutdoors;
@@ -85,7 +89,7 @@ namespace SeedMachines.Framework.BigCraftables
         public int edibility = -300;
         public String typeAndCategory;
 
-        public String ingridients;
+        public String ingredients;
         public String location = "Home";
         public String unlockConditions;
 
@@ -95,14 +99,27 @@ namespace SeedMachines.Framework.BigCraftables
 
         //-----------------
 
-        public int getAbsoluteID()
-        {
-            return initialAbsoluteID + relativeID;
-        }
-
         private String getTranslationBaseName()
         {
             return this.name.ToLower().Replace(' ', '-');
+        }
+
+        public String getDefaultLabel()
+        {
+            return CustomTranslator.getTranslation("default", getTranslationBaseName() + ".label");
+        }
+        public String getDefaultDescription()
+        {
+            return CustomTranslator.getTranslation("default", getTranslationBaseName() + ".description");
+        }
+
+        public IDictionary<String, String> getAllTranslationsForLabel()
+        {
+            return CustomTranslator.getAllTranslationsByLocales(getTranslationBaseName() + ".label");
+        }
+        public IDictionary<String, String> getAllTranslationsForDescription()
+        {
+            return CustomTranslator.getAllTranslationsByLocales(getTranslationBaseName() + ".description");
         }
 
         public String getLabel()
@@ -125,12 +142,41 @@ namespace SeedMachines.Framework.BigCraftables
 
         public void addBigCraftablesInformation(IDictionary<int, string> bigCraftablesInformationData)
         {
-            bigCraftablesInformationData[getAbsoluteID()] = $"{name}/{price}/{edibility}/{typeAndCategory}/{getDescription()}/{availableOutdoors}/{availableIndoors}/{fragility}/{getLabel()}";
+            bigCraftablesInformationData[itemID] = $"{name}/{price}/{edibility}/{typeAndCategory}/{getDescription()}/{availableOutdoors}/{availableIndoors}/{fragility}/{getLabel()}";
         }
 
         public void addCraftingRecipe(IDictionary<string, string> craftingRecipesData)
         {
-            craftingRecipesData[this.name] = $"{ingridients}/{location}/{getAbsoluteID()}/true/{unlockConditions}/{getLabel()}";
+            craftingRecipesData[this.name] = $"{ingredients}/{location}/{itemID}/true/{unlockConditions}/{getLabel()}";
+        }
+
+        public JsonAssetsBigCraftableModel getJsonAssetsModel()
+        {
+            JsonAssetsBigCraftableModel result = new JsonAssetsBigCraftableModel();
+            result.Name = this.name;
+            result.Description = this.getDefaultDescription();
+            result.Price = this.price;
+            result.IsDefault = true;
+            result.ProvidesLight = false;
+            result.ReserveExtraIndexCount = this.maxAnimationIndex;
+
+            result.Recipe = new JARecipe();
+            result.Recipe.CanPurchase = false;
+            result.Recipe.ResultCount = 1;
+            result.Recipe.Ingredients = new List<IDictionary<String, int>>();
+            string[] splittedIngredients = this.ingredients.Split(' ');
+            for (int i = 0; i < splittedIngredients.Length; i+=2)
+            {
+                IDictionary<String, int> ingredientMap = new Dictionary<string, int>();
+                ingredientMap.Add("Object", Int32.Parse(splittedIngredients[i]));
+                ingredientMap.Add("Count", Int32.Parse(splittedIngredients[i+1]));
+                result.Recipe.Ingredients.Add(ingredientMap);
+            }
+
+            result.NameLocalization = getAllTranslationsForLabel();
+            result.DescriptionLocalization = getAllTranslationsForDescription();
+
+            return result;
         }
     }
 }

@@ -78,7 +78,7 @@ namespace MoreGrass
             // apply the patches
             harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.TerrainFeatures.Grass), nameof(StardewValley.TerrainFeatures.Grass.seasonUpdate)),
-                prefix: new HarmonyMethod(AccessTools.Method(typeof(GrassPatch), nameof(GrassPatch.SeasonUpdatePreFix)))
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(GrassPatch), nameof(GrassPatch.SeasonUpdatePrefix)))
             );
 
             harmony.Patch(
@@ -104,22 +104,19 @@ namespace MoreGrass
             // winter grass compatibility patch
             if (Helper.ModRegistry.IsLoaded("cat.wintergrass"))
             {
-                Monitor.Log("Patching WinterGrass for compatibility");
-
-                // get directory of wintergrass.dll
-                string directory = Directory.GetParent(Helper.DirectoryPath).FullName;
-                string path = Path.Combine(directory, "WinterGrass", "wintergrass.dll");
-                if (File.Exists(path))
+                try
                 {
-                    var dll = Assembly.LoadFile(path);
-                    var winterGrassModEntry = dll.GetExportedTypes()[0];
+                    Monitor.Log("Patching WinterGrass for compatibility");
+
+                    var winterGrassModData = this.Helper.ModRegistry.Get("cat.wintergrass");
+                    var winterGrassInstance = (Mod)winterGrassModData.GetType().GetProperty("Mod", BindingFlags.Public | BindingFlags.Instance).GetValue(winterGrassModData);
 
                     harmony.Patch(
-                        original: AccessTools.Method(winterGrassModEntry, "FixGrassColor"),
+                        original: AccessTools.Method(winterGrassInstance.GetType(), "FixGrassColor"),
                         prefix: new HarmonyMethod(AccessTools.Method(typeof(WinterGrassPatch), nameof(WinterGrassPatch.FixGrassColorPrefix)))
                     );
                 }
-                else
+                catch
                 {
                     Monitor.Log("Couldn't disable Winter Grass, this may cause texture bugs in winter. Winter Grass is not needed with this mod as this mod enables winter grass.", LogLevel.Warn);
                 }

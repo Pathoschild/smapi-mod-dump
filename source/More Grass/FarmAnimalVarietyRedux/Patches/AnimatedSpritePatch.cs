@@ -1,8 +1,7 @@
-﻿using FarmAnimalVarietyRedux.Models;
+﻿using FarmAnimalVarietyRedux.Enums;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using System.Linq;
 using System.Reflection;
 
 namespace FarmAnimalVarietyRedux.Patches
@@ -25,18 +24,16 @@ namespace FarmAnimalVarietyRedux.Patches
 
             var spriteTexture = (Texture2D)typeof(AnimatedSprite).GetField("spriteTexture", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
             var contentManager = (ContentManager)typeof(AnimatedSprite).GetField("contentManager", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-            
+
             // check if the texture to load is an animal
             if (__instance.textureName.Value != null && __instance.textureName.Value.Contains("Animals\\"))
             {
                 var animalName = __instance.textureName.Value.Split('\\')[1];
-                var isCustomAnimal = false;
-                AnimalSubType customAnimalSubType = null;
+                var animalSubType = ModEntry.Instance.Api.GetAnimalSubTypeByName(animalName.Replace("Baby", "").Replace("Sheared", ""));
 
-                // check if it's a custom animal 
-                var subType = ModEntry.Instance.Api.GetAnimalSubTypeByName(animalName);
-                if (subType != null)
+                if (animalSubType != null) // if animalSubType is null, it means the sprite sheet being loaded is of an animal but a non farm animal (horse, dog, cat)
                 {
+                    // get the current season
                     var currentSeason = Season.Spring;
                     switch (Game1.currentSeason)
                     {
@@ -55,7 +52,7 @@ namespace FarmAnimalVarietyRedux.Patches
                     }
 
                     // load the texture through FAVR, not the content pipeline
-                    spriteTexture = customAnimalSubType.Sprites.GetSpriteSheet(
+                    spriteTexture = animalSubType.Sprites.GetSpriteSheet(
                         isBaby: animalName.Contains("Baby"),
                         isHarvested: animalName.Contains("Sheared"),
                         season: currentSeason
@@ -66,7 +63,7 @@ namespace FarmAnimalVarietyRedux.Patches
             }
             else
                 spriteTexture = __instance.textureName.Value != null ? contentManager.Load<Texture2D>(__instance.textureName.Value) : null;
-            
+
             loadedTexture = __instance.textureName.Value;
 
             typeof(AnimatedSprite).GetField("spriteTexture", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, spriteTexture);

@@ -1,5 +1,8 @@
 {
   "EatingFeature": true,
+  "EatingWithoutWaste": false,
+  "EatingTopHealth": true,
+  "EatingTopStamina": true,
   "AdventurersGuildShopFeature": true,
   "CarpenterMenuFeature": true,
   "SellableItemsFeature": true

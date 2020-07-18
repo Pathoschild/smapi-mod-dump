@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Netcode;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
 using System;
@@ -32,6 +33,12 @@ namespace NpcAdventure.Utils
             second = list.Count > 1 ? list[1] : default(T); // or throw
             third = list.Count > 1 ? list[2] : default(T); // or throw
             rest = list.Skip(3).ToList();
+        }
+
+        public static bool EqualsMajorMinor(this ISemanticVersion baseVersion, ISemanticVersion version)
+        {
+            return baseVersion.MajorVersion == version.MajorVersion 
+                && baseVersion.MinorVersion == version.MinorVersion;
         }
 
         public static Vector2 ToVector2(this Point point)
@@ -114,7 +121,7 @@ namespace NpcAdventure.Utils
                     }
                     if (((Monster)location.characters[j]).Health <= 0)
                     {
-                        if (!(bool)((NetFieldBase<bool, NetBool>)location.isFarm))
+                        if (!location.IsFarm)
                             leader.checkForQuestComplete((NPC)null, 1, 1, (Item)null, location.characters[j].Name, 4, -1);
                         Monster character = location.characters[j] as Monster;
                         location.monsterDrop(character, boundingBox.Center.X, boundingBox.Center.Y, leader);

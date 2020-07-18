@@ -5,9 +5,9 @@ mods:
    More Giant Crops
 
 latest commit:
-   commit 7278f0bef40fd8cd071485822120e21f7c97c65c
+   commit b86c1cadcc0638e4b4001bcc72edb89980679c0a
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Feb 10 20:14:30 2020 -0500
+   Date:   Wed Jun 17 13:10:43 2020 -0400
    
-       Initial commit
+       Update project structure
    

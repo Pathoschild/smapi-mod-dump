@@ -136,6 +136,7 @@ namespace NpcAdventure.StateMachine.State
         private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e) 
         { 
             this.StateMachine.Companion.clearSchedule();
+            this.UpdateFriendship(e.NewTime);
 
             if (e.NewTime >= this.TimeToBye)
             {
@@ -187,11 +188,39 @@ namespace NpcAdventure.StateMachine.State
             }
         }
 
+        /// <summary>
+        /// Update friendship points every whole hour
+        /// </summary>
+        /// <param name="time">Current time</param>
+        private void UpdateFriendship(int time)
+        {
+            if (time % 100 != 0 || !this.StateMachine.CompanionManager.Config.AllowGainFriendship)
+            {
+                return; // It's not whole hour? Or gain friendship is disabled? Do nothing!
+            }
+
+            var farmer = this.StateMachine.CompanionManager.Farmer;
+            var npc = this.StateMachine.Companion;
+            var points = 2;
+
+            if (farmer.friendshipData.TryGetValue(npc.Name, out Friendship friendship))
+            {
+                if (friendship.IsMarried())
+                    points = 5;
+                else if (friendship.IsDating())
+                    points = 3;
+            }
+
+            if (npc.isBirthday(Game1.Date.Season, Game1.Date.DayOfMonth))
+                points *= 2; // Gain double points if companion has birthday today
+
+            farmer.changeFriendship(points, npc);
+            this.monitor.VerboseLog($"You gained {points} friendship points with {npc.Name}");
+        }
+
         private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (e.IsMultipleOf(20))
-                this.FixProblemsWithNPC();
-
+            this.FixProblemsWithNPC();
             this.ai.Update(e);
         }
 
@@ -200,15 +229,28 @@ namespace NpcAdventure.StateMachine.State
         /// </summary>
         private void FixProblemsWithNPC()
         {
-            this.StateMachine.Companion.movementPause = 0;
-            this.StateMachine.Companion.followSchedule = false;
-            this.StateMachine.Companion.ignoreScheduleToday = true;
-            this.StateMachine.Companion.Schedule = null;
-            this.StateMachine.Companion.controller = null;
-            this.StateMachine.Companion.temporaryController = null;
-            this.StateMachine.Companion.eventActor = true;
-            this.StateMachine.Companion.faceTowardFarmerTimer = 0;
-            this.StateMachine.Companion.farmerPassesThrough = true;
+            var npc = this.StateMachine.Companion;
+
+            if(npc.controller != null)
+            {
+                npc.controller.endBehaviorFunction = null;
+                npc.controller.pathToEndPoint = null;
+                npc.controller = null;
+            }
+
+            if (npc.temporaryController != null)
+            {
+                npc.temporaryController.endBehaviorFunction = null;
+                npc.temporaryController.pathToEndPoint = null;
+                npc.temporaryController = null;
+            }
+
+            npc.movementPause = 0;
+            npc.followSchedule = false;
+            npc.ignoreScheduleToday = true;
+            npc.Schedule = null;
+            npc.faceTowardFarmerTimer = 0;
+            npc.farmerPassesThrough = true;
         }
 
         private void Player_Warped(object sender, WarpedEventArgs e)
@@ -325,14 +367,41 @@ namespace NpcAdventure.StateMachine.State
                 case "bag":
                     Chest bag = this.StateMachine.Bag;
                     this.StateMachine.Companion.currentLocation.playSound("openBox");
-                    Game1.activeClickableMenu = new ItemGrabMenu(
-                        bag.items, false, true, new InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems),
-                        new ItemGrabMenu.behaviorOnItemSelect(bag.grabItemFromInventory),
-                        this.StateMachine.Companion.displayName,
-                        new ItemGrabMenu.behaviorOnItemSelect(bag.grabItemFromChest), false, true, true, true, true, 1,
-                        null, -1, this.StateMachine.Companion);
+                    Game1.activeClickableMenu = this.CreateOpenBagMenu(bag);
                     break;
             }
+        }
+
+        private IClickableMenu CreateOpenBagMenu(Chest bag)
+        {
+            if (Constants.TargetPlatform == GamePlatform.Android)
+            {
+                return new ItemGrabMenu(
+                    inventory: bag.items,
+                    reverseGrab: true,
+                    showReceivingMenu: true,
+                    highlightFunction: new InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems),
+                    behaviorOnItemSelectFunction: null,
+                    message: this.StateMachine.Companion.displayName,
+                    behaviorOnItemGrab: null,
+                    canBeExitedWithKey: true,
+                    showOrganizeButton: true,
+                    source: ItemGrabMenu.source_chest,
+                    context: this.StateMachine.Companion);
+            }
+
+            return new ItemGrabMenu(
+                inventory: bag.items,
+                reverseGrab: false,
+                showReceivingMenu: true,
+                highlightFunction: new InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems),
+                behaviorOnItemSelectFunction: new ItemGrabMenu.behaviorOnItemSelect(bag.grabItemFromInventory),
+                message: this.StateMachine.Companion.displayName,
+                behaviorOnItemGrab: new ItemGrabMenu.behaviorOnItemSelect(bag.grabItemFromChest),
+                canBeExitedWithKey: true,
+                showOrganizeButton: true,
+                source: ItemGrabMenu.source_chest,
+                context: this.StateMachine.Companion);
         }
 
         /// <summary>

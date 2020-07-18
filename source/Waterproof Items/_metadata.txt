@@ -1,0 +1,13 @@
+url:
+   https://github.com/Esca-MMC/WaterproofItems.git
+
+mods:
+   Waterproof Items
+
+latest commit:
+   commit 0f61671701f55dc0643b137fd510adfeadae5203
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Mon Jul 13 16:09:12 2020 -0500
+   
+       Add update keys to manifest.json
+   

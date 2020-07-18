@@ -43,6 +43,14 @@ namespace DestroyableBushes
                     () => GMCMLocationList,
                     (string val) => GMCMLocationList = val
                 );
+                api.RegisterSimpleOption
+                (
+                    ModManifest,
+                    "When bushes regrow",
+                    "The amount of time before destroyed bushes will regrow.\nType a number and then a unit of time (Days, Seasons, Years).\nLeave this blank to never respawn bushes.\nExamples: \"3 days\" \"1 season\" \"1 year\"",
+                    () => Config.WhenBushesRegrow ?? "null", //return the string "null" if the setting is null
+                    (string val) => Config.WhenBushesRegrow = val
+                );
 
                 api.RegisterLabel
                 (

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http.Headers;
 
 namespace BFAVToFAVRModConverter.Models
 {
@@ -14,6 +13,9 @@ namespace BFAVToFAVRModConverter.Models
 
         /// <summary>Whether the animal can be bought from Marnie's shop.</summary>
         public bool Buyable { get; set; } = true;
+
+        /// <summary>Whether the animal should update a previously added animal.</summary>
+        public bool UpdatePreviousAnimal { get; set; } = false;
 
         /// <summary>The data about the animal in Marnie's shop.</summary>
         public FavrAnimalShopInfo AnimalShopInfo { get; set; }
@@ -64,6 +66,7 @@ namespace BFAVToFAVRModConverter.Models
         /// <summary>Construct an instance.</summary>
         /// <param name="name">The name of the animal.</param>
         /// <param name="buyable">Whether the animal can be bought from Marnie's shop.</param>
+        /// <param name="updatePreviousAnimal">Whether the animal should update a previously added animal.</param>
         /// <param name="animalShopInfo">The data about the animal in Marnie's shop.</param>
         /// <param name="types">The sub types of the animal.</param>
         /// <param name="daysToProduce">The number of days it takes the animal to produce product.</param>
@@ -76,11 +79,12 @@ namespace BFAVToFAVRModConverter.Models
         /// <param name="fullnessDrain">The amount the animal's hunger bar will drain each night.</param>
         /// <param name="happinessDrain">The amount the animal's happiness bar will drain each night.</param>
         /// <param name="buildings">The name(s) of the building(s) the animal can be housed in.</param>
-        public FavrContent(string name, bool buyable, FavrAnimalShopInfo animalShopInfo, List<FavrAnimalSubType> types, int daysToProduce, int daysTillMature, string soundId, int frontAndBackSpriteWidth,
+        public FavrContent(string name, bool buyable, bool updatePreviousAnimal, FavrAnimalShopInfo animalShopInfo, List<FavrAnimalSubType> types, int daysToProduce, int daysTillMature, string soundId, int frontAndBackSpriteWidth,
             int frontAndBackSpriteHeight, int sideSpriteWidth, int sideSpriteHeight, byte fullnessDrain, byte happinessDrain, List<string> buildings)
         {
             Name = name;
             Buyable = buyable;
+            UpdatePreviousAnimal = updatePreviousAnimal;
             AnimalShopInfo = animalShopInfo;
             Types = types;
             DaysToProduce = daysToProduce;

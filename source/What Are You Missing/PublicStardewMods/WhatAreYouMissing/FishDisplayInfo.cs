@@ -294,7 +294,16 @@ namespace WhatAreYouMissing
 
         private bool IsFromACrabPot()
         {
-            return FishData[ParentSheetIndex].Split('/')[1] == "trap";
+            bool fromCrabPot = false;
+            if (!FishData.ContainsKey(ParentSheetIndex))
+            {
+                ModEntry.Logger.LogWarning($"Can't Find {ParentSheetIndex} in FishData");
+            }
+            else
+            {
+                fromCrabPot = FishData[ParentSheetIndex].Split('/')[1] == "trap";
+            }
+            return fromCrabPot;
         }
 
         private int GetAreaCode(string[] data)

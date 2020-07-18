@@ -66,12 +66,15 @@
   <ItemGroup>
     <Compile Include="Framework\BigCraftables\IBigCraftable.cs" />
     <Compile Include="Framework\BigCraftables\IBigCraftableWrapper.cs" />
+    <Compile Include="Framework\BigCraftables\JsonAssetsBigCraftableModel.cs" />
     <Compile Include="Framework\BigCraftables\SeedBandit.cs" />
     <Compile Include="Framework\BigCraftables\SeedBanditWrapper.cs" />
     <Compile Include="Framework\BigCraftables\SeedMachineWrapper.cs" />
     <Compile Include="Framework\Commands.cs" />
+    <Compile Include="Framework\CustomTranslator.cs" />
     <Compile Include="Framework\DataLoader.cs" />
     <Compile Include="Framework\EventHandlers.cs" />
+    <Compile Include="Framework\IJsonAssetsAPI.cs" />
     <Compile Include="Framework\ModSettings.cs" />
     <Compile Include="Framework\SalableSeedsEnumerator.cs" />
     <Compile Include="Framework\BigCraftables\SeedMachine.cs" />

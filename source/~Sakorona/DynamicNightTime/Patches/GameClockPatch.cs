@@ -20,7 +20,7 @@ namespace DynamicNightTime.Patches
 
             //colors
             //sunrise 255,159,80
-            Color sunrise = new Color(0, 96, 175);
+            //Color sunrise = new Color(0, 96, 175);
             //preSunrise - 200, 205, 227 - mask (55,50,28);
 
             if (DynamicNightTime.LunarDisturbancesLoaded && DynamicNightTime.MoonAPI.IsSolarEclipse())
@@ -36,21 +36,9 @@ namespace DynamicNightTime.Patches
                 moonLight = DynamicNightTime.GetLunarLightDifference();
             }
 
-            string weather;
+            var weather = DynamicNightTime.ClimatesAPI?.GetCurrentWeatherName() ?? "error";
 
-            try
-            {
-                weather = DynamicNightTime.ClimatesAPI.GetCurrentWeatherName();
-            }
-#pragma warning disable CA1031 // Do not catch general exception types
-            catch (Exception ex)
-            {
-               DynamicNightTime.Logger.Log($"Exception encountered when trying to get weather in API call. Exception text is as follows {ex}.", StardewModdingAPI.LogLevel.Error);
-                weather = "error";                
-            }
-#pragma warning restore CA1031 // Do not catch general exception types
-
-            bool ShouldDarken = Game1.isRaining || ((DynamicNightTime.ClimatesLoaded && weather.Contains("overcast")));
+            bool shouldDarken = Game1.isRaining || ((DynamicNightTime.ClimatesLoaded && weather.Contains("overcast")));
 
             if (Game1.timeOfDay <= astronTime)
             {
@@ -66,7 +54,7 @@ namespace DynamicNightTime.Patches
 
             else if (Game1.timeOfDay >= astronTime && Game1.timeOfDay < sunriseTime)
             {
-                if (ShouldDarken) { 
+                if (shouldDarken) { 
                     float minEff = SDVTime.MinutesBetweenTwoIntTimes(astronTime, Game1.timeOfDay) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
                     float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunriseTime, astronTime));
                     Game1.outdoorLight = new Color((byte)(237 - (158 * percentage)), (byte)(185 - (126 * percentage)), (byte)(74 - (51 * percentage)), (byte)(237 - (161 * percentage)));
@@ -104,7 +92,7 @@ namespace DynamicNightTime.Patches
             }
             else if (Game1.timeOfDay >= sunriseTime && Game1.timeOfDay <= Game1.getStartingToGetDarkTime())
             {
-                if (ShouldDarken)
+                if (shouldDarken)
                 {
                     Game1.outdoorLight = Game1.ambientLight * 0.3f;
                 }
@@ -150,7 +138,7 @@ namespace DynamicNightTime.Patches
                 int sunsetEnding = DynamicNightTime.GetSunset().ReturnIntTime();
                 int astroTwilight = DynamicNightTime.GetAstroTwilight().ReturnIntTime();
                 //Color navalColor = new Color(120,178,113);
-                if (ShouldDarken)
+                if (shouldDarken)
                 {
                     if (Game1.timeOfDay >= Game1.getTrulyDarkTime())
                     {
@@ -166,8 +154,14 @@ namespace DynamicNightTime.Patches
                 else
                 {
                     //civil
-                    //if (Game1.timeOfDay > sunset && Game1.timeOfDay < astroTwilight)
-                    if (Game1.timeOfDay > sunsetEnding)
+                    if (Game1.timeOfDay > sunset && Game1.timeOfDay <= sunsetEnding)
+                    {
+                        //orange. >:(
+                        //so much orange.
+                        //rgba(220,168,26,1.00)
+                        Game1.outdoorLight = new Color(35,87,228);
+                    }
+                    else if (Game1.timeOfDay > sunsetEnding)
                     {
                         float minEff = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, sunset) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
                         float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunset, astroTwilight));
@@ -175,39 +169,54 @@ namespace DynamicNightTime.Patches
                         if (percentage < 0) percentage = 0;
                         if (percentage > 1) percentage = 1;
 
-                        Color destColor;
                         int redTarget, greenTarget, blueTarget, alphaTarget;
 
                         switch (DynamicNightTime.NightConfig.NightDarknessLevel)
                         {
+                            //42,55,127
                             case 1:
                             default:
-                                redTarget = 252;
-                                greenTarget = 151;
-                                blueTarget = 193;
-                                alphaTarget = 77;
+                                redTarget = 213;
+                                greenTarget = 200;
+                                blueTarget = 128;
+                                alphaTarget = 40;
                                 break;
+                            //+20,+20,+0,+30
                             case 2:
-                                redTarget = 227;
-                                greenTarget = 111;
-                                blueTarget = 193;
-                                alphaTarget = 17;
+                                redTarget = 200;
+                                greenTarget = 220;
+                                blueTarget = 128;
+                                alphaTarget = 50;
                                 break;
+                            //9,17,127
                             case 3:
-                                redTarget = 222;
-                                greenTarget = 112;
-                                blueTarget = 193;
-                                alphaTarget = 5;
+                                redTarget = 220;
+                                greenTarget = 240;
+                                blueTarget = 128;
+                                alphaTarget = 20;
                                 break;
+                            //-10,-10,0,-20
                             case 4:
-                                redTarget = 242;
-                                greenTarget = 132;
-                                blueTarget = 193;
-                                alphaTarget = 5;
+                                redTarget = 230;
+                                greenTarget = 250;
+                                blueTarget = 128;
+                                alphaTarget = 20;
+                                break;
+                            case 5:
+                                redTarget = 250;
+                                greenTarget = 250;
+                                blueTarget = 120;
+                                alphaTarget = 10;
                                 break;
                         }
 
-                        destColor = new Color(r: (byte)(0 + (redTarget * percentage)), g: (byte)(98 + (greenTarget * percentage)), b: (byte)(193 - (blueTarget * percentage)), a: (byte)(255 - (alphaTarget * percentage)));
+                        //subtract the origin color.
+                        redTarget -= 35;
+                        greenTarget -= 87;
+                        blueTarget = 228 - blueTarget;
+                        //Goes from [0,98,193] <-former, now from [35,87,228] 
+                        
+                        var destColor = new Color(r: (byte)(35 + (redTarget * percentage)), g: (byte)(87 + (greenTarget * percentage)), b: (byte)(228 - (blueTarget * percentage)), a: (byte)(255 - (alphaTarget * percentage)));
 
 
                         //[222,222,15]

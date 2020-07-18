@@ -1,0 +1,11 @@
+﻿{
+  "Name": "No Seeds",
+  "Author": "lech43",
+  "Version": "1.0.9",
+  "Description": "There are no seeds in store except rare seed. You start with some seed makers. You can buy crops at the traveling cart",
+  "UniqueID": "lech43.NoSeeds",
+  "EntryDll": "NoSeeds.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:6392" ],
+}
+

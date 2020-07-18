@@ -429,7 +429,7 @@ namespace NpcAdventure.AI.Controller
             if (this.ai.Csm.HasSkill("warrior"))
             {
                 // Warriors are more skilled
-                combatLevel += farmer.combatLevel >= 5 ? 2 : 1;
+                combatLevel += farmer.combatLevel.Value >= 5 ? 2 : 1;
             }
 
             double skill = combatLevel * Math.Log(Math.Pow(combatLevel, 2) + 1) + Math.Pow(combatLevel, 2) + combatLevel;

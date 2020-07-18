@@ -4,86 +4,112 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewConfigFramework;
+using StardewConfigFramework.Options;
+using System.Collections.Generic;
 
 namespace SCFTester2 {
+
 	public class ModEntry: Mod {
-		internal static IModSettingsFramework Settings;
+		void Testbox_ValueDidChange(string identifier, bool isOn) {
+		}
+
+		internal static IConfigMenu Settings;
+		internal static SimpleOptionsPackage Package;
 		/*********
 		** Public methods
 		*********/
 		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper) {
-			Settings = IModSettingsFramework.Instance;
-			var options = new ModOptions(this);
-			Settings.AddModOptions(options);
+			SaveEvents.AfterLoad += SaveEvents_AfterLoad;
+			GameEvents.FirstUpdateTick += LoadMenu;
+		}
 
-			var testbox = options.GetOptionWithIdentifier<ModOptionToggle>("test") ?? new ModOptionToggle("test", "Test");
-			options.AddModOption(testbox);
+		void LoadMenu(object sender, EventArgs e) {
+			Settings = Helper.ModRegistry.GetApi<IConfigMenu>("Juice805.StardewConfigMenu");
+			Package = new SimpleOptionsPackage(this);
+			var config = Helper.ReadConfig<TestConfig>();
+			Settings.AddOptionsPackage(Package);
 
+			var testbox = new ConfigToggle("checkbox", "Checkbox", config.checkbox);
+			Package.AddOption(testbox);
 
-			var list = new ModSelectionOptionChoices();
-			list.Add("available", "Option Available");
-			list.Add("second", "Option 2");
+			var emptyDropdown = new ConfigSelection("emptyDropdown", "Empty Dropdowns are disabled");
+			Package.AddOption(emptyDropdown);
 
-			var disabledDrop = options.GetOptionWithIdentifier<ModOptionSelection>("disabled") ?? new ModOptionSelection("disabled", "Disabled Dropdown", list, 0, false);
-			options.AddModOption(disabledDrop);
-
-			var stepper = options.GetOptionWithIdentifier<ModOptionStepper>("stepper") ?? new ModOptionStepper("stepper", "Plus/Minus Controls", (decimal) 5.0, (decimal) 105.0, (decimal) 1.5, 26, DisplayType.PERCENT);
-			options.AddModOption(stepper);
-
-			var label = options.GetOptionWithIdentifier<ModOptionCategoryLabel>("catlabel") ?? new ModOptionCategoryLabel("catlabel", "Category Label");
-			options.AddModOption(label);
-
-			var button = options.GetOptionWithIdentifier<ModOptionTrigger>("setButton") ?? new ModOptionTrigger("setButton", "Click Me!", OptionActionType.SET);
-			button.ActionTriggered += (identifier) => {
-				options.GetOptionWithIdentifier("disabled").enabled = !options.GetOptionWithIdentifier("disabled").enabled;
+			testbox.StateDidChange += (toggle) => {
+				emptyDropdown.Enabled = toggle.IsOn; // should not do anything
 			};
-			options.AddModOption(button);
 
-			var clearButton = options.GetOptionWithIdentifier<ModOptionTrigger>("clearButton") ?? new ModOptionTrigger("clearButton", "Clear Button", OptionActionType.CLEAR);
-			clearButton.type = OptionActionType.CLEAR;
-			clearButton.ActionTriggered += (identifier) => {
-				switch (clearButton.type) {
-					case OptionActionType.CLEAR:
-						clearButton.LabelText = "Are you sure?";
-						clearButton.type = OptionActionType.OK;
+			var list = new List<ISelectionChoice>();
+			list.Add(new SelectionChoice("first", "First", "This is the first option!"));
+			list.Add(new SelectionChoice("second", "Second", "This is the Second option!"));
+			list.Add(new SelectionChoice("third", "Third"));
+			list.Add(new SelectionChoice("fourth", "Fourth"));
+
+			var filledDropdown = new ConfigSelection("filledDropdown", "Filled Dropdown", list, config.filledDropown, true);
+			Package.AddOption(filledDropdown);
+
+			var stepper = new ConfigStepper("stepper", "Plus/Minus Controls", (decimal) 5.0, (decimal) 105.0, (decimal) 1.5, config.stepperValue, RangeDisplayType.PERCENT);
+			Package.AddOption(stepper);
+
+			var label = new ConfigHeader("catlabel", "Category Label");
+			Package.AddOption(label);
+
+			var button = new ConfigAction("setButton", "Click Me!", ButtonType.SET);
+			button.ActionWasTriggered += (identifier) => {
+				filledDropdown.Enabled = !filledDropdown.Enabled;
+			};
+			Package.AddOption(button);
+
+			var tranformingButton = new ConfigAction("clearButton", "Clear Button", ButtonType.CLEAR);
+			tranformingButton.ButtonType = ButtonType.CLEAR;
+			tranformingButton.ActionWasTriggered += (identifier) => {
+				switch (tranformingButton.ButtonType) {
+					case ButtonType.CLEAR:
+						tranformingButton.Label = "Are you sure?";
+						tranformingButton.ButtonType = ButtonType.OK;
 						break;
-					case OptionActionType.OK:
-						clearButton.LabelText = "Cleared";
-						clearButton.type = OptionActionType.DONE;
+					case ButtonType.OK:
+						tranformingButton.Label = "Cleared";
+						tranformingButton.ButtonType = ButtonType.DONE;
 						break;
-					case OptionActionType.DONE:
-						clearButton.LabelText = "Clear Button";
-						clearButton.type = OptionActionType.CLEAR;
+					case ButtonType.DONE:
+						tranformingButton.Label = "Clear Button";
+						tranformingButton.ButtonType = ButtonType.CLEAR;
 						break;
 					default:
-						clearButton.LabelText = "Clear Button";
-						clearButton.type = OptionActionType.CLEAR;
+						tranformingButton.Label = "Clear Button";
+						tranformingButton.ButtonType = ButtonType.CLEAR;
 						break;
 				}
 			};
 
-			options.AddModOption(clearButton);
+			Package.AddOption(tranformingButton);
 
-			options.AddModOption(new ModOptionTrigger("doneButton", "Done Button", OptionActionType.DONE));
-			options.AddModOption(new ModOptionTrigger("giftButton", "Gift Button", OptionActionType.GIFT));
+			Package.AddOption(new ConfigAction("doneButton", "Done Button", ButtonType.DONE));
+			Package.AddOption(new ConfigAction("giftButton", "Gift Button", ButtonType.GIFT));
 
-			var saveButton = new ModOptionTrigger("okButton", "OK Button", OptionActionType.OK);
-			options.AddModOption(saveButton);
+			var saveButton = new ConfigAction("okButton", "OK Button", ButtonType.OK);
+			Package.AddOption(saveButton);
 
-			options.AddModOption(new ModOptionSelection("empty", "Empty Dropdown", new ModSelectionOptionChoices()));
-
-
-			saveButton.ActionTriggered += (id) => {
-				// gather all options from ModOptions and update ModConfig
+			saveButton.ActionWasTriggered += (_) => {
+				SaveConfig();
 			};
-
-			SaveEvents.AfterLoad += SaveEvents_AfterLoad;
 		}
+
 
 		private void SaveEvents_AfterLoad(object sender, EventArgs e) {
 
+		}
+
+		private void SaveConfig() {
+			var config = new TestConfig();
+
+			config.checkbox = Package.GetOption<IConfigToggle>("checkbox").IsOn;
+			config.filledDropown = Package.GetOption<IConfigSelection>("filledDropdown").SelectedIdentifier;
+			config.stepperValue = Package.GetOption<IConfigStepper>("stepper").Value;
+			Helper.WriteConfig<TestConfig>(config);
 		}
 
 

@@ -100,6 +100,7 @@ Beginning with version *0.11.0* there's an experimental support for Android SMAP
 
 - **HUD may be drawn at an incorrect position on some devices.** - If you have this problem, you can disable the HUD in configuration file. (Set `ShowHUD` to `false`)
 - **The game may crash on Android 5.1 and older** - Can't fix it, because it's caused by SMAPI. Android SMAPI has an experimental harmony patching, you can report these crashes to @MartyrPher (developer of SMAPI for Android). Remember Android 5.1 and older is not officialy supported by this mod.
+- **Companion bags are not compatible with emergency saves** If you recruited any companion and saved your items to bag and then loaded your game from the emergecny save (continue from last position), your items in companion's bag are lost. **If you use this mod on Android, every load game from the start of day!**
 
 ### Compatibility with other mods
 

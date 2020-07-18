@@ -57,7 +57,7 @@ namespace NpcAdventure.AI.Controller
                         );
                     } catch (Exception e)
                     {
-                        controller.ai.Monitor.Log($"Intro or loop or outro animation for {animation} not defined or broken! Companion: {controller.ai.npc.name} Error: {e.Message}", LogLevel.Error);
+                        controller.ai.Monitor.Log($"Intro or loop or outro animation for {animation} not defined or broken! Companion: {controller.ai.npc.Name} Error: {e.Message}", LogLevel.Error);
                     }
                 }
             }

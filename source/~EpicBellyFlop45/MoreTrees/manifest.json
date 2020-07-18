@@ -1,0 +1,10 @@
+﻿{
+  "Name": "More Trees",
+  "Author": "EpicBellyFlop45",
+  "Version": "1.0.0",
+  "Description": "Loads custom trees",
+  "UniqueID": "EpicBellyFlop45.MoreTrees",
+  "EntryDll": "MoreTrees.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:" ]
+}

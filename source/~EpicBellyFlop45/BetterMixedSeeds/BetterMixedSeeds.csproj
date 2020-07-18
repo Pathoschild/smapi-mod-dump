@@ -51,7 +51,7 @@
     <Compile Include="Config\Season.cs" />
     <Compile Include="Config\Seed.cs" />
     <Compile Include="Data\CropModData.cs" />
-    <Compile Include="Data\SeedData.cs" />
+    <Compile Include="Models\SeedData.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Patches\CropPatch.cs" />
     <Compile Include="Patches\ObjectPatch.cs" />

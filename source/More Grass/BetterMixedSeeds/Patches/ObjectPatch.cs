@@ -25,7 +25,6 @@ namespace BetterMixedSeeds.Patches
             {
                 parentSheetIndex = 771;
             }
-
             else if (Game1.random.NextDouble() < mixedSeedDropChance)
             {
                 parentSheetIndex = 770;

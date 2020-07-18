@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6303
+IDs: Jonqora.FishPreview
+update keys: Nexus:6303, GitHub:Jonqora/StardewMods

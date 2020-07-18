@@ -1,0 +1,13 @@
+{
+  "Name": "Test quests",
+  "Author": "PurrplingCat",
+  "Version": "1.0.0",
+  "Description": "Test quests for Quest Framework",
+  "UniqueID": "purrplingcat.testquests",
+  "MinimumApiVersion": "3.6.0",
+  "UpdateKeys": [],
+  "ContentPackFor": {
+    "UniqueID": "PurrplingCat.QuestFramework",
+    "MinimumVersion": "1.0.0-alpha"
+  }
+}

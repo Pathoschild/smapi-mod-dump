@@ -66,10 +66,9 @@ File `content.json`:
 
 ```json
 {
-  "Format": "1.0",
+  "Format": "1.3",
   "Changes": [
     {
-      "Action": "Edit",
       "Target": "Data/CompanionDispositions",
       "FromFile": "assets/data/myOwnCompanionDispositions.json"
     },

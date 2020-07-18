@@ -18,8 +18,7 @@ Some features which was experimental you can still disable in configuration file
 
 ## Current experimental features
 
-- **Fight over companion** This feature fixes the annoying request dialogue while you are fighting with a monster and companion is too near you. For enable set `FightThruCompanion` to `true` in experimental section in config file.
-- **Use harmony patch for event checks** This feature fixes some problems with SVE with the Marlon's invitation event. If you play this mod with SVE, it's recommended to enable this feature despite it'S experimental. For enable set `UseCheckForEventsPatch` to `true` in experimental section in config file.
+- **Swimsuits** This feature allows your companions to change to swimsuit if you enter to bathroom with them. This feature is experimental, because swimsuits are incomplete and still WIP. Some companions hasn't own swimsuits and enter the pool in their daily clothes. List of NPCs with own swimsuit: *Abigail, Alex, Haley, Emily, Sam*. For enable set `UseSwimsuits` to `true` in experimental section in config file.
 
 ## See also
 

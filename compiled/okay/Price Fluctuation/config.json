@@ -1,0 +1,43 @@
+{
+  "NumberFluctuation": 15,
+  "DefaultPercent": 100,
+  "IncreasingProb": 50,
+  "IncreaseMinPercent": 50,
+  "IncreaseMaxPercent": 100,
+  "DecreaseMinPercent": 50,
+  "DecreaseMaxPercent": 100,
+  "Categories": [
+    -75,
+    -79,
+    -80,
+    -26,
+    -5,
+    -6,
+    -18,
+    -2,
+    -15,
+    -81,
+    -27,
+    -4
+  ],
+  "WithObjects": [],
+  "WithoutObjects": [
+    378,
+    380,
+    382,
+    384,
+    386,
+    92,
+    159,
+    160,
+    163,
+    682,
+    775
+  ],
+  "IsAnounceAtShippingBin": false,
+  "IsUseButton": true,
+  "Button": "Z",
+  "BoxLine": 8,
+  "IsLimited": false,
+  "GoldLimit": 5000
+}

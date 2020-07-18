@@ -1,112 +1,187 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
+using NpcAdventure.Loader.ContentPacks.Data;
+using NpcAdventure.Loader.ContentPacks.Provider;
 using NpcAdventure.Utils;
 using StardewModdingAPI;
 
-/*
- * Borrowed from Pathoschild's ContentPatcher.
- * Original file: https://github.com/Pathoschild/StardewMods/blob/d3ee0343cedafd2d54862e0f1ac16f8709c04a4e/ContentPatcher/Framework/ManagedContentPack.cs
- */
 namespace NpcAdventure.Loader.ContentPacks
 {
     /// <summary>Handles loading assets from content packs.</summary>
     internal class ManagedContentPack
     {
-        /*********
-        ** Fields
-        *********/
-        /// <summary>A dictionary which matches case-insensitive relative paths to the exact path on disk, for case-insensitive file lookups on Linux/Mac.</summary>
-        private IDictionary<string, string> RelativePaths;
+        public static string[] SUPPORTED_FORMATS = { "1.1", "1.2", "1.3" };
 
-
-        /*********
-        ** Accessors
-        *********/
         /// <summary>The managed content pack.</summary>
         public IContentPack Pack { get; }
+        public IMonitor Monitor { get; }
 
+        private readonly LegacyDataProvider legacyDataProvider;
 
-        /*********
-        ** Public methods
-        *********/
+        public Contents Contents { get; private set; }
+        public ISemanticVersion FormatVersion { get; internal set; }
+
         /// <summary>Construct an instance.</summary>
         /// <param name="pack">The content pack to manage.</param>
-        public ManagedContentPack(IContentPack pack)
+        public ManagedContentPack(IContentPack pack, IMonitor monitor, bool paranoid = false)
         {
             this.Pack = pack;
+            this.Monitor = monitor;
+            this.legacyDataProvider = new LegacyDataProvider(this, paranoid);
         }
 
-        /// <summary>Get whether a file exists in the content pack.</summary>
-        /// <param name="key">The asset key.</param>
-        public bool HasFile(string key)
+        public void Load()
         {
-            return this.GetRealPath(key) != null;
+            this.Monitor.Log($"   Loading content pack `{this.Pack.Manifest.Name}`");
+
+            if (!this.Pack.HasFile("content.json"))
+                throw new ContentPackException("Declaration file `content.json` not found!");
+
+            this.Contents = this.Pack.ReadJsonFile<Contents>("content.json");
+            this.FormatVersion = new SemanticVersion(this.Contents.Format);
+            this.VerifyContentPack();
         }
 
-        /// <summary>Get an asset from the content pack.</summary>
-        /// <typeparam name="T">The asset type.</typeparam>
-        /// <param name="key">The asset key.</param>
-        public T Load<T>(string key)
+        /// <summary>
+        /// Verify loaded content pack with their data definitions
+        /// </summary>
+        private void VerifyContentPack()
         {
-            key = this.GetRealPath(key) ?? throw new FileNotFoundException($"The file '{key}' does not exist in the {this.Pack.Manifest.Name} content patch folder.");
-            return this.Pack.LoadAsset<T>(key);
+            if (!this.CheckFormatVersion(this.FormatVersion))
+                throw new ContentPackException($"Unsupported format `{this.Contents.Format}`");
+
+            this.Monitor.Log($"      Detected format version {this.FormatVersion}");
+
+            this.VerifyPatches(this.FormatVersion);
         }
 
-        /// <summary>Read a JSON file from the content pack folder.</summary>
-        /// <typeparam name="TModel">The model type.</typeparam>
-        /// <param name="path">The file path relative to the content pack directory.</param>
-        /// <returns>Returns the deserialised model, or <c>null</c> if the file doesn't exist or is empty.</returns>
-        public TModel ReadJsonFile<TModel>(string path) where TModel : class
+        /// <summary>
+        /// Verify defined patches in the content pack
+        /// </summary>
+        /// <param name="formatVersion"></param>
+        private void VerifyPatches(ISemanticVersion formatVersion)
         {
-            return this.Pack.ReadJsonFile<TModel>(path);
-        }
-
-        /// <summary>Save data to a JSON file in the content pack's folder.</summary>
-        /// <typeparam name="TModel">The model type. This should be a plain class that has public properties for the data you want. The properties can be complex types.</typeparam>
-        /// <param name="path">The file path relative to the mod folder.</param>
-        /// <param name="data">The arbitrary data to save.</param>
-        public void WriteJsonFile<TModel>(string path, TModel data) where TModel : class
-        {
-            this.Pack.WriteJsonFile(path, data);
-        }
-
-        /// <summary>Get the raw absolute path for a path within the content pack.</summary>
-        /// <param name="relativePath">The path relative to the content pack folder.</param>
-        public string GetFullPath(string relativePath)
-        {
-            return Path.Combine(this.Pack.DirectoryPath, relativePath);
-        }
-
-
-        /*********
-        ** Private methods
-        *********/
-        /// <summary>Get the actual relative path within the content pack for a file, matched case-insensitively, or <c>null</c> if not found.</summary>
-        /// <param name="key">The case-insensitive asset key.</param>
-        private string GetRealPath(string key)
-        {
-            key = Helper.NormalisePathSeparators(key);
-
-            // cache file paths
-            if (this.RelativePaths == null)
+            int num = 0; // For identify patches without log name
+            for (int i = 0; i < this.Contents.Changes.Count; i++)
             {
-                this.RelativePaths = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-                foreach (string path in this.GetRealRelativePaths())
-                    this.RelativePaths[path] = path;
+                var change = this.Contents.Changes[i];
+                var rewriteNotices = this.ApplyPatchRewrites(change, formatVersion);
+                var errors = this.ValidatePatchDefinition(change);
+
+                if (change.LogName == null)
+                    change.LogName = $"Patch #{num}";
+
+                if (rewriteNotices.Count > 0)
+                {
+                    rewriteNotices.ForEach(e => this.Monitor.Log($"      {e} in patch `{change.LogName}`"));
+                }
+
+
+                if (errors.Count > 0)
+                {
+                    this.Monitor.Log($"Skipped content pack `{this.Pack.Manifest.Name}` patch `{change.LogName}` due to errors:", LogLevel.Error);
+                    errors.ForEach(e => this.Monitor.Log($"   - {e}", LogLevel.Error));
+                    this.Contents.Changes.RemoveAt(i--);
+                }
+
+                num++;
+            }
+        }
+
+        /// <summary>
+        /// Apply rewrites for fields in patches
+        /// </summary>
+        /// <param name="change"></param>
+        /// <param name="formatVersion"></param>
+        /// <returns></returns>
+        private List<string> ApplyPatchRewrites(LegacyChanges change, ISemanticVersion formatVersion)
+        {
+            List<string> notices = new List<string>();
+
+            if (formatVersion.IsOlderThan("1.2") && !string.IsNullOrEmpty(change.Locale))
+            {
+                // Locales exists in format version 1.2 and newer. For older formats is locale undefined
+                change.Locale = null;
+                notices.Add($"Ignore field `Locale` in format version `{formatVersion}`");
             }
 
-            // find match
-            return this.RelativePaths.TryGetValue(key, out string relativePath)
-                ? relativePath
-                : null;
+            if (formatVersion.IsOlderThan("1.2") && !string.IsNullOrEmpty(change.LogName))
+            {
+                // Locales exists in format version 1.2 and newer. For older formats is locale undefined
+                change.LogName = null;
+                notices.Add($"Ignore field `LogName` in format version `{formatVersion}`");
+            }
+
+            if (!formatVersion.IsOlderThan("1.3") && string.IsNullOrEmpty(change.Action))
+            {
+                change.Action = "Patch"; // Action patch is a default action in format >=1.3
+            }
+
+            if (formatVersion.IsOlderThan("1.3") && (change.Action == "Load" || change.Action == "Edit"))
+            {
+                var replace = change.Action == "Load" ? "Replace" : "Patch";
+
+                notices.Add($"Rewrite action `{change.Action}` -> `{replace}`");
+                change.Action = replace;
+            }
+
+            if (change.Action == "Replace")
+            {
+                notices.Add($"Detected content replacer `{change.LogName}` for `{change.Target}`");
+            }
+
+            return notices;
         }
 
-        /// <summary>Get all relative paths in the content pack directory.</summary>
-        private IEnumerable<string> GetRealRelativePaths()
+        /// <summary>
+        /// Validate patch definitions, checks their fields
+        /// </summary>
+        /// <param name="change"></param>
+        /// <returns></returns>
+        private List<string> ValidatePatchDefinition(LegacyChanges change)
         {
-            foreach (string path in Directory.EnumerateFiles(this.Pack.DirectoryPath, "*", SearchOption.AllDirectories))
-                yield return path.Substring(this.Pack.DirectoryPath.Length + 1);
+            List<string> problems = new List<string>();
+
+            if (string.IsNullOrEmpty(change.Action))
+                problems.Add($"Undefined action in patch");
+            if (string.IsNullOrEmpty(change.Target))
+                problems.Add($"Target is not defined in entry");
+            if (string.IsNullOrEmpty(change.FromFile))
+                problems.Add("No content defined! `FromFile` must be set in entry");
+            if (change.Action != null && change.Action.Equals("Replace") && !string.IsNullOrEmpty(change.Locale))
+                problems.Add("Locale can't be used for `Replace` action! Use action `Patch` instead for localization patches");
+            if (change.Action != null && !change.Action.Equals("Replace") && !change.Action.Equals("Patch"))
+                problems.Add($"Unknown action `{change.Action}`");
+
+            return problems;
+        }
+
+        /// <summary>
+        /// Validate format version of the content pack definition
+        /// </summary>
+        /// <param name="semanticVersion"></param>
+        /// <returns></returns>
+        private bool CheckFormatVersion(ISemanticVersion semanticVersion)
+        {
+            foreach (var compareTo in SUPPORTED_FORMATS)
+            {
+                if (semanticVersion.EqualsMajorMinor(new SemanticVersion(compareTo)))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Apply content pack to given target
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="target">Target to be patched</param>
+        /// <param name="path">Which patch (asset path)</param>
+        /// <returns>True if patch to the target was applied</returns>
+        public bool Apply<TKey, TValue>(Dictionary<TKey, TValue> target, string path)
+        {
+            return this.legacyDataProvider.Apply(target, path);
         }
     }
 }

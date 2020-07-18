@@ -12,6 +12,7 @@ using SeedMachines.Framework;
 using StardewValley.Network;
 using StardewValley.Menus;
 using StardewValley.Locations;
+using System.Diagnostics;
 
 namespace SeedMachines
 {
@@ -48,6 +49,11 @@ namespace SeedMachines
         public static void writeSettings()
         {
             modHelper.Data.WriteJsonFile("settings.json", settings);
+        }
+
+        public static void debug(String debugLine)
+        {
+            monitor.Log(debugLine, LogLevel.Debug);
         }
     }
 }

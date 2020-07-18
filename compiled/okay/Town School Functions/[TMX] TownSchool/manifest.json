@@ -1,0 +1,12 @@
+{
+  "Name": "TownSchool.TMX",
+  "Author": "EduAnttunes",
+  "Description": "Now we have a School for Penny, Vincent and Jas! TMX Loader mod.",
+  "Version": "1.0.0",
+  "UniqueID": "EduAnttunes.TownSchool.TMX",
+  "ContentPackFor": {
+    "UniqueID": "Platonymous.TMXLoader",
+    "MinimumVersion": "1.13.1"
+  },
+  "UpdateKeys": [ "Nexus:???" ],
+}

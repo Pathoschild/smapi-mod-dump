@@ -53,6 +53,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -64,11 +67,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\GenericModConfigMenu.cs" />
-    <Compile Include="Harmony Patches\HarmonyPatch_BushesDropWood.cs" />
+    <Compile Include="Console Commands\AddBush.cs" />
+    <Compile Include="Console Commands\RemoveBush.cs" />
+    <Compile Include="Harmony Patches\HarmonyPatch_DestroyedBushBehavior.cs" />
     <Compile Include="Harmony Patches\HarmonyPatch_BushesAreDestroyable.cs" />
+    <Compile Include="ModData.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SMAPI Events\ReceiveDestroyedBushMessage.cs" />
+    <Compile Include="SMAPI Events\RegrowBushes.cs" />
+    <Compile Include="SMAPI Events\LoadModData.cs" />
+    <Compile Include="SMAPI Events\SaveModData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

@@ -19,9 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 88ebfd20051787f79bc09895281f42decd20d53b
+   commit a4ac6dd6fc13de5d458e28dd514e81f8695605ba
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Jun 14 00:32:41 2020 -0400
+   Date:   Fri Jul 17 12:14:46 2020 -0400
    
-       add token guide link to CP readme for convenience
+       tweak code style
    

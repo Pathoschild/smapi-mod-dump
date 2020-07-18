@@ -4,7 +4,7 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 using System;
-using System.Linq;
+using System.IO;
 using System.Reflection;
 
 namespace FarmAnimalVarietyRedux.Patches
@@ -15,6 +15,13 @@ namespace FarmAnimalVarietyRedux.Patches
         /*********
         ** Internal Methods
         *********/
+        /// <summary>The post fix for the constructor.</summary>
+        /// <param name="animal">The animal whose query menu is being patched.</param>
+        internal static void ConstructorPostFix(FarmAnimal animal)
+        {
+            animal.makeSound();
+        }
+
         /// <summary>The prefix for the PerformHoverAction method.</summary>
         /// <param name="x">The X position of the cursor.</param>
         /// <param name="y">The Y position of the cursor.</param>
@@ -31,7 +38,7 @@ namespace FarmAnimalVarietyRedux.Patches
             {
                 var tile = new Vector2((x + Game1.viewport.X) / 64, (y + Game1.viewport.Y) / 64);
                 var farm = Game1.getLocationFromName("Farm") as Farm;
-                
+
                 // highlight all buildings white
                 foreach (Building building in farm.buildings)
                     building.color.Value = Color.White;
@@ -43,23 +50,14 @@ namespace FarmAnimalVarietyRedux.Patches
                     // set the highlight color of the currently hovered building based on if the animal can live in the building
                     var highLightColor = Color.Red * .8f; ;
 
-                    // if 'buildingTypeILiveIn' is used, it's a default game animal
-                    if (!string.IsNullOrEmpty(animal.buildingTypeILiveIn.Value))
+                    // get animal data
+                    var customAnimal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animal.type);
+                    if (customAnimal != null)
                     {
-                        if (hoveredBuilding.buildingType.Value.Contains(animal.buildingTypeILiveIn.Value) && !(hoveredBuilding.indoors.Value as AnimalHouse).isFull())
-                            highLightColor = Color.LightGreen * .8f;
-                    }
-                    else // animal is a custom animal
-                    {
-                        // get animal data
-                        var customAnimal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animal.type);
-                        if (customAnimal != null)
+                        foreach (var building in customAnimal.Data.Buildings)
                         {
-                            foreach (var building in customAnimal.Data.Buildings)
-                            {
-                                if (hoveredBuilding.buildingType.Value.ToLower() == building.ToLower() && !(hoveredBuilding.indoors.Value as AnimalHouse).isFull())
-                                    highLightColor = Color.LightGreen * .8f;
-                            }
+                            if (hoveredBuilding.buildingType.Value.ToLower() == building.ToLower() && !(hoveredBuilding.indoors.Value as AnimalHouse).isFull())
+                                highLightColor = Color.LightGreen * .8f;
                         }
                     }
 
@@ -83,7 +81,7 @@ namespace FarmAnimalVarietyRedux.Patches
                 if (__instance.sellButton.containsPoint(x, y))
                 {
                     __instance.sellButton.scale = Math.Min(4.1f, __instance.sellButton.scale + 0.05f);
-                    hoverText = Game1.content.LoadString("Strings\\UI:AnimalQuery_Sell", animal.getSellPrice());
+                    hoverText = Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_Sell"), animal.getSellPrice());
                 }
                 else
                     __instance.sellButton.scale = Math.Max(4f, __instance.sellButton.scale - 0.05f);
@@ -95,7 +93,7 @@ namespace FarmAnimalVarietyRedux.Patches
                 if (__instance.moveHomeButton.containsPoint(x, y))
                 {
                     __instance.moveHomeButton.scale = Math.Min(4.1f, __instance.moveHomeButton.scale + 0.05f);
-                    hoverText = Game1.content.LoadString("Strings\\UI:AnimalQuery_Move");
+                    hoverText = Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_Move"));
                 }
                 else
                     __instance.moveHomeButton.scale = Math.Max(4f, __instance.moveHomeButton.scale - 0.05f);
@@ -107,7 +105,7 @@ namespace FarmAnimalVarietyRedux.Patches
                 if (__instance.allowReproductionButton.containsPoint(x, y))
                 {
                     __instance.allowReproductionButton.scale = Math.Min(4.1f, __instance.allowReproductionButton.scale + 0.05f);
-                    hoverText = Game1.content.LoadString("Strings\\UI:AnimalQuery_AllowReproduction");
+                    hoverText = Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_AllowReproduction"));
                 }
                 else
                     __instance.allowReproductionButton.scale = Math.Max(4f, __instance.allowReproductionButton.scale - 0.05f);
@@ -169,54 +167,33 @@ namespace FarmAnimalVarietyRedux.Patches
                     return false;
 
                 var isBuildingValid = true;
-                if (!string.IsNullOrEmpty(animal.buildingTypeILiveIn.Value)) // this means the animal being moving is a default game animal
+                var customAnimal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animal.type);
+                if (customAnimal != null)
                 {
-                    if ((buildingAt.indoors.Value as AnimalHouse).isFull())
+                    // keep track of whether the animal can live in the building to determine whether to display the 'I Can't Live Here' message
+                    var canAnimalLiveHere = false;
+                    foreach (var building in customAnimal.Data.Buildings)
                     {
-                        Game1.showRedMessage(Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_BuildingFull"));
-                        isBuildingValid = false;
-                    }
-                    else if (buildingAt.Equals(animal.home))
-                    {
-                        Game1.showRedMessage(Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_AlreadyHome"));
-                        isBuildingValid = false;
-                    }
-                    else if (!buildingAt.buildingType.Value.Contains(animal.buildingTypeILiveIn.Value))
-                    {
-                        Game1.showRedMessage(Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_CantLiveThere", animal.shortDisplayType()));
-                        isBuildingValid = false;
-                    }
-                }
-                else // animal being moved is a custom animal
-                {
-                    var customAnimal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animal.type);
-                    if (customAnimal != null)
-                    {
-                        // keep track of whether the animal can live in the building to determine whether to display the 'I Can't Live Here' message
-                        var canAnimalLiveHere = false;
-                        foreach (var building in customAnimal.Data.Buildings)
+                        if (buildingAt.buildingType.Value.ToLower() == building.ToLower())
                         {
-                            if (buildingAt.buildingType.Value.ToLower() == building.ToLower())
+                            canAnimalLiveHere = true;
+                            if ((buildingAt.indoors.Value as AnimalHouse).isFull())
                             {
-                                canAnimalLiveHere = true;
-                                if ((buildingAt.indoors.Value as AnimalHouse).isFull())
-                                {
-                                    Game1.showRedMessage(Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_BuildingFull"));
-                                    isBuildingValid = false;
-                                }
-                                else if (buildingAt.Equals(animal.home))
-                                {
-                                    Game1.showRedMessage(Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_AlreadyHome"));
-                                    isBuildingValid = false;
-                                }
+                                Game1.showRedMessage(Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_Moving_BuildingFull")));
+                                isBuildingValid = false;
+                            }
+                            else if (buildingAt.Equals(animal.home))
+                            {
+                                Game1.showRedMessage(Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_Moving_AlreadyHome")));
+                                isBuildingValid = false;
                             }
                         }
+                    }
 
-                        if (!canAnimalLiveHere)
-                        {
-                            Game1.showRedMessage(Game1.content.LoadString("Strings\\UI:AnimalQuery_Moving_CantLiveThere", animal.shortDisplayType()));
-                            isBuildingValid = false;
-                        }
+                    if (!canAnimalLiveHere)
+                    {
+                        Game1.showRedMessage(Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_Moving_CantLiveThere"), animal.shortDisplayType()));
+                        isBuildingValid = false;
                     }
                 }
 
@@ -224,13 +201,13 @@ namespace FarmAnimalVarietyRedux.Patches
                 if (isBuildingValid)
                 {
                     (animal.home.indoors.Value as AnimalHouse).animalsThatLiveHere.Remove(animal.myID);
-                    
+
                     if ((animal.home.indoors.Value as AnimalHouse).animals.ContainsKey(animal.myID))
                     {
                         (buildingAt.indoors.Value as AnimalHouse).animals.Add(animal.myID, animal);
                         (animal.home.indoors.Value as AnimalHouse).animals.Remove(animal.myID);
                     }
-                    
+
                     animal.home = buildingAt;
                     animal.homeLocation.Value = new Vector2(buildingAt.tileX, buildingAt.tileY);
                     (buildingAt.indoors.Value as AnimalHouse).animalsThatLiveHere.Add(animal.myID);
@@ -245,33 +222,33 @@ namespace FarmAnimalVarietyRedux.Patches
                     Game1.player.Money += animal.getSellPrice();
                     (animal.home.indoors.Value as AnimalHouse).animalsThatLiveHere.Remove(animal.myID);
                     animal.health.Value = -1;
-                    
+
                     // draw the green puffs of smoke
                     int numberOfSmokeAnimations = animal.frontBackSourceRect.Width / 2;
                     for (int i = 0; i < numberOfSmokeAnimations; i++)
                     {
                         int colourVariationAmount = Game1.random.Next(25, 200);
                         multiplayer.broadcastSprites(
-                            location: Game1.currentLocation, 
+                            location: Game1.currentLocation,
                             sprites: new TemporaryAnimatedSprite(
-                                rowInAnimationTexture: 5, 
+                                rowInAnimationTexture: 5,
                                 position: animal.Position + new Vector2(
-                                    x: Game1.random.Next(-32, animal.frontBackSourceRect.Width * 3), 
-                                    y: Game1.random.Next(-32, animal.frontBackSourceRect.Height * 3)), 
+                                    x: Game1.random.Next(-32, animal.frontBackSourceRect.Width * 3),
+                                    y: Game1.random.Next(-32, animal.frontBackSourceRect.Height * 3)),
                                 color: new Color(
-                                    r: byte.MaxValue - colourVariationAmount, 
-                                    g: byte.MaxValue, 
-                                    b: byte.MaxValue - colourVariationAmount), 
-                                animationInterval: Game1.random.NextDouble() < 0.5 ? 50f : Game1.random.Next(30, 200), 
-                                sourceRectWidth: 64, 
-                                sourceRectHeight: 64, 
+                                    r: byte.MaxValue - colourVariationAmount,
+                                    g: byte.MaxValue,
+                                    b: byte.MaxValue - colourVariationAmount),
+                                animationInterval: Game1.random.NextDouble() < 0.5 ? 50f : Game1.random.Next(30, 200),
+                                sourceRectWidth: 64,
+                                sourceRectHeight: 64,
                                 delay: Game1.random.NextDouble() < 0.5 ? 0 : Game1.random.Next(0, 600)
                         )
-                        {
-                            scale = Game1.random.Next(2, 5) * 0.25f,
-                            alpha = Game1.random.Next(2, 5) * 0.25f,
-                            motion = new Vector2(0.0f, (float)-Game1.random.NextDouble())
-                        });
+                            {
+                                scale = Game1.random.Next(2, 5) * 0.25f,
+                                alpha = Game1.random.Next(2, 5) * 0.25f,
+                                motion = new Vector2(0.0f, (float)-Game1.random.NextDouble())
+                            });
                     }
 
                     Game1.playSound("newRecipe");
@@ -296,7 +273,7 @@ namespace FarmAnimalVarietyRedux.Patches
                 if (__instance.okButton != null && __instance.okButton.containsPoint(x, y) && __instance.readyToClose())
                 {
                     Game1.exitActiveMenu();
-                    
+
                     if (textBox.Text.Length > 0 && !Utility.areThereAnyOtherAnimalsWithThisName(textBox.Text))
                     {
                         animal.displayName = textBox.Text;
@@ -398,159 +375,159 @@ namespace FarmAnimalVarietyRedux.Patches
             {
                 // dark background
                 b.Draw(
-                    texture: Game1.fadeToBlackRect, 
-                    destinationRectangle: Game1.graphics.GraphicsDevice.Viewport.Bounds, 
+                    texture: Game1.fadeToBlackRect,
+                    destinationRectangle: Game1.graphics.GraphicsDevice.Viewport.Bounds,
                     color: Color.Black * 0.75f
                 );
-                
+
                 // menu background
                 Game1.drawDialogueBox(
-                    x: __instance.xPositionOnScreen, 
-                    y: __instance.yPositionOnScreen + 128, 
-                    width: AnimalQueryMenu.width, 
-                    height: AnimalQueryMenu.height - 128, 
-                    speaker: false, 
+                    x: __instance.xPositionOnScreen,
+                    y: __instance.yPositionOnScreen + 128,
+                    width: AnimalQueryMenu.width,
+                    height: AnimalQueryMenu.height - 128,
+                    speaker: false,
                     drawOnlyBox: true
                 );
-                
+
                 if (animal.harvestType != (byte)2)
                     textBox.Draw(b);
-                
+
                 // construct age string
                 int monthsOld = (animal.age + 1) / 28 + 1;
-                string ageString = monthsOld <= 1 
-                    ? Game1.content.LoadString("Strings\\UI:AnimalQuery_Age1") 
-                    : Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeN", monthsOld);
-                
+                string ageString = monthsOld <= 1
+                    ? Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_Age1"))
+                    : Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_AgeN"), monthsOld);
+
                 // if the animal is a baby, add ' (Baby)' onto the age string
                 if (animal.age < animal.ageWhenMature)
-                    ageString += Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeBaby");
-                
+                    ageString += Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_AgeBaby"));
+
                 // draw age string
                 Utility.drawTextWithShadow(
                     b: b,
-                    text: ageString, 
-                    font: Game1.smallFont, 
+                    text: ageString,
+                    font: Game1.smallFont,
                     position: new Vector2(
-                        x: __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 32, 
-                        y: __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 16 + 128), 
+                        x: __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 32,
+                        y: __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 16 + 128),
                     color: Game1.textColor
                 );
-                
+
                 // draw the parent of the animal
                 int parentWidthOffset = 0;
                 if (parentName != null)
                 {
                     parentWidthOffset = 21;
                     Utility.drawTextWithShadow(
-                        b: b, 
-                        text: Game1.content.LoadString("Strings\\UI:AnimalQuery_Parent", parentName), 
-                        font: Game1.smallFont, 
+                        b: b,
+                        text: Game1.content.LoadString(Path.Combine("Strings", "UI:AnimalQuery_Parent"), parentName),
+                        font: Game1.smallFont,
                         position: new Vector2(
-                            x: __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 32, 
-                            y: __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 32 + 16 + 128), 
+                            x: __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 32,
+                            y: __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 32 + 16 + 128),
                         color: Game1.textColor
                     );
                 }
-                
-                // get number of hearts
-                int numberOfHearts = loveLevel * 1000f % 200f >= 100.0 
-                    ? (int)(loveLevel * 1000f / 200f) 
+
+                // get whether a partial heart should be drawn (and in what heart it should be drawn)
+                int partialHeartLocation = loveLevel * 1000f % 200f >= 100.0
+                    ? (int)(loveLevel * 1000f / 200f)
                     : -100;
-                
+
                 // draw the 5 animal friendship hearts
                 for (int i = 0; i < 5; i++)
                 {
                     // draw heart background
                     b.Draw(
-                        texture: Game1.mouseCursors, 
+                        texture: Game1.mouseCursors,
                         position: new Vector2(
-                            x: (float)(__instance.xPositionOnScreen + 96 + 32 * i), 
-                            y: (float)(parentWidthOffset + __instance.yPositionOnScreen - 32 + 320)), 
+                            x: (float)(__instance.xPositionOnScreen + 96 + 32 * i),
+                            y: (float)(parentWidthOffset + __instance.yPositionOnScreen - 32 + 320)),
                         sourceRectangle: new Rectangle(
-                            x: 211 + (loveLevel * 1000.0 <= (double)((i + 1) * 195) ? 7 : 0), 
-                            y: 428, 
-                            width: 7, 
-                            height: 6), 
-                        color: Color.White, 
-                        rotation: 0, 
-                        origin: Vector2.Zero, 
-                        scale: 4, 
-                        effects: SpriteEffects.None, 
+                            x: 211 + (loveLevel * 1000.0 <= (double)((i + 1) * 195) ? 7 : 0),
+                            y: 428,
+                            width: 7,
+                            height: 6),
+                        color: Color.White,
+                        rotation: 0,
+                        origin: Vector2.Zero,
+                        scale: 4,
+                        effects: SpriteEffects.None,
                         layerDepth: 0.89f
                     );
-                    
-                    if (numberOfHearts == i)
+
+                    if (partialHeartLocation == i)
                     {
-                        // draw filled heart
+                        // draw partially filled heart
                         b.Draw(
-                            texture: Game1.mouseCursors, 
+                            texture: Game1.mouseCursors,
                             position: new Vector2(
-                                x: (float)(__instance.xPositionOnScreen + 96 + 32 * i), 
-                                y: (float)(parentWidthOffset + __instance.yPositionOnScreen - 32 + 320)), 
+                                x: (float)(__instance.xPositionOnScreen + 96 + 32 * i),
+                                y: (float)(parentWidthOffset + __instance.yPositionOnScreen - 32 + 320)),
                             sourceRectangle: new Rectangle(
-                                x: 211, 
-                                y: 428, 
-                                width: 4, 
-                                height: 6), 
-                            color: Color.White, 
-                            rotation: 0, 
-                            origin: Vector2.Zero, 
-                            scale: 4, 
-                            effects: SpriteEffects.None, 
+                                x: 211,
+                                y: 428,
+                                width: 4,
+                                height: 6),
+                            color: Color.White,
+                            rotation: 0,
+                            origin: Vector2.Zero,
+                            scale: 4,
+                            effects: SpriteEffects.None,
                             layerDepth: 0.891f
                         );
                     }
                 }
-                
+
                 // draw mood message
                 Utility.drawTextWithShadow(
-                    b: b, 
-                    text: Game1.parseText(animal.getMoodMessage(), Game1.smallFont, AnimalQueryMenu.width - IClickableMenu.spaceToClearSideBorder * 2 - 64), 
-                    font: Game1.smallFont, 
+                    b: b,
+                    text: Game1.parseText(animal.getMoodMessage(), Game1.smallFont, AnimalQueryMenu.width - IClickableMenu.spaceToClearSideBorder * 2 - 64),
+                    font: Game1.smallFont,
                     position: new Vector2(
-                        x: __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 32, 
-                        y: parentWidthOffset + __instance.yPositionOnScreen + 384 - 64 + 4), 
+                        x: __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 32,
+                        y: parentWidthOffset + __instance.yPositionOnScreen + 384 - 64 + 4),
                     color: Game1.textColor
                 );
-                
+
                 __instance.okButton.draw(b);
                 __instance.sellButton.draw(b);
                 __instance.moveHomeButton.draw(b);
-                
+
                 if (__instance.allowReproductionButton != null)
                     __instance.allowReproductionButton.draw(b);
-                
+
                 if (confirmingSell)
                 {
                     // draw dark background
                     b.Draw(
-                        texture: Game1.fadeToBlackRect, 
+                        texture: Game1.fadeToBlackRect,
                         destinationRectangle: Game1.graphics.GraphicsDevice.Viewport.Bounds,
                         color: Color.Black * 0.75f
                     );
-                    
+
                     // draw sell confirmation background
                     Game1.drawDialogueBox(
-                        x: Game1.viewport.Width / 2 - 160, 
-                        y: Game1.viewport.Height / 2 - 192, 
-                        width: 320, 
-                        height: 256, 
-                        speaker: false, 
+                        x: Game1.viewport.Width / 2 - 160,
+                        y: Game1.viewport.Height / 2 - 192,
+                        width: 320,
+                        height: 256,
+                        speaker: false,
                         drawOnlyBox: true
                     );
 
                     // draw 'Are you sure?' message
                     var message = "Are you sure?";
                     b.DrawString(
-                        spriteFont: Game1.dialogueFont, 
-                        text: message, 
+                        spriteFont: Game1.dialogueFont,
+                        text: message,
                         position: new Vector2(
-                            x: Game1.viewport.Width / 2f - Game1.dialogueFont.MeasureString(message).X / 2f, 
-                            y: Game1.viewport.Height / 2f - 96 + 8), 
+                            x: Game1.viewport.Width / 2f - Game1.dialogueFont.MeasureString(message).X / 2f,
+                            y: Game1.viewport.Height / 2f - 96 + 8),
                         color: Game1.textColor
                     );
-                    
+
                     // draw yes/no buttons
                     __instance.yesButton.draw(b);
                     __instance.noButton.draw(b);
@@ -559,54 +536,48 @@ namespace FarmAnimalVarietyRedux.Patches
                 {
                     // draw hover text
                     IClickableMenu.drawHoverText(
-                        b: b, 
-                        text: hoverText, 
-                        font: Game1.smallFont 
+                        b: b,
+                        text: hoverText,
+                        font: Game1.smallFont
                     );
                 }
             }
             else if (!Game1.globalFade) // player is choosing a new home for the animal
             {
                 // construct housing string
-                var housingString = Game1.content.LoadString("Strings\\UI:AnimalQuery_ChooseBuilding", animal.displayHouse, animal.displayType);
-
-                // if the animal is a custom animal construct a different string to accomodate more than 1 possible building
                 var customAnimal = ModEntry.Instance.Api.GetAnimalBySubTypeName(animal.type);
-                if (customAnimal != null)
+                var buildingsString = "";
+
+                for (var i = 0; i < customAnimal.Data.Buildings.Count; i++)
                 {
-                    var buildingsString = "";
-
-                    for (var i = 0; i < customAnimal.Data.Buildings.Count; i++)
-                    {
-                        var building = customAnimal.Data.Buildings[i];
-                        buildingsString += building;
-                        if (i != customAnimal.Data.Buildings.Count - 1)
-                            buildingsString += ", ";
-                    }
-
-                    housingString = $"Please choose a: {buildingsString} for your {animal.type}";
+                    var building = customAnimal.Data.Buildings[i];
+                    buildingsString += building;
+                    if (i != customAnimal.Data.Buildings.Count - 1)
+                        buildingsString += ", ";
                 }
+
+                var housingString = $"Please choose a: {buildingsString} for your {animal.type}";
 
                 // housing string background
                 Game1.drawDialogueBox(
-                    x: 32, 
-                    y: -64, 
-                    width: (int)Game1.dialogueFont.MeasureString(housingString).X + IClickableMenu.borderWidth * 2 + 16, 
-                    height: 128 + IClickableMenu.borderWidth * 2, 
+                    x: 32,
+                    y: -64,
+                    width: (int)Game1.dialogueFont.MeasureString(housingString).X + IClickableMenu.borderWidth * 2 + 16,
+                    height: 128 + IClickableMenu.borderWidth * 2,
                     speaker: false,
                     drawOnlyBox: true
                 );
 
                 // draw housing string
                 b.DrawString(
-                    spriteFont: Game1.dialogueFont, 
-                    text: housingString, 
+                    spriteFont: Game1.dialogueFont,
+                    text: housingString,
                     position: new Vector2(
-                        x: 32 + IClickableMenu.spaceToClearSideBorder * 2 + 8, 
-                        y: 44f), 
+                        x: 32 + IClickableMenu.spaceToClearSideBorder * 2 + 8,
+                        y: 44f),
                     color: Game1.textColor
                 );
-                
+
                 // draw ok button
                 __instance.okButton.draw(b);
             }

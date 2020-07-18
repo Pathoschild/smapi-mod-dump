@@ -6,5 +6,6 @@
   "bullet_damage_": 0,
   "fire_speed_level_": 5,
   "run_speed_level_": 2,
-  "spread_pistol_": false
+  "spread_pistol_": false,
+  "waveTimer": 60
 }

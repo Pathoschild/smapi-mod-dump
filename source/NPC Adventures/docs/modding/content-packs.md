@@ -26,7 +26,7 @@ Target mod id `purrplingcat.npcadventure`. Optional we can define a minimum vers
   "UpdateKeys": [],
   "ContentPackFor": {
     "UniqueID": "purrplingcat.npcadventure",
-    "MinimumVersion": "0.12.0"
+    "MinimumVersion": "0.13.0"
   }
 }
 ```
@@ -38,16 +38,14 @@ In your content pack folder create file `content.json` and we can define custom 
 **<your_cp_folder>/content.json**
 ```js
 {
-  "Format": "1.2",
+  "Format": "1.3",
   "Changes": [
     {
-      "Action": "Edit",
       "Target": "Data/CompanionDispositions",
       "FromFile": "assets/data/companionDispositions.json"
     },
     {
-      "Action": "Load",
-      "Target": "Dialogue/Ashley",
+      "Target": "Dialogue/Ashley", // target will be created if they don't exists
       "FromFile": "assets/dialogues/ashley.json",
       "LogName": "Ashley's dialogue" // Optional. Can be used for edit action too
     }
@@ -65,35 +63,35 @@ Before load content pack assets all base mod's assets are loaded.
 
 ### Content definition file fields
 
-| Field         | Means                                                                                                 |
-| ------------- | ----------------------------------------------------------------------------------------------------- |
-| `Format`      | The format version. You should always use the latest version (currently 1.2) to use the latest features and avoid obsolete behavior. Old formats could not be supported in current mod version. |
-| `Changes`     | The changes you want to make. Each entry is called a patch, and describes a specific action to perform: Edit json file or load new  |
+| Field                | Required? | Means                                                                                                 |
+| -------------------- | --------- | ----------------------------------------------------------------------------------------------------- |
+| `Format`             | Yes       | The format version. You should always use the latest version (currently 1.3) to use the latest features and avoid obsolete behavior. Old formats could not be supported in current mod version.   |
+| `Changes`            | Yes       | The changes you want to make. Each entry is called a patch, and describes a specific action to perform: Edit json file or load new  |
 
 Under key `Changes` we must define content definitions. It's a list of dicts with these keys:
 
-| Field                | Means                                                                                                 |
-| -------------------- | ----------------------------------------------------------------------------------------------------- |
-| `Action`             | The kind of change to make: `Load` for replace content or load new; `Edit` for patch existing content |
-| `Target`             | The NPC Adventures mod asset you want to patch. This is the file path inside mod's assets folder, without the file extension or language (like `Dialogue/Abigail` to edit `assets/Dialogue/Abigail.json`)                 |
-| `FromFile`           | The relative path to the content file in your content pack folder to patch into the target (like assets/dialogue/abigail.json). Supports only `.json` files.                                                             |
-| `LogName` (optional) | This string replaces a default entry #no description in log with custom description                   |
-| `Locale` (optional)  | **Can be used in `Edit` action only!** This key defines a lang code (like `pt-BR` and etc), for which this patch can be applied. Use this in pair with the existing content in mod or with existing patch (can be used in pair with action `Load` patch too). Locale patches are applied only for active game localization for which are defined. |
+| Field                | Required? | Means                                                                                                 |
+| -------------------- | --------- | ----------------------------------------------------------------------------------------------------- |
+| `Target`             | Yes       | The NPC Adventures mod asset you want to patch. This is the file path inside mod's assets folder, without the file extension or language (like `Dialogue/Abigail` to edit `assets/Dialogue/Abigail.json`)                 |
+| `FromFile`           | Yes       | The relative path to the content file in your content pack folder to patch into the target (like assets/dialogue/abigail.json). Supports only `.json` files.                                                             |
+| `Action`             | No        | The kind of change to make: `Replace` for replace content or load new; `Patch` for patch existing content. Undefined action is implicitly `Patch`. |
+| `LogName` (optional) | No        | This string replaces a default entry #no description in log with custom description                   |
+| `Locale` (optional)  | No        | **Can be used in `Patch` action only!** This key defines a lang code (like `pt-br` and etc), for which this patch can be applied. Use this in pair with the existing content in mod or with existing patch (can be used in pair with action `Replace` patch too). Locale patches are applied only for active game localization for which are defined. |
+
+**NOTE:** If your content pack uses older format (1.2 and older), action, these actions will be automatically rewritten.
 
 ### Localized content pack patches example
 
 ```js
 {
-  "Format": "1.2",
+  "Format": "1.3",
   "Changes": [
     {
-      "Action": "Edit",
       "Target": "Data/CompanionDispositions",
       "FromFile": "assets/data/companionDispositions.json"
     },
     {
-      // Load asset to content target `Dialogue/Ashley`
-      "Action": "Load",
+      // Load asset to content target `Dialogue/Ashley` (if this content target doesn't exists, it will be created)
       "Target": "Dialogue/Ashley",
       "FromFile": "assets/dialogues/ashley.json",
       "LogName": "Ashley's dialogue",
@@ -101,19 +99,44 @@ Under key `Changes` we must define content definitions. It's a list of dicts wit
     {
       // Patch content target `Dialogue/Ashley` with own string only if game's locale is `pt-BR`
       // Missing keys still will be uset of previous `assets/dialogues/ashley.json`
-      "Action": "Edit",
       "Target": "Dialogue/Ashley",
       "FromFile": "assets/dialogues/ashley.pt-BR.json"
-      "Locale": "pt-BR",
+      "Locale": "pt-br",
       "LogName": "Portuguese translation for Ashley's dialogue"
     },
     {
-      "Action": "Edit",
       "Target": "Dialogue/Abigail",
       "FromFile": "assets/dialogues/abigail.pt-BR.json",
-      "Locale": "fr-FR",
+      "Locale": "fr-fr",
       "LogName": "Abigail's french dialogue patch"
     }
+  ]
+}
+```
+
+### Content pack with replacer and patch with allows key overriding
+
+```js
+{
+  "Format": "1.3",
+  "Changes": [
+    {
+      "Target": "Data/CompanionDispositions",
+      "FromFile": "assets/data/companionDispositions.json"
+    },
+    {
+      // Load asset to content target `Dialogue/Ashley` normally (if this content target doesn't exists, it will be created)
+      "Target": "Dialogue/Ashley",
+      "FromFile": "assets/dialogues/ashley.json",
+      "LogName": "Ashley's dialogue",
+    },
+    {
+      // All content of `Dialogue/Abigail` will be erased and replaced with `assets/dialogues/abigail.json`
+      "Action": "Replace",
+      "Target": "Dialogue/Abigail",
+      "FromFile": "assets/dialogues/abigail.json",
+      "LogName": "Abigail's french dialogue patch"
+    },
   ]
 }
 ```

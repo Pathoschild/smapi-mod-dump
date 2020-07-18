@@ -11,16 +11,40 @@ namespace MoreGrass.Patches
     /// <summary>Contains patches for patching game code in the StardewValley.TerrainFeatures.Grass class.</summary>
     internal class GrassPatch
     {
-        /// <summary>This is code that will replace some game code, this is ran whenever the season gets updated. Used for ensuring grass doesn't get killing in winter.</summary>
+        /// <summary>This is code that will replace some game code, this is ran whenever the season gets updated. Used for ensuring grass can't live in the config specified seasons.</summary>
         /// <param name="__instance">The current grass instance that is being patched.</param>
-        /// <param name="__result">Always return false, this means the grass won't get killed.</param>
+        /// <param name="__result">Whether all grass should be killed.</param>
         /// <returns>False meaning the original method will never get ran.</returns>
-        internal static bool SeasonUpdatePreFix(Grass __instance, ref bool __result)
+        internal static bool SeasonUpdatePrefix(Grass __instance, ref bool __result)
         {
-            // this will ensure the grass doesn't get killed in winter
-            __result = false;
+            switch (Game1.currentSeason)
+            {
+                case "spring":
+                    {
+                        __result = !ModEntry.Config.CanGrassLiveInSpring;
+                        break;
+                    }
+                case "summer":
+                    {
+                        __result = !ModEntry.Config.CanGrassLiveInSummer;
+                        break;
+                    }
+                case "fall":
+                    {
+                        __result = !ModEntry.Config.CanGrassLiveInFall;
+                        break;
+                    }
+                case "winter":
+                    {
+                        __result = !ModEntry.Config.CanGrassLiveInWinter;
+                        break;
+                    }
+            }
+
+            // recalculate the new textures for grass
             __instance.loadSprite();
 
+            // return false so the base method doesn't get ran
             return false;
         }
 

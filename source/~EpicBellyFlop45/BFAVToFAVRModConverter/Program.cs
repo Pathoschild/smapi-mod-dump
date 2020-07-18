@@ -90,7 +90,7 @@ namespace BFAVToFAVRModConverter
                 var favrContent = favrContents.Where(content => content.Name == (bfavCategory.AnimalShop?.Name ?? bfavCategory.Category)).FirstOrDefault();
                 if (favrContent == null)
                 {
-                    Logger.WriteLine($"Couldn't find FAVRContent related to animal: {bfavCategory.Category}", ConsoleColor.Red);
+                    Logger.WriteLine($"Couldn't find FAVRContent related to animal: {bfavCategory.Category}. Manual conversion required.", ConsoleColor.Red);
                     continue;
                 }
 
@@ -174,12 +174,6 @@ namespace BFAVToFAVRModConverter
         {
             foreach (var category in bfavContent.Categories)
             {
-                if (category.Action != "Create")
-                {
-                    Logger.WriteLine($"Animal: {category.Category} was skipped. FAVR doesn't support editing previous entries.", ConsoleColor.Red);
-                    continue;
-                }
-
                 // create the animal sub types
                 var subTypes = new List<FavrAnimalSubType>();
                 foreach (var type in category.Types)
@@ -218,11 +212,12 @@ namespace BFAVToFAVRModConverter
                     continue;
 
                 yield return new FavrContent(
-                    name: category.AnimalShop.Name,
+                    name: category.Category,
                     buyable: category.AnimalShop != null,
+                    updatePreviousAnimal: category.Action == "Update",
                     animalShopInfo: new FavrAnimalShopInfo(
-                        description: category.AnimalShop.Description,
-                        buyPrice: category.AnimalShop.Price),
+                        description: category.AnimalShop?.Description,
+                        buyPrice: category.AnimalShop?.Price ?? 0),
                     types: subTypes,
                     daysToProduce: Convert.ToInt32(splitDataString[0]),
                     daysTillMature: Convert.ToInt32(splitDataString[1]),
@@ -314,23 +309,20 @@ namespace BFAVToFAVRModConverter
         {
             try
             {
-                if (bfavCategory.Action != "Create")
-                {
-                    Logger.WriteLine($"Animal: {bfavCategory.Category} was skipped. FAVR doesn't support editing previous entries.", ConsoleColor.Red);
-                    return;
-                }
-
                 // create asset folder in destination folder
                 var favrAssetsFolder = Path.Combine(destinationFavrFolderPath, favrContent.Name, "assets");
                 if (!Directory.Exists(favrAssetsFolder))
                     Directory.CreateDirectory(favrAssetsFolder);
 
                 // shop icon
-                File.Copy(
-                    sourceFileName: Path.Combine(bfavFolderPath, bfavCategory.AnimalShop.Icon),
-                    destFileName: Path.Combine(favrAssetsFolder, "..\\", "shopdisplay.png"),
-                    overwrite: true
-                );
+                if (bfavCategory.AnimalShop != null)
+                {
+                    File.Copy(
+                        sourceFileName: Path.Combine(bfavFolderPath, bfavCategory.AnimalShop.Icon),
+                        destFileName: Path.Combine(favrAssetsFolder, "..\\", "shopdisplay.png"),
+                        overwrite: true
+                    );
+                }
 
                 foreach (var subType in bfavCategory.Types)
                 {

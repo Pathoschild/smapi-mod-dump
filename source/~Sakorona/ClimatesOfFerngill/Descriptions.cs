@@ -276,6 +276,9 @@ namespace ClimatesOfFerngillRebuild
                     text += Translator.Get("weather-menu.desc-moonUp", new { moonPhase = ClimatesOfFerngill.MoonAPI.GetCurrentMoonPhase(), moonSet = ClimatesOfFerngill.MoonAPI.GetMoonSet() });
             }
 
+            //new line replacer
+            text.Replace("[NLK]", Environment.NewLine);
+
             return text;
         }
 

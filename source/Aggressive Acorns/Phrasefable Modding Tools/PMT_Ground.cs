@@ -12,7 +12,7 @@ namespace Phrasefable_Modding_Tools
         private void SetUp_Ground()
         {
             var desc = new StringBuilder("Prints data on the tiles around the player.");
-            desc.AppendLine("Usage: ground [radius]");
+            desc.Append("Usage: ground [radius]");
             Helper.ConsoleCommands.Add("ground", desc.ToString(), GroundCommand);
         }
 

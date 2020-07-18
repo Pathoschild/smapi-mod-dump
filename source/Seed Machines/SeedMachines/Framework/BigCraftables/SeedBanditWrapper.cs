@@ -10,7 +10,6 @@ namespace SeedMachines.Framework.BigCraftables
     {
         public SeedBanditWrapper()
         {
-            this.relativeID = 6;
             this.name = "Seed Bandit";
             this.price = ModEntry.settings.seedBanditPrice;
             this.availableOutdoors = true;
@@ -18,7 +17,7 @@ namespace SeedMachines.Framework.BigCraftables
             this.fragility = 0;
             this.typeAndCategory = "Crafting -9";
 
-            this.ingridients = ModEntry.settings.seedBanditIngredients;
+            this.ingredients = ModEntry.settings.seedBanditIngredients;
             this.unlockConditions = "null";
 
             this.dynamicObjectType = typeof(SeedBandit);

@@ -14,17 +14,16 @@ namespace TwilightShards.YouShouldRest
         public int Manners { get; set; }
         public int SocialAnxiety { get; set; }
         public int Optimism { get; set; }
-        public int HeartLevel { get; set; }
-        public int HealthStatus { get; set; }
-        public int StaminaStatus { get; set; }
+        public string HeartLevel { get; set; }
+        public string HealthStatus { get; set; }
+        public string StaminaStatus { get; set; }
         public int TimeOfDay { get; set; }
-        public string SpouseStatus { get; set; }
         public string SeasonDay { get; set; }
         public string SeasonDayFB { get; set; }
 
         public override string ToString()
         {
-            string s = $"Talking to {Name}, with heartLevel { HeartLevel}, and StaminaStatus { StaminaStatus} and HealthStatus { HealthStatus} with Time Of Day { TimeOfDay}, spouse status { SpouseStatus}, seasonDay {SeasonDay}, fall back season {SeasonDayFB}.";
+            string s = $"Talking to {Name}, with heartLevel { HeartLevel}, and StaminaStatus { StaminaStatus} and HealthStatus { HealthStatus} with Time Of Day { TimeOfDay}, seasonDay {SeasonDay}, fall back season {SeasonDayFB}.";
 
             s += Environment.NewLine;
             s += $"Disposition Data: Manners: {Manners}, Age: {Age}, Social Anxiety: {SocialAnxiety} and Optimism: {Optimism}";

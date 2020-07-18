@@ -66,10 +66,10 @@ namespace InteractionTweaks
                     || Game1.getFarm().getAllFarmAnimals().Exists((animal) => animal.currentLocation == location && AnimalCollision(animal, cursorMapPos)) //animals
                     || CanGift(cursorMapTile, grabTileVec) //talking and gifting
                     || location is Farm farm && farm.getBuildingAt(grabTileVec) is FishPond
+                    || location.getCharacterFromName("TrashBear") is Character trashBear && AnimalCollision(trashBear, cursorMapPos)
 
                 /*|| player.isRidingHorse()*/ || !player.canMove)
                 {
-                    //Monitor.Log("action was found, do not eat");
                     return;
                 }
 
@@ -173,9 +173,9 @@ namespace InteractionTweaks
         /// </summary>
         /// <param name="animal">Animal.</param>
         /// <param name="mapVec">The position of the cursor relative to the top-left corner of the map.</param>
-        private static bool AnimalCollision(FarmAnimal animal, Vector2 mapVec)
+        private static bool AnimalCollision(Character animal, Vector2 mapVec)
         {
-            return animal.GetBoundingBox().Intersects(new Rectangle((int)mapVec.X, (int)mapVec.Y, 1, 1));
+            return animal.GetBoundingBox().Intersects(new Rectangle((int)mapVec.X, (int)mapVec.Y, Game1.tileSize, Game1.tileSize));
         }
 
         /// <summary>
@@ -205,7 +205,22 @@ namespace InteractionTweaks
         {
             int sinc = StaminaInc(food);
             int hinc = HealthInc(food);
-            return System.Math.Min(System.Math.Max((int)System.Math.Ceiling((player.MaxStamina - player.Stamina) / sinc), (int)System.Math.Ceiling((player.maxHealth - (float)player.health) / hinc)), food.Stack);
+
+            int round(double d) => Config.EatingWithoutWaste ? (int)System.Math.Floor(d) : (int)System.Math.Ceiling(d);
+
+            int neededForTopHealth = round((player.maxHealth - (float)player.health) / hinc);
+            int neededForTopStamina = round((player.MaxStamina - player.Stamina) / sinc);
+            int needed = 1;
+            if (Config.EatingTopHealth && Config.EatingTopStamina)
+                needed = System.Math.Max(neededForTopStamina, neededForTopHealth);
+            else if (!Config.EatingTopHealth && !Config.EatingTopStamina)
+                needed = 1;
+            else if (Config.EatingTopHealth && !Config.EatingTopStamina)
+                needed = neededForTopHealth;
+            else if (!Config.EatingTopHealth && Config.EatingTopStamina)
+                needed = neededForTopStamina;
+
+            return System.Math.Min(needed, food.Stack);
         }
 
         private static void EatFood(Farmer player, Object food, int redAmount)

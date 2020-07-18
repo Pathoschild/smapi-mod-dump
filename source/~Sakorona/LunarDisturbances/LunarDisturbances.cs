@@ -324,8 +324,8 @@ namespace TwilightShards.LunarDisturbances
                     }
                     Helper.Reflection.GetField<float>(menu, "sellPercentage").SetValue(Helper.Reflection.GetField<float>(menu, "sellPercentage").GetValue() * sellPrice);
                     
-                    var itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(menu, "itemPriceAndStock").GetValue();
-                    foreach (KeyValuePair<Item, int[]> kvp in itemPriceAndStock)
+                    var itemPriceAndStock = Helper.Reflection.GetField<Dictionary<ISalable, int[]>>(menu, "itemPriceAndStock").GetValue();
+                    foreach (var kvp in itemPriceAndStock)
                     {
                         kvp.Value[0] = (int)Math.Floor(kvp.Value[0] * buyPrice);
                     }
@@ -591,8 +591,8 @@ namespace TwilightShards.LunarDisturbances
                 }
                 Helper.Reflection.GetField<float>(menu, "sellPercentage").SetValue(Helper.Reflection.GetField<float>(menu, "sellPercentage").GetValue() * sellPrice);
 
-                var itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(menu, "itemPriceAndStock").GetValue();
-                foreach (KeyValuePair<Item, int[]> kvp in itemPriceAndStock)
+                var itemPriceAndStock = Helper.Reflection.GetField<Dictionary<ISalable, int[]>>(menu, "itemPriceAndStock").GetValue();
+                foreach (var kvp in itemPriceAndStock)
                 {
                     kvp.Value[0] = (int)Math.Floor(kvp.Value[0] * buyPrice);
                 }

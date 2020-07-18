@@ -9,9 +9,7 @@ using StardewValley;
 namespace StardewConfigMenu {
 	public class ModEntry: Mod {
 
-		internal static IModHelper helper;
-		private ModSettings panel;
-		internal static IMonitor monitor;
+		private MenuController MenuController;
 
 		/*********
     ** Public methods
@@ -19,12 +17,12 @@ namespace StardewConfigMenu {
 		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper) {
-			ModEntry.helper = helper;
-			ModEntry.monitor = this.Monitor;
+			MenuController = new MenuController(helper, Monitor);
+			StardewConfigFrameworkLoaded();
+		}
 
-			this.panel = new ModSettings(this);
-			this.StardewConfigFrameworkLoaded();
-
+		public override object GetApi() {
+			return MenuController;
 		}
 
 		/*********
@@ -34,7 +32,7 @@ namespace StardewConfigMenu {
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
 		private void StardewConfigFrameworkLoaded() {
-			this.Monitor.Log($"StardewConfigFramework Loaded");
+			Monitor.Log($"StardewConfigFramework Loaded");
 		}
 	}
 }

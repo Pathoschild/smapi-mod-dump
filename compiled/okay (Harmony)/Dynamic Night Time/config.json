@@ -1,5 +1,6 @@
 {
   "Latitude": 38.25,
   "SunsetTimesAreMinusThirty": true,
-  "NightDarknessLevel": 1
+  "NightDarknessLevel": 1,
+  "LessOrangeSunrise": false
 }

@@ -116,8 +116,11 @@ namespace ExhaustionTweaks
 
                     if (ModEntry.config.enableSafeSleepingInFarmBuildings)
                     {
+                        modEntry.Monitor.Log("Passed out in " + $"{passOutLocation.Name}");
                         if (passOutLocation.isFarmBuildingInterior() ||
-                            passOutLocation.Name == "Greenhouse")
+                            passOutLocation.Name == "Greenhouse" ||
+                            passOutLocation.Name == "Shed" ||
+                            passOutLocation.Name == "Big Shed")
                         {
                             return true;
                         }
@@ -130,7 +133,12 @@ namespace ExhaustionTweaks
 
         public static bool isFarmLocation(GameLocation location)
         {
-            return (location is Farm || location is StardewValley.Locations.FarmCave || location.isFarmBuildingInterior());
+            return (location is Farm || 
+                    location is StardewValley.Locations.FarmCave || 
+                    location.isFarmBuildingInterior() ||
+                    location.Name == "Greenhouse" ||
+                    location.Name == "Shed" ||
+                    location.Name == "Big Shed");
         }
 
         public static bool passOutFromTired_Prefix(SObject __instance, Farmer who)

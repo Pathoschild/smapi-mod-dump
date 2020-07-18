@@ -1,4 +1,5 @@
 {
-  "Button": "F2",
-  "SubtlerReminderSound": false
+  "CustomRemindersButton": "F2",
+  "SubtlerReminderSound": false,
+  "FarmhandInventoryButton": "E"
 }

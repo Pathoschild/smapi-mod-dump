@@ -14,6 +14,9 @@ namespace FarmAnimalVarietyRedux.Models
         /// <summary>The amount the animal costs.</summary>
         public int BuyPrice { get; set; }
 
+        /// <summary>The shop icon for the animal.</summary>
+        public Texture2D ShopIcon { get; set; }
+
 
         /*********
         ** Public Methods
@@ -21,10 +24,12 @@ namespace FarmAnimalVarietyRedux.Models
         /// <summary>Construct an instance.</summary>
         /// <param name="description">The description of the animal.</param>
         /// <param name="buyPrice">The amount the animal costs.</param>
-        public AnimalShopInfo(string description, int buyPrice)
+        /// <param name="shopIcon">The shop icon for the animal.</param>
+        public AnimalShopInfo(string description, int buyPrice, Texture2D shopIcon)
         {
             Description = description;
             BuyPrice = buyPrice;
+            ShopIcon = shopIcon;
         }
     }
 }

@@ -1,0 +1,10 @@
+{
+  "GrandpaDialogue": "Original",
+  "GenderNeutrality": false,
+  "ExpressivePortraits": true,
+  "ScoringSystem": "Vanilla",
+  "YearsBeforeEvaluation": 2,
+  "ShowPointsTotal": true,
+  "BonusRewards": true,
+  "StatuesForFarmhands": true
+}

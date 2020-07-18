@@ -1,7 +1,10 @@
 ## Changelog
+### 1.3.5
+ - fixes an error-catch block that could cause slowdowns
 
 ### 1.3.4
  - fixes a null bug that seems to occur randomly when location or music is null
+ - we've redone the curves. Again. Color changes, as well.
 
 ### 1.3.3
  - More bug fixing

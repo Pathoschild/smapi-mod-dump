@@ -39,8 +39,10 @@ namespace NpcAdventure.Objects
             this.CreateUnpackAnimation(who.currentLocation);
 
             // Drop items from gift box
-            foreach (Item item in this.items)
+            foreach (Item item in this.items.Where(itm => itm != null))
+            {
                 Game1.createItemDebris(item, who.getStandingPosition(), who.FacingDirection, who.currentLocation);
+            }
 
             this.items.Clear();
             who.currentLocation.playSound("openBox");

@@ -5,10 +5,9 @@ mods:
    Aggressive Acorns
 
 latest commit:
-   commit 7c15619a26582420ad646099b7c7dbfa885f7ffe
-   Merge: 35f20ea a552028
+   commit f75b886ff2b1884110ab301d129ef4a7268f36ac
    Author: Phrasefable <12666934+phrasefable@users.noreply.github.com>
-   Date:   Thu May 14 20:14:28 2020 +1200
+   Date:   Fri Jul 3 23:33:50 2020 +1200
    
-       Merge branch 'master' into dev/dev
+       PMT: Format command description.
    

@@ -2,6 +2,7 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Menus;
 using System;
 using System.Reflection;
 
@@ -10,53 +11,56 @@ namespace MultipleSpouses
     public static class FarmerPatches
     {
         private static IMonitor Monitor;
+        private static IModHelper Helper;
 
         // call this method from your Entry class
-        public static void Initialize(IMonitor monitor)
+        public static void Initialize(IMonitor monitor, IModHelper helper)
         {
             Monitor = monitor;
+            Helper = helper;
         }
         public static bool Farmer_doDivorce_Prefix(ref Farmer __instance)
         {
             try
             {
-                __instance.divorceTonight.Value = false;
-                if (!__instance.isMarried() || ModEntry.spouseToDivorce == null)
+                __instance.divorceTonight.Value = false;if (!__instance.isMarried() || ModEntry.spouseToDivorce == null)
                 {
-                    ModEntry.PMonitor.Log("Tried to divorce but not married!");
+                    Monitor.Log("Tried to divorce but no spouse to divorce!");
                     return false;
                 }
 
                 string key = ModEntry.spouseToDivorce;
 
+                int points = 2000;
+                if(ModEntry.divorceHeartsLost < 0)
+                {
+                    points = 0;
+                }
+                else
+                {
+                    points -= ModEntry.divorceHeartsLost * 250;
+                }
 
-                ModEntry.PMonitor.Log($"Divorcing {key}");
                 if (__instance.friendshipData.ContainsKey(key))
                 {
-                    if (ModEntry.config.FriendlyDivorce)
-                    {
-                        __instance.friendshipData[key].Points = Math.Max(2000, __instance.friendshipData[key].Points);
-                        __instance.friendshipData[key].Status = FriendshipStatus.Friendly;
-                    }
-                    else
-                    {
-                        __instance.friendshipData[key].Points = 0;
-                        __instance.friendshipData[key].Status = FriendshipStatus.Divorced;
-                    }
+                    Monitor.Log($"Divorcing {key}");
+                    __instance.friendshipData[key].Points = Math.Min(2000, Math.Max(0,points));
+                    Monitor.Log($"Resulting points: {__instance.friendshipData[key].Points}");
+
+                    __instance.friendshipData[key].Status = points < 1000 ? FriendshipStatus.Divorced : FriendshipStatus.Friendly;
+                    Monitor.Log($"Resulting friendship status: {__instance.friendshipData[key].Status}");
+
                     __instance.friendshipData[key].RoommateMarriage = false;
+
                     NPC ex = Game1.getCharacterFromName(key);
                     ex.PerformDivorce();
-                    if(ModEntry.officialSpouse == key)
-                    {
-                        ModEntry.officialSpouse = null;
-                    }
                     if(__instance.spouse == key)
                     {
                         __instance.spouse = null;
                     }
                     Misc.ResetSpouses(__instance);
-                    ModEntry.PHelper.Content.InvalidateCache("Maps/FarmHouse1_marriage");
-                    ModEntry.PHelper.Content.InvalidateCache("Maps/FarmHouse2_marriage");
+                    Helper.Content.InvalidateCache("Maps/FarmHouse1_marriage");
+                    Helper.Content.InvalidateCache("Maps/FarmHouse2_marriage");
                     Maps.BuildSpouseRooms(Utility.getHomeOfFarmer(Game1.player));
                     Game1.getFarm().addSpouseOutdoorArea(__instance.spouse == null ? "" : __instance.spouse);
                 }
@@ -75,7 +79,7 @@ namespace MultipleSpouses
         {
             try
             {
-                __result = __instance.team.IsMarried(__instance.UniqueMultiplayerID) || (ModEntry.spouses.Count > 0 || __instance.spouse != null);
+                __result = __instance.team.IsMarried(__instance.UniqueMultiplayerID) || Misc.GetSpouses(__instance, 1).Count > 0;
                 return false;
             }
             catch (Exception ex)
@@ -85,23 +89,42 @@ namespace MultipleSpouses
             return true;
         }
 
-        public static bool GameLocation_performTouchAction_Prefix(GameLocation __instance, string fullActionString, Vector2 playerStandingPosition)
+        
+        public static bool Farmer_checkAction_Prefix(Farmer __instance, Farmer who, GameLocation location, ref bool __result)
         {
             try
             {
-                string[] acta = fullActionString.Split(' ');
-                string text = acta[0];
-                if (text == "Sleep" && Game1.timeOfDay == 600)
+                if (who.isRidingHorse())
                 {
+                    who.Halt();
+                }
+                if (__instance.hidden)
+                {
+                    return true;
+                }
+                if (Game1.CurrentEvent == null && who.CurrentItem != null && who.CurrentItem.parentSheetIndex == 801 && !__instance.isEngaged() && !who.isEngaged()) { 
+                    who.Halt();
+                    who.faceGeneralDirection(__instance.getStandingPosition(), 0, false);
+                    string question2 = Game1.content.LoadString("Strings\\UI:AskToMarry_" + (__instance.IsMale ? "Male" : "Female"), __instance.Name);
+                    location.createQuestionDialogue(question2, location.createYesNoResponses(), delegate (Farmer _, string answer)
+                    {
+                        if (answer == "Yes")
+                        {
+                            who.team.SendProposal(__instance, ProposalType.Marriage, who.CurrentItem.getOne());
+                            Game1.activeClickableMenu = new PendingProposalDialog();
+                        }
+                    }, null);
+                    __result = true;
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed in {nameof(GameLocation_performTouchAction_Prefix)}:\n{ex}", LogLevel.Error);
+                Monitor.Log($"Failed in {nameof(Farmer_checkAction_Prefix)}:\n{ex}", LogLevel.Error);
             }
             return true;
         }
+
 
     }
 }

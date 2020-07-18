@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Predict Seed Maker",
+  "Author": "lech43",
+  "Version": "1.0.2",
+  "Description": "You can predict result of seed maker.",
+  "UniqueID": "lech43.PredictSeedMaker",
+  "EntryDll": "PredictSeedMaker.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:6395" ],
+}

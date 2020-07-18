@@ -73,7 +73,6 @@ namespace NpcAdventure.Buffs
                 30, this.Companion.Name, this.Companion.displayName)
             {
                 millisecondsDuration = DURATION,
-                glow = married ? new Color(114, 0, 0, 50) : Color.White,
             };
 
             var keys = from k in buffData.Keys where k.StartsWith(this.Companion.Name + "~") select k;

@@ -1,0 +1,10 @@
+{
+  "Name": "Climates of Ferngill",
+  "Author": "Sakorona",
+  "Version": "2.0.0-alpha.1",
+  "Description": "Create a unique climate system with custom weathers, a moon and stamina changes, as well as add weather related events and commands.",
+  "UniqueID": "KoihimeNakamura.ClimatesOfFerngill",
+  "EntryDll": "ClimatesOfFerngillV2.dll",
+  "MinimumApiVersion": "3.4.0",
+  "UpdateKeys": [ "Nexus:604" ]
+} 

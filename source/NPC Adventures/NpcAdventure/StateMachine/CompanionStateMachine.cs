@@ -45,7 +45,7 @@ namespace NpcAdventure.StateMachine
             this.Metadata = metadata;
             this.ContentLoader = loader;
             this.Monitor = monitor;
-            this.Bag = new Chest(true);
+            this.Bag = new Chest();
             this.Reflection = reflection;
             this.SpokenDialogues = new HashSet<string>();
             this.Dialogues = new DialogueProvider(companion, loader);
@@ -172,7 +172,7 @@ namespace NpcAdventure.StateMachine
             };
 
             farm.objects.Add(place, dumpedBag);
-            this.Bag = new Chest(true);
+            this.Bag = new Chest();
 
             this.Monitor.Log($"{this.Companion} delivered bag contents into farm house at position {place}");
         }

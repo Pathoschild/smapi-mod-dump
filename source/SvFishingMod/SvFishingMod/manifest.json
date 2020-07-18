@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SvFishingMod",
+  "Author": "KDERazorback",
+  "Version": "0.1.2",
+  "Description": "Allows for fishing mechanics customization.",
+  "UniqueID": "KDERazorback.SvFishingMod",
+  "EntryDll": "SvFishingMod.dll",
+  "MinimumApiVersion": "3.1.0",
+  "UpdateKeys": [ "GitHub:KDERazorback/SvFishingMod", "Nexus:6403" ]
+}

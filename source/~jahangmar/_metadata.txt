@@ -12,9 +12,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 6661b9a747cd477e240a568ce3950f9df44bf129
+   commit c0b3f4f2652dba9ff66a0c22e16aebc69eb87499
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Thu Jun 11 20:08:58 2020 +0200
+   Date:   Fri Jun 26 18:48:30 2020 +0200
    
-       harmony/android version for working fireplace
+       trashbear issue, no waste option for eating
    

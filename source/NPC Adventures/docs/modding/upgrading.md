@@ -1,5 +1,17 @@
 # Upgrade your content pack
 
+## Update to version 0.13.0 beta
+
+### Translations moved to `locale` folder
+
+Localizations was moved from `assets` folder to `locale` and removed the locale code suffix. Now localization files are in the `locale/<localeCode>` subdirectory. If you create unofficial (community) translations, you must to migrate your translations to the new place and use the new localization files name convention. See the mod folders `assets` and `locale` for an example.
+
+### New content pack format 1.3
+
+It's highly recommended to upgrade your content packs to latest format version `1.3`. This format has been simplified and not need specify `Action` field. Actions `Load` and `Edit` is deprecated and there are automatically rewritten to new `Replace` and `Patch`. Replacers trigger warning, so your rewritten load patches trig this warning too. To avoid this warnings upgrade your pack to the latest format version. It's easy, just remove the `Action` field from your patches and change `Format` field to `1.3`. If you add new file which not exists in the mod, it will be automatically processed and added without `Load` or `Replace` action. Use `Replace` action only if you want to replace whole existing content file in the mod. This action affects all content added or edited by other content packs which edits the same target. For more information about new format see [Content Packs](content-packs.md).
+
+But no worry. Your content packs in older formats still works with NPC Adventures 0.13.0, only triggers some warnings while game launched.
+
 ## Update to version 0.12.0 beta
 
 ### Bag delivery content source changed

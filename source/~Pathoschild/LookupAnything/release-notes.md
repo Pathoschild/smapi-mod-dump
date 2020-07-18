@@ -2,10 +2,17 @@
 
 # Release notes
 ## Upcoming release
+* Fixed error looking up items when some item data is invalid.
+* Fixed incorrect color for sturgeon roe image.
+
+## 1.27.2
+Released 03 July 2020.
+
 * Fixed display for tailored hat recipes.
 * Fixed the search key working during cutscenes or when a menu is already open.
 * Fixed spawn rules not showing "mine level X" matched when you're on that mine level.
 * Fixed error looking up custom NPCs with invalid birthday data.
+* Improved translations. Thanks to AndyAllanPoe (updated Italian) and Rittsuka (updated Portuguese)!
 
 ## 1.27.1
 Released 02 May 2020.

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "TownSchoolFunctions",
+  "Author": "EduAnttunes",
+  "Version": "1.1.0",
+  "Description": "Now we have a School for Penny, Vincent and Jas! Mod required functions.",
+  "UniqueID": "EduAnttunes.TownSchool.Functions",
+  "EntryDll": "TownSchoolFunctions.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6317" ]
+}

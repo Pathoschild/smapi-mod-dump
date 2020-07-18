@@ -1,8 +1,10 @@
-﻿using StardewModdingAPI;
+﻿using System;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using TwilightShards.Common;
+using SpaceCore;
 using TwilightShards.Stardew.Common;
 
 namespace TwilightShards.WeatherIllnesses
@@ -16,8 +18,6 @@ namespace TwilightShards.WeatherIllnesses
         private int TicksOutside;
         private int TicksTotal;
         private int TicksInLocation;
-        private int prevToEatStack = -1;
-        private bool wasEating = false;
         private int TimeInBathHouse = 0;
 
         private bool UseClimates = false;
@@ -37,6 +37,13 @@ namespace TwilightShards.WeatherIllnesses
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.TimeChanged += OnTimeChanged;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            SpaceCore.Events.SpaceEvents.OnItemEaten += OnItemEaten;
+        }
+
+        private void OnItemEaten(object sender, EventArgs e)
+        {
+            if (Game1.player.itemToEat.ParentSheetIndex == 351)
+                StaminaMngr.ClearDrain();
         }
 
         /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
@@ -76,7 +83,8 @@ namespace TwilightShards.WeatherIllnesses
             if (Game1.currentLocation is BathHousePool && Game1.player.swimming.Value)
             {
                 TimeInBathHouse += 10;
-                Monitor.Log($"In the BathHouse Pool for {TimeInBathHouse}");
+                if (IllnessConfig.Verbose)
+                    Monitor.Log($"In the BathHouse Pool for {TimeInBathHouse}");
             }
 
             if (TimeInBathHouse > 30)
@@ -98,7 +106,7 @@ namespace TwilightShards.WeatherIllnesses
             {
                 temp = 100.0;
             }
-            
+
             Game1.player.stamina += StaminaMngr.TenMinuteTick(Game1.player.hat.Value?.which.Value, temp, weatherStatus, TicksInLocation, TicksOutside, TicksTotal, Dice);
 
             if (Game1.player.stamina <= 0)
@@ -119,24 +127,8 @@ namespace TwilightShards.WeatherIllnesses
         {
             if (!Game1.hasLoadedGame)
                 return;
-
-            if (Game1.player.isEating != wasEating)
-            {
-                if (!Game1.player.isEating)
-                {
-                    // Apparently this happens when the ask to eat dialog opens, but they pressed no.
-                    // So make sure something was actually consumed.
-                    if (prevToEatStack != -1 && (prevToEatStack - 1 == Game1.player.itemToEat.Stack))
-                    {
-                        if (Game1.player.itemToEat.ParentSheetIndex == 351)
-                            StaminaMngr.ClearDrain();
-                    }
-                }
-                prevToEatStack = (Game1.player.itemToEat != null ? Game1.player.itemToEat.Stack : -1);
-            }
-            wasEating = Game1.player.isEating;
-
-            if (Game1.currentLocation.IsOutdoors)
+            
+            if (!(Game1.currentLocation is null) && Game1.currentLocation.IsOutdoors)
             {
                 TicksOutside++;
             }

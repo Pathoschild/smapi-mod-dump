@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.3.2
+ - fixes an issue with shop replacers
+
 ### 1.3.1
 - API now also gives more details about location on the arc.
 - Blue Moons and Harvest Moons also affect prices

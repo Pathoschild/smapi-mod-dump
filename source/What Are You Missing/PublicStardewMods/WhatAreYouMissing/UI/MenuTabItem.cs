@@ -35,6 +35,18 @@ namespace WhatAreYouMissing
 
         public void draw(SpriteBatch b, int slotX, int slotY, int xPositionOnScreen)
         {
+            if (ParentSheetIndex == -1)
+            {
+                DrawMoneyObject(b, slotX, slotY);
+            }
+            else
+            {
+                DrawRegularObject(b, slotX, slotY, xPositionOnScreen);
+            }
+        }
+
+        private void DrawRegularObject(SpriteBatch b, int slotX, int slotY, int xPositionOnScreen)
+        {
             int SpriteX = slotX + bounds.X;
             int SpriteY = slotY + bounds.Y;
 
@@ -43,7 +55,7 @@ namespace WhatAreYouMissing
 
             b.Draw(Game1.objectSpriteSheet, new Rectangle(SpriteX, SpriteY, SPRITE_SIZE, SPRITE_SIZE), new Microsoft.Xna.Framework.Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, ParentSheetIndex, 16, 16)), Color.White);
 
-            if(Item.Stack > 1)
+            if (Item.Stack > 1)
             {
                 Utility.drawTinyDigits(Item.Stack, b, new Vector2(SpriteX + Constants.SPRITE_SIZE - 12, SpriteY + Constants.SPRITE_SIZE - 12), 2f, 0.9f, Color.White);
             }
@@ -52,7 +64,7 @@ namespace WhatAreYouMissing
 
             SpriteText.drawString(b, Name, NameX, TextY, 999, -1, 999, 1f, 0.1f, false, -1, "", -1);
 
-            if(HoverText != "")
+            if (HoverText != "")
             {
                 int InfoX = xPositionOnScreen + Constants.MENU_WIDTH - 56 - SpriteText.getWidthOfString(Utilities.GetTranslation("TEXT_TO_HOVER_OVER_FOR_INFO"));
 
@@ -63,6 +75,16 @@ namespace WhatAreYouMissing
 
                 SpriteText.drawString(b, Utilities.GetTranslation("TEXT_TO_HOVER_OVER_FOR_INFO"), InfoX, TextY);
             }
+        }
+
+        private void DrawMoneyObject(SpriteBatch b, int startX, int startY)
+        {
+            string amount = $"{Item.Stack}g";
+            int textX = startX + bounds.X + (int)(Game1.tileSize * 1.5);
+            int Y = startY + bounds.Y + Game1.pixelZoom * 3;
+            
+            Utility.drawWithShadow(b, Game1.mouseCursors, new Vector2(startX + bounds.X + Constants.SPRITE_SIZE/4, Y), new Rectangle(193, 373, 9, 10), Color.White, 0.0f, Vector2.Zero, 4f, false, 1f, -1, -1, 0.35f);
+            SpriteText.drawString(b, amount, textX, Y, 999, -1, 999, 1f, 0.1f, false, -1, "", -1);
         }
 
         private void DrawQualityStar(int quality, SpriteBatch b, Vector2 coords, float scale)
@@ -82,5 +104,7 @@ namespace WhatAreYouMissing
                     break;
             }
         }
+
+   
     }
 }

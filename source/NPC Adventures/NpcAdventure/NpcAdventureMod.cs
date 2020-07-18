@@ -9,6 +9,7 @@ using NpcAdventure.Compatibility;
 using NpcAdventure.Story;
 using NpcAdventure.Story.Scenario;
 using NpcAdventure.Internal.Patching;
+using System.Collections.Generic;
 
 namespace NpcAdventure
 {
@@ -28,21 +29,27 @@ namespace NpcAdventure
         internal GamePatcher Patcher { get; private set; }
         internal GameMaster GameMaster { get; private set; }
         internal Config Config { get; private set; } = new Config();
+        internal ContentPackManager ContentPackManager { get; private set; }
+        internal static List<string> DebugFlags { get; } = new List<string>();
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            this.Config = helper.ReadConfig<Config>();
+
             if (Constants.TargetPlatform == GamePlatform.Android)
             {
                 this.Monitor.Log("Android support is an experimental feature, may cause some problems. Before you report a bug please content me on my discord https://discord.gg/wnEDqKF Thank you.", LogLevel.Alert);
             }
 
-            this.Config = helper.ReadConfig<Config>();
-            this.ContentLoader = new ContentLoader(this.Helper.Content, this.Helper.ContentPacks, this.ModManifest.UniqueID, "assets", this.Monitor);
+            Commander.Register(this);
+
+            this.ContentPackManager = new ContentPackManager(this.Monitor, this.Config.EnableDebug);
+            this.ContentLoader = new ContentLoader(helper, this.ContentPackManager, this.Monitor);
             this.Patcher = new GamePatcher(this.ModManifest.UniqueID, this.Monitor, this.Config.EnableDebug);
             this.RegisterEvents(helper.Events);
-            Commander.Register(this);
+            this.ContentPackManager.LoadContentPacks(helper.ContentPacks.GetOwned());
         }
 
         private void RegisterEvents(IModEvents events)
@@ -61,7 +68,7 @@ namespace NpcAdventure
 
         private void Player_Warped(object sender, WarpedEventArgs e)
         {
-            if (!this.Config.Experimental.UseCheckForEventsPatch && Context.IsWorldReady && this.GameMaster.Mode != GameMasterMode.OFFLINE)
+            if (!this.Config.UseCheckForEventsPatch && Context.IsWorldReady && this.GameMaster.Mode != GameMasterMode.OFFLINE)
             {
                 // Check for NPC Adventures events in the old way by player warped event. This way will be removed in 0.16.0
                 this.GameMaster.CheckForEvents(e.NewLocation, e.Player);
@@ -123,7 +130,8 @@ namespace NpcAdventure
                 new Patches.SpouseReturnHomePatch(this.CompanionManager),
                 new Patches.GetCharacterPatch(this.CompanionManager),
                 new Patches.NpcCheckActionPatch(this.CompanionManager, this.Helper.Input, this.Config),
-                new Patches.GameLocationDrawPatch((SpecialModEvents)this.SpecialEvents)
+                new Patches.GameLocationDrawPatch((SpecialModEvents)this.SpecialEvents),
+                new Patches.GameLocationPerformActionPatch(this.CompanionManager)
             );
 
             if (this.Config.AvoidSayHiToMonsters)
@@ -132,17 +140,20 @@ namespace NpcAdventure
                 this.Patcher.Apply(new Patches.CompanionSayHiPatch(this.CompanionManager));
             }
 
-            if (this.Config.Experimental.FightThruCompanion)
+            if (this.Config.FightThruCompanion)
             {
-                // Optional experimental patch: Avoid annoying dialogue shown while use sword over companion (patch disabled by default)
+                // Optional patch: Avoid annoying dialogue shown while use sword over companion (patch enabled by default)
                 this.Patcher.Apply(new Patches.GameUseToolPatch(this.CompanionManager));
-                this.LogExperimental("FightOverCompanion");
             }
 
-            if (this.Config.Experimental.UseCheckForEventsPatch)
+            if (this.Config.UseCheckForEventsPatch)
             {
                 this.Patcher.Apply(new Patches.CheckEventPatch(this.GameMaster));
-                this.LogExperimental("NewEventChecking");
+            }
+
+            if (this.Config.Experimental.UseSwimsuits)
+            {
+                this.LogExperimental("Support swimsuits for companions");
             }
         }
 

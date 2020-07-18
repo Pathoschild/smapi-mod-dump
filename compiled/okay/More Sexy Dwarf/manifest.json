@@ -1,7 +1,7 @@
 ﻿{
   "Name": "More Sexy Dwarf",
   "Author": "CyberCheese",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "It's a sexy dwarf, but More",
   "UniqueID": "cybercheese.moresexydwarf",
   "EntryDll": "MoreSexyDwarf.dll",

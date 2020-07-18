@@ -1,0 +1,23 @@
+﻿{
+  "Format": "1.14.0",
+
+  "Changes": [
+    // Extend emote spritesheet
+    {
+      "Action": "EditImage",
+      "Target": "TileSheets/emotes",
+      "FromFile": "extendedEmotes.png",
+      "FromArea": { "X": 0, "Y": 256, "Width": 64, "Height": 16 },
+      "ToArea": { "X": 0, "Y": 256, "Width": 64, "Height": 16 }
+    },
+     
+    // Add a new test event outside the farmhouse
+    {   
+      "Action": "EditData",
+      "Target": "Data/Events/Farm",
+      "Entries": {
+        "63030001": "continue/64 15/farmer 64 15 2 Marnie 65 16 0/pause 1000/speak Marnie \"Hello @!$h#$b#I'm here to teach you a new emote!\"/pause 500/emote Marnie 64/speak Marnie \"Now you try!\"/pause 1000/emote farmer 64/speak Marnie \"Hooray, you did it!\"/emote farmer 32/pause 2000/globalFade/viewport -1000 -1000/end"
+      }
+    }
+  ]
+}

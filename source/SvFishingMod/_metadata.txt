@@ -1,0 +1,20 @@
+url:
+   https://github.com/KDERazorback/SvFishingMod.git
+
+mods:
+   SvFishingMod
+
+latest commit:
+   commit c930b568060bf90ee46809c04897d1c951a67abc
+   Author: Fabian R <kderazorback@me.com>
+   Date:   Sun Jul 5 23:57:36 2020 -0500
+   
+       Bite Delay removal and SMAPI Settings
+       
+       + Added `sv_fishing_bitedelay` option for toggling on/off the random bite delay after the line has been thrown.
+       + Ability to remove the Bite Delay after the rod has been thrown.
+       - Switched to SMAPI managed settings using JSON files, instead of manual XML serialization.
+       - Bumped mod version to 0.1.2.
+       - Updated README.md with the new `sv_fishing_bitedelay` command help.
+       - Minor code cleanup
+   

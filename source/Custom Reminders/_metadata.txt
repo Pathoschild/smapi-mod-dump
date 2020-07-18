@@ -5,9 +5,11 @@ mods:
    Custom Reminders
 
 latest commit:
-   commit 4c84b78919ee5aa588516eeb35d6c10fbddd19f7
-   Author: Dem1se <danksepticeye@protonmail.com>
-   Date:   Mon Jun 15 05:37:11 2020 +0530
+   commit 797b63ff89cb8df2ca8e03331d3fd5a28cebaa24
+   Author: Dem1se <dem1se.io@protonmail.com>
+   Date:   Mon Jul 13 22:21:53 2020 +0530
    
-       Update README
+       Minor code improvements
+       Removed switch in CustomReminders using Enums
+       Did the same as above in Utilites and also reduced code duplication.
    

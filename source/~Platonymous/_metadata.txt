@@ -25,6 +25,7 @@ mods:
    Harp of Yoba Redux
    JoJaBan - Arcade Sokoban
    Junimo Farm
+   Mod Updater
    More Map Layers
    No Soil Decay Redux
    Notes
@@ -46,9 +47,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 6f1179b93c23e4b2c08837524deffb3fd120741b
+   commit 6c4ecbf3787cfe6d163292869606388e7eaf495e
    Author: David <david@millionideas.de>
-   Date:   Sat Jun 13 19:42:19 2020 +0200
+   Date:   Thu Jul 16 20:18:27 2020 +0200
    
-       Added Comic Mod
+       update releases
    

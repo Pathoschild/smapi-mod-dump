@@ -1,0 +1,12 @@
+{
+    "dia.eatquestion": "{{item}}을 먹어?",
+    "dia.eatanswerOne": "네, 하나 먹어.",
+    "dia.eatanswerMulti": "네, 배를 불어 때까지 {{amount}}개의 먹어.",
+    "dia.eatanswerNo": "아니요.",
+    "menu.slingshotempty": "판매하면 슬링샷은 비어 있어야 합니다.",
+    "item.slingshotdescr": "돌, 광석, 야채, 폭발성 탄약 등 다양한 물품을 촬영한다.",
+    "menu.carpentermoneybuttonon": "토글 설정함: 누락된 리소스 구입.",
+    "menu.carpentermoneybuttonoff": "토글 해제함: 누락된 리소스 구입.",
+    "menu.carpenteringredinfo": "{{itemname}}은 사들일 것이다.",
+    "menu.fishingrodempty": "판매하면 첨부를 제거하십시오."
+}

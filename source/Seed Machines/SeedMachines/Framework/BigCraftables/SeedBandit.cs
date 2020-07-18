@@ -12,6 +12,12 @@ namespace SeedMachines.Framework.BigCraftables
 {
     class SeedBandit : IBigCraftable
     {
+        public SeedBandit() : base()
+        {
+            this.wrapper = IBigCraftableWrapper.getWrapper("Seed Bandit");
+            this.animate();
+        }
+
         public SeedBandit(StardewValley.Object baseObject, IBigCraftableWrapper wrapper)
             : base(baseObject, wrapper)
         { }

@@ -489,7 +489,45 @@
     "CustomTileIndex": []
   },
   "Large_Object_Spawn_Settings": {
-    "Areas": [],
+    "Areas": [
+      {
+        "ObjectTypes": [
+          "Stump"
+        ],
+        "FindExistingObjectLocations": false,
+        "PercentExtraSpawnsPerSkillLevel": 0,
+        "RelatedSkill": "Foraging",
+        "UniqueAreaID": "ESOrchard",
+        "MapName": "ESOrchard",
+        "MinimumSpawnsPerDay": 1,
+        "MaximumSpawnsPerDay": 4,
+        "IncludeTerrainTypes": [],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "12,20/27,26"
+        ],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Medium",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 600,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": null,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": null
+      }
+    ],
     "CustomTileIndex": []
   },
   "Ore_Spawn_Settings": {
@@ -673,6 +711,55 @@
           "MaximumSimultaneousSpawns": 12,
           "OnlySpawnIfAPlayerIsPresent": false,
           "SpawnSound": ""
+        },
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        },
+        "DaysUntilSpawnsExpire": null
+      },
+      {
+        "MonsterTypes": [
+          {
+            "MonsterName": "Green Slime",
+            "Settings": {}
+          },
+          {
+            "MonsterName": "Blue Slime",
+            "Settings": {}
+          },
+          {
+            "MonsterName": "Purple Slime",
+            "Settings": {}
+          },
+          {
+            "MonsterName": "Red Slime",
+            "Settings": {}
+          }
+        ],
+        "UniqueAreaID": "ESOrchard monster area 1",
+        "MapName": "ESOrchard",
+        "MinimumSpawnsPerDay": 3,
+        "MaximumSpawnsPerDay": 10,
+        "IncludeTerrainTypes": [],
+        "ExcludeTerrainTypes": [],
+        "IncludeCoordinates": [
+          "15,5/48,28"
+        ],
+        "ExcludeCoordinates": [],
+        "StrictTileChecking": "Maximum",
+        "SpawnTiming": {
+          "StartTime": 600,
+          "EndTime": 1800,
+          "MinimumTimeBetweenSpawns": 10,
+          "MaximumSimultaneousSpawns": 6,
+          "OnlySpawnIfAPlayerIsPresent": false,
+          "SpawnSound": "slime"
         },
         "ExtraConditions": {
           "Years": [],

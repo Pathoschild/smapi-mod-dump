@@ -44,7 +44,7 @@ namespace NpcAdventure.Patches
 
                 // Save has been kissed flag to state for use in postfix (we want to know previous has kissed state before kiss)
                 // Mark as kissed when we can't kiss them (cover angry emote when try to kiss - vanilla and custom kissing mod)
-                __state = __instance.hasBeenKissedToday || !canKiss;
+                __state = __instance.hasBeenKissedToday.Value || !canKiss;
 
                 return true;
             } catch (Exception ex)

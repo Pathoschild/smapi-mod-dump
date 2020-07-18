@@ -1,0 +1,27 @@
+{
+	"Music": [
+	
+		{
+			"Id": "thudStep",
+			"File": "tractor.wav",
+			"Preload": true,
+			"Loop": false,
+			"Conditions": "LC Game1.player.isRidingHorse() and string.find(Game1.player.mount.Name,'tractor') ~= nil",
+		},
+		{
+			"Id": "stoneStep",
+			"File": "tractor.wav",
+			"Preload": true,
+			"Loop": false,
+			"Conditions": "LC Game1.player.isRidingHorse() and string.find(Game1.player.mount.Name,'tractor') ~= nil",
+		},
+		{
+			"Id": "woodyStep",
+			"File": "tractor.wav",
+			"Preload": true,
+			"Loop": false,
+			"Conditions": "LC Game1.player.isRidingHorse() and string.find(Game1.player.mount.Name,'tractor') ~= nil",
+		},
+	
+	]
+}

@@ -117,6 +117,7 @@ namespace WhatAreYouMissing
 
 
         //Seeds
+        public const int RICE_SHOOT = 273;
         public const int AMARANTH_SEEDS = 299;
         public const int GRAPE_STARTER = 301;
         public const int HOPS_STARTER = 302;

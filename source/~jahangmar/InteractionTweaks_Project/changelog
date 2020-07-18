@@ -13,6 +13,10 @@
 	-fixed ponds could not be used while eating feature is active
 	-fixed spacing in carpenter menu
 
-next version:
+1.4.0:
+	-fixed issue with trashbear interaction while holding food item
+	-added config options that change how amount of items to eat is calculated
 	-added Korean translation (thanks to overwritten)
-	-added Russion translation (thanks to VengelmBjorn)
+	-added Russian translation (thanks to VengelmBjorn)
+
+

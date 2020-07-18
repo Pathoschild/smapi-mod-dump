@@ -1,0 +1,64 @@
+{
+  "Format": "1.10.0",
+
+  "Changes": [
+
+    {
+      "LogName": "NPC Manifestation",
+      "Action": "EditData",
+      "Target": "Data/NPCDispositions",
+      "Entries": {
+        "Rose": "child/neutral/shy/positive/female/non-datable/null/Town/spring 15//School 18 45/Rose"
+      },
+      "When": {
+        "HasSeenEvent": "7777002"
+      }
+    },
+    {
+      "LogName": "NPC Gift Tastes",
+      "Action": "EditData",
+      "Target": "Data/NPCGiftTastes",
+      "FromFile": "assets/Gifts/{{language}}.json",
+      "When": {
+        "HasSeenEvent": "7777002"
+      }
+    },
+    {
+      "LogName": "Rose Sprites",
+      "Action": "Load",
+      "Target": "Characters/Rose",
+      "FromFile": "assets/Image/Sprite.png",
+      "When": {
+        "HasSeenEvent": "7777002"
+      }
+    },
+    {
+      "LogName": "Rose Portraits",
+      "Action": "Load",
+      "Target": "Portraits/Rose",
+      "FromFile": "assets/Image/Rose.png",
+      "When": {
+        "HasSeenEvent": "7777002"
+      }
+    },
+    {
+      "LogName": "Dialogue",
+      "Action": "Load",
+      "Target": "Characters/Dialogue/Rose",
+      "FromFile": "assets/Dialogue/{{language}}.json",
+      "When": {
+        "HasSeenEvent": "7777002"
+      }
+    },
+    {
+      "LogName": "Schedule",
+      "Action": "Load",
+      "Target": "Characters/schedules/Rose",
+      "FromFile": "assets/Schedule/Schedule.json",
+      "When": {
+        "HasSeenEvent": "7777002"
+      }
+    }
+
+  ]
+}

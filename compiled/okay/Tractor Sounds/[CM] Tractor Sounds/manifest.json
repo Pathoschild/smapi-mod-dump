@@ -1,0 +1,12 @@
+{
+  "Name": "Tractor Sounds",
+  "Author": "MissCoriel",
+  "Version": "2.0.0",
+  "Description": "Give your Tractor a nice Hum.",
+  "UniqueID": "MissCoriel.Tractor.CustomMusic.Pack",
+  "ContentPackFor": {
+    "UniqueID": "Platonymous.CustomMusic",
+    "MinimumVersion": "1.1.0"
+  },
+   "UpdateKeys": [ "Nexus: 5781" ],
+}

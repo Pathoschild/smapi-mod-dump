@@ -144,6 +144,18 @@ namespace NpcAdventure.AI
 
         private void CheckPotentialStateChange()
         {
+            if (this.npc.swimming.Value || this.swimsuit)
+            {
+                if (this.CurrentState != State.FOLLOW)
+                {
+                    // Force follow when companion swim and is not in following state
+                    this.ChangeState(State.FOLLOW);
+                }
+
+                // Do not change state while companion are swimming
+                return;
+            }
+
             if (this.Csm.HasSkillsAny("fighter", "warrior")
                 && !this.cooldown.IsRunning(CHANGE_STATE_COOLDOWN)
                 && this.CurrentState != State.FIGHT
@@ -190,6 +202,7 @@ namespace NpcAdventure.AI
             }
 
             this.cooldown.Update(e);
+            this.CheckSwimming();
 
             if (this.Csm.HasSkill("doctor"))
                 this.UpdateDoctor(e);

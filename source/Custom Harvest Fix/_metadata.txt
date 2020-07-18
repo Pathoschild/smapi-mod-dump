@@ -5,9 +5,9 @@ mods:
    Custom Harvest Fix
 
 latest commit:
-   commit b1eaad33d2bfeed3df7115d830e92ceaa746e3aa
+   commit 400e1c9e5c5c4ffc3887100972a5ad6dda927800
    Author: Robert Howe <mytigio+github@gmail.com>
-   Date:   Wed Jun 10 08:15:20 2020 -0600
+   Date:   Sun Jul 12 13:42:50 2020 -0600
    
-       Add nexus key to manifest in repo
+       Updates to add shed and big shed to the farm buildings list.
    

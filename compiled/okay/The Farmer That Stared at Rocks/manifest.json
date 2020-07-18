@@ -1,0 +1,10 @@
+﻿{
+  "Name": "The Farmer That Stared at Rocks",
+  "Author": "ItsLittany",
+  "Version": "1.1.5",
+  "Description": "Break rocks with your mind",
+  "UniqueID": "itslittany.RockBreaker",
+  "EntryDll": "RockBreaker.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6376" ]
+}

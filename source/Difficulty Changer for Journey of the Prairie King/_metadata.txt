@@ -5,9 +5,9 @@ mods:
    Difficulty Changer for Journey of the Prairie King
 
 latest commit:
-   commit a7943842da369971012943b622dfab2c0eb84bf9
-   Author: Kilian Payer <kilian.payer@student.tugraz.at>
-   Date:   Sat Apr 18 01:38:24 2020 +0200
+   commit a531cee948bfc959127dac51e95dfd95aa5b3377
+   Author: shanks3042 <shanks3042@protonmail.com>
+   Date:   Mon Jul 6 15:00:27 2020 +0200
    
-       added more options to change for the minigame
+       commit test
    

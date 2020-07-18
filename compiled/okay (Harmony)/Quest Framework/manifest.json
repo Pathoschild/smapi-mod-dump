@@ -1,0 +1,19 @@
+﻿{
+  "Name": "Quest Framework",
+  "Author": "PurrplingCat",
+  "Version": "1.0.0-beta.1",
+  "Description": "Add, edit and manage your own quest and create new quest types.",
+  "UniqueID": "PurrplingCat.QuestFramework",
+  "EntryDll": "QuestFramework.dll",
+  "MinimumApiVersion": "3.6.1",
+  "UpdateKeys": [
+    "Nexus:6414"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "MinimumVersion": "1.6.2",
+      "IsRequired": false
+    }
+  ]
+}

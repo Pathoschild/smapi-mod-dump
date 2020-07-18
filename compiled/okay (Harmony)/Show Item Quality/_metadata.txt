@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6311
+IDs: Jonqora.ShowItemQuality
+update keys: Nexus:6311, GitHub:Jonqora/StardewMods

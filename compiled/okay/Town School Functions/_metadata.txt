@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6317
+IDs: EduAnttunes.TownSchool.Functions
+update keys: Nexus:6317

@@ -1,12 +1,13 @@
 const assetsDir = __dirname + "/../NpcAdventure/assets"
+const officialLocaleDir = __dirname + "/../NpcAdventure/locale"
 const unofficialLocaleDir = __dirname + "/../unofficial/locale";
 const excludedLocaleDir = __dirname + "/../Contrib/Locale";
 const suffix = "json";
 const supportedLocales = [
-  {code: "pt-BR", name: "Portuguese", dir: assetsDir, official: true},
-  {code: "es-ES", name: "Spanish", dir: assetsDir, official: true },
-  {code: "ja-JP", name: "Japanese", dir: unofficialLocaleDir + "/ja-JP", official: false},
-  {code: "ru-RU", name: "Russian", dir: unofficialLocaleDir + "/ru-RU", official: false},
+  {code: "pt-BR", name: "Portuguese", dir: officialLocaleDir, official: true},
+  {code: "es-ES", name: "Spanish", dir: officialLocaleDir, official: true },
+  {code: "ja-JP", name: "Japanese", dir: unofficialLocaleDir, official: false},
+  {code: "ru-RU", name: "Russian", dir: unofficialLocaleDir, official: false},
 ];
 const knownContents = [
   "Data/Events",
@@ -43,7 +44,7 @@ function seekForMissing(locale, asset) {
   const fs = require("fs");
   const path = require("path");
   const json = readOriginal(asset);
-  const localizedFilePath = path.resolve(locale.dir, asset + `.${locale.code}.${suffix}`);
+  const localizedFilePath = path.resolve(locale.dir, locale.code.toLowerCase(), `${asset}.${suffix}`);
 
   if (!fs.existsSync(localizedFilePath)) {
     console.log(`W01 (untranslated-asset): Asset '${asset}' is not translated into '${locale.code}'`);

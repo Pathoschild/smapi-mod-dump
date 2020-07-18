@@ -1,0 +1,5 @@
+﻿apiRules:
+- include:
+    uidRegex: ^QuestFramework
+- exclude:
+    uidRegex: ^PurrplingCore

@@ -1,0 +1,11 @@
+{
+    "Name": "Bug Fix - Add Item Patch",
+    "Author": "Jonqora",
+    "Version": "0.3.2",
+    "Description": "Fixes a bug in the game code that prevents fishing treasure chest artifacts from registering in collections.",
+    "UniqueID": "Jonqora.BugFixAddItem",
+    "EntryDll": "BugFixAddItem.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": ["Nexus:6408"],
+    "Dependencies": []
+  }

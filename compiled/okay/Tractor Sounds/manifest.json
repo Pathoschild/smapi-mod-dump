@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Tractor Sounds - Complete",
+  "Author": "MissCoriel",
+  "Version": "2.0.0",
+  "Description": "Adds sounds for the Tractor",
+  "UniqueID": "misscoriel.tractorsounds",
+  "EntryDll": "Tractor Sound Complete.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus: 5781" ]
+}

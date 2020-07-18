@@ -4,7 +4,7 @@
   <export target="BirdHide-fall.tmx" format="tmx"/>
  </editorsettings>
  <properties>
-  <property name="Warp" value="3 8 EastScarpe 7 5"/>
+  <property name="Warp" value="3 8 EastScarpe 7 8"/>
  </properties>
  <tileset firstgid="1" name="p" tilewidth="16" tileheight="16" tilecount="32" columns="4">
   <image source="paths" width="64" height="128"/>

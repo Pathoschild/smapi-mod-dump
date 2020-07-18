@@ -44,14 +44,17 @@ namespace StardewValleyEasyPrairieKing
         private ModConfig config_;
         private const int INFINITE = 99;
         private Dictionary<string, bool> values_set_ = new Dictionary<string, bool>();
+        //private IReflectedField<int> waveTimerCount;
         /// 
 
         public override void Entry(IModHelper helper)
         {
             this.config_ = helper.ReadConfig<ModConfig>();
             helper.Events.GameLoop.UpdateTicked += eventUpdateTicks;
-            values_set_.Add("lives", false);
-            values_set_.Add("coins", false);
+            this.values_set_.Add("lives", false);
+            this.values_set_.Add("coins", false);
+            this.config_.waveTimer *= 1000;
+
         }
 
 
@@ -132,7 +135,19 @@ namespace StardewValleyEasyPrairieKing
             {
                 minigameType.GetField("playerInvincibleTimer").SetValue(Game1.currentMinigame, 5000);
             }
-            
+
+            if(this.config_.waveTimer != 0 && (int)minigameType.GetField("waveTimer").GetValue(Game1.currentMinigame) > this.config_.waveTimer )
+            {
+                minigameType.GetField("waveTimer").SetValue(Game1.currentMinigame, this.config_.waveTimer);
+            }
+
+
+           // String string1 = String.Format("shootOutLevel: {0}", minigameType.GetField("shootoutLevel").GetValue(Game1.currentMinigame));
+           // this.Monitor.Log(string1, LogLevel.Info);
+
+
+
         }
+
     }
 }

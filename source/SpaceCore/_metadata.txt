@@ -5,12 +5,9 @@ mods:
    SpaceCore
 
 latest commit:
-   commit c59413cd8da21a79ba48c4b751a68e09f0370578
-   Merge: ba31896 4dda4c4
+   commit eb60949fef897c8677eabfb36f55edfd5a2dec12
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Apr 27 12:10:57 2020 -0400
+   Date:   Wed Jun 17 13:09:32 2020 -0400
    
-       Merge pull request #11 from Pathoschild/update-project
-       
-       Update & standardize project structure
+       Hide that silly error for now
    

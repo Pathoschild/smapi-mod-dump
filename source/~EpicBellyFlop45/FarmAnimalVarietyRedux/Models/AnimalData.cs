@@ -1,4 +1,6 @@
-﻿using StardewModdingAPI;
+﻿using FarmAnimalVarietyRedux.Enums;
+using Microsoft.Xna.Framework.Audio;
+using StardewModdingAPI;
 using System.Collections.Generic;
 
 namespace FarmAnimalVarietyRedux.Models
@@ -15,6 +17,9 @@ namespace FarmAnimalVarietyRedux.Models
         /// <summary>Whether the animal can be bought from Marnie's shop.</summary>
         public bool Buyable { get; set; } = true;
 
+        /// <summary>Whether the animal should update a previously added animal.</summary>
+        public bool UpdatePreviousAnimal { get; set; } = false;
+
         /// <summary>The data about the animal in Marnie's shop.</summary>
         public AnimalShopInfo AnimalShopInfo { get; set; }
 
@@ -29,6 +34,10 @@ namespace FarmAnimalVarietyRedux.Models
 
         /// <summary>The id of the sound the animal will make.</summary>
         public string SoundId { get; set; }
+
+        /// <summary>The custom sound effect of the animal.</summary>
+        /// <remarks>NOTE: this is only used when loading a custom sound, using default sound doesn't use this.</remarks>
+        public SoundEffect SoundEffect { get; set; }
 
         /// <summary>The width of the animal sprite when it's looking toward / away from the camera.</summary>
         public int FrontAndBackSpriteWidth { get; set; }
@@ -67,6 +76,7 @@ namespace FarmAnimalVarietyRedux.Models
         /// <summary>Construct an instance.</summary>
         /// <param name="name">The name of the animal.</param>
         /// <param name="buyable">Whether the animal can be bought from Marnie's shop.</param>
+        /// <param name="updatePreviousAnimal">Whether the animal should update a previously added animal.</param>
         /// <param name="animalShopInfo">The data about the animal in Marnie's shop.</param>
         /// <param name="types">The sub types of the animal.</param>
         /// <param name="daysToProduce">The number of days it takes the animal to produce product.</param>
@@ -82,12 +92,13 @@ namespace FarmAnimalVarietyRedux.Models
         /// <param name="walkSpeed">The walk speed multiple of the animal.</param>
         /// <param name="bedTime">The time the animal will go to sleep.</param>
         /// <param name="seasonsAllowedOutdoors">The seasons the animal is able to go outside.</param>
-        public AnimalData(string name, bool buyable, AnimalShopInfo animalShopInfo, List<AnimalSubType> types, int daysToProduce, int daysTillMature, string soundId, int frontAndBackSpriteWidth, 
+        public AnimalData(string name, bool buyable, bool updatePreviousAnimal, AnimalShopInfo animalShopInfo, List<AnimalSubType> types, int daysToProduce, int daysTillMature, string soundId, int frontAndBackSpriteWidth, 
             int frontAndBackSpriteHeight, int sideSpriteWidth, int sideSpriteHeight, byte fullnessDrain, byte happinessDrain, List<string> buildings, int walkSpeed, int bedTime, 
             List<Season> seasonsAllowedOutdoors)
         {
             Name = name;
             Buyable = buyable;
+            UpdatePreviousAnimal = updatePreviousAnimal;
             AnimalShopInfo = animalShopInfo;
             Types = types;
             DaysToProduce = daysToProduce;

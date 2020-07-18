@@ -254,7 +254,7 @@ namespace NpcAdventure.AI.Controller
             {
                 return true;
             }
-            if (this.GameLocation.largeTerrainFeatures != null)
+            if (this.GameLocation.largeTerrainFeatures.Count > 0)
             {
                 foreach (StardewValley.TerrainFeatures.LargeTerrainFeature tf in this.GameLocation.largeTerrainFeatures)
                 {

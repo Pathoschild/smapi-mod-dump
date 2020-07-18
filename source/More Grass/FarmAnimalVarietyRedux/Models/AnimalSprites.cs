@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using FarmAnimalVarietyRedux.Enums;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace FarmAnimalVarietyRedux.Models
 {
@@ -74,8 +75,8 @@ namespace FarmAnimalVarietyRedux.Models
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="adultSpriteSheet">The non seasonal adult sprite sheet for the animal.</param>
-        /// <param name="babySpriteSheet">The non seasonal sprite sheet for the animal when it's ready for harvest.</param>
-        /// <param name="harvestedSpriteSheet">The non seasonal baby sprite sheet for the animal.</param>
+        /// <param name="babySpriteSheet">The non seasonal baby sprite sheet for the animal.</param>
+        /// <param name="harvestedSpriteSheet">The non seasonal sprite sheet for the animal when it's ready for harvest.</param>
         /// <param name="springAdultSpriteSheet">The spring adult sprite sheet for the animal.</param>
         /// <param name="springHarvestedSpriteSheet">The spring ready to harvest sprite sheet for the animal.</param>
         /// <param name="springBabySpriteSheet">The spring baby sprite sheet for the animal.</param>
@@ -88,7 +89,7 @@ namespace FarmAnimalVarietyRedux.Models
         /// <param name="winterAdultSpriteSheet">The winter adult sprite sheet of the animal.</param>
         /// <param name="winterHarvestedSpriteSheet">The winter ready to harvest sprite sheet for the animal.</param>
         /// <param name="winterBabySpriteSheet">The winter baby sprite sheet of the animal.</param>
-        public AnimalSprites(Texture2D adultSpriteSheet, Texture2D babySpriteSheet, Texture2D harvestedSpriteSheet = null, Texture2D springAdultSpriteSheet = null, Texture2D springHarvestedSpriteSheet = null,
+        public AnimalSprites(Texture2D adultSpriteSheet, Texture2D babySpriteSheet = null, Texture2D harvestedSpriteSheet = null, Texture2D springAdultSpriteSheet = null, Texture2D springHarvestedSpriteSheet = null,
             Texture2D springBabySpriteSheet = null, Texture2D summerAdultSpriteSheet = null, Texture2D summerHarvestedSpriteSheet = null, Texture2D summerBabySpriteSheet = null, 
             Texture2D fallAdultSpriteSheet = null, Texture2D fallHarvestedSpriteSheet = null, Texture2D fallBabySpriteSheet = null, Texture2D winterAdultSpriteSheet = null, Texture2D winterHarvestedSpriteSheet = null,
             Texture2D winterBabySpriteSheet = null)

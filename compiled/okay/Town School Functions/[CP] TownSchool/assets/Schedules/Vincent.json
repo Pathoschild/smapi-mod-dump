@@ -1,0 +1,10 @@
+{
+  "spring_11": "900 SamHouse 4 8 0 \"Strings\\schedules\\Vincent:spring_11.000\"/1130 Hospital 12 14 0 \"Strings\\schedules\\Vincent:spring_11.001\"/1330 Hospital 4 6 1 \"Strings\\schedules\\Vincent:spring_11.002\"/1600 SamHouse 11 22 2 vincent_play/2000 SamHouse 8 22 3 vincent_sleep",
+  "Mon": "610 School 16 25 0/1200 School 46 20 2/1300 School 45 20 2/1330 School 40 22 3/1500 School 17 8 vincent_play/1650 School 16 25 0/1830 SamHouse 8 22 3 vincent_sleep",
+  "Tue": "610 School 16 25 0/1200 School 46 20 2/1300 School 45 20 2/1330 School 40 22 3/1500 School 40 33 0/1650 School 16 25 0/1830 SamHouse 8 22 3 vincent_sleep",
+  "Wed": "GOTO Mon",
+  "Thu": "GOTO Tue",
+  "Fri": "GOTO Mon",
+  "Sat": "1010 Town 31 90 1/1200 Town 16 11 1 square_5_3/1700 Town 28 91 1/2000 SamHouse 8 22 3 vincent_sleep",
+  "Sun": "GOTO Sat"
+}

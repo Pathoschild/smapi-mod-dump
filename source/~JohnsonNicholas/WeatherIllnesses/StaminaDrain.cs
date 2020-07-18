@@ -25,6 +25,8 @@ namespace TwilightShards.WeatherIllnesses
 
     internal class StaminaDrain
     {
+        private readonly int UniqueStaID = 48712560;
+
         private readonly IllnessConfig IllOptions;
         private readonly ITranslationHelper Helper;
         private bool FarmerSick;
@@ -54,6 +56,20 @@ namespace TwilightShards.WeatherIllnesses
         {
             FarmerSick = true;
             FarmerHasBeenSick = true;
+            if (IllOptions.Verbose)
+                Monitor.Log("Adding buff icon!!");
+
+            int buffId = UniqueStaID;
+            Buff WeatherBuff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == buffId);
+            if (WeatherBuff == null)
+            {
+                Game1.buffsDisplay.addOtherBuff(
+                    WeatherBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        "You are sick due to the inclement weather!", "Weather Illnesses"));
+                WeatherBuff.which = buffId;
+                WeatherBuff.sheetIndex = 17;
+                WeatherBuff.millisecondsDuration = 800000;
+            }
 
             switch (ReasonSick)
             {
@@ -98,6 +114,11 @@ namespace TwilightShards.WeatherIllnesses
         public void ClearDrain(int reason = 1)
         {
             FarmerSick = false;
+            int i = Game1.buffsDisplay.otherBuffs.FindIndex(p => p.which == UniqueStaID);
+            Game1.buffsDisplay.otherBuffs.RemoveAt(i);
+            if (IllOptions.Verbose)
+                Monitor.Log("Removing buff icon!!");
+
             if (reason == StaminaDrain.MedicineClear)
             {
                 SDVUtilities.ShowMessage(Helper.Get("hud-text.desc_cold_removed"), 4);

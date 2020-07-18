@@ -1,318 +1,49 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{644E8E3D-1F60-4742-8E8C-655652D44615}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NpcAdventure</RootNamespace>
     <AssemblyName>NpcAdventure</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
+    <RootNamespace>NpcAdventure</RootNamespace>
+    <Version>0.13.0-dev</Version>
+    <TargetFramework>net452</TargetFramework>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+
     <EnableHarmony>true</EnableHarmony>
+
+    <Authors>PurrplingCat</Authors>
+
+    <Product>NpcAdventures</Product>
+
+    <Configurations>Debug;Release;Nightbuild</Configurations>
+
+    <Copyright>© PurrplingCat 2019-2020</Copyright>
+
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Nightbuild|x86'">
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Nightbuild|AnyCPU'">
-    <OutputPath>bin\Nightbuild\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Nightbuild|x86'">
-    <OutputPath>bin\x86\Nightbuild\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="SMAPI.Toolkit.CoreInterfaces, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="AI\AI_StateMachine.cs" />
-    <Compile Include="AI\AI_StateMachine.doctor.cs" />
-    <Compile Include="AI\Controller\FightController.cs" />
-    <Compile Include="AI\Controller\FollowJoystick.cs" />
-    <Compile Include="AI\Controller\ForageController.cs" />
-    <Compile Include="AI\Controller\IdleController.AnimateBehavior.cs" />
-    <Compile Include="AI\Controller\IdleController.cs" />
-    <Compile Include="AI\Controller\IdleController.LookAroundBehavior.cs" />
-    <Compile Include="AI\EventArgsLocationChanged.cs" />
-    <Compile Include="Buffs\BuffManager.cs" />
-    <Compile Include="Commander.cs" />
-    <Compile Include="CompanionManager.cs" />
-    <Compile Include="AI\Controller\IController.cs" />
-    <Compile Include="Compatibility\CustomKissingModProxy.cs" />
-    <Compile Include="Compatibility\TPMC.cs" />
-    <Compile Include="Driver\DialogueDriver.cs" />
-    <Compile Include="AI\Controller\FollowController.cs" />
-    <Compile Include="Driver\HintDriver.cs" />
-    <Compile Include="Driver\MailDriver.cs" />
-    <Compile Include="Driver\StuffDriver.cs" />
-    <Compile Include="Events\IManagedEvent.cs" />
-    <Compile Include="Events\ISpecialModEvents.cs" />
-    <Compile Include="Events\ManagedEvent.cs" />
-    <Compile Include="Events\SpecialModEvents.cs" />
-    <Compile Include="HUD\CompanionDisplay.cs" />
-    <Compile Include="HUD\CompanionSkill.cs" />
-    <Compile Include="Dialogues\CompanionDialogue.cs" />
-    <Compile Include="Internal\Countdown.cs" />
-    <Compile Include="Internal\IDrawable.cs" />
-    <Compile Include="Loader\ContentPacks\AssetPatch.cs" />
-    <Compile Include="Loader\AssetsManager.cs" />
-    <Compile Include="Loader\ContentPacks\ManagedContentPack.cs" />
-    <Compile Include="Loader\AssetPatchHelper.cs" />
-    <Compile Include="Model\Config.cs" />
-    <Compile Include="Model\ContentPackData.cs" />
-    <Compile Include="Loader\ContentPacks\ContentPackProvider.cs" />
-    <Compile Include="Loader\IContentLoader.cs" />
-    <Compile Include="Model\BagDumpInfo.cs" />
-    <Compile Include="Model\CompanionMetaData.cs" />
-    <Compile Include="Internal\Patching\GamePatcher.cs" />
-    <Compile Include="Patches\CheckEventPatch.cs" />
-    <Compile Include="Patches\GameUseToolPatch.cs" />
-    <Compile Include="Patches\GetCharacterPatch.cs" />
-    <Compile Include="Internal\Patching\IPatch.cs" />
-    <Compile Include="Patches\NpcCheckActionPatch.cs" />
-    <Compile Include="Patches\Patch.cs" />
-    <Compile Include="Patches\QuestPatch.cs" />
-    <Compile Include="Internal\SetOnce.cs" />
-    <Compile Include="Story\Messaging\GameMasterMessage.cs" />
-    <Compile Include="Story\Messaging\IGameMasterMessage.cs" />
-    <Compile Include="Story\Messaging\RecruitMessage.cs" />
-    <Compile Include="Story\GameMasterState.cs" />
-    <Compile Include="Objects\Package.cs" />
-    <Compile Include="Patches\GameLocationDrawPatch.cs" />
-    <Compile Include="Patches\CompanionSayHiPatch.cs" />
-    <Compile Include="Patches\SpouseReturnHomePatch.cs" />
-    <Compile Include="Patches\MailBoxPatch.cs" />
-    <Compile Include="StateMachine\StateFeatures\IActionPerformer.cs" />
-    <Compile Include="StateMachine\StateFeatures\IDialogueDetector.cs" />
-    <Compile Include="StateMachine\StateFeatures\ICompanionIntegrator.cs" />
-    <Compile Include="StateMachine\State\RecruitedState.cs" />
-    <Compile Include="StateMachine\State\UnavailableState.cs" />
-    <Compile Include="Story\GameMaster.cs" />
-    <Compile Include="Story\IGameMaster.cs" />
-    <Compile Include="Story\IScenario.cs" />
-    <Compile Include="Story\Scenario\AdventureBegins.cs" />
-    <Compile Include="Story\Scenario\BaseScenario.cs" />
-    <Compile Include="Story\GameMasterEvents.cs" />
-    <Compile Include="Story\IGameMasterEvents.cs" />
-    <Compile Include="Story\Scenario\QuestScenario.cs" />
-    <Compile Include="Story\StoryHelper.cs" />
-    <Compile Include="Dialogues\VariousKeyGenerator.cs" />
-    <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Utils\Helper.cs" />
-    <Compile Include="Internal\IUpdateable.cs" />
-    <Compile Include="Loader\ContentLoader.cs" />
-    <Compile Include="Dialogues\DialogueProvider.cs" />
-    <Compile Include="NpcAdventureMod.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StateMachine\CompanionStateMachine.cs" />
-    <Compile Include="StateMachine\State\AvailableState.cs" />
-    <Compile Include="StateMachine\State\ResetState.cs" />
-    <Compile Include="AI\Controller\PathFinder.cs" />
-    <Compile Include="Utils\Helper\DrawDuringUse.cs" />
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="assets\Data\Buffs.json">
+    <Content Include="locale/**/*.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Data\CompanionDispositions.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Data\AnimationDescriptions.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Data\Events.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Data\Events.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Data\IdleBehaviors.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Data\IdleNPCDefinitions.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Data\Quests.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Data\Quests.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Abigail.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Abigail.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Alex.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Alex.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Elliott.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Elliott.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Emily.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Emily.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Haley.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Haley.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Harvey.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Harvey.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Leah.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Leah.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Maru.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Maru.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Penny.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Penny.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Sam.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Sam.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Sebastian.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Sebastian.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Shane.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\Shane.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Strings\Buffs.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Strings\Buffs.pt-BR.json" />
-    <None Include="assets\Strings\Mail.pt-BR.json" />
-    <None Include="assets\Strings\Mail.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Strings\SpeechBubbles.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Strings\SpeechBubbles.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Strings\Strings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Strings\Strings.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="manifest.json" />
-    <None Include="packages.config" />
+    </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="StateMachine\CompanionState.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Content Include="preparenightbuild.js" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>if $(ConfigurationName) == Nightbuild (
-cd $(ProjectDir)
-node preparenightbuild.js
-)</PreBuildEvent>
-  </PropertyGroup>
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Tenhle projekt odkazuje na balíčky NuGet, které nejsou v tomhle počítači k dispozici. Když je chcete stáhnout, použijte funkci obnovení balíčků NuGet.  Další informace najdete na adrese http://go.microsoft.com/fwlink/?LinkID=322105. Chybějícím souborem je soubor {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="if $(ConfigurationName) == Nightbuild (&#xD;&#xA;cd $(ProjectDir)&#xD;&#xA;node preparenightbuild.js&#xD;&#xA;)" />
   </Target>
+
 </Project>

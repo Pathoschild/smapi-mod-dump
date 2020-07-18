@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6358
+IDs: aedenthorn.CustomFixedDialogue
+update keys: Nexus:6358, GitHub:aedenthorn/StardewValleyMods

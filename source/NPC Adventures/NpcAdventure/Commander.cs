@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Harmony;
 using NpcAdventure.StateMachine;
 using NpcAdventure.Story;
@@ -28,7 +29,31 @@ namespace NpcAdventure
             consoleCommands.Add("npcadventure_eligible", "Make player eligible to recruit a companion (server or singleplayer only)", this.Eligible);
             consoleCommands.Add("npcadventure_recruit", "Recruit an NPC as companion (server or singleplayer only)", this.Recruit);
             consoleCommands.Add("npcadventure_patches", "List harmony patches applied by NPC Adventures\n\nUsage: npcadventure_patches [recheck]\n\n- recheck - Recheck conflictiong patches", this.GetPatches);
+            consoleCommands.Add("npcadventure_debug", "Set a debug flag\n\nUsage: npcadventure_debug set|unset|list <flagName>", this.SetDebugFlag);
             this.monitor.Log("Registered debug commands", LogLevel.Info);
+        }
+
+        private void SetDebugFlag(string command, string[] args)
+        {
+            if (args.Length > 0)
+            {
+                switch(args[0])
+                {
+                    case "set":
+                        if (args.Length > 1)
+                            NpcAdventureMod.DebugFlags.Add(args[1]);
+                        return;
+                    case "unset":
+                        if (args.Length > 1)
+                            NpcAdventureMod.DebugFlags.Remove(args[1]);
+                        return;
+                    case "list":
+                        this.monitor.Log($"Active debug flags:\n {string.Join("\n", NpcAdventureMod.DebugFlags)}", LogLevel.Info);
+                        return;
+                }
+            }
+
+            this.monitor.Log($"Invalid arguments.", LogLevel.Info);
         }
 
         private void Eligible(string command, string[] args)

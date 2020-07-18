@@ -22,17 +22,7 @@ namespace NpcAdventure.AI.Controller
         private readonly Random r;
         private TerrainFeature targetObject;
         protected Stack<Item> foragedObjects;
-        protected int[] springForage = new int[] { 16, 18, 20, 22, 399 };
-        protected int[] summerForage = new int[] { 396, 398, 402 };
-        protected int[] fallForage = new int[] { 404, 406, 408, 410 };
-        protected int[] winterForage = new int[] { 283, 412, 414, 416, 418 };
-        protected int[] caveForage = new int[] { 78, 420, 422 };
-        protected int[] desertForage = new int[] { 88, 90 };
-        protected int[] beachForage = new int[] { 372, 392, 393, 394, 397, 718, 719, 723 };
-        protected int[] woodsSpringForage = new int[] { 257, 404 };
-        protected int[] woodsSummerForage = new int[] { 259, 420 };
-        protected int[] woodsFallForage = new int[] { 281, 420 };
-        protected int[] rareForage = new int[] { 347, 114 };
+        private readonly Dictionary<string, int[]> forages;
 
         public NPC Forager => this.ai.npc;
         public Farmer Leader => this.ai.player;
@@ -49,8 +39,22 @@ namespace NpcAdventure.AI.Controller
             this.ai.LocationChanged += this.Ai_LocationChanged;
             this.r = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed);
             this.foragedObjects = new Stack<Item>();
+            this.forages = this.LoadForages();
 
             events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
+        }
+
+        private Dictionary<string, int[]> LoadForages()
+        {
+            try
+            {
+                return this.ai.Csm.ContentLoader.LoadStrings("Data/Forages").ToDictionary(f => f.Key, f => Utility.parseStringToIntArray(f.Value));
+            } catch (Exception e)
+            {
+                this.ai.Monitor.Log($"Error while parsing forage definitions: {e}", LogLevel.Error);
+
+                return new Dictionary<string, int[]>();
+            }
         }
 
         private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
@@ -100,7 +104,7 @@ namespace NpcAdventure.AI.Controller
                      $"| passed: {(current < realChance ? "Yes" : "No")}");
             }
 
-            if (current < realChance)
+            if (current < realChance || NpcAdventureMod.DebugFlags.Contains("forager.pickAlways"))
             {
                 this.PickForageObject(this.targetObject);
             }
@@ -114,11 +118,11 @@ namespace NpcAdventure.AI.Controller
             int skill = this.ForagingLevel;
             int quality = 0;
 
-            if (skill >= 8)
-                quality = 3;
-            else if (skill >= 6)
+            if (skill >= 8 && this.r.NextDouble() < .05f)
+                quality = 4;
+            else if (skill >= 6 && this.r.NextDouble() < 0.2f)
                 quality = 2;
-            else if (skill >= 2)
+            else if (skill >= 2 && this.r.NextDouble() < 0.55f)
                 quality = 1;
 
             GameLocation location = this.Forager.currentLocation;
@@ -131,7 +135,7 @@ namespace NpcAdventure.AI.Controller
                 if (season == "winter" || this.ForagingLevel < 1)
                     return;
 
-                switch (tree.treeType)
+                switch (tree.treeType.Value)
                 {
                     case Tree.bushyTree:
                         objectIndex = 309;
@@ -144,7 +148,7 @@ namespace NpcAdventure.AI.Controller
                         break;
                 }
 
-                if (season == "fall" && tree.treeType == Tree.leafyTree && SDate.Now().Day >= 14)
+                if (season == "fall" && tree.treeType.Value == Tree.leafyTree && SDate.Now().Day >= 14)
                     objectIndex = 408;
 
                 if (objectIndex != -1)
@@ -158,7 +162,7 @@ namespace NpcAdventure.AI.Controller
                 if (this.ForagingLevel > 5 && this.r.NextDouble() < 0.005)
                 {
                     // There is a chance <1% to get a rare forage item
-                    this.SaveForage(new SObject(this.rareForage[this.r.Next(this.rareForage.Length)], 1, false, -1, 0));
+                    this.SaveForage(new SObject(this.FetchForage("rare"), 1, false, -1, 0));
                     return;
                 }
 
@@ -168,7 +172,7 @@ namespace NpcAdventure.AI.Controller
 
                     if (season == "fall")
                         objectIndex = 410;
-                    if (bush.size == 3)
+                    if (bush.size.Value == 3)
                         objectIndex = 815;
 
                     this.SaveForage(new SObject(objectIndex, 1, false, -1, quality));
@@ -176,63 +180,64 @@ namespace NpcAdventure.AI.Controller
                 }
             }
 
-            if (locationName.Equals("Woods"))
+            if (location is Farm)
             {
-                switch (season)
-                {
-                    case "spring":
-                        objectIndex = this.woodsSpringForage[this.r.Next(2)];
-                        break;
-                    case "summer":
-                        objectIndex = this.woodsSummerForage[this.r.Next(2)];
-                        break;
-                    case "fall":
-                        objectIndex = this.woodsFallForage[this.r.Next(2)];
-                        break;
-                    default:
-                        objectIndex = this.winterForage[this.r.Next(5)];
-                        break;
-                }
-            }
-            else if (locationName.Equals("Beach"))
-            {
-                objectIndex = this.beachForage[this.r.Next(8)];
-            }
-            else if (locationName.Equals("Desert"))
-            {
-                objectIndex = this.desertForage[this.r.Next(2)];
+                var farmForages = new List<int>();
+
+                farmForages.AddRange(this.GetForageSheet(season, "Farm"));
+                farmForages.AddRange(this.GetForageSheet(season, $"farmType_{Farm.getMapNameFromTypeInt(Game1.whichFarm)}"));
+
+                objectIndex = this.FetchForage(farmForages.Distinct().ToArray());
             }
             else if (location is MineShaft)
             {
-                objectIndex = this.caveForage[this.r.Next(2)];
+                objectIndex = this.FetchForage("cave");
             }
             else
             {
-                switch (season)
-                {
-                    case "spring":
-                        objectIndex = this.springForage[this.r.Next(5)];
-
-                        if (objectIndex == 399 && !locationName.Equals("Forest"))
-                        {
-                            // Spring onion can be found only in Cindersap Forest
-                            objectIndex = this.springForage[this.r.Next(4)];
-                        }
-                        break;
-                    case "summer":
-                        objectIndex = this.summerForage[this.r.Next(3)];
-                        break;
-                    case "fall":
-                        objectIndex = this.fallForage[this.r.Next(4)];
-                        break;
-                    case "winter":
-                        objectIndex = this.winterForage[this.r.Next(5)];
-                        break;
-                }
+                objectIndex = this.FetchGeneralForage(season, locationName);
             }
 
             if (objectIndex != -1)
                 this.SaveForage(new SObject(objectIndex, 1, false, -1, quality));
+        }
+
+        private int FetchForage(string sheetName)
+        {
+            return this.FetchForage(this.forages[sheetName]);
+        }
+
+        private int FetchForage(int[] forages)
+        {
+            return forages[this.r.Next(forages.Length)];
+        }
+
+        private int FetchGeneralForage(string season, string locationName)
+        {
+            var lookup = new string[] { $"{locationName}_{season}", locationName, season };
+
+            foreach (var sheetName in lookup)
+            {
+                if (this.forages.ContainsKey(sheetName))
+                {
+                    return this.FetchForage(sheetName);
+                }
+            }
+            
+            return -1;
+        }
+
+        private int[] GetForageSheet(string season, string locationName)
+        {
+            var lookup = new string[] { $"{locationName}_{season}", locationName, season };
+
+            foreach (var sheetName in lookup)
+            {
+                if (this.forages.TryGetValue(sheetName, out int[] forages))
+                    return forages;
+            }
+
+            return new int[] { };
         }
 
         private static bool BushIsInBloom(Bush bush)
@@ -247,20 +252,28 @@ namespace NpcAdventure.AI.Controller
             if (foragedObject == null)
                 return;
 
+            // See docs: https://stardewvalleywiki.com/Modding:Object_data#Categories
+            
             double shareChance = 0.42 + this.Leader.getFriendshipHeartLevelForNPC(this.Forager.Name) * 0.032;
             double current = this.r.NextDouble();
 
             this.Forager.doEmote(Game1.random.NextDouble() < .1f ? 20 : 16);
+
+            if (!this.forages.TryGetValue("qualityCategories", out int[] qualityCategories) || !qualityCategories.Contains(foragedObject.Category))
+            {
+                // Ignore quality for objects from category which is out of bounds the quality categories.
+                foragedObject.Quality = 0;
+            }
 
             if (this.ai.Monitor.IsVerbose)
             {
                 this.ai.Monitor.VerboseLog($"(Forage share) chance: {shareChance} | current: {current} | passed: {(current < shareChance ? "Yes" : "No")}");
             }
 
-            if (current < shareChance)
+            if (current < shareChance || NpcAdventureMod.DebugFlags.Contains("forager.shareAlways"))
             {
                 this.foragedObjects.Push(foragedObject);
-                this.ai.Monitor.Log($"{this.Forager.Name} wants to share a foraged item with farmer");
+                this.ai.Monitor.Log($"{this.Forager.Name} wants to share a foraged item with farmer (items in stack: {this.foragedObjects.Count})");
             }
         }
 
@@ -406,7 +419,7 @@ namespace NpcAdventure.AI.Controller
                 return;
             }
 
-            if (this.joystick.AcquireTarget(this.PickTile(vTree, (tree is Bush bush ? bush.size + 1 : 1), 1)))
+            if (this.joystick.AcquireTarget(this.PickTile(vTree, (tree is Bush bush ? bush.size.Value + 1 : 1), 1)))
             {
                 this.targetObject = tree;
             } else

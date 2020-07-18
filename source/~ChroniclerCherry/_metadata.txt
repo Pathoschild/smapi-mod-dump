@@ -3,6 +3,7 @@ url:
 
 mods:
    Catalogues Anywhere
+   Change Slime Hutch Limit
    Custom Crafting Stations
    Customize Anywhere
    Farm Rearranger
@@ -17,9 +18,10 @@ mods:
    Upgrade Empty Cabins
 
 latest commit:
-   commit 8dfb0c82b772f7d9a7204a965b8d9dc4920dec58
-   Author: Yiminxue Zheng <33401364+ChroniclerCherry@users.noreply.github.com>
-   Date:   Sun Jun 14 22:14:23 2020 -0400
+   commit 2b37921144870a808be86483616f5f8bf9cf2409
+   Merge: 68ace15 03adf99
+   Author: Yiminxue Zheng <yiminxuezheng@gmail.com>
+   Date:   Mon Jul 6 20:34:18 2020 -0400
    
-       Update CONDITIONS.md
+       Merge branch 'Develop'
    

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Fish Preview",
+  "Author": "Jonqora",
+  "Version": "1.0.1",
+  "Description": "Displays fish species during the catching minigame.",
+  "UniqueID": "Jonqora.FishPreview",
+  "EntryDll": "FishPreview.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:6303" ]
+}

@@ -56,7 +56,7 @@ namespace NpcAdventure.Utils
             // Can't request dialogue for invisible, sleeaping NPCs or farmer is riding horse
             forbidden |= npc.IsInvisible || npc.isSleeping.Value || farmer.isRidingHorse();
             // If farmer wears mayor's shorts and try request dialogue of Marnie or Lewis, avoid to request dialogue (and play animations)
-            forbidden |= farmer.pantsItem.Value != null && farmer.pantsItem.Value.parentSheetIndex == 15 && (npc.Name.Equals("Lewis") || npc.Name.Equals("Marnie"));
+            forbidden |= farmer.pantsItem.Value != null && farmer.pantsItem.Value.ParentSheetIndex == 15 && (npc.Name.Equals("Lewis") || npc.Name.Equals("Marnie"));
             // Avoid request dialogue if farmer and NPC is know each other
             forbidden |= !farmer.friendshipData.ContainsKey(npc.Name) && Game1.NPCGiftTastes.ContainsKey(npc.Name);
 

@@ -1,0 +1,12 @@
+{
+  "Name": "Test Add Emote",
+  "Author": "Jonqora",
+  "Version": "0.1.0",
+  "Description": "Adds a new emote that is usable in event scripts.",
+  "UniqueID": "Jonqora.TestAddEmote",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  }
+}

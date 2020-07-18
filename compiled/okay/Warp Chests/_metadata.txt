@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6402
+IDs: cybercheese.WarpChests
+update keys: Nexus:6402

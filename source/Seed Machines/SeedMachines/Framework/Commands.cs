@@ -33,7 +33,7 @@ namespace SeedMachines.Framework
                 case "seedMachineIngredients":
                     ModEntry.settings.seedMachineIngredients = args[1];
                     ModEntry.writeSettings();
-                    ModEntry.monitor.Log("Ingridients for Seed Machine was changed, but you need to rerun the game for apply changes.", LogLevel.Warn);
+                    ModEntry.monitor.Log("Ingredients for Seed Machine was changed, but you need to rerun the game for apply changes.", LogLevel.Warn);
                     break;
                 case "seedMachinePriceForNonSalableSeeds":
                     ModEntry.settings.seedMachinePriceForNonSalableSeeds = int.Parse(args[1]);
@@ -50,7 +50,7 @@ namespace SeedMachines.Framework
                 case "seedBanditIngredients":
                     ModEntry.settings.seedBanditIngredients = args[1];
                     ModEntry.writeSettings();
-                    ModEntry.monitor.Log("Ingridients for Seed Bandit was changed, but you need to rerun the game for apply changes.", LogLevel.Warn);
+                    ModEntry.monitor.Log("ingredients for Seed Bandit was changed, but you need to rerun the game for apply changes.", LogLevel.Warn);
                     break;
                 case "seedBanditOneGamePrice":
                     ModEntry.settings.seedBanditOneGamePrice = int.Parse(args[1]);

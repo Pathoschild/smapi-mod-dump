@@ -1,5 +1,23 @@
 # Full changelog
 
+## 0.13.0 beta "Useless mod"
+
+- Removed lovely glowing when farmer recruit married spouse.
+- Added random chance for quality forages
+- Fixed iridium quality index (#150)
+- Hardcoded forage items moved to content file
+- Added debug flags for better debugging and testing while development
+- Added special farm forages which foragers can find on the Farm (based on farm type).
+- Fixed companion bags on Android (#116)
+- Fixed unexpected move of recruited spouse in FarmHouse.
+- Player can gain extra friendship points every whole hour while adventuring with companions (#109)
+- Fixed walk-in-square schedule conflict with companion following.
+- Added swimsuit sprites for Abigail, Alex, Emily, Haley, Sam and Sebastian (experimental feature, must be enabled in `config.json`).
+- Fixed the "Jesus" bug in the SpA bathroom. Companions can swim (#142)
+- Mod's translation was moved to the separated folder `/locale/<localeCode>` and not requires the suffix ~~`.<localeCode>.json`~~
+- Introduced new simplified content pack definition format version *1.3*
+- Redone content and content pack loader
+
 ## 0.12.0 beta "Go out"
 
 Released **22nd May 2020**

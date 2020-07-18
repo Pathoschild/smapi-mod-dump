@@ -56,20 +56,34 @@
         "FromFile": "assets/EastScarpeRiverPatch1.tmx",
         "ToArea": { "X": 19, "Y": 0, "Width": 19, "Height": 26  },
         "When": { 
-            "River":true
+            "River":true,
+            "HasMod: DaisyNiko.Tilesheets": false
                         }
         
             },
-            {
-                "Action": "EditMap",
-                "Target": "Maps/EastScarpe",
-                "FromFile": "assets/EastScarpeRiverPatch2.tmx",
-                "ToArea": { "X": 38, "Y": 15, "Width": 39, "Height": 17  },
-                "When": { 
-                    "River":true
-                                }
-                
-                    },
+    {
+        "Action": "EditMap",
+        "Target": "Maps/EastScarpe",
+        "FromFile": "assets/EastScarpeRiverPatch1-waterfall.tmx",
+        "ToArea": { "X": 19, "Y": 0, "Width": 19, "Height": 26  },
+        "When": { 
+            "River":true,
+            "HasMod:DaisyNiko.Tilesheets": true
+                        }
+        
+            },
+{
+    "Action": "EditMap",
+    "Target": "Maps/EastScarpe",
+    "FromFile": "assets/EastScarpeRiverPatch2.tmx",
+    "ToArea": { "X": 38, "Y": 15, "Width": 39, "Height": 17  },
+    "MapProperties": {"CanyonWater":"T"},
+    "When": { 
+        "River":true
+                    }
+    
+        },
+
 
 
 {
@@ -169,6 +183,17 @@
     "HasMod:SEnhanced.Shortcuts":true
             }
     },
+    {
+
+"Action": "EditMap",
+"Target": "Maps/Town",
+"FromFile": "assets/Patches/EastScarpeEntrance-reimagined1.tmx",
+"ToArea": { "X": 100, "Y": 91, "Width": 20, "Height": 8  },
+"When": {
+    "HasMod:DaisyNiko.StardewValleyReimagined":true,
+    "TownMap": "reimagined"
+            }
+    },
 
 {
 
@@ -194,7 +219,7 @@
         "Action": "EditMap",
         "Target": "Maps/EastScarpe",
         "MapProperties": {
-        "Warp": "-1 91 Town 117 94 -1 92 Town 117 94 -1 93 Town 117 95 -1 94 Town 117 96 0 91 Town 118 94 0 92 Town 118 94 0 93 Town 118 95 0 94 Town 118 96"
+        "Warp": "-1 91 Town 117 94 -1 92 Town 117 94 -1 93 Town 117 95 -1 94 Town 117 96 0 91 Town 118 94 0 92 Town 118 94 0 93 Town 118 95 0 94 Town 118 96 77 48 ESOrchard 1 18 77 49 ESOrchard 1 19"
         },
         "When": {
             "HasMod:DaisyNiko.SVR2":true
@@ -309,7 +334,8 @@
     "Target": "Data/Locations",
     "Entries": {
         "EastScarpe": "-1/-1/-1/-1/153 -1 142 0 152 -1 129 1 147 1 131 2 148 2 708 2/153 -1 142 0 144 0 152 -1 154 1 128 2 130 2 146 2 149 2 150 2 155 2 708 2 701 2 267 2/153 -1 142 0 269 0 152 -1 129 1 154 1 155 1 131 2 148 2 150 2 705 2 701 2/153 -1 142 0 269 0 152 -1 147 1 155 1 708 2 130 2 131 2 146 2 150 2 151 2 154 2 705 2/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1 102 .15 390 .25 330 1",
-        "Underground1": "-1/-1/-1/-1/153 -1 156 -1 157 -1/153 -1 156 -1 157 -1/153 -1 156 -1 157 -1/153 -1 156 -1 157 -1/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1"
+        "Underground1": "-1/-1/-1/-1/153 -1 156 -1 157 -1 158 -1/153 -1 156 -1 157 -1 158 -1/153 -1 156 -1 157 -1 158 -1/153 -1 156 -1 157 -1 158 -1/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1",
+        "ESOrchard": "-1/-1/-1/-1/142 -1 143 -1/142 -1 143 -1/142 -1 143 -1/142 -1 141 -1/110 .1 118 .1 100 .05 103 .05 106 .05 102 .15 390 .25 330 1"
                     },
         "When": {
             "HasMod:MoreFish": false
@@ -320,7 +346,8 @@
     "Target": "Data/Locations",
     "Entries": {
         "EastScarpe": "1096 .4 1097 .3/1096 .5 1098 .1/1096 .5 1099 .1/1096 .5 1100 .1/153 -1 142 0 1123 0 1124 0 1146 0 1147 0 152 -1 129 1 147 1 1071 1 1088 1 1075 1 131 2 148 2 708 2 1120 2 1137 2 1139 2 1143 2 1058 2 1076 2 267 2/153 -1 142 0 144 0 1122 0 1124 0 1148 0 1082 0 1146 0 152 -1 154 1 1071 1 1075 1 128 2 130 2 146 2 149 2 150 2 155 2 708 2 267 2 1120 2 1129 2 1143 2 1068 2 1070 2/153 -1 142 0 269 0 1121 0 1146 0 1149 0 152 -1 129 1 154 1 155 1 1075 1 131 2 148 2 150 2 705 2 1135 2 1136 2 1059 2 1069 2/153 -1 142 0 269 0 1146 0 1079 0 1081 0 152 -1 147 1 155 1 1075 1 708 2 130 2 131 2 146 2 150 2 151 2 154 2 705 2 1135 2 1138 2 1126 2 1060 2 1061 2 1072 2 1080 2 1109 2/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1 102 .15 390 .25 330 1",
-        "Underground1": "-1/-1/-1/-1/153 -1 156 -1 157 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/153 -1 156 -1 157 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/153 -1 156 -1 157 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/153 -1 156 -1 157 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/107 .01"
+        "Underground1": "-1/-1/-1/-1/153 -1 156 -1 157 -1 158 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/153 -1 156 -1 157 -1 158 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/153 -1 156 -1 157 -1 158 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/153 -1 156 -1 157 -1 158 -1 1145 -1 1062 -1 1075 -1 1095 -1 1184 -1 1185 -1 1114 -1/107 .01 378 .08 579 .1 588 .1 581 .1 583 .1",
+        "ESOrchard": "-1/-1/-1/-1/142 -1 143 -1 1073 -1 1086 -1 1092 -1/142 -1 143 -1 1073 -1 1086 -1 1092 -1/142 -1 143 -1 1086 -1 1092 -1/142 -1 141 -1/110 .1 118 .1 100 .05 103 .05 106 .05 102 .15 390 .25 330 1"
                 },
         "When": {
             "HasMod:MoreFish": true
@@ -457,7 +484,7 @@
                 "EastScarpe.10": "It's an old silo, converted into a house. Who could live here? Sadly, the door is locked.",
                 "EloiseFall.1": "Eloise's Diary: \"I love fall! It's so pretty.\"",
                 "EloiseFall.2": "\"I saw a toucan! He cracked pinenuts with his big beak! I wish I had a proper camera.\"",
-                "EloiseFall.3": "Between 'Birds of the Ferngill Republic' and 'Our feathered frieds', you find a battered paperback.",
+                "EloiseFall.3": "Between 'Birds of the Ferngill Republic' and 'Our feathered friends', you find a battered paperback.",
                 "EloiseWinter.1": "Eloise's Diary: \"Winter is cold! I hope Sora is keeping warm. I should send him something for Winter Star, but they don't celebrate it in GR.\"",
                 "EloiseWinter.2": "\"The cardinals are very noisy! They travel in big flocks. I saw heaps on the beach yesterday!",
                 "EloiseWinter.3": "Mostly field guides to birds of the Ferngill region, and a battered book about a girl and a forgotten garden.",
@@ -487,8 +514,13 @@
                 "DeepDark.1": "\"Friends are the family we choose\"",
                 "DeepDark.2": "The ladder looks worn, the wood gouged with claw marks.",
                 "DeepDark.3": "This garden bed looks well tended, as though someone takes great pride in attending to it.",
-                "DeepDark.4": "A battered journal. The writing within is sloppy and almost impossible to read."
-
+                "DeepDark.4": "A battered journal. The writing within is sloppy and almost impossible to read.",
+		"ESOrchard.0": "Beyond the barrels you can see a path leading off somewhere. But you can't get past them. Yet.",
+                "ESOrchard.1": "Looks like a storm washed it out - or perhaps torn away. Perhaps it could be repaired again?",
+                "ESOrchard.2": "The writing is worn by weather and age: \"Che ry Or ha d\" It's been scrawled over with the words \"BEWARE!\"",
+                "ESOrchard.3": "Don't look too close! These plates have been here for so long the food remnants have practically fossilized.",
+                "ESOrchard.4": "You can hear something scratching behind the door. It sounds much larger than a rat.",
+		"ESOrchard.6": "Well, it might hold your weight... only one way to find out!"
                   }
                 
     },

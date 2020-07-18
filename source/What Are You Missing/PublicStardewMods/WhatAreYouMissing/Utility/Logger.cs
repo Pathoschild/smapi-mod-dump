@@ -10,7 +10,7 @@ namespace WhatAreYouMissing
             Monitor = mod.Monitor;
         }
 
-        private void LogWarning(string warning)
+        public void LogWarning(string warning)
         {
             if (ModEntry.modConfig.LogWarnings)
             {

@@ -5,9 +5,9 @@ mods:
    Destroyable Bushes
 
 latest commit:
-   commit 801f19d0d632d074fe0a3062da7659d7b37e38d4
-   Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Tue Jun 16 04:21:11 2020 -0500
+   commit 71bf5fcd02bae3b7b3670934fbbc61ef11b19972
+   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
+   Date:   Wed Jul 8 03:10:31 2020 -0500
    
-       Add update keys to manifest, tweak readme.md
+       Update readme.md
    

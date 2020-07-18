@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
@@ -12,6 +13,8 @@ namespace MultipleSpouses
     /// <summary>The mod entry point.</summary>
     public class Misc
     {
+        private static Dictionary<string, int> topOfHeadOffsets = new Dictionary<string, int>();
+
         public static IMonitor Monitor;
         public static IModHelper Helper;
         // call this method from your Entry class
@@ -21,78 +24,161 @@ namespace MultipleSpouses
             Helper = helper;
         }
 
-        public static List<string> GetAllSpouseNamesOfficialFirst(Farmer farmer)
+        public static Dictionary<string, NPC> GetSpouses(Farmer farmer, int all)
         {
-            List<string> mySpouses = ModEntry.spouses.Keys.ToList();
-            if (farmer.spouse != null)
+            Dictionary<string, NPC> spouses = new Dictionary<string, NPC>();
+            if (all < 0)
             {
-                mySpouses.Insert(0, farmer.spouse);
+                NPC ospouse = farmer.getSpouse();
+                if (ospouse != null)
+                {
+                    spouses.Add(ospouse.Name, ospouse);
+                }
             }
-            return mySpouses;
-        }
-        
-        public static void GetSpouseRoomPosition(FarmHouse farmHouse, string spouse)
-        {
-        }
-
-        public static void PlaceSpousesInFarmhouse()
-        {
-            Farmer farmer = Game1.player;
-            FarmHouse farmHouse = Utility.getHomeOfFarmer(farmer);
-
-            List<NPC> mySpouses = ModEntry.spouses.Values.ToList();
-            if (farmer.spouse != null)
+            foreach (string friend in farmer.friendshipData.Keys)
             {
-                mySpouses.Insert(0, farmer.getSpouse());
+                if (farmer.friendshipData[friend].IsMarried() && (all > 0 || friend != farmer.spouse))
+                {
+                    spouses.Add(friend, Game1.getCharacterFromName(friend, true));
+                }
             }
 
-            foreach (NPC j in mySpouses) { 
+            return spouses;
+        }
+        public static Dictionary<string, Dictionary<string, string>> relationships = new Dictionary<string, Dictionary<string, string>>();
+        public static void SetNPCRelations()
+        {
+            relationships.Clear();
+            Dictionary<string, string> NPCDispositions = Helper.Content.Load<Dictionary<string, string>>("Data\\NPCDispositions", ContentSource.GameContent);
+            foreach(KeyValuePair<string,string> kvp in NPCDispositions)
+            {
+                string[] relations = kvp.Value.Split('/')[9].Split(' ');
+                if (relations.Length > 0)
+                {
+                    relationships.Add(kvp.Key, new Dictionary<string, string>());
+                    for (int i = 0; i < relations.Length; i += 2)
+                    {
+                        try
+                        {
+                            relationships[kvp.Key].Add(relations[i], relations[i + 1].Replace("'", ""));
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void PlaceSpousesInFarmhouse(FarmHouse farmHouse)
+        {
+            Farmer farmer = farmHouse.owner;
+
+            if (farmer == null)
+                return;
+
+            List<NPC> allSpouses = GetSpouses(farmer, 1).Values.ToList();
+
+            if (allSpouses.Count == 0)
+            {
+                Monitor.Log("no spouses");
+                return;
+            }
+
+            ShuffleList(ref allSpouses);
+
+            List<string> bedSpouses = new List<string>();
+            string kitchenSpouse = null;
+
+            foreach (NPC spouse in allSpouses)
+            {
+                int type = ModEntry.myRand.Next(0, 100);
+
+                Monitor.Log("spouse type: " + type);
+                
+                if(type < ModEntry.config.PercentChanceForSpouseInBed)
+                {
+                    if (bedSpouses.Count < GetBedWidth(farmHouse) && (ModEntry.config.RoommateRomance || !farmer.friendshipData[spouse.Name].IsRoommate()) && HasSleepingAnimation(spouse.Name))
+                    {
+                        Monitor.Log("made bed spouse: " + spouse.Name);
+                        bedSpouses.Add(spouse.Name);
+                    }
+
+                }
+                else if(type < ModEntry.config.PercentChanceForSpouseInBed + ModEntry.config.PercentChanceForSpouseInKitchen)
+                {
+                    if (kitchenSpouse == null)
+                    {
+                        Monitor.Log("made kitchen spouse: " + spouse.Name);
+                        kitchenSpouse = spouse.Name;
+                    }
+                }
+            }
+
+            List<string> allBedSpouses = new List<string>(GetSpouses(farmer, 1).Keys.ToList());
+
+            List<NPC> roomSpouses = GetSpouses(farmer, -1).Values.ToList().FindAll((s) => (Maps.roomIndexes.ContainsKey(s.Name) || Maps.tmxSpouseRooms.ContainsKey(s.Name)) && !farmer.friendshipData[s.Name].IsEngaged());
+
+            foreach (NPC j in allSpouses) { 
                 Monitor.Log("placing " + j.Name);
 
-                if (ModEntry.outdoorSpouse == j.Name && !Game1.isRaining && !Game1.IsWinter && Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Sat") && !j.Name.Equals("Krobus"))
+                Point kitchenSpot = farmHouse.getKitchenStandingSpot();
+                Vector2 spouseRoomSpot = (farmHouse.upgradeLevel == 1) ? new Vector2(32f, 5f) : new Vector2(38f, 14f);
+
+                if (farmer.Equals(Game1.MasterPlayer))
                 {
-                    Monitor.Log("going to outdoor patio");
-                    j.setUpForOutdoorPatioActivity();
-                    continue;
+                    if (ModEntry.outdoorAreaData.areas.ContainsKey(j.Name))
+                    {
+                        SetupSpouseArea(ModEntry.outdoorAreaData.areas[j.Name], j.Name);
+                        if (!Game1.isRaining && !Game1.IsWinter && Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Sat") && !j.Name.Equals("Krobus"))
+                        {
+                            Monitor.Log("going to outdoor patio");
+                            j.setUpForOutdoorPatioActivity();
+                            continue;
+                        }
+                    }
+                    else if (farmer.spouse.Equals(j.Name))
+                    {
+                        OutdoorArea area = new OutdoorArea() { 
+                            startX = 69,
+                            startY = 6,
+                        };
+                        SetupSpouseArea(area, j.Name);
+                        if (!Game1.isRaining && !Game1.IsWinter && Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Sat") && !j.Name.Equals("Krobus"))
+                        {
+                            Monitor.Log("going to outdoor patio");
+                            j.setUpForOutdoorPatioActivity();
+                            continue;
+                        }
+                    }
                 }
 
-                if (j.currentLocation != farmHouse)
+                if (!farmHouse.Equals(j.currentLocation))
                 {
                     continue;
                 }
-
 
                 Monitor.Log("in farm house");
                 j.shouldPlaySpousePatioAnimation.Value = false;
 
                 Vector2 spot = (farmHouse.upgradeLevel == 1) ? new Vector2(32f, 5f) : new Vector2(38f, 14f);
 
-                if (ModEntry.bedSpouse != null)
+
+                if (bedSpouses.Count > 0 && (IsInBed(farmHouse, j.GetBoundingBox()) || bedSpouses.Contains(j.Name)))
                 {
-                    foreach (NPC character in farmHouse.characters)
+                    Monitor.Log($"putting {j.Name} in bed");
+                    j.position.Value = GetSpouseBedPosition(farmHouse, allBedSpouses, j.Name);
+
+                    if (HasSleepingAnimation(j.Name) && Game1.timeOfDay >= 2000)
                     {
-                        if (character.isVillager() && Misc.GetAllSpouses().ContainsKey(character.Name) && Misc.IsInBed(character.GetBoundingBox()))
-                        {
-                            Monitor.Log($"{character.Name} is already in bed");
-                            ModEntry.bedSpouse = character.Name;
-                            character.position.Value = Misc.GetSpouseBedPosition(farmHouse, character.name);
-                            break;
-                        }
+                        j.playSleepingAnimation();
                     }
                 }
-
-                if (ModEntry.kitchenSpouse == j.Name)
+                else if (kitchenSpouse == j.Name)
                 {
                     Monitor.Log($"{j.Name} is in kitchen");
                     j.setTilePosition(farmHouse.getKitchenStandingSpot());
-                    ModEntry.kitchenSpouse = null;
-                }
-                else if (ModEntry.bedSpouse == j.Name)
-                {
-                    Monitor.Log($"{j.Name} is in bed");
-                    j.position.Value = Misc.GetSpouseBedPosition(farmHouse, j.name);
-                    j.faceDirection(ModEntry.myRand.NextDouble() > 0.5 ? 1 : 3);
-                    ModEntry.bedSpouse = null;
                 }
                 else if (!ModEntry.config.BuildAllSpousesRooms && farmer.spouse != j.Name)
                 {
@@ -100,10 +186,6 @@ namespace MultipleSpouses
                 }
                 else
                 {
-                    Misc.ResetSpouses(farmer);
-
-                    List<NPC> roomSpouses = mySpouses.FindAll((s) => Maps.roomIndexes.ContainsKey(s.Name) || Maps.tmxSpouseRooms.ContainsKey(s.Name));
-
 
                     if (!roomSpouses.Contains(j))
                     {
@@ -117,6 +199,7 @@ namespace MultipleSpouses
                         int offset = roomSpouses.IndexOf(j) * 7;
                         j.setTilePosition((int)spot.X + offset, (int)spot.Y);
                         j.faceDirection(ModEntry.myRand.Next(0, 4));
+                        j.setSpouseRoomMarriageDialogue();
                         Monitor.Log($"{j.Name} loc: {(spot.X + offset)},{spot.Y}");
                     }
                 }
@@ -124,36 +207,225 @@ namespace MultipleSpouses
 
         }
 
-        public static bool IsInBed(Rectangle box)
+        internal static void NPCDoAnimation(NPC npc, string npcAnimation)
         {
-            FarmHouse fh = Utility.getHomeOfFarmer(Game1.player);
+            Dictionary<string, string> animationDescriptions = Helper.Content.Load<Dictionary<string, string>>("Data\\animationDescriptions", ContentSource.GameContent);
+            if (!animationDescriptions.ContainsKey(npcAnimation))
+                return;
+
+            string[] rawData = animationDescriptions[npcAnimation].Split('/');
+            var animFrames = Utility.parseStringToIntArray(rawData[1], ' ');
+ 
+            List<FarmerSprite.AnimationFrame> anim = new List<FarmerSprite.AnimationFrame>();
+            for (int i = 0; i < animFrames.Length; i++)
+            {
+                    anim.Add(new FarmerSprite.AnimationFrame(animFrames[i], 100, 0, false, false, null, false, 0));
+            }
+            Monitor.Log($"playing animation {npcAnimation} for {npc.Name}");
+            npc.Sprite.setCurrentAnimation(anim);
+        }
+
+        private static void SetupSpouseArea(OutdoorArea area, string name)
+        {
+            Farm farm = Game1.getFarm();
+
+            int x = area.startX;
+            int y = area.startY;
+
+            farm.removeTile(x +1, y + 3, "Buildings");
+            farm.removeTile(x +2, y + 3, "Buildings");
+            farm.removeTile(x +3, y + 3, "Buildings");
+            farm.removeTile(x, y + 3, "Buildings");
+            farm.removeTile(x +1, y + 2, "Buildings");
+            farm.removeTile(x +2, y + 2, "Buildings");
+            farm.removeTile(x +3, y + 2, "Buildings");
+            farm.removeTile(x, y + 2, "Buildings");
+            farm.removeTile(x +1, y + 1, "Front");
+            farm.removeTile(x +2, y + 1, "Front");
+            farm.removeTile(x +3, y + 1, "Front");
+            farm.removeTile(x, y + 1, "Front");
+            farm.removeTile(x +1, y, "AlwaysFront");
+            farm.removeTile(x +2, y, "AlwaysFront");
+            farm.removeTile(x +3, y, "AlwaysFront");
+            farm.removeTile(x, y, "AlwaysFront");
+
+            switch (name)
+            {
+                case "Sam":
+                    farm.setMapTileIndex(x, y + 2, 1173, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 2, 1174, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 2, 1198, "Buildings", 1);
+                    farm.setMapTileIndex(x + 2, y + 2, 1199, "Buildings", 1);
+                    farm.setMapTileIndex(x, y + 1, 1148, "Front", 1);
+                    farm.setMapTileIndex(x + 3, y + 1, 1149, "Front", 1);
+                    return;
+                case "Penny":
+                    farm.setMapTileIndex(x, y + 2, 1098, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 2, 1123, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 2, 1098, "Buildings", 1);
+                    return;
+                case "Sebastian":
+                    farm.setMapTileIndex(x + 1, y + 2, 1927, "Buildings", 1);
+                    farm.setMapTileIndex(x + 2, y + 2, 1928, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 2, 1929, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 1, 1902, "Front", 1);
+                    farm.setMapTileIndex(x + 2, y + 1, 1903, "Front", 1);
+                    return;
+                case "Shane":
+                    farm.setMapTileIndex(x + 1, y + 3, 1940, "Buildings", 1);
+                    farm.setMapTileIndex(x + 2, y + 3, 1941, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 3, 1942, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 2, 1915, "Buildings", 1);
+                    farm.setMapTileIndex(x + 2, y + 2, 1916, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 2, 1917, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 1, 1772, "Front", 1);
+                    farm.setMapTileIndex(x + 2, y + 1, 1773, "Front", 1);
+                    farm.setMapTileIndex(x + 3, y + 1, 1774, "Front", 1);
+                    farm.setMapTileIndex(x + 1, y, 1747, "AlwaysFront", 1);
+                    farm.setMapTileIndex(x + 2, y, 1748, "AlwaysFront", 1);
+                    farm.setMapTileIndex(x + 3, y, 1749, "AlwaysFront", 1);
+                    return;
+                case "Alex":
+                    farm.setMapTileIndex(x, y + 2, 1099, "Buildings", 1);
+                    return;
+                case "Maru":
+                    farm.setMapTileIndex(x + 2, y + 2, 1124, "Buildings", 1);
+                    return;
+                case "Emily":
+                    farm.setMapTileIndex(x, y + 2, 1867, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 2, 1867, "Buildings", 1);
+                    farm.setMapTileIndex(x, y + 1, 1842, "Front", 1);
+                    farm.setMapTileIndex(x + 3, y + 1, 1842, "Front", 1);
+                    farm.setMapTileIndex(x, y + 3, 1866, "Buildings", 1);
+                    farm.setMapTileIndex(x + 2, y + 2, 1866, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 3, 1967, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 2, 1967, "Buildings", 1);
+                    return;
+                case "Haley":
+                    farm.setMapTileIndex(x, y + 2, 1074, "Buildings", 1);
+                    farm.setMapTileIndex(x, y + 1, 1049, "Front", 1);
+                    farm.setMapTileIndex(x, y, 1024, "AlwaysFront", 1);
+                    farm.setMapTileIndex(x + 3, y + 2, 1074, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 1, 1049, "Front", 1);
+                    farm.setMapTileIndex(x + 3, y, 1024, "AlwaysFront", 1);
+                    return;
+                case "Harvey":
+                    farm.setMapTileIndex(x, y + 2, 1098, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 2, 1123, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 2, 1098, "Buildings", 1);
+                    return;
+                case "Elliott":
+                    farm.setMapTileIndex(x, y + 2, 1098, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 2, 1123, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 2, 1098, "Buildings", 1);
+                    return;
+                case "Leah":
+                    farm.setMapTileIndex(x + 1, y + 2, 1122, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 1, 1097, "Front", 1);
+                    return;
+                case "Abigail":
+                    farm.setMapTileIndex(x, y + 2, 1098, "Buildings", 1);
+                    farm.setMapTileIndex(x + 1, y + 2, 1123, "Buildings", 1);
+                    farm.setMapTileIndex(x + 3, y + 2, 1098, "Buildings", 1);
+                    return;
+
+            }
+            foreach(SpecialTile tile in area.specialTiles)
+            {
+                farm.setMapTileIndex(tile.x, tile.y, tile.tileIndex, tile.layer, tile.tilesheet);
+            }
+        }
+
+        public static string[] relativeRoles = new string[]
+        {
+            "son",
+            "daughter",
+            "sister",
+            "brother",
+            "dad",
+            "mom",
+            "father",
+            "mother",
+            "aunt",
+            "uncle",
+            "cousin",
+            "nephew",
+            "niece",
+        };
+
+        public static bool AreSpousesRelated(string npc1, string npc2)
+        {
+            if(relationships.ContainsKey(npc1) && relationships[npc1].ContainsKey(npc2))
+            {
+                string relation = relationships[npc1][npc2];
+                foreach (string r in relativeRoles)
+                {
+                    if (relation.Contains(r))
+                    {
+                        return true;
+                    }
+                }
+            }
+            if(relationships.ContainsKey(npc2) && relationships[npc2].ContainsKey(npc1))
+            {
+                string relation = relationships[npc2][npc1];
+                foreach (string r in relativeRoles)
+                {
+                    if (relation.Contains(r))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static bool HasSleepingAnimation(string name)
+        {
+            Texture2D tex = Helper.Content.Load<Texture2D>($"Characters/{name}", ContentSource.GameContent);
+
+            int sleepidx;
+            string sleepAnim = SleepAnimation(name);
+            if (sleepAnim == null)
+                return false;
+            else
+                sleepidx = int.Parse(sleepAnim.Split('/')[0]);
+
+            if ((sleepidx * 16) / 64 * 32 >= tex.Height)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static string SleepAnimation(string name)
+        {
+            string anim = null;
+            if (Game1.content.Load<Dictionary<string, string>>("Data\\animationDescriptions").ContainsKey(name.ToLower() + "_sleep"))
+            {
+                anim = Game1.content.Load<Dictionary<string, string>>("Data\\animationDescriptions")[name.ToLower() + "_sleep"];
+            }
+            return anim;
+        }
+
+        public static bool IsInBed(FarmHouse fh, Rectangle box)
+        {
             int bedWidth = GetBedWidth(fh);
             Point bedStart = GetBedStart(fh);
             Rectangle bed = new Rectangle(bedStart.X * 64, bedStart.Y * 64 + 64, bedWidth * 64, 3 * 64);
             return box.Intersects(bed);
         }
-        public static void SetBedmates()
+        public static Vector2 GetSpouseBedPosition(FarmHouse fh, List<string> allBedmates, string name)
         {
-            if (ModEntry.allRandomSpouses == null)
-            {
-                ModEntry.allRandomSpouses = GetRandomSpouses(true).Keys.ToList();
-            }
-
-            List<string> bedmates = new List<string>();
-            bedmates.Add("Game1.player");
-            for (int i = 0; i < ModEntry.allRandomSpouses.Count; i++)
-            {
-                bedmates.Add(ModEntry.allRandomSpouses[i]);
-            }
-            ModEntry.allBedmates = new List<string>(bedmates);
-        }
-        public static Vector2 GetSpouseBedPosition(FarmHouse fh, string name)
-        {
-            SetBedmates();
             int bedWidth = GetBedWidth(fh);
             Point bedStart = GetBedStart(fh);
-            int x = (int)(ModEntry.allBedmates.IndexOf(name) / (float)ModEntry.allBedmates.Count * (bedWidth - 1) * 64);
-            return new Vector2(bedStart.X * 64 + x, bedStart.Y * 64 + 64 + ModEntry.bedSleepOffset + (name == "Game1.player"?32:0));
+            int x = 64 + (int)((allBedmates.IndexOf(name) + 1) / (float)(allBedmates.Count + 1) * (bedWidth - 2) * 64);
+            return new Vector2(bedStart.X * 64 + x, bedStart.Y * 64 + ModEntry.bedSleepOffset - (GetTopOfHeadSleepOffset(name) * 4));
+        }
+        public static Vector2 GetFarmerBedPosition(FarmHouse fh)
+        {
+            Point bedStart = GetBedStart(fh);
+            return new Vector2(bedStart.X * 64, bedStart.Y * 64 + ModEntry.bedSleepOffset);
         }
 
         public static Point GetBedStart(FarmHouse fh)
@@ -175,97 +447,24 @@ namespace MultipleSpouses
             }
         }
 
-        public static void ResetSpouseRoles()
-        {
-            ModEntry.spouseRolesDate = new WorldDate().TotalDays;
-            ModEntry.outdoorSpouse = null;
-            ModEntry.kitchenSpouse = null;
-            ModEntry.bedSpouse = null;
-            ResetSpouses(Game1.player);
-            List<NPC> allSpouses = GetAllSpouses().Values.ToList();
-            Monitor.Log("num spouses: " + allSpouses.Count);
-
-            int n = allSpouses.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = ModEntry.myRand.Next(n + 1);
-                NPC value = allSpouses[k];
-                allSpouses[k] = allSpouses[n];
-                allSpouses[n] = value;
-            }
-
-            Game1.getFarm().addSpouseOutdoorArea("");
-
-            foreach (NPC spouse in allSpouses)
-            {
-                int maxType = 4;
-
-
-                int type = ModEntry.myRand.Next(0, maxType);
-
-                Monitor.Log("spouse type: " + type);
-                switch (type)
-                {
-                    case 1:
-                        if (ModEntry.bedSpouse == null)
-                        {
-                            Monitor.Log("made bed spouse: " + spouse.Name);
-                            ModEntry.bedSpouse = spouse.Name;
-                        }
-                        break;
-                    case 2:
-                        if (ModEntry.kitchenSpouse == null)
-                        {
-                            Monitor.Log("made kitchen spouse: " + spouse.Name);
-                            ModEntry.kitchenSpouse = spouse.Name;
-                        }
-                        break;
-                    case 3:
-                        if (ModEntry.outdoorSpouse == null)
-                        {
-                            Monitor.Log("made outdoor spouse: " + spouse.Name);
-                            ModEntry.outdoorSpouse = spouse.Name;
-                            Game1.getFarm().addSpouseOutdoorArea(ModEntry.outdoorSpouse);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        internal static bool SpotHasSpouse(Vector2 position, GameLocation location)
-        {
-            foreach(NPC spouse in ModEntry.spouses.Values)
-            {
-                if (spouse.currentLocation == location)
-                {
-                    Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle((int)position.X + 1, (int)position.Y + 1, 62, 62);
-                    if(spouse.GetBoundingBox().Intersects(rect))
-                        return true;
-                }
-            }
-            return false;
-        }
-
         public static void ResetSpouses(Farmer f)
         {
+            Dictionary<string, NPC> spouses = GetSpouses(f,1);
             if (f.spouse == null)
             {
-                if(ModEntry.officialSpouse != null && f.friendshipData[ModEntry.officialSpouse] != null && (f.friendshipData[ModEntry.officialSpouse].IsMarried() || f.friendshipData[ModEntry.officialSpouse].IsEngaged()))
+                if(spouses.Count > 0)
                 {
-                    f.spouse = ModEntry.officialSpouse;
+                    Monitor.Log("No official spouse, setting official spouse to: " + spouses.First().Key);
+                    f.spouse = spouses.First().Key;
                 }
             }
-            ModEntry.officialSpouse = f.spouse;
 
-            ModEntry.spouses.Clear();
             foreach (string name in f.friendshipData.Keys)
             {
                 if (f.friendshipData[name].IsEngaged())
                 {
-                    if(f.friendshipData[name].WeddingDate.TotalDays < new WorldDate(Game1.Date).TotalDays)
+                    Monitor.Log($"{f.Name} is engaged to: {name} {f.friendshipData[name].CountdownToWedding} days until wedding");
+                    if (f.friendshipData[name].WeddingDate.TotalDays < new WorldDate(Game1.Date).TotalDays)
                     {
                         Monitor.Log("invalid engagement: " + name);
                         f.friendshipData[name].WeddingDate.TotalDays = new WorldDate(Game1.Date).TotalDays + 1;
@@ -274,56 +473,23 @@ namespace MultipleSpouses
                     {
                         Monitor.Log("setting spouse to engagee: " + name);
                         f.spouse = name;
-                        ModEntry.officialSpouse = name;
                     }
-                    continue;
                 }
                 if (f.friendshipData[name].IsMarried() && f.spouse != name)
                 {
-                    if (f.friendshipData[name].WeddingDate != null)
-                    {
-                        //Monitor.Log($"wedding date {f.friendshipData[name].WeddingDate.TotalDays} " + name);
-                    }
+                    Monitor.Log($"{f.Name} is married to: {name}");
                     if (f.spouse != null && f.friendshipData[f.spouse] != null && !f.friendshipData[f.spouse].IsMarried() && !f.friendshipData[f.spouse].IsEngaged())
                     {
-                        Monitor.Log("invalid ospouse, setting: " + name);
+                        Monitor.Log("invalid ospouse, setting ospouse to " + name);
                         f.spouse = name;
-                        ModEntry.officialSpouse = name;
-                        continue;
                     }
                     if (f.spouse == null)
                     {
-                        Monitor.Log("null ospouse, setting: " + name);
+                        Monitor.Log("null ospouse, setting ospouse to " + name);
                         f.spouse = name;
-                        ModEntry.officialSpouse = name;
-                        continue;
                     }
-
-                    NPC npc = Game1.getCharacterFromName(name);
-                    if(npc == null)
-                    {
-                        foreach(GameLocation l in Game1.locations)
-                        {
-                            foreach(NPC c in l.characters)
-                            {
-                                if(c.Name == name)
-                                {
-                                    npc = c;
-                                    goto next;
-                                }
-                            }
-                        }
-                    }
-                    if(npc == null)
-                    {
-                        continue;
-                    }
-                    next:
-                    Monitor.Log("adding spouse: " + name);
-                    ModEntry.spouses.Add(name,npc);
                 }
             }
-            Monitor.Log("official spouse: " + ModEntry.officialSpouse);
         }
         public static void SetAllNPCsDatable()
         {
@@ -345,33 +511,7 @@ namespace MultipleSpouses
             }
         }
 
-        public static Dictionary<string,NPC> GetAllSpouses()
-        {
-            Dictionary<string, NPC> npcs = new Dictionary<string, NPC>(ModEntry.spouses);
-            NPC ospouse = Game1.player.getSpouse();
-            if (ospouse != null)
-            {
-                npcs.Add(ospouse.Name, ospouse);
-            }
-            return npcs;
-        }
-        public static Dictionary<string,NPC> GetRandomSpouses(bool all = false)
-        {
-            Dictionary<string, NPC> npcs = new Dictionary<string, NPC>(ModEntry.spouses);
-            if (all)
-            {
-                NPC ospouse = Game1.player.getSpouse();
-                if (ospouse != null)
-                {
-                    npcs.Add(ospouse.Name, ospouse);
-                }
-            }
-
-            ShuffleDic(ref npcs);
-
-            return npcs;
-        }
-
+ 
         public static void ShuffleList<T>(ref List<T> list)
         {
             int n = list.Count;
@@ -409,9 +549,64 @@ namespace MultipleSpouses
             }
             return new Point(22 + offset, 5);
         }
-        public static bool ChangingHouse()
+        public static bool ChangingKidsRoom()
         {
-            return ModEntry.config.BuildAllSpousesRooms || ModEntry.config.CustomBed || ModEntry.config.ExtraCribs != 0 || ModEntry.config.ExtraKidsBeds != 0 || ModEntry.config.ExtraKidsRoomWidth != 0;
+            return ModEntry.config.ExtraCribs != 0 || ModEntry.config.ExtraKidsBeds != 0 || ModEntry.config.ExtraKidsRoomWidth != 0;
+        }
+        
+        public static int GetTopOfHeadSleepOffset(string name)
+        {
+            if (topOfHeadOffsets.ContainsKey(name))
+            {
+                return topOfHeadOffsets[name];
+            }
+            int top = 0;
+
+            if (name == "Krobus")
+                return 8;
+
+            Texture2D tex = Helper.Content.Load<Texture2D>($"Characters/{name}", ContentSource.GameContent);
+
+            int sleepidx;
+            string sleepAnim = SleepAnimation(name);
+            if (sleepAnim == null)
+                sleepidx = 8;
+            else
+                sleepidx = int.Parse(sleepAnim.Split('/')[0]);
+
+            if ((sleepidx * 16) / 64 * 32 >= tex.Height)
+            {
+                sleepidx = 8;
+            }
+
+
+            Color[] colors = new Color[tex.Width * tex.Height];
+            tex.GetData(colors);
+
+            //Monitor.Log($"sleep index for {name} {sleepidx}");
+
+            int startx = (sleepidx * 16) % 64;
+            int starty = (sleepidx * 16) / 64 * 32;
+
+            //Monitor.Log($"start {startx},{starty}");
+
+            for (int i = 0; i < 16 * 32; i++)
+            {
+                int idx = startx + (i % 16) + (starty + i / 16) * 64;
+                if (idx >= colors.Length)
+                {
+                    Monitor.Log($"Sleep pos couldn't get pixel at {startx + i % 16},{starty + i / 16} ");
+                    return top;
+                }
+                Color c = colors[idx];
+                if(c != Color.Transparent)
+                {
+                    top = i / 16;
+                    break;
+                }
+            }
+            topOfHeadOffsets.Add(name, top);
+            return top;
         }
     }
 }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>ClimatesOfFerngill</AssemblyName>
     <RootNamespace>ClimatesOfFerngillRebuild</RootNamespace>
-    <Version>1.5.9</Version>
+    <Version>1.5.11</Version>
     <TargetFramework>net452</TargetFramework>
 
     <EnableHarmony>true</EnableHarmony>

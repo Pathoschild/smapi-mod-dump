@@ -216,8 +216,8 @@ namespace WhatAreYouMissing
             for (int i = 0; i < bundleInfo.Length; ++i)
             {
                 BundleItemInfo itemInfo = new BundleItemInfo(bundleInfo[i]);
-
-                if (!IsItemCompleted(bundleID, i))
+                //-1 parent sheet index indicates its just money, there are some items in the bundle file that don't exist in the game so check for that too
+                if ((itemInfo.ParentSheetIndex == -1 || Game1.objectInformation.ContainsKey(itemInfo.ParentSheetIndex)) && !IsItemCompleted(bundleID, i))
                 {
                     SObject missingItem = new SObject(itemInfo.ParentSheetIndex, itemInfo.StackSize, quality: itemInfo.Quality);
                     AddMissingItemToProperList(missingItem);

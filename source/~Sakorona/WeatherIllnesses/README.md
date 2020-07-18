@@ -1,11 +1,9 @@
 ﻿# Weather Illnesses
 
-## Current Version
-1.1
-
 ### Requirements
 - SMAPI 3.0+
 - Stardew Valley 1.4+
+- SpaceCore
 
 ## Acknowledgements
 - Sky for the Korean translation

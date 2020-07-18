@@ -1,0 +1,31 @@
+If you have questions, you can always reach out to me on our discord: https://discord.gg/5mwwh8w
+Edit these values with caution as Longevity will not handle invalid values and can create unexpected behavior.
+
+
+"Tax_IncomeOffset":			Decimal value that increases or decreases income tax (0.1 = 10% increase, -0.1 = 10% decrease)
+"Tax_DebtPenalty":			Positive decimal value that sets the debt penalty (0.1 = 10% debt penalty; 0.0 = off)
+"Tax_MarriedReduction":			Positive decimal value that sets the tax benefit for being married (0.0 = off)
+"Tax_ChildReduction":			Positive decimal value that sets the tax benefit for each child (0.0 = off)
+"Tax_Property":				Positive integer for static propery tax (based on housing upgrades)
+"Tax_Building":				Positive integer for static building tax
+"Tax_Fixed_Water":			Positive integer for static water tax
+"Tax_Fixed_Electric":			Positive integer for static electric tax
+"Tax_Variable_Water":			Positive decimal for variable water tax (2.0 = 2 gold per day per unit of sprinkler)
+"Tax_Variable_Capital":			Positive decimal for variable capital tax (2.5 = 2.5 gold per day per unit of capital)
+"Inf_FishBase":				Positive decimal value that sets the base price for fish (0.8 = 80% base price for all fish)
+"Inf_SeedBase":				Positive decimal value that sets the base price for seeds (1.15 = 115% base price for all seeds)
+"Inf_FoodBase":				Positive decimal value that sets the base price for food (1.2 = 120% base price for all food)
+"Inf_FarmingSkill":			Percentage value that sets farming skill influence (0.0075 = .75% per skill level)
+"Inf_ForageSkill":			Percentage value that sets forage skill influence (0.0075 = .75% per skill level)
+"Inf_FishingSkill":			Percentage value that sets fishing skill influence (0.0075 = .75% per skill level)
+"Inf_MiningSkill":			Percentage value that sets mining skill influence (0.0075 = .75% per skill level)
+"Inf_RelationshipBenefit":		Percentage value that sets relationship influence (0.04 = 4% per skill level)
+"Inf_Seasonal":				Percentage value that sets seasonal item influence (0.04 = 4% per skill level)
+"Inf_FruitTreeArtisanBonus":		Percentage value that sets a bonus for fruit tree artisan goods (0.1 = 10%)
+"Inf_RandomFluctuation":		Positive Integer value that determines how much items can randomly fluctuate (16 = 0-15%; 10 = 0-9%)
+"Inf_DiminishingReturnOffset":		Decimal value that increases or decreases the effects of diminishing returns (0.1 = 10% increase, -0.1 = 10% decrease)
+"Sta_Pickaxe":				Positive decimal value that increases stamina usage for the pickaxe per tool level (0.0 = off)
+"Sta_Axe":				Positive decimal value that increases stamina usage for the axe per tool level (0.0 = off)
+"Sta_Scythe":				Positive decimal value that increases stamina usage for the scythe (0.0 = off)
+"Sta_Hoe":				Positive decimal value that increases stamina usage for the hoe per tool level (0.0 = off)
+"Sta_WateringCan":			Positive decimal value that increases stamina usage for the watering can per tool level (0.0 = off)

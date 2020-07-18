@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NpcAdventure", "NpcAdventure\NpcAdventure.csproj", "{644E8E3D-1F60-4742-8E8C-655652D44615}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NpcAdventure", "NpcAdventure\NpcAdventure.csproj", "{644E8E3D-1F60-4742-8E8C-655652D44615}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0ACC2D0B-691B-43CA-9297-C1CCF149CF3A}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,16 +25,18 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{644E8E3D-1F60-4742-8E8C-655652D44615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{644E8E3D-1F60-4742-8E8C-655652D44615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Debug|x86.ActiveCfg = Debug|x86
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Debug|x86.Build.0 = Debug|x86
-		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|Any CPU.ActiveCfg = Nightbuild|Any CPU
-		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|Any CPU.Build.0 = Nightbuild|Any CPU
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|Any CPU.ActiveCfg = Release|x86
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|Any CPU.Build.0 = Release|x86
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|x86.ActiveCfg = Release|x86
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|x86.Build.0 = Release|x86
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|Any CPU.ActiveCfg = Nightbuild|x86
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|Any CPU.Build.0 = Nightbuild|x86
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|x86.ActiveCfg = Nightbuild|x86
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|x86.Build.0 = Nightbuild|x86
-		{644E8E3D-1F60-4742-8E8C-655652D44615}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{644E8E3D-1F60-4742-8E8C-655652D44615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Release|Any CPU.ActiveCfg = Release|x86
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Release|x86.ActiveCfg = Release|x86
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection

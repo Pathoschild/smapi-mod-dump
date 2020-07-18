@@ -1,6 +1,7 @@
 {
   "AllBushesAreDestroyable": true,
   "DestroyableBushLocations": [],
+  "WhenBushesRegrow": "3 days",
   "AmountOfWoodDropped": {
     "SmallBushes": 2,
     "MediumBushes": 4,

@@ -26,33 +26,33 @@ namespace MultipleSpouses
         {
             try
             {
-                if(Game1.player != null && Utility.getHomeOfFarmer(Game1.player) != null && __instance.Equals(Utility.getHomeOfFarmer(Game1.player)))
-                {
-                    int ecribs = Math.Max(ModEntry.config.ExtraCribs, 0);
-                    int espace = Math.Max(ModEntry.config.ExtraKidsRoomWidth, 0);
-                    int ebeds = Math.Max(ModEntry.config.ExtraKidsBeds, 0);
+                if (__instance.owner == null)
+                    return;
+                int ecribs = Math.Max(ModEntry.config.ExtraCribs, 0);
+                int espace = Math.Max(ModEntry.config.ExtraKidsRoomWidth, 0);
+                int ebeds = Math.Max(ModEntry.config.ExtraKidsBeds, 0);
 
-                    if (__instance.upgradeLevel > 1 && ecribs + espace + ebeds > 0)
+                if (__instance.upgradeLevel > 1 && ecribs + espace + ebeds > 0)
+                {
+                    int x = (ecribs * 3) + espace + (ebeds * 4);
+                    __result.Remove(new Microsoft.Xna.Framework.Rectangle(15, 1, 13, 3));
+                    __result.Add(new Microsoft.Xna.Framework.Rectangle(15, 1, 13 + x, 3));
+                }
+                if (ModEntry.config.BuildAllSpousesRooms)
+                {
+                    int count = Misc.GetSpouses(__instance.owner, 0).Keys.ToList().FindAll((spouse) => Maps.roomIndexes.ContainsKey(spouse) || Maps.tmxSpouseRooms.ContainsKey(spouse)).Count;
+
+                    if (count > 0)
                     {
-                        int x = (ecribs * 3) + espace + (ebeds * 4);
-                        __result.Remove(new Microsoft.Xna.Framework.Rectangle(15, 1, 13, 3));
-                        __result.Add(new Microsoft.Xna.Framework.Rectangle(15, 1, 13 + x, 3));
-                    }
-                    if (ModEntry.config.BuildAllSpousesRooms)
-                    {
-                        List<NPC> spouses = Maps.spousesWithRooms;
-                        if(spouses != null && spouses.Count > 0)
+                        for(int i = 0; i < count; i++)
                         {
-                            for(int i = 0; i < spouses.Count; i++)
+                            if (__instance.upgradeLevel > 1)
                             {
-                                if (__instance.upgradeLevel > 1)
-                                {
-                                    __result.Add(new Microsoft.Xna.Framework.Rectangle(41 + i * 7, 10, 7, 3));
-                                }
-                                else 
-                                {
-                                    __result.Add(new Microsoft.Xna.Framework.Rectangle(35 + i * 7, 1, 7, 3));
-                                }
+                                __result.Add(new Microsoft.Xna.Framework.Rectangle(41 + i * 7, 10, 7, 3));
+                            }
+                            else 
+                            {
+                                __result.Add(new Microsoft.Xna.Framework.Rectangle(35 + i * 7, 1, 7, 3));
                             }
                         }
                     }
@@ -68,32 +68,48 @@ namespace MultipleSpouses
         {
             try
             {
-                if (Game1.player != null && __instance.Equals(Utility.getHomeOfFarmer(Game1.player)))
+                if (__instance.owner == null)
+                    return;
+                int ecribs = Math.Max(ModEntry.config.ExtraCribs, 0);
+                int espace = Math.Max(ModEntry.config.ExtraKidsRoomWidth, 0);
+                int ebeds = Math.Max(ModEntry.config.ExtraKidsBeds, 0);
+                if (__instance.upgradeLevel > 1 && ecribs + espace + ebeds > 0)
                 {
-                    int ecribs = Math.Max(ModEntry.config.ExtraCribs, 0);
-                    int espace = Math.Max(ModEntry.config.ExtraKidsRoomWidth, 0);
-                    int ebeds = Math.Max(ModEntry.config.ExtraKidsBeds, 0);
-                    if (__instance.upgradeLevel > 1 && ecribs + espace + ebeds > 0)
+                    int x = (ecribs * 3) + espace + (ebeds * 4);
+                    __result.Remove(new Microsoft.Xna.Framework.Rectangle(15, 3, 13, 6));
+                    __result.Add(new Microsoft.Xna.Framework.Rectangle(15, 3, 13 + x, 6));
+                }
+                if (ModEntry.config.BuildAllSpousesRooms)
+                {
+                    int count = Misc.GetSpouses(__instance.owner, 0).Keys.ToList().FindAll((spouse) => Maps.roomIndexes.ContainsKey(spouse) || Maps.tmxSpouseRooms.ContainsKey(spouse)).Count;
+
+                    if (__instance.owner.spouse != null && !__instance.owner.friendshipData[__instance.owner.spouse].IsEngaged() && (Maps.roomIndexes.ContainsKey(__instance.owner.spouse) || Maps.tmxSpouseRooms.ContainsKey(__instance.owner.spouse)))
+                        count++;
+                    if (count > 0)
                     {
-                        int x = (ecribs * 3) + espace + (ebeds * 4);
-                        __result.Remove(new Microsoft.Xna.Framework.Rectangle(15, 3, 13, 6));
-                        __result.Add(new Microsoft.Xna.Framework.Rectangle(15, 3, 13 + x, 6));
-                    }
-                    if (ModEntry.config.BuildAllSpousesRooms)
-                    {
-                        List<NPC> spouses = Maps.spousesWithRooms;
-                        if (spouses != null && spouses.Count > 0)
+                        if (__instance.upgradeLevel > 1)
                         {
-                            for (int i = 0; i < spouses.Count; i++)
+                            __result.Remove(new Microsoft.Xna.Framework.Rectangle(23, 12, 12, 11));
+                            __result.Add(new Microsoft.Xna.Framework.Rectangle(23, 12, 11, 11));
+                            __result.Add(new Microsoft.Xna.Framework.Rectangle(34, 19, count * 7, 1));
+                        }
+                        else
+                        {
+                            __result.Remove(new Microsoft.Xna.Framework.Rectangle(20, 3, 9, 8));
+                            __result.Add(new Microsoft.Xna.Framework.Rectangle(20, 3, 8, 8));
+                            __result.Add(new Microsoft.Xna.Framework.Rectangle(28, 10, count * 7, 1));
+                        }
+                        for (int i = 0; i < count; i++)
+                        {
+                            if (__instance.upgradeLevel > 1)
                             {
-                                if (__instance.upgradeLevel > 1)
-                                {
-                                    __result.Add(new Microsoft.Xna.Framework.Rectangle(41 + i * 7, 13, 7, 6));
-                                }
-                                else
-                                {
-                                    __result.Add(new Microsoft.Xna.Framework.Rectangle(35 + i * 7, 4, 7, 6));
-                                }
+                                __result.Add(new Microsoft.Xna.Framework.Rectangle(35 + i * 7, 13, 6, 6));
+                                __result.Add(new Microsoft.Xna.Framework.Rectangle(34 + (i * 7), 13, 1, 6));
+                            }
+                            else
+                            {
+                                __result.Add(new Microsoft.Xna.Framework.Rectangle(29 + i * 7, 4, 6, 6));
+                                __result.Add(new Microsoft.Xna.Framework.Rectangle(28 + (i * 7), 4, 1, 6));
                             }
                         }
                     }
@@ -123,39 +139,46 @@ namespace MultipleSpouses
         }
 
 
-        public static void FarmHouse_resetLocalState_Postfix(FarmHouse __instance)
+        public static void FarmHouse_resetLocalState_Postfix(ref FarmHouse __instance)
         {
             try
             {
+                Farmer f = __instance.owner;
 
-
-                if (!(__instance is FarmHouse) || !__instance.Name.StartsWith("FarmHouse") || __instance != Utility.getHomeOfFarmer(Game1.player) || Misc.GetAllSpouses().Count == 0)
+                if (f == null)
                 {
                     return;
                 }
-                ModEntry.PMonitor.Log("reset farmhouse state");
+                ModEntry.PMonitor.Log($"reset farmhouse state - upgrade level {__instance.upgradeLevel}");
 
-
-                Farmer f = __instance.owner;
                 Misc.ResetSpouses(f);
 
-                if (f.currentLocation == __instance && Misc.IsInBed(f.GetBoundingBox()))
+                if (f.currentLocation == __instance && Misc.IsInBed(__instance, f.GetBoundingBox()))
                 {
-                    f.position.Value = Misc.GetSpouseBedPosition(__instance, "Game1.player");
+                    f.position.Value = Misc.GetFarmerBedPosition(__instance);
                 }
-                NPCPatches.SetCribs(__instance);
-
-                if (Misc.ChangingHouse())
+                if (ModEntry.config.CustomBed && __instance.upgradeLevel > 0)
                 {
-                    if (__instance.upgradeLevel > 1)
+                    Maps.ReplaceBed(__instance);
+                }
+                if(__instance.upgradeLevel > 0 && __instance.upgradeLevel < 4)
+                {
+                    Maps.BuildSpouseRooms(__instance);
+                    __instance.setFloors();
+                }
+                if (Misc.ChangingKidsRoom())
+                {
+                    if(__instance.upgradeLevel > 1 && __instance.upgradeLevel < 4)
                     {
+                        NPCPatches.SetCribs(__instance);
                         Maps.ExpandKidsRoom(__instance);
                     }
-                    __instance.showSpouseRoom();
-                    Maps.BuildSpouseRooms(__instance);
-                    if (ModEntry.config.CustomBed)
+                }
+                if(Misc.GetSpouses(f,0).ContainsKey("Sebastian") && Game1.netWorldState.Value.hasWorldStateID("sebastianFrog"))
+                {
+                    if (Game1.random.NextDouble() < 0.1 && Game1.timeOfDay > 610)
                     {
-                        Maps.ReplaceBed(__instance);
+                        DelayedAction.playSoundAfterDelay("croak", 1000, null, -1);
                     }
                 }
             }
@@ -165,22 +188,20 @@ namespace MultipleSpouses
             }
         }
 
-        public static void Farm_addSpouseOutdoorArea_Prefix(ref string spouseName)
+        public static bool Farm_addSpouseOutdoorArea_Prefix(ref string spouseName)
         {
             try
             {
-                ModEntry.PMonitor.Log($"Checking for outdoor spouse to change area");
-                if (ModEntry.outdoorSpouse != null && spouseName != "")
+                if (ModEntry.outdoorAreaData.areas.ContainsKey(spouseName))
                 {
-                    spouseName = ModEntry.outdoorSpouse;
-                    ModEntry.PMonitor.Log($"Setting outdoor spouse area for {spouseName}");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 Monitor.Log($"Failed in {nameof(Farm_addSpouseOutdoorArea_Prefix)}:\n{ex}", LogLevel.Error);
             }
-
+            return true;
         }
 
 
@@ -191,21 +212,7 @@ namespace MultipleSpouses
                 if (___oldMariner != null && ___oldMariner.getTileX() == tileLocation.X && ___oldMariner.getTileY() == tileLocation.Y)
                 {
                     string playerTerm = Game1.content.LoadString("Strings\\Locations:Beach_Mariner_Player_" + (who.IsMale ? "Male" : "Female"));
-                    if (who.specialItems.Contains(460) && !Utility.doesItemWithThisIndexExistAnywhere(460, false))
-                    {
-                        for (int i = who.specialItems.Count - 1; i >= 0; i--)
-                        {
-                            if (who.specialItems[i] == 460)
-                            {
-                                who.specialItems.RemoveAt(i);
-                            }
-                        }
-                    }
-                    if (who.specialItems.Contains(460))
-                    {
-                        Game1.drawObjectDialogue(Game1.parseText(Game1.content.LoadString("Strings\\Locations:Beach_Mariner_PlayerHasItem", playerTerm)));
-                    }
-                    else if (who.hasAFriendWithHeartLevel(10, true) && who.houseUpgradeLevel == 0)
+                    if (who.hasAFriendWithHeartLevel(10, true) && who.houseUpgradeLevel == 0)
                     {
                         Game1.drawObjectDialogue(Game1.parseText(Game1.content.LoadString("Strings\\Locations:Beach_Mariner_PlayerNotUpgradedHouse", playerTerm)));
                     }
@@ -232,6 +239,7 @@ namespace MultipleSpouses
             }
             return true;
         }
+
         public static bool GameLocation_performAction_Prefix(GameLocation __instance, string action, Farmer who, ref bool __result, Location tileLocation)
         {
             try
@@ -297,7 +305,8 @@ namespace MultipleSpouses
             try
             {
                 Misc.ResetSpouses(who);
-                if (action != null && who.IsLocalPlayer && !Game1.player.divorceTonight && (Game1.player.isMarried() || ModEntry.spouses.Count > 0))
+                Dictionary<string, NPC> spouses = Misc.GetSpouses(who, -1);
+                if (action != null && who.IsLocalPlayer && !Game1.player.divorceTonight && (Game1.player.isMarried() || spouses.Count > 0))
                 {
                     string a = action.Split(new char[]
                     {
@@ -311,11 +320,9 @@ namespace MultipleSpouses
                             s2 = Game1.content.LoadStringReturnNullIfNotFound("Strings\\Locations:ManorHouse_DivorceBook_Question");
                         }
                         List<Response> responses = new List<Response>();
-                        if(who.spouse != null)
-                            responses.Add(new Response(who.spouse, who.spouse));
-                        foreach (string spouse in ModEntry.spouses.Keys)
+                        foreach (NPC spouse in spouses.Values)
                         {
-                            responses.Add(new Response(spouse, ModEntry.spouses[spouse].displayName));
+                            responses.Add(new Response(spouse.name, spouse.displayName));
                         }
                         responses.Add(new Response("No", Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No")));
                         __instance.createQuestionDialogue(s2, responses.ToArray(), "divorce");
@@ -340,7 +347,7 @@ namespace MultipleSpouses
                     string text = split[1];
                     if (text == "wedding")
                     {
-                        Misc.PlaceSpousesInFarmhouse();
+                        Misc.PlaceSpousesInFarmhouse(Utility.getHomeOfFarmer(Game1.player));
                     }
                 }
             }
@@ -355,7 +362,11 @@ namespace MultipleSpouses
         {
             try
             {
+                if (precondition == null || precondition == "")
+                    return;
                 string[] split = precondition.Split('/');
+                if (split.Length == 0)
+                    return;
                 int eventId;
                 if (!int.TryParse(split[0], out eventId))
                 {
@@ -365,12 +376,16 @@ namespace MultipleSpouses
                 {
                     return;
                 }
+                Dictionary<string, NPC> spouses = Misc.GetSpouses(Game1.player, -1);
                 for (int i = 1; i < split.Length; i++)
                 {
+                    if (split[i].Length == 0)
+                        continue;
+
                     if (split[i][0] == 'O')
                     {
                         string name = split[i].Substring(2);
-                        if (Game1.player.spouse != name && ModEntry.spouses.ContainsKey(name))
+                        if (Game1.player.spouse != name && spouses.ContainsKey(name))
                         {
                             Monitor.Log($"Got unofficial spouse requirement for event: {name}, switching event condition to isSpouse O");
                             split[i] = $"o {name}";
@@ -379,7 +394,7 @@ namespace MultipleSpouses
                     else if (split[i][0] == 'o')
                     {
                         string name = split[i].Substring(2);
-                        if (Game1.player.spouse != name && ModEntry.spouses.ContainsKey(name))
+                        if (Game1.player.spouse != name && spouses.ContainsKey(name))
                         {
                             Monitor.Log($"Got unofficial spouse barrier to event: {name}, switching event condition to notSpouse o");
                             split[i] = $"O {name}";
@@ -398,56 +413,63 @@ namespace MultipleSpouses
         {
             try
             {
-                foreach (NPC c in __instance.characters)
+                if (__instance.owner == null)
+                    return;
+
+                List<string> mySpouses = Misc.GetSpouses(__instance.owner, 1).Keys.ToList();
+                if (Game1.IsMasterGame && Game1.timeOfDay >= 2200 && Game1.IsMasterGame)
                 {
-                    if (c.isMarried())
+                    int upgradeLevel = __instance.upgradeLevel;
+                    List<string> roomSpouses = mySpouses.FindAll((s) => Maps.roomIndexes.ContainsKey(s) || Maps.tmxSpouseRooms.ContainsKey(s));
+                    List<string> bedSpouses = mySpouses.FindAll((s) => ModEntry.config.RoommateRomance || !__instance.owner.friendshipData[s].RoommateMarriage);
+                    foreach (NPC c in __instance.characters)
                     {
-                        string spouseName = c.Name;
-                        int upgradeLevel = __instance.upgradeLevel;
-                        Point bedSpot;
-                        if (Game1.player.friendshipData[spouseName].RoommateMarriage && !ModEntry.config.RoommateRomance)
+                        if (c.isMarried())
                         {
-                            List<string> mySpouses = Misc.GetAllSpouseNamesOfficialFirst(Game1.player);
-                            List<string> roomSpouses = mySpouses.FindAll((s) => Maps.roomIndexes.ContainsKey(s) || Maps.tmxSpouseRooms.ContainsKey(s));
+                            string spouseName = c.Name;
 
-                            if (!roomSpouses.Exists((n) => n == spouseName))
+                            if (Misc.GetSpouses(Game1.player,1).ContainsKey(spouseName))
                             {
-                                bedSpot = __instance.getRandomOpenPointInHouse(ModEntry.myRand);
-                            }
-                            else
-                            {
-                                int offset = roomSpouses.IndexOf(spouseName) * 7;
-                                Vector2 spot = (upgradeLevel == 1) ? new Vector2(32f, 5f) : new Vector2(38f, 14f);
-                                bedSpot = new Point((int)spot.X + offset, (int)spot.Y);
-                            }
-                        }
-                        else
-                        {
-                            Misc.SetBedmates();
-
-                            int bedWidth;
-                            bool up = upgradeLevel > 1;
-                            if (ModEntry.config.CustomBed)
-                            {
-                                bedWidth = Math.Min(up ? 9 : 6, Math.Max(ModEntry.config.BedWidth, 3));
-                            }
-                            else
-                            {
-                                bedWidth = 3;
+                                c.checkForMarriageDialogue(timeOfDay, __instance);
                             }
 
-                            Point bedStart = new Point(21 - (up ? (bedWidth / 2) - 1 : 0) + (up ? 6 : 0), 2 + (up ? 9 : 0));
-                            int x = (int)(ModEntry.allBedmates.IndexOf(spouseName) / (float)ModEntry.allBedmates.Count * (bedWidth - 1));
-                            bedSpot = new Point(bedStart.X + x, bedStart.Y + 2);
-
-                        }
-                        if (Game1.IsMasterGame && Game1.timeOfDay >= 2200 && Game1.IsMasterGame && c.position != Misc.GetSpouseBedPosition(__instance,spouseName) && (timeOfDay == 2200 || (c.controller == null && timeOfDay % 100 % 30 == 0)))
-                        {
-                            c.controller = null;
-                            c.controller = new PathFindController(c, __instance, bedSpot, 0, new PathFindController.endBehavior(FarmHouse.spouseSleepEndFunction));
-                            if (c.controller.pathToEndPoint == null || !__instance.isTileOnMap(c.controller.pathToEndPoint.Last<Point>().X, c.controller.pathToEndPoint.Last<Point>().Y))
+                            Point bedSpot;
+                            if (timeOfDay >= 2200)
                             {
+                                if (!bedSpouses.Contains(c.Name))
+                                {
+                                    if (!roomSpouses.Exists((n) => n == spouseName))
+                                    {
+                                        bedSpot = __instance.getRandomOpenPointInHouse(ModEntry.myRand);
+                                    }
+                                    else
+                                    {
+                                        int offset = roomSpouses.IndexOf(spouseName) * 7;
+                                        Vector2 spot = (upgradeLevel == 1) ? new Vector2(32f, 5f) : new Vector2(38f, 14f);
+                                        bedSpot = new Point((int)spot.X + offset, (int)spot.Y);
+                                    }
+
+                                }
+                                else
+                                {
+                                    int bedWidth = Misc.GetBedWidth(__instance);
+                                    bool up = upgradeLevel > 1;
+
+                                    Point bedStart = new Point(21 - (up ? (bedWidth / 2) - 1 : 0) + (up ? 6 : 0), 2 + (up ? 9 : 0));
+                                    int x = 1 + (int)((bedSpouses.IndexOf(spouseName) + 1) / (float)(bedSpouses.Count + 1) * (bedWidth - 2));
+                                    bedSpot = new Point(bedStart.X + x, bedStart.Y + 2);
+
+                                }
+
                                 c.controller = null;
+                                if (c.Position != Misc.GetSpouseBedPosition(__instance, bedSpouses, c.Name) && (!Misc.IsInBed(__instance,c.GetBoundingBox()) || !Kissing.kissingSpouses.Contains(c.Name)))
+                                {
+                                    c.controller = new PathFindController(c, __instance, bedSpot, 0, new PathFindController.endBehavior(FarmHouse.spouseSleepEndFunction));
+                                    if (c.controller.pathToEndPoint == null || !__instance.isTileOnMap(c.controller.pathToEndPoint.Last<Point>().X, c.controller.pathToEndPoint.Last<Point>().Y))
+                                    {
+                                        c.controller = null;
+                                    }
+                                }
                             }
                         }
                     }
@@ -458,5 +480,28 @@ namespace MultipleSpouses
                 Monitor.Log($"Failed in {nameof(FarmHouse_performTenMinuteUpdate_Postfix)}:\n{ex}", LogLevel.Error);
             }
         }
+
+        public static void Desert_getDesertMerchantTradeStock_Postfix(Farmer who, ref Dictionary<ISalable, int[]> __result)
+        {
+            try
+            {
+                if (who != null && who.getFriendshipHeartLevelForNPC("Krobus") >= 10 && !who.friendshipData["Krobus"].RoommateMarriage && who.houseUpgradeLevel >= 1 && (who.isMarried() || who.isEngaged()) && !who.hasItemInInventory(808, 1, 0))
+                {
+                    ISalable i = new StardewValley.Object(808, 1, false, -1, 0);
+                    __result.Add(i, new int[]
+                    {
+                        0,
+                        1,
+                        769,
+                        200
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(Desert_getDesertMerchantTradeStock_Postfix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+
     }
 }

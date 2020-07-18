@@ -1,11 +1,11 @@
-﻿using FarmAnimalVarietyRedux.Models;
+﻿using FarmAnimalVarietyRedux.Enums;
 using Harmony;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Network;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
@@ -69,11 +69,10 @@ namespace FarmAnimalVarietyRedux.Patches
         /// <param name="__instance">The <see cref="FarmAnimal"/> instance being patched.</param>
         internal static void ConstructorPostFix(string type, FarmAnimal __instance)
         {
-            // check if the type is custom
             var animal = ModEntry.Instance.Api.GetAnimalByName(type);
             if (animal != null)
             {
-                var subType = animal.SubTypes[Game1.random.Next(animal.SubTypes.Count())];
+                var subType = animal.Data.Types[Game1.random.Next(animal.Data.Types.Count())];
                 __instance.type.Value = subType.Name;
             }
 
@@ -94,8 +93,9 @@ namespace FarmAnimalVarietyRedux.Patches
                 ModEntry.Instance.ContentPacksLoaded = true;
             }
 
-            string data;
-            Game1.content.Load<Dictionary<string, string>>("Data\\FarmAnimals").TryGetValue(__instance.type.Value, out data);
+            // TODO: merge
+            var test = Game1.content.Load<Dictionary<string, string>>(Path.Combine("Data", "FarmAnimals"));
+            test.TryGetValue(__instance.type.Value, out string data);
             if (data == null)
             {
                 ModEntry.ModMonitor.Log($"Couldn't find farm animal datastring for animal: {__instance.type.Value}", LogLevel.Error);
@@ -117,7 +117,7 @@ namespace FarmAnimalVarietyRedux.Patches
             else if (__instance.showDifferentTextureWhenReadyForHarvest && __instance.currentProduce <= 0)
                 animalType = "Sheared" + __instance.type.Value;
 
-            __instance.Sprite = new AnimatedSprite($"Animals\\{animalType}", 0, Convert.ToInt32(dataSplit[16]), Convert.ToInt32(dataSplit[17]));
+            __instance.Sprite = new AnimatedSprite(Path.Combine("Animals", animalType), 0, Convert.ToInt32(dataSplit[16]), Convert.ToInt32(dataSplit[17]));
             __instance.frontBackSourceRect.Value = new Microsoft.Xna.Framework.Rectangle(0, 0, Convert.ToInt32(dataSplit[16]), Convert.ToInt32(dataSplit[17]));
             __instance.sidewaysSourceRect.Value = new Microsoft.Xna.Framework.Rectangle(0, 0, Convert.ToInt32(dataSplit[18]), Convert.ToInt32(dataSplit[19]));
             __instance.fullnessDrain.Value = Convert.ToByte(dataSplit[20]);
@@ -443,12 +443,27 @@ namespace FarmAnimalVarietyRedux.Patches
             return false;
         }
 
+        /// <summary>The prefix for the MakeSound method.</summary>
+        /// <param name="__instance">The <see cref="FarmAnimal"/> instance being patched.</param>
+        /// <returns>True meaning the original method will get ran.</returns>
+        internal static bool MakeSoundPrefix(FarmAnimal __instance)
+        {
+            var animalData = ModEntry.Instance.Api.GetAnimalBySubTypeName(__instance.type);
+            if (animalData.Data.SoundEffect != null)
+            {
+                animalData.Data.SoundEffect.Play();
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>The prefix for the UpdateWhenNotCurrentLocation method.</summary>
         /// <param name="currentBuilding">The current building the animal is in.</param>
         /// <param name="time">The GameTime object that contains time data about the game's frame time.</param>
         /// <param name="environment">The <see cref="GameLocation"/> of the animal.</param>
         /// <returns>False meaning the original method won't get ran.</returns>
-        public static bool UpdateWhenNotCurrentLocationPrefix(Building currentBuilding, GameTime time, GameLocation environment, FarmAnimal __instance)
+        internal static bool UpdateWhenNotCurrentLocationPrefix(Building currentBuilding, GameTime time, GameLocation environment, FarmAnimal __instance)
         {
             var behaviors = typeof(FarmAnimal).GetMethod("behaviors", BindingFlags.NonPublic | BindingFlags.Instance);
             var doFarmerPushEvent = (NetEvent1Field<int, NetInt>)typeof(FarmAnimal).GetField("doFarmerPushEvent", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
@@ -585,7 +600,7 @@ namespace FarmAnimalVarietyRedux.Patches
         /// <param name="environtment">The current location of the animal.</param>
         /// <param name="__instance">The <see cref="FarmAnimal"/> instance being patched.</param>
         /// <returns>False meaning the original method won't get ran.</returns>
-        internal static bool DayUpdatePrefix(GameLocation environtment, FarmAnimal __instance)
+        internal static bool DayUpdatePrefix(GameLocation environtment, FarmAnimal __instance) // TODO: check if I can correct the mispelling from the game code with Harmony still working
         {
             var random = new Random((int)(__instance.myID / 2 + Game1.stats.DaysPlayed));
             __instance.controller = null;
@@ -678,15 +693,12 @@ namespace FarmAnimalVarietyRedux.Patches
             var producedItemId = -1;
             if (canProduceItem && !__instance.isBaby()) // check whether the animal can produce an item and which one
             {
-                producedItemId = __instance.defaultProduceIndex.Value;
-                if (producedItemId == -1) // animal is a custom animal
+                var subType = ModEntry.Instance.Api.GetAnimalSubTypeByName(__instance.type.Value);
+                if (subType != null)
                 {
-                    var subType = ModEntry.Instance.Api.GetAnimalSubTypeByName(__instance.type.Value);
-                    if (subType != null)
-                    {
-                        producedItemId = subType.Produce.GetRandomDefault(out var harvestType);
-                        __instance.harvestType.Value = (byte)harvestType;
-                    }
+                    var numberOfHearts = (int)(__instance.friendshipTowardFarmer / 195f);
+                    producedItemId = subType.Produce.GetRandomDefault(numberOfHearts, out var harvestType);
+                    __instance.harvestType.Value = (byte)harvestType;
                 }
 
                 if (random.NextDouble() < __instance.happiness / 150.0)
@@ -724,18 +736,13 @@ namespace FarmAnimalVarietyRedux.Patches
                     {
                         if (random.NextDouble() < (__instance.friendshipTowardFarmer + frienshipModifier) / 1200.0 && __instance.friendshipTowardFarmer >= 200)
                         {
-                            if (__instance.deluxeProduceIndex == -1) // animal is a custom animal
+                            var numberOfHearts = (int)(__instance.friendshipTowardFarmer / 195f);
+                            var customSubType = ModEntry.Instance.Api.GetAnimalSubTypeByName(__instance.type.Value);
+                            var deluxeId = customSubType.Produce.GetRandomDeluxe(numberOfHearts, out var harvestType);
+                            if (deluxeId != -1) // only change to a deluxe product if one could be found (not all animals have deluxe produce)
                             {
-                                var subType = ModEntry.Instance.Api.GetAnimalSubTypeByName(__instance.type.Value);
-                                if (subType != null)
-                                {
-                                    var deluxeId = subType.Produce.GetRandomDeluxe(out var harvestType);
-                                    if (deluxeId != -1) // only change to a deluxe product if one could be found (not all animals have deluxe produce)
-                                    {
-                                        producedItemId = deluxeId;
-                                        __instance.harvestType.Value = (byte)harvestType;
-                                    }
-                                }
+                                producedItemId = deluxeId;
+                                __instance.harvestType.Value = (byte)harvestType;
                             }
                         }
                     }
@@ -759,7 +766,7 @@ namespace FarmAnimalVarietyRedux.Patches
             }
 
             // setup harvest type with a tool - this is so it's produce doesn't spawn in the animal house, instead must be manually harvested
-            if (__instance.harvestType == 1 & canProduceItem)
+            if (__instance.harvestType == 1 && canProduceItem)
             {
                 __instance.currentProduce.Value = producedItemId;
                 producedItemId = -1;

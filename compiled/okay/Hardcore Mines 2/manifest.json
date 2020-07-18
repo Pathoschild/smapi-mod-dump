@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Hardcore Mine 2",
+  "Author": "ItsLittany",
+  "Version": "1.0.0",
+  "Description": "Updated version of Hardcore Mines",
+  "UniqueID": "itslittany.HardcoreMines2",
+  "EntryDll": "HardcoreMines2.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6411" ]
+}
