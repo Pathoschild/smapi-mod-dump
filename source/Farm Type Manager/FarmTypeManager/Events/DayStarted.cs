@@ -29,16 +29,16 @@ namespace FarmTypeManager
             Utility.TimedSpawns.Clear();
             Utility.MonsterTracker.Clear();
 
-            Monitor.Log($"Checking for saved objects that went missing overnight.", LogLevel.Trace);
+            Utility.Monitor.Log($"Checking for saved objects that went missing overnight.", LogLevel.Trace);
             foreach (FarmData data in Utility.FarmDataList) //for each loaded set of data
             {
                 if (data.Pack != null) //if this data is from a content pack
                 {
-                    Monitor.VerboseLog($"Checking objects from content pack: {data.Pack.Manifest.Name}");
+                    Utility.Monitor.VerboseLog($"Checking objects from content pack: {data.Pack.Manifest.Name}");
                 }
                 else //this data is from this mod's own folders
                 {
-                    Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
+                    Utility.Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
                 }
 
                 Utility.ReplaceProtectedSpawns(data.Save); //protect unexpired spawns listed in the save data

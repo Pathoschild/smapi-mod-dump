@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>TheStarsIncline</AssemblyName>
+    <RootNamespace>TwilightShards.TheStarsIncline</RootNamespace>
+    <Version>1.0.0</Version>
+    <TargetFramework>net45</TargetFramework>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
+  </ItemGroup>
+
+  <Import Project="..\TwilightCoreShared\TwilightCoreShared.projitems" Label="Shared" />
+  <Import Project="$(SolutionDir)\deploy-mod.targets" />
+
+</Project>

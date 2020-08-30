@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6559
+IDs: Kirpy.RainPlus
+update keys: Nexus:6559

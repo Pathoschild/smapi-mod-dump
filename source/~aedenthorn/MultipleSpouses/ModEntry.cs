@@ -28,7 +28,8 @@ namespace MultipleSpouses
         public static Random myRand;
         public static int bedSleepOffset = 140;
         public static int divorceHeartsLost;
-        public static OutdoorAreaData outdoorAreaData = new OutdoorAreaData();
+        public static string farmHelperSpouse = null;
+        internal static NPC tempOfficialSpouse;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -57,21 +58,17 @@ namespace MultipleSpouses
             FarmerPatches.Initialize(Monitor, Helper);
             Maps.Initialize(Monitor);
             Kissing.Initialize(Monitor);
-            UIPatches.Initialize(Monitor);
+            UIPatches.Initialize(Monitor, Helper);
             EventPatches.Initialize(Monitor, Helper);
             HelperEvents.Initialize(Monitor, Helper);
             FileIO.Initialize(Monitor, Helper);
             Misc.Initialize(Monitor, Helper);
+            Divorce.Initialize(Monitor, Helper);
 
             var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
 
 
             // npc patches
-
-            harmony.Patch(
-               original: AccessTools.Method(typeof(NPC), nameof(NPC.setUpForOutdoorPatioActivity)),
-               prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_setUpForOutdoorPatioActivity_Prefix))
-            );
 
             harmony.Patch(
                original: AccessTools.Method(typeof(NPC), nameof(NPC.marriageDuties)),
@@ -115,15 +112,36 @@ namespace MultipleSpouses
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_spouseObstacleCheck_Postfix))
             );
 
-            harmony.Patch(
-               original: AccessTools.Method(typeof(NPC), "doPlaySpousePatioAnimation"),
-               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_doPlaySpousePatioAnimation_Postfix))
-            );
 
             harmony.Patch(
                original: AccessTools.Method(typeof(NPC), "engagementResponse"),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_engagementResponse_Postfix))
             );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(NPC), nameof(NPC.playSleepingAnimation)),
+               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_playSleepingAnimation_Postfix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(NPC), nameof(NPC.GetDispositionModifiedString)),
+               prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_GetDispositionModifiedString_Prefix)),
+               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_GetDispositionModifiedString_Postfix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(NPC), "loadCurrentDialogue"),
+               prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_loadCurrentDialogue_Prefix)),
+               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_loadCurrentDialogue_Postfix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(NPC), nameof(NPC.tryToRetrieveDialogue)),
+               prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_tryToRetrieveDialogue_Prefix))
+            );
+
+
+            // Child patches
 
             harmony.Patch(
                original: AccessTools.Method(typeof(Child), nameof(Child.reloadSprite)),
@@ -148,10 +166,6 @@ namespace MultipleSpouses
 
             // location patches
 
-            harmony.Patch(
-               original: AccessTools.Method(typeof(Farm), "addSpouseOutdoorArea"),
-               prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.Farm_addSpouseOutdoorArea_Prefix))
-            );
 
             harmony.Patch(
                original: AccessTools.Method(typeof(Beach), nameof(Beach.checkAction)),
@@ -176,6 +190,10 @@ namespace MultipleSpouses
             harmony.Patch(
                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performAction)),
                prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.GameLocation_performAction_Prefix))
+            );
+            harmony.Patch(
+               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogue)),
+               prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.GameLocation_answerDialogue_prefix))
             );
 
             harmony.Patch(
@@ -239,15 +257,32 @@ namespace MultipleSpouses
             );
 
             harmony.Patch(
+               original: AccessTools.Method(typeof(Farmer), nameof(Farmer.getSpouse)),
+               prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_getSpouse_Prefix))
+            );
+
+            harmony.Patch(
                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.checkAction)),
                prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_checkAction_Prefix))
             );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Farmer), nameof(Farmer.GetSpouseFriendship)),
+               prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_GetSpouseFriendship_Prefix))
+            );
+
 
             // UI patches
 
             harmony.Patch(
                original: AccessTools.Method(typeof(SocialPage), "drawNPCSlot"),
-               prefix: new HarmonyMethod(typeof(UIPatches), nameof(UIPatches.SocialPage_drawNPCSlot))
+               prefix: new HarmonyMethod(typeof(UIPatches), nameof(UIPatches.SocialPage_drawNPCSlot_prefix)),
+               transpiler: new HarmonyMethod(typeof(UIPatches), nameof(UIPatches.SocialPage_drawSlot_transpiler))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(SocialPage), "drawFarmerSlot"),
+               transpiler: new HarmonyMethod(typeof(UIPatches), nameof(UIPatches.SocialPage_drawSlot_transpiler))
             );
 
             harmony.Patch(
@@ -267,11 +302,11 @@ namespace MultipleSpouses
                postfix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_setUpCharacters_Postfix))
             );
 
-            // HelperEvent patches
             harmony.Patch(
-               original: AccessTools.Method(typeof(SaveGame), nameof(SaveGame.Load)),
-               prefix: new HarmonyMethod(typeof(HelperEvents), nameof(HelperEvents.SaveGame_Load_prefix))
+               original: AccessTools.Method(typeof(Event), nameof(Event.command_playSound)),
+               prefix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_command_playSound_Prefix))
             );
+
 
         }
 
@@ -495,7 +530,7 @@ namespace MultipleSpouses
             {
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
                 data["NPC.cs.3985"] = Regex.Replace(data["NPC.cs.3985"],  @"\.\.\.\$s.+", $"$n#$b#$c 0.5#{data["ResourceCollectionQuest.cs.13681"]}#{data["ResourceCollectionQuest.cs.13683"]}");
-                Monitor.Log($"New NPC.cs.3985 jealousy dialogue: {data["NPC.cs.3985"]}");
+                Monitor.Log($"NPC.cs.3985 is set to \"{data["NPC.cs.3985"]}\"");
             }
             else if (asset.AssetNameEquals("Data/animationDescriptions"))
             {
@@ -504,7 +539,10 @@ namespace MultipleSpouses
                 foreach(string key in sleepKeys)
                 {
                     if (!data.ContainsKey(key.ToLower()))
+                    {
+                        Monitor.Log($"adding {key.ToLower()} to animationDescriptions");
                         data.Add(key.ToLower(), data[key]);
+                    }
                 }
             }
             else if (asset.AssetNameEquals("Data/EngagementDialogue"))

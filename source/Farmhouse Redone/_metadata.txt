@@ -5,10 +5,9 @@ mods:
    Farmhouse Redone
 
 latest commit:
-   commit 0fa111fbc82ed8a4c3a70269f5d21d78614b73a3
-   Merge: 0074d4c d63251f
+   commit 68d0926c74c46545d0373593f7a3b880a8ba37e3
    Author: mjSurber <matthewsurber96@gmail.com>
-   Date:   Tue Apr 2 16:12:47 2019 -0400
+   Date:   Mon Aug 17 10:27:14 2020 -0400
    
-       Merge branch 'master' of https://github.com/mjSurber/FarmHouseRedone
+       Long overdue commit.  Adds all modern FHR features.
    

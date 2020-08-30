@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ClimatesOfFerngillRebuild
+﻿namespace ClimatesOfFerngillRebuild
 {
     public interface IClimatesOfFerngillAPI
     {
@@ -20,6 +18,9 @@ namespace ClimatesOfFerngillRebuild
         //streak functions
         string GetCurrentWeatherStreak();
         int GetNumDaysOfStreak();
+
+        //specific functions
+        string GetCurrentFogType();
     }
     
     public class ClimatesOfFerngillAPI : IClimatesOfFerngillAPI
@@ -93,5 +94,9 @@ namespace ClimatesOfFerngillRebuild
             return CurrentConditions.TodayLow;
         }
 
+        public string GetCurrentFogType()
+        {
+            return CurrentConditions.GetCurrentFogTypeDesc();
+        }
     }
 }

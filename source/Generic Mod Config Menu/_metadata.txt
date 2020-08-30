@@ -5,12 +5,9 @@ mods:
    Generic Mod Config Menu
 
 latest commit:
-   commit 7aa00a90d7b43697eeb2e84ae3349c4054fc7b2a
-   Merge: 85ab0d9 d64cc6f
+   commit 036e838635df9c26f735f954061964bdd55070d1
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sun May 31 13:10:45 2020 -0400
+   Date:   Thu Aug 13 12:42:14 2020 -0400
    
-       Merge pull request #4 from kdau/master
-       
-       Wrap titles and text in tooltips
+       Move some stuff to SpaceShared. Also forgot to commit the manifest update (1.2.0) before.
    

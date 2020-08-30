@@ -1,0 +1,406 @@
+{
+  "RemovePacksFromVanilla": [
+        "JAPack.UniqueID1",
+        "JAPack.UniqueID2"
+      ],
+  "RemovePackRecipesFromVanilla": [
+        "JAPack.UniqueID1",
+        "JAPack.UniqueID2"
+      ],
+   "RemoveItemsFromVanilla": [
+        "Glacierfish Mask",
+        "Legend Mask",
+        "Crimsonfish Mask",
+        "Mutant Carp Mask",
+        "Angler Mask",
+        "Pufferchick Mask",
+        "Pufferchick Shirt"
+      ],
+  "Shops": [
+   {
+      "ShopName": "BeachShop",
+	  "Quote": "Welcome! What can I get you ?",
+	  "ClosedMessage": "Sorry, we're closed. We are open from 10 am to 6 pm every day.",
+"LocalizedQuote": { 
+"zh": "欢迎，要买点什么？", 
+"ko": "어서오십쇼! 찾는 있으신가요?", 
+"ru": "Добро пожаловать! Что я могу Вам предложить?", 
+"pt": "Bem-vindo(a)! O que posso fazer por você?", 
+"fr": "Bienvenue! Que cherchez vous?", 
+"de": "Willkommen! Was darf es denn sein?"
+//"es": "", *Spanish
+//"hu": "", *Hungarian
+//"it": "", *Italian
+//"ja": "", *Japanese
+//"tr": "", *Turkish
+	},
+"LocalizedClosedMessage": { 
+"zh": "现在是歇业时间了，每天上午9点至下午7点开放。", 
+"ko":  "죄송하지만 영업시간이 아닙니다. 매일 오전 10시부터 오후 6까지 영업시간입니다요.", 
+"ru":"Продавец: Извините, мы закрыты. Приходите с 10:00 до 18:00.", 
+"pt": "Desculpe, estamos fechados. Funcionamos das 10h às 18h todos os dias.", 
+"fr": "Désolé, nous sommes fermés. Nous sommes ouvert de 10h jusqu'à 18h tout les jours.", 
+"de": "Entschuldigung, wir haben geschlossen. Wir haben täglich von 10 Uhr bis 18 Uhr geöffnet."
+//"es": "", *Spanish
+//"hu": "", *Hungarian
+//"it": "", *Italian
+//"ja": "", *Japanese
+//"tr": "", *Turkish
+	},
+	  "When": ["t 1000 1800"],
+      "ItemStocks": [
+				{
+		  "StockPrice": 50,
+		  "Stock": 4,
+		  "ItemType": "Object",
+		  "ItemNames": ["Joja Cola"] 
+		},
+				{
+		  "StockPrice": 2000,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Hot Dog"] 
+		},
+				{
+		  "StockPrice": 180,
+		  "Stock": 3,
+		  "ItemType": "Object",
+		  "ItemNames": ["Cookie"] 
+		},
+				{
+		  "StockPrice": 80,
+		  "Stock": 8,
+		  "ItemType": "Object",
+		  "ItemNames": ["Salt Flavored Chips"] 
+		},
+				{
+		  "StockPrice": 50,
+		  "Stock": 10,
+		  "ItemType": "Object",
+		  "ItemNames": ["Seaweed Chips"] 
+		},
+				{
+		  "StockPrice": 125,
+		  "Stock": 5,
+		  "ItemType": "Object",
+		  "ItemNames": ["Apple","Pomegranate"],
+		  "When": ["!z fall/y 2"]
+		},
+				{
+		  "StockPrice": 150,
+		  "Stock": 5,
+		  "ItemType": "Object",
+		  "ItemNames": ["Peach","Orange"],
+		  "When": ["!z summer/y 2"]
+		},
+				{
+		  "StockPrice": 75,
+		  "Stock": 5,
+		  "ItemType": "Object",
+		  "ItemNames": ["Apricot","Cherry"],
+		  "When": ["!z spring/y 2"]
+		}
+					]
+		},
+   {
+      "ShopName": "SubmarineShop",
+	  "Quote": "Ahoy! What are ye' lookin' for?",
+	  "ClosedMessage": "Sorry, the shop is not open yet. I'm usually open from 10 am to 9 pm.",
+"LocalizedQuote": { 
+"zh": "欢迎，要买点什么？", "ko": "여어!  찾는 거라도 있슈?", 
+"ru": "Хей! Что-то нужно?", 
+"pt": "Ahoy! O que você está 'procurando'?", 
+"fr": "Ahoy! Que cherchez-vous?", 
+"de": "Ahoi! Nach was hältst du Ausschau?"
+//"es": "", *Spanish
+//"hu": "", *Hungarian
+//"it": "", *Italian
+//"ja": "", *Japanese
+//"tr": "", *Turkish
+	},
+"LocalizedClosedMessage": { 
+"zh": "现在是歇业时间了，每天上午10点至下午9点开放。", 
+"ko":  "워쩌나, 지금은 영업시간이 아닌디. 아침 10시부터 밤 9시 사이에 다시 오십쇼잉.", 
+"ru": "Продавец: Извините, магазин еще не открылся. Приходите с 10:00 до 21:00.", 
+"pt": "Lamento, a loja ainda não abriu. Normalmente abro das 10:00 às 21:00.", 
+"fr":"Désolé, le magasin n'est pas encore ouvert. Je suis ouvert de 10h jusqu'à 21h.", 
+"de": "Entschuldigung, der Shop hat noch nicht geöffnet. Ich habe normalerweise von 10 Uhr bis 21 Uhr geöffnet."
+//"es": "", *Spanish
+//"hu": "", *Hungarian
+//"it": "", *Italian
+//"ja": "", *Japanese
+//"tr": "", *Turkish 
+	},
+	  "When": ["t 1000 2100"],
+      "ItemStocks": [
+	  			{
+          "StockPrice": 1000,
+          "Stock": 1,
+          "ItemType": "Hat",
+          "ItemNames": ["Pufferchick Mask"],
+          "When": ["Hn AquariumDonated:Pufferchick"]
+        },
+	  			{
+          "StockPrice": 1000,
+          "Stock": 1,
+          "ItemType": "Hat",
+          "ItemNames": ["Glacierfish Mask"],
+          "When": ["Hn AquariumDonated:Glacierfish"]
+        },
+	  			{
+          "StockPrice": 1000,
+          "Stock": 1,
+          "ItemType": "Hat",
+          "ItemNames": ["Legend Mask"],
+          "When": ["Hn AquariumDonated:Legend"]
+        },
+	  			{
+          "StockPrice": 1000,
+          "Stock": 1,
+          "ItemType": "Hat",
+          "ItemNames": ["Crimsonfish Mask"],
+          "When": ["Hn AquariumDonated:Crimsonfish"]
+        },
+	  			{
+          "StockPrice": 1000,
+          "Stock": 1,
+          "ItemType": "Hat",
+          "ItemNames": ["Mutant Carp Mask"],
+          "When": ["Hn AquariumDonated:MutantCarp"]
+        },
+	  			{
+          "StockPrice": 1000,
+          "Stock": 1,
+          "ItemType": "Hat",
+          "ItemNames": ["Angler Mask"],
+          "When": ["Hn AquariumDonated:Angler"]
+        },
+	  			{
+          "StockPrice": 1000,
+          "Stock": 1,
+          "ItemType": "Hat",
+          "ItemNames": ["Blobfish Mask"],
+          "When": ["Hn AquariumDonated:Blobfish"]
+        },
+	  			{
+          "StockPrice": 200,
+          "Stock": 1,
+          "ItemType": "Clothing",
+          "ItemNames": ["Pufferchick Shirt"],
+          "When": ["Hn AquariumDonated:Pufferchick"]
+        },
+	  			{
+          "StockPrice": 200,
+          "Stock": 1,
+          "ItemType": "Clothing",
+          "ItemNames": ["Shrimp Enthusiast Shirt"],
+          "When": ["Hn AquariumDonated:Shrimp"]
+        },
+	  			{
+		  "StockPrice": 500,
+		  "Stock": 1,
+		  "ItemType": "Clothing",
+		  "ItemNames": ["Fishing Vest"],
+		  "When": ["Hn AquariumFishDonated:30"]
+		},
+	  			{
+		  "StockPrice": 1000,
+		  "Stock": 1,
+		  "ItemType": "Hat",
+		  "ItemNames": ["Fishing Hat"],
+		  "When": ["Hn AquariumFishDonated:40"]
+		},
+	  			{
+		  "StockPrice": 200,
+		  "Stock": 1,
+		  "ItemType": "Clothing",
+		  "ItemNames": ["Bikini Top"],
+		},
+	  			{
+		  "StockPrice": 200,
+		  "Stock": 1,
+		  "ItemType": "Clothing",
+		  "ItemNames": ["Crop Tank Top"],
+		},
+	  			{
+		  "StockPrice": 200,
+		  "Stock": 1,
+		  "ItemType": "Clothing",
+		  "ItemNames": ["Sailor Shirt"],
+		},
+	  			{
+          "StockPrice": 200,
+          "Stock": 1,
+          "ItemType": "Clothing",
+          "ItemNames": ["Kelp Shirt"]
+        },
+	  			{
+		  "StockPrice": 200,
+		  "Stock": 1,
+		  "ItemType": "Object",
+		  "ItemNames": ["Fish Bowl"],
+		},
+	  			{
+		  "StockPrice": 600,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Magnet"],
+		  "When": ["Hn AquariumFishDonated:10"]
+		},
+
+				{
+		  "StockPrice": 28,
+		  "Stock": 15,
+		  "ItemType": "Object",
+		  "ItemNames": ["Wild Bait"],
+		  "When": ["Hn AquariumFishDonated:55"] 
+		},
+				{
+		  "StockPrice": 400,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Spinner"],
+		  "When": ["Hn AquariumFishDonated:15"] 
+		},
+				{
+		  "StockPrice": 800,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Dressed Spinner"],
+		  "When": ["Hn AquariumFishDonated:25"] 
+		},
+				{
+		  "StockPrice": 425,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Trap Bobber"],
+		  "When": ["Hn AquariumFishDonated:35"] 
+		},
+				{
+		  "StockPrice": 600,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Cork Bobber"],
+		  "When": ["Hn AquariumFishDonated:45"] 
+		},
+				{
+		  "StockPrice": 100,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Lead Bobber"],
+		  "When": ["Hn AquariumFishDonated:50"] 
+		},
+				{
+		  "StockPrice": 750,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Barbed Hook"],
+		  "When": ["Hn AquariumFishDonated:20"] 
+		},
+				{
+		  "StockPrice": 200,
+		  "Stock": 5,
+		  "ItemType": "Object",
+		  "ItemNames": ["Trout Soup"],
+		  "When": ["Hn AquariumFishDonated:5"] 
+		},
+				{
+		  "StockPrice": 300,
+		  "Stock": 5,
+		  "ItemType": "Object",
+		  "ItemNames": ["Chowder"],
+		  "When": ["Hn AquariumFishDonated:10"] 
+		},
+				{
+		  "StockPrice": 350,
+		  "Stock": 5,
+		  "ItemType": "Object",
+		  "ItemNames": ["Shrimp Cocktail"],
+		  "When": ["Hn AquariumFishDonated:15"] 
+		},
+				{
+		  "StockPrice": 650,
+		  "Stock": 3,
+		  "ItemType": "Object",
+		  "ItemNames": ["Fish Taco"],
+		  "When": ["Hn AquariumFishDonated:20/SkillLevel fishing 3"] 
+		},
+				{
+		  "StockPrice": 700,
+		  "Stock": 3,
+		  "ItemType": "Object",
+		  "ItemNames": ["Escargot"],
+		  "When": ["Hn AquariumFishDonated:25/SkillLevel fishing 5"] 
+		},
+				{
+		  "StockPrice": 800,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Dish O' The Sea"],
+		  "When": ["Hn AquariumFishDonated:30/SkillLevel fishing 4"] 
+		},
+				{
+		  "StockPrice": 850,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Fish Stew"],
+		  "When": ["Hn AquariumFishDonated:40/SkillLevel fishing 6"] 
+		},
+				{
+		  "StockPrice": 1000,
+		  "Stock": 2,
+		  "ItemType": "Object",
+		  "ItemNames": ["Lobster Bisque"],
+		  "When": ["Hn AquariumFishDonated:50/SkillLevel fishing 7"] 
+		},
+				{
+		  "StockPrice": 2500,
+		  "Stock": 1,
+		  "ItemType": "Object",
+		  "ItemNames": ["Seafoam Pudding"],
+		  "When": ["Hn AquariumFishDonated:60/SkillLevel fishing 10"] 
+		}
+					]
+   },
+      {
+      "ShopName": "LiterallyAShopThatJUSTSellsIceCream",
+	  "Quote": "Ice! Come get your ice cream!",
+	  "ClosedMessage": "Sorry. I'm not selling ice cream right now. Come back between 9 am to 7 pm!",
+"LocalizedQuote": { 
+"zh": "欢迎，要买点什么？", 
+"ko": "아이스크림! 아이스크림 드세요!", 
+"ru": "Жарко? Не беда, у меня есть мороженое!", 
+"pt": "Gelo! Venha pegar seu sorvete!", 
+"fr":"De la glace! Venez vous offrir une glace!", 
+"de": "Eis! Hier gibt es Eis!" 
+//"es": "", *Spanish
+//"hu": "", *Hungarian
+//"it": "", *Italian
+//"ja": "", *Japanese
+//"tr": "", *Turkish
+	},
+"LocalizedClosedMessage": { 
+"zh": "现在是歇业时间了，每天上午9点至下午7点开放。", 
+"ko": "미안하지만 지금은 아이스크림을 못 팔아. 오전 9시부터 오후 7까지 영업이야.", 
+"ru": "Продавец: Простите, сейчас я не продаю мороженое. Приходите с 9:00 до 19:00.", 
+"pt": "Desculpe. Não estou vendendo sorvete no momento. Volte entre 9h e 19h!", 
+"fr":"Désolé, je ne vends pas de glace à cette heure de la journée. Revenez entre 9h et 19h!", 
+"de": "Entschuldigung, ich verkaufe momentan kein Eis. Komm zwischen 9 Uhr und 19 Uhr zurück!" 
+//"es": "", *Spanish
+//"hu": "", *Hungarian
+//"it": "", *Italian
+//"ja": "", *Japanese
+//"tr": "", *Turkish
+	},
+	  "When": ["t 900 1900"],
+      "ItemStocks": [
+	  		        {
+		  "StockPrice": 200,
+		  "Stock": 4,
+		  "ItemType": "Object",
+		  "ItemNames": ["Ice Cream"] 
+		}
+		]
+	}
+	]
+}

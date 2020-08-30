@@ -1,0 +1,20 @@
+﻿{
+  "Name": "SPF60 Sunscreen",
+  "Price": 50,
+  "Description": "Protects the user from sunburn. Reapply often.",
+  "Category": "Crafting",
+  "CategoryTextOverride": "Lotion",
+  "CategoryColorOverride": "40, 80, 180, 255",
+  "Edibility": -300,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Harvey",
+  "PurchasePrice": 100,
+  "GiftTastes":
+  {
+    "Love": [],
+    "Like": ["Alex", "Harvey", "Krobus", "Penny", "Sandy"],
+    "Dislike": ["Dwarf", "Emily", "Pierre", "Sebastian", "Shane", "Wizard"],
+    "Hate": ["Jas", "Vincent"]
+  }
+}

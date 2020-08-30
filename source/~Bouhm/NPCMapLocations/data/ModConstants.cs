@@ -3,12 +3,16 @@ Static class that stores constants for map mod.
 Do NOT modify anything here other than MapVectors
 */
 
-using NPCMapLocations;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using StardewValley.Menus;
 using System.Collections.Generic;
 
 public static class ModConstants
 {
+  // The page index of mapTab
+  public static int MapTabIndex => StardewModdingAPI.Constants.TargetPlatform == GamePlatform.Android ? 4 : GameMenu.mapTab;
+
   // Cropping heads for NPC markers
   // Values shift the head up (negative) or down (positive)
   public static Dictionary<string, int> NpcMarkerOffsets => new Dictionary<string, int>
@@ -61,6 +65,18 @@ public static class ModConstants
       // "Krobus",
       // "Dusty"
     };
+
+  // Spoiler characters that are unlocked later in the game
+  public static List<string> ConditionalNpcs => new List<string>()
+  { 
+      "Dwarf", 
+      "Kent", 
+      "Krobus", 
+      "Marlon", 
+      "Merchant", 
+      "Sandy", 
+      "Wizard",
+  };
 
   // tileX and TileY (the first two values) are tile positions in the game for that location
   // X and Y (the latter values) are CENTERED pixel positions in the map sprite that correspond to the game location

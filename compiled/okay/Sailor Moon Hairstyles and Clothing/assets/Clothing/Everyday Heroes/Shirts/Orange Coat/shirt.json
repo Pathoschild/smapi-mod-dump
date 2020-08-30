@@ -3,5 +3,11 @@
     "Description": "A thick coat in bright colours.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Abrigo Naranja"
+    },
+    "DescriptionLocalization": {
+        "es": "Un abrigo grueso en colores brillantes."
+    }
 }

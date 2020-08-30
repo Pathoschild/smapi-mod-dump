@@ -1,6 +1,6 @@
 ﻿# Climates of Ferngill
 
-Current Version: 1.5.9
+Current Version: 1.5.12
 
 ## What's New
 - Variable Rain.
@@ -57,11 +57,11 @@ If you have a custom climate, you'll need to update it to match the changes to c
 This mod uses harmony to patch functions to allow it to draw custom rain and snow colors.
 
 ## Acknowledgements
-- Prismuth for the fog sprite
+- fog textures orginally by Prismuth, updated ones by ChefRude, and then again by Hadi
 - Pathoschild for ideas
 - jahangmar for the German translation
 - Sky for the Korean translation
-- ChefRude for testing and the night icon sprites (as well as better fog textures)
+- ChefRude for testing and the night icon sprites (as well as newer better fog textures)
 - Pan for the new base debris sprites
 - FoggyWizard for the sandstorm sprite
 - FarAways for the Chinese translation
@@ -72,6 +72,8 @@ This mod uses harmony to patch functions to allow it to draw custom rain and sno
 - kdau and Strobe for testing
 - Corrin, Hadi and Mae for suggestions
 - The SDV discord #modding channel for discussions and encouragement.
+- Kaya for debuff/buff icon sprites
+
 
 If I have left you out of acknowledgements, please contact me so I can get you added to the acknowledgement list
 

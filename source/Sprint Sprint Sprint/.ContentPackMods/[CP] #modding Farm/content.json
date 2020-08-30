@@ -1,0 +1,11 @@
+{
+	"Format": "1.8",
+	"Changes": [
+		{
+			"LogName": "The Best Farm Map Ever",
+			"Action": "Load",
+			"Target": "Maps/Farm",
+			"FromFile": "assets/Farm.tbin"
+		}
+	]
+}

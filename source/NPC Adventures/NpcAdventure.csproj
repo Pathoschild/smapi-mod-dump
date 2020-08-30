@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">  
+  <PropertyGroup>
+    <AssemblyName>NpcAdventure</AssemblyName>
+    <RootNamespace>NpcAdventure</RootNamespace>
+    <Version>0.14.0</Version>
+    <TargetFramework>net452</TargetFramework>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnableHarmony>true</EnableHarmony>
+    <Authors>PurrplingCat</Authors>
+    <Product>NpcAdventures</Product>
+    <Configurations>Debug;Release;Nightbuild</Configurations>
+    <Copyright>© PurrplingCat 2019-2020</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Nightbuild|x86'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="locale/**/*.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)\QuestFramework\QuestFramework.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="if $(ConfigurationName) == Nightbuild (&#xD;&#xA;cd $(ProjectDir)&#xD;&#xA;node preparenightbuild.js&#xD;&#xA;)" />
+  </Target>
+
+  <Import Project="..\PurrplingCore\PurrplingCore.projitems" Label="Shared" />
+</Project>

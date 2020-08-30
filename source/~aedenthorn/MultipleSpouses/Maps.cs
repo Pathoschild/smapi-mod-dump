@@ -71,7 +71,7 @@ namespace MultipleSpouses
 
 				List<string> spousesWithRooms = new List<string>();
 
-				foreach (string spouse in Misc.GetSpouses(f, 0).Keys)
+				foreach (string spouse in Misc.GetSpouses(f, 1).Keys)
 				{
 					Monitor.Log($"checking {spouse} for spouse room");
 					if (roomIndexes.ContainsKey(spouse) || tmxSpouseRooms.ContainsKey(spouse))
@@ -87,9 +87,14 @@ namespace MultipleSpouses
 					return;
 				}
 
-				if (f.spouse != null)
-				{
-					if (!f.friendshipData[f.spouse].IsEngaged() && (roomIndexes.ContainsKey(f.spouse) || tmxSpouseRooms.ContainsKey(f.spouse)))
+				spousesWithRooms = new List<string>(Misc.ReorderSpousesForRooms(spousesWithRooms));
+
+				if (!spousesWithRooms.Any())
+					return;
+
+				if (!ModEntry.config.BuildAllSpousesRooms)
+                {
+					if (f.spouse != null && !f.friendshipData[f.spouse].IsEngaged() && (roomIndexes.ContainsKey(f.spouse) || tmxSpouseRooms.ContainsKey(f.spouse)))
 					{
 						Monitor.Log($"Building spouse room for official spouse {f.spouse}");
 						BuildOneSpouseRoom(farmHouse, f.spouse, -1);
@@ -100,10 +105,8 @@ namespace MultipleSpouses
 						BuildOneSpouseRoom(farmHouse, spousesWithRooms[0], -1);
 						spousesWithRooms = new List<string>(spousesWithRooms.Skip(1));
 					}
-				}
-
-				if (!ModEntry.config.BuildAllSpousesRooms)
 					return;
+				}
 
 				Monitor.Log($"Building {spousesWithRooms.Count} additional spouse rooms");
 
@@ -169,7 +172,7 @@ namespace MultipleSpouses
 
 
 
-				int count = 0;
+				int count = -1;
 
 				ExtendMap(farmHouse, ox + 37 + (7* spousesWithRooms.Count));
 
@@ -233,10 +236,11 @@ namespace MultipleSpouses
 						int offset = (1 + count) * 7 * 64;
 						Vector2 parrotSpot = new Vector2(2064f + offset, 160f);
 						int upgradeLevel = farmHouse.upgradeLevel;
-						if (upgradeLevel - 2 <= 1)
+						if (upgradeLevel > 1)
 						{
 							parrotSpot = new Vector2(2448f + offset, 736f);
 						}
+						ModEntry.PMonitor.Log($"Building Emily's parrot at {parrotSpot}, spouse room count {count}, upgrade level {upgradeLevel}");
 						farmHouse.temporarySprites.Add(new EmilysParrot(parrotSpot));
 					}
 				}

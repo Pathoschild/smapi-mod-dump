@@ -1,0 +1,32 @@
+{
+	"Format": "1.6",
+	"Changes": [
+		
+		{
+			"LogName": "Winter Woods Main Map",
+			"Action": "Load",
+			"Target": "Maps/Woods",
+			"FromFile": "assets/Woods.tbin",
+		},
+		{
+			"LogName": "Winter in Winter Woods",
+			"Action": "Load",
+			"Target": "Maps/Woods",
+			"FromFile": "assets/WinterWoods.tbin",
+			"When": {
+				"HasMod:Jessebot.WinterWoodsExtras": "false",
+				"Season": "Winter",
+			}
+		},
+		{
+			"LogName": "Winter Extras for Winter Woods",
+			"Action": "Load",
+			"Target": "Maps/Woods",
+			"FromFile": "assets/ALLWinterWoods.tbin",
+			"When": {
+				"HasMod:Jessebot.WinterWoodsExtras": "true",
+				"Season": "Winter",
+			}
+		},
+	],
+}

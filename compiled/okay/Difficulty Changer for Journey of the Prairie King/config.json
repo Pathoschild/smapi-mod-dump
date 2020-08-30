@@ -1,11 +1,11 @@
 {
-  "always_invincible_": false,
-  "lives_": 98,
-  "coins_": 100,
-  "ammo_level_": 0,
-  "bullet_damage_": 0,
-  "fire_speed_level_": 5,
-  "run_speed_level_": 2,
-  "spread_pistol_": false,
+  "alwaysInvincible": false,
+  "lives": 98,
+  "coins": 100,
+  "ammoLevel": 0,
+  "bulletDamage": 0,
+  "fireSpeedLevel": 5,
+  "runSpeedLevel": 2,
+  "useShotgun": true,
   "waveTimer": 60
 }

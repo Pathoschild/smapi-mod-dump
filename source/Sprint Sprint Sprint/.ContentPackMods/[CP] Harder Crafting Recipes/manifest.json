@@ -1,0 +1,12 @@
+{
+  "Name": "Harder Crafting Recipes",
+  "Author": "Jessebot",
+  "Version": "1.0",
+  "Description": "Harder Crafting",
+  "UpdateKeys": [],
+  "UniqueID": "Jessebot.HarderCraftingRecipes",
+  "MinimumApiVersion": "2.10",
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  }
+}

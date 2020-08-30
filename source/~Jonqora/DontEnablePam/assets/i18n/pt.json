@@ -1,0 +1,87 @@
+﻿{
+  //PORTUGUESE-BR
+  "Changes": [
+
+    //Quest Details
+	{
+      "LogName": "Change Pam Is Thirsty quest details (Pam)",
+      "Action": "EditData",
+      "Target": "Data/Quests",
+      "Fields": {
+        "103": {
+          2: "Pam está tentando beber mais suco em vez de apenas cerveja e cerveja clara. Você pode fazer seu próprio suco colocando qualquer vegetal em um barril.",
+          3: "Traga qualquer suco para Pam.",
+          9: "Me dê isso. *slurp*... Ahh, bem na mosca.#$b#É muito bom e legal... muito refrescante e levemente doce, com um sabor agradável.#$b#Obrigado, criança. Significa muito para mim. Afinal, essas coisas são muito boas!!$h"
+        }
+      },
+      "When": {
+        "QuestLetterFrom": "Pam"
+      }
+    },
+    {
+      "LogName": "Change Pam Is Thirsty quest details (Penny)",
+      "Action": "EditData",
+      "Target": "Data/Quests",
+      "Fields": {
+        "103": {
+          2: "Penny está tentando fazer Pam beber suco com mais frequência. Você pode fazer seu próprio suco colocando qualquer vegetal em um barril.",
+          3: "Traga qualquer suco para Pam.",
+          9: "Me dê isso. *slurp*... Ahh, isso é surpreendentemente bom.#$b#É muito bom e legal... muito refrescante e levemente doce, com um sabor agradável.#$b#Obrigado, criança. Isto significa muito para mim. Vou ter que agradecer a Penny também.$h"
+        }
+      },
+      "When": {
+        "QuestLetterFrom": "Penny"
+      }
+    },
+    
+    //Quest Mail (if replacing original mail)
+    {
+      "LogName": "Change Pam Is Thirsty quest mail (Pam)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "summer_14_1": "Ei criança,^^Minha garganta está seca como um osso do deserto. Estou com muita sede de uma pale ale, mas Penny está tentando me fazer beber mais suco. Você tem algum?^^Tenho pretendido experimentar um pouco de suco de chirívia, mas qualquer suco de vegetal serve.^^   -Pam%item quest 103 %%[#]Pam's Request"
+      },
+      "When": {
+        "QuestLetterFrom": "Pam",
+        "ReplaceOriginalMail": "true"
+      }
+    },
+    {
+      "LogName": "Change Pam Is Thirsty quest mail (Penny)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "summer_14_1": "Oi @,^Tenho tentado fazer minha mãe beber suco com mais frequência, mas não temos nenhum em casa. Você acha que poderia entregar um pouco de suco para ela?^   -Penny^^P.S. Chirívia é provavelmente o seu favorito, mas qualquer suco de vegetal serve.%item quest 103 %%[#]Penny's Request"
+      },
+      "When": {
+        "QuestLetterFrom": "Penny",
+        "ReplaceOriginalMail": "true"
+      }
+    },
+    
+    //Quest Mail (if delivering new quest mail)
+    {
+      "LogName": "Add new Pam Is Thirsty quest mail #2 (Pam)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "6721DontEnablePam_NewMail": "Ei criança,^^Sei que pedi uma pale ale antes, mas Penny está tentando me fazer beber mais suco atualmente. Você tem algum?^^Tenho pretendido experimentar um pouco de suco de chirívia, mas qualquer suco de vegetal serve.^^   -Pam%item quest 103 %%[#]Pam's New Request"
+      },
+      "When": {
+        "QuestLetterFrom": "Pam"
+      }
+    },
+    {
+      "LogName": "Add new Pam Is Thirsty quest mail #2 (Penny)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "6721DontEnablePam_NewMail": "Oi @,^Minha mãe está com desejo de pale ale, mas estou tentando encorajá-la a beber mais suco em vez disso. Mas não temos suco em casa. Você acha que poderia entregar alguns para ela?^   -Penny^^P.S. Acho que ela gostaria muito de suco de chirívia, mas qualquer suco de vegetal serve.%item quest 103 %%[#]Penny's Request"
+      },
+      "When": {
+        "QuestLetterFrom": "Penny"
+      }
+    }
+  ]
+}

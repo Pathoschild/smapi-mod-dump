@@ -3,5 +3,11 @@
     "Description": "A jet black blazer over a bright red sweater makes for a serious look.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Blazer Llamativo"
+    },
+    "DescriptionLocalization": {
+        "es": "Un blazer negro azabache sobre un suéter rojo brillante le da un aspecto serio."
+    }
 }

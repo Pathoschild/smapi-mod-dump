@@ -3,5 +3,11 @@
     "Description": "This top is surely the height of smart-casual.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Camisa Violeta y Corbata"
+    },
+    "DescriptionLocalization": {
+        "es": "Este top es sin duda el colmo del intelectual-casual."
+    }
 }

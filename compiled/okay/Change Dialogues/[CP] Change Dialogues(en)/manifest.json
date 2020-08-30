@@ -1,9 +1,9 @@
 {
   "Name": "Change Dialogues(en)",
   "Author": "mardrest",
-  "Version": "1.9.2",
+  "Version": "2.0.1",
   "Description": "Replaces the character sprites and dialogues",
-  "UniqueID": "mardrest.CPChangeDialoguesEN",
+  "UniqueID": "mardrest.CPChangeDialoguesEn",
   "MinimumApiVersion": "3.4.1",
   "UpdateKeys": [ "Chucklefish:5995", "Nexus: 5335", "ModDrop:800760" ],
   "ContentPackFor": {
@@ -12,7 +12,7 @@
   },
   "Dependencies": [
    {
-      "UniqueID": "mardrest.ChangeDialoguesEn",
+      "UniqueID": "mardrest.ChangeDialogues",
       "IsRequired": true,
   },
   ]

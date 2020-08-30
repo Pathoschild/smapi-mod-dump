@@ -1,0 +1,13 @@
+{
+    "Name": "Cute Bow",
+    "Description": "Naru's hair bow. Never without it!",
+    "PurchasePrice": "150",
+    "ShowHair": true,
+    "IgnoreHairstyleOffset": true,
+    "NameLocalization": {
+        "es": "Lindo Lazo"
+    },
+    "DescriptionLocalization": {
+        "es": "El lazo de pelo de Naru. ¡Nunca sin esto!"
+    }
+}

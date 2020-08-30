@@ -1,0 +1,44 @@
+stages:
+    - build
+    - release
+
+build-dll:
+    stage: build
+    image: registry.gitlab.com/tophatsquid/runner-images/stardew-valley-runner:latest
+    script:
+        - xmlstarlet edit --update "/Project/PropertyGroup/GamePath" --value "/data/Stardew/Stardew Valley" $MOD_PROJECT_NAME.csproj
+        - mono /nuget.exe restore $MOD_PROJECT_NAME.sln -Source http://nuget.org/api/v2
+        - msbuild $MOD_PROJECT_NAME.csproj
+        - cp ./bin/Debug/*.zip ./build.zip
+        - unzip build.zip
+    artifacts:
+        name: "$MOD_PROJECT_NAME"
+        paths: ["$MOD_PROJECT_NAME/*"]
+        expire_in: 1 day
+        
+
+release-mod:
+    stage: release
+    image: registry.gitlab.com/tophatsquid/runner-images/smapi-release-runner:latest
+    #when: manual
+    dependencies:
+        - build-dll
+    artifacts:
+        name: "$MOD_PROJECT_NAME"
+        paths: ["$MOD_PROJECT_NAME/*"]
+        expire_in: never    
+    script:
+        # Gets version
+        - export VERSION=$(jq -r ".Version" manifest.json)
+        - echo "Creating release for tag $VERSION (from manifest.json)"
+        # Creates tag and release from this commit sha with the manifest version tag name
+        - release-cli create --description automated-release-$CI_COMMIT_SHA-$CI_JOB_ID 
+         --tag-name $VERSION --ref $CI_COMMIT_SHA
+         --assets-links-name "$MOD_PROJECT_NAME $VERSION Release"
+         --assets-links-url "$CI_JOB_URL/artifacts/download"
+    # We recommend the use of `except: tags` to prevent these pipelines
+    # from running. See the notes section below for details.
+    except:
+        - tags
+    only:
+        - release

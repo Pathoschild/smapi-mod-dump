@@ -1,0 +1,305 @@
+{
+    "Changes": [
+
+//Brings Marlon and Gunther into the game
+
+{
+	"LogName": "NPC Manifestation",
+	"Action": "EditData",
+	"Target": "Data/NPCDispositions", 
+	"Entries": { 
+		"Gunther": "adult/polite/outgoing/neutral/male/not-datable/null/Town/winter 5//ArchaeologyHouse 3 8/Gunther"
+			},
+			"When": {
+				"HasMod |contains=FlashShifter.StardewValleyExpandedALL, andril11.charlie":false,
+				"SocialGuntherandMarlon":"true"}
+
+		},
+
+{	
+	"LogName": "NPC Gift Tastes",
+	"Action": "EditData",
+	"Target": "Data/NPCGiftTastes",
+	"Entries": {
+	"Gunther": "Many thanks! This is just what I needed./226 104/Excellent! This will certainly come in handy./106 123 124 125 107 108 115 119 120 121 122 96 97 98 99 -2 -12/Well, I'm not a fan, but thanks anyway./78 110/This is unpleasant.//Thanks!/-4/",
+	"Marlon": "Ah, maybe I can be bribed with gifts after all!/125 222/Thank you. This is most appreciated/109 -2/Well, I suppose the slimes might like it./-23 78/I'm not here to take your junk, kid./796/Thanks kid!//"
+			},	"When": {
+						"HasMod |contains=FlashShifter.StardewValleyExpandedALL, andril11.charlie":false,
+						"SocialGuntherandMarlon":"true"}
+
+		},
+
+{
+	"LogName": "Dialogue", 
+	"Action": "Load",
+	"Target": "Characters/Dialogue/Gunther",
+	"FromFile": "assets/GuntherBlank.json",
+	"When": {
+		"HasMod |contains=FlashShifter.StardewValleyExpandedALL, andril11.charlie":false
+						}
+},
+{
+	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Gunther",
+	"FromFile": "assets/Dialogue/Dialogue-Gunther.json",
+	"When": {
+		"HasMod |contains=FlashShifter.StardewValleyExpandedALL, andril11.charlie, Yoshimax.BefriendMarlon":false
+						}
+},
+{
+	"LogName": "Dialogue", 
+	"Action": "Load",
+	"Target": "Characters/Dialogue/Marlon",
+	"FromFile": "assets/MarlonBlank.json",
+	"When": {
+	"HasMod |contains=FlashShifter.StardewValleyExpandedALL, Yoshimax.BefriendMarlon":false
+					}
+},
+{
+	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Marlon",
+	"FromFile": "assets/Dialogue/Dialogue-Marlon.json",
+	"When": {
+	"HasMod |contains=FlashShifter.StardewValleyExpandedALL, Yoshimax.BefriendMarlon":false
+					}
+},
+{
+	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Marlon",
+	"Entries": 
+	{
+		"fall_Wed": "You've met my nephew, Denver, right? Yeh, I know he's surly and all that. But his bark's worse than his bite. Trust me on that one.#$b#He's a good boy, he really is."
+	},
+	"When": {
+	"HasMod |contains=FlashShifter.StardewValleyExpandedALL":false,
+	"Hearts:Denver": "1,2"
+					}
+},
+{
+	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Marlon",
+	"Entries": 
+	{
+		"fall_Thu": "Denver's quite skilled with the sword. The kid's loyal, and doggedly determined. Might let him sink his teeth into a night patrol soon.",
+		"winter_Thu": "He's a good boy, Denver. I promised my sister I'd keep an eye on him. Yep, that's right kid, I've got a sister.#$b#She took up the city life, but Denver, well I guess the wilderness called to him.",
+		"summer_Sat": "I found an old demo tape the other day - you know Denver used to play in a band?#$b#They really weren't half bad. Kid's got quite some talent."	
+	},
+	"When": {
+	"HasMod |contains=FlashShifter.StardewValleyExpandedALL":false,
+	"Hearts:Denver": "5,6,7,8"
+					}
+},
+{
+	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Marlon",
+	"Entries": 
+	{
+		"fall_Thu": "Did you know wolves mate for life, @? Very family-driven canines.#$b#Why am I telling you this? Oh no reason.",
+		"winter_Thu": "Hey kid, keep an eye on Denver for me, won't you? His mom'd flay me alive if anything happened to him.#$b#I've fought plenty of monsters, and she's scarier than all of 'em combined.",
+		"summer_Sat": "Ah, if Denver keeps going the way he's going, maybe I'll be able to actually retire.#$b#You've been a good influence on him, @."	
+	},
+	"When": {
+	"HasMod |contains=FlashShifter.StardewValleyExpandedALL":false,
+	"Relationship:Denver": "Dating"
+	}
+},
+
+{
+	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Marlon",
+	"Entries": 
+	{
+		"spring_Wed": "Marnie and I were friends once, back in school. Yeah, I was a few years older - but we Pelican Town kids had to stick together.#$b#I guess we drifted apart; it'll be good to catch up with her at the flower dance though.",
+		"winter_Sat": "On these long, cold nights, I can't help but feel a bit lonely, kid. Gil's decent company - when he's awake. But it ain't the same, you know?",
+		"winter_Sun": "It's a lonely life, being a monster hunter. Don't wanna settle down, get married, have kids. Leave them wondering if dad's gonna come home.#$b#Sorry, kid. On these long winter nights, the void can fill your heart with regret.#$b#There's something I should've said, once. But that ship has sailed."	
+	},
+	"When": {
+	"HasMod |contains=FlashShifter.StardewValleyExpandedALL":false,
+	"Hearts:Marnie": "6,7,8,9,10"
+					}
+},
+{
+	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Marlon",
+	"Entries": 
+	{
+		"spring_Wed": "$1 Marl_Rumor#Tell me, @. Is there truth to the rumors of Ms Marnie and the mayor?#$b#Oh, no reason. I'm just curious.$k#$e#Spring is the time of new beginnings and fresh starts, isn't it, @? But if she's happy with Lewis, who am I to begrudge her that happiness?#$b#An old man plagued with regret that he did not speak his feelings sooner. That's who."
+			
+	},
+	"When": {
+	"HasMod |contains=FlashShifter.StardewValleyExpandedALL":false,
+	"Hearts:Marnie": "8,9,10"
+	}
+},
+
+{ "LogName": "Movie Theatre Default",	"Action": "EditData", "Target": "Data/MoviesReactions",
+	"Entries": 	{ 	
+		"Marlon": {	"NPCName": "Marlon",  
+					"Reactions": [   
+						{ 	"Tag": "*",
+							"Response": "reject",
+							"Whitelist": [],
+							"SpecialResponses": null,
+							"ID": "reaction_0"
+									}
+								  ]
+								},
+
+		"Gunther": {"NPCName": "Gunther",  
+					"Reactions": [   
+					{	"Tag": "*",
+						"Response": "reject",
+						"Whitelist": [],
+						"SpecialResponses": null,
+						"ID": "reaction_0"
+								}
+						]
+					}
+				},
+		"When": {
+		"HasMod |contains=FlashShifter.StardewValleyExpandedALL":false,
+		"SocialGuntherandMarlon":"true"
+					}
+	},
+
+//Remove obstacles from museum so you can reach Gunther
+
+{ 
+    "LogName": "Removes obstacles from museum",
+    "Action": "EditMap",
+    "Target": "Maps/ArchaeologyHouse",
+    "MapTiles": [
+    {
+        "Position": { "X": 4, "Y": 7 },
+        "Layer": "Front",
+        "Remove":true
+        }
+	
+],
+	"When": { "HasMod |contains=Karmylla.ImmersiveMaps, andril11.charlie, FlashShifter.StardewValleyExpandedALL, Yoshimax.BefriendMarlon":false}
+},
+{
+	"Action": "EditMap",
+	"Target": "Maps/ArchaeologyHouse",
+	"FromFile": "assets/Image/ArchaeologyDesk.tmx",
+	"ToArea": { "X": 4, "Y": 8, "Width": 3, "Height": 2 },
+	"When": { "HasMod |contains=Karmylla.ImmersiveMaps, andril11.charlie, FlashShifter.StardewValleyExpandedALL":false}
+},
+
+{
+	"Action": "Load",
+	"Target": "Maps/FarmCave",
+	"FromFile": "assets/Image/FarmCaveJasper.tbin",
+	"When": {
+		"HasMod": "DaisyNiko.Tilesheets",
+		"FarmCaveChange":true
+	}
+},
+
+{    
+    "LogName": "Adds Linus and Wizard to Ice Festival main event",
+    "Action": "EditMap",
+    "Target": "Maps/Forest-IceFestival",
+    "MapTiles": [
+  
+{  "Position": {"X":11, "Y": 43},
+   "Layer": "Main-Event",
+   "SetTileSheet": "characters",
+   "SetIndex": 73
+},
+{  "Position": {"X":12, "Y": 43},
+   "Layer": "Main-Event",
+   "SetTileSheet": "characters",
+   "SetIndex": 123
+}
+]
+},
+
+
+
+//Cleans up litter for Jasper's 4-heart event
+
+{ 
+  "LogName": "Removes litter from SVE",
+  "Action": "EditMap",
+  "Target": "Maps/Forest",
+  "MapTiles": [
+    {
+      "Position": { "X": 79, "Y": 99 },
+      "Layer": "Buildings",
+      "Remove":true
+      },
+      {
+        "Position": { "X": 80, "Y": 98 },
+        "Layer": "Buildings",
+        "Remove":true
+        },
+ {
+        "Position": { "X": 77, "Y": 99 },
+        "Layer": "Buildings",
+        "Remove":true
+        }
+        
+      
+        ],
+      "When": {
+      "HasMod |contains=FlashShifter.StardewValleyExpandedALL": true,
+      "HasSeenEvent |contains=50709910": false
+               }
+	  },
+	  
+//Adds dialogue relevant to other mods
+{
+	"LogName": "Cecilia Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Jasper",
+	"Entries": 
+	{
+		"winter_Fri6": "You have surely noticed the abandoned house in town, @? A woman lived there once. She died in a tragic accident$2.#$b#And I have felt a presence there. It as though she has not left. And I wonder, what is it that holds her to this place?$2#$b#There is magic here, and I can sense her reluctance to let it go.$4"
+	},
+	"When": {"HasMod":"balverines.cecilia"}
+},
+{
+	"LogName": "Denver Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Jasper",
+	"Entries": 
+	{
+		"winter_Sat4": "I heard something howling in the dark, last night. And I told myself, it was just wolves. But there was something eerie about it. Something otherworldy.$3#$b#Oh, listen to me! Spouting on this supernatural nonsense. It's these long winter nights, @. They're enough to make anyone a little superstitious."
+	},
+	"When": {"HasMod":"balverines.Denver"}
+},
+{
+	"LogName": "Charlie Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Jasper",
+	"Entries": {
+		"Tue2": "Gunther's nephew Charlie has moved in. He seems like an agreeable fellow.$1"
+		},
+	"When": {"HasMod":"andril11.charlie" }
+},
+//Dialogue Compatibility
+{
+	"LogName": "Gunther Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/GuntherWoods",
+	"FromFile": "assets/Dialogue/dialogue-GuntherWoods.json",
+	"When": {"HasMod":"andril11.charlie, Yoshimax.BefriendMarlon" }
+}
+/*{
+	"LogName": "Dialogue for SVE", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarlonFay, Characters/Dialogue/GuntherSilvian",
+	"FromFile": "assets/Dialogue/dialogue-{{TargetWithoutPath}}.json",
+	"When": {"HasMod":"FlashShifter.StardewValleyExpandedALL" }
+}*/
+
+    ]
+}

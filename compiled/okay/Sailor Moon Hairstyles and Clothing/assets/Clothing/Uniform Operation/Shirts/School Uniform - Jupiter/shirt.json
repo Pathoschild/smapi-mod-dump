@@ -3,5 +3,11 @@
     "Description": "A tall, earthy-brown school uniform.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Uniforme Escolar - Jupiter"
+    },
+    "DescriptionLocalization": {
+        "es": "Un uniforme escolar alto, de color marrón terroso."
+    }
 }

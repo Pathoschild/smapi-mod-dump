@@ -37,6 +37,10 @@
       <HintPath>H:\GAMES\SteamLibrary\steamapps\common\Stardew Valley\Netcode.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SMAPI.Toolkit.CoreInterfaces">
+      <HintPath>H:\GAMES\SteamLibrary\steamapps\common\Stardew Valley\smapi-internal\SMAPI.Toolkit.CoreInterfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Stardew Valley">
       <HintPath>H:\GAMES\SteamLibrary\steamapps\common\Stardew Valley\Stardew Valley.exe</HintPath>
       <Private>False</Private>

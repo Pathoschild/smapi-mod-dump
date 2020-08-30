@@ -1,0 +1,24 @@
+{
+	"Format": "1.6",
+	"Changes": [
+		
+		{
+			"LogName": "Winter Woods Main Map",
+			"Action": "Load",
+			"Target": "Maps/Woods",
+			"FromFile": "assets/Woods.tbin",
+			"When": {
+				"Season": "Spring, Summer, Fall"
+			}
+		},
+		{
+			"LogName": "Winter Extras for Winter Woods",
+			"Action": "Load",
+			"Target": "Maps/Woods",
+			"FromFile": "assets/ALLWinterWoods.tbin",
+			"When": {
+				"Season": "Winter"
+			}
+		},
+	],
+}

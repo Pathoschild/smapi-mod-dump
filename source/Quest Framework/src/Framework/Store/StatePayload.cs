@@ -11,7 +11,7 @@ namespace QuestFramework.Framework.Store
     {
         public StatePayload() { }
 
-        public StatePayload(string questName, long farmerId, JToken stateData)
+        public StatePayload(string questName, long farmerId, JObject stateData)
         {
             this.QuestName = questName;
             this.FarmerId = farmerId;
@@ -20,6 +20,6 @@ namespace QuestFramework.Framework.Store
 
         public long FarmerId { get; set; }
         public string QuestName { get; set; }
-        public JToken StateData { get; set; }
+        public JObject StateData { get; set; }
     }
 }

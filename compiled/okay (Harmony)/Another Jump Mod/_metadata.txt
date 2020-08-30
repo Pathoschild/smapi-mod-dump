@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6546
+IDs: aedenthorn.YAJM
+update keys: Nexus:6546, GitHub:aedenthorn/StardewValleyMods

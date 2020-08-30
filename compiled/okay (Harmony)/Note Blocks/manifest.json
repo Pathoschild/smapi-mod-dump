@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Note Blocks",
+  "Author": "Yaramy",
+  "Version": "1.0.1",
+  "Description": "Adds more note blocks to the game.",
+  "UniqueID": "yaramy.noteblocks",
+  "EntryDll": "NoteBlocks.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6646" ]
+}

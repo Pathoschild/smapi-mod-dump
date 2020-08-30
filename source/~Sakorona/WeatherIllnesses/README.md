@@ -7,6 +7,7 @@
 
 ## Acknowledgements
 - Sky for the Korean translation
+- Kaya for debuff/buff icon sprites
 
 ### Multiplayer
 
@@ -61,28 +62,3 @@ If you're out in a blizzard during the day, it's *1.25 or 2.5 rounded down to 2.
   - `ChanceOfGettingSick` - Controls the chance you'll get sick when conditions are matched. Default is set to '.7' for (70% chance). Valid Range is 0 to 1.
 
   -`TooColdInside` - Double specifying the max temperature threshold to be too cold inside. Default is `8.4` (C). Valid Range is -100 to 100, really.
-
-### Changelog
-  
-#### 1.1
-   - some fixes for updates in Climates
-   - GMCM support
-   - some optimizations
-   - Sandstorms added
-   - Will not display the inside message if you are outside at the time.
-   - updated for changes in Climates of Ferngill compatiblity
-    - less chance of being sick per 10 minute tick
- 
-#### 1.0-beta.7
-  - Updated for 1.3.20. .. and 1.3.21. 
-  - Added in bath house method of clearing
-  - Fixed a drain issue.. >_>
-  - You now get in game warning your house is too cold (also limited to before 10am and after 5:30pm)
-
-#### 1.0-beta.6
-  - Added in a more descriptive system that will give you different text for different reasons
-  - Now, if it's cold outside, and you have no heat inside, you might get sick
-
-#### 1.0-beta.5
-
-   - Updated for Stardew Valley 1.3.16

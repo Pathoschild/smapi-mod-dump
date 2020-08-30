@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>CustomizableCartRedux</AssemblyName>
     <RootNamespace>CustomizableTravelingCart</RootNamespace>
-    <Version>1.4</Version>
+    <Version>1.4.1</Version>
     <TargetFramework>net452</TargetFramework>
   </PropertyGroup>
 

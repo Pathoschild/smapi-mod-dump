@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6537
+IDs: PurrplingCat.DialogueEmotes
+update keys: Nexus:6537, GitHub:purrplingcat/DialogueEmotes

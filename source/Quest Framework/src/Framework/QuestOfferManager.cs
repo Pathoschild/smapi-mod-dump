@@ -1,4 +1,5 @@
 ﻿using QuestFramework.Offers;
+using QuestFramework.Quests;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,15 @@ namespace QuestFramework.Framework
     class QuestOfferManager
     {
         private readonly HookManager hookManager;
+        private readonly QuestManager questManager;
 
         public List<QuestOffer> Offers { get; }
 
-        public QuestOfferManager(HookManager hookManager)
+        public QuestOfferManager(HookManager hookManager, QuestManager questManager)
         {
             this.Offers = new List<QuestOffer>();
             this.hookManager = hookManager;
+            this.questManager = questManager;
         }
 
         public void AddOffer(QuestOffer schedule)
@@ -29,18 +32,20 @@ namespace QuestFramework.Framework
 
         public IEnumerable<QuestOffer> GetMatchedOffers(string source)
         {
-            return from schedule in this.Offers
-                   where schedule.OfferedBy == source
-                     && this.hookManager.CheckConditions(schedule.When)
-                     && (schedule.OnlyMainPlayer == Context.IsMainPlayer || schedule.OnlyMainPlayer == false)
-                   select schedule;
+            return from offer in this.Offers
+                   let context = this.questManager.Fetch(offer.QuestName)
+                   let isRelevantOffer = offer.OfferedBy == source && context != null
+                   where isRelevantOffer
+                         && this.hookManager.CheckConditions(offer.When, context)
+                         && (offer.OnlyMainPlayer == Context.IsMainPlayer || offer.OnlyMainPlayer == false)
+                   select offer;
         }
 
         public IEnumerable<QuestOffer<TAttributes>> GetMatchedOffers<TAttributes>(string source)
         {
             return this.GetMatchedOffers(source)
-                .Select(schedule => schedule.AsOfferWithDetails<TAttributes>())
-                .Where(schedule => schedule != null);
+                .Select(offer => offer.AsOfferWithDetails<TAttributes>())
+                .Where(offer => offer != null);
         }
     }
 }

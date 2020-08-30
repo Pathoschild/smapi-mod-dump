@@ -4,5 +4,11 @@
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless"
+    "Metadata": "Sleeveless",
+    "NameLocalization": {
+        "es": "Abotonado con Cinta Verde"
+    },
+    "DescriptionLocalization": {
+        "es": "Todo el frente está adornado con pequeños lazos rosados."
+    }
 }

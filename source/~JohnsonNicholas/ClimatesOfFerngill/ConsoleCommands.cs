@@ -113,6 +113,33 @@ namespace ClimatesOfFerngillRebuild
                     ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherBeginTime(new SDVTime(0600));
                     ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherBeginTime(new SDVTime(2800));
                     break;
+                case "lightfog":
+                    WeatherUtilities.SetWeatherSunny();
+                    Game1.updateWeatherIcon();
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Blizzard").First().EndWeather();
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("WhiteOut").First().EndWeather();
+                    (ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First() as FerngillFog).CreateWeather(FogType.Light, true);
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherBeginTime(new SDVTime(0600));
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherBeginTime(new SDVTime(2800));
+                    break;
+                case "normalfog":
+                    WeatherUtilities.SetWeatherSunny();
+                    Game1.updateWeatherIcon();
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Blizzard").First().EndWeather();
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("WhiteOut").First().EndWeather();
+                    (ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First() as FerngillFog).CreateWeather(FogType.Normal, true);
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherBeginTime(new SDVTime(0600));
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherBeginTime(new SDVTime(2800));
+                    break;
+                case "blindingfog":
+                    WeatherUtilities.SetWeatherSunny();
+                    Game1.updateWeatherIcon();
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Blizzard").First().EndWeather();
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("WhiteOut").First().EndWeather();
+                    (ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First() as FerngillFog).CreateWeather(FogType.Blinding, true);
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherBeginTime(new SDVTime(0600));
+                    ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherBeginTime(new SDVTime(2800));
+                    break;
                 case "whiteout":
                     WeatherUtilities.SetWeatherSnow();
                     Game1.updateWeatherIcon();

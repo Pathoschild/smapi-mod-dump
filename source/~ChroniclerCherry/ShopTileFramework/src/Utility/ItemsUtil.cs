@@ -118,11 +118,11 @@ namespace ShopTileFramework.Utility
         public static int GetSeedId(string cropName)
         {
             //int cropID = ModEntry.JsonAssets.GetCropId(cropName);
-            int cropId = GetIndexByName(cropName);
+            int cropId = APIs.JsonAssets.GetCropId(cropName);
             foreach (KeyValuePair<int, string> kvp in _cropData)
             {
                 //find the tree id in crops information to get seed id
-                Int32.TryParse(kvp.Value.Split('/')[3], out int id);
+                Int32.TryParse(kvp.Value.Split('/')[2], out int id);
                 if (cropId == id)
                     return kvp.Key;
             }
@@ -136,11 +136,11 @@ namespace ShopTileFramework.Utility
         /// <returns>The ID of the sapling object if found, -1 if not</returns>
         public static int GetSaplingId(string treeName)
         {
-            int treeId = GetIndexByName(treeName);
+            int treeId = APIs.JsonAssets.GetFruitTreeId(treeName);
             foreach (KeyValuePair<int, string> kvp in _fruitTreeData)
             {
                 //find the tree id in fruitTrees information to get sapling id
-                Int32.TryParse(kvp.Value.Split('/')[2], out int id);
+                Int32.TryParse(kvp.Value.Split('/')[0], out int id);
                 if (treeId == id)
                     return kvp.Key;
             }
@@ -167,7 +167,6 @@ namespace ShopTileFramework.Utility
 
             foreach (string pack in _packsToRemove)
             {
-
                 var items = APIs.JsonAssets.GetAllBigCraftablesFromContentPack(pack);
                 if (items != null)
                     _itemsToRemove.AddRange(items);
@@ -185,6 +184,25 @@ namespace ShopTileFramework.Utility
                 {
                     _itemsToRemove.AddRange(items);
                 }
+
+                var crops = APIs.JsonAssets.GetAllCropsFromContentPack(pack);
+
+                if (crops != null)
+                {
+                    foreach (int seedId in crops.Select(GetSeedId))
+                    {
+                        _itemsToRemove.Add(ObjectInfoSource["Object"][seedId].Split('/')[0]);
+                    }
+                }
+
+                var trees = APIs.JsonAssets.GetAllFruitTreesFromContentPack(pack);
+                if (trees != null)
+                {
+                    foreach (int saplingID in trees.Select(GetSaplingId))
+                    {_itemsToRemove.Add(ObjectInfoSource["Object"][saplingID].Split('/')[0]);
+                    }
+                }
+
 
                 items = APIs.JsonAssets.GetAllWeaponsFromContentPack(pack);
                 if (items != null)
@@ -223,6 +241,21 @@ namespace ShopTileFramework.Utility
             List<ISalable> keysToRemove = (stock.Where(kvp => kvp.Value[1] == 0).Select(kvp => kvp.Key)).ToList();
             foreach (ISalable item in keysToRemove)
                 stock.Remove(item);
+        }
+
+        public static bool IsInSeasonCrop(int itemId)
+        {
+            if (_cropData.ContainsKey(itemId))
+            {
+                return _cropData[itemId].Split('/')[1].Contains(Game1.currentSeason);
+            }
+
+            if (_fruitTreeData.ContainsKey(itemId))
+            {
+                return _fruitTreeData[itemId].Split('/')[1].Contains(Game1.currentSeason);
+            }
+
+            return false;
         }
     }
 }

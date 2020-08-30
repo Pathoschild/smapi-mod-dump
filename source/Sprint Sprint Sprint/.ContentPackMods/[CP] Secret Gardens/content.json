@@ -1,0 +1,32 @@
+{
+	"Format": "1.6",
+	"ConfigSchema": {
+		"PlainGreenhouse": {
+			"AllowValues": "disabled, enabled",
+		},
+	},
+	"Changes": [
+		
+		//load greenhouse
+		{
+			"Action": "Load",
+			"Target": "Maps/Greenhouse",
+			"FromFile": "assets/Greenhouse.tbin",
+			"When": {
+				"PlainGreenhouse": "disabled",
+				"HasMod:Nanogamer7.TunnelSystem": "false",
+			},
+		},
+		
+		//load plain greenhouse
+		{
+			"Action": "Load",
+			"Target": "Maps/Greenhouse",
+			"FromFile": "assets/Greenhouse_plain.tbin",
+			"When": {
+				"PlainGreenhouse": "enabled",
+				"HasMod:Nanogamer7.TunnelSystem": "false",
+			},
+		},
+	]
+}

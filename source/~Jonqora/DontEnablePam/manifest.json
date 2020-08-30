@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Don't Enable Pam",
+  "Author": "Jonqora",
+  "Version": "1.1.0",
+  "Description": "Changes the \"Pam Is Thirsty\" quest to require juice instead of pale ale.",
+  "UniqueID": "Jonqora.DontEnablePam",
+  "MinimumApiVersion": "3.5.0",
+  "UpdateKeys": [ "Nexus:6721" ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher",
+    "MinimumVersion": "1.16.0"
+  }
+}

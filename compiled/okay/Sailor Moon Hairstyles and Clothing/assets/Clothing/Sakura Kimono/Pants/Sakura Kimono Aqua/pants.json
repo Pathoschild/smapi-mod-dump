@@ -1,7 +1,13 @@
 {
-  "Name": "Sakura Kimono Aqua Lower",
-  "Description": "An aquamarine kimono, lower half.",
-  "Price": 50,
-  "Dyeable": false,
-  "DefaultColor": "255, 255, 255, 255"
+    "Name": "Sakura Kimono Aqua Lower",
+    "Description": "An aquamarine kimono, lower half.",
+    "Price": 50,
+    "Dyeable": false,
+    "DefaultColor": "255, 255, 255, 255",
+    "NameLocalization": {
+        "es": "Kimono Sakura Aguamarina Inferior"
+    },
+    "DescriptionLocalization": {
+        "es": "Un kimono aguamarina, mitad inferior."
+    }
 }

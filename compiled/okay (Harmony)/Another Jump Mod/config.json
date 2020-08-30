@@ -1,0 +1,9 @@
+{
+  "EnableMod": true,
+  "JumpButton": "Space",
+  "EnableMultiJump": false,
+  "MaxJumpDistance": 10,
+  "PlayJumpSound": true,
+  "CustomHorseTexture": false,
+  "OrdinaryJumpHeight": 8.0
+}

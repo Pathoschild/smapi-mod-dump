@@ -20,6 +20,11 @@ namespace QuestFramework.Api
         IManagedQuestApi GetManagedApi(IManifest manifest);
 
         /// <summary>
+        /// Force refresh cache, managed questlog and bulletinboard quest offer
+        /// </summary>
+        void ForceRefresh();
+
+        /// <summary>
         /// Provide Quest Framework events
         /// </summary>
         IQuestFrameworkEvents Events { get; }
@@ -32,34 +37,39 @@ namespace QuestFramework.Api
 
     public class QuestApi : IQuestApi
     {
-        private readonly Dictionary<string, ManagedQuestApi> managers;
-        private readonly QuestManager baseManager;
-        private readonly QuestOfferManager scheduleManager;
+        private readonly QuestFrameworkMod mod;
         private readonly IMonitor monitor;
 
-        internal QuestApi(QuestManager baseManager, EventManager eventManager, QuestOfferManager scheduleManager, IMonitor monitor)
-        {
-            this.managers = new Dictionary<string, ManagedQuestApi>();
-            this.baseManager = baseManager;
-            this.scheduleManager = scheduleManager;
-            this.monitor = monitor;
-            this.Events = new QuestFrameworkEvents(eventManager);
-        }
-
         public State Status => QuestFrameworkMod.Instance.Status;
+
+        internal QuestApi(QuestFrameworkMod mod)
+        {
+            this.mod = mod;
+            this.monitor = mod.Monitor;
+            this.Events = new QuestFrameworkEvents(this.mod.EventManager);
+        }
 
         public IQuestFrameworkEvents Events { get; }
 
         public IManagedQuestApi GetManagedApi(IManifest manifest)
         {
-            if (!this.managers.TryGetValue(manifest.UniqueID, out ManagedQuestApi proxy))
-            {
-                proxy = new ManagedQuestApi(manifest.UniqueID, this.baseManager, this.scheduleManager);
-                this.managers.Add(manifest.UniqueID, proxy);
-                this.monitor.Log($"Mod {manifest.UniqueID} requested scoped API.");
-            }
+            this.monitor.Log($"Requested managed api for mod `{manifest.UniqueID}`");
 
-            return proxy;
+            return new ManagedQuestApi(
+                modUid: manifest.UniqueID,
+                questManager: this.mod.QuestManager,
+                scheduleManager: this.mod.QuestOfferManager,
+                hookManager: this.mod.HookManager);
+        }
+
+        public void ForceRefresh()
+        {
+            this.monitor.Log("Force refresh requested");
+
+            QuestFrameworkMod.InvalidateCache();
+            this.mod.QuestController.RefreshAllManagedQuestsInQuestLog();
+            this.mod.QuestController.RefreshBulletinboardQuestOffer();
+            this.mod.EventManager.Refreshed.Fire(new EventArgs(), this);
         }
     }
 }

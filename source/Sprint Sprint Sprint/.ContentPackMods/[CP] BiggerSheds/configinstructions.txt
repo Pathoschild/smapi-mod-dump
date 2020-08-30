@@ -1,0 +1,19 @@
+IF YOU DONT SEE A CONFIG.JSON FILE, RUN THE GAME ONCE VIA SMAPI WITH THIS MOD INSTALLED AND A CONFIG.JSON WILL BE GENERATED
+
+--CONFIG.JSON--
+by default you will see this
+
+{
+	"Shed": "stone"
+}
+
+Available values (choose 1)
+
+"Shed": "stone"
+"Shed": "beach"
+"Shed": "bluewood"
+"Shed": "default"
+"Shed": "joja"
+"Shed": "ocean"
+"Shed": "space"
+"Shed": "wood"

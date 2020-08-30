@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 32293efccc0d0cf7244d226f4bf9d1f2199b6196
-   Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Mon Jun 15 10:21:03 2020 -0500
+   commit e7a23b25fea55df7976468f75fcdb60363f9483b
+   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
+   Date:   Sat Aug 29 14:25:25 2020 -0500
    
-       fix respawn ID updates for some "object"-category forage
+       Fix valid FarmTypes settings in readme.md
    

@@ -1,0 +1,17 @@
+{
+  "EnableSunburn": true,
+  "SunburnSeasons": "AllSeasons",
+  "WeatherReport": true,
+  "SkinColorChange": true,
+  "VillagerReactions": true,
+  "SunscreenDuration": 3,
+  "HealthLossPerLevel": 20,
+  "EnergyLossPerLevel": 50,
+  "SunburnSpeedDebuff": true,
+  "BurnSkinColorIndex": [
+    19,
+    20,
+    21
+  ],
+  "DebugMode": false
+}

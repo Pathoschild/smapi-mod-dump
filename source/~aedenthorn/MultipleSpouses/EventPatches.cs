@@ -87,7 +87,7 @@ namespace MultipleSpouses
         {
 			try
 			{
-				if (!__instance.isWedding)
+				if (!__instance.isWedding || !ModEntry.config.AllSpousesJoinWeddings)
 					return;
 
 				List<string> spouses = Misc.GetSpouses(Game1.player, 0).Keys.ToList();
@@ -146,5 +146,43 @@ namespace MultipleSpouses
 				Monitor.Log($"Failed in {nameof(Event_answerDialogueQuestion_Prefix)}:\n{ex}", LogLevel.Error);
 			}
 		}
-    }
+
+        public static bool Event_command_playSound_Prefix(Event __instance, string[] split)
+        {
+			try
+			{
+				if (split[1] == "dwop" && __instance.isWedding && ModEntry.config.RealKissSound && Kissing.kissEffect != null)
+                {
+					Kissing.kissEffect.Play();
+					int num = __instance.CurrentCommand;
+					__instance.CurrentCommand = num + 1;
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(Event_command_playSound_Prefix)}:\n{ex}", LogLevel.Error);
+			}
+			return true;
+		}
+
+		public static void Event_endBehaviors_Postfix(string[] split)
+		{
+			try
+			{
+				if (split != null && split.Length > 1)
+				{
+					string text = split[1];
+					if (text == "wedding")
+					{
+						Misc.PlaceSpousesInFarmhouse(Utility.getHomeOfFarmer(Game1.player));
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(Event_endBehaviors_Postfix)}:\n{ex}", LogLevel.Error);
+			}
+		}
+	}
 }

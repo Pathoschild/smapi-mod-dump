@@ -3,5 +3,11 @@
     "Description": "A thick winter coat worn over a wooly fleece. It's incredibly cosy.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Abrigo de Invierno Azul"
+    },
+    "DescriptionLocalization": {
+        "es": "Un grueso abrigo de invierno usado sobre un vellón de lana. Es increíblemente acogedor."
+    }
 }

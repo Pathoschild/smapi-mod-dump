@@ -1,0 +1,76 @@
+{
+"loadLate": true,
+
+"addMaps": [   
+       {
+      "name": "FishMuseum",
+      "file": "assets/Maps/FishMuseum.tmx",
+    },
+	 {
+      "name": "BigRoom",
+      "file": "assets/Maps/BigRoom.tmx",
+    },
+       {
+      "name": "Slimejack",
+      "file": "assets/Maps/Slimejack.tmx",
+    },
+	       {
+      "name": "ExteriorMuseum",
+      "file": "assets/Maps/ExteriorMuseum_Spring.tmx",
+    },
+	       {
+      "name": "FishBasement",
+      "file": "assets/Maps/FishBasement.tmx",
+    },
+	       {
+      "name": "CuratorBedroom",
+      "file": "assets/Maps/CuratorBedroom.tmx",
+    },
+	       {
+      "name": "VerySwamp",
+      "file": "assets/Maps/VerySwamp.tmx",
+    },
+	       {
+      "name": "SVEFish",
+      "file": "assets/Maps/SVE.tmx",
+	  "conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')"
+    }
+  ],
+"replaceMaps": [
+	   {
+      "name": "ExteriorMuseum",
+      "file": "assets/Maps/Rain_Spring.tmx", 
+      "conditions": "LC Game1.currentSeason == 'spring' and (Game1.isRaining or Game1.isLightning)"
+    },
+	   {
+	  "name": "ExteriorMuseum",
+	  "file": "assets/Maps/ExteriorMuseum_Summer.tmx",
+	  "conditions": "NOT z summer"
+	},
+	   {
+      "name": "ExteriorMuseum",
+      "file": "assets/Maps/Rain_Summer.tmx", 
+      "conditions": "LC Game1.currentSeason == 'summer' and (Game1.isRaining or Game1.isLightning)"
+    },
+	   {
+	  "name": "ExteriorMuseum",
+	  "file": "assets/Maps/ExteriorMuseum_Fall.tmx",
+	  "conditions": "NOT z fall"
+	},
+	   {
+      "name": "ExteriorMuseum",
+      "file": "assets/Maps/Rain_Fall.tmx",
+      "conditions": "LC Game1.currentSeason == 'fall' and (Game1.isRaining or Game1.isLightning)"
+    },
+	   {
+	  "name": "ExteriorMuseum",
+	  "file": "assets/Maps/ExteriorMuseum_Winter.tmx",
+	  "conditions": "NOT z winter"
+	},
+       {
+      "name": "FishMuseum",
+      "file": "assets/Maps/FishMuseumSVE.tmx",
+      "conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')"
+    }
+  ]
+}

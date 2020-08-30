@@ -1,0 +1,52 @@
+{
+    "Changes": [
+
+
+// Removing Jasper from festivals when he is on his quest	
+
+{	"LogName": "Remove Jasper from Egg Festival",   "Action": "EditMap",
+    "Target": "Maps/Town-EggFestival",
+    "MapTiles": [
+        {  "Position": { "X": 34, "Y": 57 },  "Layer": "Set-Up", "Remove": true  }	
+            ]
+		},
+{	"LogName": "Remove Jasper from Spring Dance",	"Action": "EditMap",
+	"Target": "Maps/Forest-FlowerFestival",
+	"MapTiles": [	
+        {   "Position": { "X": 4, "Y": 29 }, "Layer": "Set-Up","Remove": true },
+        {"Position": { "X": 4, "Y": 29 },"Layer": "MainEvent","Remove": true}
+        ]
+	},
+{	"LogName": "Remove Jasper from Luau",	"Action": "EditMap",
+	"Target": "Maps/Beach-Luau",
+    "MapTiles": [	{"Position": { "X": 11, "Y": 39 },"Layer": "Set-Up","Remove": true}
+        ]
+	},
+{	"LogName": "Remove Jasper from Jellies",	"Action": "EditMap",
+	"Target": "Maps/Beach-Jellies",
+    "MapTiles": [	{"Position": { "X": 88, "Y": 40 },"Layer": "Set-Up","Remove": true}	
+        ]  
+	},		
+{	"LogName": "Remove Jasper from Fair",	"Action": "EditMap",
+	"Target": "Maps/Town-Fair",
+    "MapTiles": [	{"Position": { "X": 38, "Y": 77 },"Layer": "Set-Up","Remove": true}
+        ]
+	},	
+{	"LogName": "Remove Jasper from Spirit's Eve",	"Action": "EditMap",
+	"Target": "Maps/Town-Halloween",
+    "MapTiles": [	{"Position": { "X": 27, "Y": 56 },"Layer": "Set-Up","Remove": true }
+        ]
+	},
+{	"LogName": "Remove Jasper from Ice Festival",	"Action": "EditMap",
+	"Target": "Maps/Forest-IceFestival",
+    "MapTiles": [	{"Position": { "X": 10, "Y": 44 },"Layer": "Set-Up","Remove": true }
+        ]
+	},	
+{	"LogName": "Remove Jasper from Ice Festival",	"Action": "EditMap",
+	"Target": "Maps/Town-Christmas",
+    "MapTiles": [	{"Position": { "X": 33, "Y": 71 },"Layer": "Set-Up","Remove": true }
+    ]
+    }
+    
+]
+}

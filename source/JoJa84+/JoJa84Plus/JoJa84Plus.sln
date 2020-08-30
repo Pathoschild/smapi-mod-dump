@@ -1,6 +1,7 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoJa84Plus", "JoJa84Plus.csproj", "{A93654B0-E106-4B33-BE5D-4FF7E0AB81F6}"
 EndProject
 Global
@@ -13,5 +14,11 @@ Global
 		{A93654B0-E106-4B33-BE5D-4FF7E0AB81F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A93654B0-E106-4B33-BE5D-4FF7E0AB81F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A93654B0-E106-4B33-BE5D-4FF7E0AB81F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F4ECC544-F9BE-4FD9-A9D5-68C3335E1925}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,3 @@
+Delete me after you get my message- said the text document
+
+Message in case you didnt get it: Put your edited png, tbin or xnbfiles here in this folder so your content.json file can find your files and patch them.

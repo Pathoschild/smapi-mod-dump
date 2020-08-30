@@ -43,46 +43,8 @@ namespace Familiars
 			this.farmerPassesThrough = true;
 			ignoreMovementAnimations = true;
 
-			if (ModEntry.Config.JunimoColorType.ToLower() == "default")
-            {
-				switch (Game1.random.Next(8))
-				{
-					case 0:
-						this.color.Value = Color.LimeGreen;
-						return;
-					case 1:
-						this.color.Value = Color.Orange;
-						return;
-					case 2:
-						this.color.Value = Color.LightGreen;
-						return;
-					case 3:
-						this.color.Value = Color.Tan;
-						return;
-					case 4:
-						this.color.Value = Color.GreenYellow;
-						return;
-					case 5:
-						this.color.Value = Color.LawnGreen;
-						return;
-					case 6:
-						this.color.Value = Color.PaleGreen;
-						return;
-					case 7:
-						this.color.Value = Color.Turquoise;
-						return;
-					default:
-						return;
-				}
-			}
-			else if (ModEntry.Config.JunimoColorType.ToLower() == "random")
-            {
-				color.Value = new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
-			}
-			else
-            {
-				color.Value = ModEntry.Config.JunimoMainColor;
-            }
+			color.Value = FamiliarsUtils.GetJunimoColor();
+
 		}
 
 		protected override void initNetFields()
@@ -199,7 +161,8 @@ namespace Familiars
 			{
 				DelayedAction.textAboveHeadAfterDelay((Game1.random.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\Characters:JunimoTextAboveHead1") : Game1.content.LoadString("Strings\\Characters:JunimoTextAboveHead2"), this, Game1.random.Next(3000, 6000));
 				this.setReturnToJunimoHutToFetchStarControllerEvent.Fire();
-				location.playSound("junimoMeep1", NetAudio.SoundContext.Default);
+				if (ModEntry.Config.JunimoSoundEffects)
+					location.playSound("junimoMeep1", NetAudio.SoundContext.Default);
 				this.collidesWithOtherCharacters.Value = false;
 				this.farmerPassesThrough = false;
 				this.holdingBundle.Value = true;
@@ -472,7 +435,10 @@ namespace Familiars
 				{
 					this.position.Y += (float)((int)this.motion.Y);
 				}
-				if (Vector2.Distance(f.getTileLocation(), getTileLocation()) < 3 && Game1.random.NextDouble() < HealChance())
+
+				lastHeal -= time.ElapsedGameTime.Milliseconds;
+
+				if (Vector2.Distance(f.getTileLocation(), getTileLocation()) < 3 && lastHeal < 0 && Game1.random.NextDouble() < HealChance())
 				{
 					bool heal = Game1.random.NextDouble() < 0.5;
 					location.temporarySprites.Add(new TemporaryAnimatedSprite((Game1.random.NextDouble() < 0.5) ? 10 : 11, base.Position, (heal ? Color.Red : Color.LawnGreen), 8, false, 100f, 0, -1, -1f, -1, 0)
@@ -493,6 +459,7 @@ namespace Familiars
 						f.stamina += HealAmount();
                     }
 					ModEntry.SMonitor.Log($"Junimo Heal {HealAmount()}, exp {exp}");
+					lastHeal = HealInterval();
 				}
 			}
 			if (this.controller == null && this.motion.Equals(Vector2.Zero))
@@ -530,12 +497,17 @@ namespace Familiars
 		}
 		private int HealAmount()
         {
-			return (int)Math.Ceiling(Math.Sqrt(exp/10f));
+			return (int)(Math.Ceiling(Math.Sqrt(exp/10f)) * ModEntry.Config.JunimoHealAmountMult);
         }
 
         private double HealChance()
         {
-			return 0.001 + Math.Sqrt(exp) * 0.001;
+			return (0.001 + Math.Sqrt(exp) * 0.001) * ModEntry.Config.JunimoHealChanceMult;
+        }
+
+        private int HealInterval()
+        {
+			return (int)Math.Round(Math.Max(1000, 10000 - Math.Sqrt(exp)) * ModEntry.Config.JunimoHealIntervalMult);
         }
 
         public override void draw(SpriteBatch b, float alpha = 1f)
@@ -543,11 +515,8 @@ namespace Familiars
 			if (!base.IsInvisible)
 			{
 				this.Sprite.UpdateSourceRect();
-				b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + new Vector2((float)(this.Sprite.SpriteWidth * 4 / 2), (float)this.Sprite.SpriteHeight * 3f / 4f * 4f / (float)Math.Pow((double)(this.Sprite.SpriteHeight / 16), 2.0) + (float)this.yJumpOffset - 8f) + ((this.shakeTimer > 0) ? new Vector2((float)Game1.random.Next(-1, 2), (float)Game1.random.Next(-1, 2)) : Vector2.Zero), new Rectangle?(this.Sprite.SourceRect), this.color.Value * alpha, this.rotation, new Vector2((float)(this.Sprite.SpriteWidth * 4 / 2), (float)(this.Sprite.SpriteHeight * 4) * 3f / 4f) / 4f, Math.Max(0.2f, this.scale) * 4f, this.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, this.drawOnTop ? 0.991f : ((float)base.getStandingY() / 10000f)));
-				if (!this.swimming && !base.HideShadow)
-				{
-					b.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, base.Position + new Vector2((float)(this.Sprite.SpriteWidth * 4) / 2f, 44f)), new Rectangle?(Game1.shadowTexture.Bounds), this.color.Value * alpha, 0f, new Vector2((float)Game1.shadowTexture.Bounds.Center.X, (float)Game1.shadowTexture.Bounds.Center.Y), (4f + (float)this.yJumpOffset / 40f) * this.scale, SpriteEffects.None, Math.Max(0f, (float)base.getStandingY() / 10000f) - 1E-06f);
-				}
+				b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + new Vector2((float)(this.Sprite.SpriteWidth * 4 / 2), (float)this.Sprite.SpriteHeight * 3f / 4f * 4f / (float)Math.Pow((double)(this.Sprite.SpriteHeight / 16), 2.0) + (float)this.yJumpOffset - 8f) + ((this.shakeTimer > 0) ? new Vector2((float)Game1.random.Next(-1, 2), (float)Game1.random.Next(-1, 2)) : Vector2.Zero) + new Vector2(0,-24), new Rectangle?(this.Sprite.SourceRect), this.color.Value * alpha, this.rotation, new Vector2((float)(this.Sprite.SpriteWidth * 4 / 2), (float)(this.Sprite.SpriteHeight * 4) * 3f / 4f) / 4f, Math.Max(0.2f, this.scale) * 4f, this.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, this.drawOnTop ? 0.991f : ((float)base.getStandingY() / 10000f)));
+
 				if (this.holdingStar)
 				{
 					b.Draw(this.Sprite.Texture, Game1.GlobalToLocal(Game1.viewport, base.Position + new Vector2(8f, -64f * this.scale + 4f + (float)this.yJumpOffset)), new Rectangle?(new Rectangle(0, 109, 16, 19)), Color.White * alpha, 0f, Vector2.Zero, 4f * this.scale, SpriteEffects.None, base.Position.Y / 10000f + 0.0001f);
@@ -574,8 +543,6 @@ namespace Familiars
 
 		private new readonly NetRectangle nextPosition = new NetRectangle();
 
-		private readonly NetColor color = new NetColor();
-
 		private readonly NetColor bundleColor = new NetColor();
 
 		private readonly NetEvent0 setReturnToJunimoHutToFetchStarControllerEvent = new NetEvent0(false);
@@ -591,5 +558,6 @@ namespace Familiars
 		private int farmerCloseCheckTimer = 100;
 
 		private static int soundTimer;
-	}
+        private int lastHeal;
+    }
 }

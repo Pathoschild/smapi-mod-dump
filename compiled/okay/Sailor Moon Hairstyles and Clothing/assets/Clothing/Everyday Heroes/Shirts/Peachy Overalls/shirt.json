@@ -3,5 +3,11 @@
     "Description": "A pastel pink pair of overalls.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Overol Melocotón"
+    },
+    "DescriptionLocalization": {
+        "es": "Un overol de color rosa pastel."
+    }
 }

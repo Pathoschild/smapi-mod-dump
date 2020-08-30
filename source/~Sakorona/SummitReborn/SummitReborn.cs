@@ -14,7 +14,7 @@ namespace SummitReborn
         public bool Clouds = true;
     }
 
-    public class SummitReborn : Mod, IAssetLoader
+    public class SummitReborn : Mod, IAssetLoader, IAssetEditor
     {
         private float weatherX;
         private SummitConfig ModConfig;
@@ -36,6 +36,35 @@ namespace SummitReborn
             {
                 api.RegisterModConfig(ModManifest, () => ModConfig = new SummitConfig(), () => Helper.WriteConfig(ModConfig));
                 api.RegisterSimpleOption(ModManifest, "Clouds", "Displays clouds in the summit", () => ModConfig.Clouds, (bool val) => ModConfig.Clouds = val);
+            }
+        }
+
+        /// <summary>
+        /// This is used to tell SMAPI what asset this mod will edit.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="asset"></param>
+        /// <returns></returns>
+        public bool CanEdit<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("Data/Locations"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// This is used to tell SMAPI what is being edited in the asset
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="asset"></param>
+        public void Edit<T>(IAssetData asset)
+        {
+            if (asset.AssetNameEquals("Data/Locations"))
+            {
+                asset.AsDictionary<string,string>().Data.Add("Summit","18 .9 20 .4 22 .7/396 .4 398 .4 402 .7/406 .6 408 .4 410 .6/414 .8 418 .8/-1/-1/-1/-1/580 .1 378 .15 102 .19 390 .25 330 1 114 .007 108 .0006 126 .0001 106 .003 103 .007 120 .01 105 .01");
             }
         }
 

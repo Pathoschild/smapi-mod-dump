@@ -34,7 +34,9 @@
     682,
     775
   ],
+  "FluctuationCycle": 1,
   "IsAnounceAtShippingBin": false,
+  "MorningPopUp": false,
   "IsUseButton": true,
   "Button": "Z",
   "BoxLine": 8,

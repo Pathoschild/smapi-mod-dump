@@ -1,0 +1,36 @@
+{
+  // This mod is completely multiplayer-compatible! You only need to install if you're using it, and it won't change things for anyone else.
+  "Format": "1.15.0",
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Strings/StringsFromCSFiles",
+      "Entries": {
+        // Change these to say whatever you want! Just make sure each one starts with '%' so Grandpa's name & face don't appear.
+
+        // First evaluation
+        "Event.cs.1315": "%You wake up unsettled. There is still a lot of work to be done on the farm.", // 1 candle
+        "Event.cs.1316": "%You feel a drive to get more done this year and continue improving the farm.", // 2 candles
+        "Event.cs.1317": "%You feel at peace with all the good work you've done on the farm.", // 3 candles
+        "Event.cs.1318": "%You feel a sense of glowing pride... something urges you to look outside.", // 4 candles
+      
+        // Re-evaluation
+        "Event.cs.1306": "%You wake up unsettled. There is still a lot of work to be done on the farm.", // 1 candle
+        "Event.cs.1307": "%You feel a drive to get more done this year and continue improving the farm.", // 2 candles
+        "Event.cs.1308": "%You feel at peace with all the good work you've done on the farm.", // 3 candles
+        "Event.cs.1309": "%You feel a sense of glowing pride... something urges you to look outside." // 4 candles
+      }
+    },
+    {
+      // This part replaces each grandpa visitation event with just a single dialogue box that pops up.
+      // The dialogue box is hardcoded in grandpaEvaluation and grandpaEvaluation2, but we can block the portrait and name at least.
+      // Removing grandpaEvaluation2 would break the re-evaluation candles mechanic, so I left them both in for symmetry.
+      "Action": "EditData",
+      "Target": "Data/Events/FarmHouse",
+      "Entries": {
+        "558291/y 3/H": "continue/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true/grandpaEvaluation/fade unfade/end bed",
+        "558292/e 321777/t 600 620/H": "continue/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true/grandpaEvaluation2/fade unfade/end bed"
+      }
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 ﻿using Harmony;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
@@ -163,76 +164,7 @@ namespace MultipleSpouses
                 "Bad_9",
             },
         };
-
-        public static Dictionary<string, int[]> spousePatioLocations = new Dictionary<string, int[]>()
-        {
-            {"Sam", new int[]{2,2}},
-            {"Penny", new int[]{2,2}},
-            {"Sebastian", new int[]{2,3}},
-            {"Shane", new int[]{0,3}},
-            {"Alex", new int[]{2,2}},
-            {"Maru", new int[]{1,2}},
-            {"Emily", new int[]{1,3}},
-            {"Haley", new int[]{1,2}},
-            {"Harvey", new int[]{2,2}},
-            {"Elliott", new int[]{2,2}},
-            {"Leah", new int[]{2,2}},
-            {"Abigail", new int[]{2,2}},
-
-        };
-
-        public static bool NPC_setUpForOutdoorPatioActivity_Prefix(NPC __instance)
-        {
-            try
-            {
-                if (ModEntry.outdoorAreaData.areas.ContainsKey(__instance.Name))
-                {
-                    Game1.warpCharacter(__instance, "Farm", ModEntry.outdoorAreaData.areas[__instance.Name].NpcPos(__instance.Name));
-                }
-                else if (Game1.player.spouse.Equals(__instance.Name) && ModEntry.outdoorAreaData.areas.Count == 0)
-                {
-                    Point point = new Point(71, 10);
-                    if (spousePatioLocations.ContainsKey(__instance.Name))
-                    {
-                        point = new Point(69 + spousePatioLocations[__instance.Name][0], 6 + spousePatioLocations[__instance.Name][1]);
-                    }
-
-                    Game1.warpCharacter(__instance, "Farm", point);
-                }
-                else
-                {
-                    __instance.shouldPlaySpousePatioAnimation.Value = false;
-                    return false;
-                }
-                __instance.popOffAnyNonEssentialItems();
-                __instance.currentMarriageDialogue.Clear();
-                __instance.addMarriageDialogue("MarriageDialogue", "patio_" + __instance.Name, false, new string[0]);
-                __instance.shouldPlaySpousePatioAnimation.Value = true;
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed in {nameof(NPC_setUpForOutdoorPatioActivity_Prefix)}:\n{ex}", LogLevel.Error);
-            }
-            return true;
-        }
-
-        public static void NPC_doPlaySpousePatioAnimation_Postfix(NPC __instance)
-        {
-            try
-            {
-                if (ModEntry.outdoorAreaData.areas.ContainsKey(__instance.Name) && ModEntry.outdoorAreaData.areas[__instance.Name].npcAnimation != null)
-                {
-                    Monitor.Log($"got animation for {__instance.Name}");
-                    Misc.NPCDoAnimation(__instance, ModEntry.outdoorAreaData.areas[__instance.Name].npcAnimation);
-                }
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed in {nameof(NPC_doPlaySpousePatioAnimation_Postfix)}:\n{ex}", LogLevel.Error);
-            }
-        }
-
+         
         public static bool NPC_checkAction_Prefix(ref NPC __instance, ref Farmer who, ref bool __result)
         {
             try
@@ -404,11 +336,62 @@ namespace MultipleSpouses
             return true;
         }
 
+        internal static bool NPC_tryToRetrieveDialogue_Prefix(NPC __instance, ref Dialogue __result, string appendToEnd)
+        {
+            try
+            {
+                if (appendToEnd.Contains("_inlaw_") && Game1.player.friendshipData.ContainsKey(__instance.Name) && Game1.player.friendshipData[__instance.Name].IsMarried())
+                {
+                    __result = null;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_tryToRetrieveDialogue_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+            return true;
+        }
+
+        internal static void NPC_GetDispositionModifiedString_Prefix(NPC __instance, ref bool __state)
+        {
+            try
+            {
+                if (Game1.player.isMarried() && Game1.player.friendshipData.ContainsKey(__instance.Name) &&  Game1.player.friendshipData[__instance.Name].IsMarried() && Game1.player.spouse != __instance.Name)
+                {
+                    ModEntry.tempOfficialSpouse = __instance;
+                    __state = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_GetDispositionModifiedString_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+
+        internal static void NPC_GetDispositionModifiedString_Postfix(bool __state)
+        {
+            try
+            {
+                if (__state)
+                {
+                    ModEntry.tempOfficialSpouse = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_GetDispositionModifiedString_Postfix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+
         public static void NPC_marriageDuties_Prefix(NPC __instance)
         {
             try
             {
-
+                if (Misc.GetSpouses(Game1.player, 0).ContainsKey(__instance.Name))
+                {
+                    ModEntry.tempOfficialSpouse = __instance;
+                }
             }
             catch (Exception ex)
             {
@@ -420,6 +403,10 @@ namespace MultipleSpouses
         {
             try
             {
+                if (ModEntry.tempOfficialSpouse == __instance)
+                {
+                    ModEntry.tempOfficialSpouse = null;
+                }
 
                 // custom dialogues
 
@@ -565,8 +552,17 @@ namespace MultipleSpouses
         }
         public static void NPC_engagementResponse_Postfix(NPC __instance, Farmer who, bool asRoommate = false)
         {
+            Monitor.Log($"engagement response for {__instance.Name}");
             if (asRoommate)
+            {
+                Monitor.Log($"{__instance.Name} is roomate");
                 return;
+            }
+            if (!who.friendshipData.ContainsKey(__instance.Name))
+            {
+                Monitor.Log($"{who.Name} has no friendship data for {__instance.Name}", LogLevel.Error);
+                return;
+            }
             Misc.ResetSpouses(who);
             Friendship friendship = who.friendshipData[__instance.Name];
             WorldDate weddingDate = new WorldDate(Game1.Date);
@@ -657,32 +653,31 @@ namespace MultipleSpouses
             return true;
         }
 
-        public static void NPC_loadCurrentDialogue_Postfix(NPC __instance, ref Stack<Dialogue> __result)
+
+        internal static void NPC_loadCurrentDialogue_Prefix(NPC __instance, ref string __state)
         {
             try
             {
                 if (Misc.GetSpouses(Game1.player, 0).ContainsKey(__instance.Name))
                 {
-                    if (!Game1.newDay && __instance.marriageDefaultDialogue.Value != null && !__instance.shouldSayMarriageDialogue.Value)
-                    {
-                        __result.Push(__instance.marriageDefaultDialogue.Value.GetDialogue(__instance));
-                        __instance.marriageDefaultDialogue.Value = null;
-                    }
-                    if (__instance.marriageDefaultDialogue.Value.GetDialogue(__instance).getCurrentDialogue() == "")
-                    {
-                        Monitor.Log($"missing marriage dialogue for {__instance.Name}");
-                        Friendship friends;
-                        int heartLevel = Game1.player.friendshipData.TryGetValue(__instance.Name, out friends) ? (friends.Points / 250) : 0;
-                        Dialogue d = __instance.tryToRetrieveDialogue(Game1.currentSeason + "_", heartLevel, "");
-                        if (d == null)
-                        {
-                            d = __instance.tryToRetrieveDialogue("", heartLevel, "");
-                        }
-                        if (d != null)
-                        {
-                            __result.Push(d);
-                        }
-                    }
+                    __state = Game1.player.spouse;
+                    Game1.player.spouse = __instance.Name;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_loadCurrentDialogue_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+
+
+        public static void NPC_loadCurrentDialogue_Postfix(string __state)
+        {
+            try
+            {
+                if (__state != null)
+                {
+                    Game1.player.spouse = __state;
                 }
             }
             catch (Exception ex)
@@ -968,6 +963,27 @@ namespace MultipleSpouses
             return codes.AsEnumerable();
         }
 
+        public static void NPC_playSleepingAnimation_Postfix(NPC __instance)
+        {
+            try
+            {
+                Dictionary<string, string> animationDescriptions = Game1.content.Load<Dictionary<string, string>>("Data\\animationDescriptions");
+                if (!animationDescriptions.ContainsKey(__instance.name.Value.ToLower() + "_sleep") && animationDescriptions.ContainsKey(__instance.name.Value + "_Sleep"))
+                {
+                    int sleep_frame = Convert.ToInt32(animationDescriptions[__instance.name.Value + "_Sleep"].Split('/')[0]);
+                    __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
+                    {
+                        new FarmerSprite.AnimationFrame(sleep_frame, 100, false, false, null, false)
+                    });
+                    __instance.Sprite.loop = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_playSleepingAnimation_Postfix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+        
         public static void Child_reloadSprite_Postfix(ref Child __instance)
         {
             try
@@ -1071,5 +1087,6 @@ namespace MultipleSpouses
                 Monitor.Log($"Failed in {nameof(Child_tenMinuteUpdate_Postfix)}:\n{ex}", LogLevel.Error);
             }
         }
+
     }
 }

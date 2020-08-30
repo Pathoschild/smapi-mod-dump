@@ -1,0 +1,91 @@
+{
+    "Format": "1.17",
+    "Changes": [
+        {
+            "LogName": "NPC Manifestation",
+            "Action": "EditData",
+            "Target": "Data/NPCDispositions",
+            "Entries": {
+                "Curator": "adult/polite/outgoing/positive/male/not-datable/null/Town/null/Goldie/FishMuseum 16 46/Curator",
+                "Goldie": "adult/polite/outgoing/positive/female/not-datable/null/Town/null/Curator/FishMuseum 15 45/Goldie"
+            }
+        },
+        {
+            "LogName": "NPC Curator",
+            "Action": "Load",
+            "Target": "Portraits/Curator, Characters/Curator",
+            "FromFile": "assets/{{target}}.png"
+        },
+        {
+            "LogName": "NPC Goldie",
+            "Action": "Load",
+            "Target": "Portraits/Goldie, Characters/Goldie",
+            "FromFile": "assets/{{target}}.png"
+        },
+        {
+            "LogName": "NPCs AntiSocial Flag Curator",
+            "Action": "EditData",
+            "Target": "Data/AntiSocialNPCs",
+            "Entries": {
+                "Curator": "true",
+                "Goldie": "true"
+            }
+        },
+        {
+            "LogName": "Load NPC Dialogue and Schedules",
+            "Action": "Load",
+            "Target": "Characters/Dialogue/Curator, Characters/schedules/Curator, Characters/Dialogue/Goldie",
+            "FromFile": "assets/{{Target}}.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "GenderNeutralContent.json",
+            "When": {
+                "HasFile:{{FromFile}}": true,
+                "HasMod": "Hana.GenderNeutralityMod"
+            }
+        },
+         {
+            "Action": "Include",
+            "FromFile": "assets/Characters/Dialogue/Willy.json",
+            "When": {
+                "HasFile:{{FromFile}}": true
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Translations/{{Language}}.json",
+            "When": {
+                "HasFile:{{FromFile}}": true
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Translations/GenderNeutral.{{Language}}.json",
+            "When": {
+                "HasFile:{{FromFile}}": true,
+                "HasMod": "Hana.GenderNeutralityMod"
+            }
+        },
+        {
+            "LogName": "Animations",
+            "Action": "EditData",
+            "Target": "Data/animationDescriptions",
+            "Entries": {
+                "Curator_work": "24/25 25 25 26 26 26 27 27 27 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24/24"
+            }
+        },
+        {
+            "LogName": "FishMuseum Events",
+            "Action": "Load",
+            "Target": "Data/Events/FishMuseum",
+            "FromFile": "assets/Data/Events/FishMuseum.json"
+        },
+        {
+            "LogName": "ExteriorMuseum Events",
+            "Action": "Load",
+            "Target": "Data/Events/ExteriorMuseum",
+            "FromFile": "assets/Data/Events/ExteriorMuseum.json"
+        }
+    ]
+}

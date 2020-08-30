@@ -1,0 +1,70 @@
+{
+	"name": "Tidal Beach Map",
+	"version": "1.0.0",
+	"author": "ItsBenter",
+	"loadLate": "true",
+	"replaceMaps": [
+		//This part is how the change is configured. You can change the time and the order.
+		{
+			"name": "Beach",
+			"file": "assets/LowTide.tmx",
+			"conditions": "t 600 800", // You can change the time 610 is 06.10
+		}, {
+			"name": "Beach",
+			"file": "assets/MidTide.tmx",
+			"conditions": "t 810 1200", // You can change the time
+		},
+		//It will use the vanilla map during this period when no map replacement is specified
+		{
+			"name": "Beach",
+			"file": "assets/MidTide.tmx",
+			"conditions": "t 1610 1800", // You can change the time
+		}, {
+			"name": "Beach",
+			"file": "assets/LowTide.tmx",
+			"conditions": "t 1810 2200", // You can change the time
+		}, {
+			"name": "Beach",
+			"file": "assets/MidTide.tmx",
+			"conditions": "t 2200 2600", // You can change the time
+		},
+	],
+	// This part is to make it compatible with SVE. I'm patching around like crazy...
+	"mergeMaps": [{
+			"name": "Beach",
+			"sourceArea": [0, 0, 104, 50],
+			"position": [0, 0],
+			"removeEmpty": "false",
+			"file": "assets/SVECompatibility.tmx",
+			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
+		}, {
+			"name": "Beach",
+			"sourceArea": [0, 0, 14, 7],
+			"position": [0, 0],
+			"removeEmpty": "true",
+			"file": "assets/SVECompatibility.tmx",
+			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
+		}, {
+			"name": "Beach",
+			"sourceArea": [46, 5, 10, 9],
+			"position": [46, 5],
+			"removeEmpty": "true",
+			"file": "assets/SVECompatibility.tmx",
+			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
+		}, {
+			"name": "Beach",
+			"sourceArea": [29, 5, 6, 12],
+			"position": [29, 5],
+			"removeEmpty": "true",
+			"file": "assets/SVECompatibility.tmx",
+			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
+		}, {
+			"name": "Beach",
+			"sourceArea": [35, 6, 8, 14],
+			"position": [35, 6],
+			"removeEmpty": "true",
+			"file": "assets/SVECompatibility.tmx",
+			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
+		}
+	],
+}

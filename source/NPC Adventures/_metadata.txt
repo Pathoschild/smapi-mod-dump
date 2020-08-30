@@ -5,9 +5,9 @@ mods:
    NPC Adventures
 
 latest commit:
-   commit 2e8da509b8a3d1aa389d5176f6dded88b98aac58
-   Author: Ellen Jana FawkesovÃ¡ <4710267+purrplingcat@users.noreply.github.com>
-   Date:   Fri Jun 26 20:56:41 2020 +0200
+   commit 34f8639410c01dac1fed16e91a141e2a0d362097
+   Author: PurrplingCat <git@purrplingcat.com>
+   Date:   Tue Aug 4 08:31:19 2020 +0200
    
-       Update content-packs.md
+       Fixed log name for lockDoorWarp
    

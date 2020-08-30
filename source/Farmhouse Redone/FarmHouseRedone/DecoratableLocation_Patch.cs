@@ -11,16 +11,26 @@ using xTile;
 namespace FarmHouseRedone
 {
 
+    class DecoratableLocation_resetForPlayerEntry_Patch
+    {
+        internal static bool Prefix(DecoratableLocation __instance)
+        {
+            MapUtilities.FacadeHelper.setWallpaperDefaults(__instance);
+            //if (__instance.Name.StartsWith("DECORHOST_"))
+            //{
+                
+            //}
+            return true;
+        }
+    }
+
+
     class DecoratableLocation_doSetVisibleWallpaper_Patch
     {
-        static void setMapTileIndexIfOnTileSheet(Map map, DecoratableLocation instance, int x, int y, int index, string layer, int tileSheet, int tileSheetToMatch)
-        {
-            if (map.GetLayer(layer).Tiles[x, y] != null && map.GetLayer(layer).Tiles[x, y].TileSheet.Equals((object)map.TileSheets[tileSheetToMatch]))
-                instance.setMapTileIndex(x, y, index, layer, tileSheet);
-        }
-
         static int getNewTileIndex(Map map, int x, int y, string layer, int destinationIndex)
         {
+            if (map.GetLayer(layer).Tiles[x, y] == null)
+                return -1;
             int currentIndex = map.GetLayer(layer).Tiles[x, y].TileIndex;
             int whichHeight = (currentIndex % 48) / 16;
             return destinationIndex + (whichHeight * 16);
@@ -28,138 +38,47 @@ namespace FarmHouseRedone
 
         static void setMapTileIndexForAnyLayer(Map map, DecoratableLocation instance, int x, int y, int index)
         {
-            //Logger.Log("Working on tile (" + x + ", " + y + ") on the Back layer...");
-            if (isTileOnWallsSheet(map, "Back", x, y))
-                instance.setMapTileIndex(x, y, getNewTileIndex(map, x, y, "Back", index), "Back", 0);
-            //Logger.Log("Working on tile (" + x + ", " + y + ") on the Buildings layer...");
-            if (isTileOnWallsSheet(map, "Buildings", x, y))
-                instance.setMapTileIndex(x, y, getNewTileIndex(map, x, y, "Buildings", index), "Buildings", 0);
-            //Logger.Log("Working on tile (" + x + ", " + y + ") on the Front layer...");
-            if (isTileOnWallsSheet(map, "Front", x, y))
-                instance.setMapTileIndex(x, y, getNewTileIndex(map, x, y, "Front", index), "Front", 0);
-        }
-
-        static bool isTileOnWallsSheet(Map map, string layer, int x, int y)
-        {
-            bool result = (map.GetLayer(layer).Tiles[x, y] != null && map.GetLayer(layer).Tiles[x, y].TileSheet.Equals(map.TileSheets[FarmHouseStates.wallAndFloorsSheet]) && map.GetLayer(layer).Tiles[x, y].TileIndex <= 335);
-            //Logger.Log("Tile (" + x + ", " + y + ") on layer '" + layer + "' was " + (result ? "" : "not") + " a wall tile.");
-            return result;
+            MapUtilities.MapMerger.setMapTileIndexIfOnTileSheet(map, x, y, getNewTileIndex(map, x, y, "Back", index), "Back", MapUtilities.SheetHelper.getTileSheet(map, "walls_and_floors"), new Rectangle(0, 0, 16, 21));
+            MapUtilities.MapMerger.setMapTileIndexIfOnTileSheet(map, x, y, getNewTileIndex(map, x, y, "Buildings", index), "Buildings", MapUtilities.SheetHelper.getTileSheet(map, "walls_and_floors"), new Rectangle(0, 0, 16, 21));
+            MapUtilities.MapMerger.setMapTileIndexIfOnTileSheet(map, x, y, getNewTileIndex(map, x, y, "Front", index), "Front", MapUtilities.SheetHelper.getTileSheet(map, "walls_and_floors"), new Rectangle(0, 0, 16, 21));
         }
 
         internal static bool Prefix(int whichRoom, int which, DecoratableLocation __instance)
         {
-            if (!(__instance is FarmHouse) || __instance is Cabin)
-                return true;
-            //Logger.Log("Setting visible walls...");
-            //Logger.Log("Updating map...");
-            __instance.updateMap();
-            //Logger.Log("Map updated.  Getting walls...");
-            List<Microsoft.Xna.Framework.Rectangle> walls = __instance.getWalls();
-            int index = which % 16 + which / 16 * 48;
-            Logger.Log("Chosen index " + index + ".");
+            MapUtilities.MapMerger.DoSetVisibleWallpaper(whichRoom, which, __instance);
+            ////if (!(__instance is FarmHouse))
+            ////    return true;
+            //__instance.updateMap();
 
-            Map map = __instance.map;
+            ////Gather a list of all the walls in this map
+            //List<Rectangle> walls = __instance.getWalls();
+            //int index = which % 16 + which / 16 * 48;
 
-            if (whichRoom == -1)
-            {
-                Logger.Log("Applying to all wall rectangles...");
-                foreach (Microsoft.Xna.Framework.Rectangle rectangle in walls)
-                {
-                    for(int x = rectangle.X; x < rectangle.Right; x++)
-                    {
-                        for(int y = rectangle.Y; y < rectangle.Bottom; y++)
-                        {
-                            //Logger.Log("Working on tile (" + x + ", " + rectangle.Y + ")...");
-                            setMapTileIndexForAnyLayer(map, __instance, x, y, index);
-                        }
-                    }
+            ////Report the index of the wallpaper being pasted.
+            //Logger.Log("Chosen index " + index + ".");
+
+            ////Get the map for this DecoratableLocation
+            //Map map = __instance.map;
 
 
-                    //Logger.Log("Applying wall rectangle (" + rectangle.X + ", " + rectangle.Y + ", " + rectangle.Width + ", " + rectangle.Height + ")...");
-                    //for (int x = rectangle.X; x < rectangle.Right; ++x)
-                    //{
-                    //    //Logger.Log("Setting tile (" + x + ", " + rectangle.Y + ") on the Back layer...");
-                    //    setMapTileIndexIfOnTileSheet(map, __instance, x, rectangle.Y, index, "Back", 0, 2);
-                    //    //Logger.Log("Setting tile (" + x + ", " + (rectangle.Y + 1) + ") on the Back layer...");
-                    //    setMapTileIndexIfOnTileSheet(map, __instance, x, rectangle.Y + 1, index + 16, "Back", 0, 2);
-                    //    if (rectangle.Height >= 3)
-                    //    {
-                    //        //Logger.Log("Rectangle was tall...");
-                    //        if (__instance.map.GetLayer("Buildings").Tiles[x, rectangle.Y + 2].TileSheet.Equals((object)__instance.map.TileSheets[2]))
-                    //        {
-                    //            //Logger.Log("Buildings tile (" + x + ", " + (rectangle.Y + 2) + ") was from the walls and floors sheet.  Setting it to wallpapered state...");
-                    //            __instance.setMapTileIndex(x, rectangle.Y + 2, index + 32, "Buildings", 0);
-                    //        }
-                    //        else
-                    //        {
-                    //            //Logger.Log("Setting tile (" + x + ", " + (rectangle.Y + 2) + ") to index " + index + 32 + "...");
-                    //            __instance.setMapTileIndex(x, rectangle.Y + 2, index + 32, "Back", 0);
-                    //        }
-                    //    }
-                    //}
-                }
-            }
-            else
-            {
-                Logger.Log("Applying wall rectangle...");
-                if (walls.Count <= whichRoom)
-                {
-                    Logger.Log("Wall rectangle exceeded walls count!", StardewModdingAPI.LogLevel.Warn);
-                    return false;
-                }
+            //Logger.Log("Applying wall rectangle...");
 
-                //List<Rectangle> connectedWalls = new List<Rectangle>();
-                //connectedWalls.Add(walls[whichRoom]);
-                //if (FarmHouseStates.wallDictionary.ContainsKey(walls[whichRoom]))
-                //{
-                //    string roomString = FarmHouseStates.wallDictionary[walls[whichRoom]];
-                //    //Logger.Log("Looking for all walls for room " + roomString + "...");
-                //    foreach (KeyValuePair<Rectangle, string> wallDefinition in FarmHouseStates.wallDictionary)
-                //    {
-                //        if (wallDefinition.Value.Equals(roomString))
-                //            connectedWalls.Add(wallDefinition.Key);
-                //    }
-                //    //Logger.Log("Found " + connectedWalls.Count + " walls for " + roomString);
-                //}
-                //foreach (Rectangle rectangle in connectedWalls)
-                //{
-                //Logger.Log("Applying wall rectangle...");
-                Rectangle rectangle = walls[whichRoom];
-                for (int x = rectangle.X; x < rectangle.Right; x++)
-                {
-                    for (int y = rectangle.Y; y < rectangle.Bottom; y++)
-                    {
-                        //Logger.Log("Working on tile (" + x + ", " + rectangle.Y + ")...");
-                        setMapTileIndexForAnyLayer(map, __instance, x, y, index);
-                    }
-                }
+            ////It's possible that the number of saved wallpapers is greater than the number of walls, so we'll just skip any after we reach the end.
+            //if (walls.Count <= whichRoom)
+            //{
+            //    Logger.Log("Wall rectangle exceeded walls count!  You can ignore this if the farmhouse just upgraded, or you installed a new farmhouse mod.", StardewModdingAPI.LogLevel.Warn);
+            //    return false;
+            //}
 
-
-                    //Logger.Log("Applying wall rectangle (" + rectangle.X + ", " + rectangle.Y + ", " + rectangle.Width + ", " + rectangle.Height + ")...");
-                    //for (int x = rectangle.X; x < rectangle.Right; ++x)
-                    //{
-                    //    //Logger.Log("Setting tile (" + x + ", " + rectangle.Y + ") on the Back layer...");
-                    //    setMapTileIndexIfOnTileSheet(map, __instance, x, rectangle.Y, index, "Back", 0, 2);
-                    //    //Logger.Log("Setting tile (" + x + ", " + (rectangle.Y + 1) + ") on the Back layer...");
-                    //    setMapTileIndexIfOnTileSheet(map, __instance, x, rectangle.Y + 1, index + 16, "Back", 0, 2);
-                    //    if (rectangle.Height >= 3)
-                    //    {
-                    //        //Logger.Log("Rectangle was tall...");
-                    //        if (__instance.map.GetLayer("Buildings").Tiles[x, rectangle.Y + 2] == null)
-                    //            continue;
-                    //        if (__instance.map.GetLayer("Buildings").Tiles[x, rectangle.Y + 2].TileSheet.Equals((object)__instance.map.TileSheets[2]))
-                    //        {
-                    //            //Logger.Log("Buildings tile (" + x + ", " + (rectangle.Y + 2) + ") was from the walls and floors sheet.  Setting it to wallpapered state...");
-                    //            __instance.setMapTileIndex(x, rectangle.Y + 2, index + 32, "Buildings", 0);
-                    //        }
-                    //        else
-                    //        {
-                    //            //Logger.Log("Setting tile (" + x + ", " + (rectangle.Y + 2) + ") to index " + index + 32 + "...");
-                    //            __instance.setMapTileIndex(x, rectangle.Y + 2, index + 32, "Back", 0);
-                    //        }
-                    //    }
-                    //}
-            }
+            ////Find the region to paste in
+            //Rectangle rectangle = walls[whichRoom];
+            //for (int x = rectangle.X; x < rectangle.Right; x++)
+            //{
+            //    for (int y = rectangle.Y; y < rectangle.Bottom; y++)
+            //    {
+            //        setMapTileIndexForAnyLayer(map, __instance, x, y, index);
+            //    }
+            //}
             return false;
         }
     }
@@ -169,15 +88,16 @@ namespace FarmHouseRedone
 
         internal static bool Prefix(int which, int whichRoom, bool persist, DecoratableLocation __instance)
         {
-            if (!(__instance is FarmHouse) || __instance is Cabin)
-                return true;
-            List<Microsoft.Xna.Framework.Rectangle> floors = __instance.getFloors();
+            //if (!(__instance is FarmHouse))
+            //    return true;
             if (!persist)
                 return true;
+            
+            List<Rectangle> floors = __instance.getFloors();
 
             if (__instance.floor.Count < floors.Count)
             {
-                FarmHouseStates.setMissingFloorsToDefault(__instance as FarmHouse);
+                MapUtilities.FacadeHelper.setMissingFloorsToDefault(__instance);
             }
 
             //__instance.floor.SetCountAtLeast(floors.Count);
@@ -190,11 +110,15 @@ namespace FarmHouseRedone
             {
                 if (whichRoom > __instance.floor.Count - 1 || whichRoom >= floors.Count)
                     return false;
-                if (FarmHouseStates.floorDictionary.ContainsKey(floors[whichRoom]))
+                //FarmHouseState state = FarmHouseStates.getState(__instance as FarmHouse);
+
+                OtherLocations.DecoratableState state = OtherLocations.DecoratableStates.getState(__instance);
+
+                if (state.floorDictionary.ContainsKey(floors[whichRoom]))
                 {
-                    string roomLabel = FarmHouseStates.floorDictionary[floors[whichRoom]];
+                    string roomLabel = state.floorDictionary[floors[whichRoom]];
                     Logger.Log("Finding all floors for room '" + roomLabel + "'...");
-                    foreach(KeyValuePair<Rectangle, string> floorData in FarmHouseStates.floorDictionary)
+                    foreach(KeyValuePair<Rectangle, string> floorData in state.floorDictionary)
                     {
 
                         if (floors.Contains(floorData.Key) && floorData.Value == roomLabel)
@@ -211,15 +135,17 @@ namespace FarmHouseRedone
         }
     }
 
+    //This sets the data for the chosen wall to reflect the index of the wallpaper used.
+    //This does _not_ set the tiles.
     class DecoratableLocation_setWallpaper_Patch
     {
         internal static bool Prefix(int which, int whichRoom, bool persist, DecoratableLocation __instance)
         {
-            if (!(__instance is FarmHouse) || __instance is Cabin)
-                return true;
-            List<Microsoft.Xna.Framework.Rectangle> walls = __instance.getWalls();
+            
             if (!persist)
                 return true;
+
+            List<Rectangle> walls = __instance.getWalls();
 
             Logger.Log("Checking wallpaper indexes before SetCountAtLeast...");
             for (int wallIndex = 0; wallIndex < __instance.wallPaper.Count; wallIndex++)
@@ -227,11 +153,11 @@ namespace FarmHouseRedone
                 Logger.Log("Wall " + wallIndex + " has a wallpaper index of " + __instance.wallPaper[wallIndex] + ".");
             }
 
+            Logger.Log(__instance.Name + " has " + walls.Count + " walls, and " + __instance.wallPaper.Count + " wallpapers.");
             if (__instance.wallPaper.Count < walls.Count)
             {
-                FarmHouseStates.setMissingWallpaperToDefault(__instance as FarmHouse);
+                MapUtilities.FacadeHelper.setMissingWallpaperToDefault(__instance);
             }
-            //__instance.wallPaper.SetCountAtLeast(walls.Count);
 
             Logger.Log("Checking wallpaper indexes after SetCountAtLeast...");
             for (int wallIndex = 0; wallIndex < __instance.wallPaper.Count; wallIndex++)
@@ -249,11 +175,14 @@ namespace FarmHouseRedone
                 Logger.Log("Setting wallpaper to " + which + "...");
                 if (whichRoom > __instance.wallPaper.Count - 1 || whichRoom >= walls.Count)
                     return false;
-                if (FarmHouseStates.wallDictionary.ContainsKey(walls[whichRoom]))
+                //FarmHouseState state = FarmHouseStates.getState(__instance as FarmHouse);
+                OtherLocations.DecoratableState state = OtherLocations.DecoratableStates.getState(__instance);
+
+                if (state.wallDictionary.ContainsKey(walls[whichRoom]))
                 {
-                    string roomLabel = FarmHouseStates.wallDictionary[walls[whichRoom]];
+                    string roomLabel = state.wallDictionary[walls[whichRoom]];
                     Logger.Log("Finding all walls for room '" + roomLabel + "'...");
-                    foreach (KeyValuePair<Rectangle, string> wallData in FarmHouseStates.wallDictionary)
+                    foreach (KeyValuePair<Rectangle, string> wallData in state.wallDictionary)
                     {
 
                         if (walls.Contains(wallData.Key) && wallData.Value == roomLabel)
@@ -268,6 +197,108 @@ namespace FarmHouseRedone
                     __instance.wallPaper[whichRoom] = which;
                 }
             }
+            return false;
+        }
+    }
+
+    class DecoratableLocation_getWalls_Patch
+    {
+        public static void Postfix(ref List<Rectangle> __result, DecoratableLocation __instance)
+        {
+            __result.Clear();
+
+            OtherLocations.DecoratableState state = OtherLocations.DecoratableStates.getState(__instance);
+
+            __result = state.getWalls();
+
+            if (__result.Count > 0)
+                return;
+            else
+            {
+                __result = new List<Rectangle>()
+                {
+                    new Rectangle(1, 1, 11, 3)
+                };
+            }
+        }
+    }
+
+    class DecoratableLocation_getFloors_Patch
+    {
+        public static void Postfix(ref List<Rectangle> __result, DecoratableLocation __instance)
+        {
+            __result.Clear();
+
+            OtherLocations.DecoratableState state = OtherLocations.DecoratableStates.getState(__instance);
+
+            __result = state.getFloors();
+
+            if (__result.Count > 0)
+                return;
+            else
+            {
+                __result = new List<Rectangle>()
+                {
+                    new Rectangle(1, 3, 11, 11)
+                };
+            }
+        }
+    }
+
+
+    class DecoratableLocation_doSetVisibleFloor_Patch
+    {
+
+        static void setMapTileIndexesInSquare(Map map, Rectangle floor, DecoratableLocation instance, int x, int y, int index)
+        {
+            if (floor.Contains(x, y))
+                MapUtilities.MapMerger.setMapTileIndexIfOnTileSheet(map, x, y, index, "Back", MapUtilities.SheetHelper.getTileSheet(map, "walls_and_floors"), new Rectangle(0, 21, 16, 10));
+            if (floor.Contains(x+1, y))
+                MapUtilities.MapMerger.setMapTileIndexIfOnTileSheet(map, x + 1, y, index + 1, "Back", MapUtilities.SheetHelper.getTileSheet(map, "walls_and_floors"), new Rectangle(0, 21, 16, 10));
+            if (floor.Contains(x, y+1))
+                MapUtilities.MapMerger.setMapTileIndexIfOnTileSheet(map, x, y + 1, index + 16, "Back", MapUtilities.SheetHelper.getTileSheet(map, "walls_and_floors"), new Rectangle(0, 21, 16, 10));
+            if (floor.Contains(x+1, y+1))
+                MapUtilities.MapMerger.setMapTileIndexIfOnTileSheet(map, x + 1, y + 1, index + 17, "Back", MapUtilities.SheetHelper.getTileSheet(map, "walls_and_floors"), new Rectangle(0, 21, 16, 10));
+        }
+
+        internal static bool Prefix(int whichRoom, int which, DecoratableLocation __instance)
+        {
+            MapUtilities.MapMerger.DoSetVisibleFloor(whichRoom, which, __instance);
+            //__instance.updateMap();
+
+            ////Gather a list of all the floors in this map
+            //List<Rectangle> floors = __instance.getFloors();
+            //int index = 336 + which % 8 * 2 + which / 8 * 32;
+
+            ////Report the index of the floor being pasted.
+            //Logger.Log("Chosen index " + index + ".");
+
+            ////Get the map for this DecoratableLocation
+            //Map map = __instance.map;
+
+
+            //Logger.Log("Applying floor rectangle...");
+
+            ////It's possible that the number of saved floors is greater than the number of floors, so we'll just skip any after we reach the end.
+            //if (floors.Count <= whichRoom)
+            //{
+            //    Logger.Log("Floor rectangle exceeded floors count!  You can ignore this if the farmhouse just upgraded, or you installed a new farmhouse mod.", StardewModdingAPI.LogLevel.Warn);
+            //    return false;
+            //}
+
+            ////Find the region to paste in
+            //Rectangle rectangle = floors[whichRoom];
+            //int x = rectangle.X;
+            //while (x < rectangle.Right)
+            //{
+            //    int y = rectangle.Y;
+            //    while (y < rectangle.Bottom)
+            //    {
+            //        setMapTileIndexesInSquare(map, rectangle, __instance, x, y, index);
+            //        y += 2;
+            //    }
+            //    x += 2;
+            //}
             return false;
         }
     }

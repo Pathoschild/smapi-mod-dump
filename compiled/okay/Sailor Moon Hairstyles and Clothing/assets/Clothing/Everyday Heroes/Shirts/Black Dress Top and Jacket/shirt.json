@@ -3,5 +3,11 @@
     "Description": "A heavy jacket over a black dress. It still needs the bottom half.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Top de Vestido Negro y Chaqueta"
+    },
+    "DescriptionLocalization": {
+        "es": "Una chaqueta gruesa sobre un vestido negro. Todavía necesita la mitad inferior."
+    }
 }

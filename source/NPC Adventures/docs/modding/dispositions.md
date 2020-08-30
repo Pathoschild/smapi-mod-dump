@@ -26,18 +26,18 @@ Definition structure is a dictionary of NPC, where key is NPC name and value rep
 
 ```json
 {
-  "Abigail": "recruitable/warrior//5/0/40",
-  "Maru": "recruitable/doctor fighter//5/0/36",
-  "Shane": "recruitable/warrior//5/0/-1",
-  "Leah": "recruitable/forager fighter//5/0/39",
-  "Haley": "recruitable/anxious fighter//5/0/42",
-  "Emily": "recruitable/fighter//5/0/0",
-  "Penny": "recruitable/fighter//5/0/38",
-  "Alex": "recruitable/warrior//5/0/25",
-  "Sam": "recruitable/fighter//5/0/30",
-  "Sebastian": "recruitable/fighter//5/0/41",
-  "Elliott": "recruitable/fighter//5/0/35",
-  "Harvey": "recruitable/doctor fighter//5/0/37"
+  "Abigail": "recruitable/warrior//5/0/Abby's Planchette",
+  "Maru": "recruitable/doctor fighter//5/0/Maru's Wrench",
+  "Shane": "recruitable/fighter//5/0/-1",
+  "Leah": "recruitable/forager fighter//5/0/Leah's Whittler",
+  "Haley": "recruitable/fighter scared//5/0/Haley's Iron",
+  "Emily": "recruitable/fighter//5/0/Rusty Sword",
+  "Penny": "recruitable/forager fighter//5/0/Penny's Fryer",
+  "Alex": "recruitable/warrior//5/0/Alex's Bat",
+  "Sam": "recruitable/fighter//5/0/Sam's Old Guitar",
+  "Sebastian": "recruitable/warrior//5/0/Seb's Lost Mace",
+  "Elliott": "recruitable/fighter//5/0/Elliott's Pencil",
+  "Harvey": "recruitable/doctor fighter//5/0/Harvey's Mallet"
 }
 ```
 
@@ -50,15 +50,17 @@ Definition structure is a dictionary of NPC, where key is NPC name and value rep
 | availability | NOT USED! | |
 | minimum_hearts | NOT USED! | |
 | price | NOT USED! |
-| sword | integer | Index of default sword. Every companion can to have own unique default sword for level 0. See game file **Data/weapons** for more details. `-1` means no sword |
+| sword | Sword name (string) or ID (int)| Name or id of default sword. Every companion can to have own unique default sword for level 0. See game file **Data/weapons** for more details. `-1` means no sword. Custom swords supported |
 
 ## Edit dispositions in content pack
 
 File `assets/data/myOwnCompanionDispositions.json`:
 
-```json
+```js
 {
-  "Biglydz": "recruitable/warrior//5/0/40"
+  "Biglydz": "recruitable/warrior//5/0/Master sword" // This companion uses custom sword from another mod named 'Master sword'
+  "Hastings": "recruitable/warrior//5/0/40" // This companion uses vanilla sword with ID 40 (Abby's Planchette)
+  "Pam": "recruitable/warrior//5/0/Cutlass" // This companion vanilla sword named 'Cutlass'
 }
 ```
 

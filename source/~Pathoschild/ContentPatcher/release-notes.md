@@ -1,6 +1,82 @@
 [← back to readme](README.md)
 
 # Release notes
+## 1.17.2
+Released 28 August 2020.
+
+* Fixed patches not always updated if they depend on mod-provided tokens that incorrectly change outside a context update.
+
+## 1.17.1
+Released 19 August 2020.
+
+* Made 'multiple patches want to load asset' errors more user-friendly.
+* Fixed error in some cases when warping to a new location as a farmhand in multiplayer.
+* Fixed error editing an image previously loaded through the Scale Up mod.
+
+## 1.17
+Released 16 August 2020. See the [release highlights for mod authors](https://www.patreon.com/posts/40495753).
+
+* Patches can now optionally [update on location change](docs/author-guide.md#update-rate), including all tokens (not only location-specific tokens).
+* Patches can now resize maps automatically using `Action: EditMap` (just patch past the bottom or right edges).
+* Added `TargetPathOnly` token (the target field value for the current patch, without the filename).
+* Added [`patch reload`](docs/author-guide.md#patch-reload) console command (thanks to spacechase0!).
+* Added troubleshooting hints related to update rate in `patch summary` console command.
+* Removed legacy token API obsolete since Content Patcher 1.12.
+* Fixed ambiguous-method detection in advanced API.
+* Internal changes to prepare for realtime content updates.
+
+**Update note for mod authors:**  
+If you use the `LocationName` or `IsOutdoors` token/condition, updating the `Format` field to
+`1.17.0` or later requires changes to your `content.json`. See the
+[migration guide](docs/author-migration-guide.md) for more info.
+
+## 1.16.4
+Released 12 August 2020.
+
+* Fixed 'collection was modified' error when unloading `Action: Include` patches.
+
+## 1.16.3
+Released 08 August 2020.
+
+* Fixed incorrect token input validation in some cases with 1.16.2.
+
+## 1.16.2
+Released 08 August 2020.
+
+* Fixed patches not always unapplied when an `Include` patch changes.
+* Fixed error using some tokens within the `contains` input argument.
+* Fixed broken error message when multiple load patches apply in 1.16.
+
+## 1.16.1
+Released 03 August 2020.
+
+* Fixed some patches not applied correctly in 1.16.
+
+## 1.16
+Released 02 August 2020. See the [release highlights for mod authors](https://www.patreon.com/posts/40028155).
+
+* Added [an `Include` action](docs/author-guide.md#include) to load patches from another JSON file. That includes full token support, so you can load files dynamically or conditionally.
+* Randomization is now consistent between players, regardless of installed content packs.
+* Content packs containing `null` patches are no longer disabled; instead those patches are now skipped with a warning.
+* Improved performance when updating very large content packs.
+* Fixed boolean/numeric fields rejecting tokens with surrounding whitespace like `"  {{SomeToken}}  "`.
+* Fixed auto-generated patch names not normalising path separators.
+* Fixed `patch summary` showing duplicate target paths in some cases.
+* Fixed string sorting/comparison for some special characters.
+* Internal changes to prepare for realtime content updates.
+
+**Update note for mod authors:**  
+Using `"Action": "EditData"` with a `FromFile` field is now deprecated, though it still works.
+Migrating to an `"Action": "Include"` patch is recommended; it's more flexible and works more
+intuitively. (That doesn't apply to `"Action": "EditData"` patches without a `FromFile` field.)
+
+## 1.15.2
+Released 21 July 2020.
+
+* Fixed error using `HasFile` with filenames containing commas.
+* Fixed broken patches preventing other patches from being applied/updated in rare cases.
+* Internal changes to prepare for 1.16.
+
 ## 1.15.1
 Released 06 July 2020.
 

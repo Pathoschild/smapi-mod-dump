@@ -30,16 +30,16 @@ namespace FarmTypeManager
 
             if (tmxName == null) //if this is a typical map
             {
-                Monitor.Log($"Map name: {loc.Name}", LogLevel.Info);
+                Utility.Monitor.Log($"Map name: {loc.Name}", LogLevel.Info);
             }
             else //if this is a buildable location added by TMXLoader
             {
-                Monitor.Log($"Map name: {tmxName}", LogLevel.Info);
+                Utility.Monitor.Log($"Map name: {tmxName}", LogLevel.Info);
             }
-			Monitor.Log($"Your location (x,y): {x},{y}", LogLevel.Info);
-            Monitor.Log($"Terrain type: {type}", LogLevel.Info);
-            Monitor.Log($"Diggable: {diggable}", LogLevel.Info);
-            Monitor.Log($"Tile image index: {index}", LogLevel.Info);
+            Utility.Monitor.Log($"Your location (x,y): {x},{y}", LogLevel.Info);
+            Utility.Monitor.Log($"Terrain type: {type}", LogLevel.Info);
+            Utility.Monitor.Log($"Diggable: {diggable}", LogLevel.Info);
+            Utility.Monitor.Log($"Tile image index: {index}", LogLevel.Info);
         }
     }
 }

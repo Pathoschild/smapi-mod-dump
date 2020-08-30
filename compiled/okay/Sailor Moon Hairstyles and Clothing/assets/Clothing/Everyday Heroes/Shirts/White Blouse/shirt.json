@@ -3,5 +3,11 @@
     "Description": "A low-necked blouse that comes with a belt.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Blusa Blanca"
+    },
+    "DescriptionLocalization": {
+        "es": "Una blusa de cuello bajo que viene con un cinturón."
+    }
 }

@@ -1,0 +1,17 @@
+{
+	"Name": "Winter Woods - Farm Extended Compatibility",
+	"Version": "1.0.2",
+	"Author": "Jessebot",
+	"Description": "A secret woods expansion mod.",
+	"MinimumApiVersion": "2.9",
+	"UpdateKeys": ["Nexus:3211"],
+	"UniqueID": "Jessebot.WinterWoods",
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+	},
+	"Dependencies": [
+		{
+			"UniqueID": "Forkmaster.ExtendedFarm"
+		}
+	]
+}

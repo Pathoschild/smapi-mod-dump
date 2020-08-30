@@ -1,11 +1,11 @@
 ﻿{
   "Name": "Line Sprinklers",
   "Author": "Hootless",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Sprinklers that water in a line!",
   "UniqueID": "hootless.LineSprinklers",
   "EntryDll": "LineSprinklers.dll",
-  "MinimumApiVersion": "2.11.0",
+  "MinimumApiVersion": "3.5.0",
   "UpdateKeys": [ "Nexus:2917" ],
   "Dependencies": [
     {

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Bigger Riverlands Farm",
+  "Author": "Jessebot",
+  "Version": "3.0",
+  "MinimumApiVersion": "2.6",
+  "Description": "A bigger and better riverlands farm",
+  "UniqueID": "jessebot.biggerriverlands",
+  "EntryDll": "BiggerRiverlandsFarm.dll",
+  "UpdateKeys": [ "Nexus:3025" ]
+}

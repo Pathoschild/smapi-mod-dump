@@ -1,5 +1,16 @@
 ﻿### Changelog
 
+#### 1.1.5
+  - Anything using the same tileactions as the bath house pool should now clear illnesses
+  - CoF integration: blinding fog displays a debuff
+
+#### 1.1.4
+  - fix to issues with clearing illnesses
+  - weather icon fixes
+
+#### 1.1.3
+  - possible NRE fix
+
 #### 1.1.2
   - Cleans up some spam (moving it to verbose)
   - Now displays a status icon when sick

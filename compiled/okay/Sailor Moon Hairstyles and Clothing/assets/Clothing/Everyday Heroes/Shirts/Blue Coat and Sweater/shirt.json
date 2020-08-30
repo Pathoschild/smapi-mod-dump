@@ -3,5 +3,11 @@
     "Description": "A double-layered warm coat and warmer sweater.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Abrigo Azul y Suéter"
+    },
+    "DescriptionLocalization": {
+        "es": "Un abrigo cálido de doble capa y un suéter más cálido."
+    }
 }

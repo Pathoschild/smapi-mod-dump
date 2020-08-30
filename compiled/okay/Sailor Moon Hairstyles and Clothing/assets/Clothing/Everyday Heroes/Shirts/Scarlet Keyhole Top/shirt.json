@@ -3,5 +3,11 @@
     "Description": "A revealing top in rich red fabric.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Top Ojo de Cerradura Escarlata"
+    },
+    "DescriptionLocalization": {
+        "es": "Un top revelador en rico tejido rojo."
+    }
 }

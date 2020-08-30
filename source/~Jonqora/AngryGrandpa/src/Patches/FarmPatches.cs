@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using CIL = Harmony.CodeInstruction;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -8,6 +9,10 @@ using StardewValley.Network;
 using Object = StardewValley.Object;
 using Netcode;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using xTile.Dimensions;
 
 namespace AngryGrandpa
@@ -42,7 +47,9 @@ namespace AngryGrandpa
                 original: AccessTools.Method(typeof(Farm),
                     nameof(Farm.addGrandpaCandles)),
                 prefix: new HarmonyMethod(typeof(FarmPatches),
-                    nameof(FarmPatches.addGrandpaCandles_Prefix))
+                    nameof(FarmPatches.addGrandpaCandles_Prefix)),
+                transpiler: new HarmonyMethod(typeof(FarmPatches),
+                    nameof(FarmPatches.addGrandpaCandles_Transpiler))
             );
         }
 
@@ -185,9 +192,122 @@ namespace AngryGrandpa
 		}
 
         /// <summary>
-        /// Gets rid of extra candlestick sprites before lighting candles, but leaves unlit candlesticks alone after an evaluation request.
+        /// Finds all sequences matching `new TemporaryAnimatedSprite("LooseSprites\\Cursors", new 
+        /// Microsoft.Xna.Framework.Rectangle(536, 1945, 8, 8), new Vector2(X, Y), false, 0.0f, Color.White)`
+        /// If found, alters the OpCode of each X value to correct the visual placement of candle flames.
         /// </summary>
-        /// <param name="__instance">The Farm locations where candles are being added</param>
+        /// <param name="instructions">CodeInstruction enumerable provided by Harmony for the original addGrandpaCandles function</param>
+        /// <returns>Altered CodeInstructions if suitable opcode replacement sites were found; else returns original codes</returns>
+        public static IEnumerable<CIL> addGrandpaCandles_Transpiler(IEnumerable<CIL> instructions)
+        {
+            try
+            {
+                var codes = new List<CodeInstruction>(instructions);
+                bool patched = false;
+                int patchCount = 0;
+
+                for (int i = 0; i < codes.Count - 12; i++)
+                {
+                    // Find any sequence matching new TemporaryAnimatedSprite("LooseSprites\\Cursors", new 
+                    /// Microsoft.Xna.Framework.Rectangle(536, 1945, 8, 8), new Vector2(X, Y), false, 0.0f, Color.White)
+                    //     for candle flame sprites, and adjust the X position value to correct off-center placements.
+
+                    if (//ldstr "LooseSprites\\Cursors"
+                        codes[i].opcode == OpCodes.Ldstr &&
+                        (string)codes[i].operand == "LooseSprites\\Cursors" &&
+                        //ldc.i4 536
+                        codes[i + 1].opcode == OpCodes.Ldc_I4 &&
+                        (int)codes[i + 1].operand == 536 &&
+                        //ldc.i4 1945
+                        codes[i + 2].opcode == OpCodes.Ldc_I4 &&
+                        (int)codes[i + 2].operand == 1945 &&
+                        //ldc.i4.8
+                        codes[i + 3].opcode == OpCodes.Ldc_I4_8 &&
+                        //ldc.i4.8
+                        codes[i + 4].opcode == OpCodes.Ldc_I4_8 &&
+                        //newobj instance void [Microsoft.Xna.Framework]Microsoft.Xna.Framework.Rectangle::.ctor(int32, int32, int32, int32)
+                        codes[i + 5].opcode == OpCodes.Newobj &&
+                        (ConstructorInfo)codes[i + 5].operand == typeof(Microsoft.Xna.Framework.Rectangle).GetConstructor(
+                                types: new Type[] { typeof(Int32), typeof(Int32), typeof(Int32), typeof(Int32) }) &&
+                        //ldc.r4 ( 460 || 484 || 592 || 612 )          // REPLACE THIS NUMBER
+                        codes[i + 6].opcode == OpCodes.Ldc_R4 &&
+                        new List<float> { 460, 484, 592, 612 }.Contains((float)codes[i + 6].operand) &&
+                        //ldc.r4 ( 380 || 320 )
+                        codes[i + 7].opcode == OpCodes.Ldc_R4 &&
+                        new List<float> { 380, 320 }.Contains((float)codes[i + 7].operand) &&
+                        //newobj instance void [Microsoft.Xna.Framework]Microsoft.Xna.Framework.Vector2::.ctor(float32, float32)
+                        codes[i + 8].opcode == OpCodes.Newobj &&
+                        (ConstructorInfo)codes[i + 8].operand == typeof(Microsoft.Xna.Framework.Vector2).GetConstructor(
+                                types: new Type[] { typeof(float), typeof(float) }) &&
+                        //ldc.i4.0
+                        codes[i + 9].opcode == OpCodes.Ldc_I4_0 &&
+                        //ldc.r4 0.0
+                        codes[i + 10].opcode == OpCodes.Ldc_R4 &&
+                        (float)codes[i + 10].operand == 0.0f &&
+                        //call valuetype [Microsoft.Xna.Framework]Microsoft.Xna.Framework.Color [Microsoft.Xna.Framework]Microsoft.Xna.Framework.Color::get_White()
+                        codes[i + 11].opcode == OpCodes.Call &&
+                        (MethodInfo)codes[i + 11].operand == typeof(Microsoft.Xna.Framework.Color).GetMethod("get_White") &&
+                        //newobj instance void StardewValley.TemporaryAnimatedSprite::.ctor(string, valuetype [Microsoft.Xna.Framework]Microsoft.Xna.Framework.Rectangle, valuetype [Microsoft.Xna.Framework]Microsoft.Xna.Framework.Vector2, bool, float32, valuetype [Microsoft.Xna.Framework]Microsoft.Xna.Framework.Color)
+                        codes[i + 12].opcode == OpCodes.Newobj &&
+                        (ConstructorInfo)codes[i + 12].operand == typeof(TemporaryAnimatedSprite).GetConstructor(
+                                types: new Type[] { typeof(string), typeof(Microsoft.Xna.Framework.Rectangle), typeof(Microsoft.Xna.Framework.Vector2), typeof(bool), typeof(float), typeof(Microsoft.Xna.Framework.Color) }) )
+                    {
+                        // Determine which replacement value to use
+                        switch (codes[i + 6].operand)
+                        {
+                            case (float)460:
+                                codes[i + 6].operand = (float)462; // Shift 2 pixels to the right
+                                patchCount += 1;
+                                Monitor.Log($"Adjusted 1st candle flame position with {nameof(addGrandpaCandles_Transpiler)}", LogLevel.Trace);
+                                break;
+                            case (float)484:
+                                codes[i + 6].operand = (float)482; // Shift 2 pixels to the left
+                                patchCount += 1;
+                                Monitor.Log($"Adjusted 2nd candle flame position with {nameof(addGrandpaCandles_Transpiler)}", LogLevel.Trace);
+                                break;
+                            case (float)592:
+                                codes[i + 6].operand = (float)590; // Shift 2 pixels to the left
+                                patchCount += 1;
+                                Monitor.Log($"Adjusted 3rd candle flame position with {nameof(addGrandpaCandles_Transpiler)}", LogLevel.Trace);
+                                break;
+                            case (float)612:
+                                codes[i + 6].operand = (float)610; // Shift 2 pixels to the left
+                                patchCount += 1;
+                                Monitor.Log($"Adjusted 4th candle flame position with {nameof(addGrandpaCandles_Transpiler)}", LogLevel.Trace);
+                                break;
+                            default:
+                                Monitor.Log($"Unexpected operand value {codes[i + 6].operand}, type {codes[i + 6].operand.GetType()} in {nameof(addGrandpaCandles_Transpiler)}", LogLevel.Debug);
+                                break;
+                        }
+                    }
+                }
+                if (patchCount >= 4) patched = true;
+
+                if (patched) { Monitor.LogOnce($"Applied harmony patch to Farm: {nameof(addGrandpaCandles_Transpiler)}", LogLevel.Trace); }
+                else if (patchCount > 0) 
+                {
+                    Monitor.Log($"Harmony patch to Farm was only partially applied: {nameof(addGrandpaCandles_Transpiler)}\n" +
+                        $"This should not cause any problems, but a visual bug with off-center candle flames may be noticed.", LogLevel.Warn);
+                }
+                else 
+                {
+                    Monitor.Log($"Couldn't apply harmony patch to Farm: {nameof(addGrandpaCandles_Transpiler)}\n" +
+                        $"This should not cause any problems, but a visual bug with off-center candle flames may be noticed.", LogLevel.Warn);
+                }
+
+                return codes.AsEnumerable();
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(addGrandpaCandles_Transpiler)}:\n{ex}", LogLevel.Error);
+                return instructions; // use original code
+            }
+        }
+        
+        /// <summary>
+         /// Gets rid of extra candlestick sprites before lighting candles, but leaves unlit candlesticks alone after an evaluation request.
+         /// </summary>
+         /// <param name="__instance">The Farm locations where candles are being added</param>
         public static void addGrandpaCandles_Prefix(Farm __instance)
         {
             try

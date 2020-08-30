@@ -1,0 +1,12 @@
+{
+   "Name": "[JA] Note Blocks",
+   "Author": "Yaramy",
+   "Description": "Adds items needed for the note blocks mod.",
+   "Version": "1.0.1",
+   "MinimumApiVersion": "3.3.2",
+   "UniqueID": "ppja.noteblocks",
+   "ContentPackFor": {
+       "UniqueID": "spacechase0.JsonAssets"
+    },
+   "UpdateKeys": [ "???" ],
+}

@@ -2,5 +2,6 @@
   "MenuButton": "J",
   "UseTempFolder": false,
   "MenuFont1": "opensans",
-  "MenuFont2": "escrita"
+  "MenuFont2": "escrita",
+  "CompatibilityMode": false
 }

@@ -1,13 +1,22 @@
 {
   "Name": "Climates of Ferngill",
   "Author": "Sakorona",
-  "Version": "1.5.11",
+  "Version": "1.5.12",
   "Description": "Create a unique climate system with custom weathers, a moon and stamina changes, as well as add weather related events and commands.",
   "UniqueID": "KoihimeNakamura.ClimatesOfFerngill",
   "EntryDll": "ClimatesOfFerngill.dll",
   "MinimumApiVersion": "3.4.0",
-    "Dependencies": [
-    { "UniqueID": "Platonymous.Toolkit", "MinimumVersion": "0.7.0" }
+  "ModUpdater": {
+    "Repository": "SDVMods",
+    "User": "Sakorona",
+    "Directory": "_releases",
+    "ModFolder": "ClimatesOfFerngill"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "MinimumVersion": "0.7.0"
+    }
   ],
   "UpdateKeys": [ "Nexus:604" ]
 } 

@@ -30,12 +30,13 @@ mods:
    Removable Horse Hats
    Safe Lightning
    Stack Everything
+   Wind Effects
    Winter Grass
 
 latest commit:
-   commit 13b093d587915d197103d79089d6e7e50157aac7
+   commit c0955362cab996ebd44242a200bca557daaa9a0b
    Author: danvolchek <danvnad@gmail.com>
-   Date:   Sun Jun 14 16:24:36 2020 -0700
+   Date:   Sat Aug 22 15:25:12 2020 -0700
    
-       [Hats On Cats] change folder name so debug helper isn't ignored by git
+       [Windy Effects] don't update when there is no current location
    

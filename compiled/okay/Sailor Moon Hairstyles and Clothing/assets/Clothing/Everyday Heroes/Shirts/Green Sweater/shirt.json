@@ -3,5 +3,11 @@
     "Description": "A comfy green sweater.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Camisa y Suéter con Cuello"
+    },
+    "DescriptionLocalization": {
+        "es": "Un cómodo suéter verde."
+    }
 }

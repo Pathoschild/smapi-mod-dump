@@ -1,11 +1,11 @@
 {
-
+"loadLate": "true",
 
 "addMaps": [   
      
        {
       "name": "EastScarpe",
-      "file": "assets/EastScarpe2.tmx",
+      "file": "assets/NewEastScarpe.tmx",
       "type": "Custom:EastScarpe.EastScarpe, EastScarpe, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
     },
 
@@ -57,12 +57,12 @@
         "position": [ 28, 27 ],
         "Conditions": "d Mon Wed Thu Fri Sat Sun/t 1100 1800/w sunny"
       },
- {
+/*{
         "name": "EastScarpe",
         "file": "assets/OrchardPatch.tmx",
         "sourceArea": [ 0, 0, 3, 3 ],
         "position": [ 74, 47 ]
-      }
+      }*/
       
       
       
@@ -178,7 +178,7 @@
 {
   "name": "Eloise",
   "map": "Town-EggFestival",
-  "position": [17, 66],
+  "position": [17, 67],
   "direction": 1,
   "position2": [35, 60],
   "direction2": 2
@@ -188,13 +188,44 @@
 {
   "name": "Jacob",
   "map": "Town-EggFestival",
-  "position": [52, 71],
-  "direction": 0,
+  "position": [17, 63],
+  "direction": 2,
   "position2": [34, 60],
   "direction2": 2
 
-        }
+        },
+{
+  "name": "Eloise",
+  "map": "Forest-FlowerFestival",
+  "position": [14, 30],
+  "direction": 3,
+  "position2": [13, 30],
+  "direction2": 0
 
+
+        },
+{
+  "name": "Jacob",
+  "map": "Forest-FlowerFestival",
+  "position": [3, 30],
+  "direction": 1,
+  "position2": [14, 31],
+  "direction2": 0
+},
+{
+  "name": "Eloise",
+  "map": "Town-Christmas",
+  "position": [27, 51],
+  "direction": 3
+
+
+        },
+{
+  "name": "Jacob",
+  "map": "Town-Christmas",
+  "position": [37, 71],
+  "direction": 3
+        }
 
 	
     ]

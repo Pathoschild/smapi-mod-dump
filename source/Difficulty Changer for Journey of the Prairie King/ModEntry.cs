@@ -80,58 +80,60 @@ namespace StardewValleyEasyPrairieKing
         {
             if (Game1.currentMinigame == null || !"AbigailGame".Equals(Game1.currentMinigame.GetType().Name))
             {
+                values_set_["lives"] = false;
+                values_set_["coins"] = false;
                 return;
             }
 
             Type minigameType = Game1.currentMinigame.GetType();
 
-            if (this.config_.lives_ > INFINITE)
+            if (this.config_.lives > INFINITE)
             {
                 minigameType.GetField("lives").SetValue(Game1.currentMinigame, INFINITE);
             }
-            else if(this.config_.lives_ != 0 && !values_set_["lives"])
+            else if(this.config_.lives != 0 && !values_set_["lives"])
             {
-                minigameType.GetField("lives").SetValue(Game1.currentMinigame, this.config_.lives_);
+                minigameType.GetField("lives").SetValue(Game1.currentMinigame, this.config_.lives);
                 values_set_["lives"] = true;
             }
 
-            if (this.config_.coins_ > INFINITE)
+            if (this.config_.coins > INFINITE)
             {
                 minigameType.GetField("coins").SetValue(Game1.currentMinigame, INFINITE);
             }
-            else if(this.config_.coins_ > INFINITE)
+            else if(this.config_.coins > INFINITE)
             {
-                minigameType.GetField("coins").SetValue(Game1.currentMinigame, this.config_.coins_);
+                minigameType.GetField("coins").SetValue(Game1.currentMinigame, this.config_.coins);
                 values_set_["coins"] = true;
             }
 
-            if(this.config_.ammo_level_ != 0 )
+            if(this.config_.ammoLevel != 0 )
             {
-                minigameType.GetField("ammoLevel").SetValue(Game1.currentMinigame, this.config_.ammo_level_);
+                minigameType.GetField("ammoLevel").SetValue(Game1.currentMinigame, this.config_.ammoLevel);
             }
 
-            if (this.config_.bullet_damage_ != 0)
+            if (this.config_.bulletDamage != 0)
             {
-                minigameType.GetField("bulletDamage").SetValue(Game1.currentMinigame, this.config_.bullet_damage_);
+                minigameType.GetField("bulletDamage").SetValue(Game1.currentMinigame, this.config_.bulletDamage);
             }
 
 
-            if (this.config_.fire_speed_level_ != 0)
+            if (this.config_.fireSpeedLevel != 0)
             {
-                minigameType.GetField("shootingDelay").SetValue(Game1.currentMinigame, this.config_.fire_speed_level_);
+                minigameType.GetField("shootingDelay").SetValue(Game1.currentMinigame, this.config_.fireSpeedLevel);
             }
 
-            if (this.config_.run_speed_level_ != 0)
+            if (this.config_.runSpeedLevel != 0)
             {
-                minigameType.GetField("runSpeedLevel").SetValue(Game1.currentMinigame, this.config_.run_speed_level_);
+                minigameType.GetField("runSpeedLevel").SetValue(Game1.currentMinigame, this.config_.runSpeedLevel);
             }
 
-            if (this.config_.spread_pistol_)
+            if (this.config_.useShotgun)
             {
-                minigameType.GetField("spreadPistol").SetValue(Game1.currentMinigame, this.config_.spread_pistol_);
+                minigameType.GetField("spreadPistol").SetValue(Game1.currentMinigame, this.config_.useShotgun);
             }
 
-            if (this.config_.always_invincible_)
+            if (this.config_.alwaysInvincible)
             {
                 minigameType.GetField("playerInvincibleTimer").SetValue(Game1.currentMinigame, 5000);
             }

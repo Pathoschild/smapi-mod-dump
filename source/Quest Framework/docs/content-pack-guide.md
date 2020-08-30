@@ -1,5 +1,9 @@
 ﻿
 
+
+
+
+
 ← [README](../README.md)
 
 # Content pack guide
@@ -127,7 +131,7 @@ See the `Data/ObjectInformation` game resource for available items.
 
 Deliver specified item to specified NPC.
 
-*Trigger*: `<string:NPC_name> <int:object_id>` like `Abigail 66` for bring Amethyst for Abigail or `Willy {{ja:Fish Oil}}` if you want to use JsonAssets item (JsonAssets required for use JA token)
+*Trigger*: `<string:NPC_name> <int:object_id> [<int:count>]` like `Abigail 66` for bring Amethyst to Abigail, `Abigail 66 5` for bring 5 pieces of Amethyst to Abigail; or `Willy {{ja:Fish Oil}}` if you want to use JsonAssets item (JsonAssets required for use JA token)
 See the `Data/ObjectInformation` game resource for available items.
 
 This quest type accepts `ReactionText`.
@@ -180,7 +184,7 @@ Field  | Description
 ------ | -----------
 When   | When this hook will be trigered (see hook types)
 Action | Which action will be executed (see actions)
-Has    | Conditions for execute the hook (see conditions)
+Has    | Conditions for execute the hook (see conditions and hook types).
 
 #### Example
 
@@ -224,11 +228,14 @@ There are these types of actions:
 Action name     | Description
 --------------- | -----------
 Complete        | Complete the quest
-Remove          | Remove the quest from player's questlog (without completion, just remove)
+Remove          | Remove the quest from player's questlog (quest is not considered complete, just removed)
 CheckIfComplete | Handles completion checker and complete the quest if inner quest conditions are met.
-Accept          | Accept this quest and add it to player's quest log as new.
+Accept          | Accept this quest and add it to player's quest log as new quest (has the sign new in quest log).
 
 ### Hook types
+
+Some hook types has own specific conditions. See them bellow.
+**NOTE:** For specialized hook type's conditions you cant't use the negation `not:` prefix. This prefix is only for [common conditions](common-environment-conditions) and for global custom conditions.
 
 #### Location
 
@@ -236,10 +243,10 @@ This hook is triggered when player entered or leaved specific location and all o
 
 Local condition | Description
 --------------- | -----------
-Enter           | Location name of entered location by player
-Leave           | Location name of leaved location
+Enter           | Name of the location the player enter
+Leave           | Name of the location the player left
 
-If you specify both, then the hook action will be triggered when player leaved specified location and entered to another specified location. For example:
+If you specify both, then the hook action will be triggered when player left the Leave location and entered the Enter location. For example:
 
 Enter condition is `Town` and leave condition is `BusStop`. This hook trigs their action when player entered Town from the Bus Stop.
 
@@ -254,28 +261,58 @@ Position        | Standing tile position (X, Y). Example `13 10`
 Area            | Specified standing area (X, Y, Width, Height) Example: `2038 5573 326 245`
 TouchAction     | Touch action property value must be this defined value for trig hook's action.
 
-### Common environment conditions
+## Common global conditions
 
-Condition name  | Example value              | Description
---------------- | -------------------------- | -----------
-Weather         | `sunny`                    | Current weather. Allowed values: `rainy`, `snowy`, `stormy`, `cloudy`, `sunny`
-Date            | `17 spring`, `5 summer Y2` | Game date in format `<day> <season>` or `<day> <season> Y<year>`
-Days            | `2 6 12`                   | Trig action only when today is one of these days. You can specify any count of days.
-Seasons         | `summer fall`              | Trig action only when current season is on of these seasons. You can specify any count of seasons.
-DaysOfWeek      | `monday wednesday`         | Trig action when today's weekday is one of these weekdays. You can specify any count of weekdays
-Friendship      | `Abigail 8`, `Maru 5 Shane 4` | Trig action when friendship heart level is the same as specified value for specified NPC. You can specify more than one friendship conditions.
-MailReceived    | `CF_Fish`                  | Trig action when this mail was received by farmer.
-EventSeen       | `3910674`                  | Trig action when event with this event id seen by player.
-MailNotReceived | `JunimoKart`               | Same as `MailReceived`, but trigs action when specified mail **was not received** by farmer.
-EventNotSeen    | `3910674`                  | Same as `EventSeen` but trigs action when event was **not seen yet** by player.
-MinDaysPlayed   | `34`                       | Minimum played days from start of new game (from 1 spring year 1)
-MaxDaysPlayed   | `51`                       | Maximum played days from start of new game (from 1 spring year 1)
-DaysPlayed      | `19`                       | Total played days from start of new game (from 1 spring year 1)
-IsPlayerMarried | `yes` or `no`              | Is player married?
+These global conditions can be used in hooks or in the quest offers.
+
+Condition name           | Example value              | Description
+------------------------ | -------------------------- | -----------
+Weather                  | `sunny`                    | Current weather. Allowed values: `rainy`, `snowy`, `stormy`, `cloudy`, `sunny`
+Date                     | `17 spring`, `5 summer Y2` | Game date in format `<day> <season>` or `<day> <season> Y<year>`
+Days                     | `2 6 12`                   | Trig action only when today is one of these days. You can specify any count of days.
+Seasons                  | `summer fall`              | Trig action only when current season is on of these seasons. You can specify any count of seasons.
+DaysOfWeek               | `monday wednesday`         | Trig action when today's weekday is one of these weekdays. You can specify any count of weekdays.
+FriendshipLevel          | `Abigail 8`, `Maru 5 Shane 4` | Trig action when friendship heart level is the same as specified value for specified NPC. You can specify more than one friendship heart level conditions. Replacement for the previous Friendship.
+FriendshipStatus         | `Abigail Dating`, `Maru Divorced Shane Married` | Trig action when friendship status is the same as specified value for specified NPC. You can specify more than one friendship status conditions. Allowed status values: `Friendly`, `Engaged`, `Married`, `Divorce`
+MailReceived             | `CF_Fish`                  | Trig action when mail with the specified id was received by farmer.
+EventSeen                | `3910674`                  | Trig action when event with this event id seen by player.
+MinDaysPlayed            | `34`                       | Minimum played days from start of new game (from 1 spring year 1)
+MaxDaysPlayed            | `51`                       | Maximum played days from start of new game (from 1 spring year 1)
+DaysPlayed               | `19`                       | Total played days from start of new game (from 1 spring year 1)
+IsPlayerMarried          | `yes` or `no`              | Is player married?
+QuestAcceptedInPeriod    | `season` or `season year` or `today` or `season year weekday` | Checks if this quest was accepted in current specified time period. The input could be combinations of: `day`, `weekday`, `season`, `year`, `date`. Value `season year` means quest was accepted in this year in current season and in any day; `season` means quest was accepted in current season in any year and any day; `today` means quest was accepted just today.
+QuestAcceptedDate        | `17 spring`, `5 summer Y2` | Checks if this quest was **accepted** in specified date. Game date in format `<day> <season>` or `<day> <season> Y<year>`
+QuestCompletedDate       | `17 spring`, `5 summer Y2` | Check if this quest was **completed** in specified date. Game date in format `<day> <season>` or `<day>`
+QuestAcceptedToday       | `yes` or `no`              | Check if this quest was (or wasn't) **accepted today**
+QuestCompletedToday      | `yes` or `no`              | Check if this quest was (or wasn't) **completed today**
+QuestNeverAccepted       | `yes` or `no`              | Check if this quest was (or wasn't) **never accepted yet**
+QuestNeverCompleted      | `yes` or `no`              | Check if this quest was (or wasn't) **never completed yet**
+SkillLevel               | `Farming 1`, `Foraging 2 Fishing 3 Mining 2`   | Check if player skill level equal or higher than what is defined. Allowed skill values: `Farming`, `Fishing`, `Foraging`, `Mining`, `Combat`, `Luck`
+IsCommunityCenterCompleted | `yes` or `no`              | Check if community center is already completed.
+BuildingConstructed      | `Coop` or `Deluxe_Coop Well Coop` | Check if specified building is currently present in farm.
+KnownCraftingRecipe      | `Furnace`                  | Player knows specified crafting recipe.
+KnownCookingRecipe       | `Fried Egg`                | Player knows specified cooking recipe.
+HasMod                   | `PurrplingCat.NpcAdventure` | Checks if mod with specified mod UID(s) are loaded in SMAPI. You can put here one or more mod UIDs.
+Random                   | `52` or `22.272`           | A random chance in % (0 - 100). Number `52` means 52% of chance, number `22.272` means 22.272% of chance.
+EPU                      | EPU string like `!z spring/t 600 1000` | Condition processed by [Expanded Preconditions Utility](https://www.nexusmods.com/stardewvalley/mods/6529). For use this condition, EPU must be installed in SDV mods folder. See [EPU docs](https://github.com/ChroniclerCherry/stardew-valley-mods/blob/master/ExpandedPreconditionsUtility/README.md) for more information.
+
+Every condition name enlisted in this common conditions list you can prefix with `not:` for negate condition result.
+For example: `not:EventSeen` means event with specified id was not seen by player;
+
+Also you can chain condition values with `OR` logic function with character separator `|`:
+
+```js
+{
+  "Weather": "rainy | snowy", // Means current weather is 'rainy' OR 'snowy'
+  "Date": "6 summer Y1 | 19 fall Y1 | 24 spring Y3", // Means current date is '6th summer year 1' OR '19th fall year 1' OR '24th spring year 3'
+  "EventSeen": "335478 | 44125", // Means player seen event ID 335478 OR event ID 44125
+  "not:MailReceived": "ccComplete | jojaMember" // Player NOT received mail 'ccComplete' OR 'jojaMember'
+}
+```
 
 ## Offers
 
-You can define offers. Offers are descriptions when and by which source your quest will be offered to player for accepting (add to quest log). You can define one ore more offers (for different or for the same quest).
+You can define offers. Offers are descriptions of when and by which source your quest will be delivered to player to accept (add to quest log). You can define one or more offers (for different or for the same quest).
 
 Field          | Description
 -------------- | -----------
@@ -287,11 +324,11 @@ OnlyMainPlayer | (boolean) Set to true if you want to offer this quest only for 
 
 ### Quests sources
 
-There are available few quests sources provided by native Quest Framework. Some sources must have defined offer details. For some quest sources are different type of offer details.
+These are the available quests sources provided by native Quest Framework. Some sources require defined offer details. There are different offer details based on the source.
 
 #### Bulletinboard
 
-Offers quest on bulletinboard on the seeds shop house.
+Offers quest on bulletinboard located in front of the seeds shop (Pierre).
 
 *This source NOT requires or accepts any offer details*
 
@@ -327,7 +364,7 @@ Offers quest on bulletinboard on the seeds shop house.
 
 #### NPC
 
-NPC can offer your quest via dialogue (speek with them and get a quest)
+NPC can offer your quest via dialogue (speak with them and get a quest)
 
 **Requires these offer details**
 Field        | Description 

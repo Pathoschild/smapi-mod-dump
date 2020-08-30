@@ -1,0 +1,13 @@
+{
+  "Name": "Stardew Aquarium [TMXL]",
+  "Author": "ZarkiiFreemanDraylon.",
+  "Version": "1.0.3",
+  "Description": "The Stardew Aquarium adds a fully fledged, brand new aquarium that lets you donate your fish, and much more!",
+  "UniqueID": "ZarkiiFreemanDraylon.StardewAquariumTMXL",
+  "UpdateKeys": [ "Nexus:???" ],
+  "ContentPackFor": {
+    "UniqueID": "Platonymous.TMXLoader",
+  },
+"Dependencies":[{"UniqueID":"Gervig91.StardewAquariumCP"}
+]
+}

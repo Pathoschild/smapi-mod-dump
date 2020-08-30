@@ -1,0 +1,12 @@
+{
+  "Name": "Dialogue emotes pack",
+  "Author": "PurrplingCat",
+  "Version": "1.0.0",
+  "Description": "Pack of unique dialogue emotes for townies",
+  "UniqueID": "PurrplingCat.DialogueEmotesPack",
+  "MinimumApiVersion": "3.6.0",
+  "UpdateKeys": [],
+  "ContentPackFor": {
+    "UniqueID": "PurrplingCat.DialogueEmotes"
+  }
+}

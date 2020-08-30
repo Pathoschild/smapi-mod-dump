@@ -1,8 +1,14 @@
 {
-  "Name": "Sakura Kimono Green Upper",
-  "Description": "A green kimono, upper half.",
-  "HasFemaleVariant": false,
-  "Price": 50,
-  "Dyeable": false,
-  "DefaultColor": "255, 255, 255, 255"
+    "Name": "Sakura Kimono Green Upper",
+    "Description": "A green kimono, upper half.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "DefaultColor": "255, 255, 255, 255",
+    "NameLocalization": {
+        "es": "Kimono Sakura Verde Superior"
+    },
+    "DescriptionLocalization": {
+        "es": "Un kimono verde, mitad superior."
+    }
 }

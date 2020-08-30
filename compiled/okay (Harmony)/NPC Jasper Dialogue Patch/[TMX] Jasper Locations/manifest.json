@@ -1,0 +1,12 @@
+{
+  "Name": "Jasper Locations",
+  "Author": "LemurKat",
+  "Version": "1.2.2",
+  "Description": "Adds Jasper's rooms in the Archaeology House, plus festival positions and spouse room.",
+  "UniqueID": "Lemurkat.JasperLocation",
+  "ContentPackFor": {
+    "UniqueID": "Platonymous.TMXLoader",
+    "MinimumVersion": "1.4.0"
+            }
+ 
+}

@@ -26,13 +26,43 @@ namespace FarmTypeManager
             {
                 StardewValley.Object forageObj;
 
-                switch (index) //if this object ID requires a different placement method
+                switch (index) //if this object ID cannot normally be picked up
                 {
+                    case 0: //weeds
+                    case 2: //stone
+                    case 4: //
+                    case 75: //stone
+                    case 76: //
+                    case 77: //
+                    case 294: //twig
+                    case 295: //
+                    case 313: //weeds
+                    case 314: //
+                    case 315: //
+                    case 316: //
+                    case 317: //
+                    case 318: //
+                    case 319: //ice crystals (called "weeds" in the object data)
+                    case 320: //
+                    case 321: //
+                    case 343: //stone
+                    case 450: //
+                    case 452: //weeds
+                    case 668: //stone
+                    case 670: //
+                    case 674: //weeds
+                    case 675: //
+                    case 751: //stone
+                    case 760: //
+                    case 762: //
+                    case 764: //
+                    case 765: //
+                    case 784: //weeds
+                    case 792: //weeds (forest farm, spring version)
+                    case 793: //forest farm weed (forest farm, summer version)
+                    case 794: //forest farm weed (forest farm, fall version)
                     case 590: //artifact dig spot
-                    case 792: //"forest farm" weed (spring)
-                    case 793: //"forest farm" weed (summer)
-                    case 794: //"forest farm" weed (fall)
-                        //note: these objects can be picked up unless this spawn method is used, which causes issues
+
                         forageObj = new StardewValley.Object(tile, index, 1); //use an alternative constructor
                         Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         location.objects.Add(tile, forageObj); //add the object directly to the objects list

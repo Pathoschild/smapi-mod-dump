@@ -1,8 +1,14 @@
 {
-  "Name": "Sakura Kimono Aqua Upper",
-  "Description": "An aquamarine kimono, upper half.",
-  "HasFemaleVariant": false,
-  "Price": 50,
-  "Dyeable": false,
-  "DefaultColor": "255, 255, 255, 255"
+    "Name": "Sakura Kimono Aqua Upper",
+    "Description": "An aquamarine kimono, upper half.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "DefaultColor": "255, 255, 255, 255",
+    "NameLocalization": {
+        "es": "Kimono Sakura Aguamarina Superior"
+    },
+    "DescriptionLocalization": {
+        "es": "Un kimono aguamarina, mitad superior."
+    }
 }

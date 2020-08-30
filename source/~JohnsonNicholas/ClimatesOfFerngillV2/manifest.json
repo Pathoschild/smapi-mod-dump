@@ -6,5 +6,11 @@
   "UniqueID": "KoihimeNakamura.ClimatesOfFerngill",
   "EntryDll": "ClimatesOfFerngillV2.dll",
   "MinimumApiVersion": "3.4.0",
+  "ModUpdater": {
+    "Repository": "SDVMods",
+    "User": "Sakorona",
+    "Directory": "_releases",
+    "ModFolder": "ClimatesOfFerngill"
+  },
   "UpdateKeys": [ "Nexus:604" ]
 } 

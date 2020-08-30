@@ -3,5 +3,11 @@
     "Description": "A pink coat topped with a frilly white collar.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Abrigo Rosa con Cuello"
+    },
+    "DescriptionLocalization": {
+        "es": "Un abrigo rosa rematado con un collar blanco con volantes."
+    }
 }

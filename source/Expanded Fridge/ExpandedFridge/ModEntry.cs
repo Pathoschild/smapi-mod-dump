@@ -1,59 +1,40 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
+﻿using StardewModdingAPI;
 
-// To fix: 
-// Readme
-// Git
 
 namespace ExpandedFridge
 {
+    /// <summary>
     /// The entry point of the mod handled by SMAPI.
+    /// </summary>
     public class ModEntry : Mod
     {
-        ExpandedFridgeHub expandedFridgeHub;
-        public static StardewModdingAPI.SButton RemoteButton { get; private set; }
-        public static Texture2D FridgeTexture { get; private set; }
-        public static int cheatStorage { get; private set; }
-        public static bool cheatUpgrades { get; private set; }
-        public static IModHelper HelperInstance { get; private set; }
-        public static IMonitor MonitorInstance { get; private set; }
+        /// Instance check for logging.
+        private static bool _instanceInitiated = false;
 
-        /// Called after mod is first loaded. We set up our event callbacks here.
+        /// Instance for static logging.
+        private static ModEntry _instance = null;
+        
+        /// Mod options instance.
+        public ModConfig Config { get; private set; }
+
+        /// Manager instance.
+        public Manager Manager { get; private set; }
+
+        /// Setup instance and mini fridge manager on entry.
         public override void Entry(IModHelper helper)
         {
-            RemoteButton = SButton.R;
-            FridgeTexture = helper.Content.Load<Texture2D>("Assets/fridge3.png", ContentSource.ModFolder);
-            HelperInstance = Helper;
-            MonitorInstance = Monitor;
-            cheatStorage = ModEntry.HelperInstance.ReadConfig<ModConfig>().cheatStorage;
-            cheatUpgrades = ModEntry.HelperInstance.ReadConfig<ModConfig>().cheatUpgrades;
-
-
-            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
-            helper.Events.GameLoop.DayEnding += this.OnDayEnded;
+            _instance = this;
+            _instanceInitiated = true;
+            
+            Config = helper.ReadConfig<ModConfig>();
+            Manager = new Manager(this);
         }
 
-
-
-        /// *************************************************************************************************************************
-        /// EVENT CALLBACK METHODS
-
-
-        /// Callback function on day started. We hook in and modify the fridge here.
-        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        /// Prints message in console log with given log level.
+        public static void DebugLog(string message, LogLevel level = LogLevel.Trace)
         {
-            this.expandedFridgeHub = new ExpandedFridgeHub();
-        }
-
-        /// Callback function on day ended. We cleanup from the expanded fridge so when the game is saved all data is safe.
-        private void OnDayEnded(object sender, DayEndingEventArgs e)
-        {
-            if (this.expandedFridgeHub != null)
-            {
-                this.expandedFridgeHub.CleanupForRelease();
-                this.expandedFridgeHub = null;
-            }
+            if (_instanceInitiated)
+                _instance.Monitor.Log(message, level);
         }
     }
 }

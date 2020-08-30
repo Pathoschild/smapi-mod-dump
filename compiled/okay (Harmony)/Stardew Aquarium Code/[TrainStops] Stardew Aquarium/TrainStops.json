@@ -1,0 +1,20 @@
+{
+  "TrainStops": [
+    {
+      "TargetMapName": "ExteriorMuseum",
+      "LocalizedDisplayName": {
+        "en": "The Stardew Aquarium",
+        "ko": "별이슬 아쿠아리움",
+        "zh": "星露水族馆",
+        "ru": "Аквариум долины Стардью",
+        "pt": "Stardew Aquarium",
+		    "fr": "L'Aquarium Stardew",
+        "de": "Sternentau Aquarium",
+      },
+      "TargetX": 40,
+      "TargetY": 1,
+      "Cost": 20,
+      "FacingDirectionAfterWarp":-2,
+    },
+  ]
+}

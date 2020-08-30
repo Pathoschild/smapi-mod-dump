@@ -1,0 +1,16 @@
+{
+  "EnableMod": true,
+  "TilePuzzleBaseChance": 0.01,
+  "LightPuzzleBaseChance": 0.01,
+  "OfferingPuzzleBaseChance": 0.001,
+  "AltarBaseChance": 0.01,
+  "RiddlesBaseChance": 0.01,
+  "CollapsedBaseFloorMaxPortion": 0.001,
+  "TrapsBaseMaxPortion": 0.001,
+  "MushroomTreesMaxPortion": 0.001,
+  "DisarmTrapsBaseChanceModifier": 1.0,
+  "ShowTrapNotifications": true,
+  "AltarBuffMult": 0.5,
+  "OverrideTreasureRooms": true,
+  "TrapDamageMult": 2.0
+}

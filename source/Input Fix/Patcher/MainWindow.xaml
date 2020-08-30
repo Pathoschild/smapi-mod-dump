@@ -1,0 +1,39 @@
+﻿<Window x:Class="Patcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Patcher"
+        mc:Ignorable="d"
+        Title="Patcher" Height="300" Width="600" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Lang\en-US.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Button Content="{DynamicResource L_Patch}"
+                FontSize="26"
+                Margin="0,20,0,0"
+                HorizontalAlignment="Center" VerticalAlignment="Top"
+                Height="115" Width="500" Click="Patch_Click" />
+        <Label BorderThickness="1" BorderBrush="Gray"
+               Margin="0,0,0,45"
+               VerticalAlignment="Bottom" HorizontalAlignment="Center"
+               Height="75" Width="500">
+            <TextBlock Name="Desc" TextWrapping="Wrap" />
+        </Label>
+        <TextBox x:Name="Command"
+                 Margin="20,0,100,10"
+                 VerticalAlignment="Bottom"
+                 Height="20"
+                 IsReadOnly="True" />
+        <Button x:Name="Copy" Content="{DynamicResource L_COPY}"
+                Margin="0,0,15,10"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Width="75"
+                Click="Copy_Click" />
+    </Grid>
+</Window>

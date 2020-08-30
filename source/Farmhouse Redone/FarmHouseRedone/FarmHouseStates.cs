@@ -4,48 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Locations;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using xTile;
 using xTile.ObjectModel;
 using xTile.Display;
 using Harmony;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace FarmHouseRedone
 {
     public static class FarmHouseStates
     {
-        public static int wallAndFloorsSheet;
-        public static int interiorSheet;
-        public static int farmSheet;
-        public static string WallsData;
-        public static string FloorsData;
-        public static Dictionary<Rectangle, string> floorDictionary;
-        public static Dictionary<Rectangle, string> wallDictionary;
-        public static string bedData;
-        public static string spouseRoomData;
-        public static string kitchenData;
-        public static string entryData;
-        public static string cellarData;
-        public static string levelThreeData;
+        public static Texture2D render;
+        public static Image.ImageInfo mapData = null;
 
+        //public static int wallsAndFloorsSheet;
+        //public static int interiorSheet;
+        //public static int farmSheet;
+        //public static int sewerSheet;
+
+        public static Dictionary<FarmHouse, FarmHouseState> states;
+
+        internal static string modPath;
         internal static IContentHelper loader;
         internal static IReflectionHelper reflector;
         internal static HarmonyInstance harmony;
 
+        public static List<LevelNUpgrade> upgrades;
+        public static int selectedUpgrade = -1;
+
         public static Dictionary<string, int> spouseRooms;
-        internal static List<char> spaceEquivalents = new List<char>
-        {
-            '|',
-            '_',
-            '[',
-            ']',
-            '(',
-            ')',
-            '{',
-            '}',
-            ',',
-            '.'
-        };
 
         public static List<int> townInteriorWalls = new List<int>
         {
@@ -610,38 +602,111 @@ namespace FarmHouseRedone
             1285
         };
 
-        public static void init(IContentHelper contentHelper)
+        public static void init()
         {
-            WallsData = null;
-            FloorsData = null;
-            wallDictionary = new Dictionary<Rectangle, string>();
-            floorDictionary = new Dictionary<Rectangle, string>();
-            bedData = null;
-            spouseRoomData = null;
-            kitchenData = null;
-            entryData = null;
-            cellarData = null;
-            interiorSheet = 0;
-            farmSheet = 1;
-            wallAndFloorsSheet = 2;
-            loader = contentHelper;
+            states = new Dictionary<FarmHouse, FarmHouseState>();
+            foreach(GameLocation location in Game1.locations)
+            {
+                if(location is FarmHouse)
+                {
+                    states[location as FarmHouse] = new FarmHouseState();
+                }
+            }
             loadVanillaSpouses();
+            //upgrades = new List<LevelNUpgrade>();
+            //loadAllUpgrades();
+
         }
 
-        internal static void clear()
+        internal static void loadAllUpgrades()
         {
-            WallsData = null;
-            FloorsData = null;
-            wallDictionary = new Dictionary<Rectangle, string>();
-            floorDictionary = new Dictionary<Rectangle, string>();
-            bedData = null;
-            spouseRoomData = null;
-            kitchenData = null;
-            entryData = null;
-            cellarData = null;
-            interiorSheet = 0;
-            farmSheet = 1;
-            wallAndFloorsSheet = 2;
+            string[] upgradeFiles = getFiles(".json", System.IO.Path.Combine("assets", "upgrades"));
+            foreach (string upgradeFile in upgradeFiles)
+            {
+                try
+                {
+                    Dictionary<string, object> file = loader.Load<Dictionary<string, object>>("assets/upgrades/" + upgradeFile, StardewModdingAPI.ContentSource.ModFolder);
+                    string version = file["Version"].ToString();
+                    Logger.Log("Loading " + upgradeFile + " as version " + version);
+
+                    JArray upgradeList = file["Upgrades"] as JArray;
+                    Logger.Log("Found " + upgradeList.Count + " upgrades.");
+                    foreach(JObject upgradeObj in file["Upgrades"] as JArray)
+                    {
+                        LevelNUpgrade upgrade = new LevelNUpgrade(upgradeObj);
+                        Logger.Log(upgrade.ToString(), LogLevel.Info);
+                        upgrades.Add(upgrade);
+                    }
+                }
+                catch (Microsoft.Xna.Framework.Content.ContentLoadException e)
+                {
+                    Logger.Log("There was a problem loading the file " + upgradeFile + "!", StardewModdingAPI.LogLevel.Error);
+                    throw e;
+                }
+                catch (KeyNotFoundException e)
+                {
+                    Logger.Log("There was a problem loading the file " + upgradeFile + "!", StardewModdingAPI.LogLevel.Error);
+                    throw e;
+                }
+                catch (FormatException e)
+                {
+                    Logger.Log("There was a problem loading the file " + upgradeFile + "!", StardewModdingAPI.LogLevel.Error);
+                    throw e;
+                }
+            }
+        }
+
+        //public static bool hasUpgradeAvailable()
+        //{
+        //    Logger.Log("Checking if upgrades are available...");
+        //    foreach (LevelNUpgrade upgrade in upgrades)
+        //    {
+        //        if (upgrade.level == Game1.player.HouseUpgradeLevel + 1)
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
+
+        public static string[] getFiles(string extension, string path = "")
+        {
+            string[] files = Directory.GetFiles(path == "" ? modPath : Path.Combine(modPath, path));
+            List<string> outFiles = new List<string>();
+            Logger.Log("Found " + files.Length + " files inside FarmHouseRedone/" + path + " ...");
+            foreach (string file in files)
+            {
+                if (file.EndsWith(extension))
+                {
+                    string matchedFile = Path.GetFileName(file);
+                    outFiles.Add(matchedFile);
+                    Logger.Log("Found file '" + matchedFile + "'");
+                }
+                else
+                {
+                    //string wrongFileName = Path.GetFileName(file);
+                    //Logger.Log(wrongFileName + " was not a " + extension + " file...");
+                }
+            }
+
+            return outFiles.ToArray();
+        }
+
+        internal static void clearAll()
+        {
+            foreach(FarmHouse house in states.Keys)
+            {
+                states[house].clear();
+            }
+        }
+
+        public static void clear(FarmHouse house)
+        {
+            if (!states.ContainsKey(house))
+            {
+                states[house] = new FarmHouseState();
+            }
+            states[house].clear();
         }
 
         public static int getSpouseRoom(string name)
@@ -665,112 +730,164 @@ namespace FarmHouseRedone
             spouseRooms["Sam"] = 9;
             spouseRooms["Shane"] = 10;
             spouseRooms["Emily"] = 11;
+            spouseRooms["Krobus"] = 12;
         }
 
-        public static string cleanup(string dirty)
+        
+
+        public static FarmHouseState getState(FarmHouse house)
         {
-            string outString = "";
-            Logger.Log("Given " + dirty);
-            dirty = dirty.Replace("\n", " ");
-            dirty = dirty.Replace("\\n", " ");
-            Logger.Log("Line breaks cleaned as " + dirty);
-            for (int index = 0; index < dirty.Length; index++)
+            if (!states.ContainsKey(house))
             {
-                if ((dirty[index] == ' ' && outString.EndsWith(" ")))
-                    continue;
-                if (spaceEquivalents.Contains(dirty[index]))
-                {
-                    outString += (outString.EndsWith(" ") ? "" : " ");
-                    continue;
-                }
-                outString += dirty[index];
+                Logger.Log("No state found for " + house.name + "!  (" + house.uniqueName + ")");
+                states[house] = new FarmHouseState();
             }
-            Logger.Log("Returning " + outString);
-            return outString.Trim(' ');
+            return states[house];
         }
 
-        public static void updateFromMapPath(string mapPath)
+        public static Map makeMapCopy(FarmHouse house, string mapPath)
         {
-            clear();
+            Map sourceMap = loader.Load<Map>(mapPath, ContentSource.GameContent);
+            Map newMap = new Map();
+            foreach (xTile.Tiles.TileSheet sheet in sourceMap.TileSheets)
+            {
+                xTile.Tiles.TileSheet newSheet = new xTile.Tiles.TileSheet(newMap, sheet.ImageSource, sheet.SheetSize, sheet.TileSize);
+                newSheet.Id = sheet.Id;
+                newMap.AddTileSheet(newSheet);
+                Logger.Log("Adding tilesheet " + newSheet.Id + " (" + newSheet.ImageSource + ")");
+            }
+            foreach (xTile.Layers.Layer layer in sourceMap.Layers)
+            {
+                xTile.Layers.Layer newLayer = new xTile.Layers.Layer(layer.Id, newMap, layer.LayerSize, layer.TileSize);
+                xTile.Tiles.TileArray tiles = layer.Tiles;
+                for (int x = 0; x < layer.LayerWidth; x++)
+                {
+                    for (int y = 0; y < layer.LayerHeight; y++)
+                    {
+                        if (tiles[x, y] != null)
+                        {
+                            xTile.Tiles.Tile tile = tiles[x, y];
+                            if (tile is xTile.Tiles.StaticTile)
+                            {
+                                Logger.Log("Searching for sheet '" + tile.TileSheet.Id + "'...");
+                                newLayer.Tiles[x, y] = new xTile.Tiles.StaticTile(newLayer, newMap.GetTileSheet(tile.TileSheet.Id), tile.BlendMode, tile.TileIndex);
+                            }
+                            else
+                            {
+                                xTile.Tiles.AnimatedTile animTile = (tile as xTile.Tiles.AnimatedTile);
+                                xTile.Tiles.StaticTile[] frames = new xTile.Tiles.StaticTile[animTile.TileFrames.Length];
+                                for(int frame = 0; frame < animTile.TileFrames.Length; frame++)
+                                {
+                                    frames[frame] = new xTile.Tiles.StaticTile(newLayer, newMap.GetTileSheet(animTile.TileSheet.Id), animTile.BlendMode, animTile.TileFrames[frame].TileIndex);
+                                }
+                                newLayer.Tiles[x, y] = new xTile.Tiles.AnimatedTile(newLayer, frames, animTile.FrameInterval);
+                            }
+                            foreach(string key in tile.Properties.Keys)
+                            {
+                                newLayer.Tiles[x, y].Properties[key] = tile.Properties[key];
+                            }
+                        }
+                    }
+                }
+                foreach(string key in layer.Properties.Keys)
+                {
+                    newLayer.Properties[key] = layer.Properties[key];
+                }
+                newMap.Layers.Add(newLayer);
+            }
+            foreach(string key in sourceMap.Properties.Keys)
+            {
+                newMap.Properties[key] = sourceMap.Properties[key];
+            }
+            return newMap;
+        }
+
+        public static void updateFromMapPath(FarmHouse house, string mapPath)
+        {
+            clear(house);
+            FarmHouseState state = getState(house);
+            //Map map = makeMapCopy(house, mapPath);
             Map map = loader.Load<Map>(mapPath, ContentSource.GameContent);
-            Logger.Log("Updating walls and floors...");
-            PropertyValue floors;
-            map.Properties.TryGetValue("Floors", out floors);
-            if (floors != null)
-                FloorsData = cleanup(floors.ToString());
-            else
-                FloorsData = "";
-            PropertyValue walls;
-            map.Properties.TryGetValue("Walls", out walls);
-            if (walls != null)
-                WallsData = cleanup(walls.ToString());
-            else
-                WallsData = "";
             PropertyValue bed;
             map.Properties.TryGetValue("Bed", out bed);
             if (bed != null)
-                bedData = cleanup(bed.ToString());
+                state.bedData = Utility.cleanup(bed.ToString());
             else
-                bedData = "";
+                state.bedData = "";
             PropertyValue spouseRoom;
             map.Properties.TryGetValue("Spouse", out spouseRoom);
             if (spouseRoom != null)
-                spouseRoomData = cleanup(spouseRoom.ToString());
+                state.spouseRoomData = Utility.cleanup(spouseRoom.ToString());
             else
-                spouseRoomData = "";
+                state.spouseRoomData = "";
             PropertyValue kitchen;
             map.Properties.TryGetValue("Kitchen", out kitchen);
             if (kitchen != null)
-                kitchenData = cleanup(kitchen.ToString());
+                state.kitchenData = Utility.cleanup(kitchen.ToString());
             else
-                kitchenData = "";
+                state.kitchenData = "";
 
             PropertyValue entry;
             map.Properties.TryGetValue("Entry", out entry);
             if (entry != null)
-                entryData = cleanup(entry.ToString());
+                state.entryData = Utility.cleanup(entry.ToString());
             else
-                entryData = "";
+                state.entryData = "";
             
             PropertyValue cellar;
             map.Properties.TryGetValue("Cellar", out cellar);
             if (cellar != null)
-                cellarData = cleanup(cellar.ToString());
+                state.cellarData = Utility.cleanup(cellar.ToString());
             else
-                cellarData = "";
+                state.cellarData = "";
 
             PropertyValue levelThree;
             map.Properties.TryGetValue("Level3", out levelThree);
             if (levelThree != null)
-                levelThreeData = cleanup(levelThree.ToString());
+                state.levelThreeData = Utility.cleanup(levelThree.ToString());
             else
-                levelThreeData = "";
+                state.levelThreeData = "";
+
+            if (mapPath.Contains("_marriage"))
+            {
+                state.isMarriage = true;
+            }
+
+            Logger.Log("Getting tilesheets for map " + map.Id + " (" + mapPath + ")...");
 
             foreach (xTile.Tiles.TileSheet sheet in map.TileSheets)
             {
+                Logger.Log("Sheet source is " + sheet.ImageSource);
                 if (sheet.ImageSource.Contains("walls_and_floors"))
                 {
-                    wallAndFloorsSheet = map.TileSheets.IndexOf(sheet);
+                    state.wallsAndFloorsSheet = map.TileSheets.IndexOf(sheet);
                 }
                 else if (sheet.ImageSource.Contains("townInterior"))
                 {
-                    interiorSheet = map.TileSheets.IndexOf(sheet);
+                    state.interiorSheet = map.TileSheets.IndexOf(sheet);
                 }
                 else if (sheet.ImageSource.Contains("farmhouse_tiles"))
                 {
-                    farmSheet = map.TileSheets.IndexOf(sheet);
+                    state.farmSheet = map.TileSheets.IndexOf(sheet);
+                }
+                else if (sheet.ImageSource.Contains("SewerTiles"))
+                {
+                    Logger.Log("Sewer tiles found!");
+                    state.sewerSheet = map.TileSheets.IndexOf(sheet);
+                    Logger.Log("Sewer sheet index: " + state.sewerSheet);
                 }
             }
         }
 
-        public static Point getEntryLocation(StardewValley.Locations.FarmHouse house)
+        public static Point getEntryLocation(FarmHouse house)
         {
-            if (entryData == null)
-                updateFromMapPath(house.mapPath);
-            if (entryData != "")
+            FarmHouseState state = getState(house);
+            if (state.entryData == null)
+                updateFromMapPath(house, house.mapPath);
+            if (state.entryData != "")
             {
                 Logger.Log("Map defined entry location...");
-                string[] entryPoint = entryData.Split(' ');
+                string[] entryPoint = state.entryData.Split(' ');
                 return new Point(Convert.ToInt32(entryPoint[0]), Convert.ToInt32(entryPoint[1]));
             }
             else
@@ -780,14 +897,15 @@ namespace FarmHouseRedone
             }
         }
 
-        public static Point getCellarLocation(StardewValley.Locations.FarmHouse house)
+        public static Point getCellarLocation(FarmHouse house)
         {
-            if (cellarData == null)
-                updateFromMapPath(house.mapPath);
-            if (cellarData != "")
+            FarmHouseState state = getState(house);
+            if (state.cellarData == null)
+                updateFromMapPath(house, house.mapPath);
+            if (state.cellarData != "")
             {
                 Logger.Log("Map defined entry location...");
-                string[] cellarPoint = cellarData.Split(' ');
+                string[] cellarPoint = state.cellarData.Split(' ');
                 return new Point(Convert.ToInt32(cellarPoint[0]), Convert.ToInt32(cellarPoint[1]));
             }
             else
@@ -797,14 +915,15 @@ namespace FarmHouseRedone
             }
         }
 
-        public static Point getKitchenSpot(StardewValley.Locations.FarmHouse house)
+        public static Point getKitchenSpot(FarmHouse house)
         {
-            if (kitchenData == null)
-                updateFromMapPath(house.mapPath);
-            if (kitchenData != "")
+            FarmHouseState state = getState(house);
+            if (state.kitchenData == null)
+                updateFromMapPath(house, house.mapPath);
+            if (state.kitchenData != "")
             {
                 Logger.Log("Map defined kitchen location...");
-                string[] kitchenPoint = kitchenData.Split(' ');
+                string[] kitchenPoint = state.kitchenData.Split(' ');
                 return new Point(Convert.ToInt32(kitchenPoint[0]), Convert.ToInt32(kitchenPoint[1]));
             }
             else
@@ -814,25 +933,119 @@ namespace FarmHouseRedone
             }
         }
 
-        public static Point getBedSpot(StardewValley.Locations.FarmHouse house, bool spouse = false)
+        public static Point getMainBedSpot()
         {
+            FarmHouse house = Game1.getLocationFromName("FarmHouse") as FarmHouse;
+            return getBedSpot(house);
+        }
+
+        public static Point getBedSpot(FarmHouse house, bool spouse = false)
+        {
+            FarmHouseState state = getState(house);
             Logger.Log("Getting bed location...");
-            if (bedData == null)
-                FarmHouseStates.updateFromMapPath(house.mapPath);
-            if (FarmHouseStates.bedData != "")
+            if (state.bedData == null)
+                updateFromMapPath(house, house.mapPath);
+            if (state.bedData != "")
             {
                 Logger.Log("Map defined bed location...");
-                string[] bedPoint = FarmHouseStates.bedData.Split(' ');
+                string[] bedPoint = state.bedData.Split(' ');
+                Point bedLocation = new Point(Convert.ToInt32(bedPoint[0]) + (spouse ? 2 : 0), Convert.ToInt32(bedPoint[1]));
 
-                return new Point(Convert.ToInt32(bedPoint[0]) + (spouse ? 2 : 0), Convert.ToInt32(bedPoint[1]));
+                Logger.Log("Defined bed location as " + bedLocation.ToString());
+
+                return bedLocation;
             }
             else
             {
                 Logger.Log("Map did not define a bed location, using vanilla.");
-                if (spouse)
-                    return house.getSpouseBedSpot();
+                if (spouse && house.owner.isMarried())
+                    return house.getSpouseBedSpot(house.owner.spouse);
                 return house.getBedSpot();
             }
+        }
+
+        public static void drawRender(SpriteBatch b)
+        {
+            //b.Draw(render, Vector2.Zero, new Rectangle(0, 0, render.Width, render.Height), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1);
+        }
+
+        public static Texture2D renderFarmHouse(FarmHouse house)
+        {
+            updateMapData(house);
+            return mapData.render();
+        }
+
+        public static void drawAStarPath(FarmHouse house, ref Color[] data)
+        {
+            int width = house.map.GetLayer("Back").LayerWidth;
+            int height = house.map.GetLayer("Back").LayerHeight;
+
+            Pathing.Path pather = new Pathing.Path(house, width, height);
+            List<Pathing.Node> path = pather.FindPath(StardewValley.Utility.PointToVector2(getEntryLocation(house)), StardewValley.Utility.PointToVector2(getBedSpot(house)));
+
+            foreach(Pathing.Node node in path)
+            {
+                data[node.x + node.y * width] = Color.SeaGreen;
+            }
+        }
+
+        public static void updateMapData(FarmHouse house)
+        {
+            int width = house.map.GetLayer("Back").LayerWidth;
+            int height = house.map.GetLayer("Back").LayerHeight;
+
+            Color[] data = new Color[width * height];
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    bool traversible = house.isTilePassable(new xTile.Dimensions.Location(x, y), Game1.viewport);
+                    bool placeable = house.isTileLocationTotallyClearAndPlaceable(new Vector2(x, y));
+                    bool isVoid = (!house.isTileOnMap(new Vector2(x, y)) || isTileVoid(house.map, x, y));
+                    bool wall = house.isTileOnWall(x, y);
+                    data[x + (y * width)] = (isVoid ? Color.Black : wall ? Color.Lavender : traversible && placeable ? Color.White : traversible ? Color.LightBlue : placeable ? Color.Red : Color.Black);
+                }
+            }
+
+            drawAStarPath(house, ref data);
+
+
+            mapData = new Image.ImageInfo(data, width, height);
+        }
+
+        public static bool isTileVoid(Map map, int x, int y)
+        {
+            if (map.GetLayer("Back").Tiles[x, y] == null && map.GetLayer("Buildings") == null)
+                return true;
+            xTile.Tiles.Tile backTile = map.GetLayer("Back").Tiles[x, y];
+            if (backTile != null && ((backTile.TileSheet.ImageSource.Contains("townInterior") && (backTile.TileIndex == 0 || backTile.TileIndex == 48)) || (backTile.TileSheet.ImageSource.Contains("farmhouse_tiles") && backTile.TileIndex == 0)))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static void fixObjectsOnMap(FarmHouse house, int maxDistance = 8)
+        {
+            double[,] weights = new double[maxDistance * 2 + 1, maxDistance * 2 + 1];
+            string testOutput = "Weight Map:\n";
+            for(int x = -maxDistance; x <= maxDistance; x++)
+            {
+                for(int y = -maxDistance; y <=maxDistance; y++)
+                {
+                    int weightX = x + maxDistance;
+                    int weightY = y + maxDistance;
+                    double weight = Math.Abs(Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)));
+                    if (weight > 8)
+                        weight = -1;
+                    weights[weightX, weightY] = weight;
+                    string valueString = weight >= 0 ? weight.ToString() : " ";
+                    valueString = valueString.Substring(0, Math.Min(4, valueString.Length));
+                    testOutput += valueString + "       ".Substring(0, 5 - valueString.Length);
+                }
+                testOutput += "\n";
+            }
+            Logger.Log(testOutput);
         }
 
         public static Map loadSpouseRoomIfPresent(string name)
@@ -882,107 +1095,108 @@ namespace FarmHouseRedone
             return map;
         }
 
-        public static void setMissingWallpaperToDefault(StardewValley.Locations.FarmHouse house)
-        {
-            List<Rectangle> walls = house.getWalls();
-            while(house.wallPaper.Count < walls.Count)
-            {
-                house.wallPaper[house.wallPaper.Count] = getWallpaperIndex(house.map, walls[house.wallPaper.Count].X, walls[house.wallPaper.Count].Y);
-            }
-        }
+        //public static void setMissingWallpaperToDefault(StardewValley.Locations.FarmHouse house)
+        //{
+        //    List<Rectangle> walls = house.getWalls();
+        //    while(house.wallPaper.Count < walls.Count)
+        //    {
+        //        house.wallPaper[house.wallPaper.Count] = getWallpaperIndex(house.map, walls[house.wallPaper.Count].X, walls[house.wallPaper.Count].Y);
+        //    }
+        //}
 
-        public static void setMissingFloorsToDefault(StardewValley.Locations.FarmHouse house)
-        {
-            List<Rectangle> floors = house.getFloors();
-            while (house.floor.Count < floors.Count)
-            {
-                house.floor[house.floor.Count] = getFloorIndex(house.map, floors[house.floor.Count].X, floors[house.floor.Count].Y);
-            }
-        }
+        //public static void setMissingFloorsToDefault(StardewValley.Locations.FarmHouse house)
+        //{
+        //    List<Rectangle> floors = house.getFloors();
+        //    while (house.floor.Count < floors.Count)
+        //    {
+        //        house.floor[house.floor.Count] = getFloorIndex(house.map, floors[house.floor.Count].X, floors[house.floor.Count].Y);
+        //    }
+        //}
 
-        public static void setWallpaperDefaults(StardewValley.Locations.FarmHouse house)
-        {
-            List<Rectangle> walls = house.getWalls();
-            List<Rectangle> floors = house.getFloors();
-            for (int wallIndex = 0; wallIndex < walls.Count; wallIndex++)
-            {
-                Logger.Log("Setting default wall for the wall " + walls[wallIndex].ToString() + "...");
-                int wallPaperIndex = getWallpaperIndex(house.map, walls[wallIndex].X, walls[wallIndex].Y);
-                house.setWallpaper(wallPaperIndex, wallIndex, true);
-            }
-        }
+        //public static void setWallpaperDefaults(StardewValley.Locations.FarmHouse house)
+        //{
+        //    List<Rectangle> walls = house.getWalls();
+        //    List<Rectangle> floors = house.getFloors();
+        //    for (int wallIndex = 0; wallIndex < walls.Count; wallIndex++)
+        //    {
+        //        Logger.Log("Setting default wall for the wall " + walls[wallIndex].ToString() + "...");
+        //        int wallPaperIndex = getWallpaperIndex(house.map, walls[wallIndex].X, walls[wallIndex].Y);
+        //        house.wallPaper[wallIndex] = wallPaperIndex;
+        //        //house.setWallpaper(wallPaperIndex, wallIndex, true);
+        //    }
+        //}
 
-        public static int getWallpaperIndex(Map map, int x, int y)
-        {
-            int wallIndex = getWallSpriteIndex(map, x, y);
-            if (wallIndex == -1)
-            {
-                Logger.Log("Could not find any wall tile on any layer at (" + x + ", " + y + ")");
-                return 0;
-            }
-            int wallPaperX = wallIndex % 16;
-            int wallPaperY = wallIndex / 48;
-            int wallPaperIndex = (wallPaperY * 16) + wallPaperX;
-            Logger.Log("Found wallpaper index of " + wallPaperIndex + " for tilesheet index " + wallIndex + ".");
-            return wallPaperIndex;
-        }
+        //public static int getWallpaperIndex(Map map, int x, int y)
+        //{
+        //    int wallIndex = getWallSpriteIndex(map, x, y);
+        //    if (wallIndex == -1)
+        //    {
+        //        Logger.Log("Could not find any wall tile on any layer at (" + x + ", " + y + ")");
+        //        return 0;
+        //    }
+        //    int wallPaperX = wallIndex % 16;
+        //    int wallPaperY = wallIndex / 48;
+        //    int wallPaperIndex = (wallPaperY * 16) + wallPaperX;
+        //    Logger.Log("Found wallpaper index of " + wallPaperIndex + " for tilesheet index " + wallIndex + ".");
+        //    return wallPaperIndex;
+        //}
 
-        public static int getFloorIndex(Map map, int x, int y)
-        {
-            int floorIndex = getFloorpriteIndex(map, x, y);
-            if (floorIndex == -1 || floorIndex < 336)
-            {
-                Logger.Log("Could not find any floor tile on any layer at (" + x + ", " + y + ")");
-                return 0;
-            }
-            floorIndex -= 336;
-            int floorX = (floorIndex / 2) % 8;
-            int floorY = floorIndex / 32;
-            int flooringIndex = (floorY * 8) + floorX;
-            Logger.Log("Found floor index of " + flooringIndex + " for tilesheet index " + floorIndex + ".");
-            return flooringIndex;
-        }
+        //public static int getFloorIndex(Map map, int x, int y)
+        //{
+        //    int floorIndex = getFloorpriteIndex(map, x, y);
+        //    if (floorIndex == -1 || floorIndex < 336)
+        //    {
+        //        Logger.Log("Could not find any floor tile on any layer at (" + x + ", " + y + ")");
+        //        return 0;
+        //    }
+        //    floorIndex -= 336;
+        //    int floorX = (floorIndex / 2) % 8;
+        //    int floorY = floorIndex / 32;
+        //    int flooringIndex = (floorY * 8) + floorX;
+        //    Logger.Log("Found floor index of " + flooringIndex + " for tilesheet index " + floorIndex + ".");
+        //    return flooringIndex;
+        //}
 
-        public static int getWallSpriteIndex(Map map, int x, int y)
-        {
-            int index = -1;
-            if (isTileAWall(map, x, y, "Back"))
-            {
-                index = map.GetLayer("Back").Tiles[x, y].TileIndex;
-                Logger.Log("Found a wall tile on Back layer of index " + index);
-            }
-            else if (isTileAWall(map, x, y, "Buildings"))
-            {
-                index = map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-                Logger.Log("Found a wall tile on Buildings layer of index " + index);
-            }
-            else if (isTileAWall(map, x, y, "Front"))
-            {
-                index = map.GetLayer("Front").Tiles[x, y].TileIndex;
-                Logger.Log("Found a wall tile on Front layer of index " + index);
-            }
-            return index;
-        }
+        //public static int getWallSpriteIndex(Map map, int x, int y)
+        //{
+        //    int index = -1;
+        //    if (isTileAWall(map, x, y, "Back"))
+        //    {
+        //        index = map.GetLayer("Back").Tiles[x, y].TileIndex;
+        //        Logger.Log("Found a wall tile on Back layer of index " + index);
+        //    }
+        //    else if (isTileAWall(map, x, y, "Buildings"))
+        //    {
+        //        index = map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+        //        Logger.Log("Found a wall tile on Buildings layer of index " + index);
+        //    }
+        //    else if (isTileAWall(map, x, y, "Front"))
+        //    {
+        //        index = map.GetLayer("Front").Tiles[x, y].TileIndex;
+        //        Logger.Log("Found a wall tile on Front layer of index " + index);
+        //    }
+        //    return index;
+        //}
 
-        public static bool isTileAWall(Map map, int x, int y, string layer)
-        {
-            bool result = map.GetLayer(layer).Tiles[x, y] != null && (map.GetLayer(layer).Tiles[x, y].TileSheet.ImageSource.Contains("walls_and_floors")) && map.GetLayer(layer).Tiles[x, y].TileIndex <= 335;
-            return result;
-        }
+        //public static bool isTileAWall(Map map, int x, int y, string layer)
+        //{
+        //    bool result = map.GetLayer(layer).Tiles[x, y] != null && (map.GetLayer(layer).Tiles[x, y].TileSheet.ImageSource.Contains("walls_and_floors")) && map.GetLayer(layer).Tiles[x, y].TileIndex <= 335;
+        //    return result;
+        //}
 
-        public static int getFloorpriteIndex(Map map, int x, int y)
-        {
-            int index = -1;
-            if (map.GetLayer("Back").Tiles[x, y] != null)
-            {
-                if (map.GetLayer("Back").Tiles[x, y].TileSheet.ImageSource.Contains("walls_and_floors"))
-                {
-                    index = map.GetLayer("Back").Tiles[x, y].TileIndex;
-                    Logger.Log("Found a floor tile on Back layer of index " + index);
-                }
-            }
-            return index;
-        }
+        //public static int getFloorpriteIndex(Map map, int x, int y)
+        //{
+        //    int index = -1;
+        //    if (map.GetLayer("Back").Tiles[x, y] != null)
+        //    {
+        //        if (map.GetLayer("Back").Tiles[x, y].TileSheet.ImageSource.Contains("walls_and_floors"))
+        //        {
+        //            index = map.GetLayer("Back").Tiles[x, y].TileIndex;
+        //            Logger.Log("Found a floor tile on Back layer of index " + index);
+        //        }
+        //    }
+        //    return index;
+        //}
 
         //Stolen (with explicit permission) from original author Bwdy
         //https://github.com/bwdymods/SDV-bwdyworks/blob/master/ModUtil.cs

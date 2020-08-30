@@ -1,0 +1,95 @@
+﻿{
+  //ENGLISH (DEFAULT)
+  "Changes": [
+
+    //Quest Details
+	{
+      "LogName": "Change Pam Is Thirsty quest details (Pam)",
+      "Action": "EditData",
+      "Target": "Data/Quests",
+      "Fields": {
+        "103": {
+          2: "Pam is trying to drink more juice instead of just beer and pale ale. You can make your own juice by putting any vegetable in a keg.",
+          3: "Bring Pam any juice.",
+          9: "Gimme that. *slurp*... Ahh, that hits the spot.#$b#It's real nice and cool... very refreshing, and mildly sweet with a pleasant bite to the flavor.#$b#Thanks, kid. It means a lot to me. This stuff is pretty good affer all!$h"
+        }
+      },
+      "When": {
+        "QuestLetterFrom": "Pam"
+        //Always (if they have the old quest, events to remove it should immediately trigger anyways)
+      }
+    },
+    {
+      "LogName": "Change Pam Is Thirsty quest details (Penny)",
+      "Action": "EditData",
+      "Target": "Data/Quests",
+      "Fields": {
+        "103": {
+          2: "Penny is trying to get Pam to drink juice more often. You can make your own juice by putting any vegetable in a keg.",
+          3: "Bring Pam any juice.",
+          9: "Gimme that. *slurp*... Ahh, that's surprisingly good.#$b#It's real nice and cool... very refreshing, and mildly sweet with a pleasant bite to the flavor.#$b#Thanks, kid. This means a lot to me. I'll have to thank Penny, too.$h"
+        }
+      },
+      "When": {
+        "QuestLetterFrom": "Penny"
+        //Always (if they have the old quest, events to remove it should immediately trigger anyways)
+      }
+    },
+    
+    //Quest Mail (if replacing original mail)
+    {
+      "LogName": "Change Pam Is Thirsty quest mail (Pam)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "summer_14_1": "Hey Kid,^^My throat's about as dry as a desert bone. I'm real thirsty for a pale ale, but Penny is trying to get me to drink more juice instead. Do you have any?^^I've been meaning to try some parsnip juice, but any vegetable juice will do.^^   -Pam%item quest 103 %%[#]Pam's Request"
+      },
+      "When": {
+        "QuestLetterFrom": "Pam",
+        "ReplaceOriginalMail": "true" //if mail has not been read yet, OR
+        //after mail is read, so long as the "already recieved OG mail" event 67210002 hasn't triggered
+      }
+      //"Update": "OnLocationChange" //...apparently it's not needed to switch true -> false when you leave farmhouse after 67210002/67210003 events?
+    },
+    {
+      "LogName": "Change Pam Is Thirsty quest mail (Penny)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "summer_14_1": "Hi @,^I've been trying to get my mom to drink juice more often, but we don't have any in the house. Do you think you could deliver some juice to her?^   -Penny^^P.S. Parsnip is probably her favorite, but any vegetable juice will do.%item quest 103 %%[#]Penny's Request"
+      },
+      "When": {
+        "QuestLetterFrom": "Penny",
+        "ReplaceOriginalMail": "true" //if mail has not been read yet, OR
+        //after mail is read, so long as the "already recieved OG mail" event 67210002 hasn't triggered
+      }
+      //"Update": "OnLocationChange" //...apparently it's not needed to switch true -> false when you leave farmhouse after 67210002/67210003 events?
+    },
+    
+    //Quest Mail (if delivering new quest mail)
+    {
+      "LogName": "Add new Pam Is Thirsty quest mail #2 (Pam)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "6721DontEnablePam_NewMail": "Hey Kid,^^I know I asked you for a pale ale earlier, but Penny is trying to get me to drink more juice these days. Do you have any?^^I've been meaning to try some parsnip juice, but any vegetable juice will do.^^   -Pam%item quest 103 %%[#]Pam's New Request"
+      },
+      "When": {
+        "QuestLetterFrom": "Pam"
+        //Always (no harm in loading the new mail even if it's never received)
+      }
+    },
+    {
+      "LogName": "Add new Pam Is Thirsty quest mail #2 (Penny)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "6721DontEnablePam_NewMail": "Hi @,^My mom's been craving pale ale, but I'm trying to encourage her to drink more juice instead. We don't have any juice in the house, though. Do you think you could deliver some to her?^   -Penny^^P.S. I think she'd enjoy parsnip juice the most, but any vegetable juice will do.%item quest 103 %%[#]Penny's Request"
+      },
+      "When": {
+        "QuestLetterFrom": "Penny"
+        //Always (no harm in loading the new mail even if it's never received)
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using QuestFramework.Framework.Stats;
 using QuestFramework.Framework.Store;
 using QuestFramework.Hooks;
 using StardewModdingAPI;
@@ -15,9 +16,12 @@ namespace QuestFramework.Quests
     {
         private int customTypeId;
         private string trigger;
+        private string name;
 
         internal int id = -1;
-        public string Name { get; set; }
+
+        public event EventHandler<IQuestInfo> Completed;
+
         public string OwnedByModUid { get; internal set; }
         public QuestType BaseType { get; set; } = QuestType.Basic;
         public string Title { get; set; }
@@ -30,7 +34,19 @@ namespace QuestFramework.Quests
         public string ReactionText { get; set; }
         public int DaysLeft { get; set; } = 0;
         public List<Hook> Hooks { get; set; }
-        
+
+        public string Name
+        {
+            get => this.name;
+            set
+            {
+                if (this.name != null)
+                    throw new InvalidOperationException("Quest name can't be changed!");
+
+                this.name = value;
+            }
+        }
+
         public string Trigger 
         {
             get => this.trigger;
@@ -50,6 +66,12 @@ namespace QuestFramework.Quests
             return this.DaysLeft > 0;
         }
 
+        internal void Complete(IQuestInfo questInfo)
+        {
+            StatsManager.AddCompletedQuest(this.GetFullName());
+            this.Completed?.Invoke(this, questInfo);
+        }
+
         public int CustomTypeId 
         { 
             get => this.BaseType == QuestType.Custom ? this.customTypeId : -1; 
@@ -58,6 +80,7 @@ namespace QuestFramework.Quests
 
         internal protected static IModHelper Helper => QuestFrameworkMod.Instance.Helper;
         internal protected static IMonitor Monitor => QuestFrameworkMod.Instance.Monitor;
+        private static StatsManager StatsManager => QuestFrameworkMod.Instance.StatsManager;
 
         public CustomQuest()
         {
@@ -71,6 +94,12 @@ namespace QuestFramework.Quests
             this.Name = name;
         }
 
+        /// <summary>
+        /// Reset this managed quest and their state.
+        /// Primarily called before accept quest and after remove quest from quest log.
+        /// If you override this method, be sure to call <code>base.Reset()</code>.
+        /// </summary>
+        public virtual void Reset() { }
 
         /// <summary>
         /// Get full quest name in format {questName}@{ownerModUniqueId}
@@ -147,38 +176,59 @@ namespace QuestFramework.Quests
             var payload = new StatePayload(
                 questName: this.GetFullName(),
                 farmerId: Game1.player.UniqueMultiplayerID,
-                stateData: JToken.FromObject(this.State)
+                stateData: JObject.FromObject(this.State)
              );
 
-            if (Context.IsMainPlayer)
-            {
-                QuestFrameworkMod.Instance.QuestStateStore.Commit(payload);
-            } else
+            if (!Context.IsMainPlayer)
             {
                 Helper.Multiplayer.SendMessage(
                     payload, "SyncState", new[] { QuestFrameworkMod.Instance.ModManifest.UniqueID });
                 Monitor.Log($"Payload `{payload.QuestName}/{payload.FarmerId}` type `{payload.StateData.Type}` sent to sync to host.");
             }
+
+            QuestFrameworkMod.Instance.QuestStateStore.Commit(payload);
         }
-        
+
         void IStateRestorable.RestoreState(StatePayload payload)
         {
             if (payload.StateData == null)
             {
-                this.State = new TState();
+                this.State = this.PrepareState();
                 return;
             }
 
             this.State = payload.StateData.ToObject<TState>();
         }
 
+        bool IStateRestorable.VerifyState(StatePayload payload)
+        {
+            return JToken.DeepEquals(payload.StateData, JObject.FromObject(this.State));
+        }
+
+        /// <summary>
+        /// Creates and prepares new quest state.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual TState PrepareState()
+        {
+            return new TState();
+        }
+
+        /// <inheritdoc cref="CustomQuest.Reset"/>
+        public override void Reset()
+        {
+            base.Reset();
+            this.State = this.PrepareState();
+            this.Sync();
+        }
+
         /// <summary>
         /// Reset quest state to default state data
         /// </summary>
+        [Obsolete("Deprecated. Use method CustomQuest.Reset instead")]
         public void ResetState()
         {
-            this.State = new TState();
-            this.Sync();
+            this.Reset();
         }
     }
 }

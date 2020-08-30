@@ -96,6 +96,7 @@ Quality | Optional | int | The quality of the sold items. 0  for normal, 1 for s
 ItemIDs | Optional | Array of ints | Adds a list of items by their IDS. One or more of `ItemIDs`,`ItemNames` or `JAPacks` is needed in order to add an item.
 ItemNames | Optional | Array of strings | Adds a list of items by their internal names. One or more of `ItemIDs`,`ItemNames` or `JAPacks` is needed in order to add an item.
 JAPacks | Optional | Array of strings | Adds all items of `ItemType` from the specified JA Packs, identified by their `UniqueID`. Crops and Trees added through `JAPacks` specified with `Object` will sell the products, while `Seed` will sell the seeds/saplings.
+FilterSeedsBySeason | Optional | boolean | Only applies to ItemType of Seed for JAPacks. When true, will filter seeds sold to only those that can be planted in the current season. Defaults to true
 Stock | Optional | int | How many of each item is available to buy per day. If not set, the stock is unlimited
 MaxNumItemsSoldInItemStock | Optional | int | The number of different items available from this ItemStock. If there are more items in this ItemStock than `MaxNumItemsSoldInItemStock` a random set will be picked per day. This is used to randomize the items listed in this `ItemStock`
 When | Optional | Array of strings | A condition for the items in this ItemStock to appear. More info can be found under [Condition Checking](#condition-checking) **Warning:** Avoid checks like `t` and `a` as conditions for ItemStocks are only checked at the start of each day, not when the user opens the shop menu. Only use these if you are planning to manually refresh the shop stock through a SMAPI mod.
@@ -147,7 +148,7 @@ ClosedMessage | Optional | string | The message that displays if a user interact
 LocalizedClosedMessage | Optional | Dictionary<string,string> | Translations for the closed message. Refer to [Translations](#translations) for details.
 
 ### Condition Checking
-All `When` fields used for various condition checking uses vanilla [event preconditions](https://stardewvalleywiki.com/Modding:Event_data#Event_preconditions) as well as several custom ones. `When` conditions can be used to determine conditions for a shop opening ( such as hours, or when an NPC is nearby ) as well as for setting conditions for ItemStocks to be added to stores or not when stocks are refreshed.
+All `When` fields used for various condition checking uses vanilla event preconditions as well as several custom ones. `When` conditions can be used to determine conditions for a shop opening ( such as hours, or when an NPC is nearby ) as well as for setting conditions for ItemStocks to be added to stores or not when stocks are refreshed.
 
 `When` takes an array of strings. Each String can be a full list of conditions that must ALL be met seperated by `/` values just like vanilla event conditions.
 
@@ -183,21 +184,7 @@ When multiple fields are provided, the condition will work if _any_ of the strin
 ```
 #### Available Conditions
 
-All [event preconditions](https://stardewvalleywiki.com/Modding:Event_data#Event_preconditions) are available, as well as:
-
-Syntax | Description | Example
-------------- | ------------- | -------------
-`NPCAt <s:NPCName> [<i:x> <i:y>]` | This will check if the named NPC is at the given tile coordinates on the current map. Multiple x/y coordinates can be given, and will return true if the NPC is at any of them. | `NPCAt Pierre 5 10 5 11 5 12` will check if Pierre is at (5,10) (5,11) or (5,12)
-`HasMod [<s:UniqueID>]` | This will check if the given Unique ID of certain mods is installed. Multiple can be supplied and will return true only if the player has all of them installed. | `HasMod Cherry.CustomizeAnywhere Cherry.PlatonicRelationships` returns true if both Customize Anywhere and Platonic Relationships are installed
-`SkillLevel [<s:SkillName> <i:SkillLevel>]` | This will check if the player has at least the given skill level for named skills. Multiple skill-level pairs can be provided, and returns true if all of them are matched. Valid skills are: `combat`, `farming`, `fishing`, `foraging`, `luck` (unsued in vanilla), and `mining` | `SkillLevel farming 5 fishing 3` Would return true if the player has at least level 5 farm and level 3 fishing
-`CommunityCenterComplete` | Returns true if the Community center is completed on this save file| 
-`JojaMartComplete` | Returns true if the joja mart route was completed on this save file |
-`SeededRandom <i:offset> <i:timeInterval/s:timeInterval> <f:random lower bounds> <f: random upper bounds>`| Used to make synchronized random checks, which can be used across different stocks/stores and remain constant over given periods of time | `SeededRandom 123 Season 0.5 1` [Find more detailed explanation here](CONDITIONS.md)
-`HasCookingRecipe [<s:recipe name>]` | Returns true if the player has learned all the listed recipes. **Note** spaces should be replaced with `-` | `HasCookingRecipe Fried-Egg Salad` will return true if the player knows how to cook both Fried Egg and salad
-`HasCraftingRecipe [<s:recipe name>]` | Returns true if the player has learned all the listed recipes. **Note** spaces should be replaced with `-` | `HasCookingRecipe Oil-Maker` will return true if the player knows how to craft Oil Makers
-`FarmHouseUpgradeLevel [<i:house upgrade levels>]` | Returns true if the player's current house levels matches any of the given numbers. Starter house is 0 and cellar is 3 | `FarmHouseUpgradeLevel 2 3` will return true if the player is on the final house upgrade and has the cellar
-
-I am always taking requests for more conditions as they are needed! Open an issue any time
+The condition checking system is provided by Expanded Preconditions Utility, and you can see a list of its available conditions at the [README](https://github.com/ChroniclerCherry/stardew-valley-mods/blob/Develop/ExpandedPreconditionsUtility/README.md)
 
 ##### Some useful vanilla preconditions of note ( taken directly from the Wiki ):
 
@@ -375,7 +362,7 @@ Command | Description
  `open_animal_shop <ShopName>` | Will open up the animal shop with the specified `ShopName`. Useful for testing without adding in a tile property / needing to go to the shop location
  `reset_shop <ShopName>` | Will reset the stock of the specified `ShopName`, which usually happens at the start of each day. Useful for checking that your conditions are applying / stock is randomizing as you'd like'
  `list_shops` | Lists all of the `ShopName`s registered with Shop Tile Framework
- 
+ `STFConditions <s: conditional string>` | Will run the given string through the conditions system and resolve to true or false
 ## Contact The Dev
 If you need to find me, the following methods are your best bets:
 - Bug reports can be made by submitting an issue on this repositiory, or use the [bugs tab](https://www.nexusmods.com/stardewvalley/mods/5005?tab=bugs) on the Nexus mod page. Please provide a [log](https://smapi.io/log/) with all bug reports and as much information about the circumstances of the bug as possible.

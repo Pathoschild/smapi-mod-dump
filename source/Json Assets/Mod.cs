@@ -17,6 +17,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Network;
@@ -53,11 +54,14 @@ namespace JsonAssets
             helper.Events.Multiplayer.PeerContextReceived += clientConnected;
 
             helper.Content.AssetEditors.Add(content1 = new ContentInjector1());
+            helper.Content.AssetLoaders.Add( content1 );
 
+            SpaceCore.TileSheetExtensions.RegisterExtendedTileSheet( "Maps\\springobjects", 16 );
             SpaceCore.TileSheetExtensions.RegisterExtendedTileSheet("TileSheets\\crops", 32);
             SpaceCore.TileSheetExtensions.RegisterExtendedTileSheet("TileSheets\\fruitTrees", 80);
             SpaceCore.TileSheetExtensions.RegisterExtendedTileSheet("Characters\\Farmer\\shirts", 32);
             SpaceCore.TileSheetExtensions.RegisterExtendedTileSheet("Characters\\Farmer\\pants", 688);
+            SpaceCore.TileSheetExtensions.RegisterExtendedTileSheet("Characters\\Farmer\\hats", 80);
 
             try
             {
@@ -125,6 +129,8 @@ namespace JsonAssets
                     original: AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed)),
                     postfix: new HarmonyMethod(typeof(ItemPatches), nameof(ItemPatches.CanBeTrashed_Postfix))
                 );
+                
+                harmony.PatchAll();
             }
             catch (Exception e)
             {
@@ -630,6 +636,54 @@ namespace JsonAssets
             bootsByContentPack[source].Add(boots.Name);
         }
 
+        public void RegisterFence(IManifest source, FenceData fence)
+        {
+            fences.Add( fence );
+
+            Func<IList<FenceData.Recipe_.Ingredient>, IList<ObjectData.Recipe_.Ingredient>> convertIngredients = (ingredients) =>
+            {
+                var ret = new List<ObjectData.Recipe_.Ingredient>();
+                foreach ( var ingred in ingredients )
+                {
+                    ret.Add( new ObjectData.Recipe_.Ingredient()
+                    {
+                        Object = ingred.Object,
+                        Count = ingred.Count,
+                    } );
+                }
+                return ret;
+            };
+
+            RegisterObject( source, fence.correspondingObject = new ObjectData()
+            {
+                texture = fence.objectTexture,
+                Name = fence.Name,
+                Description = fence.Description,
+                Category = ObjectData.Category_.Crafting,
+                Price = fence.Price,
+                Recipe = fence.Recipe == null ? null : new ObjectData.Recipe_()
+                {
+                    SkillUnlockName = fence.Recipe.SkillUnlockName,
+                    SkillUnlockLevel = fence.Recipe.SkillUnlockLevel,
+                    ResultCount = fence.Recipe.ResultCount,
+                    Ingredients = convertIngredients( fence.Recipe.Ingredients ),
+                    IsDefault = fence.Recipe.IsDefault,
+                    CanPurchase = fence.Recipe.CanPurchase,
+                    PurchasePrice = fence.Recipe.PurchasePrice,
+                    PurchaseFrom = fence.Recipe.PurchaseFrom,
+                    PurchaseRequirements = fence.Recipe.PurchaseRequirements,
+                    AdditionalPurchaseData = fence.Recipe.AdditionalPurchaseData,
+                },
+                CanPurchase = fence.CanPurchase,
+                PurchasePrice = fence.PurchasePrice,
+                PurchaseFrom = fence.PurchaseFrom,
+                PurchaseRequirements = fence.PurchaseRequirements,
+                AdditionalPurchaseData = fence.AdditionalPurchaseData,
+                NameLocalization = fence.NameLocalization,
+                DescriptionLocalization = fence.DescriptionLocalization,
+            } );
+        }
+
         private Dictionary<string, IManifest> dupObjects = new Dictionary<string, IManifest>();
         private Dictionary<string, IManifest> dupCrops = new Dictionary<string, IManifest>();
         private Dictionary<string, IManifest> dupFruitTrees = new Dictionary<string, IManifest>();
@@ -852,6 +906,25 @@ namespace JsonAssets
                     boots.texture = contentPack.LoadAsset<Texture2D>($"{relativePath}/boots.png");
                     boots.textureColor = contentPack.LoadAsset<Texture2D>($"{relativePath}/color.png");
                     RegisterBoots(contentPack.Manifest, boots);
+                }
+            }
+
+            // Load boots
+            DirectoryInfo fencesDir = new DirectoryInfo(Path.Combine(contentPack.DirectoryPath, "Fences"));
+            if (fencesDir.Exists)
+            {
+                foreach (DirectoryInfo dir in fencesDir.EnumerateDirectories())
+                {
+                    string relativePath = $"Fences/{dir.Name}";
+
+                    // load data
+                    FenceData fence = contentPack.ReadJsonFile<FenceData>($"{relativePath}/fence.json");
+                    if (fence == null || (fence.DisableWithMod != null && Helper.ModRegistry.IsLoaded(fence.DisableWithMod)) || (fence.EnableWithMod != null && !Helper.ModRegistry.IsLoaded(fence.EnableWithMod)))
+                        continue;
+
+                    fence.texture = contentPack.LoadAsset<Texture2D>($"{relativePath}/fence.png" );
+                    fence.objectTexture = contentPack.LoadAsset<Texture2D>($"{relativePath}/object.png" );
+                    RegisterFence( contentPack.Manifest, fence );
                 }
             }
         }
@@ -1101,6 +1174,18 @@ namespace JsonAssets
 
             content1.InvalidateUsed();
             Helper.Content.AssetEditors.Add(content2 = new ContentInjector2());
+
+            // This happens here instead of with ID fixing because TMXL apparently
+            // uses the ID fixing API before ID fixing happens everywhere.
+            // Doing this here prevents some NREs (that don't show up unless you're
+            // debugging for some reason????)
+            origObjects = cloneIdDictAndRemoveOurs( Game1.objectInformation, objectIds );
+            origCrops = cloneIdDictAndRemoveOurs( Game1.content.Load<Dictionary<int, string>>( "Data\\Crops" ), cropIds );
+            origFruitTrees = cloneIdDictAndRemoveOurs( Game1.content.Load<Dictionary<int, string>>( "Data\\fruitTrees" ), fruitTreeIds );
+            origBigCraftables = cloneIdDictAndRemoveOurs( Game1.bigCraftablesInformation, bigCraftableIds );
+            origHats = cloneIdDictAndRemoveOurs( Game1.content.Load<Dictionary<int, string>>( "Data\\hats" ), hatIds );
+            origWeapons = cloneIdDictAndRemoveOurs( Game1.content.Load<Dictionary<int, string>>( "Data\\weapons" ), weaponIds );
+            origClothing = cloneIdDictAndRemoveOurs( Game1.content.Load<Dictionary<int, string>>( "Data\\ClothingInformation" ), clothingIds );
         }
 
         /// <summary>Raised after the game finishes writing data to the save file (except the initial save creation).</summary>
@@ -1169,6 +1254,7 @@ namespace JsonAssets
         internal IList<PantsData> pantss = new List<PantsData>();
         internal IList<TailoringRecipeData> tailoring = new List<TailoringRecipeData>();
         internal IList<BootsData> bootss = new List<BootsData>();
+        internal List<FenceData> fences = new List<FenceData>();
 
         internal IDictionary<string, int> objectIds;
         internal IDictionary<string, int> cropIds;
@@ -1242,7 +1328,7 @@ namespace JsonAssets
 
             Dictionary<string, int> ids = new Dictionary<string, int>();
 
-            int[] bigSkip = new int[] { 309, 310, 311, 326, 340, 434, 599, 621, 628, 629, 630, 631, 632, 633, 645 };
+            int[] bigSkip = new int[] { 309, 310, 311, 326, 340, 434, 447, 459, 599, 621, 628, 629, 630, 631, 632, 633, 645, 812 };
 
             int currId = starting;
             foreach (var d in data)
@@ -1271,8 +1357,10 @@ namespace JsonAssets
             return ids;
         }
 
-        private void AssignTextureIndices(string type, int starting, IList<DataSeparateTextureIndex> data)
+        private void AssignTextureIndices(string type, int starting, List<DataSeparateTextureIndex> data)
         {
+            data.Sort((dni1, dni2) => dni1.Name.CompareTo(dni2.Name));
+
             Dictionary<string, int> idxs = new Dictionary<string, int>();
 
             int currIdx = starting;
@@ -1308,14 +1396,6 @@ namespace JsonAssets
 
         private void fixIdsEverywhere()
         {
-            origObjects = cloneIdDictAndRemoveOurs(Game1.objectInformation, objectIds);
-            origCrops = cloneIdDictAndRemoveOurs(Game1.content.Load<Dictionary<int, string>>("Data\\Crops"), cropIds);
-            origFruitTrees = cloneIdDictAndRemoveOurs(Game1.content.Load<Dictionary<int, string>>("Data\\fruitTrees"), fruitTreeIds);
-            origBigCraftables = cloneIdDictAndRemoveOurs(Game1.bigCraftablesInformation, bigCraftableIds);
-            origHats = cloneIdDictAndRemoveOurs(Game1.content.Load<Dictionary<int, string>>("Data\\hats"), hatIds);
-            origWeapons = cloneIdDictAndRemoveOurs(Game1.content.Load<Dictionary<int, string>>("Data\\weapons"), weaponIds);
-            origClothing = cloneIdDictAndRemoveOurs(Game1.content.Load<Dictionary<int, string>>("Data\\ClothingInformation"), clothingIds);
-
             fixItemList(Game1.player.Items);
 #pragma warning disable AvoidNetField
             if (Game1.player.leftRing.Value != null && fixId(oldObjectIds, objectIds, Game1.player.leftRing.Value.parentSheetIndex, origObjects))
@@ -1359,7 +1439,7 @@ namespace JsonAssets
                     return true;
                 else if (fixId(oldWeaponIds, weaponIds, weapon.currentParentTileIndex, origWeapons))
                     return true;
-                else if (fixId(oldWeaponIds, weaponIds, weapon.currentParentTileIndex, origWeapons))
+                else if (fixId(oldWeaponIds, weaponIds, weapon.indexOfMenuItemView, origWeapons))
                     return true;
             }
             else if (item is Ring ring)
@@ -1407,6 +1487,13 @@ namespace JsonAssets
                         fixId(oldObjectIds, objectIds, hd.crop.netSeedIndex, origObjects);
                     }
                 }
+            }
+            else if ( obj is Fence fence )
+            {
+                if ( fixId( oldObjectIds, objectIds, fence.whichType, origObjects ) )
+                    return true;
+                else
+                    fence.ParentSheetIndex = -fence.whichType.Value;
             }
             else
             {
@@ -1468,6 +1555,20 @@ namespace JsonAssets
                 /*else if (player.boots.Value != null)
                     player.boots.Value.reloadData();*/
 #pragma warning restore AvoidNetField
+            }
+
+            foreach ( var npc in loc.characters )
+            {
+                if ( npc is Horse horse )
+                {
+                    if ( horse.hat.Value != null && fixId( oldHatIds, hatIds, horse.hat.Value.which, origHats ) )
+                        horse.hat.Value = null;
+                }
+                else if ( npc is Child child )
+                {
+                    if ( child.hat.Value != null && fixId( oldHatIds, hatIds, child.hat.Value.which, origHats ) )
+                        child.hat.Value = null;
+                }
             }
 
             IList<Vector2> toRemove = new List<Vector2>();
@@ -1550,6 +1651,13 @@ namespace JsonAssets
                     {
                         if (fixId(oldBigCraftableIds, bigCraftableIds, obj.parentSheetIndex, origBigCraftables))
                             toRemove.Add(objk);
+                        else if ( obj.ParentSheetIndex == 126 && obj.Quality != 0 ) // Alien rarecrow stores what ID is it is wearing here
+                        {
+                            obj.Quality--;
+                            if ( fixId( oldHatIds, hatIds, obj.quality, origHats ) )
+                                obj.Quality = 0;
+                            else obj.Quality++;
+                        }
                     }
                 }
 
@@ -1788,7 +1896,7 @@ namespace JsonAssets
                 }
                 else
                 {
-                    Log.verbose("Deleting missing item " + key + " with old ID " + id_);
+                    Log.trace( "Deleting missing item " + key + " with old ID " + id_);
                     return true;
                 }
             }

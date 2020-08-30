@@ -13,5 +13,7 @@
   },
   "AllowGainFriendship": true,
   "FightThruCompanion": true,
-  "UseCheckForEventsPatch": true
+  "UseCheckForEventsPatch": true,
+  "AllowEntryLockedCompanionHouse": true,
+  "UseAsk2FollowCursor": true
 }

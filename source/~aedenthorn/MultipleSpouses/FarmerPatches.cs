@@ -23,7 +23,9 @@ namespace MultipleSpouses
         {
             try
             {
-                __instance.divorceTonight.Value = false;if (!__instance.isMarried() || ModEntry.spouseToDivorce == null)
+                Monitor.Log("Trying to divorce");
+                __instance.divorceTonight.Value = false;
+                if (!__instance.isMarried() || ModEntry.spouseToDivorce == null)
                 {
                     Monitor.Log("Tried to divorce but no spouse to divorce!");
                     return false;
@@ -89,7 +91,6 @@ namespace MultipleSpouses
             return true;
         }
 
-        
         public static bool Farmer_checkAction_Prefix(Farmer __instance, Farmer who, GameLocation location, ref bool __result)
         {
             try
@@ -125,6 +126,38 @@ namespace MultipleSpouses
             return true;
         }
 
+        internal static bool Farmer_getSpouse_Prefix(Farmer __instance, ref NPC __result)
+        {
+            try
+            {
+                if (ModEntry.tempOfficialSpouse != null && __instance.friendshipData.ContainsKey(ModEntry.tempOfficialSpouse.Name) && __instance.friendshipData[ModEntry.tempOfficialSpouse.Name].IsMarried())
+                {
+                    __result = ModEntry.tempOfficialSpouse;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(Farmer_getSpouse_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+            return true;
+        }
 
+        internal static bool Farmer_GetSpouseFriendship_Prefix(Farmer __instance, ref Friendship __result)
+        {
+            try
+            {
+                if (ModEntry.tempOfficialSpouse != null && __instance.friendshipData.ContainsKey(ModEntry.tempOfficialSpouse.Name) && __instance.friendshipData[ModEntry.tempOfficialSpouse.Name].IsMarried())
+                {
+                    __result = __instance.friendshipData[ModEntry.tempOfficialSpouse.Name];
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(Farmer_getSpouse_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+            return true;
+        }
     }
 }

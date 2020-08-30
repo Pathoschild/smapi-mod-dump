@@ -3,5 +3,11 @@
     "Description": "Apparel for an incredible scoop.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Top de Fotógrafo"
+    },
+    "DescriptionLocalization": {
+        "es": "Ropa para una primicia asombrosa."
+    }
 }

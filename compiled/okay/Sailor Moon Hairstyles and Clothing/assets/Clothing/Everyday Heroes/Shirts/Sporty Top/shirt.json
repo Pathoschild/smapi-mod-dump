@@ -3,5 +3,11 @@
     "Description": "A red two-tone top.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Top Deportivo"
+    },
+    "DescriptionLocalization": {
+        "es": "Un top rojo de dos tonos."
+    }
 }

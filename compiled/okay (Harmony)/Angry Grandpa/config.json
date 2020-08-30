@@ -2,6 +2,7 @@
   "GrandpaDialogue": "Original",
   "GenderNeutrality": false,
   "ExpressivePortraits": true,
+  "PortraitStyle": "auto",
   "ScoringSystem": "Vanilla",
   "YearsBeforeEvaluation": 2,
   "ShowPointsTotal": true,

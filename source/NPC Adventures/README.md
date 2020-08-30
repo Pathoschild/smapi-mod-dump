@@ -49,9 +49,12 @@ Download this mod on **[Nexusmods](https://nexusmods.com/stardewvalley/mods/4582
 - New documentation for players and modders/content creators
 - Support for localizations in content packs
 - Android support (experimental) Thx @MaxPresi
-- [NEW] Fight through companion without annoying dialogue (experimental, you can enable it in `config.json`)
-- [NEW] Recruit and ask companions with hold a *shift* key (you can enable it in `config.json`)
-- [NEW] Wife/Husband companion auto-dismisses at midnight (others still at 10pm)
+- Fight through companion without annoying dialogue (experimental, you can enable it in `config.json`)
+- Recruit and ask companions with hold a *shift* key (you can enable it in `config.json`)
+- Wife/Husband companion auto-dismisses at midnight (others still at 10pm)
+- [NEW] Quest Framework based
+- [NEW] Visit companion's house any time if you have recruited them
+- [NEW] New cursor for ask to follow action
 
 Next features comming soon...
 
@@ -96,17 +99,13 @@ You can add your custom NPC as companion to this mod via content pack. See [docu
 
 ### Note for Android users
 
-Beginning with version *0.11.0* there's an experimental support for Android SMAPI and Stardew Valley. There is list of known android issues:
-
-- **HUD may be drawn at an incorrect position on some devices.** - If you have this problem, you can disable the HUD in configuration file. (Set `ShowHUD` to `false`)
-- **The game may crash on Android 5.1 and older** - Can't fix it, because it's caused by SMAPI. Android SMAPI has an experimental harmony patching, you can report these crashes to @MartyrPher (developer of SMAPI for Android). Remember Android 5.1 and older is not officialy supported by this mod.
-- **Companion bags are not compatible with emergency saves** If you recruited any companion and saved your items to bag and then loaded your game from the emergecny save (continue from last position), your items in companion's bag are lost. **If you use this mod on Android, every load game from the start of day!**
+Compatibility with android was revoked and **using this mod on Android SDV is on your own risk!** Officially NPC Adventures are no longer compatible with Android.
 
 ### Compatibility with other mods
 
 - ✅ **Custom Kissing Mod** by *Digus* - 100% compatible (from version 0.9.0 with version 1.2.0 and newer of Custom Kissing Mod.
+- ✅ **Json Assets** - You can use custom weapons in disposition file from JA in your content packs via weapon name (Only swords supported).
 - ⚠️ **Automatic gates** - NOT COMPATIBLE! Companion can stuck in gate when gate is automatic closed after farmer.
-- ⚠️ **Json Assets** - CAN'T USE CUSTOM ITEMS FOR COMPANIONS. Can't use custom weapons in disposition file from JA in your content packs, because this mod not exported stacit item ids.
 
 ## Official translations
 
@@ -153,6 +152,7 @@ More features comming soon...
 - [CallMeFoxie](https://www.nexusmods.com/users/76989063) - Multiplayer support compatibility code
 - [andril11](https://www.nexusmods.com/users/68848663) - Portuguese translation
 - [mardrest](https://www.nexusmods.com/stardewvalley/users/74323508) - Spanish translation
+- 치즈린, KAYA - Korean translation
 
 ### In past worked with us
 

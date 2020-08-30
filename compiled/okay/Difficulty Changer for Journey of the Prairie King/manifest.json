@@ -2,7 +2,7 @@
 {
     "Name": "StardewValleyEasyPrairieKing",
     "Author": "shanks3042",
-    "Version": "0.3.1",
+    "Version": "0.4",
     "Description": "Provides options to make Journey of the Prairie King easier",
     "UniqueID": "shanks3042.StardewValleyEasyPrairieKing",
     "EntryDll": "StardewValleyEasyPrairieKing.dll",

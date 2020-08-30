@@ -22,4 +22,6 @@
 
   <Import Project="..\PurrplingCore\PurrplingCore.projitems" Label="Shared" />
 
+  <ProjectExtensions><VisualStudio><UserProperties manifest_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

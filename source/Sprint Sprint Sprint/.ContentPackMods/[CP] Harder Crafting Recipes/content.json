@@ -1,0 +1,42 @@
+{
+  "Format": "1.6",
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "Chest": "388 99/Home/130/true/null", //done
+        "Bee House": "388 60 382 8 335 4 724 1/Home/10/true/Farming 3", //done
+        "Keg": "388 45 334 3 335 3 725 1/Home/12/true/Farming 8", //done
+        "Cask": "388 50 709 12/Home/163/true/null", //done
+        "Furnace": "378 30 390 25/Home/13/true/l 2", //done
+        "Garden Pot": "330 4 390 15 338 4/Home/62/true/null", /* done */
+        "Wood Sign": "388 40/Home/37/true/null", /* done */
+        "Stone Sign": "390 40/Home/38/true/null", /* done */
+        "Cheese Press": "388 65 390 45 709 30 334 2/Home/16/true/Farming 6", //done
+        "Mayonnaise Machine": "388 30 390 25 334 3 86 1 -5 1/Home/24/true/Farming 2", //done
+        "Seed Maker": "388 50 382 10 336 5/Home/25/true/Farming 9", //done
+        "Loom": "388 60 771 50 335 4 726 1/Home/17/true/Farming 7", //done
+        "Oil Maker": "766 50 709 40 336 1/Home/19/true/Farming 8",  //done
+        "Recycling Machine": "388 35 390 35 338 5 335 5/Home/20/true/Fishing 4", //done
+        "Worm Bin": "709 35 336 3 335 3 771 100/Home/154/true/Fishing 8", //done
+        "Preserves Jar": "388 70 390 50 382 10/Home/15/true/Farming 4", //done
+        "Charcoal Kiln": "388 40 336 2/Home/114/true/Foraging 4", //done
+        "Tapper": "388 50 334 2/Home/105/true/Foraging 3", //done
+        "Crystalarium": "390 125 336 6 337 2 787 1/Home/21/true/Mining 9", //done
+        "Quality Sprinkler": "335 1 336 1 338 1/Home/621/false/Farming 6", //done
+        "Iridium Sprinkler": "336 2 337 2 787 2/Home/645/false/Farming 9", //done
+        "Ancient Seeds": "114 3/Field/499/false/null", //done
+        "Warp Totem: Farm": "709 2 340 2 771 20/Field/688/false/Foraging 8", //done
+        "Warp Totem: Mountains": "709 2 335 2 390 25/Field/689/false/Foraging 7", //done
+        "Warp Totem: Beach": "709 2 393 2 771 10/Field/690/false/Foraging 6", //done
+        "Rain Totem": "709 1 432 1 726 5/Field/681/false/Foraging 9", //done
+        "Crab Pot": "388 60 335 4/Home/710/false/Fishing 3", //done
+        "Iridium Band": "337 10 768 100 769 100/Home/527/false/Combat 9", //done
+        "Ring of Yoba": "336 5 335 5 72 1/Home/524/false/Combat 7", //done
+        "Sturdy Ring": "334 15 338 5 86 10/Home/525/false/Combat 1", //done
+        "Warrior Ring": "335 15 382 25 84 10/Home/521/false/Combat 4", //done
+      }
+    }
+  ]
+}

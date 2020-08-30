@@ -1,5 +1,6 @@
 ﻿using PurrplingCore.Patching;
 using QuestFramework.Api;
+using QuestFramework.Extensions;
 using QuestFramework.Framework;
 using QuestFramework.Framework.Bridges;
 using QuestFramework.Framework.ContentPacks;
@@ -7,10 +8,14 @@ using QuestFramework.Framework.Controllers;
 using QuestFramework.Framework.Events;
 using QuestFramework.Framework.Hooks;
 using QuestFramework.Framework.Networing;
+using QuestFramework.Framework.Stats;
 using QuestFramework.Framework.Store;
+using QuestFramework.Framework.Watchdogs;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Menus;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,19 +29,22 @@ namespace QuestFramework
         private bool hasInitMessageArrived = false;
 
         internal State Status { get; private set; }
+        internal Config Config { get; private set; }
         internal Bridge Bridge { get; private set; }
         internal QuestManager QuestManager { get; private set; }
-        internal QuestApi Api { get; private set; }
         internal QuestStateStore QuestStateStore { get; private set; }
+        internal StatsManager StatsManager { get; private set; }
         internal HookManager HookManager { get; private set; }
         internal QuestOfferManager QuestOfferManager { get; private set; }
         internal Loader ContentPackLoader { get; private set; }
         internal QuestController QuestController { get; private set; }
         internal MailController MailController { get; private set; }
+        internal QuestLogWatchdog QuestLogWatchdog { get; private set; }
         internal NetworkOperator NetworkOperator { get; private set; }
         internal EventManager EventManager { get; private set; }
 
         internal static QuestFrameworkMod Instance { get; private set; }
+        internal GamePatcher Patcher { get; private set; }
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -44,18 +52,26 @@ namespace QuestFramework
         {
             Instance = this;
 
-            this.Bridge = new Bridge(helper.ModRegistry);
-            this.EventManager = new EventManager();
+            this.Config = helper.ReadConfig<Config>();
+            this.Bridge = new Bridge(helper.ModRegistry, this.Config.DebugMode);
+            this.EventManager = new EventManager(this.Monitor);
             this.QuestManager = new QuestManager(this.Monitor);
             this.QuestStateStore = new QuestStateStore(helper.Data, this.Monitor);
-            this.HookManager = new HookManager();
-            this.QuestOfferManager = new QuestOfferManager(this.HookManager);
+            this.StatsManager = new StatsManager(helper.Multiplayer, helper.Data);
+            this.HookManager = new HookManager(this.Monitor);
+            this.QuestOfferManager = new QuestOfferManager(this.HookManager, this.QuestManager);
             this.ContentPackLoader = new Loader(this.Monitor, this.QuestManager, this.QuestOfferManager);
-            this.QuestController = new QuestController(this.QuestManager, this.Monitor);
+            this.QuestController = new QuestController(this.QuestManager, this.QuestOfferManager, this.Monitor);
             this.MailController = new MailController(this.QuestManager, this.QuestOfferManager, this.Monitor);
+            this.QuestLogWatchdog = new QuestLogWatchdog(helper.Events, this.EventManager, this.StatsManager, this.Monitor);
             this.NetworkOperator = new NetworkOperator(
-                helper.Multiplayer, helper.Events.Multiplayer, this.QuestStateStore, this.QuestController,
-                this.ModManifest, this.Monitor);
+                helper: helper.Multiplayer,
+                events: helper.Events.Multiplayer,
+                questStateStore: this.QuestStateStore,
+                statsManager: this.StatsManager,
+                questController: this.QuestController,
+                modManifest: this.ModManifest,
+                monitor: this.Monitor);
 
             helper.Content.AssetEditors.Add(this.QuestController);
             helper.Content.AssetEditors.Add(this.MailController);
@@ -66,12 +82,13 @@ namespace QuestFramework
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
             helper.Events.GameLoop.ReturnedToTitle += this.OnReturnToTitle;
+            helper.Events.Display.MenuChanged += this.OnQuestLogMenuChanged;
             this.NetworkOperator.InitReceived += this.OnNetworkInitMessageReceived;
 
-            GamePatcher patcher = new GamePatcher(this.ModManifest.UniqueID, this.Monitor);
+            this.Patcher = new GamePatcher(this.ModManifest.UniqueID, this.Monitor, false);
 
-            patcher.Apply(
-                new Patches.QuestPatch(this.QuestManager),
+            this.Patcher.Apply(
+                new Patches.QuestPatch(this.QuestManager, this.EventManager),
                 new Patches.LocationPatch(this.HookManager),
                 new Patches.Game1Patch(this.QuestManager, this.QuestOfferManager),
                 new Patches.DialoguePatch(this.QuestManager),
@@ -80,10 +97,25 @@ namespace QuestFramework
 
             helper.ConsoleCommands.Add("quests_list", "List all managed quests", Commands.ListQuests);
             helper.ConsoleCommands.Add("quests_log", "List all managed quests which are in player's quest log", Commands.ListLog);
+            helper.ConsoleCommands.Add("quests_stats", "Show quest statistics", Commands.QuestStats);
+            helper.ConsoleCommands.Add("quests_invalidate", "Invalidate quest assets cache", Commands.InvalidateCache);
+            helper.ConsoleCommands.Add("quests_accept", "Accept managed quest and add it to questlog", Commands.AcceptQuest);
+            helper.ConsoleCommands.Add("quests_complete", "Complete managed quest in questlog", Commands.CompleteQuest);
+            helper.ConsoleCommands.Add("quests_remove", "Remove managed quest from questlog", Commands.RemoveQuest);
 
             var packs = helper.ContentPacks.GetOwned();
             if (packs.Any())
                 this.ContentPackLoader.LoadPacks(packs);
+        }
+
+        [EventPriority(EventPriority.High + 100)]
+        private void OnGameStarted(object sender, GameLaunchedEventArgs e)
+        {
+            this.Bridge.Init();
+            this.Patcher.CheckPatches();
+            this.ChangeState(State.STANDBY);
+            this.RegisterDefaultHooks();
+            this.Monitor.Log("Quest framework established their internal systems");
         }
 
         private void OnSaving(object sender, SavingEventArgs e)
@@ -92,28 +124,33 @@ namespace QuestFramework
             {
                 this.Helper.Data.WriteSaveData("storedQuestIds", this.QuestController.GetQuestIds());
                 this.QuestStateStore.Persist();
+                this.StatsManager.SaveStats();
             }
         }
 
+        [EventPriority(EventPriority.Low - 100)]
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             this.QuestController.RefreshAllManagedQuestsInQuestLog();
+            this.QuestController.RefreshBulletinboardQuestOffer();
             this.MailController.ReceiveQuestLetterToMailbox();
+            this.EventManager.Refreshed.Fire(new EventArgs(), this);
         }
 
+        [EventPriority(EventPriority.Low - 100)]
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
             this.QuestController.SanitizeAllManagedQuestsInQuestLog(this.Helper.Translation);
+
+            if (this.Config.EnableStateVerification)
+                this.QuestStateStore.Verify(
+                    Game1.player.UniqueMultiplayerID, 
+                    this.QuestManager.Quests.Where(q => q is IStateRestorable));
         }
 
         public override object GetApi()
         {
-            if (this.Api == null)
-            {
-                this.Api = new QuestApi(this.QuestManager, this.EventManager, this.QuestOfferManager, this.Monitor);
-            }
-
-            return this.Api;
+            return new QuestApi(this);
         }
 
         /// <summary>
@@ -132,6 +169,8 @@ namespace QuestFramework
             this.QuestManager.Quests.Clear();
             this.QuestOfferManager.Offers.Clear();
             this.HookManager.Clean();
+            this.QuestStateStore.Clean();
+            this.StatsManager.Clean();
             this.NetworkOperator.Reset();
             this.hasInitialized = false;
             this.hasSaveLoaded = false;
@@ -146,6 +185,7 @@ namespace QuestFramework
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             this.hasSaveLoaded = true;
+            this.Patcher.CheckPatches();
             this.Initialize();
         }
 
@@ -169,9 +209,9 @@ namespace QuestFramework
             // Restore data from savefile on the main player 
             // (farmhands get initial state from init message from host)
             this.QuestStateStore.RestoreData();
+            this.StatsManager.LoadStats();
             this.ContentPackLoader.RegisterQuestsFromPacks();
 
-            // TODO: fire 'GettingReady' event on this line
             this.EventManager.GettingReady.Fire(new Events.GettingReadyEventArgs(), this);
             this.ChangeState(State.LAUNCHED);
 
@@ -187,16 +227,40 @@ namespace QuestFramework
                 this.QuestController.Reassign();
             }
 
+
             this.RestoreStatefullQuests();
             this.HookManager.CollectHooks(this.QuestManager.Quests);
+            this.QuestLogWatchdog.Initialize();
+            InvalidateCache();
+
             this.hasInitialized = true;
             this.EventManager.Ready.Fire(new Events.ReadyEventArgs(), this);
-            
-            InvalidateCache();
-            Game1.RefreshQuestOfTheDay();
+
+            // Post-ready executions
+            this.QuestController.RefreshBulletinboardQuestOffer();
             this.MailController.ReceiveQuestLetterToMailbox();
 
             this.Monitor.Log($"Quest framework sucessfully initialized all stuff for this loaded save game and it's ready!", LogLevel.Info);
+        }
+
+        private void OnQuestLogMenuChanged(object sender, MenuChangedEventArgs e)
+        {
+            if (e.NewMenu is QuestLog && !(e.OldMenu is QuestLog))
+                this.EventManager.QuestLogMenuOpen.Fire(new System.EventArgs(), this);
+            if (!(e.NewMenu is QuestLog) && e.OldMenu is QuestLog)
+            {
+                this.EventManager.QuestLogMenuClosed.Fire(new System.EventArgs(), this);
+
+                // Remove quests marked for destroy from questlog
+                int i = 0;
+                while(i < Game1.player.questLog.Count)
+                {
+                    if (Game1.player.questLog[i].destroy.Value == true)
+                        Game1.player.questLog.RemoveAt(i);
+                    else
+                        i++;
+                }
+            }
         }
 
         private void RegisterDefaultHooks()
@@ -231,15 +295,6 @@ namespace QuestFramework
             this.Status = state;
             this.EventManager.ChangeState.Fire(new Events.ChangeStateEventArgs(previous, this.Status), this);
             this.Monitor.Log($"State changed: {previous} -> {this.Status}");
-        }
-
-        [EventPriority(EventPriority.High + 100)]
-        private void OnGameStarted(object sender, GameLaunchedEventArgs e)
-        {
-            this.Bridge.Init();
-            this.ChangeState(State.STANDBY);
-            this.RegisterDefaultHooks();
-            this.Monitor.Log("Quest framework established their internal systems");
         }
     }
 }

@@ -5,16 +5,15 @@ mods:
    SvFishingMod
 
 latest commit:
-   commit c930b568060bf90ee46809c04897d1c951a67abc
+   commit 02df68935abca2befbfaa2d02cfbe874d436c2d7
    Author: Fabian R <kderazorback@me.com>
-   Date:   Sun Jul 5 23:57:36 2020 -0500
+   Date:   Sun Jul 19 03:17:22 2020 -0500
    
-       Bite Delay removal and SMAPI Settings
+       Proposed support for Server-Client settings synchronization
        
-       + Added `sv_fishing_bitedelay` option for toggling on/off the random bite delay after the line has been thrown.
-       + Ability to remove the Bite Delay after the rod has been thrown.
-       - Switched to SMAPI managed settings using JSON files, instead of manual XML serialization.
-       - Bumped mod version to 0.1.2.
-       - Updated README.md with the new `sv_fishing_bitedelay` command help.
-       - Minor code cleanup
+       + Added EnforceMultiplayerSettings property to config file.
+       - Refactored Settings handling into a Local and Remote variants based on current game play mode.
+       - Updated module version to 0.1.3
+       
+       - This commit is a work in progress. Not tested
    

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Cherryrar (functions)",
+  "Author": "Edu",
+  "Version": "1.0.0",
+  "Description": "Agora você pode se vestir como a Cherry!",
+  "UniqueID": "Cherryrar.Functions",
+  "EntryDll": "Cherry.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6603" ]
+}

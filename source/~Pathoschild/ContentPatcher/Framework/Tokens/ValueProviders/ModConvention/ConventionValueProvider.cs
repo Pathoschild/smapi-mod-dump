@@ -33,7 +33,8 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         public bool IsMutable => this.Provider.IsMutable();
 
         /// <inheritdoc />
-        public bool IsReady => this.Provider.IsReady();
+        /// <remarks>This is cached to ensure it never changes outside a context update (even if the mod token is otherwise incorrectly changing without a context update), since that would cause subtle hard-to-troubleshoot bugs where patches don't update correctly in some cases.</remarks>
+        public bool IsReady { get; private set; }
 
 
         /*********
@@ -46,6 +47,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         {
             this.Name = name;
             this.Provider = provider;
+            this.IsReady = provider.IsReady();
         }
 
         /// <inheritdoc />
@@ -97,7 +99,12 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <inheritdoc />
         public bool UpdateContext(IContext context)
         {
-            return this.Provider.UpdateContext();
+            bool wasReady = this.IsReady;
+
+            bool changed = this.Provider.UpdateContext();
+            this.IsReady = this.Provider.IsReady();
+
+            return changed || this.IsReady != wasReady;
         }
 
         /// <inheritdoc />
@@ -120,6 +127,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <param name="input">The input arguments.</param>
         private string ToApiInput(IInputArguments input)
         {
+            if (!input.IsReady)
+                return null;
+
             StringBuilder inputStr = new StringBuilder();
 
             inputStr.Append(string.Join(", ", input.PositionalArgs));

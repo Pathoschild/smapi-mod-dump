@@ -1,7 +1,7 @@
 {
    "Name": "SDVWM",
    "Author": "SixthTitan",
-   "Version": "2.2.2",
+   "Version": "2.2.3",
    "Description": "Location based Weather System for Stardew Valley",
    "UniqueID": "SixthTitan.SDVWM",
    "EntryDll": "SDVWM.dll",

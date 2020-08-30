@@ -5,9 +5,12 @@ mods:
    JoJa84+
 
 latest commit:
-   commit 6b5e0f2ca07d797a98cbb0c916c6e6f3a11cb511
-   Author: K4rakara <jack@insertdomain.name>
-   Date:   Wed Apr 15 09:33:58 2020 -0400
+   commit cafbc64b69f3c12729fc08e23db9235ae00486bc
+   Merge: 5ec12c3 2cefb59
+   Author: Jack <jack@insertdomain.name>
+   Date:   Tue Aug 18 16:13:01 2020 -0400
    
-       Add update keys
+       Merge pull request #2 from aedenthorn/master
+       
+       Fix for landscape in app
    

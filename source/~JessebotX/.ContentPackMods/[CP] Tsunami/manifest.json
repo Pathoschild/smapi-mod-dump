@@ -1,0 +1,12 @@
+{
+  "Name": "Tsunami",
+  "Author": "Jessebot",
+  "Version": "1.0.0",
+  "Description": "Flood the entire town, beach and forest",
+  "UniqueID": "Jessebot.Tsunami",
+  "MinimumApiVersion": "3.6",
+  "UpdateKeys": ["Nexus:6608"],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  }
+}

@@ -123,7 +123,7 @@ namespace AngryGrandpa
                     }
                 }
                 if (patched) { Monitor.LogOnce($"Applied harmony patch to ItemGrabMenu: {nameof(receiveLeftClick_Transpiler)}", LogLevel.Trace); }
-                else { Monitor.Log($"Couldn't apply harmony patch to ItemGrabMenu: {nameof(receiveLeftClick_Transpiler)}" +
+                else { Monitor.Log($"Couldn't apply harmony patch to ItemGrabMenu: {nameof(receiveLeftClick_Transpiler)}\n" +
                     $"This will not severely affect the game, but collecting rewards from grandpa's shrine might not register correctly.", LogLevel.Warn); }
 
                 return codes.AsEnumerable();

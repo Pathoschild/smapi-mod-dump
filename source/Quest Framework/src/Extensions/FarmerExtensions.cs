@@ -32,5 +32,19 @@ namespace QuestFramework.Extensions
             return questLog.Where(q => q.IsManaged())
                 .Select(q => q.AsManagedQuest());
         }
+
+        public static void AddQuestQuiet(this Farmer farmer, int questId)
+        {
+            if (farmer.hasQuest(questId))
+                return;
+            
+            Quest questFromId = Quest.getQuestFromId(questId);
+            
+            if (questFromId == null)
+                return;
+
+            questFromId.showNew.Value = false;
+            farmer.questLog.Add(questFromId);
+        }
     }
 }

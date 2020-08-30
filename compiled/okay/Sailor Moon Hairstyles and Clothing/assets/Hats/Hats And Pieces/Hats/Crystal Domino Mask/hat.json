@@ -1,0 +1,13 @@
+{
+    "Name": "Crystal Domino Mask",
+    "Description": "Sailor Moon's secretive mask. Say, does she even wear this?",
+    "PurchasePrice": "250",
+    "ShowHair": true,
+    "IgnoreHairstyleOffset": true,
+    "NameLocalization": {
+        "es": "Máscara de Dominó de Cristal"
+    },
+    "DescriptionLocalization": {
+        "es": "La máscara secreta de Sailor Moon. Dime, ¿ella incluso usa esto?"
+    }
+}

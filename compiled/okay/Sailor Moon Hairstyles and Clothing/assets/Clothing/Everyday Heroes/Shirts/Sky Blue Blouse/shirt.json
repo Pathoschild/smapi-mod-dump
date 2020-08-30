@@ -4,5 +4,11 @@
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless"
+    "Metadata": "Sleeveless",
+    "NameLocalization": {
+        "es": "Blusa Azul Cielo"
+    },
+    "DescriptionLocalization": {
+        "es": "Una refrescante blusa sin mangas con un cinturón verde."
+    }
 }

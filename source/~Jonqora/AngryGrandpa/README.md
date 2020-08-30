@@ -2,6 +2,7 @@
   <summary><i>TRANSLATION INFO:</i></summary>
   
   - Traduction française incluse! (mes propres efforts) | [informations de configuration](https://www.nexusmods.com/stardewvalley/articles/460)
+  - Traduzione italiana inclusa, grazie ad [AndyAllanPoe](https://github.com/AndyAllanPoe)! | [informazioni di configurazione](https://www.nexusmods.com/stardewvalley/articles/465)
   - Tradução para o português incluída, graças ao [Nathan2076](https://www.nexusmods.com/users/80828368)! | [informações de configuração](https://www.nexusmods.com/stardewvalley/articles/461)
 </details>
 
@@ -15,9 +16,9 @@ In early 2016 versions of Stardew Valley, grandpa's evaluation was much tougher.
   <summary><i>Original 1-candle result:</i></summary>
   
   !["Maybe I should've left the farm to one of the other grandkids..."](promo/original_dialogue_1400x400.png "yikes!")
-</details>
+</details><br/>
 
-Angry Grandpa mod gives a huge overhaul to the evaluation system! Restore the original dialogue, keep it as is, or use new `"Nuclear"` dialogue, all with new portrait expressions to match! You can see your actual points total during evaluations, customize the scoring system used, re-evaluate even after earning 4 candles, reschedule grandpa's visit to happen earlier or later in the game, and earn new rewards for achieving a 1, 2, or 3 candle result.
+Angry Grandpa mod gives a huge overhaul to the evaluation system! Restore the **Original** dialogue, keep it **Vanilla**, or use new **Nuclear** dialogue, all with new portrait expressions to match! You can see your actual points total during evaluations, customize the scoring system used, re-evaluate even after earning 4 candles, reschedule grandpa's visit to happen earlier or later in the game, and earn new rewards for achieving a 1, 2, or 3 candle result.
 
 **Can be used on existing late-game saves:** Angry Grandpa comes with a `reset_evaluation` console command. You can use this command to redo all evaluations on an existing save and experience everything new from scratch.
 
@@ -30,6 +31,34 @@ Choose from the `"Original"` (pre-SDV v1.05) game dialogue, `"Vanilla"` normal g
 Grandpa gets a lot more personality with new, expressive portraits edited by [TayLindsey](https://www.nexusmods.com/users/84157593)! A total of **eleven** new facial expressions are used to give flavor and variety to all dialogues. (Some portraits are only used in certain dialogue variants. If you want to experience them all, choose `"Nuclear"` dialogue with a higher difficulty setting.)
 
 ![New expressive portrait samples: Angry, Shocked, Stern, Pleased](promo/grandpa_expressions_four_big.png "and many more...")
+
+### Portrait Art Styles
+Thanks to the work of several artists, grandpa's new set of expressive portraits is available in multiple art styles!
+
+<details>
+  <summary><i>Click to expand and view art styles!</i></summary>
+<br/>
+
+**Option 1: Vanilla**  
+*edits by TayLindsey*  
+![Vanilla-style portraits](promo/art_style_Vanilla_demo.png "Vanilla")  
+These grandpa portraits match the base game art style. They are available as a config option in Angry Grandpa. To use them even when other portrait mods are installed, choose `"PortraitStyle": "Vanilla"` in the config settings.
+
+---
+**Option 2: Poltergeister**  
+*edits by ThoimRamsas*  
+![Poltergeister-style portraits](promo/art_style_Poltergeister_demo.png "Poltergeister")  
+These grandpa portraits match Poltergeister's art style from [Seasonal Cute Characters](https://www.nexusmods.com/stardewvalley/mods/5450) and [Slightly Edited Portraits](https://www.nexusmods.com/stardewvalley/mods/4824). Angry Grandpa will use them automatically if either mod is installed. To use this style even without one of Poltergeister's mods, choose `"PortraitStyle": "Poltergeister"` in the config settings.
+
+---
+**Option 3: Gigi Hi-Res**  
+*edits by Fuzzlepuzzle*  
+![Gigi-style hi-res portraits](promo/art_style_Gigi_Hi-Res.png "Gigi Hi-Res")  
+**Requires Portraiture mod.** These grandpa portraits match the art style from [Gigi's Hi-Res Portraits](https://www.nexusmods.com/stardewvalley/mods/3759) by laixei. Because these are high-res they are NOT available in config settings. To use these portraits, download the [optional file](https://www.nexusmods.com/stardewvalley/mods/6324?tab=files) and place the `Grandpa.png` image inside a Portraiture folder pack. [If you need Portraiture, you can get it here.](https://www.nexusmods.com/stardewvalley/mods/999)
+
+---
+
+</details>
 
 ### Scoring System Overhaul
 Choose your difficulty setting with different point thresholds. Relive the earliest versions of Stardew Valley with only 13 possible grandpa points available to earn... or use the new evaluation system with all 21 available points, but harder thresholds for earning a 4-candle result. This setting defaults to `"Vanilla"`, so you'll need to change it if you want more of a challenge!
@@ -113,8 +142,8 @@ With bonus rewards enabled, grandpa's shrine will give you new, useful gifts for
   - 1+ candles - ancient seed artifact
   - 2+ candles - dinosaur egg
   - 3+ candles - prismatic shard
-</details>
-
+</details><br/>
+  
 If you earn 4 candles in your first evaluation, you will be given all three bonus rewards plus the usual vanilla reward for 4 candles. If you install this mod after already earning 4 candles, re-doing the evaluation will give you the bonus rewards. Bonus rewards can be disabled in the config.
 
 ### Farmhand Rewards
@@ -123,7 +152,7 @@ In vanilla multiplayer games, scoring is done individually, but only one Statue 
 If you install this mod on an existing save, it will assume that any existing Statue of Perfection in the game world belongs to the host. The host player will **not** be able to receive extra statues by using the `reset_evaluation` command.
 
 ### Translation Support
-No translations are available yet, but the mod is designed with full language support! If you would like to help translate this mod, you can [contribute here](https://github.com/StardewModders/mod-translations/issues/31). Submitted translations will be included in future mod updates.
+This mod already includes full translations for French, Italian, Portuguese, and (coming soon) Russian and Spanish! If you would like to help translate this mod, you can [contribute here](https://github.com/StardewModders/mod-translations/issues/31). Submitted translations will be included in future mod updates.
 
 
 ## User Information
@@ -134,7 +163,7 @@ No translations are available yet, but the mod is designed with full language su
 
 ### INSTALLATION
 - [Install the latest version of SMAPI.](https://smapi.io/)
-- Download this mod from [Nexus](https://www.nexusmods.com/stardewvalley/mods/6324) or the [GitHub Release](https://github.com/Jonqora/StardewMods/releases) list.
+- Download this mod from [Nexus](https://www.nexusmods.com/stardewvalley/mods/6324) or the [GitHub Releases](https://github.com/Jonqora/StardewMods/releases) list.
 - Unzip the mod and place the `AngryGrandpa` folder inside your `Mods` folder.
 - Run the game using SMAPI.
 
@@ -174,6 +203,7 @@ These are not the mod's default settings, but I think they give the most interes
         "GrandpaDialogue": "Nuclear",
         "GenderNeutrality": false,
         "ExpressivePortraits": true,
+        "PortraitStyle": "Poltergeister",
         "ScoringSystem": "Hard",
         "YearsBeforeEvaluation": 1,
         "ShowPointsTotal": true,
@@ -181,15 +211,20 @@ These are not the mod's default settings, but I think they give the most interes
         "StatuesForFarmhands": true
     }
 </details>
-    
+
 - **GrandpaDialogue:** Choose the dialogue used during evaluation and re-evaluation events. Default is `"Original"`.
-  - `"Original"` - Harsher dialogue found in early versions of the game
-  - `"Vanilla"` - Normal dialogue used in the game ever since version 1.05 was released
+  - `"Original"` - Harsher dialogue found in early versions of the game.
+  - `"Vanilla"` - Normal dialogue used in the game ever since version 1.05 was released.
   - `"Nuclear"` - Grandpa is *very* enthusiastic about his opinions, good or bad. **Warning: profanity!**
 
 - **GenderNeutrality:** Removes all references to player gender in grandpa's dialogue. Defaults to `true` if  [Gender Neutrality mod](https://www.nexusmods.com/stardewvalley/mods/722) is installed. Otherwise defaults to `false`.
 
 - **ExpressivePortraits:** Gives grandpa a variety of new facial expressions to use in all evaluation dialogue. Defaults to `true`.
+
+- **PortraitStyle:** Choose the art style used for grandpa's expressive portraits. Defaults to `"auto"`.
+  - `"auto"` - Checks for compatible portrait mods and uses a matching style if available.
+  - `"Vanilla"` - Grandpa matches the vanilla art style even if other portrait mods are installed.
+  - `"Poltergeister"` - Matches Poltergeister's art style (e.g. [Seasonal Cute Characters](https://www.nexusmods.com/stardewvalley/mods/5450)) no matter what portrait mods are installed.
 
 - **ScoringSystem:** Choose how points are scored and how many points are required to earn 4 candles. Default is `"Vanilla"`.
   - `"Original"` - Original (pre-SDV v1.05) game evaluation: 13 possible points, you need 12 to earn 4 candles.
@@ -209,10 +244,12 @@ These are not the mod's default settings, but I think they give the most interes
 ## Notes
 ### ACKNOWLEDGEMENTS
 * Immense kudos go to [TayLindsey](https://www.nexusmods.com/users/84157593) whose pixel art brings great new variety to grandpa's portraits!
+* Alternate portrait styles were made possible by [ThoimRamsas](https://www.nexusmods.com/stardewvalley/users/94409623)/[Poltergeister](https://www.nexusmods.com/stardewvalley/users/2679113) and [Fuzzlepuzzle](https://www.nexusmods.com/stardewvalley/users/40356210)/[laixei](https://www.nexusmods.com/stardewvalley/users/48103348).
 * Much gratitude to ConcernedApe and [Pathoschild](https://www.nexusmods.com/stardewvalley/users/1552317?tab=user+files)!
 * Thanks to those who provided help and support in the [Stardew Valley Discord](https://discordapp.com/invite/StardewValley) #making-mods channel.
+* Many thanks to [Nathan2076](https://www.nexusmods.com/users/80828368) and [AndyAllanPoe](https://github.com/AndyAllanPoe) for doing translations!
 
 ### SEE ALSO
 * Help [translate](https://github.com/StardewModders/mod-translations/issues/31) this mod to other languages
-* Source code on [GitHub](https://github.com/Jonqora/StardewMods/tree/master/AngryGrandpa]GitHub)
+* Source code on [GitHub](https://github.com/Jonqora/StardewMods/tree/master/AngryGrandpa)
 * Check out [my other mods](https://www.nexusmods.com/users/88107803?tab=user+files)!

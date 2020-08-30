@@ -12,5 +12,6 @@
     "RegenRateInSeconds": 1,
     "SecondsUntilRegenWhenUsedStamina": 3,
     "DontCheckConditions": false
-  }
+  },
+  "IgnorePause": false
 }

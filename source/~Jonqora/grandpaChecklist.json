@@ -1,0 +1,69 @@
+﻿{
+// ========================================
+// TRANSLATION TEXT FOR GRANDPA'S CHECKLIST
+// ========================================
+
+    // These text entries are seen in a "checklist" note that appears on grandpa's shrine after each evaluation.
+    // The note contains comments on each method of earning grandpa points, depending on the player's progress in that area.
+    // One entry from each group will be used. Each entry contains two strings separated by a | in the middle. (One string is sometimes blank.)
+    // Any text before the | in the chosen entry will be included in the "accomplishments" list, if enabled.
+    // Any text after the | in the chosen entry will be included in the "improvements" list, if enabled.
+
+    "Checklist.Money.null": "|The farmland has potential for great wealth, if you use it.",
+    "Checklist.Money.50k": "{{farmName}} farm has earned a little money so far.|Money is tight, but hard work now will pay off later.", // Only used in 21-point criteria
+    "Checklist.Money.100k": "{{farmName}} farm has begun to make a small profit.|Reinvesting the money you earn will help it grow.",
+    "Checklist.Money.200k": "{{farmName}} farm has generated quite a tidy sum.|Work to expand farm production for increased profits.",
+    "Checklist.Money.300k": "{{farmName}} farm is yielding a good deal of income.|The farm is doing well, but I know it can become even more profitable.",
+    "Checklist.Money.500k": "{{farmName}} farm is pulling in huge profits!|Keep doing what you've been doing, the farm is doing great!",
+    "Checklist.Money.1mil": "{{farmName}} farm has produced extraordinary wealth!|", // Worth 2 points in 21-point criteria
+
+    "Checklist.Skills.null": "|Skills don't improve without practice, you know.",
+    "Checklist.Skills.30levels": "You've learned a good deal about living off the land.|With practice, even your less-developed skills can be perfected.", // Only used in 21-point criteria
+    "Checklist.Skills.50levels": "You've become extremely proficient in all your skills!|",
+
+    "Checklist.SpouseHouse.null": "|Are you still living all alone in that tiny farmhouse?",
+    "Checklist.SpouseHouse.UpgradeNoSpouse": "Good choice on the farmhouse expansion. Robin has done good work there.|The farmhouse is large enough for two... have you ever thought about getting married?",
+    "Checklist.SpouseHouse.UpgradeMarried": "You seem happier ever since {{spouseName}} moved in. I'm glad.|Have... you thought about kids at all? You could expand the farmhouse to make room.",
+    "Checklist.SpouseHouse.NurseryNoSpouse": "The farmhouse looks great... but I think it's too large for one person.|What *are* you still doing all alone in that big house, anyway? I want grandbabies, you know!",
+    "Checklist.SpouseHouse.NurseryMarried": "You and {{spouseName}} have made a lovely home together. It warms my heart.|", // yay you get a point
+
+    "Checklist.Villagers.null": "|It wouldn't hurt to spend more time making friends around here.", 
+    "Checklist.Villagers.Five8hearts": "I'm glad to see you've made a few good friends in the village.|Work to expand your circle of friends in Pelican Town.", // Only used in 21-point criteria
+    "Checklist.Villagers.Ten8hearts": "You've become quite the socialite! I'm so glad to see you've settled in to the community.|", 
+
+    // All of these only used in 21-point criteria
+    "Checklist.Pet.null": "|What ever happened to my beloved farm {{dogOrCat}}... do you know?",
+    "Checklist.Pet.HasPet": "|{{petName}} is looking a little scrawny...", // How to determine cat or dog? Token? Or separate i18n strings?
+    "Checklist.Pet.LovedPet": "{{petName}} is looking very healthy and well-cared for!|",
+
+    // All of these only used in 21-point criteria
+    "Checklist.RustyKey.null": "|Have you explored the sewers beneath town yet? I'm sure one of the villagers has a key.",
+    "Checklist.RustyKey.Found": "I see you've gained a key to the sewers! Say hello to {{Krobus}} from me next time you're there.|",
+
+    // All of these only used in 21-point criteria
+    "Checklist.SkullKey.null": "|Venturing deep in the mines may help you gain access to new areas.",
+    "Checklist.SkullKey.Found": "Excellent work in the mines! That skull key reminds me of something I've seen in calico desert...|",
+
+    "Checklist.CC.null": "|The old Community Center in town looks completely run down! Such a shame.",
+    "Checklist.CC.Joja": "|What on earth has Joja done to the town community center??? I'm horrified.",
+    "Checklist.CC.Some": "I see you've been fixing up the old community center in your spare time! That's very thoughtful of you.|I hope you keep working on the community center, I love that place.", // need to implement own check for this
+    "Checklist.CC.DoneButNoCutscene": "You've done a good job with the community center! It looks better than I remember it.|You should visit the town soon. I'm sure the villagers will want to thank you for fixing the community center.", // Only used in 21-point criteria
+    "Checklist.CC.Completed": "I hear the local villagers have named you a hero for restoring the old community center!|",
+
+    "Checklist.Museum.null": "|Did you hear about the theft at the local museum? Maybe you could do something to help.",
+    "Checklist.Museum.Some": "Your artifact and mineral donations have really helped the local museum.|If you keep donating to the museum, the collection there will really become something special.",
+    "Checklist.Museum.Achievement": "You've singlehandedly restored the museum collection to its former glory! I'm impressed.",
+    
+    "Checklist.Fishing.null": "|Fishing can be a rewarding activity. You should ask {{Willy}} for tips on getting started.",
+    "Checklist.Fishing.Some": "You're on your way to becoming a great fisher.|Keep exploring the lakes, rivers, and oceans to see what fish you can catch.",
+    "Checklist.Fishing.Achievement": "Your fishing prowess is incredible! I think you've surpassed {{Willy}} himself.|",
+    
+    "Checklist.Shipping.null": "|That shipping box outside your house: you do know what it's for... don't you?",
+    "Checklist.Shipping.Some": "You've been keeping {{Lewis}} busy with shipments, I see!|Expand your farm shipments to other types of goods and produce.",
+    "Checklist.Shipping.Achievement": "Just look at all the produce and goods you've shipped! I've never seen some of these before.|",
+
+    // All of these only used in 13-point criteria
+    "Checklist.Stardrops.null": "|There are secrets in this valley... a rare type of mystical fruit... when you first taste it, you'll know.",
+    "Checklist.Stardrops.Some": "So you've found the mystical fruit called the Stardrop... you look healthier than before.|This valley is full of surprises. Keep an eye out in your adventures for more stardrops.", // need to implement own check for this
+    "Checklist.Stardrops.All": "You're looking stronger than ever these days! The valley has blessed you.|",
+}

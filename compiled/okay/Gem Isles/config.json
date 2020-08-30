@@ -1,0 +1,19 @@
+{
+  "EnableMod": true,
+  "MaxIsles": 5,
+  "TreesChance": 0.7,
+  "TreesPortion": 0.05,
+  "GrassChance": 0.6,
+  "GrassPortion": 0.2,
+  "MineralChance": 0.6,
+  "MineralPortion": 0.05,
+  "TreasureChance": 0.1,
+  "CoconutChance": 0.7,
+  "CoconutPortion": 0.005,
+  "FaunaChance": 0.7,
+  "FaunaPortion": 0.005,
+  "ArtifactChance": 0.7,
+  "ArtifactPortion": 0.005,
+  "MonsterChance": 0.2,
+  "MonsterPortion": 0.02
+}

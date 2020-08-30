@@ -1,28 +1,35 @@
-﻿using PurrplingCore.Bridges;
+﻿using QuestFramework.Framework.Bridges.APIs;
 using StardewModdingAPI;
 
 namespace QuestFramework.Framework.Bridges
 {
-    class Bridge
+    internal class Bridge
     {
-        public Bridge(IModRegistry mod)
+        private readonly bool debugMode;
+
+        public Bridge(IModRegistry modRegistry, bool debugMode)
         {
-            this.Mod = mod;
+            this.ModRegistry = modRegistry;
+            this.debugMode = debugMode;
         }
 
-        private IModRegistry Mod { get; }
+        private IModRegistry ModRegistry { get; }
         public IJsonAssetsApi JsonAssets { get; private set; }
+        public IConditionsChecker EPU { get; private set; }
 
         private TApi LoadApi<TApi>(string modUid) where TApi : class
         {
-            return this.Mod.IsLoaded(modUid) 
-                ? this.Mod.GetApi<TApi>(modUid) 
+            return this.ModRegistry.IsLoaded(modUid) 
+                ? this.ModRegistry.GetApi<TApi>(modUid) 
                 : default;
         }
 
         public void Init()
         {
-            this.JsonAssets = this.LoadApi<IJsonAssetsApi>("spacechase0.JsonAssets");
+            this.JsonAssets = this.LoadApi<IJsonAssetsApi>(ApiIdentifiers.JSON_ASSETS);
+            this.EPU = this.LoadApi<IConditionsChecker>(ApiIdentifiers.EPU);
+
+            this.EPU?.Initialize(this.debugMode, this.ModRegistry.ModID);
         }
     }
 }

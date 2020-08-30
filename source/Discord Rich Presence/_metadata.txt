@@ -5,9 +5,9 @@ mods:
    Discord Rich Presence
 
 latest commit:
-   commit b39dc38953b3a63cebbab662d9c90a1505b380e5
+   commit 2f64e7e1c249f2afe3dd5ff849dbad188efbbd25
    Author: Fayne Aldan <FayneAldan@gmail.com>
-   Date:   Mon Feb 17 05:53:04 2020 -0700
+   Date:   Mon Aug 17 03:27:04 2020 -0600
    
-       I suck at Markdown
+       Create LICENSE
    

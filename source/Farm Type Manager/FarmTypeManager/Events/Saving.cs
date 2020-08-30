@@ -24,7 +24,7 @@ namespace FarmTypeManager
         /// <summary>Saves and removes custom entities before a mid-day save event.</summary>
         private void BeforeMidDaySave()
         {
-            Monitor.Log($"Mid-day save event started. Saving and removing custom objects/data.", LogLevel.Trace);
+            Utility.Monitor.Log($"Mid-day save event started. Saving and removing custom objects/data.", LogLevel.Trace);
 
             Utility.MonsterTracker.Clear(); //clear any tracked monster data (note: this should happen *before* handling monster expiration/removal)
 
@@ -34,11 +34,11 @@ namespace FarmTypeManager
             {
                 if (data.Pack != null) //if this data is from a content pack
                 {
-                    Monitor.VerboseLog($"Processing save data for content pack: {data.Pack.Manifest.Name}");
+                    Utility.Monitor.VerboseLog($"Processing save data for content pack: {data.Pack.Manifest.Name}");
                 }
                 else //this data is from this mod's own folders
                 {
-                    Monitor.VerboseLog($"Processing save data for FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
+                    Utility.Monitor.VerboseLog($"Processing save data for FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
                 }
 
                 Utility.ProcessObjectExpiration(save: data.Save, endOfDay: false); //remove custom object classes, but do not process expiration settings

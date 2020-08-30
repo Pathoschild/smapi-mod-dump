@@ -1,6 +1,22 @@
 [← back to readme](README.md)
 
 # Release notes
+## 1.17.3
+Released 19 August 2020.
+
+* Fixed seed maker not recognizing crops added after the initial `Data/Crops` load.
+
+## 1.17.2
+Released 08 August 2020.
+
+* Fixed bushes harvested out of season in some cases.
+* Fixed berry bushes not applying forage level bonus.
+
+## 1.17.1
+Released 02 August 2020.
+
+* Fixed string sorting/comparison for some special characters.
+
 ## 1.17
 Released 02 May 2020.
 

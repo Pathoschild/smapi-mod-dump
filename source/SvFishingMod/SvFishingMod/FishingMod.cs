@@ -4,8 +4,8 @@ using StardewValley.Menus;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+using System.Diagnostics;
+using System.Threading;
 
 namespace SvFishingMod
 {
@@ -13,6 +13,7 @@ namespace SvFishingMod
     {
         private static int defaultMaxFishingBiteTime = -1;
         private static int defaultMinFishingBiteTime = -1;
+        public const string MultiplayerSettingsMessageType = "EnforcedSessionSettings";
 
         private CircularBuffer<int> _circularFishList { get; set; } = null;
         private SortedList<int, string> _fishList { get; set; } = null;
@@ -20,6 +21,8 @@ namespace SvFishingMod
         private bool EnableDebugOutput { get; set; } = false;
         private int FirstFishId { get; set; } = -1;
         private int LastFishId { get; set; } = -1;
+        private ISemanticVersion CurrentVersion { get; set; } = null;
+        private string CurrentModId { get; set; } = null;
 
         public override void Entry(IModHelper helper)
         {
@@ -28,8 +31,16 @@ namespace SvFishingMod
             Settings.ConfigFilePath = "svfishmod.json";
             Settings.LoadFromFile();
 
+            CurrentVersion = helper.ModRegistry.Get(helper.ModRegistry.ModID).Manifest.Version;
+            CurrentModId = helper.ModRegistry.ModID;
+
             helper.Events.Display.MenuChanged += Display_MenuChanged;
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
+            helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            helper.Events.Multiplayer.ModMessageReceived += Multiplayer_ModMessageReceived;
+            helper.Events.Multiplayer.PeerConnected += Multiplayer_PeerConnected;
+
             helper.ConsoleCommands.Add("sv_fishing_debug", "Enables or disables Debug mode on the SvFishingMod.\nUsage: sv_fishing_debug 0|1", HandleCommand);
             helper.ConsoleCommands.Add("sv_fishing_enabled", "Enables or disables SvFishingMod.\nUsage: sv_fishing_enabled 0|1", HandleCommand);
             helper.ConsoleCommands.Add("sv_fishing_autoreel", "Enables or disables the Auto reel functionality of the SvFishingMod.\nUsage: sv_fishing_autoreel 0|1.", HandleCommand);
@@ -43,6 +54,99 @@ namespace SvFishingMod
             defaultMinFishingBiteTime = minFishingBiteTime;
         }
 
+        private void Multiplayer_PeerConnected(object sender, StardewModdingAPI.Events.PeerConnectedEventArgs e)
+        {
+            if (!e.Peer.IsHost)
+            {
+                // Send Settings update package
+                if (e.Peer.HasSmapi)
+                {
+                    Monitor.Log(string.Format("Sending mod settings to newly connected peer with ID: {0}, GameVersion {1} and SMAPIVersion {2}.", e.Peer.PlayerID, e.Peer.GameVersion, e.Peer.ApiVersion));
+                    Helper.Multiplayer.SendMessage(Settings.Local, MultiplayerSettingsMessageType, new string[] { CurrentModId }, new long[] { e.Peer.PlayerID });
+                }
+                else
+                {
+                    Monitor.Log(string.Format("Connected peer {0} doesnt have SMAPI installed, hence the mod settings could not be synced.", e.Peer.PlayerID));
+                }
+            }
+        }
+
+        private void Multiplayer_ModMessageReceived(object sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
+        {
+            if (!string.Equals(e.FromModID, CurrentModId, StringComparison.OrdinalIgnoreCase))
+                return;
+
+            ISemanticVersion ver = Helper.Multiplayer.GetConnectedPlayer(e.FromPlayerID)?.GetMod(CurrentModId)?.Version ?? null;
+            bool compatible = ver?.IsNewerThan(CurrentVersion) ?? false;
+
+            if (!compatible)
+            {
+                Monitor.Log(string.Format("Cannot use this mod during this online session because the host is currently using a more recent version of the mod. Update this mod to enable it on this server. RemoteVer: {0}. LocalVer: {1}", ver?.ToString() ?? "Null", CurrentVersion));
+                Settings.Remote = Settings.DefaultDisabled;
+                return;
+            }
+
+            foreach (Farmer farmer in Game1.getAllFarmers())
+            {
+                if (farmer.UniqueMultiplayerID == e.FromPlayerID)
+                {
+                    if (farmer.IsMainPlayer)
+                    {
+                        // Message received from server
+                        if (string.Equals(e.Type, MultiplayerSettingsMessageType, StringComparison.OrdinalIgnoreCase))
+                        {
+                            try
+                            {
+                                Settings data = e.ReadAs<Settings>();
+
+                                if (data != null)
+                                {
+                                    Settings.Remote = data;
+                                    Monitor.Log(string.Format("Remote settings updated from server. FarmerId: {0}.", e.FromPlayerID));
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Monitor.Log(string.Format("Remote settings cannot be updated from server. FarmerId: {0}. Ex: {1}. Msg: {2}. InnerEx: {3}", e.FromPlayerID, ex.GetType().Name, ex.Message, ex.InnerException?.GetType().Name ?? "None"));
+                            }
+                        }
+                        else
+                        {
+                            Monitor.Log(string.Format("Unknown mod message received from server. FarmerId: {0}. Type: {1}.", e.FromPlayerID, e.Type));
+                        }
+                    }
+                    else
+                    {
+                        Monitor.Log(string.Format("Remote mod message received from a non-host farmer. FarmerId: {0}. Type: {1}.", e.FromPlayerID, e.Type));
+                    }
+
+                    return;
+                }
+            }
+
+            Monitor.Log(string.Format("Remote mod message received from an unknown farmer. PlayerId: {0}. Type: {1}", e.FromPlayerID, e.Type));
+        }
+
+        private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
+        {
+            Settings.Remote = null;
+            if (Game1.multiplayerMode == 0)
+            {
+                Settings.IsMultiplayerSession = false;
+                Settings.IsServer = true;
+            }
+            else
+            {
+                Settings.IsMultiplayerSession = true;
+                Settings.IsServer = Game1.multiplayerMode == Game1.multiplayerServer;
+            }
+        }
+
+        private void GameLoop_ReturnedToTitle(object sender, StardewModdingAPI.Events.ReturnedToTitleEventArgs e)
+        {
+            Settings.Remote = null;
+        }
+
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
             FishingRod rod = Game1.player.CurrentTool as FishingRod;
@@ -50,7 +154,7 @@ namespace SvFishingMod
             if (rod == null)
                 return;
 
-            if (Settings.Instance.RemoveBiteDelay)
+            if (Settings.Active.RemoveBiteDelay)
             {
                 minFishingBiteTime = -20000;
                 maxFishingBiteTime = 1;
@@ -73,32 +177,32 @@ namespace SvFishingMod
             BobberBar fishBarMenu = e.NewMenu as BobberBar;
             FishingRod fishTool = Game1.player.CurrentTool as FishingRod;
 
-            if (fishBarMenu == null || fishTool == null || Settings.Instance.DisableMod)
+            if (fishBarMenu == null || fishTool == null || Settings.Active.DisableMod)
                 return;
 
             _fishMenu = fishBarMenu;
 
             int attachmentValue = fishTool.attachments[0] == null ? -1 : fishTool.attachments[0].parentSheetIndex;
-            bool caughtDouble = Settings.Instance.AlwaysCatchDoubleFish || (bossFish && attachmentValue == 774 && Game1.random.NextDouble() < 0.25 + Game1.player.DailyLuck / 2.0);
+            bool caughtDouble = Settings.Active.AlwaysCatchDoubleFish || (bossFish && attachmentValue == 774 && Game1.random.NextDouble() < 0.25 + Game1.player.DailyLuck / 2.0);
 
-            if (Settings.Instance.OverrideFishType >= 0) whichFish = Settings.Instance.OverrideFishType;
-            if (Settings.Instance.OverrideFishQuality >= 0) fishQuality = Settings.Instance.OverrideFishQuality;
-            if (Settings.Instance.AlwaysPerfectCatch) perfect = true;
-            if (Settings.Instance.AlwaysCatchTreasure)
+            if (Settings.Active.OverrideFishType >= 0) whichFish = Settings.Active.OverrideFishType;
+            if (Settings.Active.OverrideFishQuality >= 0) fishQuality = Settings.Active.OverrideFishQuality;
+            if (Settings.Active.AlwaysPerfectCatch) perfect = true;
+            if (Settings.Active.AlwaysCatchTreasure)
             {
                 treasure = true;
                 treasureCaught = true;
             }
-            if (Settings.Instance.DistanceFromCatchingOverride >= 0) distanceFromCatching = Settings.Instance.DistanceFromCatchingOverride;
-            if (Settings.Instance.OverrideBarHeight >= 0) bobberBarHeight = Settings.Instance.OverrideBarHeight;
-            if (Settings.Instance.ReelFishCycling)
+            if (Settings.Active.DistanceFromCatchingOverride >= 0) distanceFromCatching = Settings.Active.DistanceFromCatchingOverride;
+            if (Settings.Active.OverrideBarHeight >= 0) bobberBarHeight = Settings.Active.OverrideBarHeight;
+            if (Settings.Active.ReelFishCycling)
             {
                 if (_circularFishList == null) LoadFishList();
                 whichFish = _circularFishList.ElementAt(0);
                 _circularFishList.Rotate(1);
             }
 
-            if (Settings.Instance.AutoReelFish)
+            if (Settings.Active.AutoReelFish)
             {
                 // Emulate BobberBar.update() when fadeOut = true
                 if (EnableDebugOutput) Monitor.Log(string.Format("Auto-reeling fish with id: {0}. : {1},", whichFish, GetFishNameFromId(whichFish)));
@@ -141,9 +245,9 @@ namespace SvFishingMod
                 if (args != null && args.Length > 0)
                 {
                     if (string.Equals(args[0].Trim(), "1", StringComparison.Ordinal))
-                        Settings.Instance.DisableMod = false;
+                        Settings.Local.DisableMod = false;
                     else if (string.Equals(args[0].Trim(), "0", StringComparison.Ordinal))
-                        Settings.Instance.DisableMod = true;
+                        Settings.Local.DisableMod = true;
                 }
                 return;
             }
@@ -153,9 +257,9 @@ namespace SvFishingMod
                 if (args != null && args.Length > 0)
                 {
                     if (string.Equals(args[0].Trim(), "1", StringComparison.Ordinal))
-                        Settings.Instance.AutoReelFish = true;
+                        Settings.Local.AutoReelFish = true;
                     else if (string.Equals(args[0].Trim(), "0", StringComparison.Ordinal))
-                        Settings.Instance.AutoReelFish = false;
+                        Settings.Local.AutoReelFish = false;
                 }
                 return;
             }
@@ -163,7 +267,7 @@ namespace SvFishingMod
             if (string.Equals(command, "sv_fishing_reload", StringComparison.OrdinalIgnoreCase))
             {
                 Game1.playSound("jingle1");
-                Settings.Instance = null;
+                Settings.Local = null;
                 Monitor.Log("Successfully reloaded SvFishingMod settings from disk.", LogLevel.Info);
                 return;
             }
@@ -193,7 +297,7 @@ namespace SvFishingMod
                 {
                     if (int.TryParse(args[0].Trim(), out int fishId))
                     {
-                        Settings.Instance.OverrideFishType = fishId;
+                        Settings.Local.OverrideFishType = fishId;
                         Monitor.Log(string.Format("Done. The next reeled fish will be {0}: {1}.", fishId, GetFishNameFromId(fishId)), LogLevel.Info);
                     }
                     else
@@ -207,9 +311,9 @@ namespace SvFishingMod
                 if (args != null && args.Length > 0)
                 {
                     if (string.Equals(args[0].Trim(), "1", StringComparison.Ordinal))
-                        Settings.Instance.ReelFishCycling = true;
+                        Settings.Local.ReelFishCycling = true;
                     else if (string.Equals(args[0].Trim(), "0", StringComparison.Ordinal))
-                        Settings.Instance.ReelFishCycling = false;
+                        Settings.Local.ReelFishCycling = false;
                 }
                 return;
             }
@@ -219,9 +323,9 @@ namespace SvFishingMod
                 if (args != null && args.Length > 0)
                 {
                     if (string.Equals(args[0].Trim(), "1", StringComparison.Ordinal))
-                        Settings.Instance.RemoveBiteDelay = false;
+                        Settings.Local.RemoveBiteDelay = false;
                     else if (string.Equals(args[0].Trim(), "0", StringComparison.Ordinal))
-                        Settings.Instance.RemoveBiteDelay = true;
+                        Settings.Local.RemoveBiteDelay = true;
                 }
                 return;
             }

@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/tophatsquid/sdv-configurable-junimo-kart.git
+
+mods:
+   Configurable Junimo Kart
+
+latest commit:
+   commit 7159566c2873c9209302652d06725d2182efa962
+   Author: tophatsquid <tophatsquidlol@gmail.com>
+   Date:   Sat Aug 29 11:27:27 2020 +0000
+   
+       ci: Fixes release description from including unnecessary branch name (it will always be 'release')
+   

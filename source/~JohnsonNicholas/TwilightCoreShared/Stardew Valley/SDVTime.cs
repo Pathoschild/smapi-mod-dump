@@ -1,5 +1,6 @@
 ﻿using StardewValley;
 using System;
+using System.Runtime.Remoting.Messaging;
 
 namespace TwilightShards.Stardew.Common
 {
@@ -247,24 +248,24 @@ namespace TwilightShards.Stardew.Common
         public static SDVTime operator -(SDVTime s1, SDVTime s2)
         {
             SDVTime ret = new SDVTime(s1);
-            s1.hour += s2.hour;
-            s1.minute += s2.minute;
+            ret.hour -= s2.hour;
+            ret.minute -= s2.minute;
 
-            while (s1.minute > (MINPERHR - 1))
+            while (ret.minute > (MINPERHR - 1))
             {
-                s1.hour++;
-                s1.minute -= MINPERHR;
+                ret.hour++;
+                ret.minute -= MINPERHR;
             }
 
-            while (s1.minute < 0)
+            while (ret.minute < 0)
             {
-                s1.hour--;
-                s1.minute += MINPERHR;
+                ret.hour--;
+                ret.minute += MINPERHR;
             }
 
-            if (s1.hour >= MAXHOUR)
+            if (ret.hour >= MAXHOUR)
             {
-                s1.hour -= MAXHOUR;
+                ret.hour -= MAXHOUR;
             }
             return ret;
         }
@@ -389,8 +390,12 @@ namespace TwilightShards.Stardew.Common
         {
             if (hour < 12)
                 return $"{hour.ToString().PadLeft(2, '0')}:{minute.ToString().PadLeft(2, '0')} am";
-            else if (hour >= 12 && hour < 24)
+            else if (hour == 12)
+                return $"{hour}:{minute.ToString().PadLeft(2, '0')} pm";
+            else if (hour > 12 && hour < 24)
                 return $"{(hour - 12).ToString().PadLeft(2, '0')}:{minute.ToString().PadLeft(2, '0')} pm";
+            else if (hour == 24)
+                return $"{hour}:{minute.ToString().PadLeft(2, '0')} am";
             else if (hour > 24)
                 return $"{(hour - 24).ToString().PadLeft(2, '0')}:{minute.ToString().PadLeft(2, '0')} am";
 

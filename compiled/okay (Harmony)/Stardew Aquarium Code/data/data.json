@@ -1,0 +1,15 @@
+﻿{
+    "LastDonatedFishCoordinateX": 31,
+    "LastDonatedFishCoordinateY": 10,
+    "ExteriorMapName": "ExteriorMuseum",
+    "ConversationTopicsOnDonate": [ "Legend", "Crimsonfish", "Angler", "Mutant Carp", "Glacierfish", "Pufferchick" ],
+    "DolphinChance": 0.0001,
+    "DolphinRange": {
+        "X": 74,
+        "Y": 0,
+        "Width": 10,
+        "Height": 40
+    },
+    "DolphinAnimationFrames": 18
+
+}

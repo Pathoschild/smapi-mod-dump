@@ -1,0 +1,13 @@
+url:
+   https://github.com/FlashShifter/StardewValleyExpanded.git
+
+mods:
+   Stardew Valley Expanded
+
+latest commit:
+   commit 593d27096970306df53a5f95d5bcd4f71541aeed
+   Author: FlashShifter <devinhedegaard@gmail.com>
+   Date:   Sat May 23 18:56:54 2020 -0700
+   
+       SVE 1.10.8
+   

@@ -1,0 +1,67 @@
+{
+    "Content": [
+//Pregnancy and baby talk (PregnancyTalk is configurable)
+{
+	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"patio_Jasper": "I feel blessed, @, to be living on this beautiful farm, with our child on the way.#$b#I feel... complete.$4",
+		"spouseRoom_Jasper": "Our child will be here soon, my love. Oh, but I am aflutter with nerves and excitement!$4",
+		"funReturn_Jasper": "I was mulling over names for our child on the walk home, @. How do you feel about %name?$1"
+						},
+	"When": {	"HavingChild":"@{{playerName}}"			}
+				},
+{	"LogName": "Dialogue", 	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"Indoor_Day_0": "I've been doing some research, and decided to make you this.[212]$3#$b#Wild salmon is packed with omega-3 to help our baby grow healthy and strong.$4",
+		"Indoor_Night_4": "Hello my love. You must be exhausted. Would you like a backrub?",
+		"Indoor_Day_2": "I rustled up a little something to help with your cravings. [342 194 195 197 233 215]$4#$b#I hope it helps.$3",
+		"spouseRoom_Jasper": "$c 0.7#I found this book on What to Expect... Don't worry, I'm taking lots of notes.$1$k#e#Our child will be here soon, my love. Oh, but I am aflutter with nerves and excitement!$4$k#$e#$c 0.3#Emily suggested I give you this? I am not much into crystal healing. But it can't hurt, can it?[62 66]"			},
+	"When": {	"Pregnant":"@{{playerName}}", "HasSeenEvent": "5599008", "PregnancyTalk":true			}				
+						},
+{	"LogName": "Player 'Killed'", 	"Action": "EditData",
+	"Target": "Data/Events/Hospital",
+	"Entries": {"PlayerKilled": "none/-100 -100/farmer 20 12 2 Harvey 21 12 3 Jasper 22 8 2/pause 1500/showFrame 5/message \" ...{0}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/speak Harvey \"Hello @, I'm pleased you're awake.#$b#I'm not sure you remember, but you were found unconscious and battered...\"/speed Jasper 5/move Jasper 0 3 2/textAboveHead Jasper \"My love!\"/move Jasper -1 0 2/faceDirection farmer 1/move Harvey 1 0 3/move Jasper 0 1 3/speak Jasper \"I came as fast as I could. Oh I was so worried.$2\"/emote farmer 60/pause 500/speak Jasper \"Are you... are you going to be okay?$2\"/emote Jasper 40/pause 1500/emote farmer 28/pause 500/pause 500/speak Harvey \"You'll be fine, @, but be a little more careful next time, okay?$s\"/pause 500/speak Harvey \"I'll leave you two to it.\"/pause 500/move Harvey 0 -4 0/move Harvey -8 0 0 true/pause 500/faceDirection Jasper 3/speak Jasper \"Oh, you scared me, @. The thought of losing you...$2#$b#I shall never tell you what to do, @. But please... try not to take unnecessary risks.$2\"/faceDirection farmer 2/pause 1000/emote farmer 28/hospitaldeath/end"				},
+				"When": {	"Spouse":"Jasper"	}				},
+{	"LogName": "Player 'Killed' while Pregant", 	"Action": "EditData",
+	"Target": "Data/Events/Hospital",
+	"Entries": {	
+			"PlayerKilled": "none/-100 -100/farmer 20 12 2 Harvey 21 12 3 Jasper 22 8 2/pause 1500/showFrame 5/message \" ...{0}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/speak Harvey \"Hello @, I'm pleased you're awake.#$b#I'm not sure you remember, but you were found unconscious and battered...\"/speed Jasper 5/move Jasper 0 3 2/textAboveHead Jasper \"My love!\"/move Jasper -1 0 2/faceDirection farmer 1/move Harvey 1 0 3/move Jasper 0 1 3/speak Jasper \"I came as fast as I could. Oh I was so worried.$2\"/emote farmer 60/pause 500/speak Jasper \"Are you... are you going to be okay?$2#$b#Is our baby...?$2\"/emote Jasper 40/pause 1500/faceDirection Jasper 1/emote farmer 28/pause 500/pause 500/speak Harvey \"Your baby's fine, @. As will you be. This time. But be a little more careful next time, okay?$s\"/pause 500/speak Harvey \"I'll leave you two to it.\"/pause 500/move Harvey 0 -4 0/move Harvey -8 0 0 true/pause 500/move Jasper 0 1 3/speak Jasper \"Oh, you scared me, @. The thought of losing you... Both of you...$2#$b#I shall never tell you what to do, @. But please... try not to take unnecessary risks.$2\"/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end"
+				},
+				"When": {	"Pregnant":"@{{playerName}}", "PregnancyTalk":true, "Spouse":"Jasper", "HasSeenEvent": "5599008"			}
+            },
+            {	"LogName": "Setting event Player pregnant", "Action": "EditData",
+                "Target": "Data/Events/Farmhouse",
+                "Entries": {	"5599007/O Jasper/x Gunther_Letter true":"null"		},	
+                        "When": {	"Pregnant":"@{{playerName}}", "PregnancyTalk":true			}							
+                                },
+            {	"LogName": "Setting event Player pregnant", "Action": "EditData",
+                "Target": "Data/Events/Farmhouse",
+                "Entries": {	"5599008/O Jasper/x Gunther_Letter2 true":"null"		},			
+                        "When": {	"HavingChild": "Jasper", "Pregnant |contains=@{{playerName}}":"false"	}			
+                                },
+            {	"LogName": "Setting event Player pregnant", "Action": "EditData",
+                "Target": "Data/Events/Farmhouse",
+                "Entries": {	"5599008/O Jasper/x Gunther_Letter2 true":"null"		},			
+                        "When": {"Pregnant":"@{{playerName}}", "HavingChild": "Jasper", "PregnancyTalk":false}	
+                                },
+            {	"LogName": "Player pregnant", "Action": "EditData",
+                "Target": "Data/Events/Farmhouse",
+                "Entries": {
+                        "5599008/e 5599007/O Jasper/t 600 700/L": "none/20 16/farmer 12 14 3 Jasper 7 14 1 Harvey -100 -100 2/addConversationTopic FarmerPregnantJasper 14/skippable/pause 500/move farmer -3 0 3/speak Jasper \"Good morning, my love. I made you breakfast.\"/addObject 7 12 201 1/pause 1500/animate farmer false true 350 104 105/pause 500/jump Jasper 5/removeSprite 7 12/pause 500/textAboveHead Jasper \"My love\"/pause 500/move Jasper 1 0 1/pause 500/stopAnimation farmer/showFrame 5/speak Jasper \"Are you ill? Perhaps we had better get you to the Doctor.$2\"/fade/viewport -1000 -1000/warp Jasper 5 7/warp Harvey 5 5/warp farmer 4 5/faceDirection farmer 1/faceDirection Jasper 0/faceDirection Harvey 3/changeLocation Hospital/viewport 8 10 true/animate Harvey true true 1000 21/pause 500/emote Jasper 28/pause 500/stopAnimation Harvey 12/pause 500/emote farmer 8/pause 500/pause 500/speak Harvey \"Well, @, the good news is, you're not ill.\"/pause 500/emote farmer 40/pause 1500/speak Harvey \"You're pregnant!#$b#Congratulations.$1\"/pause 500/textAboveHead Jasper \"Pregnant?\"/pause 1500/jump Jasper 5/emote farmer 16/pause 500/move Jasper 0 -1 3 true/move farmer 0 1 1 true/pause 1500/animate Jasper true false 4500 28/animate farmer false false 4500 101/positionOffset farmer 10 0/positionOffset Jasper -10 0/emote farmer 20/faceDirection Harvey 2/pause 1500/emote Harvey 32/pause 1000/fade/end dialogue Jasper \"I'm going to be a father... me... a father...$1#$b#Oh, I love you so much, @!$4\"",
+                        "5599010/e 5599008/O Jasper/A FarmerPregnantJasper/x Jasper_BabyArrives true": "null",
+                        "5599009/e 5599010/O Jasper/A Jasper_BabySleep/t 0600 0900/L":	"kindadumbautumn/11 11/farmer 12 11 0 Jasper 17 6 0/addConversationTopic Jasper_BabyCrib 14/skippable/addTemporaryActor Baby 22 32 16 4 0 false/positionOffset Baby 0 -12/animate Baby false true 480 8 9 10 11 8 8 8 8/pause 500/speak Jasper \"...so the warrior bid the goblin princess farewell...\"/pause 500/move farmer 0 -5 1 true/speak Jasper \"... for although he enjoyed their lively debates, and admired her sharp wit, he could not bear the thought of never seeing the sun again....\"/pause 500/move farmer 3 0 1/stopAnimation Baby 11/pause 500/emote farmer 32/pause 500/showFrame Baby 4/animate Baby false false 480 4 5 6 7 4 4 4/textAboveHead Baby \"Ga?\"/faceDirection Jasper 3/pause 500/speak Jasper \"Good morning my love, I hope we didn't disturb you. Little Pumpkin is quite the early bird!$4\"/pause 500/textAboveHead Baby \"Goo!\"/faceDirection farmer 0/speak Jasper \"Our little munchkin really seems to appreciate my stories!$3#$b#Would you like to join us for the end, @?$4\"/pause 500/pause 500/emote farmer 20/pause 500/textAboveHead Jasper \"Very well\"/faceDirection Jasper 0/pause 500/speak Jasper \"...so he stole away, into the bright light of the day, whilst the goblins slept off their celebrations.$1\"/pause 1000/warp -100 -100 true/end",
+                        "5599010/e 5599009/A Jasper_BabyCrib/O Jasper/x Jasper_BabyCrawling true": "null",
+                        "5599011/e 5599010/A Jasper_BabyCrawler/O Jasper/x Jasper_Toddler true": "null"
+                                     }
+                            },
+
+                            
+
+
+
+
+            ]
+        }

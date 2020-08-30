@@ -235,7 +235,8 @@ namespace StardewValley.Monsters
 					this.attackState.Set(1);
 					this.nextFireTime = 500;
 					this.totalFireTime = 3000;
-					base.currentLocation.playSound("croak", NetAudio.SoundContext.Default);
+					if (ModEntry.Config.DinoSoundEffects)
+						base.currentLocation.playSound("croak", NetAudio.SoundContext.Default);
 					return;
 				}
 			}
@@ -260,26 +261,27 @@ namespace StardewValley.Monsters
 							base.currentLocation.playSound("furnace", NetAudio.SoundContext.Default);
 						}
 						float fire_angle = 0f;
-						Vector2 shot_origin = new Vector2((float)this.GetBoundingBox().Center.X - 32f, (float)this.GetBoundingBox().Center.Y - 32f);
+						Vector2 shot_origin = new Vector2((float)this.GetBoundingBox().Center.X - 32f * scale, (float)this.GetBoundingBox().Center.Y - 32f * scale);
 						switch (this.facingDirection.Value)
 						{
 							case 0:
 								this.yVelocity = -1f;
-								shot_origin.Y -= 64f;
+								shot_origin.Y -= 74f * scale;
 								fire_angle = 90f;
 								break;
 							case 1:
 								this.xVelocity = -1f;
-								shot_origin.X += 64f;
+								shot_origin.X += 74f * scale;
 								fire_angle = 0f;
 								break;
 							case 2:
 								this.yVelocity = 1f;
 								fire_angle = 270f;
+								shot_origin.Y += 74 * scale;
 								break;
 							case 3:
 								this.xVelocity = 1f;
-								shot_origin.X -= 64f;
+								shot_origin.X -= 74f * scale;
 								fire_angle = 180f;
 								break;
 						}
@@ -306,12 +308,12 @@ namespace StardewValley.Monsters
 
         private int GetFireDistance()
         {
-			return (int)Math.Sqrt(exp);
+			return (int)(Math.Sqrt(exp) * ModEntry.Config.DinoFireDistanceMult);
 		}
 
 		private int GetDamage()
         {
-			return (int)Math.Sqrt(exp);
+			return (int)(Math.Sqrt(exp) * ModEntry.Config.DinoDamageMult);
         }
 
         private void AddExp(int v)

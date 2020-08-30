@@ -1,4 +1,5 @@
-﻿using ShopTileFramework.Shop;
+﻿using ShopTileFramework.API;
+using ShopTileFramework.Shop;
 using StardewModdingAPI;
 
 namespace ShopTileFramework.Utility
@@ -19,6 +20,7 @@ namespace ShopTileFramework.Utility
                 "Usage: open_shop <ShopName>\n" +
                 "-ShopName: the name of the shop to open",
                 DisplayShopMenu);
+
             helper.ConsoleCommands.Add("open_animal_shop",
                 "Opens up a custom animal shop's menu. \n\n" +
                 "Usage: open_shop <open_animal_shop>\n" +
@@ -29,9 +31,22 @@ namespace ShopTileFramework.Utility
                 "Usage: reset_shop <ShopName>\n" +
                 "-ShopName: the name of the shop to reset",
                 ResetShopStock);
+
             helper.ConsoleCommands.Add("list_shops",
                 "Lists all shops registered with Shop Tile Framework",
                 ListAllShops);
+
+            helper.ConsoleCommands.Add("STFConditions",
+                "Will parse a single line of conditions and tell you if it is currently true or false\n\n" +
+                "Usage: STFConditions <ConditionsString>\n" +
+                "ConditionsString: A conditions string as would be written in the \"When\" field of the shops.json",
+                ConditionCheck);
+        }
+
+        private void ConditionCheck(string arg1, string[] arg2)
+        {
+            string[] condition = { string.Join(" ",arg2)};
+            ModEntry.monitor.Log($"Expression resolved as: {APIs.Conditions.CheckConditions(condition)}",LogLevel.Info);
         }
 
         /// <summary>

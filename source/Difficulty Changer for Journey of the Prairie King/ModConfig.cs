@@ -30,15 +30,15 @@ namespace StardewValleyEasyPrairieKing
 {
     public class ModConfig
     {
-        public bool always_invincible_ { get; set; } = false;
-        public int lives_ { get; set; } = 98;
-        public int coins_ { get; set; } = 100;
-        public int ammo_level_ { get; set; } = 0;
-        public int bullet_damage_ { get; set; } = 0;
-        public int fire_speed_level_ { get; set; } = 5;
-        public int run_speed_level_ { get; set; } = 2;
-        public bool spread_pistol_ { get; set; } = false;
-        public int waveTimer { get; set; } = 60;
 
+        public bool alwaysInvincible{ get; set; } = false;
+        public int lives { get; set; } = 98;
+        public int coins { get; set; } = 100;
+        public int ammoLevel { get; set; } = 0;
+        public int bulletDamage { get; set; } = 0;
+        public int fireSpeedLevel { get; set; } = 5;
+        public int runSpeedLevel { get; set; } = 2;
+        public bool useShotgun { get; set; } = false;
+        public int waveTimer { get; set; } = 60;
     }
 }

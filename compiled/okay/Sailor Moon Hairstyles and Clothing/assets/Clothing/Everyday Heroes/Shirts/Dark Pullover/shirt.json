@@ -3,5 +3,11 @@
     "Description": "It's a heavy shirt not well suited for outdoors work.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Jersey Oscuro"
+    },
+    "DescriptionLocalization": {
+        "es": "Es una camisa gruesa que no es adecuada para el trabajo al aire libre."
+    }
 }

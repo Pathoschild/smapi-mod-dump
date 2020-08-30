@@ -37,6 +37,10 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="manifest.json" />
+    <None Include="i18n\default.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="i18n\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

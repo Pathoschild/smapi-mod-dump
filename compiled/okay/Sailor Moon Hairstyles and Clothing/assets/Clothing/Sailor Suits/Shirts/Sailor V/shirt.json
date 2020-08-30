@@ -3,5 +3,11 @@
     "Description": "The classic outfit of the champion of justice.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Sailor V"
+    },
+    "DescriptionLocalization": {
+        "es": "El atuendo clásico de la campeona de la justicia."
+    }
 }

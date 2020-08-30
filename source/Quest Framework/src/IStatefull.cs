@@ -1,4 +1,4 @@
-﻿using StardewModdingAPI;
+﻿using System;
 
 namespace QuestFramework
 {
@@ -10,6 +10,7 @@ namespace QuestFramework
         /// <summary>
         /// Reset object state
         /// </summary>
+        [Obsolete("Deprecated. Use method CustomQuest.Reset instead")]
         void ResetState();
 
         /// <summary>

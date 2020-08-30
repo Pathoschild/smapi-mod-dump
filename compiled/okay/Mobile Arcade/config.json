@@ -1,0 +1,8 @@
+{
+  "EnableMod": true,
+  "BackgroundColor": "41, 57, 106, 255",
+  "PostBackgroundColor": "255, 255, 255, 255",
+  "PostMarginX": 16,
+  "PostMarginY": 16,
+  "PostHeight": 128
+}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,36 +14,70 @@ namespace JoJa84Plus
 {
 	public class ModConfig
 	{
-		public string HotKey { get; set; }
+		public SButton HotKey { get; set; }
+		public bool EnableHotKey { get; set; }
+		public bool EnableMobileApp { get; set; }
+		public Color AppBackgroundColor { get; set; }
+		public Color InputColor { get; set; }
+		public Color PrevInputColor { get; set; }
+		public int AppMarginX { get; set; }
+		public int AppMarginY { get; set; }
+
 		public ModConfig()
 		{
-			this.HotKey = "F9";
+			HotKey = SButton.F9;
+			EnableHotKey = true;
+			EnableMobileApp = true;
+			AppBackgroundColor = new Color(255, 200, 120);
+			InputColor = Color.Black;
+			PrevInputColor = new Color(100, 100, 100);
+			AppMarginX = 5;
+			AppMarginY = 5;
 		}
 	}
 
 	public class ModEntry: Mod
 	{
-		private Texture2D jojaLogo;
+		public static Texture2D jojaLogo;
+		public static Texture2D jojaAppLogo;
 		private bool CalcOpen = false;
 		private ModConfig Config;
 		private JoJa84PlusMenu menu;
+		public static IMobilePhoneApi api;
 
 		public override void Entry(IModHelper helper)
 		{
 			// Load config.
-			this.Config = this.Helper.ReadConfig<ModConfig>();
+			Config = Helper.ReadConfig<ModConfig>();
 
 			// Add event listeners.
-			helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-			helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+			helper.Events.Input.ButtonPressed += OnButtonPressed;
+			helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+			Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
 			// Load the JoJa 84+ logo
-			this.jojaLogo = helper.Content.Load<Texture2D>("assets/joja84plus.png");
+			jojaLogo = helper.Content.Load<Texture2D>("assets/joja84plus.png");
+			jojaAppLogo = helper.Content.Load<Texture2D>("assets/app_icon.png");
 		}
-
+		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+		{
+			if (Config.EnableMobileApp)
+			{
+				api = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
+				if (api != null)
+				{
+					Texture2D appIcon;
+					bool success;
+					appIcon = Helper.Content.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
+					success = api.AddApp(Helper.ModRegistry.ModID, Helper.Translation.Get("app-name"), OpenApp, appIcon);
+					Monitor.Log($"loaded app successfully: {success}", LogLevel.Debug);
+					JoJa84PlusApp.Initialize(Helper, Monitor, Config, api);
+				}
+			}
+		}
 		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
 		{
-			this.menu = new JoJa84PlusMenu(this.jojaLogo);
+			menu = new JoJa84PlusMenu(jojaLogo);
 		}
 
 		private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -51,13 +86,13 @@ namespace JoJa84Plus
 			if (!Context.IsWorldReady)
 				return;
 
-			// If the player presses F5, then open/close the calculator.
-			if (e.Button == (SButton)Enum.Parse(typeof(SButton), this.Config.HotKey))
+			// If the player presses F9, then open/close the calculator.
+			if (e.Button == Config.HotKey && Config.EnableHotKey)
 			{
-				this.CalcOpen = !this.CalcOpen;
-				if (this.CalcOpen)
+				CalcOpen = !CalcOpen;
+				if (CalcOpen)
 				{
-					Game1.activeClickableMenu = this.menu;
+					Game1.activeClickableMenu = menu;
 					Game1.playSound("bigSelect");
 				}
 				else 
@@ -66,10 +101,15 @@ namespace JoJa84Plus
 					Game1.playSound("bigDeSelect");
 				}
 			}
-			else if (e.Button == SButton.Escape && this.CalcOpen) 
+			else if (e.Button == SButton.Escape && CalcOpen) 
 			{
-				this.CalcOpen = false;
+				CalcOpen = false;
 			}
+		}
+		void OpenApp()
+		{
+			Monitor.Log("Opening App");
+			JoJa84PlusApp.Start();
 		}
 	}
 
@@ -106,34 +146,34 @@ namespace JoJa84Plus
 				showUpperRightCloseButton: false
 			)
 		{
-			this.xPositionOnScreen = Game1.viewport.Width / 2 - 256 / 2;
-			this.yPositionOnScreen = Game1.viewport.Height / 2 - 256;
-			this.widthOnScreen = 256 + IClickableMenu.borderWidth * 2;
-			this.heightOnScreen = 512 + IClickableMenu.borderWidth * 2;
+			xPositionOnScreen = Game1.viewport.Width / 2 - 256 / 2;
+			yPositionOnScreen = Game1.viewport.Height / 2 - 256;
+			widthOnScreen = 256 + IClickableMenu.borderWidth * 2;
+			heightOnScreen = 512 + IClickableMenu.borderWidth * 2;
 			
-			this.jojaLogo = logo;
+			jojaLogo = logo;
 
 			// Create the number-pad.
 			for (int iy = 0; iy < 3; iy++)
 			{
 				for (int ix = 0; ix < 3; ix++)
 				{
-					int buttonWidth = ((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) - 2;
-					this.numpad.Add
+					int buttonWidth = ((widthOnScreen - IClickableMenu.borderWidth * 2) / 4) - 2;
+					numpad.Add
 					(
 						new ClickableComponent
 						(
 							new Rectangle
 							(
-								this.xPositionOnScreen
+								xPositionOnScreen
 									+ 40
 									+ buttonWidth * ix,
-								this.yPositionOnScreen
+								yPositionOnScreen
 									+ IClickableMenu.borderWidth
 									+ IClickableMenu.spaceToClearTopBorder
 									+ buttonWidth * iy
 									+ (Game1.smallFont.LineSpacing * 4)
-									+ (((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 16,
+									+ (((widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 16,
 								buttonWidth - 2,
 								buttonWidth - 2
 							),
@@ -146,18 +186,18 @@ namespace JoJa84Plus
 			// Create the op buttons.
 			for (int i = 0; i < 6; i++)
 			{
-				int xOffset = ((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3;
-				this.opButtons.Add
+				int xOffset = ((widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3;
+				opButtons.Add
 				(
 					new ClickableComponent
 					(
 						new Rectangle
 						(
-							this.xPositionOnScreen
+							xPositionOnScreen
 								+ 40
 								+ xOffset
 								+ xOffset / 16,
-							this.yPositionOnScreen
+							yPositionOnScreen
 								+ IClickableMenu.borderWidth
 								+ IClickableMenu.spaceToClearTopBorder
 								+ ((xOffset) / 4) * i
@@ -180,17 +220,17 @@ namespace JoJa84Plus
 			}
 
 			// Create the clear button.
-			this.clearButton = new ClickableComponent
+			clearButton = new ClickableComponent
 			(
 				new Rectangle
 				(
-					this.xPositionOnScreen
+					xPositionOnScreen
 						+ 40,
-					this.yPositionOnScreen
+					yPositionOnScreen
 						+ IClickableMenu.borderWidth
 						+ IClickableMenu.spaceToClearTopBorder
 						+ (Game1.smallFont.LineSpacing * 2),
-					(this.widthOnScreen - IClickableMenu.borderWidth * 2) / 2 - 1,
+					(widthOnScreen - IClickableMenu.borderWidth * 2) / 2 - 1,
 					Game1.smallFont.LineSpacing * 2
 				),
 				"clear",
@@ -198,18 +238,18 @@ namespace JoJa84Plus
 			);
 
 			// Create the backspace button.
-			this.backspaceButton = new ClickableComponent
+			backspaceButton = new ClickableComponent
 			(
 				new Rectangle
 				(
-					this.xPositionOnScreen
+					xPositionOnScreen
 						+ 41
-						+ (this.widthOnScreen - IClickableMenu.borderWidth * 2) / 2,
-					this.yPositionOnScreen
+						+ (widthOnScreen - IClickableMenu.borderWidth * 2) / 2,
+					yPositionOnScreen
 						+ IClickableMenu.borderWidth
 						+ IClickableMenu.spaceToClearTopBorder
 						+ (Game1.smallFont.LineSpacing * 2),
-					(this.widthOnScreen - IClickableMenu.borderWidth * 2) / 2,
+					(widthOnScreen - IClickableMenu.borderWidth * 2) / 2,
 					Game1.smallFont.LineSpacing * 2
 				),
 				"backspace",
@@ -217,19 +257,19 @@ namespace JoJa84Plus
 			);
 
 			// Create the zero button.
-			this.zeroButton = new ClickableComponent
+			zeroButton = new ClickableComponent
 			(
 				new Rectangle
 				(
-					this.xPositionOnScreen
+					xPositionOnScreen
 						+ 40,
-					this.yPositionOnScreen
+					yPositionOnScreen
 						+ IClickableMenu.borderWidth
 						+ IClickableMenu.spaceToClearTopBorder
 						+ Game1.smallFont.LineSpacing * 2
-						+ (this.widthOnScreen - IClickableMenu.borderWidth * 2)
-						+ (((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 16,
-					((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3,
+						+ (widthOnScreen - IClickableMenu.borderWidth * 2)
+						+ (((widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 16,
+					((widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3,
 					Game1.smallFont.LineSpacing * 2
 				),
 				"0",
@@ -242,13 +282,13 @@ namespace JoJa84Plus
 			Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, widthOnScreen, heightOnScreen, speaker: false, drawOnlyBox: true);
 			// Draw JoJa watermark thing.
 			b.Draw(
-				this.jojaLogo,
+				jojaLogo,
 				new Vector2
 				(
-					(float)this.xPositionOnScreen
+					(float)xPositionOnScreen
 						+ 40,
-					(float)this.yPositionOnScreen
-						+ this.heightOnScreen
+					(float)yPositionOnScreen
+						+ heightOnScreen
 						- IClickableMenu.borderWidth 
 						- 40
 				),
@@ -265,13 +305,13 @@ namespace JoJa84Plus
 			b.DrawString
 			(
 				Game1.smallFont,
-				String.Concat(((this.currentInput) ? this.inputB : this.inputA), ((this.timer >= 16) ? "|" : "")),
+				String.Concat(((currentInput) ? inputB : inputA), ((timer >= 16) ? "|" : "")),
 				new Vector2(
-					(float)this.xPositionOnScreen
-						+ this.widthOnScreen
+					(float)xPositionOnScreen
+						+ widthOnScreen
 						- 40
-						- Game1.smallFont.MeasureString((this.currentInput) ? this.inputB + "|" : this.inputA + "|").X,
-					(float)this.yPositionOnScreen
+						- Game1.smallFont.MeasureString((currentInput) ? inputB + "|" : inputA + "|").X,
+					(float)yPositionOnScreen
 						+ IClickableMenu.borderWidth
 						+ IClickableMenu.spaceToClearTopBorder
 				),
@@ -279,11 +319,11 @@ namespace JoJa84Plus
 			);
 
 			// Draw the previous input, if currently entering the second number.
-			if (this.currentInput)
+			if (currentInput)
 			{
-				string prevInput = this.inputA 
+				string prevInput = inputA 
 					+ " "
-					+ (this.op switch {
+					+ (op switch {
 						Operation.Add => "+",
 						Operation.Subtract => "-",
 						Operation.Multiply => "X",
@@ -297,11 +337,11 @@ namespace JoJa84Plus
 					prevInput,
 					new Vector2
 					(
-						(float)this.xPositionOnScreen
-							+ this.widthOnScreen
+						(float)xPositionOnScreen
+							+ widthOnScreen
 							- 40
 							- Game1.smallFont.MeasureString(prevInput).X,
-						(float)this.yPositionOnScreen
+						(float)yPositionOnScreen
 							+ IClickableMenu.borderWidth
 							+ IClickableMenu.spaceToClearSideBorder
 							+ Game1.smallFont.LineSpacing * 2
@@ -311,7 +351,7 @@ namespace JoJa84Plus
 			}
 
 			// Draw the number pad.
-			foreach(ClickableComponent button in this.numpad)
+			foreach(ClickableComponent button in numpad)
 			{
 				IClickableMenu.drawTextureBox
 				(
@@ -348,7 +388,7 @@ namespace JoJa84Plus
 			}
 
 			// Draw the operator buttons.
-			foreach(ClickableComponent button in this.opButtons)
+			foreach(ClickableComponent button in opButtons)
 			{
 				IClickableMenu.drawTextureBox
 				(
@@ -390,26 +430,26 @@ namespace JoJa84Plus
 				b,
 				Game1.mouseCursors,
 				new Rectangle(432, 439, 9, 9),
-				this.clearButton.bounds.X,
-				this.clearButton.bounds.Y,
-				this.clearButton.bounds.Width,
-				this.clearButton.bounds.Height,
-				(this.clearButton.scale != 1.0001f) ? Color.Wheat : Color.White,
+				clearButton.bounds.X,
+				clearButton.bounds.Y,
+				clearButton.bounds.Width,
+				clearButton.bounds.Height,
+				(clearButton.scale != 1.0001f) ? Color.Wheat : Color.White,
 				4f,
 				false
 			);
 			b.DrawString
 			(
 				Game1.smallFont,
-				this.clearButton.label,
+				clearButton.label,
 				new Vector2
 				(
-					(float)this.clearButton.bounds.X
-						+ (this.clearButton.bounds.Width / 2)
-						- (Game1.smallFont.MeasureString(this.clearButton.label).X / 2),
-					(float)this.clearButton.bounds.Y
-						+ (this.clearButton.bounds.Height / 2)
-						- (Game1.smallFont.MeasureString(this.clearButton.name).Y / 2)
+					(float)clearButton.bounds.X
+						+ (clearButton.bounds.Width / 2)
+						- (Game1.smallFont.MeasureString(clearButton.label).X / 2),
+					(float)clearButton.bounds.Y
+						+ (clearButton.bounds.Height / 2)
+						- (Game1.smallFont.MeasureString(clearButton.name).Y / 2)
 				),
 				Game1.textColor
 			);
@@ -420,26 +460,26 @@ namespace JoJa84Plus
 				b,
 				Game1.mouseCursors,
 				new Rectangle(432, 439, 9, 9),
-				this.backspaceButton.bounds.X,
-				this.backspaceButton.bounds.Y,
-				this.backspaceButton.bounds.Width,
-				this.backspaceButton.bounds.Height,
-				(this.backspaceButton.scale != 1.0001f) ? Color.Wheat : Color.White,
+				backspaceButton.bounds.X,
+				backspaceButton.bounds.Y,
+				backspaceButton.bounds.Width,
+				backspaceButton.bounds.Height,
+				(backspaceButton.scale != 1.0001f) ? Color.Wheat : Color.White,
 				4f,
 				false
 			);
 			b.DrawString
 			(
 				Game1.smallFont,
-				this.backspaceButton.label,
+				backspaceButton.label,
 				new Vector2
 				(
-					(float)this.backspaceButton.bounds.X
-						+ (this.backspaceButton.bounds.Width / 2)
-						- (Game1.smallFont.MeasureString(this.backspaceButton.label).X / 2),
-					(float)this.backspaceButton.bounds.Y
-						+ (this.backspaceButton.bounds.Height / 2)
-						- (Game1.smallFont.MeasureString(this.backspaceButton.name).Y / 2)
+					(float)backspaceButton.bounds.X
+						+ (backspaceButton.bounds.Width / 2)
+						- (Game1.smallFont.MeasureString(backspaceButton.label).X / 2),
+					(float)backspaceButton.bounds.Y
+						+ (backspaceButton.bounds.Height / 2)
+						- (Game1.smallFont.MeasureString(backspaceButton.name).Y / 2)
 				),
 				Game1.textColor
 			);
@@ -450,27 +490,27 @@ namespace JoJa84Plus
 				b,
 				Game1.mouseCursors,
 				new Rectangle(432, 439, 9, 9),
-				this.zeroButton.bounds.X,
-				this.zeroButton.bounds.Y,
-				this.zeroButton.bounds.Width,
-				this.zeroButton.bounds.Height,
-				(this.zeroButton.scale != 1.0001f) ? Color.Wheat : Color.White,
+				zeroButton.bounds.X,
+				zeroButton.bounds.Y,
+				zeroButton.bounds.Width,
+				zeroButton.bounds.Height,
+				(zeroButton.scale != 1.0001f) ? Color.Wheat : Color.White,
 				4f,
 				false
 			);
 			Utility.drawBoldText
 			(
 				b,
-				this.zeroButton.label,
+				zeroButton.label,
 				Game1.smallFont,
 				new Vector2
 				(
-					(float)this.zeroButton.bounds.X
-						+ (this.zeroButton.bounds.Width / 2)
-						- (Game1.smallFont.MeasureString(this.zeroButton.label).X / 2),
-					(float)this.zeroButton.bounds.Y
-						+ (this.zeroButton.bounds.Height / 2)
-						- (Game1.smallFont.MeasureString(this.zeroButton.name).Y / 2)
+					(float)zeroButton.bounds.X
+						+ (zeroButton.bounds.Width / 2)
+						- (Game1.smallFont.MeasureString(zeroButton.label).X / 2),
+					(float)zeroButton.bounds.Y
+						+ (zeroButton.bounds.Height / 2)
+						- (Game1.smallFont.MeasureString(zeroButton.name).Y / 2)
 				),
 				Game1.textColor,
 				1f,
@@ -478,11 +518,11 @@ namespace JoJa84Plus
 				2
 			);
 
-			if (this.shouldDrawCloseButton()) base.draw(b);
+			if (shouldDrawCloseButton()) base.draw(b);
 			if (!Game1.options.hardwareCursor) b.Draw(Game1.mouseCursors, new Vector2(Game1.getMouseX(), Game1.getMouseY()), Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.gamepadControls ? 44 : 0, 16, 16), Color.White, 0f, Vector2.Zero, 4f + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f);
 			
-			this.timer++;
-			if (this.timer >= 32) this.timer = 0;
+			timer++;
+			if (timer >= 32) timer = 0;
 		}
 		public override void receiveKeyPress(Keys key)
 		{
@@ -513,56 +553,56 @@ namespace JoJa84Plus
 			};
 			if (keyChar != '_')
 			{
-				if (this.currentInput)
-					this.inputB += keyChar;
+				if (currentInput)
+					inputB += keyChar;
 				else
-					this.inputA += keyChar;
+					inputA += keyChar;
 			}
 			else 
 			{
 				switch (key) 
 				{
 					case Keys.Add:
-						if (!this.currentInput)
-							this.currentInput = true;
-						this.op = Operation.Add;
+						if (!currentInput)
+							currentInput = true;
+						op = Operation.Add;
 						break;
 					case Keys.Subtract:
-						if (!this.currentInput)
-							this.currentInput = true;
-						this.op = Operation.Subtract;
+						if (!currentInput)
+							currentInput = true;
+						op = Operation.Subtract;
 						break;
 					case Keys.Multiply:
-						if (!this.currentInput)
-							this.currentInput = true;
-						this.op = Operation.Multiply;
+						if (!currentInput)
+							currentInput = true;
+						op = Operation.Multiply;
 						break;
 					case Keys.Divide:
-						if (!this.currentInput)
-							this.currentInput = true;
-						this.op = Operation.Divide;
+						if (!currentInput)
+							currentInput = true;
+						op = Operation.Divide;
 						break;
 					case Keys.Enter:
-						this.DoCalculation();
+						DoCalculation();
 						break;
 					case Keys.Delete:
-						this.result = 0;
-						this.inputA = "";
-						this.inputB = "";
-						this.currentInput = false;
+						result = 0;
+						inputA = "";
+						inputB = "";
+						currentInput = false;
 						break;
 					case Keys.Back:
-						if (!this.currentInput)
+						if (!currentInput)
 						{
-							if (this.inputA.Length >= 1) this.inputA = this.inputA.Substring(0, this.inputA.Length - 1);
+							if (inputA.Length >= 1) inputA = inputA.Substring(0, inputA.Length - 1);
 						}
 						else
 						{
-							if (this.inputB.Length >= 1) this.inputB = this.inputB.Substring(0, this.inputB.Length - 1);
+							if (inputB.Length >= 1) inputB = inputB.Substring(0, inputB.Length - 1);
 						}
 						break;
 					case Keys.Escape:
-						this.exitThisMenu();
+						exitThisMenu();
 						break;
 				}
 			}
@@ -570,111 +610,111 @@ namespace JoJa84Plus
 
 		public override void performHoverAction(int x, int y)
 		{
-			foreach(ClickableComponent button in this.numpad)
+			foreach(ClickableComponent button in numpad)
 			{
 				if (button.containsPoint(x,y))
 					button.scale = 1.0001f;
 				else
 					button.scale = 1f;
 			}
-			foreach(ClickableComponent button in this.opButtons)
+			foreach(ClickableComponent button in opButtons)
 			{
 				if (button.containsPoint(x,y))
 					button.scale = 1.0001f;
 				else
 					button.scale = 1f;
 			}
-			if (this.zeroButton.containsPoint(x,y))
-				this.zeroButton.scale = 1.0001f;
+			if (zeroButton.containsPoint(x,y))
+				zeroButton.scale = 1.0001f;
 			else
-				this.zeroButton.scale = 1f;
-			if (this.clearButton.containsPoint(x,y))
-				this.clearButton.scale = 1.0001f;
+				zeroButton.scale = 1f;
+			if (clearButton.containsPoint(x,y))
+				clearButton.scale = 1.0001f;
 			else
-				this.clearButton.scale = 1f;
-			if (this.backspaceButton.containsPoint(x,y))
-				this.backspaceButton.scale = 1.0001f;
+				clearButton.scale = 1f;
+			if (backspaceButton.containsPoint(x,y))
+				backspaceButton.scale = 1.0001f;
 			else
-				this.backspaceButton.scale = 1f;
+				backspaceButton.scale = 1f;
 		}
 
 		public override void receiveLeftClick(int x, int y, bool playSound)
 		{
-			foreach(ClickableComponent button in this.numpad)
+			foreach(ClickableComponent button in numpad)
 			{
 				if (button.containsPoint(x, y))
 				{
-					if (this.currentInput)
-						this.inputB += button.name;
+					if (currentInput)
+						inputB += button.name;
 					else
-						this.inputA += button.name;
+						inputA += button.name;
 					Game1.playSound("smallSelect");
 				}
 			}
-			foreach(ClickableComponent button in this.opButtons)
+			foreach(ClickableComponent button in opButtons)
 			{
 				if (button.containsPoint(x, y))
 				{
 					switch(button.name)
 					{
 						case "+":
-							if (!this.currentInput)
-								this.currentInput = true;
-							this.op = Operation.Add;
+							if (!currentInput)
+								currentInput = true;
+							op = Operation.Add;
 							break;
 						case "-":
-							if (!this.currentInput)
-								this.currentInput = true;
-							this.op = Operation.Subtract;
+							if (!currentInput)
+								currentInput = true;
+							op = Operation.Subtract;
 							break;
 						case "X":
-							if (!this.currentInput)
-								this.currentInput = true;
-							this.op = Operation.Multiply;
+							if (!currentInput)
+								currentInput = true;
+							op = Operation.Multiply;
 							break;
 						case "/":
-							if (!this.currentInput)
-								this.currentInput = true;
-							this.op = Operation.Divide;
+							if (!currentInput)
+								currentInput = true;
+							op = Operation.Divide;
 							break;
 						case "EQ":
-							this.DoCalculation();
+							DoCalculation();
 							break;
 						case ".":
-							if (!this.currentInput)
-								this.inputA += ".";
+							if (!currentInput)
+								inputA += ".";
 							else
-								this.inputB += ".";
+								inputB += ".";
 							break;
 					}
 					Game1.playSound("smallSelect");
 				}
 			}
-			if (this.zeroButton.containsPoint(x, y))
+			if (zeroButton.containsPoint(x, y))
 			{
-				if (!this.currentInput)
-					this.inputA += "0";
+				if (!currentInput)
+					inputA += "0";
 				else
-					this.inputB += "0";
+					inputB += "0";
 				Game1.playSound("smallSelect");
 			}
-			if (this.clearButton.containsPoint(x, y))
+			if (clearButton.containsPoint(x, y))
 			{
-				this.result = 0;
-				this.inputA = "";
-				this.inputB = "";
-				this.currentInput = false;
+				result = 0;
+				inputA = "";
+				inputB = "";
+				currentInput = false;
 				Game1.playSound("backpackIN");
 			}
-			if (this.backspaceButton.containsPoint(x, y))
+			if (backspaceButton.containsPoint(x, y))
 			{
-				if (!this.currentInput)
+				if (!currentInput)
 				{
-					if (this.inputA.Length >= 1) this.inputA = this.inputA.Substring(0, this.inputA.Length - 1);
+					if (inputA.Length >= 1) inputA = inputA.Substring(0, inputA.Length - 1);
 				}
 				else
 				{
-					if (this.inputB.Length >= 1) this.inputB = this.inputB.Substring(0, this.inputB.Length - 1);
+					if (inputB.Length >= 1) inputB = inputB.Substring(0, inputB.Length - 1);
 				}
 				Game1.playSound("smallSelect");
 			}
@@ -682,37 +722,37 @@ namespace JoJa84Plus
 
 		private void DoCalculation()
 		{
-			if (!this.currentInput) 
+			if (!currentInput) 
 			{
-				double.TryParse(this.inputA, out this.result);
-				this.currentInput = false;
+				double.TryParse(inputA, out result);
+				currentInput = false;
 			}
 			else
 			{
 				double inputA, inputB;
 				double.TryParse(this.inputA, out inputA);
 				double.TryParse(this.inputB, out inputB);
-				switch (this.op)
+				switch (op)
 				{
 					case Operation.Add:
-						this.result = inputA + inputB;
+						result = inputA + inputB;
 						break;
 					case Operation.Subtract:
-						this.result = inputA - inputB;
+						result = inputA - inputB;
 						break;
 					case Operation.Multiply:
-						this.result = inputA * inputB;
+						result = inputA * inputB;
 						break;
 					case Operation.Divide:
-						this.result = inputA / inputB;
+						result = inputA / inputB;
 						break;
 					case Operation.None:
 						break;
 				}
-				this.inputA = this.result.ToString();
+				this.inputA = result.ToString();
 				if (this.inputA == "NaN") this.inputA = "";
 				this.inputB = "";
-				this.currentInput = false;
+				currentInput = false;
 			}
 		}
 	}

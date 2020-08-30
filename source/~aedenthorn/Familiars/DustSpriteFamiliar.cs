@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Monsters;
 using System;
 using System.Reflection;
@@ -26,6 +27,7 @@ namespace Familiars
 			HideShadow = true;
 			DamageToFarmer = 0;
 			farmerPassesThrough = true;
+			willDestroyObjectsUnderfoot = false;
 
 			if (ModEntry.Config.DustColorType.ToLower() == "random")
 			{
@@ -46,13 +48,13 @@ namespace Familiars
 
 		public override void reloadSprite()
 		{
-			if (this.Sprite == null)
+			if (Sprite == null)
 			{
-				this.Sprite = new AnimatedSprite(ModEntry.Config.DustTexture);
+				Sprite = new AnimatedSprite(ModEntry.Config.DustTexture);
 			}
 			else
 			{
-				this.Sprite.textureName.Value = ModEntry.Config.DustTexture;
+				Sprite.textureName.Value = ModEntry.Config.DustTexture;
 			}
 			if (ModEntry.Config.DustColorType.ToLower() != "default")
 			{
@@ -71,13 +73,13 @@ namespace Familiars
 				b.Draw(Game1.shadowTexture, base.getLocalPosition(Game1.viewport) + new Vector2(32f, 80f), new Rectangle?(Game1.shadowTexture.Bounds), Color.White, 0f, new Vector2((float)Game1.shadowTexture.Bounds.Center.X, (float)Game1.shadowTexture.Bounds.Center.Y), (4f + (float)this.yJumpOffset / 64f) * scale, SpriteEffects.None, (float)(base.getStandingY() - 1) / 10000f);
 			}
 		}
-
 		protected override void sharedDeathAnimation()
 		{
 		}
 		protected override void localDeathAnimation()
 		{
-			base.currentLocation.localSound("dustMeep");
+			if (ModEntry.Config.DustSoundEffects)
+				currentLocation.localSound("dustMeep");
 			base.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(44, base.Position, new Color(50, 50, 80), 10, false, 100f, 0, -1, -1f, -1, 0));
 			base.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(44, base.Position + new Vector2((float)Game1.random.Next(-32, 32), (float)Game1.random.Next(-32, 32)), new Color(50, 50, 80), 10, false, 100f, 0, -1, -1f, -1, 0)
 			{
@@ -113,9 +115,12 @@ namespace Familiars
 				this.yJumpVelocity = (int)(5 + Game1.random.Next(1, 4) * scale);
 				if (Game1.random.NextDouble() < 0.1 && (this.meep == null || !this.meep.IsPlaying) && Utility.isOnScreen(base.Position, 64) && Game1.soundBank != null && Game1.currentLocation == base.currentLocation)
 				{
-					this.meep = Game1.soundBank.GetCue("dustMeep");
-					this.meep.SetVariable("Pitch", (int)(this.voice * 100) + Game1.random.Next(-100, 100));
-					this.meep.Play();
+					if (ModEntry.Config.DustSoundEffects)
+                    {
+						this.meep = Game1.soundBank.GetCue("dustMeep");
+						this.meep.SetVariable("Pitch", (int)(this.voice * 100) + Game1.random.Next(-100, 100));
+						this.meep.Play();
+					}
 				}
 			}
 			base.resetAnimationSpeed();
@@ -140,10 +145,10 @@ namespace Familiars
 					});
 					foreach (Vector2 v in Utility.getAdjacentTileLocations(base.getTileLocation()))
 					{
-						if (base.currentLocation.objects.ContainsKey(v) && base.currentLocation.objects[v].Name.Contains("Stone"))
+						if (currentLocation is MineShaft && currentLocation.objects.ContainsKey(v) && base.currentLocation.objects[v].Name.Equals("Stone"))
 						{
 							AddExp(1);
-							base.currentLocation.destroyObject(v, null);
+							currentLocation.destroyObject(v, null);
 						}
 					}
 					this.yJumpVelocity *= 2f;
@@ -247,7 +252,8 @@ namespace Familiars
 		}
 		public override Rectangle GetBoundingBox()
 		{
-			Rectangle baseRect = new Rectangle((int)base.Position.X + 8, (int)base.Position.Y, this.Sprite.SpriteWidth * 4 * 3 / 4, 32);
+			Vector2 pos = position + new Vector2(0, (float)(32 + this.yJumpOffset));
+			Rectangle baseRect = new Rectangle((int)pos.X, (int)pos.Y, this.Sprite.SpriteWidth * 4 * 3 / 4, 32);
 			if (scale >= 1)
 				return baseRect;
 			return new Rectangle((int)baseRect.Center.X - (int)(Sprite.SpriteWidth * 4 * 3 / 4 * scale) / 2, (int)(baseRect.Center.Y - 16 * scale), (int)(Sprite.SpriteWidth * 4 * 3 / 4 * scale), (int)(32 * scale));
@@ -265,7 +271,7 @@ namespace Familiars
 
         private double StealChance()
         {
-			return 0.001 + (0.001 * Math.Sqrt(exp));
+			return 0.001 + (0.001 * Math.Sqrt(exp)) * ModEntry.Config.DustSpriteStealChanceMult;
 		}
 
         private void AddExp(int v)

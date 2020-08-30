@@ -3,5 +3,11 @@
     "Description": "Expensive green jacket, plain black blouse, stylish yellow belt.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Blusa y Blazer Negra"
+    },
+    "DescriptionLocalization": {
+        "es": "Chaqueta verde cara, blusa negra lisa, elegante cinturón amarillo."
+    }
 }

@@ -1,3 +1,5 @@
 {
-  "Stardew13SpouseSleep": false
+  "Stardew13SpouseSleep": false,
+  "SpouseGetUpTime": 600,
+  "SpouseGoToBedTime": 2200
 }

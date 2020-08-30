@@ -3,5 +3,11 @@
     "Description": "A striking buttonup top.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Botón Naranja"
+    },
+    "DescriptionLocalization": {
+        "es": "Un llamativo top abotonado."
+    }
 }

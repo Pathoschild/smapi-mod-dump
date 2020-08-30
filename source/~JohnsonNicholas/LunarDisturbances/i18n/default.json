@@ -16,7 +16,7 @@
 
   "moon-text.solareclipse": "It looks like a rare solar eclipse will darken the sky all day!",
 
-  "moon-text.moonrise": "The moon rises! Today's phase is {{moonPhase}}.",
+  "moon-text.moonrise": "The moon rises! Today's phase is {{moonPhase}}. Expected moon set is {{moonSet}}",
   "moon-text.moonriseBefore6": "The moon rises! Today's phase is {{moonPhase}}. The moon rose at {{riseTime}}",
   "moon-text.moonset": "The moon sets! Today's phase is {{moonPhase}}",
   "moon-text.hud_message_full": "It's a full moon! The beaches may have more items, but the ghosts may be about.",

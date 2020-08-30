@@ -5,10 +5,12 @@ mods:
    Magic
 
 latest commit:
-   commit 344410b0e9c941c26dda91603576438785af1145
-   Merge: c008b6a 67407af
+   commit f37e544cc51bbc6089491855df286392965cd021
+   Merge: 344410b 6c36d42
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Wed Jun 17 13:13:27 2020 -0400
+   Date:   Fri Aug 14 10:52:07 2020 -0400
    
-       Merge
+       Merge pull request #19 from Caco-o-sapo/master
+       
+       Portuguese Translation
    

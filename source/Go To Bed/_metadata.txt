@@ -5,9 +5,9 @@ mods:
    Go To Bed
 
 latest commit:
-   commit 55206127f16c22fedc8f10dd7f5c9a4479cc1bf3
+   commit 193058d6a6b295b786271e5f8e1b7c5bb54c4757
    Author: Candidus <candidus@xmail.net>
-   Date:   Wed Apr 15 20:58:07 2020 +0200
+   Date:   Sun Aug 2 22:38:41 2020 +0200
    
-       New feature: Farmer takes hat off when going to bed
+       Bugfix: Previous commit (attempt to fix spouse behavior after 2200) made things worse
    

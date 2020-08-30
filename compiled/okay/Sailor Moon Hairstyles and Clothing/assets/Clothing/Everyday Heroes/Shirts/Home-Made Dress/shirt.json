@@ -4,5 +4,11 @@
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless"
+    "Metadata": "Sleeveless",
+    "NameLocalization": {
+        "es": "Vestido Hecho en Casa"
+    },
+    "DescriptionLocalization": {
+        "es": "Hay mucho amor cosido en este vestido. Te recuerda a casa."
+    }
 }

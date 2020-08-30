@@ -6,5 +6,11 @@
   "UniqueID": "KoihimeNakamura.TimeReminder",
   "EntryDll": "TimeReminder.dll",
   "MinimumApiVersion": "3.0.0",
+  "ModUpdater": {
+    "Repository": "SDVMods",
+    "User": "Sakorona",
+    "Directory": "_releases",
+    "ModFolder": "TimeReminder"
+  },
   "UpdateKeys": [ "Nexus:1000" ]
 }

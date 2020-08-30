@@ -15,7 +15,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <EnableHarmony>true</EnableHarmony>
-    <IgnoreModFilePatterns>\.xcf$</IgnoreModFilePatterns>
+    <IgnoreModFilePatterns>\.xcf$, [/\\]extras\.json$, [/\\]ru\.json$</IgnoreModFilePatterns>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,9 +88,13 @@
     <None Include="i18n\fr.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="i18n\it.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="i18n\pt.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="i18n\ru.json" />
     <None Include="manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -99,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\Grandpa.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\Poltergeister\Grandpa.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="promo\nexus_description.txt" />

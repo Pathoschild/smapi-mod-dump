@@ -73,7 +73,7 @@ namespace TheftOfTheWinterStar
             Helper.Events.GameLoop.GameLaunched += onGameLaunched;
             helper.Events.GameLoop.SaveCreated += onCreated;
             helper.Events.GameLoop.SaveLoaded += onLoaded;
-            helper.Events.GameLoop.Saved += onSaved;
+            helper.Events.GameLoop.Saving += onSaving;
             Helper.Events.GameLoop.UpdateTicked += onUpdated;
             helper.Events.GameLoop.DayStarted += onDayStarted;
             helper.Events.GameLoop.DayEnding += onDayEnding;
@@ -146,7 +146,7 @@ namespace TheftOfTheWinterStar
             saveData = Helper.Data.ReadSaveData<SaveData>("FrostDungeon.SaveData") ?? new SaveData();
         }
 
-        private void onSaved(object sender, SavedEventArgs e)
+        private void onSaving(object sender, SavingEventArgs e)
         {
             if ( Game1.IsMasterGame )
                 Helper.Data.WriteSaveData("FrostDungeon.SaveData", saveData);
@@ -331,18 +331,21 @@ namespace TheftOfTheWinterStar
                                 if (!hd.crop.seasonsToGrowIn.Contains(Game1.currentSeason))
                                     hd.crop.seasonsToGrowIn.Add(Game1.currentSeason);
                             }
+                            /*
                             else
                             {
                                 var cropData = Game1.content.Load<Dictionary<int, string>>("Data\\Crops");
                                 if ( !cropData.ContainsKey(hd.crop.netSeedIndex.Value))
                                 {
-                                    Log.warn("no crop " + hd.crop.netSeedIndex.Value + "? ");
+                                    if ( hd.crop.netSeedIndex.Value != -1 )
+                                        Log.warn("no crop " + hd.crop.netSeedIndex.Value + "? ");
                                     continue;
                                 }
                                 string[] seasons = cropData[hd.crop.netSeedIndex.Value].Split('/')[1].Split(' ');
                                 hd.crop.seasonsToGrowIn.Clear();
                                 hd.crop.seasonsToGrowIn.AddRange(seasons);
                             }
+                            */
                         }
                     }
                 }

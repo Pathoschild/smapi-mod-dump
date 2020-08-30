@@ -39,9 +39,24 @@ namespace DeepWoodsMod
                 && IsMagical(carpenterMenu)
                 && !HasBluePrint(carpenterMenu))
             {
+                // Create a new Woods Obelisk BluePrint, but override the values as settings might have been loaded after blueprints
+                BluePrint woodsObeliskBluePrint = new BluePrint(WOODS_OBELISK_BUILDING_NAME)
+                {
+                    displayName = I18N.WoodsObeliskDisplayName,
+                    description = I18N.WoodsObeliskDescription,
+                    moneyRequired = Settings.Objects.WoodsObelisk.MoneyRequired
+                };
+                woodsObeliskBluePrint.itemsRequired.Clear();
+                foreach (var item in Settings.Objects.WoodsObelisk.ItemsRequired)
+                {
+                    woodsObeliskBluePrint.itemsRequired.Add(item.Key, item.Value);
+                }
+                SetBluePrintField(woodsObeliskBluePrint, "textureName", "Buildings\\" + WOODS_OBELISK_BUILDING_NAME);
+                SetBluePrintField(woodsObeliskBluePrint, "texture", Game1.content.Load<Texture2D>(woodsObeliskBluePrint.textureName));
+
                 // Add Woods Obelisk directly after the other obelisks
                 int lastObeliskIndex = GetBluePrints(carpenterMenu).FindLastIndex(bluePrint => bluePrint.name.Contains("Obelisk"));
-                GetBluePrints(carpenterMenu).Insert(lastObeliskIndex + 1, new BluePrint(WOODS_OBELISK_BUILDING_NAME));
+                GetBluePrints(carpenterMenu).Insert(lastObeliskIndex + 1, woodsObeliskBluePrint);
             }
         }
 

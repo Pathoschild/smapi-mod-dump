@@ -1,0 +1,10 @@
+﻿{
+    "name": "game",
+    "author": "Jessebot",
+    "version": "1.0.0",
+    "description": "Stardew Valley",
+    "uniqueid": "Jessebot.PleaseFixError",
+    "entrydll": "Please Fix Error.dll",
+    "minimumapiversion": "3.6",
+    "updatekeys": [ "Nexus:6492" ]
+}

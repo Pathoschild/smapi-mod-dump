@@ -25,6 +25,7 @@
   "ChanceForIronMultiplier": 1.0,
   "PurpleStoneMultiplier": 1.0,
   "MysticStoneMultiplier": 1.0,
+  "ResourceClumpChance": 0.005,
   "WeedsChance": 0.1,
   "WeedsMultiplier": 1.0,
   "ChanceForLadderInStoneMultiplier": 1.0,

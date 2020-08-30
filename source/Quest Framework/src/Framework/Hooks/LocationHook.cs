@@ -30,7 +30,7 @@ namespace QuestFramework.Framework.Hooks
 
         protected override bool CheckHookExecute(Hook hook, ICompletionArgs args)
         {
-            bool flag = hook.Has.Any() && this.owner.CheckConditions(hook.Has, new[] { "Enter", "Leave" });
+            bool flag = hook.Has.Any() && this.owner.CheckConditions(hook.Has, hook.ManagedQuest, new[] { "Enter", "Leave" });
 
             if (hook.Has.TryGetValue("Enter", out string newLocation))
             {

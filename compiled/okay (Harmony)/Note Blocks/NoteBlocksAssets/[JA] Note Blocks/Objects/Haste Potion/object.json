@@ -1,0 +1,35 @@
+{
+    "Name": "Haste Potion",
+    "Description": "Ludicrous speed!",
+    "Category": "Cooking",
+    "Edibility": 35,
+    "EdibleIsDrink": true,
+    "EdibleBuffs":
+    {
+        "Farming": 0,
+        "Fishing": 0,
+        "Mining": 0,
+        "Luck": 0,
+        "Foraging": 0,
+        "MaxStamina": 0,
+        "MagnetRadius": 0,
+        "Speed": 5,
+        "Defense": 0,
+        "Attack": 0,
+        "Duration": 10000,
+    },
+    "Price": 1500,
+    "IsColored": false,
+    "CanPurchase": false,
+    "Recipe":
+    {
+        "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": 253, //triple shot espresso
+            "Count": 10,
+        },
+      ],
+    "IsDefault": true,
+    },
+}

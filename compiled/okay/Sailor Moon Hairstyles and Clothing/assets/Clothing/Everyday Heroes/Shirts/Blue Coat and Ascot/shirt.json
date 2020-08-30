@@ -3,5 +3,11 @@
     "Description": "A trim coat tied with a big red bow.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Abrigo Azul y Ascot"
+    },
+    "DescriptionLocalization": {
+        "es": "Un abrigo recortado atado con un gran lazo rojo."
+    }
 }

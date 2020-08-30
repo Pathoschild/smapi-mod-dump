@@ -12,6 +12,7 @@ using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace PacifistValley
 {
@@ -20,10 +21,11 @@ namespace PacifistValley
 	{
 		private static ModEntry context;
 		private static ModConfig Config;
+        private static IMonitor SMonitor;
 
-		/// <summary>Get whether this instance can load the initial version of the given asset.</summary>
-		/// <param name="asset">Basic metadata about the asset being loaded.</param>
-		public bool CanLoad<T>(IAssetInfo asset)
+        /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
+        public bool CanLoad<T>(IAssetInfo asset)
 		{
 			if (!Config.EnableMod)
 				return false;
@@ -246,9 +248,12 @@ namespace PacifistValley
         {
 			context = this;
 			Config = this.Helper.ReadConfig<ModConfig>();
+			SMonitor = Monitor;
 
 			if (!Config.EnableMod)
 				return;
+
+            Helper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
 
 			var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
 
@@ -297,7 +302,7 @@ namespace PacifistValley
                prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.ShadowShaman_behaviorAtGameTick_prefix))
 			);
 
-			if (!Config.LovedMonstersStillSwarm)
+			if (!Config.LovedMonstersStillSwarm || Config.MonstersIgnorePlayer)
 			{
 				harmony.Patch(
 				   original: AccessTools.Method(typeof(Skeleton), nameof(Skeleton.behaviorAtGameTick)),
@@ -312,12 +317,8 @@ namespace PacifistValley
 				   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Serpent_updateAnimation_prefix))
 				);
 				harmony.Patch(
-				   original: AccessTools.Method(typeof(Bat), "updateAnimation"),
-				   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Bat_updateAnimation_prefix))
-				);
-				harmony.Patch(
-				   original: AccessTools.Method(typeof(Bat), nameof(Bat.behaviorAtGameTick)),
-				   postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Bat_behaviorAtGameTick_postfix))
+				   original: AccessTools.Method(typeof(Bat), "behaviorAtGameTick"),
+				   postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Bat_behaviorAtGameTick_Postfix))
 				);
 				harmony.Patch(
 				   original: AccessTools.Method(typeof(Fly), "updateAnimation"),
@@ -341,57 +342,62 @@ namespace PacifistValley
 			}
 		}
 
+        private void GameLoop_DayEnding(object sender, StardewModdingAPI.Events.DayEndingEventArgs e)
+        {
+			foreach(GameLocation l in Game1.locations)
+            {
+				for (int i = l.characters.Count - 1; i >= 0; i--)
+				{
+					NPC npc = l.characters[i];
+					if (npc is Monster && (npc as Monster).Health <= 0)
+						l.characters.RemoveAt(i);
+				}
+			}
+		}
+
         private static void DustSpirit_behaviorAtGameTick_Postfix(DustSpirit __instance, ref bool ___runningAwayFromFarmer, ref bool ___chargingFarmer)
         {
-			if (__instance.Health <= 0)
+			if (__instance.Health <= 0 ||Config.MonstersIgnorePlayer)
 			{
 				___runningAwayFromFarmer = false;
 				___chargingFarmer = false;
+				__instance.controller = null;
 			}
 		}
 
         private static void GreenSlime_behaviorAtGameTick_prefix(GreenSlime __instance, GameTime time, ref int ___readyToJump)
         {
-            if (__instance.Health <= 0)
+            if (__instance.Health <= 0 || Config.MonstersIgnorePlayer)
             {
 				___readyToJump = -1;
 			}
         }
 		private static void Fly_updateAnimation_prefix(Fly __instance, GameTime time, ref int ___invincibleCountdown)
         {
-            if (__instance.Health <= 0)
+            if (__instance.Health <= 0 || Config.MonstersIgnorePlayer)
             {
 				___invincibleCountdown = 1;
 			}
         }
-		private static void Bat_behaviorAtGameTick_postfix(Bat __instance)
-        {
 
-		}
-		private static bool Bat_updateAnimation_prefix(Bat __instance, ref ICue ___batFlap, bool ___cursedDoll)
+		private static void Bat_behaviorAtGameTick_Postfix(Bat __instance)
         {
-            if (__instance.Health <= 0)
+            try
             {
-				if (__instance.Sprite.currentFrame % 3 == 0 && Utility.isOnScreen(__instance.Position, 512) && (___batFlap == null || !___batFlap.IsPlaying) && Game1.soundBank != null && __instance.currentLocation == Game1.currentLocation && !___cursedDoll)
+				if (__instance.Health <= 0 || Config.MonstersIgnorePlayer)
 				{
-					___batFlap = Game1.soundBank.GetCue("batFlap");
-					___batFlap.Play();
+					__instance.xVelocity = 0f;
+					__instance.yVelocity = 0f;
 				}
-				else if ((__instance.Sprite.currentFrame == 0 || __instance.Sprite.currentFrame % 4 == 0) && (___batFlap == null || !___batFlap.IsPlaying))
-				{
-					__instance.Sprite.currentFrame = 4;
-
-				}
-				typeof(Monster).GetMethod("resetAnimationSpeed", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[] { });
-				__instance.xVelocity = 0f;
-				__instance.yVelocity = 0f;
-				return false;
-            }
-			return true;
+			}
+            catch(Exception ex)
+            {
+				SMonitor.Log($"Failed in {nameof(Bat_behaviorAtGameTick_Postfix)}:\n{ex}", LogLevel.Error);
+			}
         }
 		private static bool Serpent_updateAnimation_prefix(Serpent __instance, GameTime time)
         {
-            if (__instance.Health <= 0)
+            if (__instance.Health <= 0 || Config.MonstersIgnorePlayer)
             {
 				var ftn = typeof(Monster).GetMethod("updateAnimation", BindingFlags.NonPublic | BindingFlags.Instance).MethodHandle.GetFunctionPointer();
 				var action = (Action<GameTime>)Activator.CreateInstance(typeof(Action<GameTime>), __instance, ftn);
@@ -406,7 +412,7 @@ namespace PacifistValley
         }
 		private static bool Monster_updateMovement_prefix(Monster __instance, GameTime time)
         {
-            if (__instance.Health <= 0 && __instance.IsWalkingTowardPlayer)
+            if ((__instance.Health <= 0 && __instance.IsWalkingTowardPlayer) || Config.MonstersIgnorePlayer)
             {
                 __instance.defaultMovementBehavior(time);
 				return false;
@@ -415,7 +421,7 @@ namespace PacifistValley
         }
 		private static void ShadowShaman_behaviorAtGameTick_prefix(SquidKid __instance, ref NetBool ___casting)
         {
-            if (__instance.Health <= 0)
+            if (__instance.Health <= 0 || Config.MonstersIgnorePlayer)
             {
                 ___casting.Value = false;
             }
@@ -423,7 +429,7 @@ namespace PacifistValley
 
 		private static void SquidKid_behaviorAtGameTick_prefix(ref GameTime time, SquidKid __instance, ref float ___lastFireball)
 		{
-            if (__instance.Health <= 0)
+            if (__instance.Health <= 0 || Config.MonstersIgnorePlayer)
             {
                 ___lastFireball = Math.Max(1f, ___lastFireball);
                 time = new GameTime(TimeSpan.Zero, TimeSpan.Zero);
@@ -436,7 +442,7 @@ namespace PacifistValley
 
 		private static void DinoMonster_behaviorAtGameTick_postfix(DinoMonster __instance, ref int ___nextFireTime)
 		{
-            if (__instance.Health <= 0)
+            if (__instance.Health <= 0 || Config.MonstersIgnorePlayer)
             {
                 ___nextFireTime = 0;
             }
@@ -444,7 +450,7 @@ namespace PacifistValley
 
 		private static bool Skeleton_behaviorAtGameTick_prefix(Skeleton __instance, GameTime time)
         {
-            if (__instance.Health <= 0)
+            if (__instance.Health <= 0 || Config.MonstersIgnorePlayer)
             {
 				var ftn = typeof(Monster).GetMethod("behaviorAtGameTick", BindingFlags.Public | BindingFlags.Instance).MethodHandle.GetFunctionPointer();
 				var action = (Action<GameTime>)Activator.CreateInstance(typeof(Action<GameTime>), __instance, ftn);
@@ -456,7 +462,7 @@ namespace PacifistValley
 
 		private static void Skeleton_behaviorAtGameTick_postfix(Skeleton __instance, ref NetBool ___throwing)
 		{
-			if (__instance.Health <= 0)
+			if (__instance.Health <= 0 || Config.MonstersIgnorePlayer)
 			{
 				__instance.Sprite.StopAnimation();
 				___throwing.Value = false;

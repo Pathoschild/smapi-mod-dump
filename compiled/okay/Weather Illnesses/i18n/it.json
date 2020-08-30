@@ -1,0 +1,15 @@
+{
+  "hud-text.desc_sick": "Ti sei preso il raffreddore...!",
+  "hud-text.desc_hot": "Le temperature calde all'esterno ti stanno logorando più del normale.",
+  "hud-text.desc_cold": "Le temperature fredde all'esterno ti stanno logorando più del normale.",
+  "hud-text.desc_turntheheaton": "Il freddo è penetrato attraverso i muri della tua casa, e ti sta logorando...",
+  "hud-text.desc_inclement": "Il maltempo di ha fatto stare male...",
+  "hud-text.desc_blizzard": "Il vento e la neve ti hanno raffreddato fino all'osso e alla velocità...",
+  "hud-text.desc_wampa": "Il vento estremo e la neve all'esterno stanno indebolendo la tua forza e la tua velocità...", 
+  "hud-text.desc_darude": "La tempesta di sabbia oscura la tua visuale e ti sbatte addosso, indebolendo la tua forza e la tua velocità...",
+  "hud-text.desc_freeze": "Le temperature glaciali all'esterno ti fanno sentire assonnato, logorandoti.",
+  "hud-text.desc_flu": "Ti sei preso la febbre a causa del maltempo e sarebbe meglio se prendessi una medicina al più presto!",
+  "hud-text.desc_cold_removed": "Senti che la medicina sta facendo effetto contro la tua malattia e sta annullando il tuo senso di esaurimento.",
+  "hud-text.desc_bathHouse":  "Il bagno caldo è un balsamo rilassante, e ti senti molto meglio.",
+  "hud-text.desc_HeatOn":  "Il freddo è penetrato attraverso i muri della tua casa, e dovresti accendere il riscaldamento.."
+}

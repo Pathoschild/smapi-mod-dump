@@ -3,18 +3,13 @@
   <PropertyGroup>
     <AssemblyName>LunarDisturbances</AssemblyName>
     <RootNamespace>LunarDisturbances</RootNamespace>
-    <Version>1.3.2</Version>
+    <Version>1.4</Version>
     <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="CHANGELOG.md~RF5ba1bfa7.TMP" />
-    <None Remove="manifest.json~RF5b85f95d.TMP" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />

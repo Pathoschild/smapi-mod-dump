@@ -1,16 +1,23 @@
 {
   "Name": "Bug Net",
   "Author": "spacechase0, ParadigmNomad, Keychain",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Catch bugs and stuff.",
   "UniqueID": "spacechase0.BugNet",
   "EntryDll": "BugNet.dll",
   "MinimumApiVersion": "2.9.0",
-  "UpdateKeys": [ "Nexus:", "Chucklefish:" ],
-  "spacechase0": "bug-net",
+  "UpdateKeys": [
+    "Nexus:5099",
+    "Chucklefish:5900"
+  ],
   "Dependencies": [
     {
-  	  "UniqueID": "spacechase0.SpaceCore" // added locally
+      "UniqueID": "Platonymous.Toolkit",
+      "MinimumVersion": "1.10.0"
+    },
+    {
+      "UniqueID": "spacechase0.JsonAssets"
     }
-  ]
+  ],
+  "spacechase0": "bug-net"
 }

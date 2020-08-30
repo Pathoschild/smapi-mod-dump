@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6743
+IDs: aedenthorn.ZombieOutbreak
+update keys: Nexus:6743, GitHub:aedenthorn/StardewValleyMods

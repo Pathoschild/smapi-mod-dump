@@ -5,9 +5,9 @@ mods:
    Better Skull Cavern Falling
 
 latest commit:
-   commit 2fcc0da1653f6221ef0be50669558a92569d981a
+   commit 1ad1436e5fa8b2f7792eb0eeaaa10232f8c7b644
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Sun May 24 12:44:31 2020 +0200
+   Date:   Sat Aug 1 12:29:15 2020 +0200
    
-       Updated code for compatibility with Stardew Valley 1.4
+       Completely rewrote mod
    

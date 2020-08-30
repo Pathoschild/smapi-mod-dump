@@ -2,30 +2,49 @@ url:
    https://github.com/aedenthorn/StardewValleyMods.git
 
 mods:
+   Another Jump Mod
    Boss Creatures
    Craftable Butterfly Hutches
    Custom Dungeon Floors
    Custom Fixed Dialogue
    Custom Locks
    Custom Ore Nodes
+   Custom Resource Clumps
+   Custom Spouse Patio
    Enhanced Loot Magnet
    Familiars
    Friendly Divorce
    Fruit Tree Shaker
+   Gem Isles
+   Here Fishy
    Loose Audio Files
+   Mobile Arcade
+   Mobile Audio Player
+   Mobile Calendar
+   Mobile Catalogues
+   Mobile Phone
+   Mobile Television
    Multiple Spouses
+   Murdercrows
+   Non-Random Prairie King
    Pacifist Valley
    Placeable Mine Shafts
+   Quick Responses
+   Quotes
    Random NPCs
    Realistic Random Names
+   Show Players Behind Map Tiles
    Swim
    Transparent Objects
+   Underground Secrets
+   Video Player
    Witcher Mod
+   Zombie Outbreak
 
 latest commit:
-   commit 0f9364ef44dbda2be0e7df617536a7e9bf649e02
+   commit 4fd72c3ebf79f1c7831c040f8de095e97e3445ec
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Fri Jul 17 10:58:14 2020 -0400
+   Date:   Sat Aug 29 20:38:18 2020 -0400
    
-       swim
+       crows
    

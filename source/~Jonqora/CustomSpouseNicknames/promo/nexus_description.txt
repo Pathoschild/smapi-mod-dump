@@ -1,0 +1,106 @@
+[size=6][b]Custom Spouse Nicknames[/b][/size]
+[i]Good Morning, schmoopsie-poo![/i]
+
+When married to an NPC in Stardew Valley, your spouse will [u]occasionally[/u] call you cute nicknames instead of using your given name. These are called "terms of spousal endearment" in the game code, and are almost always chosen randomly from certain lists. [b]Custom Spouse Nicknames[/b] mod allows you to edit these lists so your spouse can call you whatever nickname(s) you like best!
+
+[b]Common nicknames[/b]
+Defaults in the game include [i]Honey[/i], [i]Dear[/i], [i]Sweetie[/i], [i]Hun[/i], and [i]Sweetheart[/i].
+[b]Rare nicknames[/b]
+Defaults in the game include [i]Pookie[/i], [i]Love[/i], [i]Hot Stuff[/i], [i]Cuddlebug[/i], [i]Cutie[/i], and [i]Ducky[/i].
+[b]Gender-specific rare nicknames[/b]
+These depend on the [code]<isMale>[/code] data of your player character. Defaults are [i]Hunky[/i] and [i]Handsome[/i] for [code]true[/code] (male), or [i]Peach[/i] and [i]Darling[/i] for [code]false[/code] (female).
+
+[b]Custom Spouse Nicknames[/b] mod allows you to change any or all of these possible nicknames! 
+[list]
+[*]If you only want to be called one nickname ever (say, "Bananacakes"), you can edit every single option to be "Bananacakes".
+[*]If you really hate one of the default nicknames, you can replace just that one to say something else instead.
+[*]If you change all of the nickname options to be new and unique, you can create a whole new list for yourself!
+[*]If you don't want to be called any nicknames, you can replace all of them with your player name.
+[/list]
+Please note that there are one or two spouse dialogues in the game that always say "Dear" or "Honey" without randomly choosing a cute nickname from any lists. For example, the dialogue when receiving a stardrop from your spouse will always say "Honey". This mod changes all spouse nickname dialogues [b]except[/b] those ones.
+
+Please also note that spouse dialogues with any nicknames [b]are still fairly uncommon[/b] to begin with. So even if you install this mod and customize the options, it might be a long while before you see your spouse use any of those nicknames in the game.
+
+[b][size=3]Translation Support[/size][/b]
+This mod works for any language! Simply change all the default nicknames in the [code]config.json[/code] file to use whatever nicknames you like in the language of your choice. They will be applied to the game automatically.
+
+
+[b][size=5][center]User Information[/center][/size][/b][size=4][b]COMPATIBILITY[/b][/size]
+[list]
+[*]Stardew Valley v1.4 or later;
+[*][url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url] v1.14.1 or later;
+[*]Linux, Mac, Windows, and Android.
+[*]Single-player and multiplayer. This mod only affects the player who uses it.
+[/list]
+[size=4][b]INSTALLATION[/b][/size]
+[list=1]
+[*][url=https://smapi.io/]Install the latest version of SMAPI.[/url]
+[*]Install the latest version of [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher.[/url]
+[*]Download this mod from the link in the header above.
+[*]Unzip the mod and place the [code][CP] Custom Spouse Nicknames[/code] folder inside your [code]Mods[/code] folder.
+[*]Run the game using SMAPI.
+[/list]
+[size=4][b]USING THE MOD[/b][/size]
+Installing this mod does not automatically change any nicknames used in the vanilla game. You will need to edit the config file created by this mod and replace those nicknames with your own preferred ones. (See the next section.)
+
+
+[size=5][center][b]Config Settings[/b][/center][/size]After running SMAPI at least once with Custom Spouse Nicknames (and Content Patcher) installed, a [code]config.json[/code] file will be created inside the [code][CP] Custom Spouse Nicknames[/code] mod folder. Open it in any text editor to edit or change your preferred nicknames!
+
+Click to show default settings - these are the nicknames used in the vanilla (English) game.
+[spoiler][code]{
+  "DefaultNickname1": "Honey",
+  "DefaultNickname2": "Dear",
+  "OtherNickname1": "Sweetie",
+  "OtherNickname2": "Hun",
+  "OtherNickname3": "Sweetheart",
+  "RareHappyNickname1": "Pookie",
+  "RareHappyNickname2": "Love",
+  "RareHappyNickname3": "Hot Stuff",
+  "RareHappyNickname4": "Cuddlebug",
+  "RareHappyNickname5": "Cutie",
+  "RareHappyNickname6": "Ducky",
+  "RareHappyNickname7-MalePlayer": "Hunky",
+  "RareHappyNickname7-FemalePlayer": "Peach",
+  "RareHappyNickname8-MalePlayer": "Handsome",
+  "RareHappyNickname8-FemalePlayer": "Darling"
+}
+[/code][/spoiler]
+
+[size=4][b]CONFIG DETAILS[/b][/size]
+
+[code]"DefaultNickname1":
+"DefaultNickname2":[/code]
+These are the most common nicknames used. If an NPC is ever set to "unhappy" when randomly choosing a nickname, each nickname here has a 33% chance to be used (remaining 33% chance will use the player name). If they are happy and use a nickname, each nickname listed here has an 18.4% chance.
+
+[code]"OtherNickname1":
+"OtherNickname2":
+"OtherNickname3":[/code]
+These nicknames are also very commonly used. If an NPC spouse is happy and uses a nickname, each nickname listed here has an 18.4% chance.
+
+[code]"RareHappyNickname1":
+"RareHappyNickname2":
+"RareHappyNickname3":
+"RareHappyNickname4":
+"RareHappyNickname5":
+"RareHappyNickname6":[/code]
+These nicknames are very rarely seen. If an NPC spouse is happy and uses a nickname, each nickname listed here has only a 1% chance.
+
+[code]"RareHappyNickname7-MalePlayer":
+"RareHappyNickname7-FemalePlayer":
+"RareHappyNickname8-MalePlayer":
+"RareHappyNickname8-FemalePlayer":[/code]
+These nicknames are very rarely seen. If an NPC spouse is happy and uses a nickname, each nickname (7 or 8) listed here has only a 1% chance. The version used depends on gender of the player character. If you want nicknames to [i]not[/i] depend on player gender, you can edit both versions of each nickname to be the same. 
+
+
+[b][size=5][center]Notes[/center][/size][/b][size=4][b]ACKNOWLEDGEMENTS[/b][/size]
+[list]
+[*]Much gratitude to ConcernedApe and [url=https://www.nexusmods.com/stardewvalley/users/1552317?tab=user+files]Pathoschild[/url] !
+[*]Thanks to those who provided help and support in the [url=https://discordapp.com/invite/StardewValley]Stardew Valley Discord[/url] #making-mods channel.
+[*]Hat-tip to users on [url=https://www.reddit.com/r/StardewValley/comments/hsu94l/my_wife_abigail_just_called_me_ducky_that_isnt_my/]this Reddit thread[/url] for giving me the mod idea!
+[/list]
+[size=4][b]SEE ALSO[/b][/size]
+[list]
+[*]This mod on [url=https://github.com/Jonqora/StardewMods/tree/master/CustomSpouseNicknames]GitHub[/url]
+[*]Check out [url=https://www.nexusmods.com/users/88107803?tab=user+files]my other mods[/url]!
+[/list]
+[size=1]Tiny reminder: endorse the mod if you like it. It means more people will see it, and it makes the author happy. :)[/size]

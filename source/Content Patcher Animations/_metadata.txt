@@ -5,12 +5,11 @@ mods:
    Content Patcher Animations
 
 latest commit:
-   commit 66bac28c4d7792a9f4bd6782bb258309a1148fc2
-   Merge: ea678f9 5454601
+   commit 6376eacee526fdd597315818b5cde25ba056c097
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Apr 27 12:13:35 2020 -0400
+   Date:   Mon Aug 3 17:12:55 2020 -0400
    
-       Merge pull request #1 from Pathoschild/update-project
-       
-       Update & standardize project structure
+       Some changes I forgot to commit a while back, and CP 1.16 partial support.
+       Old changes: Detect when asset is edited and refresh target.
+       Partial support: Doesn't support included patch files yet.
    

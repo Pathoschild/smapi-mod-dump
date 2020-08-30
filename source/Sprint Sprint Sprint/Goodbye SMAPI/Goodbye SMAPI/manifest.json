@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Goodbye SMAPI",
+    "Author": "Jessebot",
+    "Version": "1.0.0",
+    "Description": "Say goodbye to SMAPI.",
+    "UniqueID": "Jessebot.GoodbyeSMAPI",
+    "EntryDll": "Goodbye SMAPI.dll",
+    "MinimumApiVersion": "3.6",
+    "UpdateKeys": []
+}

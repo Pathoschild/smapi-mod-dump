@@ -74,7 +74,7 @@
   <ItemGroup>
     <Content Include="assets\BatFamiliar.png" />
     <Content Include="assets\DinoFamiliar.png" />
-    <Content Include="assets\DustSpiritFamiliar.png" />
+    <Content Include="assets\DustSpriteFamiliar.png" />
     <Content Include="assets\json-assets\Objects\BatFamiliarEgg\object.png" />
     <Content Include="assets\json-assets\Objects\ButterflyFamiliarEgg\object.png" />
     <Content Include="assets\json-assets\Objects\ButterflyDust\object.png" />

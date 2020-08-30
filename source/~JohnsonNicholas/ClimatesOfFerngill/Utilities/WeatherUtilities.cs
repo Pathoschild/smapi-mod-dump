@@ -34,19 +34,13 @@ namespace ClimatesOfFerngillRebuild
         {
            foreach (var rl in RainCategories)
 		   {
-                if (ClimatesOfFerngill.WeatherOpt.Verbose)
-                {
-                    ClimatesOfFerngill.Logger.Log($"outputting: {rl.Value}");
-                    ClimatesOfFerngill.Logger.Log($"test: Is {rain} within key?: Lower Half: {rl.Value.IsWithinLowerRange(rain)}, Upper Half: {rl.Value.IsWithinUpperRange(rain)}, Full Range: {rl.Value.IsWithinUpperRange(rain)}");
-                }
-
                 if (rl.Value.IsWithinFullRange(rain))
                 {
                     return rl.Key;
                 }
 		   }
 
-            throw new System.Exception($"Rain is {rain}, reached point in execution it shouldn't reach.");
+           throw new System.Exception($"Rain is {rain}, reached point in execution it shouldn't reach.");
         }
 
         internal static bool IsSevereRainFall(int rainAmt)
@@ -77,13 +71,13 @@ namespace ClimatesOfFerngillRebuild
                 return ClimatesOfFerngill.Translator.Get("category-moderate");
             else if (RainCategories[RainLevels.Heavy].IsWithinFullRange(rain))
                 return ClimatesOfFerngill.Translator.Get("category-heavy");
-           else if (RainCategories[RainLevels.Severe].IsWithinFullRange(rain))
+            else if (RainCategories[RainLevels.Severe].IsWithinFullRange(rain))
                 return ClimatesOfFerngill.Translator.Get("category-severe");
             else if (RainCategories[RainLevels.Torrential].IsWithinFullRange(rain))
                 return ClimatesOfFerngill.Translator.Get("category-torrential");
             else if (RainCategories[RainLevels.Typhoon].IsWithinFullRange(rain))
                 return ClimatesOfFerngill.Translator.Get("category-typhoon");
-          else if (RainCategories[RainLevels.NoahsFlood].IsWithinFullRange(rain))
+            else if (RainCategories[RainLevels.NoahsFlood].IsWithinFullRange(rain))
                 return ClimatesOfFerngill.Translator.Get("category-noahsflood");
 
             throw new System.Exception($"Rain is {rain}, reached point in execution it shouldn't reach.");
@@ -182,7 +176,7 @@ namespace ClimatesOfFerngillRebuild
             {
                 if (entry.Key.Day == Target.Day && entry.Key.Season == Target.Season)
                 {
-                    if (verbose) mon.Log($"Setting a forced value for tommorow: {Desc.DescribeInGameWeather(entry.Value)} for {entry.Key.Season} {entry.Key.Day}");
+                    if (verbose) mon.Log($"Setting a forced value for tomorrow: {Desc.DescribeInGameWeather(entry.Value)} for {entry.Key.Season} {entry.Key.Day}");
                     Game1.weatherForTomorrow = entry.Value;
                     Game1.netWorldState.Value.WeatherForTomorrow = entry.Value;
                     return true;
@@ -322,7 +316,7 @@ namespace ClimatesOfFerngillRebuild
                 Game1.debrisWeather.Clear();
             }
 
-            ClimatesOfFerngill.Logger.Log("Resizing rain array - settting weather to overcast");
+            ClimatesOfFerngill.Logger.Log("Resizing rain array - setting weather to overcast");
             Array.Resize(ref Game1.rainDrops, 0);
             ClimatesOfFerngill.Conditions.AddWeather(CurrentWeather.Overcast);
             ClimatesOfFerngill.Conditions.RemoveWeather(CurrentWeather.Rain);

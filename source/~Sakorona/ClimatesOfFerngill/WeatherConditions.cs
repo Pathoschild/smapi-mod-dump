@@ -262,8 +262,8 @@ namespace ClimatesOfFerngillRebuild
         /// *************************************************************************
         /// ACCESS METHODS
         /// *************************************************************************
-        /// <summary>Rather than track the weather seprately, always get it from the game.</summary>
-        public CurrentWeather TommorowForecast => ConvertToCurrentWeather(Game1.weatherForTomorrow);
+        /// <summary>Rather than track the weather separately, always get it from the game.</summary>
+        public CurrentWeather TomorrowForecast => ConvertToCurrentWeather(Game1.weatherForTomorrow);
         public bool IsTodayTempSet => TodayTemps != null;
         public bool IsTomorrowTempSet => TomorrowTemps != null;
         public bool IsFestivalToday => CurrentConditionsN.HasFlag(CurrentWeather.Festival);
@@ -426,15 +426,14 @@ namespace ClimatesOfFerngillRebuild
                     desc += fog.FogDescription(fogRoll, fogChance);
                 }
             }
-
             return desc;
         }
 
-        public void CreateWeather(string Type)
+        public void CreateWeather(string type)
         {
             foreach (ISDVWeather weather in CurrentWeathers)
             {
-                if (weather.WeatherType == Type)
+                if (weather.WeatherType == type)
                     weather.CreateWeather();
             }
         }
@@ -450,11 +449,11 @@ namespace ClimatesOfFerngillRebuild
             if (SDVTime.CurrentTimePeriod == SDVTimePeriods.Afternoon && GenerateEveningFog && !HasSetEveningFog && (!IsFestivalToday && !IsWeddingToday))
             {
                 //Get fog instance
-                FerngillFog ourFog = (FerngillFog)this.GetWeatherMatchingType("Fog").First();
+                var ourFog = (FerngillFog)this.GetWeatherMatchingType("Fog").First();
                 if (!ourFog.WeatherInProgress)
                 {
                     ourFog.SetEveningFog();
-                    this.GenerateWeatherSync();
+                    GenerateWeatherSync();
                     HasSetEveningFog = true;
                 }
             }
@@ -479,14 +478,14 @@ namespace ClimatesOfFerngillRebuild
 
         internal List<ISDVWeather> GetWeatherMatchingType(string type)
         {
-            List<ISDVWeather> Weathers = new List<ISDVWeather>();
+            var weathers = new List<ISDVWeather>();
             foreach (ISDVWeather weather in CurrentWeathers)
             {
                 if (weather.WeatherType == type)
-                    Weathers.Add(weather);
+                    weathers.Add(weather);
             }
 
-            return Weathers;
+            return weathers;
         }
 
         public void RemoveWeather(CurrentWeather weather)
@@ -606,8 +605,8 @@ namespace ClimatesOfFerngillRebuild
             }
             else
             {
-                SDate Tmrw = SDate.Now().AddDays(1);
-                SetTomorrowTemps(ClimatesOfFerngill.GetClimateForDay(Tmrw).GetTemperatures(ClimatesOfFerngill.Dice, Tmrw.Day));
+                var tomorrow = SDate.Now().AddDays(1);
+                SetTomorrowTemps(ClimatesOfFerngill.GetClimateForDay(tomorrow).GetTemperatures(ClimatesOfFerngill.Dice, tomorrow.Day));
                 trackerModel.TempsOnNextDay = new RangePair(TomorrowTemps);
             }
         }
@@ -615,23 +614,22 @@ namespace ClimatesOfFerngillRebuild
         internal void ForceEveningFog()
         {
             //Get fog instance
-            List<ISDVWeather> fogWeather = this.GetWeatherMatchingType("Fog");
-            foreach (ISDVWeather weat in fogWeather)
+            var fogWeather = this.GetWeatherMatchingType("Fog");
+            foreach (ISDVWeather weather in fogWeather)
             {
-                SDVTime BeginTime, ExpirTime;
-                BeginTime = new SDVTime(Game1.getStartingToGetDarkTime());
-                BeginTime.AddTime(ClimatesOfFerngill.Dice.Next(-15, 90));
+                var beginTime = new SDVTime(Game1.getStartingToGetDarkTime());
+                beginTime.AddTime(ClimatesOfFerngill.Dice.Next(-15, 90));
 
-                ExpirTime = new SDVTime(BeginTime);
-                ExpirTime.AddTime(ClimatesOfFerngill.Dice.Next(120, 310));
+                var expirationTime = new SDVTime(beginTime);
+                expirationTime.AddTime(ClimatesOfFerngill.Dice.Next(120, 310));
 
-                BeginTime.ClampToTenMinutes();
-                ExpirTime.ClampToTenMinutes();
-                weat.SetWeatherTime(BeginTime, ExpirTime);
+                beginTime.ClampToTenMinutes();
+                expirationTime.ClampToTenMinutes();
+                weather.SetWeatherTime(beginTime, expirationTime);
             }
         }
 
-        /// <summary> Syntatic Sugar for Enum.HasFlag(). Done so if I choose to rewrite how it's accessed, less rewriting of invoking functions is needed. </summary>
+        /// <summary> Syntactic Sugar for Enum.HasFlag(). Done so if I choose to rewrite how it's accessed, less rewriting of invoking functions is needed. </summary>
         /// <param name="checkWeather">The weather being checked.</param>
         /// <returns>If the weather is present</returns>
         public bool HasWeather(CurrentWeather checkWeather)
@@ -710,7 +708,6 @@ namespace ClimatesOfFerngillRebuild
 
             if (e.Weather == "Blizzard")
             {
-  
                 if (e.Present) { 
                     CurrentConditionsN |= CurrentWeather.Blizzard;
                     this.GenerateWeatherSync();
@@ -721,6 +718,26 @@ namespace ClimatesOfFerngillRebuild
                     this.GenerateWeatherSync();
                 }
             }
+        }
+
+        internal FogType GetCurrentFogType()
+        {
+            FerngillFog f = CurrentWeathers.FirstOrDefault(c => c.WeatherType == "Fog") as FerngillFog;
+            
+            if (f is null)
+                return FogType.None;
+            else
+                return f.CurrentFogType;
+        }
+
+        internal string GetCurrentFogTypeDesc()
+        {
+            FerngillFog f = CurrentWeathers.FirstOrDefault(c => c.WeatherType == "Fog") as FerngillFog;
+
+            if (f is null)
+                return "None";
+            else
+                return FerngillFog.DescFogType(f.CurrentFogType);
         }
 
         internal bool GetWeatherStatus(string weather)
@@ -740,7 +757,6 @@ namespace ClimatesOfFerngillRebuild
                 if (w.WeatherType == weather)
                     return w.WeatherBeginTime;
             }
-
             return new SDVTime(0600);
         }
 
@@ -777,12 +793,10 @@ namespace ClimatesOfFerngillRebuild
         {
             if (!Context.IsMainPlayer)
                 return;
-            /* if (!Context.IsMultiplayer)
-                return; */
 
-            WeatherSync Message = GenerateWeatherSyncMessage();
+            WeatherSync message = GenerateWeatherSyncMessage();
 
-            ClimatesOfFerngill.MPHandler.SendMessage<WeatherSync>(Message, "WeatherSync", new [] { "KoihimeNakamura.ClimatesOfFerngill" });    
+            ClimatesOfFerngill.MPHandler.SendMessage<WeatherSync>(message, "WeatherSync", new [] { "KoihimeNakamura.ClimatesOfFerngill" });    
         }
 
         internal void SetTodayTempsFromTomorrow()
@@ -793,7 +807,7 @@ namespace ClimatesOfFerngillRebuild
 
         public WeatherSync GenerateWeatherSyncMessage()
         {
-            WeatherSync Message = new WeatherSync
+            WeatherSync message = new WeatherSync
             {
                 weatherType = WeatherUtilities.GetWeatherCode(),
                 isFoggy = GetWeatherStatus("Fog"),
@@ -824,7 +838,7 @@ namespace ClimatesOfFerngillRebuild
                 currTracker = new ClimateTracker(trackerModel)
             };
 
-            return Message;
+            return message;
         }
 
         public void ForceWeatherStart(string s)
@@ -1058,19 +1072,19 @@ namespace ClimatesOfFerngillRebuild
         private string NormalizedWeatherName()
         {
             //basically, we need to remove certain flags. 
-            var RawConditions = GetCurrentConditions();
+            var rawConditions = GetCurrentConditions();
             //clear certain flags.
-            RawConditions.RemoveFlags(CurrentWeather.BloodMoon);
-            RawConditions.RemoveFlags(CurrentWeather.Fog);
-            RawConditions.RemoveFlags(CurrentWeather.Heatwave);
-            RawConditions.RemoveFlags(CurrentWeather.Frost);
-            RawConditions.RemoveFlags(CurrentWeather.Sandstorm);
+            rawConditions.RemoveFlags(CurrentWeather.BloodMoon);
+            rawConditions.RemoveFlags(CurrentWeather.Fog);
+            rawConditions.RemoveFlags(CurrentWeather.Heatwave);
+            rawConditions.RemoveFlags(CurrentWeather.Frost);
+            rawConditions.RemoveFlags(CurrentWeather.Sandstorm);
 
             //safety check
-            if (RawConditions == CurrentWeather.Unset)
+            if (rawConditions == CurrentWeather.Unset)
                 ClimatesOfFerngill.Logger.Log("Warning, we've got no weather left here!!!!", LogLevel.Info);
 
-            return Weathers[(int)RawConditions].ConditionName;
+            return Weathers[(int)rawConditions].ConditionName;
         }
 
         /// <summary> This function resets the weather object to basic. </summary>
@@ -1118,7 +1132,7 @@ namespace ClimatesOfFerngillRebuild
             SeasonalBound(TodayTemps);
         }
 
-        private void SeasonalBound(RangePair a)
+        private static void SeasonalBound(RangePair a)
         {
 
             //seasonal check
@@ -1138,7 +1152,6 @@ namespace ClimatesOfFerngillRebuild
                     a.HigherBound = 60;
             }
 
-            
             if (Game1.currentSeason == "fall")
             {
                 if (a.LowerBound < -15)
@@ -1173,7 +1186,7 @@ namespace ClimatesOfFerngillRebuild
         /// Utility functions
         /// ***************************************************************************
         
-        ///<summary> This function converts from the game weather back to the CurrentWeather enum. Intended primarily for use with tommorow's forecasted weather.</summary>
+        ///<summary> This function converts from the game weather back to the CurrentWeather enum. Intended primarily for use with tomorrow's forecasted weather.</summary>
         internal static CurrentWeather ConvertToCurrentWeather(int weather)
         { 
             if (weather == Game1.weather_rain)
@@ -1197,13 +1210,12 @@ namespace ClimatesOfFerngillRebuild
         {
             Array.Resize(ref Game1.rainDrops, AmtOfRainDrops);
 
-            if (Game1.IsMasterGame)
-                ClimatesOfFerngill.Logger.Log($"Setting rain to {AmtOfRainDrops}");
-            else
+            if (ClimatesOfFerngill.WeatherOpt.Verbose)
             {
-                ClimatesOfFerngill.Logger.Log($"Setting from master: rain to {AmtOfRainDrops}");
+                ClimatesOfFerngill.Logger.Log(Game1.IsMasterGame
+                    ? $"Setting rain to {AmtOfRainDrops}"
+                    : $"Setting from master: rain to {AmtOfRainDrops}");
             }
-
         }
 
         internal void SetRainAmt(int rainAmt)
@@ -1219,7 +1231,6 @@ namespace ClimatesOfFerngillRebuild
             {
                 ClimatesOfFerngill.Logger.Log($"Setting from master: rain to {AmtOfRainDrops}");
             }
-
         }
         
         internal void Refresh()
@@ -1266,15 +1277,15 @@ namespace ClimatesOfFerngillRebuild
                 AddWeather(CurrentWeather.Wedding);
 
             //check current weathers.
-            foreach (ISDVWeather weat in CurrentWeathers)
+            foreach (ISDVWeather weather in CurrentWeathers)
             {
-                if (weat.WeatherType == "Fog" && weat.IsWeatherVisible)
+                if (weather.WeatherType == "Fog" && weather.IsWeatherVisible)
                     CurrentConditionsN |= CurrentWeather.Fog;
-                if (weat.WeatherType == "Blizzard" && weat.IsWeatherVisible)
+                if (weather.WeatherType == "Blizzard" && weather.IsWeatherVisible)
                     CurrentConditionsN |= CurrentWeather.Blizzard;
-                if (weat.WeatherType == "WhiteOut" && weat.IsWeatherVisible)
+                if (weather.WeatherType == "WhiteOut" && weather.IsWeatherVisible)
                     CurrentConditionsN |= CurrentWeather.WhiteOut;
-                if (weat.WeatherType == "Sandstorm" && weat.IsWeatherVisible)
+                if (weather.WeatherType == "Sandstorm" && weather.IsWeatherVisible)
                     CurrentConditionsN |= CurrentWeather.Sandstorm;
             }
         }
@@ -1292,7 +1303,7 @@ namespace ClimatesOfFerngillRebuild
             foreach (ISDVWeather weather in CurrentWeathers)
                 ret += weather.ToString() + Environment.NewLine;
             
-            ret += $"Weather set for tommorow is {Weathers[(int)(WeatherConditions.ConvertToCurrentWeather(Game1.weatherForTomorrow))].ConditionName} with high {TomorrowTemps?.HigherBound:N3} and low {TomorrowTemps?.LowerBound:N3}. Evening fog generated {GenerateEveningFog} ";
+            ret += $"Weather set for tomorrow is {Weathers[(int)(WeatherConditions.ConvertToCurrentWeather(Game1.weatherForTomorrow))].ConditionName} with high {TomorrowTemps?.HigherBound:N3} and low {TomorrowTemps?.LowerBound:N3}. Evening fog generated {GenerateEveningFog} ";
 
 			ret += Environment.NewLine + trackerModel;
             ret += Environment.NewLine + $"Variable Rain Status: {IsVariableRain} with rain drops currently: {AmtOfRainDrops}";
@@ -1304,23 +1315,23 @@ namespace ClimatesOfFerngillRebuild
 	    if (trackerModel is null)
 		    trackerModel = new ClimateTracker();
 		
-            //check for rain accumulation         
-            int numTotals = (int)Math.Floor(SDVTime.MinutesBetweenTwoIntTimes(2600, Game1.timeOfDay) / 10.0);
-            if (IsVariableRain)
+        //check for rain accumulation         
+        int numTotals = (int)Math.Floor(SDVTime.MinutesBetweenTwoIntTimes(2600, Game1.timeOfDay) / 10.0);
+        if (IsVariableRain)
+        {
+            for (int i = 0; i < numTotals; i++)
             {
-                for (int i = 0; i < numTotals; i++)
-                {
-                    AmtOfRainDrops = WeatherProcessing.GetNewRainAmount(AmtOfRainDrops, ClimatesOfFerngill.Translator, false);
-                    TodayRain += AmtOfRainDrops;
-                }
+                AmtOfRainDrops = WeatherProcessing.GetNewRainAmount(AmtOfRainDrops, ClimatesOfFerngill.Translator, false);
+                TodayRain += AmtOfRainDrops;
             }
-            else if (this.ContainsCondition(CurrentWeather.Rain))
-            {
-                TodayRain += AmtOfRainDrops * numTotals;
-            }
-            trackerModel.AmtOfRainSinceDay1 += TodayRain;
-            trackerModel.AmtOfRainInCurrentStreak += TodayRain;
-            TodayRain = 0;
+        }
+        else if (this.ContainsCondition(CurrentWeather.Rain))
+        {
+            TodayRain += AmtOfRainDrops * numTotals;
+        }
+        trackerModel.AmtOfRainSinceDay1 += TodayRain;
+        trackerModel.AmtOfRainInCurrentStreak += TodayRain;
+        TodayRain = 0;
         }
 
         internal void SetVariableRain(bool val)
@@ -1328,9 +1339,9 @@ namespace ClimatesOfFerngillRebuild
             IsVariableRain = val;
         }
 
-        internal static bool IsValidWeatherForSnow(RangePair Temps)
+        internal static bool IsValidWeatherForSnow(RangePair temps)
         {
-            if (Temps.HigherBound <= 2 && Temps.GetMidPoint() <= 0)
+            if (temps.HigherBound <= 2 && temps.GetMidPoint() <= 0)
                 return true;
 
             return false;
@@ -1354,9 +1365,9 @@ namespace ClimatesOfFerngillRebuild
             SetRainAmt(AmtOfRainDrops);
         }
 
-        internal static bool PreventGoingOutside(int AmtOfRainDrops)
+        internal static bool PreventGoingOutside(int amtOfRainDrops)
         {
-            if ((WeatherUtilities.GetRainCategory(AmtOfRainDrops) == RainLevels.NoahsFlood) || (WeatherUtilities.GetRainCategory(AmtOfRainDrops) == RainLevels.Typhoon))
+            if ((WeatherUtilities.GetRainCategory(amtOfRainDrops) == RainLevels.NoahsFlood) || (WeatherUtilities.GetRainCategory(amtOfRainDrops) == RainLevels.Typhoon))
                     return true;
 
             return false;

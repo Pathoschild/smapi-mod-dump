@@ -65,9 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Divorce.cs" />
     <Compile Include="HelperEvents.cs" />
     <Compile Include="FileIO.cs" />
-    <Compile Include="OutdoorAreaData.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="EventPatches.cs" />
     <Compile Include="UIPatches.cs" />

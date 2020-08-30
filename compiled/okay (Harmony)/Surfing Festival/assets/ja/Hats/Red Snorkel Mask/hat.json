@@ -1,0 +1,35 @@
+{
+	"Name": "Red Snorkel Mask",
+	"Description": "A snorkel mask - serves no other purpose than decorative.",
+	"PurchasePrice": 500,
+	"ShowHair": true,
+	"IgnoreHairstyleOffset": true,
+	"NameLocalization":
+    {
+        // "es": "",
+		"ko": "레드 스노클 마스크",
+        // "de": "",
+        // "fr": "",
+        //"hu": "",
+        //"it": "",
+        // "ja": "",
+         "pt": "Máscara Snorkel Vermelha",
+        // "ru": "",
+        //"tr": "",
+        "zh": "红色浮潜面具"
+    },
+    "DescriptionLocalization":
+    {
+        // "es": "",
+		"ko": "스노클 마스크.",
+        // "de": "",
+        // "fr": "",
+        //"hu": "",
+        //"it": "",
+        // "ja": "",
+         "pt": "Uma máscara de snorkel - serve apenas para decoração",
+        // "ru": "",
+        //"tr": "",
+        "zh": "浮潜面具——除了装饰，没有其他作用。"
+    },
+}

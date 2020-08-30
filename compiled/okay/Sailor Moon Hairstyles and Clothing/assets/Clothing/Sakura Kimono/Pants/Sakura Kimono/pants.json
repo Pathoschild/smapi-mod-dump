@@ -3,5 +3,11 @@
     "Description": "A plain kimono, lower half.",
     "Price": 50,
     "Dyeable": true,
-    "DefaultColor": "255, 255, 255, 255"
+    "DefaultColor": "255, 255, 255, 255",
+    "NameLocalization": {
+        "es": "Kimono Sakura Inferior"
+    },
+    "DescriptionLocalization": {
+        "es": "Un kimono liso, mitad inferior."
+    }
 }

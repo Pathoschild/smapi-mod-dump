@@ -1,0 +1,58 @@
+[
+	{
+		"Name":"Polished Granite Floor",
+		"File":"granite",
+		"Seasonal":false,
+		"Alternatives":0,
+		"Salesman":"Sandy",
+		"Requirements":"",
+		"Price":25,
+		"SpeedBoost":1
+	},
+	{
+		"Name":"Frozen Floor",
+		"File":"frozen",
+		"Seasonal":false,
+		"Alternatives":0,
+		"Salesman":"Sandy",
+		"Requirements":"",
+		"Price":50,
+		"SpeedBoost":2
+	},
+	{
+	
+		"Name":"Soapy Floor",
+		"File":"soapy",
+		"Alternatives":0,
+		"Salesman":"Sandy",
+		"Price":100,
+		"SpeedBoost":3
+	},
+	{
+	
+		"Name":"Honey Floor",
+		"File":"honey",
+		"Alternatives":0,
+		"Salesman":"Sandy",
+		"Price":15,
+		"SpeedBoost":-1
+	},
+	{
+	
+		"Name":"Quicksand Floor",
+		"File":"sand",
+		"Alternatives":0,
+		"Salesman":"Sandy",
+		"Price":10,
+		"SpeedBoost":-2
+	},
+	{
+	
+		"Name":"Slime Floor",
+		"File":"slime",
+		"Alternatives":0,
+		"Salesman":"Sandy",
+		"Price":5,
+		"SpeedBoost":-3
+	}
+]

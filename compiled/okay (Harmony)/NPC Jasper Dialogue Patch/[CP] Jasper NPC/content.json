@@ -1,0 +1,738 @@
+{
+"Format": "1.16.0", 
+"ConfigSchema": {
+		"FarmCaveChange": {	"AllowValues": "true, false",	"Default": "true"  },
+		"SocialGuntherandMarlon": {	"AllowValues": "true, false",	"Default": "true"	},
+		"JasperPortraits": {	"AllowValues": "original, Airyn",	"Default": "original"	},
+		"PregnancyTalk": {	"AllowValues": "true, false",	"Default": "true"	}
+	
+				},
+"Changes": [
+			
+//NPC Data
+{	"LogName": "NPC Manifestation",	"Action": "EditData",
+	"Target": "Data/NPCDispositions", 
+	"Entries": { 
+		"Jasper": "adult/polite/shy/neutral/male/not-datable/null/Town/fall 8//Museum2 17 4/Jasper"		},
+			"When": {	"HasSeenEvent |contains=50709911": false,	"HasSeenEvent |contains=50709915": false}
+		},
+{	"LogName": "NPC Manifestation - Jasper Gone",	"Action": "EditData",
+	"Target": "Data/NPCDispositions", 
+	"Entries": { 
+		"Jasper": "adult/polite/shy/neutral/male/not-datable/null/Town/fall 8//Museum2 -100 -100/Jasper"		},
+			"When": {	"HasSeenEvent:hostPlayer |contains=50709911": true,	"HasSeenEvent:hostPlayer |contains=50709915": false	}
+		},		
+{	"LogName": "NPC Manifestation - Jasper Returns",	"Action": "EditData",
+	"Target": "Data/NPCDispositions", 
+	"Entries": { 
+		"Jasper": "adult/polite/shy/neutral/male/not-datable/null/Town/fall 8//Museum2 17 4/Jasper"		},
+			"When": {	"HasSeenEvent:hostPlayer |contains=50709911": true,	"HasSeenEvent:hostPlayer |contains=50709915": true	}
+		},		
+{	"LogName": "NPC Manifestation - Makes Jasper datable only when Marriage Patch installed",	"Action": "EditData",
+		"Target": "Data/NPCDispositions", 
+		"Entries": { 
+			"Jasper": "adult/polite/shy/neutral/male/datable/null/Town/fall 8//Museum2 17 4/Jasper"		},
+				"When": {	"HasSeenEvent:hostPlayer |contains=50709911": true,	"HasSeenEvent:hostPlayer |contains=50709915": true,	"HasMod": "Jonqora.NPCJasperFix"	}
+		},
+//Gift Tastes and other details
+{	"LogName": "NPC Gift Tastes",	"Action": "EditData",	"Target": "Data/NPCGiftTastes",
+	"Entries": {
+		"Jasper": "Thank you! You truly are most generous!/72 82 243 108 121 122 258 613 563 564/Thank you! This shall be excellent for my research./96 97 98 99 459 -2 -12/I'll find a use for this. I guess./440 209/Are you mocking me? Surely this is trash!/346 2/Thank you!//"					      }
+		},
+{	"LogName": "NPC Gift Tastes - married",	"Action": "EditData",	"Target": "Data/NPCGiftTastes",
+			"Entries": {
+				"Jasper": "Thank you! I love it. And you too, of course!/72 82 243 108 121 122 258 613 563 564/Oh @, you know me so well. Thank you./96 97 98 99 459 -2 -12/Hmm, well, I suppose I might find something to do with it./440 209/Why are you giving me this, @? Is it a joke? It's not very funny!/346 2/Thank you!//"  },
+		"When": {"Relationship:Jasper":"married"}
+				},
+{	"LogName": "Animations",	"Action": "EditData",	"Target": "Data/animationDescriptions",
+	"Entries": {
+		"Jasper_Read": "22/21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 20 20 20 20 20 20 20 20 20 20/22/Strings\\animationDescriptions:Jasper_Read",
+		"jasper_sleep": "38/38/38",
+		"Jasper_Exercise": "0/16 16 16 16 17 17 17 17 16 16 16 16 17 17 17 17 16 16 16 16 17 17 17 17 16 16 16 16 16 16 16 16 18 18 18 18 16 16 16 16 18 18 18 18 16 16 16 16 18 18 18 18 16 16 16 16/0",
+		"Jasper_Breathe": "2/32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33/2/Strings\\animationDescriptions:Jasper_Breathe"  			}
+				},
+{	"LogName": "Animations",	"Action": "EditData",	"Target": "Data/animationDescriptions",
+	"Entries": {
+		"Jasper_Read": "22/21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 20 20 20 20 20 20 20 20 20 20/22"
+			},
+			"When":{"Relationship:Jasper":"Married"}	},
+{	"LogName": "Animation strings",	"Action": "EditData",	"Target": "Strings/animationDescriptions",
+	"Entries": {
+		"Jasper_Breathe": "Do not fret. I am just taking a moment to compose myself... The dark, the earth... it still haunts me, @.",
+		"Jasper_Read": "Oh, hello there @! I was just reading about the lore of Stardew Valley. But I shan't bore you with details, I'm sure you've better things to do than listen to me rabbit on.$1"
+				}	},	
+{	"LogName": "Animation strings",	"Action": "EditData",	"Target": "Strings/animationDescriptions",
+	"Entries": {
+		"Jasper_Read": "...oh, that's a ridiculous claim! There's no evidence to support it whatsover! Oh, hello @, sorry. Just reading the works of the 'esteemed' Professor Peasbody.$5"	},
+			"When": {	"Season": "Summer",	"HasSeenEvent |contains=50709921": false	}	
+				},
+{	"LogName": "Animation strings",	"Action": "EditData",	"Target": "Strings/animationDescriptions",
+	"Entries": {
+		"Jasper_Read": "...oh, I suppose... I admit it... There is some value in your claim. Oh hello @. Sorry! I was just reading Cameron's latest 'epiphanies'.$1"},
+			"When": {	"Season": "Summer",	"HasSeenEvent |contains=50709921": true	}	
+		},
+{	"LogName": "Animation strings",	"Action": "EditData",	"Target": "Strings/animationDescriptions",
+	"Entries": {	"Jasper_Read": "Nothing like indulging in a bit of light reading on a cold winter day. It's my guilty pleasure."	},
+			"When": {	"Season": "Winter"	}			},
+{	"LogName": "Animation strings",	"Action": "EditData",	"Target": "Strings/animationDescriptions",
+	"Entries": {	"Jasper_Read": "Hello @! Have you read Mr. Elliot's book? The writing style is somewhat unsophisticated, but it is quite the page turner!"	},
+			"When": {	"Season": "Winter",	"HasSeenEvent": "1848481"	}	},
+{	"LogName": "Animation strings",	"Action": "EditData",	"Target": "Strings/animationDescriptions",
+	"Entries": {	"Jasper_Read": "Greetings @! I am delving into this fascinating perspective on the Gotoran conflict."		},
+			"When": {	"Season": "Fall"	}	},
+{	"LogName": "Animation strings",	"Action": "EditData",	"Target": "Strings/animationDescriptions",
+	"Entries": {	"Jasper_Read": "Ah, foul weather is a fine excuse to undertake some 'research', don't you think?$1"	},
+				"When": {	"Weather": "Rain, Storm"	}		},
+{	"LogName": "Animation strings",	"Action": "EditData",	"Target": "Strings/animationDescriptions",
+	"Entries": {	"Jasper_Read": "Ah, foul weather is a fine excuse to undertake some 'research', don't you think? Okay, I confess. It is one of Gunther's paperbacks.$3"	},
+				"When": {	"Weather": "Rain, Storm",	"HasSeenEvent |contains=50709911": true	}	},
+//Schedule
+
+{	"LogName": "Schedule Dialogue", "Action": "Load",	"Target": "Strings/schedules/Jasper",
+	"FromFile": "assets/Schedule/ScheduleDialogue.json"	},
+{	"LogName": "Schedule - pre-accident", "Action": "Load",	"Target": "Characters/schedules/Jasper",
+	"FromFile": "assets/Schedule/Schedule.json",
+	"When": {	"HasSeenEvent |contains=50709911": false	}		},
+{	"LogName": "Schedule - pre-accident", "Action": "EditData",	"Target": "Characters/schedules/Jasper",
+	"Entries": {	
+		"Fri": "610 Museum2 18 13 0/0930 Museum2 12 13 2 Jasper_Read/1300 AdventureGuild 5 13 0 \"Strings\\schedules\\Jasper:004\"/1630 ArchaeologyHouse 22 4 2"	},
+	"When": {	"HasSeenEvent |contains=50709911": false,	"HasMod |contains=FlashShifter.StardewValleyExpandedALL": true		}	
+			},
+{	"LogName": "Schedule - recovery", 
+	"Action": "Load",
+	"Target": "Characters/schedules/Jasper",
+	"FromFile": "assets/Schedule/Schedule2.json",
+		"When": {"HasSeenEvent:hostPlayer |contains=50709915": true,"HasSeenEvent:hostPlayer |contains=50709930": false}	
+				},
+{	"LogName": "Schedule - final", 
+	"Action": "Load",
+	"Target": "Characters/schedules/Jasper",
+	"FromFile": "assets/Schedule/Schedule3.json",
+		"When": {"HasSeenEvent:hostPlayer |contains=50709930": true}	
+				},
+{	"LogName": "Schedule - if East Scarpe installed", 
+	"Action": "EditData",
+	"Target": "Characters/schedules/Jasper",
+	"Entries": {"Sat": "610 Museum2 18 13 0/930 Museum2 12 14 2 Jasper_Exercise \"Strings\\schedules\\Jasper:008\"/1100 EastScarpe 31 97 2 \"Strings\\schedules\\Jasper:saturday.001\"/1630 ArchaeologyHouse 22 4 2"},
+	"When": {"HasSeenEvent:hostPlayer |contains=50709930": true,"HasMod":"LemurKat.EastScarpe.TMX"	}
+				},
+{	"LogName": "Schedule - post accident, after marriage", 
+	"Action": "EditData",
+	"Target": "Characters/schedules/Jasper",
+	"Entries": {	
+		"marriage_Mon":	"800 Town 46 32 2 Jasper_Read \"Strings\\schedules\\Jasper:marriage_{{Random:To1, To2, To3}}\"/1200 Beach 45 22 2 \"Strings\\schedules\\Jasper:marriage_{{Random:Be1, Be2, Be3}}\"/1600 ArchaeologyHouse 4 10 0 \"Strings\\schedules\\Jasper:marriage_{{Random:AH1, AH2, AH3}}\"/2030 BusStop -1 23 3",
+		"marriage_Wed": "MAIL Jasper_Penny/GOTO marriage_Wed_NoTute/800 ArchaeologyHouse 17 12 0 \"Strings\\schedules\\Jasper:marriage_{{Random:AM1, AM2, AM3}}\"/1400 Forest 75 50 2 \"Strings\\schedules\\Jasper:marriage_{{Random:For1, For2, For3}}\"/1930 BusStop -1 23 3",
+		"marriage_Wed_NoTute": "900 Forest 75 50 2 \"Strings\\schedules\\Jasper:marriage_{{Random:For1, For2, For3}}\"/1430 ArchaeologyHouse 4 10 0 \"Strings\\schedules\\Jasper:marriage_{{Random:AH1, AH2, AH3}}\"/2030 BusStop -1 23 3",	
+		"marriage_Fri": "MAIL Dwarf_Friend/GOTO marriage_Fri_NoDwarf/800 Town 50 22 \"Strings\\schedules\\Jasper:marriage_{{Random:To4, To5, To6}}\"/1100 Mountain 52 6 2 Jasper_Breathe/1300 Mine 42 7 1 \"Strings\\schedules\\Jasper:marriage_{{Random:Dw1, Dw2, Dw3}}\"/1800 BusStop -1 23 3",
+		"marriage_Fri_NoDwarf": "800 Town 50 22 \"Strings\\schedules\\Jasper:marriage_{{Random:To4, To5, To6}}\"/1100 AdventureGuild 7 12 3 \"Strings\\schedules\\Jasper:marriage_{{Random:Adv1,Adv2,Adv3}}\"/1800 BusStop -1 23 3",
+		}
+				},
+{	"LogName": "Schedule - post accident, after marriage", 
+	"Action": "EditData",
+	"Target": "Characters/schedules/Jasper",
+	"Entries": { "marriage_Fri": "900 Town 50 22 \"Strings\\schedules\\Jasper:marriage_{{Random:To4, To5, To6}}\"/1300 AdventureGuild 5 13 3 \"Strings\\schedules\\Jasper:marriage_{{Random:Adv1, Adv2, Adv3}}\"/1630 ArchaeologyHouse 4 10 0 \"Strings\\schedules\\Jasper:marriage_{{Random:AH1, AH2, AH3}}\"/2030 BusStop -1 23 3"},
+	"When": {"HasSeenEvent:hostPlayer |contains=50709930": true,"HasSeenEvent |contains=55990004": false,"HasMod |contains=FlashShifter.StardewValleyExpandedALL": true}	
+	},
+	{
+        "Action": "EditData",
+        "Target": "Characters/schedules/Jasper",
+        "Entries":
+		{
+			"marriage_Mon": "900 Town 46 32 2 Jasper_Read \"Strings\\schedules\\Jasper:marriage_{{Random:To1, To2, To3}}\"/1200 ArchaeologyHouse 4 10 0 \"Strings\\schedules\\Jasper:marriage_{{Random:AH1, AH2, AH3}}\"/1600 Beach 38 24 2 \"Strings\\schedules\\Jasper:marriage_nm\"/1800 BusStop -1 23 3"
+			},
+			"When": {	"Season": "Winter",	"Day": "15"	}	},		
+
+//Portraits and Sprites
+//orginal
+{	"LogName": "Jasper Portraits", 	"Action": "Load","Target": "Portraits/Jasper",
+		"FromFile": "assets/Portraits/{{JasperPortraits}}/Jasper.png"		},
+{	"LogName": "Jasper Portraits - wheelchair", "Action": "EditImage",
+	"Target": "Portraits/Jasper",	"FromFile": "assets/Portraits/{{JasperPortraits}}/Jasper_wheelchair.png",			
+	"When": {"HasSeenEvent:hostPlayer |contains=50709915": true,"HasSeenEvent: hostPlayer |contains=50709930": false}	},
+{	"LogName": "Jasper Portrait - prosthetic", "Action": "EditImage","Target": "Portraits/Jasper",
+	"FromFile": "assets/Portraits/{{JasperPortraits}}/Jasper_prosthetic.png",			
+	"When": {"HasSeenEvent:hostPlayer |contains=50709930": true,"Season": "spring, summer, fall"}	},
+{	"LogName": "Jasper Portrait - prosthetic", 	"Action": "EditImage",	"Target": "Portraits/Jasper",
+	"FromFile": "assets/Portraits/{{JasperPortraits}}/Jasper_winter.png",			
+	"When": {"HasSeenEvent:hostPlayer |contains=50709930": true,"Season": "winter"	}	},
+{	"LogName": "Jasper Sprites", "Action": "Load", "Target": "Characters/Jasper","FromFile": "assets/Characters/Airyn/Jasper.png"	},
+{	"LogName": "Jasper Sprites - wheelchair", "Action": "EditImage",	"Target": "Characters/Jasper",	"FromFile": "assets/Characters/Airyn/Jasper-wheelchair.png",			
+		"When": {"HasSeenEvent:hostPlayer |contains=50709915": true,"HasSeenEvent: hostPlayer |contains=50709930": false}	},
+{	"LogName": "Jasper Sprites - prosthetic", 	"Action": "EditImage",		"Target": "Characters/Jasper",
+	"FromFile": "assets/Characters/Airyn/Jasper-prosthetic.png",			
+		"When": {"HasSeenEvent:hostPlayer |contains=50709930": true,"Season": "spring, summer, fall"}	},
+{	"LogName": "Jasper Sprites - winter", "Action": "EditImage",	"Target": "Characters/Jasper",
+	"FromFile": "assets/Characters/Airyn/Jasper-winter.png",			
+		"When": {"HasSeenEvent:hostPlayer |contains=50709930": true,"Season": "winter"}
+					},
+
+{	"LogName": "Removes Jasper from Festivals when he is AWOL",
+	"Action": "Include",
+	"FromFile": "assets/Includes/JasperAbsent.json",
+	"When": {"HasSeenEvent |contains=50709911": true,"HasSeenEvent |contains=50709915": false}
+},		
+
+//Dialogue
+{	"LogName": "Rainy Day Dialogue",	"Action": "EditData",
+	"Target": "Characters/Dialogue/rainy",
+	"Entries": {	"Jasper": "The sound of rain upon the roof is so restful, don't you think? A good, do very little kind of day."	}
+			},
+{	"LogName": "Dialogue", "Action": "Load",	"Target": "Characters/Dialogue/Jasper",
+	"FromFile": "assets/Dialogue/Dialogue-Jasper.json"	},
+{	"LogName": "Recovery Dialogue", "Action": "EditData",
+	"Target": "Characters/Dialogue/Jasper",
+	"FromFile": "assets/Dialogue/Recovery.json",
+			"When": {	"HasSeenEvent |contains=50709915": true		}	},
+{	"LogName": "RivalHearts Dialogue", 	"Action": "EditData",
+	"Target": "Characters/Dialogue/Jasper",
+	"FromFile": "assets/Dialogue/RivalHearts.json",
+			"When": {	"HasSeenEvent |contains=50709921": true		}	},
+{	"LogName": "Jasper has a crush on farmer Dialogue", "Action": "EditData",
+	"Target": "Characters/Dialogue/Jasper",
+		"FromFile": "assets/Dialogue/JasperDating.json",
+			"When": {	"HasSeenEvent |contains=50709921": true,"Relationship:Jasper": "Dating, Engaged"	}
+		},
+{	"LogName": "Farmer and Cameron crush Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Jasper",
+	"FromFile": "assets/Dialogue/PolyOptions.json",
+	"When": {
+		"HasSeenEvent |contains=50709921": true,
+		"HasDialogueAnswer": "5070124",
+		"Relationship:Jasper": "Dating, Engaged"
+			}
+		},
+{
+	"LogName": "Pendant Denying when dating", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Jasper",
+	"Entries": {
+		"refusal_knownA": "Oh! This is very sudden... I... I care for you a lot, @. But... can we move a bit slower, please?$2#$b#You might grow tired of me yet!$4",
+		"refusal_knownB": "Oh, my mind is all a buzz... Not so long ago I was married to my research. Please, give me a little more time.$2",
+		"refusal_botherA": "I need a little more time to consider this. And what it means. Sorry.$2",
+		"refusal_botherB": "Oh, @. Why are you so determined to shackle yourself to an old fool like me? I care for you deeply, but please be patient.$4"
+	},
+	"When": {		"Relationship:Jasper": "Dating"			}
+		},
+{
+	"LogName": "Engagement Dialogue",
+	"Action": "EditData",
+	"Target": "Data/EngagementDialogue",
+		  "Entries": {
+	  "Jasper0": "I still cannot believe you really want to marry me! Oh, @! I shall be honored to be your husband.$4#$b#Everything's under control! No need to fret!$1",
+	  "Jasper1": "Oh @. I am so excited for us to be starting a life together. I love you, you know.$4"
+	}
+  }, 
+// Marriage Dialogue
+{	"LogName": "Dialogue", "Action": "Load",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"FromFile": "assets/Dialogue/MarriageDialogue.json"	
+			},
+
+//Immersive "FunDay" Dialogue
+
+{	"LogName": "Dialogue", 	"Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"funLeave_Jasper": "#$c 0.5#Good morning, my love! What shall I teach the children about today? Penny prefers me to discuss geology... but Vincent loves stories about the goblins.$3#Today I intend to teach the children about fossilization. However, I fear my careful prepared lesson shall be swiftly derailed.$3",
+		"funReturn_Jasper": "#$c 0.5#Oh phew, I'm exhausted. Who would have known children would ask so many questions?#There's something very fulfilling about teaching, @. Although it certainly helps that the children are quite a delight!$3"			},
+		"When": { 	"DayofWeek":"Wednesday", "HasFlag": "Jasper_Penny"	}},
+{	"LogName": "Dialogue", 	"Action": "EditData","Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {	
+		"funReturn_Jasper": "#$c 0.5#It seems foolish, I know, for a grown man to be scared of the dark. But every rustle in the leaves, every footstep. I know it is irrational, my love, but I cannot halt the fear.$2#Ah, a pleasant day spent catching up with old friends. Marlon sends his regards, @. Oh, and I picked up this 'shiny pebble' for you as well.[62 64 66 68]$1"	},
+	"When": { 	"DayofWeek":"Friday"	}	},
+{	"LogName": "Dialogue", 	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"funLeave_Jasper": "#$c 0.5#Its a rough walk up the mountain, but it is certainly worth it.$k#$e#I still cannot believe that I shall be taking tea with one of the Smoluanu!#Have a splendid day, my love.$1",
+		"funReturn_Jasper": "#$c 0.5#Oh, so many new revelations! My mind is quite abuzz with inspiration, @. I might need some help getting to sleep tonight!$1#Our friend sent me home with this... They were insistent. Please be careful with it, my love.$2[286 287 288]"			},
+			"When": { 	"DayofWeek":"Friday", "HasFlag": "Dwarf_Friend"	}	},
+
+//Seasonal Changes
+
+{	"LogName": "Seasonal Marriage Stuff",
+	"Action": "Include",
+	"FromFile": "assets/Includes/SeasonalMarriage_{{season}}.json",
+	"When": { "Season": "summer"}
+			},
+
+
+
+
+//Visiting Dr Harvey 
+
+{				
+	"LogName": "Schedule - Visiting Harvey", 
+	"Action": "EditData",
+	"Target": "Characters/schedules/Harvey",
+	"Entries": {
+		"Thu": "730 Hospital 1 5 0/900 Hospital 4 5 1 \"Strings\\schedules\\Harvey:009\"/1250 Hospital 10 14 2/1330 Hospital 5 5 2/1410 Hospital 5 6 3 harvey_examine_left/1550 Hospital 5 5 2/1610 Hospital 4 5 0/1630 Hospital 3 15 0/1800 HarveyRoom 9 5 0/2300 HarveyRoom 13 4 1 harvey_sleep"
+			},
+		"When": {
+		"HasSeenEvent |contains=50709915": true,
+		"HasSeenEvent |contains=50709930": false
+			}	
+},
+{	
+	"LogName": "Schedule Dialogue for Harvey", 
+	"Action": "EditData",
+	"Target": "Strings/schedules/Harvey",
+	"Entries": {
+			"009": "The wound looks to be healing well.$3"
+				}				
+		},
+
+//Temp Actors and locations for Events
+
+{	"LogName": "Amber Junimo Temp Actor", "Action": "Load",	"Target": "Characters/JunimoAmber",	"FromFile": "assets/Image/JunimoAmber.png"	},
+{	"LogName": "Mines map", "Action": "Load","Target": "Maps/MineIce","FromFile": "assets/Image/MineIce.tmx"},
+{	"LogName": "Mines map", "Action": "Load","Target": "Characters/InjuredJasper","FromFile": "assets/Characters/Airyn/InjuredJasper.png"},
+{	"Action": "Load","Target": "Characters/Cameron","FromFile": "assets/Image/Cameron-sprites.png"},
+{	"Action": "Load","Target": "Portraits/Cameron",	"FromFile": "assets/Image/Cameron-portraits.png"}, 
+{	"LogName": "Jade Junimo Temp Actor", "Action": "Load","Target": "Characters/JunimoJade","FromFile": "assets/Image/JunimoJade.png"},
+{	"Action": "Load","Target": "Maps/FairyPoolPicnic","FromFile": "assets/Image/FairyPoolPicnic.tbin"},
+{	"Action": "Load","Target": "Characters/JasperClothes","FromFile": "assets/Image/clothes.png"},
+{	"Action": "Load","Target": "Characters/Jasper_Swimsuit","FromFile": "assets/Characters/Airyn/Jasper-swimsuit.png"},
+
+//Events
+
+{	"LogName": "Cindersap Events", 
+	"Action": "EditData",
+	"Target": "Data/Events/Forest",
+	"Entries": {"50709910/f Jasper 1000/w sunny/p Jasper": "continue/83 100/Jasper 77 99 2 farmer 82 97 2/skippable/AddTemporaryActor JunimoAmber 16 32 78 96 2 false/showFrame Jasper 32/pause 1500/move farmer 0 2 3/pause 1500/playSound grassyStep/showFrame Jasper 33/speak Jasper \"Oh, good afternoon, @! 'Tis a lovely day, is it not?\"/pause 500/move farmer -4 0 3/pause 500/showFrame Jasper 4/pause 500/speak Jasper \"I do enjoy taking a walk in the fresh air. Stardew Valley is something special, don't you think?\"/emote farmer 32/pause 500/speak Jasper \"Come, @. Close your eyes.\"/faceDirection Jasper 2/pause 500/showFrame Jasper 32/faceDirection farmer 2/pause 500/speak Jasper \"Breathe deep. Fill your senses with the valley.$3#$b#There is so much life here.$3\"/pause 2000/playSound leafrustle/pause 1500/emote farmer 8/pause 500/faceDirection farmer 3/pause 500/playSound junimoMeep1/pause 500/move JunimoAmber 1 0 2/faceDirection farmer 0/move JunimoAmber 0 2 2/animate JunimoAmber false false 250 20 21 22 23 20 21 22 23/pause 1500/emote farmer 16/pause 1500/faceDirection farmer 3/pause 500/faceDirection farmer 0/animate JunimoAmber false false 250 16 17 18 19 16 17 18 19/pause 500/showFrame Jasper 33/pause 500/showFrame Jasper 4/emote Jasper 8/pause 500/jump JunimoAmber 3/playSound junimoMeep1/speed JunimoAmber 7/move JunimoAmber 0 -2 3/speed JunimoAmber 7/move JunimoAmber -1 0 2/playSound leafrustle/pause 500/faceDirection Jasper 0/pause 1000/faceDirection farmer 3/faceDirection Jasper 1/speak Jasper \"I could have sworn I saw something...#$b#Well, never mind.\"/pause 1500/faceDirection Jasper 2/faceDirection farmer 2/speak Jasper \"Stardew Valley is more than just a place on the map. It is alive. Every tiny insect that scuttles, every rustle in the leaves...#$b#$q 50700436 null#But there is more than that too.#$r 50700437 50 spiritquest_Yes#Yes, I feel it too.#$r 50700437 0 spiritquest_Neu#I thought you were a scientist!#$r 50700438 -50 spiritquest_No#I don't believe any of that spiritual nonsense.\"/pause 500/showFrame Jasper 33/pause 500/speak Jasper \"Thank you for your company, @. It has been a pleasure speaking with you.\"/pause 500/showFrame Jasper 32/pause 1500/faceDirection farmer 3/pause 500/faceDirection farmer 1/move farmer 4 0 0/pause 500/faceDirection farmer 3/pause 500/emote farmer 60/move farmer 0 -3 0/pause 500/playSound junimoMeep1/showFrame Jasper 33/jump Jasper 2/pause 500/faceDirection Jasper 0/emote Jasper 8/pause 1000/end"}
+},
+{	"LogName": "Museum2 Events", "Action": "Load", "Target": "Data/Events/Museum2",	"FromFile": "assets/Museum2.json"},
+{	"LogName": "Farm Events and mail", 
+	"Action": "EditData","Target": "Data/Events/Farm",
+	"Entries": {
+		"50709911/t 600 1130/f Jasper 1500/e 50709910/e 50709900/H": "sappypiano/64 15/farmer 64 16 2 Jasper 64 18 0/broadcastEvent/addConversationTopic JasperGone1 7/addConversationTopic JasperGone2 10/pause 1500/speak Jasper \"Um, good morning, @. I just thought I'd drop by and let you know I'll be gone for a while.$4\"/pause 500/emote farmer 8/pause 500/speak Jasper \"Yes... I have decided that the only way I can restore my reputation - (and prove Peasbody wrong!) - is to find the dwarves.\"/pause 500/emote farmer 16/pause 500/speak Jasper \"Please do not fear for my safety, @. I have entered the caves on many an occasion - and I know how to use my sword.\"/pause 500/faceDirection Jasper 3/pause 500/emote Jasper 28/pause 500/faceDirection Jasper 0/pause 500/speak Jasper \"I wanted you to have this as a small token of my esteem, and gratitude for our friendship.$4 [275]#$b#In case... well...$s\"/pause 500/faceDirection Jasper 1/pause 500/faceDirection Jasper 0/pause 500/speak Jasper \"No, I shall be back! I shall return with evidence that will wipe that knowing smirk from Peasbody's face.$5\"/emote farmer 28/pause 500/speak Jasper \"Thank you, @. For all that you have done for me. And, if Yoba wills it, I shall see you in a few days.#$b#Fare thee well, my friend.\"/pause 500/end invisible Jasper",
+		"50709912/e 50709911/t 600 1130/A JasperGone1": "none/64 15/farmer 64 16 2 Gunther 64 18 0/skippable/pause 1500/speak Gunther \"Ah, good morning Mr. @!^Ah, good morning, Ms. @!#$b#I'm sorry to interrupt your day, but I am very concerned about our mutual friend.\"/pause 500/emote farmer 8/pause 500/speak Gunther \"I mean our foolhardy Professor Jasper... I tried to caution him against heading into the caves alone... but he insisted.\"/pause 500/faceDirection Gunther 2/pause 500/faceDirection Gunther 0/pause 500/speak Gunther \"The caves are dangerous - as I am sure you will testify, @! And I'm worried something terrible has happened to him.\"/pause 500/emote farmer 28/pause 500/speak Gunther \"I have heard that you have ventured into the depths. So please, keep watch for him.\"/pause 500/emote farmer 60/pause 500/end",
+		"50709913/e 50709911/A JasperGone2/x Jasper_Peasbody1 true": "null",
+		"50709915/e 50709914/A JasperHurt/x Jasper_Home true": "null",
+		"50709916/e 50709915/A JasperHome1/x Jasper_Home1 true": "null",
+		"50709929/e 50709919/A JasperHomeA/x Jasper_HomeA true": "null",
+		"50709930/e 50709920/x Jasper_HomeB true": "null",
+		"50709932/e 50709921/f Jasper 2500/D Jasper/z winter/z fall/x Jasper_Picnic true": "null"
+
+			}
+		},
+
+		{	"LogName": "Farm Events and mail", 
+			"Action": "EditData","Target": "Data/Events/Farm",
+			"Entries": {"5599000/x Jasper_LoveLetter true": "null"},
+			"When": {"Relationship:Jasper": "Engaged"}
+		},
+
+
+
+{   "Action": "EditData",
+	"Target": "Data/mail",
+	"Entries":{ 
+		"Jasper_Peasbody1": "Hello farmer,^We've never met, but I'm reaching out to you because I'm concerned about our mutual friend, Prof. Jasper Thomas. He's a hot-headed fanatic, and I've heard rumors that he's gone off into the caves following a 'white rabbit' - and, in all likelihood, got himself killed. Despite what I'm sure he's told you (since we parted rather unamicably), I've never wished harm upon him. But then again... he was always a bit of a stubborn fool, and never inclined to leave well alone what should be left alone!^I'm sorry, this isn't a threat! It's merely an expression of concern. Please, if you've found him - alive or dead - I'd appreciate you letting me know. Because we were friends once and, truth be told, I still care for the pig-headed fool.^^Regards, ^Professor Cameron Peasbody.[#]Peasbody's Letter",
+		"Jasper_Home": "Greetings @,^I am truly indebted to you. That you would find me, and bring me home. Or what is left of me. The infection has left me a shadow of my former self, and the injury was as dire as I feared... I hope it shall not come as too much as a shock to you, my friend.^^I shall be home within the next few days, into what Gunther has uncharitably labelled \"house arrest\". I suspect I shall achieve a great deal of writing, and possibly some reading too.^^Your company would, as always, be greatly appreciated.^^Best wishes, Jasper. %item conversationTopic TalkJasperHome 7 %% [#]Jasper is home.",	
+		"Jasper_Home1": "Dear @.^House arrest is starting to get tiresome. I miss the scent and the sound of the forest. I am becoming more adept with the wheelchair now, but alas it is problematic ascending and descending the stairs - for which Gunther has been very courteous in assisting - and once outside the ground proves treacherous and uneven. I am practicising my exercises every morning and evening, like a dutiful student, in the hope that soon I shall be at least somewhat mobile once more.^^Yours truly, Jasper.[#]Jasper's correspondence 1.",
+		"Jasper_HomeA": "Greetings and salutations!^I hope things are going well for you on the farm, @, and that you are not yet weary of my correspondence. I have precious few friends in this world, and I do not wish to trouble them.^Speaking of friends - may I dare to think? - I penned a missive to Peasbody and received a swift response! It appears, perhaps, that a visit may be imminent.^^Yours fondly, Jasper.[#]Jasper and Peasbody.",
+		"Jasper_Picnic": "My dear friend,^ I have discovered the most magical place! Please meet me near the statue of 'Old Man Cannoli' over the noon-time period on the next sunny day. You might like to bring your swimwear!^^Fondest regards, Jasper.[#]Invitation to a picnic",
+		"Jasper_LoveLetter": "Dearest @,^ Some have claimed I have a way with words... others that I am too flowery for my own good. I have tried to capture my feelings for you in words. Even written poetry like our friend Elliot (it was very bad, no, you cannot see it). I cannot describe how what we have makes my heart feel lighter, and my soul soar. How much the sight of your smile makes me feel alive...^I guess, what I am saying is... I love you, @.^^Yours, now and forever, Jasper. %item conversationTopic JasperEngaged 2 %%[#]A Love Letter from Jasper",
+		"Gunther_Letter": "Jasper and @,^Hope all's going well for you both, and that Jasper hasn't dug up your farm looking for artifacts yet!^I'm glad that you found each other. Anyhow, I was tidying up around the place, and found something that reminded me of Jasper, so I thought he might like it.^Take care, both of you, and don't be strangers!^^Regards, Gunther.%item object 563 1 %%[#]A gift from Gunther",
+		"Gunther_Letter2": "Jasper and @,^Hope all is going well for you both, and that Jasper hasn't dug up your farm looking for artifacts yet!^I hear you are expecting a new family member and, since I've heard kids can be quite expensive, thought I'd send you a little gift.^^Thank you, both of you, for all you've done for my museum.^^Take care, both of you, and don't be strangers!^^Regards Gunther.%item conversationTopic FarmerPregnantJasper 14 %%item money 1000 %%[#]A Gift from Gunther",
+		"Jasper_BabyArrives": "Dear @,^^Might I say how delighted my father and I were to hear your news and to welcome our first grandchild into the world. We hope one day to be able to visit, but until then, we send our love.^^Love, Mom and Dad.%item conversationTopic Jasper_BabySleep 14 %%[#]A letter from Mom and Dad",
+		"Jasper_BabyCrawling": "Dear Jasper,^I know that we've had our differences in the past, but I wanted to send you my congratulations.^I cannot believe that you, a man so dedicated to his work, would settle down and become a family man.^I am pleased that you have found your happiness.^^I do miss our friendship, you know...^With my dearest regards and deepest regrets, Cameron. %item conversationTopic Jasper_BabyCrawler 28 %%[#]A letter from Cameron",
+		"Jasper_Toddler": "JOJA PROTEKT TODDLER GATES!^^Keep your children contained with JoJa's patented Protekt Toddler gates, guaranteed to keep the kids out of harm's way while you go about your day!^^Available now from your local JojaMart, only 1500g![#]Junk Mail from JoJa "
+				}
+		}, 
+
+		{   "Action": "EditData","Target": "Data/mail",
+			"Entries":{ 
+		"Jasper_HomeB": "Hello @!^Apologies for my melancholic mood earlier. I find my outlook much improved, for I have just received excellent news. My wound has healed fully, thus I am to be fitted with a prosthetic. I will become bionic man! Ah, I jest, but it will be good to get back on my own two - well, one - foot again.^Anyway. I trust all is well with you, and maybe hope that one day soon I shall be able to visit your farm once more. For even though the mines may now be denied me, there is still so much of this world left to explore.^^Fare thee well, Jasper.[#]Jasper's Prosthetic."},
+			"When": {"IsMainPlayer": true}
+		},
+		{   "Action": "EditData",
+			"Target": "Data/mail",
+			"Entries":{ 
+		"Jasper_HomeB": "Hello @!^Apologies for my melancholic mood earlier. Memories of that night still haunt me. But I am seeing someone about them, so do not fear for me.^I trust all is well with you, and maybe hope that one day soon I shall be able to visit your farm once more. For even though the mines may now be denied me, there is still so much of this world left to explore.^^Fare thee well, Jasper.[#]Jasper's Melancholy."},
+			"When": {"IsMainPlayer": false}
+		},
+
+{           
+	"LogName": "Mine Events", 
+	"Action": "EditData",
+	"Target": "Data/Events/Mine",
+	"Entries": {
+		"50709914/e 50709912/f Jasper 1500/H": "Upper_Ambient/18 7/Harvey -100 -100 2 Jasper -100 -100 0 Dwarf -100 -100 0 farmer 18 12 0/broadcastEvent/addConversationTopic JasperHurt 3/addConversationTopic JasperHome1 7/skippable/pause 500/move farmer 0 -2 0/pause 500/playSound stairsdown/emote farmer 16/warp Dwarf 23 9/pause 500/move Dwarf -1 0 3/pause 500/jump Dwarf 1/speed Dwarf 5/move Dwarf -4 0 2/pause 500/speak Dwarf \"You! Please, you must come with haste!\"/pause 500/emote Dwarf 40/pause 500/speak Dwarf \"One of your kind, he is hurt.\"/move Dwarf 2 0 1/faceDirection Dwarf 3/speak Dwarf \"Foolish surface-dweller! I fear the Shadow People got him.\"/emote farmer 8/move farmer 0 -1 1/pause 500/faceDirection Dwarf 1/pause 500/speed Dwarf 5/move Dwarf 2 0 1/pause 500/speed Dwarf 5/move Dwarf 1 0 0/pause 500/warp Dwarf -100 -100/playSound stairsdown/pause 500/emote farmer 16/pause 500/speed farmer 7/move farmer 4 0 0/warp farmer -100 -100/globalFade/viewport -1000 -1000/changeToTemporaryMap MineIce/viewport -1000 -1000/warp Dwarf 12 11/warp farmer 15 8/faceDirection Dwarf 1/addTemporaryActor InjuredJasper 32 32 13 12 2 false/pause 1000/viewport 18 11/playMusic starshoot/faceDirection farmer 2/pause 500/emote farmer 16/pause 500/speed farmer 5/move farmer 0 3 3/move farmer -1 0 3/pause 500/speak Jasper \"@? Is that... is that you?$7#$b#I'm sorry. I'm a fool. I... I ran afoul of those... those shadow brutes.$7\"/jump Dwarf 2/pause 500/emote Dwarf 12/pause 500/speak Jasper \"... I managed to slay several... but there were too many.$7#$b#So... I ran. And fell... And tore my leg.$7\"/pause 500/emote farmer 40/pause 500/speak Jasper \"It's bad, isn't it? It's so hot, @... It's like it's on fire. But I'm so cold.$7#$b#This... this strange child found me... helped me... but... I need to get home, @.$7#$b#Please, please help me...$7\"/emote farmer 16/pause 500/globalFade/warp Dwarf -100 -100/viewport -1000 -1000/changeLocation Hospital/viewport -1000 -1000/warp InjuredJasper 20 4/warp farmer 14 6/warp Harvey 15 6/showFrame InjuredJasper 1/positionOffset  InjuredJasper 0 6/viewport 16 6/pause 500/faceDirection Harvey 3/faceDirection farmer 1/pause 500/speak Harvey \"He's fortunate you found him when you did, @. Any longer, and the infection would've spread into his organs.#$b#As it is, there's a high chance he will lose his leg.$2\"/pause 500/emote farmer 28/pause 500/speak Harvey \"But better his leg than his life.#$b#Let that be a warning to you, @. Those caves are not to be messed with.$2\"/pause 1000/end dialogue Dwarf \"I hope your friend fares well, @. But 'strange child'? That he would not even recognise those whom he seeks?#$b#You surface dwellers, truly a peculiar species.\"",
+		"55990003/e 55990002/k 55990004/f Dwarf 1000": "EarthMine/-100 -100/Dwarf 42 10 2 farmer 36 8 1/skippable/addObject 42 11 102 1/viewport 36 11/pause 500/emote Dwarf 8/pause 1500/emote Dwarf 12/pause 500/move farmer 4 0 2/jump farmer 3/emote farmer 16/pause 500/Message \"Those look like Jasper's notes.\"/pause 500/speed farmer 5/move farmer 0 2 2/faceDirection Dwarf 3/shake Dwarf 400/pause 500/move Dwarf -1 0 3/faceDirection farmer 1/question null \"#You took Jasper's notes!#What are you reading?\"/pause 500/emote Dwarf 12/pause 500/faceDirection Dwarf 1/shake Dwarf 250/speak Dwarf \"I heard your mate had stolen secrets from my people...#$b#but these are just scratch marks on paper. They don't tell me anything.\"/pause 500/emote farmer 40/pause 500/faceDirection Dwarf 1/stopMusic/pause 500/playMusic starshoot/pause 500/faceDirection Dwarf 2/speak Dwarf \"I was born deep in the Cascade Mountains, raised on tales of a homeland filled with stars, and monsters from the deep. The Fracturing tore everything apart.\"/pause 500/faceDirection Dwarf 3/pause 500/speak Dwarf \"I came here. Alone. I hoped to find my people, my heritage, but found only monsters... and loneliness.#$b#Then your friend, he came poking around... I heard he wanted to study me, and I was afraid.#$B#I've seen what humans do! I didn't want to be put in a cage.\"/pause 500/shake Dwarf 140/emote Dwarf 28/quickQuestion #Jasper would help you, not hurt you!#What made you trust me?!#What's the Fracturing?(break)pause 500\\jump Dwarf 3\\emote Dwarf 16\\speak Dwarf \"He would?! But he stole our secrets, intended to sell them to the world!#$b#He'd not hurt me now, you say? Perhaps...#$b#He's lost a lot, friend, but maybe he's also gained more?\"(break)pause 500\\speak Dwarf \"I'd been alone too long; the monsters aren't good company.#$b#You seemed... different, and I was curious. The Mother spoke highly of you, so I took a risk.#$b#I'm glad I did\"(break)pause 500\\shake Dwarf 240\\speak Dwarf \"It was terrible, friend. Terrible! The rocks betrayed us, and swallowed my family whole.#$b#Please, no more, I don't want to talk it.\"/pause 500/speak Dwarf \"Your mate... he's not like the others. No... He sees what others cannot.\"/pause 500/emote farmer 8/pause 500/speak Dwarf \"Like you, friend, it's not just your skills as a miner that prove you're worthy of trust. You have done much for this town.\"/pause 500/emote farmer 16/speak Dwarf \"What? Just because I live in a hole in the ground doesn't mean I don't hear and see things. The stones sing, and the earth... well, she thinks highly of you.#$b#Your mate seems settled... content. Despite his ailment.\"/pause 500/faceDirection Dwarf 1/pause 500/faceDirection Dwarf 3/pause 500/speak Dwarf \"Perhaps he's trustworthy.\"/pause 500/emote Dwarf 40/speak Dwarf \"... I'll ponder this...\"/pause 500/speak Dwarf \"Please, Now leave. I've much to think about.\"/pause 1000/end"
+				}
+			
+		},
+{
+	"LogName": "Cameron makes an appearance",
+	"Action": "EditData",
+	"Target": "Data/Events/ArchaeologyHouse",
+	"Entries": {
+
+		"50709921/f Jasper 2000/e 50709930/w sunny/t 900 1300": "none/13 11/Jasper 15 9 0 farmer -100 -100 1 Gunther 3 8 2/skippable/addTemporaryActor Cameron 16 32 11 12 3 true/pause 500/textAboveHead Jasper \"Now where was it?\"/pause 1000/move Cameron 0 -2 1/pause 500/textAboveHead Jasper \"Who alphabetized this?\"/move Cameron 0 -1 1/pause 1000/textAboveHead Cameron \"Hello Jasper\"/pause 500/jump Jasper 2/pause 500/faceDirection Jasper 3/pause 500/playMusic sappypiano/speak Jasper \"You came! I... I did not think you would.$4\"/pause 500/faceDirection Jasper 0/pause 500/speak Jasper \"I did not wish for you to see me like this. To see the outcome of my folly.$2\"/pause 500/move Cameron 2 0 1/pause 500/speak Cameron \"I needed to see you, Jasper. I needed to see... To see for myself...$2\"/pause 500/faceDirection Jasper 3/emote Jasper 12/pause 500/speak Jasper \"I do not wish for your pity.$5\"/emote Cameron 28/pause 500/speak Cameron \"I came because I care... And I'm sorry.$2#$b#I'm sorry my actions pushed you into... into this.$4\"/pause 500/shake Jasper 350/pause 500/faceDirection Jasper 1/pause 500/speak Jasper \"Your words wounded me, Professor Peasbody. They cut deep into my heart. To have... Oh, I thought that we were better than this.$5#$b#That I meant something to you.$2\"/pause 500/faceDirection Jasper 3/speak Cameron \"You did, Jasper. You do! I...$2\"/pause 500/shake Cameron 250/pause 1000/move Cameron 1 0 1/move Jasper 1 0 1/pause 500/textAboveHead Cameron \"Please...\"/pause 1000/warp farmer 9 14/move farmer 5 0 0/move farmer 0 -2 0/playSound woodyStep/pause 500/jump Cameron 2/faceDirection Cameron 2/faceDirection Jasper 2/jump Jasper 2/emote farmer 28/pause 1000/emote Jasper 60/emote Cameron 40/pause 1000/speak Jasper \"Why, hello @... I would like to introduce you to Professor Peasbody. You may have heard me mention him.$5^Why, hello @... I would like to introduce you to Professor Peasbody. You may have heard me mention her.$5\"/speak Cameron \"Please, call me Cameron. Professor Peasbody makes me sound like some sort of stuck-in-the-mud academic. No offence, Professor Thomas.\"/pause 500/emote Jasper 12/pause 500/speak Jasper \"None taken.$5\"/pause 500/faceDirection Cameron 1/pause 500/faceDirection Cameron 2/question null \"...#Sorry to interrupt, I'll leave you two to it.\"/pause 500/faceDirection farmer 2/move farmer 0 2 3/pause 500/textAboveHead Jasper \"Wait!\"/pause 500/move Jasper 0 4 3/move Jasper -2 0 2/pause 500/faceDirection farmer 0/move Cameron -1 0 0/pause 500/speak Jasper \"*whispers* He seems genuinely concilatory, @. And I... I find myself still feeling affection for him. Despite his faults.^*whispers* She seems genuinely concillatory, @. And I... I find myself still feeling affection for her. Despite her faults.#$b#Before I talk with him, I would appreciate your advice.^Before I talk with her, I would appreciate your advice.\"/speak Jasper \"$q 5070123 null#If the opportunity arises, should I rekindle our friendship?#$r 5070124 0 Rekindle_Yes#Yes, definitely, just... be careful.#$r 5070125 0 Rekindle_No#I think you're better off without them.\"/pause 500/speak Jasper \"Thank you for your insight, @. I shall fill you in on the details later.\"/pause 500/emote Jasper 32/pause 500/faceDirection Jasper 0/pause 500/move Jasper 0 -4 3/pause 500/faceDirection Cameron 1/pause 500/faceDirection Cameron 2/emote farmer 60/pause 500/faceDirection Cameron 1/pause 1000/message \"Better leave them alone.\"/end dialogue Jasper \"$p 5070124#It is tentative days yet, but I feel Cameron and I are perhaps ready for a fresh start.$4|I gave a definitive 'no', @. There is a heavy ache in my heart, but I know it is for the best.$2\""
+	}
+},
+{
+	"LogName": "Jasper agrees to teach the children",
+	"Action": "EditData",
+	"Target": "Data/Events/Town",
+	"Entries": {
+"55990006/t 1000 1600/w sunny/e 50709921": "{{season}}_day_ambient/63 23/Jasper 63 15 2 Jas 50 25 1 Dwarf 74 13 2 Vincent 50 26 1 Penny 52 30 3 farmer 51 30 1/addConversationTopic Jasper_Teach 7/addMailReceived Jasper_Penny/skippable/Animate Jasper false true 480 22 21 21 20 20 22/speed Vincent 5/move Vincent 13 0 3 true/speed Jas 4/move Jas 12 0 1 true/pause 3000/jump Vincent 2/textAboveHead Vincent \"I won!\"/pause 500/emote Jas 12/pause 500/faceDirection Vincent 0/pause 500/speak Vincent \"Hey, it's Professor Jasper! Mom said he went into the caves and got hurt real bad.#$b#He's super-smart, and writes books and stuff.\"/faceDirection Jas 0/pause 500/speak Vincent \"I'm gonna talk to him.\"/pause 500/emote Jas 40/pause 1000/faceDirection Jas 1/emote Jas 36/pause 1000/speak Jas \"We shouldn't interrupt him. He's probably studying something really important.$3\"/pause 500/speak Vincent \"What could be so important about a book?\"/speed Vincent 5/move Vincent 0 -3 0 true/emote Jas 12/speed Vincent 5/move Vincent 0 -6 0 true/pause 100/speed Jas 5/move Jas 0 -8 0 true/stopAnimation Jasper/warp Jasper 63 16/pause 500/speak Vincent \"Hello Mr Professor!\"/emote Jas 28/pause 500/speak Jasper \"Um, hello children. Are you, err, having fun?$3\"/faceDirection Dwarf 3/speak Vincent \"Is it true, Mr Professor? Did monsters eat your leg? Did it hurt?\"/textAboveHead Jas \"Vincent...!\"/pause 500/faceDirection Penny 0/faceDirection farmer 0/emote Penny 16/emote Vincent 40/pause 500/emote Jasper 60/advancedMove Penny false 4 0 0 -5 6 0 0 -5 2 0 0 -1/pause 500/speak Jasper \"Well yes, it hurt very much indeed. But it was not monsters that ate my leg.$2#$b#They attacked me, yes, but I ran, and fell and...$2\"/pause 500/emote Jasper 40/showFrame Jasper 33/pause 500/showFrame Jasper 32/pause 500/showFrame Jasper 33/speak Jasper \"I'm sorry. It's not a good memory. I was badly wounded, and the surgeon had to remove my leg to save my life.$2\"/speak Vincent \"...$3\"/faceDirection Jas 1 true/faceDirection Vincent 3 true/pause 500/faceDirection Jas 0/faceDirection Vincent 0/pause 500/speak Jas \"You wrote some of the books in the library, didn't you?\"/pause 500/emote Jasper 16/pause 500/speak Jasper \"You've seen my work?$3\"/pause 500/speak Jas \"I've read them! Well... bits of them, anyway.#$b#I liked the stuff about goblins.$1\"/pause 500/jump Vincent 2/pause 500/textAboveHead Vincent \"Goblins?!!\"/faceDirection Vincent 3/speak Vincent \"You didn't tell me he knew about goblins!\"/faceDirection Vincent 0/speak Vincent \"Is it true they eat their own boogers and make jelly out of fingernails and hair?$3\"/pause 500/emote Jasper 40/pause 500/speak Jasper \"The goblin kin have an elaborate and complex culture, although some of their behaviour may seem aberrant by our standards.\"/textAboveHead Vincent \"Huh?\"/pause 1500/speak Jasper \"Sorry. (coughs)#$b#Yes, some of their behaviour could be considered, um, gross.\"/textAboveHead Vincent \"Cool!\"/pause 1500/speak Penny \"Sorry about that Professor Jasper. The children can be a bit ... enthusiastic.$4\"/pause 500/speak Jasper \"It's fine, Miss Penny. In truth, it's rare for me to find an audience since my lecturing days have ended.$2#$b#And curiosity should be encouraged. I was quite the curious lad myself once.$1\"/pause 500/emote Vincent 16/faceDirection Vincent 2/speak Vincent \"Miss Penny! I've had a brilliant idea!$1\"/pause 500/speak Vincent \"Mr Professor could come and teach us! He could tell us all about the goblins!\"/speak Penny \"Oh, I'm sure Professor Jasper has more important things...\"/pause 500/textAboveHead Jasper \"Well, actually...\"/faceDirection Vincent 0/speak Vincent \"You'll teach us?!\"/pause 500/speak Jasper \"If Miss Penny is agreeable with the idea.\"/emote Vincent 8/pause 500/speak Jas \"He means if Miss Penny wants him to!\"/faceDirection Jas 2 true/faceDirection Vincent 2 true/speak Jas \"Will you, Miss Penny? He doesn't just know about goblins - he's a geologist and an explorer too. There's loads he could teach us!\"/speak Vincent \"Yes, please! Miss Penny!$1\"/pause 500/speak Penny \"Of course! I'd love it, Professor Jasper, if you could join us. Wednesdays would be good!#$b#Although they can be quite a handful!$1\"/jump Vincent 2/pause 500/textAboveHead Vincent \"Hey!\"/faceDirection Jas 0/pause 500/speak Jas \"Thank you Professor. I'm really looking forward to our first lesson.\"/emote Jas 56/pause 500/emote Jasper 32/pause 1000/end"
+			}
+		},
+   
+{
+	"LogName": "Picnic in the Woods",
+	"Action": "EditData",
+	"Target": "Data/Events/Woods",
+	"Entries": {
+
+"50709933/f Jasper 2500/n Jasper_Picnic/w sunny/z winter/z fall/t 1000 1500": "woodsTheme/14 13/Jasper -100 -100 2 farmer 13 12 3/skippable/addTemporaryActor JunimoAmber 16 32 -100 -100 1 false Character/addTemporaryActor JunimoJade 16 32 -100 -100 2 false Character/addTemporaryActor JasperClothes 16 32 -100 -100 2 false Character/pause 500/faceDirection farmer 0/pause 500/emote farmer 8/pause 500/move farmer -5 0 2/pause 500/playSound junimoMeep1/pause 500/faceDirection farmer 3/warp JunimoAmber 5 11/animate JunimoAmber true false 150 4 5 6 7/pause 500/emote farmer 16/move farmer 0 -1 3/pause 500/stopAnimation JunimoAmber/jump JunimoAmber 2/playSound junimoMeep1/speed JunimoAmber 4/move JunimoAmber -3 0 2/pause 500/move JunimoAmber 2 0 1/animate JunimoAmber true false 150 4 5 6 7/pause 500/message \"The junimo wants you to follow!\"/pause 500/stopAnimation JunimoAmber/move JunimoAmber -2 0 3/warp JunimoAmber -100 -100/pause 500/speed farmer 3/move farmer -5 0 3/warp farmer -100 -100/globalFade/viewport -1000 -1000/changeToTemporaryMap FairyPoolPicnic/warp Jasper 27 8/warp farmer 33 13/viewport 18 14/pause 500/speak Jasper \"Hello @. You're early! I was about to come out to meet you.$3#$b#But I'm afraid things take a little longer these days.$4\"/pause 500/move farmer -4 0 0/speak Jasper \"A lovely place for a picnic, is it not?\"/move farmer 0 -2 3/move farmer -1 0 3/emote farmer 20/pause 1000/speak Jasper \"The forest spirits guided me here. I was pursuing my research when I heard a strange sound. Like birds, yet not like birds, and a bright flash of color caught my gaze.$4#$b#I followed it through the trees, and found myself here.#$b#It is magical, don't you think?\"/faceDirection farmer 0/emote farmer 32/pause 500/move farmer 0 -2 3/move farmer -2 0 1/pause 500/speak Jasper \"I apologize if this is a little forward of me...$4#$b#But would you join me in the water?\"/pause 500/emote farmer 20/speak Jasper \"Great! Only, can you enter first please? I'd rather you didn't watch me. I am a bit... awkward.$4\"/pause 500/emote farmer 32/move farmer 0 -1 3/move farmer -2 0 2/faceDirection Jasper 3/move farmer 0 2 2/swimming farmer/move farmer 0 3 2/move Jasper -3 0 2/pause 500/changeSprite Jasper Swimsuit/warp JasperClothes 25 8/pause 1000/move Jasper 0 2 2/swimming Jasper/pause 500/speak Jasper \"It is easier to move. In the water, I no longer feel like I'm crippled.$10\"/warp JunimoAmber 33 11/move JunimoAmber -3 0 0/warp JunimoJade 31 8/move JunimoJade 0 1 2/move Jasper 0 2 1/move farmer 1 0 3/move Jasper 0 1 1/positionOffset farmer 0 -6/pause 500/speak Jasper \"There's been something I wish to tell you, @.$11\"/pause 1000/speak Jasper \"Ever since that terrible time in the mines, I have been re-evaluating my life.$10#$b#I guess, what I am trying to say is...$11\"/animate JunimoJade false true 150 24 25 26 27/animate JunimoAmber false true 150 24 25 26 27/speak Jasper \"I... well, I care for you, @. A... well... a lot...$11\"pause 1500/playSound slosh/positionOffset Jasper 2 0/pause 50/positionOffset Jasper 2 0/pause 50/positionOffset Jasper 2 0/pause 50/positionOffset Jasper 2 0/positionOffset farmer -2 0/pause 50/positionOffset Jasper 2 0/positionOffset farmer -2 0/shake JunimoJade 250/eyes 1 -10000/positionOffset Jasper 2 0/positionOffset farmer -2 2/shake JunimoAmber 250/positionOffset Jasper 2 0/positionOffset farmer -2 0/pause 50/positionOffset Jasper 2 0/positionOffset farmer -2 0/positionOffset Jasper 2 0/positionOffset farmer -2 0/playSound junimoMeep1/jump Jasper 1/jump farmer 1/faceDirection farmer 1/stopAnimation JunimoJade/stopAnimation JunimoAmber/emote JunimoAmber 16/jump JunimoJade 3/speak Jasper \"Are those... are those...$10\"/pause 500/speed JunimoAmber 5/move JunimoAmber -2 0 3 true/speed JunimoJade 5/move JunimoJade -2 0 3/playSound junimoMeep1/globalFade/viewport -1000 -1000/pause 500/speak Jasper \"They're real!$8#$b#They're really real!$9\"/pause 500/stopSwimming Jasper/stopSwimming farmer/end"
+	}
+},
+
+//14 Heart Event
+{
+    "LogName": "Jasper Events", 
+	"Action": "EditData",
+	"Target": "Data/Events/Farmhouse",
+	"Entries": {
+	   "55990002/f Jasper 3500/e 50709933/t 600 700/L": "Of Dwarves/-1000 -1000/farmer 27 13 2 Dwarf 39 14 0 Jasper 29 13 1/skippable/addConversationTopic DwarfVisit 5/addObject 39 17 102 1/showFrame Jasper 51/showFrame farmer 101/playSound doorClose/pause 1000/playSound thudStep/pause 1500/playSound wind/pause 1500/pause 500/pause 500/pause 1000/fade unfade/AmbientLight 150 150 150/viewport 26 16 true/emote Dwarf 40/move Dwarf -1 0 0/playSound newRecipe/move Dwarf 1 0 2/move Dwarf 0 3 2/pause 500/playSound newRecipe/emote Dwarf 8/pause 400/emote Dwarf 16/showFrame Jasper 38/pause 500/speak Jasper \"Hello? Is someone there?$12\"/playSound woodyStep/pause 500/faceDirection Dwarf 3/pause 500/jump Dwarf 5/pause 400/emote Dwarf 28/removeSprite 39 17/speed Dwarf 5/move Dwarf 0 -3 0/playSound thudStep/jump Dwarf 5/warp Dwarf -1000 -1000/pause 500/pause 500/showFrame Jasper 39/pause 500/speak Jasper \"My love? Someone's here. Oh... where are my glasses?$12\"/pause 500/emote farmer 24/pause 500/emote Jasper 12/pause 500/fade/warp Jasper 39 16 0/showFrame Jasper 35/fade unfade/pause 500/emote Jasper 28/faceDirection farmer 2/pause 500/showFrame Jasper 34/speak Jasper \"They've gone, @. Gone!$13\"/speed farmer 3/move farmer -1 0 2/speed farmer 5/move farmer 0 3 1/move farmer 12 0 1/pause 500/emote farmer 8/pause 500/speak Jasper \"All my notes... my research about the dwarves... They've been taken!$13\"/pause 500/emote farmer 16/pause 500/speak Jasper \"Who would do such a thing?$13\"/quickQuestion #Perhaps it was a dwarf?#Maybe goblins?#I bet it was Peasbody!#You definitely left them on the table?(break)pause 500\\speak Jasper \"Do you really think so? Perhaps they do not want to be found.$13\"(break)pause 500\\speak Jasper \"That seems ... not impossible. But goblins leave a lingering scent behind them - of dead leaves and decay. I do not smell that here.$13\"(break)pause 500\\speak Jasper \"$p 5070124#I do rather doubt that. Cameron would never seek to harm me in that manner.$12|I know that you and Peasbody do not see eye-to-eye, my love, but this seems underhanded, even for him.$13^I know that you and Peasbody do not see eye-to-eye, my love, but this seems underhanded, even for her.$13\"(break)pause 500\\emote Jasper 12\\speak Jasper \"Please do not make me doubt my memories. I indeed left them on the table last night.$13\"/pause 500/speak Jasper \"Maybe this is a sign... it is time I gave up on this fruitless endeavour.$13#$b#You have given me so much. What does it matter whether my theories hold truth?$12#$b#Come on my love, let's go back to bed.$12\"/pause 500/emote farmer 32/pause 1000/fade/viewport -100 -100/pause 1000/end dialogue Jasper \"I have been thinking, my love.#$b#Maybe I should turn my hand to writing fiction.#$b#I could give young Elliott a run for his money.\"",
+	   "55990004/e 55990002/f Dwarf 25/A DwarfVisit/t 600 700/L": "sappypiano/12 16/farmer 9 14 0 Jasper -100 -100 0/skippable/pause 500/playSound woodyStep/pause 500/playSound doorOpen/pause 500/warp Jasper 12 20/faceDirection farmer 2/emote farmer 32/speak Jasper \"Good morning my love! I'm pleased to see you are awake. I hope I didn't disturb you.#$b#Sleep, once again, evaded me.\"/emote farmer 16/speed farmer 5/move farmer 3 0 2/move Jasper 0 -2 0/speak Jasper \"The nightmares, yes. I needed to feel fresh air against my skin.\"/pause 500/move Jasper 1 0 3/speak Jasper \"I found something, @.\"/addObject 12 18 102 0/pause 500/jump farmer 2/speed farmer 3/move farmer 0 3 2/pause 500/speak Jasper \"It's my journal. I found it on the doorstep. With this tucked inside:\"/pause 500/faceDirection Jasper 0/Message \"Waep ahuaiit sapocahis opi uapchgiss, hemot sahyop, waep uetapotai obmupozgi. Ud wae uush ca itau chi cpech. Aami oc mubtuehc, utca chi Kachip's maech.\"/pause 500/speak Jasper \"It's Dwarvish... An invitation, I think... to meet, within the entrance to the mines.#$b#But who could have written it? The dwarves?$3#$b#What if it's a trick?$2\"/pause 500/faceDirection Jasper 3/pause 500/faceDirection Jasper 0/speak Jasper \"No, that's ridiculous. Cameron would never stoop that low, even when he sought to discredit me.^No, that's ridiculous. Cameron would never stoop that low, even when she sought to discredit me.#$b#And we have moved beyond that.\"/pause 500/speak Jasper \"Will you come with me, @? I feel a fool for admitting it... that I, a grown man, a scientist, am scared of the dark. But I will feel much stronger with you by my side.\"/emote farmer 32/emote Jasper 20/pause 1000/end"
+						    },
+	"When": {	    "HasWalletItem":"DwarvishTranslationGuide"        }
+    	},
+{
+	"LogName": "Jasper Meets Dwarf",
+	"Action": "EditData",
+	"Target": "Data/Events/Mountain",
+	"Entries": {
+"55990005/e 55990004/t 2330 2500/w sunny": "nightTime/60 7/Jasper 58 7 3 farmer 43 10 1 Dwarf -1000 -1000 2/addConversationTopic JasperMeetsDwarf 7/addMailReceived Dwarf_Friend/skippable/pause 500/move Jasper -4 0 0/pause 500/emote Jasper 28/pause 500/move Jasper -4 0 3/pause 500/shake Jasper 240/pause 500/move Jasper 4 0 0/pause 500/emote Jasper 40/pause 500/move farmer 0 -3 1/emote farmer 56/pause 500/faceDirection Jasper 3/emote Jasper 20/move farmer 7 0 1/pause 500/speak Jasper \"My love, I'm so glad to see you... I tried to be brave and come by myself... I feel like a fool.$2#$b#What if it is all a prank? I have heard that Sam is quite the prankster.$1#$b#Although I do not imagine that he would be able to write in Dwarvish.#$b#What if the monsters are waiting for me? No... oh no...$2#$b#Oh, I'm sorry, @. I'm babbling. Nervous. Thank you for meeting me.$5\"/pause 500/emote farmer 32/pause 500/showFrame Jasper 33/pause 500/showFrame Jasper 32/pause 1500/showFrame Jasper 33/pause 500/speak Jasper \"I am ready now. Let us enter.\"/faceDirection Jasper 0/move farmer 3 0 0/move Jasper 0 -2 0/fade/stopMusic/viewport -100 -100/warp Jasper 30 8/warp farmer 32 8/warp Dwarf 43 6/changeLocation Mine/viewport 37 8/playMusic Upper_Ambient/advancedMove Jasper false 10 0/move farmer 8 0 1/move farmer 0 1 1/pause 1500/move Dwarf 0 2 3 true/speak Dwarf \"Greetings sundwellers.\"/pause 500/showFrame Jasper 4/jump Jasper 3/pause 500/emote Jasper 16/speak Jasper \"I know you! You... you found me in the caves... when I was broken and alone... you fed me powdered mushrooms...$2\"/pause 500/speak Jasper \"You saved my life!$4\"/pause 500/emote Dwarf 60/pause 500/speak Jasper \"And all the time... you were.... you are...$2\"/pause 500/shake Jasper 240/move Dwarf -1 0 3/move Dwarf 0 1 3/pause 1000/faceDirection Dwarf 3/pause 500/emote Dwarf 8/pause 500/speak Dwarf \"Your mate seems somewhat... unsettled. I haven't broken him, have I?\"/emote farmer 28/quickQuestion #He's just overcome.#He's embarrassing me!#You're a dwarf, right?(break)pause 500\\speak Dwarf \"Overcome at meeting me? Humans are such strange, emotional beings.\"(break)pause 500\\emote Jasper 12\\pause 500\\speak Jasper \"My apologies, @. I did not mean to become an embarrassment.$5\"(break)pause 500\\speak Dwarf \"Dwarf is what humans call us, yes. It'll do as well as any.\"/pause 500/speak Jasper \"My apologies. It was a bit of a shock to realize I had already met the one I sought so ardently.$3#$b#It is an honor to meet you. I am Professor Jasper Thomas.$1\"/move Dwarf 0 -1 3/pause 500/speak Dwarf \"Humans offer their names so freely, I'm afraid I'm a little more attached to mine. I hope Dwarf will suffice.\"/pause 500/faceDirection Dwarf 1/pause 500/emote Dwarf 40/pause 500/faceDirection Dwarf 3/playMusic sappypiano/speak Dwarf \"I'm sorry I borrowed your notes. But I was afraid, Professor Jasper Thomas.#$b#I was afraid you'd sell our secrets to any who wanted to know them.#$b#But I've been watching you. And I no longer believe you would.\"/textAboveHead Jasper \"Watching Me?\"/pause 3000/emote Dwarf 60/pause 1500/emote Jasper 40/pause 1500/speak Jasper \"So you will teach me? You will help me correct the errors in my papers? For my own peace of mind, if nothing more.$3\"/speak Dwarf \"No, Professor Jasper Thomas, I won't. I can't\"/pause 500/textAboveHead Jasper \"Oh....\"/pause 500/speak Jasper \"I understand. I am sorry for prying too deep into what I would not - should not - understand.$2#$b#I am grateful to have met you, regardless. And thank you, for saving my life.$4\"/pause 500/faceDirection Jasper 2/faceDirection farmer 0/pause 500/speak Jasper \"We should go, @, and permit Dwarf the privacy they require.$2\"/faceDirection farmer 1/faceDirection Jasper 3/speak Dwarf \"No, Jasper Thomas, you don't understand.\"/jump Jasper 3/faceDirection Jasper 1/pause 500/speak Dwarf \"I can't teach you... because I don't know myself.\"/emote Jasper 16 true/emote farmer 16 true/speak Dwarf \"My sire told tales of the father and the mother - the sun and the earth.#$b#Of the shadowkin in the deep and the elemental wars. They taught me how to make bombs, how to cook. And who not to trust.#$b#But everything I know, everything I remember, it's all jumbled and confused.#$b#And now they are gone. I took your notes because I hoped they'd help me learn who I really was, but...\"/pause 500/speak Jasper \"...They were just chicken scratches on paper?$2\"/pause 500/emote Dwarf 60/speak Dwarf \"I was hoping, perhaps, that you could teach me, Jasper Thomas. As you teach the human cubs.#$b#That maybe we could learn the secrets of the dwarves... together?\"/pause 500/emote Dwarf 28/pause 500/emote Jasper 16/speak Dwarf \"And you could, perhaps, not share them with the world.\"/emote Jasper 32/speak Jasper \"It would be my pleasure.\"/pause 500/emote Dwarf 32/pause 500/message \"Jasper could be some time. Perhaps it's time to head home?\"/pause 1000/end invisible Jasper" 
+			}
+	},
+
+//Dialogue from other NPCs
+{
+	"LogName": "Jas Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Jas",
+	"Entries":{
+		"ArchaeologyHouse_Wed": "#$c 0.8#Hello farmer! Professor Jasper's teaching us about gemstones! There's one called a fairy stone. It sounds really pretty!#Did you know there's a type of stone made of lava? It's called obsidian, and it's really pretty!",
+		"summer_Wed_inlaw_Jasper": "I hope Professor Jasper still comes to see us now he's living with you. I've been collecting lots of stones to show him!",
+		"summerBeach6": "I found a pretty rock! Do you think Professor Jasper might like it?$3#$b#He's super smart, and answers ALL my questions. Even the ones Miss Penny says it's rude to ask.$1",
+		"fall_Wed8": "Professor Jasper looks like a wizard, doesn't he? Like he could teach you stuff in a magic school.$4#$b#He wrote some of the books in the library, you know!$1",
+		"JasperEngaged": "You and Professor Jasper are getting married! It's so exciting.$1#$b#Hey, are you gonna have kids? I'll help look after them!",
+		"Jasper_BabyCrawler": "Can I come and visit you on the farmm please? I'd really like to meet %kid1.$3#$b#I'll be careful, I promise!$1"
+			},
+	"When": {	"HasFlag:hostPlayer |contains=Jasper_Penny": true		}
+			},
+	{
+		"LogName": "Vincent Dialogue", 
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Vincent",
+		"Entries":{
+			"ArchaeologyHouse_Wed": "Hehe! There's a rock called schist! Schist!$3",
+			"summer_Wed_inLaw_Jasper": "Professor Jasper tells really cool stories about the goblins when Miss Penny's not listening.$1#$b#They're so gross! It's awesome. I hope I get to meet one someday!",
+			"JasperEngaged": "@ and Prof Jasper up a tree! K-I-S-S-I-N-G!$1"
+			},
+		"When": {	"HasFlag:hostPlayer |contains=Jasper_Penny": true}
+			},
+{
+	"LogName": "Harvey Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Harvey",
+	"Entries":
+	{
+		"JasperHurt": "I can't break confidentiality, but I can reassure you that Jasper survived his surgery and is likely to recover.#$b#A full recovery? Ah, I think it's best you speak to him yourself.$2",
+		"JasperEnagaged": "I hear you are marrying the Professor. Congratulations to you both.[348]$1"
+		}
+},
+{
+	"LogName": "Eloise Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Eloise",
+	"Entries":{
+		"ArchaeologyHouse_Wed": "#$c 0.7#Professor Jasper's knows heaps of stuff! I've read his books! Did you know he lived with the goblins? They sound cool, but also quite scary. I'm not sure I'd ever wanna meet one.#Hello farmer @! Did you know that...#$b#%Eloise shares her _extensive_ new knowledge on gemstones with you.",
+		"JasperEngaged": "You're marrying our Professor! Did you know he was once engaged to a goblin?#$b#Maybe you should ask him about that!$1"
+				},
+	"When": {	"HasFlag:hostPlayer |contains=Jasper_Penny": true		}
+				},
+{	
+	"LogName": "Festival Dialogue",
+	"Action":"Include",
+	"FromFile": "assets/Includes/DialogueFestivals.json"
+		},
+
+//Strings from Maps
+
+{	"LogName": "Strings from Maps",
+	"Action": "EditData",
+	"Target": "Strings/StringsFromMaps",
+	"FromFile": "assets/StringsFromMaps.json"
+},
+{
+	"Action": "EditMap",
+	"Target": "Maps/Museum2",
+	"MapTiles": [
+	   {
+		  "Position": { "X": 6, "Y": 16 },
+		  "Layer": "Buildings",
+		  "SetProperties": {
+			 "Action": "Message \"FilingCabinet.{{day}}\""
+		  			}
+		 		}
+			],
+		"When": {
+		"HasSeenEvent":"50709927"
+}
+},
+
+//Dwarf
+
+{
+	"LogName": "NPC Manifestation - Dwarf doesn't appear until can talk to them or Jasper is found in mines",
+	"Action": "EditData",
+	"Target": "Data/NPCDispositions",
+	"Fields": {
+		"Dwarf": 
+			{	"10": "Mine -100 -100"}
+					},
+	"When": {
+		"HasWalletItem |contains=DwarvishTranslationGuide":false,
+		"HasSeenEvent |contains=50709914":false
+			}
+	},
+{
+	"LogName": "Dwarf Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/Dwarf",
+	"FromFile": "assets/Dialogue/Dialogue-Dwarf.json"
+	},
+
+{
+	"Action": "EditMap",
+	"Target": "Maps/Mine",
+	"FromFile": "assets/Image/MineDwarfIllusion.tmx",
+	"ToArea": { "X": 37, "Y": 2, "Width": 13, "Height": 13 },
+	"When": {
+		"HasMod |contains=DaisyNiko.Tilesheets": true,
+		"HasWalletItem |contains=DwarvishTranslationGuide":false
+		}
+	},
+{
+	"Action": "EditMap",
+	"Target": "Maps/Mine",
+	"FromFile": "assets/Image/MineDwarf.tmx",
+	"ToArea": { "X": 37, "Y": 2, "Width": 13, "Height": 13 },
+	"When": {
+		"HasMod |contains=DaisyNiko.SVR2": false,
+		"HasMod |contains=DaisyNiko.Tilesheets": true,
+		"HasWalletItem |contains=DwarvishTranslationGuide":true
+				}
+	},
+{
+	"LogName": "Mine Events", 
+	"Action": "EditData",
+	"Target": "Data/Events/Mine",
+	"Entries": {
+		"55990001/k 50709914": "EarthMine/18 7/Dwarf -100 -100 0 farmer 18 12 0/skippable/pause 500/move farmer 0 -4 0/pause 500/playSound stairsdown/emote farmer 16/warp Dwarf 23 9/pause 500/move Dwarf 0 -1 3/pause 500/jump Dwarf 1/faceDirection farmer 1/speak Dwarf \"A human! Why do you enter my domain?#$b#Ah but it is foolish to speak to them; they will not understand.\"/pause 500/quickQuestion #I'm exploring the mines.#But I do understand!#Who are you?#What are you?(break)emote Dwarf 16\\speak Dwarf \"You're here to steal my treasures, sun-dweller? Be careful! She's filled with danger!\"(break)emote Dwarf 16\\speak Dwarf \"You do! I'm impressed. Although your accent's terrible.\"(break)emote Dwarf 16\\speak Dwarf \"Humans... Enter my domain and ask who I am? What's your name, sun-dweller?\"(break)emote 12\\speak Dwarf \"What am I? Well I know what you are... a rude human!\"/pause 500/speak Dwarf \"Still, you've taken the time to learn my language, and that's more than most of your kin.\"/pause 500/faceDirection Dwarf 1/pause 500/emote Dwarf 28/pause 500/move Dwarf -2 0 3/pause 500/speak Dwarf \"I don't want to trust you... but I suppose I've got no choice...#$b#Another of your kind's been sniffing around, prodding at the rock.\"/pause 500/emote farmer 12/pause 500/speak Dwarf \"What do they look like? Well... all humans look the same... but they stink of paper and ink and wear metal rims upon their face.#$b#Humans have brought terror and pain to my people, and I fear that I'm the last...#$b#Please, I must remain hidden. I'm scared of what may happen if my existence becomes known.\"/shake Dwarf 1050/message \"They seem truly terrified.\"/question null \"Please, sun-dweller, promise that you'll keep me secret!#I promise, I'll speak of you to no-one#I suppose so... yes... I'll keep your secret\"/pause 500/emote Dwarf 32/pause 1000/speak Dwarf \"Thank you, sun-dweller. Please, if you wish, come and visit me; I have wares to help in the mines.#$b#I shall help you, as you're helping me.#$b#An illusion protects my cave from prying eyes, but you, I think, can see through the veil.#$b#Fare well.\"/faceDirection Dwarf 1/move Dwarf 5 0 1 true/pause 500/playSound healSound/Message \"It's strange, but you feel the weight of your promise settle upon you like a heavy cloak. And when you try and speak of this - Dwarf? - you cannot.\"/pause 1000/end"
+			},
+		"When": {	"HasWalletItem |contains=DwarvishTranslationGuide":true		}	
+		},
+{	"LogName": "Dwarf dialogue related to Jasper",	"Action": "EditData",
+	"Target": "Characters/Dialogue/Dwarf",
+	"FromFile": "assets/Dialogue/Dwarf_Friend.json",
+		"When": {"HasSeenEvent": "55990005"}
+			},
+
+	
+	//Marriage Dialogue to help the player
+{	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+	"spouseRoom_Jasper": "$1 Yellow_scroll#I was doing some tidying and uncovered this, @. I thought it might be fun for us to learn Dwarvish together. I know, it's silly, but we could have our own secret language![99]$4$k#$e#I was doing some tidying and uncovered this, @. I thought it might be fun for us to learn Dwarvish together.$1[98 97 96]"
+			},
+	"When": {	"HasWalletItem |contains=DwarvishTranslationGuide":false			}
+					},
+{	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"Outdoor_2": "My sleep still troubles me, my love. The early morning walks help to ease some of the stiffness from these old bones.",
+		"Outdoor_3": "The animals seem unsettled this morning, @. I feel something has disturbed them.#$b#There was a boot print in the dirt, near the pond.#$b#Is Jas, perhaps, playing pranks? No, that does not seem like her.",
+		"Outdoor_4": "I awoke at dawn, my mind too busy to permit sleep, and stepped out for a walk.#$b#I caught a glimpse of a dark figure - perhaps a child? - in the fields. They scampered away at the sight of me.#$b#Who do you think they were, @?$2",
+		"funReturn_Jasper": "Sorry I am late home, my love. I thought I heard footsteps, and caught a glimpse of something following me.$3#$b#Nevermind, it was probably just a fox."
+								},
+	"When": {	"HasSeenEvent |contains=55990003":false	}
+				},
+{	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"funReturn_Jasper": "The stars are so beautiful tonight, @. Will you come out and admire them with me? Bring a blanket for us to snuggle under.$4"
+				},
+	"When": {	"HasSeenEvent |contains=55990003":true, "Season":"summer", "DayOfWeek": "monday"	}
+				},
+
+// Player "killed"
+
+{	"LogName": "Player 'Killed'", 
+	"Action": "EditData",
+	"Target": "Data/Events/Mine",
+	"Entries": {
+		"PlayerKilled": "none/-100 -100/farmer 19 10 2 Dwarf 18 10 1/pause 1500/showFrame 5/message \" ...friend?\"/pause 1000/message \"Sundweller, wake up!\"/viewport 19 10 true/pause 1000/speak Dwarf \"Foolish Sundweller! {{Random:You should have bought more of my elixirs!, Your mate won't be impressed if you go and get yourself killed., Who will buy my wares if you die?}}#$b#And I would miss you too, friend. Please be more careful!\"/move Dwarf 3 0 2/showFrame 0/pause 1000/emote farmer 28/minedeath/end"							
+				},
+			"When": {"HasSeenEvent": "55990005", "Spouse": "Jasper" }					
+			},
+{	"LogName": "Player 'Killed'", 	"Action": "EditData",
+	"Target": "Data/Events/Hospital",
+	"Entries": {
+		"PlayerKilled": "none/-100 -100/farmer 20 12 2 Harvey 21 12 3 Jasper 22 8 2/pause 1500/showFrame 5/message \" ...{0}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/speak Harvey \"Hello @, I'm pleased you're awake.#$b#I'm not sure you remember, but you were found unconscious and battered...\"/speed Jasper 5/move Jasper 0 3 2/textAboveHead Jasper \"My love!\"/move Jasper -1 0 2/faceDirection farmer 1/move Harvey 1 0 3/move Jasper 0 1 3/speak Jasper \"I came as fast as I could. Oh I was so worried.$2\"/emote farmer 60/pause 500/speak Jasper \"Are you... are you going to be okay?$2\"/emote Jasper 40/pause 1500/emote farmer 28/pause 500/pause 500/speak Harvey \"You'll be fine, @, but be a little more careful next time, okay?$s\"/pause 500/speak Harvey \"I'll leave you two to it.\"/pause 500/move Harvey 0 -4 0/move Harvey -8 0 0 true/pause 500/faceDirection Jasper 3/speak Jasper \"Oh, you scared me, @. The thought of losing you...$2#$b#I shall never tell you what to do, @. But please... try not to take unnecessary risks.$2\"/faceDirection farmer 2/pause 1000/emote farmer 28/hospitaldeath/end"				
+				},
+			"When": {	"Spouse":"Jasper"	}				
+			},
+
+//Pregnancy and baby talk (PregnancyTalk is configurable)
+{
+	"LogName": "Dialogue", 
+	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"patio_Jasper": "I feel blessed, @, to be living on this beautiful farm, with our child on the way.#$b#I feel... complete.$4",
+		"spouseRoom_Jasper": "Our child will be here soon, my love. Oh, but I am aflutter with nerves and excitement!$4",
+		"funReturn_Jasper": "I was mulling over names for our child on the walk home, @. How do you feel about %name?$1"
+						},
+	"When": {	"HavingChild":"@{{playerName}}"			}
+				},
+{	"LogName": "Dialogue", 	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"Indoor_Day_0": "I've been doing some research, and decided to make you this.[212]$3#$b#Wild salmon is packed with omega-3 to help our baby grow healthy and strong.$4",
+		"Indoor_Night_4": "Hello my love. You must be exhausted. Would you like a backrub?",
+		"Indoor_Day_2": "I rustled up a little something to help with your cravings. [342 194 195 197 233 215]$4#$b#I hope it helps.$3",
+		"spouseRoom_Jasper": "$1 Jasper_Emily#Emily suggested I give you this? I am not much into crystal healing. But it can't hurt, can it?[62 66]$k#$e#I found this book on What to Expect... Don't worry, I'm taking lots of notes.$1"			},
+	"When": {	"Pregnant":"@{{playerName}}", "HasSeenEvent": "5599008", "PregnancyTalk":true			}				
+						},
+
+{	"LogName": "Player 'Killed' while Pregant", 	"Action": "EditData",
+	"Target": "Data/Events/Hospital",
+	"Entries": {	
+			"PlayerKilled": "none/-100 -100/farmer 20 12 2 Harvey 21 12 3 Jasper 22 8 2/pause 1500/showFrame 5/message \" ...{0}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/speak Harvey \"Hello @, I'm pleased you're awake.#$b#I'm not sure you remember, but you were found unconscious and battered...\"/speed Jasper 5/move Jasper 0 3 2/textAboveHead Jasper \"My love!\"/move Jasper -1 0 2/faceDirection farmer 1/move Harvey 1 0 3/move Jasper 0 1 3/speak Jasper \"I came as fast as I could. Oh I was so worried.$2\"/emote farmer 60/pause 500/speak Jasper \"Are you... are you going to be okay?$2#$b#Is our baby...?$2\"/emote Jasper 40/pause 1500/faceDirection Jasper 1/emote farmer 28/pause 500/pause 500/speak Harvey \"Your baby's fine, @. As will you be. This time. But be a little more careful next time, okay?$s\"/pause 500/speak Harvey \"I'll leave you two to it.\"/pause 500/move Harvey 0 -4 0/move Harvey -8 0 0 true/pause 500/move Jasper 0 1 3/speak Jasper \"Oh, you scared me, @. The thought of losing you... Both of you...$2#$b#I shall never tell you what to do, @. But please... try not to take unnecessary risks.$2\"/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end"
+				},
+				"When": {	"Pregnant":"@{{playerName}}", "PregnancyTalk":true, "Spouse":"Jasper", "HasSeenEvent": "5599008"			}
+			},
+
+{	"LogName": "Setting event Player pregnant", "Action": "EditData",
+	"Target": "Data/Events/Farmhouse",
+	"Entries": {	"5599007/O Jasper/x Gunther_Letter true":"null"		},	
+			"When": {	"Pregnant":"@{{playerName}}", "PregnancyTalk":true			}							
+					},
+{	"LogName": "Setting event when player not pregnant", "Action": "EditData",
+	"Target": "Data/Events/Farmhouse",
+	"Entries": {	"5599008/O Jasper/x Gunther_Letter2 true":"null"		},			
+			"When": {	"HavingChild": "Jasper", "Pregnant |contains=@{{playerName}}":"false"	}			
+					},
+{	"LogName": "Setting event Player pregnant", "Action": "EditData",
+	"Target": "Data/Events/Farmhouse",
+	"Entries": {	"5599008/O Jasper/x Gunther_Letter2 true":"null"		},			
+			"When": {"Pregnant":"@{{playerName}}", "HavingChild": "Jasper", "PregnancyTalk":false}	
+					},
+{	"LogName": "Player pregnant", "Action": "EditData",
+	"Target": "Data/Events/Farmhouse",
+	"Entries": {
+			"5599008/e 5599007/O Jasper/t 600 700/L": "none/20 16/farmer 12 14 3 Jasper 7 14 1 Harvey -100 -100 2/addConversationTopic FarmerPregnantJasper 14/skippable/pause 500/move farmer -3 0 3/speak Jasper \"Good morning, my love. I made you breakfast.\"/addObject 7 12 201 1/pause 1500/animate farmer false true 350 104 105/pause 500/jump Jasper 5/removeSprite 7 12/pause 500/textAboveHead Jasper \"My love\"/pause 500/move Jasper 1 0 1/pause 500/stopAnimation farmer/showFrame 5/speak Jasper \"Are you ill? Perhaps we had better get you to the Doctor.$2\"/fade/viewport -1000 -1000/warp Jasper 5 7/warp Harvey 5 5/warp farmer 4 5/faceDirection farmer 1/faceDirection Jasper 0/faceDirection Harvey 3/changeLocation Hospital/viewport 8 10 true/animate Harvey true true 1000 21/pause 500/emote Jasper 28/pause 500/stopAnimation Harvey 12/pause 500/emote farmer 8/pause 500/pause 500/speak Harvey \"Well, @, the good news is, you're not ill.\"/pause 500/emote farmer 40/pause 1500/speak Harvey \"You're pregnant!#$b#Congratulations.$1\"/pause 500/textAboveHead Jasper \"Pregnant?\"/pause 1500/jump Jasper 5/emote farmer 16/pause 500/move Jasper 0 -1 3 true/move farmer 0 1 1 true/pause 1500/animate Jasper true false 4500 28/animate farmer false false 4500 101/positionOffset farmer 10 0/positionOffset Jasper -10 0/emote farmer 20/faceDirection Harvey 2/pause 1500/emote Harvey 32/pause 1000/fade/end dialogue Jasper \"I'm going to be a father... me... a father...$1#$b#Oh, I love you so much, @!$4\"",
+			"5599010/e 5599008/O Jasper/A FarmerPregnantJasper/x Jasper_BabyArrives true": "null",
+			"5599009/e 5599012/O Jasper/A Jasper_BabySleep/t 0600 0900/L":	"kindadumbautumn/11 11/farmer 12 11 0 Jasper 17 6 0/addConversationTopic Jasper_BabyCrib 14/skippable/addTemporaryActor Baby 22 32 16 4 0 false/positionOffset Baby 0 -12/animate Baby false true 480 8 9 10 11 8 8 8 8/pause 500/speak Jasper \"...so the warrior bid the goblin princess farewell...\"/pause 500/move farmer 0 -5 1 true/speak Jasper \"... for although he enjoyed their lively debates, and admired her sharp wit, he could not bear the thought of never seeing the sun again....\"/pause 500/move farmer 3 0 1/stopAnimation Baby 11/pause 500/emote farmer 32/pause 500/showFrame Baby 4/animate Baby false false 480 4 5 6 7 4 4 4/textAboveHead Baby \"Ga?\"/faceDirection Jasper 3/pause 500/speak Jasper \"Good morning my love, I hope we didn't disturb you. Little Pumpkin is quite the early bird!$4\"/pause 500/textAboveHead Baby \"Goo!\"/faceDirection farmer 0/speak Jasper \"Our little munchkin really seems to appreciate my stories!$3#$b#Would you like to join us for the end, @?$4\"/pause 500/pause 500/emote farmer 20/pause 500/textAboveHead Jasper \"Very well\"/faceDirection Jasper 0/pause 500/speak Jasper \"...so he stole away, into the bright light of the day, whilst the goblins slept off their celebrations.$1\"/pause 1000/warp -100 -100 true/end",
+			"5599013/e 5599009/A Jasper_BabyCrib/O Jasper/x Jasper_BabyCrawling true": "null",
+			"5599014/e 5599013/A Jasper_BabyCrawler/O Jasper/x Jasper_Toddler true": "null"
+			 			}
+				},
+ 	{	"LogName": "Farmer gives birth",
+		"Action": "Include",
+		"FromFile": "assets/Includes/BabyBirth.json",
+		"When": {
+			"HasFlag": "Gunther_Letter"
+			
+				}
+		},
+
+
+
+
+{	"LogName": "Villager comments - Caroline",	"Action": "EditData",
+	"Target": "Characters/Dialogue/Caroline",
+	"Entries": {	
+		"FarmerPregnantJasper": "I hear congratulations are in order, @.$1#$b#Oh no, Doctor Harvey didn't tell me; news travels fast in a small town.#$b#Let me know if there's anything you need and I'll see if I can get it for you.#$b#I had the strangest cravings when I was pregnant with Abigail.$2"	}, 
+			"When": {"Pregnant":"@{{playerName}}", "PregnancyTalk":"true"}	
+		},
+{	"LogName": "Villager comments - Jodi",	"Action": "EditData",	
+	"Target": "Characters/Dialogue/Jodi",
+	"Entries": {	
+		"FarmerPregnantJasper": "Caroline told me your happy news! It will be wonderful to have more children around.$1#$b#But do make sure to take some time for yourself now, @, while you still can.#$b#Because once they're here... Well, your life will never be the same again.$2#$b#Not bad, goodness no! Just... different...$2"	}	
+	},
+{	"LogName": "Dwarf comments",	"Action": "EditData",
+	"Target": "Characters/Dialogue/Dwarf",
+	"Entries": {	
+		"FarmerPregnantJasper": "Your mate told me you're gravid. He seems very excited about it.#$b#Bring your cub here when they're talking, and I'll teach them the sacred art of bombcraft, what do you say?"	},
+			"When": {"HasSeenEvent": "55990005", "Pregnant":"@{{playerName}}", "PregnancyTalk":"true"	 }		
+		},
+{	"LogName": "Evelyn","Action": "EditData",
+		"Target": "Characters/Dialogue/Evelyn",
+		"Entries": { 	"FarmerPregnantJasper": "A child on the way! I'm so happy for you my dear.#$b#Here, this may ease some of the morning nausea. [614]"	},
+			"When": {"Pregnant":"@{{playerName}}", "PregnancyTalk":"true"}	},		
+{	"LogName": "Marlon","Action": "EditData",
+	"Target": "Characters/Dialogue/Marlon",
+	"Entries": { 	
+		"FarmerPregnantJasper": "I hear you're expecting a child, @! Oh yes, Jasper's been crowing it the world.#$b#Congratulations to you both.#$b#And if you need anyone to teach them the sword, feel free to stop by!"}		},
+{	"LogName": "Gunther",	"Action": "EditData",
+	"Target": "Characters/Dialogue/Gunther",
+	"Entries": {	
+		"FarmerPregnantJasper": "Jasper was in here earlier, checking out an armload of parenting books. He takes everything so seriously, our professor.#$b#I'm delighted for you both."	}		},
+{	"LogName": "Jasper",	"Action": "EditData",
+	"Target": "Characters/Dialogue/Jasper",
+	"Entries": {	
+		"FarmerPregnantJasper": "Oh yes my love... I may have told a few people. Just a couple of trusted confidants...#$b#I'm not sure how it got spread around the entire town...$2"}	},
+{	"LogName": "Harvey",	"Action": "EditData",
+	"Target": "Characters/Dialogue/Harvey",
+	"Entries": {	
+		"FarmerPregnantJasper": "Your husband's been in and out, asking me questions all day! He certainly is enthusiastic.$1#$b#Make sure to eat well, get plenty of sleep and keep up light exercise, and all will go smoothly.$3"},
+			"When": {"Pregnant":"@{{playerName}}", "PregnancyTalk":"true"}	},
+
+{	"LogName": "Prregnant strings",	"Action": "EditData",
+		"Target": "Strings/StringFromCSFiles",
+		"Entries":{
+				"NPC.cs.4448": "My love, I still cannot believe that I'm going to be a father.$l",
+				"NPC.cs.4449": "Being a parent is exhausting... I don't have the energy to get up.$s",
+				"NPC.cs.4452": "I'm working on a very important dissertation. Why can't you look after the kids for once?$a",
+				"NPC.cs.4455": "I was going to make you breakfast, but I had an epiphany of inspiration.$a",
+				"NPC.cs.4462": "I got up early and tended to some of your crops. I hope it makes your job a little easier today.",
+				"NPC.cs.4463": "#$e#I also filled {0}'s water bowl.",
+				"NPC.cs.4465": "Hello {0}! ",
+				"NPC.cs.4500": "Sorry about the mess, my love... $a"
+			},
+				"When": {"Spouse":"Jasper"}
+			},
+		
+//Movies!
+{	"Action": "EditData",			"Target": "Data/ConcessionTastes",
+			"Entries": {
+			"Jasper": {		"Name": "Jasper",
+							"LovedTags": [  "Stardrop Sorbet",  "Cappucino Mousse Cake",  "Ice Cream Sandwich"	],
+							"LikedTags": [ 	  "Sweet"	],
+							"DislikedTags": [  "Kale Smoothie",  "Salted Peanuts"]		}			}
+			},
+{	"Action": "EditData",	"Target": "Data/MoviesReactions",
+	"FromFile": "assets/MoviesReactionsJasper.json"			},
+
+{	
+	"LogName":"Brings in Marlon and Gunther as Characters",
+	"Action": "Include",
+	"FromFile": "assets/Includes/GuntherMarlon.json"
+	}
+
+
+
+
+
+	]
+	}

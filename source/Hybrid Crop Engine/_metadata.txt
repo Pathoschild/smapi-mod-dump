@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/HybridCropEngine.git
+
+mods:
+   Hybrid Crop Engine
+
+latest commit:
+   commit 7a03b7cb60b90969d8d7d57c5414c3b1367295d6
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Wed Jun 17 13:05:35 2020 -0400
+   
+       Initial commit
+   

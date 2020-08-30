@@ -10,12 +10,11 @@ namespace DynamicNightTime.Patches
         public static void Postfix()
         {
             SDVTime sunriseSTime = DynamicNightTime.GetSunrise();
-            sunriseSTime.AddTime(-10);
+            //sunriseSTime.AddTime(-10);
             int sunriseTime = sunriseSTime.ReturnIntTime();
             SDVTime sunsetT = DynamicNightTime.GetSunset();
             sunsetT.AddTime(-20);
             
-
             int astronTime = DynamicNightTime.GetMorningAstroTwilight().ReturnIntTime();
 
             //colors
@@ -106,15 +105,15 @@ namespace DynamicNightTime.Patches
                     if (Game1.timeOfDay < solarNoon)
                     {
                         //this is really the mask color, tho.
-                        //Color newSunrise = new Color(12,49,100);
-                        Color newSunrise = new Color(9,49,100);
+                        var newSunrise = DynamicNightTime.NightConfig.MoreOrangeSunrise ? new Color(13,72,147) : new Color(9,49,100);
+
                         float minEff = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, sunriseTime) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
                         float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunriseTime, solarNoon));
 
                         float tgtColorR = newSunrise.R - 0;
                         float tgtColorG = newSunrise.G - 5;
                         float tgtColorB = newSunrise.B - 1;
-                        Color destColor = new Color((byte)(9 - (tgtColorR*percentage)), (byte)(49 -(tgtColorG*percentage)),(byte)(100 -(tgtColorB*percentage)));
+                        Color destColor = new Color((byte)(newSunrise.R - (tgtColorR*percentage)), (byte)(newSunrise.G -(tgtColorG*percentage)),(byte)(newSunrise.B -(tgtColorB*percentage)));
                         Game1.outdoorLight = destColor;
                     }
                     if (Game1.timeOfDay == solarNoon)

@@ -1,11 +1,12 @@
-const assetsDir = __dirname + "/../NpcAdventure/assets"
-const officialLocaleDir = __dirname + "/../NpcAdventure/locale"
+const assetsDir = __dirname + "/../assets"
+const officialLocaleDir = __dirname + "/../locale"
 const unofficialLocaleDir = __dirname + "/../unofficial/locale";
 const excludedLocaleDir = __dirname + "/../Contrib/Locale";
 const suffix = "json";
 const supportedLocales = [
   {code: "pt-BR", name: "Portuguese", dir: officialLocaleDir, official: true},
-  {code: "es-ES", name: "Spanish", dir: officialLocaleDir, official: true },
+  {code: "es-ES", name: "Spanish", dir: officialLocaleDir, official: true},
+  {code: "ko-KR", name: "Korean", dir: officialLocaleDir, official: true},
   {code: "ja-JP", name: "Japanese", dir: unofficialLocaleDir, official: false},
   {code: "ru-RU", name: "Russian", dir: unofficialLocaleDir, official: false},
 ];
@@ -167,10 +168,10 @@ function mark(stat) {
 const analysis = analyze();
 
 for (let stat of analysis.stats) {
-  console.log(` ${mark(stat)} Locale: ${stat.official ? "*" : ""}${stat.label} (${stat.locale}) - Covered ${stat.coverage.covered} entries of ${stat.coverage.total} (${Number(stat.coverage.percentage * 100).toFixed(2)}%)`);
+  console.log(` ${mark(stat)} Locale: ${!stat.official ? "~" : ""}${stat.label} (${stat.locale}) - Covered ${stat.coverage.covered} entries of ${stat.coverage.total} (${Number(stat.coverage.percentage * 100).toFixed(2)}%)`);
 }
 
 const reportFile = process.argv[2] || "report.json";
 require("fs").writeFileSync(reportFile, JSON.stringify(analysis));
-console.log("\n * = official localization");
+console.log("\n ~  unofficial/community localization");
 console.log(`Report written to ${reportFile}`);

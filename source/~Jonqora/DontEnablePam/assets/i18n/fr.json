@@ -1,0 +1,87 @@
+﻿{
+  //FRENCH TRANSLATION
+  "Changes": [
+
+    //Quest Details
+    {
+      "LogName": "Change Pam Is Thirsty quest details (Pam)",
+      "Action": "EditData",
+      "Target": "Data/Quests",
+      "Fields": {
+        "103": {
+          2: "Pam essaie de boire plus de jus à la place de la bière blonde. Vous pouvez en faire vous-même en mettant n'importe quel légume dans un tonneau.",
+          3: "Apportez à Pam un jus.",
+          9: "Donne-moi ça. *Bois*... Ahh, ça me fait du bien.#$b#C'est agréablement frais ... très rafraîchissant et légèrement sucré avec un peu de piquant à la saveur.#$b#Merci beaucoup. Ça compte beaucoup pour moi. Ce truc est plutôt bon en fait !$h"
+        }
+      },
+      "When": {
+        "QuestLetterFrom": "Pam"
+      }
+    },
+    {
+      "LogName": "Change Pam Is Thirsty quest details (Penny)",
+      "Action": "EditData",
+      "Target": "Data/Quests",
+      "Fields": {
+        "103": {
+          2: "Penny essaie d'amener Pam à boire plus de jus. Vous pouvez en faire vous-même en mettant n'importe quel légume dans un tonneau.",
+          3: "Apportez à Pam un jus.",
+          9: "Donne-moi ça. *Bois*... Ahh, ça, c'est plutôt bien !#$b#C'est agréablement frais ... très rafraîchissant et légèrement sucré avec un peu de piquant à la saveur.#$b#Merci beaucoup. Ça compte beaucoup pour moi. Je dirai également merci à Penny.$h"
+        }
+      },
+      "When": {
+        "QuestLetterFrom": "Penny"
+      }
+    },
+
+    //Quest Mail (if replacing original mail)
+    {
+      "LogName": "Change Pam Is Thirsty quest mail (Pam)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "summer_14_1": "Salut toi,^^Ma gorge est presque aussi sèche que le sable que l’on trouve dans le désert. J'ai vraiment envie d'une bière blonde, mais Penny me pousse à boire du jus à la place. Vous en avez ?^^J'aimerais essayer du jus de panais, mais n'importe quel jus de légumes fera l'affaire.^^   -Pam%item quest 103 %%[#]La demande de Pam"
+      },
+      "When": {
+        "QuestLetterFrom": "Pam",
+        "ReplaceOriginalMail": "true"
+      }
+    },
+    {
+      "LogName": "Change Pam Is Thirsty quest mail (Penny)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "summer_14_1": "@-^J'essaie d'amener ma mère à boire plus de jus. Cependant, nous n'en avons pas chez nous. Pourriez-vous lui apporter du jus ?^   -Penny^^P.S. Le jus de panais serait le meilleur, mais n'importe quel jus de légumes fera l'affaire.%item quest 103 %%[#]La demande de Penny"
+      },
+      "When": {
+        "QuestLetterFrom": "Penny",
+        "ReplaceOriginalMail": "true"
+      }
+    },
+    
+    //Quest Mail (if delivering new quest mail)
+    {
+      "LogName": "Add new Pam Is Thirsty quest mail #2 (Pam)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "6721DontEnablePam_NewMail": "Salut toi,^^Je sais que je vous ai déjà demandé une bière blonde, mais Penny me presse de boire plus de jus ces jours-ci. Vous en avez ?^^J'aimerais essayer du jus de panais, mais n'importe quel jus de légumes fera l'affaire.^^   -Pam%item quest 103 %%[#]Nouvelle demande de Pam"
+      },
+      "When": {
+        "QuestLetterFrom": "Pam"
+      }
+    },
+    {
+      "LogName": "Add new Pam Is Thirsty quest mail #2 (Penny)",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "6721DontEnablePam_NewMail": "@-^Ma mère a envie d'une bière blonde, mais j'essaie de l'encourager à boire plus de jus à la place. Cependant, nous n'avons pas de jus à la maison. Pourriez-vous lui en apporter ?^   -Penny^^P.S. J'imagine qu'elle aimerait vraiment le jus de panais, mais n'importe quel jus de légumes fera l'affaire.%item quest 103 %%[#]La demande de Penny"
+      },
+      "When": {
+        "QuestLetterFrom": "Penny"
+      }
+    }
+  ]
+}

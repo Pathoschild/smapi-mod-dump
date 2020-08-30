@@ -1,3 +1,10 @@
 {
-  "HotKey": "F9"
+  "HotKey": "F9",
+  "EnableHotKey": true,
+  "EnableMobileApp": true,
+  "AppBackgroundColor": "255, 200, 120, 255",
+  "InputColor": "0, 0, 0, 255",
+  "PrevInputColor": "100, 100, 100, 255",
+  "AppMarginX": 5,
+  "AppMarginY": 5
 }

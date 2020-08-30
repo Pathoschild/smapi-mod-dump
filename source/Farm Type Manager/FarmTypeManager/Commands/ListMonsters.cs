@@ -19,15 +19,15 @@ namespace FarmTypeManager
         {
             if (!Context.IsGameLaunched) { return; } //if the game hasn't fully launched yet, ignore this command
 
-            Monitor.Log($"Standard monster names:", LogLevel.Info);
-            Monitor.Log($"", LogLevel.Info);
+            Utility.Monitor.Log($"Standard monster names:", LogLevel.Info);
+            Utility.Monitor.Log($"", LogLevel.Info);
             foreach (string monster in GetFTMMonsterNames()) //for each monster name from FTM's basic list
             {
-                Monitor.Log($"{monster}", LogLevel.Info);
+                Utility.Monitor.Log($"{monster}", LogLevel.Info);
             }
-            Monitor.Log($"", LogLevel.Info);
-            Monitor.Log($"Custom monster names:", LogLevel.Info);
-            Monitor.Log($"", LogLevel.Info);
+            Utility.Monitor.Log($"", LogLevel.Info);
+            Utility.Monitor.Log($"Custom monster names:", LogLevel.Info);
+            Utility.Monitor.Log($"", LogLevel.Info);
             string previousAssembly = null; //the most recently displayed assembly name
             List<Type> monsters = GetAllSubclassTypes(typeof(Monster)); //a list of every available monster type (including those from SDV and this mod)
             foreach (Type monster in monsters) //for each available monster type
@@ -41,13 +41,13 @@ namespace FarmTypeManager
 
                 if (previousAssembly != currentAssembly) //if this monster is from a different assembly than the previously displayed one
                 {
-                    Monitor.Log($"-----", LogLevel.Info);
-                    Monitor.Log($"Mod: {currentAssembly}", LogLevel.Info); //display the assembly name
-                    Monitor.Log($"-----", LogLevel.Info);
+                    Utility.Monitor.Log($"-----", LogLevel.Info);
+                    Utility.Monitor.Log($"Mod: {currentAssembly}", LogLevel.Info); //display the assembly name
+                    Utility.Monitor.Log($"-----", LogLevel.Info);
                     previousAssembly = currentAssembly;
                 }
-                
-                Monitor.Log($"{monster.FullName}", LogLevel.Info); //display this monster's name (i.e. the name compatible with this mod's MonsterName setting)
+
+                Utility.Monitor.Log($"{monster.FullName}", LogLevel.Info); //display this monster's name (i.e. the name compatible with this mod's MonsterName setting)
             }
         }
 

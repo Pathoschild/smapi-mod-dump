@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.4.1
+- Some trace spam removed
+
 ### 1.4
  - Updated to.. SDV 1.4
  - Features removed that are now vanilla (duplicate prevention, see 1.4 release notes)

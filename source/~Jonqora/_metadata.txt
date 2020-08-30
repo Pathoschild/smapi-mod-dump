@@ -5,11 +5,12 @@ mods:
    Angry Grandpa
    Fish Preview
    Show Item Quality
+   UV Index (Sunscreen Mod)
 
 latest commit:
-   commit 3ce7666ab5de141245e90da34f998e17bfab6d98
+   commit a65172bb73fc482d763a84e665cee5c2c2ec4d6e
    Author: Ellen Lloyd <ellen.lloyd@usask.ca>
-   Date:   Thu Jul 16 13:35:43 2020 -0400
+   Date:   Sat Aug 29 15:59:46 2020 -0400
    
-       [AngryGrandpa] Update README and other docs for v1.1.0 release
+       [SunscreenMod] Add more promo images for nexusmods
    

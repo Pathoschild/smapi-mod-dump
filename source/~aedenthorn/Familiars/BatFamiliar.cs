@@ -132,12 +132,13 @@ namespace Familiars
 			}
 			if (lastScreechCounter < 0 && GetBoundingBox().Intersects(GetOwner().GetBoundingBox()))
 			{
-				base.currentLocation.playSound("batScreech", NetAudio.SoundContext.Default);
+				if(ModEntry.Config.BatSoundEffects)
+					currentLocation.playSound("batScreech", NetAudio.SoundContext.Default);
 				lastScreechCounter.Value = 10000;
 			}
 
 			chargingMonster = false;
-			if(lastHitCounter < 0)
+			if(lastHitCounter < 0 && !(currentLocation is SlimeHutch))
             {
 				foreach (NPC npc in currentLocation.characters)
 				{
@@ -251,12 +252,12 @@ namespace Familiars
 
         private int AttackInterval()
         {
-			return Math.Max(500, 5000 - (int)Math.Sqrt(exp));
+			return (int)(Math.Max(500, 5000 - (int)Math.Sqrt(exp)) * ModEntry.Config.BatAttackIntervalMult);
         }
 
         private int BaseDamage()
         {
-			return (int)Math.Sqrt(exp);
+			return (int)(Math.Sqrt(exp) * ModEntry.Config.BatDamageMult);
         }
 
         protected override void updateAnimation(GameTime time)

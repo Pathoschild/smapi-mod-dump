@@ -33,9 +33,9 @@ namespace FarmTypeManager
             }
             catch (Exception ex)
             {
-                Monitor.Log($"An error happened while loading FTM's GMCM options menu. That menu might be missing or fail to work. The auto-generated error message has been added to the log.", LogLevel.Warn);
-                Monitor.Log($"----------", LogLevel.Trace);
-                Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+                Utility.Monitor.Log($"An error happened while loading FTM's GMCM options menu. That menu might be missing or fail to work. The auto-generated error message has been added to the log.", LogLevel.Warn);
+                Utility.Monitor.Log($"----------", LogLevel.Trace);
+                Utility.Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
             }
         }
 

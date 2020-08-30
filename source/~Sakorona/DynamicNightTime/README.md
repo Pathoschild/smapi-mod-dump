@@ -1,5 +1,4 @@
 # Dynamic Night Time
-Version: 1.3.4
 
 ## Requirements
 - SMAPI 3.0+
@@ -39,4 +38,4 @@ To configure, open up `config.json` in your mod folder.
 
 - `NightDarknessLevel` - Set values from 1-4, as you go higher, it gets darker.
 
-- `LessOrangeSunrise` - Uses a less orange sunrise in the morning
+- `MoreOrangeSunrise` - Uses a more orange sunrise in the morning

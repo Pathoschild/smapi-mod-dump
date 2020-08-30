@@ -1,14 +1,12 @@
 # Lunar Disturbances
 
-## Current Version:
-
-1.3.1
+## Current Version: 1.4
 
 ## Requirements
 
-- SMAPI 3.5+
+- SMAPI
 - SpaceCore
-- Stardew Valley 1.4+
+- Stardew Valley
 
 ## This Mod Does:
 

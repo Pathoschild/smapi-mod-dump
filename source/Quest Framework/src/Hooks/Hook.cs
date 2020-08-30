@@ -1,4 +1,5 @@
-﻿using QuestFramework.Quests;
+﻿using Newtonsoft.Json;
+using QuestFramework.Quests;
 using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +12,21 @@ namespace QuestFramework.Hooks
         public Actions Action { get; set; }
         public Dictionary<string, string> Has { get; set; }
 
-        internal CustomQuest managedQuest;
+        [JsonIgnore]
+        public CustomQuest ManagedQuest { get; internal set; }
 
         public void Execute(ICompletionArgs args)
         {
-            if (this.managedQuest == null)
+            if (this.ManagedQuest == null)
                 return;
 
             var manager = QuestFrameworkMod.Instance.QuestManager;
-            int questId = manager.ResolveGameQuestId(this.managedQuest.GetFullName());
+            int questId = manager.ResolveGameQuestId(this.ManagedQuest.GetFullName());
 
             switch (this.Action)
             {
                 case Actions.Accept:
-                    manager.AcceptQuest(this.managedQuest.GetFullName());
+                    manager.AcceptQuest(this.ManagedQuest.GetFullName());
                     break;
                 case Actions.CheckIfComplete:
                     var quest = Game1.player.questLog.Where(q => q.id.Value == questId).FirstOrDefault();
@@ -41,7 +43,6 @@ namespace QuestFramework.Hooks
                         return;
                     
                     Game1.player.removeQuest(questId);
-                    this.managedQuest.AsStatefull().ResetState();
                     break;
             }
         }

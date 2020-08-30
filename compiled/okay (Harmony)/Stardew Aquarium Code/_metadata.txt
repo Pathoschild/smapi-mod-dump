@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6372
+IDs: Cherry.StardewAquarium
+update keys: Nexus:6372, GitHub:ChroniclerCherry/stardew-valley-mods

@@ -59,6 +59,24 @@ namespace LineSprinklers
 
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.Input.ButtonReleased += OnButtonRelease;
+        }
+
+        private void OnButtonRelease(object sender, ButtonReleasedEventArgs e) {
+            if (e.Button == SButton.R || e.Button == SButton.LeftStick || e.Button == SButton.MouseMiddle) {
+                if (Game1.player.currentLocation.getObjectAtTile((int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y) != null) {
+                    if (Game1.player.currentLocation.getObjectAtTile((int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y).DisplayName.Contains("Iridium Line Sprinkler")) {
+                        Game1.player.currentLocation.objects.Remove(e.Cursor.GrabTile);
+                        Game1.player.dropItem(new StardewValley.Object(645, 1));
+                    } else if (Game1.player.currentLocation.getObjectAtTile((int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y).DisplayName.Contains("Quality Line Sprinkler")) {
+                        Game1.player.currentLocation.objects.Remove(e.Cursor.GrabTile);
+                        Game1.player.dropItem(new StardewValley.Object(621, 1));
+                    } else if (Game1.player.currentLocation.getObjectAtTile((int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y).DisplayName.Contains("Line Sprinkler")) {
+                        Game1.player.currentLocation.objects.Remove(e.Cursor.GrabTile);
+                        Game1.player.dropItem(new StardewValley.Object(599, 1));
+                    }
+                }
+            }
         }
 
         /// <summary>Get an API that other mods can access. This is always called after <see cref="M:StardewModdingAPI.Mod.Entry(StardewModdingAPI.IModHelper)" />.</summary>
@@ -119,6 +137,8 @@ namespace LineSprinklers
             }
         }
 
+
+
         /// <summary>Get all in-game locations.</summary>
         private IEnumerable<GameLocation> GetLocations()
         {
@@ -165,62 +185,62 @@ namespace LineSprinklers
             switch (name)
             {
                 case "Line Sprinkler (D)":
-                    for (int y = 0; y < this.Config.BasicRange; y++)
+                    for (int y = 0; y <= this.Config.BasicRange; y++)
                         yield return new Vector2(0, y);
                     break;
 
                 case "Line Sprinkler (U)":
-                    for (int y = 0; y < this.Config.BasicRange; y++)
+                    for (int y = 0; y <= this.Config.BasicRange; y++)
                         yield return new Vector2(0, -y);
                     break;
 
                 case "Line Sprinkler (L)":
-                    for (int x = 0; x < this.Config.BasicRange; x++)
+                    for (int x = 0; x <= this.Config.BasicRange; x++)
                         yield return new Vector2(-x, 0);
                     break;
 
                 case "Line Sprinkler (R)":
-                    for (int x = 0; x < this.Config.BasicRange; x++)
+                    for (int x = 0; x <= this.Config.BasicRange; x++)
                         yield return new Vector2(x, 0);
                     break;
 
                 case "Quality Line Sprinkler (D)":
-                    for (int y = 0; y < this.Config.QualityRange; y++)
+                    for (int y = 0; y <= this.Config.QualityRange; y++)
                         yield return new Vector2(0, y);
                     break;
 
                 case "Quality Line Sprinkler (U)":
-                    for (int y = 0; y < this.Config.QualityRange; y++)
+                    for (int y = 0; y <= this.Config.QualityRange; y++)
                         yield return new Vector2(0, -y);
                     break;
 
                 case "Quality Line Sprinkler (L)":
-                    for (int x = 0; x < this.Config.QualityRange; x++)
+                    for (int x = 0; x <= this.Config.QualityRange; x++)
                         yield return new Vector2(-x, 0);
                     break;
 
                 case "Quality Line Sprinkler (R)":
-                    for (int x = 0; x < this.Config.QualityRange; x++)
+                    for (int x = 0; x <= this.Config.QualityRange; x++)
                         yield return new Vector2(x, 0);
                     break;
 
                 case "Iridium Line Sprinkler (D)":
-                    for (int y = 0; y < this.Config.IridiumRange; y++)
+                    for (int y = 0; y <= this.Config.IridiumRange; y++)
                         yield return new Vector2(0, y);
                     break;
 
                 case "Iridium Line Sprinkler (U)":
-                    for (int y = 0; y < this.Config.IridiumRange; y++)
+                    for (int y = 0; y <= this.Config.IridiumRange; y++)
                         yield return new Vector2(0, -y);
                     break;
 
                 case "Iridium Line Sprinkler (L)":
-                    for (int x = 0; x < this.Config.IridiumRange; x++)
+                    for (int x = 0; x <= this.Config.IridiumRange; x++)
                         yield return new Vector2(-x, 0);
                     break;
 
                 case "Iridium Line Sprinkler (R)":
-                    for (int x = 0; x < this.Config.IridiumRange; x++)
+                    for (int x = 0; x <= this.Config.IridiumRange; x++)
                         yield return new Vector2(x, 0);
                     break;
             }

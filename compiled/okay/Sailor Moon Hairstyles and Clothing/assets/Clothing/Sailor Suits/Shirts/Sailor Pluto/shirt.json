@@ -4,5 +4,11 @@
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless"
+    "Metadata": "Sleeveless",
+    "NameLocalization": {
+        "es": "Sailor Pluto"
+    },
+    "DescriptionLocalization": {
+        "es": "Un traje de marinero sin mangas con un corte alto."
+    }
 }

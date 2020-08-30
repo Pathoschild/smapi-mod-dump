@@ -1,6 +1,7 @@
 ﻿using QuestFramework.Framework.Hooks;
 using QuestFramework.Hooks;
 using QuestFramework.Quests;
+using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,19 @@ namespace QuestFramework.Framework
 {
     internal class HookManager
     {
+        private readonly IMonitor monitor;
+
         public List<Hook> Hooks { get; private set; }
-        public Dictionary<string, Func<string, bool>> Conditions { get; private set; }
+        public Dictionary<string, Func<string, CustomQuest, bool>> Conditions { get; }
         public Dictionary<string, HookObserver> Observers { get; }
 
-        public HookManager()
+        public HookManager(IMonitor monitor)
         {
             this.Hooks = new List<Hook>();
             this.Observers = new Dictionary<string, HookObserver>();
+            this.Conditions = CommonConditions.GetConditions();
             this.Clean();
+            this.monitor = monitor;
         }
 
         public void CollectHooks(List<CustomQuest> managedQuests)
@@ -28,7 +33,7 @@ namespace QuestFramework.Framework
                         select new { managedQuest = quest, hook };
 
             this.Hooks = hooks.Select(h => { 
-                h.hook.managedQuest = h.managedQuest; return h.hook; 
+                h.hook.ManagedQuest = h.managedQuest; return h.hook; 
             }).ToList();
         }
 
@@ -52,7 +57,7 @@ namespace QuestFramework.Framework
             this.Observers.Add(hookObserver.Name, hookObserver);
         }
 
-        public bool CheckConditions(Dictionary<string, string> conditions, IEnumerable<string> ignore = null)
+        public bool CheckConditions(Dictionary<string, string> conditions, CustomQuest context, IEnumerable<string> ignore = null)
         {
             bool flag = true;
 
@@ -64,23 +69,52 @@ namespace QuestFramework.Framework
                 if (ignore != null && ignore.Any(ig => ig == cond.Key))
                     continue;
 
-                flag &= this.CheckCondition(cond.Key, cond.Value);
+                flag &= this.CheckCondition(cond.Key, cond.Value, context);
             }
+
+            this.monitor.VerboseLog($"All checked conditions result is {flag}");
 
             return flag;
         }
 
-        public bool CheckCondition(string condition, string value)
+        public bool CheckCondition(string condition, string value, CustomQuest context)
         {
+            bool isNot = false;
+            string realConditionName = condition;
+
+            if (condition == null || value == null)
+                return true;
+
+            if (condition.StartsWith("not:"))
+            {
+                condition = condition.Substring(4);
+                isNot = true;
+            }
+
             if (this.Conditions.TryGetValue(condition, out var conditionFunc))
-                return conditionFunc(value);
+            {
+                bool result = false;
+
+                foreach (string valuePart in value.Split('|'))
+                    result |= conditionFunc(valuePart.Trim(), context);
+
+                if (this.monitor.IsVerbose)
+                    this.monitor.Log(
+                        $"Checked condition `{realConditionName}` for `{value}` " +
+                        $"in quest context `{context.GetFullName()}` " +
+                        $"returns {(isNot ? !result : result)}");
+
+                return isNot ? !result : result;
+            }
+
+            this.monitor.Log(
+                $"Checked unknown condition `{condition}` in quest context `{context.GetFullName()}`. Result for unknown conditions is always false.", LogLevel.Warn);
             
             return false;
         }
 
         public void Clean()
         {
-            this.Conditions = CommonConditions.GetConditions();
             this.Hooks.Clear();
         }
     }

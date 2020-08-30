@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6538
+IDs: aedenthorn.MobileArcade
+update keys: Nexus:6538, GitHub:aedenthorn/StardewValleyMods

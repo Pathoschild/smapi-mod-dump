@@ -1,0 +1,12 @@
+{
+  "EnableMod": true,
+  "QuoteColor": "143, 188, 139, 255",
+  "QuoteCharPerLine": 50,
+  "QuoteDurationPerLineMult": 1.0,
+  "QuoteFadeMult": 1,
+  "AuthorPrefix": "-- ",
+  "ClickToDispelQuote": true,
+  "RandomQuote": false,
+  "QuoteWidth": 1000,
+  "LineSpacing": 10
+}

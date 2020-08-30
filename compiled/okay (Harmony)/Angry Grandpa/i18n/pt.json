@@ -1,7 +1,7 @@
 ﻿{
     // NOTE TO TRANSLATORS: If you are here to help create a new translation file, thank you so much!
     // I prefer to publish all translations as part of the main mod to keep everything up to date.
-    
+
     // Please prepare your translation following the stardewvalleywiki Translation guide linked below.
     // You can send me your work on Discord (Jonqora#8597) or on GitHub (Jonqora) and I will include it
     // in the next mod update.
@@ -11,7 +11,7 @@
     // https://github.com/StardewModders/mod-translations (requests board)
     // https://discord.gg/stardewvalley (ask for help on discord, my username is Jonqora#8597)
     // https://github.com/Jonqora/StardewMods/ (github repo for my mods, including this one)
-    
+
     // IMPORTANT NOTES
     // Some data entries below include event scripts and dialogue with keys or symbols that should not be changed or removed.
     // Please be careful not to remove symbols, dialogue keys, or special character sequences (like \" or _ or #$b# or $y) when translating.
@@ -35,7 +35,7 @@
 
     // If your language has grammatical gender, make sure the ordinal numbers match the word in your language for "year".
     "GrandpaOrdinalYears": "primeiro|segundo|terceiro|quarto|quinto|sexto|sétimo|oitavo|nono|décimo",
-    
+
     // Do not change {{ordinalYear}} tokens; these will automatically use an appropriate word from the list above.
     "GrandpaNote": "{0}-\n\nEspere por meu retorno na madrugada do {{ordinalYear}} ano.\n\n-Vovô",
     "GrandpaNoteMail": "@-^^Espere por meu retorno na madrugada do {{ordinalYear}} ano.^^-Vovô[#]Bilhete do Vovô",
@@ -44,7 +44,7 @@
     // smapiSDate example: "Spring 1 in year 15" or "le 1 printemps de l'année 12"
     "GrandpaNoteTenPlusYears": "{0}-\n\nEspere por meu retorno na madrugada do {{smapiSDate}}.\n\n-Vovô",
     "GrandpaNoteMailTenPlusYears": "@-^^Espere por meu retorno na madrugada do {{smapiSDate}}.^^-Vovô[#]Bilhete do Vovô",
-    
+
 
 // =====================================
 // TRANSLATION TEXT FOR DISPLAY MESSAGES
@@ -68,7 +68,7 @@
 
   // =======================
   // TOKENS AND INSTRUCTIONS
-    
+
     // Token used in EvaluationEvent {{countYears}} when grandpa says long you've had the farm. E.g. "You've been here [four years now]..."
     // The first in list, "less than a year now", is used when Config.YearsBeforeEvaluation = 0
     "GrandpaCountYears": "menos de um ano|um ano|dois anos|três anos|quatro anos|cinco anos|seis anos|sete anos|oito anos|nove anos",
@@ -79,7 +79,7 @@
 
     // Keys ending with -gn are gender-neutral. These should stay as close as possible to the standard scripts, but anything
     // like "boy", "girl", "grand-daughter" that refers to the player should be replaced with a gender-neutral phrase.
-    
+
   // ===========================
   // "ORIGINAL" DIALOGUE VARIANT
 
@@ -235,11 +235,11 @@
 // =======================================
 // TRANSLATION TEXT FOR EVALUATION RESULTS
 // =======================================
-  
+
   // =======================
   // TOKENS AND INSTRUCTIONS
 
-    // Token used in 1CandleResult.Original {{pastYears}} when grandpa talks about how long you've been there. 
+    // Token used in 1CandleResult.Original {{pastYears}} when grandpa talks about how long you've been there.
     // E.g. "you haven't accomplished very much during [this past year]"
     // The first in list, "so far", is used if Config.YearsBeforeEvaluation = 0 (grandpa visits on the morning of 1 Spring year 1)
     "GrandpaDuringPastYears": "esse tempo|esse ano|esses dois anos|esses três anos|esses quatro anos|esses cinco anos|esses cinco anos|esses sete anos|esses oito anos|esses nove anos",
@@ -261,7 +261,7 @@
 
     // Keys ending with -gn are gender-neutral. These should stay as close as possible to the standard scripts, but anything
     // like "boy", "girl", "grand-daughter" that refers to the player should be replaced with a gender-neutral phrase.
-    
+
   // ===========================
   // "ORIGINAL" DIALOGUE VARIANT
 
@@ -305,7 +305,7 @@
     "2CandleReevaluation.Original-gn": "Você fez um trabalho decente melhorando o lugar desde que falamos.{{gpaSurprise}}
         #$b#Parece que você tentou seu melhor... isso é tudo que eu posso pedir.{{gpaNeutral}}
         #$b#Eu preciso voltar ao outro mundo agora... me chame novamente se você fizer um pouco mais de progresso.{{gpaStern}}",
-    
+
     "3CandleReevaluation.Original": "Parabéns, meu garoto.^Parabéns, minha querida.{{gpaHappy}}
         #$b#A Fazenda %farm está mais bonita do que nunca. É uma honra para a família.{{gpaSurprise}}
         #$b#O vovô está satisfeito.{{gpaLove}}
@@ -314,7 +314,7 @@
         #$b#A Fazenda %farm está mais bonita do que nunca. É uma honra para a família.{gpaSurprise}}
         #$b#O vovô está satisfeito.{{gpaLove}}
         #$b#Eu preciso voltar ao outro mundo agora... mas sinta-se livre para me chamar de novo a qualquer hora.{{gpaNeutral}}",
-    
+
     "4CandleReevaluation.Original": "Eu estou tão orgulhoso de você, meu garoto!^Eu estou tão orgulhoso de você, minha querida!{{gpaLove}}
         #$b#Você finalmente trouxe potencial total à Fazenda %farm!{{gpaJoy}}
         #$b#Você é um fazendeiro melhor do que eu já fui, e você trouxe uma grande honra ao nome da família.
@@ -368,7 +368,7 @@
     "2CandleReevaluation.Vanilla-gn": "Você fez um excelente trabalho melhorando o local desde que falamos.{{gpaSurprise}}
         #$b#Parece que você fez o seu melhor... é só o que posso pedir. Tenho orgulho de você.{{gpaHappy}}
         #$b#Tenho que voltar para o outro mundo agora...mas, fique à vontade para me chamar de novo quando precisar.{{gpaNeutral}}",
-    
+
     "3CandleReevaluation.Vanilla": "Parabéns, meu garoto.^Parabéns, minha querida.{{gpaSurprise}}
         #$b#A Fazenda %farm está mais bonita do que nunca. É uma honra para a família.{{gpaJoy}}
         #$b#O vovô está satisfeito.{{gpaLove}}
@@ -377,7 +377,7 @@
         #$b#A Fazenda %farm está mais bonita do que nunca. É uma honra para a família.{{gpaJoy}}
         #$b#O vovô está satisfeito.{{gpaLove}}
         #$b#Tenho que voltar para o outro mundo agora... mas, fique à vontade para me chamar de novo quando precisar.{{gpaHappy}}",
-    
+
     "4CandleReevaluation.Vanilla": "Estou muito orgulhoso de você, meu garoto!^Estou muito orgulhoso de você, minha querida!{{gpaJoy}}
         #$b#Você transformou o lugar desde a última vez que falamos!{{gpaShock}}
         #$b#Você é um fazendeiro melhor do que eu era e trouxe uma grande honra ao nome da família.
@@ -387,10 +387,10 @@
         #$b#Você transformou o lugar desde a última vez que falamos!{{gpaShock}}
         #$b#Você é um fazendeire melhor do que eu era e trouxe uma grande honra ao nome da família.{{gpaLove}}{{fifthCandle}}
         #$b#Posso sentir agora... meu espírito finalmente encontrou a paz. Benção.{{gpaHappy}}",
-    
+
   // ==========================
   // "NUCLEAR" DIALOGUE VARIANT
-    
+
     // Exaggerated, humorous script where grandpa is more assertive with his opinions. May contain profanity. Be creative! :)
     "1CandleResult.Nuclear": "Que porra de droga você tem feito durante {{pastYears}}?{{gpaShock}}
         #$b#Sério, @...{{gpaFrown}}
@@ -438,7 +438,7 @@
         #$b#Para ser honesto, a fazenda certamente já viu dias melhores que estes.{{gpaStern}}
         #$b#Não é mais o que costumava ser... mas suponho que você fez o seu melhor.{{gpaFrown}}
         #$b#...{{gpaSigh}}
-        #$b#Para o bem ou para o mal, o futuro da Fazenda %farm está em suas mãos agora...{{gpaFrown}}", 
+        #$b#Para o bem ou para o mal, o futuro da Fazenda %farm está em suas mãos agora...{{gpaFrown}}",
 
     "3CandleResult.Nuclear": "A fazenda parece muito boa, na verdade.{{gpaShock}}
         #$b#Estou surpreso que você tenha se saído tão bem com o lugar. {{spouseOrLewis}} te ajudou com isso?{{gpaSurprise}}
@@ -493,7 +493,7 @@
         #$b#...{{gpaSigh}}
         #$b#Estou saindo... não me invoque novamente se a não ser que você tenha algo que vale a pena ver.{{gpaFrown}}
         #$b#%Uau, o vovô está realmente bravo. É melhor eu não desapontar ele denovo.",
-    
+
     "2CandleReevaluation.Nuclear": "Isso é tudo que você tem para me mostrar?{{gpaNeutral}}
         #$b#Eu estava esperando por algo um pouco mais... Eu não sei.{{gpaStern}}
         #$b#Mas não estou totalmente desapontado; você claramente tem colocado *algum* esforço.{{gpaFrown}}
@@ -506,7 +506,7 @@
         #$b#Talvez eu fosse tolo por esperar mais de você.{{gpaNeutral}}
         #$b#...{{gpaSigh}}
         #$b#Eu devo voltar agora... tente fazer mais progresso aqui antes de me invocar de novo.{{gpaStern}}",
-    
+
     "3CandleReevaluation.Nuclear": "A fazenda está parecendo muito boa esses dias.{{gpaHappy}}
         #$b#Estou muito surpreso que você tenha conseguido fazer tanto progresso... {{spouseOrLewis}} te ajudou?{{gpaJoy}}
         #$b#De qualquer forma, fico feliz em ver a fazenda em boa forma. Você fez bem.{{gpaLove}}
@@ -521,8 +521,8 @@
         #$b#Embora... ainda haja muito trabalho para te ocupar nos próximos anos, se você realmente se esforçar.{{gpaHappy}}
         #$b#...{{gpaStern}}
         #$b#É hora de voltar para o outro mundo... sinta-se livre para me chamar de novo quando quiser.{{gpaNeutral}}",
-    
-    "4CandleReevaluation.Nuclear": "@, meu garoto...^@, minha querida{{gpaStern}}... 
+
+    "4CandleReevaluation.Nuclear": "@, meu garoto...^@, minha querida{{gpaStern}}...
         #$b#Você é uma lenda do caralho absoluta.{{gpaLove}}
         #$b#A Fazenda %farm está incrível... os resultados do seu trabalho duro falam por eles mesmos.{{gpaSurprise}}
         #$b#Apenas olhe ao incrível progresso que você fez! Fico impressionado pensando em quão longe você chegou...{{gpaJoy}}
@@ -534,28 +534,28 @@
         #$b#Apenas olhe ao incrível progresso que você fez! Fico impressionado pensando em quão longe você chegou...{{gpaJoy}}
         #$b#Aww merda, @... você está me fazendo chorar.{{gpaTears}}{{fifthCandle}}
         #$b#Acima de tudo, você me trouxe paz... Meu espírito está calmamente em repouso. Benção.{{gpaHappy}}",
-    
+
 
 // ================================================
 // TRANSLATIONS FOR UTILITIES AND CONFIG (OPTIONAL)
 // ================================================
 
-    // Translations below this point are not necessary to enjoy any content this mod adds to the game!
-    // These are extra; they just allow error messages, command output, and config options to be translated.
-    // If you are creating a new translation, feel free to submit your file with or without these entries!
+  // Translations below this point are not necessary to enjoy any content this mod adds to the game!
+  // These are extra; they just allow error messages, command output, and config options to be translated.
+  // If you are creating a new translation, feel free to submit your file with or without these entries!
 
-    // {{NL}} tokens are replaced with a newline in the code.
+  // {{NL}} tokens are replaced with a newline in the code.
 
   // ===================
   // GMCM CONFIG OPTIONS
 
-    // These descriptions are visible if players install Generic Mod Config Menu (optional) 
+    // These descriptions are visible if players install Generic Mod Config Menu (optional)
     // and view or change their config settings from the lower left button in the game's main menu.
-    
+
     "DialogueOptions.title": "Opções de Diálogo", // Category title
 
     "GrandpaDialogue.name": "Escolher o estilo do diálogo do vovô",
-    "GrandpaDialogue.description": "Muda o diálogo durante os eventos de avaliação e re-avaliação:{{NL}}  Original - Diálogo rigoroso encontrado nas primeiras versões do jogo{{NL}}  Vanilla - Diálogo normal usado no jogo depois da versão 1.05{{NL}}  Nuclear - O vovô é muito entusiasmado sobre suas opiniões. AVISO:Palavrões!",
+    "GrandpaDialogue.description": "Muda o diálogo durante os eventos de avaliação e re-avaliação:{{NL}}  Original - Diálogo rigoroso encontrado nas primeiras versões do jogo{{NL}}  Vanilla - Diálogo normal usado no jogo depois da versão 1.05{{NL}}  Nuclear - O vovô é muito entusiasmado sobre suas opiniões. AVISO: Palavrões!",
     // Note to translators - do not translate the option names Original/Vanilla/Nuclear
 
     "GenderNeutrality.name": "Usar diálogo de gênero neutro",
@@ -563,6 +563,10 @@
 
     "ExpressivePortraits.name": "Retratos expressivos ao diálogo",
     "ExpressivePortraits.description": "Dá uma variedade de novas expressões faciais ao vovô",
+
+    "PortraitStyle.name": "Escolha a arte do retrato do vovô",
+    "PortraitStyle.description": "Modifica o estilo artístico usado para os retratos expressivos do vovô:{{NL}}  auto - Procura mods de retrato compatíveis e usa um estilo correspondente, se disponível{{NL}}  Vanilla - Corresponde ao estilo artístico original, mesmo que outros mods de retrato estejam instalados{{NL}}  Poltergeister - Corresponde ao estilo artístico de Poltergeister, independentemente dos mods de retrato instalados",
+    // Note to translators - do not translate the option names auto/Vanilla/Poltergeister
 
     "ScoringOptions.title": "Opções de Pontuação", // Category title
 
@@ -586,7 +590,7 @@
 
   // =====================
   // CONFIG ERROR MESSAGES
-    
+
     // These helpful messages are printed as warnings to the console if a player enters an invalid config value.
 
     // IMPORTANT: to make sure error messages match the Config file, please do not change
@@ -595,6 +599,10 @@
     "GrandpaDialogue.error": "Valor de configuração inválido \"{{value}}\" para GrandpaDialogue.
     Valores aceitos são [{{listGrandpaDialogueChoices}}].
     GrandpaDialogue foi redefinido para o valor padrão \"{{fallback}}\"",
+
+    "PortraitStyle.error": "Valor de configuração inválido \"{{value}}\" para PortraitStyle.
+    Valores aceitados são [{{listPortraitStyleChoices}}].
+    PortraitStyle foi redefinido para o valor padrão \"{{fallback}}\"",
 
     "ScoringSystem.error": "Valor de configuração inválido \"{{value}}\" para ScoringSystem.
     Valores aceitados são [{{listScoringSystemChoices}}].
@@ -614,13 +622,13 @@
 
   // ================
   // CONSOLE COMMANDS
-    
+
     // Players can view these command descriptions if they use the help command in the SMAPI console.
 
     "reset_evaluation.description": "Redefine todas as avaliações do vovô e informações armazenadas de correios já lidos e eventos já acionados, te permitindo a re-experienciar os eventos iniciais e re-avaliativos em um jogo já existente.",
 
     "grandpa_config.description": "Imprime as configurações ativadas do Angry Grandpa para o console.",
-    
+
     "grandpa_score.description": "Estima o resultado de uma avaliação da fazenda usando os critérios de pontuação do vovô.",
 
     "grandpa_debug.description": "Ativa os comandos grandpa_config e grandpa_score, além de informações úteis de depuração.",

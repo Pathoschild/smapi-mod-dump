@@ -1,0 +1,17 @@
+//delete these //comments after you are done filling out the blanks. dont add anymore stuff to this and just FILL IN THE FIELDS
+//this is required if you want SMAPI to be able to read this mod (which is required when making a CP mod)
+//MORE INSTRUCTIONS https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest
+
+{
+   "Name": "", //name of your mod
+   "Author": "", //your name u refer to online
+   "Version": "", //version of your mod, MUST USE SEMANTIC VERSIONING OR IT WONT WORK, for more info: https://semver.org/
+   "Description": "", //short description of your mod
+   "UniqueID": "", //make a unique mod ID (usually it will be something like author.yourmodname
+   "MinimumApiVersion": "2.7",//Minimum SMAPI version required to run this mod (ex. If you have SMAPI 2.6, it wont load mod if "MinimumApiVersion": "2.7" or higher but will if "MinimumApiVersion": "2.6" or lower
+   "UpdateKeys": [ "Nexus: ", "Chucklefish: ", "GitHub: ", ], //when creating your mod page, there will be an ID at the end of the mod page.(eg. nexusmods.com/stardewvalley/mods/2000), put that 2000(yours will be different) into  [ "Nexus:<number>" ] (if github, an example: Pathoschild/LookupAnything)
+   //More Info on Update Keys: https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher", //dont touch this 
+   }
+}

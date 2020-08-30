@@ -62,7 +62,7 @@ namespace TwilightShards.Common
         }
 
         /// <summary>
-        /// Adds the end point to the list. The probablity must be positive and should not add over 1
+        /// Adds the end point to the list. The probability must be positive and should not add over 1
         /// </summary>
         /// <param name="NewProb">The new probability being added</param>
         /// <param name="Entry">The entry being added</param>
@@ -85,7 +85,7 @@ namespace TwilightShards.Common
         }
 
         /// <summary>
-        /// Adds the end point to the list. The probablity must be positive and should not add over 1
+        /// Adds the end point to the list. The probability must be positive and should not add over 1
         /// </summary>
         /// <param name="NewProb">The new probability being added</param>
         /// <param name="Entry">The entry being added</param>
@@ -98,7 +98,7 @@ namespace TwilightShards.Common
             if (CurrentPoint == 1)
                 return;
 
-            if (NewProb + CurrentPoint > 1) //cap the probablity
+            if (NewProb + CurrentPoint > 1) //cap the probability
                 NewProb = 1 - CurrentPoint;
 
             CurrentPoint += NewProb;
@@ -123,10 +123,10 @@ namespace TwilightShards.Common
 
             foreach (KeyValuePair<double,T> kvp in EndPoints)
             {
-                desc += $"Key: {kvp.Key} with value: {kvp.Value}";
+                desc += $"Key: {kvp.Key:N3} with value: {kvp.Value}";
                 desc += Environment.NewLine;
             }
-            desc += $"Current Point: {CurrentPoint} with overflow result {OverflowResult}";
+            desc += $"Current Point: {CurrentPoint:N3} with overflow result {OverflowResult:N3}";
 
             return desc;
         }
@@ -140,7 +140,7 @@ namespace TwilightShards.Common
         /// <returns>If a entry was found.</returns>
         public bool GetEntryFromProb(double Prob, out T Result, bool IncludeEnds = true)
         {
-            if (EndPoints.Keys.Count() == 0)
+            if (!EndPoints.Keys.Any())
                 throw new InvalidOperationException("No probabilities have been added to this distribution");
 
             if (Prob > 1 || Prob < 0)

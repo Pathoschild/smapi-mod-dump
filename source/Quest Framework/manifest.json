@@ -1,8 +1,8 @@
 ﻿{
   "Name": "Quest Framework",
   "Author": "PurrplingCat",
-  "Version": "1.0.0-beta.1",
-  "Description": "Add, edit and manage your own quest and create new quest types.",
+  "Version": "1.1.0-alpha",
+  "Description": "Add, edit and manage your own quests and create new quest types.",
   "UniqueID": "PurrplingCat.QuestFramework",
   "EntryDll": "QuestFramework.dll",
   "MinimumApiVersion": "3.6.1",
@@ -13,6 +13,10 @@
     {
       "UniqueID": "spacechase0.JsonAssets",
       "MinimumVersion": "1.6.2",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Cherry.ExpandedPreconditionsUtility",
       "IsRequired": false
     }
   ]

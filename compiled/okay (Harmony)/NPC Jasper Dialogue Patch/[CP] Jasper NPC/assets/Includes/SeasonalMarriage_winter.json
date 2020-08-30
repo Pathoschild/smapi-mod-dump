@@ -1,0 +1,52 @@
+{
+    "Changes": [
+
+{	
+	"LogName": "Dialogue", "Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"FromFile": "assets/Dialogue/MarriageDialogue_winter.json",	
+				},
+
+{	
+	"LogName": "Dialogue", 	"Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"funLeave_Jasper": "$c 0.5#Good morning, my love! What shall I teach the children about today? Penny prefers me to discuss geology... but Vincent loves stories about the goblins.$3$k#$e#Today I intend to teach the children about fossilization. However, I fear my careful prepared lesson shall be swiftly derailed.$3",
+		"funReturn_Jasper": "$c 0.5#Oh phew, I'm exhausted. Who would have known children would ask so many questions?$k#$e#There's something very fulfilling about teaching, @. Although it certainly helps that the children are quite a delight!$3"			},
+		"When": { 	"DayofWeek":"Wednesday", "HasFlag": "Jasper_Penny"	}
+		},
+{	
+	"LogName": "Dialogue", 	"Action": "EditData","Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {	
+	"funReturn_Jasper": "$c 0.5#It seems foolish, I know, for a grown man to be scared of the dark. But every rustle in the leaves, every footstep. I know it is irrational, my love, but I cannot halt the fear.$2$2#$e#Ah, a pleasant day spent catching up with old friends. Marlon sends his regards, @. Oh, and I picked up this 'shiny pebble' for you as well.[62 64 66 68]$1"	},
+	"When": { 	"DayofWeek":"Friday"	}	
+		},
+{	
+	"LogName": "Dialogue", 	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"funLeave_Jasper": "$c 0.5#Its a rough walk up the mountain, but it is certainly worth it.$k#$e#I still cannot believe that I shall be taking tea with one of the Smoluanu!#$b#Have a splendid day, my love.$1",
+		"funReturn_Jasper": "$c 0.5#Oh, so many new revelations! My mind is quite abuzz with inspiration, @. I might need some help getting to sleep tonight!$1$k#Our friend sent me home with this... They were insistent. Please be careful with it, my love.$2[286 287 288]"			},
+			"When": { 	"DayofWeek":"Friday", "HasFlag": "Dwarf_Friend"	}	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ]
+}

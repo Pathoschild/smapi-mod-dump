@@ -3,5 +3,11 @@
     "Description": "A colourful stripey shirt.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Camisa Verde a Rayas"
+    },
+    "DescriptionLocalization": {
+        "es": "Una colorida camisa a rayas."
+    }
 }

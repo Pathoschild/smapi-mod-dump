@@ -3,5 +3,11 @@
     "Description": "A thick leather jacket, and very little else. It's chic.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Traje de Crítico Musical"
+    },
+    "DescriptionLocalization": {
+        "es": "Una gruesa chaqueta de cuero, y muy poco más. Es chic."
+    }
 }

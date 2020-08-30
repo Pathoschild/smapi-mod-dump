@@ -1,0 +1,58 @@
+{
+	"ParserVersion": 1,
+	"Portrait": "assets/snowdwarf.png",
+	"Owner": "Snow Dwarf",
+	"Messages": [
+		"Hi",
+	],
+	"Items": [
+		{
+			"Id": 60,
+			"BigCraftable": false,
+			"Price": 250,
+			"Stock": 25
+		},
+		{
+			"Id": 62,
+			"BigCraftable": false,
+			"Price": 180,
+			"Stock": 25
+		},
+		{
+			"Id": 64,
+			"BigCraftable": false,
+			"Price": 250,
+			"Stock": 25
+		},
+		{
+			"Id": 66,
+			"BigCraftable": false,
+			"Price": 100,
+			"Stock": 75
+		},
+		{
+			"Id": 68,
+			"BigCraftable": false,
+			"Price": 80,
+			"Stock": 75
+		},
+		{
+			"Id": 70,
+			"BigCraftable": false,
+			"Price": 200,
+			"Stock": 25
+		},
+		{
+			"Id": 72,
+			"BigCraftable": false,
+			"Price": 750,
+			"Stock": 20
+		},
+		{
+			"Id": 74,
+			"BigCraftable": false,
+			"Price": 2000,
+			"Stock": 5
+		},
+	],
+}

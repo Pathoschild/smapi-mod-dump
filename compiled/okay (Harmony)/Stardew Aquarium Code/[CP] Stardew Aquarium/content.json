@@ -1,0 +1,1015 @@
+{
+   "Format": "1.17.0",
+      "ConfigSchema": 
+		{
+			"LegendaryFishAnimation":
+				{
+				"AllowValues": "true,false",
+				"Default": "true",
+				"AllowMultiple": "false"
+				}, 
+		},
+   "Changes": [
+   	{
+               "LogName": "0 Fish Bowl Animation",
+            "Action": "EditImage",
+            "Target": "{{spacechase0.JsonAssets/ObjectSpriteTilesheet:Fish Bowl}}",
+            "FromFile": "assets/Animations/fishbowl.png",
+            "FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+            "ToArea":{ "X": "{{spacechase0.JsonAssets/ObjectSpriteX:Fish Bowl}}", "Y": "{{spacechase0.JsonAssets/ObjectSpriteY:Fish Bowl}}", "Width": 16, "Height": 16 },
+            "AnimationFrameTime": 10,
+            "AnimationFrameCount": 28,
+         "When": 
+         {
+         "HasMod": "spacechase0.ContentPatcherAnimations",
+         "HasMod":"spacechase0.JsonAssets"
+         }
+       },
+   	{
+   			"LogName": "0 Pufferchick Animation",
+			"Action": "EditImage",
+			"Target": "{{spacechase0.JsonAssets/ObjectSpriteTilesheet:Pufferchick}}",
+			"FromFile": "assets/Animations/pufferchick.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea":{ "X": "{{spacechase0.JsonAssets/ObjectSpriteX:Pufferchick}}", "Y": "{{spacechase0.JsonAssets/ObjectSpriteY:Pufferchick}}", "Width": 16, "Height": 16 },
+			"AnimationFrameTime": 10,
+			"AnimationFrameCount": 5,
+			"When":
+				{
+				"HasMod": "spacechase0.ContentPatcherAnimations",
+            "HasMod":"spacechase0.JsonAssets",
+				"LegendaryFishAnimation": "true"
+				},
+      },
+      {
+         "LogName": "1 Angler Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty1",
+         "FromFile": "assets/Aquariums/Angler/AquariumEmpty1.png"
+      },
+	        {
+         "LogName": "2 Crabpot1 Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty2",
+         "FromFile": "assets/Aquariums/Crabpot1/AquariumEmpty2.png"
+      },
+	        {
+         "LogName": "3 Crabpot2 Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty3",
+         "FromFile": "assets/Aquariums/Crabpot2/AquariumEmpty3.png"
+      },
+	  	    {
+         "LogName": "4 Crabpot3 Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty4",
+         "FromFile": "assets/Aquariums/Crabpot3/AquariumEmpty4.png"
+      },
+	  	        {
+         "LogName": "5 Crimsonfish Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty5",
+         "FromFile": "assets/Aquariums/Crimsonfish/AquariumEmpty5.png"
+      },
+	  	        {
+         "LogName": "6 Desert Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty6",
+         "FromFile": "assets/Aquariums/Desert/AquariumEmpty6.png"
+      },
+	  	        {
+         "LogName": "7 Forest Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty7",
+         "FromFile": "assets/Aquariums/Forest/AquariumEmpty7.png"
+      },
+	  	        {
+         "LogName": "8 Frozen Mines Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty8",
+         "FromFile": "assets/Aquariums/FrozenMines/AquariumEmpty8.png"
+      },
+	  	        {
+         "LogName": "9 Glacierfish Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty9",
+         "FromFile": "assets/Aquariums/Glacierfish/AquariumEmpty9.png"
+      },
+	  	        {
+         "LogName": "10 Lava Eel Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty10",
+         "FromFile": "assets/Aquariums/LavaMines/AquariumEmpty10.png"
+      },
+	  	        {
+         "LogName": "11 Legend Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty11",
+         "FromFile": "assets/Aquariums/Legend/AquariumEmpty11.png"
+      },
+	  	        {
+         "LogName": "12 Mines Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty12",
+         "FromFile": "assets/Aquariums/Mines/AquariumEmpty12.png"
+      },
+	  	  	        {
+         "LogName": "13 Mountain Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/AquariumEmpty13.png"
+      },
+	  	  	        {
+         "LogName": "14 Mutant Carp Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty14",
+         "FromFile": "assets/Aquariums/MutantCarp/AquariumEmpty14.png"
+      },
+	  	  	        {
+         "LogName": "15 Ocean1 Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/Ocean/AquariumEmpty15.png"
+      },
+	    	  	        {
+         "LogName": "16 Ocean2 Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/Ocean2/AquariumEmpty16.png"
+      },
+	  	  	        {
+         "LogName": "17 River Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/AquariumEmpty17.png"
+      },
+	  	  	        {
+         "LogName": "18 Slimejack Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty18",
+         "FromFile": "assets/Aquariums/Slimejack/AquariumEmpty18.png"
+      },
+	  	  	        {
+         "LogName": "19 Submarine Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty19",
+         "FromFile": "assets/Aquariums/Submarine/AquariumEmpty19.png"
+      },
+	  	  	        {
+         "LogName": "20 Void Salmon Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty20",
+         "FromFile": "assets/Aquariums/VoidSalmon/AquariumEmpty20.png"
+      },
+	  	  	        {
+         "LogName": "21 Pufferchick Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty21",
+         "FromFile": "assets/Aquariums/Pufferchick/AquariumEmpty21.png"
+      },
+      {
+         "LogName": "22 SVE Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty22",
+         "FromFile": "assets/Aquariums/SVE/AquariumEmpty22.png"
+      },
+      {
+         "LogName": "1 Angler Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty1",
+         "FromFile": "assets/Aquariums/Angler/angler.png",
+         "PatchMode":"Overlay",
+         "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Angler" 
+},
+"Update": "OnLocationChange"
+      },
+	  {
+         "LogName": "2 Crab Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty2",
+         "FromFile": "assets/Aquariums/Crabpot1/crab.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Crab" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  {
+         "LogName": "2 Shrimp Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty2",
+         "FromFile": "assets/Aquariums/Crabpot1/shrimp.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Shrimp" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  {
+         "LogName": "2 Oyster Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty2",
+         "FromFile": "assets/Aquariums/Crabpot1/oyster.png",
+         "PatchMode":"Overlay",
+         "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Oyster" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  {
+         "LogName": "3 Cockle Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty3",
+         "FromFile": "assets/Aquariums/Crabpot2/cockle.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Cockle" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  {
+         "LogName": "3 Lobster Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty3",
+         "FromFile": "assets/Aquariums/Crabpot2/lobster.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Lobster" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  {
+         "LogName": "3 Mussel Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty3",
+         "FromFile": "assets/Aquariums/Crabpot2/mussel.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Mussel",
+ 				},
+ "Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  {
+         "LogName": "4 Crayfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty4",
+         "FromFile": "assets/Aquariums/Crabpot3/crayfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Crayfish" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	  {
+         "LogName": "4 Periwinkle Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty4",
+         "FromFile": "assets/Aquariums/Crabpot3/periwinkle.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Periwinkle" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	  {
+         "LogName": "4 Snail Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty4",
+         "FromFile": "assets/Aquariums/Crabpot3/snail.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Snail" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	  
+	  	  	  	  	  	  	  	  {
+         "LogName": "5 Crimsonfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty5",
+         "FromFile": "assets/Aquariums/Crimsonfish/crimsonfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Crimsonfish" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	  {
+         "LogName": "7 Forest Carp Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty7",
+         "FromFile": "assets/Aquariums/Forest/carp.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Carp" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	  {
+         "LogName": "7 Woodskip Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty7",
+         "FromFile": "assets/Aquariums/Forest/woodskip.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Woodskip" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "8 Frozen Ghostfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty8",
+         "FromFile": "assets/Aquariums/FrozenMines/ghostfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Ghostfish" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "8 Ice Pip Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty8",
+         "FromFile": "assets/Aquariums/FrozenMines/icepip.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:IcePip" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "9 Glacierfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty9",
+         "FromFile": "assets/Aquariums/Glacierfish/glacierfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Glacierfish" 
+},
+"Update": "OnLocationChange"
+      },
+								 {
+         "LogName": "10 Lava Eel Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty10",
+         "FromFile": "assets/Aquariums/LavaMines/lava_eel.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:LavaEel" 
+},
+"Update": "OnLocationChange"
+      },
+								 {
+         "LogName": "11 Legend Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty11",
+         "FromFile": "assets/Aquariums/Legend/legend.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Legend" 
+},
+"Update": "OnLocationChange"
+      },
+								 {
+         "LogName": "12 Mines Ghostfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty12",
+         "FromFile": "assets/Aquariums/Mines/ghostfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Ghostfish" 
+},
+"Update": "OnLocationChange"
+      },
+								 {
+         "LogName": "12 Stonefish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty12",
+         "FromFile": "assets/Aquariums/Mines/stonefish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Stonefish" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "13 Bullhead Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/bullhead.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Bullhead" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "13 Mountain Carp Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/carp.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Carp" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "13 Chub Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/chub.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Chub" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "13 Largemouth Bass Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/largemouthbass.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:LargemouthBass" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "13 Lingcod Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/lingcod.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Lingcod" 
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "13 Midnight Carp Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/midnightcarp.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:MidnightCarp"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "13 Perch Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/perch.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Perch"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "13 Sturgeon Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/sturgeon.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Sturgeon"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "13 Walleye Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/Mountain/walleye.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Walleye"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "14 Mutant Carp Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty14",
+         "FromFile": "assets/Aquariums/MutantCarp/mutantcarp.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:MutantCarp"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "15 Tilapia Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/Ocean/tilapia.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Tilapia"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "15 Flounder Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/Ocean/flounder.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Flounder"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "15 Herring Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/Ocean/herring.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Herring"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "15 Octopus Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/Ocean/octopus.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Octopus"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "15 Pufferfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/Ocean/pufferfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Pufferfish"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "15 Red Mullet Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/Ocean/redmullet.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:RedMullet"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "15 Sea Cucumber Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/Ocean/seacucumber.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:SeaCucumber"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "15 Tuna Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/Ocean/tuna.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Tuna"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "16 Albacore Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/Ocean2/albacore.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Albacore"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "16 Anchovy Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/Ocean2/anchovy.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Anchovy"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "16 Eel Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/Ocean2/eel.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Eel"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "16 Red Snapper Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/Ocean2/redsnapper.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:RedSnapper"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "16 Sardine Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/Ocean2/sardine.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Sardine"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "16 Squid Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/Ocean2/squid.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Squid"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "16 Super Cucumber Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/Ocean2/supercucumber.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:SuperCucumber"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "16 Halibut Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/Ocean2/halibut.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Halibut"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "18 Slimejack Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty18",
+         "FromFile": "assets/Aquariums/Slimejack/Full.png",
+         "PatchMode":"Replace",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Slimejack"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "20 Void Salmon Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty20",
+         "FromFile": "assets/Aquariums/VoidSalmon/voidsalmon.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:VoidSalmon"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "6 Sandfish Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty6",
+         "FromFile": "assets/Aquariums/Desert/Sandfish.png",
+         "PatchMode":"Replace",
+        "When": {
+"HasFlag: hostPlayer |contains=AquariumDonated:Sandfish": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "6 Scorpion Carp Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty6",
+         "FromFile": "assets/Aquariums/Desert/ScorpionCarp.png",
+         "PatchMode":"Replace",
+        "When": {
+"HasFlag: hostPlayer |contains=AquariumDonated:ScorpionCarp": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "6 Full Desert Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty6",
+         "FromFile": "assets/Aquariums/Desert/Full.png",
+         "PatchMode":"Replace",
+        "When": {
+"HasFlag: hostPlayer |contains=AquariumDonated:Sandfish": "true",
+"HasFlag: hostPlayer |contains=AquariumDonated:ScorpionCarp": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "19 Blobfish Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty19",
+         "FromFile": "assets/Aquariums/Submarine/Blobfish.png",
+         "PatchMode":"Replace",
+        "When": {
+"HasFlag: hostPlayer |contains=AquariumDonated:Blobfish": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "19 Midnight Squid Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty19",
+         "FromFile": "assets/Aquariums/Submarine/MidnightSquid.png",
+         "PatchMode":"Replace",
+        "When": {
+"HasFlag: hostPlayer |contains=AquariumDonated:MidnightSquid": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "19 Spook Fish Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty19",
+         "FromFile": "assets/Aquariums/Submarine/Spookfish.png",
+         "PatchMode":"Replace",
+        "When": {
+"HasFlag: hostPlayer |contains=AquariumDonated:SpookFish": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "19 Blobfish and Mignight Squid Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty19",
+         "FromFile": "assets/Aquariums/Submarine/BlobfishMidnightSquid.png",
+         "PatchMode":"Replace",
+        "When": {
+"HasFlag: hostPlayer |contains=AquariumDonated:Blobfish": "true",
+"HasFlag: hostPlayer |contains=AquariumDonated:MidnightSquid": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "19 Blobfish and Spook Fish Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty19",
+         "FromFile": "assets/Aquariums/Submarine/BlobfishSpookfish.png",
+         "PatchMode":"Replace",
+        "When": {
+"HasFlag: hostPlayer |contains=AquariumDonated:Blobfish": "true",
+"HasFlag: hostPlayer |contains=AquariumDonated:SpookFish": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "19 Midnight Squid and Spook Fish Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty19",
+         "FromFile": "assets/Aquariums/Submarine/SpookfishMidnightSquid.png",
+         "PatchMode":"Replace",
+        "When": {
+"HasFlag: hostPlayer |contains=AquariumDonated:MidnightSquid": "true",
+"HasFlag: hostPlayer |contains=AquariumDonated:SpookFish": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "19 Full Submarine Replace",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty19",
+         "FromFile": "assets/Aquariums/Submarine/Full.png",
+         "PatchMode":"Replace",
+        "When": {
+ "HasFlag: hostPlayer |contains=AquariumDonated:Blobfish": "true",
+ "HasFlag: hostPlayer |contains=AquariumDonated:MidnightSquid": "true",
+ "HasFlag: hostPlayer |contains=AquariumDonated:SpookFish": "true"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Bream Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/bream.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Bream"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Catfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/catfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Catfish"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Dorado Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/dorado.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Dorado"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Pike Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/pike.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Pike"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Rainbow Trout Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/rainbowtrout.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:RainbowTrout"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Salmon Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/salmon.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Salmon"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Shad Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/shad.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Shad"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Smallmouth Bass Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/smallmouthbass.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:SmallmouthBass"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Sunfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/sunfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Sunfish"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "17 Tiger Trout Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty17",
+         "FromFile": "assets/Aquariums/River/tigertrout.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:TigerTrout"
+},
+"Update": "OnLocationChange"
+      },
+	  	  	  	  	  	  	  	 {
+         "LogName": "21 Pufferchick Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty21",
+         "FromFile": "assets/Aquariums/Pufferchick/pufferchick.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Pufferchick"
+},
+"Update": "OnLocationChange"
+      },
+     	{
+         "LogName": "22 Void Eeel Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty20",
+         "FromFile": "assets/Aquariums/SVE/voideel.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "FlashShifter.JA.SVE",
+ "HasFlag: hostPlayer": "AquariumDonated:VoidEel"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "23 Clownfish SVE Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty15",
+         "FromFile": "assets/Aquariums/SVE/clownfishSVE.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "FlashShifter.JA.SVE",
+ "HasFlag: hostPlayer": "AquariumDonated:Clownfish"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "24 Starfish SVE Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty16",
+         "FromFile": "assets/Aquariums/SVE/starfishSVE.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "FlashShifter.JA.SVE",
+ "HasFlag: hostPlayer": "AquariumDonated:Starfish"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "22 Puppyfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty22",
+         "FromFile": "assets/Aquariums/SVE/puppyfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "FlashShifter.JA.SVE",
+ "HasFlag: hostPlayer": "AquariumDonated:Puppyfish"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "22 Butterfish SVE Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty22",
+         "FromFile": "assets/Aquariums/SVE/butterfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "FlashShifter.JA.SVE",
+ "HasFlag: hostPlayer": "AquariumDonated:Butterfish"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "22 Minnow SVE Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty22",
+         "FromFile": "assets/Aquariums/SVE/minnow.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "FlashShifter.JA.SVE",
+ "HasFlag: hostPlayer": "AquariumDonated:Minnow"
+},
+"Update": "OnLocationChange"
+      },
+   ]
+}

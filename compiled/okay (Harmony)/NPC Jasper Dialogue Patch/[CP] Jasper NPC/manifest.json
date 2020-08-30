@@ -1,0 +1,14 @@
+{
+
+  "Name": "NPC Jasper",
+   "Author": "Lemurkat",
+   "Description": "Adds the NPC Jasper",
+   "Version": "1.2.2",
+   "UniqueID": "Lemurkat.NPCJasper",
+  "UpdateKeys": ["Nexus:5599"],
+   "ContentPackFor": {
+       "UniqueID": "Pathoschild.ContentPatcher"
+    }
+   
+   
+}

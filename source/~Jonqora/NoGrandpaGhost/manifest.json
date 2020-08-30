@@ -1,0 +1,12 @@
+﻿{
+  "Name": "NoGrandpaGhost",
+  "Author": "Jonqora (for Hime)",
+  "Version": "1.0.1",
+  "Description": "No ghost events! Farm evaluation candles and rewards still happen. Multiplayer-compatible.",
+  "UniqueID": "Jonqora.NoGrandpaGhost",
+  "MinimumApiVersion": "3.5.0",
+  "UpdateKeys": [  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  }
+}

@@ -2,6 +2,7 @@
 
 ## Install
 - [Install the latest version of SMAPI](https://smapi.io).
+- Download and install [Quest Framework](https://www.nexusmods.com/stardewvalley/mods/6414)
 - Download this mod and unzip it into *Stardew Valley/Mods*.
 - Run the game using SMAPI.
 
@@ -39,6 +40,10 @@ You can enable swimsuit support for companions if they enter the pool with you. 
 - Sam
 
 You can enable this experimental feature be set `true` for `Experimental.UseSwimsuits` in `config.json`.
+
+## Upgrading to 0.14.0 and newer (from 0.13.x and older)
+
+NPC Adventures is now based on [Quest Framework](https://www.nexusmods.com/stardewvalley/mods/6414). From version 0.14.0 this framework is dependency and is required to run NPC Adventures. You must [download and install Quest Framework](https://www.nexusmods.com/stardewvalley/mods/6414).
 
 ## Upgrading to 0.13.0 and newer (from 0.12.0 and older)
 

@@ -5,9 +5,9 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 0e6157cf3d8c6b89d6d754ad7d3f49bf7801132d
+   commit 7ac3ca94d7bbbc4cf8312f68ab331ead5d0cc175
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Sun May 24 21:42:25 2020 +0200
+   Date:   Sat Aug 1 11:56:53 2020 +0200
    
-       Fixed crash bug caused by too early i18n initialization.
+       Fixed DeepWoods Obelisk cost settings not having effect
    

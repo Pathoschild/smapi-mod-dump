@@ -1,4 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Deprecated, will be removed in future commit
+
+//#define OLD_CODE
+
+#if OLD_CODE
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Netcode;
@@ -514,3 +520,4 @@ namespace ExpandedFridge
         }
     }
 }
+#endif

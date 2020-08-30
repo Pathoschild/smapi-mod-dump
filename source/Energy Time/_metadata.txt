@@ -5,9 +5,9 @@ mods:
    Energy Time
 
 latest commit:
-   commit 5b1b82d4084ecea4683bcf548d2aaadf4349c024
+   commit aa28a242e87ed8f43b825f41dfd0864c122cecfd
    Author: Nikola Peric <nik@nikperic.com>
-   Date:   Fri Jul 17 16:04:49 2020 -0400
+   Date:   Wed Aug 19 16:55:47 2020 -0400
    
-       initial commit
+       i18n support, toggle between vanilla and energy time
    

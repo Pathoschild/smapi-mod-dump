@@ -1,7 +1,7 @@
 {
   "Name": "Seed Bag",
   "Author": "Platonymous",
-  "Version": "1.3.3",
+  "Version": "1.6.7",
   "Description": "Adds a Seed Bag to the Game",
   "UniqueID": "Platonymous.SeedBag",
   "EntryDll": "SeedBag.dll",
@@ -9,7 +9,21 @@
   "UpdateKeys": [ "Nexus:1133" ],
   "Dependencies": [
     {
-      "UniqueID": "Platonymous.Toolkit"
+      "UniqueID": "Platonymous.PlatoTK"
+    },
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "IsRequired": false
     }
-  ]
+  ],
+  "ModUpdater": {
+    "Repository": "Stardew-Valley-Mods",
+    "User": "Platonymous",
+    "Directory": "_releases",
+    "ModFolder": "SeedBag"
+  }
 }

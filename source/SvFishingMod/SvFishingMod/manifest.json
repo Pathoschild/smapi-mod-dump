@@ -1,7 +1,7 @@
 ﻿{
   "Name": "SvFishingMod",
   "Author": "KDERazorback",
-  "Version": "0.1.2",
+  "Version": "0.1.3",
   "Description": "Allows for fishing mechanics customization.",
   "UniqueID": "KDERazorback.SvFishingMod",
   "EntryDll": "SvFishingMod.dll",

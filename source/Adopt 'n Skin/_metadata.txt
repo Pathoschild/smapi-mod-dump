@@ -5,9 +5,9 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit 0cd918842a0395c281d5a71b6796b95d7b2be8a4
+   commit 63a20ac93261024a83b1ad33182b27b217dd59c3
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Wed Oct 9 23:41:00 2019 -0700
+   Date:   Wed Jul 29 15:59:48 2020 -0700
    
-       Creature renaming added
+       Assets added to repo
    

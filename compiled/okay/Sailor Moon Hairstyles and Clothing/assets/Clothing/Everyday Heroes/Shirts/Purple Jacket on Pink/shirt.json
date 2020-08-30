@@ -3,5 +3,11 @@
     "Description": "A tough jacket over a soft, stripey shirt.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Chaqueta Morada sobre Rosa"
+    },
+    "DescriptionLocalization": {
+        "es": "Una chaqueta resistente sobre una camisa suave a rayas."
+    }
 }

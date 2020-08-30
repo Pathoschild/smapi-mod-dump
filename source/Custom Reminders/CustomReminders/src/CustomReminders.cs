@@ -5,6 +5,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Dem1se.CustomReminders
 {
@@ -13,12 +14,6 @@ namespace Dem1se.CustomReminders
     {
         /// <summary> Object containing the read data from config file.</summary>
         private ModConfig Config;
-
-        /* These are all the fields that hold the values of the reminder */
-        protected string ReminderMessage;
-        protected int ReminderDate;
-        protected int ReminderTime;
-
         protected string NotificationSound;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
@@ -34,7 +29,7 @@ namespace Dem1se.CustomReminders
             Utilities.Data.Monitor = Monitor;
 
             // Set the notification sound
-            NotificationSound = Config.SubtlerReminderSound ? "crit" : "questcomplete";    
+            NotificationSound = Config.SubtlerReminderSound ? "crit" : "questcomplete";
             Monitor.Log($"Notification sound set to {NotificationSound}.");
 
             // Binds the event with method.
@@ -43,6 +38,7 @@ namespace Dem1se.CustomReminders
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.Multiplayer.ModMessageReceived += Multiplayer.Multiplayer.OnModMessageReceived;
             helper.Events.Multiplayer.PeerContextReceived += Multiplayer.Multiplayer.OnPeerConnected;
+            helper.Events.GameLoop.GameLaunched += MobilePhoneModAPI.MobilePhoneMod.HookToMobilePhoneMod;
         }
 
         ///<summary> Defines what happens when a save is loaded</summary>
@@ -60,7 +56,8 @@ namespace Dem1se.CustomReminders
                 Utilities.Data.MenuButton = Config.FarmhandInventoryButton;
             }
 
-            // Create the data subfolder for the save for first time users. ( Avoid DirectoryNotFound Exception in OnChangedBehaviour() )
+            /* Create the data subfolder for the save for first time users. 
+             * Avoid DirectoryNotFound Exception in OnChangedBehaviour() when trying to save new reminder for first time */
             if (!Directory.Exists(Path.Combine(Helper.DirectoryPath, "data", Utilities.Data.SaveFolderName)))
             {
                 Monitor.Log("Reminders directory not found. Creating directory.", LogLevel.Info);
@@ -74,56 +71,65 @@ namespace Dem1se.CustomReminders
         {
             // ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady) { return; }
-            if (Game1.activeClickableMenu != null || (!Context.IsPlayerFree) || ev.Button != Config.CustomRemindersButton) { return; }
+            if (Game1.activeClickableMenu != null || (!Context.IsPlayerFree) || ev.Button != Config.CustomRemindersButton) return;
 
-            Monitor.Log("Opening ReminderMenu page 1");
+            ShowReminderMenu();
+        }
+
+        /// <summary>Create a new instance of the Reminder menus, and displays them. Called on Button press</summary>
+        public static void ShowReminderMenu()
+        {
+            /* These are all the variables that hold the values of the reminder */
+            string reminderMessage;
+            int reminderDate;
+            int reminderTime;
+
+            ModConfig config = Utilities.Data.Helper.ReadConfig<ModConfig>();
+
+            // Do the MobilePhoneMod housekeeping
+            var api = Utilities.Data.Helper.ModRegistry.GetApi<MobilePhoneModAPI.IMobilePhoneApi>("aedenthorn.MobilePhone");
+            if (config.EnableMobilePhoneApp)
+            {
+                if (api != null)
+                {
+                    api.SetAppRunning(true);
+                    api.SetPhoneOpened(false);
+                }
+            }
+
+            Utilities.Data.Monitor.Log("Opening ReminderMenu page 1");
             Game1.activeClickableMenu = new NewReminder_Page1((string message, string season, int day) =>
             {
-                // have to capitalize the season due to the enum members being Pascal case and season being all lower case.
-                int seasonIndex = (int)Enum.Parse(typeof(Utilities.Season), season.Replace(season[0], char.ToUpper(season[0])));
-                int year;
+                int seasonIndex = (int)Enum.Parse(typeof(Utilities.Season), season);
                 Game1.exitActiveMenu();
-                // Convert to DaysSinceStart - calculate year fix.
+
+                // Convert to DaysSinceStart - Contextually choose year.
+                int year;
+
                 if (SDate.Now().SeasonIndex == seasonIndex) // same seasons
-                {
-                    if (SDate.Now().Day > day) // same season , past date
-                    {
-                        year = SDate.Now().Year + 1;
-                        ReminderDate = Utilities.Converts.ConvertToDays(day, seasonIndex, year);
-                    }
-                    else if (SDate.Now().Day == day) // same season, same date
-                    {
-                        year = SDate.Now().Year;
-                        ReminderDate = Utilities.Converts.ConvertToDays(day, seasonIndex, year);
-                    }
-                    else // same season, Future Date
-                    {
-                        year = SDate.Now().Year;
-                        ReminderDate = Utilities.Converts.ConvertToDays(day, seasonIndex, year);
-                    }
-                }
+                    year = (SDate.Now().Day > day) ? SDate.Now().Year + 1 : SDate.Now().Year;
                 else if (SDate.Now().SeasonIndex > seasonIndex) // past season
-                {
                     year = SDate.Now().Year + 1;
-                    ReminderDate = Utilities.Converts.ConvertToDays(day, seasonIndex, year);
-                }
                 else // future season
-                {
                     year = SDate.Now().Year;
-                    ReminderDate = Utilities.Converts.ConvertToDays(day, seasonIndex, year);
-                }
-                ReminderMessage = message;
+
+                reminderDate = Utilities.Converts.ConvertToDays(day, seasonIndex, year);
+                reminderMessage = message;
                 // open the second page
-                Monitor.Log("First page completed. Opening second page now.");
+                Utilities.Data.Monitor.Log("First page completed. Opening second page now.");
                 Game1.activeClickableMenu = new NewReminder_Page2((int time) =>
                 {
-                    ReminderTime = time;
+                    reminderTime = time;
                     // write the data to file
-                    Utilities.Files.WriteToFile(ReminderMessage, ReminderDate, ReminderTime);
-                    Monitor.Log($"Saved new reminder: {ReminderMessage} for {season} {day} at {Utilities.Converts.ConvertToPrettyTime(ReminderTime)}.", LogLevel.Info);
+                    Utilities.Files.WriteToFile(reminderMessage, reminderDate, reminderTime);
+                    Utilities.Data.Monitor.Log($"Saved new reminder: {reminderMessage} for {season} {day} at {Utilities.Converts.ConvertToPrettyTime(reminderTime)}.", LogLevel.Info);
                 });
-
             });
+
+            // MobilePhoneMod exit housekeeping
+            if (config.EnableMobilePhoneApp)
+                if (api != null)
+                    api.SetAppRunning(false);
         }
 
         /// <summary> Loop that checks if any reminders are mature.</summary>
@@ -131,10 +137,10 @@ namespace Dem1se.CustomReminders
         {
             // returns function if game time isn't multiple of 30 in-game minutes.
             string timeString = Convert.ToString(ev.NewTime);
-            if (!(timeString.EndsWith("30") || timeString.EndsWith("00"))) { return; }
+            if (!(timeString.EndsWith("30") || timeString.EndsWith("00"))) return;
 
             // Loops through all the reminder files and evaluates if they are current.
-            #region CoreReminderNotiferLoop
+            #region ReminderNotifierloop
             SDate currentDate = SDate.Now();
             foreach (string filePathAbsolute in Directory.EnumerateFiles(Path.Combine(Helper.DirectoryPath, "data", Utilities.Data.SaveFolderName)))
             {

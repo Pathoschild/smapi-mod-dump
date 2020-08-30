@@ -1,12 +1,15 @@
 {
     "Name": "Deep Dark",
     "Author": "LemurKat",
-    "Version": "1.4.1",
-    "Description": "Adds an area beneath the town.",
+    "Version": "1.4.3",
+    "Description": "Adds an area beneath East Scarpe, and more!",
     "UniqueID": "LemurKat.DeepDark.TMX",
 	"Dependencies": [
-  	{ "UniqueID": "LemurKat.EastScarpe.TMX" },{ "UniqueID": "DaisyNiko.Tilesheets" }
-			],
+    { "UniqueID": "LemurKat.EastScarpe.TMX" },{ "UniqueID": "DaisyNiko.Tilesheets" },
+      { "UniqueID": "FlashShifter.StardewValleyExpandedCP",        "IsRequired": false      },
+      { "UniqueID": "Karmylla.ImmersiveMaps",                      "IsRequired": false      },
+      { "UniqueID": "JT.LillaMaps",                                 "IsRequired": false   }
+    			],
       "ContentPackFor": {
       "UniqueID": "Platonymous.TMXLoader",
       "MinimumVersion": "1.13.0"

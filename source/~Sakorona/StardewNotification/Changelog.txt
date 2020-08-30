@@ -1,6 +1,8 @@
-﻿1.8.5
+﻿1.8.6
+ - fixes a greenhouse bug with tea leaves.
+
+1.8.5
  - fixes a bug that showed up in testing
- - API added
 
 1.8.3
  - fixes an interesting bug that should probably not show up but might - character not found in list on their birthday

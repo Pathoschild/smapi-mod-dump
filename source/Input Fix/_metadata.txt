@@ -1,0 +1,13 @@
+url:
+   https://github.com/Windmill-City/InputFix.git
+
+mods:
+   Input Fix
+
+latest commit:
+   commit dfecdb721e2bbd85f44f1448f16ebe1507de38c0
+   Author: Windmill-City <1449182174@qq.com>
+   Date:   Sat Aug 29 11:06:15 2020 +0800
+   
+       Update README.md
+   

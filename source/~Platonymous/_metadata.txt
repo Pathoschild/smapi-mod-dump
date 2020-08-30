@@ -32,6 +32,7 @@ mods:
    Pelican TTS
    Plan Importer
    Plato Warp Menu
+   PlatoTK
    Portraiture
    PyTK
    Ring of Fire
@@ -47,9 +48,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 6c4ecbf3787cfe6d163292869606388e7eaf495e
+   commit 7930d3bd39fd2067d051147d4021a84e4c0149e3
    Author: David <david@millionideas.de>
-   Date:   Thu Jul 16 20:18:27 2020 +0200
+   Date:   Sat Aug 29 21:04:06 2020 +0200
    
        update releases
    

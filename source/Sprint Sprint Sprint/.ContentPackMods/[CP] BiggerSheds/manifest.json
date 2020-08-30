@@ -1,0 +1,12 @@
+{
+   "Name": "Bigger Sheds",
+   "Author": "Jessebot",
+   "Version": "2.0.3",
+   "Description": "Sheds quadruple in size. Also comes with 8 different versions which you can set in the config.json file",
+   "UniqueID": "jessebot.biggersheds",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2816", "ModDrop:467208" ],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+   }
+}

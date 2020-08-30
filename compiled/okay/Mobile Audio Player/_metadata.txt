@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6568
+IDs: aedenthorn.MobileAudioPlayer
+update keys: Nexus:6568, GitHub:aedenthorn/StardewValleyMods

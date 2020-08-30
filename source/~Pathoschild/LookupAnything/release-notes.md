@@ -1,7 +1,19 @@
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.27.5
+Released 28 August 2020.
+
+* Improved translations. Thanks to wally232 on Nexus (updated Korean)!
+
+## 1.27.4
+Released 02 August 2020.
+
+* Fixed string sorting/comparison for some special characters.
+
+## 1.27.3
+Released 21 July 2020.
+
 * Fixed error looking up items when some item data is invalid.
 * Fixed incorrect color for sturgeon roe image.
 

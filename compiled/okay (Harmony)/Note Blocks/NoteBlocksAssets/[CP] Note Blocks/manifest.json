@@ -1,0 +1,12 @@
+{
+   "Name": "[CP] Note Blocks",
+   "Author": "Yaramy",
+   "Version": "1.0.2",
+   "Description": "Adds paths that change your speed when you walk over them.",
+   "UniqueID": "custompaths.noteblocks",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "???" ],
+   "ContentPackFor": {
+      "UniqueID": "Entoarox.CustomPaths"
+   }
+}

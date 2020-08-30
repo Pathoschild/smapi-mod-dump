@@ -8,6 +8,7 @@ using Netcode;
 using StardewValley.Locations;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Common;
 
 namespace AngryGrandpa
 {
@@ -61,8 +62,8 @@ namespace AngryGrandpa
             helper.Events.GameLoop.DayStarted += this.onDayStarted;
             helper.Events.Player.Warped += this.onWarped;
 
-            // Set up portrait asset editor. This one is added early since it never changes.
-            helper.Content.AssetEditors.Add(new PortraitEditor());
+            // Set up early portrait asset editor - used if set to automatic.
+            helper.Content.AssetEditors.Add(new PortraitEditor(overrideEdits: false));
         }
 
 
@@ -103,6 +104,7 @@ namespace AngryGrandpa
                 Instance.Helper.Content.AssetEditors.Add(new GrandpaNoteEditor());
                 Instance.Helper.Content.AssetEditors.Add(new EventEditor());
                 Instance.Helper.Content.AssetEditors.Add(new EvaluationEditor());
+                Instance.Helper.Content.AssetEditors.Add(new PortraitEditor(overrideEdits: true));
             }
         }
 

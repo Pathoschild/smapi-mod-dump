@@ -250,7 +250,7 @@ namespace TwilightShards.YouShouldRest
                 SeasonDayFB = Game1.currentSeason
             };
 
-            Monitor.Log(newDetails.ToString(), LogLevel.Info);
+            //Monitor.Log(newDetails.ToString(), LogLevel.Info);
 
             foreach (string key in GetKeys(newDetails))
             {
@@ -288,11 +288,21 @@ namespace TwilightShards.YouShouldRest
 
         private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if (e.NewMenu is DialogueBox dBox && !Game1.eventUp && StaminaCheck() && Game1.random.NextDouble() < ModConfig.CommentChance)
+            if (e.NewMenu is DialogueBox dBox && !Game1.eventUp && StaminaCheck())
             {
                 var cDBU = Helper.Reflection.GetField<Stack<string>>(dBox, "characterDialoguesBrokenUp").GetValue();
                 Dialogue diag = Helper.Reflection.GetField<Dialogue>(dBox, "characterDialogue").GetValue();
-                if (diag != null && diag.speaker != null && !NPCCommenters.Contains(diag.speaker.Name))
+
+                if (diag?.speaker is null)
+                    return;
+                
+                if (Game1.random.NextDouble() > ModConfig.CommentChance)
+                {
+                    NPCCommenters.Add(diag.speaker.Name);
+                    return;
+                }
+                
+                if (!NPCCommenters.Contains(diag.speaker.Name))
                 {
                     if (diag.temporaryDialogue == Helper.Translation.Get("Strings\\UI:Carpenter_DemolishCabinConfirm") ||
                         diag.temporaryDialogue == Helper.Translation.Get("Data\\ExtraDialogue:Robin_Instant") ||

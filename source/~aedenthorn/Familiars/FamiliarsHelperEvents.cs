@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Buildings;
+using StardewValley.Locations;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
@@ -39,7 +42,7 @@ namespace Familiars
                 if (npc is Familiar)
                 {
                     Farmer owner = Game1.getFarmer(Helper.Reflection.GetField<long>(npc, "ownerId").GetValue());
-                    if (owner == Game1.player)
+                    if (owner == Game1.player && (npc as Familiar).followingOwner)
                     {
                         FamiliarsUtils.warpFamiliar(npc, e.NewLocation, Game1.player.getTileLocation());
                     }
@@ -79,28 +82,66 @@ namespace Familiars
                     {
                         if(l.characters[i] is DustSpriteFamiliar)
                         {
-                            fsd.dustSpriteFamiliars.Add((l.characters[i] as Familiar).SaveData());
+                            fsd.dustSpriteFamiliars.Add((l.characters[i] as Familiar).SaveData(l));
                         }
                         else if(l.characters[i] is DinoFamiliar)
                         {
-                            fsd.dinoFamiliars.Add((l.characters[i] as Familiar).SaveData());
+                            fsd.dinoFamiliars.Add((l.characters[i] as Familiar).SaveData(l));
                         }
                         else if(l.characters[i] is BatFamiliar)
                         {
-                            fsd.batFamiliars.Add((l.characters[i] as Familiar).SaveData());
+                            fsd.batFamiliars.Add((l.characters[i] as Familiar).SaveData(l));
                         }
                         else if(l.characters[i] is JunimoFamiliar)
                         {
-                            fsd.junimoFamiliars.Add((l.characters[i] as Familiar).SaveData());
+                            fsd.junimoFamiliars.Add((l.characters[i] as Familiar).SaveData(l));
                         }
                         else if(l.characters[i] is ButterflyFamiliar)
                         {
-                            fsd.butterflyFamiliars.Add((l.characters[i] as Familiar).SaveData());
+                            fsd.butterflyFamiliars.Add((l.characters[i] as Familiar).SaveData(l));
                         }
+                        Monitor.Log($"removing {l.characters[i].GetType()} from {l.Name}");
                         l.characters.RemoveAt(i);
                     }
                 }
             }
+
+            foreach (Building b in Game1.getFarm().buildings)
+            {
+                if (b.indoors == null || b.indoors.Value == null || b.indoors.Value.characters == null || b.indoors.Value.Name != "Slime Hutch")
+                    continue;
+                for (int i = b.indoors.Value.characters.Count - 1; i >= 0; i--)
+                {
+                    NPC npc = b.indoors.Value.characters[i];
+                    if (npc is Familiar)
+                    {
+                        
+                        if (npc is DustSpriteFamiliar)
+                        {
+                            fsd.dustSpriteFamiliars.Add((npc as Familiar).SaveData(b.indoors.Value));
+                        }
+                        else if (npc is DinoFamiliar)
+                        {
+                            fsd.dinoFamiliars.Add((npc as Familiar).SaveData(b.indoors.Value));
+                        }
+                        else if (npc is BatFamiliar)
+                        {
+                            fsd.batFamiliars.Add((npc as Familiar).SaveData(b.indoors.Value));
+                        }
+                        else if (npc is JunimoFamiliar)
+                        {
+                            fsd.junimoFamiliars.Add((npc as Familiar).SaveData(b.indoors.Value));
+                        }
+                        else if (npc is ButterflyFamiliar)
+                        {
+                            fsd.butterflyFamiliars.Add((npc as Familiar).SaveData(b.indoors.Value));
+                        }
+                        Monitor.Log($"removing {npc.GetType()} from {b.indoors.Value.Name}");
+                        b.indoors.Value.characters.RemoveAt(i);
+                    }
+                }
+            }
+
             Helper.Data.WriteSaveData("familiars", fsd);
         }
 
@@ -169,6 +210,48 @@ namespace Familiars
                     Monitor.Log(string.Format("Familiars mod item #6 ID is {0}.", ModEntry.ButterflyDust));
                 }
             }
+
+            // fix bug
+            if (Game1.IsMasterGame && Config.TryToFixOldBugs)
+            {
+                Monitor.Log("Fixing bugs");
+                foreach (Building l in Game1.getFarm().buildings)
+                {
+                    if (l is Coop)
+                    {
+                        foreach (Object o in (l as Coop).indoors.Value.Objects.Values)
+                        {
+                            if (o.bigCraftable && o.Name.Contains("Incubator") && o.heldObject.Value != null)
+                            {
+                                int egg = o.heldObject.Value.ParentSheetIndex;
+                                Monitor.Log($"egg id {egg}");
+                                if (new int[] { ModEntry.BatFamiliarEgg, ModEntry.ButterflyFamiliarEgg, ModEntry.DinoFamiliarEgg, ModEntry.DustFamiliarEgg, ModEntry.JunimoFamiliarEgg }.Contains(egg))
+                                {
+                                    Monitor.Log($"familiar egg, removing.", LogLevel.Warn);
+                                    o.heldObject.Value = null;
+                                    o.minutesUntilReady.Value = -1;
+                                    o.ParentSheetIndex = 101;
+                                    Game1.player.addItemToInventory(new Object(egg, 1));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                foreach (GameLocation l in Game1.locations)
+                {
+                    for (int i = l.Objects.Count() - 1; i >= 0; i--)
+                    {
+                        Object o = l.Objects.Values.ElementAt(i);
+                        if (o.Name.Equals("Butterfly Dust"))
+                        {
+                            Monitor.Log($"Removing placed butterfly dust.", LogLevel.Warn);
+                            Game1.currentLocation.debris.Add(new Debris(o.ParentSheetIndex, l.Objects.Keys.ElementAt(i), Game1.player.position));
+                            l.objects.Remove(l.Objects.Keys.ElementAt(i));
+                        }
+                    }
+                }
+            }
         }
 
         public static void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
@@ -179,12 +262,34 @@ namespace Familiars
 
         public static void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if(Context.IsPlayerFree && (e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight) && Game1.player.currentLocation != null)
+            Rectangle box = new Rectangle((int)Game1.lastCursorTile.X * Game1.tileSize, (int)Game1.lastCursorTile.Y * Game1.tileSize, Game1.tileSize, Game1.tileSize);
+
+            if (Context.IsPlayerFree && (e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight) && Game1.player.currentLocation != null)
             {
+                foreach (Familiar f in Game1.player.currentLocation.characters.Where(n => n is Familiar))
+                {
+                    if ((f.ownerId == Game1.player.UniqueMultiplayerID || f.ownerId == 0 || !f.followingOwner) && f.GetBoundingBox().Intersects(box))
+                    {
+                        if (!f.followingOwner)
+                            f.ownerId = Game1.player.UniqueMultiplayerID;
+
+                        if (Game1.player.currentLocation is SlimeHutch)
+                            f.followingOwner = !f.followingOwner;
+                        else if (!f.followingOwner)
+                            f.followingOwner = true;
+
+                        if (!f.followingOwner && f.currentLocation.getTileIndexAt(f.getTileLocationPoint(), "Back") == -1)
+                            f.followingOwner = true;
+
+                        Game1.player.currentLocation.playSound("dwop");
+                        Monitor.Log($"familiar following player: {f.followingOwner}");
+                        return;
+                    }
+                }
+
                 List<Critter> critters = Helper.Reflection.GetField<List<Critter>>(Game1.player.currentLocation, "critters").GetValue();
                 if (critters == null)
                     return;
-                Rectangle box = new Rectangle((int)Game1.lastCursorTile.X * Game1.tileSize, (int)Game1.lastCursorTile.Y * Game1.tileSize, Game1.tileSize, Game1.tileSize);
                 foreach(Critter c in critters)
                 {
                     

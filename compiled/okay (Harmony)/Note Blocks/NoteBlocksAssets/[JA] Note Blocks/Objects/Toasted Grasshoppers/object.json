@@ -1,0 +1,39 @@
+{
+    "Name": "Toasted Grasshoppers",
+    "Description": "Roasted, spicy insects from the valley.",
+    "Category": "Cooking",
+    "Edibility": 35,
+    "EdibleIsDrink": false,
+    "EdibleBuffs":
+    {
+        "Farming": 0,
+        "Fishing": 0,
+        "Mining": 0,
+        "Luck": 0,
+        "Foraging": 0,
+        "MaxStamina": 0,
+        "MagnetRadius": 0,
+        "Speed": 2,
+        "Defense": 0,
+        "Attack": 0,
+        "Duration": 10000,
+    },
+    "Price": 150,
+    "IsColored": false,
+    "CanPurchase": false,
+    "Recipe":
+    {
+        "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": 774, //wild bait
+            "Count": 1,
+        },
+        {
+            "Object": 260, //hot pepper
+            "Count": 1,
+        },
+      ],
+    "IsDefault": true,
+    },
+}

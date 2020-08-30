@@ -3,5 +3,11 @@
     "Description": "A stellar sailor suit adorned with bows and a gemstone.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Sailor Uranus"
+    },
+    "DescriptionLocalization": {
+        "es": "Un traje de marinero estelar adornado con arcos y una piedra preciosa."
+    }
 }

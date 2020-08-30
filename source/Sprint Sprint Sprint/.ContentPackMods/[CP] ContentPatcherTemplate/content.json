@@ -1,0 +1,16 @@
+//<Delete these //comments after cuz they dont matter.> (For more complex stuff like adding "When" Conditions or "Action": 'EditData' and etc.: https://github.com/Pathoschild/StardewMods/tree/stable/ContentPatcher#intro)
+//also dont delete the commas[,] cuz they separate the data/code
+
+{
+  "Format": "1.4", //Minimum Content Patcher Version Required to run mod.(ex. someone with CP 1.3 can not run this mod if "Format": "1.4" or "1.5", but can run if "Format": "1.3" or lower)
+  "Changes": [
+       
+	   //Only patch one file for every box, if you're replacing more than 1 xnb files, copy this 'box' of data that is contained in {"these braces"}, paste it beneath the box of field data (which ends in '},') and repeat process
+       {
+          "Action": "Load", //dont change this unless you know what you're doing
+          "Target": "", //type in where the 'xnb file you want to find' is located[(Ex: finding Farm.xnb) Content/Maps/Farm; should look like "Target": "Maps/Farm", Content Patcher automatically looks in Content Folder so don't put in Content in the file path]
+          "FromFile": "assets/" //find your png, tbin or xnb file(with Content Patcher, no repacking/unpacking files needed. NO JSON FILE NEEDED)(you should put your EDITED file into the assets folder [ex. if you have a tbin file like 'Farm.tbin', then should look like assets/Farm.tbin] leave the "assets/<then insert your file here>.xnb"
+       },
+	   
+    ]
+}

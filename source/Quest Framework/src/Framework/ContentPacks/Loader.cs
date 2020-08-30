@@ -30,19 +30,26 @@ namespace QuestFramework.Framework.ContentPacks
 
         public void LoadPacks(IEnumerable<IContentPack> contentPacks)
         {
-            int count = 0;
+            List<IManifest> manifests = new List<IManifest>();
+
             foreach (var contentPack in contentPacks)
             {
+                this.Monitor.Log($"Loading content pack {contentPack.Manifest.UniqueID} ...");
+
                 var content = this.LoadContentPack(contentPack);
 
                 if (content != null && this.Validate(content))
                 {
                     this.ValidContents.Add(content);
-                    ++count;
+                    manifests.Add(contentPack.Manifest);
                 }
             }
 
-            this.Monitor.Log($"Loaded {count} content packs.", LogLevel.Info); 
+            if (manifests.Count > 0)
+            {
+                this.Monitor.Log($"Loaded {manifests.Count} content packs:", LogLevel.Info);
+                manifests.ForEach((m) => this.Monitor.Log($"   {m.Name} {m.Version} by {m.Author} ({m.UniqueID})", LogLevel.Info));
+            }
         }
 
         private void Prepare(Content content)
@@ -170,30 +177,32 @@ namespace QuestFramework.Framework.ContentPacks
             return string.Join("", parts);
         }
 
-        private CustomQuest MapQuest(Content content, Quest quest)
+        private CustomQuest MapQuest(Content content, QuestData questData)
         {
-            string trigger = quest.Trigger?.ToString();
+            string trigger = questData.Trigger?.ToString();
 
-            var managedQuest = new CustomQuest(quest.Name)
+            var managedQuest = new CustomQuest(questData.Name)
             {
-                Title = quest.Title,
-                Description = quest.Description,
-                BaseType = quest.Type,
-                Objective = quest.Objective,
-                DaysLeft = quest.DaysLeft,
-                Reward = quest.Reward,
-                RewardDescription = quest.RewardDescription,
-                ReactionText = quest.ReactionText,
-                Cancelable = quest.Cancelable,
+                Title = questData.Title,
+                Description = questData.Description,
+                BaseType = questData.Type,
+                Objective = questData.Objective,
+                DaysLeft = questData.DaysLeft,
+                Reward = questData.Reward,
+                RewardDescription = questData.RewardDescription,
+                ReactionText = questData.ReactionText,
+                Cancelable = questData.Cancelable,
                 Trigger = this.ApplyTokens(trigger),
-                NextQuests = quest.NextQuests,
+                NextQuests = questData.NextQuests,
                 OwnedByModUid = content.owner.Manifest.UniqueID,
             };
 
-            if (quest.CustomTypeId != -1)
+            if (questData.CustomTypeId != -1)
             {
-                managedQuest.CustomTypeId = quest.CustomTypeId;
+                managedQuest.CustomTypeId = questData.CustomTypeId;
             }
+
+            questData.PopulateExtendedData(managedQuest);
 
             return managedQuest;
         }

@@ -5,8 +5,10 @@ using TwilightShards.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using StardewValley.Locations;
 using StardewValley.Objects;
+using TwilightShards.WeatherIllnesses.Integrations;
 
 namespace TwilightShards.WeatherIllnesses
 {
@@ -27,14 +29,22 @@ namespace TwilightShards.WeatherIllnesses
     {
         private readonly int UniqueStaID = 48712560;
 
+        private const int SicknessBuffID = 24;
+        private const int FogBuffID = 26;
+
         private readonly IllnessConfig IllOptions;
         private readonly ITranslationHelper Helper;
+
+        private bool FogDebuffValid;
         private bool FarmerSick;
         private bool turnTheHeatOn;
+
         private IllCauses ReasonSick ;
         public bool FarmerHasBeenSick;
         public bool IssuedInHouseWarning;
         private readonly IMonitor Monitor;
+
+        private int timeInBathHouse;
 
         public const int MedicineClear = 1;
         public const int BathHouseClear = 2;
@@ -58,18 +68,6 @@ namespace TwilightShards.WeatherIllnesses
             FarmerHasBeenSick = true;
             if (IllOptions.Verbose)
                 Monitor.Log("Adding buff icon!!");
-
-            int buffId = UniqueStaID;
-            Buff WeatherBuff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == buffId);
-            if (WeatherBuff == null)
-            {
-                Game1.buffsDisplay.addOtherBuff(
-                    WeatherBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        "You are sick due to the inclement weather!", "Weather Illnesses"));
-                WeatherBuff.which = buffId;
-                WeatherBuff.sheetIndex = 17;
-                WeatherBuff.millisecondsDuration = 800000;
-            }
 
             switch (ReasonSick)
             {
@@ -106,16 +104,42 @@ namespace TwilightShards.WeatherIllnesses
         public void OnNewDay()
         {
             FarmerSick = false;
+            FogDebuffValid = false;
             ReasonSick = IllCauses.None;
             IssuedInHouseWarning = false;
             turnTheHeatOn = false;
         }
 
+        public void ClearFog()
+        {
+            FogDebuffValid = false;
+            if (Game1.buffsDisplay.otherBuffs.Any())
+            {
+                int buffId = UniqueStaID + FogBuffID;
+                int i = Game1.buffsDisplay.otherBuffs.FindIndex(p => p.which == buffId);
+                //of course a not found is a negative index.
+                if (i > 0)
+                    Game1.buffsDisplay.otherBuffs.RemoveAt(i);
+            }
+
+            if (IllOptions.Verbose)
+                Monitor.Log("Removing buff icon!!");
+
+            SDVUtilities.ShowMessage("The evil is defeated!", 4);
+        }
+
         public void ClearDrain(int reason = 1)
         {
             FarmerSick = false;
-            int i = Game1.buffsDisplay.otherBuffs.FindIndex(p => p.which == UniqueStaID);
-            Game1.buffsDisplay.otherBuffs.RemoveAt(i);
+            if (Game1.buffsDisplay.otherBuffs.Any())
+            {
+                int buffId = UniqueStaID + SicknessBuffID;
+                int i = Game1.buffsDisplay.otherBuffs.FindIndex(p => p.which == buffId);
+                //of course a not found is a negative index.
+                if (i > 0)
+                    Game1.buffsDisplay.otherBuffs.RemoveAt(i);
+            }
+
             if (IllOptions.Verbose)
                 Monitor.Log("Removing buff icon!!");
 
@@ -156,13 +180,12 @@ namespace TwilightShards.WeatherIllnesses
 
             if (IllOptions.Verbose)
             {
-                Monitor.Log($"Ticks: {ticksOutside}/{ticksTotal} with percentage {amtOutside}:N3 against target {IllOptions.PercentageOutside}");
-                Monitor.Log($"Ticks in house is {amtInHouse}:N3 against target {IllOptions.PercentageOutside}");
+                Monitor.Log($"Ticks: {ticksOutside}/{ticksTotal} with percentage {amtOutside:N3} against target {IllOptions.PercentageOutside}");
+                Monitor.Log($"Ticks in house is {amtInHouse:N3} against target {IllOptions.PercentageOutside}");
                 Monitor.Log($"Current Condition: {conditions}");
             }
             
             //First, update the sick status
-            bool farmerCaughtCold;
             double sickOdds = IllOptions.ChanceOfGettingSick - Game1.player.DailyLuck;
 
             //weee.
@@ -175,7 +198,7 @@ namespace TwilightShards.WeatherIllnesses
             if (hatID == 4 && conditions.Contains("heatwave") && !SDVTime.IsNight)
                 sickOdds -= .11;
 
-            farmerCaughtCold = (Dice.NextDoublePositive() <= sickOdds) && (IllOptions.StaminaDrain > 0);
+            bool farmerCaughtCold = (Dice.NextDoublePositive() <= sickOdds) && (IllOptions.StaminaDrain > 0);
 
             FarmHouse fh = Game1.getLocationFromName("FarmHouse") as FarmHouse;
             bool isHeaterHere = false;
@@ -199,17 +222,17 @@ namespace TwilightShards.WeatherIllnesses
 
             if (!(temp is null)) { 
             
-            turnTheHeatOn = (turnTheHeatOn || (amtInHouse >= IllOptions.PercentageOutside && farmerCaughtCold &&
-                                               temp < IllOptions.TooColdInside && !isHeaterHere && IssuedInHouseWarning && 
-                                               (Game1.timeOfDay < 1000 || Game1.timeOfDay > 1650)));
+                turnTheHeatOn = (turnTheHeatOn || (amtInHouse >= IllOptions.PercentageOutside && farmerCaughtCold &&
+                                                   temp < IllOptions.TooColdInside && !isHeaterHere && IssuedInHouseWarning && 
+                                                   (Game1.timeOfDay < 1000 || Game1.timeOfDay > 1650)));
             
                               
-            if (!IssuedInHouseWarning && amtInHouse >= IllOptions.PercentageOutside && temp < IllOptions.TooColdInside
-                && (Game1.timeOfDay < 1000 || Game1.timeOfDay > 1650) && !Game1.currentLocation.IsOutdoors && !isHeaterHere)
-            {
-                SDVUtilities.ShowMessage(Helper.Get("hud-text.desc_HeatOn"),4);
-                IssuedInHouseWarning = true;
-            }
+                if (!IssuedInHouseWarning && amtInHouse >= IllOptions.PercentageOutside && temp < IllOptions.TooColdInside
+                    && (Game1.timeOfDay < 1000 || Game1.timeOfDay > 1650) && !Game1.currentLocation.IsOutdoors && !isHeaterHere)
+                {
+                    SDVUtilities.ShowMessage(Helper.Get("hud-text.desc_HeatOn"),4);
+                    IssuedInHouseWarning = true;
+                }
             }
 
             if (amtOutside >= IllOptions.PercentageOutside && farmerCaughtCold || this.FarmerSick || turnTheHeatOn)
@@ -333,10 +356,82 @@ namespace TwilightShards.WeatherIllnesses
                 }
                 condString += " ]";
                 
-                Monitor.Log($"[{Game1.timeOfDay}] Conditions for the drain are {condString} for a total multipler of {totalMulti} for a total drain of {staminaAffect}"); 
+                Monitor.Log($"[{Game1.timeOfDay}] Conditions for the drain are {condString} for a total multiplier of {totalMulti} for a total drain of {staminaAffect}"); 
             }
 
             return staminaAffect;
+        }
+
+        public int GetBathHouseDuration()
+        {
+            if (timeInBathHouse == 0)
+                return 0;
+            Monitor.Log($"Time Of Day: {Game1.timeOfDay}, Time In Bath House: {timeInBathHouse}");
+            return SDVTime.MinutesBetweenTwoIntTimes(this.timeInBathHouse, Game1.timeOfDay);
+        }
+
+        public void OnUpdateTicked()
+        {
+            if (this.FogDebuffValid)
+            {
+                if (WeatherIllnesses.UseClimates && !(WeatherIllnesses.climatesAPI is null) && WeatherIllnesses.climatesAPI.GetCurrentFogType() != "Blinding")
+                {
+                    Monitor.Log("Clearing the fog",LogLevel.Info);
+                    ClearFog();
+                }
+            }
+
+            if (WeatherIllnesses.UseClimates && !(WeatherIllnesses.climatesAPI is null) && 
+                WeatherIllnesses.climatesAPI.GetCurrentFogType() == "Blinding")
+            {
+                FogDebuffValid = true;
+            }
+
+            if (this.IsSick())
+            {
+                int buffId = UniqueStaID + SicknessBuffID;
+                Buff weatherBuff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == buffId);
+                if (weatherBuff == null)
+                {
+                    Game1.buffsDisplay.addOtherBuff(
+                        weatherBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0,
+                            "Weather Illnesses", "Weather Illnesses"));
+                    weatherBuff.which = buffId;
+                    weatherBuff.sheetIndex = SicknessBuffID;
+                    weatherBuff.millisecondsDuration = 0;
+                    weatherBuff.description = "You are sick due to the inclement weather!";
+                }
+            }
+
+            if (this.FogDebuffValid)
+            {
+                int buffId = UniqueStaID + FogBuffID;
+                Buff weatherBuff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == buffId);
+                if (weatherBuff == null)
+                {
+                    Game1.buffsDisplay.addOtherBuff(
+                        weatherBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            "Weather Illnesses", "Weather Illnesses"));
+                    weatherBuff.which = buffId;
+                    weatherBuff.sheetIndex = FogBuffID;
+                    weatherBuff.millisecondsDuration = 0;
+                    weatherBuff.description = "The inclement weather is severely limiting visibility.";
+                }
+
+                if (!WeatherIllnesses.UseClimates)
+                {
+                    //a rather brute force method;
+                    Game1.outdoorLight = Color.Black;
+                }
+            }
+        }
+
+        public void PoolhouseFlip()
+        {
+            if (timeInBathHouse == 0)
+                timeInBathHouse = Game1.timeOfDay;
+            else
+                timeInBathHouse = 0;
         }
     }
 }

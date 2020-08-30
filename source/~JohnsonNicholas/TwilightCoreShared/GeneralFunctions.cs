@@ -85,7 +85,7 @@ namespace TwilightShards.Common
             int hour = (int)Math.Floor(val / 60.0);
             double min = val - (hour * 60);
 
-            return $"{hour}h{min.ToString("00")}m";
+            return $"{hour}h{min:00}m";
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "I'm not seperating this one float out.")]

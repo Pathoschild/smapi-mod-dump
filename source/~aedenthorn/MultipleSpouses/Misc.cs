@@ -45,7 +45,55 @@ namespace MultipleSpouses
 
             return spouses;
         }
+
+        internal static void ResetDivorces()
+        {
+            if (!ModEntry.config.PreventHostileDivorces)
+                return;
+            List<string> friends = Game1.player.friendshipData.Keys.ToList();
+            foreach(string f in friends)
+            {
+                if(Game1.player.friendshipData[f].Status == FriendshipStatus.Divorced)
+                {
+                    Monitor.Log($"Wiping divorce for {f}");
+                    if (Game1.player.friendshipData[f].Points < 8 * 250)
+                        Game1.player.friendshipData[f].Status = FriendshipStatus.Friendly;
+                    else
+                        Game1.player.friendshipData[f].Status = FriendshipStatus.Dating;
+                }
+            }
+        }
+
         public static Dictionary<string, Dictionary<string, string>> relationships = new Dictionary<string, Dictionary<string, string>>();
+
+        public static List<string> ReorderSpousesForRooms(List<string> spousesWithRooms)
+        {
+            List<string> configSpouses = ModEntry.config.SpouseRoomOrder.Split(',').ToList();
+            List<string> spouses = new List<string>();
+            foreach(string s in configSpouses)
+            {
+                if (spousesWithRooms.Contains(s))
+                    spouses.Add(s);
+            }
+
+            foreach (string s in spousesWithRooms)
+            {
+                if (!spouses.Contains(s))
+                {
+                    spouses.Add(s);
+                    configSpouses.Add(s);
+                }
+            }
+            string configString = string.Join(",", configSpouses);
+            if(configString != ModEntry.config.SpouseRoomOrder)
+            {
+                ModEntry.config.SpouseRoomOrder = configString;
+                Helper.WriteConfig(ModEntry.config);
+            }
+
+            return spouses;
+        }
+
         public static void SetNPCRelations()
         {
             relationships.Clear();
@@ -69,6 +117,15 @@ namespace MultipleSpouses
                     }
                 }
             }
+        }
+
+        public static string GetRandomSpouse(Farmer f)
+        {
+            var spouses = GetSpouses(f, 1);
+            if (spouses.Count == 0)
+                return null;
+            ShuffleDic(ref spouses);
+            return spouses.Keys.ToArray()[0];
         }
 
         public static void PlaceSpousesInFarmhouse(FarmHouse farmHouse)
@@ -95,7 +152,7 @@ namespace MultipleSpouses
             {
                 int type = ModEntry.myRand.Next(0, 100);
 
-                Monitor.Log("spouse type: " + type);
+                Monitor.Log($"spouse rand {type}, bed: {ModEntry.config.PercentChanceForSpouseInBed} kitchen {ModEntry.config.PercentChanceForSpouseInKitchen}");
                 
                 if(type < ModEntry.config.PercentChanceForSpouseInBed)
                 {
@@ -118,41 +175,13 @@ namespace MultipleSpouses
 
             List<string> allBedSpouses = new List<string>(GetSpouses(farmer, 1).Keys.ToList());
 
-            List<NPC> roomSpouses = GetSpouses(farmer, -1).Values.ToList().FindAll((s) => (Maps.roomIndexes.ContainsKey(s.Name) || Maps.tmxSpouseRooms.ContainsKey(s.Name)) && !farmer.friendshipData[s.Name].IsEngaged());
+            List<string> roomSpouses = ReorderSpousesForRooms(GetSpouses(farmer, -1).Keys.ToList().FindAll(s => (Maps.roomIndexes.ContainsKey(s) || Maps.tmxSpouseRooms.ContainsKey(s)) && !farmer.friendshipData[s].IsEngaged()));
 
             foreach (NPC j in allSpouses) { 
                 Monitor.Log("placing " + j.Name);
 
                 Point kitchenSpot = farmHouse.getKitchenStandingSpot();
                 Vector2 spouseRoomSpot = (farmHouse.upgradeLevel == 1) ? new Vector2(32f, 5f) : new Vector2(38f, 14f);
-
-                if (farmer.Equals(Game1.MasterPlayer))
-                {
-                    if (ModEntry.outdoorAreaData.areas.ContainsKey(j.Name))
-                    {
-                        SetupSpouseArea(ModEntry.outdoorAreaData.areas[j.Name], j.Name);
-                        if (!Game1.isRaining && !Game1.IsWinter && Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Sat") && !j.Name.Equals("Krobus"))
-                        {
-                            Monitor.Log("going to outdoor patio");
-                            j.setUpForOutdoorPatioActivity();
-                            continue;
-                        }
-                    }
-                    else if (farmer.spouse.Equals(j.Name))
-                    {
-                        OutdoorArea area = new OutdoorArea() { 
-                            startX = 69,
-                            startY = 6,
-                        };
-                        SetupSpouseArea(area, j.Name);
-                        if (!Game1.isRaining && !Game1.IsWinter && Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Sat") && !j.Name.Equals("Krobus"))
-                        {
-                            Monitor.Log("going to outdoor patio");
-                            j.setUpForOutdoorPatioActivity();
-                            continue;
-                        }
-                    }
-                }
 
                 if (!farmHouse.Equals(j.currentLocation))
                 {
@@ -187,7 +216,7 @@ namespace MultipleSpouses
                 else
                 {
 
-                    if (!roomSpouses.Contains(j))
+                    if (!roomSpouses.Contains(j.Name))
                     {
                         j.setTilePosition(farmHouse.getRandomOpenPointInHouse(ModEntry.myRand));
                         j.faceDirection(ModEntry.myRand.Next(0, 4));
@@ -196,7 +225,7 @@ namespace MultipleSpouses
                     }
                     else
                     {
-                        int offset = roomSpouses.IndexOf(j) * 7;
+                        int offset = roomSpouses.IndexOf(j.Name) * 7;
                         j.setTilePosition((int)spot.X + offset, (int)spot.Y);
                         j.faceDirection(ModEntry.myRand.Next(0, 4));
                         j.setSpouseRoomMarriageDialogue();
@@ -225,116 +254,6 @@ namespace MultipleSpouses
             npc.Sprite.setCurrentAnimation(anim);
         }
 
-        private static void SetupSpouseArea(OutdoorArea area, string name)
-        {
-            Farm farm = Game1.getFarm();
-
-            int x = area.startX;
-            int y = area.startY;
-
-            farm.removeTile(x +1, y + 3, "Buildings");
-            farm.removeTile(x +2, y + 3, "Buildings");
-            farm.removeTile(x +3, y + 3, "Buildings");
-            farm.removeTile(x, y + 3, "Buildings");
-            farm.removeTile(x +1, y + 2, "Buildings");
-            farm.removeTile(x +2, y + 2, "Buildings");
-            farm.removeTile(x +3, y + 2, "Buildings");
-            farm.removeTile(x, y + 2, "Buildings");
-            farm.removeTile(x +1, y + 1, "Front");
-            farm.removeTile(x +2, y + 1, "Front");
-            farm.removeTile(x +3, y + 1, "Front");
-            farm.removeTile(x, y + 1, "Front");
-            farm.removeTile(x +1, y, "AlwaysFront");
-            farm.removeTile(x +2, y, "AlwaysFront");
-            farm.removeTile(x +3, y, "AlwaysFront");
-            farm.removeTile(x, y, "AlwaysFront");
-
-            switch (name)
-            {
-                case "Sam":
-                    farm.setMapTileIndex(x, y + 2, 1173, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 2, 1174, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 2, 1198, "Buildings", 1);
-                    farm.setMapTileIndex(x + 2, y + 2, 1199, "Buildings", 1);
-                    farm.setMapTileIndex(x, y + 1, 1148, "Front", 1);
-                    farm.setMapTileIndex(x + 3, y + 1, 1149, "Front", 1);
-                    return;
-                case "Penny":
-                    farm.setMapTileIndex(x, y + 2, 1098, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 2, 1123, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 2, 1098, "Buildings", 1);
-                    return;
-                case "Sebastian":
-                    farm.setMapTileIndex(x + 1, y + 2, 1927, "Buildings", 1);
-                    farm.setMapTileIndex(x + 2, y + 2, 1928, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 2, 1929, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 1, 1902, "Front", 1);
-                    farm.setMapTileIndex(x + 2, y + 1, 1903, "Front", 1);
-                    return;
-                case "Shane":
-                    farm.setMapTileIndex(x + 1, y + 3, 1940, "Buildings", 1);
-                    farm.setMapTileIndex(x + 2, y + 3, 1941, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 3, 1942, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 2, 1915, "Buildings", 1);
-                    farm.setMapTileIndex(x + 2, y + 2, 1916, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 2, 1917, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 1, 1772, "Front", 1);
-                    farm.setMapTileIndex(x + 2, y + 1, 1773, "Front", 1);
-                    farm.setMapTileIndex(x + 3, y + 1, 1774, "Front", 1);
-                    farm.setMapTileIndex(x + 1, y, 1747, "AlwaysFront", 1);
-                    farm.setMapTileIndex(x + 2, y, 1748, "AlwaysFront", 1);
-                    farm.setMapTileIndex(x + 3, y, 1749, "AlwaysFront", 1);
-                    return;
-                case "Alex":
-                    farm.setMapTileIndex(x, y + 2, 1099, "Buildings", 1);
-                    return;
-                case "Maru":
-                    farm.setMapTileIndex(x + 2, y + 2, 1124, "Buildings", 1);
-                    return;
-                case "Emily":
-                    farm.setMapTileIndex(x, y + 2, 1867, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 2, 1867, "Buildings", 1);
-                    farm.setMapTileIndex(x, y + 1, 1842, "Front", 1);
-                    farm.setMapTileIndex(x + 3, y + 1, 1842, "Front", 1);
-                    farm.setMapTileIndex(x, y + 3, 1866, "Buildings", 1);
-                    farm.setMapTileIndex(x + 2, y + 2, 1866, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 3, 1967, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 2, 1967, "Buildings", 1);
-                    return;
-                case "Haley":
-                    farm.setMapTileIndex(x, y + 2, 1074, "Buildings", 1);
-                    farm.setMapTileIndex(x, y + 1, 1049, "Front", 1);
-                    farm.setMapTileIndex(x, y, 1024, "AlwaysFront", 1);
-                    farm.setMapTileIndex(x + 3, y + 2, 1074, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 1, 1049, "Front", 1);
-                    farm.setMapTileIndex(x + 3, y, 1024, "AlwaysFront", 1);
-                    return;
-                case "Harvey":
-                    farm.setMapTileIndex(x, y + 2, 1098, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 2, 1123, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 2, 1098, "Buildings", 1);
-                    return;
-                case "Elliott":
-                    farm.setMapTileIndex(x, y + 2, 1098, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 2, 1123, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 2, 1098, "Buildings", 1);
-                    return;
-                case "Leah":
-                    farm.setMapTileIndex(x + 1, y + 2, 1122, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 1, 1097, "Front", 1);
-                    return;
-                case "Abigail":
-                    farm.setMapTileIndex(x, y + 2, 1098, "Buildings", 1);
-                    farm.setMapTileIndex(x + 1, y + 2, 1123, "Buildings", 1);
-                    farm.setMapTileIndex(x + 3, y + 2, 1098, "Buildings", 1);
-                    return;
-
-            }
-            foreach(SpecialTile tile in area.specialTiles)
-            {
-                farm.setMapTileIndex(tile.x, tile.y, tile.tileIndex, tile.layer, tile.tilesheet);
-            }
-        }
 
         public static string[] relativeRoles = new string[]
         {
@@ -404,6 +323,10 @@ namespace MultipleSpouses
             if (Game1.content.Load<Dictionary<string, string>>("Data\\animationDescriptions").ContainsKey(name.ToLower() + "_sleep"))
             {
                 anim = Game1.content.Load<Dictionary<string, string>>("Data\\animationDescriptions")[name.ToLower() + "_sleep"];
+            }
+            else if (Game1.content.Load<Dictionary<string, string>>("Data\\animationDescriptions").ContainsKey(name + "_Sleep"))
+            {
+                anim = Game1.content.Load<Dictionary<string, string>>("Data\\animationDescriptions")[name + "_Sleep"];
             }
             return anim;
         }
@@ -477,7 +400,7 @@ namespace MultipleSpouses
                 }
                 if (f.friendshipData[name].IsMarried() && f.spouse != name)
                 {
-                    Monitor.Log($"{f.Name} is married to: {name}");
+                    //Monitor.Log($"{f.Name} is married to: {name}");
                     if (f.spouse != null && f.friendshipData[f.spouse] != null && !f.friendshipData[f.spouse].IsMarried() && !f.friendshipData[f.spouse].IsEngaged())
                     {
                         Monitor.Log("invalid ospouse, setting ospouse to " + name);
@@ -560,6 +483,7 @@ namespace MultipleSpouses
             {
                 return topOfHeadOffsets[name];
             }
+            //Monitor.Log($"dont yet have offset for {name}");
             int top = 0;
 
             if (name == "Krobus")
@@ -596,7 +520,7 @@ namespace MultipleSpouses
                 if (idx >= colors.Length)
                 {
                     Monitor.Log($"Sleep pos couldn't get pixel at {startx + i % 16},{starty + i / 16} ");
-                    return top;
+                    break;
                 }
                 Color c = colors[idx];
                 if(c != Color.Transparent)

@@ -1,7 +1,7 @@
 ﻿{
     // NOTE TO TRANSLATORS: If you are here to help create a new translation file, thank you so much!
     // I prefer to publish all translations as part of the main mod to keep everything up to date.
-    
+
     // Please prepare your translation following the stardewvalleywiki Translation guide linked below.
     // You can send me your work on Discord (Jonqora#8597) or on GitHub (Jonqora) and I will include it
     // in the next mod update.
@@ -37,14 +37,14 @@
      "GrandpaOrdinalYears": "première|deuxième|troisième|quatrième|cinqième|sixième|septième|huitième|neuvième|dixième",
     
     // Do not change {{ordinalYear}} tokens; these will automatically use an appropriate word from the list above.
-    "GrandpaNote": "{0}-\n\nAttends mon retour à l’aube de ta {{ordinalYear}} année.\n\n-Grand-père",
-    "GrandpaNoteMail": "@-^^Attends mon retour à l’aube de ta {{ordinalYear}} année.^^-Grand-père[#]Mot de Grand-père",
+    "GrandpaNote": "{0}-\n\nAttends mon retour à l’aube de la {{ordinalYear}} année.\n\n-Grand-père",
+    "GrandpaNoteMail": "@-^^Attends mon retour à l’aube de la {{ordinalYear}} année.^^-Grand-père[#]Mot de Grand-père",
 
     // Do not change {{smapiSDate}} tokens; these automatically generate a translated date string.
     // smapiSDate example: "Spring 1 in year 15" or "le 1 printemps de l'année 12"
     "GrandpaNoteTenPlusYears": "{0}-\n\nAttends mon retour le {{smapiSDate}}.\n\n-Grand-père",
     "GrandpaNoteMailTenPlusYears": "@-^^Attends mon retour le {{smapiSDate}}.^^-Grand-père[#]Mot de Grand-père",
-    
+
 
 // =====================================
 // TRANSLATION TEXT FOR DISPLAY MESSAGES
@@ -54,7 +54,7 @@
     // In vanilla, finding the statue of perfection shows: "Vous avez trouvé une drôle de statue derrière l'autel de grand-père."
 
     "Object.cs.1CandleReward": "Vous avez trouvé une très vieille graine sur l'autel de grand-père.",
-    "Object.cs.2CandleReward": "Vous avez trouvé un œuf préhistorique derrière l'autel. Était-ce toujours là ?",
+    "Object.cs.2CandleReward": "Vous avez trouvé un œuf préhistorique derrière l'autel. Était-ce déja là avant ?",
     "Object.cs.3CandleReward": "Quelque chose scintillait sous l'autel de grand-père... un éclat puissant!",
 
     // Points score message displayed at the top of the screen during the evaluation events."
@@ -68,7 +68,7 @@
 
   // =======================
   // TOKENS AND INSTRUCTIONS
-    
+
     // Token used in EvaluationEvent {{countYears}} when grandpa says long you've had the farm. E.g. "You've been here [four years now]..."
     // The first in list, "less than a year now", is used when Config.YearsBeforeEvaluation = 0
     "GrandpaCountYears": "un petit moment maintenant|un an maintenant|deux ans maintenant|trois ans maintenant|quatre ans maintenant|cinq ans maintenant|six ans maintenant|sept ans maintenant|huit ans maintenant|neuf ans maintenant",
@@ -234,11 +234,11 @@
 // =======================================
 // TRANSLATION TEXT FOR EVALUATION RESULTS
 // =======================================
-  
+
   // =======================
   // TOKENS AND INSTRUCTIONS
 
-    // Token used in 1CandleResult.Original {{pastYears}} when grandpa talks about how long you've been there. 
+    // Token used in 1CandleResult.Original {{pastYears}} when grandpa talks about how long you've been there.
     // E.g. "you haven't accomplished very much during [this past year]"
     // The first in list, "so far", is used if Config.YearsBeforeEvaluation = 0 (grandpa visits on the morning of 1 Spring year 1)
     "GrandpaDuringPastYears": "cette période|la dernière année|ces deux années|ces trois années|ces quatre années|ces cinq années|ces six années|ces sept années|ces huit années|ces neuf années",
@@ -260,7 +260,7 @@
 
     // Keys ending with -gn are gender-neutral. These should stay as close as possible to the standard scripts, but anything
     // like "boy", "girl", "grand-daughter" that refers to the player should be replaced with a gender-neutral phrase.
-    
+
   // ===========================
   // "ORIGINAL" DIALOGUE VARIANT
 
@@ -304,7 +304,7 @@
     "2CandleReevaluation.Original-gn": "Tu as fait un travail passable en améliorant cet endroit depuis ma dernière visite.{{gpaSurprise}}
         #$b#Tu as l'air d'avoir fait de ton mieux... je ne peux te demander que ça.{{gpaNeutral}}
         #$b#Je dois repartir dans l’autre monde... appelle-moi à nouveau lorsque tu as réalisé encore des progrès.{{gpaStern}}",
-    
+
     "3CandleReevaluation.Original": "Tu as fait du bon travail, mon garçon.^Tu as fait du bon travail, ma petite.{{gpaHappy}}
         #$b#La ferme %farm n’a jamais été aussi belle. Ça fait honneur à la famille.{{gpaSurprise}}
         #$b#Grand-père est content.{{gpaLove}}
@@ -313,7 +313,7 @@
         #$b#La ferme %farm n’a jamais été aussi belle. Ça fait honneur à la famille.{{gpaSurprise}}
         #$b#Grand-père est content.{{gpaLove}}
         #$b#Je dois repartir dans l’autre monde, mais n’hésite pas à faire appel à moi.{{gpaNeutral}}",
-    
+
     "4CandleReevaluation.Original": "Je suis tellement fier de toi, mon garçon !^Je suis tellement fier de toi, ma petite !{{gpaLove}}
         #$b#Tu as enfin réussi à tirer pleinement profit de la ferme %farm !{{gpaJoy}}
         #$b#Tu travailles beaucoup mieux que moi et tu fais honneur à ta famille.{{gpaSurprise}}{{fifthCandle}}
@@ -367,7 +367,7 @@
     "2CandleReevaluation.Vanilla-gn": "Tu as fait du bon travail en améliorant cet endroit depuis ma dernière visite.{{gpaSurprise}}
         #$b#Tu as l'air d'avoir fait de ton mieux... c’est tout ce qui compte pour moi. Je suis fier de toi.{{gpaHappy}}
         #$b#Je dois repartir dans l’autre monde, mais n’hésite pas à faire appel à moi.{{gpaNeutral}}",
-    
+
     "3CandleReevaluation.Vanilla": "Tu as fait du bon travail, mon garçon.^Tu as fait du bon travail, ma petite.{{gpaSurprise}}
         #$b#La ferme %farm n’a jamais été aussi belle. Tu fais honneur à la famille.{{gpaJoy}}
         #$b#Grand-père est content.{{gpaLove}}
@@ -376,7 +376,7 @@
         #$b#La ferme %farm n’a jamais été aussi belle. Tu fais honneur à la famille.{{gpaJoy}}
         #$b#Grand-père est content.{{gpaLove}}
         #$b#Je dois repartir dans l’autre monde, mais n’hésite pas à faire appel à moi.{{gpaHappy}}",
-    
+
     "4CandleReevaluation.Vanilla": "Je suis tellement fier de toi, mon garçon !^Je suis tellement fier de toi, ma petite !{{gpaJoy}}
         #$b#Tu as vraiment transformé cet endroit depuis ma dernière visite !{{gpaShock}}
         #$b#Tu travailles beaucoup mieux que moi et tu fais honneur à ta famille.{{gpaLove}}{{fifthCandle}}
@@ -386,10 +386,10 @@
         #$b#Tu as vraiment transformé cet endroit depuis ma dernière visite !{{gpaShock}}
         #$b#Tu travailles beaucoup mieux que moi et tu fais honneur à ta famille.{{gpaLove}}{{fifthCandle}}
         #$b#Je le sens à présent... Mon esprit peut enfin se reposer en paix. Sois bénië.{{gpaHappy}}",
-    
+
   // ==========================
   // "NUCLEAR" DIALOGUE VARIANT
-    
+
     // Exaggerated, humorous script where grandpa is more assertive with his opinions. May contain profanity. Be creative! :)
     "1CandleResult.Nuclear": "Quelle putain de bordel de merde as-tu même fait pendant {{pastYears}} ?{{gpaShock}}
         #$b#Voyons, @...{{gpaFrown}}
@@ -494,7 +494,7 @@
         #$b#Bon, j'y vais...{{gpaStern}}
         #$b#Pour l’amour de Yoba, ne m'appelle pas à nouveau à moins que tu as quelque chose à voir.{{gpaFrown}}
         #$b#%Wow, grand-père est tellement fâché contre moi. Je ferais mieux de ne pas le décevoir à nouveau.",
-    
+
     "2CandleReevaluation.Nuclear": "C'est tout a bordel ce que tu as à me montrer?{{gpaNeutral}}
         #$b#J'espérais quelque chose d'un peu plus que ça... je-ne-sais-quoi.{{gpaStern}}
         #$b#Pourtant, je ne suis pas terriblement déçu ; tu as évidemment fait quelques efforts.{{gpaFrown}}
@@ -507,7 +507,7 @@
         #$b#J'étais peut-être le bête d'avoir attendu plus de toi.{{gpaNeutral}}
         #$b#...{{gpaSigh}}
         #$b#Je dois repartir dans l’autre monde. Merci de faire des progrès ici avant de m'appeler à nouveau.{{gpaStern}}",
-    
+
     "3CandleReevaluation.Nuclear": "La ferme a l'air vraiment bien en ce moment.{{gpaHappy}}
         #$b#Je suis très surpris que tu aies pu faire autant de progrès. {{spouseOrLewis}} t'a aidé avec ça ?{{gpaJoy}}
         #$b#Quoi qu'il en soit, je suis heureux de voir la ferme en pleine forme. Tu as bien fait.{{gpaLove}}
@@ -520,21 +520,21 @@
         #$b#Cependant... il y reste encore beaucoup de travail pour s'occuper avec, si tu fais vraiment l'effort.{{gpaHappy}}
         #$b#...{{gpaStern}}
         #$b#Je dois repartir dans l’autre monde, mais n’hésite pas à m'appeler à nouveau quand tu le veux.{{gpaNeutral}}",
-    
-    "4CandleReevaluation.Nuclear": "@, mon trésor...{{gpaStern}}... 
+
+    "4CandleReevaluation.Nuclear": "@, mon trésor...{{gpaStern}}...
         #$b#Tu es une putain de légende !{{gpaLove}}
         #$b#La ferme %farm est absolument magnifique... les résultats de ton travail parlent d'eux-mêmes.{{gpaSurprise}}
         #$b#Regarde donc tous les merveilleux progrès que tu aies réalisés ! Ton chemin parcouru m'a touché profondément...{{gpaJoy}}
         #$b#Ça alors ! @, tu viens de me faire pleurer.{{gpaTears}}{{fifthCandle}}
         #$b#Surtout, tu m'as aidé à retrouver la paix... Mon esprit se repose enfin. Sois béni.
         ^Surtout, tu m'as aidé à retrouver la paix... Mon esprit se repose enfin. Sois bénie.{{gpaHappy}}",
-    "4CandleReevaluation.Nuclear-gn": "@, mon trésor...{{gpaStern}}... 
+    "4CandleReevaluation.Nuclear-gn": "@, mon trésor...{{gpaStern}}...
         #$b#Tu es une putain de légende !{{gpaLove}}
         #$b#La ferme %farm est absolument magnifique... les résultats de ton travail parlent d'eux-mêmes.{{gpaSurprise}}
         #$b#Regarde donc tous les merveilleux progrès que tu aies réalisés ! Ton chemin parcouru m'a touché profondément...{{gpaJoy}}
         #$b#Ça alors ! @, tu viens de me faire pleurer.{{gpaTears}}{{fifthCandle}}
         #$b#Surtout, tu m'as aidé à retrouver la paix... Mon esprit se repose enfin. Sois bénië.{{gpaHappy}}",
-    
+
 
 // ================================================
 // TRANSLATIONS FOR UTILITIES AND CONFIG (OPTIONAL)
@@ -549,9 +549,9 @@
   // ===================
   // GMCM CONFIG OPTIONS
 
-    // These descriptions are visible if players install Generic Mod Config Menu (optional) 
+    // These descriptions are visible if players install Generic Mod Config Menu (optional)
     // and view or change their config settings from the lower left button in the game's main menu.
-    
+
     "DialogueOptions.title": "Options de Dialogue", // Category title
 
     "GrandpaDialogue.name": "Choisissez le dialogue de grand-père",
@@ -563,6 +563,10 @@
 
     "ExpressivePortraits.name": "Portraits de dialogues expressifs",
     "ExpressivePortraits.description": "Permet à grand-père plusieurs nouvelles expressions du visage",
+
+    "PortraitStyle.name": "Choisissez le style artistique",
+    "PortraitStyle.description": "Modifie le style artistique des portraits expressifs de grand-père :{{NL}}  auto - Vérifie s'il existe des mods de portrait et utilise un style correspondant si disponible{{NL}}  Vanilla - Correspond au style artistique original même si d'autres mods de portrait sont installés{{NL}}  Poltergeister - Correspond au style artistique de Poltergeister, quels que soient les mods de portrait installés",
+    // Note to translators - do not translate the option names auto/Vanilla/Poltergeister
 
     "ScoringOptions.title": "Système de Notation", // Category title
 
@@ -586,7 +590,7 @@
 
   // =====================
   // CONFIG ERROR MESSAGES
-    
+
     // These helpful messages are printed as warnings to the console if a player enters an invalid config value.
 
     // IMPORTANT: to make sure error messages match the Config file, please do not change
@@ -595,6 +599,10 @@
     "GrandpaDialogue.error": "Valeur de configuration \"{{value}}\" non valide pour GrandpaDialogue.
     Valeurs acceptées sont les suivantes : [{{listGrandpaDialogueChoices}}].
     GrandpaDialogue a été réinitialisé à sa valeur par défaut : \"{{fallback}}\"",
+
+    "PortraitStyle.error": "Valeur de configuration \"{{value}}\" non valide pour PortraitStyle.
+    Valeurs acceptées sont les suivantes : [{{listPortraitStyleChoices}}].
+    PortraitStyle a été réinitialisé à sa valeur par défaut : \"{{fallback}}\"",
 
     "ScoringSystem.error": "Valeur de configuration \"{{value}}\" non valide pour ScoringSystem.
     Valeurs acceptées sont les suivantes : [{{listScoringSystemChoices}}].
@@ -614,13 +622,13 @@
 
   // ================
   // CONSOLE COMMANDS
-    
+
     // Players can view these command descriptions if they use the help command in the SMAPI console.
 
     "reset_evaluation.description": "Réinitialise toutes évaluations de grand-père et les données associés, vous permettant de revivre tous les événements d'évaluation et de réévaluation sur une sauvegarde existante.",
 
     "grandpa_config.description": "Affiche les paramètres de configuration 'Angry Grandpa' actuels à la console de SMAPI.",
-    
+
     "grandpa_score.description": "Estime le résultat d'une évaluation en utilisant les critères de notation de grand-père.",
 
     "grandpa_debug.description": "Déclenche les commandes grandpa_config et grandpa_score ainsi que des informations de débogage utiles.",

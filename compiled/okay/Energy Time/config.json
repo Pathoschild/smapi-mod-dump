@@ -1,4 +1,9 @@
 {
-  "EnergyRequirementMultiplier": 1,
-  "PassTimeKey": "U"
+  "EnergyRequirementMultiplier": 2.0,
+  "PassTimeKey": "U",
+  "PauseTimeKey": "N",
+  "ReloadConfigKey": "B",
+  "IncreaseMultiplierKey": "OemPeriod",
+  "DecreaseMultiplierKey": "OemComma",
+  "TimeModeToggleKey": "OemSemicolon"
 }

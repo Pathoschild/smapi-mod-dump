@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6715
+IDs: KoihimeNakamura.WashAwayForage
+update keys: Nexus:????, Nexus:6715, GitHub:Sakorona/SDVMods

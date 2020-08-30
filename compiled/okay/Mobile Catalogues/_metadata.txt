@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6543
+IDs: aedenthorn.MobileCatalogues
+update keys: Nexus:6543, GitHub:aedenthorn/StardewValleyMods

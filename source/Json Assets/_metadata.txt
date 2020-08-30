@@ -5,12 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit b3898c01f4c642152a9f8670b17adbb9cb450ead
-   Merge: 4d12df4 3bd6001
+   commit d807a6f810802a6e21b5e79696e99832f06ac248
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sun Jun 14 11:38:29 2020 -0400
+   Date:   Sat Aug 29 18:57:19 2020 -0400
    
-       Merge pull request #55 from kdau/patch-1
-       
-       README: weapon accuracy and defense
+       Fix various places for hats
    

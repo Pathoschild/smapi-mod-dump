@@ -3,5 +3,11 @@
     "Description": "A prim-and-proper private school uniform.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Uniforme Escolar - Mars"
+    },
+    "DescriptionLocalization": {
+        "es": "Un uniforme escolar privado, primitivo y apropiado."
+    }
 }

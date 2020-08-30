@@ -2,10 +2,10 @@ This repository contains all SMAPI mods in the [SMAPI compatibility list](https:
 It's used to update that page, find mods using specific APIs, etc.
 
 ## Mod stats
-* Last updated 2020-07-18 (SMAPI 3.6.1 and Stardew Valley 1.4.5).
-* 1046 mods in the SMAPI compatibility list.
-* 701 mods (67%) have a valid Git repository.
-* 295 repositories (42%) contain multiple mods.
+* Last updated 2020-08-29 (SMAPI 3.6.2 and Stardew Valley 1.4.5).
+* 1088 mods in the SMAPI compatibility list.
+* 738 mods (68%) have a valid Git repository.
+* 325 repositories (44%) contain multiple mods.
 
 ## What's in this repository
 * `compiled` has the latest download for each mod, grouped into these categories:
@@ -16,7 +16,7 @@ It's used to update that page, find mods using specific APIs, etc.
   broken in \*   | Mods which broke in that game version.
   okay           | Mods which work fine in the latest versions (and don't fit one of the next two categories).
   okay (Harmony) | Mods which work fine in the latest versions, and use Harmony to patch the game code. Using many Harmony mods together often causes conflicts, so these are separate for testing.
-  okay (special groups) | Mods which work fine in the latest version, but need to be tested separately from other mods. That include [Pong](https://www.nexusmods.com/stardewvalley/mods/1994) (which overrides the entire game).
+  okay (special groups) | Mods which work fine in the latest version, but need to be tested separately from other mods. That include [Pong](https://www.nexusmods.com/stardewvalley/mods/1994) (which overrides the entire game) and [Please Fix Error](https://www.nexusmods.com/stardewvalley/mods/6492) (which spams fake errors).
 
 * `source` has the latest source code for each open-source SMAPI mod. This only has the _code_, it
   doesn't mirror the Git history. Since many repositories contain multiple mods, mods in `compiled`

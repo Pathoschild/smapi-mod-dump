@@ -1,0 +1,7 @@
+{
+  "JumpChance": 0.3,
+  "SplashSound": true,
+  "NumberOfJumpingFish": 18,
+  "LegendariesJumpAfterCatch": true,
+  "LegendaryJumpChance": 0.18
+}

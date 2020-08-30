@@ -283,7 +283,7 @@ namespace Swim
 
         private static void LoadBreatheSound()
         {
-            string filePath = $"{Helper.DirectoryPath}\\assets\\breathe.wav";
+            string filePath = Path.Combine(Helper.DirectoryPath, "assets", "breathe.wav");
             if (File.Exists(filePath))
             {
                 breatheEffect = SoundEffect.FromStream(new FileStream(filePath, FileMode.Open));
@@ -298,47 +298,57 @@ namespace Swim
                 GameLocation location = Game1.getLocationFromName(kvp.Key);
                 if (location == null)
                 {
-                    Monitor.Log($"GameLocation {location.Name} not found in day started loop");
+                    Monitor.Log($"GameLocation {kvp.Key} not found in day started loop");
                     continue;
                 }
                 if (kvp.Value.Features.Contains("OceanTreasure") || kvp.Value.Features.Contains("OceanResources") || kvp.Value.Features.Contains("Minerals"))
                 {
+                    Monitor.Log($"Clearing overlay objects from GameLocation {location.Name} ");
                     location.overlayObjects.Clear();
                 }
                 if (kvp.Value.Features.Contains("OceanTreasure"))
                 {
+                    Monitor.Log($"Adding ocean treasure to GameLocation {location.Name} ");
                     SwimMaps.AddOceanTreasure(location);
                 }
                 if (kvp.Value.Features.Contains("OceanResources"))
                 {
+                    Monitor.Log($"Adding ocean forage to GameLocation {location.Name} ");
                     SwimMaps.AddOceanForage(location);
                 }
                 if (kvp.Value.Features.Contains("Minerals"))
                 {
+                    Monitor.Log($"Adding minerals to GameLocation {location.Name} ");
                     SwimMaps.AddMinerals(location);
                 }
                 if (kvp.Value.Features.Contains("SmolFishies") || kvp.Value.Features.Contains("BigFishies") || kvp.Value.Features.Contains("Crabs"))
                 {
+                    Monitor.Log($"Clearing characters from GameLocation {location.Name} ");
                     location.characters.Clear();
                 }
                 if (kvp.Value.Features.Contains("SmolFishies"))
                 {
+                    Monitor.Log($"Adding smol fishies to GameLocation {location.Name} ");
                     SwimMaps.AddFishies(location);
                 }
                 if (kvp.Value.Features.Contains("BigFishies"))
                 {
+                    Monitor.Log($"Adding big fishies to GameLocation {location.Name} ");
                     SwimMaps.AddFishies(location, false);
                 }
                 if (kvp.Value.Features.Contains("Crabs"))
                 {
+                    Monitor.Log($"Adding crabs to GameLocation {location.Name} ");
                     SwimMaps.AddCrabs(location);
                 }
                 if (kvp.Value.Features.Contains("WaterTiles"))
                 {
+                    Monitor.Log($"Adding water tiles to GameLocation {location.Name} ");
                     SwimMaps.AddWaterTiles(location);
                 }
                 if (kvp.Value.Features.Contains("Underwater"))
                 {
+                    Monitor.Log($"Removing water tiles from GameLocation {location.Name} ");
                     SwimMaps.RemoveWaterTiles(location);
                 }
             }
@@ -397,7 +407,7 @@ namespace Swim
                 //Game1.player.currentLocation.overlayObjects[Game1.player.getTileLocation() + new Vector2(0, 1)] = new Chest(0, new List<Item>() { Helper.Input.IsDown(SButton.LeftShift) ? (Item)(new StardewValley.Object(434, 1)) : (new Hat(ModEntry.scubaMaskID)) }, Game1.player.getTileLocation() + new Vector2(0, 1), false, 0);
             }
 
-            if (e.Button == Config.DiveKey && ModEntry.diveMaps.ContainsKey(Game1.player.currentLocation.Name) && ModEntry.diveMaps[Game1.player.currentLocation.Name].DiveLocations.Count > 0)
+            if (e.Button == Config.DiveKey && !Game1.player.UsingTool && ModEntry.diveMaps.ContainsKey(Game1.player.currentLocation.Name) && ModEntry.diveMaps[Game1.player.currentLocation.Name].DiveLocations.Count > 0)
             {
                 Point pos = Game1.player.getTileLocationPoint();
                 Location loc = new Location(pos.X, pos.Y);

@@ -58,7 +58,7 @@
           "WeatherTomorrow": [],
           "LimitedNumberOfSpawns": null
         },
-        "DaysUntilSpawnsExpire": 7
+        "DaysUntilSpawnsExpire": null
       },
       {
         "SpringItemIndex": [
@@ -115,7 +115,7 @@
           "WeatherTomorrow": [],
           "LimitedNumberOfSpawns": null
         },
-        "DaysUntilSpawnsExpire": 7
+        "DaysUntilSpawnsExpire": 2
       },
       {
         "SpringItemIndex": null,
@@ -183,7 +183,7 @@
         "UniqueAreaID": "DeepDark Foraging Area 1",
         "MapName": "Underground1",
         "MinimumSpawnsPerDay": -2,
-        "MaximumSpawnsPerDay": 6,
+        "MaximumSpawnsPerDay": 3,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
@@ -436,7 +436,7 @@
         "UniqueAreaID": "Underground1 forage area 1",
         "MapName": "Underground1",
         "MinimumSpawnsPerDay": -2,
-        "MaximumSpawnsPerDay": 8,
+        "MaximumSpawnsPerDay": 5,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
@@ -463,7 +463,7 @@
           "WeatherTomorrow": [],
           "LimitedNumberOfSpawns": null
         },
-        "DaysUntilSpawnsExpire": 5
+        "DaysUntilSpawnsExpire": 3
       }
     ],
     "PercentExtraSpawnsPerForagingLevel": 1,
@@ -539,7 +539,7 @@
         "UniqueAreaID": "DeepDark Ore Area 1",
         "MapName": "Underground1",
         "MinimumSpawnsPerDay": 10,
-        "MaximumSpawnsPerDay": 20,
+        "MaximumSpawnsPerDay": 15,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
@@ -590,12 +590,12 @@
       "Aquamarine": 0
     },
     "StartingSpawnChance": {
-      "Stone": 76,
-      "Geode": 6,
+      "Stone": 80,
+      "Geode": 4,
       "FrozenGeode": 0,
       "MagmaGeode": 0,
       "Gem": 1,
-      "Copper": 12,
+      "Copper": 10,
       "Iron": 1,
       "Gold": 0,
       "Iridium": 0,

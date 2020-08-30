@@ -7,9 +7,10 @@ mods:
    Time Reminder
 
 latest commit:
-   commit af70c3e504b37a165725b3635d83f81620e6aa9e
+   commit 8b825bad1626eb8b76f0899b4ad11904b91413fc
    Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
-   Date:   Tue Jul 14 17:43:23 2020 -0700
+   Date:   Mon Aug 24 09:53:48 2020 -0700
    
-       Updating WI to 1.1.2 (new icon, some fixes)
+       CoF update to display weather in screenshot mode. HFJ update for legendaries and zone
+       SDVTime updates, thanks to Jonqora. Starting new project for a mod
    

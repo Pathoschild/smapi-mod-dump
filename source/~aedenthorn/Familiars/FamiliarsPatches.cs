@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Monsters;
 using StardewValley.Network;
 using StardewValley.TerrainFeatures;
 using System;
+using System.Linq;
 using xTile.Dimensions;
 using Object = StardewValley.Object;
 
@@ -126,24 +129,28 @@ namespace Familiars
 				if (!name.EndsWith("Familiar Egg"))
 					return;
 
+				Monitor.Log($"Hatched a familiar from {name}");
+				long owner = __instance.owner;
+				if (owner == 0)
+					owner = Game1.MasterPlayer.UniqueMultiplayerID;
 				Familiar familiar = null;
 
                 switch (name)
                 {
 					case "Dino Familiar Egg":
-						familiar = new DinoFamiliar(v, __instance.owner);
+						familiar = new DinoFamiliar(v, owner);
 						break;
 					case "Dust Sprite Familiar Egg":
-						familiar = new DustSpriteFamiliar(v, __instance.owner);
+						familiar = new DustSpriteFamiliar(v, owner);
 						break;
 					case "Bat Familiar Egg":
-						familiar = new BatFamiliar(v, __instance.owner);
+						familiar = new BatFamiliar(v, owner);
 						break;
 					case "Junimo Familiar Egg":
-						familiar = new JunimoFamiliar(v, __instance.owner);
+						familiar = new JunimoFamiliar(v, owner);
 						break;
 					case "Butterfly Familiar Egg":
-						familiar = new ButterflyFamiliar(v, __instance.owner);
+						familiar = new ButterflyFamiliar(v, owner);
 						break;
 				}
 
@@ -158,30 +165,42 @@ namespace Familiars
 				}
 			}
 		}
-				
+
+
         public static void Object_minutesElapsed_Postfix(Object __instance, int minutes, GameLocation environment)
 		{
-			if (__instance.name.Equals("Slime Incubator") && __instance.heldObject.Value != null && __instance.heldObject.Value.name.EndsWith("Familiar Egg") && __instance.minutesUntilReady <= 0)
+			if (__instance.name.Equals("Slime Incubator") && __instance.heldObject?.Value?.name?.EndsWith("Familiar Egg") == true && __instance.minutesUntilReady <= 0)
 			{
 				Vector2 v = new Vector2((float)((int)__instance.tileLocation.X), (float)((int)__instance.tileLocation.Y + 1)) * 64f;
+				string name = __instance.heldObject.Value.name;
+
+				if (!name.EndsWith("Familiar Egg"))
+					return;
+
 				Familiar familiar = null;
 
-                switch (__instance.heldObject.Value.name)
+				Monitor.Log($"Hatched a familiar from {__instance.heldObject.Value.name} time {Game1.timeOfDay} owner {__instance.owner}");
+
+				long owner = __instance.owner;
+				if (owner == 0)
+					owner = Game1.MasterPlayer.UniqueMultiplayerID;
+
+				switch (__instance.heldObject.Value.name)
                 {
 					case "Dino Familiar Egg":
-						familiar = new DinoFamiliar(v, __instance.owner);
+						familiar = new DinoFamiliar(v, owner);
 						break;
 					case "Dust Sprite Familiar Egg":
-						familiar = new DustSpriteFamiliar(v, __instance.owner);
+						familiar = new DustSpriteFamiliar(v, owner);
 						break;
 					case "Bat Familiar Egg":
-						familiar = new BatFamiliar(v, __instance.owner);
+						familiar = new BatFamiliar(v, owner);
 						break;
 					case "Junimo Familiar Egg":
-						familiar = new JunimoFamiliar(v, __instance.owner);
+						familiar = new JunimoFamiliar(v, owner);
 						break;
 					case "Butterfly Familiar Egg":
-						familiar = new ButterflyFamiliar(v, __instance.owner);
+						familiar = new ButterflyFamiliar(v, owner);
 						break;
                 }
 
@@ -207,25 +226,7 @@ namespace Familiars
 				}
 			}
 		}
-        public static void GameLocation_checkAction_Postfix(GameLocation __instance, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who, ref bool __result)
-		{
-			if (!(__instance is SlimeHutch))
-				return;
 
-			Microsoft.Xna.Framework.Rectangle tileRect = new Microsoft.Xna.Framework.Rectangle(tileLocation.X * 64, tileLocation.Y * 64, 64, 64);
-
-			foreach (NPC i in __instance.characters)
-			{
-				if (i != null &&  i is Familiar && (i as Familiar).ownerId.Equals(who) && i.GetBoundingBox().Intersects(tileRect))
-				{
-					(i as Familiar).followingOwner = !(i as Familiar).followingOwner;
-					__instance.playSound("dwop");
-					Monitor.Log($"familiar following player: {(i as Familiar).followingOwner}");
-					__result = true;
-					return;
-				}
-			}
-		}
 		public static void GameLocation_performTouchAction_Postfix(GameLocation __instance, string fullActionString, Vector2 playerStandingPosition)
 		{
 			if (Game1.eventUp)
@@ -323,5 +324,20 @@ namespace Familiars
 				}
 			}
 		}
+		public static bool AnimalHouse_incubator_Prefix(AnimalHouse __instance)
+		{
+			if (__instance.incubatingEgg.Y <= 0 && Game1.player.ActiveObject != null && Game1.player.ActiveObject.name.Contains("Familiar Egg"))
+            {
+				Monitor.Log($"Tried adding familiar egg to incubator");
+				return false;
+            }
+			return true;
+		}
+		public static void Utility_isThereAFarmerOrCharacterWithinDistance_Postfix(ref Character __result)
+		{
+			if (__result is Familiar)
+				__result = null;
+		}
+
 	}
 }

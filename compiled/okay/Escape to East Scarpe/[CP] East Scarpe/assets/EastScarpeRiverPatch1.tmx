@@ -1739,12 +1739,299 @@
  <tileset firstgid="4312" name="ES-buildings" tilewidth="16" tileheight="16" tilecount="682" columns="22">
   <image source="spring_EastScarpe.png" width="352" height="496"/>
  </tileset>
+ <tileset firstgid="4994" name="z_extras" tilewidth="16" tileheight="16" tilecount="1800" columns="30">
+  <image source="spring_daisyextras.png" width="480" height="960"/>
+  <tile id="4">
+   <properties>
+    <property name="Passable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <animation>
+    <frame tileid="5" duration="160"/>
+    <frame tileid="11" duration="160"/>
+    <frame tileid="17" duration="160"/>
+    <frame tileid="23" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="6">
+   <animation>
+    <frame tileid="6" duration="160"/>
+    <frame tileid="12" duration="160"/>
+    <frame tileid="18" duration="160"/>
+    <frame tileid="24" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="7">
+   <animation>
+    <frame tileid="7" duration="160"/>
+    <frame tileid="13" duration="160"/>
+    <frame tileid="19" duration="160"/>
+    <frame tileid="25" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="8">
+   <animation>
+    <frame tileid="8" duration="160"/>
+    <frame tileid="14" duration="160"/>
+    <frame tileid="20" duration="160"/>
+    <frame tileid="26" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="34">
+   <properties>
+    <property name="Passable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="35">
+   <animation>
+    <frame tileid="35" duration="160"/>
+    <frame tileid="41" duration="160"/>
+    <frame tileid="47" duration="160"/>
+    <frame tileid="53" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="36">
+   <animation>
+    <frame tileid="36" duration="160"/>
+    <frame tileid="42" duration="160"/>
+    <frame tileid="48" duration="160"/>
+    <frame tileid="54" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="37">
+   <animation>
+    <frame tileid="37" duration="160"/>
+    <frame tileid="43" duration="160"/>
+    <frame tileid="49" duration="160"/>
+    <frame tileid="55" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="38">
+   <animation>
+    <frame tileid="38" duration="160"/>
+    <frame tileid="44" duration="160"/>
+    <frame tileid="50" duration="160"/>
+    <frame tileid="56" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="64">
+   <properties>
+    <property name="Passable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="65">
+   <animation>
+    <frame tileid="65" duration="160"/>
+    <frame tileid="71" duration="160"/>
+    <frame tileid="77" duration="160"/>
+    <frame tileid="83" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="66">
+   <animation>
+    <frame tileid="66" duration="160"/>
+    <frame tileid="72" duration="160"/>
+    <frame tileid="78" duration="160"/>
+    <frame tileid="84" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="67">
+   <animation>
+    <frame tileid="67" duration="160"/>
+    <frame tileid="73" duration="160"/>
+    <frame tileid="79" duration="160"/>
+    <frame tileid="85" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="68">
+   <animation>
+    <frame tileid="68" duration="160"/>
+    <frame tileid="74" duration="160"/>
+    <frame tileid="80" duration="160"/>
+    <frame tileid="86" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="94">
+   <properties>
+    <property name="Passable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="95">
+   <animation>
+    <frame tileid="95" duration="160"/>
+    <frame tileid="101" duration="160"/>
+    <frame tileid="107" duration="160"/>
+    <frame tileid="113" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="96">
+   <animation>
+    <frame tileid="96" duration="160"/>
+    <frame tileid="102" duration="160"/>
+    <frame tileid="108" duration="160"/>
+    <frame tileid="114" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="97">
+   <animation>
+    <frame tileid="97" duration="160"/>
+    <frame tileid="103" duration="160"/>
+    <frame tileid="109" duration="160"/>
+    <frame tileid="115" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="98">
+   <animation>
+    <frame tileid="98" duration="160"/>
+    <frame tileid="104" duration="160"/>
+    <frame tileid="110" duration="160"/>
+    <frame tileid="116" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="125">
+   <animation>
+    <frame tileid="125" duration="160"/>
+    <frame tileid="131" duration="160"/>
+    <frame tileid="137" duration="160"/>
+    <frame tileid="143" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="126">
+   <animation>
+    <frame tileid="126" duration="160"/>
+    <frame tileid="132" duration="160"/>
+    <frame tileid="138" duration="160"/>
+    <frame tileid="144" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="127">
+   <animation>
+    <frame tileid="127" duration="160"/>
+    <frame tileid="133" duration="160"/>
+    <frame tileid="139" duration="160"/>
+    <frame tileid="145" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="128">
+   <animation>
+    <frame tileid="128" duration="160"/>
+    <frame tileid="134" duration="160"/>
+    <frame tileid="140" duration="160"/>
+    <frame tileid="146" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="154">
+   <animation>
+    <frame tileid="154" duration="160"/>
+    <frame tileid="160" duration="160"/>
+    <frame tileid="166" duration="160"/>
+    <frame tileid="172" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="155">
+   <animation>
+    <frame tileid="155" duration="160"/>
+    <frame tileid="161" duration="160"/>
+    <frame tileid="167" duration="160"/>
+    <frame tileid="173" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="156">
+   <animation>
+    <frame tileid="156" duration="160"/>
+    <frame tileid="162" duration="160"/>
+    <frame tileid="168" duration="160"/>
+    <frame tileid="174" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="157">
+   <animation>
+    <frame tileid="157" duration="160"/>
+    <frame tileid="163" duration="160"/>
+    <frame tileid="169" duration="160"/>
+    <frame tileid="175" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="158">
+   <animation>
+    <frame tileid="158" duration="160"/>
+    <frame tileid="164" duration="160"/>
+    <frame tileid="170" duration="160"/>
+    <frame tileid="176" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="159">
+   <animation>
+    <frame tileid="159" duration="160"/>
+    <frame tileid="165" duration="160"/>
+    <frame tileid="171" duration="160"/>
+    <frame tileid="177" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="184">
+   <animation>
+    <frame tileid="184" duration="160"/>
+    <frame tileid="190" duration="160"/>
+    <frame tileid="196" duration="160"/>
+    <frame tileid="202" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="185">
+   <animation>
+    <frame tileid="185" duration="160"/>
+    <frame tileid="191" duration="160"/>
+    <frame tileid="197" duration="160"/>
+    <frame tileid="203" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="186">
+   <animation>
+    <frame tileid="186" duration="160"/>
+    <frame tileid="192" duration="160"/>
+    <frame tileid="198" duration="160"/>
+    <frame tileid="204" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="187">
+   <animation>
+    <frame tileid="187" duration="160"/>
+    <frame tileid="193" duration="160"/>
+    <frame tileid="199" duration="160"/>
+    <frame tileid="205" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="188">
+   <animation>
+    <frame tileid="188" duration="160"/>
+    <frame tileid="194" duration="160"/>
+    <frame tileid="200" duration="160"/>
+    <frame tileid="206" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="189">
+   <animation>
+    <frame tileid="189" duration="160"/>
+    <frame tileid="195" duration="160"/>
+    <frame tileid="201" duration="160"/>
+    <frame tileid="207" duration="160"/>
+   </animation>
+  </tile>
+  <tile id="373">
+   <properties>
+    <property name="Passable" value="T"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="6794" name="ES-buildings" tilewidth="16" tileheight="16" tilecount="682" columns="22">
+  <image source="summer_EastScarpe.png" width="352" height="496"/>
+ </tileset>
  <layer id="1" name="Back" width="19" height="26">
   <data encoding="csv">
 681,1244,1242,1274,1187,1188,1189,1247,1324,1247,1243,1246,681,681,376,377,352,352,352,
 681,1269,1267,1272,1212,1213,1214,1272,1247,1274,1268,1271,681,421,176,176,376,404,352,
-681,1247,1247,1324,1247,1238,1239,1240,1272,1272,1324,1247,681,468,176,176,176,376,377,
-681,1272,1247,1274,1247,1247,1264,1265,1274,1247,1247,1247,681,493,176,421,176,176,176,
+681,1247,1247,1324,1247,1275,1275,1275,1272,1272,1324,1247,681,468,176,176,176,376,377,
+681,1272,1247,1274,1247,1247,1275,1275,1274,1247,1247,1247,681,493,176,421,176,176,176,
 681,681,1272,1272,1272,1272,1324,1247,1272,1272,1272,1247,681,518,0,0,0,0,468,
 282,681,681,681,681,681,1272,1272,1247,1247,1274,1247,681,176,0,0,0,0,493,
 352,327,328,276,276,681,681,681,1272,1324,1272,1272,681,176,0,0,0,0,518,
@@ -1755,7 +2042,7 @@
 176,352,352,352,352,352,352,353,681,1247,1247,1247,681,681,1600,518,468,421,376,
 352,352,355,356,356,357,352,353,681,1272,1324,1243,1245,1246,681,681,682,176,351,
 352,352,380,381,381,382,352,353,682,682,1247,1268,1270,1271,681,681,682,152,376,
-352,352,405,406,406,407,352,353,421,682,682,1247,1324,1243,1574,681,682,176,176,
+352,352,405,406,406,407,352,353,421,682,682,1247,1324,1243,1246,681,682,176,176,
 377,377,377,377,377,404,352,353,176,176,152,682,1247,1268,1271,1246,681,682,469,
 151,176,176,255,176,351,352,353,176,176,176,682,682,1247,1268,1271,681,682,494,
 176,176,255,176,176,329,352,353,176,421,176,176,682,1247,1247,1247,681,682,519,
@@ -1772,16 +2059,16 @@
  <objectgroup id="2" name="Back"/>
  <layer id="3" name="Buildings" width="19" height="26">
   <data encoding="csv">
-0,709,1288,0,0,0,0,0,0,0,1289,711,440,416,0,112,0,0,0,
-439,734,0,0,0,0,0,0,0,0,0,736,442,0,0,137,0,112,137,
+0,709,1288,0,1674,0,0,0,0,0,1289,711,440,416,0,112,0,0,0,
+439,734,0,0,0,1724,0,0,0,0,0,736,442,0,0,137,0,112,137,
 395,759,0,0,0,0,0,0,0,0,0,761,440,292,258,0,0,137,0,
-420,784,0,0,0,0,0,1699,0,0,0,761,392,442,0,0,0,0,258,
+420,784,1674,0,0,0,0,1699,0,0,0,761,392,442,0,0,0,0,258,
 413,439,732,785,785,785,0,0,0,0,0,761,417,467,468,469,468,469,442,
 37,413,415,414,414,439,732,785,0,0,0,761,392,543,493,494,493,494,467,
-62,137,0,0,0,413,415,439,732,0,0,761,417,517,518,519,518,519,492,
+62,137,137,0,0,413,415,439,732,0,0,761,417,517,518,519,518,519,492,
 87,39,40,41,0,0,2328,420,0,757,0,761,442,542,543,544,543,544,543,
 112,64,65,66,130,0,2297,413,439,759,0,761,467,468,442,0,0,0,542,
-4904,0,0,0,0,0,0,0,395,759,0,761,492,493,467,292,258,0,0,
+4904,0,57,58,59,60,0,0,395,759,0,761,492,493,467,292,258,0,0,
 4926,0,0,0,0,0,0,0,420,759,0,761,517,518,492,442,0,0,0,
 4948,384,385,385,386,0,387,0,395,759,0,761,542,543,544,467,292,0,0,
 246,247,0,0,0,0,387,0,420,784,0,1289,710,711,542,543,317,0,0,
@@ -1840,14 +2127,14 @@
  <objectgroup id="8" name="Paths"/>
  <layer id="9" name="Front" width="19" height="26">
   <data encoding="csv">
-88,0,0,0,0,0,0,0,0,0,0,0,0,137,0,0,86,87,88,
-11,12,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-36,37,38,0,0,0,0,0,0,0,0,0,467,0,0,0,0,0,0,
-61,62,63,4,0,0,0,0,0,0,0,0,492,0,0,0,0,0,0,
-86,87,88,29,0,0,0,0,0,0,0,0,517,0,0,0,0,0,0,
-37,112,0,54,0,0,0,0,0,0,0,0,542,492,0,0,0,0,0,
-62,14,15,16,0,0,2296,0,0,0,0,0,0,0,0,0,0,0,0,
-87,88,0,104,105,106,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,5119,5120,5120,5121,5120,5121,5120,5121,5122,0,0,137,0,0,86,87,88,
+0,0,5149,5150,5150,5151,5150,5151,5150,5151,5152,5153,0,0,0,0,0,0,0,
+0,0,5179,5180,5181,5180,5181,5180,5181,5181,5182,5183,467,0,0,0,0,0,0,
+0,0,0,63,0,0,0,0,0,0,0,0,492,0,0,0,0,0,0,
+12,13,0,88,0,0,0,0,0,0,0,0,517,0,0,0,0,0,0,
+0,38,112,54,0,0,0,0,0,0,0,0,542,492,0,0,0,0,0,
+0,14,15,16,0,0,2296,0,0,0,0,0,0,0,0,0,0,0,0,
+0,39,0,104,105,106,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,359,360,360,361,0,362,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -1871,16 +2158,16 @@
  <objectgroup id="10" name="Front"/>
  <layer id="11" name="AlwaysFront" width="19" height="26">
   <data encoding="csv">
+81,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,11,12,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,36,37,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,61,62,4,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,86,87,29,30,31,0,0,0,0,0,0,0,0,0,0,0,0,0,
+7298,0,0,54,55,56,0,0,0,0,0,0,0,0,0,0,0,0,0,
+7320,63,0,79,80,81,0,0,0,0,0,0,0,0,0,0,0,0,0,
+7342,88,7,8,9,10,0,0,0,0,0,0,0,0,0,0,0,0,517,
+7364,0,32,33,34,35,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,
-12,0,0,0,30,31,0,0,0,0,0,0,0,0,0,0,0,0,0,
-4816,38,0,0,55,56,0,0,0,0,0,0,0,0,0,0,0,0,0,
-4838,63,0,79,80,81,0,0,0,0,0,0,0,0,0,0,0,0,0,
-4860,0,7,8,9,10,0,0,0,0,0,0,0,0,0,0,0,0,517,
-4882,0,32,33,34,35,0,0,0,0,0,0,0,0,0,0,0,0,0,
-4904,0,57,58,59,60,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,82,83,84,85,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

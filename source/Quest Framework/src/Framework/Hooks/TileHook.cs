@@ -66,7 +66,7 @@ namespace QuestFramework.Framework.Hooks
                         flag &= this.TouchAction == cond.Value;
                         break;
                     default:
-                        flag &= this.owner.CheckCondition(cond.Key, cond.Value);
+                        flag &= this.owner.CheckCondition(cond.Key, cond.Value, hook.ManagedQuest);
                         break;
                 }
             }

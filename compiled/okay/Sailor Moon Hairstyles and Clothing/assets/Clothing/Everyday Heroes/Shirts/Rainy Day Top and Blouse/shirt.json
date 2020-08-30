@@ -3,5 +3,11 @@
     "Description": "A cute sailor outfit in a deep blue.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Top y Blusa de Día Lluvioso"
+    },
+    "DescriptionLocalization": {
+        "es": "Un lindo traje de marinero en un azul profundo con una blusa."
+    }
 }

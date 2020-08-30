@@ -33,5 +33,21 @@
   "IAmAStinkyCheater": false,
   "FamiliarHatchMinutes": 4000,
   "FamiliarEggMinutes": 1200,
-  "MaxFamiliarDistance": 1280.0
+  "MaxFamiliarDistance": 1280.0,
+  "BatSoundEffects": false,
+  "ButterflySoundEffects": false,
+  "DinoSoundEffects": true,
+  "DustSoundEffects": false,
+  "JunimoSoundEffects": false,
+  "DustSpriteStealChanceMult": 1.0,
+  "BatDamageMult": 1.0,
+  "BatAttackIntervalMult": 1.0,
+  "ButterflyBuffIntervalMult": 1.0,
+  "ButterflyBuffChanceMult": 1.0,
+  "JunimoHealAmountMult": 1.0,
+  "JunimoHealChanceMult": 1.0,
+  "JunimoHealIntervalMult": 1.0,
+  "DinoFireDistanceMult": 1.0,
+  "DinoDamageMult": 1.0,
+  "TryToFixOldBugs": false
 }

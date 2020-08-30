@@ -1,10 +1,10 @@
 ﻿{
-  "Name": "SailorStyles 4: Clothing",
+  "Name": "Sailor Styles",
   "Author": "blueberry",
-  "Version": "4.1.1",
-  "Description": "Sailor Moon clothing options - shirts, pants, and more!",
-  "UniqueID": "blueberry.SailorStyles.Clothing",
-  "EntryDll": "SailorStyles_Clothing.dll",
+  "Version": "4.2.0",
+  "Description": "Sailor Moon clothing and optional hairstyles - shirts, pants, and more!",
+  "UniqueID": "blueberry.SailorStyles",
+  "EntryDll": "SailorStyles.dll",
   "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:4154" ],
   "Dependencies": [

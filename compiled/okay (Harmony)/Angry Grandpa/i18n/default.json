@@ -531,11 +531,11 @@
 // TRANSLATIONS FOR UTILITIES AND CONFIG (OPTIONAL)
 // ================================================
 
-    // Translations below this point are not necessary to enjoy any content this mod adds to the game!
-    // These are extra; they just allow error messages, command output, and config options to be translated.
-    // If you are creating a new translation, feel free to submit your file with or without these entries!
+  // Translations below this point are not necessary to enjoy any content this mod adds to the game!
+  // These are extra; they just allow error messages, command output, and config options to be translated.
+  // If you are creating a new translation, feel free to submit your file with or without these entries!
 
-    // {{NL}} tokens are replaced with a newline in the code.
+  // {{NL}} tokens are replaced with a newline in the code.
 
   // ===================
   // GMCM CONFIG OPTIONS
@@ -554,6 +554,10 @@
 
     "ExpressivePortraits.name": "Expressive dialogue portraits",
     "ExpressivePortraits.description": "Gives grandpa a variety of new facial expressions",
+
+    "PortraitStyle.name": "Choose grandpa's portrait art",
+    "PortraitStyle.description": "Changes the art style used for grandpa's expressive portraits:{{NL}}  auto - Checks for compatible portrait mods and uses a matching style if available{{NL}}  Vanilla - Grandpa matches the vanilla art style even if other portrait mods are installed{{NL}}  Poltergeister - Matches Poltergeister's art style no matter what portrait mods are installed",
+    // Note to translators - do not translate the option names auto/Vanilla/Poltergeister
 
     "ScoringOptions.title": "Scoring Options", // Category title
 
@@ -586,6 +590,10 @@
     "GrandpaDialogue.error": "Invalid config value \"{{value}}\" for GrandpaDialogue.
     Accepted values are [{{listGrandpaDialogueChoices}}].
     GrandpaDialogue has been reset to default value \"{{fallback}}\"",
+
+    "PortraitStyle.error": "Invalid config value \"{{value}}\" for PortraitStyle.
+    Accepted values are [{{listPortraitStyleChoices}}].
+    PortraitStyle has been reset to default value \"{{fallback}}\"",
 
     "ScoringSystem.error": "Invalid config value \"{{value}}\" for ScoringSystem.
     Accepted values are [{{listScoringSystemChoices}}].

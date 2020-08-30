@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using xTile.Layers;
 using xTile.Tiles;
 using System.Linq;
+using System.Runtime.InteropServices;
 using StardewValley.Menus;
 
 namespace TrainStation
@@ -15,15 +16,31 @@ namespace TrainStation
         public static ModEntry Instance;
 
         private List<TrainStop> TrainStops;
+        private IConditionsChecker ConditionsApi;
 
         public override void Entry(IModHelper helper)
         {
             Config = helper.ReadConfig<ModConfig>();
             Instance = this;
 
+            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.Display.MenuChanged += Display_MenuChanged;
+        }
+
+        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        {
+            ConditionsApi = Helper.ModRegistry.GetApi<IConditionsChecker>("Cherry.ExpandedPreconditionsUtility");
+            if (ConditionsApi == null)
+            {
+                Monitor.Log("Expanded Preconditions Utility API not detected. Something went wrong, please check that your installation of Expanded Preconditions Utility is valid", LogLevel.Error);
+                return;
+            }
+                
+            
+            ConditionsApi.Initialize(false, this.ModManifest.UniqueID);
+            
         }
 
         public override object GetApi()
@@ -45,26 +62,33 @@ namespace TrainStation
             RemoveInvalidLocations();
         }
 
-        private readonly int OutdoorsTilesheetIndex = 1;
         private readonly int TicketStationTopTile = 1032;
         private readonly int TicketStationBottomTile = 1057;
+
         private void DrawInTicketStation()
         {
-            //get references to all the stuff I need to edit the railroad map
+            
             GameLocation railway = Game1.getLocationFromName("Railroad");
+
+            //get references to all the stuff I need to edit the railroad map
             Layer buildingsLayer = railway.map.GetLayer("Buildings");
             Layer frontLayer = railway.map.GetLayer("Front");
-            TileSheet tilesheet = railway.map.TileSheets[OutdoorsTilesheetIndex];
+
+            string tilesheetPath =$"Maps\\{Game1.currentSeason}_outdoorsTileSheet";
+            TileSheet outdoorsTilesheet = railway.map.TileSheets.FirstOrDefault(t => t.ImageSource == tilesheetPath);
 
             //draw the ticket station
             buildingsLayer.Tiles[Config.TicketStationX, Config.TicketStationY] =
-                new StaticTile(buildingsLayer, tilesheet, BlendMode.Alpha, tileIndex: TicketStationBottomTile);
-            buildingsLayer.Tiles[Config.TicketStationX, Config.TicketStationY - 1] =
-                new StaticTile(frontLayer, tilesheet, BlendMode.Alpha, tileIndex: TicketStationTopTile);
+                new StaticTile(buildingsLayer, outdoorsTilesheet, BlendMode.Alpha, TicketStationBottomTile);
+            frontLayer.Tiles[Config.TicketStationX, Config.TicketStationY - 1] =
+                new StaticTile(frontLayer, outdoorsTilesheet, BlendMode.Alpha, TicketStationTopTile);
 
             //set the TrainStation property
             railway.setTileProperty(Config.TicketStationX, Config.TicketStationY, "Buildings", "Action", "TrainStation");
+
+            railway.map.LoadTileSheets(Game1.mapDisplayDevice);
         }
+
 
         private void LoadContentPacks()
         {
@@ -172,7 +196,7 @@ namespace TrainStation
                 if (stop.TargetMapName == Game1.currentLocation.Name) //remove stops to the current map
                     continue;
 
-                if (!CheckConditions(stop.Conditions)) //remove stops that don't meet conditions
+                if (!ConditionsApi.CheckConditions(stop.Conditions)) //remove stops that don't meet conditions
                     continue;
 
                 string displayName = $"{stop.TranslatedName}";
@@ -329,7 +353,7 @@ namespace TrainStation
         public int TargetY { get; set; }
         public int Cost { get; set; } = 0;
         public int FacingDirectionAfterWarp { get; set; } = 2;
-        public string Conditions { get; set; }
+        public string[] Conditions { get; set; }
 
         internal string StopID; //assigned by the mod's uniqueID and the number of stops from that pack
         internal string TranslatedName;
@@ -346,5 +370,29 @@ namespace TrainStation
         {
             ModEntry.Instance.OpenTrainMenu();
         }
+    }
+
+    public interface IConditionsChecker
+    {
+        /// <summary>
+        /// Must be called before any condition checking is done. Verbose mode will turn on logging for every step of the condition checking process
+        /// </summary>
+        /// <param name="verbose">Turning verbose mode true will log every step of the condition checking process. Useful for debugging but spams the debug log. It is recommended to have this false during release, or provided in a config set to a default of false.</param>
+        /// <param name="uniqueId">The unique ID of your mod. Will be prepended to all logs so it is clear which mod called the condition checking</param>
+        void Initialize(bool verbose, string uniqueId);
+
+        /// <summary>
+        /// Checks an array of condition strings. Each string will be evaluated as true if every single condition provided is true. All the strings together will evaluate as true if any string is true
+        /// </summary>
+        /// <param name="conditions">An array of condition strings.</param>
+        /// <returns></returns>
+        bool CheckConditions(string[] conditions);
+
+        /// <summary>
+        /// Checks a single condition string. The string will be evaluated as true if every single condition provided is true.
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        bool CheckConditions(string conditions);
     }
 }

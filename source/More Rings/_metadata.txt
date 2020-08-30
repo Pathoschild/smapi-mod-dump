@@ -5,12 +5,9 @@ mods:
    More Rings
 
 latest commit:
-   commit 814a65af6c6a622cf8e98b51058221b693674c5c
-   Merge: d4fe6bb 616f631
+   commit b53a41d9eb052871ee2b6c8801850ff302908097
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Apr 27 12:10:38 2020 -0400
+   Date:   Mon Jun 8 18:54:15 2020 -0400
    
-       Merge pull request #3 from Pathoschild/update-project
-       
-       Update & standardize project structure
+       Added Quality+ Ring
    

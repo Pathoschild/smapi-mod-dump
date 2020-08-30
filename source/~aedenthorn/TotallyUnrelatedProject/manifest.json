@@ -1,0 +1,21 @@
+﻿{
+  "Name": "Custom Fixed Dialogue",
+  "Author": "aedenthorn",
+  "Version": "0.5.2",
+  "Description": "Custom fixed dialogue.",
+  "UniqueID": "aedenthorn.CustomFixedDialogue",
+  "EntryDll": "Custom_Fixed_Dialogue.dll",
+  "MinimumApiVersion": "3.5.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "CustomFixedDialogue"
+  },
+  "Dependencies": [
+      {
+        "UniqueID": "Platonymous.ModUpdater",
+        "IsRequired": false
+      },
+  ]
+}

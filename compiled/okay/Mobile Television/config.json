@@ -1,0 +1,10 @@
+{
+  "EnableMod": true,
+  "EnableCatalogue": true,
+  "EnableFurnitureCatalogue": true,
+  "EnableSeedCatalogue": true,
+  "FreeCatalogue": false,
+  "FreeFurnitureCatalogue": false,
+  "FreeSeedCatalogue": false,
+  "SeedsToInclude": "season"
+}

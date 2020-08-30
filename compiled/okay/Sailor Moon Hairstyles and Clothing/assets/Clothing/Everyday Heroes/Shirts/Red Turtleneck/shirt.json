@@ -3,5 +3,11 @@
     "Description": "A thick, red sweater.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Cuello de Tortuga Rojo"
+    },
+    "DescriptionLocalization": {
+        "es": "Un grueso suéter rojo."
+    }
 }

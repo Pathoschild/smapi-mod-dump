@@ -3,5 +3,11 @@
     "Description": "A blue top to be worn with a pink dress bottom.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Top Azul y Vestido Rosa"
+    },
+    "DescriptionLocalization": {
+        "es": "Un top azul para usar con un vestido rosa."
+    }
 }

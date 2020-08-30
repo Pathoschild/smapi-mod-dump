@@ -3,5 +3,11 @@
     "Description": "A clean white dress and green undershirt. It wouldn't do without the bottom half.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Vestido Blanco"
+    },
+    "DescriptionLocalization": {
+        "es": "Un vestido blanco limpio y una camiseta verde. No funcionaría sin la mitad inferior."
+    }
 }

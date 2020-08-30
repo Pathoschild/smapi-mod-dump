@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
+using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewValley;
 
@@ -58,7 +59,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetTokensUsed()
+        public virtual IEnumerable<string> GetTokensUsed()
         {
             return Enumerable.Empty<string>();
         }
@@ -80,53 +81,56 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <inheritdoc />
         public virtual bool TryValidateInput(IInputArguments input, out string error)
         {
-            // validate positional arguments
-            if (input.HasPositionalArgs)
+            if (input.IsReady)
             {
-                // check if input allowed
-                if (!this.AllowsPositionalInput)
+                // validate positional arguments
+                if (input.HasPositionalArgs)
                 {
-                    error = $"invalid input arguments ({input.TokenString.Value}), token {this.Name} doesn't allow input.";
-                    return false;
-                }
-
-                // check argument count
-                if (input.PositionalArgs.Length > this.MaxPositionalArgs)
-                {
-                    error = $"invalid input arguments ({input.TokenString.Value}), token {this.Name} doesn't allow more than {this.MaxPositionalArgs} argument{(this.MaxPositionalArgs == 1 ? "" : "s")}.";
-                    return false;
-                }
-
-                // check values
-                InvariantHashSet validInputs = this.GetValidPositionalArgs();
-                if (validInputs?.Any() == true)
-                {
-                    if (input.PositionalArgs.Any(arg => !validInputs.Contains(arg)))
+                    // check if input allowed
+                    if (!this.AllowsPositionalInput)
                     {
-                        string raw = input.TokenString.Raw;
-                        string parsed = input.TokenString.Value;
-                        error = $"invalid input arguments ({(raw != parsed ? $"{raw} => {parsed}" : parsed)}) for {this.Name} token, expected any of '{string.Join("', '", validInputs.OrderByIgnoreCase(p => p))}'";
-                        return false;
-                    }
-                }
-            }
-
-            // validate named arguments
-            if (input.HasNamedArgs)
-            {
-                if (this.ValidNamedArguments != null)
-                {
-                    if (!this.ValidNamedArguments.Any())
-                    {
-                        error = $"invalid named argument '{input.NamedArgs.First().Key}' for {this.Name} token, which does not accept any named arguments.";
+                        error = $"invalid input arguments ({input.TokenString.Value}), token {this.Name} doesn't allow input.";
                         return false;
                     }
 
-                    string invalidKey = (from arg in input.NamedArgs where !this.ValidNamedArguments.Contains(arg.Key) select arg.Key).FirstOrDefault();
-                    if (invalidKey != null)
+                    // check argument count
+                    if (input.PositionalArgs.Length > this.MaxPositionalArgs)
                     {
-                        error = $"invalid named argument '{invalidKey}' for {this.Name} token, expected any of '{string.Join("', '", this.ValidNamedArguments.OrderByIgnoreCase(p => p))}'";
+                        error = $"invalid input arguments ({input.TokenString.Value}), token {this.Name} doesn't allow more than {this.MaxPositionalArgs} argument{(this.MaxPositionalArgs == 1 ? "" : "s")}.";
                         return false;
+                    }
+
+                    // check values
+                    InvariantHashSet validInputs = this.GetValidPositionalArgs();
+                    if (validInputs?.Any() == true)
+                    {
+                        if (input.PositionalArgs.Any(arg => !validInputs.Contains(arg)))
+                        {
+                            string raw = input.TokenString.Raw;
+                            string parsed = input.TokenString.Value;
+                            error = $"invalid input arguments ({(raw != parsed ? $"{raw} => {parsed}" : parsed)}) for {this.Name} token, expected any of '{string.Join("', '", validInputs.OrderByIgnoreCase(p => p))}'";
+                            return false;
+                        }
+                    }
+                }
+
+                // validate named arguments
+                if (input.HasNamedArgs)
+                {
+                    if (this.ValidNamedArguments != null)
+                    {
+                        if (!this.ValidNamedArguments.Any())
+                        {
+                            error = $"invalid named argument '{input.NamedArgs.First().Key}' for {this.Name} token, which does not accept any named arguments.";
+                            return false;
+                        }
+
+                        string invalidKey = (from arg in input.NamedArgs where !this.ValidNamedArguments.Contains(arg.Key) select arg.Key).FirstOrDefault();
+                        if (invalidKey != null)
+                        {
+                            error = $"invalid named argument '{invalidKey}' for {this.Name} token, expected any of '{string.Join("', '", this.ValidNamedArguments.OrderByIgnoreCase(p => p))}'";
+                            return false;
+                        }
                     }
                 }
             }
@@ -147,7 +151,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             {
                 string[] invalidValues = values
                     .Where(p => !int.TryParse(p, out int val) || val < min || val > max)
-                    .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
                     .ToArray();
 
                 if (invalidValues.Any())
@@ -160,7 +164,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             {
                 string[] invalidValues = values
                     .Where(p => !validValues.Contains(p))
-                    .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
                     .ToArray();
 
                 if (invalidValues.Any())
@@ -316,7 +320,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <summary>Get all social NPCs.</summary>
         protected IEnumerable<NPC> GetSocialVillagers()
         {
-            foreach (NPC npc in Utility.getAllCharacters())
+            foreach (NPC npc in this.GetAllCharacters())
             {
                 bool isSocial =
                     npc.CanSocialize
@@ -325,6 +329,16 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                 if (isSocial)
                     yield return npc;
             }
+        }
+
+        /// <summary>Get all characters in reachable locations.</summary>
+        /// <remarks>This is similar to <see cref="Utility.getAllCharacters()"/>, but doesn't sometimes crash when a farmhand warps and <see cref="Game1.currentLocation"/> isn't set yet.</remarks>
+        protected IEnumerable<NPC> GetAllCharacters()
+        {
+            return CommonHelper
+                .GetLocations()
+                .SelectMany(p => p.characters)
+                .Distinct(new ObjectReferenceComparer<NPC>());
         }
 
         /// <summary>Get whether the values in a collection changed.</summary>

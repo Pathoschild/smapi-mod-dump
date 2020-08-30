@@ -86,10 +86,10 @@
     <None Include="assets\[JA] LineSprinklers\content-pack.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="assets\[JA] LineSprinklers\manifest.json">
+    <None Include="assets\[JA] LineSprinklers\manifest.json" />
+    <None Include="manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\[JA] LineSprinklers\BigCraftables\Iridium Line Sprinkler %28D%29\big-craftable.png">

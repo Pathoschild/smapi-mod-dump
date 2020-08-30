@@ -3,7 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Characters;
+using StardewValley.Locations;
 using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.Quests;
@@ -11,6 +13,7 @@ using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 using Object = StardewValley.Object;
 
@@ -52,6 +55,8 @@ namespace Familiars
 
 			Helper.ConsoleCommands.Add("DispelFamiliars", "Dispel all familiars.", new Action<string, string[]>(DispelFamiliars));
 			Helper.ConsoleCommands.Add("DF", "Dispel all familiars.", new System.Action<string, string[]>(DispelFamiliars));
+			Helper.ConsoleCommands.Add("SummonFamiliars", "Summon all familiars to you.", new System.Action<string, string[]>(SummonFamiliars));
+			Helper.ConsoleCommands.Add("SF", "Summon all familiars to you.", new System.Action<string, string[]>(SummonFamiliars));
 			if (Config.IAmAStinkyCheater)
             {
 				Helper.ConsoleCommands.Add("CallFamiliar", "Call a familiar. Usage: CallFamiliar <familiarType>", new System.Action<string, string[]>(CallFamiliar));
@@ -82,10 +87,6 @@ namespace Familiars
 				postfix: new HarmonyMethod(typeof(FamiliarsPatches), nameof(FamiliarsPatches.Object_minutesElapsed_Postfix))
 			);
 			harmony.Patch(
-				original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.checkAction)),
-				postfix: new HarmonyMethod(typeof(FamiliarsPatches), nameof(FamiliarsPatches.GameLocation_checkAction_Postfix))
-			);
-			harmony.Patch(
 				original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performTouchAction)),
 				postfix: new HarmonyMethod(typeof(FamiliarsPatches), nameof(FamiliarsPatches.GameLocation_performTouchAction_Postfix))
 			);
@@ -114,8 +115,45 @@ namespace Familiars
 				original: AccessTools.Method(typeof(GameLocation), "drawCharacters"),
 				prefix: new HarmonyMethod(typeof(FamiliarsPatches), nameof(FamiliarsPatches.GameLocation_drawCharacters_Prefix))
 			);
+			harmony.Patch(
+				original: AccessTools.Method(typeof(AnimalHouse), nameof(AnimalHouse.incubator)),
+				prefix: new HarmonyMethod(typeof(FamiliarsPatches), nameof(FamiliarsPatches.AnimalHouse_incubator_Prefix))
+			);
+			harmony.Patch(
+				original: AccessTools.Method(typeof(Utility), nameof(Utility.isThereAFarmerOrCharacterWithinDistance)),
+				postfix: new HarmonyMethod(typeof(FamiliarsPatches), nameof(FamiliarsPatches.Utility_isThereAFarmerOrCharacterWithinDistance_Postfix))
+			);
 		}
 
+        private void SummonFamiliars(string arg1, string[] arg2)
+        {
+			foreach (Building l in Game1.getFarm().buildings)
+			{
+				if (l.indoors.Value is SlimeHutch)
+				{
+					foreach(Familiar f in l.indoors.Value.characters.Where(n => n is Familiar))
+                    {
+						if(f.ownerId == 0 || f.ownerId == Game1.player.UniqueMultiplayerID)
+                        {
+							Game1.warpCharacter(f, Game1.player.currentLocation, Game1.player.position);
+							f.followingOwner = true;
+                        }
+                    }
+				}
+			}
+
+			foreach (GameLocation l in Game1.locations)
+			{
+				foreach (Familiar f in l.characters.Where(n => n is Familiar))
+				{
+					if (f.ownerId == 0 || f.ownerId == Game1.player.UniqueMultiplayerID)
+					{
+						Game1.warpCharacter(f, Game1.player.currentLocation, Game1.player.position);
+						f.followingOwner = true;
+					}
+				}
+			}
+		}
 
         private void DispelFamiliars(string arg1, string[] arg2)
 		{
@@ -163,7 +201,7 @@ namespace Familiars
 		if (!Config.EnableMod)
 			return false;
 
-		if (asset.AssetNameEquals("Characters\\Monsters\\BatFamiliar") || asset.AssetNameEquals("Characters\\Monsters\\DinoFamiliar") || asset.AssetNameEquals("Characters\\Monsters\\DustSpiritFamiliar") || asset.AssetNameEquals("Characters\\JunimoFamiliar"))
+		if (asset.AssetNameEquals("Characters/Monsters/BatFamiliar") || asset.AssetNameEquals("Characters/Monsters/DinoFamiliar") || asset.AssetNameEquals("Characters/Monsters/DustSpriteFamiliar") || asset.AssetNameEquals("Characters/JunimoFamiliar") || asset.AssetNameEquals("Characters/BatFamiliar") || asset.AssetNameEquals("Characters/DinoFamiliar") || asset.AssetNameEquals("Characters/DustSpriteFamiliar") || asset.AssetNameEquals("Characters/JunimoFamiliar"))
 		{
 				Monitor.Log($"can load familiar {asset.AssetName}");
 				return true;

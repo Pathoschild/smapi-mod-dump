@@ -3,5 +3,11 @@
     "Description": "A warm sweater-jacket combo.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Chaqueta Verde y Suéter"
+    },
+    "DescriptionLocalization": {
+        "es": "Una combinación cálida de suéter y chaqueta."
+    }
 }

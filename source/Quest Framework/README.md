@@ -35,6 +35,10 @@ With advanced API you can create more complex and advanced quests, create quest 
 
 How to use advanced api see [Advanced API guide](docs/advanced-api-guide.md).
 
+## Quest Framework developers
+
+See [Developer notes](docs/developer-notes.md)
+
 ## Contributors & Special Thanks
 
 - [PurrplingCat](https://www.nexusmods.com/users/68185132) (Quest Framework mod author)

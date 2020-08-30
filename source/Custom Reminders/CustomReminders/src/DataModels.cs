@@ -8,6 +8,7 @@ namespace Dem1se.CustomReminders
         public SButton CustomRemindersButton { get; set; } = SButton.F2;
         public bool SubtlerReminderSound { get; set; } = false;
         public SButton FarmhandInventoryButton { get; set; } = SButton.E;
+        public bool EnableMobilePhoneApp { set; get; } = true;
     }
 
     /// <summary> Data model for reminders </summary>

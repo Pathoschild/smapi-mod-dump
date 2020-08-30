@@ -19,7 +19,7 @@ namespace DynamicNightTime
         public float Latitude = 38.25f;
         public bool SunsetTimesAreMinusThirty = true;
         public int NightDarknessLevel = 1;
-        public bool LessOrangeSunrise = false;
+        public bool MoreOrangeSunrise = false;
     }
 
     public class DynamicNightTime : Mod
@@ -179,14 +179,14 @@ namespace DynamicNightTime
                     Game1.currentSong.Resume();
 
                 else { 
-                if (!Game1.eventUp && (Game1.currentLocation.IsOutdoors || Game1.currentLocation is FarmHouse || Game1.currentLocation is AnimalHouse
-                    || Game1.currentLocation is Shed && Game1.options.musicVolumeLevel > 0.025 && Game1.timeOfDay < 1200) && (Game1.currentSong.Name.Contains("ambient") || Game1.currentSong.Name.Contains("none")) || Game1.currentSong.Name.Contains(Game1.currentSeason))
-                {
+                    if (!Game1.eventUp && (Game1.currentLocation.IsOutdoors || Game1.currentLocation is FarmHouse || Game1.currentLocation is AnimalHouse
+                                           || Game1.currentLocation is Shed && Game1.options.musicVolumeLevel > 0.025 && Game1.timeOfDay < 1200) && (Game1.currentSong.Name.Contains("ambient") || Game1.currentSong.Name.Contains("none")) || Game1.currentSong.Name.Contains(Game1.currentSeason))
+                    {
 
-                    if (Game1.isRaining || Game1.isLightning || (Game1.eventUp || Game1.dayOfMonth <= 0) || Game1.currentLocation.Name.Equals("Desert"))
-                        return;
-                    Game1.changeMusicTrack(Game1.currentSeason + Math.Max(1, Game1.currentSongIndex),true,Game1.MusicContext.Default);
-                }
+                        if (Game1.isRaining || Game1.isLightning || (Game1.eventUp || Game1.dayOfMonth <= 0) || Game1.currentLocation.Name.Equals("Desert"))
+                            return;
+                        Game1.changeMusicTrack(Game1.currentSeason + Math.Max(1, Game1.currentSongIndex),true,Game1.MusicContext.Default);
+                    }
                 }
                 Helper.Reflection.GetMethod(Game1.currentLocation, "_updateAmbientLighting").Invoke();
                 Game1.currentLocation.map.Properties.TryGetValue("Light", out PropertyValue propertyValue2);
@@ -277,7 +277,7 @@ namespace DynamicNightTime
                 GMCMapi.RegisterClampedOption(ModManifest, "Latitude", "Latitude used to generate the sunrise and sunset times", () => NightConfig.Latitude,
                     (float val) => NightConfig.Latitude = val, -63.5f, 63.5f);
                 GMCMapi.RegisterSimpleOption(ModManifest, "Sunset Times", "This option controls if you subtract a half hour from the generated time", () => NightConfig.SunsetTimesAreMinusThirty, (bool val) => NightConfig.SunsetTimesAreMinusThirty = val);
-                GMCMapi.RegisterSimpleOption(ModManifest, "Less Orange Sunrise", "This option controls if you want a less orange sunrise", () => NightConfig.LessOrangeSunrise, (bool val) => NightConfig.LessOrangeSunrise = val);
+                GMCMapi.RegisterSimpleOption(ModManifest, "More Orange Sunrise", "This option controls if you want a more orange sunrise", () => NightConfig.MoreOrangeSunrise, (bool val) => NightConfig.MoreOrangeSunrise = val);
                 GMCMapi.RegisterClampedOption(ModManifest, "Night Darkness Level", "Controls the options for how dark it is at night. Higher is darker.", () => NightConfig.NightDarknessLevel,
                     (int val) => NightConfig.NightDarknessLevel = val, 1, 4);
             }

@@ -3,5 +3,11 @@
     "Description": "A loose collared shirt crowned with a sharp waistcoat.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Chaleco Azul"
+    },
+    "DescriptionLocalization": {
+        "es": "Una camisa suelta con cuello y un chaleco afilado."
+    }
 }

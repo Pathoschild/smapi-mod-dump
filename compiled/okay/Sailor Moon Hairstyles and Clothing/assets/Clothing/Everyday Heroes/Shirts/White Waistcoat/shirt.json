@@ -3,5 +3,11 @@
     "Description": "A stunning white waistcoat over a green sweater.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Chaleco Blanco"
+    },
+    "DescriptionLocalization": {
+        "es": "Un impresionante chaleco blanco sobre un suéter verde."
+    }
 }

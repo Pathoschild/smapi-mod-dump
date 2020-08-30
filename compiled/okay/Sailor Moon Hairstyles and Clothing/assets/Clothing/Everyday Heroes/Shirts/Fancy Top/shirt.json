@@ -3,5 +3,11 @@
     "Description": "A blue dress shirt with a green pattern.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Top Elegante"
+    },
+    "DescriptionLocalization": {
+        "es": "Una camisa de vestir azul con un estampado verde."
+    }
 }

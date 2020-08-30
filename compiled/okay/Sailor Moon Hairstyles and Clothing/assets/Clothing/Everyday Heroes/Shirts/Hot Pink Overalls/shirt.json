@@ -3,5 +3,11 @@
     "Description": "A pair of big, bright overalls.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Overol Rosa Fuerte"
+    },
+    "DescriptionLocalization": {
+        "es": "Un par de overoles grandes y brillantes."
+    }
 }

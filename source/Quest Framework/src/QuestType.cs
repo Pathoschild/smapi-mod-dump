@@ -12,16 +12,30 @@ namespace QuestFramework
     /// </summary>
     public enum QuestType
     {
-        Custom = Quest.type_basic,
-        Basic = Quest.type_basic,
-        Building = Quest.type_building,
-        Crafting = Quest.type_crafting,
-        ItemDelivery = Quest.type_itemDelivery,
-        ItemHarvest = Quest.type_harvest,
-        Location = Quest.type_location,
-        LostItem = Quest.type_harvest,
-        Monster = Quest.type_monster,
-        SecretLostItem = Quest.type_harvest,
-        Social = Quest.type_socialize,
+        Custom,
+        Basic,
+        Building,
+        Crafting,
+        ItemDelivery,
+        ItemHarvest,
+        Location,
+        LostItem,
+        Monster,
+        SecretLostItem,
+        Social,
+    }
+
+    public static class QuestTypeId
+    {
+        public static int Basic => Quest.type_basic;
+        public static int Building => Quest.type_building;
+        public static int Crafting => Quest.type_crafting;
+        public static int ItemDelivery => Quest.type_itemDelivery;
+        public static int ItemHarvest => Quest.type_harvest;
+        public static int Location => Quest.type_location;
+        public static int LostItem => Quest.type_harvest;
+        public static int Monster => Quest.type_monster;
+        public static int SecretLostItem => Quest.type_harvest;
+        public static int Social => Quest.type_socialize;
     }
 }

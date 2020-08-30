@@ -18,5 +18,8 @@
         //streak functions
         string GetCurrentWeatherStreak();
         int GetNumDaysOfStreak();
+
+        //specific functions
+        string GetCurrentFogType();
     }
 }

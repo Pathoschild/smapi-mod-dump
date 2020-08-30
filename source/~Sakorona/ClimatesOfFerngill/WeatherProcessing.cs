@@ -235,7 +235,7 @@ namespace ClimatesOfFerngillRebuild
             if (ClimatesOfFerngill.WeatherOpt.Verbose)
             {
                 ClimatesOfFerngill.Logger.Log(WeatherDist.ToString());
-                ClimatesOfFerngill.Logger.Log($"Distribution odds is {distOdd}");
+                ClimatesOfFerngill.Logger.Log($"Distribution odds is {distOdd:N3}");
             }
 
             if (!(WeatherDist.GetEntryFromProb(distOdd, out string Result)))

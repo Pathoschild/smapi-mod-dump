@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "HappyFishJump": {
+      "commandName": "Executable",
+      "executablePath": "E:\\SteamLibrary\\steamapps\\common\\Stardew Valley\\StardewModdingAPI.exe",
+      "workingDirectory": "E:\\SteamLibrary\\steamapps\\common\\Stardew Valley\\"
+    }
+  }
+}

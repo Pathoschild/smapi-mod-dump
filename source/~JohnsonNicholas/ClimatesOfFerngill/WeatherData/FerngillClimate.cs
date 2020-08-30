@@ -1,6 +1,5 @@
 ﻿using StardewModdingAPI.Utilities;
 using System.Collections.Generic;
-using System.Text;
 using TwilightShards.Common;
 
 namespace ClimatesOfFerngillRebuild
@@ -24,24 +23,24 @@ namespace ClimatesOfFerngillRebuild
         public FerngillClimate(List<FerngillClimateTimeSpan> fCTS)
         {
             ClimateSequences = new List<FerngillClimateTimeSpan>();
-            foreach (FerngillClimateTimeSpan CTS in fCTS)
-                ClimateSequences.Add(new FerngillClimateTimeSpan(CTS));
+            foreach (FerngillClimateTimeSpan cts in fCTS)
+                ClimateSequences.Add(new FerngillClimateTimeSpan(cts));
         }
 
         //climate access functions
         /// <summary>
         /// This function returns the general climate data for a day. It's meant if you want to do processing elsewhere.
         /// </summary>
-        /// <param name="Target">The day being looked at </param>
+        /// <param name="target">The day being looked at </param>
         /// <returns>The climate data.</returns>
-        public FerngillClimateTimeSpan GetClimateForDate(SDate Target)
+        public FerngillClimateTimeSpan GetClimateForDate(SDate target)
         {
             foreach (FerngillClimateTimeSpan s in ClimateSequences)
             {
-                SDate BeginDate = new SDate(s.BeginDay, s.BeginSeason, Target.Year);
-                SDate EndDate = new SDate(s.EndDay, s.EndSeason, Target.Year);
+                SDate beginDate = new SDate(s.BeginDay, s.BeginSeason, target.Year);
+                SDate endDate = new SDate(s.EndDay, s.EndSeason, target.Year);
 
-                if (Target >= BeginDate && Target <= EndDate)
+                if (target >= beginDate && target <= endDate)
                     return s;
             }
 
@@ -51,25 +50,26 @@ namespace ClimatesOfFerngillRebuild
         /// <summary>
         /// This function returns the temperatures for a day
         /// </summary>
-        /// <param name="Target">The day being looked at</param>
+        /// <param name="target">The day being looked at</param>
+        /// <param name="dice">The PRNG object</param>
         /// <returns>The temperature range</returns>
-        public RangePair GetTemperatures(SDate Target, MersenneTwister dice)
+        public RangePair GetTemperatures(SDate target, MersenneTwister dice)
         {
-            var Weather = GetClimateForDate(Target);
-            var temps = new RangePair(Weather.RetrieveTemp(dice, "lowtemp", Target.Day), 
-                                 Weather.RetrieveTemp(dice, "hightemp", Target.Day), true);
-            ClimatesOfFerngill.Logger.Log($"We are gathering temperatures from the climate file. Temps is {temps.LowerBound}, {temps.HigherBound}");
+            var weather = GetClimateForDate(target);
+            var temps = new RangePair(weather.RetrieveTemp(dice, "lowtemp", target.Day), 
+                                 weather.RetrieveTemp(dice, "hightemp", target.Day), true);
+            ClimatesOfFerngill.Logger.Log($"We are gathering temperatures from the climate file. Temps is {temps.LowerBound:N3}, {temps.HigherBound:N3}");
             return temps;
         }
 
-        public double GetStormOdds(SDate Target, MersenneTwister dice)
+        public double GetStormOdds(SDate target, MersenneTwister dice)
         {
-            return GetClimateForDate(Target).RetrieveOdds(dice, "storm", Target.Day);
+            return GetClimateForDate(target).RetrieveOdds(dice, "storm", target.Day);
         }
 
-        public double GetEveningFogOdds(SDate Target)
+        public double GetEveningFogOdds(SDate target)
         {
-            return GetClimateForDate(Target).EveningFogChance;
+            return GetClimateForDate(target).EveningFogChance;
         }
 
     }

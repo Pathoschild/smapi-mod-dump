@@ -12,6 +12,10 @@
         float GetBrightnessQuotient();
         int GetMoonZenith();
         float GetTrackPosition();
+        void AlterEclipseOdds(float val);
+        void ForceEclipse();
+        void ForceEclipseTomorrow();
+        bool IsEclipseTomorrow();
     }
 
     public class LunarDisturbancesAPI : ILunarDisturbancesAPI
@@ -45,7 +49,7 @@
 
         public bool IsSolarEclipse()
         {
-          return LunarDisturbances.IsEclipse;
+          return IntMoon.IsEclipse;
         }
 
         public int GetMoonRise()
@@ -68,6 +72,26 @@
         public float GetBrightnessQuotient()
         {
             return IntMoon.GetBrightnessQuotient();
+        }
+
+        public void AlterEclipseOdds(float val)
+        {
+            IntMoon.EclipseMods += val;
+        }
+
+        public void ForceEclipse()
+        {
+            IntMoon.TurnEclipseOn();
+        }
+
+        public void ForceEclipseTomorrow()
+        {
+            IntMoon.MoonTracker.IsEclipseTomorrow = true;
+        }
+
+        public bool IsEclipseTomorrow()
+        {
+            return IntMoon.MoonTracker.IsEclipseTomorrow;
         }
     }
 }

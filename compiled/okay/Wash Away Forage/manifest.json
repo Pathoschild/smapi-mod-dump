@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Wash Away Forage",
+  "Author": "Sakorona",
+  "Version": "1.0.0",
+  "Description": "Washes forage away that is now in water.",
+  "UniqueID": "KoihimeNakamura.WashAwayForage",
+  "EntryDll": "WashAwayForage.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ "Nexus:????" ]
+}

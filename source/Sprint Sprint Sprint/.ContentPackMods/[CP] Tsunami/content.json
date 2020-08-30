@@ -1,0 +1,23 @@
+{
+    "Format": "1.15",
+    "Changes": [
+        {
+            "LogName": "Load flooded beach",
+            "Action": "Load",
+            "Target": "Maps/Beach",
+            "FromFile": "assets/Beach.tbin"
+        },
+        {
+            "LogName": "Load flooded forest",
+            "Action": "Load",
+            "Target": "Maps/Forest",
+            "FromFile": "assets/Forest.tbin"
+        },
+        {
+            "LogName": "Load flooded town",
+            "Action": "Load",
+            "Target": "Maps/Town",
+            "FromFile": "assets/Town.tbin"
+        }
+    ]
+}

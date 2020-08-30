@@ -5,9 +5,10 @@ mods:
    Difficulty Changer for Journey of the Prairie King
 
 latest commit:
-   commit a531cee948bfc959127dac51e95dfd95aa5b3377
+   commit d32391a343be22e4159dba607342b943ea97ed6a
+   Merge: db41756 a531cee
    Author: shanks3042 <shanks3042@protonmail.com>
-   Date:   Mon Jul 6 15:00:27 2020 +0200
+   Date:   Fri Aug 21 00:17:09 2020 +0200
    
-       commit test
+       fixed some variables not resetting properly
    

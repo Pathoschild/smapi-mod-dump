@@ -3,5 +3,11 @@
     "Description": "The black trim takes the edge off this all-pink outfit.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Chaqueta de Terciopelo Rosa"
+    },
+    "DescriptionLocalization": {
+        "es": "El ribete negro le quita el borde a este atuendo totalmente rosa."
+    }
 }

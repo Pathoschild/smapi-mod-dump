@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6492
+IDs: Jessebot.PleaseFixError
+update keys: Nexus:6492, GitHub:JessebotX/StardewValleyMods

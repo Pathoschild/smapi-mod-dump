@@ -5,6 +5,7 @@ using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Object = StardewValley.Object;
 
 namespace Familiars
@@ -135,99 +136,190 @@ namespace Familiars
 
 			foreach (FamiliarData f in fsd.dustSpriteFamiliars)
 			{
-				GameLocation l = Game1.getLocationFromName(f.currentLocation);
-				if (l != null)
+				Monitor.Log($"Got saved Dust Familiar at {f.currentLocation}");
+				GameLocation l = null;
+				if (Game1.getLocationFromName(f.currentLocation) != null)
 				{
-					Monitor.Log($"Returning saved Dust Familiar to {l.Name}");
-					DustSpriteFamiliar d = new DustSpriteFamiliar(f.position, f.ownerId);
-					d.followingOwner = f.followingOwner;
-					d.daysOld.Value = f.daysOld;
-					d.exp.Value = f.exp;
-					d.mainColor = f.mainColor;
-					d.redColor = f.redColor;
-					d.greenColor = f.greenColor;
-					d.blueColor = f.blueColor;
-					d.SetScale();
-					d.currentLocation = l;
-					l.characters.Add(d);
+					l = Game1.getLocationFromName(f.currentLocation);
 				}
+				else
+				{
+					l = Game1.getFarm().buildings.FirstOrDefault(b => b.buildingType == "Slime Hutch")?.indoors.Value;
+				}
+				if (l == null)
+					continue;
+
+				Monitor.Log($"Returning saved Dust Familiar to {l.Name}");
+				DustSpriteFamiliar d = new DustSpriteFamiliar(f.position, f.ownerId);
+				d.followingOwner = f.followingOwner;
+				d.daysOld.Value = f.daysOld;
+				d.exp.Value = f.exp;
+				d.mainColor = f.mainColor;
+				d.redColor = f.redColor;
+				d.greenColor = f.greenColor;
+				d.blueColor = f.blueColor;
+				d.SetScale();
+				d.currentLocation = l;
+				l.characters.Add(d);
 			}
 			foreach (FamiliarData f in fsd.dinoFamiliars)
 			{
-				GameLocation l = Game1.getLocationFromName(f.currentLocation);
-				if (l != null)
+				Monitor.Log($"Got saved Dino Familiar at {f.currentLocation}");
+
+				GameLocation l = null;
+				if (Game1.getLocationFromName(f.currentLocation) != null)
 				{
-					Monitor.Log($"Returning saved Dino Familiar to {l.Name}");
-					DinoFamiliar d = new DinoFamiliar(f.position, f.ownerId);
-					d.followingOwner = f.followingOwner;
-					d.daysOld.Value = f.daysOld;
-					d.exp.Value = f.exp;
-					d.mainColor = f.mainColor;
-					d.redColor = f.redColor;
-					d.greenColor = f.greenColor;
-					d.blueColor = f.blueColor;
-					d.SetScale();
-					d.currentLocation = l;
-					l.characters.Add(d);
+					l = Game1.getLocationFromName(f.currentLocation);
 				}
+				else
+				{
+					l = Game1.getFarm().buildings.FirstOrDefault(b => b.buildingType == "Slime Hutch")?.indoors.Value;
+				}
+				if (l == null)
+					continue;
+				Monitor.Log($"Returning saved Dino Familiar to {l.Name}");
+				DinoFamiliar d = new DinoFamiliar(f.position, f.ownerId);
+				d.followingOwner = f.followingOwner;
+				d.daysOld.Value = f.daysOld;
+				d.exp.Value = f.exp;
+				d.mainColor = f.mainColor;
+				d.redColor = f.redColor;
+				d.greenColor = f.greenColor;
+				d.blueColor = f.blueColor;
+				d.SetScale();
+				d.currentLocation = l;
+				l.characters.Add(d);
 			}
 			foreach (FamiliarData f in fsd.batFamiliars)
 			{
-				GameLocation l = Game1.getLocationFromName(f.currentLocation);
-				if (l != null)
+				Monitor.Log($"Got saved Bat Familiar at {f.currentLocation}");
+
+				GameLocation l = null;
+				if (Game1.getLocationFromName(f.currentLocation) != null)
 				{
-					Monitor.Log($"Returning saved Bat Familiar to {l.Name}");
-					BatFamiliar d = new BatFamiliar(f.position, f.ownerId);
-					d.followingOwner = f.followingOwner;
-					d.daysOld.Value = f.daysOld;
-					d.exp.Value = f.exp;
-					d.mainColor = f.mainColor;
-					d.redColor = f.redColor;
-					d.greenColor = f.greenColor;
-					d.blueColor = f.blueColor;
-					d.SetScale();
-					d.currentLocation = l;
-					l.characters.Add(d);
+					l = Game1.getLocationFromName(f.currentLocation);
 				}
+				else
+				{
+					l = Game1.getFarm().buildings.FirstOrDefault(b => b.buildingType == "Slime Hutch")?.indoors.Value;
+				}
+				if (l == null)
+					continue;
+				Monitor.Log($"Returning saved Bat Familiar to {l.Name}");
+				BatFamiliar d = new BatFamiliar(f.position, f.ownerId);
+				d.followingOwner = f.followingOwner;
+				d.daysOld.Value = f.daysOld;
+				d.exp.Value = f.exp;
+				d.mainColor = f.mainColor;
+				d.redColor = f.redColor;
+				d.greenColor = f.greenColor;
+				d.blueColor = f.blueColor;
+				d.SetScale();
+				d.currentLocation = l;
+				l.characters.Add(d);
 			}
 			foreach (FamiliarData f in fsd.junimoFamiliars)
 			{
-				GameLocation l = Game1.getLocationFromName(f.currentLocation);
-				if (l != null)
+				Monitor.Log($"Got saved Junimo Familiar at {f.currentLocation}");
+
+				GameLocation l = null;
+				if (Game1.getLocationFromName(f.currentLocation) != null)
 				{
-					Monitor.Log($"Returning saved Junimo Familiar to {l.Name}");
-					JunimoFamiliar d = new JunimoFamiliar(f.position, f.ownerId);
-					d.followingOwner = f.followingOwner;
-					d.daysOld.Value = f.daysOld;
-					d.exp.Value = f.exp;
-					d.mainColor = f.mainColor;
-					d.redColor = f.redColor;
-					d.greenColor = f.greenColor;
-					d.blueColor = f.blueColor;
-					d.SetScale();
-					d.currentLocation = l;
-					l.characters.Add(d);
+					l = Game1.getLocationFromName(f.currentLocation);
 				}
+				else
+				{
+					l = Game1.getFarm().buildings.FirstOrDefault(b => b.buildingType == "Slime Hutch")?.indoors.Value;
+				}
+				if (l == null)
+					continue;
+				Monitor.Log($"Returning saved Junimo Familiar to {l.Name}");
+				JunimoFamiliar d = new JunimoFamiliar(f.position, f.ownerId);
+				d.followingOwner = f.followingOwner;
+				d.daysOld.Value = f.daysOld;
+				d.exp.Value = f.exp;
+				d.mainColor = f.mainColor;
+				d.redColor = f.redColor;
+				d.greenColor = f.greenColor;
+				d.blueColor = f.blueColor;
+				if(f.color != null && f.color.A == 255)
+                {
+					d.color.Value = f.color;
+				}
+                else
+                {
+					d.color.Value = FamiliarsUtils.GetJunimoColor();
+                }
+				d.SetScale();
+				d.currentLocation = l;
+				l.characters.Add(d);
 			}
 			foreach (FamiliarData f in fsd.butterflyFamiliars)
 			{
-				GameLocation l = Game1.getLocationFromName(f.currentLocation);
-				if (l != null)
+				Monitor.Log($"Got saved Butterfly Familiar at {f.currentLocation}");
+
+				GameLocation l = null;
+				if (Game1.getLocationFromName(f.currentLocation) != null)
 				{
-					Monitor.Log($"Returning saved Butterfly Familiar to {l.Name}");
-					ButterflyFamiliar d = new ButterflyFamiliar(f.position, f.ownerId);
-					d.followingOwner = f.followingOwner;
-					d.daysOld.Value = f.daysOld;
-					d.exp.Value = f.exp;
-					d.mainColor = f.mainColor;
-					d.redColor = f.redColor;
-					d.greenColor = f.greenColor;
-					d.blueColor = f.blueColor;
-					d.baseFrame = f.baseFrame;
-					d.SetScale();
-					d.currentLocation = l;
-					l.characters.Add(d);
+					l = Game1.getLocationFromName(f.currentLocation);
 				}
+				else
+				{
+					l = Game1.getFarm().buildings.FirstOrDefault(b => b.buildingType == "Slime Hutch")?.indoors.Value;
+				}
+				if (l == null)
+					continue;
+				Monitor.Log($"Returning saved Butterfly Familiar to {l.Name}");
+				ButterflyFamiliar d = new ButterflyFamiliar(f.position, f.ownerId);
+				d.followingOwner = f.followingOwner;
+				d.daysOld.Value = f.daysOld;
+				d.exp.Value = f.exp;
+				d.mainColor = f.mainColor;
+				d.redColor = f.redColor;
+				d.greenColor = f.greenColor;
+				d.blueColor = f.blueColor;
+				d.baseFrame = f.baseFrame;
+				d.SetScale();
+				d.currentLocation = l;
+				d.baseFrame = f.baseFrame;
+				d.reloadSprite();
+				l.characters.Add(d);
+			}
+		}
+
+        public static Color GetJunimoColor()
+        {
+			if (ModEntry.Config.JunimoColorType.ToLower() == "default")
+			{
+				switch (Game1.random.Next(8))
+				{
+					case 0:
+						return Color.LimeGreen;
+					case 1:
+						return Color.Orange;
+					case 2:
+						return Color.LightGreen;
+					case 3:
+						return Color.Tan;
+					case 4:
+						return Color.GreenYellow;
+					case 5:
+						return Color.LawnGreen;
+					case 6:
+						return Color.PaleGreen;
+					case 7:
+						return Color.Turquoise;
+					default:
+						return Color.LimeGreen;
+				}
+			}
+			else if (ModEntry.Config.JunimoColorType.ToLower() == "random")
+			{
+				return new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
+			}
+			else
+			{
+				return ModEntry.Config.JunimoMainColor;
 			}
 		}
 

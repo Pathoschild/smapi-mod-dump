@@ -3,5 +3,11 @@
     "Description": "A dark, tailored high-school uniform.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Uniforme Escolar - Stars"
+    },
+    "DescriptionLocalization": {
+        "es": "Un uniforme oscuro y a medida de la escuela secundaria."
+    }
 }

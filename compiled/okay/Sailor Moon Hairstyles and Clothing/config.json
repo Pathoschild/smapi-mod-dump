@@ -1,5 +1,5 @@
 {
-  "DebugWarpKey": "U",
-  "DebugMode": false,
-  "DebugAlwaysCaturday": false
+  "EnableHairstyles": true,
+  "DebugCaturday": false,
+  "DebugMode": false
 }

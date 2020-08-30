@@ -3,5 +3,11 @@
     "Description": "This toasty coat and cardigan feels like it could warm up the whole room.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Abrigo de Invierno Ardiente"
+    },
+    "DescriptionLocalization": {
+        "es": "Este abrigo tostado y chaqueta de punto se siente como si pudiera calentar toda la habitación."
+    }
 }

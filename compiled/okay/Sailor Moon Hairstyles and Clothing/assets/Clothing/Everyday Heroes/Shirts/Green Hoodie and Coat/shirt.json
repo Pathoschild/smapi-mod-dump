@@ -3,5 +3,11 @@
     "Description": "A double-layered stack of comfy coats.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Sudadera y Abrigo Verde"
+    },
+    "DescriptionLocalization": {
+        "es": "Una pila de abrigos cómodos de doble capa."
+    }
 }

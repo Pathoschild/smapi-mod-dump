@@ -1,0 +1,20 @@
+﻿{
+  "Name": "Aloe Vera Gel",
+  "Price": 250,
+  "Description": "Soothes the effects of sunburn. Apply once a day to sunburned areas until healed.",
+  "Category": "Crafting",
+  "CategoryTextOverride": "Lotion",
+  "CategoryColorOverride": "40, 80, 180, 255",
+  "Edibility": -300,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Harvey",
+  "PurchasePrice": 500,
+  "GiftTastes":
+  {
+    "Love": [],
+    "Like": ["Caroline", "Emily", "Evelyn", "Haley", "Lewis"],
+    "Dislike": ["George", "Shane"],
+    "Hate": ["Jas"]
+  }
+}

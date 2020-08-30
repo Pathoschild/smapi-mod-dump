@@ -2,6 +2,7 @@
 using QuestFramework.Quests;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,16 @@ namespace QuestFramework.Framework.Controllers
         private Dictionary<string, int> questIdCache;
         private readonly IMonitor monitor;
 
-        public QuestController(QuestManager manager, IMonitor monitor)
+        public QuestController(QuestManager questManager, QuestOfferManager offerManager, IMonitor monitor)
         {
-            this.QuestManager = manager;
+            this.QuestManager = questManager;
+            this.OfferManager = offerManager;
             this.monitor = monitor;
             this.questIdCache = new Dictionary<string, int>();
         }
 
         public QuestManager QuestManager { get; }
+        public QuestOfferManager OfferManager { get; }
 
         public bool CanEdit<T>(IAssetInfo asset)
         {
@@ -40,10 +43,12 @@ namespace QuestFramework.Framework.Controllers
                     this.monitor.Log($"Assign quest `{questKv.GetFullName()}` to existing quest id #{questKv.id} in quest registry. Original quest overwritten.", LogLevel.Warn);
 
                 questRegistry.Data[questKv.id] = this.ToQuestString(questKv);
+
                 this.monitor.VerboseLog($"Injected quest #{questKv.id} aka `{questKv.Name}` to `Data\\Quests`");
+                this.monitor.VerboseLog($"   {questRegistry.Data[questKv.id]}");
             }
 
-            this.monitor.Log($"Injected {this.QuestManager.Quests.Count} quests.");
+            this.monitor.Log($"Injected {this.QuestManager.Quests.Count} managed quests into Data\\Quests");
         }
 
         public void RefreshAllManagedQuestsInQuestLog()
@@ -151,6 +156,32 @@ namespace QuestFramework.Framework.Controllers
             }
 
             this.questIdCache = newIds;
+        }
+
+        internal void RefreshBulletinboardQuestOffer()
+        {
+            if (QuestFrameworkMod.Instance.Status == State.LAUNCHED)
+            {
+                this.monitor.VerboseLog("Try refresh offered quest of the day");
+
+                var offers = this.OfferManager.GetMatchedOffers("Bulletinboard");
+                var offer = offers.FirstOrDefault();
+                var quest = offer != null ? this.QuestManager.Fetch(offer.QuestName) : null;
+
+                if (quest == null || Game1.player.hasQuest(quest.id))
+                {
+                    this.monitor.VerboseLog("Offered quest is already accepted in questlog.");
+                    return;
+                }
+
+                Game1.questOfTheDay = Quest.getQuestFromId(quest.id);
+                this.monitor.Log($"Added quest `{quest.Name}` to bulletin board as quest of the day.");
+
+                if (offers.Count() > 1)
+                {
+                    this.monitor.Log("Multiple quests scheduled for this time to add on buletin board. First on the list was added, others are ignored.", LogLevel.Warn);
+                }
+            }
         }
 
         public void Reassign()

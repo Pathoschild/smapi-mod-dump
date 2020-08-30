@@ -1,0 +1,237 @@
+{
+  
+  "Changes": [
+    {
+		"LogName": "Overlay Dirt and wall on outdoorsTileSheet",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_outdoorsTileSheet",
+        "FromFile": "assets/TileSheets/outdoorsTileSheet.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",	"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Replace on outdoorsTileSheet Building 1",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_outdoorsTileSheet",
+        "FromFile": "assets/TileSheets/outdoorsTileSheet.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Replace",
+         "FromArea": { "X": 352, "Y": 0, "Width": 48, "Height": 32 },
+         "ToArea": { "X": 352, "Y": 0, "Width": 48, "Height": 32 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Replace on outdoorsTileSheet Building 2",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_outdoorsTileSheet",
+        "FromFile": "assets/TileSheets/outdoorsTileSheet.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Replace",
+         "FromArea": { "X": 352, "Y": 96, "Width": 48, "Height": 32 },
+         "ToArea": { "X": 352, "Y": 96, "Width": 48, "Height": 32 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Replace on outdoorsTileSheet Building 3",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_outdoorsTileSheet",
+        "FromFile": "assets/TileSheets/outdoorsTileSheet.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Replace",
+         "FromArea": { "X": 0, "Y": 784, "Width": 32, "Height": 64 },
+         "ToArea": { "X": 0, "Y": 784, "Width": 32, "Height": 64 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Replace on outdoorsTileSheet Fence 1",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_outdoorsTileSheet",
+        "FromFile": "assets/TileSheets/outdoorsTileSheet.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Replace",
+         "FromArea": { "X": 128, "Y": 224, "Width": 48, "Height": 32 },
+         "ToArea": { "X": 128, "Y": 224, "Width": 48, "Height": 32 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Replace on outdoorsTileSheet Fence 2",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_outdoorsTileSheet",
+        "FromFile": "assets/TileSheets/outdoorsTileSheet.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Replace",
+         "FromArea": { "X": 176, "Y": 224, "Width": 16, "Height": 64 },
+         "ToArea": { "X": 176, "Y": 224, "Width": 16, "Height": 64 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Replace on outdoorsTileSheet Fence 3",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_outdoorsTileSheet",
+        "FromFile": "assets/TileSheets/outdoorsTileSheet.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Replace",
+         "FromArea": { "X": 144, "Y": 256, "Width": 16, "Height": 32 },
+         "ToArea": { "X": 144, "Y": 256, "Width": 16, "Height": 32 },
+		"Update": "OnLocationChange"
+	},
+	
+	
+    {
+		"LogName": "Replace on beach Building",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_beach",
+        "FromFile": "assets/TileSheets/beach.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Replace",
+         "FromArea": { "X": 0, "Y": 192, "Width": 80, "Height": 112 },
+         "ToArea": { "X": 0, "Y": 192, "Width": 80, "Height": 112 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Replace on beach Building",
+        "Action": "EditImage",
+        "Target": "Maps/winter_beach",
+        "FromFile": "assets/TileSheets/winter_beach.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",
+		"Update": "OnLocationChange"
+	},
+	
+    {
+		"LogName": "Overlay on beach Bench",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_beach",
+        "FromFile": "assets/TileSheets/beach.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",
+         "FromArea": { "X": 192, "Y": 288, "Width": 48, "Height": 16 },
+         "ToArea": { "X": 192, "Y": 288, "Width": 48, "Height": 16 },
+		"Update": "OnLocationChange"
+	},
+	
+	
+    {
+		"LogName": "Overlay on town Bench 1",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_town",
+        "FromFile": "assets/TileSheets/town.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",
+         "FromArea": { "X": 128, "Y": 0, "Width": 16, "Height": 48 },
+         "ToArea": { "X": 128, "Y": 0, "Width": 16, "Height": 48 },
+			"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Overlay on town Bench 2",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_town",
+        "FromFile": "assets/TileSheets/town.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",
+         "FromArea": { "X": 352, "Y": 0, "Width": 16, "Height": 48 },
+         "ToArea": { "X": 352, "Y": 0, "Width": 16, "Height": 48 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Overlay on town Bench 3",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_town",
+        "FromFile": "assets/TileSheets/town.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",
+         "FromArea": { "X": 32, "Y": 154, "Width": 32, "Height": 22 },
+         "ToArea": { "X": 32, "Y": 154, "Width": 32, "Height": 22 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Overlay on town Bench 4",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_town",
+        "FromFile": "assets/TileSheets/town.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",
+         "FromArea": { "X": 112, "Y": 154, "Width": 16, "Height": 22 },
+         "ToArea": { "X": 112, "Y": 154, "Width": 16, "Height": 22 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Replace on town Mailbox",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_town",
+        "FromFile": "assets/TileSheets/town.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Replace",
+         "FromArea": { "X": 144, "Y": 0, "Width": 16, "Height": 32 },
+         "ToArea": { "X": 144, "Y": 0, "Width": 16, "Height": 32 },
+		"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Overlay on town fence 1",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_town",
+        "FromFile": "assets/TileSheets/town.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",
+         "FromArea": { "X": 0, "Y": 400, "Width": 48, "Height": 80 },
+         "ToArea": { "X": 0, "Y": 400, "Width": 48, "Height": 80 },
+	"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Overlay on town fence 2",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_town",
+        "FromFile": "assets/TileSheets/town.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",
+         "FromArea": { "X": 48, "Y": 368, "Width": 32, "Height": 96 },
+         "ToArea": { "X": 48, "Y": 368, "Width": 32, "Height": 96 },
+	"Update": "OnLocationChange"
+	},
+    {
+		"LogName": "Overlay on town flower",
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_town",
+        "FromFile": "assets/TileSheets/{{season}}_town.png",
+        "When": { 
+			"LocationName": "EastScarpe"
+			},
+		"PatchMode": "Overlay",
+		"Update": "OnLocationChange"
+	},
+]			
+}

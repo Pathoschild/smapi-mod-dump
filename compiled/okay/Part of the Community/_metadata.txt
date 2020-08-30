@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/923
-IDs: SB_PotC
+IDs: SpaceBaby.PartOfTheCommunity, SB_PotC
 update keys: Nexus:923, GitHub:bmarquismarkail/SV_PotC

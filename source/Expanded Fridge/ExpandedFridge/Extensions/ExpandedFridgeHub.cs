@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Deprecated, will be removed in future commit
+
+//#define OLD_CODE
+
+#if OLD_CODE
+
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,6 +14,7 @@ using StardewValley.Objects;
 using StardewValley.Locations;
 using StardewModdingAPI.Events;
 using Netcode;
+
 
 namespace ExpandedFridge
 {
@@ -118,7 +125,7 @@ namespace ExpandedFridge
                         this.location = location as FarmHouse;
                 }
             }
-
+            
             // check if location can have a fridge
             if (this.location.upgradeLevel > 0)
             {
@@ -127,6 +134,7 @@ namespace ExpandedFridge
 
                 // save normal fridge
                 this.normalFridge = this.location.fridge.Value;
+                
 
                 // replace normal fridge in location with this
                 this.location.fridge.Value = this;
@@ -750,7 +758,7 @@ namespace ExpandedFridge
 
         /// Get a free tile for chest placement in our location.
         /// NOTE: This can return a value outside the map bound of the house.
-        private Vector2 GetFreeTileInLocation()
+        private Point GetFreeTileInLocation()
         {
             // for the whole width of the map
             for (int w = 0; w <= this.location.map.Layers[0].LayerWidth; w++)
@@ -758,14 +766,12 @@ namespace ExpandedFridge
                 for (int h = 0; h <= this.location.map.Layers[0].LayerHeight; h++)
                     // check if tile in width and height is placeable and not on wall
                     if (this.location.isTileLocationTotallyClearAndPlaceable(w,h) && !this.location.isTileOnWall(w,h))
-                        return new Vector2(w, h);
+                        return new Point(w, h);
 
             // NOTE: if we arrive here, the location is a mess!. We want to ensure the chests are safe so we give an out of reach option
             // we get a tile out of the map, this will be saved but cannot be accessed normally if the mod breaks but items can still be rescued
             // with an updated version or other cheat mods that accesses chests or enables movement out of the map.
-
-            ModEntry.MonitorInstance.Log("A free tile could not be found in your house, this means that you may not be able to access your fridge items if the mod breaks!", StardewModdingAPI.LogLevel.Warn);
-
+            
             int y = 0;
             int x = 0;
 
@@ -773,8 +779,12 @@ namespace ExpandedFridge
             while (this.location.isObjectAtTile(x, y))
                 y++;
 
+            ModEntry.DebugLog(
+                "A free tile could not be found in location, object might become placed out of bounds at tile x:" + x + ", y:" + y + " in location: " + location.Name, 
+                StardewModdingAPI.LogLevel.Warn);
+
             // return that position
-            return new Vector2(x, y);
+            return new Point(x, y);
         }
 
 
@@ -861,7 +871,7 @@ namespace ExpandedFridge
             {
                 if (this.items[index] != null && this.items[index].canStackWith(item))
                 {
-                    item.Stack = this.items[index].addToStack(item.Stack);
+                    item.Stack = this.items[index].addToStack(item);
                     if (item.Stack <= 0)
                         return (Item)null;
                 }
@@ -1001,3 +1011,4 @@ namespace ExpandedFridge
 
     }
 }
+#endif

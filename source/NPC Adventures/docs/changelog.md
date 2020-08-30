@@ -1,6 +1,30 @@
 # Full changelog
 
+## Upcoming version
+
+- Fixed log name for lockedDoorWarp error case
+
+## 0.14.1 "Major Minority"
+
+Released 27th July 2020
+
+- Try to fix cursor fog in mines
+
+## 0.14.0 "Major Minority"
+
+Released 26th July 2020
+
+- Added new hint cursor (on NPC mouse hover) for ask to follow dialog
+- Fixed possible exception in Abigail's reaction on interaction with her wardrobe in bathroom.
+- Default swords for companions in CompanionDispositions are file are now defined by their name (This adds support for custom swords)
+- Player can entry companion's house any time when this companion is recruited.
+- Prepare for upcoming features: Mod now is based on Quest Framework (Quest Framework mod is required)
+- Movement control was exposed in PurrplingCore for other SMAPI modders without requiring NA (for SMAPI mods devs)
+- Internal changes: Changed project structure, move some common parts to PurrplingCore shared VS project (for NA devs only)
+
 ## 0.13.0 beta "Useless mod"
+
+Released 21st June 2020
 
 - Removed lovely glowing when farmer recruit married spouse.
 - Added random chance for quality forages

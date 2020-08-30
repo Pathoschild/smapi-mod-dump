@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Dialogue Emotes",
+  "Author": "PurrplingCat",
+  "Version": "1.1.0",
+  "Description": "Show emotes above NPC's head while talking like in Animal Crossing",
+  "UniqueID": "PurrplingCat.DialogueEmotes",
+  "EntryDll": "DialogueEmotes.dll",
+  "MinimumApiVersion": "3.6.1",
+  "UpdateKeys": [
+    "Nexus:6537"
+  ],
+  "Dependencies": []
+}

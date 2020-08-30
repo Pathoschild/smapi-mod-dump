@@ -1,8 +1,15 @@
-﻿namespace ExpandedFridge
+﻿using StardewModdingAPI;
+
+
+namespace ExpandedFridge
 {
-    class ModConfig
+    /// <summary>
+    /// Stores options for the Manager.
+    /// </summary>
+    public class ModConfig
     {
-        public int cheatStorage = 0;
-        public bool cheatUpgrades = false;
+        public bool HideMiniFridges { get; set; } = true;
+        public SButton NextFridgeTabButton { get; set; } = SButton.RightTrigger;
+        public SButton LastFridgeTabButton { get; set; } = SButton.LeftTrigger;
     }
 }

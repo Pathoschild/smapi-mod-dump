@@ -1,0 +1,13 @@
+url:
+   https://github.com/purrplingcat/DialogueEmotes.git
+
+mods:
+   Dialogue Emotes
+
+latest commit:
+   commit c45d718c9cec6bf3db466e824963415ec641eb31
+   Author: PurrplingCat <git@purrplingcat.com>
+   Date:   Mon Jul 27 15:57:43 2020 +0200
+   
+       Release version 1.1.0
+   

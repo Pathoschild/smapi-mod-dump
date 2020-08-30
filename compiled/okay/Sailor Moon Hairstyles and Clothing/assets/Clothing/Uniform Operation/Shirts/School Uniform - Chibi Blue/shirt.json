@@ -3,5 +3,11 @@
     "Description": "A children's school uniform.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Uniforme Escolar - Chibi Azul"
+    },
+    "DescriptionLocalization": {
+        "es": "Un uniforme escolar para niños."
+    }
 }

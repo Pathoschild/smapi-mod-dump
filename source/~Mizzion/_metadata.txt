@@ -6,6 +6,7 @@ mods:
    Configure Machine Outputs
    Enhanced Relationships
    Fish Reminder
+   Increase Animal House Max Population
    Increased Artifact Spots
    One Sprinkler One Scarecrow
    Qi Exchanger

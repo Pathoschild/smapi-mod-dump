@@ -1,0 +1,32 @@
+{
+    "Changes": [
+
+{	
+	"LogName": "Dialogue", "Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"FromFile": "assets/Dialogue/MarriageDialogue_summer.json",	
+				},
+
+{	
+	"LogName": "Dialogue", 	"Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"funLeave_Jasper": "#$c 0.5#I found some interesting geodes to show the children today. I hope they appreciate Mother Nature's lucky dip!$1#'Tis such a glorious day. I wonder if it might be worth taking the children on a field trip. Perhaps we could excavate the beach.$3",
+		"funReturn_Jasper": "#$c 0.3#Oh dear, I fear I accidently taught young Vincent to swear in Dwarvish. Miss Penny was not impressed.$2#Young Jas has quite the imagination and asks so many questions! I do wonder who is learning more, the children, or myself!$3"			},
+		"When": { 	"DayofWeek":"Wednesday", "HasFlag": "Jasper_Penny"	}
+		},
+{	
+	"LogName": "Dialogue", 	"Action": "EditData","Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {	
+	"funLeave_Jasper": "Oh, there's a long walk ahead of me, my love, but the exercise will do me good.#$b#Do not fret, I shall pace myself, and I've plenty of water.$1",
+	"funReturn_Jasper": "#$c 0.5#My love, I am exhausted. I'm looking forward to getting off my feet. Almost literally!#Marlon sends his regards, @, and I picked up this 'shiny pebble' on the way home.[62 64 66 68]$1"	},
+	"When": { 	"DayofWeek":"Friday"	}	
+		},
+{	
+	"LogName": "Dialogue", 	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"funLeave_Jasper": "$c 0.5#Oh, perhaps I should take a gift for our friend. Dwarf does enjoy the strangest trinkets.#I still cannot believe that I shall be taking tea with one of the Smoluanu!#$b#Have a splendid day, my love.$1",
+		"funReturn_Jasper": "$c 0.3#Our friend sent me home with this... They were insistent. Please be careful with it, my love.$2[286 287 288]#Dwarf speaks often of their ancient enemy, the shadow people. Were they, perhaps, the ancestors of those foul shadow fiends?$2",			},
+			"When": { 	"DayofWeek":"Friday", "HasFlag": "Dwarf_Friend"	}	},
+
+    ]
+}

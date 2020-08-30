@@ -4,5 +4,11 @@
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless"
+    "Metadata": "Sleeveless",
+    "NameLocalization": {
+        "es": "Cuello de Tortuga Verde sin Mangas"
+    },
+    "DescriptionLocalization": {
+        "es": "Una atrevida elección de atuendo."
+    }
 }

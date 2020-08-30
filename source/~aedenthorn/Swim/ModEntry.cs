@@ -25,12 +25,6 @@ namespace Swim
         public static int scubaMaskID = -1;
         public static int scubaFinsID = -1;
         public static int scubaTankID = -1;
-        public static List<SButton> dirButtons = new List<SButton>() { 
-            SButton.DPadUp,
-            SButton.DPadDown,
-            SButton.DPadLeft,
-            SButton.DPadRight
-        };
         public static bool myButtonDown = false;
         public static int oxygen = 0;
         public static int lastUpdateMs = 0;
@@ -76,24 +70,6 @@ namespace Swim
             SwimMaps.Initialize(Monitor, helper, config);
             SwimHelperEvents.Initialize(Monitor, helper, config);
             SwimUtils.Initialize(Monitor, helper, config);
-
-
-            foreach (InputButton ib in Game1.options.moveUpButton)
-            {
-                dirButtons.Add(ib.ToSButton());
-            }
-            foreach(InputButton ib in Game1.options.moveDownButton)
-            {
-                dirButtons.Add(ib.ToSButton());
-            }
-            foreach(InputButton ib in Game1.options.moveRightButton)
-            {
-                dirButtons.Add(ib.ToSButton());
-            }
-            foreach(InputButton ib in Game1.options.moveLeftButton)
-            {
-                dirButtons.Add(ib.ToSButton());
-            }
 
             helper.Events.GameLoop.UpdateTicked += SwimHelperEvents.GameLoop_UpdateTicked;
             helper.Events.Input.ButtonPressed += SwimHelperEvents.Input_ButtonPressed;
@@ -239,8 +215,8 @@ namespace Swim
             throw new InvalidDataException(); 
         }
 
-                /// <summary>Get whether this instance can edit the given asset.</summary>
-                /// <param name="asset">Basic metadata about the asset being loaded.</param>
+        /// <summary>Get whether this instance can edit the given asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public bool CanEdit<T>(IAssetInfo asset)
         {
             if (!config.EnableMod)

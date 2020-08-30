@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6747
+IDs: shaklin.spouseoutdoorarea
+update keys: Nexus:6747

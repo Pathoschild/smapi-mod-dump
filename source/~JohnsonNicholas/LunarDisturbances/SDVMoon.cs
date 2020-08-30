@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using System.Collections;
+using StardewValley;
 using StardewModdingAPI.Utilities;
 using StardewModdingAPI;
 using StardewValley.TerrainFeatures;
@@ -9,7 +10,6 @@ using System.Linq;
 using StardewValley.Monsters;
 using TwilightShards.Common;
 using TwilightShards.Stardew.Common;
-using System;
 
 namespace TwilightShards.LunarDisturbances
 {
@@ -26,8 +26,11 @@ namespace TwilightShards.LunarDisturbances
 
         //chances for various things
         public Color BloodMoonWater = Color.Red * 0.8f;
-
+        private readonly IMonitor Monitor;
+        internal float EclipseMods;
         internal LunarInfo MoonTracker;
+
+        internal bool IsEclipse;
 
         private bool IsSuperMoon; //a relative of superman
         private bool IsBlueMoon;
@@ -38,10 +41,11 @@ namespace TwilightShards.LunarDisturbances
         internal readonly int[] beachItems = new int[] { 393, 397, 392, 394 };
         internal readonly int[] moonBeachItems = new int[] { 393, 394, 560, 586, 587, 589, 397 };
 
-        public SDVMoon(MoonConfig config, MersenneTwister rng, ITranslationHelper Trans)
+        public SDVMoon(MoonConfig config, MersenneTwister rng, ITranslationHelper Trans, IMonitor Logger)
         {
             Dice = rng;
             ModConfig = config;
+            Monitor = Logger;
             IsBloodMoon = false;
             IsSuperMoon = false;
             IsBlueMoon = false;
@@ -58,17 +62,6 @@ namespace TwilightShards.LunarDisturbances
 
             if (CurrentPhase() == MoonPhase.FullMoon || CurrentPhase() == MoonPhase.BloodMoon)
             {
-                if (MoonTracker.FullMoonThisSeason)
-                {
-                    IsBlueMoon = true;
-                    Game1.addHUDMessage(new TCHUDMessage(Translations.Get("moon-text.bluemoon"), CurrentPhase()));
-                    Game1.player.team.sharedDailyLuck.Value += .025;
-                }
-                else
-                {
-                    MoonTracker.FullMoonThisSeason = true;
-                }
-
                 if (Game1.currentSeason == "fall")
                 {
                     if (Game1.dayOfMonth - GetMoonCycleLength < 1)
@@ -89,6 +82,44 @@ namespace TwilightShards.LunarDisturbances
                 IsSuperMoon = true;
                 Game1.addHUDMessage(new TCHUDMessage(Translations.Get("moon-text.supermoon"), CurrentPhase()));
             }
+
+            if (MoonTracker is null)
+            {
+                Monitor.Log("Error: Moon Tracker is null", LogLevel.Info);
+            }
+            else
+            {
+                if (MoonTracker.FullMoonThisSeason && CurrentPhase() == MoonPhase.FullMoon || CurrentPhase() == MoonPhase.BloodMoon)
+                {
+                    IsBlueMoon = true;
+                    Game1.addHUDMessage(new TCHUDMessage(Translations.Get("moon-text.bluemoon"), CurrentPhase()));
+                    Game1.player.team.sharedDailyLuck.Value += .025;
+                }
+                else
+                {
+                    MoonTracker.FullMoonThisSeason = true;
+                }
+            }
+
+            if (!(MoonTracker is null))
+                MoonTracker.IsEclipseTomorrow = SetEclipseTomorrow();
+            else
+            {
+                Monitor.Log("MoonTracker is null! Eclipse tomorrow not set", LogLevel.Error);
+            }
+        }
+
+        public void TurnEclipseOn()
+        {
+            Monitor.Log("Turning the eclipse on!");
+            IsEclipse = true;
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
+        public void TurnEclipseOn(string arg1, string[] arg2)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            TurnEclipseOn();
         }
 
         public float GetBrightnessQuotient()
@@ -127,6 +158,7 @@ namespace TwilightShards.LunarDisturbances
             IsBlueMoon = false;
             IsHarvestMoon = false;
             IsSuperMoon = false;
+            IsEclipse = false;
         }
 
         public override string ToString()
@@ -179,8 +211,24 @@ namespace TwilightShards.LunarDisturbances
             return Today.DaysSinceStart % GetMoonCycleLength;
         }
 
+        private bool SetEclipseTomorrow()
+        {
+            bool validEclipseDate = (SDate.Now().DaysSinceStart > 2 && !Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason));
+            bool validEclipsePhase = (this.CurrentPhase() == MoonPhase.NewMoon);
+                    
+            if (validEclipsePhase && validEclipseDate)
+            {
+                if (Dice.NextDouble() < (ModConfig.EclipseChance + EclipseMods))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
-        /// This function returns the lunar phase for an arbitary day.
+        /// This function returns the lunar phase for an arbitrary day.
         /// </summary>
         /// <param name="Today">The day you are examining for.</param>
         /// <returns></returns>
@@ -318,28 +366,25 @@ namespace TwilightShards.LunarDisturbances
 
             if (CurrentPhase() == MoonPhase.NewMoon && ModConfig.HazardousMoonEvents)
             {
-                if (f != null)
+                foreach (KeyValuePair<Vector2, TerrainFeature> TF in f.terrainFeatures.Pairs)
                 {
-                    foreach (KeyValuePair<Vector2, TerrainFeature> TF in f.terrainFeatures.Pairs)
+                    double diceRoll = ModConfig.CropHaltChance;
+
+                    if (IsSuperMoon)
+                        diceRoll *= 2;
+
+                    if (TF.Value is HoeDirt current && current.crop != null)
                     {
-                        double diceRoll = ModConfig.CropHaltChance;
-
-                        if (IsSuperMoon)
-                            diceRoll *= 2;
-
-                        if (TF.Value is HoeDirt curr && curr.crop != null)
+                        if (Dice.NextDouble() < diceRoll)
                         {
-                            if (Dice.NextDouble() < diceRoll)
-                            {
-                                //SDVUtilities.DeAdvanceCrop(f, curr, TF.Key, 1);
-                                curr.state.Value = 0;
-                                cropsAffected++;
-                                if (ModConfig.Verbose)
-                                    Logger.Log($"Deadvancing crop at {TF.Key}", LogLevel.Trace);
-                            }
+                            SDVUtilities.DeAdvanceCrop(f, current, TF.Key, 1, Logger);
+                            current.state.Value = 0;
+                            cropsAffected++;
+                            if (ModConfig.Verbose)
+                                Logger.Log($"Deadvancing crop at {TF.Key}", LogLevel.Trace);
                         }
                     }
-                }                
+                }
 
                 return cropsAffected;
             }        
@@ -401,7 +446,7 @@ namespace TwilightShards.LunarDisturbances
             if (Game1.timeOfDay < GetMoonRiseTime() || Game1.timeOfDay > GetMoonSetTime())
                 return 0f;
 
-            return (timeSinceRise / moonDuration);            
+            return timeSinceRise / moonDuration;            
         }
 
         public int GetMoonZenith()
@@ -410,6 +455,11 @@ namespace TwilightShards.LunarDisturbances
             SDVTime mr = new SDVTime(GetMoonRiseTime());
             mr.AddTime(moonDuration / 2);
             return mr.ReturnIntTime();
+        }
+
+        public void DayEnding()
+        {
+            IsEclipse = false;
         }
 
         public void HandleMoonAfterWake()
@@ -490,6 +540,8 @@ namespace TwilightShards.LunarDisturbances
                 if (itemsChanged > 0)
                     Game1.addHUDMessage(new HUDMessage(Translations.Get("moon-text.hud_message_full")));
             }
+
+            //check for eclipse tomorrow.
         }
 
         public string SimpleMoonPhase()
@@ -658,6 +710,20 @@ namespace TwilightShards.LunarDisturbances
 			}
 			
             return false;
+        }
+
+        public void MoonTrackerUpdate()
+        {
+            if (MoonTracker.FullMoonThisSeason && this.CurrentPhase() == MoonPhase.FullMoon)
+            {
+                IsBlueMoon = true;
+                Game1.addHUDMessage(new TCHUDMessage(Translations.Get("moon-text.bluemoon"), CurrentPhase()));
+                Game1.player.team.sharedDailyLuck.Value += .025;
+            }
+            else
+            {
+                MoonTracker.FullMoonThisSeason = true;
+            }
         }
     }
 }

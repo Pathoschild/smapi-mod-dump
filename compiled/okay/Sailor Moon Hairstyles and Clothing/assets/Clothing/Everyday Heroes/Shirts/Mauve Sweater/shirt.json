@@ -3,5 +3,11 @@
     "Description": "A purple sweater topped with a cute bow.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Jersey Malva"
+    },
+    "DescriptionLocalization": {
+        "es": "Un suéter morado con un lindo lazo."
+    }
 }

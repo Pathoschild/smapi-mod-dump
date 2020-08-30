@@ -6,21 +6,25 @@ This document helps mod authors update their content packs for newer versions of
 
 ## Contents
 * [FAQs](#faqs)
-  * [Does this affect me as a player?](#does-this-affect-me-as-a-player)
-  * [Are Content Patcher updates backwards-compatible?](#are-content-patcher-updates-backwards-compatible)
-  * [So I never need to update my content packs?](#so-i-never-need-to-update-my-content-packs)
-  * [How do I update my content pack?](#how-do-i-update-my-content-pack)
 * [Migration guides](#migration-guides)
+  * [1.17](#117)
   * [1.15](#115)
   * [1.7](#17)
   * [1.6](#16)
 * [See also](#see-also)
 
 ## FAQs
-### Does this affect me as a player?
-No, this guide is only for content pack authors. Existing content packs should work fine.
+<dl>
+<dt>Does this affect me as a player?</dt>
+<dd>
 
-### Are Content Patcher updates backwards-compatible?
+No, this is only for content pack authors. Existing content packs should work fine.
+
+</dd>
+
+<dt>Are Content Patcher updates backwards-compatible?</dt>
+<dd>
+
 Yep; even content packs written for Content Patcher 1.0 still work in the latest versions.
 
 Content Patcher updates rarely have breaking changes, but the [`Format` field in your
@@ -29,7 +33,11 @@ version of Content Patcher loads your content pack, it internally migrates your 
 the latest format (without changing the actual files). Content Patcher itself no longer supports
 older formats, but your content pack is just changed to use the latest one.
 
-### So I never need to update my content packs?
+</dd>
+
+<dt>So I never need to update my content packs?</dt>
+<dd>
+
 Technically you don't need to (aside from game changes), but **updating your `Format` version when
 you update the content pack is strongly encouraged**.
 
@@ -43,16 +51,37 @@ Using an old `Format` version has major disadvantages:
   `"Format": "1.0"` has over a dozen automated migrations applied, which increases the chance that
   something will be migrated incorrectly and increases startup time.)
 
-### How do I update my content pack?
+</dd>
+
+<dt>How do I update my content pack?</dt>
+<dd>
+
 Just set the `Format` field to the latest version shown in the [author guide](author-guide.md),
 then review the sections below for any changes you need to make. If a version isn't listed on this
 page, there's nothing else to change for that version.
 
 Feel free to [ask on Discord](https://smapi.io/community#Discord) if you need help!
 
+</dd>
+</dl>
+
 ## Migration guides
 These changes only apply when you set the `Format` version in your `content.json` to the listed
 version or higher. See [release notes](../release-notes.md) for a full list of changes.
+
+### 1.17
+Released 16 August 2020.
+
+* **Patch updates on location change:** using `LocationName` or `IsOutdoors` as a condition/token
+  no longer automatically updates the patch when the player changes location. You can add this
+  patch field to enable that:
+
+  ```js
+  "Update": "OnLocationChange"
+  ```
+
+  (This is part of the migration to realtime content updates, since all tokens will soon update
+  live.)
 
 ### 1.15
 Released 04 July 2020.

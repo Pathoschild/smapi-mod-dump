@@ -1,0 +1,7 @@
+[submodule "ImeSharp"]
+	path = ImeSharp
+	url = https://github.com/Windmill-City/ImeSharp_libtf.git
+	branch = master
+[submodule "bsdiff.net"]
+	path = bsdiff.net
+	url = https://github.com/Windmill-City/bsdiff.net.git

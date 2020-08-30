@@ -3,5 +3,11 @@
     "Description": "A light jacket over a soft pink dress. It needs the lower half.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Vestido Rosa y Chaqueta"
+    },
+    "DescriptionLocalization": {
+        "es": "Una chaqueta ligera sobre un vestido rosa suave. Necesita la mitad inferior."
+    }
 }

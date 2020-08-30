@@ -24,7 +24,7 @@ namespace FarmTypeManager
         /// <summary>Loads and respawns custom entities after a mid-day save event.</summary>
         private void AfterMidDaySave()
         {
-            Monitor.Log($"Mid-day save event ended. Restoring custom objects/data.", LogLevel.Trace);
+            Utility.Monitor.Log($"Mid-day save event ended. Restoring custom objects/data.", LogLevel.Trace);
 
             //note: do not clear Utility.TimedSpawns here; that should only happen when in the DayStarted event, which currently happens whenever saves are loaded (even "mid-day" ones)
 
@@ -34,11 +34,11 @@ namespace FarmTypeManager
             {
                 if (data.Pack != null) //if this data is from a content pack
                 {
-                    Monitor.VerboseLog($"Checking objects from content pack: {data.Pack.Manifest.Name}");
+                    Utility.Monitor.VerboseLog($"Checking objects from content pack: {data.Pack.Manifest.Name}");
                 }
                 else //this data is from this mod's own folders
                 {
-                    Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
+                    Utility.Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
                 }
 
                 Utility.ReplaceProtectedSpawns(data.Save); //protect unexpired spawns listed in the save data

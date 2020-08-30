@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewModdingAPI;
@@ -92,9 +93,11 @@ namespace StardewNotification
             //var counter = new Dictionary<string, Pair<StardewValley.TerrainFeatures.HoeDirt, int>>();
             foreach (var pair in greenhouse.terrainFeatures.Pairs)
             {
+                Console.Write($"Investigating {pair.Key} and {pair.Value.ToString()}");
                 if (pair.Value is StardewValley.TerrainFeatures.HoeDirt hoeDirt)
                 {
                     if (!hoeDirt.readyForHarvest()) continue;
+                    Console.Write($"This is ready for harvest: {hoeDirt.crop}");
                     Util.ShowMessage(Trans.Get("greenhouse_crops"));
                     break;
                 }

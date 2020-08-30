@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/SurfingFestival.git
+
+mods:
+   Surfing Festival
+
+latest commit:
+   commit b8ea12ae34e29caa4d3b4b0cbe3cc2e69d663eae
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sat Aug 22 16:00:36 2020 -0400
+   
+       Initial commit
+   

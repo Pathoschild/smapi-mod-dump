@@ -5,9 +5,9 @@ mods:
    SpaceCore
 
 latest commit:
-   commit eb60949fef897c8677eabfb36f55edfd5a2dec12
+   commit bfc4c049c630a7a862a770fe40aabdb56a197762
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Wed Jun 17 13:09:32 2020 -0400
+   Date:   Sun Aug 16 21:03:27 2020 -0400
    
-       Hide that silly error for now
+       1.4.0
    

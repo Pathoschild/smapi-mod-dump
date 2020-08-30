@@ -3,9 +3,8 @@
   <PropertyGroup>
     <RootNamespace>YouShouldRest</RootNamespace>
     <AssemblyName>YouShouldRest</AssemblyName>
-    <Version>1.1.0-beta.1</Version>
+    <Version>1.1.0-beta.2</Version>
     <TargetFramework>net452</TargetFramework>
-    <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

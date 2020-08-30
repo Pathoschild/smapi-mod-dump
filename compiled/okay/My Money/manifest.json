@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MyMoney",
+  "Author": "Marcos Brendon",
+  "Version": "1.0.0",
+  "Description": "give my money",
+  "UniqueID": "marcos.mymoney",
+  "EntryDll": "MyMoney.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

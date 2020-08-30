@@ -23,7 +23,7 @@ namespace CustomizableTravelingCart
 
         internal void InvokeCartProcessingComplete()
         {
-            CustomizableCartRedux.Logger.Log("Event: CartProcessingComplete", LogLevel.Trace);
+            //CustomizableCartRedux.Logger.Log("Event: CartProcessingComplete", LogLevel.Trace);
             if (CartProcessingComplete == null)
                 return;
             Util.invokeEvent("CustomizableCartAPI.CartProcessingComplete", CartProcessingComplete.GetInvocationList(), null);

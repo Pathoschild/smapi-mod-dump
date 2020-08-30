@@ -82,6 +82,36 @@ namespace AngryGrandpa
         }
         private bool _expressivePortraits; // Initialize this one in the constructor
 
+        /// <summary>Changes the dialogue used during evaluation and re-evaluation events.</summary>
+        public string PortraitStyle
+        {
+            get { return _portraitStyle; }
+            set
+            {
+                if (PortraitStyleChoices.Contains(value)) _portraitStyle = value;
+                else if (PortraitStyleDefault == value.ToLower())
+                {
+                    _portraitStyle = PortraitStyleDefault;
+                }
+                else
+                {
+                    string fallback = PortraitStyleDefault;
+                    _portraitStyle = fallback;
+                    Monitor.Log(i18n.Get(
+                        "PortraitStyle.error",
+                        new
+                        {
+                            value,
+                            listPortraitStyleChoices = string.Join(", ", PortraitStyleChoices),
+                            fallback
+                        }), LogLevel.Warn);
+                }
+            }
+        }
+        private static readonly string[] PortraitStyleChoices = new string[] { "auto", "Vanilla", "Poltergeister" };
+        internal static readonly string PortraitStyleDefault = PortraitStyleChoices[0]; // Default to "auto"
+        private string _portraitStyle = PortraitStyleDefault;
+        
         /// <summary>Changes how points are scored and how many are required to earn 4 candles.</summary>
         public string ScoringSystem
         {
@@ -304,6 +334,13 @@ namespace AngryGrandpa
                 i18n.Get("ExpressivePortraits.description"),
                 () => Instance.ExpressivePortraits,
                 (bool val) => Instance.ExpressivePortraits = val);
+
+            api.RegisterChoiceOption(manifest,
+                i18n.Get("PortraitStyle.name"),
+                i18n.Get("PortraitStyle.description", new { NL }),
+                () => Instance.PortraitStyle,
+                (string val) => Instance.PortraitStyle = val,
+                ModConfig.PortraitStyleChoices);
 
             api.RegisterLabel(manifest, "", "");
             api.RegisterLabel(manifest, i18n.Get("ScoringOptions.title"), "");

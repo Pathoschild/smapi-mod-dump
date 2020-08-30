@@ -1,8 +1,14 @@
 {
-  "Name": "Sakura Kimono Orange Upper",
-  "Description": "An orange kimono, upper half.",
-  "HasFemaleVariant": false,
-  "Price": 50,
-  "Dyeable": false,
-  "DefaultColor": "255, 255, 255, 255"
+    "Name": "Sakura Kimono Orange Upper",
+    "Description": "An orange kimono, upper half.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "DefaultColor": "255, 255, 255, 255",
+    "NameLocalization": {
+        "es": "Kimono Sakura Naranja Superior"
+    },
+    "DescriptionLocalization": {
+        "es": "Un kimono naranja, mitad superior."
+    }
 }

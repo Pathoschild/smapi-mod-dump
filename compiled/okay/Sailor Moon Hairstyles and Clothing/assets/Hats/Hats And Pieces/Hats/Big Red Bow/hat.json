@@ -1,0 +1,13 @@
+{
+    "Name": "Big Red Bow",
+    "Description": "Minako's red bow. A big, red ribbon is best.",
+    "PurchasePrice": "150",
+    "ShowHair": true,
+    "IgnoreHairstyleOffset": true,
+    "NameLocalization": {
+        "es": "Gran Lazo Rojo"
+    },
+    "DescriptionLocalization": {
+        "es": "El lazo rojo de Minako. Una cinta grande y roja es lo mejor."
+    }
+}

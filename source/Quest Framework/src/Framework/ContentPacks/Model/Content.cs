@@ -13,7 +13,7 @@ namespace QuestFramework.Framework.ContentPacks.Model
     {
         public ISemanticVersion Format { get; set; }
 
-        public List<Quest> Quests { get; set; }
+        public List<QuestData> Quests { get; set; }
         public List<QuestOffer<JObject>> Offers { get; set; } = new List<QuestOffer<JObject>>();
 
         internal IContentPack owner { get; set; }

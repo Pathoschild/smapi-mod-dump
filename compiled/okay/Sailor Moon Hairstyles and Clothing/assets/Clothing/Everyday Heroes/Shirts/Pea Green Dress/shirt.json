@@ -4,5 +4,11 @@
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless"
+    "Metadata": "Sleeveless",
+    "NameLocalization": {
+        "es": "Vestido Verde Guisante"
+    },
+    "DescriptionLocalization": {
+        "es": "Un top de vestido verde brillante. Se vería tonto sin la mitad inferior."
+    }
 }

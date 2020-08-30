@@ -6,22 +6,25 @@ mods:
    Change Slime Hutch Limit
    Custom Crafting Stations
    Customize Anywhere
+   Expanded Preconditions Utility
    Farm Rearranger
    Hay Bales as Silos
    Limited Campfire Cooking
    Multi Yield Crops
+   Multiplayer Mod Checker
    Platonic Relationships
    Profit Margins
    Shop Tile Framework
    Snack Anything
+   Stardew Aquarium Code
+   Tool Upgrade Costs
    Train Station
    Upgrade Empty Cabins
 
 latest commit:
-   commit 2b37921144870a808be86483616f5f8bf9cf2409
-   Merge: 68ace15 03adf99
-   Author: Yiminxue Zheng <yiminxuezheng@gmail.com>
-   Date:   Mon Jul 6 20:34:18 2020 -0400
+   commit b4efc381ea8b7f8ab88b3f29203a2b5aa221f050
+   Author: Yiminxue Zheng <33401364+ChroniclerCherry@users.noreply.github.com>
+   Date:   Wed Aug 5 14:03:09 2020 -0400
    
-       Merge branch 'Develop'
+       Update README.md
    

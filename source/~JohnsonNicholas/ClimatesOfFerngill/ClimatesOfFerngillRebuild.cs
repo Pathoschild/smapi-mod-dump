@@ -180,7 +180,8 @@ namespace ClimatesOfFerngillRebuild
             events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
             events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
             events.GameLoop.SaveLoaded += OnSaveLoaded;
-            events.Display.RenderingHud += OnRenderingHud;
+            events.Display.RenderedWorld += Display_RenderedWorld;
+            //events.Display.RenderingHud += OnRenderingHud;
             events.Display.RenderedHud += OnRenderedHud;
             events.Input.ButtonPressed += OnButtonPressed;
             events.Multiplayer.ModMessageReceived += OnModMessageRecieved;
@@ -203,6 +204,34 @@ namespace ClimatesOfFerngillRebuild
                 .Add("debug_resetwind", "Reset Global Wind", ConsoleCommands.ResetGlobalWind)
             */
                 .Add("debug_printClimate", "Print Climate Tracker Data", ConsoleCommands.DisplayClimateTrackerData);
+        }
+
+        private void Display_RenderedWorld(object sender, RenderedWorldEventArgs e)
+        {
+            if (!Context.IsWorldReady)
+                return;
+
+            if (Game1.currentLocation.IsOutdoors)
+                Conditions.DrawWeathers();
+
+            if (Game1.isRaining && Game1.currentLocation.IsOutdoors && (Game1.currentLocation is Summit) && !SummitRebornLoaded &&
+                (!Game1.eventUp || Game1.currentLocation.isTileOnMap(new Vector2((float)(Game1.viewport.X / Game1.tileSize), (float)(Game1.viewport.Y / Game1.tileSize)))))
+            {
+                for (int index = 0; index < Game1.rainDrops.Length; ++index)
+                {
+                    Game1.spriteBatch.Draw(Game1.rainTexture, Game1.rainDrops[index].position, new Microsoft.Xna.Framework.Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.rainTexture, Game1.rainDrops[index].frame, -1, -1)), Color.White);
+                }
+
+                if (WeatherOpt.ShowSummitClouds)
+                {
+                    int num2 = -61 * GetPixelZoom();
+                    while (num2 < Game1.viewport.Width + 61 * GetPixelZoom())
+                    {
+                        Game1.spriteBatch.Draw(Game1.mouseCursors, new Vector2((float)num2 + this.weatherX % (float)(61 * GetPixelZoom()), (float)(-Game1.tileSize / 2)), new Rectangle?(new Rectangle(643, 1142, 61, 53)), Color.DarkSlateGray * 1f, 0.0f, Vector2.Zero, (float)GetPixelZoom(), SpriteEffects.None, 1f);
+                        num2 += 61 * GetPixelZoom();
+                    }
+                }
+            }
         }
 
         public static float WindOverrideSpeed = 0f;
@@ -350,7 +379,7 @@ namespace ClimatesOfFerngillRebuild
                 this.PreviousMenu = null;
             }
 
-            // bandle new dialogue box
+            // handle new dialogue box
             else if (e.NewMenu is DialogueBox box)
             {
                 double odds = Dice.NextDoublePositive(), stormOdds = GameClimate.GetStormOdds(SDate.Now().AddDays(1), Dice);

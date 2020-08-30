@@ -1,11 +1,14 @@
 ﻿using Harmony;
 using PurrplingCore.Patching;
 using QuestFramework.Framework;
+using QuestFramework.Framework.Events;
 using QuestFramework.Framework.Quests;
 using QuestFramework.Quests;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Quests;
 using System;
+using System.Collections.Generic;
 
 namespace QuestFramework.Patches
 {
@@ -14,10 +17,14 @@ namespace QuestFramework.Patches
         public override string Name => nameof(QuestPatch);
 
         QuestManager QuestManager { get; }
+        EventManager EventManager { get; }
+        HashSet<Quest> QuestCheckerLock { get; }
 
-        public QuestPatch(QuestManager questManager)
+        public QuestPatch(QuestManager questManager, EventManager eventManager)
         {
             this.QuestManager = questManager;
+            this.EventManager = eventManager;
+            this.QuestCheckerLock = new HashSet<Quest>();
             Instance = this;
         }
 
@@ -25,15 +32,18 @@ namespace QuestFramework.Patches
         {
             try
             {
-                var manager = QuestFrameworkMod.Instance.QuestManager;
-                var customQuest = manager.GetById(id);
+                var customQuest = Instance.QuestManager.GetById(id);
 
                 if (__result != null && customQuest != null)
                 {
-                    if (customQuest.BaseType == QuestType.Monster)
+                    if (customQuest.BaseType == QuestType.Monster && __result is SlayMonsterQuest)
                     {
+                        // This is fix for use custom dialogue text for slay monster quest type
                         (__result as SlayMonsterQuest).dialogueparts.Clear();
                     }
+
+                    if (!Game1.player.hasQuest(id))
+                        customQuest.Reset();
 
                     __result.dailyQuest.Value = customQuest.IsDailyQuest();
                     __result.daysLeft.Value = customQuest.DaysLeft;
@@ -91,22 +101,18 @@ namespace QuestFramework.Patches
         {
             try
             {
+                if (!__instance.completed.Value || __instance.completed.Value == __state)
+                    return; // Do nothing if completion status wasn't changed or completion status is false
+
                 var managedQuest = Instance.QuestManager.GetById(__instance.id.Value);
 
-                if (managedQuest == null || __instance.completed.Value == __state)
-                    return; // Do nothing if it's not managed quest or completion status wasn't changed
-
-                if (managedQuest is IQuestObserver observer)
+                if (managedQuest == null)
                 {
-                    observer.Completed(
-                        new QuestInfo(__instance, Game1.player));
+                    Instance.EventManager.QuestCompleted.Fire(new Events.QuestEventArgs(__instance), Instance);
+                    return; // Only fire global uest completed event if quest is unmanaged
                 }
 
-                if (managedQuest is IStatefull statefullManagedQuest)
-                {
-                    // Reset to the inital state if the quest is completed
-                    statefullManagedQuest.ResetState();
-                }
+                managedQuest.Complete(new QuestInfo(__instance, Game1.player));
 
                 if (managedQuest.NextQuests?.Count > 0)
                 {
@@ -116,8 +122,8 @@ namespace QuestFramework.Patches
                     }
                 }
 
-                Instance.Monitor.Log($"Quest `{managedQuest.GetFullName()}` #{__instance.id.Value} completed!"); 
-
+                Instance.EventManager.QuestCompleted.Fire(new Events.QuestEventArgs(__instance), Instance);
+                Instance.Monitor.Log($"Quest `{managedQuest.GetFullName()}` #{__instance.id.Value} completed!");
             }
             catch (Exception e)
             {
@@ -153,30 +159,35 @@ namespace QuestFramework.Patches
         {
             try
             {
+                if (Instance.QuestCheckerLock.Contains(__instance))
+                    return true; // Always call only the original method for locked quests
+
                 var managedQuest = Instance.QuestManager.GetById(__instance.id.Value);
 
-                if (managedQuest == null || !(managedQuest is IQuestObserver))
+                if (managedQuest is IQuestObserver observer)
                 {
-                    // It's vanilla quest, unmanaged quest or managed quest without observer. 
-                    // We call the original method
-                    return true;
+                    Instance.QuestCheckerLock.Add(__instance);
+                    var goingComplete = observer.CheckIfComplete(
+                        new QuestInfo(__instance, Game1.player),
+                        new CompletionArgs(n, number1, number2, item, str));
+
+                    if (goingComplete && !__instance.completed.Value)
+                        __instance.questComplete();
+
+                    __result = goingComplete;
+                    Instance.QuestCheckerLock.Remove(__instance);
+
+                    // For observed managed quest we don't call the original method Quest.checkIfComplete
+                    return false;
                 }
 
-                var goingComplete = (managedQuest as IQuestObserver).CheckIfComplete(
-                    new QuestInfo(__instance, Game1.player),
-                    new CompletionArgs(n, number1, number2, item, str));
-
-                if (goingComplete.HasValue && goingComplete.Value && !__instance.completed.Value)
-                    __instance.questComplete();
-
-                if (goingComplete.HasValue)
-                    __result = goingComplete.Value;
-
-                return !goingComplete.HasValue;
+                return true;
 
             } catch (Exception e)
             {
                 Instance.LogFailure(e, nameof(Before_checkIfComplete));
+                Instance.QuestCheckerLock.Remove(__instance);
+
                 return true;
             }
         }

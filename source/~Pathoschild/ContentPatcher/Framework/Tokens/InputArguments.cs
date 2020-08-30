@@ -31,8 +31,14 @@ namespace ContentPatcher.Framework.Tokens
         /****
         ** State
         ****/
+        /// <summary>The last raw value that was parsed.</summary>
+        private string LastRawValue = null;
+
         /// <summary>The last tokenisable value that was parsed.</summary>
         private string LastParsedValue = null;
+
+        /// <summary>The raw input argument segment containing positional arguments, after parsing tokens but before splitting into individual arguments.</summary>
+        private string PositionalSegment;
 
         /// <summary>The backing field for <see cref="PositionalArgs"/>.</summary>
         private string[] PositionalArgsImpl = new string[0];
@@ -48,7 +54,7 @@ namespace ContentPatcher.Framework.Tokens
         ** Accessors
         *********/
         /// <summary>A singleton instance representing zero input arguments.</summary>
-        public static IInputArguments Empty { get; } = new InputArguments(new LiteralString(string.Empty));
+        public static IInputArguments Empty { get; } = new InputArguments(new LiteralString(string.Empty, new LogPathBuilder()));
 
         /****
         ** Values
@@ -75,7 +81,10 @@ namespace ContentPatcher.Framework.Tokens
         public bool HasPositionalArgs => this.PositionalArgs.Any();
 
         /// <inheritdoc />
-        public bool IsMutable => this.TokenString.IsMutable;
+        public bool IsMutable => this.TokenString?.IsMutable ?? false;
+
+        /// <inheritdoc />
+        public bool IsReady => this.TokenString?.IsReady ?? false;
 
 
         /*********
@@ -94,6 +103,21 @@ namespace ContentPatcher.Framework.Tokens
             return this.PositionalArgs.FirstOrDefault();
         }
 
+        /// <summary>Get the raw value for a named argument, if any.</summary>
+        /// <param name="key">The argument name.</param>
+        public string GetRawArgumentValue(string key)
+        {
+            return this.NamedArgs.TryGetValue(key, out IInputArgumentValue value)
+                ? value.Raw
+                : null;
+        }
+
+        /// <inheritdoc />
+        public string GetPositionalSegment()
+        {
+            return this.PositionalSegment;
+        }
+
 
         /*********
         ** Private methods
@@ -101,10 +125,11 @@ namespace ContentPatcher.Framework.Tokens
         /// <summary>Parse the underlying token string if it's not already parsed.</summary>
         private InputArguments ParseIfNeeded()
         {
-            if (this.LastParsedValue != this.TokenString?.Value)
+            if (this.LastParsedValue != this.TokenString?.Value || this.LastRawValue != this.TokenString?.Raw)
             {
-                InputArguments.Parse(this.TokenString, out this.PositionalArgsImpl, out this.NamedArgsImpl, out this.ReservedArgsImpl);
+                InputArguments.Parse(this.TokenString, out this.PositionalSegment, out this.PositionalArgsImpl, out this.NamedArgsImpl, out this.ReservedArgsImpl);
                 this.LastParsedValue = this.TokenString?.Value;
+                this.LastRawValue = this.TokenString?.Raw;
             }
 
             return this;
@@ -112,19 +137,20 @@ namespace ContentPatcher.Framework.Tokens
 
         /// <summary>Parse arguments from a tokenised string.</summary>
         /// <param name="input">The tokenised string to parse.</param>
+        /// <param name="positionalSegment">The raw input argument segment containing positional arguments, after parsing tokens but before splitting into individual arguments.</param>
         /// <param name="positionalArgs">The positional arguments.</param>
         /// <param name="namedArgs">The named arguments.</param>
         /// <param name="reservedArgs">The named arguments handled by Content Patcher.</param>
-        private static void Parse(ITokenString input, out string[] positionalArgs, out IDictionary<string, IInputArgumentValue> namedArgs, out IDictionary<string, IInputArgumentValue> reservedArgs)
+        private static void Parse(ITokenString input, out string positionalSegment, out string[] positionalArgs, out IDictionary<string, IInputArgumentValue> namedArgs, out IDictionary<string, IInputArgumentValue> reservedArgs)
         {
-            InputArguments.GetRawArguments(input, out string rawPositionalArgs, out InvariantDictionary<string> rawNamedArgs);
+            InputArguments.GetRawArguments(input, out positionalSegment, out InvariantDictionary<string> rawNamedArgs);
 
             // get value separator
             if (!rawNamedArgs.TryGetValue(InputArguments.InputSeparatorKey, out string inputSeparator) || string.IsNullOrWhiteSpace(inputSeparator))
                 inputSeparator = ",";
 
             // parse arguments
-            positionalArgs = rawPositionalArgs.SplitValuesNonUnique(inputSeparator).ToArray();
+            positionalArgs = positionalSegment.SplitValuesNonUnique(inputSeparator).ToArray();
             namedArgs = new InvariantDictionary<IInputArgumentValue>();
             reservedArgs = new InvariantDictionary<IInputArgumentValue>();
             foreach (var arg in rawNamedArgs)
@@ -146,8 +172,9 @@ namespace ContentPatcher.Framework.Tokens
         {
             // get token text
             string raw = input?.IsReady == true
-                ? input.Value?.Trim() ?? string.Empty
-                : string.Empty;
+                ? input.Value
+                : input?.Raw;
+            raw = raw?.Trim() ?? string.Empty;
 
             // split into positional and named segments
             string positionalSegment;

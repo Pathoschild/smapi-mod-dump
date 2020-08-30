@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>6126b448-b95c-4e13-b35e-bf73ecb5b964</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>CustomSpouseNicknames</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)promo\nexus_description.txt" />
+    <Content Include="$(MSBuildThisFileDirectory)[CP] Custom Spouse Nicknames\content.json" />
+    <Content Include="$(MSBuildThisFileDirectory)[CP] Custom Spouse Nicknames\manifest.json" />
+  </ItemGroup>
+</Project>

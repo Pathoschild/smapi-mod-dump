@@ -35,18 +35,30 @@ namespace ContentPatcher.Framework.Patches
         ** Public methods
         *********/
         /// <summary>Construct an instance.</summary>
-        /// <param name="logName">A unique name for this patch shown in log messages.</param>
-        /// <param name="contentPack">The content pack which requested the patch.</param>
+        /// <param name="path">The path to the patch from the root content file.</param>
         /// <param name="assetName">The normalized asset name to intercept.</param>
         /// <param name="conditions">The conditions which determine whether this patch should be applied.</param>
         /// <param name="fromAsset">The asset key to load from the content pack instead.</param>
         /// <param name="fromArea">The sprite area from which to read an image.</param>
         /// <param name="toArea">The sprite area to overwrite.</param>
         /// <param name="patchMode">Indicates how the image should be patched.</param>
+        /// <param name="updateRate">When the patch should be updated.</param>
+        /// <param name="contentPack">The content pack which requested the patch.</param>
+        /// <param name="parentPatch">The parent patch for which this patch was loaded, if any.</param>
         /// <param name="monitor">Encapsulates monitoring and logging.</param>
         /// <param name="normalizeAssetName">Normalize an asset name.</param>
-        public EditImagePatch(string logName, ManagedContentPack contentPack, IManagedTokenString assetName, IEnumerable<Condition> conditions, IManagedTokenString fromAsset, TokenRectangle fromArea, TokenRectangle toArea, PatchMode patchMode, IMonitor monitor, Func<string, string> normalizeAssetName)
-            : base(logName, PatchType.EditImage, contentPack, assetName, conditions, normalizeAssetName, fromAsset: fromAsset)
+        public EditImagePatch(LogPathBuilder path, IManagedTokenString assetName, IEnumerable<Condition> conditions, IManagedTokenString fromAsset, TokenRectangle fromArea, TokenRectangle toArea, PatchMode patchMode, UpdateRate updateRate, ManagedContentPack contentPack, IPatch parentPatch, IMonitor monitor, Func<string, string> normalizeAssetName)
+            : base(
+                path: path,
+                type: PatchType.EditImage,
+                assetName: assetName,
+                conditions: conditions,
+                normalizeAssetName: normalizeAssetName,
+                fromAsset: fromAsset,
+                updateRate: updateRate,
+                contentPack: contentPack,
+                parentPatch: parentPatch
+            )
         {
             this.FromArea = fromArea;
             this.ToArea = toArea;
@@ -58,12 +70,10 @@ namespace ContentPatcher.Framework.Patches
                 .Add(toArea);
         }
 
-        /// <summary>Apply the patch to a loaded asset.</summary>
-        /// <typeparam name="T">The asset type.</typeparam>
-        /// <param name="asset">The asset to edit.</param>
+        /// <inheritdoc />
         public override void Edit<T>(IAssetData asset)
         {
-            string errorPrefix = $"Can't apply image patch \"{this.LogName}\" to {this.TargetAsset}";
+            string errorPrefix = $"Can't apply image patch \"{this.Path}\" to {this.TargetAsset}";
 
             // validate
             if (typeof(T) != typeof(Texture2D))
@@ -122,7 +132,7 @@ namespace ContentPatcher.Framework.Patches
             editor.PatchImage(source, sourceArea, targetArea, this.PatchMode);
         }
 
-        /// <summary>Get a human-readable list of changes applied to the asset for display when troubleshooting.</summary>
+        /// <inheritdoc />
         public override IEnumerable<string> GetChangeLabels()
         {
             if (this.ResizedLastImage)

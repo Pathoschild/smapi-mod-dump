@@ -1,15 +1,18 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using TwilightShards.Common;
 using SpaceCore;
+using SpaceCore.Events;
 using TwilightShards.Stardew.Common;
 
 namespace TwilightShards.WeatherIllnesses
 {
-    public class WeatherIllnesses : Mod
+    public class WeatherIllnesses : Mod, IAssetEditor
     {
         private IllnessConfig IllnessConfig { get; set; }
         private MersenneTwister Dice { get; set; }
@@ -18,10 +21,9 @@ namespace TwilightShards.WeatherIllnesses
         private int TicksOutside;
         private int TicksTotal;
         private int TicksInLocation;
-        private int TimeInBathHouse = 0;
 
-        private bool UseClimates = false;
-        private Integrations.IClimatesOfFerngillAPI climatesAPI;
+        internal static bool UseClimates = false;
+        internal static Integrations.IClimatesOfFerngillAPI climatesAPI;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -37,12 +39,50 @@ namespace TwilightShards.WeatherIllnesses
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.TimeChanged += OnTimeChanged;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            SpaceCore.Events.SpaceEvents.OnItemEaten += OnItemEaten;
+
+            SpaceEvents.TouchActionActivated += TouchActionActivated;
+            SpaceEvents.OnItemEaten += OnItemEaten;
+
+            Helper.ConsoleCommands.Add("debug_forceillness", "Force an illness.", ForceIllness);
+        }
+
+        public bool CanEdit<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("Tilesheets/BuffsIcons"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Edit<T>(IAssetData asset)
+        {
+            Texture2D customTexture = this.Helper.Content.Load<Texture2D>("assets/BuffsInsert.png", ContentSource.ModFolder);
+
+            asset
+                .AsImage()
+                .ExtendImage(192,48);
+            asset.AsImage()
+                .PatchImage(customTexture, targetArea: new Rectangle(0, 32, 192, 16));
+        }
+
+        private void TouchActionActivated(object sender, EventArgsAction e)
+        {
+            if (e.TouchAction && (e.ActionString == "PoolhouseEntry" || e.ActionString == "PoolEntrance"))
+            {
+                StaminaMngr.PoolhouseFlip();
+            }
+        }
+
+        private void ForceIllness(string arg1, string[] arg2)
+        {
+            StaminaMngr.MakeSick();
         }
 
         private void OnItemEaten(object sender, EventArgs e)
         {
-            if (Game1.player.itemToEat.ParentSheetIndex == 351)
+            if (Game1.player?.itemToEat?.ParentSheetIndex == 351 && StaminaMngr.IsSick())
                 StaminaMngr.ClearDrain();
         }
 
@@ -51,7 +91,7 @@ namespace TwilightShards.WeatherIllnesses
         /// <param name="e">The event arguments.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            climatesAPI = SDVUtilities.GetModApi<Integrations.IClimatesOfFerngillAPI>(Monitor, Helper, "KoihimeNakamura.ClimatesOfFerngill", "1.5-beta.2", "Climates of Ferngill");
+            climatesAPI = SDVUtilities.GetModApi<Integrations.IClimatesOfFerngillAPI>(Monitor, Helper, "KoihimeNakamura.ClimatesOfFerngill", "1.5.12", "Climates of Ferngill");
 
             if (climatesAPI != null)
             {
@@ -79,7 +119,7 @@ namespace TwilightShards.WeatherIllnesses
         {
             if (!Game1.hasLoadedGame)
                 return;
-
+            /*
             if (Game1.currentLocation is BathHousePool && Game1.player.swimming.Value)
             {
                 TimeInBathHouse += 10;
@@ -87,11 +127,19 @@ namespace TwilightShards.WeatherIllnesses
                     Monitor.Log($"In the BathHouse Pool for {TimeInBathHouse}");
             }
 
-            if (TimeInBathHouse > 30)
+            if (TimeInBathHouse > 30 && StaminaMngr.IsSick())
             {
+                //Monitor.Log("Sick, clearing sickness.");
                 StaminaMngr.ClearDrain(StaminaDrain.BathHouseClear);
                 TimeInBathHouse = 0;
+            }*/
+
+            Monitor.Log($"Bath house duration is {StaminaMngr.GetBathHouseDuration()}");
+            if (StaminaMngr.GetBathHouseDuration() >= 30 && StaminaMngr.IsSick())
+            {
+                StaminaMngr.ClearDrain(StaminaDrain.BathHouseClear);
             }
+
 
             string weatherStatus;
             //get current weather string
@@ -139,6 +187,8 @@ namespace TwilightShards.WeatherIllnesses
             }
 
             TicksTotal++;
+
+            StaminaMngr.OnUpdateTicked();
         }
 
         /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
@@ -148,7 +198,6 @@ namespace TwilightShards.WeatherIllnesses
         {
             TicksOutside = TicksTotal = TicksInLocation = 0;
             StaminaMngr.OnNewDay();
-            TimeInBathHouse = 0;
         }
 
         /// <summary>Raised after the game returns to the title screen.</summary>
@@ -158,7 +207,6 @@ namespace TwilightShards.WeatherIllnesses
         {
             TicksTotal = TicksOutside = TicksInLocation = 0;
             StaminaMngr.Reset();
-            TimeInBathHouse = 0;
         }
     }
 }

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Harmony;
 using JsonAssets.Data;
 using Microsoft.Xna.Framework;
 using SpaceShared;
 using StardewValley;
+using StardewValley.Network;
 using StardewValley.Objects;
 using SObject = StardewValley.Object;
 
@@ -205,6 +208,56 @@ namespace JsonAssets.Overrides
             {
                 Log.error($"Failed in {nameof(CanBeGivenAsGift_Postfix)} for #{__instance?.ParentSheetIndex} {__instance?.Name}:\n{ex}");
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(StardewValley.Object), nameof(StardewValley.Object.isPlaceable))]
+    public static class ObjectIsPlaceablePatch
+    {
+        public static bool Prefix( StardewValley.Object __instance, ref bool __result )
+        {
+            if ( __instance.bigCraftable.Value )
+                return true;
+
+            if ( __instance.Category == StardewValley.Object.CraftingCategory && Mod.instance.objectIds.Values.Contains( __instance.ParentSheetIndex ) )
+            {
+                if ( !Mod.instance.fences.Any( f => f.correspondingObject.id == __instance.ParentSheetIndex ) )
+                {
+                    __result = false;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(StardewValley.Object), nameof(StardewValley.Object.placementAction))]
+    public static class ObjectPlacementActionPatch
+    {
+        public static bool Prefix(StardewValley.Object __instance, GameLocation location, int x, int y, Farmer who, ref bool __result )
+        {
+            Vector2 pos = new Vector2( x / 64, y / 64 );
+            if ( !__instance.bigCraftable.Value && !(__instance is Furniture) )
+            {
+                foreach ( var fence in Mod.instance.fences )
+                {
+                    if ( __instance.ParentSheetIndex == fence.correspondingObject.GetObjectId() )
+                    {
+                        if ( location.objects.ContainsKey( pos ) )
+                        {
+                            __result = false;
+                            return false;
+                        }
+                        location.objects.Add( pos, new Fence( pos, fence.correspondingObject.GetObjectId(), false ) );
+                        location.playSound( fence.PlacementSound, NetAudio.SoundContext.Default );
+                        __result = true;
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

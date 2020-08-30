@@ -29,11 +29,11 @@ namespace FarmTypeManager
             {
                 if (data.Pack != null) //if this data is from a content pack
                 {
-                    Monitor.VerboseLog($"Processing save data for content pack: {data.Pack.Manifest.Name}");
+                    Utility.Monitor.VerboseLog($"Processing save data for content pack: {data.Pack.Manifest.Name}");
                 }
                 else //this data is from this mod's own folders
                 {
-                    Monitor.VerboseLog($"Processing save data for FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
+                    Utility.Monitor.VerboseLog($"Processing save data for FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
                 }
 
                 Utility.ProcessObjectExpiration(save: data.Save, endOfDay: true); //remove custom object classes, but do not process expiration settings

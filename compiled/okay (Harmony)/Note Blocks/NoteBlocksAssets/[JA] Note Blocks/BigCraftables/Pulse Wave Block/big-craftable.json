@@ -1,0 +1,30 @@
+{
+    "Name": "Pulse Wave Block",
+    "Description": "Plays a pulse wave sound when you walk past.",
+    "Price": 10,
+    "ProvidesLight": false,
+    "ReserveExtraIndexCount": 0,
+    "Recipe":
+    {
+        "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": 388, //wood
+            "Count": 10,
+        },
+        {
+            "Object": 378, //copper ore
+            "Count": 2,
+        },
+        {
+            "Object": 92, //sap
+            "Count": 5,
+        }, ],
+	"IsDefault": true,
+        "CanPurchase": false,
+    },
+    "CanPurchase": true,
+    "PurchaseFrom": "Robin",
+    "PurchasePrice": 20,
+    "EnableWithMod": "yaramy.noteblocks",
+}

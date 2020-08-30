@@ -1,0 +1,12 @@
+{
+   "Name": "Mineral Farm",
+   "Author": "Jessebot",
+   "Version": "1.0",
+   "Description": "Adds a separate MTN farm map that brings the Mineral Farm from Harvest Moon: Friends of Mineral Town",
+   "UniqueID": "Jessebot.MineralFarm",
+   "MinimumApiVersion": "2.5",
+   "UpdateKeys": [ "Nexus:2946" ],
+   "ContentPackFor": {
+    	"UniqueID": "SgtPickles.MTN", 
+  }
+}

@@ -11,8 +11,7 @@ namespace QuestFramework.Quests
     /// </summary>
     public interface IQuestObserver
     {
-        bool? CheckIfComplete(IQuestInfo questData, ICompletionArgs completion);
-        void Completed(IQuestInfo questData);
+        bool CheckIfComplete(IQuestInfo questData, ICompletionArgs completion);
         void UpdateObjective(IQuestInfo questData, ref string objective);
         void UpdateDescription(IQuestInfo questData, ref string description);
         void UpdateTitle(IQuestInfo questData, ref string title);

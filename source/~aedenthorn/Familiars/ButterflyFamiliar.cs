@@ -19,7 +19,7 @@ namespace Familiars
 		}
 
 
-		public ButterflyFamiliar(Vector2 position, long _owner) : base("Butterfly", position, new AnimatedSprite(ModEntry.Config.ButterflyTexture, 0, 16, 16))
+		public ButterflyFamiliar(Vector2 position, long _owner, bool existing = false) : base("Butterfly", position, new AnimatedSprite(ModEntry.Config.ButterflyTexture, 0, 16, 16))
 		{
 			Name = "ButterflyFamiliar";
 			ownerId = _owner;
@@ -33,33 +33,37 @@ namespace Familiars
 			ignoreMovementAnimations = true;
 			damageToFarmer.Value = 0;
 
-			if (Game1.random.NextDouble() < 0.5)
-			{
-				baseFrame = (Game1.random.NextDouble() < 0.5) ? (Game1.random.Next(3) * 3 + 160) : (Game1.random.Next(3) * 3 + 180);
-			}
-			else
-			{
-				baseFrame = (Game1.random.NextDouble() < 0.5) ? (Game1.random.Next(3) * 4 + 128) : (Game1.random.Next(3) * 4 + 148);
-				summerButterfly = true;
-			}
-			Sprite.currentFrame = baseFrame;
-			sprite.Value.loop = false;
+            if (!existing)
+            {
 
-			if (ModEntry.Config.ButterflyColorType.ToLower() == "random")
-			{
-				mainColor = new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
-				redColor = new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
-				greenColor = new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
-				blueColor = new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
+				if (Game1.random.NextDouble() < 0.5)
+				{
+					baseFrame = (Game1.random.NextDouble() < 0.5) ? (Game1.random.Next(3) * 3 + 160) : (Game1.random.Next(3) * 3 + 180);
+				}
+				else
+				{
+					baseFrame = (Game1.random.NextDouble() < 0.5) ? (Game1.random.Next(3) * 4 + 128) : (Game1.random.Next(3) * 4 + 148);
+					summerButterfly = true;
+				}
+				Sprite.currentFrame = baseFrame;
+				sprite.Value.loop = false;
+
+				if (ModEntry.Config.ButterflyColorType.ToLower() == "random")
+				{
+					mainColor = new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
+					redColor = new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
+					greenColor = new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
+					blueColor = new Color(Game1.random.Next(256), Game1.random.Next(256), Game1.random.Next(256));
+				}
+				else
+				{
+					mainColor = ModEntry.Config.ButterflyMainColor;
+					redColor = ModEntry.Config.ButterflyRedColor;
+					greenColor = ModEntry.Config.ButterflyGreenColor;
+					blueColor = ModEntry.Config.ButterflyBlueColor;
+				}
+				reloadSprite();
 			}
-			else
-			{
-				mainColor = ModEntry.Config.ButterflyMainColor;
-				redColor = ModEntry.Config.ButterflyRedColor;
-				greenColor = ModEntry.Config.ButterflyGreenColor;
-				blueColor = ModEntry.Config.ButterflyBlueColor;
-			}
-			reloadSprite();
 		}
 
 		public override void reloadSprite()
@@ -88,6 +92,10 @@ namespace Familiars
 
         public override void update(GameTime time, GameLocation location)
 		{
+			if (followingOwner || location.getTileIndexAt(getTileLocationPoint(), "Back") != -1)
+				lastPosition = position;
+			else
+				position.Value = lastPosition;
 
 			flapTimer -= time.ElapsedGameTime.Milliseconds;
 			if (flapTimer <= 0 && sprite.Value.CurrentAnimation == null)
@@ -124,18 +132,24 @@ namespace Familiars
 		public override void drawAboveAllLayers(SpriteBatch b)
 		{
 			Sprite.currentFrame = Math.Max(Sprite.CurrentFrame, baseFrame);
-			if(Sprite.currentAnimationIndex  > (summerButterfly ? 2 : 1))
+			if(Sprite.currentAnimationIndex  > (summerButterfly ? 3 : 2))
             {
 				position.Value += new Vector2(0, -4);
             }
 			else
             {
-				position.Value += new Vector2(0, 4);
+				position.Value += new Vector2(0, 2);
 			}
 			Sprite.draw(b, Game1.GlobalToLocal(Game1.viewport, position + new Vector2(-64f, -128f + yJumpOffset + yOffset)), position.Y / 10000f, 0, 0, Color.White, flip, 4f * scale, 0f, false);
 		}
 
-		protected override void initNetFields()
+        public override Rectangle GetBoundingBox()
+        {
+			Vector2 pos = position + new Vector2(-64f, -128f + yJumpOffset + yOffset);
+			return new Rectangle((int)pos.X - 16, (int)pos.Y - 16, 32, 32);
+        }
+
+        protected override void initNetFields()
 		{
 			base.initNetFields();
 			base.NetFields.AddFields(new INetSerializable[]
@@ -237,15 +251,20 @@ namespace Familiars
 				{
 					this.yVelocity -= -ySlope * maxAccel / 6f;
 				}
-				if (lastBuff <= 0 && Vector2.Distance(GetOwner().getTileLocation(), getTileLocation()) < 3 && Game1.random.NextDouble() < BuffChance())
+				if (lastBuff <= 0 && Vector2.Distance(GetOwner().getTileLocation(), getTileLocation()) < 3)
 				{
-					Game1.playSound("yoba");
-					BuffsDisplay buffsDisplay = Game1.buffsDisplay;
-					Buff buff2 = GetBuff();
-					buff2.which = -1;
-					buffsDisplay.addOtherBuff(buff2);
-					AddExp(1);
-					lastBuff.Value = GetBuffInterval();
+					if (Game1.random.NextDouble() < BuffChance())
+					{
+						if (ModEntry.Config.ButterflySoundEffects)
+							Game1.playSound("yoba");
+						BuffsDisplay buffsDisplay = Game1.buffsDisplay;
+						Buff buff2 = GetBuff();
+						buffsDisplay.addOtherBuff(buff2);
+						AddExp(1);
+						lastBuff.Value = GetBuffInterval();
+					}
+					else
+						lastBuff.Value = 1000;
 				}
 			}
 		}
@@ -253,15 +272,15 @@ namespace Familiars
         private Buff GetBuff()
         {
 			int buffAmount = (int)Math.Ceiling(Math.Sqrt(exp) / 10f);
-			int which = Game1.random.Next(12);
-			int[] buffs = new int[12];
-			for(int i = 0; i < 12; i++)
+			int which = Game1.random.Next(10);
+			int[] buffs = new int[10];
+			for(int i = 0; i < 10; i++)
             {
 				buffs[i] = which == i ? buffAmount : 0;
 
 			}
 
-			Buff buff = new Buff(buffs[0], buffs[1], buffs[2], buffs[3], buffs[4], buffs[5], buffs[6], buffs[7] * 100, buffs[8] * 100, buffs[9], buffs[10], buffs[11], BuffDuration(), "ButterflyFamiliar", ModEntry.SHelper.Translation.Get("butterfly-familiar"));
+			Buff buff = new Buff(buffs[0], buffs[1], buffs[2], buffs[3], buffs[4], buffs[5], buffs[6], 0, 0, buffs[7], buffs[8], buffs[9], BuffDuration(), "ButterflyFamiliar", ModEntry.SHelper.Translation.Get("butterfly-familiar"));
 			buff.which = 4200 + which;
 			return buff;
 		}
@@ -273,7 +292,7 @@ namespace Familiars
 
 		private int GetBuffInterval()
         {
-			return 10000 - (int)Math.Sqrt(exp) * 10;
+			return (int)((10000 - (int)Math.Sqrt(exp)) * ModEntry.Config.ButterflyBuffIntervalMult);
 		}
 
         private int Buff()
@@ -283,7 +302,7 @@ namespace Familiars
 
 		private double BuffChance()
 		{
-			return 0.001 + Math.Sqrt(exp) * 0.001;
+			return (0.01 + Math.Sqrt(exp) * 0.001) * ModEntry.Config.ButterflyBuffChanceMult;
 		}
 
 		private Farmer GetOwner()
@@ -327,6 +346,5 @@ namespace Familiars
 		private int flapSpeed = 50;
 		private bool summerButterfly;
 		public bool stayInbounds;
-		public int baseFrame;
-	}
+    }
 }

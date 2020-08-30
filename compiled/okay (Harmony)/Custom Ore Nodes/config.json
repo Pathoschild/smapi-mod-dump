@@ -1,3 +1,4 @@
 {
-  "SpriteSheetOffsetRows": 0
+  "SpriteSheetOffsetRows": 0,
+  "AllowCustomOreNodesAboveGround": false
 }

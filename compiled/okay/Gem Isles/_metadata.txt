@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6692
+IDs: aedenthorn.GemIsles
+update keys: Nexus:6692, GitHub:aedenthorn/StardewValleyMods

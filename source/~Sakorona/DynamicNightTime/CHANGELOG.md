@@ -1,4 +1,8 @@
 ## Changelog
+### 1.3.6
+ - fix to dawn icon timing
+ - less orange sunrise is now more orange sunrise
+
 ### 1.3.5
  - fixes an error-catch block that could cause slowdowns
 

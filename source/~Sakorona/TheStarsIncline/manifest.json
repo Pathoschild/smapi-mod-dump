@@ -1,0 +1,16 @@
+﻿{
+  "Name": "The Stars Incline",
+  "Author": "Sakorona",
+  "Version": "1.0.0-alpha.1",
+  "Description": "Adds astrological effects to various elements. ",
+  "UniqueID": "KoihimeNakamura.TheStarsIncline",
+  "EntryDll": "TheStarsIncline.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ],
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ "Nexus:????" ]
+}

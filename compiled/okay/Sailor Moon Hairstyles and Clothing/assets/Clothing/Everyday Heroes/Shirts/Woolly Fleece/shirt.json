@@ -3,5 +3,11 @@
     "Description": "There couldn't possibly be anything more comfortable.",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Lana Lanuda"
+    },
+    "DescriptionLocalization": {
+        "es": "No podría haber nada más cómodo."
+    }
 }
