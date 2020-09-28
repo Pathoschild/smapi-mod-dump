@@ -1,0 +1,18 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/Festivals/spring13",
+		"Entries": {
+			"AbbyWin": "pause 100/jump Abigail/faceDirection Vincent 3/pause 800/move Abigail 0 -1 0/faceDirection Vincent 0/speak Lewis \"Aquí está tu premio, {{mardrest.ChangeDialogues/AbigailName}}. ¡Disfrútalo!\"/pause 500/move Abigail 0 -1 0/playSound coin/pause 400/move Abigail 0 2 0/faceDirection Lewis 0/speak Lewis \"Y con esto termina el festival del huevo de este año. ¡Gracias a todos por venir!\"/pause 1000/viewport move 1 -1 5000/pause 2000/globalFade/viewport -1000 -1000/waitForOtherPlayers festivalEnd/end",
+			"Maru_spouse": "Me estoy poniendo al día con {{mardrest.ChangeDialogues/PennyName}}. ¿Has comido ya suficientes huevos?",
+			"Penny_spouse": "{{mardrest.ChangeDialogues/MaruName}} intenta convencerme para que me coma un huevo relleno. No creo que mi estómago lo aguante...",
+			"Sebastian": "Antes también hacíamos una batalla de huevos podridos...#$b#Pero {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}} le puso fin enseguida.",
+			"Caroline": "A {{mardrest.ChangeDialogues/AbigailNickname}} siempre le ha encantado la búsqueda de huevos, desde que era pequeñita.",
+			"Jodi": "A {{mardrest.ChangeDialogues/VincentName}} le encanta este festival... Da gusto verl{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/VincentGender}}}} tan content{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/VincentGender}}}}.",
+			"Harvey": "Los huevos deberían incluirse siempre en una dieta equilibrada.#$e#Ups... Debería dejar de comportarme como un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}} doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}, al menos hoy.$11",
+			"Jas": "Espero poder encontrar huevos antes de que {{mardrest.ChangeDialogues/VincentName}} se los quede todos...$s"
+		}
+	}
+	]
+}

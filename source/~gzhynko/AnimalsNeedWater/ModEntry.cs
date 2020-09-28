@@ -124,6 +124,7 @@ namespace AnimalsNeedWater
             foreach (Building building in Game1.getFarm().buildings)
             {
                 int animalCount = 0;
+                GameLocation gameLocation = building.indoors.Value;
 
                 foreach (FarmAnimal animal in Game1.getFarm().getAllFarmAnimals())
                 {
@@ -149,8 +150,6 @@ namespace AnimalsNeedWater
                 {
                     if (building.nameOfIndoorsWithoutUnique.ToLower() == "coop")
                     {
-                        GameLocation gameLocation = building.indoors.Value;
-
                         ChangeCoopTexture(building, true);
 
                         foreach (TroughTile tile in CurrentTroughPlacementProfile.coopTroughTiles)
@@ -172,8 +171,6 @@ namespace AnimalsNeedWater
                     }
                     else if (building.nameOfIndoorsWithoutUnique.ToLower() == "coop2")
                     {
-                        GameLocation gameLocation = building.indoors.Value;
-
                         ChangeBigCoopTexture(building, true);
 
                         foreach (TroughTile tile in CurrentTroughPlacementProfile.coop2TroughTiles)
@@ -195,8 +192,6 @@ namespace AnimalsNeedWater
                     }
                     else if (building.nameOfIndoorsWithoutUnique.ToLower() == "coop3")
                     {
-                        GameLocation gameLocation = building.indoors.Value;
-
                         foreach (TroughTile tile in CurrentTroughPlacementProfile.coop3TroughTiles)
                         {
                             gameLocation.removeTile(tile.TileX, tile.TileY, tile.Layer);
@@ -219,8 +214,6 @@ namespace AnimalsNeedWater
                 {
                     if (building.nameOfIndoorsWithoutUnique.ToLower() == "barn")
                     {
-                        GameLocation gameLocation = building.indoors.Value;
-
                         foreach (TroughTile tile in CurrentTroughPlacementProfile.barnTroughTiles)
                         {
                             gameLocation.removeTile(tile.TileX, tile.TileY, tile.Layer);
@@ -240,8 +233,6 @@ namespace AnimalsNeedWater
                     }
                     else if (building.nameOfIndoorsWithoutUnique.ToLower() == "barn2")
                     {
-                        GameLocation gameLocation = building.indoors.Value;
-
                         foreach (TroughTile tile in CurrentTroughPlacementProfile.barn2TroughTiles)
                         {
                             gameLocation.removeTile(tile.TileX, tile.TileY, tile.Layer);
@@ -261,8 +252,6 @@ namespace AnimalsNeedWater
                     }
                     else if (building.nameOfIndoorsWithoutUnique.ToLower() == "barn3")
                     {
-                        GameLocation gameLocation = building.indoors.Value;
-
                         foreach (TroughTile tile in CurrentTroughPlacementProfile.barn3TroughTiles)
                         {
                             gameLocation.removeTile(tile.TileX, tile.TileY, tile.Layer);
@@ -577,8 +566,14 @@ namespace AnimalsNeedWater
                     {
                         ModData.CoopsWithWateredTrough.Add(building.nameOfIndoors.ToLower());
 
-                        ChangeCoopTexture(building, false);
-                        ChangeBigCoopTexture(building, false);
+                        if (building.nameOfIndoorsWithoutUnique.ToLower().Equals("coop"))
+                        {
+                            ChangeCoopTexture(building, false);
+                        }
+                        else if (building.nameOfIndoorsWithoutUnique.ToLower().Equals("coop2"))
+                        {
+                            ChangeBigCoopTexture(building, false);
+                        }
                     }
                     else if (building.nameOfIndoorsWithoutUnique.ToLower().Contains("barn"))
                     {

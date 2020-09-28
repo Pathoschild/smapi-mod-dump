@@ -4,6 +4,7 @@ using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
+using System.IO;
 
 namespace DynamicConversationTopics
 {
@@ -99,7 +100,7 @@ namespace DynamicConversationTopics
                                     Monitor.Log($"ERROR: No <topic> argument was provided.\n" +
                                         $"Usage: DCT {command} <topic> [days]", LogLevel.Info);
                                 }
-                                else if (!Game1.player.activeDialogueEvents.ContainsKey(argtopic))
+                                else if (true) //!Game1.player.activeDialogueEvents.ContainsKey(argtopic)) TODO: revert this
                                 {
                                     int days = args.Count() > 1 ? Convert.ToInt32(args[1]) : 4;
                                     Game1.player.activeDialogueEvents.Add(argtopic, days);
@@ -167,6 +168,23 @@ namespace DynamicConversationTopics
                         case "test":
                             {
                                 // TODO: make this add something to a "test topics" somewhere that the DialogueEditor pulls from.
+                                if (string.IsNullOrEmpty(argtopic))
+                                {
+                                    Monitor.Log($"ERROR: No <topic> argument was provided.\n" +
+                                        $"Usage: DCT {command} <topic>", LogLevel.Info);
+                                }
+                                else if (!ModEntry.Instance.TestTopics.Contains(argtopic))
+                                {
+                                    ModEntry.Instance.TestTopics.Add(argtopic);
+                                    //Invalidate all dialogue assets
+                                    Helper.Content.InvalidateCache(asset => Utilities.IsDialogueAsset(asset));
+                                    Monitor.Log($"Added test dialogue for topic <{argtopic}> to all characters.", LogLevel.Info);
+                                    //The adding itself happens in the dialogue editor next time each asset is loaded but... yunno
+                                }
+                                else
+                                {
+                                    Monitor.Log($"Test dialogue for topic <{argtopic}> is already active.", LogLevel.Info);
+                                }
                                 return;
                             }
                         case "history":
@@ -253,7 +271,8 @@ namespace DynamicConversationTopics
                                 {
                                    "DCT.Test0", "DCT.Test1", "DCT.Test2", "DCT.Test3", "DCT.Test4", "DCT.Test5", "DCT.Test6", "DCT.Test7", "DCT.Test8", "DCT.Test9"
                                 };
-                                List<string> alltopics = vanillatopics.Concat<string>(DCTtopics).ToList();
+                                var TestTopics = new List<string>(ModEntry.Instance.TestTopics);
+                                List<string> alltopics = vanillatopics.Concat(DCTtopics).Concat(TestTopics).ToList();
 
                                 int tflags = 0;
                                 int rflags = 0;

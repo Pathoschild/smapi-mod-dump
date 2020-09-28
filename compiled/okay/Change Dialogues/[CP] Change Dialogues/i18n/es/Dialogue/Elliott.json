@@ -1,0 +1,59 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Elliott",
+		"Entries": {
+			"Introduction": "¡Ah! Te acabas de mudar a la vieja granja, ¿no? ¡Tu llegada ha dado lugar a más de una conversación!#$b#Soy {{mardrest.ChangeDialogues/ElliottName}}... Vivo en la cabaña de la playa. Un placer conocerte.",
+			"Mon": "Yo también soy relativamente nuev{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} en el pueblo, pero me siento como en casa.$h#$e#Me mudé aquí un año antes que tú.",
+			"Wed8": "Lo siento, hoy estoy de mal humor.$s#$e#Ojalá el futuro no fuera tan incierto.$s#$e#No quiero hacerme viej{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} y acabar siendo un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ElliottGender}}}} ermitañ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} en esta playa...$s",
+			"Thu4": "Últimamente me siento esperanzad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}. Quizá es que el tiempo cambia.",
+			"Thu6": "A veces me pregunto si solo tengo una imagen muy henchida de mí mism{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} y ningún talento real...$s#$e#No, no... No estoy intentando conseguir halagos. Aunque te los agradezco...",
+			"Thu8": "#$1 elliottApol#Aquí en la playa me siento un poco sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}... Por eso te pido disculpas si parecí un poco ansios{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} cuando nos conocimos. Simplemente quería hacer amigos.$k#$e#Es agradable tener amistades tan cercanas como la tuya.",
+			"Sat6": "Algunas personas son tímidas. Sigue mostrando interés y acabarán sintiéndose a gusto contigo.#$e#A todo el mundo le gusta tener amigos, incluso a es{{mardrest.ChangeDialogues/This:{{mardrest.ChangeDialogues/ClintGender}}}} herrer{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}} {{mardrest.ChangeDialogues/Grumpy:L{{mardrest.ChangeDialogues/ClintGender}}}}.",
+			"event_boat1": "Yo también.$l^...Me preocupaba que no sintieras lo mismo por otr{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} {{mardrest.ChangeDialogues/Man:L{{mardrest.ChangeDialogues/ElliottGender}}}}.$l",
+			"event_toast2": "¡Es una idea genial!$h#$b#¡Por nosotros!^¡Por nosotr{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}s!",
+			"summer_Mon": "Un dulce rayo de sol me ha despertado esta mañana. Nunca me había sentido tan fresc{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}.$u#$e#Lo siento si no te interesa mucho.",
+			"summer_Mon4": "Sé que soy un poco excéntric{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}.#$e#Espero que no te importe.$h",
+			"summer_Mon6": "@, sé que confías en mi habilidad como escritor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ElliottGender}}}}. Significa mucho para mí.$h",
+			"fall_Fri4": "Tengo las piernas agarrotadas de pasar toda la noche pegad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} al escritorio.$s#$e#A veces te envidio, @.",
+			"fall_Fri": "Tengo las piernas agarrotadas de pasar toda la mañana pegad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} al escritorio.$s",
+			"fall_Fri10": "@, cuando estás por aquí... me siento extrañamente creativ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}.$l#$e#Lo sé... Es raro, pero cierto.",
+			"winter_Thu6": "Respira hondo. ¿Lo notas? El olor del mar.#$e#Siempre que lo huelo me transporta a mi juventud. El océano me impresionaba mucho de pequeñ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}.",
+			"winter_Fri": "Tengo que cepillarme el pelo a diario, o se convierte en una maraña de enredos.#$e#Da mucho trabajo.#$e#Me sorprende no habérmelo rapado aún.$h#$e#Supongo que soy demasiado presumid{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} para eso.",
+			"secondChance_Guys": "Me has hecho daño a unos niveles que se salen de toda escala posible... pero estoy dispuest{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} a dejar el pasado atrás.$s"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialogueElliott",
+		"Entries": {
+			"OneKid_3": "Cuidar bebés no es precisamente mi fuerte... Pero haré todo lo que pueda para ser un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ElliottGender}}}} buen{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ElliottGender}}}}.",
+			"TwoKids_1": "Antes llevaba en brazos a %kid1 y juraría que ha dicho \"{{mardrest.ChangeDialogues/Da:{{mardrest.ChangeDialogues/ElliottGender}}}}a... {{mardrest.ChangeDialogues/Da:L{{mardrest.ChangeDialogues/ElliottGender}}}}á...\"$h",
+			"Rainy_Day_0": "Hoy me siento inspirad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}... Creo que voy a escribir un rato.",
+			"Indoor_Day_0": "Me cuido mucho más desde que estamos juntos. Mi vida de solter{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} no era demasiado saludable.",
+			"Indoor_Night_2": "Nunca tuve mucho éxito con las plantas en mi antigua casa de la playa. Espero poder aprender observándote.#$e#En ese aspecto, tú serías el maestro y yo un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ElliottGender}}}} humilde aprendiz.^En ese aspecto, tú serías la maestra y yo un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ElliottGender}}}} humilde aprendiz.",
+			"Outdoor_3": "Si me quedo perfectamente quiet{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}, tal vez una mariposa resplandeciente tenga a bien aterrizar en mi nariz.",
+			"Good_0": "@... Estoy muy orgullos{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} de tu trabajo. Tengo mucha suerte de tenerte.$l",
+			"Good_4": "Me siento consumid{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} en tu ausencia. Pero cuando oigo ese ruido de botas llenas de barro contra la madera, mi corazón se alza de sus cenizas.",
+			"funReturn_Elliott": "Me lo he pasado bien yo sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} en la playa. He observado el vaivén de las olas, como en los viejos tiempos.",
+			"fall_26": "¿Me seguirías queriendo aunque me bebiera siete litros de cerveza de calabaza en el festival de la víspera de los espíritus? A veces un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ElliottGender}}}} {{mardrest.ChangeDialogues/Man:L{{mardrest.ChangeDialogues/ElliottGender}}}} tiene necesidades primitivas...",
+			"winter_7": "Estoy un poco oxidad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}, ¡pero mañana participaré en el concurso de pesca! Te ha salido competencia, mi amor."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Elliott",
+		"Entries": {
+			"summer_9.001": "Me duele la espalda, doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}... Ya sabe, por lo de encorvarme cuando escribo mi novela."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Elliott": "adult/polite/neutral/neutral/{{lowercase:{{mardrest.ChangeDialogues/ElliottGender}}}}/datable/Leah/Town/fall 5/Willy ''/ElliottHouse 1 5/{{mardrest.ChangeDialogues/ElliottName}}"
+		}
+	}
+	]
+}

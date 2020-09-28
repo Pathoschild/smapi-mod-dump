@@ -1,0 +1,16 @@
+{
+   "Name": "Angel's weapon rebalance - Data",
+   "Author": "AngelaRanna",
+   "Version": "1.0.1",
+   "Description": "Rebalances weapons to make all of them desirable - Data",
+   "UniqueID": "AngelaRanna.WeaponBalanceData",
+   "MinimumApiVersion": "2.8.2",
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.5.3"
+   },
+   "UpdateKeys": [
+       "Nexus:6894"
+   ]
+}
+

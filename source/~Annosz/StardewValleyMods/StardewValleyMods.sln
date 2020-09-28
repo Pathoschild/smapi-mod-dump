@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SleeplessFisherman", "Sleep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrobusSellsLargerStacks", "KrobusSellsLargerStacks\KrobusSellsLargerStacks.csproj", "{5414AB1A-4320-4E5A-B553-FFAF9C388E61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveCaskRecolor", "ActiveCaskRecolor\ActiveCaskRecolor.csproj", "{D0CA92BD-1897-490F-95F8-48CDEBCCA14D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighlightedJars", "HighlightedJars\HighlightedJars.csproj", "{1FFDE1D7-E092-4CC8-A195-B4A1CE31BCBB}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{5414AB1A-4320-4E5A-B553-FFAF9C388E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5414AB1A-4320-4E5A-B553-FFAF9C388E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5414AB1A-4320-4E5A-B553-FFAF9C388E61}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0CA92BD-1897-490F-95F8-48CDEBCCA14D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0CA92BD-1897-490F-95F8-48CDEBCCA14D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0CA92BD-1897-490F-95F8-48CDEBCCA14D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0CA92BD-1897-490F-95F8-48CDEBCCA14D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1FFDE1D7-E092-4CC8-A195-B4A1CE31BCBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1FFDE1D7-E092-4CC8-A195-B4A1CE31BCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FFDE1D7-E092-4CC8-A195-B4A1CE31BCBB}.Release|Any CPU.ActiveCfg = Release|Any CPU

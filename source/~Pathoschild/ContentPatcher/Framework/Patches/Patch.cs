@@ -52,7 +52,7 @@ namespace ContentPatcher.Framework.Patches
         public PatchType Type { get; }
 
         /// <inheritdoc />
-        public ManagedContentPack ContentPack { get; }
+        public IContentPack ContentPack { get; }
 
         /// <inheritdoc />
         public IPatch ParentPatch { get; }
@@ -174,7 +174,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="contentPack">The content pack which requested the patch.</param>
         /// <param name="parentPatch">The parent <see cref="PatchType.Include"/> patch for which this patch was loaded, if any.</param>
         /// <param name="fromAsset">The normalized asset key from which to load the local asset (if applicable), including tokens.</param>
-        protected Patch(LogPathBuilder path, PatchType type, IManagedTokenString assetName, IEnumerable<Condition> conditions, UpdateRate updateRate, ManagedContentPack contentPack, IPatch parentPatch, Func<string, string> normalizeAssetName, IManagedTokenString fromAsset = null)
+        protected Patch(LogPathBuilder path, PatchType type, IManagedTokenString assetName, IEnumerable<Condition> conditions, UpdateRate updateRate, IContentPack contentPack, IPatch parentPatch, Func<string, string> normalizeAssetName, IManagedTokenString fromAsset = null)
         {
             this.Path = path;
             this.Type = type;
@@ -212,6 +212,16 @@ namespace ContentPatcher.Framework.Patches
             area = new Rectangle(defaultX, defaultY, defaultWidth, defaultHeight);
             error = null;
             return true;
+        }
+
+        /// <summary>A utility method for returning false with an out error.</summary>
+        /// <param name="inError">The error message.</param>
+        /// <param name="outError">The input error.</param>
+        /// <returns>Return false.</returns>
+        protected bool Fail(string inError, out string outError)
+        {
+            outError = inError;
+            return false;
         }
 
         /// <summary>Update the target path, and add the relevant tokens to the patch context.</summary>

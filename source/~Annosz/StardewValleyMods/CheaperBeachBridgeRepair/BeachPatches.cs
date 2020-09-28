@@ -5,13 +5,15 @@ using xTile.Dimensions;
 
 namespace CheaperBeachBridgeRepair
 {
-    class BeachPatches
+    public static class BeachPatches
     {
-        private static IMonitor Monitor;
+        private static ModConfig _config;
+        private static IMonitor _monitor;
 
-        public static void Initialize(IMonitor monitor)
+        public static void Initialize(ModConfig config, IMonitor monitor)
         {
-            Monitor = monitor;
+            _config = config;
+            _monitor = monitor;
         }
 
         public static bool AnswerDialogueAction_Prefix(StardewValley.Locations.Beach __instance, string questionAndAnswer, string[] questionParams, ref bool __result)
@@ -22,7 +24,7 @@ namespace CheaperBeachBridgeRepair
                 {
                     case "BeachBridge_Yes":
                         Game1.globalFadeToBlack(new Game1.afterFadeFunction(__instance.fadedForBridgeFix), 0.02f);
-                        Game1.player.removeItemsFromInventory(388, 8);
+                        Game1.player.removeItemsFromInventory(388, _config.BridgeRepairPrice);
                         __result = true;
                         return false;
                     default:
@@ -31,7 +33,7 @@ namespace CheaperBeachBridgeRepair
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed in {nameof(AnswerDialogueAction_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(AnswerDialogueAction_Prefix)}:\n{ex}", LogLevel.Error);
                 return true;
             }
         }
@@ -42,13 +44,13 @@ namespace CheaperBeachBridgeRepair
             {
                 if (__instance.map.GetLayer("Buildings").Tiles[tileLocation] != null && __instance.map.GetLayer("Buildings").Tiles[tileLocation].TileIndex == 284)
                 {
-                    if (who.hasItemInInventory(388, 8, 0))
+                    if (who.hasItemInInventory(388, _config.BridgeRepairPrice, 0))
                     {
-                        __instance.createQuestionDialogue(Game1.content.LoadString("Strings\\Locations:Beach_FixBridge_Question").Replace("300","8"), __instance.createYesNoResponses(), "BeachBridge");
+                        __instance.createQuestionDialogue(Game1.content.LoadString("Strings\\Locations:Beach_FixBridge_Question").Replace("300", _config.BridgeRepairPrice.ToString()), __instance.createYesNoResponses(), "BeachBridge");
                     }
                     else
                     {
-                        Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:Beach_FixBridge_Hint").Replace("300", "8"));
+                        Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:Beach_FixBridge_Hint").Replace("300", _config.BridgeRepairPrice.ToString()));
                     }
                     __result = true;
                     return false;
@@ -57,7 +59,7 @@ namespace CheaperBeachBridgeRepair
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed in {nameof(checkAction_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(checkAction_Prefix)}:\n{ex}", LogLevel.Error);
                 return true;
             }
         }

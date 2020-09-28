@@ -1,0 +1,14 @@
+url:
+   https://github.com/dem1se/SDVMods.git
+
+mods:
+   Recurring Reminders
+
+latest commit:
+   commit 81e8effcf097296a0a7c29962dc314335ed40ed2
+   Author: Dem1se <dem1se.io@protonmail.com>
+   Date:   Mon Sep 28 02:15:52 2020 +0530
+   
+       Added i18n support
+       en defaults
+   

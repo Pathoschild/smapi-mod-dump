@@ -106,7 +106,7 @@ namespace EnergyTime
                 this.StatefulEnergyRequirementMultiplier = Math.Max(minAllowed, this.StatefulEnergyRequirementMultiplier - change);
             }
             else
-                this.StatefulEnergyRequirementMultiplier = this.StatefulEnergyRequirementMultiplier + change;
+                this.StatefulEnergyRequirementMultiplier += change;
 
             this.SendHUDMessage(Helper.Translation.Get("energy-time.multiplier-changed", new { multiplier = this.StatefulEnergyRequirementMultiplier }));
         }
@@ -149,16 +149,19 @@ namespace EnergyTime
 
             SButton key = e.Button;
 
-            if (key == this.Config.PassTimeKey)
-                this.IsPassingTime = true;
-            else if (key == this.Config.PauseTimeKey)
-                this.TimePauseToggle();
-            else if (key == this.Config.ReloadConfigKey)
-                this.ReloadConfig();
-            else if (key == this.Config.IncreaseMultiplierKey || key == this.Config.DecreaseMultiplierKey)
-                this.ChangeEnergyRequirementMultiplier(shouldIncrease: key == Config.IncreaseMultiplierKey);
-            else if (key == this.Config.TimeModeToggleKey)
-                this.TimeModeToggle();
+            if (Game1.activeClickableMenu == null)
+            {
+                if (key == this.Config.PassTimeKey)
+                    this.IsPassingTime = true;
+                else if (key == this.Config.PauseTimeKey)
+                    this.TimePauseToggle();
+                else if (key == this.Config.ReloadConfigKey)
+                    this.ReloadConfig();
+                else if (key == this.Config.IncreaseMultiplierKey || key == this.Config.DecreaseMultiplierKey)
+                    this.ChangeEnergyRequirementMultiplier(shouldIncrease: key == Config.IncreaseMultiplierKey);
+                else if (key == this.Config.TimeModeToggleKey)
+                    this.TimeModeToggle();
+            }
         }
 
         // Effectful.

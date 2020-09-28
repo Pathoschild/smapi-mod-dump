@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Unsettling Item Descriptions",
+  "Author": "Jonqora and friends",
+  "Version": "1.0.0-beta.2",
+  "Description": "Gives item descriptions a little extra flavor.",
+  "UniqueID": "Jonqora.UnsettlingDescriptions",
+  "MinimumApiVersion": "3.5.0",
+  "UpdateKeys": [ "Nexus:6822" ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher",
+    "MinimumVersion": "1.16.0"
+  }
+}

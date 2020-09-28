@@ -1,0 +1,121 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Shane",
+		"Entries": {
+			"Mon4": "Buenas. Lo siento si te parecí groser{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} cuando nos conocimos.#$e#Me cuesta un poco abrirme a los desconocidos.",
+			"Wed8": "Supongo que he cogido cariño a {{mardrest.ChangeDialogues/MarnieName}} y {{mardrest.ChangeDialogues/JasName}}. Somos cada uno de su padre y de su madre, pero formamos una especie de familia rara.#$e#Tampoco es que tuviera mucha familia de niñ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}.$s",
+			"JojaMart": "%{{mardrest.ChangeDialogues/ShaneName}} está trabajando duro. No parece interesad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} en hablar.",
+			"Fri4": "$d Joja#¿Qué sentido tiene tu vida si todo lo que haces es trabajar?|Últimamente no puedo pagar el alquiler, pero {{mardrest.ChangeDialogues/MarnieName}} me deja quedarme igualmente. Tengo suerte.",
+			"Sat": "¿Por qué me molestas? Quiero estar sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}.",
+			"Sat2": "#$1 ShaneJOSH#Me sorprende que aún quieras llevarte bien conmigo. ¿No he sido aún lo bastante maleducad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}?#$e#*Sigh...*$s",
+			"Sat4": "$d Joja#{{mardrest.ChangeDialogues/MarnieName}} me alquila una de sus habitaciones a muy buen precio. Es pequeña, pero no me puedo quejar.|Si pudiera empezar de cero mi vida, igual montaba una granja de gallinas. Por supuesto, solo huevos de gallinas criadas en libertad.",
+			"Sat8": "He cogido cariño a las gallinas de {{mardrest.ChangeDialogues/MarnieName}}.$h",
+			"Sun": "Estoy ocupad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}, ¿no lo ves?",
+			"event_room1": "Vale... Eso requiere un gran guión. A lo mejor le pido consejo a {{mardrest.ChangeDialogues/ElliottName}} la próxima vez que nos veamos en el Salón.$s",
+			"pamHouseUpgrade": "Dicen que le construiste una casa a {{mardrest.ChangeDialogues/PamName}}... Qué generoso por tu parte...#$b#Oye, no me vendrían mal un par de cientos de miles de oro...#$e#*Ejem... esto... Era broma. Ja...",
+			"pamHouseUpgradeAnonymous": "Dicen que alguien le compró una casa a {{mardrest.ChangeDialogues/PamName}}... Ay... ¿Qué hizo {{mardrest.ChangeDialogues/PamName}} para ser digna de semejante generosidad?",
+			"dumped_Guys": "%{{mardrest.ChangeDialogues/ShaneName}} tiene los ojos vidriosos. No va a querer hablar contigo."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialogueShane",
+		"Entries": {
+			"Rainy_Day_0": "Espero que {{mardrest.ChangeDialogues/JasName}} y {{mardrest.ChangeDialogues/MarnieName}} estén bien sin mí.#$e#No me preocupa demasiado... {{mardrest.ChangeDialogues/JasName}} ya es lo bastante mayor como para cuidar sola de los animales.",
+			"Rainy_Day_3": "Buhh... Hoy no me apetece ser productiv{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}.",
+			"Indoor_Day_4": "Puede que sea reservad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} y a veces parezc{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} ser infeliz... Pero en realidad valoro el trabajo que haces. Tengo mucha suerte.$6",
+			"Indoor_Night_1": "Si... Si hubiera... Estaba pensando en los viejos días de gloria en los que jugaba a gridball en el equipo de la universidad.$6#$b#Aunque ahora estoy débil y viej{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}...",
+			"Indoor_Night_2": "Ughh... *Glu, glu* Estoy un poco empachad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}... Uf... He comido demasiada salsa multiusos de Joja.",
+			"Indoor_Night_3": "Buh... Ojalá fuera diez centímetros más alt{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} y mucho más list{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}...#$e#¿Que me quieres tal y como soy? Eso sí que no lo entiendo...",
+			"TwoKids_1": "Seré sincer{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}... Dos hijos son suficientes para mí. ",
+			"Good_2": "El nombre «{{mardrest.ChangeDialogues/ShaneName}}» significa «Don de Yoba». Menudo chiste.",
+			"Good_4": "Oye, si alguna vez parezco enfadad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}, no me hagas caso. A veces me pongo de un humor raro, pero no es por ti, ¿vale?",
+			"Good_6": "Ah... Esto es vida. Cero responsabilidades, partido de los Excavadores de Ciudad Zuzu esta noche, nevera llena con todo lo que un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ShaneGender}}}} tí{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} necesita...$h",
+			"Neutral_0": "Ah, ¿necesitas algo? Lo siento, ahora mismo estoy algo ocupad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}.",
+			"Neutral_2": "¿Por qué no me cuentas cómo te ha ido el día esta noche en la cama? Ahora mismo estoy ocupad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}...",
+			"Bad_5": "Escucha, quiero estar sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}. ¿Por qué no sales y haces tus cosas un rato?",
+			"Bad_6": "¿Qué quieres? Me recuerdas a {{mardrest.ChangeDialogues/MarnieName}} en sus días malos. Lárgate.$a",
+			"OneKid_3": "{{mardrest.ChangeDialogues/Dad:{{mardrest.ChangeDialogues/ShaneGender}}}} {{mardrest.ChangeDialogues/ShaneName}} a sus órdenes...$6#$e#Bah... Con la edad me he vuelto un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ShaneGender}}}} cursi.",
+			"funReturn_Shane": "Lo siento si estoy sudad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}... Ha sido un buen paseo... Pero estoy en baja forma.$6",
+			"spring_12": "El festival del huevo es probablemente mi preferido... Ya me conoces, me vuelve loc{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} todo lo que tenga que ver con las gallinas.$h",
+			"fall_15": "Mañana ayudaré a {{mardrest.ChangeDialogues/MarnieName}} con los animales en la feria, como siempre. Tú relájate y pásalo bien.$6",
+			"winter_28": "Bueno, otro año que pasa... Sueno como un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ShaneGender}}}} viej{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}, pero es lo que hay.$6"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Shane",
+		"Entries": {
+			"marriage_Mon.001": "Me siento unid{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} a este bosque... Muchos recuerdos...",
+			"marriage_Fri.002": "Si no me pido un buen trago fresquito de vez en cuando, {{mardrest.ChangeDialogues/GusName}} tendrá que cerrar. Estoy cumpliendo con mi deber como ciudadan{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}. Volveré a casa sobre las 22:00.",
+			"winter_15.000": "Esta noche no voy a ir al Salón, por el bien de {{mardrest.ChangeDialogues/JasName}}..."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Shane": {
+				"NPCName": "Shane",
+				"Reactions": [
+				{
+					"Tag": "love",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Heh. Realmente me interesa ver esta película..."
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/message \"{{mardrest.ChangeDialogues/ShaneName}} intenta no sonreír.\"",
+							"Text": "Vale, ha estado bien...$h"
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Cuando estás viendo una buena película, puedes olvidarte de todo lo demás... Es un regalo."
+						}
+					},
+					"ID": "reaction_5"
+				},
+				{
+					"Tag": "dislike",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Ugh... esto va a ser doloroso."
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/emote Shane 28/message \"{{mardrest.ChangeDialogues/ShaneName}} se desploma...\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Estoy deprimid{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}...$s"
+						}
+					},
+					"ID": "reaction_7"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Shane": "adult/rude/shy/negative/{{lowercase:{{mardrest.ChangeDialogues/ShaneGender}}}}/datable/null/Town/spring 20/Marnie 'tía'/AnimalShop 25 6/{{mardrest.ChangeDialogues/ShaneName}}"
+		}
+	}
+	]
+}

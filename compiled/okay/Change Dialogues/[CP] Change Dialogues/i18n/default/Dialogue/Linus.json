@@ -1,0 +1,75 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Linus",
+		"Entries": {
+			"Wed2": "I have to be wary of strangers. Most people don't like a 'wild {{mardrest.ChangeDialogues/Man:L{{mardrest.ChangeDialogues/LinusGender}}}}'."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Linus": {
+				"NPCName": "Linus",
+				"Reactions": [
+				{
+					"Tag": "spring_movie_1",
+					"Response": "dislike",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I feel out of place here... I hope I'm not bothering anyone.$s"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/emote Linus 28/message \"{{mardrest.ChangeDialogues/LinusName}} is looking at the floor...\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Why stare at a screen when you could experience these things yourself?$s"
+						}
+					},
+					"ID": "reaction_1"
+				},
+				{
+					"Tag": "dislike",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I feel out of place here... I hope I'm not bothering anyone.$s"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/emote Linus 28/message \"{{mardrest.ChangeDialogues/LinusName}} is looking at the floor...\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I'm not used to that much stimulation... sorry if I was a disappointing guest, @. I still appreciate your inviting me!"
+						}
+					},
+					"ID": "reaction_2"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Linus": "adult/neutral/shy/positive/{{lowercase:{{mardrest.ChangeDialogues/LinusGender}}}}/not-datable/null/Town/winter 3//Tent 1 2/{{mardrest.ChangeDialogues/LinusName}}"
+		}
+	}
+	]
+}

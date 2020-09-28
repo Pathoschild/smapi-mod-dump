@@ -1,7 +1,7 @@
 <details>
   <summary><i>TRANSLATION INFO:</i></summary>
   
-  - No translations for this mod are available yet.
+  - No translations for this mod are available yet. [Visit this link](https://github.com/StardewModders/mod-translations/issues/33) if you would like to help translate it!
 </details>
 
 ---
@@ -24,7 +24,7 @@ You can buy protective Sunscreen lotion from Harvey's shop for 100g. You can als
 (If you uninstall this mod while still sunburnt, your character's skin color and everything else will return to normal.)
 
 ### Translation Support
-This mod is designed to support built-in translations. If you would like to help translate this mod to other languages, *watch for a link coming soon!* Submitted translations will be included in future mod updates.
+This mod is designed with full translation support! If you would like to help translate this mod to other languages, you can [contribute here](https://github.com/StardewModders/mod-translations/issues/33). Submitted translations will be included in future mod updates.
 
 
 ## User Information
@@ -96,5 +96,6 @@ After running SMAPI at least once with UV Index installed, a `config.json` file 
 * Thanks to those who provided help and support in the [Stardew Valley Discord](https://discordapp.com/invite/StardewValley) #making-mods channel.
 
 ### SEE ALSO
+* Help [translate](https://github.com/StardewModders/mod-translations/issues/33) this mod to other languages
 * Source code on [GitHub](https://github.com/Jonqora/StardewMods/tree/master/SunscreenMod)
 * Check out [my other mods](https://www.nexusmods.com/users/88107803?tab=user+files)!

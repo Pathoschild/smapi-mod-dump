@@ -1,0 +1,11 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/Events/HarveyRoom",
+		"Entries": {
+			"normal": "pause 400/speak Harvey \"Siento estar tan desaliñad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/HarveyGender}}}}... No sabía que vendrías.$h\"/move farmer 0 -2 0/pause 600/speak Harvey \"Ey, me parece que oigo un avión...\"/move Harvey 0 1 3/move Harvey -3 0 0/move Harvey 0 -2 0/speak Harvey \"¡@, ven aquí!\"/move farmer 0 -1 3/move farmer -4 0 0/move farmer 0 -2 0/speak Harvey \"¡Mira!\"/globalFade/cutscene plane/viewport -1000 -1000/speak Harvey \"De niñ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/HarveyGender}}}} mi sueño siempre fue ser piloto.\"/pause 1000/speak Harvey \"Pero con mi mala vista y mi miedo atenazante a las alturas, aquel sueño comenzó a desvanecerse.$s\"/faceDirection Harvey 3/faceDirection farmer 1/viewport 5 6 true/pause 1000/emote farmer 28/speak Harvey \"No pasa nada... No te pongas triste.#$b#He aceptado mi lugar en la vida. No todo el mundo consigue alcanzar sus sueños... Así es la vida.\"/pause 1600/speak Harvey \"Ey, deja que te enseñe mis maquetas de aviones. Acabo de terminar mi nuevo TR-Starbird Deluxe.$h\"/advancedMove Harvey false 0 2 4 0/faceDirection farmer 2/end"
+		}
+	}
+	]
+}

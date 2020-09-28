@@ -1,0 +1,10 @@
+{
+  "Name": "GiftEveryDay",
+  "Author": "Tommy Lizotte",
+  "Version": "1.0.0",
+  "Description": "Un mod permettant d'offrir autant de cadeau que voulu",
+  "UniqueID": "Tommy.GiftEveryDay",
+  "EntryDll": "GiftEveryDay.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

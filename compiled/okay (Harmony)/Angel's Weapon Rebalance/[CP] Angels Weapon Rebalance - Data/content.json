@@ -1,0 +1,707 @@
+{
+  "Format": "1.18.0",
+  "DynamicTokens": [
+      {
+          "Name": "MINDAMAGE",
+          "Value": "2"
+      },
+      {
+          "Name": "MAXDAMAGE",
+          "Value": "3"
+      },
+      {
+          "Name": "KNOCKBACK",
+          "Value": "4"
+      },
+      {
+          "Name": "SPEED",
+          "Value": "5"
+      },
+      {
+          "Name": "PRECISION",
+          "Value": "6"
+      },
+      {
+          "Name": "DEFENSE",
+          "Value": "7"
+      },
+      {
+          "Name": "TARGETLVL",
+          "Value": "9"
+      },
+      {
+          "Name": "MINLVL",
+          "Value": "10"
+      },
+      {
+          "Name": "AOE",
+          "Value": "11"
+      },
+      {
+          "Name": "CRIT",
+          "Value": "12"
+      },
+      {
+          "Name": "CRITMULT",
+          "Value": "13"
+      }
+  ],
+  "Changes": [
+       {
+          "Action": "EditData",
+          "Target": "Data/weapons",
+          "Fields":
+          {
+              // Values that aren't changed by this mod are commented out to preserve compatibility with other mods 
+              // while still being able to see the default values for reference (or change them in the future)
+
+              // End-game weapons
+              "45": // Wicked Kris
+              {
+                  "{{MINDAMAGE}}": "12",
+                  "{{MAXDAMAGE}}": "16",
+                  //"{{KNOCKBACK}}": ".5",
+                  //"{{SPEED}}": "0",
+                  //"{{PRECISION}}": "8",
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "160",
+                  "{{MINLVL}}": "120",
+                  //"{{AOE}}": "2",
+                  "{{CRIT}}": ".67",
+                  "{{CRITMULT}}": "3"
+              },
+              "23": // Galaxy Dagger
+              {
+                  //"{{MINDAMAGE}}": "30",
+                  //"{{MAXDAMAGE}}": "40",
+                  "{{KNOCKBACK}}": "0.6",
+                  //"{{SPEED}}": "3",
+                  "{{PRECISION}}": "80", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  "{{AOE}}": "10",
+                  "{{CRIT}}": "0.0",
+                  "{{CRITMULT}}": "1.0"
+              },
+              "29": // Galaxy Hammer
+              {
+                  "{{MINDAMAGE}}": "10",
+                  "{{MAXDAMAGE}}": "300",
+                  "{{KNOCKBACK}}": "3.5",
+                  //"{{SPEED}}": "-4",
+                  "{{PRECISION}}": "160", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  "{{AOE}}": "5",
+                  "{{CRIT}}": "0.0",
+                  "{{CRITMULT}}": "1.0"
+              },
+              "4": // Galaxy Sword
+              {
+                  "{{MINDAMAGE}}": "75",
+                  //"{{MAXDAMAGE}}": "80",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "8",
+                  //"{{PRECISION}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": "0.0",
+                  "{{CRITMULT}}": "1.0"
+              },
+
+              // Swords
+              "0": // Rusty Sword
+              {
+                  //"{{MINDAMAGE}}": "2",
+                  //"{{MAXDAMAGE}}": "5",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "40", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "12": // Wooden Blade
+              {
+                  //"{{MINDAMAGE}}": "3",
+                  //"{{MAXDAMAGE}}": "7",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "50", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "3",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "11": // Steel Smallsword
+              {
+                  //"{{MINDAMAGE}}": "4",
+                  //"{{MAXDAMAGE}}": "8",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "4",
+                  "{{PRECISION}}": "40", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "26",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "1": // Silver Saber
+              {
+                  //"{{MINDAMAGE}}": "8",
+                  //"{{MAXDAMAGE}}": "15",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "51", //1
+                  "{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "40",
+                  "{{MINLVL}}": "15",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "43": // Pirate's Sword
+              {
+                  //"{{MINDAMAGE}}": "8",
+                  //"{{MAXDAMAGE}}": "14",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "4",
+                  "{{PRECISION}}": "50", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "40",
+                  "{{MINLVL}}": "20",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "44": // Cutlass
+              {
+                  //"{{MINDAMAGE}}": "9",
+                  //"{{MAXDAMAGE}}": "17",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "4",
+                  "{{PRECISION}}": "40", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "6": // Iron Edge
+              {
+                  //"{{MINDAMAGE}}": "12",
+                  //"{{MAXDAMAGE}}": "25",
+                  //"{{KNOCKBACK}}": "1.2",
+                  //"{{SPEED}}": "-4",
+                  "{{PRECISION}}": "40", //0
+                  "{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "44",
+                  "{{MINLVL}}": "20",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "3": // Holy Blade
+              {
+                  //"{{MINDAMAGE}}": "18",
+                  //"{{MAXDAMAGE}}": "24",
+                  //"{{KNOCKBACK}}": "1.2",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "45", //5
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "45",
+                  "{{MINLVL}}": "20",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "13": // Insect Head
+              {
+                  //"{{MINDAMAGE}}": "10",
+                  //"{{MAXDAMAGE}}": "20",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "4",
+                  "{{PRECISION}}": "59", //9
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".1",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "15": // Forest Sword
+              {
+                  "{{MINDAMAGE}}": "15",
+                  //"{{MAXDAMAGE}}": "18",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "4",
+                  "{{PRECISION}}": "55", //5
+                  "{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "50",
+                  "{{MINLVL}}": "25",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "49": // Rapier
+              {
+                  //"{{MINDAMAGE}}": "15",
+                  //"{{MAXDAMAGE}}": "25",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "4",
+                  "{{PRECISION}}": "50", //0
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "0",
+                  "{{MINLVL}}": "75",
+                  //"{{AOE}}": "2",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "14": // Neptune's Glaive
+              {
+                  //"{{MINDAMAGE}}": "18",
+                  //"{{MAXDAMAGE}}": "35",
+                  //"{{KNOCKBACK}}": "1.4",
+                  //"{{SPEED}}": "-2",
+                  "{{PRECISION}}": "66", //6
+                  "{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "5": // Bone Sword
+              {
+                  //"{{MINDAMAGE}}": "20",
+                  //"{{MAXDAMAGE}}": "30",
+                  //"{{KNOCKBACK}}": ".8",
+                  //"{{SPEED}}": "8",
+                  "{{PRECISION}}": "55", //5
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "74",
+                  //"{{MINLVL}}": "50",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "10": // Claymore
+              {
+                  //"{{MINDAMAGE}}": "20",
+                  //"{{MAXDAMAGE}}": "32",
+                  //"{{KNOCKBACK}}": "1.3",
+                  //"{{SPEED}}": "-8",
+                  "{{PRECISION}}": "50", //0
+                  "{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "86",
+                  //"{{MINLVL}}": "50",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "7": // Templar's Blade
+              {
+                  //"{{MINDAMAGE}}": "22",
+                  //"{{MAXDAMAGE}}": "29",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "0",
+                  //"{{PRECISION}}": "10",
+                  "{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "90",
+                  //"{{MINLVL}}": "50",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".01",
+                  "{{CRITMULT}}": "3"
+              },
+              "48": // Yeti Tooth
+              {
+                  //"{{MINDAMAGE}}": "26",
+                  //"{{MAXDAMAGE}}": "42",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "50", //0
+                  //"{{DEFENSE}}": "4",
+                  "{{TARGETLVL}}": "100",
+                  "{{MINLVL}}": "75",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.8"
+              },
+              "8": // Obsidian Edge
+              {
+                  "{{MINDAMAGE}}": "28",
+                  "{{MAXDAMAGE}}": "46",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "-2",
+                  "{{PRECISION}}": "50", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "121",
+                  //"{{MINLVL}}": "100",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.8"
+              },
+              "52": // Tempered Broadsword
+              {
+                  //"{{MINDAMAGE}}": "29",
+                  //"{{MAXDAMAGE}}": "44",
+                  //"{{KNOCKBACK}}": "1.2",
+                  //"{{SPEED}}": "-6",
+                  "{{PRECISION}}": "50", //0
+                  "{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "135",
+                  //"{{MINLVL}}": "100",
+                  //"{{AOE}}": "1",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "50": // Steel Falchion
+              {
+                  "{{MINDAMAGE}}": "30",
+                  "{{MAXDAMAGE}}": "45",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "8",
+                  "{{PRECISION}}": "35", //5
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "142",
+                  //"{{MINLVL}}": "100",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "2"
+              },
+              "2": // Dark Sword
+              {
+                  //"{{MINDAMAGE}}": "30",
+                  //"{{MAXDAMAGE}}": "45",
+                  "{{KNOCKBACK}}": "1",
+                  "{{SPEED}}": "0",
+                  "{{PRECISION}}": "40", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "2",
+                  "{{CRIT}}": ".1",
+                  "{{CRITMULT}}": "1.5"
+              },
+              "9": // Lava Katana
+              {
+                  //"{{MINDAMAGE}}": "55",
+                  //"{{MAXDAMAGE}}": "64",
+                  //"{{KNOCKBACK}}": "1.2",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "50", //0
+                  "{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "2",
+                  "{{CRIT}}": ".1",
+                  "{{CRITMULT}}": "2.0"
+              },
+
+              // Daggers
+              "16": // Carving Knife
+              {
+                  //"{{MINDAMAGE}}": "1",
+                  //"{{MAXDAMAGE}}": "3",
+                  //"{{KNOCKBACK}}": ".5",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "-60", //0
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "5",
+                  "{{MINLVL}}": "1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".56",
+                  "{{CRITMULT}}": "2"
+              },
+              "17": // Iron Dirk
+              {
+                  //"{{MINDAMAGE}}": "2",
+                  "{{MAXDAMAGE}}": "6",
+                  //"{{KNOCKBACK}}": ".5",
+                  "{{SPEED}}": "1",
+                  "{{PRECISION}}": "-70",
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "25",
+                  "{{MINLVL}}": "1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".56",
+                  "{{CRITMULT}}": "2"
+              },
+              "22": // Wind Spire
+              {
+                  "{{MINDAMAGE}}": "4",
+                  "{{MAXDAMAGE}}": "10",
+                  "{{KNOCKBACK}}": "0.6",
+                  "{{SPEED}}": "1",
+                  "{{PRECISION}}": "-60", //0
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "45",
+                  "{{MINLVL}}": "20",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".56",
+                  "{{CRITMULT}}": "2.5"
+              },
+              "20": // Elf Blade
+              {
+                  "{{MINDAMAGE}}": "6",
+                  "{{MAXDAMAGE}}": "12",
+                  //"{{KNOCKBACK}}": ".5",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "-65", //5
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "50",
+                  "{{MINLVL}}": "25",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".56",
+                  "{{CRITMULT}}": "2"
+              },
+              "21": // Crystal Dagger
+              {
+                  "{{MINDAMAGE}}": "10",
+                  "{{MAXDAMAGE}}": "15",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "-80", //10
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".56",
+                  "{{CRITMULT}}": "3"
+              },
+              "51": // Broken Trident
+              {
+                  "{{MINDAMAGE}}": "12",
+                  "{{MAXDAMAGE}}": "17",
+                  //"{{KNOCKBACK}}": ".5",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "-62", //8
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "2",
+                  "{{CRIT}}": ".56",
+                  "{{CRITMULT}}": "2"
+              },
+              "18": // Burglar's Shank
+              {
+                  "{{MINDAMAGE}}": "14",
+                  "{{MAXDAMAGE}}": "20",
+                  //"{{KNOCKBACK}}": ".5",
+                  "{{SPEED}}": "1",
+                  "{{PRECISION}}": "-5", //5
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "80",
+                  "{{MINLVL}}": "50",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".56",
+                  "{{CRITMULT}}": "2.5"
+              },
+              "19": // Shadow Dagger
+              {
+                  "{{MINDAMAGE}}": "18",
+                  "{{MAXDAMAGE}}": "26",
+                  //"{{KNOCKBACK}}": ".5",
+                  //"{{SPEED}}": "0",
+                  "{{PRECISION}}": "20", //0
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "114",
+                  "{{MINLVL}}": "90",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".56",
+                  "{{CRITMULT}}": "2"
+              },
+
+              // Hammers
+              "31": // Femur
+              {
+                  "{{MINDAMAGE}}": "1",
+                  "{{MAXDAMAGE}}": "40",
+                  "{{KNOCKBACK}}": "2",
+                  //"{{SPEED}}": "-4",
+                  //"{{PRECISION}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "9",
+                  "{{MINLVL}}": "1",
+                  "{{AOE}}": "2",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "2"
+              },
+              "24": // Wood Club
+              {
+                  "{{MINDAMAGE}}": "2",
+                  "{{MAXDAMAGE}}": "50",
+                  "{{KNOCKBACK}}": "2",
+                  //"{{SPEED}}": "-8",
+                  "{{PRECISION}}": "60", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "32",
+                  "{{MINLVL}}": "1",
+                  "{{AOE}}": "2",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "2"
+              },
+              "27": // Wood Mallet
+              {
+                  "{{MINDAMAGE}}": "5",
+                  "{{MAXDAMAGE}}": "100",
+                  "{{KNOCKBACK}}": "2.3",
+                  //"{{SPEED}}": "-4",
+                  "{{PRECISION}}": "81", //1
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "68",
+                  "{{MINLVL}}": "43",
+                  "{{AOE}}": "2",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "2"
+              },
+              "26": // Lead Rod
+              {
+                  "{{MINDAMAGE}}": "5",
+                  "{{MAXDAMAGE}}": "125",
+                  "{{KNOCKBACK}}": "2",
+                  //"{{SPEED}}": "-16",
+                  "{{PRECISION}}": "140", //0
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "75",
+                  //"{{MINLVL}}": "50",
+                  "{{AOE}}": "3",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "2"
+              },
+              "46": // Kudgel
+              {
+                  "{{MINDAMAGE}}": "5",
+                  "{{MAXDAMAGE}}": "175",
+                  "{{KNOCKBACK}}": "2.3",
+                  //"{{SPEED}}": "-10",
+                  "{{PRECISION}}": "140", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "107",
+                  "{{MINLVL}}": "82",
+                  "{{AOE}}": "2",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "2.5"
+              },
+              "28": // The Slammer
+              {
+                  "{{MINDAMAGE}}": "10",
+                  "{{MAXDAMAGE}}": "200",
+                  "{{KNOCKBACK}}": "2",
+                  //"{{SPEED}}": "-12",
+                  "{{PRECISION}}": "180", //0
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "128",
+                  //"{{MINLVL}}": "100",
+                  "{{AOE}}": "4",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "2"
+              },
+
+              // Slingshots
+              "32": // Slingshot
+              {
+                  //"{{MINDAMAGE}}": "1",
+                  //"{{MAXDAMAGE}}": "3",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "308",
+                  //"{{PRECISION}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "5"
+              },
+              "33": // Master Slingshot
+              {
+                  //"{{MINDAMAGE}}": "1",
+                  //"{{MAXDAMAGE}}": "3",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "308",
+                  //"{{PRECISION}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "5"
+              },
+
+              // Scythes
+              "47": // Scythe
+              {
+                  //"{{MINDAMAGE}}": "1",
+                  //"{{MAXDAMAGE}}": "3",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "0",
+                  //"{{PRECISION}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05",
+                  "{{CRITMULT}}": "10"
+              },
+              "53": // Golden Scythe
+              {
+                  "{{MINDAMAGE}}": "18",
+                  "{{MAXDAMAGE}}": "18",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "0",
+                  //"{{PRECISION}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "2",
+                  "{{CRIT}}": ".01",
+                  "{{CRITMULT}}": "37"
+              }
+          }
+       },
+       {
+           // Contents of the mail sent to you after floor 1 of the mines
+          "Action": "EditData",
+          "Target": "Data/mail",
+          "Entries":
+          {
+              "WeaponRebalanceIntro": "Whippersnapper,^^Heard young Marlon gave you a sword, eh? Well, that may be his favorite, but it's not for everyone. Stop by the Guild some time and I'll get you set up with something else. There's more than enough old junk lying around this place.^^   -Gil[#]Weapon Rebalance Intro",
+          }
+       },
+       {
+           // Load an empty event file so we can add to it with EditData
+           "LogName": "Events",
+           "Action": "Load",
+           "Target": "Data/Events/WeaponRebalanceEvents",
+           "FromFile": "assets/WeaponRebalanceEvents.json"
+       },
+       {
+           // Load an invisible Gil sprite that will be put off-screen so the player can talk to Gil in the cutscene
+           "LogName": "Events",
+           "Action": "Load",
+           "Target": "Characters/Gil",
+           "FromFile": "assets/WeaponRebalanceInvisoGil.png"
+       },
+       {
+           // Event where Gil gives you the basic dagger and hammer
+           "LogName": "Events",
+           "Action": "EditData",
+           "Target": "Data/Events/WeaponRebalanceEvents",
+           "Entries":
+           {
+               "WeaponRebalanceIntroWeaponsGift": "MarlonsTheme/-100 -100/farmer 6 19 0/addTemporaryActor Gil 1 1 100 100 1/viewport 13 25/move farmer 0 -6 0/move farmer 1 0 1/move farmer 0 -1 0/move farmer 3 0 1/speak Gil \"There you are, kid. Here, try these on for size and pick what you like.\"/speak Gil \"Swords are great for consistent damage, but daggers are faster and easier to find your foes' weak points.\"/speak Gil \"Hammers are slow, but great at keeping monsters away so you don't have to fight them in the first place.\"/pause 1000/end"
+           }
+       }
+    ]
+}

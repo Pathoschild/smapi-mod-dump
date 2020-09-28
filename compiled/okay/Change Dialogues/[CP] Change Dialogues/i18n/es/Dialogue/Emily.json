@@ -1,0 +1,74 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Emily",
+		"Entries": {
+			"Mon": "¿Te había dicho que {{mardrest.ChangeDialogues/HaleyName}} y yo somos hermanas? Es raro, ¿no?",
+			"Mon6": "Ojalá {{mardrest.ChangeDialogues/HaleyName}} buscase trabajo, o por lo menos contribuyese con la cocina y la limpieza.$s#$e#Creo que aspira a casarse con alguien rico.",
+			"Mon6_inlaw_Haley": "La verdad es que, desde que {{mardrest.ChangeDialogues/HaleyName}} no está, resulta mucho más fácil mantener el orden.",
+			"Tue": "Trabajo a tiempo parcial en el Salón de {{mardrest.ChangeDialogues/GusName}}. Me sirve para pagar las facturas.",
+			"Tue4": "Trabajo con {{mardrest.ChangeDialogues/GusName}} para llegar a fin de mes... Pero mi verdadera pasión es la sastrería.#$e#Esta ropa me la he hecho yo.",
+			"summer_Mon": "{{mardrest.ChangeDialogues/HaleyName}} es muy quisquillosa con la comida. Es bastante duro cocinar para ella.",
+			"summer_Mon_inlaw_Haley": "{{mardrest.ChangeDialogues/HaleyName}} y yo nos llevamos mucho mejor desde que no vive aquí. ¡Espero con ganas sus visitas!",
+			"summer_Fri": "¡Si no tuviera tanto trabajo iría a ayudarte a la granja!#$e#Pero {{mardrest.ChangeDialogues/GusName}} se disgustaría si tuviera otro trabajo...$s",
+			"summer_Sat": "¡No trabajes demasiado o acabarás en la clínica de {{mardrest.ChangeDialogues/HarveyName}}!",
+			"fall_Thu": "¿Te llevas bien con {{mardrest.ChangeDialogues/ClintName}}? Es un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ClintGender}}}} tí{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}} maj{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}} una vez l{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}} conoces.#$e#Se siente sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}} en su taller todo el día. Pero es tan tímid{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}} que le cuesta hacer nuevos amigos.",
+			"winter_Wed": "{{mardrest.ChangeDialogues/HaleyName}} y yo no estamos hechas para una casa tan grande. Es un follón mantenerla limpia.#$e#En fin. No debería quejarme.#$e#Tu casa parece acogedora y bonita.$h",
+			"winter_Thu": "Qué frío deben de pasar los pobres peces.$s#$e#¿Hibernarán los peces? Debería preguntárselo a {{mardrest.ChangeDialogues/DemetriusName}}.",
+			"summer_Tue6": "Me da pena {{mardrest.ChangeDialogues/LinusName}}. Todos le juzgan, pero {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/LinusGender}}}} solo vive de forma distinta.$u#$e#Ojalá la gente aprendiera a aceptar a los demás.",
+			"summer_Fri6": "¿Sabes? Creo que {{mardrest.ChangeDialogues/GusName}} lo entendería si un día dejara el Salón.#$b#Hay tanto que hacer en la vida que no me puedo quedar de camarera para siempre.$u",
+			"fall_Thu8": "Creo que {{mardrest.ChangeDialogues/ClintName}} está enfadad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}} conmigo. Ya ni me mira...$u#$e#Siempre pensé que éramos amig{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}}s.$u"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Emily",
+		"Entries": {
+			"marriage_Mon.002": "Parece que {{mardrest.ChangeDialogues/GusName}} tiene problemas organizándolo todo sin mí.",
+			"winter_11.001": "Doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}, preferiría un «remedio natural», si es posible."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Emily": {
+				"NPCName": "Emily",
+				"Reactions": [
+				{
+					"Tag": "dislike",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Generalmente voy a películas más positivas, esta será interesante."
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/message \"{{mardrest.ChangeDialogues/EmilyName}} se susurra a sí misma...\"",
+							"Text": "Yoba, por favor, protégeme de la energía oscura de esta película.$7"
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Mis niveles de energía están bajos después de esta película...$3"
+						}
+					},
+					"ID": "reaction_5"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Emily": "adult/polite/outgoing/positive/female/datable/null/Town/spring 27/Haley 'hermana'/HaleyHouse 16 5/{{mardrest.ChangeDialogues/EmilyName}}"
+		}
+	}
+	]
+}

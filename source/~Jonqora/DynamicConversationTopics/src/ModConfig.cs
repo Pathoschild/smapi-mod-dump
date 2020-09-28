@@ -121,18 +121,6 @@ namespace DynamicConversationTopics
             "WizardHouse",
             "Woods"
         };
-
-        internal static bool AssetMatch(IAssetInfo asset, string path, List<string> targets)
-        {
-            foreach(string target in targets)
-            {
-                if (asset.AssetNameEquals(path + "\\" + target))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
         #endregion
 
         #region Generic Mod Config Menu helper functions
@@ -146,8 +134,7 @@ namespace DynamicConversationTopics
             Helper.WriteConfig(Instance);
             //ModConfig.Print();
             Helper.Content.InvalidateCache(asset // Trigger changed assets to reload on next use.
-                => asset.DataType == typeof(Dictionary<string, string>)
-                && (AssetMatch(asset, "Characters\\Dialogue", NPCs) || AssetMatch(asset, "Data\\Events", EventLocations))
+                => Utilities.IsDialogueAsset(asset) || Utilities.IsEventAsset(asset)
                 );
         }
 

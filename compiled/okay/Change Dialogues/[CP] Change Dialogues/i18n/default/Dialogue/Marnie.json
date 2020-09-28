@@ -1,0 +1,31 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Marnie",
+		"Entries": {
+			"Introduction": "Ah, Mayor {{mardrest.ChangeDialogues/LewisName}} told me you just arrived. I'm {{mardrest.ChangeDialogues/MarnieName}}!#$e#I sell livestock and animal care products at my ranch. You should swing by some time.$h",
+			"Saloon_Fri": "%{{mardrest.ChangeDialogues/MarnieName}} doesn't seem to notice that you're there...",
+			"Saloon_Sat": "I always see {{mardrest.ChangeDialogues/ClintName}} here but {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/ClintGender}}}} won't talk to anyone. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/ClintGender}}}} just glances over {{mardrest.ChangeDialogues/His:L{{mardrest.ChangeDialogues/ClintGender}}}} shoulder now and then.$s",
+			"Fri4": "#$1 marnieLike#I think someone in town has taken a liking to me. *teehee*$k$h#$e#I would be so lonely if {{mardrest.ChangeDialogues/ShaneName}} ever moved out.",
+			"Fri6": "I wonder if {{mardrest.ChangeDialogues/Mr:{{mardrest.ChangeDialogues/LewisGender}}}}. {{mardrest.ChangeDialogues/LewisName}} gets lonely in that big house of {{mardrest.ChangeDialogues/His:L{{mardrest.ChangeDialogues/LewisGender}}}}... $s#$e#It seems so empty in there, doesn't it?",
+			"Tue": "My {{mardrest.ChangeDialogues/Nephew:L{{mardrest.ChangeDialogues/ShaneGender}}}} {{mardrest.ChangeDialogues/ShaneName}} has been staying at my place the last few months.#$e#{{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/ShaneGender}}}} helps me out with the chickens, so I'm not complaining."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Marnie",
+		"Entries": {
+			"fall_18.000": "Erm... Doctor {{mardrest.ChangeDialogues/HarveyName}}? This is completely confidential, right?",
+			"winter_18.002": "Erm... Doctor {{mardrest.ChangeDialogues/HarveyName}}? When you give her the shots, can we have two lollipops?"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Marnie": "adult/polite/outgoing/positive/female/not-datable/Lewis/Town/fall 18/Lewis '' Shane '{{mardrest.ChangeDialogues/Nephew:L{{mardrest.ChangeDialogues/ShaneGender}}}}' Jas 'niece'/AnimalShop 12 14/{{mardrest.ChangeDialogues/MarnieName}}"
+		}
+	}
+	]
+}

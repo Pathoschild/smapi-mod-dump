@@ -5,10 +5,10 @@ mods:
    Mushroom Propagator - Grow More Mushrooms
 
 latest commit:
-   commit b0dd6ff759b978e4aab92d87b4903d7687908d5f
+   commit 055dd3009181b3d44779369df78ce40fe5660862
+   Merge: d9b313a cf8895f
    Author: razikh-git <pocketsathome@gmail.com>
-   Date:   Wed Mar 11 00:48:44 2020 +1100
+   Date:   Sun Sep 13 22:42:40 2020 +1000
    
-       Unified object naming conventions.
-       Undone stupid refactor of filepath in string.
+       Minor log message change
    

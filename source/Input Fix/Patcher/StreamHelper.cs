@@ -61,7 +61,7 @@ namespace Patcher
             stream.Seek(0, SeekOrigin.Begin);
             stream.Read(bytes, 0, bytes.Length);
             FileStream fileStream = new FileStream(path,
-                FileMode.OpenOrCreate,
+                FileMode.Create,
                 FileAccess.ReadWrite);
             fileStream.Write(bytes, 0, bytes.Length);
             fileStream.Flush();

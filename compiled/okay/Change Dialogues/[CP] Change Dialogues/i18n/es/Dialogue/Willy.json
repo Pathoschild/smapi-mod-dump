@@ -1,0 +1,27 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Willy",
+		"Entries": {
+			"Tue6": "¿Sabes? Mi viej{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/WillyGender}}}} era pescador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/WillyGender}}}}. Yo me crié navegando entre las islas Helecho, viviendo de captura en captura.#$e#La vida del pescador es dura, pero tiene algo que te engancha."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Willy",
+		"Entries": {
+			"spring_9.001": "Eh... Tengo un anzuelo clavado en el pulgar... {{mardrest.ChangeDialogues/The:{{mardrest.ChangeDialogues/HarveyGender}}}} doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}} va a sacármelo.",
+			"spring_9.002": "¡Ay! ¡Eso ha dolido, doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}!$s",
+			"spring_9.000": "Hoy tengo cita con {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/HarveyGender}}}} médic{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/HarveyGender}}}}, así que date prisa si tienes que comprar algo."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Willy": "adult/neutral/neutral/neutral/{{lowercase:{{mardrest.ChangeDialogues/WillyGender}}}}/not-datable/null/Town/summer 24/Elliott ''/FishShop 5 4/{{mardrest.ChangeDialogues/WillyName}}"
+		}
+	}
+	]
+}

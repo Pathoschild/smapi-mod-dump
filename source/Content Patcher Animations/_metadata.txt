@@ -5,11 +5,9 @@ mods:
    Content Patcher Animations
 
 latest commit:
-   commit 6376eacee526fdd597315818b5cde25ba056c097
+   commit b86229c1522704148bb107524d3acb533d96ac63
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Aug 3 17:12:55 2020 -0400
+   Date:   Sat Aug 29 21:54:39 2020 -0400
    
-       Some changes I forgot to commit a while back, and CP 1.16 partial support.
-       Old changes: Detect when asset is edited and refresh target.
-       Partial support: Doesn't support included patch files yet.
+       Bugfix for non-active patches, for next version. (Manifest update is from last release).
    

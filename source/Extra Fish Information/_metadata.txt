@@ -5,11 +5,12 @@ mods:
    Extra Fish Information
 
 latest commit:
-   commit 9a89aa6260e40b18d66a7457d7a5bb180642ba44
-   Author: Jessica <jessica.sammon@hotmail.co.uk>
-   Date:   Tue Mar 3 20:09:19 2020 +0000
+   commit efcc07d8fb0ec0f9457ab5db0e3a87d7d8f4df07
+   Merge: 9a89aa6 82e04aa
+   Author: Jessica <32495134+jessica0x73@users.noreply.github.com>
+   Date:   Mon Aug 31 12:44:21 2020 +0100
    
-       Version 1.2.0
+       Merge pull request #1 from websterl3o/master
        
-       Implemented translations & implemented better exception handling
+       Adding Portuguese translation
    

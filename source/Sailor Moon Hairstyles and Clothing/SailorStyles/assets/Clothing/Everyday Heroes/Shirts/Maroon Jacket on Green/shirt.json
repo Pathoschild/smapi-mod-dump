@@ -1,0 +1,13 @@
+{
+    "Name": "Maroon Jacket on Green",
+    "Description": "There's a white shirt tucked away under these thick layers.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Chaqueta Granate en Verde"
+    },
+    "DescriptionLocalization": {
+        "es": "Hay una camisa blanca escondida debajo de estas gruesas capas."
+    }
+}

@@ -109,11 +109,13 @@ namespace MobilePhone
             Monitor.Log($"Creating Callable List");
 
             callableList.Clear();
+            string[] blackList = Config.CallBlockList.Length > 0 ? Config.CallBlockList.Split(',') : null;
+            string[] whiteList = Config.CallAllowList.Length > 0 ? Config.CallAllowList.Split(',') : null;
             foreach(KeyValuePair<string,Netcode.NetRef<Friendship>> kvp in Game1.player.friendshipData.FieldDict)
             {
                 try
                 {
-                    if (kvp.Value.Value.Points >= Config.MinPointsToCall)
+                    if (kvp.Value.Value.Points >= Config.MinPointsToCall && blackList?.Contains(kvp.Key) != true && whiteList?.Contains(kvp.Key) != false)
                     {
                         Monitor.Log($"Adding {kvp.Key} to callable list");
                         NPC npc = Game1.getCharacterFromName(kvp.Key);

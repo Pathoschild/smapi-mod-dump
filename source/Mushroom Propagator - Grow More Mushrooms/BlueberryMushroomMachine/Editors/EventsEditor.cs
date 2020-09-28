@@ -21,13 +21,13 @@ namespace BlueberryMushroomMachine.Editors
 
 		public void Edit<T>(IAssetData asset)
 		{
-			Log.D($"Editing {asset.AssetName}.",
+			Log.T($"Editing {asset.AssetName}.",
 				_isDebugging);
 
 			var data = asset.AsDictionary<string, string>().Data;
 
 			// Event 0000: Robin
-			// Pre-Demetrius-event dialogue.
+			// Pre-Demetrius-event dialogue
 			if (asset.AssetNameEquals(@"Characters/Dialogue/Robin"))
 			{
 				const string key = "event.4637.0000.0000";
@@ -36,11 +36,11 @@ namespace BlueberryMushroomMachine.Editors
 			}
 
 			// Event 0001: Farm, Demetrius
-			// Receive Propagator recipe after house upgrade level 3.
+			// Receive Propagator recipe after house upgrade level 3
 			if (asset.AssetNameEquals(@"Data/Events/Farm"))
 			{
 				var json = ModEntry.Instance.Helper.Content.Load<IDictionary<string, string>>
-					(Const.EventsPath);
+					(ModValues.EventsPath);
 				foreach (var key in json.Keys)
 				{
 					if (key.StartsWith("46370001"))
@@ -49,10 +49,10 @@ namespace BlueberryMushroomMachine.Editors
 						{
 							Log.D("Event conditions:" +
 							      $" disabled=[{ModEntry.Instance.Config.DisabledForFruitCave}]" +
-							      $" caveChoice=[{Game1.player.caveChoice}]",
+							      $" caveChoice=[{Game1.MasterPlayer.caveChoice}]",
 								_isDebugging);
 							if (ModEntry.Instance.Config.DisabledForFruitCave
-								&& Game1.player.caveChoice.Value != 2)
+								&& Game1.MasterPlayer.caveChoice.Value != 2)
 								return;
 
 							if (!data.ContainsKey(key))
@@ -63,7 +63,7 @@ namespace BlueberryMushroomMachine.Editors
 									ModEntry.Instance.i18n.Get("event.4637.0001.0001"),
 									ModEntry.Instance.i18n.Get("event.4637.0001.0002"),
 									ModEntry.Instance.i18n.Get("event.4637.0001.0003"),
-									Const.PropagatorInternalName);
+									ModValues.PropagatorInternalName);
 								Log.D($"Injecting event.",
 									_isDebugging);
 								data.Add(key, value);

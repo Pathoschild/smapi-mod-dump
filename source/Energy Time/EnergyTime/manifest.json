@@ -1,7 +1,7 @@
 ﻿{
   "Name": "EnergyTime",
   "Author": "nikperic",
-  "Version": "1.4.0",
+  "Version": "1.4.1",
   "Description": "Makes time pass with energy usage.",
   "UniqueID": "nikperic.EnergyTime",
   "EntryDll": "EnergyTime.dll",

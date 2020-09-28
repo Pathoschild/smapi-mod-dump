@@ -7,6 +7,7 @@ using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using xTile.Dimensions;
@@ -29,7 +30,7 @@ namespace MobilePhone
         }
         internal static bool Game1_pressSwitchToolButton_prefix()
         {
-            if (ModEntry.screenRect.Contains(Game1.getMousePosition()))
+            if (ModEntry.phoneOpen && ModEntry.screenRect.Contains(Game1.getMousePosition()))
             {
                 return false;
             }
@@ -230,6 +231,29 @@ namespace MobilePhone
                 Game1.exitActiveMenu();
                 int num = __instance.CurrentCommand;
                 __instance.CurrentCommand = num + 1;
+                return false;
+            }
+            return true;
+        }
+        internal static bool Event_skipEvent_prefix(Event __instance, ref Dictionary<string, Vector3> ___actorPositionsAfterMove)
+        {
+            if (ModEntry.isReminiscing)
+            {
+                Monitor.Log($"Reminiscing, will not execute skip functions");
+                Game1.playSound("drumkit6");
+                ___actorPositionsAfterMove.Clear();
+                foreach (NPC i in __instance.actors)
+                {
+                    i.Halt();
+                    __instance.resetDialogueIfNecessary(i);
+                }
+                __instance.farmer.Halt();
+                __instance.farmer.ignoreCollisions = false;
+                Game1.exitActiveMenu();
+                Game1.dialogueUp = false;
+                Game1.dialogueTyping = false;
+                Game1.pauseTime = 0f;
+                __instance.exitEvent();
                 return false;
             }
             return true;

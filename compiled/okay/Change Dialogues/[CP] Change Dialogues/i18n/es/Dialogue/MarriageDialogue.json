@@ -1,0 +1,22 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialogue",
+		"Entries": {
+			"Rainy_Night_Sam": "Ha llamado {{mardrest.ChangeDialogues/VincentName}}. Dice que me echa de menos y te envía recuerdos.$h",
+			"Indoor_Night_Harvey": "Te irá bien un masaje esta noche.$l#$e#Órdenes {{mardrest.ChangeDialogues/From:L{{mardrest.ChangeDialogues/HarveyGender}}}} médic{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/HarveyGender}}}}... ¡Es bueno para la circulación!",
+			"Indoor_Night_Sebastian": "#$c .5#Puede que sea un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/SebastianGender}}}} tí{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} reservad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}, pero siempre estoy content{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} cuando te tengo cerca.$h#$e#Hola, @. Me alegro de verte. Me tranquiliza que estés cerca.$h",
+			"Outdoor_Harvey": "Esto es mucho mejor que estar encerrad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/HarveyGender}}}} en la clínica todo el día.$l#$e#Me encanta observarte en la granja... Je, je.",
+			"jobReturn_Penny": "#$c .5#Buenas tardes. ¡Mi día ha sido genial, gracias! ¿Y el tuyo?$h#$e#{{mardrest.ChangeDialogues/JasName}} y {{mardrest.ChangeDialogues/VincentName}} no se han portado muy bien hoy. Estoy algo angustiada...",
+			"fall_Elliott": "Ah... Otoño. El cálido sol flota bajo en el cielo, creando sombras alargadas en los campos de oro que se mecen.#$e#Un momento del año hermoso, ¿no crees?",
+			"winter_Harvey": "El invierno es la temporada de la gripe, así que el trabajo será mucho más estresante. Mis disculpas por adelantado si estoy {{mardrest.ChangeDialogues/Grumpy:L{{mardrest.ChangeDialogues/HarveyGender}}}}.",
+			"winter_Sam": "Ya no quiero ser músic{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}} profesional. ¡Quiero dedicarme a mi familia!",
+			"winter_Sebastian": "Me pregunto qué tal le irá a {{mardrest.ChangeDialogues/SamName}}. Solíamos estar muy unid{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}{{mardrest.ChangeDialogues/SebastianGender}}}}s.",
+			"spouseRoom_Harvey": "#$c .5#No hay tráfico aéreo esta mañana, cariño. Pero es divertido poner en marcha el equipo de vez en cuando.#$e#Estoy trabajando en una nueva maqueta de avión. Me siento mucho más relajad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/HarveyGender}}}} aquí que en mi antigua casa.",
+			"Rainy_Night_Shane": "Acabo de llamar a {{mardrest.ChangeDialogues/JasName}} y {{mardrest.ChangeDialogues/MarnieName}}. Parece que les va bastante bien sin mí.",
+			"Outdoor_Shane": "No sé si mis pulmones aguantarán tanta frescura. Aún estoy acostumbrad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} al aire de Joja."
+		}
+	}
+	]
+}

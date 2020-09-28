@@ -1,0 +1,18 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/Festivals/summer11",
+		"Entries": {
+			"Maru_spouse": "{{mardrest.ChangeDialogues/HarveyName}} no para de hablarme, pero yo lo único que quiero es un trozo de asado.",
+			"Maru": "Sea lo que sea que asa {{mardrest.ChangeDialogues/LinusName}}, huele increíblemente bien... *Slurp*",
+			"Sebastian": "Un año, {{mardrest.ChangeDialogues/SamName}} echó medio kilo de anchoas a la sopa.#$e#¿Nunca te has preguntado por qué {{mardrest.ChangeDialogues/SamName}} hace tantas horas de servicio comunitario?$h",
+			"Pierre": "Hmmm... Si consigo poner de mi parte al gobernador, a lo mejor le da un respiro fiscal a mi negocio...#$b#¿Le gustará el whisky añejo?#$e#Ya podría {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} dejar de charlar con él todo el rato...",
+			"Penny": "Celebramos este festival todos los años para dar a probar al gobernador lo que el valle tiene para ofrecer.#$e#{{mardrest.ChangeDialogues/The:{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}} espera que sirva para poner al gobernador de nuestro lado. Por eso está tan obsesionado con el sabor de la sopa.",
+			"Harvey": "Menos mal que he traído crema solar.#$e#Me pregunto si {{mardrest.ChangeDialogues/MaruName}} querrá un poco en los hombros.",
+			"Jas": "{{mardrest.ChangeDialogues/VincentName}} no baila muy bien.",
+			"Willy": "Hola, @. ¿Tomando un descanso?#$e#Para serte sincer{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/WillyGender}}}}, preferiría estar pescando ahora mismo."
+		}
+	}
+	]
+}

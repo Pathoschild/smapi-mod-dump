@@ -1,0 +1,68 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Lewis",
+		"Entries": {
+			"pamHouseUpgrade": "@, I heard what you did for {{mardrest.ChangeDialogues/PamName}} and {{mardrest.ChangeDialogues/PennyName}}... now *that's* the kind of community support I love to see in Pelican Town!$h",
+			"pamHouseUpgradeAnonymous": "@, did you hear? Someone paid {{mardrest.ChangeDialogues/RobinName}} to build {{mardrest.ChangeDialogues/PamName}} and {{mardrest.ChangeDialogues/PennyName}} a house! {{mardrest.ChangeDialogues/RobinName}} won't tell me who it was, though.#$e#Regardless of who paid, I love seeing this kind of community support in Pelican Town!$h",
+			"Saloon_Entry": "Hi, {{mardrest.ChangeDialogues/GusName}}!",
+			"summer_Town_57_40": "#$c .3#Ah, my flowers are growing wonderfully!$h#$c .3#Good morning! Can you smell the sweet scent of these dew-lilies?#$e#It's early but the air is already quite warm. Summer is nice for an old {{mardrest.ChangeDialogues/Guy:L{{mardrest.ChangeDialogues/LewisGender}}}} like me hehe.",
+			"summer_Thu": "The saloon gets pretty lively at night.#$e#I like to visit once a week or so to catch up on things. And to get a taste of {{mardrest.ChangeDialogues/GusName}}' authentic spaghetti.",
+			"summer_Fri": "Hmm... I wonder if it's anyone's birthday today? I'd better check the calendar by {{mardrest.ChangeDialogues/PierreName}}'s shop.",
+			"fall_Fri4": "Have you tried {{mardrest.ChangeDialogues/GusName}}' 'secret' spaghetti sauce?$s#$b#...The ingredients may be secret, but the smell isn't.#$b#I'll see you later.",
+			"winter_Sun": "Hi there, @! How're you doing today?$h#$e#If you see {{mardrest.ChangeDialogues/MarnieName}}, tell her I say 'hi'."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Lewis",
+		"Entries": {
+			"fall_9.000": "Erm... Doctor {{mardrest.ChangeDialogues/HarveyName}}? This is completely confidential, right?",
+			"6.000": "I'm here to collect {{mardrest.ChangeDialogues/ClintName}}'s business tax.",
+			"3.000": "I'm just here to make sure all of {{mardrest.ChangeDialogues/MarnieName}}'s business needs are met."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Lewis": {
+				"NPCName": "Lewis",
+				"Reactions": [
+				{
+					"Tag": "summer_movie_0",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I watched cowboy movies when I was a kid... I'm glad to see the art is still alive!"
+						},
+						"DuringMovie": {
+							"ResponsePoint": "PK_villain",
+							"Script": "/message \"Mayor {{mardrest.ChangeDialogues/LewisName}} seems deep in thought...\"",
+							"Text": "(I wonder what kind of {{mardrest.ChangeDialogues/Moustache:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Wax:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/LewisGender}}}} uses?)"
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Heh, that was great! Really brought me back...$h"
+						}
+					},
+					"ID": "reaction_3"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Lewis": "adult/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/LewisGender}}}}/not-datable/null/Town/spring 7/Marnie ''/ManorHouse 8 5/{{mardrest.ChangeDialogues/LewisName}}"
+		}
+	}
+	]
+}

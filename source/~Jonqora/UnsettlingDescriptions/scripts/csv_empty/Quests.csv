@@ -1,0 +1,62 @@
+key,name,unsettling_description,original_description
+1,Meet The Wizard,TODO,You received a letter from the local wizard. He claims to have information regarding the old community center.
+2,The Mysterious Qi,TODO,"Within a secret lock-box, you found a note with peculiar instructions. It's signed by a 'Mr. Qi'."
+3,The Mysterious Qi,TODO,You've found another note written by 'Mr. Qi'. The request is even more unusual this time.
+4,The Mysterious Qi,TODO,"You've found yet another strange note within the Mayor's fridge. This time, the instructions are more cryptic."
+5,The Mysterious Qi,TODO,You found another note in the sand dragon's eye. It seems Mr. Qi's strange scavenger hunt has come to an end.
+6,Getting Started,TODO,"If you want to become a farmer, you have to start with the basics. Use your hoe to till the soil, then use a seed packet on the tilled soil to sow a crop. Water every day until the crop is ready for harvest."
+7,Raising Animals,TODO,"Robin, the local carpenter, lives north of town. In exchange for raw materials and money, she'll construct new buildings on your farm. You'll need her to build a coop or barn so that you can raise animals."
+8,Advancement,TODO,"As you gain experience, you'll discover new crafting recipes to increase profit and make life easier. A scarecrow, for example, will prevent crows from snacking on your precious crops."
+9,Introductions,TODO,It would be a nice gesture to introduce yourself around town. Some people might be anxious to meet the new farmer.
+10,Copper Ore,TODO,"You found a piece of copper ore. You're not sure what you can use it for, but the local blacksmith ought to know."
+11,Forging Ahead,TODO,"If you're going to keep mining, you should build a furnace."
+12,Smelting,TODO,"Now that you've built a furnace, you can smelt some metal. According to Clint's instructions, if you place 5 copper ore and 1 piece of coal in the furnace, it should produce a copper bar."
+13,To The Beach,TODO,Someone named Willy invited you to visit the beach south of town. He says he has something to give you.
+14,Explore The Mine,TODO,"There's an old mine shaft in the mountains north of town. There could be valuable minerals inside, but Marlon hinted that it might be dangerous."
+15,Initiation,TODO,"If you can slay 10 slimes, you'll have earned your place in the Adventurer's Guild."
+16,Initiation,TODO,You sucessfully dispatched 10 slimes. Now you can enter the Adventurer's Guild.
+17,Deeper In The Mine,TODO,It seems that the mine elevator is still functional. It will allow you to quickly return to any elevator doors you've discovered. A deeper expedition might be in order.
+18,To The Bottom?,TODO,"So far, there's no sign of the bottom. How low does it go?"
+19,The Skull Key,TODO,You found a strange looking key in the bottom of the mines.
+20,Qi's Challenge,TODO,You've been challenged to reach level 25 in the skull cavern. You've been promised a substantial reward if you're successful.
+21,Marnie's Request,TODO,"Marnie came by the farm and asked if you'd bring her a cave carrot. She's trying to train her goats to speak, and cave carrot is their favorite snack."
+22,Fish Casserole,TODO,Jodi swung by the farm to ask you to dinner at 7:00 PM. Her only request was that you bring a largemouth bass for her fish casserole.
+23,Archaeology,TODO,"You found an ancient-looking object. Could it be some kind of artifact from long ago? Perhaps Gunther, curator of the local museum, has the answer."
+24,Archaeology,TODO,Gunther asked if you'd consider donating any new artifacts or minerals you find to the museum. He says he'll compensate you by way of occasional rare goods.
+25,How To Win Friends,TODO,Giving gifts is a great way to build friendships. Learn each person's individual tastes and you'll be popular in no time.
+26,"""Rat Problem""",TODO,There's something odd going on in the Community Center...
+27,Goblin Problem,TODO,There's a goblin blocking the path to the Witch's hut. There must be some way to get him to move... Perhaps I should seek out more information on Goblins.
+28,Dark Talisman,TODO,The Wizard asked me to retrieve the magic ink from his ex-wife's house... but to gain access I'll need a dark talisman.
+29,Strange Note,TODO,"You found a note, barely legible, asking you to bring ""may-pal serrup"" to the ""seecrit wuds""."
+30,Cryptic Note,TODO,"You found a note that reads, ""Someone is waiting for you on level 100 in the Skull Cavern"""
+31,A Winter Mystery,TODO,"You encountered a suspicious looking figure by the bus stop. When it saw you, it fled toward town. Could there be a clue to its whereabouts?"
+100,Robin's Lost Axe,TODO,"Robin lost her favorite axe. The last time she remembers using it, she was cutting wood south of Marnie's ranch."
+101,Jodi's Request,TODO,Jodi needs a fresh cauliflower for a recipe she's making. She's asking you to bring her one.
+102,"Mayor's ""Shorts""",TODO,"Mayor Lewis has lost his purple ""shorts"". He's asking you to find and return them... Discreetly."
+103,Pam Is Thirsty,TODO,Pam is hankerin' for a pale ale. Regular old beer won't do. You can brew one yourself if you have hops and a keg.
+104,Crop Research,TODO,Demetrius needs a fresh melon for his research.
+105,Knee Therapy,TODO,George needs a hot pepper to soothe his aching knee.
+106,Cow's Delight,TODO,Marnie wants to give her cows a special treat. She's asking for a single bunch of amaranth.
+107,Blackberry Basket,TODO,"It's blackberry season, but Linus can't find his basket! He's asking you to help him find it. He has no idea where it is."
+108,Carving Pumpkins,TODO,Caroline wants to carve a pumpkin with her daughter. She asked you to bring her one from the farm.
+109,Catch A Squid,TODO,Willy is challenging you to catch a squid. He says you can fish them from the ocean on winter nights.
+110,Clint's Attempt,TODO,Clint wants you to give Emily an amethyst. He wants you to tell her it's from him.
+111,A Dark Reagent,TODO,The wizard wants you to descend into the mines and fetch him a Void Essence. He needs it for some kind of dark magic.
+112,A Favor For Clint,TODO,Clint got a new hammer and he wants to test it out on a variety of metals.
+113,Robin's Request,TODO,Robin wrote to you asking for some hardwood.
+114,Fish Stew,TODO,"Gus wants to make fish stew, but he needs an albacore."
+115,Fresh Fruit,TODO,Emily wants a taste of spring. She's asking for a fresh apricot.
+116,Granny's Gift,TODO,Evelyn wants to surprise her husband with a gift.
+117,Pierre's Notice,TODO,"Pierre will pay ""top coin"" to whoever brings him a plate of sashimi. Apparently he's really craving the stuff."
+118,Aquatic Research,TODO,Demetrius is studying the toxin levels of the local pufferfish. He'd like you to bring him one.
+119,A Soldier's Star,TODO,Kent wants to give his wife a starfruit for their anniversary.
+120,Mayor's Need,TODO,Mayor Lewis wants truffle oil. He won't explain what it's for. Maybe it's none of your business.
+121,Wanted: Lobster,TODO,Gus put out a notice requesting a fresh lobster.
+122,Pam Needs Juice,TODO,Pam's TV Remote is dead. She's having a tough time going back and forth between the couch and the TV dial.
+123,Staff Of Power,TODO,The Wizard is creating a staff of phenomenal power. Who knows what it's for. He needs an iridium bar to finish it.
+124,Catch a Lingcod,TODO,Willy is challenging you to catch a Lingcod.
+125,Exotic Spirits,TODO,"Gus wants to make a Coco-no-no, but he's missing the main ingredient."
+126,Errand for your Wife,TODO,Your wife asked you to bring her 200 pieces of fiber for a secret project.
+127,Haley's Cake-Walk,TODO,Your wife is organizing a charity cake-walk in the town square. She asked you to bring a chocolate cake.
+128,...,TODO,...
+129,...,TODO,...

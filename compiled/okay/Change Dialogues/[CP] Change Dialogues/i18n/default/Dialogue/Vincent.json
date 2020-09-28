@@ -1,0 +1,81 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Vincent",
+		"Entries": {
+			"Introduction": "Oh, a stranger! My name's {{mardrest.ChangeDialogues/VincentName}}.#$b#Momma says not to talk to strangers... But you seem okay.",
+			"Mon4": "$d kent#I'm glad {{mardrest.ChangeDialogues/Dad:{{mardrest.ChangeDialogues/KentGender}}}}'s back... but {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/KentGender}}}}'s different than I remember...$s|{{mardrest.ChangeDialogues/Dad:{{mardrest.ChangeDialogues/KentGender}}}}'s not around much... I miss playing with {{mardrest.ChangeDialogues/Him:L{{mardrest.ChangeDialogues/KentGender}}}}.$s",
+			"Tue6": "Can you keep a secret, mister?^Can you keep a secret, miss?$u#$b#I wanna marry Miss {{mardrest.ChangeDialogues/PennyName}} when I grow up.#$e#Just don't tell her, okay?$u",
+			"Sat": "Miss {{mardrest.ChangeDialogues/PennyName}} makes me read a new book every week.$s#$b#At least she lets me pick them, sometimes!",
+			"Sat_1": "{{mardrest.ChangeDialogues/Dad:{{mardrest.ChangeDialogues/KentGender}}}}'s coming back soon!#$b#I hope {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/KentGender}}}} brings me some toys.$u",
+			"Sat8": "$d kent#{{mardrest.ChangeDialogues/Dad:{{mardrest.ChangeDialogues/KentGender}}}} seems weird since {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/KentGender}}}} came back. I wonder what happened to {{mardrest.ChangeDialogues/Him:L{{mardrest.ChangeDialogues/KentGender}}}}$s#$b#{{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/KentGender}}}} doesn't play with me anymore.$s|I wonder if {{mardrest.ChangeDialogues/Dad:{{mardrest.ChangeDialogues/KentGender}}}} will ever come home...$s",
+			"Mon": "I wanna be just like my big {{mardrest.ChangeDialogues/Brother:L{{mardrest.ChangeDialogues/SamGender}}}} when I grow up!$h#$e#Okay! Bye!"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Vincent": {
+				"NPCName": "Vincent",
+				"Reactions": [
+				{
+					"Tag": "love",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I'm so excited! My mom said I can have candy, too!$h"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/jump Vincent/pause 400/playSound reward/message \"{{mardrest.ChangeDialogues/VincentName}} is having a blast!\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "That was so fun! I wanna go see it again!$h"
+						}
+					},
+					"ID": "reaction_4"
+				},
+				{
+					"Tag": "dislike",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "B... But... This movie is for grown-ups, isn't it?$s"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/shake Vincent 250/pause 500/shake Vincent 250/pause 500/emote Vincent 28/message \"{{mardrest.ChangeDialogues/VincentName}} is fidgeting in {{mardrest.ChangeDialogues/His:L{{mardrest.ChangeDialogues/VincentGender}}}} seat.\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "That was boring... I didn't understand anything.$s"
+						}
+					},
+					"ID": "reaction_5"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Vincent": "child/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/VincentGender}}}}/not-datable/Jas/Town/spring 10/Jas ''/SamHouse 10 23/{{mardrest.ChangeDialogues/VincentName}}"
+		}
+	}
+	]
+}

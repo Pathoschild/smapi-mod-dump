@@ -1,7 +1,7 @@
 ﻿{
   "Name": "NiceMessages",
   "Author": "Nori",
-  "Version": "1.2.1",
+  "Version": "1.2.2", // fixed locally
   "Description": "Flavour text for when you wake up in the morning.",
   "UniqueID": "nori.NiceMessages",
   "EntryDll": "Nice Messages.dll",

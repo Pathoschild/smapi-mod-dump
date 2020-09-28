@@ -5,9 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit d807a6f810802a6e21b5e79696e99832f06ac248
+   commit 3c7cb6433be13ade33930b016bd9f0c4ffc1723d
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Aug 29 18:57:19 2020 -0400
+   Date:   Sat Sep 26 13:11:05 2020 -0400
    
-       Fix various places for hats
+       Test fix for rare tilesheet 'corruption'
    

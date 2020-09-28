@@ -1,0 +1,55 @@
+tilesheet_coordinates,key,name,image,unsettling_description,silly_description,original_description
+"(0, 0)",0,Rusty Sword,,"Bestows tetanus on your enemies. And on you, if you're not careful.",,"A rusty, dull old sword."
+"(16, 0)",1,Silver Saber,,Helpful when the howls you hear aren't just ordinary howls.,,Plated with silver to deter rust.
+"(32, 0)",2,Dark Sword,,Saps the life force from your enemies and drives it through your veins.,,It's glowing with vampire energy.
+"(48, 0)",3,Holy Blade,,This sword doesn't sit right in your hands. Something about you feels *wrong*.,,It feels hopeful to wield.
+"(64, 0)",4,Galaxy Sword,,You wield the power of the universe in your hands. Don't drop it.,,It's unlike anything you've ever seen.
+"(80, 0)",5,Bone Sword,,"A human leg bone, sharpened into a crude but piercing sword.",,A very light piece of sharpened bone.
+"(96, 0)",6,Iron Edge,,Particularly effective against fae folk.,,A heavy broadsword.
+"(112, 0)",7,Templar's Blade,,It belonged to a knight who once was honorable.,,It once belonged to an honorable knight.
+"(0, 16)",8,Obsidian Edge,,Sharp enough that deadly cuts are barely felt by its victims.,,It's incredibly sharp.
+"(16, 16)",9,Lava Katana,,Cuts and cauterizes in one stroke.,,A powerful blade forged in a pool of churning lava.
+"(32, 16)",10,Claymore,,It's strong enough to cleave through heavy armor.,,It's really heavy.
+"(48, 16)",11,Steel Smallsword,,"It's not the size that counts, it's how you use it.",,A standard metal blade.
+"(64, 16)",12,Wooden Blade,,"What a weak sword. You might as well scream ""Kill me!"" instead.",,Not bad for a piece of carved wood.
+"(80, 16)",13,Insect Head,,Insect guts and a decapitated head. Kill monsters with their own kind.,,Not very pleasant to wield.
+"(96, 16)",14,Neptune's Glaive,,You'll be in for a world of trouble if Neptune ever comes back for it.,,An heirloom from beyond the Gem Sea.
+"(112, 16)",15,Forest Sword,,Even the trees are conspiring to bloodshed.,,Made powerful by forest magic.
+"(0, 32)",16,Carving Knife,,Melt through bones like butter with this knife!,,"A small, light blade."
+"(16, 32)",17,Iron Dirk,,Concealed and deadly. A weapon made for treachery.,,A common dagger.
+"(32, 32)",18,Burglar's Shank,,Made by Pierre back in his prison days. Wonder how it got here?,,A weapon of choice for the swift and silent.
+"(48, 32)",19,Shadow Dagger,,UNOBTAINABLE,,"When you hold the blade to your ear you can hear 1,000 souls shrieking."
+"(64, 32)",20,Elf Blade,,UNOBTAINABLE,,Only the nimble hands of an elf could craft this.
+"(80, 32)",21,Crystal Dagger,,Abigail might eat this.,,The blade is made of purified quartz.
+"(96, 32)",22,Wind Spire,,Unusually light in your hands and on your conscience.,,A swift little blade.
+"(112, 32)",23,Galaxy Dagger,,Tears holes in the space-time continuum if used improperly.,,It's unlike anything you've seen.
+"(0, 48)",24,Wood Club,,A crudely shaped club. The heavy end is pockmarked and matted with blood and hair.,,"A solid piece of wood, crudely chiseled into a club shape."
+"(16, 48)",25,Alex's Bat,,UNOBTAINABLE,,The sweet spot is dented from Alex's famous Grand Slam.
+"(32, 48)",26,Lead Rod,,The material is toxic when ingested.,,It's incredibly heavy.
+"(48, 48)",27,Wood Mallet,,Repurposed equipment from a children's game.,,The solid head packs a punch. Relatively light for a club.
+"(64, 48)",28,The Slammer,,"With this gavel in hand you can be judge, jury and executioner.",,An extremely heavy gavel that'll send foes flying.
+"(80, 48)",29,Galaxy Hammer,,Swinging this too hard could have cosmic repercussions.,,It's made from an ultra-light material you've never seen before.
+"(96, 48)",30,Sam's Old Guitar,,UNOBTAINABLE,,It's seen better days.
+"(112, 48)",31,Femur,,Stolen from the guy in the basement.,,"An old, heavy bone caked in centuries of grime."
+"(0, 64)",32,Slingshot,,Hit the eyes and crush it! Yes! Requires ammo.,,Requires stones for ammo.
+"(16, 64)",33,Master Slingshot,,Adds extra strength to deliver a nice clear hole in the head. Requires ammo.,,Requires stones for ammo.
+"(32, 64)",34,Galaxy Slingshot,,UNOBTAINABLE,,It looks really powerful.
+"(48, 64)",35,Elliott's Pencil,,UNOBTAINABLE,,Elliott used this to write his book. It's sharp!
+"(64, 64)",36,Maru's Wrench,,UNOBTAINABLE,,"A big, metal wrench. It smells like Maru."
+"(80, 64)",37,Harvey's Mallet,,UNOBTAINABLE,,It brings back memories of Harvey's clinic.
+"(96, 64)",38,Penny's Fryer,,UNOBTAINABLE,,Penny's favorite frying pan. There's some rubbery gunk stuck to the inside.
+"(112, 64)",39,Leah's Whittler,,UNOBTAINABLE,,Leah's favorite tool for shaping driftwood.
+"(0, 80)",40,Abby's Planchette,,UNOBTAINABLE,,It's made from fine marblewood.
+"(16, 80)",41,Seb's Lost Mace,,UNOBTAINABLE,,One of Sebastian's medieval replicas.
+"(32, 80)",42,Haley's Iron,,UNOBTAINABLE,,It's searing hot and smells like Haley's hair.
+"(48, 80)",43,Pirate's Sword,,Stained with the blood of several mutinies.,,It looks like a pirate owned this once.
+"(64, 80)",44,Cutlass,,Sever bodies from souls with panache!,,A finely crafted blade.
+"(80, 80)",45,Wicked Kris,,"A jagged, razor-sharp dagger rumoured to be used in ritual killings.",,The blade is made of an iridium alloy.
+"(96, 80)",46,Kudgel,,UNOBTAINABLE,,A brute's companion.
+"(112, 80)",47,Scythe,,Cuts grass... and souls. Yields hay if you've built a silo.,,"It can cut grass into hay, if you've built a silo."
+"(0, 96)",48,Yeti Tooth,,UNOBTAINABLE,,It's icy cold to the touch.
+"(16, 96)",49,Rapier,,UNOBTAINABLE,,An elegant blade.
+"(32, 96)",50,Steel Falchion,,Tears through flesh as fluidly as if it were paper.,,Light and powerful.
+"(48, 96)",51,Broken Trident,,A relic of the merfolk wars.,,"It came from the sea, but it's still sharp."
+"(64, 96)",52,Tempered Broadsword,,Forged to return the living to the dead.,,It looks like it could withstand anything.
+"(80, 96)",53,Golden Scythe,,From the hands of the Reaper himself!,,It's more powerful than a normal scythe.

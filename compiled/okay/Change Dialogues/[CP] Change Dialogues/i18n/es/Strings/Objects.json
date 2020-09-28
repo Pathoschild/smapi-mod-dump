@@ -1,0 +1,11 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Strings/Objects",
+		"Entries": {
+			"MagicInkDescription": "¡Has encontrado la «{0}» que perdió {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}! Será mejor que se la devuelvas."
+		}
+	}
+	]
+}

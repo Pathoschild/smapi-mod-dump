@@ -116,17 +116,21 @@ namespace CustomSpousePatio
         private void LoadSpouseAreaData()
         {
 			string path = Path.Combine("assets", "outdoor-areas.json");
-			SMonitor.Log($"loading outdoor patios");
+
+            if(!File.Exists(Path.Combine(SHelper.DirectoryPath, path)))
+                path = "content.json";
+
+            SMonitor.Log($"loading outdoor patios");
 			try
 			{
 				OutdoorAreaData json = SHelper.Data.ReadJsonFile<OutdoorAreaData>(path) ?? null;
 
-				if (json != null)
-				{
-					if (json.areas != null && json.areas.Count > 0)
-					{
-						foreach (KeyValuePair<string, OutdoorArea> area in json.areas)
-						{
+                if (json != null)
+                {
+                    if (json.areas != null && json.areas.Count > 0)
+                    {
+                        foreach (KeyValuePair<string, OutdoorArea> area in json.areas)
+                        {
                             if (area.Key == "default")
                             {
                                 if (Game1.MasterPlayer.spouse != null)
@@ -143,9 +147,13 @@ namespace CustomSpousePatio
                             }
                         }
                     }
-				}
+                }
+                else
+                {
+                    SMonitor.Log($"Couldn't get spouse areas from {path}", LogLevel.Debug);
+                }
 
-			}
+            }
 			catch (Exception ex)
 			{
 				SMonitor.Log($"Error reading {path}:\r\n {ex}", LogLevel.Error);
@@ -246,9 +254,10 @@ namespace CustomSpousePatio
                     SMonitor.Log($"no spouse area for {spouse.Key}", LogLevel.Warn);
                     continue;
                 }
-                SMonitor.Log($"Adding spouse area for {spouse.Key}", LogLevel.Debug);
-
                 OutdoorArea area = outdoorAreas[spouse.Key];
+
+                SMonitor.Log($"Adding spouse area for {spouse.Key}: use default tiles: {area.useDefaultTiles}, special tiles: {area.specialTiles.Count}", LogLevel.Debug);
+
 
                 int x = area.GetLocation().X;
                 int y = area.GetLocation().Y;
@@ -256,7 +265,7 @@ namespace CustomSpousePatio
                 if (farm.map.Layers[0].LayerWidth <= x + 3 || farm.map.Layers[0].LayerHeight <= y + 3)
                 {
                     SMonitor.Log($"Invalid spouse area coordinates {x},{y} for {spouse.Key}", LogLevel.Error);
-                    return;
+                    continue;
                 }
 
                 farm.removeTile(x + 1, y + 3, "Buildings");
@@ -360,8 +369,6 @@ namespace CustomSpousePatio
 
                     }
                 }
-
-                SMonitor.Log($"Adding {area.specialTiles.Count} specialTiles for {spouse.Key}", LogLevel.Debug);
 
                 foreach (SpecialTile tile in area.specialTiles)
                 {

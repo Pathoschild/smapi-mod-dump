@@ -2,7 +2,7 @@
 
 This mod adds functional sunscreen to the game that protects you from sunburn. If you spend too long outdoors without sunscreen on a sunny day, you'll get sunburnt... but it won't show up until the next day!
 
-Sunburn will temporarily change your character's skin color. [color=#cc0000][b]NPC villagers who see your tomato-red skin will react in shock![/b][/color] Each villager has a unique set of randomized reactions.
+Sunburn will temporarily change your character's skin color. [color=#e06666][b]NPC villagers who see your tomato-red skin will react in shock![/b][/color] Each villager has a unique set of randomized reactions.
 
 Active sunburn damage lowers your starting health and energy for the day and gives you a slight speed debuff. More severe sunburn damage will take longer to heal (up to 3 days without treatment).
 
@@ -17,7 +17,7 @@ You can buy protective Sunscreen lotion from Harvey's shop for 100g. You can als
 
 
 [b][size=3]Translation Support[/size][/b]
-This mod is designed to support built-in translations. If you would like to help translate this mod to other languages, [i]watch for a link coming soon![/i] Submitted translations will be included in future mod updates.
+This mod is designed with full translation support! If you would like to help translate this mod to other languages, you can [url=https://github.com/StardewModders/mod-translations/issues/33]contribute here[/url]. Submitted translations will be included in future mod updates.
 
 
 [b][size=5][center]User Information[/center][/size][/b][size=4][b]COMPATIBILITY[/b][/size]
@@ -89,6 +89,7 @@ Logs noisy info messages to the SMAPI console for Jonqora to stress over. Defaul
 [*]Thanks to those who provided help and support in the [url=https://discordapp.com/invite/StardewValley]Stardew Valley Discord[/url] #making-mods channel.
 [/list]
 [b][size=4]SEE ALSO[/size][/b][list]
+[*]Help [url=https://github.com/StardewModders/mod-translations/issues/33]translate[/url]﻿ this mod to other languages
 [*]Source code on [url=https://github.com/Jonqora/StardewMods/tree/master/SunscreenMod]GitHub[/url]
 [*]Check out [url=https://www.nexusmods.com/users/88107803?tab=user+files]my other mods[/url]!
 [/list]

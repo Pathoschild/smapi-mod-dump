@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6783
+IDs: BlaDe.StepsTakenOnScreen
+update keys: Nexus:6783

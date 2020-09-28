@@ -1,0 +1,123 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"Chat_MonsterSlayer1": "{0} ha derrotado a un {1}, y {{mardrest.ChangeDialogues/MarlonName}} está muy satisfech{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/MarlonGender}}}}."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "¡{0} te ha pedido que tengáis un hijo juntos! ¿Quieres tener un hijo?",
+			"AskedToAdoptBaby_Accepted_Male": "¡{0} ha aceptado tener un hijo contigo! Llegará dentro de 14 días.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} ha decidido que no quiere tener hijos de momento."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Alex": "Married", "mardrest.ChangeDialogues/AlexGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToMarry_NotSingle_Male": "¡{0} no está soltera!"
+		}, "When": { "mardrest.ChangeDialogues/AlexGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "¡{0} te ha pedido que tengáis un hijo juntos! ¿Quieres tener un hijo?",
+			"AskedToAdoptBaby_Accepted_Male": "¡{0} ha aceptado tener un hijo contigo! Llegará dentro de 14 días.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} ha decidido que no quiere tener hijos de momento."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Elliott": "Married", "mardrest.ChangeDialogues/ElliottGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToMarry_NotSingle_Male": "¡{0} no está soltera!"
+		}, "When": { "mardrest.ChangeDialogues/ElliottGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "¡{0} te ha pedido que tengáis un hijo juntos! ¿Quieres tener un hijo?",
+			"AskedToAdoptBaby_Accepted_Male": "¡{0} ha aceptado tener un hijo contigo! Llegará dentro de 14 días.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} ha decidido que no quiere tener hijos de momento."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Harvey": "Married", "mardrest.ChangeDialogues/HarveyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToMarry_NotSingle_Male": "¡{0} no está soltera!"
+		}, "When": { "mardrest.ChangeDialogues/HarveyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "¡{0} te ha pedido que tengáis un hijo juntos! ¿Quieres tener un hijo?",
+			"AskedToAdoptBaby_Accepted_Male": "¡{0} ha aceptado tener un hijo contigo! Llegará dentro de 14 días.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} ha decidido que no quiere tener hijos de momento."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Sam": "Married", "mardrest.ChangeDialogues/SamGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToMarry_NotSingle_Male": "¡{0} no está soltera!"
+		}, "When": { "mardrest.ChangeDialogues/SamGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "¡{0} te ha pedido que tengáis un hijo juntos! ¿Quieres tener un hijo?",
+			"AskedToAdoptBaby_Accepted_Male": "¡{0} ha aceptado tener un hijo contigo! Llegará dentro de 14 días.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} ha decidido que no quiere tener hijos de momento."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Sebastian": "Married", "mardrest.ChangeDialogues/SebastianGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToMarry_NotSingle_Male": "¡{0} no está soltera!"
+		}, "When": { "mardrest.ChangeDialogues/SebastianGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "¡{0} te ha pedido que tengáis un hijo juntos! ¿Quieres tener un hijo?",
+			"AskedToAdoptBaby_Accepted_Male": "¡{0} ha aceptado tener un hijo contigo! Llegará dentro de 14 días.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} ha decidido que no quiere tener hijos de momento."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Shane": "Married", "mardrest.ChangeDialogues/ShaneGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToMarry_NotSingle_Male": "¡{0} no está soltera!"
+		}, "When": { "mardrest.ChangeDialogues/ShaneGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "¡{0} te ha pedido que tengáis un hijo juntos! ¿Quieres tener un hijo?",
+			"AskedToAdoptBaby_Accepted_Male": "¡{0} ha aceptado tener un hijo contigo! Llegará dentro de 14 días.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} ha decidido que no quiere tener hijos de momento."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Victor": "Married", "mardrest.ChangeDialogues/VictorGender": "Female", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": true }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToMarry_NotSingle_Male": "¡{0} no está soltera!"
+		}, "When": { "mardrest.ChangeDialogues/VictorGender": "Female", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": true }
+	}
+	]
+}

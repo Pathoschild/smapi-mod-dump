@@ -1,0 +1,24 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Pierre",
+		"Entries": {
+			"Introduction": "¡Ey, es el señor @! ¡El nuevo granjero! Soy {{mardrest.ChangeDialogues/PierreName}}, dueñ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/PierreGender}}}} de la tienda local.^¡Ey, es la señorita @! ¡La nueva granjera! Soy {{mardrest.ChangeDialogues/PierreName}}, dueñ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/PierreGender}}}} de la tienda local.#$b#Si buscas semillas, mi tienda es el lugar adecuado. ¡También puedo comprarte productos a muy buen precio!#$e#¡Algo de agricultura podría darle un poco de vidilla a la economía local!",
+			"Mon4_inlaw_Abigail": "Hola, @. ¿Qué tal le va a {{mardrest.ChangeDialogues/AbigailName}}? La tienda no es lo mismo sin ella...",
+			"Thu": "Te compraré encantad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/PierreGender}}}} tus productos.#$b#¡Por un precio justo, por supuesto!",
+			"Thu8": "#$1 pierre2#¿{{mardrest.ChangeDialogues/AbigailName}} se parece a mí en algo? No se lo digas a mi mujer, pero a veces me pregunto si de verdad soy yo la {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/PierreGender}}}}.$k$s#$e#No se lo digas a mi mujer, pero odio hacer la cena.",
+			"winter_Wed": "#$1 pierreDin#Voy a sorprender a {{mardrest.ChangeDialogues/CarolineName}} esta noche con una cena y una botella de tinto de Stardew Valley. ¡No se lo digas a nadie!$k#$e#Por fin un día de descanso.",
+			"fall_Fri": "#$1 pierreMEGA#Mi sueño es seguir abriendo tiendas hasta hacerme extremadamente ric{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/PierreGender}}}}. Je, je, je.$k#$e#Hola. ¿Sigue yendo bien tu granja?#$e#Igual unas cuantas de mis semillas animan la cosa.$h",
+			"fall_Sat": "Compraré encantad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/PierreGender}}}} todo lo que produzcas en la granja.#$e#Sí, lo revendo para obtener beneficios... Pero esas son las ventajas de tener una tienda.#$e#No me copies la idea..."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Pierre": "adult/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/PierreGender}}}}/not-datable/Caroline/Town/spring 26/Abigail 'hija' Caroline 'mujer'/SeedShop 4 17/{{mardrest.ChangeDialogues/PierreName}}"
+		}
+	}
+	]
+}

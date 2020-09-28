@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/560
-IDs: littleraskol.SprintAndDashRedux, lrsk_sdvm_sndr.0921161059
-update keys: Nexus:560, Chucklefish:4201

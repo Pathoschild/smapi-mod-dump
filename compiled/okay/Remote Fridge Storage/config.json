@@ -2,6 +2,7 @@
   "FlipImage": false,
   "ImageScale": 1.0,
   "OverrideOffset": false,
-  "XOffset": 0,
-  "YOffset": 1
+  "XOffset": 1145,
+  "YOffset": 450,
+  "Editable": false
 }

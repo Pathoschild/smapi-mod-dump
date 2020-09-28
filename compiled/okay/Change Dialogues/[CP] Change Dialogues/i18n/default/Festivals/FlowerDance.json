@@ -1,0 +1,15 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/Festivals/spring24",
+		"Entries": {
+			"Caroline": "I wish {{mardrest.ChangeDialogues/PierreName}} would spend this time with the family...$s",
+			"Clint": "I wonder if {{mardrest.ChangeDialogues/EmilyName}} would dance with me?",
+			"Kent": "This open field... it makes me nervous.#$e#*whisper* Happy thoughts, {{mardrest.ChangeDialogues/KentName}}. Happy Thoughts.",
+			"Marlon": "{{mardrest.ChangeDialogues/MarnieName}} looks lovely today...",
+			"Elliott": "I wore my best {{mardrest.ChangeDialogues/Shirt:L{{mardrest.ChangeDialogues/ElliottGender}}}} for the dance... This sort of thing doesn't happen very often!"
+		}
+	}
+	]
+}

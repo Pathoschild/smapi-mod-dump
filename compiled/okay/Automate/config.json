@@ -1,8 +1,4 @@
 {
-  "MachinePriority": {
-    "ShippingBinMachine": -1
-  },
-  "AutomateShippingBin": true,
   "PullGemstonesFromJunimoHuts": false,
   "AutomationInterval": 60,
   "Controls": {
@@ -14,5 +10,11 @@
   "ModCompatibility": {
     "AutoGrabberMod": true,
     "BetterJunimos": true
+  },
+  "MachineOverrides": {
+    "ShippingBin": {
+      "Priority": -1,
+      "Enabled": true
+    }
   }
 }

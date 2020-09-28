@@ -1,0 +1,13 @@
+{
+    "Name": "Sakura Kimono Red Lower",
+    "Description": "A red kimono, lower half.",
+    "Price": 50,
+    "Dyeable": false,
+    "DefaultColor": "255, 255, 255, 255",
+    "NameLocalization": {
+        "es": "Kimono Sakura Rojo Inferior"
+    },
+    "DescriptionLocalization": {
+        "es": "Un kimono rojo, mitad inferior."
+    }
+}

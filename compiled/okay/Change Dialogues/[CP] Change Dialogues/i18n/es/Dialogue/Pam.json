@@ -1,0 +1,31 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Pam",
+		"Entries": {
+			"Introduction": "Buenas, chaval.^Buenas, chavala. Soy {{mardrest.ChangeDialogues/PamName}}.#$e#No te pases de listo y nos llevaremos bien.^No te pases de lista y nos llevaremos bien.",
+			"Saloon_Entry": "Ah... Por fin./Necesito un trago./¡{{mardrest.ChangeDialogues/GusName}}! Lo de siempre./Ey, ¡he vuelto!/¡Me muero de sed!/¡Tengo el gaznate seco!",
+			"Trailer_Entry": "¡{{mardrest.ChangeDialogues/PennyName}}! ¿Has hecho la cena?/¡{{mardrest.ChangeDialogues/PennyName}}! ¿Has acabado las tareas de casa?/¡{{mardrest.ChangeDialogues/PennyName}}! ¿Estás en casa?/¡Ey! ¡Ya he vuelto!",
+			"Saloon_Tue": "¡Ey, {{mardrest.ChangeDialogues/GusName}}! ¡Ponme otra ronda! *Hic*$h",
+			"Saloon_Fri": "¡Eh, {{mardrest.ChangeDialogues/GusName}}! ¡Otra pinta de lo más fuerte que tengas!",
+			"Saloon_Sat": "%{{mardrest.ChangeDialogues/PamName}} no responde.",
+			"Saloon_Sun": "%{{mardrest.ChangeDialogues/PamName}} parece fuera de sí. Mejor dejarla en paz por ahora.",
+			"Thu": "#$1 PamDrunk#Blah... Creo que bebí demasiadas birras de caramelo anoche en el Salón... Vete.$k#$e#Mi casa no es bonita, pero por lo menos está junto al río.#$e#Ey. {{mardrest.ChangeDialogues/PennyName}} es mi princesita. Trátala bien o déjala en paz, ¿me entiendes?",
+			"Thu4": "{{mardrest.ChangeDialogues/PennyName}} dice que paso demasiado tiempo en el Salón...$s",
+			"Sun": "¿Te llevas bien con {{mardrest.ChangeDialogues/GusName}}? Es un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/GusGender}}}} buen{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/GusGender}}}} tip{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GusGender}}}}.#$e#Incluso me regala cerveza por mi cumpleaños.",
+			"fall_Thu": "{{mardrest.ChangeDialogues/PennyName}} es todo lo que tengo, así que sé amable con ella.",
+			"winter_Tue4": "Espero que {{mardrest.ChangeDialogues/PennyName}} tenga una buena vida por delante. Cuando tengas hijos, entenderás cómo me siento.#$e#... Qué seco es el invierno. Mi piel parece un pergamino.",
+			"winter_Tue4_inlaw_Penny": "Buenas. Más te vale estar tratando bien a {{mardrest.ChangeDialogues/PennyName}} en esa vieja granja tuya. ¡Ella es lo único que tengo!",
+			"winter_Fri": "A {{mardrest.ChangeDialogues/PennyName}} le encantan los libros antiguos. Creo que es más lista de lo que yo nunca fui, de lejos.#$e#Y me alegro."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Pam": "adult/rude/outgoing/negative/female/not-datable/Gus/Town/spring 18/Penny 'princesita' Gus ''/Trailer 15 4/{{mardrest.ChangeDialogues/PamName}}"
+		}
+	}
+	]
+}

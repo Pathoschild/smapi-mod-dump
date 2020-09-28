@@ -1,0 +1,99 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Sebastian",
+		"Entries": {
+			"Wed2": "Creo que {{mardrest.ChangeDialogues/SamName}} es mi únic{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}} amig{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}} en este pueblo.#$e#Bueno, {{mardrest.ChangeDialogues/AbigailNickname}} también es maja, pero...$h#$e#Umm... No importa.",
+			"Wed2_inlaw_Abigail": "Creo que {{mardrest.ChangeDialogues/SamName}} es {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/SamGender}}}} únic{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}} amig{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}} que tengo en el pueblo...",
+			"Wed6": "{{mardrest.ChangeDialogues/SamName}} y tú sois probablemente los únicos amigos que tengo en este pueblo.$s",
+			"Thu4": "¿Por qué a todo el mundo le cae bien {{mardrest.ChangeDialogues/MaruName}}? Sí, es lista y sociable, ¿pero no se dan cuenta de que solo es una trampa para llamar la atención?#$e#Lo siento...$s",
+			"Fri8": "¿Qué hay de nuevo?$h#$e#Esta noche estaré en el Salón, dándole una paliza a {{mardrest.ChangeDialogues/SamName}} al billar otra vez.$h",
+			"event_city4": "Ugh... Suenas como mi madre.$a#$b#*Sigh...* $s#$b#Aunque tienes razón. Estoy enganchad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} y eso no es bueno.$s",
+			"summer_10": "Je, je... Sería divertido echar algo asqueroso en la olla común de mañana. Pero sin intoxicar a nadie.#$e#¿Por qué echarla a perder? Hmm... Supongo que algunos se sienten liberados cuando las estructuras rígidas de la sociedad se rompen un poco. A lo mejor es que soy rar{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}.",
+			"fall_Tue6": "¿Quién se cree {{mardrest.ChangeDialogues/DemetriusName}} que es para decirme lo que tengo que hacer? Ni siquiera es mi verdader{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/DemetriusGender}}}} {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/DemetriusGender}}}}.$a",
+			"winter_Mon4": "Ya nada me sorprende... Nada me hace reír.#$e#Ya lo sé... Estoy siendo un poco dramátic{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}.",
+			"winter_Wed": "%{{mardrest.ChangeDialogues/SebastianName}} parece perdid{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} en sus pensamientos...",
+			"winter_Fri8": "Cuando era más pequeñ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}, salía corriendo hacia las vías cada vez que oía llegar un tren.#$e#¿Qué ha sido de aquella época...? *Sigh*$s",
+			"winter_Sun": "Hice un monstruo de nieve, pero {{mardrest.ChangeDialogues/DemetriusName}} me obligó a deshacerme de él.#$e#¿De qué va?$u",
+			"winter_Sun6": "Hice un monstruo de nieve, pero {{mardrest.ChangeDialogues/DemetriusName}} me obligó a deshacerme de él.... ¡Y el muñequito de nieve de {{mardrest.ChangeDialogues/MaruName}} se fue de rositas!$a#$e#Es ridículo."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialogueSebastian",
+		"Entries": {
+			"Rainy_Day_1": "Buenas. Estaba pensando en mi antigua habitación del sótano. Me sentía cómod{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} allí, pero esto es mucho más interesante. Y no echo de menos el olor...#$e#Me avergonzaba un poco seguir viviendo en casa de mi madre a mi edad.",
+			"Rainy_Night_0": "Estoy haciendo todo lo posible por dejar de fumar ahora que estamos casados... No quiero morirme y dejarte solo.^No quiero morirme y dejarte sola. Es una mala costumbre.#$e#Quiero que tengamos un futuro juntos.$l^Quiero que tengamos un futuro junt{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}s.$l",
+			"Indoor_Day_0": "Cuanto más mayor me hago, menos me atrae la gran ciudad. Tenía cierto encanto en su momento. Pero resulta que solo era una fantasía.#$e#La gran ciudad es muy ruidosa, y está llena de gente... No es mi sitio. Soy un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/SebastianGender}}}} lob{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} solitari{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}.",
+			"Indoor_Night_1": "A lo mejor he tomado demasiado café... No estoy muy cansad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}.#$e#Aún me estoy ajustando al horario de la granja. Antes solía quedarme despiert{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} hasta las 05:00 y luego dormir hasta las 14:00 o así.$h",
+			"Indoor_Night_2": "Mola un montón tener nuestra propia casa. Puedo hacer lo que me apetezca y no tener a nadie dándome la brasa todo el rato#$e#Seguro que {{mardrest.ChangeDialogues/MaruName}} se alegra de que me haya ido.",
+			"Indoor_Night_4": "En casa no me sentía muy valorad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}... Pero aquí me siento donde debo estar. Gracias por hacerme sentir bienvenid{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}, @.$l",
+			"Outdoor_1": "Hmm... A veces tengo que obligarme a salir afuera, por el bien de mi salud.#$e#No sé por qué, pero me gusta estar en casa. A lo mejor simplemente estoy acostumbrad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} a mi sótano oscuro.",
+			"Outdoor_3": "¡No me quiero ablandar ahora que soy un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/SebastianGender}}}} tí{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} casad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}! A lo mejor debería empezar a comer más chiles y a entrenar.#$e#Solo era una idea...$h",
+			"OneKid_0": "Aún me estoy acostumbrando a lo de ser {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/SebastianGender}}}}. No te preocupes, ¡voy a cuidar bien de %kid1! Solo que... es un cambio enorme.",
+			"TwoKids_1": "Espero que %kid1 y %kid2 se lleven bien. {{mardrest.ChangeDialogues/MaruName}} y yo siempre nos peleábamos de niños.#$e#Ahora que lo pienso, la mayoría de veces la culpa era mía...",
+			"Good_3": "No siempre te lo demuestro, pero estoy muy content{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} de ser tu {{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/SebastianGender}}}}. Casarme contigo ha sido la mejor decisión de mi vida.$l",
+			"Neutral_0": "Cuando paseo intento evitar a todo el mundo. Odio verme obligad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} a hablar de banalidades.",
+			"Neutral_2": "¿Por qué no me cuentas cómo te ha ido el día cuando nos metamos en la cama? Ahora estoy algo ocupad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}...",
+			"Neutral_6": "Si necesitas ir a ver a tus amigos, adelante. Total, a mí me gusta estar sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}.",
+			"Bad_5": "Mira, solo quiero estar sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}}. ¿Por qué no te vas y te dedicas a tus cosas un rato?",
+			"Bad_8": "He vuelto a fumar otra vez... He estado muy estresad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} últimamente.$s",
+			"spring_12": "¿Tienes ganas de que llegue el festival de mañana? Molará volver a ver a {{mardrest.ChangeDialogues/SamName}}.",
+			"spring_23": "Oh... La danza floral es mañana, ¿no? ¿Tenemos que ir?#$e#Odio llevar ese {{mardrest.ChangeDialogues/Suit:L{{mardrest.ChangeDialogues/SebastianGender}}}} tan ceñido. ¿Por qué nos obliga {{mardrest.ChangeDialogues/LewisName}} a hacer esto?$s",
+			"fall_15": "La feria de Stardew Valley está demasiado abarrotada para mi gusto... Pero iré a pasar el rato con {{mardrest.ChangeDialogues/SamName}}. Nos vendrá bien para ponernos al día.#$e#¡Pero tú diviértete con los juegos! ¿Vale? No te preocupes por mí.$7"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Sebastian",
+		"Entries": {
+			"summer_4.000": "Maldición... Casi se me olvida. Tengo que ir a ver {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/HarveyGender}}}} doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}} {{mardrest.ChangeDialogues/HarveyName}} hoy.",
+			"Fri.000": "¿Debería dejar ganar a {{mardrest.ChangeDialogues/SamName}} al menos una vez? ... Nah.$h",
+			"marriage_Fri.001": "Soy tan hábil como antes... Sigue siendo igual de fácil ganar a {{mardrest.ChangeDialogues/SamName}}.$h",
+			"winter_16.000": "Me siento más relajad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} durante la noche... Puede que hasta compre alguna cosilla."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Sebastian": {
+				"NPCName": "Sebastian",
+				"Reactions": [
+				{
+					"Tag": "love",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Hey. He oído que esta película es algo macabra... Estaba esperando verla.$h"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/emote Sebastian 32/message \"{{mardrest.ChangeDialogues/SebastianName}} tiene una sonrisa en su cara.\"",
+							"Text": "Esta cinematografía tiene otro nivel."
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "la mejor película que he visto en mucho tiempo... Me pregunto como han hecho los efectos especiales...$h"
+						}
+					},
+					"ID": "reaction_3"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Sebastian": "teen/rude/shy/negative/{{lowercase:{{mardrest.ChangeDialogues/SebastianGender}}}}/datable/Abigail/Town/winter 10/Robin 'madre' Maru 'hermanastra' Sam ''/SebastianRoom 10 9/{{mardrest.ChangeDialogues/SebastianName}}"
+		}
+	}
+	]
+}

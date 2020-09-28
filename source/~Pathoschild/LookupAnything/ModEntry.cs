@@ -11,7 +11,6 @@ using Pathoschild.Stardew.Common.Integrations.JsonAssets;
 using Pathoschild.Stardew.Common.Integrations.ProducerFrameworkMod;
 using Pathoschild.Stardew.LookupAnything.Components;
 using Pathoschild.Stardew.LookupAnything.Framework;
-using Pathoschild.Stardew.LookupAnything.Framework.Constants;
 using Pathoschild.Stardew.LookupAnything.Framework.Subjects;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -78,7 +77,7 @@ namespace Pathoschild.Stardew.LookupAnything
             this.Keys = this.Config.Controls.ParseControls(helper.Input, this.Monitor);
 
             // load translations
-            L10n.Init(helper.Translation);
+            I18n.Init(helper.Translation);
 
             // load & validate database
             this.LoadMetadata();
@@ -125,8 +124,8 @@ namespace Pathoschild.Stardew.LookupAnything
             var customFarming = new CustomFarmingReduxIntegration(this.Helper.ModRegistry, this.Monitor);
             var producerFramework = new ProducerFrameworkModIntegration(this.Helper.ModRegistry, this.Monitor);
             this.GameHelper = new GameHelper(customFarming, producerFramework, this.Metadata, this.Helper.Reflection);
-            this.SubjectFactory = new SubjectFactory(this.Metadata, this.Helper.Translation, this.Helper.Reflection, this.GameHelper, this.Config);
-            this.TargetFactory = new TargetFactory(this.Helper.Reflection, this.GameHelper, jsonAssets, this.SubjectFactory);
+            this.SubjectFactory = new SubjectFactory(this.Metadata, this.Helper.Reflection, this.GameHelper, this.Config);
+            this.TargetFactory = new TargetFactory(this.Helper.Reflection, this.GameHelper, jsonAssets, this.SubjectFactory, () => this.Config.EnableTileLookups);
             this.DebugInterface = new DebugInterface(this.GameHelper, this.TargetFactory, this.Config, this.Monitor);
         }
 
@@ -365,7 +364,7 @@ namespace Pathoschild.Stardew.LookupAnything
 
             // world
             logMessage.Append(" searching the world...");
-            return this.TargetFactory.GetSubjectFrom(Game1.player, Game1.currentLocation, this.Config.EnableTileLookups, hasCursor);
+            return this.TargetFactory.GetSubjectFrom(Game1.player, Game1.currentLocation, hasCursor);
         }
 
         /// <summary>Push a new menu onto the display stack, saving the previous menu if needed.</summary>

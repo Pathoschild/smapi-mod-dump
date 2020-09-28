@@ -1,0 +1,18 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Willy",
+		"Entries": {
+			"Tue6": "The ol' {{mardrest.ChangeDialogues/Man:{{mardrest.ChangeDialogues/WillyGender}}}} was a fisher{{mardrest.ChangeDialogues/Man:L{{mardrest.ChangeDialogues/WillyGender}}}}, you know. I grew up sailing between the fern islands, living from catch to catch.#$e#The fishing life is tough, but there's something about it that keeps you goin'."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Willy": "adult/neutral/neutral/neutral/{{lowercase:{{mardrest.ChangeDialogues/WillyGender}}}}/not-datable/null/Town/summer 24/Elliott ''/FishShop 5 4/{{mardrest.ChangeDialogues/WillyName}}"
+		}
+	}
+	]
+}

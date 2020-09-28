@@ -3,13 +3,17 @@ url:
 
 mods:
    Cheaper Beach Bridge Repair
+   Highlighted Jars
    Krobus Sells Larger Stacks
    Sleepless Fisherman
 
 latest commit:
-   commit 50e4693e2dafc45f7f3093d4293a68a879cc1d71
-   Author: Annosz <tadamleanyfalu@gmail.com>
-   Date:   Mon May 11 20:46:59 2020 +0200
+   commit e3717aed139774ce496ca47c4d64e8c4e24b60b6
+   Merge: ec02a75 66b6cac
+   Author: TÃ³th ÃdÃ¡m <10620868+Annosz@users.noreply.github.com>
+   Date:   Mon Sep 21 15:48:32 2020 +0200
    
-       HighlightedJars - Initialization and technology test
+       Merge pull request #3 from Annosz/development
+       
+       CheaperBeachBridgeRepair - Add config file
    

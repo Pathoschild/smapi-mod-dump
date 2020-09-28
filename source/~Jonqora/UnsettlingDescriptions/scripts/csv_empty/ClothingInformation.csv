@@ -1,0 +1,211 @@
+key,name,unsettling_description,original_description
+-1,Pants,TODO,A wearable pair of pants.
+-2,Shirt,TODO,A wearable shirt.
+0,Farmer Pants,TODO,Comfortable and durable for long hours in the field.
+1,Shorts,TODO,Perfect for a hot summer's day... your legs will thank you.
+2,Long Dress,TODO,"A long, flowy dress."
+3,Skirt,TODO,A cute skirt.
+4,Pleated Skirt,TODO,A cute pleated skirt.
+5,Dinosaur Pants,TODO,These pants were thought to have gone extinct a long time ago!
+6,Grass Skirt,TODO,A skirt made of dried grass.
+7,Luau Skirt,TODO,A skirt destined to make you the 'luau' the party!
+8,Genie Pants,TODO,Pants that balloon out near the bottom. Your wish has been answered!
+9,Tight Pants,TODO,A very tight pair of pants.
+10,Baggy Pants,TODO,A loose pair of pants.
+11,Simple Dress,TODO,"A soft, smooth, medium length dress."
+12,Relaxed Fit Pants,TODO,These pants have a little more room for the legs.
+13,Relaxed Fit Shorts,TODO,These shorts have a little more room for the legs.
+14,Polka Dot Shorts,TODO,Whoops!
+15,Trimmed Lucky Purple Shorts,TODO,Purple silk shorts trimmed in luxurious gold...
+998,Prismatic Pants,TODO,Pants that shimmer with prismatic energy.
+999,Prismatic Genie Pants,TODO,Pants that shimmer with prismatic energy.
+1000,Classic Overalls,TODO,A farming classic.
+1002,Mint Blouse,TODO,"A cute, light green blouse."
+1003,Dark Shirt,TODO,A dark colored shirt.
+1004,Skull Shirt,TODO,A shirt was a menacing skull printed on it.
+1005,Light Blue Shirt,TODO,A light blue shirt.
+1006,Tan Striped Shirt,TODO,A tan shirt with a white stripe going through the middle of it.
+1007,Green Overalls,TODO,A slightly less popular farming classic.
+1008,"""Good Grief"" Shirt",TODO,A good ol' shirt...
+1009,Aquamarine Shirt,TODO,An aquamarine shirt.
+1010,Suit Top,TODO,A formal top for fancy events and celebrations.
+1011,Green Belted Shirt,TODO,"A green, belted shirt."
+1012,Lime Green Striped Shirt,TODO,A lime green shirt with white stripes.
+1013,Red Striped Shirt,TODO,A red shirt with white stripes.
+1014,Skeleton Shirt,TODO,A shirt with a skeletal rib cage printed on it.
+1015,Orange Shirt,TODO,An orange shirt.
+1016,Night Sky Shirt,TODO,A shirt that reminds you of the night sky.
+1017,Mayoral Suspenders,TODO,A pair of suspenders that looks awfully familiar...
+1018,Brown Jacket,TODO,"A nice, sturdy jacket made of brown material."
+1019,Sailor Shirt,TODO,Reminds you of the open sea.
+1020,Green Vest,TODO,A neat green vest over a shirt.
+1021,Yellow and Green Shirt,TODO,A yellow shirt with a green stripe.
+1026,Light Blue Striped Shirt,TODO,A light blue shirt with a white stripe.
+1027,Pink Striped Shirt,TODO,A pink shirt with stripes.
+1028,Heart Shirt,TODO,Wear your heart on your sleeves with this extra soft garment.
+1029,Work Shirt,TODO,For long days in the fields.
+1030,Store Owner's Jacket,TODO,A jacket that looks like it'd be worn by a small town merchant.
+1034,Green Tunic,TODO,A shirt fit for an adventurer.
+1035,Fancy Red Blouse,TODO,A bright red blouse adorned with shiny yellow buttons.
+1038,Plain Shirt,TODO,A simple shirt.
+1039,Retro Rainbow Shirt,TODO,A simple shirt with a faded rainbow pattern.
+1042,Lime Green Tunic,TODO,A bright green tunic with a belt.
+1087,Neat Bow Shirt,TODO,A neat button down shirt with a prominent bow tie.
+1123,Shirt And Tie,TODO,A white dress shirt and a tie.
+1127,Emily's Magic Shirt,TODO,Made with love by Emily. Colored with all-natural dye!
+1128,Striped Shirt,TODO,It's a shirt with faint stripes on it.
+1129,Tank Top,TODO,A sleeveless shirt.
+1131,Cowboy Poncho,TODO,A legendary outfit from the old west.
+1132,Crop Tank Top,TODO,A sleeveless shirt cut extra short on the bottom.
+1134,Bikini Top,TODO,A summer staple.
+1135,Wumbus Shirt,TODO,A shirt featuring a strange green guy.
+1136,80's Shirt,TODO,A gnarly t-shirt that sits off the shoulder.
+1137,Letterman Jacket,TODO,A jacket that's oozing with team spirit.
+1138,Black Leather Jacket,TODO,A cool jacket made of dark black leather.
+1139,Strapped Top,TODO,A top with a thin strap.
+1140,Button Down Shirt,TODO,"A simple, clean shirt."
+1141,Crop Top Shirt,TODO,A shirt cut extra short on the bottom.
+1142,Tube Top,TODO,A strapless top that wraps around the body.
+1143,Tye Die Shirt,TODO,A shirt that was tied up and then dipped into multiple colored dyes.
+1148,Steel Breastplate,TODO,Decorative armor made from steel.
+1149,Copper Breastplate,TODO,Decorative armor made from copper.
+1150,Gold Breastplate,TODO,Decorative armor made from solid gold.
+1151,Iridium Breastplate,TODO,Decorative armor made from pure iridium.
+1153,Fake Muscles Shirt,TODO,"You could hit the gym, or you could just wear this instead."
+1154,Flannel Shirt,TODO,A nice thick button down shirt with a cross-hatch pattern. Perfect for cold winters.
+1155,Bomber Jacket,TODO,"A thick, sturdy jacket worn by fighter pilots long ago."
+1156,Caveman Shirt,TODO,A stone-age classic!
+1157,Fishing Vest,TODO,Lots of pockets to store your tackle.
+1158,Fish Shirt,TODO,A shirt with a fish logo.
+1159,Shirt And Belt,TODO,A plain shirt with a brown belt.
+1160,Gray Hoodie,TODO,A sporty gray pullover with a hood.
+1161,Blue Hoodie,TODO,A sporty blue pullover with a hood.
+1162,Red Hoodie,TODO,A sporty red pullover with a hood.
+1163,Denim Jacket,TODO,A rugged jacket made from denim.
+1164,Track Jacket,TODO,A light jacket made from elastic material.
+1165,White Gi,TODO,A loose garment typically worn by martial artists.
+1166,Orange Gi,TODO,A loose garment typically worn by martial artists.
+1167,Gray Vest,TODO,A gray vest over a white shirt.
+1168,Kelp Shirt,TODO,"It looks like you just washed up on the beach. Smells like it, too."
+1169,Studded Vest,TODO,A black vest studded with metal spikes.
+1170,Gaudy Shirt,TODO,It's a therapeutic blue...
+1171,Oasis Gown,TODO,The jewel of the desert.
+1172,Blacksmith Apron,TODO,Handed down from one generation to the next.
+1173,Neat Bow Shirt,TODO,A neat button down shirt with a prominent bow tie.
+1174,High-Waisted Shirt,TODO,"The high-waisted pants look, with a dyeable bottom."
+1175,High-Waisted Shirt,TODO,"The high-waisted jeans look, with a dyeable top."
+1176,Basic Pullover,TODO,It's a plain pullover.
+1178,Turtleneck Sweater,TODO,Keep that neck piping hot.
+1179,Iridium Energy Shirt,TODO,Show off your iridium energy.
+1180,Tunnelers Jersey,TODO,It's a jersey for the Zuzu City Tunnelers.
+1183,Gray Suit,TODO,It's a custom-tailored gray suit.
+1184,Red Tuxedo,TODO,An elegant top for formal events.
+1185,Navy Tuxedo,TODO,An elegant top for formal events.
+1186,Holiday Shirt,TODO,Celebrate the Feast of the Winter Star.
+1187,Leafy Top,TODO,Real leaves adorn this garment.
+1188,Goodnight Shirt,TODO,A big baggy nightshirt with a detailed moon graphic.
+1189,Green Belted Shirt,TODO,A green shirt with a belt.
+1190,Happy Shirt,TODO,It's the happiest shirt.
+1191,Shirt with Bow,TODO,This shirt comes with a little bow around the neck.
+1192,Jester Shirt,TODO,Put your inner clown on display.
+1193,Ocean Shirt,TODO,The shirt looks like underwater ripples.
+1194,Dark Striped Shirt,TODO,A dark shirt with colorful stripes.
+1195,Bandana Shirt,TODO,A shirt with a bandana that keeps your neck very clean.
+1196,Backpack Shirt,TODO,A plain shirt with a canvas backpack.
+1197,Purple Blouse,TODO,A stunning purple blouse.
+1198,Vintage Polo,TODO,It's faded from age and smells like old closet.
+1199,Toga Shirt,TODO,"It's an old design, but the airflow is really nice!"
+1200,Star Shirt,TODO,"The star is supposed to glow in the dark, but it doesn't."
+1201,Classy Top,TODO,It feels like the softest velvet.
+1203,Bandana Shirt,TODO,A shirt with a bandana to shield your neck from harm.
+1204,Vacation Shirt,TODO,It's a tourist shirt from the Fern Islands.
+1205,Green Thumb Shirt,TODO,It comes pre-rubbed with potting soil.
+1206,Bandana Shirt,TODO,A shirt with a bandana to keep your neck soft.
+1207,Slime Shirt,TODO,A shirt that looks like a big slime.
+1208,Excavator Shirt,TODO,Look sharp while digging for fossils.
+1209,Sports Shirt,TODO,Knock it out of the park with this classic look.
+1210,Heart Shirt,TODO,Wear your heart on your sleeves with this extra soft garment.
+1211,Dark Jacket,TODO,A dark denim jacket lined with fleece.
+1212,Sunset Shirt,TODO,A shirt inspired by the most evocative time of day.
+1213,Chef Coat,TODO,The traditional uniform of a head chef.
+1214,Shirt O' The Sea,TODO,It smells like the brine of the sea.
+1215,Arcane Shirt,TODO,You can feel a certain power from this garment.
+1216,Plain Overalls,TODO,Classic overalls with a shirt that can be dyed.
+1217,Sleeveless Overalls,TODO,Classic overalls with a sleeveless shirt that can be dyed.
+1071,White Overalls Shirt,TODO,Classic overalls with a white shirt and belt.
+1218,Cardigan,TODO,A soft button-up cardigan sweater.
+1219,Yoba Shirt,TODO,A shirt featuring a prominent 'sign of the vessel'.
+1220,Necklace Shirt,TODO,A shirt with a gold necklace.
+1221,Belted Coat,TODO,A velvety black coat with a prominent belt.
+1222,Gold Trimmed Shirt,TODO,A shirt with a gold trim.
+1223,Prismatic Shirt,TODO,It's shimmering with prismatic energy.
+1224,Pendant Shirt,TODO,A shirt with a big pendant.
+1225,High Heat Shirt,TODO,The shirt almost looks like it's on fire!
+1226,Flames Shirt,TODO,Look cool with hot flames.
+1227,Antiquity Shirt,TODO,A shirt with an ancient pattern.
+1228,Soft Arrow Shirt,TODO,A soft-colored shirt with an upward arrow pattern.
+1229,Doll Shirt,TODO,A shirt featuring a strange ancient doll face.
+1230,Jewelry Shirt,TODO,A shirt with a simple golden chain.
+1231,Canvas Jacket,TODO,A brown jacket with a fleece lining.
+1232,Trash Can Shirt,TODO,You're wearing a trash can.
+1233,Rusty Shirt,TODO,It's made to look like the shirt is full of rust.
+1234,Circuitboard Shirt,TODO,The shirt looks like an electronics circuitboard.
+1235,Fluffy Shirt,TODO,It's fuzzy.
+1236,Sauce-Stained Shirt,TODO,It's already covered in spaghetti sauce so you don't have to feel guilty about it!
+1237,Brown Suit,TODO,It's a standard brown business suit.
+1238,Golden Shirt,TODO,It's a shiny golden shirt.
+1239,Captain's Uniform,TODO,The classic uniform of a ship's captain.
+1240,Officer Uniform,TODO,The classic uniform for an officer of the law.
+1241,Ranger Uniform,TODO,The classic uniform for a park ranger.
+1242,Blue Long Vest,TODO,A long blue vest above a grey shirt.
+1243,Regal Mantle,TODO,A regal purple garment
+1244,Relic Shirt,TODO,I found a golden relic and I've got the shirt to prove it!
+1245,Bobo Shirt,TODO,A pink shirt featuring a strange-looking guy.
+1246,Fried Egg Shirt,TODO,"Wake up, it's time for eggs."
+1247,Burger Shirt,TODO,Wear what you eat!
+1248,Collared Shirt,TODO,A shirt with a starchy white collar.
+1249,Toasted Shirt,TODO,It looks lightly toasted.
+1250,Carp Shirt,TODO,A big carp head adorns the front.
+1251,Red Flannel Shirt,TODO,A flannel shirt with a red and blue pattern.
+1252,Tortilla Shirt,TODO,A shirt that looks like the surface of a tortilla.
+1253,Warm Flannel Shirt,TODO,A flannel shirt with a warm brown and rose color.
+1254,Sugar Shirt,TODO,It's bursting with 'sweet energy'.
+1255,Green Flannel Shirt,TODO,A flannel shirt with a green and brown pattern.
+1256,Oil Stained Shirt,TODO,It's already stained with oil for that greasy look.
+1257,Morel Shirt,TODO,This shirt features the iconic spring mushroom.
+1258,Spring Shirt,TODO,"It's light, it's fresh, and it features the colors of spring."
+1259,Sailor Shirt,TODO,Reminds you of the open sea.
+1260,Rain Coat,TODO,The classic yellow rain coat.
+1261,Sailor Shirt,TODO,"Unlike most sailor shirts, this one has a dyeable body and a white collar."
+1262,Dark Bandana Shirt,TODO,A dark shirt with a colorful bandana.
+1263,Dark Highlight Shirt,TODO,A dark shirt with bright highlights.
+1264,Omni Shirt,TODO,It's speckled with rainbow flecks!
+1265,Bridal Shirt,TODO,"A beautiful white top, perfect for a bride."
+1266,Brown Overalls,TODO,It's hard to see the dirt stains on this one.
+1267,Orange Bow Shirt,TODO,A striped orange shirt with a big white bow.
+1268,White Overalls,TODO,A nice clean variant of the classic farmer look.
+1269,Pour-Over Shirt,TODO,A familiar zig-zag pattern adorns this shirt. Ahhh... that smell.
+1270,Green Jacket Shirt,TODO,Inspired by the mallard's coat. The shirt can be dyed.
+1271,Short Jacket,TODO,A short dyeable jacket over a shirt.
+1272,Polka Dot Shirt,TODO,A dark shirt with dyeable polka dots.
+1273,White Dot Shirt,TODO,A dyeable shirt with white polka dots.
+1274,Camo Shirt,TODO,Helps you blend in with the surroundings.
+1275,Dirt Shirt,TODO,You'll fit right in on the farm!
+1276,Crab Cake Shirt,TODO,Pre-slathered with aioli for your enjoyment. Bon Appetit!
+1277,Silky Shirt,TODO,It's made from a smooth silky substance.
+1278,Blue Buttoned Vest,TODO,It's a blue shirt with dyeable sleeves.
+1279,Faded Denim Shirt,TODO,"It's a denim shirt with a dusty, faded look."
+1280,Red Buttoned Vest,TODO,It's a red shirt with dyeable sleeves.
+1281,Green Buttoned Vest,TODO,It's a green shirt with dyeable sleeves.
+1282,Tomato Shirt,TODO,A shirt that answers the big question: 'Tomatoes are'... (but the rest is smudged).
+1283,Fringed Vest,TODO,A fringed brown vest over a sleeveless shirt.
+1284,Globby Shirt,TODO,It's got an indistinguishable glob pattern.
+1285,Midnight Dog Jacket,TODO,It's dyed a deep midnight blue from squid ink.
+1286,Shrimp Enthusiast Shirt,TODO,For those whose appetites demand a steady supply of shrimp.
+1287,Tea Shirt,TODO,A shirt inspired by the popular beverage.
+1288,Trinket Shirt,TODO,A shirt with large colored glass orbs attached to it.
+1289,Darkness Suit,TODO,A black suit top with a faded red pocket square.
+1290,Mineral Dog Jacket,TODO,It's infused with trace minerals from the ocean.
+1997,Magic Sprinkle Shirt,TODO,A shirt with prismatic sprinkles.
+1998,Prismatic Shirt,TODO,It's shimmering with prismatic energy. Has dark sleeves.
+1999,Prismatic Shirt,TODO,It's shimmering with prismatic energy. Has white sleeves.

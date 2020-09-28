@@ -5,9 +5,9 @@ mods:
    Sailor Moon Hairstyles and Clothing
 
 latest commit:
-   commit 81ce2c32c06df6b0f9974cbd722123ca7f18be25
+   commit e5948578ad60cc7c5b0c3006dbea8d6224b88a95
    Author: razikh-git <pocketsathome@gmail.com>
-   Date:   Wed Jun 17 00:39:44 2020 +1000
+   Date:   Mon Sep 14 01:11:16 2020 +1000
    
-       Updated csproj file to SDK format, and corrected capitalisation for "assets" to stop breaking Linux installs.
+       Release 4.2+: The ol' 'rebase remove head' manouevre
    

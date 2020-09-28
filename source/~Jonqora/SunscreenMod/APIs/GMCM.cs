@@ -5,6 +5,7 @@ using System;
 
 namespace GenericModConfigMenu
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public interface IApi
     {
         void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
@@ -35,4 +36,5 @@ namespace GenericModConfigMenu
 
         // void OpenModMenu(IManifest mod);
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

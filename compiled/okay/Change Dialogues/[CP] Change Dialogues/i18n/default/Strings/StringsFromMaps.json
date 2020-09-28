@@ -1,0 +1,69 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromMaps",
+		"Entries": {
+			"AnimalShop.6": "You rummage through {{mardrest.ChangeDialogues/MarnieName}}'s dresser. It's mostly long dresses, but there's a pair of brown suspenders in here as well.",
+			"AnimalShop.7": "You dig around in {{mardrest.ChangeDialogues/MarnieName}}'s private drawer. There's nothing of interest.",
+			"AnimalShop.16": "Doesn't seem like {{mardrest.ChangeDialogues/JasName}} uses this much.",
+			"BathHouse_WomensLocker.2": "It's {{mardrest.ChangeDialogues/PennyName}}'s locker. There's a frilly bathing suit inside.",
+			"BathHouse_WomensLocker.3": "It's {{mardrest.ChangeDialogues/AbigailName}}'s locker. It stinks pretty bad.",
+			"Blacksmith.2": "You rifle through {{mardrest.ChangeDialogues/ClintName}}'s personal effects. There's a stack of blacksmith aprons, some magazines, an old sword, and a nice picture of {{mardrest.ChangeDialogues/His:L{{mardrest.ChangeDialogues/ClintGender}}}} mother.",
+			"Blacksmith.3": "You rifle through {{mardrest.ChangeDialogues/ClintName}}'s personal effects. There's a stack of blacksmith aprons, some magazines, an old sword, and a nice picture of {{mardrest.ChangeDialogues/His:L{{mardrest.ChangeDialogues/ClintGender}}}} mother.",
+			"Blacksmith.4": "Dear {{mardrest.ChangeDialogues/EmilyName}},^I know you only think of me as a friend.^It's my fault. I'm too shy. I'll never have the courage to tell you the truth.^That's why I'm writing this letter to myself that I'll certainly crumple up and toss in the corner.",
+			"Blacksmith.7": "{{mardrest.ChangeDialogues/ClintName}}'s quality anvil. It's made from an iridium alloy.",
+			"Blacksmith.8": "{{mardrest.ChangeDialogues/ClintName}}'s quality anvil. It's made from an iridium alloy.",
+			"ElliottHouse.1": "It's a painting by {{mardrest.ChangeDialogues/LeahName}}.",
+			"ElliottHouse.2": "{{mardrest.ChangeDialogues/ElliottName}}'s work desk. It's covered in notes and crumpled papers.",
+			"ElliottHouse.4": "It looks like {{mardrest.ChangeDialogues/ElliottName}} is trying to grow a bonsai tree. It looks cool so far!",
+			"ElliottHouse.6": "It looks like {{mardrest.ChangeDialogues/ElliottName}} is trying to grow a bonsai tree. It looks cool so far!",
+			"HaleyHouse.2": "You quickly peek into {{mardrest.ChangeDialogues/HaleyName}}'s private dresser. It's stuffed with clothes. ",
+			"HaleyHouse.3": "You quickly peek into {{mardrest.ChangeDialogues/HaleyName}}'s private dresser. It's stuffed with clothes. ",
+			"HaleyHouse.6": "There's a little note on the pot. 'Something to remember me by. -{{mardrest.ChangeDialogues/SandyName}}'",
+			"HaleyHouse.8": "It's {{mardrest.ChangeDialogues/EmilyName}}'s computer. It's password-protected so you can't snoop around on it.",
+			"HaleyHouse.11": "It's {{mardrest.ChangeDialogues/HaleyName}}'s camera.",
+			"HarveyRoom.3": "It's {{mardrest.ChangeDialogues/HarveyName}}'s model airplane collection.",
+			"HarveyRoom.4": "It's {{mardrest.ChangeDialogues/HarveyName}}'s model airplane collection.",
+			"Hospital.3": "It's probably not a good idea to stick your hands in there. It's full of used syringes, dirty swabs, and little nozzles that {{mardrest.ChangeDialogues/HarveyName}} stuck into people's ears.",
+			"JoshHouse.1": "Momma-^If you're reading this, it means I've passed on. I'm so sorry you had to go through this. Know that I love you both.^Don't be too upset, I'm with Yoba now. ^My final request: take care of {{mardrest.ChangeDialogues/AlexName}}. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/AlexGender}}}} needs a family, something stable. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/AlexGender}}}}'s a good kid.^ Love, ^Clara",
+			"JoshHouse.9": "It's {{mardrest.ChangeDialogues/AlexName}}'s gridball helmet. Looks like {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/AlexGender}}}} keeps it polished.",
+			"LeahHouse.2": "It's a stack of {{mardrest.ChangeDialogues/LeahName}}'s paintings. It's mostly landscapes and studies of nature.",
+			"LeahHouse.5": "It's a wooden sculpture {{mardrest.ChangeDialogues/LeahName}}'s working on. It has a wonderful cedar smell.",
+			"ManorHouse.3": "Won't you come by tomorrow night?^If you come through the back window no one will notice.^I'd like to see you more often.^I know you're busy but can't you make time for me?^I hope to see you tomorrow.^-{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/MarnieName}}}} ",
+			"SamHouse.3": "{{mardrest.ChangeDialogues/JodiName}}-^Since I'll be coming home soon I want to tell you a few things.^I might not be the same {{mardrest.ChangeDialogues/Man:L{{mardrest.ChangeDialogues/KentGender}}}} you remember. I've seen some things out here that have really shaken me up. I've been having a real hard time relaxing.^I don't want to scare you or make you upset. I just don't want you to be shocked when I get back.^Remember, no matter how I act, you and the kids mean everything to me.^I'll see you soon.^-{{mardrest.ChangeDialogues/KentName}} ",
+			"SamHouse.9": "{{mardrest.ChangeDialogues/SamName}}'s electric guitar. It has a pair of active pickups and a whammy bar.",
+			"SamHouse.10": "--Report Card--^Name: {{mardrest.ChangeDialogues/VincentName}}^^Reading: C^Spelling: D^Math: C^Social Studies: B-^Art: B-^Sports:A^^Note:{{mardrest.ChangeDialogues/VincentNickname}} is a good {{mardrest.ChangeDialogues/Boy:L{{mardrest.ChangeDialogues/VincentGender}}}}, but {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/VincentGender}}}} could make do with a little more studying!^  -{{mardrest.ChangeDialogues/PennyName}} ",
+			"SamHouse.11": "It's {{mardrest.ChangeDialogues/SamName}}'s computer. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/SamGender}}}}'s got an extensive library of computer games.",
+			"SamHouse.12": "{{mardrest.ChangeDialogues/VincentName}}'s toys are strewn about the room.",
+			"ScienceHouse.2": "For a gadgeteer, {{mardrest.ChangeDialogues/MaruName}}'s computer is pretty old. She's still backing up her files to floppy disk.",
+			"ScienceHouse.7": "It's some kind of device {{mardrest.ChangeDialogues/MaruName}}'s working on. It looks pretty scrappy.",
+			"ScienceHouse.11": "One of {{mardrest.ChangeDialogues/RobinName}}'s axes.",
+			"SeedShop.9": "To {{mardrest.ChangeDialogues/Mr:{{mardrest.ChangeDialogues/PierreGender}}}}. {{mardrest.ChangeDialogues/PierreName}}:^It pains me to be the bearer of bad news, but I feel obligated to inform you of a recent development most threatening to your livelihood.^Joja Co. has decided to expand into Pelican Town.^It's too late for protest. Joja Builders have already broken ground for the new JojaMart.^^This must be devastating news for you. So many years in business...a local standby... and now, obscured by the shadow of a powerful, efficient, economically viable corporation. What a shame!^^As manager of the new JojaMart, I feel, to some degree, personally responsible for your predicament. As such, I'd like to offer you a position as Assistant Grocer. Wages start at 5g an hour. I look forward to seeing your resume!^^-{{mardrest.ChangeDialogues/Mr:{{mardrest.ChangeDialogues/MorrisGender}}}}. {{mardrest.ChangeDialogues/MorrisName}}, Manager^Pelican Town JojaMart",
+			"WitchHut.5": "Curse The Countryside!... A Spellbook For The Rural {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WitchGender}}}} ",
+			"MovieTheater_Marlon": "{{mardrest.ChangeDialogues/GilName}} slept through the whole movie... typical.",
+			"MovieTheater_Marlon2": "That was an interesting one... what'd you think, {{mardrest.ChangeDialogues/GilName}}?#$b#...{{mardrest.ChangeDialogues/GilName}}?#$b#...{{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/GilGender}}}}'s out cold."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromMaps",
+		"Entries": {
+			"BathHouse_MensLocker.4": "This locker is empty.",
+			"BathHouse_WomensLocker.4": "{{mardrest.ChangeDialogues/AlexName}}'s Locker... There's a bunch of pictures of bodybuilders taped inside the door.",
+			"JoshHouse.7": "You peek into {{mardrest.ChangeDialogues/AlexName}}'s drawer. There's clothes, headbands, and a box of gridball trading cards.",
+			"JoshHouse.8": "You peek into {{mardrest.ChangeDialogues/AlexName}}'s drawer. There's clothes, headbands, and a box of gridball trading cards."
+		}, "When": { "mardrest.ChangeDialogues/AlexGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromMaps",
+		"Entries": {
+			"BathHouse_MensLocker.4": "{{mardrest.ChangeDialogues/AlexName}}'s Locker... There's a bunch of pictures of bodybuilders taped inside the door.",
+			"BathHouse_WomensLocker.4": "This Locker is empty.",
+			"JoshHouse.7": "You peek into {{mardrest.ChangeDialogues/AlexName}}'s drawer. There's clothes, hair gel, and a box of gridball trading cards.",
+			"JoshHouse.8": "You peek into {{mardrest.ChangeDialogues/AlexName}}'s drawer. There's clothes, hair gel, and a box of gridball trading cards."
+		}, "When": { "mardrest.ChangeDialogues/AlexGender": "Male" }
+	}
+	]
+}

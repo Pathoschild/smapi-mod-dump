@@ -1,0 +1,13 @@
+{
+    "Name": "Photographers Coat",
+    "Description": "Apparel for an incredible scoop.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Abrigo de Fotógrafo"
+    },
+    "DescriptionLocalization": {
+        "es": "Ropa para una primicia increíble."
+    }
+}

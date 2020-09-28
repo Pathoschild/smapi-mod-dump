@@ -14,6 +14,7 @@ namespace QuestFramework.Patches
 {
     class DialoguePatch : Patch<DialoguePatch>
     {
+        private const string PATTERN = @"\[quest:([^\]]+?)( ([^\]]+?))?\]";
         public override string Name => nameof(DialoguePatch);
 
         QuestManager QuestManager { get; }
@@ -26,43 +27,19 @@ namespace QuestFramework.Patches
 
         private static bool MatchQuestName(string input, out string questName)
         {
-            string pattern = @"!\[(.+)\]";
-            
-            if (Regex.IsMatch(input, pattern))
+            if (Regex.IsMatch(input, PATTERN))
             {
-                questName = Regex.Match(input, pattern).Groups[1].Value;
+                Match match = Regex.Match(input, PATTERN);
+                string name = match.Groups[1].Value;
+                string modUid = match.Groups[3].Value;
+
+                questName = string.IsNullOrEmpty(modUid) ? name : $"{name}@{modUid}";
+
                 return true;
             }
 
             questName = null;
             return false;
-        }
-
-        private static bool Before_parseDialogueString(ref string masterString)
-        {
-            try
-            {
-                string pattern = @"!\[(.+)\]";
-
-                foreach (Match m in Regex.Matches(masterString, pattern))
-                {
-                    string name = m.Groups[1].Value;
-                    int id = Instance.QuestManager.ResolveGameQuestId(name);
-
-                    masterString = masterString.Replace($"![{name}]", $"![{id}]");
-
-                    if (id == -1)
-                    {
-                        Instance.Monitor.Log($"Unable to resolve quest id for `{name}` - quest doesn't exist.", LogLevel.Error);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Instance.LogFailure(e, nameof(Instance.Before_parseDialogueString));
-            }
-
-            return true;
         }
 
         private static bool Before_getCurrentDialogue(Dialogue __instance, List<string> ___dialogues, bool ___finishedLastDialogue)
@@ -74,9 +51,15 @@ namespace QuestFramework.Patches
 
                 if (___dialogues.Count > 0 && MatchQuestName(___dialogues[__instance.currentDialogueIndex], out string questName))
                 {
-                    int id = int.Parse(questName);
+                    if (!int.TryParse(questName, out int id))
+                    {
+                        id = Instance.QuestManager.ResolveGameQuestId(questName);
+                        
+                        if (id == -1)
+                            Instance.Monitor.Log($"Unable to resolve quest id for `{questName}` - quest doesn't exist.", LogLevel.Error);
+                    }
 
-                    ___dialogues[__instance.currentDialogueIndex] = ___dialogues[__instance.currentDialogueIndex].Replace("![" + questName + "]", "");
+                    ___dialogues[__instance.currentDialogueIndex] = Regex.Replace(___dialogues[__instance.currentDialogueIndex], PATTERN, "");
 
                     if (!Game1.player.hasQuest(id))
                     {
@@ -97,10 +80,6 @@ namespace QuestFramework.Patches
             harmony.Patch(
                 original: AccessTools.Method(typeof(Dialogue), nameof(Dialogue.getCurrentDialogue)),
                 prefix: new HarmonyMethod(typeof(DialoguePatch), nameof(DialoguePatch.Before_getCurrentDialogue))
-            );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Dialogue), "parseDialogueString"),
-                prefix: new HarmonyMethod(typeof(DialoguePatch), nameof(DialoguePatch.Before_parseDialogueString))
             );
         }
     }

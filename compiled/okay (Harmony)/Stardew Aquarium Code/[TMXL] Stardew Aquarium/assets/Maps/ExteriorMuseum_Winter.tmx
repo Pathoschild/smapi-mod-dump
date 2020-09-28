@@ -2373,15 +2373,6 @@
  <tileset firstgid="10781" name="springobjects" tilewidth="16" tileheight="16" tilecount="816" columns="24">
   <image source="springobjects.png" width="384" height="544"/>
  </tileset>
- <tileset firstgid="11597" name="smol boio" tilewidth="16" tileheight="16" tilecount="9" columns="3">
-  <image source="CustomTS/smol boio.png" width="48" height="48"/>
- </tileset>
- <tileset firstgid="11606" name="smol and cold boio" tilewidth="16" tileheight="16" tilecount="9" columns="3">
-  <image source="CustomTS/smol and cold boio.png" width="48" height="48"/>
- </tileset>
- <tileset firstgid="11615" name="new" tilewidth="16" tileheight="16" tilecount="12" columns="2">
-  <image source="CustomTS/new.png" width="32" height="96"/>
- </tileset>
  <layer id="1" name="Back" width="85" height="80">
   <data>
    <tile gid="176"/>
@@ -3265,7 +3256,7 @@
    <tile gid="10605"/>
    <tile gid="10606"/>
    <tile gid="10605"/>
-   <tile gid="11610"/>
+   <tile gid="9126"/>
    <tile gid="10605"/>
    <tile gid="10606"/>
    <tile gid="276"/>
@@ -10154,9 +10145,9 @@
    <tile/>
    <tile/>
    <tile gid="269"/>
-   <tile gid="11612"/>
-   <tile gid="11613"/>
-   <tile gid="11614"/>
+   <tile gid="9165"/>
+   <tile gid="9166"/>
+   <tile gid="9167"/>
    <tile gid="2377"/>
    <tile gid="233"/>
    <tile gid="390"/>
@@ -23650,9 +23641,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="11606"/>
-   <tile gid="11607"/>
-   <tile gid="11608"/>
+   <tile gid="9085"/>
+   <tile gid="9086"/>
+   <tile gid="9087"/>
    <tile gid="2343"/>
    <tile/>
    <tile/>
@@ -23735,9 +23726,9 @@
    <tile/>
    <tile/>
    <tile gid="244"/>
-   <tile gid="11609"/>
+   <tile gid="9125"/>
    <tile/>
-   <tile gid="11611"/>
+   <tile gid="9127"/>
    <tile gid="2360"/>
    <tile gid="9403"/>
    <tile/>
@@ -24248,7 +24239,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="11622"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -24334,7 +24325,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="11622"/>
    <tile/>
    <tile/>
    <tile/>
@@ -24420,7 +24410,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="11622"/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>

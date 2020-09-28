@@ -1,4 +1,12 @@
 {
+  "OnlyToolsCanRemoveRootMushrooms": false,
+  "PulseWhenGrowing": true,
+  "OtherObjectsThatCanBeGrown": [
+    "Example Mushroom Name",
+    "Example Item Not Called Fungus"
+  ],
+  "DisabledForFruitCave": true,
+  "RecipeAlwaysAvailable": false,
   "MaximumDaysToMature": 4,
   "MaximumQuantityLimitsDoubled": false,
   "WorksInCellar": true,
@@ -7,8 +15,8 @@
   "WorksInFarmHouse": false,
   "WorksInGreenhouse": false,
   "WorksOutdoors": false,
-  "DisabledForFruitCave": true,
-  "RecipeAlwaysAvailable": false,
   "DebugMode": false,
-  "GivePropagatorKey": "F9"
+  "GivePropagatorKey": "OemComma",
+  "CheckForPyTKMigration": true,
+  "CheckForJsonAssetsMigration": true
 }

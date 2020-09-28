@@ -38,6 +38,7 @@
     <None Include="packages.config" />
     <None Include="manifest.json" />
     <None Include="i18n\default.json" />
+    <None Include="i18n\fr.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="i18n\" />

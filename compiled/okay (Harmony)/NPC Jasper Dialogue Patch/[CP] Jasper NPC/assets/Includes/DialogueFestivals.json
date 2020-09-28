@@ -19,6 +19,11 @@
 	"LogName": "Luau",	"Action": "EditData",	"Target": "Data/Festivals/summer11",
 		"Entries":{	"Jasper": "Are you acquainted with my good friend Rasmodius?"	}	
 		},
+{	
+	"LogName": "Luau",	"Action": "EditData",	"Target": "Data/Festivals/summer11",
+		"Entries":{	"Jasper": "Please, come and join us my love. Rasmodius and I were discussing the mysterious ways of the deep ocean."	},
+		"When": {	"spouse":"Jasper"	}	
+		},
 {	"LogName": "Flower Dance",	"Action": "EditData",	"Target": "Data/Festivals/spring24",
 	"Entries":{	"Jasper": "Dancing is not my forte. Two left feet, is how my dear mother once described me.$4"	},
 	"When": {	"HasSeenEvent |contains=50709914":"false"	}	
@@ -31,7 +36,7 @@
 {	
 	"LogName": "Egg Festival-married",	"Action": "EditData",	"Target": "Data/Festivals/spring24",
 	"Entries":{	"Jasper": "Hello gorgeous. Spring is in the air, and I have never felt so alive.$1#$b#I love you.$4"	},
-		"When": {	"spouse":"Jasper", "Hearts:Jasper":"12,13,14"	}	
+		"When": {	"spouse":"Jasper", "Hearts:Jasper":"10,12,13,14"	}	
 		},
 {   
 	"LogName": "Marriage Flower Dance Accept",	  "Action": "EditData",    "Target": "Strings/StringsFromCSFiles",

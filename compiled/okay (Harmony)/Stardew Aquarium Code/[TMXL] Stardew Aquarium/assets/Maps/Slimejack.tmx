@@ -3942,7 +3942,7 @@
   </object>
   <object id="5" name="TileData" x="256" y="256" width="16" height="16">
    <properties>
-    <property name="Action" value="Warp 8 41 FishMuseum"/>
+    <property name="Action" value="Warp 7 41 FishMuseum"/>
    </properties>
   </object>
  </objectgroup>

@@ -33,7 +33,7 @@ namespace DynamicConversationTopics
 		/// <returns>true for asset Data\Events\***, false otherwise</returns>
 		public bool CanEdit<_T> (IAssetInfo asset)
 		{
-			return ModConfig.AssetMatch(asset, "Data\\Events", ModConfig.EventLocations);
+			return Utilities.AssetMatch(asset, "Data\\Events", ModConfig.EventLocations);
 		}
 
 		/// <summary>

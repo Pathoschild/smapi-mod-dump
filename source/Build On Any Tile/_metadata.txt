@@ -1,0 +1,13 @@
+url:
+   https://github.com/Esca-MMC/BuildOnAnyTile.git
+
+mods:
+   Build On Any Tile
+
+latest commit:
+   commit 4532e567f98e27de34da8a60fe3fd43f00369dca
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Sat Sep 19 18:31:30 2020 -0500
+   
+       Update manifest version to 1.0.1
+   

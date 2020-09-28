@@ -3,14 +3,14 @@
 
 {	
 	"LogName": "Dialogue", "Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
-	"FromFile": "assets/Dialogue/MarriageDialogue_summer.json",	
+	"FromFile": "assets/Dialogue/MarriageDialogue_summer.json"	
 				},
 
 {	
 	"LogName": "Dialogue", 	"Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
 	"Entries": {
 		"funLeave_Jasper": "#$c 0.5#I found some interesting geodes to show the children today. I hope they appreciate Mother Nature's lucky dip!$1#'Tis such a glorious day. I wonder if it might be worth taking the children on a field trip. Perhaps we could excavate the beach.$3",
-		"funReturn_Jasper": "#$c 0.3#Oh dear, I fear I accidently taught young Vincent to swear in Dwarvish. Miss Penny was not impressed.$2#Young Jas has quite the imagination and asks so many questions! I do wonder who is learning more, the children, or myself!$3"			},
+		"funReturn_Jasper": "#$c 0.3#Oh dear, I fear I accidently taught young Vincent to swear in Dwarvish. Miss Penny was not impressed.$2#Young Jas has quite the imagination and asks so many questions! I do wonder who is learning more, the children or myself!$3"			},
 		"When": { 	"DayofWeek":"Wednesday", "HasFlag": "Jasper_Penny"	}
 		},
 {	
@@ -25,8 +25,21 @@
 	"Target": "Characters/Dialogue/MarriageDialogueJasper",
 	"Entries": {
 		"funLeave_Jasper": "$c 0.5#Oh, perhaps I should take a gift for our friend. Dwarf does enjoy the strangest trinkets.#I still cannot believe that I shall be taking tea with one of the Smoluanu!#$b#Have a splendid day, my love.$1",
-		"funReturn_Jasper": "$c 0.3#Our friend sent me home with this... They were insistent. Please be careful with it, my love.$2[286 287 288]#Dwarf speaks often of their ancient enemy, the shadow people. Were they, perhaps, the ancestors of those foul shadow fiends?$2",			},
+		"funReturn_Jasper": "$c 0.3#Our friend sent me home with this... They were insistent. Please be careful with it, my love.$2[286 287 288]#Dwarf speaks often of their ancient enemy, the shadow people. Were they, perhaps, the ancestors of those foul shadow fiends?$2"			},
 			"When": { 	"DayofWeek":"Friday", "HasFlag": "Dwarf_Friend"	}	},
+
+{	"LogName": "Dialogue", 	"Action": "EditData","Target": "Characters/Dialogue/MarriageDialogueJasper",
+		"Entries": {	
+			"OneKid_0": "Little %kid1 really seems to enjoy my stories. It's lovely to have such a captivating audience.$4",
+			"OneKid_1": "I have been writing some stories for %kid1. Maybe one day I shall have them put to print.",
+			"OneKid_2": "Good morning, my love. I've fed %kid1 their breakfast...#$b#And cleaned up the floor as well. It seems %kid1 is not too fond of pureed corn.$2",
+			"OneKid_3": "I wonder if %kid1 would like a sibling some day.#$b#When I was growing up, I would've loved a little brother or sister.$3#$b#Sorry my love, I'm not meaning to pressure you!$4"	
+				},
+			"When": { "HasSeenEvent |contains=5599013":true }
+				}
+
+
+
 
     ]
 }

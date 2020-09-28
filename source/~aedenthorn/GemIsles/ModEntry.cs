@@ -3,10 +3,8 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
-using StardewValley.Monsters;
 using System.Collections.Generic;
 using System.Linq;
-using xTile;
 
 namespace GemIsles
 {
@@ -21,8 +19,7 @@ namespace GemIsles
         private static int mapX;
         private static int mapY;
 
-        private static List<string> isleMaps = new List<string>();
-        private string mapAssetKey;
+        public static string mapAssetKey;
         private string locationPrefix = "GemIsles_";
 
         public override void Entry(IModHelper helper)
@@ -48,7 +45,6 @@ namespace GemIsles
                     Game1.locations.RemoveAt(i);
                 }
             }
-            isleMaps.Clear();
         }
 
         private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -125,10 +121,11 @@ namespace GemIsles
         }
         private void WarpToGemIsles(int x, int y)
         {
+            if (Game1.eventUp)
+                return;
             string name = $"{locationPrefix}{mapX}_{mapY}";
             if (Game1.getLocationFromName(name) == null)
             {
-                isleMaps.Add(name);
                 GameLocation location = new GameLocation(mapAssetKey, name) { IsOutdoors = true, IsFarm = false };
                 Game1.locations.Add(location);
                 Helper.Content.InvalidateCache("Data/Locations");

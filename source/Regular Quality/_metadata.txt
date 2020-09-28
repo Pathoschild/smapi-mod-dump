@@ -5,9 +5,12 @@ mods:
    Regular Quality
 
 latest commit:
-   commit 451314774f0fa933e248ab6b584ad519452cf0c1
+   commit 11d95300ab4fed04db46459756f70fb7cbf3cdb2
    Author: desto-git <desto-git@users.noreply.github.com>
-   Date:   Fri Jan 3 14:03:42 2020 +0100
+   Date:   Sun Sep 27 01:47:13 2020 +0200
    
-       add update key, update README, upload to Nexus
+       add README.md for solution
+       
+       Not part of the previous commit to
+       keep the history of the original README intact.
    

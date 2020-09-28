@@ -1,0 +1,13 @@
+{
+    "Name": "Pullover Sweater",
+    "Description": "A huge, loose-fitting pullover, sitting over an orange turtleneck.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Suéter Pulover"
+    },
+    "DescriptionLocalization": {
+        "es": "Un enorme jersey holgado, sentado sobre un cuello de tortuga naranja."
+    }
+}

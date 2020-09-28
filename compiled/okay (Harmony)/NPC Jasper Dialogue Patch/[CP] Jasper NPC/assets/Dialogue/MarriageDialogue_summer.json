@@ -27,10 +27,7 @@
     "Outdoor_4": "I hope you don't mind, @, but I did a little excavating of the lower fields.#$b#I found this.#$b#It's kind of fun, isn't it? The people who used to live here must've really loved chickens.[113]",
     "funLeave_Jasper": "Time to stretch my legs and visit a few friends, @. Do you have any messages for Gunther?#$b#I might pick up a few books while I'm at it.",
     "funReturn_Jasper": "Oh, my arms ache from carrying so many books!#$e#$c 0.5#Gunther snuck in one of his favorites. I'm not really sure it's quite my genre, but I shall try it.$1",
-    "OneKid_0": "Little %kid1 really seems to enjoy my stories. It's lovely to have such a captivating audience.$4",
-    "OneKid_1": "I have been writing some stories for %kid1. Maybe one day I shall have them put to print.",
-    "OneKid_2": "Good morning, my love. I've fed %kid1 their breakfast...#$b#And cleaned up the floor as well. It seems %kid1 is not too fond of pureed corn.$2",
-    "OneKid_3": "I wonder if %kid1 would like a sibling some day.#$b#When I was growing up, I would've loved a little brother or sister.$3",
+    
     "TwoKids_0": "Maybe we could take the kids to the beach? Perhaps it's time to teach %kid1 the fine art of sand castle construction.",
     "TwoKids_1": "Giving %kid1 an ice cream was probably not the best idea...#$b#But don't worry, I cleaned all the walls!$3#$b#%kid1's quite the artist.",
     "TwoKids_2": "The children play so nicely together. I hope they always remain good friends.$4",

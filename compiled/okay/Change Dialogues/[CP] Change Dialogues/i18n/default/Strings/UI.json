@@ -1,0 +1,128 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"Chat_MonsterSlayer1": "{0} just defeated a {1}, and {{mardrest.ChangeDialogues/MarlonName}} is very pleased."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Alex": "Married", "mardrest.ChangeDialogues/AlexGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Elliott": "Married", "mardrest.ChangeDialogues/ElliottGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Harvey": "Married", "mardrest.ChangeDialogues/HarveyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Sam": "Married", "mardrest.ChangeDialogues/SamGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Sebastian": "Married", "mardrest.ChangeDialogues/SebastianGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Shane": "Married", "mardrest.ChangeDialogues/ShaneGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Victor": "Married", "mardrest.ChangeDialogues/VictorGender": "Female", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": true }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/UI",
+		"Entries": {
+			"AskedToAdoptBaby_Male": "{0} has asked you to have a baby with her! Do you want to have a baby?",
+			"AskedToAdoptBaby_Accepted_Male": "{0} agreed to have a baby with you! It's due in 14 days.",
+			"AskedToAdoptBaby_Rejected_Male": "{0} has decided she'd rather not have a baby at this point."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	}
+	]
+}

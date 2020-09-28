@@ -1,0 +1,13 @@
+{
+    "Name": "Grey Hoodie on Pink",
+    "Description": "A simple, comfortable outfit.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Sudadera Gris con Capucha en Rosa"
+    },
+    "DescriptionLocalization": {
+        "es": "Un atuendo sencillo y cómodo."
+    }
+}

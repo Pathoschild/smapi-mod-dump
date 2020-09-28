@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -46,23 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\ICookingSkillApi.cs" />
-    <Compile Include="API\IRemoteFridgeApi.cs" />
-    <Compile Include="API\RemoteFridgeApi.cs" />
+    <Compile Include="API\IGenericModConfigMenuAPI.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="CraftingPage\RemoteFrigdeCraftingMenu.cs" />
-    <Compile Include="FridgeHandler.cs" />
+    <Compile Include="controller\ChestController.cs" />
+    <Compile Include="controller\FridgeController.cs" />
+    <Compile Include="controller\saving\SaveData.cs" />
+    <Compile Include="controller\saving\SaveManager.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VirtualListBase.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\craft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="assets\craft2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="assets\fridge-flipped.png" />
     <Content Include="assets\fridge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

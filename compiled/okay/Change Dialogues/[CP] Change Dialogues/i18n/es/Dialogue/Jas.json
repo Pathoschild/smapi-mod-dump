@@ -1,0 +1,111 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Jas",
+		"Entries": {
+			"Mon": "Oh... ¿Buscas a mi tía {{mardrest.ChangeDialogues/MarnieName}}?$u",
+			"Wed4": "A partir de las 18:00 la tía {{mardrest.ChangeDialogues/MarnieName}} no me deja salir de casa. ¡No es justo!$s#$e#¡Ya no me da miedo la oscuridad!",
+			"Thu2": "La señorita {{mardrest.ChangeDialogues/PennyName}} me enseña a escribir en cursiva.$h#$e#Tiene una letra muy bonita.",
+			"Sat2": "A veces busco cangrejos en el río. No se lo digas a mi tía {{mardrest.ChangeDialogues/MarnieName}}... Pero una vez le di uno a una de las vacas.#$e#Le encantó.",
+			"Sun2": "{{mardrest.ChangeDialogues/ShaneName}} pasa mucho tiempo fuera, y la tía {{mardrest.ChangeDialogues/MarnieName}} siempre está ocupada... Así que tengo que inventarme mis propios juegos.#$e#Menos mal que tengo mis juguetes.$h",
+			"Sun10": "¿Sabías que {{mardrest.ChangeDialogues/ShaneName}} es mi {{mardrest.ChangeDialogues/Da:L{{mardrest.ChangeDialogues/ShaneGender}}}}adrin{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}? Era amig{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} de mis padres.$s#$e#Se murieron... *Snif*$s"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Jas",
+		"Entries": {
+			"winter_18.000": "Hoy tengo que ver {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/HarveyGender}}}} doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}, ¡pero no tengo miedo!",
+			"winter_18.001": "¿Me puede enseñar cómo funciona esta herramienta, doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}} {{mardrest.ChangeDialogues/HarveyName}}?"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Jas": {
+				"NPCName": "Jas",
+				"Reactions": [
+				{
+					"Tag": "love",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "¡Me encantaría ver una película!"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/jump Jas/pause 400/playSound reward/message \"¡{{mardrest.ChangeDialogues/JasName}} está enfervorizada!\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "¡Ha sido tan divertida...! ¡Gracias por traerme!$h"
+						}
+					},
+					"ID": "reaction_3"
+				},
+				{
+					"Tag": "like",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Esta es una película de adultos, ¿verdad? ¡Estaré bien!"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/message \"{{mardrest.ChangeDialogues/JasName}} está cabeceando y mirando hacia los lados.\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "¡Ha estado bien! ¡Tenía... um... buen «di-funt-álogo »! ...¿verdad?"
+						}
+					},
+					"ID": "reaction_4"
+				},
+				{
+					"Tag": "horror",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Yo... Yo no estoy segura de que me dejen ver esto...$s"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/shake Jas 250/pause 500/shake Jas 250/pause 500/emote Jas 28/message \"{{mardrest.ChangeDialogues/JasName}} está temblando.\"",
+							"Text": "Tengo miedo...$s"
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "*sniff*...$s"
+						}
+					},
+					"ID": "reaction_5"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Jas": "child/neutral/shy/positive/female/not-datable/Vincent/Town/summer 4/Vincent ''/AnimalShop 4 6/{{mardrest.ChangeDialogues/JasName}}"
+		}
+	}
+	]
+}

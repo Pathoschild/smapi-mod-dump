@@ -1,0 +1,12 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/rainy",
+		"Entries": {
+			"Evelyn": "Cuando me he levantado se oía como un goteo... Creo que tenemos goteras en el tejado.$s#$e#En los buenos tiempos, {{mardrest.ChangeDialogues/GeorgeName}} hubiera corrido a arreglarlas en un santiamén... *Sigh*$s",
+			"Emily": "En el desierto de Calico nunca llueve... Ahí vive mi amiga {{mardrest.ChangeDialogues/SandyName}}.#$e#Me hubiera gustado visitarla hoy.$s"
+		}
+	}
+	]
+}

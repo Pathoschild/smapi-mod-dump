@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Build On Any Tile",
+  "Author": "Esca",
+  "Version": "1.0.1",
+  "Description": "Allows buildings to be placed on any tile, even if they're obstructed by terrain or other buildings.",
+  "UniqueID": "Esca.BuildOnAnyTile",
+  "EntryDll": "BuildOnAnyTile.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": [ "GitHub:Esca-MMC/BuildOnAnyTile", "Nexus:6854", "ModDrop:827525" ]
+}

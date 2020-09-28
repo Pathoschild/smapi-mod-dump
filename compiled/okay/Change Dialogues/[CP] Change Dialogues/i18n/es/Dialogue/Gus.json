@@ -1,0 +1,84 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Gus",
+		"Entries": {
+			"Introduction": "¡Guau, hola! Soy {{mardrest.ChangeDialogues/GusName}}, chef y propietari{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GusGender}}}} del Salón Fruta Estelar.#$e#Pásate si necesitas algún tentempié. Siempre tengo café caliente y cerveza fría a punto.$h",
+			"Mon": "Sí, sé mucho de los habitantes de por aquí.#$e#Es una de las ventajas de ser camarer{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GusGender}}}}.$h#$e#A veces oigo demasiado...",
+			"SeedShop_Entry": "¡Hola, {{mardrest.ChangeDialogues/PierreName}}!/Bueno, a ver qué necesito.../¡Ah, eso tiene buena pinta!/¡Esta noche voy a preparar mi salsa especial!/¡{{mardrest.ChangeDialogues/PierreName}}! ¿Qué es lo más fresco que tienes?/¡{{mardrest.ChangeDialogues/PierreName}}! ¿Qué me puedes ofrecer hoy?",
+			"Wed": "{{mardrest.ChangeDialogues/EmilyName}} lleva un tiempo trabajando aquí. ¡No sé qué haría sin ella!#$e#No soportaría tener que limpiar todas esas ollas yo sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GusGender}}}}.$s",
+			"Thu": "{{mardrest.ChangeDialogues/PamName}} y {{mardrest.ChangeDialogues/ClintName}} vienen al Salón casi cada noche.#$e#Me arruinaría si dejaran de venir.$h#$e#¡Así que más te vale no alejarl{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}}s de aquí!",
+			"Thu6": "{{mardrest.ChangeDialogues/ClintName}} viene casi cada noche y se sienta sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ClintGender}}}} en la misma mesa.#$e#De vez en cuando lanza miradas nerviosas a {{mardrest.ChangeDialogues/EmilyName}}. Hmmm.#$e#Igual por eso viene tan a menudo. Pero bueno, más negocio para mí.",
+			"Thu8": "{{mardrest.ChangeDialogues/PamName}} viene al Salón casi cada noche y bebe demasiada cerveza.#$e#Pero bueno, no debería juzgar a mis clientes.",
+			"pamHouseUpgrade": "Hola. Me han dicho lo que has hecho por {{mardrest.ChangeDialogues/PamName}}. ¡Ha sido muy amable por tu parte!$h#$e#Por desgracia, no creo que esto la anime a dejar el bebercio...",
+			"pamHouseUpgradeAnonymous": "Me he encontrado con {{mardrest.ChangeDialogues/PamName}} antes... ¡no veas qué sonrisa tenía de oreja a oreja! ¡Dice que alguien le compró una casa nueva!#$e#No sé quién sería, ¡pero se merece lo mejor del mundo!$h"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Gus",
+		"Entries": {
+			"fall_4.000": "Ver {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/HarveyGender}}}} doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}} me pone algo nervios{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GusGender}}}}... ¿Y si solo me quedan un par de años de vida? ¡Aún no estoy en paz con el mundo!",
+			"fall_4.001": "Es el hígado... ¿Verdad, doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}? Puedo verlo en su rostro. *Sigh...* Necesito dejar de tomar tanto dulce y delicioso vino de Stardew Valley.$s",
+			"Mon.000": "He venido a por suministros para el Salón. En {{mardrest.ChangeDialogues/PierreName}}'s calidad ante todo.$h"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Gus": {
+				"NPCName": "Gus",
+				"Reactions": [
+				{
+					"Tag": "summer_movie_1",
+					"Response": "love",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "He visto un anuncio de esta película en televisión. ¡Parece muy divertida!"
+						},
+						"DuringMovie": null,
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Como expert{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GusGender}}}} principiante, la extraña obsesión con la comida basada en gluten ha sido divertidísima.$h"
+						}
+					},
+					"ID": "reaction_0"
+				},
+				{
+					"Tag": "fall_movie_0",
+					"Response": "dislike",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Dicen que esta película es «poco convencional»... ¿Quiere eso decir que es mala?$s"
+						},
+						"DuringMovie": null,
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "¿Cual ha sido el punto de esta película? No lo entiendo. Quizá soy muy viej{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GusGender}}}}.$s"
+						}
+					},
+					"ID": "reaction_3"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Gus": "adult/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/GusGender}}}}/not-datable/null/Town/summer 8/Emily '' Pam ''/Saloon 18 6/{{mardrest.ChangeDialogues/GusName}}"
+		}
+	}
+	]
+}

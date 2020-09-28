@@ -1,0 +1,29 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Elliott",
+		"Entries": {
+			"Introduction": "Ah, the new farmer we've all been expecting... and whose arrival has sparked many a conversation!#$b#I'm {{mardrest.ChangeDialogues/ElliottName}}... I live in the little cabin by the beach. It's a pleasure to meet you.",
+			"event_boat1": "... I was worried you might not feel this way about another {{mardrest.ChangeDialogues/Man:{{mardrest.ChangeDialogues/ElliottGender}}}}.$l^So am I.$l"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialogueElliott",
+		"Entries": {
+			"Rainy_Night_0": "{{ElliottText}}",
+			"OneKid_3": "Caring for babies isn't exactly my strong suit... but I'll do my best to be a good {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ElliottGender}}}}.",
+			"TwoKids_1": "I was carrying %kid1 earlier, and I could've sworn I heard a \"{{mardrest.ChangeDialogues/Da:{{mardrest.ChangeDialogues/ElliottGender}}}}...{{mardrest.ChangeDialogues/Da:L{{mardrest.ChangeDialogues/ElliottGender}}}}\".$h",
+			"fall_26": "Would you still love me if I guzzled two gallons of pumpkin ale at the Spirit's Eve festival? Sometimes a {{mardrest.ChangeDialogues/Man:L{{mardrest.ChangeDialogues/ElliottGender}}}} has primitive urges..."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Elliott": "adult/polite/neutral/neutral/{{lowercase:{{mardrest.ChangeDialogues/ElliottGender}}}}/datable/Leah/Town/fall 5/Willy ''/ElliottHouse 1 5/{{mardrest.ChangeDialogues/ElliottName}}"
+		}
+	}
+	]
+}

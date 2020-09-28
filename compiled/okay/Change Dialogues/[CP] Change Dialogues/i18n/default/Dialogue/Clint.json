@@ -1,0 +1,79 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Clint",
+		"Entries": {
+			"Introduction": "Er... hi. I'm {{mardrest.ChangeDialogues/ClintName}}.#$e#I'm the town blacksmith. If you ever need to upgrade your tools, I'm your {{mardrest.ChangeDialogues/Guy:L{{mardrest.ChangeDialogues/ClintGender}}}}.",
+			"Mon": "Yep. I'm a blacksmith.#$e#My {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ClintGender}}}} was also a blacksmith.#$e#My grand{{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ClintGender}}}} was a blacksmith as well.$u#$q 9/9 Mon_old#I bet you can't guess what my great-grand{{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ClintGender}}}} was...#$r 9 30 Mon_9#A blacksmith.#$r 9 50 Mon_clown#A silly clown.#$r 9 -50 Mon_rude#A sarcastic {{mardrest.ChangeDialogues/Jerk:L{{mardrest.ChangeDialogues/ClintGender}}}}",
+			"Mon_old": "And yes, my great-grand{{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ClintGender}}}} was also a blacksmith.",
+			"Mon4": "Be glad you're a farmer, @. It's nicer to work outdoors than by a hot furnace all day.#$e#I'm only a blacksmith because my {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ClintGender}}}} pushed me into it.",
+			"summer_Mon4": "Be glad you're a farmer, @. It's nicer to work outdoors than by a hot furnace all day.#$e#I'm only a blacksmith because my {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ClintGender}}}} pushed me into it."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Clint": {
+				"NPCName": "Clint",
+				"Reactions": [
+				{
+					"Tag": "winter_movie_1",
+					"Response": "dislike",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "This movie's supposed to be a romance, right? *sigh*$s"
+						},
+						"DuringMovie": {
+							"ResponsePoint": "guyEnters",
+							"Script": "/emote Clint 12/message \"{{mardrest.ChangeDialogues/ClintName}} is scowling.\"",
+							"Text": "Why would she like THAT guy? Totally unrealistic if you ask me...$3"
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "That movie was depressing...$s"
+						}
+					},
+					"ID": "reaction_1"
+				},
+				{
+					"Tag": "like",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "{{ClintText1}} "
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/message \"{{mardrest.ChangeDialogues/ClintName}} is taking sips from an unmarked flask.\"",
+							"Text": "{{ClintText2}} "
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Hey... that was kind of fun... right?$h"
+						}
+					},
+					"ID": "reaction_0"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Clint": "adult/rude/shy/negative/{{lowercase:{{mardrest.ChangeDialogues/ClintGender}}}}/not-datable/Emily/Town/winter 26/Emily ''/Blacksmith 3 13/{{mardrest.ChangeDialogues/ClintName}}"
+		}
+	}
+	]
+}

@@ -1,0 +1,11 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/Festivals/winter25",
+		"Entries": {
+			"Leah": "{{mardrest.ChangeDialogues/GusName}} was just telling me about {{mardrest.ChangeDialogues/His:L{{mardrest.ChangeDialogues/GusGender}}}} artisan candy canes. *yawn*$u#$e#I think {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/GusGender}}}} had too much cinnamon nog."
+		}
+	}
+	]
+}

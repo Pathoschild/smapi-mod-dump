@@ -1,0 +1,120 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Penny",
+		"Entries": {
+			"Introduction": "Oh... Hello! I'm {{mardrest.ChangeDialogues/PennyName}}...",
+			"Tue": "I'm tutoring {{mardrest.ChangeDialogues/VincentName}} and {{mardrest.ChangeDialogues/JasName}} today... They're a handful, but it's nice to make a difference in someone's life.",
+			"Wed": "We don't have a school here but I'm doing my best to give {{mardrest.ChangeDialogues/VincentName}} and {{mardrest.ChangeDialogues/JasName}} a proper education.#$e#Every child deserves a chance to be successful.#$e#{{mardrest.ChangeDialogues/JasName}} is very good at math and reading. {{mardrest.ChangeDialogues/VincentName}} is good at... well, {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/VincentGender}}}} has an active imagination!",
+			"Sat2": "$d Joja#Things changed a lot after the JojaMart went up. It's been really bad for {{mardrest.ChangeDialogues/PierreName}}'s shop. Mom loves JojaMart, though. The prices are cheap, so she can afford a lot more there than she ever could at {{mardrest.ChangeDialogues/PierreName}}'s.|Mom's been complaining ever since JojaMart closed down. I think it's good for her, though. Maybe she'll drink less Joja Cola now.",
+			"event_mail1": "Thank you...$l#$b#I just wish {{mardrest.ChangeDialogues/GeorgeName}} wasn't so upset... I was only trying to help.$s",
+			"winter_Thu": "Oh... hi. You want to talk?$u#$e#If you find any interesting artifacts or minerals, {{mardrest.ChangeDialogues/GuntherName}} will gladly display them in the museum.#$e#{{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/GuntherGender}}}} told me {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/GuntherGender}}}} has special gifts for people who donate.",
+			"winter_Fri2": "Are you friends with {{mardrest.ChangeDialogues/LinusName}}? {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/LinusGender}}}} lives in a tent up in the mountains.#$e#Everyone ignores {{mardrest.ChangeDialogues/Him:L{{mardrest.ChangeDialogues/LinusGender}}}}, the poor {{mardrest.ChangeDialogues/Guy:L{{mardrest.ChangeDialogues/LinusGender}}}}. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/LinusGender}}}}'s actually really nice... Just a little odd.#$e#It must be so cold to live in a tent this time of year."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialoguePenny",
+		"Entries": {
+			"Rainy_Day_1": "I wonder if {{mardrest.ChangeDialogues/MaruName}} and Dr. {{mardrest.ChangeDialogues/HarveyName}} will ever get together? I'm sure {{mardrest.ChangeDialogues/HarveyName}} likes her...#$e#I think {{mardrest.ChangeDialogues/MaruName}} will have to make the first move, though.$h"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Penny",
+		"Entries": {
+			"marriage_Mon.002": "I wonder if {{mardrest.ChangeDialogues/MaruName}} will get married some day?"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Penny": {
+				"NPCName": "Penny",
+				"Reactions": [
+				{
+					"Tag": "*",
+					"Response": "love",
+					"Whitelist": [
+					"Pam"
+					],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Watching a movie with mom sure brings me back!"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/message \"({{mardrest.ChangeDialogues/PamName}} and {{mardrest.ChangeDialogues/PennyName}} are watching intently!)\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "It's great to be able to do things as a family again!"
+						}
+					},
+					"ID": "reaction_0"
+				},
+				{
+					"Tag": "spring_movie_0",
+					"Response": "love",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I'm looking forward to this! {{mardrest.ChangeDialogues/JasName}} and {{mardrest.ChangeDialogues/VincentName}} have been talking about it non-stop."
+						},
+						"DuringMovie": {
+							"ResponsePoint": "sprout_leave",
+							"Script": "/shake Penny 3000/pause 500/message \"{{mardrest.ChangeDialogues/PennyName}} seems to be holding back some tears...\"",
+							"Text": "Wow, it must be really hard leaving his family like that...$s"
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Thanks for taking me to this, I can't wait to tell the kids how good it was!"
+						}
+					},
+					"ID": "reaction_1"
+				},
+				{
+					"Tag": "family",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Oh, '{0}'! This looks wholesome and fun!"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/message \"({{mardrest.ChangeDialogues/PennyName}} is smiling)\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I should totally bring the kids to see this sometime!"
+						}
+					},
+					"ID": "reaction_3"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Penny": "teen/polite/shy/positive/female/datable/Sam/Town/fall 2/Pam 'mother'/Trailer 4 9/{{mardrest.ChangeDialogues/PennyName}}"
+		}
+	}
+	]
+}

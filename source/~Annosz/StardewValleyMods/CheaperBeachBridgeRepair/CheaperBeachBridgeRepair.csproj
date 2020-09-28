@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BeachPatches.cs" />
     <Compile Include="CheaperBeachBridgeRepair.cs" />
+    <Compile Include="ModConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

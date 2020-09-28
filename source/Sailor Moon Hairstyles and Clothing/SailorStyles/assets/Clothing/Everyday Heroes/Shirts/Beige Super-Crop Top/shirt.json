@@ -1,0 +1,13 @@
+{
+    "Name": "Beige Super-Crop Top",
+    "Description": "An incredibly short shirt in plain beige.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Top Super-Corto Beige"
+    },
+    "DescriptionLocalization": {
+        "es": "Una camisa increíblemente corta en beige liso."
+    }
+}

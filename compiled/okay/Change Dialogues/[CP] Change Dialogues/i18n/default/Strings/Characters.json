@@ -1,0 +1,12 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Strings/Characters",
+		"Entries": {
+			"AbigailInMineFlute": "%{{mardrest.ChangeDialogues/AbigailName}} is lost in her music...",
+			"AbigailInMine3": "Hey! It's a relief to see you down here...$h#$e#Um... don't tell my {{mardrest.ChangeDialogues/Dad:{{mardrest.ChangeDialogues/PierreGender}}}} I'm here, okay?$9"
+		}
+	}
+	]
+}

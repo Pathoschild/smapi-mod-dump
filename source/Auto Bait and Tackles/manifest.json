@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AutoBaitAndTackles",
+  "Author": "Alison-Li",
+  "Version": "1.0.0",
+  "Description": "Automatically attach fishing bait and tackles to a fishing rod",
+  "UniqueID": "Alison-Li.AutoBaitAndTackles",
+  "EntryDll": "AutoBaitAndTackles.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:6773" ]
+}

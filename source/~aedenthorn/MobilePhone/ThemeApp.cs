@@ -26,7 +26,7 @@ namespace MobilePhone
         private static bool clicked;
         public static Dictionary<string, Texture2D[]> skinDict = new Dictionary<string, Texture2D[]>();
         public static Dictionary<string, Texture2D[]> backgroundDict = new Dictionary<string, Texture2D[]>();
-        public static Dictionary<string, SoundPlayer> ringDict = new Dictionary<string, SoundPlayer>();
+        public static Dictionary<string, object> ringDict = new Dictionary<string, object>();
         public static List<string> ringList;
         public static List<string> skinList = new List<string>();
         public static List<string> backgroundList = new List<string>();
@@ -77,11 +77,11 @@ namespace MobilePhone
                             Monitor.Log($"loaded skin {path.Replace("_landscape", "")}");
                         }
                         else
-                            Monitor.Log($"Couldn't load skin {path.Replace("_landscape", "")}: texture was null");
+                            Monitor.Log($"Couldn't load skin {path.Replace("_landscape", "")}: texture was null", LogLevel.Error);
                     }
                     catch (Exception ex)
                     {
-                        Monitor.Log($"Couldn't load skin {path.Replace("_landscape", "")}: {ex}");
+                        Monitor.Log($"Couldn't load skin {path.Replace("_landscape", "")}: {ex}", LogLevel.Error);
                     }
                 }
             }
@@ -101,11 +101,11 @@ namespace MobilePhone
                             Monitor.Log($"loaded background {path.Replace("_landscape", "")}");
                         }
                         else
-                            Monitor.Log($"Couldn't load background {path.Replace("_landscape", "")}: texture was null");
+                            Monitor.Log($"Couldn't load background {path.Replace("_landscape", "")}: texture was null", LogLevel.Error);
                     }
                     catch (Exception ex)
                     {
-                        Monitor.Log($"Couldn't load background {path.Replace("_landscape", "")}: {ex}");
+                        Monitor.Log($"Couldn't load background {path.Replace("_landscape", "")}: {ex}", LogLevel.Error);
                     }
                 }
             }
@@ -118,18 +118,27 @@ namespace MobilePhone
                 {
                     try
                     {
-                        SoundPlayer ring = new SoundPlayer(path);
+                        object ring;
+                        try
+                        {
+                            var type = Type.GetType("System.Media.SoundPlayer, System");
+                            ring = Activator.CreateInstance(type, new object[] { path });
+                        }
+                        catch 
+                        {
+                            ring = SoundEffect.FromStream(new FileStream(path, FileMode.Open));
+                        }
                         if (ring != null)
                         {
                             ringDict.Add(Path.GetFileName(path).Replace(".wav", ""), ring);
                             Monitor.Log($"loaded ring {path}");
                         }
                         else
-                            Monitor.Log($"Couldn't load ring {path}");
+                            Monitor.Log($"Couldn't load ring {path}", LogLevel.Error);
                     }
                     catch (Exception ex)
                     {
-                        Monitor.Log($"Couldn't load ring {path}:\r\n{ex}");
+                        Monitor.Log($"Couldn't load ring {path}:\r\n{ex}", LogLevel.Error);
                     }
                 }
                 rings = Config.BuiltInRingTones.Split(',');
@@ -188,7 +197,7 @@ namespace MobilePhone
                 return;
             ModEntry.ringSound = ringDict[ringName];
             if (ModEntry.ringSound != null)
-                ModEntry.ringSound.Play();
+                Helper.Reflection.GetMethod(ModEntry.ringSound, "Play").Invoke(new object[] { });
             else if(Config.BuiltInRingTones.Split(',').Contains(ringName))
                 Game1.playSound(ringName);
             Config.PhoneRingTone = ringName;

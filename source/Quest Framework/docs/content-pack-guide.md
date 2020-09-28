@@ -489,14 +489,14 @@ If you add suffix `|bigcraftable` after item name, then Quest Framework looks in
 
 You can add known quest in Quest Framework via NPC dialogues. You can define it with content patcher (Patch `Dialogue/<NPC_name>`) and add your dialogue which adds a quest to the player's questlog or edit existing dialogue line.
 
-By place `![<questname>@<modUID>]` to the dialogue player get a quest when speak with NPC and this dialogue line is shown.
+By place `[quest:<questname> <modUID>]` to the dialogue player get a quest when speak with NPC and this dialogue line is shown.
 
 #### Example
 
 ```js
 // Some dialogue definition file
 {
-    "yourDialogueKey": "Can you bring me an Amethyst? ![bringAmethyst@purrplingcat.myquestmod]"
-    "anotherDIalogue": "What's up? $h#$b#Are you interested to small fighting adventure?#$b#Bless your sword! ![slayMonsters@purrplingcat.myquestmod]"
+    "yourDialogueKey": "Can you bring me an Amethyst? [´quest:bringAmethyst purrplingcat.myquestmod]"
+    "anotherDIalogue": "What's up? $h#$b#Are you interested to small fighting adventure?#$b#Bless your sword! [quest:slayMonsters purrplingcat.myquestmod]"
 }
 ```

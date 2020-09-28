@@ -8,9 +8,9 @@ mods:
    UV Index (Sunscreen Mod)
 
 latest commit:
-   commit a65172bb73fc482d763a84e665cee5c2c2ec4d6e
+   commit cf55d988ec6f827772a2ee79cdbbbbede9aedf49
    Author: Ellen Lloyd <ellen.lloyd@usask.ca>
-   Date:   Sat Aug 29 15:59:46 2020 -0400
+   Date:   Wed Sep 23 14:35:51 2020 -0400
    
-       [SunscreenMod] Add more promo images for nexusmods
+       [Unsettling] Fix bugs in content patcher files.
    

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "InputFix",
   "Author": "Windmill_City",
-  "Version": "2.0.1",
+  "Version": "2.0.2",
   "Description": "Fix IME crash problem",
   "UniqueID": "Windmill_City.InputFix",
   "EntryDll": "InputFix.dll",

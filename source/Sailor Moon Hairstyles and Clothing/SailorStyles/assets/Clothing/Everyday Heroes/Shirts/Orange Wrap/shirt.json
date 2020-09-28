@@ -1,0 +1,13 @@
+{
+    "Name": "Orange Wrap",
+    "Description": "A bizarre, colourful wraparound.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Envoltura Naranja"
+    },
+    "DescriptionLocalization": {
+        "es": "Una envoltura extraña y colorida."
+    }
+}

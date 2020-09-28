@@ -1,0 +1,12 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/rainy",
+		"Entries": {
+			"Evelyn": "When I woke up I heard dripping from somewhere... I think the roof might be leaking.$s#$e#In the old days, {{mardrest.ChangeDialogues/GeorgeName}} would've scampered right up and fixed it... *sigh*$s",
+			"Emily": "It never rains in Calico Desert... That's where my friend {{mardrest.ChangeDialogues/SandyName}} lives.#$e#I wish I could've visited her today.$s"
+		}
+	}
+	]
+}

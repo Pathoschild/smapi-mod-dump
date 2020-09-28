@@ -19,9 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit b59efd6e7019b2fe8fca6510ca3c9022f31f5ffc
+   commit b65a01505eb0ea3c551f57033f569039f4c8fde7
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Aug 29 18:39:43 2020 -0400
+   Date:   Fri Sep 25 20:18:14 2020 -0400
    
-       add option to change which farm Small Beach Farm replaces
+       sort translations
    

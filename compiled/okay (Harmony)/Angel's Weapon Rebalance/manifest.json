@@ -1,0 +1,12 @@
+{
+   "Name": "Angel's weapon rebalance - Code",
+   "Author": "AngelaRanna",
+   "Version": "1.0.1",
+   "Description": "Rebalances weapons to make all of them desirable - Code",
+   "UniqueID": "AngelaRanna.WeaponBalanceCode",
+   "EntryDll": "StardewCombatMod.dll",
+   "MinimumApiVersion": "2.8.2",
+   "UpdateKeys": [
+       "Nexus:6894"
+   ]
+}

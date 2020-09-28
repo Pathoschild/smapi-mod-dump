@@ -1,6 +1,5 @@
 ﻿using Harmony;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
@@ -9,7 +8,6 @@ using StardewValley.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Media;
 
 namespace MobilePhone
 {
@@ -94,8 +92,8 @@ namespace MobilePhone
         public static int ringToggle;
         public static NPC callingNPC;
         public static bool inCall;
-        public static SoundPlayer ringSound;
-        public static SoundPlayer notificationSound;
+        public static object ringSound;
+        public static object notificationSound;
         internal static bool isReminiscing;
         internal static bool isInviting;
         internal static INpcAdventureModApi npcAdventureModApi;
@@ -107,6 +105,8 @@ namespace MobilePhone
         internal static Texture2D ringListBackgroundTexture;
         internal static Texture2D ringListHighlightTexture;
         internal static bool isReminiscingAtNight;
+        internal static Event reminisceEvent;
+        internal static bool buildingInCall;
 
         public static event EventHandler OnScreenRotated;
 
@@ -199,6 +199,10 @@ namespace MobilePhone
             harmony.Patch(
                 original: AccessTools.Method(typeof(Event), nameof(Event.command_cutscene)),
                 prefix: new HarmonyMethod(typeof(PhonePatches), nameof(PhonePatches.Event_command_cutscene_prefix))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Event), nameof(Event.skipEvent)),
+                prefix: new HarmonyMethod(typeof(PhonePatches), nameof(PhonePatches.Event_skipEvent_prefix))
             );
             harmony.Patch(
                 original: AccessTools.Method(typeof(Event), "namePet"),

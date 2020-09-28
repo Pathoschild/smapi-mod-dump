@@ -1,7 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SunscreenMod
@@ -9,12 +8,12 @@ namespace SunscreenMod
     /// <summary>The mod configuration model.</summary>
     public class ModConfig
     {
-        protected static IModHelper Helper => ModEntry.Instance.Helper;
-        protected static IMonitor Monitor => ModEntry.Instance.Monitor;
+        static IModHelper Helper => ModEntry.Instance.Helper;
+        static IMonitor Monitor => ModEntry.Instance.Monitor;
 
         internal static ModConfig Instance { get; private set; }
 
-        protected static ITranslationHelper i18n = Helper.Translation;
+        static readonly ITranslationHelper i18n = Helper.Translation;
 
         static readonly string NL = Environment.NewLine;
 
@@ -26,7 +25,7 @@ namespace SunscreenMod
 
         /// <summary>Enables sunburn effects from this mod for the current player.</summary>
         public bool EnableSunburn { get; set; } = true;
-        
+
         /// <summary>Enables or disables sunburn chance during certain times of year.</summary>
         public string SunburnSeasons
         {
@@ -239,6 +238,8 @@ namespace SunscreenMod
         private int[] _burnSkinColorIndex = new int[3] { 19, 20, 21 };
 
         //These getters and setters used in GMCM settings menu
+
+        /// <summary>Skin color ID to use for level 1 sunburn in multiplayer games.</summary>
         private int SkinColorIndex1
         {
             get { return _burnSkinColorIndex[0]; }
@@ -256,6 +257,7 @@ namespace SunscreenMod
             }
         }
 
+        /// <summary>Skin color ID to use for level 2 sunburn in multiplayer games.</summary>
         private int SkinColorIndex2
         {
             get { return _burnSkinColorIndex[1]; }
@@ -273,6 +275,7 @@ namespace SunscreenMod
             }
         }
 
+        /// <summary>Skin color ID to use for level 3 sunburn in multiplayer games.</summary>
         private int SkinColorIndex3
         {
             get { return _burnSkinColorIndex[2]; }
@@ -301,7 +304,7 @@ namespace SunscreenMod
         /// <summary>Currently empty constructor method.</summary>
         public ModConfig()
         {
-            
+
         }
         #endregion
 
@@ -327,6 +330,7 @@ namespace SunscreenMod
         {
             Instance = Helper.ReadConfig<ModConfig>();
         }
+        /// <summary>Save user config options and invalidate cache for affected assets.</summary>
         internal static void Save()
         {
             Helper.WriteConfig(Instance);
@@ -334,9 +338,6 @@ namespace SunscreenMod
             Helper.Content.InvalidateCache(asset // Trigger changed assets to reload on next use.
                 => asset.AssetNameEquals("Characters\\Farmer\\skinColors")
                 || asset.AssetNameEquals("Strings\\StringsFromCSFiles"));
-                /*|| asset.AssetNameEquals("Data\\Events\\Farmhouse")
-                || asset.AssetNameEquals("Data\\Events\\Farm")
-                || asset.AssetNameEquals("Portraits\\Grandpa"));*/
         }
 
         /// <summary>Reset all config options to their default values.</summary>

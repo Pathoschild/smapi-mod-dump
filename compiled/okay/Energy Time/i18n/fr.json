@@ -1,0 +1,8 @@
+﻿{
+  "energy-time.reloaded": "Config EnergyTime rechargée",
+  "energy-time.multiplier-changed": "Multiplicateur d'énergie changé à {{multiplier}}",
+  "energy-time.paused": "Temps arrêté",
+  "energy-time.unpaused": "Temp commencé",
+  "energy-time.vanilla-mode": "Mode temps: temps vanille",
+  "energy-time.energy-time-mode": "Mode temps: temps d'énergie"
+}

@@ -80,7 +80,8 @@ namespace MobilePhone
                     {
                         ringingTicks = 0;
                     }
-                    e.SpriteBatch.Draw(ModEntry.iconTexture, new Vector2((int)ModEntry.phoneIconPosition.X + ModEntry.iconTexture.Width / 2, (int)ModEntry.phoneIconPosition.Y + ModEntry.iconTexture.Height / 2), null, Color.White, rot, new Vector2(ModEntry.iconTexture.Width / 2, ModEntry.iconTexture.Height / 2), 1f, SpriteEffects.None, 0.86f);
+                    e.SpriteBatch.Draw(ModEntry.backgroundTexture, new Vector2((int)ModEntry.phoneIconPosition.X + ModEntry.phoneTexture.Width / 20, (int)ModEntry.phoneIconPosition.Y + ModEntry.phoneTexture.Height / 20), null, Color.White, rot, new Vector2(ModEntry.phoneTexture.Width / 2, ModEntry.phoneTexture.Height / 2), 0.1f, SpriteEffects.None, 0.86f);
+                    e.SpriteBatch.Draw(ModEntry.phoneTexture, new Vector2((int)ModEntry.phoneIconPosition.X + ModEntry.phoneTexture.Width / 20, (int)ModEntry.phoneIconPosition.Y + ModEntry.phoneTexture.Height / 20), null, Color.White, rot, new Vector2(ModEntry.phoneTexture.Width / 2, ModEntry.phoneTexture.Height / 2), 0.1f, SpriteEffects.None, 0.86f);
                 }
 
                 return;
@@ -191,10 +192,11 @@ namespace MobilePhone
 
                             ModEntry.currentCallRings = 0;
                             ModEntry.callingNPC = null;
+
                         }
                     }
                 }
-                else
+                else if(!ModEntry.buildingInCall)
                 {
                     Rectangle endRect = new Rectangle((int)(screenPos.X + screenSize.X / 4), ModEntry.screenRect.Bottom - Config.AppHeaderHeight, (int)(screenSize.X / 2), Config.AppHeaderHeight);
                     e.SpriteBatch.Draw(ModEntry.declineTexture, endRect, Color.White);
@@ -204,8 +206,14 @@ namespace MobilePhone
                     e.SpriteBatch.DrawString(Game1.dialogueFont, ends, new Vector2(endRect.X + endRect.Width / 2f - endsSize.X / 2f, endRect.Top + endRect.Height / 2f - endsSize.Y / 2f), Config.CallTextColor, 0f, Vector2.Zero, textScale, SpriteEffects.None,1f);
                     if (ModEntry.clicking && !Helper.Input.IsSuppressed(SButton.MouseLeft))
                     {
-                        if (endRect.Contains(mousePos))
+                        if (endRect.Contains(mousePos) && !ModEntry.buildingInCall)
                         {
+                            if (ModEntry.isReminiscing)
+                            {
+                                Game1.CurrentEvent?.skipEvent();
+                                //ModEntry.reminisceEvent = null;
+                                ModEntry.isReminiscing = false;
+                            }
                             MobilePhoneCall.EndCall();
                             if (Game1.activeClickableMenu is DialogueBox)
                                 Game1.activeClickableMenu = null;

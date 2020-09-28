@@ -1,0 +1,13 @@
+{
+    "Name": "Crimson Overalls",
+    "Description": "A thick and loose pair of overalls.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Overol Carmesí"
+    },
+    "DescriptionLocalization": {
+        "es": "Un overol grueso y suelto."
+    }
+}

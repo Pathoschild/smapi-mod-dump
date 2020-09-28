@@ -13,9 +13,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
-using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace ContentPatcher.Framework.Commands
@@ -324,7 +324,7 @@ namespace ContentPatcher.Framework.Commands
                     // log target value if different from name
                     {
                         // get patch values
-                        string rawIdentifyingPath = PathUtilities.NormalizePathSeparators(patch.ParsedType == PatchType.Include
+                        string rawIdentifyingPath = PathUtilities.NormalizePath(patch.ParsedType == PatchType.Include
                             ? patch.RawFromAsset
                             : patch.RawTargetAsset
                         );
@@ -334,13 +334,13 @@ namespace ContentPatcher.Framework.Commands
 
                         // get raw name if different
                         // (ignore differences in whitespace, capitalization, and path separators)
-                        string rawValue = !PathUtilities.NormalizePathSeparators(patch.PathWithoutContentPackPrefix.ToString().Replace(" ", "")).ContainsIgnoreCase(rawIdentifyingPath?.Replace(" ", ""))
+                        string rawValue = !PathUtilities.NormalizePath(patch.PathWithoutContentPackPrefix.ToString().Replace(" ", "")).ContainsIgnoreCase(rawIdentifyingPath?.Replace(" ", ""))
                             ? $"{patch.ParsedType?.ToString() ?? patch.RawType} {rawIdentifyingPath}"
                             : null;
 
                         // get parsed value
                         string parsedValue = patch.MatchesContext && parsedIdentifyingPath?.HasAnyTokens == true
-                            ? PathUtilities.NormalizePathSeparators(parsedIdentifyingPath.Value)
+                            ? PathUtilities.NormalizePath(parsedIdentifyingPath.Value)
                             : null;
 
                         // format
@@ -537,7 +537,7 @@ namespace ContentPatcher.Framework.Commands
             output.AppendLine("----------------");
             output.AppendLine(!tokenStr.IsReady
                 ? "The token string is invalid or unready."
-                : $"   The token string is valid and ready. Parsed value: \"{tokenStr.Value}\""
+                : $"   The token string is valid and ready. Parsed value: \"{tokenStr}\""
             );
 
             this.Monitor.Log(output.ToString(), LogLevel.Debug);
@@ -623,7 +623,7 @@ namespace ContentPatcher.Framework.Commands
             this.PatchLoader.UnloadPatchesLoadedBy(pack, false);
 
             // load pack patches
-            var changes = pack.ManagedPack.ReadJsonFile<ContentConfig>("content.json").Changes;
+            var changes = pack.ContentPack.ReadJsonFile<ContentConfig>("content.json").Changes;
             pack.Content.Changes = changes;
 
             // reload patches

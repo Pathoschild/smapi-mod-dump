@@ -15,6 +15,7 @@ namespace InputFix
         public static IModHelper _helper;
         public static NotifyHelper notifyHelper;
         private static int mainThreadId;
+
         /*********
         ** Public methods
         *********/

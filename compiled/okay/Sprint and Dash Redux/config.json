@@ -1,0 +1,11 @@
+{
+  "SprintKey": "Space",
+  "DashKey": "Q",
+  "StamCost": 2.0,
+  "DashDuration": 4,
+  "WindedStep": 5,
+  "QuitSprintingAt": 0.1,
+  "ToggleMode": true,
+  "TimeInterval": 0.1,
+  "VerboseMode": false
+}

@@ -1,0 +1,12 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/Festivals/summer28",
+		"Entries": {
+			"Pam": "Don't tell {{mardrest.ChangeDialogues/GusName}}, but I'm a little disappointed there's no buffet tonight.",
+			"Sam": "I wonder if they're poisonous?#$e#Maybe I shouldn't push {{mardrest.ChangeDialogues/SebastianName}} in the water after all...$h"
+		}
+	}
+	]
+}

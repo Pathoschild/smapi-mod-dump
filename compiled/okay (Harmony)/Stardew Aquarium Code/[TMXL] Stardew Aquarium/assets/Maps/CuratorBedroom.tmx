@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="2">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="2">
  <properties>
   <property name="Music" value="submarine_song"/>
   <property name="Warp" value="17 13 FishMuseum 16 46"/>
@@ -149,7 +149,7 @@
    <tile gid="46"/>
    <tile gid="255"/>
    <tile gid="46"/>
-   <tile gid="2473"/>
+   <tile gid="2328"/>
    <tile gid="2473"/>
    <tile gid="2473"/>
    <tile gid="2473"/>
@@ -169,7 +169,7 @@
    <tile gid="78"/>
    <tile gid="287"/>
    <tile gid="78"/>
-   <tile gid="2489"/>
+   <tile gid="2344"/>
    <tile gid="2489"/>
    <tile gid="2489"/>
    <tile gid="2489"/>
@@ -594,7 +594,7 @@
    <tile gid="488"/>
    <tile gid="319"/>
    <tile gid="110"/>
-   <tile gid="2505"/>
+   <tile gid="2360"/>
    <tile gid="2505"/>
    <tile gid="599"/>
    <tile gid="2505"/>
@@ -714,7 +714,7 @@
    <tile/>
    <tile/>
    <tile gid="535"/>
-   <tile/>
+   <tile gid="2126"/>
    <tile gid="402"/>
    <tile/>
    <tile/>
@@ -980,7 +980,7 @@
    <tile gid="580"/>
    <tile gid="581"/>
    <tile/>
-   <tile gid="2744"/>
+   <tile/>
    <tile gid="563"/>
    <tile gid="564"/>
    <tile gid="1225"/>
@@ -1099,7 +1099,7 @@
    <tile/>
    <tile/>
    <tile gid="503"/>
-   <tile/>
+   <tile gid="2159"/>
    <tile gid="370"/>
    <tile/>
    <tile/>
@@ -1464,6 +1464,16 @@
    <tile gid="2873"/>
    <tile/>
    <tile/>
+   <tile gid="2873"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="2873"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -1585,16 +1595,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile gid="2873"/>
    <tile gid="2873"/>
    <tile/>
@@ -1633,14 +1633,14 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2873"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="2873"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1788,7 +1788,7 @@
    <tile/>
    <tile/>
    <tile gid="2782"/>
-   <tile gid="2773"/>
+   <tile gid="609"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1889,7 +1889,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="101"/>
    <tile/>
    <tile/>
    <tile/>

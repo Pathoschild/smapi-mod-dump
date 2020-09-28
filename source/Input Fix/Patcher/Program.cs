@@ -84,7 +84,7 @@ namespace Patcher
 
         private static void WriteDll(byte[] dlldata, string path)
         {
-            var file = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            var file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
             file.Write(dlldata, 0, dlldata.Length);
             file.Flush();
             file.Close();
@@ -125,7 +125,7 @@ namespace Patcher
 
         public static void CreateSDVPatch()
         {
-            string path = @"E:\source\repos\InputFix\Patcher\DataSources";
+            string path = @"E:\Codes\source\repos\InputFix\Patcher\DataSources";
             string PATCHED = "Stardew Valley_Fixed.exe";
 
             patchData = new PatchData(Path.Combine(path, SDVEXE),

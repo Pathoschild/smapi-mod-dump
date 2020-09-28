@@ -1,0 +1,5 @@
+﻿{
+  "template.start": "Started {{mod}} from folder: {{folder}}",
+  "template.exceptions.warpExportNullProperties": "Failed to export warp due to {value} being null",
+  "template.exceptions.WarpUpdateTickFailed": "Warp Update Tick Exception Caught"
+}

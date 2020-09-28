@@ -1,0 +1,39 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Jodi",
+		"Entries": {
+			"Introduction": "¡Oh! No eres exactamente como imaginaba... ¡Pero no pasa nada! Soy {{mardrest.ChangeDialogues/JodiName}}.#$e#Este es un pueblo muy tranquilo, ¡por eso que alguien se mude aquí es tan emocionante! Tener por aquí a alguien con una granja puede cambiar mucho las cosas.",
+			"2_1": "{{mardrest.ChangeDialogues/KentName}}, mi {{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/KentGender}}}}, es soldado y está fuera del país. Por eso no está aquí ahora.#$b#¡¡Sé que volverá san{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/KentGender}}}} y salv{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/KentGender}}}} cuando acabe el servicio!!#$e#¿Necesitas algo?",
+			"Thu6": "¿Dónde se mete el tiempo? *Sigh*#$e#Recuerdo cuando {{mardrest.ChangeDialogues/SamName}} era un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/SamGender}}}} bebé en pañales. Era un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/SamGender}}}} niñ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}} monísim{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}}.$s#$e#Pero no le digas que te lo he dicho.$h#$e#Supongo que te gusta hablar conmigo, ¿no?",
+			"Fri": "$d Joja#Los alimentos de MercaJoja puede que no sean los más sanos para mi familia, pero con esos precios tan baratos sería una locura comprar en otro sitio.|Los alimentos de {{mardrest.ChangeDialogues/PierreName}}'s son mucho más frescos y sanos que los que venden en MercaJoja. Aunque echo de menos las gangas de Joja.",
+			"fall_Thu": "A lo mejor he malcriado algo a mis chicos. Nunca han tenido que hacer las tareas de casa.#$e#Supongo que quiero que disfruten de la infancia ahora que pueden. Aunque {{mardrest.ChangeDialogues/SamName}} ya es tod{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}} un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/SamGender}}}} {{mardrest.ChangeDialogues/Man:L{{mardrest.ChangeDialogues/SamGender}}}}.#$b#Espero que no se acostumbre a ser vag{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}}. No puede ser.$s#$e#Ser madre no es fácil.",
+			"fall_Sun": "{{mardrest.ChangeDialogues/CarolineName}} y yo somos buenas amigas. Se lo cuento todo.",
+			"summer_Tue_inlaw_Sam": "¿Cómo está mi pequeñ{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}} {{mardrest.ChangeDialogues/SamNickname}} en la vieja granja?$h",
+			"winter_Wed4_2": "{{mardrest.ChangeDialogues/KentName}} lleva ya un tiempo en casa, pero parece incómod{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/KentGender}}}}.$s",
+			"winter_Thu": "{{mardrest.ChangeDialogues/SamName}} hace mucho ruido con su música. Espero que no moleste a los vecinos.",
+			"winter_Thu_inlaw_Sam": "¿Qué tal le va a {{mardrest.ChangeDialogues/SamName}}? Tengo que admitir que hay menos limpieza y comida que hacer desde que se fue...",
+			"winter_Thu8": "Nos casamos demasiado pronto. Como {{mardrest.ChangeDialogues/KentName}} era soldado... Apenas disfruté de la juventud y la libertad, y ahora es demasiado tarde para volver atrás.$s#$e#No cometas el mismo error.$4",
+			"fall_Thu_inlaw_Sam": "¿Está {{mardrest.ChangeDialogues/SamName}} solamente holgazaneando por la granja, o está contribuyendo en algo?"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Jodi",
+		"Entries": {
+			"spring_11.001": "Sé valiente, {{mardrest.ChangeDialogues/VincentName}}. Piensa en tu {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/KentGender}}}}.",
+			"spring_11.002": "¿Doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}} {{mardrest.ChangeDialogues/HarveyName}}? Me preocupa la altura de {{mardrest.ChangeDialogues/VincentName}}. ¿No es un poco bajit{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/VincentGender}}}} para su edad?",
+			"spring_11.000": "{{mardrest.ChangeDialogues/VincentName}} odia ir al médico con todas sus fuerzas, pero va a tener que superarlo.",
+			"spring_11.003": "{{mardrest.ChangeDialogues/VincentName}} ha sido muy valiente hoy en el médico. Estoy orgullosa de {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/VincentGender}}}}."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Jodi": "adult/polite/neutral/neutral/female/not-datable/Kent/Town/fall 11/Sam 'hij{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}}' Vincent 'hij{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/VincentGender}}}}' Kent '{{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/KentGender}}}}'/SamHouse 4 5/{{mardrest.ChangeDialogues/JodiName}}"
+		}
+	}
+	]
+}

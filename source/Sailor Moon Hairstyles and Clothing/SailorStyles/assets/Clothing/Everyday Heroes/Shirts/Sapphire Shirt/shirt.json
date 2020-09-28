@@ -1,0 +1,13 @@
+{
+    "Name": "Sapphire Shirt",
+    "Description": "A collared shirt decorated with a gemstone brooch.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Camisa de Zafiro"
+    },
+    "DescriptionLocalization": {
+        "es": "Una camisa con cuello decorada con un broche de piedras preciosas."
+    }
+}

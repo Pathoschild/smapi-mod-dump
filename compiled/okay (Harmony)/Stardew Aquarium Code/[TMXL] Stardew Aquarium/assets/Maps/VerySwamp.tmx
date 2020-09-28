@@ -2216,7 +2216,7 @@
  <objectgroup id="6" name="Back">
   <object id="6" name="TileData" x="336" y="336" width="16" height="16">
    <properties>
-    <property name="TouchAction" value="MagicWarp FishMuseum 11 40"/>
+    <property name="TouchAction" value="MagicWarp FishMuseum 10 40"/>
    </properties>
   </object>
  </objectgroup>

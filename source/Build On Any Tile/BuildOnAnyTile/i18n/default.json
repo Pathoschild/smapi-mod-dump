@@ -1,0 +1,14 @@
+﻿{
+	"BuildOnAllTerrainFeatures.Name": "Build on all terrain features",
+	"BuildOnAllTerrainFeatures.Description": "Check this box to place buildings on crops, trees, and similar objects.\n\nWARNING: Buildings will immediately delete those objects when placed over them!",
+	"BuildOnOtherBuildings.Name": "Build on other buildings",
+	"BuildOnOtherBuildings.Description": "Check this box to place buildings on tiles that already contain other buildings.",
+	"BuildOnWater.Name": "Build on water",
+	"BuildOnWater.Description": "Check this box to place buildings on water tiles.",
+	"BuildOnImpassableTiles.Name": "Build on impassable tiles",
+	"BuildOnImpassableTiles.Description": "Check this box to place buildings on impassable tiles, e.g. cliffs and other obstructions.",
+	"BuildOnNoFurnitureTiles.Name": "Build on \"no furniture\" tiles",
+	"BuildOnNoFurnitureTiles.Description": "Check this box to place buildings on tiles with the \"NoFurniture\" property.",
+	"BuildOnCaveAndShippingZones.Name": "Build on cave and shipping zones",
+	"BuildOnCaveAndShippingZones.Description": "Check this box to place buildings on tiles in the preset cave entrance and shipping bin areas.",
+}

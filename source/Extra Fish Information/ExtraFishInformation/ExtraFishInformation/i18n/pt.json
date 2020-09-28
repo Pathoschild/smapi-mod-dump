@@ -1,0 +1,28 @@
+{
+    "new-description.trapper.fish": "Encontrado no {{location}}.",
+    "new-description.normal.fish": "Encontrado {{weather}} a partir de {{schedule}}.\n\nLocalizações:\n{{locations}}",
+
+    "location.freshwater": "rios",
+    "location.ocean": "oceanos",
+    "location.unknown": "?",
+
+    "schedule.between.times": "{{startTime}} a {{endTime}}",
+    "schedule.join.times": "{{parsedTimes}} e {{startTime}} para {{endTime}}",
+    "schedule.more.times": "{{parsedTimes}}, {{startTime}} a {{endTime}}",
+
+    "time.24hour.format": "{{hour}}: {{minutes}}",
+    "time.morning.12hour": "{{hour}} sou",
+    "time.morning.12hour.minutes": "{{hour}}. {{minutes}} sou",
+    "time.afternoon.12hour": "{{hour}} pm",
+    "time.afternoon.12hour.minutes": "{{hour}}. {{minutes}} pm",
+
+    "season.spring": "Primavera",
+    "season.summer": "Verão",
+    "season.fall": "Outono",
+    "season.winter": "Inverno",
+
+    "weather.sunny": "quando está ensolarado",
+    "weather.rainy": "quando chove",
+    "weather.both": "em todos os tempos",
+    "weather.unknown": "em condições desconhecidas",
+}

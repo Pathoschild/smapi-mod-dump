@@ -1,0 +1,13 @@
+{
+    "Name": "School Uniform - Venus",
+    "Description": "A junior's school uniform.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Uniforme Escolar - Venus"
+    },
+    "DescriptionLocalization": {
+        "es": "Un uniforme escolar para niños."
+    }
+}

@@ -17,12 +17,11 @@ namespace BlueberryMushroomMachine.Editors
 		}
 		public void Edit<T>(IAssetData asset)
 		{
-			Log.D($"Editing {asset.AssetName}.",
+			Log.T($"Editing {asset.AssetName}.",
 				_isDebugging);
 
 			// Inject crafting recipe data using custom appended index as the result.
-			//var name = ModEntry.Instance.i18n.Get("machine.name");
-			var name = Const.PropagatorInternalName;
+			var name = ModValues.PropagatorInternalName;
 			var data = asset.AsDictionary<string, string>().Data;
 			if (!data.ContainsKey(name))
 				data.Add(name, ModValues.CraftingRecipeData);

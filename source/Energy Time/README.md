@@ -23,6 +23,8 @@ Default controls below:
 
 While in Vanilla Time, time will pass by normally, unless you are holding U to fast forward, or have paused time with N (default keybindings, may differ given your configuration).
 
+Shortcuts will only work when there are no active menus.
+
 ### Multiplayer
 
 In multiplater, all connected players stamina is pooled together for calculations. Whenever a player joins or leaves the game, the base factor for time passing is calculated and reset.

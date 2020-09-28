@@ -1,0 +1,626 @@
+﻿{
+    // NOTE TO TRANSLATORS: If you are here to help create a new translation file, thank you so much!
+    // I prefer to publish all translations as part of the main mod to keep everything up to date.
+    
+    // Please prepare your translation following the stardewvalleywiki Translation guide linked below.
+    // You can send me your work on Discord (Jonqora#8597) or on GitHub (Jonqora) and I will include it
+    // in the next mod update.
+
+    // HELPFUL LINKS
+    // https://stardewvalleywiki.com/Modding:Translations (translation guide)
+    // https://github.com/StardewModders/mod-translations (requests board)
+    // https://discord.gg/stardewvalley (ask for help on discord, my username is Jonqora#8597)
+    // https://github.com/Jonqora/StardewMods/ (github repo for my mods, including this one)
+    
+    // IMPORTANT NOTES
+    // Some data entries below include event scripts and dialogue with keys or symbols that should not be changed or removed.
+    // Please be careful not to remove symbols, dialogue keys, or special character sequences (like \" or _ or #$b# or $y) when translating.
+    // For example, @ is a placeholder for player name, %farm is a placeholder for farm name, and %rival gives a random same-gender name.
+    // https://stardewvalleywiki.com/Modding:Event_data (how Stardew event scripts work)
+    // https://stardewvalleywiki.com/Modding:Dialogue#Format (Stardew dialogue formatting)
+
+    // If you are creating a new translation, making gender-neutral "-gn" dialogue variants dialogue is optional.
+    // It's easier in some langauges than others, and not everyone is familiar with gender-neutral grammar alteratives used in their language.
+    // Feel free to submit a partial translation with only standard dialogue keys. Someone else can add the -gn variant later.
+
+
+// ===================================
+// TRANSLATION TEXT FOR GRANDPA'S NOTE
+// ===================================
+
+    // These text entries are based on game files => Strings/Locations => "Farm_GrandpaNote"
+
+    // Do not remove or change any symbols {0}-\n\n , \n\n , @-^^ , ^^ , or [#]
+    // Text that comes after [#] is the mail preview name; this is shown when you hover over a letter in collections.
+
+    // If your language has grammatical gender, make sure the ordinal numbers match the word in your language for "year".
+    "GrandpaOrdinalYears": "primer|segundo|tercer|cuarto|quinto|sexto|séptimo|octavo|noveno|décimo",
+    
+    // Do not change {{ordinalYear}} tokens; these will automatically use an appropriate word from the list above.
+    "GrandpaNote": "{0}-\n\nEspera mi regreso en los albores del {{ordinalYear}} año.\n\n-Tu abuelo",
+    "GrandpaNoteMail": "@-^^Espera mi regreso en los albores del {{ordinalYear}} año.^^-Abuelo[#]Nota del abuelo",
+
+    // Do not change {{smapiSDate}} tokens; these automatically generate a translated date string.
+    // smapiSDate example: "Spring 1 in year 15" or "le 1 printemps de l'année 12"
+    "GrandpaNoteTenPlusYears": "{0}-\n\nEspera mi regreso en {{smapiSDate}}.\n\n-Tu abuelo",
+    "GrandpaNoteMailTenPlusYears": "@-^^Espera mi regreso en {{smapiSDate}}.^^-Abuelo[#]Nota del abuelo",
+    
+
+// =====================================
+// TRANSLATION TEXT FOR DISPLAY MESSAGES
+// =====================================
+
+    // These text entries are brand-new messages that appear when you collect a bonus reward from Grandpa's Shrine.
+    // In vanilla, finding the statue of perfection shows: "You found a peculiar statue behind Grandpa's Shrine."
+
+    "Object.cs.1CandleReward": "Has encontrado una semilla muy antigua encima del altar.",
+    "Object.cs.2CandleReward": "Has encontrado un huevo prehistórico escondido destrás del altar. ¿Ha estado siempre ahí?",
+    "Object.cs.3CandleReward": "Hay algo brillando debajo del altar del abuelo... ¡es un mineral extraño!",
+
+    // Points score message displayed at the top of the screen during the evaluation events."
+
+    "Event.cs.ShowGrandpaScore": "Puntuación del abuelo: {{grandpaScore}} de {{maxScore}} grandes honores",
+
+
+// ==================================
+// TRANSLATION TEXT FOR EVENT SCRIPTS
+// ==================================
+
+  // =======================
+  // TOKENS AND INSTRUCTIONS
+    
+    // Token used in EvaluationEvent {{countYears}} when grandpa says long you've had the farm. E.g. "You've been here [four years now]..."
+    // The first in list, "less than a year now", is used when Config.YearsBeforeEvaluation = 0
+    "GrandpaCountYears": "casi un año|un año|dos años|tres años|cuatro años|cinco años|seis años|siete años|ocho años|nueve años",
+    // Used instead when Config.YearsBeforeEvaluation = 10 or more
+    "GrandpaCountManyYears": "muchos años",
+    // Used instead when Config.YearsBeforeEvaluation = 10 or more AND Config.GrandpaDialogue = "Nuclear"
+    "GrandpaCountManyYears.Nuclear": "demasiados años, joder",
+
+    // Keys ending with -gn are gender-neutral. These should stay as close as possible to the standard scripts, but anything
+    // like "boy", "girl", "grand-daughter" that refers to the player should be replaced with a gender-neutral phrase.
+
+  // ===========================
+  // "ORIGINAL" DIALOGUE VARIANT
+
+    // Slightly different script from the earliest versions of Stardew Valley
+    "EvaluationEvent.Original": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi querido muchacho...^Mi querida nieta...{{gpaHappy}}
+            #$b#Han pasado muchos años desde que hablamos por última vez. Eras solo un niño... ¿Lo recuerdas?
+            ^Han pasado muchos años desde que hablamos por última vez. Eras solo una niña... ¿Lo recuerdas?{{gpaNeutral}}
+            #$b#¡Mira lo lejos que has llegado!{{gpaSurprise}}
+            #$b#Aunque a lo mejor te has olvidado de mí, siempre he estado aquí.{{gpaStern}}
+            #$b#¿Sabes...? Mi cuerpo ha abandonado este mundo, pero mi corazón se quedará para siempre en Stardew Valley.{{gpaNeutral}}\"
+        /specificTemporarySprite grandpaNight/pause 4000
+        /speak Grandpa \"Ya llevas aquí {{countYears}}...{{gpaStern}}\"
+        /grandpaEvaluation/pause 3000
+        /speak Grandpa \"El futuro de la granja %farm está en tus manos ahora.{{gpaStern}}
+            #$b#¡Hasta siempre!{{gpaNeutral}}\"
+        /pause 1000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+    "EvaluationEvent.Original-gn": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi queride niñe...{{gpaHappy}}
+            #$b#Han pasado muchos años desde que hablamos por última vez. Eras solo un niñe... ¿Lo recuerdas?{{gpaNeutral}}
+            #$b#¡Mira lo lejos que has llegado!{{gpaSurprise}}
+            #$b#Aunque a lo mejor te has olvidado de mí, siempre he estado aquí.{{gpaStern}}
+            #$b#¿Sabes...? Mi cuerpo ha abandonado este mundo, pero mi corazón se quedará para siempre en Stardew Valley.{{gpaNeutral}}\"
+        /specificTemporarySprite grandpaNight/pause 4000
+        /speak Grandpa \"Ya llevas aquí {{countYears}}...{{gpaStern}}\"
+        /grandpaEvaluation/pause 3000
+        /speak Grandpa \"El futuro de la granja %farm está en tus manos ahora.{{gpaStern}}
+            #$b#¡Hasta siempre!{{gpaNeutral}}\"
+        /pause 1000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+
+    // Re-evaluations didn't exist in the original game, so this entry is creatively written to fit grandpa's old attitudes.
+    "RepeatEvaluationEvent.Original": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /skippable/specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi querido muchacho...^Mi querida nieta...{{gpaNeutral}}
+            #$b#Me alegro de que me hayas invocado. Estoy ansioso de ver el progreso que has hecho.{{gpaSurprise}}
+            #$b#Confío en que has estado trabajando duro desde mi última visita.{{gpaHappy}}\"
+        /specificTemporarySprite grandpaNight/pause 4000
+        /speak Grandpa \"Veamos...{{gpaStern}}\"
+        /grandpaEvaluation2/pause 3000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+    "RepeatEvaluationEvent.Original-gn": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /skippable/specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi queride niñe...{{gpaNeutral}}
+            #$b#Me alegro de que me hayas invocado. Estoy ansioso de ver el progreso que has hecho.{{gpaSurprise}}
+            #$b#Confío en que has estado trabajando duro desde mi última visita.{{gpaHappy}}\"
+        /specificTemporarySprite grandpaNight/pause 4000
+        /speak Grandpa \"Veamos...{{gpaStern}}\"
+        /grandpaEvaluation2/pause 3000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+
+  // ==========================
+  // "VANILLA" DIALOGUE VARIANT
+
+    // Normal event script found in the current game files => Data/Events/Farmhouse => "558291/y 3/H"
+    "EvaluationEvent.Vanilla": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi querido muchacho...^Mi querida nieta...{{gpaHappy}}
+            #$b#Han pasado muchos años desde que hablamos por última vez. Eras solo un niño... ¿Lo recuerdas?
+            ^Han pasado muchos años desde que hablamos por última vez. Eras solo una niña... ¿Lo recuerdas?{{gpaNeutral}}
+            #$b#¡Mira lo lejos que has llegado!{{gpaSurprise}}
+            #$b#Aunque a lo mejor te has olvidado de mí, siempre he estado aquí.{{gpaStern}}
+            #$b#¿Sabes...? Mi cuerpo ha abandonado este mundo, pero mi corazón se quedará para siempre en Stardew Valley.{{gpaNeutral}}\"
+        /specificTemporarySprite grandpaNight/pause 4000
+        /speak Grandpa \"Ya llevas aquí {{countYears}}...{{gpaNeutral}}\"
+        /grandpaEvaluation/pause 3000
+        /speak Grandpa \"El futuro de la granja %farm está en tus manos ahora.{{gpaNeutral}}
+            #$b#¡Hasta siempre!{{gpaHappy}}\"
+        /pause 1000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+    "EvaluationEvent.Vanilla-gn": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi queride niete...{{gpaHappy}}
+            #$b#Han pasado muchos años desde que hablamos por última vez. Eras solo un niñe... ¿Lo recuerdas?{{gpaNeutral}}
+            #$b#¡Mira lo lejos que has llegado!{{gpaSurprise}}
+            #$b#Aunque a lo mejor te has olvidado de mí, siempre he estado aquí.{{gpaStern}}
+            #$b#¿Sabes...? Mi cuerpo ha abandonado este mundo, pero mi corazón se quedará para siempre en Stardew Valley.{{gpaNeutral}}\"
+        /specificTemporarySprite grandpaNight/pause 4000
+        /speak Grandpa \"Ya llevas aquí {{countYears}}...{{gpaNeutral}}\"
+        /grandpaEvaluation/pause 3000
+        /speak Grandpa \"El futuro de la granja %farm está en tus manos ahora.{{gpaNeutral}}
+            #$b#¡Hasta siempre!{{gpaHappy}}\"
+        /pause 1000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+
+    // Normal event script found in the current game files => Data/Events/Farmhouse => "558292/e 321777/t 600 620/H"
+    "RepeatEvaluationEvent.Vanilla": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /skippable/specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi querido muchacho...^Mi querida nieta...{{gpaHappy}}
+            #$b#Me alegro de que me hayas invocado. A lo mejor... fui demasiado duro contigo la última vez.{{gpaNeutral}}
+            #$b#Perdóname. Has trabajado muy duro y estoy muy orgulloso.{{gpaSurprise}}\"
+        /specificTemporarySprite grandpaNight/pause 4000
+        /speak Grandpa \"Veamos...{{gpaHappy}}\"
+        /grandpaEvaluation2/pause 3000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+    "RepeatEvaluationEvent.Vanilla-gn": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /skippable/specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi queride niete...{{gpaHappy}}
+            #$b#Me alegro de que me hayas invocado. A lo mejor... fui demasiado duro contigo la última vez.{{gpaNeutral}}
+            #$b#Perdóname. Has trabajado muy duro y estoy muy orgulloso.{{gpaSurprise}}\"
+        /specificTemporarySprite grandpaNight/pause 4000
+        /speak Grandpa \"Veamos...{{gpaHappy}}\"
+        /grandpaEvaluation2/pause 3000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+
+  // ==========================
+  // "NUCLEAR" DIALOGUE VARIANT
+
+    // Exaggerated, humorous script where grandpa is more assertive with his opinions. May contain profanity.
+    "EvaluationEvent.Nuclear": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi querido muchacho...^Mi querida nieta...{{gpaHappy}}
+            #$b#Han pasado muchos años desde que hablamos por última vez. Eras solo un niño... ¿Lo recuerdas?
+            ^Han pasado muchos años desde que hablamos por última vez. Eras solo una niña... ¿Lo recuerdas? {{gpaNeutral}}
+            #$b#Espero que, durante este tiempo, hayas trabajado en ti y en la granja que te dejé.{{gpaStern}}
+            #$b#Desde mi muerte no he sido capaz de cuidar de la granja %farm... y mi alma está algo molesta por ello.{{gpaFrown}}
+            #$b#Tal vez tu trabajo en la granja me deje finalmente descansar en paz.{{gpaHappy}}\"
+        /specificTemporarySprite grandpaNight/pause 3000
+        /speak Grandpa \"Ya llevas aquí {{countYears}}...{{gpaNeutral}}
+            #$b#Veamos...{{gpaStern}}\"
+        /grandpaEvaluation/pause 2000
+        /speak Grandpa \"¡Hasta siempre!{{gpaStern}}\"
+        /pause 1000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+    "EvaluationEvent.Nuclear-gn": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi queride niete...{{gpaHappy}}
+            #$b#Han pasado muchos años desde que hablamos por última vez. Eras solo un niñe... ¿Lo recuerdas?{{gpaNeutral}}
+            #$b#Espero que, durante este tiempo, hayas trabajado en ti y en la granja que te dejé.{{gpaStern}}
+            #$b#Desde mi muerte no he sido capaz de cuidar de la granja %farm... y mi alma está algo molesta por ello.{{gpaFrown}}
+            #$b#Tal vez tu trabajo en la granja me deje finalmente descansar en paz.{{gpaHappy}}\"
+        /specificTemporarySprite grandpaNight/pause 3000
+        /speak Grandpa \"Ya llevas aquí {{countYears}}...{{gpaNeutral}}
+            #$b#Veamos...{{gpaStern}}\"
+        /grandpaEvaluation/pause 2000
+        /speak Grandpa \"¡Hasta siempre!{{gpaStern}}\"
+        /pause 1000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+
+    // Exaggerated, humorous script where grandpa is more assertive with his opinions. May contain profanity.
+    "RepeatEvaluationEvent.Nuclear": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /skippable/specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi querido muchacho...^Mi querida nieta...{{gpaSurprise}}
+            #$b#He escuchado que me llamabas desde el otro mundo y he venido a ver cómo te va.{{gpaNeutral}}
+            #$b#¿Has hecho alguna mejora desde mi última visita?{{gpaStern}}\"
+        /specificTemporarySprite grandpaNight/pause 3000
+        /speak Grandpa \"Veamos qué has hecho...{{gpaHappy}}\"
+        /grandpaEvaluation2/pause 3000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+    "RepeatEvaluationEvent.Nuclear-gn": "grandpas_theme/-2000 -1000/farmer 13 23 2/broadcastEvent/addTemporaryActor Grandpa 1 1 -100 -100 2 true
+        /skippable/specificTemporarySprite grandpaSpirit/viewport -1000 -1000 true/pause 10000
+        /speak Grandpa \"Mi queride niete...{{gpaSurprise}}
+            #$b#He escuchado que me llamabas desde el otro mundo y he venido a ver cómo te va.{{gpaNeutral}}
+            #$b#¿Has hecho alguna mejora desde mi última visita?{{gpaStern}}\"
+        /specificTemporarySprite grandpaNight/pause 3000
+        /speak Grandpa \"Veamos qué has hecho...{{gpaHappy}}\"
+        /grandpaEvaluation2/pause 3000/globalFade/removeTemporarySprites/playMusic none/pause 1000/end bed",
+
+
+// =======================================
+// TRANSLATION TEXT FOR EVALUATION RESULTS
+// =======================================
+  
+  // =======================
+  // TOKENS AND INSTRUCTIONS
+
+    // Token used in 1CandleResult.Original {{pastYears}} when grandpa talks about how long you've been there. 
+    // E.g. "you haven't accomplished very much during [this past year]"
+    // The first in list, "so far", is used if Config.YearsBeforeEvaluation = 0 (grandpa visits on the morning of 1 Spring year 1)
+    "GrandpaDuringPastYears": "este tiempo|este año|estos dos años|estos tres años|estos cuatro años|estos cinco años|estos seis años|estos siete años|estos ocho años|estos nueve años",
+    // Used instead when Config.YearsBeforeEvaluation = 10 or more
+    "GrandpaDuringManyYears": "todos estos años",
+    // Token used for {{pastYears}} when Config.YearsBeforeEvaluation = 10 or more AND Config.GrandpaDialogue = "Nuclear"
+    "GrandpaDuringManyYears.Nuclear": "todos estos años?{{gpaShock}}
+        #$b#Por el amor de Yoba, ¿no te das cuenta de que ha pasado más de una década",
+
+    //Special lines of text for {{fifthCandle}} token that are added to the 4-candle dialogue ONLY if a player earns all 21 grandpa points in one year.
+    "FifthCandle.Original": "#$b#Vaya, parece que has logrado incluso lo imposible.{{gpaShock}}
+        #$b#Desearía poder encender una quinta vela en mi altar en tu honor.{{gpaJoy}}",
+    "FifthCandle.Vanilla": "#$b#Has podido lograr incluso lo imposible.{{gpaShock}}
+        #$b#Desearía poder encender una quinta vela en mi altar en tu honor.{{gpaJoy}}",
+    "FifthCandle.Nuclear": "#$b#¡Madre mía! Has logrado incluso conseguir cosas que no creía posibles.{{gpaShock}}
+        #$b#¡Ojalá pudiese encender una quinta vela en mi altar en tu honor!{{gpaJoy}}",
+
+    //The {{spouseOrLewis}} token is automatically generated and translated from game code. No need to translate this one.
+
+    // Keys ending with -gn are gender-neutral. These should stay as close as possible to the standard scripts, but anything
+    // like "boy", "girl", "grand-daughter" that refers to the player should be replaced with a gender-neutral phrase.
+    
+  // ===========================
+  // "ORIGINAL" DIALOGUE VARIANT
+
+    // Different, harsher scripts from the earliest versions of Stardew Valley
+    "1CandleResult.Original": "Siento tener que decir esto... pero no has logrado mucho durante {{pastYears}}.{{gpaFrown}}
+        #$b#Debería haberle dejado la granja a otro de mis nietos...{{gpaSigh}}",
+    "1CandleResult.Original-gn": "Siento tener que decir esto... pero no has logrado mucho durante {{pastYears}}.{{gpaFrown}}
+        #$b#Debería haberle dejado la granja a otro de mis nietos...{{gpaSigh}}",
+
+    "2CandleResult.Original": "Has hecho un trabajo decente con este sitio.{{gpaNeutral}}
+        #$b#Parece que has hecho lo mejor que has podido... supongo que eso es suficiente.{{gpaStern}}",
+    "2CandleResult.Original-gn": "Has hecho un trabajo decente con este sitio.{{gpaNeutral}}
+        #$b#Parece que has hecho lo mejor que has podido... supongo que eso es suficiente.{{gpaStern}}",
+
+    "3CandleResult.Original": "Lo has hecho genial, querido.^Lo has hecho bien, querida.{{gpaHappy}}
+        #$b#La granja %farm nunca había tenido mejor aspecto. Eres todo un orgullo para la familia.{{gpaSurprise}}
+        #$b#Has hecho feliz a tu abuelo.{{gpaLove}}",
+    "3CandleResult.Original-gn": "Lo has hecho genial, queride.{{gpaHappy}}
+        #$b#La granja %farm nunca había tenido mejor aspecto. Eres todo un orgullo para la familia.{{gpaSurprise}}
+        #$b#Has hecho feliz a tu abuelo.{{gpaLove}}",
+
+    "4CandleResult.Original": "¡Qué orgulloso estoy de ti, querido!^¡Qué orgulloso estoy de ti, querida!{{gpaLove}}
+        #$b#Yo jamás fui tan buen granjero como tú. Tu esfuerzo supone un orgullo enorme para nuestra familia.{{gpaSurprise}}{{fifthCandle}}
+        #$b#Puedo sentirlo... Mi espíritu está listo para descansar. Te deseo lo mejor.{{gpaHappy}}",
+    "4CandleResult.Original-gn": "¡Qué orgulloso estoy de ti, queride!{{gpaLove}}
+        #$b#Yo jamás fui tan buen granjero como tú. Tu esfuerzo supone un orgullo enorme para nuestra familia.{{gpaSurprise}}{{fifthCandle}}
+        #$b#Puedo sentirlo... Mi espíritu está listo para descansar. Te deseo lo mejor.{{gpaHappy}}",
+
+    // Re-evaluations didn't exist in the original game, so these entries are creatively altered to fit grandpa's old attitudes.
+    "1CandleReevaluation.Original": "Siento tener que decir esto... pero todavía no has logrado mucho.{{gpaFrown}}
+        #$b#Mis otros nietos hubieran hecho mejor las cosas...{{gpaSigh}}
+        #$b#Debo volver al otro mundo... llámame de nuevo si tienes algo que valga la pena ver.{{gpaStern}}",
+    "1CandleReevaluation.Original-gn": "Siento tener que decir esto... pero todavía no has logrado mucho.{{gpaFrown}}
+        #$b#Mis otros nietos hubieran hecho mejor las cosas...{{gpaSigh}}
+        #$b#Debo volver al otro mundo... llámame de nuevo si tienes algo que valga la pena ver.{{gpaStern}}",
+
+    "2CandleReevaluation.Original": "Has hecho un trabajo decente mejorando este lugar desde la última vez que hablamos.{{gpaSurprise}}
+        #$b#Parece que lo has hecho lo mejor que has podido... eso es todo lo que puedo pedir.{{gpaNeutral}}
+        #$b#Debo volver al otro mundo ahora... invócame de nuevo cuando hayas progresado más.{{gpaStern}}",
+    "2CandleReevaluation.Original-gn": "Has hecho un trabajo decente mejorando este lugar desde la última vez que hablamos.{{gpaSurprise}}
+        #$b#Parece que lo has hecho lo mejor que has podido... eso es todo lo que puedo pedir.{{gpaNeutral}}
+        #$b#Debo volver al otro mundo ahora... invócame de nuevo cuando hayas progresado más.{{gpaStern}}",
+    
+    "3CandleReevaluation.Original": "Lo has hecho genial, querido.^Lo has hecho genial, querida.{{gpaHappy}}
+        #$b#La granja %farm nunca había tenido mejor aspecto. Eres todo un orgullo para la familia.{{gpaSurprise}}
+        #$b#Has hecho feliz a tu abuelo.{{gpaLove}}
+        #$b#Ahora debo volver al otro mundo... pero puedes volver a llamarme cuando quieras.{{gpaNeutral}}",
+    "3CandleReevaluation.Original-gn": "Lo has hecho genial, queride.{{gpaHappy}}
+        #$b#La granja %farm nunca había tenido mejor aspecto. Eres todo un orgullo para la familia.{{gpaSurprise}}
+        #$b#Has hecho feliz a tu abuelo.{{gpaLove}}
+        #$b#Ahora debo volver al otro mundo... pero puedes volver a llamarme cuando quieras.{{gpaNeutral}}",
+    
+    "4CandleReevaluation.Original": "¡Qué orgulloso estoy de ti, querido!^¡Qué orgulloso estoy de ti, querida!{{gpaLove}}
+        #$b#¡Por fin has podido sacar todo el potencial de la granja %farm!{{gpaJoy}}
+        #$b#Yo jamás fui tan buen granjero como tú. Tu esfuerzo supone un orgullo enorme para nuestra familia.{{gpaSurprise}}{{fifthCandle}}
+        #$b#Puedo sentirlo... Mi alma puede descansar finalmente. Te deseo lo mejor.{{gpaHappy}}",
+    "4CandleReevaluation.Original-gn": "¡Qué orgulloso estoy de ti, queride!{{gpaLove}}
+        #$b#¡Por fin has podido sacar todo el potencial de la granja %farm!{{gpaJoy}}
+        #$b#Yo jamás fui tan buen granjero como tú. Tu esfuerzo supone un orgullo enorme para nuestra familia.{{gpaSurprise}}{{fifthCandle}}
+        #$b#Puedo sentirlo... Mi alma puede descansar finalmente. Te deseo lo mejor.{{gpaHappy}}",
+
+  // ==========================
+  // "VANILLA" DIALOGUE VARIANT
+
+    // From game files => Strings/StringsFromCSFiles => "Event.cs.1315", "Event.cs.1316", "Event.cs.1317", "Event.cs.1318"
+    "1CandleResult.Vanilla": "La granja no ha cambiado demasiado en {{pastYears}}... pero no pasa nada.{{gpaStern}}
+        #$b#Que estés disfrutando de tu nueva vida es suficiente para hacerme feliz...{{gpaHappy}}",
+    "1CandleResult.Vanilla-gn": "La granja no ha cambiado demasiado en {{pastYears}}... pero no pasa nada.{{gpaStern}}
+        #$b#Que estés disfrutando de tu nueva vida es suficiente para hacerme feliz...{{gpaHappy}}",
+
+    "2CandleResult.Vanilla": "Has hecho un buen trabajo con este lugar.{{gpaHappy}}
+        #$b#Parece que has hecho todo lo que estaba en tu mano... No podría pedir nada más. Estoy muy orgulloso de ti.{{gpaSurprise}}",
+    "2CandleResult.Vanilla-gn": "Has hecho un buen trabajo con este lugar.{{gpaHappy}}
+        #$b#Parece que has hecho todo lo que estaba en tu mano... No podría pedir nada más. Estoy muy orgulloso de ti.{{gpaSurprise}}",
+
+    "3CandleResult.Vanilla": "Lo has hecho genial, querido.^Lo has hecho genial, querida.{{gpaHappy}}
+        #$b#La granja %farm nunca había tenido mejor aspecto. Eres todo un orgullo para la familia.{{gpaSurprise}}
+        #$b#Has hecho feliz a tu abuelo.{{gpaLove}}",
+    "3CandleResult.Vanilla-gn": "Lo has hecho genial, queride.{{gpaHappy}}
+        #$b#La granja %farm nunca había tenido mejor aspecto. Eres todo un orgullo para la familia.{{gpaSurprise}}
+        #$b#Has hecho feliz a tu abuelo.{{gpaLove}}",
+
+    "4CandleResult.Vanilla": "¡Qué orgulloso estoy de ti, querido!^¡Qué orgulloso estoy de ti, querida!{{gpaLove}}
+        #$b#Yo jamás fui tan buen granjero como tú. Tu esfuerzo supone un orgullo enorme para nuestra familia.{{gpaJoy}}{{fifthCandle}}
+        #$b#Puedo sentirlo... Mi espíritu está listo para descansar. Te deseo lo mejor.{{gpaHappy}}",
+    "4CandleResult.Vanilla-gn": "¡Qué orgulloso estoy de ti, queride!{{gpaLove}}
+        #$b#Yo jamás fui tan buen granjero como tú. Tu esfuerzo supone un orgullo enorme para nuestra familia.{{gpaJoy}}{{fifthCandle}}
+        #$b#Puedo sentirlo... Mi espíritu está listo para descansar. Te deseo lo mejor.{{gpaHappy}}",
+
+    // More text from game files => Strings/StringsFromCSFiles => "Event.cs.1306", "Event.cs.1307", "Event.cs.1308", "Event.cs.1309"
+    "1CandleReevaluation.Vanilla": "La granja no ha cambiado demasiado desde la última vez que hablamos... pero no pasa nada.{{gpaNeutral}}
+        #$b#Que estés disfrutando de tu nueva vida es suficiente para hacerme feliz...{{gpaHappy}}
+        #$b#Ahora debo regresar al otro mundo... Pero no dudes en volver a llamarme cuando lo creas conveniente.{{gpaStern}}",
+    "1CandleReevaluation.Vanilla-gn": "La granja no ha cambiado demasiado desde la última vez que hablamos... pero no pasa nada.{{gpaNeutral}}
+        #$b#Que estés disfrutando de tu nueva vida es suficiente para hacerme feliz...{{gpaHappy}}
+        #$b#Ahora debo regresar al otro mundo... Pero no dudes en volver a llamarme cuando lo creas conveniente.{{gpaStern}}",
+
+    "2CandleReevaluation.Vanilla": "Has mejorado mucho desde la última vez que hablamos.{{gpaSurprise}}
+        #$b#Parece que has hecho todo lo que estaba en tu mano... No podría pedir nada más. Estoy muy orgulloso de ti.{{gpaHappy}}
+        #$b#Ahora debo regresar al otro mundo... Pero no dudes en volver a llamarme cuando lo creas conveniente.{{gpaNeutral}}",
+    "2CandleReevaluation.Vanilla-gn": "Has mejorado mucho desde la última vez que hablamos.{{gpaSurprise}}
+        #$b#Parece que has hecho todo lo que estaba en tu mano... No podría pedir nada más. Estoy muy orgulloso de ti.{{gpaHappy}}
+        #$b#Ahora debo regresar al otro mundo... Pero no dudes en volver a llamarme cuando lo creas conveniente.{{gpaNeutral}}",
+    
+    "3CandleReevaluation.Vanilla": "Lo has hecho genial, querido.^Lo has hecho genial, querida.{{gpaSurprise}}
+        #$b#La granja %farm nunca había tenido mejor aspecto. Eres todo un orgullo para la familia.{{gpaJoy}}
+        #$b#Has hecho feliz a tu abuelo.{{gpaLove}}
+        #$b#Ahora debo regresar al otro mundo... Pero no dudes en volver a llamarme cuando lo creas conveniente.{{gpaHappy}}",
+    "3CandleReevaluation.Vanilla-gn": "Lo has hecho genial, queride.{{gpaSurprise}}
+        #$b#La granja %farm nunca había tenido mejor aspecto. Eres todo un orgullo para la familia.{{gpaJoy}}
+        #$b#Has hecho feliz a tu abuelo.{{gpaLove}}
+        #$b#Ahora debo regresar al otro mundo... Pero no dudes en volver a llamarme cuando lo creas conveniente.{{gpaHappy}}",
+    
+    "4CandleReevaluation.Vanilla": "¡Qué orgulloso estoy de ti, querido!^¡Qué orgulloso estoy de ti, querida!{{gpaJoy}}
+        #$b#¡Menudo cambio desde la última vez que hablamos!{{gpaShock}}
+        #$b#Yo jamás fui tan buen granjero como tú. Tu esfuerzo supone un orgullo enorme para nuestra familia.{{gpaLove}}{{fifthCandle}}
+        #$b#Puedo sentirlo... Mi espíritu está listo para descansar. Te deseo lo mejor.{{gpaHappy}}",
+    "4CandleReevaluation.Vanilla-gn": "¡Qué orgulloso estoy de ti, queride!{{gpaJoy}}
+        #$b#¡Menudo cambio desde la última vez que hablamos!{{gpaShock}}
+        #$b#Yo jamás fui tan buen granjero como tú. Tu esfuerzo supone un orgullo enorme para nuestra familia.{{gpaLove}}{{fifthCandle}}
+        #$b#Puedo sentirlo... Mi espíritu está listo para descansar. Te deseo lo mejor.{{gpaHappy}}",
+    
+  // ==========================
+  // "NUCLEAR" DIALOGUE VARIANT
+    
+    // Exaggerated, humorous script where grandpa is more assertive with his opinions. May contain profanity. Be creative! :)
+    "1CandleResult.Nuclear": "¿Pero qué cojones has hecho durante {{pastYears}}?{{gpaShock}}
+        #$b#De verdad, @...{{gpaFrown}}
+        #$b#¿Llamas a esto granja?{{gpaAngry}}
+        #$b#He visto zonas en guerra mejor cuidadas que esta basura.{{gpaRage}}
+        #$b#...{{gpaStern}}
+        #$b#Cómo me arrepiento de dejarte la granja %farm...{{gpaNeutral}}
+        #$b#Debería habérsela dado a uno de tus primos.{{gpaTears}}
+        #$b#...{{gpaNeutral}}
+        #$b#El futuro de la granja %farm está en tus manos ahora...{{gpaFrown}}
+        #$b#por desgracia.{{gpaSigh}}
+        #$b#$y '
+            _[quedarse en silencio]
+                _...hay un silencio incómodo.{{gpaFrown}}
+            _Este lugar era un vertedero cuando llegué. ¡Estoy haciéndolo lo mejor posible para arreglar el estropicio que dejaste!
+                _Bueno, siento que mi muerte afectase a tu herencia... gilipollas.{{gpaRage}}
+            _Que te den también, abuelo.
+                _...El abuelo parece ofendido.{{gpaShock}}'",
+    "1CandleResult.Nuclear-gn": "¿Pero qué cojones has hecho durante {{pastYears}}?{{gpaShock}}
+        #$b#De verdad, @...{{gpaFrown}}
+        #$b#¿Llamas a esto granja?{{gpaAngry}}
+        #$b#He visto zonas en guerra mejor cuidadas que esta basura.{{gpaRage}}
+        #$b#...{{gpaStern}}
+        #$b#Cómo me arrepiento de dejarte la granja %farm...{{gpaNeutral}}
+        #$b#Debería habérsela dado a uno de tus primos.{{gpaTears}}
+        #$b#...{{gpaNeutral}}
+        #$b#El futuro de la granja %farm está en tus manos ahora...{{gpaFrown}}
+        #$b#por desgracia.{{gpaSigh}}
+        #$b#$y '
+            _[quedarse en silencio]
+                _...hay un silencio incómodo.{{gpaFrown}}
+            _Este lugar era un vertedero cuando llegué. ¡Estoy haciéndolo lo mejor posible para arreglar el estropicio que dejaste!
+                _Bueno, siento que mi muerte afectase a tu herencia... gilipollas.{{gpaRage}}
+            _Que te den también, abuelo.
+                _...El abuelo parece ofendido.{{gpaShock}}'",
+
+    "2CandleResult.Nuclear": "¿Es esto todo lo que has hecho durante {{pastYears}}?{{gpaAngry}}
+        #$b#...{{gpaFrown}}
+        #$b#Si te soy sincero, la granja ha vivido días mucho mejores.{{gpaStern}}
+        #$b#Ya no es lo que solía ser... pero supongo que has hecho todo lo que estaba en tu mano.{{gpaFrown}}
+        #$b#...{{gpaSigh}}
+        #$b#Para bien o para mal, el futuro de la granja %farm está en tus manos ahora...{{gpaFrown}}",
+    "2CandleResult.Nuclear-gn": "¿Es esto todo lo que has hecho durante {{pastYears}}?{{gpaAngry}}
+        #$b#...{{gpaFrown}}
+        #$b#Si te soy sincero, la granja ha vivido días mucho mejores.{{gpaStern}}
+        #$b#Ya no es lo que solía ser... pero supongo que has hecho todo lo que estaba en tu mano.{{gpaFrown}}
+        #$b#...{{gpaSigh}}
+        #$b#Para bien o para mal, el futuro de la granja %farm está en tus manos ahora...{{gpaFrown}}",
+
+    "3CandleResult.Nuclear": "La verdad es que la granja se ve bastante bien.{{gpaShock}}
+        #$b#Estoy muy sorprendido de todo lo que has hecho con este sitio. ¿Te ha ayudado {{spouseOrLewis}}?{{gpaSurprise}}
+        #$b#De todos modos, me alegra ver que le estás dando un buen uso.{{gpaHappy}}
+        #$b#Aún hay cosas que puedes mejorar, pero lo has hecho muy bien, muchacho mío.
+        ^Aún hay cosas que puedes mejorar, pero lo has hecho muy bien, querida.{{gpaNeutral}}
+        #$b#...{{gpaHappy}}
+        #$b#En futuro de granja %farm está en tus manos ahora...{{gpaNeutral}}",
+    "3CandleResult.Nuclear-gn": "La verdad es que la granja se ve bastante bien.{{gpaShock}}
+        #$b#Estoy muy sorprendido de todo lo que has hecho con este sitio. ¿Te ha ayudado {{spouseOrLewis}}?{{gpaSurprise}}
+        #$b#De todos modos, me alegra ver que le estás dando un buen uso.{{gpaHappy}}
+        #$b#Aún hay cosas que puedes mejorar, pero lo has hecho muy bien.{{gpaNeutral}}
+        #$b#...{{gpaHappy}}
+        #$b#En futuro de granja %farm está en tus manos ahora...{{gpaNeutral}}",
+
+    "4CandleResult.Nuclear": "@, muchacho mío...^@, querida...{{gpaFrown}}
+        #$b#Eres una puta leyenda.{{gpaLove}}
+        #$b#¿De verdad es esta la misma granja que te dejé? ¡Casi no la reconozco!{{gpaShock}}
+        #$b#¡Es increíble el trabajo que has hecho! Yo jamás fui tan buen granjero.{{gpaJoy}}
+        #$b#Siempre apuntas a la excelencia... Por eso eres mi nieto favorito.^Siempre apuntas a la excelencia... Por eso eres mi nieta favorita.{{gpaLove}}{{fifthCandle}}
+        #$b#Ah...{{gpaHappy}}
+        #$b#Ahora puedo sentirlo... Mi espíritu puede por fin descansar. Te deseo lo mejor.{{gpaSurprise}}
+        #$b#...{{gpaHappy}}
+        #$b#El futuro de la granja %farm está en muy buenas manos...{{gpaJoy}}
+        #$b#Llámame cuando quieras; me encantaría ver todo tu progreso otra vez.{{gpaLove}}",
+    "4CandleResult.Nuclear-gn": "@, queride...{{gpaFrown}}
+        #$b#Eres una puta leyenda.{{gpaLove}}
+        #$b#¿De verdad es esta la misma granja que te dejé? ¡Casi no la reconozco!{{gpaShock}}
+        #$b#¡Es increíble el trabajo que has hecho! Yo jamás fui tan buen granjero.{{gpaJoy}}
+        #$b#Siempre apuntas a la excelencia... Por eso eres mi niete favorite.{{gpaLove}}{{fifthCandle}}
+        #$b#Ah...{{gpaHappy}}
+        #$b#Ahora puedo sentirlo... Mi espíritu puede por fin descansar. Te deseo lo mejor.{{gpaSurprise}}
+        #$b#...{{gpaHappy}}
+        #$b#El futuro de la granja %farm está en muy buenas manos...{{gpaJoy}}
+        #$b#Llámame cuando quieras; me encantaría ver todo tu progreso otra vez.{{gpaLove}}",
+
+    // Exaggerated, humorous script where grandpa is more assertive with his opinions. May contain profanity. Be creative! :)
+    "1CandleReevaluation.Nuclear": "Creo que fui demasiado duro contigo la última vez, así que he vuelto para echar un vistazo...{{gpaSurprise}}
+        #$b#Pero parece que aún no has hecho jodidamente nada.{{gpaRage}}
+        #$b#Tu primo %rival y su granja te dejan por los suelos.^Tu prima %rival y su granja te dejan por los suelos.{{gpaAngry}}
+        #$b#Esto está siendo una pérdida de tiempo.{{gpaFrown}}
+        #$b#...{{gpaSigh}}
+        #$b#Me voy... no me vuelvas a invocar a no ser que tengas algo que merezca la pena ver.{{gpaFrown}}
+        #$b#%Vaya, el abuelo está muy enfadado. Será mejor que no vuelva a decepcionarlo.",
+    "1CandleReevaluation.Nuclear-gn": "Creo que fui demasiado duro contigo la última vez, así que he vuelto para echar un vistazo...{{gpaSurprise}}
+        #$b#Pero parece que aún no has hecho jodidamente nada.{{gpaRage}}
+        #$b#Tu primo %rival y su granja te dejan por los suelos.{{gpaAngry}}
+        #$b#Esto está siendo una pérdida de tiempo.{{gpaFrown}}
+        #$b#...{{gpaSigh}}
+        #$b#Me voy... no me vuelvas a invocar a no ser que tengas algo que merezca la pena ver.{{gpaFrown}}
+        #$b#%Vaya, el abuelo está muy enfadado. Será mejor que no vuelva a decepcionarlo.",
+    
+    "2CandleReevaluation.Nuclear": "¿Es esto todo lo que querías enseñarme?{{gpaNeutral}}
+        #$b#Esperaba algo un poco más... bueno, no sé.{{gpaStern}}
+        #$b#No te preocupes, no estoy del todo decepcionado; veo claramente que has estado poniendo *algo* de esfuerzo.{{gpaFrown}}
+        #$b#Tal vez fui algo iluso al esperar más de ti.{{gpaNeutral}}
+        #$b#...{{gpaSigh}}
+        #$b#Ahora debo volver... intenta mejorar más las cosas por aquí y llámame otra vez.{{gpaStern}}",
+    "2CandleReevaluation.Nuclear-gn": "¿Es esto todo lo que querías enseñarme?{{gpaNeutral}}
+        #$b#Esperaba algo un poco más... bueno, no sé.{{gpaStern}}
+        #$b#No te preocupes, no estoy del todo decepcionado; veo claramente que has estado poniendo *algo* de esfuerzo.{{gpaFrown}}
+        #$b#Tal vez fui algo iluso al esperar más de ti.{{gpaNeutral}}
+        #$b#...{{gpaSigh}}
+        #$b#Ahora debo volver... intenta mejorar más las cosas por aquí y llámame otra vez.{{gpaStern}}",
+    
+    "3CandleReevaluation.Nuclear": "La granja está espectacular estos días.{{gpaHappy}}
+        #$b#Estoy muy sorprendido de que hayas sido capaz de progresar tanto... ¿te ha ayudado {{spouseOrLewis}}?{{gpaJoy}}
+        #$b#De todas formas, estoy feliz de ver la granja así de cuidada. Buen trabajo.{{gpaLove}}
+        #$b#Aunque... aún hay mucho trabajo por hacer que te mantendrá ocupado por unos años más si te esfuerzas de verdad.{{gpaHappy}}
+        #$b#...{{gpaStern}}
+        #$b#Es hora de que vuelva al otro mundo... invócame otra vez cuando quieras.{{gpaNeutral}}",
+    "3CandleReevaluation.Nuclear-gn": "La granja está espectacular estos días.{{gpaHappy}}
+        #$b#Estoy muy sorprendido de que hayas sido capaz de progresar tanto... ¿te ha ayudado {{spouseOrLewis}}?{{gpaJoy}}
+        #$b#De todas formas, estoy feliz de ver la granja así de cuidada. Buen trabajo.{{gpaLove}}
+        #$b#Aunque... aún hay mucho trabajo por hacer que te mantendrá ocupado por unos años más si te esfuerzas de verdad.{{gpaHappy}}
+        #$b#...{{gpaStern}}
+        #$b#Es hora de que vuelva al otro mundo... invócame otra vez cuando quieras.{{gpaNeutral}}",
+    
+    "4CandleReevaluation.Nuclear": "@, muchacho mío...^@, querida... {{gpaStern}}
+        #$b#Eres una puta leyenda.{{gpaLove}}
+        #$b#La granja %farm está espectacular... los frutos de tu arduo trabajo hablan por sí mismos.{{gpaSurprise}}
+        #$b#¡No hay más que ver todo el progreso que has hecho! Me siento abrumado solo de pensar lo lejos que has llegado...{{gpaJoy}}
+        #$b#Joder, @... vas a hacerme llorar.{{gpaTears}}{{fifthCandle}}
+        #$b#Sobre todo, has conseguido traerme paz interior... Mi alma por fin puede descansar en paz. Te deseo lo mejor.{{gpaHappy}}",
+    "4CandleReevaluation.Nuclear-gn": "@, mi niñe...{{gpaStern}}
+        #$b#Eres una puta leyenda.{{gpaLove}}
+        #$b#La granja %farm está espectacular... los frutos de tu arduo trabajo hablan por sí mismos.{{gpaSurprise}}
+        #$b#¡No hay más que ver todo el progreso que has hecho! Me siento abrumado solo de pensar lo lejos que has llegado...{{gpaJoy}}
+        #$b#Joder, @... vas a hacerme llorar.{{gpaTears}}{{fifthCandle}}
+        #$b#Sobre todo, has conseguido traerme paz interior... Mi alma por fin puede descansar en paz. Te deseo lo mejor.{{gpaHappy}}",
+    
+
+// ================================================
+// TRANSLATIONS FOR UTILITIES AND CONFIG (OPTIONAL)
+// ================================================
+
+  // Translations below this point are not necessary to enjoy any content this mod adds to the game!
+  // These are extra; they just allow error messages, command output, and config options to be translated.
+  // If you are creating a new translation, feel free to submit your file with or without these entries!
+
+  // {{NL}} tokens are replaced with a newline in the code.
+
+  // ===================
+  // GMCM CONFIG OPTIONS
+
+    // These descriptions are visible if players install Generic Mod Config Menu (optional) 
+    // and view or change their config settings from the lower left button in the game's main menu.
+    
+    "DialogueOptions.title": "Opciones de diálogo", // Category title
+
+    "GrandpaDialogue.name": "Elige el estilo de los diálogos del abuelo",
+    "GrandpaDialogue.description": "Cambia los diálogos del abuelo en los eventos de evaluación y reevaluación:{{NL}}  Original - Versión algo más severo usado en las versiones iniciales del juego{{NL}}  Vanilla - Dialógo usado por defecto en el juego desde la versión 1.05{{NL}}  Nuclear - El abuelo está muy entusiasmado por dar su opinión. ATENCIÓN: ¡lenguaje poco apropiado!",
+    // Note to translators - do not translate the option names Original/Vanilla/Nuclear
+
+    "GenderNeutrality.name": "Diálogos de género neutro",
+    "GenderNeutrality.description": "Elimina las referencias al género del jugador en los diálogos del abuelo",
+
+    "ExpressivePortraits.name": "Retratos expresivos",
+    "ExpressivePortraits.description": "Añade expresiones faciales al abuelo",
+
+    "PortraitStyle.name": "Elige los retratos del abuelo",
+    "PortraitStyle.description": "Cambia el estilo de los retratos expresivos del abuelo:{{NL}}  auto - Comprueba si hay retratos instalados compatibles y los aplica{{NL}}  Vanilla - Los retratos del abuelo siguen la estética del juego original aunque haya otros retratos instalados{{NL}}  Poltergeister - Los retratos del abuelo hechos por Poltergeister se aplican aunque haya otros retratos instalados",
+    // Note to translators - do not translate the option names auto/Vanilla/Poltergeister
+
+    "ScoringOptions.title": "Sistema de puntuación", // Category title
+
+    "ScoringSystem.name": "Elige un sistema de puntuación",
+    "ScoringSystem.description": "Cambia cómo se obtienen puntos en la evaluación y los puntos necesarios para conseguir 4 velas:{{NL}}  Original - Sistema original del juego: 13 puntos obtenibles, 12+ necesarios para conseguir 4 velas{{NL}}  Vanilla - Sistema normal del juego: 21 puntos posibles, 12+ necesarios para conseguir 4 velas{{NL}}  Hard - Sistema de puntuación más difícil: se necesitan 18/21 puntos para conseguir 4 velas{{NL}}  Expert - Sistema de puntuación más difícil: ¡los 21 puntos son necesarios para conseguir 4 velas!",
+    // Note to translators - do not translate the option names Original/Vanilla/Hard/Expert
+
+    "YearsBeforeEvaluation.name": "Años antes de la evaluación",
+    "YearsBeforeEvaluation.description": "Años dentro del juego que quedan para la primera visita del abuelo:{{NL}}  El valor por defecto es [2] - el abuelo aparecerá el día 1 de primavera del año 3",
+
+    "ShowPointsTotal.name": "Mostrar puntos totales",
+    "ShowPointsTotal.description": "Muestra tu puntuación obtenida en la evaluación",
+
+    "Rewards.title": "Recompensas", // Category title
+
+    "BonusRewards.name": "Activa recompensas adicionales",
+    "BonusRewards.description": "Otorga nuevas recompensas por conseguir 1-3 velas",
+
+    "StatuesForFarmhands.name": "Estatuas para todos los jugadores",
+    "StatuesForFarmhands.description": "En una partida multijugador, permite que cada jugador reciba su propia Estatua de la Perfección",
+
+  // =====================
+  // CONFIG ERROR MESSAGES
+    
+    // These helpful messages are printed as warnings to the console if a player enters an invalid config value.
+
+    // IMPORTANT: to make sure error messages match the Config file, please do not change
+    // the property names (e.g. GrandpaDialogue, YearsBeforeEvaluation)
+
+    "GrandpaDialogue.error": "Valor de configuración \"{{value}}\" para GrandpaDialogue inválido.
+    Los valores aceptados son [{{listGrandpaDialogueChoices}}].
+    GrandpaDialogue se ha reiniciado a su valor por defecto \"{{fallback}}\"",
+
+    "PortraitStyle.error": "Valor de configuración \"{{value}}\" para PortraitStyle inválido.
+    Los valores aceptados son [{{listPortraitStyleChoices}}].
+    PortraitStyle se ha reiniciado a su valor por defecto \"{{fallback}}\"",
+
+    "ScoringSystem.error": "Valor de configuración \"{{value}}\" para ScoringSystem inválido.
+    Los valores aceptados son [{{listScoringSystemChoices}}].
+    ScoringSystem se ha reiniciado a su valor por defecto \"{{fallback}}\"",
+
+    "YearsBeforeEvaluation.error": "Valor de configuración [{{value}}] para YearsBeforeEvaluation inválido.
+    No debes introducir un valor negativo.
+    YearsBeforeEvaluation se ha reiniciado a su valor por defecto [{{_yearsBeforeEvaluation}}].",
+
+    "CustomCandleScores.error.wrongLengthOrNotZero": "Entrada de configuración [{{valueList}}] para CustomCandleScores inválida.
+    Debes introducir una lista de cuatro números con el primer númro igual a 0.
+    CustomCandleScores se ha reiniciado.",
+
+    "CustomCandleScores.error.notAscendingOrder": "Entrada de configuración [{{valueList}}] para CustomCandleScores inválida.
+    Debes introducir una lista de cuatro números en orden creciente.
+    CustomCandleScores se ha reiniciado.",
+
+  // ================
+  // CONSOLE COMMANDS
+    
+    // Players can view these command descriptions if they use the help command in the SMAPI console.
+
+    "reset_evaluation.description": "Reinicia todas las evaluaciones del abuelo y señales de correo o evento asociados, permitiendo volver a ver la evaluación y re-evaluación en una partida existente.",
+
+    "grandpa_config.description": "Muestra la configuración actual de Angry Grandpa en la consola.",
+    
+    "grandpa_score.description": "Estima el resultado de la evaluación usando los criterios del abuelo.",
+
+    "grandpa_debug.description": "Activa los comandos grandpa_config y grandpa_score, además de información de depuración útil.",
+    // Note: do not change grandpa_config or grandpa_score as these are commands.
+}

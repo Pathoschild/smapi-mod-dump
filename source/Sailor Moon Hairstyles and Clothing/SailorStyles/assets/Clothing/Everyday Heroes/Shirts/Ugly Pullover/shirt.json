@@ -1,0 +1,13 @@
+{
+    "Name": "Ugly Pullover",
+    "Description": "A tricolor wonder. It's a wonder how it got in your wardrobe.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Pulover Feo"
+    },
+    "DescriptionLocalization": {
+        "es": "Una duda tricolor. Es una duda cómo llegó a tu armario."
+    }
+}

@@ -1,0 +1,127 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"Morris_Greeting": "Welcome to JojaMart! How are you doing today?#$b#I don't believe we've met. I'm {{mardrest.ChangeDialogues/MorrisName}}, Joja Customer Satisfaction Representative.#$b#When you decide you want to become a Joja Member, I'll be delighted to help make your transition a joyous experience.",
+			"Morris_PlayerSignedUp": "Excellent! Welcome to Joja Corporation! Come back tomorrow and we can see about getting started on some community development projects... Oh, and don't forget your wallet! Hehe.#$b#Now, let me call Mayor {{mardrest.ChangeDialogues/LewisName}} and see about gutting that nasty old community center...",
+			"Morris_WeekendGreeting_MembershipAvailable": "Welcome to JojaMart! How is your weekend going?#$b#Membership is now available! With a Joja Membership, you'll be able to make improvements in the community with the help of our dedicated personnel... for a fee, of course.#$b#Oh, and another thing... Mayor {{mardrest.ChangeDialogues/LewisName}} promised us that if anyone else joined up, {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/LewisGender}}}}'d let us turn that old community center into a Joja Warehouse. Isn't that wonderful?#$q -1 -1#Membership costs {0}g. Well, would you like to join us?#$r -1 -1 Yes#Yes.#$r -1 -1 No#No.",
+			"Morris_FirstGreeting_MembershipAvailable": "Welcome to JojaMart! How are you doing today?#$b#Membership is now available! With a Joja Membership, you'll be able to make improvements in the community with the help of our dedicated personnel... for a fee, of course.#$b#Oh, and another thing... Mayor {{mardrest.ChangeDialogues/LewisName}} promised us that if anyone else joined up, {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/LewisGender}}}}'d let us turn that old community center into a Joja Warehouse. Isn't that wonderful?#$q -1 -1#Membership costs {0}g. Well, would you like to join us?#$r -1 -1 Yes#Yes.#$r -1 -1 No#No.",
+			"PurchasedItem_1_QualityHigh": "Hey, {0}.#$b# So I stopped by {{mardrest.ChangeDialogues/PierreName}}'s the other day and bought {1} {2}. It was the first time I've seen one of those there in a while... #$b#I cooked it up for dinner last night... It filled the house with a {3} smell.. It was a hit!$h#$b#I'm glad {{mardrest.ChangeDialogues/PierreName}}'s stock is starting to expand again.#$e# Anyways...",
+			"PurchasedItem_1_QualityLow": "Hey, {0}.#$b# So I stopped by {{mardrest.ChangeDialogues/PierreName}}'s the other day and bought {1} {2}. It was the first time I've seen one of those there in a while... #$b#I cooked it up for dinner last night... It filled the house with a {3} odor. I don't even want to know where {{mardrest.ChangeDialogues/PierreName}} found that thing.$s#$e# Anyways...",
+			"PurchasedItem_3_QualityLow_Rude": "I went shopping last night and picked up {1} {2} on sale for only {3}g.#$e# It was {4}! No wonder {{mardrest.ChangeDialogues/PierreName}} was selling that {5} for so cheap...",
+			"PurchasedItem_4": "So I was at the store the other day and {{mardrest.ChangeDialogues/PierreName}} showed me {1} {2} you brought in.#$e#I bought it.$h",
+			"PurchasedItem_5_VegetableOrFruit": "I bought the tastiest {2} from {{mardrest.ChangeDialogues/PierreName}}'s shop the other day. #$b#{{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/PierreGender}}}} said that {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/PierreGender}}}} grew the thing in {{mardrest.ChangeDialogues/His:L{{mardrest.ChangeDialogues/PierreGender}}}} own backyard. I didn't know {{mardrest.ChangeDialogues/PierreName}} was such a talented farmer!$h#$b#Looks like you might have some competition, huh?",
+			"PurchasedItem_5_Cooking": "I bought the tastiest {2} from {{mardrest.ChangeDialogues/PierreName}}'s shop the other day. #$b#{{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/PierreGender}}}} said {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/PierreGender}}}} cooked the thing {{mardrest.ChangeDialogues/Him:L{{mardrest.ChangeDialogues/PierreGender}}}}self using local ingredients. I didn't know {{mardrest.ChangeDialogues/PierreName}} was such {3} {4} chef!",
+			"PurchasedItem_5_Foraged": "I bought the tastiest {2} from {{mardrest.ChangeDialogues/PierreName}}'s shop the other day. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/PierreGender}}}} said {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/PierreGender}}}} found it {{mardrest.ChangeDialogues/Him:L{{mardrest.ChangeDialogues/PierreGender}}}}self while exploring the mountains. I didn't know {{mardrest.ChangeDialogues/PierreName}} was such a talented forager!",
+			"PurchasedItem_Pierre_QualityHigh": "Hey, remember that {2} you sold me the other day? I ended up serving it to the family for a special dinner.#$b#My wife loved it! ...And {{mardrest.ChangeDialogues/AbigailNickname}} even started going to town on it after I smothered the thing in hoisin sauce. $h#$b#... well,... back to business, huh?",
+			"PurchasedItem_Haley": "{{mardrest.ChangeDialogues/EmilyName}} tried to serve me {1} {2} for dinner last night... I threw it away when she wasn't looking.#$e#I don't like health food...$s",
+			"PurchasedItem_Elliott": "I saw that {{mardrest.ChangeDialogues/PierreName}} had fresh {2} in the shop the other day! Marvelous. It smelled just perfect... and firm, too!",
+			"PurchasedItem_Leah": "The other day I bought {1} {2} at {{mardrest.ChangeDialogues/PierreName}}'s. It was perfect on a bed of greens and a dash of my 'special' vinaigrette.",
+			"PurchasedItem_1_QualityHigh_Willy": "Hey, {0}.#$b# So I stopped by {{mardrest.ChangeDialogues/WillyName}}'s the other day and bought {1} {2}. I've never seen one so fresh! #$b#So I cooked it up for dinner last night, and it filled the house with a {3} smell.. It was a hit!$h#$b#{{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/WillyGender}}}} told me you caught it yourself... I'm impressed!#$e# Anyways...",
+			"PurchasedItem_1_QualityLow_Willy": "Hey, {0}.#$b# So I stopped by {{mardrest.ChangeDialogues/WillyName}}'s the other day and bought {1} {2}. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/WillyGender}}}} said you caught it yourself! #$b#I cooked it up for dinner last night... and, uh... It filled the house with a {3} odor. I don't even want to know where you found that thing...$s#$e#Anyways...",
+			"PurchasedItem_3_QualityLow_Rude_Willy": "I went shopping last night and picked up {1} {2} on a 'chum-bucket' sale for only {3}g.#$e# It was {4}! No wonder {{mardrest.ChangeDialogues/WillyName}} was practically giving that {5} away...",
+			"PurchasedItem_4_Willy": "So I was at {{mardrest.ChangeDialogues/WillyName}}'s other day and {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/WillyGender}}}} showed me {1} {2} you brought in.#$e#I cooked it up for dinner with some lemon and a side of rice pilaf. Pretty good!$h"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Alex": "Married", "mardrest.ChangeDialogues/AlexGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Elliott": "Married", "mardrest.ChangeDialogues/ElliottGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Harvey": "Married", "mardrest.ChangeDialogues/HarveyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Sam": "Married", "mardrest.ChangeDialogues/SamGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Sebastian": "Married", "mardrest.ChangeDialogues/SebastianGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Shane": "Married", "mardrest.ChangeDialogues/ShaneGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Victor": "Married", "mardrest.ChangeDialogues/VictorGender": "Female", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	}
+	]
+}

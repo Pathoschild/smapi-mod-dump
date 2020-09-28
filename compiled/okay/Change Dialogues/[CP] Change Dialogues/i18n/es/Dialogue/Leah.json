@@ -1,0 +1,49 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Leah",
+		"Entries": {
+			"spring_16.001": "¿Cree que estoy bien, doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}} {{mardrest.ChangeDialogues/HarveyName}}?",
+			"spring_16.000": "Hola. ¿Estás aquí para ver {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/HarveyGender}}}} doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}?"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Leah": {
+				"NPCName": "Leah",
+				"Reactions": [
+				{
+					"Tag": "like",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "No se qué esperar de esta película, ¡Pero mantendré una mentalidad abierta!"
+						},
+						"DuringMovie": null,
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Ha sido simple, pero buena... Es como la confortante comida del cine."
+						}
+					},
+					"ID": "reaction_6"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Leah": "adult/polite/neutral/positive/female/datable/Elliott/Town/winter 23//LeahHouse 3 7/{{mardrest.ChangeDialogues/LeahName}}",
+		}
+	}
+	]
+}

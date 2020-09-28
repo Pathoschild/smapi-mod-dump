@@ -52,7 +52,7 @@ namespace QuestFramework.Patches
                     if (string.IsNullOrEmpty(schedule.OfferDetails.DialogueText))
                         return true;
 
-                    Game1.drawDialogue(__instance, $"{schedule.OfferDetails.DialogueText} ![{schedule.QuestName}]");
+                    Game1.drawDialogue(__instance, $"{schedule.OfferDetails.DialogueText}[quest:{schedule.QuestName.Replace('@', ' ')}]");
                     __result = true;
 
                     Instance.Monitor.Log($"Getting new quest `{quest.GetFullName()}` to quest log from NPC `{__instance.Name}`.");

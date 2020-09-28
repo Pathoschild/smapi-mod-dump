@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pathoschild.Stardew.LookupAnything.Framework.Constants;
 using Pathoschild.Stardew.LookupAnything.Framework.DebugFields;
 using Pathoschild.Stardew.LookupAnything.Framework.Fields;
-using StardewModdingAPI;
 using StardewValley;
 using xTile.Layers;
 using xTile.ObjectModel;
@@ -25,6 +23,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
         /// <summary>The tile position.</summary>
         private readonly Vector2 Position;
 
+        /// <summary>Whether to show raw tile info like tilesheets and tile indexes.</summary>
+        private readonly bool ShowRawTileInfo;
+
 
         /*********
         ** Public methods
@@ -34,39 +35,44 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
         /// <param name="gameHelper">Provides utility methods for interacting with the game code.</param>
         /// <param name="location">The game location.</param>
         /// <param name="position">The tile position.</param>
-        /// <param name="translations">Provides translations stored in the mod folder.</param>
-        public TileSubject(SubjectFactory codex, GameHelper gameHelper, GameLocation location, Vector2 position, ITranslationHelper translations)
-            : base(codex, gameHelper, $"({position.X}, {position.Y})", L10n.Tile.Description(), L10n.Types.Tile(), translations)
+        /// <param name="showRawTileInfo">Whether to show raw tile info like tilesheets and tile indexes.</param>
+        public TileSubject(SubjectFactory codex, GameHelper gameHelper, GameLocation location, Vector2 position, bool showRawTileInfo)
+            : base(codex, gameHelper, $"({position.X}, {position.Y})", I18n.Tile_Description(), I18n.Type_MapTile())
         {
             this.Location = location;
             this.Position = position;
+            this.ShowRawTileInfo = showRawTileInfo;
         }
 
         /// <summary>Get the data to display for this subject.</summary>
         public override IEnumerable<ICustomField> GetData()
         {
-            // yield map data
-            yield return new GenericField(this.GameHelper, L10n.Tile.MapName(), this.Location.Name);
-
-            // get tiles
-            Tile[] tiles = this.GetTiles(this.Location, this.Position).ToArray();
-            if (!tiles.Any())
+            // raw map data
+            if (this.ShowRawTileInfo)
             {
-                yield return new GenericField(this.GameHelper, L10n.Tile.TileField(), L10n.Tile.TileFieldNoneFound());
-                yield break;
-            }
+                // yield map data
+                yield return new GenericField(this.GameHelper, I18n.Tile_MapName(), this.Location.Name);
 
-            // fetch tile data
-            foreach (Tile tile in tiles)
-            {
-                string layerName = tile.Layer.Id;
-                yield return new GenericField(this.GameHelper, L10n.Tile.TileIndex(layerName: layerName), this.Stringify(tile.TileIndex));
-                yield return new GenericField(this.GameHelper, L10n.Tile.TileSheet(layerName: layerName), tile.TileSheet.ImageSource.Replace("\\", ": ").Replace("/", ": "));
-                yield return new GenericField(this.GameHelper, L10n.Tile.BlendMode(layerName: layerName), this.Stringify(tile.BlendMode));
-                foreach (KeyValuePair<string, PropertyValue> property in tile.TileIndexProperties)
-                    yield return new GenericField(this.GameHelper, L10n.Tile.IndexProperty(layerName: layerName, propertyName: property.Key), property.Value);
-                foreach (KeyValuePair<string, PropertyValue> property in tile.Properties)
-                    yield return new GenericField(this.GameHelper, L10n.Tile.TileProperty(layerName: layerName, propertyName: property.Key), property.Value);
+                // get tiles
+                Tile[] tiles = this.GetTiles(this.Location, this.Position).ToArray();
+                if (!tiles.Any())
+                {
+                    yield return new GenericField(this.GameHelper, I18n.Tile_Tile(), I18n.Tile_Tile_NoneHere());
+                    yield break;
+                }
+
+                // fetch tile data
+                foreach (Tile tile in tiles)
+                {
+                    string layerName = tile.Layer.Id;
+                    yield return new GenericField(this.GameHelper, I18n.Tile_TileIndex(layerName: layerName), this.Stringify(tile.TileIndex));
+                    yield return new GenericField(this.GameHelper, I18n.Tile_Tilesheet(layerName: layerName), tile.TileSheet.ImageSource.Replace("\\", ": ").Replace("/", ": "));
+                    yield return new GenericField(this.GameHelper, I18n.Tile_BlendMode(layerName: layerName), this.Stringify(tile.BlendMode));
+                    foreach (KeyValuePair<string, PropertyValue> property in tile.TileIndexProperties)
+                        yield return new GenericField(this.GameHelper, I18n.Tile_IndexProperty(layerName: layerName, propertyName: property.Key), property.Value);
+                    foreach (KeyValuePair<string, PropertyValue> property in tile.Properties)
+                        yield return new GenericField(this.GameHelper, I18n.Tile_TileProperty(layerName: layerName, propertyName: property.Key), property.Value);
+                }
             }
         }
 
@@ -91,6 +97,16 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
             return false;
         }
 
+        /// <summary>Whether a tile lookup should be enabled.</summary>
+        /// <param name="location">The game location being searched.</param>
+        /// <param name="tile">The tile position.</param>
+        /// <param name="enableTileMetadata">Whether map tile metadata</param>
+        public static bool EnableLookup(GameLocation location, Vector2 tile, bool enableTileMetadata)
+        {
+            return
+                enableTileMetadata;
+        }
+
 
         /*********
         ** Private methods
@@ -112,6 +128,19 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
                 if (tile != null)
                     yield return tile;
             }
+        }
+
+        /// <summary>Get whether a tile property is defined.</summary>
+        /// <param name="location">The game location.</param>
+        /// <param name="tile">The tile position.</param>
+        /// <param name="name">The property name.</param>
+        /// <param name="layer">The map layer name to check.</param>
+        /// <param name="arguments">The space-separated property values, if any.</param>
+        private static bool HasTileProperty(GameLocation location, Vector2 tile, string name, string layer, out string[] arguments)
+        {
+            string property = location.doesTileHaveProperty((int)tile.X, (int)tile.Y, name, layer);
+            arguments = property?.Split(' ').ToArray() ?? new string[0];
+            return property != null;
         }
     }
 }

@@ -10,9 +10,9 @@ mods:
    Sprint Sprint
 
 latest commit:
-   commit 8361062689915811097bdfdb3ac12f5f6297207e
-   Author: Jesse <elgoogjessebotics@gmail.com>
-   Date:   Fri Aug 28 12:00:36 2020 -0700
+   commit f7891b19ac2e2ceb5be1c281ca8019d0cd70e261
+   Author: Jesse Huang <jessebotx2003@gmail.com>
+   Date:   Wed Sep 2 10:38:38 2020 -0700
    
-       v2.0.1 healthstaminaregen
+       updated README
    

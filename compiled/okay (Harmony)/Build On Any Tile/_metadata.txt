@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6854
+IDs: Esca.BuildOnAnyTile
+update keys: GitHub:Esca-MMC/BuildOnAnyTile, Nexus:6854, ModDrop:827525

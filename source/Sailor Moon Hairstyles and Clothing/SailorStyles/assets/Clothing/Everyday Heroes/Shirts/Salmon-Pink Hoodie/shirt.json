@@ -1,0 +1,13 @@
+{
+    "Name": "Salmon-Pink Hoodie",
+    "Description": "A pink hoodie over a startling green shirt.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Sudadera con Capucha Rosa Salmón"
+    },
+    "DescriptionLocalization": {
+        "es": "Una sudadera con capucha rosa sobre una sorprendente camisa verde."
+    }
+}

@@ -1,0 +1,26 @@
+key,name,unsettling_description,original_description
+Silo,Silo,TODO,Allows you to cut and store grass for feed.
+Mill,Mill,TODO,Allows you to create flour from wheat and sugar from beets.
+Earth Obelisk,Earth Obelisk,TODO,Warps you to the mountains.
+Water Obelisk,Water Obelisk,TODO,Warps you to the beach.
+Desert Obelisk,Desert Obelisk,TODO,Warps you to the desert.
+Junimo Hut,Junimo Hut,TODO,Junimos will harvest crops around the hut for you.
+Gold Clock,Gold Clock,TODO,Prevents debris from appearing on your farm. Keeps fences from decaying.
+Stable,Stable,TODO,Allows you to keep and ride a horse. Horse included.
+Well,Well,TODO,Provides a place for you to refill your watering can.
+Shipping Bin,Shipping Bin,TODO,Throw items inside to sell them overnight.
+Coop,Coop,TODO,Houses 4 coop-dwelling animals.
+Big Coop,Big Coop,TODO,Houses 8 coop-dwelling animals. Comes with an incubator. Unlocks ducks.
+Deluxe Coop,Deluxe Coop,TODO,Houses 12 coop-dwelling animals. Comes with an auto-feed system. Unlocks rabbits.
+Barn,Barn,TODO,Houses 4 barn-dwelling animals.
+Big Barn,Big Barn,TODO,Houses 8 barn-dwelling animals. Allows animals to give birth. Unlocks goats.
+Deluxe Barn,Deluxe Barn,TODO,Houses 12 barn-dwelling animals. Comes with an auto-feed system. Unlocks sheep and pigs.
+Slime Hutch,Slime Hutch,TODO,Raise up to 20 slimes. Fill water troughs and slimes will create slime balls.
+Shed,Shed,TODO,An empty building. Fill it with whatever you like! The interior can be decorated.
+Big Shed,Big Shed,TODO,Doubles the size of the shed. The interior can be decorated.
+Stone Cabin,Cabin,TODO,A home for a friend! Subsidized by the town agricultural fund.
+Plank Cabin,Cabin,TODO,A home for a friend! Subsidized by the town agricultural fund.
+Log Cabin,Cabin,TODO,A home for a friend! Subsidized by the town agricultural fund.
+Greenhouse,Greenhouse,TODO,"A place to grow crops from any season, year round!"
+Mine Elevator,Mine Elevator,TODO,Quickly travel between any mine elevators you construct. You can only build one per mine level.
+Fish Pond,Fish Pond,TODO,Raise fish and harvest their produce. Fish multiply over time.

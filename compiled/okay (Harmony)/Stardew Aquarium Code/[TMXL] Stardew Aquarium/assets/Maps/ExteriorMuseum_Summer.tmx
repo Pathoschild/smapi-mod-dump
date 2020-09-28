@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="85" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="1137">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="85" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="1137">
  <properties>
   <property name="Music" value="ocean"/>
   <property name="Outdoors" value="T"/>
@@ -2264,12 +2264,6 @@
  <tileset firstgid="10781" name="springobjects" tilewidth="16" tileheight="16" tilecount="816" columns="24">
   <image source="springobjects.png" width="384" height="544"/>
  </tileset>
- <tileset firstgid="11597" name="smol boio" tilewidth="16" tileheight="16" tilecount="9" columns="3">
-  <image source="CustomTS/smol boio.png" width="48" height="48"/>
- </tileset>
- <tileset firstgid="11606" name="new" tilewidth="16" tileheight="16" tilecount="12" columns="2">
-  <image source="CustomTS/new.png" width="32" height="96"/>
- </tileset>
  <layer id="1" name="Back" width="85" height="80">
   <data>
    <tile gid="176"/>
@@ -3153,7 +3147,7 @@
    <tile gid="10605"/>
    <tile gid="10606"/>
    <tile gid="10605"/>
-   <tile gid="11601"/>
+   <tile gid="9130"/>
    <tile gid="10605"/>
    <tile gid="10606"/>
    <tile gid="276"/>
@@ -11163,9 +11157,9 @@
    <tile/>
    <tile/>
    <tile gid="269"/>
-   <tile gid="11603"/>
-   <tile gid="11604"/>
-   <tile gid="11605"/>
+   <tile gid="9169"/>
+   <tile gid="9170"/>
+   <tile gid="9171"/>
    <tile gid="2377"/>
    <tile gid="233"/>
    <tile gid="390"/>
@@ -24936,9 +24930,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="11597"/>
-   <tile gid="11598"/>
-   <tile gid="11599"/>
+   <tile gid="9089"/>
+   <tile gid="9090"/>
+   <tile gid="9091"/>
    <tile gid="2343"/>
    <tile/>
    <tile/>
@@ -25021,9 +25015,9 @@
    <tile/>
    <tile/>
    <tile gid="244"/>
-   <tile gid="11600"/>
+   <tile gid="9129"/>
    <tile/>
-   <tile gid="11602"/>
+   <tile gid="9131"/>
    <tile gid="2360"/>
    <tile gid="9403"/>
    <tile/>
@@ -25534,7 +25528,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="11612"/>
+   <tile gid="362"/>
    <tile/>
    <tile/>
    <tile/>
@@ -25620,7 +25614,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="11612"/>
+   <tile gid="362"/>
    <tile/>
    <tile/>
    <tile/>
@@ -25706,7 +25700,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="11612"/>
+   <tile gid="362"/>
    <tile/>
    <tile/>
    <tile gid="7881"/>

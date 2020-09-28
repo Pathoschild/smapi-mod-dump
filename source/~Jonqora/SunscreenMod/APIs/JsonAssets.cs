@@ -1,15 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
-using StardewValley.TerrainFeatures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace JsonAssets
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public interface IApi
     {
         void LoadAssets(string path);
@@ -59,4 +52,5 @@ namespace JsonAssets
         //bool TryGetCustomSprite(object entity, out Texture2D texture, out Rectangle sourceRect);
         //bool TryGetCustomSpriteSheet(object entity, out Texture2D texture, out Rectangle sourceRect);
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

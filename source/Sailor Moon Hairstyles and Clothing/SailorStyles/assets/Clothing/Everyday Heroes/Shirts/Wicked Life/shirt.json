@@ -1,0 +1,13 @@
+{
+    "Name": "Wicked Life",
+    "Description": "A studded hot pink leather jacket. It's vicious.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "vida Perverso"
+    },
+    "DescriptionLocalization": {
+        "es": "Una chaqueta de cuero rosa con tachuelas. Es vicioso"
+    }
+}

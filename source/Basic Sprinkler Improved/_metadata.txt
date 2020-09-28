@@ -1,0 +1,13 @@
+url:
+   https://github.com/littleraskol/Basic-Sprinkler-Improved.git
+
+mods:
+   Basic Sprinkler Improved
+
+latest commit:
+   commit d3624f5edd288d743ae1e0da777411e61d065497
+   Author: littleraskol <gunnerj@gmail.com>
+   Date:   Thu Sep 17 14:32:30 2020 -0400
+   
+       Update manifest.json
+   

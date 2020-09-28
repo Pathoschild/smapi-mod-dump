@@ -5,9 +5,10 @@ mods:
    Custom Reminders
 
 latest commit:
-   commit 3cb930636bd3cb6049cfae1b95f1d986632486e1
+   commit 81e8effcf097296a0a7c29962dc314335ed40ed2
    Author: Dem1se <dem1se.io@protonmail.com>
-   Date:   Tue Aug 18 04:52:44 2020 +0530
+   Date:   Mon Sep 28 02:15:52 2020 +0530
    
-       Disableable MobilePhoneApp
+       Added i18n support
+       en defaults
    

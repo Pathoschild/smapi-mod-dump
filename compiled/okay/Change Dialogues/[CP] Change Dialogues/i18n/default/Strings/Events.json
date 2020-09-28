@@ -1,0 +1,121 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Alex": "Married", "mardrest.ChangeDialogues/AlexGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Elliott": "Married", "mardrest.ChangeDialogues/ElliottGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Harvey": "Married", "mardrest.ChangeDialogues/HarveyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Sam": "Married", "mardrest.ChangeDialogues/SamGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Sebastian": "Married", "mardrest.ChangeDialogues/SebastianGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Shane": "Married", "mardrest.ChangeDialogues/ShaneGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Victor": "Married", "mardrest.ChangeDialogues/VictorGender": "Female", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
+			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
+		}, "When": { "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+	}
+	]
+}

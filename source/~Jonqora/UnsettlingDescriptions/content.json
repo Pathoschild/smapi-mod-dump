@@ -1,0 +1,21 @@
+{
+  "Format": "1.16.0",
+  "Changes": [
+  //ENGLISH - DEFAULT
+    {
+      "Action": "Include",
+      "FromFile": "assets/i18n/default.json",
+      "When": {
+        "HasFile:assets/i18n/{{language}}.json": false
+      }
+    },
+  //OTHER LANGUAGES
+    {
+      "Action": "Include",
+      "FromFile": "assets/i18n/{{language}}.json",
+      "When": {
+        "HasFile:{{FromFile}}": true
+      }
+    }
+  ]
+}

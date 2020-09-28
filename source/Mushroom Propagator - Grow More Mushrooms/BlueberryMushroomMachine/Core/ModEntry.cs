@@ -1,21 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
-using StardewValley.Menus;
-
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-
-using Harmony; // el diavolo
+using Object = StardewValley.Object;
 
 namespace BlueberryMushroomMachine
 {
 	public class ModEntry : Mod
 	{
+		public enum Mushrooms
+		{
+			Morel = 257,
+			Chantarelle = 281,
+			Common = 404,
+			Red = 420,
+			Purple = 422
+		}
+
 		internal static ModEntry Instance;
 
 		internal Config Config;
@@ -28,86 +34,82 @@ namespace BlueberryMushroomMachine
 			Instance = this;
 			Config = helper.ReadConfig<Config>();
 
-			// Debug events.
 			if (Config.DebugMode)
 				helper.Events.Input.ButtonPressed += OnButtonPressed;
 
 			Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			Helper.Events.GameLoop.DayStarted += OnDayStarted;
 
-			// Load mushroom overlay texture for all filled machines.
-			OverlayTexture = Helper.Content.Load<Texture2D>(Const.OverlayPath);
+			// Load mushroom overlay texture for all filled machines
+			OverlayTexture = Helper.Content.Load<Texture2D>(ModValues.OverlayPath);
 
-			// Harmony setup.
-			var harmony = HarmonyInstance.Create($"{Const.AuthorName}.{Const.PackageName}");
-
-			Log.D("Harmony patching methods:"
-			      + "\nCraftingPage.performHoverAction:Postfix:void"
-			      + "\nCraftingPage.clickCraftingRecipe:Prefix:bool"
-				  + "\nCraftingRecipe.createItem:Postfix:void",
-				Config.DebugMode);
-
-			harmony.Patch(
-				original: AccessTools.Method(typeof(CraftingPage), "performHoverAction"),
-				postfix: new HarmonyMethod(typeof(RecipeHoverActionPatch), nameof(RecipeHoverActionPatch.Postfix)));
-			harmony.Patch(
-				original: AccessTools.Method(typeof(CraftingPage), "clickCraftingRecipe"),
-				prefix: new HarmonyMethod(typeof(ClickCraftingRecipePatch), nameof(ClickCraftingRecipePatch.Prefix)));
-			harmony.Patch(
-				original: AccessTools.Method(typeof(CraftingRecipe), "createItem"),
-				postfix: new HarmonyMethod(typeof(CreateRecipeItemPatch), nameof(CreateRecipeItemPatch.Postfix)));
+			// Harmony setup
+			HarmonyPatches.Apply();
 		}
-
-		#region Game Events
 
 		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
 		{
-			Log.I("See log file TRACE for Mushroom Machine state info." 
-			      + " Post a complete log via HTTPS://LOG.SMAPI.IO/ on the Nexus page with any issues."
-			      + " Thanks!");
-
-			Log.D("Works in locations:"
-			      + $" {Config.WorksInCellar} {Config.WorksInFarmCave} {Config.WorksInBuildings}"
-				  + $" {Config.WorksInFarmHouse} {Config.WorksInGreenhouse} {Config.WorksOutdoors}"
-				  + $"\nMushroom Cave: {Config.RecipeAlwaysAvailable}"
-				  + $"\nRecipe Cheat:  {Config.RecipeAlwaysAvailable}"
-				  + $"\nDebug Mode:    {Config.DebugMode}",
-				Config.DebugMode);
-
-			// Identify the tilesheet index for the machine, and then continue
-			// to inject relevant data into multiple other assets if successful.
-			AddObjectData();
+			try
+			{
+				Log.D("== CONFIG SUMMARY ==\n"
+				      + "\nWorks in locations:"
+				      + $"\n    {Config.WorksInCellar} {Config.WorksInFarmCave} {Config.WorksInBuildings}" 
+				      + $"\n    {Config.WorksInFarmHouse} {Config.WorksInGreenhouse} {Config.WorksOutdoors}\n" 
+				      + $"\nMushroom Cave:  {Config.DisabledForFruitCave}" 
+				      + $"\nRecipe Cheat:   {Config.RecipeAlwaysAvailable}" 
+				      + $"\nQuantity Cheat: {Config.MaximumQuantityLimitsDoubled}" 
+				      + $"\nDays To Mature: {Config.MaximumDaysToMature}" 
+				      + $"\nGrowth Pulse:   {Config.PulseWhenGrowing}" 
+				      + $"\nOnly Tools Pop: {Config.OnlyToolsCanRemoveRootMushrooms}" 
+				      + $"\nCustom Objects: {Config.OtherObjectsThatCanBeGrown.Aggregate("", (s, s1) => $"{s}\n    {s1}")}\n" 
+				      + $"\nLanguage:       {LocalizedContentManager.CurrentLanguageCode.ToString().ToUpper()}" 
+				      + $"\nDebugging:      {Config.DebugMode}",
+					Config.DebugMode);
+			}
+			catch (Exception e1)
+			{
+				Log.E($"Error in printing mod configuration.\n{e1}");
+			}
+			finally
+			{
+				// Identify the tilesheet index for the machine, and then continue
+				// to inject relevant data into multiple other assets if successful
+				AddObjectData();
+			}
 		}
 		
 		private void OnDayStarted(object sender, DayStartedEventArgs e)
 		{
-			// Add Robin's pre-Demetrius-event dialogue.
+			// Add Robin's pre-Demetrius-event dialogue
 			if (Game1.player.daysUntilHouseUpgrade.Value == 2 && Game1.player.HouseUpgradeLevel == 2)
 				Game1.player.activeDialogueEvents.Add("event.4637.0000.0000", 7);
 
-			// Add the Propagator crafting recipe if the cheat is enabled.
+			// Add the Propagator crafting recipe if the cheat is enabled
 			if (Config.RecipeAlwaysAvailable)
-				if (!Game1.player.craftingRecipes.ContainsKey(Const.PropagatorInternalName))
-					Game1.player.craftingRecipes.Add(Const.PropagatorInternalName, 0);
+				if (!Game1.player.craftingRecipes.ContainsKey(ModValues.PropagatorInternalName))
+					Game1.player.craftingRecipes.Add(ModValues.PropagatorInternalName, 0);
 
 			// TEMPORARY FIX: Manually rebuild each Propagator in the user's inventory.
 			// PyTK ~1.12.13.unofficial seemingly rebuilds inventory objects at ReturnedToTitle,
-			// so inventory objects are only rebuilt after the save is reloaded for every session.
-			var items = Game1.player.Items;
-			for (var i = items.Count - 1; i > 0; --i)
+			// so inventory objects are only rebuilt after the save is reloaded for every session
+			if (Config.CheckForPyTKMigration)
 			{
-				if (items[i] == null
-				    || !items[i].Name.StartsWith($"PyTK|Item|{Const.PackageName}") 
-				    || !items[i].Name.Contains($"{Const.PropagatorInternalName}"))
-					continue;
+				var items = Game1.player.Items;
+				for (var i = items.Count - 1; i > 0; --i)
+				{
+					if (items[i] == null
+					    || !items[i].Name.StartsWith($"PyTK|Item|{ModValues.PackageName}") 
+					    || !items[i].Name.Contains($"{ModValues.PropagatorInternalName}"))
+						continue;
 				
-				Log.D($"Found a broken {items[i].Name} in {Game1.player.Name}'s inventory slot {i}"
-				      + ", rebuilding manually.",
-					Config.DebugMode);
+					Log.T($"Found a broken {items[i].Name} in {Game1.player.Name}'s inventory slot {i}"
+					      + ", rebuilding manually.",
+						Config.DebugMode);
 						
-				var stack = items[i].Stack;
-				Game1.player.removeItemFromInventory(items[i]);
-				Game1.player.addItemToInventory(new Propagator { Stack = stack }, i);
+					var stack = items[i].Stack;
+					Game1.player.removeItemFromInventory(items[i]);
+					Game1.player.addItemToInventory(new Propagator { Stack = stack }, i);
+				}
 			}
 
 			// TEMPORARY FIX: Manually DayUpdate each Propagator.
@@ -117,7 +119,7 @@ namespace BlueberryMushroomMachine
 			{
 				if (!location.Objects.Values.Any())
 					continue;
-				var objects = location.Objects.Values.Where(o => o.Name.Equals(Const.PropagatorInternalName));
+				var objects = location.Objects.Values.Where(o => o.Name.Equals(ModValues.PropagatorInternalName));
 				foreach (var obj in objects)
 					((Propagator)obj).TemporaryDayUpdate();
 			}
@@ -126,17 +128,20 @@ namespace BlueberryMushroomMachine
 		private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
 		{
 			e.Button.TryGetKeyboard(out var keyPressed);
-
-			if (Game1.activeClickableMenu != null)
+			if (Game1.eventUp && !Game1.currentLocation.currentEvent.playerControlSequence
+			    || Game1.currentBillboard != 0 || Game1.activeClickableMenu != null || Game1.menuUp
+			    || Game1.nameSelectUp
+			    || Game1.IsChatting || Game1.dialogueTyping || Game1.dialogueUp || Game1.fadeToBlack
+			    || !Game1.player.CanMove || Game1.eventUp || Game1.isFestival())
 				return;
 
-			// Debug functionalities.
+			// Debug spawning for Propagator: Can't be spawned in with CJB Item Spawner as it subclasses Object
 			if (keyPressed.ToSButton().Equals(Config.GivePropagatorKey))
 			{
 				var prop = new Propagator(Game1.player.getTileLocation());
 				Game1.player.addItemByMenuIfNecessary(prop);
-				Log.D($"{Game1.player.Name} spawned in a {Const.PropagatorInternalName} ({prop.DisplayName}).",
-					Config.DebugMode);
+				Log.D($"{Game1.player.Name} spawned in a"
+				      + $" [{ModValues.PropagatorIndex}] {ModValues.PropagatorInternalName} ({prop.DisplayName}).");
 			}
 		}
 
@@ -145,96 +150,99 @@ namespace BlueberryMushroomMachine
 			Log.D("Injecting object data.",
 				Config.DebugMode);
 
-			// Identify the index in bigCraftables for the machine.
+			// Identify the index in bigCraftables for the machine
 			Helper.Content.AssetEditors.Add(new Editors.BigCraftablesInfoEditor());
 
-			// Edit all assets that rely on the generated object index:
+			// Edit all assets that rely on the new bigCraftables index:
 
-			// These can potentially input a bad index first, though BigCraftablesInfoEditor.Edit()
-			// invalidates the cache once it finishes operations to reassign data with an appropriate index.
+			// These can potentially input a bad index first, though BigCraftablesInfoEditor.Edit() will
+			// invalidate the cache once it finishes reassigning data with an appropriate index
 
-			// Inject recipe into the Craftables data sheet.
+			// Inject recipe into the Craftables data sheet
 			Helper.Content.AssetEditors.Add(new Editors.CraftingRecipesEditor());
-			// Inject sprite into the Craftables tilesheet.
+			// Inject sprite into the Craftables tilesheet
 			Helper.Content.AssetEditors.Add(new Editors.BigCraftablesTilesheetEditor());
-			// Inject Demetrius' event.
+			// Inject Demetrius' event
 			Helper.Content.AssetEditors.Add(new Editors.EventsEditor());
 		}
-
-		#endregion
-	}
-
-	#region Harmony Patches
-
-	public class RecipeHoverActionPatch
-	{
-		internal static void Postfix(CraftingRecipe ___hoverRecipe)
+		
+		/// <summary>
+		/// Determines the frame to be used for showing held mushroom growth.
+		/// </summary>
+		/// <param name="days">Current days since last growth.</param>
+		/// <param name="quantity">Current count of mushrooms.</param>
+		/// <param name="max">Maximum amount of mushrooms of this type.</param>
+		/// <returns>Frame for mushroom growth progress.</returns>
+		public static int GetOverlayGrowthFrame(int days, int daysToMature, int quantity, int max)
 		{
-			if (___hoverRecipe == null)
-				return;
-			if (___hoverRecipe.name.Equals(Const.PropagatorInternalName))
-				___hoverRecipe.DisplayName = new Propagator().DisplayName;
+			var maths =
+				(((quantity - 1) + ((float)days / daysToMature)) * daysToMature)
+				/ ((max - 1) * daysToMature)
+				* ModValues.OverlayMushroomFrames;
+			maths = Math.Max(0, Math.Min(ModValues.OverlayMushroomFrames, maths));
+			return (int)Math.Floor(maths);
 		}
-	}
 
-	public class ClickCraftingRecipePatch
-	{
-		internal static bool Prefix(
-			List<Dictionary<ClickableTextureComponent, CraftingRecipe>> ___pagesOfCraftingRecipes,
-			int ___currentCraftingPage, Item ___heldItem,
-			ClickableTextureComponent c, bool playSound = true)
+		/// <summary>
+		/// Generates a clipping rectangle for the overlay appropriate
+		/// to the current held mushroom, and its held quantity.
+		/// Undefined mushrooms will use their default object rectangle.
+		/// </summary>
+		/// <returns></returns>
+		public static Rectangle GetOverlaySourceRect(Object o, int whichFrame)
 		{
-			try
+			return Enum.IsDefined(typeof(Mushrooms), o.ParentSheetIndex)
+				? new Rectangle(whichFrame * 16,  GetMushroomSourceRectIndex(o) * 32, 16, 32)
+				: Game1.getSourceRectForStandardTileSheet(
+					Game1.objectSpriteSheet, o.ParentSheetIndex, 16, 16);
+		}
+		
+		public static bool IsValidMushroom(Object o)
+		{
+			return Enum.IsDefined(typeof(Mushrooms), o.ParentSheetIndex)
+			       || (o.Category == -75 || o.Category == -81)
+			       && (o.Name.ToLower().Contains("mushroom") || o.Name.ToLower().Contains("fungus"))
+			       || Instance.Config.OtherObjectsThatCanBeGrown.Contains(o.Name);
+		}
+
+		public static int GetMushroomSourceRectIndex(Object o)
+		{
+			return o.ParentSheetIndex switch
 			{
-				// Fetch an instance of any clicked-on craftable in the crafting menu.
-				var tempItem = ___pagesOfCraftingRecipes[___currentCraftingPage][c]
-					.createItem();
-
-				// Fall through the prefix for any craftables other than the Propagator.
-				if (!tempItem.Name.Equals(Const.PropagatorInternalName))
-					return true;
-
-				// Behaviours as from base method.
-				if (___heldItem == null)
-				{
-					___pagesOfCraftingRecipes[___currentCraftingPage][c]
-						.consumeIngredients(null);
-					___heldItem = tempItem;
-					if (playSound)
-						Game1.playSound("coin");
-				}
-				if (Game1.player.craftingRecipes.ContainsKey(___pagesOfCraftingRecipes[___currentCraftingPage][c].name))
-					Game1.player.craftingRecipes[___pagesOfCraftingRecipes[___currentCraftingPage][c].name]
-						+= ___pagesOfCraftingRecipes[___currentCraftingPage][c].numberProducedPerCraft;
-				if (___heldItem == null || !Game1.player.couldInventoryAcceptThisItem(___heldItem))
-					return false;
-
-				// Add the machine to the user's inventory.
-				var prop = new Propagator(Game1.player.getTileLocation());
-				Game1.player.addItemToInventoryBool(prop);
-				___heldItem = null;
-				return false;
-			}
-			catch (Exception e)
-			{
-				Log.E($"{Const.AuthorName}.{Const.PackageName} failed in"
-				      + $" {nameof(ClickCraftingRecipePatch)}.{nameof(Prefix)}"
-				      + $"\n{e}");
-				return true;
-			}
+				(int) Mushrooms.Morel => 0,
+				(int) Mushrooms.Chantarelle => 1,
+				(int) Mushrooms.Common => 2,
+				(int) Mushrooms.Red => 3,
+				(int) Mushrooms.Purple => 4,
+				_ => -1
+			};
 		}
-	}
 
-	public class CreateRecipeItemPatch
-	{
-		internal static void Postfix(CraftingRecipe __instance, Item __result)
+		public static void GetMushroomGrowthRate(Object o, out float rate)
 		{
-			// Intercept machine crafts with a Propagator subclass,
-			// rather than a generic nonfunctional craftable.
-			if (__instance.name == Const.PropagatorInternalName)
-				__result = new Propagator(Game1.player.getTileLocation());
+			rate = o.ParentSheetIndex switch
+			{
+				(int) Mushrooms.Morel => 0.5f,
+				(int) Mushrooms.Chantarelle => 0.5f,
+				(int) Mushrooms.Common => 1.0f,
+				(int) Mushrooms.Red => 0.5f,
+				(int) Mushrooms.Purple => 0.25f,
+				_ => o.Price < 50 ? 1.0f : o.Price < 100 ? 0.75f : o.Price < 200 ? 0.5f : 0.25f
+			};
+		}
+
+		public static void GetMushroomMaximumQuantity(Object o, out int quantity)
+		{
+			quantity = o.ParentSheetIndex switch
+			{
+				(int) Mushrooms.Morel => 4,
+				(int) Mushrooms.Chantarelle => 4,
+				(int) Mushrooms.Common => 6,
+				(int) Mushrooms.Red => 3,
+				(int) Mushrooms.Purple => 2,
+				_ => o.Price < 50 ? 5 : o.Price < 100 ? 4 : o.Price < 200 ? 3 : 2
+			};
+			quantity *= Instance.Config.MaximumQuantityLimitsDoubled ? 2 : 1;
 		}
 	}
-
-	#endregion
 }

@@ -63,6 +63,7 @@ Choose which character should send you the updated quest letter. Options: [code]
 [/list]
 [size=4][b]SEE ALSO[/b][/size]
 [list]
+[*]Help [url=https://github.com/StardewModders/mod-translations/issues/32]translate[/url]﻿ this mod to other languages
 [*]This mod on [url=https://github.com/Jonqora/StardewMods/tree/master/DontEnablePam]GitHub[/url]
 [*]Check out [url=https://www.nexusmods.com/users/88107803?tab=user+files]my other mods[/url]! My favorite one is [url=https://www.nexusmods.com/stardewvalley/mods/6324]Angry Grandpa[/url] mod, it has a bunch of cool features.
 [/list]

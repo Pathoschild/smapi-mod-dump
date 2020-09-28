@@ -1,0 +1,15 @@
+﻿{
+	"Name": "Sailor Styles",
+	"Author": "blueberry",
+	"Version": "4.2.1",
+	"Description": "Sailor Moon clothing and optional hairstyles - shirts, pants, and more!",
+	"UniqueID": "blueberry.SailorStyles",
+	"EntryDll": "SailorStyles.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:4154" ],
+	"Dependencies": [
+		{
+			"UniqueID": "spacechase0.JsonAssets"
+		}
+	]
+}

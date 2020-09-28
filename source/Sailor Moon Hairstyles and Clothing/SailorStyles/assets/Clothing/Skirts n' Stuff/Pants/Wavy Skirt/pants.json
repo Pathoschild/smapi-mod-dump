@@ -1,0 +1,13 @@
+{
+    "Name": "Wavy Skirt",
+    "Description": "A comfy skirt. The pleats flow like flower petals!",
+    "Price": 150,
+    "Dyeable": true,
+    "DefaultColor": "75, 100, 175, 255",
+    "NameLocalization": {
+        "es": "Falda Ondulada"
+    },
+    "DescriptionLocalization": {
+        "es": "Una falda cómoda. ¡Los pliegues fluyen como pétalos de flores!"
+    }
+}

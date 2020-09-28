@@ -1,9 +1,0 @@
-{
-  "healthRegenPerSecond": 0.1,
-  "healthIdleSeconds": 15,
-  "regenHealthWhileRunningRate": 0.0,
-  "staminaRegenPerSecond": 1.0,
-  "staminaIdleSeconds": 10,
-  "regenStaminaWhileRunningRate": 0.25,
-  "percentageMode": false
-}

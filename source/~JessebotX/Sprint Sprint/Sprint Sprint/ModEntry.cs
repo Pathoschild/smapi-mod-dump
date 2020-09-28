@@ -77,7 +77,8 @@ namespace Sprint_Sprint
             {
                 Game1.player.addedSpeed = this.Config.SprintSpeed;
                 this.DepleteStamina(e);
-            } else if (Game1.player.mount != null)
+            }
+            else if (Game1.player.mount != null)
                 Game1.player.addedSpeed = this.Config.HorseSpeed;
             else
                 Game1.player.addedSpeed = 0;
@@ -91,13 +92,15 @@ namespace Sprint_Sprint
             {
                 if (this.Config.NoSprintIfTooTired.Enabled)
                 {
-                    if (Game1.player.Stamina > this.Config.NoSprintIfTooTired.TiredStamina) 
+                    if (Game1.player.Stamina > this.Config.NoSprintIfTooTired.TiredStamina)
                         return true;
                     else
                         return false;
-                } else
+                }
+                else
                     return true;
-            } else
+            }
+            else
                 return false;
         }
 

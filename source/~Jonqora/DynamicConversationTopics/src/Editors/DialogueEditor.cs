@@ -1,6 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using static System.Math;
@@ -33,7 +34,9 @@ namespace DynamicConversationTopics
 		/// <returns>true for asset Data\Events\***, false otherwise</returns>
 		public bool CanEdit<_T> (IAssetInfo asset)
 		{
-			return ModConfig.AssetMatch(asset, "Characters\\Dialogue", ModConfig.NPCs);
+			return asset.DataType == typeof(Dictionary<string, string>) &&
+			asset.AssetName.StartsWith(Path.Combine("Characters", "Dialogue", "_").TrimEnd('_'));
+			//return ModConfig.AssetMatch(asset, "Characters\\Dialogue", ModConfig.NPCs);
 		}
 
 		/// <summary>
@@ -46,11 +49,17 @@ namespace DynamicConversationTopics
 		{
 			var data = asset.AsDictionary<string, string>().Data;
 
-			// Insert addConversationTopic commands for main events and fork paths
+			// Insert ConversationTopic dialogue
 			if (false)
 			{
 
 			}
+
+			//Insert dialogue for test topics
+			foreach (string topic in ModEntry.Instance.TestTopics)
+            {
+				data[topic] = $"Test dialogue: {topic}#$b#More test dialogue: {topic}#$e#Even more test dialogue after a break: {topic}";
+            }
 		}
 	}
 }

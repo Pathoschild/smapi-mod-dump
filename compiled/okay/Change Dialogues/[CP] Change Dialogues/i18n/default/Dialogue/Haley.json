@@ -1,0 +1,39 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Haley",
+		"Entries": {
+			"Introduction": "Oh... you're that new farmer boy, aren't you?^Oh... You're that new farmer girl, or whatever. Aren't you?#$e#Huh? Oh... I'm {{mardrest.ChangeDialogues/HaleyName}}.#$e#Hmm... If it weren't for those horrendous clothes you might actually be cute.^Hmm... If it weren't for those horrendous clothes you might actually be pretty... Actually, nevermind.$h",
+			"Fri": "%{{mardrest.ChangeDialogues/HaleyName}} is ignoring you.",
+			"summer_Fri": "I wonder what {{mardrest.ChangeDialogues/AlexName}} is doing today...#$e#Huh? I didn't notice you standing there.",
+			"summer_Sun": "{{mardrest.ChangeDialogues/EmilyName}} usually cooks dinner... But she makes weird stuff like quinoa.",
+			"summer_Sun6": "#$1 HaleySister#I talked to my sister for a while last night. I actually enjoyed it quite a bit.#$e#You know, {{mardrest.ChangeDialogues/EmilyName}}'s not actually that weird. I guess we have more in common than I used to think.#$e#Don't tell her I said so.",
+			"winter_Sun": "Will you say hi to {{mardrest.ChangeDialogues/AlexName}} for me?#$e#Thanks.",
+			"winter_Sun6": "Um, if you see {{mardrest.ChangeDialogues/AlexName}} could you tell {{mardrest.ChangeDialogues/Him:L{{mardrest.ChangeDialogues/AlexGender}}}} I'm busy today?#$e#Thanks.",
+			"Event_room1": "{{mardrest.ChangeDialogues/Him:{{mardrest.ChangeDialogues/AlexGender}}}}? No!#$b#...Well, I guess I used to like {{mardrest.ChangeDialogues/AlexName}}. But not anymore! {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/AlexGender}}}}'s immature."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialogueHaley",
+		"Entries": {
+			"Rainy_Night_2": "I hope {{mardrest.ChangeDialogues/EmilyName}} isn't too lonely all by herself. I should visit her again soon.$7"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Haley",
+		"Entries": {
+			"marriage_Mon.000": "Hi, honey! I'm mostly just here to visit {{mardrest.ChangeDialogues/EmilyName}}."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Haley": "adult/rude/outgoing/neutral/female/datable/Alex/Town/spring 14/Emily 'sister'/HaleyHouse 8 7/{{mardrest.ChangeDialogues/HaleyName}}"
+		}
+	}
+	]
+}

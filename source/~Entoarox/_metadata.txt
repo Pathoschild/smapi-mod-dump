@@ -16,9 +16,9 @@ mods:
    XNB Loader
 
 latest commit:
-   commit 052263e6e6218835d2d1575f52810fcf2908ce00
+   commit 8b4c2a4ef4cb4752549552b4d9c3a99b6493187c
    Author: Entoarox <kvdk@kvdk.net>
-   Date:   Mon Jul 27 13:20:28 2020 +0200
+   Date:   Thu Sep 24 03:11:59 2020 +0200
    
-       Github sync
+       Sync sln file
    

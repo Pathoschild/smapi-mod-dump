@@ -1,0 +1,14 @@
+{
+    "Name": "Orange Collared Tank",
+    "Description": "Fashionistas still argue whether this top counts as smart-casual.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "Metadata": "Sleeveless",
+    "NameLocalization": {
+        "es": "Camiseta sin Mangas con Cuello Naranja"
+    },
+    "DescriptionLocalization": {
+        "es": "Los fashionistas todavía discuten si este top cuenta como intelectual-casual."
+    }
+}

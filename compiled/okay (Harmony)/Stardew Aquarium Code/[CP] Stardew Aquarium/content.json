@@ -296,17 +296,6 @@
 "Update": "OnLocationChange"
       },
 	  	  	  	  	  	  	  	  {
-         "LogName": "7 Forest Carp Overlay",
-         "Action": "EditImage",
-         "Target": "Maps/AquariumEmpty7",
-         "FromFile": "assets/Aquariums/Forest/carp.png",
-         "PatchMode":"Overlay",
-        "When": {
- "HasFlag: hostPlayer": "AquariumDonated:Carp" 
-},
-"Update": "OnLocationChange"
-      },
-	  	  	  	  	  	  	  	  {
          "LogName": "7 Woodskip Overlay",
          "Action": "EditImage",
          "Target": "Maps/AquariumEmpty7",
@@ -314,6 +303,17 @@
          "PatchMode":"Overlay",
         "When": {
  "HasFlag: hostPlayer": "AquariumDonated:Woodskip" 
+},
+"Update": "OnLocationChange"
+      },
+        {
+         "LogName": "7 Forest Catfish Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty7",
+         "FromFile": "assets/Aquariums/Forest/catfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Catfish" 
 },
 "Update": "OnLocationChange"
       },
@@ -826,17 +826,6 @@
          "PatchMode":"Overlay",
         "When": {
  "HasFlag: hostPlayer": "AquariumDonated:Bream"
-},
-"Update": "OnLocationChange"
-      },
-	  	  	  	  	  	  	  	 {
-         "LogName": "17 Catfish Overlay",
-         "Action": "EditImage",
-         "Target": "Maps/AquariumEmpty17",
-         "FromFile": "assets/Aquariums/River/catfish.png",
-         "PatchMode":"Overlay",
-        "When": {
- "HasFlag: hostPlayer": "AquariumDonated:Catfish"
 },
 "Update": "OnLocationChange"
       },

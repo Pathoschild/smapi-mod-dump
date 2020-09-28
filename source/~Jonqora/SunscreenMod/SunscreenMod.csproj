@@ -7,9 +7,20 @@
     <TargetFramework>net452</TargetFramework>
     <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>
-    <EnableHarmony>true</EnableHarmony>
-	<ModFolderName>UVIndex</ModFolderName>
+    <ModFolderName>UVIndex</ModFolderName>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DocumentationFile>C:\Users\iread\Dropbox\Coding\StardewValleyMods\StardewMods\SunscreenMod\SunscreenMod.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="promo\nexus_description.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="promo\nexus_description.txt" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />

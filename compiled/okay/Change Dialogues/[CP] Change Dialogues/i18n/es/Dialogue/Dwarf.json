@@ -1,0 +1,53 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Dwarf",
+		"Entries": {
+			"Thu_4": "Bajo tierra es donde estoy más cómod{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/DwarfGender}}}}.#$e#Cuanto más profundo, mejor.",
+			"Fri": "¿A que no habías visto nunca un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/DwarfGender}}}} enan{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/DwarfGender}}}}?"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Dwarf": {
+				"NPCName": "Dwarf",
+				"Reactions": [
+				{
+					"Tag": "love",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Oh, ¡wow! ¡Un lugar construido con el entretenimiento como único propósito!"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/message \"{{mardrest.ChangeDialogues/The:{{mardrest.ChangeDialogues/DwarfGender}}}} {{mardrest.ChangeDialogues/DwarfName}} parece estar en un profundo trance...\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "No he entendido nada, ¡pero las luces centelleantes han sido fascinantes!"
+						}
+					},
+					"ID": "reaction_1"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Dwarf": "adult/neutral/outgoing/positive/undefined/not-datable/null/Other/summer 22//Mine 43 6/{{mardrest.ChangeDialogues/DwarfName}}"
+		}
+	}
+	]
+}

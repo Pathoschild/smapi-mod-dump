@@ -1,0 +1,15 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/Festivals/winter8",
+		"Entries": {
+			"DickWin": "pause 100/jump Willy/faceDirection Elliott 3/pause 800/move Willy 0 -1 0/faceDirection Elliott 0/speak Lewis \"Here's your prize, {{mardrest.ChangeDialogues/WillyName}}. Enjoy.\"/pause 500/move Willy 0 -2 0/move Lewis -1 0 2/move Lewis 0 1 2/playSound coin/pause 400/move Lewis 0 -1 0/pause 500/speak Lewis \"Well, that's it for this year's Festival of Ice. Thanks for coming, everyone!#$b#Now let's release these poor fish...$s\"/move Lewis -2 0 0/pause 600/viewport move 1 0 5000/pause 2000/playMusic none/globalFade/viewport -1000 -1000/pause 1000/message \"I didn't win the competition, but it was still fun! Time to head home.\"/waitForOtherPlayers festivalEnd/end",
+			"Evelyn": "Did I ever tell you how {{mardrest.ChangeDialogues/GeorgeName}} and I first met? {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/GeorgeGender}}}} actually pelted me with a snowball in this very festival.#$e#{{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/GeorgeGender}}}} was a {{mardrest.ChangeDialogues/Gentleman:L{{mardrest.ChangeDialogues/GeorgeGender}}}} back then, and came over to see if I was okay.$h",
+			"Clint": "{{mardrest.ChangeDialogues/EmilyName}} started helping me without any provocation... does that mean something? *gulp*$4",
+			"Pam": "I plan on winning the ice fishing competition!#$e#{{mardrest.ChangeDialogues/WillyName}} is gonna be pretty hard to beat, though... {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/WillyGender}}}} does this kinda stuff day and night.$s",
+			"Elliott": "I'm entering the ice fishing competition today. Why not?#$e#It's rare that {{mardrest.ChangeDialogues/WillyName}} ever loses, though."
+		}
+	}
+	]
+}

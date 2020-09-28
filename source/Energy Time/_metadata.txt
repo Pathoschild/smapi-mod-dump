@@ -5,9 +5,9 @@ mods:
    Energy Time
 
 latest commit:
-   commit aa28a242e87ed8f43b825f41dfd0864c122cecfd
+   commit 4d6f04075508b5a064791253c5756ef518829be0
    Author: Nikola Peric <nik@nikperic.com>
-   Date:   Wed Aug 19 16:55:47 2020 -0400
+   Date:   Fri Sep 4 10:36:43 2020 -0400
    
-       i18n support, toggle between vanilla and energy time
+       Allow keybinds only when no menus are open. Add French
    

@@ -1,0 +1,10 @@
+{
+  "Name": "RecurringReminders",
+  "Author": "Dem1se",
+  "Version": "1.0.0",
+  "Description": "Lets players set in-game recurring reminder through a new menu.",
+  "UniqueID": "Dem1se.RecurringReminders",
+  "EntryDll": "RecurringReminders.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

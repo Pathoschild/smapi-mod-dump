@@ -1,0 +1,11 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/Events/JoshHouse",
+		"Entries": {
+			"56/f Harvey 500/p George": "jaunty/16 18/farmer 9 24 0 George 16 18 1 Harvey 15 18 1/skippable/move farmer 0 -4 1/move farmer 1 0 1/speak Harvey \"Okay, {{mardrest.ChangeDialogues/GeorgeName}}. I want you take a deep breath for me.\"/pause 700/speak Harvey \"Mmhmm... turn around, please.\"/pause 300/faceDirection George 2/faceDirection George 3/speak Harvey \"{{mardrest.ChangeDialogues/GeorgeName}}, I'll be honest with you. You need to make some changes in your lifestyle if you want to stay healthy.#$b#I'd like you to reduce your sodium intake, and try to get some moderate exercise with your arms.\"/emote George 12/speak George \"Hmmph... I know what's best for me. Who do you think you are, telling me how to live my life?\"/pause 500/speak Harvey \"I'm your doctor, {{mardrest.ChangeDialogues/GeorgeName}}. That's who I am...#$b#And I went to school for 8 years so I could learn how to help people stay healthy.\"/move farmer 0 -1 1/move farmer 5 0 0/faceDirection Harvey 2 true/faceDirection George 2/speak Harvey \"Oh!#$b#I'm sorry, but you shouldn't be here... these check-ups are supposed to be private.\"/faceDirection farmer 3/speak George \"Not so fast! I'd like to get a second opinion from this young man.^Not so fast! I'd like to get a second opinion from this young lady.\"/faceDirection farmer 1/speak Harvey \"Very well...\"/speak Harvey \"$q 84 null#@, what do you think {{mardrest.ChangeDialogues/GeorgeName}} should do?#$r 84 40 event_george1#{{mardrest.ChangeDialogues/GeorgeName}} should follow Dr. {{mardrest.ChangeDialogues/HarveyName}}'s advice.#$r 85 -40 event_george2#{{mardrest.ChangeDialogues/GeorgeName}} knows what's best for {{mardrest.ChangeDialogues/His:L{{mardrest.ChangeDialogues/GeorgeGender}}}} own body.\"/faceDirection Harvey 1/faceDirection George 2/emote George 28/speak George \"Fine. I'll do what you say, doctor.\"/pause 500/faceDirection Harvey 2/speak Harvey \"$p 84#Thanks for your help, @. I appreciate it.$h|It's better not to give my patients mixed messages, @. Please remember that in the future.\"/end"
+		}
+	}
+	]
+}

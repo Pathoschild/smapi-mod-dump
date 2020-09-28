@@ -1,0 +1,78 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"Morris_Greeting": "¡Te damos la bienvenida a MercaJoja! ¿Qué tal va todo hoy?#$b#Creo que no nos conocemos. Soy {{mardrest.ChangeDialogues/MorrisName}}, representante del departamento de satisfacción al cliente de Joja.#$b#Cuando decidas convertirte en miembro de Joja, estaré encantad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/MorrisGender}}}} de hacer de la transición una agradable experiencia.",
+			"Morris_PlayerSignedUp": "¡Excelente! ¡Te damos la bienvenida a Joja Corporation! Vuelve mañana para empezar a poner en marcha los proyectos de desarrollo comunitario... ¡Ah, y no olvides tu monedero! Je, je.#$b#Ahora, permíteme que llame {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}} para ver cómo destripamos ese horrible centro cívico...",
+			"Morris_WeekendGreeting_MembershipAvailable": "¡Te damos la bienvenida a MercaJoja! ¿Qué tal el fin de semana?#$b#¡Ya tienes la posibilidad de unirte a nosotros! Al hacerlo, podrás mejorar la comunidad con la ayuda de nuestro entregado personal... Pagando un módico precio, claro.#$b#Ah, una cosa más... {{mardrest.ChangeDialogues/The:{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}} nos ha prometido que, si conseguíamos un miembro más, nos dejará convertir ese viejo centro cívico en un almacén de Joja. ¿No es maravilloso?#$q -1 -1#Convertirse en miembro cuesta {0}G. ¿Y bien? ¿Te interesa?#$r -1 -1 Yes#¿Por qué no?#$r -1 -1 No#Ni hablar.",
+			"Morris_FirstGreeting_MembershipAvailable": "¡Te damos la bienvenida a MercaJoja! ¿Qué tal va todo hoy?#$b#¡Ya tienes la posibilidad de unirte a nosotros! Al hacerlo, podrás mejorar la comunidad con la ayuda de nuestro entregado personal... Pagando un módico precio, claro.#$b#Ah, una cosa más... {{mardrest.ChangeDialogues/The:{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}} nos ha prometido que, si conseguíamos un miembro más, nos dejará convertir ese viejo centro cívico en un almacén de Joja. ¿No es maravilloso?#$q -1 -1#Convertirse en miembro cuesta {0}G. ¿Y bien? ¿Te interesa?#$r -1 -1 Yes#¿Por qué no?#$r -1 -1 No#Ni hablar.",
+			"PurchasedItem_1_QualityHigh": "Ey, {0}.#$b# El otro día fui a {{mardrest.ChangeDialogues/PierreName}}'s y compré un ejemplar de {2}. Hacía tiempo que no veía por aquí... #$b#Anoche, al hacer la cena... me llenó la casa de un aroma {3}. ¡Tuvo mucho éxito!$h#$b#Me alegra que {{mardrest.ChangeDialogues/PierreName}} tenga más variedad.#$e#En fin...",
+			"PurchasedItem_1_QualityLow": "Ey, {0}.#$b# El otro día fui a {{mardrest.ChangeDialogues/PierreName}}'s y compré un ejemplar de {2}. Hacía tiempo que no veía por aquí... #$b#Anoche, al hacer la cena... me llenó la casa de un aroma {3}. ¡Tuvo mucho éxito!$sMe alegra que {{mardrest.ChangeDialogues/PierreName}} tenga más variedad.#$e#En fin...",
+			"PurchasedItem_3_QualityLow_Rude": "Anoche fui a comprar y cogí un ejemplar de {2} de oferta por solo {3}G.#$e#¡Qué sabor tan {4}! No me extraña que {{mardrest.ChangeDialogues/PierreName}} lo vendiera a ese precio... Menuda {5}.",
+			"PurchasedItem_4": "El otro día estaba en la tienda y {{mardrest.ChangeDialogues/PierreName}} me enseñó un ejemplar de {2} que le vendiste.#$e#Lo compré sin dudar.$h",
+			"PurchasedItem_5_VegetableOrFruit": "El otro día le compré a {{mardrest.ChangeDialogues/PierreName}} un ejemplar de {2} que sabía a gloria.#$b#Dijo que era de su propia cosecha. ¡No sabía que fuera tan buen granjero!$h#$b#Vas a tener competencia, ¿eh?",
+			"PurchasedItem_5_Cooking": "El otro día le compré a {{mardrest.ChangeDialogues/PierreName}} un plato de {2} que sabía a gloria.#$b#Dijo que lo había cocinado él con ingredientes de la zona. ¡No sabía que fuera un chef tan {4}!",
+			"PurchasedItem_5_Foraged": "El otro día le compré a {{mardrest.ChangeDialogues/PierreName}} un ejemplar de {2} que sabía a gloria. Dijo que lo había encontrado explorando las montañas. ¡No sabía que fuese tan buen recolector!",
+			"PurchasedItem_Pierre_QualityHigh": "Ey, ¿recuerdas aquel ejemplar de {2} que me vendiste el otro día? Acabé sirviéndoselo a la familia para cenar.#$b#¡A mi mujer le encantó! Y hasta {{mardrest.ChangeDialogues/AbigailNickname}} se emocionó cuando lo cubrí con salsa barbacoa.$h#$b#Bueno,... Volvamos al trabajo, ¿no?",
+			"PurchasedItem_Haley": "Anoche {{mardrest.ChangeDialogues/EmilyName}} intentó darme {2} para cenar... Vacié el plato en la basura cuando no miraba.#$e#No me gusta la comida sana...$s",
+			"PurchasedItem_Elliott": "¡Vi que {{mardrest.ChangeDialogues/PierreName}} tenía un ejemplar fresco de {2} en su tienda el otro día! Un aspecto maravilloso. El olor perfecto... ¡Y qué firmeza!",
+			"PurchasedItem_Leah": "El otro día compré un ejemplar de {2} en {{mardrest.ChangeDialogues/PierreName}}'s. Quedó genial sobre un lecho de verduritas con un toque de mi vinagreta especial.",
+			"PurchasedItem_3_QualityLow_Rude_Willy": "Fui a comprar anoche y me llevé {1} {2} en una oferta de «cubo de cebo» por solo {3}G.#$e# ¡Estaba {4}! No hay duda de que {{mardrest.ChangeDialogues/WillyName}} estaba prácticamente regalando {5}...",
+			"PurchasedItem_4_Willy": "Estuve en la tienda de {{mardrest.ChangeDialogues/WillyName}} el otro día y me enseñó {1} {2} que le llevaste.#$e#Lo cociné para cenar con algo de limón y un poco de arroz pilaf. ¡Estaba bueno!$h",
+			"PurchasedItem_1_QualityHigh_Willy": "Hey, {0}.#$b# Me pasé por la tienda de {{mardrest.ChangeDialogues/WillyName}} el otro día y compré {1} {2}. ¡Nunca he visto algo tan fresco! #$b#Lo cociné para cenar anoche, y llenó la casa con un olor a {3}.. ¡Era muy intenso!$h#$b#Me dijo que lo pescaste tú... ¡Me has impresionado!#$e# Bueno...",
+			"PurchasedItem_1_QualityLow_Willy": "Hey, {0}.#$b# Me pasé por la tienda de {{mardrest.ChangeDialogues/WillyName}} el otro día y compré {1} {2}. ¡Dijo que lo pescaste tú! #$b#Lo cociné para cenar anoche... y, uh... Llenó la casa con un hedor a {3}. Ni siquiera quiero saber de donde sacaste esa cosa...$s#$e#Bueno..."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Todo ha ido bien, y ahora {0} forma parte de la familia. Cuánta suerte tenemos."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Alex": "Married", "mardrest.ChangeDialogues/AlexGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Todo ha ido bien, y ahora {0} forma parte de la familia. Cuánta suerte tenemos."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Elliott": "Married", "mardrest.ChangeDialogues/ElliottGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Todo ha ido bien, y ahora {0} forma parte de la familia. Cuánta suerte tenemos."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Harvey": "Married", "mardrest.ChangeDialogues/HarveyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Todo ha ido bien, y ahora {0} forma parte de la familia. Cuánta suerte tenemos."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Sam": "Married", "mardrest.ChangeDialogues/SamGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Todo ha ido bien, y ahora {0} forma parte de la familia. Cuánta suerte tenemos."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Sebastian": "Married", "mardrest.ChangeDialogues/SebastianGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Todo ha ido bien, y ahora {0} forma parte de la familia. Cuánta suerte tenemos."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Shane": "Married", "mardrest.ChangeDialogues/ShaneGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/ExtraDialogue",
+		"Entries": {
+			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Victor": "Married", "mardrest.ChangeDialogues/VictorGender": "Female", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true" }
+	}
+	]
+}

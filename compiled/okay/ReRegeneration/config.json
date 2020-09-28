@@ -1,0 +1,21 @@
+{
+  "staminaRegenPerSecond": 1.0,
+  "staminaIdleSeconds": 5,
+  "maxStaminaRatioToRegen": 0.8,
+  "scaleStaminaRegenRateTo": 0.8,
+  "scaleStaminaRegenDelayTo": 0.2,
+  "healthRegenPerSecond": 0.5,
+  "healthIdleSeconds": 10,
+  "maxHealthRatioToRegen": 0.6,
+  "scaleHealthRegenRateTo": 0.6,
+  "scaleHealthRegenDelayTo": 0.4,
+  "percentageMode": false,
+  "regenWhileActiveRate": 0.8,
+  "regenWhileRunningRate": 0.5,
+  "endExhaustionAt": 0.75,
+  "exhuastionPenalty": 0.25,
+  "shortenDelayWhenStillBy": 0.5,
+  "lengthenDelayWhenRunningBy": 0.5,
+  "timeInterval": 0.25,
+  "verboseMode": false
+}

@@ -1,0 +1,13 @@
+{
+    "Name": "Casual Purple Shirt",
+    "Description": "A simple pastel shirt.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Camisa Morada Casual"
+    },
+    "DescriptionLocalization": {
+        "es": "Una simple camisa en color pastel."
+    }
+}

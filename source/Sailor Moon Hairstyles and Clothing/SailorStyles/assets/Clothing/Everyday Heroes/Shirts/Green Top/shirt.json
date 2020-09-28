@@ -1,0 +1,13 @@
+{
+    "Name": "Green Top",
+    "Description": "A deep green shirt sporting a belt and scarf.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Top Verde"
+    },
+    "DescriptionLocalization": {
+        "es": "Una camisa de color verde oscuro con cinturón y bufanda."
+    }
+}

@@ -1,70 +1,57 @@
 {
 	"name": "Tidal Beach Map",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"author": "ItsBenter",
 	"loadLate": "true",
-	"replaceMaps": [
-		//This part is how the change is configured. You can change the time and the order.
+	"mergeMaps": [
+		//This t 600 800 is how the change is configured. You can change the time and the order.
 		{
 			"name": "Beach",
+			"sourceArea": [4, 7, 7, 22, 10, 15, 15, 18, 24, 19, 4, 3, 28, 18, 31, 13, 40, 31, 19, 3, 59, 14, 6, 19, 65, 24, 21, 9, 88, 21, 9, 12, 91, 0, 7, 21, 65, 22, 2, 2],
+			"position": [4, 7, 10, 15, 24, 19, 28, 18, 40, 31, 59, 14, 65, 24, 88, 21, 91, 0, 65, 22],
+			"removeEmpty": "true",
 			"file": "assets/LowTide.tmx",
-			"conditions": "t 600 800", // You can change the time 610 is 06.10
+			"conditions": "t 600 800",
 		}, {
 			"name": "Beach",
+			"sourceArea": [4, 7, 7, 22, 10, 15, 15, 18, 24, 19, 4, 3, 28, 18, 31, 13, 40, 31, 19, 3, 59, 14, 6, 19, 65, 24, 21, 9, 88, 21, 9, 12, 91, 0, 7, 21, 65, 22, 2, 2],
+			"position": [4, 7, 10, 15, 24, 19, 28, 18, 40, 31, 59, 14, 65, 24, 88, 21, 91, 0, 65, 22],
+			"removeEmpty": "true",
 			"file": "assets/MidTide.tmx",
-			"conditions": "t 810 1200", // You can change the time
+			"conditions": "t 810 1200",
 		},
-		//It will use the vanilla map during this period when no map replacement is specified
+		//The game will use the vanilla map during this period when no map replacement is specified
 		{
 			"name": "Beach",
+			"sourceArea": [4, 7, 7, 22, 10, 15, 15, 18, 24, 19, 4, 3, 28, 18, 31, 13, 40, 31, 19, 3, 59, 14, 6, 19, 65, 24, 21, 9, 88, 21, 9, 12, 91, 0, 7, 21, 65, 22, 2, 2],
+			"position": [4, 7, 10, 15, 24, 19, 28, 18, 40, 31, 59, 14, 65, 24, 88, 21, 91, 0, 65, 22],
+			"removeEmpty": "true",
 			"file": "assets/MidTide.tmx",
-			"conditions": "t 1610 1800", // You can change the time
+			"conditions": "t 1610 1800",
 		}, {
 			"name": "Beach",
+			"sourceArea": [4, 7, 7, 22, 10, 15, 15, 18, 24, 19, 4, 3, 28, 18, 31, 13, 40, 31, 19, 3, 59, 14, 6, 19, 65, 24, 21, 9, 88, 21, 9, 12, 91, 0, 7, 21, 65, 22, 2, 2],
+			"position": [4, 7, 10, 15, 24, 19, 28, 18, 40, 31, 59, 14, 65, 24, 88, 21, 91, 0, 65, 22],
+			"removeEmpty": "true",
 			"file": "assets/LowTide.tmx",
-			"conditions": "t 1810 2200", // You can change the time
+			"conditions": "t 1810 2200",
 		}, {
 			"name": "Beach",
+			"sourceArea": [4, 7, 7, 22, 10, 15, 15, 18, 24, 19, 4, 3, 28, 18, 31, 13, 40, 31, 19, 3, 59, 14, 6, 19, 65, 24, 21, 9, 88, 21, 9, 12, 91, 0, 7, 21, 65, 22, 2, 2],
+			"position": [4, 7, 10, 15, 24, 19, 28, 18, 40, 31, 59, 14, 65, 24, 88, 21, 91, 0, 65, 22],
+			"removeEmpty": "true",
 			"file": "assets/MidTide.tmx",
-			"conditions": "t 2200 2600", // You can change the time
+			"conditions": "t 2210 2600",
 		},
-	],
-	// This part is to make it compatible with SVE. I'm patching around like crazy...
-	"mergeMaps": [{
+		//This is for SVE fixing few patches
+		{
 			"name": "Beach",
-			"sourceArea": [0, 0, 104, 50],
-			"position": [0, 0],
-			"removeEmpty": "false",
-			"file": "assets/SVECompatibility.tmx",
-			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
-		}, {
-			"name": "Beach",
-			"sourceArea": [0, 0, 14, 7],
-			"position": [0, 0],
+			"sourceArea": [9, 7, 2, 1],
+			"position": [6, 6],
 			"removeEmpty": "true",
-			"file": "assets/SVECompatibility.tmx",
+			"file": "assets/MidTide.tmx",
 			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
-		}, {
-			"name": "Beach",
-			"sourceArea": [46, 5, 10, 9],
-			"position": [46, 5],
-			"removeEmpty": "true",
-			"file": "assets/SVECompatibility.tmx",
-			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
-		}, {
-			"name": "Beach",
-			"sourceArea": [29, 5, 6, 12],
-			"position": [29, 5],
-			"removeEmpty": "true",
-			"file": "assets/SVECompatibility.tmx",
-			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
-		}, {
-			"name": "Beach",
-			"sourceArea": [35, 6, 8, 14],
-			"position": [35, 6],
-			"removeEmpty": "true",
-			"file": "assets/SVECompatibility.tmx",
-			"conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')",
-		}
+		},
+
 	],
 }

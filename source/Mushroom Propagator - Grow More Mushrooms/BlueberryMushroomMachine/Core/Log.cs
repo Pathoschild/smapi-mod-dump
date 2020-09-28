@@ -6,6 +6,9 @@
 		{
 			ModEntry.Instance.Monitor.Log(str, StardewModdingAPI.LogLevel.Alert);
 		}
+		/// <summary>
+		/// Print to log file in visible channel, or to hidden channel if debug flag is false.
+		/// </summary>
 		internal static void D(string str, bool isDebug = true)
 		{
 			ModEntry.Instance.Monitor.Log(str,
@@ -19,9 +22,13 @@
 		{
 			ModEntry.Instance.Monitor.Log(str, StardewModdingAPI.LogLevel.Info);
 		}
-		internal static void T(string str)
+		/// <summary>
+		/// Print to log file, ignoring if debug flag is false.
+		/// </summary>
+		internal static void T(string str, bool isDebug = true)
 		{
-			ModEntry.Instance.Monitor.Log(str, StardewModdingAPI.LogLevel.Trace);
+			if (isDebug)
+				ModEntry.Instance.Monitor.Log(str, StardewModdingAPI.LogLevel.Trace);
 		}
 		internal static void W(string str)
 		{

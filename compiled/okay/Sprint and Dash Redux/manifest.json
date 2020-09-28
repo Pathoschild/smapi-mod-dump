@@ -1,0 +1,10 @@
+{
+  "Name": "Sprint and Dash Mod Redux",
+  "Author": "littleraskol",
+  "Version": "2.1.0",
+  "Description": "Lets you sprint and combat dash, with progressive stamina drain.",
+  "UniqueID": "littleraskol.SprintAndDashRedux",
+  "EntryDll": "SprintAndDashRedux.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Chucklefish:4201", "Nexus:560", "ModDrop:827770" ]
+}

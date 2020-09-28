@@ -1,0 +1,24 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/Festivals/fall16",
+		"Entries": {
+			"Leah_spouse": "{{mardrest.ChangeDialogues/RobinName}} me enseñó todos sus trucos el año pasado, ¡pero siempre va un paso por delante de mí!",
+			"Sebastian_spouse": "Ey, @. Me estoy poniendo al día con {{mardrest.ChangeDialogues/SamName}}. Ve tirando y diviértete.",
+			"Sam_spouse": "{{mardrest.ChangeDialogues/SebastianName}} sigue siendo {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/SebastianGender}}}} mism{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SebastianGender}}}} de siempre. ¿Te lo estás pasando bien en el festival?",
+			"Demetrius": "{{mardrest.ChangeDialogues/RobinName}} trabaja muy duro en sus proyectos de carpintería... Se merece algo de reconocimiento de vez en cuando.",
+			"Caroline": "{{mardrest.ChangeDialogues/PierreName}} se toma muy en serio su exposición agrícola. Ha estado apartando los productos con el mejor aspecto durante semanas.#$e#¡Mucha suerte si participas!",
+			"Evelyn": "Ojalá {{mardrest.ChangeDialogues/GusName}} incluyera una alternativa vegetariana. Unos pinchitos de calabacín, ¿quizás?",
+			"Pam": "Date prisa, joven... ¡Antes de que {{mardrest.ChangeDialogues/PamName}} acapare todos los peces de la carpa! Je, je.$h",
+			"Jodi": "No parece muy feliz... Supongo que {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}} ha tenido que recortar el presupuesto para contratar al payaso de este año.",
+			"Leah": "Admiro mucho la habilidad de {{mardrest.ChangeDialogues/RobinName}} con la carpintería. Utilizo muchas de sus técnicas adaptadas a mi propio trabajo.",
+			"Marnie": "He hecho lo que he podido, pero mi exposición es bastante floja comparada con la de {{mardrest.ChangeDialogues/PierreName}}.$s#$e#Bueno, a lo mejor los jueces me dan puntos extra por el queso gigante.",
+			"Elliott": "Estoy intentando que {{mardrest.ChangeDialogues/GusName}} me dé la receta de su salsa, pero no hay manera.",
+			"Gus": "¡Come todo lo que quieras! Todo es gratis hoy... Dale las gracias {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}}.$h#$e#¡Oh! Asegúrate de echarle un poco de mi salsa secreta a la comida.",
+			"Harvey": "Y justo aquí al lado, {{mardrest.ChangeDialogues/GusName}} está asando una montaña de costillas de cerdo... Ufff...$s#$e#Creo que necesito un examen de conciencia...$11",
+			"Marlon": "Las hojas de {{mardrest.ChangeDialogues/ClintName}} son más mortales cada año.#$e#Igual que sus precios..."
+		}
+	}
+	]
+}

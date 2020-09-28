@@ -1,0 +1,59 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Krobus",
+		"Entries": {
+			"Mon6": "'{{mardrest.ChangeDialogues/KrobusName}}' means 'bridge-crosser' in our language."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialogueKrobus",
+		"Entries": {
+			"Rainy_Day_3": "I wonder if the {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}} knows about... this? I hope {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/WizardGender}}}} can keep a secret.$s"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Krobus": {
+				"NPCName": "Krobus",
+				"Reactions": [
+				{
+					"Tag": "fall_movie_0",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Psst... Hey, it's me, {{mardrest.ChangeDialogues/KrobusName}}. Could you recognize me?$8#$b#If anyone approaches us, you do the talking, okay?$8"
+						},
+						"DuringMovie": {
+							"ResponsePoint": "mysterium_shadow",
+							"Script": "/message \"{{mardrest.ChangeDialogues/KrobusName}} is stewing...\"",
+							"Text": "Not all shadow people are like that!$8"
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I'm not used to wearing clothes... It's very uncomfortable!$8"
+						}
+					},
+					"ID": "reaction_0"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Krobus": "adult/polite/shy/neutral/{{lowercase:{{mardrest.ChangeDialogues/KrobusGender}}}}/not-datable/null/Other/winter 1//Sewer 31 17/{{mardrest.ChangeDialogues/KrobusName}}"
+		}
+	}
+	]
+}

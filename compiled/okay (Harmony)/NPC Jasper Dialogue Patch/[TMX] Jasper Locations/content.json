@@ -6,48 +6,56 @@
         "position": [34, 57],
         "direction": 2
         },
-	{
+        //SVE fine
+        {
         "name": "Jasper",
         "map": "Forest-FlowerFestival", 
         "position": [4, 29],
         "direction": 2
         },
+        //SVE fine
 	{
         "name": "Jasper",
         "map": "Beach-Luau", 
         "position": [11, 39],
         "direction": 2
         },
+        //SVE Fine
 	{
         "name": "Jasper",
         "map": "Beach-Jellies", 
         "position": [88, 40],
         "direction": 2
         },
+        //SVE FIne
 	{
         "name": "Jasper",
         "map": "Town-Fair", 
         "position": [38, 77],
         "direction": 2
         },
+        //SVE Fine
 	{
         "name": "Jasper",
         "map": "Town-Halloween", 
         "position": [27, 56],
         "direction": 2
         },
+        //SVE Fine
 	{
         "name": "Jasper",
         "map": "Forest-IceFestival", 
         "position": [10, 44],
         "direction": 1
         },
+        // NOT SVE Fine, move to 57, 32, 3
 	 {
         "name": "Jasper",
         "map": "Town-Christmas", 
         "position": [33, 71],
         "direction": 1
         }
+        //SVE fine
 
     ],  
 

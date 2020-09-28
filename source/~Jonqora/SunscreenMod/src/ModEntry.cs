@@ -1,5 +1,4 @@
-﻿using Harmony;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -10,28 +9,46 @@ using static SunscreenMod.Flags;
 
 namespace SunscreenMod
 {
+    /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
         /*********
         ** Fields
         *********/
         internal static ModEntry Instance { get; private set; }
-        internal HarmonyInstance Harmony { get; private set; }
+
+        /// <summary>Json Assets API instance.</summary>
         internal JsonAssets.IApi JA { get; private set; }
 
+        /// <summary>Whether the next tick is the first one.</summary>
+        private bool IsFirstTick = true;
+
+
+        //Class instance fields to be accessible
+        /// <summary>Data about villagers who react to a sunburn.</summary>
         private Reactions Reacts;
-        private Lotions Lotion;
+
+        /// <summary>Manages in-game behaviour of lotion products.</summary>
+        public Lotions Lotion;
+
+        /// <summary>Data about sunscreen application and status.</summary>
         public SunscreenProtection Sunscreen;
+
+        /// <summary>Data about sunburn level, new burn, sun damage, and skin color.</summary>
         public Sunburn Burn;
 
+
+        /// <summary>Whether the save file is loaded.</summary>
         internal bool IsSaveReady = false;
 
+        /// <summary>Cumulative total available UV exposure, reset each day. (Only for debug logs, doesn't affect player.)</summary>
         private int TotalUVExposure = 0;
+
 
         /*********
         ** Accessors
         *********/
-        internal protected static ModConfig Config => ModConfig.Instance;
+        internal static ModConfig Config => ModConfig.Instance;
 
 
         /*********
@@ -45,31 +62,20 @@ namespace SunscreenMod
             Instance = this;
             ModConfig.Load();
 
-            // Apply Harmony patches.
-            Harmony = HarmonyInstance.Create(ModManifest.UniqueID);
-            //EventPatches.Apply();
-            //FarmPatches.Apply();
-
             // Add console commands.
             ConsoleCommands.Apply();
 
             // Listen for game events.
             helper.Events.GameLoop.GameLaunched += this.onGameLaunched;
+            helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
             helper.Events.GameLoop.ReturnedToTitle += this.onReturnedToTitle;
             helper.Events.GameLoop.SaveLoaded += this.onSaveLoaded;
             helper.Events.GameLoop.DayStarted += this.onDayStarted;
             helper.Events.GameLoop.DayEnding += this.onDayEnding;
-            helper.Events.GameLoop.OneSecondUpdateTicked += this.onOneSecondUpdateTicked;
+            helper.Events.GameLoop.UpdateTicked += this.onHalfSecondUpdateTicked;
             helper.Events.GameLoop.TimeChanged += this.onTimeChanged;
-
             helper.Events.Player.Warped += this.onWarped;
-
             helper.Events.Input.ButtonPressed += this.onButtonPressed;
-
-            // Set up asset editors
-
-            helper.Content.AssetEditors.Add(new UVIndex());
-            helper.Content.AssetEditors.Add(new SkinColors());
         }
 
 
@@ -80,13 +86,14 @@ namespace SunscreenMod
         ** GameLoop Event handlers
         ****/
         /// <summary>
-        /// SUMMARY
+        /// Set up API integrations and instatiate Lotions (to handle JA items). Raised after the game is launched.
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void onGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             ModConfig.SetUpMenu();
+
             JA = Helper.ModRegistry.GetApi<JsonAssets.IApi>("spacechase0.JsonAssets");
             if (JA != null)
             {
@@ -101,7 +108,29 @@ namespace SunscreenMod
         }
 
         /// <summary>
-        /// SUMMARY
+        /// Loads asset editors on the second update tick, after Content Patcher has loaded most others.
+        /// Raised after the game state is updated. Only runs twice then unhooks itself.
+        /// </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (this.IsFirstTick)
+            {
+                this.IsFirstTick = false;
+            }
+            else // Is second update tick
+            {
+                Instance.Helper.Events.GameLoop.UpdateTicked -= this.onUpdateTicked; // Don't check again
+
+                // Set up asset loaders/editors to load after CP content packs
+                Instance.Helper.Content.AssetEditors.Add(new UVIndex());
+                Instance.Helper.Content.AssetEditors.Add(new SkinColors());
+            }
+        }
+
+        /// <summary>
+        /// Clears save-specific data for villager reactions, sunscreen, and sunburn. Raised when the player returns to title screen.
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -116,13 +145,12 @@ namespace SunscreenMod
         }
 
         /// <summary>
-        /// SUMMARY
+        /// Re-initialize reacts, lotions, sunscreen and burn data. Refresh TV channel data. Raised when a save is loaded.
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void onSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            //clear any previous data from other saves
             //initialize new instances of Burn and Sunscreen
             Reacts = new Reactions();
             Lotion = new Lotions();
@@ -135,7 +163,7 @@ namespace SunscreenMod
         }
 
         /// <summary>
-        /// SUMMARY
+        /// Raised at the start of a new day OR when a farmhand connects in multiplayer. Checks if it is actually a new day before performing daily tasks.
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -149,13 +177,18 @@ namespace SunscreenMod
         }
 
         /// <summary>
-        /// SUMMARY
+        /// Change skin color back to normal and add NewDay flag before saving player data. Raised when an in-game day ends.
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void onDayEnding(object sender, DayEndingEventArgs e)
         {
-            //clear burn debuffs???
+            //Clear burn debuffs? Nah, speed is the only true debuff enabled right now, and that clears itself.
+
+            if (Game1.stats.DaysPlayed == 0) //Before the first day of the game
+            {
+                return;
+            }
 
             //change skin color back to normal
             int? normalSkin = Burn.GetNormalSkinFlag();
@@ -166,19 +199,23 @@ namespace SunscreenMod
             }
 
             AddFlag("NewDay");
+            Lotion.HasAppliedAloeToday = false;
         }
 
         /// <summary>
-        /// SUMMARY HERE
+        /// Prompt nearby villagers to react to a sunburnt player. Raised every update tick (runs every half-second, if a save is loaded).
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void onOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        private void onHalfSecondUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!IsSaveReady)
+            if (!e.IsMultipleOf(30) || //Only run every half-second.
+                !IsSaveReady) //Ignore this before a save is loaded.
             {
-                return; //Ignore this before a save is loaded.
+                return;
             }
+
+            Sunscreen.UpdateStatus(); //Checks and updates if sunscreen has worn off or washed off (more timely alerts when swimming)
 
             if (Game1.activeClickableMenu == null &&
                 Game1.currentMinigame == null &&
@@ -191,7 +228,7 @@ namespace SunscreenMod
         }
 
         /// <summary>
-        /// SUMMARY HERE
+        /// Update suncreen status and check for damage from sun exposure. Raised when the game time changes (10-minute intervals).
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -206,7 +243,8 @@ namespace SunscreenMod
                 Monitor.Log($"Time is {time.Get12HourTime()} - current UV strength is {UV} or index {uvIndex}. Total exposure is {TotalUVExposure}", LogLevel.Debug);
             }
 
-            Sunscreen.UpdateStatus(); //Checks if it has worn off or washed off
+            //Possibly redundant? (Also in this.onHalfSecondUpdateTicked)
+            Sunscreen.UpdateStatus(); //Checks and updates if sunscreen has worn off or washed off
 
             if (Config.EnableSunburn &&
                 Config.SunburnPossible(SDate.Now()) && //Check config settings
@@ -223,7 +261,7 @@ namespace SunscreenMod
         ** Player Event handlers
         ****/
         /// <summary>
-        /// SUMMARY
+        /// Clear the list of villagers who have already reacted to a sunburn. Raised when the player is warped to any location.
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -242,7 +280,7 @@ namespace SunscreenMod
         ** Input Event handlers
         ****/
         /// <summary>
-        /// SUMMARY
+        /// Allow the player to apply sunscreen or other lotion with right click. Raised when the player presses any button.
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -271,7 +309,12 @@ namespace SunscreenMod
         /****
         ** Helper Functions
         ****/
-        //Stuff for onButtonPressed
+
+        #region functions for onButtonPressed
+        /// <summary>
+        /// Checks to make sure the player is not currently eating or in a menu, minigame, or event.
+        /// </summary>
+        /// <returns>true if player can use an item, false otherwise</returns>
         private bool CanUseItem()
         {
             return Game1.activeClickableMenu == null &&
@@ -280,11 +323,16 @@ namespace SunscreenMod
                 !Game1.player.isEating &&
                 !Game1.player.canOnlyWalk && !Game1.player.FarmerSprite.PauseForSingleAnimation && !Game1.fadeToBlack; //Idk, vanilla code has em
         }
+
+        /// <summary>Checks if the active item is a non-edible object.</summary>
         private bool HoldingNonEdibleObject()
         {
             return Game1.player.ActiveObject != null && //Player is holding something, it is an Object
                 Game1.player.ActiveObject.Edibility == -300; //It is not an edible object
         }
+
+        /// <summary>Checks if an android player's cursor is on their farmer.</summary>
+        /// <returns>true if player did tap on farmer, or not on android; false otherwise</returns>
         private bool TappedOnFarmerIfAndroid(ICursorPosition cursor)
         {
             int x = (int)cursor.AbsolutePixels.X;
@@ -298,7 +346,16 @@ namespace SunscreenMod
                 return true; //Game1.player.GetBoundingBox().Contains(x, y);
             }
         }
-        //Stuff for onDayStarted and onSaveLoaded
+        #endregion functions for onButtonPressed
+
+        /// <summary>
+        /// Perform new day tasks, including:
+        /// - refresh TV channel data
+        /// - reset UV data and lotion data
+        /// - obtain and update sunburn severity level
+        /// - lose start of day health and energy if sunburnt
+        /// - display a message if sunburnt or newly healed
+        /// </summary>
         private void DoNewDayStuff()
         {
             if (Config.DebugMode) Monitor.Log("Doing new day stuff.", LogLevel.Info);
@@ -311,20 +368,24 @@ namespace SunscreenMod
 
             int initialLevel = Burn.SunburnLevel; //Yesterday's sunburn severity level
 
-            Burn.UpdateForNewDay();
+            Burn.UpdateForNewDay(); //Includes a message about taking new damage or sunburn improving
 
             int burnLevel = Burn.SunburnLevel;
             Farmer who = Game1.player;
-            who.health -= Config.HealthLossPerLevel * burnLevel; //Lose health at the start of a day
-            who.Stamina -= Config.EnergyLossPerLevel * burnLevel; //Lose energy at the start of a day
-            if (Config.DebugMode) Monitor.Log($"Current health: {who.health}/{who.maxHealth} | Current stamina: {who.Stamina}/{who.MaxStamina}", LogLevel.Info);
 
-            //if has sunburn, or healed existing sunburn from yesterday
-            if (burnLevel > 0 ||
-                (initialLevel != burnLevel && burnLevel == 0))
+            //if has sunburn damage
+            if (burnLevel > 0)
             {
-                Burn.DisplaySunburnStatus(); //Info: new sunburn level, or healed if healed
+                who.health -= Config.HealthLossPerLevel * burnLevel; //Lose health at the start of a day
+                who.Stamina -= Config.EnergyLossPerLevel * burnLevel; //Lose energy at the start of a day
+                Monitor.Log($"New day: Lost {Config.HealthLossPerLevel * burnLevel} health " +
+                    $"and {Config.EnergyLossPerLevel * burnLevel} energy " +
+                    $"due to sunburn damage.", LogLevel.Debug);
             }
+            //if has sunburn, or healed existing sunburn from yesterday
+            if (burnLevel > 0 || (initialLevel != burnLevel && burnLevel == 0)) Burn.DisplaySunburnStatus(); //Info: new sunburn or newly healed
+            
+            if (Config.DebugMode) Monitor.Log($"Current health: {who.health}/{who.maxHealth} | Current stamina: {who.Stamina}/{who.MaxStamina}", LogLevel.Info);
 
             RemoveFlag("NewDay");
         }

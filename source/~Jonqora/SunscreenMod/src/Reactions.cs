@@ -6,20 +6,24 @@ using StardewValley.Characters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SunscreenMod
 {
     class Reactions
     {
-        //ACCESSORS
-        protected static IModHelper Helper => ModEntry.Instance.Helper;
-        protected static IMonitor Monitor => ModEntry.Instance.Monitor;
+        /*********
+        ** Accessors
+        *********/
+        private static IModHelper Helper => ModEntry.Instance.Helper;
+        private static IMonitor Monitor => ModEntry.Instance.Monitor;
+        private static ModConfig Config => ModConfig.Instance;
 
-        protected static ITranslationHelper i18n = Helper.Translation;
+        private readonly static ITranslationHelper i18n = Helper.Translation;
 
-        //CONSTANTS
+
+        /*********
+        ** Constants
+        *********/
         private static readonly string Ah = i18n.Get("Reaction.Ah"); // "Ah!"
         private static readonly string DearMe = i18n.Get("Reaction.DearMe"); // "Dear me"
         private static readonly string DearYoba = i18n.Get("Reaction.DearYoba"); // "Dear Yoba..."
@@ -46,145 +50,168 @@ namespace SunscreenMod
         private static readonly string Tomato = i18n.Get("Reaction.Tomato"); // "A tomato!?"
         private static readonly string TooMuchSun = i18n.Get("Reaction.TooMuchSun"); // "Too much sun?"
         private static readonly string Wow = i18n.Get("Reaction.Wow"); // "Wow!"
-        private static readonly string WowName = i18n.Get("Reaction.WowName", new {name = Game1.player.Name} ); // "Wow, {{name}}..."
+        private static readonly string WowName = i18n.Get("Reaction.WowName", new { name = Game1.player.Name }); // "Wow, {{name}}..."
         private static readonly string WTF = i18n.Get("Reaction.WTF"); // "What the Ferngill?!"
         private static readonly string Yikes = i18n.Get("Reaction.Yikes"); // "Yikes"
 
+        /// <summary>Dictionary of string arrays containing possible reactions from each vanilla villager.</summary>
         private static Dictionary<string, string[]> VillagerReactions { get; } = new Dictionary<string, string[]>()
         {
-            { "Abigail", new string[] { 
+            { "Abigail", new string[] {
                 ThatsGottaHurt, Yikes, WowName, LOL, WTF
-            } }, 
+            } },
             { "Alex", new string[] {
                 ThatsGottaHurt, LOL, NiceTan, Oof
-            } }, 
-            { "Caroline", new string[] { 
+            } },
+            { "Caroline", new string[] {
                 OhNo, OhMyGoodness, OhMyGoodness, PoorName
-            } }, 
-            { "Clint", new string[] { 
+            } },
+            { "Clint", new string[] {
                 Yikes, Wow, Oof
-            } }, 
-            { "Demetrius", new string[] { 
+            } },
+            { "Demetrius", new string[] {
                 SweetYoba, HolyYoba, Tomato, ExclMarks
-            } }, 
-            { "Dwarf", new string[] { 
+            } },
+            { "Dwarf", new string[] {
                 ExclMarks, Ah, Ah, DotDotDot, SurfaceDweller, SurfaceDweller
-            } }, 
-            { "Elliott", new string[] { 
+            } },
+            { "Elliott", new string[] {
                 OhMy, OhMy, TooMuchSun, PoorName
-            } }, 
-            { "Emily", new string[] { 
+            } },
+            { "Emily", new string[] {
                 OhNo, OhNo, Yikes, HolyYoba, PoorName
-            } }, 
-            { "Evelyn", new string[] { 
+            } },
+            { "Evelyn", new string[] {
                 Gasp, DearMe, DearMe, OhNo
-            } }, 
-            { "George", new string[] { 
+            } },
+            { "George", new string[] {
                 Ouch, Ouch, ExclMarks, Wow
-            } }, 
-            { "Gil", new string[] { 
+            } },
+            { "Gil", new string[] {
                 ExclMarks, DotDotDot, ThatsGottaHurt, Oof
-            } }, 
-            { "Gus", new string[] { 
+            } },
+            { "Gus", new string[] {
                 TooMuchSun, TooMuchSun, PoorName, ThatsGottaHurt, Ouch
-            } }, 
-            { "Haley", new string[] { 
+            } },
+            { "Haley", new string[] {
                 Eek, LOL, LOL, ExclMarks, Gasp
-            } }, 
-            { "Harvey", new string[] { 
+            } },
+            { "Harvey", new string[] {
                 TooMuchSun, OhNo, OhDear, OhDear, Gasp
-            } }, 
-            { "Jas", new string[] { 
+            } },
+            { "Jas", new string[] {
                 Eek, Eek, OhNo, Wow, Ah
-            } }, 
-            { "Jodi", new string[] { 
+            } },
+            { "Jodi", new string[] {
                 OhMyGoodness, DearYoba, OhNo, Gasp
-            } }, 
-            { "Kent", new string[] { 
+            } },
+            { "Kent", new string[] {
                 Ouch, Oof, Oof, ExclMarks, DotDotDot
-            } }, 
-            { "Krobus", new string[] { 
+            } },
+            { "Krobus", new string[] {
                 HolyYoba, Ah, Ah, WowName
-            } }, 
-            { "Leah", new string[] { 
+            } },
+            { "Leah", new string[] {
                 WTF, WTF, Yikes, Ouch, HolyCrap
-            } }, 
-            { "Lewis", new string[] { 
-                Gasp, OhDear, OhDear, Ouch, ExclMarks 
-            } }, 
-            { "Linus", new string[] { 
+            } },
+            { "Lewis", new string[] {
+                Gasp, OhDear, OhDear, Ouch, ExclMarks
+            } },
+            { "Linus", new string[] {
                 PoorName, PoorName, OhDear, DotDotDot, Ah
-            } }, 
-            { "Marnie", new string[] { 
+            } },
+            { "Marnie", new string[] {
                 OhNo, Gasp, Gasp, DearMe, TooMuchSun, Ah
-            } }, 
-            { "Maru", new string[] { 
+            } },
+            { "Maru", new string[] {
                 WowName, WowName, LOL, ThatsGottaHurt, ExclMarks
-            } }, 
-            { "Mister Qi", new string[] { 
+            } },
+            { "Mister Qi", new string[] {
                 DotDotDot, ExclMarks, WowName
-            } }, 
-            { "Pam", new string[] { 
+            } },
+            { "Pam", new string[] {
                 SweetYoba, ThatsGottaHurt, ThatsGottaHurt, WowName, Oof
-            } }, 
-            { "Penny", new string[] { 
+            } },
+            { "Penny", new string[] {
                 OhMyGoodness, OhNo, OhDear, Eek, TooMuchSun
-            } }, 
-            { "Pierre", new string[] { 
+            } },
+            { "Pierre", new string[] {
                 Yikes, Yikes, Ouch, WTF, ExclMarks
-            } }, 
-            { "Robin", new string[] { 
+            } },
+            { "Robin", new string[] {
                 OhNo, OhNo, Gasp, Yikes, WowName
-            } }, 
-            { "Sam", new string[] { 
+            } },
+            { "Sam", new string[] {
                 LOL, ThatsGottaHurt, WowName, HolyCrap, HolyCrap
-            } }, 
-            { "Sandy", new string[] { 
+            } },
+            { "Sandy", new string[] {
                 OhNo, Ouch, TooMuchSun, TooMuchSun, OhMyGoodness
-            } }, 
-            { "Sebastian", new string[] { 
+            } },
+            { "Sebastian", new string[] {
                 NiceTan, NiceTan, ThatsGottaHurt, Oof, Wow
-            } }, 
-            { "Shane", new string[] { 
+            } },
+            { "Shane", new string[] {
                 Yikes, Yikes, WowName, WTF, DotDotDot
-            } }, 
-            { "Vincent", new string[] { 
+            } },
+            { "Vincent", new string[] {
                 Ah, Wow, ExclMarks, HaHaHa, HaHaHa
-            } }, 
-            { "Willy", new string[] { 
+            } },
+            { "Willy", new string[] {
                 Oof, PoorName, Lobster, Lobster, Ouch
-            } }, 
-            { "Wizard", new string[] { 
+            } },
+            { "Wizard", new string[] {
                 ExclMarks, OhMy, Ah, Ah, OhDear
             } }
         };
 
+        /// <summary>String array containing possible reactions from each NPC children.</summary>
         private static readonly string[] ChildReactions = new string[] {
             Eek, Wow, ExclMarks, Gasp, Ah, DotDotDot, HaHaHa
-        }; 
-        
+        };
+
+        /// <summary>String arrays containing possible reactions from a generic or unknown villager.</summary>
         private static readonly string[] GenericReactions = new string[] {
             Ouch, Wow, ExclMarks, OhNo, Ah, DotDotDot, TooMuchSun
         };
 
-        private static readonly int ReactRadius = 12;
+        /// <summary>Maximum tile distance that villagers can see and react to sunburn.</summary>
+        private const int ReactRadius = 12;
 
-        //FIELDS
+
+        /*********
+        ** Fields
+        *********/
+        /// <summary>Seeded random instance.</summary>
         private readonly Random rnd = new Random();
 
+        /// <summary>List of NPCs who have already reacted since last player warp.</summary>
         private readonly List<string> NPCsWhoReacted = new List<string>();
 
-        //PRIVATE METHODS
+
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Returns a random object from an array of arbitrary length.</summary>
         private T PickOne<T>(T[] array)
         {
             return array[rnd.Next(0, array.Length)];
         }
 
+        /// <summary>Checks whether a given NPC has already reacted to player sunburn.</summary>
+        /// <param name="npc">The NPC to check.</param>
+        /// <returns>true if already reacted, false if not</returns>
         private bool HasReacted(NPC npc)
         {
             return NPCsWhoReacted.Contains(npc.Name);
         }
 
+        /// <summary>Checks whether the player is in view of a given NPC.</summary>
+        /// <param name="playerX">Player X tile position</param>
+        /// <param name="playerY">Player Y tile position</param>
+        /// <param name="npcX">NPC X tile position</param>
+        /// <param name="npcY">NPC Y tile position</param>
+        /// <param name="facing">NPC facing direction: 0 up - 1 right - 2 down - 3 left</param>
+        /// <returns>true if facing player, false if not</returns>
         private bool CanSeePlayer(int playerX, int playerY, int npcX, int npcY, int facing)
         {
             if (facing == 0 && playerY >= npcY || //Looking up, player is further down
@@ -197,43 +224,54 @@ namespace SunscreenMod
             return true;
         }
 
+        /// <summary>Makes an NPC jump and give a speech bubble reaction.</summary>
+        /// <param name="npc">The NPC to perform a reaction</param>
         private void DoReact(NPC npc)
         {
+            string reaction = GetReaction(npc);
             npc.jump(JumpHeight());
-            npc.showTextAboveHead(GetReaction(npc));
+            npc.showTextAboveHead(reaction);
+            Monitor.Log($"NPC {npc.Name} reacted: \"{reaction}\"", Config.DebugMode ? LogLevel.Debug : LogLevel.Trace);
         }
 
+        /// <summary>Returns a random jump height value between 4 and 8.</summary>
+        /// <returns>Jump height</returns>
         private float JumpHeight()
         {
             return (float)(4 + 4 * rnd.NextDouble()); //Range from 4 to 8
         }
 
-        //PUBLIC METHODS
-        public string GetReaction(NPC npc)
+        /// <summary>Returns a random sunburn reaction text for a given villager</summary>
+        /// <param name="npc">The NPC to get an appropriate reaction for</param>
+        /// <returns>Reaction text</returns>
+        private string GetReaction(NPC npc)
         {
-            if (npc.Name == "Krobus" && SDate.Now().DayOfWeek.ToString() == "Friday")
-            {
-                return rnd.NextDouble() > 0.5 ? DotDotDot : ExclMarks; //Krobus doesn't speak on Fridays
-            }
-            else if (npc is Child)
+            if (npc is Child)
             {
                 return PickOne(ChildReactions);
+            }
+            else if (npc.Name == "Krobus" && SDate.Now().DayOfWeek.ToString() == "Friday")
+            {
+                return rnd.NextDouble() > 0.5 ? DotDotDot : ExclMarks; //Krobus doesn't speak on Fridays
             }
             else if (VillagerReactions.Keys.Contains(npc.Name))
             {
                 return PickOne(VillagerReactions[npc.Name]);
             }
-            else
-            {
-                return PickOne(GenericReactions);
-            }
+            return PickOne(GenericReactions);
         }
 
+
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>Clear the stored list of NPCs who have already reacted.</summary>
         public void ClearReacts()
         {
             NPCsWhoReacted.Clear();
         }
 
+        /// <summary>Causes any nearby NPCs who can see the player to perform sunburn reactions.</summary>
         public void NearbyNPCsReact()
         {
             int playerX = Game1.player.getTileX();

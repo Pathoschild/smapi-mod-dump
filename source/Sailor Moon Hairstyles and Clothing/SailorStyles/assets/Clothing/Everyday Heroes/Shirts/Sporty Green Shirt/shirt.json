@@ -1,0 +1,13 @@
+{
+    "Name": "Sporty Green Shirt",
+    "Description": "A green shirt sporting white collars and sleeves.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Camisa Verde Deportiva"
+    },
+    "DescriptionLocalization": {
+        "es": "Una camisa verde con cuellos y mangas blancas."
+    }
+}

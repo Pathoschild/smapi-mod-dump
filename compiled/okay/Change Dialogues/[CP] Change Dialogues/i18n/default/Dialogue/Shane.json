@@ -1,0 +1,104 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Shane",
+		"Entries": {
+			"pamHouseUpgrade": "I heard you built {{mardrest.ChangeDialogues/PamName}} a house... That's really generous...#$b#You know, I could use a hundred thousand gold myself...#$e#*ahem* ...ah ...Just kidding. ...Heh.",
+			"pamHouseUpgradeAnonymous": "I heard someone bought {{mardrest.ChangeDialogues/PamName}} a house... *sigh*... What did {{mardrest.ChangeDialogues/PamName}} ever do to earn that kind of generosity??",
+			"dumped_Guys": "%{{mardrest.ChangeDialogues/ShaneName}} has a glazed look in {{mardrest.ChangeDialogues/His:L{{mardrest.ChangeDialogues/ShaneGender}}}} eye. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/ShaneGender}}}} won't speak to you.",
+			"event_room1": "Okay... that'll require a great script. Maybe I'll ask {{mardrest.ChangeDialogues/ElliottName}} for advice next time I see {{mardrest.ChangeDialogues/Him:L{{mardrest.ChangeDialogues/ElliottGender}}}} at the saloon.$s",
+			"Wed8": "I guess I've grown attached to {{mardrest.ChangeDialogues/MarnieName}} and {{mardrest.ChangeDialogues/JasName}}. We're a ragtag bunch but it kind of feels like a weird family.#$e#I never really had much of a family as a kid.$s",
+			"JojaMart": "%{{mardrest.ChangeDialogues/ShaneName}}'s hard at work. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/ShaneGender}}}} doesn't seem interested in talking.",
+			"Fri4": "$d Joja#What's the point of life if all you do is work?|I haven't been able to pay my rent, but {{mardrest.ChangeDialogues/MarnieName}}'s letting me stay anyway. I'm lucky.",
+			"Sat4": "$d Joja#I'm renting my room from {{mardrest.ChangeDialogues/MarnieName}} at a really good price. It's small but I can't complain.|If I could reset my life maybe I'd start a chicken farm. Only free-range eggs of course.",
+			"Sat8": "I've really grown attached to {{mardrest.ChangeDialogues/MarnieName}}'s chickens.$h"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialogueShane",
+		"Entries": {
+			"Rainy_Day_0": "I hope {{mardrest.ChangeDialogues/JasName}} and {{mardrest.ChangeDialogues/MarnieName}} are doing alright without me.#$e#I'm not too worried... {{mardrest.ChangeDialogues/JasName}} is old enough now to take care of the animals on her own.",
+			"Good_2": "The name '{{mardrest.ChangeDialogues/ShaneName}}' means 'Gift from Yoba'... What a joke.",
+			"Bad_6": "What do you want? You sound like {{mardrest.ChangeDialogues/MarnieName}} on one of her bad days. Go away.$a",
+			"fall_15": "I'll be helping Marnie with the animals at tomorrow's fair, like usual. You should just kick back and have some fun.$6",
+			"Indoor_Day_4": "I may keep to myself a lot, and I may seem unhappy sometimes... but I do appreciate all the work you do. I'm a lucky {{mardrest.ChangeDialogues/Guy:L{{mardrest.ChangeDialogues/ShaneGender}}}}.$6",
+			"OneKid_3": "{{mardrest.ChangeDialogues/Pa:{{mardrest.ChangeDialogues/ShaneGender}}}}{{mardrest.ChangeDialogues/Pa:L{{mardrest.ChangeDialogues/ShaneGender}}}} {{mardrest.ChangeDialogues/ShaneName}} reporting for duty...$6#$e#Buh... I've become corny in my old age.",
+			"Good_6": "Ah... this is the life. No responsibilities, Tunnelers game tonight, fridge stocked with all the goodies a {{mardrest.ChangeDialogues/Guy:L{{mardrest.ChangeDialogues/ShaneGender}}}} could need.$h"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Shane",
+		"Entries": {
+			"marriage_Fri.002": "If I don't order a cold one now and then, {{mardrest.ChangeDialogues/GusName}} will go out of business. I'm just doing my civic duty. I'll head home around 10.",
+			"winter_15.000": "I'm taking a night off from the saloon for {{mardrest.ChangeDialogues/JasName}}' sake..."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Shane": {
+				"NPCName": "Shane",
+				"Reactions": [
+				{
+					"Tag": "love",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Heh. I'm actually interested in seeing this one..."
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/message \"{{mardrest.ChangeDialogues/ShaneName}}'s trying not to smile.\"",
+							"Text": "Okay, this is good...$h"
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "When you're watching a good movie, you can forget about everything else... That's a gift."
+						}
+					},
+					"ID": "reaction_5"
+				},
+				{
+					"Tag": "dislike",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Ugh... this is going to be painful."
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/emote Shane 28/message \"{{mardrest.ChangeDialogues/ShaneName}}'s slumped over...\"",
+							"Text": ""
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I feel depressed...$s"
+						}
+					},
+					"ID": "reaction_7"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Shane": "adult/rude/shy/negative/{{lowercase:{{mardrest.ChangeDialogues/ShaneGender}}}}/datable/null/Town/spring 20/Marnie 'aunt'/AnimalShop 25 6/{{mardrest.ChangeDialogues/ShaneName}}"
+		}
+	}
+	]
+}

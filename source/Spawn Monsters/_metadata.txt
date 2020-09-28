@@ -5,9 +5,9 @@ mods:
    Spawn Monsters
 
 latest commit:
-   commit c5e5078be5d55959990f7a92ee5b0c8156e6cc90
+   commit 71807983b720fe84cbe522b180ce21e2fd641a75
    Author: Berisan <berisan@berisan.dev>
-   Date:   Sun Jan 5 20:54:53 2020 +0100
+   Date:   Tue Sep 8 16:55:35 2020 +0200
    
-       Bump version
+       Bump ModBuildConfig to 3.2.0
    

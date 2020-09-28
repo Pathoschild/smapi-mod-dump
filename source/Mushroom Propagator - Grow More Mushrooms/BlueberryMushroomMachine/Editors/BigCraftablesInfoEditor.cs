@@ -19,7 +19,7 @@ namespace BlueberryMushroomMachine.Editors
 
 		public void Edit<T>(IAssetData asset)
 		{
-			Log.D($"Editing {asset.AssetName}.",
+			Log.T($"Editing {asset.AssetName}.",
 				_isDebugging);
 
 			var data = asset.AsDictionary<int, string>().Data;
@@ -33,7 +33,7 @@ namespace BlueberryMushroomMachine.Editors
 
 			// Inject custom object data with appending index.
 			ModValues.ObjectData = string.Format(ModValues.ObjectData,
-				Const.PropagatorInternalName,
+				ModValues.PropagatorInternalName,
 				ModEntry.Instance.i18n.Get("machine.desc"));
 
 			if (!data.ContainsKey(ModValues.PropagatorIndex))

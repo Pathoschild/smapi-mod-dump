@@ -1,0 +1,721 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SunscreenMod</name>
+    </assembly>
+    <members>
+        <member name="T:SunscreenMod.ConsoleCommands">
+            <summary>Class containing the mod's console commands.</summary>
+        </member>
+        <member name="M:SunscreenMod.ConsoleCommands.Apply">
+            <summary>Use the Mod Helper to register the commands in this class.</summary>
+        </member>
+        <member name="M:SunscreenMod.ConsoleCommands.checkTime(System.String,System.String[])">
+            <summary>Print the current game time.</summary>
+            <param name="_command">The name of the command invoked.</param>
+            <param name="_args">The arguments received by the command. Each word after the command name is a separate argument.</param>
+        </member>
+        <member name="M:SunscreenMod.ConsoleCommands.getUV(System.String,System.String[])">
+            <summary>Print the UV value (no scaling) and UV index high for a specific date (int days since start).</summary>
+            <param name="_command">The name of the command invoked.</param>
+            <param name="_args">The arguments received by the command. Each word after the command name is a separate argument.</param>
+        </member>
+        <member name="M:SunscreenMod.ConsoleCommands.setSunburn(System.String,System.String[])">
+            <summary>Set the current player's sunburn level from 0-3.</summary>
+            <param name="_command">The name of the command invoked.</param>
+            <param name="_args">The arguments received by the command. Each word after the command name is a separate argument.</param>
+        </member>
+        <member name="M:SunscreenMod.ConsoleCommands.setNewBurn(System.String,System.String[])">
+            <summary>Set the current player's new burn damage level from 0-3.</summary>
+            <param name="_command">The name of the command invoked.</param>
+            <param name="_args">The arguments received by the command. Each word after the command name is a separate argument.</param>
+        </member>
+        <member name="M:SunscreenMod.ConsoleCommands.checkBurn(System.String,System.String[])">
+            <summary>Print the player's current sunburn and new burn levels plus sun damage count.</summary>
+            <param name="_command">The name of the command invoked.</param>
+            <param name="_args">The arguments received by the command. Each word after the command name is a separate argument.</param>
+        </member>
+        <member name="M:SunscreenMod.ConsoleCommands.cmdPlaySound(System.String,System.String[])">
+            <summary>Invokes the uvPlaySound console commands (first argument specifies the sound name).</summary>
+            <param name="_command">The name of the command invoked.</param>
+            <param name="_args">The arguments received by the command. Each word after the command name is a separate argument.</param>
+        </member>
+        <member name="F:SunscreenMod.Flags.FLAG_BASE">
+            <summary>The base key contained in all mail flags added by this mod.</summary>
+        </member>
+        <member name="F:SunscreenMod.Flags.FlagList">
+            <summary>List of non-dynamic mail flags used by this mod.</summary>
+        </member>
+        <member name="M:SunscreenMod.Flags.IsFlag(System.String)">
+            <summary>Checks if a flag name exists in the list of mod flags.</summary>
+        </member>
+        <member name="M:SunscreenMod.Flags.IsFullFlag(System.String)">
+            <summary>Checks if a complete mailflag matches the format and list of mod flags.</summary>
+        </member>
+        <member name="M:SunscreenMod.Flags.HasFlag(System.String,StardewValley.Farmer)">
+            <summary>Checks if a mod flag exists in a player's mailReceived</summary>
+            <param name="flagName">Name of the flag to check.</param>
+            <param name="who">Player to check in mailReceived.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SunscreenMod.Flags.AddFlag(System.String,StardewValley.Farmer)">
+            <summary>Adds a mod flag to a player's mailReceived</summary>
+            <param name="flagName">Name of the flag to add.</param>
+            <param name="who">Player to add flag to.</param>
+        </member>
+        <member name="M:SunscreenMod.Flags.AddFlags(System.Collections.Generic.List{System.String},StardewValley.Farmer)">
+            <summary>Adds multiple mod flags to a player's mailReceived</summary>
+            <param name="flagNames">List of the flag names to add.</param>
+            <param name="who">Player to add flags to.</param>
+        </member>
+        <member name="M:SunscreenMod.Flags.RemoveFlag(System.String,StardewValley.Farmer)">
+            <summary>Removes a mod flag from a player's mailReceived, if present</summary>
+            <param name="flagName">Name of the flag to remove.</param>
+            <param name="who">Player to remove flag from.</param>
+        </member>
+        <member name="M:SunscreenMod.Flags.RemoveFlags(System.Collections.Generic.List{System.String},StardewValley.Farmer)">
+            <summary>Removes multiple mod flags from a player's mailReceived</summary>
+            <param name="flagNames">List of the flag names to remove.</param>
+            <param name="who">Player to remove flags from.</param>
+        </member>
+        <member name="T:SunscreenMod.Lotions">
+            <summary>Manages use and application of sunscreen and aloe gel lotions.</summary>
+        </member>
+        <member name="F:SunscreenMod.Lotions.JA">
+            <summary>Slimmed-down Json Assets API</summary>
+        </member>
+        <member name="P:SunscreenMod.Lotions.LotionIDs">
+            <summary>The item IDs of all lotions added by this mod.</summary>
+        </member>
+        <member name="F:SunscreenMod.Lotions.SUNSCREEN_ITEM_NAME">
+            <summary>The item name for sunscreen (matches JA content pack).</summary>
+        </member>
+        <member name="F:SunscreenMod.Lotions.ALOE_GEL_ITEM_NAME">
+            <summary>The item name for aloe gel (matches JA content pack)</summary>
+        </member>
+        <member name="F:SunscreenMod.Lotions.APPLIED_ALOE_FLAG">
+            <summary>The mail flag to store data on whether aloe gel has already been applied.</summary>
+        </member>
+        <member name="P:SunscreenMod.Lotions.HasAppliedAloeToday">
+            <summary>If character has already applied aloe gel today. Getter handles initialization, setter handles mail flags.</summary>
+        </member>
+        <member name="M:SunscreenMod.Lotions.IsLotion(StardewValley.Item)">
+            <summary>Checks if an item is a lotion type added by this mod.</summary>
+            <param name="item">The Item (or SDV Object) to check</param>
+            <returns>true if lotion, false otherwise</returns>
+        </member>
+        <member name="M:SunscreenMod.Lotions.ApplyQuestion(StardewValley.Item)">
+            <summary>Prompt the player to apply a lotion item, or display a message if not allowed.</summary>
+            <param name="item">The lotion item to check or apply</param>
+        </member>
+        <member name="M:SunscreenMod.Lotions.ApplyLotionAnswer(StardewValley.Farmer,System.String)">
+            <summary>Delegate function to use a lotion item on a player if they respond "Yes" to the prompt.</summary>
+            <param name="who">The player who should use the lotion</param>
+            <param name="whichAnswer">The answer chosen at the ApplyQuestion prompt</param>
+        </member>
+        <member name="M:SunscreenMod.Lotions.ApplySunscreen">
+            <summary>Apply sunscreen protection to the current player, including an HUD message.</summary>
+        </member>
+        <member name="M:SunscreenMod.Lotions.ApplyAloeGel(StardewValley.Farmer)">
+            <summary>Apply aloe vera gel to the specified player, reducing burn level and healing accordingly with an HUD message.</summary>
+            <param name="who">The player to be treated with aloe gel</param>
+        </member>
+        <member name="T:SunscreenMod.ModConfig">
+            <summary>The mod configuration model.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.EnableSunburn">
+            <summary>Enables sunburn effects from this mod for the current player.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.SunburnSeasons">
+            <summary>Enables or disables sunburn chance during certain times of year.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.WeatherReport">
+            <summary>Reports tomorrow's UV Index on the TV weather channel.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.SkinColorChange">
+            <summary>Changes skin display color to red when sunburnt.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.VillagerReactions">
+            <summary>Villagers react in shock when they see a sunburnt player.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.SunscreenDuration">
+            <summary>How many in-game hours sunscreen lasts before wearing off.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.HealthLossPerLevel">
+            <summary>Loss in new day starting health per level of sunburn damage.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.EnergyLossPerLevel">
+            <summary>Loss in new day starting energy per level of sunscreen damage.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.SunburnSpeedDebuff">
+            <summary>Active sunburn (no matter what severity) gives a -1 speed debuff.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.BurnSkinColorIndex">
+            <summary>Choose which skin color IDs are overwritten with sunburn colors. Important in multiplayer!</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.SkinColorIndex1">
+            <summary>Skin color ID to use for level 1 sunburn in multiplayer games.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.SkinColorIndex2">
+            <summary>Skin color ID to use for level 2 sunburn in multiplayer games.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.SkinColorIndex3">
+            <summary>Skin color ID to use for level 3 sunburn in multiplayer games.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModConfig.DebugMode">
+            <summary>Enable noisy console debug messages.</summary>
+        </member>
+        <member name="M:SunscreenMod.ModConfig.#ctor">
+            <summary>Currently empty constructor method.</summary>
+        </member>
+        <member name="M:SunscreenMod.ModConfig.Load">
+            <summary>Load user config options from file using smapi's Config API.</summary>
+        </member>
+        <member name="M:SunscreenMod.ModConfig.Save">
+            <summary>Save user config options and invalidate cache for affected assets.</summary>
+        </member>
+        <member name="M:SunscreenMod.ModConfig.Reset">
+            <summary>Reset all config options to their default values.</summary>
+        </member>
+        <member name="M:SunscreenMod.ModConfig.SetUpMenu">
+            <summary>Register API stuff for Generic Mod Config Menu.</summary>
+        </member>
+        <member name="M:SunscreenMod.ModConfig.Print">
+            <summary>Prints current config values to the console.</summary>
+        </member>
+        <member name="T:SunscreenMod.ModEntry">
+            <summary>The mod entry point.</summary>
+        </member>
+        <member name="P:SunscreenMod.ModEntry.JA">
+            <summary>Json Assets API instance.</summary>
+        </member>
+        <member name="F:SunscreenMod.ModEntry.IsFirstTick">
+            <summary>Whether the next tick is the first one.</summary>
+        </member>
+        <member name="F:SunscreenMod.ModEntry.Reacts">
+            <summary>Data about villagers who react to a sunburn.</summary>
+        </member>
+        <member name="F:SunscreenMod.ModEntry.Lotion">
+            <summary>Manages in-game behaviour of lotion products.</summary>
+        </member>
+        <member name="F:SunscreenMod.ModEntry.Sunscreen">
+            <summary>Data about sunscreen application and status.</summary>
+        </member>
+        <member name="F:SunscreenMod.ModEntry.Burn">
+            <summary>Data about sunburn level, new burn, sun damage, and skin color.</summary>
+        </member>
+        <member name="F:SunscreenMod.ModEntry.IsSaveReady">
+            <summary>Whether the save file is loaded.</summary>
+        </member>
+        <member name="F:SunscreenMod.ModEntry.TotalUVExposure">
+            <summary>Cumulative total available UV exposure, reset each day. (Only for debug logs, doesn't affect player.)</summary>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.Entry(StardewModdingAPI.IModHelper)">
+            <summary>The mod entry point, called after the mod is first loaded.</summary>
+            <param name="helper">Provides simplified APIs for writing mods.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onGameLaunched(System.Object,StardewModdingAPI.Events.GameLaunchedEventArgs)">
+            <summary>
+            Set up API integrations and instatiate Lotions (to handle JA items). Raised after the game is launched.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onUpdateTicked(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <summary>
+            Loads asset editors on the second update tick, after Content Patcher has loaded most others.
+            Raised after the game state is updated. Only runs twice then unhooks itself.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onReturnedToTitle(System.Object,StardewModdingAPI.Events.ReturnedToTitleEventArgs)">
+            <summary>
+            Clears save-specific data for villager reactions, sunscreen, and sunburn. Raised when the player returns to title screen.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onSaveLoaded(System.Object,StardewModdingAPI.Events.SaveLoadedEventArgs)">
+            <summary>
+            Re-initialize reacts, lotions, sunscreen and burn data. Refresh TV channel data. Raised when a save is loaded.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onDayStarted(System.Object,StardewModdingAPI.Events.DayStartedEventArgs)">
+            <summary>
+            Raised at the start of a new day OR when a farmhand connects in multiplayer. Checks if it is actually a new day before performing daily tasks.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onDayEnding(System.Object,StardewModdingAPI.Events.DayEndingEventArgs)">
+            <summary>
+            Change skin color back to normal and add NewDay flag before saving player data. Raised when an in-game day ends.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onHalfSecondUpdateTicked(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <summary>
+            Prompt nearby villagers to react to a sunburnt player. Raised every update tick (runs every half-second, if a save is loaded).
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onTimeChanged(System.Object,StardewModdingAPI.Events.TimeChangedEventArgs)">
+            <summary>
+            Update suncreen status and check for damage from sun exposure. Raised when the game time changes (10-minute intervals).
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onWarped(System.Object,StardewModdingAPI.Events.WarpedEventArgs)">
+            <summary>
+            Clear the list of villagers who have already reacted to a sunburn. Raised when the player is warped to any location.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.onButtonPressed(System.Object,StardewModdingAPI.Events.ButtonPressedEventArgs)">
+            <summary>
+            Allow the player to apply sunscreen or other lotion with right click. Raised when the player presses any button.
+            </summary>
+            <param name="sender">The event sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.CanUseItem">
+            <summary>
+            Checks to make sure the player is not currently eating or in a menu, minigame, or event.
+            </summary>
+            <returns>true if player can use an item, false otherwise</returns>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.HoldingNonEdibleObject">
+            <summary>Checks if the active item is a non-edible object.</summary>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.TappedOnFarmerIfAndroid(StardewModdingAPI.ICursorPosition)">
+            <summary>Checks if an android player's cursor is on their farmer.</summary>
+            <returns>true if player did tap on farmer, or not on android; false otherwise</returns>
+        </member>
+        <member name="M:SunscreenMod.ModEntry.DoNewDayStuff">
+            <summary>
+            Perform new day tasks, including:
+            - refresh TV channel data
+            - reset UV data and lotion data
+            - obtain and update sunburn severity level
+            - lose start of day health and energy if sunburnt
+            - display a message if sunburnt or newly healed
+            </summary>
+        </member>
+        <member name="P:SunscreenMod.Reactions.VillagerReactions">
+            <summary>Dictionary of string arrays containing possible reactions from each vanilla villager.</summary>
+        </member>
+        <member name="F:SunscreenMod.Reactions.ChildReactions">
+            <summary>String array containing possible reactions from each NPC children.</summary>
+        </member>
+        <member name="F:SunscreenMod.Reactions.GenericReactions">
+            <summary>String arrays containing possible reactions from a generic or unknown villager.</summary>
+        </member>
+        <member name="F:SunscreenMod.Reactions.ReactRadius">
+            <summary>Maximum tile distance that villagers can see and react to sunburn.</summary>
+        </member>
+        <member name="F:SunscreenMod.Reactions.rnd">
+            <summary>Seeded random instance.</summary>
+        </member>
+        <member name="F:SunscreenMod.Reactions.NPCsWhoReacted">
+            <summary>List of NPCs who have already reacted since last player warp.</summary>
+        </member>
+        <member name="M:SunscreenMod.Reactions.PickOne``1(``0[])">
+            <summary>Returns a random object from an array of arbitrary length.</summary>
+        </member>
+        <member name="M:SunscreenMod.Reactions.HasReacted(StardewValley.NPC)">
+            <summary>Checks whether a given NPC has already reacted to player sunburn.</summary>
+            <param name="npc">The NPC to check.</param>
+            <returns>true if already reacted, false if not</returns>
+        </member>
+        <member name="M:SunscreenMod.Reactions.CanSeePlayer(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Checks whether the player is in view of a given NPC.</summary>
+            <param name="playerX">Player X tile position</param>
+            <param name="playerY">Player Y tile position</param>
+            <param name="npcX">NPC X tile position</param>
+            <param name="npcY">NPC Y tile position</param>
+            <param name="facing">NPC facing direction: 0 up - 1 right - 2 down - 3 left</param>
+            <returns>true if facing player, false if not</returns>
+        </member>
+        <member name="M:SunscreenMod.Reactions.DoReact(StardewValley.NPC)">
+            <summary>Makes an NPC jump and give a speech bubble reaction.</summary>
+            <param name="npc">The NPC to perform a reaction</param>
+        </member>
+        <member name="M:SunscreenMod.Reactions.JumpHeight">
+            <summary>Returns a random jump height value between 4 and 8.</summary>
+            <returns>Jump height</returns>
+        </member>
+        <member name="M:SunscreenMod.Reactions.GetReaction(StardewValley.NPC)">
+            <summary>Returns a random sunburn reaction text for a given villager</summary>
+            <param name="npc">The NPC to get an appropriate reaction for</param>
+            <returns>Reaction text</returns>
+        </member>
+        <member name="M:SunscreenMod.Reactions.ClearReacts">
+            <summary>Clear the stored list of NPCs who have already reacted.</summary>
+        </member>
+        <member name="M:SunscreenMod.Reactions.NearbyNPCsReact">
+            <summary>Causes any nearby NPCs who can see the player to perform sunburn reactions.</summary>
+        </member>
+        <member name="T:SunscreenMod.SDVTimePeriods">
+            <summary>Valid time periods: Morning, Afternoon, Evening, Night, LateNight, Noon, Midnight.</summary>
+        </member>
+        <member name="F:SunscreenMod.SDVTimePeriods.Morning">
+            <summary>Before 1200</summary>
+        </member>
+        <member name="F:SunscreenMod.SDVTimePeriods.Afternoon">
+            <summary>After 1200 and before it starts to get dark</summary>
+        </member>
+        <member name="F:SunscreenMod.SDVTimePeriods.Evening">
+            <summary>When it starts to get dark until 30m after sunset</summary>
+        </member>
+        <member name="F:SunscreenMod.SDVTimePeriods.Night">
+            <summary>From 30m after sunset until 2300</summary>
+        </member>
+        <member name="F:SunscreenMod.SDVTimePeriods.LateNight">
+            <summary>After 2300 but not including 2400 exactly</summary>
+        </member>
+        <member name="F:SunscreenMod.SDVTimePeriods.Noon">
+            <summary>Exactly 1200</summary>
+        </member>
+        <member name="F:SunscreenMod.SDVTimePeriods.Midnight">
+            <summary>Exactly 2400</summary>
+        </member>
+        <member name="T:SunscreenMod.SDVTime">
+            <summary>Represents a time value in Stardew Valley</summary>
+        </member>
+        <member name="P:SunscreenMod.SDVTime.IsNight">
+            <summary>Is it currently nighttime</summary>
+        </member>
+        <member name="P:SunscreenMod.SDVTime.CurrentTimePeriod">
+            <summary>Get current time of day period (Morning, Afternoon, etc)</summary>
+        </member>
+        <member name="P:SunscreenMod.SDVTime.TimePeriod">
+            <summary>Get the corresponding time of day period for this SDVTime instance</summary>
+        </member>
+        <member name="P:SunscreenMod.SDVTime.CurrentTime">
+            <summary>Get the current time of day</summary>
+        </member>
+        <member name="P:SunscreenMod.SDVTime.CurrentIntTime">
+            <summary>Get the current time of day as an integer</summary>
+        </member>
+        <member name="F:SunscreenMod.SDVTime.MAXHOUR">
+            <summary>Maximum limit for hours in a valid SDVTime</summary>
+        </member>
+        <member name="F:SunscreenMod.SDVTime.MINPERHR">
+            <summary>Minutes per hour when calculating time</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.#ctor(System.Int32)">
+            <summary>Constructs an instance using integer time</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.#ctor(System.Int32,System.Int32)">
+            <summary>Constructs an instance from hours and minutes</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.ConvertTimeToMinutes(System.Int32)">
+            <summary>Constructs an integer time value to minutes</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.ConvertTimeToMinutes(SunscreenMod.SDVTime)">
+            <summary>Constructs an SDVTime value to minutes</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.MinutesBetweenTwoIntTimes(System.Int32,System.Int32)">
+            <summary>
+            This function takes two integer times and returns minutes between. Note: this returns an absolute value.
+            </summary>
+            <param name="t1">The first int time.</param>
+            <param name="t2">The second int time</param>
+            <returns>Amount of minutes between the two times</returns>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.#ctor(SunscreenMod.SDVTime)">
+            <summary>Constructs an instance by copying another SDVTime instance</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.ClampToTenMinutes">
+            <summary>Round this SDVTime instance to the nearest 10m</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.AddTime(System.Int32,System.Int32)">
+            <summary>Adds time (in hours and minutes) to this SDVTime instance</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.AddMinutes(System.Int32)">
+            <summary>Adds an integer number of minutes to this SDVTime instance</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.AddTime(SunscreenMod.SDVTime)">
+            <summary>Adds a SDVTime to this SDVTime instance</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_Addition(SunscreenMod.SDVTime,SunscreenMod.SDVTime)">
+            <summary>Adds two instances of SDVTime</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_Subtraction(SunscreenMod.SDVTime,SunscreenMod.SDVTime)">
+            <summary>Returns the difference of two instances of SDVTime</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_Equality(SunscreenMod.SDVTime,SunscreenMod.SDVTime)">
+            <summary>Tests two instances of SDVTime for equality</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_Inequality(SunscreenMod.SDVTime,SunscreenMod.SDVTime)">
+            <summary>Tests two instances of SDVTime for inequality</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_Equality(SunscreenMod.SDVTime,System.Int32)">
+            <summary>Tests an instance of SDVTime and an instance of integer time for equality. Gives unpredictable behavior.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_Inequality(SunscreenMod.SDVTime,System.Int32)">
+            <summary>Tests an instance of SDVTime and an instance of integer time for inequality. Gives unpredictable behavior.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_GreaterThan(SunscreenMod.SDVTime,SunscreenMod.SDVTime)">
+            <summary>Tests if an instance of SDVTime is greater than (chronologically after) another instance.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_LessThan(SunscreenMod.SDVTime,SunscreenMod.SDVTime)">
+            <summary>Tests if an instance of SDVTime is less than (chronologically before) another instance.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_GreaterThanOrEqual(SunscreenMod.SDVTime,SunscreenMod.SDVTime)">
+            <summary>Tests if an instance of SDVTime is greater than (chronologically after) or equal to another instance.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.op_LessThanOrEqual(SunscreenMod.SDVTime,SunscreenMod.SDVTime)">
+            <summary>Tests if an instance of SDVTime is less than (chronologically before) or equal to another instance.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.GetNumberOfMinutesFromMidnight">
+            <summary>Return the absolute distance from midnight in minutes for this instance of SDVTime.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.ReturnIntTime">
+            <summary>Returns the value of this SDVTime instance converted to integer time.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.IsValidGameTime(System.Int32)">
+            <summary>Tests if an integer time value represents a valid game time.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.IsValidGameTime(SunscreenMod.SDVTime)">
+            <summary>Tests if a SDVTime instance represents a valid game time.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.IsValidTime(System.Int32)">
+            <summary>Tests if an integer time value represents a sensible time value.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.IsValidTime(SunscreenMod.SDVTime)">
+            <summary>Tests if an SDVTime instance represents a sensible time value.</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.Get12HourTime">
+            <summary>Return the value of this SDVTime instance represented in 12-hour time, e.g. 03:40 pm</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.ToString">
+            <summary>Return the value of this SDVTime instance represented in 24-hour time, e.g. "1710"</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.Equals(System.Object)">
+            <summary>Test this SDVTime instance for equality with another object</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.Equals(SunscreenMod.SDVTime)">
+            <summary>Test this SDVTime instance for equality with another instance of SDVTime</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.ConvertIntTimeToMinutes(System.Int32)">
+            <summary>Convert an integer time value to total minutes</summary>
+        </member>
+        <member name="M:SunscreenMod.SDVTime.GetHashCode">
+            <summary>Get hashcode for this SDVTime instance</summary>
+        </member>
+        <member name="F:SunscreenMod.SkinColors.SunburnColors">
+            <summary>List of color arrays each representing the 3 skin color values used for a level of sunburn.</summary>
+        </member>
+        <member name="M:SunscreenMod.SkinColors.GetSunburntSkinIndex(System.Int32)">
+            <summary>Gets the appropriate skin color value for a given sunburn level. In single player this is always the same, but it changes by sunburn level in multiplayer.</summary>
+            <param name="sunburnLevel">The level of sunburn to obtain a skin color value for.</param>
+            <returns>Integer representing a skin color value in the game.</returns>
+        </member>
+        <member name="M:SunscreenMod.SkinColors.SetPixelsInRow(Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32,Microsoft.Xna.Framework.Color[])">
+            <summary>Overwrite the color data for 3 pixels in a given row of an image.</summary>
+            <param name="image">The image to modify the pixels of</param>
+            <param name="row">The image row (indexed at 1) to edit</param>
+            <param name="pixels">The new color values to use</param>
+        </member>
+        <member name="M:SunscreenMod.SkinColors.CanEdit``1(StardewModdingAPI.IAssetInfo)">
+            <summary>Get whether this instance can edit the given asset.</summary>
+            <typeparam name="_T">The asset Type</typeparam>
+            <param name="asset">Basic metadata about the asset being loaded</param>
+            <returns>Return true for asset Characters\Farmer\skinColors, false otherwise</returns>
+        </member>
+        <member name="M:SunscreenMod.SkinColors.Edit``1(StardewModdingAPI.IAssetData)">
+            <summary>Edit the pixels of the Characters\Farmer\skinColors image to use as sunburned render values.</summary>
+            <typeparam name="_T">The asset Type</typeparam>
+            <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it</param>
+        </member>
+        <member name="T:SunscreenMod.Sunburn">
+            <summary>Manages a player's sunburn level, new burn level, and sun damage.</summary>
+        </member>
+        <member name="F:SunscreenMod.Sunburn.MAX_LEVEL">
+            <summary>Maximum allowable level of sunburn or new burn damage.</summary>
+        </member>
+        <member name="F:SunscreenMod.Sunburn.SUN_DAMAGE_THRESHOLD">
+            <summary>Sun damage threshold for triggering new burn if healthy.</summary>
+        </member>
+        <member name="F:SunscreenMod.Sunburn.EXTRA_DAMAGE_THRESHOLD">
+            <summary>Sun damage threshold for additional new burn if already sunburnt or damaged</summary>
+        </member>
+        <member name="P:SunscreenMod.Sunburn.SunburnLevel">
+            <summary>Current level of active sunburn damage from 0-3. Setter handles validation, skin color changes and flag data.</summary>
+        </member>
+        <member name="P:SunscreenMod.Sunburn.NewBurnDamageLevel">
+            <summary>Current level of newly accumulated sunburn damage from 0-3. Setter handles validation and flag data.</summary>
+        </member>
+        <member name="P:SunscreenMod.Sunburn.SunDamageCounter">
+            <summary>Accumulated points of UV damage leading to new burn development. Setter handles rollover when threshold is hit.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.#ctor">
+            <summary>Initializes a class instance with the player's current sunburn and new burn data from mail flags.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.NewSunburnDebuff(System.Int32)">
+            <summary>Constructs a Buff instance to match the ongoing effects of sunburn.</summary>
+            <param name="level">Level of sunburn damage</param>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.ActivateSunburnDebuff(System.Int32)">
+            <summary>Resets and/or activates a Buff matching the input level of sunburn damage.</summary>
+            <param name="level">Level of sunburn damage</param>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.MaintainSunburnDebuffs">
+            <summary>Maintains current sunburn Buff remaining times when called.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.DisplaySunburnStatus">
+            <summary>Display an HUD info message with the current sunburn level, or "healed" if zero.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.UpdateForNewDay">
+            <summary>Heals one sunburn level, adds new burn to current, and resets new burn and sun damage counters.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.CheckForBurnDamage(SunscreenMod.SDVTime)">
+            <summary>Calculates current UV intensity and adds that value to the damage counter.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.SaveNormalSkinFlag(System.Int32)">
+            <summary>Saves data about the player's normal skin color as a mail flag.</summary>
+            <param name="skinValue">The normal skin color value.</param>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.RemoveNormalSkinFlag">
+            <summary>Clears data about normal skin color value from the player's mail flags.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.GetNormalSkinFlag">
+            <summary>Retrieves data about the player's normal skin color from their mail flags.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.SaveLevelFlag(System.String,System.Int32)">
+            <summary>Saves data about a player's sunburn level or new burn level as a mail flag. Removes other flags of same type.</summary>
+            <param name="flagType">The flag value, not including FlagBase prefix or level suffix.</param>
+            <param name="level">The level value to save as a suffix.</param>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.IsSunburnt">
+            <summary>Checks if the current player has an active sunburn.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.HasSunDamage">
+            <summary>Checks if the current player has an active sunburn OR existing new burn.</summary>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.IsPlayerSunburnt(StardewValley.Farmer)">
+            <summary>Checks if a player has an active sunburn.</summary>
+            <param name="who">The player to check.</param>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.GetPlayerSunburnLevel(StardewValley.Farmer)">
+            <summary>Return's a player's active sunburn level.</summary>
+            <param name="who">The player to check.</param>
+        </member>
+        <member name="M:SunscreenMod.Sunburn.GetPlayerNewBurnDamageLevel(StardewValley.Farmer)">
+            <summary>Return's a player's new burn damage level.</summary>
+            <param name="who">The player to check.</param>
+        </member>
+        <member name="T:SunscreenMod.SunscreenProtection">
+            <summary>Stores and manipulates data about a player's sunscreen application.</summary>
+        </member>
+        <member name="F:SunscreenMod.SunscreenProtection.PlayerWasSwimming">
+            <summary>If player was swimming when last checked.</summary>
+        </member>
+        <member name="F:SunscreenMod.SunscreenProtection.TimeOfApplication">
+            <summary>The time that sunscreen was last applied.</summary>
+        </member>
+        <member name="P:SunscreenMod.SunscreenProtection.TimeOfExpiry">
+            <summary>The time that the sunscreen will wear off.</summary>
+        </member>
+        <member name="M:SunscreenMod.SunscreenProtection.GetExpiryTime">
+            <summary>Returns the time when the applied sunscreen will wear off.</summary>
+        </member>
+        <member name="M:SunscreenMod.SunscreenProtection.ApplySunscreen(SunscreenMod.SDVTime)">
+            <summary>Apply (or reapply) suncreen protection.</summary>
+        </member>
+        <member name="M:SunscreenMod.SunscreenProtection.RemoveSunscreen">
+            <summary>Remove all suncreen protection.</summary>
+        </member>
+        <member name="M:SunscreenMod.SunscreenProtection.AppliedSunscreenRecently">
+            <summary>Check if new suncreen was applied within the last 30 minutes.</summary>
+        </member>
+        <member name="M:SunscreenMod.SunscreenProtection.IsProtected">
+            <summary>Check if sunscreen protection is active at the current time.</summary>
+        </member>
+        <member name="M:SunscreenMod.SunscreenProtection.UpdateStatus">
+            <summary>Remove protection (and display an HUD message) if sunscreen has recently expired or washed off.</summary>
+        </member>
+        <member name="P:SunscreenMod.UVIndex.TodayMaxUVIndex">
+            <summary>Forecasted UV Index high for the current game day.</summary>
+        </member>
+        <member name="P:SunscreenMod.UVIndex.TomorrowMaxUVIndex">
+            <summary>Forecasted UV Index high for the next game day.</summary>
+        </member>
+        <member name="F:SunscreenMod.UVIndex.SOLAR_NOON">
+            <summary>Daily solar noon in integer time.</summary>
+        </member>
+        <member name="F:SunscreenMod.UVIndex.AVG_MAX_UV_HIGH">
+            <summary>Average daily UV index high on sunny days in midsummer.</summary>
+        </member>
+        <member name="F:SunscreenMod.UVIndex.AVG_MAX_UV_LOW">
+            <summary>Average daily UV index high on sunny days in midwinter.</summary>
+        </member>
+        <member name="F:SunscreenMod.UVIndex.UV_INDEX_FACTOR">
+            <summary>Multiplication factor for converting between UV intensity and UV index.</summary>
+        </member>
+        <member name="F:SunscreenMod.UVIndex.MAX_UV_STD_DEV">
+            <summary>Standard deviation from seasonal sunny average for randomized max daily UV intensity.</summary>
+        </member>
+        <member name="F:SunscreenMod.UVIndex.WeatherKeys">
+            <summary>List of game data keys in Strings/StringsFromCSFiles that correspond to weather forcast text.</summary>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.SeasonalAvgMaxUV(System.Int32)">
+            <summary>Sine function to calculate seasonal average UV intensity high for a given day.</summary>
+            <param name="daysSinceStart">Date represented as integer days since start</param>
+            <returns>UV intensity (daily high in sunny weather)</returns>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.DailyMaxUV(System.Int32,System.Int32)">
+            <summary>Calculates UV intensity high for a given day, adjusting for random variance and weather.</summary>
+            <param name="daysSinceStart">Date represented as integer days since start</param>
+            <param name="weather">Integer weather from game constants e.g. Game1.weather_rain</param>
+            <returns>UV intensity (daily high)</returns>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.UVIntensityAt(SunscreenMod.SDVTime)">
+            <summary>Calculates immediate UV intensity for the current date at a given time.</summary>
+            <param name="time">Time of day to calculate for</param>
+            <returns>UV intensity at time of day</returns>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.UVIndexForecast(System.Int32,System.Int32)">
+            <summary>Calculates a forecasted UV index high for a given day, random variance and weather.</summary>
+            <param name="daysSinceStart">Date represented as integer days since start</param>
+            <param name="weather">Integer weather from game constants e.g. Game1.weather_rain</param>
+            <returns>UV index (daily high)</returns>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.UVIndexForecastForTomorrow">
+            <summary>Calculates tomorrow's forecasted UV index high, given random variance and weather.</summary>
+            <returns>UV index (daily high)</returns>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.UVIndexForecastForToday">
+            <summary>Calculates today's forecasted UV index high, given random variance and weather.</summary>
+            <returns>UV index (daily high)</returns>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.GetTodaysWeather">
+            <summary>Get's the integer weather constant for the current weather.</summary>
+            <returns>Weather value (e.g. integer value of Game1.weather_lightning)</returns>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.GetRiskLevel(System.Int32)">
+            <summary>Determines risk level according to the UV index scale.</summary>
+            <param name="uvIndex">UV Index value</param>
+            <returns>Risk level (ranging from LowRisk to ExtremeRisk)</returns>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.CanEdit``1(StardewModdingAPI.IAssetInfo)">
+            <summary>Get whether this instance can edit the given asset.</summary>
+            <typeparam name="_T">The asset Type.</typeparam>
+            <param name="asset">Basic metadata about the asset being loaded.</param>
+            <returns>true for asset Strings\StringsFromCSFiles, false otherwise</returns>
+        </member>
+        <member name="M:SunscreenMod.UVIndex.Edit``1(StardewModdingAPI.IAssetData)">
+            <summary>Edit the Strings\StringsFromCSFiles TV weather channel entries to show UV forecast index and advice.</summary>
+            <typeparam name="_T">The asset Type</typeparam>
+            <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it</param>
+        </member>
+    </members>
+</doc>

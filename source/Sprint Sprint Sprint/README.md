@@ -16,6 +16,9 @@ This is the source code for things that are better than you!
 **[Bigger Riverlands Farm](https://www.nexusmods.com/stardewvalley/mods/3025)**
 - A bigger and better riverlands farm with some cool features. Replaces Riverlands Farm (works on old and new saves).
 
+**[Goodbye SMAPI](https://www.nexusmods.com/stardewvalley/mods/6514)**
+- The spin off to Hello SMAPI, this mod lets you say bye to SMAPI and it will drop one of the many (configurable) responses. Closes your game after as well. 
+
 **[Health and Stamina Regeneration](https://www.nexusmods.com/stardewvalley/mods/3207)**
 - Ever low on health and stamina, you have no food with you, and you still have stuff to do for the day... and mobs to slay... Well now health and stamina regenerates overtime. Highly configurable.
 

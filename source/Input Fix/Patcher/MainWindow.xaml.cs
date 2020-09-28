@@ -61,7 +61,7 @@ namespace Patcher
                     StreamHelper.WriteFile(dest, finalPath);
                     Program.ExtractDlls(destDict);
                     Desc.Text = helper.GetString("L_Patch_Done", destName);
-                    Command.Text = string.Format("\"{0}\"", finalPath);
+                    Command.Text = string.Format("\"{0}\" %command%", finalPath);
                     source.Close();
                 }
                 catch (Exception ex)

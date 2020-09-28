@@ -1,0 +1,10 @@
+﻿{
+   "Name": "SDVWM_Astro",
+   "Author": "SixthTitan",
+   "Version": "1.1",
+   "Description": "An Add-on that provides near real-time cloud coverage in Stardew Valley",
+   "UniqueID": "SixthTitan.SDVWM_Astro",
+   "EntryDll": "SDVWM_Astro.dll",
+   "MinimumApiVersion": "2.9",
+   "UpdateKeys": [ ]
+}

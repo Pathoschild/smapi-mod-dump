@@ -1,5 +1,6 @@
 {
   "AddCampfire": true,
   "EnableIslands": false,
-  "UseBeachMusic": false
+  "UseBeachMusic": false,
+  "ReplaceFarmID": 1
 }

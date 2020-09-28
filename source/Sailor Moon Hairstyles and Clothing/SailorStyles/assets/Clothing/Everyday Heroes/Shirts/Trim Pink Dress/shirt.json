@@ -1,0 +1,13 @@
+{
+    "Name": "Trim Pink Dress",
+    "Description": "A pink dress with white trim. It'd look silly without the bottom half.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Vestido Ribete Rosa"
+    },
+    "DescriptionLocalization": {
+        "es": "Un vestido rosa con ribete blanco. Se vería tonto sin la mitad inferior."
+    }
+}

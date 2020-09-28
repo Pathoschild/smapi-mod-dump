@@ -1,11 +1,11 @@
 {
   "RemovePacksFromVanilla": [
-        "JAPack.UniqueID1",
-        "JAPack.UniqueID2"
+        //"JAPack.UniqueID1",
+        //"JAPack.UniqueID2"
       ],
   "RemovePackRecipesFromVanilla": [
-        "JAPack.UniqueID1",
-        "JAPack.UniqueID2"
+        //"JAPack.UniqueID1",
+        //"JAPack.UniqueID2"
       ],
    "RemoveItemsFromVanilla": [
         "Glacierfish Mask",
@@ -27,8 +27,8 @@
 "ru": "Добро пожаловать! Что я могу Вам предложить?", 
 "pt": "Bem-vindo(a)! O que posso fazer por você?", 
 "fr": "Bienvenue! Que cherchez vous?", 
-"de": "Willkommen! Was darf es denn sein?"
-//"es": "", *Spanish
+"de": "Willkommen! Was darf es denn sein?",
+"es": "¡Bienvenido! ¿Qué puedo hacer por ti?",
 //"hu": "", *Hungarian
 //"it": "", *Italian
 //"ja": "", *Japanese
@@ -40,8 +40,8 @@
 "ru":"Продавец: Извините, мы закрыты. Приходите с 10:00 до 18:00.", 
 "pt": "Desculpe, estamos fechados. Funcionamos das 10h às 18h todos os dias.", 
 "fr": "Désolé, nous sommes fermés. Nous sommes ouvert de 10h jusqu'à 18h tout les jours.", 
-"de": "Entschuldigung, wir haben geschlossen. Wir haben täglich von 10 Uhr bis 18 Uhr geöffnet."
-//"es": "", *Spanish
+"de": "Entschuldigung, wir haben geschlossen. Wir haben täglich von 10 Uhr bis 18 Uhr geöffnet.",
+"es": "Lo siento, estamos cerrados. Abrimos de las 10 am hasta las 6 pm todos los días.",
 //"hu": "", *Hungarian
 //"it": "", *Italian
 //"ja": "", *Japanese
@@ -111,8 +111,8 @@
 "ru": "Хей! Что-то нужно?", 
 "pt": "Ahoy! O que você está 'procurando'?", 
 "fr": "Ahoy! Que cherchez-vous?", 
-"de": "Ahoi! Nach was hältst du Ausschau?"
-//"es": "", *Spanish
+"de": "Ahoi! Nach was hältst du Ausschau?",
+"es": "¡Ahoy! ¿Qué estás buscando?",
 //"hu": "", *Hungarian
 //"it": "", *Italian
 //"ja": "", *Japanese
@@ -124,8 +124,8 @@
 "ru": "Продавец: Извините, магазин еще не открылся. Приходите с 10:00 до 21:00.", 
 "pt": "Lamento, a loja ainda não abriu. Normalmente abro das 10:00 às 21:00.", 
 "fr":"Désolé, le magasin n'est pas encore ouvert. Je suis ouvert de 10h jusqu'à 21h.", 
-"de": "Entschuldigung, der Shop hat noch nicht geöffnet. Ich habe normalerweise von 10 Uhr bis 21 Uhr geöffnet."
-//"es": "", *Spanish
+"de": "Entschuldigung, der Shop hat noch nicht geöffnet. Ich habe normalerweise von 10 Uhr bis 21 Uhr geöffnet.",
+"es": "Lo siento, la tienda no está abierta aún. Abro desde las 10 am hasta las 9 pm.",
 //"hu": "", *Hungarian
 //"it": "", *Italian
 //"ja": "", *Japanese
@@ -372,8 +372,8 @@
 "ru": "Жарко? Не беда, у меня есть мороженое!", 
 "pt": "Gelo! Venha pegar seu sorvete!", 
 "fr":"De la glace! Venez vous offrir une glace!", 
-"de": "Eis! Hier gibt es Eis!" 
-//"es": "", *Spanish
+"de": "Eis! Hier gibt es Eis!",
+"es": "¡Hielo! ¡Ven a tomar tu helado!",
 //"hu": "", *Hungarian
 //"it": "", *Italian
 //"ja": "", *Japanese
@@ -385,8 +385,8 @@
 "ru": "Продавец: Простите, сейчас я не продаю мороженое. Приходите с 9:00 до 19:00.", 
 "pt": "Desculpe. Não estou vendendo sorvete no momento. Volte entre 9h e 19h!", 
 "fr":"Désolé, je ne vends pas de glace à cette heure de la journée. Revenez entre 9h et 19h!", 
-"de": "Entschuldigung, ich verkaufe momentan kein Eis. Komm zwischen 9 Uhr und 19 Uhr zurück!" 
-//"es": "", *Spanish
+"de": "Entschuldigung, ich verkaufe momentan kein Eis. Komm zwischen 9 Uhr und 19 Uhr zurück!",
+"es": "Lo siento, no estoy vendiendo helado ahora. ¡Vuelve entre las 9 am y las 7 pm!",
 //"hu": "", *Hungarian
 //"it": "", *Italian
 //"ja": "", *Japanese

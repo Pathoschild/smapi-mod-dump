@@ -192,6 +192,14 @@
 	"ToArea": { "X": 4, "Y": 8, "Width": 3, "Height": 2 },
 	"When": { "HasMod |contains=Karmylla.ImmersiveMaps, andril11.charlie, FlashShifter.StardewValleyExpandedALL":false}
 },
+{
+	"Action": "EditMap",
+	"Target": "Maps/AdventureGuild",
+	"FromFile": "assets/Image/MarlonCounterPatch.tmx",
+	"ToArea": { "X": 5, "Y": 10, "Width": 2, "Height": 3 },
+	"When": { "HasMod |contains=Karmylla.ImmersiveMaps, FlashShifter.StardewValleyExpandedALL":false}
+},
+
 
 {
 	"Action": "Load",
@@ -202,6 +210,46 @@
 		"FarmCaveChange":true
 	}
 },
+
+{
+	"Action": "EditMap",
+	"Target": "Maps/FarmCave",
+	"MapTiles": [
+	   {
+		  "Position": { "X": 15, "Y": 3 },
+		  "Layer": "Buildings",
+		  "SetProperties": {
+			 "Action": "Warp 45 12 Mine"
+		  			}
+		 		}
+			],
+		"When": {
+			"HasMod": "DaisyNiko.Tilesheets",
+			"FarmCaveChange":true,
+			"Relationship:Dwarf":"Friendly"
+			}
+},
+{
+	"Action": "EditMap",
+	"Target": "Maps/Mine",
+	"MapTiles": [
+	   {
+		  "Position": { "X": 45, "Y": 13 },
+		  "Layer": "Buildings",
+		  "SetProperties": {
+			 "Action": "Warp 15 35 FarmCave"
+		  			}
+		 		}
+			],
+		"When": {
+			"HasMod": "DaisyNiko.Tilesheets",
+			"FarmCaveChange":true,
+			"Relationship:Dwarf":"Friendly",
+			"HasMod |contains=DaisyNiko.SVR2":false
+			}
+},
+
+
 
 {    
     "LogName": "Adds Linus and Wizard to Ice Festival main event",
@@ -291,14 +339,14 @@
 	"Action": "EditData",
 	"Target": "Characters/Dialogue/GuntherWoods",
 	"FromFile": "assets/Dialogue/dialogue-GuntherWoods.json",
-	"When": {"HasMod":"andril11.charlie, Yoshimax.BefriendMarlon" }
+	"When": {"HasMod":"andril11.charlie" }
 }
 /*{
 	"LogName": "Dialogue for SVE", 
 	"Action": "EditData",
 	"Target": "Characters/Dialogue/MarlonFay, Characters/Dialogue/GuntherSilvian",
 	"FromFile": "assets/Dialogue/dialogue-{{TargetWithoutPath}}.json",
-	"When": {"HasMod":"FlashShifter.StardewValleyExpandedALL" }
+	"When": {"HasMod":"FlashShifter.StardewValleyExpandedCP" }
 }*/
 
     ]

@@ -1,0 +1,13 @@
+{
+    "Name": "Sailor Moon",
+    "Description": "The iconic outfit of the pretty sailor-suited soldier.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Sailor Moon"
+    },
+    "DescriptionLocalization": {
+        "es": "Un traje de marinero estelar adornado con arcos y una piedra preciosa."
+    }
+}

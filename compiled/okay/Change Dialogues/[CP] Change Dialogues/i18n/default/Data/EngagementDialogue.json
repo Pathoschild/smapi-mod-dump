@@ -1,0 +1,11 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Data/EngagementDialogue",
+		"Entries": {
+			"Sam0": "I'm going to be really happy as your {{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/SamGender}}}}, @.$l#$e#I'm excited."
+		}
+	}
+	]
+}

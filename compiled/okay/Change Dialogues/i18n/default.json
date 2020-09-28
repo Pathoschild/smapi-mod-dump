@@ -1,5 +1,4 @@
 {
-  "DwarfName": "Dwarf",
   "BachelorFemale": "Bachelorette",
   "BachelorMale": "Bachelor",
   "BeardFemale": "Chin",
@@ -26,10 +25,8 @@
   "FromMale": "",
   "GeezerFemale": "Geezelle",
   "GeezerMale": "Geezer",
-  "GenderDefinedFemale": "",
-  "GenderDefinedMale": "",
-  "GenderUndefinedFemale": "",
-  "GenderUndefinedMale": "",
+  "GenderFemale": "",
+  "GenderMale": "",
   "GentlemanFemale": "Lady",
   "GentlemanMale": "Gentleman",
   "GrumpyFemale": "",

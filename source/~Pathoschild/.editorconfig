@@ -19,6 +19,9 @@ indent_size = 2
 charset = utf-8-bom
 insert_final_newline = false
 
+[*.{ttinclude,tt}]
+insert_final_newline = false
+
 ##########
 ## C# formatting
 ## documentation: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
@@ -66,3 +69,10 @@ csharp_style_inlined_variable_declaration = true:warning
 
 # avoid superfluous braces
 csharp_prefer_braces = false:suggestion
+
+##########
+## Column guidelines
+## documentation: https://marketplace.visualstudio.com/items?itemName=PaulHarrington.EditorGuidelines
+##########
+[*.md]
+guidelines = 100

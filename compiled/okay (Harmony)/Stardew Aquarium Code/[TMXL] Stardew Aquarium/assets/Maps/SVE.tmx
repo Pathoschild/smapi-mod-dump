@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="6">
  <properties>
-  <property name="Warp" value="50 48 FishMuseum 5 40"/>
+  <property name="Warp" value="50 48 FishMuseum 4 40"/>
  </properties>
  <tileset firstgid="1" name="townInterior" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
   <image source="townInterior.png" width="512" height="1088"/>
@@ -20384,7 +20384,7 @@
    <tile/>
   </data>
  </layer>
- <objectgroup id="4" name="Buildings">
+ <objectgroup id="4" name="Buildings" visible="0">
   <object id="1" name="TileData" x="832" y="688" width="16" height="16">
    <properties>
     <property name="Action" value="AquariumString SVEBookOpen"/>

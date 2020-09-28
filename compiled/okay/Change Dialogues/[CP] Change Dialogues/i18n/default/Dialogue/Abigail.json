@@ -1,0 +1,67 @@
+{
+    "Changes": [
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Abigail",
+		"Entries": {
+			"fall_Thu": "#$1 AbigailHAND#Last night I dreamt that my left hand had turned into a gigantic %noun. Does that mean anything?#$e#%{{mardrest.ChangeDialogues/AbigailName}} doesn't seem to be interested in talking right now."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/MarriageDialogueAbigail",
+		"Entries": {
+			"patio_Abigail": "%{{mardrest.ChangeDialogues/AbigailName}} is lost in her music.",
+			"Bad_9": "I wonder if I could've done better... I was very good friends with {{mardrest.ChangeDialogues/SebastianName}} before we met. {{mardrest.ChangeDialogues/He:{{mardrest.ChangeDialogues/SebastianGender}}}} was probably the one...$s"
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Schedules/Abigail",
+		"Entries": {
+			"marriage_Mon.000": "{{mardrest.ChangeDialogues/Dad:{{mardrest.ChangeDialogues/PierreGender}}}} seems to be doing okay without me around."
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/MoviesReactions",
+		"Entries": {
+			"Abigail": {
+				"NPCName": "Abigail",
+				"Reactions": [
+				{
+					"Tag": "love",
+					"Response": "like",
+					"Whitelist": [],
+					"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I love horror movies... I hope it's scary!$h"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/shake Abigail 3000/pause 500/message \"{{mardrest.ChangeDialogues/AbigailName}} is giggling!\"",
+							"Text": "Haha! It's not scary, but I love it.$h"
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "That was pretty campy, but I liked it.$h"
+						}
+					},
+					"ID": "reaction_4"
+				}
+				]
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Abigail": "teen/rude/outgoing/neutral/female/datable/Sebastian/Town/fall 13/Caroline 'mom' Pierre '{{mardrest.ChangeDialogues/Dad:L{{mardrest.ChangeDialogues/PierreGender}}}}'/SeedShop 1 9/{{mardrest.ChangeDialogues/AbigailName}}"
+		}
+	}
+	]
+}

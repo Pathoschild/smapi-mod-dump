@@ -1,6 +1,10 @@
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming version
+* Internal refactor to translation handling.
+* Improved translations. Thanks to Enaium (updated Chinese) and Macskasajt05 (added Hungarian)!
+
 ## 1.27.5
 Released 28 August 2020.
 

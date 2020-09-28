@@ -1,18 +1,21 @@
 {
   "EnableMod": true,
-  "BackgroundColor": "25, 60, 107, 255",
   "ListLineOne": "{1}",
   "ListLineTwo": "{2} - {3}",
+  "BackgroundColor": "25, 60, 107, 255",
   "LineOneColor": "255, 255, 255, 255",
   "LineTwoColor": "211, 211, 211, 255",
+  "HighlightColor": "90, 139, 227, 255",
+  "ButtonBarColor": "169, 169, 169, 255",
+  "VolumeBarColor": "0, 255, 0, 255",
   "MarginX": 4.0,
   "MarginY": 4,
-  "HighlightColor": "90, 139, 227, 255",
+  "VolumeBarWidth": 8,
   "PlayAll": true,
   "LoopPlaylist": true,
   "LineOneScale": 0.5,
   "LineTwoScale": 0.4,
   "MuteGameMusicWhilePlaying": true,
   "MuteAmbientSoundWhilePlaying": true,
-  "ButtonBarColor": "169, 169, 169, 255"
+  "VolumeLevel": 100
 }

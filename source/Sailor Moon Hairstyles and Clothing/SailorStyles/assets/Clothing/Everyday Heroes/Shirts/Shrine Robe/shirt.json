@@ -1,0 +1,13 @@
+{
+    "Name": "Shrine Robe",
+    "Description": "The traditional thick, white garb of shrine attendants.",
+    "HasFemaleVariant": true,
+    "Price": 50,
+    "Dyeable": false,
+    "NameLocalization": {
+        "es": "Toga de Santuario"
+    },
+    "DescriptionLocalization": {
+        "es": "El atuendo tradicional grueso y blanco de los asistentes al santuario."
+    }
+}

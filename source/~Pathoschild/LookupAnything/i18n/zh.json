@@ -293,9 +293,9 @@
     // values
     "fruit-tree.complaints.adjacent-objects": "因相邻的物体无法生长",
     "fruit-tree.growth.summary": "将于 {{date}} 成熟",
-    "fruit-tree.next-fruit.struck-by-lighting": "被闪电击中！将在 {{count}} 天后复原。",
-    "fruit-tree.next-fruit.out-of-season": "过季",
     "fruit-tree.next-fruit.max-fruit": "收获这批水果之前无法再次结果",
+    "fruit-tree.next-fruit.out-of-season": "过季",
+    "fruit-tree.next-fruit.struck-by-lightning": "被闪电击中！将在 {{count}} 天后复原。",
     "fruit-tree.next-fruit.too-young": "树龄太小无法结果",
     "fruit-tree.quality.now": "目前{{quality}}",
     "fruit-tree.quality.on-date": "将于{{date}}获得{{quality}}",
@@ -550,8 +550,8 @@
     "tile.tile-index": "{{layerName}}：地格号",
     "tile.tilesheet": "{{layerName}}: 地格层",
     "tile.blend-mode": "{{layerName}}: 混合模式",
-    "tile.index-property": "{{layerName}}: ix props: {{propertyName}}", // TODO
-    "tile.tile-property": "{{layerName}}: props: {{propertyName}}", // TODO
+    "tile.index-property": "{{layerName}}: 指数属性: {{propertyName}}",
+    "tile.tile-property": "{{layerName}}: 属性: {{propertyName}}",
 
     // values
     "tile.tile.none-here": "此处无地格",

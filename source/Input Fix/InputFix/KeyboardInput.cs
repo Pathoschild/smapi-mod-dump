@@ -38,6 +38,9 @@ namespace InputFix
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         internal static extern int MapWindowPoints(IntPtr hWndFrom, IntPtr hWndTo, ref RECT pt, int cPoints);
 
+        [DllImport("imm32.dll", SetLastError = true)]
+        public static extern IntPtr ImmReleaseContext(IntPtr hWnd, IntPtr hIMC);
+
         #endregion Dll Import
 
         #region WM_MSG
@@ -61,9 +64,12 @@ namespace InputFix
             {
                 throw new InvalidOperationException("KeyboardInput.Initialize can only be called once!");
             }
+
             hookProcDelegate = new WndProc(HookProc);
             //set Wnd long before Init IME
             SetWindowLong(window.Handle, GWL_WNDPROC, (int)Marshal.GetFunctionPointerForDelegate(hookProcDelegate));
+
+            ImmReleaseContext(window.Handle, (IntPtr)Traverse.Create(typeof(KeyboardInput)).Field("hIMC").GetValue());
 
             if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
             {
