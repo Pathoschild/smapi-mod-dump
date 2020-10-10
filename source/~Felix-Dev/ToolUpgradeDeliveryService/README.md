@@ -1,4 +1,12 @@
-﻿**Tool-Upgrade Delivery Service** is a [Stardew Valley](http://stardewvalley.net/) mod which makes retrieving upgraded farm tools 
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Felix-Dev/StardewMods**
+
+----
+
+**Tool-Upgrade Delivery Service** is a [Stardew Valley](http://stardewvalley.net/) mod which makes retrieving upgraded farm tools 
 less tedious. With this mod, Clint (the blacksmith) will simply send you a mail with the upgraded tool included as soon as 
 the upgrade is finished. No more visiting the blacksmith simply to get your improved farm tool!
 

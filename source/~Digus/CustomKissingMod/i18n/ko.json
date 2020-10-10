@@ -1,3 +1,13 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
 	"Jealousy.Dialog":"누가 너랑 {{npcName}} 랑 키스했다고 하던데...$s#$e#의심할만한 상황 만들지 않아줬음 좋겠어.$s#$e#...$a"
 }

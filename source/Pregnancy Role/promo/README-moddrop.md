@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/kdau/pregnancyrole**
+
+----
+
 ![[icon]](https://kdau.gitlab.io/PregnancyRole/icon.png) People of all genders may or may not be able to become pregnant. This mod gives Stardew Valley farmers and NPCs the full range of possibilities.
 
 Pregnancy Role does not change the chance or timing of baby proposals between spouses. However, if and when a proposal for a new baby is made, whether the spouse is an NPC or another player, this mod will affect what happens. There will be a pregnancy only if one of the spouses can become pregnant and the other spouse can make pregnant. In any other combination, there will be an adoption instead.

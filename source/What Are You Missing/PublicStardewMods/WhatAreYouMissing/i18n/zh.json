@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LukeSeewald/PublicStardewValleyMods
+**
+*************************************************/
+
+{
   "SEASON_SPECIFIC_HEADER": "当季注意事项",
   "SEASON_SPECIFIC_CC_HEADER": "当季社区中心可收集项目",
   "COMMON_CC_HEADER": "全年社区中心可收集项目",

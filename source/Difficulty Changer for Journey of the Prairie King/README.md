@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/shanks3042/stardewvalleyeasyprairieking**
+
+----
+
 # StardewValleyEasyPrairieKing
 
 This is a mod for Stardew Valley which adds options to the minigame *Journey of the Prairie King* to make it easier.

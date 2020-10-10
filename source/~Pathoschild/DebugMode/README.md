@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Pathoschild/StardewMods**
+
+----
+
 **Debug Mode** is an open-source [Stardew Valley](http://stardewvalley.net/) mod which shows a
 useful debug info overlay when you press `~`, and optionally enables the game's debug hotkeys
 (including teleportation and time manipulation).

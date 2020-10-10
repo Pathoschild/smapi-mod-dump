@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/K4rakara/Stardew-Mods**
+
+----
+
 ![JoJa84+Logo](./assets/joja84plus.png)
 # JoJa 84+
 JoJa 84 plus is a simple mod for Stardew Valley that allows you to make computations without having to Alt+Tab out of the game.

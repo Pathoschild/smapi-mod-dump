@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+{
 	"scuba-fins": "Scuba Fins",
 	"SwimMod_Mariner_Questions": "Old Mariner: Ah, I see ye caught the diving bug, {0}. Might be that I have something you could use in your undersea-faring journey... are ye interested?",
 	"SwimMod_Mariner_Questions_Old": "Old Mariner: Ah, back again I see... are ye ready to prove yer worth and take me buried treasure?",

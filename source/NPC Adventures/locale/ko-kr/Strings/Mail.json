@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
   "adventureBegins": "좋은 하루!, @.^^광산에서의 당신의 활약을 계속 지켜보았네, 당신의 성공을 축하하고 싶군. 마을에 모험가의 정신을 가진 사람이 당신만이 아니라는 것을 알고있는가?. 모험가 길드로 오게나, 직접 만나서 의논하는 것이 좋을 만한 정보가 몇 가지 있어.^^-말론",
   "adventureContinue": "안녕, @,나는 최근 길드에서 당신과 얘기했던 몇몇 젊은이들과 탈출 소식을 듣고 기뻤다네. 너희 모두가 이 땅을 탐험하고 서로를 지지하는데 관심을 가지는 것을 보니 너무나 기쁘구나. 특히 이 규모의 마을에서는 공동체가 중요하지.^^내가 없어도 너와 네 동료들이 모험가의 정신을 살려주길 바란단다. 언제든지 길드에 오거라. 언제나 너를 반길것이고, 새로운 이야기를 할 수 있을 거야.^^-말론",
   "bagItemsSentLetter.Abigail": "안녕, {0},^^내 가방에 네 물건을 두고갔더라. 너에게 다시 보낼게.^어제 모험 재밌었어. 다음 번에도 기대할게!^^    - {1}",

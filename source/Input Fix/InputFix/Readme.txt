@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Windmill-City/InputFix
+**
+*************************************************/
+
 1.Install SMAPI
 2.Unzip and copy InputFix folder into the Mods folder
 3.Use STALauncher.exe to launch the game(Put it in your game folder)

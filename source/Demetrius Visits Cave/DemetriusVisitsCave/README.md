@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/KeelanRosa/StardewMods**
+
+----
+
 Demetrius puts in so much effort turning that empty farm cave into a controlled environment for his experiment and then… never comes back. Dima, c'mon man, get down here and collect some data!
 
 This mod brings him over once a week to check on his research project. That's once a week when you don't have to run all the way up the mountain if you're trying to increase friendsh-- uh, once a week encouraging your local scientist to gather important scientific data.

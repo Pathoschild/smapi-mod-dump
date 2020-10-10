@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AairTheGreat/StardewValleyMods
+**
+*************************************************/
+
 This file is to explain the configuration settings for the config.json file.
 The most up to date information will be at:
 https://github.com/AairTheGreat/StardewValleyMods/tree/master/Better%20Garbage%20Cans

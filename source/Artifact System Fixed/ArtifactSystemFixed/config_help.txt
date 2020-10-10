@@ -1,4 +1,14 @@
-﻿(ARTIFACT DIG SPOTS)
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Ilyaki/ArtifactSystemFixed
+**
+*************************************************/
+
+(ARTIFACT DIG SPOTS)
 Artifact_AlreadyFoundMultiplier: 
 	Should be between 0 and 1. Every time an artifact is found, its weight is multiplied by this number. 
 	A smaller number results in less chance to find a duplicate artifact.

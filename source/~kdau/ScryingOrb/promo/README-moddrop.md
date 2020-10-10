@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/kdau/predictivemods**
+
+----
+
 ![[icon]](https://kdau.gitlab.io/ScryingOrb/icon.png) Craft a Scrying Orb with a recipe from Welwick and you too can peer into the future. Make an offering to the spirits to scry mining conditions, geode contents, rare events or garbage loot.
 
 This mod is based on the [Stardew Predictor](https://mouseypounds.github.io/stardew-predictor/) web app by MouseyPounds, whose tools are all worth a look. Its companion mod, [Public Access TV](https://www.moddrop.com/stardew-valley/mods/757967-public-access-tv), offers a different route to much of the same information for the current game day.

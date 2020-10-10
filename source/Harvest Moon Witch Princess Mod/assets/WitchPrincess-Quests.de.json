@@ -1,6 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Sasara2201/WitchPrincess
+**
+*************************************************/
+
 {
-    [1] = "Location/Triff die Hexen Princessin/Du hast einen Brief von der Hexen Princessin bekommen. Sie behauptet, Informationen über das alte Gemeinschaftszentrum zu haben./Betritt den Turm der Hexen Princessin./WizardHouse/-1/0/-1/false";
-    [28] = "Basic/Dark Talisman/Die Hexenprinzessin hat mich gefragt ob ich ihr ein altes Geschenk an eine andere Hexe, in der nähe des Dorfes bringen kann... aber um Eintritt zu erhalten, brauche ich einen Dunklen Talisman./Gehe in die Kanalisation und frage Krobus nach dem Talisman./-1/-1/0/-1/false";
-    [111] = "ItemDelivery/Dunkle Reagenz/Die Hexen Princessin will, dass du in die Minen gehst und ihr eine Schattenessenz bringst. Sie braucht sie für eine Art dunkle Magie./Bringe der Hexen Princessin eine Schattenessenz./Wizard 769/-1/1000/-1/true/Ah, du hast sie mitgebracht. Du hast dir meine Dankbarkeit und 1000 G verdient. Jetzt geh.";
-    [123] = "ItemDelivery/Stab der Macht/Die Hexen Princessin arbeitet an einem Stab von phänomenaler Kraft. Wer weiß schon wofür. Sie braucht einen Iridiumbarren, um ihn zu vollenden./Bringe der Hexen Princessin einen Iridiumbarren./Wizard 337/-1/5000/-1/true/Ah, wertvolles Iridium. Das hast du gut gemacht, @. Du hast meine Dankbarkeit. Jetzt geh.";
+    [1] = "Location/Triff die Hexen Princessin/Du hast einen Brief von der Hexen Princessin bekommen. Sie behauptet, Informationen ï¿½ber das alte Gemeinschaftszentrum zu haben./Betritt den Turm der Hexen Princessin./WizardHouse/-1/0/-1/false";
+    [28] = "Basic/Dark Talisman/Die Hexenprinzessin hat mich gefragt ob ich ihr ein altes Geschenk an eine andere Hexe, in der nï¿½he des Dorfes bringen kann... aber um Eintritt zu erhalten, brauche ich einen Dunklen Talisman./Gehe in die Kanalisation und frage Krobus nach dem Talisman./-1/-1/0/-1/false";
+    [111] = "ItemDelivery/Dunkle Reagenz/Die Hexen Princessin will, dass du in die Minen gehst und ihr eine Schattenessenz bringst. Sie braucht sie fï¿½r eine Art dunkle Magie./Bringe der Hexen Princessin eine Schattenessenz./Wizard 769/-1/1000/-1/true/Ah, du hast sie mitgebracht. Du hast dir meine Dankbarkeit und 1000 G verdient. Jetzt geh.";
+    [123] = "ItemDelivery/Stab der Macht/Die Hexen Princessin arbeitet an einem Stab von phï¿½nomenaler Kraft. Wer weiï¿½ schon wofï¿½r. Sie braucht einen Iridiumbarren, um ihn zu vollenden./Bringe der Hexen Princessin einen Iridiumbarren./Wizard 337/-1/5000/-1/true/Ah, wertvolles Iridium. Das hast du gut gemacht, @. Du hast meine Dankbarkeit. Jetzt geh.";
 }

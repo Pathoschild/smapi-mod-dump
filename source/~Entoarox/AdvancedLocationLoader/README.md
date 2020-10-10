@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Entoarox/StardewMods**
+
+----
+
 **Advanced Location Loader** lets mods easily add new locations to the game. It provides a
 framework for adding or editing locations using only JSON (no programming needed), adds new map
 tile actions (see below), and automatically fixes some issues with custom locations (like misplaced

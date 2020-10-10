@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/kdau/predictivemods**
+
+----
+
 # Predictive Mods
 
 "Public Access TV" and "Scrying Orb" are [Stardew Valley](http://stardewvalley.net/) mods that make the information from the [Stardew Predictor](https://mouseypounds.github.io/stardew-predictor/) tool by MouseyPounds available in-game in a lore-friendly, balanced way.

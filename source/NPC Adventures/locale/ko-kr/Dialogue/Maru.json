@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
   "companionAccepted": "정말 좋은 생각이야!$h 흙 샘플을 좀 더 수집하려고 했는데.",
   "companionRejected": "지금은 안돼. 중요한 연구실 일이 좀 있어서.",
   "companionRejectedNight": "지금은 안돼. 중요한 프로젝트를 진행중이야.",

@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Platonymous/Stardew-Valley-Mods
+**
+*************************************************/
+
 { //Optional Parameter: 'Bounds:X Y W H Frames:F Duration:D Offset:X Y' Defaults: 'Bounds:0 0 42 28 Frames:2 Duration:150 Offset:0 0'
   "Changes": [
     {

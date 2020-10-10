@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Jonqora/StardewMods
+**
+*************************************************/
+
 {
   "Silo": "390 100 330 10 334 5/3/3/-1/-1/-2/-1/null/Silo/Allows you to cut and store grass for feed./Buildings/none/48/128/-1/null/Farm/100/false",
   "Mill": "388 150 390 50 428 4/4/2/-1/-1/-2/-1/null/Mill/Allows you to create flour from wheat and sugar from beets./Buildings/none/64/128/-1/null/Farm/2500/false",

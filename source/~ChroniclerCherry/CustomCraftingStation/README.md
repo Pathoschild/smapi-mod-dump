@@ -1,4 +1,12 @@
-﻿# Custom Crafting Stations
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/ChroniclerCherry/stardew-valley-mods**
+
+----
+
+# Custom Crafting Stations
 
 Custom Crafting Stations (CCS) is a framework mod that allows modders to create specialized crafting stations. These stations can be attached to a BigCraftable object, or to tiledata.
 

@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/eduanttunes/sv_fighting_with_npcs
+**
+*************************************************/
+
+{
   "provocation_text_1": "싸우자!",
   "provocation_text_2": "아주 약하구나!",
   "provocation_text_3": "겁 먹었구나!",

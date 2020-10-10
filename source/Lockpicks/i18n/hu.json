@@ -1,9 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bwdymods/SDV-Lockpicks
+**
+*************************************************/
+
 {
   "yes": "Igen",
   "no": "Nem",
-  "use": "Használjon egy zárkiválasztást?",
-  "tool": "Zárfeltörés",
-  "tooltip": "Szerszám a zárt ajtók megnyitásához.",
-  "broke": "A készülék megtört.",
-  "complex": "Ez a zár túl bonyolult a nyitáshoz."
+  "use": "Hasznï¿½ljon egy zï¿½rkivï¿½lasztï¿½st?",
+  "tool": "Zï¿½rfeltï¿½rï¿½s",
+  "tooltip": "Szerszï¿½m a zï¿½rt ajtï¿½k megnyitï¿½sï¿½hoz.",
+  "broke": "A kï¿½szï¿½lï¿½k megtï¿½rt.",
+  "complex": "Ez a zï¿½r tï¿½l bonyolult a nyitï¿½shoz."
 }

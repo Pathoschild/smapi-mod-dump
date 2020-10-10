@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
 0000-54f0:  00 ff ff 33-62 00 00 ff-ff 41 62 00-00 ff ff 64  d
 0000-5500:  6f 6f 72 43-6c 6f 73 65-00 61 72 63-68 61 65 6f  oorClose .archaeo
 0000-5510:  00 61 78 65-00 62 6f 75-6c 64 65 72-43 72 61 63  .axe.bou lderCrac

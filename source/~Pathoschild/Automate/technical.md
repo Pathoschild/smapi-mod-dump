@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Pathoschild/StardewMods**
+
+----
+
 This document provides technical info about the Automate mod. **For more general info, see the
 [README](README.md) file instead.**
 

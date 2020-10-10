@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LukeSeewald/PublicStardewValleyMods
+**
+*************************************************/
+
+{
   "SEASON_SPECIFIC_HEADER": "Itens Da Estação",
   "SEASON_SPECIFIC_CC_HEADER": "Itens Centro Comunitário Estação",
   "COMMON_CC_HEADER": "Itens Comuns do Centro Comunitário",

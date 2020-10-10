@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MouseyPounds/stardew-mods
+**
+*************************************************/
+
 Category: Miscellaneous
 
 Tags:
@@ -16,7 +26,7 @@ This mod uses only original assets and modifications of existing game assets.
 Details:
 [b]Description:
 
-[color=#ffff00]Floor Shadow Switcher[/color][/b] is a SMAPI mod which allows toggling of shadows on crafted flooring items. It is mostly useful in conjunction with flooring texture replacements such as [url=https://www.nexusmods.com/stardewvalley/mods/2726]Natural Paths[/url]. Shadow presence for each flooring item can be set individually in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+[color=#ffff00]Floor Shadow Switcher[/color][/b] is a SMAPI mod which allows toggling of shadows on crafted flooring items. It is mostly useful in conjunction with flooring texture replacements such as [url=https://www.nexusmods.com/stardewvalley/mods/2726]Natural Paths[/url]. Shadow presence for each flooring item can be setï¿½individually in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
 
 
 [b]Installation:[/b]
@@ -27,7 +37,7 @@ Details:
 
 [b]Configuration:
 [/b]
-The config tokens should be self explanatory. For example, [color=#6d9eeb][b]EnableShadowsForType_0_WoodFloor[/b][/color] lets you enable (set to [i][color=#b4a7d6]true[/color][/i]) or disable (set to [i][color=#b4a7d6]false[/color][/i]) for the crafted Wood Floors (or whatever mod item replaces them.) By default, this mod sets all 10 floors to [i][color=#b4a7d6]false[/color][/i]. In the unmodded game, all items with "Floor" in the name have shadows on.
+The config tokens should be self explanatory. For example, [color=#6d9eeb][b]EnableShadowsForType_0_WoodFloor[/b][/color]ï¿½lets you enable (set to [i][color=#b4a7d6]true[/color][/i]) or disable (set to [i][color=#b4a7d6]false[/color][/i]) for the crafted Wood Floors (or whatever mod item replaces them.) By default, this mod sets all 10 floors to [i][color=#b4a7d6]false[/color][/i]. In the unmodded game, all items with "Floor" in the name have shadows on.
 
 [b]Compatibility:
 [/b]

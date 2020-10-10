@@ -1,4 +1,14 @@
-﻿namespace AnythingPonds
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MouseyPounds/stardew-mods
+**
+*************************************************/
+
+namespace AnythingPonds
 {
     // This is a dumb little object made necessary because I am stubborn and wanted to be able to keep the name
     //  of the parent location for my fishponds as well as their empty day count.

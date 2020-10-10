@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Bouhm/stardew-valley-mods**
+
+----
+
 # Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue or any other method with the owners of this repository. 

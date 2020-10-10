@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JohnsonNicholas/SDVMods
+**
+*************************************************/
+
 {
   "hud-text.desc_sick": "당신은 감기에 걸렸습니다...!",
   "hud-text.desc_hot": "바깥의 더위가 평소에 비해 당신을 더 빨리 지치게 합니다.",

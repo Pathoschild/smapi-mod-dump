@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jahangmar/StardewValleyMods
+**
+*************************************************/
+
+{
     "cult.msg_headline_traitinfo": "Eigenschaften von {{seeds}}:",
     "cult.msg_headline_traitinfo_compost": "Eigenschaften von {{seeds}} mit Kompost:",
     "cult.msg_traitinc": "Die {{traitdesc}}-Eigenschaft deiner {{seed}} erhöhte sich und ist nun {{trait}}",

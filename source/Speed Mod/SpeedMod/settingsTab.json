@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Xebeth/StardewValley-SpeedMod
+**
+*************************************************/
+
+{
   "$schema": "https://raw.githubusercontent.com/Xebeth/SVM/feature/label-localization/ModSettingsTab/schema.json",
   "Description": {
     "en": "Adds a permanent (configurable) speed boost and the ability to teleport home at the cost of energy.",

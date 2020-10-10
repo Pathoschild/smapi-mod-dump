@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/miketweaver/BashNinja_SDV_Mods**
+
+----
+
 **DynamicNPCSprites** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you to add custom character portraits and sprites that can dynamically change based on the weather and season, and lets NPC wear random clothing each day. You can configure the mods to use by editing `.json` files.
 
 This mod can be used directly by players, or as a framework for sprite and portrait designers.

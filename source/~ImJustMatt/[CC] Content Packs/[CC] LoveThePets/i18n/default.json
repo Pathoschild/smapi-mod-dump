@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/SDVCustomChores
+**
+*************************************************/
+
+{
 	// Shane dialogue (credit: alekrrau)
 	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1": "If {{PetName}} tries to con you, I already filled their bowl. No matter how much they whine or how cute and sad they look you can't fall for it.",
     // Emily dialogue (credit: alekrrau)

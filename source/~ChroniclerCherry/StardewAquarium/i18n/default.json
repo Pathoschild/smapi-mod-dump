@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ChroniclerCherry/stardew-valley-mods
+**
+*************************************************/
+
+{
 	//Welcome message after the stardew aquarium has been completed
 	"AquariumWelcome": "Welcome to the Stardew Aquarium! We've now acquired a full collection. And it's all thanks to you!",
 	"NoInventorySpace": "There's a gift waiting for you! Try coming back if you have space in your inventory.",

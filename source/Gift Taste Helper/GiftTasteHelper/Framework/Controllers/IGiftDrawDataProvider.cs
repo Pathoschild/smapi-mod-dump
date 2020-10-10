@@ -1,4 +1,14 @@
-﻿namespace GiftTasteHelper.Framework
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tstaples/GiftTasteHelper
+**
+*************************************************/
+
+namespace GiftTasteHelper.Framework
 {
     /// <summary>Provides the data used in drawing gifts for an npc.</summary>
     internal interface IGiftDrawDataProvider

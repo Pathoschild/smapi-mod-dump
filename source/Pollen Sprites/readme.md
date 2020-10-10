@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Esca-MMC/PollenSprites**
+
+----
+
 # Pollen Sprites
 A mod for the game Stardew Valley, adding a new type of monster called a Pollen Sprite. They appear on windy days in spring, float around players harmlessly, and sometimes drop random seeds when defeated.
 

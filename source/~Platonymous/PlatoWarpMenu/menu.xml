@@ -1,4 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Platonymous/Stardew-Valley-Mods
+**
+*************************************************/
+
+<?xml version="1.0" encoding="utf-8" ?>
 <Box Width="100%" Height="100%">
   <Box Id="LeftMenu" Width="140" Height="100%" BackgroundColor="#ff248dc1">
     <Box Id="template.leftMenu" X="10" Y="10" Width="-20" Height="25" BackgroundColor="#77000000,hover:#cc000000,selected:#ff000000" OnClick="PickSet">

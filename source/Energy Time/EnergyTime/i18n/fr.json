@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/nikperic/energytime
+**
+*************************************************/
+
+{
   "energy-time.reloaded": "Config EnergyTime rechargée",
   "energy-time.multiplier-changed": "Multiplicateur d'énergie changé à {{multiplier}}",
   "energy-time.paused": "Temps arrêté",

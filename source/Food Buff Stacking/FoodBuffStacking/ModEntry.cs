@@ -1,4 +1,14 @@
-﻿/* Welcome to Stardew BuffStack!
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/thejcannon/Stardew-FoodBuffStacking
+**
+*************************************************/
+
+/* Welcome to Stardew BuffStack!
  * 
  * This mod allows for the stacking of buffs from different foods
  * (instead of wiping out the previous buffs when a new food is consumed)

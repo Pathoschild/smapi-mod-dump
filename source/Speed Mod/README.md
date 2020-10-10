@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Xebeth/StardewValley-SpeedMod**
+
+----
+
 
 ## Overview
 This mod adds a speed boost and the ability to teleport home at the cost of stamina. This could be considered cheating but I consider it more of QoL mod because of the built-in limitations.

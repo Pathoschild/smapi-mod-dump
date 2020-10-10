@@ -1,4 +1,14 @@
-﻿namespace Bookcase.Events {
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Stardew-Valley-Modding/Bookcase
+**
+*************************************************/
+
+namespace Bookcase.Events {
 
     /// <summary>
     /// Events implemented by Bookcase specifically - using EventBus<T> to allow for priorities. Registration is atypical of C# events, requiring you to manually register the handler via a method rather than using the event notation.

@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/AndyCrocker/StardewMods**
+
+----
+
 **Better 10 Hearts** is a [Stardew Valley](http://stardewvalley.net/) mod that adds a few perks to NPCs.
 
 ![](pics/better10hearts.png)

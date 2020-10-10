@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ChroniclerCherry/stardew-valley-mods
+**
+*************************************************/
+
+{
     "robin.whichcabin_question": "Quale Cabina desideri aggiornare?",
     "robin.hu1_materials": "Upgrade della Cucina: 10.000 ge 450 pezzi di legno",
     "robin.hu2_materials": "Upgrade dell'Asilo Nido: 50.000 ge 150 pezzi di legno duro",

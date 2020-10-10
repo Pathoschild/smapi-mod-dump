@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Pathoschild/StardewMods**
+
+----
+
 **Lookup Anything** is a [Stardew Valley](https://stardewvalley.net/) mod that shows live info about
 whatever's under your cursor when you press `F1`. Learn a villager's favorite gifts, when a crop
 will be ready to harvest, how long a fence will last, why your farm animals are unhappy, and more.

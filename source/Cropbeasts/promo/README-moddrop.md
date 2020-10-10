@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/kdau/cropbeasts**
+
+----
+
 ![[icon]](https://kdau.gitlab.io/Cropbeasts/icon.png) Why just harvest your crops when you could do battle with them? Cropbeasts are crops cursed by the witch that turn into monsters on your farm. After you defeat them, you get the original harvest and maybe something extra.
 
 ## ![Compatibility](https://kdau.gitlab.io/headers/compatibility.png)

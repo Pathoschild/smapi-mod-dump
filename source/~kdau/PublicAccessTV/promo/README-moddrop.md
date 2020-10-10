@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/kdau/predictivemods**
+
+----
+
 ![[icon]](https://kdau.gitlab.io/PublicAccessTV/icon.png) Your friends in the valley take to the airwaves to keep you apprised of today's mining conditions, garbage loot, train schedules, rare events and more.
 
 This mod is largely based on the [Stardew Predictor](https://mouseypounds.github.io/stardew-predictor/) web app by MouseyPounds, whose tools are all worth a look. Its companion mod, [Scrying Orb](https://www.moddrop.com/stardew-valley/mods/756553-scrying-orb), offers a different route to some of the same information and more, but looks well beyond the current game day.

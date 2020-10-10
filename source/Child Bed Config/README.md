@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/clockworkhound/SDV-ChildBedConfig**
+
+----
+
 # ChildBedConfig
 <p>A very simple mod for Stardew Valley that can hide any combination of the crib and beds in the back room (i.e. show only the crib, hide one of the beds, hide everything).  Each save file can have a different set-up, so hiding the crib in File A will not hide it in File B.</p>
 

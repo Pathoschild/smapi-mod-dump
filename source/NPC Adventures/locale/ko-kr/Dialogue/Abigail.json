@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
 {
   "companionAccepted": "나랑 같이 모험하고 싶어?$u#$b# 그래@, 뭘 기다리고 있는거야? 어서 가자!$h",
   "companionAccepted_Spouse": "모험? 오, 물론 난 갈거야, @!$l#$b#난 우리가 오늘 더 광산 깊은 곳에 도달하면 좋겠어!.$h",

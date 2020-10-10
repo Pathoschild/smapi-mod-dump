@@ -1,4 +1,14 @@
-﻿using Denifia.Stardew.SendItemsApi.Domain;
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Denifia/StardewMods
+**
+*************************************************/
+
+using Denifia.Stardew.SendItemsApi.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

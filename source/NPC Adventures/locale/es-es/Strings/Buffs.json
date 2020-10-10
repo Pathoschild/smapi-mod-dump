@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
   "Abigail": "¡Pasar el rato con Abigail hace que tu sangre aventurera bombee mas fuerte!#Ganas +1 de velocidad, +1 de suerte y +1 de ataque.",
   "Alex": "El espíritu de lucha de Alex parece despertar el tuyo también.#Ganas +1 de velocidad y +2 de ataque.",
   "Elliott": "Verdaderamente un descendiente del propio Thoreau, no hay nadie#como Elliott para sentarse y pescar junto a un estanque tranquilo.#Ganas +3 de habilidad de pesca.",

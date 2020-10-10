@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/IrregularPorygon/SMAPIGenericShopMod**
+
+----
+
 # SMAPIGenericShopMod
 Adds whatever you want to the shop vendors (Starts with adding animal products to Marnie's shop)
 

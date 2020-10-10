@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/ceasg/StardewValleyMods**
+
+----
+
 # Extra Fish Information [1.2.0]
 
 This mod adds extra info to the descriptions for each fish, which will help you find the fish you're hoping to catch!

@@ -1,4 +1,12 @@
-﻿Send items to other farmers (saved games or online friends) by right clicking on the letterbox outside your house.
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Denifia/StardewMods**
+
+----
+
+Send items to other farmers (saved games or online friends) by right clicking on the letterbox outside your house.
 
 For a gif of what to expect, visit the project on [url=https://github.com/Denifia/StardewMods/blob/master/SendItems/readme.md]github readme[/url].
 

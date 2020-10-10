@@ -1,4 +1,14 @@
-﻿
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+
 {
   //SPECIAL DIALOGUE
   "Introduction": "Would you look at that? It's the new farmer everyone has been talkin' about. Finally moved to the valley, I see.$0#$b#I've been workin' Fairhaven Farm here for many years. It ain't much, but it's honest work.$1#$e#You're lucky you got that free property from your grandpa.$2",

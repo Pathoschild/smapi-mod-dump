@@ -1,4 +1,12 @@
-﻿# Console commands
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/purrplingcat/QuestFramework**
+
+----
+
+# Console commands
 
 There are list of available console commands in Quest Framework for debug your work.
 

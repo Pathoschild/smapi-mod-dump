@@ -1,4 +1,12 @@
-﻿# Normal (Default) Climate
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/JohnsonNicholas/SDVMods**
+
+----
+
+# Normal (Default) Climate
 
 This shows off all of the features of Climates. In versions before 2.0 these were the enhanced versions. In an effort to simplify mainteance, this merges into one file. In an effort to make it easier for people to turn off fog, I've restructured the climates.
 

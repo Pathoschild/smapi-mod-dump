@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/tstaples/GiftTasteHelper**
+
+----
+
 **Gift Taste Helper** is a [Stardew Valley](http://stardewvalley.net/) mod that shows a helpful
 tooltip with a villager's favourite gifts when you point at them on the calendar or (thanks to
 [dreamsicl](https://github.com/dreamsicl)) on the social page. It won't show the two universal

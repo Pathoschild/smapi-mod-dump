@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/kdau/portabletv**
+
+----
+
 ![[icon]](https://kdau.gitlab.io/PortableTV/icon.png) It's little! It's lovely! It shows Livin' Off The Land! The Portable TV is a craftable item carried in your inventory that lets you watch TV channels (standard and custom) from anywhere in Stardew Valley.
 
 ## ![[Compatibility]](https://kdau.gitlab.io/headers/compatibility.png)

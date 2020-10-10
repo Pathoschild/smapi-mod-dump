@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/DeathGameDev/SDV-FastTravel**
+
+----
+
 # Fast Travel
 Fast Travel is a mod which allows the player to fast travel to any location on the map, by simply left clicking the icon.
 This allows the player to quickly go from say, the mines, to the blacksmith.

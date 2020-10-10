@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/KeelanRosa/StardewMods**
+
+----
+
 Changes the order in which barn animals are unlocked to goats > sheep > cows/pigs
 
 Look, cows are great but in no realistic way is a half-ton animal the best First Livestock Choice for a newbie farmer who was a Joja cubicle jockey two weeks ago and just built their first barn. Do you want to wing "learning how to milk a dairy animal without getting kicked in the head" on something seven times your size, or would you like to start with something a little more managable?

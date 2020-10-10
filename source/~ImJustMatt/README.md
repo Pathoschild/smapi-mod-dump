@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/ImJustMatt/SDVCustomChores**
+
+----
+
 # Stardew Valley Mods
 
 This is a repo for the SMAPI mods that I have created. For all of my Stardew mods please visit my user page on [Nexus Mods](https://www.nexusmods.com/stardewvalley/users/1643034?tab=user+files).

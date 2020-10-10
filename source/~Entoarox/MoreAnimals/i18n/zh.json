@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Entoarox/StardewMods
+**
+*************************************************/
+
 {
   "EmptyBox": "只是一个空箱子。",
   "AdoptMessage": "啊，天呀!看起来有一只被遗弃又可怜的{{petType}}在这里!也许你应该付给玛妮{{adoptionPrice}}元，给它做个检查，看看能不能领养它?",

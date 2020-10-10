@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/veleek/IdlePause**
+
+----
+
 # Stardew Valley IdlePause Mod
 
 One of the big parts of Stardrew Valley is time management.  The days are reasonably short and figuring out exactly what you want to, or more accurately, will be able to finish in a day is part of the fun.  However, the game time continues to progress even when you're not doing anything unless you've opened up a game menu or are browsing through a chest.  

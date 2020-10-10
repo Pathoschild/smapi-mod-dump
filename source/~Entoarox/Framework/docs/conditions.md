@@ -1,4 +1,12 @@
-﻿Custom Condition System
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Entoarox/StardewMods**
+
+----
+
+Custom Condition System
 =====================
 This document contains a list of all conditions that are implemented into the EntoaroxFramework Custom Condition System (CCS).
 Each condition comes with a explanation as to what situation makes it true

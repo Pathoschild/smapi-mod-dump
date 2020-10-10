@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
   "askToFollow": "Perguntar a {0} pra vir?",
   "recruitedWant": "O que você quer?",
   "recruitedWant.bag": "Posso usar a sua mochila?",

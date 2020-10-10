@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/dantheman999301/StardewMods**
+
+----
+
 This is a collection of Stardew Valley mods by dantheman999. Currently there's only one mod available.
 
 **Variable Grass** adds a randomised chance for more or less plant growth per day.

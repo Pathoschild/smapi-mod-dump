@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Annosz/StardewValleyModding**
+
+----
+
 # Stardew Valley Mods
 This repo contains the mods I've created for Stardew Valley. Each folder contains some more information and a link to the NexusMods page for downloads. See [my NexusMods profile](https://www.nexusmods.com/users/44734342?tab=user+files) for an other view of the mods I've created.
 

@@ -1,4 +1,14 @@
-﻿// Thanks to Pathoschild's Lookup Anything, which provided the pattern code for this menu!
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Sakorona/SDVMods
+**
+*************************************************/
+
+// Thanks to Pathoschild's Lookup Anything, which provided the pattern code for this menu!
 
 using System;
 using Microsoft.Xna.Framework;

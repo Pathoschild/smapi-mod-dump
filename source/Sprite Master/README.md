@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/ameisen/SV-SpriteMaster**
+
+----
+
 # SpriteMaster - Stardew Valley Mod (SMAPI / Harmony)
 
 Stardew Valley mod that resamples all sprites using the [xBRZ resizing algorithm](https://en.wikipedia.org/wiki/Pixel-art_scaling_algorithms#xBR_family).

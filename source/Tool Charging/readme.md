@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/mralbobo/stardew-tool-charging**
+
+----
+
 ## Config
 * IncreaseBy [40] - increase to speed up, decrease to slow down. For base-game set to 0. Effective range is: -15 to 599.
 

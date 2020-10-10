@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MouseyPounds/stardew-mods
+**
+*************************************************/
+
 Category: Livestock & Animals
 
 Tags:
@@ -12,21 +22,21 @@ Bear Mounts is a Content Patcher mod which replaces the horse with a ride-able B
 Details:
 [b]Description:
 
-[color=#ffff00]Bear Mounts[/color][/b] is a Content Patcher mod which replaces the horse with a ride-able Bear. Includes 4 different Bear textures (Brown, Black, Polar, and Panda) which are based on the Bear who appears in some cutscene events. Any bear can be ridden with or without a saddle and reins, and a small Stable texture edit which shows more Bear-friendly food choices is included. The choice of Bear and other options can be set in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+[color=#ffff00]Bear Mounts[/color][/b] is a Content Patcher mod which replaces the horse with a ride-able Bear. Includes 4 different Bear textures (Brown, Black, Polar, and Panda)ï¿½which are based on the Bear who appears in some cutscene events. Any bear can be ridden with or without a saddle and reins, and a small Stable texture edit which shows more Bear-friendly food choices is included. The choice of Bear and other options can be setï¿½in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
 
 Here are some previews of the riding animation and the idle animation with the optional Stable changes.
-[img]https://i.imgur.com/qoCwCAW.gif[/img] 
+[img]https://i.imgur.com/qoCwCAW.gif[/img]ï¿½
 [img]https://i.imgur.com/AFnj38m.gif[/img]
 
 
 [b]Configuration:
 [/b]
 [list]
-[*][color=#6d9eeb][b]WhichBear[/b][/color] lets you select which Bear texture to use. Choices are [color=#b4a7d6][i]brown[/i] [/color](default), [i][color=#b4a7d6]black[/color][/i], [i][color=#b4a7d6]polar[/color][/i], [i][color=#b4a7d6]panda[/color][/i], or [i][color=#b4a7d6]skeleton[/color][/i].
-[*][b][color=#6d9eeb]UseSaddle[/color][/b] lets you choose whether or not the Bear will have a saddle. Choices are [color=#b4a7d6][i]true[/i]  [/color]or [i][color=#b4a7d6]false[/color][/i]  (default).
-[*][b][color=#6d9eeb]ShowReins[/color][/b] lets you choose whether or not the Farmer will hold reins when riding the Bear. Choices are [color=#b4a7d6][i]true[/i]  [/color]or [i][color=#b4a7d6]false[/color][/i]  (default).
-[*][b][color=#6d9eeb]ChangeStable[/color][/b] lets you choose whether the Stable texture should be changed to show Bear-friendly food options instead of hay. Choices are [i][color=#b4a7d6]true [/color][/i](default) or [i][color=#b4a7d6]false[/color][/i].
-[*][b][color=#6d9eeb]SkeletonForSpiritsEve[/color][/b] lets you choose whether to override your normal Bear with the Skeleton Bear during the last week of Fall. Choices are [i][color=#b4a7d6]true [/color][/i](default) or [i][color=#b4a7d6]false[/color][/i].
+[*][color=#6d9eeb][b]WhichBear[/b][/color]ï¿½lets you select which Bear texture to use. Choices are [color=#b4a7d6][i]brown[/i]ï¿½[/color](default), [i][color=#b4a7d6]black[/color][/i], [i][color=#b4a7d6]polar[/color][/i], [i][color=#b4a7d6]panda[/color][/i], or [i][color=#b4a7d6]skeleton[/color][/i].
+[*][b][color=#6d9eeb]UseSaddle[/color][/b]ï¿½lets youï¿½choose whether or not the Bear will have a saddle. Choices are [color=#b4a7d6][i]true[/i]ï¿½ï¿½[/color]or [i][color=#b4a7d6]false[/color][/i]ï¿½ï¿½(default).
+[*][b][color=#6d9eeb]ShowReins[/color][/b]ï¿½lets you choose whether or not the Farmer will hold reins when riding the Bear. Choices areï¿½[color=#b4a7d6][i]true[/i]ï¿½ï¿½[/color]orï¿½[i][color=#b4a7d6]false[/color][/i]ï¿½ï¿½(default).
+[*][b][color=#6d9eeb]ChangeStable[/color][/b]ï¿½lets you choose whether the Stable texture should be changed to show Bear-friendly food options instead of hay. Choices are [i][color=#b4a7d6]true [/color][/i](default) or [i][color=#b4a7d6]false[/color][/i].
+[*][b][color=#6d9eeb]SkeletonForSpiritsEve[/color][/b]ï¿½lets you choose whether to override your normal Bear with the Skeleton Bear during the last week of Fall. Choices are [i][color=#b4a7d6]true [/color][/i](default) or [i][color=#b4a7d6]false[/color][/i].
 
 
 [/list]

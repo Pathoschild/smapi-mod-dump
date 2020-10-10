@@ -1,4 +1,14 @@
-﻿namespace Randomizer {
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/cTooshi/stardew-valley-randomizer
+**
+*************************************************/
+
+namespace Randomizer {
     //done all up to this point minus the BigCraftableObjects
     //Updated with 1.4 additions
     public enum ObjectIndexes {

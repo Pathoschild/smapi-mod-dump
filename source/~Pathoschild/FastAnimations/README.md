@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Pathoschild/StardewMods**
+
+----
+
 **Fast Animations** is a [Stardew Valley](http://stardewvalley.net/) mod that lets you selectively
 speed up many animations like eating, breaking geodes, etc.
 

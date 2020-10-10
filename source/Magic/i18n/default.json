@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/Magic
+**
+*************************************************/
+
+{
   "event.wizard.1": "It is time for you to learn the ways of magic.",
   "event.wizard.2": "I have... adjusted the Yoba altar in Pierre's shop for you to use.",
   "event.wizard.3": "I will teach you the basic of Arcane magic, but the rest you must discover on your own. ",

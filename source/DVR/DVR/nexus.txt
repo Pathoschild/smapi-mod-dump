@@ -1,4 +1,14 @@
-﻿This mod makes your TV much more useful. Sunday episodes of "The Queen of Sauce" will now be recorded, and on Wednesdays you will prefer episodes
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/captncraig/StardewMods
+**
+*************************************************/
+
+This mod makes your TV much more useful. Sunday episodes of "The Queen of Sauce" will now be recorded, and on Wednesdays you will prefer episodes
 that you have not seen yet, instead of random ones. This makes it much easier to catch up if you miss a few Sunday episodes.
 
 

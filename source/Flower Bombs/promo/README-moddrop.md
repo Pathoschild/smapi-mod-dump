@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/kdau/flowerbombs**
+
+----
+
 ![[icon]](https://kdau.gitlab.io/FlowerBombs/icon.png) Make blooms, not war. Craft a Flower Bomb, fill it with wild or flower seeds, and toss it on any dirt or grass in the Valley. The next morning you’ll have an explosion of seasonal color.
 
 ## ![Compatibility](https://kdau.gitlab.io/headers/compatibility.png)

@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MouseyPounds/stardew-mods
+**
+*************************************************/
+
 Category: Miscellaneous
 
 Tags:
@@ -28,12 +38,12 @@ Details:
 [b]Configuration:
 [/b]
 [list]
-[*][color=#6d9eeb][b]Show_Chat_Message[/b][/color] lets you choose whether the localized text message appears. Choices are [color=#b4a7d6][i]true[/i] [/color](default) or [i][color=#b4a7d6]false[/color][/i].
-[*][color=#6d9eeb][b]Place_Sign[/b][/color] lets you choose whether an in-game sign will be created. Choices are [color=#b4a7d6][i]true[/i] [/color](default) or [i][color=#b4a7d6]false[/color][/i].
-[*][color=#6d9eeb][b]Sign_Type[/b][/color] lets you choose which variation of sign (if it's enabled.) Choices are [color=#b4a7d6][i]wood[/i] [/color](default) or [i][color=#b4a7d6]stone[/color][/i].
-[*][color=#6d9eeb][b]Sign_Location_Map_Name[/b][/color] lets you choose on which map the sign will appear (if it's enabled.) The default is [color=#b4a7d6][i]Town[/i][/color]; any other valid location identifier (including those added by mods) should work.
-[*][color=#6d9eeb][b]Sign_Location_Tile_X[/b][/color] lets you choose the X coordinate where the sign will appear (if it's enabled.) The default is [color=#b4a7d6][i]42[/i][/color]; accepts integer values.
-[*][color=#6d9eeb][b]Sign_Location_Tile_Y[/b][/color] lets you choose the Y coordinate where the sign will appear (if it's enabled.) The default is [color=#b4a7d6][i]71[/i][/color]; accepts integer values.
+[*][color=#6d9eeb][b]Show_Chat_Message[/b][/color]ï¿½lets you choose whether the localized text message appears. Choices are [color=#b4a7d6][i]true[/i]ï¿½[/color](default) or [i][color=#b4a7d6]false[/color][/i].
+[*][color=#6d9eeb][b]Place_Sign[/b][/color]ï¿½lets you choose whether an in-game sign will be created. Choices are [color=#b4a7d6][i]true[/i]ï¿½[/color](default) or [i][color=#b4a7d6]false[/color][/i].
+[*][color=#6d9eeb][b]Sign_Type[/b][/color]ï¿½lets you choose which variation of sign (if it's enabled.) Choices are [color=#b4a7d6][i]wood[/i]ï¿½[/color](default) or [i][color=#b4a7d6]stone[/color][/i].
+[*][color=#6d9eeb][b]Sign_Location_Map_Name[/b][/color]ï¿½lets you choose on which map the sign will appear (if it's enabled.) The default is [color=#b4a7d6][i]Town[/i][/color]; any other valid location identifier (including those added by mods) should work.
+[*][color=#6d9eeb][b]Sign_Location_Tile_X[/b][/color]ï¿½lets you choose the X coordinate where the sign will appear (if it's enabled.) The default is [color=#b4a7d6][i]42[/i][/color]; accepts integer values.
+[*][color=#6d9eeb][b]Sign_Location_Tile_Y[/b][/color]ï¿½lets you choose the Y coordinate where the sign will appear (if it's enabled.) The default is [color=#b4a7d6][i]71[/i][/color]; accepts integer values.
 [/list]
 
 [b]Compatibility:

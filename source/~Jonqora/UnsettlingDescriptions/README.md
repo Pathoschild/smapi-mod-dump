@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Jonqora/StardewMods**
+
+----
+
 # Unsettling Item Descriptions
 Does your game feel as bland as fiddlehead risotto? As common as carp? Install this slightly-spoopy mod to add mildly disturbing or uncomfortable descriptive text to over 800 in-game items!
 

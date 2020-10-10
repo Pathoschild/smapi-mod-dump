@@ -1,9 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bwdymods/SDV-Lockpicks
+**
+*************************************************/
+
 {
   "yes": "Ja",
   "no": "Nein",
   "use": "Sperrwerkzeug verwenden?",
   "tool": "Sperrwerkzeug",
-  "tooltip": "Ein Werkzeug zum Öffnen von verschlossenen Türen.",
+  "tooltip": "Ein Werkzeug zum ï¿½ffnen von verschlossenen Tï¿½ren.",
   "broke": "Das Werkzeug ist kaputt!",
   "complex": "Diese Sperre ist zu kompliziert."
 }

@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/EKomperud/StardewMods
+**
+*************************************************/
+
 {
   "Companion": "I'm really enjoying my photography lately.#$q 600/601 haleyCompanion_followup#Hey @! Wanna help me with some photography around town today?#$r 600 10 haleyCompanion_yes#Sure! Make sure to take some good ones of me.#$r 601 -5 haleyCompanion_no#Not today. Sorry Haley.",
   "haleyCompanion_yes": "I didn't know it was possible to get a bad one of you.",

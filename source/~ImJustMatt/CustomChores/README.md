@@ -1,4 +1,12 @@
-﻿**Custom Chores** is a [Stardew Valley](https://www.stardewvalley.net/) mod which lets you
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/ImJustMatt/SDVCustomChores**
+
+----
+
+**Custom Chores** is a [Stardew Valley](https://www.stardewvalley.net/) mod which lets you
 add/configure custom chores to the game. It is intended to make Spouses more helpful around
 the farm in a helpful and lore-friendly way.
 

@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Esca-MMC/CustomTracker**
+
+----
+
 # Custom Tracker
 A mod for the game Stardew Valley, allowing players to use a custom forage tracker icon of any size or shape. It includes options to display the tracker for players without the Tracker profession, display the specific forage being tracked by each icon, and more.
 

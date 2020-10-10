@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/purrplingcat/PurrplingMod**
+
+----
+
 # Companion dispisitions
 
 When we want to add new NPC as a companion, we must define it in dispositions file. **It's very important to define our NPC when we wants to be supported as companion in mod**

@@ -1,4 +1,12 @@
-﻿**Send Items API** is the Web Api for the [Send Items](http://www.nexusmods.com/stardewvalley/mods/1087) [Stardew Valley](http://stardewvalley.net/) 
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Denifia/StardewMods**
+
+----
+
+**Send Items API** is the Web Api for the [Send Items](http://www.nexusmods.com/stardewvalley/mods/1087) [Stardew Valley](http://stardewvalley.net/) 
 mod which lets you send items to your other saved games or other players from around the world.
 
 Build with .NET Core so it'll run on Linux, Mac and Windows and can be cloud hosted.

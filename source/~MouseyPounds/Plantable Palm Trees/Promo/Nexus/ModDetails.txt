@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MouseyPounds/stardew-mods
+**
+*************************************************/
+
 Category: Gameplay Mechanics
 
 Tags:
@@ -28,10 +38,10 @@ Details:
 [b]Configuration:
 [/b]
 [list]
-[*][color=#6d9eeb][b]Use_Modifier_Key[/b][/color] lets you choose whether an additional key needs to be held down in addition to clicking. Choices are [color=#b4a7d6][i]false[/i] [/color](default) or [i][color=#b4a7d6]true[/color][/i].
-[*][color=#6d9eeb][b]Modifier_Key[/b][/color] is the key to use if the previous option is enabled. There is a [url=https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings]list of valid key codes[/url] on the wiki. The default is [color=#b4a7d6][i]LeftAlt[/i] [/color].
-[*][color=#6d9eeb][b]Require_Tilled_Soil[/b][/color] lets you choose whether tiles on the Farm must be tilled first. Choices are [color=#b4a7d6][i]false[/i] [/color](default) or [i][color=#b4a7d6]true[/color][/i].
-[*][color=#6d9eeb][b]Show_Placement_Icon[/b][/color] lets you choose whether to highlight the tile under your cursor the same way other tree seeds work. Choices are [color=#b4a7d6][i]true[/i] [/color](default) or [i][color=#b4a7d6]false[/color][/i].
+[*][color=#6d9eeb][b]Use_Modifier_Key[/b][/color]ï¿½lets you choose whether an additional key needs to be held down in addition to clicking. Choices are [color=#b4a7d6][i]false[/i]ï¿½[/color](default) or [i][color=#b4a7d6]true[/color][/i].
+[*][color=#6d9eeb][b]Modifier_Key[/b][/color]ï¿½is the key to use if the previous option is enabled. There is a [url=https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings]list of valid key codes[/url] on the wiki. The default is [color=#b4a7d6][i]LeftAlt[/i]ï¿½[/color].
+[*][color=#6d9eeb][b]Require_Tilled_Soil[/b][/color]ï¿½lets you choose whether tiles on the Farm must be tilled first. Choices are [color=#b4a7d6][i]false[/i]ï¿½[/color](default) or [i][color=#b4a7d6]true[/color][/i].
+[*][color=#6d9eeb][b]Show_Placement_Icon[/b][/color]ï¿½lets you choose whether to highlight the tile under your cursor the same way other tree seeds work. Choices are [color=#b4a7d6][i]true[/i]ï¿½[/color](default) or [i][color=#b4a7d6]false[/color][/i].
 [/list]
 
 [b]Compatibility:

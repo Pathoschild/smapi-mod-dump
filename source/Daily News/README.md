@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/miketweaver/DailyNews**
+
+----
+
 # DailyNews
 
 ![dailynews - still 3](https://cloud.githubusercontent.com/assets/5581855/25777459/443cd26e-329b-11e7-9b9f-d78496c194e3.png)

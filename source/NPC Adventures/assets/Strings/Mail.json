@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
   "adventureBegins": "Good day, @.^^I've continued to monitor your progress in the mines, and I'd like to congratulate you on your success. You may be interested in knowing you are not the only one in town with an adventurer's spirit. Please come visit me at the Adventurer's Guild, I have some information I'd like to share with you that would be better discussed in person.^^-Marlon",
   "adventureContinue": "Hello, @,^^I was pleased to hear of your recent escapades with some of the young people I spoke with you about at the guild. It does my heart good to see you all take an interest in exploring this land and being supportive to one another. Community is important, especially for a town of this size.^^I hope you and your companions will help keep the adventurer's spirit alive long after I'm gone. Come by the guild anytime, I'll always be glad to see you, and maybe you'll have a new story or two to tell.^^-Marlon",
   "bagItemsSentLetter.Abigail": "Hi {0},^^You forgot some items in my bag, so I've sent them back to you.^I had fun yesterday, I hope to see you again soon!^^    - {1}",

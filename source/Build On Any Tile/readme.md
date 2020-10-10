@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Esca-MMC/BuildOnAnyTile**
+
+----
+
 # Build On Any Tile
  A mod for the game Stardew Valley, allowing buildings to be placed on otherwise nonvalid tiles, such as water and other obstructions.
 

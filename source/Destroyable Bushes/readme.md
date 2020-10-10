@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Esca-MMC/DestroyableBushes**
+
+----
+
 # Destroyable Bushes
 A mod for the game Stardew Valley, allowing players to destroy every type of bush with an upgraded axe. Destroyed bushes drop small amounts of wood and respawn after 3 days. These features can be customized in the config.json file.
 

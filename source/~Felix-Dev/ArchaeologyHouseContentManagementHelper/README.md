@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Felix-Dev/StardewMods**
+
+----
+
 **Archaeology House Content Management Helper** is a [Stardew Valley](http://stardewvalley.net/) mod that is aimed at improving 
 the management of the Library/Museum. It provides status information about found books and contributed items and improves 
 management of museum pieces. It largely fixes the in-game bug preventing item placement in certain cases and allows 

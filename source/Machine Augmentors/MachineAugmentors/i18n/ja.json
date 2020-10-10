@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Videogamers0/SDV-MachineAugmentors
+**
+*************************************************/
+
+{
   "OutputAugmentorName": "出力増強器",
   "OutputAugmentorDescription": "加工・精製設備に取り付けると、\n生産量をわずかに増やす事が出来ます。",
   "OutputAugmentorEffectDescription": "生産量増加",

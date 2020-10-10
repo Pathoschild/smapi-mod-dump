@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Entoarox/StardewMods**
+
+----
+
 **More Animals** lets you to get more pets, and optionally randomises the appearance of your farm
 animals based on the sprites you download.
 

@@ -1,4 +1,14 @@
-﻿// Copyright 2020 Jamie Taylor
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jltaylor-us/StardewRangeHighlight
+**
+*************************************************/
+
+// Copyright 2020 Jamie Taylor
 //
 // To facilitate other mods which would like to use the RangeHighlight API,
 // the license for this file (and only this file) is modified by removing the

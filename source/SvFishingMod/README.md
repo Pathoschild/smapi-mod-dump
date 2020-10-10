@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/KDERazorback/SvFishingMod**
+
+----
+
 # SvFishingMod
 Small and simple **StardewValley Mod** which allows user customization of the Fishing mechanics included in the game, with features like *difficulty, rewards and condition tweaks*, as well as *auto-reeling* the hooked fish and overriding fish types regardless of the area where the player is located.
 

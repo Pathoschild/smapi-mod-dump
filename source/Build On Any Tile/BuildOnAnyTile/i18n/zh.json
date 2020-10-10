@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Esca-MMC/BuildOnAnyTile
+**
+*************************************************/
+
+{
   "BuildOnAllTerrainFeatures.Name": "建造在所有物体之上",
   "BuildOnAllTerrainFeatures.Description": "勾选此项，可将建筑物放置在农作物、树木、树桩、巨石或类似的地形特征上（注意这不包括觅食、杂草、石块和木头等，因为这些是另一种类型）。\n\n注意：当你把建筑物放置在这些东西上时，此 MOD 将会立即删除这些东西。",
   "BuildOnOtherBuildings.Name": "在其他建筑物上建造",

@@ -1,4 +1,12 @@
-﻿# Train Station
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/ChroniclerCherry/stardew-valley-mods**
+
+----
+
+# Train Station
 
 Train Station is a mod that transforms the train station at the railroad into a working train station. A ticket booth is added that allows players to pay a fee to travel to other train stations set by modders.
 

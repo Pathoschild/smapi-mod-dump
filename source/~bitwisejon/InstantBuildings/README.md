@@ -1,4 +1,12 @@
-﻿**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.4x mod which lets you build any building normally sold by the carpenter directly from your farm without waiting for days for Robin to build them. Buildings are created/upgraded instantly, and the magician buildings are included too! The configuration file allows you to turn off the resource requirements needed to build so you can play around in a sandbox mode if you want.
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/bitwisejon/StardewValleyMods**
+
+----
+
+**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.4x mod which lets you build any building normally sold by the carpenter directly from your farm without waiting for days for Robin to build them. Buildings are created/upgraded instantly, and the magician buildings are included too! The configuration file allows you to turn off the resource requirements needed to build so you can play around in a sandbox mode if you want.
 
 ## Contents
 * [Install](#install)

@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/SurfingFestival
+**
+*************************************************/
+
+{
   "name": "Surfing Festival",
   "conditions": "Beach/900 1400",
   "set-up": "event2/-1000 -1000/farmer 38 3 2/changeToTemporaryMap Beach-Surfing/loadActors Set-Up/animate Robin false true 500 20 21 20 22/animate Demetrius false true 500 24 25 24 26/viewport 38 2 clamp true/pause 1000/playerControl surfing",

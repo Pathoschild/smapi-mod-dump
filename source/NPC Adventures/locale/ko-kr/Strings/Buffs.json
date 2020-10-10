@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
   "Abigail": "에비게일과 어울리면 모험가의 피가 솟구쳐!#+1속도, +1행운, +1공격력이 올라가!",
   "Alex": "알렉스의 투지가 나에게도 깨어난 것 같아.#+1속도와 +2공격력이 올라가!",
   "Elliott": "소로의 후손인 엘리엇처럼 연못에 앉아서 조용히 낚시를 하는 사람은 없을거야.#낚시 기술을 +3을 얻는다.",

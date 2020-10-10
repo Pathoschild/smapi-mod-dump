@@ -1,4 +1,12 @@
-﻿# Synchronized randomness
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/ChroniclerCherry/stardew-valley-mods**
+
+----
+
+# Synchronized randomness
  
  SeededRandom is an available condition that can be useful for synchronizing randomness across different stocks, shops, for extended time periods, but can be quite complex.
  

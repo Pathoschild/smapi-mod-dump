@@ -1,4 +1,12 @@
-﻿# Expanded Preconditions Utility
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/ChroniclerCherry/stardew-valley-mods**
+
+----
+
+# Expanded Preconditions Utility
 Event preconditions is a commonly used conditions system across SMAPI mods due to the fact it already exists in game and thus allows a large number of conditions to be used with very little additional work. However, it can be limited in what it offers. This mod seeks to provide a conditions system in the same format as event preconditions, but with additional custom conditions. [More will be added over time as people make requests](https://github.com/ChroniclerCherry/stardew-valley-mods/issues/8)
 
 ## Syntax

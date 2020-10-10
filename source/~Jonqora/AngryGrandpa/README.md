@@ -1,9 +1,17 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Jonqora/StardewMods**
+
+----
+
 <details>
   <summary><i>TRANSLATION INFO:</i></summary>
   
-  - Traduction française incluse! (mes propres efforts) | [informations de configuration](https://www.nexusmods.com/stardewvalley/articles/460)
+  - Traduction franï¿½aise incluse! (mes propres efforts) | [informations de configuration](https://www.nexusmods.com/stardewvalley/articles/460)
   - Traduzione italiana inclusa, grazie ad [AndyAllanPoe](https://github.com/AndyAllanPoe)! | [informazioni di configurazione](https://www.nexusmods.com/stardewvalley/articles/465)
-  - Tradução para o português incluída, graças ao [Nathan2076](https://www.nexusmods.com/users/80828368)! | [informações de configuração](https://www.nexusmods.com/stardewvalley/articles/461)
+  - Traduï¿½ï¿½o para o portuguï¿½s incluï¿½da, graï¿½as ao [Nathan2076](https://www.nexusmods.com/users/80828368)! | [informaï¿½ï¿½es de configuraï¿½ï¿½o](https://www.nexusmods.com/stardewvalley/articles/461)
 </details>
 
 ---
@@ -221,7 +229,7 @@ These are not the mod's default settings, but I think they give the most interes
 
 - **ExpressivePortraits:** Gives grandpa a variety of new facial expressions to use in all evaluation dialogue. Defaults to `true`.
 
-- **PortraitStyle:** Choose the art style used for grandpa's expressive portraits. Defaults to `"auto"`.
+- **PortraitStyle:** Choose the art style used for grandpa's expressive portraits. Defaults toï¿½`"auto"`.
   - `"auto"` - Checks for compatible portrait mods and uses a matching style if available.
   - `"Vanilla"` - Grandpa matches the vanilla art style even if other portrait mods are installed.
   - `"Poltergeister"` - Matches Poltergeister's art style (e.g. [Seasonal Cute Characters](https://www.nexusmods.com/stardewvalley/mods/5450)) no matter what portrait mods are installed.

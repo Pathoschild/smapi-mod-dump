@@ -1,4 +1,14 @@
-﻿[
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+[
 	{
 		"Name": "John", //The name of the NPC
 		"Frame": 33, //The frame of the NPC sprite sheet that should be using while kissing. Start with 0 and go from left to right, top to botton.

@@ -1,4 +1,12 @@
-﻿##  Customizable Traveling Cart Redux
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Sakorona/SDVMods**
+
+----
+
+##  Customizable Traveling Cart Redux
 Version 1.4
 
 This mod is inspired by yyeahdude. It allows you to set the chances of the traveling cart appearing per day (by setting it from 0 to 1, for example, a 25% chance is .25), the items it contains, and how much it is. 

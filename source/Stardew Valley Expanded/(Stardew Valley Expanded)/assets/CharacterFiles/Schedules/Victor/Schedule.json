@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
 {
  //Plays video games, takes a trip to Pierre's, returns to the fridge, reads books, goes to sleep
   "7": "600 JenkinsHouse 31 5 1 Victor_Sleep/730 JenkinsHouse 6 8 0/930 JenkinsHouse 30 37 2/1000 SeedShop 13 27 1/1530 JenkinsHouse 35 37 0/1700 JenkinsHouse 13 31 0 Victor_Book2/2100 JenkinsHouse 31 5 1 Victor_Sleep",

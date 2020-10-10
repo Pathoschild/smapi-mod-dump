@@ -1,4 +1,14 @@
-﻿/*
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/isaacs-dev/Minidew-Mods
+**
+*************************************************/
+
+/*
  * MIT License
  *
  * Copyright (c) 2017-2019 Isaac S.

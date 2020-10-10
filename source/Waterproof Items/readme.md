@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Esca-MMC/WaterproofItems**
+
+----
+
 # Waterproof Items
  A mod for the game Stardew Valley, causing items dropped in water to float instead of being destroyed. It also includes an option to automatically teleport floating items to the nearest player, making them easier to retrieve.
 

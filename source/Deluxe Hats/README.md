@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/domsim1/stardew-valley-deluxe-hats-mod**
+
+----
+
 # Deluxe Hats
 
 Deluxe Hats is a mod for Stardew Valley that brings unique mechanics to hats. The goal behind this mod is to give the player a better sense of achievement when they spend possibly hours to obtain a particular hat.  Without this mod, hats only serve a purpose as a cosmetic item. With this mod, hats will have unique effects that alter gameplay, making them a valuable asset to any player.

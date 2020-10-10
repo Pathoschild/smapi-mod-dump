@@ -1,4 +1,12 @@
-﻿Speeder's Chest Labeling System
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/speeder1/ChestNameWithHoverLabel**
+
+----
+
+Speeder's Chest Labeling System
 ===============================
  
 This is a fairly simple mod for the game [Stardew Valley](http://stardewvalley.net/), it adds to the game a way to label your chests, and see their names on a hovering tooltip if you pass your mouse pointer over there, the purpose is make organizing things easier.

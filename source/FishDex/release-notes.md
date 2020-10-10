@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/rupak0577/FishDex**
+
+----
+
 # Release notes
 ## 1.3
 * Fixed a major bug in the parsing logic which resulted in incorrect season data (thanks [ImmortalZypther](https://github.com/ImmortalZypther) for reporting the bug!)

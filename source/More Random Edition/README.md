@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Chikakoo/stardew-valley-randomizer**
+
+----
+
 # Stardew Valley Randomizer (More Random Edition)
 
 An update for cTooshi's Stardew Valley Randomizer to fix errors, add new features and make the existing features more random.

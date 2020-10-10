@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/rupak0577/FishDex**
+
+----
+
 FishDex is a Stardew Valley mod that allows you to lookup fish info in-game. 
 The info is available only after you have caught the fish and is hidden otherwise. This
 allows you to play without cheating or getting spoiled.

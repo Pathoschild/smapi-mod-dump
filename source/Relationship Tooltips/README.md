@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/M3ales/RelationshipTooltips**
+
+----
+
 # Relationship Tooltips [![](http://cf.way2muchnoise.eu/298040.svg)](https://stardewvalley.curseforge.com/projects/298040)
 A tooltip mod which displays NPC friendship/relationship information on mouse hover, as well as gifting information.
 

@@ -1,4 +1,14 @@
-﻿namespace BetterCrabPotsConfigUpdater.ModConfigs
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AndyCrocker/StardewMods
+**
+*************************************************/
+
+namespace BetterCrabPotsConfigUpdater.ModConfigs
 {
     /// <summary>The object that contains data about each item, both for trash and non trash uses.</summary>
     public class Item

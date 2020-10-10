@@ -1,4 +1,12 @@
-﻿# Configuration Options
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Sakorona/SDVMods**
+
+----
+
+# Configuration Options
 
 - Verbose: This turns on debug logging. Note that the mod is *very chatty* if you turn on this feature. Verbose logs things to the console whenever possible
 	Valid options: **false**, **true**. Default: **true** in alpha,beta and delta builds. **false** in release builds.

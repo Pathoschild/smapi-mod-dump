@@ -1,4 +1,12 @@
-﻿Speeder's Slower Fence Decay Mod
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/speeder1/FenceSlowDecayMod**
+
+----
+
+Speeder's Slower Fence Decay Mod
 ================================
  
 This is a fairly simple mod for the game [Stardew Valley](http://stardewvalley.net/), it makes the game fences decay slower.

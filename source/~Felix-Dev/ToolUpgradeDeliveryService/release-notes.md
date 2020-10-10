@@ -1,4 +1,12 @@
-﻿# Release notes
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Felix-Dev/StardewMods**
+
+----
+
+# Release notes
 ## 1.4.0
 * Added compatibility for the mod "Rush Orders" (Rush Orders version 1.1.4 and above).
 * The delivery service now also works when the mod is installed *during* a tool upgrade process.

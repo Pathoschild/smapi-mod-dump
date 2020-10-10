@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/JohnsonNicholas/SDVMods**
+
+----
+
 This repository contains my SMAPI mods for Stardew Valley. See the individual mods for documentation, licenses, and release notes. May have other related projects that are here for tracking.
 
 ## Mods

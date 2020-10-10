@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/cantorsdust/StardewMods**
+
+----
+
 **TimeSpeed** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you control the flow
 of time in the game: speed it up, slow it down, or freeze it altogether. This can happen
 automatically or when you press a key in the game.

@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Brian-Wuest/Quick_Start**
+
+----
+
 # Quick_Start
 When starting a new farm with this mod installed, it will automatically add a few items to your inventory when you start and add some gold. Below is the list of things which it adds by default.
 

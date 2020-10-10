@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MouseyPounds/stardew-mods
+**
+*************************************************/
+
 Category: 
 
 Tags:
@@ -17,7 +27,7 @@ Details:
 [b]Description:
 
 [color=#ffff00]X[/color][/b] is a Content Patcher mod which 
-X can be set in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+X can be setï¿½in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
 
 
 [b]Installation:[/b]
@@ -30,7 +40,7 @@ X can be set in the [i]config.json[/i] file; this file is not included with the 
 [b]Configuration:
 [/b]
 [list]
-[*][color=#6d9eeb][b]Key[/b][/color] lets you select Y. Choices are [color=#b4a7d6][i]A[/i] [/color](default) or  [i][color=#b4a7d6]B[/color][/i].
+[*][color=#6d9eeb][b]Key[/b][/color]ï¿½lets you select Y. Choices are [color=#b4a7d6][i]A[/i]ï¿½[/color](default) or  [i][color=#b4a7d6]B[/color][/i].
 [/list]
 
 [b]Additional Notes:

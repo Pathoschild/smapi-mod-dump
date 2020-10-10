@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/loe2run/ChildToNPC**
+
+----
+
 # ChildToNPC
 This is a Stardew Valley mod called Child To NPC. Child To NPC is a modding tool which converts children into full-fledged NPCs, allowing them to be patched by other mods in the sames ways that NPCs can. This mod is newly released, so please let me know if you run into any issues using it.
 

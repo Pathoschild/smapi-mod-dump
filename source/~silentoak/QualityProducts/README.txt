@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/silentoak/StardewMods
+**
+*************************************************/
+
 Quality Products - 2.1.1
 Adds quality modifiers to foods, beverages and other products made from quality ingredients.
 High-quality ingredients make high-quality products!

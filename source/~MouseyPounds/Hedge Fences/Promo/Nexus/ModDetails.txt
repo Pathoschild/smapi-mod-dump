@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MouseyPounds/stardew-mods
+**
+*************************************************/
+
 Category: Items
 
 Tags:
@@ -27,7 +37,7 @@ Details:
 [*][color=#6d9eeb][b]ReplaceFence[/b][/color] lets you select which fence item will be replaced. Choices are [color=#b4a7d6][i]hardwood[/i] [/color](default), [i][color=#b4a7d6]wood[/color][/i], [i][color=#b4a7d6]stone[/color][/i], or [i][color=#b4a7d6]iron[/color][/i].
 [*][b][color=#6d9eeb]CraftingMaterial[/color][/b] lets you select what item is needed to craft the hedge. Choices are [color=#b4a7d6][i]hardwood[/i] [/color](default), [i][color=#b4a7d6]wood[/color][/i], or [i][color=#b4a7d6]fiber[/color][/i].
 [*][b][color=#6d9eeb]AddFlowers[/color][/b] lets you choose whether or not the hedge will have flowers. Choices are [color=#b4a7d6][i]true[/i] [/color](default) or [i][color=#b4a7d6]false[/color][/i].
-[*][b][color=#6d9eeb]FlowerType[/color][/b] lets you choose what color flowers (if [b]AddFlowers[/b] is true). The mixed option has blue, pink, and purple flowers; the others are various shades of the named color. Choices are [i][color=#b4a7d6]mixed [/color][/i](default), [i][color=#b4a7d6]blue[/color][/i], [i][color=#b4a7d6]pink[/color][/i], and [i][color=#b4a7d6]yellow[/color][/i]. 
+[*][b][color=#6d9eeb]FlowerType[/color][/b] lets you choose what color flowers (if [b]AddFlowers[/b] is true). The mixed option has blue, pink, and purple flowers; the others are various shades of the named color.ï¿½Choices are [i][color=#b4a7d6]mixed [/color][/i](default), [i][color=#b4a7d6]blue[/color][/i], [i][color=#b4a7d6]pink[/color][/i], and [i][color=#b4a7d6]yellow[/color][/i].ï¿½
 [*][b][color=#6d9eeb]HedgeShade[/color][/b] lets you choose how dark the hedge should be. Choices are [i][color=#b4a7d6]dark [/color][/i](default) and [i][color=#b4a7d6]light[/color][/i].
 [*][b][color=#6d9eeb]SnowInWinter[/color][/b] lets you choose whether the hedge should be covered in snow during winter. Choices are [i][color=#b4a7d6]full[/color][/i] (default), [i][color=#b4a7d6]half[/color][/i] or [i][color=#b4a7d6]none[/color][/i].
 [*][b][color=#6d9eeb]FlowersInWinter[/color][/b] lets you choose whether the flowers (if enabled) still show during winter. Choices are [i][color=#b4a7d6]true[/color][/i] or [i][color=#b4a7d6]false[/color][/i] (default).
@@ -37,9 +47,9 @@ Details:
 [/b]
 [list]
 [*]The fence item will be renamed to "Hedge Fence" and will keep the durability amount of the fence which it replaces; so if you replace wood fences they will decay very quickly and if you replace hardwood fences they will decay very slowly. [i][color=#ea9999]The name change will only apply to items that are newly crafted after the mod was installed; hedge fences currently in the save file will still retain their old name[/color].[/i]
-[*]The Hedge Fence will sell for 1g regardless of what they are replacing and what material was chosen. [i][color=#ea9999]The value change will only apply to items that are newly crafted after the mod was installed; hedge fences currently in the save file will still retain their old sale price[/color][/i]
-[*]The crafting recipe [i][color=#ea9999]will not change names[/color][/i] and will still refer to the fence that was replaced. This is done to prevent possible issues with the [i]Craft Master[/i]  achievement.
-[*]Hedge Fences always craft at a 1:1 rate regardless of what they are replacing and what material was chosen.
+[*]The Hedge Fence will sell for 1g regardless of what they are replacing and what material was chosen.ï¿½[i][color=#ea9999]The value change will only apply to items that are newly crafted after the mod was installed; hedge fences currently in the save file will still retain their old sale price[/color][/i]
+[*]The crafting recipe [i][color=#ea9999]will not change names[/color][/i] and will still refer to the fence that was replaced. This is done to prevent possible issues with the [i]Craft Master[/i]ï¿½ achievement.
+[*]Hedge Fences always craft at a 1:1 rate regardless of whatï¿½they are replacing and what material was chosen.
 [/list][b]
 
 Compatibility:[/b]

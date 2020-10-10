@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/urbanyeti/stardew-better-ranching**
+
+----
+
 # Stardew Valley Mod - Better Ranching
 Stardew Valley mod that prevents doomed milking/shearing attempts and adds an indicator when animals can be petted, milked, or sheared: https://www.nexusmods.com/stardewvalley/mods/859/
 

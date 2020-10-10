@@ -1,4 +1,12 @@
-﻿In the 'Example' folder, you will see a variety of examples I've made. You can just copy them out and replace the Cursor.png IMPORTANT: YOU NEED TO RENAME THEM THE Cursor.png OTHERWISE IT WILL NOT BE PICKED UP BY THE CODE 
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/EpicBellyFlop45/StardewMods**
+
+----
+
+In the 'Example' folder, you will see a variety of examples I've made. You can just copy them out and replace the Cursor.png IMPORTANT: YOU NEED TO RENAME THEM THE Cursor.png OTHERWISE IT WILL NOT BE PICKED UP BY THE CODE 
 (They have incrementing numbers due to Windows not allowing multiple files with the same name in the same folder) that is in the root of Assets if you want to use one of those (They are only colour changes).
 
 You will also see a 'Base.png' this is the default cursor and you can use this as a base for a custom cursor if you wish (Useful so you know the layout of cursors etc. Also good as you can see the rough boundries for each cursor

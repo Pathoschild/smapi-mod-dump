@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/instafluff/SleeplessInStardew**
+
+----
+
 **SleeplessInStardew** The Stardew Valley Late-Night Get-More-Done Sleep-less Insomniac Productivity Powernap Mod!
 
 Just add this mod and extend your sleep time to 6am instead of 2am.

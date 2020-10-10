@@ -1,8 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Felix-Dev/StardewMods
+**
+*************************************************/
+
 {
   "MAIL_TOOL_UPGRADE_AXE": "Hallo @,^Ich habe deine Axt verbessert! Viel Erfolg mit deiner Farm! ^^Bis bald, ^-Clint",
   "MAIL_TOOL_UPGRADE_PICKAXE": "Hallo @,^Ich habe deine Spitzhacke verbessert! Viel Erfolg mit deiner Farm! ^^Bis bald, ^-Clint",
   "MAIL_TOOL_UPGRADE_HOE": "Hallo @,^Ich habe deine Hacke verbessert! Viel Erfolg mit deiner Farm! ^^Bis bald, ^-Clint",
-  "MAIL_TOOL_UPGRADE_WATERING_CAN": "Hallo @,^Ich habe deine Gießkanne verbessert! Viel Erfolg mit deiner Farm! ^^Bis bald, ^-Clint",
+  "MAIL_TOOL_UPGRADE_WATERING_CAN": "Hallo @,^Ich habe deine Gieï¿½kanne verbessert! Viel Erfolg mit deiner Farm! ^^Bis bald, ^-Clint",
 
   "MAIL_TOOL_UPGRADE_TOOL_ALREADY_RECEIVED": "^^(Du hast bereits dein verbessertes Werkzeug von Clint erhalten.)"
 }

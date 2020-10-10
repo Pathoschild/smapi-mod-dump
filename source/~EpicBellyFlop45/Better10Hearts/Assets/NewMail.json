@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/EpicBellyFlop45/StardewMods
+**
+*************************************************/
+
 {
   "better10Hearts_George_Home": "Dear @,^I found you in our house asleep. I got someone to take you to your house.^^-George",
   "better10Hearts_George_Away": "Dear @,^I found you outside asleep. I got someone to take you to your house.^^-George",

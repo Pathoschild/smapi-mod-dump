@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Pathoschild/StardewMods**
+
+----
+
 **Data Layers** is a [Stardew Valley](http://stardewvalley.net/) mod that overlays the world with
 visual data like accessibility, bee/Junimo/scarecrow/sprinkler coverage, etc. It automatically
 includes data from other mods if applicable.

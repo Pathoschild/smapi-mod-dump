@@ -1,4 +1,14 @@
-﻿Peaceful Mining - 0.1.0
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/nman130/Stardew-Mods
+**
+*************************************************/
+
+Peaceful Mining - 0.1.0
 
 This mod makes the Stardew Valley mining experience much more peaceful.
 It can either stop monsters from moving or stop them from appearing entirely.

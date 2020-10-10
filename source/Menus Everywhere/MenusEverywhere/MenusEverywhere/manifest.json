@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/nman130/Stardew-Mods
+**
+*************************************************/
+
+{
   "Name": "Menus Everywhere",
   "Author": "nman130",
   "Version": "0.1.2",

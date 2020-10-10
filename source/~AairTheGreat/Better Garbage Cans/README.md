@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/AairTheGreat/StardewValleyMods**
+
+----
+
 [Better Garbage Cans](https://github.com/AairTheGreat/StardewValleyMods/tree/master/Better%20Garbage%20Cans) is a [Stardew Valley](http://stardewvalley.net/) mod which changes the way the town's garbage cans work.
                                                                                                            
 **This documentation is for modders and player. See the [Nexus page](https://www.nexusmods.com/stardewvalley/mods/4171) if you want the compiled mod.**

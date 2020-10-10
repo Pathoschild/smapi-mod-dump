@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://gitlab.com/kdau/cropbeasts**
+
+----
+
 # Customizing Cropbeasts
 
 Additional crops, including custom crops added by Json Assets or otherwise, can be made eligible to become cropbeasts by patching this mod's data.

@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
   "Abigail": "Sair com Abigail faz seu espírito de aventura aparecer!#Você ganha +1 de velocidade, +1 de sorte e +1 ataque.",
   "Alex": "O espírito de luta de Alex faz o seu acordar também.#Você ganha +1 de velocidade e +2 ataque.",
   "Elliott": "Um verdadeiro pescador nato que tem uma habilidade#que faz a sua ficar no chinelo.#Você ganha +3 de pesca.",

@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/janavarro95/Stardew_Valley_Mods**
+
+----
+
 Custom_NCP_Plus_Shop v 1.0.0
 
 Posted on 5/8/16 at 8:46 P.M.

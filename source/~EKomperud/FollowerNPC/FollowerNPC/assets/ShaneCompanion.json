@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/EKomperud/StardewMods
+**
+*************************************************/
+
 {
   "Companion": "Hey @. I was reading that going for nature walks is good for mental health.#$q 775/776 shaneCompanion_followup#What do you say we take a stroll#$r 775 15 shaneCompanion_yes#Yeah, I've heard that bit about walks too. Where do you want to go?#$r 776 5 shaneCompanion_no#Sorry Shane, I'm a bit too tired to entertain company right now.#$r 776 0 shaneCompanion_no#Not today Shane. Sorry.",
   "shaneCompanion_yes": "I don't know. I was kind of hoping you had some ideas haha! Let's head out.$h",

@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Esca-MMC/FarmTypeManager**
+
+----
+
 # Farm Type Manager
 This mod allows players and modders to customize features from Stardew Valley's different farm maps. It can spawn forageable plants, large objects (e.g. stumps and boulders), ore, and monsters at any location in the game. Users can configure the number of objects spawned per day, which areas or terrain types they can spawn on, the chances of spawning each object type, and more.
 

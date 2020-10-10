@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
   "adventureBegins": "Bom dia, @.^^Eu estive monitorando seu progresso nas minas, e eu gostaria de te parabenizar pelo seu sucesso. Talvez você estaria interessado(a) em saber que você não é a única pessoa com o espírito de aventureiro. Por favor venha até a Guilda dos Aventureiros, eu tenho informações que gostaria de discutir em pessoa.^^-Marlon",
   "adventureContinue": "Olá, @,^^Eu fiquei impressionado em saber sobre suas pequenas aventuras com as pessoas da vila. Faz bem ao meu coração em saber que ainda existem pessoas que querem se aventurar e se apoiar em momentos difíceis. A comunidade é importante, principalmente em uma vila desse tamanho.^^Eu espero que você e seus amigos mantenham o espírito de aventura mesmo quando eu for embora. Venha para a guilda a qualquer hora, talvez tenha uma ou duas histórias para contar para mim e o velho Gil.^^-Marlon",
   "bagItemsSentLetter.Abigail": "Oi {0},^^Você esqueçeu umas coisas na minha mochila.^Espero que possamos fazer isso novamente!^^    - {1}",

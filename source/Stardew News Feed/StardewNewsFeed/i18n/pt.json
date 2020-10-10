@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Mikesnorth/StardewNewsFeed
+**
+*************************************************/
+
+{
     "news-feed.birthday-notice": "Hoje é o aniversário de {{npcName}}. Não esqueça de lhe dar um presente!",
     "news-feed.harvest-items-found-in-location-notice": "Há {{numberOfItems}} itens prontos para serem colhidos em {{locationName}}!",
     "news-feed.harvest-animals-found-in-location-notice.singular": "Há 1 animal com produto disponível em {{locationName}}!",

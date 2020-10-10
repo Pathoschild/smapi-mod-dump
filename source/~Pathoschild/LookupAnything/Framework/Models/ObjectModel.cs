@@ -1,4 +1,14 @@
-﻿namespace Pathoschild.Stardew.LookupAnything.Framework.Models
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+namespace Pathoschild.Stardew.LookupAnything.Framework.Models
 {
     /// <summary>An object entry parsed from the game's data files.</summary>
     internal class ObjectModel

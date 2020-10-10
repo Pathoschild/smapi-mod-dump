@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/littleraskol/ReRegeneration
+**
+*************************************************/
+
 ReRegeneration is one more iteration of the idea of regenerating health and stamina in Stardew Valley. It is based on the code of "Regeneration" by Hammurabi, and while it does not replicate all its features, I've tried to add a good mix of options to make it a worthwhile option while that mod is not being maintained anymore.
 
 Source code is included in the install package and available here: https://github.com/littleraskol/ReRegeneration

@@ -1,4 +1,12 @@
-﻿**One Click Shed Reloader** is a [Stardew Valley](http://stardewvalley.net/) v1.4x mod which lets you harvest and reload
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/bitwisejon/StardewValleyMods**
+
+----
+
+**One Click Shed Reloader** is a [Stardew Valley](http://stardewvalley.net/) v1.4x mod which lets you harvest and reload
 all supported containers in a Shed, Barn, or Coop with a single click on the outside of the building.
 
 ## Contents

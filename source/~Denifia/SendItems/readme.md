@@ -1,4 +1,12 @@
-﻿# Send Items
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Denifia/StardewMods**
+
+----
+
+# Send Items
 
 **Send Items** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you
 send items to your other farmers (saved games) or other farmers from around the world (online friends).

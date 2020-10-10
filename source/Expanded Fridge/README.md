@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Uwazouri/ExpandedFridge**
+
+----
+
 # Managing Mini Fridges
 Access mini fridges through the kitchen fridge using inventory tabs. Simply place mini fridges in a farm house or cabin with a kitchen and they will be accessible from the kitchen fridge. The next day you will find your placed mini fridges moved away from your living space. They are placed in the first found free tiles within the house when the day ends so if the mod stops working you should still have your stuff. It should also work in multiplayer.
 

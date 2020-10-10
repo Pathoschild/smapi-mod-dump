@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
     "Quest.FirstObjective": "Construa um(a) {{Item}}.",
     "Quest.LastObjective": "Traga o(a) {{Item}} para o Willy.",
     "Quest.CompleteDialog": "É esse o trem, né? Assim que eu terminá de testá eu falo prô Clint enviá a nova receita prô cê.$h",

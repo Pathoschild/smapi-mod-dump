@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+{
 	"scuba-fins": "스쿠버 핀",
 	"SwimMod_Mariner_Questions": "늙은 선원: 이렇게 깊은 곳까지 잠수해 왔군요, {0}. 바다 속을 탐험하다 그대에게 쓸만한 걸 발견했는데...관심 있나요?",
 	"SwimMod_Mariner_Questions_Old": "늙은 선원: 자, 어디보자...당신은 그대의 가치를 증명하고 내게서 보물을 가져갈 준비가 되었나요?",

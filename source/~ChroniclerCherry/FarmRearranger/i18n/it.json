@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ChroniclerCherry/stardew-valley-mods
+**
+*************************************************/
+
+{
     "robinletter": "Ehilà @! ^Maru e io abbiamo lavorato su un nuovo progetto e abbiamo pensato che forse avresti potuto usarlo. ^Si chiama 'Rearranger': un pratico set di progetti che puoi usare per cambiare da solo il layout dei tuoi edifici agricoli senza dovermi chiamare! ^Li ho aggiunti al mio negozio, quindi sentiti libero di venire a prenderne uno quando vuoi. A dopo! ^^-Robin[#]Avviso Rearranger",
     "CantBuildOffFarm" : "Puoi riorganizzare i tuoi edifici solo dalla tua fattoria."
 }

@@ -1,4 +1,14 @@
-﻿// These declare which packages you are using.
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Stardew-Valley-Modding/PriceTooltips
+**
+*************************************************/
+
+// These declare which packages you are using.
 using StardewModdingAPI; // SMAPI library, used here for loading the mod.
 using Bookcase.Utils; // Bookcase's utils, used here for getting item sell price with ItemUtils
 using Bookcase.Events; // Bookcase's events, used here to modify tooltips.

@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/GilarF/SVM
+**
+*************************************************/
+
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -9,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Replaces the standard options tab, adding the function of editing the settings of installed modifications")]
 [assembly: AssemblyCompany("GilarF")]
 [assembly: AssemblyProduct("Mod Settings Tab")]
-[assembly: AssemblyCopyright("Copyright ©Gilar Fasulaki 2020")]
+[assembly: AssemblyCopyright("Copyright ï¿½Gilar Fasulaki 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

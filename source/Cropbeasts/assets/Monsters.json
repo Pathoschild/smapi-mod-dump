@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/kdau/cropbeasts
+**
+*************************************************/
+
 {
 	"Berrybeast":      "24/ 5/0/0/false/1000/ -1 0.00/1/.010/ 4/2/.00/false/0/Berrybeast",
 	"Grainbeast":      "27/ 8/0/0/false/2000/ -1 0.00/1/.010/ 6/2/.00/false/0/Grainbeast",

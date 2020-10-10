@@ -1,4 +1,14 @@
-﻿/* Courtesy of Mazzons: https://www.nexusmods.com/stardewvalley/users/49269143 */
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+/* Courtesy of Mazzons: https://www.nexusmods.com/stardewvalley/users/49269143 */
 {
     "text.percent": "{0:P}",
     "text.streak": "Sequencia Perfeita de pescaria!: {0}",

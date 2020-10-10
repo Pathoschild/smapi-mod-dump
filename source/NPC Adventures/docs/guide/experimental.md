@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/purrplingcat/PurrplingMod**
+
+----
+
 # Experimental features
 
 From version 0.12.0 the mod brings experimental features. This features are disabled by default and player can enable it in [config.json](configuration.md). See the `Experimental` section in config file.

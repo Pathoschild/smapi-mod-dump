@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Platonymous/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
   "Greeting": "좋은 아침이에요, {Player}. {Season}의 {Day}일, {DayName}.",
   "Your husband": "당신의 남편",
   "Your wife": "당신의 아내",

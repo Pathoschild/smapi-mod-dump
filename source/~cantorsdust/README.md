@@ -1,4 +1,12 @@
-﻿This repository contains my mods for [Stardew Valley](http://stardewvalley.net/):
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/cantorsdust/StardewMods**
+
+----
+
+This repository contains my mods for [Stardew Valley](http://stardewvalley.net/):
 
 * [All Professions](AllProfessions) ([Nexus](http://www.nexusmods.com/stardewvalley/mods/174))
 * [Instant Grow Trees](InstantGrowTrees) ([Nexus](http://www.nexusmods.com/stardewvalley/mods/173))

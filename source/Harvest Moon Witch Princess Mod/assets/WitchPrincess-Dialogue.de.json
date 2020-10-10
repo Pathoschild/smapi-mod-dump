@@ -1,14 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Sasara2201/WitchPrincess
+**
+*************************************************/
+
 {
-    ["Introduction"] = "So du bist also neu hier, huh? Wie war dein Name..? @.#$e#Naja, wie auch immer. Viel glück, schätze ich.";
+    ["Introduction"] = "So du bist also neu hier, huh? Wie war dein Name..? @.#$e#Naja, wie auch immer. Viel glï¿½ck, schï¿½tze ich.";
     ["fall_24"] = "@, kommst du zum Fest in 3 Tagen?$u#$b#Ich habe heute fast die Vorbereitungen abgeschlossen.$4#&e#Hehe...";
-    ["Tue"] = "Was? Warum störst du mich? Ich bin beschäftigt!";
+    ["Tue"] = "Was? Warum stï¿½rst du mich? Ich bin beschï¿½ftigt!";
     ["Tue4"] = "Da du dich als hilfreich herausgestellt hast, denke Ich, dass du in den Keller darfst. Aber fass nichts dort unten!.";
     ["Wed"] = "Es braucht Jahre des Studiums um die Sprache der Elemente zu verstehen.#$e#Um die Sprache dann auch zu sprechen, braucht es eine lebenslange Hingabe.#$e#Nun, wenn du mich entschuldigst...";
-    ["Thu"] = "...#$e#..Hm.#$e#..Du störst mich...";
-    ["Thu10"] = "Erzähle es keinem... aber ich habe Gründe, anzunehmen das deine Farm umgeben ist von einem starken magischem Feld.#$e#Ich könnte daneben liegen... es ist selten, Doch sowas kann passieren.";
-    ["Fri"] = "Die Dorfbewohner sind verängstigt von mir.#$e#Das ist in Ordnung. Ich bin sowieso lieber alleine.";
-    ["Fri6"] = "In meiner Schulzeit war ich befreundet mit einer anderen Hexe. Nach der Zeit ist sie Verrückt geworden, sie begann über die Landschaft zu fliegen, und jeden zu verfluchen der ihr über den Weg kam...";
+    ["Thu"] = "...#$e#..Hm.#$e#..Du stï¿½rst mich...";
+    ["Thu10"] = "Erzï¿½hle es keinem... aber ich habe Grï¿½nde, anzunehmen das deine Farm umgeben ist von einem starken magischem Feld.#$e#Ich kï¿½nnte daneben liegen... es ist selten, Doch sowas kann passieren.";
+    ["Fri"] = "Die Dorfbewohner sind verï¿½ngstigt von mir.#$e#Das ist in Ordnung. Ich bin sowieso lieber alleine.";
+    ["Fri6"] = "In meiner Schulzeit war ich befreundet mit einer anderen Hexe. Nach der Zeit ist sie Verrï¿½ckt geworden, sie begann ï¿½ber die Landschaft zu fliegen, und jeden zu verfluchen der ihr ï¿½ber den Weg kam...";
     ["Sat"] = "Du stehst auf einem Magischem Feld.#$e#Ich kam nicht einfach so in dieses runtergekommene Dorf...";
-    ["Sat2"] = "Wie läuft es mit den Juminos? Das Letztes mal als ich von ihnen gehört habe waren sie sehr bedüftig...";
-    ["Sun"] = "Manchmal, Observiere ich die Dorfbewohner, im Geheimen.#$e#Die täglichen Rituale der Sterblichen sind lustig, hehe...";
+    ["Sat2"] = "Wie lï¿½uft es mit den Juminos? Das Letztes mal als ich von ihnen gehï¿½rt habe waren sie sehr bedï¿½ftig...";
+    ["Sun"] = "Manchmal, Observiere ich die Dorfbewohner, im Geheimen.#$e#Die tï¿½glichen Rituale der Sterblichen sind lustig, hehe...";
 }

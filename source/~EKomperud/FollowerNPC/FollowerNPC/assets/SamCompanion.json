@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/EKomperud/StardewMods
+**
+*************************************************/
+
 {
   "Companion": "Hey @! It seems like a good day to hang out, right?#$q 725/726 samCompanion_followup#What do you say?#$r 725 15 samCompanion_yes#Sure! I know some cool places I think you'd like to see.#$r 726 0 samCompanion_sorry#Sorry Sam, today's a bad day for me. Another time though!#$r 726 0 samCompanion_no#No thanks, Sam. Not today.",
   "samCompanion_yes": "Nice. I knew you'd be down for fun times!$h",

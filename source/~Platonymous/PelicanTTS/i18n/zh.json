@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Platonymous/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
   "Greeting": "早上好 {Player}。 这是 {DayName}，{Season} 中的 {Day} 标记。",
   "Your husband": "你的丈夫",
   "Your wife": "你的妻子",

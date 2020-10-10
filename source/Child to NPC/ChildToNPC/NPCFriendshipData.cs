@@ -1,4 +1,14 @@
-﻿namespace ChildToNPC
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/loe2run/ChildToNPC
+**
+*************************************************/
+
+namespace ChildToNPC
 {
     //This takes just the information I need from the Friendship class
     //(There's a Netcode error if I try to directly save Date information)

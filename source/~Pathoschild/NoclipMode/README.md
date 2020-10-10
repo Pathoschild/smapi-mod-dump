@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Pathoschild/StardewMods**
+
+----
+
 **Noclip Mode** is a [Stardew Valley](http://stardewvalley.net/) mod that toggles
 [noclip mode](https://en.wikipedia.org/wiki/Noclip_mode) at the press of a button, letting you walk
 through anything (even map boundaries).

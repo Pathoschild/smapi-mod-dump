@@ -1,4 +1,12 @@
-﻿Buy cooking recipes from the SMAPI console!
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Denifia/StardewMods**
+
+----
+
+Buy cooking recipes from the SMAPI console!
 
 Now that this mod has 10+ endorsements, I'll schedule in development to allow you to buy recipes from a magazine rack in Pierre's shop.
 

@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Pathoschild/StardewMods**
+
+----
+
 **Chests Anywhere** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you access
 your chests, fridge, Junimo huts, and shipping bin from anywhere and organize them your way.
 Transfer items without having to run around, from the comfort of your bed to the deepest mine level.

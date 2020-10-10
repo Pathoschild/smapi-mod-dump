@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Igorious/Stardew_Valley_Showcase_Mod
+**
+*************************************************/
+
 using System;
 using System.Collections.Generic;
 using Igorious.StardewValley.DynamicApi2.Compatibility;
@@ -15,7 +25,7 @@ namespace Igorious.StardewValley.DynamicApi2.Services
 
         private DataService()
         {
-            EntoaroxFrameworkÑompatibilityLayout.Instance.ContentIsReadyToOverride += OnLoadContent;
+            EntoaroxFrameworkï¿½ompatibilityLayout.Instance.ContentIsReadyToOverride += OnLoadContent;
         }
 
         public DataService RegisterFurniture(FurnitureInfo furnitureInfo)
@@ -28,7 +38,7 @@ namespace Igorious.StardewValley.DynamicApi2.Services
 
         private void OnLoadContent()
         {
-            EntoaroxFrameworkÑompatibilityLayout.Instance.ContentIsReadyToOverride -= OnLoadContent;
+            EntoaroxFrameworkï¿½ompatibilityLayout.Instance.ContentIsReadyToOverride -= OnLoadContent;
 
             var furnitureData = GetFurnitureInternal();
             foreach (var furnitureInfo in FurnitureData)

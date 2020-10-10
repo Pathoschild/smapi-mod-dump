@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
 Spring is nature's way of saying, 'Let's party!'^Robin Williams
 Though I do not believe that a plant will spring up where no seed has been, I have great faith in a seed... Convince me that you have a seed there, and I am prepared to expect wonders.^Henry David Thoreau
 To find the universal elements enough; to find the air and the water exhilarating; to be refreshed by a morning walk or an evening saunter... to be thrilled by the stars at night; to be elated over a bird's nest or a wildflower in spring - these are some of the rewards of the simple life.^John Burroughs
@@ -28,7 +38,7 @@ If you don't know where you are going, any road will get you there.^Lewis Carrol
 To be interested in the changing seasons is a happier state of mind than to be hopelessly in love with spring.^George Santayana
 What is important in life is life, and not the result of life.^Johann Wolfgang von Goethe
 When I wake up, I expect things to be good. If they're not, then I try to set about trying to make them as good as I can 'cause I know I'm gonna have to live that day anyway. So why not try to make the most of it if you can? Some days, they pan out a little better than others, but you still gotta always just try.^Dolly Parton
-Be who you are and say what you feel because those who mind don’t matter and those who matter don’t mind.^Dr. Seuss
+Be who you are and say what you feel because those who mind donï¿½t matter and those who matter donï¿½t mind.^Dr. Seuss
 It's a helluva start, being able to recognize what makes you happy.^Lucille Ball
 Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that.^Martin Luther King, Jr.
 Nothing great is created suddenly, any more than a bunch of grapes or a fig. If you tell me that you desire a fig. I answer you that there must be time. Let it first blossom, then bear fruit, then ripen.^Epictetus
@@ -86,7 +96,7 @@ In the depth of winter I finally learned that there was in me an invincible summ
 What is called genius is the abundance of life and health.^Henry David Thoreau
 There is no more fatal blunderer than he who consumes the greater part of his life getting his living.^Henry David Thoreau
 Everyone has inside of him a piece of good news. The good news is that you don't know how great you can be! How much you can love! What you can accomplish! And what your potential is!^Anne Frank
-So be sure when you step, Step with care and great tact. And remember that life's A Great Balancing Act. And will you succeed? Yes! You will, indeed! (98 and ¾ percent guaranteed)^Dr. Seuss
+So be sure when you step, Step with care and great tact. And remember that life's A Great Balancing Act. And will you succeed? Yes! You will, indeed! (98 and ï¿½ percent guaranteed)^Dr. Seuss
 Don't judge each day by the harvest you reap but by the seeds that you plant.^Robert Louis Stevenson
 All labor that uplifts humanity has dignity and importance and should be undertaken with painstaking excellence.^Martin Luther King, Jr.
 Nothing makes the earth seem so spacious as to have friends at a distance; they make the latitudes and longitudes.^Henry David Thoreau

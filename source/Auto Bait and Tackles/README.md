@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Alison-Li/AutoBaitAndTacklesMod**
+
+----
+
 # Auto Bait And Tackles Mod
 
 [![Generic badge](https://img.shields.io/badge/contributions-welcome-<COLOR>.svg)](https://shields.io/)

@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Entoarox/StardewMods**
+
+----
+
 **Entoarox Framework** contains utilities that other mods can use to simplify their code. All of
 its main functionality is designed as extension methods on SMAPI's own API's, thus one simple
 `using Entoarox.Framework;` at the top of your file, and all of it is available. 

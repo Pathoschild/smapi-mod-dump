@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/jamespfluger/Stardew-TimeOfThePrairieKing**
+
+----
+
 # Time of the Prairie King
 
 This is a mod for Stardew Valley that displays the time of day in _Journey of the Prairie King_ during multiplayer. The goal is to bring the same feature that is part of the _Junimo Cart_ game to _Journey of the Prairie King_. Now you don't have to leave the game suddenly when you realize it's 1:20am and your friends are yelling at you to get back to the farm!

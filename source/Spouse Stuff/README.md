@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/sikker/SpouseStuff**
+
+----
+
 # SpouseStuff - A Stardew Valley mod
 As the title suggests, this mod adds interactions to your spouse's stuff in the farmhouse of Stardew Valley. If you're married, of course.
 

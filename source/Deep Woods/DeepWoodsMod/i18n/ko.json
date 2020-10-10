@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/maxvollmer/DeepWoodsMod
+**
+*************************************************/
+
 {
   "easter-egg.hatched-message": "새로운... 잠깐만요, 토끼가 알에서 나왔다고요?!",
   "easter-egg.name": "부활절 달걀",

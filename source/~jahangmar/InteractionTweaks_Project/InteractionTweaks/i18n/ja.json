@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jahangmar/StardewValleyMods
+**
+*************************************************/
+
+{
     "dia.eatquestion": "{{item}}を食べようか?",
     "dia.eatanswerOne": "一つだけ",
     "dia.eatanswerMulti": "満腹になるまで{{amount}}個食べる",

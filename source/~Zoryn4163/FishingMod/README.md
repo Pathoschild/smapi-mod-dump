@@ -1,4 +1,12 @@
-﻿﻿**Fishing Mod** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you customise the
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Zoryn4163/SMAPI-Mods**
+
+----
+
+﻿**Fishing Mod** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you customise the
 fishing experience by editing the mod settings.
 
 ## Contents

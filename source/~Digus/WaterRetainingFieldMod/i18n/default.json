@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
 	"WaterRetainingFieldResolution.Letter": "Farmer @,^   There was a change of regulation for water retainers. All Retaining Soils, basic or quality, sold or produced, in the past or in the future, shall follow the new resolution.^^Resolution: All adjacent watered soils using the same quality of retainer shall behave the same, retaining the water or drying out.^^(Continued on next page)^   All existing Retaining Soils in the Ferngill Republic were replaced to comply with this resolution.^   All Retaining Soils to be produced in the future shall comply with this resolution, violators will be fined.^   Thank you for understanding.^^   -Ferngill Farmers Association",
 	"WaterRetainingFieldResolution.Letter.Title": "Water Retaining Soil Resolution"
 }

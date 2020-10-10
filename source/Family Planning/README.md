@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/loe2run/FamilyPlanningMod**
+
+----
+
 # FamilyPlanningMod
 This is a Stardew Valley mod called Family Planning. Family Planning allows you to customize the maximum number of children you can have and their genders. Currently, you can have zero to four children. Family Planning also allows you to adopt children with a roommate by config.
 

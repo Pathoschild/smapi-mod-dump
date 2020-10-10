@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/SwizzyStudios/SV-SwizzyMeads**
+
+----
+
 # SV-SwizzyMeads
 Stardew Valley mod to add more mead flavors based on existing honey types. This was accomplished by using [Harmony](https://github.com/pardeike/Harmony) to alter the Stardew Valley base code.
 

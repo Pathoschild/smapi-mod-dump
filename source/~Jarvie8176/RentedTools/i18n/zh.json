@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Jarvie8176/StardewMods
+**
+*************************************************/
+
+{
   "Blacksmith_RecycleTools_Menu": "你要归还我之前借你的工具吗？",
   "Blacksmith_RecycleToolsMenu_Confirm": "是的",
   "Blacksmith_RecycleToolsMenu_Leave": "现在还不行",

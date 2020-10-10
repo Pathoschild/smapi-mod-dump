@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MouseyPounds/stardew-mods
+**
+*************************************************/
+
 Category: 
 
 Tags:
@@ -16,7 +26,7 @@ This mod uses only original assets and modifications of existing game assets.
 Details:
 [b]Description:
 
-[color=#ffff00]Mouse House Makeover[/color][/b] is a Content Patcher mod which gives Hat Mouse a fancy new stone house and some friends to share the burden of minding the store. Also fixes a vanilla tilesheet bug for those scoundrels who choose to keep Hat Mouse and friends living in squalor. Compatible with [url=https://www.nexusmods.com/stardewvalley/mods/1975]Fixed Mouse House[/url] Mod although it does not affect that mod's alignment problems. House and mouse options can be set in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+[color=#ffff00]Mouse House Makeover[/color][/b] is a Content Patcher mod which gives Hat Mouse a fancy new stone house and some friends to share the burden of minding the store. Also fixes a vanilla tilesheet bug for those scoundrels who choose to keep Hat Mouse and friends living in squalor. Compatible with [url=https://www.nexusmods.com/stardewvalley/mods/1975]Fixed Mouse House[/url] Mod although it does not affect that mod's alignment problems. House and mouse options can be setï¿½in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
 
 
 [b]Installation:[/b]
@@ -29,7 +39,7 @@ Details:
 [b]Configuration:
 [/b]
 [list]
-[*][color=#6d9eeb][b]WhichMouseSprite[/b][/color] lets you select who minds the store. The default is [color=#b4a7d6][i]all[/i][/color] which assigns the mice based on the day of the week. A single store minder can be chosen with the other options ([i][color=#b4a7d6]original[/color][/i], [i][color=#b4a7d6]beret[/color][/i], or [i][color=#b4a7d6]glasses[/color][/i]).
+[*][color=#6d9eeb][b]WhichMouseSprite[/b][/color]ï¿½lets you select who minds the store. The default is [color=#b4a7d6][i]all[/i][/color] which assigns the mice based on the day of the week. A single store minder can be chosen with the other options ([i][color=#b4a7d6]original[/color][/i], [i][color=#b4a7d6]beret[/color][/i], or [i][color=#b4a7d6]glasses[/color][/i]).
 [*][color=#6d9eeb][b]UseFancyHouse[/b][/color] lets you decide whether Hat Mouse and friends get a fabulous new stone house ([color=#b4a7d6][i]true[/i][/color] - the default) or continue to toil in abandoned ruins ([color=#b4a7d6][i]false[/i][/color]). Also set to false in order to use with [url=https://www.nexusmods.com/stardewvalley/mods/1975]Fixed Mouse House[/url].
 [*][color=#6d9eeb][b]RecolorOption[/b][/color] lets you change recolor compatibility if not using the fancy house. Default option of [color=#b4a7d6][i]auto[/i][/color] is probably the best choice, but you can force a specific recolor with the other options ([i][color=#b4a7d6]ATDSV[/color][/i], [i][color=#b4a7d6]Ace[/color][/i], [i][color=#b4a7d6]Starblue[/color][/i], or [i][color=#b4a7d6]none[/color][/i]).
 [*][color=#6d9eeb][b]UseMapPatch[/b][/color] lets you choose whether or not to use a tiny little map merge to fix a missing piece on the right side of the roof. Options are [color=#b4a7d6][i]true[/i][/color] (default) or [color=#b4a7d6][i]false[/i][/color].

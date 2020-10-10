@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/EKomperud/StardewMods
+**
+*************************************************/
+
 {
   "Companion": "Hey @! I was just thinking about going for a walk around the valley.#$q 650/651 leahCompanion_followup#Where are you headed?#$r 650 15 leahCompanion_yes#Walking around a bit too. You feel like coming with?#$r 651 0 leahCompanion_errands#I have a few errands I need to get done today.#$r 651 0 leahCompanion_boring#Eh, nowhere too interesting I think.",
   "leahCompanion_yes": "Sounds like we both want the same things in life! Let's go.",

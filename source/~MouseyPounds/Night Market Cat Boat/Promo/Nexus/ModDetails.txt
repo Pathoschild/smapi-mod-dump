@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MouseyPounds/stardew-mods
+**
+*************************************************/
+
 Category: Miscellaneous
 
 Tags:
@@ -14,7 +24,7 @@ Night Market Cat Boat is a Content Patcher mod which changes the Night Market ve
 Details:
 [b]Description:
 
-[color=#ffff00]Night Market Cat Boat[/color][/b] is a Content Patcher mod which changes the Night Market vendor that sells Seasonal Plants into a Cat and changes the decorations on their boat to include a board game, cheese wheel, and only fish in the bins. All graphics used are based on original game assets. The Cat still sells all the same items and performs animations similar to the original vendor. By default the Cat wears a Sailor's Cap, but this can be turned off in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+[color=#ffff00]Night Market Cat Boat[/color][/b]ï¿½is a Content Patcher mod which changes the Night Market vendor that sells Seasonal Plants into a Cat and changes the decorations on their boat to include a board game, cheese wheel, and only fish in the bins. All graphics used are based on original game assets. The Cat still sells all the same items and performs animations similar to the original vendor. By default the Cat wears a Sailor's Cap, but this can be turned off inï¿½the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
 
 [img]https://i.imgur.com/aRFvJA4.gif[/img]
 
@@ -30,7 +40,7 @@ Details:
 Configuration:
 [/b]
 [list]
-[*][color=#6d9eeb][b]SailorHat[/b][/color] lets you choose whether or not the Cat will wear a hat. Choices are [color=#b4a7d6][i]true[/i] [/color](default) or [i][color=#b4a7d6]false[/color][/i].
+[*][color=#6d9eeb][b]SailorHat[/b][/color]ï¿½lets you choose whether or not the Cat will wear a hat. Choices are [color=#b4a7d6][i]true[/i] [/color](default) or [i][color=#b4a7d6]false[/color][/i].
 [/list]
 [b]
 Additional Notes:
@@ -41,4 +51,4 @@ Additional Notes:
 
 Compatibility:
 [/b]
-[b][color=#ffff00][b][color=#ffff00]Night Market Cat Boat[/color][/b][/color][/b] requires [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url] version 1.4 or higher (which means it also requires [url=https://smapi.io]SMAPI[/url] version 2.6 or higher); it will only work with version 1.3 (or higher) of Stardew Valley since the Night Market was added with that version.
+[b][color=#ffff00][b][color=#ffff00]Night Market Cat Boat[/color][/b][/color][/b]ï¿½requires [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url] version 1.4 or higher (which means it also requires [url=https://smapi.io]SMAPI[/url] version 2.6 or higher); it will only work with version 1.3 (or higher) of Stardew Valley since the Night Market was added with that version.

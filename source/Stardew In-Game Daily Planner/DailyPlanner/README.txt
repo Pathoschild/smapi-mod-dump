@@ -1,4 +1,14 @@
-﻿#### MevNav's In-Game Daily Planner Mod ####
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/BuildABuddha/StardewDailyPlanner
+**
+*************************************************/
+
+#### MevNav's In-Game Daily Planner Mod ####
 
 This is the 0.5 version of this mod. The GUI is pretty much ripped out of the Cheat Menu Mod. In version 1.0, an in-game way to add tasks will be added.
 

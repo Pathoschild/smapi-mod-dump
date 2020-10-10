@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
 	"CustomCrystalarium.Letter": "Fazendeiro @, ^   Estamos removendo a proibição do uso de fragmento prismático no cristalário. Estudos recentes mostraram que não só é seguro como funciona perfeitamente. ^   Inicialmente nós pensávamos que a força eletromotriz do fragmento interagia negativamente com o cristalário, podendo ser nocivo para as pessoas em volta. Mas este não é o caso, o fragmento apenas leva muito mais tempo para ser clonado. ^   Nós também estamos felizes em anunciar que com uma 'ajusta externa', é possível ajustar o cristalário para copiar uma variedade de objetos, não apenas gemas e minerais. Até é possível mudar o tempo atual de copia dos minerais e gemas.^^   -Associação de Tecnologia da Fernígia¦Fazendeira @, ^   Estamos removendo a proibição do uso de fragmento prismático no cristalário. Estudos recentes mostraram que não só é seguro como funciona perfeitamente. ^   Inicialmente nós pensávamos que a força eletromotriz do fragmento interagia negativamente com o cristalário, podendo ser nocivo para as pessoas em volta. Mas este não é o caso, o fragmento apenas leva muito mais tempo para ser clonado. ^   Nós também estamos felizes em anunciar que com uma 'ajusta externa', é possível ajustar o cristalário para copiar uma variedade de objetos, não apenas gemas e minerais. Até é possível mudar o tempo atual de copia dos minerais e gemas.^^   -Associação de Tecnologia da Fernígia",
 	"CustomCrystalarium.Letter.Title": "Fragmento Prismático no Cristalário"
 }

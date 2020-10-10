@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KabigonFirst/StardewValleyMods
+**
+*************************************************/
+
 This mod intend to add quick key bindings to assist mining. But as a general key binding mod, you can also use it in other situations.
 
 Deleting config.json will make the mod regenerate the missing files with default values. This is useful when updating the mod.

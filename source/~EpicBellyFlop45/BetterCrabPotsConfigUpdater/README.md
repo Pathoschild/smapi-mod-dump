@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/EpicBellyFlop45/StardewMods**
+
+----
+
 **Better Crab Pots Config Updater** is a Windows console application for [BetterCrabPots](https://www.nexusmods.com/stardewvalley/mods/3159) that converts the config.json file from version 1 to version 2.
 
 ## Install

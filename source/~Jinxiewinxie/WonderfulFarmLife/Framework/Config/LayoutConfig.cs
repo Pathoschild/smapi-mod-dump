@@ -1,4 +1,14 @@
-﻿namespace WonderfulFarmLife.Framework.Config
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Jinxiewinxie/StardewValleyMods
+**
+*************************************************/
+
+namespace WonderfulFarmLife.Framework.Config
 {
     /// <summary>Defines a group of tile overrides to apply.</summary>
     internal class LayoutConfig

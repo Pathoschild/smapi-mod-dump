@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/miome/MultitoolMod**
+
+----
+
 # Multitool
 ## What is it?
 Multitool is a Stardew SMAPI mod, created as an alternative to AlmightyTool. Point at the tile you want to act on and press a button, and Multitool choses the right tool and uses it.

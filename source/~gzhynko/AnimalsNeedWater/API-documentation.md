@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/gzhynko/StardewMods**
+
+----
+
 # API Documentation
 **Animals Need Water** provides an API allowing modders to access data like *which animals were left thirsty yesterday* or *coops/barns with watered troughs*.
 

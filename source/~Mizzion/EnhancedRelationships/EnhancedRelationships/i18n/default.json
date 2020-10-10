@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Mizzion/MyStardewMods
+**
+*************************************************/
+
 {
   "npc_dialogue1": "How dare you miss my Birthday, {{player_name}}. ",
   "npc_dialogue2": "I know you're busy {{player_name}}, but I can't believe you missed my Birthday.",

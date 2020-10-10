@@ -1,7 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeonBlade/TreeTransplant
+**
+*************************************************/
+
 {
-  "Menu_DefaultText": "Nakletmek için bir aðaç seçin.",
-  "Menu_PlacementText": "Aðaç için yeni bir yer seçin.",
+  "Menu_DefaultText": "Nakletmek iï¿½in bir aï¿½aï¿½ seï¿½in.",
+  "Menu_PlacementText": "Aï¿½aï¿½ iï¿½in yeni bir yer seï¿½in.",
   "Menu_InvalidPlace": "Buraya koyulamaz!",
-  "Menu_InvalidCap": "Akýtaçlý aðaçlar taþýnamaz!",
-  "Carpenter_Option": "Aðaç Nakli"
+  "Menu_InvalidCap": "Akï¿½taï¿½lï¿½ aï¿½aï¿½lar taï¿½ï¿½namaz!",
+  "Carpenter_Option": "Aï¿½aï¿½ Nakli"
 }

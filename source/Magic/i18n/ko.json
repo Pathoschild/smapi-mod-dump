@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/Magic
+**
+*************************************************/
+
 {
   "event.wizard.1": "흠... 이제 그대 또한 마법의 도에 대해 배워야 할 때가 되었구나.",
   "event.wizard.2": "숨겨진 다섯 제단 중 하나를 찾아내서 마법을 익혀보도록 해라.",

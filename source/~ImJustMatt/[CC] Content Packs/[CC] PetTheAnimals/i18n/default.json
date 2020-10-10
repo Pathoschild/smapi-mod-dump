@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/SDVCustomChores
+**
+*************************************************/
+
+{
 	// Shane dialogue (credit: alekrrau)
 	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.HasChild=Yes.Priority=1": "I took {{ChildName}} around the farm today to pet all the animals with me. It was so cute, I should've taken pictures.",
 	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1.1": "Morning {{NickName}}. I got up early and I've visited all the chickens, and the other animals too. Gave 'em all plenty of attention. Can't believe that's even a chore we have to do, it's one of the best parts of my day! Besides you, of course.",

@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/Entoarox/StardewMods**
+
+----
+
 **Shop Expander** lets you buy often-needed resources like wood/stone/seeds in bulk from the appropriate vendor. 
 
 ## Install

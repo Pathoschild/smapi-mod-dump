@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Jonqora/StardewMods
+**
+*************************************************/
+
 {
   // This mod is completely multiplayer-compatible! You only need to install if you're using it, and it won't change things for anyone else.
   "Format": "1.15.0",

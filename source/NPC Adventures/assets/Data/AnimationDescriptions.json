@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
   "abigail_flute": "0/16 16 17 17 18 18 19 19/0",
   "abigail_sitting": "26 26 26 26/27/26 26 26 26",
   "alex_footbal": "23/23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 16 16 16 17 18 19 19 20 21 22 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23/23",

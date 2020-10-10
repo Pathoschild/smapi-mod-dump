@@ -1,4 +1,12 @@
-﻿# Quest Framework
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/purrplingcat/QuestFramework**
+
+----
+
+# Quest Framework
 
 **Quest framework** is a Stardew Valley framework mod which provides a tools for work with quests like create custom quests, define custom quest types and handle quests. Support Content Packs and SMAPI mod provided API.
 

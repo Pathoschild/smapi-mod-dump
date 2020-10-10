@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Entoarox/StardewMods
+**
+*************************************************/
+
 {
   "EmptyBox": "Just an empty box.",
   "AdoptMessage": "Oh dear, it looks like someone has abandoned a poor {{petType}} here! Perhaps you should pay Marnie {{adoptionPrice}} gold to give it a checkup so you can adopt it?",

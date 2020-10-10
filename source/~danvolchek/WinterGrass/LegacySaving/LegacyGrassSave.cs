@@ -1,4 +1,14 @@
-﻿namespace WinterGrass.LegacySaving
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/danvolchek/StardewMods
+**
+*************************************************/
+
+namespace WinterGrass.LegacySaving
 {
     /// <summary>A slimmed down version of SDV's Grass class with the relevant information needed to re-create it.</summary>
     internal class LegacyGrassSave

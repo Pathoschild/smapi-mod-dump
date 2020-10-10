@@ -1,4 +1,12 @@
-﻿# Regular Quality
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/desto-git/sdv-mods**
+
+----
+
+# Regular Quality
 
 Drop the quality level of all items to be regular quality. Less clutter and less profit!
 

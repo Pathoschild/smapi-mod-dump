@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/EKomperud/StardewMods
+**
+*************************************************/
+
 {
   "Companion": "What a beautiful day it is!#$q 700/701 pennyCompanion_followup#Hey @, do you think you could use come company?#$r 700 20 pennyCompanion_yes#Yeah, that sounds nice. Want to walk with me?#$r 701 -5 pennyCompanion_no#Sorry Penny. Not right now.",
   "pennyCompanion_yes": "Yes! That sounds lovely. Where are we headed today?$h",

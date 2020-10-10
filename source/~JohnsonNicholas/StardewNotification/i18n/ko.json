@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JohnsonNicholas/SDVMods
+**
+*************************************************/
+
+{
   // Notification messages
   "travelingMerchant": "마차상인이 마을에 도착했다",
   "queenSauce": "오늘은 소스의 여왕이 방송하는 날이다",

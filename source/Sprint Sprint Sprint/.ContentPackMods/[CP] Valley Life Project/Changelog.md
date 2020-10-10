@@ -1,3 +1,11 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/JessebotX/StardewMods**
+
+----
+
 # RELEASE NOTES [(Project Valley Life)](https://www.nexusmods.com/stardewvalley/mods/2909)
 
 ### v1.1.2 (Nov 17, 2018)

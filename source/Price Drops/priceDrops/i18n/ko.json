@@ -1,3 +1,13 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/skuldomg/priceDrops
+**
+*************************************************/
+
 {
   // discount terms
   // Most NPCs will say "save 50% at my store", but the dwarf and Krobus will say "save a half at

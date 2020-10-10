@@ -1,4 +1,14 @@
-﻿{
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/Magic
+**
+*************************************************/
+
+{
   "event.wizard.1": "现在是你学习魔法的时候了。",
   "event.wizard.2": "我已经...调整了皮埃尔店里的由巴祭坛供你使用。 ",
   "event.wizard.3": "我会教你基本的奥术魔法，但剩下的你必须自己去发现。",

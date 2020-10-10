@@ -1,4 +1,14 @@
-﻿namespace Randomizer
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Chikakoo/stardew-valley-randomizer
+**
+*************************************************/
+
+namespace Randomizer
 {
 	/// <summary>
 	/// Used to track how difficult it is to get an item - intended to be used when determining
