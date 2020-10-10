@@ -5,12 +5,9 @@ mods:
    Regular Quality
 
 latest commit:
-   commit 11d95300ab4fed04db46459756f70fb7cbf3cdb2
+   commit 4a34b63fdca835b9aba3829b5704388caa9282ba
    Author: desto-git <desto-git@users.noreply.github.com>
-   Date:   Sun Sep 27 01:47:13 2020 +0200
+   Date:   Thu Oct 1 01:39:34 2020 +0200
    
-       add README.md for solution
-       
-       Not part of the previous commit to
-       keep the history of the original README intact.
+       [GD] fix error when giving a quest item
    

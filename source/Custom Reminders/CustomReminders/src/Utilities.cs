@@ -29,7 +29,7 @@ namespace Dem1se.CustomReminders.Utilities
                 delimiter = '/';
             else
                 throw new NotSupportedException("Operating system is not Windows, Mac or Linux. Unsupported Platform");
-            
+
             filePathRelativeParts = filePathAbsolute.Split(delimiter);
             filePathIndex = Array.IndexOf(filePathRelativeParts, "data");
             for (int i = filePathIndex; i < filePathRelativeParts.Length; i++)
@@ -50,7 +50,7 @@ namespace Dem1se.CustomReminders.Utilities
         {
             int width = 0;
             char[] characters = reminderMessage.ToCharArray();
-            
+
             // add time number
             if (characters[1] == ' ')
                 // 1 digit time
@@ -123,7 +123,28 @@ namespace Dem1se.CustomReminders.Utilities
                 month = (Season)3;
                 years--;
             }
-            return $"{month} {day}, {Utilities.Data.Helper.Translation.Get("date.year")} {years + 1}";
+            string monthStr;
+            switch (month)
+            {
+                case Season.Spring:
+                    monthStr = Utilities.Data.Helper.Translation.Get("date.season.spring");
+                    break;
+                case Season.Summer:
+                    monthStr = Utilities.Data.Helper.Translation.Get("date.season.summer");
+                    break;
+                case Season.Fall:
+                    monthStr = Utilities.Data.Helper.Translation.Get("date.season.fall");
+                    break;
+                case Season.Winter:
+                    monthStr = Utilities.Data.Helper.Translation.Get("date.season.winter");
+                    break;
+                default:
+                    monthStr = "";
+                    Utilities.Data.Monitor.Log("Season translation failed.", LogLevel.Error);
+                    break;
+            }
+
+            return $"{monthStr} {day}, {Utilities.Data.Helper.Translation.Get("date.year")} {years + 1}";
         }
 
         /// <summary>
@@ -281,7 +302,7 @@ namespace Dem1se.CustomReminders.Utilities
             }
         }
     }
-    
+
     enum Season
     {
         Spring,

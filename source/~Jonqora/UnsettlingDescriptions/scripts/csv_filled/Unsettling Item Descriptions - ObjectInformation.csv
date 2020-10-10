@@ -23,7 +23,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(96, 48)",78,Cave Carrot,,A dirtier variety of carrot. Fulfills many needs of a miner.,,A starchy snack found in caves. It helps miners work longer.
 "(112, 48)",79,Secret Note,,Better hope it's not about you...,,"It's old and crumpled, but if you look closely you can make out the details..."
 "(128, 48)",80,Quartz,,The fine dust released when cutting these crystals can cause fibrosis of the lungs.,,A clear crystal commonly found in caves and mines.
-"(160, 48)",82,Fire Quartz,,The red glow of this crystal never seems to fade.,,A glowing red crystal commonly found near hot lava.
+"(160, 48)",82,Fire Quartz,,The red glow of this crystal leaves a burning sensation on your retinas.,,A glowing red crystal commonly found near hot lava.
 "(192, 48)",84,Frozen Tear,,The last remnant of some long forgotten creature.,,A crystal fabled to be the frozen tears of a yeti.
 "(224, 48)",86,Earth Crystal,,"A cloudy, fragile gemstone commonly gifted by cheapskates.",,A resinous substance found near the surface.
 "(256, 48)",88,Coconut,,"Covered in rough hair, it provides both milk and meat.",,A seed of the coconut palm. It has many culinary uses.
@@ -91,14 +91,14 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(192, 96)",156,Ghostfish,,Should have left it in the water...,,"A pale, blind fish found in underground lakes."
 "(208, 96)",157,White Algae,,It leaves a fragrant white film on your hands.,,It's super slimy.
 "(224, 96)",158,Stonefish,,"Its venom will quickly cause paralysis, tissue necrosis and heart failure.",,A bizarre fish that's shaped like a brick.
-"(240, 96)",159,Crimsonfish,,Swimmers beware: this summer spawning fish becomes quite violent to protect its eggs.,,Lives deep in the ocean but likes to lay its eggs in the warm summer water.
+"(240, 96)",159,Crimsonfish,,Swimmers beware: this summer-spawning fish becomes quite violent to protect its eggs.,,Lives deep in the ocean but likes to lay its eggs in the warm summer water.
 "(256, 96)",160,Angler,,This eerie fish is known for the sexual parasitism of its reproductive cycle.,,Uses a bioluminescent dangler to attract prey.
-"(272, 96)",161,Ice Pip,,"Frozen and zombified: don't let it bite you. You might be able to use it as a weapon, though.",,A rare fish that thrives in extremely cold conditions.
+"(272, 96)",161,Ice Pip,,Frozen and zombified: don't let it bite you. But you might be able to use it as a weapon.,,A rare fish that thrives in extremely cold conditions.
 "(288, 96)",162,Lava Eel,,Legend says it survives by feeding off the remains of travelers who drown in the mines.,,It can somehow survive in pools of red-hot lava.
-"(304, 96)",163,Legend,,"The grandfather of all largemouth bass in the lake, now torn from his home.",,The king of all fish! They said he'd never be caught.
+"(304, 96)",163,Legend,,"The grandfather of all largemouth bass in the lake, ruthlessly torn from his home.",,The king of all fish! They said he'd never be caught.
 "(320, 96)",164,Sandfish,,It hides using camouflage. Sometimes you can see the sand move as it waits for prey.,,It tries to hide using camouflage.
 "(336, 96)",165,Scorpion Carp,,The unholy union of a scorpion and a carp. Keep hands away from tailfin!,,It's like a regular carp but with a sharp stinger.
-"(352, 96)",166,Treasure Chest,,"Many of the coins inside are stained an ugly dark red, almost black.",,"Wow, it's loaded with treasure! This is sure to fetch a good price."
+"(352, 96)",166,Treasure Chest,,"Many of the coins inside are stained an ugly dark reddish-brown, almost black.",,"Wow, it's loaded with treasure! This is sure to fetch a good price."
 "(368, 96)",167,Joja Cola,,Food safety authorities have questioned the blue chemical used to color this drink.,,The flagship product of Joja corporation.
 "(0, 112)",168,Trash,,Like you.,,It's junk.
 "(16, 112)",169,Driftwood,,The weathered remnant of a drowned tree.,,A piece of wood from the sea.
@@ -128,7 +128,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(176, 128)",203,Strange Bun,,What's inside? OH SWEET YOBA IT'S SPIDERS!,,What's inside?
 "(192, 128)",204,Lucky Lunch,,So tasty that luck-bringing spirits will nest in your belly to eat it.,,A special little meal.
 "(208, 128)",205,Fried Mushroom,,You can still taste the dirt.,,Earthy and aromatic.
-"(224, 128)",206,Pizza,,It has pineapples on it. *shudder*,,It's popular for all the right reasons.
+"(224, 128)",206,Pizza,,It has pineapples on it. Urgh.,,It's popular for all the right reasons.
 "(240, 128)",207,Bean Hotpot,,Sticks heavily to the pot and to your insides.,,It sure is healthy.
 "(256, 128)",208,Glazed Yams,,"If you can't stomach eating your vegetables, drown them in sugar first.",,Sweet and satisfying... The sugar gives it a hint of caramel.
 "(272, 128)",209,Carp Surprise,,The carp is not the surprising part of this meal.,,It's bland and oily.
@@ -167,7 +167,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(48, 160)",243,Miner's Treat,,A dish served best with a side of amethyst.,,This should keep your energy up.
 "(64, 160)",244,Roots Platter,,"They have that nice, musty graveyard taste.",,This'll get you digging for more.
 "(80, 160)",245,Sugar,,The leading cause of diabetes.,,Adds sweetness to pastries and candies. Too much can be unhealthy.
-"(96, 160)",246,Wheat Flour,,Destroys the surface of small intestines through a severe immune reaction that occurs in 1% of people.,,A common cooking ingredient made from crushed wheat seeds.
+"(96, 160)",246,Wheat Flour,,Harmless for 99% of people. The other 1% experience a severe immune reaction that destroys the surface of their small intestines.,,A common cooking ingredient made from crushed wheat seeds.
 "(112, 160)",247,Oil,,A vital ingredient in fried food and clogged arteries.,,All purpose cooking oil.
 "(128, 160)",248,Garlic,,Keeps the bloodsuckers away.,,Adds a wonderful zestiness to dishes. High quality garlic can be pretty spicy.
 "(160, 160)",250,Kale,,"Stringy, fibrous leaves that taste like sour dirt.",,The waxy leaves are great in soups and stir frys.
@@ -195,7 +195,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(208, 176)",277,Wilted Bouquet,,As dead as your heart. Makes a thoughtful and symbolic gift.,,A gift that shows you want to stop dating someone.
 "(224, 176)",278,Bok Choy,,Its chemical composition can induce swelling of the thyroid gland.,,The leafy greens and fibrous stalks are healthy and delicious.
 "(240, 176)",279,Magic Rock Candy,,Colorful candy made from literal rocks. Very alluring to small children.,,A rare and powerful candy infused with the essence of the prismatic shard.
-"(256, 176)",280,Yam,,"A firm, fleshy tuber spoilt by flavor that is too sweet and too starchy.",,A starchy tuber with a lot of culinary versatility.
+"(256, 176)",280,Yam,,"A firm, fleshy tuber spoilt by flavor that is both too sweet and too starchy.",,A starchy tuber with a lot of culinary versatility.
 "(272, 176)",281,Chanterelle,,"The visible, edible part is just the tip of a vast colony of fungus threaded throughout the soil.",,A tasty mushroom with a fruity smell and slightly peppery flavor.
 "(288, 176)",282,Cranberries,,Bitter little fruits with unnatural properties: they float in water and bounce on land.,,These tart red berries are a traditional winter food.
 "(304, 176)",283,Holly,,"Crisp and juicy berries. Alas, some things are only edible once.",,The leaves and bright red berries make a popular winter decoration.
@@ -258,8 +258,8 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(208, 224)",349,Energy Tonic,,"This drug will give you the ""youthful"" energy to go all night long!",,Restores a lot of energy.
 "(224, 224)",350,Juice,,Life-blood squeezed from vegetables for easy-to-drink vitamins!,,"A sweet, nutritious beverage."
 "(240, 224)",351,Muscle Remedy,,Harvey's special steroids. Removes exhaustion.,,"When you've pushed your body too hard, drink this to remove 'Exhaustion'."
-"(128, 240)",368,Basic Fertilizer,,Your crops have a slight chance to grow larger in soil sprinkled with tree blood.,,"Improves soil quality a little, increasing your chance to grow quality crops. Mix into tilled soil."
-"(144, 240)",369,Quality Fertilizer,,Improves the chance of higher quality harvests by repurposing dead fish.,,"Improves soil quality, increasing your chance to grow quality crops. Mix into tilled soil."
+"(128, 240)",368,Basic Fertilizer,,Slightly improves the chance of high quality harvests by infusing the soil with tree blood.,,"Improves soil quality a little, increasing your chance to grow quality crops. Mix into tilled soil."
+"(144, 240)",369,Quality Fertilizer,,Improves the chance of high quality harvests by repurposing dead fish.,,"Improves soil quality, increasing your chance to grow quality crops. Mix into tilled soil."
 "(160, 240)",370,Basic Retaining Soil,,Keep your soil moist and wet.,,This soil has a chance of staying watered overnight. Mix into tilled soil.
 "(176, 240)",371,Quality Retaining Soil,,Ohh yes! Keep the dirt wet all night long...,,This soil has a good chance of staying watered overnight. Mix into tilled soil.
 "(192, 240)",372,Clam,,Taking home invasion to new heights.,,Someone lived here once.
@@ -271,7 +271,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(32, 256)",386,Iridium Ore,,Choking hazard: Not for children under 30 years.,,An exotic ore with many curious properties. Can be smelted into bars.
 "(64, 256)",388,Wood,,A highly flammable building material.,,"A sturdy, yet flexible plant material with a wide variety of uses."
 "(96, 256)",390,Stone,,The most ancient and versatile of all weapons and tools.,,A common material with many uses in crafting and building.
-"(128, 256)",392,Nautilus Shell,,"A beautiful specimen. Washed up like this, you can pretend there’s still plenty in the sea.",,An ancient shell.
+"(128, 256)",392,Nautilus Shell,,"A beautiful specimen. Washed up like this, you can pretend there's still plenty in the sea.",,An ancient shell.
 "(144, 256)",393,Coral,,"A structure formed by beautiful, endangered species ravaged by human ecological damage.",,A colony of tiny creatures that clump together to form beautiful structures.
 "(160, 256)",394,Rainbow Shell,,The poor hermit crab needed this more than you did.,,It's a very beautiful shell.
 "(176, 256)",395,Coffee,,"Brown, bitter liquid made from straining hot water through burnt, pulverized seeds.",,It smells delicious. This is sure to give you a boost.
@@ -283,7 +283,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(272, 256)",401,Straw Floor,,Toss dead grass around for a nice fall look. Place on the ground to create paths or floors.,,Place on the ground to create paths or to spruce up your floors.
 "(288, 256)",402,Sweet Pea,,The flower's wiry tendrils cling possessively to its surroundings.,,A fragrant summer flower.
 "(304, 256)",403,Field Snack,,Flosses your teeth and gums as you eat it. Moderate to severe bleeding is normal.,,A quick snack to fuel the hungry forager.
-"(320, 256)",404,Common Mushroom,,"Someday they will decompose *your* remains. If you must eat, chew gently.",,"Slightly nutty, with good texture."
+"(320, 256)",404,Common Mushroom,,"Someday they will decompose YOUR remains. If you must eat, chew gently.",,"Slightly nutty, with good texture."
 "(336, 256)",405,Wood Path,,Decorate with milled tree carcasses. Place on the ground to create paths or floors.,,Place on the ground to create paths or to spruce up your floors.
 "(352, 256)",406,Wild Plum,,Watery and tasteless. The weak flavor is overpowered by the fruit's pungent smell.,,Tart and juicy with a pungent aroma.
 "(368, 256)",407,Gravel Path,,"Small, sharp rocks to step on. Place on the ground to create paths or floors.",,Place on the ground to create paths or to spruce up your floors.
@@ -296,7 +296,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(96, 272)",414,Crystal Fruit,,Could break your teeth.,,A delicate fruit that pops up from the snow.
 "(112, 272)",415,Stepping Stone Path,,Step on these stones like you step on others to achieve your goals. Place on the ground to create paths or floors.,,Place on the ground to create paths or to spruce up your floors.
 "(128, 272)",416,Snow Yam,,Lurks out of sight under the winter snow... waiting...,,This little yam was hiding beneath the snow.
-"(144, 272)",417,Sweet Gem Berry,,An unearthly sweetness permeating this stone-fleshed berry renders it entirely inedible.,,It's by far the sweetest thing you've ever smelled.
+"(144, 272)",417,Sweet Gem Berry,,The unearthly sweetness permeating this stone-fleshed berry renders it entirely inedible.,,It's by far the sweetest thing you've ever smelled.
 "(160, 272)",418,Crocus,,This delicate flower prefers all other flowers to be dead when it blooms in the snow.,,A flower that can bloom in the winter.
 "(176, 272)",419,Vinegar,,"Given time, it can dissolve submerged human teeth to nothing.",,An aged fermented liquid used in many cooking recipes.
 "(192, 272)",420,Red Mushroom,,Maybe it can be made non-poisonous by parboiling... but maybe not.,,A spotted mushroom sometimes found in caves.
@@ -306,7 +306,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(256, 272)",424,Cheese,,Cow milk exposed to bacteria and allowed to curdle. Eat up!,,It's your basic cheese.
 "(288, 272)",426,Goat Cheese,,"Squishy, congealed milk from a goat's udder. Considered a delicacy by many.",,Soft cheese made from goat's milk.
 "(320, 272)",428,Cloth,,An essential material for proper mummification.,,A bolt of fine wool cloth.
-"(352, 272)",430,Truffle,,Pigs find them easily due to their chemical similarities with pig mating pheromones.,,A gourmet type of mushroom with a unique taste.
+"(352, 272)",430,Truffle,,Pigs find these fungus lumps easily due to chemical similarities with pig mating pheromones.,,A gourmet type of mushroom with a unique taste.
 "(0, 288)",432,Truffle Oil,,It's wonderfully lubricating.,,A gourmet cooking ingredient.
 "(16, 288)",433,Coffee Bean,,"Whatever you do, don't stuff it up your nose. Grows in spring and summer, reharvestable.",,Plant in spring or summer to grow a coffee plant. Place five beans in a keg to make coffee.
 "(32, 288)",434,Stardrop,,NON-INVENTORY,,"A mysterious fruit that empowers those who eat it. The flavor is like a dream... a powerful personal experience, yet difficult to describe to others."
@@ -335,7 +335,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(144, 304)",465,Speed-Gro,,You have to wonder if this would work on other things. Increases growth rate by at least 10%.,,Stimulates leaf production. Guaranteed to increase growth rate by at least 10%. Mix into tilled soil.
 "(160, 304)",466,Deluxe Speed-Gro,,The long-term effects on edible produce are untested. Increases growth rate by at least 25%.,,Stimulates leaf production. Guaranteed to increase growth rate by at least 25%. Mix into tilled soil.
 "(256, 304)",472,Parsnip Seeds,,"An inexpensive, fast-growing trap for beginner farmers. Plant in spring, 4 days.",,Plant these in the spring. Takes 4 days to mature.
-"(272, 304)",473,Bean Starter,,"It doesn't *feel* magical, but you never know. Plant in spring, 10 days, reharvestable. Trellis crop.",,"Plant these in the spring. Takes 10 days to mature, but keeps producing after that. Grows on a trellis."
+"(272, 304)",473,Bean Starter,,"It doesn't feel magical, but you never know. Plant in spring, 10 days, reharvestable. Trellis crop.",,"Plant these in the spring. Takes 10 days to mature, but keeps producing after that. Grows on a trellis."
 "(288, 304)",474,Cauliflower Seeds,,"The crop it grows is ghostly pale. Plant in spring, 12 days.",,Plant these in the spring. Takes 12 days to produce a large cauliflower.
 "(304, 304)",475,Potato Seeds,,"The package says ""seeds"", but these are clearly potato eyes. Plant in spring, 6 days. Chance for multiple harvest.",,"Plant these in the spring. Takes 6 days to mature, and has a chance of yielding multiple potatoes at harvest."
 "(320, 304)",476,Garlic Seeds,,"Plant quickly, before the vampires destroy them. Plant in spring, 4 days.",,Plant these in the spring. Takes 4 days to mature.
@@ -343,13 +343,13 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(352, 304)",478,Rhubarb Seeds,,"They're pretty much weeds. Plant in spring, 13 days.",,Plant these in the spring. Takes 13 days to mature.
 "(368, 304)",479,Melon Seeds,,"No fun in your lungs. Plant in summer, 12 days.",,Plant these in the summer. Takes 12 days to mature.
 "(0, 320)",480,Tomato Seeds,,"Sometimes they take root inside ripe tomatoes. Plant in summer, 11 days, reharvestable.",,"Plant these in the summer. Takes 11 days to mature, and continues to produce after first harvest."
-"(16, 320)",481,Blueberry Seeds,,"The richest source of wild seeds is fresh bear scat. Plant in summer, 13 days, reharvestable.",,"Plant these in the summer. Takes 13 days to mature, and continues to produce after first harvest."
+"(16, 320)",481,Blueberry Seeds,,"The richest source of these seeds is fresh bear scat. Plant in summer, 13 days, reharvestable.",,"Plant these in the summer. Takes 13 days to mature, and continues to produce after first harvest."
 "(32, 320)",482,Pepper Seeds,,"Not actually the hottest part of the pepper. Plant in summer, 5 days, reharvestable.",,"Plant these in the summer. Takes 5 days to mature, and continues to produce after first harvest."
 "(48, 320)",483,Wheat Seeds,,"Gluten-rich. Plant in summer or fall, 4 days. Harvest with scythe.",,Plant these in the summer or fall. Takes 4 days to mature. Harvest with the scythe.
 "(64, 320)",484,Radish Seeds,,"The pod-growing seeds are sometimes pickled as a snack. Plant in summer, 6 days.",,Plant these in the summer. Takes 6 days to mature.
 "(80, 320)",485,Red Cabbage Seeds,,"Produces a swollen, purple head. Plant in summer, 9 days.",,Plant these in the summer. Takes 9 days to mature.
 "(96, 320)",486,Starfruit Seeds,,"They'll break the bank. Plant in summer, 13 days.",,Plant these in the summer. Takes 13 days to mature.
-"(112, 320)",487,Corn Seeds,,"Terrible as popcorn. Plant in summer or fall, 14 days, reharvestable.",,"Plant these in the summer or fall. Takes 14 days to mature, and continues to produce after first harvest."
+"(112, 320)",487,Corn Seeds,,"Terribly ineffective as popcorn. Plant in summer or fall, 14 days, reharvestable.",,"Plant these in the summer or fall. Takes 14 days to mature, and continues to produce after first harvest."
 "(128, 320)",488,Eggplant Seeds,,"Flat, round eggplant spunk. Plant in fall, 5 days, reharvestable.",,"Plant these in the fall. Takes 5 days to mature, and continues to produce after first harvest."
 "(144, 320)",489,Artichoke Seeds,,"A plump variety of thistle. Plant in fall, 8 days.",,Plant these in the fall. Takes 8 days to mature.
 "(160, 320)",490,Pumpkin Seeds,,"Fished out from slimy pumpkin entrails. Plant in fall, 13 days.",,Plant these in the fall. Takes 13 days to mature.
@@ -403,8 +403,8 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(320, 352)",548,Jamborite,,"A spiky, sinister-looking green crystal. It might be from another planet?",,The crystals are so tightly packed it almost looks fuzzy.
 "(336, 352)",549,Jagoite,,"Thousands of tiny microcrystals, each one unique and entirely forgettable.",,A high volume of tiny crystals makes it very glittery.
 "(352, 352)",550,Kyanite,,Swells up to twice its original size when heated.,,The geometric faces are as smooth as glass.
-"(368, 352)",551,Lunarite,,They say the posessor of such a stone can command werewolves.,,The cratered white orbs form a tight cluster.
-"(0, 368)",552,Malachite,,Toxic and water-soluable. Please do not insert it into any orifices.,,"A popular ornamental stone, used in sculpture and to make green paint."
+"(368, 352)",551,Lunarite,,They say the possessor of such a stone can command werewolves.,,The cratered white orbs form a tight cluster.
+"(0, 368)",552,Malachite,,Toxic and water-soluble. Please do not insert it into any orifices.,,"A popular ornamental stone, used in sculpture and to make green paint."
 "(16, 368)",553,Neptunite,,Reflected in its jet-black surface you can see your face... and another face behind you.,,A jet-black crystal that is unusually reflective.
 "(32, 368)",554,Lemon Stone,,Dwarves are said to use the powdered crystal both medicinally and recreationally.,,Some claim the powdered crystal is a dwarvish delicacy.
 "(48, 368)",555,Nekoite,,OwO what's this? The shards are too sharp to cuddle-wuddle?,,The delicate shards form a tiny pink meadow.
@@ -418,7 +418,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(176, 368)",563,Jasper,,It looks like it's been shattered and then reassembled. You can still see the cracks.,,"When polished, this stone becomes attactively luminous. Prized by ancient peoples for thousands of years."
 "(192, 368)",564,Opal,,It looks like two other stones were fused to make this...,,Its internal structure causes it to reflect a rainbow of light.
 "(208, 368)",565,Fire Opal,,Many of these stones were plundered from indigenous inhabitants of the Fern Islands.,,"A rare variety of opal, named for its red spots."
-"(224, 368)",566,Celestine,,"This fragile, pale crystal flares a vivid red when burned.",,Some early life forms had bones made from this.
+"(224, 368)",566,Celestine,,Used in pyrotechnics to generate vibrant red bursts of substantial air pollution.,,Some early life forms had bones made from this.
 "(240, 368)",567,Marble,,Some can see angels forever trapped within the stone.,,A very popular material for sculptures and construction.
 "(256, 368)",568,Sandstone,,Can be used to make grindstone wheels for sharpening tools or knives.,,A common type of stone with red and brown striations.
 "(272, 368)",569,Granite,,Contains traces of uranium that produce carcinogenic radon gas.,,A speckled Mineral that is commonly used in construction.
@@ -455,7 +455,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(112, 400)",607,Roasted Hazelnuts,,Savor the rich forest flavor of charred tree seeds.,,The roasting process creates a rich forest flavor.
 "(128, 400)",608,Pumpkin Pie,,Pureed pumpkin guts surrounded with lard-filled crust.,,Silky pumpkin cream in a flakey crust.
 "(144, 400)",609,Radish Salad,,Watch out for little worms that also like to eat crisp radishes.,,The radishes are so crisp!
-"(160, 400)",610,Fruit Salad,,"A splendid mélange of textures from mushy blueberries, fuzzy apricots, and underripe melon.",,A delicious combination of summer fruits.
+"(160, 400)",610,Fruit Salad,,"A splendid mélange of texture from mushy blueberries, fuzzy apricots, and underripe melon.",,A delicious combination of summer fruits.
 "(176, 400)",611,Blackberry Cobbler,,"Blackberries very often harbor small worms inside them. They're not harmful though, and you won't even notice them when cooked!",,There's nothing quite like it.
 "(192, 400)",612,Cranberry Candy,,There's more sugar in this obesity-linked beverage than in soda.,,It's sweet enough to mask the bitter fruit.
 "(208, 400)",613,Apple,,How many worms are in this one?,,A crisp fruit used for juice and cider.
@@ -513,7 +513,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(192, 464)",708,Halibut,,"Born with an eye on each side of its head, one eye slowly migrates across as it grows.",,A flat fish that lives on the ocean floor.
 "(208, 464)",709,Hardwood,,A formidable length of hardened wood. Very pleasing to the touch.,,A special kind of wood with superior strength and beauty.
 "(224, 464)",710,Crab Pot,,Place in the water and load with tantalizing insect bits. Return next day for a stinky surprise!,,"Place it in the water, load it with bait, and check the next day to see if you've caught anything. Works in streams, lakes, and the ocean."
-"(304, 464)",715,Lobster,,Raising them in captivity is difficult; their cannibalistic behaviour limits profits.,,A large ocean-dwelling crustacean with a strong tail.
+"(304, 464)",715,Lobster,,Raising them in captivity is difficult; their cannibalistic behavior limits profits.,,A large ocean-dwelling crustacean with a strong tail.
 "(320, 464)",716,Crayfish,,Their sperm are amoeba-shaped and crawl towards the eggs.,,A small freshwater relative of the lobster.
 "(336, 464)",717,Crab,,"A sea spider, ready to be boiled alive and eaten fresh.",,A marine crustacean with two powerful pincers.
 "(352, 464)",718,Cockle,,"The cockle's large siphon pokes out from its shell, squirming like a giant tongue.",,A common saltwater clam.
@@ -560,7 +560,7 @@ tilesheet_coordinates,key,name,image,unsettling_description,silly_description,or
 "(304, 512)",787,Battery Pack,,Lightning-powered. It's probably safe.,,It's fully charged with precious energy.
 "(320, 512)",788,Lost Axe,,"The axe cries out for its owner. Faintly you can hear it whisper, ""Robin...""",,Robin's been looking everywhere for it.
 "(336, 512)",789,Lucky Purple Shorts,,Most definitely unwashed.,,Better not inspect these too closely.
-"(352, 512)",790,Berry Basket,,"Stained with what you *hope* is berry juice. It smells like Linus, and he smells awful.",,The fibers are stained with berry juice.
+"(352, 512)",790,Berry Basket,,"Stained with what you hope is berry juice. It smells like Linus, and he smells awful.",,The fibers are stained with berry juice.
 "(0, 528)",792,Weeds,,UNOBTAINABLE,,Ugly weeds.
 "(16, 528)",793,Weeds,,UNOBTAINABLE,,Ugly weeds.
 "(32, 528)",794,Weeds,,UNOBTAINABLE,,Ugly weeds.

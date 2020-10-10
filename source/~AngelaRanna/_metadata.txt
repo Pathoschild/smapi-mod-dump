@@ -1,0 +1,16 @@
+url:
+   https://github.com/AngelaRanna/StardewMods.git
+
+mods:
+   Angel's Existing Weapon Updater
+   Angel's Weapon Rebalance
+   What Does The Fox Say
+
+latest commit:
+   commit a4e3fa1f98c216acb454af3ef27b5f96395e2fb5
+   Author: SIMON\Zach <whitewolf9024@hotmail.com>
+   Date:   Fri Oct 9 15:25:43 2020 -0700
+   
+       Did a pass at weapon AoE's since vanilla values were too small to be noticeable.
+       Added a second pass at object hit detection so weapons clear everything in their AoE instead of just along the perimeter.
+   

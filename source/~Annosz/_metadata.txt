@@ -5,15 +5,16 @@ mods:
    Cheaper Beach Bridge Repair
    Highlighted Jars
    Krobus Sells Larger Stacks
+   Remember Faced Direction
    Sleepless Fisherman
 
 latest commit:
-   commit e3717aed139774ce496ca47c4d64e8c4e24b60b6
-   Merge: ec02a75 66b6cac
+   commit d1c53c7c4cd14a371b7e58d80ccc08222400bf05
+   Merge: e3717ae e7b0a2a
    Author: TÃ³th ÃdÃ¡m <10620868+Annosz@users.noreply.github.com>
-   Date:   Mon Sep 21 15:48:32 2020 +0200
+   Date:   Tue Sep 29 18:32:20 2020 +0200
    
-       Merge pull request #3 from Annosz/development
+       Merge pull request #4 from Annosz/development
        
-       CheaperBeachBridgeRepair - Add config file
+       Add Remember Faced Direction mod
    

@@ -1,0 +1,14 @@
+url:
+   https://github.com/millerscout/StardewMillerMods.git
+
+mods:
+   Economy Mod
+   Retroactive Stardew
+
+latest commit:
+   commit 9a3fd0a9cb0977ae3c4ab23cbcd2466b95c2b1e1
+   Author: Marcos Miller Dantas <mmillerdantas@outlook.com>
+   Date:   Wed Oct 7 05:03:32 2020 -0300
+   
+       version bump.
+   

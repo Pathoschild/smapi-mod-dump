@@ -5,9 +5,9 @@ mods:
    Cellar Available
 
 latest commit:
-   commit 937a2b9be70265945d6c24f61848fb40878647d1
+   commit be8a2113e8ad715645ad0c4819eaf53917c0a633
    Author: Candidus <candidus@xmail.net>
-   Date:   Thu Apr 16 21:48:08 2020 +0200
+   Date:   Thu Oct 8 22:46:42 2020 +0200
    
-       New feature: Casks can be removed to start with an empty cellar
+       Bugfix: Mod doesn't work after creating a new game, saving and reloading required due to an issue in SDV
    

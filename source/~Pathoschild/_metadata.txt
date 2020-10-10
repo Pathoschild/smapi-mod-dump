@@ -19,9 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit b65a01505eb0ea3c551f57033f569039f4c8fde7
+   commit 3c68b5fe37db2bb0f2e10d0dffe4067c316c5dc5
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Sep 25 20:18:14 2020 -0400
+   Date:   Thu Oct 8 19:03:37 2020 -0400
    
-       sort translations
+       move Automate container preference enum for future reuse
    

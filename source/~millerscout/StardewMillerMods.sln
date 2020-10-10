@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroactiveStardew", "RetroactiveStardew\RetroactiveStardew.csproj", "{C1FAFCC5-A19B-4385-BEA2-45F755ED8D16}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54E6D6D7-E57B-4FEA-8F9B-65FF1BE00379}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EconomyMod", "EconomyMod\EconomyMod.csproj", "{D998B15F-DA2F-4EC1-92F9-02CE8394D187}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EconomyModTest", "EconomyModTest\EconomyModTest.csproj", "{B9BC0C8A-E849-4CBA-8D04-6DF6763FD126}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1FAFCC5-A19B-4385-BEA2-45F755ED8D16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1FAFCC5-A19B-4385-BEA2-45F755ED8D16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1FAFCC5-A19B-4385-BEA2-45F755ED8D16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1FAFCC5-A19B-4385-BEA2-45F755ED8D16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D998B15F-DA2F-4EC1-92F9-02CE8394D187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D998B15F-DA2F-4EC1-92F9-02CE8394D187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D998B15F-DA2F-4EC1-92F9-02CE8394D187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D998B15F-DA2F-4EC1-92F9-02CE8394D187}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BC0C8A-E849-4CBA-8D04-6DF6763FD126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BC0C8A-E849-4CBA-8D04-6DF6763FD126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BC0C8A-E849-4CBA-8D04-6DF6763FD126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BC0C8A-E849-4CBA-8D04-6DF6763FD126}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {734774A2-46AC-46FF-A632-E889CB08C78A}
+	EndGlobalSection
+EndGlobal

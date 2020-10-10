@@ -5,12 +5,9 @@ mods:
    Wedding Mod
 
 latest commit:
-   commit 172648bf8669e367b8d492e443f978ddd1da3492
-   Merge: 2a4bbfb 854f581
+   commit 89cf3020bd6f41db76544b733c7a890d8f7c3a41
    Author: Opalie <31365045+Opalie@users.noreply.github.com>
-   Date:   Sat May 4 23:04:00 2019 +0100
+   Date:   Wed Sep 30 13:42:47 2020 +0200
    
-       Merge pull request #3 from sushigang/maemi
-       
-       Portuguese Language
+       Create README.md
    

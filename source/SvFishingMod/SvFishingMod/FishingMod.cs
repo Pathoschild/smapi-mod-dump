@@ -49,6 +49,7 @@ namespace SvFishingMod
             helper.ConsoleCommands.Add("sv_fishing_setfish", "Forces the next fishing event to give a fish with the specified id.\nUsage: sv_fishing_setfish <fish_id>\nUse sv_fishing_search to get the id of a given fish by name.\nUse -1 as the fish id to restore original game functionality.", HandleCommand);
             helper.ConsoleCommands.Add("sv_fishing_fishcycling", "Enables or disables the reeled fish cycling feature.\nUsage: sv_fishing_fishcycling 0|1\nWhen enabled, this feature will allow you to automatically reel all possibles fishes one after another each time you throw your fishrod.", HandleCommand);
             helper.ConsoleCommands.Add("sv_fishing_bitedelay", "Enables or disables the bite delay for fishes once the rod has been casted into the water.\nUsage: sv_fishing_bitedelay 0|1\nIf the value is 1, the original game mechanics will be used and the fish will bite after a random amount of time.", HandleCommand);
+            helper.ConsoleCommands.Add("sv_fishing_status", "Displays the current mod status, including synced data from the host in multiplayer sessions.\nUsage: sv_fishing_status\nThis command doesnt accept any parameters.", HandleCommand);
 
             defaultMaxFishingBiteTime = maxFishingBiteTime;
             defaultMinFishingBiteTime = minFishingBiteTime;
@@ -326,6 +327,23 @@ namespace SvFishingMod
                         Settings.Local.RemoveBiteDelay = false;
                     else if (string.Equals(args[0].Trim(), "0", StringComparison.Ordinal))
                         Settings.Local.RemoveBiteDelay = true;
+                }
+                return;
+            }
+
+            if (string.Equals(command, "sv_fishing_status", StringComparison.OrdinalIgnoreCase))
+            {
+                if (EnableDebugOutput)
+                {
+                    Monitor.Log("SvFishingMod V. " + ModManifest.Version, LogLevel.Info);
+                    Monitor.Log("\tTime: " + DateTime.Now.ToString(), LogLevel.Info);
+                    Monitor.Log("\tIs Multiplayer Session: " + (Settings.IsMultiplayerSession ? "YES" : "NO"), LogLevel.Info);
+                    Monitor.Log("\tIs Server Mode: " + (Settings.IsServer? "YES" : "NO"), LogLevel.Info);
+                    Monitor.Log("\tRemote Settings Received: " + (Settings.RemoteSettingsSet ? "YES" : "NO"), LogLevel.Info);
+                    Monitor.Log("\tLocal Config File Path: " + Settings.ConfigFilePath, LogLevel.Info);
+                    Monitor.Log("\tActive Settings: " + (Settings.Active == Settings.Local ? "LOCAL" : "REMOTE"), LogLevel.Info);
+                    if (Settings.IsServer)
+                        Monitor.Log("\tEnforce Multiplayer Settings: " + (Settings.Local.EnforceMultiplayerSettings ? "YES" : "NO"), LogLevel.Info);
                 }
                 return;
             }

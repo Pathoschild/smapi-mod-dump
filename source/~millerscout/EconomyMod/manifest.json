@@ -1,0 +1,16 @@
+{
+    "Name": "EconomyMod",
+    "Author": "millerscout",
+    "Version": "1.0.7",
+    "Description": "WIP - EconomyMod (wannabe)",
+    "UniqueID": "Millerscout.EconomyMod",
+    "EntryDll": "EconomyMod.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:6955" ],
+    "Dependencies": [
+        {
+            "UniqueID": "Pathoschild.LookupAnything",
+            "IsRequired": true
+        }
+    ]
+}

@@ -14,6 +14,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="promo\nexus_description.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="promo\nexus_description.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="assets\i18n\default.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

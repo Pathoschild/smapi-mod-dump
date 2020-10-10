@@ -5,15 +5,9 @@ mods:
    SvFishingMod
 
 latest commit:
-   commit 02df68935abca2befbfaa2d02cfbe874d436c2d7
+   commit 1449c7b8bdb28783b919df2d1b6d9a50061f13a9
    Author: Fabian R <kderazorback@me.com>
-   Date:   Sun Jul 19 03:17:22 2020 -0500
+   Date:   Mon Oct 5 07:03:25 2020 +0200
    
-       Proposed support for Server-Client settings synchronization
-       
-       + Added EnforceMultiplayerSettings property to config file.
-       - Refactored Settings handling into a Local and Remote variants based on current game play mode.
-       - Updated module version to 0.1.3
-       
-       - This commit is a work in progress. Not tested
+       Updated README.md.
    

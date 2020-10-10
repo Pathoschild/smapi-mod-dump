@@ -1,0 +1,132 @@
+[size=6][b]Unsettling Item Descriptions[/b][/size]
+
+Does your game feel as bland as fiddlehead risotto? As common as carp? Install this slightly-spoopy mod to add mildly disturbing or uncomfortable descriptive text to over 800 in-game items!
+
+[center][i]Currently includes reinvented descriptions for:[/i]
+[b]534[/b] small objects   [b]38[/b] weapons
+[b]106[/b] large objects   ﻿[b]13[/b] boots
+[b]73[/b] pants & shirts   ﻿[b]42[/b] hats
+[b]21[/b] buildings   ﻿[b]11[/b] tools[/center]
+
+[center][img]https://staticdelivery.nexusmods.com/mods/1303/images/6822/6822-1601489199-668368847.png[/img][/center]
+
+
+[b][size=5][center]Q&A[/center][/size][/b][size=3][b]Q: Geez, those are some WEIRD nature facts. How much of this stuff is true?[/b][/size]
+[b][color=#e69138]A. Most of it is true![/color][/b] Don't treat us like a textbook—we can't [i]guarantee[/i] the truth of every description. But we [b]did[/b] do a lot of research for this mod, and tried to avoid spreading false information as facts. Remember that some of the animals, plants, and minerals in Stardew Valley are fictional or only loosely based on the real world. We may have gotten more creative for those. :)
+
+By and large, though, the weirdest and most bizarre nature facts revealed in this mod are all [b]true[/b]. We figure that weird-but-true facts are a lot more unsettling than fiction, anyway. Isn't it more uncomfortable when it's real?
+
+[size=3][b]Q: Does this mod make it harder to play the game?[/b][/size]
+[b][color=#e69138]A. Brand-new players [i]may[/i] be disadvantaged by using this mod.[/color][/b] Sometimes, a helpful description relating to an item's purpose has been replaced with unsettling but less-informative text. If you're not already familiar with the purpose and use of most in-game items, you might have a harder time. We recommend that players use the [url=https://stardewvalleywiki.com/]wiki[/url] to look up unfamiliar items!
+
+The amount of information left out is [b]small[/b], and should not be a problem for experienced players. All descriptions for seed items, for example, still contain season, growth, and harvest information.
+
+[size=3][b]Q: Hey! I found a description that isn't very unsettling.[/b][/size]
+[b][color=#e69138]A. Feel free to suggest a better one![/color][/b] Our [url=https://docs.google.com/spreadsheets/d/1s3Upkb2qTd6m02gyfdLdIgkqdHE1TD2ga0LU8BdDnKY/edit?usp=sharing]spreadsheets[/url] are open for anyone to comment with suggestions or improvements. Generally speaking, the creepiness of individual descriptions in this mod may vary. Some are weird, and a few are just silly.
+
+We are actively collecting suggestions for "silly" descriptions also, and will consider expanding this mod in the future to include an option making all descriptions silly, all unsettling, or fifty-fifty randomized. This depends on how many new descriptions we can collect, so please contribute your ideas!
+
+
+
+[b][size=5][center]Showcase[/center][/size][/b]A team of 20 people worked hard to bring you this mod! We would each like to share one of our favorite rewrites, beginning with the [i]Bouquet[/i] description that started it all:
+
+[center][url=https://www.nexusmods.com/users/8049772]Draylon[/url]'s favorite: [b]Bouquet[/b]
+[quote]A colorful bunch of severed plant reproductive organs. Maybe your sweetheart will get the hint?[/quote]
+[url=https://www.nexusmods.com/stardewvalley/users/92469153]Arknir[/url]'s favorite: [b]Wilted Bouquet[/b]
+[quote]As dead as your heart. Makes a thoughtful and symbolic gift.[/quote]
+[url=https://www.nexusmods.com/users/3391358]Ruukas[/url]' favorite: [b]Plush Bunny[/b]
+[quote]The fur looks awfully real.[/quote]
+[url=https://www.nexusmods.com/users/12004908]Undare[/url]'s favorite: [b]Strange Bun[/b]
+[quote]What's inside? OH SWEET YOBA IT'S SPIDERS![/quote]
+[b]Glowbug[/b]'s favorite: [b]Mouse Ears[/b]
+[quote]Me gonna be deaf now, poke.[/quote]
+[url=https://www.nexusmods.com/users/18592979?tab=user+files]LenneDalben[/url]'s favorite: [b]Cave Carrot[/b]
+[quote]A dirtier variety of carrot. Fulfills many needs of a miner.[/quote]
+[url=https://www.nexusmods.com/users/94394293]General Alexis[/url]' favorite: [b]Axe[/b]
+[quote]A perfect tool for chopping trees and stealing kneecaps.[/quote]
+[b]Wobin[/b]'s favorite: [b]Skeletal Hand[/b]
+[quote]The age of these bones is about one thous... Oh! ...Oh no. They're much more recent.[/quote]
+[url=https://www.nexusmods.com/users/88107803]Jonqora[/url]'s favorite: [b]Worm Bin[/b]
+[quote]Produces bait. Close the lid to give the worms some privacy.[/quote]
+[url=https://www.nexusmods.com/users/85656033]ExnoticTest[/url]'s favorite: [b]Quality Retaining Soil[/b]
+[quote]Ohh yes! Keep the dirt wet all night long...[/quote]
+[url=https://www.nexusmods.com/users/41011220]ItsBenter[/url]'s favorite: [b]Mermaid's Pendant[/b]
+[quote]A ghost ripped this from a mermaid so you can woo your lover.[/quote]
+[url=https://github.com/KatrinaHoffert]Kat[/url]'s favorite: [b]Explosive Ammo[/b]
+[quote]Owing to improper storage, it causes hundreds of unfortunate child deaths each year.[/quote]
+[b]ssoshwac[/b]'s favorite: [b]Earmuffs[/b]
+[quote]They won't block out the voices in your head...[/quote]
+[url=https://www.nexusmods.com/stardewvalley/users/24986819]Gervig91[/url]'s favorite: [b]Treasure Chest[/b]
+[quote]Many of the coins inside are stained an ugly dark reddish-brown, almost black.[/quote]
+[url=https://www.nexusmods.com/users/48380238]foggywizard[/url]'s favorite: [b]Strange Doll (green)[/b]
+[quote]What a beautiful smile you have.[/quote]
+[b]Wingheart[/b]'s favorite: [b]Log Cabin[/b]
+[quote]Termites included.[/quote]
+[url=https://www.nexusmods.com/users/84002498]Forsy :D[/url]'s favorite: [b]Living Hat[/b]
+[quote]It slowly absorbs life energy from your scalp, waiting for the day you die.[/quote]
+[url=https://www.nexusmods.com/users/91777683]icecreamrat[/url]'s favorite: [b]Official Cap[/b]
+[quote]Wear this and you can get away with murder.[/quote]
+[url=https://www.nexusmods.com/users/67314851?tab=user+files]Arcane[/url]'s favorite: [b]Shirt (made from Basalt)[/b]
+[quote]May cause chaffing and bleeding of the nipples.[/quote]
+[url=https://www.nexusmods.com/users/61873026]SwiftIsHere[/url]'s favorite: [b]Elvish Jewelry[/b]
+[quote]Legend says they are enchanted to be as warm as their owners. It's cold to the touch.[/quote][/center]
+
+
+[b][size=5][center]User Information[/center][/size][/b][size=4][b]COMPATIBILITY[/b][/size]
+[list]
+[*]Stardew Valley v1.4 or later;
+[*][url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url] v1.16.0 or later (v1.16.4 and up recommended);
+[*]Linux, Mac, Windows, and Android.
+[*]Single-player and multiplayer. This mod only affects players who install it.
+[/list]
+[size=4][b]INSTALLATION[/b][/size]
+[list=1]
+[*][url=https://smapi.io/]Install the latest version of SMAPI.[/url]
+[*]Install the latest version of [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher.[/url]
+[*]Download this mod from the link in the header above.
+[*]Unzip the mod and place the [code][CP] Unsettling Item Descriptions[/code] folder inside your [code]Mods[/code] folder.
+[*]Run the game using SMAPI.
+[/list]
+[size=4][b]USING THE MOD[/b][/size]
+You should see the new item descriptions show up right away. Almost every description for objects, craftables, boots, weapons, and tools has been re-written. (There were a few that were already so unsettling we didn't change them.) Some—but not all—descriptions for hats, clothing, and buildings have been re-written as well.
+
+If you want to help add to this mod by suggesting description ideas for missed items, you can join our contributor group by commenting on our [url=https://docs.google.com/spreadsheets/d/1s3Upkb2qTd6m02gyfdLdIgkqdHE1TD2ga0LU8BdDnKY/edit?usp=sharing]shared google speadsheet document![/url]
+
+
+
+[size=5][center][b]Config Settings[/b][/center][/size]After running SMAPI at least once with Unsettling Item Descriptions (and Content Patcher) installed, a [code]config.json[/code] file will be created inside the [code][CP] Unsettling Item Descriptions[/code] mod folder. Open it in any text editor to change your config settings.
+
+[b][size=3]DescribeObjects:[/size][/b]
+Use unsettling descriptions for normal objects. Defaults to [code]true[/code].
+[b][size=3]DescribeBigCraftables:[/size][/b]
+Use unsettling descriptions for big craftables (large objects). Defaults to [code]true[/code].
+[b][size=3]DescribeWeapons:[/size][/b]
+Use unsettling descriptions for weapons. Defaults to [code]true[/code].
+[b][size=3]DescribeTools:[/size][/b]
+Use unsettling descriptions for tools. Defaults to [code]true[/code].
+
+[b][size=3]DescribeBoots:[/size][/b]
+Use unsettling descriptions for shoes and boots. Defaults to [code]true[/code].
+[b][size=3]DescribeHats:[/size][/b]
+Use unsettling descriptions for hats and headwear. Defaults to [code]true[/code].
+[b][size=3]DescribeClothing:[/size][/b]
+Use unsettling descriptions for pants and shirts. Defaults to [code]true[/code].
+
+[b][size=3]DescribeBuildings:[/size][/b]
+Use unsettling descriptions for farm buildings. Defaults to [code]true[/code].
+
+
+
+[b][size=5][center]Notes[/center][/size][/b][size=4][b]ACKNOWLEDGEMENTS[/b][/size]
+[list]
+[*]This project was made possible by the joint creativity of many people! Huge thanks to contributors [url=https://www.nexusmods.com/users/8049772]Draylon[/url], [url=https://www.nexusmods.com/users/61873026]SwiftIsHere[/url], [url=https://www.nexusmods.com/users/48380238]foggywizard[/url], [url=https://www.nexusmods.com/users/84002498]Forsy :D[/url], [url=https://www.nexusmods.com/users/41011220]ItsBenter[/url], [url=https://www.nexusmods.com/users/12004908]Undare[/url], [url=https://www.nexusmods.com/users/3391358]Ruukas[/url], [url=https://www.nexusmods.com/users/85656033]ExnoticTest[/url], [url=https://github.com/KatrinaHoffert]Kat[/url], [url=https://www.nexusmods.com/users/94394293]General Alexis[/url], [url=https://www.nexusmods.com/users/18592979?tab=user+files]LenneDalben[/url], Glowbug, Wingheart, [url=https://www.nexusmods.com/stardewvalley/users/92469153]Arknir[/url], ssoshwac, Wobin, [url=https://www.nexusmods.com/stardewvalley/users/24986819]Gervig91[/url], [url=https://www.nexusmods.com/users/67314851?tab=user+files]Arcane[/url], and [url=https://www.nexusmods.com/users/91777683]icecreamrat[/url].
+[*]Much gratitude to ConcernedApe and [url=https://www.nexusmods.com/stardewvalley/users/1552317?tab=user+files]Pathoschild[/url]!
+[*]Thanks to those who provided help and support in the [url=https://discordapp.com/invite/StardewValley]Stardew Valley Discord[/url] #making-mods channel.
+[*]If you want to contribute description ideas to expand this mod, you can [url=https://docs.google.com/spreadsheets/d/1s3Upkb2qTd6m02gyfdLdIgkqdHE1TD2ga0LU8BdDnKY/edit?usp=sharing]comment your suggestions here![/url]
+[/list]
+[size=4][b]SEE ALSO[/b][/size]
+[list]
+[*]This mod on [url=https://github.com/Jonqora/StardewMods/tree/master/UnsettlingDescriptions]GitHub[/url]
+[*]Check out [url=https://www.nexusmods.com/users/88107803?tab=user+files]my other mods[/url]! My favorite one is [url=https://www.nexusmods.com/stardewvalley/mods/6324]Angry Grandpa[/url] mod, it has a bunch of cool features.
+[/list]
+[size=1]Tiny reminder: endorse the mod if you like it. It means more people will see it, and it makes the authors happy. :)[/size]

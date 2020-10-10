@@ -1,0 +1,13 @@
+url:
+   https://github.com/Jonqora/NPCJasperFix.git
+
+mods:
+   NPC Jasper Dialogue Patch
+
+latest commit:
+   commit cf945c55106068d8691eb995d5effe64282852d8
+   Author: Ellen <31304746+Jonqora@users.noreply.github.com>
+   Date:   Mon Jul 27 14:59:59 2020 -0400
+   
+       Update README.md
+   

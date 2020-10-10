@@ -1,0 +1,14 @@
+url:
+   https://github.com/desto-git/sdv-mods.git
+
+mods:
+   Billboard Profit Margin
+   Gift Decline
+
+latest commit:
+   commit 4a34b63fdca835b9aba3829b5704388caa9282ba
+   Author: desto-git <desto-git@users.noreply.github.com>
+   Date:   Thu Oct 1 01:39:34 2020 +0200
+   
+       [GD] fix error when giving a quest item
+   

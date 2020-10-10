@@ -15,6 +15,14 @@ namespace BetterJunimos.Utils {
         internal const int UnpaidRadius = 3;
         public const int CoffeeId = 433;
 
+        public const int GemCategory = -2;
+        public const int MineralCategory = -12;
+
+        public const int ForageCategory = -81;
+        public const int FlowerCategory = -80;
+        public const int FruitCategory = -79;
+        public const int WineCategory = -26; 
+
         public static int MaxRadius;
 
         internal static ModConfig Config;
@@ -86,7 +94,7 @@ namespace BetterJunimos.Utils {
             List<Color> colorList = new List<Color>();
             Chest chest = hut.output.Value;
             foreach (Item dye_object in chest.items) {
-                if (dye_object != null && (dye_object.Category == -12 || dye_object.Category == -2)) {
+                if (dye_object != null && (dye_object.Category == MineralCategory || dye_object.Category == GemCategory)) {
                     Color? dyeColor = TailoringMenu.GetDyeColor(dye_object);
                     if (dye_object.Name == "Prismatic Shard")
                         isPrismatic = true;

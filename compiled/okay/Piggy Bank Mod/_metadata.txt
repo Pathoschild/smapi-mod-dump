@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6934
+IDs: MindMeltMax.PiggyBank
+update keys: Nexus:6934

@@ -9,7 +9,7 @@ tilesheet_coordinates,key,name,image,image2,image3,image4,unsettling_description
 "(112, 0)",7,House Plant,,,,,The lush potted grass provides a good hiding spot for illicit items.,,Adds some character to your home or farm.
 "(0, 32)",8,Scarecrow,,,,,A miracle of modern taxidermy.,,"Prevents crows from attacking your crops. Has a limited radius (about 8 ""tiles"")."
 "(16, 32)",9,Lightning Rod,,,,,Packages the immense energy of lightning storms in a convenient format.,,Collects energy from lightning storms and turns it into battery packs.
-"(32, 32)",10,Bee House,,,,,Cute bee vomit factories for your farm. The enslaved insects produce honey in all seasons but winter.,,Place outside and wait for delicious honey! (Except in Winter).
+"(32, 32)",10,Bee House,,,,,Cute bee vomit factories for your farm. Harvest from enslaved insects in every season but winter.,,Place outside and wait for delicious honey! (Except in Winter).
 "(64, 32)",12,Keg,,,,,The liquid inside burbles and sloshes even when no one is near the barrel.,,Place a fruit or vegetable in here. Eventually it will turn into a beverage.
 "(80, 32)",13,Furnace,,,,,Turns ore and coal into metal bars. Is it big enough to fit a person inside?,,Turns ore and coal into metal bars.
 "(112, 32)",15,Preserves Jar,,,,,Preserves food long beyond its best-by date.,,Turns vegetables into pickles and fruit into jam.
@@ -29,11 +29,11 @@ tilesheet_coordinates,key,name,image,image2,image3,image4,unsettling_description
 "(112, 96)",31,Chicken Statue,,,,,Flammable.,,A wooden statue of a chicken.
 "(0, 128)",32,Stone Cairn,,,,,Stones like these are often used as burial monuments.,,A decorative piece for your farm.
 "(16, 128)",33,Suit Of Armor,,,,,Purely decorative. There's no one inside... wait...,,A decorative piece for your farm.
-"(32, 128)",34,Sign Of The Vessel,,,,,Using this as decoration only would be dangerous blasphemy.,,A decorative piece for your farm.
+"(32, 128)",34,Sign Of The Vessel,,,,,Using this as decoration would be dangerous blasphemy.,,A decorative piece for your farm.
 "(48, 128)",35,Basic Log,,,,,Some poor tree's midriff.,,A decorative piece for your farm.
 "(64, 128)",36,Lawn Flamingo,,,,,"Unusually life-like. The material seems artificial, but you can't be sure.",,A decorative piece for your farm.
-"(80, 128)",37,Wood Sign,,,,,Use an item on this to trap its image inside. The item won't be consumed.,,Use an item on this to change what's displayed. The item won't be consumed.
-"(96, 128)",38,Stone Sign,,,,,Use an item on this to trap its image inside. The item won't be consumed.,,Use an item on this to change what's displayed. The item won't be consumed.
+"(80, 128)",37,Wood Sign,,,,,Use an item on it to trap the item's image inside. The item won't be consumed.,,Use an item on this to change what's displayed. The item won't be consumed.
+"(96, 128)",38,Stone Sign,,,,,Use an item on it to trap the item's image inside. The item won't be consumed.,,Use an item on this to change what's displayed. The item won't be consumed.
 "(0, 160)",40,Big Green Cane,,,,,Full-grown. This species takes two winters to become sexually mature.,,A decorative piece for your farm.
 "(16, 160)",41,Green Canes,,,,,Juvenile green candy canes.,,A decorative piece for your farm.
 "(32, 160)",42,Mixed Cane,,,,,Half-breeds!,,A decorative piece for your farm.
@@ -48,7 +48,7 @@ tilesheet_coordinates,key,name,image,image2,image3,image4,unsettling_description
 "(96, 192)",54,Stone Owl,,,,,Medusa got to the poor critter.,,Garden art for your farm.
 "(112, 192)",55,Stone Junimo,,,,,Medusa got to the poor critter.,,Garden art for your farm.
 "(0, 224)",56,Slime Ball,,,,,Pity the poor slime who had this growth removed.,,Filled with slime.
-"(96, 224)",62,Garden Pot,,,,,Grows crops from any season when indoors. The dirt is full of worms and insects.,,"Grows crops from any season when indoors. Outdoors, it can only house seasonal crops."
+"(96, 224)",62,Garden Pot,,,,,The dirt is crawling with worms and insects. Allows you to grow crops from any season when indoors.,,"Grows crops from any season when indoors. Outdoors, it can only house seasonal crops."
 "(0, 256)",64,Bookcase,,,,,UNOBTAINABLE,,A home for books.
 "(16, 256)",65,Fancy Table,,,,,UNOBTAINABLE,,A finely crafted round table.
 "(32, 256)",66,Ancient Table,,,,,UNOBTAINABLE,,It's covered in the thickest cobwebs.
@@ -82,11 +82,11 @@ tilesheet_coordinates,key,name,image,image2,image3,image4,unsettling_description
 "(48, 384)",99,Feed Hopper,,,,,NON-INVENTORY,,Provides convenient access to silo fodder.
 "(80, 384)",101,Incubator,,,,,NON-INVENTORY,,Hatches eggs into baby chickens and ducks.
 "(0, 416)",104,Heater,,,,,Should be serviced regularly to avoid risk of sudden fire or explosions.,,Keeps your animals warmer and happier during the winter.
-"(16, 416)",105,Tapper,,,,,Handy tools to drain the life out of trees!,,"Place on a maple, oak, or pine tree and wait for the reservoir to fill with product!"
+"(16, 416)",105,Tapper,,,,,A handy tool to drain the life out of trees!,,"Place on a maple, oak, or pine tree and wait for the reservoir to fill with product!"
 "(32, 416)",106,Camera,,,,,UNOBTAINABLE,,An old camera mounted on a tripod.
 "(48, 416)",107,Plush Bunny,,,,,The fur looks awfully real.,,"It's big, it's soft, and it's cute."
 "(64, 416)",108,Tub o' Flowers,,,,,"The flowers are so fragrant, they mask all other odors.",,Flowers planted in an oak barrel. Blooms in spring and summer.
-"(80, 416)",109,Tub o' Flowers,,,,,"The flowers are so fragrant, they mask all other odors.",,Flowers planted in an oak barrel. Blooms in spring and summer.
+"(80, 416)",109,Tub o' Flowers,,,,,"Ugh, this empty barrel smells like something has crawled into it and died!",,Flowers planted in an oak barrel. Blooms in spring and summer.
 "(96, 416)",110,Rarecrow,,,,,An unfortunate prince cursed into stasis. Collect them all! (1 of 8),,Collect them all! (1 of 8)
 "(112, 416)",111,Decorative Pitcher,,,,,UNOBTAINABLE,,Hand-made out of brass.
 "(0, 448)",112,Dried Sunflowers,,,,,"Plenty of sun, not enough water.",,A vibrant home decoration.
@@ -119,7 +119,7 @@ tilesheet_coordinates,key,name,image,image2,image3,image4,unsettling_description
 "(48, 576)",147,Stump Brazier,,,,,Only you can prevent forest fires. Provides moderate light.,,Provides a moderate amount of light.
 "(64, 576)",148,Carved Brazier,,,,,A wooden masterpiece to burn. Provides moderate light.,,Provides a moderate amount of light.
 "(80, 576)",149,Skull Brazier,,,,,"No, this isn't a real skull... probably. Provides moderate light.",,Provides a moderate amount of light.
-"(96, 576)",150,Barrel Brazier,,,,,A fire in a wooden barrel sounds very safe. Provides moderate light.,,Provides a moderate amount of light.
+"(96, 576)",150,Barrel Brazier,,,,,A fire in a wooden barrel sounds safe. Provides moderate light.,,Provides a moderate amount of light.
 "(112, 576)",151,Marble Brazier,,,,,Burn things in style. Provides moderate light.,,Provides a moderate amount of light.
 "(0, 608)",152,Wood Lamp-post,,,,,An industrial age tool correlated with reduced homicide rates. Provides abundant light.,,Provides a good amount of light.
 "(16, 608)",153,Iron Lamp-post,,,,,An industrial age tool correlated with reduced homicide rates. Provides abundant light.,,Provides a good amount of light.

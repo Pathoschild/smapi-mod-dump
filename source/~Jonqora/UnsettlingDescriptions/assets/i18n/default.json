@@ -36,7 +36,7 @@
           "4": "Packages the immense energy of lightning storms in a convenient format."
         },
         "10": {
-          "4": "Cute bee vomit factories for your farm. The enslaved insects produce honey in all seasons but winter."
+          "4": "Cute bee vomit factories for your farm. Harvest from enslaved insects in every season but winter."
         },
         "12": {
           "4": "The liquid inside burbles and sloshes even when no one is near the barrel."
@@ -81,7 +81,7 @@
           "4": "Purely decorative. There's no one inside... wait..."
         },
         "34": {
-          "4": "Using this as decoration only would be dangerous blasphemy."
+          "4": "Using this as decoration would be dangerous blasphemy."
         },
         "35": {
           "4": "Some poor tree's midriff."
@@ -90,10 +90,10 @@
           "4": "Unusually life-like. The material seems artificial, but you can't be sure."
         },
         "37": {
-          "4": "Use an item on this to trap its image inside. The item won't be consumed."
+          "4": "Use an item on it to trap the item's image inside. The item won't be consumed."
         },
         "38": {
-          "4": "Use an item on this to trap its image inside. The item won't be consumed."
+          "4": "Use an item on it to trap the item's image inside. The item won't be consumed."
         },
         "40": {
           "4": "Full-grown. This species takes two winters to become sexually mature."
@@ -138,7 +138,7 @@
           "4": "Pity the poor slime who had this growth removed."
         },
         "62": {
-          "4": "Grows crops from any season when indoors. The dirt is full of worms and insects."
+          "4": "The dirt is crawling with worms and insects. Allows you to grow crops from any season when indoors."
         },
         "71": {
           "4": "Hopefully the monsters chasing you won't know how to use stairs."
@@ -177,7 +177,7 @@
           "4": "Should be serviced regularly to avoid risk of sudden fire or explosions."
         },
         "105": {
-          "4": "Handy tools to drain the life out of trees!"
+          "4": "A handy tool to drain the life out of trees!"
         },
         "107": {
           "4": "The fur looks awfully real."
@@ -186,7 +186,7 @@
           "4": "The flowers are so fragrant, they mask all other odors."
         },
         "109": {
-          "4": "The flowers are so fragrant, they mask all other odors."
+          "4": "Ugh, this empty barrel smells like something has crawled into it and died!"
         },
         "110": {
           "4": "An unfortunate prince cursed into stasis. Collect them all! (1 of 8)"
@@ -255,7 +255,7 @@
           "4": "No, this isn't a real skull... probably. Provides moderate light."
         },
         "150": {
-          "4": "A fire in a wooden barrel sounds very safe. Provides moderate light."
+          "4": "A fire in a wooden barrel sounds safe. Provides moderate light."
         },
         "151": {
           "4": "Burn things in style. Provides moderate light."
@@ -323,6 +323,9 @@
         "216": {
           "4": "Not big enough for meat. Storing crops and forage ingredients will have to do."
         }
+      },
+      "When": {
+        "DescribeBigCraftables": true
       }
     },
     {
@@ -336,21 +339,66 @@
         "Mill": {
           "9": "Crushes things into fine powder. Be careful not to lose any fingers."
         },
+        "Earth Obelisk": {
+          "9": "A monument constructed with the volatile technology of the dwarves."
+        },
+        "Water Obelisk": {
+          "9": "A monument imbued with the dangerous magic of the siren's call."
+        },
+        "Desert Obelisk": {
+          "9": "A monument summoned by the arcane power of corrupted beings."
+        },
         "Junimo Hut": {
           "9": "An inconspicuous form of magical creature slavery."
         },
         "Gold Clock": {
           "9": "Fundamentally alters the flow of space-time on your farm. Debris and fences become suspended in time."
         },
+        "Shipping Bin": {
+          "9": "Invites Lewis to snoop all around your farm every night."
+        },
+        "Coop": {
+          "9": "Houses 4 modern-day, coop-dwelling dinosaurs!"
+        },
+        "Big Coop": {
+          "9": "Houses 8 coop-dwelling dinosaurs, comes with an incubator to hatch unknown species. Unlocks ducks."
+        },
+        "Deluxe Coop": {
+          "9": "Houses 12 coop-dwellers, overfeeds them with an automated system. Unlocks rabbits."
+        },
+        "Barn": {
+          "9": "Houses 4 lactating, horned hoofstock."
+        },
+        "Big Barn": {
+          "9": "Houses 8 barn-dwelling animals, occasionally impregnates them. Unlocks goats."
+        },
+        "Deluxe Barn": {
+          "9": "Houses 12 barn-dwelling animals, overfeeds them with an automated system. Unlocks sheep and pigs."
+        },
         "Slime Hutch": {
           "9": "Raise deadly monsters!"
+        },
+        "Shed": {
+          "9": "Enable your hoarding tendencies with an extra storage building."
+        },
+        "Stone Cabin": {
+          "9": "Sometimes the rocks that make up these homes include plundered gravestones."
         },
         "Plank Cabin": {
           "9": "With all-natural air-conditioning."
         },
+        "Log Cabin": {
+          "9": "Termites included."
+        },
+        "Greenhouse": {
+          "9": "The secrets of this frail glass hovel could probably solve climate change..."
+        },
         "Fish Pond": {
           "9": "Toss your fish into a bottomless hole and hope they keep breeding down there."
         }
+      },
+      "When": {
+        "DescribeBuildings": true
       }
     },
     {
@@ -389,7 +437,7 @@
           "1": "Nothing happens when they are rubbed."
         },
         "514": {
-          "1": "Their NASA certification has expired."
+          "1": "Their Ferngill Space Agency certification has expired."
         },
         "804": {
           "1": "Emily made these to be 100% compostable! They might be composting a little already..."
@@ -397,21 +445,30 @@
         "806": {
           "1": "A little tight on the toes."
         }
+      },
+      "When": {
+        "DescribeBoots": true
       }
     },
     {
       "LogName": "Edit ClothingInformation descriptions",
       "Action": "EditData",
       "Target": "Data/ClothingInformation",
-      "Entries": {
-        "1105": "Shirt/Shirt/A wearable shirt./0/-1/50/255 255 255/false/Shirt"
-      },
       "Fields": {
         "-1": {
-          "2": "Optional."
+          "2": "Totally optional."
         },
         "0": {
-          "2": "Optional."
+          "2": "Totally optional."
+        },
+        "1": {
+          "2": "Mmm yes, show a little ankle."
+        },
+        "2": {
+          "2": "The flowing hem drags in the dirt as you walk."
+        },
+        "5": {
+          "2": "What's in your pants? Fossils."
         },
         "6": {
           "2": "Scratchy down there, but has great airflow!"
@@ -446,11 +503,17 @@
         "1017": {
           "2": "For holding up your lucky shorts."
         },
+        "1029": {
+          "2": "Handwashing instructions for this tough garment say to \"beat it with a stick or other object\"."
+        },
         "1030": {
           "2": "Complete with \"secret stash\" in the pocket."
         },
         "1034": {
           "2": "A hand-me-down adventurer's tunic. Tragically, it's not puncture-resistant."
+        },
+        "1038": {
+          "2": "A stretchy, scratchy, warm, knitted shirt."
         },
         "1039": {
           "2": "Reclaim your sad childhood."
@@ -458,23 +521,89 @@
         "1071": {
           "2": "It smells of sour milk."
         },
-        "1105": {
-          "2": "Join Us. Thrive."
+        "1131": {
+          "2": "The seams are rough and it's flecked with rust."
+        },
+        "1134": {
+          "2": "Prone to slippage."
         },
         "1138": {
           "2": "Looks badass as hell, but you'll smell like a brewery."
         },
+        "1148": {
+          "2": "Costume armor suitable for LARPing. Provides no real protection."
+        },
+        "1149": {
+          "2": "Flimsy with a noticeable patina. Provides no protection."
+        },
+        "1150": {
+          "2": "Heavy, soft, and expensive, it provides no meaningful protection."
+        },
+        "1151": {
+          "2": "Flashy and ostentatious, it provides zero protection to the wearer."
+        },
+        "1156": {
+          "2": "Give in to your baser instincts."
+        },
+        "1161": {
+          "2": "Always feels strangely cold, like your body heat isn't affecting it at all."
+        },
+        "1163": {
+          "2": "A classy jhirt."
+        },
+        "1166": {
+          "2": "Kame hame haaaa!"
+        },
+        "1168": {
+          "2": "Provides questionable coverage and an even more questionable smell."
+        },
+        "1169": {
+          "2": "Studded with sharp spikes and decorative lava-glass. Be careful not to impale anyone."
+        },
+        "1170": {
+          "2": "The loose glitter on this shirt sheds everywhere."
+        },
+        "1171": {
+          "2": "Flimsy and low-cut. Is it really appropriate for farmwork?"
+        },
+        "1172": {
+          "2": "This stained apron is the perfect color for stalking your crush."
+        },
+        "1174": {
+          "2": "Pull off that mom pants look. Has a dyeable bottom."
+        },
+        "1175": {
+          "2": "The 80s called, they want you back. Has a dyeable top."
+        },
+        "1180": {
+          "2": "Oh, you're a Tunnelers fan? Name every player."
+        },
         "1185": {
           "2": "The buttons are peculiar red stones. Wearing it brings an ever-present aura of low-level dread."
+        },
+        "1187": {
+          "2": "The leaves on this garment rot away and must be replaced frequently."
         },
         "1190": {
           "2": "It smiles so you don't have to."
         },
+        "1197": {
+          "2": "A beautiful blouse that tightly constricts your range of motion and limits breathing."
+        },
+        "1207": {
+          "2": "Cute! Hopefully a slime won't mistake you for its mate..."
+        },
         "1210": {
           "2": "A couple spiders shake loose when you pick it up."
         },
+        "1213": {
+          "2": "No one will suspect a thing when you poison the soup."
+        },
         "1217": {
           "2": "It smells strongly of sour milk."
+        },
+        "1219": {
+          "2": "Aww yeah, some sweet all-powerful Yoba merch!"
         },
         "1220": {
           "2": "A shirt with a metal chain sewn around the neck."
@@ -488,14 +617,29 @@
         "1226": {
           "2": "Smells faintly of burnt flesh."
         },
+        "1229": {
+          "2": "Occasionally causes you to move your arms not of your own volition."
+        },
         "1232": {
           "2": "Where you belong."
+        },
+        "1235": {
+          "2": "The fluff comes from real feathers plucked from meat chickens."
         },
         "1236": {
           "2": "The red stuff is probably spaghetti sauce. Or plausibly, anyway."
         },
         "1239": {
           "2": "Remember: you go down with your ship."
+        },
+        "1240": {
+          "2": "Don't forget to turn off your bodycam."
+        },
+        "1241": {
+          "2": "For easy impersonation of state officials."
+        },
+        "1243": {
+          "2": "Sewn from hundreds of dyed animal skins."
         },
         "1244": {
           "2": "The hieroglyphic warning probably wasn't important."
@@ -521,9 +665,18 @@
         "1275": {
           "2": "Dust thou art, and to dust thou shalt return..."
         },
+        "1286": {
+          "2": "Proclaim your voracious love of eating invertebrates."
+        },
+        "1287": {
+          "2": "(Caroline's fever dream not included.)"
+        },
         "1289": {
-          "2": "A stylish getup for a funeral or an ex-lover's wedding."
+          "2": "A stylish suit for an ex-lover's wedding or an eagerly-awaited funeral."
         }
+      },
+      "When": {
+        "DescribeClothing": true
       }
     },
     {
@@ -539,6 +692,9 @@
         },
         "4": {
           "1": "Scratchy and musty."
+        },
+        "5": {
+          "1": "Wear this and you can get away with murder."
         },
         "6": {
           "1": "Provides top-notch impairment of your peripheral vision."
@@ -556,10 +712,16 @@
           "1": "They won't block out the voices in your head..."
         },
         "14": {
-          "1": "Flutters frantically in only a sight breeze."
+          "1": "Flutters frantically in only a slight breeze."
+        },
+        "16": {
+          "1": "Definitely compensating for something."
+        },
+        "17": {
+          "1": "Eww, seamen!"
         },
         "19": {
-          "1": "M'lady, may I take your chair, bitch?"
+          "1": "M'lady, may I take your chair, b****?"
         },
         "24": {
           "1": "It feels damp against your eyelid when you wear it. Smells odd."
@@ -567,8 +729,14 @@
         "25": {
           "1": "Lure children in with promises of presents."
         },
+        "26": {
+          "1": "The perfect accessory for your precious toddler. Comes with a matching shade of lipstick!"
+        },
         "27": {
           "1": "A funny dent has caved it in on one side. It's otherwise in great condition!"
+        },
+        "28": {
+          "1": "Protects your hairdo from rain and splattered viscera."
         },
         "29": {
           "1": "The flower's lifeblood fades in vain while trying to beautify your face."
@@ -581,6 +749,12 @@
         },
         "34": {
           "1": "100% real cow skin."
+        },
+        "37": {
+          "1": "This town ain't big enough for the two of us! No, really, somebody died in this hat."
+        },
+        "38": {
+          "1": "The suede material is uncomfortably damp."
         },
         "39": {
           "1": "Colorized excrement."
@@ -600,8 +774,26 @@
         "46": {
           "1": "A stylish excuse for cultural appropriation."
         },
+        "48": {
+          "1": "Ichabod Crane's worst nightmare."
+        },
+        "51": {
+          "1": "The hard edges of the opening dig into your face as you wear it."
+        },
+        "53": {
+          "1": "Tight enough to constrict blood flow, but at least it's warm."
+        },
         "56": {
           "1": "Hardly makes a difference."
+        },
+        "57": {
+          "1": "It's a little cheesy."
+        },
+        "59": {
+          "1": "Something's fishy about this hat."
+        },
+        "61": {
+          "1": "Good for hiding bald patches or puppeteering rats."
         },
         "63": {
           "1": "Smells like turkey and smallpox."
@@ -618,6 +810,9 @@
         "71": {
           "1": "It may be practical, but your style choices are hideous."
         }
+      },
+      "When": {
+        "DescribeHats": true
       }
     },
     {
@@ -677,7 +872,7 @@
           "5": "The fine dust released when cutting these crystals can cause fibrosis of the lungs."
         },
         "82": {
-          "5": "The red glow of this crystal never seems to fade."
+          "5": "The red glow of this crystal leaves a burning sensation on your retinas."
         },
         "84": {
           "5": "The last remnant of some long forgotten creature."
@@ -872,19 +1067,19 @@
           "5": "Its venom will quickly cause paralysis, tissue necrosis and heart failure."
         },
         "159": {
-          "5": "Swimmers beware: this summer spawning fish becomes quite violent to protect its eggs."
+          "5": "Swimmers beware: this summer-spawning fish becomes quite violent to protect its eggs."
         },
         "160": {
           "5": "This eerie fish is known for the sexual parasitism of its reproductive cycle."
         },
         "161": {
-          "5": "Frozen and zombified: don't let it bite you. You might be able to use it as a weapon, though."
+          "5": "Frozen and zombified: don't let it bite you. But you might be able to use it as a weapon."
         },
         "162": {
           "5": "Legend says it survives by feeding off the remains of travelers who drown in the mines."
         },
         "163": {
-          "5": "The grandfather of all largemouth bass in the lake, now torn from his home."
+          "5": "The grandfather of all largemouth bass in the lake, ruthlessly torn from his home."
         },
         "164": {
           "5": "It hides using camouflage. Sometimes you can see the sand move as it waits for prey."
@@ -893,7 +1088,7 @@
           "5": "The unholy union of a scorpion and a carp. Keep hands away from tailfin!"
         },
         "166": {
-          "5": "Many of the coins inside are stained an ugly dark red, almost black."
+          "5": "Many of the coins inside are stained an ugly dark reddish-brown, almost black."
         },
         "167": {
           "5": "Food safety authorities have questioned the blue chemical used to color this drink."
@@ -983,7 +1178,7 @@
           "5": "You can still taste the dirt."
         },
         "206": {
-          "5": "It has pineapples on it. *shudder*"
+          "5": "It has pineapples on it. Urgh."
         },
         "207": {
           "5": "Sticks heavily to the pot and to your insides."
@@ -1100,7 +1295,7 @@
           "5": "The leading cause of diabetes."
         },
         "246": {
-          "5": "Destroys the surface of small intestines through a severe immune reaction that occurs in 1% of people."
+          "5": "Harmless for 99% of people. The other 1% experience a severe immune reaction that destroys the surface of their small intestines."
         },
         "247": {
           "5": "A vital ingredient in fried food and clogged arteries."
@@ -1184,7 +1379,7 @@
           "5": "Colorful candy made from literal rocks. Very alluring to small children."
         },
         "280": {
-          "5": "A firm, fleshy tuber spoilt by flavor that is too sweet and too starchy."
+          "5": "A firm, fleshy tuber spoilt by flavor that is both too sweet and too starchy."
         },
         "281": {
           "5": "The visible, edible part is just the tip of a vast colony of fungus threaded throughout the soil."
@@ -1331,10 +1526,10 @@
           "5": "Harvey's special steroids. Removes exhaustion."
         },
         "368": {
-          "5": "Your crops have a slight chance to grow larger in soil sprinkled with tree blood."
+          "5": "Slightly improves the chance of high quality harvests by infusing the soil with tree blood."
         },
         "369": {
-          "5": "Improves the chance of higher quality harvests by repurposing dead fish."
+          "5": "Improves the chance of high quality harvests by repurposing dead fish."
         },
         "370": {
           "5": "Keep your soil moist and wet."
@@ -1370,7 +1565,7 @@
           "5": "The most ancient and versatile of all weapons and tools."
         },
         "392": {
-          "5": "A beautiful specimen. Washed up like this, you can pretend there\u00e2\u20ac\u2122s still plenty in the sea."
+          "5": "A beautiful specimen. Washed up like this, you can pretend there's still plenty in the sea."
         },
         "393": {
           "5": "A structure formed by beautiful, endangered species ravaged by human ecological damage."
@@ -1406,7 +1601,7 @@
           "5": "Flosses your teeth and gums as you eat it. Moderate to severe bleeding is normal."
         },
         "404": {
-          "5": "Someday they will decompose *your* remains. If you must eat, chew gently."
+          "5": "Someday they will decompose YOUR remains. If you must eat, chew gently."
         },
         "405": {
           "5": "Decorate with milled tree carcasses. Place on the ground to create paths or floors."
@@ -1445,7 +1640,7 @@
           "5": "Lurks out of sight under the winter snow... waiting..."
         },
         "417": {
-          "5": "An unearthly sweetness permeating this stone-fleshed berry renders it entirely inedible."
+          "5": "The unearthly sweetness permeating this stone-fleshed berry renders it entirely inedible."
         },
         "418": {
           "5": "This delicate flower prefers all other flowers to be dead when it blooms in the snow."
@@ -1475,7 +1670,7 @@
           "5": "An essential material for proper mummification."
         },
         "430": {
-          "5": "Pigs find them easily due to their chemical similarities with pig mating pheromones."
+          "5": "Pigs find these fungus lumps easily due to chemical similarities with pig mating pheromones."
         },
         "432": {
           "5": "It's wonderfully lubricating."
@@ -1547,7 +1742,7 @@
           "5": "An inexpensive, fast-growing trap for beginner farmers. Plant in spring, 4 days."
         },
         "473": {
-          "5": "It doesn't *feel* magical, but you never know. Plant in spring, 10 days, reharvestable. Trellis crop."
+          "5": "It doesn't feel magical, but you never know. Plant in spring, 10 days, reharvestable. Trellis crop."
         },
         "474": {
           "5": "The crop it grows is ghostly pale. Plant in spring, 12 days."
@@ -1571,7 +1766,7 @@
           "5": "Sometimes they take root inside ripe tomatoes. Plant in summer, 11 days, reharvestable."
         },
         "481": {
-          "5": "The richest source of wild seeds is fresh bear scat. Plant in summer, 13 days, reharvestable."
+          "5": "The richest source of these seeds is fresh bear scat. Plant in summer, 13 days, reharvestable."
         },
         "482": {
           "5": "Not actually the hottest part of the pepper. Plant in summer, 5 days, reharvestable."
@@ -1589,7 +1784,7 @@
           "5": "They'll break the bank. Plant in summer, 13 days."
         },
         "487": {
-          "5": "Terrible as popcorn. Plant in summer or fall, 14 days, reharvestable."
+          "5": "Terribly ineffective as popcorn. Plant in summer or fall, 14 days, reharvestable."
         },
         "488": {
           "5": "Flat, round eggplant spunk. Plant in fall, 5 days, reharvestable."
@@ -1748,10 +1943,10 @@
           "5": "Swells up to twice its original size when heated."
         },
         "551": {
-          "5": "They say the posessor of such a stone can command werewolves."
+          "5": "They say the possessor of such a stone can command werewolves."
         },
         "552": {
-          "5": "Toxic and water-soluable. Please do not insert it into any orifices."
+          "5": "Toxic and water-soluble. Please do not insert it into any orifices."
         },
         "553": {
           "5": "Reflected in its jet-black surface you can see your face... and another face behind you."
@@ -1793,7 +1988,7 @@
           "5": "Many of these stones were plundered from indigenous inhabitants of the Fern Islands."
         },
         "566": {
-          "5": "This fragile, pale crystal flares a vivid red when burned."
+          "5": "Used in pyrotechnics to generate vibrant red bursts of substantial air pollution."
         },
         "567": {
           "5": "Some can see angels forever trapped within the stone."
@@ -1898,7 +2093,7 @@
           "5": "Watch out for little worms that also like to eat crisp radishes."
         },
         "610": {
-          "5": "A splendid m\u00c3\u00a9lange of textures from mushy blueberries, fuzzy apricots, and underripe melon."
+          "5": "A splendid mélange of texture from mushy blueberries, fuzzy apricots, and underripe melon."
         },
         "611": {
           "5": "Blackberries very often harbor small worms inside them. They're not harmful though, and you won't even notice them when cooked!"
@@ -2048,7 +2243,7 @@
           "5": "Place in the water and load with tantalizing insect bits. Return next day for a stinky surprise!"
         },
         "715": {
-          "5": "Raising them in captivity is difficult; their cannibalistic behaviour limits profits."
+          "5": "Raising them in captivity is difficult; their cannibalistic behavior limits profits."
         },
         "716": {
           "5": "Their sperm are amoeba-shaped and crawl towards the eggs."
@@ -2162,7 +2357,7 @@
           "5": "Most definitely unwashed."
         },
         "790": {
-          "5": "Stained with what you *hope* is berry juice. It smells like Linus, and he smells awful."
+          "5": "Stained with what you hope is berry juice. It smells like Linus, and he smells awful."
         },
         "795": {
           "5": "Shadows have mutated this species beyond repair. Keep an eye out behind you, you could be next."
@@ -2227,6 +2422,9 @@
         "269": {
           "5": "It's up to no good."
         }
+      },
+      "When": {
+        "DescribeObjects": true
       }
     },
     {
@@ -2244,7 +2442,7 @@
           "1": "Saps the life force from your enemies and drives it through your veins."
         },
         "3": {
-          "1": "This sword doesn't sit right in your hands. Something about you feels *wrong*."
+          "1": "This sword doesn't sit right in your hands. Something about you feels \"wrong\"."
         },
         "4": {
           "1": "You wield the power of the universe in your hands. Don't drop it."
@@ -2274,7 +2472,7 @@
           "1": "What a weak sword. You might as well scream \"Kill me!\" instead."
         },
         "13": {
-          "1": "Insect guts and a decapitated head. Kill monsters with their own kind."
+          "1": "Made from insect guts and a detached head, it seems to still chitter softly."
         },
         "14": {
           "1": "You'll be in for a world of trouble if Neptune ever comes back for it."
@@ -2348,6 +2546,9 @@
         "53": {
           "1": "From the hands of the Reaper himself!"
         }
+      },
+      "When": {
+        "DescribeWeapons": true
       }
     },
     {
@@ -2366,6 +2567,9 @@
         "FishingRod.cs.14042": "Used to drag unsuspecting fish to their deaths. A fun and relaxing pastime.",
         "FishingRod.cs.trainingRodDescription": "Too incompetent to use a normal fishing rod, huh? Sucks to be you.",
         "Shears.cs.14241": "Strip sheep naked to steal their wool."
+      },
+      "When": {
+        "DescribeTools": true
       }
     }
   ]

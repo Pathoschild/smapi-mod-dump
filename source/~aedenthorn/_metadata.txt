@@ -34,6 +34,7 @@ mods:
    Random NPCs
    Realistic Random Names
    Show Players Behind Map Tiles
+   Sixty-Nine Shirt
    Swim
    Transparent Objects
    Underground Secrets
@@ -42,9 +43,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit c51531acc3ddab82280ae98ac4d2d6d133efe154
+   commit 5262643a69eba42ae7772f50c7d83f745f3985b7
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sat Sep 12 14:32:12 2020 -0400
+   Date:   Thu Oct 8 18:28:28 2020 -0400
    
-       etc
+       phone
    

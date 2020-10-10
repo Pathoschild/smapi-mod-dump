@@ -23,29 +23,31 @@ For mod downloads, please refer to the following sections.
         - SvFishingMod.dll
         - SvFishingMod.pdb
         - manifest.json
-        - svfishmod.cfg (optional)
+        - svfishmod.json (optional)
     ```
 - Move the `SvFishingMod` folder to the `Mods` directory of your StardewValley installation. If you dont have a `Mods` directory, please ensure you have already downloaded and installed **SMAPI** from the [SMAPI Homepage](https://smapi.io/) and have launched the game at least once after its installation.
 
 # Usage
 When first run, the mod includes a default configuration that completely skips the Fishing minigame when a fish is hooked, automatically reeling it up the player's inventory. No other customizations are made, fish types that can be reeled on specific map areas are unchanged, as well as fish quality and treasure conditions.
 
-To further tweak the fishing mechanics, you need to edit the Mod configuration file (`svfishmod.cfg`) located in the mod's directory. This file is created automatically once the game has been launched at least once with the mod installed. Please refer to the **Configuration** section for details on how to further tweak the mod.
+To further tweak the fishing mechanics, you need to edit the Mod configuration file (`svfishmod.json`) located in the mod's directory. This file is created automatically once the game has been launched at least once with the mod installed. Please refer to the **Configuration** section for details on how to further tweak the mod.
 
 # Remarks
 - This mod doesnt affect the achievements you can get through Steam, fished counts will still increment as normal when a fish is reeled.
 - The mod is designed to be compatible with the **Multiplayer/Coop mode** of the game. **This is still being tested**, so your mileage may vary. Please comment or open new Issues if you encounter something weird during your Online adventures when using this mod.
+- Since 0.1.3, support for Server enforced settings in multiplayer sessions has been added. This should work if both the server and clients have at least this mod version installed. **This is currently being tested.**
 
 # Configuration
-The `svfishmod.cfg` configuration file is located on the mod's folder under the StardewValley installation directory, and its automatically created the first time the Game is run with the mod installed.
+The `svfishmod.json` configuration file is located on the mod's folder under the StardewValley installation directory, and its automatically created the first time the Game is run with the mod installed.
 
-This file is an XML-formatted file which can be edited with any normal text editor or with the help of XML online tools like [CodeBeautify's XML Viewer](https://codebeautify.org/xmlviewer). 
-- Open the file on your computer using any text editor like *Notepad* or *VS Code*
-- Select all its contents and copy it to the Clipboard.
-- Paste it into the XML viewer.
-- Make the desired changes to the XML file, an option is considered enabled when set to `true` and disabled when set to `false`.
-- Download the new XML file and place it on the mods's directory, replacing the previous one.
-- Ensure the configuration file is named `svfishmod.cfg` exactly.
+This file is an JSON-formatted file which can be edited with any normal text editor or with the help of JSON online tools like [ACE's Online JSON Editor](https://jsoneditoronline.org). 
+- Navigate to the page, and select `Open from disk` on the right panel (right panel is easier).
+- Select the `svfishmod.json` file from the mod's directory. _Remember this file is created the first time you launch the game with the mod installed._
+- Tweak settings as desired.
+- When done, choose `Save to disk` on the same panel you used for editing the file and save it back to the mod's directory, replacing the old configuration file.
+- Ensure the configuration file is named `svfishmod.json` exactly.
+
+**Note:** If you dont have your file explorer set to display file extensions by default, you will only see a single file with name `svfishmod`. That's the configuration file, just follow the previous steps ignoring the `.json` file extension. Take note that the configuration file is named `svfishmod` instead of `svfishingmod` by purpose.
 
 ## Configuration sections
 ### AlwaysCatchDoubleFish
@@ -104,6 +106,13 @@ Recommended values are: 60-300
 Requires "AutoReelFish: false" since this feature has no effect when the minigame is skipped.
 ```
 
+### RemoveBiteDelay
+**Possible values:** `true | false`
+
+```
+When enabled, the fish will instantly bite the bait as soon as it touches the water, removing the waiting time. If this value is false, the normal game behaviour will be used and fishes will take a little while for biting.
+```
+
 ### OverrideFishQuality
 **Possible values:** `0 | 1 | 2 | 4`
 
@@ -128,8 +137,17 @@ Changes the type of fish reeled-out to the specified id after every fishing acti
 Cycles through all possible fish (and trash) types everytime you reel-out your fishing rod, ignoring the area, time, season and rod conditions set by the game. This allows you to catch every type of fish in the game, just by throwing your rod continuously. The fish type only changes when the currently selected fish is actually reeled-out from the water.
 ```
 
+### EnforceMultiplayerSettings
+**Possible values:** `true | false`
+
+```
+Introduced on v0.1.3. When enabled, the host player on multiplayer sessions will send its mod settings to every other player upon connecting. This allows the host to enforce custom settings that will be applied to all players on the session. Players must have at least v0.1.3 of the mod installed for this feature to work.
+```
+
 # Console Commands
 This mods includes an small set of commands that can be used from the **SMAPI Console**. Please take note that these commands **CANNOT** be used from within the game's chat window.
+Most settings can be changed while the game is running by using the SMAPI console. Just type `help` to get started.
+
 
 ## sv_fishing_debug
 **Possible values:** `0 | 1`
@@ -192,6 +210,13 @@ Before every fish name, you will see its internal ID which can be used with the 
 Forces the next reeled-out fishes to always give the a fish with the specified internal ID. Use the "sv_fishing_search" command to get the internal ID of a fish from its name.
 
 A value of "-1" restores the original Game functionality and gives the player a fish based on the usual Game conditions.
+```
+
+## sv_fishing_status
+**Possible values:** `none`
+
+```
+Displays the current working status of the mod to the SMAPI console.
 ```
 
 # Open-Source commitment

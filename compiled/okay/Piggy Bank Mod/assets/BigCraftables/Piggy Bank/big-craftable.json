@@ -1,0 +1,50 @@
+{
+    "Name": "Piggy Bank",
+    "Description": "How can this little porcelein pig be so valuable?",
+    "Price": 0,
+    "ProvidesLight": false,
+    "Recipe": 
+    {
+        "ResultCount": 1,
+        "Ingredients": 
+        [
+            {
+                "Object": 330,
+                "Count": 10
+            }
+        ],
+        "IsDefault": false
+    },
+    "CanPurchase": true,
+    "PurchaseFrom": "Robin",
+    "PurchasePrice": 2500,
+    "PurchaseRequirements": null,
+    "NameLocalization":
+    {
+        //"es": "",
+        "ko": "돼지저금통",
+        //"de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        //"ja": "",
+        //"pt": "",
+        // "ru": "",
+        // "tr": "",
+        //"zh": "",
+    },
+    "DescriptionLocalization":
+    {
+        //"es": "",
+        "ko": "이 작고 동그란 돼지저금통의 가치는 당신의 노력에 달렸습니다!",
+        //"de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        //"ja": "",
+        //"pt": "",
+        // "ru": "",
+        // "tr": "",
+        //"zh": "",
+    }
+}

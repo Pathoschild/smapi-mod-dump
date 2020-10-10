@@ -1,0 +1,13 @@
+url:
+   https://github.com/purrplingcat/QuestFramework.git
+
+mods:
+   Quest Framework
+
+latest commit:
+   commit 1400f1a4fd436569b2a4d62fb9c14060f8fb1b4b
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Fri Oct 9 19:49:42 2020 -0400
+   
+       fix Git error due to BOM in .gitattributes
+   

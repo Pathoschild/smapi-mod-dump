@@ -64,6 +64,16 @@ namespace CellarAvailable {
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e) {
+            // Creating a new game doesn't initialize the cellar properly
+            // because Game1.updateCellarAssignments() is called only on load
+            // and creating a new game is not a load operation.
+            // As long as we don't call Game1.updateCellarAssignments()
+            // there's no cellar so we call it on on first day as a workaround.
+            if (Game1.year == 1 && Game1.dayOfMonth == 1 && Game1.IsSpring) {
+                this.Monitor.Log("Workaround on first day: Update cellar assignments.");
+                Game1.updateCellarAssignments();
+            }
+
             FarmHouse farmHouse = Utility.getHomeOfFarmer(Game1.player);
 
             CreateCellarEntrance(farmHouse);

@@ -1,5 +1,52 @@
 {
   "Format": "1.16.0",
+  "ConfigSchema": {
+    "DescribeObjects": {
+      "AllowValues": "true, false",
+      "Default": "true",
+      "Description": "Use unsettling descriptions for normal objects."
+    },
+    "DescribeBigCraftables": {
+      "AllowValues": "true, false",
+      "Default": "true",
+      "Description": "Use unsettling descriptions for big craftables (large objects)."
+    },
+    "DescribeWeapons": {
+      "AllowValues": "true, false",
+      "Default": "true",
+      "Description": "Use unsettling descriptions for weapons."
+    },
+    "DescribeTools": {
+      "AllowValues": "true, false",
+      "Default": "true",
+      "Description": "Use unsettling descriptions for tools."
+    },
+    "DescribeBoots": {
+      "AllowValues": "true, false",
+      "Default": "true",
+      "Description": "Use unsettling descriptions for shoes and boots."
+    },
+    "DescribeHats": {
+      "AllowValues": "true, false",
+      "Default": "true",
+      "Description": "Use unsettling descriptions for hats and headwear."
+    },
+    "DescribeClothing": {
+      "AllowValues": "true, false",
+      "Default": "true",
+      "Description": "Use unsettling descriptions for pants and shirts."
+    },
+    "DescribeBuildings": {
+      "AllowValues": "true, false",
+      "Default": "true",
+      "Description": "Use unsettling descriptions for farm buildings."
+    }/*,
+    "DescribeAchievements": {
+      "AllowValues": "true, false",
+      "Default": "true",
+      "Description": "Use unsettling descriptions for game achievements."
+    }*/
+  },
   "Changes": [
   //ENGLISH - DEFAULT
     {

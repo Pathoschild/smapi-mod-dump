@@ -1,0 +1,11 @@
+# topmost editorconfig
+root: true
+
+##########
+## General formatting
+## documentation: https://editorconfig.org
+##########
+[*]
+[*.cs]
+
+csharp_new_line_before_open_brace = none

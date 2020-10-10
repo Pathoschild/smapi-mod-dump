@@ -12,7 +12,6 @@ mods:
    More Animals
    Seasonal Immersion
    Shop Expander
-   Sundrop City
    XNB Loader
 
 latest commit:

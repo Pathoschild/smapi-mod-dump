@@ -7,9 +7,12 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit 3ad33fb66b7921a49c5a0035bb9b52d8d46de5ac
+   commit 492bcd488cd4192095141fc42f8199d62b4af7d3
+   Merge: 3ad33fb a3b13cf
    Author: hawkfalcon <contact@hawkfalcon.com>
-   Date:   Thu Mar 5 21:36:27 2020 -0800
+   Date:   Wed Sep 30 19:06:24 2020 -0700
    
-       [Better Junimos] Fix bugs with junimo behavior and tea harvesting
+       Merge pull request #6 from millerscout/master
+       
+       [BUGFIX] fixes junimo not being paid while not using english as locale.
    

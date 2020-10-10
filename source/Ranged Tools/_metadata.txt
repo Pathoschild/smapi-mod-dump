@@ -1,0 +1,13 @@
+url:
+   https://github.com/vgperson/RangedTools.git
+
+mods:
+   Ranged Tools
+
+latest commit:
+   commit 48ebfa94b6b8b155e6c83cfd52f264622d090a4e
+   Author: vgperson <vgboy2002@yahoo.com>
+   Date:   Sun Sep 27 16:58:27 2020 -0700
+   
+       Initial release
+   

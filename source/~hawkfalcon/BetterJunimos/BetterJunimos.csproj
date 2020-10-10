@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -60,6 +60,8 @@
     <Compile Include="Abilities\Base\HarvestBushesAbility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="i18n\pt.json" />
+    <None Include="i18n\default.json" />
     <None Include="manifest.json" />
     <None Include="assets\JunimoUmbrellaOnly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -1,0 +1,21 @@
+﻿{
+  // Thanks to jina2ya (nexus) for providing these translations.
+
+  // New reminder page
+  "new-reminder.title": "새 알림 만들기",
+  "new-reminder.reminder-message": "알림 메세지",
+  "new-reminder.reminder-time": "알림 시간",
+  "new-reminder.instruction": "알림 기간을 설정하세요.",
+  "new-reminder.invalid-time": "알림을 사용할 수 없는 시간입니다.",
+
+  // Display reminder page
+  "display-reminder.title": "설정한 알림 보기",
+  "display-reminder.zero-reminders": "설정된 알림이 없습니다.",
+
+  // general strings
+  "date.year": "년도",
+  "date.season.summer": "여름",
+  "date.season.spring": "봄",
+  "date.season.fall": "가을",
+  "date.season.winter": "겨울"
+}

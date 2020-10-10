@@ -122,7 +122,7 @@ namespace BetterJunimos {
                     CheckForWages(hut);
                 }
             }
-            
+
             // opened menu
             else if (e.OldMenu == null && e.NewMenu is CarpenterMenu) {
                 if (Helper.Reflection.GetField<bool>(e.NewMenu, "magicalConstruction").GetValue())
@@ -152,7 +152,7 @@ namespace BetterJunimos {
             }
 
             if (Config.JunimoPayment.WorkForWages && !Util.Payments.WereJunimosPaidToday && huts.Any()) {
-                Util.SendMessage("Junimos will not work until they are paid");
+                Util.SendMessage(Helper.Translation.Get("junimosWillNotWorkText"));
             }
 
 
@@ -188,21 +188,21 @@ namespace BetterJunimos {
             }
         }
 
-        public static void SpawnJunimoCommand() {
+        public void SpawnJunimoCommand() {
             if (Game1.player.currentLocation.IsFarm) {
                 Farm farm = Game1.getFarm();
                 Random rand = new Random();
 
                 IEnumerable<JunimoHut> huts = farm.buildings.OfType<JunimoHut>();
                 if (huts.Count() <= 0) {
-                    Util.SendMessage("There must be a Junimo Hut to spawn a Junimo");
+                    Util.SendMessage(Helper.Translation.Get("spawnJunimoCommandText"));
                     return;
                 }
                 JunimoHut hut = huts.ElementAt(rand.Next(0, huts.Count()));
                 Util.SpawnJunimoAtPosition(Game1.player.Position, hut, rand.Next(4, 100));
             }
             else {
-                Util.SendMessage("Can only spawn Junimos on Farm");
+                Util.SendMessage(Helper.Translation.Get("spawnJunimoCommandText"));
             }
         }
 
@@ -210,7 +210,7 @@ namespace BetterJunimos {
             if (!Util.Payments.WereJunimosPaidToday && Util.Payments.ReceivePaymentItems(hut)) {
                 Util.Payments.WereJunimosPaidToday = true;
                 Util.MaxRadius = Config.JunimoHuts.MaxRadius;
-                Util.SendMessage("Junimos are happy with their payment!");
+                Util.SendMessage(Helper.Translation.Get("checkForWagesText"));
             }
         }
 

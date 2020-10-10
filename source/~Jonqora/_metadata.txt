@@ -8,9 +8,9 @@ mods:
    UV Index (Sunscreen Mod)
 
 latest commit:
-   commit cf55d988ec6f827772a2ee79cdbbbbede9aedf49
+   commit 69da4403a8749beb5c9626ab4b11a53f215bf1c2
    Author: Ellen Lloyd <ellen.lloyd@usask.ca>
-   Date:   Wed Sep 23 14:35:51 2020 -0400
+   Date:   Tue Oct 6 16:33:04 2020 -0400
    
-       [Unsettling] Fix bugs in content patcher files.
+       [Unsettling] Add config options to mod documentation.
    

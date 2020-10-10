@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrobusSellsLargerStacks", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighlightedJars", "HighlightedJars\HighlightedJars.csproj", "{1FFDE1D7-E092-4CC8-A195-B4A1CE31BCBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RememberFacedDirection", "RememberFacedDirection\RememberFacedDirection.csproj", "{2B81C3D0-4ABA-4F0D-9743-838201FBF3B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1FFDE1D7-E092-4CC8-A195-B4A1CE31BCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FFDE1D7-E092-4CC8-A195-B4A1CE31BCBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FFDE1D7-E092-4CC8-A195-B4A1CE31BCBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B81C3D0-4ABA-4F0D-9743-838201FBF3B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B81C3D0-4ABA-4F0D-9743-838201FBF3B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B81C3D0-4ABA-4F0D-9743-838201FBF3B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B81C3D0-4ABA-4F0D-9743-838201FBF3B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

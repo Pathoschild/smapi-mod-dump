@@ -1,0 +1,9 @@
+﻿{
+    "Name": "Piggy Bank",
+
+    "Deposit": "Deposit Gold",
+    "Withdraw": "Withdraw Gold",
+    "Close": "Close Piggy Bank",
+
+    "Stored": "Stored Gold : "
+}
