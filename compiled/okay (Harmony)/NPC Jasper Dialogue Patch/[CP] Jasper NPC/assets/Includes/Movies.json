@@ -1,0 +1,130 @@
+{   "Changes":[
+
+    {	"Action": "EditData",			
+	    "Target": "Data/ConcessionTastes",
+	    "Entries": {
+			"Jasper": {		"Name": "Jasper",
+							"LovedTags": [  "Stardrop Sorbet",  "Cappucino Mousse Cake",  "Ice Cream Sandwich"	],
+							"LikedTags": [ 	  "Sweet"	],
+							"DislikedTags": [  "Kale Smoothie",  "Salted Peanuts"]		}			}
+			},
+    {	"Action": "EditData",	
+	    "Target": "Data/MoviesReactions",
+	    "Entries": {
+		    "Jasper": {
+			    "NPCName": "Jasper",
+				"Reactions": [
+					{	"Tag": "documentary",
+						"Response": "love",
+						"Whitelist": [],
+						"SpecialResponses": null,
+						"ID": "reaction_0"
+							},
+		  			{	"Tag": "horror",
+						"Response": "dislike",
+						"Whitelist": [],
+						"SpecialResponses": null,
+						"ID": "reaction_1"
+		  					},
+		  			{	"Tag": "spring_movie_1",
+						"Response": "love",
+						"Whitelist": [],
+						"SpecialResponses": {
+			  			"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "Ah, the documentaries always intrigue me, @. There is so much of the world to see!"
+			 						 },
+						"DuringMovie": {
+			  				"ResponsePoint": null,
+			  				"Script": "/message \"Jasper grins at you.\"",
+			  				"Text": "Fascinating, isn't it?"
+								},
+						"AfterMovie": {
+						"ResponsePoint": null,
+						"Script": "",
+						"Text": "Thank you @. That was quite the cinematic experience. I hope you enjoyed it too?$1"
+			  					}
+							},
+						"ID": "reaction_2"
+		  					},
+						
+					{
+						"Tag": "fall_movie_0",
+						"Response": "dislike",
+						"Whitelist": [],
+						"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I'm not really sure about this one, @.$2"
+						},
+						"DuringMovie": {
+							"ResponsePoint": null,
+							"Script": "/shake Jasper 1000/pause 500/message \"Jasper's eyes are tightly closed.\"",
+							"Text": null
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "/message \"Jasper looks pale.\"",
+							"Text": "Oh... no... sorry... I think I need to go home now.$2"
+						}
+						},
+						"ID": "reaction_4"
+						},
+					{	"Tag": "like",
+						"Response": "like",
+						"Whitelist": [],
+						"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "This looks like fun."
+						},
+						"DuringMovie": null,
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I enjoyed that. Thank you for inviting me.$1"
+						}
+						},
+						"ID": "reaction_5"
+					},
+					{	"Tag": "dislike",
+						"Response": "like",
+						"Whitelist": [],
+						"SpecialResponses": {
+						"BeforeMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I admit, I have reservations about this one, but I shall refrain from comment just yet."
+						},
+						"AfterMovie": {
+							"ResponsePoint": null,
+							"Script": "",
+							"Text": "I'm sorry, @, I did not enjoy that film at all."
+							}
+						},
+						"ID": "reaction_6"
+						}
+					]
+				}
+			}	
+	},
+{    //Adds spouse strings for the movie theater
+	"Action": "EditData",
+	"Target": "Strings/Characters",
+	"Entries": { 
+	"MovieInvite_Spouse_Jasper": "What an excellent idea, my love! I'd be delighted to see a movie with you." 
+	}
+},
+{    //Adds spouse strings for the movie theater
+	"Action": "EditData",
+	"Target": "Strings/Characters",
+	"Entries": { 
+	"MovieInvite_Spouse_Jasper": "What an excellent idea, my love! We'll need to find a babysitter!" 
+	},
+	"When": {	"HasSeenEvent": "5599009"}
+        }
+    ]
+}

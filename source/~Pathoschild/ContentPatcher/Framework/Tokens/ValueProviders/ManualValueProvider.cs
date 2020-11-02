@@ -49,7 +49,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         public void AddAllowedValues(ITokenString possibleValues)
         {
             // can't reasonably generate known values if tokens are involved
-            if (possibleValues.IsMutable || this.AllowedRootValues == null)
+            if (possibleValues.HasAnyTokens || possibleValues.IsMutable || this.AllowedRootValues == null)
             {
                 this.AllowedRootValues = null;
                 this.MayReturnMultipleValuesForRoot = true;
@@ -67,8 +67,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <param name="tokens">The token names used.</param>
         public void AddTokensUsed(IEnumerable<string> tokens)
         {
-            foreach (string name in tokens)
-                this.TokensUsed.Add(name);
+            this.TokensUsed.AddMany(tokens);
         }
 
         /// <summary>Set the current values.</summary>

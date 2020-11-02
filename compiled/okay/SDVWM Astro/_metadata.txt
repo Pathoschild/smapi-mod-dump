@@ -1,3 +1,3 @@
-page URL: 
+page URL: https://www.nexusmods.com/stardewvalley/mods/5773
 IDs: SixthTitan.SDVWM_Astro
-update keys: 
+update keys: Nexus:5773

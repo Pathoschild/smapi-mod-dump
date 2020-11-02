@@ -16,7 +16,7 @@
 			"Farmer.cs.1918": "¡Has recibido 15 semillas de chirivía!^^«Aquí tienes un detalle para que puedas empezar.^-{{mardrest.ChangeDialogues/Mayor:{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}}»",
 			"Game1.cs.2634": "cerca del rancho de {{mardrest.ChangeDialogues/MarnieName}}.",
 			"Game1.cs.3180": "No ocurre nada. {{mardrest.ChangeDialogues/SandyName}} dijo algo de «infundirle el poder de Yoba».",
-			"Game1.cs.3756": "Sr{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}}. {{mardrest.ChangeDialogues/LewisName}}",
+			"Game1.cs.3756": "{{mardrest.ChangeDialogues/Mr:{{mardrest.ChangeDialogues/LewisGender}}}}. {{mardrest.ChangeDialogues/LewisName}}",
 			"NPC.cs.3990": "¿Un visitante humano? Menuda sorpresa...#$e#Soy {{mardrest.ChangeDialogues/KrobusName}}, mercader{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/KrobusGender}}}} de mercancías raras y exóticas.",
 			"Stats.cs.5129": "¡Eliminación de monstruos completada! Visita a {{mardrest.ChangeDialogues/GilName}} para recibir tu recompensa.",
 			"Utility.cs.5308": "¡Gracias, señor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}}!$h",
@@ -66,10 +66,10 @@
 			"ItemDeliveryQuest.cs.13462": "¡Hola! Necesito un ejemplar de {0} para un nuevo aperitivo que he pensado. Pásate por el Salón y te lo agradeceré mucho.	  -{{mardrest.ChangeDialogues/GusName}}",
 			"ItemDeliveryQuest.cs.13473": "Hola, soy {{mardrest.ChangeDialogues/EmilyName}}. Quisiera comprar un ejemplar de {0} para crear joyas. ¡Gracias!",
 			"ItemDeliveryQuest.cs.13476": "Busco un ejemplar de {0} para hacer los botones de un vestido que estoy confeccionando. Si encuentras alguno, ¿me lo podrías traer?	   -{{mardrest.ChangeDialogues/EmilyName}}",
-			"ItemDeliveryQuest.cs.13546": "Necesito un ejemplar de {0} para hacer pociones. Entregar, por favor, directamente en mi morada.	 -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}",
+			"ItemDeliveryQuest.cs.13546": "Necesito un ejemplar de {0} para hacer pociones. Entregar, por favor, directamente en mi morada.	 -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}}",
 			"ItemDeliveryQuest.cs.13548": "{{mardrest.ChangeDialogues/WizardName}} desea estudiar las propiedades arcanas de un ejemplar de {0}. Obtendrás una recompensa.",
-			"ItemDeliveryQuest.cs.13551": "Necesito un ejemplar de {0} para un experimento.	 -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}",
-			"ItemDeliveryQuest.cs.13553": "{{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}} local busca un ejemplar fresco de {0}.",
+			"ItemDeliveryQuest.cs.13551": "Necesito un ejemplar de {0} para un experimento.	 -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}}",
+			"ItemDeliveryQuest.cs.13553": "{{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}} local busca un ejemplar fresco de {0}.",
 			"ItemDeliveryQuest.cs.13557": "¡Te querré un montón si me traes un ejemplar de {0}!		-{{mardrest.ChangeDialogues/HaleyName}}",
 			"ItemDeliveryQuest.cs.13560": "Busco a un apuesto caballero que me traiga un ejemplar de {0}.		-{{mardrest.ChangeDialogues/HaleyName}}",
 			"ItemDeliveryQuest.cs.13563": "SOLO PARA CHICAS: Psst... Necesito un ejemplar de {0}... Ya sabéis para qué. Guardadme el secreto, ¿vale?	  -{{mardrest.ChangeDialogues/HaleyName}}",
@@ -82,10 +82,10 @@
 			"ResourceCollectionQuest.cs.13674": "¡Hola! Soy {{mardrest.ChangeDialogues/RobinName}}. ¿Podría traerme alguien {0} trozos de {1}? Tienen que ser recientes... O sea, recogidos hoy mismo. ¡Gracias!",
 			"ResourceCollectionQuest.cs.13688": "\n- Te puedes quedar las menas una vez {{mardrest.ChangeDialogues/ClintName}} las inspeccione.",
 			"SlayMonsterQuest.cs.13747": "¡Una especie invasiva de cangrejos que vive en la mina amenaza el ecosistema local! Estas criaturas son conocidas por disfrazarse de piedra. Pagaré a quien mate a {0} de ellas.	-{{mardrest.ChangeDialogues/DemetriusName}}",
-			"SlayMonsterQuest.cs.13752": "Los monstruos conocidos como «{0}» están rompiendo el equilibrio elemental. Quisiera que algún aventurero entrase en las minas y eliminara a {1} de estas {2}.  -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}",
+			"SlayMonsterQuest.cs.13752": "Los monstruos conocidos como «{0}» están rompiendo el equilibrio elemental. Quisiera que algún aventurero entrase en las minas y eliminara a {1} de estas {2}.  -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}}",
 			"SocializeQuest.cs.13786": "¡Ey! ¿Podría alguien ir a saludar a todos los del pueblo por mí? ¡Quisiera mandar un mensaje de {0} hoy!   -{{mardrest.ChangeDialogues/EmilyName}}",
 			"WeedingQuest.cs.13816": "Busco a alguien que quite todos los hierbajos del pueblo. Cuando no quede ni uno, dirígete {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} para cobrar. ¡Gracias!",
-			"WeedingQuest.cs.13824": "Habla con {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/LewisGender}}}} Sr{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}}. {{mardrest.ChangeDialogues/LewisName}}.",
+			"WeedingQuest.cs.13824": "Habla con {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mr:{{mardrest.ChangeDialogues/LewisGender}}}}. {{mardrest.ChangeDialogues/LewisName}}.",
 			"MapPage.PamHouseHomeOf": "Casa de {{mardrest.ChangeDialogues/PamName}} y {{mardrest.ChangeDialogues/PennyName}}",
 			"TriedToMarryButKrobus": "No te puedes declarar a alguien mientras vives con un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/KrobusGender}}}} compañer{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/KrobusGender}}}} de casa.",
 			"KrobusShopGone": "Estoy ausente. Por favor, deje su pago en la caja. -{{mardrest.ChangeDialogues/KrobusName}}",
@@ -130,6 +130,37 @@
 		"Entries": {
 			"Event.cs.1625": "¡No! ¿Otra vez ese vestido estúpido? Pensaba que ahora que estábamos casados... Bueno, vale.$s",
 			"Event.cs.1820": "Ahh... Sí... Te veo en una habitación, conversando con una chica. ",
+			"Event.cs.1831": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Parece tener muchas ganas de pasar tiempo contigo.",
+			"Event.cs.1832": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Está hecha un manojo de nervios, pero feliz por estar contigo.",
+			"Event.cs.1837": "Hmmm... ¿Cómo se llama esa jovencita? Creo que empieza por «{0}»...",
+			"NPC.cs.4437": "Estoy embarazada... ¿No puedes hacerte tu propio desayuno?$a",
+			"NPC.cs.4438": "Ugh... Esta mañana tengo náuseas...$s",
+			"NPC.cs.4440": "{0}, pronto tendremos un bebé.$l",
+			"NPC.cs.4441": "{0}, estoy embarazada. ¿No es maravilloso?$l",
+			"SocialPage.cs.11636": "(Mujer)"
+		}, "When": { "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Utility.cs.5371": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro marido y mujer!$h",
+			"Utility.cs.5377": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro mujer y... bueno, mujer!$h"
+		}, "When": { "Relationship:Clint": "Engaged", "mardrest.ChangeDialogues/ClintGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"SocialPage.cs.11642": "(Exmujer)"
+		}, "When": { "Relationship:Clint": "Divorced", "mardrest.ChangeDialogues/ClintGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Event.cs.1625": "¡No! ¿Otra vez ese vestido estúpido? Pensaba que ahora que estábamos casados... Bueno, vale.$s",
+			"Event.cs.1820": "Ahh... Sí... Te veo en una habitación, conversando con una chica. ",
 			"Event.cs.1831": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Está hecha un manojo de nervios, pero feliz por estar contigo.",
 			"Event.cs.1832": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Parece tener muchas ganas de pasar tiempo contigo.",
 			"Event.cs.1837": "Hmmm... ¿Cómo se llama esa jovencita? Creo que empieza por «{0}»...",
@@ -162,6 +193,37 @@
 		"Entries": {
 			"Event.cs.1625": "¡No! ¿Otra vez ese vestido estúpido? Pensaba que ahora que estábamos casados... Bueno, vale.$s",
 			"Event.cs.1820": "Ahh... Sí... Te veo en una habitación, conversando con una chica. ",
+			"Event.cs.1831": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Parece tener muchas ganas de pasar tiempo contigo.",
+			"Event.cs.1832": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Está hecha un manojo de nervios, pero feliz por estar contigo.",
+			"Event.cs.1837": "Hmmm... ¿Cómo se llama esa jovencita? Creo que empieza por «{0}»...",
+			"NPC.cs.4437": "Estoy embarazada... ¿No puedes hacerte tu propio desayuno?$a",
+			"NPC.cs.4438": "Ugh... Esta mañana tengo náuseas...$s",
+			"NPC.cs.4440": "{0}, pronto tendremos un bebé.$l",
+			"NPC.cs.4441": "{0}, estoy embarazada. ¿No es maravilloso?$l",
+			"SocialPage.cs.11636": "(Mujer)"
+		}, "When": { "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Utility.cs.5371": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro marido y mujer!$h",
+			"Utility.cs.5377": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro mujer y... bueno, mujer!$h"
+		}, "When": { "Relationship:Gus": "Engaged", "mardrest.ChangeDialogues/GusGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"SocialPage.cs.11642": "(Exmujer)"
+		}, "When": { "Relationship:Gus": "Divorced", "mardrest.ChangeDialogues/GusGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Event.cs.1625": "¡No! ¿Otra vez ese vestido estúpido? Pensaba que ahora que estábamos casados... Bueno, vale.$s",
+			"Event.cs.1820": "Ahh... Sí... Te veo en una habitación, conversando con una chica. ",
 			"Event.cs.1831": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Está hecha un manojo de nervios, pero feliz por estar contigo.",
 			"Event.cs.1832": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Parece tener muchas ganas de pasar tiempo contigo.",
 			"Event.cs.1837": "Hmmm... ¿Cómo se llama esa jovencita? Creo que empieza por «{0}»...",
@@ -187,6 +249,68 @@
 		"Entries": {
 			"SocialPage.cs.11642": "(Exmujer)"
 		}, "When": { "Relationship:Harvey": "Divorced", "mardrest.ChangeDialogues/HarveyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Event.cs.1625": "¡No! ¿Otra vez ese vestido estúpido? Pensaba que ahora que estábamos casados... Bueno, vale.$s",
+			"Event.cs.1820": "Ahh... Sí... Te veo en una habitación, conversando con una chica. ",
+			"Event.cs.1831": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Parece tener muchas ganas de pasar tiempo contigo.",
+			"Event.cs.1832": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Está hecha un manojo de nervios, pero feliz por estar contigo.",
+			"Event.cs.1837": "Hmmm... ¿Cómo se llama esa jovencita? Creo que empieza por «{0}»...",
+			"NPC.cs.4437": "Estoy embarazada... ¿No puedes hacerte tu propio desayuno?$a",
+			"NPC.cs.4438": "Ugh... Esta mañana tengo náuseas...$s",
+			"NPC.cs.4440": "{0}, pronto tendremos un bebé.$l",
+			"NPC.cs.4441": "{0}, estoy embarazada. ¿No es maravilloso?$l",
+			"SocialPage.cs.11636": "(Mujer)"
+		}, "When": { "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Utility.cs.5371": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro marido y mujer!$h",
+			"Utility.cs.5377": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro mujer y... bueno, mujer!$h"
+		}, "When": { "Relationship:Lewis": "Engaged", "mardrest.ChangeDialogues/LewisGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"SocialPage.cs.11642": "(Exmujer)"
+		}, "When": { "Relationship:Lewis": "Divorced", "mardrest.ChangeDialogues/LewisGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Event.cs.1625": "¡No! ¿Otra vez ese vestido estúpido? Pensaba que ahora que estábamos casados... Bueno, vale.$s",
+			"Event.cs.1820": "Ahh... Sí... Te veo en una habitación, conversando con una chica. ",
+			"Event.cs.1831": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Parece tener muchas ganas de pasar tiempo contigo.",
+			"Event.cs.1832": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Está hecha un manojo de nervios, pero feliz por estar contigo.",
+			"Event.cs.1837": "Hmmm... ¿Cómo se llama esa jovencita? Creo que empieza por «{0}»...",
+			"NPC.cs.4437": "Estoy embarazada... ¿No puedes hacerte tu propio desayuno?$a",
+			"NPC.cs.4438": "Ugh... Esta mañana tengo náuseas...$s",
+			"NPC.cs.4440": "{0}, pronto tendremos un bebé.$l",
+			"NPC.cs.4441": "{0}, estoy embarazada. ¿No es maravilloso?$l",
+			"SocialPage.cs.11636": "(Mujer)"
+		}, "When": { "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Utility.cs.5371": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro marido y mujer!$h",
+			"Utility.cs.5377": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro mujer y... bueno, mujer!$h"
+		}, "When": { "Relationship:Linus": "Engaged", "mardrest.ChangeDialogues/LinusGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"SocialPage.cs.11642": "(Exmujer)"
+		}, "When": { "Relationship:Linus": "Divorced", "mardrest.ChangeDialogues/LinusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -314,6 +438,68 @@
 		"Entries": {
 			"SocialPage.cs.11642": "(Exmujer)"
 		}, "When": { "Relationship:Victor": "Divorced", "mardrest.ChangeDialogues/VictorGender": "Female", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": true }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Event.cs.1625": "¡No! ¿Otra vez ese vestido estúpido? Pensaba que ahora que estábamos casados... Bueno, vale.$s",
+			"Event.cs.1820": "Ahh... Sí... Te veo en una habitación, conversando con una chica. ",
+			"Event.cs.1831": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Parece tener muchas ganas de pasar tiempo contigo.",
+			"Event.cs.1832": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Está hecha un manojo de nervios, pero feliz por estar contigo.",
+			"Event.cs.1837": "Hmmm... ¿Cómo se llama esa jovencita? Creo que empieza por «{0}»...",
+			"NPC.cs.4437": "Estoy embarazada... ¿No puedes hacerte tu propio desayuno?$a",
+			"NPC.cs.4438": "Ugh... Esta mañana tengo náuseas...$s",
+			"NPC.cs.4440": "{0}, pronto tendremos un bebé.$l",
+			"NPC.cs.4441": "{0}, estoy embarazada. ¿No es maravilloso?$l",
+			"SocialPage.cs.11636": "(Mujer)"
+		}, "When": { "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Utility.cs.5371": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro marido y mujer!$h",
+			"Utility.cs.5377": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro mujer y... bueno, mujer!$h"
+		}, "When": { "Relationship:Willy": "Engaged", "mardrest.ChangeDialogues/WillyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"SocialPage.cs.11642": "(Exmujer)"
+		}, "When": { "Relationship:Willy": "Divorced", "mardrest.ChangeDialogues/WillyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Event.cs.1625": "¡No! ¿Otra vez ese vestido estúpido? Pensaba que ahora que estábamos casados... Bueno, vale.$s",
+			"Event.cs.1820": "Ahh... Sí... Te veo en una habitación, conversando con una chica. ",
+			"Event.cs.1831": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Parece tener muchas ganas de pasar tiempo contigo.",
+			"Event.cs.1832": "Oooh... Está oscuro. Os veo a ti y a una bella joven. Está hecha un manojo de nervios, pero feliz por estar contigo.",
+			"Event.cs.1837": "Hmmm... ¿Cómo se llama esa jovencita? Creo que empieza por «{0}»...",
+			"NPC.cs.4437": "Estoy embarazada... ¿No puedes hacerte tu propio desayuno?$a",
+			"NPC.cs.4438": "Ugh... Esta mañana tengo náuseas...$s",
+			"NPC.cs.4440": "{0}, pronto tendremos un bebé.$l",
+			"NPC.cs.4441": "{0}, estoy embarazada. ¿No es maravilloso?$l",
+			"SocialPage.cs.11636": "(Mujer)"
+		}, "When": { "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"Utility.cs.5371": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro marido y mujer!$h",
+			"Utility.cs.5377": "@... %spouse... #$b# Como {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} de Pueblo Pelícano, y portador{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}} regional del sello matrimonial, ¡os declaro mujer y... bueno, mujer!$h"
+		}, "When": { "Relationship:Wizard": "Engaged", "mardrest.ChangeDialogues/WizardGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/StringsFromCSFiles",
+		"Entries": {
+			"SocialPage.cs.11642": "(Exmujer)"
+		}, "When": { "Relationship:Wizard": "Divorced", "mardrest.ChangeDialogues/WizardGender": "Female" }
 	},
 	{
 		"Action": "EditData",

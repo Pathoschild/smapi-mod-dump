@@ -6,13 +6,6 @@
 		"Entries": {
 			"spring_16.001": "Do I look healthy, Doctor {{mardrest.ChangeDialogues/HarveyName}}?"
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Leah": "adult/polite/neutral/positive/female/datable/Elliott/Town/winter 23//LeahHouse 3 7/{{mardrest.ChangeDialogues/LeahName}}"
-		}
 	}
 	]
 }

@@ -1,7 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 		<AssemblyName>Runtime</AssemblyName>
 		<RootNamespace>SpriteMaster</RootNamespace>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <PackageId>SpriteMaster Runtime</PackageId>
+    <Version>0.12.0</Version>
+    <Authors>Digital Carbide</Authors>
+    <Product>SpriteMaster-SV</Product>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <AssemblyVersion>0.12.0.0</AssemblyVersion>
+    <FileVersion>0.12.3.0</FileVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
 		<ProjectGuid>{D8AB0188-41C5-4669-AD33-231DA9401FA0}</ProjectGuid>
     <OutputType>Library</OutputType>
 		<TargetFramework>net45</TargetFramework>
@@ -15,33 +25,22 @@
 		<ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
 		<DebugSymbols>true</DebugSymbols>
 		<DebugType>portable</DebugType>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<BaseAddress>285736960</BaseAddress>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;THREADQUEUE_PARALLEL;DOUBLEBUFFER_PINNED</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;THREADQUEUE_PARALLEL</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>1815</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Development|AnyCPU'">
-    <OutputPath>bin\Development\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>1815</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <PackageId>SpriteMaster Runtime</PackageId>
-    <Version>0.11.3</Version>
-    <Authors>Digital Carbide</Authors>
-    <Product>SpriteMaster-SV</Product>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <AssemblyVersion>0.11.3.0</AssemblyVersion>
-    <FileVersion>0.11.3.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="$(SolutionDir)\LICENSE.md">

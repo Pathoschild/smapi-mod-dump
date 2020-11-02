@@ -197,6 +197,7 @@
 		"FromFile": "assets/Characters/Alex{{mardrest.ChangeDialogues/AlexGender}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
+		"Update": "OnLocationChange",
 		"When": { "mardrest.ChangeDialogues/AlexGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Alex{{mardrest.ChangeDialogues/AlexGender}}.png": true }
 	},
 	{
@@ -410,6 +411,7 @@
 		"FromFile": "assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
+		"Update": "OnLocationChange",
 		"When": { "mardrest.ChangeDialogues/ElliottGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.png": true }
 	},
 	{
@@ -700,6 +702,7 @@
 		"FromFile": "assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
+		"Update": "OnLocationChange",
 		"When": { "mardrest.ChangeDialogues/HarveyGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.png": true }
 	},
 	{
@@ -1380,6 +1383,7 @@
 		"FromFile": "assets/Characters/Sam{{mardrest.ChangeDialogues/SamGender}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
+		"Update": "OnLocationChange",
 		"When": { "mardrest.ChangeDialogues/SamGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Sam{{mardrest.ChangeDialogues/SamGender}}.png": true }
 	},
 	{
@@ -1468,6 +1472,7 @@
 		"FromFile": "assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
+		"Update": "OnLocationChange",
 		"When": { "mardrest.ChangeDialogues/SebastianGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.png": true }
 	},
 	{
@@ -1510,6 +1515,7 @@
 		"FromFile": "assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
+		"Update": "OnLocationChange",
 		"When": { "mardrest.ChangeDialogues/ShaneGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}.png": true }
 	},
 	{
@@ -1552,7 +1558,8 @@
 		"FromFile": "assets/Characters/Victor{{mardrest.ChangeDialogues/VictorGender}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
-		"When": { "mardrest.ChangeDialogues/VictorGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Victor{{mardrest.ChangeDialogues/VictorGender}}.png": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": true }
+		"Update": "OnLocationChange",
+		"When": { "mardrest.ChangeDialogues/VictorGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Victor{{mardrest.ChangeDialogues/VictorGender}}.png": true, "HasMod": "FlashShifter.StardewValleyExpandedCP" }
 	},
 	{
 		"Action": "EditImage",
@@ -1626,25 +1633,61 @@
 		"Action": "EditImage",
 		"Target": "Characters/Wizard",
 		"FromFile": "assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png",
-		"When": { "HasFile:assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png": true }
+		"When": { "HasFile:assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Wizard",
 		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png",
-		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png": true }
+		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
+	},
+	{
+		"Action": "EditImage",
+		"Target": "Portraits/Wizard",
+		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png",
+		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
+	},
+	{
+		"Action": "EditImage",
+		"Target": "Portraits/Wizard",
+		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}Raz.png",
+		"PatchMode": "Overlay",
+		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "no", "HasMod": "misscoriel.razolyn" }
+	},
+	{
+		"Action": "EditImage",
+		"Target": "Portraits/Wizard",
+		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}Raz7.png",
+		"ToArea": { "X": 64, "Y": 192, "Width": 64, "Height": 64 },
+		"Update": "OnLocationChange",
+		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "no", "HasMod": "misscoriel.razolyn", "LocationName |contains=WizardHouse": true, "Hearts:Wizard": "9" }
+	},
+	{
+		"Action": "EditImage",
+		"Target": "Portraits/Wizard",
+		"FromFile": "assets/Portraits/Razolyn.png",
+		"PatchMode": "Overlay",
+		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "yes", "HasMod |contains=misscoriel.razolyn, foggy.LfL": true }
+	},
+	{
+		"Action": "EditImage",
+		"Target": "Portraits/Wizard",
+		"FromFile": "assets/Portraits/Razolyn7.png",
+		"ToArea": { "X": 64, "Y": 192, "Width": 64, "Height": 64 },
+		"Update": "OnLocationChange",
+		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "yes", "HasMod |contains=misscoriel.razolyn, foggy.LfL": true, "LocationName |contains=WizardHouse": true, "Hearts:Wizard": "9" }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Wizard",
 		"FromFile": "assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb": true }
+		"When": { "HasFile:assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Wizard",
 		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb": true }
+		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
 	},
 	{
 		"Action": "Include",
@@ -1888,6 +1931,145 @@
 				]
 			}
 		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Fields": {
+			"Abigail": {
+				11: "{{mardrest.ChangeDialogues/AbigailName}}"
+			},
+			"Alex": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/AlexGender}} }}",
+				11: "{{mardrest.ChangeDialogues/AlexName}}"
+			},
+			"Caroline": {
+				11: "{{mardrest.ChangeDialogues/CarolineName}}"
+			},
+			"Clint": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/ClintGender}} }}",
+				11: "{{mardrest.ChangeDialogues/ClintName}}"
+			},
+			"Demetrius": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/DemetriusGender}} }}",
+				11: "{{mardrest.ChangeDialogues/DemetriusName}}"
+			},
+			"Dwarf": {
+				11: "{{mardrest.ChangeDialogues/DwarfName}}"
+			},
+			"Elliott": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/ElliottGender}} }}",
+				11: "{{mardrest.ChangeDialogues/ElliottName}}"
+			},
+			"Emily": {
+				11: "{{mardrest.ChangeDialogues/EmilyName}}"
+			},
+			"Evelyn": {
+				11: "{{mardrest.ChangeDialogues/EvelynName}}"
+			},
+			"George": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/GeorgeGender}} }}",
+				11: "{{mardrest.ChangeDialogues/GeorgeName}}"
+			},
+			"Gus": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/GusGender}} }}",
+				11: "{{mardrest.ChangeDialogues/GusName}}"
+			},
+			"Haley": {
+				11: "{{mardrest.ChangeDialogues/HaleyName}}"
+			},
+			"Harvey": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/HarveyGender}} }}",
+				11: "{{mardrest.ChangeDialogues/HarveyName}}"
+			},
+			"Jas": {
+				11: "{{mardrest.ChangeDialogues/JasName}}"
+			},
+			"Jodi": {
+				11: "{{mardrest.ChangeDialogues/JodiName}}"
+			},
+			"Kent": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/KentGender}} }}",
+				11: "{{mardrest.ChangeDialogues/KentName}}"
+			},
+			"Krobus": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/KrobusGender}} }}",
+				11: "{{mardrest.ChangeDialogues/KrobusName}}"
+			},
+			"Leah": {
+				11: "{{mardrest.ChangeDialogues/LeahName}}"
+			},
+			"Lewis": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/LewisGender}} }}",
+				11: "{{mardrest.ChangeDialogues/LewisName}}"
+			},
+			"Linus": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/LinusGender}} }}",
+				11: "{{mardrest.ChangeDialogues/LinusName}}"
+			},
+			"Marnie": {
+				11: "{{mardrest.ChangeDialogues/MarnieName}}"
+			},
+			"Maru": {
+				11: "{{mardrest.ChangeDialogues/MaruName}}"
+			},
+			"Pam": {
+				11: "{{mardrest.ChangeDialogues/PamName}}"
+			},
+			"Penny": {
+				11: "{{mardrest.ChangeDialogues/PennyName}}"
+			},
+			"Pierre": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/PierreGender}} }}",
+				11: "{{mardrest.ChangeDialogues/PierreName}}"
+			},
+			"Robin": {
+				11: "{{mardrest.ChangeDialogues/RobinName}}"
+			},
+			"Sam": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/SamGender}} }}",
+				11: "{{mardrest.ChangeDialogues/SamName}}"
+			},
+			"Sandy": {
+				11: "{{mardrest.ChangeDialogues/SandyName}}"
+			},
+			"Sebastian": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/SebastianGender}} }}",
+				11: "{{mardrest.ChangeDialogues/SebastianName}}"
+			},
+			"Shane": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/ShaneGender}} }}",
+				11: "{{mardrest.ChangeDialogues/ShaneName}}"
+			 },
+			"Vincent": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/VincentGender}} }}",
+				11: "{{mardrest.ChangeDialogues/VincentName}}"
+			},
+			"Willy": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/WillyGender}} }}",
+				11: "{{mardrest.ChangeDialogues/WillyName}}"
+			}
+		}
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Fields": {
+			"Marlon": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/MarlonGender}} }}",
+				11: "{{mardrest.ChangeDialogues/MarlonName}}"
+			},
+		}, "When": { "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Fields": {
+			"Wizard": {
+				4: "{{lowercase:{{mardrest.ChangeDialogues/WizardGender}} }}",
+				11: "{{mardrest.ChangeDialogues/WizardName}}"
+			},
+		}, "When": { "HasMod |contains=FlashShifter.StardewValleyExpandedCP, misscoriel.razolyn, foggy.LfL": false }
 	},
 	{
 		"Action": "Include",
@@ -2138,6 +2320,16 @@
 		"Action": "Include",
 		"FromFile": "i18n/{{Language}}/Events/SeedShop.json",
 		"When": { "HasFile:i18n/{{Language}}/Events/SeedShop.json": true, "Language |contains=en": false }
+	},
+	{
+		"Action": "Include",
+		"FromFile": "i18n/default/Events/Sewer.json",
+		"When": { "HasFile:i18n/default/Events/Sewer.json": true }
+	},
+	{
+		"Action": "Include",
+		"FromFile": "i18n/{{Language}}/Events/Sewer.json",
+		"When": { "HasFile:i18n/{{Language}}/Events/Sewer.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",

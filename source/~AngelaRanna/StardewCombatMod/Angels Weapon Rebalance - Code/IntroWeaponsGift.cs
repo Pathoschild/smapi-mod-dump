@@ -23,7 +23,6 @@ namespace StardewCombatMod
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.DayStarted += this.dayStarted;
-            //helper.Events.Player.Warped += this.adventureGuildEntry;
 
             // Make sure to get the monitor set up for debugging prints
             CheckEventPostfixPatch.Initialize(this.Monitor);
@@ -52,22 +51,6 @@ namespace StardewCombatMod
                 Game1.mailbox.Add("WeaponRebalanceIntro");
             }
         }
-
-        // DEPRECATED -- using the Harmony postfix patcher instead. Just keeping this around in case things break in 1.5 or we get a better way to play asset load chicken.
-        //private void adventureGuildEntry(object sender, WarpedEventArgs e)
-        //{
-        //    // If the player entered the guild, they've seen the mail, this event hasn't played, and the player has enough free inventory to receive the free lewt
-        //    if (e.NewLocation.name == "AdventureGuild" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro") && !Game1.player.eventsSeen.Contains(68940000) 
-        //        && Game1.player.freeSpotsInInventory() >= 2 && !Game1.eventUp && e.NewLocation.currentEvent == null)
-        //    {
-        //        // Play the Gil event
-        //        e.NewLocation.startEvent(new StardewValley.Event(Game1.content.LoadString("Data\\Events\\WeaponRebalanceEvents:WeaponRebalanceIntroWeaponsGift"), 68940000, Game1.player));
-
-        //        // Give the player a carving knife and a femur
-        //        Game1.player.addItemToInventory(new StardewValley.Tools.MeleeWeapon(16));
-        //        Game1.player.addItemToInventory(new StardewValley.Tools.MeleeWeapon(31));
-        //    }
-        //}
     }
 
     public class CheckEventPostfixPatch
@@ -84,7 +67,7 @@ namespace StardewCombatMod
             try
             {
                 // If the player entered the guild, they've seen the mail, this event hasn't played, and the player has enough free inventory to receive the free lewt
-                if (__instance.name == "AdventureGuild" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro") && !Game1.player.eventsSeen.Contains(68940000)
+                if (__instance.name == "Mountain" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro") && !Game1.player.eventsSeen.Contains(68940000)
                     && Game1.player.freeSpotsInInventory() >= 2 && !Game1.eventUp && __instance.currentEvent == null)
                 {
                     // Play the Gil event
@@ -125,7 +108,9 @@ namespace StardewCombatMod
                 {
                     // Play the toolAction on that aread and remove any objects there
                     if (location.objects.ContainsKey(locationToClear) && location.objects[locationToClear].performToolAction((Tool)who.CurrentItem, location))
+                    {
                         location.objects.Remove(locationToClear);
+                    }
                 }
             }
             catch (Exception ex)
@@ -144,7 +129,7 @@ namespace StardewCombatMod
             {
                 for (int j = rectangle.Top; j < rectangle.Bottom; j++)
                 {
-                    hset.Add(new Vector2(i/64, j/64));
+                    hset.Add(new Vector2(i / 64, j / 64));
                 }
             }
 

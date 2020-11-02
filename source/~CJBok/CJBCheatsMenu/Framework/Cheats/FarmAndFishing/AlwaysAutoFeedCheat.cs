@@ -31,7 +31,7 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
         public override IEnumerable<OptionsElement> GetFields(CheatContext context)
         {
             yield return new CheatsOptionsCheckbox(
-                label: context.Text.Get("farm.always-auto-feed"),
+                label: I18n.Farm_AlwaysAutoFeed(),
                 value: context.Config.AutoFeed,
                 setValue: value => context.Config.AutoFeed = value
             );
@@ -58,7 +58,7 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                 return;
 
             Farm farm = Game1.getFarm();
-            if (farm == null || farm.piecesOfHay.Value <= 0)
+            if (farm == null || !this.HasHay(farm, context))
                 return;
 
             foreach (GameLocation location in context.GetAllLocations())
@@ -75,13 +75,13 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                                 ? 8
                                 : 6;
 
-                            for (int i = 0; i < animalCount && farm.piecesOfHay.Value > 0; i++)
+                            for (int i = 0; i < animalCount && this.HasHay(farm, context); i++)
                             {
                                 Vector2 tile = new Vector2(tileX + i, 3);
                                 if (!animalHouse.objects.ContainsKey(tile))
                                 {
                                     animalHouse.objects.Add(tile, new Object(178, 1));
-                                    farm.piecesOfHay.Value--;
+                                    this.ConsumeHay(farm);
                                 }
                             }
                         }
@@ -93,6 +93,27 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                         break;
                 }
             }
+        }
+
+
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Get whether hay is available for animal feed.</summary>
+        /// <param name="farm">The farm instance.</param>
+        /// <param name="context">The cheat context.</param>
+        private bool HasHay(Farm farm, CheatContext context)
+        {
+            return
+                context.Config.InfiniteHay
+                || farm.piecesOfHay.Value > 0;
+        }
+
+        /// <summary>Reduce the hay count by one if possible.</summary>
+        /// <param name="farm">The farm instance.</param>
+        private void ConsumeHay(Farm farm)
+        {
+            farm.piecesOfHay.Value = Math.Max(0, farm.piecesOfHay.Value - 1);
         }
     }
 }

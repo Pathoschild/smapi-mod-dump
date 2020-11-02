@@ -41,7 +41,7 @@ namespace SpriteMaster {
 
 		internal static string ConfigVersion = "";
 		[ConfigIgnore]
-		internal static string ClearConfigBefore = "0.11.0";
+		internal static string ClearConfigBefore = "0.12.0";
 
 		internal static bool Enabled = true;
 		internal static SButton ToggleButton = SButton.F11;
@@ -196,7 +196,7 @@ namespace SpriteMaster {
 			internal static bool Enabled = DevEnabled && true;
 			private const bool DevEnabled = true;
 			internal static bool AlwaysFlush = false;
-			internal static Compression.Algorithm Compress = Compression.Algorithm.LZ;
+			internal static Compression.Algorithm Compress = Compression.BestAlgorithm;
 			internal static bool Async = true;
 		}
 
@@ -206,7 +206,7 @@ namespace SpriteMaster {
 			private const bool DevEnabled = true;
 			internal const int LockRetries = 32;
 			internal const int LockSleepMS = 32;
-			internal static Compression.Algorithm Compress = Compression.Algorithm.LZ;
+			internal static Compression.Algorithm Compress = Compression.BestAlgorithm;
 			internal static bool ForceCompress = false;
 		}
 	}

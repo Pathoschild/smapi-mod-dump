@@ -53,10 +53,10 @@
 			"ItemDeliveryQuest.cs.13462": "Hi! I need {0} for a new appetizer I'm thinking about. Drop one off at the saloon and I'll be very grateful.     -{{mardrest.ChangeDialogues/GusName}} ",
 			"ItemDeliveryQuest.cs.13473": "Hello, it's {{mardrest.ChangeDialogues/EmilyName}}. I'd like to buy {0} from someone, to craft into some fine jewelry. Thanks!",
 			"ItemDeliveryQuest.cs.13476": "Looking for {0} to make into buttons for a dress I'm making. If you find one could you bring it to me?.     -{{mardrest.ChangeDialogues/EmilyName}} ",
-			"ItemDeliveryQuest.cs.13546": "I require {0} for potion-making. Please deliver directly to my study.     -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}} ",
-			"ItemDeliveryQuest.cs.13548": "The {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}}, {{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, wishes to study the arcane properties of the {0}. You will be rewarded.",
-			"ItemDeliveryQuest.cs.13551": "Need {0} for experiment.    -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}} ",
-			"ItemDeliveryQuest.cs.13553": "Local {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}} in search of a fresh {0}.",
+			"ItemDeliveryQuest.cs.13546": "I require {0} for potion-making. Please deliver directly to my study.     -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}} ",
+			"ItemDeliveryQuest.cs.13548": "The {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}}, {{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, wishes to study the arcane properties of the {0}. You will be rewarded.",
+			"ItemDeliveryQuest.cs.13551": "Need {0} for experiment.    -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}} ",
+			"ItemDeliveryQuest.cs.13553": "Local {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}} in search of a fresh {0}.",
 			"ItemDeliveryQuest.cs.13557": "I will < you forever if you bring me {0}!     -{{mardrest.ChangeDialogues/HaleyName}} ",
 			"ItemDeliveryQuest.cs.13560": "Looking for a handsome young man to bring me {0}.       -{{mardrest.ChangeDialogues/HaleyName}} ",
 			"ItemDeliveryQuest.cs.13563": "FOR GIRLS ONLY: psst... I need {0}... you know what it's for. Keep it secret, okay?      -{{mardrest.ChangeDialogues/HaleyName}} ",
@@ -69,7 +69,7 @@
 			"ResourceCollectionQuest.cs.13674": "Hello! It's {{mardrest.ChangeDialogues/RobinName}}. Could someone bring me {0} pieces of {1}? They need to be fresh... that means gathered today. Thanks!",
 			"ResourceCollectionQuest.cs.13688": "\n- You can keep the ores after {{mardrest.ChangeDialogues/ClintName}} inspects them.",
 			"SlayMonsterQuest.cs.13747": "An invasive crab species is living in the local mine, threatening the native wildlife! These creatures are known for disguising themselves as stones. I'll pay someone to slay {0} of them.  -{{mardrest.ChangeDialogues/DemetriusName}} ",
-			"SlayMonsterQuest.cs.13752": "The monsters known as {0} are throwing the elemental balance into disarray. I would like an adventurer to enter the mines and slay {1} of these {2}.  -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}} ",
+			"SlayMonsterQuest.cs.13752": "The monsters known as {0} are throwing the elemental balance into disarray. I would like an adventurer to enter the mines and slay {1} of these {2}.  -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}} ",
 			"SocializeQuest.cs.13786": "Hey! Will someone say 'Hi' to everyone in town for me? I want to spread a message of {0} today!   -{{mardrest.ChangeDialogues/EmilyName}} ",
 			"WeedingQuest.cs.13824": "Talk to {{mardrest.ChangeDialogues/Mr:{{mardrest.ChangeDialogues/LewisGender}}}}. {{mardrest.ChangeDialogues/LewisName}} ",
 			"KrobusShopGone": "I'm away. Please leave your payment in the box. -{{mardrest.ChangeDialogues/KrobusName}} ",
@@ -128,7 +128,7 @@
 			"NPC.cs.4441": "{0}, I'm pregnant. Isn't it wonderful?$l",
 			"NPC.cs.4443": "$s",
 			"SocialPage.cs.11636": "(wife)"
-		}, "When": { "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -137,14 +137,14 @@
 			"Utility.cs.5371": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you husband and wife!$h",
 			"Utility.cs.5377": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you wife and... well, wife!$h",
 			"SocialPage.cs.11639": "(girlfriend)"
-		}, "When": { "Relationship:Clint": "Engaged", "mardrest.ChangeDialogues/ClintGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Clint": "Engaged", "mardrest.ChangeDialogues/ClintGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Strings/StringsFromCSFiles",
 		"Entries": {
 			"SocialPage.cs.11642": "(ex-wife)"
-		}, "When": { "Relationship:Clint": "Divorced", "mardrest.ChangeDialogues/ClintGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Clint": "Divorced", "mardrest.ChangeDialogues/ClintGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -198,7 +198,7 @@
 			"NPC.cs.4441": "{0}, I'm pregnant. Isn't it wonderful?$l",
 			"NPC.cs.4443": "$s",
 			"SocialPage.cs.11636": "(wife)"
-		}, "When": { "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -207,14 +207,14 @@
 			"Utility.cs.5371": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you husband and wife!$h",
 			"Utility.cs.5377": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you wife and... well, wife!$h",
 			"SocialPage.cs.11639": "(girlfriend)"
-		}, "When": { "Relationship:Gus": "Engaged", "mardrest.ChangeDialogues/GusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Gus": "Engaged", "mardrest.ChangeDialogues/GusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Strings/StringsFromCSFiles",
 		"Entries": {
 			"SocialPage.cs.11642": "(ex-wife)"
-		}, "When": { "Relationship:Gus": "Divorced", "mardrest.ChangeDialogues/GusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Gus": "Divorced", "mardrest.ChangeDialogues/GusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -268,7 +268,7 @@
 			"NPC.cs.4441": "{0}, I'm pregnant. Isn't it wonderful?$l",
 			"NPC.cs.4443": "$s",
 			"SocialPage.cs.11636": "(wife)"
-		}, "When": { "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -277,14 +277,14 @@
 			"Utility.cs.5371": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you husband and wife!$h",
 			"Utility.cs.5377": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you wife and... well, wife!$h",
 			"SocialPage.cs.11639": "(girlfriend)"
-		}, "When": { "Relationship:Lewis": "Engaged", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Lewis": "Engaged", "mardrest.ChangeDialogues/LewisGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Strings/StringsFromCSFiles",
 		"Entries": {
 			"SocialPage.cs.11642": "(ex-wife)"
-		}, "When": { "Relationship:Lewis": "Divorced", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Lewis": "Divorced", "mardrest.ChangeDialogues/LewisGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -303,7 +303,7 @@
 			"NPC.cs.4441": "{0}, I'm pregnant. Isn't it wonderful?$l",
 			"NPC.cs.4443": "$s",
 			"SocialPage.cs.11636": "(wife)"
-		}, "When": { "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -312,14 +312,14 @@
 			"Utility.cs.5371": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you husband and wife!$h",
 			"Utility.cs.5377": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you wife and... well, wife!$h",
 			"SocialPage.cs.11639": "(girlfriend)"
-		}, "When": { "Relationship:Linus": "Engaged", "mardrest.ChangeDialogues/LinusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Linus": "Engaged", "mardrest.ChangeDialogues/LinusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Strings/StringsFromCSFiles",
 		"Entries": {
 			"SocialPage.cs.11642": "(ex-wife)"
-		}, "When": { "Relationship:Linus": "Divorced", "mardrest.ChangeDialogues/LinusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Linus": "Divorced", "mardrest.ChangeDialogues/LinusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -478,7 +478,7 @@
 			"NPC.cs.4441": "{0}, I'm pregnant. Isn't it wonderful?$l",
 			"NPC.cs.4443": "$s",
 			"SocialPage.cs.11636": "(wife)"
-		}, "When": { "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -487,14 +487,14 @@
 			"Utility.cs.5371": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you husband and wife!$h",
 			"Utility.cs.5377": "@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you wife and... well, wife!$h",
 			"SocialPage.cs.11639": "(girlfriend)"
-		}, "When": { "Relationship:Willy": "Engaged", "mardrest.ChangeDialogues/WillyGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Willy": "Engaged", "mardrest.ChangeDialogues/WillyGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Strings/StringsFromCSFiles",
 		"Entries": {
 			"SocialPage.cs.11642": "(ex-wife)"
-		}, "When": { "Relationship:Willy": "Divorced", "mardrest.ChangeDialogues/WillyGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Willy": "Divorced", "mardrest.ChangeDialogues/WillyGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -513,7 +513,7 @@
 			"NPC.cs.4441": "{0}, I'm pregnant. Isn't it wonderful?$l",
 			"NPC.cs.4443": "$s",
 			"SocialPage.cs.11636": "(wife)"
-		}, "When": { "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -522,14 +522,14 @@
 			"Utility.cs.5371": "@... {{mardrest.ChangeDialogues/WizardName}}... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you husband and wife!$h",
 			"Utility.cs.5377": "@... {{mardrest.ChangeDialogues/WizardName}}... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you wife and... well, wife!$h",
 			"SocialPage.cs.11639": "(girlfriend)"
-		}, "When": { "Relationship:Wizard": "Engaged", "mardrest.ChangeDialogues/WizardGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Wizard": "Engaged", "mardrest.ChangeDialogues/WizardGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Strings/StringsFromCSFiles",
 		"Entries": {
 			"SocialPage.cs.11642": "(ex-wife)"
-		}, "When": { "Relationship:Wizard": "Divorced", "mardrest.ChangeDialogues/WizardGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Wizard": "Divorced", "mardrest.ChangeDialogues/WizardGender": "Female" }
 	},
 	{
 		"Action": "EditData",

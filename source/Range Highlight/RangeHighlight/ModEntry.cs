@@ -145,6 +145,7 @@ namespace RangeHighlight {
             }
             if (config.ShowScarecrowRange) {
                 api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/scarecrow", config.ShowScarecrowRangeKey,
+                    config.ShowOtherScarecrowsWhenHoldingScarecrow,
                     (item, itemID, itemName) => {
                         if (itemName.Contains("arecrow")) {
                             return new Tuple<Color, bool[,]>(config.ScarecrowRangeTint,
@@ -156,6 +157,7 @@ namespace RangeHighlight {
             }
             if (config.ShowSprinklerRange) {
                 api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/sprinkler", config.ShowSprinklerRangeKey,
+                    config.ShowOtherSprinklersWhenHoldingSprinkler,
                     (item, itemID, itemName) => {
                         if (itemName.Contains("sprinkler")) {
                             return new Tuple<Color, bool[,]>(config.SprinklerRangeTint, defaultShapes.GetSprinkler(itemName));
@@ -166,6 +168,7 @@ namespace RangeHighlight {
             }
             if (config.ShowBeehouseRange) {
                 api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/beehouse", config.ShowBeehouseRangeKey,
+                    config.ShowOtherBeehousesWhenHoldingBeehouse,
                     (item, itemID, itemName) => {
                         if (itemName.Contains("bee house")) {
                             return new Tuple<Color, bool[,]>(config.BeehouseRangeTint, defaultShapes.beehouse);
@@ -175,7 +178,7 @@ namespace RangeHighlight {
                     });
             }
             if (config.ShowBombRange) {
-                api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/bomb", null,
+                api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/bomb", null, true,
                     (item, itemID, itemName) => {
                         if (itemName.Contains("bomb")) {
                             DefaultShapes.BombRange range = defaultShapes.GetBomb(itemName);

@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JacquePott/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Mass Production",
+  "Author": "Jacque Pott",
+  "Version": "1.0",
+  "Description": "Allows for producing goods at greater scale.",
+  "UniqueID": "JacquePott.MassProduction",
+  "EntryDll": "MassProduction.dll",
+  "MinimumApiVersion": "3.7.4",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets"
+    },
+    {
+      "UniqueID": "Digus.ProducerFrameworkMod"
+    },
+	{
+	  "UniqueID": "DIGUS.MailFrameworkMod"
+	},
+    {
+      "UniqueID": "Pathoschild.Automate",
+      "IsRequired": false
+    }
+  ]
+}

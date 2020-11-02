@@ -28,7 +28,7 @@
 		"Action": "EditData",
 		"Target": "Characters/Dialogue/MarriageDialogueElliott",
 		"Entries": {
-			"OneKid_3": "Cuidar bebés no es precisamente mi fuerte... Pero haré todo lo que pueda para ser un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ElliottGender}}}} buen{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ElliottGender}}}}.",
+			"OneKid_3": "Cuidar bebés no es precisamente mi fuerte... Pero haré todo lo que pueda para ser un{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ElliottGender}}}} buen{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/ElliottGender}}}} {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/ElliottGender}}}}.",
 			"TwoKids_1": "Antes llevaba en brazos a %kid1 y juraría que ha dicho \"{{mardrest.ChangeDialogues/Da:{{mardrest.ChangeDialogues/ElliottGender}}}}a... {{mardrest.ChangeDialogues/Da:L{{mardrest.ChangeDialogues/ElliottGender}}}}á...\"$h",
 			"Rainy_Day_0": "Hoy me siento inspirad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}}... Creo que voy a escribir un rato.",
 			"Indoor_Day_0": "Me cuido mucho más desde que estamos juntos. Mi vida de solter{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ElliottGender}}}} no era demasiado saludable.",
@@ -46,13 +46,6 @@
 		"Target": "Strings/Schedules/Elliott",
 		"Entries": {
 			"summer_9.001": "Me duele la espalda, doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}... Ya sabe, por lo de encorvarme cuando escribo mi novela."
-		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Elliott": "adult/polite/neutral/neutral/{{lowercase:{{mardrest.ChangeDialogues/ElliottGender}}}}/datable/Leah/Town/fall 5/Willy ''/ElliottHouse 1 5/{{mardrest.ChangeDialogues/ElliottName}}"
 		}
 	}
 	]

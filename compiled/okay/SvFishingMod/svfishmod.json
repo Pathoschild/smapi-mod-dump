@@ -1,0 +1,14 @@
+{
+  "AlwaysCatchDoubleFish": false,
+  "AlwaysCatchTreasure": false,
+  "AlwaysPerfectCatch": true,
+  "AutoReelFish": true,
+  "DisableMod": false,
+  "DistanceFromCatchingOverride": 0.0,
+  "OverrideBarHeight": -1,
+  "RemoveBiteDelay": false,
+  "OverrideFishQuality": -1,
+  "OverrideFishType": -1,
+  "ReelFishCycling": false,
+  "EnforceMultiplayerSettings": true
+}

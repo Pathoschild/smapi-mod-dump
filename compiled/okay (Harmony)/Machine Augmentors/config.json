@@ -1,5 +1,5 @@
 {
-  "CreatedByVersionString": "1.0.6",
+  "CreatedByVersionString": "1.0.8",
   "IconOpacity": 0.75,
   "GlobalPriceMultiplier": 1.0,
   "DaysPerStandardDuplicate": 10.0,
@@ -60,7 +60,7 @@
       "ShopStockMultiplier": 2.5,
       "MaxAttachmentsPerMachine": 200,
       "MaxEffectPerStandardMachine": 100.0,
-      "MaxEffectPerInputlessMachine": 1.0,
+      "MaxEffectPerInputlessMachine": 25.0,
       "UseLinearFormula": true,
       "StandardDecayRate": 0.04,
       "InputlessDecayRate": 0.04

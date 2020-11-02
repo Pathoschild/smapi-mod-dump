@@ -1,0 +1,19 @@
+﻿{
+  "Keyboard_Name": "Keyboard Block",
+  "Keyboard_Description": "Instruments with keys.",
+  "Keyboard_Labels_0": "Piano",
+  "Wind_Name": "Wind Block",
+  "Wind_Description": "Wind instruments, including brasses and woodwinds.",
+  "Wind_Labels_0": "Flute",
+  "Guitar_Name": "Guitar Block",
+  "Guitar_Description": "Fretted musical instruments that usually have six strings.",
+  "Guitar_Labels_0": "Acoustic guitar (nylon)",
+  "Drumkit_Name": "Drumkit Block",
+  "Drumkit_Description": "A set of drums.",
+  "Drumkit_Labels_0": "kit 1",
+  "Menu_BPM": "BPM",
+  "Menu_Duration": "Note",
+  "Menu_Velocity": "Velocity",
+  "Menu_Volume": "Volume",
+  "Out_Of_Range_Hint": "Out of pitch range. Back to default pitch. C5"
+}

@@ -1923,6 +1923,18 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
             return I18n.GetByKey("item.movie-ticket.movie-this-week.none");
         }
 
+        /// <summary>Get a translation equivalent to "Pitch".</summary>
+        public static string Item_MusicBlock_Pitch()
+        {
+            return I18n.GetByKey("item.music-block.pitch");
+        }
+
+        /// <summary>Get a translation equivalent to "Drum type".</summary>
+        public static string Item_MusicBlock_DrumType()
+        {
+            return I18n.GetByKey("item.music-block.drum-type");
+        }
+
         /// <summary>Get a translation equivalent to "Invincible".</summary>
         public static string Monster_Invincible()
         {
@@ -1971,24 +1983,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
             return I18n.GetByKey("monster.drops.nothing");
         }
 
-        /// <summary>Get a translation equivalent to "complete".</summary>
-        public static string Monster_AdventureGuild_Complete()
-        {
-            return I18n.GetByKey("monster.adventure-guild.complete");
-        }
-
-        /// <summary>Get a translation equivalent to "in progress".</summary>
-        public static string Monster_AdventureGuild_Incomplete()
-        {
-            return I18n.GetByKey("monster.adventure-guild.incomplete");
-        }
-
-        /// <summary>Get a translation equivalent to "killed {{count}} of {{requiredCount}}".</summary>
+        /// <summary>Get a translation equivalent to "eradication goal: {{name}} (killed {{count}} of {{requiredCount}})".</summary>
+        /// <param name="name">The value to inject for the <c>{{name}}</c> token.</param>
         /// <param name="count">The value to inject for the <c>{{count}}</c> token.</param>
         /// <param name="requiredCount">The value to inject for the <c>{{requiredCount}}</c> token.</param>
-        public static string Monster_AdventureGuild_Progress(object count, object requiredCount)
+        public static string Monster_AdventureGuild_EradicationGoal(object name, object count, object requiredCount)
         {
-            return I18n.GetByKey("monster.adventure-guild.progress", new { count, requiredCount });
+            return I18n.GetByKey("monster.adventure-guild.eradication-goal", new { name, count, requiredCount });
         }
 
         /// <summary>Get a translation equivalent to "Birthday".</summary>
@@ -2436,6 +2437,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
             return I18n.GetByKey("tree.is-fertilized");
         }
 
+        /// <summary>Get a translation equivalent to "Big Mushroom".</summary>
+        public static string Tree_Name_BigMushroom()
+        {
+            return I18n.GetByKey("tree.name.big-mushroom");
+        }
+
         /// <summary>Get a translation equivalent to "Maple Tree".</summary>
         public static string Tree_Name_Maple()
         {
@@ -2448,22 +2455,16 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
             return I18n.GetByKey("tree.name.oak");
         }
 
-        /// <summary>Get a translation equivalent to "Pine Tree".</summary>
-        public static string Tree_Name_Pine()
-        {
-            return I18n.GetByKey("tree.name.pine");
-        }
-
         /// <summary>Get a translation equivalent to "Palm Tree".</summary>
         public static string Tree_Name_Palm()
         {
             return I18n.GetByKey("tree.name.palm");
         }
 
-        /// <summary>Get a translation equivalent to "Big Mushroom".</summary>
-        public static string Tree_Name_BigMushroom()
+        /// <summary>Get a translation equivalent to "Pine Tree".</summary>
+        public static string Tree_Name_Pine()
         {
-            return I18n.GetByKey("tree.name.big-mushroom");
+            return I18n.GetByKey("tree.name.pine");
         }
 
         /// <summary>Get a translation equivalent to "Unknown Tree".</summary>

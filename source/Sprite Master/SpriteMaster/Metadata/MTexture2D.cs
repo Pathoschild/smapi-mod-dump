@@ -20,6 +20,10 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Metadata {
 	internal sealed class MTexture2D {
+		static MTexture2D() {
+			Config.MemoryCache.Compress = Compression.GetPreferredAlgorithm(Config.MemoryCache.Compress);
+		}
+
 		internal static readonly SharedLock DataCacheLock = new SharedLock();
 		private static MemoryCache DataCache = (Config.MemoryCache.Enabled) ? new MemoryCache(name: "DataCache", config: null) : null;
 		private static long CurrentID = 0U;
@@ -33,7 +37,7 @@ namespace SpriteMaster.Metadata {
 		private readonly Semaphore CompressionSemaphore = new Semaphore(int.MaxValue, int.MaxValue);
 
 		public volatile bool TracePrinted = false;
-		public Volatile<ulong> UpdateToken { get; private set; } = 0;
+		public VolatileULong UpdateToken { get; private set; } = 0;
 
 		public bool ScaleValid = true;
 
@@ -43,16 +47,17 @@ namespace SpriteMaster.Metadata {
 				return;
 			}
 
-			using (DataCacheLock.Shared) {
+			using (DataCacheLock.Exclusive) {
 				DataCache.Dispose();
 				DataCache = new MemoryCache(name: "DataCache", config: null);
 			}
 		}
 
-		public Volatile<ulong> LastAccessFrame { get; private set; } = (ulong)DrawState.CurrentFrame;
-		internal Volatile<ulong> Hash { get; private set; } = Hashing.Default;
+		public VolatileULong LastAccessFrame { get; private set; } = (ulong)DrawState.CurrentFrame;
+		internal VolatileULong Hash { get; private set; } = Hashing.Default;
 
 		// TODO : this presently is not threadsafe.
+		private int CachedDataLength = -1;
 		private readonly WeakReference<byte[]> _CachedData = (Config.MemoryCache.Enabled) ? new WeakReference<byte[]>(null) : null;
 
 		public bool HasCachedData {
@@ -153,7 +158,7 @@ namespace SpriteMaster.Metadata {
 
 							compressedBuffer = DataCache[UniqueIDString] as byte[];
 							if (compressedBuffer != null) {
-								target = Compression.Decompress(compressedBuffer, Config.MemoryCache.Compress);
+								target = Compression.Decompress(compressedBuffer, CachedDataLength, Config.MemoryCache.Compress);
 							}
 							else {
 								target = null;
@@ -202,7 +207,7 @@ namespace SpriteMaster.Metadata {
 
 							compressedBuffer = DataCache[UniqueIDString] as byte[];
 							if (compressedBuffer != null) {
-								target = Compression.Decompress(compressedBuffer, Config.MemoryCache.Compress);
+								target = Compression.Decompress(compressedBuffer, CachedDataLength, Config.MemoryCache.Compress);
 							}
 							else {
 								target = null;
@@ -218,6 +223,8 @@ namespace SpriteMaster.Metadata {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			set {
 				try {
+					CachedDataLength = (value != null) ? value.Length : -1;
+
 					if (!Config.MemoryCache.Enabled)
 						return;
 

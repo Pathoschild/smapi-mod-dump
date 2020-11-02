@@ -6,6 +6,11 @@ for queries and analysis.**
 
 ----
 
+## 1.1.1
+
+- Fix: Remove some debugging logs
+- Fix: Remove error log when handing in a billboard quest item a day after accepting it
+
 ## 1.1.0
 
 - Feature: [#2] Add option to cap gift taste reduction

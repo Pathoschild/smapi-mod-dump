@@ -146,8 +146,7 @@ namespace Pathoschild.Stardew.Automate
             this.DisabledMachineGroups.Clear();
             this.AutomateCountdown = this.Config.AutomationInterval;
             this.DisableOverlay();
-            foreach (GameLocation location in CommonHelper.GetLocations())
-                this.ReloadQueue.Add(location);
+            this.ReloadQueue.AddMany(CommonHelper.GetLocations());
         }
 
         /// <summary>The method invoked when the player warps to a new location.</summary>
@@ -179,8 +178,7 @@ namespace Pathoschild.Stardew.Automate
                 }
 
                 // add locations
-                foreach (GameLocation location in e.Added)
-                    this.ReloadQueue.Add(location);
+                this.ReloadQueue.AddMany(e.Added);
             }
             catch (Exception ex)
             {

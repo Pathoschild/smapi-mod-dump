@@ -1,5 +1,8 @@
 {
-    "Entries": {
+    "Changes":[
+        {	"LogName": "RivalHearts Dialogue", 	"Action": "EditData",
+            "Target": "Characters/Dialogue/Jasper",
+            "Entries": {
         "Wed8": "Sorry, I am a little tired today. Cameron dropped by and we were up all night.$1#$b#We were talking of course! Well...mostly talking...$4",
         "Sat8": "$1 New_Proposal#I have submitted a new proposal for consideration. I hope that my newly-found camaraderie with Cameron may asist in its acceptance.$k#$e#Cameron has agreed to help with my latest proposal. I am sure that we shall disagree most whole-heartedly.#$b#But well-considered debate is always welcome, and shall assist in rebuttals at a later date.$3",
         "fall_Fri8":"Cameron has invited me to attend a movie with him. I do not know whether to accept.$2^Cameron has invited me to attend a movie with her. I do not know whether to accept.$2#$b#I am sure we shall most avidly disagree over it and it seems a shame to destabilize this new amiability we have forged.$2",
@@ -21,6 +24,7 @@
             "Jasper_Mean": "Seek reassurance, receive disregard. I would say I appreciate your honesty, @. But in truth, I do not.#5",
             "Jasper_Extrovert": "$p 5070103#But there is a saying that opposites attract, and perhaps my negatives shall balance his positives.$3^But there is a saying that opposites attract, and perhaps my negatives shall balance her positives.$3|And I understand that it cannot work between us. So why is it that I want so badly to try? I really like him, @. A lot.$5^And I understand that it cannot work between us. So why is it that I want so badly to try? I really like her, @. A lot.$5",
         "winter_20_2": "I would like to get Cameron a gift for Winter Star. Do you have any suggestions, @?"
-
-    }
+            }
+        }
+    ]
 }

@@ -203,7 +203,7 @@ namespace ContentPatcher.Framework
                     break;
 
                 case JObject objToken:
-                    foreach (JProperty p in objToken.Properties())
+                    foreach (JProperty p in objToken.Properties().ToArray())
                     {
                         JProperty property = p;
                         LogPathBuilder localPath = path.With(p.Name);

@@ -20,7 +20,7 @@
 			"Emily": "¡Hola!^¿Qué tal te va? Espero que disfrutes el regalo que te he enviado... ¡Bueno, adiós! +^^-{{mardrest.ChangeDialogues/EmilyName}} %item object 397 1 428 1 440 1 %%[#]Un regalo de {{mardrest.ChangeDialogues/EmilyName}}",
 			"Marnie": "Hola, @:^Te portas tan bien con los vecinos que se me ha ocurrido enviarte un poco de forraje para facilitarte el trabajo. ¡Sigue así!^^-{{mardrest.ChangeDialogues/MarnieName}} %item object 178 30 %%[#]Un regalo de {{mardrest.ChangeDialogues/MarnieName}}",
 			"Shane": "Buenas:^He pensado que sería divertido enviarte una carta. Aunque ahora no sé muy bien qué escribir.^Bueno, toma un pequeño detalle. No se lo digas a nadie, pero mangué esto del almacén de MercaJoja hace siglos.^^Bueno, hasta pronto.^^-{{mardrest.ChangeDialogues/ShaneName}} %item object 215 1 206 1 %%[#]Un regalo de {{mardrest.ChangeDialogues/ShaneName}}",
-			"Wizard": "Saludos, joven aprendiz.^Adjunto en este paquete un objeto de gran valor arcano. Utilízalo sabiamente.^^-{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}%item object 422 1 82 1 84 1 70 1 %%[#]Un regalo {{mardrest.ChangeDialogues/From:L{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}",
+			"Wizard": "Saludos, joven aprendiz.^Adjunto en este paquete un objeto de gran valor arcano. Utilízalo sabiamente.^^-{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}}%item object 422 1 82 1 84 1 70 1 %%[#]Un regalo {{mardrest.ChangeDialogues/From:L{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}}",
 			"Sandy": "¡Saludos desde el desierto de Calico!^^Ven a visitarme pronto, me aburro como una ostra aquí... :(^^He incluido un regalo del desierto. ¡Puedes venir a darme las gracias en persona!^^-{{mardrest.ChangeDialogues/SandyName}} %item object 88 1 90 1 218 1 %%[#]Un regalo de {{mardrest.ChangeDialogues/SandyName}}",
 			"afterSamShow": "@:^¡El espectáculo ha sido un éxito arrollador! Quiero darte las gracias otra vez por ayudar a crear este grupo tan genial. ¡No lo hubiéramos conseguido sin ti!	^	-{{mardrest.ChangeDialogues/SamName}}[#]Nota de agradecimiento de {{mardrest.ChangeDialogues/SamName}}",
 			"afterArtShow": "Hola, @:^Gracias una vez más por venir a mi exposición. ¡Ha sido todo un éxito! He vendido casi todas mis esculturas, ¡y todo el mundo me ha animado mucho! Espero volver a verte pronto.^^-{{mardrest.ChangeDialogues/LeahName}}[#]Nota de agradecimiento de {{mardrest.ChangeDialogues/LeahName}}",
@@ -74,14 +74,14 @@
 			"foundLostTools": "Hola, @:^Alguien puso tus herramientas en el cubo de objetos perdidos anoche.^^Las he traído y te las he puesto junto a la cama.^Espero no haberte despertado...^^-{{mardrest.ChangeDialogues/Mayor:{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}}[#]Herramientas perdidas",
 			"fishing2": "Tengo nuevos objetos disponibles...^^¡Una lujosa caña de pescar y cebo para que se lo pongas! Puedes usar el cebo para que los peces piquen más rápido.^^¡Espero verte pronto!^^-{{mardrest.ChangeDialogues/WillyName}}[#]Nuevos objetos de {{mardrest.ChangeDialogues/WillyName}}",
 			"fishing6": "Pásate por la tienda y echa un vistazo a las nuevas cañas.^^Son las mejores del mercado... ¡Y las puedes personalizar con distintos tipos de aparejo!^^¡Espero verte pronto!^^-{{mardrest.ChangeDialogues/WillyName}}[#]2ª tanda de objetos nuevos de {{mardrest.ChangeDialogues/WillyName}}",
-			"wizardJunimoNote": "Según mis fuentes, has estado investigando el interior del centro cívico.^¿Por qué no me haces una visita?^Mis aposentos están al oeste del lago del bosque, en la torre de piedra. Puede que tenga información... sobre tu «problema con las ratas».^^-{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}%item quest 1 true %%[#]Las invocaciones {{mardrest.ChangeDialogues/From:L{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}",
+			"wizardJunimoNote": "Según mis fuentes, has estado investigando el interior del centro cívico.^¿Por qué no me haces una visita?^Mis aposentos están al oeste del lago del bosque, en la torre de piedra. Puede que tenga información... sobre tu «problema con las ratas».^^-{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}}%item quest 1 true %%[#]Las invocaciones {{mardrest.ChangeDialogues/From:L{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}}",
 			"winter_18": "Hola, @:^Me gustaría informarte sobre un acontecimiento que se acerca: la fiesta de la estrella invernal.^Es momento de que la comunidad se reúna y piense en toda la buena fortuna que ha tenido este año.^Una de las tradiciones preferidas es el intercambio de regalos, en el que a cada vecino se le asigna otro al azar.^¡El día del festival todo el mundo trae un regalo para su amigo invisible y le sorprende con algo especial!^^Este año, tu amigo invisible es... ¡%secretsanta! ¡No se lo digas a nadie!^^La fiesta se celebrará el día 25 de 09:00 a 14:00 en la plaza. ¡Nos vemos entonces!^^-{{mardrest.ChangeDialogues/Mayor:{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}}[#]Entrega-regalos secreto",
 			"ccBulletinThankYou": "Hola, @:^¡Todo el mundo en el pueblo habla de tu gran generosidad últimamente!^¡Parece ser que han ido apareciendo en casa de todo el mundo paquetes con objetos publicados hace años en el tablón de anuncios del centro cívico! ¡Y todos enviados desde tu granja!^Gracias por molestarte en hacer algo así... ¡Estamos todos encantados!^^-{{mardrest.ChangeDialogues/Mayor:{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}} [#]Agradecimiento del tablón de anuncios",
 			"guildQuest": "Veo que has estado explorando la vieja mina. Tienes espíritu aventurero, lo noto.^Si consigues acabar con 10 babas, te habrás ganado un puesto en mi gremio de aventureros. Ten cuidado.^^-{{mardrest.ChangeDialogues/MarlonName}} %item quest 15 true %%[#]Misión de cazar babas",
-			"skullCave": "Veo que has entrado en la caverna calavera.^Bien hecho.^^Eso sí, tengo un reto aún mejor para ti. Llega hasta el piso 25 o más abajo. Tengo un montón de $ que enviarte si lo consigues.^^Tu amigo, {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/QiGender}}}} Sr{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/QiGender}}}}. {{mardrest.ChangeDialogues/QiName}} %item quest 20 %%[#]El desafío de {{mardrest.ChangeDialogues/QiName}}",
+			"skullCave": "Veo que has entrado en la caverna calavera.^Bien hecho.^^Eso sí, tengo un reto aún mejor para ti. Llega hasta el piso 25 o más abajo. Tengo un montón de $ que enviarte si lo consigues.^^Tu amigo, {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/QiGender}}}} {{mardrest.ChangeDialogues/Mr:{{mardrest.ChangeDialogues/QiGender}}}}. {{mardrest.ChangeDialogues/QiName}} %item quest 20 %%[#]El desafío de {{mardrest.ChangeDialogues/QiName}}",
 			"robinWell": "¡Soy {{mardrest.ChangeDialogues/RobinName}}!^^Sé que hay mucha piedra desperdigada por tu granja. Si tienes demasiada, podrías pedirme que te construya un pozo. Se pueden colocar por toda la granja, y son una forma muy cómoda de rellenar la regadera. Pásate por mi tienda con 75 piedras y 1000G cuando te interese.^^-{{mardrest.ChangeDialogues/RobinName}}[#]Construir un pozo",
 			"landslideDone": "Apreciados clientes de MercaJoja:^Los miembros de nuestro equipo han retirado el desprendimiento causado por nuestra operación de perforación cerca del lago de la montaña. Nos gustaría recordarles que la perforación que llevamos a cabo es totalmente legal (de acuerdo con la iniciativa L61091, enmendada por Joja Co). ¡La preservación responsable del entorno local es una de nuestras máximas prioridades!^^Rogamos disculpen las molestias que el accidente haya podido causar. Como siempre, ¡apreciamos su constante apoyo!^^-{{mardrest.ChangeDialogues/MorrisName}}, Representante del departamento de satisfacción al cliente de Joja[#]Joja ha retirado el desprendimiento",
-			"QiChallengeComplete": "Lo has conseguido.^Me has impresionado.^Disfruta de tu recompensa.^^-Sr{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/QiGender}}}}. {{mardrest.ChangeDialogues/QiName}}. %item money 10000 %%[#]El desafío de {{mardrest.ChangeDialogues/QiName}} completado",
+			"QiChallengeComplete": "Lo has conseguido.^Me has impresionado.^Disfruta de tu recompensa.^^-{{mardrest.ChangeDialogues/Mr:{{mardrest.ChangeDialogues/QiGender}}}}. {{mardrest.ChangeDialogues/QiName}}. %item money 10000 %%[#]El desafío de {{mardrest.ChangeDialogues/QiName}} completado",
 			"spring_2_1": "Hola:^Acabo de volver de un viaje pesquero. Deberías pasarte por la playa alguna vez.^Tengo algo para ti.^^-{{mardrest.ChangeDialogues/WillyName}} %item quest 13 true %%[#]Invitación de {{mardrest.ChangeDialogues/WillyName}}",
 			"spring_12": "Hola, @:^Mañana celebraremos el festival del huevo en la plaza. Deberías venir entre las 09:00 y las 14:00 si quieres participar.^^¡No querrás perderte la búsqueda anual de huevos!^^-{{mardrest.ChangeDialogues/Mayor:{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}}[#]Comunicado sobre el festival del huevo",
 			"spring_15_1": "Hola, cielo...^^Sé que acabas de empezar con la jardinería, por eso quería darte un consejo.^^La mayoría de cultivos solo crecen durante una estación. Cuando llegue el verano, todos tus cultivos de primavera se marchitarán. ¡Así que planifica con antelación!^^-Abuelita {{mardrest.ChangeDialogues/EvelynName}}[#]El consejo de {{mardrest.ChangeDialogues/EvelynName}}",
@@ -103,7 +103,7 @@
 			"fall_19_1": "@:^Querría comprarte una calabaza. Mi hija y yo queremos tallar una lámpara de calabaza para el próximo festival de la víspera de los espíritus.^^-{{mardrest.ChangeDialogues/CarolineName}}%item quest 108 %%[#]Pedido de {{mardrest.ChangeDialogues/CarolineName}}",
 			"winter_2_1": "Ey, tengo un pequeño reto para ti:^Atrápame un calamar.^^Se pueden pescar en el mar por la noche. Eso sí, solo aparecen en invierno.^^-{{mardrest.ChangeDialogues/WillyName}}%item quest 109 %%[#]El desafío de {{mardrest.ChangeDialogues/WillyName}}",
 			"winter_6_1": "Tengo una petición que se sale de lo común. ¿Me harás el favor de mantenerla en secreto?^Quiero que le entregues una amatista a {{mardrest.ChangeDialogues/EmilyName}}. Es su piedra preferida. Dile que es de mi parte.^^-{{mardrest.ChangeDialogues/ClintName}} %item quest 110 %%[#]Pedido inusual de {{mardrest.ChangeDialogues/ClintName}}",
-			"winter_12_1": "@:^Estoy investigando el arte olvidado de la adivinación con sombras. Necesito un objeto llamado «Esencia sombría». Tráemelo y obtendrás tu recompensa.^^-{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 111 %%[#]Pedido {{mardrest.ChangeDialogues/From:L{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}",
+			"winter_12_1": "@:^Estoy investigando el arte olvidado de la adivinación con sombras. Necesito un objeto llamado «Esencia sombría». Tráemelo y obtendrás tu recompensa.^^-{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 111 %%[#]Pedido {{mardrest.ChangeDialogues/From:L{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}}",
 			"winter_17_1": "@:^Disculpa por molestarte de nuevo, pero necesito otro favor. Tengo un nuevo martillo y quiero probarlo en varios metales.^^¿Podrías fundir un lingote de hierro y traérmelo?^^Gracias.^^-{{mardrest.ChangeDialogues/ClintName}} %item quest 112 %%[#]Pedido de {{mardrest.ChangeDialogues/ClintName}}",
 			"winter_21_1": "@:^¿Qué tal te va? Espero que el invierno no se haya cebado contigo.^En cualquier caso, quería pedirte algo de madera noble. Necesitaría unos diez trozos, si los tienes.^Si no, no pasa nada. ¡Cuídate!^^-{{mardrest.ChangeDialogues/RobinName}}%item quest 113 %%[#]Pedido de {{mardrest.ChangeDialogues/RobinName}}",
 			"winter_26_1": "Hola, @:^Quiero preparar una caldereta, ¡pero necesito un atún blanco! Sé que ya casi se acaba la temporada... Siento avisarte tan tarde. ¿Podrías pescarme uno?^^-{{mardrest.ChangeDialogues/GusName}}%item quest 114 %%[#]{{mardrest.ChangeDialogues/GusName}} necesita cierto pez...",
@@ -115,7 +115,7 @@
 			"summer_21_2": "@:^Necesito aceite de trufa. No preguntes para qué.^^-{{mardrest.ChangeDialogues/Mayor:{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/LewisName}}%item quest 120 %%[#]Pedido de {{mardrest.ChangeDialogues/LewisName}}",
 			"fall_6_2": "Se busca: Una langosta fresca para la maravillosa crema que estoy preparando.^^Quién: {{mardrest.ChangeDialogues/GusName}}, propietari{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GusGender}}}} del Salón Fruta Estelar^^Recompensa: 800G %item quest 121 %%[#]{{mardrest.ChangeDialogues/GusName}} necesita langosta",
 			"fall_19_2": "AVISO:^^¿A alguien le sobra una pila? El mando de mi tele la ha palmado y me da mucha pereza levantarme del sofá a cambiar de canal.^^-{{mardrest.ChangeDialogues/PamName}}%item quest 122 %%[#]{{mardrest.ChangeDialogues/PamName}} necesita ayuda",
-			"winter_5_2": "@:^Estoy creando una vara encantada con un poder asombroso.^Sin embargo, me falta algo: un lingote de iridio.^Estoy dispuest{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/WizardGender}}}} a pagar 5 veces el precio de mercado por él. Tráemelo lo antes posible.^^-{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 123 %%[#]{{mardrest.ChangeDialogues/The:{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}} necesita un objeto raro",
+			"winter_5_2": "@:^Estoy creando una vara encantada con un poder asombroso.^Sin embargo, me falta algo: un lingote de iridio.^Estoy dispuest{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/WizardGender}}}} a pagar 5 veces el precio de mercado por él. Tráemelo lo antes posible.^^-{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 123 %%[#]{{mardrest.ChangeDialogues/The:{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}} necesita un objeto raro",
 			"winter_13_2": "Tengo otro reto para ti:^Consígueme un bacalao largo.^^No se andan con chiquitas, pero sé que puedes hacerlo.^^-{{mardrest.ChangeDialogues/WillyName}}%item quest 124 %%[#]2º desafío de {{mardrest.ChangeDialogues/WillyName}}",
 			"winter_19_2": "Hola, @:^Estoy desesperad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GusGender}}}}. Me muero de ganas de preparar un Coco-No-No en el Salón, ¡pero no hay manera de conseguir un coco!^¿Puedes ayudarme?^^-{{mardrest.ChangeDialogues/GusName}}%item quest 125 %%[#]{{mardrest.ChangeDialogues/GusName}} necesita un coco",
 			"winter_24": "Hola, @:^Mañana es la fiesta de la estrella invernal.^^¿Has conseguido ya un regalo para tu amigo invisible? ¡Recuerda que es %secretsanta!^La fiesta empieza a las 09:00 en la plaza. ¡Nos vemos entonces!^^-Alcalde {{mardrest.ChangeDialogues/LewisName}}[#]Recordatorio de la fiesta de la estrella invernal",
@@ -157,6 +157,13 @@
 		"Target": "Data/mail",
 		"Entries": {
 			"adoptionLetter": null
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/mail",
+		"Entries": {
+			"adoptionLetter": null
 		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Elliott": "Married", "mardrest.ChangeDialogues/ElliottGender": "Female" }
 	},
 	{
@@ -164,7 +171,28 @@
 		"Target": "Data/mail",
 		"Entries": {
 			"adoptionLetter": null
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/mail",
+		"Entries": {
+			"adoptionLetter": null
 		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Harvey": "Married", "mardrest.ChangeDialogues/HarveyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/mail",
+		"Entries": {
+			"adoptionLetter": null
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/mail",
+		"Entries": {
+			"adoptionLetter": null
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -193,6 +221,20 @@
 		"Entries": {
 			"adoptionLetter": null
 		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Victor": "Married", "mardrest.ChangeDialogues/VictorGender": "Female", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": true }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/mail",
+		"Entries": {
+			"adoptionLetter": null
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Data/mail",
+		"Entries": {
+			"adoptionLetter": null
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female" }
 	}
 	]
 }

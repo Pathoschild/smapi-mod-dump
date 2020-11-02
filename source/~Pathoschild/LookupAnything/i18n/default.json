@@ -443,6 +443,14 @@
 
 
     /*********
+    ** Item > music block lookups
+    *********/
+    // labels
+    "item.music-block.pitch": "Pitch",
+    "item.music-block.drum-type": "Drum type",
+
+
+    /*********
     ** Monster lookups
     *********/
     // labels
@@ -456,9 +464,7 @@
 
     // values
     "monster.drops.nothing": "nothing",
-    "monster.adventure-guild.complete": "complete",
-    "monster.adventure-guild.incomplete": "in progress",
-    "monster.adventure-guild.progress": "killed {{count}} of {{requiredCount}}",
+    "monster.adventure-guild.eradication-goal": "eradication goal: {{name}} (killed {{count}} of {{requiredCount}})",
 
 
     /*********
@@ -584,11 +590,11 @@
     "tree.is-fertilized": "Is fertilized",
 
     // values
+    "tree.name.big-mushroom": "Big Mushroom",
     "tree.name.maple": "Maple Tree",
     "tree.name.oak": "Oak Tree",
-    "tree.name.pine": "Pine Tree",
     "tree.name.palm": "Palm Tree",
-    "tree.name.big-mushroom": "Big Mushroom",
+    "tree.name.pine": "Pine Tree",
     "tree.name.unknown": "Unknown Tree",
     "tree.stage.done": "Fully grown",
     "tree.stage.partial": "{{stageName}} ({{step}} of {{max}})",

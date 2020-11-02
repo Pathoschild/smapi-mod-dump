@@ -17,41 +17,23 @@ using System.Runtime.InteropServices;
 namespace SpriteMaster.Extensions {
 	public static class Reflection {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static int TypeSize<T> (this T obj) {
-			if (typeof(T) is Type) {
-				return Marshal.SizeOf(typeof(T));
-			}
-			return Marshal.SizeOf(obj.GetType());
-		}
+		public static int TypeSize<T> (this T obj) => Marshal.SizeOf((typeof(T) is Type) ? typeof(T) : obj.GetType());
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static int Size (this Type type) {
-			return Marshal.SizeOf(type);
-		}
+		public static int Size (this Type type) => Marshal.SizeOf(type);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T AddRef<T> (this T type) where T : Type {
-			return (T)type.MakeByRefType();
-		}
+		public static T AddRef<T> (this T type) where T : Type => (T)type.MakeByRefType();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T RemoveRef<T> (this T type) where T : Type {
-			return (T)(type.IsByRef ? type.GetElementType() : type);
-		}
+		public static T RemoveRef<T> (this T type) where T : Type => (T)(type.IsByRef ? type.GetElementType() : type);
 
-		public static string GetFullName (this MethodBase method) {
-			return method.DeclaringType.Name + "::" + method.Name;
-		}
+		public static string GetFullName (this MethodBase method) => method.DeclaringType.Name + "::" + method.Name;
 
-		public static string GetCurrentMethodName () {
-			return MethodBase.GetCurrentMethod().GetFullName();
-		}
+		public static string GetCurrentMethodName () => MethodBase.GetCurrentMethod().GetFullName();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T GetValue<T> (this FieldInfo field, object instance) {
-			var result = field.GetValue(instance);
-			return (T)result;
-		}
+		public static T GetValue<T> (this FieldInfo field, object instance) => (T)field.GetValue(instance);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool GetAttribute<T> (this MemberInfo member, out T attribute) where T : Attribute {
@@ -78,69 +60,45 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static object GetField (this object obj, string name) {
-			return obj?.GetType().GetField(
-				name,
-				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy
-			)?.GetValue(obj);
-		}
+		public static object GetField (this object obj, string name) => obj?.GetType().GetField(
+			name,
+			BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy
+		)?.GetValue(obj);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static object GetProperty (this object obj, string name) {
-			return obj?.GetType().GetProperty(
-				name,
-				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy
-			)?.GetValue(obj);
-		}
+		public static object GetProperty (this object obj, string name) => obj?.GetType().GetProperty(
+			name,
+			BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy
+		)?.GetValue(obj);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T CreateInstance<T> (this Type _) {
-			return Activator.CreateInstance<T>();
-		}
+		public static T CreateInstance<T> (this Type _) => Activator.CreateInstance<T>();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T CreateInstance<T> (this Type _, params object[] parameters) {
-			return (T)Activator.CreateInstance(typeof(T), parameters);
-		}
+		public static T CreateInstance<T> (this Type _, params object[] parameters) => (T)Activator.CreateInstance(typeof(T), parameters);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T CreateInstance<T> (this Type<T> _) {
-			return Activator.CreateInstance<T>();
-		}
+		public static T CreateInstance<T> (this Type<T> _) => Activator.CreateInstance<T>();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T CreateInstance<T> (this Type<T> _, params object[] parameters) {
-			return (T)Activator.CreateInstance(typeof(T), parameters);
-		}
+		public static T CreateInstance<T> (this Type<T> _, params object[] parameters) => (T)Activator.CreateInstance(typeof(T), parameters);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T CreateInstance<T> () {
-			return Activator.CreateInstance<T>();
-		}
+		public static T CreateInstance<T> () => Activator.CreateInstance<T>();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T CreateInstance<T> (params object[] parameters) {
-			return (T)Activator.CreateInstance(typeof(T), parameters);
-		}
+		public static T CreateInstance<T> (params object[] parameters) => (T)Activator.CreateInstance(typeof(T), parameters);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T Invoke<T> (this MethodInfo method, object obj) {
-			return (T)method.Invoke(obj, Arrays<object>.Empty);
-		}
+		public static T Invoke<T> (this MethodInfo method, object obj) => (T)method.Invoke(obj, Arrays<object>.Empty);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T Invoke<T> (this MethodInfo method, object obj, params object[] args) {
-			return (T)method.Invoke(obj, args);
-		}
+		public static T Invoke<T> (this MethodInfo method, object obj, params object[] args) => (T)method.Invoke(obj, args);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T InvokeMethod<T> (this object obj, MethodInfo method) {
-			return (T)method.Invoke(obj, Arrays<object>.Empty);
-		}
+		public static T InvokeMethod<T> (this object obj, MethodInfo method) => (T)method.Invoke(obj, Arrays<object>.Empty);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T InvokeMethod<T> (this object obj, MethodInfo method, params object[] args) {
-			return (T)method.Invoke(obj, args);
-		}
+		public static T InvokeMethod<T> (this object obj, MethodInfo method, params object[] args) => (T)method.Invoke(obj, args);
 	}
 }

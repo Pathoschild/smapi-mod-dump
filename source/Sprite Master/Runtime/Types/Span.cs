@@ -192,15 +192,11 @@ namespace SpriteMaster.Types {
 			}
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public void Reset () {
-				Index = 0;
-			}
+			public void Reset () => Index = 0;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly IEnumerator<T> GetEnumerator () {
-			return new Enumerator(this);
-		}
+		public readonly IEnumerator<T> GetEnumerator () => new Enumerator(this);
 
 		/*
 		IEnumerator IEnumerable.GetEnumerator () {

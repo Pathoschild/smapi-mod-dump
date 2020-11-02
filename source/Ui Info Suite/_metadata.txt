@@ -5,9 +5,9 @@ mods:
    Ui Info Suite
 
 latest commit:
-   commit a972062f5e82c782e94895c64f5c7407bd471150
+   commit f5bf465e9b2a149c511fa6ad30ed38131870757d
    Author: U-Gamer\Cdaragorn <707092+cdaragorn@users.noreply.github.com>
-   Date:   Sat Dec 28 11:44:31 2019 -0700
+   Date:   Sun Oct 25 23:01:06 2020 -0600
    
-       Fixed shop harvest prices.
+       Fixed small bug that could display multiple hands. Added turkish translation.
    

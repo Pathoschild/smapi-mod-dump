@@ -1,5 +1,9 @@
 {
-    "Entries": {
+    "Changes":[
+    {	"LogName": "Recovery Dialogue", 
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Jasper",
+        "Entries": {
         "Tue8": "Sorry if I seem a little out of sorts. Last night, nightmares plagued my sleep.#$b#I fear the dark, @, as I never had before.",
         "summer_Wed6": "Gunther has been a most gracious host, for I am afeared I am not the best of company at present.",
         "Wed8": "I am ashamed to admit it, @, but I have invested in a night light. It helps to keep the dark thoughts at bay.#$b#I worry that the void has crept its way into my heart.",
@@ -33,5 +37,7 @@
         "Town_32_78": "Greetings my friend! It is my pleasure to assist Evelyn in tending the flowerbeds.#$b#There's some use to a washed-up scholar after all!",
         "summer_15_2": "Today marks the anniversary of my father's death. I was seven years old.$2#$b#The yield from the mines had dwindled significantly, and miners were sent down in shifts - working day and night - in an effort to make the quota.#$b#My father was on the night shift.#$b#The explosion happened at five minutes to midnight: a terrible low BOOM that rattled the windows and sent the cat bolting under the bed.#$b#We ran outside, and smoke obscured the stars. The forest burned for a week. The mines are burning still.$2",
         "ReputationIncreased": "I confess, I was wary at first. Lucikiel certainly made a grand entrance, by all accounts...$2#$b#But Gunther and Marlon both speak highly of his deeds in the mines; he's giving you a run for your money, my friend!$1#$b#Perhaps first impressions can be deceiving."
-    }
+           }
+        }
+    ]
 }

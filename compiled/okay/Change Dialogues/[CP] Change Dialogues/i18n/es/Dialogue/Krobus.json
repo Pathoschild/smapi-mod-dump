@@ -52,13 +52,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Krobus": "adult/polite/shy/neutral/{{lowercase:{{mardrest.ChangeDialogues/KrobusGender}}}}/not-datable/null/Other/winter 1//Sewer 31 17/{{mardrest.ChangeDialogues/KrobusName}}"
-		}
 	}
 	]
 }

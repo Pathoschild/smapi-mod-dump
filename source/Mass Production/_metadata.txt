@@ -1,0 +1,13 @@
+url:
+   https://github.com/JacquePott/StardewValleyMods.git
+
+mods:
+   Mass Production
+
+latest commit:
+   commit ddd6477f76778d2f0b733c6b2041d1f8540948d4
+   Author: Stephen Fahy <jacquepottsa@gmail.com>
+   Date:   Fri Oct 16 09:23:01 2020 +0100
+   
+       Fixed missing dependency
+   

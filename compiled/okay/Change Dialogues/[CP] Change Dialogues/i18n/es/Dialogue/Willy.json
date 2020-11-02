@@ -15,13 +15,6 @@
 			"spring_9.002": "¡Ay! ¡Eso ha dolido, doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}!$s",
 			"spring_9.000": "Hoy tengo cita con {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/HarveyGender}}}} médic{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/HarveyGender}}}}, así que date prisa si tienes que comprar algo."
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Willy": "adult/neutral/neutral/neutral/{{lowercase:{{mardrest.ChangeDialogues/WillyGender}}}}/not-datable/null/Town/summer 24/Elliott ''/FishShop 5 4/{{mardrest.ChangeDialogues/WillyName}}"
-		}
 	}
 	]
 }

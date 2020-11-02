@@ -98,13 +98,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Jas": "child/neutral/shy/positive/female/not-datable/Vincent/Town/summer 4/Vincent ''/AnimalShop 4 6/{{mardrest.ChangeDialogues/JasName}}"
-		}
 	}
 	]
 }

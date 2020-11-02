@@ -1,5 +1,6 @@
 {
   "CustomRemindersButton": "F2",
   "SubtlerReminderSound": false,
-  "FarmhandInventoryButton": "E"
+  "FarmhandInventoryButton": "E",
+  "EnableMobilePhoneApp": true
 }

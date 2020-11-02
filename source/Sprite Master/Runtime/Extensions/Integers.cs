@@ -92,7 +92,7 @@ namespace SpriteMaster.Extensions {
 		public static bool GetBit (this long value, int bit) {
 			unchecked {
 				CheckBit<long>(bit);
-				return ((value >> bit) & 1) != 0;
+				return ((int)(value >> bit) & 1) != 0;
 			}
 		}
 
@@ -100,14 +100,14 @@ namespace SpriteMaster.Extensions {
 		public static bool GetBit (this ulong value, int bit) {
 			unchecked {
 				CheckBit<ulong>(bit);
-				return ((value >> bit) & 1) != 0;
+				return ((int)(value >> bit) & 1) != 0;
 			}
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool GetBit (this in BigInteger value, int bit) {
 			unchecked {
-				return ((value >> bit) & 1) != 0;
+				return ((int)(value >> bit) & 1) != 0;
 			}
 		}
 
@@ -137,7 +137,7 @@ namespace SpriteMaster.Extensions {
 		public static byte SetBit (this ref byte value, int bit) {
 			unchecked {
 				CheckBit<byte>(bit);
-				value |= (byte)(1 << bit);
+				value |= (byte)(1U << bit);
 				return value;
 			}
 		}
@@ -155,7 +155,7 @@ namespace SpriteMaster.Extensions {
 		public static ushort SetBit (this ref ushort value, int bit) {
 			unchecked {
 				CheckBit<ushort>(bit);
-				value |= (ushort)(1 << bit);
+				value |= (ushort)(1U << bit);
 				return value;
 			}
 		}
@@ -173,7 +173,7 @@ namespace SpriteMaster.Extensions {
 		public static uint SetBit (this ref uint value, int bit) {
 			unchecked {
 				CheckBit<uint>(bit);
-				value |= (uint)(1 << bit);
+				value |= (uint)(1U << bit);
 				return value;
 			}
 		}
@@ -191,7 +191,7 @@ namespace SpriteMaster.Extensions {
 		public static ulong SetBit (this ref ulong value, int bit) {
 			unchecked {
 				CheckBit<ulong>(bit);
-				value |= (ulong)(1ul << bit);
+				value |= (ulong)(1UL << bit);
 				return value;
 			}
 		}
@@ -231,7 +231,7 @@ namespace SpriteMaster.Extensions {
 		public static byte ClearBit (this ref byte value, int bit) {
 			unchecked {
 				CheckBit<byte>(bit);
-				value &= (byte)~(1 << bit);
+				value &= (byte)~(1U << bit);
 				return value;
 			}
 		}
@@ -249,7 +249,7 @@ namespace SpriteMaster.Extensions {
 		public static ushort ClearBit (this ref ushort value, int bit) {
 			unchecked {
 				CheckBit<ushort>(bit);
-				value &= (ushort)~(1 << bit);
+				value &= (ushort)~(1U << bit);
 				return value;
 			}
 		}
@@ -267,7 +267,7 @@ namespace SpriteMaster.Extensions {
 		public static uint ClearBit (this ref uint value, int bit) {
 			unchecked {
 				CheckBit<uint>(bit);
-				value &= (uint)~(1 << bit);
+				value &= (uint)~(1U << bit);
 				return value;
 			}
 		}
@@ -276,7 +276,7 @@ namespace SpriteMaster.Extensions {
 		public static long ClearBit (this ref long value, int bit) {
 			unchecked {
 				CheckBit<long>(bit);
-				value &= (long)~(1 << bit);
+				value &= (long)~(1L << bit);
 				return value;
 			}
 		}
@@ -285,7 +285,7 @@ namespace SpriteMaster.Extensions {
 		public static ulong ClearBit (this ref ulong value, int bit) {
 			unchecked {
 				CheckBit<ulong>(bit);
-				value &= (ulong)~(1 << bit);
+				value &= (ulong)~(1UL << bit);
 				return value;
 			}
 		}
@@ -317,8 +317,8 @@ namespace SpriteMaster.Extensions {
 		public static sbyte SetBit (this ref sbyte value, int bit, bool condition) {
 			unchecked {
 				CheckBit<sbyte>(bit);
-				var mask = (sbyte)(1 << bit);
-				var flag = condition ? sbyte.MaxValue : 0;
+				var mask = (byte)(1U << bit);
+				var flag = condition ? byte.MaxValue : default;
 				var Value = value;
 				Value = (sbyte)((sbyte)(Value & (sbyte)~mask) | (sbyte)(flag & mask));
 				return value = Value;
@@ -329,8 +329,8 @@ namespace SpriteMaster.Extensions {
 		public static byte SetBit (this ref byte value, int bit, bool condition) {
 			unchecked {
 				CheckBit<byte>(bit);
-				var mask = (byte)(1 << bit);
-				var flag = condition ? byte.MaxValue : 0;
+				var mask = (byte)(1U << bit);
+				var flag = condition ? byte.MaxValue : default;
 				var Value = value;
 				Value = (byte)((byte)(Value & (byte)~mask) | (byte)(flag & mask));
 				return value = Value;
@@ -341,8 +341,8 @@ namespace SpriteMaster.Extensions {
 		public static short SetBit (this ref short value, int bit, bool condition) {
 			unchecked {
 				CheckBit<short>(bit);
-				var mask = (ushort)(1 << bit);
-				var flag = condition ? ushort.MaxValue : 0;
+				var mask = (ushort)(1U << bit);
+				var flag = condition ? ushort.MaxValue : default;
 				var Value = (ushort)value;
 				Value = (ushort)((ushort)(Value & (ushort)~mask) | (ushort)(flag & mask));
 				return value = (short)Value;
@@ -353,8 +353,8 @@ namespace SpriteMaster.Extensions {
 		public static ushort SetBit (this ref ushort value, int bit, bool condition) {
 			unchecked {
 				CheckBit<ushort>(bit);
-				var mask = (ushort)(1 << bit);
-				var flag = condition ? ushort.MaxValue : 0;
+				var mask = (ushort)(1U << bit);
+				var flag = condition ? ushort.MaxValue : default;
 				var Value = value;
 				Value = (ushort)((ushort)(Value & (ushort)~mask) | (ushort)(flag & mask));
 				return value = Value;
@@ -365,8 +365,8 @@ namespace SpriteMaster.Extensions {
 		public static int SetBit (this ref int value, int bit, bool condition) {
 			unchecked {
 				CheckBit<int>(bit);
-				var mask = (uint)(1 << bit);
-				var flag = condition ? uint.MaxValue : 0;
+				var mask = (uint)(1U << bit);
+				var flag = condition ? uint.MaxValue : default;
 				var Value = (uint)value;
 				Value = (uint)((uint)(Value & (uint)~mask) | (uint)(flag & mask));
 				return value = (int)Value;
@@ -377,8 +377,8 @@ namespace SpriteMaster.Extensions {
 		public static uint SetBit (this ref uint value, int bit, bool condition) {
 			unchecked {
 				CheckBit<uint>(bit);
-				var mask = (uint)(1 << bit);
-				var flag = condition ? uint.MaxValue : 0;
+				var mask = (uint)(1U << bit);
+				var flag = condition ? uint.MaxValue : default;
 				var Value = value;
 				Value = (uint)((uint)(Value & (uint)~mask) | (uint)(flag & mask));
 				return value = Value;
@@ -389,8 +389,8 @@ namespace SpriteMaster.Extensions {
 		public static long SetBit (this ref long value, int bit, bool condition) {
 			unchecked {
 				CheckBit<long>(bit);
-				var mask = (ulong)(1ul << bit);
-				var flag = condition ? ulong.MaxValue : 0;
+				var mask = (ulong)(1UL << bit);
+				var flag = condition ? ulong.MaxValue : default;
 				var Value = (ulong)value;
 				Value = (ulong)((ulong)(Value & (ulong)~mask) | (ulong)(flag & mask));
 				return value = (long)Value;
@@ -401,8 +401,8 @@ namespace SpriteMaster.Extensions {
 		public static ulong SetBit (this ref ulong value, int bit, bool condition) {
 			unchecked {
 				CheckBit<ulong>(bit);
-				var mask = (ulong)(1ul << bit);
-				var flag = condition ? ulong.MaxValue : 0;
+				var mask = (ulong)(1UL << bit);
+				var flag = condition ? ulong.MaxValue : default;
 				var Value = value;
 				Value = (ulong)((ulong)(Value & (ulong)~mask) | (ulong)(flag & mask));
 				return value = Value;

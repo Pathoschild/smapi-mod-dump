@@ -61,13 +61,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Emily": "adult/polite/outgoing/positive/female/datable/null/Town/spring 27/Haley 'sister'/HaleyHouse 16 5/{{mardrest.ChangeDialogues/EmilyName}}"
-		}
 	}
 	]
 }

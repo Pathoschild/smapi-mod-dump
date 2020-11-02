@@ -161,58 +161,39 @@ namespace SpriteMaster.Types {
 		public Bounds (System.Drawing.Bitmap bmp) : this(bmp.Width, bmp.Height) { }
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool Overlaps(in Bounds other) {
-			return !(
-				other.Left > Right ||
-				other.Right < Left ||
-				other.Top > Bottom ||
-				other.Bottom < Top
-			);
-		}
+		public bool Overlaps (in Bounds other) =>
+		!(
+			other.Left > Right ||
+			other.Right < Left ||
+			other.Top > Bottom ||
+			other.Bottom < Top
+		);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly Bounds Clone () {
-			return new Bounds(this);
-		}
+		public readonly Bounds Clone () => this;
 
-		readonly object ICloneable.Clone () {
-			return Clone();
-		}
+		readonly object ICloneable.Clone () => this;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator DrawingRectangle (in Bounds bounds) {
-			return new DrawingRectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
-		}
+		public static implicit operator DrawingRectangle (in Bounds bounds) => new DrawingRectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator XNARectangle (in Bounds bounds) {
-			return new XNARectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
-		}
+		public static implicit operator XNARectangle (in Bounds bounds) => new XNARectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator XTileRectangle (in Bounds bounds) {
-			return new XTileRectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
-		}
+		public static implicit operator XTileRectangle (in Bounds bounds) => new XTileRectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator Bounds (in DrawingRectangle rect) {
-			return new Bounds(rect);
-		}
+		public static implicit operator Bounds (in DrawingRectangle rect) => new Bounds(rect);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator Bounds (in XNARectangle rect) {
-			return new Bounds(rect);
-		}
+		public static implicit operator Bounds (in XNARectangle rect) => new Bounds(rect);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator Bounds (in XTileRectangle rect) {
-			return new Bounds(rect);
-		}
+		public static implicit operator Bounds (in XTileRectangle rect) => new Bounds(rect);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public override readonly string ToString () {
-			return $"[{X}, {Y}, {Width}, {Height}]";
-		}
+		public override readonly string ToString () => $"[{X}, {Y}, {Width}, {Height}]";
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public readonly int CompareTo (Bounds other) {
@@ -224,155 +205,99 @@ namespace SpriteMaster.Types {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly int CompareTo (DrawingRectangle other) {
-			return CompareTo((Bounds)other);
-		}
+		public readonly int CompareTo (DrawingRectangle other) => CompareTo((Bounds)other);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly int CompareTo (XNARectangle other) {
-			return CompareTo((Bounds)other);
-		}
+		public readonly int CompareTo (XNARectangle other) => CompareTo((Bounds)other);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly int CompareTo (XTileRectangle other) {
-			return CompareTo((Bounds)other);
-		}
+		public readonly int CompareTo (XTileRectangle other) => CompareTo((Bounds)other);
 
-		readonly int IComparable.CompareTo (object other) {
-			return other switch {
-				Bounds bounds => CompareTo(bounds),
-				DrawingRectangle rect => CompareTo(rect),
-				XNARectangle rect => CompareTo(rect),
-				XTileRectangle rect => CompareTo(rect),
-				_ => throw new ArgumentException(),
-			};
-		}
+		readonly int IComparable.CompareTo (object other) => other switch {
+			Bounds bounds => CompareTo(bounds),
+			DrawingRectangle rect => CompareTo(rect),
+			XNARectangle rect => CompareTo(rect),
+			XTileRectangle rect => CompareTo(rect),
+			_ => throw new ArgumentException(),
+		};
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly override int GetHashCode () {
-			return unchecked((int)Hash.Combine(Offset.GetHashCode(), Extent.GetHashCode()));
-		}
+		public readonly override int GetHashCode () => unchecked((int)Hash.Combine(Offset.GetHashCode(), Extent.GetHashCode()));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly override bool Equals (object other) {
-			return other switch {
-				Bounds bounds => Equals(bounds),
-				DrawingRectangle rect => Equals(rect),
-				XNARectangle rect => Equals(rect),
-				XTileRectangle rect => Equals(rect),
-				_ => throw new ArgumentException(),
-			};
-		}
+		public readonly override bool Equals (object other) => other switch {
+			Bounds bounds => Equals(bounds),
+			DrawingRectangle rect => Equals(rect),
+			XNARectangle rect => Equals(rect),
+			XTileRectangle rect => Equals(rect),
+			_ => throw new ArgumentException(),
+		};
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool Equals (Bounds other) {
-			return Offset == other.Offset && Extent == other.Extent;
-		}
+		public readonly bool Equals (Bounds other) => Offset == other.Offset && Extent == other.Extent;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool Equals (DrawingRectangle other) {
-			return Equals((Bounds)other);
-		}
+		public readonly bool Equals (DrawingRectangle other) => Equals((Bounds)other);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool Equals (XNARectangle other) {
-			return Equals((Bounds)other);
-		}
+		public readonly bool Equals (XNARectangle other) => Equals((Bounds)other);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool Equals (XTileRectangle other) {
-			return Equals((Bounds)other);
-		}
+		public readonly bool Equals (XTileRectangle other) => Equals((Bounds)other);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool NotEquals (in Bounds other) {
-			return Offset != other.Offset || Extent != other.Extent;
-		}
+		public readonly bool NotEquals (in Bounds other) => Offset != other.Offset || Extent != other.Extent;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool NotEquals (in DrawingRectangle other) {
-			return NotEquals((Bounds)other);
-		}
+		public readonly bool NotEquals (in DrawingRectangle other) => NotEquals((Bounds)other);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool NotEquals (in XNARectangle other) {
-			return NotEquals((Bounds)other);
-		}
+		public readonly bool NotEquals (in XNARectangle other) => NotEquals((Bounds)other);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool NotEquals (in XTileRectangle other) {
-			return NotEquals((Bounds)other);
-		}
+		public readonly bool NotEquals (in XTileRectangle other) => NotEquals((Bounds)other);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator == (in Bounds lhs, in Bounds rhs) {
-			return lhs.Equals(rhs);
-		}
+		public static bool operator == (in Bounds lhs, in Bounds rhs) => lhs.Equals(rhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator != (in Bounds lhs, in Bounds rhs) {
-			return lhs.NotEquals(rhs);
-		}
+		public static bool operator != (in Bounds lhs, in Bounds rhs) => lhs.NotEquals(rhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator == (in Bounds lhs, in DrawingRectangle rhs) {
-			return lhs.Equals(rhs);
-		}
+		public static bool operator == (in Bounds lhs, in DrawingRectangle rhs) => lhs.Equals(rhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator != (in Bounds lhs, in DrawingRectangle rhs) {
-			return lhs.NotEquals(rhs);
-		}
+		public static bool operator != (in Bounds lhs, in DrawingRectangle rhs) => lhs.NotEquals(rhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator == (in DrawingRectangle lhs, in Bounds rhs) {
-			return rhs.Equals(lhs);
-		}
+		public static bool operator == (in DrawingRectangle lhs, in Bounds rhs) => rhs.Equals(lhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator != (in DrawingRectangle lhs, in Bounds rhs) {
-			return rhs.NotEquals(lhs);
-		}
+		public static bool operator != (in DrawingRectangle lhs, in Bounds rhs) => rhs.NotEquals(lhs);
 
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator == (in Bounds lhs, in XNARectangle rhs) {
-			return lhs.Equals(rhs);
-		}
+		public static bool operator == (in Bounds lhs, in XNARectangle rhs) => lhs.Equals(rhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator != (in Bounds lhs, in XNARectangle rhs) {
-			return lhs.NotEquals(rhs);
-		}
+		public static bool operator != (in Bounds lhs, in XNARectangle rhs) => lhs.NotEquals(rhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator == (in XNARectangle lhs, in Bounds rhs) {
-			return rhs.Equals(lhs);
-		}
+		public static bool operator == (in XNARectangle lhs, in Bounds rhs) => rhs.Equals(lhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator != (in XNARectangle lhs, in Bounds rhs) {
-			return rhs.NotEquals(lhs);
-		}
+		public static bool operator != (in XNARectangle lhs, in Bounds rhs) => rhs.NotEquals(lhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator == (in Bounds lhs, in XTileRectangle rhs) {
-			return lhs.Equals(rhs);
-		}
+		public static bool operator == (in Bounds lhs, in XTileRectangle rhs) => lhs.Equals(rhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator != (in Bounds lhs, in XTileRectangle rhs) {
-			return lhs.NotEquals(rhs);
-		}
+		public static bool operator != (in Bounds lhs, in XTileRectangle rhs) => lhs.NotEquals(rhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator == (in XTileRectangle lhs, in Bounds rhs) {
-			return rhs.Equals(lhs);
-		}
+		public static bool operator == (in XTileRectangle lhs, in Bounds rhs) => rhs.Equals(lhs);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator != (in XTileRectangle lhs, in Bounds rhs) {
-			return rhs.NotEquals(lhs);
-		}
+		public static bool operator != (in XTileRectangle lhs, in Bounds rhs) => rhs.NotEquals(lhs);
 	}
 }

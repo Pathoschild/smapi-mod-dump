@@ -19,8 +19,7 @@
   "AppList": [
     "aedenthorn.MobilePhone",
     "aedenthorn.MobilePhone_themes",
-    "aedenthorn.MobilePhone_Rotate",
-    "Platonymous.PlatoWarpMenuMobileWarpMenu"
+    "aedenthorn.MobilePhone_Rotate"
   ],
   "PhoneWidth": 286,
   "PhoneHeight": 503,
@@ -51,6 +50,7 @@
   "CallAllowList": "",
   "ShowNamesInPhoneBook": true,
   "UseRealNamesInPhoneBook": true,
+  "UncallableNPCAlpha": 255,
   "PhoneBookBackgroundColor": "255, 255, 255, 255",
   "PhoneBookHeaderColor": "0, 191, 255, 255",
   "PhoneBookHeaderTextColor": "255, 255, 255, 255",

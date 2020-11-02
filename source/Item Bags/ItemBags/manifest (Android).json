@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Videogamers0/SDV-ItemBags
+**
+*************************************************/
+
+{
+  "Name": "Item Bags",
+  "Author": "SlayerDharok",
+  "Version": "1.5.1",
+  "Description": "Adds bag items which can store multiple items in a single inventory space",
+  "UniqueID": "SlayerDharok.Item_Bags",
+  "EntryDll": "ItemBags.dll",
+  "MinimumApiVersion": "3.2.0",
+  "UpdateKeys": [ "Nexus:5382" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": false
+    }
+  ]
+}

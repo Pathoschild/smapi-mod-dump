@@ -1,0 +1,71 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JacquePott/StardewValleyMods
+**
+*************************************************/
+
+[
+	{
+	  "Key": "Basic",
+	  "UpgradeObject": "Basic Machine Kit",
+	  "BaseMultiplier": 10,
+	  "UnlockConditions":
+	  {
+	    "TotalEarnings": 100000
+	  }
+	},
+	{
+	  "Key": "High Volume",
+	  "UpgradeObject": "Huge Machine Kit",
+	  "BaseMultiplier": 50,
+	  "TimeMultiplier": 2,
+	  "UnlockConditions":
+	  {
+	    "UnlockedUpgrade": "Basic",
+	    "TotalEarnings": 500000
+	  }
+	},
+	{
+	  "Key": "Efficient",
+	  "UpgradeObject": "Efficient Machine Kit",
+	  "BaseMultiplier": 10,
+	  "InputMultiplier": -2,
+	  "OutputMultiplier": 2,
+	  "TimeMultiplier": 0.8,
+	  "UnlockConditions":
+	  {
+	    "UnlockedUpgrade": "Basic",
+	    "TotalEarnings": 1000000
+	  }
+	},
+	{
+	  "Key": "Golden",
+	  "UpgradeObject": "Golden Machine Kit",
+	  "BaseMultiplier": 10,
+	  "OutputMultiplier": -1.5,
+	  "TimeMultiplier": 1.2,
+	  "Quality": "Gold",
+	  "UnlockConditions":
+	  {
+	    "UnlockedUpgrade": "High Volume",
+		"TotalEarnings": 2000000
+	  }
+	},
+	{
+	  "Key": "Iridium",
+	  "UpgradeObject": "Iridium Machine Kit",
+	  "BaseMultiplier": 10,
+	  "OutputMultiplier": -3,
+	  "TimeMultiplier": 1.4,
+	  "Quality": "Iridium",
+	  "UnlockConditions":
+	  {
+	    "UnlockedUpgrade": "Golden",
+		"IsEndgame": true
+	  }
+	}
+]

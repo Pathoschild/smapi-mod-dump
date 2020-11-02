@@ -5,9 +5,9 @@ mods:
    Sprite Master
 
 latest commit:
-   commit 432e2afceac59e69d0a28b39bc94c0ef390b6882
+   commit 101454fe3942ded9911900af4a6d1fdafbfc464d
    Author: Michael Kuklinski <14104310+ameisen@users.noreply.github.com>
-   Date:   Sun Jan 19 16:23:19 2020 -0600
+   Date:   Sat Oct 10 00:46:48 2020 -0500
    
-       General code cleanup.
+       Removing some extraneous usings and simplifying the best algorithm code.
    

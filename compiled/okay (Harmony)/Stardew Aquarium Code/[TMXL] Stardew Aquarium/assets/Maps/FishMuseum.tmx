@@ -3867,6 +3867,7 @@
     <frame tileid="339" duration="200"/>
     <frame tileid="344" duration="200"/>
     <frame tileid="349" duration="200"/>
+    <frame tileid="354" duration="200"/>
     <frame tileid="359" duration="200"/>
     <frame tileid="364" duration="200"/>
     <frame tileid="369" duration="200"/>
@@ -19413,12 +19414,12 @@
   </object>
   <object id="111" name="TileData" x="480" y="608" width="80" height="16">
    <properties>
-    <property name="Action" value="AquariumSign Crab Shrimp Oyster"/>
+    <property name="Action" value="AquariumSign Crab Shrimp Oyster DottedAbalone"/>
    </properties>
   </object>
   <object id="112" name="TileData" x="576" y="608" width="80" height="16">
    <properties>
-    <property name="Action" value="AquariumSign Cockle Mussel Lobster"/>
+    <property name="Action" value="AquariumSign Cockle Mussel Lobster Scallop"/>
    </properties>
   </object>
   <object id="113" name="TileData" x="528" y="656" width="80" height="16">

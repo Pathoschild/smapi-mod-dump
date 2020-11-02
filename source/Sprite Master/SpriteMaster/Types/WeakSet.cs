@@ -9,11 +9,9 @@
 *************************************************/
 
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security;
 
 namespace SpriteMaster.Types {
-	[ComVisible(false)]
 	public class WeakSet<T> where T : class {
 		private const object Sentinel = null;
 

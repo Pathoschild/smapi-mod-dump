@@ -81,8 +81,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Caroline": "adult/polite/neutral/neutral/female/not-datable/Pierre/Town/winter 7/Pierre '{{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/PierreGender}}}}' Abigail ''/SeedShop 22 5/{{mardrest.ChangeDialogues/CarolineName}}"
+		"Fields": {
+			"Caroline": {
+				9: "Pierre '{{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/PierreGender}}}}' Abigail ''"
+			}
 		}
 	}
 	]

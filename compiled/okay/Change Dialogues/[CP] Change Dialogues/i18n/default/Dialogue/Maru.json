@@ -75,8 +75,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Maru": "teen/neutral/outgoing/positive/female/datable/Harvey/Town/summer 10/Robin 'mom' Demetrius '{{mardrest.ChangeDialogues/Dad:L{{mardrest.ChangeDialogues/DemetriusGender}}}}' Sebastian 'half-{{mardrest.ChangeDialogues/Brother:L{{mardrest.ChangeDialogues/SebastianGender}}}}'/ScienceHouse 2 4/{{mardrest.ChangeDialogues/MaruName}}"
+		"Fields": {
+			"Maru": {
+				9: "Robin 'mom' Demetrius '{{mardrest.ChangeDialogues/Dad:L{{mardrest.ChangeDialogues/DemetriusGender}}}}' Sebastian 'half-{{mardrest.ChangeDialogues/Brother:L{{mardrest.ChangeDialogues/SebastianGender}}}}'"
+			}
 		}
 	}
 	]

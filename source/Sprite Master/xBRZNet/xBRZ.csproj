@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 		<AssemblyName>xBRZ</AssemblyName>
 		<RootNamespace>SpriteMaster</RootNamespace>
@@ -15,31 +16,31 @@
 		<ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
 		<DebugSymbols>true</DebugSymbols>
 		<DebugType>portable</DebugType>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<BaseAddress>286261248</BaseAddress>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>1815</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Development|AnyCPU'">
-    <OutputPath>bin\Development\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>1815</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <PackageId>SpriteMaster xBRZ</PackageId>
     <Version>2.0.0</Version>
     <Authors>xBRZ, Digital Carbide</Authors>
     <Product>SM-xBRZ2</Product>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <NeutralLanguage>English (United States)</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <None Include="$(SolutionDir)\LICENSE.md">

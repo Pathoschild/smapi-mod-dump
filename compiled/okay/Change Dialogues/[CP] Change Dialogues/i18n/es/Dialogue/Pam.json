@@ -19,13 +19,6 @@
 			"winter_Tue4_inlaw_Penny": "Buenas. Más te vale estar tratando bien a {{mardrest.ChangeDialogues/PennyName}} en esa vieja granja tuya. ¡Ella es lo único que tengo!",
 			"winter_Fri": "A {{mardrest.ChangeDialogues/PennyName}} le encantan los libros antiguos. Creo que es más lista de lo que yo nunca fui, de lejos.#$e#Y me alegro."
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Pam": "adult/rude/outgoing/negative/female/not-datable/Gus/Town/spring 18/Penny 'princesita' Gus ''/Trailer 15 4/{{mardrest.ChangeDialogues/PamName}}"
-		}
 	}
 	]
 }

@@ -27,7 +27,7 @@ namespace SpriteMaster {
 		internal readonly bool WasCached;
 
 		internal byte[] Data = default;
-		private Volatile<ulong> _Hash = Hashing.Default;
+		private VolatileULong _Hash = Hashing.Default;
 		public ulong Hash {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get {

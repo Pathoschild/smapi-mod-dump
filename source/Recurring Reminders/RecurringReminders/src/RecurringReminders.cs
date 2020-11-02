@@ -47,6 +47,7 @@ namespace Dem1se.RecurringReminders
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.Multiplayer.ModMessageReceived += Multiplayer.Multiplayer.OnModMessageReceived;
             helper.Events.Multiplayer.PeerContextReceived += Multiplayer.Multiplayer.OnPeerConnected;
+            helper.Events.GameLoop.GameLaunched += Mpm.MobilePhoneMod.HookToMobilePhoneMod;
         }
 
         ///<summary> Defines what happens when a save is loaded</summary>
@@ -90,6 +91,18 @@ namespace Dem1se.RecurringReminders
 
             ModConfig config = Utilities.Data.Helper.ReadConfig<ModConfig>();
             Utilities.Data.Monitor.Log("Opening ReminderMenu page 1");
+            
+            // Do the MobilePhoneMod housekeeping
+            var api = Utilities.Data.Helper.ModRegistry.GetApi<Mpm.IMobilePhoneApi>("aedenthorn.MobilePhone");
+            if (config.EnableMobilePhoneApp)
+            {
+                if (api != null)
+                {
+                    api.SetAppRunning(true);
+                    api.SetPhoneOpened(false);
+                }
+            }
+
             Game1.activeClickableMenu = new NewReminder_Page1((string message, int reminderInterval) =>
             {
                 Game1.exitActiveMenu();
@@ -107,6 +120,11 @@ namespace Dem1se.RecurringReminders
                     Utilities.Data.Monitor.Log($"Saved new reminder: {reminderMessage} every {reminderInterval} days at {Utilities.Converts.ConvertToPrettyTime(reminderTime)}.", LogLevel.Info);
                 });
             });
+
+            // MobilePhoneMod exit housekeeping
+            if (config.EnableMobilePhoneApp)
+                if (api != null)
+                    api.SetAppRunning(false);
         }
 
         /// <summary> Loop that checks if any reminders are mature.</summary>

@@ -1,7 +1,7 @@
 {
   "Name": "Change Dialogues",
   "Author": "mardrest",
-  "Version": "2.0.4",
+  "Version": "2.0.6",
   "Description": "Replaces the character sprites and dialogues",
   "UniqueID": "mardrest.CPChangeDialogues",
   "MinimumApiVersion": "3.4.1",

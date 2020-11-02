@@ -1,0 +1,14 @@
+{
+  "Name": "Huge Machine Kit",
+  "Description": "Modifies a machine to use 50x the input to make 50x the output but take 2x the time.",
+  "Price": 10000,
+  "Category": "Crafting",
+  "Recipe":
+  {
+    "ResultCount": 1,
+	"Ingredients":
+	[
+	  { "Object": "Basic Machine Kit", "Count": 4 }
+	]
+  }
+}

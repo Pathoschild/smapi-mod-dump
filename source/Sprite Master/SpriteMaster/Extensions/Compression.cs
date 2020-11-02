@@ -8,117 +8,97 @@
 **
 *************************************************/
 
-using Ionic.Zlib;
 using System;
-using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions {
 	internal static class Compression {
 		internal enum Algorithm {
 			None = 0,
-			Compress = 1,
-			LZ = 2,
-			LZMA = 3
+			Compress,
+			Deflate,
+			LZMA,
+			Zstd,
+			Best = Zstd,
 		}
 
-		//private static readonly MethodInfo ZlibBaseCompressBuffer;
-		//
-		//static Compression() {
-		//	ZlibBaseCompressBuffer = typeof(ZlibStream).Assembly.GetType("Ionic.Zlib.ZlibBaseStream").GetMethod("CompressBuffer", BindingFlags.Static | BindingFlags.Public);
-		//	if (ZlibBaseCompressBuffer == null) {
-		//		throw new NullReferenceException(nameof(ZlibBaseCompressBuffer));
-		//	}
-		//}
+		internal static readonly Algorithm BestAlgorithm = GetPreferredAlgorithm();
 
-		// https://stackoverflow.com/questions/39191950/how-to-compress-a-byte-array-without-stream-or-system-io
+		internal static Algorithm GetPreferredAlgorithm(Algorithm fromAlgorithm = Algorithm.Best) {
+			for (int i = (int)fromAlgorithm; i > 0; --i) {
+				var algorithm = (Algorithm)i;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static byte[] StreamCompress (byte[] data) {
-			using var val = new MemoryStream();
-			using (var compressor = new System.IO.Compression.DeflateStream(val, System.IO.Compression.CompressionLevel.Optimal)) {
-				compressor.Write(data, 0, data.Length);
+				bool supported = algorithm switch
+				{
+					Algorithm.Compress => Compressors.SystemIO.IsSupported,
+					Algorithm.Deflate => Compressors.Deflate.IsSupported,
+					Algorithm.LZMA => Compressors.LZMA.IsSupported,
+					Algorithm.Zstd => Compressors.Zstd.IsSupported,
+					_ => false
+				};
+
+				if (supported) {
+					return algorithm;
+				}
 			}
-			return val.ToArray();
+
+			return Algorithm.None;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static byte[] StreamDecompress (byte[] data) {
-			using var dataStream = new MemoryStream(data);
-			using var val = new MemoryStream();
-			using (var compressor = new System.IO.Compression.DeflateStream(dataStream, System.IO.Compression.CompressionMode.Decompress)) {
-				compressor.CopyTo(val);
-			}
-			return val.ToArray();
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static byte[] StreamDecompress (byte[] data, int size) {
-			using var dataStream = new MemoryStream(data);
-			var output = new byte[size];
-			using (var val = new MemoryStream(output)) {
-				using var compressor = new System.IO.Compression.DeflateStream(dataStream, System.IO.Compression.CompressionMode.Decompress);
-				compressor.CopyTo(val);
-			}
-			return output;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static byte[] LZCompress (byte[] data) {
-			using var val = new MemoryStream();
-			using (var compressor = new DeflateStream(val, CompressionMode.Compress, CompressionLevel.BestCompression)) {
-				compressor.Write(data, 0, data.Length);
-			}
-			return val.ToArray();
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static byte[] LZDecompress (byte[] data) {
-			return DeflateStream.UncompressBuffer(data);
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static byte[] LZDecompress (byte[] data, int size) {
-			using var dataStream = new MemoryStream(data);
-			var output = new byte[size];
-			using (var val = new MemoryStream(output)) {
-				using var compressor = new DeflateStream(dataStream, CompressionMode.Decompress);
-				compressor.CopyTo(val);
-			}
-			return output;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static byte[] Compress(this byte[] data, Algorithm algorithm = Algorithm.LZ) {
+		public static byte[] Compress(this byte[] data, Algorithm algorithm) {
 			return algorithm switch {
 				Algorithm.None => data,
-				Algorithm.Compress => StreamCompress(data),
-				Algorithm.LZ => LZCompress(data),
-				Algorithm.LZMA => throw new NotImplementedException("LZMA support not yet implemented."),
+				Algorithm.Compress => Compressors.SystemIO.Compress(data),
+				Algorithm.Deflate => Compressors.Deflate.Compress(data),
+				Algorithm.LZMA => Compressors.LZMA.Compress(data),
+				Algorithm.Zstd => Compressors.Zstd.Compress(data),
 				_ => throw new Exception($"Unknown Compression Algorithm: {algorithm}"),
 			};
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static byte[] Decompress (this byte[] data, int size, Algorithm algorithm = Algorithm.LZ) {
+		public static byte[] Compress(this byte[] data) {
+			return Compress(data, BestAlgorithm);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static byte[] Decompress (this byte[] data, int size, Algorithm algorithm) {
+			if (size == -1) {
+				return Decompress(data, algorithm);
+			}
+
 			return algorithm switch {
 				Algorithm.None => data,
-				Algorithm.Compress => StreamDecompress(data, size),
-				Algorithm.LZ => LZDecompress(data, size),
-				Algorithm.LZMA => throw new NotImplementedException("LZMA support not yet implemented."),
+				Algorithm.Compress => Compressors.SystemIO.Decompress(data, size),
+				Algorithm.Deflate => Compressors.Deflate.Decompress(data, size),
+				Algorithm.LZMA => Compressors.LZMA.Decompress(data, size),
+				Algorithm.Zstd => Compressors.Zstd.Decompress(data, size),
 				_ => throw new Exception($"Unknown Compression Algorithm: {algorithm}"),
 			};
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static byte[] Decompress(this byte[] data, Algorithm algorithm = Algorithm.LZ) {
+		public static byte[] Decompress(this byte[] data, int size) {
+			return Decompress(data, size, BestAlgorithm);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static byte[] Decompress(this byte[] data, Algorithm algorithm) {
 			return algorithm switch {
 				Algorithm.None => data,
-				Algorithm.Compress => StreamDecompress(data),
-				Algorithm.LZ => LZDecompress(data),
-				Algorithm.LZMA => throw new NotImplementedException("LZMA support not yet implemented."),
+				Algorithm.Compress => Compressors.SystemIO.Decompress(data),
+				Algorithm.Deflate => Compressors.Deflate.Decompress(data),
+				Algorithm.LZMA => Compressors.LZMA.Decompress(data),
+				Algorithm.Zstd => Compressors.Zstd.Decompress(data),
 				_ => throw new Exception($"Unknown Compression Algorithm: {algorithm}"),
 			};
 		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static byte[] Decompress(this byte[] data) {
+			return Decompress(data, BestAlgorithm);
+		}
+
 	}
 }

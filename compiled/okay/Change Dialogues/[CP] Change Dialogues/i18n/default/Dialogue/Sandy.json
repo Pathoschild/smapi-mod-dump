@@ -8,13 +8,6 @@
 			"Sat": "Hi! Welcome to {{mardrest.ChangeDialogues/SandyName}}'s Oasis, the number one destination in Calico Desert!#$e#*whisper* Did I sound professional?$h#$e#Make sure to check out our seasonal seed selection.#$e#You look really thirsty. Here, have a taste of this ice cold milk. [184]#$e#Tasty, huh?$h",
 			"Fri4": "My name's not really {{mardrest.ChangeDialogues/SandyName}}, you know. It's just good for business.#$e#But everyone calls me {{mardrest.ChangeDialogues/SandyName}} anyway, so I've just gotten used to it."
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Sandy": "adult/neutral/outgoing/positive/female/not-datable/null/Desert/fall 15/Emily ''/SandyHouse 2 5/{{mardrest.ChangeDialogues/SandyName}}"
-		}
 	}
 	]
 }

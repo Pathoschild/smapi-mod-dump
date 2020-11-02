@@ -33,7 +33,7 @@ namespace SpriteMaster {
 			}
 		}
 		internal static ulong LastPushedUpdateFrame = 0UL;
-		internal static Volatile<ulong> CurrentFrame = 0UL;
+		internal static VolatileULong CurrentFrame = 0UL;
 		internal static TextureAddressMode CurrentAddressModeU = DefaultSamplerState.AddressU;
 		internal static TextureAddressMode CurrentAddressModeV = DefaultSamplerState.AddressV;
 		internal static Blend CurrentBlendSourceMode = BlendState.AlphaBlend.AlphaSourceBlend;

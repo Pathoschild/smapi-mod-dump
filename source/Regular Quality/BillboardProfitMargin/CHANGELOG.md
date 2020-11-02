@@ -6,6 +6,10 @@ for queries and analysis.**
 
 ----
 
+## 1.0.3
+
+- Fix: Adjust item delivery quests even when they are not completed on the same day
+
 ## 1.0.2
 
 - Fix: Add UpdateKey to manifest.json

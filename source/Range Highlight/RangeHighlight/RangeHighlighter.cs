@@ -58,10 +58,17 @@ namespace RangeHighlight {
                 }
             }
         }
+        private class ItemHighlighter : Highlighter<ItemHighlightFunction> {
+            public bool highlightOthersWhenHeld { get; }
+            public ItemHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, ItemHighlightFunction highlighter)
+                : base(uniqueId, hotkey, highlighter) {
+                this.highlightOthersWhenHeld = highlightOthersWhenHeld;
+            }
+        }
         // NB: blueprintHighlighters and buildingHighlighters are parallel lists.  The highlighter in a blueprintHighlighter may be null.
         private readonly List<Highlighter<BlueprintHighlightFunction>> blueprintHighlighters = new List<Highlighter<BlueprintHighlightFunction>>();
         private readonly List<Highlighter<BuildingHighlightFunction>> buildingHighlighters = new List<Highlighter<BuildingHighlightFunction>>();
-        private readonly List<Highlighter<ItemHighlightFunction>> itemHighlighters = new List<Highlighter<ItemHighlightFunction>>();
+        private readonly List<ItemHighlighter> itemHighlighters = new List<ItemHighlighter>();
         private readonly List<Highlighter<TASHighlightFunction>> tasHighlighters = new List<Highlighter<TASHighlightFunction>>();
 
         public RangeHighlighter(IModHelper helper, ModConfig config) {
@@ -124,8 +131,8 @@ namespace RangeHighlight {
             buildingHighlighters.RemoveAll(elt => elt.uniqueId == uniqueId);
         }
 
-        public void AddItemHighlighter(string uniqueId, SButton? hotkey, ItemHighlightFunction highlighter) {
-            itemHighlighters.Insert(0, new Highlighter<ItemHighlightFunction>(uniqueId, hotkey, highlighter));
+        public void AddItemHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, ItemHighlightFunction highlighter) {
+            itemHighlighters.Insert(0, new ItemHighlighter(uniqueId, hotkey, highlightOthersWhenHeld, highlighter));
         }
 
         public void RemoveItemHighlighter(string uniqueId) {
@@ -201,7 +208,9 @@ namespace RangeHighlight {
                     if (ret != null) {
                         var cursorTile = helper.Input.GetCursorPosition().Tile;
                         AddHighlightTiles(ret.Item1, ret.Item2, (int)cursorTile.X, (int)cursorTile.Y);
-                        runItemHighlighter[i] = true;
+                        if (itemHighlighters[i].highlightOthersWhenHeld) {
+                            runItemHighlighter[i] = true;
+                        }
                         iterateItems = true;
                         break;
                     }

@@ -1,4 +1,5 @@
 {
   "CustomRemindersButton": "F2",
-  "SubtlerReminderSound": false
+  "SubtlerReminderSound": false,
+  "EnableMobilePhoneApp": true
 }

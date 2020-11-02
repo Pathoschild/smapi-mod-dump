@@ -123,8 +123,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Alex": "adult/rude/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/AlexGender}}}}/datable/Haley/Town/summer 13/George 'abuel{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GeorgeGender}}}}' Evelyn 'abuela'/JoshHouse 19 5/{{mardrest.ChangeDialogues/AlexName}}"
+		"Fields": {
+			"Alex": {
+				9: "George 'abuel{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/GeorgeGender}}}}' Evelyn 'abuela'"
+			}
 		}
 	}
 	]

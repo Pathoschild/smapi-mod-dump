@@ -5,9 +5,9 @@ mods:
    Range Highlight
 
 latest commit:
-   commit 9f8a9fb06918df2c2aa1391327010b491614adaf
-   Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Tue Sep 15 18:51:26 2020 -0400
+   commit fe173efab93a475bb0b153ee1038aa05cf9fdb44
+   Author: Jamie Taylor <jltaylor-us@users.noreply.github.com>
+   Date:   Fri Oct 16 19:28:00 2020 -0400
    
-       Update version to 1.4.0
+       Add nexusmods link to readme
    

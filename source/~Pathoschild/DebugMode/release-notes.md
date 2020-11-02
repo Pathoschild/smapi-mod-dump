@@ -9,8 +9,10 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming version
-* Internal refactor to translation handling.
+## 1.12.2
+Released 15 October 2020.
+
+* Refactored translation handling.
 
 ## 1.12.1
 Released 02 May 2020.

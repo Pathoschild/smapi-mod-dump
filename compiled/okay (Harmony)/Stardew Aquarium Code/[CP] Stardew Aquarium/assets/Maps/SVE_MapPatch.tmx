@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="5" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="133">
+ <properties>
+  <property name="DayTiles" value="Front 2 4 256 Front 2 5 288 Front 14 1 256 Front 14 2 288 Front 22 1 256 Front 22 2 288 Front 28 1 256 Front 28 2 288 Front 30 1 256 Front 30 2 288 Front 32 1 256 Front 32 2 288 Front 34 1 256 Front 34 2 288 Front 36 1 256 Front 36 2 288"/>
+  <property name="Music" value="submarine_song"/>
+  <property name="NightTiles" value="Front 2 4 1253 Front 2 5 1285 Front 14 1 1253 Front 14 2 1285 Front 22 1 1253 Front 22 2 1285 Front 28 1 1253 Front 28 2 1285 Front 30 1 1253 Front 30 2 1285 Front 32 1 1253 Front 32 2 1285 Front 34 1 1253 Front 34 2 1285 Front 36 1 1253 Front 36 2 1285"/>
+  <property name="Warp" value="16 53 ExteriorMuseum 26 10 17 53 ExteriorMuseum 26 10 9 45 Slimejack 21 18"/>
+ </properties>
+ <tileset firstgid="1" name="Paths" tilewidth="16" tileheight="16" tilecount="32" columns="4">
+  <image source="paths.png" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="33" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior.png" width="512" height="1088"/>
+ </tileset>
+ <tileset firstgid="2209" name="custom" tilewidth="16" tileheight="16" tilecount="100" columns="10">
+  <image source="CustomTS/custom.png" width="160" height="160"/>
+  <tile id="1">
+   <animation>
+    <frame tileid="1" duration="500"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="1" duration="500"/>
+    <frame tileid="1" duration="500"/>
+    <frame tileid="1" duration="500"/>
+    <frame tileid="1" duration="500"/>
+    <frame tileid="1" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="61">
+   <animation>
+    <frame tileid="61" duration="200"/>
+    <frame tileid="62" duration="200"/>
+    <frame tileid="63" duration="600"/>
+    <frame tileid="63" duration="500"/>
+    <frame tileid="63" duration="500"/>
+    <frame tileid="63" duration="500"/>
+    <frame tileid="63" duration="500"/>
+    <frame tileid="63" duration="600"/>
+    <frame tileid="62" duration="200"/>
+    <frame tileid="61" duration="200"/>
+    <frame tileid="61" duration="600"/>
+    <frame tileid="61" duration="600"/>
+    <frame tileid="61" duration="600"/>
+    <frame tileid="61" duration="600"/>
+    <frame tileid="61" duration="600"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="2309" name="walls_and_floors" tilewidth="16" tileheight="16" tilecount="560" columns="16">
+  <image source="walls_and_floors.png" width="256" height="560"/>
+ </tileset>
+ <layer id="1" name="Back" width="5" height="8">
+  <data>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="299"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="334"/>
+   <tile gid="299"/>
+   <tile gid="334"/>
+   <tile gid="334"/>
+   <tile/>
+   <tile gid="334"/>
+   <tile gid="2346"/>
+   <tile gid="334"/>
+   <tile gid="334"/>
+   <tile/>
+   <tile/>
+   <tile gid="2790"/>
+   <tile gid="2790"/>
+   <tile gid="2790"/>
+   <tile/>
+   <tile gid="2790"/>
+   <tile gid="2790"/>
+   <tile gid="2790"/>
+   <tile gid="2790"/>
+   <tile/>
+   <tile gid="2790"/>
+   <tile gid="2790"/>
+   <tile gid="2790"/>
+   <tile gid="2790"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+  </data>
+ </layer>
+ <layer id="13" name="AboveBack" width="5" height="8">
+  <properties>
+   <property name="DrawBefore" value="Buildings"/>
+  </properties>
+  <data>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <layer id="3" name="Buildings" width="5" height="8">
+  <data>
+   <tile/>
+   <tile gid="42"/>
+   <tile gid="43"/>
+   <tile gid="44"/>
+   <tile gid="42"/>
+   <tile gid="42"/>
+   <tile gid="227"/>
+   <tile/>
+   <tile gid="226"/>
+   <tile gid="227"/>
+   <tile gid="97"/>
+   <tile gid="188"/>
+   <tile gid="1422"/>
+   <tile gid="187"/>
+   <tile gid="188"/>
+   <tile gid="97"/>
+   <tile gid="220"/>
+   <tile gid="1454"/>
+   <tile gid="219"/>
+   <tile gid="220"/>
+   <tile gid="97"/>
+   <tile gid="252"/>
+   <tile/>
+   <tile gid="251"/>
+   <tile gid="252"/>
+   <tile gid="97"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="193"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="33"/>
+   <tile gid="33"/>
+   <tile gid="33"/>
+   <tile gid="33"/>
+   <tile gid="33"/>
+  </data>
+ </layer>
+ <layer id="11" name="BuildingsFront" width="5" height="8">
+  <properties>
+   <property name="DrawAbove" value="Buildings"/>
+  </properties>
+  <data>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="2237"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+  </data>
+ </layer>
+ <objectgroup id="4" name="Buildings">
+  <object id="130" name="TileData" x="32" y="48" width="16" height="16">
+   <properties>
+    <property name="Action" value="Warp 50 47 SVEFish"/>
+   </properties>
+  </object>
+  <object id="131" name="TileData" x="48" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="AquariumString SVETP"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer id="5" name="Front" width="5" height="8">
+  <data>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="194"/>
+   <tile gid="198"/>
+   <tile gid="198"/>
+   <tile gid="198"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+  </data>
+ </layer>
+ <layer id="12" name="NotAlwaysFront" width="5" height="8">
+  <properties>
+   <property name="DrawBefore" value="AlwaysFront"/>
+  </properties>
+  <data>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+  </data>
+ </layer>
+ <objectgroup id="6" name="Front"/>
+ <layer id="7" name="Paths" width="5" height="8">
+  <data>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="9"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+  </data>
+ </layer>
+ <objectgroup id="8" name="Paths"/>
+ <layer id="9" name="AlwaysFront" width="5" height="8">
+  <data>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+  </data>
+ </layer>
+ <objectgroup id="10" name="AlwaysFront"/>
+</map>

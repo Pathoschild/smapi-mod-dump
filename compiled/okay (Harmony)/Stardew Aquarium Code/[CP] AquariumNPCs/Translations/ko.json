@@ -50,6 +50,19 @@
                 "6372002/t 1000 2100/Hn AquariumCompleted": "junimoStarSong/20 49/Marnie -100 -100 2 Marlon -100 -100 2 Emily -100 -100 0 Harvey -100 -100 0 Alex -100 -100 0 Wizard -100 -100 2 Shane 16 33 2 Harvey -100 -100 0 Emily -100 -100 0 Haley -100 -100 0 Maru -100 -100 0 Governor 26 29 2 Krobus -100 -100 2 Penny -100 -100 0 Jodi 17 35 2 Jas 17 33 0 Vincent 18 35 1 Willy 18 29 2 Lewis 22 29 2 Dwarf 15 19 3 Sandy 34 20 0 Sebastian 34 30 0 Sam 35 30 0 Elliott 23 33 0 Abigail 25 32 3 Leah 7 30 0 Curator 20 30 2 farmer -100 -100 0/broadcastEvent/addConversationTopic AquariumCompletedCT 7/pause 500/playSound doorOpen/warp farmer 16 52/pause 500/move farmer 0 -3 0/pause 500/faceDirection farmer 3/pause 250/faceDirection farmer 1/pause 250/faceDirection farmer 0/pause 750/fade/viewport -1000 -1000/viewport 17 35/viewport move -2 -1 3000/pause 400/emote Leah 32/pause 250/jump Vincent 8/pause 400/faceDirection Jodi 1/pause 250/emote Vincent 16/pause 1000/fade/viewport -1000 -1000/pause 500/fade/viewport -1000 -1000/viewport 18 18/pause 500/viewport move -2 -2 5000/pause 200/emote Dwarf 32/pause 5500/fade/viewport -1000 -1000/pause 500/viewport 34 22/pause 500/viewport move 0 2 6500/pause 10000/fade/viewport -1000 -1000/pause 500/changeLocation Slimejack/viewport 22 15/changeSprite Krobus Trenchcoat/warp Krobus 22 13/warp Dwarf -100 -100/warp Sandy -100 -100/pause 1500/faceDirection Krobus 0/pause 500/emote Krobus 32/pause 500/fade/viewport -1000 -1000/pause 500/changeLocation VerySwamp/viewport 21 19/warp Wizard 21 17/warp Krobus -100 -100/pause 1000/faceDirection Wizard 0/pause 500/emote Wizard 40/pause 1000/fade/viewport -1000 -1000/pause 500/changeLocation FishBasement/warp Wizard -100 -100/viewport 25 18/pause 2000/fade/viewport -1000 -1000/pause 500/changeToTemporaryMap BigRoom/viewport 8 9 true/warp Alex 7 9/warp Harvey 9 9/warp Maru 23 9/warp Penny 24 9/warp Haley 36 9/warp Emily 38 9/warp Marnie 51 9/warp Marlon 52 9/pause 500/viewport move 3 0 12500/pause 1500/faceDirection Maru 1/faceDirection Penny 3/emote Maru 32/pause 50/emote Penny 32/pause 50/faceDirection Maru 0/pause 50/faceDirection Penny 0/pause 10000/fade/viewport -1000 -1000/pause 500/changeLocation FishMuseum/viewport 20 33/warp farmer 20 32/warp Sandy 34 20/warp Dwarf 15 19/pause 1500/jump Curator 5/pause 1000/playSound crystal/pause 250/playSound crystal/textAboveHead Curator \"관객 여러분, 주목해주세요!\"/pause 500/advancedMove Sandy false -4 0 0 3 -6 0 0 5/advancedMove Leah false 2 0 0 4 5 0/advancedMove Sebastian false 0 2 -8 0 0 -1/advancedMove Sam false 0 2 -9 0 0 1/faceDirection Elliott 3 true/faceDirection Shane 1 true/faceDirection Vincent 0 true/faceDirection Jodi 0 true/faceDirection Jas 1 true/faceDirection Abigail 3 true/pause 6000/stopAdvancedMoves/showFrame Leah 4/showFrame Sebastian 12/showFrame Sam 12/advancedMove Sandy false -1 0 0 5/pause 3000/stopAdvancedMoves/showFrame Sandy 0/speak Curator \"*엣헴* 감사합니다..$0#$b#먼저 이 특별행사에 참석해주신 모든 분들께 감사드립니다.$1#$b#제가 이 별이슬 아쿠아리움을 개장했을 때, 여긴 저와 골디 뿐이었죠..$0\"/pause 500/speak Curator \"그런데 @씨, 그의 헌신적인 도움 덕분에 아쿠아리움을 꾸리는데 큰 도움을 받을 수 있었습니다!^그런데 @씨, 그녀의 헌신적인 도움 덕분에 아쿠아리움을 꾸리는데 큰 도움을 받을 수 있었습니다!$1\"/pause 500/jump Curator 5/pause 500/speak Curator \"이제 이 아쿠아리움의 컬렉션이 완벽해졌어요!$0#$b#전부 @, 당신 덕분입니다. 여러분이 여기서 보고계시는 모든 표본은 @로부터 기증받았습니다.$1\"/pause 250/textAboveHead Willy \"잘했어!\"/pause 250/emote Abigail 32/pause 100/emote Elliott 56/pause 100/textAboveHead Governor \"훌륭해!\"/pause 1500/speak Curator \"@, 이 모든 건 자네의 도움 없인 불가능했어.^@, 이 모든 건 자네의 도움 없인 불가능했어.$0#$b#자네에게 이 특별한 보상을 줄 수 있게 되어 너무나 자랑스러워!$1\"/pause 500/jump farmer 5/pause 500/speak Curator \"'별이슬 아쿠아리움 트로피', 축하하네, 젊으니!^'별이슬 아쿠아리움 트로피', 축하하네, 아가씨!$4\"/move farmer 0 -1 0/faceDirection farmer 2/pause 250/showFrame 57/pause 100/GiveAquariumTrophy1/null/GiveAquariumTrophy2/null/pause 2000/end"
             }
         },
+        /*{
+            "LogName": "FishMuseum Korean Special Events",
+            "Action": "EditData",
+            "Target": "Data/Events/FishMuseum",
+            "Entries": {
+            "6372003/t 1000 2100/i {{spacechase0.JsonAssets/ObjectId:Razor Trout}}": "50s/20 49/Curator 15 47 2 farmer -100 -100 0 Goldie 15 46 0/skippable/pause 500/playSound stoneStep/playSound doorOpen/warp farmer 16 52/speak Curator \"Ah hello @!$0\"/pause 500/move farmer 0 -3 0/pause 500/move Curator 1 0 2/speak Curator \"So what have you come to donate today?$1\"/pause 500/showFrame farmer 15/pause 200/playSound fishSlap/addObject 16 47 {{spacechase0.JsonAssets/ObjectId:Razor Trout}} 1/pause 100/showFrame farmer 12/pause 100/faceDirection farmer 3/move farmer -1 0 0/pause 200/jump Curator 4/pause 100/faceDirection farmer 1/pause 200/emote Curator 16/pause 500/move Curator -1 0 2 true/faceDirection farmer 0/speak Curator \"Oh no lad, that won't do!$6^Oh no lass, that won't do!$6\"/pause 500/emote farmer 8/pause 500/speak Curator \"I know this fish, it's the Razor Trout.$2#$b#It's an invasive species to this area...$5\"/pause 500/emote farmer 28/pause 500/speak Curator \"It also eats other fish!$0\"/pause 200/jump farmer 5/pause 200/speak Goldie \"...$0#$b#*Goldie looks scared*$7\"/pause 500/emote Goldie 16/pause 500/speak Curator \"I don't think the Aquarium is a place for such a fish...$2#$b#You better take it with you.$0\"/move farmer 1 0 0/pause 500/showFrame farmer 15/pause 200/removeSprite 16 47/playSound pickUpItem/pause 200/showFrame farmer 12/pause 500/speak Curator \"Don't feel bad lad, I'm sure you didn't mean any harm.^Don't feel bad lass, I'm sure you didn't mean any harm.$0\"/pause 500/emote farmer 60/pause 1000/end"
+                        },
+            "When": {
+                "HasMod": "spacechase0.JsonAssets", 
+                "HasMod": "FlashShifter.JA.SVE",
+                "HasMod |contains=Hana.GenderNeutralityMod": false
+                    }
+        }*/
         //ko-KR in the "Target" should be the same format as the XNBs in the  SDV Dialogue folders. So for example for French it should be "fr-FR".
         {
         	"LogName": "Willy ko-KR Legendary Fish Conversation Topics",
@@ -64,6 +77,42 @@
 				"AquariumDonated:Pufferchick": "아쿠아리움 지하에 숨어들어가서 내가 뭘 본 줄 알아? '복어닭'이 있었어.$0#$b#정말 이상한 생물이었어.$0",
 				"AquariumCompletedCT": "아쿠아리움이 완성되었다는게 믿겨져?$0#$b#세상에 이런 일이!$1"
 				}
+        },
+        // 1.1.0
+        {   
+            "LogName": "Abigail Fish Conversation Topics",
+            "Target": "Characters/Dialogue/Abigail",
+            "Action": "EditData",
+            "Entries": {
+                "AquariumDonated:Pufferfish": "너 아쿠아리움에서 '복어닭'이란 거 봤어?$0#$b#나 그거 진짜 맘에 들더라!$1",
+            }
+        },
+        {   
+            "LogName": "Penny Fish Conversation Topics",
+            "Target": "Characters/Dialogue/Penny",
+            "Action": "EditData",
+            "Entries": {
+                "AquariumDonated:Sandfish": "얼마전에 제스와 빈센트를 데리고 아쿠아리움에 현장학습을 갔어요.$0#$b#교육적이고, 아이들에겐 정말 귀중한 경험이에요. 전 '도루묵'이 특히 좋더라고요. 샌드피쉬라고도 하는데, 귀엽지 않나요?$1",
+            }
+        },
+        {   
+            "LogName": "Sebastian Fish Conversation Topics",
+            "Target": "Characters/Dialogue/Sebastian",
+            "Action": "EditData",
+            "Entries": {
+                "AquariumDonated:Frog": "최근에 아쿠아리움에 가봤어?$0#$b#거기에 개구리 테라리움이 있더라. 거기 개구리가 외로워 보여서 내 개구리 중 하나를 기증했어...$7#$b#친구가 생겼으니 이제 외롭지 않을거야.$1",
+                },
+            "When": {
+                "HasMod": "FlashShifter.JA.SVE"
+            }
+        },
+        {   
+            "LogName": "Wizard Fish Conversation Topics",
+            "Target": "Characters/Dialogue/Wizard",
+            "Action": "EditData",
+            "Entries": {
+                "AquariumDonated:SuperCucumber": "아쿠아리움에 '슈퍼 해삼'을 전시해 놨더군.$0#$b#그건 해삼의 독특한 아종이야. 불가사의한 성질을 띄고 있지...$0#$b#%마법사는 생각에 잠긴 듯하다.",
+            }
         }
     ]
 }

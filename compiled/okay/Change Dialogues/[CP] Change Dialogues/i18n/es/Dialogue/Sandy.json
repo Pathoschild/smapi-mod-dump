@@ -8,13 +8,6 @@
 			"Sat": "¡Hola, ! ¡Bienvenido al Oasis de {{mardrest.ChangeDialogues/SandyName}}, el destino número uno del desierto de Calico!^¡Bienvenida al Oasis de {{mardrest.ChangeDialogues/SandyName}}, el destino número uno del desierto de Calico!#$e#*Susurra* ¿Ha sonado profesional?$h#$e#No olvides revisar nuestra selección de semillas de temporada.#$e#Parece que tienes mucha sed. Toma, prueba esta leche fresquita. [184]#$e#Está buena, ¿eh?$h",
 			"Fri4": "¿Sabes? En realidad no me llamo {{mardrest.ChangeDialogues/SandyName}}. Es por el negocio.#$e#Pero todos me llaman {{mardrest.ChangeDialogues/SandyName}}, así que ya me he acostumbrado a ese nombre."
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Sandy": "adult/neutral/outgoing/positive/female/not-datable/null/Desert/fall 15/Emily ''/SandyHouse 2 5/{{mardrest.ChangeDialogues/SandyName}}"
-		}
 	}
 	]
 }

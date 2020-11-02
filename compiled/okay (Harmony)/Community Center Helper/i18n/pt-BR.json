@@ -1,0 +1,346 @@
+{
+	/***** Suggestions *****/
+	
+	// Crops
+	"seasonalCrop": "Plante sementes compradas no {{seedShop}} durante {{season}}{{startingYear}}{{qualityCrop}}",
+	"growSeeds": "Plante {{seeds}}{{qualityCrop}}",
+	"startingYear": " (a partir do Ano {{num}})", // included if seeds only become available starting a certain year
+	"qualityCrop": " (utilize fertilizante)", // included if higher quality is required
+	
+	// Foraging
+	"seasonalForage": "Colete durante {{season}}",
+	"locationalForage": "Colete em {{location}}",
+	"seasonalLocationalForage": "Colete durante {{season}} {{location}}",
+	"salmonberryForage": "Colete em arbustos durante a Primavera nos dias 15-18",
+	
+	// Tilling
+	"generalTilling": "Arando terra",
+	"seasonalTilling": "Arando terra durante {{season}}",
+	"locationalTilling": "Arando em {{location}}",
+	"artifactDigging": "Cave em Pontos de Artefatos (\"minhocas\")",
+	"locationalArtifact": "Pontos de Artefatos em {{location}}",
+	
+	// Mining
+	"hitRocks": "Quebre pedras com {{pickaxe}}",
+	"hitRocksInLocation": "Quebre pedras em {{location}}",
+	
+	// Fishing
+	"fishBase": "Pesque {{water}}, {{extraLinebreak}}{{time}}{{weather}}, {{season}}",
+	// {{extraLinebreak}} is a linebreak inserted for some fish with long location descriptions, {{weather}} is left blank if no particular weather is required
+	"weatherSun": " (apenas clima ensolarado)", // included if only available in sunny weather
+	"weatherRain": " (apenas clima chuvoso)", // included if only available in rain
+	"fishSubmarine": "Pesque no Mercado Noturno durante o pesseio de submarino (Inverno 15-17)",
+	"fishingChest": "Pescando em baús de tesouro",
+	"crabPot": "Pegue em {{crabPot}} ({{waterType}})",
+	
+	// Animal Products
+	"animalProduct": "Produzido por {{animal}}{{details}}",
+	"inGoodMood": " (se feliz o suficiente)", // included if a certain level of happiness is required to produce the item
+	"animalOutside": " (se estiver ao ar livre)", // included if animal must be outside to produce it
+	
+	// Machines
+	"putItemInMachine": "Coloque {{rawItem}} em {{machine}}",
+	"machineItemQuantity": "{{item}} x{{num}}", // used for {{rawItem}} above if more than 1 of item is required
+	"putItemInMachineThenCask": "Coloque {{rawItem}} em {{machine}}, no fim {{resultItem}} em {{cask}}",
+	"noItemMachine": "Produzido por {{machine}}",
+	
+	// Constructions
+	"putItemInMill": "Coloque {{rawItem}} no Moinho",
+	"fishPond": "Produzido no Lago de Peixes com {{fish}} x{{num}}",
+	
+	// Monsters
+	"droppedByMonster": "Soltado por {{monster}} ao morrer",
+	
+	// Trees
+	"treeDuringSeason": "{{tree}} durante {{season}}",
+	"tapTree": "Use {{tapper}} na {{tree}}",
+	"seedFromTree": "Remexa/Corte {{tree}}",
+	
+	// Crafting/Cooking
+	"craftRecipeByName": "Craft {{recipe}}",
+	"craftRecipe": "Crafting",
+	"cookRecipe": "Cozinhando",
+	
+	// From Geodes
+	"openGeode": "Abra um {{geode}} no ferreiro",
+	"openAnyGeode": "Abra qualquer geodo no ferreiro",
+	
+	// Panning
+	"panning": "Peneirando",
+	
+	// Ore Through Mining
+	"mineCopperOre": "Minere um Minério de Cobre (Minas, numeroso em 31-39)",
+	"mineIronOre": "Minere um Minério de Ferro (Minas 41+, numeroso em 71-79)",
+	"mineGoldOre": "Minere um Minério de Ouro (Minas 81+)",
+	"mineIridiumOre": "Minere uma Pedra Mítica (Minas 101+), meteoritos (evento raro)",
+	
+	// Gems Through Mining
+	"gemEmerald": "Minere um Nó de Esmeralda (Minas 81+), Nó de Gemas",
+	"gemAquamarine": "Minere um Nó de Áqua-marinha (Minas 41+), Nó de Gemas",
+	"gemRuby": "Minere um Nó de Rubi (Minas 81+), Nó de Gemas",
+	"gemAmethyst": "Minere um Nó de Ametista, Nó de Gemas",
+	"gemTopaz": "Minere um Nó de Topázio, Nó de Gemas",
+	"gemJade": "Minere um Nó de Jade (Minas 41+), Nó de Gemas",
+	"gemDiamond": "Minere um Nó de Diamante (Minas 51+), Nó de Gemas",
+	"gemPrismaticShard": "Minere Nó de Gemas, Pedras Míticas (Minas 101+, 25%), Nó de Irídio (4%)",
+	
+	// Farm Cave
+	"caveYours": "Ache na caverna da fazenda", // once cave type has been chosen, the other type is disregarded and this is used
+	"caveFruitBats": "Ache na caverna da fazenda (morcegos frutíferos)", // if spoilers are allowed, cave type is specified until player selects type
+	"caveMushrooms": "Ache na caverna da fazenda (cogumelos)", // if spoilers are allowed, cave type is specified until player selects type
+	
+	// Buying
+	"buyFrom": "Compre no {{shop}}",
+	
+	// General Actions
+	"chopWood": "Derrube árvores ou quebre troncos com {{axe}}",
+	"chopHardwood": "Derrube grandes tocos de madeira com {{copperAxe}} ou troncos caídos com {{steelAxe}}",
+	"chopTrees": "Derrube árvores com {{axe}}",
+	"smashCrates": "Quebre caixas nas minas",
+	"clearWeeds": "Destrua ervas-daninhas",
+	"harvestHay": "Colete de grama ou {{wheat}}",
+	"trash": "Lixo vindo da pesca, Covos, ou latas de lixo",
+	
+	// Miscellaneous Sources
+	"luckyShorts": "Quarto da Marnie (na missão do Prefeito dos shorts perdidos no Verão 3)",
+	"goldenPumpkin": "Labirinto da Véspera dos Espíritos (Outono 27)",
+	"mermaidPearl": "Do Mercado Noturno (Inverno 15-17) Bote da Sereia{{hint}}",
+	"mermaidHint": " (1-5-4-2-3)", // included as hint for how to get the mermaid's pearl, if spoilers are allowed or secret note read
+	"winCraneGame": "Ganhe no jogo no Cinema",
+	"voidEggEvent": "Evento da bruxa aleatório",
+	
+	// Concealed Source (for when entire suggestion is a spoiler)
+	"unknownSource": "???",
+	
+	/***** Short Hints *****/
+	
+	"shortHintSeasonalCrop": "lavoura do {{season}}",
+	"shortHintSeasonalCropStartingYear": "lavoura do {{season}} Ano {{year}}+",
+	"shortHintSeasonalSeed": "{{season}} semente",
+	"shortHintMachine": "{{item}} em {{machine}}",
+	"shortHintTrash": "lixo",
+	"shortHintFishPond": "Lago de Peixes",
+	"shortHintFiber": "ervas-daninhas",
+	"shortHintHay": "grama/{{wheat}}",
+	
+	/***** Partial Strings *****/
+	
+	// General Formatting
+	"parenthesized": " ({{text}})", // general form for appending descriptive text after a thing
+	"multipleThingSeparator": "/", // general separator for lists of multiple seasons, locations, etc.
+	
+	// Season Names
+	"spring": "Primavera",
+	"summer": "Verão",
+	"fall": "Outono",
+	"winter": "Inverno",
+	"allSeasons": "todas as estações",
+	
+	// Location Names (for foraging suggestions)
+	"locationFarm": "A Fazenda",
+	"locationMines": "As Minas",
+	"locationMinesArea1": "As Minas 1-39",
+	"locationMinesArea2": "As Minas 41-79",
+	"locationMinesArea3": "As Minas 81-119",
+	"locationMines21Plus": "As Minas 21+",
+	"locationMountains": "As Montanhas",
+	"locationBeach": "A Praia",
+	"locationBeachEast": "A Praia (lado direito após a ponte)",
+	"locationBeachEastInaccessible": "A Praia (lado direito; 300 {{wood}} para consertar a ponte)", // tip displayed if bridge is not fixed
+	"locationForest": "A Floresta Cinzaseiva",
+	"locationWoods": "O Bosque Secreto",
+	"locationSewer": "Os Esgotos",
+	"locationDesert": "Deserto do Cálico",
+	"locationSkullPrehistoric": "Caverna da Caveira nos andares pré-históricos",
+	"locationUnknown": "na ???",
+	
+	// Water Locations (for fishing suggestions)
+	"waterRivers": "nos rios", // Town river or Cindersap Forest river
+	"waterOcean": "no Oceano",
+	"waterTown": "no rio da Cidade",
+	"waterMountain": "no lago da Montanha",
+	"waterForestPond": "no lago da Floresta Cinzaseiva",
+	"waterForestRiver": "no rio da Floresta Cinzaseiva",
+	"waterSpecialFarm": "na Fazenda",
+	"waterWoods": "no lago do Bosque Secreto",
+	"waterDesert": "no lago do Deserto",
+	"waterSewer": "nos Esgotos",
+	"waterBugLand": "no Covil dos Insetos Mutantes",
+	"waterMines": "nas Minas níveis 20/60/100",
+	"waterMines20": "nas Minas nível 20",
+	"waterMines60": "nas Minas nível 60",
+	"waterMines100": "nas Minas nível 100",
+	"waterSwamp": "no Pantâno da Bruxa",
+	"waterAnglerSpot": "ao extremo Norte do rio da cidade",
+	"waterCrimsonfishSpot": "no pier leste da Praia (depois da ponte)",
+	"waterGlacierfishSpot": "ao extremo sul da ilha principal da Floresta Cinzaseiva",
+	"waterLegendSpot": "em volta do tronco no Lago da Montanha",
+	"waterUnknown": "na ???",
+	
+	// Water Types (for crab pot suggestions)
+	"waterTypeOcean": "oceano",
+	"waterTypeFresh": "água doce",
+	
+	// Shop Names (for buying suggestions)
+	"shopPierre": "Armazém do Pierre",
+	"shopPierreSeason": "Armazém do Pierre em {{season}}{{startingYear}}",
+	"shopJoja": "Mercado Joja",
+	"shopMarnie": "Rancho da Marnie",
+	"shopCarpenter": "Carpintaria",
+	"shopBlacksmith": "Ferreiro",
+	"shopSaloon": "Saloon",
+	"shopClinic": "Clínica",
+	"shopDwarf": "Anão",
+	"shopKrobus": "Krobus",
+	"shopKrobusWeekday": "Krobus ({{day}})",
+	"shopDesertTrader": "Mercador do Deserto",
+	"shopOasis": "Oasis",
+	"shopOasisWeekday": "Oasis ({{day}})",
+	"shopTravelingCartRandom": "Carrinho de Viagem (aleatório)",
+	"shopTravelingCartSeason": "Carrinho de Viagem em {{season}}",
+	"shopEggFestival": "Pierre durante o Festival do Ovo (Primavera 13)",
+	"shopFlowerDance": "Pierre durante a Dança das Flores (Primavera 24)",
+	"shopSpiritsEve": "Pierre durante o dia da Véspera dos Espíritos (Outono 27)",
+	"shopUnknown": "???",
+	"randomlyAvailable": "aleatório", // appended in parentheses after shop name when item is only randomly in stock
+	"mustHaveShipped": "envie pelo correio o(a) {{item}}", // appended in parentheses after shop name if you have to have shipped a certain other item
+	"sewerRequirement": "doe 60 itens para o Museu", // appended in parentheses after Krobus's shop name if sewer is not yet accessible
+	
+	// Item Categories (for when any item from a category is allowed as machine input or recipe ingredient)
+	"itemCategoryGem": "qualquer gema",
+	"itemCategoryFish": "qualquer peixe",
+	"itemCategoryEgg": "qualquer ovo",
+	"itemCategoryMilk": "qualquer leite",
+	"itemCategoryMineral": "qualquer mineral",
+	"itemCategoryJunk": "qualquer lixo",
+	"itemCategorySeed": "qualquer semente",
+	"itemCategoryVegetable": "qualquer vegetal",
+	"itemCategoryFruit": "qualquer fruta",
+	"itemCategoryFlower": "qualquer flor",
+	"itemCategoryWildSeed": "qualquer semente silvestre", // category -777; not defined as a constant, but used for Tea Sapling recipe
+	"itemCategoryNut": "qualquer noz", // not a category strictly defined by base game, but used to summarize machine input
+	"itemCategoryMushroom": "qualquer cogumelo", // not a category strictly defined by base game, but used to summarize machine input
+	
+	// Tree Names (for tree suggestions)
+	"treeApple": "Macieira",
+	"treeApricot": "Damasqueiro",
+	"treeOrange": "Árvore de Laranja",
+	"treePeach": "Árvore de Pêssego",
+	"treePomegranate": "Romãzeira",
+	"treeCherry": "Cerejeira",
+	"treeLime": "Árvore limão", // PPJA
+	"treePapaya": "Árvore Mamão", // PPJA
+	"treeWalnut": "Árvore de Noz", // PPJA
+	"treePersimmon": "Árvore de Caqui", // PPJA
+	"treeGranny": "Árvore de Maçã-verde", // PPJA
+	"treeEucalyptus": "Árvore de Eucalipto", // PPJA
+	"treeMaple": "Árvore de Ácer",
+	"treeOak": "Árvore de Carvalho",
+	"treePine": "Pinheiro",
+	"treeMushroom": "Árvore de Cogumelos (evento Raro do Outono)",
+	"treeDescSeedling": "sementes do {{shop}}{{startingYear}}", // advice for fruit trees
+	"treeDescNonFruit": "já na Fazenda {{treeSeed}}", // advice for Maple/Oak/Pine trees
+	
+	// General Monster Names (most monster names are taken from data, so these are either categories of monster or specific colors/etc.)
+	"monsterGeneralAnyInMines": "maioria dos monstros",
+	"monsterGeneralSlime": "slimes",
+	"monsterGeneralBat": "morcegos",
+	"monsterGeneralBug": "insetos",
+	"monsterBlueSlime": "slime Azul",
+	"monsterRedSlime": "slime Vermelho",
+	"monsterPurpleSlime": "slime Roxo",
+	"monsterBRPCISlime": "slime Azul/Vermelho/Roxo/Cobre/Ferro",
+	"monsterUnknown": "???",
+	
+	// Monster Locations (appended after monster names)
+	"monsterAreaMinesAll": "Minas",
+	"monsterAreaMinesAndSkull": "Minas, Caverna da Caveira",
+	"monsterAreaMinesRange": "Minas {{start}}-{{end}}",
+	"monsterAreaSkull": "Caverna da Caveira",
+	"monsterAreaSkullFloorPlus": "Caverna da Caveira {{start}}+",
+	"monsterAreaSkullPrehistoric": "chãos pré-históricos da Caverna da Caveira",
+	"monsterAreaSkullMummy": "chãos de múmias da Caverna da Caveira",
+	"monsterAreaUnknown": "???",
+	
+	// Animal Names (for animal product suggestions)
+	"animalCow": "Vacas",
+	"animalChicken": "Galinhas",
+	"animalVoidChicken": "Galinhas Vazias",
+	"animalGoat": "Cabras",
+	"animalSheep": "Ovelhas",
+	"animalRabbit": "Coelhos",
+	"animalDuck": "Patos",
+	"animalPig": "Porcos",
+	
+	// Animal Building Requirements (advice on how to obtain animals, if not currently available to purchase)
+	"animalReqCoopLv1": "precisa de Galinheiro",
+	"animalReqCoopLv2": "precisa de Galinheiro Grande",
+	"animalReqCoopLv3": "precisa de Galinheiro de Luxo",
+	"animalReqBarnLv1": "precisa de Celeiro",
+	"animalReqBarnLv2": "precisa de Celeiro Grande",
+	"animalReqBarnLv3": "precisa de Celeiro de Luxo",
+	
+	// Recipe Help
+	"recipeTipHouseUpgrade": "precisa da casa melhorada", // displayed for cooking recipes if cooking is not yet available
+	"recipeFrom": "receita: {{sources}}",
+	"recipeSourceSeparator": " / ",
+	
+	// Recipe Sources (compiled into list for recipeFrom)
+	"recipeSourceSaloon": "Saloon",
+	"recipeSourceTV": "TV ({{date}})",
+	"recipeSourceTVAlreadyAired": "TV (Reprise de Quarta, ou {{date}})",
+	"recipeSourceFriendship": "{{hearts}}+ corações com {{person}}", // sent in mail when you have enough hearts
+	"recipeSourceHeartEvent": "{{hearts}}-corações {{person}} evento", // received from heart event specifically
+	"recipeSourceFirstCopper": "obtenha {{copperOre}}",
+	"recipeSourceAfterGreenhouse": "conserte da estufa",
+	"recipeSourceFinalFarmhouse": "melhoria final da Casa da Fazenda",
+	"recipeSourceAncientSeed": "doe {{seedArtifact}} ao museu",
+	"recipeSourceRarecrows": "colete todos os Espantalhos Raros",
+	
+	// Recipe Ingredient Lists (for learned recipes)
+	"recipeIngredientSingle": "{{ingredient}}", // for ingredient x1
+	"recipeIngredientMultiple": "{{ingredient}} x{{num}}", // for ingredient x2 or more
+	"recipeIngredientSeparator": ", ",
+	
+	// Skill Level Requirements
+	"farmingLvRequirement": "Cultivo nível {{num}}",
+	"miningLvRequirement": "Mineração nível {{num}}",
+	"fishingLvRequirement": "Pesca nível {{num}}",
+	"foragingLvRequirement": "Coleta nível {{num}}",
+	"combatLvRequirement": "Combate nível {{num}}",
+	"totalSkillLvRequirement": "Nível de habilidade total {{num}}",
+	
+	// Machine Sources
+	"statueOfPerfectionTip": "nota do avô perfeita", // advice for statue if you haven't had evaluation or achieved 4 candles
+	"statueOfPerfectionAvailable": "Altar do Vovô", // advice for statue if you've unlocked it, but haven't collected it
+	
+	// Conditional Mail
+	"conditionalMailAll": "correio depois {{time}} quando {{friendReq}} & {{skillReq}}",
+	"conditionalMailTimeFriend": "correio depois {{time}} com {{friendReq}}",
+	"conditionalMailTimeSkill": "correio depois {{time}} com {{skillReq}}",
+	"conditionalMailFriendSkill": "correio quando {{friendReq}} & {{skillReq}}",
+	"mailConditionFriendship": "{{hearts}} corações com {{person}}",
+	
+	// Times (for fishing)
+	"timeAM": "{{hour}}am",
+	"timePM": "{{hour}}pm",
+	"time24Hour": "{{hour}}:00",
+	"timeRange": "{{start}}-{{end}}",
+	"anyTime": "qualquer horário",
+	
+	// Days of the Week (for daily shop stocks)
+	"monday": "Segunda-feira",
+	"tuesday": "Terça-feira",
+	"wednesday": "Quarta-feira",
+	"thursday": "Quinta-feira",
+	"friday": "Sexta-feira",
+	"saturday": "Sábado",
+	"sunday": "Domingo",
+	
+	// Dates (for things that happen on or after specific date/season/year)
+	"specificDate": "{{season}} {{day}} Ano {{year}}",
+	"generalDate": "{{season}} {{day}}",
+	"yearSeason": "{{season}} Ano {{year}}",
+	"year": "Ano {{year}}",
+	"today": "hoje", // when Queen of Sauce episode is airing that very day
+}

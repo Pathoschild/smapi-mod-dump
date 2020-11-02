@@ -41,13 +41,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Dwarf": "adult/neutral/outgoing/positive/undefined/not-datable/null/Other/summer 22//Mine 43 6/{{mardrest.ChangeDialogues/DwarfName}}"
-		}
 	}
 	]
 }

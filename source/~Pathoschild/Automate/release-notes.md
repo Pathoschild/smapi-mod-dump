@@ -9,8 +9,10 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Internal refactoring to prepare for future game updates.
+## 1.18.1
+Released 15 October 2020.
+
+* Refactored to prepare for future game updates.
 
 ## 1.18
 Released 12 September 2020.

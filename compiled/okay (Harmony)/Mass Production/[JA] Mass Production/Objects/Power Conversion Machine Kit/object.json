@@ -1,0 +1,15 @@
+{
+  "Name": "Power Conversion Machine Kit",
+  "Description": "Modifies a machine to use 10x the input to make 10x the output but takes 2x as long. Every operation also produces Battery Packs.",
+  "Price": 3000,
+  "Category": "Crafting",
+  "Recipe":
+  {
+    "ResultCount": 1,
+	"Ingredients":
+	[
+	  { "Object": "Basic Machine Kit", "Count": 1 },
+	  { "Object": 336, "Count": 2 }
+	]
+  }
+}

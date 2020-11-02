@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CommonHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataParsers\CropDataParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DrawHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameI18n.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\GenericModConfigMenu\GenericModConfigMenuIntegration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\GenericModConfigMenu\IGenericModConfigMenuApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\Automate\AutomateIntegration.cs" />
@@ -51,9 +52,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)TileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\BaseOverlay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\CommonSprites.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\DropdownList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Dropdown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ConstraintSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\InvariantDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\InvariantHashSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ObjectReferenceComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\SetExtensions.cs" />
   </ItemGroup>
 </Project>

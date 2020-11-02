@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Pathoschild.Stardew.LookupAnything.Framework.Subjects;
+using Pathoschild.Stardew.LookupAnything.Framework.Lookups;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
 {

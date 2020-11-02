@@ -991,7 +991,7 @@ info):
    "Target": "Characters/Abigail",
    "FromFile": "assets/abigail-{{Random:hood, jacket, raincoat |key=outfit}}.png",
    "When": {
-      "HasFile": "assets/abigail-{{Random:hood, jacket, raincoat |key=outfit}}.png"
+      "HasFile:assets/abigail-{{Random:hood, jacket, raincoat |key=outfit}}.png": true
    }
 }
 ```

@@ -60,7 +60,7 @@
     <Compile Include="Items\AugmentorTypes.cs" />
     <Compile Include="Items\MachineInfo.cs" />
     <Compile Include="Items\PlacedAugmentorsManager.cs" />
-    <Compile Include="Items\SerializablePlaceAugmentors.cs" />
+    <Compile Include="Items\SerializablePlacedAugmentors.cs" />
     <Compile Include="MachineAugmentorsMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserConfig.cs" />

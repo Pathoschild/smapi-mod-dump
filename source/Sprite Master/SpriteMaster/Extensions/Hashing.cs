@@ -32,18 +32,15 @@ namespace SpriteMaster.Extensions {
 		public const ulong Default = _HashValues.Default;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ulong Accumulate (ulong hash, ulong hashend) {
-			switch (DefaultCombineType) {
-				case CombineType.Xor: return hash ^ hashend;
-				// Stolen from C++ Boost.
-				case CombineType.Boost: return hash ^ (hashend + 0x9e3779b9ul + (hash << 6) + (hash >> 2));
-			}
-		}
+		private static ulong Accumulate (ulong hash, ulong hashend) => DefaultCombineType switch {
+			CombineType.Xor => hash ^ hashend,
+			// Stolen from C++ Boost.
+			CombineType.Boost => hash ^ (hashend + 0x9e3779b9ul + (hash << 6) + (hash >> 2)),
+			_ => throw new Exception($"Unknown Combine Type {DefaultCombineType}")
+		};
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ulong Accumulate (ulong hash, int hashend) {
-			return Accumulate(hash, unchecked((ulong)hashend));
-		}
+		private static ulong Accumulate (ulong hash, int hashend) => Accumulate(hash, unchecked((ulong)hashend));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ulong Combine (params ulong[] hashes) {
@@ -78,9 +75,7 @@ namespace SpriteMaster.Extensions {
 
 		// FNV-1a hash.
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong HashFNV1 (this byte[] data) {
-			return new Span<byte>(data).HashFNV1();
-		}
+		public static ulong HashFNV1 (this byte[] data) => new Span<byte>(data).HashFNV1();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ulong HashFNV1 (this in Span<byte> data) {
@@ -95,31 +90,21 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong HashFNV1 (this byte[] data,/* int start,*/ int length) {
-			return new Span<byte>(data, /*start, */length).HashFNV1();
-		}
+		public static ulong HashFNV1 (this byte[] data,/* int start,*/ int length) => new Span<byte>(data, /*start, */length).HashFNV1();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong HashFNV1<T> (this T[] data) where T : unmanaged {
-			return data.CastAs<T, byte>().HashFNV1();
-		}
+		public static ulong HashFNV1<T> (this T[] data) where T : unmanaged => data.CastAs<T, byte>().HashFNV1();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static unsafe ulong HashFNV1<T> (this in Span<T> data) where T : unmanaged {
-			return data.As<byte>().HashFNV1();
-		}
+		public static unsafe ulong HashFNV1<T> (this in Span<T> data) where T : unmanaged => data.As<byte>().HashFNV1();
 
 		private static readonly IxxHash HasherXX = xxHashFactory.Instance.Create(new xxHashConfig() { HashSizeInBits = 64 });
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ulong HashXXCompute (this byte[] hashData) {
-			return BitConverter.ToUInt64(hashData, 0);
-		}
+		private static ulong HashXXCompute (this byte[] hashData) => BitConverter.ToUInt64(hashData, 0);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong HashXX (this byte[] data) {
-			return HasherXX.ComputeHash(data).Hash.HashXXCompute();
-		}
+		public static ulong HashXX (this byte[] data) => HasherXX.ComputeHash(data).Hash.HashXXCompute();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static unsafe ulong HashXX (this in Span<byte> data) {
@@ -136,67 +121,45 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong HashXX<T> (this T[] data) where T : unmanaged {
-			return data.CastAs<T, byte>().HashXX();
-		}
+		public static ulong HashXX<T> (this T[] data) where T : unmanaged => data.CastAs<T, byte>().HashXX();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong HashXX<T> (this in Span<T> data) where T : unmanaged {
-			return data.As<byte>().HashXX();
-		}
+		public static ulong HashXX<T> (this in Span<T> data) where T : unmanaged => data.As<byte>().HashXX();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong Hash (this byte[] data) {
-			return data.HashXX();
-			//return data.HashFNV1();
-		}
+		public static ulong Hash (this byte[] data) => data.HashXX();//return data.HashFNV1();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong Hash (this in Span<byte> data) {
-			return data.HashXX();
-		}
+		public static ulong Hash (this in Span<byte> data) => data.HashXX();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong Hash (this byte[] data, int start, int length) {
-			return data.HashXX(start, length);
-			//return data.HashFNV1();
-		}
+		public static ulong Hash (this byte[] data, int start, int length) => data.HashXX(start, length);//return data.HashFNV1();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong Hash<T> (this T[] data) where T : unmanaged {
-			return data.HashXX();
-		}
+		public static ulong Hash<T> (this T[] data) where T : unmanaged => data.HashXX();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong Hash<T> (this in Span<T> data) where T : unmanaged {
-			return data.HashXX();
-		}
+		public static ulong Hash<T> (this in Span<T> data) where T : unmanaged => data.HashXX();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong Hash (this in Rectangle rectangle) {
-			return
-				((ulong)rectangle.X & 0xFFFF) |
-				(((ulong)rectangle.Y & 0xFFFF) << 16) |
-				(((ulong)rectangle.Width & 0xFFFF) << 32) |
-				(((ulong)rectangle.Height & 0xFFFF) << 48);
-		}
+		public static ulong Hash (this in Rectangle rectangle) =>
+			((ulong)rectangle.X & 0xFFFF) |
+			(((ulong)rectangle.Y & 0xFFFF) << 16) |
+			(((ulong)rectangle.Width & 0xFFFF) << 32) |
+			(((ulong)rectangle.Height & 0xFFFF) << 48);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong Hash (this in XRectangle rectangle) {
-			return
-				((ulong)rectangle.X & 0xFFFF) |
-				(((ulong)rectangle.Y & 0xFFFF) << 16) |
-				(((ulong)rectangle.Width & 0xFFFF) << 32) |
-				(((ulong)rectangle.Height & 0xFFFF) << 48);
-		}
+		public static ulong Hash (this in XRectangle rectangle) =>
+			((ulong)rectangle.X & 0xFFFF) |
+			(((ulong)rectangle.Y & 0xFFFF) << 16) |
+			(((ulong)rectangle.Width & 0xFFFF) << 32) |
+			(((ulong)rectangle.Height & 0xFFFF) << 48);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong Hash (this in Bounds rectangle) {
-			return
-				((ulong)rectangle.X & 0xFFFF) |
-				(((ulong)rectangle.Y & 0xFFFF) << 16) |
-				(((ulong)rectangle.Width & 0xFFFF) << 32) |
-				(((ulong)rectangle.Height & 0xFFFF) << 48);
-		}
+		public static ulong Hash (this in Bounds rectangle) =>
+			((ulong)rectangle.X & 0xFFFF) |
+			(((ulong)rectangle.Y & 0xFFFF) << 16) |
+			(((ulong)rectangle.Width & 0xFFFF) << 32) |
+			(((ulong)rectangle.Height & 0xFFFF) << 48);
 	}
 }

@@ -3,7 +3,7 @@
   "Name": "NPC Jasper",
    "Author": "Lemurkat",
    "Description": "Adds the NPC Jasper",
-   "Version": "1.2.5",
+   "Version": "1.2.8",
    "UniqueID": "Lemurkat.NPCJasper",
   "UpdateKeys": ["Nexus:5599"],
    "ContentPackFor": {

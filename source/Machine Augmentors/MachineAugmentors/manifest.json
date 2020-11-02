@@ -11,8 +11,8 @@
 {
   "Name": "Machine Augmentors",
   "Author": "SlayerDharok",
-  "Version": "1.0.6",
-  "Description": "Adds augmentor items that can be attached to machines to upgrade them",
+  "Version": "1.0.9",
+  "Description": "Adds augmentor items that can be attached to machines to upgrade them. Sold by the Travelling Cart Merchant or obtained through rare monster drops.",
   "UniqueID": "SlayerDharok.MachineAugmentors",
   "EntryDll": "MachineAugmentors.dll",
   "MinimumApiVersion": "3.0.1",

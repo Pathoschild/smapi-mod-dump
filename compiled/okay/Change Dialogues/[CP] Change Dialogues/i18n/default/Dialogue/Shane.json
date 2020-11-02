@@ -92,13 +92,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Shane": "adult/rude/shy/negative/{{lowercase:{{mardrest.ChangeDialogues/ShaneGender}}}}/datable/null/Town/spring 20/Marnie 'aunt'/AnimalShop 25 6/{{mardrest.ChangeDialogues/ShaneName}}"
-		}
 	}
 	]
 }

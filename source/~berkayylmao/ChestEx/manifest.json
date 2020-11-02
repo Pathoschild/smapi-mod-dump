@@ -10,8 +10,8 @@
 
 {
   "Name": "ChestEx",
-  "Author": "Berkay Yigit (berkayylmao)",
-  "Version": "1.3.4",
+  "Author": "berkayylmao",
+  "Version": "1.4.0",
   "Description": "Increase the capacity of your chests/fridge, today!",
   "UniqueID": "berkayylmao.ChestEx",
   "EntryDll": "ChestEx.dll",

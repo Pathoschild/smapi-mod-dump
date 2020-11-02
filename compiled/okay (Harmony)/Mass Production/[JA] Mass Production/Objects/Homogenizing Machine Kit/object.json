@@ -1,0 +1,15 @@
+{
+  "Name": "Homogenizing Machine Kit",
+  "Description": "Modifies a machine to use 3x the input to make 3, 6, 10, or 15x the output and a little more time depending on input quality. Output will always be lowest quality.",
+  "Price": 3000,
+  "Category": "Crafting",
+  "Recipe":
+  {
+    "ResultCount": 1,
+	"Ingredients":
+	[
+	  { "Object": 336, "Count": 5 },
+	  { "Object": 338, "Count": 15 }
+	]
+  }
+}

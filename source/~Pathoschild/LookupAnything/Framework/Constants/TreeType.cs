@@ -15,10 +15,10 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
     /// <summary>Indicates a tree type.</summary>
     internal enum TreeType
     {
-        Oak = Tree.bushyTree,
+        BigMushroom = Tree.mushroomTree,
         Maple = Tree.leafyTree,
-        Pine = Tree.pineTree,
+        Oak = Tree.bushyTree,
         Palm = Tree.palmTree,
-        BigMushroom = Tree.mushroomTree
+        Pine = Tree.pineTree
     }
 }

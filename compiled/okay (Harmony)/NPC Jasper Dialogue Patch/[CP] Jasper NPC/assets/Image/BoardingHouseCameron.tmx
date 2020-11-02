@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="47" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="10">
+ <tileset firstgid="1" name="paths" tilewidth="16" tileheight="16" tilecount="32" columns="4">
+  <image source="paths.png" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="33" name="walls_and_floors" tilewidth="16" tileheight="16" tilecount="512" columns="16">
+  <image source="walls_and_floors.png" width="256" height="512"/>
+ </tileset>
+ <tileset firstgid="545" name="1" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior.png" width="512" height="1088"/>
+ </tileset>
+ <tileset firstgid="2721" name="Z_lemurfurniture" tilewidth="16" tileheight="16" tilecount="2048" columns="32">
+  <image source="lemurfurniture.png" width="512" height="1024"/>
+ </tileset>
+ <tileset firstgid="4769" name="Z_DesertTiles" tilewidth="16" tileheight="16" tilecount="368" columns="16">
+  <image source="DesertTiles.png" width="256" height="368"/>
+ </tileset>
+ <layer id="1" name="Back" width="47" height="24">
+  <data encoding="base64" compression="zlib">
+   eJzVlsFtAjEQRb1GQqQE4MQN7rmEnKM0AEoJNEIDSCmBBrIdZEugCiLRATlkzDKR9bVrzzgYOV/6Gu/wZI1HxpqZNWYmsJOES2H/oq3AudlUvQucm32tjHlRmLUXODf7RvWsFWZ90LquwvEe7M62Rs7lNlVrzrE+ad1U4XgPto/jde3lSut7jPVjaX2PsX4soZfavj8OW7Nq8OVudeS7fEtW0u/VsDWrAbszYq7Pt2Qlfcc7cwC73zHXZy0beutT7rvm/50rate/d0Zx3lxRu2al9EbCpvZdwrJwLuWzSWbbEJuy98lzbG8WzqbubNLZNsRq+RPU71jMoXA2deeVzrYhVstjnU2kdn+G8+c4P7ezYfbcwWp5ZL9tfx0szZuqfX+1ex+pti8bj35vpLObds7T7j0aGPNAHpMn5On1ewSxxL7Pqa4F+Ym8JD9fv+cQS+57LP53/QBNPEWf
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <layer id="3" name="Buildings" width="47" height="24">
+  <properties>
+   <property name="Doors" value="13 11 1 120 20 11 1 120 14 16 1 120"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzVVrtOwzAUNY6rMlYCPqDqRB/0NxADEp/QSpGQYOETkCgLLIxIbFAmWGDiMUJ5FQlYYQLxZkCsdOBYzlXSJG2cNkHplY4Sx8fHx1F6evOcsQKQ80HBgSKQj5ibs7i9VgVrZzRg8ui5skzrmu9wzk4oWnssaMCMkUvvUNYdjdPqeuMaU9EeaxqIk0vedc5axxm20/YeOhUnl7zvpBjbTXnPJ2tIqPtT+G4k0HsTvq+BaeBkmLES/E4AZWAc2DMYe4bvlwR6L6b01tC6Rc09NmPkytI9K5X07s6mJ0vjkQfnVJRcmpd1jm/iArgEroCmK2PIO533h6scOrbGR7w9l0bxrY0Z9rgb9wDjQx7MvbWefXN7XtYb5t+BD+AT+Ori3ZlBD5bGvUZeRcml+aBawm+2JvxzuAWsA788OJuj5LY0vW/Bd12Ey4Ok1aB5l5k/h3c+L8JlZFJqBb5XhcrWLPf2q848c/erYbhxa2e5t1915pm7Xw3D7UV7P63gx6U50iZ9nTwLk6nmP2iTvk6ehclUs0ftGv7/lg31bFLY3Abuz0S7NunrVNgeq1/tWaGuGyPoHXH/CmREcr1X8M6rhnd+Sni1k+a9qtEHO73H1dv2o13O+PNKGVt7kPEHbEIQ9g==
+  </data>
+ </layer>
+ <objectgroup id="4" name="Buildings">
+  <object id="1" name="TileData" x="576" y="80" width="16" height="16">
+   <properties>
+    <property name="Action" value="Say Wi-fi is free for guest use."/>
+   </properties>
+  </object>
+  <object id="2" name="TileData" x="704" y="80" width="16" height="16">
+   <properties>
+    <property name="Action" value="Say Out of Order"/>
+   </properties>
+  </object>
+  <object id="3" name="TileData" x="80" y="176" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message &quot;BoardingHouse.1&quot;"/>
+   </properties>
+  </object>
+  <object id="4" name="TileData" x="256" y="176" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message &quot;BoardingHouse.1&quot;"/>
+   </properties>
+  </object>
+  <object id="5" name="TileData" x="432" y="176" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message &quot;BoardingHouse.1&quot;"/>
+   </properties>
+  </object>
+  <object id="6" name="TileData" x="96" y="288" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message &quot;BoardingHouse.1&quot;"/>
+   </properties>
+  </object>
+  <object id="7" name="TileData" x="272" y="288" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message &quot;BoardingHouse.1&quot;"/>
+   </properties>
+  </object>
+  <object id="8" name="TileData" x="464" y="288" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message &quot;BoardingHouse.1&quot;"/>
+   </properties>
+  </object>
+  <object id="9" name="TileData" x="640" y="288" width="16" height="16">
+   <properties>
+    <property name="Action" value="Door Cameron"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer id="5" name="Front" width="47" height="24">
+  <data encoding="base64" compression="zlib">
+   eJxjYBh4oMhEHgaBzeyEMQzQQi3MHaSCa+yE1dBaLbluHwyAFLcvBYbJMhLChdYA5vYeVgaGXlYIewkHAwMvCwMDHxDzAzEjEE9iZmA4CnT3sUHodh7WgXUHOYDc9N4I1HcMCR+GmnMETZyWatHdvgKYJlYC8SogXg3EawZRGqEE7EbzJ3qZG8lEXNlMbbXEgBRgnk1lwS1fSUL6w6b2JlDsFhZxUswdBYMHgMp8b2B68cGTZoYSOEZkeYYNk6KWmmbTGtCrjUVMeUaqWlxtbHxmhwPTcgQLdrWmQHEztLSOrb2KqzwjRS3I7aSanQpsb6UBcSgzqtoSNqAY0N1hdMqn5KSZRqCbm6Du/skPoXuEGRimAN0+FYg/MFPPffgAOW5fCHTbIjq5Dx8YKf0hdMAvgF2cF00cvb2KC5OqltZmD2UAAMftuBQ=
+  </data>
+ </layer>
+ <objectgroup id="6" name="Front"/>
+ <layer id="7" name="AlwaysFront" width="47" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztzrEJACAQBMGDD2xIK7dBWzAQFJyBzTfhd7PtB8AZvZJRty8AAHjFApy9CG4=
+  </data>
+ </layer>
+ <objectgroup id="8" name="AlwaysFront"/>
+ <layer id="9" name="Paths" width="47" height="24" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztlc0KACAIg7v2/i/cXTL7YWW67xLIghy6SiEkL1WcL7Q93ey9H5HejHpFaaMQsVfvvWSas5VcQmk1XWTfvaD5bXmPnIVMfyUhaLzs6sleo7QotDf06itaWbcyezffyR0aJ8cCHQ==
+  </data>
+ </layer>
+ <objectgroup id="10" name="Paths"/>
+</map>

@@ -1,0 +1,11 @@
+{
+	"Changes": [
+        {	
+            "Target": "Characters/Dialogue/Wizard",
+            "Action": "EditData",
+            "Entries": {
+				"AquariumDonated:SuperCucumber": "I saw that the Aquarium have a 'Super Cucumber' on display now.$0#$b#I believe it to be a peculiar type of the regular 'Sea Cucumber', it might possess arcane properties...$0#$b#%The Wizard seems lost in thought.",
+			}
+		}
+	]
+}

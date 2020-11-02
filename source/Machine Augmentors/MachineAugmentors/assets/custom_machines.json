@@ -11,25 +11,21 @@
 {
   "Machines": [
     //  You can specify some basic metadata about modded machines so that Machine Augmentors is able to recognize them and let you attach augmentors to them.
-    /* EXAMPLE:
+    /* EXAMPLE #1: This lets you attach any type of augmentor to the Syrup Maker machine from the Artisinal Soda Makers mod
     {
       "RequiredModUniqueId": "Hadi.JASoda", // This is the "UniqueID" value in the manifest.json of the mod that contains the machine
       "Name": "Syrup Maker", // Optional (Not required if you specify a value for "Id"). This is the internal "Name" of the machine, NOT the "DisplayName". 
                              // (So if the mod has support for multiple languages, use the name specified in i18n\default.json)
-      "Id": 379, // Optional (Not required if you specify a value for "Name"). This is the "ParentSheetIndex" value for the machine
-      "HasQualityProducts": false, // This should be set to true if the machine produces items that can have multiple different Quality values (Regular/Silver/Gold/Iridium)
-      "RequiresInput": true, // This should be set to true if the machine requires 1 or more input items to produce an output. False if it automatically keeps producing outputs like a Crystalarium, Bee House, Tapper etc.
+      "Id": 379,  // Optional (Not required if you specify a value for "Name"). This is the "ParentSheetIndex" value for the machine. 
+                  // If the machine doesn't have a static Id (as in, it's a modded machine that wasn't added to the game through Content Patcher), then do NOT use this field. Instead reference it by "Name".
+      "HasQualityProducts": false, // This should be set to true (without quotes around it) if the machine produces items that can have multiple different Quality values (Regular/Silver/Gold/Iridium)
+      "RequiresInput": true, // This should be set to true (without quotes around it) if the machine requires 1 or more input items to produce an output. False if it automatically keeps producing outputs like a Crystalarium, Bee House, Tapper etc.
       "AttachableAugmentors": [ // This is the names of all Augmentors that should be attachable to the machine
-        "Output",
-        "Speed",
-        "Efficiency",
-        "Quality",
-        "Production",
-        "Duplication"
+        "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication"
       ]
     }
     */
-    // Here's another example that lets you attach Speed Augmentors to Incubators. Not thoroughly tested but seems to work...
+    // EXAMPLE #2: This lets you attach Speed Augmentors to Incubators
     /*{
       "RequiredModUniqueId": "SlayerDharok.MachineAugmentors",
       "Name": "Incubator",
@@ -39,5 +35,167 @@
         "Speed"
       ]
     }*/
+
+    //  Artisan Valley Machines:
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Alembic",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Butter Churn",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Dehydrator",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Drying Rack",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Espresso Machine",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Extruder",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Foreign Cask",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Glass Jar",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Grinder",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Ice Cream Machine",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Infuser",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Juicer",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Pepper Blender",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Smoker",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Soap Press",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Still",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Vinegar Cask",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Wax Barrel",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+    {
+      "RequiredModUniqueId": "ppja.artisanvalleymachinegoods",
+      "Name": "Yogurt Jar",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Quality", "Production", "Duplication" ]
+    },
+
+    //  Vanilla Machines:
+    //  Incubator
+    {
+      "RequiredModUniqueId": "SlayerDharok.MachineAugmentors",
+      "Name": "Incubator",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Duplication" ]
+    },
+    //  Slime egg-incubator
+    {
+      "RequiredModUniqueId": "SlayerDharok.MachineAugmentors",
+      "ID": 156,
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Duplication" ]
+    },
+    //  Slime egg press
+    {
+      "RequiredModUniqueId": "SlayerDharok.MachineAugmentors",
+      "ID": 158,
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [ "Output", "Speed", "Efficiency", "Production", "Duplication" ]
+    }
+
   ]
 }

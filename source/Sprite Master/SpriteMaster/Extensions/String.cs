@@ -14,9 +14,7 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Extensions {
 	public static class String {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool IsBlank (this string str) {
-			return str == null || str == "";
-		}
+		public static bool IsBlank (this string str) => str == null || str == "";
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Reverse (this string str) {

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="2">
+ <properties>
+  <property name="Music" value="SettlingIn"/>
+  <property name="Warp" value="0 0 UnderwaterMountain 0 0"/>
+ </properties>
+ <tileset firstgid="1" name="ElliottHouseIndoors" tilewidth="16" tileheight="16" tilecount="56" columns="4">
+  <image source="ElliottHouseTiles.png" width="64" height="224"/>
+ </tileset>
+ <tileset firstgid="57" name="mine" tilewidth="16" tileheight="16" tilecount="288" columns="16">
+  <image source="mine.png" width="256" height="288"/>
+ </tileset>
+ <tileset firstgid="345" name="paths" tilewidth="16" tileheight="16" tilecount="32" columns="4">
+  <image source="paths.png" width="64" height="128"/>
+ </tileset>
+ <layer id="1" name="Back" width="20" height="20">
+  <properties>
+   <property name="Water" value="T"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxrZ2BgaB/FDIcIYHLMukyhmejqNRkZGLSQsDYjRPwIEWZis98SqN8KCVszIuSOEjATJH4YzTxPoH4vJOzNSLzfQWKX0NRgC78jePj4/PuIiDjG50ZS9OGyC5956GFJDfcdJdKcyzjMQ48PdIxL/igO85D9+gjNz4TyCjnxQcj/xOQR9Li8D8QPgPghmpvJLQveA/EHIP5IhFnElBX/gZgBmO8YGck3ixQMAOSVAVs=
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <layer id="3" name="Buildings" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYMAO6oHYFojt0LA9EE/DoQcXAJnVD8S+QOyHhv2BeBmRZoLM6YOaNR+IY4E4Dg3HA/E2IsyshZozC2rWeiDOBeI8NJwPxMeIMLMXas46qFn78dh9jQgz50LN2YfFrEg8Zs6CmrkCTX4tHjepMRJ25w40ub04zCIEYGbeQBM/S6Z5MDPRzbtLgXkgwIEWJpS4DwR+oPEHm/vQzaPUfS/Q+G8pNE8CzX1/gfgfmWaxAc1ix5Lm+RgRZsoD2Qo48gUyEAWqEcOjDmQmP9Q+GFuAEbvbCZmFDyCbLQBlk2sWKQAAFjk5rw==
+  </data>
+ </layer>
+ <objectgroup id="4" name="Buildings">
+  <object id="1" name="TileData" x="144" y="96" width="16" height="16">
+   <properties>
+    <property name="Action" value="StartWave"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer id="5" name="Front" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFtAaeA+2AUTAKRsEooAEAAGkLAEo=
+  </data>
+ </layer>
+ <objectgroup id="6" name="Front"/>
+ <layer id="7" name="Paths" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBjZIJFxoF1AXTDc/DMKRsFgB/jy3HDPjwByEAGJ
+  </data>
+ </layer>
+ <objectgroup id="8" name="Paths"/>
+</map>

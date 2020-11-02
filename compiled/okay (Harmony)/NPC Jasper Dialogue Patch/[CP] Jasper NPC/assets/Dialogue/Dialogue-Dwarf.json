@@ -1,7 +1,10 @@
 {
-    "Entries": {
-        
-//Canon: Mon, Tue, Wed, Thu, Fri, Sat, Sun, Wed6, Thu4, Fri2
+	"Changes":[
+	{	"LogName": "Dwarf Dialogue", 
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Dwarf",
+    	"Entries": {
+        //Canon: Mon, Tue, Wed, Thu, Fri, Sat, Sun, Wed6, Thu4, Fri2
 		//Mon
 	"Mon2": "It's weird what people leave lying around. I don't know what most of it's for, but... do you like my collection?",
 	"summer_Mon4": "The sun is no friend to my kind, sundweller. His gaze burns our skin.",
@@ -36,6 +39,7 @@
 	"Sat8": "I came from mountains far away. Escaped from... No, you don't need to hear my sad story!#$b#The valley called me home. The end.",
 	"Sat10": "The Elemental Wars were terrible. My sire told stories about the carnage.#$b#They made sure I remember.",
 		//Sun
+	"Sun": "$1 Dwarf_Milk#One day you'll have to tell me about this beverage you call \"milk\".$k#$e#Human food intrigues me. Is it true you drain the juices from other animals to drink?",
 	"Sun8": "That human with the wire-frame eyes, the one that smells of metal and oil. I watch her stare at the stars.#$b#Sire said we came from the stars. I'm not sure I believe him.",
 	"Sun10": "You're a good friend. I'm glad I trusted you.",
 	"summer_Mon10": "I think one day, yes, I will trust you with my true name.#$b#But that day is... not today, friend.",
@@ -45,7 +49,21 @@
 
 	"DwarfVisit": "I'm not ready to return them yet... okay?",
 	"JasperHome1": "I hope your friend's okay. But please keep our secret.#$b#Humans fear what they don't understand and destroy what they fear.",
-	"JasperHomeA": "Thanks for keeping me secret, friend. Maybe one day I'll talk to your friend... but I've gotta decide if he can be trusted first. Okay?"
-        
-    }
+	"JasperHomeA": "Thanks for keeping me secret, friend. Maybe one day I'll talk to your friend... but I've gotta decide if he can be trusted first. Okay?"     
+    	}
+	},
+	{	"LogName": "Dwarf dialogue related to Jasper",	
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Dwarf",
+		"When": {"HasSeenEvent": "55990005"},
+		"Entries": {
+			"winter_Fri_inlaw_Jasper": "Your mate has some most outrageous ideas, friend.#$b#But there is insight too, when you listen between the lines.",
+			"summer_Fri_inlaw_Jasper": "Your mate uses a great many words I don't understand, friend.#$b#What does {{random: preposterous, terraformation, subcutaneous, metamorphic, thesaurus}} mean?",
+			"fall_Fri_inlaw_Jasper": "Humans are a strange species, @. Why does your mate use so many words to say the same thing?", 
+			"spring_Fri_inlaw_Jasper": "Greetings friend! Pleased you could join us. How goes your mining?"
+		}
+	
+	}
+
+	]
 }

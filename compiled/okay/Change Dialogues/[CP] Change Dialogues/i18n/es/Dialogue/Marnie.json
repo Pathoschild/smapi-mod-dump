@@ -9,7 +9,7 @@
 			"Saloon_Sat": "Siempre veo a {{mardrest.ChangeDialogues/ClintName}} aquí, pero nunca habla con nadie. Solo mira por encima de su hombro de vez en cuando.$s",
 			"Tue": "Mi sobrin{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}} {{mardrest.ChangeDialogues/ShaneName}} lleva viviendo en mi casa unos meses.#$e#Me ayuda con las gallinas, así que no me quejo.",
 			"Fri4": "#$1 marnieLike#Creo que hay alguien en el pueblo a quien le hago tilín. *Ji, ji*$k$h#$e#Me sentiría muy sola si {{mardrest.ChangeDialogues/ShaneName}} se marchara.",	
-			"Fri6": "Me pregunto si {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/LewisGender}}}} Sr{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/LewisGender}}}}. {{mardrest.ChangeDialogues/LewisName}} se sentirá sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/LewisGender}}}} en esa casa tan grande...$s#$e#Seguro que echa de menos tener compañía, ¿no crees?"
+			"Fri6": "Me pregunto si {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mr:{{mardrest.ChangeDialogues/LewisGender}}}}. {{mardrest.ChangeDialogues/LewisName}} se sentirá sol{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/LewisGender}}}} en esa casa tan grande...$s#$e#Seguro que echa de menos tener compañía, ¿no crees?"
 		}
 	},
 	{
@@ -24,8 +24,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Marnie": "adult/polite/outgoing/positive/female/not-datable/Lewis/Town/fall 18/Lewis '' Shane 'sobrin{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}' Jas 'sobrina'/AnimalShop 12 14/{{mardrest.ChangeDialogues/MarnieName}}"
+		"Fields": {
+			"Marnie": {
+				9: "Lewis '' Shane 'sobrin{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/ShaneGender}}}}' Jas 'sobrina'"
+			}
 		}
 	}
 	]

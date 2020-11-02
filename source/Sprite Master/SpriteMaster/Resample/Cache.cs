@@ -31,14 +31,10 @@ namespace SpriteMaster.Resample {
 		private static readonly bool SystemCompression = false;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static string GetPath (params string[] path) {
-			return Path.Combine(LocalDataPath, Path.Combine(path));
-		}
+		internal static string GetPath (params string[] path) => Path.Combine(LocalDataPath, Path.Combine(path));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static string GetDumpPath (params string[] path) {
-			return Path.Combine(DumpPath, Path.Combine(path));
-		}
+		internal static string GetDumpPath (params string[] path) => Path.Combine(DumpPath, Path.Combine(path));
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private class CacheHeader {
@@ -54,15 +50,39 @@ namespace SpriteMaster.Resample {
 			public uint UncompressedDataLength;
 			public uint DataLength;
 
+			private delegate void ReadValue (object obj, BinaryReader stream);
+			private delegate void WriteValue (object obj, BinaryWriter stream);
+			private static readonly uint HeaderSize;
+			private static readonly ReadValue[] ReadValues;
+			private static readonly WriteValue[] WriteValues;
+
+			// Cache the serialization/deserialization commands so we don't have to do reflection every time.
+			static CacheHeader () {
+				uint headerSize = 0;
+
+				var fields = typeof(CacheHeader).GetFields();
+				ReadValues = new ReadValue[fields.Length];
+				WriteValues = new WriteValue[fields.Length];
+				uint i = 0;
+				foreach (var field in fields) {
+					headerSize += field.FieldType.GetSerializedSize();
+					var reader = field.FieldType.GetReader();
+					var writer = field.FieldType.GetWriter();
+
+					ReadValues[i] = (obj, stream) => field.SetValue(obj, reader(stream));
+					WriteValues[i] = (obj, stream) => writer(stream, field.GetValue(obj));
+					++i;
+				}
+
+				HeaderSize = headerSize;
+			}
+
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			internal static CacheHeader Read (BinaryReader reader) {
 				var newHeader = new CacheHeader();
 
-				foreach (var field in typeof(CacheHeader).GetFields()) {
-					field.SetValue(
-						newHeader,
-						reader.Read(field.FieldType)
-					);
+				foreach (var setField in ReadValues) {
+					setField(newHeader, reader);
 				}
 
 				return newHeader;
@@ -70,8 +90,8 @@ namespace SpriteMaster.Resample {
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			internal void Write (BinaryWriter writer) {
-				foreach (var field in typeof(CacheHeader).GetFields()) {
-					writer.Write(field.GetValue(this));
+				foreach (var writeField in WriteValues) {
+					writeField(this, writer);
 				}
 			}
 
@@ -153,7 +173,7 @@ namespace SpriteMaster.Resample {
 								data = rawData;
 							}
 							else {
-								data = Compression.Decompress(rawData, Config.FileCache.Compress);
+								data = Compression.Decompress(rawData, (int)uncompressedDataLength, Config.FileCache.Compress);
 							}
 						}
 						return true;
@@ -243,12 +263,11 @@ namespace SpriteMaster.Resample {
 		static extern bool CreateSymbolicLink (string Link, string Target, LinkType Type);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static bool IsSymbolic (string path) {
-			var pathInfo = new FileInfo(path);
-			return pathInfo.Attributes.HasFlag(FileAttributes.ReparsePoint);
-		}
+		private static bool IsSymbolic (string path) => new FileInfo(path).Attributes.HasFlag(FileAttributes.ReparsePoint);
 
 		static Cache () {
+			Config.FileCache.Compress = Compression.GetPreferredAlgorithm(Config.FileCache.Compress);
+
 			// Delete any old caches.
 			try {
 				foreach (var root in new [] { Config.LocalRoot }) {

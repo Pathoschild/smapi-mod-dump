@@ -64,14 +64,10 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static long SizeBytes (this Texture2D texture) {
-			return texture.Format.SizeBytes(texture.Area());
-		}
+		internal static long SizeBytes (this Texture2D texture) => texture.Format.SizeBytes(texture.Area());
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static long SizeBytes (this ManagedTexture2D texture) {
-			return (long)texture.Area() * 4;
-		}
+		internal static long SizeBytes (this ManagedTexture2D texture) => (long)texture.Area() * 4;
 
 		internal static Bitmap Resize (this Bitmap source, in Vector2I size, InterpolationMode filter = InterpolationMode.HighQualityBicubic, bool discard = true) {
 			if (size == new Vector2I(source)) {
@@ -102,28 +98,18 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static bool Anonymous (this Texture2D texture) {
-			return texture.Name.IsBlank();
-		}
+		internal static bool Anonymous (this Texture2D texture) => texture.Name.IsBlank();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static bool Anonymous (this ScaledTexture texture) {
-			return texture.Name.IsBlank();
-		}
+		internal static bool Anonymous (this ScaledTexture texture) => texture.Name.IsBlank();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static string SafeName (this string name) {
-			return name.IsBlank() ? "Unknown" : name.Replace("\\", "/").Replace("//", "/");
-		}
+		internal static string SafeName (this string name) => name.IsBlank() ? "Unknown" : name.Replace("\\", "/").Replace("//", "/");
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static string SafeName (this Texture2D texture) {
-			return texture.Name.SafeName();
-		}
+		internal static string SafeName (this Texture2D texture) => texture.Name.SafeName();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static string SafeName (this ScaledTexture texture) {
-			return texture.Name.SafeName();
-		}
+		internal static string SafeName (this ScaledTexture texture) => texture.Name.SafeName();
 
 		internal static Bitmap CreateBitmap (byte[] source, in Vector2I size, PixelFormat format = PixelFormat.Format32bppArgb) {
 			var newImage = new Bitmap(size.Width, size.Height, format);

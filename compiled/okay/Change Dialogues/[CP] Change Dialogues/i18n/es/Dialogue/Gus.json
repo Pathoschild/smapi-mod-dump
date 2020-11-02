@@ -72,13 +72,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Gus": "adult/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/GusGender}}}}/not-datable/null/Town/summer 8/Emily '' Pam ''/Saloon 18 6/{{mardrest.ChangeDialogues/GusName}}"
-		}
 	}
 	]
 }

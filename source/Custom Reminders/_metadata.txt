@@ -5,10 +5,10 @@ mods:
    Custom Reminders
 
 latest commit:
-   commit 78f001c7cb5579439bf5cae428f7be4132ef4437
+   commit 2401b85955f6957808047f0c6e89ca3c3c50b015
    Author: Dem1se <dem1se.io@protonmail.com>
-   Date:   Wed Sep 30 16:14:51 2020 +0530
+   Date:   Mon Oct 12 15:18:43 2020 +0530
    
-       Translation Update
-       Added Korean translations
+       Added MobilePhoneMod support
+       and other release changes
    

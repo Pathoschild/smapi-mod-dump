@@ -5,9 +5,9 @@ mods:
    Machine Augmentors
 
 latest commit:
-   commit f1fb41b31b218d72f7d0d80ac1b991b9ef9a6c72
+   commit 4caaef27b6541d26e0e880be7f7c9d2b1ed29e38
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Wed Apr 22 15:20:57 2020 -0400
+   Date:   Thu Oct 29 20:30:03 2020 -0400
    
-       Fixed duplication augmentor scaling formula. Changed production to linear formula.
+       Allow removing augmentors from Incubators by hitting them with a pickaxe or axe.
    

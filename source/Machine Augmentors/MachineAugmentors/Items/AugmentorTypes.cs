@@ -543,13 +543,18 @@ namespace MachineAugmentors.Items
 
         public static void OnProductsCollected(CheckForActionData CFAData, int AugmentorQuantity)
         {
-            //MachineInfo Info = MachineInfo.GetMachineInfo(CFAData.Machine);
-            //if (!AugmentableMachineTypes.Contains(Info.Type) || AugmentorQuantity <= 0 || Info.RequiresInput || CFAData.CurrentHeldObject == null)
-            //    return;
+            if (MachineInfo.TryGetMachineInfo(CFAData.Machine, out MachineInfo Info))
+            {
+                if (!Info.AttachableAugmentors.Contains(AugmentorType.Production) || AugmentorQuantity <= 0 || Info.RequiresInput || CFAData.CurrentHeldObject == null)
+                    return;
 
-            //  Intentionally left blank since there are no inputs to multiply by during an OnProductsCollected
-            //  And I think it'd be too overpowered to allow using ProductionAugmentors on machines that don't require inputs, since then
-            //  you'd receive a big boost to output with no penalty to balance it out.
+                //  Modify the output
+                int PreviousOutputStack = CFAData.CurrentHeldObjectQuantity;
+                int NewOutputStack = ComputeNewValue(AugmentorQuantity, double.MaxValue, PreviousOutputStack, Info.RequiresInput, out double OutputEffect, out double DesiredNewOutputValue);
+                CFAData.CurrentHeldObject.Stack = NewOutputStack;
+                MachineAugmentorsMod.LogTrace(AugmentorType.Production, AugmentorQuantity, CFAData.Machine, Info.RequiresInput, CFAData.Machine.TileLocation,
+                    "HeldObject.Stack", PreviousOutputStack, DesiredNewOutputValue, NewOutputStack, OutputEffect);
+            }
         }
 
         public static void OnInputsInserted(PerformObjectDropInData PODIData, int AugmentorQuantity)

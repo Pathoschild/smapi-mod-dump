@@ -3,14 +3,14 @@ url:
 
 mods:
    Angel's Existing Weapon Updater
+   Angel's Lead Rod Drop Rate Fixer
    Angel's Weapon Rebalance
    What Does The Fox Say
 
 latest commit:
-   commit a4e3fa1f98c216acb454af3ef27b5f96395e2fb5
+   commit 70c87309281b488d4bdf4201971a402dad2c7b7c
    Author: SIMON\Zach <whitewolf9024@hotmail.com>
-   Date:   Fri Oct 9 15:25:43 2020 -0700
+   Date:   Thu Oct 22 21:48:25 2020 -0700
    
-       Did a pass at weapon AoE's since vanilla values were too small to be noticeable.
-       Added a second pass at object hit detection so weapons clear everything in their AoE instead of just along the perimeter.
+       Added the Lead Rod Fixer mod. Fixed getting stuck in early game with the AG door closed until you killed 10 slimes before you got your new weapons. Added support for the 3 SVE weapons.
    

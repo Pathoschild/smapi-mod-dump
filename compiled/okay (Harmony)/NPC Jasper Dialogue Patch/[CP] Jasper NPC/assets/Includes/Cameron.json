@@ -1,0 +1,89 @@
+{
+	"Changes": [
+	
+{   "LogName": "NPC Manifestation",
+    "Action": "EditData",
+    "Target": "Data/NPCDispositions", 
+    "Entries": { 
+                    "Cameron": "adult/polite/outgoing/positive/female/not-datable/null/Town/summer 8/Jasper ''/BusStop 9 3/Cameron"		
+            },
+            "When": {  "HasMod |contains=CPBoardingHouse":false   }
+    },
+{   "LogName": "NPC Manifestation",
+    "Action": "EditData",
+    "Target": "Data/NPCDispositions", 
+    "Entries": { 
+                    "Cameron": "adult/polite/outgoing/positive/female/not-datable/null/Town/summer 8/Jasper ''/BoardingHouse 36 19/Cameron"		
+            },
+            "When": {   "HasMod |contains=CPBoardingHouse":true   }
+    },
+{	"LogName": "NPC Manifestation - change Cameron gender based on host gender",
+    "Action": "EditData",
+    "Target": "Data/NPCDispositions",
+    "Fields": {		"Cameron": {	"4": "male"     }
+                    },
+    "When": {	"PlayerGender":"male"    }
+    },		
+{   "LogName": "NPC Gift Tastes",
+    "Action": "EditData",
+    "Target": "Data/NPCGiftTastes",
+    "Entries": {
+        "Cameron": "wow, thanks! You've been doing your research. I love this!/72 82 243 108 121 122 258 613 563/This is wicked - and I mean that in a good way!/96 97 98 99 554 459/Um, yeah, not really my thing but it's the thought that counts, I guess.../440 346 209/Oh think you're funny, don't you? What is this? Trash?/196 2 156/Thanks!//" 
+            }
+    },
+
+//Loads everything    
+{	"LogName": "Cameron Portraits", 
+	"Action": "Load",
+	"Target": "Portraits/Cameron",
+	"FromFile": "assets/Portraits/Cameron-portraits.png"		
+        },
+{	"LogName": "Cameron Sprites", 
+    "Action": "Load",
+    "Target": "Characters/Cameron",
+    "When": {	"PlayerGender":"female"    },
+    "FromFile": "assets/Characters/CameronF.png"			
+        },
+{	"LogName": "Cameron Sprites", 
+    "Action": "Load",
+    "Target": "Characters/Cameron",
+    "When": {	"PlayerGender":"male"    },
+    "FromFile": "assets/Characters/CameronM.png"			
+        },
+{	"LogName": "Dialogue", 
+	"Action": "Load",
+	"Target": "Characters/Dialogue/Cameron",
+	"FromFile": "assets/Dialogue/Dialogue-Cameron.json"
+		},
+{	"LogName": "Schedule Dialogue", 
+	"Action": "Load",
+	"Target": "Strings/schedules/Cameron",
+	"FromFile": "assets/Schedule/CameronScheduleDialogue.json"
+		},
+{	"LogName": "Schedule", 
+	"Action": "Load",
+	"Target": "Characters/schedules/Cameron",
+	"FromFile": "assets/Schedule/CameronSchedule.json"
+        },
+
+//Events
+{   "Action": "EditData", 
+	"Target": "Data/Events/Farm",
+	"Entries":{ 
+		"55991001/e 50709920": "continue/64 15/farmer 64 16 2 Cameron 64 18 0/skippable/pause 1500/speak Cameron \"Oh hi there! Can you help me, please?#$b#I've just arrived from Zuzu City, and I'm lost.$2\"/emote farmer 8/pause 1000/speak Cameron \"Oh, sorry! My name's Peasbody, Professor Cameron Peasbody.$1#$b#Could you point me in the direction of the museum?$2\"/pause 500/emote farmer 16/pause 1000/question fork0 \"...#Follow the path into town, it's just over the stream.#You should go back to Zuzu. We don't want you here.\"/fork HelpCameron/pause 500/addMailReceived Cameron_Unwelcome/emote Cameron 60/pause 1500/speak Cameron \"I thought village folk were meant to be friendly.$5\"/pause 500/emote farmer 12/pause 2500/faceDirection farmer 0/warp farmer -100 -100/playSound doorClose/viewport 61 16/pause 1000/emote Cameron 28/pause 500/faceDirection Cameron 2/speak Cameron \"Okay... I suppose I deserved that.$2#$b#But...$2\"/pause 1000/faceDirection Cameron 0/pause 1500/speak Cameron \"This might be harder than I thought...$2\"/pause 2000/end",
+		"HelpCameron": "pause 500/speak Cameron \"Thanks! I hope to see you around sometime. I might be here for a while.\"/pause 500/faceDirection Cameron 2/pause 1500/faceDirection Cameron 0/speak Cameron \"Oh, hey, I hear there's a saloon in town. We could meet up for a drink there sometime.#$b#If you wanted to, that is?$2\"/pause 500/emote farmer 40/pause 1500/speak Cameron \"Hey, no need to answer now. Don't be a stranger, okay? Later!\"/pause 1500/faceDirection Cameron 2/pause 1500/end"
+		}
+},
+{ 	"Action": "EditMap",
+	"Target": "Maps/BoardingHouse",
+	"FromFile": "assets/BoardingHouseCameron.tmx",
+	"FromArea": { "X": 35, "Y": 15, "Width": 11, "Height": 8  },
+	"ToArea": { "X": 35, "Y": 15, "Width": 11, "Height": 8  },
+	"When": { "HasMod": "BusStopExpansion"   }
+		}
+
+	]
+
+}
+		
+		

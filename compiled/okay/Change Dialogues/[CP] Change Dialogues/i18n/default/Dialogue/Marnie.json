@@ -23,8 +23,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Marnie": "adult/polite/outgoing/positive/female/not-datable/Lewis/Town/fall 18/Lewis '' Shane '{{mardrest.ChangeDialogues/Nephew:L{{mardrest.ChangeDialogues/ShaneGender}}}}' Jas 'niece'/AnimalShop 12 14/{{mardrest.ChangeDialogues/MarnieName}}"
+		"Fields": {
+			"Marnie": {
+				9: "Lewis '' Shane '{{mardrest.ChangeDialogues/Nephew:L{{mardrest.ChangeDialogues/ShaneGender}}}}' Jas 'niece'"
+			}
 		}
 	}
 	]

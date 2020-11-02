@@ -444,6 +444,15 @@
 
 
     /*********
+    ** Item > music block lookups
+    *********/
+    // labels
+    // TODO
+    "item.music-block.pitch": "Pitch",
+    "item.music-block.drum-type": "Drum type",
+
+
+    /*********
     ** Monster lookups
     *********/
     // labels
@@ -457,9 +466,7 @@
 
     // values
     "monster.drops.nothing": "无",
-    "monster.adventure-guild.complete": "完成",
-    "monster.adventure-guild.incomplete": "正在进行",
-    "monster.adventure-guild.progress": "击杀了总数{{requiredCount}}中的{{count}}",
+    "monster.adventure-guild.eradication-goal": "消灭怪物的目的: {{name}} (击杀了总数{{requiredCount}}中的{{count}})",
 
 
     /*********
@@ -585,11 +592,11 @@
     "tree.is-fertilized": "播洒树肥",
 
     // values
+    "tree.name.big-mushroom": "大蘑菇",
     "tree.name.maple": "枫树",
     "tree.name.oak": "橡树",
-    "tree.name.pine": "松树",
     "tree.name.palm": "棕榈树",
-    "tree.name.big-mushroom": "大蘑菇",
+    "tree.name.pine": "松树",
     "tree.name.unknown": "未知",
     "tree.stage.done": "完全长成",
     "tree.stage.partial": "{{stageName}} (总共{{max}}个阶段中的第{{step}}阶段)",

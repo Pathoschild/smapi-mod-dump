@@ -24,14 +24,10 @@ namespace SpriteMaster.Types {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong From (int hashCode) {
-			return Hash.Combine(hashCode, hashCode << 32);
-		}
+		public static ulong From (int hashCode) => Hash.Combine(hashCode, hashCode << 32);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong From (ILongHash obj) {
-			return obj.GetLongHashCode();
-		}
+		public static ulong From (ILongHash obj) => obj.GetLongHashCode();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ulong From<T> (T obj) {

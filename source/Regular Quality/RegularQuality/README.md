@@ -11,7 +11,8 @@ for queries and analysis.**
 Drop the quality level of all items to be regular quality. Less clutter and less profit!
 
 Community Center bundle requirements are updated accordingly.
-Compatible with [Minerva's Harder Community Center Bundles](https://www.moddrop.com/stardew-valley/mods/580704).
+This should be compatibly with mods that alter community center requirements.
+Tested with [Minerva's Harder Community Center Bundles](https://www.moddrop.com/stardew-valley/mods/580704).
 
 ## Installation
 

@@ -1,0 +1,14 @@
+{
+  "Name": "[JA] Mass Production",
+  "Author": "Jacque Pott",
+  "Version": "1.2",
+  "Description": "Objects to allow machines to be upgraded.",
+  "UniqueID": "JacquePott.MassProductionJA",
+  "UpdateKeys": [
+    "Nexus:7021"
+  ],
+  "ContentPackFor":
+  {
+    "UniqueID": "spacechase0.JsonAssets"
+  }
+}

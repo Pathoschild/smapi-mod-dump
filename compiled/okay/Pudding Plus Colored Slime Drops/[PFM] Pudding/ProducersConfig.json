@@ -1,0 +1,32 @@
+﻿[
+	{
+		"ProducerName": "Pudding Machine",
+		"AlternateFrameProducing": false,
+		"AlternateFrameWhenReady": false,
+		"DisableBouncingAnimationWhileWorking": false,
+		"ProducingAnimation":
+		{ 
+			"RelativeFrameIndex": [1,2], 
+			"FrameInterval": 2
+		},
+        "ReadyAnimation": 
+        {
+        	"RelativeFrameIndex": [0],
+   		},
+	},
+
+	{
+		"ProducerName": "Gelatin Condenser",
+		"AlternateFrameProducing": false,
+		"AlternateFrameWhenReady": false,
+		"DisableBouncingAnimationWhileWorking": false,
+		"ProducingAnimation":
+		{ 
+			"RelativeFrameIndex": [1],
+		},
+        "ReadyAnimation": 
+        {
+        	"RelativeFrameIndex": [0],
+   		},
+	},
+]

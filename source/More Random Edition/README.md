@@ -94,3 +94,42 @@ Make sure you have SMAPI installed (https://stardewvalleywiki.com/Modding:Instal
   * Randomly generated weapon/crop names are English
   * The mad-lib style crop descriptions are English
   * Everything else has been internationalized
+
+## Pending Changes on the 0.4.0 branch
+* Crop changes
+  * When randomizing crops, there's the option of using custom crop images. This will link together the crop as it's growing, the seed packet, and the crop itself into a coherent set of images.
+      * Credits for the crop sprites not made by us (some images were modified from the originals):
+        * Mizu - permission is assumed from this page: https://community.playstarbound.com/threads/mizus-sprites.136549/
+        * Bonster - permission is assumed based on the bottom of the mod page for Bonster's Crops: https://www.nexusmods.com/stardewvalley/mods/3438
+        * Marrorow
+  * Wild seeds will now grow one of the randomized foragables of the season
+  * Crop text fixes
+    * The Queen of Sauce show now uses the randomized crop/fish names
+    * The text in the Secret Woods that tells you to bring a Sweet Gem Berry will now specifically tell you what crop you need to bring, since there's now no way to tell otherwise
+    * The Mr Qi quest now mentions which 10 crops to put in the Mayor's fridge for the initial textbox, and not just the quest description
+* Fish Changes
+  * When randomizing fish, there's the option of using custom fish images
+    * The majority of the new fish images on the FishRework branch are mostly directly pulled form the New New Fish mod: https://www.nexusmods.com/stardewvalley/mods/3578
+      * Specific credits go to Hisame for the sprites: https://www.nexusmods.com/Users/51209496
+  * Legendary fish can now be identified from their tooltip
+  * Legendary fish now show up in the spoiler log
+* Bundle changes
+  * The new bundles now have matching images
+  * Made the Rare Foods bundle based off of the crop seeds, rather than the crop
+    * This means that Ancient Seeds, the old Starfruit Seeds (from the desert shop), and the Rare Seeds (from the traveling cart) will be requried
+  * The fish in the Night market submarine should no longer appear for season-specific bundles that are not winter
+  * As a QoL feature, added the option (it's on by default) for a tooltip over the possible things to put into a bundle - this will make it easier to know where/when to get the fish
+* Balances changes
+  * Frozen tears were marked as easy to get - this has been rebalanced, since it does take time to get there
+  * Mead was marked as easy to get - this has been rebalanced since this could potentialaly take a long time to obtain
+  * Clay was potentially required for crafting recipies - this was rebalanced to require about 1/3 of the original requirements, as it was too high before
+* Boots now have custom images and descriptions (descriptions are enabled in English only)
+* Added the Stable to the list of randomized buildings, as it was overlooked before
+* Added Desert Totems to the item pool, and included them in the appropriate bundles
+* Reworked the config file to be more readable/user friendly
+* Reworked logging to log at appropriate levels (Trace/Warn/Error)
+* Removed a track called "coin" form the random music list - this seems to just be a sound effect used for picking up an item, and not a real song (so it was really annoying to listen to on loop!)
+* The weather string for fish in Korean has been fixed
+* Error Item bugfixes
+  * You could get "Error Item" as a reward from a bundle - this was due to the "Any Fish" item being rewarded. This has been fixed.
+  * If a building required the "Any Fish" item to build it, it showed up as "Error Item". This has been fixed by removing "Any Fish" from that pool.

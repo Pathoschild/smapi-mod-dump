@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Joja's Hauntings",
+    "Author": "MindMeltMax",
+    "Version": "1.0.0",
+    "Description": "Strange things happen in this store this close to spirit's eve",
+    "UniqueID": "MindMeltMax.HauntedJoja",
+    "EntryDll": "Joja's Hauntings.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "nexus:XXXX" ]
+}

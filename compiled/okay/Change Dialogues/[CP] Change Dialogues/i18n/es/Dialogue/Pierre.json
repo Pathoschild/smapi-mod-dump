@@ -12,13 +12,6 @@
 			"fall_Fri": "#$1 pierreMEGA#Mi sueño es seguir abriendo tiendas hasta hacerme extremadamente ric{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/PierreGender}}}}. Je, je, je.$k#$e#Hola. ¿Sigue yendo bien tu granja?#$e#Igual unas cuantas de mis semillas animan la cosa.$h",
 			"fall_Sat": "Compraré encantad{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/PierreGender}}}} todo lo que produzcas en la granja.#$e#Sí, lo revendo para obtener beneficios... Pero esas son las ventajas de tener una tienda.#$e#No me copies la idea..."
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Pierre": "adult/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/PierreGender}}}}/not-datable/Caroline/Town/spring 26/Abigail 'hija' Caroline 'mujer'/SeedShop 4 17/{{mardrest.ChangeDialogues/PierreName}}"
-		}
 	}
 	]
 }

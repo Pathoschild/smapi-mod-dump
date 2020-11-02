@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="11" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="14">
+ <tileset firstgid="1" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior" width="512" height="1088"/>
+ </tileset>
+ <tileset firstgid="2177" name="lemurfurniture" tilewidth="16" tileheight="16" tilecount="2048" columns="32">
+  <image source="lemurfurniture.png" width="512" height="1024"/>
+ </tileset>
+ <tileset firstgid="4225" name="paths" tilewidth="16" tileheight="16" tilecount="32" columns="4">
+  <image source="paths.png" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="4257" name="1" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior.png" width="512" height="1088"/>
+ </tileset>
+ <layer id="1" name="Back" width="11" height="9">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,4291,4291,4291,4291,4291,4291,4291,4291,4291,0,
+0,4323,4323,4323,4323,4323,4323,4323,4323,4323,0,
+0,5128,5128,5128,5128,5128,5128,5128,5128,5128,0,
+0,4456,4457,4456,4457,4456,4457,4485,4457,4456,4457,
+0,4488,4489,4488,4489,4488,4489,4517,4489,4488,4489,
+0,4520,4521,4520,4521,4520,4521,4520,4521,4520,4521,
+0,4488,4489,4488,4489,4520,4488,4488,4489,4488,4489,
+232,4520,4521,4520,4521,4488,4489,4520,4521,4520,4521
+</data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <layer id="3" name="Buildings" width="11" height="9">
+  <data encoding="csv">
+10,1,1,1,1,1,1,1,1,1,12,
+97,0,0,0,0,0,0,0,0,0,97,
+65,4331,4331,4331,4331,4331,4331,4331,4331,4331,69,
+65,4363,4363,4363,4363,4363,4363,4363,4363,4363,69,
+65,3507,0,3329,3330,3944,3945,5101,3329,3330,69,
+65,0,0,3329,3330,0,0,0,3329,3330,69,
+65,0,5101,3361,3362,0,0,0,3329,3330,69,
+65,0,0,0,0,0,0,0,3361,3362,69,
+65,4752,0,0,0,0,0,0,5101,0,69
+</data>
+ </layer>
+ <objectgroup id="4" name="Buildings">
+  <object id="2" name="TileData" x="16" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message &quot;Museum2.8&quot;"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer id="5" name="Front" width="11" height="9">
+  <properties>
+   <property name="Action" value=""/>
+  </properties>
+  <data encoding="csv">
+0,11,11,11,11,11,11,11,11,11,0,
+65,4851,4852,4513,0,3848,3849,4513,3718,3719,69,
+0,4883,4884,4545,0,3880,3881,4545,3750,3751,0,
+0,3475,0,3297,3298,3912,3913,0,3297,3298,0,
+0,0,0,4688,0,0,0,0,3191,5319,0,
+0,0,0,0,5091,0,0,0,0,4906,0,
+0,0,0,0,0,0,0,0,4908,4473,0,
+0,4720,0,0,0,0,0,0,0,0,0,
+97,166,166,166,166,163,0,164,166,166,4387
+</data>
+ </layer>
+ <objectgroup id="6" name="Front"/>
+ <layer id="7" name="Paths" width="11" height="9">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,4233,0,0,0,4233,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,4233,0,0,4233,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="8" name="Paths"/>
+</map>

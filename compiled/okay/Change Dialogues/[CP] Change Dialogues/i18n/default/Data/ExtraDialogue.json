@@ -37,7 +37,7 @@
 		"Target": "Data/ExtraDialogue",
 		"Entries": {
 			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -51,7 +51,7 @@
 		"Target": "Data/ExtraDialogue",
 		"Entries": {
 			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -65,21 +65,21 @@
 		"Target": "Data/ExtraDialogue",
 		"Entries": {
 			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Data/ExtraDialogue",
 		"Entries": {
 			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Data/ExtraDialogue",
 		"Entries": {
 			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -114,14 +114,14 @@
 		"Target": "Data/ExtraDialogue",
 		"Entries": {
 			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Data/ExtraDialogue",
 		"Entries": {
 			"NewChild_Adoption": "Everything went well, and now little {0} is part of the family. We're very fortunate."
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female" }
 	}
 	]
 }

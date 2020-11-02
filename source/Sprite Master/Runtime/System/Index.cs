@@ -217,9 +217,7 @@ namespace System {
     /// <summary>Create an Index from the start at the position indicated by the value.</summary>
     /// <param name="value">The index value from the start.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Index FromStart (long value) {
-      return FromStart(value, typeof(int));
-    }
+    public static Index FromStart (long value) => FromStart(value, typeof(int));
 
     /// <summary>Create an Index from the end at the position indicated by the value.</summary>
     /// <param name="value">The index value from the end.</param>
@@ -235,9 +233,7 @@ namespace System {
     /// <summary>Create an Index from the end at the position indicated by the value.</summary>
     /// <param name="value">The index value from the end.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Index FromEnd (long value) {
-      return FromEnd(value, typeof(int));
-    }
+    public static Index FromEnd (long value) => FromEnd(value, typeof(int));
 
     /// <summary>Returns the index value.</summary>
     public readonly long Value => (_value < 0) ? ~_value : _value;

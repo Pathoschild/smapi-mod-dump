@@ -59,6 +59,7 @@ namespace BossCreatures
 		public override void MovePosition(GameTime time, xTile.Dimensions.Rectangle viewport, GameLocation currentLocation)
 		{
 			base.MovePosition(time, viewport, currentLocation);
+			return;
 			if (Health < MaxHealth / 2)
 			{
 				base.MovePosition(time, viewport, currentLocation);

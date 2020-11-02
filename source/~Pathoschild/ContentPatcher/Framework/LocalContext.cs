@@ -99,15 +99,18 @@ namespace ContentPatcher.Framework
         /// <summary>Set a local token value.</summary>
         /// <param name="name">The token name.</param>
         /// <param name="value">The token value.</param>
-        public void SetLocalValue(string name, string value)
+        /// <param name="ready">Whether to mark the token ready.</param>
+        public void SetLocalValue(string name, string value, bool ready = true)
         {
-            this.SetLocalValue(name, new LiteralString(value, new LogPathBuilder(nameof(LocalContext), this.Scope, name)));
+            ITokenString str = new LiteralString(value, new LogPathBuilder(nameof(LocalContext), this.Scope, name));
+            this.SetLocalValue(name, str, ready);
         }
 
         /// <summary>Set a local token value.</summary>
         /// <param name="name">The token name.</param>
         /// <param name="value">The token value.</param>
-        public void SetLocalValue(string name, ITokenString value)
+        /// <param name="ready">Whether to mark the token ready.</param>
+        public void SetLocalValue(string name, ITokenString value, bool ready = true)
         {
             // get or create token
             ManagedManualToken managed;
@@ -118,7 +121,7 @@ namespace ContentPatcher.Framework
 
             // update values
             managed.ValueProvider.SetValue(value);
-            managed.ValueProvider.SetReady(true);
+            managed.ValueProvider.SetReady(ready);
         }
     }
 }

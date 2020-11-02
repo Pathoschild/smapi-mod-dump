@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using SpriteMaster.Types;
 using System;
 using System.Collections.Generic;
@@ -16,43 +17,53 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Extensions {
 	public static class Range {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static T Clamp<T> (this T value, T min, T max) where T : IComparable, IComparable<T> {
-			return (value.CompareTo(min) < 0) ?
-				min :
-				(value.CompareTo(max) > 0) ?
-					max :
-					value;
-		}
+		public static T Clamp<T> (this T value, T min, T max) where T : IComparable, IComparable<T> =>
+			(value.CompareTo(min) < 0) ? min : (value.CompareTo(max) > 0) ? max : value;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static int Clamp (this int value, int min, int max) {
-			return (value < min) ? min : (value > max) ? max : value;
-		}
+		public static int Clamp (this int value, int min, int max) => (value < min) ? min : (value > max) ? max : value;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static uint Clamp (this uint value, uint min, uint max) {
-			return (value < min) ? min : (value > max) ? max : value;
-		}
+		public static uint Clamp (this uint value, uint min, uint max) => (value < min) ? min : (value > max) ? max : value;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static long Clamp (this long value, long min, long max) {
-			return (value < min) ? min : (value > max) ? max : value;
-		}
+		public static long Clamp (this long value, long min, long max) => (value < min) ? min : (value > max) ? max : value;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong Clamp (this ulong value, ulong min, ulong max) {
-			return (value < min) ? min : (value > max) ? max : value;
-		}
+		public static ulong Clamp (this ulong value, ulong min, ulong max) => (value < min) ? min : (value > max) ? max : value;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static float Clamp (this float value, float min, float max) {
-			return (value < min) ? min : (value > max) ? max : value;
-		}
+		public static float Clamp (this float value, float min, float max) => (value < min) ? min : (value > max) ? max : value;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static double Clamp (this double value, double min, double max) {
-			return (value < min) ? min : (value > max) ? max : value;
-		}
+		public static double Clamp (this double value, double min, double max) => (value < min) ? min : (value > max) ? max : value;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2 Clamp (this Vector2 value, float min, float max) => new Vector2(value.X.Clamp(min, max), value.Y.Clamp(min, max));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2 Clamp (this Vector2 value, double min, double max) => value.Clamp((float)min, (float)max);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2 Clamp (this Vector2 value, Vector2 min, Vector2 max) => new Vector2(value.X.Clamp(min.X, max.X), value.Y.Clamp(min.Y, max.Y));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2 Min (this Vector2 value, float min) => new Vector2(Math.Min(value.X, min), Math.Min(value.Y, min));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2 Min (this Vector2 value, double min) => new Vector2(Math.Min(value.X, (float)min), Math.Min(value.Y, (float)min));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2 Min (this Vector2 value, Vector2 min) => new Vector2(Math.Min(value.X, min.X), Math.Min(value.Y, min.Y));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2 Max (this Vector2 value, float max) => new Vector2(Math.Max(value.X, max), Math.Max(value.Y, max));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2 Max (this Vector2 value, double max) => new Vector2(Math.Max(value.X, (float)max), Math.Max(value.Y, (float)max));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2 Max (this Vector2 value, Vector2 max) => new Vector2(Math.Max(value.X, max.X), Math.Max(value.Y, max.Y));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool WithinInclusive<T> (this T value, T min, T max) where T : IComparable, IComparable<T> {

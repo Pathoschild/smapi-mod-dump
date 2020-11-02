@@ -1,0 +1,72 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Videogamers0/SDV-ItemBags
+**
+*************************************************/
+
+{
+  "DefaultBagName": "Standardtasche",
+  "DefaultBagDescription": "Eine standard Tasche",
+  "GemBagName": "Edelsteintasche",
+  "GemBagDescription": "Eine Tasche zur Aufbewahrung wertvoller Edelsteine.",
+  "SmithingBagName": "Schmiedetasche",
+  "SmithingBagDescription": "Eine Tasche zur Aufbewahrung von Erzen, Barren und Geoden.",
+  "MineralBagName": "Mineraltasche",
+  "MineralBagDescription": "Eine Tasche zur Aufbewahrung wertvoller Mineralien.",
+  "MiningBagName": "Bergbautasche",
+  "MiningBagDescription": "Eine Tasche zur Aufbewahrung von Erzen, Geoden und Edelsteinen.",
+  "ResourceBagName": "Ressourcentasche",
+  "ResourceBagDescription": "Eine Tasche zum aufbewahren von Ressourcen.",
+  "ConstructionBagName": "Bautasche",
+  "ConstructionBagDescription": "Eine Tasche zur Aufbewahrung von Z�unen, B�den, Wegen und Bauressourcen.",
+  "TreeBagName": "Baumtasche",
+  "TreeBagDescription": "Eine Tasche zur Aufbewahrung von Baumprodukten und Setzlingen.",
+  "AnimalProductsBagName": "Tierprodukttasche",
+  "AnimalProductsBagDescription": "Eine Tasche zur Aufbewahrung tierischer Produkte.",
+  "RecyclingBagName": "Recyclingtasche",
+  "RecyclingBagDescription": "Eine Tasche zur Aufbewahrung von Wertstoffen und M�ll.",
+  "LootBagName": "Beutetasche",
+  "LootBagDescription": "Eine Tasche zur Aufbewahrung von Monsterbeute.",
+  "ForagingBagName": "Sammeltasche",
+  "ForagingBagDescription": "Eine Tasche zur Aufbewahrung von Sammelgegenst�nden.",
+  "ArtifactBagName": "Artefakttasche",
+  "ArtifactBagDescription": "Eine Tasche zur Aufbewahrung seltener Artefakte.",
+  "SeedBagName": "Saattasche",
+  "SeedBagDescription": "Eine Tasche zur Aufbewahrung von Samen.",
+  "OceanFishBagName": "Meeresfischtasche",
+  "OceanFishBagDescription": "Eine Tasche zur Aufbewahrung von Meeresfischen.",
+  "RiverFishBagName": "Flussfischtasche",
+  "RiverFishBagDescription": "Eine Tasche zur Aufbewahrung von Flussfischen.",
+  "LakeFishBagName": "Seefischtasche",
+  "LakeFishBagDescription": "Eine Tasche zur Aufbewahrung von Seefischen.",
+  "MiscellaneousFishBagName": "Sonstigerfischtasche",
+  "MiscellaneousFishBagDescription": "Eine Tasche zur Aufbewahrung verschiedener Fische.",
+  "BundleBagName": "B�ndeltasche",
+  "BundleBagDescription": "Eine Tasche zur Aufbewahrung, \nvon Gemeindezentrumbundles.",
+
+  "SizeSmallName": "Kleine",
+  "SizeMediumName": "Mittlere",
+  "SizeLargeName": "Gro�e",
+  "SizeGiantName": "Riesige",
+  "SizeMassiveName": "Enormriesige",
+
+  "DepositAllToolTip": "Lagert alle passenden Gegenst�nde \nvom Inventar in diese Tasche",
+  "WithdrawAllToolTip": "R�umt alle Gegenst�nde aus\ndieser Tasche ins Invetar",
+  "AutofillOnToolTip": "autom. Bef�llen (momentan an)\nWenn diese Option aktiv ist, \nwerden passende Gegenst�nde automatisch \nin diese Tasche gelegt",
+  "AutofillOffToolTip": "autom. Bef�llen (momentan aus)\nWenn diese Option aktiv ist, \nwerden passende Gegenst�nde automatisch \nin diese Tasche gelegt",
+  "HelpInfoToolTip": "-Rechts-Klick um ein Gegenstand zu �bertragen\n(halten zum wiederholen)\n \n-Shift halten um mehrere zu �bertragen \n-Strg halten um die H�lfte zu �bertragen",
+  "CustomizeIconToolTip": "Taschensymbol anpassen",
+  "BundleTaskCompletedToolTip": "Dieses Bundle ist vollst�ndig!",
+  "BundleTaskIncompleteToolTip": "{{CompletedCount}}/{{TotalCount}} Gegenst�nde vorhanden\n{{ReadyToCompleteCount}}/{{TotalCount}} Gegenst�nde bereit zum Abgeben\n{{RequiredCount}}/{{TotalCount}} Erforderlich",
+
+  "BagCategoryName": "Beh�lter",
+  "CapacityDescription": "h�lt bis zu {{count}} von jedem",
+  "LargeBundleBagUnstoreableRooms": "Schwarzes Brett, verlassener Joja Mart",
+  "CustomizeIconInstructions": "Klicken um das Symbol f�r diese Tasche zu verwenden:",
+  "UseDefaultIconButtonText": "Standard",
+  "CloseButtonText": "Schlie�en"
+}

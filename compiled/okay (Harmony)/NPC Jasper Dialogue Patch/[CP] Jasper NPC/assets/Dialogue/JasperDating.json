@@ -1,4 +1,8 @@
 {
+    "Changes": [
+{	"LogName": "Jasper has a crush on farmer Dialogue", 
+    "Action": "EditData",
+    "Target": "Characters/Dialogue/Jasper",
     "Entries": {
         "Wed8": "Greetings my dear friend! It is always a pleasure to see you.#$b#And I hope that you feel the same?$4",
         "spring_Sat8": "I found these in the back of my cupboard... I hope they shall still grow.[745][0745]$4",
@@ -16,6 +20,8 @@
         "winter_24": "Happy Winter Star! I got you a little something... I hope that was not too presumptious of me?[72]$4#$b#It is freshly mined, and raw, but the shine holds promise.$1",
         "winter_24_2": "Happy Winter Star! I got you a little something...[72]$4#$b#It is freshly mined, and raw, but the shine holds promise.$1"
     }
+}
+    ]
 }
 
 

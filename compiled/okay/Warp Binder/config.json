@@ -1,5 +1,6 @@
 {
   "ExportFolder": "ExportedWarps",
+  "ForceHostWarpDictionary": true,
   "CustomWarpFolders": [],
   "WarpBlacklistMaps": [],
   "WarpBlacklistByID": [],

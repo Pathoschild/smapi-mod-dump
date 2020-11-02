@@ -93,7 +93,7 @@ namespace ContentPatcher.Framework.Patches
                     // validate file existence
                     if (!this.FromAssetExists())
                     {
-                        this.Monitor.Log($"{errorPrefix}: file doesn't exist.");
+                        this.Monitor.Log($"{errorPrefix}: file '{this.FromAsset}' doesn't exist.");
                         return true;
                     }
 
@@ -119,6 +119,11 @@ namespace ContentPatcher.Framework.Patches
 
                     // load raw file
                     var content = this.ContentPack.LoadAsset<ContentConfig>(this.FromAsset);
+                    if (content?.Changes == null)
+                    {
+                        this.Monitor.Log($"{errorPrefix}: file '{this.FromAsset}' doesn't contain a {nameof(content.Changes)} field. Is the file formatted correctly?", LogLevel.Warn);
+                        return true;
+                    }
 
                     // validate fields
                     string[] invalidFields = this.GetInvalidFields(content).ToArray();

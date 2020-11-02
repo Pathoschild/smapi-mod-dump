@@ -19,7 +19,7 @@
 		"Action": "EditData",
 		"Target": "Characters/Dialogue/MarriageDialogueSebastian",
 		"Entries": {
-			"Rainy_Night_4": "Maybe a {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WitchGender}}}} will visit us tonight? Hah.. if only life was that interesting...",
+			"Rainy_Night_4": "Maybe a {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WitchGender}}}} will visit us tonight? Hah.. if only life was that interesting...",
 			"Indoor_Night_2": "It's really cool to have our own place. I can do whatever I feel like and not have people nagging at me all the time.#$e#I'm sure {{mardrest.ChangeDialogues/MaruName}}'s happy that I'm gone.",
 			"TwoKids_1": "I hope %kid1 and %kid2 are nice to each other. {{mardrest.ChangeDialogues/MaruName}} and I always fought as kids.#$e#If I think back on it, it was mostly my fault...",
 			"Good_3": "I don't often show it, but I'm really happy that I'm your {{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/SebastianGender}}}}. Marrying you was the best decision I ever made.$l",
@@ -71,13 +71,6 @@
 				}
 				]
 			}
-		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Sebastian": "teen/rude/shy/negative/{{lowercase:{{mardrest.ChangeDialogues/SebastianGender}}}}/datable/Abigail/Town/winter 10/Robin 'mom' Maru 'half-sister' Sam ''/SebastianRoom 10 9/{{mardrest.ChangeDialogues/SebastianName}}"
 		}
 	}
 	]

@@ -10,7 +10,6 @@
 
 using SpriteMaster.Extensions;
 using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
@@ -20,63 +19,72 @@ namespace SpriteMaster.Types {
 		public const int StartingIndex = 0;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static int GetSafeIndex(int index) {
-			return index & 1;
+		private uint GetIndex (uint index) {
+			return (index & 1U);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private T GetBuffer(uint index) {
+			return (GetIndex(index) == 0U) ? Buffer0 : Buffer1;
 		}
 
 		public static readonly Type<T> BufferType = Type<T>.This;
 
 		// Regarding bounds checking on x86 and x64
 		// https://stackoverflow.com/questions/16713076/array-bounds-check-efficiency-in-net-4-and-above
-		private readonly T[] BufferedObjects;
+		private readonly T Buffer0;
+		private readonly T Buffer1;
 
 		private volatile int _CurrentBuffer = StartingIndex;
-		public int CurrentBuffer {
+
+#pragma warning disable CS0420 // A reference to a volatile field will not be treated as volatile
+		private uint CurrentBufferAtomic => unchecked((uint)Volatile.Read(ref _CurrentBuffer));
+#pragma warning restore CS0420
+
+		public uint CurrentBuffer {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => GetSafeIndex(_CurrentBuffer);
+			get => GetIndex(CurrentBufferAtomic);
 		}
 
-		public int NextBuffer {
+		public uint NextBuffer {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => GetSafeIndex(unchecked(_CurrentBuffer + 1));
+			get => GetIndex(CurrentBufferAtomic + 1U);
 		}
 
 		public T Current {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => BufferedObjects[CurrentBuffer];
+			get => GetBuffer(CurrentBufferAtomic);
 		}
 		public T Next {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => BufferedObjects[NextBuffer];
+			get => GetBuffer(CurrentBufferAtomic + 1U);
 		}
+
+		public T this[int index] => GetBuffer(unchecked((uint)index));
+		public T this[uint index] => GetBuffer(index);
 
 		public Tuple<T, T> Both {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get {
-				var currentIndex = _CurrentBuffer;
+				var currentIndex = CurrentBufferAtomic;
 				return Tuple.Create(
-					BufferedObjects[GetSafeIndex(currentIndex)],
-					BufferedObjects[GetSafeIndex(unchecked(currentIndex + 1))]
+					GetBuffer(currentIndex),
+					GetBuffer(currentIndex + 1U)
 				);
 			}
 		}
 
 		public Tuple<T, T> All => Both;
 		public DoubleBuffer(in T element0, in T element1) {
-			BufferedObjects = new [] {
-				element0,
-				element1
-			};
+			Buffer0 = element0;
+			Buffer1 = element1;
 			Thread.MemoryBarrier();
 		}
 
-		public DoubleBuffer (T[] elements) {
-			Contract.Requires(elements.Length >= 2);
-			BufferedObjects = (elements.Length == 2) ?
-				elements :
-				new[] { elements[0], elements[1] };
-			Thread.MemoryBarrier();
-		}
+		public DoubleBuffer (T[] elements) : this(
+			elements[0],
+			elements[1]
+		) { }
 
 		public DoubleBuffer (params object[] parameters) : this(
 			// We do, indeed, want to create two seperate instances.
@@ -85,22 +93,9 @@ namespace SpriteMaster.Types {
 		) { }
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public void Swap() {
-			unchecked {
-				++_CurrentBuffer;
-			}
-		}
+		public void Swap() => Interlocked.Increment(ref _CurrentBuffer);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public void SwapAtomic () {
-			unchecked {
-				Interlocked.Increment(ref _CurrentBuffer);
-			}
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator T (in DoubleBuffer<T> buffer) {
-			return buffer.Current;
-		}
+		public static implicit operator T (in DoubleBuffer<T> buffer) => buffer.Current;
 	}
 }

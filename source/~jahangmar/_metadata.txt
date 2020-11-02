@@ -12,9 +12,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit c0b3f4f2652dba9ff66a0c22e16aebc69eb87499
+   commit 93f51eaf9db27956f1a4c64b193a16945c2f821d
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Fri Jun 26 18:48:30 2020 +0200
+   Date:   Sun Nov 1 23:28:34 2020 +0100
    
-       trashbear issue, no waste option for eating
+       accessibility init
    

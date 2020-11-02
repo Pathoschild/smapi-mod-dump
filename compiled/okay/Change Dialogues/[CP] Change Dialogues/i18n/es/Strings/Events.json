@@ -16,6 +16,15 @@
 			"BirthMessage_Adoption": "Durante la noche {1} ha dado a luz a un bebé {0}.^Durante la noche la agencia de adopción os ha dejado a vuestro nuevo bebé {0}.",
 			"HaveBabyQuestion_Adoption": "¿Quieres tener un bebé, {0}?^¿Quieres adoptar un bebé, {0}?",
 			"HavePlayerBabyQuestion_Adoption": "¿Quieres tener un hijo con {0}?^¿Quieres adoptar a un hijo con {0}?"
+		}, "When": { "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "Durante la noche {1} ha dado a luz a un bebé {0}.^Durante la noche la agencia de adopción os ha dejado a vuestro nuevo bebé {0}.",
+			"HaveBabyQuestion_Adoption": "¿Quieres tener un bebé, {0}?^¿Quieres adoptar un bebé, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "¿Quieres tener un hijo con {0}?^¿Quieres adoptar a un hijo con {0}?"
 		}, "When": { "Relationship:Elliott": "Married", "mardrest.ChangeDialogues/ElliottGender": "Female" }
 	},
 	{
@@ -25,7 +34,34 @@
 			"BirthMessage_Adoption": "Durante la noche {1} ha dado a luz a un bebé {0}.^Durante la noche la agencia de adopción os ha dejado a vuestro nuevo bebé {0}.",
 			"HaveBabyQuestion_Adoption": "¿Quieres tener un bebé, {0}?^¿Quieres adoptar un bebé, {0}?",
 			"HavePlayerBabyQuestion_Adoption": "¿Quieres tener un hijo con {0}?^¿Quieres adoptar a un hijo con {0}?"
+		}, "When": { "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "Durante la noche {1} ha dado a luz a un bebé {0}.^Durante la noche la agencia de adopción os ha dejado a vuestro nuevo bebé {0}.",
+			"HaveBabyQuestion_Adoption": "¿Quieres tener un bebé, {0}?^¿Quieres adoptar un bebé, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "¿Quieres tener un hijo con {0}?^¿Quieres adoptar a un hijo con {0}?"
 		}, "When": { "Relationship:Harvey": "Married", "mardrest.ChangeDialogues/HarveyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "Durante la noche {1} ha dado a luz a un bebé {0}.^Durante la noche la agencia de adopción os ha dejado a vuestro nuevo bebé {0}.",
+			"HaveBabyQuestion_Adoption": "¿Quieres tener un bebé, {0}?^¿Quieres adoptar un bebé, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "¿Quieres tener un hijo con {0}?^¿Quieres adoptar a un hijo con {0}?"
+		}, "When": { "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "Durante la noche {1} ha dado a luz a un bebé {0}.^Durante la noche la agencia de adopción os ha dejado a vuestro nuevo bebé {0}.",
+			"HaveBabyQuestion_Adoption": "¿Quieres tener un bebé, {0}?^¿Quieres adoptar un bebé, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "¿Quieres tener un hijo con {0}?^¿Quieres adoptar a un hijo con {0}?"
+		}, "When": { "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -62,6 +98,24 @@
 			"HaveBabyQuestion_Adoption": "¿Quieres tener un bebé, {0}?^¿Quieres adoptar un bebé, {0}?",
 			"HavePlayerBabyQuestion_Adoption": "¿Quieres tener un hijo con {0}?^¿Quieres adoptar a un hijo con {0}?"
 		}, "When": { "Relationship:Victor": "Married", "mardrest.ChangeDialogues/VictorGender": "Female", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "Durante la noche {1} ha dado a luz a un bebé {0}.^Durante la noche la agencia de adopción os ha dejado a vuestro nuevo bebé {0}.",
+			"HaveBabyQuestion_Adoption": "¿Quieres tener un bebé, {0}?^¿Quieres adoptar un bebé, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "¿Quieres tener un hijo con {0}?^¿Quieres adoptar a un hijo con {0}?"
+		}, "When": { "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female" }
+	},
+	{
+		"Action": "EditData",
+		"Target": "Strings/Events",
+		"Entries": {
+			"BirthMessage_Adoption": "Durante la noche {1} ha dado a luz a un bebé {0}.^Durante la noche la agencia de adopción os ha dejado a vuestro nuevo bebé {0}.",
+			"HaveBabyQuestion_Adoption": "¿Quieres tener un bebé, {0}?^¿Quieres adoptar un bebé, {0}?",
+			"HavePlayerBabyQuestion_Adoption": "¿Quieres tener un hijo con {0}?^¿Quieres adoptar a un hijo con {0}?"
+		}, "When": { "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female" }
 	}
 	]
 }

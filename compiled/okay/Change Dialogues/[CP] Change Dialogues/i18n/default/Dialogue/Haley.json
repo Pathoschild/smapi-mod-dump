@@ -27,13 +27,6 @@
 		"Entries": {
 			"marriage_Mon.000": "Hi, honey! I'm mostly just here to visit {{mardrest.ChangeDialogues/EmilyName}}."
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Haley": "adult/rude/outgoing/neutral/female/datable/Alex/Town/spring 14/Emily 'sister'/HaleyHouse 8 7/{{mardrest.ChangeDialogues/HaleyName}}"
-		}
 	}
 	]
 }

@@ -63,13 +63,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Linus": "adult/neutral/shy/positive/{{lowercase:{{mardrest.ChangeDialogues/LinusGender}}}}/not-datable/null/Town/winter 3//Tent 1 2/{{mardrest.ChangeDialogues/LinusName}}"
-		}
 	}
 	]
 }

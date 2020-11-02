@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/5335
 IDs: mardrest.ChangeDialogues, mardrest.ChangeDialoguesEn
-update keys: Nexus:5335
+update keys: Chucklefish:5995, Nexus:5335, ModDrop:800760

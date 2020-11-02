@@ -63,8 +63,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Evelyn": "adult/polite/outgoing/positive/female/not-datable/George/Town/winter 20/George '{{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/GeorgeGender}}}}' Alex 'niet{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/AlexGender}}}}'/JoshHouse 2 17/{{mardrest.ChangeDialogues/EvelynName}}"
+		"Fields": {
+			"Evelyn": {
+				9: "George '{{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/GeorgeGender}}}}' Alex 'niet{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/AlexGender}}}}'"
+			}
 		}
 	}
 	]

@@ -42,34 +42,22 @@ namespace SpriteMaster.Types {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator == (DataRef<T> lhs, DataRef<T> rhs) {
-			return lhs.Data == rhs.Data && lhs.Offset == rhs.Offset;
-		}
+		public static bool operator == (DataRef<T> lhs, DataRef<T> rhs) => lhs.Data == rhs.Data && lhs.Offset == rhs.Offset;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator == (DataRef<T> lhs, object rhs) {
-			return lhs.Data == rhs;
-		}
+		public static bool operator == (DataRef<T> lhs, object rhs) => lhs.Data == rhs;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator != (DataRef<T> lhs, DataRef<T> rhs) {
-			return lhs.Data == rhs.Data && lhs.Offset == rhs.Offset;
-		}
+		public static bool operator != (DataRef<T> lhs, DataRef<T> rhs) => lhs.Data == rhs.Data && lhs.Offset == rhs.Offset;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator != (DataRef<T> lhs, object rhs) {
-			return lhs.Data != rhs;
-		}
+		public static bool operator != (DataRef<T> lhs, object rhs) => lhs.Data != rhs;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool Equals (DataRef<T> other) {
-			return this == other;
-		}
+		public readonly bool Equals (DataRef<T> other) => this == other;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly override bool Equals(object other) {
-			return this == other;
-		}
+		public readonly override bool Equals (object other) => this == other;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public readonly override int GetHashCode () {

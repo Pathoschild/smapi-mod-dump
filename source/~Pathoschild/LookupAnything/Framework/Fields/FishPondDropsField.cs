@@ -14,7 +14,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.Common;
-using Pathoschild.Stardew.LookupAnything.Components;
+using Pathoschild.Stardew.Common.UI;
 using Pathoschild.Stardew.LookupAnything.Framework.Data;
 using StardewValley;
 using StardewValley.Buildings;
@@ -29,6 +29,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /*********
         ** Fields
         *********/
+        /// <summary>Provides utility methods for interacting with the game code.</summary>
+        protected GameHelper GameHelper;
+
         /// <summary>The possible drops.</summary>
         private readonly FishPondDrop[] Drops;
 
@@ -46,8 +49,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <param name="data">The fish pond data.</param>
         /// <param name="preface">>The text to display before the list, if any.</param>
         public FishPondDropsField(GameHelper gameHelper, string label, int currentPopulation, FishPondData data, string preface)
-            : base(gameHelper, label)
+            : base(label)
         {
+            this.GameHelper = gameHelper;
             this.Drops = this.GetEntries(currentPopulation, data, gameHelper).ToArray();
             this.HasValue = this.Drops.Any();
             this.Preface = preface;
@@ -71,7 +75,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
             }
 
             // calculate sizes
-            float checkboxSize = Sprites.Icons.FilledCheckbox.Width * (Game1.pixelZoom / 2);
+            float checkboxSize = CommonSprites.Icons.FilledCheckbox.Width * (Game1.pixelZoom / 2);
             float lineHeight = Math.Max(checkboxSize, Game1.smallFont.MeasureString("ABC").Y);
             float checkboxOffset = (lineHeight - checkboxSize) / 2;
             float outerIndent = checkboxSize + 7;
@@ -91,13 +95,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                     lastGroup = drop.MinPopulation;
 
                     spriteBatch.Draw(
-                        texture: Sprites.Icons.Sheet,
+                        texture: CommonSprites.Icons.Sheet,
                         position: new Vector2(position.X + outerIndent, position.Y + height + checkboxOffset),
-                        sourceRectangle: drop.IsUnlocked ? Sprites.Icons.FilledCheckbox : Sprites.Icons.EmptyCheckbox,
+                        sourceRectangle: drop.IsUnlocked ? CommonSprites.Icons.FilledCheckbox : CommonSprites.Icons.EmptyCheckbox,
                         color: Color.White * (disabled ? 0.5f : 1f),
                         rotation: 0,
                         origin: Vector2.Zero,
-                        scale: checkboxSize / Sprites.Icons.FilledCheckbox.Width,
+                        scale: checkboxSize / CommonSprites.Icons.FilledCheckbox.Width,
                         effects: SpriteEffects.None,
                         layerDepth: 1f
                     );

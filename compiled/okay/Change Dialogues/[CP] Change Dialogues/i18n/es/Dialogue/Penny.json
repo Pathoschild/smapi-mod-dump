@@ -112,13 +112,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Penny": "teen/polite/shy/positive/female/datable/Sam/Town/fall 2/Pam 'madre'/Trailer 4 9/{{mardrest.ChangeDialogues/PennyName}}"
-		}
 	}
 	]
 }

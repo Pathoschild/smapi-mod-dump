@@ -19,13 +19,6 @@
 			"winter_Tue4_inlaw_Penny": "Hey. You better be treatin' {{mardrest.ChangeDialogues/PennyName}} right on that old farm of yours. She's the only one I got!",
 			"winter_Fri": "{{mardrest.ChangeDialogues/PennyName}} sure does like old books. I think she's a heck of a lot smarter than I ever was.#$e#I'm glad."
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Pam": "adult/rude/outgoing/negative/female/not-datable/Gus/Town/spring 18/Penny 'little_baby-girl' Gus ''/Trailer 15 4/{{mardrest.ChangeDialogues/PamName}}"
-		}
 	}
 	]
 }

@@ -34,7 +34,12 @@
       "name": "SVEFish",
       "file": "assets/Maps/SVE.tmx",
 	  "conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')"
-    }
+    },
+         {
+      "name": "LASV",
+      "file": "assets/Maps/LASV.tmx",
+    "conditions": "LC Luau.hasMod('Rafseazz.LunnaItems')"
+    },
   ],
 "replaceMaps": [
 	   {
@@ -66,11 +71,6 @@
 	  "name": "ExteriorMuseum",
 	  "file": "assets/Maps/ExteriorMuseum_Winter.tmx",
 	  "conditions": "NOT z winter"
-	},
-       {
-      "name": "FishMuseum",
-      "file": "assets/Maps/FishMuseumSVE.tmx",
-      "conditions": "LC Luau.hasMod('FlashShifter.JA.SVE')"
-    }
+	   }
   ]
 }

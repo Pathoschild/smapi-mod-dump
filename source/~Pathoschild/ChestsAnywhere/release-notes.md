@@ -9,8 +9,15 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming version
-* Internal refactor to translation handling.
+## Upcoming release
+* Changed dropdown buttons to better fit UI.
+* Fixed compatibility with recent ChestEx update.
+* Improved translations. Thanks to Caco-o-sapo (updated Portuguese)!
+
+## 1.19.6
+Released 15 October 2020.
+
+* Refactored translation handling to prepare for future updates and use game translations where possible.
 * Improved translations. Thanks to Macskasajt05 (updated Hungarian) and zhxxn (updated Korean)!
 
 ## 1.19.5

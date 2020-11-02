@@ -80,13 +80,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Clint": "adult/rude/shy/negative/{{lowercase:{{mardrest.ChangeDialogues/ClintGender}}}}/not-datable/Emily/Town/winter 26/Emily ''/Blacksmith 3 13/{{mardrest.ChangeDialogues/ClintName}}"
-		}
 	}
 	]
 }

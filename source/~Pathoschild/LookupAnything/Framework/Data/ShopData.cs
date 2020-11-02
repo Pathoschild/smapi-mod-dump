@@ -16,9 +16,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Data
         /*********
         ** Accessors
         *********/
-        /// <summary>The internal name of the shop's indoor location.</summary>
-        public string LocationName { get; set; }
-
         /// <summary>The translation key for the shop name.</summary>
         public string DisplayKey { get; set; }
 

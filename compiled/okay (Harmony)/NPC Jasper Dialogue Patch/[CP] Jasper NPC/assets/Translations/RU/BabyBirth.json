@@ -1,0 +1,24 @@
+{
+    "Changes": [
+//PregnancyTalk True, Farmer is pregnant
+
+{ 	"LogName": "Giving birth in game",
+	"Action": "EditData",
+	"Target": "strings/Events",
+	"Entries": {  
+		"BirthMessage_PlayerMother": "Милая? Что случилось? О! Лучше я отведу тебя в больницу!",
+		"BabyNamingTitle_Male": "Как мы назовём малыша, если будет мальчик?",
+	        "BabyNamingTitle_Female": "Как мы назовём малыша, если будет девочка?"
+            }
+},
+
+{	"LogName": "Player birth scene", "Action": "EditData",
+    "Target": "Data/Events/Farmhouse",
+    "Entries": {
+"5599012/e 5599007/A FarmerPregnantJasper/t 600 700": "sappypiano/-100 -100/farmer 19 12 2 Jasper 20 12 2 Harvey 5 15 2/addConversationTopic Jasper_BabySleep 14/skippable/pause 500/speak Jasper \"Всё хорошо, любовь моя?$13\"/changeLocation Hospital/showFrame 5/ambientLight 150 150 150/viewport 12 14 true/pause 1000/speak Jasper \"Тебе удобно?#$b#Ну, настолько удобно, сколько можно было ожидать.$4\"/faceDirection Jasper 3/pause 500/emote farmer 60/emote Jasper 28/pause 500/speak Jasper \"Я могу тебе чем-нибудь помочь, всё, что тебе нужно, @. Эм...$4\"/pause 500/move Jasper 0 1 3/pause 500/speak Jasper \" Тебе не слишком жарко? Или слишком холодно?#$b#Не хочешь чего-нибудь выпить?$2\"/pause 500/emote farmer 12/pause 500/move Jasper 0 -1 3/speak Jasper \"О, прости, любовь моя, я слишком много волнуюсь, да?$4\"/pause 500/emote farmer 36/pause 500/speak Jasper \"Я замолчу тогда? Или... хочешь послушать какую-нибудь историю?$1\"/pause 500/emote farmer 32/pause 500/speak Jasper \"Э-э, ладно. Так вот, жил-был молодой воин-учёный, чьё любопытство привело его к гоблинам...\"/pause 1000/fade/viewport -100 -100 true/warp Harvey 21 12/faceDirection Harvey 3/warp Jasper 20 11/faceDirection Jasper 2/speak Jasper \"... И король гоблинов был так доволен доблестью воина, что предложил ему своё самое ценное сокров-\"/pause 500/speak Jasper \"О, уже пора? %kid1 уже выходит?$2#$b#О, боже... Я позвоню доктору.$2\"/pause 1500/message \"Вопль новорождённого рассекает воздух.\"/pause 1500/showFrame 4/speak Harvey \"Ну, лёгкие вашего малыша, безусловно, крепкие и здоровые!\"/showFrame Jasper 40/fade/viewport 12 14 true/pause 500/emote Jasper 20/pause 2000/showFrame Jasper 41/speak Jasper \"Ах, @. %kid1 красиво выглядит. Совсем как ты.\"/emote farmer 60/pause 500/emote Harvey 32/pause 1500/viewport -100 -100 true/message \"Пора вашей обновлённой семье вернуться домой.\"/pause 1000/end"
+
+    }
+ 
+}
+    ]
+}

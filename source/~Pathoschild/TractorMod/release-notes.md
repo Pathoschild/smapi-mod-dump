@@ -7,8 +7,10 @@ for queries and analysis.**
 ----
 
 # Release notes
-## Upcoming version
-* Internal refactor to translation handling.
+## 4.11.3
+Released 15 October 2020.
+
+* Refactored translation handling.
 
 ## 4.11.2
 Released 12 September 2020.

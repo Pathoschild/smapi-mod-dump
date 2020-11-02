@@ -87,13 +87,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Sebastian": "teen/rude/shy/negative/{{lowercase:{{mardrest.ChangeDialogues/SebastianGender}}}}/datable/Abigail/Town/winter 10/Robin 'madre' Maru 'hermanastra' Sam ''/SebastianRoom 10 9/{{mardrest.ChangeDialogues/SebastianName}}"
-		}
 	}
 	]
 }

@@ -20,6 +20,10 @@ namespace RangeHighlight {
         public bool ShowBeehouseRange { get; set; } = true;
         public bool ShowBombRange { get; set; } = true;
 
+        public bool ShowOtherSprinklersWhenHoldingSprinkler { get; set; } = true;
+        public bool ShowOtherScarecrowsWhenHoldingScarecrow { get; set; } = true;
+        public bool ShowOtherBeehousesWhenHoldingBeehouse { get; set; } = false;
+
         public bool showPlacedBombRange { get; set; } = true;
         public bool showBombInnerRange { get; set; } = false;
         public bool showBombOuterRange { get; set; } = true;

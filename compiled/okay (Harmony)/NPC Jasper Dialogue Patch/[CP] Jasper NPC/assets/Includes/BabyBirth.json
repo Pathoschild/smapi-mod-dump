@@ -16,9 +16,13 @@
     "Target": "Data/Events/Farmhouse",
     "Entries": {
 "5599012/e 5599008/A FarmerPregnantJasper/O Jasper/t 600 700": "sappypiano/-100 -100/farmer 19 12 2 Jasper 20 12 2 Harvey 5 15 2/addConversationTopic Jasper_BabySleep 14/skippable/pause 500/speak Jasper \"Is everything all right, my love?$13\"/changeLocation Hospital/showFrame 5/ambientLight 150 150 150/viewport 12 14 true/pause 1000/speak Jasper \"Are you comfortable?#$b#Well, as comfortable as can be expected.$4\"/faceDirection Jasper 3/pause 500/emote farmer 60/emote Jasper 28/pause 500/speak Jasper \"Is there anything I can get you, anything you need, @. Um...$4\"/pause 500/move Jasper 0 1 3/pause 500/speak Jasper \" Are you too hot? Too cold?#$b#Would you like something to drink?$2\"/pause 500/emote farmer 12/pause 500/move Jasper 0 -1 3/speak Jasper \"Oh sorry, my love, I'm fussing too much, aren't I?$4\"/pause 500/emote farmer 36/pause 500/speak Jasper \"I'll um, shut up then? Or... would you like to hear a story?$1\"/pause 500/emote farmer 32/pause 500/speak Jasper \"Err, okay. Well, once there was a young warrior scholar, whose curiosity lead him to the goblins...\"/pause 1000/fade/viewport -100 -100 true/warp Harvey 21 12/faceDirection Harvey 3/warp Jasper 20 11/faceDirection Jasper 2/speak Jasper \"... And the king of the goblins was so pleased with the warrior's prowess that he offered his most prized possess-\"/pause 500/speak Jasper \"Oh, it's time? %kid1's coming?$2#$b#Oh, oh my... I'll call the doctor.$2\"/pause 1500/message \"A newborn's wail splits the air\"/pause 1500/showFrame 4/speak Harvey \"Well, your baby's lungs are certainly strong and healthy!\"/showFrame Jasper 40/fade/viewport 12 14 true/pause 500/emote Jasper 20/pause 2000/showFrame Jasper 41/speak Jasper \"Oh @. %kid1 is beautiful. Just like you.\"/emote farmer 60/pause 500/emote Harvey 32/pause 1500/viewport -100 -100 true/message \"Time to take our new family home.\"/pause 1000/end"
+        }
+    },
+//Russian Translation
+{	"Action": "Include",
+	"FromFile": "assets/Translations/RU/BabyBirth.json",
+	"When": {	"Language": "ru"	}
+	}
 
-    }
- 
-}
     ]
 }

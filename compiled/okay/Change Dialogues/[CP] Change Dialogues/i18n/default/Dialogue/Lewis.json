@@ -56,13 +56,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Lewis": "adult/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/LewisGender}}}}/not-datable/null/Town/spring 7/Marnie ''/ManorHouse 8 5/{{mardrest.ChangeDialogues/LewisName}}"
-		}
 	}
 	]
 }

@@ -71,15 +71,11 @@ namespace System {
 
 		/// <summary>Returns the hash code for this instance.</summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public override int GetHashCode () {
-			return Start.GetHashCode() * 31 + End.GetHashCode();
-		}
+		public override int GetHashCode () => Start.GetHashCode() * 31 + End.GetHashCode();
 
 		/// <summary>Converts the value of the current Range object to its equivalent string representation.</summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public override string ToString () {
-			return Start + ".." + End;
-		}
+		public override string ToString () => $"{Start}..{End}";
 
 		/// <summary>Create a Range object starting from start index to the end of the collection.</summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)] 
@@ -149,55 +145,35 @@ namespace System {
 			}
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public void Reset () {
-				_Current = Start;
-			}
+			public void Reset () => _Current = Start;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		IEnumerator IEnumerable.GetEnumerator () {
-			return new RangeEnumerator(Start, End);
-		}
+		IEnumerator IEnumerable.GetEnumerator () => new RangeEnumerator(Start, End);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public IEnumerator<long> GetEnumerator () {
-			return new RangeEnumerator(Start, End);
-		}
+		public IEnumerator<long> GetEnumerator () => new RangeEnumerator(Start, End);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		IEnumerator<sbyte> IEnumerable<sbyte>.GetEnumerator () {
-			return new RangeEnumerator(Start, End);
-		}
+		IEnumerator<sbyte> IEnumerable<sbyte>.GetEnumerator () => new RangeEnumerator(Start, End);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		IEnumerator<short> IEnumerable<short>.GetEnumerator () {
-			return new RangeEnumerator(Start, End);
-		}
+		IEnumerator<short> IEnumerable<short>.GetEnumerator () => new RangeEnumerator(Start, End);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		IEnumerator<int> IEnumerable<int>.GetEnumerator () {
-			return new RangeEnumerator(Start, End);
-		}
+		IEnumerator<int> IEnumerable<int>.GetEnumerator () => new RangeEnumerator(Start, End);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		IEnumerator<byte> IEnumerable<byte>.GetEnumerator () {
-			return new RangeEnumerator(Start, End);
-		}
+		IEnumerator<byte> IEnumerable<byte>.GetEnumerator () => new RangeEnumerator(Start, End);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		IEnumerator<ushort> IEnumerable<ushort>.GetEnumerator () {
-			return new RangeEnumerator(Start, End);
-		}
+		IEnumerator<ushort> IEnumerable<ushort>.GetEnumerator () => new RangeEnumerator(Start, End);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		IEnumerator<uint> IEnumerable<uint>.GetEnumerator () {
-			return new RangeEnumerator(Start, End);
-		}
+		IEnumerator<uint> IEnumerable<uint>.GetEnumerator () => new RangeEnumerator(Start, End);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		IEnumerator<ulong> IEnumerable<ulong>.GetEnumerator () {
-			return new RangeEnumerator(Start, End);
-		}
+		IEnumerator<ulong> IEnumerable<ulong>.GetEnumerator () => new RangeEnumerator(Start, End);
 	}
 }
 #endif

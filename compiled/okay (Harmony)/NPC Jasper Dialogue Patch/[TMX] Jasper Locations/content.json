@@ -54,9 +54,20 @@
         "map": "Town-Christmas", 
         "position": [33, 71],
         "direction": 1
-        }
+        },
         //SVE fine
 
+  //Adds in Gunther and Cameron for Winter Star (in case you need to give them gifts)      
+  { "name": "Cameron",
+    "map": "Town-Christmas", 
+    "position": [35, 89],
+    "direction": 1
+    },
+{     "name": "Gunther",
+      "map": "Town-Christmas", 
+      "position": [36, 88],
+      "direction": 2
+            }
     ],  
 
 

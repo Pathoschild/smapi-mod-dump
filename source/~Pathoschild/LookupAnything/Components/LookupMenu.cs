@@ -15,10 +15,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pathoschild.Stardew.Common;
+using Pathoschild.Stardew.Common.UI;
 using Pathoschild.Stardew.LookupAnything.Framework.Constants;
 using Pathoschild.Stardew.LookupAnything.Framework.DebugFields;
 using Pathoschild.Stardew.LookupAnything.Framework.Fields;
-using Pathoschild.Stardew.LookupAnything.Framework.Subjects;
+using Pathoschild.Stardew.LookupAnything.Framework.Lookups;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -87,14 +88,13 @@ namespace Pathoschild.Stardew.LookupAnything.Components
         ** Constructors
         ****/
         /// <summary>Construct an instance.</summary>
-        /// <param name="gameHelper">Provides utility methods for interacting with the game code.</param>
         /// <param name="subject">The metadata to display.</param>
         /// <param name="monitor">Encapsulates logging and monitoring.</param>
         /// <param name="reflectionHelper">Simplifies access to private game code.</param>
         /// <param name="scroll">The amount to scroll long content on each up/down scroll.</param>
         /// <param name="showDebugFields">Whether to display debug fields.</param>
         /// <param name="showNewPage">A callback which shows a new lookup for a given subject.</param>
-        public LookupMenu(GameHelper gameHelper, ISubject subject, IMonitor monitor, IReflectionHelper reflectionHelper, int scroll, bool showDebugFields, Action<ISubject> showNewPage)
+        public LookupMenu(ISubject subject, IMonitor monitor, IReflectionHelper reflectionHelper, int scroll, bool showDebugFields, Action<ISubject> showNewPage)
         {
             // save data
             this.Subject = subject;
@@ -112,15 +112,15 @@ namespace Pathoschild.Stardew.LookupAnything.Components
                 this.Fields = this.Fields
                     .Concat(new[]
                     {
-                        new DataMiningField(gameHelper, "debug (pinned)", debugFields.Where(p => p.IsPinned)),
-                        new DataMiningField(gameHelper, "debug (raw)", debugFields.Where(p => !p.IsPinned))
+                        new DataMiningField("debug (pinned)", debugFields.Where(p => p.IsPinned)),
+                        new DataMiningField("debug (raw)", debugFields.Where(p => !p.IsPinned))
                     })
                     .ToArray();
             }
 
             // add scroll buttons
-            this.ScrollUpButton = new ClickableTextureComponent(Rectangle.Empty, Sprites.Icons.Sheet, Sprites.Icons.UpArrow, 1);
-            this.ScrollDownButton = new ClickableTextureComponent(Rectangle.Empty, Sprites.Icons.Sheet, Sprites.Icons.DownArrow, 1);
+            this.ScrollUpButton = new ClickableTextureComponent(Rectangle.Empty, CommonSprites.Icons.Sheet, CommonSprites.Icons.UpArrow, 1);
+            this.ScrollDownButton = new ClickableTextureComponent(Rectangle.Empty, CommonSprites.Icons.Sheet, CommonSprites.Icons.DownArrow, 1);
 
             // update layout
             this.UpdateLayout();
@@ -447,8 +447,8 @@ namespace Pathoschild.Stardew.LookupAnything.Components
             int y = this.yPositionOnScreen;
             int gutter = this.ScrollButtonGutter;
             float contentHeight = this.height - gutter * 2;
-            this.ScrollUpButton.bounds = new Rectangle(x + gutter, (int)(y + contentHeight - Sprites.Icons.UpArrow.Height - gutter - Sprites.Icons.DownArrow.Height), Sprites.Icons.UpArrow.Height, Sprites.Icons.UpArrow.Width);
-            this.ScrollDownButton.bounds = new Rectangle(x + gutter, (int)(y + contentHeight - Sprites.Icons.DownArrow.Height), Sprites.Icons.DownArrow.Height, Sprites.Icons.DownArrow.Width);
+            this.ScrollUpButton.bounds = new Rectangle(x + gutter, (int)(y + contentHeight - CommonSprites.Icons.UpArrow.Height - gutter - CommonSprites.Icons.DownArrow.Height), CommonSprites.Icons.UpArrow.Height, CommonSprites.Icons.UpArrow.Width);
+            this.ScrollDownButton.bounds = new Rectangle(x + gutter, (int)(y + contentHeight - CommonSprites.Icons.DownArrow.Height), CommonSprites.Icons.DownArrow.Height, CommonSprites.Icons.DownArrow.Width);
         }
 
         /// <summary>The method invoked when an unhandled exception is intercepted.</summary>

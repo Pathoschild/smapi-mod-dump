@@ -5,11 +5,9 @@ mods:
    Community Center Helper
 
 latest commit:
-   commit 8bb2802c438944b4557860442c429fd5bd09b7f6
+   commit 353e6ea043a3e92db86eefb9b92db5143af15676
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Sun Sep 27 14:32:31 2020 -0700
+   Date:   Fri Oct 30 11:50:55 2020 -0700
    
-       1.1.0 update
-       
-       Support for Minerva's Harder CC PPJA option, more accurate fish data
+       Delete JA-jp.json
    

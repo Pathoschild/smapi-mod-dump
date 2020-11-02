@@ -17,6 +17,7 @@ namespace Dem1se.RecurringReminders
     {
         public SButton CustomRemindersButton { get; set; } = SButton.F2;
         public bool SubtlerReminderSound { get; set; } = false;
+        public bool EnableMobilePhoneApp { get; set; } = true;
     }
 
     /// <summary> Data model for reminders </summary>

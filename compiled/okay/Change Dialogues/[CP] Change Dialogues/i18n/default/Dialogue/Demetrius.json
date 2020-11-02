@@ -80,13 +80,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Demetrius": "adult/polite/neutral/positive/{{lowercase:{{mardrest.ChangeDialogues/DemetriusGender}}}}/not-datable/Robin/Town/summer 19/Robin 'wife' Maru ''/ScienceHouse 19 4/{{mardrest.ChangeDialogues/DemetriusName}}"
-		}
 	}
 	]
 }

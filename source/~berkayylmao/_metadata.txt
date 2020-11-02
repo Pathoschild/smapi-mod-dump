@@ -6,9 +6,9 @@ mods:
    Ship Anything
 
 latest commit:
-   commit 4f5a852a235daa0746fa97ed7adab4d24741342f
-   Author: berkay <berkayyigit@anadolu.edu.tr>
-   Date:   Sun Dec 8 17:14:39 2019 +0300
+   commit dcee00fa3b838cea3de0e89cc5c763a0774ca302
+   Author: Berkay YÄ°ÄžÄ°T <berkayyigit@anadolu.edu.tr>
+   Date:   Sat Oct 17 13:49:20 2020 +0300
    
-       Fix inventory gamepad snapping
+       Refactoring
    

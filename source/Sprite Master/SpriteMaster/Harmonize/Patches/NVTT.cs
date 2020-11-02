@@ -30,7 +30,7 @@ namespace SpriteMaster.Harmonize.Patches {
 				var dlTypes = Arrays.Of(
 					typeof(LibDL),
 					typeof(LibDL2),
-					typeof(LibDL227),
+					typeof(LibDL3),
 					typeof(LibDL1)
 				);
 
@@ -224,8 +224,8 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 		}
 
 		[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
-		private sealed class LibDL227 : LibDL {
-			private const string lib = "libdl-2.27.so";
+		private sealed class LibDL3 : LibDL {
+			private const string lib = "libdl.so.3";
 
 			internal override IntPtr open (string fileName, int flags) {
 				return dlopen(fileName, flags);

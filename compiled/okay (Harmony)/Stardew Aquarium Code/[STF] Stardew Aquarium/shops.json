@@ -241,8 +241,8 @@
 		  "ItemNames": ["Fish Bowl"],
 		},
 	  			{
-		  "StockPrice": 600,
-		  "Stock": 2,
+		  "StockPrice": 15,
+		  "Stock": 20,
 		  "ItemType": "Object",
 		  "ItemNames": ["Magnet"],
 		  "When": ["Hn AquariumFishDonated:10"]

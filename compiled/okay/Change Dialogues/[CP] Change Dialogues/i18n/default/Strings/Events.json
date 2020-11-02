@@ -16,7 +16,7 @@
 			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
 			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
 			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
-		}, "When": { "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -34,7 +34,7 @@
 			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
 			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
 			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
-		}, "When": { "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -52,7 +52,7 @@
 			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
 			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
 			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
-		}, "When": { "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -61,7 +61,7 @@
 			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
 			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
 			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
-		}, "When": { "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -106,7 +106,7 @@
 			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
 			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
 			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
-		}, "When": { "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -115,7 +115,7 @@
 			"BirthMessage_Adoption": "During the night, {1} gave birth to a baby {0}.^During the night, the adoption agency dropped off your new baby {0}.",
 			"HaveBabyQuestion_Adoption": "Should we have a baby, {0}?^Should we adopt a baby, {0}?",
 			"HavePlayerBabyQuestion_Adoption": "Do you want to have a baby with {0}?^Do you want to adopt a baby with {0}?"
-		}, "When": { "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female" }
 	}
 	]
 }

@@ -11,7 +11,7 @@
 		"Action": "EditData",
 		"Target": "Characters/Dialogue/MarriageDialogueKrobus",
 		"Entries": {
-			"Rainy_Day_3": "I wonder if the {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}} knows about... this? I hope {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/WizardGender}}}} can keep a secret.$s"
+			"Rainy_Day_3": "I wonder if the {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}} knows about... this? I hope {{mardrest.ChangeDialogues/He:L{{mardrest.ChangeDialogues/WizardGender}}}} can keep a secret.$s"
 		}
 	},
 	{
@@ -46,13 +46,6 @@
 				}
 				]
 			}
-		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Krobus": "adult/polite/shy/neutral/{{lowercase:{{mardrest.ChangeDialogues/KrobusGender}}}}/not-datable/null/Other/winter 1//Sewer 31 17/{{mardrest.ChangeDialogues/KrobusName}}"
 		}
 	}
 	]

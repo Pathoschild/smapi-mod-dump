@@ -12,9 +12,11 @@ using SpriteMaster.Extensions;
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Types {
 	[DebuggerDisplay("[{X}, {Y}}")]
+	[StructLayout(LayoutKind.Sequential, Pack = sizeof(byte), Size = sizeof(byte))]
 	public struct Vector2B :
 		ICloneable,
 		IComparable,
@@ -22,8 +24,8 @@ namespace SpriteMaster.Types {
 		IComparable<bool>,
 		IEquatable<Vector2B>,
 		IEquatable<bool> {
-		public static readonly Vector2B True = new Vector2B(true);
-		public static readonly Vector2B False = new Vector2B(false);
+		public static readonly Vector2B True = new Vector2B(Packed: All_Value);
+		public static readonly Vector2B False = new Vector2B(Packed: ZeroByte);
 
 		/*
 		// TODO : would an int be faster? Since it would be a native type?
@@ -32,6 +34,7 @@ namespace SpriteMaster.Types {
 		*/
 
 		private const byte ZeroByte = 0;
+		private const byte OneByte = 1;
 		private const byte X_Bit = 0;
 		private const byte Y_Bit = 1;
 		private const byte X_Value = 1 << X_Bit;
@@ -39,41 +42,27 @@ namespace SpriteMaster.Types {
 		private const byte All_Value = X_Value | Y_Value;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static byte GetX(bool value) {
-			return value ? X_Value : ZeroByte;
-		}
+		private static byte GetX (bool Value) => Value ? X_Value : ZeroByte;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static byte GetY (bool value) {
-			return value ? Y_Value : ZeroByte;
-		}
+		private static byte GetY (bool Value) => Value ? Y_Value : ZeroByte;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static byte Get(bool x, bool y) {
-			return (byte)(GetX(x) | GetY(y));
-		}
+		private static byte Get (bool X, bool Y) => (byte)(GetX(X) | GetY(Y));
 
 		public byte Packed;
 
 		public bool X {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			readonly get {
-				return (byte)(Packed & X_Value) != ZeroByte;
-			}
+			readonly get => (Packed & X_Value) != ZeroByte;
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set {
-				Packed.SetBit(X_Bit, value);
-			}
+			set => Packed.SetBit(X_Bit, value);
 		}
 		public bool Y {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			readonly get {
-				return (byte)(Packed & Y_Value) != ZeroByte;
-			}
+			readonly get => (Packed & Y_Value) != ZeroByte;
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set {
-				Packed.SetBit(Y_Bit, value);
-			}
+			set => Packed.SetBit(Y_Bit, value);
 		}
 
 		public bool Width { [MethodImpl(MethodImplOptions.AggressiveInlining)] readonly get => X; [MethodImpl(MethodImplOptions.AggressiveInlining)] set { X = value; } }
@@ -109,103 +98,94 @@ namespace SpriteMaster.Types {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public Vector2B (byte value) {
-			Packed = value;
-		}
+		public Vector2B (byte Packed) => this.Packed = Packed;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public Vector2B (bool x, bool y) : this(Get(x, y)) {}
+		public static Vector2B From (byte Packed) => new Vector2B(Packed: Packed);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public Vector2B (bool value) : this(value ? All_Value : ZeroByte) { }
+		public Vector2B (bool X, bool Y) : this(Packed: Get(X, Y)) {}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public Vector2B (Vector2B vec) : this(vec.Packed) {}
+		public static Vector2B From (bool X, bool Y) => new Vector2B(X, Y);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public Vector2B Set (Vector2B vec) {
-			Packed = vec.Packed;
+		public Vector2B (bool Value) : this(Value ? All_Value : ZeroByte) { }
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2B From (bool Value) => new Vector2B(Value: Value);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public Vector2B (Vector2B Vector) : this(Vector.Packed) {}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static Vector2B From (Vector2B Vector) => new Vector2B(Vector: Vector);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public Vector2B Set (Vector2B Vector) {
+			Packed = Vector.Packed;
 			return this;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public Vector2B Set (bool x, bool y) {
-			Packed = Get(x, y);
+		public Vector2B Set (bool X, bool Y) {
+			Packed = Get(X, Y);
 			return this;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public Vector2B Set (bool v) {
-			Packed = v ? All_Value : ZeroByte;
+		public Vector2B Set (bool Value) {
+			Packed = Value ? All_Value : ZeroByte;
 			return this;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly Vector2B Clone () {
-			return this;
-		}
+		public readonly Vector2B Clone () => this;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		readonly object ICloneable.Clone () {
-			return this;
-		}
+		readonly object ICloneable.Clone () => this;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static Vector2B operator & (Vector2B lhs, Vector2B rhs) {
-			return new Vector2B((byte)(lhs.Packed & rhs.Packed));
-		}
+		public static Vector2B operator & (Vector2B lhs, Vector2B rhs) => new Vector2B((byte)(lhs.Packed & rhs.Packed));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static Vector2B operator & (Vector2B lhs, bool rhs) {
-			return rhs ? lhs : False;
-		}
+		public static Vector2B operator & (Vector2B lhs, bool rhs) => rhs ? lhs : False;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static Vector2B operator | (Vector2B lhs, Vector2B rhs) {
-			return new Vector2B((byte)(lhs.Packed | rhs.Packed));
-		}
+		public static Vector2B operator | (Vector2B lhs, Vector2B rhs) => new Vector2B((byte)(lhs.Packed | rhs.Packed));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static Vector2B operator | (Vector2B lhs, bool rhs) {
-			return rhs ? True : lhs;
-		}
+		public static Vector2B operator | (Vector2B lhs, bool rhs) => rhs ? True : lhs;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public override readonly string ToString () {
-			return $"[{X}, {Y}]";
-		}
+		public static Vector2B operator ^ (Vector2B lhs, Vector2B rhs) => new Vector2B((byte)(lhs.Packed ^ rhs.Packed));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly int CompareTo (object obj) {
-			if (obj is Vector2B other) {
-				return CompareTo(other);
-			}
-			throw new ArgumentException();
-		}
+		public static Vector2B operator ^ (Vector2B lhs, bool rhs) => new Vector2B((byte)(lhs.Packed ^ (rhs ? OneByte : ZeroByte)));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly int CompareTo (Vector2B other) {
-			return Packed.CompareTo(other.Packed);
-		}
+		public override readonly string ToString () => $"[{X}, {Y}]";
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public readonly bool Equals (Vector2B other) {
-			return Packed == other.Packed;
-		}
+		public readonly int CompareTo (object obj) => obj switch {
+			Vector2B vector => CompareTo(vector),
+			bool boolean => CompareTo(boolean),
+			_ => throw new ArgumentException(obj.GetType().Name),
+		};
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public int CompareTo (bool other) {
-			return Packed.CompareTo(other ? All_Value : ZeroByte);
-		}
+		public readonly int CompareTo (Vector2B other) => Packed.CompareTo(other.Packed);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool Equals (bool other) {
-			return Packed == (other ? All_Value : ZeroByte);
-		}
+		public readonly int CompareTo (bool other) => Packed.CompareTo(other ? OneByte : ZeroByte);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public TypeCode GetTypeCode () {
-			return TypeCode.Object;
-		}
+		public readonly bool Equals (Vector2B other) => Packed == other.Packed;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public readonly bool Equals (bool other) => Packed == (other ? OneByte : ZeroByte);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public readonly TypeCode GetTypeCode () => TypeCode.Object;
 	}
 }

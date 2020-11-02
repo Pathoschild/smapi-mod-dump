@@ -1,0 +1,39 @@
+{
+	"Name": "Gelatin",
+	"Description": "A jiggly substance used for pudding production.",
+	"Category": "ArtisanGoods",
+	"Edibility": -300,
+	"Price": 70,
+	"Recipe": null,
+    "CanPurchase": true,
+    "PurchaseFrom": "Marnie",
+    "PurchasePrice": 70,
+	"NameLocalization":
+	{
+		//"es": "",
+		//"ko": "",
+		//"de": "",
+		//"fr": "",
+		//"hu": "",
+		//"it": "",
+		//"ja": "",
+		//"pt": "",
+		//"ru": "",
+		//"tr": "",
+		//"zh": "",
+	},
+	"DescriptionLocalization":
+	{
+		//"es": "",
+		//"ko": "",
+		//"de": "",
+		//"fr": "",
+		//"hu": "",
+		//"it": "",
+		//"ja": "",
+		//"pt": "",
+		//"ru": "",
+		//"tr": "",
+		//"zh": "",
+	}
+}

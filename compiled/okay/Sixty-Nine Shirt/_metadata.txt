@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/6969
 IDs: aedenthorn.SixtyNine
-update keys: Nexus:6969
+update keys: Nexus:6969, GitHub:aedenthorn/StardewValleyMods

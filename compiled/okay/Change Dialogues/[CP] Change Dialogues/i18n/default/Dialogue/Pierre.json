@@ -9,13 +9,6 @@
 			"Thu8": "#$1 pierre2#Does {{mardrest.ChangeDialogues/AbigailName}} look anything like me? Don't tell my wife, but sometimes I wonder if I'm really the {{mardrest.ChangeDialogues/Father:L{{mardrest.ChangeDialogues/PierreGender}}}}.$k$s#$e#Don't tell my wife, but I hate to cook dinner.",
 			"winter_Wed": "#$1 pierreDin#I'm going to surprise {{mardrest.ChangeDialogues/CarolineName}} tonight with dinner and a bottle of Stardew Red. Don't tell anyone!$k#$e#Finally, a day of relaxation."
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Pierre": "adult/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/PierreGender}}}}/not-datable/Caroline/Town/spring 26/Abigail 'daughter' Caroline 'wife'/SeedShop 4 17/{{mardrest.ChangeDialogues/PierreName}}"
-		}
 	}
 	]
 }

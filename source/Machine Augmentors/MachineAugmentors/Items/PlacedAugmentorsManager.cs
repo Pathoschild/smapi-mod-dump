@@ -331,7 +331,13 @@ namespace MachineAugmentors.Items
                     if (Quantity > 0)
                     {
                         Augmentor Refund = Augmentor.CreateInstance(KVP.Key, Quantity);
-                        int SpawnDirection = Augmentor.Randomizer.Next(4);
+                        int SpawnDirection;
+                        //  When spawning items at the edge of the map, sometimes it seems to move them off the map. Mostly only happens when removing augmentors from incubators in coops,
+                        //  so as a temporary workaround, spawn the items in the direction of the player when handling indestructible machines like incubators.
+                        if (!MachineInfo.IsDestructible(Tile.Machine))
+                            SpawnDirection = Game1.MasterPlayer.getGeneralDirectionTowards(Tile.VectorPosition, 0, true);
+                        else
+                            SpawnDirection = Augmentor.Randomizer.Next(4);
                         Game1.createItemDebris(Refund, new Vector2(Tile.Position.X * Game1.tileSize, Tile.Position.Y * Game1.tileSize), SpawnDirection, Location, -1);
                     }
                 }
@@ -377,6 +383,7 @@ namespace MachineAugmentors.Items
     {
         public AugmentedLocation Location { get; }
         public Point Position { get; }
+        public Vector2 VectorPosition { get { return new Vector2(Position.X, Position.Y); } }
         public Object Machine { get; }
         //public MachineInfo MachineInfo { get; }
 

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6971
+IDs: Becks723.MusicBlocks
+update keys: Nexus:6971

@@ -23,7 +23,7 @@ Inhabitants will like items less each time you gift them that same item. Stop li
 - `ResetEveryXDays: int` = Reset all gift tastes to their original value after this many days have passed,
 starting from the very first day (Day 1, Year 1).  
 If set to `0`, gift taste will never be reset. Defaults to `112` (= yearly)
-- `MaximumDeviation: int` = Limit how much the taste for a gift can drop.
+- `MaximumDeviation: int` = Limit by how much the taste for a gift can drop.
 E.g. if set to `2`, a loved gift can not fall below a neutral reaction.
 - `ReduceAfterXGifts: int` = Reduce the gift taste only after the item has been gifted to the NPC this many times.
 

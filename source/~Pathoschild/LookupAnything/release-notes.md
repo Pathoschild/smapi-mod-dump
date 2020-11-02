@@ -9,8 +9,24 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming version
-* Internal refactor to translation handling.
+## Upcoming release
+* Fixed 'number owned' field sometimes counting two of the same tool/weapon as different items.
+* Fixed lookups on forage items.
+* Fixed search UI lookups on flavored items like wines showing incorrect prices.
+* Fixed search UI not showing Clam Roe, Sea Urchin Roe, and custom roe from mods.
+* Fixed some translation issues in 1.28.
+* Improved translations. Thanks to Caco-o-sapo (updated Portuguese) and therealmate (updated Hungarian)!
+
+## 1.28
+Released 15 October 2020.
+
+* Added music block lookups.
+* Improved Adventurer's Guild eradication goal info in monster lookups.
+* Fixed spawned stones sometimes showing info for a different item.
+* Fixed description for some generic spawned stones.
+* Fixed Scorpion Carp showing 'contents: no' field.
+* Refactored to prepare for future game updates.
+* Refactored translation handling.
 * Improved translations. Thanks to Enaium (updated Chinese), Macskasajt05 (added Hungarian), and zhxxn (updated Korean)!
 
 ## 1.27.5

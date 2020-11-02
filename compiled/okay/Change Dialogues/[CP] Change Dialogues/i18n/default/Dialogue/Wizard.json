@@ -33,7 +33,7 @@
 						},
 						"DuringMovie": {
 							"ResponsePoint": null,
-							"Script": "/message \"There's a twinkle in {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}}'s eye...\"",
+							"Script": "/message \"There's a twinkle in {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}}'s eye...\"",
 							"Text": "And to think... the layman has no idea that this is all raw, real footage!"
 						},
 						"AfterMovie": {
@@ -47,20 +47,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Wizard": "adult/rude/neutral/negative/{{lowercase:{{mardrest.ChangeDialogues/WizardGender}}}}/not-datable/null/Other/winter 17//WizardHouse 3 17/{{mardrest.ChangeDialogues/WizardName}}"
-		}, "When": { "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false" }
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Wizard": "adult/rude/neutral/negative/{{lowercase:{{mardrest.ChangeDialogues/WizardGender}} }}/not-datable/null/Other/winter 17//WizardHouse 3 17/{{mardrest.ChangeDialogues/WizardName}}"
-		}, "When": { "HasMod |contains=foggy.LfL": "true" }
 	}
 	]
 }

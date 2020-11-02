@@ -69,13 +69,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Vincent": "child/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/VincentGender}}}}/not-datable/Jas/Town/spring 10/Jas ''/SamHouse 10 23/{{mardrest.ChangeDialogues/VincentName}}"
-		}
 	}
 	]
 }

@@ -1,0 +1,10 @@
+﻿{
+	"Name":"CustomDeathPenaltyPlus",
+	"Author":"TheMightyAmondee",
+	"Version":"1.0.0",
+	"Description":"Fully customisable penalty for dying.",
+	"UniqueID": "TheMightyAmondee.CustomDeathPenaltyPlus",
+	"EntryDll":"CustomDeathPenaltyPlus.dll",
+	"MinimumApiVersion":"3.0.0",
+	"UpdateKeys":["Nexus:7069"]
+}

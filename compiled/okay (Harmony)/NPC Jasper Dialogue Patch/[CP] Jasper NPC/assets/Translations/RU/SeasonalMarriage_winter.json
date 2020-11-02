@@ -1,0 +1,52 @@
+{
+    "Changes": [
+
+{	
+	"LogName": "Dialogue", "Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"FromFile": "assets/Dialogue/MarriageDialogue_winter.json",	
+				},
+
+{	
+	"LogName": "Dialogue", 	"Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"funLeave_Jasper": "$c 0.5#Доброе утро, любовь моя! Чему я сегодня буду учить детей? Пенни хочет, чтобы я рассказывал про историю... но Винсент обожает истории про гоблинов.$3$k#$e#Сегодня я собираюсь рассказать детям про пещеры. О, не волнуйся, я собираюсь рассказать как они образуются и прочее.$3",
+		"funReturn_Jasper": "$c 0.5#Ох, как же я устал. Дети как всегда, не давали мне покоя.$k#$e#Но я рад, что мои уроки им нравятся!$3"			},
+		"When": { 	"DayofWeek":"Wednesday", "HasFlag": "Jasper_Penny"	}
+		},
+{	
+	"LogName": "Dialogue", 	"Action": "EditData","Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {	
+	"funReturn_Jasper": "$c 0.5#Я знаю, что взрослому человеку глупо бояться темноты. Но каждый шорох в листве, каждый шаг... Я знаю, что это иррационально, любовь моя, но я не могу остановить страх.$2$2#$e#Ах, приятный денёк, проведённый в компании старых друзей. Марлон передаёт тебе привет, @. Да, и ещё я подобрал для тебя этот 'блестящий камешек'.[62 64 66 68]$1"	},
+	"When": { 	"DayofWeek":"Friday"	}	
+		},
+{	
+	"LogName": "Dialogue", 	"Action": "EditData",
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {
+		"funLeave_Jasper": "$c 0.5#Это тяжелая прогулка в гору, но она, безусловно, стоит того.$k#$e#Я всё ещё не могу поверить, что буду пить чай с одним из Смолуану!#$b#Удачного тебе дня, любовь моя.$1",
+		"funReturn_Jasper": "$c 0.5#О, как много новых открытий! Мой разум просто гудит от вдохновения, @. Мне может понадобиться помощь, чтобы заснуть сегодня вечером!$1$k#Наш друг отправил меня домой с этим... Он был настойчив. Пожалуйста, будь осторожна с ним, любовь моя.$2[286 287 288]"			},
+			"When": { 	"DayofWeek":"Friday", "HasFlag": "Dwarf_Friend"	}	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ]
+}

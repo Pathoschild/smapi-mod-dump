@@ -7408,7 +7408,7 @@
  <objectgroup id="7" name="Buildings">
   <object id="4" name="TileData" x="192" y="144" width="16" height="16">
    <properties>
-    <property name="Action" value="AquariumSign Carp MidnightCarp Lingcod LargemouthBass Bullhead Chub Perch Sturgeon Walleye"/>
+    <property name="Action" value="AquariumSign Carp MidnightCarp Minnow Lingcod LargemouthBass Bullhead Chub Perch Sturgeon Walleye"/>
    </properties>
   </object>
   <object id="5" name="TileData" x="416" y="144" width="16" height="16">

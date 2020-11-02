@@ -71,8 +71,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Kent": "adult/neutral/shy/negative/{{lowercase:{{mardrest.ChangeDialogues/KentGender}}}}/not-datable/Jodi/Town/spring 4/Jodi 'mujer' Sam 'hij{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}}' Vincent 'hij{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/VincentGender}}}}'/SamHouse 22 5/{{mardrest.ChangeDialogues/KentName}}"
+		"Fields": {
+			"Kent": {
+				9: "Jodi 'mujer' Sam 'hij{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/SamGender}}}}' Vincent 'hij{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/VincentGender}}}}'"
+			}
 		}
 	}
 	]

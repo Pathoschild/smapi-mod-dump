@@ -6,6 +6,6 @@
   "bulletDamage": 0,
   "fireSpeedLevel": 5,
   "runSpeedLevel": 2,
-  "useShotgun": true,
+  "useShotgun": false,
   "waveTimer": 60
 }

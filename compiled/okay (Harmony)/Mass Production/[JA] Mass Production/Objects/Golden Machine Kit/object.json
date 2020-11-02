@@ -1,0 +1,15 @@
+{
+  "Name": "Golden Machine Kit",
+  "Description": "Modifies a machine to use 10x the input and 20% more time to make 8.5x the output at guaranteed gold quality.",
+  "Price": 12000,
+  "Category": "Crafting",
+  "Recipe":
+  {
+    "ResultCount": 1,
+	"Ingredients":
+	[
+	  { "Object": 336, "Count": 40 },
+	  { "Object": 334, "Count": 10 }
+	]
+  }
+}

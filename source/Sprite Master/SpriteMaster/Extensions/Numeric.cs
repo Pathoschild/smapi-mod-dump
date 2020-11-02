@@ -15,34 +15,22 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Extensions {
 	public static class Numeric {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static long KiB(this long value) {
-			return value * 1024L;
-		}
+		public static long KiB (this long value) => value * 1024L;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static long MiB (this long value) {
-			return value * 1024L * 1024L;
-		}
+		public static long MiB (this long value) => value * 1024L * 1024L;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static long GiB (this long value) {
-			return value * 1024L * 1024L * 1024L;
-		}
+		public static long GiB (this long value) => value * 1024L * 1024L * 1024L;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static long KiB (this int value) {
-			return value * 1024L;
-		}
+		public static long KiB (this int value) => value * 1024L;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static long MiB (this int value) {
-			return value * 1024L * 1024L;
-		}
+		public static long MiB (this int value) => value * 1024L * 1024L;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static long GiB (this int value) {
-			return value * 1024L * 1024L * 1024L;
-		}
+		public static long GiB (this int value) => value * 1024L * 1024L * 1024L;
 
 		// Extracts a byte (8 bits) worth of data from a provided value, from the given offset
 		// Example: ExtractByte(0x00F0, 8) would return 0xF
@@ -79,70 +67,46 @@ namespace SpriteMaster.Extensions {
 		// Extracts a byte (8 bits) worth of data from a provided value, from the given offset
 		// Example: ExtractByte(0x00F0, 8) would return 0xF
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static byte ExtractByte (this sbyte value, int offset) {
-			return ExtractByte(unchecked((byte)value), offset);
-		}
+		public static byte ExtractByte (this sbyte value, int offset) => ExtractByte(unchecked((byte)value), offset);
 
 		// Extracts a byte (8 bits) worth of data from a provided value, from the given offset
 		// Example: ExtractByte(0x00F0, 8) would return 0xF
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static byte ExtractByte (this short value, int offset) {
-			return ExtractByte(unchecked((ushort)value), offset);
-		}
+		public static byte ExtractByte (this short value, int offset) => ExtractByte(unchecked((ushort)value), offset);
 
 		// Extracts a byte (8 bits) worth of data from a provided value, from the given offset
 		// Example: ExtractByte(0x00F0, 8) would return 0xF
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static byte ExtractByte (this int value, int offset) {
-			return ExtractByte(unchecked((uint)value), offset);
-		}
+		public static byte ExtractByte (this int value, int offset) => ExtractByte(unchecked((uint)value), offset);
 
 		// Extracts a byte (8 bits) worth of data from a provided value, from the given offset
 		// Example: ExtractByte(0x00F0, 8) would return 0xF
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static byte ExtractByte (this long value, int offset) {
-			return ExtractByte(unchecked((ulong)value), offset);
-		}
+		public static byte ExtractByte (this long value, int offset) => ExtractByte(unchecked((ulong)value), offset);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string Delimit (this long number) {
-			return number.ToString("G");
-		}
+		public static string Delimit (this long number) => number.ToString("G");
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string Delimit (this int number) {
-			return number.ToString("G");
-		}
+		public static string Delimit (this int number) => number.ToString("G");
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string Delimit (this short number) {
-			return number.ToString("G");
-		}
+		public static string Delimit (this short number) => number.ToString("G");
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string Delimit (this sbyte number) {
-			return number.ToString("G");
-		}
+		public static string Delimit (this sbyte number) => number.ToString("G");
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string Delimit (this ulong number) {
-			return number.ToString("G");
-		}
+		public static string Delimit (this ulong number) => number.ToString("G");
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string Delimit (this uint number) {
-			return number.ToString("G");
-		}
+		public static string Delimit (this uint number) => number.ToString("G");
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string Delimit (this ushort number) {
-			return number.ToString("G");
-		}
+		public static string Delimit (this ushort number) => number.ToString("G");
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string Delimit (this byte number) {
-			return number.ToString("G");
-		}
+		public static string Delimit (this byte number) => number.ToString("G");
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Delimit (this long number, string delimiter = ",", uint delimitCount = 3) {

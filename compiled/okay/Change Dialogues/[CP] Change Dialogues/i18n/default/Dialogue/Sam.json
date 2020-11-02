@@ -144,8 +144,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Sam": "teen/neutral/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/SamGender}}}}/datable/Penny/Town/summer 17/Vincent 'little_{{mardrest.ChangeDialogues/Brother:L{{mardrest.ChangeDialogues/VincentGender}}}}' Jodi 'mom' Kent '{{mardrest.ChangeDialogues/Dad:L{{mardrest.ChangeDialogues/KentGender}}}}' Sebastian ''/SamHouse 22 13/{{mardrest.ChangeDialogues/SamName}}"
+		"Fields": {
+			"Sam": {
+				9: "Vincent 'little_{{mardrest.ChangeDialogues/Brother:L{{mardrest.ChangeDialogues/VincentGender}}}}' Jodi 'mom' Kent '{{mardrest.ChangeDialogues/Dad:L{{mardrest.ChangeDialogues/KentGender}}}}' Sebastian ''"
+			}
 		}
 	}
 	]

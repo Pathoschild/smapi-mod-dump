@@ -9,6 +9,21 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.5.0
+
+### User-visible Changes
+
+* Added configuration options to control whether holding a
+  sprinkler, scarecrow, or beehouse automatically highlights
+  the range of other (already placed) items of that type.
+
+### API Changes
+
+* Add a new signature of `AddItemRangeHighlighter` to allow
+  specifing whether to highlight other (already placed) items
+  if the highlighter matches the currently held item.  Deprecate
+  the old signature.
+
 ## Version 1.4.0
 
 ### User-visible Changes

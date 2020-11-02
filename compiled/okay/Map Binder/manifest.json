@@ -1,0 +1,17 @@
+﻿{
+  "Name": "Map Binder",
+  "Author": "SnowFire k'Vala",
+  "Version": "1.3.1",
+  "Description": "A mod that allows creation of instances of custom or built in maps as new game locations.",
+  "UniqueID": "SnowFire.Map_Binder",
+  "EntryDll": "Map_Binder.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": [ "Nexus:6983" ],
+  "Dependencies": [
+    {
+      "UniqueID": "SnowFire.Warp_Binder",
+      "IsRequired": false,
+      "MinimumVersion": "1.5.1"
+    }
+  ]
+}

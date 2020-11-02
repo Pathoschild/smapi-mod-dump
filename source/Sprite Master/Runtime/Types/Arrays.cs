@@ -102,9 +102,7 @@ namespace SpriteMaster.Types {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static Span<U> CastAs<T, U> (this T[] data) where T : unmanaged where U : unmanaged {
-			return new Span<T>(data).As<U>();
-		}
+		public static Span<U> CastAs<T, U> (this T[] data) where T : unmanaged where U : unmanaged => new Span<T>(data).As<U>();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T[] Reverse<T> (this T[] array) {

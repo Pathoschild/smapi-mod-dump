@@ -1,0 +1,12 @@
+﻿{
+   "Name": "Angel's Lead Rod drop rate fixer",
+   "Author": "AngelaRanna",
+   "Version": "0.2.0",
+   "Description": "Fixes a line in the code that is short circuiting drop rates, causing so many lead rod drops",
+   "UniqueID": "AngelaRanna.LeadRodFixer",
+   "EntryDll": "LeadRodFixer.dll",
+   "MinimumApiVersion": "2.8.2",
+   "UpdateKeys": [
+       "Nexus:6894@LeadRodFixer"
+   ]
+}

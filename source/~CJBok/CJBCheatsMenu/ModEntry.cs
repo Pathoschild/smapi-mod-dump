@@ -49,6 +49,9 @@ namespace CJBCheatsMenu
             this.Config = helper.ReadConfig<ModConfig>();
             this.Monitor.Log($"Started with menu key {this.Config.OpenMenuKey}.");
 
+            // init translations
+            I18n.Init(helper.Translation);
+
             // load warps
             try
             {
@@ -66,7 +69,7 @@ namespace CJBCheatsMenu
 
             // load cheats
             this.ResetLocationCache();
-            this.Cheats = new CheatManager(this.Config, this.Helper.Reflection, this.Helper.Translation, () => this.Locations.Value, this.Warps);
+            this.Cheats = new CheatManager(this.Config, this.Helper.Reflection, () => this.Locations.Value, this.Warps);
 
             // hook events
             helper.Events.Display.Rendered += this.OnRendered;

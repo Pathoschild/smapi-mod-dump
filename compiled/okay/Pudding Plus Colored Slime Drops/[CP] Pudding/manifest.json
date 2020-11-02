@@ -1,0 +1,14 @@
+﻿
+{
+  "Name": "Pudding Mod Drops",
+  "Author": "TerryDBS",
+  "Version": "1.0.2",
+  "Description": "Adds various slime types",
+  "UniqueID": "TerryDBS.PuddingModDrops",
+	"ContentPackFor":
+	{
+		"UniqueID": "Pathoschild.ContentPatcher"
+	},
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:7048"]
+}

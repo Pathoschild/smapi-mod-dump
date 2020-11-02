@@ -1,0 +1,13 @@
+url:
+   https://github.com/TheMightyAmondee/CustomDeathPenaltyPlus.git
+
+mods:
+   Custom Death Penalty Plus
+
+latest commit:
+   commit 3ca17c0e7301fe83db7bbdc8e86444fcd19d3d16
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Tue Oct 27 18:40:58 2020 +1100
+   
+       Updates to manifest (#1)
+   

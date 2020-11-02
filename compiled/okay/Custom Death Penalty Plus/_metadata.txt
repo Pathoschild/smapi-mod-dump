@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7069
+IDs: TheMightyAmondee.CustomDeathPenaltyPlus
+update keys: Nexus:7069, GitHub:TheMightyAmondee/CustomDeathPenaltyPlus

@@ -59,8 +59,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Abigail": "teen/rude/outgoing/neutral/female/datable/Sebastian/Town/fall 13/Caroline 'mom' Pierre '{{mardrest.ChangeDialogues/Dad:L{{mardrest.ChangeDialogues/PierreGender}}}}'/SeedShop 1 9/{{mardrest.ChangeDialogues/AbigailName}}"
+		"Fields": {
+			"Abigail": {
+				9: "Caroline 'mom' Pierre '{{mardrest.ChangeDialogues/Dad:L{{mardrest.ChangeDialogues/Pierre}}}}'"
+			}
 		}
 	}
 	]

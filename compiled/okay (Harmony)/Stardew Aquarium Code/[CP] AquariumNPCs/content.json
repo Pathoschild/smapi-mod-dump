@@ -54,6 +54,34 @@
         },
         {
             "Action": "Include",
+            "FromFile": "assets/Characters/Dialogue/Sebastian.json",
+            "When": {
+                "HasFile:{{FromFile}}": true
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "assets/Characters/Dialogue/Abigail.json",
+            "When": {
+                "HasFile:{{FromFile}}": true
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "assets/Characters/Dialogue/Penny.json",
+            "When": {
+                "HasFile:{{FromFile}}": true
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "assets/Characters/Dialogue/Wizard.json",
+            "When": {
+                "HasFile:{{FromFile}}": true
+            }
+        },
+        {
+            "Action": "Include",
             "FromFile": "Translations/{{Language}}.json",
             "When": {
                 "HasFile:{{FromFile}}": true
@@ -86,6 +114,14 @@
             "Action": "Load",
             "Target": "Data/Events/ExteriorMuseum",
             "FromFile": "assets/Data/Events/ExteriorMuseum.json"
+        },
+        {
+            "LogName": "Include Special Events",
+            "Action": "Include",
+            "FromFile": "assets/Data/Events/SpecialEvents.json",
+            "When": {
+                "HasFile:{{FromFile}}": true,
+            }
         }
     ]
 }

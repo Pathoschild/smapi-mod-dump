@@ -2,15 +2,45 @@
     "Changes": [
 
 {	
-	"LogName": "Dialogue", "Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
-	"FromFile": "assets/Dialogue/MarriageDialogue_fall.json",	
-				},
-
-{	
-	"LogName": "Dialogue", 	"Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"LogName": "Dialogue", 
+	"Action": "EditData",	
+	"Target": "Characters/Dialogue/MarriageDialogueJasper",
 	"Entries": {
-		"funLeave_Jasper": "$c 0.5#Good morning, my love! What shall I teach the children about today? Penny prefers me to discuss geology... but Vincent loves stories about the goblins.$3$k#$e#Today I intend to teach the children about fossilization. However, I fear my careful prepared lesson shall be swiftly derailed.$3",
-		"funReturn_Jasper": "$c 0.5#Oh phew, I'm exhausted. Who would have known children would ask so many questions?$k#$e#There's something very fulfilling about teaching, @. Although it certainly helps that the children are quite a delight!$3"			},
+		"spouseRoom_Jasper": "Good morning gorgeous. I've been up since dawn, too inspired to sleep.$1#$b#Why is it that epiphanies always come in the wee small hours?",
+		"Rainy_Day_0": "Are you sure you must go out today, my love? We could do some baking, perhaps?#$b#I have been watching that Queen of Sauce show. She has proven most inspiring.$1",
+		"Rainy_Day_2": "This autumn rain is rather dreary. Still, it sounds most musical on the roof.#$b#I feel today, perhaps, shall be a day to escape into a book.$3",
+		"Rainy_Day_3": "Please my love, keep dry amd warm. I would hate for you to catch a chill.$2",
+		"Rainy_Day_4": "You are not going to the mines today, are you my love?#$b#Please, do take care. Here, this might help. [349]",
+		"patio_Jasper": "The autumnal colors are so beautiful, and the temperature is perfect.$1#$b#I could stand here all day and soak up nature.$3",
+		"Rainy_Night_0": "Good evening, my love! A little something to sweeten up your day.[611]$1#$b#Not that you aren't already sweet enough!$4",
+		"Rainy_Night_1": "I fear we have sprung a leak. I shall have to take a look at it tomorrow.$2",
+		"Rainy_Night_2": "My love, you're freezing! Here, this'll warm you from the inside out.[236]$2#$b#Perhaps we could huddle beneath a blanket and read together?$3",
+		"Indoor_Day_0": "I heard rustling in the night. I believe this cooler nights are bringing the rodents inside.$2#$b#I hope %pet is up for the task before them.$1",
+		"Indoor_Day_2": "Good morning, @. I hope this shall be sufficient to help you through a busy day.[201 240 241 242]$3",
+		"Indoor_Day_3": "My plans for today? Well, there's a new theory I'm pursuing...#$b#It won't make me famous, but it might help re-establish my career.$3",
+		"Indoor_Day_4": "I was thinking of my goblin friend today. Oh, not like that, do not fret, @!$2#$b#I wonder if she is chieftain now? She was always so curious about the outside world.$1",
+		"Indoor_Night_0": "Today was... not a good day, my love. It feels heavy. Ominous.$2#$b#Please, will you come to bed with me? I take such comfort in your company.$2",
+		"Indoor_Night_1": "@, you're home! Is that the time? I was quite wrapped up in my research and lost track.$2#$b#Please forgive me, for I have not cooked you dinner.$2",
+		"Indoor_Night_2": "Excellent news, @! My latest paper has been accepted for publication in {random: Cryptozoology Today, Journal of Uncommon Theories, The Unorthodox}.$1#$b#Yes, I know, not the prestigious publication I had hoped...but it's a beginning.$2#$b#And at least I know people read these!$3",
+		"Indoor_Night_3": "The goblins celebrate Spirit's Eve too you know, but in a rather different manner to us!$3#$b#They tell the tales of their ancestors, with puppets woven from wood and fibre, and sing their praises on instruments made of bone.#$b#Spirit's Eve is about remembrance for them, not about hiding from the shadows.$1",
+	   "Indoor_Night_4": "Listen to the wind rattling the shutters and the boards that creak and moan...$2#$b#I am glad that you are here, @, to help me keep the shadows at bay.$4",
+		"Outdoor_1": "When I was a kid, we would scramble over the cliffs, racing to fill our blackberry baskets.$3#$b#My mother was a wonderful baker; she made the most delicious pies.$1",
+		"Outdoor_0": "The animals seem a little restless this morning. They can feel the chill in the air, the approach of winter.$2",
+		"Outdoor_2": "The breeze is brisk this morning. Perhaps you should wear a coat?$2",
+		"Outdoor_3": "Good morning @! Too many ideas, and roaming the farm, visiting the animals, it helps to clear my thoughts.#$b#Have a productive day, my love. I am sure I shall!$3",
+		"Outdoor_4": "I could not sleep, @. I came out here, so as not to disturb you with my restlessness.#$b#Watching the sun rise over your farm... it is really most beautiful.#$b#Almost as beautiful as your smile.",
+		"funLeave_Jasper": "I shall be visiting the library today, if you have any requests?",
+		"funReturn_Jasper": "Oh @, the shadows lurk long, and the trees seem to whisper.$2#$b#I can sense the brush of the void. Winter is coming.$2",
+		"TwoKids_0": "%kid1 found a worm in the leaves today and told %kid2 it was 'piz-getti'.$2#$b#Do not fret, it was confiscated and safely liberated. No worms - or small children! - harmed.$3",
+		"TwoKids_1": "The kids and I have taken to painting rocks and hiding them around the village.#$b#Small steps, yes, but I shall make a geologist of at least one of them yet!"
+		//"TwoKids_2": "",
+		//"TwoKids_3": ""
+				}
+			},
+{		"LogName": "Dialogue", 	"Action": "EditData",	"Target": "Characters/Dialogue/MarriageDialogueJasper",
+		"Entries": {
+			"funLeave_Jasper": "$c 0.5#Good morning, my love! What shall I teach the children about today? Penny prefers me to discuss geology... but Vincent loves stories about the goblins.$3$k#$e#Today I intend to teach the children about fossilization. However, I fear my careful prepared lesson shall be swiftly derailed.$3",
+			"funReturn_Jasper": "$c 0.5#Oh phew, I'm exhausted. Who would have known children would ask so many questions?$k#$e#There's something very fulfilling about teaching, @. Although it certainly helps that the children are quite a delight!$3"			},
 		"When": { 	"DayofWeek":"Wednesday", "HasFlag": "Jasper_Penny"	}
 		},
 {	
@@ -25,8 +55,29 @@
 	"Entries": {
 		"funLeave_Jasper": "$c 0.5#Its a rough walk up the mountain, but it is certainly worth it.$k#$e#I still cannot believe that I shall be taking tea with one of the Smoluanu!#$b#Have a splendid day, my love.$1",
 		"funReturn_Jasper": "$c 0.5#Oh, so many new revelations! My mind is quite abuzz with inspiration, @. I might need some help getting to sleep tonight!$1$k#Our friend sent me home with this... They were insistent. Please be careful with it, my love.$2[286 287 288]"			},
-			"When": { 	"DayofWeek":"Friday", "HasFlag": "Dwarf_Friend"	}	},
+			"When": { 	"DayofWeek":"Friday", "HasFlag": "Dwarf_Friend"	}	
+		},
+{	"LogName": "Dialogue", 	
+	"Action": "EditData","Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {	
+		"OneKid_0": "%kid1 loves to play in the fallen leaves.#$b#I must confess, I am rather enjoying it myself.$4#$b#I feel young again, @. Reborn.$4",
+		"OneKid_1": "Why yes... there is mashed pumpkin in my hair.$2#$b#I offered %kid1 some, pureed, for breakfast. They were not appreciative.",
+		"One_Kid_2": "%kid1 and I have been skipping stones on the pond. My record is 5 hops.$1#$b#%kid1's is one plop, but it's early days yet.$3"
+				},
+	"When": { "HasSeenEvent |contains=5599013":true }
+		},
+{	
+	"LogName": "Dialogue", 	"Action": "EditData","Target": "Characters/Dialogue/MarriageDialogueJasper",
+	"Entries": {	
+	"funReturn_Jasper": "Good evening my love! Oh yes, thank you, I did enjoy my birthday.$3#$b#Gunther presented me with some fascinating artifacts, and this... [348]$1"	},
+	"When": { 	"Day":"8"	}	
+		},
 
+
+{	"Action": "Include",
+	"FromFile": "assets/Translations/RU/SeasonalMarriage_fall.json",
+	"When": {	"Language": "ru"	}
+	}
 
     ]
 }

@@ -84,12 +84,13 @@ namespace GiftDecline
 				}
 			}
 
-			if (Game1.questOfTheDay is ItemDeliveryQuest quest &&
-				quest.deliveryItem.Value.ParentSheetIndex == item.ParentSheetIndex &&
-				Game1.questOfTheDay.hasReward())
+			foreach (ItemDeliveryQuest quest in QuestLogHelper.GetDailyItemDeliveryQuests())
 			{
-				Logger.Trace("Handed over quest item");
-				return;
+				if (quest.deliveryItem.Value.ParentSheetIndex == item.ParentSheetIndex && quest.hasReward())
+				{
+					Logger.Trace("Handed over quest item");
+					return;
+				}
 			}
 
 			throw new Exception("It appears a gift has been given to someone, but I can't determine to whom :(");

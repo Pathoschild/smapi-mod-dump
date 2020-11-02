@@ -34,9 +34,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit c0955362cab996ebd44242a200bca557daaa9a0b
+   commit 05fa60c6ad79e48148187dffe148e1cce7d94066
    Author: danvolchek <danvnad@gmail.com>
-   Date:   Sat Aug 22 15:25:12 2020 -0700
+   Date:   Sun Nov 1 15:47:53 2020 -0800
    
-       [Windy Effects] don't update when there is no current location
+       [Cacti Hurt You] don't check for cacti when there is no current location
    

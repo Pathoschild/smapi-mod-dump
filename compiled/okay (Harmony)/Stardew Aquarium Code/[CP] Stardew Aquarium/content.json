@@ -19,12 +19,12 @@
             "ToArea":{ "X": "{{spacechase0.JsonAssets/ObjectSpriteX:Fish Bowl}}", "Y": "{{spacechase0.JsonAssets/ObjectSpriteY:Fish Bowl}}", "Width": 16, "Height": 16 },
             "AnimationFrameTime": 10,
             "AnimationFrameCount": 28,
-         "When": 
-         {
-         "HasMod": "spacechase0.ContentPatcherAnimations",
-         "HasMod":"spacechase0.JsonAssets"
-         }
-       },
+         	"When": 
+         		{
+        		"HasMod": "spacechase0.ContentPatcherAnimations",
+        		"HasMod":"spacechase0.JsonAssets"
+         		}
+    },
    	{
    			"LogName": "0 Pufferchick Animation",
 			"Action": "EditImage",
@@ -37,9 +37,31 @@
 			"When":
 				{
 				"HasMod": "spacechase0.ContentPatcherAnimations",
-            "HasMod":"spacechase0.JsonAssets",
+            	"HasMod":"spacechase0.JsonAssets",
 				"LegendaryFishAnimation": "true"
 				},
+      },
+      {
+         "LogName": "LASV Warp Patch",
+         "Action": "EditMap",
+         "Target": "Maps/FishMuseum",
+         "FromFile": "assets/Maps/LASV_WarpPatch.tmx",
+         "FromArea": { "X": 0, "Y": 0, "Width": 3, "Height": 3 },
+         "ToArea": { "X": 2, "Y": 29, "Width": 3, "Height": 3 },
+         "When": {
+ 			"HasMod": "Rafseazz.LunnaItems"
+ 				}
+      },
+      {
+         "LogName": "SVE Map Patch",
+         "Action": "EditMap",
+         "Target": "Maps/FishMuseum",
+         "FromFile": "assets/Maps/SVE_MapPatch.tmx",
+         "FromArea": { "X": 0, "Y": 0, "Width": 5, "Height": 8 },
+         "ToArea": { "X": 2, "Y": 36, "Width": 5, "Height": 8 },
+         "When": {
+ 			"HasMod": "FlashShifter.JA.SVE"
+ 				}
       },
       {
          "LogName": "1 Angler Load",
@@ -174,6 +196,18 @@
          "FromFile": "assets/Aquariums/SVE/AquariumEmpty22.png"
       },
       {
+         "LogName": "22 SVE Frogs Load",
+         "Action": "Load",
+         "Target": "Maps/TerrariumEmpty1",
+         "FromFile": "assets/Aquariums/SVE/TerrariumEmpty1.png"
+      },
+      {
+         "LogName": "23 LASV Load",
+         "Action": "Load",
+         "Target": "Maps/AquariumEmpty23",
+         "FromFile": "assets/Aquariums/LASV/AquariumEmpty23.png"
+      },
+      {
          "LogName": "1 Angler Overlay",
          "Action": "EditImage",
          "Target": "Maps/AquariumEmpty1",
@@ -217,6 +251,18 @@
 },
 "Update": "OnLocationChange"
       },
+      {
+         "LogName": "2 Dotted Abalone Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty2",
+         "FromFile": "assets/Aquariums/Crabpot1/dottedabalone.png",
+         "PatchMode":"Overlay",
+         "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:DottedAbalone", 
+ "HasMod": "ItsBenter.ShellCollection.JA"
+},
+"Update": "OnLocationChange"
+      },
 	  	  	  	  	  {
          "LogName": "3 Cockle Overlay",
          "Action": "EditImage",
@@ -247,6 +293,18 @@
          "PatchMode":"Overlay",
         "When": {
  "HasFlag: hostPlayer": "AquariumDonated:Mussel",
+ 				},
+ "Update": "OnLocationChange"
+      },
+      {
+         "LogName": "3 Scallop Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty3",
+         "FromFile": "assets/Aquariums/Crabpot2/scallop.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasFlag: hostPlayer": "AquariumDonated:Scallop",
+ "HasMod": "ItsBenter.ShellCollection.JA"
  				},
  "Update": "OnLocationChange"
       },
@@ -490,6 +548,18 @@
          "PatchMode":"Overlay",
         "When": {
  "HasFlag: hostPlayer": "AquariumDonated:Walleye"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "13 Minnow SVE Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty13",
+         "FromFile": "assets/Aquariums/SVE/minnow.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "FlashShifter.JA.SVE",
+ "HasFlag: hostPlayer": "AquariumDonated:Minnow"
 },
 "Update": "OnLocationChange"
       },
@@ -929,7 +999,7 @@
 "Update": "OnLocationChange"
       },
      	{
-         "LogName": "22 Void Eeel Overlay",
+         "LogName": "20 Void Eeel Overlay",
          "Action": "EditImage",
          "Target": "Maps/AquariumEmpty20",
          "FromFile": "assets/Aquariums/SVE/voideel.png",
@@ -988,15 +1058,87 @@
 },
 "Update": "OnLocationChange"
       },
-      {
-         "LogName": "22 Minnow SVE Overlay",
+       {
+         "LogName": "22 King Salmon SVE Overlay",
          "Action": "EditImage",
          "Target": "Maps/AquariumEmpty22",
-         "FromFile": "assets/Aquariums/SVE/minnow.png",
+         "FromFile": "assets/Aquariums/SVE/kingsalmon.png",
          "PatchMode":"Overlay",
         "When": {
  "HasMod": "FlashShifter.JA.SVE",
- "HasFlag: hostPlayer": "AquariumDonated:Minnow"
+ "HasFlag: hostPlayer": "AquariumDonated:KingSalmon"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "22 Frogs SVE Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/TerrariumEmpty1",
+         "FromFile": "assets/Aquariums/SVE/frogs_overlay.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "FlashShifter.JA.SVE",
+ "HasFlag: hostPlayer": "AquariumDonated:Frog"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "23 Dewdrop Fish LASV Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty23",
+         "FromFile": "assets/Aquariums/LASV/dewdropfish.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "Rafseazz.LunnaItems",
+ "HasFlag: hostPlayer": "AquariumDonated:DewdropFish"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "23 Purple Spotted Trout LASV Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty23",
+         "FromFile": "assets/Aquariums/LASV/purplespottedtrout.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "Rafseazz.LunnaItems",
+ "HasFlag: hostPlayer": "AquariumDonated:PurpleSpottedTrout"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "23 Relicantlette LASV Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty23",
+         "FromFile": "assets/Aquariums/LASV/relicantlette.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "Rafseazz.LunnaItems",
+ "HasFlag: hostPlayer": "AquariumDonated:Relicantlette"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "23 Serafin LASV Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty23",
+         "FromFile": "assets/Aquariums/LASV/serafin.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "Rafseazz.LunnaItems",
+ "HasFlag: hostPlayer": "AquariumDonated:Serafin"
+},
+"Update": "OnLocationChange"
+      },
+      {
+         "LogName": "23 Umuwi Carp LASV Overlay",
+         "Action": "EditImage",
+         "Target": "Maps/AquariumEmpty23",
+         "FromFile": "assets/Aquariums/LASV/umuwicarp.png",
+         "PatchMode":"Overlay",
+        "When": {
+ "HasMod": "Rafseazz.LunnaItems",
+ "HasFlag: hostPlayer": "AquariumDonated:UmuwiCarp"
 },
 "Update": "OnLocationChange"
       },

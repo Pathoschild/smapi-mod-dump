@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6894
+IDs: AngelaRanna.LeadRodFixer
+update keys: Nexus:6894@LeadRodFixer, Nexus:6894, GitHub:AngelaRanna/StardewMods

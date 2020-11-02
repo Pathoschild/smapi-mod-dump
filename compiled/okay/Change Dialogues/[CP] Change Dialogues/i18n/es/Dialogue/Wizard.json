@@ -33,7 +33,7 @@
 						},
 						"DuringMovie": {
 							"ResponsePoint": null,
-							"Script": "/message \"Le brillan los ojos {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:L{{mardrest.ChangeDialogues/WizardGender}}}}...\"",
+							"Script": "/message \"Le brillan los ojos {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/WizardGender}}}} {{mardrest.ChangeDialogues/Wizard:LR{{mardrest.ChangeDialogues/WizardGender}}}}...\"",
 							"Text": "Y pensar... ¡que el hombre de a pie no sabe que este vídeo es real y no está manipulado!"
 						},
 						"AfterMovie": {
@@ -47,20 +47,6 @@
 				]
 			}
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Wizard": "adult/rude/neutral/negative/{{lowercase:{{mardrest.ChangeDialogues/WizardGender}}}}/not-datable/null/Other/winter 17//WizardHouse 3 17/{{mardrest.ChangeDialogues/WizardName}}"
-		}, "When": { "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false" }
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Wizard": "adult/rude/neutral/negative/{{lowercase:{{mardrest.ChangeDialogues/WizardGender}}}}/not-datable/null/Other/winter 17//WizardHouse 3 17/{{mardrest.ChangeDialogues/WizardName}}"
-		}, "When": { "HasMod |contains=foggy.LfL": "true" }
 	}
 	]
 }

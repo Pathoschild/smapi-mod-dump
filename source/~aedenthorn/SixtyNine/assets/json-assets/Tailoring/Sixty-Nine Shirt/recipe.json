@@ -11,4 +11,5 @@
 {
     "CraftedItems": [ "Sixty-Nine Shirt" ],
     "FirstItemTags": [ "item_fish_taco" ],
+    "SecondItemTags": [ "item_hardwood" ],
 }

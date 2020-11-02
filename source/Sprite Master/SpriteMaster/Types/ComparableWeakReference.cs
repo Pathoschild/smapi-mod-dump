@@ -24,9 +24,7 @@ namespace SpriteMaster.Types {
 			public static readonly MethodInfo Create = typeof(WeakReference<T>).GetMethod("Create", BindingFlags.Instance | BindingFlags.NonPublic);
 			public static readonly MethodInfo IsTrackResurrection = typeof(WeakReference<T>).GetMethod("IsTrackResurrection", BindingFlags.Instance | BindingFlags.NonPublic);
 
-			private static string GetName (string name) {
-				return $"{typeof(ComparableWeakReference<T>).Name}.{name}";
-			}
+			private static string GetName (string name) => $"{typeof(ComparableWeakReference<T>).Name}.{name}";
 
 			static Reflect () {
 				_ = Target ?? throw new NullReferenceException(GetName(nameof(Target)));
@@ -44,9 +42,7 @@ namespace SpriteMaster.Types {
 			set { _Reference.SetTarget(value); }
 		}
 
-		public bool IsAlive {
-			get { return _Reference.TryGetTarget(out T _); }
-		}
+		public bool IsAlive => _Reference.TryGetTarget(out T _);
 
 		public ComparableWeakReference (T target) : this(new WeakReference<T>(target)) { }
 
@@ -65,13 +61,9 @@ namespace SpriteMaster.Types {
 			Create(target, boolean);
 		}
 
-		public bool TryGetTarget (out T target) {
-			return _Reference.TryGetTarget(out target);
-		}
+		public bool TryGetTarget (out T target) => _Reference.TryGetTarget(out target);
 
-		public void SetTarget (T target) {
-			_Reference.SetTarget(target);
-		}
+		public void SetTarget (T target) => _Reference.SetTarget(target);
 
 		public void GetObjectData (SerializationInfo info, StreamingContext context) {
 			if (info == null) {
@@ -82,14 +74,10 @@ namespace SpriteMaster.Types {
 		}
 
 		[SecuritySafeCritical]
-		private void Create (T target, bool trackResurrection) {
-			Reflect.Create.Invoke(_Reference, new object[] { target, trackResurrection });
-		}
+		private void Create (T target, bool trackResurrection) => Reflect.Create.Invoke(_Reference, new object[] { target, trackResurrection });
 
 		[SecuritySafeCritical]
-		private bool IsTrackResurrection () {
-			return (bool)Reflect.IsTrackResurrection.Invoke(_Reference, null);
-		}
+		private bool IsTrackResurrection () => (bool)Reflect.IsTrackResurrection.Invoke(_Reference, null);
 
 		public override int GetHashCode () {
 			if (_Reference.TryGetTarget(out T target)) {
@@ -105,37 +93,23 @@ namespace SpriteMaster.Types {
 			return LongHash.Null;
 		}
 
-		public static implicit operator WeakReference<T> (ComparableWeakReference<T> reference) {
-			return reference._Reference;
-		}
+		public static implicit operator WeakReference<T> (ComparableWeakReference<T> reference) => reference._Reference;
 
-		public static implicit operator ComparableWeakReference<T> (WeakReference<T> reference) {
-			return new ComparableWeakReference<T>(reference);
-		}
+		public static implicit operator ComparableWeakReference<T> (WeakReference<T> reference) => new ComparableWeakReference<T>(reference);
 
-		public bool Equals(ComparableWeakReference<T> obj) {
-			return this == obj;
-		}
+		public bool Equals (ComparableWeakReference<T> obj) => this == obj;
 
-		public bool Equals(WeakReference<T> obj) {
-			return this == obj;
-		}
+		public bool Equals (WeakReference<T> obj) => this == obj;
 
-		public static bool Equals(WeakReference<T> objA, ComparableWeakReference<T> objB) {
-			return objA == objB;
-		}
+		public static bool Equals (WeakReference<T> objA, ComparableWeakReference<T> objB) => objA == objB;
 
-		public static bool Equals (object objA, ComparableWeakReference<T> objB) {
-			return objB.Equals(objA);
-		}
+		public static bool Equals (object objA, ComparableWeakReference<T> objB) => objB.Equals(objA);
 
-		public override bool Equals(object obj) {
-			return obj switch {
-				ComparableWeakReference<T> reference => this == reference,
-				WeakReference<T> reference => this == reference,
-				_ => false,
-			};
-		}
+		public override bool Equals (object obj) => obj switch {
+			ComparableWeakReference<T> reference => this == reference,
+			WeakReference<T> reference => this == reference,
+			_ => false,
+		};
 
 		public static bool operator == (ComparableWeakReference<T> objA, ComparableWeakReference<T> objB) {
 			if (objA.TryGetTarget(out T l) && objB.TryGetTarget(out T r)) {
@@ -151,9 +125,7 @@ namespace SpriteMaster.Types {
 			return false;
 		}
 
-		public static bool operator == (WeakReference<T> objA, ComparableWeakReference<T> objB) {
-			return objB == objA;
-		}
+		public static bool operator == (WeakReference<T> objA, ComparableWeakReference<T> objB) => objB == objA;
 
 		public static bool operator != (ComparableWeakReference<T> objA, ComparableWeakReference<T> objB) {
 			if (objA.TryGetTarget(out T l) && objB.TryGetTarget(out T r)) {
@@ -169,8 +141,6 @@ namespace SpriteMaster.Types {
 			return true;
 		}
 
-		public static bool operator != (WeakReference<T> objA, ComparableWeakReference<T> objB) {
-			return objB != objA;
-		}
+		public static bool operator != (WeakReference<T> objA, ComparableWeakReference<T> objB) => objB != objA;
 	}
 }

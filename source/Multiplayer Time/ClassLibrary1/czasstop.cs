@@ -257,7 +257,7 @@ namespace MultiplayerTime
                 Game1.textColor *= 0f;
                 Game1.dayTimeMoneyBox.timeShakeTimer = 0;
             }
-            if (Context.IsMultiplayer)
+            if (Context.IsMultiplayer && !Game1.isFestival())
             {
                 drawPasek(Game1.spriteBatch);
             }
@@ -305,12 +305,12 @@ namespace MultiplayerTime
                 {
                     orginal = orginal + Game1.player.MagneticRadius;
                 }
-                if (!Context.IsPlayerFree || (Game1.currentMinigame != null && Game1.currentMinigame.minigameId() == "PrairieKing") || Game1.player.isEating || Game1.freezeControls)
+                if (!Context.IsPlayerFree || (Game1.currentMinigame != null && Game1.currentMinigame.minigameId() == "PrairieKing") || Game1.player.isEating || Game1.freezeControls || Game1.activeClickableMenu is BobberBar)
                 {
                     Game1.player.MagneticRadius = 0;
                     difference = false;
                 }
-                if ((Context.IsPlayerFree && !Game1.player.isEating && Game1.currentMinigame==null && !Game1.freezeControls) || Game1.activeClickableMenu is BobberBar)
+                if (Context.IsPlayerFree && !Game1.player.isEating && Game1.currentMinigame==null && !Game1.freezeControls)
                 {
                     Game1.player.MagneticRadius = orginal;
                     difference = true;

@@ -32,19 +32,13 @@ namespace SpriteMaster {
 			}
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			internal static Functor Of (WaitCallback callback, object state) {
-				return new Functor(callback, state);
-			}
+			internal static Functor Of (WaitCallback callback, object state) => new Functor(callback, state);
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			internal static Functor Of<T>(QueueFunctor<T> callback, T state) where T : class {
-				return new Functor((object o) => callback((T)o), state);
-			}
+			internal static Functor Of<T> (QueueFunctor<T> callback, T state) where T : class => new Functor((object o) => callback((T)o), state);
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			internal static Functor Of(WaitCallback callback) {
-				return new Functor(callback, null);
-			}
+			internal static Functor Of (WaitCallback callback) => new Functor(callback, null);
 		}
 
 #if THREADQUEUE_PARALLEL
@@ -68,7 +62,7 @@ namespace SpriteMaster {
 						}
 					}
 
-					QueueList.SwapAtomic();
+					QueueList.Swap();
 
 					lock (CurrentQueue) {
 						foreach (var functor in CurrentQueue) {
@@ -102,18 +96,12 @@ namespace SpriteMaster {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void Queue<T>(QueueFunctor<T> functor, T argument) where T : class {
-			Enqueue(Functor.Of(functor, argument));
-		}
+		public static void Queue<T> (QueueFunctor<T> functor, T argument) where T : class => Enqueue(Functor.Of(functor, argument));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void Queue (WaitCallback functor, object argument) {
-			Enqueue(Functor.Of(functor, argument));
-		}
+		public static void Queue (WaitCallback functor, object argument) => Enqueue(Functor.Of(functor, argument));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void Queue (WaitCallback functor) {
-			Enqueue(Functor.Of(functor));
-		}
+		public static void Queue (WaitCallback functor) => Enqueue(Functor.Of(functor));
 	}
 }

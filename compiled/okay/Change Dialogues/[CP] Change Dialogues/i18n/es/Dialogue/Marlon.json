@@ -1,11 +1,5 @@
 {
     "Changes": [
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Marlon": "adult/neutral/outgoing/neutral/{{lowercase:{{mardrest.ChangeDialogues/MarlonGender}}}}/not-datable/Marnie/Town///AdventureGuild 5 11/{{mardrest.ChangeDialogues/MarlonName}}"
-		}, "When": { "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false" }
-	}
+		
 	]
 }

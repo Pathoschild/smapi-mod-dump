@@ -19,7 +19,7 @@ Most item sources are included, but not every possible one - I prioritized the e
 
 ## Supported Languages
 
-**English, Japanese**
+**English, Japanese, Portuguese (provided by Cosmiky)**
 
 (Even in unsupported languages, item and character names refer directly to the data, so those will use the proper names for that language.)
 

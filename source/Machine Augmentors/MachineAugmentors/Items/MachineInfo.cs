@@ -70,8 +70,8 @@ namespace MachineAugmentors.Items
             new MachineInfo("Furnace", new List<int>() { 13, 14 }, false, true, AugmentorType.Output, AugmentorType.Speed, AugmentorType.Efficiency, AugmentorType.Production, AugmentorType.Duplication, AugmentorType.Quality),
             new MachineInfo("Recycling Machine", 20, false, true, AugmentorType.Output, AugmentorType.Speed, AugmentorType.Efficiency, AugmentorType.Production, AugmentorType.Duplication),
             new MachineInfo("Seed Maker", 25, false, true, AugmentorType.Output, AugmentorType.Speed, AugmentorType.Efficiency, AugmentorType.Production, AugmentorType.Duplication),
-            new MachineInfo("Tapper", 105, false, false, AugmentorType.Output, AugmentorType.Speed, AugmentorType.Duplication),
-            new MachineInfo("Worm Bin", 154, false, false, AugmentorType.Output, AugmentorType.Speed, AugmentorType.Duplication)
+            new MachineInfo("Tapper", 105, false, false, AugmentorType.Output, AugmentorType.Speed, AugmentorType.Production, AugmentorType.Duplication),
+            new MachineInfo("Worm Bin", 154, false, false, AugmentorType.Output, AugmentorType.Speed, AugmentorType.Production, AugmentorType.Duplication)
         }.AsReadOnly();
 
         static MachineInfo() { LoadAugmentableMachineData(); }
@@ -116,7 +116,7 @@ namespace MachineAugmentors.Items
             if (!RequiresInput)
             {
                 ValidatedTypes.Remove(AugmentorType.Efficiency);
-                ValidatedTypes.Remove(AugmentorType.Production);
+                //ValidatedTypes.Remove(AugmentorType.Production);
             }
             this.AttachableAugmentors = ValidatedTypes.AsReadOnly();
         }
@@ -159,6 +159,15 @@ namespace MachineAugmentors.Items
         {
             Result = RegisteredMachines.FirstOrDefault(x => x.IsMatch(Item));
             return Result != null;
+        }
+
+        private static readonly ReadOnlyCollection<int> IndestructibleMachineIds = new List<int>() {
+            101 // Incubator
+        }.AsReadOnly();
+
+        public static bool IsDestructible(Object Machine)
+        {
+            return Machine != null && Machine.bigCraftable && Machine.CanBeSetDown && Machine.isPlaceable() && !IndestructibleMachineIds.Contains(Machine.ParentSheetIndex);
         }
     }
 }

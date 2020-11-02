@@ -20,8 +20,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Robin": "adult/neutral/outgoing/positive/female/not-datable/Demetrius/Town/fall 21/Demetrius '{{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/DemetriusGender}}}}' Maru 'daughter' Sebastian '{{mardrest.ChangeDialogues/Son:L{{mardrest.ChangeDialogues/SebastianGender}}}}'/ScienceHouse 21 4/{{mardrest.ChangeDialogues/RobinName}}"
+		"Fields": {
+			"Robin": {
+				9: "Demetrius '{{mardrest.ChangeDialogues/Husband:L{{mardrest.ChangeDialogues/DemetriusGender}}}}' Maru 'daughter' Sebastian '{{mardrest.ChangeDialogues/Son:L{{mardrest.ChangeDialogues/SebastianGender}}}}'"
+			}
 		}
 	}
 	]

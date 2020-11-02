@@ -561,7 +561,7 @@
                   "{{CRIT}}": ".05",
                   "{{CRITMULT}}": "2"
               },
-              "46": // Kudgel
+              "28": // The Slammer
               {
                   "{{MINDAMAGE}}": "5",
                   "{{MAXDAMAGE}}": "175",
@@ -574,7 +574,7 @@
                   "{{CRIT}}": ".05",
                   "{{CRITMULT}}": "2.5"
               },
-              "28": // The Slammer
+              "46": // Kudgel
               {
                   "{{MINDAMAGE}}": "10",
                   "{{MAXDAMAGE}}": "200",
@@ -650,7 +650,8 @@
           "Action": "EditData",
           "Target": "Data/weapons",
           "When": {
-              "EnablePrecisionChanges": "true"
+              "EnablePrecisionChanges": "true",
+              //"HasMod |contains=FlashShifter.StardewValleyExpandedCP": false
           },
           "Fields":
           {
@@ -839,20 +840,76 @@
               }
           }
        },
-       /*
-       *{
-       *    // Update the text of the galaxy dagger to add something about the AoE
-       *    "Action": "EditData",
-       *    "Target": "Data/weapons",
-       *    "TextOperations":
-       *    {
-       *        "Operation": "Append",
-       *        "Target": ["23", "1"], // Galaxy Dagger, description field
-       *        "Value": "The air well beyond the blade hums when swung, as if the blade were much larger.",
-       *        "Delimiter": " "
-       *    },
-       *},
-       */
+       {
+          // SVE Weapons
+          "Action": "EditData",
+          "Target": "Data/weapons",
+          "When": {
+              "HasMod": "FlashShifter.JA.SVE",
+              "HasMod": "spacechase0.JsonAssets"
+          },
+          "Fields":
+          {
+              "{{spacechase0.JsonAssets/WeaponId:Tempered Galaxy Sword}}": {
+                  "{{MINDAMAGE}}": 220,
+                  "{{MAXDAMAGE}}": 260,
+                  //"{{KNOCKBACK}}": 1.2,
+                  "{{SPEED}}": 8,
+                  "{{DEFENSE}}": 0,
+                  //"{{TARGETLVL}}": 0,
+                  //{{MINLVL}}": -1,
+                  "{{AOE}}": 0,
+                  "{{CRIT}}": 0,
+                  "{{CRITMULT}}": 1
+              },
+              "{{spacechase0.JsonAssets/WeaponId:Tempered Galaxy Hammer}}": {
+                  "{{MINDAMAGE}}": 100,
+                  "{{MAXDAMAGE}}": 450,
+                  "{{KNOCKBACK}}": 4.0,
+                  "{{SPEED}}": -2,
+                  "{{DEFENSE}}": 0,
+                  //"{{TARGETLVL}}": 0,
+                  //{{MINLVL}}": -1,
+                  "{{AOE}}": 25,
+                  "{{CRIT}}": 0,
+                  "{{CRITMULT}}": 1
+              },
+              "{{spacechase0.JsonAssets/WeaponId:Tempered Galaxy Dagger}}": {
+                  "{{MINDAMAGE}}": 100,
+                  "{{MAXDAMAGE}}": 150,
+                  "{{KNOCKBACK}}": 1.0,
+                  "{{SPEED}}": 5,
+                  //"{{DEFENSE}}": 0,
+                  //"{{TARGETLVL}}": 0,
+                  //{{MINLVL}}": -1,
+                  "{{AOE}}": 100,
+                  "{{CRIT}}": 0,
+                  "{{CRITMULT}}": 1,
+              }
+          }
+       },
+       {
+          // SVE Weapons Precision
+          "Action": "EditData",
+          "Target": "Data/weapons",
+          "When": {
+              "HasMod": "FlashShifter.JA.SVE",
+              "HasMod": "spacechase0.JsonAssets",
+              "EnablePrecisionChanges": "true"
+          },
+          "Fields":
+          {
+              "{{spacechase0.JsonAssets/WeaponId:Tempered Galaxy Sword}}": {
+                  "{{PRECISION}}": -490
+              },
+              "{{spacechase0.JsonAssets/WeaponId:Tempered Galaxy Hammer}}": {
+                  "{{PRECISION}}": 120
+              },
+              "{{spacechase0.JsonAssets/WeaponId:Tempered Galaxy Dagger}}": {
+                  "{{PRECISION}}": -370
+              }
+          }
+       },
        {
            // Contents of the mail sent to you after floor 1 of the mines
           "Action": "EditData",
@@ -886,7 +943,7 @@
            "Target": "Data/Events/WeaponRebalanceEvents",
            "Entries":
            {
-               "WeaponRebalanceIntroWeaponsGift": "MarlonsTheme/-100 -100/farmer 6 19 0/addTemporaryActor Gil 1 1 100 100 1/viewport 13 25/move farmer 0 -6 0/move farmer 1 0 1/move farmer 0 -1 0/move farmer 3 0 1/speak Gil \"There you are, kid. Here, try these on for size and pick what you like.\"/speak Gil \"Swords are great for consistent damage, but daggers are faster and easier to find your foes' weak points.\"/speak Gil \"Hammers are slow, but great at keeping monsters away so you don't have to fight them in the first place.\"/pause 1000/end"
+               "WeaponRebalanceIntroWeaponsGift": "MarlonsTheme/-100 -100/farmer 6 19 0/changeLocation AdventureGuild/addTemporaryActor Gil 1 1 100 100 1/viewport 13 25/move farmer 0 -6 0/move farmer 1 0 1/move farmer 0 -1 0/move farmer 3 0 1/speak Gil \"There you are, kid. Here, try these on for size and pick what you like.\"/speak Gil \"Swords are great for consistent damage, but daggers are faster and easier to find your foes' weak points.\"/speak Gil \"Hammers are slow, but great at keeping monsters away so you don't have to fight them in the first place.\"/pause 1000/end warpOut"
            }
        }
     ]

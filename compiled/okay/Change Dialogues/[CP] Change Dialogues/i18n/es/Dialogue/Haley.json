@@ -28,13 +28,6 @@
 			"winter_9.001": "Bueno... Me gotea un poco la nariz, doctor{{mardrest.ChangeDialogues/Gender:N{{mardrest.ChangeDialogues/HarveyGender}}}}. ¡Pero por lo demás estoy bien!",
 			"marriage_Mon.000": "¡Hola, cariño! He venido básicamente para visitar a {{mardrest.ChangeDialogues/EmilyName}}."
 		}
-	},
-	{
-		"Action": "EditData",
-		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Haley": "adult/rude/outgoing/neutral/female/datable/Alex/Town/spring 14/Emily 'hermana'/HaleyHouse 8 7/{{mardrest.ChangeDialogues/HaleyName}}"
-		}
 	}
 	]
 }

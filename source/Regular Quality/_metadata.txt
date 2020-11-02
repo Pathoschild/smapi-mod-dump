@@ -5,9 +5,9 @@ mods:
    Regular Quality
 
 latest commit:
-   commit 4a34b63fdca835b9aba3829b5704388caa9282ba
+   commit 492301562096e655e00978184e2727bb74f865d4
    Author: desto-git <desto-git@users.noreply.github.com>
-   Date:   Thu Oct 1 01:39:34 2020 +0200
+   Date:   Mon Oct 19 21:39:30 2020 +0200
    
-       [GD] fix error when giving a quest item
+       [RQ] fix compatibility with Minerva's CC mod
    

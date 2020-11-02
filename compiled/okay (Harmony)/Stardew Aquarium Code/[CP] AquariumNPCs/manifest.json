@@ -1,7 +1,7 @@
 {
   "Name": "Stardew Aquarium NPCs [CP]",
   "Author": "LemurKat",
-  "Version": "1.0.6",
+  "Version": "1.1.1",
   "Description": "NPCs & Events for Aquarium",
   "UniqueID": "LemurKat.StardewAquariumCP",
   "UpdateKeys": [ "Nexus:???" ],
@@ -12,6 +12,14 @@
    {
       "UniqueID": "FlashShifter.StardewValleyExpandedCP",
       "IsRequired": false,
-   }
+   },
+   {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true,
+   },
+   {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": true,
+   },
 ]
 }

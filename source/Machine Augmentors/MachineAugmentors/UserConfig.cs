@@ -149,7 +149,7 @@ namespace MachineAugmentors
                     MaxAttachmentsPerMachine = 200,
                     UseLinearFormula = true,
                     MaxEffectPerStandardMachine = 100.0,
-                    MaxEffectPerInputlessMachine = 1.0, // Recommended: 0.5-1.5
+                    MaxEffectPerInputlessMachine = 25.0,
                     StandardDecayRate = 0.04, // Recommended: 0.03-0.06
                     InputlessDecayRate = 0.04 // Recommended: 0.03-0.06
                 },

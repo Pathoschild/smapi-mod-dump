@@ -39,7 +39,7 @@
     "TwoKids_2": "%kid2 said 'geode' today! Or at least, that's what I like to think they said.#$b#It was probably just baby babble and wishful thinking, however.",
     "TwoKids_3": "The kids and I have been playing 'school'. I believe %kid1 is beginning to grasp the priciples of anthropology.$1#$b#%kid2, however, is currently classifying all the toys by flavor.$3",
     "Good_1": "Have I told you today that you're amazing?#$b#No? Well, that's awfully slack of me, I really need to up my game, don't I?$1#$b#@. You're amazing, and I love you.$4",
-    "Good_2": "Ah good evening my dear! Just wanted you to know that I ad-ORE you!$4#$b#Sorry. A bit of geology humor.$3",
+    "Good_2": "Ah good day my dear! Just wanted you to know that I ad-ORE you!$4#$b#Sorry. A bit of geology humor.$3",
     "Good_3": "Hey, @. You rock!$1#$b#Get it?!$3",
     "Good_4": "Fresh air is good for the soul. And having you beside me, my dear, is an even better balm.$3#$b#I love you.$4",
     "Good_5": "Why yes, I have been borrowing Gunther's books. They have been most... inspirational.$4#$b#If you are home early tonight, perhaps we can both profit from my 'research'.$3",
@@ -69,12 +69,22 @@
     "Bad_9": "....Can't you see I'm busy? Oh, I don't look like I'm doing anything?$5#$b#Just leave me to my thoughts. Please, @.$2",
 
     //Dated Dialogue
+    "spring_1": "Spring has sprung! I'm sorry I can't help much on the farm, but I made you lunch.[240]",
+    "Spring_8": "I love watching the earth come back to life.",
     "spring_12": "I am looking forward to the Egg Festival tomorrow, @. 'Tis a time to celebrate renewal, and rebirth. As I myself feel reborn.$1",
     "spring_23": "Love is in the air, my dear, and there's a spring in my step.$3#$b#I hope you shall do the honor of dancing with me tomorrow.$1",
     "spring_24": "I've got my dancing shoes on and I'm ready to go! But, I'll understand if you choose a more sure-footed partner.#$b#But I do hope you'll dance with me.$4",
     "summer_1": "Summertime, a time to cherish the great outdoors.$1#$b#Please remember to wear a sunhat, my love.$4",
+    "summer_8": "Sorry if I was restless last night... the heat makes it hard to sleep.$2",
     "summer_15": "My father was a jovial man. He always had time for me, even though he must have been exhausted and I was always full of questions.#$b#I can only hope that one day I shall be as good a father as he. I miss him so much, @.",
     "summer_11": "Oh, I am actually looking forward to the luau today, my love!$1#$b#With you by my side, I truly feel part of the community.$3",
+    "summer_28": "Tonight our jellyfish visitors migrate past, headed for the warmer waters of the south.#$b#I shall meet you on the beach tonight, my love.$4",
+    "fall_1": "Ah, the halcyon days of the harvest have arrived!#$b#Oh, I do love this autumn season. Autumn, such a beautiful word.$1",
+    "fall_8": "My love! I am pondering how to celebrate my birthday this year.#$b#Oh, who am I kidding? I shall probably immerse myself in a book and forget all about it.$1#$b#I love you, and I shall see you tonight.$4",
+    "fall_15": "I'm looking forward to the Fair tomorrow. I am certain your display will impress.#$b#Me? I shall catch up with Marlon and Clint. I enjoy their quiet company.$3",
+    "fall_26": "When I was a child, I loved the Spirit's Eve festival. Now the thought of entering that maze gives me chills.#$b#I know it is all in fun, @. But...$2",
+    "winter_15":"Ah yes, the travelers are in town! The perfect chance to indulge in some gift shopping.#$b#Who am I buying for? Oh, let's see... Gunther, Rasmodius... maybe Miss Penny...$3#$b#Oh there's someone I've forgotten? Now who could that be?$1",
+    "winter_25": "Happy Winter Star my love. What am I thankful for? Oh, so many things!#$b#Friendships... a good book. And, of course, you my love. Happy Winter Star. I love you.[578 565 553 547 347]$4",
     "winter_28": "And so we bid farewell to another year, my love. What will the next year bring, do you think? [459]#$b#Adventure? New discoveries? Oh, I do not mind, as long as we are together.",
 	"{{AnniversarySeason}}_{{AnniversaryDayOfMonth}}": "Happy anniversary, @. A small token of my appreciation.[578 565 553 547 347]#$e#You have sparked new light inside me, and drawn me back to life.$3#$b#I love you.$4"
 

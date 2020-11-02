@@ -46,7 +46,7 @@
 		"Action": "EditData",
 		"Target": "Characters/Dialogue/MarriageDialogueAlex",
 		"Entries": {
-			"OneKid_3": "It was painfull when i was pregnant.^I wonder what it's like to be pregnant...?$h"
+			"OneKid_3": "It was painful when i was pregnant.^I wonder what it's like to be pregnant...?$h"
 		}, "When": { "mardrest.ChangeDialogues/AlexGender": "Female" }
 	},
 	{
@@ -59,8 +59,10 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/NPCDispositions",
-		"Entries": {
-			"Alex": "adult/rude/outgoing/positive/{{lowercase:{{mardrest.ChangeDialogues/AlexGender}}}}/datable/Haley/Town/summer 13/George 'grand{{mardrest.ChangeDialogues/Pa:L{{mardrest.ChangeDialogues/GeorgeGender}}}}' Evelyn 'grandma'/JoshHouse 19 5/{{mardrest.ChangeDialogues/AlexName}}"
+		"Fields": {
+			"Alex": {
+				9: "George 'grand{{mardrest.ChangeDialogues/Pa:L{{mardrest.ChangeDialogues/George}}}}' Evelyn 'grandma'"
+			}
 		}
 	}
 	]

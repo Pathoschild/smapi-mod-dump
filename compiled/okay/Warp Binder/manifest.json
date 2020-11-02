@@ -1,10 +1,13 @@
 ﻿{
   "Name": "Warp Binder Library",
   "Author": "SnowFire kVala",
-  "Version": "1.0.0",
+  "Version": "1.5.1",
   "Description": "This library provides the necessary components for other mods to dynamically bind map warp points.",
   "UniqueID": "SnowFire.Warp_Binder",
   "EntryDll": "Warp_Binder.dll",
   "MinimumApiVersion": "2.11",
-  "UpdateKeys": [ "Nexus:" ]
+  "UpdateKeys": [ "Nexus:6892" ],
+  "Dependencies": [
+
+  ]
 }

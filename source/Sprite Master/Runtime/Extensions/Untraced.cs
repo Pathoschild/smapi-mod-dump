@@ -16,9 +16,7 @@ using System.Reflection;
 namespace SpriteMaster.Extensions {
 	public static class Untraced {
 		[DebuggerStepThrough, DebuggerHidden()]
-		public static bool IsUntraced (this MethodBase method) {
-			return method != null && (method.IsDefined(typeof(DebuggerStepThroughAttribute), true) || method.IsDefined(typeof(DebuggerHiddenAttribute), true));
-		}
+		public static bool IsUntraced (this MethodBase method) => method != null && (method.IsDefined(typeof(DebuggerStepThroughAttribute), true) || method.IsDefined(typeof(DebuggerHiddenAttribute), true));
 
 		[DebuggerStepThrough, DebuggerHidden()]
 		public static string GetStackTrace (this Exception e) {

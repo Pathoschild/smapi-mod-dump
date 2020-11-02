@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/4778
 IDs: Jessebot.SprintSprint
-update keys: Nexus:4778, GitHub:JessebotX/StardewMods
+update keys: Nexus:4778, GitHub:JessebotX/StardewValleyMods

@@ -1,0 +1,19 @@
+﻿{
+  // New reminder page
+  "new-reminder.title": "New Reminder",
+  "new-reminder.reminder-message": "Reminder Message",
+  "new-reminder.reminder-time": "Reminder Time",
+  "new-reminder.instruction": "Choose the Hour, Minutes and Period",
+  "new-reminder.invalid-time": "The entered time is invalid",
+
+  // Display reminder page
+  "display-reminder.title": "Display Reminder",
+  "display-reminder.zero-reminders": "No reminders are set yet",
+
+  // general strings
+  "date.year": "Year",
+  "date.season.summer": "Summer",
+  "date.season.spring": "Spring",
+  "date.season.fall": "Fall",
+  "date.season.winter": "Winter"
+}

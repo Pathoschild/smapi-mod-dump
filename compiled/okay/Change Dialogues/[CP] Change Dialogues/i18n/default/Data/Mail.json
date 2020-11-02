@@ -20,7 +20,7 @@
 			"Emily": "Hi!^How are you doing? I hope you enjoy the gift I've sent you... Well, goodbye! +   ^   -{{mardrest.ChangeDialogues/EmilyName}} %item object 397 1 428 1 440 1 %%[#]A Gift From {{mardrest.ChangeDialogues/EmilyName}}",
 			"Marnie": "Dear @,^You're such a good neighbor I thought I'd send over some animal feed to make your job easier. Keep it up! ^   -{{mardrest.ChangeDialogues/MarnieName}} %item object 178 30 %%[#]A Gift From {{mardrest.ChangeDialogues/MarnieName}}",
 			"Shane": "Hey,^I thought it would be fun to send you a letter. I don't really know what to write, though.^ Here, I've enclosed a treat for you. Don't tell anyone, but I snagged this from the back room of JojaMart ages ago.^Okay, see you soon. ^   -{{mardrest.ChangeDialogues/ShaneName}} %item object 215 1 206 1 %%[#]A Gift From {{mardrest.ChangeDialogues/ShaneName}}",
-			"Wizard": "Greetings, young adept.^I have enclosed in this package an item of arcane significance. Use it wisely.   ^   -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}}%item object 422 1 82 1 84 1 70 1 %%[#]A Gift From the {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}}",
+			"Wizard": "Greetings, young adept.^I have enclosed in this package an item of arcane significance. Use it wisely.   ^   -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}}%item object 422 1 82 1 84 1 70 1 %%[#]A Gift From the {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}}",
 			"Sandy": "Greetings from Calico Desert!^Come visit me soon, I'm really bored out here :(. I've included a gift from the desert. You can come and thank me in person!   ^   -{{mardrest.ChangeDialogues/SandyName}} %item object 88 1 90 1 218 1 %%[#]A Gift From {{mardrest.ChangeDialogues/SandyName}}",
 			"afterSamShow": "@,^the show was a rockin' success! I wanted to say thanks again for all your help in creating this amazing band. We couldn't have done it without you!   ^   -{{mardrest.ChangeDialogues/SamName}}[#]{{mardrest.ChangeDialogues/SamName}}'s Thank-you Note",
 			"afterArtShow": "Dear @,^Thanks again for coming to my art show. It was such a success! I sold nearly all of my sculptures, and everyone was so positive and encouraging! I hope to see you again soon.  ^   -{{mardrest.ChangeDialogues/LeahName}}[#]{{mardrest.ChangeDialogues/LeahName}}'s Thank-you Note",
@@ -73,7 +73,7 @@
 			"foundLostTools": "Dear @,^Someone dropped your tools into the lost and found bin last night.^^I came in and set them next to your bed.^Hope I didn't wake you... ^^  -Mayor {{mardrest.ChangeDialogues/LewisName}}[#]Lost Tools",
 			"fishing2": "I've got some new items in stock...^A deluxe fishing pole and some bait that you can attach to it!^You can use bait to make fish bite faster. Hope to see you soon! ^   -{{mardrest.ChangeDialogues/WillyName}}[#]{{mardrest.ChangeDialogues/WillyName}}'s New Items",
 			"fishing6": "Come by the shop and check out the new rods I'm selling.^They're the best money can buy... and you can customize them with different kinds of tackle!^Hope to see you soon! ^   -{{mardrest.ChangeDialogues/WillyName}}[#]{{mardrest.ChangeDialogues/WillyName}}'s New Items #2",
-			"wizardJunimoNote": "My sources tell me you've been poking around inside the old community center.^Why don't you pay me a visit?^My chambers are west of the forest lake, in the stone tower. I may have information concerning your... 'rat problem'.^   -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 1 true %%[#]{{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}}'s Summons",
+			"wizardJunimoNote": "My sources tell me you've been poking around inside the old community center.^Why don't you pay me a visit?^My chambers are west of the forest lake, in the stone tower. I may have information concerning your... 'rat problem'.^   -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 1 true %%[#]{{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}}'s Summons",
 			"winter_18": "Dear @,^I would like to give you some information about an upcoming event: the Feast of the Winter Star. It's a time for the community to come together and think back on all the good fortune we've had this year.^A favorite tradition is the \"secret gift exchange\", where everyone in town is randomly assigned to someone else. On the day of the festival, everyone brings a gift for their secret friend and surprise them with something special!^This year, your secret friend is:^    %secretsanta ^Don't tell anyone! The feast will take place on the 25th from 10AM to 2PM at the town square. See you then! ^   -Mayor {{mardrest.ChangeDialogues/LewisName}}[#]Secret Gift-Giver",
 			"ccBulletinThankYou": "Dear @,^Everyone around town has been talking about your great generosity lately!^Apparently, packages have been appearing in people's houses containing items they posted about years ago on the community center bulletin! And the packages are all addressed from your farm!^Thanks for going out of your way to do something like that... all of us in town are delighted! ^   -Mayor {{mardrest.ChangeDialogues/LewisName}}[#]Bulletin Board Thank-you",
 			"guildQuest": "I see you've been exploring the old mine. You've got the adventurer's spirit, that much I can tell.^If you can slay 10 slimes, you'll have earned your place in my adventurer's guild. ^Be careful.    -{{mardrest.ChangeDialogues/MarlonName}} %item quest 15 true %%[#]Quest To Slay Slimes",
@@ -102,7 +102,7 @@
 			"fall_19_1": "@-^I'd like to buy a pumpkin from you. My daughter and I want to carve a jack-o-lantern for the upcoming Spirit's Eve festival. ^   -{{mardrest.ChangeDialogues/CarolineName}}%item quest 108 %%[#]{{mardrest.ChangeDialogues/CarolineName}}'s Request",
 			"winter_2_1": "Hey, I've got a little challenge for you:^    Catch me a squid.^You can fish them from the ocean at night. They only show up in the winter, though.^   -{{mardrest.ChangeDialogues/WillyName}}%item quest 109 %%[#]{{mardrest.ChangeDialogues/WillyName}}'s Challenge",
 			"winter_6_1": "I've got an unusual request. Could you keep this a secret?^ I want you to deliver an amethyst to {{mardrest.ChangeDialogues/EmilyName}}. It's her favorite stone. Tell her it's from me.^   -{{mardrest.ChangeDialogues/ClintName}} %item quest 110 %%[#]{{mardrest.ChangeDialogues/ClintName}}'s Unusual Request",
-			"winter_12_1": "@-^I am researching the forgotten art of shadow divination. I require an item known as 'Void Essence'. Bring it to me and you will be rewarded.^ -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 111 %%[#]{{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}}'s Request",
+			"winter_12_1": "@-^I am researching the forgotten art of shadow divination. I require an item known as 'Void Essence'. Bring it to me and you will be rewarded.^ -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 111 %%[#]{{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}}'s Request",
 			"winter_17_1": "@,^Sorry to bother you again, but I need another favor.^I got a new hammer and I want to try it on a variety of metals.^Could you smelt an iron bar and bring it to me? ^Thanks.^ -{{mardrest.ChangeDialogues/ClintName}} %item quest 112 %%[#]{{mardrest.ChangeDialogues/ClintName}}'s Request",
 			"winter_21_1": "@-^How are you doing? Hope the winter hasn't been too hard on you.^Anyway, I'm writing to ask you for some hardwood. I need about ten pieces, if you've got it.^If not, no worries. Take Care!^  -{{mardrest.ChangeDialogues/RobinName}}%item quest 113 %%[#]{{mardrest.ChangeDialogues/RobinName}}'s Request",
 			"winter_26_1": "Dear @-^I want to make fish stew, but I need an albacore! I know they're almost out of season... sorry about the short notice. Could you catch one for me?^   -{{mardrest.ChangeDialogues/GusName}}%item quest 114 %%[#]{{mardrest.ChangeDialogues/GusName}} Needs A Certain Fish",
@@ -115,7 +115,7 @@
 			"summer_21_2": "@,^I need truffle oil. Don't ask me why.^ -Mayor {{mardrest.ChangeDialogues/LewisName}}%item quest 120 %%[#]{{mardrest.ChangeDialogues/LewisName}}' Request",
 			"fall_6_2": "Wanted: 1 Fresh Lobster for a marvelous bisque I'm creating.^Who: {{mardrest.ChangeDialogues/GusName}}, proprietor of the Stardrop Saloon^Reward: 800g %item quest 121 %%[#]{{mardrest.ChangeDialogues/GusName}} Needs Lobster",
 			"fall_19_2": "NOTICE^Does anybody have one of them battery packs? My TV remote died, and it's a real hassle getting off the couch to change the station.^  -{{mardrest.ChangeDialogues/PamName}}%item quest 122 %%[#]{{mardrest.ChangeDialogues/PamName}} Needs Help",
-			"winter_5_2": "@,^I'm creating an enchanted staff of phenomenal power.^However, I'm missing something: an Iridium Bar.^I'm willing to pay 5x the market value for it. Bring it as soon as you can.^ -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 123 %%[#]{{mardrest.ChangeDialogues/Wizard:{{mardrest.ChangeDialogues/WizardGender}}}} Needs A Rare Item",
+			"winter_5_2": "@,^I'm creating an enchanted staff of phenomenal power.^However, I'm missing something: an Iridium Bar.^I'm willing to pay 5x the market value for it. Bring it as soon as you can.^ -{{mardrest.ChangeDialogues/IncompleteName:1{{mardrest.ChangeDialogues/WizardFirstName}}}}. {{mardrest.ChangeDialogues/WizardName}}, {{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}} %item quest 123 %%[#]{{mardrest.ChangeDialogues/Wizard:R{{mardrest.ChangeDialogues/WizardGender}}}} Needs A Rare Item",
 			"winter_13_2": "I've got another challenge for you: Catch me a Lingcod.^They don't go down easy, but I know you can do it.^  -{{mardrest.ChangeDialogues/WillyName}}%item quest 124 %%[#]{{mardrest.ChangeDialogues/WillyName}}'s Challenge #2",
 			"winter_19_2": "Dear @,^I'm at my wit's end. I desperately want to make a Coco-no-no at the saloon, but I have no way of getting a coconut!^Can you help me?^  -{{mardrest.ChangeDialogues/GusName}}%item quest 125 %%[#]{{mardrest.ChangeDialogues/GusName}} Needs A Coconut",
 			"winter_24": "Dear @,^Tomorrow is the Feast of the Winter Star.^Did you get a gift for your 'secret friend'... %secretsanta?^The feast starts at 9 AM in the town square. See you then! ^   -Mayor {{mardrest.ChangeDialogues/LewisName}}[#]Feast Of The Winter Star Reminder",
@@ -150,7 +150,7 @@
 		"Target": "Data/mail",
 		"Entries": {
 			"adoptionLetter": null
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Clint": "Married", "mardrest.ChangeDialogues/ClintGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -164,7 +164,7 @@
 		"Target": "Data/mail",
 		"Entries": {
 			"adoptionLetter": null
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Gus": "Married", "mardrest.ChangeDialogues/GusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -178,14 +178,14 @@
 		"Target": "Data/mail",
 		"Entries": {
 			"adoptionLetter": null
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Lewis": "Married", "mardrest.ChangeDialogues/LewisGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Data/mail",
 		"Entries": {
 			"adoptionLetter": null
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Linus": "Married", "mardrest.ChangeDialogues/LinusGender": "Female" }
 	},
 	{
 		"Action": "EditData",
@@ -220,14 +220,14 @@
 		"Target": "Data/mail",
 		"Entries": {
 			"adoptionLetter": null
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Willy": "Married", "mardrest.ChangeDialogues/WillyGender": "Female" }
 	},
 	{
 		"Action": "EditData",
 		"Target": "Data/mail",
 		"Entries": {
 			"adoptionLetter": null
-		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female", "HasMod |contains=foggy.LfL": "true" }
+		}, "When": { "mardrest.ChangeDialogues/PlayerGender": "Male", "Relationship:Wizard": "Married", "mardrest.ChangeDialogues/WizardGender": "Female" }
 	}
 	]
 }
