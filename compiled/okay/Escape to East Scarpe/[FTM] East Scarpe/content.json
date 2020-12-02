@@ -1,6 +1,6 @@
 {
   "ForageSpawnEnabled": true,
-  "LargeObjectSpawnEnabled": false,
+  "LargeObjectSpawnEnabled": true,
   "OreSpawnEnabled": true,
   "MonsterSpawnEnabled": true,
   "Forage_Spawn_Settings": {
@@ -499,7 +499,7 @@
         "RelatedSkill": "Foraging",
         "UniqueAreaID": "ESOrchard",
         "MapName": "ESOrchard",
-        "MinimumSpawnsPerDay": 1,
+        "MinimumSpawnsPerDay": -2,
         "MaximumSpawnsPerDay": 4,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
@@ -525,7 +525,7 @@
           "WeatherTomorrow": [],
           "LimitedNumberOfSpawns": null
         },
-        "DaysUntilSpawnsExpire": null
+        "DaysUntilSpawnsExpire": 1
       }
     ],
     "CustomTileIndex": []

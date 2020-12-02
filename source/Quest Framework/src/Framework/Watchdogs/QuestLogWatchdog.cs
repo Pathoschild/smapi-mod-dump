@@ -11,6 +11,7 @@
 using QuestFramework.Events;
 using QuestFramework.Extensions;
 using QuestFramework.Framework.Events;
+using QuestFramework.Framework.Quests;
 using QuestFramework.Framework.Stats;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -83,7 +84,7 @@ namespace QuestFramework.Framework.Watchdogs
             {
                 var managedQuest = newValue.AsManagedQuest();
 
-                this.StatsManager.AddAcceptedQuest(managedQuest.GetFullName());
+                managedQuest.ConfirmAccept(new QuestInfo(newValue, Game1.player));
                 this.Monitor.Log($"Managed quest `{managedQuest.GetFullName()}` added to player's quest log");
             }
 
@@ -91,6 +92,7 @@ namespace QuestFramework.Framework.Watchdogs
             {
                 var managedQuest = oldValue.AsManagedQuest();
 
+                managedQuest.ConfirmRemove(new QuestInfo(oldValue, Game1.player));
                 this.StatsManager.AddRemovedQuest(managedQuest.GetFullName());
                 this.Monitor.Log($"Managed quest `{managedQuest.GetFullName()}` removed from player's quest log");
             }

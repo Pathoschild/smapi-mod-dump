@@ -158,59 +158,35 @@
 		"When": { "HasFile:assets/Portraits/Abigail{{mardrest.ChangeDialogues/AbigailSprite}}.png": true, "mardrest.ChangeDialogues/AbigailSprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Abigail",
-		"FromFile": "assets/Characters/Abigail{{mardrest.ChangeDialogues/AbigailSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Abigail{{mardrest.ChangeDialogues/AbigailSprite}}.xnb": true, "mardrest.ChangeDialogues/AbigailSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Abigail",
-		"FromFile": "assets/Portraits/Abigail{{mardrest.ChangeDialogues/AbigailSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Abigail{{mardrest.ChangeDialogues/AbigailSprite}}.xnb": true, "mardrest.ChangeDialogues/AbigailSprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Abigail.json",
 		"When": { "HasFile:i18n/default/Dialogue/Abigail.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Abigail.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Abigail.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Abigail.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Abigail.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Alex",
-		"FromFile": "assets/Characters/Alex{{mardrest.ChangeDialogues/AlexGender}}.png",
-		"When": { "HasFile:assets/Characters/Alex{{mardrest.ChangeDialogues/AlexGender}}.png": true }
+		"FromFile": "assets/Characters/Alex{{mardrest.ChangeDialogues/AlexSprite}}.png",
+		"When": { "HasFile:assets/Characters/Alex{{mardrest.ChangeDialogues/AlexSprite}}.png": true, "mardrest.ChangeDialogues/AlexSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Alex",
-		"FromFile": "assets/Portraits/Alex{{mardrest.ChangeDialogues/AlexGender}}.png",
-		"When": { "HasFile:assets/Portraits/Alex{{mardrest.ChangeDialogues/AlexGender}}.png": true }
+		"FromFile": "assets/Portraits/Alex{{mardrest.ChangeDialogues/AlexSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Alex{{mardrest.ChangeDialogues/AlexSprite}}.png": true, "mardrest.ChangeDialogues/AlexSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Alex",
-		"FromFile": "assets/Characters/Alex{{mardrest.ChangeDialogues/AlexGender}}.png",
+		"FromFile": "assets/Characters/Alex{{mardrest.ChangeDialogues/AlexSprite}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
 		"Update": "OnLocationChange",
-		"When": { "mardrest.ChangeDialogues/AlexGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Alex{{mardrest.ChangeDialogues/AlexGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Alex",
-		"FromFile": "assets/Characters/Alex{{mardrest.ChangeDialogues/AlexGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Alex{{mardrest.ChangeDialogues/AlexGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Alex",
-		"FromFile": "assets/Portraits/Alex{{mardrest.ChangeDialogues/AlexGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Alex{{mardrest.ChangeDialogues/AlexGender}}.xnb": true }
+		"When": { "mardrest.ChangeDialogues/AlexGender": "Female", "DayEvent": "wedding", "LocationName": "Town", "HasFile:assets/Characters/Alex{{mardrest.ChangeDialogues/AlexSprite}}.png": true, "mardrest.ChangeDialogues/AlexSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditData",
@@ -228,8 +204,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Alex.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Alex.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Alex.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Alex.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -244,50 +220,26 @@
 		"When": { "HasFile:assets/Portraits/Caroline{{mardrest.ChangeDialogues/CarolineSprite}}.png": true, "mardrest.ChangeDialogues/CarolineSprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Caroline",
-		"FromFile": "assets/Characters/Caroline{{mardrest.ChangeDialogues/CarolineSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Caroline{{mardrest.ChangeDialogues/CarolineSprite}}.xnb": true, "mardrest.ChangeDialogues/CarolineSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Caroline",
-		"FromFile": "assets/Portraits/Caroline{{mardrest.ChangeDialogues/CarolineSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Caroline{{mardrest.ChangeDialogues/CarolineSprite}}.xnb": true, "mardrest.ChangeDialogues/CarolineSprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Caroline.json",
 		"When": { "HasFile:i18n/default/Dialogue/Caroline.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Caroline.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Caroline.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Caroline.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Caroline.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Clint",
-		"FromFile": "assets/Characters/Clint{{mardrest.ChangeDialogues/ClintGender}}.png",
-		"When": { "HasFile:assets/Characters/Clint{{mardrest.ChangeDialogues/ClintGender}}.png": true }
+		"FromFile": "assets/Characters/Clint{{mardrest.ChangeDialogues/ClintSprite}}.png",
+		"When": { "HasFile:assets/Characters/Clint{{mardrest.ChangeDialogues/ClintSprite}}.png": true, "mardrest.ChangeDialogues/ClintSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Clint",
-		"FromFile": "assets/Portraits/Clint{{mardrest.ChangeDialogues/ClintGender}}.png",
-		"When": { "HasFile:assets/Portraits/Clint{{mardrest.ChangeDialogues/ClintGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Clint",
-		"FromFile": "assets/Characters/Clint{{mardrest.ChangeDialogues/ClintGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Clint{{mardrest.ChangeDialogues/ClintGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Clint",
-		"FromFile": "assets/Portraits/Clint{{mardrest.ChangeDialogues/ClintGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Clint{{mardrest.ChangeDialogues/ClintGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Clint{{mardrest.ChangeDialogues/ClintSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Clint{{mardrest.ChangeDialogues/ClintSprite}}.png": true, "mardrest.ChangeDialogues/ClintSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -296,46 +248,34 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Clint.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Clint.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Clint.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Clint.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/ClothesTherapyCharacters",
-		"FromFile": "assets/Characters/ClothesTherapyCharactersClint{{mardrest.ChangeDialogues/ClintGender}}.png",
+		"FromFile": "assets/Characters/ClothesTherapyCharactersClint{{mardrest.ChangeDialogues/ClintSprite}}.png",
 		"ToArea": { "X": 0, "Y": 96, "Width": 64, "Height": 30 },
-		"When": { "HasFile:assets/Characters/ClothesTherapyCharactersClint{{mardrest.ChangeDialogues/ClintGender}}.png": true }
+		"When": { "HasFile:assets/Characters/ClothesTherapyCharactersClint{{mardrest.ChangeDialogues/ClintSprite}}.png": true, "mardrest.ChangeDialogues/ClintSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/ClothesTherapyCharacters",
-		"FromFile": "assets/Characters/ClothesTherapyCharactersShane{{mardrest.ChangeDialogues/ShaneGender}}.png",
+		"FromFile": "assets/Characters/ClothesTherapyCharactersShane{{mardrest.ChangeDialogues/ShaneSprite}}.png",
 		"ToArea": { "X": 0, "Y": 2, "Width": 64, "Height": 30 },
-		"When": { "HasFile:assets/Characters/ClothesTherapyCharactersShane{{mardrest.ChangeDialogues/ShaneGender}}.png": true }
+		"When": { "HasFile:assets/Characters/ClothesTherapyCharactersShane{{mardrest.ChangeDialogues/ShaneSprite}}.png": true, "mardrest.ChangeDialogues/ClintSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Demetrius",
-		"FromFile": "assets/Characters/Demetrius{{mardrest.ChangeDialogues/DemetriusGender}}.png",
-		"When": { "HasFile:assets/Characters/Demetrius{{mardrest.ChangeDialogues/DemetriusGender}}.png": true }
+		"FromFile": "assets/Characters/Demetrius{{mardrest.ChangeDialogues/DemetriusSprite}}.png",
+		"When": { "HasFile:assets/Characters/Demetrius{{mardrest.ChangeDialogues/DemetriusSprite}}.png": true, "mardrest.ChangeDialogues/DemetriusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Demetrius",
-		"FromFile": "assets/Portraits/Demetrius{{mardrest.ChangeDialogues/DemetriusGender}}.png",
-		"When": { "HasFile:assets/Portraits/Demetrius{{mardrest.ChangeDialogues/DemetriusGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Demetrius",
-		"FromFile": "assets/Characters/Demetrius{{mardrest.ChangeDialogues/DemetriusGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Demetrius{{mardrest.ChangeDialogues/DemetriusGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Demetrius",
-		"FromFile": "assets/Portraits/Demetrius{{mardrest.ChangeDialogues/DemetriusGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Demetrius{{mardrest.ChangeDialogues/DemetriusGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Demetrius{{mardrest.ChangeDialogues/DemetriusSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Demetrius{{mardrest.ChangeDialogues/DemetriusSprite}}.png": true, "mardrest.ChangeDialogues/DemetriusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -344,44 +284,26 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Demetrius.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Demetrius.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Demetrius.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Demetrius.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Dick",
-		"FromFile": "assets/Characters/Willy{{mardrest.ChangeDialogues/WillyGender}}.png",
-		"When": { "HasFile:assets/Characters/Willy{{mardrest.ChangeDialogues/WillyGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Dick",
-		"FromFile": "assets/Characters/Willy{{mardrest.ChangeDialogues/WillyGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Willy{{mardrest.ChangeDialogues/WillyGender}}.xnb": true }
+		"FromFile": "assets/Characters/Willy{{mardrest.ChangeDialogues/WillySprite}}.png",
+		"When": { "HasFile:assets/Characters/Willy{{mardrest.ChangeDialogues/WillySprite}}.png": true, "mardrest.ChangeDialogues/WillySprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Dwarf",
-		"FromFile": "assets/Characters/Dwarf{{mardrest.ChangeDialogues/DwarfGender}}.png",
-		"When": { "HasFile:assets/Characters/Dwarf{{mardrest.ChangeDialogues/DwarfGender}}.png": true }
+		"FromFile": "assets/Characters/Dwarf{{mardrest.ChangeDialogues/DwarfSprite}}.png",
+		"When": { "HasFile:assets/Characters/Dwarf{{mardrest.ChangeDialogues/DwarfSprite}}.png": true, "mardrest.ChangeDialogues/DwarfSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Dwarf",
-		"FromFile": "assets/Portraits/Dwarf{{mardrest.ChangeDialogues/DwarfGender}}.png",
-		"When": { "HasFile:assets/Portraits/Dwarf{{mardrest.ChangeDialogues/DwarfGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Dwarf",
-		"FromFile": "assets/Characters/Dwarf{{mardrest.ChangeDialogues/DwarfGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Dwarf{{mardrest.ChangeDialogues/DwarfGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Dwarf",
-		"FromFile": "assets/Portraits/Dwarf{{mardrest.ChangeDialogues/DwarfGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Dwarf{{mardrest.ChangeDialogues/DwarfGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Dwarf{{mardrest.ChangeDialogues/DwarfSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Dwarf{{mardrest.ChangeDialogues/DwarfSprite}}.png": true, "mardrest.ChangeDialogues/DwarfSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -390,41 +312,29 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Dwarf.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Dwarf.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Dwarf.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Dwarf.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Elliott",
-		"FromFile": "assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.png",
-		"When": { "HasFile:assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.png": true }
+		"FromFile": "assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottSprite}}.png",
+		"When": { "HasFile:assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottSprite}}.png": true, "mardrest.ChangeDialogues/ElliottSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Elliott",
-		"FromFile": "assets/Portraits/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.png",
-		"When": { "HasFile:assets/Portraits/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.png": true }
+		"FromFile": "assets/Portraits/Elliott{{mardrest.ChangeDialogues/ElliottSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Elliott{{mardrest.ChangeDialogues/ElliottSprite}}.png": true, "mardrest.ChangeDialogues/ElliottSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Elliott",
-		"FromFile": "assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.png",
+		"FromFile": "assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottSprite}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
 		"Update": "OnLocationChange",
-		"When": { "mardrest.ChangeDialogues/ElliottGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Elliott",
-		"FromFile": "assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Elliott",
-		"FromFile": "assets/Portraits/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Elliott{{mardrest.ChangeDialogues/ElliottGender}}.xnb": true }
+		"When": { "mardrest.ChangeDialogues/ElliottGender": "Female", "DayEvent": "wedding", "LocationName": "Town", "HasFile:assets/Characters/Elliott{{mardrest.ChangeDialogues/ElliottSprite}}.png": true, "mardrest.ChangeDialogues/ElliottSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -433,8 +343,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Elliott.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Elliott.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Elliott.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Elliott.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -449,26 +359,14 @@
 		"When": { "HasFile:assets/Portraits/Emily{{mardrest.ChangeDialogues/EmilySprite}}.png": true, "mardrest.ChangeDialogues/EmilySprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Emily",
-		"FromFile": "assets/Characters/Emily{{mardrest.ChangeDialogues/EmilySprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Emily{{mardrest.ChangeDialogues/EmilySprite}}.xnb": true, "mardrest.ChangeDialogues/EmilySprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Emily",
-		"FromFile": "assets/Portraits/Emily{{mardrest.ChangeDialogues/EmilySprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Emily{{mardrest.ChangeDialogues/EmilySprite}}.xnb": true, "mardrest.ChangeDialogues/EmilySprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Emily.json",
 		"When": { "HasFile:i18n/default/Dialogue/Emily.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Emily.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Emily.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Emily.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Emily.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -483,50 +381,26 @@
 		"When": { "HasFile:assets/Portraits/Evelyn{{mardrest.ChangeDialogues/EvelynSprite}}.png": true, "mardrest.ChangeDialogues/EvelynSprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Evelyn",
-		"FromFile": "assets/Characters/Evelyn{{mardrest.ChangeDialogues/EvelynSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Evelyn{{mardrest.ChangeDialogues/EvelynSprite}}.xnb": true, "mardrest.ChangeDialogues/EvelynSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Evelyn",
-		"FromFile": "assets/Portraits/Evelyn{{mardrest.ChangeDialogues/EvelynSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Evelyn{{mardrest.ChangeDialogues/EvelynSprite}}.xnb": true, "mardrest.ChangeDialogues/EvelynSprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Evelyn.json",
 		"When": { "HasFile:i18n/default/Dialogue/Evelyn.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Evelyn.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Evelyn.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Evelyn.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Evelyn.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/George",
-		"FromFile": "assets/Characters/George{{mardrest.ChangeDialogues/GeorgeGender}}.png",
-		"When": { "HasFile:assets/Characters/George{{mardrest.ChangeDialogues/GeorgeGender}}.png": true }
+		"FromFile": "assets/Characters/George{{mardrest.ChangeDialogues/GeorgeSprite}}.png",
+		"When": { "HasFile:assets/Characters/George{{mardrest.ChangeDialogues/GeorgeSprite}}.png": true, "mardrest.ChangeDialogues/GeorgeSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/George",
-		"FromFile": "assets/Portraits/George{{mardrest.ChangeDialogues/GeorgeGender}}.png",
-		"When": { "HasFile:assets/Portraits/George{{mardrest.ChangeDialogues/GeorgeGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/George",
-		"FromFile": "assets/Characters/George{{mardrest.ChangeDialogues/GeorgeGender}}.xnb",
-		"When": { "HasFile:assets/Characters/George{{mardrest.ChangeDialogues/GeorgeGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/George",
-		"FromFile": "assets/Portraits/George{{mardrest.ChangeDialogues/GeorgeGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/George{{mardrest.ChangeDialogues/GeorgeGender}}.xnb": true }
+		"FromFile": "assets/Portraits/George{{mardrest.ChangeDialogues/GeorgeSprite}}.png",
+		"When": { "HasFile:assets/Portraits/George{{mardrest.ChangeDialogues/GeorgeSprite}}.png": true, "mardrest.ChangeDialogues/GeorgeSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -535,110 +409,80 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/George.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/George.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/George.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/George.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/MovieTheaterJoja_TileSheet",
-		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}_TheatreJoja.png",
+		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}_TheatreJoja.png",
 		"ToArea": { "X": 224, "Y": 208, "Width": 32, "Height": 48 },
-		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}_TheatreJoja.png": true }
+		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}_TheatreJoja.png": true, "mardrest.ChangeDialogues/GilSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/MovieTheaterJoja_TileSheet_international",
-		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}_TheatreJoja.png",
+		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}_TheatreJoja.png",
 		"ToArea": { "X": 224, "Y": 208, "Width": 32, "Height": 48 },
-		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}_TheatreJoja.png": true }
+		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}_TheatreJoja.png": true, "mardrest.ChangeDialogues/GilSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/MovieTheater_TileSheet",
-		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}_Theatre.png",
+		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}_Theatre.png",
 		"ToArea": { "X": 224, "Y": 208, "Width": 32, "Height": 48 },
-		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}_Theatre.png": true }
+		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}_Theatre.png": true, "mardrest.ChangeDialogues/GilSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/townInterior",
-		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}1.png",
+		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}1.png",
 		"ToArea": { "X": 176, "Y": 624, "Width": 32, "Height": 32 },
-		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}1.png": true }
+		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}1.png": true, "mardrest.ChangeDialogues/GilSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/townInterior",
-		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}2.png",
+		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}2.png",
 		"ToArea": { "X": 176, "Y": 656, "Width": 32, "Height": 32 },
-		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}2.png": true }
+		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}2.png": true, "mardrest.ChangeDialogues/GilSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/townInterior",
-		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}3.png",
+		"FromFile": "assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}3.png",
 		"ToArea": { "X": 209, "Y": 656, "Width": 32, "Height": 32 },
-		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilGender}}3.png": true }
+		"When": { "HasFile:assets/Maps/Gil{{mardrest.ChangeDialogues/GilSprite}}3.png": true, "mardrest.ChangeDialogues/GilSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Gil",
-		"FromFile": "assets/Portraits/Gil{{mardrest.ChangeDialogues/GilGender}}.png",
-		"When": { "HasFile:assets/Portraits/Gil{{mardrest.ChangeDialogues/GilGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Gil",
-		"FromFile": "assets/Portraits/Gil{{mardrest.ChangeDialogues/GilGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Gil{{mardrest.ChangeDialogues/GilGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Gil{{mardrest.ChangeDialogues/GilSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Gil{{mardrest.ChangeDialogues/GilSprite}}.png": true, "mardrest.ChangeDialogues/GilSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Gunther",
-		"FromFile": "assets/Characters/Gunther{{mardrest.ChangeDialogues/GuntherGender}}.png",
-		"When": { "HasFile:assets/Characters/Gunther{{mardrest.ChangeDialogues/GuntherGender}}.png": true }
+		"FromFile": "assets/Characters/Gunther{{mardrest.ChangeDialogues/GuntherSprite}}.png",
+		"When": { "HasFile:assets/Characters/Gunther{{mardrest.ChangeDialogues/GuntherSprite}}.png": true, "mardrest.ChangeDialogues/GuntherSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Gunther",
-		"FromFile": "assets/Portraits/Gunther{{mardrest.ChangeDialogues/GuntherGender}}.png",
-		"When": { "HasFile:assets/Portraits/Gunther{{mardrest.ChangeDialogues/GuntherGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Gunther",
-		"FromFile": "assets/Characters/Gunther{{mardrest.ChangeDialogues/GuntherGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Gunther{{mardrest.ChangeDialogues/GuntherGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Gunther",
-		"FromFile": "assets/Portraits/Gunther{{mardrest.ChangeDialogues/GuntherGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Gunther{{mardrest.ChangeDialogues/GuntherGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Gunther{{mardrest.ChangeDialogues/GuntherSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Gunther{{mardrest.ChangeDialogues/GuntherSprite}}.png": true, "mardrest.ChangeDialogues/GuntherSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Gus",
-		"FromFile": "assets/Characters/Gus{{mardrest.ChangeDialogues/GusGender}}.png",
-		"When": { "HasFile:assets/Characters/Gus{{mardrest.ChangeDialogues/GusGender}}.png": true }
+		"FromFile": "assets/Characters/Gus{{mardrest.ChangeDialogues/GusSprite}}.png",
+		"When": { "HasFile:assets/Characters/Gus{{mardrest.ChangeDialogues/GusSprite}}.png": true, "mardrest.ChangeDialogues/GusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Gus",
-		"FromFile": "assets/Portraits/Gus{{mardrest.ChangeDialogues/GusGender}}.png",
-		"When": { "HasFile:assets/Portraits/Gus{{mardrest.ChangeDialogues/GusGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Gus",
-		"FromFile": "assets/Characters/Gus{{mardrest.ChangeDialogues/GusGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Gus{{mardrest.ChangeDialogues/GusGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Gus",
-		"FromFile": "assets/Portraits/Gus{{mardrest.ChangeDialogues/GusGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Gus{{mardrest.ChangeDialogues/GusGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Gus{{mardrest.ChangeDialogues/GusSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Gus{{mardrest.ChangeDialogues/GusSprite}}.png": true, "mardrest.ChangeDialogues/GusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -647,8 +491,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Gus.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Gus.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Gus.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Gus.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -663,59 +507,35 @@
 		"When": { "HasFile:assets/Portraits/Haley{{mardrest.ChangeDialogues/HaleySprite}}.png": true, "mardrest.ChangeDialogues/HaleySprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Haley",
-		"FromFile": "assets/Characters/Haley{{mardrest.ChangeDialogues/HaleySprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Haley{{mardrest.ChangeDialogues/HaleySprite}}.xnb": true, "mardrest.ChangeDialogues/HaleySprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Haley",
-		"FromFile": "assets/Portraits/Haley{{mardrest.ChangeDialogues/HaleySprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Haley{{mardrest.ChangeDialogues/HaleySprite}}.xnb": true, "mardrest.ChangeDialogues/HaleySprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Haley.json",
 		"When": { "HasFile:i18n/default/Dialogue/Haley.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Haley.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Haley.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Haley.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Haley.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Harvey",
-		"FromFile": "assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.png",
-		"When": { "HasFile:assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.png": true }
+		"FromFile": "assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveySprite}}.png",
+		"When": { "HasFile:assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveySprite}}.png": true, "mardrest.ChangeDialogues/HarveySprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Harvey",
-		"FromFile": "assets/Portraits/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.png",
-		"When": { "HasFile:assets/Portraits/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.png": true }
+		"FromFile": "assets/Portraits/Harvey{{mardrest.ChangeDialogues/HarveySprite}}.png",
+		"When": { "HasFile:assets/Portraits/Harvey{{mardrest.ChangeDialogues/HarveySprite}}.png": true, "mardrest.ChangeDialogues/HarveySprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Harvey",
-		"FromFile": "assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.png",
+		"FromFile": "assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveySprite}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
 		"Update": "OnLocationChange",
-		"When": { "mardrest.ChangeDialogues/HarveyGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Harvey",
-		"FromFile": "assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Harvey",
-		"FromFile": "assets/Portraits/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Harvey{{mardrest.ChangeDialogues/HarveyGender}}.xnb": true }
+		"When": { "mardrest.ChangeDialogues/HarveyGender": "Female", "DayEvent": "wedding", "LocationName": "Town", "HasFile:assets/Characters/Harvey{{mardrest.ChangeDialogues/HarveySprite}}.png": true, "mardrest.ChangeDialogues/HarveySprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -724,56 +544,32 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Harvey.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Harvey.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Harvey.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Harvey.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Henchman",
-		"FromFile": "assets/Characters/Henchman{{mardrest.ChangeDialogues/HenchmanGender}}.png",
-		"When": { "HasFile:assets/Characters/Henchman{{mardrest.ChangeDialogues/HenchmanGender}}.png": true }
+		"FromFile": "assets/Characters/Henchman{{mardrest.ChangeDialogues/HenchmanSprite}}.png",
+		"When": { "HasFile:assets/Characters/Henchman{{mardrest.ChangeDialogues/HenchmanSprite}}.png": true, "mardrest.ChangeDialogues/HenchmanSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Henchman",
-		"FromFile": "assets/Portraits/Henchman{{mardrest.ChangeDialogues/HenchmanGender}}.png",
-		"When": { "HasFile:assets/Portraits/Henchman{{mardrest.ChangeDialogues/HenchmanGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Henchman",
-		"FromFile": "assets/Characters/Henchman{{mardrest.ChangeDialogues/HenchmanGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Henchman{{mardrest.ChangeDialogues/HenchmanGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Henchman",
-		"FromFile": "assets/Portraits/Henchman{{mardrest.ChangeDialogues/HenchmanGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Henchman{{mardrest.ChangeDialogues/HenchmanGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Henchman{{mardrest.ChangeDialogues/HenchmanSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Henchman{{mardrest.ChangeDialogues/HenchmanSprite}}.png": true, "mardrest.ChangeDialogues/HenchmanSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Jas",
 		"FromFile": "assets/Characters/Jas{{mardrest.ChangeDialogues/JasSprite}}.png",
-		"When": { "HasFile:assets/Characters/Jas{{mardrest.ChangeDialogues/JasSprite}}.png": true, "mardrest.ChangeDialogues/JasSprite": "New" }
+		"When": { "HasFile:assets/Characters/Jas{{mardrest.ChangeDialogues/JasSprite}}.png": true }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Jas",
 		"FromFile": "assets/Portraits/Jas{{mardrest.ChangeDialogues/JasSprite}}.png",
-		"When": { "HasFile:assets/Portraits/Jas{{mardrest.ChangeDialogues/JasSprite}}.png": true, "mardrest.ChangeDialogues/JasSprite": "New" }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Jas",
-		"FromFile": "assets/Characters/Jas{{mardrest.ChangeDialogues/JasSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Jas{{mardrest.ChangeDialogues/JasSprite}}.xnb": true, "mardrest.ChangeDialogues/JasSprite": "New" }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Jas",
-		"FromFile": "assets/Portraits/Jas{{mardrest.ChangeDialogues/JasSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Jas{{mardrest.ChangeDialogues/JasSprite}}.xnb": true, "mardrest.ChangeDialogues/JasSprite": "New" }
+		"When": { "HasFile:assets/Portraits/Jas{{mardrest.ChangeDialogues/JasSprite}}.png": true }
 	},
 	{
 		"Action": "Include",
@@ -782,8 +578,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Jas.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Jas.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Jas.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Jas.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -798,50 +594,26 @@
 		"When": { "HasFile:assets/Portraits/Jodi{{mardrest.ChangeDialogues/JodiSprite}}.png": true, "mardrest.ChangeDialogues/JodiSprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Jodi",
-		"FromFile": "assets/Characters/Jodi{{mardrest.ChangeDialogues/JodiSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Jodi{{mardrest.ChangeDialogues/JodiSprite}}.xnb": true, "mardrest.ChangeDialogues/JodiSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Jodi",
-		"FromFile": "assets/Portraits/Jodi{{mardrest.ChangeDialogues/JodiSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Jodi{{mardrest.ChangeDialogues/JodiSprite}}.xnb": true, "mardrest.ChangeDialogues/JodiSprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Jodi.json",
 		"When": { "HasFile:i18n/default/Dialogue/Jodi.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Jodi.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Jodi.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Jodi.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Jodi.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Kent",
-		"FromFile": "assets/Characters/Kent{{mardrest.ChangeDialogues/KentGender}}.png",
-		"When": { "HasFile:assets/Characters/Kent{{mardrest.ChangeDialogues/KentGender}}.png": true }
+		"FromFile": "assets/Characters/Kent{{mardrest.ChangeDialogues/KentSprite}}.png",
+		"When": { "HasFile:assets/Characters/Kent{{mardrest.ChangeDialogues/KentSprite}}.png": true, "mardrest.ChangeDialogues/KentSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Kent",
-		"FromFile": "assets/Portraits/Kent{{mardrest.ChangeDialogues/KentGender}}.png",
-		"When": { "HasFile:assets/Portraits/Kent{{mardrest.ChangeDialogues/KentGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Kent",
-		"FromFile": "assets/Characters/Kent{{mardrest.ChangeDialogues/KentGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Kent{{mardrest.ChangeDialogues/KentGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Kent",
-		"FromFile": "assets/Portraits/Kent{{mardrest.ChangeDialogues/KentGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Kent{{mardrest.ChangeDialogues/KentGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Kent{{mardrest.ChangeDialogues/KentSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Kent{{mardrest.ChangeDialogues/KentSprite}}.png": true, "mardrest.ChangeDialogues/KentSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -850,32 +622,20 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Kent.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Kent.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Kent.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Kent.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Krobus",
-		"FromFile": "assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusGender}}.png",
-		"When": { "HasFile:assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusGender}}.png": true }
+		"FromFile": "assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusSprite}}.png",
+		"When": { "HasFile:assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusSprite}}.png": true, "mardrest.ChangeDialogues/KrobusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Krobus",
-		"FromFile": "assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusGender}}.png",
-		"When": { "HasFile:assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Krobus",
-		"FromFile": "assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Krobus",
-		"FromFile": "assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusSprite}}.png": true, "mardrest.ChangeDialogues/KrobusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -884,32 +644,20 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Krobus.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Krobus.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Krobus.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Krobus.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Krobus_Trenchcoat",
-		"FromFile": "assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusGender}}_Trenchcoat.png",
-		"When": { "HasFile:assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusGender}}_Trenchcoat.png": true }
+		"FromFile": "assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusSprite}}_Trenchcoat.png",
+		"When": { "HasFile:assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusSprite}}_Trenchcoat.png": true, "mardrest.ChangeDialogues/KrobusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Krobus_Trenchcoat",
-		"FromFile": "assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusGender}}_Trenchcoat.png",
-		"When": { "HasFile:assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusGender}}_Trenchcoat.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Krobus_Trenchcoat",
-		"FromFile": "assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusGender}}_Trenchcoat.xnb",
-		"When": { "HasFile:assets/Characters/Krobus{{mardrest.ChangeDialogues/KrobusGender}}_Trenchcoat.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Krobus_Trenchcoat",
-		"FromFile": "assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusGender}}_Trenchcoat.xnb",
-		"When": { "HasFile:assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusGender}}_Trenchcoat.xnb": true }
+		"FromFile": "assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusSprite}}_Trenchcoat.png",
+		"When": { "HasFile:assets/Portraits/Krobus{{mardrest.ChangeDialogues/KrobusSprite}}_Trenchcoat.png": true, "mardrest.ChangeDialogues/KrobusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
@@ -924,50 +672,26 @@
 		"When": { "HasFile:assets/Portraits/Leah{{mardrest.ChangeDialogues/LeahSprite}}.png": true, "mardrest.ChangeDialogues/LeahSprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Leah",
-		"FromFile": "assets/Characters/Leah{{mardrest.ChangeDialogues/LeahSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Leah{{mardrest.ChangeDialogues/LeahSprite}}.xnb": true, "mardrest.ChangeDialogues/LeahSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Leah",
-		"FromFile": "assets/Portraits/Leah{{mardrest.ChangeDialogues/LeahSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Leah{{mardrest.ChangeDialogues/LeahSprite}}.xnb": true, "mardrest.ChangeDialogues/LeahSprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Leah.json",
 		"When": { "HasFile:i18n/default/Dialogue/Leah.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Leah.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Leah.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Leah.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Leah.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Lewis",
-		"FromFile": "assets/Characters/Lewis{{mardrest.ChangeDialogues/LewisGender}}.png",
-		"When": { "HasFile:assets/Characters/Lewis{{mardrest.ChangeDialogues/LewisGender}}.png": true }
+		"FromFile": "assets/Characters/Lewis{{mardrest.ChangeDialogues/LewisSprite}}.png",
+		"When": { "HasFile:assets/Characters/Lewis{{mardrest.ChangeDialogues/LewisSprite}}.png": true, "mardrest.ChangeDialogues/LewisSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Lewis",
-		"FromFile": "assets/Portraits/Lewis{{mardrest.ChangeDialogues/LewisGender}}.png",
-		"When": { "HasFile:assets/Portraits/Lewis{{mardrest.ChangeDialogues/LewisGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Lewis",
-		"FromFile": "assets/Characters/Lewis{{mardrest.ChangeDialogues/LewisGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Lewis{{mardrest.ChangeDialogues/LewisGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Lewis",
-		"FromFile": "assets/Portraits/Lewis{{mardrest.ChangeDialogues/LewisGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Lewis{{mardrest.ChangeDialogues/LewisGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Lewis{{mardrest.ChangeDialogues/LewisSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Lewis{{mardrest.ChangeDialogues/LewisSprite}}.png": true, "mardrest.ChangeDialogues/LewisSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -976,32 +700,20 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Lewis.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Lewis.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Lewis.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Lewis.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Linus",
-		"FromFile": "assets/Characters/Linus{{mardrest.ChangeDialogues/LinusGender}}.png",
-		"When": { "HasFile:assets/Characters/Linus{{mardrest.ChangeDialogues/LinusGender}}.png": true }
+		"FromFile": "assets/Characters/Linus{{mardrest.ChangeDialogues/LinusSprite}}.png",
+		"When": { "HasFile:assets/Characters/Linus{{mardrest.ChangeDialogues/LinusSprite}}.png": true, "mardrest.ChangeDialogues/LinusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Linus",
-		"FromFile": "assets/Portraits/Linus{{mardrest.ChangeDialogues/LinusGender}}.png",
-		"When": { "HasFile:assets/Portraits/Linus{{mardrest.ChangeDialogues/LinusGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Linus",
-		"FromFile": "assets/Characters/Linus{{mardrest.ChangeDialogues/LinusGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Linus{{mardrest.ChangeDialogues/LinusGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Linus",
-		"FromFile": "assets/Portraits/Linus{{mardrest.ChangeDialogues/LinusGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Linus{{mardrest.ChangeDialogues/LinusGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Linus{{mardrest.ChangeDialogues/LinusSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Linus{{mardrest.ChangeDialogues/LinusSprite}}.png": true, "mardrest.ChangeDialogues/LinusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1010,55 +722,37 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Linus.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Linus.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Linus.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Linus.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Mariner",
-		"FromFile": "assets/Characters/Mariner{{mardrest.ChangeDialogues/OldMarinerGender}}.png",
-		"When": { "HasFile:assets/Characters/Mariner{{mardrest.ChangeDialogues/OldMarinerGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Mariner",
-		"FromFile": "assets/Characters/Mariner{{mardrest.ChangeDialogues/OldMarinerGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Mariner{{mardrest.ChangeDialogues/OldMarinerGender}}.xnb": true }
+		"FromFile": "assets/Characters/Mariner{{mardrest.ChangeDialogues/OldMarinerSprite}}.png",
+		"When": { "HasFile:assets/Characters/Mariner{{mardrest.ChangeDialogues/OldMarinerSprite}}.png": true, "mardrest.ChangeDialogues/OldMarinerSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Marlon",
-		"FromFile": "assets/Characters/Marlon{{mardrest.ChangeDialogues/MarlonGender}}.png",
-		"When": { "HasFile:assets/Characters/Marlon{{mardrest.ChangeDialogues/MarlonGender}}.png": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false }
+		"FromFile": "assets/Characters/Marlon{{mardrest.ChangeDialogues/MarlonSprite}}.png",
+		"When": { "HasFile:assets/Characters/Marlon{{mardrest.ChangeDialogues/MarlonSprite}}.png": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false, "mardrest.ChangeDialogues/MarlonSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Marlon",
-		"FromFile": "assets/Portraits/Marlon{{mardrest.ChangeDialogues/MarlonGender}}.png",
-		"When": { "HasFile:assets/Portraits/Marlon{{mardrest.ChangeDialogues/MarlonGender}}.png": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false }
+		"FromFile": "assets/Portraits/Marlon{{mardrest.ChangeDialogues/MarlonSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Marlon{{mardrest.ChangeDialogues/MarlonSprite}}.png": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false, "mardrest.ChangeDialogues/MarlonSprite |contains=Vanilla": false }
 	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Marlon",
-		"FromFile": "assets/Characters/Marlon{{mardrest.ChangeDialogues/MarlonGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Marlon{{mardrest.ChangeDialogues/MarlonGender}}.xnb": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Marlon",
-		"FromFile": "assets/Portraits/Marlon{{mardrest.ChangeDialogues/MarlonGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Marlon{{mardrest.ChangeDialogues/MarlonGender}}.xnb": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false }
-	},
-	{
+	/*{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Marlon.json",
 		"When": { "HasFile:i18n/default/Dialogue/Marlon.json": true }
-	},
-	{
+	},*/
+	/*{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Marlon.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Marlon.json": true, "Language |contains=en": false }
-	},
+		"FromFile": "i18n/{{language}}/Dialogue/Marlon.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Marlon.json": true, "Language |contains=en": false }
+	},*/
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Marnie",
@@ -1072,26 +766,14 @@
 		"When": { "HasFile:assets/Portraits/Marnie{{mardrest.ChangeDialogues/MarnieSprite}}.png": true, "mardrest.ChangeDialogues/MarnieSprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Marnie",
-		"FromFile": "assets/Characters/Marnie{{mardrest.ChangeDialogues/MarnieSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Marnie{{mardrest.ChangeDialogues/MarnieSprite}}.xnb": true, "mardrest.ChangeDialogues/MarnieSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Marnie",
-		"FromFile": "assets/Portraits/Marnie{{mardrest.ChangeDialogues/MarnieSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Marnie{{mardrest.ChangeDialogues/MarnieSprite}}.xnb": true, "mardrest.ChangeDialogues/MarnieSprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Marnie.json",
 		"When": { "HasFile:i18n/default/Dialogue/Marnie.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Marnie.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Marnie.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Marnie.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Marnie.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -1100,8 +782,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/MarriageDialogue.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/MarriageDialogue.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/MarriageDialogue.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/MarriageDialogue.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -1116,26 +798,14 @@
 		"When": { "HasFile:assets/Portraits/Maru{{mardrest.ChangeDialogues/MaruSprite}}.png": true, "mardrest.ChangeDialogues/MaruSprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Maru",
-		"FromFile": "assets/Characters/Maru{{mardrest.ChangeDialogues/MaruSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Maru{{mardrest.ChangeDialogues/MaruSprite}}.xnb": true, "mardrest.ChangeDialogues/MaruSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Maru",
-		"FromFile": "assets/Portraits/Maru{{mardrest.ChangeDialogues/MaruSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Maru{{mardrest.ChangeDialogues/MaruSprite}}.xnb": true, "mardrest.ChangeDialogues/MaruSprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Maru.json",
 		"When": { "HasFile:i18n/default/Dialogue/Maru.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Maru.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Maru.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Maru.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Maru.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -1151,63 +821,27 @@
 	},
 	{
 		"Action": "EditImage",
-		"Target": "Characters/Maru_Hospital",
-		"FromFile": "assets/Characters/Maru{{mardrest.ChangeDialogues/MaruSprite}}_Hospital.xnb",
-		"When": { "HasFile:assets/Characters/Maru{{mardrest.ChangeDialogues/MaruSprite}}_Hospital.xnb": true, "mardrest.ChangeDialogues/MaruSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Maru_Hospital",
-		"FromFile": "assets/Portraits/Maru{{mardrest.ChangeDialogues/MaruSprite}}_Hospital.xnb",
-		"When": { "HasFile:assets/Portraits/Maru{{mardrest.ChangeDialogues/MaruSprite}}_Hospital.xnb": true, "mardrest.ChangeDialogues/MaruSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
 		"Target": "Characters/Morris",
-		"FromFile": "assets/Characters/Morris{{mardrest.ChangeDialogues/MorrisGender}}.png",
-		"When": { "HasFile:assets/Characters/Morris{{mardrest.ChangeDialogues/MorrisGender}}.png": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false }
+		"FromFile": "assets/Characters/Morris{{mardrest.ChangeDialogues/MorrisSprite}}.png",
+		"When": { "HasFile:assets/Characters/Morris{{mardrest.ChangeDialogues/MorrisSprite}}.png": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false, "mardrest.ChangeDialogues/MorrisSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Morris",
-		"FromFile": "assets/Portraits/Morris{{mardrest.ChangeDialogues/MorrisGender}}.png",
-		"When": { "HasFile:assets/Portraits/Morris{{mardrest.ChangeDialogues/MorrisGender}}.png": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Morris",
-		"FromFile": "assets/Characters/Morris{{mardrest.ChangeDialogues/MorrisGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Morris{{mardrest.ChangeDialogues/MorrisGender}}.xnb": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Morris",
-		"FromFile": "assets/Portraits/Morris{{mardrest.ChangeDialogues/MorrisGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Morris{{mardrest.ChangeDialogues/MorrisGender}}.xnb": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false }
+		"FromFile": "assets/Portraits/Morris{{mardrest.ChangeDialogues/MorrisSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Morris{{mardrest.ChangeDialogues/MorrisSprite}}.png": true, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false, "mardrest.ChangeDialogues/MorrisSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/MrQi",
-		"FromFile": "assets/Characters/MrQi{{mardrest.ChangeDialogues/QiGender}}.png",
-		"When": { "HasFile:assets/Characters/MrQi{{mardrest.ChangeDialogues/QiGender}}.png": true }
+		"FromFile": "assets/Characters/MrQi{{mardrest.ChangeDialogues/QiSprite}}.png",
+		"When": { "HasFile:assets/Characters/MrQi{{mardrest.ChangeDialogues/QiSprite}}.png": true, "mardrest.ChangeDialogues/QiSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/MrQi",
-		"FromFile": "assets/Portraits/MrQi{{mardrest.ChangeDialogues/QiGender}}.png",
-		"When": { "HasFile:assets/Portraits/MrQi{{mardrest.ChangeDialogues/QiGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/MrQi",
-		"FromFile": "assets/Characters/MrQi{{mardrest.ChangeDialogues/QiGender}}.xnb",
-		"When": { "HasFile:assets/Characters/MrQi{{mardrest.ChangeDialogues/QiGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/MrQi",
-		"FromFile": "assets/Portraits/MrQi{{mardrest.ChangeDialogues/QiGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/MrQi{{mardrest.ChangeDialogues/QiGender}}.xnb": true }
+		"FromFile": "assets/Portraits/MrQi{{mardrest.ChangeDialogues/QiSprite}}.png",
+		"When": { "HasFile:assets/Portraits/MrQi{{mardrest.ChangeDialogues/QiSprite}}.png": true, "mardrest.ChangeDialogues/QiSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1216,8 +850,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/MrQi.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/MrQi.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/MrQi.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/MrQi.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -1232,26 +866,14 @@
 		"When": { "HasFile:assets/Portraits/Pam{{mardrest.ChangeDialogues/PamSprite}}.png": true, "mardrest.ChangeDialogues/PamSprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Pam",
-		"FromFile": "assets/Characters/Pam{{mardrest.ChangeDialogues/PamSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Pam{{mardrest.ChangeDialogues/PamSprite}}.xnb": true, "mardrest.ChangeDialogues/PamSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Pam",
-		"FromFile": "assets/Portraits/Pam{{mardrest.ChangeDialogues/PamSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Pam{{mardrest.ChangeDialogues/PamSprite}}.xnb": true, "mardrest.ChangeDialogues/PamSprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Pam.json",
 		"When": { "HasFile:i18n/default/Dialogue/Pam.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Pam.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Pam.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Pam.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Pam.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -1266,50 +888,26 @@
 		"When": { "HasFile:assets/Portraits/Penny{{mardrest.ChangeDialogues/PennySprite}}.png": true, "mardrest.ChangeDialogues/PennySprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Penny",
-		"FromFile": "assets/Characters/Penny{{mardrest.ChangeDialogues/PennySprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Penny{{mardrest.ChangeDialogues/PennySprite}}.xnb": true, "mardrest.ChangeDialogues/PennySprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Penny",
-		"FromFile": "assets/Portraits/Penny{{mardrest.ChangeDialogues/PennySprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Penny{{mardrest.ChangeDialogues/PennySprite}}.xnb": true, "mardrest.ChangeDialogues/PennySprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Penny.json",
 		"When": { "HasFile:i18n/default/Dialogue/Penny.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Penny.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Penny.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Penny.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Penny.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Pierre",
-		"FromFile": "assets/Characters/Pierre{{mardrest.ChangeDialogues/PierreGender}}.png",
-		"When": { "HasFile:assets/Characters/Pierre{{mardrest.ChangeDialogues/PierreGender}}.png": true }
+		"FromFile": "assets/Characters/Pierre{{mardrest.ChangeDialogues/PierreSprite}}.png",
+		"When": { "HasFile:assets/Characters/Pierre{{mardrest.ChangeDialogues/PierreSprite}}.png": true, "mardrest.ChangeDialogues/PierreSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Pierre",
-		"FromFile": "assets/Portraits/Pierre{{mardrest.ChangeDialogues/PierreGender}}.png",
-		"When": { "HasFile:assets/Portraits/Pierre{{mardrest.ChangeDialogues/PierreGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Pierre",
-		"FromFile": "assets/Characters/Pierre{{mardrest.ChangeDialogues/PierreGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Pierre{{mardrest.ChangeDialogues/PierreGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Pierre",
-		"FromFile": "assets/Portraits/Pierre{{mardrest.ChangeDialogues/PierreGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Pierre{{mardrest.ChangeDialogues/PierreGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Pierre{{mardrest.ChangeDialogues/PierreSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Pierre{{mardrest.ChangeDialogues/PierreSprite}}.png": true, "mardrest.ChangeDialogues/PierreSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1318,8 +916,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Pierre.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Pierre.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Pierre.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Pierre.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -1328,8 +926,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Rainy.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Rainy.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Rainy.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Rainy.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -1344,59 +942,35 @@
 		"When": { "HasFile:assets/Portraits/Robin{{mardrest.ChangeDialogues/RobinSprite}}.png": true, "mardrest.ChangeDialogues/RobinSprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Robin",
-		"FromFile": "assets/Characters/Robin{{mardrest.ChangeDialogues/RobinSprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Robin{{mardrest.ChangeDialogues/RobinSprite}}.xnb": true, "mardrest.ChangeDialogues/RobinSprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Robin",
-		"FromFile": "assets/Portraits/Robin{{mardrest.ChangeDialogues/RobinSprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Robin{{mardrest.ChangeDialogues/RobinSprite}}.xnb": true, "mardrest.ChangeDialogues/RobinSprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Robin.json",
 		"When": { "HasFile:i18n/default/Dialogue/Robin.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Robin.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Robin.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Robin.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Robin.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Sam",
-		"FromFile": "assets/Characters/Sam{{mardrest.ChangeDialogues/SamGender}}.png",
-		"When": { "HasFile:assets/Characters/Sam{{mardrest.ChangeDialogues/SamGender}}.png": true }
+		"FromFile": "assets/Characters/Sam{{mardrest.ChangeDialogues/SamSprite}}.png",
+		"When": { "HasFile:assets/Characters/Sam{{mardrest.ChangeDialogues/SamSprite}}.png": true, "mardrest.ChangeDialogues/SamSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Sam",
-		"FromFile": "assets/Portraits/Sam{{mardrest.ChangeDialogues/SamGender}}.png",
-		"When": { "HasFile:assets/Portraits/Sam{{mardrest.ChangeDialogues/SamGender}}.png": true }
+		"FromFile": "assets/Portraits/Sam{{mardrest.ChangeDialogues/SamSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Sam{{mardrest.ChangeDialogues/SamSprite}}.png": true, "mardrest.ChangeDialogues/SamSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Sam",
-		"FromFile": "assets/Characters/Sam{{mardrest.ChangeDialogues/SamGender}}.png",
+		"FromFile": "assets/Characters/Sam{{mardrest.ChangeDialogues/SamSprite}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
 		"Update": "OnLocationChange",
-		"When": { "mardrest.ChangeDialogues/SamGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Sam{{mardrest.ChangeDialogues/SamGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Sam",
-		"FromFile": "assets/Characters/Sam{{mardrest.ChangeDialogues/SamGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Sam{{mardrest.ChangeDialogues/SamGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Sam",
-		"FromFile": "assets/Portraits/Sam{{mardrest.ChangeDialogues/SamGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Sam{{mardrest.ChangeDialogues/SamGender}}.xnb": true }
+		"When": { "mardrest.ChangeDialogues/SamGender": "Female", "DayEvent": "wedding", "LocationName": "Town", "HasFile:assets/Characters/Sam{{mardrest.ChangeDialogues/SamSprite}}.png": true, "mardrest.ChangeDialogues/SamSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1405,8 +979,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Sam.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Sam.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Sam.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Sam.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
@@ -1421,71 +995,41 @@
 		"When": { "HasFile:assets/Portraits/Sandy{{mardrest.ChangeDialogues/SandySprite}}.png": true, "mardrest.ChangeDialogues/SandySprite |contains=Vanilla": false }
 	},
 	{
-		"Action": "EditImage",
-		"Target": "Characters/Sandy",
-		"FromFile": "assets/Characters/Sandy{{mardrest.ChangeDialogues/SandySprite}}.xnb",
-		"When": { "HasFile:assets/Characters/Sandy{{mardrest.ChangeDialogues/SandySprite}}.xnb": true, "mardrest.ChangeDialogues/SandySprite |contains=Vanilla": false }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Sandy",
-		"FromFile": "assets/Portraits/Sandy{{mardrest.ChangeDialogues/SandySprite}}.xnb",
-		"When": { "HasFile:assets/Portraits/Sandy{{mardrest.ChangeDialogues/SandySprite}}.xnb": true, "mardrest.ChangeDialogues/SandySprite |contains=Vanilla": false }
-	},
-	{
 		"Action": "Include",
 		"FromFile": "i18n/default/Dialogue/Sandy.json",
 		"When": { "HasFile:i18n/default/Dialogue/Sandy.json": true }
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Sandy.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Sandy.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Sandy.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Sandy.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/SeaMonsterKrobus",
-		"FromFile": "assets/Characters/SeaMonsterKrobus{{mardrest.ChangeDialogues/KrobusGender}}.png",
-		"When": { "HasFile:assets/Characters/SeaMonsterKrobus{{mardrest.ChangeDialogues/KrobusGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/SeaMonsterKrobus",
-		"FromFile": "assets/Characters/SeaMonsterKrobus{{mardrest.ChangeDialogues/KrobusGender}}.xnb",
-		"When": { "HasFile:assets/Characters/SeaMonsterKrobus{{mardrest.ChangeDialogues/KrobusGender}}.xnb": true }
+		"FromFile": "assets/Characters/SeaMonsterKrobus{{mardrest.ChangeDialogues/KrobusSprite}}.png",
+		"When": { "HasFile:assets/Characters/SeaMonsterKrobus{{mardrest.ChangeDialogues/KrobusSprite}}.png": true, "mardrest.ChangeDialogues/KrobusSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Sebastian",
-		"FromFile": "assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.png",
-		"When": { "HasFile:assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.png": true }
+		"FromFile": "assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianSprite}}.png",
+		"When": { "HasFile:assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianSprite}}.png": true, "mardrest.ChangeDialogues/SebastianSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Sebastian",
-		"FromFile": "assets/Portraits/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.png",
-		"When": { "HasFile:assets/Portraits/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.png": true }
+		"FromFile": "assets/Portraits/Sebastian{{mardrest.ChangeDialogues/SebastianSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Sebastian{{mardrest.ChangeDialogues/SebastianSprite}}.png": true, "mardrest.ChangeDialogues/SebastianSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Sebastian",
-		"FromFile": "assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.png",
+		"FromFile": "assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianSprite}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
 		"Update": "OnLocationChange",
-		"When": { "mardrest.ChangeDialogues/SebastianGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Sebastian",
-		"FromFile": "assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Sebastian",
-		"FromFile": "assets/Portraits/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Sebastian{{mardrest.ChangeDialogues/SebastianGender}}.xnb": true }
+		"When": { "mardrest.ChangeDialogues/SebastianGender": "Female", "DayEvent": "wedding", "LocationName": "Town", "HasFile:assets/Characters/Sebastian{{mardrest.ChangeDialogues/SebastianSprite}}.png": true, "mardrest.ChangeDialogues/SebastianSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1494,41 +1038,29 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Sebastian.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Sebastian.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Sebastian.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Sebastian.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Shane",
-		"FromFile": "assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}.png",
-		"When": { "HasFile:assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}.png": true }
+		"FromFile": "assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneSprite}}.png",
+		"When": { "HasFile:assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneSprite}}.png": true, "mardrest.ChangeDialogues/ShaneSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Shane",
-		"FromFile": "assets/Portraits/Shane{{mardrest.ChangeDialogues/ShaneGender}}.png",
-		"When": { "HasFile:assets/Portraits/Shane{{mardrest.ChangeDialogues/ShaneGender}}.png": true }
+		"FromFile": "assets/Portraits/Shane{{mardrest.ChangeDialogues/ShaneSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Shane{{mardrest.ChangeDialogues/ShaneSprite}}.png": true, "mardrest.ChangeDialogues/ShaneSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Shane",
-		"FromFile": "assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}.png",
+		"FromFile": "assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneSprite}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
 		"Update": "OnLocationChange",
-		"When": { "mardrest.ChangeDialogues/ShaneGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Shane",
-		"FromFile": "assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Shane",
-		"FromFile": "assets/Portraits/Shane{{mardrest.ChangeDialogues/ShaneGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Shane{{mardrest.ChangeDialogues/ShaneGender}}.xnb": true }
+		"When": { "mardrest.ChangeDialogues/ShaneGender": "Female", "DayEvent": "wedding", "LocationName": "Town", "HasFile:assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneSprite}}.png": true, "mardrest.ChangeDialogues/ShaneSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1537,53 +1069,35 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Shane.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Shane.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Shane.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Shane.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Shane_JojaMart",
-		"FromFile": "assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}_JojaMart.png",
-		"When": { "HasFile:assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}_JojaMart.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Shane_JojaMart",
-		"FromFile": "assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}_JojaMart.xnb",
-		"When": { "HasFile:assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneGender}}_JojaMart.xnb": true }
+		"FromFile": "assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneSprite}}_JojaMart.png",
+		"When": { "HasFile:assets/Characters/Shane{{mardrest.ChangeDialogues/ShaneSprite}}_JojaMart.png": true, "mardrest.ChangeDialogues/ShaneSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/",
-		"FromFile": "assets/Characters/Victor{{mardrest.ChangeDialogues/VictorGender}}.png",
+		"FromFile": "assets/Characters/Victor{{mardrest.ChangeDialogues/VictorSprite}}.png",
 		"FromArea": { "X": 0, "Y": 384, "Width": 48, "Height": 32 },
 		"ToArea": { "X": 0, "Y": 288, "Width": 48, "Height": 32 },
 		"Update": "OnLocationChange",
-		"When": { "mardrest.ChangeDialogues/VictorGender": "Female", "DayEvent |contains=wedding": true, "LocationName": "Town", "HasFile:assets/Characters/Victor{{mardrest.ChangeDialogues/VictorGender}}.png": true, "HasMod": "FlashShifter.StardewValleyExpandedCP" }
+		"When": { "mardrest.ChangeDialogues/VictorGender": "Female", "DayEvent": "wedding", "LocationName": "Town", "HasFile:assets/Characters/Victor{{mardrest.ChangeDialogues/VictorSprite}}.png": true, "HasMod": "FlashShifter.StardewValleyExpandedCP", "mardrest.ChangeDialogues/VictorSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
-		"Target": "Characters/Vincent{{mardrest.ChangeDialogues/VincentGender}}",
-		"FromFile": "assets/Characters/Vincent{{mardrest.ChangeDialogues/VincentGender}}.png",
-		"When": { "HasFile:assets/Characters/Vincent{{mardrest.ChangeDialogues/VincentGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Vincent",
-		"FromFile": "assets/Portraits/Vincent{{mardrest.ChangeDialogues/VincentGender}}.png",
-		"When": { "HasFile:assets/Portraits/Vincent{{mardrest.ChangeDialogues/VincentGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Vincent{{mardrest.ChangeDialogues/VincentGender}}",
-		"FromFile": "assets/Characters/Vincent{{mardrest.ChangeDialogues/VincentGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Vincent{{mardrest.ChangeDialogues/VincentGender}}.xnb": true }
+		"Target": "Characters/Vincent",
+		"FromFile": "assets/Characters/Vincent{{mardrest.ChangeDialogues/VincentSprite}}.png",
+		"When": { "HasFile:assets/Characters/Vincent{{mardrest.ChangeDialogues/VincentSprite}}.png": true, "mardrest.ChangeDialogues/VincentSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Vincent",
-		"FromFile": "assets/Portraits/Vincent{{mardrest.ChangeDialogues/VincentGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Vincent{{mardrest.ChangeDialogues/VincentGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Vincent{{mardrest.ChangeDialogues/VincentSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Vincent{{mardrest.ChangeDialogues/VincentSprite}}.png": true, "mardrest.ChangeDialogues/VincentSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1592,32 +1106,20 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Vincent.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Vincent.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Vincent.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Vincent.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Willy",
-		"FromFile": "assets/Characters/Willy{{mardrest.ChangeDialogues/WillyGender}}.png",
-		"When": { "HasFile:assets/Characters/Willy{{mardrest.ChangeDialogues/WillyGender}}.png": true }
+		"FromFile": "assets/Characters/Willy{{mardrest.ChangeDialogues/WillySprite}}.png",
+		"When": { "HasFile:assets/Characters/Willy{{mardrest.ChangeDialogues/WillySprite}}.png": true, "mardrest.ChangeDialogues/WillySprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Willy",
-		"FromFile": "assets/Portraits/Willy{{mardrest.ChangeDialogues/WillyGender}}.png",
-		"When": { "HasFile:assets/Portraits/Willy{{mardrest.ChangeDialogues/WillyGender}}.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Willy",
-		"FromFile": "assets/Characters/Willy{{mardrest.ChangeDialogues/WillyGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Willy{{mardrest.ChangeDialogues/WillyGender}}.xnb": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Willy",
-		"FromFile": "assets/Portraits/Willy{{mardrest.ChangeDialogues/WillyGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Willy{{mardrest.ChangeDialogues/WillyGender}}.xnb": true }
+		"FromFile": "assets/Portraits/Willy{{mardrest.ChangeDialogues/WillySprite}}.png",
+		"When": { "HasFile:assets/Portraits/Willy{{mardrest.ChangeDialogues/WillySprite}}.png": true, "mardrest.ChangeDialogues/WillySprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1626,48 +1128,48 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Willy.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Willy.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Willy.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Willy.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Characters/Wizard",
-		"FromFile": "assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png",
-		"When": { "HasFile:assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
+		"FromFile": "assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardSprite}}.png",
+		"When": { "HasFile:assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardSprite}}.png": true, "mardrest.ChangeDialogues/RazolynSprite": "no", "mardrest.ChangeDialogues/WizardSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Wizard",
-		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png",
-		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
+		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardSprite}}.png": true, "mardrest.ChangeDialogues/RazolynSprite": "no", "mardrest.ChangeDialogues/WizardSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Wizard",
-		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png",
-		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.png": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
+		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardSprite}}.png",
+		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardSprite}}.png": true, "mardrest.ChangeDialogues/RazolynSprite": "no", "mardrest.ChangeDialogues/WizardSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Wizard",
-		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}Raz.png",
+		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardSprite}}Raz.png",
 		"PatchMode": "Overlay",
-		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "no", "HasMod": "misscoriel.razolyn" }
+		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "no", "HasMod": "misscoriel.razolyn", "mardrest.ChangeDialogues/WizardSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Wizard",
-		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}Raz7.png",
+		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardSprite}}Raz7.png",
 		"ToArea": { "X": 64, "Y": 192, "Width": 64, "Height": 64 },
 		"Update": "OnLocationChange",
-		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "no", "HasMod": "misscoriel.razolyn", "LocationName |contains=WizardHouse": true, "Hearts:Wizard": "9" }
+		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "no", "HasMod": "misscoriel.razolyn", "LocationName |contains=WizardHouse": true, "Hearts:Wizard": "9", "mardrest.ChangeDialogues/WizardSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Portraits/Wizard",
 		"FromFile": "assets/Portraits/Razolyn.png",
 		"PatchMode": "Overlay",
-		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "yes", "HasMod |contains=misscoriel.razolyn, foggy.LfL": true }
+		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "yes", "HasMod |contains=misscoriel.razolyn, foggy.LfL": true, "mardrest.ChangeDialogues/WizardSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
@@ -1675,19 +1177,7 @@
 		"FromFile": "assets/Portraits/Razolyn7.png",
 		"ToArea": { "X": 64, "Y": 192, "Width": 64, "Height": 64 },
 		"Update": "OnLocationChange",
-		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "yes", "HasMod |contains=misscoriel.razolyn, foggy.LfL": true, "LocationName |contains=WizardHouse": true, "Hearts:Wizard": "9" }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Characters/Wizard",
-		"FromFile": "assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb",
-		"When": { "HasFile:assets/Characters/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "Portraits/Wizard",
-		"FromFile": "assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb",
-		"When": { "HasFile:assets/Portraits/Wizard{{mardrest.ChangeDialogues/WizardGender}}.xnb": true, "mardrest.ChangeDialogues/RazolynSprite": "no" }
+		"When": {"mardrest.ChangeDialogues/WizardGender": "Female", "mardrest.ChangeDialogues/RazolynSprite": "yes", "HasMod |contains=misscoriel.razolyn, foggy.LfL": true, "LocationName |contains=WizardHouse": true, "Hearts:Wizard": "9", "mardrest.ChangeDialogues/WizardSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1696,104 +1186,104 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Dialogue/Wizard.json",
-		"When": { "HasFile:i18n/{{Language}}/Dialogue/Wizard.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Dialogue/Wizard.json",
+		"When": { "HasFile:i18n/{{language}}/Dialogue/Wizard.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/cowPhotos",
 		"FromFile": "assets/LooseSprites/cowPhotos{{mardrest.ChangeDialogues/HaleySprite}}.png",
-		"When": { "HasFile:assets/LooseSprites/cowPhotos{{mardrest.ChangeDialogues/HaleySprite}}.png": true, "mardrest.ChangeDialogues/HaleySprite": "New" }
+		"When": { "HasFile:assets/LooseSprites/cowPhotos{{mardrest.ChangeDialogues/HaleySprite}}.png": true, "mardrest.ChangeDialogues/HaleySprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/cowPhotosWinter",
 		"FromFile": "assets/LooseSprites/cowPhotosWinter{{mardrest.ChangeDialogues/HaleySprite}}.png",
-		"When": { "HasFile:assets/LooseSprites/cowPhotosWinter{{mardrest.ChangeDialogues/HaleySprite}}.png": true, "mardrest.ChangeDialogues/HaleySprite": "New" }
+		"When": { "HasFile:assets/LooseSprites/cowPhotosWinter{{mardrest.ChangeDialogues/HaleySprite}}.png": true, "mardrest.ChangeDialogues/HaleySprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
 		"FromFile": "assets/LooseSprites/CursorsMarnie{{mardrest.ChangeDialogues/MarnieSprite}}.png",
 		"ToArea": { "X": 558, "Y": 1425, "Width": 60, "Height": 26 },
-		"When": { "HasFile:assets/LooseSprites/CursorsMarnie{{mardrest.ChangeDialogues/MarnieSprite}}.png": true, "mardrest.ChangeDialogues/MarnieSprite": "New" }
+		"When": { "HasFile:assets/LooseSprites/CursorsMarnie{{mardrest.ChangeDialogues/MarnieSprite}}.png": true, "mardrest.ChangeDialogues/MarnieSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
 		"FromFile": "assets/LooseSprites/CursorsMarniePicture{{mardrest.ChangeDialogues/MarnieSprite}}.png",
 		"ToArea": { "X": 28, "Y": 1928, "Width": 19, "Height": 16 },
-		"When": { "HasFile:assets/LooseSprites/CursorsMarniePicture{{mardrest.ChangeDialogues/MarnieSprite}}.png": true, "mardrest.ChangeDialogues/MarnieSprite": "New" }
+		"When": { "HasFile:assets/LooseSprites/CursorsMarniePicture{{mardrest.ChangeDialogues/MarnieSprite}}.png": true, "mardrest.ChangeDialogues/MarnieSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
 		"FromFile": "assets/LooseSprites/CursorsMorris{{mardrest.ChangeDialogues/MorrisGender}}_Fright.png",
 		"ToArea": { "X": 103, "Y": 1317, "Width": 16, "Height": 32 },
-		"When": { "HasFile:assets/LooseSprites/CursorsMorris{{mardrest.ChangeDialogues/MorrisGender}}_Fright.png": true, "mardrest.ChangeDialogues/MorrisGender": "Female" }
+		"When": { "HasFile:assets/LooseSprites/CursorsMorris{{mardrest.ChangeDialogues/MorrisGender}}_Fright.png": true, "mardrest.ChangeDialogues/MorrisGender": "Female", "mardrest.ChangeDialogues/MorrisGender |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
 		"FromFile": "assets/LooseSprites/CursorsMorris{{mardrest.ChangeDialogues/MorrisGender}}_Win.png",
 		"ToArea": { "X": 48, "Y": 1388, "Width": 30, "Height": 18 },
-		"When": { "HasFile:assets/LooseSprites/CursorsMorris{{mardrest.ChangeDialogues/MorrisGender}}Win.png": true, "mardrest.ChangeDialogues/MorrisGender": "Female" }
+		"When": { "HasFile:assets/LooseSprites/CursorsMorris{{mardrest.ChangeDialogues/MorrisGender}}Win.png": true, "mardrest.ChangeDialogues/MorrisGender": "Female", "mardrest.ChangeDialogues/MorrisGender |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
 		"FromFile": "assets/LooseSprites/CursorsMorris{{mardrest.ChangeDialogues/MorrisGender}}_Work.png",
 		"ToArea": { "X": 390, "Y": 1405, "Width": 36, "Height": 32 },
-		"When": { "HasFile:assets/LooseSprites/CursorsMorris{{mardrest.ChangeDialogues/MorrisGender}}_Work.png": true, "mardrest.ChangeDialogues/MorrisGender": "Female" }
+		"When": { "HasFile:assets/LooseSprites/CursorsMorris{{mardrest.ChangeDialogues/MorrisGender}}_Work.png": true, "mardrest.ChangeDialogues/MorrisGender": "Female", "mardrest.ChangeDialogues/MorrisGender |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
-		"FromFile": "assets/LooseSprites/CursorsSebastian{{mardrest.ChangeDialogues/SebastianGender}}.png",
+		"FromFile": "assets/LooseSprites/CursorsSebastian{{mardrest.ChangeDialogues/SebastianSprite}}.png",
 		"ToArea": { "X": 405, "Y": 1852, "Width": 47, "Height": 35 },
-		"When": { "HasFile:assets/LooseSprites/CursorsSebastian{{mardrest.ChangeDialogues/SebastianGender}}.png": true }
+		"When": { "HasFile:assets/LooseSprites/CursorsSebastian{{mardrest.ChangeDialogues/SebastianSprite}}.png": true, "mardrest.ChangeDialogues/SebastianSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
-		"FromFile": "assets/LooseSprites/CursorsShane{{mardrest.ChangeDialogues/ShaneGender}}.png",
+		"FromFile": "assets/LooseSprites/CursorsShane{{mardrest.ChangeDialogues/ShaneSprite}}.png",
 		"ToArea": { "X": 533, "Y": 1864, "Width": 19, "Height": 27 },
-		"When": { "HasFile:assets/LooseSprites/CursorsShane{{mardrest.ChangeDialogues/ShaneGender}}.png": true }
+		"When": { "HasFile:assets/LooseSprites/CursorsShane{{mardrest.ChangeDialogues/ShaneSprite}}.png": true, "mardrest.ChangeDialogues/ShaneSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/LooseSprites/Cursors",
 		"FromFile": "assets/LooseSprites/CursorsShane{{mardrest.ChangeDialogues/ShaneGender}}Joja.png",
 		"ToArea": { "X": 15, "Y": 1391, "Width": 16, "Height": 30 },
-		"When": { "HasFile:assets/LooseSprites/CursorsShane{{mardrest.ChangeDialogues/ShaneGender}}Joja.png": true }
-	},
-	{
-		"Action": "EditImage",
-		"Target": "LooseSprites/Cursors",
-		"FromFile": "assets/LooseSprites/CursorsWitch{{mardrest.ChangeDialogues/WitchGender}}.png",
-		"ToArea": { "X": 277, "Y": 1886, "Width": 34, "Height": 57 },
-		"When": { "mardrest.ChangeDialogues/WitchGender": "Male", "HasFile:assets/LooseSprites/CursorsWitch{{mardrest.ChangeDialogues/WitchGender}}.png": true }
+		"When": { "HasFile:assets/LooseSprites/CursorsShane{{mardrest.ChangeDialogues/ShaneGender}}Joja.png": true, "mardrest.ChangeDialogues/ShaneSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
 		"FromFile": "assets/LooseSprites/CursorsWitch{{mardrest.ChangeDialogues/WitchSprite}}.png",
 		"ToArea": { "X": 277, "Y": 1886, "Width": 34, "Height": 57 },
-		"When": { "mardrest.ChangeDialogues/WitchSprite": "New", "HasFile:assets/LooseSprites/CursorsWitch{{mardrest.ChangeDialogues/WitchSprite}}.png": true }
+		"When": { "mardrest.ChangeDialogues/WitchGender": "Male", "HasFile:assets/LooseSprites/CursorsWitch{{mardrest.ChangeDialogues/WitchSprite}}.png": true, "mardrest.ChangeDialogues/WitchSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
-		"FromFile": "assets/LooseSprites/CursorsWizard{{mardrest.ChangeDialogues/WizardGender}}.png",
-		"ToArea": { "X": 387, "Y": 1965, "Width": 16, "Height": 31 },
-		"When": { "HasFile:assets/LooseSprites/CursorsWizard{{mardrest.ChangeDialogues/WizardGender}}.png": true }
+		"FromFile": "assets/LooseSprites/CursorsWitch{{mardrest.ChangeDialogues/WitchSprite}}.png",
+		"ToArea": { "X": 277, "Y": 1886, "Width": 34, "Height": 57 },
+		"When": { "HasFile:assets/LooseSprites/CursorsWitch{{mardrest.ChangeDialogues/WitchSprite}}.png": true, "mardrest.ChangeDialogues/WitchSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
-		"FromFile": "assets/LooseSprites/CursorsWorms.png",
-		"ToArea": { "X": 369, "Y": 33, "Width": 63, "Height": 15 },
-		"When": { "HasFile:assets/LooseSprites/CursorsWorms.png": true, "mardrest.ChangeDialogues/WormsSprite": "Chest" }
+		"FromFile": "assets/LooseSprites/CursorsWizard{{mardrest.ChangeDialogues/WizardSprite}}.png",
+		"ToArea": { "X": 387, "Y": 1964, "Width": 16, "Height": 32 },
+		"When": { "HasFile:assets/LooseSprites/CursorsWizard{{mardrest.ChangeDialogues/WizardSprite}}.png": true, "mardrest.ChangeDialogues/WizardSprite |contains=Vanilla": false, "mardrest.ChangeDialogues/RazolynSprite": "no" }
+	},
+	{
+		"Action": "EditImage",
+		"Target": "LooseSprites/Cursors",
+		"FromFile": "assets/LooseSprites/CursorsWorms{{mardrest.ChangeDialogues/WormsSprite}}.png",
+		"ToArea": { "X": 369, "Y": 32, "Width": 64, "Height": 16 },
+		"When": { "HasFile:assets/LooseSprites/CursorsWorms.png": true, "mardrest.ChangeDialogues/WormsSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
@@ -1802,8 +1292,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Data/EngagementDialogue.json",
-		"When": { "HasFile:i18n/{{Language}}/Data/EngagementDialogue.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Data/EngagementDialogue.json",
+		"When": { "HasFile:i18n/{{language}}/Data/EngagementDialogue.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -1812,8 +1302,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Data/ExtraDialogue.json",
-		"When": { "HasFile:i18n/{{Language}}/Data/ExtraDialogue.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Data/ExtraDialogue.json",
+		"When": { "HasFile:i18n/{{language}}/Data/ExtraDialogue.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -1822,8 +1312,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Data/Mail.json",
-		"When": { "HasFile:i18n/{{Language}}/Data/Mail.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Data/Mail.json",
+		"When": { "HasFile:i18n/{{language}}/Data/Mail.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditData",
@@ -2078,8 +1568,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Data/Quests.json",
-		"When": { "HasFile:i18n/{{Language}}/Data/Quests.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Data/Quests.json",
+		"When": { "HasFile:i18n/{{language}}/Data/Quests.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2088,8 +1578,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Data/SecretNotes.json",
-		"When": { "HasFile:i18n/{{Language}}/Data/SecretNotes.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Data/SecretNotes.json",
+		"When": { "HasFile:i18n/{{language}}/Data/SecretNotes.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2098,8 +1588,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/AnimalShop.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/AnimalShop.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/AnimalShop.json",
+		"When": { "HasFile:i18n/{{language}}/Events/AnimalShop.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2108,8 +1598,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/ArchaeologyHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/ArchaeologyHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/ArchaeologyHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/ArchaeologyHouse.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2118,8 +1608,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Beach.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Beach.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Beach.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Beach.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2128,8 +1618,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/BusStop.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/BusStop.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/BusStop.json",
+		"When": { "HasFile:i18n/{{language}}/Events/BusStop.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2138,18 +1628,18 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/CommunityCenter.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/CommunityCenter.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/CommunityCenter.json",
+		"When": { "HasFile:i18n/{{language}}/Events/CommunityCenter.json": true, "Language |contains=en": false }
 	},
-	{
+	/*{
 		"Action": "Include",
 		"FromFile": "i18n/default/Events/ElliottHouse.json",
 		"When": { "HasFile:i18n/default/Events/ElliottHouse.json": true }
-	},
+	},*/
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/ElliottHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/ElliottHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/ElliottHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/ElliottHouse.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2158,8 +1648,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Farm.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Farm.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Farm.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Farm.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2168,8 +1658,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/FarmHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/FarmHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/FarmHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/FarmHouse.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2178,8 +1668,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Forest.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Forest.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Forest.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Forest.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2188,18 +1678,18 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/HaleyHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/HaleyHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/HaleyHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/HaleyHouse.json": true, "Language |contains=en": false }
 	},
-	{
+	/*{
 		"Action": "Include",
 		"FromFile": "i18n/default/Events/HarveyRoom.json",
 		"When": { "HasFile:i18n/default/Events/HarveyRoom.json": true }
-	},
+	},*/
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/HarveyRoom.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/HarveyRoom.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/HarveyRoom.json",
+		"When": { "HasFile:i18n/{{language}}/Events/HarveyRoom.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2208,8 +1698,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Hospital.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Hospital.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Hospital.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Hospital.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2218,8 +1708,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/JoshHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/JoshHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/JoshHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/JoshHouse.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2228,8 +1718,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/ManorHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/ManorHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/ManorHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/ManorHouse.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2238,8 +1728,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Mine.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Mine.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Mine.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Mine.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2248,8 +1738,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Mountain.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Mountain.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Mountain.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Mountain.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2258,8 +1748,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Railroad.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Railroad.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Railroad.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Railroad.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2268,8 +1758,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Saloon.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Saloon.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Saloon.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Saloon.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2278,8 +1768,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/SamHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/SamHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/SamHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/SamHouse.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2288,8 +1778,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/SandyHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/SandyHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/SandyHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/SandyHouse.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2298,8 +1788,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/ScienceHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/ScienceHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/ScienceHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/ScienceHouse.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2308,8 +1798,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/SebastianRoom.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/SebastianRoom.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/SebastianRoom.json",
+		"When": { "HasFile:i18n/{{language}}/Events/SebastianRoom.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2318,8 +1808,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/SeedShop.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/SeedShop.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/SeedShop.json",
+		"When": { "HasFile:i18n/{{language}}/Events/SeedShop.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2328,8 +1818,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Sewer.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Sewer.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Sewer.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Sewer.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2338,8 +1828,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Temp.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Temp.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Temp.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Temp.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2348,8 +1838,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Town.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Town.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Town.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Town.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2358,8 +1848,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/Trailer_big.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/Trailer_big.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/Trailer_big.json",
+		"When": { "HasFile:i18n/{{language}}/Events/Trailer_big.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2368,8 +1858,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Events/WizardHouse.json",
-		"When": { "HasFile:i18n/{{Language}}/Events/WizardHouse.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Events/WizardHouse.json",
+		"When": { "HasFile:i18n/{{language}}/Events/WizardHouse.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2378,8 +1868,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Festivals/SVF.json",
-		"When": { "HasFile:i18n/{{Language}}/Festivals/SVF.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Festivals/SVF.json",
+		"When": { "HasFile:i18n/{{language}}/Festivals/SVF.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2388,8 +1878,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Festivals/SpiritsEve.json",
-		"When": { "HasFile:i18n/{{Language}}/Festivals/SpiritsEve.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Festivals/SpiritsEve.json",
+		"When": { "HasFile:i18n/{{language}}/Festivals/SpiritsEve.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2398,8 +1888,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Festivals/EggFestival.json",
-		"When": { "HasFile:i18n/{{Language}}/Festivals/EggFestival.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Festivals/EggFestival.json",
+		"When": { "HasFile:i18n/{{language}}/Festivals/EggFestival.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2408,8 +1898,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Festivals/FlowerDance.json",
-		"When": { "HasFile:i18n/{{Language}}/Festivals/FlowerDance.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Festivals/FlowerDance.json",
+		"When": { "HasFile:i18n/{{language}}/Festivals/FlowerDance.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2418,8 +1908,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Festivals/Luau.json",
-		"When": { "HasFile:i18n/{{Language}}/Festivals/Luau.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Festivals/Luau.json",
+		"When": { "HasFile:i18n/{{language}}/Festivals/Luau.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2428,8 +1918,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Festivals/MoonlightJellies.json",
-		"When": { "HasFile:i18n/{{Language}}/Festivals/MoonlightJellies.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Festivals/MoonlightJellies.json",
+		"When": { "HasFile:i18n/{{language}}/Festivals/MoonlightJellies.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2438,8 +1928,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Festivals/FestivalIce.json",
-		"When": { "HasFile:i18n/{{Language}}/Festivals/FestivalIce.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Festivals/FestivalIce.json",
+		"When": { "HasFile:i18n/{{language}}/Festivals/FestivalIce.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2448,71 +1938,71 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Festivals/WinterStar.json",
-		"When": { "HasFile:i18n/{{Language}}/Festivals/WinterStar.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Festivals/WinterStar.json",
+		"When": { "HasFile:i18n/{{language}}/Festivals/WinterStar.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/townInterior",
-		"FromFile": "assets/Maps/Morris{{mardrest.ChangeDialogues/MorrisGender}}.png",
+		"FromFile": "assets/Maps/Morris{{mardrest.ChangeDialogues/MorrisSprite}}.png",
 		"ToArea": { "X": 368, "Y": 1008, "Width": 48, "Height": 32 },
-		"When": { "mardrest.ChangeDialogues/MorrisGender": "Female" }
+		"When": { "HasFile:assets/Maps/Morris{{mardrest.ChangeDialogues/MorrisSprite}}.png": true, "mardrest.ChangeDialogues/MorrisGender": "Female" }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/DesertTiles",
-		"FromFile": "assets/Maps/DesertTiles.png",
+		"FromFile": "assets/Maps/DesertTiles{{language}}.png",
 		"ToArea": { "X": 35, "Y": 177, "Width": 43, "Height": 14 },
-		"When": { "mardrest.ChangeDialogues/Map:Qi": false }
+		"When": { "HasFile:assets/Maps/DesertTiles{{language}}.png": true, "mardrest.ChangeDialogues/QiName |contains=Qi": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/DesertTiles",
-		"FromFile": "assets/Maps/DesertTiles.png",
+		"FromFile": "assets/Maps/DesertTiles{{language}}.png",
 		"ToArea": { "X": 83, "Y": 177, "Width": 43, "Height": 14 },
-		"When": { "mardrest.ChangeDialogues/Map:Qi": false }
+		"When": { "HasFile:assets/Maps/DesertTiles{{language}}.png": true, "mardrest.ChangeDialogues/QiName |contains=Qi": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/DesertTiles",
-		"FromFile": "assets/Maps/DesertTiles.png",
+		"FromFile": "assets/Maps/DesertTiles{{language}}.png",
 		"ToArea": { "X": 131, "Y": 177, "Width": 43, "Height": 14 },
-		"When": { "mardrest.ChangeDialogues/Map:Qi": false }
+		"When": { "HasFile:assets/Maps/DesertTiles{{language}}.png": true, "mardrest.ChangeDialogues/QiName |contains=Qi": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/fall_town",
-		"FromFile": "assets/Maps/fall_town.png",
+		"FromFile": "assets/Maps/fall_town{{language}}.png",
 		"ToArea": { "X": 125, "Y": 276, "Width": 31, "Height": 12 },
-		"When": { "mardrest.ChangeDialogues/Map:Pierre": false }
+		"When": { "HasFile:assets/Maps/DesertTiles{{language}}.png": true, "mardrest.ChangeDialogues/PierreName |contains=Pierre": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/spring_town",
-		"FromFile": "assets/Maps/spring_town.png",
+		"FromFile": "assets/Maps/spring_town{{language}}.png",
 		"ToArea": { "X": 125, "Y": 276, "Width": 31, "Height": 12 },
-		"When": { "mardrest.ChangeDialogues/Map:Pierre": false }
+		"When": { "HasFile:assets/Maps/DesertTiles{{language}}.png": true, "mardrest.ChangeDialogues/PierreName |contains=Pierre": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/summer_town",
-		"FromFile": "assets/Maps/summer_town.png",
+		"FromFile": "assets/Maps/summer_town{{language}}.png",
 		"ToArea": { "X": 125, "Y": 276, "Width": 31, "Height": 12 },
-		"When": { "mardrest.ChangeDialogues/Map:Pierre": false }
+		"When": { "HasFile:assets/Maps/DesertTiles{{language}}.png": true, "mardrest.ChangeDialogues/PierreName |contains=Pierre": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/winter_town",
-		"FromFile": "assets/Maps/winter_town.png",
+		"FromFile": "assets/Maps/winter_town{{language}}.png",
 		"ToArea": { "X": 125, "Y": 276, "Width": 31, "Height": 12 },
-		"When": { "mardrest.ChangeDialogues/Map:Pierre": false }
+		"When": { "HasFile:assets/Maps/DesertTiles{{language}}.png": true, "mardrest.ChangeDialogues/PierreName |contains=Pierre": false }
 	},
 	{
 		"Action": "EditImage",
 		"Target": "Maps/Festivals",
-		"FromFile": "assets/Maps/Festivals.png",
+		"FromFile": "assets/Maps/Festivals{{language}}.png",
 		"ToArea": { "X": 375, "Y": 101, "Width": 33, "Height": 7 },
-		"When": { "mardrest.ChangeDialogues/Map:Pierre": false }
+		"When": { "HasFile:assets/Maps/DesertTiles{{language}}.png": true, "mardrest.ChangeDialogues/PierreName |contains=Pierre": false }
 	},
 	{
 		"Action": "Load",
@@ -2526,8 +2016,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/AnimationDescriptions.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/AnimationDescriptions.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/AnimationDescriptions.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/AnimationDescriptions.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2536,8 +2026,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/Characters.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/Characters.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/Characters.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/Characters.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2546,8 +2036,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/Events.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/Events.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/Events.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/Events.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2556,8 +2046,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/Locations.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/Locations.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/Locations.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/Locations.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2566,8 +2056,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/Notes.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/Notes.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/Notes.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/Notes.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "EditData",
@@ -2589,8 +2079,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/Objects.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/Objects.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/Objects.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/Objects.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2599,8 +2089,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/SpeechBubbles.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/SpeechBubbles.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/SpeechBubbles.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/SpeechBubbles.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2609,8 +2099,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/StringsFromCSFiles.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/StringsFromCSFiles.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/StringsFromCSFiles.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/StringsFromCSFiles.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2619,8 +2109,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/StringsFromMaps.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/StringsFromMaps.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/StringsFromMaps.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/StringsFromMaps.json": true, "Language |contains=en": false }
 	},
 	{
 		"Action": "Include",
@@ -2629,8 +2119,8 @@
 	},
 	{
 		"Action": "Include",
-		"FromFile": "i18n/{{Language}}/Strings/UI.json",
-		"When": { "HasFile:i18n/{{Language}}/Strings/UI.json": true, "Language |contains=en": false }
+		"FromFile": "i18n/{{language}}/Strings/UI.json",
+		"When": { "HasFile:i18n/{{language}}/Strings/UI.json": true, "Language |contains=en": false }
 	}
 	]
 }

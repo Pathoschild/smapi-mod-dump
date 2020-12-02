@@ -42,33 +42,27 @@ namespace ContentPatcher.Framework.Migrations
             };
         }
 
-        /// <summary>Migrate a content pack.</summary>
-        /// <param name="content">The content pack data to migrate.</param>
-        /// <param name="error">An error message which indicates why migration failed.</param>
-        /// <returns>Returns whether the content pack was successfully migrated.</returns>
+        /// <inheritdoc />
         public override bool TryMigrate(ContentConfig content, out string error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
             // 1.5 adds dynamic tokens
-            if (content.DynamicTokens?.Any() == true)
+            if (content.DynamicTokens.Any())
             {
                 error = this.GetNounPhraseError($"using the {nameof(ContentConfig.DynamicTokens)} field");
                 return false;
             }
 
             // check patch format
-            if (content.Changes?.Any() == true)
+            foreach (PatchConfig patch in content.Changes)
             {
-                foreach (PatchConfig patch in content.Changes)
+                // 1.5 adds multiple Target values
+                if (patch.Target?.Contains(",") == true)
                 {
-                    // 1.5 adds multiple Target values
-                    if (patch.Target?.Contains(",") == true)
-                    {
-                        error = this.GetNounPhraseError($"specifying multiple {nameof(PatchConfig.Target)} values");
-                        return false;
-                    }
+                    error = this.GetNounPhraseError($"specifying multiple {nameof(PatchConfig.Target)} values");
+                    return false;
                 }
             }
 

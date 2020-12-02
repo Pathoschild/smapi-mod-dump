@@ -36,6 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.2</LangVersion>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Automate">
@@ -70,20 +71,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Automate\AutomateOverrides.cs" />
     <Compile Include="Automate\MPMAutomated.cs" />
     <Compile Include="Automate\MPMAutomationFactory.cs" />
+    <Compile Include="Automate\VanillaAutomatedOverride.cs" />
+    <Compile Include="data\ConditionalSetting.cs" />
+    <Compile Include="data\ConditionalSettingCheckCache.cs" />
     <Compile Include="data\ImageHelper.cs" />
+    <Compile Include="data\InputInfo.cs" />
+    <Compile Include="data\InputRequirement.cs" />
     <Compile Include="data\MPMManager.cs" />
     <Compile Include="data\MPMSettings.cs" />
     <Compile Include="data\QualitySetting.cs" />
     <Compile Include="data\MassProductionMachineDefinition.cs" />
     <Compile Include="data\SavedMPMInfo.cs" />
+    <Compile Include="data\StaticValues.cs" />
     <Compile Include="MailManager.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="ObjectOverrides.cs" />
     <Compile Include="PFMCompatability.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VanillaOverrides\IVanillaOverride.cs" />
+    <Compile Include="VanillaOverrides\SeedMakerOverride.cs" />
+    <Compile Include="VanillaOverrides\WormBinOverride.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

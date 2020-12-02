@@ -24,25 +24,18 @@ namespace MassProduction
     /// </summary>
     public class MassProductionMachineDefinition
     {
-        public static readonly string PRODUCER_NAME_PREFIX = "Mass Production";
-
         public string BaseProducerName { get; protected set; }
-        public string ProducerNameSuffix { get; protected set; }
         public List<object> BlacklistedInputKeys { get; protected set; }
         public MPMSettings Settings { get; protected set; }
-
-        public string ProducerName { get { return PRODUCER_NAME_PREFIX + " " + BaseProducerName + " (" + ProducerNameSuffix + ")"; } }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="baseProducerName">Name of the base production machine as used by PFM.</param>
-        /// <param name="suffix">Will be added to end of producer names.</param>
+        /// <param name="baseProducerName">Name of the base production machine as used by PFM or the base game.</param>
         /// <param name="settings">How the machine affects inputs and outputs.</param>
-        protected MassProductionMachineDefinition(string baseProducerName, string suffix, MPMSettings settings)
+        protected MassProductionMachineDefinition(string baseProducerName, MPMSettings settings)
         {
             BaseProducerName = baseProducerName;
-            ProducerNameSuffix = suffix;
             Settings = settings;
             BlacklistedInputKeys = new List<object>();
         }
@@ -55,12 +48,14 @@ namespace MassProduction
         public static List<MassProductionMachineDefinition> Setup(Dictionary<string, MPMSettings> settings)
         {
             List<MassProductionMachineDefinition> mpms = new List<MassProductionMachineDefinition>();
+
+            //PFM integration
             List<ProducerRule> allProducerRules = ProducerController.GetProducerRules();
             List<string> baseProducers = new List<string>();
 
             foreach (ProducerRule rule in allProducerRules)
             {
-                if (!baseProducers.Contains(rule.ProducerName))
+                if (ProducerController.GetProducerConfig(rule.ProducerName) != null && !baseProducers.Contains(rule.ProducerName))
                 {
                     baseProducers.Add(rule.ProducerName);
                 }
@@ -70,14 +65,33 @@ namespace MassProduction
             {
                 ProducerConfig config = ProducerController.GetProducerConfig(baseProducerName);
 
-                foreach (string settingName in settings.Keys)
+                foreach (MPMSettings setting in settings.Values)
                 {
-                    if (config == null || (config.NoInputStartMode.HasValue && !settings[settingName].AllowInputlessBases))
+                    if (config == null || 
+                        (config.NoInputStartMode.HasValue && setting.InputRequirementEnum == InputRequirement.InputRequired) ||
+                        (!config.NoInputStartMode.HasValue && setting.InputRequirementEnum == InputRequirement.NoInputsOnly))
                     {
                         continue;
                     }
 
-                    mpms.Add(new MassProductionMachineDefinition(baseProducerName, settingName, settings[settingName]));
+                    mpms.Add(new MassProductionMachineDefinition(baseProducerName, setting));
+                }
+            }
+
+            //Other vanilla machines
+            foreach (string vanillaMachineName in StaticValues.SUPPORTED_VANILLA_MACHINES.Keys)
+            {
+                if (!baseProducers.Contains(vanillaMachineName))
+                {
+                    InputRequirement inputRequirement = StaticValues.SUPPORTED_VANILLA_MACHINES[vanillaMachineName];
+
+                    foreach (MPMSettings setting in settings.Values)
+                    {
+                        if (setting.InputRequirementEnum == inputRequirement || setting.InputRequirementEnum == InputRequirement.NoRequirements)
+                        {
+                            mpms.Add(new MassProductionMachineDefinition(vanillaMachineName, setting));
+                        }
+                    }
                 }
             }
 

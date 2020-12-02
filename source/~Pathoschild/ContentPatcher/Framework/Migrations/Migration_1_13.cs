@@ -34,25 +34,19 @@ namespace ContentPatcher.Framework.Migrations
             };
         }
 
-        /// <summary>Migrate a content pack.</summary>
-        /// <param name="content">The content pack data to migrate.</param>
-        /// <param name="error">An error message which indicates why migration failed.</param>
-        /// <returns>Returns whether the content pack was successfully migrated.</returns>
+        /// <inheritdoc />
         public override bool TryMigrate(ContentConfig content, out string error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
-            if (content.Changes?.Any() == true)
+            foreach (PatchConfig patch in content.Changes)
             {
-                foreach (PatchConfig patch in content.Changes)
+                // 1.13 adds map tile patches
+                if (patch.MapTiles.Any())
                 {
-                    // 1.13 adds map tile patches
-                    if (patch.MapTiles != null)
-                    {
-                        error = this.GetNounPhraseError($"using {nameof(PatchConfig.MapTiles)}");
-                        return false;
-                    }
+                    error = this.GetNounPhraseError($"using {nameof(PatchConfig.MapTiles)}");
+                    return false;
                 }
             }
 

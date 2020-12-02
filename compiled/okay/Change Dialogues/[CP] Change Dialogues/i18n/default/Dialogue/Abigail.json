@@ -61,7 +61,7 @@
 		"Target": "Data/NPCDispositions",
 		"Fields": {
 			"Abigail": {
-				9: "Caroline 'mom' Pierre '{{mardrest.ChangeDialogues/Dad:L{{mardrest.ChangeDialogues/Pierre}}}}'"
+				9: "Caroline 'mom' Pierre '{{mardrest.ChangeDialogues/Dad:L{{mardrest.ChangeDialogues/PierreGender}}}}'"
 			}
 		}
 	}

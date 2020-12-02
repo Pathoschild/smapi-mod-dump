@@ -80,6 +80,10 @@ namespace NpcAdventure.AI.Controller
                 this.currentBehavior.StopBehavior();
         }
 
+        public virtual void SideUpdate(UpdateTickedEventArgs e)
+        {
+        }
+
         public void Update(UpdateTickedEventArgs e)
         {
             if (!Context.IsMultiplayer && !Context.IsPlayerFree)

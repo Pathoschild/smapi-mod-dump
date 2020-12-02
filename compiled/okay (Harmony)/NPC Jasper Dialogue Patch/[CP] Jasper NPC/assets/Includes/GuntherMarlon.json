@@ -11,7 +11,7 @@
 		"Gunther": "adult/polite/outgoing/neutral/male/not-datable/null/Town/winter 5//ArchaeologyHouse 3 8/Gunther"
 			},
 			"When": {
-				"HasMod |contains=FlashShifter.StardewValleyExpandedALL,Yoshimax.BefriendMarlon,andril11.charlie, ChicoLopes.GuntherToNPC":false, "SocialGuntherandMarlon":"true"		}
+				"HasMod |contains=FlashShifter.StardewValleyExpandedALL,Yoshimax.BefriendMarlon,andril11.charlie, ChicoLopes.GuntherToNPC, Wolf.Gun":false, "SocialGuntherandMarlon":"true"		}
 		},
 {	"LogName": "NPC Gift Tastes",
 	"Action": "EditData",
@@ -19,7 +19,7 @@
 	"Entries": {
 	"Gunther": "Many thanks! This is just what I needed./226 104/Excellent! This will certainly come in handy./106 123 124 125 107 108 115 119 120 121 122 96 97 98 99 -2 -12/Well, I'm not a fan, but thanks anyway./78 110/This is unpleasant.//Thanks!/-4/",
 			},	
-	"When": {	"HasMod |contains=FlashShifter.StardewValleyExpandedALL, Yoshimax.BefriendMarlon, andril11.charlie, ChicoLopes.GuntherToNPC":false,	"SocialGuntherandMarlon":"true"}
+	"When": {	"HasMod |contains=FlashShifter.StardewValleyExpandedALL, Yoshimax.BefriendMarlon, andril11.charlie, ChicoLopes.GuntherToNPC, Wolf.Gun":false,	"SocialGuntherandMarlon":"true"}
 					},
 {	"LogName": "NPC Gift Tastes",
 	"Action": "EditData",
@@ -33,12 +33,14 @@
 	"Action": "Load",
 	"Target": "Characters/Dialogue/Gunther",
 	"FromFile": "assets/GuntherBlank.json",
-	"When": {	"HasMod |contains=ChicoLopes.GuntherToNPC,FlashShifter.StardewValleyExpandedALL,Yoshimax.BefriendMarlon, andril11.charlie":false		}
+	"When": {	"HasMod |contains=ChicoLopes.GuntherToNPC,FlashShifter.StardewValleyExpandedALL,Yoshimax.BefriendMarlon, andril11.charlie, Wolf.Gun":false		}
 			},
 {	"LogName": "Gunther Dialogue", 
 	"Action": "Include",
-	"FromFile": "assets/Dialogue/Dialogue-Gunther.json"
+	"FromFile": "assets/Dialogue/Dialogue-Gunther.json",
+	"When": {	"HasMod |contains=Wolf.Gun":false						}
 			},
+		
 {	"LogName": "Dialogue", 
 	"Action": "Load",
 	"Target": "Characters/Dialogue/Marlon",
@@ -90,19 +92,19 @@
         	"Layer": "Front",     "Remove":true
     	   				 }
 		],
-	"When": { "HasMod |contains=ChicoLopes.GuntherToNPC,Karmylla.ImmersiveMaps, andril11.charlie, FlashShifter.StardewValleyExpandedALL, Yoshimax.BefriendMarlon":false}
+	"When": { "HasMod |contains=ChicoLopes.GuntherToNPC,Karmylla.ImmersiveMaps, andril11.charlie, FlashShifter.StardewValleyExpandedALL, Yoshimax.BefriendMarlon, Wolf.Gun":false}
 		},
 {	"Action": "EditMap",
 	"Target": "Maps/ArchaeologyHouse",
 	"FromFile": "assets/Image/ArchaeologyDesk.tmx",
 	"ToArea": { "X": 4, "Y": 8, "Width": 3, "Height": 2 },
-	"When": { "HasMod |contains=Karmylla.ImmersiveMaps,ChicoLopes.GuntherToNPC, andril11.charlie, FlashShifter.StardewValleyExpandedALL":false}
+	"When": { "HasMod |contains=Karmylla.ImmersiveMaps,ChicoLopes.GuntherToNPC, andril11.charlie, FlashShifter.StardewValleyExpandedALL, Wolf.Gun":false}
 		},
 {	"Action": "EditMap",
 	"Target": "Maps/Museum2",
 	"FromFile": "assets/Image/Museum2-MEPatch.tmx",
 	"ToArea": { "X": 0, "Y": 0, "Width": 11, "Height": 9 },
-	"When": { "HasMod |contains=ChicoLopes.GuntherToNPC, test2.andril11, FlashShifter.StardewValleyExpandedALL":true,
+	"When": { "HasMod |contains=ChicoLopes.GuntherToNPC, test2.andril11, FlashShifter.StardewValleyExpandedALL, Wolf.Gun":true,
 			//"HasMod |contains=MIDI.Blanche":false		
 		}
 		},

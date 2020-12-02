@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7222
+IDs: shurmash.LewdDew_Valley_helper
+update keys: Nexus:7222

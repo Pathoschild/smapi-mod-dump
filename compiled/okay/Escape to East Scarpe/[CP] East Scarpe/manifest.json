@@ -1,7 +1,7 @@
 {
     "Name": "[CP] East Scarpe",
     "Author": "LemurKat",
-    "Version": "1.4.3",
+    "Version": "1.5.0",
     "Description": "Adds an area east of town by the Archaeology House.",
     "UniqueID": "LemurKat.EastScarpe.CP",
     "MinimumApiVersion": "1.0.0",
@@ -14,7 +14,10 @@
       { "UniqueID":"Acerbicon.Recolor", "IsRequired": false      },
       { "UniqueID":"stardewfoliageredone", "IsRequired": false   },
       { "UniqueID":"stardewfoliageredonereshade", "IsRequired": false},
-      { "UniqueID":"DaisyNiko.EarthyRecolour", "IsRequired": false}
+      { "UniqueID":"DaisyNiko.EarthyRecolour", "IsRequired": false},
+      { "UniqueID":"andril11.charlie", "IsRequired": false},
+      { "UniqueID":"andril11.charlie.CP", "IsRequired": false},//this one can be removed when uploading
+      {   "UniqueID":"Lemurkat.NPCJasper",  "IsRequired":false    }
 			],
     "ContentPackFor": {
    "UniqueID": "Pathoschild.ContentPatcher"	

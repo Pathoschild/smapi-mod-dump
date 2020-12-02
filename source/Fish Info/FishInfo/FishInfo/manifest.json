@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Speshkitty/FishInfo
+**
+*************************************************/
+
+{
+  "Name": "Fish Info",
+  "Author": "Speshkitty",
+  "Version": "1.3.92",
+  "Description": "Adds infomration about where fish can be caught to the collections page",
+  "UniqueID": "speshkitty.fishinfo",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5452" ],
+  "EntryDLL": "FishInfo.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

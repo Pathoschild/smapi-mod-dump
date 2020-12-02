@@ -29,6 +29,19 @@ namespace QuestFramework.Framework
         {
             StringBuilder builder = new StringBuilder();
 
+            if (args.Length > 0 && args[0] == "raw")
+            {
+                var quests = Game1.content.Load<Dictionary<int, string>>(@"Data\\Quests");
+
+                builder.AppendLine($"StardewVallley has registered {quests.Count} quests:");
+
+                foreach(var q in quests)
+                    builder.AppendLine($"{q.Key}: {q.Value}");
+
+                Monitor.Log(builder.ToString(), LogLevel.Info);
+                return;
+            }
+
             builder.AppendLine($"Quest framework has {QuestManager.Quests.Count} quests under management:");
 
             foreach (var quest in QuestManager.Quests)

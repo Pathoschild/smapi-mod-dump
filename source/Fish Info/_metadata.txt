@@ -1,0 +1,13 @@
+url:
+   https://github.com/Speshkitty/FishInfo.git
+
+mods:
+   Fish Info
+
+latest commit:
+   commit f8cdea543d5cdc84e6af7ead229512b926a840a6
+   Author: Speshkitty <sirspeshkitty+github@gmail.com>
+   Date:   Thu Nov 19 15:30:41 2020 +0000
+   
+       Fish for issue with Stardew Aquarium
+   

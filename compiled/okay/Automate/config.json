@@ -9,7 +9,8 @@
   ],
   "ModCompatibility": {
     "AutoGrabberMod": true,
-    "BetterJunimos": true
+    "BetterJunimos": true,
+    "WarnForMissingBridgeMod": true
   },
   "MachineOverrides": {
     "ShippingBin": {

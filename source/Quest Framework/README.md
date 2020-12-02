@@ -35,7 +35,7 @@ Quest Framework is compatible with Stardew Valley 1.4+ on Linux/Mac/Windows, bot
 
 You can create content packs which adds your custom quests. Options for added quests by this way are limited. For more advanced stuffs with quests use advanced api.
 
-To create JSON content pack see [Content Pack API guide](docs/content-pack-guide.md).
+To create JSON content pack see [Content Pack API guide](docs/content-pack-guide.md).Content packs also supports [i18n translations](docs/translations.md).
 
 ### Advanced API
 
@@ -50,6 +50,9 @@ See [Developer notes](docs/developer-notes.md)
 ## Contributors & Special Thanks
 
 - [PurrplingCat](https://www.nexusmods.com/users/68185132) (Quest Framework mod author)
+- [Itsbenter](https://www.nexusmods.com/stardewvalley/users/41011220) (Occasionally contributor)
+- [Mortimer](https://www.nexusmods.com/stardewvalley/users/68848663) (Portuguese translation)
+- [Kaya](https://www.nexusmods.com/stardewvalley/users/48693548) (Korean translation)
 - [Kdau](https://www.nexusmods.com/stardewvalley/users/80928528) (Special thanks for help with creating this mod)
 
 ## Links

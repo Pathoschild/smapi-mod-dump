@@ -184,45 +184,45 @@ namespace AccessibilityForBlind.Menus
                 return;
             }
 
-            switch (button)
+            if (Inputs.IsMenuDeleteButton(button))
             {
-                case SButton.Delete:
-                    if (current != null && current != backButton)
+                if (current != null && current != backButton)
+                {
+                    (stardewMenu as LoadGameMenu).deleteConfirmationScreen = true;
+                    ModEntry.GetHelper().Reflection.GetField<int>((stardewMenu as LoadGameMenu), "selectedForDelete").SetValue(itemIdx);
+                    string name = (menuSlots[itemIdx] as LoadGameMenu.SaveFileSlot).Farmer.Name;
+                    TextToSpeech.Speak("Press enter to confirm to delete " + name + " save file, press escape to cancel");
+                }
+            }
+            else if (Inputs.IsMenuEscapeButton(button))
+            {
+                if (!TextToSpeech.Speaking() && (stardewMenu as LoadGameMenu).deleteConfirmationScreen)
+                {
+                    (stardewMenu as LoadGameMenu).deleteConfirmationScreen = false;
+                    ModEntry.GetHelper().Reflection.GetField<int>((stardewMenu as LoadGameMenu), "selectedForDelete").SetValue(-1);
+                    TextToSpeech.Speak("canceled deleting");
+                }
+            }
+            else if (Inputs.IsTTSInfoButton(button) || Inputs.IsTTSStopButton(button) || Inputs.IsTTSRepeatButton(button))
+            {
+                base.ButtonPressed(button);
+            }
+            else
+            {
+                if (!(stardewMenu as LoadGameMenu).deleteConfirmationScreen)
+                    base.ButtonPressed(button);
+                else
+                {
+                    if (Inputs.IsMenuActivateButton(button))
                     {
-                        (stardewMenu as LoadGameMenu).deleteConfirmationScreen = true;
-                        ModEntry.GetHelper().Reflection.GetField<int>((stardewMenu as LoadGameMenu), "selectedForDelete").SetValue(itemIdx);
-                        string name = (menuSlots[itemIdx] as LoadGameMenu.SaveFileSlot).Farmer.Name;
-                        TextToSpeech.Speak("Press enter to confirm to delete "+name+" save file, press escape to cancel");
+                        TextToSpeech.Speak("deleting save file");
+                        confirmDeleteButton.Activate();
+                        while (ModEntry.GetHelper().Reflection.GetField<int>((stardewMenu as LoadGameMenu), "currentItemIndex").GetValue() > 0)
+                            ModEntry.GetHelper().Reflection.GetMethod((stardewMenu as LoadGameMenu), "upArrowPressed").Invoke();
+                        reset = true;
+                        TextToSpeech.Speak("finished deleting");
                     }
-                    break;
-                case SButton.F1:
-                case SButton.F5:
-                case SButton.Escape:
-                    if (!TextToSpeech.Speaking() && (stardewMenu as LoadGameMenu).deleteConfirmationScreen)
-                    {
-                        (stardewMenu as LoadGameMenu).deleteConfirmationScreen = false;
-                        ModEntry.GetHelper().Reflection.GetField<int>((stardewMenu as LoadGameMenu), "selectedForDelete").SetValue(-1);
-                        TextToSpeech.Speak("canceled deleting");
-                    }
-                    else
-                        base.ButtonPressed(button);
-                    break;
-                default:
-                    if (!(stardewMenu as LoadGameMenu).deleteConfirmationScreen)
-                        base.ButtonPressed(button);
-                    else
-                    {
-                        if (button == SButton.Enter)
-                        {
-                            TextToSpeech.Speak("deleting save file");
-                            confirmDeleteButton.Activate();
-                            while (ModEntry.GetHelper().Reflection.GetField<int>((stardewMenu as LoadGameMenu), "currentItemIndex").GetValue() > 0)
-                                ModEntry.GetHelper().Reflection.GetMethod((stardewMenu as LoadGameMenu), "upArrowPressed").Invoke();
-                            reset = true;
-                            TextToSpeech.Speak("finished deleting");
-                        }
-                    }
-                    break;
+                }
             }
 
         }

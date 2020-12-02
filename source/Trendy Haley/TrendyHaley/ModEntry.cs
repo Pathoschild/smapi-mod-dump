@@ -127,16 +127,34 @@ namespace TrendyHaley {
             if (config_.SaveGame[saveGameName].ColorIsFading) {
                 // The color gets brighter day by day so at season's end the color multiplier is white.
                 Color baseColor = config_.SaveGame[saveGameName].HairColor;
-                Color fadedColor
+
+                // The following calculations are simple enough to be done
+                // even if we don't need their results, getting the conditions right
+                // would make things unnecessarily complicated.
+
+                // Needed for color blend and option SpouseLookAlike.
+                Color colorFadedColor
                     = new Color((byte) (baseColor.R + (255 - baseColor.R) * (float) (Game1.dayOfMonth - 1) / 27.0f),
                                 (byte) (baseColor.G + (255 - baseColor.G) * (float) (Game1.dayOfMonth - 1) / 27.0f),
                                 (byte) (baseColor.B + (255 - baseColor.B) * (float) (Game1.dayOfMonth - 1) / 27.0f));
+
+                // Needed for alpha blend: Base color with modified alpha channel.
+                // Note that the renderer expects premultiplied alpha.
+                Color alphaFadedColor
+                    = Color.FromNonPremultiplied(baseColor.R,
+                                                 baseColor.G,
+                                                 baseColor.B,
+                                                 (int) (255.0f * (float) (28 - Game1.dayOfMonth) / 27.0f));
+
+                Color fadedColor = config_.SaveGame[saveGameName].AlphaBlend
+                                 ? alphaFadedColor
+                                 : colorFadedColor;
 
                 SetHairColor(fadedColor);
                 this.Monitor.Log($"Haley's hair color faded: {fadedColor}");
 
                 if (config_.SaveGame[saveGameName].SpouseLookAlike && isFarmerMarriedToHaley) {
-                    Game1.player.changeHairColor(fadedColor);
+                    Game1.player.changeHairColor(colorFadedColor);
                     this.Monitor.Log($"{Game1.player.Name} has the same hair color as Haley");
                 }
             }

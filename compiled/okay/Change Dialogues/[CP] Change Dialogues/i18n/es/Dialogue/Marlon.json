@@ -1,5 +1,13 @@
 {
     "Changes": [
-		
+	{
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Fields": {
+			"Marlon": {
+				9: ""
+			}
+		}
+	}
 	]
 }

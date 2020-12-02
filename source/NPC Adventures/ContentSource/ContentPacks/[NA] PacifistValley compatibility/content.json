@@ -1,0 +1,102 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/PurrplingMod
+**
+*************************************************/
+
+{
+  "Format": "1.4",
+  "Changes": [
+    {
+      "LogName": "Change spirituals to lovers (fighters)",
+      "Target": "Data/CompanionDispositions",
+      "FromFile": "assets/companions.json"
+    },
+    {
+      "LogName": "Common lovestuff",
+      "Target": "Data/Weapons",
+      "FromFile": "assets/not-weapons.json"
+    },
+    {
+      "LogName": "Abigail's love stuff",
+      "Target": "Data/Weapons/Abigail",
+      "FromFile": "assets/abigail-lovestuff.json"
+    },
+    {
+      "LogName": "Alex's love stuff",
+      "Target": "Data/Weapons/Alex",
+      "FromFile": "assets/alex-lovestuff.json"
+    },
+    {
+      "LogName": "Elliott's love stuff",
+      "Target": "Data/Weapons/Elliott",
+      "FromFile": "assets/elliott-lovestuff.json"
+    },
+    {
+      "LogName": "Haley's love stuff",
+      "Target": "Data/Weapons/Haley",
+      "FromFile": "assets/haley-lovestuff.json"
+    },
+    {
+      "LogName": "Harvey's love stuff",
+      "Target": "Data/Weapons/Harvey",
+      "FromFile": "assets/harvey-lovestuff.json"
+    },
+    {
+      "LogName": "Leah's love stuff",
+      "Target": "Data/Weapons/Leah",
+      "FromFile": "assets/leah-lovestuff.json"
+    },
+    {
+      "LogName": "Maru's love stuff",
+      "Target": "Data/Weapons/Maru",
+      "FromFile": "assets/maru-lovestuff.json"
+    },
+    {
+      "LogName": "Penny's love stuff",
+      "Target": "Data/Weapons/Penny",
+      "FromFile": "assets/penny-lovestuff.json"
+    },
+    {
+      "LogName": "Sam's love stuff",
+      "Target": "Data/Weapons/Sam",
+      "FromFile": "assets/sam-lovestuff.json"
+    },
+    {
+      "LogName": "Sebastian's love stuff",
+      "Target": "Data/Weapons/Sebastian",
+      "FromFile": "assets/sebastian-lovestuff.json"
+    },
+    {
+      "LogName": "Shane's love stuff",
+      "Target": "Data/Weapons/Shane",
+      "FromFile": "assets/shane-lovestuff.json"
+    },
+    {
+      "LogName": "Kiss frames",
+      "Target": "Data/FightFrames",
+      "FromFile": "assets/kissframes.json"
+    },
+    {
+      "LogName": "Speech bubbles",
+      "Target": "Strings/SpeechBubbles",
+      "FromFile": "assets/bubbles.json",
+      "Action": "Replace",
+      "Priority": -1000
+    },
+    {
+      "LogName": "Common strings",
+      "Target": "Strings/Strings",
+      "FromFile": "assets/strings.json"
+    },
+    {
+      "LogName": "Buffs description",
+      "Target": "Strings/Buffs",
+      "FromFile": "assets/buff-desc.json"
+    }
+  ]
+}

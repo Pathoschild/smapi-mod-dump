@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Utilities;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.ChestsAnywhere.Framework;
 using Pathoschild.Stardew.ChestsAnywhere.Framework.Containers;
@@ -220,17 +221,16 @@ namespace Pathoschild.Stardew.ChestsAnywhere
                 }
             }
 
-            return (
-                from chest in Search()
-                orderby chest.Order ?? int.MaxValue, chest.DisplayName
-                where
+            return Search()
+                .OrderBy(chest => chest.Order ?? int.MaxValue)
+                .ThenBy(chest => chest.DisplayName, HumanSortComparer.DefaultIgnoreCase)
+                .Where(chest =>
                     chest.Container.IsSameAs(alwaysIncludeContainer)
                     || (
                         (!excludeHidden || !chest.IsIgnored)
                         && range.IsInRange(chest.Location)
                     )
-                select chest
-            );
+                );
         }
 
         /// <summary>Get the player chest on the specified tile (if any).</summary>

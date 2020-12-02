@@ -35,41 +35,34 @@ namespace ContentPatcher.Framework.Migrations
             };
         }
 
-        /// <summary>Migrate a content pack.</summary>
-        /// <param name="content">The content pack data to migrate.</param>
-        /// <param name="error">An error message which indicates why migration failed.</param>
-        /// <returns>Returns whether the content pack was successfully migrated.</returns>
+        /// <inheritdoc />
         public override bool TryMigrate(ContentConfig content, out string error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
-            if (content.Changes?.Any() == true)
+            foreach (PatchConfig patch in content.Changes)
             {
-                foreach (PatchConfig patch in content.Changes)
+                // 1.17 adds 'Update' field
+                if (patch.Update != null)
                 {
-                    // 1.17 adds 'Update' field
-                    if (patch.Update != null)
-                    {
-                        error = this.GetNounPhraseError($"specifying the patch update rate ('{nameof(patch.Update)}' field)");
-                        return false;
-                    }
+                    error = this.GetNounPhraseError($"specifying the patch update rate ('{nameof(patch.Update)}' field)");
+                    return false;
+                }
 
-                    // pre-1.17 patches which used {{IsOutdoors}}/{{LocationName}} would update on location change
-                    // (Technically that applies to all references, but parsing tokens at this
-                    // point is difficult and a review of existing content packs shows that they
-                    // only used these as condition keys.)
-                    if (patch.When?.Any() == true)
-                    {
-                        bool hasLocationToken = patch.When.Keys.Any(key =>
-                            !string.IsNullOrWhiteSpace(key)
-                            && (key.ContainsIgnoreCase("IsOutdoors") || key.ContainsIgnoreCase("LocationName")) // quick check with false positives
-                            && Regex.IsMatch(key, @"\b(?:IsOutdoors|LocationName)\b") // slower but reliable check
-                        );
+                // pre-1.17 patches which used {{IsOutdoors}}/{{LocationName}} would update on location change
+                // (Technically that applies to all references, but parsing tokens at this
+                // point is difficult and a review of existing content packs shows that they
+                // only used these as condition keys.)
+                {
+                    bool hasLocationToken = patch.When.Keys.Any(key =>
+                        !string.IsNullOrWhiteSpace(key)
+                        && (key.ContainsIgnoreCase("IsOutdoors") || key.ContainsIgnoreCase("LocationName")) // quick check with false positives
+                        && Regex.IsMatch(key, @"\b(?:IsOutdoors|LocationName)\b") // slower but reliable check
+                    );
 
-                        if (hasLocationToken)
-                            patch.Update = UpdateRate.OnLocationChange.ToString();
-                    }
+                    if (hasLocationToken)
+                        patch.Update = UpdateRate.OnLocationChange.ToString();
                 }
             }
 

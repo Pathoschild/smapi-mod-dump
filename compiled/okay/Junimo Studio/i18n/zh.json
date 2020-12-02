@@ -1,0 +1,36 @@
+﻿{
+  "Keyboard_Name": "键盘块",
+  "Keyboard_Description": "有琴键的乐器。",
+  "Keyboard_Labels_0": "钢琴",
+
+  "Guitar_Name": "吉他块",
+  "Guitar_Description": "一种弹拨乐器，通常有六根弦。",
+  "Guitar_Labels_0": "木吉他（尼龙弦）",
+  "Guitar_Labels_1": "原声贝斯",
+
+  "Drumkit_Name": "套鼓块",
+  "Drumkit_Description": "一套鼓，打击乐器。",
+  "Drumkit_Labels_0": "套鼓1",
+
+  "String_Name": "弦乐器块",
+  "String_Description": "一种靠弦振动而发声的乐器。",
+  "String_Labels_0": "小提琴",
+
+  "Wind_Name": "管乐器块",
+  "Wind_Description": "多为吹奏乐器，包括木管类和铜管类。",
+  "Wind_Labels_0": "长笛",
+
+  "Custom_Name": "自定义方块",
+  "Custom_Description": "你可以自由地添加wav格式的音频并播放。",
+
+  "Menu_BPM": "曲速",
+  "Menu_Duration": "时值",
+  "Menu_Velocity": "力度",
+  "Menu_Volume": "响度",
+  "Menu_StopAtNext": "停止",
+  "Menu_IsDelayed": "延迟",
+  "Menu_DelayTime": "延时",
+  "Out_Of_Range_Hint": "超出音高范围，恢复成默认音高：C5",
+
+  "Rendered_PlayerTempo": "祝尼魔音乐： \n {{addedSpeed}} 速度"
+}

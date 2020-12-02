@@ -16,7 +16,7 @@ namespace DeluxeHats.Hats
     public static class CatEars
     {
         public const string Name = "Cat Ears";
-        public const string Description = "When you are hit, meow and gain Skittish Kitty buff:\n+3 Speed";
+        public const string Description = "When you are hit, meow and gain Skittish Kitty Buff:\n+3 Speed\n+2 Attack";
         public static int PlayerOldHP = 0;
         public static void Activate()
         {
@@ -40,14 +40,14 @@ namespace DeluxeHats.Hats
                         magneticRadius: 0,
                         speed: 3,
                         defense: 0,
-                        attack: 0,
+                        attack: 2,
                         minutesDuration: 1,
                         source: "Deluxe Hats",
                         displaySource: Name)
                         {
-                            which = 6284,
+                            which = HatService.BuffId,
                         };
-                        catBuff.description = "Skittish Kitty\n+3 Speed";
+                        catBuff.description = "Skittish Kitty\n+3 Speed\n+2 Attack";
                         Game1.buffsDisplay.addOtherBuff(catBuff);
                     }
                     catBuff.millisecondsDuration = 1500;

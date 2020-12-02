@@ -8,6 +8,16 @@ for queries and analysis.**
 
 # Upgrade your content pack
 
+## Update to version 0.15.0 beta
+
+### Custom weapons
+
+From version 0.15.0 you can define custom weapon for each combat level. This change deprecates weapon definition part in `Data/CompanionDispositions`. If you defined custom weapon for your custom companion in dispositions content asset, then create new asset file in your content pack, define custom weapon for combat level 0 and move weapon name or id here. In `content.json` in your pack folder define patch for `Data/Weapons/<YourCompanionName>`. Don't forget remove weapon deifinition from dispositions content asset. More details you can read in [Weapons docs](weapons.md).
+
+### Upgrade legacy content packs to new format
+
+If you are an author of legacy content pack (format version `1.2` and older), please upgrade your content pack to latest format version `1.3`. Otherwise your content pack will be not loaded if player doesn't allow it in configuration file. 
+
 ## Update to version 0.13.0 beta
 
 ### Translations moved to `locale` folder

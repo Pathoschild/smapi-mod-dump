@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Speshkitty/FishInfo
+**
+*************************************************/
+
+{
+  //Thanks to wally232 on Nexus for this translation!
+  "location.prefix": "출현 지역",
+  "location.none": "Unknown - Mines/Event?",
+  "location.crabpot": "통발 : {{location}}",
+  "location.ocean": "해변",
+  "location.freshwater": "민물",
+  "location.forestriver": "숲의 강",
+  "location.forestpond": "숲의 호수",
+  "location.bugland": "버그 랜드",
+  "location.witchswamp": "마녀의 늪",
+  "season.prefix": "계절",
+  "season.all": "모든 계절",
+  "season.none": "찾을 수 없음",
+  "time.prefix": "시간",
+  "time.allday": "하루 종일",
+  "time.midday": "정오",
+  "time.midnight": "자정",
+  "weather.prefix": "날씨",
+  "weather.sun": "맑은 날",
+  "weather.rain": "비오는 날",
+  "weather.none": "찾을 수 없음"
+}

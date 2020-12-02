@@ -58,6 +58,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <inheritdoc />
         public bool RequiresPositionalInput { get; private set; }
 
+        /// <inheritdoc />
+        public bool BypassesContextValidation { get; protected set; } = false;
+
 
         /*********
         ** Public methods
@@ -215,6 +218,12 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             this.AssertInput(input);
             yield break;
+        }
+
+        /// <inheritdoc />
+        public virtual string NormalizeValue(string value)
+        {
+            return value;
         }
 
 

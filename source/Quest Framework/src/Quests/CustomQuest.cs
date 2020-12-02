@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using QuestFramework.Framework.Stats;
 using QuestFramework.Framework.Store;
 using QuestFramework.Hooks;
+using QuestFramework.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using System;
@@ -31,6 +32,8 @@ namespace QuestFramework.Quests
         internal int id = -1;
 
         public event EventHandler<IQuestInfo> Completed;
+        public event EventHandler<IQuestInfo> Accepted;
+        public event EventHandler<IQuestInfo> Removed;
 
         public string OwnedByModUid { get; internal set; }
         public QuestType BaseType { get; set; } = QuestType.Basic;
@@ -76,10 +79,22 @@ namespace QuestFramework.Quests
             return this.DaysLeft > 0;
         }
 
-        internal void Complete(IQuestInfo questInfo)
+        internal void ConfirmComplete(IQuestInfo questInfo)
         {
             StatsManager.AddCompletedQuest(this.GetFullName());
             this.Completed?.Invoke(this, questInfo);
+        }
+
+        internal void ConfirmAccept(IQuestInfo questInfo)
+        {
+            StatsManager.AddAcceptedQuest(this.GetFullName());
+            this.Accepted?.Invoke(this, questInfo);
+        }
+
+        internal void ConfirmRemove(IQuestInfo questInfo)
+        {
+            StatsManager.AddRemovedQuest(this.GetFullName());
+            this.Removed?.Invoke(this, questInfo);
         }
 
         public int CustomTypeId 

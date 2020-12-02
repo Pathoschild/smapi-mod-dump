@@ -1,0 +1,18 @@
+{
+  "Name": "LewdDew Valley",
+  "Author": "shurmash",
+  "Version": "0.0.1",
+  "Description": "New life with love.",
+  "UniqueID": "shurmash.LewdDew_Valley",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+},
+"Dependencies": [
+{
+"UniqueID": "shurmash.LewdDew_Valley_helper",
+"IsRequired": true
+}
+]
+}

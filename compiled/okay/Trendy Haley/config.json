@@ -1,8 +1,9 @@
 {
   "SaveGame": {
-    "Pookachu_201827481": {
-      "HairColor": "140, 66, 64, 255",
+    "Abigail_261605590": {
+      "HairColor": "47, 83, 21, 255",
       "ColorIsFading": true,
+      "AlphaBlend": false,
       "SpouseLookAlike": false
     }
   }

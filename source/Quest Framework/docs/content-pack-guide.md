@@ -6,12 +6,6 @@ for queries and analysis.**
 
 ----
 
-
-
-
-
-
-
 ← [README](../README.md)
 
 # Content pack guide
@@ -46,7 +40,7 @@ Create your `manifest.json` file which must contains these minimum contents:
   "UpdateKeys": [],
   "ContentPackFor": {
     "UniqueID": "PurrplingCat.QuestFramework", // Quest Framework unique id must be here
-    "MinimumVersion": "1.0.0-alpha" // optional
+    "MinimumVersion": "1.1.0" // optional
   }
 }
 ```
@@ -89,6 +83,7 @@ Cancelable        |           | (boolean) Can player cancel this quest?
 ReactionText      |           | (string) NPC's reaction text when you complete this quest (only for quests which interacts with NPCs)
 Trigger           |           | (string) Completion trigger (see quest types for more info) Supports [JSON Assets](#json-assets-support)
 Hooks             |           | (Hook) Quest hooks (see hooks for more info)
+ConversationTopic |           | (ConversationTopic) Add or remove conversation topic (see conversation topic for more info)
 
 #### Example
 
@@ -268,6 +263,53 @@ Location        | Game location
 Position        | Standing tile position (X, Y). Example `13 10`
 Area            | Specified standing area (X, Y, Width, Height) Example: `2038 5573 326 245`
 TouchAction     | Touch action property value must be this defined value for trig hook's action.
+
+## Conversation topic
+
+[Conversation topic] (https://stardewvalleywiki.com/Modding:Dialogue#Conversation_topics) can make the character speak of certain dialogue when the specific conversation topic is active. Please refer to the conversation topic explanation on the wiki before using this feature. With this field you can make NPCs give dialogue when a quest is accepted, cancelled, and or completed. The respective dialogue itself must be added using [Content patcher] (https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editdata)
+
+## Options 
+
+Valid field              | Example value              | Description
+------------------------ | -------------------------- | -----------
+AddWhenQuestAccepted     | `AbigailLookingForward 2 CarolineConcerned 5`  | The keys of the conversation topic to be added and its duration after a quest is accepted. In the example after the quest is accepted it will activate two conversation topics: AbigailLookingForward for 2 days and CarolineConcerned for 5 days.
+AddWhenQuestRemoved      | `AbigailDisappointed 3`    | The keys of the conversation topic to be added and its duration after a quest is removed. In the example after the quest is removed it will activate a conversation topic: AbigailDisappointed for 3 days.
+AddWhenQuestCompleted    | `AbigailSeenEatingRock 10 AbigailHappier 2` | The keys of the conversation topic to be added and its duration after a quest is completed. In the example after the quest is completed it will activate two conversation topics: AbigailDisappointed for 3 days and AbigailHappier 2.
+RemoveWhenQuestAccepted | `AbigailLookingForward `    | The key of the conversation topic to be removed. The conversation topic will end before the set when the quest is accepted. In the example after the quest is acappted it will remove the conversation topics: AbigailLookingForward.
+RemoveWhenQuestRemoved   | `AbigailLookingForward`    | The key of the conversation topic to be removed. The conversation topic will end before the set when the quest is removed.
+RemoveWhenQuestCompleted | `AbigailLookingForward`    | The key of the conversation topic to be removed. The conversation topic will end before the set when the quest is completed.
+
+#### Example
+
+```js
+{
+  "Format": "1.0",
+  "Quests": [
+    {
+      "Name": "abigail_amethyst", // No id needed, will be automatically generated
+      "Type": "ItemDelivery", // Vanilla quest type
+      "Title": "The purple lunch",
+      "Description": "Abigail are very hungry. She wants to eat something special from mines.",
+      "Objective": "Bring amethyst to Abigail",
+      "DaysLeft": 5, // If player don't complete this quest until 5 days, this quest will be removed from quest log automatically without completion
+      "Reward": 300, // 300g
+      "Cancelable": true, // This quest can be cancelled by player
+      "Trigger": "Abigail 66", // Bring amethyst to Abby
+      "ReactionText": "Oh, it's looks delicious. I am really hungry.",
+      "ConversationTopic": {
+        "AddWhenQuestAccepted": "add_abigail_amethyst_accepted 7", 
+		"AddWhenQuestRemoved": "add_abigail_amethyst_removed 7",
+        "AddWhenQuestCompleted": "add_abigail_amethyst_completed 7",
+        "RemoveWhenQuestAccepted":"remove_abigail_amethyst_accepted", 
+		"RemoveWhenQuestRemoved": "remove_abigail_amethyst_removed",
+        "RemoveWhenQuestCompleted": "remove_abigail_amethyst_completed",
+        // Use only what is needed. The field explain itself.
+        // Any string is fine as long as it is unique. You'll need to add the same key to respective character dialogue using content patcher.
+	  }
+    }
+  ]
+}
+```
 
 ## Common global conditions
 

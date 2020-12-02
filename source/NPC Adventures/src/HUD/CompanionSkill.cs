@@ -45,6 +45,9 @@ namespace NpcAdventure.HUD
                 case "scared":
                     this.icon = new Rectangle(372, 362, 8, 9);
                     break;
+                case "spiritual":
+                    this.icon = new Rectangle(172, 514, 9, 10);
+                    break;
             }
         }
 

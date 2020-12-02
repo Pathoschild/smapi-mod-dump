@@ -1,0 +1,209 @@
+{
+  "BalancedMode": false,
+  "FastTravelPoints": [
+    {
+      "MapName": "Calico Desert",
+      "GameLocationIndex": 28,
+      "SpawnPosition": "19, 41",
+      "RerouteName": "Desert"
+    },
+    {
+      "MapName": "{0} Farm",
+      "GameLocationIndex": 1,
+      "SpawnPosition": "64, 18",
+      "RerouteName": "Farm"
+    },
+    {
+      "MapName": "Backwoods",
+      "GameLocationIndex": 49,
+      "SpawnPosition": "22, 14",
+      "RerouteName": null
+    },
+    {
+      "MapName": "Bus Stop",
+      "GameLocationIndex": 24,
+      "SpawnPosition": "14, 15",
+      "RerouteName": null
+    },
+    {
+      "MapName": "Wizard's Tower",
+      "GameLocationIndex": 21,
+      "SpawnPosition": "5, 28",
+      "RerouteName": "Forest"
+    },
+    {
+      "MapName": "Marnie's Ranch",
+      "GameLocationIndex": 22,
+      "SpawnPosition": "88, 18",
+      "RerouteName": "Forest"
+    },
+    {
+      "MapName": "Leah's Cottage",
+      "GameLocationIndex": 23,
+      "SpawnPosition": "104, 34",
+      "RerouteName": "Forest"
+    },
+    {
+      "MapName": "Town Square",
+      "GameLocationIndex": 3,
+      "SpawnPosition": "29, 67",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Harvey's Clinic",
+      "GameLocationIndex": 12,
+      "SpawnPosition": "36, 58",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Pierre's General Store",
+      "GameLocationIndex": 9,
+      "SpawnPosition": "44, 58",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Blacksmith",
+      "GameLocationIndex": 7,
+      "SpawnPosition": "94, 83",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Saloon",
+      "GameLocationIndex": 10,
+      "SpawnPosition": "45, 72",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Mayor's Manor",
+      "GameLocationIndex": 8,
+      "SpawnPosition": "58, 88",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Stardew Valley Museum & Library",
+      "GameLocationIndex": 31,
+      "SpawnPosition": "101, 91",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Elliott's Cabin",
+      "GameLocationIndex": 15,
+      "SpawnPosition": "49, 13",
+      "RerouteName": "Beach"
+    },
+    {
+      "MapName": "Sewer Pipe",
+      "GameLocationIndex": 26,
+      "SpawnPosition": "97, 100",
+      "RerouteName": "Forest"
+    },
+    {
+      "MapName": "Sewer",
+      "GameLocationIndex": 26,
+      "SpawnPosition": "34, 98",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Graveyard",
+      "GameLocationIndex": 18,
+      "SpawnPosition": "47, 89",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Trailer",
+      "GameLocationIndex": 11,
+      "SpawnPosition": "72, 71",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Carpenter's Shop",
+      "GameLocationIndex": 30,
+      "SpawnPosition": "12, 28",
+      "RerouteName": "Mountain"
+    },
+    {
+      "MapName": "Tent",
+      "GameLocationIndex": 19,
+      "SpawnPosition": "26, 9",
+      "RerouteName": "Mountain"
+    },
+    {
+      "MapName": "Mines",
+      "GameLocationIndex": 25,
+      "SpawnPosition": "54, 7",
+      "RerouteName": "Mountain"
+    },
+    {
+      "MapName": "Adventurer's Guild",
+      "GameLocationIndex": 33,
+      "SpawnPosition": "76, 11",
+      "RerouteName": "Mountain"
+    },
+    {
+      "MapName": "Quarry",
+      "GameLocationIndex": 39,
+      "SpawnPosition": "104, 26",
+      "RerouteName": "Mountain"
+    },
+    {
+      "MapName": "JojaMart",
+      "GameLocationIndex": 46,
+      "SpawnPosition": "95, 53",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Fish Shop",
+      "GameLocationIndex": 40,
+      "SpawnPosition": "30, 35",
+      "RerouteName": "Beach"
+    },
+    {
+      "MapName": "Spa",
+      "GameLocationIndex": 41,
+      "SpawnPosition": "10, 58",
+      "RerouteName": "Railroad"
+    },
+    {
+      "MapName": "Secret Woods",
+      "GameLocationIndex": 34,
+      "SpawnPosition": "56, 15",
+      "RerouteName": "Woods"
+    },
+    {
+      "MapName": "Community Center",
+      "GameLocationIndex": 45,
+      "SpawnPosition": "53, 23",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Railroad",
+      "GameLocationIndex": 35,
+      "SpawnPosition": "29, 47",
+      "RerouteName": "Railroad"
+    },
+    {
+      "MapName": "1 River Road",
+      "GameLocationIndex": 35,
+      "SpawnPosition": "57, 65",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "2 Willow Lane",
+      "GameLocationIndex": 35,
+      "SpawnPosition": "20, 91",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "1 Willow Lane",
+      "GameLocationIndex": 35,
+      "SpawnPosition": "10, 87",
+      "RerouteName": "Town"
+    },
+    {
+      "MapName": "Ruined House",
+      "GameLocationIndex": 35,
+      "SpawnPosition": "34, 98",
+      "RerouteName": "Forest"
+    }
+  ]
+}

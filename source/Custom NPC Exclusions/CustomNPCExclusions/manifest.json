@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Esca-MMC/CustomNPCExclusions
+**
+*************************************************/
+
+{
+  "Name": "Custom NPC Exclusions",
+  "Author": "Esca",
+  "Version": "1.0.0",
+  "Description": "Allows modders to exclude custom NPCs from quests and events via Content Patcher.",
+  "UniqueID": "Esca.CustomNPCExclusions",
+  "EntryDll": "CustomNPCExclusions.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": [ "Nexus:7089, Github:Esca-MMC/CustomNPCExclusions, ModDrop:847997" ]
+}

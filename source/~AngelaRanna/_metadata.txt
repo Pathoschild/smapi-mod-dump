@@ -8,9 +8,9 @@ mods:
    What Does The Fox Say
 
 latest commit:
-   commit 70c87309281b488d4bdf4201971a402dad2c7b7c
+   commit d67b058352600fae5c3c7aa28e3128bc03b5d5ba
    Author: SIMON\Zach <whitewolf9024@hotmail.com>
-   Date:   Thu Oct 22 21:48:25 2020 -0700
+   Date:   Fri Nov 6 14:40:49 2020 -0700
    
-       Added the Lead Rod Fixer mod. Fixed getting stuck in early game with the AG door closed until you killed 10 slimes before you got your new weapons. Added support for the 3 SVE weapons.
+       -Fixed DogToAmaterasu version number.
    

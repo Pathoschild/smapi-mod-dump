@@ -51,7 +51,7 @@ namespace NpcAdventure.Patches
                     return true;
                 }
 
-                bool canKiss = (bool)TPMC.Instance?.CustomKissing.CanKissNpc(who, __instance) && (bool)TPMC.Instance?.CustomKissing.HasRequiredFriendshipToKiss(who, __instance);
+                bool canKiss = (bool)Compat.Instance?.CustomKissing.CanKissNpc(who, __instance) && (bool)Compat.Instance?.CustomKissing.HasRequiredFriendshipToKiss(who, __instance);
 
                 // Save has been kissed flag to state for use in postfix (we want to know previous has kissed state before kiss)
                 // Mark as kissed when we can't kiss them (cover angry emote when try to kiss - vanilla and custom kissing mod)

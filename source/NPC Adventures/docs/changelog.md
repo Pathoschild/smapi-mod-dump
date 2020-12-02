@@ -8,9 +8,21 @@ for queries and analysis.**
 
 # Full changelog
 
-## Upcoming version
+## 0.15.0 "Tasty Kimchi"
 
-- Fixed log name for lockedDoorWarp error case
+Released 26th November 2020
+
+- Fixed log name for `lockedDoorWarp` error case
+- Added mod-accessible api NpcAdventureModApi (thx aedenthorn aka iLoveLucy)
+- Loading of legacy content packs (format 1.2 and older) is now DISABLED by default. (User can enable support for legacy packs in config file)
+- Added support for companion events (for future NA cutscenes and for use in content packs)
+- Added support for custom weapons for all combat levels (supports JSON assets weapons)
+- Redefined swords for (almost) each companion
+- Tuned fighting behavior
+- Added new companion skill: spiritual - sends love&peace to monsters and they don't attack on farmer
+- Reassigned companion skill: Emily is now spiritual and do not fight with monsters
+- Added compatibility with PacifistValley mod (needs install compatibility content pack too)
+- Added priority field for patches in content packs (format 1.4)
 
 ## 0.14.1 "Major Minority"
 

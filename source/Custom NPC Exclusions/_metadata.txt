@@ -1,0 +1,13 @@
+url:
+   https://github.com/Esca-MMC/CustomNPCExclusions.git
+
+mods:
+   Custom NPC Exclusions
+
+latest commit:
+   commit fe3e8f517f1a7053b8814834faf8885f97670388
+   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
+   Date:   Sun Nov 1 17:41:25 2020 -0600
+   
+       Add code highlighting to readme
+   

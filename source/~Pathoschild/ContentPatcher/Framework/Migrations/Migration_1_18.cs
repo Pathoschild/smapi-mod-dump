@@ -34,25 +34,19 @@ namespace ContentPatcher.Framework.Migrations
             };
         }
 
-        /// <summary>Migrate a content pack.</summary>
-        /// <param name="content">The content pack data to migrate.</param>
-        /// <param name="error">An error message which indicates why migration failed.</param>
-        /// <returns>Returns whether the content pack was successfully migrated.</returns>
+        /// <inheritdoc />
         public override bool TryMigrate(ContentConfig content, out string error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
-            if (content.Changes?.Any() == true)
+            foreach (PatchConfig patch in content.Changes)
             {
-                foreach (PatchConfig patch in content.Changes)
+                // 1.18 adds 'TextOperations' field
+                if (patch.TextOperations.Any())
                 {
-                    // 1.18 adds 'TextOperations' field
-                    if (patch.TextOperations != null)
-                    {
-                        error = this.GetNounPhraseError($"using {nameof(patch.TextOperations)}");
-                        return false;
-                    }
+                    error = this.GetNounPhraseError($"using {nameof(patch.TextOperations)}");
+                    return false;
                 }
             }
 

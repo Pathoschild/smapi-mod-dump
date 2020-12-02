@@ -8,7 +8,16 @@ for queries and analysis.**
 
 # Changelog
 
-## Upcoming version
+## 1.1.1
+
+### Common changes
+
+- Fixed vanilla SDV quest type id resolving (this fixes problem with item harvest quest completion)
+- Fixed item harvest quest current objective
+- Added command for list raw content from `Data\Quests` (command `quests_list raw`)
+- Added korean translation (thx KAYA)
+
+## 1.1.0
 
 ### Common changes
 
@@ -24,10 +33,14 @@ for queries and analysis.**
 ## For Content Pack modders
 
 - Added support for custom properties for `CustomQuest` from content packs
+- Added option of ConversationTopic to add or remove conversation topic when quest accepted, removed, or completed. (thx itsbenter)
+- Added support for i18n translations (provided by SMAPI)
 
 ## For SMAPI modders
 
 - Added new APIs for `CustomQuest` and statefull `CustomQuest<TState>`
+- Added `GetQuestByName` to Managed mod API.
+- Added `GetQuestById` as replacement for `GetbyId` (old API method is deprecated and will be removed in one of next versions)
 
 ## 1.0.0
 

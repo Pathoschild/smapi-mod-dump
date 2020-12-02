@@ -11,7 +11,7 @@
 {
   "Name": "Winter Grass",
   "Author": "Cat",
-  "Version": "2.0.1",
+  "Version": "2.0.2",
   "Description": "Grass will stay around in winter.",
   "UniqueID": "cat.wintergrass",
   "MinimumApiVersion": "2.9.0",

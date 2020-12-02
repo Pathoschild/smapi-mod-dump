@@ -29,7 +29,7 @@ namespace NpcAdventure.Compatibility
 
         public CustomKissingModProxy(IModRegistry registry, IMonitor monitor)
         {
-            IModInfo modInfo = registry.Get("Digus.CustomKissingMod");
+            IModInfo modInfo = registry.Get(ModUids.KISSINGMOD_UID);
 
             if (modInfo != null && modInfo.Manifest.Version.IsOlderThan(MINIMUM_VERSION))
             {

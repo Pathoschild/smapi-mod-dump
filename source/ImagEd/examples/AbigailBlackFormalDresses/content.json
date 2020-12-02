@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mus-candidus/ImagEd
+**
+*************************************************/
+
+{
+  "Format": "1.18",
+  "Changes": [
+       {
+          "Action": "EditImage",
+          "Target": "Characters/Abigail",
+          "FromFile": "{{Candidus42.ImagEd/Recolor: Candidus42.AbigailBlackFormalDresses, Characters/Abigail, gamecontent, assets/Characters/Abigail_formaldresses_mask.png, #303030}}",
+          "PatchMode": "Overlay"
+       },
+    ]
+}

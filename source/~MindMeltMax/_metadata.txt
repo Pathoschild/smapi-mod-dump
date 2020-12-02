@@ -1,0 +1,15 @@
+url:
+   https://github.com/MindMeltMax/Stardew-Valley-Mods.git
+
+mods:
+   Joja's Hauntings
+   Piggy Bank Mod
+   Single-Player Regen
+
+latest commit:
+   commit f58e54177a96a1104e51fdd3afe2ecebd80f6f65
+   Author: Jeremy Korteland <99058701@mydavinci.nl>
+   Date:   Tue Nov 24 12:54:23 2020 +0100
+   
+       Updated piggy bank mod
+   

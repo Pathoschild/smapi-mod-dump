@@ -18,6 +18,28 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 -->
 ## Upcoming release
+* Added [query expressions](docs/author-tokens-guide.md#query-expressions).
+* Added support for updating patches [on in-game clock change](docs/author-guide.md#update-rate).
+* Added support for multiple `FromFile` values.
+* Added map overlay options for `"Action": "EditMap"` via the new `PatchMode` field.
+* Added `Time` token.
+* Fixed error when using a comma within a token in the `Target` field.
+* Custom mod tokens can now normalize raw values before they're compared with the token.
+
+## 1.18.6
+Released 21 November 2020.
+
+* Fixed validation for `Include` patches in 1.18.5.
+
+## 1.18.5
+Released 21 November 2020.
+
+* Improved error-handling for some content packs with invalid formats.
+* Fixed `EditData` patches with multiple targets sometimes applied incorrectly to some targets.
+
+## 1.18.4
+Released 04 November 2020.
+
 * Fixed tokens which use input arguments failing to update silently in rare cases.
 * Fixed 'collection was modified' error in some cases when patching a data model asset.
 

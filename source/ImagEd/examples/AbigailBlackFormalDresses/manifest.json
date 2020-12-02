@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mus-candidus/ImagEd
+**
+*************************************************/
+
+{
+   "Name": "AbigailBlackFormalDresses",
+   "Author": "Candidus42",
+   "Version": "1.0.0",
+   "Description": "Black wedding and flower dance dresses for Abigail",
+   "UniqueID": "Candidus42.AbigailBlackFormalDresses",
+   "UpdateKeys": [],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.18.3"
+   },
+   "Dependencies": [
+      {
+         "UniqueID": "Candidus42.ImagEd",
+         "IsRequired": "true"
+      },
+      // Patch dependency: If we have AbigailHairDye we must apply it before.
+      {
+         "UniqueID": "Candidus42.AbigailHairDye",
+         "IsRequired": "false"
+      },
+   ]
+}

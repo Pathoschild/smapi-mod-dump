@@ -8,9 +8,13 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -28,7 +32,6 @@ namespace BitwiseJonMods
         public override void Entry(IModHelper helper)
         {
             BitwiseJonMods.Common.Utility.InitLogging(this.Monitor);
-
             _config = helper.ReadConfig<ModConfig>();
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
         }
@@ -39,6 +42,7 @@ namespace BitwiseJonMods
 
             BitwiseJonMods.Common.Utility.Log(string.Format("Config BuildUsesResources={0}", _config.BuildUsesResources));
             BitwiseJonMods.Common.Utility.Log(string.Format("Config ToggleInstantBuildMenuButton={0}", _config.ToggleInstantBuildMenuButton));
+            BitwiseJonMods.Common.Utility.Log(string.Format("Config PerformInstantHouseUpgradeButton={0}", _config.PerformInstantHouseUpgradeButton));
             BitwiseJonMods.Common.Utility.Log(string.Format("Tractor Mod Found={0}", _tractorModFound));
 
             Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
@@ -46,28 +50,175 @@ namespace BitwiseJonMods
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (e.Button == _config.ToggleInstantBuildMenuButton && Game1.currentLocation is Farm)
+            if ((e.Button == _config.ToggleInstantBuildMenuButton || e.Button == _config.PerformInstantHouseUpgradeButton) && Game1.currentLocation is Farm)
             {
-                if (Context.IsPlayerFree && Game1.activeClickableMenu == null)
+                if (e.Button == _config.ToggleInstantBuildMenuButton)
                 {
-                    if (_tractorModFound)
-                    {
-                        //Get tractor blueprint from carpenter menu
-                        var carpenterMenu = new CarpenterMenu();
-                        Game1.activeClickableMenu = (IClickableMenu)carpenterMenu;
-                        Game1.delayedActions.Add(new DelayedAction(100, new DelayedAction.delayedBehavior(this.getTractorBlueprintFromCarpenterMenu)));
-                    }
-                    else
-                    {
-                        activateInstantBuildMenu();
-                    }
+                    BitwiseJonMods.Common.Utility.Log(string.Format("User clicked Instant Build key={0}", _config.ToggleInstantBuildMenuButton));
+                    HandleInstantBuildButtonClick();
                 }
-                else if (Game1.activeClickableMenu is InstantBuildMenu)
+                else if (e.Button == _config.PerformInstantHouseUpgradeButton)
                 {
-                    Game1.displayFarmer = true;
-                    ((InstantBuildMenu)Game1.activeClickableMenu).exitThisMenu();
+                    BitwiseJonMods.Common.Utility.Log(string.Format("User clicked Instant Upgrade key={0}", _config.PerformInstantHouseUpgradeButton));
+                    HandleInstantUpgradeButtonClick();
+                }
+
+            }
+        }
+
+        private void HandleInstantBuildButtonClick()
+        {
+            if (Context.IsPlayerFree && Game1.activeClickableMenu == null)
+            {
+                if (_tractorModFound)
+                {
+                    //Get tractor blueprint from carpenter menu
+                    var carpenterMenu = new CarpenterMenu();
+                    Game1.activeClickableMenu = (IClickableMenu)carpenterMenu;
+                    Game1.delayedActions.Add(new DelayedAction(100, new DelayedAction.delayedBehavior(this.getTractorBlueprintFromCarpenterMenu)));
+                }
+                else
+                {
+                    activateInstantBuildMenu();
                 }
             }
+            else if (Game1.activeClickableMenu is InstantBuildMenu)
+            {
+                Game1.displayFarmer = true;
+                ((InstantBuildMenu)Game1.activeClickableMenu).exitThisMenu();
+            }
+        }
+
+        private void HandleInstantUpgradeButtonClick()
+        {
+            if (Context.IsPlayerFree && Game1.activeClickableMenu == null)
+            {
+                string msg = "";
+
+                //These string replacements probably won't work in some languages due to the comma separator, but at least the rest of the message
+                //  will be translated.  I will also look for the period separator just in case.
+                switch ((int)((NetFieldBase<int, NetInt>)Game1.player.houseUpgradeLevel))
+                {
+                    case 0:
+                        msg = Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse1"));
+                        if (!_config.BuildUsesResources) msg = msg.Replace("10,000", "0").Replace("10.000", "0").Replace("450", "0");
+                        this.createQuestionDialogue(msg);
+                        break;
+                    case 1:
+                        msg = Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse2"));
+                        if (!_config.BuildUsesResources) msg = msg.Replace("50,000", "0").Replace("50.000", "0").Replace("150", "0");
+                        this.createQuestionDialogue(msg);
+                        break;
+                    case 2:
+                        msg = Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse3"));
+                        if (!_config.BuildUsesResources) msg = msg.Replace("100,000", "0").Replace("100.000", "0");
+                        this.createQuestionDialogue(msg);
+                        break;
+                }
+            }
+        }
+
+        private void createQuestionDialogue(string question)
+        {
+            Game1.currentLocation.createQuestionDialogue(question, Game1.currentLocation.createYesNoResponses(), (GameLocation.afterQuestionBehavior)((f, answer) =>
+            {
+                if (answer == "Yes")
+                {
+                    BitwiseJonMods.Common.Utility.Log(string.Format("User agreed to house upgrade from level {0} to level {1}.", Game1.player.houseUpgradeLevel.Value, Game1.player.houseUpgradeLevel.Value + 1));
+                    houseUpgradeAccept();
+                }
+            }), (NPC)Game1.getCharacterFromName("Robin", true));
+        }
+
+        private Response[] createYesNoResponses()
+        {
+            return new Response[2]
+            {
+                new Response("Yes", Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_Yes")),
+                new Response("No", Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No"))
+            };
+        }
+        
+        private void houseUpgradeAccept()
+        {
+            if (!_config.BuildUsesResources)
+            {
+                BitwiseJonMods.Common.Utility.Log("BuildUsesResources=false so completing house upgrade at no cost.");
+                CompleteHouseUpgrade();
+                return;
+            }
+
+            //See StardewValley.Locations.1GameLocation.houseUpgradeAccept()
+            BitwiseJonMods.Common.Utility.Log("BuildUsesResources=true so checking if player has the resources to complete upgrade.");
+            switch ((int)((NetFieldBase<int, NetInt>)Game1.player.houseUpgradeLevel))
+            {
+                case 0:
+                    if (Game1.player.Money >= 10000 && Game1.player.hasItemInInventory(388, 450, 0))
+                    {
+                        Game1.player.Money -= 10000;
+                        Game1.player.removeItemsFromInventory(388, 450);
+                        CompleteHouseUpgrade();
+                        break;
+                    }
+                    if (Game1.player.Money < 10000)
+                    {
+                        Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\UI:NotEnoughMoney3"));
+                        break;
+                    }
+                    Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_NotEnoughWood1"));
+                    break;
+                case 1:
+                    if (Game1.player.Money >= 50000 && Game1.player.hasItemInInventory(709, 150, 0))
+                    {
+                        Game1.player.Money -= 50000;
+                        Game1.player.removeItemsFromInventory(709, 150);
+                        CompleteHouseUpgrade();
+                        break;
+                    }
+                    if (Game1.player.Money < 50000)
+                    {
+                        Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\UI:NotEnoughMoney3"));
+                        break;
+                    }
+                    Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_NotEnoughWood2"));
+                    break;
+                case 2:
+                    if (Game1.player.Money >= 100000)
+                    {
+                        Game1.player.Money -= 100000;
+                        CompleteHouseUpgrade();
+                        break;
+                    }
+                    if (Game1.player.Money >= 100000)
+                        break;
+                    Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\UI:NotEnoughMoney3"));
+                    break;
+            }
+        }
+
+        private void CompleteHouseUpgrade()
+        {
+            BitwiseJonMods.Common.Utility.Log("Performing instant house upgrade!");
+
+            Game1.playSound("achievement");
+            var homeOfFarmer = Utility.getHomeOfFarmer(Game1.player);
+            homeOfFarmer.moveObjectsForHouseUpgrade((int)((NetFieldBase<int, NetInt>)Game1.player.houseUpgradeLevel) + 1);
+
+            Game1.player.daysUntilHouseUpgrade.Value = -1;
+            ++Game1.player.houseUpgradeLevel.Value;
+            homeOfFarmer.setMapForUpgradeLevel((int)((NetFieldBase<int, NetInt>)Game1.player.houseUpgradeLevel));
+
+            //Cabins automatically change their appearance for all players, but the main house texture has to be changed manually.
+            if (!(homeOfFarmer is Cabin))
+            {
+                //Use reflection to update house texture in otherwise private variable of Farm class.
+                var houseSource = Helper.Reflection.GetField<NetRectangle>(Game1.getFarm(), "houseSource");
+                var rect = new Microsoft.Xna.Framework.Rectangle(0, 144 * ((int)((NetFieldBase<int, NetInt>)Game1.MasterPlayer.houseUpgradeLevel) == 3 ? 2 : (int)((NetFieldBase<int, NetInt>)Game1.MasterPlayer.houseUpgradeLevel)), 160, 144);
+                houseSource.GetValue().Value = rect;
+            }
+
+            Game1.stats.checkForBuildingUpgradeAchievements();
+            BitwiseJonMods.Common.Utility.Log($"Upgrade complete! New upgrade level: {Game1.player.houseUpgradeLevel.Value}");
         }
 
         private void activateInstantBuildMenu(BluePrint tractorBlueprint = null)

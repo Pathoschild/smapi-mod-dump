@@ -3,6 +3,7 @@
 	{
 		"Action": "EditData",
 		"Target": "Data/Events/ElliottHouse",
+		"When": { "HasMod:mardrest.ChangeDialogues": false },
 		"Entries": {
 			
 		}

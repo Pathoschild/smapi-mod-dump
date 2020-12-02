@@ -11,12 +11,14 @@
 {
   "Name": "Mass Production",
   "Author": "Jacque Pott",
-  "Version": "1.0",
+  "Version": "1.3",
   "Description": "Allows for producing goods at greater scale.",
   "UniqueID": "JacquePott.MassProduction",
   "EntryDll": "MassProduction.dll",
   "MinimumApiVersion": "3.7.4",
-  "UpdateKeys": [],
+  "UpdateKeys": [
+    "Nexus:7021"
+  ],
   "Dependencies": [
     {
       "UniqueID": "spacechase0.JsonAssets"
@@ -24,9 +26,12 @@
     {
       "UniqueID": "Digus.ProducerFrameworkMod"
     },
-	{
-	  "UniqueID": "DIGUS.MailFrameworkMod"
-	},
+    {
+      "UniqueID": "DIGUS.MailFrameworkMod"
+    },
+    {
+      "UniqueID": "Digus.CustomProducerMod"
+    },
     {
       "UniqueID": "Pathoschild.Automate",
       "IsRequired": false

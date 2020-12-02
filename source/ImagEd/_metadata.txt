@@ -1,0 +1,13 @@
+url:
+   https://github.com/mus-candidus/ImagEd.git
+
+mods:
+   ImagEd
+
+latest commit:
+   commit 623b912342c8b1387f4b7e45472c79d38fd76971
+   Author: Candidus <candidus@xmail.net>
+   Date:   Sat Nov 28 15:35:48 2020 +0100
+   
+       Add another example that provides black flower dance and wedding dresses for Abigail.
+   

@@ -5,9 +5,9 @@ mods:
    NPC Adventures
 
 latest commit:
-   commit 34f8639410c01dac1fed16e91a141e2a0d362097
+   commit a7b024b0dfb4070b3fc39c3f996099c3c6cbdb67
    Author: PurrplingCat <git@purrplingcat.com>
-   Date:   Tue Aug 4 08:31:19 2020 +0200
+   Date:   Thu Nov 26 18:21:29 2020 +0100
    
-       Fixed log name for lockDoorWarp
+       Release version 0.15.0 'Tasty Kimchi'
    

@@ -1,0 +1,21 @@
+{
+  // Thanks to Jinkros (steam) for providing these translations.
+
+  // New reminder page
+  "new-reminder.title": "Nuevo recordatorio",
+  "new-reminder.reminder-message": "Mensaje del recordatorio",
+  "new-reminder.reminder-time": "Hora del recordatorio",
+  "new-reminder.instruction": "Elige la hora, minutos y periodo del día",
+  "new-reminder.invalid-time": "La hora introducida no es válida",
+  
+  // Display reminder page
+  "display-reminder.title": "Mostras recordatorio",
+  "display-reminder.zero-reminders": "Aún no hay recordatorios fijados",
+  
+  // general strings
+  "date.year": "Año",
+  "date.season.summer": "Verano",
+  "date.season.spring": "Primavera",
+  "date.season.fall": "Otoño",
+  "date.season.winter": "Invierno"
+}

@@ -40,13 +40,13 @@ namespace NpcAdventure.Loader.ContentPacks.Provider
 
         private Dictionary<TKey, TValue> ResolveDataContents<TKey, TValue>(string subPath)
         {
-            switch (subPath)
+            /*switch (subPath)
             {
                 case "CompanionDispositions":
                     if (this.Managed.Contents.Companions != null)
                         return AsDictionary<TKey, TValue>(this.Managed.Contents.Companions);
                     break;
-            }
+            }*/
 
             return null;
         }

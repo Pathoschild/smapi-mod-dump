@@ -7,6 +7,10 @@ for queries and analysis.**
 ----
 
 # Release notes
+## 1.1.0
+* Upgrade your house/cabin instantly from your farm (with or without requiring resources) to add the kitchen, nursery, and cellar!
+* Updated to support SMAPI 3.75 and Stardew Valley v1.45
+
 ## 1.0.7
 * Updated to support SMAPI 3.0 and Stardew Valley v1.4x
 

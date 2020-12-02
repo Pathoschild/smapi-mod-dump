@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7089
+IDs: Esca.CustomNPCExclusions
+update keys: Nexus:7089, GitHub:Esca-MMC/CustomNPCExclusions

@@ -5,9 +5,9 @@ mods:
    Fast Travel
 
 latest commit:
-   commit a831e68f8cfb7d0b2b7137243417e5f491b5c02e
-   Author: Mckenon <DeathGameDev@gmail.com>
-   Date:   Wed Jun 5 19:19:41 2019 -0600
+   commit 24297ef8c206e9d5cdd941a92585d2a93f569d6b
+   Author: Mckenon <MckenonDev@gmail.com>
+   Date:   Thu Nov 12 23:27:26 2020 -0600
    
-       Update readme.md
+       Code cleanup, require visit to the mines before fast travel in balanced mode
    

@@ -11,13 +11,17 @@
 {
    "Name": "Angel's weapon rebalance - Data",
    "Author": "AngelaRanna",
-   "Version": "1.1.0",
+   "Version": "1.2.0",
    "Description": "Rebalances weapons to make all of them desirable - Data",
    "UniqueID": "AngelaRanna.WeaponBalanceData",
    "MinimumApiVersion": "2.8.2",
    "Dependencies": [
        {
            "UniqueID": "FlashShifter.JA.SVE",
+           "IsRequired": false
+       },
+       {
+           "UniqueID": "FlashShifter.StardewValleyExpandedCP",
            "IsRequired": false
        },
        {

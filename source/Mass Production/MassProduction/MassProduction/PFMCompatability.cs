@@ -50,47 +50,23 @@ namespace MassProduction
         }
 
         /// <summary>
-        /// Check if an input has the required stack for the producer rule and machine settings.
+        /// Check if the input and fuels are of the required quantities for the producer rule and machine settings.
         /// Adapted from https://github.com/Digus/StardewValleyMods/blob/master/ProducerFrameworkMod/ProducerRuleController.cs
         /// </summary>
         /// <param name="producerRule">the producer rule to check.</param>
         /// <param name="settings">Mass production machine settings to check.</param>
-        /// <param name="input">The input to check.</param>
-        public static void ValidateIfInputStackLessThanRequired(ProducerRule producerRule, MPMSettings settings, SObject input)
+        /// <param name="inputs">The inputs to check.</param>
+        /// <param name="who">The farmer placing an item in the machine.</param>
+        public static void ValidateIfInputsLessThanRequired(ProducerRule producerRule, MPMSettings settings, List<InputInfo> inputs, Farmer who)
         {
-            int requiredStack = settings.CalculateInputRequired(producerRule.InputStack);
-            if (input.Stack < requiredStack)
+            foreach (InputInfo input in inputs)
             {
-                throw new RestrictionException(string.Format("{1}x{0} required", requiredStack, input.DisplayName));
-            }
-        }
-
-        /// <summary>
-        /// Check if a farmer has the required fules and stack for a given producer rule.
-        /// Adapted from https://github.com/Digus/StardewValleyMods/blob/master/ProducerFrameworkMod/ProducerRuleController.cs
-        /// </summary>
-        /// <param name="producerRule">the producer tule to check</param>
-        /// <param name="who">The farmer to check</param>
-        public static void ValidateIfAnyFuelStackLessThanRequired(ProducerRule producerRule, MPMSettings settings, Farmer who)
-        {
-            foreach (Tuple<int, int> fuel in producerRule.FuelList)
-            {
-                if (!who.hasItemInInventory(fuel.Item1, fuel.Item2))
+                int quantityRequired = settings.CalculateInputRequired(input);
+                
+                if ((!input.IsFuel && who.ActiveObject.Stack < quantityRequired) ||
+                    (input.IsFuel && !who.hasItemInInventory(input.ID, quantityRequired)))
                 {
-                    int quantityRequired = settings.CalculateInputRequired(fuel.Item2);
-                    string objectName;
-
-                    if (fuel.Item1 >= 0)
-                    {
-                        Dictionary<int, string> objects = ModEntry.Instance.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
-                        objectName = Lexicon.makePlural(GetObjectName(objects[fuel.Item1]), quantityRequired == 1);
-                    }
-                    else
-                    {
-                        objectName = GetCategoryName(fuel.Item1);
-                    }
-
-                    throw new RestrictionException(ModEntry.Instance.Helper.Translation.Get("Message.Requirement.Amount", new { amount = quantityRequired, objectName }));
+                    throw new RestrictionException(string.Format("{1}x{0} required", quantityRequired, input.Name));
                 }
             }
         }
@@ -111,11 +87,17 @@ namespace MassProduction
         /// <param name="noSoundAndAnimation"></param>
         /// <returns>Base output config - no values altered for mass production machine</returns>
         public static OutputConfig ProduceOutput(ProducerRule producerRule, MPMSettings settings, SObject producer, Func<int, int, bool> fuelSearch, Farmer who, GameLocation location,
-            ProducerConfig producerConfig = null, SObject input = null, bool probe = false, bool noSoundAndAnimation = false)
+            ProducerConfig producerConfig = null, SObject input = null, int inputQuantity = 0, bool probe = false, bool noSoundAndAnimation = false,
+            List<InputInfo> inputInfo = null)
         {
             if (who == null)
             {
                 who = Game1.getFarmer((long)producer.owner);
+            }
+
+            if (inputInfo == null)
+            {
+                inputInfo = new List<InputInfo>();
             }
 
             Vector2 tileLocation = producer.TileLocation;
@@ -125,20 +107,17 @@ namespace MassProduction
             if (outputConfig != null)
             {
                 SObject output = producerRule.LookForInputWhenReady == null ? OutputConfigController.CreateOutput(outputConfig, input, random) : new SObject(outputConfig.OutputIndex, 1);
-                output.Stack = settings.CalculateOutputProduced(output.Stack);
+                output.Stack = settings.CalculateOutputProduced(output.Stack, inputInfo.ToArray());
 
-                if (settings.Quality == QualitySetting.KeepInput)
+                if (settings.Quality.HasValue)
                 {
-                    output.Quality = input.Quality;
-                }
-                else if (settings.Quality != QualitySetting.NoStars)
-                {
-                    int newQuality = (int)settings.Quality;
-
-                    // Ignore PFM's keep input quality settings if mass production machine's settings would improve quality
-                    if (!outputConfig.KeepInputQuality || newQuality > output.Quality)
+                    if (settings.Quality == QualitySetting.KeepInput)
                     {
-                        output.Quality = newQuality;
+                        output.Quality = input.Quality;
+                    }
+                    else
+                    {
+                        output.Quality = settings.GetOutputQuality();
                     }
                 }
 
@@ -158,7 +137,7 @@ namespace MassProduction
                     //}
 
                     int minutesUntilReadyBase = outputConfig.MinutesUntilReady ?? producerRule.MinutesUntilReady;
-                    int minutesUntilReady = settings.CalculateTimeRequired(minutesUntilReadyBase);
+                    int minutesUntilReady = settings.CalculateTimeRequired(minutesUntilReadyBase, inputInfo.ToArray());
 
                     producer.minutesUntilReady.Value = minutesUntilReady;
                     if (producerRule.SubtractTimeOfDay)
@@ -184,7 +163,7 @@ namespace MassProduction
                     }
                     producer.initializeLightSource(tileLocation, false);
 
-                    int statsIncrement = settings.CalculateInputRequired(producerRule.InputStack);
+                    int statsIncrement = inputQuantity;
                     producerRule.IncrementStatsOnInput.ForEach(s => StatsController.IncrementStardewStats(s, statsIncrement));
                 }
 
@@ -288,22 +267,20 @@ namespace MassProduction
                     if (producerRule.OutputConfigs.Find(o => o.OutputIndex == producer.heldObject.Value.ParentSheetIndex) is OutputConfig outputConfig)
                     {
                         SObject input = SearchInput(location, producer.tileLocation, inputSearchConfig);
+                        List<InputInfo> inputInfo = InputInfo.ConvertPFMInputs(producerRule, input);
                         SObject output = OutputConfigController.CreateOutput(outputConfig, input, ProducerRuleController.GetRandomForProducing(producer.tileLocation));
 
-                        output.Stack = mpm.Settings.CalculateOutputProduced(output.stack);
+                        output.Stack = mpm.Settings.CalculateOutputProduced(output.stack, inputInfo.ToArray());
 
-                        if (mpm.Settings.Quality == QualitySetting.KeepInput)
+                        if (mpm.Settings.Quality.HasValue)
                         {
-                            output.Quality = input.Quality;
-                        }
-                        else if (mpm.Settings.Quality != QualitySetting.NoStars)
-                        {
-                            int newQuality = (int)mpm.Settings.Quality;
-
-                            // Ignore PFM's keep input quality settings if mass production machine's settings would improve quality
-                            if (!outputConfig.KeepInputQuality || newQuality > output.Quality)
+                            if (mpm.Settings.Quality == QualitySetting.KeepInput)
                             {
-                                output.Quality = newQuality;
+                                output.Quality = input.Quality;
+                            }
+                            else
+                            {
+                                output.Quality = mpm.Settings.GetOutputQuality();
                             }
                         }
 

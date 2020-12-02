@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Runtime.Serialization;
 using Pathoschild.Stardew.Common.Utilities;
 
 namespace ContentPatcher.Framework.ConfigModels
@@ -26,5 +27,17 @@ namespace ContentPatcher.Framework.ConfigModels
 
         /// <summary>The criteria to apply. See readme for valid values.</summary>
         public InvariantDictionary<string> When { get; set; }
+
+
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>Normalize the model after it's deserialized.</summary>
+        /// <param name="context">The deserialization context.</param>
+        [OnDeserialized]
+        public void OnDeserialized(StreamingContext context)
+        {
+            this.When ??= new InvariantDictionary<string>();
+        }
     }
 }

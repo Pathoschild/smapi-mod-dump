@@ -1,0 +1,10 @@
+{
+  "Name": "GameSpeed",
+  "Author": "RandomComputerUser",
+  "Version": "1.0.1",
+  "Description": "Allows the user to change the speed of the game. This does not change the speed of the in-game clock, but instead the real-time speed of the game.",
+  "UniqueID": "RandomComputerUser.GameSpeed",
+  "EntryDll": "GameSpeed.dll",
+  "MinimumApiVersion": "3.7",
+  "UpdateKeys": ["Nexus:7211"]
+}

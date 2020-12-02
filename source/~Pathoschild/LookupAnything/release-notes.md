@@ -10,6 +10,17 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Fixed crop fields shown for forage crops.
+* Fixed item lookups no longer showing iridium or stack prices.
+
+## 1.28.2
+Released 21 November 2020.
+
+* Fixed search UI lookups for certain item types causing an error.
+
+## 1.28.1
+Released 04 November 2020.
+
 * Fixed 'number owned' field sometimes counting two of the same tool/weapon as different items.
 * Fixed lookups on forage items.
 * Fixed search UI lookups on flavored items like wines showing incorrect prices.

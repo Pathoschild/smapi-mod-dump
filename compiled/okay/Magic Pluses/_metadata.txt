@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7096
+IDs: TerryDBS.MagicPluses
+update keys: Nexus:7096

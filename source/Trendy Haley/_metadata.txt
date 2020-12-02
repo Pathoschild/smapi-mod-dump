@@ -5,9 +5,9 @@ mods:
    Trendy Haley
 
 latest commit:
-   commit cd67fb399226cab75fca152a83686caa8d62a5d9
+   commit f1589461a0e4e802e2e01824aeb37831cde6e13d
    Author: Candidus <candidus@xmail.net>
-   Date:   Tue Apr 7 20:34:29 2020 +0200
+   Date:   Sun Nov 22 22:18:03 2020 +0100
    
-       New feature: Haley's spouse can have the same hair color
+       New feature: Alpha blending for Haley's hair texture
    

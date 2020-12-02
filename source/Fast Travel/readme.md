@@ -11,7 +11,7 @@ Fast Travel is a mod which allows the player to fast travel to any location on t
 This allows the player to quickly go from say, the mines, to the blacksmith.
 
 # IMPORTANT!
-This mod is no longer regularly maintained, as I now lack the time to continue development / updates for each SDV version. If you would like to see this mod continue, feel free to make a pull request and message me on discord at Death#1880 :)
+This mod is no longer regularly maintained, as I now lack the time to continue development / updates for each SDV version. If you would like to see this mod continue, feel free to make a pull request and message me on discord at Mckenon#1692 :)
 
 # Download
 The latest version of the mod can be found on **Nexus**:  

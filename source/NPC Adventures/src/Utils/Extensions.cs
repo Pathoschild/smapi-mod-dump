@@ -10,9 +10,12 @@
 
 using Microsoft.Xna.Framework;
 using Netcode;
+using NpcAdventure.Compatibility;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
+using StardewValley.Network;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +72,11 @@ namespace NpcAdventure.Utils
             Character who,
             Farmer leader)
         {
+            if (Compat.IsModLoaded(ModUids.PACIFISTMOD_UID))
+            {
+                return CuddleMonster(location, areaOfEffect, minDamage, maxDamage, false, knockBackModifier, addedPrecision, critChance, critMultiplier, triggerMonsterInvincibleTimer, who, leader);
+            }
+            
             bool flag1 = false;
 
             for (int j = location.characters.Count - 1; j >= 0; j--)
@@ -137,6 +145,7 @@ namespace NpcAdventure.Utils
                         location.monsterDrop(character, boundingBox.Center.X, boundingBox.Center.Y, leader);
                         location.characters.Remove(character);
                         ++Game1.stats.MonstersKilled;
+                        Game1.stats.monsterKilled(character.Name);
                     }
                     else if (number > 0)
                     {
@@ -178,6 +187,104 @@ namespace NpcAdventure.Utils
             }
 
             return flag1;
+        }
+
+        private static bool CuddleMonster(GameLocation location, Rectangle areaOfEffect, int minDamage, int maxDamage, bool isBomb, float knockBackModifier, int addedPrecision, float critChance, float critMultiplier, bool triggerMonsterInvincibleTimer, Character who, Farmer leader)
+        {
+            bool didAnyDamage = false;
+            for (int i = location.characters.Count - 1; i >= 0; i--)
+            {
+                Monster monster;
+                if (i < location.characters.Count && (monster = (location.characters[i] as Monster)) != null && monster.IsMonster && monster.Health > 0 && monster.GetBoundingBox().Intersects(areaOfEffect) && !monster.IsInvisible && !monster.isInvincible())
+                {
+                    didAnyDamage = true;
+                    monster.doEmote(20, true);
+                    if (Game1.currentLocation == location)
+                    {
+                        Rumble.rumble(0.1f + (float)(Game1.random.NextDouble() / 8.0), (float)(200 + Game1.random.Next(-50, 50)));
+                    }
+                    Rectangle monsterBox = monster.GetBoundingBox();
+                    Vector2 trajectory = Helper.GetAwayFromCharacterTrajectory(monsterBox, who);
+                    if (knockBackModifier > 0f)
+                    {
+                        trajectory *= knockBackModifier;
+                    }
+                    else
+                    {
+                        trajectory = new Vector2(monster.xVelocity, monster.yVelocity);
+                    }
+                    if (monster.Slipperiness == -1)
+                    {
+                        trajectory = Vector2.Zero;
+                    }
+                    bool crit = false;
+                    int damageAmount;
+                    if (maxDamage >= 0)
+                    {
+                        damageAmount = Game1.random.Next(minDamage, maxDamage + 1);
+                        if (who != null && Game1.random.NextDouble() < (double)(critChance + (float)leader.LuckLevel * (critChance / 40f)))
+                        {
+                            crit = true;
+                            location.playSound("crit", NetAudio.SoundContext.Default);
+                        }
+                        damageAmount = (crit ? ((int)((float)damageAmount * critMultiplier)) : damageAmount);
+                        damageAmount = Math.Max(1, damageAmount + ((who != null) ? (leader.attack * 3) : 0));
+                        damageAmount = monster.takeDamage(damageAmount, (int)trajectory.X, (int)trajectory.Y, isBomb, (double)addedPrecision / 10.0, leader);
+                        if (damageAmount == -1)
+                        {
+                            location.debris.Add(new Debris("Miss", 1, new Vector2((float)monsterBox.Center.X, (float)monsterBox.Center.Y), Color.LightGray, 1f, 0f));
+                        }
+                        else
+                        {
+                            location.debris.Filter((Debris d) => d.toHover == null || !d.toHover.Equals(monster) || d.nonSpriteChunkColor.Equals(Color.Yellow) || d.timeSinceDoneBouncing <= 900f);
+                            location.debris.Add(new Debris(damageAmount, new Vector2((float)(monsterBox.Center.X + 16), (float)monsterBox.Center.Y), crit ? Color.Yellow : new Color(255, 130, 0), crit ? (1f + (float)damageAmount / 300f) : 1f, monster));
+                        }
+                        if (triggerMonsterInvincibleTimer)
+                        {
+                            monster.setInvincibleCountdown(450 / 2);
+                        }
+                    }
+                    else
+                    {
+                        damageAmount = -2;
+                        monster.setTrajectory(trajectory);
+                        if (monster.Slipperiness > 10)
+                        {
+                            monster.xVelocity /= 2f;
+                            monster.yVelocity /= 2f;
+                        }
+                    }
+                    if (monster.Health <= 0)
+                    {
+                        if (!location.IsFarm)
+                        {
+                            leader.checkForQuestComplete(null, 1, 1, null, monster.Name, 4, -1);
+                        }
+                        if (leader != null && !location.IsFarm && (!(monster is GreenSlime) || (monster as GreenSlime).firstGeneration.Value))
+                        {
+                            if (leader.IsLocalPlayer)
+                            {
+                                ++Game1.stats.MonstersKilled;
+                                Game1.stats.monsterKilled(monster.Name);
+                            }
+                            else if (Game1.IsMasterGame)
+                            {
+                                leader.queueMessage(25, Game1.player, new object[]
+                                {
+                                    monster.Name
+                                });
+                            }
+                        }
+                        location.monsterDrop(monster, monsterBox.Center.X, monsterBox.Center.Y, leader);
+                        Stats stats = Game1.stats;
+                        uint monstersKilled = stats.MonstersKilled;
+                        stats.MonstersKilled = monstersKilled + 1u;
+                        monster.farmerPassesThrough = true;
+                    }
+                }
+            }
+
+            return didAnyDamage;
         }
     }
 }

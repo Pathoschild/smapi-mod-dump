@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
 using Harmony;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -25,8 +27,10 @@ namespace StardewCombatMod
             helper.Events.GameLoop.DayStarted += this.dayStarted;
 
             // Make sure to get the monitor set up for debugging prints
-            CheckEventPostfixPatch.Initialize(this.Monitor);
+            CheckEventPostfixPatch.Initialize(this.Monitor, this.Helper);
             WeaponDoDamagePostfixPatch.Initialize(this.Monitor);
+            //KnockbackMultiplierFixerTranspilerPatch.Initialize(this.Monitor);
+            KnockbackDeRandomizerTranspilerPatch.Initialize(this.Monitor);
 
             var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
 
@@ -39,6 +43,16 @@ namespace StardewCombatMod
             harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Tools.MeleeWeapon), nameof(StardewValley.Tools.MeleeWeapon.DoDamage)),
                 postfix: new HarmonyMethod(typeof(WeaponDoDamagePostfixPatch), nameof(WeaponDoDamagePostfixPatch.doDamage_postfix))
+                );
+            // Patch to remove the extra x4 multiplier on knockback decay for flying and "slippery" foes
+            //harmony.Patch(
+            //    original: AccessTools.Method(typeof(StardewValley.Monsters.Monster), nameof(StardewValley.Monsters.Monster.MovePosition)),
+            //    transpiler: new HarmonyMethod(typeof(KnockbackMultiplierFixerTranspilerPatch), nameof(KnockbackMultiplierFixerTranspilerPatch.movePosition_transpiler))
+            //    );
+            // Patch to remove the randomness from weapon knockback
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Utility), nameof(StardewValley.Utility.getAwayFromPlayerTrajectory)),
+                transpiler: new HarmonyMethod(typeof(KnockbackDeRandomizerTranspilerPatch), nameof(KnockbackDeRandomizerTranspilerPatch.getAwayFromPlayerTrajectory_transpiler))
                 );
         }
 
@@ -56,18 +70,35 @@ namespace StardewCombatMod
     public class CheckEventPostfixPatch
     {
         private static IMonitor Monitor;
+        private static IModHelper Helper;
 
-        public static void Initialize(IMonitor monitor)
+        public static void Initialize(IMonitor monitor, IModHelper helper)
         {
             Monitor = monitor;
+            Helper = helper;
         }
 
         public static void checkForEvents_postfix(GameLocation __instance)
         {
             try
             {
-                // If the player entered the guild, they've seen the mail, this event hasn't played, and the player has enough free inventory to receive the free lewt
-                if (__instance.name == "Mountain" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro") && !Game1.player.eventsSeen.Contains(68940000)
+                // If SVE is loaded
+                if (Helper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP"))
+                {
+                    // If the player entered the guild, they've seen the mail, this event hasn't played, and the player has enough free inventory to receive the free lewt
+                    if (__instance.name == "AdventureGuild" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro")
+                    && !Game1.player.eventsSeen.Contains(68940001) && Game1.player.freeSpotsInInventory() >= 2 && !Game1.eventUp && __instance.currentEvent == null)
+                    {
+                        // Play the Gil event
+                        __instance.startEvent(new StardewValley.Event(Game1.content.LoadString("Data\\Events\\WeaponRebalanceEvents:WeaponRebalanceIntroWeaponsGiftSVE"), 68940001, Game1.player));
+
+                        // Give the player a carving knife and a femur
+                        Game1.player.addItemToInventory(new StardewValley.Tools.MeleeWeapon(16));
+                        Game1.player.addItemToInventory(new StardewValley.Tools.MeleeWeapon(31));
+                    }
+                }
+                // If the player entered the mountains, they've seen the mail, this event hasn't played, and the player has enough free inventory to receive the free lewt
+                else if (__instance.name == "Mountain" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro") && !Game1.player.eventsSeen.Contains(68940000)
                     && Game1.player.freeSpotsInInventory() >= 2 && !Game1.eventUp && __instance.currentEvent == null)
                 {
                     // Play the Gil event
@@ -136,6 +167,100 @@ namespace StardewCombatMod
             // Convert back to a list before returning
             List<Vector2> ret = new List<Vector2>(hset);
             return ret;
+        }
+    }
+
+    public class KnockbackMultiplierFixerTranspilerPatch
+    {
+        private static IMonitor Monitor;
+
+        public static void Initialize(IMonitor monitor)
+        {
+            Monitor = monitor;
+        }
+
+        public static IEnumerable<CodeInstruction> movePosition_transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            int foundKnockbackMultiplier = 0;
+            List<int> instancesToRemove = new List<int>();
+
+            for (int i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Ldarg_0
+                    && codes[i + 1].opcode == OpCodes.Ldarg_0
+                    && codes[i + 2].opcode == OpCodes.Ldfld
+                    && codes[i + 3].opcode == OpCodes.Ldarg_0
+                    && codes[i + 4].opcode == OpCodes.Ldfld
+                    && codes[i + 5].opcode == OpCodes.Ldarg_0
+                    && codes[i + 6].opcode == OpCodes.Call
+                    && codes[i + 7].opcode == OpCodes.Conv_R4
+                    && codes[i + 8].opcode == OpCodes.Div
+                    && codes[i + 9].opcode == OpCodes.Ldc_R4 && (float)(codes[i + 9].operand) == (float)4
+                    && codes[i + 10].opcode == OpCodes.Div
+                    && codes[i + 11].opcode == OpCodes.Sub
+                    && codes[i + 12].opcode == OpCodes.Stfld)
+                {
+                    codes[i + 9].operand = (float)1;
+                    foundKnockbackMultiplier += 1;
+                }
+            }
+
+            LogLevel loglevel = LogLevel.Info;
+            if (foundKnockbackMultiplier != 2) loglevel = LogLevel.Error;
+            Monitor.Log($"Found {foundKnockbackMultiplier.ToString()} instances of knockback multiplier code to replace.", loglevel);
+            return codes.AsEnumerable();
+        }
+    }
+
+    public class KnockbackDeRandomizerTranspilerPatch
+    {
+        private static IMonitor Monitor;
+
+        public static void Initialize(IMonitor monitor)
+        {
+            Monitor = monitor;
+        }
+
+        public static IEnumerable<CodeInstruction> getAwayFromPlayerTrajectory_transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            bool foundKnockbackRandomizer = false;
+
+            // Find the line where it calculates the knockback vector, which includes a couple random calls
+            for (int i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Ldc_I4_S && (sbyte)(codes[i].operand) == 50
+                    && codes[i + 1].opcode == OpCodes.Ldsfld
+                    && codes[i + 2].opcode == OpCodes.Ldc_I4_S && (sbyte)(codes[i + 2].operand) == -20
+                    && codes[i + 3].opcode == OpCodes.Ldc_I4_S && (sbyte)(codes[i + 3].operand) == 20
+                    && codes[i + 4].opcode == OpCodes.Callvirt
+                    && codes[i + 5].opcode == OpCodes.Add
+                    && codes[i + 6].opcode == OpCodes.Conv_R4
+                    && codes[i + 7].opcode == OpCodes.Mul
+                    && codes[i + 8].opcode == OpCodes.Ldloc_0
+                    && codes[i + 9].opcode == OpCodes.Ldloc_1
+                    && codes[i + 10].opcode == OpCodes.Div
+                    && codes[i + 11].opcode == OpCodes.Ldc_I4_S && (sbyte)(codes[i + 11].operand) == 50
+                    && codes[i + 12].opcode == OpCodes.Ldsfld
+                    && codes[i + 13].opcode == OpCodes.Ldc_I4_S && (sbyte)(codes[i + 13].operand) == -20
+                    && codes[i + 14].opcode == OpCodes.Ldc_I4_S && (sbyte)(codes[i + 14].operand) == 20
+                    && codes[i + 15].opcode == OpCodes.Callvirt
+                    && codes[i + 16].opcode == OpCodes.Add)
+                {
+                    // Set the random calls to return a random value between 10 and 10
+                    codes[i + 2].operand = (sbyte)10;
+                    codes[i + 3].operand = (sbyte)10;
+                    codes[i + 13].operand = (sbyte)10;
+                    codes[i + 14].operand = (sbyte)10;
+                    foundKnockbackRandomizer = true;
+                }
+            }
+            
+            // Throw an error if we couldn't find the code to replace
+            if (foundKnockbackRandomizer) Monitor.Log($"Found knockback randomizer code to replace.", LogLevel.Info);
+            else Monitor.Log($"DID NOT FIND knockback randomizer code to replace. This portion of the mod will not work!", LogLevel.Error);
+            return codes.AsEnumerable();
         }
     }
 }

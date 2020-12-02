@@ -459,7 +459,7 @@
               {
                   "{{MINDAMAGE}}": "10",
                   "{{MAXDAMAGE}}": "15",
-                  //"{{KNOCKBACK}}": "1",
+                  "{{KNOCKBACK}}": ".6",
                   //"{{SPEED}}": "0",
                   //"{{DEFENSE}}": "0",
                   //"{{TARGETLVL}}": "-1",
@@ -943,8 +943,9 @@
            "Target": "Data/Events/WeaponRebalanceEvents",
            "Entries":
            {
-               "WeaponRebalanceIntroWeaponsGift": "MarlonsTheme/-100 -100/farmer 6 19 0/changeLocation AdventureGuild/addTemporaryActor Gil 1 1 100 100 1/viewport 13 25/move farmer 0 -6 0/move farmer 1 0 1/move farmer 0 -1 0/move farmer 3 0 1/speak Gil \"There you are, kid. Here, try these on for size and pick what you like.\"/speak Gil \"Swords are great for consistent damage, but daggers are faster and easier to find your foes' weak points.\"/speak Gil \"Hammers are slow, but great at keeping monsters away so you don't have to fight them in the first place.\"/pause 1000/end warpOut"
+               "WeaponRebalanceIntroWeaponsGift": "MarlonsTheme/-100 -100/farmer 6 19 0/changeLocation AdventureGuild/addTemporaryActor Gil 1 1 100 100 1/viewport 13 25/move farmer 0 -6 0/move farmer 1 0 1/move farmer 0 -1 0/move farmer 3 0 1/speak Gil \"There you are, kid. Here, try these on for size and pick what you like.\"/speak Gil \"Swords are great for consistent damage, but daggers are faster and easier to find your foes' weak points.\"/speak Gil \"Hammers are slow, but great at keeping monsters away so you don't have to fight them in the first place.\"/pause 1000/end warpOut",
+               "WeaponRebalanceIntroWeaponsGiftSVE": "MarlonsTheme/-100 -100/farmer 6 19 0/changeLocation AdventureGuild/addTemporaryActor Gil 1 1 100 100 1/viewport 13 25/move farmer 0 -5 0/move farmer 4 0 1/move farmer 0 -2 1/speak Gil \"There you are, kid. Here, try these on for size and pick what you like.\"/speak Gil \"Swords are great for consistent damage, but daggers are faster and easier to find your foes' weak points.\"/speak Gil \"Hammers are slow, but great at keeping monsters away so you don't have to fight them in the first place.\"/pause 1000/end"
            }
-       }
+       },
     ]
 }

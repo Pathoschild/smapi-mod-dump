@@ -15,9 +15,18 @@ II. implement sound design for in-game (collisions, interactable objects)
 
 
 I.
--bug: wilderness farm tts doesn't work
+-fix received item messages
 -implement in-game main menu
+    -> continue
+-implement shop menu
+-implement carpenter menu including blind building placement
 
 II.
 -detect collision type (object or map wall)
-    -> further distinguish between types. how to do this with tiles?
+    -> further distinguish between types.
+    -> more enter info for objects such as crops
+-positional sounds for characters and interactable objects
+    -> warps
+    -> machines
+    -> ...
+    -> test, different sounds

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Speshkitty/SlimeWaterFiller
+**
+*************************************************/
+
+{
+  "Name": "Slime AutoWaterer",
+  "Description": "Adds an item that automatically waters slimes",
+  "Author": "Speshkitty",
+  "EntryDLL": "SlimeWaterFiller.dll",
+  "MinimumApiVersion": "3.1.0",
+  "Version": "1.0.0",
+  "UpdateKeys": [ "Nexus:???" ],
+  "UniqueID": "speshkitty.slimewaterer"
+}

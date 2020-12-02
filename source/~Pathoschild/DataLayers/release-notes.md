@@ -7,8 +7,11 @@ for queries and analysis.**
 ----
 
 # Release notes
-## Upcoming release
+## 1.13
+Released 04 November 2020.
+
 * Added arrow UI to navigate layers.
+* Dropped support for abandoned Cobalt mod.
 
 ## 1.12.3
 Released 15 October 2020.

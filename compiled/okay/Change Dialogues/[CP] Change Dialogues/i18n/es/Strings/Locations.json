@@ -23,6 +23,7 @@
 			"AnimalShop_Marnie_Absent": "Cerrado por hoy.\n\n-{{mardrest.ChangeDialogues/MarnieName}}",
 			"Town_SeedShopSign": "Tienda local {{mardrest.ChangeDialogues/PierreName}}'s\n¡Ahora abrimos de 09:00 a 17:00 los 7 días de la semana!",
 			"Town_PickupTruck": "Tan solo es la parte trasera de la vieja camioneta de reparto de {{mardrest.ChangeDialogues/LewisName}}...",
+			"Town_mgThiefMessage": "Tip{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/KrobusGender}}}} sombrí{{mardrest.ChangeDialogues/Gender:{{mardrest.ChangeDialogues/KrobusGender}}}}: ¡Vaaaya! ¡Me has pillado! ¡Lo siento! ¡Para ti! ¡Para ti! Parecía tan valiosa que no pude resistirme...",
 			"ScienceHouse_Carpenter_CommunityUpgrade1": "¿Cómo dices? ¿Le quieres construir una casa a {{mardrest.ChangeDialogues/PamName}}? ¡Es una gran idea!^Tan solo necesitaré 950 de madera y 500 000 G.",
 			"ManorHouse_LedgerBook_Singleplayer": "Libro mayor de Pueblo Pelícano... Parece que {{mardrest.ChangeDialogues/The:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} usa esto para archivar las finanzas.",
 			"ManorHouse_LedgerBook_SharedWallets_Client": "Libro mayor de Pueblo Pelícano... El dueño de la granja puede pedirle {{mardrest.ChangeDialogues/ToThe:L{{mardrest.ChangeDialogues/LewisGender}}}} {{mardrest.ChangeDialogues/Mayor:L{{mardrest.ChangeDialogues/LewisGender}}}} la separación de fondos de los campesinos.",

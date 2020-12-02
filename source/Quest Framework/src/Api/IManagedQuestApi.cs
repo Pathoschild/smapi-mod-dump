@@ -24,11 +24,27 @@ namespace QuestFramework.Api
         void AcceptQuest(string questName, bool silent = false);
 
         /// <summary>
+        /// DEPRECATED! Resolve game quest id and returns custom quest
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Obsolete("This API is deprecated! Use IManagedQuestApi.GetQuestById instead.")]
+        CustomQuest GetById(int id);
+
+        /// <summary>
         /// Resolve game quest id and returns custom quest
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        CustomQuest GetById(int id);
+        CustomQuest GetQuestById(int id);
+
+        /// <summary>
+        /// Resolve game quest by name and return it's instance
+        /// You can request quest by fullname (with @) or localname (localname returns quest in this mod-managed scope).
+        /// </summary>
+        /// <param name="questName"></param>
+        /// <returns></returns>
+        CustomQuest GetQuestByName(string questName);
 
         /// <summary>
         /// Register custom quest (vanilla or custom type)

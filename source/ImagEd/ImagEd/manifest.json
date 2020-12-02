@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mus-candidus/ImagEd
+**
+*************************************************/
+
+{
+  "Name": "ImagEd",
+  "Author": "Candidus42",
+  "Version": "1.0.0",
+  "Description": "Provides image recoloring for CP",
+  "UniqueID": "Candidus42.ImagEd",
+  "EntryDll": "ImagEd.dll",
+  "MinimumApiVersion": "3.7.3",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.18.3",
+      "IsRequired": true
+    }
+  ],
+  "UpdateKeys": []
+}

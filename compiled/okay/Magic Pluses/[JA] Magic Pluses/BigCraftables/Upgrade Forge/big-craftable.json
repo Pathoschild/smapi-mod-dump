@@ -1,0 +1,36 @@
+{
+	"Name": "Upgrade Forge",
+	"Description": "A place to upgrade your equipment.",
+	"Price": 4000,
+	"ProvidesLight": false,
+	"CanPurchase": true,
+	"PurchaseFrom": "Clint",
+	"NameLocalization":
+	{
+		//"es": "",
+		//"ko": "",
+		//"de": "",
+		//"fr": "",
+		//"hu": "",
+		//"it": "",
+		//"ja": "",
+		//"pt": "",
+		//"ru": "",
+		//"tr": "",
+		//"zh": "",
+	},
+	"DescriptionLocalization":
+	{
+		//"es": "",
+		//"ko": "",
+		//"de": "",
+		//"fr": "",
+		//"hu": "",
+		//"it": "",
+		//"ja": "",
+		//"pt": "",
+		//"ru": "",
+		//"tr": "",
+		//"zh": "",
+	}
+}

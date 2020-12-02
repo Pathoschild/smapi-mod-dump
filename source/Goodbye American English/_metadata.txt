@@ -1,0 +1,14 @@
+url:
+   https://github.com/TheMightyAmondee/GoodbyeAmericanEnglish.git
+
+mods:
+   Goodbye American English
+
+latest commit:
+   commit b6ff2579d41c6086fd70621916a9a69b5aa4709e
+   Merge: b3ba71c 89b6b6b
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Tue Dec 1 11:48:03 2020 +1100
+   
+       Merge branch 'master' of https://github.com/TheMightyAmondee/GoodbyeAmericanEnglish
+   

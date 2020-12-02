@@ -48,6 +48,8 @@ namespace catGifts
         private int MID_CHANCE = -1;
         private int HI_CHANCE = -1;
         private int MAX_WEEKLY_GIFTS = -1;
+        private int CONFIG_X = -1;
+        private int CONFIG_Y = -1;
 
         // TODO: Add custom items, ie. dead bird, dead mouse, other trash, ...
         public override void Entry(IModHelper helper)
@@ -67,6 +69,8 @@ namespace catGifts
             this.MID_CHANCE = config.MID_CHANCE;
             this.HI_CHANCE = config.HI_CHANCE;
             this.MAX_WEEKLY_GIFTS = config.MAX_WEEKLY_GIFTS;
+            this.CONFIG_X = config.SPAWN_X;
+            this.CONFIG_Y = config.SPAWN_Y;
 
             // Safety checks
             if (this.THRESHOLD_1 > this.THRESHOLD_2 || this.THRESHOLD_1 > this.THRESHOLD_3 || this.THRESHOLD_2 > this.THRESHOLD_3 || this.THRESHOLD_1 < 0 || this.THRESHOLD_1 > 1000 ||
@@ -97,7 +101,8 @@ namespace catGifts
             if (this.MAX_WEEKLY_GIFTS < 0 || this.MAX_WEEKLY_GIFTS > 7)
                 this.MAX_WEEKLY_GIFTS = 3;
             if (this.FARMHAND_CHANCE < 0 || this.FARMHAND_CHANCE > 100)
-                this.FARMHAND_CHANCE = 30;
+                this.FARMHAND_CHANCE = 30;       
+                
 
             // Initialize gift lists
             lowGifts = new List<int>();
@@ -327,8 +332,13 @@ namespace catGifts
                             int x = (int)Game1.player.Position.X / 64;
                             int y = (int)Game1.player.Position.Y / 64;
 
-                            // Spawn gift                                                
+                            // Use position from config file, if there is one
+                            if (CONFIG_X > 0)
+                                x = CONFIG_X;
+                            if (CONFIG_Y > 0)
+                                y = CONFIG_Y - 1;
 
+                            // Spawn gift                                                
                             // Remove old gift if there's still one on the floor
                             OverlaidDictionary obs = Game1.getLocationFromName("Farm").Objects;
                             Vector2 spawnPos = new Vector2(x, y + 1);
@@ -341,7 +351,9 @@ namespace catGifts
                                     obs.Remove(obs.Keys.ElementAt(i));                                
                             }
 
-                            Game1.getLocationFromName("Farm").dropObject(new StardewValley.Object(giftId, 1, false, -1, 0), spawnPos * 64f, Game1.viewport, true, (Farmer)null);                        
+                            Game1.getLocationFromName("Farm").dropObject(new StardewValley.Object(giftId, 1, false, -1, 0), spawnPos * 64f, Game1.viewport, true, (Farmer)null);
+
+                            //this.Monitor.Log("Spawned object at " + spawnPos.X + "; " + spawnPos.Y, LogLevel.Debug);
 
                             // Warp cat
                             // Check if field is free
@@ -389,8 +401,6 @@ namespace catGifts
                     HUDMessage msg = new HUDMessage(thePet.Name + " brought you a gift." + dog, 1);
                     Game1.addHUDMessage(msg);
                 }
-                //else
-                    //this.Monitor.Log("Didn't find the pet.");
             }
         }
 
@@ -404,14 +414,22 @@ namespace catGifts
             warpedToday = false;
             GameLocation theFarm = Game1.getLocationFromName("Farm");
 
+            
+
             tile = theFarm.getRandomTile();
             // Find a free tile to generate dirt                
             while (!theFarm.isTileLocationTotallyClearAndPlaceable(tile))
             {
-                //this.Monitor.Log("Searching for a clear tile...");
+                //this.Monitor.Log("Searching for a clear tile...", LogLevel.Debug);
                 tile = theFarm.getRandomTile();
-                //this.Monitor.Log("Checking tile " + tile.X + "/" + tile.Y + " ...");
+                //this.Monitor.Log("Checking tile " + tile.X + "/" + tile.Y + " ...", LogLevel.Debug);
             }
+
+            // If config has a x/y pos, use that instead
+            if (CONFIG_X > 0 && CONFIG_Y > 0)
+                tile = new Vector2(CONFIG_X, CONFIG_Y);
+
+            //this.Monitor.Log("Tile is now " + tile.X + "/" + tile.Y, LogLevel.Debug);
 
             // Look for a cat or a dog
             foreach (NPC pet in Game1.getLocationFromName("Farm").getCharacters())
@@ -668,7 +686,7 @@ namespace catGifts
                     theNPC.Position = warpPos * 64f;             
             }
 
-            this.Monitor.Log("Warped him ... most likely, to "+warpPos.X+"/"+warpPos.Y);
+            //this.Monitor.Log("Warped him ... most likely, to "+warpPos.X+"/"+warpPos.Y, LogLevel.Debug);
             warpedToday = true;
 
             Game1.playSound("dog_bark");

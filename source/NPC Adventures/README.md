@@ -36,12 +36,12 @@ Download this mod on **[Nexusmods](https://nexusmods.com/stardewvalley/mods/4582
 - Next morning you can find a package with your items you saved in companion's backpack
 - Idle animations
 - Speech bubbles while companion fighting
-- [UPDATED] Different personal skills: warrior, fighter, doctor, forager and scared (next comming soon)
+- [UPDATED] Different personal skills: warrior, fighter, doctor, forager, scared and spiritual (next comming soon)
 - Doctor can heal you if your health is under 30% and can try to save your life before death
 - Warrior can use critical defense fists
 - Fighter can level up (syncing level with player) and can upgrade swords
-- [NEW] Forager can occasionally forage and give you foraged items.
-- [NEW] Companion with scared skill can be scared when see a monster.
+- Forager can occasionally forage and give you foraged items.
+- Companion with scared skill can be scared when see a monster.
 - Display personal skills in HUD (with mouseover tooltip)
 - Better critical defense fist fight animation and sound
 - Support for content packs and localizations. You can add custom NPC as companion (see [how to create content pack](https://github.com/purrplingcat/PurrplingMod/wiki/Content-packs) on wiki)
@@ -56,13 +56,16 @@ Download this mod on **[Nexusmods](https://nexusmods.com/stardewvalley/mods/4582
 - Added debug command `npcadventure_eligible` for eligible player to recruit, DEBUG AND ADVENTURE MODE ONLY!-
 - New documentation for players and modders/content creators
 - Support for localizations in content packs
-- Android support (experimental) Thx @MaxPresi
-- Fight through companion without annoying dialogue (experimental, you can enable it in `config.json`)
+- ~~Android support (experimental) Thx @MaxPresi~~ Official android support cancelled!
+- Fight through companion without annoying dialogue
 - Recruit and ask companions with hold a *shift* key (you can enable it in `config.json`)
 - Wife/Husband companion auto-dismisses at midnight (others still at 10pm)
-- [NEW] Quest Framework based
-- [NEW] Visit companion's house any time if you have recruited them
-- [NEW] New cursor for ask to follow action
+- Quest Framework based
+- Visit companion's house any time if you have recruited them
+- New cursor for ask to follow action
+- [NEW] Mod-accessible API
+- [NEW] Spiritual skill for Emily
+- [NEW] Compatibility with Pacifist Valley (requires [Compatibility content pack](ContentSource/ContentPacks/%5BNA%5D%20PacifistValley%20compatibility) for full compatibility)
 
 Next features comming soon...
 
@@ -76,14 +79,14 @@ Next features comming soon...
 | Maru      | Doctor          | +1 Mining, +1 Luck, +1 Speed |
 | Shane     |                 | +3 Farming                   |
 | Leah      | Forager         | +2 Foraging                  |
-| Emily     |                 | +2 Mining                    |
+| Emily     | Spiritual       | +2 Mining                    |
 | Penny     | Forager         | +3 Farming                   |
 | Sam       |                 | +2 Speed                     |
 | Sebastian | Warrior         | +1 Speed, +1 Luck, +1 Attack |
 | Elliott   |                 | +3 Fishing                   |
 | Harvey    | Doctor          | +3 Defense                   |
 
-All listed NPCs can figth with sword! **Married spouse** grants additional buffs **+1 Luck** and **+1 Magnetic** radius
+All listed NPCs except *Emily* can figth with sword! **Married spouse** grants additional buffs **+1 Luck** and **+1 Magnetic** radius
 
 For some NPCs listed above we're missing companion dialogues. You can help us and you can create it. How? Fork this repo and see [Dialogue wiki](https://github.com/purrplingcat/PurrplingMod/wiki/Dialogues). You can get inspiration [from code](https://github.com/purrplingcat/PurrplingMod/tree/master/PurrplingMod/assets/Dialogue). Are you created dialogues? Just send us a PR.
 
@@ -111,8 +114,9 @@ Compatibility with android was revoked and **using this mod on Android SDV is on
 
 ### Compatibility with other mods
 
-- ✅ **Custom Kissing Mod** by *Digus* - 100% compatible (from version 0.9.0 with version 1.2.0 and newer of Custom Kissing Mod.
+- ✅ **Custom Kissing Mod** - 100% compatible (from version 0.9.0 with version 1.2.0 and newer of Custom Kissing Mod.
 - ✅ **Json Assets** - You can use custom weapons in disposition file from JA in your content packs via weapon name (Only swords supported).
+- ✅ **Pacifist Valley** - You can give some love with companions together! For full compatibility you need install [Compatibility content pack](ContentSource/ContentPacks/%5BNA%5D%20PacifistValley%20compatibility). Requires NPC Adventures >= 0.15.0.
 - ⚠️ **Automatic gates** - NOT COMPATIBLE! Companion can stuck in gate when gate is automatic closed after farmer.
 
 ## Official translations
@@ -155,9 +159,8 @@ More features comming soon...
 
 ## Contributors
 
-- [purrplingcat](https://www.nexusmods.com/users/68185132) - main developer and producer
+- [PurrplingCat](https://www.nexusmods.com/users/68185132) - main developer and producer
 - [RememberEmber](https://www.nexusmods.com/users/11961608) - author of dialogues and texts
-- [CallMeFoxie](https://www.nexusmods.com/users/76989063) - Multiplayer support compatibility code
 - [andril11](https://www.nexusmods.com/users/68848663) - Portuguese translation
 - [mardrest](https://www.nexusmods.com/stardewvalley/users/74323508) - Spanish translation
 - 치즈린, KAYA - Korean translation
@@ -166,6 +169,7 @@ More features comming soon...
 
 - Corashirou - dialogues and texts
 - smirkii - dialogues and texts
+- [CallMeFoxie](https://www.nexusmods.com/users/76989063) - Multiplayer support compatibility code (Multiplayer cancelled)
 - [Reikounet](https://www.nexusmods.com/users/70092158) - French translation
 - [wu574932346](https://www.nexusmods.com/users/67777356) - Chinese translation
 

@@ -24,6 +24,7 @@ using NpcAdventure.AI;
 using NpcAdventure.Events;
 using NpcAdventure.Dialogues;
 using NpcAdventure.Utils;
+using StardewValley.Monsters;
 
 namespace NpcAdventure.StateMachine.State
 {
@@ -39,6 +40,12 @@ namespace NpcAdventure.StateMachine.State
         public bool CanPerformAction { get; private set; }
         private BuffManager BuffManager { get; set; }
         public ISpecialModEvents SpecialEvents { get; }
+
+        public AI_StateMachine GetAI()
+        {
+            return this.ai;
+        }
+
         public int TimeToBye { get; private set; }
 
         public RecruitedState(CompanionStateMachine stateMachine, IModEvents events, ISpecialModEvents specialEvents, IMonitor monitor) : base(stateMachine, events, monitor)
@@ -163,7 +170,7 @@ namespace NpcAdventure.StateMachine.State
             // Fix spawn ladder if area is infested and all monsters is killed but NPC following us
             if (this.StateMachine.Companion.currentLocation is MineShaft mines && mines.mustKillAllMonstersToAdvance())
             {
-                var monsters = from c in mines.characters where c.IsMonster select c;
+                var monsters = from c in mines.characters where c.IsMonster && !this.ai.IsLovedMonster(c as Monster) select c;
                 if (monsters.Count() == 0)
                 {
                     Vector2 vector2 = this.StateMachine.Reflection.GetProperty<Vector2>(mines, "tileBeneathLadder").GetValue();

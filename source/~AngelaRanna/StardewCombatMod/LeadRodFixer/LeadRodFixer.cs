@@ -74,7 +74,7 @@ namespace LeadRodFixer
                         {
                             codes[i + 1].operand = (System.Int32)80;
                             foundLevelCode = true;
-                            Monitor.Log($"Found lead rod level code to replace.\n", LogLevel.Info);
+                            Monitor.Log($"Found lead rod level code to replace.", LogLevel.Info);
                         }
                     }
                 }
@@ -128,7 +128,7 @@ namespace LeadRodFixer
                             codes[i].operand = (System.Int32)3;
                             codes[i + 3].operand = (System.Int32)3;
                             foundDropTableCode = true;
-                            Monitor.Log($"Found lead rod drop table code to replace.\n", LogLevel.Info);
+                            Monitor.Log($"Found lead rod drop table code to replace.", LogLevel.Info);
                         }
                     }
                 }

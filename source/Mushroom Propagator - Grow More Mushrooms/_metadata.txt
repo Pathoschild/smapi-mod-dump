@@ -1,5 +1,5 @@
 url:
-   https://github.com/razikh-git/BlueberryMushroomMachine.git
+   https://github.com/b-b-blueberry/BlueberryMushroomMachine.git
 
 mods:
    Mushroom Propagator - Grow More Mushrooms

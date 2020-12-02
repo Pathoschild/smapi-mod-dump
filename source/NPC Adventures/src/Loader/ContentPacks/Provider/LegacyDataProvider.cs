@@ -31,7 +31,7 @@ namespace NpcAdventure.Loader.ContentPacks.Provider
 
         public bool Apply<TKey, TValue>(Dictionary<TKey, TValue> target, string path)
         {
-            var patches = new List<LegacyChanges>();
+            var patches = new List<ManagedPatch>();
             var contentPackName = this.Managed.Pack.Manifest.Name;
 
             patches.AddRange(this.GetPatchesForAsset(path, "Replace"));
@@ -45,38 +45,38 @@ namespace NpcAdventure.Loader.ContentPacks.Provider
 
             foreach (var patch in patches)
             {
-                if (patch.Action == "Replace")
+                if (patch.Change.Action == "Replace")
                 {
                     if (target.Count > 0)
                         this.Monitor.Log(
-                            $"Content pack `{contentPackName}` patch `{patch.LogName}` replaces all contents for `{path}`.", 
+                            $"Content pack `{contentPackName}` patch `{patch.Change.LogName}` replaces all contents for `{path}`.", 
                             this.paranoid ? LogLevel.Alert : LogLevel.Trace);
                     target.Clear(); // Load replaces all content
                 }
 
-                var isLocalized = !string.IsNullOrEmpty(patch.Locale);
-                var patchData = this.Managed.Pack.LoadAsset<Dictionary<TKey, TValue>>(patch.FromFile);
+                var isLocalized = !string.IsNullOrEmpty(patch.Change.Locale);
+                var patchData = patch.LoadData<TKey, TValue>();
                 
                 AssetPatchHelper.ApplyPatch(target, patchData);
-                this.Monitor.Log($"Content pack `{contentPackName}` applied{(isLocalized ? $" `{patch.Locale}` translation" : "")} patch `{patch.LogName}` for `{path}`");
+                this.Monitor.Log($"Content pack `{contentPackName}` applied{(isLocalized ? $" `{patch.Change.Locale}` translation" : "")} patch `{patch.Change.LogName}` for `{path}`");
             }
 
             return true;
         }
 
-        private List<LegacyChanges> GetPatchesForAsset(string path, string action)
+        private List<ManagedPatch> GetPatchesForAsset(string path, string action)
         {
-            return this.Managed.Contents.Changes
-                .Where((p) => p.Action.Equals(action) && p.Target.Equals(path) && !p.Disabled)
-                .Where((p) => string.IsNullOrEmpty(p.Locale))
+            return this.Managed.Patches
+                .Where((p) => p.Change.Action.Equals(action) && p.Change.Target.Equals(path) && !p.Disabled)
+                .Where((p) => string.IsNullOrEmpty(p.Change.Locale))
                 .ToList();
         }
 
-        private List<LegacyChanges> GetTranslationPatches(string path, string locale)
+        private List<ManagedPatch> GetTranslationPatches(string path, string locale)
         {
-            return this.Managed.Contents.Changes
-                .Where((p) => p.Action.Equals("Patch") && p.Target.Equals(path) && !p.Disabled)
-                .Where((p) => !string.IsNullOrEmpty(p.Locale) && p.Locale.ToLower().Equals(locale))
+            return this.Managed.Patches
+                .Where((p) => p.Change.Action.Equals("Patch") && p.Change.Target.Equals(path) && !p.Disabled)
+                .Where((p) => !string.IsNullOrEmpty(p.Change.Locale) && p.Change.Locale.ToLower().Equals(locale))
                 .ToList();
         }
     }

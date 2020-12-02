@@ -78,6 +78,7 @@
     <Compile Include="src\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="i18n\es.json" />
     <None Include="i18n\ko.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />

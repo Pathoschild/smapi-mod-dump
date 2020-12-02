@@ -9,12 +9,12 @@
 *************************************************/
 
 {
-  "Name": "FastTravel",
-  "Author": "@DeathGameDev",
-  "Version": "1.2.0",
+  "Name": "Fast Travel",
+  "Author": "@MckenonDev",
+  "Version": "1.2.2",
   "Description": "Adds the ability to fast travel to any location on the map",
-  "UniqueID": "DeathGameDev.FastTravel",
+  "UniqueID": "Mckenon.FastTravel",
   "EntryDll": "FastTravel.dll",
-  "MinimumApiVersion": "2.6-beta",
+  "MinimumApiVersion": "2.11.2",
   "UpdateKeys": [ "Nexus:1529" ]
 }

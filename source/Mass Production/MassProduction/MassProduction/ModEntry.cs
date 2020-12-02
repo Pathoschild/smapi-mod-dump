@@ -11,10 +11,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Harmony;
 using MassProduction.Automate;
+using MassProduction.VanillaOverrides;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.Automate;
@@ -29,9 +31,15 @@ namespace MassProduction
     public class ModEntry : Mod
     {
         public static Dictionary<string, MPMSettings> MPMSettings { get; private set; }
-        public static Dictionary<string, MassProductionMachineDefinition> MPMDefinitionSet { get; private set; }
+        public static List<MassProductionMachineDefinition> MPMDefinitionSet { get; private set; }
         public static MPMManager MPMManager { get; private set; }
         public static ModEntry Instance;
+
+        static ModEntry()
+        {
+            MPMSettings = new Dictionary<string, MPMSettings>();
+            MPMDefinitionSet = new List<MassProductionMachineDefinition>();
+        }
 
         /// <summary>
         /// Runs when the mod is loaded.
@@ -40,8 +48,6 @@ namespace MassProduction
         public override void Entry(IModHelper helper)
         {
             Instance = this;
-            MPMSettings = new Dictionary<string, MPMSettings>();
-            MPMDefinitionSet = new Dictionary<string, MassProductionMachineDefinition>();
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -69,11 +75,28 @@ namespace MassProduction
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.isPlaceable)),
                 postfix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.isPlaceable_Postfix))
             );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.performDropDownAction)),
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.performDropDownAction_Prefix))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.DayUpdate)),
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.DayUpdate_Prefix))
+            );
 
+            //Automate integration
             if (Helper.ModRegistry.IsLoaded("Pathoschild.Automate"))
             {
                 IAutomateAPI automate = Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");
                 automate.AddFactory(new MPMAutomationFactory());
+
+                Assembly automateAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName.StartsWith("Automate,"));
+                Type automationFactoryType = automateAssembly.GetType("Pathoschild.Stardew.Automate.Framework.AutomationFactory");
+                MethodInfo methodInfo = AccessTools.GetDeclaredMethods(automationFactoryType).Find(m => m.GetParameters().Any(p => p.ParameterType == typeof(SObject)));
+                harmony.Patch(
+                    original: methodInfo,
+                    postfix: new HarmonyMethod(typeof(AutomateOverrides), nameof(AutomateOverrides.GetFor))
+                );
 
                 if (Helper.ModRegistry.IsLoaded("Digus.PFMAutomate"))
                 {
@@ -91,7 +114,6 @@ namespace MassProduction
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs args)
         {
             //Clear out old data if any exists
-            ObjectExtensions.MASS_PRODUCER_RECORD.Clear();
             MPMSettings.Clear();
             MPMDefinitionSet.Clear();
             if (MPMManager != null)
@@ -117,11 +139,12 @@ namespace MassProduction
                         }
                         else
                         {
-                            Monitor.Log($"Loaded content pack {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}.",
-                                LogLevel.Info);
                             MPMSettings.Add(setting.Key, setting);
                         }
                     }
+
+                    Monitor.Log($"Loaded content pack {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}.",
+                                LogLevel.Info);
                 }
                 else
                 {
@@ -134,22 +157,13 @@ namespace MassProduction
 
             //Set up machines to work with PFM
             Monitor.Log("Defining machines...", LogLevel.Info);
-            List<MassProductionMachineDefinition> mpms = MassProductionMachineDefinition.Setup(MPMSettings);
-
-            foreach (MassProductionMachineDefinition mpm in mpms)
-            {
-                MPMDefinitionSet.Add(mpm.ProducerName, mpm);
-            }
+            MPMDefinitionSet = MassProductionMachineDefinition.Setup(MPMSettings);
+            SeedMakerOverride.Initialize();
 
             //Start manager, loading saved data
             MPMManager = new MPMManager();
             
             Helper.Events.GameLoop.Saving += OnSave;
-
-            //TODO
-            //- Saved dictionary doesn't contain any elements when loaded.
-            //  * Move to a new data structure
-            //  * Save to json files like JsonAssets and load those
         }
 
         /// <summary>
@@ -159,7 +173,7 @@ namespace MassProduction
         /// <returns></returns>
         public static IEnumerable<MassProductionMachineDefinition> GetMPMachinesBasedOn(string baseMachineName)
         {
-            return from mpm in MPMDefinitionSet.Values
+            return from mpm in MPMDefinitionSet
                    where mpm.BaseProducerName.Equals(baseMachineName)
                    select mpm;
         }
@@ -172,6 +186,11 @@ namespace MassProduction
         /// <returns></returns>
         public static MassProductionMachineDefinition GetMPMMachine(string baseMachineName, string settingsKey)
         {
+            if (string.IsNullOrEmpty(baseMachineName) || string.IsNullOrEmpty(settingsKey))
+            {
+                return null;
+            }
+
             return (from mpm in GetMPMachinesBasedOn(baseMachineName)
                     where mpm.Settings.Key.Equals(settingsKey)
                     select mpm).FirstOrDefault();
@@ -196,22 +215,21 @@ namespace MassProduction
         {
             if (e.Removed.Count() > 0)
             {
-                Dictionary<string, int> toReturn = new Dictionary<string, int>();
-                Dictionary<string, List<Vector2>> toReturnCoords = new Dictionary<string, List<Vector2>>();
+                Dictionary<string, List<SObject>> toReturn = new Dictionary<string, List<SObject>>();
 
                 foreach (var pair in e.Removed)
                 {
-                    if (!string.IsNullOrEmpty(pair.Value.GetMassProducerKey()))
+                    string returnUpgradeKey = MPMManager.Remove(e.Location, pair.Value);
+
+                    if (!string.IsNullOrEmpty(returnUpgradeKey))
                     {
-                        if (toReturn.ContainsKey(pair.Value.GetMassProducerKey()))
+                        if (toReturn.ContainsKey(returnUpgradeKey))
                         {
-                            toReturn[pair.Value.GetMassProducerKey()]++;
-                            toReturnCoords[pair.Value.GetMassProducerKey()].Add(pair.Key);
+                            toReturn[returnUpgradeKey].Add(pair.Value);
                         }
                         else
                         {
-                            toReturn.Add(pair.Value.GetMassProducerKey(), 1);
-                            toReturnCoords.Add(pair.Value.GetMassProducerKey(), new List<Vector2>() { pair.Key });
+                            toReturn.Add(returnUpgradeKey, new List<SObject>() { pair.Value });
                         }
                     }
                 }
@@ -220,10 +238,9 @@ namespace MassProduction
                 {
                     int itemId = MPMSettings[upgradeKey].UpgradeObjectID;
 
-                    foreach (Vector2 coord in toReturnCoords[upgradeKey])
+                    foreach (SObject o in toReturn[upgradeKey])
                     {
-                        Game1.createItemDebris(new SObject(itemId, toReturn[upgradeKey]), coord * Game1.tileSize, 0, e.Location);
-                        MPMManager.Remove(e.Location.name, coord);
+                        Game1.createItemDebris(new SObject(itemId, 1), o.TileLocation * Game1.tileSize, 0, e.Location);
                     }
                 }
             }

@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <AssemblyName>TrendyHaley</AssemblyName>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <RootNamespace>TrendyHaley</RootNamespace>
     <TargetFramework>net452</TargetFramework>
     <ModZipPath>$(SolutionDir)\releases</ModZipPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0-beta.8" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

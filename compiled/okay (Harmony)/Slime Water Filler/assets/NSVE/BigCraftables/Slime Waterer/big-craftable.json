@@ -1,0 +1,10 @@
+{
+  "Name": "Slime Waterer",
+  "Description": "Keeps your slimes watered",
+  "Price": 25000,
+  "ProvidesLight": false,
+  "CanPurchase": true,
+  "PurchaseFrom": "Marlon",
+  "PurchasePrice": 25000,
+  "PurchaseRequirements": [ "n QiChallengeComplete", "e 690006" ]
+}

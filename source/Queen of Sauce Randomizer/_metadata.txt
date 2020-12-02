@@ -1,0 +1,13 @@
+url:
+   https://github.com/Speshkitty/QueenOfSauceRandomiser.git
+
+mods:
+   Queen of Sauce Randomizer
+
+latest commit:
+   commit 173301129083cfab5e7f22bafff9b551b6993d40
+   Author: Speshkitty <sirspeshkitty+github@gmail.com>
+   Date:   Thu Nov 19 01:32:41 2020 +0000
+   
+       Implemented multiplayer support
+   

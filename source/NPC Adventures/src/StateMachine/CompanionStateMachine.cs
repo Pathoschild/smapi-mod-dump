@@ -107,6 +107,11 @@ namespace NpcAdventure.StateMachine
             this.CurrentStateFlag = stateFlag;
         }
 
+        public ICompanionState GetCurrentStateBehavior()
+        {
+            return this.currentState;
+        }
+
         /// <summary>
         /// Setup state handlers
         /// </summary>

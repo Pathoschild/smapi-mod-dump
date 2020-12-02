@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/4637
 IDs: blueberry.MushroomPropagator, blueberry.BlueberryMushroomMachine
-update keys: Nexus:4637, GitHub:razikh-git/BlueberryMushroomMachine
+update keys: Nexus:4637, GitHub:b-b-blueberry/BlueberryMushroomMachine

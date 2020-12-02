@@ -124,6 +124,10 @@ namespace NpcAdventure.AI.Controller
             this.IsIdle = true;
         }
 
+        public virtual void SideUpdate(UpdateTickedEventArgs e)
+        {
+        }
+
         public void PickForageObject(TerrainFeature source)
         {
             int skill = this.ForagingLevel;

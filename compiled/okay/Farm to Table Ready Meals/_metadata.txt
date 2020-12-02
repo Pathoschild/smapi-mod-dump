@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7148
+IDs: speshkitty.farmtotablereadymeals
+update keys: Nexus:7148, GitHub:Speshkitty/FarmToTableReadyMeals

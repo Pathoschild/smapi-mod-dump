@@ -49,6 +49,16 @@ You can enable swimsuit support for companions if they enter the pool with you. 
 
 You can enable this experimental feature be set `true` for `Experimental.UseSwimsuits` in `config.json`.
 
+## Upgrading to 0.15.0 and newer
+
+### Players
+
+NPC Adventures doesn't load legacy content packs by default. If you have installed some legacy content packs for NA and do you want load them, you must allow it in config file. See [Configuration](configuration.md).
+
+### Modders
+
+NPC Adventures now supports custom weapons for each combat level. This change may affects your content pack. Also if you are an author of legacy content pack, please upgrade your content pack format to versiob `1.3`. See [Modder's upgrade guide](../modding/upgrading.md) for more details.
+
 ## Upgrading to 0.14.0 and newer (from 0.13.x and older)
 
 NPC Adventures is now based on [Quest Framework](https://www.nexusmods.com/stardewvalley/mods/6414). From version 0.14.0 this framework is dependency and is required to run NPC Adventures. You must [download and install Quest Framework](https://www.nexusmods.com/stardewvalley/mods/6414).

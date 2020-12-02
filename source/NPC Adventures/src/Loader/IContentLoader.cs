@@ -24,6 +24,8 @@ namespace NpcAdventure.Loader
         /// <returns></returns>
         Dictionary<TKey, TValue> LoadData<TKey, TValue>(string path);
 
+        Dictionary<TKey, TValue> LoadMergedData<TKey, TValue>(params string[] paths);
+
         /// <summary>
         /// Loads mod content data as string map
         /// </summary>

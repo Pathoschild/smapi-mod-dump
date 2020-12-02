@@ -1,0 +1,77 @@
+{
+    "Format": "1.18.0",
+	"ConfigSchema": {
+        "Versions": {
+            "AllowValues": "Greenhouse, Gardenpots 2, Gardenpots 3, Gardenpots 4, OFF",
+            "Default": "Greenhouse"
+        },
+		"Barrels and Wood": {
+            "AllowValues": "true, false",
+            "Default": "true"
+        },
+    },
+    "Changes": [
+        {
+        "Action": "Load",
+        "Target": "Maps/Cellar",
+        "FromFile": "assets/Cellar.tbin",
+		"When": {
+			"Versions": "Gardenpots 2"
+            }
+        },
+        {
+        "Action": "Load",
+        "Target": "Maps/Cellar",
+        "FromFile": "assets/Cellar_Green.tbin",
+		"When": {
+			"Versions": "Greenhouse"
+            }
+        },
+		{
+        "Action": "Load",
+        "Target": "Maps/Cellar",
+        "FromFile": "assets/Cellar_pots.tbin",
+		"When": {
+			"Versions": "Gardenpots 3"
+            }
+        },
+		{
+        "Action": "Load",
+        "Target": "Maps/Cellar",
+        "FromFile": "assets/Cellar_pots_full.tbin",
+		"When": {
+			"Versions": "Gardenpots 4"
+            }
+        },
+		{
+        "Action": "EditMap",
+        "Target": "Maps/Cellar",
+        "FromFile": "assets/Clean.tbin",
+        "FromArea": { "X": 1, "Y": 4, "Width": 37, "Height": 4 },
+        "ToArea": { "X": 1, "Y": 4, "Width": 37, "Height": 4 },
+		"When": {
+		"Barrels and Wood": "false"
+        },
+		},
+		{
+        "Action": "EditMap",
+        "Target": "Maps/Cellar",
+        "FromFile": "assets/Clean.tbin",
+        "FromArea": { "X": 1, "Y": 14, "Width": 2, "Height": 3 },
+        "ToArea": { "X": 1, "Y": 14, "Width": 2, "Height": 3 },
+		"When": {
+		"Barrels and Wood": "false"
+        },
+		},
+		{
+        "Action": "EditMap",
+        "Target": "Maps/Cellar",
+        "FromFile": "assets/Clean.tbin",
+        "FromArea": { "X": 21, "Y": 14, "Width": 1, "Height": 3 },
+        "ToArea": { "X": 21, "Y": 14, "Width": 1, "Height": 3 },
+		"When": {
+		"Barrels and Wood": "false"
+        },
+		},
+    ]
+}

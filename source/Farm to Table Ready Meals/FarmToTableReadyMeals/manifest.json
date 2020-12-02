@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Speshkitty/FarmToTableReadyMeals
+**
+*************************************************/
+
+{
+  "Name": "Farm to Table Ready Meals",
+  "Description": "Allows you to cook food, skipping interstitial steps",
+  "Author": "Speshkitty",
+  "EntryDLL": "FarmToTableReadyMeals.dll",
+  "MinimumApiVersion": "3.7.0",
+  "Version": "1.1.1",
+  "UpdateKeys": [ "Nexus:7148" ],
+  "UniqueID": "speshkitty.farmtotablereadymeals"
+}

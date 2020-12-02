@@ -188,6 +188,9 @@ namespace NpcAdventure.HUD
                 case AI_StateMachine.State.FORAGE:
                     icon = new Rectangle(60, 428, 10, 10);
                     break;
+                case AI_StateMachine.State.SPIRITUAL:
+                    icon = new Rectangle(172, 514, 9, 10);
+                    break;
                 default:
                     return;
             }

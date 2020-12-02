@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="27">
+ <tileset firstgid="1" name="town interior" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior.png" width="512" height="1088"/>
+  <tile id="448">
+   <properties>
+    <property name="Passable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="449">
+   <properties>
+    <property name="Passable" value="T"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer id="1" name="Back" width="1" height="1">
+  <data encoding="csv">
+0
+</data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <layer id="3" name="Buildings" width="1" height="1">
+  <data encoding="csv">
+1160
+</data>
+ </layer>
+ <objectgroup id="4" name="Buildings">
+  <object id="26" name="TileData" x="0" y="0" width="16" height="16">
+   <properties>
+    <property name="Action" value="Warp 26 31 MonsterSaloon"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer id="5" name="Front" width="1" height="1">
+  <data encoding="csv">
+0
+</data>
+ </layer>
+ <objectgroup id="8" name="Paths"/>
+</map>

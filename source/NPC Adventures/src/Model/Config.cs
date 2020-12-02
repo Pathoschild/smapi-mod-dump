@@ -35,6 +35,7 @@ namespace NpcAdventure.Model
         public bool UseCheckForEventsPatch { get; set; } = true;
         public bool AllowEntryLockedCompanionHouse { get; set; } = true;
         public bool UseAsk2FollowCursor { get; set; } = true;
+        public bool AllowLegacyContentPacks { get; set; } = false;
 
         public class ExperimentalFeatures
         {    

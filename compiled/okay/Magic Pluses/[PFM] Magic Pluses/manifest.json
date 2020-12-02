@@ -1,0 +1,19 @@
+﻿{
+	"Name": "[PFM] Magic Pluses",
+	"Author": "TerryDBS",
+	"Description": "Upgrade your equipment.",
+	"Version": "1.0.6",
+	"UniqueID": "TerryDBS.MagicPluses.PFM",
+	"UpdateKeys": ["Nexus:7096"],
+	"ContentPackFor":
+	{
+		"UniqueID": "DIGUS.ProducerFrameworkMod"
+	},
+	"Dependencies":
+	[
+		{
+			"UniqueID": "TerryDBS.MagicPluses.JA",
+			"IsRequired": true,
+		},
+	]
+}

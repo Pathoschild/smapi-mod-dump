@@ -77,12 +77,14 @@ namespace AccessibilityForBlind.Menus
 
         public virtual void DefaultSpeakOnClickAction()
         {
-            TextToSpeech.Speak(this.TextOnAction);
+            if (TextOnAction != null)
+                TextToSpeech.Speak(this.TextOnAction);
         }
 
         public virtual void SpeakOnSelect()
         {
-            TextToSpeech.Speak(Label);
+            if (Label != null)
+                TextToSpeech.Speak(Label);
         }
 
         public void Click()
@@ -200,6 +202,7 @@ namespace AccessibilityForBlind.Menus
         public void ClearItems()
         {
             items.Clear();
+            current = null;
         }
 
         public virtual void NextItem()
@@ -240,33 +243,35 @@ namespace AccessibilityForBlind.Menus
 
         public virtual void ButtonPressed(StardewModdingAPI.SButton button)
         {
-            switch (button)
+            if (Inputs.IsMenuNextButton(button))
             {
-                case StardewModdingAPI.SButton.Tab:
-                case StardewModdingAPI.SButton.Down:
-                    NextItem();
-                    break;
-                case StardewModdingAPI.SButton.Up:
-                    PrevItem();
-                    break;
-                case StardewModdingAPI.SButton.Enter:
-                    ActivateItem();
-                    break;
-                case StardewModdingAPI.SButton.F1:
-                    if (current != null)
-                    {
-                        if (current is MenuTextBox)
-                            current.Activate(); //speak text box content
-                        else
-                            TextToSpeech.Speak(current.Label + (current.Description.Length > 0 ? ": " + current.Description : ""));
-                    }
-                    break;
-                case StardewModdingAPI.SButton.F5:
-                    TextToSpeech.Repeat();
-                    break;
-                case StardewModdingAPI.SButton.Escape:
-                    TextToSpeech.Stop();
-                    break;
+                NextItem();
+            }
+            else if (Inputs.IsMenuPrevButton(button))
+            {
+                PrevItem();
+            }
+            else if (Inputs.IsMenuActivateButton(button))
+            {
+                ActivateItem();
+            }
+            else if (Inputs.IsTTSInfoButton(button))
+            {
+                if (current != null)
+                {
+                    if (current is MenuTextBox)
+                        current.Activate(); //speak text box content
+                    else
+                        TextToSpeech.Speak(current.Label + (current.Description.Length > 0 ? ": " + current.Description : ""));
+                }
+            }
+            else if (Inputs.IsTTSRepeatButton(button))
+            {
+                TextToSpeech.Repeat();
+            }
+            else if (Inputs.IsTTSStopButton(button))
+            {
+                TextToSpeech.Stop();
             }
         }
     }

@@ -22,6 +22,7 @@ using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NpcAdventure.AI
 {
@@ -36,6 +37,7 @@ namespace NpcAdventure.AI
             FIGHT,
             IDLE,
             FORAGE,
+            SPIRITUAL
         }
 
         private const string FORAGING_COOLDOWN = "foragingCooldown";
@@ -43,6 +45,15 @@ namespace NpcAdventure.AI
         private const string SCARED_COOLDOWN = "scaredCooldown";
         public readonly NPC npc;
         public readonly Farmer player;
+
+        public bool IsLovedMonster(Monster monster)
+        {
+            if (!this.Csm.HasSkill("spiritual"))
+                return false;
+
+            return (this.controllers[State.SPIRITUAL] as LovePeaceController).IsLovedMonster(monster);
+        }
+
         private readonly CompanionDisplay hud;
         private readonly IModEvents events;
         internal IMonitor Monitor { get; private set; }
@@ -66,6 +77,7 @@ namespace NpcAdventure.AI
         internal IController CurrentController { get => this.controllers[this.CurrentState]; }
 
         internal CompanionStateMachine Csm { get; }
+        public IContentLoader ContentLoader => this.Csm.ContentLoader;
 
         public event EventHandler<EventArgsLocationChanged> LocationChanged;
 
@@ -80,6 +92,7 @@ namespace NpcAdventure.AI
                 [State.FIGHT] = new FightController(this, this.loader, this.events, this.Csm.Metadata.Sword),
                 [State.IDLE] = new IdleController(this, this.loader),
                 [State.FORAGE] = new ForageController(this, this.events),
+                [State.SPIRITUAL] = new LovePeaceController(this, this.events)
             };
 
             // By default AI following the player
@@ -179,6 +192,14 @@ namespace NpcAdventure.AI
                 this.Monitor.Log("A 50ft monster is here!");
             }
 
+            if (this.Csm.HasSkill("spiritual")
+                && !this.cooldown.IsRunning(CHANGE_STATE_COOLDOWN)
+                && this.CurrentState != State.SPIRITUAL
+                && (this.controllers[State.SPIRITUAL] as LovePeaceController).IsAngryMonstersHere)
+            {
+                this.ChangeState(State.SPIRITUAL);
+            }
+
             if (this.CurrentState != State.FOLLOW && this.CurrentController.IsIdle)
             {
                 this.cooldown.Set(CHANGE_STATE_COOLDOWN, 100);
@@ -219,6 +240,9 @@ namespace NpcAdventure.AI
 
             if (this.CurrentController != null)
                 this.CurrentController.Update(e);
+
+            foreach (var controller in this.controllers.Values)
+                controller.SideUpdate(e);
         }
 
         /// <summary>
@@ -294,6 +318,10 @@ namespace NpcAdventure.AI
         {
             this.events.GameLoop.TimeChanged -= this.GameLoop_TimeChanged;
             this.CurrentController.Deactivate();
+
+            foreach (var controller in this.controllers.OfType<IDisposable>())
+                controller.Dispose();
+
             this.controllers.Clear();
             this.controllers = null;
         }
@@ -303,6 +331,11 @@ namespace NpcAdventure.AI
             if (Context.IsWorldReady && this.CurrentController is IDrawable drawableController)
             {
                 drawableController.Draw(spriteBatch);
+            }
+
+            if (Context.IsWorldReady && this.Csm.HasSkill("spiritual"))
+            {
+                (this.controllers[State.SPIRITUAL] as LovePeaceController).DrawLove(spriteBatch);
             }
         }
     }

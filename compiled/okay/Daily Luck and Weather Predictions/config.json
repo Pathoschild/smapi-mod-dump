@@ -5,5 +5,11 @@
   "DisplayGift": true,
   "DisplayDish": true,
   "HorizontalOffset": 0,
-  "VerticalOffset": 0
+  "VerticalOffset": 0,
+  "TargetLuck": -1.0,
+  "TargetWeather": "",
+  "TargetGifter": "",
+  "TargetDish": "",
+  "TargetDishAmount": 0,
+  "TargetStepsLimit": 1000
 }

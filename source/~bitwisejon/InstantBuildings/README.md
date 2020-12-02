@@ -6,7 +6,15 @@ for queries and analysis.**
 
 ----
 
-**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.4x mod which lets you build any building normally sold by the carpenter directly from your farm without waiting for days for Robin to build them. Buildings are created/upgraded instantly, and the magician buildings are included too! The configuration file allows you to turn off the resource requirements needed to build so you can play around in a sandbox mode if you want.
+**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.45 mod which lets you build any building normally sold by the 
+carpenter directly from your farm without waiting for days for Robin to build them. Buildings are created/upgraded instantly, and the magician 
+buildings are included too! You can also upgrade your house or cabin instantly to add the kitchen, nursery, and cellar directly from your farm
+without having to wait. The configuration file allows you to turn off the resource requirements needed to build/upgrade so you can play around in 
+a sandbox mode if you want.
+
+**Note**: There is a known issue with a brand new player upgrading their house or cabin through all levels which causes the game to crash when entering
+the cellar on the same day. The workaround is to go to sleep first after the cellar upgrade is complete and then you may enter the cellar after that
+without it crashing.
 
 ## Contents
 * [Install](#install)
@@ -35,6 +43,8 @@ Upgrades happen instantly too:
 You can also move and destroy buildings directly from your farm:
 > ![](screenshots/destroy-building.png)
 
+Press the 'U' key (configurable) to upgrade your house or cabin to the next level.
+
 ## Buildings
 All of the following buildings can be built instantly from the catalogue menu on your farm:
 * Coop
@@ -60,6 +70,12 @@ The following buildings can be upgraded instantly provided you already have the 
 
 In multiplayer, any player can use the build menu and the new building will appear instantly for all players.
 
+## House/Cabin Upgrades
+Pressing the 'U' key prompts Robin to ask if the player wants to upgrade their house or cabin to the next available level. Clicking 'Yes' will instantly
+upgrade the house/cabin to that upgrade level and change the appearance of the building. The player can immediately hit 'U' again to continue upgrading.
+
+In multiplayer, any player can use the house/cabin upgrade feature and the new building will appear instantly for all players.
+
 ## Configuration
 This mod creates a config.json file the first time you run it. Once created, open the file in a text editor to configure the mod. You can set the following options:
 
@@ -68,9 +84,10 @@ setting | default | effect
 `BuildUsesResources` | `true` | Set to false to enable sandbox mode. Buildings will cost no gold or resources.
 `AllowMagicalBuildingsWithoutMagicInk` | `false` | If false, will only allow the Magician buildings to be built once the player has the magic ink. Set to true for "sandbox" mode.
 `ToggleInstantBuildMenuButton` | `B` | Change this value to bind the Instant Build menu to another key.
+`PerformInstantHouseUpgradeButton` | `U` | Change this value to bind the Instant House/Cabin Upgrade feature to another key.
 
 ## Mod Compatibility
-**Note:*** This mod is only compatible with version 1.4x of Stardew Valley (released 11/26/2019) and works in multiplayer as well. Starting with version 1.0.7 of this mod, Stardew Valley v1.3x is no longer supported. 
+**Note:*** This mod is only compatible with version 1.45 of Stardew Valley (released 2/11/2020) and works in multiplayer as well. Starting with version 1.0.7 of this mod, Stardew Valley v1.3x is no longer supported. 
 
 This mod is fully compatible with:
 * [TractorMod](http://www.nexusmods.com/stardewvalley/mods/1401) by Pathoschild. The Tractor Garage will appear in the build menu if the mod is installed.

@@ -59,26 +59,28 @@ namespace NpcAdventure.Loader
         /// <returns>Loaded content of asset</returns>
         public Dictionary<TKey, TValue> LoadData<TKey, TValue>(string path)
         {
-            // Try to get asset from our map cache
-            /*if (this.assetCache.TryGetValue(path, out object asset))
-                return (Dictionary<TKey, TValue>)asset;*/
+            if (!this.TryLoadData<TKey, TValue>(path, out var data))
+                this.monitor.Log($"Cannot load asset: {path}", LogLevel.Error);
 
+            return data;
+        }
+
+        private bool TryLoadData<TKey, TValue>(string path, out Dictionary<TKey, TValue> data)
+        {
             string locale = this.Assets.CurrentLocale.ToLower();
-            Dictionary<TKey, TValue> baseData;
 
             // If this content doesn't exists in mod scope, try load them from content packs
             if (!this.HasFile($"assets/{path}.json"))
             {
-                return this.FallbackLoad<TKey, TValue>(path);
+                return this.FallbackLoad(path, out data);
             }
 
-            baseData = this.Assets.Load<Dictionary<TKey, TValue>>($"assets/{path}.json");
+            data = this.Assets.Load<Dictionary<TKey, TValue>>($"assets/{path}.json");
 
-            this.ApplyTranslation(path, locale, baseData); // Apply translations                
-            this.contentPackManager.Apply(baseData, path); // Apply content packs
-            // this.assetCache.Add(path, baseData); // Save to cache
+            this.ApplyTranslation(path, locale, data); // Apply translations                
+            this.contentPackManager.Apply(data, path); // Apply content packs
 
-            return baseData;
+            return true;
         }
 
         /// <summary>
@@ -90,18 +92,13 @@ namespace NpcAdventure.Loader
         /// <typeparam name="TKey"></typeparam>
         /// <typeparam name="TValue"></typeparam>
         /// <param name="path"></param>
+        /// <param name="fallbackData"></param>
         /// <returns></returns>
-        private Dictionary<TKey, TValue> FallbackLoad<TKey, TValue>(string path)
+        private bool FallbackLoad<TKey, TValue>(string path, out Dictionary<TKey, TValue> fallbackData)
         {
-            var baseData = new Dictionary<TKey, TValue>();
+            fallbackData = new Dictionary<TKey, TValue>();
 
-            if (!this.contentPackManager.Apply(baseData, path))
-            {
-                this.monitor.Log($"Cannot load asset `{path}`", LogLevel.Error);
-                return new Dictionary<TKey, TValue>();
-            }
-
-            return baseData;
+            return this.contentPackManager.Apply(fallbackData, path);
         }
 
         private bool HasFile(string path)
@@ -202,6 +199,32 @@ namespace NpcAdventure.Loader
 
             // Get asset key in game folder
             return this.Assets.GetActualAssetKey(assetName, ContentSource.GameContent);
+        }
+
+        public Dictionary<TKey, TValue> LoadMergedData<TKey, TValue>(params string[] paths)
+        {
+            var dataMerged = new Dictionary<TKey, TValue>();
+            bool hasAnyContent = false;
+
+            foreach (string path in paths.Reverse())
+            {
+                if (this.TryLoadData<TKey, TValue>(path, out var dataToMerge))
+                {
+                    hasAnyContent = true;
+                    AssetPatchHelper.ApplyPatch(dataMerged, dataToMerge);
+
+                    continue;
+                }
+
+                this.monitor.VerboseLog($"MergeLoad: Cannot load asset `{path}`");
+            }
+
+            if (!hasAnyContent)
+            {
+                this.monitor.Log($"Cannot load any of these assets: {string.Join(", ", paths)}", LogLevel.Error);
+            }
+
+            return dataMerged;
         }
     }
 }

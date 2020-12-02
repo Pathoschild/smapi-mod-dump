@@ -34,5 +34,9 @@ namespace catGifts
         public int MID_CHANCE { get; set; } = 40;
         public int HI_CHANCE { get; set; } = 20;
         public int MAX_WEEKLY_GIFTS { get; set; } = 3;
+        public int SPAWN_X { get; set; } = -1;
+        public int SPAWN_Y { get; set; } = -1;
+
+
     }
 }

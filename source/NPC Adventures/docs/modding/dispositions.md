@@ -58,7 +58,7 @@ Definition structure is a dictionary of NPC, where key is NPC name and value rep
 | availability | NOT USED! | |
 | minimum_hearts | NOT USED! | |
 | price | NOT USED! |
-| sword | Sword name (string) or ID (int)| Name or id of default sword. Every companion can to have own unique default sword for level 0. See game file **Data/weapons** for more details. `-1` means no sword. Custom swords supported |
+| sword | **DEPRECATED** Sword name (string) or ID (int)| This field is deprecated, don't use it. Use [custom weapons](weapons.md) definition assets instead. ~~Name or id of default sword. Every companion can to have own unique default sword for level 0. See game file **Data/weapons** for more details. `-1` means no sword. Custom swords supported~~ |
 
 ## Edit dispositions in content pack
 
@@ -91,3 +91,4 @@ This defines new companion in mod. Referenced NPC must be exists in gam. If it's
 ## See also
 
 - [Dialogues](dialogues.md)
+- [Weapons](weapons.md)

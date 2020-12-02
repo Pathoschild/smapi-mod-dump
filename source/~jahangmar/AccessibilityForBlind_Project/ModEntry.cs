@@ -85,6 +85,14 @@ namespace AccessibilityForBlind
             {
                 ActiveMenu = new AccessDialogBox(dialogueBox);
             }
+            else if (menu is LetterViewerMenu letterViewerMenu)
+            {
+                ActiveMenu = new AccessLetterViewerMenu(letterViewerMenu);
+            }
+            else if (menu is GameMenu gameMenu)
+            {
+                ActiveMenu = new AccessGameMenu(gameMenu);
+            }
             else
             {
                 TextToSpeech.Speak("unknown menu");

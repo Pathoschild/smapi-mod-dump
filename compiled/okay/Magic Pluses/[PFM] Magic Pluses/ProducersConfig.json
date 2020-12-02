@@ -1,0 +1,12 @@
+﻿[
+	{
+		"ProducerName": "Upgrade Forge",
+		"AlternateFrameProducing": false,
+		"AlternateFrameWhenReady": false,
+		"DisableBouncingAnimationWhileWorking": false,
+        "ReadyAnimation": 
+        {
+        	"RelativeFrameIndex": [0],
+   		},
+	},
+]

@@ -29,9 +29,10 @@ for queries and analysis.**
     5. [Quests](modding/quests.md)
     6. [Idle behaviors](modding/idle.md)
     7. [Bag delivery letters](modding/bag-letters.md)
-    8. [Swimsuits](modding/swimsuits.md)
-    9. [Forages](modding/forages.md)
-    10. [General strings](modding/strings.md)
+    8. [Weapons](modding/weapons.md)
+    9. [Swimsuits](modding/swimsuits.md)
+    10. [Forages](modding/forages.md)
+    11. [General strings](modding/strings.md)
 4. [Debugging with commands](modding/commands.md)
 
 Need help with something? Join [PurrplingCat's discord](https://discord.gg/wnEDqKF) and ask for help.

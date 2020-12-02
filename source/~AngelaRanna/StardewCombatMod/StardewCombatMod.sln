@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngelsWeaponRebalance", "St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngelsExistingWeaponUpdater", "ExistingWeaponUpdater\AngelsExistingWeaponUpdater.csproj", "{512FA8C2-4ACF-44F8-B955-9AD2642696FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadRodFixer", "LeadRodFixer\LeadRodFixer.csproj", "{08B45608-82DD-4A62-8465-BEEFE1E15D6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{512FA8C2-4ACF-44F8-B955-9AD2642696FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{512FA8C2-4ACF-44F8-B955-9AD2642696FA}.Release|x86.ActiveCfg = Release|Any CPU
 		{512FA8C2-4ACF-44F8-B955-9AD2642696FA}.Release|x86.Build.0 = Release|Any CPU
+		{08B45608-82DD-4A62-8465-BEEFE1E15D6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B45608-82DD-4A62-8465-BEEFE1E15D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B45608-82DD-4A62-8465-BEEFE1E15D6C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{08B45608-82DD-4A62-8465-BEEFE1E15D6C}.Debug|x86.Build.0 = Debug|Any CPU
+		{08B45608-82DD-4A62-8465-BEEFE1E15D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B45608-82DD-4A62-8465-BEEFE1E15D6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B45608-82DD-4A62-8465-BEEFE1E15D6C}.Release|x86.ActiveCfg = Release|Any CPU
+		{08B45608-82DD-4A62-8465-BEEFE1E15D6C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

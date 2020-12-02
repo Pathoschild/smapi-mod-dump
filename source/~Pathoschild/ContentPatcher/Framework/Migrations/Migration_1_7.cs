@@ -38,10 +38,7 @@ namespace ContentPatcher.Framework.Migrations
             };
         }
 
-        /// <summary>Migrate a lexical token.</summary>
-        /// <param name="lexToken">The lexical token to migrate.</param>
-        /// <param name="error">An error message which indicates why migration failed (if any).</param>
-        /// <returns>Returns whether migration succeeded.</returns>
+        /// <inheritdoc />
         public override bool TryMigrate(ILexToken lexToken, out string error)
         {
             if (!base.TryMigrate(lexToken, out error))
@@ -57,41 +54,32 @@ namespace ContentPatcher.Framework.Migrations
             return true;
         }
 
-        /// <summary>Migrate a content pack.</summary>
-        /// <param name="content">The content pack data to migrate.</param>
-        /// <param name="error">An error message which indicates why migration failed.</param>
-        /// <returns>Returns whether the content pack was successfully migrated.</returns>
+        /// <inheritdoc />
         public override bool TryMigrate(ContentConfig content, out string error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
             // 1.7 adds tokens in dynamic token values
-            if (content.DynamicTokens != null)
+            if (content.DynamicTokens.Any(p => p.Value?.Contains("{{") == true))
             {
-                if (content.DynamicTokens.Any(p => p.Value?.Contains("{{") == true))
-                {
-                    error = this.GetNounPhraseError("using tokens in dynamic token values");
-                    return false;
-                }
+                error = this.GetNounPhraseError("using tokens in dynamic token values");
+                return false;
             }
 
             // 1.7 adds tokens in field keys and condition values
-            if (content.Changes?.Any() == true)
+            foreach (PatchConfig patch in content.Changes)
             {
-                foreach (PatchConfig patch in content.Changes)
+                if (patch.Fields.Keys.Any(key => key.Contains("{{")))
                 {
-                    if (patch.Fields != null && patch.Fields.Keys.Any(key => key.Contains("{{")))
-                    {
-                        error = this.GetNounPhraseError("using tokens in field keys");
-                        return false;
-                    }
+                    error = this.GetNounPhraseError("using tokens in field keys");
+                    return false;
+                }
 
-                    if (patch.When != null && patch.When.Any(condition => condition.Value?.Contains("{{") == true && !condition.Value.ContainsIgnoreCase("HasFile")))
-                    {
-                        error = this.GetNounPhraseError("using tokens in condition values");
-                        return false;
-                    }
+                if (patch.When.Any(condition => condition.Value?.Contains("{{") == true && !condition.Value.ContainsIgnoreCase("HasFile")))
+                {
+                    error = this.GetNounPhraseError("using tokens in condition values");
+                    return false;
                 }
             }
 

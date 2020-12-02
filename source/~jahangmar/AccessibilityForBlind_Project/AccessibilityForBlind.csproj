@@ -50,15 +50,22 @@
     <Compile Include="HarmonyPatches\Farmer_AddItemToInventory.cs" />
     <Compile Include="HarmonyPatches\Game1_showMessages.cs" />
     <Compile Include="Menus\AccessDialogBox.cs" />
+    <Compile Include="Menus\AccessLetterViewerMenu.cs" />
+    <Compile Include="Inputs.cs" />
+    <Compile Include="Menus\AccessGameMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="manifest.json" />
     <None Include="TODO.txt" />
+    <None Include="sounds\guitar.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Menus\" />
     <Folder Include="HarmonyPatches\" />
+    <Folder Include="sounds\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

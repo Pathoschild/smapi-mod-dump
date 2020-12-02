@@ -14,9 +14,8 @@
       "file": "assets/Lighthouse_Interior.tmx"
     },
   
-       {
-        "name": "ESHouse1",
-        "file": "assets/House1.tmx"
+    {   "name": "ESHouse1",
+        "file": "assets/ESHouse1.tmx"
       },
       {
         "name": "ESHouse2",
@@ -56,13 +55,12 @@
         "sourceArea": [ 0, 0, 6, 9 ],
         "position": [ 28, 27 ],
         "Conditions": "d Mon Wed Thu Fri Sat Sun/t 1100 1800/w sunny"
-      },
+      }
 /*{
-        "name": "EastScarpe",
-        "file": "assets/OrchardPatch.tmx",
-        "sourceArea": [ 0, 0, 3, 3 ],
-        "position": [ 74, 47 ]
-      }*/
+      "name": "EastScarpe", 
+    "file": "assets/EastScarpeTristan.tmx",
+    "position": [9,36]
+      },*/
       
       
       

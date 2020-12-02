@@ -26,6 +26,10 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace AccessibilityForBlind
 {
     public static class TextToSpeech
@@ -86,25 +90,39 @@ namespace AccessibilityForBlind
                     ModEntry.Log("Windows detected. Speech2Text is not supported.", StardewModdingAPI.LogLevel.Error);
                     break;
             }
+            if (initialized)
+                queueTask.Start();
         }
 
         private static Process proc;
         private static Speech last_speech;
+        private static Queue<Speech> queue = new Queue<Speech>();
 
         public struct Speech
         {
             public string text;
-            public bool male;
+            public Gender gender;
             public float speed;
+            public bool overwrite;
+        }
+
+        public enum Gender {
+            Male,
+            Female,
+            Neutral
         }
 
         public static bool Speaking() =>
             proc != null && !proc.HasExited;
 
+        public static bool QueuedSpeech() => queue.Count > 0;
+
         public static void Stop()
         {
-            if (proc != null && !proc.HasExited)
+            if (Speaking())
                 proc.Kill();
+
+            queue.Clear();
         }
 
         public static void Repeat()
@@ -112,29 +130,89 @@ namespace AccessibilityForBlind
             Speak(last_speech);
         }
 
-        public static void Speak(Speech speech) =>
-            Speak(speech.text, speech.male, speech.speed);
+        public static void SpeakQueued(Speech speech)
+        {
+            queue.Enqueue(speech);
+            //speak(speech);
 
-        public static void Speak(string text, bool male=true, float speed = 1.0f) 
+        }
+
+        static Task queueTask = new Task(() =>
+        {
+            while (true)
+            {
+                System.Threading.Thread.Sleep(200);
+                while (queue.Count > 0 && !Speaking())
+                {
+                    Speech q = queue.Dequeue();
+                    speak(q);
+                };
+            }
+        });
+
+        public static void Speak(Speech speech, bool overwrite = true) =>
+            Speak(speech.text, speech.gender, speech.speed);
+
+
+        public static void Speak(string text, Gender gender=Gender.Neutral, float speed = 1.0f, bool overwrite = true) 
         {
             if (!initialized)
                 return;
 
             last_speech.text = text;
-            last_speech.male = male;
+            last_speech.gender = gender;
             last_speech.speed = speed;
 
-            Stop();
+            Speech speech = new Speech()
+            {
+                text = text,
+                gender = gender,
+                speed = speed
+            };
 
+            if (overwrite)
+            {
+                queue.Clear();
+                Stop();
+            }
+
+            SpeakQueued(speech);
+        }
+
+        private static string GetSpeedArg()
+        {
+            float speed = 1 + 1 - ModEntry.GetConfig().tts_speed / 100f;
+            return "--setf duration_stretch=" + speed.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        private static string GetPitchArg()
+        {
+            int pitch = ModEntry.GetConfig().tts_pitch;
+            return "--setf int_f0_target_mean=" + pitch;
+        }
+
+        private static void speak(Speech speech)
+        {
             try
             {
                 proc = new Process();
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.CreateNoWindow = true;
                 proc.StartInfo.FileName = executable;
-                proc.StartInfo.Arguments = "-t " + "'" + text + "'";
+                string voice()
+                {
+                    switch (speech.gender)
+                    {
+                        case Gender.Male: return "-voice rms";
+                        case Gender.Female: return "-voice slt";
+                        case Gender.Neutral: return "-voice ap";
+                        default: return "";
+                    }
+                }
+                proc.StartInfo.Arguments = $"{GetSpeedArg()} {GetPitchArg()} {voice()} -t " + "\"" + speech.text.Replace('"', '\'') + "\"";
+                //ModEntry.Log("mimic args: " + proc.StartInfo.Arguments);
                 proc.Start();
-                ModEntry.Log("speaking '" + text + "'");
+                ModEntry.Log("speaking '" + speech.text + "'");
 
             }
             catch (Exception e)

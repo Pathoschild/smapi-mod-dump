@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Seeds Unpacked",
+    "Author": "blueberry",
+    "Version": "1.0.0",
+    "Description": "Your inventory holds loose seeds, rather than seed packets.",
+    "UniqueID": "blueberry.SeedsUnpacked",
+    "EntryDll": "SeedsUnpacked.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:7215" ]
+}

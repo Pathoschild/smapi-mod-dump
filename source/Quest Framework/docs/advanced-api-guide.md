@@ -8,497 +8,292 @@ for queries and analysis.**
 
 ← [README](../README.md)
 
-# Content pack guide
+# Advanced API guide
 
-aka how to use JSON API for creating content packs with your custom quests.
+aka mod api for use in SMAPI mods (written in C#)
 
-## Introduction
+## Installation
 
-### What is quest framework?
+1. Download Quest Framework from [Nexusmods](todo)
+2. Copy contents of ZIP file to the mods folder in StardewValley folder
+3. Create new SMAPI mod with VisualStudio
+4. Reference QuestFramework dll in your project references (from the SDV mods folder)
 
-Quest framework is a "core" mod which provides a tools for work with quests in StardewValley. In the JSON api you can do these things:
+### How to use
 
-- Create custom quests
-- Handle quests with predefined hooks
+You can access Quest Framework API via [SMAPI's mod API provider](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations#Using_an_API)
 
-## Define quest
+```csharp
+using QuestFramework.API
+using StardewModdingAPI;
 
-### Prepare content pack
-
-For more info about SMAPI content packs see [How to create content pack](https://stardewvalleywiki.com/Modding:Content_packs)
-
-Create your `manifest.json` file which must contains these minimum contents:
-
-```js
+class ModEntry : Mod
 {
-  "Name": "Your Project Name",
-  "Author": "your name",
-  "Version": "1.0.0",
-  "Description": "One or two sentences about the mod.",
-  "UniqueID": "YourName.YourProjectName",
-  "MinimumApiVersion": "3.6.0",
-  "UpdateKeys": [],
-  "ContentPackFor": {
-    "UniqueID": "PurrplingCat.QuestFramework", // Quest Framework unique id must be here
-    "MinimumVersion": "1.1.0" // optional
-  }
-}
-```
-
-Then create file `quests.json` and follow next instructions.
-
-### The content pack format
-
-Your `quests.json` has this format:
-
-```js
-{
-  "Format": "1.0", // this is required
-  "Quests": [
-    // quests are defined here
-  ],
-  "Offers": [
-    // quest offers are defined here (optional)
-  ]
-}
-```
-
-### Quest basics
-
-In the `Quests` section you can define one ore more custom quests. Quest definition has these fields:
-
-Field             | Required? | Description 
------------------ | --------- | -----------
-Name              | required  | (string) Name (UID) of your quest (this never shows to player)
-Type              | required  | (string) Vanilla SDV quest type (see quest type)
-CustomTypeId      |           | (int) Custom Quest type id (see custom quest types in advanced API). Can be handled by any other mod.
-Title             | required  | (string) Quest title in the quest log
-Description       |           | (string) Quest description
-Objective         | required  | (string) Quest objective
-NextQuests        |           | (string[]) One of more next quests which will be added to player's quest log when this quest is completed.
-DaysLeft          |           | (int) If this field is filled or is greater than 0, this quest is marked as daily and limited for specified number of days here.
-Reward            |           | (int) Reward in SDV currency "golds". If this field is not defined or has value `0`, then player will receive no money reward.
-RewardDescription |           | (string) Reward description
-Cancelable        |           | (boolean) Can player cancel this quest?
-ReactionText      |           | (string) NPC's reaction text when you complete this quest (only for quests which interacts with NPCs)
-Trigger           |           | (string) Completion trigger (see quest types for more info) Supports [JSON Assets](#json-assets-support)
-Hooks             |           | (Hook) Quest hooks (see hooks for more info)
-
-#### Example
-
-```js
-{
-  "Format": "1.0",
-  "Quests": [
+    public override void Entry(IModHelper helper)
     {
-      "Name": "abigail_amethyst", // No id needed, will be automatically generated
-      "Type": "ItemDelivery", // Vanilla quest type
-      "Title": "The purple lunch",
-      "Description": "Abigail are very hungry. She wants to eat something special from mines.",
-      "Objective": "Bring amethyst to Abigail",
-      "DaysLeft": 5, // If player don't complete this quest until 5 days, this quest will be removed from quest log automatically without completion
-      "Reward": 300, // 300g
-      "Cancelable": true, // This quest can be cancelled by player
-      "Trigger": "Abigail 66", // Bring amethyst to Abby
-      "ReactionText": "Oh, it's looks delicious. I am really hungry."
+        helper.Events.GameLoop.GameLaunched += this.OnGameStarted;
     }
-  ]
+  
+    private void OnGameStarted(object sender, GameLaunchedEventArgs e)
+    {
+        IQuestApi api = this.Helper.ModRegistry.GetApi<IQuestApi>("PurrplingCat.QuestFramework");
+        IManagedQuestApi managedApi = api.GetManagedApi(this.ModManifest);
+        
+        api.Events.GettingReady += (_sender, _e) => {
+            managedApi.RegisterQuest(/* enter quest definition here */);
+        };
+    }
 }
 ```
 
-### Quest types
+## API Overview
 
-This part describes only vanilla StardewValley quest types existing in the game. If you want to define custom quests, see the [Advanced API guide](advanced-api-guide.md) or Hooks bellow. For more information about SDV quests see the [Quests wiki](https://stardewvalleywiki.com/Quests) and [Modding quest data](https://stardewvalleywiki.com/Modding:Quest_data)
+### Mod-provided API
 
-#### Basic
+All mod-provided Quest Framework APIs is in namespace `QuestFramework.API`
 
-The basic SDV quest which is handled properly by the game (this is hardcoded in vanilla game).
+**IQuestApi** interface
 
-*Trigger:* No trigger for this quest type
-
-#### Building
-
-Build a building quest. Hardcoded in SDV, but you can define which building type must player build for complete this quest (in the `Trigger` property)
-
-*Trigger*: Building type name (like `Coop`). For available building types see `Data/Blueprints` SDV content resource.
-
-#### Crafting
-
-Craft a specified item.
-
-*Trigger*: `<int:item_id> <boolean:is_bigcraftable>` (like `13 true` for craft furance to complete this quest). 
-See the `Data/ObjectInformation` game resource for available items.
-
-#### ItemDelivery
-
-Deliver specified item to specified NPC.
-
-*Trigger*: `<string:NPC_name> <int:object_id> [<int:count>]` like `Abigail 66` for bring Amethyst to Abigail, `Abigail 66 5` for bring 5 pieces of Amethyst to Abigail; or `Willy {{ja:Fish Oil}}` if you want to use JsonAssets item (JsonAssets required for use JA token)
-See the `Data/ObjectInformation` game resource for available items.
-
-This quest type accepts `ReactionText`.
-
-#### ItemHarvest
-
-Harvest or pick specific count of specific items.
-
-*Trigger*: `<int:item_id> <int:count>`  like `334 3` for harvest 3 pieces of copper bar to complete this quest.
-See the `Data/ObjectInformation` game resource for available items.
-
-#### Location
-
-Go to specified location.
-
-*Trigger*: Location name like `Town` for complete this quest when player enters Town.
-
-#### LostItem
-
-Find a lost item and deliver it to an NPC.
-
-*Trigger*: `<string:NPC_name> <int:item_id> <string:Location_name> <int:TileX> <int:TileY>` like `Robin 788 Forest 110 81` bring Robin Axe to robin which are spawned in Forest on tile location `X=110; Y=81`.
-See the `Data/ObjectInformation` game resource for available items.
-
-This quest type accepts `ReactionText`.
-
-#### Monster
-
-Slay a specified count of specified monster.
-
-*Trigger*: `<string:Monster_name> <int:count> [<string:talkWithNpc>]` (monster name can't contain spaces. Replace spaces with `_` in monster name) like `Green_Slime 10` slay 10 Green slimes to complete this quest. `Bat 5 Lewis` means slay five bats and then talk with *Lewis* to complete this quest.
-
-#### SecretLostItem
-
-Same usage as *LostItem*
-
-#### Custom
-
-Custom quest type. You can specify field `CustomTypeId` for more explicit which custom quest type. In JSON api you can use hooks to create custom quest handling.
-
-*Trigger*: Custom defined. In JSON api use hooks instead for handle your pure JSON custom quest. If you target a custom quest type defined by any other mod in your JSON content pack, follow instructions of the source mod of this quest type.
-
-## Hooks
-
-You can add some "magic" to your custom quests with hooks. Hooks do specified action with your quests when something was triggered in the game.
-
-Hooks has conditions for check if the action of hook will be triggered or not. There are two types of conditions: local and environment. You don't must specify all available conditions. You can specify conditions which you need.
-
-Field  | Description
------- | -----------
-When   | When this hook will be trigered (see hook types)
-Action | Which action will be executed (see actions)
-Has    | Conditions for execute the hook (see conditions and hook types).
-
-#### Example
-
-```js
+```csharp
+public interface IQuestApi
 {
-  "Format": "1.0",
-  "Quests": [
-    {
-      "Name": "my_custom_quest",
-      "Type": "ItemDelivery", // Vanilla quest type
-      "Title": "The purple lunch",
-      "Description": "Abigail are very hungry. She wants to eat something special from mines.",
-      "Objective": "Bring amethyst to Abigail",
-      "Reward": 300, // 300g
-      "Cancelable": true,
-      "Trigger": "Abigail 66", // Bring amethyst to Abby
-      "ReactionText": "Oh, it's looks delicious. I am really hungry.",
-      "Hooks": [
-         // Quest will be accepted (added to quest log) 
-         // when farmer go near the tree on the west side of graveyard in Town
-         // and when is sunny weather today
-        {
-          "When": "Tile",
-          "Has": {
-            "Location": "Town",
-            "Area": "2038 5573 326 245",
-            "Weather": "sunny"
-          },
-          "Action": "Accept"
-        }
-      ]
-    }
-  ]
+    /// <summary>
+    /// Get Quest Framework API for your mod scope
+    /// </summary>
+    /// <param name="manifest">Your mod manifest</param>
+    /// <returns></returns>
+    IManagedQuestApi GetManagedApi(IManifest manifest);
+
+    /// <summary>
+    /// Force refresh cache, managed questlog and bulletinboard quest offer
+    /// </summary>
+    void ForceRefresh();
+
+    /// <summary>
+    /// Provide Quest Framework events
+    /// </summary>
+    IQuestFrameworkEvents Events { get; }
+
+    /// <summary>
+    /// Quest Framework lifecycle status
+    /// </summary>
+    State Status { get; }
 }
 ```
 
-### Actions
+**IManagedQuestApi** interface
 
-There are these types of actions:
-
-Action name     | Description
---------------- | -----------
-Complete        | Complete the quest
-Remove          | Remove the quest from player's questlog (quest is not considered complete, just removed)
-CheckIfComplete | Handles completion checker and complete the quest if inner quest conditions are met.
-Accept          | Accept this quest and add it to player's quest log as new quest (has the sign new in quest log).
-
-### Hook types
-
-Some hook types has own specific conditions. See them bellow.
-**NOTE:** For specialized hook type's conditions you cant't use the negation `not:` prefix. This prefix is only for [common conditions](common-environment-conditions) and for global custom conditions.
-
-#### Location
-
-This hook is triggered when player entered or leaved specific location and all other conditions are met.
-
-Local condition | Description
---------------- | -----------
-Enter           | Name of the location the player enter
-Leave           | Name of the location the player left
-
-If you specify both, then the hook action will be triggered when player left the Leave location and entered the Enter location. For example:
-
-Enter condition is `Town` and leave condition is `BusStop`. This hook trigs their action when player entered Town from the Bus Stop.
-
-#### Tile
-
-This hook is triggered when player stands on specific tile position or in specific area of specific location.
-
-Local condition | Description
---------------- | -----------
-Location        | Game location
-Position        | Standing tile position (X, Y). Example `13 10`
-Area            | Specified standing area (X, Y, Width, Height) Example: `2038 5573 326 245`
-TouchAction     | Touch action property value must be this defined value for trig hook's action.
-
-## Common global conditions
-
-These global conditions can be used in hooks or in the quest offers.
-
-Condition name           | Example value              | Description
------------------------- | -------------------------- | -----------
-Weather                  | `sunny`                    | Current weather. Allowed values: `rainy`, `snowy`, `stormy`, `cloudy`, `sunny`
-Date                     | `17 spring`, `5 summer Y2` | Game date in format `<day> <season>` or `<day> <season> Y<year>`
-Days                     | `2 6 12`                   | Trig action only when today is one of these days. You can specify any count of days.
-Seasons                  | `summer fall`              | Trig action only when current season is on of these seasons. You can specify any count of seasons.
-DaysOfWeek               | `monday wednesday`         | Trig action when today's weekday is one of these weekdays. You can specify any count of weekdays.
-FriendshipLevel          | `Abigail 8`, `Maru 5 Shane 4` | Trig action when friendship heart level is the same as specified value for specified NPC. You can specify more than one friendship heart level conditions. Replacement for the previous Friendship.
-FriendshipStatus         | `Abigail Dating`, `Maru Divorced Shane Married` | Trig action when friendship status is the same as specified value for specified NPC. You can specify more than one friendship status conditions. Allowed status values: `Friendly`, `Engaged`, `Married`, `Divorce`
-MailReceived             | `CF_Fish`                  | Trig action when mail with the specified id was received by farmer.
-EventSeen                | `3910674`                  | Trig action when event with this event id seen by player.
-MinDaysPlayed            | `34`                       | Minimum played days from start of new game (from 1 spring year 1)
-MaxDaysPlayed            | `51`                       | Maximum played days from start of new game (from 1 spring year 1)
-DaysPlayed               | `19`                       | Total played days from start of new game (from 1 spring year 1)
-IsPlayerMarried          | `yes` or `no`              | Is player married?
-QuestAcceptedInPeriod    | `season` or `season year` or `today` or `season year weekday` | Checks if this quest was accepted in current specified time period. The input could be combinations of: `day`, `weekday`, `season`, `year`, `date`. Value `season year` means quest was accepted in this year in current season and in any day; `season` means quest was accepted in current season in any year and any day; `today` means quest was accepted just today.
-QuestAcceptedDate        | `17 spring`, `5 summer Y2` | Checks if this quest was **accepted** in specified date. Game date in format `<day> <season>` or `<day> <season> Y<year>`
-QuestCompletedDate       | `17 spring`, `5 summer Y2` | Check if this quest was **completed** in specified date. Game date in format `<day> <season>` or `<day>`
-QuestAcceptedToday       | `yes` or `no`              | Check if this quest was (or wasn't) **accepted today**
-QuestCompletedToday      | `yes` or `no`              | Check if this quest was (or wasn't) **completed today**
-QuestNeverAccepted       | `yes` or `no`              | Check if this quest was (or wasn't) **never accepted yet**
-QuestNeverCompleted      | `yes` or `no`              | Check if this quest was (or wasn't) **never completed yet**
-SkillLevel               | `Farming 1`, `Foraging 2 Fishing 3 Mining 2`   | Check if player skill level equal or higher than what is defined. Allowed skill values: `Farming`, `Fishing`, `Foraging`, `Mining`, `Combat`, `Luck`
-IsCommunityCenterCompleted | `yes` or `no`              | Check if community center is already completed.
-BuildingConstructed      | `Coop` or `Deluxe_Coop Well Coop` | Check if specified building is currently present in farm.
-KnownCraftingRecipe      | `Furnace`                  | Player knows specified crafting recipe.
-KnownCookingRecipe       | `Fried Egg`                | Player knows specified cooking recipe.
-HasMod                   | `PurrplingCat.NpcAdventure` | Checks if mod with specified mod UID is loaded in SMAPI
-Random                   | `52` or `22.272`           | A random chance in % (0 - 100). Number `52` means 52% of chance, number `22.272` means 22.272% of chance.
-EPU                      | EPU string like `!z spring/t 600 1000` | Condition processed by [Expanded Preconditions Utility](https://www.nexusmods.com/stardewvalley/mods/6529). For use this condition, EPU must be installed in SDV mods folder. See [EPU docs](https://github.com/ChroniclerCherry/stardew-valley-mods/blob/master/ExpandedPreconditionsUtility/README.md) for more information.
-
-Every condition name enlisted in this common conditions list you can prefix with `not:` for negate condition result.
-For example: `not:EventSeen` means event with specified id was not seen by player;
-
-Also you can chain condition values with `OR` logic function with character separator `|`:
-
-```js
+```csharp
+public interface IManagedQuestApi
 {
-  "Weather": "rainy | snowy", // Means current weather is 'rainy' OR 'snowy'
-  "Date": "6 summer Y1 | 19 fall Y1 | 24 spring Y3", // Means current date is '6th summer year 1' OR '19th fall year 1' OR '24th spring year 3'
-  "EventSeen": "335478 | 44125", // Means player seen event ID 335478 OR event ID 44125
-  "not:MailReceived": "ccComplete | jojaMember" // Player NOT received mail 'ccComplete' OR 'jojaMember'
+    /// <summary>
+    /// Add custom quest to player's questlog and mark then accepted and new.
+    /// </summary>
+    /// <param name="questName">Name without @ has resolved in your mod scope</param>
+    void AcceptQuest(string questName, bool silent = false);
+
+    /// <summary>
+    /// Resolve game quest id and returns custom quest
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    CustomQuest GetQuestById(int id);
+
+    /// <summary>
+    /// Resolve game quest by name and return it's instance
+    /// You can request quest by fullname (with @) or localname (localname returns quest in this mod-managed scope).
+    /// </summary>
+    /// <param name="questName"></param>
+    /// <returns></returns>
+    CustomQuest GetQuestByName(string questName);
+
+    /// <summary>
+    /// Register custom quest (vanilla or custom type)
+    /// WARNING: Can't register new quests when game is loaded. 
+    /// Please register all your quests and quest types before game will be loaded. 
+    /// (Before Content.IsWorldReady is true)
+    /// </summary>
+    /// <param name="quest">Quest template</param>
+    void RegisterQuest(CustomQuest quest);
+
+    /// <summary>
+    /// Mark quest by given name as completed,
+    /// if quest with this name exists and is managed.
+    /// </summary>
+    /// <param name="questName"></param>
+    void CompleteQuest(string questName);
+
+    /// <summary>
+    /// Schedule a quest for add to specified quest source 
+    /// which will be available to accept by player.
+    /// (like offer quest on bulletin board, deliver via mail or etc)
+    /// </summary>
+    /// <param name="schedule"></param>
+    void OfferQuest(QuestOffer schedule);
+
+    /// <summary>
+    /// Get quest schedules for today by the source name.
+    /// </summary>
+    /// <param name="source"/>
+    /// <exception cref="InvalidOperationException">
+    ///     Throws when this method is called outside of loaded game
+    /// </exception>
+    IEnumerable<QuestOffer> GetTodayQuestOffers(string source);
+
+    /// <summary>
+    /// Get quest schedules with attributes (if that schedules has them)
+    /// for today by the source name.
+    /// </summary>
+    /// <typeparam name="TAttributes"></typeparam>
+    /// <param name="source"></param>
+    /// <exception cref="InvalidOperationException">
+    ///     Throws when this method is called outside of loaded game
+    /// </exception>
+    IEnumerable<QuestOffer<TAttributes>> GetTodayQuestOffers<TAttributes>(string source);
+
+    /// <summary>
+    /// Exposes global condition for usage in offers or hooks.
+    /// </summary>
+    /// <param name="conditionName">Name of condition</param>
+    /// <param name="conditionHandler">Handler for this condition</param>
+    void ExposeGlobalCondition(string conditionName, Func<string, CustomQuest, bool> conditionHandler);
 }
 ```
 
-## Offers
+### Events API
 
-You can define offers. Offers are descriptions of when and by which source your quest will be delivered to player to accept (add to quest log). You can define one or more offers (for different or for the same quest).
-
-Field          | Description
--------------- | -----------
-QuestName      | (string) Quest for schedule to offer (available for add to quest log).
-OfferedBy      | (string) Which source offers this quest to accept. (See quest sources bellow)
-OfferDetails   | (custom) Details for quest offer. This field is customized. (Optional. See quest sources bellow)
-When           | (dictionary<string, string>) When this quest will be offered (see environment conditions).
-OnlyMainPlayer | (boolean) Set to true if you want to offer this quest only for main player (server).
-
-### Quests sources
-
-These are the available quests sources provided by native Quest Framework. Some sources require defined offer details. There are different offer details based on the source.
-
-#### Bulletinboard
-
-Offers quest on bulletinboard located in front of the seeds shop (Pierre).
-
-*This source NOT requires or accepts any offer details*
-
-**Example**
-```js
+```csharp
+namespace QuestFramework.Events
 {
-  "Format": "1.0",
-  "Quests": [
+    /// <summary>
+    /// Events of Quest Framework
+    /// </summary>
+    public interface IQuestFrameworkEvents
     {
-      "Name": "abigail_amethyst", // No id needed, will be automatically generated
-      "Type": "ItemDelivery", // Vanilla quest type
-      "Title": "The purple lunch",
-      "Description": "Abigail are very hungry. She wants to eat something special from mines.",
-      "Objective": "Bring amethyst to Abigail",
-      "Reward": 300, // 300g
-      "Cancelable": true,
-      "Trigger": "Abigail 66", // Bring amethyst to Abby
-      "ReactionText": "Oh, it's looks delicious. I am really hungry.",
+        /// <summary>
+        /// Quest Framework lifecycle state changed event.
+        /// </summary>
+        event EventHandler<ChangeStateEventArgs> ChangeState;
+
+        /// <summary>
+        /// Quest Framework getting ready.
+        /// Place for register quests, hooks and etc.
+        /// </summary>
+        event EventHandler<GettingReadyEventArgs> GettingReady;
+
+        /// <summary>
+        /// Quest Framework is ready.
+        /// Here you can't to do anything with quest registry, hooks and etc.
+        /// </summary>
+        event EventHandler<ReadyEventArgs> Ready;
+
+        /// <summary>
+        /// A quest was completed
+        /// </summary>
+        event EventHandler<QuestEventArgs> QuestCompleted;
+
+        /// <summary>
+        /// A quest was accepted and added to quest log
+        /// </summary>
+        event EventHandler<QuestEventArgs> QuestAccepted;
+
+        /// <summary>
+        /// A quest was removed from log
+        /// </summary>
+        event EventHandler<QuestEventArgs> QuestRemoved;
+
+        /// <summary>
+        /// Quest log menu was open
+        /// </summary>
+        event EventHandler<EventArgs> QuestLogMenuOpen;
+
+        /// <summary>
+        /// Quest log menu was closed
+        /// </summary>
+        event EventHandler<EventArgs> QuestLogMenuClosed;
+        
+        /// <summary>
+        /// Managed questlog and/or offers was refreshed
+        /// </summary>
+        event EventHandler<EventArgs> Refreshed;
     }
-  ],
-  "Offers": [
-    {
-      "QuestName": "abigail_amethyst",
-      "OfferedBy": "Bulletinboard",
-      "When": {
-        "DaysOfWeek": "Monday Thursday Friday",
-        "Seasons": "spring fall",
-      }
-    }
-  ]
 }
 ```
 
-#### NPC
+## Lifecycle
 
-NPC can offer your quest via dialogue (speak with them and get a quest)
+1. `DISABLED`
+Before onGameLaunched and when QF's Entry() method called
+2. `STANDBY`
+After onGameLaunched
+**Register hook observers here**
+3. `AWAITING`
+Only in multiplayer and on client-side. Waiting for init message
+4. `LAUNCHING`
+On game loaded (and init message received in multiplayer on client-side) 
+**Register your quests, offers and assign hooks on quests here**
+5. `LAUNCHED`
+Game loaded and all Quest Framework stuff initialized
+6. `CLEANING` 
+Returning to title screen. Next state is *STANDBY*.
+**Clean your specialized custom stuff with QF here**
 
-**Requires these offer details**
-Field        | Description 
------------- | -----------
-NpcName      | (string) Which NPC offers this quest.
-DialogueText | (string) What to NPC say to offer this quest.
+## Events
 
-**Example**
-```js
-{
-  "Format": "1.0",
-  "Quests": [
-    {
-      "Name": "abigail_amethyst", // No id needed, will be automatically generated
-      "Type": "ItemDelivery", // Vanilla quest type
-      "Title": "The purple lunch",
-      "Description": "Abigail is very hungry. She wants to eat something special from mines.",
-      "Objective": "Bring amethyst to Abigail",
-      "Reward": 300, // 300g
-      "Cancelable": true,
-      "Trigger": "Abigail 66", // Bring amethyst to Abby
-      "ReactionText": "Oh, this looks so delicious. I am really hungry, thank you, @!$h"
-    }
-  ],
-  "Offers": [
-    {
-      "QuestName": "abigail_amethyst",
-      "OfferedBy": "NPC",
-      "OfferDetails": {
-        "NpcName": "Abigail", // Speak with Abigail to get this quest
-        "DialogueText": "I have a craving for something special.#$b#@, can you bring me amethyst?"
-      },
-      "When": {
-        "DaysOfWeek": "Monday Thursday Friday",
-        "Seasons": "spring fall"
-      }
-    }
-  ]
-}
+Event              | Summary                           
+------------------ | ---------------------------------
+ChangeState        | Raised when Quest Framework's lifecycle state changed.
+GettingReady       | Raised when Quest Framework is in state `Launching` at least before QF is going to state `Launched`. **Best place for register your custom quests.**
+Ready              | Raised when lifecycle state is `Launched` and all important Quest Framework systems are ready.
+QuestCompleted     | Raised when any quest (managed or unmanaged) completed.
+QuestAccepted      | Raised when any quest (managed or unmanaged) accepted and added to questlog.
+QuestRemoved       | Raised when any quest (managed or unmanaged) removed from questlog.
+QuestLogMenuOpen   | Raised when questlog menu was open.
+QuestLogMenuClosed | Raised when questlog menu was closed.
+Refreshed          | Raised when new day started or `IApi.ForceRefresh()` was called.
+
+## Work with quests
+
+### Add custom quest
+
+```cs
+var quest = new CustomQuest();
+
+quest.Name = "meet_marlon"; // This is important!
+quest.BaseType = QuestType.Location
+quest.Title = "Meet with Marlon";
+quest.Description = "Enter the Adventurer Guild east of mines and meet with Marlon.";
+quest.Objective = "Go to Adventurer Guild";
+quest.Trigger = "AdventureGuild";
+quest.Cancelable = true; // Set this if you want this quest cancelable
+quest.Reward = 500; // Set this if you want to set money reward (50g in this example quest)
+
+// If you want to set next quests which will be added after this quest was completed
+// These quests must be registered too in Quest Framework quest manager!
+quest.NextQuests.Add("slay_bats");
+quest.NextQuests.Add("bat_wing_trophy");
 ```
 
-#### Mail
+### Use quest offers
 
-Farmer can get a quest via received letter in their mailbox on the farm.
+TODO
 
-**Requires these offer details**
-Field        | Description 
------------- | -----------
-Topic        | (string) Title or topic of the letter (optional)
-Text         | (string) Text of the quest source letter (required)
+### Use quest hooks
 
-**Example**
-```js
-{
-  "Format": "1.0",
-  "Quests": [
-    {
-      "Name": "bat_problem",
-      "Type": "Monster",
-      "Title": "The bat problem",
-      "Description": "Bats are attacking the town every night. Slay some bats and make town more safe.",
-      "Objective": "Slay 10 bats",
-      "Reward": 500, // 500g
-      "Cancelable": false,
-      "Trigger": "Bat 10 Lewis", // Slay 10 bats and then talk with Lewis
-      "ReactionText": "Good job, @. Our town is safe for this time.#$b#Bats are big problem after mines in mountains are open again. We must be carefull."
-    }
-  ],
-  "Offers": [
-    {
-      "QuestName": "bat_problem",
-      "OfferedBy": "Mail",
-      "OfferDetails": {
-        "Topic": "The bat problem",
-        "Text": "Hi, @,^Our town is not safe during nights, because agressive kind of bats attacking villagers and they are scared. Reduce the bat population and make this town safe again. Thanks ^   -Mayor Lewis"
-      },
-      "When": {
-        "Weather": "cloudy",
-        "Seasons": "spring summer",
-        "Days": "4 11 24"
-      }
-    }
-  ]
-}
-```
+TODO
 
-## Compatibility with other mods
+### Create custom quest type
 
-### Json Assets support
+TODO
 
-Quest Framework is compatible with JsonAssets mod. The framework supports JsonAssets objects for the `Trigger` quest field via token named `ja` and supports two item types: `object` and `bigcraftable`.
+### Manual quest handling
 
-Token looks like: `{{ja: <itemName> [|bigcraftable]}}`
+TODO
 
-If you add suffix `|bigcraftable` after item name, then Quest Framework looks in the BigCraftable sheet. Otherwise looks in Object sheet.
+## Extensions API
 
-#### Example
+TODO
 
-```js
-{
-  "Format": "1.0",
-  "Quests": [
-    {
-      "Name": "willy_fish_oil", // No id needed, will be automatically generated
-      "Type": "ItemDelivery", // Vanilla quest type
-      "Title": "Fish Oil needed",
-      "Description": "Hi. I need a fish oil. ASAP please.\n                                - Willy",
-      "Objective": "Bring Fish Oil to Willy",
-      "Reward": 220, // 220g
-      "Cancelable": true,
-      "Trigger": "Willy {{ja:Fish Oil}}", // Bring Fish Oil to Willy (this item is from JA items)
-      "ReactionText": "This one smells very intensive! Thank you so much, @!$h"
-    }
-  ]
-}
+## API Reference
 
-```
-
-## Outbound
-
-### Add quest via NPC dialogue (external)
-
-You can add known quest in Quest Framework via NPC dialogues. You can define it with content patcher (Patch `Dialogue/<NPC_name>`) and add your dialogue which adds a quest to the player's questlog or edit existing dialogue line.
-
-By place `![<questname>@<modUID>]` to the dialogue player get a quest when speak with NPC and this dialogue line is shown.
-
-#### Example
-
-```js
-// Some dialogue definition file
-{
-    "yourDialogueKey": "Can you bring me an Amethyst? ![bringAmethyst@purrplingcat.myquestmod]"
-    "anotherDIalogue": "What's up? $h#$b#Are you interested to small fighting adventure?#$b#Bless your sword! ![slayMonsters@purrplingcat.myquestmod]"
-}
-```
+TODO

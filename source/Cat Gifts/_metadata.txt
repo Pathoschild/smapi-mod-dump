@@ -5,12 +5,9 @@ mods:
    Cat Gifts
 
 latest commit:
-   commit e293072a076126e725a247eb80f9fdb9eb3f69de
-   Merge: 7ef262f 34c7db4
-   Author: Simon <scdehne@googlemail.com>
-   Date:   Mon Dec 2 17:19:15 2019 +0100
+   commit 8cc9b15842499796d5c354a6ae24398afee6b193
+   Author: SkuldOMG <SkuldOMG@gmx.net>
+   Date:   Mon Nov 30 21:17:35 2020 +0100
    
-       Merge pull request #2 from strobel1ght/master
-       
-       Updates for 1.4
+       Updated version no
    

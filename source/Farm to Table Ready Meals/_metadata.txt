@@ -1,0 +1,13 @@
+url:
+   https://github.com/Speshkitty/FarmToTableReadyMeals.git
+
+mods:
+   Farm to Table Ready Meals
+
+latest commit:
+   commit 2ad72f4a9ee9da6e625dc39fbfe25c6761f4f500
+   Author: Speshkitty <sirspeshkitty+github@gmail.com>
+   Date:   Sat Nov 21 14:39:10 2020 +0000
+   
+       Added some output text when this mod does things
+   

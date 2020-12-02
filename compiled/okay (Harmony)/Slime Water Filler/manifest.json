@@ -1,0 +1,16 @@
+{
+  "Name": "Slime AutoWaterer",
+  "Description": "Adds an item that automatically waters slimes",
+  "Author": "Speshkitty",
+  "EntryDLL": "SlimeWaterFiller.dll",
+  "MinimumApiVersion": "3.1.0",
+  "Version": "1.0.1",
+  "UpdateKeys": [ "Nexus:7141" ],
+  "UniqueID": "speshkitty.slimewaterer",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": true
+    }
+  ]
+}

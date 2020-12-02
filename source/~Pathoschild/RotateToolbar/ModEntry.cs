@@ -39,7 +39,7 @@ namespace Pathoschild.Stardew.RotateToolbar
         {
             // read config
             this.Config = helper.ReadConfig<ModConfig>();
-            this.Keys = this.Config.Controls.ParseControls(this.Monitor);
+            this.Keys = this.Config.Controls.ParseControls(helper.Input, this.Monitor);
 
             // hook events
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
@@ -64,9 +64,9 @@ namespace Pathoschild.Stardew.RotateToolbar
             this.Monitor.InterceptErrors("handling your input", $"handling input '{e.Button}'", () =>
             {
                 ModConfigKeys keys = this.Keys;
-                if (keys.ShiftToNext.Contains(e.Button))
+                if (keys.ShiftToNext.JustPressedUnique())
                     this.RotateToolbar(true, this.Config.DeselectItemOnRotate);
-                else if (keys.ShiftToPrevious.Contains(e.Button))
+                else if (keys.ShiftToPrevious.JustPressedUnique())
                     this.RotateToolbar(false, this.Config.DeselectItemOnRotate);
             });
         }

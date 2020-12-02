@@ -9,6 +9,8 @@
 *************************************************/
 
 using PurrplingCore.Internal;
+using StardewModdingAPI.Events;
+using StardewValley.Monsters;
 
 namespace NpcAdventure.AI.Controller
 {
@@ -17,5 +19,6 @@ namespace NpcAdventure.AI.Controller
         bool IsIdle { get; }
         void Activate();
         void Deactivate();
+        void SideUpdate(UpdateTickedEventArgs e);
     }
 }

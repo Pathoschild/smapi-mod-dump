@@ -61,7 +61,7 @@
 		"Target": "Data/NPCDispositions",
 		"Fields": {
 			"Alex": {
-				9: "George 'grand{{mardrest.ChangeDialogues/Pa:L{{mardrest.ChangeDialogues/George}}}}' Evelyn 'grandma'"
+				9: "George 'grand{{mardrest.ChangeDialogues/Pa:L{{mardrest.ChangeDialogues/GeorgeGender}}}}' Evelyn 'grandma'"
 			}
 		}
 	}

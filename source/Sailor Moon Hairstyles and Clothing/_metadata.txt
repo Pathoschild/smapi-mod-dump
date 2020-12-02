@@ -1,5 +1,5 @@
 url:
-   https://github.com/razikh-git/SailorStyles.git
+   https://github.com/b-b-blueberry/SailorStyles.git
 
 mods:
    Sailor Moon Hairstyles and Clothing

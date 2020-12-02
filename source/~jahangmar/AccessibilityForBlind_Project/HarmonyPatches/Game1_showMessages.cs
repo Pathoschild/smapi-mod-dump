@@ -53,32 +53,39 @@ namespace AccessibilityForBlind.HarmonyPatches
         {
             if (Game1.hudMessages.Count < 0)
                 return;
-
-            HUDMessage message = Game1.hudMessages[Game1.hudMessages.Count-1];
-            switch (message.whatType)
+            //bool first = false;
+            foreach (HUDMessage message in Game1.hudMessages)
             {
-                case HUDMessage.achievement_type:
-                    TextToSpeech.Speak("archievement: " + message.Message);
-                    break;
-                case HUDMessage.error_type:
-                    TextToSpeech.Speak("error: " + message.Message);
-                    break;
-                case HUDMessage.health_type:
-                    TextToSpeech.Speak("health: " + message.Message);
-                    break;
-                case HUDMessage.stamina_type:
-                    TextToSpeech.Speak("stamina: " + message.Message);
-                    break;
-                case HUDMessage.newQuest_type:
-                    TextToSpeech.Speak("quest: " + message.Message);
-                    break;
-                case HUDMessage.screenshot_type:
-                    TextToSpeech.Speak("screenshot: " + message.Message);
-                    break;
-                default:
-                    Item item = ModEntry.GetHelper().Reflection.GetField<Item>(message, "messageSubject").GetValue();
-                    TextToSpeech.Speak("received " + TextToSpeech.ItemToSpeech(item));
-                    break;
+                //HUDMessage message = Game1.hudMessages[Game1.hudMessages.Count-1];
+                switch (message.whatType)
+                {
+                    case HUDMessage.achievement_type:
+                        TextToSpeech.Speak("archievement: " + message.Message);
+                        break;
+                    case HUDMessage.error_type:
+                        TextToSpeech.Speak("error: " + message.Message);
+                        break;
+                    case HUDMessage.health_type:
+                        TextToSpeech.Speak("health: " + message.Message);
+                        break;
+                    case HUDMessage.stamina_type:
+                        TextToSpeech.Speak("stamina: " + message.Message);
+                        break;
+                    case HUDMessage.newQuest_type:
+                        TextToSpeech.Speak("quest: " + message.Message);
+                        break;
+                    case HUDMessage.screenshot_type:
+                        TextToSpeech.Speak("screenshot: " + message.Message);
+                        break;
+                    default:
+                        Item item = ModEntry.GetHelper().Reflection.GetField<Item>(message, "messageSubject").GetValue();
+                        if (item != null)
+                            TextToSpeech.Speak("received " + TextToSpeech.ItemToSpeech(item));
+                        else
+                            TextToSpeech.Speak(message.Message);
+                        break;
+                }
+                //dfirst = false;
             }
         }
 

@@ -6,12 +6,12 @@ mods:
    One Click Shed Reloader
 
 latest commit:
-   commit dea5c1ebc4c8a87ee92eb499c1880bb2237135a8
-   Merge: 03520c0 8944b9b
+   commit e7b5d8748cc9abe59c1ca017fdae0dd460d49a39
+   Merge: 928f1fa 1b015ed
    Author: bitwisejon <38377407+bitwisejon@users.noreply.github.com>
-   Date:   Wed Nov 27 19:06:13 2019 -0500
+   Date:   Fri Nov 27 11:21:07 2020 -0500
    
-       Merge pull request #12 from bitwisejon/SupportSDV1.4
+       Merge pull request #15 from bitwisejon/ReleaseNotes
        
-       Support sdv1.4
+       Updated release notes
    

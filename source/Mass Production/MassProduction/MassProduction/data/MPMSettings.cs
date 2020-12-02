@@ -9,14 +9,13 @@
 *************************************************/
 
 using MailFrameworkMod;
-using ProducerFrameworkMod.ContentPack;
+using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using JsonAssetsIngredient = JsonAssets.Data.BigCraftableData.Recipe_.Ingredient;
 
 namespace MassProduction
 {
@@ -34,10 +33,14 @@ namespace MassProduction
         public int OutputStaticChange { get; set; } = 0;
         public double InputMultiplier { get; set; } = 0.0;
         public double OutputMultiplier { get; set; } = 0.0;
+        public double OutputMultiplierMin { get; set; } = 0.0;
+        public double OutputMultiplierMax { get; set; } = 0.0;
         public double TimeMultiplier { get; set; } = 1.0;
-        public bool AllowInputlessBases { get; set; } = false;
-        public QualitySetting Quality { get; set; } = QualitySetting.NoStars;
+        public string InputRequirement { get; set; } = "InputRequired";
+        public QualitySetting? Quality { get; set; } = null;
         public Dictionary<string, object> UnlockConditions { get; set; }
+        public string[] FuelIgnore { get; set; } = new string[0];
+        public ConditionalSetting[] ConditionalSettings { get; set; } = new ConditionalSetting[0];
 
         public int UpgradeObjectID
         {
@@ -52,19 +55,39 @@ namespace MassProduction
                 return -1;
             }
         }
+        public InputRequirement InputRequirementEnum
+        {
+            get
+            {
+                return (InputRequirement)Enum.Parse(typeof(InputRequirement), InputRequirement);
+            }
+        }
 
         /// <summary>
         /// Finds what new amount of input is required.
         /// </summary>
-        /// <param name="baseInputStack"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        public int CalculateInputRequired(int baseInputStack)
+        public int CalculateInputRequired(InputInfo input)
         {
-            if (baseInputStack == 0) { return 0; }
-
+            if (input.BaseQuantity == 0) { return 0; }
+            
             double multiplier = BaseMultiplier + InputMultiplier;
+            int staticChange = InputStaticChange;
+
+            if (input.IsFuel && FuelIgnore.Contains(input.ID.ToString()) || FuelIgnore.Contains(input.Name))
+            {
+                return 0;
+            }
+
+            foreach (ConditionalSetting conditional in GetActiveConditionalSettings(input))
+            {
+                multiplier += conditional.InputMultiplier;
+                staticChange += conditional.InputStaticChange;
+            }
+
             if (multiplier < 1.0) { multiplier = 1.0; }
-            int inputRequired = (int)Math.Ceiling(baseInputStack * multiplier) + InputStaticChange;
+            int inputRequired = (int)Math.Ceiling(input.BaseQuantity * multiplier) + staticChange;
             if (inputRequired < 1) { inputRequired = 1; }
 
             return inputRequired;
@@ -74,26 +97,54 @@ namespace MassProduction
         /// Finds what new amount of output is produced.
         /// </summary>
         /// <param name="baseOutputStack"></param>
+        /// <param name="inputs"></param>
         /// <returns></returns>
-        public int CalculateOutputProduced(int baseOutputStack)
+        public int CalculateOutputProduced(int baseOutputStack, params InputInfo[] inputs)
         {
-            double multiplier = BaseMultiplier + OutputMultiplier;
-            if (multiplier < 1.0) { multiplier = 1.0; }
-            int outputRequired = (int)Math.Ceiling(baseOutputStack * multiplier) + OutputStaticChange;
-            if (outputRequired < 1) { outputRequired = 1; }
+            double multiplierBeforeRandom = BaseMultiplier + OutputMultiplier;
+            double randomMin = OutputMultiplierMin;
+            double randomMax = OutputMultiplierMax;
+            int staticChange = OutputStaticChange;
 
-            return outputRequired;
+            if (inputs != null && inputs.Length > 0)
+            {
+                foreach (ConditionalSetting conditional in GetActiveConditionalSettings(inputs))
+                {
+                    multiplierBeforeRandom += conditional.OutputMultiplier;
+                    randomMin += conditional.OutputMultiplierMin;
+                    randomMax += conditional.OutputMultiplierMax;
+                    staticChange += conditional.OutputStaticChange;
+                }
+            }
+
+            double multiplier = multiplierBeforeRandom + GetRandomDouble(randomMin, randomMax);
+            if (multiplier < 1.0) { multiplier = 1.0; }
+            int outputProduced = (int)Math.Ceiling(baseOutputStack * multiplier) + staticChange;
+            if (outputProduced < 1) { outputProduced = 1; }
+
+            return outputProduced;
         }
 
         /// <summary>
         /// Calculates the new time required per operation.
         /// </summary>
         /// <param name="baseTime"></param>
+        /// <param name="inputs"></param>
         /// <returns></returns>
-        public int CalculateTimeRequired(int baseTime)
+        public int CalculateTimeRequired(int baseTime, params InputInfo[] inputs)
         {
-            //TOREVIEW: time needs to be in increments of ten minutes - does this accomplish that?
-            int timeRequired = (int)Math.Round((baseTime / 10.0) * TimeMultiplier) * 10;
+            double multiplier = TimeMultiplier;
+
+            if (inputs != null && inputs.Length > 0)
+            {
+                foreach (ConditionalSetting conditional in GetActiveConditionalSettings(inputs))
+                {
+                    multiplier += conditional.TimeMultiplier;
+                }
+            }
+
+            int timeRequired = (int)Math.Round((baseTime / 10.0) * multiplier) * 10;
+            if (timeRequired < 10) { timeRequired = 10; }
 
             return timeRequired;
         }
@@ -104,7 +155,14 @@ namespace MassProduction
         /// <returns></returns>
         public int GetOutputQuality()
         {
-            return (Quality == QualitySetting.KeepInput) ? 0 : (int)Quality;
+            if (Quality.HasValue)
+            {
+                return (Quality == QualitySetting.KeepInput) ? 0 : (int)Quality;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         /// <summary>
@@ -160,11 +218,39 @@ namespace MassProduction
             }
             catch (Exception e)
             {
-                ModEntry.Instance.Monitor.Log($"Error in checking if recipe could be learned:\n{e}", StardewModdingAPI.LogLevel.Error);
+                ModEntry.Instance.Monitor.Log($"Error in checking if recipe could be learned:\n{e}", LogLevel.Error);
                 return false;
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets a random double in a range.
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        private double GetRandomDouble(double min, double max)
+        {
+            if (max <= min)
+            {
+                return max;
+            }
+
+            return Game1.random.NextDouble() * (max - min) + min;
+        }
+
+        /// <summary>
+        /// Gets all conditional settings that meet the conditions of the current inputs.
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <returns></returns>
+        private IEnumerable<ConditionalSetting> GetActiveConditionalSettings(params InputInfo[] inputs)
+        {
+            return from setting in ConditionalSettings
+                   where setting.IsActive(inputs)
+                   select setting;
         }
     }
 }

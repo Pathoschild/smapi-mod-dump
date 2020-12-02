@@ -45,21 +45,28 @@ namespace NpcAdventure
         internal ContentPackManager ContentPackManager { get; private set; }
         internal static List<string> DebugFlags { get; } = new List<string>();
         internal static IManifest Manifest { get; private set; }
+        internal static IReflectionHelper Reflection { get; private set; }
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             Manifest = this.ModManifest;
+            Reflection = helper.Reflection;
             this.Config = helper.ReadConfig<Config>();
 
             if (Constants.TargetPlatform == GamePlatform.Android)
             {
                 this.Monitor.Log("Android support is an experimental feature, may cause some problems. Before you report a bug please content me on my discord https://discord.gg/wnEDqKF Thank you.", LogLevel.Alert);
             }
+
+            if (this.Config.AllowLegacyContentPacks)
+            {
+                this.Monitor.Log("Loading of legacy content packs is allowed! This may cause some unexpected side-effects.", LogLevel.Alert);
+            }
             
             this.RegisterAssetEditors(helper);
-            this.ContentPackManager = new ContentPackManager(this.Monitor, this.Config.EnableDebug);
+            this.ContentPackManager = new ContentPackManager(this.Monitor, this.Config.EnableDebug, this.Config.AllowLegacyContentPacks);
             this.ContentLoader = new ContentLoader(helper, this.ContentPackManager, this.Monitor);
             this.Patcher = new GamePatcher(this.ModManifest.UniqueID, this.Monitor, this.Config.EnableDebug);
             this.RegisterEvents(helper.Events);
@@ -79,7 +86,6 @@ namespace NpcAdventure
         {
             events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
             events.GameLoop.Saving += this.GameLoop_Saving;
-            events.Specialized.LoadStageChanged += this.Specialized_LoadStageChanged;
             events.GameLoop.ReturnedToTitle += this.GameLoop_ReturnedToTitle;
             events.GameLoop.DayEnding += this.GameLoop_DayEnding;
             events.GameLoop.DayStarted += this.GameLoop_DayStarted;
@@ -125,7 +131,7 @@ namespace NpcAdventure
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
             // Setup third party mod compatibility bridge
-            TPMC.Setup(this.Helper.ModRegistry, this.Monitor);
+            Compat.Setup(this.Helper.ModRegistry, this.Monitor);
             IQuestApi questApi = this.Helper.ModRegistry.GetApi<IQuestApi>("purrplingcat.questframework");
             var storyHelper = new StoryHelper(this.ContentLoader, questApi.GetManagedApi(this.ModManifest));
 
@@ -159,7 +165,8 @@ namespace NpcAdventure
                 new Patches.GetCharacterPatch(this.CompanionManager),
                 new Patches.NpcCheckActionPatch(this.CompanionManager, this.Helper.Input, this.Config),
                 new Patches.GameLocationDrawPatch((SpecialModEvents)this.SpecialEvents),
-                new Patches.GameLocationPerformActionPatch(this.CompanionManager, this.Config.AllowEntryLockedCompanionHouse)
+                new Patches.GameLocationPerformActionPatch(this.CompanionManager, this.Config.AllowEntryLockedCompanionHouse),
+                new Patches.MonsterBehaviorPatch(this.CompanionManager)
             );
 
             if (this.Config.AvoidSayHiToMonsters)
@@ -191,36 +198,6 @@ namespace NpcAdventure
             this.Monitor.Log("   This feature may affect game stability, you can disable it in config.json", LogLevel.Warn);
         }
 
-        private void Specialized_LoadStageChanged(object sender, LoadStageChangedEventArgs e)
-        {
-            if (e.NewStage == StardewModdingAPI.Enums.LoadStage.Loaded)
-            {
-                this.PreloadAssets();
-            }
-        }
-
-        private void PreloadAssets()
-        {
-            /* Preload assets to cache */
-            this.Monitor.Log("Preloading assets...", LogLevel.Info);
-
-            var dispositions = this.ContentLoader.LoadStrings("Data/CompanionDispositions");
-
-            this.ContentLoader.LoadStrings("Data/AnimationDescriptions");
-            this.ContentLoader.LoadStrings("Data/IdleBehaviors");
-            this.ContentLoader.LoadStrings("Data/IdleNPCDefinitions");
-            this.ContentLoader.LoadStrings("Strings/Strings");
-            this.ContentLoader.LoadStrings("Strings/SpeechBubbles");
-
-            // Preload dialogues for companions
-            foreach (string npcName in dispositions.Keys)
-            {
-                this.ContentLoader.LoadStrings($"Dialogue/{npcName}");
-            }
-
-            this.Monitor.Log("Assets preloaded!", LogLevel.Info);
-        }
-
         private void InitializeScenarios()
         {
             if (!this.Config.AdventureMode)
@@ -228,6 +205,7 @@ namespace NpcAdventure
 
             this.GameMaster.RegisterScenario(new AdventureBegins(this.SpecialEvents, this.QuestApi.Events, this.Helper.Events, this.ContentLoader, this.Config, this.Monitor));
             this.GameMaster.RegisterScenario(new RecruitmentScenario());
+            this.GameMaster.RegisterScenario(new CompanionCutscenes(this.ContentLoader, this.CompanionManager));
         }
 
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
@@ -271,6 +249,10 @@ namespace NpcAdventure
 
             this.CompanionManager.InitializeCompanions(this.ContentLoader, this.Helper.Events, this.SpecialEvents, this.Helper.Reflection);
             this.Patcher.CheckPatches();
+        }
+        public override object GetApi()
+        {
+            return new NpcAdventureModApi(this);
         }
     }
 }

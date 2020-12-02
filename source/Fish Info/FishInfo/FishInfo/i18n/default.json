@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Speshkitty/FishInfo
+**
+*************************************************/
+
+{
+  "location.prefix": "Caught in",
+  "location.none": "Unknown - Mines/Event?",
+  "location.crabpot": "Crab Pot in: {{location}}",
+  "location.ocean": "Ocean",
+  "location.freshwater": "Freshwater",
+  "location.forestriver": "Forest River",
+  "location.forestpond": "Forest Pond",
+  "location.bugland": "Mutant Bug Lair",
+  "location.witchswamp": "Witch's Swamp",
+  "season.prefix": "Season",
+  "season.all": "All Seasons",
+  "season.none": "No Entry Found",
+  "time.prefix": "Time",
+  "time.allday": "All day",
+  "time.midday": "Midday",
+  "time.midnight": "Midnight",
+  "weather.prefix": "Weather",
+  "weather.sun": "Sun",
+  "weather.rain": "Rain",
+  "weather.none": "No Entry Found"
+}

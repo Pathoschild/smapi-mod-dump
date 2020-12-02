@@ -1,0 +1,13 @@
+url:
+   https://github.com/Speshkitty/SlimeWaterFiller.git
+
+mods:
+   Slime Water Filler
+
+latest commit:
+   commit fb95bff27059d9214680ef4c2081479fc2deb273
+   Author: Speshkitty <sirspeshkitty+github@gmail.com>
+   Date:   Sun Nov 15 15:50:58 2020 +0000
+   
+       SVE/Vanilla support
+   

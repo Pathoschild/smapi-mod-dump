@@ -5,6 +5,7 @@ mods:
    Compost
    Dismantle Craftables
    Don't Eat That
+   Fall To Autumn
    Interaction Tweaks
    Leveling Adjustment
    Pet Interaction
@@ -12,9 +13,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 93f51eaf9db27956f1a4c64b193a16945c2f821d
+   commit c7c6b605d7fe08f1d7fb5f76ddf56eff919a27af
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Sun Nov 1 23:28:34 2020 +0100
+   Date:   Sun Nov 22 12:50:00 2020 +0100
    
-       accessibility init
+       init falltoautumn
    

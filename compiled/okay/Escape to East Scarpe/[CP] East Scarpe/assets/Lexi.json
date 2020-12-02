@@ -1,0 +1,59 @@
+{
+	
+	"Changes": [
+	
+		{
+		
+			"LogName": "NPC Manifestation",
+			"Action": "EditData",
+			"Target": "Data/NPCDispositions", 
+			"Entries": { 
+			
+				"Leximonster": "adult/neutral/shy/neutral/undefined/not-datable/null/Other//Jessie 'mother'/SeaCave 33 5/Lexi"		
+			        }
+		},
+		
+	{   "LogName": "Lexi Antisocial flag",  "Action": "EditData", "Target": "Data/AntiSocialNPCs", "Entries": { "Leximonster": true }	
+},
+			
+
+					
+	{	"LogName": "LexiPortraits", 
+			"Action": "Load",
+			"Target": "Portraits/Leximonster",
+			"FromFile": "assets/Lexi/Lexi_portrait.png"		
+		},
+		
+		{		
+			"LogName": "Lexi Sprites", 
+			"Action": "Load",
+			"Target": "Characters/Leximonster",
+			"FromFile": "assets/Lexi/seamonster.png"			
+		},
+		
+		{
+			"LogName": "Dialogue", 
+			"Action": "Load",
+			"Target": "Characters/Dialogue/Leximonster",
+			"FromFile": "assets/Lexi/dialogue.json"
+		},
+		/*{
+	"LogName": "Schedule Dialogue", 
+	"Action": "Load",
+	"Target": "Strings/schedules/Leximonster",
+	"FromFile": "assets/Lexi/ScheduleDialogue.json"
+		},*/
+
+{
+	"LogName": "Schedule", 
+	"Action": "Load",
+	"Target": "Characters/schedules/Leximonster",
+	"FromFile": "assets/Lexi/schedule.json"
+		}
+
+
+	]
+
+}
+		
+		

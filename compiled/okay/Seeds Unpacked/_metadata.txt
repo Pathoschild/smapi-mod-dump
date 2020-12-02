@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7215
+IDs: blueberry.SeedsUnpacked
+update keys: Nexus:7215, GitHub:b-b-blueberry/SeedsUnboxed

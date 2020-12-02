@@ -25,6 +25,11 @@ namespace BitwiseJonMods
         public SButton ToggleInstantBuildMenuButton { get; set; } = SButton.B;
 
         /// <summary>
+        /// Button to initiate the house/cabin upgrade
+        /// </summary>
+        public SButton PerformInstantHouseUpgradeButton { get; set; } = SButton.U;
+
+        /// <summary>
         /// If false, will only allow the Magician buildings to be built once the player has the magic ink. Set to true for "sandbox" mode.
         /// </summary>
         public bool AllowMagicalBuildingsWithoutMagicInk { get; set; } = false;

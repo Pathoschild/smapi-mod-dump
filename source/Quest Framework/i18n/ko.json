@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/QuestFramework
+**
+*************************************************/
+
+{
+  "fallbackTitle": "(이 퀘스트 지우기)",
+  "fallbackDescription": "이 퀘스트는 Quest Framework 모드를 설치하여 생겼습니다. 모드 오류 또는 퀘스트 완료 전에 QF 모드를 제거하여 표시되는 텍스트입니다.  아래의 삭제 버튼을 클릭하여 이 퀘스트를 삭제할 수 있습니다.",
+  "fallbackObjective": "삭제 버튼을 클릭하여 이 퀘스트 삭제하기",
+  "quest.itemHarvest.objective": "{{itemName}} {{total}}번 수확하기/{{harvested}}번 완료"
+}

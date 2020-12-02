@@ -12,5 +12,7 @@
   href: content-pack-guide.md
 - name: Advanced Guide
   href: advanced-api-guide.md
+- name: Translations
+  href: translations.md
 - name: Console commands
   href: commands.md

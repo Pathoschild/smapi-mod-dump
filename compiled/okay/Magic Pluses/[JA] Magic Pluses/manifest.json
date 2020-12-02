@@ -1,0 +1,12 @@
+{
+	"Name": "[JA] Magic Pluses",
+	"Author": "TerryDBS",
+	"Description": "Allows you to upgrade hats and boots.",
+	"Version": "1.0.6",
+	"UniqueID": "TerryDBS.MagicPluses.JA",
+	"UpdateKeys": ["Nexus:7096"],
+	"ContentPackFor":
+	{
+		"UniqueID": "spacechase0.JsonAssets"
+	},
+}

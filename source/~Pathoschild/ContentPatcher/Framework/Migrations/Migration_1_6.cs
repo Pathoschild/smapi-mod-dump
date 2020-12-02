@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
 using Pathoschild.Stardew.Common.Utilities;
@@ -35,23 +34,17 @@ namespace ContentPatcher.Framework.Migrations
             };
         }
 
-        /// <summary>Migrate a content pack.</summary>
-        /// <param name="content">The content pack data to migrate.</param>
-        /// <param name="error">An error message which indicates why migration failed.</param>
-        /// <returns>Returns whether the content pack was successfully migrated.</returns>
+        /// <inheritdoc />
         public override bool TryMigrate(ContentConfig content, out string error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
             // before 1.6, the 'sun' weather included 'wind'
-            if (content.Changes?.Any() == true)
+            foreach (PatchConfig patch in content.Changes)
             {
-                foreach (PatchConfig patch in content.Changes)
-                {
-                    if (patch.When != null && patch.When.TryGetValue(ConditionType.Weather.ToString(), out string value) && value.Contains("Sun"))
-                        patch.When[ConditionType.Weather.ToString()] = $"{value}, Wind";
-                }
+                if (patch.When.TryGetValue(ConditionType.Weather.ToString(), out string value) && value.Contains("Sun"))
+                    patch.When[ConditionType.Weather.ToString()] = $"{value}, Wind";
             }
 
             return true;

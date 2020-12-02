@@ -22,6 +22,7 @@ using StardewValley.Network;
 using System.Reflection.Emit;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MassProduction.VanillaOverrides;
 
 namespace MassProduction
 {
@@ -60,7 +61,7 @@ namespace MassProduction
 
                     if (mpm == null)
                     {
-                        throw new RestrictionException("This cannot take that upgrade.");
+                        Game1.showRedMessage("This cannot take that upgrade.");
                     }
                     else
                     {
@@ -93,6 +94,23 @@ namespace MassProduction
                 MassProductionMachineDefinition mpm = ModEntry.GetMPMMachine(__instance.name, __instance.GetMassProducerKey());
 
                 if (mpm == null) { return true; }
+
+                if (StaticValues.SUPPORTED_VANILLA_MACHINES.ContainsKey(__instance.name))
+                {
+                    IVanillaOverride vanillaOverride = VanillaOverrideList.GetFor(__instance.name);
+
+                    if (vanillaOverride != null)
+                    {
+                        bool overrideResult = vanillaOverride.Manual_PerformObjectDropInAction(__instance, input, probe, who, mpm);
+
+                        //End early if a result has been found
+                        if (overrideResult)
+                        {
+                            __result = input.Stack <= 0;
+                            return true;
+                        }
+                    }
+                }
 
                 ProducerConfig baseConfig = mpm.GetBaseProducerConfig();
                 GameLocation location = who.currentLocation;
@@ -137,28 +155,44 @@ namespace MassProduction
                             throw new RestrictionException("Machine can't be used in this season.");
                         }
 
-                        PFMCompatability.ValidateIfInputStackLessThanRequired(producerRule, mpm.Settings, input);
-                        PFMCompatability.ValidateIfAnyFuelStackLessThanRequired(producerRule, mpm.Settings, who);
+                        List<InputInfo> inputAndFuelInfo = InputInfo.ConvertPFMInputs(producerRule, input);
+                        PFMCompatability.ValidateIfInputsLessThanRequired(producerRule, mpm.Settings, inputAndFuelInfo, who);
 
-                        Func<int, int, bool> hasItemsInInventory = (i, q) => who.hasItemInInventory(i, mpm.Settings.CalculateInputRequired(q));
+                        Dictionary<int, int> fuelQuantities = new Dictionary<int, int>();
+
+                        foreach (InputInfo inputInfo in inputAndFuelInfo)
+                        {
+                            if (inputInfo.IsFuel)
+                            {
+                                fuelQuantities.Add(inputInfo.ID, mpm.Settings.CalculateInputRequired(inputInfo));
+                            }
+                        }
+
+                        Func<int, int, bool> fuelSearch = (i, q) => who.hasItemInInventory(i, fuelQuantities[i]);
                         OutputConfig outputConfig = PFMCompatability.ProduceOutput(producerRule, mpm.Settings, __instance,
-                            hasItemsInInventory, who, location, baseConfig, input, probe);
+                            fuelSearch, who, location, baseConfig, input, mpm.Settings.CalculateInputRequired(inputAndFuelInfo.First()), probe,
+                            inputInfo: inputAndFuelInfo);
 
                         if (outputConfig != null)
                         {
                             if (!probe)
                             {
-                                foreach (var fuel in producerRule.FuelList)
+                                foreach (InputInfo inputInfo in inputAndFuelInfo)
                                 {
-                                    RemoveItemsFromInventory(who, fuel.Item1, mpm.Settings.CalculateInputRequired(fuel.Item2));
+                                    if (inputInfo.IsFuel)
+                                    {
+                                        RemoveItemsFromInventory(who, inputInfo.ID, mpm.Settings.CalculateInputRequired(inputInfo));
+                                    }
                                 }
 
-                                foreach (var fuel in outputConfig.FuelList)
+                                List<InputInfo> outputConfigFuels = InputInfo.ConvertPFMInputs(outputConfig);
+
+                                foreach (InputInfo fuel in outputConfigFuels)
                                 {
-                                    RemoveItemsFromInventory(who, fuel.Item1, mpm.Settings.CalculateInputRequired(fuel.Item2));
+                                    RemoveItemsFromInventory(who, fuel.ID, mpm.Settings.CalculateInputRequired(fuel));
                                 }
 
-                                input.Stack -= mpm.Settings.CalculateInputRequired(producerRule.InputStack);
+                                input.Stack -= mpm.Settings.CalculateInputRequired(inputAndFuelInfo.First());
                                 __result = input.Stack <= 0;
                             }
                             else
@@ -223,27 +257,33 @@ namespace MassProduction
         /// <param name="alpha"></param>
         public static void Draw_Postfix(SObject __instance, SpriteBatch spriteBatch, int x, int y, float alpha)
         {
-            if (!string.IsNullOrEmpty(__instance.GetMassProducerKey()) && ModEntry.MPMSettings[__instance.GetMassProducerKey()] != null)
+            try
             {
-                int upgradeId = ModEntry.MPMSettings[__instance.GetMassProducerKey()].UpgradeObjectID;
+                if (!string.IsNullOrEmpty(__instance.GetMassProducerKey()) && ModEntry.MPMSettings[__instance.GetMassProducerKey()] != null)
+                {
+                    int upgradeId = ModEntry.MPMSettings[__instance.GetMassProducerKey()].UpgradeObjectID;
 
-                float scale = 0.6f;
-                float drawLayer = Math.Max(0f, ((y + 1) * 64 - 24) / 10000f) + x * 1E-05f;
-                float drawLayerOffset = 1E-05f; // The SpriteBatch layer depth needs to be slightly larger to avoid z-fighting
+                    float scale = 0.6f;
+                    float drawLayer = Math.Max(0f, ((y + 1) * 64 - 24) / 10000f) + x * 1E-05f;
+                    float drawLayerOffset = 1E-05f; // The SpriteBatch layer depth needs to be slightly larger to avoid z-fighting
 
-                Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * Game1.tileSize, y * Game1.tileSize));
-                spriteBatch.Draw(Game1.mouseCursors, position, GetPrimaryIconSourceRect(2), Color.White, 0f, Vector2.Zero, 4f * scale, SpriteEffects.None, drawLayer + drawLayerOffset);
+                    Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * Game1.tileSize, y * Game1.tileSize));
+                    spriteBatch.Draw(Game1.mouseCursors, position, GetPrimaryIconSourceRect(2), Color.White, 0f, Vector2.Zero, 4f * scale, SpriteEffects.None, drawLayer + drawLayerOffset);
 
-                Vector2 bottomLeftPosition = new Vector2(position.X, position.Y + 64f * scale);
+                    Vector2 bottomLeftPosition = new Vector2(position.X, position.Y + 64f * scale);
 
-                Texture2D spritesheet = Game1.objectSpriteSheet;
-                Tuple<int, int> spriteCoordinates = ImageHelper.GetObjectSpritesheetIndex(spritesheet.Width, spritesheet.Height, upgradeId);
-                float iconScale = 2f;
-                Rectangle sourceRectangle = new Rectangle(spriteCoordinates.Item1, spriteCoordinates.Item2, 16, 16);
-                Vector2 spriteDestination = bottomLeftPosition + new Vector2(4f * scale, -4f * scale - sourceRectangle.Height * iconScale * scale);
-                float spriteLayerDepth = drawLayer + drawLayerOffset + 1E-04f;
+                    Texture2D spritesheet = Game1.objectSpriteSheet;
+                    Tuple<int, int> spriteCoordinates = ImageHelper.GetObjectSpritesheetIndex(spritesheet.Width, spritesheet.Height, upgradeId);
+                    float iconScale = 2f;
+                    Rectangle sourceRectangle = new Rectangle(spriteCoordinates.Item1, spriteCoordinates.Item2, 16, 16);
+                    Vector2 spriteDestination = bottomLeftPosition + new Vector2(4f * scale, -4f * scale - sourceRectangle.Height * iconScale * scale);
+                    float spriteLayerDepth = drawLayer + drawLayerOffset + 1E-04f;
 
-                spriteBatch.Draw(spritesheet, spriteDestination, sourceRectangle, Color.White * 1f, 0f, new Vector2(0, 0), scale * iconScale, SpriteEffects.None, spriteLayerDepth);
+                    spriteBatch.Draw(spritesheet, spriteDestination, sourceRectangle, Color.White * 1f, 0f, new Vector2(0, 0), scale * iconScale, SpriteEffects.None, spriteLayerDepth);
+                }
+            }
+            catch
+            { //Ignore errors that come up when first loading a save and can't access __instance.GetMassProducerKey()
             }
         }
 
@@ -273,6 +313,124 @@ namespace MassProduction
             {
                 __result = false;
             }
+        }
+
+        /// <summary>
+        /// Allows for upgraded inputless machines to function.
+        /// Code adapted from https://github.com/Digus/StardewValleyMods/blob/master/ProducerFrameworkMod/ObjectOverrides.cs
+        /// </summary>
+        /// <param name="__instance"></param>
+        /// <param name="who"></param>
+        /// <param name="__result"></param>
+        /// <returns></returns>
+        [HarmonyPriority(801)] //Just before ProducerFrameworkMod. Can't use HarmonyBefore attribute, that wasn't working for some reason
+        internal static bool performDropDownAction_Prefix(SObject __instance, Farmer who, bool __result)
+        {
+            if (string.IsNullOrEmpty(__instance.GetMassProducerKey())) { return true; }
+
+            MassProductionMachineDefinition mpm = ModEntry.GetMPMMachine(__instance.name, __instance.GetMassProducerKey());
+
+            if (mpm == null) { return true; }
+
+            if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)
+            {
+                try
+                {
+                    if (!producerConfig.CheckLocationCondition(who.currentLocation))
+                    {
+                        throw new RestrictionException(ModEntry.Instance.Helper.Translation.Get("Message.Condition.Location"));
+                    }
+                    if (producerConfig.NoInputStartMode != null)
+                    {
+                        if (producerConfig.CheckSeasonCondition() && NoInputStartMode.Placement == producerConfig.NoInputStartMode)
+                        {
+                            if (ProducerController.GetProducerItem(__instance.Name, null) is ProducerRule producerRule)
+                            {
+                                PFMCompatability.ProduceOutput(producerRule, mpm.Settings, __instance, (i, q) => who.hasItemInInventory(i, q), 
+                                    who, who.currentLocation, producerConfig);
+                            }
+                        }
+                        return __result = false;
+                    }
+                }
+                catch (RestrictionException e)
+                {
+                    if (e.Message != null && who.IsLocalPlayer)
+                    {
+                        Game1.showRedMessage(e.Message);
+                    }
+                    return __result = false;
+                }
+            }
+            else if (StaticValues.SUPPORTED_VANILLA_MACHINES.ContainsKey(__instance.name) &&
+                StaticValues.SUPPORTED_VANILLA_MACHINES[__instance.name] == InputRequirement.NoInputsOnly)
+            {
+                IVanillaOverride vanillaOverride = VanillaOverrideList.GetFor(__instance.name);
+
+                if (vanillaOverride != null && vanillaOverride.Manual_PerformDropDownAction(__instance, mpm))
+                {
+                    return true;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Allows for inputless machines from PFM that produce every day to function.
+        /// Adapted from https://github.com/Digus/StardewValleyMods/blob/master/ProducerFrameworkMod/ObjectOverrides.cs
+        /// </summary>
+        /// <param name="__instance"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        [HarmonyPriority(Priority.First + 1)] //Just before ProducerFrameworkMod. Can't use HarmonyBefore attribute, that wasn't working for some reason
+        public static bool DayUpdate_Prefix(SObject __instance, GameLocation location)
+        {
+            if (__instance == null || string.IsNullOrEmpty(__instance.GetMassProducerKey())) { return true; }
+
+            MassProductionMachineDefinition mpm = ModEntry.GetMPMMachine(__instance.name, __instance.GetMassProducerKey());
+
+            if (mpm == null) { return true; }
+
+            if (__instance.bigCraftable.Value)
+            {
+                if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)
+                {
+                    if (producerConfig != null)
+                    {
+                        if (ProducerController.GetProducerItem(__instance.Name, null) is ProducerRule producerRule)
+                        {
+                            if (!producerConfig.CheckSeasonCondition() || !producerConfig.CheckLocationCondition(location))
+                            {
+                                ProducerRuleController.ClearProduction(__instance, location);
+                                return false;
+                            }
+                            else if (producerConfig.NoInputStartMode != null)
+                            {
+                                if (producerConfig.NoInputStartMode == NoInputStartMode.DayUpdate || producerConfig.NoInputStartMode == NoInputStartMode.Placement)
+                                {
+                                    if (__instance.heldObject.Value == null)
+                                    {
+                                        try
+                                        {
+
+                                            Farmer who = Game1.getFarmer((long)__instance.owner);
+                                            PFMCompatability.ProduceOutput(producerRule, mpm.Settings, __instance, 
+                                                (i, q) => who.hasItemInInventory(i, q), who, who.currentLocation, producerConfig);
+                                        }
+                                        catch (RestrictionException)
+                                        {
+                                            //Does not show the restriction error since the machine is auto-starting.
+                                        }
+                                    }
+                                }
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
     }
 }

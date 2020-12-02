@@ -34,9 +34,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 05fa60c6ad79e48148187dffe148e1cce7d94066
+   commit f01df2fa97cd747673052a47507ed3374820ced3
    Author: danvolchek <danvnad@gmail.com>
-   Date:   Sun Nov 1 15:47:53 2020 -0800
+   Date:   Sun Nov 15 16:21:13 2020 -0800
    
-       [Cacti Hurt You] don't check for cacti when there is no current location
+       [Winter Grass] fix grass color not being updated on grass starter stack changes
    

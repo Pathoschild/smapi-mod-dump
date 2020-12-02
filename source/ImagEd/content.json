@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mus-candidus/ImagEd
+**
+*************************************************/
+
+{
+  "Format": "1.11",
+  "Changes": [
+       {
+          "Action": "EditImage",
+          "Target": "Characters/Haley",
+          "FromFile": "{{Candidus42.ImagEd/ColorBlend: assets/Characters/Haley.png, 40, 80, 150}}",
+          "PatchMode": "Overlay"
+       },
+       {
+          "Action": "EditImage",
+          "Target": "Portraits/Haley",
+          "FromFile": "{{Candidus42.ImagEd/ColorBlend: assets/Portraits/Haley.png, 40, 80, 150}}",
+          "PatchMode": "Overlay"
+       },
+    ]
+}

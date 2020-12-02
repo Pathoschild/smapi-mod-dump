@@ -31,6 +31,8 @@
   "companionState_follow": "Status: Follow",
   "companionState_idle": "Status: Idle",
   "companionState_fight": "Status: Fight",
+  "companionState_forage": "Status: Forage",
+  "companionState_spiritual": "Status: Loving",
   "spouseWife": "wife",
   "spouseHusband": "husband",
   "hudSkillUsed": "(Skill's effect used)",

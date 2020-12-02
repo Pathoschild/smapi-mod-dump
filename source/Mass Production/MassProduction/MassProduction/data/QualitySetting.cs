@@ -21,6 +21,6 @@ namespace MassProduction
     /// </summary>
     public enum QualitySetting
     {
-        NoStars = 0, Silver = 1, Gold = 2, Iridium = 3, KeepInput = -1
+        NoStars = 1, Silver = 2, Gold = 3, Iridium = 4, KeepInput = -1
     }
 }

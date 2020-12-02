@@ -18,7 +18,15 @@
 {
       "name": "ESShack",
       "file": "assets/shack.tmx"
-    }
+    },
+    {
+      "name": "SeaCave",
+      "file": "assets/SeaMonsterCaves.tmx"
+    },
+   /* {
+      "name": "MonsterSaloon",
+      "file": "assets/MonsterPub.tmx"
+    }*/
 ],
 "onlyWarps":[
  

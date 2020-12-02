@@ -1,0 +1,13 @@
+url:
+   https://github.com/b-b-blueberry/SeedsUnboxed.git
+
+mods:
+   Seeds Unpacked
+
+latest commit:
+   commit 09c479179792888c838e1eefde85db2a4f34b27c
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Mon Nov 30 21:12:50 2020 +1100
+   
+       Renamed mod and added release media.
+   

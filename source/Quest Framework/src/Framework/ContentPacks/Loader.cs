@@ -8,16 +8,16 @@
 **
 *************************************************/
 
+using Newtonsoft.Json.Linq;
 using PurrplingCore.Lexing;
 using PurrplingCore.Lexing.LexTokens;
 using QuestFramework.Framework.ContentPacks.Model;
+using QuestFramework.Framework.Helpers;
+using QuestFramework.Offers;
 using QuestFramework.Quests;
 using StardewModdingAPI;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuestFramework.Framework.ContentPacks
 {
@@ -40,8 +40,6 @@ namespace QuestFramework.Framework.ContentPacks
 
         public void LoadPacks(IEnumerable<IContentPack> contentPacks)
         {
-            List<IManifest> manifests = new List<IManifest>();
-
             foreach (var contentPack in contentPacks)
             {
                 this.Monitor.Log($"Loading content pack {contentPack.Manifest.UniqueID} ...");
@@ -51,15 +49,22 @@ namespace QuestFramework.Framework.ContentPacks
                 if (content != null && this.Validate(content))
                 {
                     this.ValidContents.Add(content);
-                    manifests.Add(contentPack.Manifest);
                 }
             }
 
-            if (manifests.Count > 0)
+            if (this.ValidContents.Count > 0)
             {
-                this.Monitor.Log($"Loaded {manifests.Count} content packs:", LogLevel.Info);
-                manifests.ForEach((m) => this.Monitor.Log($"   {m.Name} {m.Version} by {m.Author} ({m.UniqueID})", LogLevel.Info));
+                this.PrintContentPackListSummary();
             }
+        }
+
+        private void PrintContentPackListSummary()
+        {
+            this.Monitor.Log($"Loaded {this.ValidContents.Count} content packs:", LogLevel.Info);
+            this.ValidContents.Select(c => c.Owner.Manifest)
+                .ToList()
+                .ForEach(
+                    (m) => this.Monitor.Log($"   {m.Name} {m.Version} by {m.Author} ({m.UniqueID})", LogLevel.Info));
         }
 
         private void Prepare(Content content)
@@ -68,7 +73,7 @@ namespace QuestFramework.Framework.ContentPacks
             {
                 if (!schedule.QuestName.Contains('@'))
                 {
-                    schedule.QuestName = $"{schedule.QuestName}@{content.owner.Manifest.UniqueID}";
+                    schedule.QuestName = $"{schedule.QuestName}@{content.Owner.Manifest.UniqueID}";
                 }
             }
         }
@@ -79,13 +84,13 @@ namespace QuestFramework.Framework.ContentPacks
 
             if (content.Format == null || content.Format.IsOlderThan("1.0"))
             {
-                this.Monitor.Log($"Content pack `{content.owner.Manifest.Name}` has unsupported format version {content.Format}.", LogLevel.Error);
+                this.Monitor.Log($"Content pack `{content.Owner.Manifest.Name}` has unsupported format version {content.Format}.", LogLevel.Error);
                 isValid = false;
             }
 
             if (content.Quests == null || !content.Quests.Any())
             {
-                this.Monitor.Log($"Content pack `{content.owner.Manifest.Name}` contains no quests.", LogLevel.Error);
+                this.Monitor.Log($"Content pack `{content.Owner.Manifest.Name}` contains no quests.", LogLevel.Error);
                 isValid = false;
             }
 
@@ -95,15 +100,16 @@ namespace QuestFramework.Framework.ContentPacks
         private void Apply(Content content)
         {
             // Register quests
-            foreach (var quest in content.Quests)
+            foreach (var questData in content.Quests)
             {
-                CustomQuest managedQuest = this.MapQuest(content, quest);
+                CustomQuest managedQuest = this.MapQuest(content, questData);
 
-                if (quest.Hooks != null)
+                if (questData.Hooks != null)
                 {
-                    managedQuest.Hooks.AddRange(quest.Hooks);
+                    managedQuest.Hooks.AddRange(questData.Hooks);
                 }
 
+                this.ApplyHandlers(managedQuest, questData);
                 this.Manager.RegisterQuest(managedQuest);
             }
 
@@ -114,9 +120,46 @@ namespace QuestFramework.Framework.ContentPacks
             }
         }
 
+        private void ApplyHandlers(CustomQuest managedQuest, QuestData questData)
+        {
+            managedQuest.Accepted += (_sender, _info) =>
+            {
+                if (_info.VanillaQuest.completed.Value)
+                    return;
+
+                // Add/Remove conversation topic(s) when quest was ACCEPTED
+                if (!string.IsNullOrEmpty(questData.ConversationTopic?.AddWhenQuestAccepted))
+                    ConversationTopicHelper.AddConversationTopic(questData.ConversationTopic.AddWhenQuestAccepted);
+                if (!string.IsNullOrEmpty(questData.ConversationTopic?.RemoveWhenQuestAccepted))
+                    ConversationTopicHelper.RemoveConversationTopic(questData.ConversationTopic.RemoveWhenQuestAccepted);
+            };
+            managedQuest.Completed += (_sender, _info) =>
+            {
+                if (!_info.VanillaQuest.completed.Value)
+                    return;
+
+                // Add/Remove conversation topic(s) when quest was COMPLETED
+                if (!string.IsNullOrEmpty(questData.ConversationTopic?.AddWhenQuestCompleted))
+                    ConversationTopicHelper.AddConversationTopic(questData.ConversationTopic.AddWhenQuestCompleted);
+                if (!string.IsNullOrEmpty(questData.ConversationTopic?.RemoveWhenQuestCompleted))
+                    ConversationTopicHelper.RemoveConversationTopic(questData.ConversationTopic.RemoveWhenQuestCompleted);
+            };
+            managedQuest.Removed += (_sender, _info) =>
+            {
+                if (_info.VanillaQuest.completed.Value)
+                    return;
+
+                // Add/Remove conversation topic(s) when quest was REMOVED
+                if (!string.IsNullOrEmpty(questData.ConversationTopic?.AddWhenQuestRemoved))
+                    ConversationTopicHelper.AddConversationTopic(questData.ConversationTopic.AddWhenQuestRemoved);
+                if (!string.IsNullOrEmpty(questData.ConversationTopic?.RemoveWhenQuestRemoved))
+                    ConversationTopicHelper.RemoveConversationTopic(questData.ConversationTopic.RemoveWhenQuestRemoved);
+            };
+        }
+
         public void RegisterQuestsFromPacks()
         {
-            this.ValidContents.ForEach(content => this.Apply(content));
+            this.ValidContents.ForEach(content => this.Apply(content.Translate(content.Owner.Translation)));
 
         }
 
@@ -204,7 +247,7 @@ namespace QuestFramework.Framework.ContentPacks
                 Cancelable = questData.Cancelable,
                 Trigger = this.ApplyTokens(trigger),
                 NextQuests = questData.NextQuests,
-                OwnedByModUid = content.owner.Manifest.UniqueID,
+                OwnedByModUid = content.Owner.Manifest.UniqueID,
             };
 
             if (questData.CustomTypeId != -1)
@@ -227,7 +270,7 @@ namespace QuestFramework.Framework.ContentPacks
 
             var content = contentPack.ReadJsonFile<Content>("quests.json");
 
-            content.owner = contentPack;
+            content.Owner = contentPack;
             this.Prepare(content);
 
             return content;

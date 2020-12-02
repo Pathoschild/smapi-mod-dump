@@ -21,19 +21,22 @@ namespace QuestFramework.Api
 {
     internal class ManagedQuestApi : IManagedQuestApi
     {
+        private readonly IMonitor monitor;
+
         public string ModUid { get; }
         public QuestManager QuestManager { get; }
-        public QuestOfferManager ScheduleManager { get; }
+        public QuestOfferManager QuestOfferManager { get; }
         public HookManager HookManager { get; }
 
         private static IMonitor Monitor => QuestFrameworkMod.Instance.Monitor;
 
-        public ManagedQuestApi(string modUid, QuestManager questManager, QuestOfferManager scheduleManager, HookManager hookManager)
+        public ManagedQuestApi(string modUid, QuestManager questManager, QuestOfferManager questOfferManager, HookManager hookManager, IMonitor monitor)
         {
             this.ModUid = modUid;
             this.QuestManager = questManager;
-            this.ScheduleManager = scheduleManager;
+            this.QuestOfferManager = questOfferManager;
             this.HookManager = hookManager;
+            this.monitor = monitor;
         }
 
         public void AcceptQuest(string fullQuestName, bool silent = false)
@@ -46,9 +49,30 @@ namespace QuestFramework.Api
             this.QuestManager.AcceptQuest(fullQuestName, silent);
         }
 
+        [Obsolete]
         public CustomQuest GetById(int id)
         {
-            return this.QuestManager.GetById(id);
+            return this.GetQuestById(id);
+        }
+
+        public CustomQuest GetQuestById(int id)
+        {
+            var managedQuest = this.QuestManager.GetById(id);
+
+            if (managedQuest?.OwnedByModUid != this.ModUid)
+                this.monitor.LogOnce($"Mod {this.ModUid} accessed to quest `{managedQuest.Name}` managed by mod `{managedQuest.OwnedByModUid}`");
+
+            return managedQuest;
+        }
+
+        public CustomQuest GetQuestByName(string questName)
+        {
+            if (!questName.Contains('@'))
+            {
+                questName = $"{questName}@{this.ModUid}";
+            }
+
+            return this.GetQuestById(this.QuestManager.ResolveGameQuestId(questName));
         }
 
         public void RegisterQuest(CustomQuest quest)
@@ -73,7 +97,7 @@ namespace QuestFramework.Api
                 offer.QuestName = $"{offer.QuestName}@{this.ModUid}";
             }
 
-            this.ScheduleManager.AddOffer(offer);
+            this.QuestOfferManager.AddOffer(offer);
         }
 
         public IEnumerable<QuestOffer> GetTodayQuestOffers(string source)
@@ -81,7 +105,7 @@ namespace QuestFramework.Api
             if (!Context.IsWorldReady)
                 throw new InvalidOperationException("Unable to get today quest schedules when world is not ready!");
 
-            return this.ScheduleManager.GetMatchedOffers(source);
+            return this.QuestOfferManager.GetMatchedOffers(source);
         }
 
         public IEnumerable<QuestOffer<TAttributes>> GetTodayQuestOffers<TAttributes>(string source)
@@ -89,7 +113,7 @@ namespace QuestFramework.Api
             if (!Context.IsWorldReady)
                 throw new InvalidOperationException("Unable to get today quest schedules when world is not ready!");
 
-            return this.ScheduleManager.GetMatchedOffers<TAttributes>(source);
+            return this.QuestOfferManager.GetMatchedOffers<TAttributes>(source);
         }
 
         public void ExposeGlobalCondition(string conditionName, Func<string, CustomQuest, bool> conditionHandler)
