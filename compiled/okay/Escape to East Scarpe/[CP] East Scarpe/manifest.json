@@ -1,7 +1,7 @@
 {
     "Name": "[CP] East Scarpe",
     "Author": "LemurKat",
-    "Version": "1.5.0",
+    "Version": "1.5.2",
     "Description": "Adds an area east of town by the Archaeology House.",
     "UniqueID": "LemurKat.EastScarpe.CP",
     "MinimumApiVersion": "1.0.0",

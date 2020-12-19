@@ -4,7 +4,7 @@
 		"Action": "EditData",
 		"Target": "Characters/Dialogue/Pam",
 		"Entries": {
-			"Introduction": "Hey, kid. The name's {{mardrest.ChangeDialogues/PamName}}.#$e#Don't be a {{mardrest.ChangeDialogues/Jerk:L{{mardrest.ChangeDialogues/PlayerGender}}}} and we'll get along fine.",
+			"Introduction": "Hey, kid. The name's {{mardrest.ChangeDialogues/PamName}}.#$e#Don't be a jerk and we'll get along fine.^Don't be a bitch and we'll get along fine.",
 			"Saloon_Entry": "Ah... Finally./I need a drink./{{mardrest.ChangeDialogues/GusName}}! Gimme the usual./Hey, I'm back!/Ooh boy, am I thirsty!/I'm parched!",
 			"Trailer_Entry": "{{mardrest.ChangeDialogues/PennyName}}! Did you make dinner?/{{mardrest.ChangeDialogues/PennyName}}! You done your chores?/{{mardrest.ChangeDialogues/PennyName}}! You home?/Hey! I'm home!",
 			"Saloon_Tue": "Hey {{mardrest.ChangeDialogues/GusName}}! Gimme another round! *hic*$h",

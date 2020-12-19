@@ -15,8 +15,8 @@
 		"Action": "EditData",
 		"Target": "Characters/Dialogue/George",
 		"Entries": {	
-			"Wed_inlaw_Alex": "You're part of the family, now. I'm glad that my grand{{mardrest.ChangeDialogues/Son:L{{mardrest.ChangeDialogues/AlexGender}}}} found such a nice husband.^How can two {{mardrest.ChangeDialogues/Men:L{{mardrest.ChangeDialogues/AlexGender}}}} get married? It's unnatural... Hmmph. I guess I'm just \"old fashioned\"...",
-			"Wed10_inlaw_Alex": "You're part of the family, now... and I couldn't be more proud.^I'll admit, I thought it was... strange... for two {{mardrest.ChangeDialogues/Men:L{{mardrest.ChangeDialogues/AlexGender}}}} to be together. But you're such a nice young {{mardrest.ChangeDialogues/Man:L{{mardrest.ChangeDialogues/PlayerGender}}}}, and I know you two are in love... I've changed my mind."
+			"Wed_inlaw_Alex": "You're part of the family, now. I'm glad that my granddaughter found such a nice husband.^How can two women get married? It's unnatural... Hmmph. I guess I'm just \"old fashioned\"...",
+			"Wed10_inlaw_Alex": "You're part of the family, now... and I couldn't be more proud.^I'll admit, I thought it was... strange... for two women to be together. But you're such a nice young woman, and I know you two are in love... I've changed my mind."
 		}, "When": { "mardrest.ChangeDialogues/AlexGender": "Female" }
 	},
 	{

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7258
+IDs: X3n0n182.AutoAttack
+update keys: Nexus:7258

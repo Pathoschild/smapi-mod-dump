@@ -27,7 +27,7 @@
 			"fall_15": "The Stardew Valley Fair is a little crowded for my tastes... but I'll just hang out with {{mardrest.ChangeDialogues/SamName}}. It'll be good to catch up with {{mardrest.ChangeDialogues/Him:L{{mardrest.ChangeDialogues/SamGender}}}}.#$e#You should play some carnival games, though! Don't worry about me.$7",
 			"Outdoor_3": "I don't want to get soft now that I'm a married girl. Maybe I should start eating more hot pepper and working out?#$e#Just an idea...$h",
 			"OneKid_0": "I'm still getting used to being a mother. Don't worry, I'll take good care of %kid1! It's just... something new.",
-			"spring_23": "Oh... tomorrow's the flower dance, isn't it? Do we have to go?#$e#I hate wearing that ridiculous tight {{mardrest.ChangeDialogues/Jumpsuit:L{{mardrest.ChangeDialogues/SebastianGender}}}}. Why does {{mardrest.ChangeDialogues/LewisName}} make us do this?$s"
+			"spring_23": "Oh... tomorrow's the flower dance, isn't it? Do we have to go?#$e#I hate wearing that ridiculous tight {{mardrest.ChangeDialogues/Suit:LJ{{mardrest.ChangeDialogues/SebastianGender}}}}. Why does {{mardrest.ChangeDialogues/LewisName}} make us do this?$s"
 		}
 	},
 	{

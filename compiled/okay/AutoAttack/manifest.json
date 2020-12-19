@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AutoAttack",
+  "Author": "X3n0n182",
+  "Version": "1.2.1",
+  "Description": "Automatically aim and hit monsters within four tiles to the player.",
+  "UniqueID": "X3n0n182.AutoAttack",
+  "EntryDll": "AutoAttack.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7258" ]
+}

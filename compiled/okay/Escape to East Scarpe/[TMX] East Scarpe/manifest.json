@@ -1,7 +1,7 @@
 {
     "Name": "[TMX] East Scarpe",
     "Author": "LemurKat",
-    "Version": "1.4.3",
+    "Version": "1.5.2",
     "Description": "Adds ES TMX warps and map",
     "UniqueID": "LemurKat.EastScarpe.TMX",
     "Dependencies": [

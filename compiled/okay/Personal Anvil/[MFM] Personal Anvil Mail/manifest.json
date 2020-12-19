@@ -1,8 +1,8 @@
 ﻿{
 	"Name": "[MFM] Personal Anvil",
 	"Author": "Strobe",
-	"Version": "1.0.1",
-	"Description": "Letter for Personal Anvil recipe.",
+	"Version": "1.0.2",
+	"Description": "Personal Anvil MFM.",
 	"UniqueID": "Strobe.PersonalAnvilMail",
 	"MinimumApiVersion": "3.0.0",
 	"UpdateKeys": [ "Nexus:" ],

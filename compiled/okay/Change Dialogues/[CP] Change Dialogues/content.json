@@ -1,5 +1,5 @@
 {
-	"Format": "1.18.0",
+	"Format": "1.19.0",
 
 	"DynamicTokens": [
 	{
@@ -1283,7 +1283,7 @@
 		"Target": "LooseSprites/Cursors",
 		"FromFile": "assets/LooseSprites/CursorsWorms{{mardrest.ChangeDialogues/WormsSprite}}.png",
 		"ToArea": { "X": 369, "Y": 32, "Width": 64, "Height": 16 },
-		"When": { "HasFile:assets/LooseSprites/CursorsWorms.png": true, "mardrest.ChangeDialogues/WormsSprite |contains=Vanilla": false }
+		"When": { "HasFile:assets/LooseSprites/CursorsWorms{{mardrest.ChangeDialogues/WormsSprite}}.png": true, "mardrest.ChangeDialogues/WormsSprite |contains=Vanilla": false }
 	},
 	{
 		"Action": "Include",
