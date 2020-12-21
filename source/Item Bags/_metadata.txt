@@ -5,9 +5,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit 99e9738c069e8ae472306c19371367f869075214
+   commit edf3dca3ebd00b5270385231f312cad811da6fac
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Sat Sep 26 10:15:52 2020 -0400
+   Date:   Fri Dec 18 13:02:19 2020 -0500
    
-       Added option to specify ObjectId instead of item Name in modded bag configs. This resolves ambiguities where certain items don't have unique names, such as "Stone" which could be Id=670, 668, 450, 390, 343 etc. Only intended to be used by items with static ids (Content patcher or vanilla items, but not JsonAsset items)
+       Changed logic for stacking items to compare by Id and internal name, instead of by Id and Price, which more closely resembles the game's logic. Hid tooltips while navigating menus with gamepad. Added saved bag item data to maintain honey and preserve names.
    

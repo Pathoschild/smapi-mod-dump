@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace QuestFramework.Quests
 {
-    interface ITriggerLoader
+    public interface ITriggerLoader
     {
         void LoadTrigger(string triggerData);
     }

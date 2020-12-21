@@ -5,9 +5,9 @@ mods:
    ImagEd
 
 latest commit:
-   commit 623b912342c8b1387f4b7e45472c79d38fd76971
+   commit a2a43d9afb7e21c0806d9cf4266a2bdcaa769f97
    Author: Candidus <candidus@xmail.net>
-   Date:   Sat Nov 28 15:35:48 2020 +0100
+   Date:   Mon Nov 30 19:26:32 2020 +0100
    
-       Add another example that provides black flower dance and wedding dresses for Abigail.
+       Add Nexus key.
    

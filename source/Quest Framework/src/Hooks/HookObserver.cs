@@ -15,11 +15,12 @@ using System.Linq;
 
 namespace QuestFramework.Hooks
 {
+    [Obsolete("This hook API is deprecated. Will be replaced in future")]
     public abstract class HookObserver : IDisposable
     {
         public abstract string Name { get; }
 
-        internal HookManager owner;
+        internal ConditionManager owner;
 
         protected abstract bool CheckHookExecute(Hook hook, ICompletionArgs args);
 

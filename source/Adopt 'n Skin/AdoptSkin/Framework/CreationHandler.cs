@@ -52,6 +52,9 @@ namespace AdoptSkin.Framework
         internal bool FirstHorseReceived = false;
         internal bool FirstPetReceived = false;
 
+        internal bool PetsPlacedForDay = false;
+        internal bool PetsPlacedForNight = false;
+
         internal static readonly int AdoptPrice = ModEntry.Config.StrayAdoptionPrice;
         internal static readonly int WildHorseChance = ModEntry.Config.WildHorseChancePercentage;
         internal static readonly int StrayChance = ModEntry.Config.StrayChancePercentage;
@@ -72,7 +75,7 @@ namespace AdoptSkin.Framework
         internal void ProcessNewDay(object sender, DayStartedEventArgs e)
         {
             // Make the luck bonus into a percentage for our use
-            int luckBonus = (int)(Game1.dailyLuck * 100);
+            int luckBonus = (int)(Game1.player.team.sharedDailyLuck.Value * 100);
             // Luck affect has been turned off in the Config
             if (!ModEntry.Config.ChanceAffectedByLuck)
                 luckBonus = 0;
@@ -97,6 +100,9 @@ namespace AdoptSkin.Framework
                 StrayInfo.RemoveFromWorld();
             if (HorseInfo != null && HorseInfo.HorseInstance != null)
                 HorseInfo.RemoveFromWorld();
+
+            PetsPlacedForDay = false;
+            PetsPlacedForNight = false;
         }
 
 
@@ -130,29 +136,39 @@ namespace AdoptSkin.Framework
 
         internal void SpreadPets(object sender, WarpedEventArgs e)
         {
+            // ** TODO: Only one pet on farmer's bed
+            // TODO: If no pets, handle error
             List<Pet> pets = ModApi.GetPets().ToList();
 
             // No pets are in the game
             if (pets.Count == 0)
                 return;
 
-            // Only do teleport if the player is entering the Farm, FarmHouse, or Marnie's
-            if (!typeof(Farm).IsAssignableFrom(e.NewLocation.GetType()) &&
-                !typeof(FarmHouse).IsAssignableFrom(e.NewLocation.GetType()) &&
-                (Stray.Marnies != e.NewLocation))
-                return;
-
             // Ensure Stray isn't moved around by vanilla
-            ModEntry.Creator.MoveStrayToSpawn();
+            if (typeof(Farm).IsAssignableFrom(e.NewLocation.GetType()) ||
+                typeof(FarmHouse).IsAssignableFrom(e.NewLocation.GetType()) ||
+                Stray.Marnies != e.NewLocation)
+                ModEntry.Creator.MoveStrayToSpawn();
+
+            // Only move pets once at beginning of day and once at night
+            if ((!Game1.isDarkOut() && PetsPlacedForDay) ||
+                (Game1.isDarkOut() && PetsPlacedForNight))
+                return;
 
 
             if (IsIndoorWeather())
             {
                 IndoorWeatherPetSpawn();
+                PetsPlacedForDay = true;
+                PetsPlacedForNight = true;
                 return;
             }
             else
             {
+                // Place everyone at the correct starting point, at the water dish
+                foreach (Pet pet in ModApi.GetPets())
+                    pet.setAtFarmPosition();
+
                 // Find area to warp pets to
                 Farm farm = Game1.getFarm();
                 int initX = (int)pets[0].getTileLocation().X;
@@ -191,6 +207,8 @@ namespace AdoptSkin.Framework
                     Vector2 ranTile = warpableTiles[Randomizer.Next(0, warpableTiles.Count)];
                     Game1.warpCharacter(pet, farm, ranTile);
                 }
+
+                PetsPlacedForDay = true;
             }
         }
 
@@ -240,7 +258,20 @@ namespace AdoptSkin.Framework
         }
 
 
-        
+        /// <summary>Returns the first Stable instance found on the farm.</summary>
+        internal static Guid GetStableID()
+        {
+            Guid stableID = ZeroHorseID;
+
+            foreach (Horse horse in ModApi.GetHorses())
+                if (horse.HorseId != ZeroHorseID)
+                {
+                    stableID = horse.HorseId;
+                    break;
+                }
+
+            return stableID;
+        }
 
 
         /// <summary>Check to see if the player is attempting to interact with a Stray or WildHorse</summary>
@@ -275,7 +306,7 @@ namespace AdoptSkin.Framework
                 if ((e.Button.Equals(SButton.MouseRight) || (e.Button.Equals(SButton.ControllerA)) || e.Button.IsActionButton()) &&
                     HorseInfo.HorseInstance.withinPlayerThreshold(2))
                 {
-
+                    
                     Game1.activeClickableMenu = new ConfirmationDialog("This appears to be an escaped horse from a neighboring town. \n\nIt looks tired, but friendly. Will you adopt this horse?", (who) =>
                     {
                         if (ModEntry.Config.DebuggingMode)
@@ -343,6 +374,7 @@ namespace AdoptSkin.Framework
 
             // Exit the naming menu
             Game1.drawObjectDialogue($"{petName} was brought home.");
+
             Game1.player.Money -= AdoptPrice;
         }
 
@@ -362,7 +394,7 @@ namespace AdoptSkin.Framework
             HorseInfo.HorseInstance.Name = horseName;
             HorseInfo.HorseInstance.displayName = horseName;
             HorseInfo.HorseInstance.HorseId = ModApi.GetRandomStableID();
-            Earth.AddCreature(HorseInfo.HorseInstance, HorseInfo.SkinID);
+            Earth.AddCreature(HorseInfo.HorseInstance, HorseInfo.SkinID, Game1.player);
 
             // Horse is no longer a WildHorse to keep track of
             HorseInfo = null;

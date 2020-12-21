@@ -33,7 +33,8 @@ namespace AdoptSkin
     // ** The TODO List **
     // 
     // - Add support for custom animal types (Ento added an ExtraTypes to the Config, look there)
-    // - Is there a keyboard interact button to do compat for?
+    // - Figure out pet spawn before moving maps (check to see if pet is already on map? Will this cause cuddle puddle?)
+    // - Is there a keyboard interact button to do compat for for Android?
     // - Baby stage pets and horses
 
     //
@@ -43,7 +44,7 @@ namespace AdoptSkin
     // - Skins can be named non-continuously
     // - Randomize_skins >> Work as list_creatures does, use variables
 
-    public class ModEntry : Mod, IAssetEditor
+    public class ModEntry : Mod, IAssetEditor, IAssetLoader
     {
         /************************
         ** Fields
@@ -88,10 +89,15 @@ namespace AdoptSkin
         internal static Dictionary<long, int> AnimalLongToShortIDs = new Dictionary<long, int>();
         internal static Dictionary<int, long> AnimalShortToLongIDs = new Dictionary<int, long>();
 
+        // Pet to Owner map
+        //internal static Dictionary<long, Farmer> OwnerMap = new Dictionary<long, Farmer>();
+        // Horse to Owner map
+        internal static Dictionary<long, Farmer> HorseOwnershipMap = new Dictionary<long, Farmer>();
+
         // Pet and Horse to type maps
         internal static Dictionary<string, Type> PetTypeMap = new Dictionary<string, Type>();
         internal static Dictionary<string, Type> HorseTypeMap = new Dictionary<string, Type>();
-        // ** TODO: Would it benefit from making animal similar?
+        // ** TODO: Would it benefit from making FarmAnimal similar?
 
         // Ridden horse holder
         internal static List<Horse> BeingRidden = new List<Horse>();
@@ -123,6 +129,20 @@ namespace AdoptSkin
             Commander = new CommandHandler(this);
             Creator = new CreationHandler(this);
             SaverLoader = new SaveLoadHandler(this);
+
+            var loaders = Helper.Content.AssetLoaders;
+            loaders.Add(this);
+
+            WildHorse.PlayerSpecifiedSpawnMaps = new List<string>(Config.WildHorseSpawnLocations);
+            // Check that Wild Horse spawn maps set in the Config file are all valid
+            foreach (string loc in Config.WildHorseSpawnLocations)
+            {
+                if (!WildHorse.SpawningMaps.Contains(Sanitize(loc)))
+                {
+                    SMonitor.Log($"Invalid map \"{loc}\" is listed in Wild Horse spawning locations and will be ignored.\nMaps must all be one of: Forest, BusStop, Mountain, Town, Railroad, or Beach.", LogLevel.Warn);
+                    WildHorse.PlayerSpecifiedSpawnMaps.Remove(loc);
+                }
+            }
 
             // Event Listeners
             helper.Events.GameLoop.SaveLoaded += SaveLoadHandler.Setup;
@@ -156,6 +176,22 @@ namespace AdoptSkin
                 helper.ConsoleCommands.Add("summon_horse", "DEBUG: Summons a wild horse. Somewhere.", Commander.OnCommandReceived);
                 helper.ConsoleCommands.Add("debug_clearunowned", "DEBUG: Removes any wild horses or strays that exist, to clear out glitched extras", Commander.OnCommandReceived);
             }
+        }
+
+        public bool CanLoad<T>(IAssetInfo asset)
+        {
+            if ((asset.AssetName.ToLower()).Contains("assets/skins"))
+                return true;
+            return false;
+        }
+
+        public T Load<T>(IAssetInfo asset)
+        {
+            if ((asset.AssetName.ToLower()).Contains("assets/skins"))
+            {
+                return SHelper.Content.Load<T>(asset.AssetName, ContentSource.ModFolder);
+            }
+            throw new InvalidOperationException($"Unexpected asset '{asset.AssetName}'.");
         }
 
         /// <summary>Get whether this instance can edit the given asset.</summary>
@@ -222,9 +258,6 @@ namespace AdoptSkin
             type = Sanitize(type);
             if (!ModApi.HasSkins(type))
                 return 0;
-            // ** TODO: Find out why erroring with stray spawn, issue in GetSkin likely.
-            // Issue related to lack of cat skins? Fix this
-            // Android: A Button works, but not right click
             int randomLookup = Randomizer.Next(0, Assets[type].Keys.Count);
             return Assets[type].ElementAt(randomLookup).Key;
         }
@@ -277,7 +310,16 @@ namespace AdoptSkin
             return GetSkin(type, skinID);
         }
 
-        internal static AnimalSkin GetSkin(string type, int skinID) { return Assets[Sanitize(type)][skinID]; }
+        internal static AnimalSkin GetSkin(string type, int skinID)
+        {
+            type = Sanitize(type);
+            if (Assets.ContainsKey(type) && Assets[type].ContainsKey(skinID))
+                return Assets[Sanitize(type)][skinID];
+            else if (Assets.ContainsKey(type))
+                return Assets[type][GetRandomSkin(type)];
+            else
+                return null;
+        }
 
 
 
@@ -424,31 +466,50 @@ namespace AdoptSkin
 
         /// <summary>Calls a horse that the player owns to the player's location</summary>
         /// <returns>Returns true if a horse was successfully called.</returns>
-        internal static bool CallHorse(long id = 0)
+        internal static bool CallHorse(int id = 0)
         {
             // Make sure that the player is calling the horse while outside
             if (!Game1.player.currentLocation.IsOutdoors)
             {
-                ModEntry.SMonitor.Log("You cannot call for a horse while indoors.", LogLevel.Warn);
                 Game1.chatBox.addInfoMessage("You hear your Grandfather's voice echo in your head.. \"Now is not the time to use that.\"");
                 return false;
             }
 
-            // Teleport the horse with the given ID or the last horse ridden
+            // Teleport the first horse you find that the player actually owns
             List<Horse> taxis = ModApi.GetHorses().ToList();
             taxis.Reverse();
             foreach (Horse taxi in taxis)
+            {
+                long longID = GetLongID(taxi);
+
+                // If the player called for a specific horse
                 if (id != 0 && GetShortID(taxi) == id)
                 {
+                    // Ensure that the player owns this horse
+                    if (HorseOwnershipMap[longID] != Game1.player)
+                    {
+                        SMonitor.Log($"Horse {id} ({taxi.Name}) does not belong to this player. (Belongs to ({HorseOwnershipMap[longID].Name}))", LogLevel.Error);
+                        return false;
+                    }
+
                     Game1.warpCharacter(taxi, Game1.player.currentLocation, Game1.player.getTileLocation());
                     return true;
                 }
+                // Otherwise
                 else if (id == 0)
                 {
-                    Game1.warpCharacter(taxi, Game1.player.currentLocation, Game1.player.getTileLocation());
-                    return true;
+                    // Ensure that the player owns this horse
+                    if (HorseOwnershipMap[longID] != Game1.player)
+                        continue;
+                    else
+                    {
+                        Game1.warpCharacter(taxi, Game1.player.currentLocation, Game1.player.getTileLocation());
+                        return true;
+                    }
                 }
+            }
 
+            SMonitor.Log("This player does not own any horses to call.", LogLevel.Debug);
             return false;
         }
 
@@ -479,7 +540,7 @@ namespace AdoptSkin
                             horsehuts.Add(building as Stable);
                             break;
                         }
-                    
+
             // Player does not own a stable
             if (horsehuts.Count == 0)
             {
@@ -517,9 +578,9 @@ namespace AdoptSkin
         {
             // Check if a horse needs to be re-added to the map
             HorseDismountedCheck();
-            // OneTileHorse mounted check
-            if (Config.OneTileHorse)
-                foreach (Horse horse in BeingRidden)
+            // One-tile-horse for horses being ridden
+            foreach (Horse horse in BeingRidden)
+                if (Config.OneTileHorse)
                     horse.squeezeForGate();
 
             // Make sure A&S database is up-to-date
@@ -535,7 +596,7 @@ namespace AdoptSkin
         internal static void HorseMountedCheck(object sender, NpcListChangedEventArgs e)
         {
             foreach (NPC npc in e.Removed)
-                if (npc is Horse horse && horse.rider != null && horse.Manners != 0)
+                if (npc is Horse horse && horse.rider != null && !ModApi.IsWildHorse(horse))
                     BeingRidden.Add(horse);
         }
 
@@ -632,7 +693,8 @@ namespace AdoptSkin
                     {
                         if (ModApi.IsNotATractor(horse))
                         {
-                            AddCreature(horse);
+                            // The first horse is given to the host player
+                            AddCreature(horse, 0, Game1.MasterPlayer);
                             Creator.FirstHorseReceived = true;
                             this.Helper.Events.World.NpcListChanged -= this.CheckForFirstHorse;
                             return;
@@ -673,7 +735,7 @@ namespace AdoptSkin
 
 
         /// <summary>Adds the given Pet, Horse, or FarmAnimal into the A&S database</summary>
-        internal void AddCreature(Character creature, int skinID = 0)
+        internal void AddCreature(Character creature, int skinID = 0, Farmer owner = null)
         {
             string type = ModApi.GetInternalType(creature);
             if (ModApi.IsInDatabase(creature) || !ModApi.IsRegisteredType(type))
@@ -682,6 +744,22 @@ namespace AdoptSkin
             // Set internal IDs
             SetShortID(creature, GetUnusedShortID());
             IDToCategory[GetLongID(creature)] = ModApi.GetCreatureCategory(type);
+
+            // Set ownership
+            if (creature is Horse)
+            {
+                if (owner != null)
+                {
+                    HorseOwnershipMap.Add(GetLongID(creature), owner);
+                    // DEBUG
+                    Monitor.Log($"Horse ID: {GetShortID(creature)}\nOwner: {owner.Name}", LogLevel.Debug);
+                }
+                else
+                {
+                    Monitor.Log($"No adopter able to be detected. Horse {GetShortID(creature)} will be owned by the host player.", LogLevel.Debug);
+                    HorseOwnershipMap.Add(GetLongID(creature), Game1.MasterPlayer);
+                }
+            }
 
             // Give a skin
             if (skinID != 0)

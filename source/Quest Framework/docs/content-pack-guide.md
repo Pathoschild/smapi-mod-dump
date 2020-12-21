@@ -6,6 +6,8 @@ for queries and analysis.**
 
 ----
 
+
+
 ← [README](../README.md)
 
 # Content pack guide
@@ -40,7 +42,7 @@ Create your `manifest.json` file which must contains these minimum contents:
   "UpdateKeys": [],
   "ContentPackFor": {
     "UniqueID": "PurrplingCat.QuestFramework", // Quest Framework unique id must be here
-    "MinimumVersion": "1.1.0" // optional
+    "MinimumVersion": "1.2.0" // optional
   }
 }
 ```
@@ -69,21 +71,26 @@ In the `Quests` section you can define one ore more custom quests. Quest definit
 
 Field             | Required? | Description 
 ----------------- | --------- | -----------
-Name              | required  | (string) Name (UID) of your quest (this never shows to player)
-Type              | required  | (string) Vanilla SDV quest type (see quest type)
-CustomTypeId      |           | (int) Custom Quest type id (see custom quest types in advanced API). Can be handled by any other mod.
-Title             | required  | (string) Quest title in the quest log
-Description       |           | (string) Quest description
-Objective         | required  | (string) Quest objective
-NextQuests        |           | (string[]) One of more next quests which will be added to player's quest log when this quest is completed.
-DaysLeft          |           | (int) If this field is filled or is greater than 0, this quest is marked as daily and limited for specified number of days here.
-Reward            |           | (int) Reward in SDV currency "golds". If this field is not defined or has value `0`, then player will receive no money reward.
-RewardDescription |           | (string) Reward description
-Cancelable        |           | (boolean) Can player cancel this quest?
-ReactionText      |           | (string) NPC's reaction text when you complete this quest (only for quests which interacts with NPCs)
-Trigger           |           | (string) Completion trigger (see quest types for more info) Supports [JSON Assets](#json-assets-support)
-Hooks             |           | (Hook) Quest hooks (see hooks for more info)
-ConversationTopic |           | (ConversationTopic) Add or remove conversation topic (see conversation topic for more info)
+Name              | required  | `string` Name (UID) of your quest (this never shows to player)
+[Type](#quest-types) | required  | `string` Vanilla SDV quest type (see quest type)
+CustomTypeId      |           | `int` Custom Quest type id (see custom quest types in advanced API). Can be handled by any other mod.
+Title             | required  | `string` Quest title in the quest log
+Description       |           | `string` Quest description
+Objective         | required  | `string` Quest objective
+NextQuests        |           | `string[]` One of more next quests which will be added to player's quest log when this quest is completed.
+DaysLeft          |           | `int` If this field is filled or is greater than 0, this quest is marked as daily and limited for specified number of days here.
+[Reward](#rewards) || `int|string` Reward in SDV currency "golds". If this field is not defined or has value `0`, then player will receive no money reward.
+RewardType        |           | `RewardType` Type of [reward for player](#Rewards). (default: *Money*)
+RewardAmount      |           | `int` Amount of reward items. Only for `Object` reward type.
+RewardDescription |           | `string` Reward description
+Cancelable        |           | `boolean` Can player cancel this quest?
+ReactionText      |           | `string` NPC's reaction text when you complete this quest (only for quests which interacts with NPCs)
+Trigger           |           | `string` Completion trigger (see quest types for more info) Supports [JSON Assets](#json-assets-support)
+[Texture](#colors--texture) || `string` Path to PNG file with custom background texture for this quest in quest log menu. Path is relative to your content pack root directory.
+[Colors](#colors--texture)  || `QuestLogColors` Settings of font colors for this quest in the quest log menu.
+FriendshipGain    |           | `{[string]: int}` Additional friendship points for enumarated NPCs which player gains after this quest was completed.
+[Hooks](#hooks) || `Hook[]` Quest hooks (see hooks for more info)
+[ConversationTopic](#conversation-topic) || `ConversationTopic` Add or remove conversation topic (see conversation topic for more info)
 
 #### Example
 
@@ -99,9 +106,13 @@ ConversationTopic |           | (ConversationTopic) Add or remove conversation t
       "Objective": "Bring amethyst to Abigail",
       "DaysLeft": 5, // If player don't complete this quest until 5 days, this quest will be removed from quest log automatically without completion
       "Reward": 300, // 300g
+      "RewardType": "Money",
       "Cancelable": true, // This quest can be cancelled by player
       "Trigger": "Abigail 66", // Bring amethyst to Abby
-      "ReactionText": "Oh, it's looks delicious. I am really hungry."
+      "ReactionText": "Oh, it's looks delicious. I am really hungry.",
+      "FriendshipGain": {
+        "Abigail": 100 // Gain 100 additional friendship points when this quest was completed
+      }
     }
   ]
 }
@@ -175,7 +186,134 @@ Same usage as *LostItem*
 
 Custom quest type. You can specify field `CustomTypeId` for more explicit which custom quest type. In JSON api you can use hooks to create custom quest handling.
 
+You can define custom quest via setup value `Custom` into field `Type` or in format `<modUID>/<QuestTypeName>` for custom quests defined by other mods which exposes their quest types for content packs.
+
 *Trigger*: Custom defined. In JSON api use hooks instead for handle your pure JSON custom quest. If you target a custom quest type defined by any other mod in your JSON content pack, follow instructions of the source mod of this quest type.
+
+### Rewards
+
+There are supported some reward types for quests. You can specify reward type in field `RewardType` in your quest definition. Reward is paid to player after quest is completed by clicking the reward in questlog menu (in quest details for completed quest)
+
+Reward type | Description
+----------- | -----------
+Money       | Amount of money player earn by complete this quest
+Object      | Which item player gets by complete this quest. You can specify your item by name (JSON assets items supported) or via their id (integer). Also you can specify amount (stack) of this item in field `RewardAmount`
+Weapon      | Which weapon player gets by complete this quest. You can specify your weapon by name (JSON assets items supported) or via their id (integer)
+
+#### Examples
+
+```js
+{
+  "Format": "1.0",
+  "Quests": [
+    {
+      "Name": "abigail_amethyst1",
+      "Type": "ItemDelivery",
+      "Title": "The purple lunch",
+      "Description": "Abigail are very hungry. She wants to eat something special from mines.",
+      "Objective": "Bring amethyst to Abigail",
+      "DaysLeft": 5,
+      "Reward": "Chocolate Cake",
+      "RewardType": "Object"
+      "RewardAmount": 2, // Player gets two chocolate cakes after complete this quest
+      "Cancelable": true, // This quest can be cancelled by player
+      "Trigger": "Abigail 66", // Bring amethyst to Abby
+      "ReactionText": "Oh, it's looks delicious. I am really hungry."
+    },
+    {
+      "Name": "abigail_amethyst2",
+      "Type": "ItemDelivery",
+      "Title": "The purple lunch again",
+      "Description": "Abigail are very hungry. She wants to eat something special from mines.",
+      "Objective": "Bring amethyst to Abigail",
+      "DaysLeft": 3,
+      "Reward": "Emerald", // Reward is 1x emerald for this quest
+      "RewardType": "Object"
+      "Cancelable": true, // This quest can be cancelled by player
+      "Trigger": "Abigail 66", // Bring amethyst to Abby
+      "ReactionText": "Oh, it's looks delicious. I am really hungry."
+    },
+    {
+      "Name": "clint_copperbar",
+      "Type": "ItemDelivery",
+      "Title": "Clint needs a copper bar",
+      "Description": "Clint asked you if you can bring him a copper bar.",
+      "Objective": "Bring a copperbar to Clint",
+      "Reward": 320, // Reward is 320g
+      "RewardType": "Money"
+      "Cancelable": true,
+      "Trigger": "Clint 334", // Bring copper bar to Clint
+      "ReactionText": "Thanks."
+    },
+    {
+      "Name": "marlon_slay_bats",
+      "Type": "Monster",
+      "Title": "Dangerous mine bats",
+      "Description": "Marlon wants help with slay dangerous bats which threaten villagers in the mountains every night",
+      "Objective": "Slay 10 bats",
+      "DaysLeft": 2,
+      "Reward": "Pirate's Sword", // Pirate's Sword is an reward for this quest
+      "RewardType": "Weapon"
+      "Cancelable": true,
+      "Trigger": "Bat 10", // Kill 10 bats
+    }
+  ]
+}
+```
+
+### Colors & Texture
+
+Be different! You can specify background texture of quest details window in quest log menu. Just specify an relative path to your content pack root in field `Texture` for your quest. Also you can customize text colors for this quest with field `Colors`.
+
+Color property | Type   | Desription
+-------------- | ------ | ----------
+TitleColor     | `int`  | Color of quest title.
+TextColor      | `int`  | Standard quest color (for decription)
+ObjectiveColor | `int`  | Color of quest objective
+
+#### Available colors
+
+Color id | Description
+-------- | -----------
+0        | Black
+1        | Sky Blue
+2        | Red
+3        | Purple
+4        | White
+5        | Orange Red
+6        | Lime Green
+7        | Cyan
+8        | Grey
+
+#### Example
+
+```js
+{
+  "Format": "1.0",
+  "Quests": [
+    {
+      "Name": "abigail_amethyst", // No id needed, will be automatically generated
+      "Type": "ItemDelivery", // Vanilla quest type
+      "Title": "%i18n:abigail_amethyst.title",
+      "Description": "Abigail is very hungry. She wants to eat something special from mines.",
+      "Objective": "Bring amethyst to Abigail",
+      "DaysLeft": 10,
+      "Reward": 1000,
+      "RewardType": "Money",
+      "Cancelable": true,
+      "Trigger": "Abigail 66", // Bring amethyst to Abby
+      "ReactionText": "Oh, this looks so delicious. I am really hungry, thank you, @!$h",
+      "CustomField": "%i18n:custom.field",
+      "Texture": "assets/wizardQuest.png",
+      "Colors": {
+        "TitleColor": 4,
+        "TextColor": 4,
+        "ObjectiveColor": 1
+      }
+    }
+  ]
+}
+```
 
 ## Hooks
 
@@ -266,9 +404,9 @@ TouchAction     | Touch action property value must be this defined value for tri
 
 ## Conversation topic
 
-[Conversation topic] (https://stardewvalleywiki.com/Modding:Dialogue#Conversation_topics) can make the character speak of certain dialogue when the specific conversation topic is active. Please refer to the conversation topic explanation on the wiki before using this feature. With this field you can make NPCs give dialogue when a quest is accepted, cancelled, and or completed. The respective dialogue itself must be added using [Content patcher] (https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editdata)
+[Conversation topic](https://stardewvalleywiki.com/Modding:Dialogue#Conversation_topics) can make the character speak of certain dialogue when the specific conversation topic is active. Please refer to the conversation topic explanation on the wiki before using this feature. With this field you can make NPCs give dialogue when a quest is accepted, cancelled, and or completed. The respective dialogue itself must be added using [Content patcher](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editdata)
 
-## Options 
+### Options 
 
 Valid field              | Example value              | Description
 ------------------------ | -------------------------- | -----------

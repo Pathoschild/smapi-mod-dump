@@ -65,7 +65,7 @@ namespace AdoptSkin.Framework
                     foreach (Pet pet in ModApi.GetPets())
                         Earth.AddCreature(pet);
                     foreach (Horse horse in ModApi.GetHorses())
-                        Earth.AddCreature(horse);
+                        Earth.AddCreature(horse, 0, Game1.MasterPlayer);
                     foreach (FarmAnimal animal in ModApi.GetAnimals())
                         Earth.AddCreature(animal);
                     ModEntry.SMonitor.Log("All creatures have be readded into the A&S system. This has randomized all skins. Strays and wild horses have been unaffected.", LogLevel.Info);
@@ -76,7 +76,7 @@ namespace AdoptSkin.Framework
                     if (!EnforceArgCount(args, 0))
                         return;
                     ModEntry.SMonitor.Log($"Animals Long to Short:\n{string.Join("\n", ModEntry.AnimalLongToShortIDs)}", LogLevel.Info);
-                    ModEntry.SMonitor.Log($"Animals Short to Long equal length: {ModEntry.AnimalLongToShortIDs.Count == ModEntry.AnimalShortToLongIDs.Count}", LogLevel.Warn);
+                    ModEntry.SMonitor.Log($"Animals Short to Long equal length: {ModEntry.AnimalLongToShortIDs.Count == ModEntry.AnimalShortToLongIDs.Count}", LogLevel.Info);
                     return;
 
 
@@ -90,7 +90,6 @@ namespace AdoptSkin.Framework
                 case "debug_pets":
                     if (!EnforceArgCount(args, 0))
                         return;
-
                     foreach (Pet pet in ModApi.GetAllPets())
                     {
                         int petSkin = 0;
@@ -512,7 +511,7 @@ namespace AdoptSkin.Framework
             // Add Pet types to the return list
             if (group == "all" || group == "pet")
                 foreach (Pet pet in ModApi.GetPets())
-                        calledGroup.Add(pet);
+                    calledGroup.Add(pet);
             else if (ModApi.GetHandledPetTypes().Contains(group))
                 foreach (Pet pet in ModApi.GetPets())
                     if (ModApi.GetInternalType(pet) == group)

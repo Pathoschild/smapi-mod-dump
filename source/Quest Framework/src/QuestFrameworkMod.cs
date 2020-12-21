@@ -17,6 +17,7 @@ using QuestFramework.Framework.ContentPacks;
 using QuestFramework.Framework.Controllers;
 using QuestFramework.Framework.Events;
 using QuestFramework.Framework.Hooks;
+using QuestFramework.Framework.Menus;
 using QuestFramework.Framework.Networing;
 using QuestFramework.Framework.Stats;
 using QuestFramework.Framework.Store;
@@ -44,7 +45,7 @@ namespace QuestFramework
         internal QuestManager QuestManager { get; private set; }
         internal QuestStateStore QuestStateStore { get; private set; }
         internal StatsManager StatsManager { get; private set; }
-        internal HookManager HookManager { get; private set; }
+        internal ConditionManager ConditionManager { get; private set; }
         internal QuestOfferManager QuestOfferManager { get; private set; }
         internal Loader ContentPackLoader { get; private set; }
         internal QuestController QuestController { get; private set; }
@@ -68,8 +69,8 @@ namespace QuestFramework
             this.QuestManager = new QuestManager(this.Monitor);
             this.QuestStateStore = new QuestStateStore(helper.Data, this.Monitor);
             this.StatsManager = new StatsManager(helper.Multiplayer, helper.Data);
-            this.HookManager = new HookManager(this.Monitor);
-            this.QuestOfferManager = new QuestOfferManager(this.HookManager, this.QuestManager);
+            this.ConditionManager = new ConditionManager(this.Monitor);
+            this.QuestOfferManager = new QuestOfferManager(this.ConditionManager, this.QuestManager);
             this.ContentPackLoader = new Loader(this.Monitor, this.QuestManager, this.QuestOfferManager);
             this.QuestController = new QuestController(this.QuestManager, this.QuestOfferManager, this.Monitor);
             this.MailController = new MailController(this.QuestManager, this.QuestOfferManager, this.Monitor);
@@ -87,6 +88,7 @@ namespace QuestFramework
             helper.Content.AssetEditors.Add(this.MailController);
 
             helper.Events.GameLoop.GameLaunched += this.OnGameStarted;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.Saving += this.OnSaving;
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
@@ -99,7 +101,7 @@ namespace QuestFramework
 
             this.Patcher.Apply(
                 new Patches.QuestPatch(this.QuestManager, this.EventManager),
-                new Patches.LocationPatch(this.HookManager),
+                new Patches.LocationPatch(this.ConditionManager),
                 new Patches.Game1Patch(this.QuestManager, this.QuestOfferManager),
                 new Patches.DialoguePatch(this.QuestManager),
                 new Patches.NPCPatch(this.QuestManager, this.QuestOfferManager),
@@ -112,10 +114,19 @@ namespace QuestFramework
             helper.ConsoleCommands.Add("quests_accept", "Accept managed quest and add it to questlog", Commands.AcceptQuest);
             helper.ConsoleCommands.Add("quests_complete", "Complete managed quest in questlog", Commands.CompleteQuest);
             helper.ConsoleCommands.Add("quests_remove", "Remove managed quest from questlog", Commands.RemoveQuest);
+            helper.ConsoleCommands.Add("quests_customtypes", "List of exposed custom quest types" ,Commands.ListTypeFactories);
 
             var packs = helper.ContentPacks.GetOwned();
             if (packs.Any())
                 this.ContentPackLoader.LoadPacks(packs);
+        }
+
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (!Context.IsGameLaunched)
+                return;
+
+            this.QuestManager.Update();
         }
 
         [EventPriority(EventPriority.High + 100)]
@@ -178,7 +189,7 @@ namespace QuestFramework
             this.QuestController.Reset();
             this.QuestManager.Quests.Clear();
             this.QuestOfferManager.Offers.Clear();
-            this.HookManager.Clean();
+            this.ConditionManager.Clean();
             this.QuestStateStore.Clean();
             this.StatsManager.Clean();
             this.NetworkOperator.Reset();
@@ -239,7 +250,7 @@ namespace QuestFramework
 
 
             this.RestoreStatefullQuests();
-            this.HookManager.CollectHooks(this.QuestManager.Quests);
+            this.ConditionManager.CollectHooks(this.QuestManager.Quests);
             this.QuestLogWatchdog.Initialize();
             InvalidateCache();
 
@@ -255,6 +266,12 @@ namespace QuestFramework
 
         private void OnQuestLogMenuChanged(object sender, MenuChangedEventArgs e)
         {
+            if (e.NewMenu is QuestLog && !(e.NewMenu is ManagedQuestLog))
+            {
+                Game1.activeClickableMenu = new ManagedQuestLog();
+                return;
+            }
+
             if (e.NewMenu is QuestLog && !(e.OldMenu is QuestLog))
                 this.EventManager.QuestLogMenuOpen.Fire(new System.EventArgs(), this);
             if (!(e.NewMenu is QuestLog) && e.OldMenu is QuestLog)
@@ -275,8 +292,8 @@ namespace QuestFramework
 
         private void RegisterDefaultHooks()
         {
-            this.HookManager.AddHookObserver(new LocationHook(this.Helper));
-            this.HookManager.AddHookObserver(new TileHook(this.Helper));
+            this.ConditionManager.AddHookObserver(new LocationHook(this.Helper));
+            this.ConditionManager.AddHookObserver(new TileHook(this.Helper));
         }
 
         private void RestoreStatefullQuests()

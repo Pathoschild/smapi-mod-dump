@@ -34,14 +34,17 @@ namespace AdoptSkin.Framework
             ".png",
             ".xnb"
         };
-        private static readonly Random Randomizer = new Random();
 
         private static readonly IModHelper SHelper = ModEntry.SHelper;
         private static readonly IMonitor SMonitor = ModEntry.SMonitor;
 
         private static ModEntry Entry;
 
-
+        private static List<string> InvalidExt = new List<string>();
+        private static List<string> InvalidType = new List<string>();
+        private static List<string> InvalidID = new List<string>();
+        private static List<string> InvalidNum = new List<string>();
+        private static List<string> InvalidRange = new List<string>();
 
         internal SaveLoadHandler(ModEntry entry)
         {
@@ -148,29 +151,75 @@ namespace AdoptSkin.Framework
         internal static void LoadData(object s, EventArgs e)
         {
             // Only allow the host player to load Adopt & Skin data
-            if (!Context.IsMainPlayer)
+            if (Context.IsMainPlayer)
             {
-                SMonitor.Log("Multiplayer Farmhand detected. Adopt & Skin has been disabled.", LogLevel.Debug);
-                return;
+                //SMonitor.Log("Multiplayer Farmhand detected. Adopt & Skin has been disabled.", LogLevel.Debug);
+                SMonitor.Log("Host detected! Let's WRECK IT", LogLevel.Debug);
+                // Load skin and category maps
+                ModEntry.SkinMap = SHelper.Data.ReadSaveData<Dictionary<long, int>>("skin-map") ?? new Dictionary<long, int>();
+                ModEntry.IDToCategory = SHelper.Data.ReadSaveData<Dictionary<long, ModEntry.CreatureCategory>>("id-to-category") ?? new Dictionary<long, ModEntry.CreatureCategory>();
+
+                // Load Short ID maps
+                ModEntry.AnimalLongToShortIDs = SHelper.Data.ReadSaveData<Dictionary<long, int>>("animal-long-to-short-ids") ?? new Dictionary<long, int>();
+                ModEntry.AnimalShortToLongIDs = SHelper.Data.ReadSaveData<Dictionary<int, long>>("animal-short-to-long-ids") ?? new Dictionary<int, long>();
+
+                // Set up maps if save data is from an older data format of A&S
+                if (ModEntry.SkinMap.Count == 0)
+                    LoadSkinsOldVersion();
+
+                // Load Pet ownership map
+                // TODO: Similar to horse ownership loading
+
+                // Load Horse ownership map
+                Dictionary<long, long> horseOwnerMap = SHelper.Data.ReadSaveData<Dictionary<long, long>>("horse-ownership-map") ?? new Dictionary<long, long>();
+                ModEntry.HorseOwnershipMap = new Dictionary<long, Farmer>();
+
+                foreach (KeyValuePair<long, long> pair in horseOwnerMap)
+                {
+                    foreach (Farmer farmer in Game1.getAllFarmers())
+                        if (pair.Key == ModApi.FarmerToID(farmer))
+                            ModEntry.HorseOwnershipMap[pair.Key] = farmer;
+                }
+
+                // If no horses are mapped to owners, or there are some unmapped horses, assign them all to the host player
+                if (ModEntry.HorseOwnershipMap.Count != ModApi.GetHorses().Count())
+                    foreach (Horse horse in ModApi.GetHorses())
+                    {
+                        long horseID = ModEntry.GetLongID(horse);
+                        if (horseID != 0 && !ModEntry.HorseOwnershipMap.ContainsKey(horseID))
+                            ModEntry.HorseOwnershipMap.Add(horseID, Game1.MasterPlayer);
+                    }
+                // If there are extra horses on the mapping, remove them. This deal with a bug in older versions of A&S
+                if (ModEntry.HorseOwnershipMap.Count > ModApi.GetHorses().Count())
+                {
+                    List<Horse> horses = ModApi.GetHorses().ToList();
+                    List<long> existingHorses = new List<long>();
+                    // Find the IDs of all existing, owned Horses
+                    foreach (Horse horse in horses)
+                        existingHorses.Add(ModEntry.GetLongID(horse));
+
+                    // Find the stowaways.
+                    List<long> idsToRemove = new List<long>();
+                    foreach (long horseID in ModEntry.HorseOwnershipMap.Keys)
+                    {
+                        if (!existingHorses.Contains(horseID))
+                            idsToRemove.Add(horseID);
+                    }
+
+                    // Yeet them from the mapping.
+                    foreach (long id in idsToRemove)
+                        ModEntry.HorseOwnershipMap.Remove(id);
+                }
+
+                // Load received first pet/horse status
+                ModEntry.Creator.FirstHorseReceived = bool.Parse(SHelper.Data.ReadSaveData<string>("first-horse-received") ?? "false");
+                ModEntry.Creator.FirstPetReceived = bool.Parse(SHelper.Data.ReadSaveData<string>("first-pet-received") ?? "false");
+                Entry.CheckForFirstPet(null, null);
+                Entry.CheckForFirstHorse(null, null);
+                //return;
             }
 
-            // Load skin and category maps
-            ModEntry.SkinMap = SHelper.Data.ReadSaveData<Dictionary<long, int>>("skin-map") ?? new Dictionary<long, int>();
-            ModEntry.IDToCategory = SHelper.Data.ReadSaveData<Dictionary<long, ModEntry.CreatureCategory>>("id-to-category") ?? new Dictionary<long, ModEntry.CreatureCategory>();
             
-            // Load Short ID maps
-            ModEntry.AnimalLongToShortIDs = SHelper.Data.ReadSaveData<Dictionary<long, int>>("animal-long-to-short-ids") ?? new Dictionary<long, int>();
-            ModEntry.AnimalShortToLongIDs = SHelper.Data.ReadSaveData<Dictionary<int, long>>("animal-short-to-long-ids") ?? new Dictionary<int, long>();
-
-            // Set up maps if save data is from an older data format of A&S
-            if (ModEntry.SkinMap.Count == 0)
-                LoadSkinsOldVersion();
-
-            // Load received first pet/horse status
-            ModEntry.Creator.FirstHorseReceived = bool.Parse(SHelper.Data.ReadSaveData<string>("first-horse-received") ?? "false");
-            ModEntry.Creator.FirstPetReceived = bool.Parse(SHelper.Data.ReadSaveData<string>("first-pet-received") ?? "false");
-            Entry.CheckForFirstPet(null, null);
-            Entry.CheckForFirstHorse(null, null);
 
             // Refresh skins via skinmap
             LoadCreatureSkins();
@@ -216,7 +265,6 @@ namespace AdoptSkin.Framework
                     Entry.AddCreature(animal);
                 else
                     ModEntry.UpdateSkin(animal);
-
 
             foreach (Pet pet in ModApi.GetPets())
                 if (ModEntry.GetLongID(pet) == 0)
@@ -305,12 +353,27 @@ namespace AdoptSkin.Framework
             SHelper.Data.WriteSaveData("animal-long-to-short-ids", ModEntry.AnimalLongToShortIDs);
             SHelper.Data.WriteSaveData("animal-short-to-long-ids", ModEntry.AnimalShortToLongIDs);
 
+            // Save Pet to owner map
+            /*Dictionary<long, long> petOwnership = new Dictionary<long, long>();
+            foreach (KeyValuePair<long, Farmer> pair in ModEntry.OwnerMap)
+            {
+                petOwnership[pair.Key] = ModApi.FarmerToID(pair.Value);
+            }
+            SHelper.Data.WriteSaveData("pet-ownership-map", petOwnership); */
+            // Save Horse to owner map
+            Dictionary<long, long> horseOwnership = new Dictionary<long, long>();
+            foreach (KeyValuePair<long, Farmer> pair in ModEntry.HorseOwnershipMap)
+            {
+                horseOwnership[pair.Key] = ModApi.FarmerToID(pair.Value);
+            }
+            SHelper.Data.WriteSaveData("horse-ownership-map", horseOwnership);
+
             // Save Stray and WildHorse spawn potential
             SHelper.Data.WriteSaveData("first-pet-received", ModEntry.Creator.FirstPetReceived.ToString());
             SHelper.Data.WriteSaveData("first-horse-received", ModEntry.Creator.FirstHorseReceived.ToString());
 
             // Save data version. May be used for reverse-compatibility for files.
-            SHelper.Data.WriteSaveData("data-version", "4");
+            SHelper.Data.WriteSaveData("data-version", "5");
 
             // Remove Adopt & Skin from update loop
             StopUpdateChecks(null, null);
@@ -323,56 +386,27 @@ namespace AdoptSkin.Framework
             // Gather handled types
             string validTypes = string.Join(", ", ModApi.GetHandledAllTypes());
 
-            List<string> invalidExt = new List<string>();
-            List<string> invalidType = new List<string>();
-            List<string> invalidID = new List<string>();
-            List<string> invalidNum = new List<string>();
-            List<string> invalidRange = new List<string>();
+
 
             // Add custom sprites
             foreach (string path in Directory.EnumerateFiles(Path.Combine(SHelper.DirectoryPath, "assets", "skins"), "*", SearchOption.AllDirectories))
-            {
-                string extension = Path.GetExtension(path);
-                string fileName = Path.GetFileNameWithoutExtension(path);
-                string[] nameParts = fileName.Split(new[] { '_' }, 2);
-                string type = ModEntry.Sanitize(nameParts[0]);
-                int skinID = 0;
-
-                if (!ValidExtensions.Contains(extension))
-                    invalidExt.Add(fileName);
-                else if (!ModEntry.Assets.ContainsKey(type))
-                    invalidType.Add(fileName);
-                else if (nameParts.Length != 2)
-                    invalidID.Add(fileName);
-                else if (nameParts.Length == 2 && !int.TryParse(nameParts[1], out skinID))
-                    invalidNum.Add(fileName);
-                else if (skinID <= 0)
-                    invalidRange.Add(fileName);
-                else
-                {
-                    // File naming is valid, get the asset key
-                    string assetKey = SHelper.Content.GetActualAssetKey(Path.Combine(Path.GetDirectoryName(path), extension.Equals("xnb") ? Path.GetFileNameWithoutExtension(path) : Path.GetFileName(path)));
-
-                    // User has duplicate skin names. Only keep the first skin found with the identifier and number ID
-                    if (ModEntry.Assets[type].ContainsKey(skinID))
-                        ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with duplicate type and ID (more than one skin named `{fileName}` exists in `/assets/skins`)", LogLevel.Debug);
-                    // Skin is valid, add into system
-                    else
-                        ModEntry.Assets[type].Add(skinID, new AnimalSkin(type, skinID, assetKey));
-                }
-            }
+                PullSprite(path);
+            // Grab the directory for the /Mods folder from the /Mods/AdoptSkin
+            
+            //string modFolderPath = SHelper.DirectoryPath
+            foreach (string path in Directory.EnumerateFiles(Path.Combine(SHelper.DirectoryPath)))
 
             // Warn for invalid files
-            if (invalidExt.Count > 0)
-                ModEntry.SMonitor.Log($"Ignored skins with invalid extension:\n`{string.Join("`, `", invalidExt)}`\nExtension must be one of type {string.Join(", ", ValidExtensions)}", LogLevel.Warn);
-            if (invalidType.Count > 0)
-                ModEntry.SMonitor.Log($"Ignored skins with invalid naming convention:\n`{string.Join("`, `", invalidType)}`\nCan't parse as an animal, pet, or horse. Expected one of type: {validTypes}", LogLevel.Warn);
-            if (invalidID.Count > 0)
-                ModEntry.SMonitor.Log($"Ignored skins with invalid naming convention (no skin ID found):\n`{string.Join("`, `", invalidID)}`", LogLevel.Warn);
-            if (invalidNum.Count > 0)
-                ModEntry.SMonitor.Log($"Ignored skins with invalid ID (can't parse ID number):\n`{string.Join("`, `", invalidNum)}`", LogLevel.Warn);
-            if (invalidRange.Count > 0)
-                ModEntry.SMonitor.Log($"Ignored skins with ID of less than or equal to 0 (Skins must have an ID of at least 1):\n`{string.Join("`, `", invalidRange)}`", LogLevel.Warn);
+            if (InvalidExt.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with invalid extension:\n`{string.Join("`, `", InvalidExt)}`\nExtension must be one of type {string.Join(", ", ValidExtensions)}", LogLevel.Warn);
+            if (InvalidType.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with invalid naming convention:\n`{string.Join("`, `", InvalidType)}`\nCan't parse as an animal, pet, or horse. Expected one of type: {validTypes}", LogLevel.Warn);
+            if (InvalidID.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with invalid naming convention (no skin ID found):\n`{string.Join("`, `", InvalidID)}`", LogLevel.Warn);
+            if (InvalidNum.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with invalid ID (can't parse ID number):\n`{string.Join("`, `", InvalidNum)}`", LogLevel.Warn);
+            if (InvalidRange.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with ID of less than or equal to 0 (Skins must have an ID of at least 1):\n`{string.Join("`, `", InvalidRange)}`", LogLevel.Warn);
 
             EnforceSpriteSets();
 
@@ -392,6 +426,45 @@ namespace AdoptSkin.Framework
             ModEntry.SMonitor.Log(summary.ToString(), LogLevel.Trace);
             ModEntry.AssetsLoaded = true;
         }
+
+
+        /// <summary>Places the custom sprite at the given path into the A&S system for use.</summary>
+        /// <param name="path">The full directory location of the sprite</param>
+        private static void PullSprite(string path)
+        {
+            string extension = Path.GetExtension(path);
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            string[] nameParts = fileName.Split(new[] { '_' }, 2);
+            string type = ModEntry.Sanitize(nameParts[0]);
+            int skinID = 0;
+
+            if (!ValidExtensions.Contains(extension))
+                InvalidExt.Add(fileName);
+            else if (!ModEntry.Assets.ContainsKey(type))
+                InvalidType.Add(fileName);
+            else if (nameParts.Length != 2)
+                InvalidID.Add(fileName);
+            else if (nameParts.Length == 2 && !int.TryParse(nameParts[1], out skinID))
+                InvalidNum.Add(fileName);
+            else if (skinID <= 0)
+                InvalidRange.Add(fileName);
+            else
+            {
+                // File naming is valid, get the asset key
+                string assetKey = SHelper.Content.GetActualAssetKey(Path.Combine(Path.GetDirectoryName(path), extension.Equals("xnb") ? Path.GetFileNameWithoutExtension(path) : Path.GetFileName(path)));
+
+                // User has duplicate skin names. Only keep the first skin found with the identifier and number ID
+                if (ModEntry.Assets[type].ContainsKey(skinID))
+                    ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with duplicate type and ID (more than one skin named `{fileName}` exists in `/assets/skins`)", LogLevel.Debug);
+                // Skin is valid, add into system
+                else
+                {
+                    Texture2D texture = ModEntry.SHelper.Content.Load<Texture2D>(assetKey, ContentSource.ModFolder);
+                    ModEntry.Assets[type].Add(skinID, new AnimalSkin(type, skinID, assetKey, texture));
+                }
+            }
+        }
+
 
         /// <summary>
         /// Checks the list of loaded assets, removes incomplete skin sets
@@ -462,7 +535,7 @@ namespace AdoptSkin.Framework
 
                 ModEntry.SMonitor.Log($"The following skins are incomplete skin sets, and will not be loaded (missing a paired sheared, baby, or adult skin):\n{warnString}", LogLevel.Warn);
             }
-
+                
 
             // ** TODO: Is there a way to check for types, so adults with no baby *or* sheared can be caught? Just make grab adult skin?
             // -- Cycle through FarmAnimal typing list and check while in there

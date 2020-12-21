@@ -383,7 +383,7 @@ namespace ItemBags
                 {
                     if (SM.storeContext.Equals("Forest", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        if (SM.onPurchase?.GetMethodInfo().Name == "onTravelingMerchantShopPurchase")
+                        if (SM.onPurchase?.GetMethodInfo().Name == "onTravelingMerchantShopPurchase") // nameof(Utility.onTravelingMerchantShopPurchase)
                             BagShop = BagShop.TravellingCart;
                         else
                             BagShop = BagShop.HatMouse;

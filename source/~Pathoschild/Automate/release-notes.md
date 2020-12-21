@@ -9,6 +9,11 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.18.4
+Released 05 December 2020.
+
+* Internal changes to simplify upcoming updates.
+
 ## 1.18.3
 Released 21 November 2020.
 

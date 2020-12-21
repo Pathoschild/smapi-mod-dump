@@ -244,7 +244,7 @@ namespace ItemBags
                 foreach (ItemBag Bag in AutofillableBags.Where(x => x.IsValidBagObject(Obj) && !x.IsFull(Obj)))
                 {
                     //  Don't allow Rucksacks to be autofilled with the new item unless they already have an existing stack of it
-                    if (Bag is Rucksack && !Bag.Contents.Any(x => x != null && ItemBag.AreItemsEquivalent(Obj, x, true)))
+                    if (Bag is Rucksack && !Bag.Contents.Any(x => x != null && ItemBag.AreItemsEquivalent(Obj, x, false)))
                         continue;
                     //  Don't allow standard bags to be autofilled with items that the user explicitly set to ignore
                     else if (Bag is BoundedBag BB && !BB.CanAutofillWithItem(Item as Object))

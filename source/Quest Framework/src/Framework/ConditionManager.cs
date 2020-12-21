@@ -18,15 +18,17 @@ using System.Linq;
 
 namespace QuestFramework.Framework
 {
-    internal class HookManager
+    internal class ConditionManager
     {
         private readonly IMonitor monitor;
 
         public List<Hook> Hooks { get; private set; }
         public Dictionary<string, Func<string, CustomQuest, bool>> Conditions { get; }
+        
+        [Obsolete("This hook API is deprecated. Will be replaced in future")]
         public Dictionary<string, HookObserver> Observers { get; }
 
-        public HookManager(IMonitor monitor)
+        public ConditionManager(IMonitor monitor)
         {
             this.Hooks = new List<Hook>();
             this.Observers = new Dictionary<string, HookObserver>();
@@ -35,6 +37,7 @@ namespace QuestFramework.Framework
             this.monitor = monitor;
         }
 
+        [Obsolete("This hook API is deprecated. Will be replaced in future")]
         public void CollectHooks(List<CustomQuest> managedQuests)
         {
             var hooks = from quest in managedQuests
@@ -47,6 +50,7 @@ namespace QuestFramework.Framework
             }).ToList();
         }
 
+        [Obsolete("This hook API is deprecated. Will be replaced in future")]
         public List<Hook> GetHooksByWhen(string whenName)
         {
             return this.Hooks
@@ -54,6 +58,7 @@ namespace QuestFramework.Framework
                 .ToList();
         }
 
+        [Obsolete("This hook API is deprecated. Will be replaced in future")]
         public void AddHookObserver(HookObserver hookObserver)
         {
             if (QuestFrameworkMod.Instance.Status != State.STANDBY)
@@ -67,7 +72,7 @@ namespace QuestFramework.Framework
             this.Observers.Add(hookObserver.Name, hookObserver);
         }
 
-        public bool CheckConditions(Dictionary<string, string> conditions, CustomQuest context, IEnumerable<string> ignore = null)
+        public bool CheckConditions(Dictionary<string, string> conditions, CustomQuest context, IEnumerable<string> ignore = null, bool ignoreUnknown = false)
         {
             bool flag = true;
 
@@ -79,7 +84,7 @@ namespace QuestFramework.Framework
                 if (ignore != null && ignore.Any(ig => ig == cond.Key))
                     continue;
 
-                flag &= this.CheckCondition(cond.Key, cond.Value, context);
+                flag &= this.CheckCondition(cond.Key, cond.Value, context, ignoreUnknown);
             }
 
             this.monitor.VerboseLog($"All checked conditions result is {flag}");
@@ -87,7 +92,7 @@ namespace QuestFramework.Framework
             return flag;
         }
 
-        public bool CheckCondition(string condition, string value, CustomQuest context)
+        public bool CheckCondition(string condition, string value, CustomQuest context, bool ignoreUnknown = false)
         {
             bool isNot = false;
             string realConditionName = condition;
@@ -115,6 +120,10 @@ namespace QuestFramework.Framework
                         $"returns {(isNot ? !result : result)}");
 
                 return isNot ? !result : result;
+            } else if (ignoreUnknown)
+            {
+                // Always true when unknown conditions are ignored
+                return true;
             }
 
             this.monitor.Log(

@@ -5,9 +5,14 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit 63a20ac93261024a83b1ad33182b27b217dd59c3
+   commit c260e8693ab2c2e0b65dc7a41320bf15d87e37d8
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Wed Jul 29 15:59:48 2020 -0700
+   Date:   Wed Jul 29 17:38:10 2020 -0700
    
-       Assets added to repo
+       3.0.0 Branch + Horse Updates
+       
+       - Updates for 3.0.0 compat
+       - WildHorses can now notify whether they appear and/or where they appear (rather than requiring both at once)
+       - WildHorse spawn locations can now be customized (adding additional options will bug out- SDV does not like them to be in certain places)
+       - Beginnings of Horse ownership implemented into the coding.
    

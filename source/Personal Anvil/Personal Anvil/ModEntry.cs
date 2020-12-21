@@ -9,21 +9,18 @@
 *************************************************/
 
 using System.IO;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Menus;
-
 
 namespace PersonalAnvil
 {
     public class ModEntry : Mod
     {
-        private IJsonAssetsApi JsonAssets;
-        private int AnvilID;
-        private int leftClickXPos;
-        private int leftClickYPos;
+        private IJsonAssetsApi _jsonAssets;
+        private int _anvilId;
+        private int _leftClickXPos;
+        private int _leftClickYPos;
 
         public override void Entry(IModHelper helper)
         {
@@ -32,58 +29,75 @@ namespace PersonalAnvil
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
         }
-        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
-        {
-            if (JsonAssets != null)
-            {
-                AnvilID = JsonAssets.GetBigCraftableId("Anvil");
 
-                if (AnvilID == -1)
-                {
-                    Monitor.Log("Could not get the ID for the Anvil item", LogLevel.Warn);
-                }
-            }
+        private void OnSaveLoaded(object sender,
+            SaveLoadedEventArgs e)
+        {
+            if (_jsonAssets == null)
+                return;
+            _anvilId = _jsonAssets.GetBigCraftableId("Anvil");
+
+            if (_anvilId == -1)
+                Monitor.Log("Could not get the ID for the Anvil item",
+                    LogLevel.Warn);
         }
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+
+        private void OnButtonPressed(object sender,
+            ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
             if (e.Button == SButton.MouseLeft)
             {
-                leftClickXPos = (int)e.Cursor.ScreenPixels.X;
-                leftClickYPos = (int)e.Cursor.ScreenPixels.Y;
+                _leftClickXPos = (int) e.Cursor.ScreenPixels.X;
+                _leftClickYPos = (int) e.Cursor.ScreenPixels.Y;
             }
+
             if (!e.Button.IsActionButton())
                 return;
-            Vector2 tile = Helper.Input.GetCursorPosition().Tile;
-            Game1.currentLocation.Objects.TryGetValue(tile, out Object obj);
-            if (obj != null && obj.bigCraftable.Value)
-            {
-                if (obj.ParentSheetIndex.Equals(AnvilID))
-                {
-                    Game1.activeClickableMenu = new WorkbenchGeodeMenu(Helper.Content);
-                }
-            }
+            var tile = Helper.Input.GetCursorPosition()
+                .Tile;
+            Game1.currentLocation.Objects.TryGetValue(tile,
+                out var obj);
+            if (obj == null || !obj.bigCraftable.Value)
+                return;
+            if (obj.ParentSheetIndex.Equals(_anvilId))
+                Game1.activeClickableMenu = new WorkbenchGeodeMenu(Helper.Content);
         }
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
-        {
-            JsonAssets = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
-            JsonAssets.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets"));
-        }
-        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
-        {
-            if (e.IsMultipleOf(4) && Helper.Input.IsDown(SButton.MouseLeft) && Game1.activeClickableMenu is WorkbenchGeodeMenu menu)
-            {
-                bool clintNotBusy = menu.heldItem != null && (menu.heldItem.Name.Contains("Geode") || menu.heldItem.ParentSheetIndex == 275) && Game1.player.Money >= 0 && menu.geodeAnimationTimer <= 0;
-                bool playerHasRoom = Game1.player.freeSpotsInInventory() > 1 || (Game1.player.freeSpotsInInventory() == 1 && menu.heldItem != null && menu.heldItem.Stack == 1);
 
-                if (clintNotBusy && playerHasRoom && menu.geodeSpot.containsPoint(leftClickXPos, leftClickYPos))
-                {
-                    menu.receiveLeftClick(leftClickXPos, leftClickYPos, false);
-                }
-            }
+        private void OnGameLaunched(object sender,
+            GameLaunchedEventArgs e)
+        {
+            _jsonAssets = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
+            _jsonAssets.LoadAssets(Path.Combine(Helper.DirectoryPath,
+                "assets"));
+        }
+
+        private void OnUpdateTicked(object sender,
+            UpdateTickedEventArgs e)
+        {
+            if (!e.IsMultipleOf(4) ||
+                !Helper.Input.IsDown(SButton.MouseLeft) ||
+                !(Game1.activeClickableMenu is WorkbenchGeodeMenu menu))
+                return;
+            var clintNotBusy = menu.heldItem != null &&
+                               (menu.heldItem.Name.Contains("Geode") || menu.heldItem.ParentSheetIndex == 275) &&
+                               Game1.player.Money >= 0 &&
+                               menu.GeodeAnimationTimer <= 0;
+            var playerHasRoom = Game1.player.freeSpotsInInventory() > 1 ||
+                                Game1.player.freeSpotsInInventory() == 1 &&
+                                menu.heldItem != null &&
+                                menu.heldItem.Stack == 1;
+
+            if (clintNotBusy &&
+                playerHasRoom &&
+                menu.GeodeSpot.containsPoint(_leftClickXPos,
+                    _leftClickYPos))
+                menu.receiveLeftClick(_leftClickXPos,
+                    _leftClickYPos);
         }
     }
+
     public interface IJsonAssetsApi
     {
         int GetBigCraftableId(string name);

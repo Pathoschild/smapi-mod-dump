@@ -180,15 +180,24 @@ namespace RangeHighlight {
             if (config.ShowBombRange) {
                 api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/bomb", null, true,
                     (item, itemID, itemName) => {
-                        if (itemName.Contains("bomb")) {
-                            DefaultShapes.BombRange range = defaultShapes.GetBomb(itemName);
-                            // This relies on the fact that placed bombs are not an item, so this
-                            // can use the cursor position for the location
-                            var cursorTile = helper.Input.GetCursorPosition().Tile;
-                            return bombHelper(range, (int)cursorTile.X, (int)cursorTile.Y);
-                        } else {
-                            return null;
+                        DefaultShapes.BombRange range;
+                        switch (itemID) {
+                            case 286:
+                                range = defaultShapes.cherryBomb;
+                                break;
+                            case 287:
+                                range = defaultShapes.bomb;
+                                break;
+                            case 288:
+                                range = defaultShapes.megaBomb;
+                                break;
+                            default:
+                                return null;
                         }
+                        // This relies on the fact that placed bombs are not an item, so this
+                        // can use the cursor position for the location
+                        var cursorTile = helper.Input.GetCursorPosition().Tile;
+                        return bombHelper(range, (int)cursorTile.X, (int)cursorTile.Y);
                     });
 
                 if (config.showPlacedBombRange) {

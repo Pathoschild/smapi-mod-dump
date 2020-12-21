@@ -21,11 +21,11 @@ namespace QuestFramework.Patches
     {
         public override string Name => nameof(LocationPatch);
 
-        public HookManager HookManager { get; }
+        public ConditionManager ConditionManager { get; }
 
-        public LocationPatch(HookManager hookManager)
+        public LocationPatch(ConditionManager conditionManager)
         {
-            this.HookManager = hookManager;
+            this.ConditionManager = conditionManager;
             Instance = this;
         }
 
@@ -39,7 +39,7 @@ namespace QuestFramework.Patches
 
         private static void After_performTouchAction(GameLocation __instance, string fullActionString, Vector2 playerStandingPosition)
         {
-            var hookObserver = Instance.HookManager.Observers["Tile"] as TileHook;
+            var hookObserver = Instance.ConditionManager.Observers["Tile"] as TileHook;
 
             if (hookObserver != null)
             {

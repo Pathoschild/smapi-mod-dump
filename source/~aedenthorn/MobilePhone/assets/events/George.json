@@ -9,12 +9,13 @@
 *************************************************/
 
 {
-	"events":
-	[
-		{
-			"name": "Coal Mines (Six Hearts)",
-			"location": "JoshHouse",
-			"eventId":"18"
-		},
-	]
+  "events": [
+    {
+      "name": "George-event-0",
+      "location": "JoshHouse",
+      "eventId": "18",
+      "night": false,
+      "mail": null
+    }
+  ]
 }

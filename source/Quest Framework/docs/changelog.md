@@ -8,6 +8,37 @@ for queries and analysis.**
 
 # Changelog
 
+## 1.2.0
+
+### Common changes
+
+- Internal hook API is deprecated
+- Added support for gain additional friendship by complete a quest
+- Added support for custom background texture and font colors for quest details window in quest log menu
+- Added support for new types of quest reward: `Object` and `Weapon`
+- Fixed some issues with multiplayer
+- Write quest type classes in console for `quests_list`, `quests_log` and `quests_customtypes`
+- Added new command `quests_customtypes`
+
+### For Content Pack modders
+
+- Added field `FriendshipGain` for define how much friendship points for which NPCs player gains after quest completion
+- Added new fields for quest: `RewardType`, `RewardAmount`, `Texture` and `Colors`
+- Added support for custom quest types in content packs (via `<modUid>/<questTypeName>` in `Type` field)
+- Better error messages
+
+### For SMAPI modders
+
+- Added property `ConditionFunc` on `QuestOffer` class for support additional programatic condition
+- Added new API on `CustomQuest` class for define how much friendship points for which NPCs player gains after quest completion
+- Added new APIs for define quest reward type, custom bg texture nad font colors
+- Deprecated `IStateful.ResetState()` and `IManagedQuestApi.GetById` now raise a compilation error when it is used in code
+- Added active state
+- Added new state interfaces: `IPersistentState` and `IReactiveState`
+- Added support for disposable quest state (by implementing `IDisposable` interface)
+- Added new APIs for expose custom quest types (class)
+- Exposed `ITriggerLoader` interface
+
 ## 1.1.1
 
 ### Common changes

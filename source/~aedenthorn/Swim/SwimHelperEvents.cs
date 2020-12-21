@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Monsters;
 using StardewValley.Network;
@@ -572,7 +573,7 @@ namespace Swim
 
             // only if ready to swim from here on!
 
-            if (!Config.ReadyToSwim || !Context.IsPlayerFree)
+            if (!Config.ReadyToSwim || !Context.IsPlayerFree || Game1.player.currentLocation is BeachNightMarket)
             {
                 return;
             }

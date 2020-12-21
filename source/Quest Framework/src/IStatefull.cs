@@ -20,7 +20,7 @@ namespace QuestFramework
         /// <summary>
         /// Reset object state
         /// </summary>
-        [Obsolete("Deprecated. Use method CustomQuest.Reset instead")]
+        [Obsolete("Deprecated. Use method CustomQuest.Reset instead", true)]
         void ResetState();
 
         /// <summary>

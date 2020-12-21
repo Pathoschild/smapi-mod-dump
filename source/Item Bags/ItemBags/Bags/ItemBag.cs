@@ -203,7 +203,8 @@ namespace ItemBags.Bags
                     object1.Quality != object2.Quality ||
                     object1.IsRecipe != object2.IsRecipe ||
                     object1.bigCraftable.Value != object2.bigCraftable.Value ||
-                    (ComparePrice && (object1.Price != object2.Price)))
+                    (ComparePrice && (object1.Price != object2.Price)) ||
+                    object1.Name != object2.Name)
                 {
                     return false;
                 }
@@ -857,7 +858,7 @@ namespace ItemBags.Bags
                 return false;
             }
 
-            Object BagItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, true));
+            Object BagItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, false));
 
             //  Determine how many more of this Item the bag can hold
             int MaxCapacity = GetMaxStackSize(Item);
@@ -876,9 +877,9 @@ namespace ItemBags.Bags
                 this.Contents.Add(BagItem);
             }
 
-            List<Object> InventoryItems = Source.Where(x => x != null && x is Object).Cast<Object>().Where(x => AreItemsEquivalent(x, Item, true))
+            List<Object> InventoryItems = Source.Where(x => x != null && x is Object).Cast<Object>().Where(x => AreItemsEquivalent(x, Item, false))
                 .OrderByDescending(x => x == Item).ToList(); // OrderBy will prioritize moving the clicked item's index first
-            if (Source == Game1.player.Items && Game1.player.CursorSlotItem != null && Game1.player.CursorSlotItem is Object CursorSlotObject && AreItemsEquivalent(CursorSlotObject, Item, true))
+            if (Source == Game1.player.Items && Game1.player.CursorSlotItem != null && Game1.player.CursorSlotItem is Object CursorSlotObject && AreItemsEquivalent(CursorSlotObject, Item, false))
                 InventoryItems.Insert(0, CursorSlotObject);
 
             foreach (Object InventoryItem in InventoryItems)
@@ -983,13 +984,13 @@ namespace ItemBags.Bags
 
             int TargetCapacity = Math.Max(ActualTargetCapacity, Target.Count);
 
-            Object BagItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, true));
+            Object BagItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, false));
             if (BagItem == null)
                 return false;
             int RemainingQty = Math.Min(BagItem.Stack, Qty);
 
             //  Add to existing stacks of the item that are already in the target inventory
-            List<Object> ExistingStacks = Target.Where(x => x != null && x is Object).Cast<Object>().Where(x => AreItemsEquivalent(x, Item, true)).ToList();
+            List<Object> ExistingStacks = Target.Where(x => x != null && x is Object).Cast<Object>().Where(x => AreItemsEquivalent(x, Item, false)).ToList();
             foreach (Object InventoryItem in ExistingStacks)
             {
                 int AmountToMove = Math.Min(RemainingQty, InventoryItem.maximumStackSize() - InventoryItem.Stack);

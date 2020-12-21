@@ -43,9 +43,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 82accbeb58e036ba84d351c14d60521b9aa9e196
+   commit f482a517f1c2d499c086f73f19bb2f807d6a5e31
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Fri Nov 27 00:03:27 2020 -0500
+   Date:   Sat Dec 12 01:05:11 2020 -0500
    
        etc
    

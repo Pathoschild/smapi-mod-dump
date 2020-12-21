@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using PurrplingCore.Lexing;
 using PurrplingCore.Lexing.LexTokens;
@@ -16,13 +18,18 @@ using QuestFramework.Framework.Helpers;
 using QuestFramework.Offers;
 using QuestFramework.Quests;
 using StardewModdingAPI;
+using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace QuestFramework.Framework.ContentPacks
 {
     class Loader
     {
+        private readonly Regex allowedChars = new Regex("^[a-zA-Z0-9_-]*$");
+
         public Loader(IMonitor monitor, QuestManager manager, QuestOfferManager scheduleManager)
         {
             this.Contents = new List<Content>();
@@ -102,15 +109,28 @@ namespace QuestFramework.Framework.ContentPacks
             // Register quests
             foreach (var questData in content.Quests)
             {
-                CustomQuest managedQuest = this.MapQuest(content, questData);
-
-                if (questData.Hooks != null)
+                try
                 {
-                    managedQuest.Hooks.AddRange(questData.Hooks);
-                }
+                    CustomQuest managedQuest = this.MapQuest(content, questData);
 
-                this.ApplyHandlers(managedQuest, questData);
-                this.Manager.RegisterQuest(managedQuest);
+                    if (questData.Hooks != null)
+                    {
+                        managedQuest.Hooks.AddRange(questData.Hooks);
+                    }
+
+                    if (!this.allowedChars.IsMatch(managedQuest.Name))
+                    {
+                        this.Monitor.Log($"Quest name `{managedQuest.Name}` contains unallowed characters in pack `{content.Owner.Manifest.UniqueID}`", LogLevel.Error);
+                        return;
+                    }
+
+                    this.ApplyHandlers(managedQuest, questData);
+                    this.Manager.RegisterQuest(managedQuest);
+                } 
+                catch (InvalidQuestException ex)
+                {
+                    this.Monitor.Log($"Error while creating quest `{questData.Name}` from pack `{content.Owner.Manifest.UniqueID}`: {ex.Message}", LogLevel.Error);
+                }
             }
 
             // Add quest schedules
@@ -230,34 +250,123 @@ namespace QuestFramework.Framework.ContentPacks
             return string.Join("", parts);
         }
 
+        private QuestType ParseBaseQuestType(QuestData questData, Content content)
+        {
+            if (questData.Type.Contains('/'))
+                return QuestType.Custom;
+
+            if (Enum.TryParse(questData.Type, out QuestType parsedType))
+                return parsedType;
+
+            this.Monitor.Log($"Invalid quest type `{questData.Type}` for `{questData.Name}` in pack `{content.Owner.Manifest.UniqueID}`", LogLevel.Error);
+
+            return QuestType.Basic;
+        }
+
+        private CustomQuest CreateQuest(string type)
+        {
+            return type.Contains('/')
+                ? this.Manager.CreateQuestOfType(type)
+                : new CustomQuest();
+        }
+
         private CustomQuest MapQuest(Content content, QuestData questData)
         {
             string trigger = questData.Trigger?.ToString();
+            var managedQuest = this.CreateQuest(questData.Type);
 
-            var managedQuest = new CustomQuest(questData.Name)
-            {
-                Title = questData.Title,
-                Description = questData.Description,
-                BaseType = questData.Type,
-                Objective = questData.Objective,
-                DaysLeft = questData.DaysLeft,
-                Reward = questData.Reward,
-                RewardDescription = questData.RewardDescription,
-                ReactionText = questData.ReactionText,
-                Cancelable = questData.Cancelable,
-                Trigger = this.ApplyTokens(trigger),
-                NextQuests = questData.NextQuests,
-                OwnedByModUid = content.Owner.Manifest.UniqueID,
-            };
+            managedQuest.Name = questData.Name;
+            managedQuest.BaseType = this.ParseBaseQuestType(questData, content);
+            managedQuest.Title = questData.Title;
+            managedQuest.Description = questData.Description;
+            managedQuest.Objective = questData.Objective;
+            managedQuest.DaysLeft = questData.DaysLeft;
+            managedQuest.Reward = this.ParseReward(questData.Reward, questData.RewardType);
+            managedQuest.RewardType = questData.RewardType;
+            managedQuest.RewardAmount = questData.RewardAmount;
+            managedQuest.RewardDescription = questData.RewardDescription;
+            managedQuest.ReactionText = questData.ReactionText;
+            managedQuest.Cancelable = questData.Cancelable;
+            managedQuest.Trigger = this.ApplyTokens(trigger);
+            managedQuest.NextQuests = questData.NextQuests;
+            managedQuest.Colors = questData.Colors;
+            managedQuest.OwnedByModUid = content.Owner.Manifest.UniqueID;
 
             if (questData.CustomTypeId != -1)
             {
                 managedQuest.CustomTypeId = questData.CustomTypeId;
             }
 
+            if (questData.FriendshipGain != null)
+            {
+                foreach (var fship in questData.FriendshipGain)
+                {
+                    managedQuest.FriendshipGain[fship.Key] = fship.Value;
+                }
+            }
+
+            if (questData.Tags != null)
+            {
+                foreach (var tag in questData.Tags)
+                {
+                    managedQuest.Tags[tag.Key] = tag.Value;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(questData.Texture))
+            {
+                try
+                {
+                    managedQuest.Texture = content.Owner.LoadAsset<Texture2D>(questData.Texture);
+                } 
+                catch (ContentLoadException ex)
+                {
+                    this.Monitor.Log($"Couldn't load quest background texture file `{questData.Texture}`: {ex.Message}");
+                }
+            }
+
             questData.PopulateExtendedData(managedQuest);
 
             return managedQuest;
+        }
+
+        private int ParseReward(JToken reward, RewardType rewardType)
+        {
+            if (reward != null && reward.Type != JTokenType.Null)
+            {
+                if (reward.Type == JTokenType.Integer)
+                {
+                    return reward.ToObject<int>();
+                }
+
+                int id;
+                string rewardName = reward.ToObject<string>();
+                switch (rewardType)
+                {
+                    case RewardType.Money:
+                        return reward.ToObject<int>();
+                    case RewardType.Object:
+                        id = ItemHelper.GetObjectId(rewardName);
+
+                        if (id == -1)
+                        {
+                            this.Monitor.Log($"Unknown object `{rewardName}` for quest reward.", LogLevel.Error);
+                        }
+
+                        return id;
+                    case RewardType.Weapon:
+                        id = ItemHelper.GetWeaponId(rewardName);
+
+                        if (id == -1)
+                        {
+                            this.Monitor.Log($"Unknown weapon `{rewardName}` for quest reward.", LogLevel.Error);
+                        }
+
+                        return id;
+                }
+            }
+
+            return 0;
         }
 
         private Content LoadContentPack(IContentPack contentPack)

@@ -38,6 +38,13 @@ namespace ItemBags.Persistence
         [XmlElement("Name")]
         public string Name { get; set; }
 
+        [XmlElement("HoneyType")]
+        public int? HoneyType { get; set; }
+        [XmlElement("PreserveType")]
+        public int? PreserveType { get; set; }
+        [XmlElement("PreservedId")]
+        public int PreservedId { get; set; }
+
         public BagItem()
         {
             InitializeDefaults();
@@ -52,6 +59,9 @@ namespace ItemBags.Persistence
             this.Price = Item.Price;
             this.IsBigCraftable = Item.bigCraftable.Value;
             this.Name = Item.Name;
+            this.HoneyType = Item.honeyType.Value.HasValue ? (int)Item.honeyType.Value.Value : null as int?;
+            this.PreserveType = Item.preserve.Value.HasValue ? (int)Item.preserve.Value.Value : null as int?;
+            this.PreservedId = Item.preservedParentSheetIndex.Value;
         }
 
         public Object ToObject()
@@ -65,6 +75,15 @@ namespace ItemBags.Persistence
             else
             {
                 Object Item = new Object(Id, Quantity, false, Price <= 0 ? -1 : Price, Quality);
+                if (!string.IsNullOrEmpty(Name))
+                    Item.Name = Name;
+
+                if (this.HoneyType != null)
+                    Item.honeyType.Value = (Object.HoneyType)this.HoneyType.Value;
+                if (this.PreserveType != null)
+                    Item.preserve.Value = (Object.PreserveType)this.PreserveType.Value;
+                if (this.PreservedId != int.MinValue)
+                    Item.preservedParentSheetIndex.Value = this.PreservedId;
 
 #if DEBUG
                 if (Item.Price <= 0 && Item.Price != this.Price)
@@ -92,6 +111,9 @@ namespace ItemBags.Persistence
             this.IsBigCraftable = false;
             this.Price = -1;
             this.Name = "";
+            this.HoneyType = null;
+            this.PreserveType = null;
+            this.PreservedId = int.MinValue;
         }
 
         [OnSerializing]

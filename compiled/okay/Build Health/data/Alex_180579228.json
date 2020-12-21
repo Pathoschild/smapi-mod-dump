@@ -1,0 +1,9 @@
+{
+  "CurrentLevel": 0,
+  "CurrentExp": 10.0,
+  "ExpToNextLevel": 20.0,
+  "BaseHealthBonus": 0,
+  "CurrentLevelHealthBonus": 0,
+  "ClearModEffects": false,
+  "OriginalMaxHealth": 120
+}

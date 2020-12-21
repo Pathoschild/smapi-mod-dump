@@ -24,11 +24,13 @@ namespace QuestFramework.Framework
         private readonly IMonitor monitor;
 
         public List<CustomQuest> Quests { get; }
+        public Dictionary<string, Func<CustomQuest>> Factories { get; }
 
         public QuestManager(IMonitor monitor)
         {
             this.monitor = monitor;
             this.Quests = new List<CustomQuest>();
+            this.Factories = new Dictionary<string, Func<CustomQuest>>();
         }
 
         public void RegisterQuest(CustomQuest quest)
@@ -40,17 +42,17 @@ namespace QuestFramework.Framework
 
             if (string.IsNullOrEmpty(quest.Name) || string.IsNullOrEmpty(quest.OwnedByModUid))
             {
-                throw new ArgumentException($"Quest name and category can't be empty or null!");
+                throw new InvalidQuestException($"Quest name and category can't be empty or null!");
             }
 
             if (quest.Name.Contains(' ') || quest.Name.Contains('@'))
             {
-                throw new ArgumentException("Quest name contains illegal characters (spaces or these reserved characters: @)");
+                throw new InvalidQuestException("Quest name contains illegal characters (spaces or these reserved characters: @)");
             }
 
             if (this.Quests.Any(q => q.GetFullName() == quest.GetFullName()))
             {
-                throw new InvalidOperationException($"Quest `{quest.GetFullName()}` is already registered!");
+                throw new InvalidQuestException($"Quest `{quest.GetFullName()}` is already registered!");
             }
 
             this.Quests.Add(quest);
@@ -96,6 +98,14 @@ namespace QuestFramework.Framework
             }
         }
 
+        public void RegisterQuestFactory<T>(string name, Func<T> factory) where T : CustomQuest
+        {
+            if (this.Factories.ContainsKey(name))
+                throw new InvalidOperationException($"Quest factory {name} is already registered!");
+
+            this.Factories.Add(name, factory);
+        }
+
         public bool IsManaged(int id)
         {
             if (id < 0)
@@ -110,6 +120,15 @@ namespace QuestFramework.Framework
                 return null;
 
             return this.Quests.Where(q => q.id == id).FirstOrDefault();
+        }
+
+        public void Update()
+        {
+            foreach (var customQuest in this.Quests.Where(q => q.NeedsUpdate))
+            {
+                customQuest.Update();
+                customQuest.NeedsUpdate = false;
+            }
         }
 
         internal int ResolveGameQuestId(string fullName)
@@ -132,6 +151,19 @@ namespace QuestFramework.Framework
                 return null;
 
             return quests.First();
+        }
+
+        internal CustomQuest CreateQuestOfType(string type)
+        {
+            if (!this.Factories.ContainsKey(type))
+                throw new InvalidQuestException($"Quest type factory {type} doesn't exist!");
+
+            CustomQuest quest = this.Factories[type]();
+
+            if (quest.Name != null)
+                throw new InvalidQuestException("Quest name is unexpectedly assigned by factory!");
+
+            return quest;
         }
     }
 }

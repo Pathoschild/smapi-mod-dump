@@ -33,7 +33,7 @@ Current options allow configuration for:
 2. Change any desired values in the config. Percentage values are expressed in decimal form
 3. Your changes should now be implemented in game
 
-Note: The mod will create per-save file JSON files (found in the mod folder) so that the mod it knows what to restore if you exit the next day without saving after dying or passing out. While deleting these will not affect the game, it can lead to incorrect values being used. Only delete the file if you are deleting the character.
+Note: The mod will create per-save file JSON files (found in the mod folder) so that the mod knows what to restore if you exit the next day without saving after dying or passing out. While deleting these will not affect the game, it can lead to incorrect values being used. Only delete the file if you are deleting the character.
 
 ### If changes are not implemented:
  - Check the mod page for accepted values

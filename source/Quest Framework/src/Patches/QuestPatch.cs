@@ -75,6 +75,12 @@ namespace QuestFramework.Patches
             {
                 var managedQuest = Instance.QuestManager.GetById(__instance.id.Value);
 
+                if (managedQuest?.Objective != null)
+                {
+                    __instance._currentObjective = managedQuest.Objective;
+                    __instance.reloadObjective();
+                }
+
                 // Fix item harvest quest type objective (like 'x/y item harvested', affects only managed harvest quests)
                 if (managedQuest != null && __instance is ItemHarvestQuest harvestQuest)
                 {
@@ -165,6 +171,11 @@ namespace QuestFramework.Patches
             {
                 var managedQuest = Instance.QuestManager.GetById(__instance.id.Value);
 
+                if (managedQuest?.Description != null) 
+                {
+                    __instance._questDescription = managedQuest.Description;
+                }
+
                 if (managedQuest is IQuestObserver observer)
                 {
                     observer.UpdateDescription(
@@ -180,6 +191,35 @@ namespace QuestFramework.Patches
             catch (Exception e)
             {
                 Instance.LogFailure(e, nameof(After_get_questDescription));
+            }
+        }
+
+        private static void After_get_questTitle(Quest __instance, ref string __result)
+        {
+            try
+            {
+                var managedQuest = Instance.QuestManager.GetById(__instance.id.Value);
+
+                if (managedQuest?.Title != null)
+                {
+                    __instance._questTitle = managedQuest.Title;
+                }
+
+                if (managedQuest is IQuestObserver observer)
+                {
+                    observer.UpdateTitle(
+                        new QuestInfo(__instance, Game1.player),
+                        ref __instance._questTitle);
+                }
+
+                if (__instance._questTitle == null)
+                    __instance._questTitle = "";
+
+                __result = __instance._questTitle;
+            }
+            catch (Exception e)
+            {
+                Instance.LogFailure(e, nameof(After_get_questTitle));
             }
         }
 
@@ -238,6 +278,10 @@ namespace QuestFramework.Patches
             harmony.Patch(
                 original: AccessTools.Property(typeof(Quest), nameof(Quest.questDescription)).GetGetMethod(),
                 postfix: new HarmonyMethod(typeof(QuestPatch), nameof(QuestPatch.After_get_questDescription))
+            );
+            harmony.Patch(
+                original: AccessTools.Property(typeof(Quest), nameof(Quest.questTitle)).GetGetMethod(),
+                postfix: new HarmonyMethod(typeof(QuestPatch), nameof(QuestPatch.After_get_questTitle))
             );
             harmony.Patch(
                 original: AccessTools.Method(typeof(Quest), nameof(Quest.checkIfComplete)),

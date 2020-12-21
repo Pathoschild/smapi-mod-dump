@@ -212,9 +212,12 @@ namespace Pathoschild.Stardew.LookupAnything
             if (!npc.isVillager())
                 return false;
 
-            return this.Metadata.Constants.ForceSocialVillagers.TryGetValue(npc.Name, out bool social)
-                ? social
-                : npc.CanSocialize;
+            if (this.Metadata.Constants.ForceSocialVillagers.TryGetValue(npc.Name, out bool social))
+                return social;
+
+            return
+                Game1.player.friendshipData.ContainsKey(npc.Name)
+                || npc.CanSocialize;
         }
 
         /// <summary>Get how much each NPC likes receiving an item as a gift.</summary>
@@ -697,7 +700,7 @@ namespace Pathoschild.Stardew.LookupAnything
                     yield return new RecipeModel(
                         key: null,
                         type: RecipeType.TailorInput,
-                        displayType: "Tailoring",
+                        displayType: I18n.RecipeType_Tailoring(),
                         ingredients: new[] { new RecipeIngredientModel(input.ParentSheetIndex, 1) },
                         item: _ => this.GetTailoredItem(outputId),
                         mustBeLearned: false,

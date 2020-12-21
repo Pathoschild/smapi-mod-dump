@@ -30,8 +30,9 @@ namespace AdoptSkin.Framework
         /// <summary>Outdoor locations in which wild horses can spawn</summary>
         internal static List<string> SpawningMaps = new List<string>
         {
-            "Forest", "BusStop", "Mountain", "Town", "Railroad", "Beach"
+            "forest", "busstop", "mountain", "town", "railroad", "beach"
         };
+        internal static List<string> PlayerSpecifiedSpawnMaps = new List<string>();
         /// <summary>RNG for selecting randomized aspects</summary>
         private readonly Random Randomizer = new Random();
         /// <summary>The identifying number for a wild horse</summary>
@@ -49,7 +50,7 @@ namespace AdoptSkin.Framework
         {
             // Create WildHorse traits
             SkinID = ModEntry.GetRandomSkin(ModEntry.Sanitize(typeof(Horse).Name));
-            Map = Game1.getLocationFromName(SpawningMaps[Randomizer.Next(0, SpawningMaps.Count)]);
+            Map = Game1.getLocationFromName(PlayerSpecifiedSpawnMaps[Randomizer.Next(0, PlayerSpecifiedSpawnMaps.Count)]);
             Tile = GetRandomSpawnLocation(Map);
 
             // Create Horse instance
@@ -67,9 +68,16 @@ namespace AdoptSkin.Framework
             // Put that thing where it belongs
             Game1.warpCharacter(HorseInstance, Map, Tile);
 
+            // Spawn notifications
             if (ModEntry.Config.NotifyHorseSpawn)
             {
-                string message = $"A wild horse has been spotted at: {Map.Name} -- {Tile.X}, {Tile.Y}";
+                string message = $"A wild horse has been spotted!";
+                ModEntry.SMonitor.Log(message, LogLevel.Debug);
+                Game1.chatBox.addInfoMessage(message);
+            }
+            if (ModEntry.Config.NotifyHorseSpawnLocation)
+            {
+                string message = $"Wild horse spotted at: {Map.Name} -- {Tile.X}, {Tile.Y}";
                 ModEntry.SMonitor.Log(message, LogLevel.Debug);
                 Game1.chatBox.addInfoMessage(message);
             }

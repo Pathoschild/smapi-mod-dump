@@ -9,9 +9,14 @@
 *************************************************/
 
 using QuestFramework.Events;
+using QuestFramework.Framework;
 using QuestFramework.Framework.Events;
 using StardewModdingAPI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace QuestFramework.Api
 {
@@ -64,9 +69,7 @@ namespace QuestFramework.Api
                 modUid: manifest.UniqueID,
                 questManager: this.mod.QuestManager,
                 questOfferManager: this.mod.QuestOfferManager,
-                hookManager: this.mod.HookManager,
-                monitor: this.monitor
-            );
+                conditionManager: this.mod.ConditionManager);
         }
 
         public void ForceRefresh()

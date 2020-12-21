@@ -5,9 +5,9 @@ mods:
    NPC Adventures
 
 latest commit:
-   commit a7b024b0dfb4070b3fc39c3f996099c3c6cbdb67
+   commit 7bbcae5b1fbcececea2116a955fb5c238dcc344f
    Author: PurrplingCat <git@purrplingcat.com>
-   Date:   Thu Nov 26 18:21:29 2020 +0100
+   Date:   Wed Dec 2 10:26:01 2020 +0100
    
-       Release version 0.15.0 'Tasty Kimchi'
+       Add luck debuf for Shane
    

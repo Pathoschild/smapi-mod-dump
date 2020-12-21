@@ -21,6 +21,12 @@ namespace ItemBags
 {
     public static class MultiplayerHandler
     {
+        //  Note: To test multiplayer locally:
+        //  1. Launch SMAPI through the visual studio debugger
+        //  2. Launch a 2nd instance of SMAPI normally
+        //  3. One one instance, host a multiplayer lobby
+        //  4. On the second instance, connect to 127.0.0.1
+
         private static IModHelper Helper { get; set; }
         private static IMonitor Monitor { get { return ItemBagsMod.ModInstance.Monitor; } }
 

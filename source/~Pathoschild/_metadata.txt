@@ -19,9 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit f24441acd15cc7ef7411718daa18d9cb93e9c9a6
+   commit 619d395f2ccd121840641296cf1e941d059be873
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon Nov 30 17:42:32 2020 -0500
+   Date:   Sat Dec 19 11:46:24 2020 -0500
    
-       update some archived code
+       fix sort error when a numeric sequence that overflows int
    

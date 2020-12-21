@@ -78,9 +78,10 @@ namespace QuestFramework.Framework.Controllers
                     foreach (var q in managedLog)
                     {
                         // Restore title, description and right cancellable flag
-                        q.vanillaQuest.questTitle = q.managedQuest.Title;
-                        q.vanillaQuest.questDescription = q.managedQuest.Description;
+                        q.vanillaQuest._questTitle = q.managedQuest.Title;
+                        q.vanillaQuest._questDescription = q.managedQuest.Description;
                         q.vanillaQuest.canBeCancelled.Value = q.managedQuest.Cancelable;
+                        q.vanillaQuest.questTitle = q.managedQuest.Title; // For more safety
                     }
 
                     this.monitor.Log($"Refresh managed quests info in questlog for player `{farmhand.UniqueMultiplayerID}` aka `{farmhand.Name}`.");
@@ -104,9 +105,10 @@ namespace QuestFramework.Framework.Controllers
                 {
                     q.vanillaQuest.canBeCancelled.Value = true; // Allow cancelation
                     // Add "disclaimer" info
-                    q.vanillaQuest.questTitle = $"{q.managedQuest.Name} {translation.Get("fallbackTitle")}";
-                    q.vanillaQuest.questDescription = translation.Get("fallbackDescription");
-                    q.vanillaQuest.currentObjective = translation.Get("fallbackObjective");
+                    q.vanillaQuest._questTitle = $"{q.managedQuest.Name} {translation.Get("fallbackTitle")}";
+                    q.vanillaQuest._questDescription = translation.Get("fallbackDescription");
+                    q.vanillaQuest._currentObjective = translation.Get("fallbackObjective");
+                    q.vanillaQuest.questTitle = q.vanillaQuest._questTitle; // For more safety
                 }
 
                 this.monitor.Log($"Managed quests in questlog for player `{farmhand.UniqueMultiplayerID}` aka `{farmhand.Name}` sanitized.");
@@ -115,7 +117,7 @@ namespace QuestFramework.Framework.Controllers
 
         internal void SetQuestIdCache(Dictionary<string, int> questIdList)
         {
-            if (!Context.IsMultiplayer || Context.IsMainPlayer)
+            if (Context.IsMainPlayer)
             {
                 throw new InvalidOperationException("Cannot set quest id cache from external source in singleplayer or host game");
             }

@@ -10,6 +10,14 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Fixed some untranslated text.
+* Fixed NPC lookups not showing social info for some custom mod NPCs. (This affects NPCs with friendship data but `CanSocialize` set to false.)
+* Improved translations. Thanks to spindensity (updated Chinese)!
+
+## 1.28.3
+Released 05 December 2020.
+
+* Moved `data.json` into standard `assets` folder.
 * Fixed crop fields shown for forage crops.
 * Fixed item lookups no longer showing iridium or stack prices.
 

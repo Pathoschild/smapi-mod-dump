@@ -208,7 +208,7 @@ namespace MobilePhone
 
             List<Response> responses = new List<Response>();
             for (int i = 0; i < inCallReminiscence.Count; i++)
-                responses.Add(new Response($"PhoneApp_InCall_Reminiscence_{i}", inCallReminiscence[i].name));
+                responses.Add(new Response($"PhoneApp_InCall_Reminiscence_{i}", Helper.Translation.Get(inCallReminiscence[i].name)));  
 
             responses.Add(new Response("PhoneApp_InCall_Return", Helper.Translation.Get("back")));
 
@@ -230,7 +230,6 @@ namespace MobilePhone
                 if (eventInvites[i].CanInvite(npc))
                 {
                     responses.Add(new Response($"PhoneApp_InCall_Invitation_{i}", eventInvites[i].name));
-                    break;
                 }
             }
 
@@ -425,7 +424,7 @@ namespace MobilePhone
 
             if (ModEntry.npcAdventureModApi.CanRecruit(Game1.player, npc))
             {
-                Game1.drawDialogue(npc, ModEntry.npcAdventureModApi.LoadString($"Dialogues/{npc.Name}:companionAccepted"));
+                Game1.drawDialogue(npc, ModEntry.npcAdventureModApi.LoadString($"Dialogue/{npc.Name}:companionAccepted"));
                 while (Game1.activeClickableMenu is DialogueBox)
                 {
                     await Task.Delay(50);
@@ -434,7 +433,7 @@ namespace MobilePhone
             }
             else
             {
-                Game1.drawDialogue(npc, ModEntry.npcAdventureModApi.LoadString($"Dialogues/{npc.Name}:" + (Game1.timeOfDay >= 2200 ? "companionRejectedNight" : "companionRejected")));
+                Game1.drawDialogue(npc, ModEntry.npcAdventureModApi.LoadString($"Dialogue/{npc.Name}:" + (Game1.timeOfDay >= 2200 ? "companionRejectedNight" : "companionRejected")));
                 while (Game1.activeClickableMenu is DialogueBox)
                 {
                     await Task.Delay(50);

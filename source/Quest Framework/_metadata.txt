@@ -5,9 +5,9 @@ mods:
    Quest Framework
 
 latest commit:
-   commit 5d87ed6c1ad5e97eb138d896a9ad162bd0a522fa
+   commit 565dccd62b4ae34880060c255a29078682276aa4
    Author: PurrplingCat <git@purrplingcat.com>
-   Date:   Mon Nov 9 10:22:48 2020 +0100
+   Date:   Sat Dec 19 17:49:00 2020 +0100
    
-       Release version 1.1.1
+       Fix sanitizers
    

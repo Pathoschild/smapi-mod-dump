@@ -84,6 +84,7 @@
     // recipe types
     "recipe-type.cooking": "Cozinhar",
     "recipe-type.crafting": "Construir",
+    "recipe-type.tailoring": "Alfaiataria",
 
     // NPC descriptions
     "data.npc.pet.description": "Seu animal de estimação leal.",

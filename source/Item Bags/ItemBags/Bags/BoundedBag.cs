@@ -127,7 +127,7 @@ namespace ItemBags.Bags
                 return true;
             else
             {
-                Object BagItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, true));
+                Object BagItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, false));
                 if (BagItem == null)
                     return false;
                 else

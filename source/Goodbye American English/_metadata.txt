@@ -5,10 +5,12 @@ mods:
    Goodbye American English
 
 latest commit:
-   commit b6ff2579d41c6086fd70621916a9a69b5aa4709e
-   Merge: b3ba71c 89b6b6b
-   Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Tue Dec 1 11:48:03 2020 +1100
+   commit 3359b852a9f058d913046cd117b9e5b1e411fc36
+   Merge: 04d875e 50ea4c7
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Tue Dec 15 21:46:58 2020 +1100
    
-       Merge branch 'master' of https://github.com/TheMightyAmondee/GoodbyeAmericanEnglish
+       Merge pull request #5 from TheMightyAmondee/Introduction
+       
+       Introduction
    

@@ -24,6 +24,7 @@ namespace GoodbyeAmericanEnglish
     public class ModEntry
         : Mod, IAssetEditor
     {
+        private ModConfig config;
 
         // Array to hold NPC names
         private static string[] NPCs = 
@@ -34,7 +35,7 @@ namespace GoodbyeAmericanEnglish
             "Clint",
             "Demetrius",
             "Dwarf",
-            "Elliot",
+            "Elliott",
             "Emily",
             "George",
             "Gus",
@@ -106,7 +107,7 @@ namespace GoodbyeAmericanEnglish
 
         public override void Entry(IModHelper helper)
         {
-
+            this.config = this.Helper.ReadConfig<ModConfig>();
         }
 
         // Return true if an asset name matches
@@ -156,6 +157,7 @@ namespace GoodbyeAmericanEnglish
                     || asset.AssetNameEquals("Data\\Bundles")
                     || asset.AssetNameEquals("Data\\weapons")
                     || asset.AssetNameEquals("Data\\hats")
+                    || asset.AssetNameEquals("Data\\ObjectContextTags")
                     || asset.AssetNameEquals("Data\\Concessions")
                     || asset.AssetNameEquals("Data\\Movies")
                     || asset.AssetNameEquals("Data\\MoviesReactions")
@@ -180,58 +182,67 @@ namespace GoodbyeAmericanEnglish
 
                 foreach (string key in new List<string>(data.Keys))
                 {
-                    // Skip replacement if string is any of the following
-                    if (false 
-                        || data[key].Contains("fall on")
-                        || data[key].Contains("fall out")
-                        || data[key].Contains("fall prey")
-                        || data[key].Contains("fallen")
-                        || data[key].Contains("falling")
-                        || data[key].Contains("fall_") 
-                        || data[key].Contains("citizen") 
-                        || data[key].Contains("size") 
-                        || data[key].Contains("moment")
-                        || data[key].Contains("cardamom")
-                        || data[key].Contains("[color") 
-                        || data[key].Contains("bgColor") 
-                        || data[key].Contains("Prize") 
-                        || data[key].Contains("prize")
-                        || data[key].Contains("_apologize") 
-                        || data[key].Contains("JoshMom")
-                        || data[key].Contains("fallFest")
-                        || data[key].Contains("WildColor")
-                        || data[key].Contains("Favor")
-                        || data[key].Contains("Fall Of Planet")
-                        || data[key].Contains("communityCenter"))
-                    {
-                        continue;
-                    }
-
                     // Replace specified string with new string
-                    data[key] = data[key].Replace("the fall", "autumn");
+                    
                     data[key] = data[key].Replace("olor", "olour");
-                    data[key] = data[key].Replace("behavior", "behaviour");
-                    data[key] = data[key].Replace("fall", "autumn");
-                    data[key] = data[key].Replace("Fall", "Autumn");
+                    data[key] = data[key].Replace("behavior", "behaviour");                  
                     data[key] = data[key].Replace("ize", "ise");
+                    data[key] = data[key].Replace("izing", "ising");
                     data[key] = data[key].Replace("zation", "sation");
-                    data[key] = data[key].Replace("Center", "Centre");
-                    data[key] = data[key].Replace("twenty miles", "thirty kilometres");
+                    data[key] = data[key].Replace(" center", " centre");
+                    data[key] = data[key].Replace(" Center", " Centre");
                     data[key] = data[key].Replace("mom", "mum");
-                    data[key] = data[key].Replace("Mom", "Mum");
-                    data[key] = data[key].Replace("six inches", "fifteen centimetres");
-                    data[key] = data[key].Replace("center", "centre");
-                    data[key] = data[key].Replace("{0} in.", "{0} cm.");
-                    data[key] = data[key].Replace("inches", "centimetres");
+                    data[key] = data[key].Replace("Mom", "Mum");                   
                     data[key] = data[key].Replace("theater", "theatre");
                     data[key] = data[key].Replace("Theater", "Theatre");
                     data[key] = data[key].Replace("counselor", "counsellor");
-                    data[key] = data[key].Replace("honor", "honour");
-                    data[key] = data[key].Replace("humor", "humour");
+                    data[key] = data[key].Replace("onor", "onour");
+                    data[key] = data[key].Replace("umor", "umour");
                     data[key] = data[key].Replace("avor", "avour");
-                    data[key] = data[key].Replace("neighbor", "neighbour");
+                    data[key] = data[key].Replace("eighbor", "eighbour");
                     data[key] = data[key].Replace("traveling", "travelling");
                     data[key] = data[key].Replace("travele", "travelle");
+                    data[key] = data[key].Replace("cozy", "cosy");
+                    data[key] = data[key].Replace("fiber", "fibre");
+                    data[key] = data[key].Replace("efense", "efence");
+                    
+
+                    if(this.config.MetricSystem == true)
+                    {
+                        data[key] = data[key].Replace("twenty miles", "thirty kilometres");
+                        data[key] = data[key].Replace("six inches", "fifteen centimetres");
+                        data[key] = data[key].Replace("{0} in.", "{0} cm.");
+                        data[key] = data[key].Replace("inches", "centimetres");
+                    }
+
+                    if(this.config.FalltoAutumn == true)
+                    {
+                        data[key] = data[key].Replace("the fall", "autumn");
+                        data[key] = data[key].Replace("fall", "autumn");
+                        data[key] = data[key].Replace("Fall", "Autumn");
+
+                        data[key] = data[key].Replace("autumnen", "fallen");
+                        data[key] = data[key].Replace("autumn out", "fall out");
+                        data[key] = data[key].Replace("autumning", "falling");
+                        data[key] = data[key].Replace("autumn on", "fall on");
+                        data[key] = data[key].Replace("autumns", "falls");
+                        data[key] = data[key].Replace("autumn prey", "fall prey");
+                        data[key] = data[key].Replace("autumnFest", "fallFest");
+                        data[key] = data[key].Replace("Autumn Of Planet", "Fall Of Planet");
+                        data[key] = data[key].Replace("autumn_", "fall_");
+                    }
+
+                    // Correct word replacement that shouldn't occur
+                    data[key] = data[key].Replace("mument", "moment");
+                    data[key] = data[key].Replace("JoshMum", "JoshMom");
+                    data[key] = data[key].Replace(" sise", " size");
+                    data[key] = data[key].Replace("citisen", "citizen");
+                    data[key] = data[key].Replace("cardamum", "cardamom");
+                    data[key] = data[key].Replace("bgColour", "bgColor");
+                    data[key] = data[key].Replace("Prise", "Prize");
+                    data[key] = data[key].Replace(" prise", " prize");
+                    data[key] = data[key].Replace("_apologise", "_apologize");
+                    data[key] = data[key].Replace("WildColour", "WildColor");
                 }
             }
 
@@ -325,6 +336,7 @@ namespace GoodbyeAmericanEnglish
                     // Replace specified string with new string
                     data[key] = data[key].Replace("favorite", "favourite");
                     data[key] = data[key].Replace("Mom", "Mum");
+                    data[key] = data[key].Replace("efense", "efence");
                 }
             }
 
@@ -356,55 +368,44 @@ namespace GoodbyeAmericanEnglish
                         continue;
                     }
 
+                    if(this.config.FalltoAutumn == true)
+                    {
+                        data[key] = data[key].Replace("the fall", "autumn");
+                        data[key] = data[key].Replace("A fall", "An autumn");
+                        data[key] = data[key].Replace("fall", "autumn");
+
+                        // Only replace string value for a specific key
+                        if (key == 497)
+                        {
+                            data[key] = data[key].Replace("Fall", "Autumn");
+                        }
+
+                        else if (key == 487)
+                        {
+                            data[key] = "Corn Seeds/75/-300/Seeds -74/Corn Seeds/Plant these in the summer or in autumn. Takes 14 days to mature, and continues to produce after first harvest.";
+                        }
+                    }
                     // Replace string with new word
-                    data[key] = data[key].Replace("the fall", "autumn");
-                    data[key] = data[key].Replace("A fall", "An autumn");
-                    data[key] = data[key].Replace("fall", "autumn");
+                    
                     data[key] = data[key].Replace("color", "colour");
                     data[key] = data[key].Replace("favorite", "favourite");
                     data[key] = data[key].Replace("ize", "ise");
                     data[key] = data[key].Replace("theater", "theatre");
                     data[key] = data[key].Replace("zation", "sation");
 
-                    // Only replace string value for a specific key
-                    if (key == 497)
-                    {
-                        data[key] = data[key].Replace("Fall", "Autumn");
-                    }
-
-                    else if (key == 487)
-                    {
-                        data[key] = "Corn Seeds/75/-300/Seeds -74/Corn Seeds/Plant these in the summer or in autumn. Takes 14 days to mature, and continues to produce after first harvest.";
-                    }
+                    
                 }
             }
 
             // Edit TV channel data
             else if (asset.AssetNameEquals("Data\\TV\\TipChannel"))
             {
-                var data = asset.AsDictionary<string, string>().Data;
-
-                // Replace specified key value with new value
-                data["53"] = data["53"].Replace("Fall", "Autumn");
-
-                foreach (string key in new List<string>(data.Keys) { "36", "67", "78", "116", "186", "102" })
-                {
-                    // Replace specified string with new string
-                    data[key] = data[key].Replace("fall", "autumn");
-                    data[key] = data[key].Replace("favorite", "favourite");
-                }
+                SpellingFixer();
             }
 
             else if (asset.AssetNameEquals("Data\\TV\\CookingChannel"))
             {
-                var data = asset.AsDictionary<string, string>().Data;
-
-                foreach (string key in new List<string>(data.Keys) { "18", "27", "31", "32" })
-                {
-                    // Replace specified string with new string
-                    data[key] = data[key].Replace("favorite", "favourite");
-                    data[key] = data[key].Replace("ize", "ise");
-                }
+                SpellingFixer();
             }
 
             // Edit mail data
@@ -491,7 +492,7 @@ namespace GoodbyeAmericanEnglish
             }
 
             // Edit a single entry in hats
-            else if (asset.AssetNameEquals("Data\\Bundles"))
+            else if (asset.AssetNameEquals("Data\\Bundles") && this.config.FalltoAutumn == true)
             {
                 var data = asset.AsDictionary<string, string>().Data;
 
@@ -512,7 +513,7 @@ namespace GoodbyeAmericanEnglish
             }
 
             // Patch Intro tilesheet with new sign image
-            else if (asset.AssetNameEquals("Minigames\\Intro"))
+            else if (asset.AssetNameEquals("Minigames\\Intro") && this.config.MetricSystem == true)
             {
                 var editor = asset.AsImage();
 
@@ -549,15 +550,18 @@ namespace GoodbyeAmericanEnglish
                     MovieEditor("spring_movie_0", " ", " ", 4, "spring0_4", "demoralized", "demoralised");
                 }
 
-                if (movieDatas.ContainsKey("spring_movie_1"))
+                if(this.config.MetricSystem == true)
                 {
-                    MovieEditor("spring_movie_1", " ", " ", 1, "spring1_1", "80 miles", "128 kilometres");
-                }
+                    if (movieDatas.ContainsKey("spring_movie_1"))
+                    {
+                        MovieEditor("spring_movie_1", " ", " ", 1, "spring1_1", "80 miles", "128 kilometres");
+                    }
 
-                if (movieDatas.ContainsKey("fall_movie_1"))
-                {
-                    MovieEditor("fall_movie_1", " ", " ", 1, "fall1_1", "30 miles", "48 kilometres");
-                }
+                    if (movieDatas.ContainsKey("fall_movie_1"))
+                    {
+                        MovieEditor("fall_movie_1", " ", " ", 1, "fall1_1", "30 miles", "48 kilometres");
+                    }
+                }              
 
                 if (movieDatas.ContainsKey("summer_movie_1"))
                 {
@@ -631,6 +635,18 @@ namespace GoodbyeAmericanEnglish
                 ConcessionsDescriptionEditor(16, "fiber", "fibre");
                 // Rock candy
                 ConcessionsDescriptionEditor(23, "Flavored", "Flavoured");
+            }
+
+            // Edit objectcontexttag data
+            else if (asset.AssetNameEquals("Data\\ObjectContextTags"))
+            {
+                var data = asset.AsDictionary<string, string>().Data;
+
+                foreach (string key in new List<string>(data.Keys))
+                {
+                    // Replace specified string with new string
+                    data[key] = data[key].Replace("fertilizer", "fertiliser");
+                }
             }
         }
     }

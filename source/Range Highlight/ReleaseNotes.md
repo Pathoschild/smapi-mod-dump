@@ -9,6 +9,12 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.5.1
+
+### User-visible Changes
+
+* The Bomber Jacket item no longer shows a bomb range highlight.
+
 ## Version 1.5.0
 
 ### User-visible Changes

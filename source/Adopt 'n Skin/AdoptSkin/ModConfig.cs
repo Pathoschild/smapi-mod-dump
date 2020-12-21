@@ -22,7 +22,7 @@ namespace AdoptSkin
         public bool OneTileHorse { get; set; } = true;
         public bool PetAndHorseNameTags { get; set; } = true;
         public string HorseWhistleKey { get; set; } = "R";
-        public string CorralKey { get; set; } = "Y";
+        public string CorralKey { get; set; } = "G";
 
 
         public int StrayAdoptionPrice { get; set; } = 1000;
@@ -42,6 +42,10 @@ namespace AdoptSkin
 
 
 
+        /// <summary>Sets the locations that wild horses may spawn at</summary>
+        public List<string> WildHorseSpawnLocations { get; set; } = new List<string> { "Forest", "BusStop", "Mountain", "Town", "Railroad", "Beach" };
+
+
 
         /// <summary>The percentage chance that a WildHorse will spawn. 25% by default.</summary>
         public int WildHorseChancePercentage { get; set; } = 25;
@@ -53,8 +57,10 @@ namespace AdoptSkin
 
 
 
-        /// <summary>Whether or not to tell the player when and where a WildHorse has spawned on the map. Will be FALSE by default</summary>
+        /// <summary>Whether or not to tell the player IF a WildHorse has spawned on the map. Will be FALSE by default</summary>
         public bool NotifyHorseSpawn { get; set; } = false;
+        /// <summary>Whether or not to tell the player WHERE a WildHorse has spawned on the map. Will be FALSE by default</summary>
+        public bool NotifyHorseSpawnLocation { get; set; } = false;
         /// <summary>Whether or not to tell the player when a Stray has spawned at Marnie's. Will be FALSE by default</summary>
         public bool NotifyStraySpawn { get; set; } = false;
 
