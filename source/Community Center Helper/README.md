@@ -37,7 +37,7 @@ By its nature, this mod spoils certain things about the game. However, by defaul
 **Things that ShowSpoilers will hide as appropriate:** Names of areas you haven't yet reached, unknown shops, unencountered monsters.
 
 ## Bundle Mod Support
-In addition to the bundles in the base game, the following bundle-altering mods are supported.
+In addition to the bundles (both normal and remixed) in the base game, the following bundle-altering mods are supported.
 
 - EasierBundles (by Quirinea)
 - Alternative Bundles (by Quirinea)

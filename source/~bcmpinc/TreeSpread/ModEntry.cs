@@ -19,7 +19,7 @@ namespace StardewHack.TreeSpread
     public class ModConfig
     {
         /** Chance that a tree will have a seed. Normally this is 0.05 (=5%). */
-        public double SeedChance = 0.15;
+        public float SeedChance = 0.15f;
         /** Whether only tapped trees are prevented from dropping seeds. */
         public bool OnlyPreventTapped = false;
     }
@@ -75,13 +75,17 @@ namespace StardewHack.TreeSpread
             }
             
             // Increase chance that tree has a seed.
+            // hasSeed.Value = false;
+            // float num3 = 0.05f;
             var seed = spread.FindNext(
-                OpCodes.Ldsfld,
+                OpCodes.Ldarg_0,
+                Instructions.Ldfld(typeof(Tree),nameof(Tree.hasSeed)),
+                OpCodes.Ldc_I4_0,
                 OpCodes.Callvirt,
-                OpCodes.Ldc_R8,
-                OpCodes.Bge_Un
+                Instructions.Ldc_R4(0.05f),
+                OpCodes.Stloc_1
             );
-            seed[2].operand = config.SeedChance;
+            seed[4].operand = config.SeedChance;
         }
     }
 }

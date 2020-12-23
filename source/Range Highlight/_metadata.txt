@@ -5,9 +5,9 @@ mods:
    Range Highlight
 
 latest commit:
-   commit ef2c1b595b39fb92b7f4f125a5bee6f43805391b
+   commit d3f4c68f9c77175b9b375a783feb5fc3b8bae97a
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sat Dec 5 13:10:21 2020 -0500
+   Date:   Tue Dec 22 18:49:02 2020 -0500
    
-       fix typo
+       Add integration with Better Sprinklers; bump version to 2.1.0
    

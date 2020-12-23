@@ -53,6 +53,9 @@ namespace CustomTracker
             /// <summary>If true, harvestable berry bushes should be tracked.</summary>
             public bool TrackBerryBushes = false;
 
+            /// <summary>If true, harvestable walnut bushes should be tracked.</summary>
+            public bool TrackWalnutBushes = false;
+
             /// <summary>A list of additional object IDs and/or names that should be tracked.</summary>
             public List<object> OtherTrackedObjects = new List<object>();
 

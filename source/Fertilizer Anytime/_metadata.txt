@@ -1,0 +1,13 @@
+url:
+   https://github.com/stoobinator/Stardew-Valley-Fertilizer-Anytime.git
+
+mods:
+   Fertilizer Anytime
+
+latest commit:
+   commit d71e541142b918baf5a559f950d83e3f9e8ae7df
+   Author: stoobinator <stoobinator@gmail.com>
+   Date:   Mon Dec 21 22:03:06 2020 -0600
+   
+       Update for 1.5
+   

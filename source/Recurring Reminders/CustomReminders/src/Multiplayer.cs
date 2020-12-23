@@ -16,6 +16,9 @@ namespace Dem1se.CustomReminders.Multiplayer
 
     static class Multiplayer
     {
+        /* The below two methods are bound in the entry method to their respective events.*/
+        
+        
         /// <summary>
         /// Used by the peers to recieve and set the value for Utilities.Utilities.SaveFolderName field
         /// </summary>
@@ -23,10 +26,10 @@ namespace Dem1se.CustomReminders.Multiplayer
         /// <param name="e">Contains all the data/args of the event</param>
         public static void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
-            if (e.FromModID == Utilities.Data.Helper.ModRegistry.ModID && e.Type == "SaveFolderName")
+            if (e.FromModID == Utilities.Globals.Helper.ModRegistry.ModID && e.Type == "SaveFolderName")
             {
                 SaveFolderNameModel message = e.ReadAs<SaveFolderNameModel>();
-                Utilities.Data.SaveFolderName = message.SaveFolderName;
+                Utilities.Globals.SaveFolderName = message.SaveFolderName;
             }
         }
 
@@ -40,7 +43,7 @@ namespace Dem1se.CustomReminders.Multiplayer
         {
             if (Context.IsMainPlayer)
             {
-                Utilities.Data.Helper.Multiplayer.SendMessage<SaveFolderNameModel>(new SaveFolderNameModel() { SaveFolderName = Utilities.Data.SaveFolderName }, "SaveFolderName", modIDs: new[] { Utilities.Data.Helper.ModRegistry.ModID }, playerIDs: new[] { e.Peer.PlayerID });
+                Utilities.Globals.Helper.Multiplayer.SendMessage<SaveFolderNameModel>(new SaveFolderNameModel() { SaveFolderName = Utilities.Globals.SaveFolderName }, "SaveFolderName", modIDs: new[] { Utilities.Globals.Helper.ModRegistry.ModID }, playerIDs: new[] { e.Peer.PlayerID });
             }
         }
     }

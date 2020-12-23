@@ -1,0 +1,16 @@
+{
+  "Name": "Stardew Aquarium [CP]",
+  "Author": "Gervig91",
+  "Version": "1.2.0",
+  "Description": "Animations and stuff",
+  "UniqueID": "Gervig91.StardewAquariumCP",
+  "UpdateKeys": [ "Nexus:???" ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+"Dependencies": [
+   {
+      "UniqueID": "Cherry.StardewAquarium",
+   }
+]
+}

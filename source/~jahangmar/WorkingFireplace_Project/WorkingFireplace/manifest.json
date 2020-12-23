@@ -11,7 +11,7 @@
 {
   "Name": "WorkingFireplace",
   "Author": "jahangmar",
-  "Version": "1.5.2",
+  "Version": "1.5.3",
   "Description": "The fireplace consumes wood and sleeping in your cold house drains energy",
   "UniqueID": "jahangmar.WorkingFireplace",
   "MinimumApiVersion": "3.0.0",

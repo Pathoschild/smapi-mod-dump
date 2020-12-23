@@ -47,6 +47,7 @@
 	// Constructions
 	"putItemInMill": "Put {{rawItem}} in Mill building",
 	"fishPond": "Produced by Fish Pond with {{fish}} x{{num}}",
+	"fishPondAny": "Produced by Fish Pond with any fish",
 	
 	// Monsters
 	"droppedByMonster": "Dropped by {{monster}}",
@@ -260,6 +261,7 @@
 	"monsterAreaSkullFloorPlus": "Skull Cavern {{start}}+",
 	"monsterAreaSkullPrehistoric": "Skull Cavern prehistoric floors",
 	"monsterAreaSkullMummy": "Skull Cavern mummy floors",
+	"monsterAreaVolcano": "Volcano",
 	"monsterAreaUnknown": "???",
 	
 	// Animal Names (for animal product suggestions)

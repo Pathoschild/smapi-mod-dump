@@ -5,9 +5,9 @@ mods:
    Bug Net
 
 latest commit:
-   commit 87c37697a70ba413dec7a15acfe1470bfb6a1a9b
+   commit 06df14e283c2fa99a4d71f57fb9fdb52c386b34d
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sun May 31 21:18:40 2020 -0400
+   Date:   Mon Dec 21 15:19:06 2020 -0500
    
-       Move critter items to JA so they can be sold
+       1.5 stuff
    

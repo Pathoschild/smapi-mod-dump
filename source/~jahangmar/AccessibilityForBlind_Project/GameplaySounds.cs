@@ -103,12 +103,16 @@ namespace AccessibilityForBlind
 
             if (Game1.activeClickableMenu == null)
             {
-                if (Inputs.IsTTSMapCheckButton(e.Button))
+                if (Inputs.IsTTSMapCheckUnderneathButton(e.Button, e.IsDown))
                 {
-                        //ModEntry.Log($"dir: {Game1.player.getDirection()}, fdir: {Game1.player.getFacingDirection()}");
-                        string descr = FindBarrierDescription();
-                        if (descr.Length > 0)
-                            TextToSpeech.Speak("You feel a " + descr);
+                    SpeakUnderneathDescription();
+                }
+                else if (Inputs.IsTTSMapCheckButton(e.Button))
+                {
+                    //ModEntry.Log($"dir: {Game1.player.getDirection()}, fdir: {Game1.player.getFacingDirection()}");
+                    string descr = FindBarrierDescription();
+                    if (descr.Length > 0)
+                        TextToSpeech.Speak("You feel a " + descr);
                 }
                 else if (false && Inputs.IsGameMenuButton(e.Button))
                 {
@@ -213,6 +217,14 @@ namespace AccessibilityForBlind
                     PlaySoundEffect(sound_guitar, charPos);
                 }
             }
+
+            //TODO do this not only every second and better aligned with tiles, change sound
+            int pX = (int)Game1.player.Position.X / Game1.tileSize;
+            int pY = (int)Game1.player.Position.Y / Game1.tileSize;
+            if (Game1.currentLocation is Farm farm && farm.isTileHoeDirt(new Vector2(pX, pY)) && farm.terrainFeatures[new Vector2(pX, pY)] is HoeDirt hoeDirt && hoeDirt.crop is Crop)
+            {
+                Game1.playSound("seeds");
+            }
         }
 
         private static void PlaySoundEffect(string name, Vector2 sourcePosition)
@@ -287,6 +299,30 @@ namespace AccessibilityForBlind
             catch (System.Exception e)
             {
                 ModEntry.Log("Error while playing sound: " + e.Message);
+            }
+        }
+
+        private static void SpeakUnderneathDescription()
+        {
+            GameLocation loc = Game1.currentLocation;
+            Vector2 pos = PlayerPosition();
+            Vector2 tilePos = pos / Game1.tileSize;
+
+            if (loc.getObjectAt((int)pos.X, (int)pos.Y) is Object obj)
+            {
+                TextToSpeech.Speak("standing above " + obj.DisplayName);
+            }
+            else if (loc.isTileHoeDirt(tilePos) && loc.terrainFeatures[tilePos] is HoeDirt hoeDirt)
+            {
+                if (hoeDirt.crop != null)
+                {
+                    //TODO no "needs water" if dead or ready for harvest
+                    TextToSpeech.Speak("standing above crop " + hoeDirt.crop.indexOfHarvest.Value + ", " + (hoeDirt.readyForHarvest() ? "ready for harvest" : "") + ", " + (hoeDirt.needsWatering() ? "needs water" : ""));
+                }
+                else
+                {
+                    TextToSpeech.Speak("standing above tilled dirt");
+                }
             }
         }
 
@@ -508,10 +544,7 @@ namespace AccessibilityForBlind
             }
         }
 
-        /// <summary>
-        /// Returns the next position of the player while moving even if player is blocked.
-        /// </summary>
-        private static Vector2 PlayerNextPosition()
+        private static Vector2 PlayerPosition()
         {
             Rectangle boundingBox = Game1.player.GetBoundingBox();
             int hwidth = boundingBox.Width / 2;
@@ -520,22 +553,31 @@ namespace AccessibilityForBlind
             boundingBox.Y += hheight;
             int x = boundingBox.X - (boundingBox.X % Game1.tileSize);
             int y = boundingBox.Y - (boundingBox.Y % Game1.tileSize);
+            return new Vector2(x, y);
+        }
+
+        /// <summary>
+        /// Returns the next position of the player while moving even if player is blocked.
+        /// </summary>
+        private static Vector2 PlayerNextPosition()
+        {
+            Vector2 pos = PlayerPosition();
             switch (FacingDir)
             {
                 case 0:
-                    y -= Game1.tileSize;
+                    pos.Y -= Game1.tileSize;
                     break;
                 case 1:
-                    x += Game1.tileSize;
+                    pos.X += Game1.tileSize;
                     break;
                 case 2:
-                    y += Game1.tileSize;
+                    pos.Y += Game1.tileSize;
                     break;
                 case 3:
-                    x -= Game1.tileSize;
+                    pos.X -= Game1.tileSize;
                     break;
             }
-            return new Vector2(x, y);
+            return new Vector2(pos.X, pos.Y);
         }
 
         private static void ShowTileInfo(xTile.Dimensions.Location location)

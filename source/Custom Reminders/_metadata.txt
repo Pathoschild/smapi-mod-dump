@@ -5,10 +5,9 @@ mods:
    Custom Reminders
 
 latest commit:
-   commit 4f947b9bf554606cc94ecb21fb9cdeb87015840a
+   commit 5cbf90d9f84fc87db015b32dec3037db801566ac
    Author: Dem1se <dem1se.io@protonmail.com>
-   Date:   Sun Nov 8 00:21:05 2020 +0530
+   Date:   Tue Dec 22 19:47:18 2020 +0530
    
-       Add Spanish translations
-       and bump version in manifest
+       Release Portuguese translation
    

@@ -7,12 +7,10 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit 492bcd488cd4192095141fc42f8199d62b4af7d3
-   Merge: 3ad33fb a3b13cf
-   Author: hawkfalcon <contact@hawkfalcon.com>
-   Date:   Wed Sep 30 19:06:24 2020 -0700
+   commit cb80d7ce94eed3c72a41d38e2c7ff169d0fcd246
+   Merge: 857babf 492bcd4
+   Author: hawkfalcon <hello@tristenmiller.me>
+   Date:   Mon Dec 21 16:56:34 2020 -0800
    
-       Merge pull request #6 from millerscout/master
-       
-       [BUGFIX] fixes junimo not being paid while not using english as locale.
+       Merge branch 'master' of https://github.com/hawkfalcon/Stardew-Mods
    

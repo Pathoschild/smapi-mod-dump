@@ -133,8 +133,8 @@ namespace BetterJunimos.Patches {
             
                 int radius = Util.MaxRadius;
                 if (__instance.controller.pathToEndPoint == null ||
-                    Math.Abs(__instance.controller.pathToEndPoint.Last().X - hut.tileX.Value + 1) > radius ||
-                    Math.Abs(__instance.controller.pathToEndPoint.Last().Y - hut.tileY.Value + 1) > radius) {
+                    Math.Abs(__instance.controller.pathToEndPoint.Last().X - hut.tileX.Value - 1) > radius ||
+                    Math.Abs(__instance.controller.pathToEndPoint.Last().Y - hut.tileY.Value - 1) > radius) {
                     if (Game1.random.NextDouble() < 0.5 && !hut.lastKnownCropLocation.Equals(Point.Zero)) {
                         __instance.controller = new PathFindController(__instance, __instance.currentLocation, hut.lastKnownCropLocation, -1,
                             new PathFindController.endBehavior(__instance.reachFirstDestinationFromHut), 100);

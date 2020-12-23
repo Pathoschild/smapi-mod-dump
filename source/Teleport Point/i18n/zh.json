@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Enaium-StardewValleyMods/TeleportPoint
+**
+*************************************************/
+
+{
+  "teleportPoint.button.teleport": "传送",
+  "teleportPoint.button.record": "记录传送点",
+  "teleportPoint.button.delete": "删除",
+  "teleportPoint.title.naming": "命名",
+  "teleportPoint.label.teleportPointList": "传送点列表",
+  "teleportPoint.label.teleportPoint": "传送点"
+}

@@ -47,6 +47,7 @@
 	// Constructions
 	"putItemInMill": "製粉機（建物）で{{rawItem}}を工程",
 	"fishPond": "{{fish}}が{{num}}匹いる池の物産",
+	"fishPondAny": "魚がいる池の物産",
 	
 	// Monsters
 	"droppedByMonster": "{{monster}}からのドロップ",
@@ -260,6 +261,7 @@
 	"monsterAreaSkullFloorPlus": "ドクロの洞窟{{floor}}F以上",
 	"monsterAreaSkullPrehistoric": "ドクロの洞窟の先史時代",
 	"monsterAreaSkullMummy": "ドクロの洞窟のミイラ階",
+	"monsterAreaVolcano": "火山",
 	"monsterAreaUnknown": "???",
 	
 	// Animal Names (for animal product suggestions)

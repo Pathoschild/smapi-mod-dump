@@ -1,0 +1,14 @@
+url:
+   https://github.com/b-b-blueberry/BlueberryMushroomMachine.git
+
+mods:
+   Mushroom Propagator - Grow More Mushrooms
+   Mushroom Propagator Automation
+
+latest commit:
+   commit ac4eb538a8fb261580b6a56461388ad5442f9811
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Wed Dec 23 02:16:44 2020 +1100
+   
+       Release 2.0.1: Fixed Automate support, mod is now split into BlueberryMushroomMachine and BlueberryMushroomAutomation in the main file.
+   

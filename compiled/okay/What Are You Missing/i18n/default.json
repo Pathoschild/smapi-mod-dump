@@ -1,0 +1,90 @@
+﻿{
+  "SEASON_SPECIFIC_HEADER": "Season Items",
+  "SEASON_SPECIFIC_CC_HEADER": "Season Community Center Items",
+  "COMMON_CC_HEADER": "Common Community Center Items",
+  "SPECIFIC_MERCHANT_HEADER": "Seasonal Travelling Cart Items",
+  "CCMERCHANT_HEADER": "CC Travelling Cart Items",
+  "COOKED_ITEMS_HEADER": "Cooked Items",
+  "FISH_TAB_HEADER": "All Fish",
+  "CROPS_TAB_HEADER": "All Crops",
+
+  "SEASON_SPECIFIC_DESCRIPTION": "Missing items specific to this season",
+  "SEASON_SPECIFIC_CC_DESCRIPTION": "Missing Community Center items specific to this season",
+  "COMMON_CC_DESCRIPTION": "Missing Community Center items common to all seasons",
+  "SPECIFIC_MERCHANT_DESCRIPTION": "Missing seasonal items that are available from the Travelling Cart",
+  "CCMERCHANT_DESCRIPTION": "Missing Community Center items that are available from the Travelling Cart",
+  "COOKED_ITEMS_DESCRIPTION": "Missing cooked items that you know how to make",
+  "FISH_TAB_DESCRIPTION": "All of the fish that can be obtained",
+  "CROPS_TAB_DESCRIPTION": "All of the crops from all of the seasons (even if you haven't unlocked the seeds yet)",
+
+  "EMPTY_LIST_MESSAGE": "There is nothing you are missing that is available",
+
+  "MINES_DISPLAY_NAME": "Mines",
+  "DESERT_DISPLAY_NAME": "Desert",
+  "CINDERSAP_RIVER_DISPLAY_NAME": "Cindersap River",
+  "CINDERSAP_POND_DISPLAY_NAME": "Cindersap Pond",
+  "FOREST_FARM_POND_DIAPLAY_NAME": "Forest Farm Pond",
+  "TOWN_RIVER_DISPLAY_NAME": "Town River",
+  "MOUNTAIN_LAKE_DISPLAY_NAME": "Mountain Lake",
+  "BEACH_DISPLAY_NAME": "Beach",
+  "SECRET_WOODS_DISPLAY_NAME": "Secret Woods",
+  "SEWER_DISPLAY_NAME": "Sewer",
+  "MUTANT_BUG_LAIR_DISPLAY_NAME": "Mutant Bug Lair",
+  "WITCHS_SWAMP_DISPLAY_NAME": "Witch's Swamp",
+
+  "NIGHT_MARKET": "Night Market Sub",
+
+  "OBTAINED_FROM_CRAB_POT_IN_OCEAN": "Obtained from a crab pot in the ocean",
+  "OBTAINED_FROM_CRAB_POT_IN_FRESHWATER": "Obtained from a crab pot in freshwater",
+
+  "TEXT_TO_HOVER_OVER_FOR_INFO": "Info",
+
+  "RAINY_WEATHER": "Rainy",
+  "SUNNY_WEATHER": "Sunny",
+  "ANY_WEATHER": "Any Weather",
+  "ANY_EGG": "Egg (Any)",
+  "ANY_MILK": "Milk (Any)",
+  "ANY_FISH": "Fish (Any)",
+  "ANYTIME": "Anytime",
+  "INGREDIENTS": "Ingredients",
+
+  "SPRING": "Spring",
+  "SUMMER": "Summer",
+  "FALL": "Fall",
+  "WINTER": "Winter",
+
+  "LEGEND_INFO": "In spring, fish close to the giant log in the Mountain Lake when its raining. Requires fishing lvl 10.",
+  "GLACIERFISH_INFO": "In winter, fish at the southern most point of the island just above the hat mouse. Requires fishing lvl 6.",
+  "CRIMSONFISH_INFO": "In summer, fish at the second Beach Pier. Requires fishing lvl 5.",
+  "ANGLER_INFO": "In fall, fish upwards on the small bridge near JoJo Mart. Requires fishing lvl 3.",
+  "MUTANT_CARP_INFO": "In any season, fish in the Sewers (in the open room with Krobus)",
+
+  "STONEFISH_INFO": "Found in the Mines on floor 20",
+  "ICE_PIP_INFO": "Found in the Mines on floor 60",
+  "LAVA_EEL_INFO": "Found in the Mines on floor 100",
+
+  "FARMING": "Farming",
+  "FISHING": "Fishing",
+  "MINING": "Mining",
+  "LUCK": "Luck",
+  "FORAGING": "Foraging",
+  "MAX_ENERGY": "Max Energy",
+  "MAGNETISM": "Magnetism",
+  "SPEED": "Speed",
+  "DEFENSE": "Defense",
+  "ATTACK": "Attack",
+
+  "ENERGY": "Energy",
+  "HEALTH": "Health",
+  "BUFFS": "Buff(s)",
+  "DURATION": "Duration",
+  "MINUTE": "min",
+  "SECONDS": "sec",
+
+  "LOCATIONS": "Location(s)",
+  "SEASONS": "Season(s)",
+  "WEATHER": "Weather",
+  "TIME": "Time",
+
+  "AREA": "Area"
+}

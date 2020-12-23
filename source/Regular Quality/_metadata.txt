@@ -5,9 +5,9 @@ mods:
    Regular Quality
 
 latest commit:
-   commit 492301562096e655e00978184e2727bb74f865d4
+   commit efde466a37640872bc355d21420660b72ffe5bd1
    Author: desto-git <desto-git@users.noreply.github.com>
-   Date:   Mon Oct 19 21:39:30 2020 +0200
+   Date:   Sat Dec 19 22:58:59 2020 +0100
    
-       [RQ] fix compatibility with Minerva's CC mod
+       [BP] #4 improve compatibility with Quest Framework
    

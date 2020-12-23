@@ -18,7 +18,7 @@ A mod for the game Stardew Valley, allowing players to use a custom forage track
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
 2. **Install the latest version of [Content Patcher](https://www.nexusmods.com/stardewvalley/mods/1915).**
-3. **Download CustomTracker** from [the Releases page on GitHub](https://github.com/Esca-MMC/CustomTracker/releases), Nexus Mods, or ModDrop.
+3. **Download CustomTracker** from [the Releases page on GitHub](https://github.com/Esca-MMC/CustomTracker/releases), NexusMods, or ModDrop.
 4. **Unzip CustomTracker** into the `Stardew Valley\Mods` folder.
 
 ## Customization
@@ -47,6 +47,7 @@ TrackArtifactSpots | **true**, false | When set to true, this mod will track art
 TrackPanningSpots | **true**, false | When set to true, this mod will track panning spots, i.e. the glowing spots in water where the Copper Pan tool can be used.
 TrackSpringOnions | true, **false** | When set to true, this mod will track harvestable spring onions. This is false by default because the original tracker  doesn't target them.
 TrackBerryBushes | true, **false** | When set to true, this mod will track harvestable salmonberry and blackberry bushes. This is false by default because the original tracker doesn't target them.
+TrackWalnutBushes | true, **false** | When set to true, this mod will track harvestable walnut bushes. This is false by default because the original tracker doesn't target them; it may also spoil some hidden content.
 OtherTrackedObjects | A list of object IDs or names (default **[]**) | A list of additional object IDs (a.k.a. parent sheet index) and/or object names to track. These should be separated by commas, and names should be in quotation marks. Example: `[599, "quality sprinkler", 645]`
 
 

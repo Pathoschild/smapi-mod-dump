@@ -5,9 +5,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit edf3dca3ebd00b5270385231f312cad811da6fac
+   commit d585f3cd2b08857b45080cf944e559be9f8041ee
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Fri Dec 18 13:02:19 2020 -0500
+   Date:   Mon Dec 21 23:30:10 2020 -0500
    
-       Changed logic for stacking items to compare by Id and internal name, instead of by Id and Price, which more closely resembles the game's logic. Hid tooltips while navigating menus with gamepad. Added saved bag item data to maintain honey and preserve names.
+       Added compatibility with Stardew Valley 1.5 update. Added compatibility with new randomized bundles setting and new UI scaling option.
    

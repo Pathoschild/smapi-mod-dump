@@ -11,7 +11,7 @@
 {
   "Name": "DeluxeHats",
   "Author": "domsim1",
-  "Version": "1.0.6",
+  "Version": "1.0.7",
   "Description": "Hats have unique effects!",
   "UniqueID": "domsim1.DeluxeHats",
   "EntryDll": "DeluxeHats.dll",

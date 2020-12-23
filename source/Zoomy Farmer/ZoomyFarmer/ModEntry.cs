@@ -72,6 +72,13 @@ namespace Sprint {
 			//modhelper.Multiplayer.SendMessage(this.actualSprintSpeed, "MessageTypeSprintSpeed", new[] { this.ModManifest.UniqueID });
 			//modhelper.Multiplayer.SendMessage(this.actualStaminaDrain, "MessageTypeStamina", new[] { this.ModManifest.UniqueID });
 			//}
+
+			// If toggle sprinting and enableSprintWhenWaking, start sprinting now
+			if(config.toggleSprint && config.enableSprintWhenWaking) {
+				isPlayerToggleSprinting = true;
+				StartSprint();
+			}
+
 		}
 
 		private void OnUpdateTicked(object sender, UpdateTickedEventArgs e) {
@@ -205,7 +212,8 @@ namespace Sprint {
 		public SButton sprintKey { get; set; } = SButton.LeftControl;
 		public SButton alternateSprintKey { get; set; } = SButton.LeftStick;
 
-		public bool toggleSprint { get; set; } = false;
+		public bool toggleSprint { get; set; } = true;
+		public bool enableSprintWhenWaking { get; set; } = true;
 		//public bool multiplayerSync { get; set; } = true;
 	}
 }

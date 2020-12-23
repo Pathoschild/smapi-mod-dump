@@ -65,7 +65,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
             }
 
             // grown tree
-            return Tree.treeTopSourceRect;
+            return tree.treeTopSourceRect;
         }
 
         /// <summary>Get a rectangle which roughly bounds the visible sprite relative the viewport.</summary>

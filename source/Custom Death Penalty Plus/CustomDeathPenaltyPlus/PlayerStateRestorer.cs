@@ -45,13 +45,13 @@ namespace CustomDeathPenaltyPlus
             PlayerStateRestorer.config = config;
         }
 
-        // Saves player's current money and amount to be lost, killed
+        // Saves player's current money, amount to be lost and mine data, killed
         public static void SaveStateDeath()
         {
             statedeath = new PlayerDataTracker(Game1.player.Money, Math.Min(config.DeathPenalty.MoneyLossCap, Game1.player.Money * (1 - config.DeathPenalty.MoneytoRestorePercentage)));
         }
 
-        // Saves player's current money and amount to be lost, passed out
+        // Saves player's current money, amount to be lost and mine data, passed out
         public static void SaveStatePassout()
         {
             statepassout = new PlayerDataTracker(Game1.player.Money, Math.Min(config.PassOutPenalty.MoneyLossCap, Game1.player.Money * (1 - config.PassOutPenalty.MoneytoRestorePercentage)));
@@ -65,7 +65,7 @@ namespace CustomDeathPenaltyPlus
             {
                 Game1.player.Money = statedeath.money - (int)Math.Round(statedeath.moneylost);
             }
-          
+
             // Restore stamina to amount as specified by config values
             Game1.player.stamina = (int)(Game1.player.maxStamina * config.DeathPenalty.EnergytoRestorePercentage);
 
@@ -80,20 +80,30 @@ namespace CustomDeathPenaltyPlus
                 // Go through each item lost and saved to itemsLostLastDeath
                 foreach (Item item in Game1.player.itemsLostLastDeath)
                 {
-                    // Add item to player's inventory
-                    Game1.player.addItemToInventory(item);
+                    //Is the player's inventory full?
+                    if (Game1.player.isInventoryFull() == true)
+                    {
+                        // Yes, drop item on the floor
+                        Game1.player.dropItem(item);
+                    }
+
+                    else
+                    {
+                        // No, add item to player's inventory
+                        Game1.player.addItemToInventory(item);
+                    }  
                 }
                 // Clears items lost, prevents being purchasable at Guild
                 Game1.player.itemsLostLastDeath.Clear();
             }
 
             // Is FriendshipPenalty greater than 0?
-            if(config.DeathPenalty.FriendshipPenalty > 0 && (Game1.currentLocation.NameOrUniqueName == "Hospital" || config.DeathPenalty.WakeupNextDayinClinic == true))
+            if(config.DeathPenalty.FriendshipPenalty > 0 && Game1.player.friendshipData.ContainsKey("Harvey") && (Game1.currentLocation.NameOrUniqueName == "Hospital" || config.DeathPenalty.WakeupNextDayinClinic == true))
             {
                 //Yes, change friendship level for Harvey
 
                 Game1.player.changeFriendship(-Math.Min(config.DeathPenalty.FriendshipPenalty, Game1.player.getFriendshipLevelForNPC("Harvey")), Game1.getCharacterFromName("Harvey", true));
-            }  
+            } 
         }
 
         // Load Player state, passed out

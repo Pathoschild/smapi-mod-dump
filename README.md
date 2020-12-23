@@ -2,10 +2,10 @@ This repository contains all SMAPI mods in the [SMAPI compatibility list](https:
 It's used to update that page, find mods using specific APIs, etc.
 
 ## Mod stats
-* Last updated 2020-12-21 (SMAPI 3.8.0 and Stardew Valley 1.5.0).
-* 1134 mods in the SMAPI compatibility list.
-* 767 mods (68%) have a valid Git repository.
-* 331 repositories (43%) contain multiple mods.
+* Last updated 2020-12-22 (SMAPI 3.8.0 and Stardew Valley 1.5.0).
+* 1141 mods in the SMAPI compatibility list.
+* 775 mods (68%) have a valid Git repository.
+* 335 repositories (43%) contain multiple mods.
 
 ## What's in this repository
 * `compiled` has the latest download for each mod, grouped into these categories:
@@ -16,7 +16,7 @@ It's used to update that page, find mods using specific APIs, etc.
   broken in \*   | Mods which broke in that game version.
   okay           | Mods which work fine in the latest versions (and don't fit one of the next two categories).
   okay (Harmony) | Mods which work fine in the latest versions, and use Harmony to patch the game code. Using many Harmony mods together often causes conflicts, so these are separate for testing.
-  okay (special groups) | Mods which work fine in the latest version, but need to be tested separately from other mods. That include [Pong](https://www.nexusmods.com/stardewvalley/mods/1994) (which overrides the entire game) and [Please Fix Error](https://www.nexusmods.com/stardewvalley/mods/6492) (which spams fake errors).
+  okay (special groups) | Mods which work fine in the latest version, but need to be tested separately from other mods. That include [Entoarox Modding Utilities](https://www.nexusmods.com/stardewvalley/mods/5521) (which frequently crashes when loading a save), [Pong](https://www.nexusmods.com/stardewvalley/mods/1994) (which overrides the entire game), and [Please Fix Error](https://www.nexusmods.com/stardewvalley/mods/6492) (which spams fake errors).
 
 * `source` has the latest source code for each open-source SMAPI mod. This only has the _code_, it
   doesn't mirror the Git history. Since many repositories contain multiple mods, mods in `compiled`

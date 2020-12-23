@@ -497,7 +497,7 @@ namespace AnimalHusbandryMod.animals
                 if (
                     (totalPoints >= DataLoader.AnimalContestData.MinPointsToGaranteeWin)
                     || (totalPoints >= DataLoader.AnimalContestData.MinPointsToPossibleWin
-                        && agePoints > 0 && treatVariatyPoints > 0 && treatAveragePoints > 0 && friendshipPoints > 0
+                        && agePoints > 0 && ((treatVariatyPoints > 0 && treatAveragePoints > 0) || DataLoader.ModConfig.DisableTreats) && friendshipPoints > 0
                         && history.Count(h => h.Winner != "Farmer") >= history.Count(h => h.Winner == "Farmer"))
                 )
                 {
@@ -617,11 +617,11 @@ namespace AnimalHusbandryMod.animals
                 {
                     playerAct.Append($"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.DisqualifyAge", new { animalName })}\"");
                 }
-                else if (score.TreatVariatyPoints == 0)
+                else if (score.TreatVariatyPoints == 0 && !DataLoader.ModConfig.DisableTreats)
                 {
                     playerAct.Append($"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.DisqualifyTreatVariaty", new { animalName })}\"");
                 }
-                else if (score.TreatAveragePoints == 0)
+                else if (score.TreatAveragePoints == 0 && !DataLoader.ModConfig.DisableTreats)
                 {
                     playerAct.Append($"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.DisqualifyTreatAverage", new { animalName })}\"");
                 }
@@ -657,6 +657,7 @@ namespace AnimalHusbandryMod.animals
                         playerAct.Append($"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.Age1Old")}\"");
                     }
                     playerAct.Append($"/pause 800");
+                    
                     switch (score.FriendshipPoints)
                     {
                         case 1:
@@ -675,42 +676,55 @@ namespace AnimalHusbandryMod.animals
                             break;
                     }
                     playerAct.Append($"/pause 800");
-                    switch (score.TreatVariatyPoints)
+
+                    if (!DataLoader.ModConfig.DisableTreats)
                     {
-                        case 1:
-                            string shortDisplayType = farmAnimal.shortDisplayType().ToLower();
-                            playerAct.Append($"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatVariaty1", new { shortDisplayType })}");
-                            break;
-                        case 2:
-                            playerAct.Append($"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatVariaty2")}");
-                            break;
-                        case 3:
-                        default:
-                            playerAct.Append($"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatVariaty3")}");
-                            break;
+                        switch (score.TreatVariatyPoints)
+                        {
+                            case 1:
+                                string shortDisplayType = farmAnimal.shortDisplayType().ToLower();
+                                playerAct.Append(
+                                    $"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatVariaty1", new {shortDisplayType})}");
+                                break;
+                            case 2:
+                                playerAct.Append(
+                                    $"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatVariaty2")}");
+                                break;
+                            case 3:
+                            default:
+                                playerAct.Append(
+                                    $"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatVariaty3")}");
+                                break;
+                        }
+
+                        playerAct.Append("#$b#");
+                        string conjunction;
+                        switch (score.TreatAveragePoints)
+                        {
+                            case 1:
+                                conjunction = score.TreatVariatyPoints < 3
+                                    ? i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage1.Conjunction1")
+                                    : i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage1.Conjunction2");
+                                playerAct.Append(
+                                    $"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage1", new {conjunction})}\"");
+                                break;
+                            case 2:
+                                playerAct.Append(
+                                    $"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage2", new {animalName})}\"");
+                                break;
+                            case 3:
+                            default:
+                                conjunction = score.TreatVariatyPoints < 3
+                                    ? i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage3.Conjunction1")
+                                    : i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage3.Conjunction2");
+                                playerAct.Append(
+                                    $"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage3", new {conjunction})}\"");
+                                break;
+                        }
+
+                        playerAct.Append($"/pause 200");
                     }
-                    playerAct.Append("#$b#");
-                    string conjunction;
-                    switch (score.TreatAveragePoints)
-                    {
-                        case 1:
-                            conjunction = score.TreatVariatyPoints < 3
-                                ? i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage1.Conjunction1")
-                                : i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage1.Conjunction2");
-                            playerAct.Append($"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage1", new { conjunction })}\"");
-                            break;
-                        case 2:
-                            playerAct.Append($"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage2", new { animalName })}\"");
-                            break;
-                        case 3:
-                        default:
-                            conjunction = score.TreatVariatyPoints < 3
-                                ? i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage3.Conjunction1")
-                                : i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage3.Conjunction2");
-                            playerAct.Append($"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.TreatAverage3", new { conjunction })}\"");
-                            break;
-                    }
-                    playerAct.Append($"/pause 200");
+
                     if (score.TotalPoints >= DataLoader.AnimalContestData.MinPointsToPossibleWin)
                     {
                         playerAct.Append($"/speak Lewis \"{i18n.Get("AnimalContest.Dialog.PlayerAct.Lewis.ChanceWinning")}\"");

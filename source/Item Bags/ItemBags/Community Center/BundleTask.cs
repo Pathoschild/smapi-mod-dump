@@ -10,6 +10,8 @@
 
 using ItemBags.Helpers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,9 +35,31 @@ namespace ItemBags.Community_Center
         public Rectangle SpriteSmallIconClosedPosition { get { return new Rectangle((SpriteColorIndex % 2) * 16 * 16, 244 + (SpriteColorIndex / 2) * 16, 16, 16); } }
         /// <summary>The Texture position within <see cref="TextureHelpers.JunimoNoteTexture"/> where the small bundle icon is located (The little colored bag). The bag is opened.</summary>
         public Rectangle SpriteSmallIconOpenedPosition { get { return new Rectangle(15 * 16 + (SpriteColorIndex % 2) * 16 * 16, 244 + (SpriteColorIndex / 2) * 16, 16, 16); } }
-        public int SpriteIconIndex { get { return BundleIndex; } }
-        /// <summary>The Texture position within <see cref="TextureHelpers.JunimoNoteTexture"/> where the bundle's image is located (The 32x32 picture that describes the bundle)</summary>
-        public Rectangle SpriteLargeIconPosition { get { return new Rectangle((SpriteIconIndex % 20) * 32, 180 + (SpriteIconIndex / 20) * 32, 32, 32); } }
+
+        private int DefaultLargeIconIndex { get { return BundleIndex; } }
+        private int? OverriddenLargeIconIndex { get; }
+        private int ActualLargeIconIndex { get { return OverriddenLargeIconIndex ?? DefaultLargeIconIndex; } }
+
+        public Texture2D OverriddenLargeIconTexture { get; }
+        public Texture2D ActualLargeIconTexture { get { return OverriddenLargeIconTexture ?? TextureHelpers.JunimoNoteTexture; } }
+
+        /// <summary>The Texture position within <see cref="TextureHelpers.JunimoNoteTexture"/> where the bundle's image is located (The 32x32 picture that describes the bundle), if this bundle isn't using an overridden icon.<para/>
+        /// See also: <see cref="ActualLargeIconTexture"/></summary>
+        public Rectangle DefaultLargeIconPosition { get { return new Rectangle((DefaultLargeIconIndex % 20) * 32, 180 + (DefaultLargeIconIndex / 20) * 32, 32, 32); } }
+        public Rectangle ActualLargeIconPosition
+        {
+            get
+            {
+                if (OverriddenLargeIconTexture == null)
+                {
+                    return new Rectangle((ActualLargeIconIndex % 20) * 32, 180 + (ActualLargeIconIndex / 20) * 32, 32, 32);
+                }
+                else
+                {
+                    return new Rectangle((ActualLargeIconIndex % 8) * 32, (ActualLargeIconIndex / 8) * 32, 32, 32);
+                }
+            }
+        }
 
         /// <summary>May be null (EX: The Missing bundle in the Abandoned JojaMart)</summary>
         public BundleReward Reward { get; }
@@ -72,26 +96,45 @@ namespace ItemBags.Community_Center
 
             this.Items = Entries[2].Split(' ').Split(3).Select(x => string.Join(" ", x)).Select(x => new BundleItem(this, x)).ToList().AsReadOnly();
             this.SpriteColorIndex = int.Parse(Entries[3]);
-            if (Entries.Count > 4)
+
+            bool IsEnglish = LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en;
+            if (!IsEnglish)
             {
-                int RequiredCount;
-                if (int.TryParse(Entries[4], out RequiredCount))
-                {
-                    this.RequiredItemCount = RequiredCount;
-                    if (Entries.Count > 5)
-                    {
-                        this.TranslatedName = Entries[5];
-                    }
-                }
-                else
-                {
-                    this.RequiredItemCount = Items.Count;
-                    this.TranslatedName = Entries[4];
-                }
+                this.TranslatedName = Entries.Last();
+                Entries.RemoveAt(Entries.Count - 1);
+            }
+
+            if (Entries.Count <= 4)
+            {
+                this.RequiredItemCount = Items.Count;
             }
             else
             {
-                this.RequiredItemCount = Items.Count;
+                this.RequiredItemCount = int.Parse(Entries[4]);
+
+                if (Entries.Count > 5)
+                {
+                    string TextureOverrideData = Entries[5];
+                    try
+                    {
+                        if (TextureOverrideData.IndexOf(':') < 0)
+                        {
+                            this.OverriddenLargeIconTexture = null;
+                            this.OverriddenLargeIconIndex = int.Parse(TextureOverrideData);
+                        }
+                        else
+                        {
+                            string[] OverrideParts = TextureOverrideData.Split(':');
+                            this.OverriddenLargeIconTexture = Game1.content.Load<Texture2D>(OverrideParts[0]);
+                            this.OverriddenLargeIconIndex = int.Parse(OverrideParts[1]);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        this.OverriddenLargeIconTexture = null;
+                        this.OverriddenLargeIconIndex = null;
+                    }
+                }
             }
         }
 

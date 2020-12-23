@@ -40,3 +40,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 2.0:
 * Updated for Stardew Valley 1.4
 * Movement speed change is no longer applied during cutscenes.
+
+#### 3.1:
+* Updated for Stardew Valley 1.5

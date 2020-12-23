@@ -54,7 +54,7 @@ namespace FarmTypeManager
 
                 if (matchingType == null) //if this type isn't in the DynamicTypes list
                 {
-                    Monitor.VerboseLog($"Searching assemblies for custom type. Type name: {typeName}.{(baseClass == null ? "" : $"Base class: {baseClass.Name}")}");
+                    Monitor.VerboseLog($"Searching assemblies for custom type. Type name: {typeName}.{(baseClass == null ? "" : $" Base class: {baseClass.Name}")}");
 
                     matchingType =
                     AppDomain.CurrentDomain.GetAssemblies() //get all assemblies

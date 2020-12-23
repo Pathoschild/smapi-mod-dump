@@ -218,7 +218,7 @@ For a more detailed description of the complex item settings, see the table belo
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
 Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Clothing", "Crate", "Furniture", "Hat", "Object", "Ring", "Weapon" | The category of the spawned item.| This setting is required. "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
-Name | An item name, e.g. `"Red Mushroom"` | The name of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
+Name | An item name or ID, e.g. `"Red Mushroom"` | The name or ID of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
 Stack | An integer (minimum 1) | The number of items "stacked" together in this single object. | This setting should affect any categories capable of stacking. Others, such as furniture and clothing, will ignore this value.
 PercentChanceToSpawn | An integer or decimal (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
 SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this forage type. | Increases the odds of spawning this forage type instead of others, similar to adding multiple copies of it to a forage list. Has no effect in "loot" or "contents" lists. Example: If this forage type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
@@ -321,11 +321,22 @@ Settings | A list of setting names and values, e.g. `"HP": 1` | A list of option
 #### Monster Type Settings
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
+SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this monster type. | Increases the odds of spawning this monster type instead of others, similar to adding multiple copies of it to the list. Example: If this monster type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
 HP | An integer (minimum 1) | The monster's maximum health. | 
+CurrentHP | An integer (minimum 1) | The monster's current (not maximum) health at spawn. | This is mainly useful for "themed" monsters to spawn with injuries, or monsters capable of healing themselves.
+PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings.
 Damage | An integer (minimum 0) | The amount of damage the monster's attacks deal. | Some monster types/attacks ignore this setting and use hard-coded damage values, e.g. skeleton bone-throwing attacks.
 Defense | An integer (minimum 0) | Attacks that hit the monster are reduced by this much damage. | 
 DodgeChance | An integer (minimum 0) | The percent chance the monster will completely ignore each attack. | 
 EXP | An integer (minimum 0) | Defeating the monster will give players this amount of Combat skill experience. | Even with this setting, Stardew does **not** give players experience for defeating monsters at the farm.
+Loot | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | A list of items the monster will drop when defeated. | By defualt, loot is **not** randomized; use multiple monster types or items with "PercentChanceToSpawn" settings to randomize loot. An empty list will cause the monster to drop nothing. For formatting information, see the [Item Settings](#item-settings) section.
+SeesPlayersAtSpawn | true, **false** | Whether the monster will always be aware of players, regardless of distance. | Slimes with this setting will have red eyes and behave aggressively.
+FacingDirection | "up", "down", "right", or "left" | The direction the monster is facing when it spawns. | Spikers will attack in the chosen direction (or a single random direction if this setting is not used).
+Segments | An integer (minimum 0) | The number of extra body parts this monster will have (if applicable). | Slimes will have this number of extra slimes "stacked" on top of them. Royal Serpents will have this number of extra tail segments.
+Sprite | The "address" of a loaded asset | A loaded spritesheet to replace this monster's default sprite. | These can be default assests in Stardew or those loaded by a mod like Content Patcher. Examples: `"Characters/Monsters/Skeleton"` or `"Animals/horse"`
+Color | A string of RGB or RGBA values, e.g. `"255 0 0"` | The monster's color and transparency level. | This setting overrides MinColor and Maxcolor. It currently only applies to slimes, big slimes, and metal heads. Values can range from 0 to 255 and optionally include alpha transparency, e.g.: `"0 0 0"` or `"0 0 0 127"`
+MinColor | A string of RGB or RGBA values, e.g. `"0 0 0"` | The minimum color and transparency randomly applied to this monster. | This setting will be ignored unless MaxColor is also provided. See `Color` above for formatting.
+MaxColor |  A string of RGB or RGBA values, e.g. `"255 255 255"` | The maximum color and transparency randomly applied to this monster. | This setting will be ignored unless MinColor is also provided. See `Color` above for formatting.
 RelatedSkill | "Farming", "Fishing", "Foraging", "Mining", "Combat" | The player skill that affects the "Skill Level" settings below. | If this setting isn't provided, the "Skill Level" settings below will be ignored.  In multiplayer, these settings check the highest skill level among **all** players.
 MinimumSkillLevel | An integer (minimum 0) | The minimum skill level required to spawn this monster type. | This is based on the RelatedSkill setting.
 MaximumSkillLevel | An integer (minimum 0) | The maximum skill level allowed to spawn this monster type. | This is based on the RelatedSkill setting.
@@ -334,15 +345,6 @@ PercentExtraDamagePerSkillLevel | An integer | The monster's damage is increased
 PercentExtraDefensePerSkillLevel | An integer | The monster's defense is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
 PercentExtraDodgeChancePerSkillLevel | An integer | The monster's dodge chance is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
 PercentExtraEXPPerSkillLevel | An integer | The monster's EXP is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
-Loot | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | A list of items the monster will drop when defeated. | By defualt, loot is **not** randomized; use multiple monster types or items with "PercentChanceToSpawn" settings to randomize loot. An empty list will cause the monster to drop nothing. For formatting information, see the [Item Settings](#item-settings) section.
-PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings.
-CurrentHP | An integer (minimum 1) | The monster's current (not maximum) health at spawn. | This is mainly useful for "themed" monsters to spawn with injuries, or monsters capable of healing themselves.
-SeesPlayersAtSpawn | true, **false** | Whether the monster will immediately "spot" players at spawn. | If true, this causes most monster types to immediately approach and attack the nearest player, rather than waiting for players to approach. Slimes will have red eyes and behave aggressively.
-SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this monster type. | Increases the odds of spawning this monster type instead of others, similar to adding multiple copies of it to the list. Example: If this monster type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
-Sprite | The "address" of a loaded asset | A loaded spritesheet to replace this monster's default sprite. | These can be default assests in Stardew or those loaded by a mod like Content Patcher. Examples: `"Characters/Monsters/Skeleton"` or `"Animals/horse"`
-Color | A string of RGB or RGBA values, e.g. `"255 0 0"` | The monster's color and transparency level. | This setting overrides MinColor and Maxcolor. It currently only applies to slimes, big slimes, and metal heads. Values can range from 0 to 255 and optionally include alpha transparency, e.g.: `"0 0 0"` or `"0 0 0 127"`
-MinColor | A string of RGB or RGBA values, e.g. `"0 0 0"` | The minimum color and transparency randomly applied to this monster. | This setting will be ignored unless MaxColor is also provided. See `Color` above for formatting.
-MaxColor |  A string of RGB or RGBA values, e.g. `"255 255 255"` | The maximum color and transparency randomly applied to this monster. | This setting will be ignored unless MinColor is also provided. See `Color` above for formatting.
 
 ### Other Settings
 Name | Valid settings | Description | Notes

@@ -39,7 +39,7 @@ namespace FarmTypeManager
                 }
                 catch (Exception ex) //if an error happens
                 {
-                    Monitor.VerboseLog($"TryGetTypes skipped an unreadable assembly. Assembly name: {assembly.GetName()?.Name}");
+                    Monitor.VerboseLog($"TryGetTypes skipped an unreadable assembly. Assembly name: {assembly?.GetName()?.Name ?? "(null)"}");
                     return new Type[0]; //return an empty type array
                 }
             }

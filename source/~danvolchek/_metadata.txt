@@ -34,9 +34,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit f01df2fa97cd747673052a47507ed3374820ced3
+   commit 00c5f305ca6eb1bc20ff78d57101a62017eba1d0
    Author: danvolchek <danvnad@gmail.com>
-   Date:   Sun Nov 15 16:21:13 2020 -0800
+   Date:   Mon Dec 21 13:24:11 2020 -0800
    
-       [Winter Grass] fix grass color not being updated on grass starter stack changes
+       [Winter Grass] update for SDV 1.5
    

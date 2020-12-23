@@ -266,6 +266,7 @@ namespace AnimalHusbandryMod
             {
                 PregnancyController.UpdatePregnancy();
             }
+            FarmerLoader.SaveData();
         }
 
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>

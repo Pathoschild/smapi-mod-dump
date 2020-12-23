@@ -29,7 +29,6 @@ namespace StardewCombatMod
             // Make sure to get the monitor set up for debugging prints
             CheckEventPostfixPatch.Initialize(this.Monitor, this.Helper);
             WeaponDoDamagePostfixPatch.Initialize(this.Monitor);
-            //KnockbackMultiplierFixerTranspilerPatch.Initialize(this.Monitor);
             KnockbackDeRandomizerTranspilerPatch.Initialize(this.Monitor);
 
             var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
@@ -170,49 +169,6 @@ namespace StardewCombatMod
         }
     }
 
-    public class KnockbackMultiplierFixerTranspilerPatch
-    {
-        private static IMonitor Monitor;
-
-        public static void Initialize(IMonitor monitor)
-        {
-            Monitor = monitor;
-        }
-
-        public static IEnumerable<CodeInstruction> movePosition_transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            var codes = new List<CodeInstruction>(instructions);
-            int foundKnockbackMultiplier = 0;
-            List<int> instancesToRemove = new List<int>();
-
-            for (int i = 0; i < codes.Count; i++)
-            {
-                if (codes[i].opcode == OpCodes.Ldarg_0
-                    && codes[i + 1].opcode == OpCodes.Ldarg_0
-                    && codes[i + 2].opcode == OpCodes.Ldfld
-                    && codes[i + 3].opcode == OpCodes.Ldarg_0
-                    && codes[i + 4].opcode == OpCodes.Ldfld
-                    && codes[i + 5].opcode == OpCodes.Ldarg_0
-                    && codes[i + 6].opcode == OpCodes.Call
-                    && codes[i + 7].opcode == OpCodes.Conv_R4
-                    && codes[i + 8].opcode == OpCodes.Div
-                    && codes[i + 9].opcode == OpCodes.Ldc_R4 && (float)(codes[i + 9].operand) == (float)4
-                    && codes[i + 10].opcode == OpCodes.Div
-                    && codes[i + 11].opcode == OpCodes.Sub
-                    && codes[i + 12].opcode == OpCodes.Stfld)
-                {
-                    codes[i + 9].operand = (float)1;
-                    foundKnockbackMultiplier += 1;
-                }
-            }
-
-            LogLevel loglevel = LogLevel.Info;
-            if (foundKnockbackMultiplier != 2) loglevel = LogLevel.Error;
-            Monitor.Log($"Found {foundKnockbackMultiplier.ToString()} instances of knockback multiplier code to replace.", loglevel);
-            return codes.AsEnumerable();
-        }
-    }
-
     public class KnockbackDeRandomizerTranspilerPatch
     {
         private static IMonitor Monitor;
@@ -225,7 +181,7 @@ namespace StardewCombatMod
         public static IEnumerable<CodeInstruction> getAwayFromPlayerTrajectory_transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
-            bool foundKnockbackRandomizer = false;
+            int foundKnockbackRandomizer = 0;
 
             // Find the line where it calculates the knockback vector, which includes a couple random calls
             for (int i = 0; i < codes.Count; i++)
@@ -238,28 +194,19 @@ namespace StardewCombatMod
                     && codes[i + 5].opcode == OpCodes.Add
                     && codes[i + 6].opcode == OpCodes.Conv_R4
                     && codes[i + 7].opcode == OpCodes.Mul
-                    && codes[i + 8].opcode == OpCodes.Ldloc_0
-                    && codes[i + 9].opcode == OpCodes.Ldloc_1
-                    && codes[i + 10].opcode == OpCodes.Div
-                    && codes[i + 11].opcode == OpCodes.Ldc_I4_S && (sbyte)(codes[i + 11].operand) == 50
-                    && codes[i + 12].opcode == OpCodes.Ldsfld
-                    && codes[i + 13].opcode == OpCodes.Ldc_I4_S && (sbyte)(codes[i + 13].operand) == -20
-                    && codes[i + 14].opcode == OpCodes.Ldc_I4_S && (sbyte)(codes[i + 14].operand) == 20
-                    && codes[i + 15].opcode == OpCodes.Callvirt
-                    && codes[i + 16].opcode == OpCodes.Add)
+                    && codes[i + 8].opcode == OpCodes.Stind_R4)
                 {
                     // Set the random calls to return a random value between 10 and 10
                     codes[i + 2].operand = (sbyte)10;
                     codes[i + 3].operand = (sbyte)10;
-                    codes[i + 13].operand = (sbyte)10;
-                    codes[i + 14].operand = (sbyte)10;
-                    foundKnockbackRandomizer = true;
+                    foundKnockbackRandomizer++;
                 }
             }
-            
+
             // Throw an error if we couldn't find the code to replace
-            if (foundKnockbackRandomizer) Monitor.Log($"Found knockback randomizer code to replace.", LogLevel.Info);
-            else Monitor.Log($"DID NOT FIND knockback randomizer code to replace. This portion of the mod will not work!", LogLevel.Error);
+            LogLevel loglevel = LogLevel.Info;
+            if (foundKnockbackRandomizer != 2) loglevel = LogLevel.Error;
+            Monitor.Log($"Found {foundKnockbackRandomizer.ToString()} instances of knockback randomizer code to replace.", loglevel);
             return codes.AsEnumerable();
         }
     }

@@ -11,7 +11,7 @@
 {
   "Name": "LevelingAdjustment",
   "Author": "jahangmar",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Allows to adjust how fast the player levels.",
     "UniqueID": "jahangmar.LevelingAdjustment",
   "MinimumApiVersion": "3.0.0",

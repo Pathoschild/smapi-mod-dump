@@ -5,9 +5,9 @@ mods:
    Community Center Helper
 
 latest commit:
-   commit 353e6ea043a3e92db86eefb9b92db5143af15676
+   commit 6f8f6f19e06547569ced38f83d6d05e28efa21db
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Fri Oct 30 11:50:55 2020 -0700
+   Date:   Mon Dec 21 16:08:10 2020 -0800
    
-       Delete JA-jp.json
+       1.2.0 update for Stardew 1.5
    

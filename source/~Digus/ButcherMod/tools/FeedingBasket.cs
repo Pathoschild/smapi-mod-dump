@@ -308,9 +308,10 @@ namespace AnimalHusbandryMod.tools
 
                 if (this._animal != null)
                 {
+                    FarmAnimal tempAnimal = this._animal;
                     Game1.delayedActions.Add(new DelayedAction(300, new DelayedAction.delayedBehavior(() => {
-                        AnimalHusbandryModEntry.ModHelper.Reflection.GetField<NetBool>(this._animal, "isEating").GetValue().Value = true;
-                        this._animal.Sprite.loop = false;
+                        AnimalHusbandryModEntry.ModHelper.Reflection.GetField<NetBool>(tempAnimal, "isEating").GetValue().Value = true;
+                        tempAnimal.Sprite.loop = false;
                     })));
                 }
                 else if (this._pet != null)

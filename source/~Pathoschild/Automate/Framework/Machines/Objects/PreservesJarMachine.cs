@@ -44,9 +44,9 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
                 minutes: 4000
             ),
 
-            // vegetable => pickled vegetable
+            // vegetable or ginger => pickled item
             new Recipe(
-                input: SObject.VegetableCategory,
+                input: item => item.Category == SObject.VegetableCategory || item.ParentSheetIndex == 829,
                 inputCount: 1,
                 output: input =>
                 {
@@ -60,7 +60,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
                     return item;
 
                 },
-                minutes: 4000
+                minutes: _ => 4000
             ),
 
             // roe => aged roe || sturgeon roe => caviar

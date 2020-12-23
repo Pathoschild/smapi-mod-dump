@@ -103,7 +103,7 @@ namespace StardewHack.WearMoreRings
             // Change the network protocol version.
             // I've tried doing this through SMAPI events, but stuff already breaks prior to those events being received and when scanning for local games.
             var mp = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer");
-            mp.GetValue().protocolVersion += "+WearMoreRings";
+            //mp.GetValue().protocolVersion. += "+WearMoreRings";
             
             Patch(typeof(Farmer), "farmerInit", Farmer_farmerInit);
             Patch((Farmer f)=>f.isWearingRing(0), Farmer_isWearingRing);

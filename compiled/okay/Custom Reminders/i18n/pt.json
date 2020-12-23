@@ -1,0 +1,19 @@
+{
+  // New reminder page
+  "new-reminder.title": "Novo Lembrete",
+  "new-reminder.reminder-message": "Mensagem do Lembrete",
+  "new-reminder.reminder-time": "Hora do Lembrete",
+  "new-reminder.instruction": "Escolha a Hora, Minutos e Periodo do Dia",
+  "new-reminder.invalid-time": "A Hora não é válida",
+
+  // Display reminder page
+  "display-reminder.title": "Mostrar Lembrete",
+  "display-reminder.zero-reminders": "Não Há Lembretes Fixados",
+
+  // general strings
+  "date.year": "Ano",
+  "date.season.summer": "Verão",
+  "date.season.spring": "Primavera",
+  "date.season.fall": "Outono",
+  "date.season.winter": "Inverno"
+}

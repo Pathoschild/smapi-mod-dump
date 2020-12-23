@@ -22,7 +22,7 @@ namespace WhatAreYouMissing
         public static ITranslationHelper Translator;
         public static IModHelper HelperInstance;
 
-        //This are initialized only once as they are performance heavy
+        //These are initialized only once (per button press to open menu) as they are performance heavy
         public static MissingItems MissingItems;
         public static RecipeIngredients RecipesIngredients;
 

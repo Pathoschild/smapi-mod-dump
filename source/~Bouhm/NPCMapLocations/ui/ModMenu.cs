@@ -467,9 +467,9 @@ namespace NPCMapLocations
 			greyedOut = true;
 		}
 
-		public override void draw(SpriteBatch b, int slotX, int slotY)
+		public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
 		{
-			base.draw(b, slotX - 32, slotY);
+			base.draw(b, slotX - 32, slotY, context);
 		}
 	}
 
@@ -569,8 +569,8 @@ namespace NPCMapLocations
       ModMain.Helper.Data.WriteJsonFile("config/globals.json", ModMain.Globals);
     }
 
-		public override void draw(SpriteBatch b, int slotX, int slotY)
-		{
+    public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
+    {
 			b.Draw(Game1.mouseCursors, new Vector2(slotX + bounds.X, slotY + bounds.Y),
 				isChecked ? OptionsCheckbox.sourceRectChecked : OptionsCheckbox.sourceRectUnchecked,
 				Color.White * (greyedOut ? 0.33f : 1f), 0f, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None,
@@ -600,7 +600,7 @@ namespace NPCMapLocations
 			}
 			else
 			{
-				base.draw(b, slotX, slotY);
+				base.draw(b, slotX, slotY, context);
 			}
 		}
 	}
@@ -675,13 +675,13 @@ namespace NPCMapLocations
 			leftClickHeld(x, y);
 		}
 
-		public override void draw(SpriteBatch b, int slotX, int slotY)
-		{
+    public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
+    {
 			label = valueLabel + ": " + value;
 			greyedOut = false;
 			if (whichOption == 8 || whichOption == 9) greyedOut = !ModMain.Config.ByHeartLevel;
 
-			base.draw(b, slotX, slotY);
+			base.draw(b, slotX, slotY, context);
 			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, OptionsSlider.sliderBGSource, slotX + bounds.X,
 				slotY + bounds.Y, bounds.Width, bounds.Height, Color.White, Game1.pixelZoom, false);
 			b.Draw(Game1.mouseCursors,
@@ -795,8 +795,8 @@ namespace NPCMapLocations
 			}
 		}
 
-		public override void draw(SpriteBatch b, int slotX, int slotY)
-		{
+    public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
+    {
 			greyedOut = !ModMain.Config.ShowMinimap;
 			b.Draw(Game1.mouseCursors, new Vector2(slotX + minusButton.X, slotY + minusButton.Y), minusButtonSource,
 				Color.White * (greyedOut ? 0.33f : 1f) * (selected == 0 ? 0.5f : 1f), 0f, Vector2.Zero, 4f, SpriteEffects.None,
@@ -821,7 +821,7 @@ namespace NPCMapLocations
 				}
 			}
 
-			base.draw(b, slotX, slotY);
+			base.draw(b, slotX, slotY, context);
 		}
 	}
 }

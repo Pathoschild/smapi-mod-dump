@@ -11,7 +11,7 @@
 {
   "Name": "Pet Interaction",
   "Author": "jahangmar",
-  "Version": "1.1.2",
+  "Version": "1.1.3",
   "Description": "Lets your pet follow you, do silly stuff, and play fetch",
   "UniqueID": "jahangmar.PetInteraction",
   "MinimumApiVersion": "3.0.0",

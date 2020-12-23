@@ -8,10 +8,10 @@ mods:
    CJB Show Item Sell Price
 
 latest commit:
-   commit 46bcbddc8c4f73745fb736b8fee6a3dd2e0cda23
-   Merge: 09a9dc4 a22f6f3
+   commit 6864f45ee1770f5ee21c75290d968572d2b226d0
+   Merge: 46bcbdd 2dc6aef
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Thu Nov 19 19:23:39 2020 -0500
+   Date:   Sun Dec 20 23:49:13 2020 -0500
    
        Merge branch 'develop'
    

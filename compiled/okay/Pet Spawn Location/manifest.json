@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Pet Spawn Location",
+  "Author": "Shaklin",
+  "Version": "1.5",
+  "Description": "Your pets will spawn around your house.",
+  "UniqueID": "shaklin.petspawnlocation",
+  "EntryDll": "PetSpawnLocation.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Nexus: 5986" ],
+}

@@ -1,0 +1,16 @@
+url:
+   https://github.com/Enaium-StardewValleyMods/EnaiumToolKit.git
+
+mods:
+   Enaium ToolKit
+
+latest commit:
+   commit b49ecdd52ee02101547d0605ac7bbafc2431c5f2
+   Merge: 6494713 18538fd
+   Author: Enaium <32991121+Enaium@users.noreply.github.com>
+   Date:   Mon Dec 21 22:31:05 2020 -0600
+   
+       Merge pull request #10 from Enaium-StardewValleyMods/develop
+       
+       Develop
+   

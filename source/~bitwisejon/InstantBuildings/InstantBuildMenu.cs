@@ -45,6 +45,7 @@ namespace BitwiseJonMods
         public const int region_moveBuitton = 105;
         public const int region_okButton = 106;
         public const int region_cancelButton = 107;
+        public const int region_paintButton = 108;
         private List<BluePrint> blueprints;
         private int currentBlueprintIndex;
         public ClickableTextureComponent okButton;
@@ -54,6 +55,8 @@ namespace BitwiseJonMods
         public ClickableTextureComponent upgradeIcon;
         public ClickableTextureComponent demolishButton;
         public ClickableTextureComponent moveButton;
+        public ClickableTextureComponent paintButton;
+
         private Building currentBuilding;
         private Building buildingToMove;
         private string buildingDescription;
@@ -65,6 +68,24 @@ namespace BitwiseJonMods
         private bool demolishing;
         private bool moving;
         private bool magicalConstruction;
+        private bool painting;
+        protected BluePrint _demolishCheckBlueprint;
+
+        public bool readOnly
+        {
+            set
+            {
+                if (!value)
+                    return;
+                this.upgradeIcon.visible = false;
+                this.demolishButton.visible = false;
+                this.moveButton.visible = false;
+                this.okButton.visible = false;
+                this.paintButton.visible = false;
+                this.cancelButton.leftNeighborID = 102;
+            }
+        }
+
 
         private ModConfig _config;
 
@@ -124,6 +145,7 @@ namespace BitwiseJonMods
                 this.blueprints.Add(new BluePrint("Earth Obelisk"));
                 this.blueprints.Add(new BluePrint("Water Obelisk"));
                 this.blueprints.Add(new BluePrint("Desert Obelisk"));
+                this.blueprints.Add(new BluePrint("Island Obelisk"));
                 this.blueprints.Add(new BluePrint("Gold Clock"));
             }
 
@@ -153,6 +175,11 @@ namespace BitwiseJonMods
             }
         }
 
+        public override bool shouldClampGamePadCursor()
+        {
+            return this.onFarm;
+        }
+
         public override void snapToDefaultClickableComponent()
         {
             this.currentlySnappedComponent = this.getComponentWithID(107);
@@ -161,8 +188,8 @@ namespace BitwiseJonMods
 
         private void resetBounds()
         {
-            this.xPositionOnScreen = Game1.viewport.Width / 2 - this.maxWidthOfBuildingViewer - IClickableMenu.spaceToClearSideBorder;
-            this.yPositionOnScreen = Game1.viewport.Height / 2 - this.maxHeightOfBuildingViewer / 2 - IClickableMenu.spaceToClearTopBorder + 32;
+            this.xPositionOnScreen = Game1.uiViewport.Width / 2 - this.maxWidthOfBuildingViewer - IClickableMenu.spaceToClearSideBorder;
+            this.yPositionOnScreen = Game1.uiViewport.Height / 2 - this.maxHeightOfBuildingViewer / 2 - IClickableMenu.spaceToClearTopBorder + 32;
             this.width = this.maxWidthOfBuildingViewer + this.maxWidthOfDescription + IClickableMenu.spaceToClearSideBorder * 2 + 64;
             this.height = this.maxHeightOfBuildingViewer + IClickableMenu.spaceToClearTopBorder;
             this.initialize(this.xPositionOnScreen, this.yPositionOnScreen, this.width, this.height, true);
@@ -182,7 +209,7 @@ namespace BitwiseJonMods
             ClickableTextureComponent textureComponent4 = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + this.maxWidthOfBuildingViewer - 256 + 16, this.yPositionOnScreen + this.maxHeightOfBuildingViewer + 64, 48, 44), Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(365, 495, 12, 11), 4f, false);
             textureComponent4.myID = 102;
             textureComponent4.leftNeighborID = 101;
-            textureComponent4.rightNeighborID = 105;
+            textureComponent4.rightNeighborID = -99998;
             this.forwardButton = textureComponent4;
             ClickableTextureComponent textureComponent5 = new ClickableTextureComponent(Game1.content.LoadString("Strings\\UI:Carpenter_Demolish"), new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + this.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 128 - 8, this.yPositionOnScreen + this.maxHeightOfBuildingViewer + 64 - 4, 64, 64), (string)null, (string)null, Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(348, 372, 17, 17), 4f, false);
             textureComponent5.myID = 104;
@@ -197,16 +224,27 @@ namespace BitwiseJonMods
             ClickableTextureComponent textureComponent7 = new ClickableTextureComponent(Game1.content.LoadString("Strings\\UI:Carpenter_MoveBuildings"), new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + this.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 256 - 20, this.yPositionOnScreen + this.maxHeightOfBuildingViewer + 64, 64, 64), (string)null, (string)null, Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(257, 284, 16, 16), 4f, false);
             textureComponent7.myID = 105;
             textureComponent7.rightNeighborID = 106;
-            textureComponent7.leftNeighborID = 102;
+            textureComponent7.leftNeighborID = -99998;
             this.moveButton = textureComponent7;
-            bool flag = false;
+            ClickableTextureComponent textureComponent8 = new ClickableTextureComponent(Game1.content.LoadString("Strings\\UI:Carpenter_PaintBuildings"), new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + this.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20, this.yPositionOnScreen + this.maxHeightOfBuildingViewer + 64, 64, 64), (string)null, (string)null, Game1.mouseCursors2, new Microsoft.Xna.Framework.Rectangle(80, 208, 16, 16), 4f, false);
+            textureComponent8.myID = 105;
+            textureComponent8.rightNeighborID = -99998;
+            textureComponent8.leftNeighborID = -99998;
+            this.paintButton = textureComponent8;
+            bool flag1 = false;
+            bool flag2 = this.CanPaintHouse() && this.HasPermissionsToPaint((Building)null);
             foreach (Building building in Game1.getFarm().buildings)
             {
                 if (building.hasCarpenterPermissions())
-                    flag = true;
+                    flag1 = true;
+                if (building.CanBePainted() && this.HasPermissionsToPaint(building))
+                    flag2 = true;
             }
             this.demolishButton.visible = Game1.IsMasterGame;
-            this.moveButton.visible = Game1.IsMasterGame || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.OwnedBuildings & flag;
+            this.moveButton.visible = Game1.IsMasterGame || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.OwnedBuildings & flag1;
+            this.paintButton.visible = flag2;
+            if (this.magicalConstruction)
+                this.paintButton.visible = false;
             if (!this.demolishButton.visible)
             {
                 this.upgradeIcon.rightNeighborID = this.demolishButton.rightNeighborID;
@@ -216,13 +254,14 @@ namespace BitwiseJonMods
             if (this.moveButton.visible)
                 return;
             this.upgradeIcon.leftNeighborID = this.moveButton.leftNeighborID;
-            this.forwardButton.rightNeighborID = this.moveButton.rightNeighborID;
+            this.forwardButton.rightNeighborID = -99998;
             this.okButton.leftNeighborID = this.moveButton.leftNeighborID;
         }
 
+
         public void setNewActiveBlueprint()
         {
-            this.currentBuilding = !this.blueprints[this.currentBlueprintIndex].name.Contains("Coop") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Barn") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Mill") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Junimo Hut") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Shipping Bin") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Fish Pond") ? new Building(this.blueprints[this.currentBlueprintIndex], Vector2.Zero) : (Building)new FishPond(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new ShippingBin(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new JunimoHut(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Mill(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Barn(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Coop(this.blueprints[this.currentBlueprintIndex], Vector2.Zero);
+            this.currentBuilding = !this.blueprints[this.currentBlueprintIndex].name.Contains("Coop") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Barn") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Mill") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Junimo Hut") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Shipping Bin") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Fish Pond") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Greenhouse") ? new Building(this.blueprints[this.currentBlueprintIndex], Vector2.Zero) : (Building)new GreenhouseBuilding(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new FishPond(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new ShippingBin(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new JunimoHut(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Mill(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Barn(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Coop(this.blueprints[this.currentBlueprintIndex], Vector2.Zero);
             this.price = this.blueprints[this.currentBlueprintIndex].moneyRequired;
             this.ingredients.Clear();
             foreach (KeyValuePair<int, int> keyValuePair in this.blueprints[this.currentBlueprintIndex].itemsRequired)
@@ -242,60 +281,92 @@ namespace BitwiseJonMods
                 this.okButton.tryHover(x, y, 0.1f);
                 this.demolishButton.tryHover(x, y, 0.1f);
                 this.moveButton.tryHover(x, y, 0.1f);
+                this.paintButton.tryHover(x, y, 0.1f);
                 if (this.CurrentBlueprint.isUpgrade() && this.upgradeIcon.containsPoint(x, y))
                     this.hoverText = Game1.content.LoadString("Strings\\UI:Carpenter_Upgrade", (object)new BluePrint(this.CurrentBlueprint.nameOfBuildingToUpgrade).displayName);
-                else if (this.demolishButton.containsPoint(x, y))
+                else if (this.demolishButton.containsPoint(x, y) && this.CanDemolishThis(this.CurrentBlueprint))
                     this.hoverText = Game1.content.LoadString("Strings\\UI:Carpenter_Demolish");
                 else if (this.moveButton.containsPoint(x, y))
                     this.hoverText = Game1.content.LoadString("Strings\\UI:Carpenter_MoveBuildings");
                 else if (this.okButton.containsPoint(x, y) && this.CurrentBlueprint.doesFarmerHaveEnoughResourcesToBuild())
                     this.hoverText = Game1.content.LoadString("Strings\\UI:Carpenter_Build");
+                else if (this.paintButton.containsPoint(x, y))
+                    this.hoverText = this.paintButton.name;
                 else
                     this.hoverText = "";
             }
             else
             {
-                if (!this.upgrading && !this.demolishing && !this.moving || this.freeze)
+                if (!this.upgrading && !this.demolishing && (!this.moving && !this.painting) || this.freeze)
                     return;
+                Farm farm = Game1.getFarm();
+                Vector2 vector2 = new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY(false)) / 64));
+                if (this.painting && (farm.GetHouseRect().Contains(Utility.Vector2ToPoint(vector2)) && this.HasPermissionsToPaint((Building)null) && this.CanPaintHouse()))
+                    farm.frameHouseColor = new Color?(Color.Lime);
                 foreach (Building building in ((BuildableGameLocation)Game1.getLocationFromName("Farm")).buildings)
                     building.color.Value = Color.White;
-                Building b = ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY()) / 64))) ?? ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY() + 128) / 64))) ?? ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY() + 192) / 64)));
+                Building building1 = ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(vector2) ?? ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY(false) + 128) / 64))) ?? ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY(false) + 192) / 64)));
                 if (this.upgrading)
                 {
-                    if (b != null && this.CurrentBlueprint.nameOfBuildingToUpgrade != null && this.CurrentBlueprint.nameOfBuildingToUpgrade.Equals((string)((NetFieldBase<string, NetString>)b.buildingType)))
+                    if (building1 != null && this.CurrentBlueprint.nameOfBuildingToUpgrade != null && this.CurrentBlueprint.nameOfBuildingToUpgrade.Equals((string)((NetFieldBase<string, NetString>)building1.buildingType)))
                     {
-                        b.color.Value = Color.Lime * 0.8f;
+                        building1.color.Value = Color.Lime * 0.8f;
                     }
                     else
                     {
-                        if (b == null)
+                        if (building1 == null)
                             return;
-                        b.color.Value = Color.Red * 0.8f;
+                        building1.color.Value = Color.Red * 0.8f;
                     }
                 }
                 else if (this.demolishing)
                 {
-                    if (b == null || !this.hasPermissionsToDemolish(b))
+                    if (building1 == null || !this.hasPermissionsToDemolish(building1) || !this.CanDemolishThis(building1))
                         return;
-                    b.color.Value = Color.Red * 0.8f;
+                    building1.color.Value = Color.Red * 0.8f;
+                }
+                else if (this.moving)
+                {
+                    if (building1 == null || !this.hasPermissionsToMove(building1))
+                        return;
+                    building1.color.Value = Color.Lime * 0.8f;
                 }
                 else
                 {
-                    if (!this.moving || b == null || !this.hasPermissionsToMove(b))
+                    if (!this.painting || building1 == null || (!building1.CanBePainted() || !this.HasPermissionsToPaint(building1)))
                         return;
-                    b.color.Value = Color.Lime * 0.8f;
+                    building1.color.Value = Color.Lime * 0.8f;
                 }
             }
         }
 
+
         public bool hasPermissionsToDemolish(Building b)
         {
-            return Game1.IsMasterGame;
+            if (Game1.IsMasterGame)
+                return this.CanDemolishThis(b);
+            return false;
         }
+
+        public bool CanPaintHouse()
+        {
+            return Game1.MasterPlayer.HouseUpgradeLevel >= 2;
+        }
+
+        public bool HasPermissionsToPaint(Building b)
+        {
+            if (b == null)
+                return Game1.player.UniqueMultiplayerID == Game1.MasterPlayer.UniqueMultiplayerID || Game1.player.spouse == Game1.MasterPlayer.UniqueMultiplayerID.ToString();
+            if (!b.isCabin || !(b.indoors.Value is Cabin))
+                return true;
+            Farmer owner = (b.indoors.Value as Cabin).owner;
+            return Game1.player.UniqueMultiplayerID == owner.UniqueMultiplayerID || Game1.player.spouse == owner.UniqueMultiplayerID.ToString();
+        }
+
 
         public bool hasPermissionsToMove(Building b)
         {
-            return Game1.IsMasterGame || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.OwnedBuildings && b.hasCarpenterPermissions();
+            return (Game1.getFarm().greenhouseUnlocked.Value || !(b is GreenhouseBuilding)) && (Game1.IsMasterGame || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.OwnedBuildings && b.hasCarpenterPermissions());
         }
 
         public override void receiveGamePadButton(Buttons b)
@@ -324,7 +395,7 @@ namespace BitwiseJonMods
                 base.receiveKeyPress(key);
             if (Game1.delayedActions.Count() > 0 || !this.onFarm)
                 return;
-            if (Game1.options.doesInputListContain(Game1.options.menuButton, key) && this.readyToClose())
+            if (Game1.options.doesInputListContain(Game1.options.menuButton, key) && this.readyToClose() && Game1.locationRequest == null)
             {
                 Game1.delayedActions.Add(new DelayedAction(MENU_DELAY, new DelayedAction.delayedBehavior(this.returnToFarm)));
             }
@@ -354,8 +425,8 @@ namespace BitwiseJonMods
             base.update(time);
             if (!this.onFarm || Game1.delayedActions.Count() > 0)
                 return;
-            int num1 = Game1.getOldMouseX() + Game1.viewport.X;
-            int num2 = Game1.getOldMouseY() + Game1.viewport.Y;
+            int num1 = Game1.getOldMouseX(false) + Game1.viewport.X;
+            int num2 = Game1.getOldMouseY(false) + Game1.viewport.Y;
             if (num1 - Game1.viewport.X < 64)
                 Game1.panScreen(-16, 0);
             else if (num1 - (Game1.viewport.X + Game1.viewport.Width) >= (int)sbyte.MinValue)
@@ -418,7 +489,7 @@ namespace BitwiseJonMods
                 this.backButton.scale = this.backButton.baseScale;
                 Game1.playSound("shwip");
             }
-            if (!this.onFarm && this.demolishButton.containsPoint(x, y) && this.demolishButton.visible)
+            if (!this.onFarm && this.demolishButton.containsPoint(x, y) && (this.demolishButton.visible && this.CanDemolishThis(this.blueprints[this.currentBlueprintIndex])))
             {
                 Game1.delayedActions.Add(new DelayedAction(MENU_DELAY, new DelayedAction.delayedBehavior(this.setUpForBuildingPlacement)));
                 Game1.playSound("smallSelect");
@@ -432,7 +503,14 @@ namespace BitwiseJonMods
                 this.onFarm = true;
                 this.moving = true;
             }
-            if (this.okButton.containsPoint(x, y) && !this.onFarm && (Game1.player.Money >= this.price && this.blueprints[this.currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild()))
+            if (!this.onFarm && this.paintButton.containsPoint(x, y) && this.paintButton.visible)
+            {
+                Game1.globalFadeToBlack(new Game1.afterFadeFunction(this.setUpForBuildingPlacement), 0.02f);
+                Game1.playSound("smallSelect");
+                this.onFarm = true;
+                this.painting = true;
+            }
+            if (this.okButton.containsPoint(x, y) && !this.onFarm && (this.price >= 0 && Game1.player.Money >= this.price) && this.blueprints[this.currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild())
             {
                 Game1.delayedActions.Add(new DelayedAction(MENU_DELAY, new DelayedAction.delayedBehavior(this.setUpForBuildingPlacement)));
                 Game1.playSound("smallSelect");
@@ -443,7 +521,7 @@ namespace BitwiseJonMods
             if (this.demolishing)
             {
                 Farm farm = Game1.getLocationFromName("Farm") as Farm;
-                Building destroyed = farm.getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY()) / 64)));
+                Building destroyed = farm.getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY(false)) / 64)));
                 Action buildingLockFailed = (Action)(() => Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed"), Color.Red, 3500f)));
                 Action continueDemolish = (Action)(() =>
                 {
@@ -453,7 +531,7 @@ namespace BitwiseJonMods
                         Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction"), Color.Red, 3500f));
                     else if (destroyed.indoors.Value != null && destroyed.indoors.Value is AnimalHouse && (destroyed.indoors.Value as AnimalHouse).animalsThatLiveHere.Count > 0)
                         Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere"), Color.Red, 3500f));
-                    else if (destroyed.indoors.Value != null && destroyed.indoors.Value.farmers.Count<Farmer>() > 0)
+                    else if (destroyed.indoors.Value != null && destroyed.indoors.Value.farmers.Any())
                     {
                         Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere"), Color.Red, 3500f));
                     }
@@ -476,13 +554,14 @@ namespace BitwiseJonMods
                         }
                         else
                         {
+                            destroyed.BeforeDemolish();
                             Chest chest = (Chest)null;
                             if (destroyed.indoors.Value is Cabin)
                             {
                                 List<Item> objList = (destroyed.indoors.Value as Cabin).demolish();
                                 if (objList.Count > 0)
                                 {
-                                    chest = new Chest(true);
+                                    chest = new Chest(true, 130);
                                     chest.fixLidFrame();
                                     chest.items.Set((IList<Item>)objList);
                                 }
@@ -508,6 +587,11 @@ namespace BitwiseJonMods
                     if (destroyed.indoors.Value != null && destroyed.indoors.Value is Cabin && !Game1.IsMasterGame)
                     {
                         Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed"), Color.Red, 3500f));
+                        destroyed = (Building)null;
+                        return;
+                    }
+                    if (!this.CanDemolishThis(destroyed))
+                    {
                         destroyed = (Building)null;
                         return;
                     }
@@ -541,7 +625,7 @@ namespace BitwiseJonMods
             }
             else if (this.upgrading)
             {
-                Building buildingAt = ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY()) / 64)));
+                Building buildingAt = ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY(false)) / 64)));
                 if (buildingAt != null && this.CurrentBlueprint.name != null && buildingAt.buildingType.Equals((object)this.CurrentBlueprint.nameOfBuildingToUpgrade))
                 {
                     this.CurrentBlueprint.consumeResources();
@@ -558,16 +642,52 @@ namespace BitwiseJonMods
                     Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantUpgrade_BuildingType"), Color.Red, 3500f));
                 }
             }
+            else if (this.painting)
+            {
+                Farm farm_location = Game1.getFarm();
+                Vector2 vector2 = new Vector2((float)((Game1.viewport.X + Game1.getMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getMouseY(false)) / 64));
+                Building buildingAt = farm_location.getBuildingAt(vector2);
+                if (buildingAt != null)
+                {
+                    if (!buildingAt.CanBePainted())
+                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint"), Color.Red, 3500f));
+                    else if (!this.HasPermissionsToPaint(buildingAt))
+                    {
+                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission"), Color.Red, 3500f));
+                    }
+                    else
+                    {
+                        buildingAt.color.Value = Color.White;
+                        this.SetChildMenu((IClickableMenu)new BuildingPaintMenu(buildingAt));
+                    }
+                }
+                else
+                {
+                    if (!farm_location.GetHouseRect().Contains(Utility.Vector2ToPoint(vector2)))
+                        return;
+                    if (!this.CanPaintHouse())
+                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint"), Color.Red, 3500f));
+                    else if (!this.HasPermissionsToPaint((Building)null))
+                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CannotPaint_Permission"), Color.Red, 3500f));
+                    else
+                        this.SetChildMenu((IClickableMenu)new BuildingPaintMenu("House", (Func<Texture2D>)(() =>
+                        {
+                            if (farm_location.paintedHouseTexture != null)
+                                return farm_location.paintedHouseTexture;
+                            return Farm.houseTextures;
+                        }), farm_location.houseSource.Value, farm_location.housePaintColor.Value));
+                }
+            }
             else if (this.moving)
             {
                 if (this.buildingToMove == null)
                 {
-                    this.buildingToMove = ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getMouseY()) / 64)));
+                    this.buildingToMove = ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getMouseY(false)) / 64)));
                     if (this.buildingToMove == null)
                         return;
                     if ((int)((NetFieldBase<int, NetInt>)this.buildingToMove.daysOfConstructionLeft) > 0)
                         this.buildingToMove = (Building)null;
-                    else if (!Game1.IsMasterGame && !this.hasPermissionsToMove(this.buildingToMove))
+                    else if (!this.hasPermissionsToMove(this.buildingToMove))
                     {
                         this.buildingToMove = (Building)null;
                     }
@@ -577,11 +697,13 @@ namespace BitwiseJonMods
                         Game1.playSound("axchop");
                     }
                 }
-                else if (((BuildableGameLocation)Game1.getLocationFromName("Farm")).buildStructure(this.buildingToMove, new Vector2((float)((Game1.viewport.X + Game1.getMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getMouseY()) / 64)), Game1.player, false))
+                else if (((BuildableGameLocation)Game1.getLocationFromName("Farm")).buildStructure(this.buildingToMove, new Vector2((float)((Game1.viewport.X + Game1.getMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getMouseY(false)) / 64)), Game1.player, false))
                 {
                     this.buildingToMove.isMoving = false;
                     if (this.buildingToMove is ShippingBin)
                         (this.buildingToMove as ShippingBin).initLid();
+                    if (this.buildingToMove is GreenhouseBuilding)
+                        Game1.getFarm().greenhouseMoved.Value = true;
                     this.buildingToMove.performActionOnBuildingPlacement();
                     this.buildingToMove = (Building)null;
                     Game1.playSound("axchop");
@@ -634,7 +756,7 @@ namespace BitwiseJonMods
 
         public bool tryToBuild()
         {
-            return ((BuildableGameLocation)Game1.getLocationFromName("Farm")).buildStructure(this.CurrentBlueprint, new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY()) / 64)), Game1.player, this.magicalConstruction, false);
+            return ((BuildableGameLocation)Game1.getLocationFromName("Farm")).buildStructure(this.CurrentBlueprint, new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY(false)) / 64)), Game1.player, this.magicalConstruction, false);
         }
 
         public void returnToFarm()
@@ -647,6 +769,7 @@ namespace BitwiseJonMods
             this.resetBounds();
             this.upgrading = false;
             this.moving = false;
+            this.painting = false;
             this.buildingToMove = (Building)null;
             this.freeze = true;
             Game1.displayHUD = true;
@@ -678,8 +801,8 @@ namespace BitwiseJonMods
             Game1.currentLocation.resetForPlayerEntry();
             Game1.delayedActions.Add(new DelayedAction(MENU_DELAY, new DelayedAction.delayedBehavior(this.doNothing)));
             this.onFarm = true;
-            this.cancelButton.bounds.X = Game1.viewport.Width - 128;
-            this.cancelButton.bounds.Y = Game1.viewport.Height - 128;
+            this.cancelButton.bounds.X = Game1.uiViewport.Width - 128;
+            this.cancelButton.bounds.Y = Game1.uiViewport.Height - 128;
             Game1.displayHUD = false;
             Game1.viewportFreeze = true;
             Game1.viewport.Location = new Location((Game1.player.getTileX() * Game1.tileSize) - (Game1.viewport.Width / 2), (Game1.player.getTileY() * Game1.tileSize) - (Game1.viewport.Height / 2));
@@ -687,7 +810,7 @@ namespace BitwiseJonMods
             this.drawBG = false;
             this.freeze = true;
             Game1.displayFarmer = false;
-            if (this.demolishing || this.CurrentBlueprint.nameOfBuildingToUpgrade == null || (this.CurrentBlueprint.nameOfBuildingToUpgrade.Length <= 0 || this.moving))
+            if (this.demolishing || this.CurrentBlueprint.nameOfBuildingToUpgrade == null || (this.CurrentBlueprint.nameOfBuildingToUpgrade.Length <= 0 || this.moving) || this.painting)
                 return;
             this.upgrading = true;
         }
@@ -695,6 +818,37 @@ namespace BitwiseJonMods
         public override void gameWindowSizeChanged(Microsoft.Xna.Framework.Rectangle oldBounds, Microsoft.Xna.Framework.Rectangle newBounds)
         {
             this.resetBounds();
+        }
+
+        public virtual bool CanDemolishThis(Building building)
+        {
+            if (building == null)
+                return false;
+            if (this._demolishCheckBlueprint == null || this._demolishCheckBlueprint.name != building.buildingType.Value)
+                this._demolishCheckBlueprint = new BluePrint((string)((NetFieldBase<string, NetString>)building.buildingType));
+            if (this._demolishCheckBlueprint != null)
+                return this.CanDemolishThis(this._demolishCheckBlueprint);
+            return true;
+        }
+
+        public virtual bool CanDemolishThis(BluePrint blueprint)
+        {
+            if (blueprint.moneyRequired < 0)
+                return false;
+            if (blueprint.name == "Shipping Bin")
+            {
+                int num = 0;
+                foreach (Building building in Game1.getFarm().buildings)
+                {
+                    if (building is ShippingBin)
+                        ++num;
+                    if (num > 1)
+                        break;
+                }
+                if (num <= 1)
+                    return false;
+            }
+            return true;
         }
 
         public override void draw(SpriteBatch b)
@@ -786,13 +940,16 @@ namespace BitwiseJonMods
                 Vector2 location = new Vector2((float)(this.xPositionOnScreen + this.maxWidthOfBuildingViewer + 16), (float)(this.yPositionOnScreen + 256 + 32));
                 if (this.ingredients.Count < 3 && (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.fr || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ko || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.pt))
                     location.Y += 64f;
-                SpriteText.drawString(b, "$", (int)location.X, (int)location.Y, 999999, -1, 999999, 1f, 0.88f, false, -1, "", -1, SpriteText.ScrollTextAlignment.Left);
-                if (this.magicalConstruction)
+                if (this.price >= 0)
                 {
-                    Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2(location.X + 64f, location.Y + 8f), Game1.textColor * 0.5f, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
-                    Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2((float)((double)location.X + 64.0 + 4.0 - 1.0), location.Y + 8f), Game1.textColor * 0.25f, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
+                    SpriteText.drawString(b, "$", (int)location.X, (int)location.Y, 999999, -1, 999999, 1f, 0.88f, false, -1, "", -1, SpriteText.ScrollTextAlignment.Left);
+                    if (this.magicalConstruction)
+                    {
+                        Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2(location.X + 64f, location.Y + 8f), Game1.textColor * 0.5f, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
+                        Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2((float)((double)location.X + 64.0 + 4.0 - 1.0), location.Y + 8f), Game1.textColor * 0.25f, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
+                    }
+                    Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2((float)((double)location.X + 64.0 + 4.0), location.Y + 4f), Game1.player.Money >= this.price ? (this.magicalConstruction ? Color.PaleGoldenrod : Game1.textColor) : Color.Red, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
                 }
-                Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2((float)((double)location.X + 64.0 + 4.0), location.Y + 4f), Game1.player.Money >= this.price ? (this.magicalConstruction ? Color.PaleGoldenrod : Game1.textColor) : Color.Red, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
                 location.X -= 16f;
                 location.Y -= 21f;
                 foreach (Item ingredient in this.ingredients)
@@ -810,16 +967,18 @@ namespace BitwiseJonMods
                 this.backButton.draw(b);
                 this.forwardButton.draw(b);
                 this.okButton.draw(b, this.blueprints[this.currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild() ? Color.White : Color.Gray * 0.8f, 0.88f, 0);
-                this.demolishButton.draw(b);
+                this.demolishButton.draw(b, this.CanDemolishThis(this.blueprints[this.currentBlueprintIndex]) ? Color.White : Color.Gray * 0.8f, 0.88f, 0);
                 this.moveButton.draw(b);
+                this.paintButton.draw(b);
             }
             else
             {
-                string s = this.upgrading ? Game1.content.LoadString("Strings\\UI:Carpenter_SelectBuilding_Upgrade", (object)new BluePrint(this.CurrentBlueprint.nameOfBuildingToUpgrade).displayName) : (this.demolishing ? Game1.content.LoadString("Strings\\UI:Carpenter_SelectBuilding_Demolish") : Game1.content.LoadString("Strings\\UI:Carpenter_ChooseLocation"));
-                SpriteText.drawStringWithScrollBackground(b, s, Game1.viewport.Width / 2 - SpriteText.getWidthOfString(s, 999999) / 2, 16, "", 1f, -1, SpriteText.ScrollTextAlignment.Left);
-                if (!this.upgrading && !this.demolishing && !this.moving)
+                string s = !this.upgrading ? (!this.demolishing ? (!this.painting ? Game1.content.LoadString("Strings\\UI:Carpenter_ChooseLocation") : Game1.content.LoadString("Strings\\UI:Carpenter_SelectBuilding_Paint")) : Game1.content.LoadString("Strings\\UI:Carpenter_SelectBuilding_Demolish")) : Game1.content.LoadString("Strings\\UI:Carpenter_SelectBuilding_Upgrade", (object)new BluePrint(this.CurrentBlueprint.nameOfBuildingToUpgrade).displayName);
+                SpriteText.drawStringWithScrollBackground(b, s, Game1.uiViewport.Width / 2 - SpriteText.getWidthOfString(s, 999999) / 2, 16, "", 1f, -1, SpriteText.ScrollTextAlignment.Left);
+                Game1.StartWorldDrawInUI(b);
+                if (!this.upgrading && !this.demolishing && (!this.moving && !this.painting))
                 {
-                    Vector2 vector2 = new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY()) / 64));
+                    Vector2 vector2 = new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY(false)) / 64));
                     for (int y = 0; y < this.CurrentBlueprint.tilesHeight; ++y)
                     {
                         for (int x = 0; x < this.CurrentBlueprint.tilesWidth; ++x)
@@ -831,10 +990,20 @@ namespace BitwiseJonMods
                             b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, tileLocation * 64f), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(194 + structurePlacementTile * 16, 388, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
                         }
                     }
+                    foreach (Point additionalPlacementTile in this.CurrentBlueprint.additionalPlacementTiles)
+                    {
+                        int x = additionalPlacementTile.X;
+                        int y = additionalPlacementTile.Y;
+                        int structurePlacementTile = this.CurrentBlueprint.getTileSheetIndexForStructurePlacementTile(x, y);
+                        Vector2 tileLocation = new Vector2(vector2.X + (float)x, vector2.Y + (float)y);
+                        if (!(Game1.currentLocation as BuildableGameLocation).isBuildable(tileLocation))
+                            ++structurePlacementTile;
+                        b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, tileLocation * 64f), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(194 + structurePlacementTile * 16, 388, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
+                    }
                 }
-                else if (this.moving && this.buildingToMove != null)
+                else if (!this.painting && this.moving && this.buildingToMove != null)
                 {
-                    Vector2 vector2_1 = new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY()) / 64));
+                    Vector2 vector2_1 = new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX(false)) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY(false)) / 64));
                     BuildableGameLocation currentLocation = Game1.currentLocation as BuildableGameLocation;
                     for (int y = 0; y < (int)((NetFieldBase<int, NetInt>)this.buildingToMove.tilesHigh); ++y)
                     {
@@ -848,10 +1017,22 @@ namespace BitwiseJonMods
                             b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, vector2_2 * 64f), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(194 + structurePlacementTile * 16, 388, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
                         }
                     }
+                    foreach (Point additionalPlacementTile in this.buildingToMove.additionalPlacementTiles)
+                    {
+                        int x = additionalPlacementTile.X;
+                        int y = additionalPlacementTile.Y;
+                        int structurePlacementTile = this.buildingToMove.getTileSheetIndexForStructurePlacementTile(x, y);
+                        Vector2 vector2_2 = new Vector2(vector2_1.X + (float)x, vector2_1.Y + (float)y);
+                        bool flag = currentLocation.buildings.Contains(this.buildingToMove) && this.buildingToMove.occupiesTile(vector2_2);
+                        if (!currentLocation.isBuildable(vector2_2) && !flag)
+                            ++structurePlacementTile;
+                        b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, vector2_2 * 64f), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(194 + structurePlacementTile * 16, 388, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
+                    }
                 }
+                Game1.EndWorldDrawInUI(b);
             }
             this.cancelButton.draw(b);
-            this.drawMouse(b);
+            this.drawMouse(b, false, -1);
             if (this.hoverText.Length <= 0)
                 return;
             IClickableMenu.drawHoverText(b, this.hoverText, Game1.dialogueFont, 0, 0, -1, (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null, (IList<Item>)null);

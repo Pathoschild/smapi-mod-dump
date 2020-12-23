@@ -5,9 +5,9 @@ mods:
    Custom Tracker
 
 latest commit:
-   commit 36521baf2f03dadacf05184a9c294edb65c30000
+   commit f0c727667cf3ebfc746dc5bcbed0cca352acb824
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Fri Apr 10 01:52:50 2020 -0500
+   Date:   Mon Dec 21 13:21:07 2020 -0600
    
-       Add GMCM support for settings added in 1.3.0
+       Update for SDV v1.5.0, increment manifest to v1.4.0
    

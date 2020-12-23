@@ -5,9 +5,9 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit ebe4402cc320fcdc829d8a8e2489e9388d8c4163
+   commit 193c5d617ad3fd636b859f1b7d5edab4f0d25b8d
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Sun Jul 12 18:43:35 2020 -0400
+   Date:   Tue Dec 22 22:15:19 2020 -0500
    
-       Fixed a couple small things. It will no longer show the meat errror items, it will properly show the money, the time to grow seeds now actually works so it will not show you things you can't finish growing.
+       Updated some legendary fish info, made it so the clam shows up in the fish tab, recompiled so it doesn't crash on stardew 1.5
    

@@ -546,6 +546,36 @@ namespace CommunityCenterHelper
                         return strPutItemInMachine(ItemID.IT_Roe, itemLiteral: getFishRoeName(ItemID.IT_Sturgeon),
                                                    machineID: ItemID.BC_PreservesJar);
                     
+                    /********** Pantry (Remix) **********/
+                    
+                    // Fish Farmer's Bundle
+                    
+                    case ItemID.IT_Roe:
+                        return str.Get("fishPondAny");
+                    
+                    /********** Boiler Room (Remix) **********/
+                    
+                    // Adventurer's Bundle
+                    
+                    case ItemID.IT_BoneFragment:
+                        return strDroppedByMonster("Skeleton") + "\n"
+                             + strDroppedByMonster("Lava Lurk");
+                    
+                    /********** Bulletin Board (Remix) **********/
+                    
+                    // Children's Bundle
+                    
+                    case ItemID.IT_IceCream:
+                        return strCookRecipe("Ice Cream");
+                        
+                    case ItemID.IT_Cookie:
+                        return strCookRecipe("Cookies");
+                    
+                    // Home Cook's Bundle
+                    
+                    case ItemID.IT_WheatFlour:
+                        return strBuyFrom(shopLiteral: getSeedShopsString());
+                    
                     /********** [EasierBundles] Crafts Room **********/
                     
                     // [EasierBundles] Construction Bundle
@@ -2702,7 +2732,7 @@ namespace CommunityCenterHelper
             string locationKey = "";
             int startFloor = -1, endFloor = -1;
             int mineLevelReq = -1;
-            bool skullReq = false;
+            bool skullReq = false, volcanoReq = false;
             
             if (monsterKey != "")
             {
@@ -2728,6 +2758,7 @@ namespace CommunityCenterHelper
                     case "Bug":
                     case "Cave Fly":
                     case "Rock Crab":
+                    case "Blue Squid":
                         startFloor = 1;
                         endFloor = 29;
                         locationKey = "monsterAreaMinesRange";
@@ -2760,6 +2791,7 @@ namespace CommunityCenterHelper
                         locationKey = "monsterAreaMinesRange";
                         break;
                     case "Ghost":
+                    case "Putrid Ghost":
                         mineLevelReq = 50;
                         startFloor = 51;
                         endFloor = 79;
@@ -2777,6 +2809,7 @@ namespace CommunityCenterHelper
                     case "Sludge": // Red
                     case "Shadow Brute":
                     case "Shadow Shaman":
+                    case "Shadow Sniper":
                     case "Squid Kid":
                         mineLevelReq = 80;
                         startFloor = 81;
@@ -2785,6 +2818,7 @@ namespace CommunityCenterHelper
                         break;
                     case "Mummy":
                     case "Serpent":
+                    case "Royal Serpent":
                         skullReq = true;
                         locationKey = "monsterAreaSkull";
                         break;
@@ -2806,6 +2840,17 @@ namespace CommunityCenterHelper
                         skullReq = true;
                         locationKey = "monsterAreaSkullMummy";
                         break;
+                    case "Lava Lurk":
+                    case "Hot Head":
+                    case "Spider":
+                    case "Magma Duggy":
+                    case "Magma Sprite":
+                    case "Magma Sparker":
+                    case "Dwarvish Sentry":
+                    case "False Magma Cap":
+                        volcanoReq = true;
+                        locationKey = "monsterAreaVolcano";
+                        break;
                 }
             }
             
@@ -2816,14 +2861,16 @@ namespace CommunityCenterHelper
             if (!Config.ShowSpoilers)
             {
                 if ((skullReq && !isSkullCavernKnown()) // Skull Cavern only, but not yet unlocked
+                 || (volcanoReq && !isVolcanoKnown()) // Volcano, but not yet unlocked
                  || (mineLevelReq > MineShaft.lowestLevelReached)) // Mines, but haven't gotten deep enough
                     monsterStr = str.Get("monsterUnknown"); // Conceal monster name
                 
-                if (skullReq && !isSkullCavernKnown()) // Skull Cavern only, but not yet unlocked
+                if ((skullReq && !isSkullCavernKnown()) // Skull Cavern only, but not yet unlocked
+                 || (volcanoReq && !isVolcanoKnown())) // Volcano, but not yet unlocked
                     locationKey = "monsterAreaUnknown"; // Conceal area name
             }
             
-            if (locationKey != "") // Always append location, even if name is hidden
+            if (locationKey != "") // Always append location, even if its name is hidden
                 monsterStr += parenthesize(str.Get(locationKey, new { start = startFloor != -1? startFloor.ToString() : "",
                                                                       end = endFloor != -1? endFloor.ToString() : "" }));
             
@@ -3804,6 +3851,12 @@ namespace CommunityCenterHelper
         private static bool isWitchSwampKnown()
         {
             return Config.ShowSpoilers || Game1.MasterPlayer.mailReceived.Contains("witchStatueGone");
+        }
+        
+        /// <summary>Returns whether it's okay to mention the volcano, either due to spoiler policy or having unlocked it.</summary>
+        private static bool isVolcanoKnown()
+        {
+            return Config.ShowSpoilers || Game1.MasterPlayer.mailReceived.Contains("islandNorthCaveOpened");
         }
         
         /// <summary>Returns whether it's okay to mention the Movie Theather, either due to spoiler policy or having unlocked it.</summary>

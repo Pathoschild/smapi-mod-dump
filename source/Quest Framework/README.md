@@ -22,8 +22,8 @@ for queries and analysis.**
 
 ### Requirements
 
-- SMAPI version 3.6.1 or newer
-- Stardew Valley 1.4
+- SMAPI version 3.8.0 or newer
+- Stardew Valley 1.5
 
 ### Compatibility
 

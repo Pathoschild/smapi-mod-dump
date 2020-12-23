@@ -1,0 +1,13 @@
+url:
+   https://github.com/GStefanowich/SDV-NFFTT.git
+
+mods:
+   Not Far From The Tree
+
+latest commit:
+   commit 1fdf4421e34e85e7fb49ebea423a3977f8be07f2
+   Author: Greg <GStefanowich@users.noreply.github.com>
+   Date:   Tue Feb 4 03:38:56 2020 -0500
+   
+       Fixed Repo in License to be correct
+   

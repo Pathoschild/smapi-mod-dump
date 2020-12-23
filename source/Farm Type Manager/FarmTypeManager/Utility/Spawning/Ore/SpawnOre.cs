@@ -76,6 +76,10 @@ namespace FarmTypeManager
                         ore = new StardewValley.Object(tile, 46, "Stone", true, true, false, false); //mystic stone, a.k.a. mystic ore
                         ore.MinutesUntilReady = 12;
                         break;
+                    case "radioactive":
+                        ore = new StardewValley.Object(tile, 95, "Stone", true, false, false, false);
+                        ore.MinutesUntilReady = 25;
+                        break;
                     case "diamond":
                         ore = new StardewValley.Object(tile, 2, "Stone", true, true, false, false);
                         ore.MinutesUntilReady = 5;

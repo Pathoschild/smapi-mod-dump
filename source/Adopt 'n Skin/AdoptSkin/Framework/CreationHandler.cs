@@ -80,6 +80,9 @@ namespace AdoptSkin.Framework
             if (!ModEntry.Config.ChanceAffectedByLuck)
                 luckBonus = 0;
 
+            // Only allow the host player to load in strays and wild horses
+            if (!Context.IsMainPlayer)
+                return;
             // Check chances for Stray and WildHorse to spawn, add creation to update loop if spawn should occur
             if (ModEntry.Config.StraySpawn && FirstPetReceived && Randomizer.Next(0, 100) - luckBonus < StrayChance)
                 ModEntry.SHelper.Events.GameLoop.UpdateTicked += this.PlaceStray;

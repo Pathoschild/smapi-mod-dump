@@ -218,6 +218,11 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
                     dirt.destroyCrop(tile, showAnimation: isScytheCrop, location);
                     return true;
                 }
+                if (dirt.crop.hitWithHoe((int)tile.X, (int)tile.Y, location, dirt))
+                {
+                    dirt.destroyCrop(tile, showAnimation: false, location);
+                    return true;
+                }
             }
 
             return false;
@@ -286,7 +291,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
                 case Tree tree:
                     if (tree.hasSeed.Value && !tree.tapped.Value)
                     {
-                        bool shouldHarvest = tree.treeType.Value == Tree.palmTree
+                        bool shouldHarvest = (tree.treeType.Value == Tree.palmTree || tree.treeType.Value == Tree.palmTree2)
                             ? this.Config.HarvestFruitTrees
                             : this.Config.HarvestTreeSeeds;
 

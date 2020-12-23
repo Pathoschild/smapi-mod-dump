@@ -63,59 +63,6 @@
               // while still being able to see the default values for reference (or change them in the future)
               // Precision is handled in the "when EnablePrecisionChanges = true" block below to make them configurable
 
-              // End-game weapons
-              "45": // Wicked Kris
-              {
-                  "{{MINDAMAGE}}": "12",
-                  "{{MAXDAMAGE}}": "16",
-                  //"{{KNOCKBACK}}": ".5",
-                  //"{{SPEED}}": "0",
-                  //"{{DEFENSE}}": "0",
-                  "{{TARGETLVL}}": "160",
-                  "{{MINLVL}}": "120",
-                  "{{AOE}}": "10", //2
-                  "{{CRIT}}": ".67",
-                  "{{CRITMULT}}": "3"
-              },
-              "23": // Galaxy Dagger
-              {
-                  //"{{MINDAMAGE}}": "30",
-                  //"{{MAXDAMAGE}}": "40",
-                  "{{KNOCKBACK}}": "0.6",
-                  //"{{SPEED}}": "3",
-                  //"{{DEFENSE}}": "0",
-                  //"{{TARGETLVL}}": "-1",
-                  //"{{MINLVL}}": "-1",
-                  "{{AOE}}": "100",
-                  "{{CRIT}}": "0.0",
-                  "{{CRITMULT}}": "1.0"
-              },
-              "29": // Galaxy Hammer
-              {
-                  "{{MINDAMAGE}}": "10",
-                  "{{MAXDAMAGE}}": "300",
-                  "{{KNOCKBACK}}": "3.5",
-                  //"{{SPEED}}": "-4",
-                  //"{{DEFENSE}}": "0",
-                  //"{{TARGETLVL}}": "-1",
-                  //"{{MINLVL}}": "-1",
-                  "{{AOE}}": "25",
-                  "{{CRIT}}": "0.0",
-                  "{{CRITMULT}}": "1.0"
-              },
-              "4": // Galaxy Sword
-              {
-                  "{{MINDAMAGE}}": "75",
-                  //"{{MAXDAMAGE}}": "80",
-                  //"{{KNOCKBACK}}": "1",
-                  //"{{SPEED}}": "8",
-                  //"{{DEFENSE}}": "0",
-                  //"{{TARGETLVL}}": "-1",
-                  //"{{MINLVL}}": "-1",
-                  //"{{AOE}}": "0",
-                  "{{CRIT}}": "0.0",
-                  "{{CRITMULT}}": "1.0"
-              },
 
               // Swords
               "0": // Rusty Sword
@@ -163,7 +110,7 @@
                   //"{{MAXDAMAGE}}": "15",
                   //"{{KNOCKBACK}}": "1",
                   //"{{SPEED}}": "0",
-                  "{{DEFENSE}}": "0",
+                  //"{{DEFENSE}}": "1",
                   "{{TARGETLVL}}": "40",
                   "{{MINLVL}}": "15",
                   //"{{AOE}}": "0",
@@ -202,7 +149,7 @@
                   //"{{MAXDAMAGE}}": "25",
                   //"{{KNOCKBACK}}": "1.2",
                   //"{{SPEED}}": "-4",
-                  "{{DEFENSE}}": "0",
+                  //"{{DEFENSE}}": "1",
                   //"{{TARGETLVL}}": "44",
                   "{{MINLVL}}": "20",
                   //"{{AOE}}": "0",
@@ -241,7 +188,7 @@
                   //"{{MAXDAMAGE}}": "18",
                   //"{{KNOCKBACK}}": "1",
                   //"{{SPEED}}": "4",
-                  "{{DEFENSE}}": "0",
+                  //"{{DEFENSE}}": "1",
                   "{{TARGETLVL}}": "50",
                   "{{MINLVL}}": "25",
                   //"{{AOE}}": "0",
@@ -267,7 +214,7 @@
                   //"{{MAXDAMAGE}}": "35",
                   //"{{KNOCKBACK}}": "1.4",
                   //"{{SPEED}}": "-2",
-                  "{{DEFENSE}}": "0",
+                  //"{{DEFENSE}}": "2",
                   //"{{TARGETLVL}}": "-1",
                   //"{{MINLVL}}": "-1",
                   //"{{AOE}}": "0",
@@ -293,7 +240,7 @@
                   //"{{MAXDAMAGE}}": "32",
                   //"{{KNOCKBACK}}": "1.3",
                   //"{{SPEED}}": "-8",
-                  "{{DEFENSE}}": "0",
+                  //"{{DEFENSE}}": "2",
                   //"{{TARGETLVL}}": "86",
                   //"{{MINLVL}}": "50",
                   //"{{AOE}}": "0",
@@ -306,7 +253,7 @@
                   //"{{MAXDAMAGE}}": "29",
                   //"{{KNOCKBACK}}": "1",
                   //"{{SPEED}}": "0",
-                  "{{DEFENSE}}": "0",
+                  //"{{DEFENSE}}": "1",
                   //"{{TARGETLVL}}": "90",
                   //"{{MINLVL}}": "50",
                   //"{{AOE}}": "0",
@@ -345,7 +292,7 @@
                   //"{{MAXDAMAGE}}": "44",
                   //"{{KNOCKBACK}}": "1.2",
                   //"{{SPEED}}": "-6",
-                  "{{DEFENSE}}": "0",
+                  //"{{DEFENSE}}": "3",
                   //"{{TARGETLVL}}": "135",
                   //"{{MINLVL}}": "100",
                   "{{AOE}}": "10", //1
@@ -384,12 +331,81 @@
                   //"{{MAXDAMAGE}}": "64",
                   //"{{KNOCKBACK}}": "1.2",
                   //"{{SPEED}}": "0",
-                  "{{DEFENSE}}": "0",
+                  //"{{DEFENSE}}": "3",
                   //"{{TARGETLVL}}": "-1",
                   //"{{MINLVL}}": "-1",
                   "{{AOE}}": "15", //2
                   "{{CRIT}}": ".1",
                   "{{CRITMULT}}": "2.0"
+              },
+              "4": // Galaxy Sword
+              {
+                  "{{MINDAMAGE}}": "75",
+                  //"{{MAXDAMAGE}}": "80",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "8",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": "0.0",
+                  "{{CRITMULT}}": "1.0"
+              },
+              "54": // Dwarf Sword
+              {
+                  //"{{MINDAMAGE}}": "65",
+                  //"{{MAXDAMAGE}}": "75",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "4",
+                  //"{{PRECISION}}": "0",
+                  //"{{DEFENSE}}": "4",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05", //0.2
+                  "{{CRITMULT}}": "2" //3
+              },
+              "57": // Dragontooth Cutlass
+              {
+                  //"{{MINDAMAGE}}": "75",
+                  //"{{MAXDAMAGE}}": "90",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "0",
+                  //"{{PRECISION}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05", //0.2
+                  "{{CRITMULT}}": "3" //4
+              },
+              "60": // Ossified Blade
+              {
+                  //"{{MINDAMAGE}}": "26",
+                  //"{{MAXDAMAGE}}": "42",
+                  "{{KNOCKBACK}}": "1.5", //1.1
+                  //"{{SPEED}}": "-4",
+                  //"{{PRECISION}}": "0",
+                  "{{DEFENSE}}": "2", //1
+                  //"{{TARGETLVL}}": "142",
+                  //"{{MINLVL}}": "100",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".05", //0.2
+                  "{{CRITMULT}}": "2" //3
+              },
+              "62": // Infinity Blade
+              {
+                  "{{MINDAMAGE}}": "95", //80
+                  //"{{MAXDAMAGE}}": "100",
+                  //"{{KNOCKBACK}}": "1",
+                  //"{{SPEED}}": "8",
+                  //"{{PRECISION}}": "0",
+                  //"{{DEFENSE}}": "2",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": "0.0",
+                  "{{CRITMULT}}": "1"
               },
 
               // Daggers
@@ -403,8 +419,8 @@
                   "{{TARGETLVL}}": "5",
                   "{{MINLVL}}": "1",
                   //"{{AOE}}": "0",
-                  "{{CRIT}}": ".56",
-                  "{{CRITMULT}}": "2"
+                  "{{CRIT}}": ".50",
+                  "{{CRITMULT}}": "3"
               },
               "17": // Iron Dirk
               {
@@ -416,8 +432,8 @@
                   "{{TARGETLVL}}": "25",
                   "{{MINLVL}}": "1",
                   //"{{AOE}}": "0",
-                  "{{CRIT}}": ".56",
-                  "{{CRITMULT}}": "2"
+                  "{{CRIT}}": ".50",
+                  "{{CRITMULT}}": "3"
               },
               "22": // Wind Spire
               {
@@ -429,8 +445,8 @@
                   "{{TARGETLVL}}": "45",
                   "{{MINLVL}}": "20",
                   //"{{AOE}}": "0",
-                  "{{CRIT}}": ".56",
-                  "{{CRITMULT}}": "2.5"
+                  "{{CRIT}}": ".50",
+                  "{{CRITMULT}}": "4"
               },
               "20": // Elf Blade
               {
@@ -442,8 +458,8 @@
                   "{{TARGETLVL}}": "50",
                   "{{MINLVL}}": "25",
                   //"{{AOE}}": "0",
-                  "{{CRIT}}": ".56",
-                  "{{CRITMULT}}": "2"
+                  "{{CRIT}}": ".50",
+                  "{{CRITMULT}}": "3"
               },
               "21": // Crystal Dagger
               {
@@ -455,8 +471,8 @@
                   //"{{TARGETLVL}}": "-1",
                   //"{{MINLVL}}": "-1",
                   //"{{AOE}}": "0",
-                  "{{CRIT}}": ".56",
-                  "{{CRITMULT}}": "3"
+                  "{{CRIT}}": ".50",
+                  "{{CRITMULT}}": "5"
               },
               "51": // Broken Trident
               {
@@ -468,8 +484,8 @@
                   //"{{TARGETLVL}}": "-1",
                   //"{{MINLVL}}": "-1",
                   "{{AOE}}": "15", //2
-                  "{{CRIT}}": ".56",
-                  "{{CRITMULT}}": "2"
+                  "{{CRIT}}": ".50",
+                  "{{CRITMULT}}": "3"
               },
               "18": // Burglar's Shank
               {
@@ -481,8 +497,8 @@
                   "{{TARGETLVL}}": "80",
                   "{{MINLVL}}": "50",
                   //"{{AOE}}": "0",
-                  "{{CRIT}}": ".56",
-                  "{{CRITMULT}}": "2.5"
+                  "{{CRIT}}": ".50",
+                  "{{CRITMULT}}": "4"
               },
               "19": // Shadow Dagger
               {
@@ -494,31 +510,109 @@
                   "{{TARGETLVL}}": "114",
                   "{{MINLVL}}": "90",
                   //"{{AOE}}": "0",
-                  "{{CRIT}}": ".56",
+                  "{{CRIT}}": ".50",
+                  "{{CRITMULT}}": "3"
+              },
+              "23": // Galaxy Dagger
+              {
+                  //"{{MINDAMAGE}}": "30",
+                  //"{{MAXDAMAGE}}": "40",
+                  "{{KNOCKBACK}}": "0.6",
+                  //"{{SPEED}}": "3",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  "{{AOE}}": "100",
+                  "{{CRIT}}": "0.0",
+                  "{{CRITMULT}}": "1.0"
+              },
+              "45": // Wicked Kris
+              {
+                  "{{MINDAMAGE}}": "12",
+                  "{{MAXDAMAGE}}": "16",
+                  //"{{KNOCKBACK}}": ".5",
+                  //"{{SPEED}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  "{{TARGETLVL}}": "160",
+                  "{{MINLVL}}": "120",
+                  "{{AOE}}": "10", //2
+                  "{{CRIT}}": ".60", //0.6
+                  "{{CRITMULT}}": "4.5" //3
+              },
+              "56": // Dwarf Dagger
+              {
+                  "{{MINDAMAGE}}": "24", //32
+                  "{{MAXDAMAGE}}": "32", //38
+                  "{{KNOCKBACK}}": ".6", //1
+                  //"{{SPEED}}": "3",
+                  //"{{DEFENSE}}": "6",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLKL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".50", //0.3
                   "{{CRITMULT}}": "2"
+              },
+              "59": // Dragontooth Shiv
+              {
+                  "{{MINDAMAGE}}": "28", //40
+                  "{{MAXDAMAGE}}": "40", //50
+                  "{{KNOCKBACK}}": "0.6", //1
+                  //"{{SPEED}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".55", //.05
+                  "{{CRITMULT}}": "4" //5
+              },
+              "61": // Iridium Needle
+              {
+                  //"{{MINDAMAGE}}": "20",
+                  //"{{MAXDAMAGE}}": "35",
+                  //"{{KNOCKBACK}}": ".5",
+                  //"{{SPEED}}": "0",
+                  //"{{DEFENSE}}": "0",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  //"{{AOE}}": "0",
+                  "{{CRIT}}": ".60",
+                  //"{{CRITMULT}}": "7"
+              },
+              "64": // Infinity Dagger
+              {
+                  //"{{MINDAMAGE}}": "50",
+                  //"{{MAXDAMAGE}}": "70",
+                  "{{KNOCKBACK}}": "0.6", //1
+                  //"{{SPEED}}": "3",
+                  //"{{DEFENSE}}": "3",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  "{{AOE}}": "100", //0
+                  "{{CRIT}}": "0.0", //3
+                  "{{CRITMULT}}": "1" //3
               },
 
               // Hammers
               "31": // Femur
               {
-                  "{{MINDAMAGE}}": "1",
-                  "{{MAXDAMAGE}}": "40",
-                  "{{KNOCKBACK}}": "2",
+                  "{{MINDAMAGE}}": "1", //6
+                  "{{MAXDAMAGE}}": "40", //11
+                  //"{{KNOCKBACK}}": "1.5", //1.5
                   //"{{SPEED}}": "-4",
-                  //"{{DEFENSE}}": "0",
-                  "{{TARGETLVL}}": "9",
-                  "{{MINLVL}}": "1",
-                  "{{AOE}}": "20",
-                  "{{CRIT}}": ".05",
-                  "{{CRITMULT}}": "2"
+                  "{{DEFENSE}}": "1", //0
+                  "{{TARGETLVL}}": "9", //10
+                  "{{MINLVL}}": "1", //-1
+                  "{{AOE}}": "20", //0
+                  "{{CRIT}}": ".05", //.02
+                  "{{CRITMULT}}": "2" //3
               },
               "24": // Wood Club
               {
                   "{{MINDAMAGE}}": "2",
                   "{{MAXDAMAGE}}": "50",
-                  "{{KNOCKBACK}}": "2",
+                  //"{{KNOCKBACK}}": "1.5",
                   //"{{SPEED}}": "-8",
-                  //"{{DEFENSE}}": "0",
+                  "{{DEFENSE}}": "2", //0
                   //"{{TARGETLVL}}": "32",
                   "{{MINLVL}}": "1",
                   "{{AOE}}": "20",
@@ -529,9 +623,9 @@
               {
                   "{{MINDAMAGE}}": "5",
                   "{{MAXDAMAGE}}": "100",
-                  "{{KNOCKBACK}}": "2.3",
+                  //"{{KNOCKBACK}}": "1.3", //1.3
                   //"{{SPEED}}": "-4",
-                  //"{{DEFENSE}}": "0",
+                  "{{DEFENSE}}": "3",
                   //"{{TARGETLVL}}": "68",
                   "{{MINLVL}}": "43",
                   "{{AOE}}": "20",
@@ -542,9 +636,9 @@
               {
                   "{{MINDAMAGE}}": "5",
                   "{{MAXDAMAGE}}": "125",
-                  "{{KNOCKBACK}}": "2",
+                  //"{{KNOCKBACK}}": "1.5", //1.5
                   //"{{SPEED}}": "-16",
-                  //"{{DEFENSE}}": "0",
+                  "{{DEFENSE}}": "4",
                   "{{TARGETLVL}}": "75",
                   //"{{MINLVL}}": "50",
                   "{{AOE}}": "25",
@@ -555,9 +649,9 @@
               {
                   "{{MINDAMAGE}}": "5",
                   "{{MAXDAMAGE}}": "175",
-                  "{{KNOCKBACK}}": "2.3",
+                  //"{{KNOCKBACK}}": "1.5", //1.5
                   //"{{SPEED}}": "-10",
-                  //"{{DEFENSE}}": "0",
+                  "{{DEFENSE}}": "5",
                   //"{{TARGETLVL}}": "107",
                   "{{MINLVL}}": "82",
                   "{{AOE}}": "20",
@@ -568,14 +662,66 @@
               {
                   "{{MINDAMAGE}}": "10",
                   "{{MAXDAMAGE}}": "200",
-                  "{{KNOCKBACK}}": "2",
+                  //"{{KNOCKBACK}}": "1.6", //1.6
                   //"{{SPEED}}": "-12",
-                  //"{{DEFENSE}}": "0",
+                  "{{DEFENSE}}": "6",
                   //"{{TARGETLVL}}": "128",
                   //"{{MINLVL}}": "100",
                   "{{AOE}}": "32",
                   "{{CRIT}}": ".05",
                   "{{CRITMULT}}": "2"
+              },
+              "29": // Galaxy Hammer
+              {
+                  "{{MINDAMAGE}}": "10",
+                  "{{MAXDAMAGE}}": "300",
+                  "{{KNOCKBACK}}": "3.5",
+                  //"{{SPEED}}": "-4",
+                  "{{DEFENSE}}": "10",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  "{{AOE}}": "25",
+                  "{{CRIT}}": "0.0",
+                  "{{CRITMULT}}": "1.0"
+              },
+              "55": // Dwarf Hammer
+              {
+                  "{{MINDAMAGE}}": "100", //75
+                  "{{MAXDAMAGE}}": "180", //85
+                  //"{{KNOCKBACK}}": "1", //1
+                  //"{{SPEED}}": "-8",
+                  "{{DEFENSE}}": "8",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  "{{AOE}}": "20", //0
+                  "{{CRIT}}": ".05", //.02
+                  "{{CRITMULT}}": "2" //3
+              },
+              "58": // Dragontooth Club
+              {
+                  "{{MINDAMAGE}}": "25", //80
+                  "{{MAXDAMAGE}}": "350", //100
+                  //"{{KNOCKBACK}}": "1.3", //1.3
+                  //"{{SPEED}}": "-8",
+                  "{{DEFENSE}}": "9",
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  "{{AOE}}": "20", //0
+                  "{{CRIT}}": ".05", //.02
+                  "{{CRITMULT}}": "2.5" //4
+              },
+              "63": // Infinity Gavel
+              {
+                  //"{{MINDAMAGE}}": "100",
+                  "{{MAXDAMAGE}}": "500", //120
+                  "{{KNOCKBACK}}": "3.5", //1
+                  //"{{SPEED}}": "-4",
+                  "{{DEFENSE}}": "15", //1
+                  //"{{TARGETLVL}}": "-1",
+                  //"{{MINLVL}}": "-1",
+                  "{{AOE}}": "25", //0
+                  "{{CRIT}}": "0.0", //.02
+                  "{{CRITMULT}}": "1" //3
               },
 
               // Slingshots
@@ -645,24 +791,6 @@
           },
           "Fields":
           {
-              // End-game weapons
-              "45": // Wicked Kris
-              {
-                  //"{{PRECISION}}": "8",
-              },
-              "23": // Galaxy Dagger
-              {
-                  "{{PRECISION}}": "80", //0
-              },
-              "29": // Galaxy Hammer
-              {
-                  "{{PRECISION}}": "160", //0
-              },
-              "4": // Galaxy Sword
-              {
-                  //"{{PRECISION}}": "0",
-              },
-
               // Swords
               "0": // Rusty Sword
               {
@@ -748,6 +876,26 @@
               {
                   "{{PRECISION}}": "50", //0
               },
+              "4": // Galaxy Sword
+              {
+                  //"{{PRECISION}}": "0",
+              },
+              "54": // Dwarf Sword
+              {
+                  //"{{PRECISION}}": "0",
+              },
+              "57": // Dragontooth Cutlass
+              {
+                  //"{{PRECISION}}": "0",
+              },
+              "60": // Ossified Blade
+              {
+                  //"{{PRECISION}}": "0",
+              },
+              "62": // Infinity Blade
+              {
+                  //"{{PRECISION}}": "0",
+              },
 
               // Daggers
               "16": // Carving Knife
@@ -782,6 +930,30 @@
               {
                   "{{PRECISION}}": "20", //0
               },
+              "45": // Wicked Kris
+              {
+                  //"{{PRECISION}}": "8",
+              },
+              "23": // Galaxy Dagger
+              {
+                  "{{PRECISION}}": "80", //0
+              },
+              "56": // Dwarf Dagger
+              {
+                  //"{{PRECISION}}": "0",
+              },
+              "59": // Dragontooth Shiv
+              {
+                  //"{{PRECISION}}": "0",
+              },
+              "61": // Iridium Needle
+              {
+                  //"{{PRECISION}}": "0",
+              },
+              "64": // Infinity Dagger
+              {
+                  //"{{PRECISION}}": "0",
+              },
 
               // Hammers
               "31": // Femur
@@ -807,6 +979,22 @@
               "28": // The Slammer
               {
                   "{{PRECISION}}": "180", //0
+              },
+              "29": // Galaxy Hammer
+              {
+                  "{{PRECISION}}": "160", //0
+              },
+              "55": // Dwarf Hammer
+              {
+                  //"{{PRECISION}}": "0",
+              },
+              "58": // Dragontooth Club
+              {
+                  //"{{PRECISION}}": "0",
+              },
+              "63": // Infinity Gavel
+              {
+                  //"{{PRECISION}}": "0",
               },
 
               // Slingshots
@@ -845,7 +1033,7 @@
                   "{{MAXDAMAGE}}": 260,
                   //"{{KNOCKBACK}}": 1.2,
                   "{{SPEED}}": 8,
-                  "{{DEFENSE}}": 0,
+                  //"{{DEFENSE}}": 10,
                   //"{{TARGETLVL}}": 0,
                   //{{MINLVL}}": -1,
                   "{{AOE}}": 0,
@@ -857,7 +1045,7 @@
                   "{{MAXDAMAGE}}": 450,
                   "{{KNOCKBACK}}": 4.0,
                   "{{SPEED}}": -2,
-                  "{{DEFENSE}}": 0,
+                  //"{{DEFENSE}}": 35,
                   //"{{TARGETLVL}}": 0,
                   //{{MINLVL}}": -1,
                   "{{AOE}}": 25,

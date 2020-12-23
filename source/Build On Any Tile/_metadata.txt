@@ -5,9 +5,9 @@ mods:
    Build On Any Tile
 
 latest commit:
-   commit 4532e567f98e27de34da8a60fe3fd43f00369dca
+   commit 912126cc53861e3ff63abf190de3b88f4dfd14f8
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sat Sep 19 18:31:30 2020 -0500
+   Date:   Mon Dec 21 14:04:07 2020 -0600
    
-       Update manifest version to 1.0.1
+       Increment manifest to 1.0.2
    

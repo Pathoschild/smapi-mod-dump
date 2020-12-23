@@ -29,7 +29,7 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>Generates an item described by a saved object.</summary>
-            /// <param name="save">A saved object of the "Item" type.</param>
+            /// <param name="save">A saved object descibing an item.</param>
             /// <param name="tile">The object's intended tile location. Generally necessary for items derived from StardewValley.Object.</param>
             public static Item CreateItem(SavedObject save, Vector2 tile = default(Vector2))
             {

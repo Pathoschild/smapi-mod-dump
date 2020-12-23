@@ -5,6 +5,7 @@ mods:
    Advanced Location Loader
    Custom Paths
    Entoarox Framework
+   Entoarox Modding Utilities
    Extended Minecart
    Faster Paths
    Furniture Anywhere

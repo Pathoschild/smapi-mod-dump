@@ -13,9 +13,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit c7c6b605d7fe08f1d7fb5f76ddf56eff919a27af
+   commit c6a5315dd2b50ad03b802e41048388facfd471eb
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Sun Nov 22 12:50:00 2020 +0100
+   Date:   Tue Dec 22 02:49:16 2020 +0100
    
-       init falltoautumn
+       update for sdv 1.5, no code changes
    

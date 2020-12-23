@@ -837,7 +837,7 @@ namespace ItemBags.Menus
                     //  Draw image associated with this task
                     Rectangle TaskImagePosition = new Rectangle(Position.X + (Position.Width - TaskImageSize) / 2, CurrentY, TaskImageSize, TaskImageSize);
                     DrawHelpers.DrawBorder(b, new Rectangle(TaskImagePosition.Left - 4, TaskImagePosition.Top - 4, TaskImagePosition.Width + 8, TaskImagePosition.Height + 8), 4, Color.Black);
-                    b.Draw(TextureHelpers.JunimoNoteTexture, TaskImagePosition, HoveredBundleTask.SpriteLargeIconPosition, Color.White);
+                    b.Draw(HoveredBundleTask.ActualLargeIconTexture, TaskImagePosition, HoveredBundleTask.ActualLargeIconPosition, Color.White);
                     CurrentY += TaskImageSize + 16;
 
                     //  Draw header text (Task's name)

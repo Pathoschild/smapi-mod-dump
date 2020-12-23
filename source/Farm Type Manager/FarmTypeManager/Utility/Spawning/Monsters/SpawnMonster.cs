@@ -129,6 +129,31 @@ namespace FarmTypeManager
                     }
                 }
 
+                int facingDirection = 2; //the direction the monster should be facing at spawn (handled differently by some monster types)
+                if (monsterType.Settings != null) //if settings were provided
+                {
+                    if (monsterType.Settings.ContainsKey("FacingDirection")) //if this setting was provided
+                    {
+                        string directionString = (string)monsterType.Settings["FacingDirection"]; //get the provided setting
+                        switch (directionString.Trim().ToLower())
+                        {
+                            //get an integer representing the provided direction
+                            case "up":
+                                facingDirection = 0;
+                                break;
+                            case "right":
+                                facingDirection = 1;
+                                break;
+                            case "down":
+                                facingDirection = 2;
+                                break;
+                            case "left":
+                                facingDirection = 3;
+                                break;
+                        }
+                    }
+                }
+
                 //create a new monster based on the provided name & apply type-specific settings
                 switch (monsterType.MonsterName.ToLower()) //avoid most casing issues by making this lower-case
                 {
@@ -156,6 +181,14 @@ namespace FarmTypeManager
                     case "hauntedskull":
                     case "haunted skull":
                         monster = new BatFTM(tile, 77377);
+                        break;
+                    case "magmasprite":
+                    case "magma sprite":
+                        monster = new BatFTM(tile, -555);
+                        break;
+                    case "magmasparker":
+                    case "magma sparker":
+                        monster = new BatFTM(tile, -556);
                         break;
                     case "bigslime":
                     case "big slime":
@@ -213,6 +246,10 @@ namespace FarmTypeManager
                             monster.IsWalkingTowardPlayer = true;
                         }
                         break;
+                    case "bluesquid":
+                    case "blue squid":
+                        monster = new BlueSquid(tile);
+                        break;
                     case "bug":
                         monster = new Bug(tile, 0);
                         break;
@@ -232,6 +269,10 @@ namespace FarmTypeManager
                     case "duggy":
                         monster = new DuggyFTM(tile);
                         break;
+                    case "magmaduggy":
+                    case "magma duggy":
+                        monster = new DuggyFTM(tile, true);
+                        break;
                     case "dust":
                     case "sprite":
                     case "dustsprite":
@@ -241,12 +282,30 @@ namespace FarmTypeManager
                     case "dust spirit":
                         monster = new DustSpirit(tile);
                         break;
+                    case "dwarvishsentry":
+                    case "dwarvish sentry":
+                    case "dwarvish":
+                    case "sentry":
+                        monster = new DwarvishSentry(tile);
+                        for (int x = Game1.delayedActions.Count - 1; x >= 0; x--) //check each existing DelayedAction (from last to first)
+                        {
+                            if (Game1.delayedActions[x].stringData == "DwarvishSentry") //if this action seems to be playing this monster's sound effect
+                            {
+                                Game1.delayedActions.Remove(Game1.delayedActions[x]); //remove the action (preventing this monster's global sound effect after creation)
+                                break; //skip the rest of the actions
+                            }
+                        }
+                        break;
                     case "ghost":
                         monster = new GhostFTM(tile);
                         break;
                     case "carbonghost":
                     case "carbon ghost":
                         monster = new GhostFTM(tile, "Carbon Ghost");
+                        break;
+                    case "putridghost":
+                    case "putrid ghost":
+                        monster = new GhostFTM(tile, "Putrid Ghost");
                         break;
                     case "slime":
                     case "greenslime":
@@ -287,6 +346,24 @@ namespace FarmTypeManager
                             ((GreenSlime)monster).color.Value = color.Value; //set its color after creation
                         }
                         break;
+                    case "tigerslime":
+                    case "tiger slime":
+                        monster = new GreenSlime(tile, 0); //create any "normal" slime
+                        ((GreenSlime)monster).makeTigerSlime(); //convert it into a tiger slime
+                        if (color.HasValue) //if color was also provided
+                        {
+                            ((GreenSlime)monster).color.Value = color.Value; //set its color after creation
+                        }
+                        break;
+                    case "prismaticslime":
+                    case "prismatic slime":
+                        monster = new GreenSlime(tile, 0); //create any "normal" slime
+                        ((GreenSlime)monster).makePrismatic(); //convert it into a prismatic slime
+                        if (color.HasValue) //if color was also provided
+                        {
+                            ((GreenSlime)monster).color.Value = color.Value; //set its color after creation
+                        }
+                        break;
                     case "grub":
                     case "cavegrub":
                     case "cave grub":
@@ -313,6 +390,21 @@ namespace FarmTypeManager
                             ((MetalHead)monster).c.Value = color.Value; //set its color after creation
                         }
                         break;
+                    case "hothead":
+                    case "hot head":
+                        monster = new HotHead(tile);
+                        if (color.HasValue) //if color was provided
+                        {
+                            ((HotHead)monster).c.Value = color.Value; //set its color after creation
+                        }
+                        break;
+                    case "lavalurk":
+                    case "lava lurk":
+                        monster = new LavaLurk(tile);
+                        break;
+                    case "leaper":
+                        monster = new Leaper(tile);
+                        break;
                     case "mummy":
                         monster = new MummyFTM(tile);
                         break;
@@ -328,6 +420,18 @@ namespace FarmTypeManager
                     case "iridium crab":
                         monster = new RockCrab(tile, "Iridium Crab");
                         break;
+                    case "falsemagmacap":
+                    case "false magma cap":
+                    case "magmacap":
+                    case "magma cap":
+                        monster = new RockCrab(tile, "False Magma Cap");
+                        monster.HideShadow = true; //hide shadow, making them look more like "real" magma caps
+                        break;
+                    case "stickbug":
+                    case "stick bug":
+                        monster = new RockCrab(tile);
+                        (monster as RockCrab).makeStickBug();
+                        break;
                     case "rockgolem":
                     case "rock golem":
                     case "stonegolem":
@@ -341,6 +445,10 @@ namespace FarmTypeManager
                     case "serpent":
                         monster = new SerpentFTM(tile);
                         break;
+                    case "royalserpent":
+                    case "royal serpent":
+                        monster = new SerpentFTM(tile, "Royal Serpent");
+                        break;
                     case "brute":
                     case "shadowbrute":
                     case "shadow brute":
@@ -351,6 +459,11 @@ namespace FarmTypeManager
                     case "shadow shaman":
                         monster = new ShadowShaman(tile);
                         break;
+                    case "sniper":
+                    case "shadowsniper":
+                    case "shadow sniper":
+                        monster = new Shooter(tile);
+                        break;
                     case "skeleton":
                         monster = new Skeleton(tile);
                         if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
@@ -360,8 +473,19 @@ namespace FarmTypeManager
                             monster.IsWalkingTowardPlayer = true;
                         }
                         break;
-                    case "squid":
-                    case "kid":
+                    case "skeletonmage":
+                    case "skeleton mage":
+                        monster = new Skeleton(tile, true);
+                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        {
+                            IReflectedField<bool> spottedPlayer = Helper.Reflection.GetField<bool>(monster, "spottedPlayer"); //try to access this skeleton's private "spottedPlayer" field
+                            spottedPlayer.SetValue(true);
+                            monster.IsWalkingTowardPlayer = true;
+                        }
+                        break;
+                    case "spiker":
+                        monster = new Spiker(tile, facingDirection);
+                        break;
                     case "squidkid":
                     case "squid kid":
                         monster = new SquidKidFTM(tile);

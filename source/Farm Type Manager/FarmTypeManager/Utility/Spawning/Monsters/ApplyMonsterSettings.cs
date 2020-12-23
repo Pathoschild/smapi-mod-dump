@@ -205,6 +205,50 @@ namespace FarmTypeManager
                     //replace the monster's sprite, using its existing settings where possible
                     monster.Sprite = new AnimatedSprite((string)settings["Sprite"], monster.Sprite.CurrentFrame, monster.Sprite.SpriteWidth, monster.Sprite.SpriteHeight);
                 }
+
+                //set facing direction
+                if (settings.ContainsKey("FacingDirection"))
+                {
+                    int facingDirection = 2;
+                    string directionString = (string)settings["FacingDirection"]; //get the provided setting
+                    switch (directionString.Trim().ToLower())
+                    {
+                        //get an integer representing the provided direction
+                        case "up":
+                            facingDirection = 0;
+                            break;
+                        case "right":
+                            facingDirection = 1;
+                            break;
+                        case "down":
+                            facingDirection = 2;
+                            break;
+                        case "left":
+                            facingDirection = 3;
+                            break;
+                    }
+                    monster.faceDirection(facingDirection); //set monster direction
+                }
+
+                //set segments
+                if (settings.ContainsKey("Segments"))
+                {
+                    int segments = Convert.ToInt32(settings["Segments"]);
+
+                    if (monster is GreenSlime slime) //if this monster is a type of slime
+                    {
+                        segments = Math.Max(0, segments); //minimum = 0
+
+                        slime.stackedSlimes.Value = segments; //set the number of additional slimes stacked on top of this slime
+                    }
+                    else if (monster is Serpent serpent) //if this monster is a type of serpent
+                    {
+                        if (segments < 2)
+                            segments = 0; //minimum 0, but treat 1 as 0 (to avoid potential issues with royal/non-royal serpent distinctions)
+
+                        serpent.segmentCount.Value = segments; //set the number of additional body segments this serpent has
+                    }
+                }
             }
         }
     }

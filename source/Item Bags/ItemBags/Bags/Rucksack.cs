@@ -413,7 +413,7 @@ namespace ItemBags.Bags
             }
         }
 
-        public override void drawTooltip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, string overrideText)
+        public override void drawTooltip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)
         {
             //  If hovering over this bag from a Shop, draw a custom tooltip that displays icons for each item the bag is capable of storing
             if (Game1.activeClickableMenu is ShopMenu)
@@ -436,7 +436,7 @@ namespace ItemBags.Bags
                 DrawHelpers.DrawBox(spriteBatch, new Rectangle(x, y, RequiredWidth, RequiredHeight));
 
                 //  Draw the description text
-                if (!string.IsNullOrEmpty(overrideText) && overrideText != " ")
+                if (overrideText != null && !string.IsNullOrEmpty(overrideText.ToString()) && overrideText.ToString() != " ")
                 {
                     spriteBatch.DrawString(font, overrideText, new Vector2((float)(x + 16), (float)(y + 16 + 4)) + new Vector2(2f, 2f), Game1.textShadowColor * alpha);
                     spriteBatch.DrawString(font, overrideText, new Vector2((float)(x + 16), (float)(y + 16 + 4)) + new Vector2(0f, 2f), Game1.textShadowColor * alpha);
@@ -495,7 +495,7 @@ namespace ItemBags.Bags
                     DrawHelpers.DrawBox(spriteBatch, new Rectangle(x, y, RequiredWidth, RequiredHeight));
 
                     //  Draw the description text
-                    if (!string.IsNullOrEmpty(overrideText) && overrideText != " ")
+                    if (overrideText != null && !string.IsNullOrEmpty(overrideText.ToString()) && overrideText.ToString() != " ")
                     {
                         spriteBatch.DrawString(font, overrideText, new Vector2((float)(x + 16), (float)(y + 16 + 4)) + new Vector2(2f, 2f), Game1.textShadowColor * alpha);
                         spriteBatch.DrawString(font, overrideText, new Vector2((float)(x + 16), (float)(y + 16 + 4)) + new Vector2(0f, 2f), Game1.textShadowColor * alpha);

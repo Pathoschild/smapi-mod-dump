@@ -23,6 +23,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -41,7 +42,7 @@ namespace AccessibilityForBlind.Menus
             return "GameMenu";
         }
 
-        public void SetMenuItemsForTab()
+        public void SetMenuItemsForTab(bool speakPageName=true)
         {
             GameMenu menu = stardewMenu as GameMenu;
             IClickableMenu menuPage = menu.GetCurrentPage();
@@ -82,11 +83,44 @@ namespace AccessibilityForBlind.Menus
             }
             else if (menuPage is CraftingPage craftingPage)
             {
-                TextToSpeech.Speak("crafting");
+                if (speakPageName)
+                    TextToSpeech.Speak("crafting");
+
+                int currentCraftingPage = ModEntry.GetHelper().Reflection.GetField<int>(craftingPage, "currentCraftingPage").GetValue();
+                Dictionary<ClickableTextureComponent, CraftingRecipe> pagesOfCraftingRecipes = ModEntry.GetHelper().Reflection.GetField<List<Dictionary<ClickableTextureComponent, CraftingRecipe>>>(craftingPage, "pagesOfCraftingRecipes").GetValue()[currentCraftingPage];
+                IReflectedMethod getContainerContents = ModEntry.GetHelper().Reflection.GetMethod(craftingPage, "getContainerContents");
+                int i = 0;
+                foreach (ClickableTextureComponent comp in craftingPage.currentPageClickableComponents)
+                {
+                    CraftingRecipe recipe = pagesOfCraftingRecipes[comp];
+                    bool doesFarmerHasItems = recipe.doesFarmerHaveIngredientsInInventory(getContainerContents.Invoke<IList<Item>>());
+                    Dictionary<int, int> recipeList = ModEntry.GetHelper().Reflection.GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
+                    string description = ModEntry.GetHelper().Reflection.GetField<string>(recipe, "description").GetValue();
+
+                    string recipeListToDescr()
+                    {
+                        string result = "";
+                        foreach (KeyValuePair<int,int> ingred in recipeList)
+                        {
+                            result += ingred.Value + " " + Game1.objectInformation[ingred.Key].Split('/')[4] + ",";
+                        }
+                        return result;
+                    }
+
+                    MenuItem menuItem = MenuItem.MenuItemFromComponent(comp, craftingPage, recipe.DisplayName + (doesFarmerHasItems ? "" : " missing resources"));
+                    //string craftable = doesFarmerHasItems ? "can be crafted," : "resources missing";
+                    menuItem.Description = " needs " + recipeListToDescr() + " " + description;
+                    AddItem(menuItem);
+                    i++;
+                }
             }
             else if (menuPage is CollectionsPage collectionsPage)
             {
                 TextToSpeech.Speak("collections");
+            }
+            else if (menuPage is OptionsPage optionsPage)
+            {
+                TextToSpeech.Speak("options");
             }
             else if (menuPage is ExitPage exitPage)
             {
@@ -126,6 +160,11 @@ namespace AccessibilityForBlind.Menus
             else if (Inputs.IsGameMenuMapButton(button))
             {
                 menu.changeTab(GameMenu.mapTab);
+                SetMenuItemsForTab();
+            }
+            else if (Inputs.IsGameMenuCraftingButton(button))
+            {
+                menu.changeTab(GameMenu.craftingTab);
                 SetMenuItemsForTab();
             }
             else if (Inputs.IsGameMenuCollectionsButton(button))
@@ -171,6 +210,43 @@ namespace AccessibilityForBlind.Menus
                         ModEntry.GetHelper().Reflection.GetMethod(socialPage, "_SelectSlot").Invoke(socialPage.getCurrentlySnappedComponent());
                     }
                 }
+            }
+            else if (menu.GetCurrentPage() is CraftingPage craftingPage && (Inputs.IsMenuNextButton(button) || Inputs.IsMenuPrevButton(button)))
+            {
+                int craftingPagesCount = ModEntry.GetHelper().Reflection.GetField<List<Dictionary<ClickableTextureComponent, CraftingRecipe>>>(craftingPage, "pagesOfCraftingRecipes").GetValue().Count;
+                int currentCraftingPage = ModEntry.GetHelper().Reflection.GetField<int>(craftingPage, "currentCraftingPage").GetValue();
+                if (Inputs.IsMenuNextButton(button) && IsOnLastItem())
+                {
+                    if (currentCraftingPage >= craftingPagesCount - 1) //on last page
+                    {
+                        ModEntry.GetHelper().Reflection.GetField<int>(craftingPage, "currentCraftingPage").SetValue(0);
+
+                    }
+                    else //not on last page
+                    {
+                        ModEntry.GetHelper().Reflection.GetField<int>(craftingPage, "currentCraftingPage").SetValue(currentCraftingPage + 1);
+                    }
+                    ModEntry.GetHelper().Reflection.GetMethod(craftingPage, "_UpdateCurrentPageButtons").Invoke();
+                    SetMenuItemsForTab(speakPageName: false);
+                    NextItem();
+                }
+                else if (Inputs.IsMenuPrevButton(button) && IsOnFirstItem())
+                {
+                    if (currentCraftingPage == 0) //on first page
+                    {
+                        ModEntry.GetHelper().Reflection.GetField<int>(craftingPage, "currentCraftingPage").SetValue(craftingPagesCount - 1);
+                    }
+                    else // not on first page
+                    {
+                        ModEntry.GetHelper().Reflection.GetField<int>(craftingPage, "currentCraftingPage").SetValue(currentCraftingPage - 1);
+                    }
+                    ModEntry.GetHelper().Reflection.GetMethod(craftingPage, "_UpdateCurrentPageButtons").Invoke();
+                    SetMenuItemsForTab(speakPageName: false);
+                    PrevItem();
+                    PrevItem();
+                }
+                else
+                    base.ButtonPressed(button);
             }
             else
                 base.ButtonPressed(button);

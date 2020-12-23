@@ -43,6 +43,13 @@ namespace FarmTypeManager
                             return itemInfo.Key; //return the item's ID
                         }
                     }
+
+                    //if no items matched the provided name
+                    if (int.TryParse(name.Trim(), out int nameAsID)) //if the name can be parsed as an item ID
+                    {
+                        if (itemsInfo.ContainsKey(nameAsID)) //if this ID exists in the item dictionary
+                            return nameAsID; //return the provided ID
+                    }
                 }
 
                 return null; //no item could be found with this category and name

@@ -126,13 +126,22 @@ namespace CustomTracker
                 {
                     if (feature is Bush bush) //if this feature is a bush
                     {
-                        if (bush.size != 3 && bush.townBush.Value == false && bush.tileSheetOffset.Value == 1 && bush.inBloom(Game1.currentSeason, Game1.dayOfMonth)) //if the bush will drop a berry when shaken (based on code from the Bush.shake method)
+                        if (bush.size != 3 //if this is NOT a tea bush
+                            && (MConfig.TrackWalnutBushes || bush.size != 4) //AND this bush is NOT excluded by the walnut setting
+                            && bush.townBush.Value == false //AND this is NOT flagged as a town bush
+                            && bush.tileSheetOffset.Value == 1 //AND this bush is currently displaying berries/walnuts
+                            && bush.inBloom(Game1.currentSeason, Game1.dayOfMonth)) //AND this bush is currently blooming
                         {
                             if (ForageIconMode) //if this is rendering forage icons
                             {
-                                int index = 296; //the object ID to display; default to salmonberry
-                                if (Game1.currentSeason == "fall") //if the current season is fall
+                                int index; //the object ID to display
+
+                                if (bush.size == 4) //if this is a walnut bush
+                                    index = 73; //use the walnut ID
+                                else if (Game1.currentSeason.Equals("fall", StringComparison.OrdinalIgnoreCase)) //else if the current season is fall
                                     index = 410; //use the blackberry ID
+                                else
+                                    index = 296; //use the salmonberry ID
 
                                 SpriteSource = GameLocation.getSourceRectForObject(index); //get the berry type's spritesheet source rectangle
 

@@ -5,9 +5,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit a6b4502c517fd37d28fee6501fea8f0e521768b4
+   commit 47e4dd13b0574961e13324ece79ac19278a92aec
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sat Feb 1 18:27:32 2020 +0100
+   Date:   Tue Dec 22 16:01:34 2020 +0100
    
-       Add change to readme.
+       Note that android is not supported
    

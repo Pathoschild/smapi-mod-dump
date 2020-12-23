@@ -5,9 +5,9 @@ mods:
    Dialogue Emotes
 
 latest commit:
-   commit 27b082b1029975fa42be0db0c59194c32fa495d1
+   commit a5a5af99e4e17e3a6a701b7f0e53de80d79f3ea7
    Author: PurrplingCat <git@purrplingcat.com>
-   Date:   Fri Dec 18 10:12:39 2020 +0100
+   Date:   Sun Dec 20 17:11:50 2020 +0100
    
-       Bump ModBuildConfig to version 3.2.2
+       .gitattributes
    

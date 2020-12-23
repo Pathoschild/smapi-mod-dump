@@ -297,7 +297,7 @@ namespace ItemBags.Bags
             }
         }
 
-        public override void drawTooltip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, string overrideText)
+        public override void drawTooltip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)
         {
             BaseDrawToolTip(spriteBatch, ref x, ref y, font, alpha, overrideText);
         }

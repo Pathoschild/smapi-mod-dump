@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/4739
 IDs: TheElm.NotFarFromTheTree
-update keys: Nexus:4739
+update keys: Nexus:4739, GitHub:GStefanowich/SDV-NFFTT

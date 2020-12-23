@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit e7a23b25fea55df7976468f75fcdb60363f9483b
-   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
-   Date:   Sat Aug 29 14:25:25 2020 -0500
+   commit ede39effbd49a760007ad872e62300538670f824
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Mon Dec 21 12:40:47 2020 -0600
    
-       Fix valid FarmTypes settings in readme.md
+       Add "stick bug" to the list_monsters command
    

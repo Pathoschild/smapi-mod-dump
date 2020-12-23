@@ -8,6 +8,16 @@ for queries and analysis.**
 
 # Changelog
 
+## Upcoming version
+
+- Fixed some multiplayer problems
+
+## 1.2.1
+
+### Common changes
+
+- Update to work with Stardew Valley 1.5 (SMAPI 3.8)
+
 ## 1.2.0
 
 ### Common changes
@@ -29,6 +39,7 @@ for queries and analysis.**
 
 ### For SMAPI modders
 
+- Added simple API for mods which wants work with QF and do basic stuff (like resolve quest id from name; check if quest is managed; ...) without referencing dll.
 - Added property `ConditionFunc` on `QuestOffer` class for support additional programatic condition
 - Added new API on `CustomQuest` class for define how much friendship points for which NPCs player gains after quest completion
 - Added new APIs for define quest reward type, custom bg texture nad font colors

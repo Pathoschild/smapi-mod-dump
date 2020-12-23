@@ -1,0 +1,5 @@
+# large or unneeded files
+.DS_Store
+*.xwb
+*.xcf
+*.zip

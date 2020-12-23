@@ -17,7 +17,7 @@ II. implement sound design for in-game (collisions, interactable objects)
 I.
 -fix received item messages
 -implement in-game main menu
-    -> continue
+    -> inventory (also do chest menu), options
 -implement shop menu
 -implement carpenter menu including blind building placement
 
@@ -25,6 +25,7 @@ II.
 -detect collision type (object or map wall)
     -> further distinguish between types.
     -> more enter info for objects such as crops
+-shift+enter gives info for tile/hoedirt/... you are standing on
 -positional sounds for characters and interactable objects
     -> warps
     -> machines

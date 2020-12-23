@@ -265,7 +265,7 @@ namespace Dem1se.RecurringReminders.Utilities
         public static string SaveFolderName;
 
         /// <summary>The menu button of the player, required for suppressing</summary>
-        public static SButton MenuButton = GetMenuButton();
+        public static SButton MenuButton;
 
         /// <summary>
         /// Returns the button that is set to open the menu in current save.

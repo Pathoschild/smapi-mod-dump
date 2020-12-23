@@ -5,9 +5,11 @@ mods:
    SvFishingMod
 
 latest commit:
-   commit 1449c7b8bdb28783b919df2d1b6d9a50061f13a9
+   commit fcab7b208301930dc78ad3d87c6c12f99f62c481
    Author: Fabian R <kderazorback@me.com>
-   Date:   Mon Oct 5 07:03:25 2020 +0200
+   Date:   Mon Dec 21 12:50:25 2020 -0600
    
-       Updated README.md.
+       Update README.md
+       
+       Ammend latest commit.
    

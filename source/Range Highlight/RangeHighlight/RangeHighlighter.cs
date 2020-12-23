@@ -28,6 +28,7 @@ namespace RangeHighlight {
     using TASHighlightFunction = Func<TemporaryAnimatedSprite, Tuple<Color, bool[,]>>;
 
     internal class RangeHighlighter {
+        private readonly IMonitor monitor;
         private readonly IModHelper helper;
         private readonly ModConfig config;
         private readonly List<Tuple<Color, Point>> highlightTiles = new List<Tuple<Color, Point>>();
@@ -71,15 +72,16 @@ namespace RangeHighlight {
         private readonly List<ItemHighlighter> itemHighlighters = new List<ItemHighlighter>();
         private readonly List<Highlighter<TASHighlightFunction>> tasHighlighters = new List<Highlighter<TASHighlightFunction>>();
 
-        public RangeHighlighter(IModHelper helper, ModConfig config) {
+        public RangeHighlighter(IMonitor monitor, IModHelper helper, ModConfig config) {
+            this.monitor = monitor;
             this.helper = helper;
             this.config = config;
             tileTexture = helper.Content.Load<Texture2D>("tile.png");
-            helper.Events.Display.Rendered += OnRendered;
+            helper.Events.Display.RenderedWorld += OnRenderedWorld;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
         }
 
-        private void OnRendered(object sender, RenderedEventArgs e) {
+        private void OnRenderedWorld(object sender, RenderedWorldEventArgs e) {
             if (highlightTilesMutex.WaitOne(0)) {
                 try {
                     foreach (var tuple in highlightTiles) {
@@ -147,6 +149,14 @@ namespace RangeHighlight {
             tasHighlighters.RemoveAll(elt => elt.uniqueId == uniqueId);
         }
 
+        internal Vector2 GetCursorTile() {
+            // Work around bug in SMAPI 3.8.0
+            // return helper.Input.GetCursorPosition().Tile;
+            var mouse = Microsoft.Xna.Framework.Input.Mouse.GetState();
+            return new Vector2((Game1.viewport.X + mouse.X / Game1.options.zoomLevel) / Game1.tileSize,
+                (Game1.viewport.Y + mouse.Y / Game1.options.zoomLevel) / Game1.tileSize);
+        }
+
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e) {
             if (!e.IsMultipleOf(6)) return; // only do this once every 0.1s or so
 
@@ -170,7 +180,7 @@ namespace RangeHighlight {
                         if (blueprintHighlighters[i].highlighter != null) {
                             var ret = blueprintHighlighters[i].highlighter(carpenterMenu.CurrentBlueprint);
                             if (ret != null) {
-                                var cursorTile = helper.Input.GetCursorPosition().Tile;
+                                var cursorTile = GetCursorTile();
                                 AddHighlightTiles(ret.Item1, ret.Item2, (int)cursorTile.X + ret.Item3, (int)cursorTile.Y + ret.Item4);
                                 runBuildingHighlighter[i] = true;
                                 iterateBuildings = true;
@@ -206,7 +216,7 @@ namespace RangeHighlight {
                 for (int i = 0; i < itemHighlighters.Count; ++i) {
                     var ret = itemHighlighters[i].highlighter(item, itemID, itemName);
                     if (ret != null) {
-                        var cursorTile = helper.Input.GetCursorPosition().Tile;
+                        var cursorTile = GetCursorTile();
                         AddHighlightTiles(ret.Item1, ret.Item2, (int)cursorTile.X, (int)cursorTile.Y);
                         if (itemHighlighters[i].highlightOthersWhenHeld) {
                             runItemHighlighter[i] = true;

@@ -44,6 +44,12 @@ namespace BillboardProfitMargin
 		// once the quest is completed, it needs to be updated again along with the reward
 		private void UpdateItemDeliveryQuest(ItemDeliveryQuest quest)
 		{
+			if (quest.deliveryItem.Value == null)
+			{
+				Logger.Trace("Can not adjust reward for daily quest that is managed by Quest Framework.");
+				return;
+			}
+
 			// item delivery quests don't have a reward property
 			// instead, the reward is calculated from the item being requested once the quest has been completed
 			// this assumes that the reward is always three times the item value
@@ -63,17 +69,8 @@ namespace BillboardProfitMargin
 
 		private void OnDayStarted(object sender, DayStartedEventArgs e)
 		{
-			Quest dailyQuest = Game1.questOfTheDay;
-			if (dailyQuest == null) return;
-
-			if (dailyQuest is ItemDeliveryQuest itemDeliveryQuest)
-			{
-					itemDeliveryQuest.loadQuestInfo();
-					this.UpdateItemDeliveryQuest(itemDeliveryQuest);
-					return;
-			}
-
-			QuestHelper.AdjustRewardImmediately(dailyQuest, this.config);
+			// wait for Quest Framework to potentially initialize a quest
+			this.Helper.Events.GameLoop.UpdateTicked += this.OnDayStartedDelayed;
 		}
 
 		private void OnMenuChanged(object sender, MenuChangedEventArgs e)
@@ -85,6 +82,23 @@ namespace BillboardProfitMargin
 					this.UpdateItemDeliveryQuest(quest);
 				}
 			}
+		}
+
+		private void OnDayStartedDelayed(object sender, UpdateTickedEventArgs e)
+		{
+			this.Helper.Events.GameLoop.UpdateTicked -= this.OnDayStartedDelayed;
+
+			Quest dailyQuest = Game1.questOfTheDay;
+			if (dailyQuest == null) return;
+
+			if (dailyQuest is ItemDeliveryQuest itemDeliveryQuest)
+			{
+				itemDeliveryQuest.loadQuestInfo();
+				this.UpdateItemDeliveryQuest(itemDeliveryQuest);
+				return;
+			}
+
+			QuestHelper.AdjustRewardImmediately(dailyQuest, this.config);
 		}
 	}
 }

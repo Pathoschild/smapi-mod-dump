@@ -5,9 +5,9 @@ mods:
    Custom NPC Exclusions
 
 latest commit:
-   commit fe3e8f517f1a7053b8814834faf8885f97670388
-   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
-   Date:   Sun Nov 1 17:41:25 2020 -0600
+   commit 818672b70d2f83fdd54dcd8861a870213496fdd2
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Mon Dec 21 13:31:47 2020 -0600
    
-       Add code highlighting to readme
+       Add "IslandVisit" exclusion setting, increment to 1.1.0
    

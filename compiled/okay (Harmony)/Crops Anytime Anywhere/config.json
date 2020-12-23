@@ -1,0 +1,14 @@
+{
+  "InLocations": {
+    "*": {
+      "GrowCrops": true,
+      "GrowCropsOutOfSeason": true
+    }
+  },
+  "ForceTillable": {
+    "Dirt": true,
+    "Grass": true,
+    "Stone": false,
+    "Other": false
+  }
+}

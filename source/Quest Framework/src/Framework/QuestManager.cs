@@ -119,7 +119,7 @@ namespace QuestFramework.Framework
             if (id < 0)
                 return null;
 
-            return this.Quests.Where(q => q.id == id).FirstOrDefault();
+            return this.Quests.Where(q => q.id == id).SingleOrDefault();
         }
 
         public void Update()

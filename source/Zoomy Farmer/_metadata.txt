@@ -5,9 +5,9 @@ mods:
    Zoomy Farmer
 
 latest commit:
-   commit 66b88e2de3d994f3fc3a8341922136b6370ff8b2
+   commit 3204ba1b22008ba91d2088f4c19ff39463d22f30
    Author: Geko_X <xavhunt@gmail.com>
-   Date:   Mon May 25 11:40:12 2020 +1000
+   Date:   Tue Dec 22 09:48:39 2020 +1000
    
-       + Code dump because I'm lazy and don't commit often sometimes
+       + Update ZoomyFarmer for SDV 1.5
    

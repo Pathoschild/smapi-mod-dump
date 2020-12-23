@@ -11,7 +11,7 @@
 {
   "Name": "Build On Any Tile",
   "Author": "Esca",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Allows buildings to be placed on any tile, even if they're obstructed by terrain or other buildings.",
   "UniqueID": "Esca.BuildOnAnyTile",
   "EntryDll": "BuildOnAnyTile.dll",

@@ -5,14 +5,9 @@ mods:
    SpaceCore
 
 latest commit:
-   commit 47e221b6fefdb793b752969424f03aa6da5d6198
+   commit f439c20e1c8ce1af5d0fcad29a53dbab9d437a13
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Wed Sep 9 17:14:51 2020 -0400
+   Date:   Mon Dec 21 13:24:44 2020 -0500
    
-       Hopefully fix edge case with invisible pants.
-       Pants 51-60 would be invisible due to being on the edge of the texture.
-       The whole texture itself overlaps the end, but each portion that the
-       game renders at once does not overlap. Since it doesn't overlap or go
-       past the boundary, the rect wouldn't be adjusted. There was enough room
-       on the vanilla texture left so that this left them invisible.
+       New serialization API. 1.5.0
    

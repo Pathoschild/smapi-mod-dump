@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Fire Crackers",
+    "Author": "MindMeltMax",
+    "Version": "1.0.0",
+    "Description": "Gives your friends pets a nice scare",
+    "UniqueID": "MindMeltMax.FireCracker",
+    "EntryDll": "FireCrackers Mod.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "nexus:7321" ]
+}

@@ -62,6 +62,10 @@ namespace FarmTypeManager
                         case "skull":
                         case "hauntedskull":
                         case "haunted skull":
+                        case "magmasprite":
+                        case "magma sprite":
+                        case "magmasparker":
+                        case "magma sparker":
                         case "bigslime":
                         case "big slime":
                         case "biggreenslime":
@@ -78,6 +82,8 @@ namespace FarmTypeManager
                         case "big purple slime":
                         case "bigpurplesludge":
                         case "big purple sludge":
+                        case "bluesquid":
+                        case "blue squid":
                         case "bug":
                         case "armoredbug":
                         case "armored bug":
@@ -89,6 +95,8 @@ namespace FarmTypeManager
                         case "pepper rex":
                         case "rex":
                         case "duggy":
+                        case "magmaduggy":
+                        case "magma duggy":
                         case "dust":
                         case "sprite":
                         case "dustsprite":
@@ -96,9 +104,15 @@ namespace FarmTypeManager
                         case "spirit":
                         case "dustspirit":
                         case "dust spirit":
+                        case "dwarvishsentry":
+                        case "dwarvish sentry":
+                        case "dwarvish":
+                        case "sentry":
                         case "ghost":
                         case "carbonghost":
                         case "carbon ghost":
+                        case "putridghost":
+                        case "putrid ghost":
                         case "slime":
                         case "greenslime":
                         case "green slime":
@@ -114,6 +128,10 @@ namespace FarmTypeManager
                         case "purple slime":
                         case "purplesludge":
                         case "purple sludge":
+                        case "tigerslime":
+                        case "tiger slime":
+                        case "prismaticslime":
+                        case "prismatic slime":
                         case "grub":
                         case "cavegrub":
                         case "cave grub":
@@ -126,6 +144,11 @@ namespace FarmTypeManager
                         case "mutant fly":
                         case "metalhead":
                         case "metal head":
+                        case "hothead":
+                        case "hot head":
+                        case "lavalurk":
+                        case "lava lurk":
+                        case "leaper":
                         case "mummy":
                         case "rockcrab":
                         case "rock crab":
@@ -133,6 +156,12 @@ namespace FarmTypeManager
                         case "lava crab":
                         case "iridiumcrab":
                         case "iridium crab":
+                        case "falsemagmacap":
+                        case "false magma cap":
+                        case "stickbug":
+                        case "stick bug":
+                        case "magmacap":
+                        case "magma cap":
                         case "rockgolem":
                         case "rock golem":
                         case "stonegolem":
@@ -140,15 +169,21 @@ namespace FarmTypeManager
                         case "wildernessgolem":
                         case "wilderness golem":
                         case "serpent":
+                        case "royalserpent":
+                        case "royal serpent":
                         case "brute":
                         case "shadowbrute":
                         case "shadow brute":
                         case "shaman":
                         case "shadowshaman":
                         case "shadow shaman":
+                        case "sniper":
+                        case "shadowsniper":
+                        case "shadow sniper":
                         case "skeleton":
-                        case "squid":
-                        case "kid":
+                        case "skeletonmage":
+                        case "skeleton mage":
+                        case "spiker":
                         case "squidkid":
                         case "squid kid":
                             validName = true; //the name is valid
@@ -657,7 +692,7 @@ namespace FarmTypeManager
                             int weight = Convert.ToInt32(validTypes[x].Settings["SpawnWeight"]);
                             if (weight < 1) //if the setting is too low
                             {
-                                Monitor.Log($"The \"SpawnWeight\" setting for monster type \"{validTypes[x].MonsterName}\" is {weight}. Setting it to 1.", LogLevel.Trace);
+                                Monitor.Log($"The \"SpawnWeight\" setting for monster type \"{validTypes[x].MonsterName}\" is {weight} and will be ignored. Please use a number above 0.", LogLevel.Trace);
                                 validTypes[x].Settings["SpawnWeight"] = (long)1; //set to 1
                             }
                         }
@@ -667,6 +702,50 @@ namespace FarmTypeManager
                             Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
                             validTypes[x].Settings.Remove("SpawnWeight"); //remove the setting
+                        }
+                    }
+
+                    //validate facing direction
+                    if (validTypes[x].Settings.ContainsKey("FacingDirection"))
+                    {
+                        if (validTypes[x].Settings["FacingDirection"] is string direction) //if this is a string
+                        {
+                            switch (direction.Trim().ToLower())
+                            {
+                                case "up":
+                                case "right":
+                                case "down":
+                                case "left":
+                                    break;
+                                default:
+                                    Monitor.Log($"The \"FacingDirection\" setting for monster type \"{validTypes[x].MonsterName}\" was not recognized and will be ignored: \"{direction}\".", LogLevel.Info);
+                                    Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+                                    validTypes[x].Settings.Remove("FacingDirection"); //remove the setting
+                                    break;
+                            }
+                        }
+                        else //if this is NOT a string
+                        {
+                            Monitor.Log($"The \"FacingDirection\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's a string.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("FacingDirection"); //remove the setting
+                        }
+                    }
+
+                    //validate segments
+                    if (validTypes[x].Settings.ContainsKey("Segments"))
+                    {
+                        if (validTypes[x].Settings["Segments"] is long) //if this is a readable integer
+                        {
+                            //do nothing; minimum values will vary between monster types
+                        }
+                        else //if this isn't a readable integer
+                        {
+                            Monitor.Log($"The \"Segments\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("Segments"); //remove the setting
                         }
                     }
                 }

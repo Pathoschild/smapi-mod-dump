@@ -86,7 +86,7 @@ namespace FarmTypeManager
             }
 
             /// <summary>Generates a item from a saved object and places it on the specified map and tile.</summary>
-            /// <param name="name">A raw string value describing the item to spawn, e.g. "pizza" or "hat:sombrero".</param>
+            /// <param name="forage">The SavedObject containing this forage's information.</param>
             /// <param name="location">The GameLocation where the forage should be spawned.</param>
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
             public static bool SpawnForage(SavedObject forage, GameLocation location, Vector2 tile)

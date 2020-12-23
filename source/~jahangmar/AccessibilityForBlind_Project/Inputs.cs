@@ -36,6 +36,7 @@ namespace AccessibilityForBlind
         public static bool IsMenuTitleMuteButton(SButton b) => ModEntry.GetConfig().key_menu_title_mute.Contains(b);
 
         public static bool IsTTSMapCheckButton(SButton b) => ModEntry.GetConfig().key_tts_map_check.Contains(b);
+        public static bool IsTTSMapCheckUnderneathButton(SButton b, System.Func<SButton, bool> extra) => IsTTSMapCheckButton(b) && (extra(SButton.LeftShift) || extra(SButton.RightShift));
         public static bool IsTTSInfoButton(SButton b) => ModEntry.GetConfig().key_tts_info.Contains(b);
         public static bool IsTTSRepeatButton(SButton b) => ModEntry.GetConfig().key_tts_repeat.Contains(b);
         public static bool IsTTSStopButton(SButton b) => ModEntry.GetConfig().key_tts_stop.Contains(b);

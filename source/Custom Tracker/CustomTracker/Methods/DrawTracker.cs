@@ -49,61 +49,65 @@ namespace CustomTracker
 
             Vector2 renderSize = new Vector2((float)SpriteSource.Width * scale, (float)SpriteSource.Height * scale); //get the render size of the sprite
 
-            Vector2 trackerRenderPosition = new Vector2();
-            float rotation = 0.0f;
-
             Vector2 centerOfObject = new Vector2((targetTile.X * 64) + 32, (targetTile.Y * 64) + 32); //get the center pixel of the object
             Vector2 targetPixel = new Vector2(centerOfObject.X - (renderSize.X / 2), centerOfObject.Y - (renderSize.Y / 2)); //get the top left pixel of the custom tracker's "intended" location
 
-            if (targetPixel.X > (double)(Game1.viewport.MaxCorner.X - 64)) //if the object is RIGHT of the screen
-            {
-                trackerRenderPosition.X = maxX; //use the predefined max X
-                rotation = 1.570796f;
-                targetPixel.Y = centerOfObject.Y - (renderSize.X / 2); //adjust Y for rotation
-            }
-            else if (targetPixel.X < (double)Game1.viewport.X) //if the object is LEFT of the screen
-            {
-                trackerRenderPosition.X = minX; //use the predefined min X
-                rotation = -1.570796f;
-                targetPixel.Y = centerOfObject.Y + (renderSize.X / 2); //adjust Y for rotation
-            }
-            else
-                trackerRenderPosition.X = targetPixel.X - (float)Game1.viewport.X; //use the target X (adjusted for viewport)
+            Vector2 trackerRenderPosition = Game1.GlobalToLocal(Game1.viewport, targetPixel); //get the target pixel's position relative to the viewport
+            trackerRenderPosition = Utility.ModifyCoordinatesForUIScale(trackerRenderPosition); //adjust for UI scaling and/or zoom
+            trackerRenderPosition.X = Utility.Clamp(trackerRenderPosition.X, minX, maxX); //limit X to min/max
+            trackerRenderPosition.Y = Utility.Clamp(trackerRenderPosition.Y, minY, maxY); //limit Y to min/max
 
-            if (targetPixel.Y > (double)(Game1.viewport.MaxCorner.Y - 64)) //if the object is DOWN from the screen
+            //define offsets to adjust for rotation 
+            float offsetX = 0;
+            float offsetY = 0;
+
+            float rotation = 0f; //the rotation of the tracker sprite
+
+            if (trackerRenderPosition.X == minX) //if the tracker is on the LEFT
             {
-                trackerRenderPosition.Y = maxY; //use the predefined max Y
-                rotation = 3.141593f;
-                if (trackerRenderPosition.X > minX) //if X is NOT min (i.e. this is NOT the bottom left corner)
+                if (trackerRenderPosition.Y == minY) //if the tracker is on the TOP LEFT
                 {
-                    trackerRenderPosition.X = Math.Min(centerOfObject.X + (renderSize.X / 2) - (float)Game1.viewport.X, maxX); //adjust X for rotation (using renderPos, clamping to maxX, and adjusting for viewport)
+                    offsetY = renderSize.X / 2f; //offset down by 1/2 sprite width
+                    rotation = (float)Math.PI * 1.75f; //315 degrees
+                }
+                else if (trackerRenderPosition.Y == maxY) //if the tracker is on the BOTTOM LEFT
+                {
+                    offsetX = renderSize.X / 2f; //offset right by 1/2 sprite width
+                    offsetY = renderSize.X; //offset down by 1 sprite width
+                    rotation = (float)Math.PI * 1.25f; //225 degrees
+                }
+                else
+                {
+                    offsetY = renderSize.X; //offset down by 1 sprite width
+                    rotation = (float)Math.PI * 1.5f; //270 degrees
                 }
             }
-            else
+            else if (trackerRenderPosition.X == maxX) //if the tracker is on the RIGHT
             {
-                trackerRenderPosition.Y = targetPixel.Y >= (double)Game1.viewport.Y ? targetPixel.Y - (float)Game1.viewport.Y : minY; //if the object is UP from the screen, use the predefined min Y; otherwise, use the target Y (adjusted for viewport)
+                if (trackerRenderPosition.Y == minY) //if the tracker is on the TOP RIGHT
+                {
+                    offsetX = -renderSize.X / 2f; //offset left by 1/2 sprite width
+                    rotation = (float)Math.PI * 0.25f; //45 degrees
+                }
+                else if (trackerRenderPosition.Y == maxY) //if the tracker is on the BOTTOM RIGHT
+                {
+                    offsetX = renderSize.X; //offset right by 1 sprite width
+                    offsetY = -renderSize.X / 2f; //offset up by 1/2 sprite width
+                    rotation = (float)Math.PI * 0.75f; //135 degrees
+                }
+                else
+                {
+                    rotation = (float)Math.PI * 0.5f; //90 degrees
+                }
+            }
+            else if (trackerRenderPosition.Y == maxY) //if the tracker is on the BOTTOM
+            {
+                offsetX = renderSize.X; //offset right by 1 sprite width
+                rotation = (float)Math.PI; //180 degrees
             }
 
-            if (trackerRenderPosition.X == minX && trackerRenderPosition.Y == minY) //if X and Y are min (TOP LEFT corner)
-            {
-                trackerRenderPosition.Y += SpriteSource.Height; //adjust DOWN based on sprite size
-                rotation += 0.7853982f;
-            }
-            else if (trackerRenderPosition.X == minX && trackerRenderPosition.Y == maxY) //if X is min and Y is max (BOTTOM LEFT corner)
-            {
-                trackerRenderPosition.X += SpriteSource.Width; //adjust RIGHT based on sprite size
-                rotation += 0.7853982f;
-            }
-            else if (trackerRenderPosition.X == maxX && trackerRenderPosition.Y == minY) //if X is max and Y is min (TOP RIGHT corner)
-            {
-                trackerRenderPosition.X -= SpriteSource.Width; //adjust LEFT based on sprite size
-                rotation -= 0.7853982f;
-            }
-            else if (trackerRenderPosition.X == maxX && trackerRenderPosition.Y == maxY) //if X and Y are max (BOTTOM RIGHT corner)
-            {
-                trackerRenderPosition.Y -= SpriteSource.Height; //adjust UP based on sprite size
-                rotation -= 0.7853982f;
-            }
+            trackerRenderPosition.X = Utility.Clamp(trackerRenderPosition.X + offsetX, minX, maxX); //add offset to X (limited to min/max)
+            trackerRenderPosition.Y = Utility.Clamp(trackerRenderPosition.Y + offsetY, minY, maxY); //add offset to Y (limited to min/max)
 
             if (ForageIconMode && Background != null) //if a background should be drawn
             {

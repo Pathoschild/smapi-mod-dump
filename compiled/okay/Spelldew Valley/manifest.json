@@ -1,0 +1,15 @@
+{
+  "Name": "SpelldewValley",
+  "Author": "Instafluff",
+  "Version": "0.1.0",
+  "Description": "The Stardew Valley Mystery Name Detective Mod!",
+  "UniqueID": "instafluff.spelldewvalley",
+  "EntryDll": "SpelldewValley.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [
+    "GitHub:instafluff/SpelldewValley"
+  ],
+  "Dependencies": [
+    { "UniqueID": "Pathoschild.ContentPatcher", "IsRequired": true }
+  ]
+}

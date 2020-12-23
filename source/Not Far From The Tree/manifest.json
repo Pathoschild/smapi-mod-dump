@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/GStefanowich/SDV-NFFTT
+**
+*************************************************/
+
+{
+  "Name": "Not Far From The Tree",
+  "Author": "TheElm",
+  "Version": "1.0.2",
+  "Description": "A mod that makes the children of Stardew Valley look like their respective parent",
+  "UniqueID": "TheElm.NotFarFromTheTree",
+  "EntryDll": "NotFarFromTheTree.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [
+	"Nexus:4739"
+  ]
+}

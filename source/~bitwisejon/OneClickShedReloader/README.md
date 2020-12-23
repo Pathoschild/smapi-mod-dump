@@ -6,13 +6,13 @@ for queries and analysis.**
 
 ----
 
-**One Click Shed Reloader** is a [Stardew Valley](http://stardewvalley.net/) v1.45 mod which lets you harvest and reload
+**One Click Shed Reloader** is a [Stardew Valley](http://stardewvalley.net/) v1.5 mod which lets you harvest and reload
 all supported containers in a Shed, Barn, Coop, Cellar, Cave, or Greenhouse with a single click on the outside of the building. Only the
 house's/cabin's owner can harvest/reload the cellar in multiplayer. Harvesting/reloading the house/cabin itself is NOT supported by this mod.
 
-**Important Note**: In multiplayer, farmhands can only harvest/reload the Cave, Greenhouse, or their Cellar from within that location
-due to a limitation of SMAPI and the fact that these locations are not synced with the main game unless a player is in the location. To
-harvest/reload as a farmhand in these locations, hover the cursor around the entryway once inside.
+**Important Note**: In multiplayer, farmhands can only harvest/reload the Cave and their Cellar from within that location due to a limitation 
+of SMAPI and the fact that these locations are not synced with the main game unless a player is in the location. To harvest/reload as a 
+farmhand in these locations, hover the cursor around the entryway once inside.
 
 ## Contents
 * [Install](#install)
@@ -79,7 +79,7 @@ over a building, or with mods that handle click events on buildings. If you disc
 the [BitwiseJon GitHub page](https://github.com/bitwisejon/StardewValleyMods/issues). Only U.S. English text is provided at this time.
 
 ## Mod Compatibility
-**Note:*** This mod is only compatible with version 1.45 of Stardew Valley (released 2/11/2020) and works in multiplayer as well. Starting with version 1.0.7 of this mod, Stardew Valley v1.3x is no longer supported. 
+**Note:*** This mod is only compatible with version 1.5 of Stardew Valley (released 12/21/2020) and works in multiplayer as well.  
 
 This mod is fully compatible with:
 * [Instant Buildings from Farm](http://www.nexusmods.com/stardewvalley/mods/2070) by me.

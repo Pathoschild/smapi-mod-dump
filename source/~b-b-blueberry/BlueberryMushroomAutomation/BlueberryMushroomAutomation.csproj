@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>BlueberryMushroomAutomation</AssemblyName>
+    <RootNamespace>BlueberryMushroomAutomation</RootNamespace>
+    <Version>1.0.0</Version>
+    <TargetFramework>net452</TargetFramework>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlueberryMushroomMachine\BlueberryMushroomMachine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Automate">
+      <HintPath>$(GamePath)\Mods\[CORE]\Automate\Automate.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

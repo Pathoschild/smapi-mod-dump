@@ -1,0 +1,27 @@
+{
+	"PromenadeMain":{
+		"Map":"SundropPromenade",
+		"X":0,
+		"Y":0
+	},
+	"PlazaMain":{
+		"Map":"SundropPlaza",
+		"X":0,
+		"Y":0
+	},
+	"ParkMain":{
+		"Map":"SundropPark",
+		"X":0,
+		"Y":0
+	},
+	"ResidentialMain":{
+		"Map":"SundropResidential",
+		"X":0,
+		"Y":0
+	},
+	"ShoppingDistrictMain":{
+		"Map":"SundropShoppingDistrict",
+		"X":0,
+		"Y":0
+	}
+}

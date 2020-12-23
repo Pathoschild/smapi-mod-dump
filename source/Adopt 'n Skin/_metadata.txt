@@ -5,14 +5,14 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit c260e8693ab2c2e0b65dc7a41320bf15d87e37d8
+   commit 43c5401c26a3231d922dc2c51da869f0ac335583
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Wed Jul 29 17:38:10 2020 -0700
+   Date:   Mon Dec 21 19:09:56 2020 -0800
    
-       3.0.0 Branch + Horse Updates
+       Updates for SDV 1.5
        
-       - Updates for 3.0.0 compat
-       - WildHorses can now notify whether they appear and/or where they appear (rather than requiring both at once)
-       - WildHorse spawn locations can now be customized (adding additional options will bug out- SDV does not like them to be in certain places)
-       - Beginnings of Horse ownership implemented into the coding.
+       Updated to SMAPI 3.8.0 and SDV 1.5
+       
+       - Hover box and interaction code has been changed to use SDV's new version of the functions for sprite positions. This seems to be the only change necessary at the moment.
+       - One-line hotfix attempt for errors in MP, where farmhands receive error code when a stray or wild horse spawns
    

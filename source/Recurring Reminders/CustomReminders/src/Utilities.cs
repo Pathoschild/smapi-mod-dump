@@ -137,24 +137,24 @@ namespace Dem1se.CustomReminders.Utilities
             switch (month)
             {
                 case Season.Spring:
-                    monthStr = Utilities.Data.Helper.Translation.Get("date.season.spring");
+                    monthStr = Utilities.Globals.Helper.Translation.Get("date.season.spring");
                     break;
                 case Season.Summer:
-                    monthStr = Utilities.Data.Helper.Translation.Get("date.season.summer");
+                    monthStr = Utilities.Globals.Helper.Translation.Get("date.season.summer");
                     break;
                 case Season.Fall:
-                    monthStr = Utilities.Data.Helper.Translation.Get("date.season.fall");
+                    monthStr = Utilities.Globals.Helper.Translation.Get("date.season.fall");
                     break;
                 case Season.Winter:
-                    monthStr = Utilities.Data.Helper.Translation.Get("date.season.winter");
+                    monthStr = Utilities.Globals.Helper.Translation.Get("date.season.winter");
                     break;
                 default:
                     monthStr = "";
-                    Utilities.Data.Monitor.Log("Season translation failed.", LogLevel.Error);
+                    Utilities.Globals.Monitor.Log("Season translation failed.", LogLevel.Error);
                     break;
             }
 
-            return $"{monthStr} {day}, {Utilities.Data.Helper.Translation.Get("date.year")} {years + 1}";
+            return $"{monthStr} {day}, {Utilities.Globals.Helper.Translation.Get("date.year")} {years + 1}";
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace Dem1se.CustomReminders.Utilities
         public static void WriteToFile(string reminderMessage, int daysSinceStart, int time)
         {
             ReminderModel ReminderData = new ReminderModel(reminderMessage, daysSinceStart, time);
-            string pathToWrite = Path.Combine(Data.Helper.DirectoryPath, "data", Data.SaveFolderName);
+            string pathToWrite = Path.Combine(Globals.Helper.DirectoryPath, "data", Globals.SaveFolderName);
             string serializedReminderData = JsonConvert.SerializeObject(ReminderData, Formatting.Indented);
             int reminderCount = 0;
             bool bWritten = false;
@@ -247,7 +247,7 @@ namespace Dem1se.CustomReminders.Utilities
         public static void DeleteReminder(int reminderIndex)
         {
             int iterationIndex = 1;
-            foreach (string path in Directory.EnumerateFiles(Path.Combine(Data.Helper.DirectoryPath, "data", Data.SaveFolderName)))
+            foreach (string path in Directory.EnumerateFiles(Path.Combine(Globals.Helper.DirectoryPath, "data", Globals.SaveFolderName)))
             {
                 if (reminderIndex == iterationIndex)
                 {
@@ -261,15 +261,13 @@ namespace Dem1se.CustomReminders.Utilities
     }
 
     /// <summary>Contains data values that are used across classes and namespaces</summary>
-    static class Data
+    static class Globals
     {
-        /// <summary>IModHelper instance for classes to access without need it be an parameter everywhere.</summary>
-        /// <remarks>Assigned in SetUpStatics() in CustomReminders.cs</remarks>
-        public static IModHelper Helper;
+        /// <summary>IModHelper instance for classes to access without needing it be an parameter everywhere.</summary>
+        internal static IModHelper Helper;
 
-        /// <summary>IMonitor instance for classes to access without need it be a parameter everywhere.</summary>
-        /// <remarks>Assigned in SetUpStatics() in CustomReminders.cs</remarks>
-        public static IMonitor Monitor;
+        /// <summary>IMonitor instance for classes to access without needing it be a parameter everywhere.</summary>
+        internal static IMonitor Monitor;
 
         /// <summary>
         /// <para>
@@ -283,7 +281,7 @@ namespace Dem1se.CustomReminders.Utilities
         public static string SaveFolderName;
 
         /// <summary>The menu button of the player, required for suppressing</summary>
-        public static SButton MenuButton = GetMenuButton();
+        public static SButton MenuButton;
 
         /// <summary>
         /// Returns the button that is set to open the menu in current save.

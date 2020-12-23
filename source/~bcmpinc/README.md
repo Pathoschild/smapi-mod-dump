@@ -7,7 +7,9 @@ for queries and analysis.**
 ----
 
 # StardewHack
-A bunch of Stardew Valley mods that heavily rely on IL code modification. For this purpose it uses [Harmony](https://github.com/pardeike/Harmony/wiki).
+A bunch of Stardew Valley mods that heavily rely on IL code modification. For this purpose it uses [Harmony](https://github.com/pardeike/Harmony/wiki). 
+
+Android is partially supported. Only the mods Wear More Rings and Bigger Backpack are not supported on android, due to android having an entirely different inventory screen.
 
 ## Overview
 * [Always Scroll Map](/AlwaysScrollMap):                     Makes the map scroll past the edge of the map.
@@ -19,3 +21,13 @@ A bunch of Stardew Valley mods that heavily rely on IL code modification. For th
 * [Tilled Soil Decay](/TilledSoilDecay):                     Delays decay of watered tilled soil.
 * [Tree Spread](/TreeSpread):                                Prevents trees from spreading on your farm.
 * [Wear More Rings](/WearMoreRings):                         Adds 4 additional ring slots to your inventory.
+
+## Compiling
+
+First make sure that you also have bigger backpack checked out. Run: 
+```
+git submodule init
+git submodule update
+```
+
+Then open `StardewHack2.sln` in monodevelop (or whatever development tool you are using) and hope it compiles. :)

@@ -72,6 +72,39 @@ public interface IQuestApi
     void ForceRefresh();
 
     /// <summary>
+    /// Returns an quest id of managed quest
+    /// </summary>
+    /// <param name="fullQuestName">A fullqualified name of quest (questName@youdid)</param>
+    /// <returns>
+    /// Quest id if the quest with <param>fullQuestName</param> exists and it's managed, otherwise returns -1
+    /// </returns>
+    int ResolveQuestId(string fullQuestName);
+
+    /// <summary>
+    /// Resolves a fullqualified name (questName@youdid) of managed quest with this id
+    /// </summary>
+    /// <param name="questId"></param>
+    /// <returns>
+    /// Fullname of managed quest if this quest is managed by QF, otherwise returns null
+    /// </returns>
+    string ResolveQuestName(int questId);
+
+    /// <summary>
+    /// Is the quest with this id managed by QF?
+    /// </summary>
+    /// <param name="questId">A number representing quest id</param>
+    /// <returns>True if this quest is managed, otherwise False</returns>
+    bool IsManagedQuest(int questId);
+
+    void LoadContentPack(Mod provider, IContentPack pack);
+
+    /// <summary>
+    /// Get QF lifecycle status as string
+    /// </summary>
+    /// <returns></returns>
+    string GetStatus();
+
+    /// <summary>
     /// Provide Quest Framework events
     /// </summary>
     IQuestFrameworkEvents Events { get; }
@@ -93,6 +126,14 @@ public interface IManagedQuestApi
     /// </summary>
     /// <param name="questName">Name without @ has resolved in your mod scope</param>
     void AcceptQuest(string questName, bool silent = false);
+
+    /// <summary>
+    /// DEPRECATED! Resolve game quest id and returns custom quest
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [Obsolete("This API is deprecated! Use IManagedQuestApi.GetQuestById instead.", true)]
+    CustomQuest GetById(int id);
 
     /// <summary>
     /// Resolve game quest id and returns custom quest
@@ -159,6 +200,23 @@ public interface IManagedQuestApi
     /// <param name="conditionName">Name of condition</param>
     /// <param name="conditionHandler">Handler for this condition</param>
     void ExposeGlobalCondition(string conditionName, Func<string, CustomQuest, bool> conditionHandler);
+
+    /// <summary>
+    /// Exposes a quest type for content packs and other mods based on QF.
+    /// </summary>
+    /// <typeparam name="TQuest">Quest class type</typeparam>
+    /// <param name="type">Name of quest type in registry</param>
+    /// <param name="factory">Factory of quest of declared type</param>
+    void ExposeQuestType<TQuest>(string type, Func<TQuest> factory) where TQuest : CustomQuest;
+
+    /// <summary>
+    /// Exposes a quest type for content packs and other mods based on QF.
+    /// </summary>
+    /// <typeparam name="TQuest">Quest class type</typeparam>
+    /// <param name="type">Name of quest type in registry</param>
+    void ExposeQuestType<TQuest>(string type) where TQuest : CustomQuest, new();
+
+    bool HasQuestType(string type);
 }
 ```
 

@@ -222,6 +222,8 @@ namespace ItemBags.Menus
         public const int ButtonBottomMargin = 6;
         public static int ButtonSize { get { return 32; } } //{ get { return Constants.TargetPlatform == GamePlatform.Android ? 48 : 32; } }
 
+        private static double DrawingScaleFactor { get { return 1.0 / Game1.options.uiScale * 1.0 * Game1.options.zoomLevel; } }
+
         private int ResizeIteration { get; set; } = 0;
         private void InitializeLayout()
         {
@@ -256,12 +258,12 @@ namespace ItemBags.Menus
                 width = Math.Max(InventoryWidth, ContentsWidth);
                 bool IsWidthBoundToContents = ContentsWidth > InventoryWidth;
                 height = Math.Max(InventoryMenu.RelativeBounds.Height + InventoryMargin * 2, SidebarHeight) + Math.Max(Content.RelativeBounds.Height + ContentsMargin * 2, 0);
-                xPositionOnScreen = (Game1.viewport.Size.Width - width) / 2;
-                yPositionOnScreen = (Game1.viewport.Size.Height - height) / 2;
+                xPositionOnScreen = (int)((Game1.viewport.Size.Width * DrawingScaleFactor - width) / 2);
+                yPositionOnScreen = (int)((Game1.viewport.Size.Height * DrawingScaleFactor - height) / 2);
 
                 //  Check if menu fits on screen
-                bool IsMenuTooWide = width > Game1.viewport.Size.Width;
-                bool IsMenuTooTall = height > Game1.viewport.Size.Height;
+                bool IsMenuTooWide = width > Game1.viewport.Size.Width * DrawingScaleFactor;
+                bool IsMenuTooTall = height > Game1.viewport.Size.Height * DrawingScaleFactor;
                 bool FitsOnScreen = !IsMenuTooWide && !IsMenuTooTall;
                 bool DidSizeChange = width != PreviousWidth || height != PreviousHeight;
                 PreviousWidth = width;

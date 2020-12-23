@@ -70,7 +70,6 @@ namespace CustomNPCExclusions
             {
                 if (data.Value.Exists(entry =>
                     entry.StartsWith("All", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from everything
-                    || entry.StartsWith("Event", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from events
                     || entry.StartsWith("TownEvent", StringComparison.OrdinalIgnoreCase) //OR if this NPC is excluded from town events
                     || entry.StartsWith("ShopDialog", StringComparison.OrdinalIgnoreCase) //OR this NPC is excluded from the Winter Star event
                 ))

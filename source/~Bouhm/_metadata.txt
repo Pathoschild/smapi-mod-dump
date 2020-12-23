@@ -6,9 +6,12 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 045872148282bf07fcf79921c186cf8179149509
-   Author: Bouhm <bbouhm@gmail.com>
-   Date:   Fri Aug 14 23:54:02 2020 -0700
+   commit fee99835298ee71abb9425f0862984ddf9bb0a8d
+   Merge: 1f8c660 995e75f
+   Author: Brian Pak <bbouhm@gmail.com>
+   Date:   Tue Dec 22 12:38:17 2020 -0800
    
-       update map files
+       Merge pull request #63 from DrewScoggins/Update15
+       
+       Update mod to work with SDV 1.5
    

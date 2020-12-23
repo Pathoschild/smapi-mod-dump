@@ -199,6 +199,10 @@ namespace AccessibilityForBlind.Menus
 
         public Point DefaultMouse() => new Point(0, 0);
 
+        public bool IsOnLastItem() => items.Count > 0 ? items[items.Count - 1] == current : false;
+
+        public bool IsOnFirstItem() => items.Count > 0 ? items[0] == current : false;
+
         public void ClearItems()
         {
             items.Clear();

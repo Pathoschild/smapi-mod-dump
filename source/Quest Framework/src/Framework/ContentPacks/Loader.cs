@@ -53,7 +53,7 @@ namespace QuestFramework.Framework.ContentPacks
 
                 var content = this.LoadContentPack(contentPack);
 
-                if (content != null && this.Validate(content))
+                if (content != null && this.ValidateContent(content))
                 {
                     this.ValidContents.Add(content);
                 }
@@ -85,7 +85,7 @@ namespace QuestFramework.Framework.ContentPacks
             }
         }
 
-        private bool Validate(Content content)
+        public bool ValidateContent(Content content)
         {
             bool isValid = true;
 
@@ -369,7 +369,7 @@ namespace QuestFramework.Framework.ContentPacks
             return 0;
         }
 
-        private Content LoadContentPack(IContentPack contentPack)
+        public Content LoadContentPack(IContentPack contentPack)
         {
             if (!contentPack.HasFile("quests.json"))
             {

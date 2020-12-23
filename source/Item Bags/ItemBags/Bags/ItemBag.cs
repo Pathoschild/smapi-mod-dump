@@ -1248,7 +1248,7 @@ namespace ItemBags.Bags
             //spriteBatch.Draw(Game1.toolSpriteSheet, location + new Vector2(32f, 32f), new Rectangle?(Game1.getSquareSourceRectForNonStandardTileSheet(Game1.toolSpriteSheet, 16, 16, this.IndexOfMenuItemView)), color * transparency, 0f, new Vector2(8f, 8f), 4f * scaleSize, SpriteEffects.None, layerDepth);
         }
 
-        public override void drawTooltip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, string overrideText)
+        public override void drawTooltip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)
         {
             //  Item.cs implementation:
             //if (!string.IsNullOrEmpty(overrideText) && overrideText != " ")
@@ -1263,7 +1263,7 @@ namespace ItemBags.Bags
             base.drawTooltip(spriteBatch, ref x, ref y, font, alpha, overrideText);
         }
 
-        protected void BaseDrawToolTip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, string overrideText)
+        protected void BaseDrawToolTip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)
         {
             base.drawTooltip(spriteBatch, ref x, ref y, font, alpha, overrideText);
         }

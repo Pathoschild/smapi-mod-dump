@@ -11,7 +11,7 @@
 {
   "Name": "Json Assets",
   "Author": "spacechase0",
-  "Version": "1.6.2",
+  "Version": "1.7.0",
   "Description": "Allow custom stuff.",
   "UniqueID": "spacechase0.JsonAssets",
   "EntryDll": "JsonAssets.dll",
@@ -25,6 +25,9 @@
     },
     {
       "UniqueID": "spacechase0.SpaceCore"
-    }
+    },
+    {
+      "UniqueID": "Cherry.ExpandedPreconditionsUtility"
+    },
   ]
 }

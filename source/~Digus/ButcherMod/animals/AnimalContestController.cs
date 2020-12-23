@@ -157,17 +157,20 @@ namespace AnimalHusbandryMod.animals
                     animalStatus.HasWon = (animalStatus.HasWon ?? false) || animalContestItem.Winner == "Farmer";
                     if (participantIdValue != AnimalData.PetId)
                     {
-                        if (participated)
+                        if (_temporaryFarmAnimal != null)
                         {
-                            _temporaryFarmAnimal.friendshipTowardFarmer.Value = Math.Min(1000, _temporaryFarmAnimal.friendshipTowardFarmer.Value + DataLoader.AnimalContestData.FarmAnimalFriendshipForParticipating);
-                            _temporaryFarmAnimal.happiness.Value = 255;
+                            if (participated)
+                            {
+                                _temporaryFarmAnimal.friendshipTowardFarmer.Value = Math.Min(1000, _temporaryFarmAnimal.friendshipTowardFarmer.Value + DataLoader.AnimalContestData.FarmAnimalFriendshipForParticipating);
+                                _temporaryFarmAnimal.happiness.Value = 255;
+                            }
+                            else
+                            {
+                                _temporaryFarmAnimal.friendshipTowardFarmer.Value = Math.Max(0, _temporaryFarmAnimal.friendshipTowardFarmer.Value - DataLoader.AnimalContestData.FarmAnimalFriendshipForParticipating);
+                                _temporaryFarmAnimal.happiness.Value = 0;
+                            }
+                            ReAddFarmAnimal(participantIdValue);
                         }
-                        else
-                        {
-                            _temporaryFarmAnimal.friendshipTowardFarmer.Value = Math.Max(0, _temporaryFarmAnimal.friendshipTowardFarmer.Value - DataLoader.AnimalContestData.FarmAnimalFriendshipForParticipating);
-                            _temporaryFarmAnimal.happiness.Value = 0;
-                        }
-                        ReAddFarmAnimal(participantIdValue);
                     }
                     else
                     {
@@ -195,7 +198,7 @@ namespace AnimalHusbandryMod.animals
             }
             else
             {
-                AnimalHusbandryModEntry.monitor.Log($"The animal id '{id}' was not found in the game and its animal status data is being discarted.", LogLevel.Warn);
+                AnimalHusbandryModEntry.monitor.Log($"The animal id '{id}' was not found in the game and its animal status data is being discarded.", LogLevel.Warn);
                 RemoveAnimalStatus(id);
                 return null;
             }

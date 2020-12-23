@@ -159,9 +159,19 @@ namespace AnimalHusbandryMod.common
             {
                 var data = asset.AsDictionary<string, string>().Data;
                 string value = data["Pantry/4"];
-                if (!value.Contains("644 1 0") && value.Contains("/4/5"))
+                if (!ModConfig.DisableMeatInBlundle)
                 {
-                    value = value.Insert(value.LastIndexOf("/4/5"), " 644 1 0");
+                    if (!value.Contains("644 1 0") && value.Contains("/4/5"))
+                    {
+                        value = value.Insert(value.LastIndexOf("/4/5"), " 644 1 0");
+                    }
+                }
+                else
+                {
+                    if (value.Contains(" 639 1 0 640 1 0 641 1 0 642 1 0 643 1 0"))
+                    {
+                        value = value.Replace(" 639 1 0 640 1 0 641 1 0 642 1 0 643 1 0","");
+                    }
                 }
                 
                 data["Pantry/4"] = value;

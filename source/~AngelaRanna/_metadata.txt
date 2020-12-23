@@ -8,9 +8,9 @@ mods:
    What Does The Fox Say
 
 latest commit:
-   commit d67b058352600fae5c3c7aa28e3128bc03b5d5ba
+   commit 50788a607b1b1fbcd733ac1d2e1ff7129dc99948
    Author: SIMON\Zach <whitewolf9024@hotmail.com>
-   Date:   Fri Nov 6 14:40:49 2020 -0700
+   Date:   Mon Dec 21 20:11:29 2020 -0700
    
-       -Fixed DogToAmaterasu version number.
+       SD 1.5 first pass - new weapons, first attempt at rebalancing daggers since desperado nerf, fixed randomizer code lookup.
    

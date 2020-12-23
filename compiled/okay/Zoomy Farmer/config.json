@@ -3,5 +3,6 @@
   "staminaDrainPerSecond": 1.0,
   "sprintKey": "LeftControl",
   "alternateSprintKey": "LeftStick",
-  "toggleSprint": false
+  "toggleSprint": true,
+  "enableSprintWhenWaking": true
 }

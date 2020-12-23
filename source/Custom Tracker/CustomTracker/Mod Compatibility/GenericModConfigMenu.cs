@@ -43,6 +43,7 @@ namespace CustomTracker
             api.RegisterSimpleOption(ModManifest, "Track panning spots", "If this box is checked, the mod will track ore panning locations in the water.", () => MConfig.TrackPanningSpots, (bool val) => MConfig.TrackPanningSpots = val);
             api.RegisterSimpleOption(ModManifest, "Track spring onions", "If this box is checked, the mod will track harvestable spring onions.", () => MConfig.TrackSpringOnions, (bool val) => MConfig.TrackSpringOnions = val);
             api.RegisterSimpleOption(ModManifest, "Track berry bushes", "If this box is checked, the mod will track harvestable salmonberry and blackberry bushes.", () => MConfig.TrackBerryBushes, (bool val) => MConfig.TrackBerryBushes = val);
+            api.RegisterSimpleOption(ModManifest, "Track walnut bushes", "If this box is checked, the mod will track harvestable walnut bushes.", () => MConfig.TrackWalnutBushes, (bool val) => MConfig.TrackWalnutBushes = val);
         }
     }
 

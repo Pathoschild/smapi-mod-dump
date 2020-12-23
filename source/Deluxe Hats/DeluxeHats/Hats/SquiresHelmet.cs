@@ -15,9 +15,9 @@ namespace DeluxeHats.Hats
     public static class SquiresHelmet
     {
         public const string Name = "Squire's Helmet";
-        public const string Description = "Gain +6 armour and +4 attack";
-        private const int squiresResilience = 6;
-        private const int squiresAttack = 4;
+        public const string Description = "Gain +2 armour and +2 attack";
+        private const int squiresResilience = 2;
+        private const int squiresAttack = 2;
         public static void Activate()
         {
             Game1.player.resilience += squiresResilience;

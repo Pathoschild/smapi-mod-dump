@@ -118,7 +118,7 @@ namespace FarmTypeManager
             public static bool DayIsEnding { get; set; } = false;
 
             /// <summary>Enumerated list of farm types, in the order used by Stardew's internal code (e.g. Farm.cs)</summary>
-            public enum FarmTypes { Standard, Riverland, Forest, Hilltop, Wilderness, FourCorners }
+            public enum FarmTypes { Standard, Riverland, Forest, Hilltop, Wilderness, FourCorners, Beach }
 
             /// <summary>Enumerated list of player skills, in the order used by Stardew's internal code (e.g. Farmer.cs).</summary>
             public enum Skills { Farming, Fishing, Foraging, Mining, Combat, Luck }

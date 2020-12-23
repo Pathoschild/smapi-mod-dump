@@ -40,6 +40,15 @@ namespace FarmTypeManager.Monsters
 
         }
 
+        /// <summary>Creates an instance of Stardew's Serpent class, but with adjustments made for this mod.</summary>
+        /// <param name="position">The x,y coordinates of this monster's location.</param>
+        /// <param name="name">The "internal" name for this monster. Known subtype(s) for this class: "Royal Serpent"</param>
+        public SerpentFTM(Vector2 position, string name)
+            : base(position, name)
+        {
+
+        }
+
         //this override forces any instance of GameLocation to call drawAboveAllLayers, fixing a bug where flying monsters are invisible on some maps
         public override void drawAboveAlwaysFrontLayer(SpriteBatch b)
         {

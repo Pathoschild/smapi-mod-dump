@@ -33,7 +33,7 @@ namespace FarmTypeManager
             {
                 if (Constants.TargetPlatform == GamePlatform.Android) //if a new config.json is created on an Android device
                 {
-                    MonsterLimitPerLocation = 10; //use the community-recommended default monster limit (TODO: find volunteer(s) with older Android device(s) for direct testing)
+                    MonsterLimitPerLocation = 50; //use the community-recommended default monster limit
                 }
             }  
         }

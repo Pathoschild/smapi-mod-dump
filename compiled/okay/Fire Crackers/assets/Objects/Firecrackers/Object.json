@@ -1,0 +1,29 @@
+﻿{
+    "Name": "Firecracker",
+    "Description": "This can easily make you go blind if you're not carefull",
+    "Price": 0,
+    "Category": "Crafting",
+    "Edibility": -300,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Recipe": 
+    {
+        "ResultCount": 10,
+        "Ingredients":
+        [
+            {
+                "Object": 382,
+                "Count": 2
+            },
+            {
+                "Object": 388,
+                "Count": 50
+            }
+        ],
+        "IsDefault": true
+    },
+    /*"CanPurchase": true,
+    "PurchaseFrom": "Dwarf",
+    "PurchasePrice": "1000",
+    "PurchaseRequirements": null*/
+}

@@ -1,0 +1,11 @@
+{
+  "Name": "Stardew Aquarium [TS]",
+  "Author": "Cherry",
+  "Version": "1.2.0",
+  "Description": "Adds a train station ticket that lets you visit that Aquarium.",
+  "UniqueID": "StardewAquariumTeam.StardewAquariumTS",
+  "UpdateKeys": [ "Nexus:???" ],
+  "ContentPackFor": {
+	"UniqueID": "Cherry.TrainStation"
+  }
+}

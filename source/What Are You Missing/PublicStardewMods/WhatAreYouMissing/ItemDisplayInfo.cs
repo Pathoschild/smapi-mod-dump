@@ -27,7 +27,8 @@ namespace WhatAreYouMissing
 
         public string GetItemDisplayInfo()
         {
-            if (Item.Category == SObject.FishCategory)
+            //The Clam be special in that you can forage it and get it in crab pots
+            if (Item.Category == SObject.FishCategory || Item.ParentSheetIndex == Constants.CLAM)
             {
                 return new FishDisplayInfo(ParentSheetIndex).GetFishDisplayInfo();
             }

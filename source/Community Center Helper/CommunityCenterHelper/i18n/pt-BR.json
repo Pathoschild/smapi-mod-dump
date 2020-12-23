@@ -57,6 +57,7 @@
 	// Constructions
 	"putItemInMill": "Coloque {{rawItem}} no Moinho",
 	"fishPond": "Produzido no Lago de Peixes com {{fish}} x{{num}}",
+	"fishPondAny": "Produzido no Lago de Peixes",
 	
 	// Monsters
 	"droppedByMonster": "Soltado por {{monster}} ao morrer",
@@ -270,6 +271,7 @@
 	"monsterAreaSkullFloorPlus": "Caverna da Caveira {{start}}+",
 	"monsterAreaSkullPrehistoric": "chãos pré-históricos da Caverna da Caveira",
 	"monsterAreaSkullMummy": "chãos de múmias da Caverna da Caveira",
+	"monsterAreaVolcano": "Vulcão",
 	"monsterAreaUnknown": "???",
 	
 	// Animal Names (for animal product suggestions)

@@ -13,6 +13,7 @@ mods:
    Custom Spouse Patio
    Enhanced Loot Magnet
    Familiars
+   Fire Breath
    Friendly Divorce
    Fruit Tree Shaker
    Gem Isles
@@ -33,7 +34,7 @@ mods:
    Quotes
    Random NPCs
    Realistic Random Names
-   Show Players Behind Map Tiles
+   Show Players Behind Buildings
    Sixty-Nine Shirt
    Swim
    Transparent Objects
@@ -43,9 +44,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit f482a517f1c2d499c086f73f19bb2f807d6a5e31
+   commit 823e1217aa482c71ce5805cab64261bb2098479c
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sat Dec 12 01:05:11 2020 -0500
+   Date:   Tue Dec 22 13:41:02 2020 -0500
    
-       etc
+       1.5
    

@@ -53,7 +53,7 @@ and not yet exploded shows its ranges (unless disabled in configuration).
 
 ### Compatibility
 
-Works with Stardew Valley 1.4, single player and multiplayer.
+Works with Stardew Valley 1.5, single player and multiplayer.
 No known incompatibilities with other mods, although if another mod also
 shows range highlights (e.g., UI Info Suite) then each mod will show
 its own highlight.  The result is not horrible, but you probably

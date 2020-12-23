@@ -87,16 +87,6 @@ namespace JsonAssets.Data
                     str += "/" + parent.LocalizedName();
                 return str;
             }
-
-            internal string GetPurchaseRequirementString()
-            {
-                if ( PurchaseRequirements == null )
-                    return "";
-                var str = $"1234567890";
-                foreach (var cond in PurchaseRequirements)
-                    str += $"/{cond}";
-                return str;
-            }
         }
 
         public class FoodBuffs_
@@ -125,6 +115,8 @@ namespace JsonAssets.Data
         public bool CanTrash { get; set; } = true;
         public bool CanSell { get; set; } = true;
         public bool CanBeGifted { get; set; } = true;
+
+        public bool HideFromShippingCollection { get; set; } = false;
 
         public Recipe_ Recipe { get; set; }
 
@@ -192,16 +184,6 @@ namespace JsonAssets.Data
                 var itype = (int)Category;
                 return $"{Name}/{Price}/{Edibility}/" + (Category == Category_.Artifact ? "Arch" : $"Basic {itype}") + $"/{LocalizedName()}/{LocalizedDescription()}";
             }
-        }
-
-        internal string GetPurchaseRequirementString()
-        {
-            if ( PurchaseRequirements == null )
-                return "";
-            var str = $"1234567890";
-            foreach (var cond in PurchaseRequirements)
-                str += $"/{cond}";
-            return str;
         }
     }
 }

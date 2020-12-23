@@ -39,6 +39,11 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     setValue: value => context.Config.FastBeeHouse = value
                 ),
                 new CheatsOptionsCheckbox(
+                    label: GameI18n.GetBigCraftableName(90),
+                    value: context.Config.FastBoneMill,
+                    setValue: value => context.Config.FastBoneMill = value
+                ),
+                new CheatsOptionsCheckbox(
                     label: GameI18n.GetBigCraftableName(163),
                     value: context.Config.FastCask,
                     setValue: value => context.Config.FastCask = value
@@ -54,6 +59,11 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     setValue: value => context.Config.FastCheesePress = value
                 ),
                 new CheatsOptionsCheckbox(
+                    label: GameI18n.GetBigCraftableName(246),
+                    value: context.Config.FastCoffeeMaker,
+                    setValue: value => context.Config.FastCoffeeMaker = value
+                ),
+                new CheatsOptionsCheckbox(
                     label: GameI18n.GetObjectName(710),
                     value: context.Config.FastCrabPot,
                     setValue: value => context.Config.FastCrabPot = value
@@ -64,6 +74,11 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     setValue: value => context.Config.FastCrystalarium = value
                 ),
                 new CheatsOptionsCheckbox(
+                    label: GameI18n.GetBigCraftableName(265),
+                    value: context.Config.FastDeconstructor,
+                    setValue: value => context.Config.FastDeconstructor = value
+                ),
+                new CheatsOptionsCheckbox(
                     label: I18n.FastMachines_FruitTrees(),
                     value: context.Config.FastFruitTree,
                     setValue: value => context.Config.FastFruitTree = value
@@ -72,6 +87,11 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     label: GameI18n.GetBigCraftableName(13),
                     value: context.Config.FastFurnace,
                     setValue: value => context.Config.FastFurnace = value
+                ),
+                new CheatsOptionsCheckbox(
+                    label: GameI18n.GetBigCraftableName(182),
+                    value: context.Config.FastGeodeCrusher,
+                    setValue: value => context.Config.FastGeodeCrusher = value
                 ),
                 new CheatsOptionsCheckbox(
                     label: I18n.FastMachines_ReadyInTheMorning(machineName: GameI18n.GetBigCraftableName(101)),
@@ -109,6 +129,11 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     setValue: value => context.Config.FastOilMaker = value
                 ),
                 new CheatsOptionsCheckbox(
+                    label: I18n.FastMachines_ReadyInTheMorning(GameI18n.GetBigCraftableName(254)),
+                    value: context.Config.FastOstrichIncubator,
+                    setValue: value => context.Config.FastOstrichIncubator = value
+                ),
+                new CheatsOptionsCheckbox(
                     label: GameI18n.GetBigCraftableName(15),
                     value: context.Config.FastPreservesJar,
                     setValue: value => context.Config.FastPreservesJar = value
@@ -137,6 +162,12 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     label: GameI18n.GetBigCraftableName(117),
                     value: context.Config.FastSodaMachine,
                     setValue: value => context.Config.FastSodaMachine = value
+                ),
+
+                new CheatsOptionsCheckbox(
+                    label: GameI18n.GetBigCraftableName(231),
+                    value: context.Config.FastSolarPanel,
+                    setValue: value => context.Config.FastSolarPanel = value
                 ),
                 new CheatsOptionsCheckbox(
                     label: GameI18n.GetBigCraftableName(127),
@@ -232,10 +263,15 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                 _ => obj.name switch
                 {
                     "Bee House" => config.FastBeeHouse,
+                    "Bone Mill" => config.FastBoneMill,
                     "Charcoal Kiln" => config.FastCharcoalKiln,
                     "Cheese Press" => config.FastCheesePress,
+                    "Coffee Maker" => config.FastCoffeeMaker,
                     "Crystalarium" => config.FastCrystalarium,
+                    "Deconstructor" => config.FastDeconstructor,
                     "Furnace" => config.FastFurnace,
+                    "Geode Crusher" => config.FastGeodeCrusher,
+                    "Heavy Tapper" => config.FastTapper,
                     "Incubator" => config.FastIncubator,
                     "Keg" => config.FastKeg,
                     "Lightning Rod" => config.FastLightningRod,
@@ -243,12 +279,14 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     "Mayonnaise Machine" => config.FastMayonnaiseMachine,
                     "Mushroom Box" => config.FastMushroomBox,
                     "Oil Maker" => config.FastOilMaker,
+                    "Ostrich Incubator" => config.FastOstrichIncubator,
                     "Preserves Jar" => config.FastPreservesJar,
                     "Recycling Machine" => config.FastRecyclingMachine,
                     "Seed Maker" => config.FastSeedMaker,
                     "Slime Egg-Press" => config.FastSlimeEggPress,
                     "Slime Incubator" => config.FastSlimeIncubator,
                     "Soda Machine" => config.FastSodaMachine,
+                    "Solar Panel" => config.FastSolarPanel,
                     "Statue Of Endless Fortune" => config.FastStatueOfEndlessFortune,
                     "Statue Of Perfection" => config.FastStatueOfPerfection,
                     "Tapper" => config.FastTapper,
@@ -288,6 +326,7 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     switch (machine.Name)
                     {
                         // daily machines
+                        case "Coffee Maker":
                         case "Soda Machine":
                         case "Statue Of Endless Fortune":
                         case "Statue Of Perfection":
@@ -296,6 +335,13 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                                 machine.DayUpdate(location);
                                 machine.minutesElapsed(1, location);
                             }
+                            break;
+
+                        // daily solar panels
+                        case "Solar Panel":
+                            if (machine.MinutesUntilReady > 1)
+                                machine.MinutesUntilReady = 1;
+                            machine.DayUpdate(location); // complete machine if conditions are correct (e.g. outdoors and sunny)
                             break;
 
                         // input processing machines

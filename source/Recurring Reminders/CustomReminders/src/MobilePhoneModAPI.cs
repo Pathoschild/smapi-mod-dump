@@ -38,12 +38,12 @@ namespace Dem1se.CustomReminders.MobilePhoneModAPI
     {
         public static void HookToMobilePhoneMod(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
         {
-            IMobilePhoneApi api = Data.Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
+            IMobilePhoneApi api = Globals.Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
             if (api != null)
             {
-                Texture2D appIcon = Data.Helper.Content.Load<Texture2D>(System.IO.Path.Combine("assets", "mpmIcon.png"));
-                bool success = api.AddApp(Data.Helper.ModRegistry.ModID, "Custom Reminders", ModEntry.ShowReminderMenu, appIcon);
-                Data.Monitor.Log($"Loaded phone app successfully: {success}", LogLevel.Debug);
+                Texture2D appIcon = Globals.Helper.Content.Load<Texture2D>(System.IO.Path.Combine("assets", "mpmIcon.png"));
+                bool success = api.AddApp(Globals.Helper.ModRegistry.ModID, "Custom Reminders", ModEntry.ShowReminderMenu, appIcon);
+                Globals.Monitor.Log($"Loaded phone app successfully: {success}", LogLevel.Debug);
             }
         }
     }

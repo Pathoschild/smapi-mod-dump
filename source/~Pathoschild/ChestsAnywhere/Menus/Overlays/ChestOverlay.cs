@@ -76,7 +76,6 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         {
             if (this.IsInitialized)
             {
-
                 switch (this.ActiveElement)
                 {
                     case Element.EditForm:
@@ -125,9 +124,9 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
             return base.ReceiveCursorHover(x, y);
         }
 
-        /// <summary>Draw the overlay to the screen.</summary>
+        /// <summary>Draw the overlay to the screen over the UI.</summary>
         /// <param name="batch">The sprite batch being drawn.</param>
-        protected override void Draw(SpriteBatch batch)
+        protected override void DrawUi(SpriteBatch batch)
         {
             if (!this.ActiveElement.HasFlag(Element.EditForm))
             {
@@ -135,7 +134,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
                 this.SortInventoryButton?.draw(batch, Color.White * navOpacity, 1f);
             }
 
-            base.Draw(batch); // run base logic last, to draw cursor over everything else
+            base.DrawUi(batch); // run base logic last, to draw cursor over everything else
         }
 
         /// <summary>Initialize the edit-chest overlay for rendering.</summary>

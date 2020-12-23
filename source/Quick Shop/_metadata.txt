@@ -1,0 +1,16 @@
+url:
+   https://github.com/Enaium-StardewValleyMods/QuickShop.git
+
+mods:
+   Quick Shop
+
+latest commit:
+   commit 4fa7f91b9b15580b6ca6e961fa12fac5ae31459e
+   Merge: ea702e7 0d26b96
+   Author: Enaium <32991121+Enaium@users.noreply.github.com>
+   Date:   Tue Dec 22 03:04:34 2020 -0600
+   
+       Merge pull request #4 from Enaium-StardewValleyMods/develop
+       
+       Develop
+   

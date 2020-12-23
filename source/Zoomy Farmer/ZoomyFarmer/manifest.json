@@ -11,7 +11,7 @@
 {
   "Name": "Zoomy Farmer",
   "Author": "Geko_X",
-  "Version": "1.1.1",
+  "Version": "1.2",
   "Description": "Lets the farmer sprint!",
   "UniqueID": "gekox.zoomyFarmer",
   "EntryDll": "ZoomyFarmer.dll",

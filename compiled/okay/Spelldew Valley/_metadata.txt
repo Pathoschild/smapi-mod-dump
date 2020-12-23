@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7322
+IDs: instafluff.spelldewvalley
+update keys: GitHub:instafluff/SpelldewValley, Nexus:7322

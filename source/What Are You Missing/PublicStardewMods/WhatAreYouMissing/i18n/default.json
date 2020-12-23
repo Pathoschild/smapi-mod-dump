@@ -63,11 +63,11 @@
   "FALL": "Fall",
   "WINTER": "Winter",
 
-  "LEGEND_INFO": "Fish close to the giant log in the Mountain Lake when its raining",
-  "GLACIERFISH_INFO": "At the bottom of the giant log in the Mountain Lake when its raining",
-  "CRIMSONFISH_INFO": "Second Beach Pier",
-  "ANGLER_INFO": "Fish upwards on the small bridge near JoJo Mart",
-  "MUTANT_CARP_INFO": "Fish in the Sewers (in the open room with Krobus)",
+  "LEGEND_INFO": "In spring, fish close to the giant log in the Mountain Lake when its raining. Requires fishing lvl 10.",
+  "GLACIERFISH_INFO": "In winter, fish at the southern most point of the island just above the hat mouse. Requires fishing lvl 6.",
+  "CRIMSONFISH_INFO": "In summer, fish at the second Beach Pier. Requires fishing lvl 5.",
+  "ANGLER_INFO": "In fall, fish upwards on the small bridge near JoJo Mart. Requires fishing lvl 3.",
+  "MUTANT_CARP_INFO": "In any season, fish in the Sewers (in the open room with Krobus)",
 
   "STONEFISH_INFO": "Found in the Mines on floor 20",
   "ICE_PIP_INFO": "Found in the Mines on floor 60",

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SpaceCore
 {
@@ -32,6 +33,9 @@ namespace SpaceCore
 
         // Must take (Event, GameLocation, GameTime, string[])
         void AddEventCommand( string command, MethodInfo info );
+
+        // Must have [XmlType("Mods_SOMETHINGHERE")] attribute (required to start with "Mods_")
+        void RegisterSerializerType( Type type );
     }
 
     public class Api : IApi
@@ -68,6 +72,15 @@ namespace SpaceCore
 
             Log.debug( "Adding event command: " + command + " = " + info );
             EventTryCommandPatch.customCommands.Add( command, info );
+        }
+
+        public void RegisterSerializerType( Type type )
+        {
+            if ( !type.GetCustomAttribute< XmlTypeAttribute >().TypeName.StartsWith( "Mods_" ) )
+            {
+                throw new ArgumentException( "Custom types must have an [XmlType] attribute with the TypeName starting with \"Mods_\"" );
+            }
+            SpaceCore.modTypes.Add( type );
         }
     }
 }

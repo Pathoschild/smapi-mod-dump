@@ -61,6 +61,15 @@ namespace FarmTypeManager.Monsters
             
         }
 
+        /// <summary>Creates an instance of Stardew's Duggy class, but with adjustments made for this mod.</summary>
+        /// <param name="position">The x,y coordinates of this monster's location.</param>
+        /// <param name="magmaDuggy">True if this should be a Magma Duggy. NOTE: Currently redundant; this constructor always produces a Magma Duggy.</param>
+        public DuggyFTM(Vector2 position, bool magmaDuggy)
+            : base(position, magmaDuggy)
+        {
+
+        }
+
         /// <summary>This method adds the CustomDamage setting to to the monster's list of net fields for multiplayer functionality.</summary>
         protected override void initNetFields()
         {

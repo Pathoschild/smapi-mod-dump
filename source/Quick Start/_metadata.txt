@@ -5,12 +5,9 @@ mods:
    Quick Start
 
 latest commit:
-   commit 09f33fb300a328e6df507d6c78185c822185ee90
-   Merge: 8fea0a8 c3d5068
+   commit c839f2d36df634991b76f9e7b853a63028784e31
    Author: Brian Wuest <brian.wuest@outlook.com>
-   Date:   Fri Jun 14 20:30:24 2019 -0500
+   Date:   Sat Dec 19 17:44:42 2020 -0600
    
-       Merge pull request #2 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0, internal refactoring
+       update configurations
    

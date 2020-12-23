@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.45 mod which lets you build any building normally sold by the 
+**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.5 mod which lets you build any building normally sold by the 
 carpenter directly from your farm without waiting for days for Robin to build them. Buildings are created/upgraded instantly, and the magician 
 buildings are included too! You can also upgrade your house or cabin instantly to add the kitchen, nursery, and cellar directly from your farm
 without having to wait. The configuration file allows you to turn off the resource requirements needed to build/upgrade so you can play around in 
@@ -60,6 +60,7 @@ All of the following buildings can be built instantly from the catalogue menu on
 * Junimo Hut
 * Earth Obelisk
 * Water Obelisk
+* Island Obelisk
 * Gold Clock
 
 The following buildings can be upgraded instantly provided you already have the required building:
@@ -87,7 +88,7 @@ setting | default | effect
 `PerformInstantHouseUpgradeButton` | `U` | Change this value to bind the Instant House/Cabin Upgrade feature to another key.
 
 ## Mod Compatibility
-**Note:*** This mod is only compatible with version 1.45 of Stardew Valley (released 2/11/2020) and works in multiplayer as well. Starting with version 1.0.7 of this mod, Stardew Valley v1.3x is no longer supported. 
+**Note:*** This mod is only compatible with version 1.5 of Stardew Valley (released 12/21/2020) and works in multiplayer as well. 
 
 This mod is fully compatible with:
 * [TractorMod](http://www.nexusmods.com/stardewvalley/mods/1401) by Pathoschild. The Tractor Garage will appear in the build menu if the mod is installed.

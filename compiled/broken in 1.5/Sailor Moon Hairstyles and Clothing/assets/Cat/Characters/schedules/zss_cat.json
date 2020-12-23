@@ -1,7 +1,0 @@
-{
-  "rain": "GOTO spring",
-  "winter": "GOTO spring",
-  "fall": "GOTO spring",
-  "summer": "GOTO spring",
-  "spring": "600 Forest 33 96 0 zss_cat_standing/1240 Forest 33 96 0 zss_cat_sitting/1830 Forest 33 96 0 zss_cat_sleepy/2020 Forest 33 96 0 zss_cat_snoozing"
-}

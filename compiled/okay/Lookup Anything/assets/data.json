@@ -1,0 +1,1158 @@
+/*
+
+
+This file provides metadata to the mod that isn't available from the game (e.g. because it's buried in the logic).
+You shouldn't change this file unless you know what you're doing.
+
+
+*/
+{
+    /*********
+    ** Constants
+    *********/
+    "Constants": {
+        /* animals */
+        "AnimalFriendshipPointsPerLevel": 200,
+        "AnimalFriendshipMaxPoints": 1000,
+        "AnimalMaxHappiness": 255,
+
+        /* fruit trees */
+        "FruitTreeQualityGrowthTime": 112,
+
+        /* NPCs */
+        "ForceSocialVillagers": {
+            "Dwarf": true, // always false?
+            "Krobus": true, // false in-game until met
+            "Sandy": true // false in-game until desert unlocked
+        },
+        "DatingHearts": 2,
+        "SpouseMaxFriendship": 3500,
+        "SpouseFriendshipForStardrop": 3125,
+
+        /* players */
+        "PlayerMaxSkillPoints": 15000,
+        "PlayerSkillPointsPerLevel": [ 100, 380, 770, 1300, 2150, 3300, 4800, 6900, 10000, 15000 ],
+
+        /* time */
+        "DaysInSeason": 28,
+        "FenceDecayRate": 1440,
+
+        /* crafting */
+        "CaskAgeSchedule": {
+            "Silver": 14,
+            "Gold": 28,
+            "Iridium": 56
+        },
+
+        /* items */
+        "ItemsWithIridiumQuality": [
+            /* animal products */
+            -5, // eggs
+            -6, // milks
+            430, // truffle
+            440, // wool
+            444, // duck feather
+            446, // rabbit's foot
+
+            /* forage (foods) */
+            16, // wild horseradish
+            18, // daffodil
+            20, // leek
+            22, // dandelion
+            78, // cave carrot
+            88, // coconut
+            90, // cactus fruit
+            257, // morel
+            259, // fiddlehead fern
+            281, // chanterelle
+            283, // holly
+            296, // salmonberry
+            396, // spice berry
+            398, // grape
+            399, // spring onion
+            402, // sweet pea
+            404, // common mushroom
+            406, // wild plum
+            408, // hazelnut
+            410, // blackberry
+            412, // winter root
+            414, // crystal fruit
+            416, // snow yam
+            420, // red mushroom
+            422, // purple mushroom
+
+            /* forage (beach) */
+            372, // clam
+            392, // nautilus shell
+            393, // coral
+            394, // rainbow shell
+            397, // sea urchin
+            719, // mussel
+            723, // oyster
+
+            /* fruit tree produce */
+            613, // apple
+            634, // apricot
+            635, // orange
+            636, // peach
+            637, // pomegranate
+            638, // cherry
+
+            /* cask-aged artisanal products */
+            303, // pale ale
+            346, // beer
+            348, // wine
+            424, // cheese
+            426, // goat cheese
+            459 // mead
+        ],
+
+        /* achievements */
+        "PolycultureCrops": [ 24, 188, 190, 192, 248, 250, 252, 254, 256, 258, 260, 262, 264, 266, 268, 270, 272, 274, 276, 278, 280, 282, 284, 300, 304, 398, 400, 433 ],
+        "PolycultureCount": 15
+    },
+
+    /*********
+    ** Shops
+    *********/
+    "Shops": [
+        {
+            "DisplayKey": "shop.adventure-guild",
+            "BuysCategories": [ -28, -98, -97, -96 ]
+        },
+        {
+            "DisplayKey": "shop.clint",
+            "BuysCategories": [ -12, -2, -15 ]
+        },
+        {
+            "DisplayKey": "shop.marnie",
+            "BuysCategories": [ -18, -6, -5, -14 ]
+        },
+        {
+            "DisplayKey": "shop.pierre",
+            "BuysCategories": [ -81, -75, -79, -80, -74, -17, -18, -6, -26, -5, -14, -19, -7, -25 ]
+        },
+        {
+            "DisplayKey": "shop.robin",
+            "BuysCategories": [ -16 ]
+        },
+        {
+            "DisplayKey": "shop.willy",
+            "BuysCategories": [ -4, -23, -21, -22 ]
+        },
+        {
+            "DisplayKey": "shop.volcano",
+            "BuysCategories": [ -12, -2, -15 ] // same as blacksmith
+        }
+    ],
+
+    /*********
+    ** Building recipes (not available from game data)
+    *********/
+    "BuildingRecipes": [
+        /* mill */
+        {
+            "BuildingKey": "Mill",
+            "Ingredients": {
+                "262": 1 // wheat
+            },
+            "Output": 246 // wheat flour
+        },
+        {
+            "BuildingKey": "Mill",
+            "Ingredients": {
+                "284": 1 // beet
+            },
+            "Output": 245, // sugar
+            "MaxOutput": 3
+        }
+    ],
+
+    /*********
+    ** Machine recipes (not available from game data)
+    *********/
+    "MachineRecipes": [
+        /* charcoal kiln */
+        {
+            "MachineID": 114,
+            "Ingredients": [
+                { "ID": 388, "Count": 10 } // wood
+            ],
+            "Output": 382 // coal
+        },
+
+        /* cheese press */
+        {
+            "MachineID": 16,
+            "Ingredients": [
+                { "ID": 184 } // milk
+            ],
+            "Output": 424 // cheese
+        },
+        {
+            "MachineID": 16,
+            "Ingredients": [
+                { "ID": 186 } // large milk
+            ],
+            "Output": 424 // cheese
+        },
+        {
+            "MachineID": 16,
+            "Ingredients": [
+                { "ID": 436 } // goat milk
+            ],
+            "Output": 426 // goat cheese
+        },
+        {
+            "MachineID": 16,
+            "Ingredients": [
+                { "ID": 438 } // large goat milk
+            ],
+            "Output": 426 // goat cheese
+        },
+
+        /* furnace */
+        {
+            "MachineID": 13,
+            "Ingredients": [
+                { "ID": 378, "Count": 5 }, // copper ore
+                { "ID": 382 }              // coal
+            ],
+            "Output": 334 // copper bar
+        },
+        {
+            "MachineID": 13,
+            "Ingredients": [
+                { "ID": 380, "Count": 5 }, // iron ore
+                { "ID": 382 }              // coal
+            ],
+            "Output": 335 // iron bar
+        },
+        {
+            "MachineID": 13,
+            "Ingredients": [
+                { "ID": 384, "Count": 5 }, // gold ore
+                { "ID": 382 }              // coal
+            ],
+            "Output": 336 // gold bar
+        },
+        {
+            "MachineID": 13,
+            "Ingredients": [
+                { "ID": 386, "Count": 5 }, // gold ore
+                { "ID": 382 }              // coal
+            ],
+            "Output": 337 // iridium bar
+        },
+        {
+            "MachineID": 13,
+            "Ingredients": [
+                { "ID": 82 },   // fire quartz
+                { "ID": 382 }   // coal
+            ],
+            "Output": 338, // refined quartz
+            "MaxOutput": 3
+        },
+        {
+            "MachineID": 13,
+            "Ingredients": [
+                { "ID": 80 },   // quartz
+                { "ID": 382 }   // coal
+            ],
+            "Output": 338 // refined quartz
+        },
+
+        /* keg */
+        {
+            "MachineID": 12,
+            "Ingredients": [
+                { "ID": 262 } // wheat
+            ],
+            "Output": 346 // beer
+        },
+        {
+            "MachineID": 12,
+            "Ingredients": [
+                { "ID": 433, "Count": 5 } // coffee bean
+            ],
+            "Output": 395 // coffee
+        },
+        {
+            "MachineID": 12,
+            "Ingredients": [
+                { "ID": 815 } // tea leaves
+            ],
+            "Output": 614 // green tea
+        },
+        {
+            "MachineID": 12,
+            "Ingredients": [
+                { "ID": 340 } // honey
+            ],
+            "Output": 459 // mead
+        },
+        {
+            "MachineID": 12,
+            "Ingredients": [
+                { "ID": 304 } // hops
+            ],
+            "Output": 303 // pale ale
+        },
+        {
+            "MachineID": 12,
+            "Ingredients": [
+                { "ID": -79 } // any fruit
+            ],
+            "Output": 348 // wine
+        },
+        {
+            "MachineID": 12,
+            "Ingredients": [
+                { "ID": -75 } // any vegetable
+            ],
+            "ExceptIngredients": [
+                { "ID": 262 }, // wheat
+                { "ID": 304 }, // hops
+                { "ID": 815 } // tea leaves
+            ],
+            "Output": 350 // juice
+        },
+
+        /* loom */
+        {
+            "MachineID": 17,
+            "Ingredients": [
+                { "ID": 440 } // wool
+            ],
+            "Output": 428 // cloth
+        },
+
+        /* mayonnaise machine */
+        {
+            "MachineID": 24,
+            "Ingredients": [
+                { "ID": 174 } // large white egg
+            ],
+            "Output": 306 // mayonnaise
+        },
+        {
+            "MachineID": 24,
+            "Ingredients": [
+                { "ID": 176 } // white egg
+            ],
+            "Output": 306 // mayonnaise
+        },
+        {
+            "MachineID": 24,
+            "Ingredients": [
+                { "ID": 180 } // brown egg
+            ],
+            "Output": 306 // mayonnaise
+        },
+        {
+            "MachineID": 24,
+            "Ingredients": [
+                { "ID": 182 } // large brown egg
+            ],
+            "Output": 306 // mayonnaise
+        },
+        {
+            "MachineID": 24,
+            "Ingredients": [
+                { "ID": 107 } // dinosaur egg
+            ],
+            "Output": 807 // dinosaur mayonnaise
+        },
+        {
+            "MachineID": 24,
+            "Ingredients": [
+                { "ID": 442 } // duck egg
+            ],
+            "Output": 307 // duck mayonnaise
+        },
+        {
+            "MachineID": 24,
+            "Ingredients": [
+                { "ID": 305 } // void egg
+            ],
+            "Output": 308 // void mayonnaise
+        },
+
+        /* oil maker */
+        {
+            "MachineID": 19,
+            "Ingredients": [
+                { "ID": 430 } // truffle
+            ],
+            "Output": 432 // truffle oil
+        },
+        {
+            "MachineID": 19,
+            "Ingredients": [
+                { "ID": 270 } // corn
+            ],
+            "Output": 247 // oil
+        },
+        {
+            "MachineID": 19,
+            "Ingredients": [
+                { "ID": 421 } // sunflower
+            ],
+            "Output": 247 // oil
+        },
+        {
+            "MachineID": 19,
+            "Ingredients": [
+                { "ID": 431 } // sunflower seeds
+            ],
+            "Output": 247 // oil
+        },
+
+        /* preserves jar */
+        {
+            "MachineID": 15,
+            "Ingredients": [
+                { "ID": -79 } // any fruit
+            ],
+            "Output": 344 // jelly
+        },
+        {
+            "MachineID": 15,
+            "Ingredients": [
+                { "ID": -75 } // any vegetable
+            ],
+            "Output": 342 // pickled
+        },
+        {
+            "MachineID": 15,
+            "Ingredients": [
+                { "ID": 812, "PreserveType": "Roe", "PreservedParentSheetIndex": 698 } // sturgeon roe
+            ],
+            "Output": 445 // caviar
+        },
+        {
+            "MachineID": 15,
+            "Ingredients": [
+                { "ID": 812 } // roe (non-sturgeon)
+            ],
+            "ExceptIngredients": [
+                { "ID": 812, "PreserveType": "Roe", "PreservedParentSheetIndex": 698 } // sturgeon roe
+            ],
+            "Output": 447 // aged roe
+        },
+
+        /* recycling machine */
+        {
+            "MachineID": 20,
+            "Ingredients": [
+                { "ID": 168 } // trash
+            ],
+            "Output": 382, // coal
+            "MinOutput": 1,
+            "MaxOutput": 3,
+            "OutputChance": 30
+        },
+        {
+            "MachineID": 20,
+            "Ingredients": [
+                { "ID": 168 } // trash
+            ],
+            "Output": 380, // iron ore
+            "MinOutput": 1,
+            "MaxOutput": 3,
+            "OutputChance": 21
+        },
+        {
+            "MachineID": 20,
+            "Ingredients": [
+                { "ID": 168 } // trash
+            ],
+            "Output": 390, // stone
+            "MinOutput": 1,
+            "MaxOutput": 3,
+            "OutputChance": 49
+        },
+
+        {
+            "MachineID": 20,
+            "Ingredients": [
+                { "ID": 169 } // driftwood
+            ],
+            "Output": 382, // coal
+            "MinOutput": 1,
+            "MaxOutput": 3,
+            "OutputChance": 25
+        },
+        {
+            "MachineID": 20,
+            "Ingredients": [
+                { "ID": 169 } // driftwood
+            ],
+            "Output": 388, // wood
+            "MinOutput": 1,
+            "MaxOutput": 3,
+            "OutputChance": 75
+        },
+
+        {
+            "MachineID": 20,
+            "Ingredients": [
+                { "ID": 170 } // broken glasses
+            ],
+            "Output": 338 // refined quartz
+        },
+
+        {
+            "MachineID": 20,
+            "Ingredients": [
+                { "ID": 171 } // broken CD
+            ],
+            "Output": 338 // refined quartz
+        },
+
+        {
+            "MachineID": 20,
+            "Ingredients": [
+                { "ID": 172 } // soggy newspaper
+            ],
+            "Output": 428, // cloth
+            "OutputChance": 10
+        },
+
+        {
+            "MachineID": 20,
+            "Ingredients": [
+                { "ID": 172 } // soggy newspaper
+            ],
+            "Output": 93, // torch
+            "MinOutput": 3,
+            "OutputChance": 90
+        },
+
+        /* slime egg-press */
+        {
+            "MachineID": 158,
+            "Ingredients": [
+                { "ID": 766, "Count": 100 } // slime
+            ],
+            "Output": 680, // green slime egg
+            "OutputChance": 64
+        },
+        {
+            "MachineID": 158,
+            "Ingredients": [
+                { "ID": 766, "Count": 100 } // slime
+            ],
+            "Output": 439, // purple slime egg
+            "OutputChance": 5
+        },
+        {
+            "MachineID": 158,
+            "Ingredients": [
+                { "ID": 766, "Count": 100 } // slime
+            ],
+            "Output": 437, // red slime egg
+            "OutputChance": 10
+        },
+        {
+            "MachineID": 158,
+            "Ingredients": [
+                { "ID": 766, "Count": 100 } // slime
+            ],
+            "Output": 413, // blue slime egg
+            "OutputChance": 21
+        },
+
+        /* wood chipper */
+        {
+            "MachineID": 211,
+            "Ingredients": [
+                { "ID": 709 } // hardwood
+            ],
+            "Output": 724, // maple syrup
+            "OutputChance": 0.67
+        },
+        {
+            "MachineID": 211,
+            "Ingredients": [
+                { "ID": 709 } // hardwood
+            ],
+            "Output": 725, // oak resin
+            "OutputChance": 0.67
+        },
+        {
+            "MachineID": 211,
+            "Ingredients": [
+                { "ID": 709 } // hardwood
+            ],
+            "Output": 726, // pine tar
+            "OutputChance": 0.67
+        },
+        {
+            "MachineID": 211,
+            "Ingredients": [
+                { "ID": 709 } // hardwood
+            ],
+            "Output": 388, // wood
+            "MinOutput": 5,
+            "MaxOutput": 10,
+            "OutputChance": 88.2
+        },
+        {
+            "MachineID": 211,
+            "Ingredients": [
+                { "ID": 709 } // hardwood
+            ],
+            "Output": 388, // wood
+            "MinOutput": 15,
+            "MaxOutput": 20,
+            "OutputChance": 9.8
+        },
+
+        {
+            "MachineID": 211,
+            "Ingredients": [
+                { "ID": 169 } // driftwood
+            ],
+            "Output": 388, // wood
+            "MinOutput": 5,
+            "MaxOutput": 9
+        }
+    ],
+
+    /*********
+    ** Added metadata for NPCs (including villagers, pets, farm animals, monsters, etc).
+    *********/
+    "Characters": [
+        {
+            "ID": "Pet",
+            "DescriptionKey": "data.npc.pet.description"
+        },
+        {
+            "ID": "Horse",
+            "DescriptionKey": "data.npc.horse.description"
+        },
+        {
+            "ID": "Junimo",
+            "DescriptionKey": "data.npc.junimo.description"
+        },
+        {
+            "ID": "Villager::TrashBear",
+            "DescriptionKey": "data.npc.trash-bear.description"
+        }
+    ],
+
+    /*********
+    ** Added fish spawn rules
+    *********/
+    /*
+       Implementation notes:
+         - Submarine rules are from StardewValley.Locations.Submarine::getFish.
+         - UndergroundMine rules are from StardewValley.Locations.MineShaft::getFish and
+           getMineArea. The mine fishing areas cover multiple floors where water never appears, so
+           the 'area' field for mines specify the actual level where water can appear (i.e. 20, 60,
+           and 100), rather than the internal area ID used by getMineArea.
+         - Legendary fish rules are from the getFish implementations of each location.
+
+        Numeric area IDs are for the vanilla game (except mines per the above); named areas are
+        matched to translations.
+     */
+    "CustomFishSpawnRules": {
+        // Octopus
+        "149": {
+            "Locations": [
+                {
+                    "LocationName": "Submarine",
+                    "Seasons": [ "Winter" ]
+                }
+            ]
+        },
+
+        // Seaweed
+        "152": {
+            "Locations": [
+                {
+                    "LocationName": "Submarine",
+                    "Seasons": [ "Winter" ]
+                }
+            ]
+        },
+
+        // Sea Cucumber
+        "154": {
+            "Locations": [
+                {
+                    "LocationName": "Submarine",
+                    "Seasons": [ "Winter" ]
+                }
+            ]
+        },
+
+        // Super Cucumber
+        "155": {
+            "Locations": [
+                {
+                    "LocationName": "Submarine",
+                    "Seasons": [ "Winter" ]
+                }
+            ]
+        },
+
+        // Stonefish
+        "158": {
+            "Locations": [
+                {
+                    "LocationName": "UndergroundMine",
+                    "Area": 20,
+                    "Seasons": [ "Spring", "Summer", "Fall", "Winter" ]
+                }
+            ]
+        },
+
+        // Crimsonfish (legendary)
+        "159": {
+            "IsUnique": true,
+            "MinFishingLevel": 5,
+            "Locations": [
+                {
+                    "LocationName": "Beach",
+                    "Area": "east-pier",
+                    "Seasons": [ "Summer" ]
+                }
+            ]
+        },
+
+        // Angler (legendary)
+        "160": {
+            "IsUnique": true,
+            "MinFishingLevel": 3,
+            "Locations": [
+                {
+                    "LocationName": "Town",
+                    "Area": "northmost-bridge",
+                    "Seasons": [ "Fall" ]
+                }
+            ]
+        },
+
+        // Ice Pip
+        "161": {
+            "Locations": [
+                {
+                    "LocationName": "UndergroundMine",
+                    "Area": 60,
+                    "Seasons": [ "Spring", "Summer", "Fall", "Winter" ]
+                }
+            ]
+        },
+
+        // Lava Eel
+        "162": {
+            "Locations": [
+                {
+                    "LocationName": "UndergroundMine",
+                    "Area": 100,
+                    "Seasons": [ "Spring", "Summer", "Fall", "Winter" ]
+                }
+            ]
+        },
+
+        // Legend (legendary)
+        "163": {
+            "IsUnique": true,
+            "MinFishingLevel": 10,
+            "Weather": "Rainy",
+            "Locations": [
+                {
+                    "LocationName": "Mountain",
+                    "Seasons": [ "Spring" ]
+                }
+            ]
+        },
+
+        // Mutant Carp (legendary)
+        "682": {
+            "IsUnique": true,
+            "Locations": [
+                {
+                    "LocationName": "Sewer",
+                    "Seasons": [ "Spring", "Summer", "Fall", "Winter" ]
+                }
+            ]
+        },
+
+        // Glacierfish (legendary)
+        "775": {
+            "IsUnique": true,
+            "MinFishingLevel": 6,
+            "Locations": [
+                {
+                    "LocationName": "Forest",
+                    "Area": "island-tip",
+                    "Seasons": [ "Winter" ]
+                }
+            ]
+        },
+
+        // Midnight Squid
+        "798": {
+            "Locations": [
+                {
+                    "LocationName": "Submarine",
+                    "Seasons": [ "Winter" ]
+                }
+            ]
+        },
+
+        // Spook Fish
+        "799": {
+            "Locations": [
+                {
+                    "LocationName": "Submarine",
+                    "Seasons": [ "Winter" ]
+                }
+            ]
+        },
+
+        // Blobfish
+        "800": {
+            "Locations": [
+                {
+                    "LocationName": "Submarine",
+                    "Seasons": [ "Winter" ]
+                }
+            ]
+        }
+    },
+
+    /*********
+    ** Corrects metadata for game objects (including inventory items, terrain features, crops, trees, and other map objects).
+    *********/
+    "Objects": [
+        /****
+        ** Farm
+        ****/
+        {
+            "Type": "BigCraftable",
+            "SpriteID": [ 102 /*duck or white egg*/, 103 /*brown or void egg*/ ],
+            "Context": "World",
+            "DescriptionKey": "data.item.egg-incubator.description" // no description when it contains an egg
+        },
+        {
+            "SpriteID": [ 294, 295 ],
+            "Context": "World",
+            "NameKey": "data.item.broken-branch.name",
+            "TypeKey": "data.type.debris",
+            "DescriptionKey": "data.item.broken-branch.description" // no meaningful default
+        },
+        {
+            "SpriteID": [ 343, 450 ],
+            "Context": "World",
+            "NameKey": "data.item.stone.name",
+            "TypeKey": "data.type.debris", // default is 'asdf'
+            "DescriptionKey": "data.item.stone.description" // no meaningful default
+        },
+        {
+            "SpriteID": [ 75 ],
+            "Context": "World",
+            "NameKey": "data.item.geode.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.geode.description" // no meaningful default
+        },
+        {
+            "SpriteID": [ 76 ],
+            "Context": "World",
+            "NameKey": "data.item.frozen-geode.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.frozen-geode.name" // no meaningful default
+        },
+        {
+            "SpriteID": [ 77 ],
+            "Context": "World",
+            "NameKey": "data.item.magma-geode.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.magma-geode.description" // no meaningful default
+        },
+
+        /****
+        ** Weeds & crystals (all identified as "Weeds" with no meaningful description, with a sale price despite being unsellable)
+        ****/
+        {
+            "SpriteID": [ 313, 314, 315, 316, 317, 318, 452, 674, 675, 676, 677, 678, 679, 750, 784, 785, 786 ],
+            "Context": "World",
+            "NameKey": "data.item.weed.name",
+            "TypeKey": "data.type.debris",
+            "DescriptionKey": "data.item.weed.description",
+            "ShowInventoryFields": false
+        },
+        {
+            "SpriteID": [ 792, 793, 794 ],
+            "Context": "World",
+            "NameKey": "data.item.fertile-weed.name",
+            "TypeKey": "data.type.debris",
+            "DescriptionKey": "data.item.fertile-weed.description",
+            "ShowInventoryFields": false
+        },
+        {
+            "SpriteID": [ 319, 320, 321 ],
+            "Context": "World",
+            "NameKey": "data.item.ice-crystal.name",
+            "TypeKey": "data.type.debris",
+            "DescriptionKey": "data.item.ice-crystal.description",
+            "ShowInventoryFields": false
+        },
+
+        /****
+        ** Mine stones (all identified as "Stone" with no meaningful description)
+        ****/
+        /* gems */
+        {
+            "SpriteID": [ 8, 66 ],
+            "Context": "World",
+            "NameKey": "data.item.amethyst-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.amethyst-node.description"
+        },
+        {
+            "SpriteID": [ 14, 62 ],
+            "Context": "World",
+            "NameKey": "data.item.aquamarine-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.aquamarine-node.description"
+        },
+        {
+            "SpriteID": [ 843, 844 ], // volcano
+            "Context": "World",
+            "NameKey": "data.item.cinder-shard-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.cinder-shard-node.description"
+        },
+        {
+            "SpriteID": [ 2 /*skull cavern*/, 72 ],
+            "Context": "World",
+            "NameKey": "data.item.diamond-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.diamond-node.description"
+        },
+        {
+            "SpriteID": [ 12 /*skull cavern*/, 60 ],
+            "Context": "World",
+            "NameKey": "data.item.emerald-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.emerald-node.description"
+        },
+        {
+            "SpriteID": [ 44 ],
+            "Context": "World",
+            "NameKey": "data.item.gem-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.gem-node.description"
+        },
+        {
+            "SpriteID": [ 6, 70 ],
+            "Context": "World",
+            "NameKey": "data.item.jade-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.jade-node.description"
+        },
+        {
+            "SpriteID": [ 46 ],
+            "Context": "World",
+            "NameKey": "data.item.mystic-stone.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.mystic-stone.description"
+        },
+        {
+            "SpriteID": [ 74 ],
+            "Context": "World",
+            "NameKey": "data.item.prismatic-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.prismatic-node.description"
+        },
+        {
+            "SpriteID": [ 4 /*skull cavern*/, 64 ],
+            "Context": "World",
+            "NameKey": "data.item.ruby-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.ruby-node.description"
+        },
+        {
+            "SpriteID": [ 10, 68 ],
+            "Context": "World",
+            "NameKey": "data.item.topaz-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.topaz-node.description"
+        },
+        {
+            "SpriteID": [ 819 ], // volcano
+            "Context": "World",
+            "NameKey": "data.item.omni-geode-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.omni-geode-node.description"
+        },
+
+        /* ores */
+        {
+            "SpriteID": [ 751, 849/* volcano */ ],
+            "Context": "World",
+            "NameKey": "data.item.copper-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.copper-node.description"
+        },
+        {
+            "SpriteID": [ 764 ],
+            "Context": "World",
+            "NameKey": "data.item.gold-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.gold-node.description"
+        },
+        {
+            "SpriteID": [ 765 ],
+            "Context": "World",
+            "NameKey": "data.item.iridium-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.iridium-node.description"
+        },
+        {
+            "SpriteID": [ 290, 850/* volcano */ ],
+            "Context": "World",
+            "NameKey": "data.item.iron-node.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.iron-node.description"
+        },
+
+        /* generic stones */
+        {
+            "SpriteID": [ 32 /*grey*/, 34 /*blue*/, 36 /*blue*/, 38 /*blue*/, 40 /*brown*/, 42 /*brown*/, 48 /*snowy*/, 50 /*snowy*/, 52 /*snowy*/, 54 /*snowy*/, 56 /*snowy*/, 58 /*snowy*/ ],
+            "Context": "World",
+            "NameKey": "data.item.colored-stone.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.colored-stone.description"
+        },
+        {
+            "SpriteID": [ 668, 670, 845, 846, 847 ], // 845+ in volcano
+            "Context": "World",
+            "NameKey": "data.item.mine-stone.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.mine-stone.description"
+        },
+
+        /* other stones */
+        {
+            "SpriteID": [ 818 ], // IslandNorth
+            "Context": "World",
+            "NameKey": "data.item.clay-stone.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.clay-stone.description"
+        },
+        {
+            "SpriteID": [ 816, 817 ], // IslandNorth
+            "Context": "World",
+            "NameKey": "data.item.fossil-stone.name",
+            "TypeKey": "data.type.stone",
+            "DescriptionKey": "data.item.fossil-stone.description"
+        },
+        {
+            "SpriteID": [ 25 ], // IslandWest
+            "Context": "World",
+            "TypeKey": "data.type.stone"
+        },
+
+
+        /****
+        ** Mine containers (all identified as "Barrel" with no meaningful description)
+        ****/
+        {
+            "Type": "BigCraftable",
+            "SpriteID": [ 118 /*barrel*/, 120 /*frost barrel*/, 122 /*dark barrel*/, 124 /*desert barrel*/ ],
+            "Context": "World",
+            "NameKey": "data.item.barrel.name",
+            "TypeKey": "data.type.container",
+            "DescriptionKey": "data.item.barrel.description"
+        },
+        {
+            "Type": "BigCraftable",
+            "SpriteID": [ 119 /*box*/, 121 /*frost box*/, 123 /*dark box*/, 125 /*desert box*/ ],
+            "Context": "World",
+            "NameKey": "data.item.box.name",
+            "TypeKey": "data.type.container",
+            "DescriptionKey": "data.item.box.description"
+        }
+    ],
+
+    /*********
+    ** Information about Adventure Guild monster-slaying quests.
+    ** Extracted from AdventureGuild::showMonsterKillList().
+    *********/
+    "AdventureGuildQuests": [
+        {
+            "KillListKey": "Slimes",
+            "Targets": [ "Green Slime", "Frost Jelly", "Sludge", "Tiger Slime" ],
+            "RequiredKills": 1000
+        },
+        {
+            "KillListKey": "VoidSpirits",
+            "Targets": [ "Shadow Guy", "Shadow Shaman", "Shadow Brute", "Shadow Sniper" ],
+            "RequiredKills": 150
+        },
+        {
+            "KillListKey": "Skeletons",
+            "Targets": [ "Skeleton", "Skeleton Mage" ],
+            "RequiredKills": 50
+        },
+        {
+            "KillListKey": "RockCrabs",
+            "Targets": [ "Rock Crab", "Lava Crab", "Iridium Crab" ],
+            "RequiredKills": 60
+        },
+        {
+            "KillListKey": "CaveInsects",
+            "Targets": [ "Grub", "Fly", "Bug" ],
+            "RequiredKills": 125
+        },
+        {
+            "KillListKey": "Bats",
+            "Targets": [ "Bat", "Frost Bat", "Lava Bat", "Iridium Bat" ],
+            "RequiredKills": 200
+        },
+        {
+            "KillListKey": "Duggies",
+            "Targets": [ "Duggy", "Magma Duggy" ],
+            "RequiredKills": 30
+        },
+        {
+            "KillListKey": "DustSprites",
+            "Targets": [ "Dust Spirit" ],
+            "RequiredKills": 500
+        },
+        {
+            "KillListKey": "Mummies",
+            "Targets": [ "Mummy" ],
+            "RequiredKills": 100
+        },
+        {
+            "KillListKey": "PepperRex",
+            "Targets": [ "Pepper Rex" ],
+            "RequiredKills": 50
+        },
+        {
+            "KillListKey": "Serpent",
+            "Targets": [ "Serpent", "Royal Serpent" ],
+            "RequiredKills": 250
+        },
+        {
+            "KillListKey": "MagmaSprite",
+            "Targets": [ "Magma Sprite", "Magma Sparker" ],
+            "RequiredKills": 150
+        }
+    ],
+
+    /*********
+    ** Puzzle solutions
+    *********/
+    "PuzzleSolutions": {
+        // The sequence of flute block pitches for the IslandSouthEast mermaid music puzzle.
+        // Derived from IslandSouthEast.OnFlutePlayed.
+        "IslandMermaidFluteBlockSequence": [ 200, 1100, 900, 500, 700 ]
+    }
+}

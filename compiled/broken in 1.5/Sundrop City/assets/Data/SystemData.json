@@ -1,5 +1,16 @@
 {
-	"Layers":["Light", "Warps", "Doors", "NightTiles", "DayTiles"],
+	"Properties":["Light", "Warps", "Doors", "NightTiles", "DayTiles"],
+	"EmptyStalls":[17, 19, 20, 23, 25, 26],
+	"PlayerStall":12,
+	"TouristLines":{
+		"Common":60,
+		"Adult":0,
+		"Male":0,
+		"Female":0,
+		"Child":0,
+		"Boy":0,
+		"Girl":0
+	},
 	"FileBlacklist":[
 		"Maps/Festivals.png",
 		"Maps/furniture.png",
@@ -13,5 +24,5 @@
 		"Maps/walls_and_floors.png",
 		"Maps/Mines/mine.png",
 		"Maps/Furniture/Furniture_Template_aseprite.ase"
-]
+	]
 }

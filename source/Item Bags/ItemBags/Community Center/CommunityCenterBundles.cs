@@ -46,8 +46,7 @@ namespace ItemBags.Community_Center
                 this.Building = Game1.getLocationFromName("CommunityCenter") as CommunityCenter;
                 this.IsJojaMember = Game1.MasterPlayer.mailReceived.Contains("JojaMember"); // Possible TODO Do names of received mail depend on current language?
 
-                string DataPath = @"Data\Bundles";
-                Dictionary<string, string> RawBundleData = Game1.content.Load<Dictionary<string, string>>(DataPath);
+                Dictionary<string, string> RawBundleData = Game1.netWorldState.Value.BundleData; //Game1.content.Load<Dictionary<string, string>>(@"Data\Bundles");
                 Dictionary<string, List<Tuple<int, string>>> GroupedByRoomName = new Dictionary<string, List<Tuple<int, string>>>();
                 foreach (KeyValuePair<string, string> KVP in RawBundleData)
                 {
@@ -68,7 +67,7 @@ namespace ItemBags.Community_Center
                 Dictionary<int, BundleTask> IndexedTasks = Rooms.SelectMany(x => x.Tasks).ToDictionary(x => x.BundleIndex);
 
                 //  Fill in data for which items of which tasks have been completed
-                foreach (var KVP in Building.bundlesDict())
+                foreach (var KVP in Building.bundlesDict()) // maybe use Game1.netWorldState.Value.Bundles instead?
                 {
                     if (IndexedTasks.TryGetValue(KVP.Key, out BundleTask Task))
                     {

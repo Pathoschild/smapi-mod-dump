@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections;
 
 namespace CustomDeathPenaltyPlus
 {
@@ -19,7 +17,6 @@ namespace CustomDeathPenaltyPlus
 
         public PassOutPenaltyChanges PassOutPenalty { get; set; } = new PassOutPenaltyChanges();
 
-        
         internal class DeathPenaltyChanges
         {
             public bool RestoreItems { get; set; } = true;

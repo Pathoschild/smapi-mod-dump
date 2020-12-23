@@ -35,6 +35,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModEntry.cs" />
@@ -48,5 +53,5 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\Pathoschild.Stardew.ModBuildConfig.3.0.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\..\packages\Pathoschild.Stardew.ModBuildConfig.3.0.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Import Project="..\..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
 </Project>

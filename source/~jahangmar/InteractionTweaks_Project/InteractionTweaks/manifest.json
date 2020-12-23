@@ -11,7 +11,7 @@
 {
   "Name": "InteractionTweaks",
   "Author": "jahangmar",
-  "Version": "1.4.0",
+  "Version": "1.4.1",
   "Description": "Allows eating of multiple items, improves some menus, and more.",
     "UniqueID": "jahangmar.InteractionTweaks",
   "MinimumApiVersion": "3.0.0",

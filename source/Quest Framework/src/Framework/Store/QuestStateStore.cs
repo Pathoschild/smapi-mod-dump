@@ -87,8 +87,8 @@ namespace QuestFramework.Framework.Store
 
         internal void Commit(StatePayload payload)
         {
-            if (!this.Store.ContainsKey(payload.FarmerId))
-                this.Store.Add(payload.FarmerId, new Dictionary<string, StatePayload>());
+            if (!this.Store.ContainsKey(payload.FarmerId) || this.Store[payload.FarmerId] == null)
+                this.Store[payload.FarmerId] = new Dictionary<string, StatePayload>();
 
             this.Store[payload.FarmerId][payload.QuestName] = payload;
             this.Monitor.Log($"Payload `{payload.QuestName}/{payload.FarmerId}` type `{payload.StateData.Type}` commited to store");

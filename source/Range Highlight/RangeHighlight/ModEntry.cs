@@ -30,7 +30,7 @@ namespace RangeHighlight {
         public override void Entry(IModHelper helper) {
             this.helper = helper;
             config = helper.ReadConfig<ModConfig>();
-            highlighter = new RangeHighlighter(helper, config);
+            highlighter = new RangeHighlighter(this.Monitor, helper, config);
             api = _api_private = new RangeHighlightAPI(this);
             defaultShapes = new DefaultShapes(api);
             installDefaultHighlights();
@@ -196,7 +196,7 @@ namespace RangeHighlight {
                         }
                         // This relies on the fact that placed bombs are not an item, so this
                         // can use the cursor position for the location
-                        var cursorTile = helper.Input.GetCursorPosition().Tile;
+                        var cursorTile = highlighter.GetCursorTile();
                         return bombHelper(range, (int)cursorTile.X, (int)cursorTile.Y);
                     });
 

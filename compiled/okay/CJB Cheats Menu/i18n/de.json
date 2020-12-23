@@ -1,0 +1,232 @@
+{
+    /*********
+    ** Main translations
+    *********/
+    // mod name shown in the menu
+    "mod-name": "CJB Cheatmenü",
+
+    // tab names
+    "tabs.player-and-tools": "Spieler & Werkzeuge",
+    "tabs.farm-and-fishing": "Farm & Fischen",
+    "tabs.skills": "Fertigkeiten",
+    "tabs.weather": "Wetter",
+    "tabs.relationships": "Beziehungen",
+    "tabs.warp": "Teleportieren",
+    "tabs.time": "Zeit",
+    "tabs.advanced": "Erweitert",
+    "tabs.controls": "Steuerung",
+
+
+    /*********
+    ** Player & Tools tab
+    *********/
+    // player
+    "player.title": "Spieler",
+    "player.infinite-stamina": "Unendliche Ausdauer",
+    "player.infinite-health": "Unendlich Leben",
+    "player.instant-cooldowns": "Sofortige Waffen-Cooldowns",
+    "player.inventory-size": "Inventargröße",
+    "player.movement-speed": "Bewegungsgeschwindigkeit",
+    "player.movement-speed.default": "normal",
+    "player.one-hit-kill": "Mit einem Schlag töten",
+    "player.max-daily-luck": "Maximales tägliches Glück",
+
+    // tools
+    "tools.title": "Werkzeuge",
+    "tools.infinite-water": "Unendlich Wasser in Gießkanne",
+    "tools.one-hit-break": "Mit einem Schlag zerstören",
+    "tools.harvest-with-scythe": "Mit Sense ernten",
+
+    // money
+    "money.title": "Geld",
+    "money.add-amount": "Füge {{amount}}g hinzu",
+    "casino-coins.title": "Casino Münzen",
+    "casino-coins.add-amount": "Füge {{amount}} hinzu",
+
+
+    /*********
+    ** Farm & Fishing tab
+    *********/
+    // farm
+    "farm.title": "Farm",
+    "farm.auto-water": "Automatisches Gießen",
+    "farm.durable-fences": "Widerstandsfähige Zäune",
+    "farm.instant-build": "Sofortiger Bau",
+    "farm.always-auto-feed": "Immer automatisch füttern",
+    "farm.infinite-hay": "Unendlich Heu",
+
+    // fishing
+    "fishing.title": "Angeln",
+    "fishing.instant-catch": "Sofortiger Fang",
+    "fishing.instant-bite": "Sofortiger Biss",
+    "fishing.always-throw-max-distance": "Immer über maximale Distanz auswerfen",
+    "fishing.always-treasure": "Jedes mal Schatz",
+    "fishing.durable-tackles": "Haltbares Angelzubehör",
+
+    // fast machines
+    "fast-machines.title": "Schnelle maschinelle Verarbeitung",
+    "fast-machines.fruit-trees": "Fruchtbäume",
+    "fast-machines.ready-in-the-morning": "{{machineName}} (morgens fertig)",
+
+
+    /*********
+    ** Skills tab
+    *********/
+    // skills
+    "skills.title": "Fähigkeiten",
+    "skills.increase-farming": "Erhöhe Hofarbeit Lvl: {{currentLevel}}",
+    "skills.increase-mining": "Erhöhe Minenarbeit Lvl: {{currentLevel}}",
+    "skills.increase-foraging": "Erhöhe Sammeln Lvl: {{currentLevel}}",
+    "skills.increase-fishing": "Erhöhe Fischen Lvl: {{currentLevel}}",
+    "skills.increase-combat": "Erhöhe Kampf Lvl: {{currentLevel}}",
+    "skills.reset": "FÄHIGKEITEN ZURÜCKSETZEN!",
+
+    // professions
+    "professions.title": "Berufe",
+    "professions.combat.fighter": "Kampf lvl 5 - Kämpfer",
+    "professions.combat.scout": "Kampf lvl 5 - Kundschafter",
+    "professions.combat.acrobat": "Kampf lvl 10 - Akrobat",
+    "professions.combat.brute": "Kampf lvl 10 - Schläger",
+    "professions.combat.defender": "Kampf lvl 10 - Verteidiger",
+    "professions.combat.desperado": "Kampf lvl 10 - Desperado",
+    "professions.farming.rancher": "Hofarbeit lvl 5 - Viehzüchter",
+    "professions.farming.tiller": "Hofarbeit lvl 5 - Ackerbauer",
+    "professions.farming.agriculturist": "Hofarbeit lvl 10 - Landwirt",
+    "professions.farming.artisan": "Hofarbeit lvl 10 - Handwerker",
+    "professions.farming.coopmaster": "Hofarbeit lvl 10 - Stallmeister",
+    "professions.farming.shepherd": "Hofarbeit lvl 10 - Hirte",
+    "professions.fishing.fisher": "Fischen lvl 5 - Fischer",
+    "professions.fishing.trapper": "Fischen lvl 5 - Fallensteller",
+    "professions.fishing.angler": "Fischen lvl 10 - Angler",
+    "professions.fishing.luremaster": "Fischen lvl 10 - Lockmeister",
+    "professions.fishing.mariner": "Fischen lvl 10 - Seemann",
+    "professions.fishing.pirate": "Fischen lvl 10 - Pirat",
+    "professions.foraging.forester": "Sammeln lvl 5 - Förster",
+    "professions.foraging.gatherer": "Sammeln lvl 5 - Sammler",
+    "professions.foraging.botanist": "Sammeln lvl 10 - Botanist",
+    "professions.foraging.lumberjack": "Sammeln lvl 10 - Holzfäller",
+    "professions.foraging.tapper": "Sammeln lvl 10 - Zapfmeister",
+    "professions.foraging.tracker": "Sammeln lvl 10 - Fährtenleser",
+    "professions.mining.geologist": "Minenarbeit lvl 5 - Geologe",
+    "professions.mining.miner": "Minenarbeit lvl 5 - Minenarbeiter",
+    "professions.mining.blacksmith": "Minenarbeit lvl 10 - Schmied",
+    "professions.mining.excavator": "Minenarbeit lvl 10 - Ausgräber",
+    "professions.mining.gemologist": "Minenarbeit lvl 10 - Gemmologe",
+    "professions.mining.prospector": "Minenarbeit lvl 10 - Erzsucher",
+
+
+    /*********
+    ** Weather tab
+    *********/
+    "weather.title": "Wetter Morgen",
+    "weather.current": "Aktuell",
+    "weather.sunny": "Sonnig",
+    "weather.raining": "Regen",
+    "weather.lightning": "Gewitter",
+    "weather.snowing": "Schnee",
+
+
+    /*********
+    ** Relationships tab
+    *********/
+    "relationships.title": "Beziehungen",
+    "relationships.give-gifts-anytime": "Geschenke jederzeit hergeben",
+    "relationships.no-decay": "Kein Freundschaftsrückfall",
+    "relationships.friends": "Freunde",
+
+
+    /*********
+    ** Warps tab
+    *********/
+    // main areas
+    "warp-section.main": "Hauptgebiete",
+    "warp.farm": "Farm",
+    "warp.carpenter": "Schreinerladen",
+    "warp.desert": "Wüste",
+    "warp.mines": "Minen",
+    "warp.pierre-shop": "Pierres Gemischtwarenladen",
+
+    // town
+    "warp-section.town": "Stadt",
+    "warp.blacksmith": "Schmiede",
+    "warp.community-center": "Gemeinschaftszentrum",
+    "warp.jojamart": "Joja-Markt",
+    "warp.movie-theater": "Kino",
+    "warp.museum": "Museum",
+    "warp.saloon": "Saloon",
+    "warp.sewer": "Kanalisation",
+
+    // forest
+    "warp-section.forest": "Wald",
+    "warp.hats": "Hüte",
+    "warp.ranch": "Marnies Ranch",
+    "warp.secret-woods": "Geheimer Wald",
+    "warp.wizard-tower": "Turm des Zauberers",
+
+    // mountain
+    "warp-section.mountain": "Berge",
+    "warp.adventurers-guild": "Abenteurergilde",
+    "warp.bathhouse": "Spa",
+    "warp.quarry": "Steinbruch",
+
+    // beach
+    "warp-section.beach": "Strand",
+    "warp.tide-pools": "Gezeitentümpel",
+    "warp.willy-shop": "Angelbedarf",
+
+    // desert
+    "warp-section.desert": "Wüste",
+    "warp.casino": "Casino",
+    "warp.sandy-shop": "Oase",
+    "warp.skull-cavern": "Schädelhöhle",
+
+    // island
+    // TODO
+    "warp-section.island": "Ginger Island",
+    "warp.forge": "Forge",
+    "warp.island-farm": "Island Farm",
+    "warp.dwarf-shop": "Volcano Dwarf Shop",
+    "warp.field-office": "Field Office",
+    "warp.leo-house": "Leo's House",
+
+
+    /*********
+    ** Time tab
+    *********/
+    "time.title": "Zeit",
+    "time.freeze-inside": "Zeit in Gebäuden stoppen",
+    "time.freeze-caves": "Zeit in Höhlen stoppen",
+    "time.freeze-everywhere": "Zeit überall stoppen",
+    "time.time": "Zeit",
+    "time.time-frozen-message": "Zeit gestoppt",
+
+
+    /*********
+    ** Advanced tab
+    *********/
+    "flags.warning": "Benutze diesen Abschnitt auf eigene Gefahr!\nDies kann zu Problemen wie übersprungene Briefe, Ereignisse oder Quests führen.",
+    "flags.quests": "Schließe Quests ab",
+    "flags.wallet": "Geldbörsen-Gegenstände",
+    "flags.unlocked": "Freigeschaltete Gebiete",
+    "flags.unlocked.guild": "Abenteurergilde",
+    "flags.unlocked.room": "Raum: {{name}}",
+    "flags.unlocked-content": "Freigeschaltete Inhalte",
+    "flags.unlocked-content.dyes-and-tailoring": "Farben & Schneiderei",
+    "flags.community-center": "Gemeinschaftszentrum",
+    "flags.community-center.door-unlocked": "Tür aufgeschlossen",
+    "flags.jojamart.membership": "Joja-Markt-Mitgliedschaft",
+
+
+    /*********
+    ** Controls tab
+    *********/
+    "controls.title": "Steuerungen",
+    "controls.android-config-note": "Du kannst die On-Screen Buttons in den Konfigurationsdateien für das CJB Cheats Menu und Virtual Keyboard Mods ändern.",
+    "controls.open-menu": "Menü öffnen",
+    "controls.freeze-time": "Zeit stoppen",
+    "controls.grow-tree": "Baum wachsen lassen",
+    "controls.grow-crops": "Saat wachsen lassen",
+    "controls.grow-radius": "Wachstumsradius um Spieler",
+    "controls.reset-controls": "Reset",
+    "controls.press-new-key": "Neue Taste drücken..."
+}

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3768
 IDs: EpicBellyFlop45.ConsoleChat
-update keys: Nexus:3768, GitHub:EpicBellyFlop45/StardewMods
+update keys: Nexus:3768, GitHub:AndyCrocker/StardewMods

@@ -40,7 +40,8 @@ namespace BitwiseJonMods
         private List<string> _supportedBuildingTypes = new List<string>() {
             "Shed",
             "Barn",
-            "Coop"
+            "Coop",
+            "Greenhouse"
         };
 
         private List<string> _supportedContainerTypes = new List<string>() {
@@ -84,7 +85,19 @@ namespace BitwiseJonMods
 
                     if (building != null && _supportedBuildingTypes.Any(b => building.buildingType.Contains(b)))
                     {
-                        _currentTileLocation = building.indoors.Value;
+                        //jon, 12/22/20: Greenhouse is now a building and can be moved. But the building is just a shell with no indoors so we must get
+                        //  the actual Greenhouse game location here to use for finding objects inside.
+                        if (building.buildingType == "Greenhouse")
+                        {
+                            if (Game1.MasterPlayer.hasOrWillReceiveMail("jojaPantry") || Game1.MasterPlayer.hasOrWillReceiveMail("ccPantry"))
+                            {
+                                _currentTileLocation = Game1.getLocationFromName("GreenHouse");
+                            }
+                        }
+                        else
+                        {
+                            _currentTileLocation = building.indoors.Value;
+                        }
                         return;
                     }
                 }
@@ -98,7 +111,7 @@ namespace BitwiseJonMods
                     return;
                 }
 
-                //See if we have the greenhouse under the cursor
+                //See if we are in the greenhouse under and hovering near the door
                 var greenhouse = GetGreenHouseUnderCursor(Game1.currentCursorTile);
                 if (greenhouse != null)
                 {
@@ -166,8 +179,6 @@ namespace BitwiseJonMods
             return result;
         }
 
-        //jon, 11/21/20: Due to a current limitation with SMAPI, locations outside of the farm, farmhouse, and farm buildings are not synced to
-        //  other players. Therefore, we cannot support harvesting the greenhouse unless the player is the main player.
         private GameLocation GetGreenHouseUnderCursor(Vector2 cursorTile)
         {
             GameLocation result = null;
@@ -179,28 +190,14 @@ namespace BitwiseJonMods
             var greenhouse = Game1.getLocationFromName("GreenHouse");
             if (greenhouse == null || greenhouse.warps == null || greenhouse.warps.Count() == 0 || (!Game1.MasterPlayer.hasOrWillReceiveMail("jojaPantry") && !Game1.MasterPlayer.hasOrWillReceiveMail("ccPantry"))) return null;
 
-            if (Game1.currentLocation.IsFarm && Game1.currentLocation.IsOutdoors && Context.IsMainPlayer)
+            if (Game1.currentLocation.Name == greenhouse.Name)
             {
-                //Only main player can load from outside
-                var mainDoorPoint = new Point(greenhouse.warps[0].TargetX, greenhouse.warps[0].TargetY);
-                hitRectangle = new Rectangle(mainDoorPoint.X - 3, mainDoorPoint.Y - 6, 7, 6);
-
-                var isHit = isPointInRectangle(Utility.Vector2ToPoint(cursorTile), hitRectangle.Value);
-                if (isHit)
-                {
-                    result = greenhouse;
-                }
-            }
-            else if (Game1.currentLocation.Name == greenhouse.Name)
-            {
-                //Other players have to actually be inside the location for the game to sync the contents
                 var mainDoorPoint = new Point(greenhouse.warps[0].X, greenhouse.warps[0].Y);
                 hitRectangle = new Rectangle(mainDoorPoint.X - 2, mainDoorPoint.Y - 1, 5, 4);
 
                 var isHit = isPointInRectangle(Utility.Vector2ToPoint(cursorTile), hitRectangle.Value);
                 if (isHit)
                 {
-                    //Only the "currentLocation" object is synced with main game
                     result = Game1.currentLocation;
                 }
             }
@@ -362,7 +359,7 @@ namespace BitwiseJonMods
 
         private Vector2 GetCursorTileLocation()
         {
-            return new Vector2((int)(Game1.getOldMouseX() + Game1.viewport.X) / Game1.tileSize, (int)(Game1.getOldMouseY() + Game1.viewport.Y) / Game1.tileSize);
+            return new Vector2((int)(Game1.getOldMouseX(false) + Game1.viewport.X) / Game1.tileSize, (int)(Game1.getOldMouseY(false) + Game1.viewport.Y) / Game1.tileSize);
         }
 
         private void HarvestAllItemsInBuilding(GameLocation location)

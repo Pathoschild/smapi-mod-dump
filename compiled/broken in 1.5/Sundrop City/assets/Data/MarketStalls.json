@@ -1,0 +1,26 @@
+[
+	{
+		"Pattern":"black",
+		"Decoration":0,
+		"Items":[
+			{
+				"Item":"sdv.object:beer"
+			},
+			{
+				"Item":"sdv.object:mead"
+			},
+			{
+				"Item":"sdv.object:pale_ale"
+			},
+			{
+				"Item":"sdv.artisan:grape_wine"
+			},
+			{
+				"Item":"sdv.artisan:apple_wine"
+			},
+			{
+				"Item":"sdv.artisan:blackberry_wine"
+			}
+		]
+	}
+]
