@@ -1,0 +1,10 @@
+{
+  "Name": "StatsReloader",
+  "Author": "Strato35",
+  "Version": "1.0.0",
+  "Description": "Regain stats regulary",
+  "UniqueID": "Strato35.StatsReloader",
+  "EntryDll": "StatsReloader.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:7428" ]
+}

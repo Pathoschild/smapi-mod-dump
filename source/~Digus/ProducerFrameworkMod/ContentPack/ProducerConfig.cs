@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using ProducerFrameworkMod.Controllers;
+using ProducerFrameworkMod.Utils;
 using StardewValley;
 
 namespace ProducerFrameworkMod.ContentPack

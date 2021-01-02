@@ -82,8 +82,20 @@ namespace BetterTrainLoot.GamePatch
 
             Item reward;
             // Create reward item
-            reward = (Item)new StardewValley.Object(id, 1); // Note: if any boots or rings are in the treasure list, they will not be equipable
-            
+            if ((id >= 516 && id <= 534) || id == 810 || id == 811)
+            {
+                reward = new Ring(id);                
+            }
+            else if ((id >= 504 && id <= 515) || id == 804 || id == 806)
+            {
+                reward = new Boots(id);                
+            }
+            //reward = new Clothing(id);
+            //reward = new Hat(id);
+            else
+            {
+                reward = (Item)new StardewValley.Object(id, 1); // Note: if any boots or rings are in the treasure list, they will not be equipable
+            }
             return reward;
         }             
     }

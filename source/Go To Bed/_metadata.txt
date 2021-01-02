@@ -5,9 +5,9 @@ mods:
    Go To Bed
 
 latest commit:
-   commit 193058d6a6b295b786271e5f8e1b7c5bb54c4757
+   commit 71a8ac1019198171b27f90d436820dd945edb954
    Author: Candidus <candidus@xmail.net>
-   Date:   Sun Aug 2 22:38:41 2020 +0200
+   Date:   Tue Dec 29 19:05:11 2020 +0100
    
-       Bugfix: Previous commit (attempt to fix spouse behavior after 2200) made things worse
+       Fix for SDV 1.5: Farmer was moved to first bed when there are multiple beds in the farm house.
    

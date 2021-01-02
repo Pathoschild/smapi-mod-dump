@@ -99,9 +99,9 @@ namespace JoysOfEfficiency.OptionsElements
             }
         }
 
-        public override void draw(SpriteBatch b, int slotX, int slotY)
+        public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
         {
-            string text = $"{label}: {_button.ToString()}";
+            string text = $"{label}: {_button}";
             Vector2 size = Game1.dialogueFont.MeasureString(text);
             b.DrawString(Game1.dialogueFont, text, new Vector2(slotX+16, slotY + 8), Color.Black, 0, new Vector2(), 1f, SpriteEffects.None, 1.0f);
 
@@ -120,9 +120,8 @@ namespace JoysOfEfficiency.OptionsElements
             {
                 return;
             }
-            x += _menu.xPositionOnScreen;
-            y += _buttonRect.Height / 2;
-            if (x < _buttonRect.Left || x > _buttonRect.Right)
+            x += _menu.xPositionOnScreen - 16;
+            if (x < _buttonRect.Left || x > _buttonRect.Right + _buttonRect.Width / 2)
                 return;
             _onStartListening(whichOption, this);
             _isListening = true;
@@ -153,7 +152,7 @@ namespace JoysOfEfficiency.OptionsElements
         public Point GetListeningMessageWindowSize()
         {
             int x = 32;
-            int y = 16;
+            int y = 32;
 
             {
                 Vector2 size = Font.MeasureString(_translation.Get("button.awaiting"));

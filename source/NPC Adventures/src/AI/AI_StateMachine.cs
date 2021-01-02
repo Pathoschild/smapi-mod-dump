@@ -20,6 +20,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Monsters;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,21 +38,24 @@ namespace NpcAdventure.AI
             FIGHT,
             IDLE,
             FORAGE,
-            SPIRITUAL
+            SPIRITUAL,
+            FISH
         }
 
         private const string FORAGING_COOLDOWN = "foragingCooldown";
+        private const string FISHING_COOLDOWN = "fishingCooldown";
         private const string CHANGE_STATE_COOLDOWN = "changeStateCooldown";
         private const string SCARED_COOLDOWN = "scaredCooldown";
         public readonly NPC npc;
-        public readonly Farmer player;
+        public readonly Farmer farmer;
 
         public bool IsLovedMonster(Monster monster)
         {
             if (!this.Csm.HasSkill("spiritual"))
                 return false;
 
-            return (this.controllers[State.SPIRITUAL] as LovePeaceController).IsLovedMonster(monster);
+            return this.controllers[State.SPIRITUAL] is LovePeaceController lovePeaceController 
+                && lovePeaceController.IsLovedMonster(monster);
         }
 
         private readonly CompanionDisplay hud;
@@ -64,13 +68,13 @@ namespace NpcAdventure.AI
 
         internal AI_StateMachine(CompanionStateMachine csm, CompanionDisplay hud, IModEvents events, IMonitor monitor)
         {
-            this.npc = csm.Companion;
-            this.player = csm.CompanionManager.Farmer;
             this.events = events ?? throw new ArgumentException(nameof(events));
             this.Monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
-            this.Csm = csm;
-            this.hud = hud;
+            this.Csm = csm ?? throw new ArgumentNullException(nameof(csm));
+            this.hud = hud ?? throw new ArgumentNullException(nameof(hud));
             this.loader = csm.ContentLoader;
+            this.npc = csm.Companion;
+            this.farmer = csm.CompanionManager.Farmer;
         }
 
         public State CurrentState { get; private set; }
@@ -92,7 +96,8 @@ namespace NpcAdventure.AI
                 [State.FIGHT] = new FightController(this, this.loader, this.events, this.Csm.Metadata.Sword),
                 [State.IDLE] = new IdleController(this, this.loader),
                 [State.FORAGE] = new ForageController(this, this.events),
-                [State.SPIRITUAL] = new LovePeaceController(this, this.events)
+                [State.SPIRITUAL] = new LovePeaceController(this, this.events),
+                [State.FISH] = new FishController(this, this.events),
             };
 
             // By default AI following the player
@@ -111,7 +116,7 @@ namespace NpcAdventure.AI
 
         public bool PerformAction()
         {
-            if (this.Csm.HasSkill("doctor") && (this.player.health < this.player.maxHealth / 3) && this.healCooldown == 0 && this.medkits != -1)
+            if (this.Csm.HasSkill("doctor") && (this.farmer.health < this.farmer.maxHealth / 3) && this.healCooldown == 0 && this.medkits != -1)
             {
                 this.TryHealFarmer();
                 return true;
@@ -120,16 +125,25 @@ namespace NpcAdventure.AI
             if (this.Csm.HasSkill("forager")
                 && this.controllers[State.FORAGE] is ForageController fc
                 && fc.HasAnyForage()
-                && fc.GiveForageTo(this.player))
+                && fc.GiveForageTo(this.farmer))
             {
-                Game1.drawDialogue(this.npc, this.Csm.Dialogues.GetFriendSpecificDialogueText(this.player, "giveForages"));
+                Game1.drawDialogue(this.npc, this.Csm.Dialogues.GetFriendSpecificDialogueText(this.farmer, "giveForages"));
+                return true;
+            }
+
+            if (this.Csm.HasSkill("fisherman")
+                && this.controllers[State.FISH] is FishController fishController
+                && fishController.HasAnyFish()
+                && fishController.GiveFishesTo(this.farmer))
+            {
+                Game1.drawDialogue(this.npc, this.Csm.Dialogues.GetFriendSpecificDialogueText(this.farmer, "giveFishes"));
                 return true;
             }
 
             return false;
         }
 
-        private void ChangeState(State state)
+        public void ChangeState(State state)
         {
             this.Monitor.Log($"AI changes state {this.CurrentState} -> {state}");
 
@@ -150,14 +164,15 @@ namespace NpcAdventure.AI
             return monster != null && Helper.IsValidMonster(monster);
         }
 
-        private bool PlayerIsNear()
+        public bool IsFarmerNear(float maxDistance = 11f)
         {
-            return Helper.Distance(this.player.getTileLocationPoint(), this.npc.getTileLocationPoint()) < 11f;
+            return Helper.Distance(this.farmer.getTileLocationPoint(), this.npc.getTileLocationPoint()) < maxDistance;
         }
 
         private bool CanForage()
         {
-            return this.PlayerIsNear() 
+            return this.IsFarmerNear() 
+                && this.CurrentState != State.FORAGE
                 && !this.cooldown.IsRunning(CHANGE_STATE_COOLDOWN)
                 && !this.cooldown.IsRunning(FORAGING_COOLDOWN)
                 && this.controllers[State.FORAGE] is ForageController fc 
@@ -182,7 +197,7 @@ namespace NpcAdventure.AI
             if (this.Csm.HasSkillsAny("fighter", "warrior")
                 && !this.cooldown.IsRunning(CHANGE_STATE_COOLDOWN)
                 && this.CurrentState != State.FIGHT
-                && this.PlayerIsNear()
+                && this.IsFarmerNear()
                 && this.IsThereAnyMonster(
                     this.Csm.HasSkill("warrior") 
                     ? FightController.DEFEND_TILE_RADIUS_WARRIOR 
@@ -212,11 +227,31 @@ namespace NpcAdventure.AI
                 this.ChangeState(State.FORAGE);
             }
 
+            if (this.Csm.HasSkill("fisherman") && this.FollowOrIdle() && this.CanFish())
+            {
+                this.cooldown.Set(FORAGING_COOLDOWN, Game1.random.Next(5000, 20000));
+                this.ChangeState(State.FISH);
+            }
+
             if (this.CurrentState == State.FOLLOW && this.CurrentController.IsIdle)
             {
                 this.cooldown.Increase(FORAGING_COOLDOWN, Game1.random.Next(300, 700));
                 this.ChangeState(State.IDLE);
             }
+        }
+
+        private bool CanFish()
+        {
+            bool isFarmerFishing = this.farmer.UsingTool && this.farmer.CurrentTool is FishingRod;
+            return this.IsFarmerNear()
+                && this.CurrentState != State.FISH
+                && !this.cooldown.IsRunning(CHANGE_STATE_COOLDOWN)
+                && !this.cooldown.IsRunning(FISHING_COOLDOWN)
+                && !this.farmer.isMoving()
+                && this.npc.currentLocation.waterTiles != null
+                && this.controllers[State.FISH] is FishController fishController
+                && fishController.CanFish()
+                && (isFarmerFishing || Game1.random.Next(1, 24) == 1);
         }
 
         private bool FollowOrIdle()
@@ -265,7 +300,7 @@ namespace NpcAdventure.AI
                 if (!this.npc.IsEmoting && Game1.random.Next(0, 8) == 1)
                 {
                     this.npc.doEmote(28);
-                    this.player.changeFriendship(-1, this.npc);
+                    this.farmer.changeFriendship(-1, this.npc);
                 }
 
                 this.cooldown.Set(SCARED_COOLDOWN, Game1.random.Next(800, 2400));
@@ -280,7 +315,7 @@ namespace NpcAdventure.AI
 
         private int GetNotBeScaredChanceIndex()
         {
-            int notBeScaredChance = 4 + this.player.CombatLevel / 2;
+            int notBeScaredChance = 4 + this.farmer.CombatLevel / 2;
 
             if (this.Csm.HasSkill("warrior"))
             {
@@ -295,7 +330,7 @@ namespace NpcAdventure.AI
             GameLocation previousLocation = this.npc.currentLocation;
             
             // Warp NPC to player's location at theirs position
-            Helper.WarpTo(this.npc, l, this.player.getTileLocationPoint());
+            Helper.WarpTo(this.npc, l, this.farmer.getTileLocationPoint());
 
             this.cooldown.Set(CHANGE_STATE_COOLDOWN, 30);
 

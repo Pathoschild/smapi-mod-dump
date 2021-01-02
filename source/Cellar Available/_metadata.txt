@@ -5,9 +5,9 @@ mods:
    Cellar Available
 
 latest commit:
-   commit be8a2113e8ad715645ad0c4819eaf53917c0a633
+   commit 51136d8a73bdea669b78db3d5643f6aafbf472ba
    Author: Candidus <candidus@xmail.net>
-   Date:   Thu Oct 8 22:46:42 2020 +0200
+   Date:   Sun Dec 27 18:58:49 2020 +0100
    
-       Bugfix: Mod doesn't work after creating a new game, saving and reloading required due to an issue in SDV
+       Fix for SDV 1.5: All front tiles must be removed.
    

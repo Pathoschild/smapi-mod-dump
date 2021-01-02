@@ -1,0 +1,15 @@
+﻿{
+  "Name": "IncubatePufferfishEggs",
+  "Author": "GZhynko",
+  "Version": "1.0.3",
+  "Description": "Provides logic for the Pufferfish Chickens mod.",
+  "UniqueID": "GZhynko.IncubatePufferfishEggs",
+  "EntryDll": "IncubatePufferfishEggs.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:???" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets"
+    }
+  ]
+}

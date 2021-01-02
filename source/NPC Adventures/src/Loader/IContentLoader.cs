@@ -22,7 +22,7 @@ namespace NpcAdventure.Loader
         /// <typeparam name="TValue">Type of asset data values</typeparam>
         /// <param name="path">Name of asset, like `Strings/Strings` or `Dialogue/Abigail` and etc</param>
         /// <returns></returns>
-        Dictionary<TKey, TValue> LoadData<TKey, TValue>(string path);
+        Dictionary<TKey, TValue> LoadData<TKey, TValue>(string path, bool isRequired = true);
 
         Dictionary<TKey, TValue> LoadMergedData<TKey, TValue>(params string[] paths);
 

@@ -5,9 +5,9 @@ mods:
    Deluxe Hats
 
 latest commit:
-   commit f5638ed55e7dd03d220385184abf2a6e0c621b02
+   commit 1c809e71e42d95a27d4ba5bb4e443d5a38e62035
    Author: Domenic Simone <domenicsim1@gmail.com>
    Date:   Wed Dec 23 14:41:56 2020 +1100
    
-       Version 1.0.8
+       Version 1.0.7
    

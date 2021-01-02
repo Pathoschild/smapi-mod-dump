@@ -9,9 +9,9 @@ for queries and analysis.**
 # Stardew Valley Mod - Better Ranching
 Stardew Valley mod that prevents doomed milking/shearing attempts and adds an indicator when animals can be petted, milked, or sheared: https://www.nexusmods.com/stardewvalley/mods/859/
 
-Compatible with Stardew Valley 1.4.3+ on Linux, Mac, and Windows. Requires SMAPI 3.0 or later.
+Compatible with Stardew Valley 1.5.0+ on Linux, Mac, and Windows. Requires SMAPI 3.0 or later.
 
-**New Update (1.7.6):** [floatingatoll](https://github.com/floatingatoll) awesomely fixed a bug that was causing bubbles to be weirdly floating alone during custscenes! 
+**New Update (1.8.0):** Updated to work with Stardew Valley v1.5 and fixed zoom / UI scaling issues! Shout out to [corrinr](https://github.com/corrinr) for releasing an unofficial patch while I worked on this!
 
 ![Preview image](/better_ranching_preview.gif)
 
@@ -56,10 +56,13 @@ Compatible with Stardew Valley 1.4.3+ on Linux, Mac, and Windows. Requires SMAPI
     * minervamaga made a fix for an error that was spamming the console
 * 1.7.4:
     * Fixed a bug causing dogs/cats to keep their heart indicators even if the setting was turned off in the config
-* 1.75:
+* 1.7.5:
     * Improve error handling
-* 1.76:
+* 1.7.6:
     * floatingatoll fixed a bug causing bubbles to not be hidden during cutscenes
+* 1.8.0:
+    * Made compatible with SDV 1.5
+    * Fixed UI / Zoom scaling issues
 <h2>Contributors</h2>
 
 * Urbanyeti -- https://github.com/urbanyeti
@@ -67,3 +70,4 @@ Compatible with Stardew Valley 1.4.3+ on Linux, Mac, and Windows. Requires SMAPI
 * Pathoschild -- https://github.com/Pathoschild
 * minervamaga -- https://github.com/minervamaga
 * floatingatoll -- https://github.com/floatingatoll
+* corrin -- https://github.com/corrinr

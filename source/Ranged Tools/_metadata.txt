@@ -5,9 +5,9 @@ mods:
    Ranged Tools
 
 latest commit:
-   commit 48ebfa94b6b8b155e6c83cfd52f264622d090a4e
+   commit 63fd35032a7ca95859ece40f0d9c0d2104e5f1bf
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Sun Sep 27 16:58:27 2020 -0700
+   Date:   Tue Dec 29 17:02:45 2020 -0800
    
-       Initial release
+       Fixed formatting
    

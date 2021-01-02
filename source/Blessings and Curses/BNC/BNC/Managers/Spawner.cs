@@ -29,8 +29,11 @@ namespace BNC
 
         public static void Init()
         {
-            if(BNC_Core.config.Use_Bits_To_Spawn_Mobs)
-                GraphicsEvents.OnPostRenderHudEvent += new EventHandler(OnPostRender);
+            if (BNC_Core.config.Use_Bits_To_Spawn_Mobs)
+            {
+                BNC_Core.helper.Events.Display.RenderedHud += OnPostRender;
+            }
+               
         }
 
 
@@ -381,7 +384,7 @@ namespace BNC
         }
 
         //## Client Rendering Code for Twitch Name over twitch mobs. 
-        private static void OnPostRender(object sender, EventArgs e)
+        private static void OnPostRender(object sender, RenderedHudEventArgs e)
         {
             if (Game1.currentLocation != null && Game1.activeClickableMenu == null && Game1.CurrentEvent == null)
             {

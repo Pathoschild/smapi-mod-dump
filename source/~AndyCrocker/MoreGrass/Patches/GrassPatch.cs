@@ -18,125 +18,82 @@ using System.Reflection;
 
 namespace MoreGrass.Patches
 {
-    /// <summary>Contains patches for patching game code in the StardewValley.TerrainFeatures.Grass class.</summary>
+    /// <summary>Contains patches for patching game code in the <see cref="StardewValley.TerrainFeatures.Grass"/> class.</summary>
     internal class GrassPatch
     {
-        /// <summary>This is code that will replace some game code, this is ran whenever the season gets updated. Used for ensuring grass can't live in the config specified seasons.</summary>
-        /// <param name="__instance">The current grass instance that is being patched.</param>
-        /// <param name="__result">Whether all grass should be killed.</param>
-        /// <returns>False meaning the original method will never get ran.</returns>
+        /*********
+        ** Internal Methods
+        *********/
+        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Grass.seasonUpdate(bool)"/> method.</summary>
+        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <param name="__result">Whether all the grass should be killed (this is the return value of the original method).</param>
+        /// <returns><see langword="false"/>, meaning the original method will not get ran.</returns>
+        /// <remarks>This is used to determine if grass should get killed at the beginning of a new season based on the mod configuration.</remarks>
         internal static bool SeasonUpdatePrefix(Grass __instance, ref bool __result)
         {
             switch (Game1.currentSeason)
             {
-                case "spring":
-                    {
-                        __result = !ModEntry.Config.CanGrassLiveInSpring;
-                        break;
-                    }
-                case "summer":
-                    {
-                        __result = !ModEntry.Config.CanGrassLiveInSummer;
-                        break;
-                    }
-                case "fall":
-                    {
-                        __result = !ModEntry.Config.CanGrassLiveInFall;
-                        break;
-                    }
-                case "winter":
-                    {
-                        __result = !ModEntry.Config.CanGrassLiveInWinter;
-                        break;
-                    }
+                case "spring": __result = !ModEntry.Instance.Config.CanGrassLiveInSpring; break;
+                case "summer": __result = !ModEntry.Instance.Config.CanGrassLiveInSummer; break;
+                case "fall": __result = !ModEntry.Instance.Config.CanGrassLiveInFall; break;
+                case "winter": __result = !ModEntry.Instance.Config.CanGrassLiveInWinter; break;
             }
 
             // recalculate the new textures for grass
-            __instance.loadSprite();
+            __instance.loadSprite(); 
+            __instance.setUpRandom(__instance.currentTileLocation);
 
-            // return false so the base method doesn't get ran
             return false;
         }
 
-        /// <summary>This is code that will run after some game code, this is ran whenever the grass sprite gets loaded. Used for setting a custom sprite.</summary>
-        /// <param name="__instance">The current grass instance that is being patched.</param>
+        /// <summary>The post fix for the <see cref="StardewValley.TerrainFeatures.Grass.loadSprite"/> method.</summary>
+        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <remarks>This is used to load the custom grass sprite.</remarks>
         internal static void LoadSpritePostFix(Grass __instance)
         {
-            FieldInfo texture = typeof(Grass).GetField("texture", BindingFlags.NonPublic | BindingFlags.Instance);
-
             Texture2D grassTexture = null;
             switch (Game1.currentSeason)
             {
-                case "spring":
-                    {
-                        grassTexture = ModEntry.SpringGrassSprites[Game1.random.Next(ModEntry.SpringGrassSprites.Count)];
-                        break;
-                    }
-                case "summer":
-                    {
-                        grassTexture = ModEntry.SummerGrassSprites[Game1.random.Next(ModEntry.SummerGrassSprites.Count)];
-                        break;
-                    }
-                case "fall":
-                    {
-                        grassTexture = ModEntry.FallGrassSprites[Game1.random.Next(ModEntry.FallGrassSprites.Count)];
-                        break;
-                    }
-                case "winter":
-                    {
-                        grassTexture = ModEntry.WinterGrassSprites[Game1.random.Next(ModEntry.WinterGrassSprites.Count)];
-                        break;
-                    }
+                case "spring": grassTexture = ModEntry.Instance.SpringGrassSprites[Game1.random.Next(ModEntry.Instance.SpringGrassSprites.Count)]; break;
+                case "summer": grassTexture = ModEntry.Instance.SummerGrassSprites[Game1.random.Next(ModEntry.Instance.SummerGrassSprites.Count)]; break;
+                case "fall": grassTexture = ModEntry.Instance.FallGrassSprites[Game1.random.Next(ModEntry.Instance.FallGrassSprites.Count)]; break;
+                case "winter": grassTexture = ModEntry.Instance.WinterGrassSprites[Game1.random.Next(ModEntry.Instance.WinterGrassSprites.Count)]; break;
             }
 
-            texture.SetValue(__instance, new Lazy<Texture2D>(() => grassTexture));
+            __instance.texture = new Lazy<Texture2D>(() => grassTexture);
             __instance.grassSourceOffset.Value = 0;
         }
 
-        /// <summary>This is code that will run after some game code, this is used for setting 'whichWeed' which ensures the custom sprite is drawn correctly.</summary>
-        /// <param name="__instance">The current grass instance that is being patched.</param>
+        /// <summary>The post fix for the <see cref="StardewValley.TerrainFeatures.Grass.setUpRandom(Vector2)"/> method.</summary>
+        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <remarks>This is used for setting the 'whichWeed' member which ensures the custom sprite is drawn correctly.</remarks>
         internal static void SetupRandomPostFix(Vector2 tileLocation, Grass __instance)
         {
-            Random random = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed / 28 + (int)tileLocation.X * 7 + (int)tileLocation.Y * 11);
+            var random = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed / 28 + (int)tileLocation.X * 7 + (int)tileLocation.Y * 11);
 
-            FieldInfo whichWeed = typeof(Grass).GetField("whichWeed", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            int[] newWhichWeed = new int[4];
-            for (int i  = 0; i < 4; i++)
+            // calculate the 'whichWeed' value
+            var newWhichWeed = new int[4];
+            for (int i = 0; i < 4; i++)
             {
                 switch (Game1.currentSeason)
                 {
-                    case "spring":
-                        {
-                            newWhichWeed[i] = random.Next(ModEntry.SpringGrassSprites.Count);
-                            break;
-                        }
-                    case "summer":
-                        {
-                            newWhichWeed[i] = random.Next(ModEntry.SummerGrassSprites.Count);
-                            break;
-                        }
-                    case "fall":
-                        {
-                            newWhichWeed[i] = random.Next(ModEntry.FallGrassSprites.Count);
-                            break;
-                        }
-                    case "winter":
-                        {
-                            newWhichWeed[i] = random.Next(ModEntry.WinterGrassSprites.Count);
-                            break;
-                        }
+                    case "spring": newWhichWeed[i] = random.Next(ModEntry.Instance.SpringGrassSprites.Count); break;
+                    case "summer": newWhichWeed[i] = random.Next(ModEntry.Instance.SummerGrassSprites.Count); break;
+                    case "fall": newWhichWeed[i] = random.Next(ModEntry.Instance.FallGrassSprites.Count); break;
+                    case "winter": newWhichWeed[i] = random.Next(ModEntry.Instance.WinterGrassSprites.Count); break;
                 }
             }
 
-            whichWeed.SetValue(__instance, newWhichWeed);
+            // update the member on the grass instance
+            typeof(Grass).GetField("whichWeed", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, newWhichWeed);
         }
 
-        /// <summary>This is code that will run after some game code, this is used to draw the sprites correctly.</summary>
+        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Grass.draw(SpriteBatch, Vector2)(bool)"/> method.</summary>
         /// <param name="spriteBatch">The sprite batch to draw the grass to.</param>
         /// <param name="tileLocation">The tile location of the current grass being drawn.</param>
-        /// <param name="__instance">The grass instance to draw.</param>
-        /// <returns>False meaning the original method will never get ran.</returns>
+        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <returns><see langword="false"/>, meaning the original method will not get ran.</returns>
+        /// <remarks>This is used to draw the grass sprites.</remarks>
         internal static bool DrawPrefix(SpriteBatch spriteBatch, Vector2 tileLocation, Grass __instance)
         {
             // load all private fields that will be needed
@@ -149,48 +106,34 @@ namespace MoreGrass.Patches
             var shakeRandom = (double[])typeof(Grass).GetField("shakeRandom", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
             var flip = (bool[])typeof(Grass).GetField("flip", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
 
-            // cache the textures so they dont need to be fetched 4x more
+            // cache the textures
             var textures = new List<Texture2D>();
             switch (Game1.currentSeason)
             {
-                case "spring":
-                    {
-                        textures = ModEntry.SpringGrassSprites;
-                        break;
-                    }
-                case "summer":
-                    {
-                        textures = ModEntry.SummerGrassSprites;
-                        break;
-                    }
-                case "fall":
-                    {
-                        textures = ModEntry.FallGrassSprites;
-                        break;
-                    }
-                case "winter":
-                    {
-                        textures = ModEntry.WinterGrassSprites;
-                        break;
-                    }
+                case "spring": textures = ModEntry.Instance.SpringGrassSprites; break;
+                case "summer": textures = ModEntry.Instance.SummerGrassSprites; break;
+                case "fall": textures = ModEntry.Instance.FallGrassSprites; break;
+                case "winter": textures = ModEntry.Instance.WinterGrassSprites; break;
             }
 
+            // draw the grass
             for (int i = 0; i < __instance.numberOfWeeds; i++)
             {
-                Vector2 globalPosition = i != 4 
-                    ? tileLocation * 64f + new Vector2((float)(i % 2 * 64 / 2 + offset3[i] * 4 - 4) + 30f, (float)(i / 2 * 64 / 2 + offset4[i] * 4 + 40)) 
-                    : tileLocation * 64f + new Vector2((float)(16 + offset1[i] * 4 - 4) + 30f, (float)(16 + offset2[i] * 4 + 40));
+                var globalPosition = i != 4
+                    ? tileLocation * 64f + new Vector2(x: i % 2 * 64 / 2 + offset3[i] * 4 - 4 + 30, y: i / 2 * 64 / 2 + offset4[i] * 4 + 40)
+                    : tileLocation * 64f + new Vector2(x: 16 + offset1[i] * 4 - 4 + 30, y: 16 + offset2[i] * 4 + 40);
                 
                 spriteBatch.Draw(
-                    texture: textures[whichWeed[i]], 
-                    position: Game1.GlobalToLocal(Game1.viewport, globalPosition), 
-                    sourceRectangle: new Rectangle(0, 0, 15, 20), 
-                    color: Color.White, 
-                    rotation: shakeRotation / (float)(shakeRandom[i] + 1.0), 
-                    origin: new Vector2(7.5f, 17.5f), 
-                    scale: 4f, 
-                    effects: flip[i] ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 
-                    layerDepth: (float)(((double)globalPosition.Y + 16.0 - 20.0) / 10000.0 + (double)globalPosition.X / 10000000.0));
+                    texture: textures[whichWeed[i]],
+                    position: Game1.GlobalToLocal(Game1.viewport, globalPosition),
+                    sourceRectangle: new Rectangle(0, 0, 15, 20),
+                    color: Color.White,
+                    rotation: shakeRotation / (float)(shakeRandom[i] + 1),
+                    origin: new Vector2(7.5f, 17.5f),
+                    scale: 4f,
+                    effects: flip[i] ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+                    layerDepth: (globalPosition.Y + 16 - 20) / 10000f + globalPosition.X / 10000000f
+                );
             }
 
             return false;

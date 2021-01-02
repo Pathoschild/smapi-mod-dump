@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Player Income Stats",
+  "Author": "ha1fdaew",
+  "Version": "1.0.0",
+  "Description": "Adds a panel with info about each farmer's contribution to the wallet",
+  "UniqueID": "ha1fdaew.playerincomestats",
+  "EntryDll": "PlayerIncomeStats.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7373" ]
+}

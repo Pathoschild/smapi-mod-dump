@@ -11,6 +11,7 @@
 using BetterTrainLoot.Config;
 using BetterTrainLoot.Data;
 using BetterTrainLoot.GamePatch;
+using BetterTrainLoot.Interfaces;
 using Harmony;
 using StardewModdingAPI;
 using StardewValley;
@@ -51,10 +52,13 @@ namespace BetterTrainLoot
 
         private Railroad railroad;
 
+        private IModHelper modHelper;
 
         public override void Entry(IModHelper helper)
         {
             Instance = this;
+            modHelper = helper;
+
             config = helper.Data.ReadJsonFile<ModConfig>("config.json") ?? ModConfigDefaultConfig.CreateDefaultConfig("config.json");
             config = ModConfigDefaultConfig.UpdateConfigToLatest(config, "config.json");
 
@@ -64,6 +68,7 @@ namespace BetterTrainLoot
                 helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
                 helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
                 helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+                //helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
 
                 harmony = HarmonyInstance.Create("com.aairthegreat.mod.trainloot");
                 harmony.Patch(typeof(TrainCar).GetMethod("draw"), null, new HarmonyMethod(typeof(TrainCarOverrider).GetMethod("postfix_getTrainTreasure")));
@@ -74,6 +79,7 @@ namespace BetterTrainLoot
                 SetupMultiplayerObject();
             }
         }
+
         private void Input_ButtonReleased(object sender, StardewModdingAPI.Events.ButtonReleasedEventArgs e)
         {
             if (e.Button == SButton.O && !railroadMapBlocked 
@@ -93,6 +99,27 @@ namespace BetterTrainLoot
         {
             railroad = (Game1.getLocationFromName("Railroad") as Railroad);
             startupMessage = true;
+
+            //Check for JSON Assests
+            //if (this.Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets"))
+            //{
+            //    var api = modHelper.ModRegistry.GetApi<IJsonAssetsAPI>("spacechase0.JsonAssets");
+
+            //    var trees = api?.GetAllFruitTreeIds();
+            //    var crops = api?.GetAllCropIds();
+            //    //Game1.Get
+            //}
+
+
+            var fish = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
+            var fruitTrees = Game1.content.Load<Dictionary<int, string>>("Data\\fruitTrees");
+
+            var crops = Game1.content.Load<Dictionary<int, string>>("Data\\Crops");
+            ////Content Packs
+            //foreach (IContentPack contentPack in this.Helper.ContentPacks.GetOwned())
+            //{
+            //    this.Monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+            //}
         }
 
         private void GameLoop_TimeChanged(object sender, StardewModdingAPI.Events.TimeChangedEventArgs e)

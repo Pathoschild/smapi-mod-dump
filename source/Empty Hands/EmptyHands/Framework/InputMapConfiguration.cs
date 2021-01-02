@@ -8,9 +8,7 @@
 **
 *************************************************/
 
-using System.Linq;
-
-namespace Pathoschild.Stardew.EmptyHands.Framework
+namespace EmptyHands.Framework
 {
     /// <summary>The input mapping configuration.</summary>
     /// <typeparam name="T">The control type.</typeparam>
@@ -31,12 +29,6 @@ namespace Pathoschild.Stardew.EmptyHands.Framework
         public bool IsValidKey(T key)
         {
             return key != null && !key.Equals(default(T));
-        }
-
-        /// <summary>Get whether any keys are configured.</summary>
-        public bool HasAny()
-        {
-            return new[] { this.SetToNothing }.Any(this.IsValidKey);
         }
     }
 }

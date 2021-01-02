@@ -1,0 +1,10 @@
+{
+  "regenRate": 6,
+  "stamRegen": 4,
+  "healthRegen": 4,
+  "restMessageA": "sits down and relaxes!",
+  "restMessageB": "kicks their feet up!",
+  "restMessageC": "yawns and closes their eyes!",
+  "restMessageD": "sighs and groans, feeling the weight off their feet!",
+  "extendedRestTime": 21
+}

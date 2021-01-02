@@ -54,8 +54,8 @@ Definition structure is a dictionary of NPC, where key is NPC name and value rep
 | Section | Allowed values | Description |
 | ------- | -------------- | ----------- |
 | recruitable | `recruitable` | Is this NPC recruitable, rentable or unavailable for asks and suggestions, but available in quests only? Only recruitable value is implemented in mod. |
-| skills | `warrior, fighter, doctor, forager, scared` | One or more presonal skills. Defines which persoinal skills companion has. |
-| availability | NOT USED! | |
+| skills | `warrior, fighter, doctor, forager, scared, spiritual, fisherman` | One or more presonal skills. Defines which persoinal skills companion has. |
+| availability | An [EPU](https://github.com/ChroniclerCherry/stardew-valley-mods/blob/master/ExpandedPreconditionsUtility/README.md) condition delimited with `;` | Say when the companion can be available for recruit (CSM state `AVAILABLE`), otherwise they are unavailable for recruit (CSM state `UNAVAILABLE`) and you can't ask them for follow (same behavior as non-companion standard NPCs). |
 | minimum_hearts | NOT USED! | |
 | price | NOT USED! |
 | sword | **DEPRECATED** Sword name (string) or ID (int)| This field is deprecated, don't use it. Use [custom weapons](weapons.md) definition assets instead. ~~Name or id of default sword. Every companion can to have own unique default sword for level 0. See game file **Data/weapons** for more details. `-1` means no sword. Custom swords supported~~ |

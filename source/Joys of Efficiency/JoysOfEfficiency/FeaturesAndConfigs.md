@@ -21,10 +21,19 @@ Config description will be like:
 
 # Features
 
+## Safe Mode
+
+If Safe Mode is enabled, JoE won't patch the game itself, so it's much safer.
+
+But, some features requiring patching mechanism won't work perfectly.
+
+- SafeMode("Not on menu", bool, default:false) - whether this utility is enabled.
+
+
 ## Config Menu
 You can open mod configuration menu when specified key(Default:R).
-You can't disable this feature because it's a core feature.
 
+You can't disable this feature because it's a core feature.
 
 **[CONFIG]**
 
@@ -38,8 +47,10 @@ You can't disable this feature because it's a core feature.
 
 ## Balanced Mode
 ﻿Did you thought following utilities are a bit cheaty?
-﻿This utility lets them not to be executed so often. (almost 1 executing per seconds), and
+
+﻿This utility lets them not to be executed so often(almost 1 executing per seconds), and
 ﻿automation radius will be 1 tile.
+
 ﻿
 ﻿This utility affects to ***AutoWaterNearbyCrops, AutoPetNearbyAnimals, AutoHarvest, AutoCollectCollectibles, AutoShakeFruitedPlants,
 AutoDigArtifactSpot, AutoDepositIngredient, and AutoPullMachineResult.***
@@ -108,24 +119,29 @@ You can refill your watering can automatically from nearby water source.
 
 - AutoAnimalDoor("Automation", bool, default:true) - whether this utility is enabled.
 
-## Auto Fishing
-Are you tired to deal with fishing minigame? When this utility is enabled, your computer will play the minigame instead of you.
+## AFK Fishing
+Are you tired to deal with fishing? When this utility is enabled, your computer will catch fish instead of you.
 ﻿This was requested by @GastlyMister. Many thanks!
 
 **[CONFIG]**
 
-- AutoFishing("Automation", bool, default:false) - whether this utility is enabled.
+- AutoFishing("Automation", bool, default:false) - whether this plays fishing minigame.
 
 
-- ﻿CPUThresholdFishing("Automation", float, default:0.2 min:0.0 max:0.5)       - determines how often cpu reel up the rod.
+- ﻿CPUThresholdFishing("Automation", float, default:0.2 min:0.0 max:0.5) - determines how often cpu reel up the rod.
 
-## Fishing Tweaks
-﻿This is a set of tweaks of fishing.
 
-﻿
-**[CONFIG]**
+- ﻿ThrowPower("Automation", float, default:1.0 min:0.0 max:1.0) - How strong a bobber will be thrown.
+
+
+- ThresholdStaminaPercentage("Automation", int, default:20 min:10 max:60) - If farmer's stamina percentage is lower than this value, AFK mode will be stopped.
+
 
 - AutoReelRod("Automation", bool, default:true) - whether it automatically reels up the rod when fish nibbled.﻿
+
+
+- ToggleAFKFishing("Controls", SButton, default: 'End') - The button to activate/deactivate AFK fishing mode.
+
 
 ## Fishing Information GUI
 
@@ -253,7 +269,7 @@ MachineRadius("Automation", int, default:1) - How far tiles can be affected by t
 - MorePreciseProbabilities("UIs", bool, default:true) - Displays more plactical and precise probabiilities.
 
 
-- TrialOfExamine("UIs", int, default:10 min:1 max:10) - Trial number of computing probabilities.
+- TrialOfExamine("UIs", int, default:10 min:1 max:50) - Trial number of computing probabilities.
 
 
 ## Show Shipping Price

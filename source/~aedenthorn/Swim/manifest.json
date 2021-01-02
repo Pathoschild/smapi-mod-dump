@@ -11,7 +11,7 @@
 {
   "Name": "Swim Mod",
   "Author": "aedenthorn",
-  "Version": "1.5.0",
+  "Version": "1.5.1",
   "Description": "Allows you to swim.",
   "UniqueID": "aedenthorn.Swim",
   "EntryDll": "Swim.dll",

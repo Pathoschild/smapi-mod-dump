@@ -21,6 +21,8 @@ namespace CropTransplantMod
         public bool EnablePlacementOfFruitTreesOnAnyTileType;
         public bool EnablePlacementOfFruitTreesNextToAnotherTree;
         public bool EnablePlacementOfTreesOnAnyTileType;
+        public bool EnableToPlantTeaBushesOutOfTheFarm;
+        public bool EnableToPlantTeaBushesOnAnyTileType;
         public bool EnableSoilTileUnderTrees = true;
         public List<float> FruitTreeTransplantEnergyCostPerStage = new List<float> { 4f, 4f, 4f, 4f, 20f };
         public List<float> TreeTransplantEnergyCostPerStage = new List<float> { 4f, 4f, 8f, 12f, 20f };

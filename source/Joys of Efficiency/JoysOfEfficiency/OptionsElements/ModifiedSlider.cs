@@ -17,7 +17,7 @@ using StardewValley.Menus;
 
 namespace JoysOfEfficiency.OptionsElements
 {
-    internal class ModifiedSlider : OptionsElement
+    internal class ModifiedSlider : OptionsElementWithLabel
     {
         private readonly string _label;
 
@@ -77,7 +77,7 @@ namespace JoysOfEfficiency.OptionsElements
             _setValue?.Invoke(whichOption, _value + _minValue);
         }
 
-        public override void draw(SpriteBatch spriteBatch, int slotX, int slotY)
+        public override void draw(SpriteBatch spriteBatch, int slotX, int slotY, IClickableMenu context = null)
         {
             label = _label.Contains("{0}")
                 ? string.Format(_label, _format(whichOption, _value + _minValue))
@@ -85,7 +85,7 @@ namespace JoysOfEfficiency.OptionsElements
 
             greyedOut = _isDisabled();
 
-            base.draw(spriteBatch, slotX, slotY - ((int)Game1.dialogueFont.MeasureString(label).Y - bounds.Height) / 2);
+            base.draw(spriteBatch, slotX, slotY - ((int)Game1.dialogueFont.MeasureString(label).Y - bounds.Height) / 2, context);
             IClickableMenu.drawTextureBox(spriteBatch, Game1.mouseCursors, OptionsSlider.sliderBGSource, slotX + bounds.X, slotY + bounds.Y, bounds.Width, bounds.Height, Color.White * (greyedOut ? 0.33f : 1.0f), Game1.pixelZoom, false);
             spriteBatch.Draw(Game1.mouseCursors, new Vector2(slotX + bounds.X + (bounds.Width - 10 * Game1.pixelZoom) * (_value / (float)_maxValue), slotY + bounds.Y), OptionsSlider.sliderButtonRect, Color.White * (greyedOut ? 0.66f : 1.0f), 0.0f, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None, 0.9f);
         }

@@ -9,8 +9,12 @@
 *************************************************/
 
 {
+  "FileVersion": 1,
   "AreaName": "WitchSwamp",
   "numberOfOreSpotsPerDay": 50,
+  "StartTime": 600,
+  "EndTime": 2600,
+  "CustomTreasure": false,
   "OreSpots": [
     "15, 20",
     "15, 21",

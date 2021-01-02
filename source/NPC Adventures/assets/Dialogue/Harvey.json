@@ -9,6 +9,11 @@
 *************************************************/
 
 {
+  "companionAccepted_Spouse": "Sounds great! A change of scenery and fresh air would be really nice, dear!$1#$b#",
+  "companionRejectedNight_Spouse": "Right now? Wow you sure are healthy and energetic, dear.$2#$b#I am sorry, but we should probably should sleep soon. Getting enough sleep is quite important for our health.",
+  "companionDismiss_Spouse": "Oh, okay, I probably should head back too.#$b#It was nice walking together with you. Stay safe and be careful out there!$h",
+  "companionDismissAuto_Spouse": "It has gotten really late, we should head home soon.#$b#Don't stay up too late. I don't want you to get sleep-deprived, dear.",
+  "companionRecruited_Spouse": "I am so glad to be able to spend some time with you today. Spending time with your loved ones has many psychological benefits.$1#$b#On top of that, being together with you just makes me so happy.$4",
   "companionAccepted": "I suppose I could take a short break from work today.",
   "companionRejected": "Terribly sorry, @. I'm fully booked for the day.$2",
   "companionRejectedNight": "It's far too dangerous to explore the valley at night, @. You could get hurt.$6",

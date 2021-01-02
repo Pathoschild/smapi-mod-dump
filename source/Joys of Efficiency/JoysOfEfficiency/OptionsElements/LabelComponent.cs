@@ -19,7 +19,7 @@ namespace JoysOfEfficiency.OptionsElements
     {
         public LabelComponent(string label) : base(label, -1, -1, 9 * Game1.pixelZoom, 9 * Game1.pixelZoom, 0) { }
 
-        public override void draw(SpriteBatch b, int slotX, int slotY)
+        public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
         {
             Utility.drawTextWithShadow(b, $" {label}", Game1.dialogueFont, new Vector2(slotX, slotY), Color.Black);
         }

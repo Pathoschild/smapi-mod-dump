@@ -115,7 +115,7 @@ namespace GetGlam.Framework
 
                         //Patch the hair texture and change the hair texture height
                         if (Entry.IsSpaceCoreInstalled)
-                            Entry.SpaceCorePatchExtendedTileSheet(asset.AsImage(), hair.Texture, new Rectangle(hairTextureX, hairTextureY, 16, 96), new Rectangle(HairTextureWidth, HairTextureHeight, 16, 96));
+                            Entry.HarmonyHelper.SpaceCorePatchExtendedTileSheet(asset.AsImage(), hair.Texture, new Rectangle(hairTextureX, hairTextureY, 16, 96), new Rectangle(HairTextureWidth, HairTextureHeight, 16, 96));
                         else
                             asset.AsImage().PatchImage(hair.Texture, new Rectangle(hairTextureX, hairTextureY, 16, 96), new Rectangle(HairTextureWidth, HairTextureHeight, 16, 96));
 

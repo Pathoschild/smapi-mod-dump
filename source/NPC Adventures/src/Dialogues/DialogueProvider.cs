@@ -9,6 +9,7 @@
 *************************************************/
 
 using NpcAdventure.Loader;
+using NpcAdventure.StateMachine;
 using NpcAdventure.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
@@ -27,27 +28,30 @@ namespace NpcAdventure.Dialogues
     {
         public const char FLAG_RANDOM = '~';
         public const char FLAG_CHANCE = '^';
-        private readonly NPC npc;
         private readonly IContentLoader contentLoader;
         private readonly string sourcePrefix;
         private readonly SortedDictionary<string, List<string>> keyLookupCache;
         private readonly VariousKeyGenerator keygen;
         private Dictionary<string, string> dialogueCache;
+        private readonly CompanionStateMachine csm;
 
         /// <summary>
         /// Create an instance of dialogue provider with assigned NPC and content loader
         /// </summary>
-        /// <param name="npc">NPC for assign</param>
-        /// <param name="contentLoader">Source of dialogues</param>
-        public DialogueProvider(NPC npc, IContentLoader contentLoader, string sourcePrefix = "Dialogue/")
+        /// <param name="csm">Companion State Machine</param>
+        /// <param name="contentLoader">Content asset loader</param>
+        /// <param name="sourcePrefix">Asset source file prefix</param>
+        internal DialogueProvider(CompanionStateMachine csm, IContentLoader contentLoader, string sourcePrefix = "Dialogue/")
         {
-            this.npc = npc;
+            this.csm = csm;
             this.contentLoader = contentLoader;
             this.sourcePrefix = sourcePrefix;
             this.dialogueCache = new Dictionary<string, string>();
             this.keyLookupCache = new SortedDictionary<string, List<string>>();
             this.keygen = new VariousKeyGenerator();
         }
+
+        public NPC Npc { get => this.csm.Companion; }
 
         /// <summary>
         /// Setup dialogue provider for new day.
@@ -56,13 +60,16 @@ namespace NpcAdventure.Dialogues
         /// </summary>
         public void SetupForNewDay()
         {
+            if (this.Npc == null)
+                return;
+
             Farmer f = Game1.player;
 
             this.keygen.Date = SDate.Now();
             this.keygen.Weather = Helper.GetCurrentWeatherName();
             this.keygen.IsNight = Game1.isDarkOut();
-            this.keygen.FriendshipHeartLevel = f.getFriendshipHeartLevelForNPC(this.npc.Name);
-            this.keygen.FriendshipStatus = FetchFriendshipStatus(f, this.npc);
+            this.keygen.FriendshipHeartLevel = f.getFriendshipHeartLevelForNPC(this.Npc.Name);
+            this.keygen.FriendshipStatus = FetchFriendshipStatus(f, this.Npc);
 
             this.keyLookupCache.Clear();
             this.dialogueCache.Clear();
@@ -77,10 +84,10 @@ namespace NpcAdventure.Dialogues
         public void LoadDialogues()
         {
             this.dialogueCache = new Dictionary<string, string>().Concat(
-                this.contentLoader.LoadStrings($"{this.sourcePrefix}{this.npc.Name}"))
+                this.contentLoader.LoadStrings($"{this.sourcePrefix}{this.Npc.Name}"))
                 .ToDictionary(d => d.Key, d => d.Value);
 
-            SetupCompanionDialogues(this.npc, this.dialogueCache);
+            SetupCompanionDialogues(this.Npc, this.dialogueCache);
         }
 
         /// <summary>
@@ -90,7 +97,7 @@ namespace NpcAdventure.Dialogues
         /// <param name="key">Probably missing key</param>
         private void ReloadIfLost(string key)
         {
-            if (this.dialogueCache.Count <= 0 || this.dialogueCache.ContainsKey(key) && !this.npc.Dialogue.ContainsKey(key))
+            if (this.dialogueCache.Count <= 0 || this.dialogueCache.ContainsKey(key) && !this.Npc.Dialogue.ContainsKey(key))
             {
                 // Reaload and refresh NPC dialogues only when 
                 // the key is missing in NPC dialogue registry but in pre-loaded cache this key exists.
@@ -162,7 +169,7 @@ namespace NpcAdventure.Dialogues
         /// <returns>True if raw dialogue found and returned in <paramref name="rawDialogue"/></returns>
         public bool GetRawDialogue(string key, out KeyValuePair<string, string> rawDialogue, bool retryReload = true)
         {
-            if (GetRawDialogue(this.npc.Dialogue, key, out rawDialogue))
+            if (GetRawDialogue(this.Npc.Dialogue, key, out rawDialogue))
                 return true;
 
             if (retryReload)
@@ -171,12 +178,12 @@ namespace NpcAdventure.Dialogues
                 this.ReloadIfLost(key);
 
                 // ...and try again to fetch dialogue
-                if (GetRawDialogue(this.npc.Dialogue, key, out rawDialogue))
+                if (GetRawDialogue(this.Npc.Dialogue, key, out rawDialogue))
                     return true;
             }
 
             // Dialogue still can't be fetch? So we mark this dialogue as undefined and return dialogue key path as text
-            rawDialogue = new KeyValuePair<string, string>(key, $"{this.npc.Name}.{key}");
+            rawDialogue = new KeyValuePair<string, string>(key, $"{this.Npc.Name}.{key}");
 
             return false;
         }
@@ -192,12 +199,12 @@ namespace NpcAdventure.Dialogues
         /// <returns>A dialogue text</returns>
         public string GetFriendSpecificDialogueText(Farmer f, string key)
         {
-            if (Helper.IsSpouseMarriedToFarmer(this.npc, f) && this.GetRawDialogue($"{key}_Spouse", out KeyValuePair<string, string> rawSpousedDialogue))
+            if (Helper.IsSpouseMarriedToFarmer(this.Npc, f) && this.GetRawDialogue($"{key}_Spouse", out KeyValuePair<string, string> rawSpousedDialogue))
             {
                 return rawSpousedDialogue.Value;
             }
 
-            if (f.friendshipData.TryGetValue(this.npc.Name, out Friendship friendship)
+            if (f.friendshipData.TryGetValue(this.Npc.Name, out Friendship friendship)
                 && friendship.IsDating()
                 && this.GetRawDialogue($"{key}_Dating", out KeyValuePair<string, string> rawDatingDialogue))
             {
@@ -255,7 +262,7 @@ namespace NpcAdventure.Dialogues
             foreach (string k in this.keyLookupCache[baseKey])
                 if (this.GetRawDialogue(baseKey + k, out rawDialogue, false))
                     return true;
-            rawDialogue = new KeyValuePair<string, string>(baseKey, $"{this.npc.Name}.{baseKey}");
+            rawDialogue = new KeyValuePair<string, string>(baseKey, $"{this.Npc.Name}.{baseKey}");
 
             return false;
         }
@@ -264,8 +271,8 @@ namespace NpcAdventure.Dialogues
         {
             Farmer f = Game1.player;
             var isNight = Game1.isDarkOut();
-            FriendshipStatus friendshipStatus = FetchFriendshipStatus(f, this.npc);
-            var heartLevel = f.getFriendshipHeartLevelForNPC(this.npc.Name);
+            FriendshipStatus friendshipStatus = FetchFriendshipStatus(f, this.Npc);
+            var heartLevel = f.getFriendshipHeartLevelForNPC(this.Npc.Name);
             bool invalidated = false;
 
             if (this.keygen.IsNight != isNight || this.keygen.FriendshipStatus != friendshipStatus || this.keygen.FriendshipHeartLevel != heartLevel)
@@ -353,7 +360,7 @@ namespace NpcAdventure.Dialogues
         public Dialogue GenerateDialogue(string key)
         {
             if (this.GetVariableRawDialogue(key, out KeyValuePair<string, string> rawDilogue))
-                return CreateDialogueFromRaw(this.npc, rawDilogue);
+                return CreateDialogueFromRaw(this.Npc, rawDilogue);
 
             return null;
         }
@@ -369,7 +376,7 @@ namespace NpcAdventure.Dialogues
         {
             if (this.GetVariableRawDialogue(key, l, out KeyValuePair<string, string> rawDialogue))
             {
-                return CreateDialogueFromRaw(this.npc, rawDialogue);
+                return CreateDialogueFromRaw(this.Npc, rawDialogue);
             }
 
             return null;
@@ -385,7 +392,7 @@ namespace NpcAdventure.Dialogues
         {
             if (this.GetRawDialogue(key, out KeyValuePair<string, string> rawDialogue))
             {
-                return CreateDialogueFromRaw(this.npc, rawDialogue);
+                return CreateDialogueFromRaw(this.Npc, rawDialogue);
             }
 
             return null;

@@ -104,7 +104,7 @@ namespace GetGlam.Framework
                 Game1.player.changeGender(currentPlayerStyle.IsMale);
                 Game1.player.hair.Set(currentPlayerStyle.HairIndex);
                 Game1.player.accessory.Set(currentPlayerStyle.AccessoryIndex);
-                Game1.player.FarmerRenderer.recolorSkin(currentPlayerStyle.SkinIndex);
+                Game1.player.FarmerRenderer.recolorSkin(currentPlayerStyle.SkinIndex, true);
 
                 //Change the color of the hair and the eyes
                 Game1.player.newEyeColor.Set(currentPlayerStyle.EyeColor);
@@ -147,7 +147,7 @@ namespace GetGlam.Framework
             farmer.changeGender(configModel.IsMale);
             farmer.hair.Set(configModel.HairIndex);
             farmer.accessory.Set(configModel.AccessoryIndex);
-            farmer.FarmerRenderer.recolorSkin(configModel.SkinIndex);
+            farmer.FarmerRenderer.recolorSkin(configModel.SkinIndex, true);
             farmer.FarmerRenderer.recolorEyes(configModel.EyeColor);
             farmer.changeHairColor(configModel.HairColor);
 
@@ -166,7 +166,7 @@ namespace GetGlam.Framework
             Game1.player.changeGender(Favorites[whichPosition].IsMale);
             Game1.player.hair.Set(Favorites[whichPosition].HairIndex);
             Game1.player.accessory.Set(Favorites[whichPosition].AccessoryIndex);
-            Game1.player.skin.Set(Favorites[whichPosition].SkinIndex);
+            Game1.player.changeSkinColor(Favorites[whichPosition].SkinIndex, true);
 
             //Change the color of the hair and the eyes
             Game1.player.newEyeColor.Set(Favorites[whichPosition].EyeColor);

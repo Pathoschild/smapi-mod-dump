@@ -18,6 +18,8 @@ namespace JoysOfEfficiency.Core
     internal class Config
     {
 
+        public bool SafeMode { get; set; } = false;
+
         public bool MineInfoGui { get; set; } = true;
 
         public bool AutoWaterNearbyCrops { get; set; } = true;
@@ -36,10 +38,13 @@ namespace JoysOfEfficiency.Core
 
         public bool AutoAnimalDoor { get; set; } = true;
 
+
         public bool AutoFishing { get; set; } = false;
         public float CpuThresholdFishing { get; set; } = 0.2f;
-
         public bool AutoReelRod { get; set; } = true;
+        public float ThrowPower { get; set; } = 1.0f;
+        public int ThresholdStaminaPercentage { get; set; } = 20;
+        public SButton ToggleAfkFishing { get; set; } = SButton.End;
 
         public bool FishingInfo { get; set; } = true;
 

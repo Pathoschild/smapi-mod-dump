@@ -8,6 +8,19 @@ for queries and analysis.**
 
 # Full changelog
 
+## 0.16.0 "Christmas Miracle"
+
+- Added companion event for Emily
+- Added companion event for Haley
+- Added swimsuits (uses vanilla SDV beach sprites)
+- Updated to working with SDV 1.5 (SMAPI 3.8)
+- Added spouse recruitment dialogue for most companions
+- Added `fisherman` skill for Elliott
+- Added support for availability (via EPU condition in companion dispositions file)
+- Added translation registry. Translations must have their own `manifest.json` file
+- Added support for optional assets in ContentLoader
+- Added support for EPU conditions in companion event cutscenes (EPU is required)
+
 ## 0.15.0 "Tasty Kimchi"
 
 Released 26th November 2020

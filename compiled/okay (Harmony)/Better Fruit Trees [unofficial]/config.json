@@ -1,0 +1,6 @@
+{
+  "DisableFruitTreeJunimoHarvesting": false,
+  "WaitToHarvestFruitTreesUntilTheyHaveThreeFruitsThenHarvestAllThreeAtOnce": false,
+  "AllowPlacingFruitTreesOutsideFarm": false,
+  "AllowDangerousPlanting": false
+}

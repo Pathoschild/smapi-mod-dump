@@ -1,7 +1,7 @@
 ﻿{
   "Name": "FishMe",
   "Author": "marikaefer",
-  "Version": "1.1.1",
+  "Version": "1.2.0",
   "Description": "skips the fishing minigame",
   "UniqueID": "marikaefer.FishMe",
   "EntryDll": "FishMe.dll",

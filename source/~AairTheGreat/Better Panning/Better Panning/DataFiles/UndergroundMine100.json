@@ -9,8 +9,12 @@
 *************************************************/
 
 {
+  "FileVersion": 1,
   "AreaName": "UndergroundMine100",
   "numberOfOreSpotsPerDay": 10,
+  "StartTime": 600,
+  "EndTime": 2600,
+  "CustomTreasure": false,
   "OreSpots": [
     "21, 15",
     "21, 16",

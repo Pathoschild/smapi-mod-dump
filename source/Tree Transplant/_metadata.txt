@@ -5,9 +5,9 @@ mods:
    Tree Transplant
 
 latest commit:
-   commit 6b60bfca89cc849f3359a0e01eefb58e9f3ac127
+   commit d420d0aad9860b8640d65732cec519a9c841eb2c
    Author: James Stine <leon.blade@gmail.com>
-   Date:   Mon Mar 9 20:16:29 2020 -0400
+   Date:   Mon Dec 28 17:25:37 2020 -0500
    
-       Add new translations to the csproj file.
+       Update to version 1.0.11
    

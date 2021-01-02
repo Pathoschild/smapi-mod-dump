@@ -1,0 +1,10 @@
+﻿{
+  "Name": "No Transitions",
+  "Author": "crazywig",
+  "Version": "1.0.3",
+  "Description": "Removes black screen transitions to speed up gameplay when moving",
+  "UniqueID": "crazywig.notransitions",
+  "EntryDll": "notransitions.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7354" ]
+}

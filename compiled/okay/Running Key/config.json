@@ -2,10 +2,10 @@
   "RunningSpeedGain": 50,
   "Key": "LeftShift",
   "StaminaLose": 1,
-  "StaminaTick": 15,
-  "StaminaLimit": 40,
-  "RainReductionPercent": 20,
-  "SnowReductionPercent": 30,
+  "StaminaTick": 30,
+  "StaminaLimit": 20,
+  "RainReductionPercent": 10,
+  "SnowReductionPercent": 20,
   "HoeReductionPercent": 10,
   "FlooredGainPercent": 10
 }

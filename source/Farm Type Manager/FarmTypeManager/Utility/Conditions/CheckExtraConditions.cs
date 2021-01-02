@@ -404,8 +404,43 @@ namespace FarmTypeManager
                     }
                 }
 
+                //check EPU preconditions
+                if (area.ExtraConditions.EPUPreconditions != null && area.ExtraConditions.EPUPreconditions.Length > 0)
+                {
+                    Monitor.Log($"EPU Preconditions found. Checking...", LogLevel.Trace);
+                    if (EPUConditionsChecker == null) //if EPU's API is not available
+                    {
+                        Monitor.LogOnce($"FTM cannot currently access the API for Expanded Preconditions Utility (EPU), but at least one spawn area has EPU preconditions. Those areas will be disabled. Please make sure EPU is installed.", LogLevel.Warn);
+                        Monitor.Log($"EPU preconditions could not be checked. Spawn disabled.", LogLevel.Trace);
+                        return false; //prevent spawning
+                    }
+                    else //if EPU's API is available
+                    {
+                        try
+                        {
+                            if (EPUConditionsChecker.CheckConditions(area.ExtraConditions.EPUPreconditions) == true) //if ANY of this area's precondition strings are true
+                            {
+                                Monitor.Log("At least one EPU precondition string was valid. Spawn allowed.", LogLevel.Trace);
+                            }
+                            else //if ALL of this area's precondition strings are false
+                            {
+                                Monitor.Log("All EPU precondition strings were invalid. Spawn disabled.", LogLevel.Trace);
+                                return false; //prevent spawning
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.Log($"An error occurred while FTM was using the API for Expanded Preconditions Utility (EPU). Please report this to FTM's developer. Auto-generated error message:", LogLevel.Error);
+                            Monitor.Log($"----------", LogLevel.Error);
+                            Monitor.Log($"{ex.ToString()}", LogLevel.Error);
+                            Monitor.Log($"EPU preconditions could not be checked. Spawn disabled.", LogLevel.Trace);
+                            return false;
+                        }
+                    }
+                }
+
                 //check number of spawns
-                //NOTE: it's important that this is the last condition checked, because otherwise it might count down while not actually spawning (i.e. while blocked by another condition
+                //NOTE: it's important that this is the last condition checked, because otherwise it might count down while not actually spawning (i.e. while blocked by another condition)
                 if (area.ExtraConditions.LimitedNumberOfSpawns != null)
                 {
                     Monitor.Log("Limited Number Of Spawns condition found. Checking...", LogLevel.Trace);

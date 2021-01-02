@@ -1,11 +1,11 @@
 {
   "Name": "Tree Changes",
   "Author": "JPAN",
-  "Version": "1.1",
+  "Version": "2.0",
   "Description": "Allows you to change the Tree's specific parameters.",
   "UniqueID": "jpan.TreeChanges",
   "EntryDll": "TreeChanges.dll",
-  "MinimumApiVersion": "2.9.0",
+  "MinimumApiVersion": "3.8.0",
   "jpan": "tree_changes",
    "Dependencies": [
 	{

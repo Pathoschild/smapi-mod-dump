@@ -42,7 +42,6 @@ namespace JoysOfEfficiency.Huds
             {
                 if (_isFirstTimeOfFishing)
                 {
-                    Logger.Log("Examine fishing probability");
 
                     _isFirstTimeOfFishing = false;
                     GameLocation location = Game1.currentLocation;
@@ -73,7 +72,6 @@ namespace JoysOfEfficiency.Huds
 
         private static Dictionary<int, double> GetFishes(GameLocation location, int bait, int waterDepth, Farmer who, int trial = 1)
         {
-            Logger.Log($"Trial:{trial}");
             List<Dictionary<int, double>> dictList = new List<Dictionary<int, double>>();
             for (int i = 0; i < trial; i++)
             {

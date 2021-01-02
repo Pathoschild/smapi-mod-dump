@@ -45,13 +45,13 @@ namespace CustomDeathPenaltyPlus
             PlayerStateRestorer.config = config;
         }
 
-        // Saves player's current money, amount to be lost and mine data, killed
+        // Saves player's current money, and amount to be lost, killed
         public static void SaveStateDeath()
         {
             statedeath = new PlayerDataTracker(Game1.player.Money, Math.Min(config.DeathPenalty.MoneyLossCap, Game1.player.Money * (1 - config.DeathPenalty.MoneytoRestorePercentage)));
         }
 
-        // Saves player's current money, amount to be lost and mine data, passed out
+        // Saves player's current money, and amount to be lost, passed out
         public static void SaveStatePassout()
         {
             statepassout = new PlayerDataTracker(Game1.player.Money, Math.Min(config.PassOutPenalty.MoneyLossCap, Game1.player.Money * (1 - config.PassOutPenalty.MoneytoRestorePercentage)));

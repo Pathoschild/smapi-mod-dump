@@ -1,0 +1,16 @@
+url:
+   https://github.com/Gaphodil/BetterJukebox.git
+
+mods:
+   Better Jukebox
+
+latest commit:
+   commit 5c7c1d87835e0ffa6d72a68e8446f0253ccda9d6
+   Merge: 858212f 428657a
+   Author: Gaphodil <56048441+Gaphodil@users.noreply.github.com>
+   Date:   Mon Dec 28 19:12:33 2020 -0800
+   
+       Merge pull request #4 from Gaphodil/dev
+       
+       Version 1.2.0
+   

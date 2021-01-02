@@ -64,7 +64,7 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Checking monster settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
                         //validate the map name for the area
-                        List<GameLocation> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
+                        List<string> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
                         if (locations.Count == 0) //if no locations were found
                         {
                             Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Monsters won't be spawned there.", LogLevel.Trace);
@@ -96,14 +96,7 @@ namespace FarmTypeManager
                             //calculate how many monsters to spawn today
                             int spawnCount = Utility.RNG.Next(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay + 1); //random number from min to max
 
-                            if (locations.Count > 1) //if this area targets multiple locations
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawnCount}.", LogLevel.Trace);
-                            }
-                            else //if this area only targets one location
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawnCount}.", LogLevel.Trace);
-                            }
+                            Utility.Monitor.Log($"Potential spawns at {locations[x]}: {spawnCount}.", LogLevel.Trace);
 
                             List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
 
@@ -152,7 +145,7 @@ namespace FarmTypeManager
                                 //create a saved object representing this spawn (with a "blank" tile location)
                                 SavedObject saved = new SavedObject()
                                 {
-                                    MapName = locations[x].uniqueName.Value ?? locations[x].Name,
+                                    MapName = locations[x],
                                     Type = SavedObject.ObjectType.Monster,
                                     DaysUntilExpire = area.DaysUntilSpawnsExpire ?? 1,
                                     MonType = randomMonster

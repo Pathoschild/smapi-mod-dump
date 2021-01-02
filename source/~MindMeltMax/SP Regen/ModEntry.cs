@@ -45,7 +45,7 @@ namespace SP_Regen
             }*/
             if (Config.RegenTime <= 0)
             {
-                this.Monitor.Log("Have to have some limits, time can't be less than or equal to 0", LogLevel.Warn);
+                this.Monitor.Log("Have to have some limits, time can't be less than 0 or 0", LogLevel.Warn);
                 Helper.Events.GameLoop.UpdateTicked -= UpdateTicked;
             }
             else
@@ -58,7 +58,7 @@ namespace SP_Regen
                 return;
 
             time = Game1.currentGameTime; //assigns time variable to currentGameTime
-            if(Game1.player.isInBed)//Check if the player is in bed
+            if(Game1.player.isInBed || Game1.player.isSitting)//Check if the player is in bed
             {
                 Game1.player.regenTimer -= time.ElapsedGameTime.Milliseconds;//Set the regenTimer
                 if(Game1.player.regenTimer < 0)//if the regenTimer is below 0 Milliseconds, add stamina and health

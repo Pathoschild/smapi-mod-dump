@@ -93,7 +93,7 @@ namespace JsonAssets.Overrides
         }
     }
 
-    [HarmonyPatch( typeof( ForgeMenu ), nameof( ForgeMenu.draw ), typeof( SpriteBatch ) )]
+    //[HarmonyPatch( typeof( ForgeMenu ), nameof( ForgeMenu.draw ), typeof( SpriteBatch ) )]
     public static class ForgeDrawCostPatch
     {
         public static void DrawCost()

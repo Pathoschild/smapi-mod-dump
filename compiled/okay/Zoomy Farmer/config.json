@@ -4,5 +4,8 @@
   "sprintKey": "LeftControl",
   "alternateSprintKey": "LeftStick",
   "toggleSprint": true,
-  "enableSprintWhenWaking": true
+  "enableSprintWhenWaking": true,
+  "fasterOnFloorTiles": true,
+  "additionalFloorSpeed": 1,
+  "multiplayerSync": true
 }

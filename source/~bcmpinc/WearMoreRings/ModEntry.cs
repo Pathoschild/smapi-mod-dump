@@ -22,91 +22,21 @@ using System.Runtime.CompilerServices;
 
 namespace StardewHack.WearMoreRings
 {
-    using SaveRingsDict   = Dictionary<long, SaveRings>;
-
-    #region Data Classes
-    /// <summary>
-    /// Structure used to store the actual rings.
-    /// </summary> 
-    public class ActualRings {
-        public readonly NetRef<Ring> ring1 = new NetRef<Ring>(null);
-        public readonly NetRef<Ring> ring2 = new NetRef<Ring>(null);
-        public readonly NetRef<Ring> ring3 = new NetRef<Ring>(null);
-        public readonly NetRef<Ring> ring4 = new NetRef<Ring>(null);
-        
-        public void LoadRings(SaveRings sr) {
-            ring1.Set(MakeRing(sr.which1));
-            ring2.Set(MakeRing(sr.which2));
-            ring3.Set(MakeRing(sr.which3));
-            ring4.Set(MakeRing(sr.which4));
-        }
-        
-        private Ring MakeRing(int which) {
-            if (which < 0) return null;
-            try {
-                return new Ring(which);
-            } catch {
-                // Ring no longer exists, so delete it.
-                ModEntry.getInstance().Monitor.Log($"Failed to create ring with id {which}.", LogLevel.Warn);
-                return null;
-            }
-        }
-    }
-    
-    /// <summary>
-    /// Structure for save data.
-    /// </summary>
-    public class SaveRings {
-        public int which1;
-        public int which2;
-        public int which3;
-        public int which4;
-
-        public SaveRings() { }
-        
-        public SaveRings(ActualRings ar) {
-            which1 = getWhich(ar.ring1.Value);
-            which2 = getWhich(ar.ring2.Value);
-            which3 = getWhich(ar.ring3.Value);
-            which4 = getWhich(ar.ring4.Value);
-        }
-        
-        private int getWhich(Ring r) {
-            if (r==null) return -1;
-            return r.indexInTileSheet.Value;
-        }
-    }
-    #endregion Data Classes
-
-    public class RingsImplementation : IWearMoreRingsAPI
+    public class ModEntry : Hack<ModEntry>, IWearMoreRingsAPI
     {
-        public int CountEquippedRings(Farmer f, int which) {
-            if (f == null) throw new ArgumentNullException(nameof(f));
-            return ModEntry.CountWearingRing(f, which);
-        }
+        private const String DATA_KEY = "bcmpinc.WearMoreRings/chest-id";
+        private const int EXTRA_RINGS = 6;
 
-        public IEnumerable<Ring> GetAllRings(Farmer f) {
-            if (f == null) throw new ArgumentNullException(nameof(f));
-            return ModEntry.ListRings(f);
-        }
-    }
-
-    public class ModEntry : Hack<ModEntry>
-    {
-        static readonly ConditionalWeakTable<Farmer, ActualRings> actualdata = new ConditionalWeakTable<Farmer, ActualRings>();
+        static readonly ConditionalWeakTable<Farmer, Chest> ring_inventory = new ConditionalWeakTable<Farmer, Chest>();
+        
         public static readonly Random random = new Random();
         
         public override void HackEntry(IModHelper helper) {
-            helper.Events.GameLoop.Saving += GameLoop_Saving;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            helper.ConsoleCommands.Add("player_resetmodifiers", "Clears buffs, then resets and reapplies the modifiers applied by boots & rings.", HandleActionReset);
             
-            // Change the network protocol version.
-            // I've tried doing this through SMAPI events, but stuff already breaks prior to those events being received and when scanning for local games.
-            var mp = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer");
-            //mp.GetValue().protocolVersion. += "+WearMoreRings";
-            
-            Patch(typeof(Farmer), "farmerInit", Farmer_farmerInit);
             Patch((Farmer f)=>f.isWearingRing(0), Farmer_isWearingRing);
+            Patch((Farmer f)=>f.GetEffectsOfRingMultiplier(0), Farmer_GetEffectsOfRingMultiplier);
             Patch(typeof(Farmer), "updateCommon", Farmer_updateCommon);
             Patch((GameLocation gl)=>gl.cleanupBeforePlayerExit(), GameLocation_cleanupBeforePlayerExit); 
             Patch(typeof(GameLocation), "resetLocalState", GameLocation_resetLocalState); 
@@ -117,130 +47,160 @@ namespace StardewHack.WearMoreRings
             Patch((InventoryPage ip)=>ip.receiveLeftClick(0,0,false), InventoryPage_receiveLeftClick);
             Patch(()=>new Ring(0), Ring_ctor);
         }
-        
+
+        #region API
         public override object GetApi() {
-            return new RingsImplementation();
+            return this;
         }
         
-        static ActualRings FarmerNotFound(Farmer f) {
-            throw new Exception("ERROR: A Farmer object was not correctly registered with the 'WearMoreRings' mod.");
-        }
-        
-        #region Events
-        /// <summary>
-        /// Serializes the worn extra rings to disk.
-        /// </summary>
-        void GameLoop_Saving(object sender, StardewModdingAPI.Events.SavingEventArgs e) {
-            if (!Game1.IsMasterGame) return;
-            var savedata = new SaveRingsDict();
-            foreach(Farmer f in Game1.getAllFarmers()) {
-                savedata[f.UniqueMultiplayerID] = new SaveRings(actualdata.GetValue(f, FarmerNotFound));
+        delegate void RingVisitor(Ring ring);
+        static void ForEachRing(Farmer f, RingVisitor visitor) {
+            if (f == null) throw new ArgumentNullException(nameof(f));
+            if (f.leftRing.Value != null) visitor(f.leftRing.Value);
+            if (f.rightRing.Value != null) visitor(f.rightRing.Value);
+            foreach(Item item in ModEntry.GetRingInventory(f).items) {
+                var ring = item as Ring;
+                if (ring != null) {
+                    if (ring is CombinedRing) {
+                        foreach (var cr in ((CombinedRing)ring).combinedRings) {
+                            visitor(ring);
+                        }
+                    } else {
+                        visitor(ring);
+                    }
+                }
             }
-            Helper.Data.WriteSaveData("extra-rings", savedata);
-            Monitor.Log("Saved extra rings data.");
         }
 
+        public int CountEquippedRings(Farmer f, int which) {
+            int res = 0;
+            ForEachRing(f, r => {
+                if (r.GetsEffectOfRing(which)) {
+                    res++;
+                }
+             });
+            return res;
+        }
+
+        public IEnumerable<Ring> GetAllRings(Farmer f) {
+            var res = new List<Ring>();
+            ForEachRing(f, r => res.Add(r));
+            return res;
+        }
+        #endregion API
+        
+        #region JewelryChest
+        static Vector2 getPositionFromId(int id) {
+            return new Vector2(id, -50);
+        }
+        static Chest GetRingInventory_internal(Farmer farmer) {
+            Farm farm = Game1.getFarm();
+            int id = 0;
+            
+            // Check whether the farmer has a chest assigned.
+            if (farmer.modData.ContainsKey(DATA_KEY)) {
+                id = int.Parse(farmer.modData[DATA_KEY]);
+                getInstance().Monitor.Log($"Farmer {farmer.Name} has existing chest {id}.");
+                if (farm.objects.ContainsKey(getPositionFromId(id))) {
+                    var existing_chest = farm.objects[getPositionFromId(id)];
+                    if (existing_chest is Chest) {
+                        existing_chest.modData["Pathoschild.ChestsAnywhere/IsIgnored"] = "true";
+                        // Yes, return it.
+                        return (Chest)existing_chest;
+                    }
+                    getInstance().Monitor.Log("Object is not a chest!", LogLevel.Error);
+                } else {
+                    getInstance().Monitor.Log("Chest went missing!", LogLevel.Error);
+                }
+            }
+            
+            // No, create a new chest.
+            while (farm.objects.ContainsKey(getPositionFromId(id))) id++;
+            Chest new_chest = new Chest(true);
+            farm.objects[getPositionFromId(id)] = new_chest;
+            farmer.modData[DATA_KEY] = id.ToString();
+            getInstance().Monitor.Log($"Farmer {farmer.Name} has new chest {id}.");
+            new_chest.modData["Pathoschild.ChestsAnywhere/IsIgnored"] = "true";
+            return new_chest;
+        }
+        
+        public static Chest GetRingInventory(Farmer f) {
+            var res = ring_inventory.GetValue(f, GetRingInventory_internal);
+            while (res.items.Count < EXTRA_RINGS) res.items.Add(null);
+            return res;
+        }
+        #endregion JewelryChest
+        
+        #region Events
         /// <summary>
         /// Reads the saved extra rings and creates them.
         /// </summary>
         void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e) {
-            if (!Game1.IsMasterGame) return;
-            // Load data from mod's save file, if available.
-            var savedata = Helper.Data.ReadSaveData<SaveRingsDict>("extra-rings");
-            if (savedata == null) {
-                Monitor.Log("Save data not available.");
-                return;
-            }
-            // Iterate through each farmer to load the extra equipped rings.
-            foreach(Farmer f in Game1.getAllFarmers()) {
-                if (savedata.ContainsKey(f.UniqueMultiplayerID)) {
-                    actualdata.GetValue(f, FarmerNotFound).LoadRings(savedata[f.UniqueMultiplayerID]);
-                }
-            }
-            Monitor.Log("Loaded extra rings save data.");
+            Migration.Import(Monitor, helper);
         }
+
+        /// <summary>
+        /// Attempts to fix save game corruption caused by inappropriate (un)equipping of rings.
+        /// </summary>
+        void HandleActionReset(string arg1, string[] arg2) {
+            var who = Game1.player;
+            Monitor.Log("Resetting modifiers for " + who.Name);
+            who.ClearBuffs();
+            ForEachRing(who, (r) => r.onUnequip(who, who.currentLocation));
+            who.boots.Value?.onUnequip();
+            who.MagneticRadius = 128;
+            who.knockbackModifier = 0;
+            who.weaponPrecisionModifier = 0;
+            who.critChanceModifier = 0;
+            who.critPowerModifier = 0;
+            who.weaponSpeedModifier = 0;
+            who.attackIncreaseModifier = 0;
+            who.resilience = 0;
+            who.addedLuckLevel.Value = 0;
+            who.immunity = 0;
+            who.boots.Value?.onEquip();
+            ForEachRing(who, (r) => r.onEquip(who, who.currentLocation));
+        }
+
+
         #endregion Events
 
-        #region Patch Farmer
-        /// <summary>
-        /// Add the extra rings to the Netcode tree.
-        /// </summary>
-        public static void InitFarmer(Farmer f) {
-            var actualrings = new ActualRings();
-            f.NetFields.AddFields(
-                actualrings.ring1,
-                actualrings.ring2,
-                actualrings.ring3,
-                actualrings.ring4
-            );
-            actualdata.Add(f, actualrings);
-        }
-
-        void Farmer_farmerInit() {
-            var addfields = FindCode(
-                OpCodes.Stelem_Ref,
-                Instructions.Callvirt(typeof(NetFields), nameof(NetFields.AddFields), typeof(INetSerializable[]))
-            );
-            addfields.Append(
-                Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.InitFarmer), typeof(Farmer))
-            );
-        }
-        
-        public static IEnumerable<Ring> ListRings(Farmer f) {
-            var r = new List<Ring>();
-            void Add(Ring ring) {
-                if (ring!=null) r.Add(ring);
-            }
-            ActualRings ar = ModEntry.actualdata.GetValue(f, ModEntry.FarmerNotFound);
-            Add(f.leftRing.Value);
-            Add(f.rightRing.Value);
-            Add(ar.ring1.Value);
-            Add(ar.ring2.Value);
-            Add(ar.ring3.Value);
-            Add(ar.ring4.Value);
-            return r;
-        }
-        
-        public static int CountWearingRing(Farmer f, int id) {
-            bool IsRing(Ring r) {
-                return r != null && r.indexInTileSheet.Value == id;
-            }
-        
-            ActualRings ar = actualdata.GetValue(f, FarmerNotFound);
-            int res = 0;
-            if (IsRing(f.leftRing.Value)) res++;
-            if (IsRing(f.rightRing.Value)) res++;
-            if (IsRing(ar.ring1.Value)) res++;
-            if (IsRing(ar.ring2.Value)) res++;
-            if (IsRing(ar.ring3.Value)) res++;
-            if (IsRing(ar.ring4.Value)) res++;
-            return res;
-        }
 
         void Farmer_isWearingRing() {
             AllCode().Replace(
+                Instructions.Call(typeof(ModEntry), nameof(ModEntry.getInstance)),
                 Instructions.Ldarg_0(),
                 Instructions.Ldarg_1(),
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.CountWearingRing), typeof(Farmer), typeof(int)),
+                Instructions.Call(typeof(ModEntry), nameof(ModEntry.CountEquippedRings), typeof(Farmer), typeof(int)),
                 Instructions.Ret()
             );
         }
 
+        void Farmer_GetEffectsOfRingMultiplier() {
+            AllCode().Replace(
+                Instructions.Call(typeof(ModEntry), nameof(ModEntry.getInstance)),
+                Instructions.Ldarg_0(),
+                Instructions.Ldarg_1(),
+                Instructions.Call(typeof(ModEntry), nameof(ModEntry.CountEquippedRings), typeof(Farmer), typeof(int)),
+                Instructions.Ret()
+            );
+        }
+
+
+
+
         public static void UpdateRings(GameTime time, GameLocation location, Farmer f) {
-            void update(Ring r) { 
+            void Update(Ring r) { 
                 if (r != null) r.update(time, location, f); 
             };
-            
-            ActualRings ar = actualdata.GetValue(f, FarmerNotFound);
-            update(f.leftRing.Value);
-            update(f.rightRing.Value);
-            update(ar.ring1.Value);
-            update(ar.ring2.Value);
-            update(ar.ring3.Value);
-            update(ar.ring4.Value);
+            Update(f.leftRing.Value);
+            Update(f.rightRing.Value);
+            foreach(Item item in ModEntry.GetRingInventory(f).items) {
+                Update(item as Ring);
+            }
         }
-        
+
+        #region Patch Farmer
         void Farmer_updateCommon() {
             FindCode(
                 OpCodes.Ldarg_0,
@@ -279,13 +239,7 @@ namespace StardewHack.WearMoreRings
 
         #region Patch GameLocation
         public static void ring_onLeaveLocation(GameLocation location) {
-            ActualRings ar = actualdata.GetValue(Game1.player, FarmerNotFound);
-            Game1.player.leftRing.Value?.onLeaveLocation(Game1.player, location);
-            Game1.player.rightRing.Value?.onLeaveLocation(Game1.player, location);
-            ar.ring1.Value?.onLeaveLocation(Game1.player, location);
-            ar.ring2.Value?.onLeaveLocation(Game1.player, location);
-            ar.ring3.Value?.onLeaveLocation(Game1.player, location);
-            ar.ring4.Value?.onLeaveLocation(Game1.player, location);
+            ForEachRing(Game1.player, r => r.onLeaveLocation(Game1.player, location));
         }
         
         void GameLocation_cleanupBeforePlayerExit() { 
@@ -310,13 +264,7 @@ namespace StardewHack.WearMoreRings
         }
         
         public static void ring_onNewLocation(GameLocation location) {
-            ActualRings ar = actualdata.GetValue(Game1.player, FarmerNotFound);
-            Game1.player.leftRing.Value?.onNewLocation(Game1.player, location);
-            Game1.player.rightRing.Value?.onNewLocation(Game1.player, location);
-            ar.ring1.Value?.onNewLocation(Game1.player, location);
-            ar.ring2.Value?.onNewLocation(Game1.player, location);
-            ar.ring3.Value?.onNewLocation(Game1.player, location);
-            ar.ring4.Value?.onNewLocation(Game1.player, location);
+            ForEachRing(Game1.player, r => r.onNewLocation(Game1.player, location));
         }
         
         void GameLocation_resetLocalState() { 
@@ -341,14 +289,8 @@ namespace StardewHack.WearMoreRings
         }
          
         public static void ring_onMonsterSlay(Monster target, GameLocation location, Farmer who) {
-            if (who==null) return;
-            ActualRings ar = actualdata.GetValue(who, FarmerNotFound);
-            who.leftRing.Value?.onMonsterSlay(target, location, who);
-            who.rightRing.Value?.onMonsterSlay(target, location, who);
-            ar.ring1.Value?.onMonsterSlay(target, location, who);
-            ar.ring2.Value?.onMonsterSlay(target, location, who);
-            ar.ring3.Value?.onMonsterSlay(target, location, who);
-            ar.ring4.Value?.onMonsterSlay(target, location, who);
+            if (who == null) return;
+            ForEachRing(who, r => r.onMonsterSlay(target, location, who));
         }
         
         void GameLocation_damageMonster() {
@@ -369,20 +311,18 @@ namespace StardewHack.WearMoreRings
                 Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
                 OpCodes.Callvirt,
                 // .onMonsterSlay (monster, this, who);
-                OpCodes.Ldloc_2,
-                OpCodes.Ldfld, // monster
+                OpCodes.Ldloc_2, // monster
                 OpCodes.Ldarg_0, // this
                 Instructions.Ldarg_S(arg_who), // who
                 Instructions.Callvirt(typeof(Ring), nameof(Ring.onMonsterSlay), typeof(Monster), typeof(GameLocation), typeof(Farmer))
             );
             
-            var monster = code.SubRange(code.length - 5, 4);
+            var monster = code.SubRange(code.length - 4, 3);
             code.Replace(
                 // ModEntry.ring_onMonsterSlay(monster, this, who);
                 monster[0],
                 monster[1],
                 monster[2],
-                monster[3],
                 Instructions.Call(typeof(ModEntry), nameof(ring_onMonsterSlay), typeof(Monster), typeof(GameLocation), typeof(Farmer))
             );
         }
@@ -408,7 +348,8 @@ namespace StardewHack.WearMoreRings
         }
 
         static public void AddEquipmentIcons(InventoryPage page) {
-            ActualRings ar = actualdata.GetValue(Game1.player, FarmerNotFound);
+            Chest chest = GetRingInventory(Game1.player);
+            
             int inv = Game1.player.MaxItems - 12;
             //             name            x   y   id   up   dn   lt   rt, item
             AddIcon(page, "Hat",           0,  0, 102, inv, 103,  -1, 110, Game1.player.hat.Value);
@@ -417,10 +358,12 @@ namespace StardewHack.WearMoreRings
             AddIcon(page, "Boots",         0, 48, 108, 104,  -1,  -1, 112, Game1.player.boots.Value);
             AddIcon(page, "Left Ring",    52,  0, 110, inv, 111, 102, 101, Game1.player.leftRing.Value);
             AddIcon(page, "Right Ring",   68,  0, 101, inv, 121, 110, 105, Game1.player.rightRing.Value);
-            AddIcon(page, "Extra Ring 1", 52, 16, 111, 110, 112, 103, 121, ar.ring1.Value);
-            AddIcon(page, "Extra Ring 2", 68, 16, 121, 101, 122, 111, 105, ar.ring2.Value);
-            AddIcon(page, "Extra Ring 3", 52, 32, 112, 111,  -1, 104, 122, ar.ring3.Value);
-            AddIcon(page, "Extra Ring 4", 68, 32, 122, 121,  -1, 112, 105, ar.ring4.Value);
+            AddIcon(page, "Extra Ring 1", 52, 16, 111, 110, 112, 103, 121, chest.items[0] as Ring);
+            AddIcon(page, "Extra Ring 2", 68, 16, 121, 101, 122, 111, 105, chest.items[1] as Ring);
+            AddIcon(page, "Extra Ring 3", 52, 32, 112, 111, 113, 104, 122, chest.items[2] as Ring);
+            AddIcon(page, "Extra Ring 4", 68, 32, 122, 121, 123, 112, 105, chest.items[3] as Ring);
+            AddIcon(page, "Extra Ring 5", 52, 48, 113, 122,  -1, 108, 123, chest.items[4] as Ring);
+            AddIcon(page, "Extra Ring 6", 68, 48, 123, 122,  -1, 113, 105, chest.items[5] as Ring);
         }
         
         void InventoryPage_ctor() {
@@ -643,7 +586,7 @@ namespace StardewHack.WearMoreRings
             }
             
             // Update inventory
-            ActualRings ar = actualdata.GetValue(Game1.player, FarmerNotFound);
+            Chest chest = GetRingInventory(Game1.player);
             switch (icon.name) {
             case "Hat":          Game1.player.hat.Set (helditem as Hat);            break;
             case "Shirt":        Game1.player.shirtItem.Set (helditem as Clothing); break;
@@ -651,10 +594,12 @@ namespace StardewHack.WearMoreRings
             case "Boots":        Game1.player.boots.Set (helditem as Boots);        break;
             case "Left Ring":    Game1.player.leftRing.Set (helditem as Ring);      break;
             case "Right Ring":   Game1.player.rightRing.Set (helditem as Ring);     break;
-            case "Extra Ring 1": ar.ring1.Set (helditem as Ring);                   break;
-            case "Extra Ring 2": ar.ring2.Set (helditem as Ring);                   break;
-            case "Extra Ring 3": ar.ring3.Set (helditem as Ring);                   break;
-            case "Extra Ring 4": ar.ring4.Set (helditem as Ring);                   break;
+            case "Extra Ring 1": chest.items[0] = helditem;                         break;
+            case "Extra Ring 2": chest.items[1] = helditem;                         break;
+            case "Extra Ring 3": chest.items[2] = helditem;                         break;
+            case "Extra Ring 4": chest.items[3] = helditem;                         break;
+            case "Extra Ring 5": chest.items[4] = helditem;                         break;
+            case "Extra Ring 6": chest.items[5] = helditem;                         break;
             default:
                 getInstance().Monitor.Log ($"ERROR: Trying to fit equipment item into invalid slot '{icon.name}'", LogLevel.Error);
                 return false;

@@ -11,8 +11,8 @@
 {
   "Name": "Get Glam",
   "Author": "MartyrPher",
-  "Version": "1.1.0-hairPackTest",
-  "MinimumApiVersion": "3.0",
+  "Version": "1.1.0",
+  "MinimumApiVersion": "3.7.4",
   "Description": "Stardew Valley Gets Glam.",
   "UniqueID": "MartyrPher.GetGlam",
   "EntryDll": "GetGlam.dll",

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/thespbgamer/ZoomLevel
+**
+*************************************************/
+
+{
+  "Name": "ZoomLevel",
+  "Author": "thespbgamer",
+  "Version": "1.1.1",
+  "Description": "Mod that changes the zoom level with a simple keybind.",
+  "UniqueID": "thespbgamer.ZoomLevel",
+  "EntryDll": "ZoomLevel.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "GitHub:thespbgamer/ZoomLevel", "Nexus:7363" ]
+}

@@ -156,7 +156,7 @@ See [content packs](https://stardewvalleywiki.com/Modding:Content_packs) on the 
 - Prefix your content pack folder with `[NA]`, like `[NA] Ashley companion`
 - Add specific install steps in your mod description to help players:
 
-```
+```bbcode
 [size=5]Install[/size]
 [list=1]
 [*][url=https://smapi.io]Install the latest version of SMAPI[/url].

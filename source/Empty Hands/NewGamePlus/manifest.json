@@ -11,14 +11,9 @@
 {
   "Name": "New Game Plus",
   "Author": "Quicksilver Fox",
-  "Version": {
-    "MajorVersion": 1,
-    "MinorVersion": 1,
-    "PatchVersion": 0,
-    "Build": null
-  },
+  "Version": "1.1.0",
   "Description": "Stuck in a groundhog day loop? You should at least learn from it.",
   "UniqueID": "QuicksilverFox.NewGamePlus",
   "EntryDll": "NewGamePlus.dll",
-  "UpdateKeys": [ ]
+  "UpdateKeys": []
 }

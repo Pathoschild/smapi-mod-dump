@@ -33,6 +33,9 @@ namespace NpcAdventure.StateMachine.State
 
         public override void Entry()
         {
+            if (this.StateMachine.Companion == null)
+                throw new TransitionStateException("Companion NPC can't be null for CSM state `AVAILABLE`.");
+
             this.recruitRequestsEnabled = true;
             this.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
             this.Events.GameLoop.UpdateTicked += this.GameLoop_UpdateTicked;

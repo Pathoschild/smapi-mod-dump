@@ -11,7 +11,7 @@
 {
 	"Name": "Gift Decline",
 	"Author": "desto",
-	"Version": "1.1.1",
+	"Version": "1.1.2",
 	"Description": "Inhabitants will like items less each time you gift them that same item.",
 	"UniqueID": "desto.GiftDecline",
 	"EntryDll": "GiftDecline.dll",

@@ -46,10 +46,10 @@ namespace TreeTransplant
 		private ITree Cast(TerrainFeature tf)
 		{
 			// return the appropriate wrapper
-			if (tf is Tree)
-				return new TreeWrapper((Tree)tf);
-			if (tf is FruitTree)
-				return new FruitTreeWrapper((FruitTree)tf);
+			if (tf is Tree t)
+				return new TreeWrapper(t);
+			if (tf is FruitTree ft)
+				return new FruitTreeWrapper(ft);
 
 			// throw an exception
 			throw new InvalidCastException("Type not of Tree or FruitTree cannot cast!");
@@ -90,7 +90,7 @@ namespace TreeTransplant
 				// scale with the pixel zoom
 				Game1.pixelZoom,
 				// flip the sprite if necessary
-				tree.flipped || flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+				flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
 				// depth with z-buffer (not entirely sure of the equation here)
 				0.999f
 			);

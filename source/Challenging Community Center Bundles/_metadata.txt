@@ -1,0 +1,13 @@
+url:
+   https://github.com/Jaksha6472/ChallengingCommunityCenterBundles.git
+
+mods:
+   Challenging Community Center Bundles
+
+latest commit:
+   commit 99c8fa03ad97b6e35c4c3a541afdf787df88c706
+   Author: Jaksha6472 <freaky_chick@gmx.de>
+   Date:   Wed Dec 30 23:27:38 2020 +0100
+   
+       CCCB version 2.1.0 release
+   

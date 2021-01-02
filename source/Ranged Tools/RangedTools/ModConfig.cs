@@ -26,6 +26,9 @@ namespace RangedTools
         public bool ToolAlwaysFaceClick { get; set; } = true;
         public bool WeaponAlwaysFaceClick { get; set; } = true;
         
+        public int ToolHitLocationDisplay { get; set; } = 1;
+        
+        public bool AllowRangedChargeEffects { get; set; } = false;
         public bool CustomRangeOnClickOnly { get; set; } = true;
     }
 }

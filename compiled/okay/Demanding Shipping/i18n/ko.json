@@ -1,6 +1,8 @@
 ﻿{
     "re-roll" : "다시 뽑기",
-    "original" : "배송 상자 메뉴",
+    "original" : "기존 배송 메뉴",
     "next" : "내일",
     "gift" : "선물",
+    "open" : "열기",
+    "demanding shipping" : "까다로운 배송",
 }

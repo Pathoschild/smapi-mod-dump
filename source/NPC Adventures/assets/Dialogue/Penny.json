@@ -9,6 +9,11 @@
 *************************************************/
 
 {
+  "companionAccepted_Spouse": "Why of course, dear! It'll be lovely!$1",
+  "companionRejectedNight_Spouse": "I am sorry, but I have to review some materials for Jas and Vincent's class. Maybe tomorrow.",
+  "companionDismiss_Spouse": "I see, I should probably go too. I learned useful things that I can teach in class and I want to write them down.#$b#Thanks for taking me out today. It made my day really special.$4",
+  "companionDismissAuto_Spouse": "It's getting late, we should probably go home soon.#$b#I really enjoyed our time today. Don't linger around for too long, dear. Stay safe.",
+  "companionRecruited_Spouse": "Where are we going? Should we visit my mother?#$b#I'll follow you to anywhere you'd like to, though. Being able to spend more time with you already made me so happy.$1",
   "companionAccepted": "Sure, that sounds wonderful!",
   "companionRejected": "I've got some reading to do with Vincent and Jas, maybe next time.",
   "companionRejectedNight": "I'm sorry, I've got to get home. There's just so much to do.$2",

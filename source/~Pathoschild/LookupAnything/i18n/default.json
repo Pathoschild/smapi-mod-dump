@@ -17,6 +17,9 @@
     "generic.tomorrow": "tomorrow",
     "generic.yesterday": "yesterday",
 
+    // generic values
+    "generic.unknown": "unknown",
+
     // generic field values
     "generic.percent": "{{percent}}%",
     "generic.percent-chance-of": "{{percent}}% chance of {{label}}",
@@ -331,6 +334,8 @@
     // labels
     "crop.summary": "Crop",
     "crop.harvest": "Harvest",
+    "crop.fertilized": "Fertilized",
+    "crop.watered": "Watered",
 
     // values
     "crop.summary.dead": "This crop is dead.",

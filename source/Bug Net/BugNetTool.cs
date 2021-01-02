@@ -10,7 +10,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PyTK.CustomElementHandler;
 using SpaceCore;
 using SpaceShared;
 using StardewValley;
@@ -21,10 +20,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace BugNet
 {
-    public class BugNetTool : MeleeWeapon, ICustomWeaponDraw, ISaveElement
+    [XmlType("Mods_spacechase0_BugNet")]
+    public class BugNetTool : MeleeWeapon, ICustomWeaponDraw
     {
         internal static Texture2D Texture;
 

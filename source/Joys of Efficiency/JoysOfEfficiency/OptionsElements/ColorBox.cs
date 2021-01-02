@@ -26,7 +26,7 @@ namespace JoysOfEfficiency.OptionsElements
             _color = color;
         }
 
-        public override void draw(SpriteBatch b, int slotX, int slotY)
+        public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
         {
             slotX += 32;
 

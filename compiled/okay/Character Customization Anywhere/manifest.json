@@ -1,0 +1,10 @@
+﻿{
+  "Name": "CharacterCustomizationAnywhere",
+  "Author": "jeanne",
+  "Version": "1.0.1", // fixed locally
+  "Description": "Customize the player anywhere in the game",
+  "UniqueID": "jeanne.CharacterCustomizationAnywhere",
+  "EntryDll": "CharacterCustomizationAnywhere.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

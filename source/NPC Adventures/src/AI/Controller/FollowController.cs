@@ -42,7 +42,7 @@ namespace NpcAdventure.AI.Controller
         {
             this.pathToFollow = new Queue<Vector2>();
             this.ai = ai;
-            this.leader = ai.player;
+            this.leader = ai.farmer;
             this.follower = ai.npc;
             this.pathFinder = new PathFinder(this.follower.currentLocation, this.follower, this.leader);
             this.joystick = new NpcMovementController(this.follower, this.pathFinder);

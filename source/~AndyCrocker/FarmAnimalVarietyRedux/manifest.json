@@ -12,7 +12,7 @@
   "Name": "Farm Animal Variety Redux",
   "Author": "EpicBellyFlop45",
   "Version": "1.0.0",
-  "Description": "Loads custom farm animals",
+  "Description": "Adds ability to load custom animals",
   "UniqueID": "EpicBellyFlop45.FarmAnimalVarietyRedux",
   "EntryDll": "FarmAnimalVarietyRedux.dll",
   "MinimumApiVersion": "3.0.0",

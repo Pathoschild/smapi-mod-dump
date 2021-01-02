@@ -5,9 +5,9 @@ mods:
    Community Bundle Item Tooltip
 
 latest commit:
-   commit e51a22d017fcb90b06f35c302bf1e002d782d77c
+   commit 18b008c46b9e9c0679a03e3feea97f4aeb56777d
    Author: Musbah Sinno <musbahsinno@hotmail.com>
-   Date:   Thu Feb 21 19:41:53 2019 -0700
+   Date:   Fri Jan 1 20:43:06 2021 -0500
    
-       Updated manifest
+       Added new languages
    

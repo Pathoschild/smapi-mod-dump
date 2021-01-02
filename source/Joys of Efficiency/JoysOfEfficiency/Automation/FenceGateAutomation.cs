@@ -13,7 +13,6 @@ using System.Linq;
 using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
 using StardewValley;
-using Object = StardewValley.Object;
 
 namespace JoysOfEfficiency.Automation
 {
@@ -61,10 +60,8 @@ namespace JoysOfEfficiency.Automation
                 //Player is facing upside/downside.
                 return type == FenceType.Horizontal;
             }
-            else
-            {
-                return type == FenceType.Vertical;
-            }
+
+            return type == FenceType.Vertical;
         }
 
         private static bool IsPlayerInClose(Fence fence, Farmer player)
@@ -90,6 +87,7 @@ namespace JoysOfEfficiency.Automation
                 {
                     return true;
                 }
+
 
                 switch (type)
                 {

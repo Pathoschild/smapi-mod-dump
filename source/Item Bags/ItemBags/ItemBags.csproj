@@ -116,6 +116,7 @@
     <Compile Include="Helpers\SaveLoadHelpers.cs" />
     <Compile Include="Helpers\TextureHelpers.cs" />
     <Compile Include="SaveAnywhereAPI.cs" />
+    <Compile Include="SpaceCoreAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\Modded Bags\Samples %28Copy into Modded Bags folder to use%29\Aquilegia.SweetTooth.json" />

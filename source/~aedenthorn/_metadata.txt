@@ -12,6 +12,7 @@ mods:
    Custom Resource Clumps
    Custom Spouse Patio
    Enhanced Loot Magnet
+   Expert Sitting
    Familiars
    Fire Breath
    Friendly Divorce
@@ -44,9 +45,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 823e1217aa482c71ce5805cab64261bb2098479c
+   commit 2b5dd090e3d679199b7343c9c6495378c46b9c96
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Tue Dec 22 13:41:02 2020 -0500
+   Date:   Thu Dec 31 10:06:19 2020 -0500
    
-       1.5
+       etc
    

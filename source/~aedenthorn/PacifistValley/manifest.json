@@ -11,11 +11,11 @@
 {
   "Name": "Pacifist Valley",
   "Author": "Aedenthorn",
-  "Version": "0.6.4",
+  "Version": "0.7.2",
   "Description": "Changes killing into kissing.",
   "UniqueID": "Aedenthorn.PacifistValley",
   "EntryDll": "PacifistValley.dll",
-  "MinimumApiVersion": "3.5.0",
+  "MinimumApiVersion": "3.8.0",
   "UpdateKeys": ["Nexus:5464"],
   "ModUpdater": {
     "Repository": "StardewValleyMods",

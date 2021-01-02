@@ -1,5 +1,5 @@
 {
-  "Shoe_Color_Extras": false,
+  "Shoe_Color_Extras": true,
   "Shoe_Color": 0,
   "Shoe_Color_Key_Next": "Add",
   "Shoe_Color_Key_Previous": "Subtract"

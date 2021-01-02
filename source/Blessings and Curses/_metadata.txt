@@ -5,11 +5,9 @@ mods:
    Blessings and Curses
 
 latest commit:
-   commit b68d65890b357f524a4719fb0dfc698d139313d5
+   commit 62de9fd336691df5cf706d783ed0e390f98b1755
    Author: GenDeathrow <gendeathrow@gmail.com>
-   Date:   Mon Mar 4 10:47:23 2019 -0600
+   Date:   Fri Jan 1 15:49:06 2021 -0600
    
-       Refractoring of some code
-       Spawning multiple mobs with bits can now be spawned via multible cheers in a single message.
-       New option to despawn some mobs on each day via a float 0 -> 1. Default 0.5
+       Updated to latest version of stardew
    

@@ -1,0 +1,16 @@
+url:
+   https://github.com/Enaium-StardewValleyMods/TeleportNpc.git
+
+mods:
+   Teleport NPC
+
+latest commit:
+   commit b8fa7adc907e8c3031ec991142829579358be1dd
+   Merge: 2496ac2 3197742
+   Author: Enaium <32991121+Enaium@users.noreply.github.com>
+   Date:   Tue Dec 22 23:34:23 2020 -0600
+   
+       Merge pull request #1 from Enaium-StardewValleyMods/develop
+       
+       Develop
+   

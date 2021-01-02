@@ -12,7 +12,7 @@ using System;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 
-namespace Pathoschild.Stardew.EmptyHands.Framework
+namespace EmptyHands.Framework
 {
     /// <summary>The mod configuration.</summary>
     internal class RawModConfig
@@ -26,9 +26,6 @@ namespace Pathoschild.Stardew.EmptyHands.Framework
         /// <summary>The controller input map.</summary>
         public InputMapConfiguration<string> Controller { get; set; }
 
-        /// <summary>Whether to check for updates to the mod.</summary>
-        public bool CheckForUpdates { get; set; } = true;
-
 
         /*********
         ** Public methods
@@ -36,11 +33,11 @@ namespace Pathoschild.Stardew.EmptyHands.Framework
         /// <summary>Construct a default instance.</summary>
         public RawModConfig()
         {
-            this.Keyboard = new InputMapConfiguration<string>
+            Keyboard = new InputMapConfiguration<string>
             {
                 SetToNothing = Keys.OemTilde.ToString()
             };
-            this.Controller = new InputMapConfiguration<string>
+            Controller = new InputMapConfiguration<string>
             {
                 SetToNothing = ""
             };
@@ -52,13 +49,13 @@ namespace Pathoschild.Stardew.EmptyHands.Framework
         {
             return new ModConfig
             {
-                Keyboard = new InputMapConfiguration<Keys>
+                Keyboard = new InputMapConfiguration<SButton>
                 {
-                    SetToNothing = this.TryParse(monitor, this.Keyboard.SetToNothing, Keys.OemTilde)
+                    SetToNothing = TryParse(monitor, Keyboard.SetToNothing, SButton.OemTilde)
                 },
-                Controller = new InputMapConfiguration<Buttons>
+                Controller = new InputMapConfiguration<SButton>
                 {
-                    SetToNothing = this.TryParse<Buttons>(monitor, this.Controller.SetToNothing)
+                    SetToNothing = TryParse<SButton>(monitor, Controller.SetToNothing)
                 }
             };
         }

@@ -186,6 +186,37 @@ namespace CustomDeathPenaltyPlus
         }
 
         /// <summary>
+        /// Edits content in Data/Events/IslandSouth
+        /// </summary>
+        public class IslandSouthEventFixes : IAssetEditor
+        {
+            private IModHelper modHelper;
+
+            public IslandSouthEventFixes(IModHelper helper)
+            {
+                modHelper = helper;
+            }
+
+            // Allow asset to be editted if name matches
+            public bool CanEdit<T>(IAssetInfo asset)
+            {
+                return asset.AssetNameEquals("Data\\Events\\IslandSouth");
+            }
+
+            // Edit asset
+            public void Edit<T>(IAssetData asset)
+            {
+                var eventedits = asset.AsDictionary<string, string>().Data;
+
+                // Is WakeupNextDayinClinic true?
+                if (config.DeathPenalty.WakeupNextDayinClinic == true)
+                {
+                    eventedits["PlayerKilled"] = $"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}", "on the island shore")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
+                }
+            }
+        }
+
+        /// <summary>
         /// Edits content in Data/Events/Hospital
         /// </summary>
         public class HospitalEventFixes : IAssetEditor

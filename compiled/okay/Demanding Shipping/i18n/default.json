@@ -1,6 +1,8 @@
 ﻿{
     "re-roll" : "Re-roll",
-    "original" : "Shipping Bin Menu",
+    "original" : "Original Shipping Menu",
     "next" : "Tomorrow",
     "gift" : "Gift",
+    "open" : "Open",
+    "demanding shipping" : "Demanding Shipping",
 }

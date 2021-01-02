@@ -1,0 +1,13 @@
+url:
+   https://github.com/jltaylor-us/StardewToDew.git
+
+mods:
+   To-Dew
+
+latest commit:
+   commit aca2adc6bfb4750bb0478b97533c547fb438e529
+   Author: Jamie Taylor <Jamie.Taylor@pobox.com>
+   Date:   Tue Dec 29 21:02:52 2020 -0500
+   
+       Initial version; release 1.0.0
+   

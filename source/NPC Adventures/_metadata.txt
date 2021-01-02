@@ -5,9 +5,9 @@ mods:
    NPC Adventures
 
 latest commit:
-   commit 7bbcae5b1fbcececea2116a955fb5c238dcc344f
-   Author: PurrplingCat <git@purrplingcat.com>
-   Date:   Wed Dec 2 10:26:01 2020 +0100
+   commit fbd67320be9c900580cffac2baa989aaddc5be55
+   Author: Ellen Jana FawkesovÃ¡ <4710267+purrplingcat@users.noreply.github.com>
+   Date:   Wed Dec 23 12:50:02 2020 +0100
    
-       Add luck debuf for Shane
+       Update README.md
    

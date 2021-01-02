@@ -1,9 +1,9 @@
 ﻿{
   "Name": "Better Mixed Seeds",
-  "Author": "EpicBellyFlop45",
-  "Version": "2.3.10",
-  "Description": "Makes the mixed seeds truly random, instead of limited to a limited number of seeds",
-  "UniqueID": "EpicBellyFlop45.BetterMixedSeeds",
+  "Author": "Satozaki",
+  "Version": "3.0.1",
+  "Description": "Adds ability for mixed seeds to drop anything",
+  "UniqueID": "Satozaki.BetterMixedSeeds",
   "EntryDll": "BetterMixedSeeds.dll",
   "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:3012" ]

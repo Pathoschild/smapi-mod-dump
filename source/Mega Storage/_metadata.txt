@@ -1,16 +1,13 @@
 url:
-   https://github.com/ImJustMatt/Stardew-MegaStorage.git
+   https://github.com/ImJustMatt/MegaStorageMod.git
 
 mods:
    Mega Storage
 
 latest commit:
-   commit 5b847b7343af4a5a601b2d6c72b0e9059d2b0530
-   Merge: 1d4bfa9 4a318e4
+   commit 0064f4b13969b38f153889d18c42e1ad52d2aec2
    Author: Matthew <ImJustMatt@users.noreply.github.com>
-   Date:   Sun Mar 1 22:16:52 2020 -0600
+   Date:   Thu Dec 31 17:14:12 2020 -0600
    
-       Merge pull request #7 from ImJustMatt/develop
-       
-       Let JsonAssets 1.6.2 handle extra frames
+       Update README.md
    

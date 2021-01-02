@@ -40,9 +40,6 @@ namespace ItemBags.Community_Center
         {
             try
             {
-                //Possible TODO: Load the current language's Bundle .xnb file (Does SMAPI Automatically do this for us when loading game content?)
-                //Refer to: LocalizedContentManager.CurrentLanguageCode and use that code to build the string of the content filename, such as Data\Bundles.pt-BR if language code is portuguese
-
                 this.Building = Game1.getLocationFromName("CommunityCenter") as CommunityCenter;
                 this.IsJojaMember = Game1.MasterPlayer.mailReceived.Contains("JojaMember"); // Possible TODO Do names of received mail depend on current language?
 

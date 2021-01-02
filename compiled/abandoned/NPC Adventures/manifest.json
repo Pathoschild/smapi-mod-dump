@@ -1,0 +1,26 @@
+{
+  "Name": "NPC Adventures",
+  "Author": "PurrplingCat",
+  "Version": "0.16.0",
+  "Description": "It's time to adventure! Go to an adventure with Pelican Town's villagers!",
+  "UniqueID": "purrplingcat.npcadventure",
+  "EntryDll": "NpcAdventure.dll",
+  "MinimumApiVersion": "3.2.0",
+  "UpdateKeys": ["Nexus:4582"],
+  "Dependencies": [
+    {
+      "UniqueID": "PurrplingCat.QuestFramework",
+      "MinimumVersion": "1.0.0",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "Cherry.ExpandedPreconditionsUtility",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "Digus.CustomKissingMod",
+      "MinimumVersion": "1.2.0",
+      "IsRequired": false
+    }
+  ]
+}

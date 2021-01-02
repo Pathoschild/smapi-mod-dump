@@ -6,5 +6,5 @@
   "Name": "Combat Controls",
   "UniqueID": "DJ-STLN.CombatControls",
   "UpdateKeys": [ "Nexus:2590", "Github:DJ-STLN/CombatControls" ],
-  "Version": "1.1.5"
+  "Version": "1.1.6"
 }

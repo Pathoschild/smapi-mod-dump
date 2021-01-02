@@ -31,30 +31,26 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Creates a list of all game locations, including building interiors, matching the provided name.</summary>
+            /// <summary>Creates a list of all game location names, including building interiors, matching the provided name.</summary>
             /// <param name="name">The name of the location(s) to be listed. Case-insensitive.</param>
-            /// <returns>A list of all locations with a Name property matching the provided name.</returns>
-            public static List<GameLocation> GetAllLocationsFromName(string name)
+            /// <returns>A list of all locations with a <see cref="GameLocation.NameOrUniqueName"/> matching the provided name.</returns>
+            public static List<string> GetAllLocationsFromName(string name)
             {
-                List<GameLocation> locations; //the final list of matching locations
-                
-                GameLocation location = Game1.getLocationFromName(name); //attempt to get a "static" map location with the provided name
-                if (location != null) //if a location was found
+                if (name.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase) //if the name is a mineshaft level
+                    || (Game1.getLocationFromName(name) != null)) //OR if the name is a typical, easily retrieved location (NOTE: do not check this for mineshaft levels; they will spawn things, advance elevator progress, etc)
                 {
-                    locations = new List<GameLocation> { location }; //create a list containing the location
+                    return new List<string>() { name }; //return a list containing the name
                 }
-                else //if a location was not found
-                {
-                    locations = new List<GameLocation>(); //create a blank list
 
-                    foreach (BuildableGameLocation buildable in Game1.locations.OfType<BuildableGameLocation>()) //for each buildable location in the game
+                List<string> locations = new List<string>(); //create a blank list
+
+                foreach (BuildableGameLocation buildable in Game1.locations.OfType<BuildableGameLocation>()) //for each buildable location in the game
+                {
+                    foreach (Building building in buildable.buildings.Where(building => building.indoors.Value != null)) //for each building with an interior location ("indoors")
                     {
-                        foreach (Building building in buildable.buildings.Where(building => building.indoors.Value != null)) //for each building with an interior location ("indoors")
+                        if (building.indoors.Value.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) //if the location's name matches the provided name
                         {
-                            if (building.indoors.Value.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) //if the location's name matches the provided name
-                            {
-                                locations.Add(building.indoors.Value); //add the location to the list
-                            }
+                            locations.Add(building.indoors.Value.NameOrUniqueName); //add the location to the list
                         }
                     }
                 }
@@ -73,7 +69,7 @@ namespace FarmTypeManager
                                     string mapName = "BuildableIndoors-" + UniqueId; //construct the GameLocation.Name used for this buildable's interior location
                                     if (name == Id && Game1.getLocationFromName(mapName) is GameLocation indoors) //if the provided name equals this buildable's ID AND the interior location exists
                                     {
-                                        locations.Add(indoors); //add this location to the list
+                                        locations.Add(mapName); //add this location to the list
                                     }
                                 }
                             }

@@ -128,9 +128,9 @@ namespace NpcAdventure
                 return;
             }
 
-            if (!this.npcAdventureMod.CompanionManager.PossibleCompanions.TryGetValue(npcName, out CompanionStateMachine csm))
+            if (!this.npcAdventureMod.CompanionManager.PossibleCompanions.TryGetValue(npcName, out CompanionStateMachine csm) || csm.Companion == null)
             {
-                this.monitor.Log($"Cannot recruit '{npcName}' - NPC is not recruitable or doesn't exists", LogLevel.Info);
+                this.monitor.Log($"Cannot recruit '{npcName}' - NPC is not recruitable or doesn't exists.", LogLevel.Error);
                 return;
             }
 

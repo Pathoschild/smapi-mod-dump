@@ -23,7 +23,6 @@ using StardewValley.Tools;
 using static System.String;
 using static StardewValley.Game1;
 using Object = StardewValley.Object;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace JoysOfEfficiency.Utils
 {
@@ -36,6 +35,11 @@ namespace JoysOfEfficiency.Utils
 
 
         private static int _lastItemIndex;
+
+        public static bool IsAndroid()
+        {
+            return Constants.TargetPlatform == GamePlatform.Android;
+        }
 
         public static string GetItemName(int parentSheetIndex)
         {
@@ -77,6 +81,11 @@ namespace JoysOfEfficiency.Utils
                 timeLeft = duration
             };
             addHUDMessage(hudMessage);
+        }
+
+        public static void ShowHudMessageTranslated(string key, int duration = 3500)
+        {
+            ShowHudMessage(Translation.Get(key), duration);
         }
 
         public static IEnumerable<FarmAnimal> GetAnimalsList(Character player)
@@ -399,6 +408,10 @@ namespace JoysOfEfficiency.Utils
 
         public static int GetTruePrice(Item item)
         {
+            if (item == null)
+            {
+                return 0;
+            }
             return item is SVObject obj ? obj.sellToStorePrice() * 2 : item.salePrice();
         }
 

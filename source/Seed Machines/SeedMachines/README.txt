@@ -41,6 +41,7 @@ After first running of the game in the `%Stardew Valley Folder%/Mods/SeedMachine
 | themeName | String | Default | Theme name (you can add your own asset e.g. `assets/SeedMachinesMyTheme.png`. Then this parameter should be "MyTheme".|
 
 Release Notes
- - 0.0.3-beta - current version - Quick changes for parameterless constructors fix (v1)
+ - 0.0.4-beta - current version - Updated minimum SMAPI version to 3.8.0
+ - 0.0.3-beta - Quick changes for parameterless constructors fix (v1)
  - 0.0.2-beta - Fixed issue with loading of the assets on Android devices. Added compatilibty-fix for JsonAssets mod from spacechase0 (if it installed)
  - 0.0.1-beta - Added base functionality for Seed Machine and Seed Bandit.

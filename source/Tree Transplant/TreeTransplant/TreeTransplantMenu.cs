@@ -36,37 +36,15 @@ namespace TreeTransplant
 
 		public TreeTransplantMenu()
 		{
-			// play a sound
+			// startup to the menu
 			Game1.playSound("dwop");
-			// open the menu after a fade to black
 			Game1.globalFadeToBlack(open);
+			Game1.player.forceCanMove();
+			resetBounds();
 
 			// set the rectangles for green and red square
 			greenSquare = new Rectangle(194, 388, 16, 16);
 			redSquare = new Rectangle(210, 388, 16, 16);
-
-			// initialize buttons
-			cancelButton = new ClickableTextureComponent(
-				new Rectangle(
-					xPositionOnScreen + width - borderWidth - spaceToClearSideBorder - Game1.tileSize,
-					yPositionOnScreen + spaceToClearTopBorder + Game1.tileSize,
-					Game1.tileSize,
-					Game1.tileSize),
-				Game1.mouseCursors,
-				Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 47, -1, -1),
-				1.0f);
-
-			flipButton = new ClickableTextureComponent(
-				new Rectangle(
-					xPositionOnScreen + width - borderWidth - spaceToClearSideBorder - (Game1.tileSize * 2) - (Game1.tileSize / 2),
-					yPositionOnScreen + spaceToClearTopBorder + Game1.tileSize,
-					Game1.tileSize,
-					Game1.tileSize),
-				TreeTransplant.flipTexture,
-				new Rectangle(0, 0, 64, 64),
-				1.0f);
-
-			resetBounds();
 		}
 
 		/// <summary>
@@ -134,12 +112,24 @@ namespace TreeTransplant
 		public override void receiveKeyPress(Keys key)
 		{
 			// we're still fading so ignore key input
-			if (Game1.globalFade)
+			if (Game1.IsFading())
 				return;
 
 			// handle input ensuring that invalid keys in mapping don't get checked
 			if (Game1.options.doesInputListContain(Game1.options.menuButton, key))
 				handleCancelAction();
+
+			if (!Game1.options.SnappyMenus)
+			{
+				if (Game1.options.doesInputListContain(Game1.options.moveDownButton, key))
+					Game1.panScreen(0, 4);
+				if (Game1.options.doesInputListContain(Game1.options.moveUpButton, key))
+					Game1.panScreen(0, -4);
+				if (Game1.options.doesInputListContain(Game1.options.moveRightButton, key))
+					Game1.panScreen(4, 0);
+				if (Game1.options.doesInputListContain(Game1.options.moveLeftButton, key))
+					Game1.panScreen(-4, 0);
+			}
 		}
 
 		/// <summary>
@@ -169,17 +159,17 @@ namespace TreeTransplant
 				return;
 
 			// get X and Y relative to the viewport
-			int x = Game1.getOldMouseX() + Game1.viewport.X;
-			int y = Game1.getOldMouseY() + Game1.viewport.Y;
+			int x = Game1.getOldMouseX(ui_scale: false) + Game1.viewport.X;
+			int y = Game1.getOldMouseY(ui_scale: false) + Game1.viewport.Y;
 
 			// checks if we moved more than a tile size and if so pan the screen
-			if (x - Game1.viewport.X < Game1.tileSize)
+			if (x - Game1.viewport.X < 64)
 				Game1.panScreen(-8, 0);
-			else if (x - (Game1.viewport.X + Game1.viewport.Width) >= -Game1.tileSize * 2)
+			else if (x - (Game1.viewport.X + Game1.viewport.Width) >= -128)
 				Game1.panScreen(8, 0);
-			if (y - Game1.viewport.Y < Game1.tileSize)
+			if (y - Game1.viewport.Y < 64)
 				Game1.panScreen(0, -8);
-			else if (y - (Game1.viewport.Y + Game1.viewport.Height) >= -Game1.tileSize)
+			else if (y - (Game1.viewport.Y + Game1.viewport.Height) >= -64)
 				Game1.panScreen(0, 8);
 
 			// calculate valid placement for cursor tiles and for actual placement status
@@ -203,15 +193,14 @@ namespace TreeTransplant
 				true, true, true
 			};
 
-
-			// get X and Y relative to the viewport
-			var x = Game1.getOldMouseX() + Game1.viewport.X;
-			var y = Game1.getOldMouseY() + Game1.viewport.Y;
+			// get the mouse position (don't use the x and y from the function)
+			var mouseX = Game1.getOldMouseX(ui_scale: false);
+			var mouseY = Game1.getOldMouseY(ui_scale: false);
 
 			// get cursor tile location
 			var tileLocation = new Vector2(
-				(float)Math.Floor((decimal)x / Game1.tileSize),
-				(float)Math.Floor((decimal)y / Game1.tileSize)
+				(Game1.viewport.X + mouseX) / Game1.tileSize,
+				(Game1.viewport.Y + mouseY) / Game1.tileSize
 			);
 
 			// get fast reference to tile location coordinates
@@ -242,11 +231,11 @@ namespace TreeTransplant
 				throw new Exception("Selected tree is somehow not of Tree or FruitTree");
 
 			// is this a normal tree
-			bool isNT = tileLocations.Length == 4;
+			bool isNormalTree = tileLocations.Length == 4;
 
 			for (int i = 0; i < tileLocations.Length; i++)
 			{
-				bool flag = isTileValid((int)tileLocations[i].X, (int)tileLocations[i].Y, isNT || (!isNT && selectedTree.tree.isAdult()));
+				bool flag = isTileValid((int)tileLocations[i].X, (int)tileLocations[i].Y, isNormalTree || (!isNormalTree && selectedTree.tree.isAdult()));
 				validSpot[ids[i]] = flag;
 				if (!flag)
 					canPlace = flag;
@@ -331,10 +320,14 @@ namespace TreeTransplant
 			if (Game1.globalFade)
 				return;
 
+			// get the mouse position (don't use the x and y from the function)
+			var mouseX = Game1.getOldMouseX(ui_scale: false);
+			var mouseY = Game1.getOldMouseY(ui_scale: false);
+
 			// get cursor tile location
 			var tileLocation = new Vector2(
-				(Game1.viewport.X + x) / Game1.tileSize,
-				(Game1.viewport.Y + y) / Game1.tileSize
+				(Game1.viewport.X + mouseX) / Game1.tileSize,
+				(Game1.viewport.Y + mouseY) / Game1.tileSize
 			);
 
 			if (cancelButton.containsPoint(x, y))
@@ -356,15 +349,17 @@ namespace TreeTransplant
 			}
 			else if (selectedTree != null && tileLocation == selectedTreeLocation)
 			{
+				if (selectedTree.tree.flipped == selectedTree.flipped)
+					Game1.playSound("shwip");
+				else
+					Game1.playSound("dirtyHit");
 				selectedTree.propFlip();
 				selectedTree = null;
-				Game1.playSound("shwip");
-
 			}
 			else if (Game1.currentLocation.terrainFeatures.ContainsKey(tileLocation))
 			{
 				// get our terrain feature
-				TerrainFeature terrainFeature = Game1.currentLocation.terrainFeatures[tileLocation];
+				var terrainFeature = Game1.currentLocation.terrainFeatures[tileLocation];
 				// make sure its the type we care about
 				if (terrainFeature is FruitTree || terrainFeature is Tree)
 				{
@@ -377,7 +372,7 @@ namespace TreeTransplant
 					// set the selected tree                    
 					selectedTree = new TreeRenderer(terrainFeature);
 					selectedTreeLocation = tileLocation;
-					Game1.playSound("bigSelect");
+					Game1.playSound("hoeHit");
 				}
 			}
 			else if (selectedTree != null)
@@ -388,8 +383,8 @@ namespace TreeTransplant
 				selectedTree.propFlip();
 				// add a new one in the spot selected
 				Game1.currentLocation.terrainFeatures.Add(tileLocation, selectedTree.tree.getTerrainFeature());
-				// play sound of tree
-				Game1.playSound("bigDeSelect");
+				// play sound of seed placement
+				Game1.playSound("dirtyHit");
 				// deselect the tree
 				selectedTree = null;
 				selectedTreeLocation = Vector2.Zero;
@@ -411,9 +406,12 @@ namespace TreeTransplant
 
 			// get cursor tile location
 			var tileLocation = new Vector2(
-				(Game1.viewport.X + Game1.getOldMouseX()) / Game1.tileSize,
-				(Game1.viewport.Y + Game1.getOldMouseY()) / Game1.tileSize
+				(Game1.viewport.X + Game1.getOldMouseX(ui_scale: false)) / Game1.tileSize,
+				(Game1.viewport.Y + Game1.getOldMouseY(ui_scale: false)) / Game1.tileSize
 			);
+
+			// start drawing in world and not UI
+			Game1.StartWorldDrawInUI(b);
 
 			// draw a tree if we have one
 			if (selectedTree != null)
@@ -444,14 +442,17 @@ namespace TreeTransplant
 				}
 			}
 
+			// stop drawing in world
+			Game1.EndWorldDrawInUI(b);
+
 			// draw the cancel button
 			cancelButton.draw(b);
 			// draw the flip button
 			flipButton.draw(b);
 
 			// draw the scroll with text
-			string t = selectedTree != null ? placementText : defaultText;
-			SpriteText.drawStringWithScrollBackground(b, t, Game1.viewport.Width / 2 - SpriteText.getWidthOfString(t) / 2, Game1.tileSize / 4);
+			var t = selectedTree != null ? placementText : defaultText;
+			SpriteText.drawStringWithScrollBackground(b, t, Game1.uiViewport.Width / 2 - SpriteText.getWidthOfString(t) / 2, 16);
 
 			// draw the cursor
 			drawMouse(b);
@@ -462,12 +463,29 @@ namespace TreeTransplant
 		/// </summary>
 		void resetBounds()
 		{
-			// set the bounds
-			cancelButton.bounds.X = Game1.viewport.Width - Game1.tileSize * 2;
-			cancelButton.bounds.Y = Game1.viewport.Height - Game1.tileSize * 2;
+			cancelButton = new ClickableTextureComponent(
+				new Rectangle(
+					xPositionOnScreen + Game1.uiViewport.Width - borderWidth - spaceToClearSideBorder - 64,
+					yPositionOnScreen + Game1.uiViewport.Height - 128,
+					64,
+					64
+				),
+				Game1.mouseCursors,
+				Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 47, -1, -1),
+				1.0f
+			); ;
 
-			flipButton.bounds.X = cancelButton.bounds.X - (int)(Game1.tileSize / 0.75);
-			flipButton.bounds.Y = cancelButton.bounds.Y;
+			flipButton = new ClickableTextureComponent(
+				new Rectangle(
+					xPositionOnScreen + Game1.uiViewport.Width - borderWidth - spaceToClearSideBorder - 144,
+					yPositionOnScreen + Game1.uiViewport.Height - 128,
+					64,
+					64
+				),
+				TreeTransplant.flipTexture,
+				new Rectangle(0, 0, 64, 64),
+				1.0f
+			);
 		}
 
 		/// <summary>

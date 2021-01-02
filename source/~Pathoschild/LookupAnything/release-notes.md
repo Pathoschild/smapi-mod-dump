@@ -9,6 +9,9 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Looking up a planted crop now shows its water and fertilizer state.
+
 ## 1.29
 Released 21 December 2020.
 

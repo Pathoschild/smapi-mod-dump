@@ -1,0 +1,11 @@
+{
+  "IncreaseZoomKey": "OemPeriod",
+  "DecreaseZoomKey": "OemComma",
+  "IncreaseZoomButton": "RightStick",
+  "DecreaseZoomButton": "LeftStick",
+  "SuppressControllerButton": true,
+  "ZoomLevelIncreaseValue": 0.05,
+  "ZoomLevelDecreaseValue": -0.05,
+  "MaxZoomOutLevelValue": 0.35,
+  "MaxZoomInLevelValue": 2.0
+}

@@ -59,5 +59,10 @@ namespace Entoarox.Utilities.Tools
                 this.Log(message);
             }
         }
+
+        public void LogOnce(string message, LogLevel level = LogLevel.Trace)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

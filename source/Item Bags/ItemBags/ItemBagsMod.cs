@@ -17,11 +17,14 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
 using static ItemBags.Persistence.BagSizeConfig;
 using Object = StardewValley.Object;
 
@@ -29,13 +32,11 @@ namespace ItemBags
 {
     public class ItemBagsMod : Mod
     {
-        public static Version CurrentVersion = new Version(1, 5, 1); // Last updated 8/7/2020 (Don't forget to update manifest.json)
+        public static Version CurrentVersion = new Version(1, 5, 3); // Last updated 12/26/2020 (Don't forget to update manifest.json)
         public const string ModUniqueId = "SlayerDharok.Item_Bags";
         public const string JAUniqueId = "spacechase0.JsonAssets";
-
-        //Possible TODO 
-        //  "Equipment Bag" : subclass of BoundedBag - has a List<Weapon>, List<Hat> etc. List<AllowedHat> AllowedHats List<AllowedWeapon> AllowedWeapons etc
-        //      would need to override IsValidBagItem, and the MoveToBag/MoveFromBag needs a new implementation to handle non-Objects. Allow the items to stack even if item.maximumStackSize == 1
+        public const string SpaceCoreUniqueId = "spacechase0.SpaceCore";
+        public const string SaveAnywhereUniqueId = "Omegasis.SaveAnywhere";
 
         internal static ItemBagsMod ModInstance { get; private set; }
         internal static string Translate(string Key, Dictionary<string, string> Parameters = null)
@@ -65,6 +66,21 @@ namespace ItemBags
         {
             ModInstance = this;
 
+            if (Constants.TargetPlatform != GamePlatform.Android) // Android version saves items without the use of PyTK. See Helpers\SaveLoadHelpers.cs
+            {
+                //  SpaceCore v1.5.0 introduced a breaking change to the game's saving/loading logic that is not compatible with my custom items
+                if (Helper.ModRegistry.IsLoaded(SpaceCoreUniqueId))
+                {
+                    IModInfo SpaceCoreInfo = Helper.ModRegistry.Get(SpaceCoreUniqueId);
+                    if (SpaceCoreInfo.Manifest.Version.IsNewerThan("1.4.1"))
+                    {
+                        throw new InvalidOperationException("This mod is not compatible with SpaceCore v1.5.0 due to the changes SpaceCore makes to the game's save serializer, " +
+                            "which are not compatible with PyTK's CustomElementHandler.ISaveElement that this mod utilizes. " +
+                            "To use Item Bags, consider downgrading to an earlier version of SpaceCore such as v1.3.5.");
+                    }
+                }
+            }
+
             LoadUserConfig();
             LoadGlobalConfig();
             LoadModdedItems();
@@ -83,7 +99,6 @@ namespace ItemBags
             helper.Events.GameLoop.GameLaunched += (sender, e) =>
             {
                 //  Add compatibility with the Save Anywhere mod
-                string SaveAnywhereUniqueId = "Omegasis.SaveAnywhere";
                 bool IsSaveAnywhereInstalled = Helper.ModRegistry.IsLoaded(SaveAnywhereUniqueId) ||
                     Helper.ModRegistry.GetAll().Any(x => x.Manifest.Name.Equals("Save Anywhere", StringComparison.CurrentCultureIgnoreCase));
                 if (IsSaveAnywhereInstalled)
@@ -103,6 +118,33 @@ namespace ItemBags
                         Monitor.Log(string.Format("Failed to bind to Save Anywhere's Mod API. Your game may crash while saving with Save Anywhere! Error: {0}", ex.Message), LogLevel.Warn);
                     }
                 }
+
+                //  Add compatibility with v1.5.0 of SpaceCore (v1.5.0 added changes that use Harmony to override the game's XmlSerializer for saving/loading save files)
+                /*if (Helper.ModRegistry.IsLoaded(SpaceCoreUniqueId))
+                {
+                    IModInfo SpaceCoreInfo = Helper.ModRegistry.Get(SpaceCoreUniqueId);
+                    if (SpaceCoreInfo.Manifest.Version.IsNewerThan("1.4.0"))
+                    {
+                        try
+                        {
+                            SpaceCoreAPI API = Helper.ModRegistry.GetApi<SpaceCoreAPI>(SpaceCoreUniqueId);
+                            if (API != null)
+                            {
+                                //  I couldn't get this to work with PyTK. Most of my items' data is loaded via PyTK's ISaveElement.rebuild function, which doesn't play nicely with SpaceCore
+                                //  (I'm not sure what's happening, but I assume that either rebuild isn't getting called, or it's getting called before SpaceCore finishes deserializing, so the data is overwritten with default values.)
+                                API.RegisterSerializerType(typeof(BoundedBag));
+                                API.RegisterSerializerType(typeof(BundleBag));
+                                API.RegisterSerializerType(typeof(OmniBag));
+                                API.RegisterSerializerType(typeof(Rucksack));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.Log(string.Format("Failed to bind to SpaceCore's Mod API. If your bags are not loading or you have errors while saving, " +
+                                "try downgrading to SpaceCore version 1.4.0! Error: {0}", ex.Message), LogLevel.Warn);
+                        }
+                    }
+                }*/
 
                 ModdedBag.OnGameLaunched();
             };
@@ -132,6 +174,11 @@ namespace ItemBags
                 if (GlobalUserConfig.CreatedByVersion == null || GlobalUserConfig.CreatedByVersion < new Version(1, 4, 5))
                 {
                     GlobalUserConfig.MonsterLootSettings = new MonsterLootSettings();
+                    RewriteConfig = true;
+                }
+                if (GlobalUserConfig.CreatedByVersion == null || GlobalUserConfig.CreatedByVersion < new Version(1, 4, 8))
+                {
+                    //  Added a new setting, "AllowAutofillInsideChest"
                     RewriteConfig = true;
                 }
                 //  Update config file with settings for gamepad controls (Added in v1.4.9)
@@ -207,10 +254,12 @@ namespace ItemBags
                     ModInstance.Helper.Data.WriteGlobalData(BagConfigDataKey + "-backup_before_v1.4.6_update", GlobalBagConfig);
                     GlobalBagConfig = new BagConfig() { CreatedByVersion = CurrentVersion };
                 }
-                if (GlobalBagConfig.CreatedByVersion == null || GlobalBagConfig.CreatedByVersion < new Version(1, 4, 8))
+                if (GlobalBagConfig.CreatedByVersion == null || GlobalBagConfig.CreatedByVersion < new Version(1, 5, 2))
                 {
-                    //  Added a new setting, "AllowAutofillInsideChest"
                     RewriteConfig = true;
+                    //  Added numerous new items from the Stardew Valley 1.5 update to existing bag types
+                    ModInstance.Helper.Data.WriteGlobalData(BagConfigDataKey + "-backup_before_v1.5.2_update", GlobalBagConfig);
+                    GlobalBagConfig = new BagConfig() { CreatedByVersion = CurrentVersion };
                 }
 
                 //  Suppose you just added a new BagType "Scarecrow Bag" to version 1.0.12

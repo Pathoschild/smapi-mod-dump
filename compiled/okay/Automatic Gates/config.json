@@ -1,3 +1,4 @@
 {
-  "AutoClose": true
+  "AutoClose": true,
+  "GateDelay": 0
 }

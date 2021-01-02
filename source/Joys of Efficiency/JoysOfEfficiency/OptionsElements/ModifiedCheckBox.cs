@@ -17,7 +17,7 @@ using StardewValley.Menus;
 
 namespace JoysOfEfficiency.OptionsElements
 {
-    internal class ModifiedCheckBox : OptionsElement
+    internal class ModifiedCheckBox : OptionsElementWithLabel
     {
 
         private bool IsChecked { get; set; }
@@ -44,7 +44,7 @@ namespace JoysOfEfficiency.OptionsElements
             _valueChanged?.Invoke(whichOption, IsChecked);
         }
 
-        public override void draw(SpriteBatch spriteBatch, int slotX, int slotY)
+        public override void draw(SpriteBatch spriteBatch, int slotX, int slotY, IClickableMenu context = null)
         {
             greyedOut = _isDisabled(whichOption);
             spriteBatch.Draw(Game1.mouseCursors, new Vector2(slotX + bounds.X, slotY + bounds.Y), IsChecked ? OptionsCheckbox.sourceRectChecked : OptionsCheckbox.sourceRectUnchecked, Color.White * (greyedOut ? 0.33f : 1f), 0.0f, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None, 0.4f);

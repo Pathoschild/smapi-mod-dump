@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>GoToBed</AssemblyName>
-    <Version>1.2.2</Version>
+    <Version>1.3.0</Version>
     <RootNamespace>GoToBed</RootNamespace>
     <TargetFramework>net452</TargetFramework>
     <EnableHarmony>true</EnableHarmony>

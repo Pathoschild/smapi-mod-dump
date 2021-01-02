@@ -1,0 +1,15 @@
+﻿{
+  "Name": "SpiceOfLife",
+  "Author": "KarratKake",
+  "Version": "2.0.2",
+  "Description": "This mod makes eating the same food over and over again give less stamina each time, promiting a more varied diet.",
+  "UniqueID": "KarratKake.SpiceOfLife",
+  "EntryDll": "SpiceOfLife.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:7398"],
+  "Dependencies": [
+   {
+      "UniqueID": "spacechase0.SpaceCore",
+   }
+]
+}

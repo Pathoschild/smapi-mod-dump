@@ -9,8 +9,12 @@
 *************************************************/
 
 {
+  "FileVersion": 1,
   "AreaName": "Farm_Mining",
   "numberOfOreSpotsPerDay": 50,
+  "StartTime": 600,
+  "EndTime": 2600,
+  "CustomTreasure": false,
   "OreSpots": [
     "5, 54",
     "5, 55",

@@ -21,12 +21,9 @@ namespace BetterSkullCavernFalling
     {
         private static HarmonyInstance harmonyInstance = null;
 
-        [HarmonyPatch(typeof(MineShaft), "enterMineShaft")]
-        class MineShaftEnterMineShaftPatch
+        private class MineShaftEnterMineShaftPatch
         {
-            [HarmonyPrefix]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Harmony Patch")]
-            static bool Prefix(MineShaft __instance)
+            internal static bool enterMineShaft_Prefix(MineShaft __instance)
             {
                 DelayedAction.playSoundAfterDelay("fallDown", 0, null, -1);
                 DelayedAction.playSoundAfterDelay("clubSmash", 1000, null, -1);
@@ -56,8 +53,11 @@ namespace BetterSkullCavernFalling
 
         public override void Entry(IModHelper helper)
         {
-            harmonyInstance = HarmonyInstance.Create("maxvollmer.betterskullcavernfalling");
-            harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
+            harmonyInstance = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            harmonyInstance.Patch(
+               original: AccessTools.Method(typeof(MineShaft), nameof(MineShaft.enterMineShaft)),
+               prefix: new HarmonyMethod(typeof(MineShaftEnterMineShaftPatch), nameof(MineShaftEnterMineShaftPatch.enterMineShaft_Prefix))
+            );
         }
 
         protected override void Dispose(bool disposing)

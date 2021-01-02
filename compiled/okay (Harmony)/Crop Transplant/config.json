@@ -6,6 +6,8 @@
   "EnablePlacementOfFruitTreesOnAnyTileType": false,
   "EnablePlacementOfFruitTreesNextToAnotherTree": false,
   "EnablePlacementOfTreesOnAnyTileType": false,
+  "EnableToPlantTeaBushesOutOfTheFarm": false,
+  "EnableToPlantTeaBushesOnAnyTileType": false,
   "EnableSoilTileUnderTrees": true,
   "FruitTreeTransplantEnergyCostPerStage": [
     4.0,

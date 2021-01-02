@@ -1,0 +1,13 @@
+url:
+   https://github.com/Underscore76/SDVPracticeMod.git
+
+mods:
+   Speedrun Practice Mod
+
+latest commit:
+   commit bf59be43dc01c0bd97d0ccc61ab8b7474cc61af4
+   Author: Underscore76 <34466574+Underscore76@users.noreply.github.com>
+   Date:   Wed Dec 23 14:54:53 2020 -0600
+   
+       init commit
+   

@@ -191,6 +191,9 @@ namespace NpcAdventure.HUD
                 case AI_StateMachine.State.SPIRITUAL:
                     icon = new Rectangle(172, 514, 9, 10);
                     break;
+                case AI_StateMachine.State.FISH:
+                    icon = new Rectangle(20, 428, 10, 10);
+                    break;
                 default:
                     return;
             }

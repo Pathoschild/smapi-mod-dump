@@ -5,9 +5,9 @@ mods:
    Regular Quality
 
 latest commit:
-   commit efde466a37640872bc355d21420660b72ffe5bd1
+   commit 73a31af79b8c9d7de6b000e80f12508adc3a6312
    Author: desto-git <desto-git@users.noreply.github.com>
-   Date:   Sat Dec 19 22:58:59 2020 +0100
+   Date:   Wed Dec 23 11:11:45 2020 +0100
    
-       [BP] #4 improve compatibility with Quest Framework
+       [GD] recompile for sv 1.5, prefer log over throw
    

@@ -5,9 +5,9 @@ mods:
    Seed Machines
 
 latest commit:
-   commit 775b4d8e17c99183349743ff9f637525017d2222
+   commit c21810dce2d2bbce8abafdb50ce94944f0954512
    Author: Veress <veress.honaht@gmail.com>
-   Date:   Wed Jul 1 09:18:51 2020 +0300
+   Date:   Wed Dec 23 12:00:15 2020 +0300
    
-       Increase release version
+       Implemented 0.0.4-beta version
    

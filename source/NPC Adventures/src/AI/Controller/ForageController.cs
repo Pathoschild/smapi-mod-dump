@@ -36,7 +36,7 @@ namespace NpcAdventure.AI.Controller
         private readonly Dictionary<string, int[]> forages;
 
         public NPC Forager => this.ai.npc;
-        public Farmer Leader => this.ai.player;
+        public Farmer Leader => this.ai.farmer;
         public int ForagingLevel => Math.Max(this.Leader.ForagingLevel
             - (this.Leader.professions.Contains(Farmer.gatherer) ? 0 : 1), 0);
 
@@ -44,7 +44,7 @@ namespace NpcAdventure.AI.Controller
         {
             this.ai = ai;
             this.ignoreList = new List<TerrainFeature>();
-            this.pathFinder = new PathFinder(this.Forager.currentLocation, this.Forager, this.ai.player);
+            this.pathFinder = new PathFinder(this.Forager.currentLocation, this.Forager, this.ai.farmer);
             this.joystick = new NpcMovementController(this.Forager, this.pathFinder);
             this.joystick.EndOfRouteReached += this.Joystick_EndOfRouteReached;
             this.ai.LocationChanged += this.Ai_LocationChanged;

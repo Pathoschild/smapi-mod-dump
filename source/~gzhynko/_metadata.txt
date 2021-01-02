@@ -3,13 +3,14 @@ url:
 
 mods:
    Animals Need Water
+   Incubate Pufferfish Eggs
    Puffer Eggs to Mayonnaise
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit b874e4e0cc8739e4acb207fa399b1cc5134c9d92
+   commit 00b10d830209541b112a790028900f1fbc13299e
    Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Mon Dec 21 23:05:30 2020 +0300
+   Date:   Fri Jan 1 14:14:29 2021 +0300
    
-       feat: support SV 1.5
+       fix: fix update keys
    

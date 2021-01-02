@@ -23,23 +23,23 @@ using System.Threading.Tasks;
 
 namespace BCC.Menus
 {
-    /*public class BoilerCoalMenu : InventoryMenu
+    public class BoilerCoalMenu : InventoryMenu
     {
-        /*public Chest CoalStorageChest;
+        public Chest CoalStorageChest;
         public IMonitor Monitor;
         public IModHelper Helper;
         public bool hasBeenAdded = false;
-        public static List<Item> ItemsDonated = new List<Item>();*/
+        public static List<Item> ItemsDonated = new List<Item>();
 
-        /*public BoilerCoalMenu(Chest chest, IMonitor monitor, IModHelper helper) : base(Game1.viewport.Width / 2 - 384, Game1.viewport.Height / 2 + 36, true, highlightMethod:new InventoryMenu.highlightThisItem(Util.IsFuelItem), capacity: 36)
+        public BoilerCoalMenu(Chest chest, IMonitor monitor, IModHelper helper) : base(Game1.viewport.Width / 2 - 384, Game1.viewport.Height / 2 + 36, true, highlightMethod:new InventoryMenu.highlightThisItem(Util.IsFuelItem), capacity: 36)
         {
             Helper = helper;
             Monitor = monitor;
             CoalStorageChest = chest;
             exitFunction = (IClickableMenu.onExit)(() => Util.CoalChestExit());
-        }*/
+        }
 
-        /*public override void receiveLeftClick(int x, int y, bool playSound = true)
+        public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
             base.receiveLeftClick(x, y, playSound);
             Item itemXY = getItemAt(x, y);
@@ -120,5 +120,5 @@ namespace BCC.Menus
             base.draw(b);
             drawMouse(b);
         }
-    }*/
+    }
 }

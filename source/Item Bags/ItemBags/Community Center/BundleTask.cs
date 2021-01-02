@@ -104,37 +104,49 @@ namespace ItemBags.Community_Center
                 Entries.RemoveAt(Entries.Count - 1);
             }
 
-            if (Entries.Count <= 4)
+            try
             {
-                this.RequiredItemCount = Items.Count;
-            }
-            else
-            {
-                this.RequiredItemCount = int.Parse(Entries[4]);
-
-                if (Entries.Count > 5)
+                if (Entries.Count <= 4)
                 {
-                    string TextureOverrideData = Entries[5];
-                    try
+                    this.RequiredItemCount = Items.Count;
+                }
+                else
+                {
+                    this.RequiredItemCount = int.Parse(Entries[4]);
+
+                    if (Entries.Count > 5)
                     {
-                        if (TextureOverrideData.IndexOf(':') < 0)
+                        string TextureOverrideData = Entries[5];
+                        try
+                        {
+                            if (TextureOverrideData.IndexOf(':') < 0)
+                            {
+                                this.OverriddenLargeIconTexture = null;
+                                this.OverriddenLargeIconIndex = int.Parse(TextureOverrideData);
+                            }
+                            else
+                            {
+                                string[] OverrideParts = TextureOverrideData.Split(':');
+                                this.OverriddenLargeIconTexture = Game1.content.Load<Texture2D>(OverrideParts[0]);
+                                this.OverriddenLargeIconIndex = int.Parse(OverrideParts[1]);
+                            }
+                        }
+                        catch (Exception)
                         {
                             this.OverriddenLargeIconTexture = null;
-                            this.OverriddenLargeIconIndex = int.Parse(TextureOverrideData);
+                            this.OverriddenLargeIconIndex = null;
                         }
-                        else
-                        {
-                            string[] OverrideParts = TextureOverrideData.Split(':');
-                            this.OverriddenLargeIconTexture = Game1.content.Load<Texture2D>(OverrideParts[0]);
-                            this.OverriddenLargeIconIndex = int.Parse(OverrideParts[1]);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        this.OverriddenLargeIconTexture = null;
-                        this.OverriddenLargeIconIndex = null;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                this.RequiredItemCount = Items.Count;
+                this.OverriddenLargeIconTexture = null;
+                this.OverriddenLargeIconIndex = null;
+
+                string ErrorMsg = string.Format("Error while parsing Bundle Data: '{0}' - {1}\nBundle Bags might not display the correct data on their menu, but should still work correctly.", RawData, ex.Message);
+                ItemBagsMod.ModInstance.Monitor.Log(ErrorMsg, StardewModdingAPI.LogLevel.Warn);
             }
         }
 

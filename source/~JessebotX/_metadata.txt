@@ -10,9 +10,9 @@ mods:
    Sprint Sprint
 
 latest commit:
-   commit f7891b19ac2e2ceb5be1c281ca8019d0cd70e261
-   Author: Jesse Huang <jessebotx2003@gmail.com>
-   Date:   Wed Sep 2 10:38:38 2020 -0700
+   commit 24f04cefc42e88f5b5c745e2715065769e1ce102
+   Author: Jessebot <jessebotx2003@gmail.com>
+   Date:   Tue Dec 29 17:49:56 2020 -0800
    
-       updated README
+       remove
    

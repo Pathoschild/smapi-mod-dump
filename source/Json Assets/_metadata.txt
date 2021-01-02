@@ -5,12 +5,12 @@ mods:
    Json Assets
 
 latest commit:
-   commit c239894b1c1ed44a4422a1e2771dae655802e5ee
-   Merge: f34bad7 3e4cae9
+   commit a0b0e560b4caafd78244f73a00dd9210062180ea
+   Merge: 8f0d1eb c8ba7e2
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Dec 21 15:09:24 2020 -0500
+   Date:   Thu Dec 24 23:55:08 2020 -0500
    
-       Merge pull request #57 from paradigmnomad/patch-10
+       Merge pull request #59 from CMAlbrecht/master
        
-       Update ReadMe
+       Boots API
    

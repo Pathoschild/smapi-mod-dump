@@ -11,13 +11,13 @@
 {
    "Name": "Animal Husbandry Mod",
    "Author": "Digus",
-   "Version": "2.4.2",
+   "Version": "2.5.0-beta1",
    "Description": "Adds features related to animal husbandry.",
    "UniqueID": "DIGUS.ANIMALHUSBANDRYMOD",
    "EntryDll": "AnimalHusbandryMod.dll",
-   "MinimumApiVersion": "3.0.0",
+   "MinimumApiVersion": "3.8.0",
    "Dependencies": [
-      { "UniqueID": "Platonymous.Toolkit", "MinimumVersion": "1.12.9" },
+      { "UniqueID": "Platonymous.Toolkit", "MinimumVersion": "1.20.0-aplha" },
       { "UniqueID": "DIGUS.MailFrameworkMod", "MinimumVersion": "1.5.1" }
    ],
    "UpdateKeys": [ "Nexus:1538" ]

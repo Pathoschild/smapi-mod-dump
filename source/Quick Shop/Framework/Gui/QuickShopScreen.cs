@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using EnaiumToolKit.Framework.Screen;
 using EnaiumToolKit.Framework.Screen.Elements;
 using Microsoft.Xna.Framework;
@@ -19,6 +20,8 @@ using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
+using StardewValley.Util;
+using Object = StardewValley.Object;
 
 namespace QuickShop.Framework.Gui
 {
@@ -27,7 +30,7 @@ namespace QuickShop.Framework.Gui
         public QuickShopScreen()
         {
             string buttonTitle = GetTranslation("quickShop.button");
-            
+
             string pierreShopTitle = $"{buttonTitle} {GetButtonTranslation("pierreShop")}";
             AddElement(new Button(pierreShopTitle, pierreShopTitle)
             {
@@ -115,7 +118,27 @@ namespace QuickShop.Framework.Gui
                         on_purchase: Utility.onTravelingMerchantShopPurchase);
                 }
             });
-            
+
+            string magicShopBoatTitle = $"{buttonTitle} {GetButtonTranslation("magicShopBoat")}";
+            AddElement(new Button(magicShopBoatTitle, magicShopBoatTitle)
+            {
+                OnLeftClicked = () =>
+                {
+                    Game1.activeClickableMenu = new ShopMenu(new BeachNightMarket().geMagicShopStock(),
+                        who: "magicBoatShop");
+                }
+            });
+
+            string decorationBoatShopTitle = $"{buttonTitle} {GetButtonTranslation("decorationBoatShop")}";
+            AddElement(new Button(decorationBoatShopTitle, decorationBoatShopTitle)
+            {
+                OnLeftClicked = () =>
+                {
+                    Game1.activeClickableMenu =
+                        new ShopMenu(new BeachNightMarket().getBlueBoatStock(), who: "BlueBoat");
+                }
+            });
+
             string renovationTitle = $"{buttonTitle} {GetButtonTranslation("renovation")}";
             AddElement(new Button(renovationTitle, renovationTitle)
             {
@@ -222,10 +245,38 @@ namespace QuickShop.Framework.Gui
                 OnLeftClicked = () => { Game1.activeClickableMenu = new ShopMenu(Utility.getHatStock()); }
             });
 
+            string movieTheaterShopTitle = $"{buttonTitle} {GetButtonTranslation("movieTheaterShop")}";
+            AddElement(new Button(movieTheaterShopTitle, movieTheaterShopTitle)
+            {
+                OnLeftClicked = () =>
+                {
+                    Object @object = new Object(809, 1);
+                    Game1.activeClickableMenu = new ShopMenu(new Dictionary<ISalable, int[]>
+                    {
+                        {
+                            @object,
+                            new[] {@object.salePrice(), int.MaxValue}
+                        }
+                    }, who: "boxOffice");
+                }
+            });
+
+
             string casinoShopTitle = $"{buttonTitle} {GetButtonTranslation("casinoShop")}";
             AddElement(new Button(casinoShopTitle, casinoShopTitle)
             {
                 OnLeftClicked = () => { Game1.activeClickableMenu = new ShopMenu(Utility.getQiShopStock(), 2); }
+            });
+
+            string qiShopTitle = $"{buttonTitle} {GetButtonTranslation("qiShop")}";
+            AddElement(new Button(qiShopTitle, qiShopTitle)
+            {
+                OnLeftClicked = () =>
+                {
+                    Game1.playSound("qi_shop");
+                    Game1.activeClickableMenu = new ShopMenu(Utility.GetQiChallengeRewardStock(Game1.player), 4,
+                        context: "QiGemShop");
+                }
             });
 
             string qiSpecialOrdersBoardTitle = $"{buttonTitle} {GetButtonTranslation("qiSpecialOrdersBoard")}";
@@ -239,10 +290,11 @@ namespace QuickShop.Framework.Gui
             {
                 OnLeftClicked = () =>
                 {
-                    Game1.activeClickableMenu =
-                        new ShopMenu(new List<ISalable>(Utility.getShopStock(false)), who: "Sandy");
+                    Game1.activeClickableMenu = new ShopMenu(sandyShopStock(), who: "Sandy",
+                        on_purchase: onSandyShopPurchase);
                 }
             });
+
 
             string desertShopTitle = $"{buttonTitle} {GetButtonTranslation("desertShop")}";
             AddElement(new Button(desertShopTitle, desertShopTitle)
@@ -285,6 +337,21 @@ namespace QuickShop.Framework.Gui
                     }
                 });
             }
+
+            string iceCreamStandTitle = $"{buttonTitle} {GetButtonTranslation("iceCreamStand")}";
+            AddElement(new Button(iceCreamStandTitle, iceCreamStandTitle)
+            {
+                OnLeftClicked = () =>
+                {
+                    Game1.activeClickableMenu = new ShopMenu(new Dictionary<ISalable, int[]>
+                    {
+                        {
+                            new Object(233, 1),
+                            new[] {250, int.MaxValue}
+                        }
+                    });
+                }
+            });
 
             string wizardTitle = $"{buttonTitle} {GetButtonTranslation("wizard")}";
             AddElement(new Button(wizardTitle, wizardTitle)
@@ -526,6 +593,125 @@ namespace QuickShop.Framework.Gui
                     });
                 }
             }
+        }
+
+        private Dictionary<ISalable, int[]> sandyShopStock()
+        {
+            Dictionary<ISalable, int[]> dictionary = new Dictionary<ISalable, int[]>();
+            Utility.AddStock(dictionary, (Item) new Object(802, int.MaxValue),
+                (int) (75.0 * (double) Game1.MasterPlayer.difficultyModifier));
+            Utility.AddStock(dictionary, (Item) new Object(478, int.MaxValue));
+            Utility.AddStock(dictionary, (Item) new Object(486, int.MaxValue));
+            Utility.AddStock(dictionary, (Item) new Object(494, int.MaxValue));
+            Dictionary<ISalable, int[]> stock = dictionary;
+            Object @object = new Object(Vector2.Zero, 196);
+            @object.Stack = int.MaxValue;
+            Utility.AddStock(stock, (Item) @object);
+            switch (Game1.dayOfMonth % 7)
+            {
+                case 0:
+                    Utility.AddStock(dictionary, (Item) new Object(233, int.MaxValue));
+                    break;
+                case 1:
+                    Utility.AddStock(dictionary, (Item) new Object(88, 1), 200, 10);
+                    break;
+                case 2:
+                    Utility.AddStock(dictionary, (Item) new Object(90, int.MaxValue));
+                    break;
+                case 3:
+                    Utility.AddStock(dictionary, (Item) new Object(749, 1), 500, 3);
+                    break;
+                case 4:
+                    Utility.AddStock(dictionary, (Item) new Object(466, int.MaxValue));
+                    break;
+                case 5:
+                    Utility.AddStock(dictionary, (Item) new Object(340, int.MaxValue));
+                    break;
+                case 6:
+                    Utility.AddStock(dictionary, (Item) new Object(371, int.MaxValue), 100);
+                    break;
+            }
+
+            Random random = new Random((int) Game1.stats.DaysPlayed + (int) Game1.uniqueIDForThisGame / 2);
+            Clothing clothing = new Clothing(1000 + random.Next((int) sbyte.MaxValue));
+            dictionary.Add((ISalable) clothing, new int[2]
+            {
+                1000,
+                int.MaxValue
+            });
+            dictionary.Add((ISalable) new Furniture(2655, Vector2.Zero), new int[2]
+            {
+                700,
+                int.MaxValue
+            });
+            switch (Game1.dayOfMonth % 7)
+            {
+                case 0:
+                    dictionary.Add((ISalable) new Furniture(2720, Vector2.Zero), new int[2]
+                    {
+                        3000,
+                        int.MaxValue
+                    });
+                    break;
+                case 1:
+                    dictionary.Add((ISalable) new Furniture(2802, Vector2.Zero), new int[2]
+                    {
+                        2000,
+                        int.MaxValue
+                    });
+                    break;
+                case 2:
+                    dictionary.Add((ISalable) new Furniture(2734 + random.Next(4) * 2, Vector2.Zero), new int[2]
+                    {
+                        500,
+                        int.MaxValue
+                    });
+                    break;
+                case 3:
+                    dictionary.Add((ISalable) new Furniture(2584, Vector2.Zero), new int[2]
+                    {
+                        5000,
+                        int.MaxValue
+                    });
+                    break;
+                case 4:
+                    dictionary.Add((ISalable) new Furniture(2794, Vector2.Zero), new int[2]
+                    {
+                        2500,
+                        int.MaxValue
+                    });
+                    break;
+                case 5:
+                    dictionary.Add((ISalable) new Furniture(2784, Vector2.Zero), new int[2]
+                    {
+                        2500,
+                        int.MaxValue
+                    });
+                    break;
+                case 6:
+                    dictionary.Add((ISalable) new Furniture(2748, Vector2.Zero), new int[2]
+                    {
+                        500,
+                        int.MaxValue
+                    });
+                    dictionary.Add((ISalable) new Furniture(2812, Vector2.Zero), new int[2]
+                    {
+                        500,
+                        int.MaxValue
+                    });
+                    break;
+            }
+
+            Game1.player.team.synchronizedShopStock.UpdateLocalStockWithSyncedQuanitities(
+                SynchronizedShopStock.SynchedShop.Sandy, dictionary);
+            return dictionary;
+        }
+
+        private bool onSandyShopPurchase(ISalable item, Farmer who, int amount)
+        {
+            Game1.player.team.synchronizedShopStock.OnItemPurchased(SynchronizedShopStock.SynchedShop.Sandy, item,
+                amount);
+            return false;
         }
 
         private string GetButtonTranslation(string key)

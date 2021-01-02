@@ -262,6 +262,21 @@ namespace StardewValleyBundleTooltips
                 case LocalizedContentManager.LanguageCode.zh:
                     language = ".zh-CN";
                     break;
+                case LocalizedContentManager.LanguageCode.tr:
+                    language = ".tr-TR";
+                    break;
+                case LocalizedContentManager.LanguageCode.ko:
+                    language = ".ko-KR";
+                    break;
+                case LocalizedContentManager.LanguageCode.it:
+                    language = ".it-IT";
+                    break;
+                case LocalizedContentManager.LanguageCode.hu:
+                    language = ".hu-HU";
+                    break;
+                case LocalizedContentManager.LanguageCode.fr:
+                    language = ".fr-FR";
+                    break;
             }
 
             Dictionary<string, string> dictionary = Game1.content.Load<Dictionary<string, string>>("Data\\Bundles" + language);

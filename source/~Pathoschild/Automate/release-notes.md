@@ -9,6 +9,10 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* When you join a multiplayer game, Automate shows a warning that it needs to be installed by the main player. That message is now clearer and only shown if they don't have it installed.
+* Fixed automated slime egg incubators ignoring tiger slime eggs.
+
 ## 1.19
 Released 21 December 2020.
 

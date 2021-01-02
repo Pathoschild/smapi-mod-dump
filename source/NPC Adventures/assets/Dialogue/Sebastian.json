@@ -9,12 +9,17 @@
 *************************************************/
 
 {
-  "companionAccepted": "Yeah, sure. Have any idea where you want to go?",
-  "companionRejected": "Nah, no thanks.",
-  "companionRejectedNight": "No, sorry, @. It's too late, I'm going to bed soon.",
-  "companionDismiss": "I understand. We all have to say our goodbyes at some point.",
-  "companionDismissAuto": "Hey, @, I'm gonna go now. Thanks, this was nice.$1",
-  "companionRecruited": "Anywhere you want to go is cool with me, @.",
+  "companionAccepted": "Yeah, sure. Have any idea where you want to go?",
+  "companionAccepted_Spouse": "Of course! It'll be nice to have some time together, just the two of us.$1",
+  "companionRejected": "Nah, no thanks.",
+  "companionRejectedNight": "No, sorry, @. It's too late, I'm going to bed soon.",
+  "companionRejectedNight_Spouse": "I am sorry, honey, but it's already late.#$b#I need to rest my brain after dealing with a bunch of bugs in my code today. Maybe next time.$2",
+  "companionDismiss": "I understand. We all have to say our goodbyes at some point.",
+  "companionDismiss_Spouse": "Alright, I guess I'll head home now then. I had great time with you.$1#$b#Let's do this again someday. Take care!$4",
+  "companionDismissAuto": "Hey, @, I'm gonna go now. Thanks, this was nice.$1",
+  "companionDismissAuto_Spouse": "I had a lot of fun, but I think I am gonna go home now.#$b#Don't stay up too late or else you might mess up your sleep pattern like I used to. Stay safe.",
+  "companionRecruited": "Anywhere you want to go is cool with me, @.",
+  "companionRecruited_Spouse": "I may not look like it, but whenever I get to spend time with you, I feel really excited.$1",
   "companionSuggest": "It's not too bad outside today, I think I should take a walk...#$q -1 -1#Wanna join me?  #$r -1 0 Yes#Sure, let's go!#$r -1 0 No#Sorry, today I can't, but thanks for inviting me.",
   "companionSuggest_Yes": "Good. Lead the way, @.$h",
   "companionSuggest_No": "That's fine, @. I don't mind being alone.",

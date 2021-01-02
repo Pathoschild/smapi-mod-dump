@@ -9,8 +9,12 @@
 *************************************************/
 
 {
+  "FileVersion": 1,
   "AreaName": "Beach",
   "numberOfOreSpotsPerDay": 50,
+  "StartTime": 600,
+  "EndTime": 2600,
+  "CustomTreasure": false,
   "OreSpots": [
     "9, 36",
     "9, 37",

@@ -5,12 +5,9 @@ mods:
    Experience Bars
 
 latest commit:
-   commit f9210df5001606fac41db9753c269c3191215b3f
-   Merge: dcad17d 405bfe7
+   commit 448d35278340d4deb2ed098d02b5a3c10e1f2159
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Apr 27 12:09:35 2020 -0400
+   Date:   Thu Dec 24 22:15:29 2020 -0500
    
-       Merge pull request #5 from Pathoschild/update-project
-       
-       Update & standardize project structure
+       Tweaks for when it should show up
    

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace Entoarox.Utilities.Internals.Api
 {
-    interface IJsonAssetsApi
+    public interface IJsonAssetsApi
     {
         int GetObjectId(string name);
         int GetBigCraftableId(string name);

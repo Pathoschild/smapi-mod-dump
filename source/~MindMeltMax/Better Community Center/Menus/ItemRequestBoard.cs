@@ -134,7 +134,7 @@ namespace BCC.Menus
                 drawBackground(b);
             b.Draw(BackgroundTexture, new Vector2((float)xPositionOnScreen, (float)yPositionOnScreen), new Rectangle(0, 0, 338, 198), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
             if (!hasRequestedAnything)
-                b.DrawString(Game1.dialogueFont, Game1.content.LoadString("No requests posted right now"), new Vector2((float)xPositionOnScreen + 384, (float)yPositionOnScreen + 320), Game1.textColor);
+                b.DrawString(Game1.dialogueFont, "No requests posted right now", new Vector2((float)xPositionOnScreen + 384, (float)yPositionOnScreen + 320), Game1.textColor);
             if (RequestItemButton.visible)
             {
                 IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(403, 373, 9, 9), RequestItemButton.bounds.X, RequestItemButton.bounds.Y, RequestItemButton.bounds.Width, RequestItemButton.bounds.Height, (double)RequestItemButton.scale > 1.0 ? Color.LightBlue : Color.White, 4f * RequestItemButton.scale);

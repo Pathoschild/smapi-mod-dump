@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
@@ -36,28 +37,35 @@ namespace CropTransplantMod
 
         public bool IsHoldingSomething()
         {
-            return this.hoeDirt.Value.crop != null || this.tree != null;
+            return this.hoeDirt.Value.crop != null || this.tree != null || this.bush.Value != null;
         }
 
         public override bool placementAction(GameLocation location, int x, int y, Farmer who = null)
         {
-            if (!DataLoader.ModConfig.EnablePlacementOfCropsOutsideOutOfTheFarm && !Game1.player.currentLocation.IsFarm && Game1.player.currentLocation.IsOutdoors)
+            if ((this.hoeDirt.Value.crop != null && !DataLoader.ModConfig.EnablePlacementOfCropsOutsideOutOfTheFarm && !location.IsFarm && location.IsOutdoors))
             {
                 Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:HoeDirt.cs.13919"));
                 return false;
             }
 
             bool result = base.placementAction(location, x, y, who);
-            if (this.hoeDirt.Value.crop != null)
+            Vector2 placedPotLocation = new Vector2((float)(x / 64), (float)(y / 64));
+            if (location.objects[placedPotLocation] is IndoorPot pot)
             {
-                Vector2 index1 = new Vector2((float)(x / 64), (float)(y / 64));
-                if(location.objects[index1] is IndoorPot pot)
+                if (this.hoeDirt.Value.crop != null)
                 {
                     pot.hoeDirt.Value.crop = this.hoeDirt.Value.crop;
                     pot.hoeDirt.Value.fertilizer.Value = this.hoeDirt.Value.fertilizer.Value;
-                    TransplantOverrides.ShakeCrop(pot.hoeDirt.Value, index1);
+                    TransplantOverrides.ShakeCrop(pot.hoeDirt.Value, placedPotLocation);
                 }
+                else if (this.bush.Value != null)
+                {
+                    pot.bush.Value = TransplantOverrides.PrepareBushForPlacement(this.bush.Value, placedPotLocation);
+
+                }
+                TransplantOverrides.CleanHeldIndoorPot();
             }
+
             return result;
         }
 
@@ -102,10 +110,19 @@ namespace CropTransplantMod
             }
 
             if (this.hoeDirt.Value.crop != null)
-                DrawWithOffset(this.hoeDirt.Value.crop, spriteBatch, objectPosition, this.hoeDirt.Value.state.Value != 1 || this.hoeDirt.Value.crop.currentPhase.Value != 0 || this.hoeDirt.Value.crop.raisedSeeds.Value ? Color.White : new Color(180, 100, 200) * 1f, this.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 72),f);
-            if (this.heldObject.Value == null)
-                return;
-            this.heldObject.Value.draw(spriteBatch, (int)x * 64, (int)(y * 64 - 48), (float)((objectPosition.Y + 0.660000026226044) * 64.0 / 10000.0 + (double)x * 9.99999974737875E-06), 1f);
+            {
+                DrawWithOffset(this.hoeDirt.Value.crop, spriteBatch, objectPosition, this.hoeDirt.Value.state.Value != 1 || this.hoeDirt.Value.crop.currentPhase.Value != 0 || this.hoeDirt.Value.crop.raisedSeeds.Value ? Color.White : new Color(180, 100, 200) * 1f, this.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 72), f);
+            }
+
+            if (base.heldObject.Value != null)
+            {
+                base.heldObject.Value.draw(spriteBatch, (int)x * 64, (int)(y * 64 - 48), (objectPosition.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
+            }
+
+            if (this.bush.Value != null)
+            {
+                drawTeaBush(this.bush.Value, spriteBatch, objectPosition);
+            }
         }
 
         private void DrawWithOffset(Crop crop, SpriteBatch b, Vector2 tileLocation, Color toTint, float rotation, Vector2 offset, Farmer f)
@@ -182,7 +199,7 @@ namespace CropTransplantMod
                 {
                     spriteBatch.Draw(Game1.mouseCursors, tileLocation + new Vector2(-51, 150), new Microsoft.Xna.Framework.Rectangle?(Tree.shadowSourceRect), Color.White * (1.570796f - Math.Abs(shakeRotation)), 0.0f, Vector2.Zero, 4f, treeToDraw.flipped.Value ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1E-06f);
                     SpriteBatch spriteBatch1 = spriteBatch;
-                    Microsoft.Xna.Framework.Rectangle? sourceRectangle = new Microsoft.Xna.Framework.Rectangle?(Tree.treeTopSourceRect);
+                    Microsoft.Xna.Framework.Rectangle? sourceRectangle = new Microsoft.Xna.Framework.Rectangle?(treeToDraw.treeTopSourceRect);
                     Color color = Color.White;
                     Vector2 origin = new Vector2(24f, 96f);
                     double num1 = 4.0;
@@ -317,6 +334,18 @@ namespace CropTransplantMod
                 double num3 = Math.Max(0.0f, (float)(Game1.player.getStandingY() + 2) / 10000f) + 0.0004f;
                 spriteBatch1.Draw(texture, local, sourceRectangle, white, (float)rotation, zero, (float)num1, (SpriteEffects)num2, (float)num3);
             }
+        }
+
+        public void drawTeaBush(Bush bushToDraw, SpriteBatch spriteBatch, Vector2 tileLocation)
+        {
+            float shakeRotation = DataLoader.Helper.Reflection.GetField<float>(bushToDraw, "shakeRotation").GetValue();
+            Rectangle sourceRect = DataLoader.Helper.Reflection.GetField<NetRectangle>(bushToDraw, "sourceRect").GetValue().Value;
+            Vector2 plantLocation = tileLocation + new Vector2(32f, 104f);
+
+            Color color = Color.White * 1f;
+            SpriteEffects spriteEffects = bushToDraw.flipped.Value ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            float layerDepth = Math.Max(0.0f, (float)(Game1.player.getStandingY() + 2) / 10000f) + 0.0002f;
+            spriteBatch.Draw(Bush.texture.Value, plantLocation, sourceRect, color, shakeRotation, new Vector2(8f, 32f), 4f, spriteEffects, layerDepth);
         }
     }
 }

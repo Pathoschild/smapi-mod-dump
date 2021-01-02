@@ -533,7 +533,7 @@ namespace ItemBags.Menus
                 this.ItemSlotPositions = new OrderedDictionary<BundleItem, Rectangle>();
                 this.LockedSlotPositions = new List<Rectangle>();
 
-                int RoomNameWidth = CC.Rooms.Select(x => (int)(RoomHeaderFont.MeasureString(x.Name).X * RoomHeaderScale)).DefaultIfEmpty(100).Max() + 32;
+                int RoomNameWidth = CC.Rooms.Select(x => (int)(RoomHeaderFont.MeasureString(x.DisplayName).X * RoomHeaderScale)).DefaultIfEmpty(100).Max() + 32;
 
                 int CurrentRow = 0;
                 int CurrentColumn = 0;
@@ -649,7 +649,7 @@ namespace ItemBags.Menus
                     Rectangle Position = RoomHeader.Value.GetOffseted(TopLeftScreenPosition);
                     DrawHelpers.DrawBox(b, Position);
 
-                    string Text = RoomHeader.Key.Name;
+                    string Text = RoomHeader.Key.DisplayName;
                     Vector2 Size = RoomHeaderFont.MeasureString(Text) * RoomHeaderScale;
                     b.DrawString(RoomHeaderFont, Text, new Vector2(Position.X + (Position.Width - Size.X) / 2, Position.Y + (Position.Height - Size.Y) / 2),
                         IsCompleted ? Color.Green : Color.Black, 0f, Vector2.Zero, RoomHeaderScale, SpriteEffects.None, 1f);

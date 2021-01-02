@@ -9,6 +9,9 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Fixed issues when moving greenhouse or default shipping bin in Stardew Valley 1.5.
+
 ## 1.8
 Released 12 September 2020.
 

@@ -26,6 +26,8 @@ namespace JoysOfEfficiency.Menus
     {
         private static Config Config => InstanceHolder.Config;
 
+        private static Logger Logger = new Logger("JoeMenu");
+
         private readonly List<MenuTab> _tabs = new List<MenuTab>();
 
         private readonly ClickableTextureComponent _upCursor;
@@ -50,9 +52,6 @@ namespace JoysOfEfficiency.Menus
         private readonly string _tabMiscString;
         private readonly string _tabControlsString;
 
-        private bool _isListening;
-        private bool _isListeningClick;
-
         private bool _isFirstTime;
 
         private ModifiedInputListener _listener;
@@ -67,6 +66,7 @@ namespace JoysOfEfficiency.Menus
         internal JoeMenu(int width, int height)
             : base(Game1.viewport.Width / 2 - width / 2, Game1.viewport.Height / 2 - height / 2, width, height, true)
         {
+
             ITranslationHelper translation = InstanceHolder.Translation;
             _upCursor = new ClickableTextureComponent("up-arrow", new Rectangle(xPositionOnScreen + this.width + Game1.tileSize / 4, yPositionOnScreen + Game1.tileSize, 11 * Game1.pixelZoom, 12 * Game1.pixelZoom), "", "", Game1.mouseCursors, new Rectangle(421, 459, 11, 12), Game1.pixelZoom);
             _downCursor = new ClickableTextureComponent("down-arrow", new Rectangle(xPositionOnScreen + this.width + Game1.tileSize / 4, yPositionOnScreen + this.height - Game1.tileSize, 11 * Game1.pixelZoom, 12 * Game1.pixelZoom), "", "", Game1.mouseCursors, new Rectangle(421, 472, 11, 12), Game1.pixelZoom);
@@ -114,12 +114,12 @@ namespace JoysOfEfficiency.Menus
                 tab.AddOptionsElement(new ModifiedCheckBox("AutoAnimalDoor", 4, Config.AutoAnimalDoor, OnCheckboxValueChanged));
 
                 tab.AddOptionsElement(new EmptyLabel());
-                tab.AddOptionsElement(new LabelComponent("Auto Fishing"));
+                tab.AddOptionsElement(new LabelComponent("AFK Fishing"));
                 tab.AddOptionsElement(new ModifiedCheckBox("AutoFishing", 5, Config.AutoFishing, OnCheckboxValueChanged));
                 tab.AddOptionsElement(new ModifiedSlider("CPUThresholdFishing", 0, (int)(Config.CpuThresholdFishing * 10), 0, 5, OnSliderValueChanged, () => !Config.AutoFishing, Format));
-
-                tab.AddOptionsElement(new EmptyLabel());
-                tab.AddOptionsElement(new LabelComponent("Fishing Tweaks")); tab.AddOptionsElement(new ModifiedCheckBox("AutoReelRod", 6, Config.AutoReelRod, OnCheckboxValueChanged));
+                tab.AddOptionsElement(new ModifiedCheckBox("AutoReelRod", 6, Config.AutoReelRod, OnCheckboxValueChanged));
+                tab.AddOptionsElement(new ModifiedSlider("ThrowPower", 17, (int)(Config.ThrowPower * 10), 0, 10, OnSliderValueChanged, null, Format));
+                tab.AddOptionsElement(new ModifiedSlider("ThresholdStaminaPersentage", 18, Config.ThresholdStaminaPercentage, 10, 60, OnSliderValueChanged, null, Format));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Auto Gate"));
@@ -189,7 +189,7 @@ namespace JoysOfEfficiency.Menus
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Farm Cleaner"));
-                tab.AddOptionsElement(new ModifiedSlider("ScavengingRadius", 16, Config.RadiusFarmCleanup, 1, 3, OnSliderValueChanged, ()=>!(Config.CutWeeds || Config.ChopTwigs || Config.BreakRocks)));
+                tab.AddOptionsElement(new ModifiedSlider("RadiusFarmCleanup", 16, Config.RadiusFarmCleanup, 1, 3, OnSliderValueChanged, ()=>!(Config.CutWeeds || Config.ChopTwigs || Config.BreakRocks)));
                 tab.AddOptionsElement(new ModifiedCheckBox("CutWeeds", 39, Config.CutWeeds, OnCheckboxValueChanged));
                 tab.AddOptionsElement(new ModifiedCheckBox("BreakRocks", 40, Config.BreakRocks, OnCheckboxValueChanged));
                 tab.AddOptionsElement(new ModifiedCheckBox("ChopTwigs", 41, Config.ChopTwigs, OnCheckboxValueChanged));
@@ -223,7 +223,7 @@ namespace JoysOfEfficiency.Menus
                 tab.AddOptionsElement(new ModifiedCheckBox("FishingProbabilitiesInfo", 26, Config.FishingProbabilitiesInfo, OnCheckboxValueChanged));
                 tab.AddOptionsElement(new ModifiedClickListener(this, "ProbBoxLocation", 0, Config.ProbBoxCoordinates.X, Config.ProbBoxCoordinates.Y, translation, OnSomewhereClicked, OnStartListeningClick));
                 tab.AddOptionsElement(new ModifiedCheckBox("MorePreciseProbabilities", 37, Config.MorePreciseProbabilities, OnCheckboxValueChanged, i => !Config.FishingProbabilitiesInfo));
-                tab.AddOptionsElement(new ModifiedSlider("TrialOfExamine", 15, Config.TrialOfExamine, 1, 10, OnSliderValueChanged, () => !(Config.FishingProbabilitiesInfo && Config.MorePreciseProbabilities)));
+                tab.AddOptionsElement(new ModifiedSlider("TrialOfExamine", 15, Config.TrialOfExamine, 1, 50, OnSliderValueChanged, () => !(Config.FishingProbabilitiesInfo && Config.MorePreciseProbabilities)));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Show Shipping Price"));
@@ -269,25 +269,34 @@ namespace JoysOfEfficiency.Menus
                 tab.AddOptionsElement(new ModifiedInputListener(this, "ButtonToggleFlowerColorUnification", 2, Config.ButtonToggleFlowerColorUnification, translation, OnInputListenerChanged, OnStartListening));
 
                 tab.AddOptionsElement(new EmptyLabel());
+                tab.AddOptionsElement(new LabelComponent("AFK Fishing"));
+                tab.AddOptionsElement(new ModifiedInputListener(this, "ToggleAFKFishing", 3, Config.ToggleAfkFishing, translation, OnInputListenerChanged, OnStartListening));
+
+                tab.AddOptionsElement(new EmptyLabel());
                 _tabs.Add(tab);
             }
         }
         private void OnStartListening(int i, ModifiedInputListener option)
         {
-            _isListening = true;
             _listener = option;
         }
 
         private void OnStartListeningClick(int i, ModifiedClickListener option)
         {
-            _isListeningClick = true;
             _clickListener = option;
         }
 
         private void OnSomewhereClicked(int index, Point point)
         {
-            _isListeningClick = false;
             _clickListener = null;
+
+            if (index == -1)
+            {
+                //Assertion was cancelled
+                Logger.Log("Assertion Cancelled");
+                return;
+            }
+
             switch (index)
             {
                 case 0:
@@ -313,11 +322,13 @@ namespace JoysOfEfficiency.Menus
                 case 2:
                     Config.ButtonToggleFlowerColorUnification = value;
                     break;
+                case 3:
+                    Config.ToggleAfkFishing = value;
+                    break;
                 default:
                     return;
             }
             InstanceHolder.WriteConfig();
-            _isListening = false;
             _listener = null;
         }
         private void OnCheckboxValueChanged(int index, bool value)
@@ -385,6 +396,8 @@ namespace JoysOfEfficiency.Menus
                 case 14: Config.AnimalHarvestRadius = value; break;
                 case 15: Config.TrialOfExamine = value; break;
                 case 16: Config.RadiusFarmCleanup = value; break;
+                case 17: Config.ThrowPower = value / 10.0f; break;
+                case 18: Config.ThresholdStaminaPercentage = value; break;
                 default: return;
             }
 
@@ -393,9 +406,13 @@ namespace JoysOfEfficiency.Menus
 
         private static string Format(int id, int value)
         {
-            if (id >= 0 && id <= 2)
+            if (id >= 0 && id <= 2 || id == 17)
             {
                 return $"{value / 10f:f1}";
+            }
+            if(id == 18)
+            {
+                return $"{value}%";
             }
             return value + "";
         }
@@ -409,7 +426,7 @@ namespace JoysOfEfficiency.Menus
 
         public override void gamePadButtonHeld(Buttons b)
         {
-            if (_isListening || _isListeningClick)
+            if (_listener != null || _clickListener != null)
             {
                 return;
             }
@@ -425,16 +442,13 @@ namespace JoysOfEfficiency.Menus
 
         public override void receiveGamePadButton(Buttons b)
         {
-            if (_isListeningClick)
+            if (_clickListener != null)
             {
                 return;
             }
-            if (_isListening)
+            if (_listener != null)
             {
-                foreach (ModifiedInputListener element in _tabs[_tabIndex].GetElements().OfType<ModifiedInputListener>())
-                {
-                    element.ReceiveButtonPress(b);
-                }
+                _listener.ReceiveButtonPress(b);
                 return;
             }
             if ((b.HasFlag(Buttons.DPadUp) || b.HasFlag(Buttons.LeftThumbstickUp)) && _upCursor.visible)
@@ -497,7 +511,7 @@ namespace JoysOfEfficiency.Menus
         /// <param name="direction">amount and direction of the rotation</param>
         public override void receiveScrollWheelAction(int direction)
         {
-            if (_isListening || _isListeningClick)
+            if (_listener != null || _clickListener != null)
             {
                 return;
             }
@@ -584,7 +598,7 @@ namespace JoysOfEfficiency.Menus
             _upCursor.draw(b);
             _downCursor.draw(b);
 
-            if (_isListening)
+            if (_listener != null)
             {
                 //Draw the window of active ModifiedInputListener.
                 Point size = _listener.GetListeningMessageWindowSize();
@@ -592,7 +606,7 @@ namespace JoysOfEfficiency.Menus
                 _listener.DrawStrings(b, (Game1.viewport.Width - size.X) / 2, (Game1.viewport.Height - size.Y) / 2);
             }
 
-            if (_isListeningClick)
+            if (_clickListener != null)
             {
                 //Draw the window of active ModifiedClickListener.
                 Point size = _clickListener.GetListeningMessageWindowSize();
@@ -634,7 +648,7 @@ namespace JoysOfEfficiency.Menus
                     ChangeIndexOfScrollBar(index);
                 }
             }
-            if (_isListening)
+            if (_listener != null)
             {
                 return;
             }
@@ -651,13 +665,13 @@ namespace JoysOfEfficiency.Menus
 
         public override void receiveKeyPress(Keys key)
         {
-            base.receiveKeyPress(key);
-            if (_isListening)
+            if (_listener != null)
             {
-                foreach (OptionsElement element in _tabs[_tabIndex].GetElements())
-                {
-                    element.receiveKeyPress(key);
-                }
+                _listener.receiveKeyPress(key);
+            }
+            else if (_clickListener != null)
+            {
+                _clickListener.receiveKeyPress(key);
             }
             else if (key == Keys.Escape)
             {
@@ -671,6 +685,13 @@ namespace JoysOfEfficiency.Menus
                     return;
                 }
                 CloseMenu();
+            }
+            else
+            {
+                foreach (OptionsElement element in _tabs[_tabIndex].GetElements())
+                {
+                    element.receiveKeyPress(key);
+                }
             }
         }
 
@@ -689,16 +710,14 @@ namespace JoysOfEfficiency.Menus
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
             base.receiveLeftClick(x, y, playSound);
-            if (_isListening)
+            if (_listener != null)
             {
+                _listener.receiveLeftClick(x, y);
                 return;
             }
-            if (_isListeningClick)
+            if (_clickListener != null)
             {
-                foreach (ModifiedClickListener listener in _tabs[_tabIndex].GetElements().OfType<ModifiedClickListener>())
-                {
-                    listener.receiveLeftClick(x, y);
-                }
+                _clickListener.receiveLeftClick(x, y);
                 return;
             }
             if (_scrollBar.visible && _scrollBarRunner.Contains(x, y))
@@ -751,16 +770,14 @@ namespace JoysOfEfficiency.Menus
         {
             _isScrolling = false;
             base.releaseLeftClick(x, y);
-            if (_isListeningClick)
+            if (_listener != null)
             {
-                foreach (ModifiedClickListener listener in _tabs[_tabIndex].GetElements().OfType<ModifiedClickListener>())
-                {
-                    listener.leftClickReleased(x, y);
-                }
+                _listener.leftClickReleased(x, y);
                 return;
             }
-            if (_isListening)
+            if (_clickListener != null)
             {
+                _clickListener.leftClickReleased(x, y);
                 return;
             }
             foreach (OptionsElement element in GetElementsToShow())

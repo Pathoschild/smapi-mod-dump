@@ -22,6 +22,8 @@ using NpcAdventure.Story.Scenario;
 using NpcAdventure.Internal.Assets;
 using PurrplingCore.Patching;
 using QuestFramework.Api;
+using ExpandedPreconditionsUtility;
+using System.IO;
 
 namespace NpcAdventure
 {
@@ -34,7 +36,8 @@ namespace NpcAdventure
         private HintDriver HintDriver { get; set; }
         private StuffDriver StuffDriver { get; set; }
         private MailDriver MailDriver { get; set; }
-        public IQuestApi QuestApi { get; private set; }
+        internal IQuestApi QuestApi { get; private set; }
+        internal IConditionsChecker Epu { get; private set; }
         internal ISpecialModEvents SpecialEvents { get; private set; }
         internal CompanionManager CompanionManager { get; private set; }
         internal CompanionDisplay CompanionHud { get; private set; }
@@ -70,6 +73,7 @@ namespace NpcAdventure
             this.ContentLoader = new ContentLoader(helper, this.ContentPackManager, this.Monitor);
             this.Patcher = new GamePatcher(this.ModManifest.UniqueID, this.Monitor, this.Config.EnableDebug);
             this.RegisterEvents(helper.Events);
+            this.CheckTranslations();
             this.ContentPackManager.LoadContentPacks(helper.ContentPacks.GetOwned());
             Commander.Register(this);
         }
@@ -133,13 +137,16 @@ namespace NpcAdventure
             // Setup third party mod compatibility bridge
             Compat.Setup(this.Helper.ModRegistry, this.Monitor);
             IQuestApi questApi = this.Helper.ModRegistry.GetApi<IQuestApi>("purrplingcat.questframework");
+            IConditionsChecker epu = this.Helper.ModRegistry.GetApi<IConditionsChecker>("Cherry.ExpandedPreconditionsUtility");
             var storyHelper = new StoryHelper(this.ContentLoader, questApi.GetManagedApi(this.ModManifest));
 
             questApi.Events.GettingReady += (_, args) => storyHelper.LoadQuests(this.GameMaster);
             questApi.Events.Ready += (_, args) => storyHelper.SanitizeOldAdventureQuestsInLog();
+            epu.Initialize(this.Config.EnableDebug, this.ModManifest.UniqueID);
 
             // Mod's services and drivers
             this.QuestApi = questApi;
+            this.Epu = epu;
             this.SpecialEvents = new SpecialModEvents();
             this.DialogueDriver = new DialogueDriver(this.Helper.Events);
             this.HintDriver = new HintDriver(this.Helper.Events);
@@ -147,7 +154,15 @@ namespace NpcAdventure
             this.MailDriver = new MailDriver(this.ContentLoader, this.Monitor);
             this.GameMaster = new GameMaster(this.Helper, storyHelper, this.Monitor);
             this.CompanionHud = new CompanionDisplay(this.Config, this.ContentLoader);
-            this.CompanionManager = new CompanionManager(this.GameMaster, this.DialogueDriver, this.HintDriver, this.CompanionHud, this.Config, this.Monitor);
+            this.CompanionManager = new CompanionManager(
+                gameMaster: this.GameMaster,
+                dialogueDriver: this.DialogueDriver,
+                hintDriver: this.HintDriver,
+                hud: this.CompanionHud,
+                config: this.Config,
+                epu: this.Epu,
+                monitor: this.Monitor
+            );
             
             this.StuffDriver.RegisterEvents(this.Helper.Events);
             this.MailDriver.RegisterEvents(this.SpecialEvents);
@@ -185,11 +200,6 @@ namespace NpcAdventure
             {
                 this.Patcher.Apply(new Patches.CheckEventPatch(this.GameMaster));
             }
-
-            if (this.Config.Experimental.UseSwimsuits)
-            {
-                this.LogExperimental("Support swimsuits for companions");
-            }
         }
 
         private void LogExperimental(string featureName)
@@ -205,7 +215,36 @@ namespace NpcAdventure
 
             this.GameMaster.RegisterScenario(new AdventureBegins(this.SpecialEvents, this.QuestApi.Events, this.Helper.Events, this.ContentLoader, this.Config, this.Monitor));
             this.GameMaster.RegisterScenario(new RecruitmentScenario());
-            this.GameMaster.RegisterScenario(new CompanionCutscenes(this.ContentLoader, this.CompanionManager));
+            this.GameMaster.RegisterScenario(new CompanionCutscenes(this.ContentLoader, this.CompanionManager, this.Epu));
+        }
+
+        private void CheckTranslations()
+        {
+            var dirInfo = new DirectoryInfo(Path.Combine(this.Helper.DirectoryPath, "locale"));
+            var localeDirs = dirInfo.GetDirectories();
+            string localeRoot;
+            LocaleManifest locale;
+
+            foreach(var localeDir in localeDirs)
+            {
+                localeRoot = Path.Combine("locale", localeDir.Name);
+                locale = this.Helper.Data.ReadJsonFile<LocaleManifest>(Path.Combine(localeRoot, "manifest.json"));
+
+                if (locale == null)
+                {
+                    this.Monitor.Log($"Invalid translation in folder `{localeRoot}`", LogLevel.Error);
+                    continue;
+                }
+
+                if (this.ContentLoader.Translations.ContainsKey(locale.Code))
+                {
+                    this.Monitor.Log($"Translation locale `{locale.Code}` is already registered! Can't add another one from `{localeRoot}`.", LogLevel.Error);
+                    continue;
+                }
+
+                this.ContentLoader.Translations.Add(locale.Code, Path.Combine("locale", localeDir.Name));
+                this.Monitor.Log($"Found translation: {locale.Language} ({locale.Code}) {locale.Version} by {locale.Translator} in `{localeRoot}`", LogLevel.Info);
+            }
         }
 
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)

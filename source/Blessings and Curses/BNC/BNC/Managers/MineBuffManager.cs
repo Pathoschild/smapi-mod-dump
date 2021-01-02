@@ -15,12 +15,13 @@ using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewValley.Locations;
 
 namespace BNC
 {
     static class MineBuffManager
     {
-
+        
         public static String CurrentAugment = null;
         public static bool finishedLoop = false;
 
@@ -47,25 +48,28 @@ namespace BNC
             //Augments.Add("extra", new AugmentOption("extra", "More Mobs", "More mobs per level."));
         }
 
-        public static void mineLevelChanged(object sender, EventArgsMineLevelChanged e)
+        public static void mineLevelChanged(object sender, WarpedEventArgs e)
         {
-            if (shouldUpdateAugment(e))
+            if (e.NewLocation is MineShaft mine)
             {
-                if (TwitchIntergration.isConnected())
+                if (shouldUpdateAugment(e))
                 {
-                   if(!TwitchIntergration.hasMinePollStarted)
-                        TwitchIntergration.StartMinePoll(getRandomBuff(3));
+                    if (TwitchIntergration.isConnected())
+                    {
+                        if (!TwitchIntergration.hasMinePollStarted)
+                            TwitchIntergration.StartMinePoll(getRandomBuff(3));
+                    }
+                    else
+                    {
+                        AugmentOption aug = getRandomBuff(1)[0];
+                        CurrentAugment = aug.id;
+                        Game1.addHUDMessage(new HUDMessage(aug.DisplayName + ": " + aug.desc, null));
+                    }
                 }
-                else
-                {
-                    AugmentOption aug = getRandomBuff(1)[0];
-                    CurrentAugment = aug.id;
-                    Game1.addHUDMessage(new HUDMessage(aug.DisplayName + ": " + aug.desc, null));
-                }
-            }
 
-            if(CurrentAugment != null)
-                UpdateLocation();
+                if (CurrentAugment != null)
+                    UpdateLocation(e);
+            }
 
         }
 
@@ -88,11 +92,15 @@ namespace BNC
 
         }
 
-        public static bool shouldUpdateAugment(EventArgsMineLevelChanged e)
+        public static bool shouldUpdateAugment(WarpedEventArgs e)
         {
-            if (isMineShaft() && lastAugment() && (e.CurrentMineLevel % BNC_Core.config.Mine_Augment_Every_x_Levels == 0 || CurrentAugment == null || e.CurrentMineLevel == 1)) {
-                startTime = DateTime.Now;
-                return true;
+            if (e.NewLocation is MineShaft mine)
+            {
+                if (lastAugment() && (mine.mineLevel % BNC_Core.config.Mine_Augment_Every_x_Levels == 0 || CurrentAugment == null || mine.mineLevel == 1))
+                {
+                    startTime = DateTime.Now;
+                    return true;
+                }
             }
 
             return false;
@@ -106,17 +114,11 @@ namespace BNC
             return false;
         }
 
-        public static bool isMineShaft()
-        {
-            if (Game1.currentLocation.Name.StartsWith("UndergroundMine"))
-                return true;
-            return false;
-        }
-        
         // Runs on each mine location update
-        public static void UpdateLocation()
+        public static void UpdateLocation(WarpedEventArgs e)
         {
-            if (!isMineShaft())
+
+            if (!(e.NewLocation is MineShaft mine))
                 return;
 
             foreach (NPC npc in Game1.player.currentLocation.characters)
@@ -171,12 +173,14 @@ namespace BNC
         // Runs ever second
         public static void UpdateTick()
         {
-            if (!isMineShaft())
+            GameLocation location = Game1.player.currentLocation;
+
+            if (!(location is MineShaft))
                 return;
 
             if (queue.Count > 0)
             {
-                GameLocation location = Game1.player.currentLocation;
+                
                 bool flag = location.addCharacterAtRandomLocation(queue[0]);
                 if (flag)
                     queue.RemoveAt(0);

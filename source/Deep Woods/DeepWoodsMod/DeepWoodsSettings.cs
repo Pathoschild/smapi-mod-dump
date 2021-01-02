@@ -303,12 +303,6 @@ namespace DeepWoodsMod
             new WeightedInt(453, 50),  // 376, // Poppy, summer (140g)
             new WeightedInt(425, 30),  // 595, // FairyRose, fall (290g)
         };
-
-        public Chance ChanceForEasterEgg { get; set; } = new Chance(new LuckValue(5, 25), 1000);
-        public Chance ChanceForExtraEasterEgg { get; set; } = new Chance(new LuckValue(0, 25));
-        public Chance ChanceForEasterEggsDoubled { get; set; } = new Chance(new LuckValue(75, 100));
-
-        public LuckRange MaxEasterEggsPerLevel { get; set; } = new LuckRange(new LuckValue(0, 2), new LuckValue(2, 6));
     }
 
     public class ClearingLuckSettings

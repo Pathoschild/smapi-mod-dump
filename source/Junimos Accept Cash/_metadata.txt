@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/JunimosAcceptCash.git
+
+mods:
+   Junimos Accept Cash
+
+latest commit:
+   commit 1e1fc90e3c220e51117baacf5a7eb98d6e06d4d8
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Wed Jun 17 13:06:35 2020 -0400
+   
+       Initial commit
+   

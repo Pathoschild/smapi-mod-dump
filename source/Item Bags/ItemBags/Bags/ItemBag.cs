@@ -70,6 +70,7 @@ namespace ItemBags.Bags
         Iridium = 4 // Might not be correct. According the the game code, if (StardewValley.Object.Quality > 3) then it draws iridium icon. So maybe it's possible for multiple qualities to map to iridium? Not sure why they didn't just use (StardewValley.Object.Quality == 3)
     }
 
+    //[XmlType("Mods_ItemBag")]
     [XmlRoot(ElementName = "ItemBag", Namespace = "")]
     [KnownType(typeof(BoundedBag))]
     [KnownType(typeof(BundleBag))]
@@ -368,16 +369,17 @@ namespace ItemBags.Bags
         #endregion Textures
 
         /// <summary>Same purpose as <see cref="Tool.Description"/> except this is a read-only property that doesn't call a function</summary>
-        [XmlElement("DescriptionAlias")]
+        [XmlIgnore]
         public string DescriptionAlias { get; protected set; }
 
-        [XmlElement("ContainerSize")]
+        [XmlIgnore]
         public ContainerSize Size { get; protected set; }
         /// <summary>Never Add/Remove from this List directly. Use <see cref="MoveToBag(Object, int, out int, bool, IList{Item})"/> and <see cref="MoveFromBag(Object, int, out int, bool, IList{Item}, int)"/></summary>
         [XmlArray("BagContents")]
         [XmlArrayItem("BagItem")]
         public List<Object> Contents { get; }
         /// <summary>Invoked when Items are added to or removed from the bag</summary>
+        [XmlIgnore]
         public EventHandler<EventArgs> OnContentsChanged;
 
         #region Lookup Anything Compatibility
@@ -535,6 +537,7 @@ namespace ItemBags.Bags
         }
 
 #region Multiplayer Support
+        [XmlIgnore]
         public bool IsBagInUse { get { return IsContentsMenuOpen || CraftingHandler.IsUsingForCrafting(this); } }
         //private bool IgnoreNextDeserialize { get; set; }
 

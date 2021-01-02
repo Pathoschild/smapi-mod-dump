@@ -5,9 +5,9 @@ mods:
    Audio Devices
 
 latest commit:
-   commit 85f7a0db238e1156e42e719fef472a5ec578c7b2
+   commit 2e280cf2b6433bd08e22a249e1d8a6ed3c467f1c
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Mon Jan 13 11:03:45 2020 +0100
+   Date:   Sun Dec 27 18:44:14 2020 +0100
    
-       Updated code to be compatible with SDV 1.4
+       Compatibility with SDV 1.5
    

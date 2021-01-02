@@ -29,7 +29,7 @@ namespace JoysOfEfficiency.Automation
             {
                 if (menu.shippingBin || ShippingEstimationInfoBox.IsCaShippingBinMenu(menu))
                 {
-                    Logger.Log("Don't do anything with shipping bin");
+                    Logger.Log("Won't do anything to shipping bin");
                     return;
                 }
 
@@ -41,7 +41,7 @@ namespace JoysOfEfficiency.Automation
 
                 if (menu.source == ItemGrabMenu.source_chest)
                 {
-                    Logger.Log("Don't do anything with chest player placed");
+                    Logger.Log("Won't do anything to chest player placed");
                     return;
                 }
 

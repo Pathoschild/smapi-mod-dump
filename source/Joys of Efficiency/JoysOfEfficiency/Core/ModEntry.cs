@@ -8,12 +8,13 @@
 **
 *************************************************/
 
+using System.IO;
 using JoysOfEfficiency.EventHandler;
+using JoysOfEfficiency.Harmony;
 using JoysOfEfficiency.Huds;
 using JoysOfEfficiency.ModCheckers;
 using JoysOfEfficiency.Utils;
 using StardewModdingAPI;
-
 using StardewValley;
 
 namespace JoysOfEfficiency.Core
@@ -39,21 +40,20 @@ namespace JoysOfEfficiency.Core
         /// <param name="helper"></param>
         public override void Entry(IModHelper helper)
         {
-            // Loads configuration from file.
-            Config conf = Helper.ReadConfig<Config>();
-
-            // Initialize InstanceHolder.
-            InstanceHolder.Init(this, conf);
-
             // Initialize Logger
             Logger.Init(Monitor);
 
+            // Initialize InstanceHolder.
+            InstanceHolder.Init(this);
+
             // Register events.
             EventHolder.RegisterEvents(Helper.Events);
-            
+
 
             // Registration commands.
             Helper.ConsoleCommands.Add("joedebug", "Debug command for JoE", OnDebugCommand);
+            Helper.ConsoleCommands.Add("joerelcon", "Reloading config command for JoE", OnReloadConfigCommand);
+
 
             // Limit config values.
             ConfigLimitation.LimitConfigValues();
@@ -71,16 +71,36 @@ namespace JoysOfEfficiency.Core
                 IsCaOn = true;
             }
 
+            // Do patching stuff
+            if (!Conf.SafeMode)
+            {
+                HarmonyPatcher.DoPatching();
+            }
+            else
+            {
+                Logger.Log("Bypassing patching...");
+            }
+
             helper.WriteConfig(Conf);
             MineIcons.Init(helper);
+        }
+
+        private static void OnReloadConfigCommand(string name, string[] args)
+        {
+            // Loads configuration from file.
+            InstanceHolder.LoadConfig();
+            Logger.Log("Reloaded JoE's config.");
         }
 
         private static void OnDebugCommand(string name, string[] args)
         {
             DebugMode = !DebugMode;
-            Farmer player = Game1.player;
-            Logger.Log($"Facing:{player.FacingDirection}");
 
+        }
+
+        public string GetFilePath(string fileName)
+        {
+            return Path.Combine(Helper.DirectoryPath, fileName);
         }
     }
 }

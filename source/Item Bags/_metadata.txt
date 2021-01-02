@@ -5,9 +5,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit d585f3cd2b08857b45080cf944e559be9f8041ee
+   commit d80de7f880b0847fa2f61c44e61fde88daae7f03
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Mon Dec 21 23:30:10 2020 -0500
+   Date:   Sat Dec 26 20:45:27 2020 -0500
    
-       Added compatibility with Stardew Valley 1.5 update. Added compatibility with new randomized bundles setting and new UI scaling option.
+       Allow crafting/cooking with items inside bags that are in fridges or attached to workbenches (previously only allowed crafting/cooking with items inside bags within your inventory)
    

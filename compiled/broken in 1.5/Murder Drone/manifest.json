@@ -1,9 +1,0 @@
-﻿{
-  "Name": "MURDER DRONE",
-  "Version": "0.0.6",
-  "Description": "THIS DRONE WILL MURDER EVERYTHING",
-  "UniqueID": "cambam.MURDERDRONE",
-  "EntryDll": "MURDERDRONE.dll",
-  "MinimumApiVersion": "2.11.3",
-  "UpdateKeys": [ "Nexus:4507" ]
-}

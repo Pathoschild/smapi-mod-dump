@@ -5,9 +5,9 @@ mods:
    Daily Screenshot
 
 latest commit:
-   commit beed07dfd9be764ee4ec5b163dd07a326fd4ff10
-   Author: Lauren Stephenson <compscilauren@gmail.com>
-   Date:   Thu Mar 19 11:56:20 2020 -0500
+   commit 78f336a9de566317a60612e0828ac1403cbfdc63
+   Author: Lauren Stephenson <CompSciLauren@gmail.com>
+   Date:   Mon Dec 28 14:47:06 2020 -0600
    
-       Fix Chucklefish link
+       Update version
    

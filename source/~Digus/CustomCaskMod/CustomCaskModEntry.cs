@@ -8,14 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Linq;
-using System.Reflection;
 using Harmony;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Objects;
 
 namespace CustomCaskMod
@@ -47,7 +42,7 @@ namespace CustomCaskMod
         /*********
         ** Private methods
         *********/
-        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
+        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialized at this point, so this is a good time to set up mod integrations.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -57,32 +52,20 @@ namespace CustomCaskMod
             var harmony = HarmonyInstance.Create("Digus.CustomCaskMod");
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(Cask), nameof(Cask.performObjectDropInAction)),
-                prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.PerformObjectDropInAction))
+                original: AccessTools.Method(typeof(Cask), nameof(Cask.IsValidCaskLocation)),
+                prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.IsValidCaskLocation))
             );
-
-            if (!DataLoader.ModConfig.DisableAutomateCompatibility && Helper.ModRegistry.IsLoaded("Pathoschild.Automate"))
-            {
-                ModMonitor.Log("Automated detected, patching it to work with configured items and aging rates.",LogLevel.Info);
-                try
-                {
-                    Assembly automateAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName.StartsWith("Automate,"));
-                    harmony.Patch(
-                        original: AccessTools.Constructor(automateAssembly.GetType("Pathoschild.Stardew.Automate.Framework.Machines.Objects.CaskMachine"), new Type[] { typeof(Cask), typeof(GameLocation), typeof(Vector2) }),
-                        postfix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.CaskMachine))
-                    );
-                }
-                catch (Exception ex)
-                {
-                    ModMonitor.Log("Error trying to patch Automate. Configured items and aging rates will not work with Automate.", LogLevel.Warn);
-                    ModMonitor.Log(ex.Message, LogLevel.Trace);
-                    ModMonitor.Log(ex.StackTrace, LogLevel.Trace);
-                }
-                
-            }
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Cask), nameof(Cask.GetAgingMultiplierForItem)),
+                prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.GetAgingMultiplierForItem))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Cask), nameof(Cask.checkForMaturity)),
+                prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.checkForMaturity))
+            );
         }
 
-        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <summary>Raised after the player loads a save slot and the world is initialized.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         public static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)

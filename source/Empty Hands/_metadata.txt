@@ -5,10 +5,10 @@ mods:
    Empty Hands
 
 latest commit:
-   commit 56ef899155baef947137604a8ececf9a761e0ff1
-   Merge: 08728f5 4449b7a
+   commit 1fa6052bfe9376fe3c2cc298936f8e7c6db37567
+   Merge: ef65fcf 7ce9d2c
    Author: Quicksilver Fox <QuicksilverFox@ignis.name>
-   Date:   Sat May 12 08:34:36 2018 +0300
+   Date:   Sun Dec 27 13:47:39 2020 +0300
    
        Merge branch 'master' of https://github.com/quicksilverfox/StardewMods
    

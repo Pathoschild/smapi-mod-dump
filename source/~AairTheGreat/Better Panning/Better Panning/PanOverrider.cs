@@ -26,13 +26,24 @@ namespace BetterPanning.GamePatch
         internal static List<Item> GetTreasure()
         {
             List<Item> rewards = new List<Item>();
-
+            var location = Game1.player.currentLocation;
             //Treasure Groups
-            List<TreasureGroup> possibleGroups = PanningMod.Instance.treasureGroups.Values
+            List<TreasureGroup> possibleGroups;
+
+            if (PanningMod.Instance.areaTresureGroups.ContainsKey(location.Name))
+            {
+                possibleGroups = PanningMod.Instance.areaTresureGroups[location.Name].Values
                 .Where(group => group.Enabled == true)
                 .OrderBy(group => group.GroupChance)
                 .ToList();
-            
+            }
+            else
+            {
+                possibleGroups = PanningMod.Instance.defaultTresureGroups.Values
+                .Where(group => group.Enabled == true)
+                .OrderBy(group => group.GroupChance)
+                .ToList();
+            }
             // Select rewards
             double chance = 1f;
 

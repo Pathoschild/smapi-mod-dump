@@ -256,7 +256,7 @@ namespace ExtremeFishingOverhaul
             {
                 var texture = this.Helper.Content.Load<Texture2D>(@"assets\springobjects.xnb", ContentSource.ModFolder);
 
-                asset.AsImage().ReplaceWith(texture);
+                //asset.AsImage().ReplaceWith(texture);
 
                 //asset
                     //.AsImage()
@@ -269,7 +269,7 @@ namespace ExtremeFishingOverhaul
             //this.Monitor.Log("2nd");
             bool rare = false;
             bool rare2 = false;
-
+            MaxFish = 500;
 
 
 
@@ -311,7 +311,7 @@ namespace ExtremeFishingOverhaul
                     //Monitor.Log("Celestial2 F Created.");
                 }
 
-                int id = 804 + i;
+                int id = 1999 - i;
                 int levR = rnd.Next(minFL, maxFL);
                 int diff;
                 string ft;

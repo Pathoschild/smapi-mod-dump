@@ -5,9 +5,10 @@ mods:
    Lefty Mode
 
 latest commit:
-   commit fddcc25c7ee52b2d04cfd3ba321dad61f3a78f57
+   commit 34dadf73b6393e1111397b366c1b7cfee2095db8
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Sat May 30 16:52:20 2020 +0200
+   Date:   Sun Dec 27 18:38:28 2020 +0100
    
-       Initial commit
+       * SDV 1.5 compatibility
+       * Added nexusmods banner
    

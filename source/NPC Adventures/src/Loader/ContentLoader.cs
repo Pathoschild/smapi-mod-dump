@@ -30,6 +30,7 @@ namespace NpcAdventure.Loader
         public IDataHelper Data { get; }
         private IContentHelper Assets { get; }
         public ITranslationHelper Translation { get; }
+        public Dictionary<string, string> Translations { get; }
         public string DirectoryPath { get; }
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace NpcAdventure.Loader
             this.contentPacks = helper.ContentPacks;
             this.contentPackManager = contentPackManager ?? throw new ArgumentNullException(nameof(contentPackManager));
             this.monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
+            this.Translations = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -57,18 +59,16 @@ namespace NpcAdventure.Loader
         /// <typeparam name="TValue"></typeparam>
         /// <param name="path">Name of asset, like `Strings/Strings` or `Dialogue/Abigail` and etc</param>
         /// <returns>Loaded content of asset</returns>
-        public Dictionary<TKey, TValue> LoadData<TKey, TValue>(string path)
+        public Dictionary<TKey, TValue> LoadData<TKey, TValue>(string path, bool isRequired = true)
         {
             if (!this.TryLoadData<TKey, TValue>(path, out var data))
-                this.monitor.Log($"Cannot load asset: {path}", LogLevel.Error);
+                this.monitor.Log($"Cannot load asset: {path}", isRequired ? LogLevel.Error : LogLevel.Trace);
 
             return data;
         }
 
         private bool TryLoadData<TKey, TValue>(string path, out Dictionary<TKey, TValue> data)
         {
-            string locale = this.Assets.CurrentLocale.ToLower();
-
             // If this content doesn't exists in mod scope, try load them from content packs
             if (!this.HasFile($"assets/{path}.json"))
             {
@@ -77,7 +77,7 @@ namespace NpcAdventure.Loader
 
             data = this.Assets.Load<Dictionary<TKey, TValue>>($"assets/{path}.json");
 
-            this.ApplyTranslation(path, locale, data); // Apply translations                
+            this.ApplyTranslation(path, this.Assets.CurrentLocale, data); // Apply translations                
             this.contentPackManager.Apply(data, path); // Apply content packs
 
             return true;
@@ -111,18 +111,21 @@ namespace NpcAdventure.Loader
             if (string.IsNullOrEmpty(locale))
                 return;
 
-            this.monitor.VerboseLog($"Trying to load localised file `locale/{locale}/{path}.json` for `{path}`, locale `{locale}`");
-            var translatedData = this.Data.ReadJsonFile<Dictionary<TKey, TValue>>($"locale/{locale}/{path}.json");
-
-            if (translatedData == null)
+            if (this.Translations.TryGetValue(locale, out string localeRoot))
             {
-                this.monitor.Log($"No translations for {path} locale {locale}");
-                return;
-                
+                this.monitor.VerboseLog($"Trying to load localised file `{localeRoot}/{path}.json` for `{path}`, locale `{locale}`");
+                var translatedData = this.Data.ReadJsonFile<Dictionary<TKey, TValue>>($"{localeRoot}/{path}.json");
+
+                if (translatedData != null)
+                {
+                    AssetPatchHelper.ApplyPatch(baseData, translatedData);
+                    this.monitor.Log($"Applied mod's translation to `{locale}` for `{path}`.");
+
+                    return;
+                }
             }
 
-            AssetPatchHelper.ApplyPatch(baseData, translatedData);
-            this.monitor.Log($"Applied mod's translation to `{locale}` for `{path}`.");
+            this.monitor.LogOnce($"No translations for {path} locale {locale}", LogLevel.Debug);
         }
 
         /// <summary>

@@ -35,6 +35,12 @@ namespace JoysOfEfficiency.Automation
                 if (obj.heldObject.Value != null)
                     continue;
 
+                if (obj.Name == "Keg" && item.ParentSheetIndex == 433 && item.Stack < 5)
+                {
+                    // You don't have enough beans.
+                    return;
+                }
+
                 bool flag = false;
                 bool accepted = obj.Name == "Furnace" ? CanFurnaceAcceptItem(item, player) : Utility.isThereAnObjectHereWhichAcceptsThisItem(currentLocation, item, (int)loc.X * tileSize, (int)loc.Y * tileSize);
                 if (obj is Cask)

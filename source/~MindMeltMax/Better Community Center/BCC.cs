@@ -18,15 +18,13 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 
 using System.Collections.Generic;
-using xTile.Tiles;
-using xTile.Dimensions;
+using System.IO;
+
 using BCC.Menus;
 using BCC.Utilities;
+
+using xTile.Tiles;
 using xTile.Layers;
-using Netcode;
-using Microsoft.Xna.Framework.Graphics;
-using System.Reflection;
-using System.IO;
 
 namespace BCC
 {
@@ -132,7 +130,7 @@ namespace BCC
                     Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
                     Helper.Events.GameLoop.Saving += GameLoop_Saving;
                     Helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
-                    //Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked_Main;
+                    Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked_Main;
                     DonationsAddedForToday = false;
                     if (Game1.Date.Season != Season)
                         PreviousSeason = Season;
@@ -163,7 +161,7 @@ namespace BCC
                     Requests.RequestList = new List<Request>();
             }
             Monitor.Log($"List : {BoilerData.dataList}", LogLevel.Debug);
-            /*if (BoilerData.dataList == null)
+            if (BoilerData.dataList == null)
             {
                 BoilerData.dataList = new List<data>();
                 for (int i = 0; i < 6; i++)
@@ -176,7 +174,7 @@ namespace BCC
                 }
                 if (BoilerData.dataList == null)
                     BoilerData.dataList = new List<data>();
-            }*/
+            }
 
             #region Request
             int Days = Game1.Date.TotalDays;
@@ -201,16 +199,14 @@ namespace BCC
             #endregion Request
         }
 
-        /*private void GameLoop_UpdateTicked_Main(object sender, UpdateTickedEventArgs e)
+        private void GameLoop_UpdateTicked_Main(object sender, UpdateTickedEventArgs e)
         {
             if(BoilerMenu.isSmelting)
             {
-                TileSheet sheet = CommunityCenter.map.GetTileSheet("paths");
-                Layer DonationsLayer = CommunityCenter.map.GetLayer("Paths");
-                DonationsLayer.Tiles[(int)CCBoiler1.X, (int)CCBoiler1.Y-1] = new StaticTile(DonationsLayer, sheet, BlendMode.Alpha, 8);
-                DonationsLayer.Tiles[(int)CCBoiler2.X, (int)CCBoiler2.Y - 1] = new StaticTile(DonationsLayer, sheet, BlendMode.Alpha, 8);
+                Game1.currentLightSources.Add(new LightSource(LightSource.sconceLight, CCBoiler1, 2f));
+                Game1.currentLightSources.Add(new LightSource(LightSource.sconceLight, CCBoiler2, 2f));
             }
-        }*/
+        }
 
         private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
@@ -410,16 +406,16 @@ namespace BCC
                 {
                     if (TodaysDonations == null)
                         checkForDonations();
-                    //Game1.activeClickableMenu = (IClickableMenu)new BoilerCoalMenu(CCCoalChest, Monitor, Helper);
-                    Game1.activeClickableMenu = (IClickableMenu)new DialogueBox("Under construction, please check back later");
+                    Game1.activeClickableMenu = (IClickableMenu)new BoilerCoalMenu(CCCoalChest, Monitor, Helper);
+                    //Game1.activeClickableMenu = (IClickableMenu)new DialogueBox("Under construction, please check back later");
                 }
 
                 else if(property == "CCBoiler")
                 {
                     if (TodaysDonations == null)
                         checkForDonations();
-                    Game1.activeClickableMenu = (IClickableMenu)new DialogueBox("Under construction, please check back later");
-                    //Game1.activeClickableMenu = (IClickableMenu)new BoilerMenu(Monitor, Helper, CCCoalChest);
+                    //Game1.activeClickableMenu = (IClickableMenu)new DialogueBox("Under construction, please check back later");
+                    Game1.activeClickableMenu = (IClickableMenu)new BoilerMenu(Monitor, Helper, CCCoalChest);
                     /*Game1.activeClickableMenu = (IClickableMenu)new ItemGrabMenu((IList<Item>)CCCoalChest.items, false, true, new InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems),
                                                     new ItemGrabMenu.behaviorOnItemSelect(CCCoalChest.grabItemFromInventory), (string)null, new ItemGrabMenu.behaviorOnItemSelect(CCCoalChest.grabItemFromChest),
                                                     false, true, true, true, true, 1, sourceItem: ((bool)(NetFieldBase<bool, NetBool>)CCCoalChest.fridge ? (Item)null : (Item)CCCoalChest), context: ((object)CCCoalChest));*/
@@ -460,10 +456,6 @@ namespace BCC
 
         private void setCustomTiles()
         {
-            foreach (TileSheet t in CommunityCenter.map.TileSheets)
-            {
-                Monitor.Log($"{t.Id}-{t.Description}", LogLevel.Debug);
-            }
             CommunityCenter.map.LoadTileSheets(Game1.mapDisplayDevice);
             TileSheet sheet = CommunityCenter.map.GetTileSheet("indoors");
 

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "HoldToPause",
+  "Author": "samspartan",
+  "Version": "1.0.0",
+  "Description": "Pause multiplayer games with by holding 'P' or 'Start' for 2 seconds",
+  "UniqueID": "samspartan.HoldToPause",
+  "EntryDll": "HoldToPause.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:7352" ]
+}

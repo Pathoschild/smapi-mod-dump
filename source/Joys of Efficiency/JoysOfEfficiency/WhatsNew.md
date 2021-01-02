@@ -198,3 +198,28 @@ This is a changelog from 1.0.22
 ## 1.3.6
 - Now FishInformationHud shows correct quality when you are fishing perfectly.
 - Fixed the problem that FishingProbabilitiesBox may throw an exception.
+
+## 1.3.7
+- Added AFK Fishing function.
+
+## 1.3.8
+- Now auto-casting works even if SafeMode is on.
+- Fixed a bug that AutoDepositIngredient consume coffee beans if you don't have enough(<5) beans.
+- Updated chinese translation by Lake1059. Many thanks!
+- Now AutoShakeFruitedPlants supports tea bushes!
+
+## 1.3.9
+- Added Korean translation. (provided by wally232. Many thanks!)
+- Graphical adjustment for Android.
+
+## 1.3.10
+- Adjusted MineInfoGui for Android.
+- Adjusted FishingInfo for Android.
+- Fixed a problem that GetTruePrice might throw NRE.
+
+## 1.4.0
+- Updated for SDV 1.5 and SMAPI 3.8.
+
+## 1.4.1
+- Fixed Harmony related crash.
+- Improved usability around menus.

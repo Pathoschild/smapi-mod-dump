@@ -9,7 +9,11 @@
 *************************************************/
 
 {
+  "FileVersion": 1,
   "AreaName": "Mine",
   "numberOfOreSpotsPerDay": 50,
+  "StartTime": 600,
+  "EndTime": 2600,
+  "CustomTreasure": false,
   "OreSpots": []
 }

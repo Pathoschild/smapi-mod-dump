@@ -26,3 +26,9 @@
 
 0.3.1-internal.3
 - [CODE] Added extra trace-level reporting on time requirements during Init
+
+0.3.2
+- [CODE] Update to SDV 1.5
+
+0.3.3
+- [CODE] Fix strict base64 logic issue

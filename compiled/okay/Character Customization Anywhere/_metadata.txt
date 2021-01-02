@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7415
+IDs: jeanne.CharacterCustomizationAnywhere
+update keys: Nexus:7415

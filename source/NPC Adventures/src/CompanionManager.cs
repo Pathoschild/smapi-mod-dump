@@ -25,6 +25,7 @@ using NpcAdventure.HUD;
 using NpcAdventure.Story;
 using NpcAdventure.Story.Messaging;
 using System.Linq;
+using ExpandedPreconditionsUtility;
 
 namespace NpcAdventure
 {
@@ -36,6 +37,7 @@ namespace NpcAdventure
 
         public Dictionary<string, CompanionStateMachine> PossibleCompanions { get; }
         public IGameMaster GameMaster { get; }
+        public IConditionsChecker EPU { get; }
 
         public CompanionStateMachine GetRecruitedCompanion()
         {
@@ -60,7 +62,7 @@ namespace NpcAdventure
             }
         }
 
-        public CompanionManager(IGameMaster gameMaster, DialogueDriver dialogueDriver, HintDriver hintDriver, CompanionDisplay hud, Config config, IMonitor monitor)
+        public CompanionManager(IGameMaster gameMaster, DialogueDriver dialogueDriver, HintDriver hintDriver, CompanionDisplay hud, Config config, IConditionsChecker epu, IMonitor monitor)
         {
             this.GameMaster = gameMaster ?? throw new ArgumentNullException(nameof(gameMaster));
             this.dialogueDriver = dialogueDriver ?? throw new ArgumentNullException(nameof(dialogueDriver));
@@ -69,6 +71,7 @@ namespace NpcAdventure
             this.monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
             this.PossibleCompanions = new Dictionary<string, CompanionStateMachine>();
             this.Config = config ?? throw new ArgumentNullException(nameof(config));
+            this.EPU = epu ?? throw new ArgumentNullException(nameof(epu));
 
             this.dialogueDriver.DialogueChanged += this.DialogueDriver_DialogueChanged;
             this.hintDriver.CheckHint += this.HintDriver_CheckHint;
@@ -91,7 +94,7 @@ namespace NpcAdventure
             // Check if spoken it any our companion
             if (this.PossibleCompanions.TryGetValue(n.Name, out CompanionStateMachine csm))
             {
-                csm.DialogueSpeaked(e.PreviousDialogue); // Companion can react on this dialogue
+                csm.OnDialogueSpoken(e.PreviousDialogue); // Companion can react on this dialogue
             }
         }
 
@@ -179,18 +182,21 @@ namespace NpcAdventure
         /// </summary>
         public void NewDaySetup()
         {
-            try
+            // For each companion state machine call new day setup method
+            foreach (var companion in this.PossibleCompanions.Values)
             {
-                // For each companion state machine call new day setup method
-                foreach (var companionKv in this.PossibleCompanions)
-                    companionKv.Value.NewDaySetup();
+                try
+                {
+                    companion.SetupForNewDay();
+                }
+                catch (CompanionStateException e)
+                {
+                    this.monitor.Log($"Error while trying setup new day for '{companion.Name}' companion: {e.Message}", LogLevel.Error);
+                    companion.Kill();
+                }
+            }
 
-                this.monitor.Log("Companions are successfully setup for new day!", LogLevel.Info);
-            }
-            catch (InvalidStateException e)
-            {
-                this.monitor.Log($"Error while trying to setup new day: {e.Message}");
-            }
+            this.monitor.Log("Companions are ready for new day!", LogLevel.Info);
         }
 
         /// <summary>
@@ -230,17 +236,7 @@ namespace NpcAdventure
 
             foreach (string npcName in dispositions.Keys)
             {
-                NPC companion = Game1.getCharacterFromName(npcName, true);
-
-                if (companion == null)
-                {
-                    this.monitor.Log($"Unable to initialize companion `{npcName}`, because this NPC cannot be found in the game. " +
-                        "Are you trying to add a custom NPC as a companion? Check the mod which adds this NPC into the game. " +
-                        "Don't report this as a bug to NPC Adventures unless it's a vanilla game NPC.", LogLevel.Error);
-                    continue;
-                }
-
-                CompanionStateMachine csm = new CompanionStateMachine(this, companion, new CompanionMetaData(dispositions[npcName]), loader, reflection, this.monitor);
+                CompanionStateMachine csm = new CompanionStateMachine(npcName, this, new CompanionMetaData(dispositions[npcName]), loader, reflection, this.monitor);
                 Dictionary<StateFlag, ICompanionState> stateHandlers = new Dictionary<StateFlag, ICompanionState>()
                 {
                     [StateFlag.RESET] = new ResetState(csm, gameEvents, this.monitor),

@@ -5,9 +5,9 @@ mods:
    ImagEd
 
 latest commit:
-   commit a2a43d9afb7e21c0806d9cf4266a2bdcaa769f97
+   commit 8bed1dde0573ce56573b873694771559ae598fd3
    Author: Candidus <candidus@xmail.net>
-   Date:   Mon Nov 30 19:26:32 2020 +0100
+   Date:   Wed Dec 30 22:02:30 2020 +0100
    
-       Add Nexus key.
+       Add alpha value support.
    

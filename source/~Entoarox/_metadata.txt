@@ -13,12 +13,13 @@ mods:
    More Animals
    Seasonal Immersion
    Shop Expander
+   Sit For Stamina
    XNB Loader
 
 latest commit:
-   commit 8b4c2a4ef4cb4752549552b4d9c3a99b6493187c
+   commit 32ee759fce26aebbb14947727da1b7d3e592d78d
    Author: Entoarox <kvdk@kvdk.net>
-   Date:   Thu Sep 24 03:11:59 2020 +0200
+   Date:   Fri Dec 25 10:56:08 2020 +0100
    
-       Sync sln file
+       SfS fix
    

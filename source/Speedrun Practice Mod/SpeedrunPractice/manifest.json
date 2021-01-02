@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Underscore76/SDVPracticeMod
+**
+*************************************************/
+
+{
+  "Name": "SpeedrunPractice",
+  "Author": "Underscore",
+  "Version": "1.0.0",
+  "Description": "Practice mod to help improve on speedrun tech",
+  "UniqueID": "underscore.speedrun_practie",
+  "EntryDll": "SpeedrunPractice.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

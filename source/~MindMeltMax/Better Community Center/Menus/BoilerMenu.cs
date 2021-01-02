@@ -26,7 +26,7 @@ namespace BCC.Menus
 {
     public class BoilerMenu : IClickableMenu
     {
-        /*public IMonitor Monitor;
+        public IMonitor Monitor;
         public IModHelper Helper;
 
         public static bool isSmelting;
@@ -202,7 +202,7 @@ namespace BCC.Menus
                                         BoilerData.dataList.Add(new data(c.item.parentSheetIndex, c.item.Stack, c.myID));
                                         itemAdded = true;
                                     }
-                                    /*else if (c.item.Name == temp.Name) // Was to be able to stack items but does not fit with current system, future change?
+                                    else if (c.item.Name == temp.Name) // Was to be able to stack items but does not fit with current system, future change?
                                     {
                                         c.item.addToStack(new Object(temp.parentSheetIndex, 5));
                                         Monitor.LogOnce($"{c.item.Name} - {c.item.Stack}", LogLevel.Debug);
@@ -478,6 +478,6 @@ namespace BCC.Menus
             if (split.Contains("copper"))
                 return 30;
             return -1;
-        }*/
+        }
     }
 }

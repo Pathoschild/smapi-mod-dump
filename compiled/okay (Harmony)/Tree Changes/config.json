@@ -1,6 +1,8 @@
 {
   "treeParameters": {
     "treeGrowthChance": 0.2,
+    "hardwoodTreeGrowthChance": 0.15,
+    "hardwoodTreeGrowthChanceFertilized": 0.6,
     "treeSpreadChance": 0.15,
     "treeHasSeedChance": 0.05
   },

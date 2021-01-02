@@ -40,8 +40,8 @@ namespace FarmTypeManager
             public readonly NetObjectList<Item> Items = new NetObjectList<Item>();
 
             public BuriedItems()
+                : base()
             {
-                initNetFields();
             }
 
             /// <summary>Create a new buried item location with the specified contents.</summary>
@@ -59,7 +59,13 @@ namespace FarmTypeManager
                 NetFields.AddFields(Items); //include this class's custom field
             }
 
-            /// <summary>A customized override method that produces customizable items instead of the normal artifact spot object(s).</summary>
+            /// <summary>An override that indicates this object type should be passable, despite the base method's result.</summary>
+            public override bool isPassable()
+            {
+                return true;
+            }
+
+            /// <summary>An override that produces customizable items instead of the normal artifact spot object(s).</summary>
             public override bool performToolAction(Tool t, GameLocation location)
             {
                 //imitate the base method's initial validation process

@@ -5,9 +5,9 @@ mods:
    Custom Death Penalty Plus
 
 latest commit:
-   commit 9625136745069ee21325e214fb19b8ee2c637b01
-   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Tue Dec 22 10:09:06 2020 +1100
+   commit 575160a6cf195b6de40ececa5b33a2faed2aba2d
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Fri Jan 1 09:56:32 2021 +1100
    
-       Update README.md (#2)
+       removed old comments
    

@@ -43,17 +43,18 @@ namespace JoysOfEfficiency.Automation
 
         public static void AutoOpenAnimalDoor()
         {
+            if (Game1.IsWinter)
+            {
+                Logger.Log("Don't open the animal door because it's winter");
+                return;
+            }
+
             if (Game1.isRaining || Game1.isSnowing)
             {
                 Logger.Log("Don't open the animal door because of rainy/snowy weather.");
                 return;
             }
 
-            if (Game1.IsWinter)
-            {
-                Logger.Log("Don't open the animal door because it's winter");
-                return;
-            }
 
             Farm farm = Game1.getFarm();
             foreach (Building building in farm.buildings)

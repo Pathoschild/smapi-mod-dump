@@ -1,0 +1,13 @@
+url:
+   https://github.com/thespbgamer/ZoomLevel.git
+
+mods:
+   Zoom Level
+
+latest commit:
+   commit 02fe929df503ea9fba1985a3736f2699ecb078f3
+   Author: thespbgamer <thespbgamer@users.noreply.github.com>
+   Date:   Sun Dec 27 19:27:03 2020 +0000
+   
+       fixed check for update bug
+   

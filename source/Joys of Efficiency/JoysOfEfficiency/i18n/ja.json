@@ -13,7 +13,9 @@
   "button.conflict": "そのキーかボタンはすでに割り当てられています",
   "button.esc": "Escキーを押すとキャンセルできます",
   "location.awaiting": "座標をマウスカーソルで指定してクリックしてください",
+
   "estimatedprice.title": "出荷額",
+
   "fishinfo.quality": "品質: ",
   "fishinfo.size": "大きさ: {0}センチ",
   "fishinfo.species": "種: {0}",
@@ -21,9 +23,12 @@
   "fishinfo.treasure.caught": "宝物をゲットした",
   "fishinfo.treasure.incoming": "{0:f1}秒後に宝箱が出現する",
   "fishinfo.price": "売値:{0}G",
+
   "hud.paused": "一時停止中",
+
   "ladder": "はしごが出現した！",
   "monsters.tally": "{0}: {1}匹",
+
   "options.AnimalHarvestRadius": "動物を探す範囲",
   "options.AutoAnimalDoor": "動物のドアを自動で開閉",
   "options.AutoCollectCollectibles": "周りの収集物を採取",
@@ -86,6 +91,15 @@
   "options.BreakRocks": "岩砕き(ツルハシが必要)",
   "options.ChopTwigs": "小枝刈り(斧が必要)",
   "options.PriceBoxCoordinates": "情報ウィンドウの左上座標",
+
+  "options.ThrowPower": "浮きを投げる強さ",
+  "options.ThresholdStaminaPersentage": "釣りを止めるスタミナの割合",
+  "options.ToggleAFKFishing": "自動釣りモードの切り替え",
+
+  "hud.afk.passedout": "気絶したので釣りを止めた。",
+  "hud.afk.on": "自動釣りモード開始。",
+  "hud.afk.off": "自動釣りモード停止。",
+  "hud.afk.tired": "疲れてきたので釣りを止めた。",
 
   //RegisterFlowerMenu strings
   "options.flower": "花:{0}",

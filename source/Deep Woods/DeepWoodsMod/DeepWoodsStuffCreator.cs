@@ -134,21 +134,6 @@ namespace DeepWoodsMod
                 deepWoods.resourceClumps.Add(new GingerBreadHouse(new Vector2(mapWidth / 2, mapHeight / 2)));
             }
 
-            int numEasterEggs = 0;
-            int maxEasterEggs = 0;
-            if (IsEasterEggDay())
-            {
-                maxEasterEggs = 1 + this.random.GetRandomValue(Settings.Luck.Terrain.MaxEasterEggsPerLevel);
-                if (this.random.CheckChance(Settings.Luck.Terrain.ChanceForExtraEasterEgg))
-                {
-                    maxEasterEggs++;
-                }
-                if (!this.random.CheckChance(Settings.Luck.Terrain.ChanceForEasterEggsDoubled))
-                {
-                    maxEasterEggs = Math.Max(1, maxEasterEggs / 2);
-                }
-            }
-
             List<int> allTilesInRandomOrder = Enumerable.Range(0, mapWidth * mapHeight).OrderBy(n => Game1.random.Next()).ToList();
 
             // Calculate maximum theoretical amount of terrain features for the current map.
@@ -183,11 +168,6 @@ namespace DeepWoodsMod
                     if (this.random.CheckChance(Settings.Luck.Terrain.ChanceForFlowerOnClearing))
                     {
                         deepWoods.terrainFeatures[location] = new Flower(GetRandomFlowerType(), location);
-                    }
-                    else if (IsEasterEggDay() && numEasterEggs < maxEasterEggs && this.random.CheckChance(Settings.Luck.Terrain.ChanceForEasterEgg))
-                    {
-                        deepWoods.terrainFeatures[location] = new EasterEgg();
-                        numEasterEggs++;
                     }
                     else
                     {
@@ -268,11 +248,6 @@ namespace DeepWoodsMod
                     else if (deepWoods.level.Value >= Settings.Level.MinLevelForFlowers && this.random.CheckChance(Game1.currentSeason == "winter" ? Settings.Luck.Terrain.ChanceForFlowerInWinter : Settings.Luck.Terrain.ChanceForFlower))
                     {
                         deepWoods.terrainFeatures[location] = new Flower(GetRandomFlowerType(), location);
-                    }
-                    else if (IsEasterEggDay() && numEasterEggs < maxEasterEggs && this.random.CheckChance(Settings.Luck.Terrain.ChanceForEasterEgg))
-                    {
-                        deepWoods.terrainFeatures[location] = new EasterEgg();
-                        numEasterEggs++;
                     }
                     else
                     {
@@ -755,11 +730,6 @@ namespace DeepWoodsMod
 
             // Shuffle items around
             return new List<Item>(items.OrderBy<Item, int>(a => Game1.random.Next()));
-        }
-
-        private bool IsEasterEggDay()
-        {
-            return Game1.currentSeason == "spring" && (Game1.dayOfMonth == 13 || Game1.dayOfMonth == 14);
         }
 
         private int GetRandomFlowerType()

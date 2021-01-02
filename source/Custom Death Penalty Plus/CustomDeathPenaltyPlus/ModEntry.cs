@@ -116,6 +116,8 @@ namespace CustomDeathPenaltyPlus
 
         private bool warptoinvisiblelocation = false;
 
+        private bool loadnewday = false;
+
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -157,6 +159,8 @@ namespace CustomDeathPenaltyPlus
 
                 //Edit MineEvents
                 this.Helper.Content.AssetEditors.Add(new AssetEditor.MineEventFixes(Helper));
+                //Edit IslandSouthEvents
+                this.Helper.Content.AssetEditors.Add(new AssetEditor.IslandSouthEventFixes(Helper));
                 //Edit HospitalEvents
                 this.Helper.Content.AssetEditors.Add(new AssetEditor.HospitalEventFixes(Helper));
             }
@@ -231,78 +235,80 @@ namespace CustomDeathPenaltyPlus
                     // Set warptoinvisiblelocation to false to stop endless warp loop
                     warptoinvisiblelocation = false;
                 }
+
+                if(this.config.DeathPenalty.WakeupNextDayinClinic == true)
+                {
+                    loadnewday = true;
+                }
             }
 
-            // Restore state after PlayerKilled event ends
+            if(true
+                // Player death state has been saved
+                && PlayerStateRestorer.statedeath != null
+                // No events are running
+                && Game1.CurrentEvent == null
+                // New day should be forced to load after event
+                && loadnewday == true)
+            {
+                // Save necessary data to data model
+                ModEntry.PlayerData.DidPlayerWakeupinClinic = true;
+
+                // Write data model to JSON file
+                this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
+
+                loadnewday = false;
+
+                // Is the game multiplayer?
+                if(Context.IsMultiplayer == false)
+                {
+                    // No, load new day immediately
+
+                    Game1.NewDay(1.1f);
+                }
+                else
+                {
+
+                    // Yes, inform other players you're ready for a new day
+
+                    Game1.player.team.SetLocalReady("sleep", true);
+
+                    // Ensures new day will load, will become false after new day is loaded
+                    Game1.player.passedOut = true;
+
+                    // Create class instance to hold player's name
+                    Multiplayer multiplayer = new Multiplayer
+                    {
+                        PlayerWhoDied = Game1.player.Name
+                    };
+
+                    // Send data from class instance to other players, message type is IDied
+                    this.Helper.Multiplayer.SendMessage(multiplayer, "IDied", modIDs: new[] { this.ModManifest.UniqueID });
+
+                    // Bring up a new menu that will launch a new day when all player's are ready
+                    Game1.activeClickableMenu = (IClickableMenu)new ReadyCheckDialog("sleep", false, (ConfirmationDialog.behavior)(_ => Game1.NewDay(1.1f)));
+
+                    // Add player to list of ready farmers if needed
+                    if (Game1.player.team.announcedSleepingFarmers.Contains(Game1.player)) return;
+                    Game1.player.team.announcedSleepingFarmers.Add(Game1.player);
+                }
+            }
+
+            // Restore state after PlayerKilled event ends if new day hasn't been loaded
             if (true
                 // Player death state has been saved
                 && PlayerStateRestorer.statedeath != null
                 // No events are running
                 && Game1.CurrentEvent == null
+                // New day hasn't been forced
+                && loadnewday == false
                 // Player can move
                 && Game1.player.canMove)
             {
-
-                // Check if WakeupNextDayinClinic is true
-                if (this.config.DeathPenalty.WakeupNextDayinClinic == true)
-                {
-                    // Yes, do some extra stuff
-
-                    // Save necessary data to data model
-                    ModEntry.PlayerData.DidPlayerWakeupinClinic = true;
-
-                    // Write data model to JSON file
-                    this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);                   
-
-                    // Is the game in multiplayer?
-                    if (Context.IsMultiplayer == false)
-                    {
-                        // No, new day can be loaded immediately
-
-                        // Warp player to clinic if it is not the current location
-                        if (Game1.currentLocation.NameOrUniqueName == "Mine")
-                        {
-                            Game1.warpFarmer("Hospital", 20, 12, false);
-                        }
-
-                        // Load new day
-                        Game1.NewDay(1.1f);
-                    }
-
-                    else
-                    {
-                        // Yes, inform other players you're ready for a new day
-
-                        Game1.player.team.SetLocalReady("sleep", true);
-                        // Ensures new day will load, will become false after new day is loaded
-                        Game1.player.passedOut = true;
-
-                        // Create class instance to hold player's name
-                        Multiplayer multiplayer = new Multiplayer
-                        {
-                            PlayerWhoDied = Game1.player.Name
-                        };
-                        // Send data from class instance to other players, message type is IDied
-                        this.Helper.Multiplayer.SendMessage(multiplayer, "IDied", modIDs: new[] { this.ModManifest.UniqueID });                        
-
-                        // Bring up a new menu that will launch a new day when all player's are ready
-                        Game1.activeClickableMenu = (IClickableMenu)new ReadyCheckDialog("sleep", false, (ConfirmationDialog.behavior)(_ => Game1.NewDay(1.1f)));
-
-                        // Add player to list of ready farmers if needed
-                        if (Game1.player.team.announcedSleepingFarmers.Contains(Game1.player)) return;
-                        Game1.player.team.announcedSleepingFarmers.Add(Game1.player);
-
-                    }                    
-                }
-
                 // Restore Player state using DeathPenalty values
                 PlayerStateRestorer.LoadStateDeath();
 
-                // Write data model to JSON file
-                this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
-
                 // Reset PlayerStateRestorer class with the statedeath field
-                PlayerStateRestorer.statedeath = null;
+                PlayerStateRestorer.statedeath = null;              
             }
 
             // Chack if time is 2am or the player has passed out
@@ -354,6 +360,18 @@ namespace CustomDeathPenaltyPlus
 
                 // Reset PlayerStateRestorer class with the statepassout field
                 PlayerStateRestorer.statepassout = null;
+            }
+
+            // Is the day ending because player died?
+            if (PlayerStateRestorer.statedeath != null)
+            {
+                //Yes, reload the state
+
+                // Restore playerstate using DeathPenalty values
+                PlayerStateRestorer.LoadStateDeath();
+
+                // Reset PlayerStateRestorer class with the statedeath field
+                PlayerStateRestorer.statedeath = null;
             }
         }
 

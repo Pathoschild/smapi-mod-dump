@@ -8,129 +8,72 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
+using Harmony;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Objects;
 
 namespace CustomCaskMod
 {
     internal class CaskOverrides
     {
-        public static bool PerformObjectDropInAction(ref Cask __instance, ref Item dropIn, ref bool probe, ref Farmer who, ref bool __result)
+        [HarmonyPriority(700)]
+        public static bool GetAgingMultiplierForItem(ref Item item, ref float __result)
         {
-            if (dropIn != null && dropIn is StardewValley.Object &&
-                (dropIn as StardewValley.Object).bigCraftable.Value || __instance.heldObject.Value != null)
+            __result = 0f;
+            if (item != null && Utility.IsNormalObjectAtParentSheetIndex(item, item.ParentSheetIndex))
             {
-                __result = false;
-                return false;
-            }
-            if (!probe && (who == null || !(who.currentLocation is Cellar)) && !DataLoader.ModConfig.EnableCasksAnywhere)
-            {
-                Game1.showRedMessageUsingLoadString("Strings\\Objects:CaskNoCellar");
-                __result = false;
-                return false;
-            }
-
-            if (__instance.Quality >= 4)
-            {
-                __result = false;
-                return false;
-            }
-            bool flag = false;
-            float num = 1f;
-
-            if (DataLoader.CaskDataId.ContainsKey(dropIn.ParentSheetIndex))
-            {
-                flag = true;
-                num = DataLoader.CaskDataId[dropIn.ParentSheetIndex];
-            }
-            else if (DataLoader.CaskDataId.ContainsKey(dropIn.Category))
-            {
-                flag = true;
-                num = DataLoader.CaskDataId[dropIn.Category];
-            }
-            else
-            {
-                switch (dropIn.ParentSheetIndex)
+                if (DataLoader.CaskDataId.ContainsKey(item.ParentSheetIndex))
                 {
-                    case 303:
-                        flag = true;
-                        num = 1.66f;
-                        break;
-                    case 346:
-                        flag = true;
-                        num = 2f;
-                        break;
-                    case 348:
-                        flag = true;
-                        num = 1f;
-                        break;
-                    case 424:
-                        flag = true;
-                        num = 4f;
-                        break;
-                    case 426:
-                        flag = true;
-                        num = 4f;
-                        break;
-                    case 459:
-                        flag = true;
-                        num = 2f;
-                        break;
+                    __result = DataLoader.CaskDataId[item.ParentSheetIndex];
                 }
-            }
-            
-
-            if (!flag)
-            {
-                __result = false;
-                return false;
-            }
-            __instance.heldObject.Value = dropIn.getOne() as StardewValley.Object;
-            if (!probe)
-            {
-                __instance.agingRate.Value = num;
-                __instance.daysToMature.Value = 56f;
-                __instance.MinutesUntilReady = 999999;
-                if (__instance.heldObject.Value.Quality == 1)
-                    __instance.daysToMature.Value = 42f;
-                else if (__instance.heldObject.Value.Quality == 2)
-                    __instance.daysToMature.Value = 28f;
-                else if (__instance.heldObject.Value.Quality == 4)
+                else if (DataLoader.CaskDataId.ContainsKey(item.Category))
                 {
-                    __instance.daysToMature.Value = 0.0f;
-                    __instance.MinutesUntilReady = 1;
+                    __result = DataLoader.CaskDataId[item.Category];
                 }
-                who.currentLocation.playSound("Ship");
-                who.currentLocation.playSound("bubbles");
-                Multiplayer multiplayer = DataLoader.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
-                multiplayer.broadcastSprites
-                (
-                    who.currentLocation
-                    , new TemporaryAnimatedSprite[1]
-                    {
-                        new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(256, 1856, 64, 128), 80f, 6, 999999, __instance.TileLocation * 64f + new Vector2(0.0f, (float) sbyte.MinValue), false, false, (float) (((double) __instance.TileLocation.Y + 1.0) * 64.0 / 10000.0 + 9.99999974737875E-05), 0.0f, Color.Yellow * 0.75f, 1f, 0.0f, 0.0f, 0.0f, false)
-                        {
-                            alphaFade = 0.005f
-                        }
-                    }
-                );
+                else
+                {
+                    return true;
+                }
+
             }
-            __result = true;
             return false;
         }
 
-        public static void CaskMachine(object __instance)
+        [HarmonyPriority(700)]
+        public static bool IsValidCaskLocation(ref bool __result)
         {
-            IReflectedField<Dictionary<int, float>> agingRates = CustomCaskModEntry.Helper.Reflection.GetField<Dictionary<int, float>>(__instance, "AgingRates");
-
-            foreach (var keyValuePair in DataLoader.CaskDataId)
+            if (DataLoader.ModConfig.EnableCasksAnywhere)
             {
-                agingRates.GetValue()[keyValuePair.Key] = keyValuePair.Value;
+                __result = true;
+                return false;
             }
+            else
+            {
+                return true;
+            }
+        }
+
+        [HarmonyPriority(700)]
+        public static bool checkForMaturity(ref Cask __instance)
+        {
+            if (DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay)
+            {
+                if ((float)__instance.daysToMature.Value <= 0f)
+                {
+                    __instance.MinutesUntilReady = 1;
+                    __instance.heldObject.Value.Quality = 4;
+                }
+                else if ((float)__instance.daysToMature.Value <= 28f)
+                {
+                    __instance.heldObject.Value.Quality = 2;
+                }
+                else if ((float)__instance.daysToMature.Value <= 42f)
+                {
+                    __instance.heldObject.Value.Quality = 1;
+                }
+                return false;
+            }
+            return true;
         }
     }
 }

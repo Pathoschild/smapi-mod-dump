@@ -9,8 +9,12 @@
 *************************************************/
 
 {
+  "FileVersion": 1,
   "AreaName": "BugLand",
   "numberOfOreSpotsPerDay": 50,
+  "StartTime": 600,
+  "EndTime": 2600,
+  "CustomTreasure": false,
   "OreSpots": [
     "10, 49",
     "10, 50",

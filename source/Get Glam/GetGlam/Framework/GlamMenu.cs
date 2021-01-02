@@ -203,7 +203,7 @@ namespace GetGlam.Framework
         public void RestoreSnapshot()
         {
             Game1.player.changeGender(FarmerSnapshot[0] == 0 ? true : false);
-            Game1.player.changeSkinColor(FarmerSnapshot[2]);
+            Game1.player.skin.Set(FarmerSnapshot[2]);
             Game1.player.hair.Set(FarmerSnapshot[3]);
             Game1.player.changeAccessory(FarmerSnapshot[7]);
 
@@ -565,7 +565,7 @@ namespace GetGlam.Framework
             if (Entry.IsCustomizeAnywhereInstalled)
             {
                 if (ClothingTab.containsPoint(x, y))
-                    Entry.CustomizeAnywhereClothingMenu();
+                    Entry.HarmonyHelper.CustomizeAnywhereClothingMenu();
             }
 
             //Check if the search tab has been clicked

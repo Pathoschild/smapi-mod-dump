@@ -1,0 +1,30 @@
+﻿{
+  "Name": "Lunar Disturbances",
+  "Author": "Sakorona",
+  "Version": "1.4.1",
+  "Description": "Adds a moon to more than just one day, and adds events based on it, including eclipses",
+  "UniqueID": "KoihimeNakamura.LunarDisturbances",
+  "EntryDll": "LunarDisturbances.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "skuldomg.priceDrops",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ],
+  "MinimumApiVersion": "3.0",
+  "ModUpdater": {
+    "Repository": "SDVMods",
+    "User": "Sakorona",
+    "Directory": "_releases",
+    "ModFolder": "LunarDisturbances"
+  },
+  "UpdateKeys": [ "Nexus:2208" ]
+}

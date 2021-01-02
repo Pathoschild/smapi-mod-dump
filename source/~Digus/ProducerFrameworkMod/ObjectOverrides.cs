@@ -8,20 +8,19 @@
 **
 *************************************************/
 
+using Harmony;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ProducerFrameworkMod.ContentPack;
+using ProducerFrameworkMod.Controllers;
+using ProducerFrameworkMod.Utils;
+using StardewValley;
+using StardewValley.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
-using Harmony;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Netcode;
-using ProducerFrameworkMod.ContentPack;
-using StardewValley;
-using StardewValley.Network;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
 using Object = StardewValley.Object;
 
 namespace ProducerFrameworkMod
@@ -245,7 +244,7 @@ namespace ProducerFrameworkMod
                 linkedListNode.Value = new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ObjectOverrides), "getScale", new Type[] {typeof(Object)}));
             }
 
-            codeInstruction = newInstructions.FirstOrDefault(c => c.opcode == OpCodes.Callvirt && c.operand?.ToString() == "Void Draw(Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Rectangle, System.Nullable`1[Microsoft.Xna.Framework.Rectangle], Microsoft.Xna.Framework.Color, Single, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Graphics.SpriteEffects, Single)");
+            codeInstruction = newInstructions.LastOrDefault(c => c.opcode == OpCodes.Callvirt && c.operand?.ToString() == "Void Draw(Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Rectangle, System.Nullable`1[Microsoft.Xna.Framework.Rectangle], Microsoft.Xna.Framework.Color, Single, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Graphics.SpriteEffects, Single)");
             linkedListNode = newInstructions.Find(codeInstruction);
             if (linkedListNode != null && codeInstruction != null)
             {
@@ -261,10 +260,6 @@ namespace ProducerFrameworkMod
             if(ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig && __instance.MinutesUntilReady > 0 && __instance.heldObject.Value != null)
             {
                 if (producerConfig.DisableBouncingAnimationWhileWorking)
-                {
-                    return Vector2.Zero;
-                }
-                else if (!producerConfig.CheckLocationCondition(Game1.currentLocation))
                 {
                     return Vector2.Zero;
                 }
@@ -298,7 +293,8 @@ namespace ProducerFrameworkMod
         {
             if (ProducerController.GetProducerConfig(producer.Name) is ProducerConfig producerConfig)
             {
-                if (producerConfig.ProducingAnimation is Animation producingAnimation && producer.minutesUntilReady > 0 && producingAnimation.RelativeFrameIndex.Any())
+                if (producerConfig.ProducingAnimation is Animation producingAnimation && producer.minutesUntilReady > 0 && producingAnimation.RelativeFrameIndex.Any()
+                    && producerConfig.CheckSeasonCondition() && producerConfig.CheckWeatherCondition() && producerConfig.CheckCurrentTimeCondition())
                 {
                     int frame = producingAnimation.RelativeFrameIndex[((Game1.ticks + GetLocationSeed(producer.TileLocation)) % (producingAnimation.RelativeFrameIndex.Count * producingAnimation.FrameInterval)) / producingAnimation.FrameInterval];
                     spriteBatch.Draw(texture, destinationRectangle, new Rectangle?(Object.getSourceRectForBigCraftable(producer.ParentSheetIndex + frame)), color, rotation, origin, effects, layerDepth);

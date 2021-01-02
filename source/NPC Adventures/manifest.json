@@ -11,7 +11,7 @@
 {
   "Name": "NPC Adventures",
   "Author": "PurrplingCat",
-  "Version": "0.16.0-alpha",
+  "Version": "0.16.0",
   "Description": "It's time to adventure! Go to an adventure with Pelican Town's villagers!",
   "UniqueID": "purrplingcat.npcadventure",
   "EntryDll": "NpcAdventure.dll",
@@ -21,6 +21,10 @@
     {
       "UniqueID": "PurrplingCat.QuestFramework",
       "MinimumVersion": "1.0.0",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "Cherry.ExpandedPreconditionsUtility",
       "IsRequired": true
     },
     {

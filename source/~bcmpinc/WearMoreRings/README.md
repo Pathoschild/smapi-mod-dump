@@ -9,7 +9,10 @@ for queries and analysis.**
 # Wear More Rings
 
 ## Description
-Adds 4 additional ring slots to your inventory.
+Adds 6 additional ring slots to your inventory.
+
+## Console Commands
+* `player_resetmodifiers`: Clears buffs, then resets and reapplies the modifiers applied by boots & rings.
 
 ## Dependencies
 This mod requires the following mods to be installed:
@@ -21,9 +24,7 @@ This mod requires the following mods to be installed:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 * This mod does not support android / mobile.
-* The mod changes the network protocol. So you cannot connect to players who don't have this mod installed. In that case it will refuse to connect giving a "version mismatch" error.
 * While rings from the [Giant Crop Ring](https://www.nexusmods.com/stardewvalley/mods/1182) mod can be equipped in the additional slots, their effects won't be applied. Rings from the [MoreRings](https://www.nexusmods.com/stardewvalley/mods/2054) mod, v1.0.3+ should work though.
-* Rings from mods might disappear on load due to ID's of modded items changing between restarts. There's currently no easy way to fix this.
 
 ## Changes
 #### 1.0:
@@ -60,3 +61,16 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 3.0:
 * Updated for Stardew Valley 1.4.4.
+
+#### 3.1:
+* Updated for Stardew Valley 1.5.
+* Added two extra ring slots.
+* Mod no longer modifies the network protocol.
+* Rings are now stored in a way that works for combined and modded rings.
+
+#### 3.2:
+* Fixed issue with some effects of combined rings not being applied.
+
+#### 3.3:
+* Hide the chest in the [Chests Anywhere](https://www.nexusmods.com/stardewvalley/mods/518) mod.
+* Added the `player_resetmodifiers` command for people who added/removed rings from the hidden chest using Chests Anywhere to fix any issues this might have caused.

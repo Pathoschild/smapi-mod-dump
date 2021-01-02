@@ -24,6 +24,7 @@ namespace JoysOfEfficiency.Core
             Conf.CpuThresholdFishing = Util.Cap(Conf.CpuThresholdFishing, 0, 0.5f);
             Conf.HealthToEatRatio = Util.Cap(Conf.HealthToEatRatio, 0.1f, 0.8f);
             Conf.StaminaToEatRatio = Util.Cap(Conf.StaminaToEatRatio, 0.1f, 0.8f);
+            Conf.ThrowPower = Util.Cap(Conf.ThrowPower, 0.0f, 1.0f);
             Conf.AutoCollectRadius = (int)Util.Cap(Conf.AutoCollectRadius, 1, 3);
             Conf.AutoHarvestRadius = (int)Util.Cap(Conf.AutoHarvestRadius, 1, 3);
             Conf.AutoPetRadius = (int)Util.Cap(Conf.AutoPetRadius, 1, 3);
@@ -34,8 +35,9 @@ namespace JoysOfEfficiency.Core
             Conf.IdleTimeout = (int)Util.Cap(Conf.IdleTimeout, 1, 300);
             Conf.ScavengingRadius = (int)Util.Cap(Conf.ScavengingRadius, 1, 3);
             Conf.AnimalHarvestRadius = (int)Util.Cap(Conf.AnimalHarvestRadius, 1, 3);
-            Conf.TrialOfExamine = (int)Util.Cap(Conf.TrialOfExamine, 1, 10);
+            Conf.TrialOfExamine = (int)Util.Cap(Conf.TrialOfExamine, 1, 50);
             Conf.RadiusFarmCleanup = (int)Util.Cap(Conf.RadiusFarmCleanup, 1, 3);
+            Conf.ThresholdStaminaPercentage = (int)Util.Cap(Conf.ThresholdStaminaPercentage, 10f, 60f);
         }
     }
 }

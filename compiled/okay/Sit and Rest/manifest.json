@@ -1,0 +1,10 @@
+{
+  "Name": "SitAndRest",
+  "Author": "Krutonium",
+  "Version": "1.0.0",
+  "Description": "Sit when you're weary",
+  "UniqueID": "krutonium.sitandrest",
+  "EntryDll": "SitAndRest.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

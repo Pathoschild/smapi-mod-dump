@@ -7,9 +7,10 @@ mods:
    Single-Player Regen
 
 latest commit:
-   commit f58e54177a96a1104e51fdd3afe2ecebd80f6f65
-   Author: Jeremy Korteland <99058701@mydavinci.nl>
-   Date:   Tue Nov 24 12:54:23 2020 +0100
+   commit fa35a63912920a53354703d3aea01a082a51d270
+   Merge: f9049cd f58e541
+   Author: MindMeltMax <mindmeltmax695@gmail.com>
+   Date:   Thu Dec 31 21:40:32 2020 +0100
    
-       Updated piggy bank mod
+       piggy bank updates
    

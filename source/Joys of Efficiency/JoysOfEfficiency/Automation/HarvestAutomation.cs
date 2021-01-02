@@ -11,16 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Utils;
-
 using Microsoft.Xna.Framework;
-
 using StardewModdingAPI;
-
 using StardewValley;
-using StardewValley.Characters;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
@@ -218,7 +213,7 @@ namespace JoysOfEfficiency.Automation
                 if (Math.Abs(diff.X) > radius || Math.Abs(diff.Y) > radius)
                     continue;
 
-                if (!bush.townBush.Value && bush.tileSheetOffset.Value == 1 && bush.inBloom(Game1.currentSeason, Game1.dayOfMonth))
+                if (IsBushFruited(bush))
                     bush.performUseAction(loc, Game1.currentLocation);
             }
         }
@@ -273,10 +268,11 @@ namespace JoysOfEfficiency.Automation
                         }
 
                         break;
-                    case FruitTree ftree:
-                        if (ftree.growthStage.Value >= 4 && ftree.fruitsOnTree.Value > 0 && !ftree.stump.Value)
+                    case FruitTree fruitTree:
+                        if (fruitTree.growthStage.Value >= 4 && fruitTree.fruitsOnTree.Value > 0 && !fruitTree.stump.Value)
                         {
-                            ftree.shake(loc, false, Game1.currentLocation);
+                            fruitTree.shake(loc, false, Game1.currentLocation);
+                            Logger.Log($@"Shook fruited tree @{loc}");
                         }
                         break;
                 }
@@ -337,9 +333,25 @@ namespace JoysOfEfficiency.Automation
 
             return cropLocations;
         }
-        private static bool Harvest(int xTile, int yTile, HoeDirt soil, JunimoHarvester junimoHarvester = null)
+
+        private static bool IsTeaBush(Bush bush)
         {
-            return soil.crop.harvest(xTile, yTile, soil, junimoHarvester);
+            return bush.size.Value == Bush.greenTeaBush;
+        }
+
+        private static bool IsBerryBush(Bush bush)
+        {
+            return bush.size.Value == Bush.mediumBush && !bush.townBush;
+        }
+
+        private static bool IsBushFruited(Bush bush)
+        {
+            if (IsBerryBush(bush) || IsTeaBush(bush))
+            {
+                return bush.tileSheetOffset.Value == 1 && bush.inBloom(Game1.currentSeason, Game1.dayOfMonth);
+            }
+
+            return false;
         }
     }
 }

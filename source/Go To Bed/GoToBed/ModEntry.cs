@@ -11,6 +11,8 @@
 using System.Linq;
 using System.Collections.Generic;
 
+using Microsoft.Xna.Framework;
+
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -68,13 +70,21 @@ namespace GoToBed {
             if (whichAnswer.Equals("Yes")) {
                 this.Monitor.Log($"Farmer {Game1.player.Name} goes to bed", LogLevel.Debug);
 
+                FarmHouse farmHouse = Game1.player.currentLocation as FarmHouse;
+
+                // Check SDV version: SMAPI 3.8 is not usable with SDV 1.4 .
+                bool isSDV14 = StardewModdingAPI.Constants.ApiVersion.IsOlderThan("3.8.0");
+                // Compatibility with SDV 1.4: Access old and new API via reflection.
+                IReflectedMethod getBed = isSDV14
+                                        ? this.Helper.Reflection.GetMethod(farmHouse, nameof(FarmHouse.getBedSpot))
+                                        : this.Helper.Reflection.GetMethod(farmHouse, "GetPlayerBedSpot");
+                Game1.player.position.Y = getBed.Invoke<Point>().Y * 64f + 24f;
+
                 // Take hat off. We could check for a hat and store it in the inventory
                 // overnight but this requires a free inventory slot and causes its own
                 // problems (you always have to put your hat on if you load a game...)
                 // so we move the farmer under the blanket and change into swimsuit.
                 // Simple and reliable.
-                FarmHouse farmHouse = Game1.player.currentLocation as FarmHouse;
-                Game1.player.position.Y = farmHouse.getBedSpot().Y * 64f + 24f;
                 Game1.player.changeIntoSwimsuit();
 
                 // Player is not married.

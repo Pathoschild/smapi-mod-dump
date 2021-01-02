@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
+using ProducerFrameworkMod.Controllers;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
@@ -22,7 +23,7 @@ namespace PFMAutomate.Automate
     {
         public IAutomatable GetFor(SObject obj, GameLocation location, in Vector2 tile)
         {
-            if (ProducerFrameworkMod.ProducerController.HasProducerRule(obj.Name))
+            if (ProducerController.HasProducerRule(obj.Name))
             {
                 return new CustomProducerMachine(obj,location,tile);
             }

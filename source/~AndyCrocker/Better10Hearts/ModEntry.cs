@@ -231,7 +231,7 @@ namespace Better10Hearts
                     // add the npc to a list to check if they have spoken today
                     npcEnergyGeneration.Add(npc.Name, false);
 
-                    if (npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
+                    if (npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth) && Config.MaxLuckOnNPCBirthdays)
                     {
                         // set max luck 
                         Game1.player.team.sharedDailyLuck.Value = 0.12;

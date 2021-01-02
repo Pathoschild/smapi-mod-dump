@@ -1,0 +1,14 @@
+url:
+   https://gitlab.com/geko_x/stardew-mods.git
+
+mods:
+   Shut Up
+   Zoomy Farmer
+
+latest commit:
+   commit 534f5fd985e8bd84b66b91fa4f85ca7aee1d35c4
+   Author: Geko_X <xavhunt@gmail.com>
+   Date:   Sat Dec 26 19:33:05 2020 +1000
+   
+       + ShutUp: release
+   

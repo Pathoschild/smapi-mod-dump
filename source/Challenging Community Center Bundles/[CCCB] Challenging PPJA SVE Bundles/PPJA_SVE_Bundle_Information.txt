@@ -1,0 +1,455 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Jaksha6472/ChallengingCommunityCenterBundles
+**
+*************************************************/
+
+   /   __  \     /   __  \     /   __  \  \  ____  \  
+  | ,_/  \__)   | ,_/  \__)   | ,_/  \__) | |    \ |  
+,-./  )       ,-./  )       ,-./  )       | |____/ /  
+\  '_ '`)     \  '_ '`)     \  '_ '`)     |   _ _ '.  
+ > (_)  )  __  > (_)  )  __  > (_)  )  __ |  ( ' )  \ 
+(  .  .-'_/  )(  .  .-'_/  )(  .  .-'_/  )| (_{;}_) | 
+ `-'`-'     /  `-'`-'     /  `-'`-'     / |  (_,_)  / 
+   `._____.'     `._____.'     `._____.'  /_______.'  
+                                                      
+PPJA SVE BUNDLE INFORMATION (Beware Spoilers Ahead)
+
+======================================================
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+======================================================
+
+PANTRY
+
+1. Spring Crops - 8 out of 10
+
+  Reward: 5 Rain Totems
+
+  40x Parsnip
+  30x Garlic
+  30x Honeysuckle
+  20x Cauliflower
+  20x Rhuharb
+  50x Spinach
+  30x Green Bean
+  50x Passion Fruit
+  20x Strawberry
+  10x Tulip
+
+2. Summer Crops - 8 out of 10
+
+  Reward: 4 Quality Sprinkler
+
+  50x Blueberry
+  30x Chives
+  20x Clary Sage
+  40x Hops
+  20x Melon
+  30x Kiwi
+  40x Oregano
+  30x Tomato
+  20x Sunflower
+  10x Sugar Cane
+
+3. Fall Crops - 8 out of 10
+
+  Reward: 30 Speed-Gro
+
+  20x Sweet Potato
+  40x Eggplant
+  60x Bell Pepper
+  40x Bok Choy
+  20x Watermelon
+  30x Cranberries
+  20x Pumpkin
+  20x Sweet Jasmine
+  35x Fennel
+  30x Yam
+
+4. Quality Crops - 6 out of 9
+
+  Reward: 1 Seedmaker
+
+  30x Mint
+  40x Rose
+  20x Artichoke
+  20x Wasabi Root
+  30x Cotton Boll
+  20x Kale
+  15x Strawberry
+  20x Tomato
+  15x Pumpkin
+
+5. Animal Products - 8 out of 10
+
+  Reward: 1 Oilmaker
+
+  20x Large Milk
+  20x Large Egg (Brown)
+  20x Large Egg (White)
+  15x Large Goat Milk
+  20x Wool
+  20x Duck Egg
+  30x Mayonnaise
+  20x Goat Cheese
+  10x Butter
+  3x Rabbit's Foot
+
+6. Artisan Products - 6 out of 10
+
+  Reward: 1 Soda Machine
+
+  30x Fruit Juice
+  20x Apple Cider
+  20x Jelly
+  20x Honey
+  40x Essential Oil
+  10x Cherry
+  10x Lime
+  10x Papaya
+  10x Walnut
+  10x Persimmon
+
+======================================================
+
+FISHTANK
+
+1. River Fish - 8 out of 8
+
+  Reward: 1 Worm Bin
+
+  20x Dorado
+  20x Smallmouth Bass
+  20x Salmon
+  20x Sunfish
+  20x Butterfish
+  20x Shad
+  10x Pike
+  20x Lingcod
+
+2. Lake Fish - 8 out of 8
+
+  Reward: 30 Bait
+
+  20x Largemouth Bass
+  20x Sturgeon
+  20x Bullhead
+  20x Carp
+  20x Chub
+  20x Perch
+  20x Rainbow Trout
+  20x Minnow
+
+3. Ocean Fish - 8 out of 10
+
+  Reward: 1 Artifact Trove
+
+  10x Pufferfish
+  20x Anchovy
+  20x Tuna
+  20x Sardine
+  20x Clownfish
+  20x Herring
+  20x Red Snapper
+  20x Sea Cucumber
+  20x Flunder
+  20x Starfish
+
+4. Night Fishing - 8 out of 8
+
+  Reward: 10 Dish O' The Sea
+
+  15x Eel
+  30x Bream
+  20x Walleye
+  20x Squid
+  5x Super Cucumber
+  20x Albacore
+  30x Halibut
+  10x Midnight Carp
+
+5. Specialty Fish - 8 out of 8
+
+  Reward: 1 Fishing Vest
+
+  15x Ghostfish
+  10x Stonefish
+  5x Ice Pip
+  20x Woodskip
+  20x Sandfish
+  5x Scorpion Carp
+  5x Spook Fish
+  10x Puppyfish
+
+6. Crab Pot - 10 out of 10
+
+  Reward: 1 Anchor
+
+  20x Lobster
+  20x Crab
+  20x Cockle
+  20x Mussel
+  20x Shrimp
+  20x Oyster
+  20x Crayfish
+  20x Snail
+  20x Periwinkle
+  20x Driftwood
+  
+======================================================
+
+CRAFTSROOM
+
+1. Spring Foraging - 6 out of 8
+
+  Reward: 30 Basic Fertilizer
+
+  20x Daffodil
+  20x Leek
+  20x Dandelion
+  20x Wild Horseradish
+  99x Salmonberry
+  10x Spring Onion
+  10x Morel
+  20x Basil
+
+2. Summer Foraging - 6 out of 8
+
+  Reward: 1 Beehouse
+
+  20x Grape
+  20x Spice Berry
+  20x Sweet Pea
+  5x Fiddlehead Fern
+  20x Coral
+  20x Clam
+  30x Maple Seed
+  20x Blue Mist
+
+3. Fall Foraging - 6 out of 8
+
+  Reward: 3 Farmer's Lunch
+
+  20x Common Mushroom
+  20x Wild Plum
+  20x Hazelnut
+  99x Blackberry
+  10x Chanterelle
+  30x Acorn
+  10x Shiitake Mushroom
+  10x Beet
+
+4. Winter Foraging - 6 out of 6
+
+  Reward: 3 Tapper
+
+  20x Winter Root
+  20x Crystal Fruit
+  10x Snow Yam
+  20x Crocus
+  30x Pine Cone
+  20x Holly
+
+5. Construction - 7 out of 7
+
+  Reward: 1 Workbench
+
+  99x Wood
+  50x Wood Fence
+  99x Stone
+  20x Hardwood
+  20x Clay
+  99x Fiber
+  50x Sap
+
+6. Exotic Foraging - 6 out of 10
+
+  Reward: 1 Apple Sapling
+
+  10x Cave Carrot
+  10x Maple Syrup
+  10x Oak Resin
+  10x Pine Tar
+  10x Purple Mushroom
+  10x Red Mushroom
+  30x Torch
+  10x Cactus Fruit
+  10x Coconut
+  20x Quartz
+
+======================================================
+
+BOILERROOM
+
+1. Blacksmith's - 5 out of 6
+
+  Reward: 10 Omni Geodes
+
+  40x Refined Quartz
+  30x Coal
+  40x Copper Bar
+  30x Iron Bar
+  20x Gold Bar
+  1x Iridium Bar
+
+2. Geologist's - 7 out of 10
+
+  Reward: Crystalarium
+
+  10x Fire Quartz
+  20x Topaz
+  20x Amethyst
+  10x Emerald
+  10x Ruby
+  15x Jade
+  3x Diamond
+  20x Frozen Tear
+  30x Earth Crystal
+  3x Mudstone
+
+3. Adventurer's - 7 out of 7
+
+  Reward: 1 Squire Helmet
+
+  99x Slime
+  99x Bat Wing
+  35x Solar Essence
+  35x Void Essence
+  20x White Algae
+  30x Bomb
+  1x Ancient Sword
+
+======================================================
+
+VAULT
+
+1. 8,000g
+
+  Reward: 1 Gold Pillar
+
+2. 15,000g
+
+  Reward: 1 Gold Brazier
+
+3. 25,000g
+
+  Reward: 5 Gold Bars
+
+4. 50,000g
+
+  Reward: 1 Navy Tuxedo
+
+======================================================
+
+BULLETIN BOARD
+
+1. Chef's - 6 out of 10
+
+  Reward: 1 Tea Set
+
+  10x Poached Pear
+  25x Glazed Butterfish
+  10x Rich Tiramisu
+  20x Mushroom and Pepper Crepe
+  15x Big Bark Burger
+  10x Sparkling Wine
+  30x Gin
+  10x Brandy
+  30x Affogato
+  25x Truffle Oil
+
+2. Field Research - 6 out of 10
+
+  Reward: 1 Dino Egg
+
+  20x Handmade Soap
+  5x Ancient Fruit
+  30x Aloe
+  10x Nautilus Shell
+  1x Amphibian Fossil
+  40x Field Snack
+  10x King Salmon
+  15x Breakfast Tea
+  20x Dried Fruit
+  10x Frozen Geode
+
+3. Enchanter's - 6 out of 10
+
+  Reward: 1 Iridium Band
+
+  20x Candle
+  20x Sun Tea
+  40x Dried Mushroom
+  20x Frog
+  10x Sweet Gem Berry
+  50x Moonshine
+  30x Life Elixir
+  1x Red Slime Egg
+  10x Warp Totem Farm
+  1x Golden Pumpkin
+
+4. Dye - 6 out of 10
+
+  Reward: 1 Deluxe Scarecrow
+
+  20x Gold Thread
+  99x Yarn
+  5x Lucky Purple Shorts
+  15x Blue Jazz
+  10x Duck Feather
+  50x Cloth
+  20x Berry Fusion Kombucha
+  30x Dried Flower
+  30x Herbal Lavender
+  20x Aquamarine
+
+5. Fodder - 6 out of 10
+
+  Reward: 1 Iridium Sprinkler
+
+  99x Hay
+  50x Soybean
+  40x Cabbage
+  25x Carrot
+  50x Corn
+  50x Wheat
+  25x Amaranth
+  10x Apple Rind
+  10x Granny Smith Apple
+  10x Eucalyptus Leaves
+
+======================================================
+
+MISSING
+
+1. Missing - 10 out of 12
+
+  1x Prismatic Ice Cream
+  30x Jalapeno Extract
+  50x Popcorn
+  20x Wasabi Peas
+  50x Seaweed Chips
+  30x Hot Irish Coffee
+  10x Dark Ale
+  50x Battery Pack
+  20x Strawberry Lemonade
+  5x Void Pebble
+  10x Void Salmon Sushi
+  1x Dwarf Gadet

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7435
+IDs: aedenthorn.ExpertSitting
+update keys: Nexus:7435

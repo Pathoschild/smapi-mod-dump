@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SeedMachines.Framework.Minigames;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -35,7 +36,7 @@ namespace SeedMachines.Framework.BigCraftables
         public override void onClick(ButtonPressedEventArgs args)
         {
             ModEntry.modHelper.Input.Suppress(args.Button);
-            
+
             if (Game1.player.Money >= ModEntry.settings.seedBanditOneGamePrice)
             {
                 Game1.player.Money -= ModEntry.settings.seedBanditOneGamePrice;
@@ -55,6 +56,7 @@ namespace SeedMachines.Framework.BigCraftables
             {
                 Game1.addHUDMessage(new HUDMessage(ModEntry.modHelper.Translation.Get("seed-bandit.not-enough-money"), 3));
             }
+            //Game1.currentMinigame = new SeedBanditSlots();
         }
     }
 }

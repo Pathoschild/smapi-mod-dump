@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Fast Forward",
+  "Author": "crazywig",
+  "Version": "1.0.0",
+  "Description": "Speeds up time when a button is pressed",
+  "UniqueID": "crazywig.fastforward",
+  "EntryDll": "fastforward.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7413" ]
+}

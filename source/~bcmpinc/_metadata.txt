@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 15d9f06c9131def6b7b3e516d3dcfca8710bfb60
+   commit cd40944c803fedf203712b607c214a999aa70001
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Tue Dec 22 17:20:41 2020 +0100
+   Date:   Thu Dec 31 18:21:33 2020 +0100
    
-       Updated mods' README
+       Fixed incompatibility with chests anywhere mod.
    

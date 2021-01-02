@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>NpcAdventure</AssemblyName>
     <RootNamespace>NpcAdventure</RootNamespace>
-    <Version>0.14.0</Version>
+    <Version>0.16.0</Version>
     <TargetFramework>net452</TargetFramework>
     <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>
@@ -10,7 +10,7 @@
     <Authors>PurrplingCat</Authors>
     <Product>NpcAdventures</Product>
     <Configurations>Debug;Release;Nightbuild</Configurations>
-    <Copyright>© PurrplingCat 2019-2020</Copyright>
+    <Copyright>© PurrplingCat 2019-2021</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
@@ -19,7 +19,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    <Reference Include="ExpandedPreconditionsUtility" HintPath="$(GamePath)\Mods\ExpandedPreconditionsUtility\ExpandedPreconditionsUtility.dll" Private="false" />
   </ItemGroup>
 
   <ItemGroup>

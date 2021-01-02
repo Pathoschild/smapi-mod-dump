@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7363
+IDs: thespbgamer.ZoomLevel
+update keys: GitHub:thespbgamer/ZoomLevel, Nexus:7363

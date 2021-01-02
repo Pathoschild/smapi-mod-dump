@@ -148,6 +148,10 @@
     "Krobus": {
       "Voice": "Matthew",
       "Pitch": 0.0
+    },
+    "Leo": {
+      "Voice": "Brian",
+      "Pitch": 0.0
     }
   }
 }

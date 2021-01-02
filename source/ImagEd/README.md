@@ -10,7 +10,7 @@ for queries and analysis.**
 
 Mod for [Stardew Valley](http://stardewvalley.net/) which provides non-interactive image recoloring. Requires [ContentPatcher](https://www.nexusmods.com/stardewvalley/mods/1915).
 
-Provides the token **ImageEd/Recolor** which takes an image to recolor and optionally a mask and a desaturation mode. The final image loaded by content patcher is created as following:
+Provides the token **ImageEd/Recolor** which takes an image to recolor and optionally a mask and a desaturation mode. The final image loaded by ContentPatcher is created as following:
 
 - The source image is loaded, either from content pack or from game content. 
 - A sub image of the source image is extracted using the given mask. If no mask is given, a copy is created.
@@ -24,7 +24,7 @@ Provides the token **ImageEd/Recolor** which takes an image to recolor and optio
 2. Asset name.
 3. Source image or "gamecontent" to load a vanilla asset.
 4. Mask image or "none". Mask is supposed to be a grayscale image so we always desaturate it (mode is DesaturateLuma).
-5. Blend color in HTML format.
+5. Blend color in #RRGGBB format ([Hex triplet](https://en.wikipedia.org/wiki/Web_colors#Hex_triplet)). The non-standard format #RRGGBBAA is supported to set an alpha value.
 6. Desaturation mode: DesaturateHSV, DesaturateHSL, DesaturateHSI, DesaturateLuma or None. This is an optional argument, default is None.
 
 Example:

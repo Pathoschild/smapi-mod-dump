@@ -17,6 +17,7 @@ using StardewValley.Characters;
 using StardewValley.Events;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace MultipleSpouses
             myRand = new Random();
 
             helper.Events.GameLoop.GameLaunched += HelperEvents.GameLoop_GameLaunched;
-            helper.Events.GameLoop.SaveLoaded += HelperEvents.GameLoop_SaveLoaded; 
+            helper.Events.GameLoop.SaveLoaded += HelperEvents.GameLoop_SaveLoaded;
             helper.Events.Input.ButtonPressed += HelperEvents.Input_ButtonPressed;
             helper.Events.GameLoop.DayStarted += HelperEvents.GameLoop_DayStarted;
             helper.Events.GameLoop.DayEnding += HelperEvents.GameLoop_DayEnding;
@@ -74,6 +75,7 @@ namespace MultipleSpouses
             FileIO.Initialize(Monitor, Helper);
             Misc.Initialize(Monitor, Helper);
             Divorce.Initialize(Monitor, Helper);
+            FurniturePatches.Initialize(Monitor, Helper, config);
 
             var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
 
@@ -160,6 +162,7 @@ namespace MultipleSpouses
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_setRandomAfternoonMarriageDialogue_Prefix))
             );
 
+
             // Child patches
 
             harmony.Patch(
@@ -176,14 +179,14 @@ namespace MultipleSpouses
                original: AccessTools.Method(typeof(Child), nameof(Child.dayUpdate)),
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_dayUpdate_Prefix))
             );
-            
+
             harmony.Patch(
                original: AccessTools.Method(typeof(Child), nameof(Child.tenMinuteUpdate)),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_tenMinuteUpdate_Postfix))
             );
 
 
-            // location patches
+            // Location patches
 
 
             harmony.Patch(
@@ -195,7 +198,7 @@ namespace MultipleSpouses
                original: AccessTools.Method(typeof(ManorHouse), nameof(ManorHouse.performAction)),
                prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.ManorHouse_performAction_Prefix))
             );
-            
+
             harmony.Patch(
                original: AccessTools.Method(typeof(FarmHouse), nameof(FarmHouse.getWalls)),
                postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_getWalls_Postfix))
@@ -233,13 +236,13 @@ namespace MultipleSpouses
                original: AccessTools.Method(typeof(FarmHouse), nameof(FarmHouse.performTenMinuteUpdate)),
                postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_performTenMinuteUpdate_Postfix))
             );
-            
+
             harmony.Patch(
                original: AccessTools.Method(typeof(Desert), nameof(Desert.getDesertMerchantTradeStock)),
                postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.Desert_getDesertMerchantTradeStock_Postfix))
             );
-            
-            
+
+
 
             // pregnancy patches
 
@@ -309,6 +312,7 @@ namespace MultipleSpouses
                prefix: new HarmonyMethod(typeof(UIPatches), nameof(UIPatches.DialogueBox_Prefix))
             );
 
+
             // Event patches
 
             harmony.Patch(
@@ -326,6 +330,13 @@ namespace MultipleSpouses
                prefix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_command_playSound_Prefix))
             );
 
+
+            // Furniture patches
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(BedFurniture), nameof(BedFurniture.draw), new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
+               prefix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.BedFurniture_draw_Prefix))
+            );
 
         }
 

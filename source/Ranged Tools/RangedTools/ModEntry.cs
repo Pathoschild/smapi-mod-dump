@@ -9,9 +9,13 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Harmony;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -24,10 +28,15 @@ namespace RangedTools
     public class ModEntry : Mod
     {
         private static IMonitor myMonitor;
+        private static IInputHelper myInput;
         private static ModConfig Config;
         
-        public static bool specialClick = false;
+        public static bool specialClickActive = false;
         public static Vector2 specialClickLocation = Vector2.Zero;
+        public static List<SButton> knownToolButtons = new List<SButton>();
+        
+        public static bool eventUpReset = false;
+        public static bool eventUpOld = false;
         
         /***************************
          ** Mod Injection Methods **
@@ -40,9 +49,11 @@ namespace RangedTools
             try
             {
                 myMonitor = this.Monitor;
+                myInput = this.Helper.Input;
                 Config = this.Helper.ReadConfig<ModConfig>();
                 
                 helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+                helper.Events.Input.CursorMoved += this.OnCursorMoved;
                 
                 HarmonyInstance harmonyInstance = HarmonyInstance.Create(this.ModManifest.UniqueID);
                 
@@ -51,6 +62,20 @@ namespace RangedTools
                 
                 patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.isWithinTileWithLeeway),
                             typeof(ModEntry), nameof(ModEntry.Prefix_isWithinTileWithLeeway));
+                
+                patchPrefix(harmonyInstance, typeof(Game1), nameof(Game1.pressUseToolButton),
+                            typeof(ModEntry), nameof(ModEntry.Prefix_pressUseToolButton));
+                
+                if (Config.ToolHitLocationDisplay > 0)
+                {
+                    patchPrefix(harmonyInstance, typeof(Farmer), nameof(Farmer.draw),
+                                typeof(ModEntry), nameof(ModEntry.Prefix_draw),
+                                new Type[] { typeof(SpriteBatch) });
+                    
+                    patchPostfix(harmonyInstance, typeof(Farmer), nameof(Farmer.draw),
+                                 typeof(ModEntry), nameof(ModEntry.Postfix_draw),
+                                 new Type[] { typeof(SpriteBatch) });
+                }
             }
             catch (Exception e)
             {
@@ -64,11 +89,12 @@ namespace RangedTools
         /// <param name="sourceName">The name of the source method.</param>
         /// <param name="patchClass">The class the patch method is part of.</param>
         /// <param name="patchName">The name of the patch method.</param>
-        void patchPrefix(HarmonyInstance harmonyInstance, System.Type sourceClass, string sourceName, System.Type patchClass, string patchName)
+        /// <param name="sourceParameters">The source method's parameter list, when needed for disambiguation.</param>
+        void patchPrefix(HarmonyInstance harmonyInstance, System.Type sourceClass, string sourceName, System.Type patchClass, string patchName, Type[] sourceParameters = null)
         {
             try
             {
-                MethodBase sourceMethod = AccessTools.Method(sourceClass, sourceName);
+                MethodBase sourceMethod = AccessTools.Method(sourceClass, sourceName, sourceParameters);
                 HarmonyMethod prefixPatch = new HarmonyMethod(patchClass, patchName);
                 
                 if (sourceMethod != null && prefixPatch != null)
@@ -76,8 +102,38 @@ namespace RangedTools
                 else
                 {
                     if (sourceMethod == null)
-                        Log("Warning: Source method (" + sourceClass.ToString() + "::" + sourceName + ") not found.");
+                        Log("Warning: Source method (" + sourceClass.ToString() + "::" + sourceName + ") not found or ambiguous.");
                     if (prefixPatch == null)
+                        Log("Warning: Patch method (" + patchClass.ToString() + "::" + patchName + ") not found.");
+                }
+            }
+            catch (Exception e)
+            {
+                Log("Error in code patching: " + e.Message + Environment.NewLine + e.StackTrace);
+            }
+        }
+        
+        /// <summary>Attempts to patch the given source method with the given postfix method.</summary>
+        /// <param name="harmonyInstance">The Harmony instance to patch with.</param>
+        /// <param name="sourceClass">The class the source method is part of.</param>
+        /// <param name="sourceName">The name of the source method.</param>
+        /// <param name="patchClass">The class the patch method is part of.</param>
+        /// <param name="patchName">The name of the patch method.</param>
+        /// <param name="sourceParameters">The source method's parameter list, when needed for disambiguation.</param>
+        void patchPostfix(HarmonyInstance harmonyInstance, Type sourceClass, string sourceName, Type patchClass, string patchName, Type[] sourceParameters = null)
+        {
+            try
+            {
+                MethodBase sourceMethod = AccessTools.Method(sourceClass, sourceName, sourceParameters);
+                HarmonyMethod postfixPatch = new HarmonyMethod(patchClass, patchName);
+                
+                if (sourceMethod != null && postfixPatch != null)
+                    harmonyInstance.Patch(sourceMethod, postfix: postfixPatch);
+                else
+                {
+                    if (sourceMethod == null)
+                        Log("Warning: Source method (" + sourceClass.ToString() + "::" + sourceName + ") not found or ambiguous.");
+                    if (postfixPatch == null)
                         Log("Warning: Patch method (" + patchClass.ToString() + "::" + patchName + ") not found.");
                 }
             }
@@ -91,7 +147,7 @@ namespace RangedTools
          ** Input Method **
          ******************/
         
-        /// <summary>Checks whether to set ToolLocation override when Tool Button is pressed.</summary>
+        /// <summary>Checks whether to enable ToolLocation override when a Tool Button is pressed.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -110,35 +166,21 @@ namespace RangedTools
                 if (e.Button.IsUseToolButton() && (withClick || !Config.CustomRangeOnClickOnly))
                 {
                     Farmer player = Game1.player;
-                    Vector2 mousePosition = new Vector2(e.Cursor.AbsolutePixels.X, e.Cursor.AbsolutePixels.Y);
-                    
                     if (player.CurrentTool != null && !player.UsingTool) // Have a tool selected, not in the middle of using it
                     {
-                        specialClick = false; // Reset override flag
-                        
-                        Tool currentTool = player.CurrentTool;
+                        Vector2 mousePosition = convertCursorPosition(e.Cursor);
                         
                         // If setting is enabled, face all mouse clicks when a tool/weapon is equipped.
-                        if (withClick && shouldToolTurnToFace(currentTool))
+                        if (withClick && shouldToolTurnToFace(player.CurrentTool))
                             player.faceGeneralDirection(mousePosition);
                         
-                        if (isToolOverridable(currentTool)) // Only override ToolLocation for applicable tools
+                        if (positionValidForExtendedRange(player, mousePosition))
                         {
-                            int range = getCustomRange(currentTool);
-                            
-                            // Click position is within tool's range, or range setting is negative (infinite).
-                            if (range < 0 || Utility.withinRadiusOfPlayer((int)mousePosition.X, (int)mousePosition.Y, range, player))
-                            {
-                                bool usableOnPlayerTile = getPlayerTileSetting(Game1.player.CurrentTool);
-                                
-                                // If not allowed to use on player tile, ensure click is not within radius 0 of player.
-                                if (usableOnPlayerTile || !Utility.withinRadiusOfPlayer((int)mousePosition.X, (int)mousePosition.Y, 0, player))
-                                {
-                                    // Set this location as an override to be used a bit later, when the tool is actually used.
-                                    specialClick = true;
-                                    specialClickLocation = mousePosition;
-                                }
-                            }
+                            // Set this as an override location for when tool is used.
+                            specialClickActive = true;
+                            specialClickLocation = mousePosition;
+                            if (!knownToolButtons.Contains(e.Button)) // Keep a list of Tool Buttons (accounting for click-only option)
+                                knownToolButtons.Add(e.Button);
                         }
                     }
                 }
@@ -149,21 +191,86 @@ namespace RangedTools
             }
         }
         
+        /// <summary>Checks for mouse drag while holding any Tool Button.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnCursorMoved(object sender, CursorMovedEventArgs e)
+        {
+            try
+            {
+                if (holdingToolButton()) // Update override location as long as a Tool Button is held (range validity checked later)
+                    specialClickLocation = convertCursorPosition(e.NewPosition);
+            }
+            catch (Exception ex)
+            {
+                Log("Error in cursor move: " + ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+        
+        /// <summary>Returns Vector2 global coordinates of mouse position, adjusted for scale.</summary>
+        /// <param name="cursor">The cursor position data.</param>
+        public static Vector2 convertCursorPosition(ICursorPosition cursor)
+        {
+            Vector2 mousePosition = Utility.ModifyCoordinatesFromUIScale(cursor.ScreenPixels);
+            mousePosition.X += Game1.viewport.X;
+            mousePosition.Y += Game1.viewport.Y;
+            return mousePosition;
+        }
+        
+        /// <summary>Checks whether the given Farmer and mouse position are within extended range for the current tool.</summary>
+        /// <param name="who">The Farmer using the tool.</param>
+        /// <param name="mousePosition">The position of the mouse.</param>
+        public static bool positionValidForExtendedRange(Farmer who, Vector2 mousePosition)
+        {
+            Tool currentTool = who.CurrentTool;
+            
+            if (isToolOverridable(currentTool)) // Only override ToolLocation for applicable tools
+            {
+                int range = getCustomRange(currentTool);
+                
+                // Mouse position is within tool's range, or range setting is negative (infinite).
+                if (range < 0 || Utility.withinRadiusOfPlayer((int)mousePosition.X, (int)mousePosition.Y, range, who))
+                {
+                    bool usableOnPlayerTile = getPlayerTileSetting(currentTool);
+                    
+                    // If not allowed to use on player tile, ensure mouse is not within radius 0 of player.
+                    if (usableOnPlayerTile || !Utility.withinRadiusOfPlayer((int)mousePosition.X, (int)mousePosition.Y, 0, who))
+                        return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        /// <summary>Returns whether a known Tool Button is still being held.</summary>
+        /// <param name="clickOnly">Whether to only check for mouse Tool Buttons.</param>
+        public static bool holdingToolButton(bool clickOnly = false)
+        {
+            foreach (SButton button in knownToolButtons)
+                if (myInput.IsDown(button)
+                 && (!clickOnly || button.ToString().Contains("Mouse"))
+                 && button.IsUseToolButton()) // Double-check in case it changed
+                    return true;
+            
+            return false;
+        }
+        
         /// <summary>Returns whether tools can be used currently. Does not check whether player is in the middle of using tool.</summary>
-        private bool isAppropriateTimeToUseTool()
+        public static bool isAppropriateTimeToUseTool()
         {
             return !Game1.fadeToBlack
                 && !Game1.dialogueUp
                 && !Game1.eventUp
                 && !Game1.menuUp
                 && Game1.currentMinigame == null
+                && !Game1.player.hasMenuOpen
                 && !Game1.player.isRidingHorse()
                 && (Game1.CurrentEvent == null || Game1.CurrentEvent.canPlayerUseTool());
         }
         
         /// <summary>Returns whether the given tool is a type that supports ToolLocation override.</summary>
         /// <param name="tool">The Tool being checked.</param>
-        private bool isToolOverridable(Tool tool)
+        public static bool isToolOverridable(Tool tool)
         {
             return tool is Axe
                 || tool is Pickaxe
@@ -173,18 +280,18 @@ namespace RangedTools
         
         /// <summary>Returns whether the given tool is a type that should face mouse clicks (i.e. sprite won't glitch).</summary>
         /// <param name="tool">The Tool being checked.</param>
-        private bool shouldToolTurnToFace(Tool tool)
+        public static bool shouldToolTurnToFace(Tool tool, bool buttonHeld = false)
         {
             return (tool is Axe && Config.ToolAlwaysFaceClick)
                 || (tool is Pickaxe && Config.ToolAlwaysFaceClick)
-                || (tool is Hoe && Config.ToolAlwaysFaceClick)
-                || (tool is WateringCan && Config.ToolAlwaysFaceClick)
-                || (tool is MeleeWeapon && Config.WeaponAlwaysFaceClick);
+                || (tool is Hoe && Config.ToolAlwaysFaceClick && !buttonHeld)
+                || (tool is WateringCan && Config.ToolAlwaysFaceClick && !buttonHeld)
+                || (tool is MeleeWeapon && Config.WeaponAlwaysFaceClick && !buttonHeld);
         }
         
         /// <summary>Returns custom range setting for overridable tools (1 for any others).</summary>
         /// <param name="tool">The Tool being checked.</param>
-        private int getCustomRange(Tool tool)
+        public static int getCustomRange(Tool tool)
         {
             return tool is Axe? Config.AxeRange
                  : tool is Pickaxe? Config.PickaxeRange
@@ -195,7 +302,7 @@ namespace RangedTools
        
         /// <summary>Returns "usable on player tile" setting for overridable tools (1 for any others).</summary>
         /// <param name="tool">The Tool being checked.</param>
-        private bool getPlayerTileSetting(Tool tool)
+        public static bool getPlayerTileSetting(Tool tool)
         {
             return tool is Axe? Config.AxeUsableOnPlayerTile
                  : tool is Pickaxe? Config.PickaxeUsableOnPlayerTile
@@ -207,23 +314,37 @@ namespace RangedTools
          ** Method Patches **
          ********************/
         
-        /// <summary>Prefix to Farmer.useTool that overrides GetToolLocation with click location when specialClick is set.</summary>
+        /// <summary>Prefix to Farmer.useTool that overrides GetToolLocation with click location.</summary>
         /// <param name="who">The Farmer using the tool.</param>
         public static bool Prefix_useTool(Farmer who)
         {
             try
             {
-                if (specialClick) // Override set by earlier click
+                if (!positionValidForExtendedRange(who, specialClickLocation)) // Disable override if target position is out of range
+                    specialClickActive = false;
+                else if (holdingToolButton()) // Itherwise, force use of override as long as a Tool Button is being held
+                    specialClickActive = true;
+                // Note that simply clicking and letting go should leave specialClickActive as true for the next use.
+                
+                if (specialClickActive)
                 {
-                    if (who.toolOverrideFunction == null)
+                    if (who.toolOverrideFunction == null) // Equivalent to "else" branch of original function, only relevant part
                     {
-                        if (who.CurrentTool == null)
+                        if (who.CurrentTool == null) // Check from original function
                             return true; // Go to original function (where it should just terminate due to tool being null, but still)
-                        float stamina = who.stamina;
-                        specialClick = false;
-                        who.CurrentTool.DoFunction(who.currentLocation, (int)ModEntry.specialClickLocation.X, (int)ModEntry.specialClickLocation.Y, 1, who);
+                        if (who.toolPower > 0 && !Config.AllowRangedChargeEffects) // Don't override charged tool use unless enabled
+                            return true; // Go to original function
                         
-                        // Usual post-DoFunction checks from original
+                        float stamina = who.stamina; // From original function
+                        if (who.IsLocalPlayer) // From original function
+                        {
+                            // Call DoFunction like original function, but on the override location
+                            who.CurrentTool.DoFunction(who.currentLocation, (int)specialClickLocation.X, (int)specialClickLocation.Y, 1, who);
+                            if (!holdingToolButton()) // Performed action, and button has been let go, so don't use override anymore
+                                specialClickActive = false;
+                        }
+                        
+                        // Usual post-DoFunction tasks from original function
                         who.lastClick = Vector2.Zero;
                         who.checkForExhaustion(stamina);
                         Game1.toolHold = 0.0f;
@@ -284,6 +405,93 @@ namespace RangedTools
             {
                 Log("Error in isWithinTileWithLeeway: " + e.Message + Environment.NewLine + e.StackTrace);
                 return true; // Go to original function
+            }
+        }
+        
+        /// <summary>Turns player to face mouse if Tool Button is being held.</summary>
+        public static bool Prefix_pressUseToolButton()
+        {
+            try
+            {
+                if (Game1.player == null) // Go to original function
+                    return true;
+                
+                if (specialClickActive && holdingToolButton(true) && shouldToolTurnToFace(Game1.player.CurrentTool, true))
+                    Game1.player.faceGeneralDirection(specialClickLocation);
+                return true; // Go to original function
+            }
+            catch (Exception e)
+            {
+                Log("Error in pressUseToolButton: " + e.Message + Environment.NewLine + e.StackTrace);
+                return true; // Go to original function
+            }
+        }
+        
+        /// <summary>Prefix to Farmer.draw that draws tool hit location at extended ranges.</summary>
+        /// <param name="__instance">The instance of the Farmer.</param>
+        /// <param name="b">The sprite batch.</param>
+        public static bool Prefix_draw(Farmer __instance, SpriteBatch b)
+        {
+            try
+            {
+                // Abort cases from original function
+                if (__instance.currentLocation == null
+                 || (!__instance.currentLocation.Equals(Game1.currentLocation)
+                  && !__instance.IsLocalPlayer
+                  && !Game1.currentLocation.Name.Equals("Temp")
+                  && !__instance.isFakeEventActor)
+                 || ((bool)(NetFieldBase<bool, NetBool>)__instance.hidden
+                  && (__instance.currentLocation.currentEvent == null || __instance != __instance.currentLocation.currentEvent.farmer)
+                  && (!__instance.IsLocalPlayer || Game1.locationRequest == null))
+                 || (__instance.viewingLocation.Value != null
+                  && __instance.IsLocalPlayer))
+                    return true; // Go to original function
+                
+                // Conditions for drawing tool hit indicator from original function
+                if (Game1.activeClickableMenu == null
+                 && !Game1.eventUp
+                 && (__instance.IsLocalPlayer && __instance.CurrentTool != null)
+                 && (Game1.oldKBState.IsKeyDown(Keys.LeftShift) || Game1.options.alwaysShowToolHitLocation)
+                 && __instance.CurrentTool.doesShowTileLocationMarker()
+                 && (!Game1.options.hideToolHitLocationWhenInMotion || !__instance.isMoving()))
+                {
+                    Vector2 mousePosition = Utility.PointToVector2(Game1.getMousePosition()) 
+                                          + new Vector2((float)Game1.viewport.X, (float)Game1.viewport.Y);
+                    Vector2 limitedLocal = Game1.GlobalToLocal(Game1.viewport, Utility.clampToTile(__instance.GetToolLocation(mousePosition)));
+                    Vector2 extendedLocal = Game1.GlobalToLocal(Game1.viewport, Utility.clampToTile(mousePosition));
+                    if (!limitedLocal.Equals(extendedLocal)) // Just fall back on original if clamped position is the same
+                    {
+                        if (positionValidForExtendedRange(__instance, mousePosition))
+                        {
+                            b.Draw(Game1.mouseCursors, extendedLocal,
+                                   new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29)),
+                                   Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, extendedLocal.Y / 10000f);
+                            
+                            if (Config.ToolHitLocationDisplay == 1) // 2 shows both, but 1 should hide the default indicator
+                            {
+                                eventUpOld = Game1.eventUp;
+                                Game1.eventUp = true; // Temporarily set this to disable drawing of original indicator
+                                eventUpReset = true; // Make sure it's set back to original value in the postfix
+                            }
+                        }
+                    }
+                }
+                return true; // Go to original function
+            }
+            catch (Exception e)
+            {
+                Log("Error in Farmer draw: " + e.Message + Environment.NewLine + e.StackTrace);
+                return true; // Go to original function
+            }
+        }
+        
+        /// <summary>Postfix to Farmer.draw that resets eventUp to what it was.</summary>
+        public static void Postfix_draw()
+        {
+            if (eventUpReset)
+            {
+                Game1.eventUp = eventUpOld;
+                eventUpReset = false;
             }
         }
         

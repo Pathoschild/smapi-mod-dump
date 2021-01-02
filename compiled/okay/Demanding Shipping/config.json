@@ -15,8 +15,7 @@
     373,
     166
   ],
-  "RemoveOriginalShipment": false,
-  "NotSellingToStore": false,
+  "ReplaceShippingBinMenu": true,
   "Categories": [
     -75,
     -79,

@@ -9,6 +9,11 @@
 *************************************************/
 
 {
+  "companionAccepted_Spouse": "You bet! I'd love to go with you today!$1#$b#Maybe at some point I can sing you a love song or two outdoor!",
+  "companionRejectedNight_Spouse": "Sorry, I am feeling a bit tired today. Let's just stay at home for tonight.$2#$b#I still have the energy to play a romantic serenade if you want, though.$4",
+  "companionDismiss_Spouse": "Aww, already? I was having a great time with you.$s#$b#Oh well, I know you're a busy person. Don't work yourself too hard, okay? Love you!",
+  "companionDismissAuto_Spouse": "*Yawn* What time is it? I think I am gonna call it a day.$s#$b#Today was awesome. See you at home.",
+  "companionRecruited_Spouse": "%Sam is humming a familiar love song.#$b#Ah, we're going now? Sorry, I got carried away.",
   "companionAccepted": "Oh yeah, sounds awesome!$1",
   "companionRejected": "Oh! I just remembered I'm supposed to call my Grandma.",
   "companionRejectedNight": "Not now, sorry. I'm exhausted.",

@@ -8,13 +8,11 @@
 **
 *************************************************/
 
-using System;
+using ProducerFrameworkMod.ContentPack;
+using ProducerFrameworkMod.Controllers;
+using StardewModdingAPI;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProducerFrameworkMod.ContentPack;
-using StardewModdingAPI;
 using Object = StardewValley.Object;
 
 namespace ProducerFrameworkMod.Api

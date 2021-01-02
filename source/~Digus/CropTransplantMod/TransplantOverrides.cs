@@ -27,7 +27,7 @@ namespace CropTransplantMod
     {
         private static IModEvents Events => CropTransplantModEntry.Events;
 
-        internal static Object RegularPotObject =  null;
+        internal static Object RegularPotObject = new Object(Vector2.Zero, 62);
         internal static HeldIndoorPot CurrentHeldIndoorPot = null;
         internal static bool ShakeFlag = false;
 
@@ -65,7 +65,6 @@ namespace CropTransplantMod
                         if (potHoeDirt.crop != null )
                         {
                             CurrentHeldIndoorPot = new HeldIndoorPot(pot.TileLocation);
-                            RegularPotObject = new Object(Vector2.Zero, 62, false);
                             HoeDirt holdenHoeDirt = CurrentHeldIndoorPot.hoeDirt.Value;
                             holdenHoeDirt.crop = potHoeDirt.crop;
                             holdenHoeDirt.fertilizer.Value = potHoeDirt.fertilizer.Value;
@@ -74,9 +73,19 @@ namespace CropTransplantMod
                             Game1.player.ActiveObject = CurrentHeldIndoorPot;
                             Events.GameLoop.UpdateTicked += OnUpdateTicked;
                         }
+                        else if (pot.bush.Value is Bush bush)
+                        {
+                            CurrentHeldIndoorPot = new HeldIndoorPot(pot.TileLocation);
+                            CurrentHeldIndoorPot.bush.Value = bush;
+                            Bush holdenBush = CurrentHeldIndoorPot.bush.Value;
+                            ShakeBush(holdenBush);
+                            Game1.player.Stamina -= ((float)DataLoader.ModConfig.CropTransplantEnergyCost - (float)Game1.player.FarmingLevel * DataLoader.ModConfig.CropTransplantEnergyCost / 20f);
+                            Game1.player.ActiveObject = CurrentHeldIndoorPot;
+                            Events.GameLoop.UpdateTicked += OnUpdateTicked;
+                        }
                         else
                         {
-                            Game1.player.ActiveObject = new Object(Vector2.Zero, 62, false);
+                            Game1.player.ActiveObject = (Object)RegularPotObject.getOne();
                         }
                         
                         __result = true;
@@ -128,8 +137,6 @@ namespace CropTransplantMod
                 {
                     if (heldPot.tree != null)
                     {
-                        
-
                         if(!location.terrainFeatures.ContainsKey(tileLocation)
                            && !location.objects.ContainsKey(tileLocation) 
                            && !location.farmers.Any(fs => fs.GetBoundingBox().Intersects(new Microsoft.Xna.Framework.Rectangle((int)tileLocation.X * 64, (int)tileLocation.Y * 64, 64, 64)))
@@ -161,11 +168,25 @@ namespace CropTransplantMod
                                     __result = true;
                                     return false;
                                 }
-                                
                             }
                         }
                         __result = false;
                         return false;
+                    }
+                    else if (heldPot.bush.Value != null)
+                    {
+                        if (!location.terrainFeatures.ContainsKey(tileLocation)
+                            && !location.objects.ContainsKey(tileLocation)
+                            && !location.farmers.Any(fs => fs.GetBoundingBox().Intersects(new Microsoft.Xna.Framework.Rectangle((int)tileLocation.X * 64, (int)tileLocation.Y * 64, 64, 64)))
+                            && location.doesTileHaveProperty((int)tileLocation.X, (int)tileLocation.Y, "Water", "Back") == null
+                            && !location.isTileOccupied(tileLocation, "")
+                            && ((location is Farm || DataLoader.ModConfig.EnableToPlantTeaBushesOutOfTheFarm)
+                                && ((location.doesTileHaveProperty((int)tileLocation.X, (int)tileLocation.Y, "Diggable", "Back") != null || location.doesTileHavePropertyNoNull((int)tileLocation.X, (int)tileLocation.Y, "Type", "Back").Equals("Grass")) || DataLoader.ModConfig.EnableToPlantTeaBushesOnAnyTileType)
+                                && !location.doesTileHavePropertyNoNull((int)tileLocation.X, (int)tileLocation.Y, "NoSpawn", "Back").Equals("Tree")))
+                        {
+                            __result = true;
+                            return false;
+                        }
                     }
                 }
             }
@@ -192,7 +213,7 @@ namespace CropTransplantMod
 
         /// <summary>
         /// Override to not show the harvest tooltip while holding the pot.
-        /// Override to change the tooltip when grabing the pot from the ground. 
+        /// Override to change the tooltip when grabbing the pot from the ground. 
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -220,13 +241,21 @@ namespace CropTransplantMod
         }
 
         /// <summary>
-        /// Override to let you lift fruit trees
+        /// Override to let you lift trees and bushes
         /// </summary>
         /// <param name="__result"></param>
+        /// <param name="tileLocation"></param>
+        /// <param name="location"></param>
         /// <returns></returns>
-        public static void FruitTreePerformUseAction(ref bool __result)
+        public static void TreeOrBushPerformUseAction(ref bool __result, Vector2 tileLocation, GameLocation location)
         {
-            __result = false;
+            if (__result == true
+                && IsGardenPot(Game1.player.ActiveObject)
+                && location.terrainFeatures.ContainsKey(tileLocation) 
+                && (location.terrainFeatures[tileLocation] is Tree || location.terrainFeatures[tileLocation] is FruitTree || location.terrainFeatures[tileLocation] is Bush))
+            {
+                __result = false;
+            }
         }
 
         /// <summary>
@@ -287,7 +316,6 @@ namespace CropTransplantMod
                                 if (Game1.player.ActiveObject.Stack == 1)
                                 {
                                     CurrentHeldIndoorPot = new HeldIndoorPot(tileLocation);
-                                    RegularPotObject = Game1.player.ActiveObject;
                                     Game1.player.ActiveObject = null;
                                     Game1.player.ActiveObject = CurrentHeldIndoorPot;
                                     Events.GameLoop.UpdateTicked += OnUpdateTicked;
@@ -309,7 +337,7 @@ namespace CropTransplantMod
                                 heldPot.hoeDirt.Value.crop != null
                                 && !location.farmers.Any(f=>f.GetBoundingBox().Intersects(new Microsoft.Xna.Framework.Rectangle((int)tileLocation.X * 64, (int)tileLocation.Y * 64, 64, 64))))
                             {
-                                if (!DataLoader.ModConfig.EnablePlacementOfCropsOutsideOutOfTheFarm && !Game1.player.currentLocation.IsFarm && Game1.player.currentLocation.IsOutdoors)
+                                if (!DataLoader.ModConfig.EnablePlacementOfCropsOutsideOutOfTheFarm && !Game1.player.currentLocation.IsFarm && !Game1.player.currentLocation.CanPlantSeedsHere(heldPot.hoeDirt.Value.crop.netSeedIndex.Value, x/64, y/64) && Game1.player.currentLocation.IsOutdoors)
                                 {
                                     Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:HoeDirt.cs.13919"));
                                     return false;
@@ -317,9 +345,8 @@ namespace CropTransplantMod
                                 hoeDirt.crop = heldPot.hoeDirt.Value.crop;
                                 ShakeCrop(hoeDirt, tileLocation);
                                 hoeDirt.fertilizer.Value = heldPot.hoeDirt.Value.fertilizer.Value;
-                                Events.GameLoop.UpdateTicked -= OnUpdateTicked;
-                                Game1.player.ActiveObject = null;
-                                Game1.player.ActiveObject = RegularPotObject;
+                                CleanHeldIndoorPot();
+                                Game1.player.ActiveObject = (Object) RegularPotObject.getOne();
                                 location.playSound("dirtyHit");
                                 return false;
                             }
@@ -328,12 +355,13 @@ namespace CropTransplantMod
                     else
                     {
                         if (Game1.player.ActiveObject is HeldIndoorPot heldPot 
-                            && heldPot.tree != null
+                            && (heldPot.tree != null || heldPot.bush.Value != null)
                             && !location.terrainFeatures.ContainsKey(tileLocation)
                             && !location.farmers.Any(f => f.GetBoundingBox().Intersects(new Microsoft.Xna.Framework.Rectangle((int)tileLocation.X * 64, (int)tileLocation.Y * 64, 64, 64)))
                             && location.doesTileHaveProperty((int)tileLocation.X, (int)tileLocation.Y, "Water", "Back") == null
                             && !location.isTileOccupied(tileLocation, ""))
                         {
+                            TerrainFeature terrainFeature;
                             if (heldPot.tree is Tree tree)
                             {
                                 string str = location.doesTileHaveProperty((int)tileLocation.X, (int)tileLocation.Y, "NoSpawn", "Back");
@@ -346,6 +374,7 @@ namespace CropTransplantMod
                                 }
 
                                 ShakeTree(tree, tileLocation);
+                                terrainFeature = tree;
                             }
                             else if (heldPot.tree is FruitTree fruitTree)
                             {
@@ -374,13 +403,32 @@ namespace CropTransplantMod
                                 fruitTree.GreenHouseTileTree = location.doesTileHaveProperty((int)tileLocation.X, (int)tileLocation.Y, "Diggable", "Back") == null && !location.doesTileHavePropertyNoNull((int)tileLocation.X, (int)tileLocation.Y, "Type", "Back").Equals("Grass") && !(location is Farm);
 
                                 ShakeTree(fruitTree, tileLocation);
+                                terrainFeature = fruitTree;
+                            }
+                            else if (heldPot.bush.Value is Bush bush)
+                            {
+                                if (!DataLoader.ModConfig.EnableToPlantTeaBushesOutOfTheFarm && !(location is Farm) && !location.IsGreenhouse)
+                                {
+                                    return true;
+                                }
+
+                                if (!(((location.doesTileHaveProperty((int)tileLocation.X, (int)tileLocation.Y, "Diggable", "Back") != null || location.doesTileHavePropertyNoNull((int)tileLocation.X, (int)tileLocation.Y, "Type", "Back").Equals("Grass")) || DataLoader.ModConfig.EnableToPlantTeaBushesOnAnyTileType)
+                                      && !location.doesTileHavePropertyNoNull((int)tileLocation.X, (int)tileLocation.Y, "NoSpawn", "Back").Equals("Tree")))
+                                {
+                                    return true;
+                                }
+
+                                terrainFeature = PrepareBushForPlacement(bush, tileLocation);
+                            }
+                            else
+                            {
+                                return true;
                             }
 
-                            location.terrainFeatures.Add(tileLocation, heldPot.tree);
+                            location.terrainFeatures.Add(tileLocation, terrainFeature);
 
-                            Events.GameLoop.UpdateTicked -= OnUpdateTicked;
-                            Game1.player.ActiveObject = null;
-                            Game1.player.ActiveObject = RegularPotObject;
+                            CleanHeldIndoorPot();
+                            Game1.player.ActiveObject = (Object) RegularPotObject.getOne();
                             location.playSound("dirtyHit");
                             return false;
                             
@@ -388,32 +436,39 @@ namespace CropTransplantMod
                         else
                         {
                             if (location.terrainFeatures.ContainsKey(tileLocation) 
-                                && IsValidTree(location.terrainFeatures[tileLocation])
+                                && (IsValidTree(location.terrainFeatures[tileLocation]) || IsValidBush(location.terrainFeatures[tileLocation]))
                                 && ! (Game1.player.ActiveObject is HeldIndoorPot))
                             {
                                 TerrainFeature terrainFeature = location.terrainFeatures[tileLocation];
                                 if (Game1.player.ActiveObject.Stack == 1)
                                 {
                                     CurrentHeldIndoorPot = new HeldIndoorPot(tileLocation);
-                                    RegularPotObject = Game1.player.ActiveObject;
                                     Game1.player.ActiveObject = null;
                                     Game1.player.ActiveObject = CurrentHeldIndoorPot;
                                     Events.GameLoop.UpdateTicked += OnUpdateTicked;
-                                    CurrentHeldIndoorPot.tree = terrainFeature;
-                                    float treeTransplantEnergyCost = 0;
+                                    float transplantEnergyCost = 0;
                                     if (terrainFeature is Tree tree)
                                     {
+                                        CurrentHeldIndoorPot.tree = tree;
                                         ShakeTree(tree, tileLocation);
-                                        treeTransplantEnergyCost = DataLoader.ModConfig.TreeTransplantEnergyCostPerStage[Math.Min(4, tree.growthStage.Value >=4 ? tree.growthStage.Value-1 : tree.growthStage.Value)];
+                                        transplantEnergyCost = DataLoader.ModConfig.TreeTransplantEnergyCostPerStage[Math.Min(4, tree.growthStage.Value >=4 ? tree.growthStage.Value-1 : tree.growthStage.Value)];
                                     }
                                     else if (terrainFeature is FruitTree fruitTree)
                                     {
+                                        CurrentHeldIndoorPot.tree = fruitTree;
                                         ShakeTree(fruitTree, tileLocation);
-                                        treeTransplantEnergyCost = DataLoader.ModConfig.FruitTreeTransplantEnergyCostPerStage[Math.Min(4, fruitTree.growthStage.Value)];
+                                        transplantEnergyCost = DataLoader.ModConfig.FruitTreeTransplantEnergyCostPerStage[Math.Min(4, fruitTree.growthStage.Value)];
+                                    }
+                                    else if (terrainFeature is Bush bush)
+                                    {
+                                        CurrentHeldIndoorPot.bush.Value = bush;
+                                        ShakeBush(bush, tileLocation);
+                                        transplantEnergyCost = DataLoader.ModConfig.CropTransplantEnergyCost; 
                                     }
                                     location.terrainFeatures.Remove(tileLocation);
-                                    
-                                    Game1.player.Stamina -= ((float)treeTransplantEnergyCost - (float)Game1.player.ForagingLevel * treeTransplantEnergyCost / 20f);
+
+                                    float playerSkillLevel = (float) (terrainFeature is Bush ? Game1.player.FarmingLevel : Game1.player.ForagingLevel);
+                                    Game1.player.Stamina -= ((float)transplantEnergyCost - playerSkillLevel * transplantEnergyCost / 20f);
                                     location.playSound("dirtyHit");
                                 }
                                 return false;
@@ -434,6 +489,27 @@ namespace CropTransplantMod
             return true;
         }
 
+        internal static void CleanHeldIndoorPot()
+        {
+            Events.GameLoop.UpdateTicked -= OnUpdateTicked;
+            CurrentHeldIndoorPot = null;
+            Game1.player.ActiveObject = null;
+        }
+
+        internal static Bush PrepareBushForPlacement(Bush bush, Vector2 tileLocation)
+        {
+            if (!Game1.player.currentLocation.IsOutdoors && !bush.greenhouseBush.Value)
+            {
+                bush.greenhouseBush.Value = true;
+            }
+            else if (Game1.player.currentLocation.IsOutdoors && bush.greenhouseBush.Value)
+            {
+                bush.greenhouseBush.Value = false;
+            }
+            ShakeBush(bush, tileLocation);
+            return bush;
+        }
+
         private static bool IsValidTree(TerrainFeature terrainFeature)
         {
             bool result = false;
@@ -444,6 +520,16 @@ namespace CropTransplantMod
             else if (terrainFeature is FruitTree fruitTree)
             {
                 result = Math.Min(5, fruitTree.growthStage.Value) <= DataLoader.ModConfig.FruitTreeTransplantMaxStage - 1;
+            }
+            return result;
+        }
+
+        private static bool IsValidBush(TerrainFeature terrainFeature)
+        {
+            bool result = false;
+            if (terrainFeature is Bush bush)
+            {
+                result = bush.size.Value == Bush.greenTeaBush;
             }
             return result;
         }
@@ -476,10 +562,15 @@ namespace CropTransplantMod
             tree.performUseAction(tileLocation ?? Game1.player.getTileLocation() + new Vector2(0, -2), Game1.player.currentLocation);
         }
 
+        internal static void ShakeBush(Bush bush, Vector2? tileLocation = null)
+        {
+            bush.performUseAction(tileLocation ?? Game1.player.getTileLocation() + new Vector2(0, -2), Game1.player.currentLocation);
+        }
+
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private static void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        internal static void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (Game1.player.ActiveObject is HeldIndoorPot heldPot)
             {
@@ -487,7 +578,7 @@ namespace CropTransplantMod
                 if (potHoeDirt.crop != null)
                 {
                     potHoeDirt.tickUpdate(Game1.currentGameTime, heldPot.TileLocation, Game1.currentLocation);
-                    if (Game1.player.isMoving())
+                    if (Game1.player.isMoving() && !Game1.eventUp)
                     {
                         ShakeCrop(potHoeDirt);
                     }
@@ -495,7 +586,7 @@ namespace CropTransplantMod
                 else if (heldPot.tree is Tree tree)
                 {
                     tree.tickUpdate(Game1.currentGameTime, Game1.player.getTileLocation(), Game1.currentLocation);
-                    if (Game1.player.isMoving())
+                    if (Game1.player.isMoving() && !Game1.eventUp)
                     {
                         ShakeTree(tree);
                     }
@@ -503,9 +594,17 @@ namespace CropTransplantMod
                 else if (heldPot.tree is FruitTree fruitTree)
                 {
                     fruitTree.tickUpdate(Game1.currentGameTime, Game1.player.getTileLocation(), Game1.currentLocation);
-                    if (Game1.player.isMoving())
+                    if (Game1.player.isMoving() && !Game1.eventUp)
                     {
                         ShakeTree(fruitTree);
+                    }
+                }
+                else if (heldPot.bush.Value is Bush bush)
+                {
+                    bush.tickUpdate(Game1.currentGameTime, Game1.player.getTileLocation(), Game1.currentLocation);
+                    if (Game1.player.isMoving() && !Game1.eventUp)
+                    {
+                        ShakeBush(bush);
                     }
                 }
             }
@@ -535,7 +634,7 @@ namespace CropTransplantMod
                     
                     int heldIndorPotInveotryPosition = Game1.player.getIndexOfInventoryItem(CurrentHeldIndoorPot);
                     Game1.player.removeItemFromInventory(CurrentHeldIndoorPot);
-                    Game1.player.addItemToInventory(RegularPotObject, heldIndorPotInveotryPosition);
+                    Game1.player.addItemToInventory(RegularPotObject.getOne(), heldIndorPotInveotryPosition);
                 }
                 
                 CurrentHeldIndoorPot = null;
@@ -546,90 +645,6 @@ namespace CropTransplantMod
         private static bool IsGardenPot(Object o)
         {
             return o is Object object1 && object1.ParentSheetIndex == 62 && object1.bigCraftable.Value;
-        }
-
-        /// <summary>
-        /// An used method for a lifting animation.
-        /// </summary>
-        private static void showAnimation()
-        {
-            Game1.player.canMove = false;
-            switch (Game1.player.facingDirection.Value)
-            {
-                case 0:
-                    Game1.player.FarmerSprite.animateOnce(
-                    new FarmerSprite.AnimationFrame[6]
-                    {
-                        new FarmerSprite.AnimationFrame(62, 0, false, false,
-                            (AnimatedSprite.endOfAnimationBehavior) null, false),
-                        new FarmerSprite.AnimationFrame(62, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(63, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(64, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(65, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(65, 0, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.canMoveNow), false)
-                    });
-                    break;
-                case 1:
-                    Game1.player.FarmerSprite.animateOnce(
-                        new FarmerSprite.AnimationFrame[6]
-                    {
-                        new FarmerSprite.AnimationFrame(58, 0, false, false,
-                            (AnimatedSprite.endOfAnimationBehavior) null, false),
-                        new FarmerSprite.AnimationFrame(58, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(59, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(60, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(61, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(61, 0, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.canMoveNow), false)
-                    });
-                    break;
-                case 2:
-                    Game1.player.FarmerSprite.animateOnce(
-                        new FarmerSprite.AnimationFrame[6]
-                    {
-                        new FarmerSprite.AnimationFrame(54, 0, false, false,
-                            (AnimatedSprite.endOfAnimationBehavior) null, false),
-                        new FarmerSprite.AnimationFrame(54, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(55, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(56, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(57, 100, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(57, 0, false, false,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.canMoveNow), false)
-                    });
-                    break;
-                case 3:
-                    Game1.player.FarmerSprite.animateOnce(
-                        new FarmerSprite.AnimationFrame[6]
-                    {
-                        new FarmerSprite.AnimationFrame(58, 0, false, true,
-                            (AnimatedSprite.endOfAnimationBehavior) null, false),
-                        new FarmerSprite.AnimationFrame(58, 100, false, true,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(59, 100, false, true,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(60, 100, false, true,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(61, 200, false, true,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.showItemIntake), false),
-                        new FarmerSprite.AnimationFrame(61, 0, false, true,
-                            new AnimatedSprite.endOfAnimationBehavior(Farmer.canMoveNow), false)
-                    });
-                    break;
-            }
-            Game1.player.FarmerSprite.PauseForSingleAnimation = true;
         }
     }
 }

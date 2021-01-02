@@ -5,9 +5,10 @@ mods:
    Better Skull Cavern Falling
 
 latest commit:
-   commit 1ad1436e5fa8b2f7792eb0eeaaa10232f8c7b644
+   commit 633996e6159616e5645f7b53240af66de3c4844a
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Sat Aug 1 12:29:15 2020 +0200
+   Date:   Sun Dec 27 18:47:39 2020 +0100
    
-       Completely rewrote mod
+       * Using Harmony to patch game
+       * Compatibility with SDV 1.5
    

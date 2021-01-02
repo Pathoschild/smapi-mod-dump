@@ -19,16 +19,22 @@ namespace JoysOfEfficiency.Huds
 {
     public class MineIcons
     {
+        private static Logger _logger = new Logger("MineIcons");
 
         private static Texture2D _iconPickaxe;
         private static Texture2D _iconMonster;
         private static Texture2D _iconLadder;
+
+        private static int OffsetX => (Util.IsAndroid() ? 128 : 0);
 
         public static void Init(IModHelper helper)
         {
             _iconPickaxe = helper.Content.Load<Texture2D>("icon_pickaxe.png");
             _iconMonster = helper.Content.Load<Texture2D>("icon_monster.png");
             _iconLadder = helper.Content.Load<Texture2D>("icon_ladder.png");
+            int x = 16 + OffsetX;
+            
+            _logger.Log($"x:{x}");
         }
 
         public void Draw(string stoneStr, string monsterStr, string ladderStr)
@@ -41,7 +47,7 @@ namespace JoysOfEfficiency.Huds
             Point mousePos = new Point(Game1.getMouseX(), Game1.getMouseY());
 
             int y = 96;
-            int x = 16;
+            int x = 16 + OffsetX;
             {
                 IClickableMenu.drawTextureBox(batch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), x - 16, y - 16, 40 + 32, 40 + 32, Color.White);
                 batch.Draw(_iconPickaxe, new Vector2(x, y), null, Color.White, 0.0f, Vector2.Zero, 2.5f, SpriteEffects.None, 0.9f);

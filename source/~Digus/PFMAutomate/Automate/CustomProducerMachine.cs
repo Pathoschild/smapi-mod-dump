@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
 using ProducerFrameworkMod;
 using ProducerFrameworkMod.ContentPack;
+using ProducerFrameworkMod.Controllers;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;

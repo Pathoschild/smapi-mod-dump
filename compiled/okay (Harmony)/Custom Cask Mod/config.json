@@ -1,5 +1,5 @@
 {
   "DisableLetter": false,
   "EnableCasksAnywhere": false,
-  "DisableAutomateCompatibility": false
+  "EnableMoreThanOneQualityIncrementPerDay": true
 }

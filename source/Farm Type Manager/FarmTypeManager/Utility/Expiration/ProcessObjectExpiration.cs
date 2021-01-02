@@ -45,6 +45,12 @@ namespace FarmTypeManager
                         continue; //skip to the next object
                     }
 
+                    if (saved.DaysUntilExpire.HasValue //if this saved object has an expiration setting
+                        && saved.MapName.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase)) //AND if this saved object was in a mine level (i.e. temporary location)
+                    {
+                        saved.DaysUntilExpire = 1; //force this object to expire below
+                    }
+
                     GameLocation location = Game1.getLocationFromName(saved.MapName); //get the saved object's location
 
                     if (location == null) //if this isn't a valid map

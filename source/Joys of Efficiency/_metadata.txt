@@ -5,12 +5,11 @@ mods:
    Joys of Efficiency
 
 latest commit:
-   commit f956eb67abe8c8e5c26b6517e0568651afa03ff4
-   Merge: cb27706 ba58c3a
+   commit 36167da31b36b4fc1f9834f76e1d89fd4f4e2857
    Author: pomepome <punyoon03@gmail.com>
-   Date:   Wed May 27 01:03:20 2020 +0900
+   Date:   Sat Dec 26 13:06:23 2020 +0900
    
-       Merge pull request #41 from kdau/patch-1
+       Update WhatsNew.md
        
-       Compatibility fix for East Scarpe
+       Fixed typo.
    

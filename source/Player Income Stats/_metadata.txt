@@ -1,0 +1,13 @@
+url:
+   https://github.com/ha1fdaew/PlayerIncomeStats.git
+
+mods:
+   Player Income Stats
+
+latest commit:
+   commit dce0403917921b15137bcb0abdeb9e045635a886
+   Author: ha1fdaew <76654515+ha1fdaew@users.noreply.github.com>
+   Date:   Sun Dec 27 19:35:03 2020 +0400
+   
+       Add files via upload
+   

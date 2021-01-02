@@ -48,6 +48,9 @@ namespace NpcAdventure.HUD
                 case "spiritual":
                     this.icon = new Rectangle(172, 514, 9, 10);
                     break;
+                case "fisherman":
+                    this.icon = new Rectangle(20, 428, 10, 10);
+                    break;
             }
         }
 

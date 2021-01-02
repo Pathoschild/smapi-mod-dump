@@ -83,7 +83,7 @@ Next features comming soon...
 | Penny     | Forager         | +3 Farming                   |
 | Sam       |                 | +2 Speed                     |
 | Sebastian | Warrior         | +1 Speed, +1 Luck, +1 Attack |
-| Elliott   |                 | +3 Fishing                   |
+| Elliott   | Fisherman       | +3 Fishing                   |
 | Harvey    | Doctor          | +3 Defense                   |
 
 All listed NPCs except *Emily* can figth with sword! **Married spouse** grants additional buffs **+1 Luck** and **+1 Magnetic** radius

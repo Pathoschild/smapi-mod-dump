@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -18,17 +19,15 @@ namespace TreeTransplant
 {
 	public class TreeWrapper : ITree
 	{
-		private Tree tree;
+		private readonly Tree tree;
+		private readonly int[] basicTrees = new[] { Tree.bushyTree, Tree.leafyTree, Tree.pineTree, Tree.mahoganyTree };
 
 		public TreeWrapper(Tree t)
 		{
 			tree = t;
 		}
 
-		public TerrainFeature getTerrainFeature()
-		{
-			return tree;
-		}
+		public TerrainFeature getTerrainFeature() => tree;
 
 		public Texture2D texture
 		{
@@ -36,7 +35,7 @@ namespace TreeTransplant
 			{
 				if (isAdult() && !tree.stump.Value)
 				{
-					if (tree.treeType.Value == Tree.bushyTree || tree.treeType.Value == Tree.leafyTree || tree.treeType.Value == Tree.pineTree)
+					if (basicTrees.Contains(tree.treeType.Value))
 						return TreeTransplant.treeTexture;
 					else if (tree.treeType.Value == Tree.mushroomTree || tree.treeType.Value == Tree.palmTree)
 						return TreeTransplant.specialTreeTexture;
@@ -47,14 +46,11 @@ namespace TreeTransplant
 
 		public bool flipped
 		{
-			get { return tree.flipped.Value; }
-			set { tree.flipped.Set(value); }
+			get => tree.flipped.Value;
+			set => tree.flipped.Set(value);
 		}
 
-		public int treeType
-		{
-			get { return tree.treeType.Value; }
-		}
+		public int treeType => tree.treeType.Value;
 
 		public Rectangle treeTopSourceRect
 		{
@@ -85,37 +81,21 @@ namespace TreeTransplant
 					return rect;
 				}
 
-				bool basicTree = (tree.treeType.Value >= 1 && tree.treeType.Value <= 3);
-				int xOffset = tree.treeType.Value - (basicTree ? 1 : 6);
-				int yOffset = basicTree ? Utility.getSeasonNumber(Game1.currentSeason) : 0;
+				// tree index refers to column in the generated texture, mahogany is hard coded as 4
+				var treeIndex = tree.treeType.Value == Tree.mahoganyTree ? 4 : tree.treeType.Value;
+				var basicTree = treeIndex >= 1 && treeIndex <= 4;
+				// non-basic trees are palm and mushroom which are 6 and 7 so we subtract 6 to get 0 and 1
+				var xOffset = treeIndex - (basicTree ? 1 : 6);
+				var yOffset = basicTree ? Utility.getSeasonNumber(Game1.currentSeason) : 0;
 
 				return new Rectangle(48 * xOffset, yOffset * 96, 48, 96);
 			}
 		}
 
-		public Rectangle stumpSourceRect
-		{
-			get { return Tree.stumpSourceRect; }
-		}
-
-		public Rectangle getBoundingBox(Vector2 tileLocation)
-		{
-			return tree.getBoundingBox(tileLocation);
-		}
-
-		public bool stump
-		{
-			get { return tree.stump.Value; }
-		}
-
-		public bool isAdult()
-		{
-			return tree.growthStage.Value > 4;
-		}
-
-		public bool isStumpSeparate()
-		{
-			return isAdult();
-		}
+		public Rectangle stumpSourceRect => Tree.stumpSourceRect;
+		public Rectangle getBoundingBox(Vector2 tileLocation) => tree.getBoundingBox(tileLocation);
+		public bool stump => tree.stump.Value;
+		public bool isAdult() => tree.growthStage.Value > 4;
+		public bool isStumpSeparate() => isAdult();
 	}
 }

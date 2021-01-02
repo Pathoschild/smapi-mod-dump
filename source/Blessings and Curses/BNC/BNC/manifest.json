@@ -11,14 +11,10 @@
 {
    "Name": "Blessings And Curses",
    "Author": "GenDeathrow",
-   "Version": "1.1.1",
+   "Version": "1.1.2",
    "Description": "Recieve blessings or curses and combat augments, Also has Twitch chat integration",
    "UniqueID": "gendeathrow.BNC",
    "EntryDll": "BNC.dll",
-   "MinimumApiVersion": "2.0",
-   "UpdateKeys": ["GitHub:GenDeathrow/SDV_BlessingsAndCurses"],
-   	"Dependencies": [{
-		"UniqueID": "darkhax.bookcase",
-		"MinimumVersion": "0.7.2"
-	}]
+   "MinimumApiVersion": "3.0.0",
+   "UpdateKeys": ["GitHub:GenDeathrow/SDV_BlessingsAndCurses"]
 }

@@ -31,6 +31,7 @@ using PyTK.CustomElementHandler;
 namespace ItemBags.Bags
 {
     /// <summary>A bag used for storing items required by incomplete Community Center Bundles</summary>
+    //[XmlType("Mods_BundleBag")]
     [XmlRoot(ElementName = "BundleBag", Namespace = "")]
 #if ANDROID
     public class BundleBag : BoundedBag
@@ -52,11 +53,13 @@ namespace ItemBags.Bags
             { ContainerSize.Massive, new HashSet<string>() { } }
         };
 
+        [XmlIgnore]
         public override int MaxStackSize { get { return int.MaxValue; } }
 
         /// <summary>If true, then placing items inside the BundleBag will allow  downgrading the placed item's <see cref="StardewValley.Object.Quality"/> to the highest quality still needed of that item for an incomplete bundle.<para/>
         /// For example, suppose you picked up a Gold-quality Parsnip. Gold parsnips are needed for the Quality crops bundle and Regular-quality are needed for Spring crops bundle.<para/>
         /// If Quality crops is already complete, then the picked-up Parsnip will be downgraded to regular quality, to fulfill the Spring crops bundle instead.</summary>
+        [XmlIgnore]
         public bool AllowDowngradeItemQuality { get { return ItemBagsMod.UserConfig.AllowDowngradeBundleItemQuality(this.Size); } }
 
         /// <summary>Default parameterless constructor intended for use by XML Serialization. Do not use this constructor to instantiate a bag.</summary>

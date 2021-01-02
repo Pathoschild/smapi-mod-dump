@@ -55,13 +55,9 @@
     <Compile Include="DeepWoodsStuffCreator.cs" />
     <Compile Include="DeepWoodsTileDefinitions.cs" />
     <Compile Include="DestroyableBush.cs" />
-    <Compile Include="EasterEgg.cs" />
-    <Compile Include="EasterEggFunctions.cs" />
-    <Compile Include="EasterEggItem.cs" />
     <Compile Include="Excalibur.cs" />
     <Compile Include="ExcaliburStone.cs" />
     <Compile Include="ExplodableResourceClump.cs" />
-    <Compile Include="FarmerSprite.cs" />
     <Compile Include="Flower.cs" />
     <Compile Include="Framework\Messages\InitResponseMessage.cs" />
     <Compile Include="Framework\Messages\WarpMessage.cs" />
@@ -85,10 +81,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="i18n\default.json" />
+    <None Include="i18n\es.json" />
     <None Include="i18n\fr.json" />
     <None Include="i18n\ko.json" />
     <None Include="i18n\ru.json" />
     <None Include="i18n\pt.json" />
+    <None Include="i18n\zh.json" />
     <None Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>

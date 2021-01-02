@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7402
+IDs: krutonium.strongeryou, Krutonium.StrongerYou
+update keys: Nexus:7402

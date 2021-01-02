@@ -9,6 +9,11 @@
 *************************************************/
 
 {
+  "companionAccepted_Spouse": "That's a great idea, honey!$1#$b#Who knows? Maybe we'll find some fresh forageables along the way for our dinner.",
+  "companionRejectedNight_Spouse": "Are you sure? It's gotten really dark outside.#$b# I think we should just stay home at this hour.",
+  "companionDismiss_Spouse": "Ah, I see. Then I'll head back to farm house.#$b#It's really fun walking with you today. Take care, sweetheart!$1",
+  "companionDismissAuto_Spouse": "Hey, it's gotten really dark. We probably should go home now.#$b#Don't linger outside for too long, nature can be dangerous too at night. Stay safe, dear.",
+  "companionRecruited_Spouse": "This sketch book? Well, you'll never know when will inspiration strike you.#$b#You could be doing something really adorable, and I want to make sure I can capture it within these papers when it happens.$1",
   "companionAccepted": "Absolutely! I'd like to do some foraging.",
   "companionRejected": "I'm a bit too busy to do any exploring today, @. Sorry.",
   "companionRejectedNight": "Don't you think it's too late to go exploring now?",

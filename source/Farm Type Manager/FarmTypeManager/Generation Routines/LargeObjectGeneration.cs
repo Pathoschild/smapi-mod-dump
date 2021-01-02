@@ -64,7 +64,7 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Checking large object settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
                         //validate the map name for the area
-                        List<GameLocation> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
+                        List<string> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
                         if (locations.Count == 0) //if no locations were found
                         {
                             Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Forage won't be spawned there.", LogLevel.Trace);
@@ -91,7 +91,9 @@ namespace FarmTypeManager
                         }
 
                         //find the locations any existing objects (of the listed types)
-                        if (area.FindExistingObjectLocations == true && locations.Count == 1) //if enabled & exactly one location was found (TODO: rework or fix this system to support multiple locations per area)
+                        if (area.FindExistingObjectLocations == true //if enabled
+                            && locations.Count == 1 //AND only one location was found (building interiors not currently supported)
+                            && !locations[0].StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase)) //AND this is NOT a mineshaft level (temporary maps not supported)
                         {
                             if (data.Save.ExistingObjectLocations.ContainsKey(area.UniqueAreaID)) //if this area already has a list of existing objects (even if it's blank)
                             {
@@ -103,21 +105,7 @@ namespace FarmTypeManager
 
                                 List<string> existingObjects = new List<string>(); //any new object location strings to be added to area.IncludeAreas
 
-                                IEnumerable<TerrainFeature> resourceClumps = null; //a list of large objects at this location
-                                if (locations[0] is Farm farm)
-                                {
-                                    resourceClumps = farm.resourceClumps.ToList(); //use the farm's clump list
-                                }
-                                else if (locations[0] is MineShaft mine)
-                                {
-                                    resourceClumps = mine.resourceClumps.ToList(); //use the mine's clump list
-                                }
-                                else
-                                {
-                                    resourceClumps = locations[0].largeTerrainFeatures.OfType<LargeResourceClump>(); //use this location's large resource clump list
-                                }
-
-                                foreach (TerrainFeature clump in resourceClumps) //for each of this location's large objects
+                                foreach (TerrainFeature clump in Game1.getLocationFromName(locations[0]).resourceClumps) //for each of this location's large objects
                                 {
                                     string newInclude = "";
 
@@ -159,7 +147,7 @@ namespace FarmTypeManager
                                     }
                                 }
 
-                                Utility.Monitor.Log($"Existing objects found: {existingObjects.Count}.", LogLevel.Trace);
+                                Utility.Monitor.Log($"Existing objects saved as spawn locations for this area: {existingObjects.Count}.", LogLevel.Trace);
 
                                 data.Save.ExistingObjectLocations.Add(area.UniqueAreaID, existingObjects.ToArray()); //add the new strings to the save data for the current config+farm
                             }
@@ -172,7 +160,7 @@ namespace FarmTypeManager
                             }
                             else //if this was caused by map limitations
                             {
-                                Utility.Monitor.Log("Find Existing Objects does not currently support map names that target multiple locations (e.g. building types). The setting will be ignored.", LogLevel.Debug);
+                                Utility.Monitor.Log("Find Existing Objects does not currently support this map type. The setting will be ignored.", LogLevel.Debug);
                                 Utility.Monitor.Log($"Affected area: {area.UniqueAreaID}", LogLevel.Debug);
                                 Utility.Monitor.Log($"Map name: {area.MapName}", LogLevel.Debug);
                             }
@@ -185,14 +173,7 @@ namespace FarmTypeManager
                             //calculate how many objects to spawn today
                             int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, area.PercentExtraSpawnsPerSkillLevel, (Utility.Skills)Enum.Parse(typeof(Utility.Skills), area.RelatedSkill, true));
 
-                            if (locations.Count > 1) //if this area targets multiple locations
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawnCount}.", LogLevel.Trace);
-                            }
-                            else //if this area only targets one location
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawnCount}.", LogLevel.Trace);
-                            }
+                            Utility.Monitor.Log($"Potential spawns at {locations[x]}: {spawnCount}.", LogLevel.Trace);
 
                             //begin to generate large objects
                             List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
@@ -204,7 +185,7 @@ namespace FarmTypeManager
 
                                 SavedObject saved = new SavedObject() //create a saved object representing this spawn (with a "blank" tile location)
                                 {
-                                    MapName = locations[x].uniqueName.Value ?? locations[x].Name,
+                                    MapName = locations[x],
                                     Type = SavedObject.ObjectType.LargeObject,
                                     ID = randomObject,
                                     DaysUntilExpire = area.DaysUntilSpawnsExpire ?? 0

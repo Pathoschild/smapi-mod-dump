@@ -5,9 +5,9 @@ mods:
    InstaCrops
 
 latest commit:
-   commit 874d40b63dded9b3e83a5f9d0c2494c483df6d45
+   commit f15f4137c2c4a754e935846caa63385e882cbf1e
    Author: Brian Wuest <brian.wuest@outlook.com>
-   Date:   Mon Feb 3 18:23:13 2020 -0600
+   Date:   Sat Dec 26 13:29:22 2020 -0600
    
-       Update manifest to latest version
+       Updating packages
    

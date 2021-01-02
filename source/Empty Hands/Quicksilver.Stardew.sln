@@ -1,28 +1,38 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.28307.1321
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewGamePlus", "NewGamePlus\NewGamePlus.csproj", "{0C0ED630-12E8-4830-AB02-EC72F4B9DAC6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{E09CEAE3-8A44-4D7C-8DD6-09104D5D0F6F}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyHands", "EmptyHands\EmptyHands.csproj", "{C4BEA490-0A36-4307-B5FF-DA5CC007FCD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmptyHands", "EmptyHands\EmptyHands.csproj", "{99905811-5678-4B22-BF71-F25875291FDC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewGamePlus", "NewGamePlus\NewGamePlus.csproj", "{E5E1134C-A7D0-4C66-A362-29C815BAD447}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0C0ED630-12E8-4830-AB02-EC72F4B9DAC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C0ED630-12E8-4830-AB02-EC72F4B9DAC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C0ED630-12E8-4830-AB02-EC72F4B9DAC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C0ED630-12E8-4830-AB02-EC72F4B9DAC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4BEA490-0A36-4307-B5FF-DA5CC007FCD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4BEA490-0A36-4307-B5FF-DA5CC007FCD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4BEA490-0A36-4307-B5FF-DA5CC007FCD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4BEA490-0A36-4307-B5FF-DA5CC007FCD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99905811-5678-4B22-BF71-F25875291FDC}.Debug|x86.ActiveCfg = Debug|x86
+		{99905811-5678-4B22-BF71-F25875291FDC}.Debug|x86.Build.0 = Debug|x86
+		{99905811-5678-4B22-BF71-F25875291FDC}.Release|x86.ActiveCfg = Release|x86
+		{99905811-5678-4B22-BF71-F25875291FDC}.Release|x86.Build.0 = Release|x86
+		{E5E1134C-A7D0-4C66-A362-29C815BAD447}.Debug|x86.ActiveCfg = Debug|x86
+		{E5E1134C-A7D0-4C66-A362-29C815BAD447}.Debug|x86.Build.0 = Debug|x86
+		{E5E1134C-A7D0-4C66-A362-29C815BAD447}.Release|x86.ActiveCfg = Release|x86
+		{E5E1134C-A7D0-4C66-A362-29C815BAD447}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9A4D61D-AA7A-491F-9207-953CE55298FA}
 	EndGlobalSection
 EndGlobal

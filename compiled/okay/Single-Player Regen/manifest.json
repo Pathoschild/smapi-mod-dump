@@ -1,7 +1,7 @@
 ﻿{
     "Name": "SinglePlayer Regen",
     "Author": "MindMeltMax",
-    "Version": "1.1.0",
+    "Version": "1.2.0",
     "Description": "Health and Stamina regen now works in singleplayer",
     "UniqueID": "MindMeltMax.SPRegen",
     "EntryDll": "SP Regen.dll",

@@ -11,11 +11,11 @@
 {
   "Name": "Custom Cask Mod",
   "Author": "Digus",
-  "Version": "1.2.1",
+  "Version": "1.2.2",
   "Description": "Adds ways to customize the casks.",
   "UniqueID": "DIGUS.CustomCaskMod",
   "EntryDll": "CustomCaskMod.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.8.0",
   "Dependencies": [
 	  {
 		  "UniqueID": "DIGUS.MailFrameworkMod",

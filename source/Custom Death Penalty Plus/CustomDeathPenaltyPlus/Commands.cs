@@ -101,6 +101,7 @@ namespace CustomDeathPenaltyPlus
                             dp.FriendshipPenalty = int.Parse(args[1]);
                             monitor.Log($"FriendshipPenalty set to {args[1]}", LogLevel.Info);
                         }
+                        helper.Content.InvalidateCache("Data\\Events\\Hospital");
                         break;
                     }
                 case "nextday":
@@ -109,6 +110,9 @@ namespace CustomDeathPenaltyPlus
                         
                         dp.WakeupNextDayinClinic = bool.Parse(args[1]);
                         monitor.Log($"WakeupNextDayinClinic set to {args[1]}", LogLevel.Info);
+                        helper.Content.InvalidateCache("Data\\Events\\IslandSouth");
+                        helper.Content.InvalidateCache("Data\\Events\\Mine");
+                        helper.Content.InvalidateCache("Data\\Events\\Hospital");
                         break;
                     }
                 default:

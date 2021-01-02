@@ -36,7 +36,7 @@ Bellow you can see a configuration schema with default values
   "UseAsk2FollowCursor": true // {boolean} Use NPC Adventures ask2follow cursor. If this option is disabled, then will be used propirental dialogue cursor.
   "AllowLegacyContentPacks": false, // {boolean} Allow load legacy content packs (format 1.2 and older)
   "Experimental": { // WARNING! This section enables experimental features which can affect gameplay and cause errors or unstability.
-    "UseSwimsuits": false // {boolean} Allow companions to change to swimsuit in bathroom (disabled by default). Not all companions has own swimsuit!
+    // No experimental features available yet
   }
 }
 ```

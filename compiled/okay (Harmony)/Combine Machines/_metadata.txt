@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7411
+IDs: SlayerDharok.CombineMachines
+update keys: Nexus:7411, GitHub:Videogamers0/SDV-CombineMachines

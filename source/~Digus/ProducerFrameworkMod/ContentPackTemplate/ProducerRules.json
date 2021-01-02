@@ -21,8 +21,8 @@
 			"Coal": 1,
 			"246": 5
 		}, //Additional fuel if needed. You don't need to set a Fuel to use AdditionalFuel. The format is a pair of identifier and stack amount, following the same rules of the other fuel property. Default is null.
-		"MinutesUntilReady": 120, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
-		"SubtractTimeOfDay": true, //If MinutesUntilReady should be subtracted by the current time of day.
+		"MinutesUntilReady": 120, //The amount of minutes it takes to produce. Stardew days have 1600 minutes. 1200 minutes from 6 am to 2am and 400 minutes from 2am to 6am. Should be divisible by 10. Required.
+		"SubtractTimeOfDay": true, //If MinutesUntilReady should be subtracted by the current time of day. It always add 360 to the formula, since the day start at 6 am. So if you set MinutesUntilReady to 1600, it will always produce at 6 am of the next day. Never set to true if MinutesUntilReady is smaller than 1600.
 		"OutputIdentifier": "Beer", //The identifier of the output. Can be the Index or the Name of the object. Required.
 		"OutputName": "{farmerName}'s {inputName} {outputName} from {farmName}", //The Name of the object. This will replace the basic output name. It accepts 4 tags that are dynamically replaced. Default is null.
 		"OutputTranslationKey": "MyMod.MyOutput", //The translation key. This is the key in the i18n file where the mod will look for the format of the OutputName in other languages. The value of this key follows the same rules of the OutputName property above. Default is null.

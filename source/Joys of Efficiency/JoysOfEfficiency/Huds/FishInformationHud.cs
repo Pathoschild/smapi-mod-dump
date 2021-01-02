@@ -133,7 +133,7 @@ namespace JoysOfEfficiency.Huds
 
             width += 64;
 
-            int x = bar.xPositionOnScreen + bar.width + 96;
+            int x = bar.xPositionOnScreen + bar.width + 96 + (Util.IsAndroid() ? bar.width * 3: 0);
             if (x + width > Game1.viewport.Width)
             {
                 x = bar.xPositionOnScreen - width - 96;

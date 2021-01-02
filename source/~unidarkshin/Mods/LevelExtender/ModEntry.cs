@@ -210,6 +210,32 @@ namespace LevelExtender
             }
 
         }
+        private void TellXP2(string command, string[] args)
+        {
+
+            int[] temp = { Game1.player.farmingLevel.Value, Game1.player.fishingLevel.Value, Game1.player.foragingLevel.Value, Game1.player.miningLevel.Value, Game1.player.combatLevel.Value };
+            this.Monitor.Log($"XP: Farming  Fishing  Foraging  Mining  Combat |");
+            for (int i = 0; i < addedXP.Length; i++)
+            {
+                if (temp[i] >= 10)
+                    this.Monitor.Log($"XP: {addedXP[i]}");
+                else
+                    this.Monitor.Log($"XP: Empty.");
+            }
+            this.Monitor.Log($"\n");
+            for (int i = 0; i < sLevs.Length; i++)
+            {
+                if (temp[i] >= 10)
+                    this.Monitor.Log($"NL: {Math.Round((1000 * temp[i] + (temp[i] * temp[i] * temp[i] * 0.33)) * xp_mod)}");
+                else
+                    this.Monitor.Log($"XP: Empty.");
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                this.Monitor.Log($"Current XP - Default: {Game1.player.experiencePoints[i]}.");
+            }
+
+        }
         private void SetLev(string command, string[] args)
         {
             if (args[0] == null || args[1] == null || !int.TryParse(args[1], out int n))

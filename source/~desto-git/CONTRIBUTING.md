@@ -96,6 +96,21 @@ Add the following to the `ModName.csproj` file:
 </PropertyGroup>
 ```
 
+# Debug commands
+
+Type those into the SMAPI terminal.
+
+- Give item to player: `debug item $itemId $amount`
+	- https://stardewvalleywiki.com/Modding:Object_data#Raw_data
+	- https://stardewids.com/
+- Set time to 11:00am: `debug time 1100`
+- Set day of the current month to the 28th: `debug day 28`
+- Set season to winter: `debug season winter`
+- Increase movement speed by 5x for the day: `debug speed 5 1200`
+- Warp to bed: `debug wh`
+
+Source: https://stardewvalleywiki.com/Modding:Debug_commands
+
 # CLI usage
 
 Mainly as notes to myself.

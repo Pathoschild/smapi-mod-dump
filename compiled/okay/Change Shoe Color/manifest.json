@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Change Shoe Color",
   "Author": "Shaklin",
-  "Version": "1.0",
+  "Version": "1.1",
   "Description": "Set your shoe default color",
   "UniqueID": "shaklin.changeshoecolor",
   "EntryDll": "ChangeShoeColor.dll",

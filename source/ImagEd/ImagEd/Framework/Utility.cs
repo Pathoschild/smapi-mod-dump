@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using System.Globalization;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -62,17 +63,28 @@ namespace ImagEd.Framework {
         }
 
         public static Color ColorFromHtml(string htmlColor) {
-            // Use ColorTranslator for conversion.
-            // ATTENTION: The types System.Drawing.Color and Microsoft.Xna.Framework.Color are incompatible.
-            System.Drawing.Color color = System.Drawing.ColorTranslator.FromHtml(htmlColor);
+            // ATTENTION: System.Drawing.ColorTranslator doesn't support hex colors with transparency
+            // thus we need our own implementation.
+            int htmlColorLength = htmlColor.Length;
 
-            return new Color(color.R, color.G, color.B, color.A);
+            if (!(htmlColorLength == 7 || htmlColorLength == 9) && !htmlColor.StartsWith("#")) {
+                throw new ArgumentException($"Invalid color {htmlColor}, format must be '#RRGGBB' or '#RRGGBBAA'");
+            }
+
+            byte R = byte.Parse(htmlColor.Substring(1, 2), NumberStyles.HexNumber);
+            byte G = byte.Parse(htmlColor.Substring(3, 2), NumberStyles.HexNumber);
+            byte B = byte.Parse(htmlColor.Substring(5, 2), NumberStyles.HexNumber);
+            byte A = htmlColor.Length == 9
+                   ? byte.Parse(htmlColor.Substring(7, 2), NumberStyles.HexNumber)
+                   : (byte) 0xFF;
+
+            return new Color(R, G, B, A);
         }
 
         public static string ColorToHtml(Color color) {
-            // Use ColorTranslator for conversion.
-            // ATTENTION: The types System.Drawing.Color and Microsoft.Xna.Framework.Color are incompatible.
-            return System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B));
+            // ATTENTION: System.Drawing.ColorTranslator doesn't support hex colors with transparency
+            // thus we need our own implementation.
+            return $"#{color.R:X2}{color.G:X2}{color.B:X2}{color.A:X2}";
         }
     }
 }

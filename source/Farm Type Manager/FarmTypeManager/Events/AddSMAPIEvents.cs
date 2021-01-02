@@ -41,6 +41,7 @@ namespace FarmTypeManager
             //mod compatiblity events
             helper.Events.GameLoop.GameLaunched += EnableGMCM;
             helper.Events.GameLoop.GameLaunched += EnableSaveAnywhere;
+            helper.Events.GameLoop.GameLaunched += EnableEPU;
         }
     }
 }

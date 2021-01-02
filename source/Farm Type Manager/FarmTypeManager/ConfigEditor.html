@@ -1086,6 +1086,7 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
+										<option>EPU Preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
@@ -1220,7 +1221,7 @@
 								
 								<div class="setting" id="Forage-EC-WeatherYesterday-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn the day <b>after</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+									<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn the day <b>after</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -1252,7 +1253,7 @@
 								
 								<div class="setting" id="Forage-EC-WeatherToday-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn <b>during</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+									<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn <b>during</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -1284,7 +1285,7 @@
 								
 								<div class="setting" id="Forage-EC-WeatherTomorrow-Div" style="display:none">
 									<fieldset class="border" style="max-width:400px">
-									<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn the day <b>before</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+									<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Forage will only spawn the day <b>before</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
 										<table class="checkboxes">
 											<tr>
 												<td>
@@ -1308,6 +1309,37 @@
 												<td>
 													<input type="checkbox" class="small" name="Forage-EC-WeatherTomorrow" id="Forage-EC-WeatherTomorrow-Snow" value="Snow">
 													<label for="Forage-EC-WeatherTomorrow-Snow" class="small-checkbox-label">Snow</label>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
+								<div class="setting" id="Forage-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+									<legend>EPU Preconditions<span class="tooltip">?<span class="tooltiptext">Forage will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Forage-EC-EPUPreconditions" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Forage-EC-EPUPreconditions-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Forage-EC-EPUPreconditions-Add"></label>
+													<input type="text" name="Forage-EC-EPUPreconditions-Add" id="Forage-EC-EPUPreconditions-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Forage-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Name</button>
 												</td>
 											</tr>
 										</table>
@@ -1882,6 +1914,7 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
+										<option>EPU Preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
@@ -2104,6 +2137,37 @@
 												<td>
 													<input type="checkbox" class="small" name="LargeObject-EC-WeatherTomorrow" id="LargeObject-EC-WeatherTomorrow-Snow" value="Snow">
 													<label for="LargeObject-EC-WeatherTomorrow-Snow" class="small-checkbox-label">Snow</label>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
+								<div class="setting" id="LargeObject-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+									<legend>EPU Preconditions<span class="tooltip">?<span class="tooltiptext">Objects will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="LargeObject-EC-EPUPreconditions" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="LargeObject-EC-EPUPreconditions-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="LargeObject-EC-EPUPreconditions-Add"></label>
+													<input type="text" name="LargeObject-EC-EPUPreconditions-Add" id="LargeObject-EC-EPUPreconditions-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="LargeObject-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Name</button>
 												</td>
 											</tr>
 										</table>
@@ -2780,6 +2844,7 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
+										<option>EPU Preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
@@ -3002,6 +3067,37 @@
 												<td>
 													<input type="checkbox" class="small" name="Ore-EC-WeatherTomorrow" id="Ore-EC-WeatherTomorrow-Snow" value="Snow">
 													<label for="Ore-EC-WeatherTomorrow-Snow" class="small-checkbox-label">Snow</label>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
+								<div class="setting" id="Ore-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+									<legend>EPU Preconditions<span class="tooltip">?<span class="tooltiptext">Ore will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Ore-EC-EPUPreconditions" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Ore-EC-EPUPreconditions-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Ore-EC-EPUPreconditions-Add"></label>
+													<input type="text" name="Ore-EC-EPUPreconditions-Add" id="Ore-EC-EPUPreconditions-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Ore-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Name</button>
 												</td>
 											</tr>
 										</table>
@@ -3993,6 +4089,7 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
+										<option>EPU Preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
@@ -4215,6 +4312,37 @@
 												<td>
 													<input type="checkbox" class="small" name="Monster-EC-WeatherTomorrow" id="Monster-EC-WeatherTomorrow-Snow" value="Snow">
 													<label for="Monster-EC-WeatherTomorrow-Snow" class="small-checkbox-label">Snow</label>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
+								<div class="setting" id="Monster-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+									<legend>EPU Preconditions<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Monster-EC-EPUPreconditions" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-EPUPreconditions-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Monster-EC-EPUPreconditions-Add"></label>
+													<input type="text" name="Monster-EC-EPUPreconditions-Add" id="Monster-EC-EPUPreconditions-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Monster-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Name</button>
 												</td>
 											</tr>
 										</table>
@@ -4900,7 +5028,7 @@
 						document.getElementById("alertbox-message").textContent = "\n\nError - \"" + file.name + "\" seems to be the wrong kind of config file.\n\nLook for .json files in the FarmTypeManager/data folder, or for content packs, the content.json file.";
 						return; //quit without filling in settings
 					}
-					else if (jsonTemp.ForageSpawnEnabled == null || jsonTemp.LargeObjectSpawnEnabled == null || jsonTemp.OreSpawnEnabled == null || jsonTemp.MonsterSpawnEnabled == null) //if this seems like an out-of-date confg file
+					else if (jsonTemp.ForageSpawnEnabled == null || jsonTemp.LargeObjectSpawnEnabled == null || jsonTemp.OreSpawnEnabled == null || jsonTemp.MonsterSpawnEnabled == null || text.includes("EPUPreconditions") == false) //if this seems like an out-of-date confg file
 					{
 						document.getElementById("alertbox-message").textContent = "\n\nError - \"" + file.name + "\" seems outdated or incomplete.\n\nPlease load a Stardew farm that uses this config to automatically update it.";
 						return; //quit without filling in settings
@@ -5602,6 +5730,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
 						},
 						"DaysUntilSpawnsExpire": null
@@ -5644,6 +5773,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
 						},
 						"DaysUntilSpawnsExpire": null
@@ -5683,6 +5813,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
 						},
 						"DaysUntilSpawnsExpire": null
@@ -5720,6 +5851,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
 						},
 						"DaysUntilSpawnsExpire": null
@@ -6148,6 +6280,12 @@
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
 					}
+
+					prev.ExtraConditions.EPUPreconditions = [];
+					for (var x = 0; x < document.getElementById("Forage-EC-EPUPreconditions").options.length; x++) //for each EPU condition
+					{
+						prev.ExtraConditions.EPUPreconditions.push(document.getElementById("Forage-EC-EPUPreconditions").options[x].text);
+					}
 					
 					if (document.getElementById("Forage-EC-LNOS").value) //if not null
 					{
@@ -6388,6 +6526,14 @@
 							}
 						}
 					}
+
+					document.getElementById("Forage-EC-EPUPreconditions").options.length = 0;
+					for (var x = 0; x < curr.ExtraConditions.EPUPreconditions.length; x++) //for each EPU condition
+					{
+						var option = document.createElement("option");
+						option.text = curr.ExtraConditions.EPUPreconditions[x];
+						document.getElementById("Forage-EC-EPUPreconditions").options.add(option);
+					}
 					
 					document.getElementById("Forage-EC-LNOS").value = curr.ExtraConditions.LimitedNumberOfSpawns;
 				}
@@ -6552,6 +6698,12 @@
 						{
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
+					}
+
+					prev.ExtraConditions.EPUPreconditions = [];
+					for (var x = 0; x < document.getElementById("LargeObject-EC-EPUPreconditions").options.length; x++) //for each EPU condition
+					{
+						prev.ExtraConditions.EPUPreconditions.push(document.getElementById("LargeObject-EC-EPUPreconditions").options[x].text);
 					}
 					
 					if (document.getElementById("LargeObject-EC-LNOS").value) //if not null
@@ -6739,6 +6891,14 @@
 								break; //skip the rest of the "y" loop
 							}
 						}
+					}
+
+					document.getElementById("LargeObject-EC-EPUPreconditions").options.length = 0;
+					for (var x = 0; x < curr.ExtraConditions.EPUPreconditions.length; x++) //for each EPU condition
+					{
+						var option = document.createElement("option");
+						option.text = curr.ExtraConditions.EPUPreconditions[x];
+						document.getElementById("LargeObject-EC-EPUPreconditions").options.add(option);
 					}
 					
 					document.getElementById("LargeObject-EC-LNOS").value = curr.ExtraConditions.LimitedNumberOfSpawns;
@@ -6969,6 +7129,12 @@
 						{
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
+					}
+
+					prev.ExtraConditions.EPUPreconditions = [];
+					for (var x = 0; x < document.getElementById("Ore-EC-EPUPreconditions").options.length; x++) //for each EPU condition
+					{
+						prev.ExtraConditions.EPUPreconditions.push(document.getElementById("Ore-EC-EPUPreconditions").options[x].text);
 					}
 					
 					if (document.getElementById("Ore-EC-LNOS").value) //if not null
@@ -7225,6 +7391,14 @@
 							}
 						}
 					}
+
+					document.getElementById("Ore-EC-EPUPreconditions").options.length = 0;
+					for (var x = 0; x < curr.ExtraConditions.EPUPreconditions.length; x++) //for each EPU condition
+					{
+						var option = document.createElement("option");
+						option.text = curr.ExtraConditions.EPUPreconditions[x];
+						document.getElementById("Ore-EC-EPUPreconditions").options.add(option);
+					}
 					
 					document.getElementById("Ore-EC-LNOS").value = curr.ExtraConditions.LimitedNumberOfSpawns;
 				}
@@ -7382,6 +7556,12 @@
 						{
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
+					}
+
+					prev.ExtraConditions.EPUPreconditions = [];
+					for (var x = 0; x < document.getElementById("Monster-EC-EPUPreconditions").options.length; x++) //for each EPU condition
+					{
+						prev.ExtraConditions.EPUPreconditions.push(document.getElementById("Monster-EC-EPUPreconditions").options[x].text);
 					}
 					
 					if (document.getElementById("Monster-EC-LNOS").value) //if not null
@@ -7573,6 +7753,14 @@
 								break; //skip the rest of the "y" loop
 							}
 						}
+					}
+
+					document.getElementById("Monster-EC-EPUPreconditions").options.length = 0;
+					for (var x = 0; x < curr.ExtraConditions.EPUPreconditions.length; x++) //for each EPU condition
+					{
+						var option = document.createElement("option");
+						option.text = curr.ExtraConditions.EPUPreconditions[x];
+						document.getElementById("Monster-EC-EPUPreconditions").options.add(option);
 					}
 					
 					document.getElementById("Monster-EC-LNOS").value = curr.ExtraConditions.LimitedNumberOfSpawns;

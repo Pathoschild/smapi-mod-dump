@@ -23,7 +23,7 @@ using xTile.Tiles;
 
 namespace Jojas_Hauntings
 {
-    class ModEntry : Mod
+    public class ModEntry : Mod
     {
         public GameLocation jojaMart;
         public GameLocation GhostDungeon;
@@ -58,18 +58,28 @@ namespace Jojas_Hauntings
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
 
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
-    }
+        }
 
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
         {
             if (!Context.CanPlayerMove)
                 return;
-            if(Game1.currentSeason == "fall" && Game1.Date.DayOfMonth == 26)
+            if (Game1.currentSeason == "fall" && Game1.Date.DayOfMonth == 26)
             {
                 Game1.activeClickableMenu = new DialogueBox("A whisper in your dreams told you about strange things happening in joja");
                 jojaMart.setTileProperty(3, 16, "Buildings", "Action", "Are");
+                jojaMart.map.GetLayer("Back").Tiles[2, 16] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("z_mineAdditions"), BlendMode.Alpha, 1);
+
+                string mapAssetForMod = Helper.Content.GetActualAssetKey("assets/spoilers/HiddenMap.tmx", ContentSource.ModFolder);
+
+                GhostDungeon = new GameLocation(mapAssetForMod, "Ghost Dungeon") { IsFarm = false, IsGreenhouse = false, IsOutdoors = false };
+
+                Game1.locations.Add(GhostDungeon);
+
+                DungeonWarp = new Warp(Game1.player.getTileX(), Game1.player.getTileY(), "Ghost Dungeon", 13, 17, false);
+                ReturnWarp = new Warp(Game1.player.getTileX(), Game1.player.getTileY(), "JojaMart", 20, 5, false);
             }
-            else if(Game1.currentSeason == "fall" && Game1.Date.DayOfMonth == 27)
+            else if (Game1.currentSeason == "fall" && Game1.Date.DayOfMonth == 27)
             {
                 jojaMart.setTileProperty(3, 16, "Buildings", "Action", OrigTile6);
                 jojaMart.setTileProperty(15, 16, "Buildings", "Action", OrigTile5);
@@ -79,13 +89,13 @@ namespace Jojas_Hauntings
                 jojaMart.setTileProperty(11, 11, "Buildings", "Action", OrigTile1);
                 jojaMart.removeTileProperty(20, 4, "Buildings", "Action");
                 jojaMart.removeTileProperty(20, 3, "Buildings", "Action");
+
+                Game1.locations.Remove(GhostDungeon);
+                GhostDungeon = null;
             }
-            else
-            {
-                return;
-            }
+            else return;
         }
-        //BuildComment
+
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.CanPlayerMove)
@@ -100,32 +110,43 @@ namespace Jojas_Hauntings
             {
                 Game1.activeClickableMenu = new DialogueBox(ScaryMessage6);
                 jojaMart.setTileProperty(15, 16, "Buildings", "Action", "You");
+                jojaMart.map.GetLayer("Back").Tiles[2, 16] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("untitled tile sheet"), BlendMode.Alpha, 1984);
+                jojaMart.map.GetLayer("Back").Tiles[14, 16] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("z_mineAdditions"), BlendMode.Alpha, 1);
             }
             else if(property == "You")
             {
                 Game1.activeClickableMenu = new DialogueBox(ScaryMessage5);
                 jojaMart.setTileProperty(28, 13, "Buildings", "Action", "Affraid");
+                jojaMart.map.GetLayer("Back").Tiles[14, 16] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("untitled tile sheet"), BlendMode.Alpha, 1984);
+                jojaMart.map.GetLayer("Back").Tiles[27, 13] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("z_mineAdditions"), BlendMode.Alpha, 1);
             }
             else if(property == "Affraid")
             {
                 Game1.activeClickableMenu = new DialogueBox(ScaryMessage4);
                 jojaMart.setTileProperty(19, 14, "Buildings", "Action", "Of");
+                jojaMart.map.GetLayer("Back").Tiles[27, 13] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("untitled tile sheet"), BlendMode.Alpha, 1984);
+                jojaMart.map.GetLayer("Back").Tiles[18, 14] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("z_mineAdditions"), BlendMode.Alpha, 1);
             }
             else if(property == "Of")
             {
                 Game1.activeClickableMenu = new DialogueBox(ScaryMessage3);
                 jojaMart.setTileProperty(4, 10, "Buildings", "Action", "The");
+                jojaMart.map.GetLayer("Back").Tiles[18, 14] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("untitled tile sheet"), BlendMode.Alpha, 1984);
+                jojaMart.map.GetLayer("Back").Tiles[5, 10] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("z_mineAdditions"), BlendMode.Alpha, 0);
             }
             else if(property == "The")
             {
                 Game1.activeClickableMenu = new DialogueBox(ScaryMessage2);
                 jojaMart.setTileProperty(11, 11, "Buildings", "Action", "Dark");
+                jojaMart.map.GetLayer("Back").Tiles[5, 10] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("untitled tile sheet"), BlendMode.Alpha, 1889);
+                jojaMart.map.GetLayer("Back").Tiles[10, 11] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("z_mineAdditions"), BlendMode.Alpha, 1);
             }
             else if (property == "Dark")
             {
                 Game1.activeClickableMenu = new DialogueBox(ScaryMessage1);
                 jojaMart.setTileProperty(20, 4, "Buildings", "Action", "Boo!");
                 jojaMart.setTileProperty(20, 3, "Buildings", "Action", "Boo!");
+                jojaMart.map.GetLayer("Back").Tiles[10, 11] = new StaticTile(jojaMart.map.GetLayer("Back"), jojaMart.map.GetTileSheet("untitled tile sheet"), BlendMode.Alpha, 1984);
 
             }
             else if (property == "Boo!")
@@ -173,8 +194,7 @@ namespace Jojas_Hauntings
                 jojaMart.removeTileProperty(20, 4, "Buildings", "Action");
                 jojaMart.removeTileProperty(20, 3, "Buildings", "Action");
             }
-            else
-                return;
+            else return;
         }
 
         private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -183,26 +203,23 @@ namespace Jojas_Hauntings
                 return;
 
             string tileSheetForAnima = Helper.Content.GetActualAssetKey("assets/spoilers/Anima.png", ContentSource.ModFolder);
-            string mapAssetForMod = Helper.Content.GetActualAssetKey("assets/spoilers/HiddenMap.tmx", ContentSource.ModFolder);
+            string tileSheetForGrime = Helper.Content.GetActualAssetKey("assets/spoilers/mine.png", ContentSource.ModFolder);
 
             jojaMart = Game1.getLocationFromName("JojaMart");
-            GhostDungeon = new GameLocation(mapAssetForMod, "Ghost Dungeon") { IsOutdoors = false, IsFarm = false};
 
             TileSheet tile = new TileSheet("z_CustomJojaAnima", jojaMart.map, tileSheetForAnima, new xTile.Dimensions.Size(80, 16), new xTile.Dimensions.Size(16, 16));
+            TileSheet tile2 = new TileSheet("z_mineAdditions", jojaMart.map, tileSheetForGrime, new xTile.Dimensions.Size(256, 288), new xTile.Dimensions.Size(16, 16));
 
             jojaMart.map.AddTileSheet(tile);
+            jojaMart.map.AddTileSheet(tile2);
             jojaMart.map.LoadTileSheets(Game1.mapDisplayDevice);
-
-            Game1.locations.Add(GhostDungeon);
-
-            DungeonWarp = new Warp(Game1.player.getTileX(), Game1.player.getTileY(), "Ghost Dungeon", 13, 17, false);
-            ReturnWarp = new Warp(Game1.player.getTileX(), Game1.player.getTileY(), "JojaMart", 20, 5, false);
         }
 
         private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!Context.CanPlayerMove)
                 return;
+
             if (Game1.player.currentLocation != Game1.getLocationFromName("Ghost Dungeon"))
                 return;
             var loc = Game1.currentLocation;
@@ -215,8 +232,7 @@ namespace Jojas_Hauntings
                 Game1.activeClickableMenu = new DialogueBox(GhostCluber);
                 Helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
             }
-            else
-                return;
+            else return;
         }
 
         public void setAnimatedTile(int tileX, int tileY, Layer mapLayer, TileSheet mapSheet)

@@ -537,7 +537,10 @@ namespace DailyScreenshot
 
                 Directory.CreateDirectory(Path.Combine(DefaultSSdirectory.FullName, ssDirectory));
             }
-            string mapScreenshotPath = Game1.game1.takeMapScreenshot(rule.ZoomLevel, ssPath);
+            string mapScreenshotPath = Game1.game1.takeMapScreenshot(rule.ZoomLevel, ssPath, () => {
+                    //Nothing here. Just added Action as empty lambda to provide all now required parameters.
+                }
+            );
             FileInfo mapScreenshot = new FileInfo(Path.Combine(DefaultSSdirectory.FullName, mapScreenshotPath));
             MTrace($"Snapshot saved to {mapScreenshot.FullName}");
             Game1.playSound("cameraNoise");

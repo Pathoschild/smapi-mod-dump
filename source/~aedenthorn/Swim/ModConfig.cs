@@ -25,6 +25,7 @@ namespace Swim
         public int OxygenMult { get; set; }
         public int BubbleMult { get; set; }
         public bool AllowActionsWhileInSwimsuit { get; set; }
+        public bool AllowRunningWhileInSwimsuit { get; set; }
         public bool AddFishies { get; set; }
         public bool AddCrabs { get; set; }
         public bool BreatheSound { get; set; }
@@ -57,6 +58,7 @@ namespace Swim
             OxygenMult = 2;
             BubbleMult = 1;
             AllowActionsWhileInSwimsuit = true;
+            AllowRunningWhileInSwimsuit = false;
             AddFishies = true;
             AddCrabs = true;
             BreatheSound = true;

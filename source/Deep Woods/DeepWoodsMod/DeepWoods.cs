@@ -62,7 +62,7 @@ namespace DeepWoodsMod
 
         public readonly NetInt playerCount = new NetInt(0);
 
-        public readonly NetObjectList<ResourceClump> resourceClumps = new NetObjectList<ResourceClump>();
+        public readonly new NetObjectList<ResourceClump> resourceClumps = new NetObjectList<ResourceClump>();
 
         public readonly NetBool isLichtungSetByAPI = new NetBool(false);
         public readonly NetBool isMapSizeSetByAPI = new NetBool(false);
@@ -998,9 +998,7 @@ namespace DeepWoodsMod
                             }
                             return false;
                         });
-                        if (this.terrainFeatures.ContainsKey(location) &&
-                            (this.terrainFeatures[location] is Flower
-                            || this.terrainFeatures[location] is EasterEgg))
+                        if (this.terrainFeatures.ContainsKey(location) && this.terrainFeatures[location] is Flower)
                         {
                             this.terrainFeatures.Remove(location);
                         }

@@ -1,0 +1,8 @@
+{
+  "queueSize": 10,
+  "foodForgottenEachDay": 2,
+  "timesEatenBeforeDecay": 1,
+  "carrotMode": true,
+  "carrotStaminaGained": 4,
+  "exceptionList": []
+}

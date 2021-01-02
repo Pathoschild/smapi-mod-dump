@@ -1,0 +1,51 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Jaksha6472/ChallengingCommunityCenterBundles
+**
+*************************************************/
+
+{
+    "Name": "Challenging Community Center Bundles - Forage Pack",
+    "Author": "alvadea & jaksha",
+    "Version": "1.0.0",
+    "Description": "The forage pack for CCCB",
+    "UniqueID": "alja.FTMCCCB",
+    "MinimumApiVersion": "3.5",
+    "ContentPackFor": {
+    "UniqueID": "Esca.FarmTypeManager",
+    },
+    "Dependencies": [
+        {
+            "UniqueID": "Esca.FarmTypeManager",
+            "IsRequired": true
+        },
+        {
+            "UniqueID": "ppja.artisanvalleymachinegoods",
+            "IsRequired": true
+        },
+        {
+            "UniqueID": "ppja.fruitsandveggies",
+            "IsRequired": true
+        },
+        {
+            "UniqueID": "mizu.flowers",
+            "IsRequired": true
+        },
+        {
+            "UniqueID": "paradigmnomad.morefood",
+            "IsRequired": true
+        },
+        {
+            "UniqueID": "ppja.moretrees",
+            "IsRequired": true
+        },
+	{
+            "UniqueID": "ppja.evenmorerecipes",
+            "IsRequired": true
+        }
+    ]
+}

@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit ede39effbd49a760007ad872e62300538670f824
+   commit 443e0b8e2ddbfdf2b53e595de96ebb160d5f90e9
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Mon Dec 21 12:40:47 2020 -0600
+   Date:   Fri Jan 1 13:38:14 2021 -0600
    
-       Add "stick bug" to the list_monsters command
+       Fix BuriedItems being impassable in SDV 1.5
    

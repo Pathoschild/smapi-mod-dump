@@ -5,12 +5,9 @@ mods:
    Magic
 
 latest commit:
-   commit f37e544cc51bbc6089491855df286392965cd021
-   Merge: 344410b 6c36d42
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Fri Aug 14 10:52:07 2020 -0400
+   commit add8422e5ba53a447f71b610dcd7eb88b3495d05
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Thu Dec 31 16:35:27 2020 -0500
    
-       Merge pull request #19 from Caco-o-sapo/master
-       
-       Portuguese Translation
+       Every location has resource clumps now, so use that. Fixes #20
    

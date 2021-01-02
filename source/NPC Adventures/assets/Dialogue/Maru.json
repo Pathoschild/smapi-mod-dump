@@ -9,7 +9,12 @@
 *************************************************/
 
 {
-  "companionAccepted": "What an excellent idea! I've been meaning to collect some more soil samples.$1",
+  "companionAccepted_Spouse": "Absolutely! Let me get my gadgets, they will help you along the way!$1",
+  "companionRejectedNight_Spouse": "Um, how about we spend our time tonight inside? I am quite exhausted today...$2",
+  "companionDismiss_Spouse": "Okay, then. I suppose I should go back and work on stuff.#$b#Thanks for taking me out, it was really refreshing, honey!$1",
+  "companionDismissAuto_Spouse": "Hey, it's getting really late. We probably should go home soon.#$b#I'll go ahead and prepare the bed for us. Don't stay out too late, honey!",
+  "companionRecruited_Spouse": "Don't worry sweetie, my prosthetics will never disappoint you!$1",
+  "companionAccepted": "What an excellent idea! I've been meaning to collect some more soil samples.$1",
   "companionRejected": "I can't right now, I have some important lab work to attend to.",
   "companionRejectedNight": "Sorry @, not now. I'm working on an important project.",
   "companionDismiss": "That's okay! I've collected enough samples to last a while, thanks, @!",

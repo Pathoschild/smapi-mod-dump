@@ -1,0 +1,9 @@
+﻿{
+  "Name": "MURDER DRONE",
+  "Version": "0.0.7-unofficial.2-prism99",
+  "Description": "THIS DRONE WILL MURDER EVERYTHING",
+  "UniqueID": "cambam.MURDERDRONE",
+  "EntryDll": "MURDERDRONE.dll",
+  "MinimumApiVersion": "3.8.1",
+  "UpdateKeys": [ "Nexus:4507" ]
+}

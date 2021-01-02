@@ -10,11 +10,11 @@
 
 {
   "Name": "More Grass",
-  "Author": "EpicBellyFlop45",
-  "Version": "1.0.7",
+  "Author": "Satozaki",
+  "Version": "1.1.1",
   "Description": "Loads custom grass sprites",
   "UniqueID": "EpicBellyFlop45.MoreGrass",
   "EntryDll": "MoreGrass.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.8.0",
   "UpdateKeys": [ "Nexus:5398" ]
 }

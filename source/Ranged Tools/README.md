@@ -15,7 +15,7 @@ Playing with mouse controls, but find it annoying walking up to things just to g
 
 Note that this extended range is generally **only applied when mouse-clicking**, and things will otherwise work as usual. This mod is thus mainly intended for **mouse and keyboard** play, where you have a free-moving cursor. I don't currently plan on adding any sort of "controller support."
 
-Also, nothing else about your tools is affected. They still use the same animation, consume the usual amount of stamina, and can be upgraded as normal. Charged tool functionality is also unaffected.
+Also, nothing else about your tools is affected. They still use the same animation, consume the usual amount of stamina, and can be upgraded as normal.
 
 ## Installation
 
@@ -49,15 +49,29 @@ In the base game (or with false setting), you cannot use a tool on the tile you'
 
 Makes your farmer face toward the cursor when you click to use a tool or melee weapon respectively, even if you click outside the range. You may find this more natural, especially for melee weapons, as you'll at least use the tool/weapon in the general cardinal direction you clicked in.
 
+**ToolHitLocationDisplay (0, 1, or 2)**
+
+Affects how the Tool Hit Location display is determined (only when that game option is enabled).
+
+**0 (original logic):** Indicates the targeted tile according to the base game ranges.
+
+**1 (new logic, default):** Indicates the targeted tile taking into account extended ranges.
+
+**2 (combination):** Indicates both of the above. May be desirable to know what will be targeted should the cursor go beyond the custom range.
+
+**AllowRangedChargeEffects (true or false)**
+
+Whether to use the custom range for charged tool use as well. If enabled (true), charge effects will activate starting from the tile the cursor is over when you release the button. (At least currently, the charge-up animation does not reflect this.) If disabled, they will always start from your farmer, like normal.
+
 **CustomRangeOnClickOnly (true or false)**
 
 By default (true), this mod only takes effect when pressing a "use tool" button that is a mouse button. If you want it to work even when pressing a keyboard or controller "use tool" button, set this option to false. This will cause it to try and target the current cursor position always, so it's not recommended if you aren't actively moving the mouse around.
 
 ## Possible Mod Conflicts
 
-This mod affects the "use tool" function (adding an override for what tile the tool acts upon), as well as a range-checking function (in order to extend range of seed/object placement). I aimed to make them as unobtrusive as I could.
+This mod affects the "use tool" function (adding an override for what tile the tool acts upon), as well as a range-checking function (in order to extend range of seed/object placement). If ToolHitLocationDisplay is anything but 0, it also adds a bit to the player's draw method to change the hit location display logic. I aimed to make these as unobtrusive as I could.
 
-However, because the former in particular completely overrides the original function in many cases, it's possible that similar tool functionality mods operating in the same area may not work, or cause this mod to not work. This might be something I could fix on a case-by-case basis, but who knows.
+However, because the "use tool" function in particular is completely overriden in many cases, it's possible that similar tool functionality mods operating in the same area may not work, or cause this mod to not work. This might be something I could fix on a case-by-case basis, but who knows.
 
 ## Download
 

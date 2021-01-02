@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Auto Farm Screenshot",
+  "Author": "DwayneTen",
+  "Version": "1.0.1-unofficial.1-AevumDecessus",
+  "Description": "Automatically capture screenshot of your farm everyday.",
+  "UniqueID": "DwayneTen.AutoFarmScreenshot",
+  "EntryDll": "AutoFarmScreenshot.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": ["GitHub:Dwayneten/AutoFarmScreenshot"]
+}

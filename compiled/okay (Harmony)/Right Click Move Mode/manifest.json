@@ -1,0 +1,10 @@
+﻿{
+  "Author": "ylsama",
+  "Description": "A simple enchancement for game controls that allow player move your Farmmer by Mouse",
+  "EntryDll": "RightClickMoveMode.dll",
+  "MinimumApiVersion": "3.8",
+  "Name": "RightClickMoveMode",
+  "UniqueID": "ylsama.RightClickMoveMode",
+  "UpdateKeys": [ "Nexus:2614", "Github:ylsama/RightClickMoveMode" ],
+  "Version": "1.2.6"
+}

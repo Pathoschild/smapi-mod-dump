@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ExpandedPreconditionsUtility;
 using Microsoft.Xna.Framework;
 using NpcAdventure.Dialogues;
 using NpcAdventure.Loader;
@@ -26,7 +27,7 @@ using StardewValley.Objects;
 namespace NpcAdventure.StateMachine
 {
 
-    internal class CompanionStateMachine
+    internal class CompanionStateMachine : IDisposable
     {
         /// <summary>
         /// Allowed states in machine
@@ -47,9 +48,12 @@ namespace NpcAdventure.StateMachine
         public IReflectionHelper Reflection { get; }
         public Dictionary<StateFlag, ICompanionState> States { get; private set; }
         private ICompanionState currentState;
+        private readonly bool isVillager;
 
         public CompanionStateMachine(CompanionManager manager, NPC companion, CompanionMetaData metadata, IContentLoader loader, IReflectionHelper reflection, IMonitor monitor = null)
         {
+            this.isVillager = false;
+            this.Name = companion?.Name;
             this.CompanionManager = manager;
             this.Companion = companion;
             this.Metadata = metadata;
@@ -58,19 +62,20 @@ namespace NpcAdventure.StateMachine
             this.Bag = new Chest();
             this.Reflection = reflection;
             this.SpokenDialogues = new HashSet<string>();
-            this.Dialogues = new DialogueProvider(companion, loader);
+            this.Dialogues = new DialogueProvider(this, loader);
+        }
+
+        public CompanionStateMachine(string name, CompanionManager manager, CompanionMetaData metadata, IContentLoader loader, IReflectionHelper reflection, IMonitor monitor = null) : this(manager, null, metadata, loader, reflection, monitor)
+        {
+            this.Name = name;
+            this.isVillager = true;
+            this.ReloadNpc();
         }
 
         /// <summary>
         /// Our companion name (Refers NPC name)
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return this.Companion.Name;
-            }
-        }
+        public string Name { get; private set; }
 
         public StateFlag CurrentStateFlag { get; private set; }
         public Dictionary<int, SchedulePathDescription> BackedupSchedule { get; internal set; }
@@ -81,6 +86,24 @@ namespace NpcAdventure.StateMachine
         public HashSet<string> SpokenDialogues { get; private set; }
         public DialogueProvider Dialogues { get; }
 
+        public void ReloadNpc()
+        {
+            if (!this.isVillager)
+                return;
+
+            var npcDispositions = Game1.content.Load<Dictionary<string, string>>(@"Data\NPCDispositions");
+
+            if (!npcDispositions.ContainsKey(this.Name))
+            {
+                this.Monitor?.Log($"Unable to initialize companion `{this.Name}`, because this NPC cannot be found in the game. " +
+                        "Are you trying to add a custom NPC as a companion? Check the mod which adds this NPC into the game. " +
+                        "Don't report this as a bug to NPC Adventures unless it's a vanilla game NPC.", LogLevel.Error);
+                return;
+            }
+
+            this.Companion = Game1.getCharacterFromName(this.Name);
+        }
+
         /// <summary>
         /// Change companion state machine state
         /// </summary>
@@ -88,10 +111,10 @@ namespace NpcAdventure.StateMachine
         private void ChangeState(StateFlag stateFlag)
         {
             if (this.States == null)
-                throw new InvalidStateException("State machine is not ready! Call setup first.");
+                throw new InvalidStateException($"State machine for companion '{this.Name}' is not ready! Call setup first.");
 
             if (!this.States.TryGetValue(stateFlag, out ICompanionState newState))
-                throw new InvalidStateException($"Invalid state {stateFlag.ToString()}. Is state machine correctly set up?");
+                throw new InvalidStateException($"Invalid state {stateFlag} for companion '{this.Name}'. Is state machine correctly set up?");
 
             if (this.currentState == newState)
                 return;
@@ -103,7 +126,7 @@ namespace NpcAdventure.StateMachine
 
             newState.Entry();
             this.currentState = newState;
-            this.Monitor.Log($"{this.Name} changed state: {this.CurrentStateFlag.ToString()} -> {stateFlag.ToString()}");
+            this.Monitor.Log($"{this.Name} changed state: {this.CurrentStateFlag} -> {stateFlag}");
             this.CurrentStateFlag = stateFlag;
         }
 
@@ -128,16 +151,16 @@ namespace NpcAdventure.StateMachine
         /// <summary>
         /// Companion speaked a dialogue
         /// </summary>
-        /// <param name="speakedDialogue"></param>
-        public void DialogueSpeaked(Dialogue speakedDialogue)
+        /// <param name="spokenDialogue"></param>
+        public void OnDialogueSpoken(Dialogue spokenDialogue)
         {
             // Convert state to dialogue detector (if state implements it)
             if (this.currentState is IDialogueDetector detector)
             {
-                detector.OnDialogueSpoken(speakedDialogue); // Handle this dialogue
+                detector.OnDialogueSpoken(spokenDialogue); // Handle this dialogue
             }
 
-            if (speakedDialogue is CompanionDialogue companionDialogue && companionDialogue.SpecialAttributes.Contains("session"))
+            if (spokenDialogue is CompanionDialogue companionDialogue && companionDialogue.SpecialAttributes.Contains("session"))
             {
                 // Remember session spoken dialogue this day (forget morning)
                 this.SpokenDialogues.Add(companionDialogue.Tag);
@@ -147,15 +170,14 @@ namespace NpcAdventure.StateMachine
         /// <summary>
         /// Setup companion for new day
         /// </summary>
-        public void NewDaySetup()
+        public void SetupForNewDay()
         {
             if (this.CurrentStateFlag != StateFlag.RESET)
                 throw new InvalidStateException($"State machine {this.Name} must be in reset state!");
 
             // Today is festival day? Player can't recruit this companion
-            if (Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason))
+            if (!this.CanBeAvailableToday())
             {
-                this.Monitor.Log($"{this.Name} is unavailable to recruit due to festival today.");
                 this.MakeUnavailable();
                 return;
             }
@@ -169,8 +191,36 @@ namespace NpcAdventure.StateMachine
                 && !(this.Companion.isMarried() && SDate.Now().DayOfWeek == DayOfWeek.Monday);
             this.SpokenDialogues.Clear();
             this.MakeAvailable();
+
             if (this.CanSuggestToday)
                 this.Monitor.Log($"{this.Name} can suggest adventure today!");
+        }
+
+        /// <summary>
+        /// Check if the companion state can be set to AVAILABLE state
+        /// </summary>
+        /// <returns></returns>
+        private bool CanBeAvailableToday()
+        {
+            if (Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason))
+            {
+                this.Monitor.Log($"{this.Name} can't be available today for recruit due to festival day.");
+                return false; 
+            }
+
+            if (!string.IsNullOrEmpty(this.Metadata.Availability))
+            {
+                bool canBeAvailable = this.CompanionManager
+                    .EPU
+                    .CheckConditions(this.Metadata.Availability.Replace(';', '/'));
+
+                if (!canBeAvailable)
+                    this.Monitor.Log($"Availability condition `{this.Metadata.Availability}` is not met for '{this.Name}'. Companion is unavailable for recruit.");
+
+                return canBeAvailable;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -194,8 +244,6 @@ namespace NpcAdventure.StateMachine
 
         public Dialogue GenerateLocationDialogue(GameLocation location, string suffix = "")
         {
-            NPC companion = this.Companion;
-
             // Try generate only once spoken dialogue in game save
             if (this.Dialogues.GenerateStaticDialogue(location, $"companionOnce{suffix}") is CompanionDialogue dialogueOnce
                 && !this.CompanionManager.Farmer.hasOrWillReceiveMail(dialogueOnce.Tag))
@@ -283,6 +331,20 @@ namespace NpcAdventure.StateMachine
         }
 
         /// <summary>
+        /// Kills state machine current state behavior 
+        /// and forces empty behavior with RESET state flag.
+        /// </summary>
+        public void Kill()
+        {
+            var state = this.currentState;
+
+            this.currentState = null;
+            this.CurrentStateFlag = StateFlag.RESET;
+
+            state?.Exit();
+        }
+
+        /// <summary>
         /// Dismiss recruited companion
         /// </summary>
         /// <param name="keepUnavailableOthers">Keep other companions unavailable?</param>
@@ -319,12 +381,16 @@ namespace NpcAdventure.StateMachine
 
         public void Dispose()
         {
-            if (this.currentState != null)
-                this.currentState.Exit();
+            this.currentState?.Exit();
+            this.currentState = null;
+
+            foreach (var state in this.States.Values.OfType<IDisposable>())
+            {
+                state.Dispose();
+            }
 
             this.States.Clear();
             this.States = null;
-            this.currentState = null;
             this.Companion = null;
             this.CompanionManager = null;
             this.ContentLoader = null;
@@ -353,9 +419,23 @@ namespace NpcAdventure.StateMachine
         }
     }
 
-    class InvalidStateException : Exception
+    abstract class CompanionStateException : Exception
+    {
+        public CompanionStateException(string message) : base(message)
+        {
+        }
+    }
+
+    class InvalidStateException : CompanionStateException
     {
         public InvalidStateException(string message) : base(message)
+        {
+        }
+    }
+
+    class TransitionStateException : CompanionStateException
+    {
+        public TransitionStateException(string message) : base(message)
         {
         }
     }

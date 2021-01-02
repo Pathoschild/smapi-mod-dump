@@ -103,7 +103,7 @@ namespace Pathoschild.Stardew.FastAnimations.Framework
         /// <summary>Get whether the current player is riding a tractor from Tractor Mod.</summary>
         protected bool IsRidingTractor()
         {
-            return Game1.player?.mount?.Name?.StartsWith("tractor/") == true;
+            return Game1.player?.mount?.modData?.ContainsKey("Pathoschild.TractorMod") == true;
         }
     }
 }

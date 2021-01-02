@@ -12,10 +12,10 @@ A Stardew Valley mod that help you automatically takes a screenshot of farm ever
 
 ### REQUIREMENTS :
 
-[SMAPI - Stardew Modding API 3.0.1+](https://github.com/Pathoschild/SMAPI)
+[SMAPI - Stardew Modding API 3.8.0+](https://github.com/Pathoschild/SMAPI)
 
 
-### HOW THIS MOD WORK :
+### HOW THIS MOD WORKS :
 
 With Stardew Valley 1.4 update it comes a new map export feature
 
@@ -38,13 +38,25 @@ Screenshots will be saved in "%appdata%\StardewValley\Screenshots". You can also
 
 ### CONFIG :
 
-Open the config.json and change the scale number with in (0, 1] (default: 0.25 means 25%)
+Open config.json and change the values you would like to change 
 
 ``` json
 {
-  "ScaleNumber": 0.25
+  "ScaleNumber": 0.25,
+  "ScreenshotFormat": "{PlayerName}_{Season}_{Day}_{Year}"
 }
 ```
+
+* ScaleNumber: the zoom scale for the [0, 1] (default: 0.25 is 25% zoom)
+* ScreenshotFormat: The formatting for the name of the screenshots being taken
+  * {PlayerName} is replaced with the Farmer's name
+  * {Season} is replaced with the name of the current season
+  * {Day} is replaced with the day of the season in 2 digit format (01, 05, 11)
+  * {Year} is replaced with the current year in 2 digit format  (01, 05, 11)
+  * {TotalDays} is replaced with the total number of days that have passed since Spring 1, Year 1 in 4 digit format (0001, 0023)
+  * {FarmName} is replaced by the name of the farm
+  * Anything else is added literally to the screnshot name as is.
+  * I.E {PlayerName}_{Season}_{Day}_{Year} is turned into Bob_spring_03_01 for a character named Bob, on spring day 3, year 1
 
 ### NEXUS PAGE
 [AutoFarmScreenshot](https://www.nexusmods.com/stardewvalley/mods/4783/)

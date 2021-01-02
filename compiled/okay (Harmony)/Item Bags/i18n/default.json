@@ -12,7 +12,7 @@
   "ResourceBagName": "Resource Bag",
   "ResourceBagDescription": "A bag for storing resources.",
   "ConstructionBagName": "Construction Bag",
-  "ConstructionBagDescription": "A bag for storing fences, floors, path,\nand construction resources.",
+  "ConstructionBagDescription": "A bag for storing signs, fences, floors, paths,\nand construction resources.",
   "TreeBagName": "Tree Bag",
   "TreeBagDescription": "A bag for storing tree seeds and products.",
   "AnimalProductsBagName": "Animal Products Bag",

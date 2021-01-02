@@ -12,9 +12,9 @@ mods:
    More Grass
 
 latest commit:
-   commit a600a9eaf853556d69954aab8e773949bda56cfc
+   commit a3489772d4ff92804077bf6d91871057fc7abce4
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Sun Jun 28 17:23:17 2020 +0100
+   Date:   Thu Dec 31 20:05:23 2020 +0000
    
-       [FarmAnimalVarietyRedux] Allow JA items to not require full api token, expose all animals as StardewValley.Objects through api
+       [BarkingUpTheRightTree] Fix typos in README
    

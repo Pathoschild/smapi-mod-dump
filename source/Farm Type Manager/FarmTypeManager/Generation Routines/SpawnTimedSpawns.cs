@@ -65,18 +65,17 @@ namespace FarmTypeManager
                     {
                         continue; //skip to the next list
                     }
-
-                    GameLocation location = Game1.getLocationFromName(spawns[0].SavedObject.MapName); //get the location matching this object's map name (NOTE: do not use the area name, which may be different)
-
+                    
                     //validate the "only spawn if a player is present" setting
-                    if (spawns[0].SpawnArea.SpawnTiming.OnlySpawnIfAPlayerIsPresent)
+                    if (spawns[0].SpawnArea.SpawnTiming.OnlySpawnIfAPlayerIsPresent //if the setting is enabled
+                        || spawns[0].SavedObject.MapName.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase)) //OR if the target map is a mineshaft level (i.e. temporary)
                     {
                         FarmerCollection farmers = Game1.getOnlineFarmers(); //get all active players
 
                         bool playerIsPresent = false;
                         foreach (Farmer farmer in farmers)
                         {
-                            if (farmer.currentLocation == location) //if this farmer is at the current location
+                            if (spawns[0].SavedObject.MapName.Equals(farmer.currentLocation?.NameOrUniqueName, StringComparison.OrdinalIgnoreCase)) //if this farmer is at this spawn location
                             {
                                 playerIsPresent = true;
                                 break;
@@ -89,6 +88,9 @@ namespace FarmTypeManager
                             continue; //skip to the next list
                         }
                     }
+
+                    GameLocation location = Game1.getLocationFromName(spawns[0].SavedObject.MapName); //get the location matching this object's map name (NOTE: do not use the area name, which may be different)
+
 
                     int[] customTiles = { }; //the set of custom tiles to use (to be selected based on the spawn object's type)
                     int? monstersAtLocation = null; //the number of existing monsters at a location (used to optionally limit monster spawns)

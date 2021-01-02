@@ -1,0 +1,10 @@
+﻿{
+  "Name": "catGifts",
+  "Author": "skuldomg",
+  "Version": "1.1.8",
+  "Description": "Your cat or dog will randomly leave you gifts on your doorstep.",
+  "UniqueID": "skuldomg.catGifts",
+  "EntryDll": "catGifts.dll",
+  "MinimumApiVersion": "3.8.1",
+  "UpdateKeys": [ "Nexus:2132" ]
+}

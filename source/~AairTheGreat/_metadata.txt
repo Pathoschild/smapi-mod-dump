@@ -8,9 +8,10 @@ mods:
    Fish Finder
 
 latest commit:
-   commit 183d5af23d9c6daeccd2390b47af2504cac47014
+   commit 02d5220f23bee4bf3c412d89ba230c5109c0fd9e
+   Merge: a9100b7 b3176a4
    Author: Aair the Great <a_aair@hotmail.com>
-   Date:   Sun Mar 15 12:19:53 2020 -0700
+   Date:   Tue Dec 29 16:46:51 2020 -0800
    
-       Included new chinese translation into project
+       Merge branch 'master' of https://github.com/AairTheGreat/StardewValleyMods
    

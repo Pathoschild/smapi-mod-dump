@@ -168,6 +168,11 @@ namespace SpaceCore.Overrides
     [HarmonyPatch]
     public static class SaveGameLoadEnumeratorPatch
     {
+        private static Type FindModType( string xmlType )
+        {
+            return SpaceCore.modTypes.SingleOrDefault( t => t.GetCustomAttribute<XmlTypeAttribute>().TypeName == xmlType );
+        }
+
         private static void RestoreModNodes( XmlDocument doc, XmlNode node, List< KeyValuePair< string, string > > modNodes, string currPath = "" )
         {
             var processed = new List<KeyValuePair<string, string>>();
@@ -181,6 +186,11 @@ namespace SpaceCore.Overrides
                 {
                     var newDoc = new XmlDocument();
                     newDoc.LoadXml( modNode.Value );
+
+                    var attr = newDoc.DocumentElement.Attributes[ "xsi:type" ];
+                    if ( attr == null || FindModType( attr.Value ) == null )
+                        continue;
+
                     var newNode = doc.ImportNode( newDoc.DocumentElement, true );
 
                     int idx = int.Parse( idxStr );
@@ -403,6 +413,29 @@ namespace SpaceCore.Overrides
             }
 
             return newInsns;
+        }
+    }
+
+    [HarmonyPatch(typeof(SaveGame), nameof(SaveGame.loadDataToLocations))]
+    public static class SaveGameCleanLocationsPatch
+    {
+        public static void Prefix( List<GameLocation> gamelocations )
+        {
+            foreach ( var loc in gamelocations )
+            {
+                var objs = loc.netObjects.Pairs.ToArray();
+                foreach ( var pair in objs )
+                {
+                    if ( pair.Value == null )
+                        loc.netObjects.Remove( pair.Key );
+                }
+                var tfs = loc.terrainFeatures.Pairs.ToArray();
+                foreach ( var pair in tfs )
+                {
+                    if ( pair.Value == null )
+                        loc.terrainFeatures.Remove( pair.Key );
+                }
+            }
         }
     }
 }

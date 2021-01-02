@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeleportNpc", "TeleportNpc.csproj", "{8E9579E0-988E-4977-94B9-0A2C4D22DAB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E9579E0-988E-4977-94B9-0A2C4D22DAB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E9579E0-988E-4977-94B9-0A2C4D22DAB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E9579E0-988E-4977-94B9-0A2C4D22DAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E9579E0-988E-4977-94B9-0A2C4D22DAB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

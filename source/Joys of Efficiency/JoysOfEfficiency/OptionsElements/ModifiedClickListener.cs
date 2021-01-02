@@ -47,7 +47,7 @@ namespace JoysOfEfficiency.OptionsElements
             _menu = parent;
         }
 
-        public override void draw(SpriteBatch b, int slotX, int slotY)
+        public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
         {
             string text = $"{label}: [{_point.X},{_point.Y}]";
             Vector2 size = Game1.dialogueFont.MeasureString(text);
@@ -114,9 +114,7 @@ namespace JoysOfEfficiency.OptionsElements
                 batch.DrawString(Font, _translation.Get("location.awaiting"), new Vector2(x, y), Color.Black, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f);
                 y += (int)size.Y + 8;
 
-                size = Font.MeasureString(_translation.Get("button.esc"));
                 batch.DrawString(Font, _translation.Get("button.esc"), new Vector2(x, y), Color.Black, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f);
-                y += (int)size.Y + 8;
 
                 if (InstanceHolder.Config.ShowMousePositionWhenAssigningLocation)
                 {

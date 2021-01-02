@@ -48,9 +48,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 0ecbab4244cd7ecc24465aa0b0012cf4302eff03
+   commit 81b837258cd2d1b26cf9c0c1bf0745da01bf794b
    Author: David <david@millionideas.de>
-   Date:   Fri Sep 25 14:35:15 2020 +0200
+   Date:   Thu Dec 24 02:49:43 2020 +0100
    
        update releases
    

@@ -1,0 +1,12 @@
+{
+  "CreatedByVersionString": "1.0.1",
+  "NumberOpacity": 1.0,
+  "DrawToolTip": true,
+  "ToolTipOffset": "0, 0",
+  "MinimumEffect": 0.25,
+  "CombinePenalty": 0.03,
+  "CombineKeyNames": [
+    "LeftControl",
+    "RightControl"
+  ]
+}

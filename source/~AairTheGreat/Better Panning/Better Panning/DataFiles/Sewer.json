@@ -10,7 +10,10 @@
 
 {
   "AreaName": "Sewer",
-  "numberOfOreSpotsPerDay": 50,
+  "numberOfOreSpotsPerDay": 10,
+  "StartTime": 600,
+  "EndTime": 2600,
+  "CustomTreasure": false,
   "OreSpots": [
     "5, 19",
     "5, 23",

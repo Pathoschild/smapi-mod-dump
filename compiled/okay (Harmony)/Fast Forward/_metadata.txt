@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7413
+IDs: crazywig.fastforward, crazywig.FastForward
+update keys: Nexus:7413

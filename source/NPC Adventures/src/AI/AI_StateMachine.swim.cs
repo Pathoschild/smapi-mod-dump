@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -71,27 +72,24 @@ namespace NpcAdventure.AI
 
         public void ChangeIntoSwimsuit()
         {
-            if (this.swimsuit || !this.Csm.CompanionManager.Config.Experimental.UseSwimsuits)
+            if (this.swimsuit)
                 return;
-
-            var spriteDefinitions = this.Csm.ContentLoader.LoadStrings("Data/Swimsuits");
 
             this.swimsuit = true;
 
-            if (spriteDefinitions.TryGetValue(this.npc.Name, out string assetName))
+            try
             {
-                this.npc.Sprite.LoadTexture(this.Csm.ContentLoader.GetAssetKey(assetName));
+                this.npc.Sprite.LoadTexture($"Characters\\{this.npc.Name}_Beach");
             } 
-            else
+            catch (ContentLoadException ex)
             {
-                this.Monitor.Log($"Missing sprite definition `Data/Sprites:{this.npc.Name}_Swimsuit`");
-                this.Monitor.Log($"No swimsuit defined for {this.npc.Name}.", LogLevel.Debug);
+                this.Monitor.Log($"No swimsuit sprite for {this.npc.Name}: {ex.Message}", LogLevel.Debug);
             }
         }
 
         public void ChangeOutOfSwimsuit()
         {
-            if (!this.swimsuit || !this.Csm.CompanionManager.Config.Experimental.UseSwimsuits)
+            if (!this.swimsuit)
                 return;
 
             this.swimsuit = false;

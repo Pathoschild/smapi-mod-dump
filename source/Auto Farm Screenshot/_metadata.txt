@@ -5,9 +5,12 @@ mods:
    Auto Farm Screenshot
 
 latest commit:
-   commit 99a529c7d57b00848844a56fe8ffeb8912770d72
+   commit 3e4706645dee388e89f1f232af4a204476930785
+   Merge: 9448ae9 a655db1
    Author: DwayneTen <151809668@qq.com>
-   Date:   Wed Dec 4 23:10:23 2019 +0800
+   Date:   Fri Dec 25 18:27:00 2020 +0800
    
-       Update README.md
+       Merge pull request #3 from AevumDecessus/config_screenshot
+       
+       Added capability to change screnshot string
    

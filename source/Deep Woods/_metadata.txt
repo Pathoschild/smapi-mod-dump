@@ -5,9 +5,9 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 7ac3ca94d7bbbc4cf8312f68ab331ead5d0cc175
+   commit 3f36b2a51ebb2e82db9b71f6c9e67089e1500ff0
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Sat Aug 1 11:56:53 2020 +0200
+   Date:   Mon Dec 28 16:11:05 2020 +0100
    
-       Fixed DeepWoods Obelisk cost settings not having effect
+       Updated version for unicorn fix
    

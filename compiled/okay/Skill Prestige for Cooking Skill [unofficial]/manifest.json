@@ -1,7 +1,7 @@
 {
     "Name": "Skill Prestige for Cooking Skill",
     "Author": "Alphablackwolf",
-    "Version": "1.2.4-unofficial.12-pathoschild",
+    "Version": "1.2.4-unofficial.13-Jiopaba",
     "Description": "Extends Skill Prestige to support the Cooking Skill mod.",
     "UniqueID": "Alphablackwolf.CookingSkillPrestigeAdapter",
     "EntryDll": "SkillPrestige.CookingSkill.dll",

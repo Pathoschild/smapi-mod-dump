@@ -61,21 +61,17 @@ namespace ItemBags
                 {
                     Monitor.Log("Unable to execute command: Inventory is full!", LogLevel.Alert);
                 }
-                else if (Args.Length < 2)
+                else if (Args.Length < 1)
                 {
                     Monitor.Log("Unable to execute command: Required arguments missing!", LogLevel.Alert);
                 }
                 else
                 {
-                    string SizeName = Args[0];
-                    if (!Enum.TryParse(SizeName, out ContainerSize Size))
+                    //  If user didn't specify a size, give them 1 of every available size for thes BagType
+                    bool AllSizes = Args.Length < 2;
+                    if (AllSizes)
                     {
-                        Monitor.Log(string.Format("Unable to execute command: <BagSize> \"{0}\" is not valid. Expected valid values: {1}", SizeName, string.Join(", ", ValidSizes)), LogLevel.Alert);
-                    }
-                    else
-                    {
-                        string TypeName = string.Join(" ", Args.Skip(1));
-                        //Possible TODO: If you add translation support to this command, then find the BagType where BagType.GetTranslatedName().Equals(TypeName, StringComparison.CurrentCultureIgnoreCase));
+                        string TypeName = string.Join(" ", Args[0]);
                         BagType BagType = BagConfig.BagTypes.FirstOrDefault(x => x.Name.Equals(TypeName, StringComparison.CurrentCultureIgnoreCase));
                         if (BagType == null)
                         {
@@ -83,20 +79,59 @@ namespace ItemBags
                         }
                         else
                         {
-                            if (!BagType.SizeSettings.Any(x => x.Size == Size))
+                            foreach (ContainerSize Size in Enum.GetValues(typeof(ContainerSize)).Cast<ContainerSize>())
                             {
-                                Monitor.Log(string.Format("Unable to execute command: Type='{0}' does not contain a configuration for Size='{1}'", TypeName, SizeName), LogLevel.Alert);
+                                if (BagType.SizeSettings.Any(x => x.Size == Size))
+                                {
+                                    try
+                                    {
+                                        if (!Game1.player.isInventoryFull())
+                                        {
+                                            BoundedBag NewBag = new BoundedBag(BagType, Size, false);
+                                            Game1.player.addItemToInventory(NewBag);
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Monitor.Log(string.Format("ItemBags: Unhandled error while executing command: {0}", ex.Message), LogLevel.Error);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        string SizeName = Args[0];
+                        if (!Enum.TryParse(SizeName, out ContainerSize Size))
+                        {
+                            Monitor.Log(string.Format("Unable to execute command: <BagSize> \"{0}\" is not valid. Expected valid values: {1}", SizeName, string.Join(", ", ValidSizes)), LogLevel.Alert);
+                        }
+                        else
+                        {
+                            string TypeName = string.Join(" ", Args.Skip(1));
+                            //Possible TODO: If you add translation support to this command, then find the BagType where BagType.GetTranslatedName().Equals(TypeName, StringComparison.CurrentCultureIgnoreCase));
+                            BagType BagType = BagConfig.BagTypes.FirstOrDefault(x => x.Name.Equals(TypeName, StringComparison.CurrentCultureIgnoreCase));
+                            if (BagType == null)
+                            {
+                                Monitor.Log(string.Format("Unable to execute command: <BagType> \"{0}\" is not valid. Expected valid values: {1}", TypeName, string.Join(", ", ValidTypes)), LogLevel.Alert);
                             }
                             else
                             {
-                                try
+                                if (!BagType.SizeSettings.Any(x => x.Size == Size))
                                 {
-                                    BoundedBag NewBag = new BoundedBag(BagType, Size, false);
-                                    Game1.player.addItemToInventory(NewBag);
+                                    Monitor.Log(string.Format("Unable to execute command: Type='{0}' does not contain a configuration for Size='{1}'", TypeName, SizeName), LogLevel.Alert);
                                 }
-                                catch (Exception ex)
+                                else
                                 {
-                                    Monitor.Log(string.Format("ItemBags: Unhandled error while executing command: {0}", ex.Message), LogLevel.Error);
+                                    try
+                                    {
+                                        BoundedBag NewBag = new BoundedBag(BagType, Size, false);
+                                        Game1.player.addItemToInventory(NewBag);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Monitor.Log(string.Format("ItemBags: Unhandled error while executing command: {0}", ex.Message), LogLevel.Error);
+                                    }
                                 }
                             }
                         }

@@ -4,5 +4,8 @@
   "MushroomTreesGrowInWinter": false,
   "FruitTreesDontGrowInWinter": false,
   "FasterNormalTreeGrowth": false,
+  "SafeSprouts": false,
+  "BuffMahoganyTrees": false,
+  "GrowthIgnoresStumps": false,
   "FruitTreeGrowth": 0
 }

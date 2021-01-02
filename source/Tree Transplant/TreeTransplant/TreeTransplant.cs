@@ -137,7 +137,6 @@ namespace TreeTransplant
 					Game1.activeClickableMenu = new CarpenterMenu(false);
 					break;
 				case "Tree":
-					Game1.player.forceCanMove();
 					Game1.activeClickableMenu = new TreeTransplantMenu();
 					break;
 				case "Leave":
@@ -153,9 +152,10 @@ namespace TreeTransplant
 		{
 			// the list of seasons
 			var seasons = new[] { "spring", "summer", "fall", "winter" };
+			var trees = new[] { Tree.bushyTree, Tree.leafyTree, Tree.pineTree, Tree.mahoganyTree };
 
 			// create a render target to prepare the tree texture to
-			var texture = new RenderTarget2D(Game1.graphics.GraphicsDevice, 144, 96 * seasons.Length);
+			var texture = new RenderTarget2D(Game1.graphics.GraphicsDevice, 48 * trees.Length, 96 * seasons.Length);
 
 			// set the render target and clear the buffer
 			Game1.graphics.GraphicsDevice.SetRenderTarget(texture);
@@ -164,23 +164,26 @@ namespace TreeTransplant
 			// begin drawing session
 			Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
 
-			for (int s = 0; s < seasons.Length; s++)
+			// Get source rectangle for tree tops.
+			var treeTopSourceRect = new Tree().treeTopSourceRect;
+
+			for (var s = 0; s < seasons.Length; s++)
 			{
 				// loop through the three trees in the game
-				for (int i = 0; i < 3; i++)
+				for (var i = 0; i < trees.Length; i++)
 				{
 					// get the current season
-					string season = seasons[s];
+					var season = seasons[s];
 
 					// spring and summer share the same texture for the pine tree
-					if (i == 2 && season.Equals("summer"))
+					if (trees[i] == Tree.pineTree && season.Equals("summer"))
 						season = "spring";
 
 					// load the texture into memory
-					string treeString = $"TerrainFeatures\\tree{i + 1}_{season}";
+					var treeString = $"TerrainFeatures\\tree{trees[i]}_{season}";
 
 					// get the current tree's texture
-					Texture2D currentTreeTexture = Game1.content.Load<Texture2D>(treeString);
+					var currentTreeTexture = Game1.content.Load<Texture2D>(treeString);
 
 					// draw the trunk of the tree
 					Game1.spriteBatch.Draw(
@@ -193,7 +196,7 @@ namespace TreeTransplant
 					Game1.spriteBatch.Draw(
 						currentTreeTexture,
 						new Vector2(48 * i, 96 * s),
-						Tree.treeTopSourceRect,
+						treeTopSourceRect,
 						Color.White);
 				}
 			}
@@ -226,8 +229,11 @@ namespace TreeTransplant
 			Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
 
 			// get the special tree's texture
-			Texture2D mushroomTreeTexture = Game1.content.Load<Texture2D>("TerrainFeatures\\mushroom_tree");
-			Texture2D palmTreeTexture = Game1.content.Load<Texture2D>("TerrainFeatures\\tree_palm");
+			var mushroomTreeTexture = Game1.content.Load<Texture2D>("TerrainFeatures\\mushroom_tree");
+			var palmTreeTexture = Game1.content.Load<Texture2D>("TerrainFeatures\\tree_palm");
+
+			// Get source rectangle for tree tops.
+			var treeTopSourceRect = new Tree().treeTopSourceRect;
 
 			// draw the trunk of the tree
 			Game1.spriteBatch.Draw(
@@ -240,7 +246,7 @@ namespace TreeTransplant
 			Game1.spriteBatch.Draw(
 				palmTreeTexture,
 				new Vector2(0, 0),
-				Tree.treeTopSourceRect,
+				treeTopSourceRect,
 				Color.White);
 
 			// draw the trunk of the tree
@@ -254,7 +260,7 @@ namespace TreeTransplant
 			Game1.spriteBatch.Draw(
 				mushroomTreeTexture,
 				new Vector2(48, 0),
-				Tree.treeTopSourceRect,
+				treeTopSourceRect,
 				Color.White);
 
 			Game1.spriteBatch.End();

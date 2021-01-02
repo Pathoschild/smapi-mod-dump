@@ -5,9 +5,9 @@ mods:
    More Rings
 
 latest commit:
-   commit b53a41d9eb052871ee2b6c8801850ff302908097
+   commit a4085979e8fe250d73ab76b708f9808266410507
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Jun 8 18:54:15 2020 -0400
+   Date:   Thu Dec 24 22:31:35 2020 -0500
    
-       Added Quality+ Ring
+       1.5 stuff, move some stuff over from tool geodes as rings
    

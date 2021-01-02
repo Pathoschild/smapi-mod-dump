@@ -8,71 +8,87 @@
 **
 *************************************************/
 
+using BetterMixedSeeds.Models;
 using Harmony;
-using StardewModdingAPI;
 using StardewValley;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 
 namespace BetterMixedSeeds.Patches
 {
-    /// <summary>Contains patches for patching game code in the StardewValley.Crop class.</summary>
+    /// <summary>Contains patches for patching game code in the <see cref="StardewValley.Crop"/> class.</summary>
     internal class CropPatch
     {
-        /// <summary>Change the condition for the seed index from 473 to 1. (this was preventing Green Beans from being planted as it would decrement the number)</summary>
-        internal static IEnumerable<CodeInstruction> ConstructorTranspile(IEnumerable<CodeInstruction> instructions)
+        /*********
+        ** Internal Methods
+        *********/
+        /// <summary>The transpiler for the <see cref="StardewValley.Crop(int, int, int)"/> constructor.</summary>
+        /// <param name="instructions">The IL instructions.</param>
+        /// <returns>The new IL instructions.</returns>
+        /// <remarks>Used for removing the id shifting if green beans were picked (which resulted in never finding green beans).</remarks>
+        internal static IEnumerable<CodeInstruction> ConstructorTranspiler(IEnumerable<CodeInstruction> instructions)
         {
-            bool changed = false;
+            var patchApplied = false;
 
-            foreach (CodeInstruction instruction in instructions)
+            foreach (var instruction in instructions)
             {
-                if (!changed && instruction.opcode == OpCodes.Ldc_I4 && (int)instruction.operand == 473)
+                // check if this instruction is the one responsible for the condition to id shift green beans
+                if (!patchApplied && ModEntry.Instance.Config.EnableTrellisCrops && instruction.opcode == OpCodes.Ldc_I4 && (int)instruction.operand == 473) // ensure trillis crops are allowed (green beans is a trellis crop)
                 {
-                    // Changes the condition of the if to check for id of 1 instead of 473 (an Id that will never be returned by the method patch)
-                    changed = true;
+                    patchApplied = true;
+
+                    // change the id shift condition to 1 (which won't ever be true) so grean beans can be dropped
                     instruction.operand = 1;
+                    yield return instruction;
+                    continue;
                 }
 
                 yield return instruction;
             }
         }
 
-        /// <summary>This is code that will replace some game code, this is ran whenever the player is about to place some mixed seeds. Used for calculating the result from the seed list.</summary>
+        /// <summary>The prefix for the <see cref="StardewValley.Crop.getRandomLowGradeCropForThisSeason(string)"/> method.</summary>
         /// <param name="season">The current game season.</param>
-        /// <param name="__result">The seed id that will be planted from the mixed seeds.</param>
-        /// <returns>If no seeds are available, return true (This means the actual game code will be ran). If seeds are available, return false (This means the actual game code doesn't get ran)</returns>
-        internal static bool RandomCropPrefix(string season, ref int __result)
+        /// <param name="__result">The return object from the original method (the seed id that will be planted from the mixed seeds).</param>
+        /// <returns><see langword="true"/> if the original method should get ran; otherwise, <see langword="false"/> (this depends on if there were valid seeds to plant).</returns>
+        /// <remarks>Used for calculating the result from the seed list.</remarks>
+        internal static bool GetRandomLowGradeCropForThisSeasonPrefix(string season, ref int __result)
         {
-            List<int> possibleSeeds = new List<int>();
+            List<Seed> possibleSeeds;
 
+            // get possible seeds, determined from season and whether they are in the greenhouse
             if (Game1.currentLocation.IsGreenhouse)
-            {
-                possibleSeeds = ModEntry.Seeds
-                    .Select(seed => seed.Id)
+                possibleSeeds = ModEntry.Instance.Seeds
                     .ToList();
-            }
             else
-            {
-                possibleSeeds = ModEntry.Seeds
-                    .Where(seed => seed.Seasons.Contains(season))
-                    .Select(seed => seed.Id)
+                possibleSeeds = ModEntry.Instance.Seeds
+                    .Where(seed => seed.Season.ToLower() == season.ToLower())
                     .ToList();
-            }
 
-            if (possibleSeeds.Any())
-            {
-                __result = possibleSeeds[new Random().Next(possibleSeeds.Count())];
-                var test2 = __result;
-                var test = ModEntry.Seeds.Where(seed => seed.Id == test2);
-            }
-            else
-            {
-                ModEntry.ModMonitor.Log("No possible seeds in seed list", LogLevel.Error);
+            // ensure there are possible seeds, if not then let the original method run
+            if (!possibleSeeds.Any())
                 return true;
+
+            // get the total drop chance of all crops
+            var totalDropChance = 0f;
+            foreach (var possibleSeed in possibleSeeds)
+                totalDropChance += possibleSeed.DropChance;
+
+            // pick a random seed
+            var randomValue = (float)(Game1.random.NextDouble() * totalDropChance);
+            foreach (var possibleSeed in possibleSeeds)
+            {
+                randomValue -= possibleSeed.DropChance;
+                if (randomValue <= 0)
+                {
+                    __result = possibleSeed.Id;
+                    return false;
+                }
             }
 
+            // this shouldn't ever get ran, but if for whatever reason this it does, just return the first seed
+            __result = possibleSeeds[0].Id;
             return false;
         }
     }

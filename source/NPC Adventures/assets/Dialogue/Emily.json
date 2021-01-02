@@ -9,6 +9,11 @@
 *************************************************/
 
 {
+  "companionAccepted_Spouse": "Absolutely! I'd love to go! I can't wait to go outside and spend some time with you in nature!$1",
+  "companionRejectedNight_Spouse": "I don't think it's a good idea to go out at this hour, dear. Maybe next time!",
+  "companionDismiss_Spouse": "I had great time with you, @! Thank you for taking me out, today!$1#$b#Say hi to Haley and Clint for me if you see them! See you at home!",
+  "companionDismissAuto_Spouse": "I should get going. It was really nice going out with you.#$b#Don't stay out too late and stay safe. May Yoba always protect you.",
+  "companionRecruited_Spouse": "I really love spending time with you, dear. It makes me feel all sorts of positive emotion inside.$4",
   "companionAccepted": "Absolutely!$h",
   "companionRejected": "No, thank you. I feel the spirits are unhappy with me today.",
   "companionRejectedNight": "Don't you know it's dangerous to explore at night?",

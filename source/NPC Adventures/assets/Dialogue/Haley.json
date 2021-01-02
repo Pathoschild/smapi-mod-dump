@@ -9,6 +9,11 @@
 *************************************************/
 
 {
+  "companionAccepted_Spouse": "Sure! I really enjoy going out with you!$1#$b#Let me get my camera, maybe we can take some cute pictures together on the way.",
+  "companionRejectedNight_Spouse": "I don't really like going outdoor at night, @.$2#$b#I prefer spending the night with you in our house. *giggles*$4",
+  "companionDismiss_Spouse": "Okay, I'll get going then!#$b#I snatched some cute candids of you, I better back them up!$1#$b#Love you, and take care, honey!",
+  "companionDismissAuto_Spouse": "I had fun time going out with you today, babe, but my feet are killing me.$2#$b#I'll go home and get some rest, you should go home soon too.#$b#Stay safe, love you!$1",
+  "companionRecruited_Spouse": "Ooh, I am so excited!! I even bring spare memory card and battery for my camera!$1",
   "companionAccepted": "Alright, but let's avoid the mines. I don't want to get all dirty.",
   "companionRejected": "Sounds boring...$2",
   "companionRejectedNight": "It's too late to do anything now.$3",

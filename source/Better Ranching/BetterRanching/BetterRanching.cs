@@ -33,7 +33,7 @@ namespace BetterRanching
 		{
 			Config = helper.ReadConfig<ModConfig>();
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-			helper.Events.Display.RenderingHud += OnRenderingHud;
+			helper.Events.Display.RenderedWorld += OnRenderedWorld;
 			helper.Events.Input.ButtonPressed += OnButtonPressed;
 		}
 
@@ -153,10 +153,7 @@ namespace BetterRanching
 			}
 		}
 
-		/// <summary>Raised before drawing the HUD (item toolbar, clock, etc) to the screen. The vanilla HUD may be hidden at this point (e.g. because a menu is open).</summary>
-		/// <param name="sender">The event sender.</param>
-		/// <param name="e">The event data.</param>
-		private void OnRenderingHud(object sender, RenderingHudEventArgs e)
+		private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
 		{
 			if (!Context.IsWorldReady || !Game1.currentLocation.IsFarm || Game1.eventUp)
 			{
@@ -190,7 +187,6 @@ namespace BetterRanching
 					}
 				}
 			}
-
 		}
 
 		public void DrawItemBubble(SpriteBatch spriteBatch, FarmAnimal animal)

@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Objects;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -182,14 +183,9 @@ namespace HereFishy
 			{
 				o = new Object(Game1.random.Next(167, 173), 1, false, -1, 0);
 			}
-			pullFishFromWater(who, x, y, o.ParentSheetIndex);
-			return;
 
-		}
 
-		private static void pullFishFromWater(Farmer who, int x, int y, int parentSheetIndex)
-		{
-
+			int parentSheetIndex = o.parentSheetIndex;
 			animations.Clear();
 			float t;
 			lastUser = who;
@@ -200,21 +196,53 @@ namespace HereFishy
 			{
 				datas = data[whichFish].Split('/');
 			}
+
+
+			bool non_fishable_fish = false;
+			if (o is Furniture)
+			{
+				non_fishable_fish = true;
+			}
+			else if (Utility.IsNormalObjectAtParentSheetIndex(o, o.ParentSheetIndex) && data.ContainsKey(o.ParentSheetIndex))
+			{
+				string[] array = data[o.ParentSheetIndex].Split(new char[]
+				{
+							'/'
+				});
+				int difficulty = -1;
+				if (!int.TryParse(array[1], out difficulty))
+				{
+					non_fishable_fish = true;
+				}
+			}
+			else
+			{
+				non_fishable_fish = true;
+			}
+
+
 			float fs = 1f;
 			int minimumSizeContribution = 1 + who.FishingLevel / 2;
 			fs *= (float)Game1.random.Next(minimumSizeContribution, Math.Max(6, minimumSizeContribution)) / 5f;
 			fs *= 1.2f;
 			fs *= 1f + (float)Game1.random.Next(-10, 11) / 100f;
 			fs = Math.Max(0f, Math.Min(1f, fs));
-			if(datas != null)
+			if(datas != null && !non_fishable_fish)
             {
-				int minFishSize = int.Parse(datas[3]);
-				int maxFishSize = int.Parse(datas[4]);
-				fishSize = (int)((float)minFishSize + (float)(maxFishSize - minFishSize) * fishSize);
-				fishSize++;
-				fishQuality = (((double)fishSize < 0.33) ? 0 : (((double)fishSize < 0.66) ? 1 : 2));
-				if (perfect)
-					fishQuality *= 2;
+				try
+				{
+					int minFishSize = int.Parse(datas[3]);
+					int maxFishSize = int.Parse(datas[4]);
+					fishSize = (int)((float)minFishSize + (float)(maxFishSize - minFishSize) * fishSize);
+					fishSize++;
+					fishQuality = (((double)fishSize < 0.33) ? 0 : (((double)fishSize < 0.66) ? 1 : 2));
+					if (perfect)
+						fishQuality *= 2;
+				}
+				catch 
+				{
+					context.Monitor.Log($"Error getting fish size from {data[whichFish]}", LogLevel.Error);
+				}
 			}
 			bossFish = FishingRod.isFishBossFish(whichFish);
 			caughtDoubleFish = !bossFish && Game1.random.NextDouble() < 0.1 + Game1.player.DailyLuck / 2.0;
@@ -223,7 +251,7 @@ namespace HereFishy
 
 			if (who.IsLocalPlayer)
 			{
-				if (datas != null)
+				if (datas != null && !non_fishable_fish)
 				{
 					fishDifficulty = int.Parse(datas[1]);
 

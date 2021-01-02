@@ -273,6 +273,7 @@ namespace MultipleSpouses
                     {
 						ModEntry.PMonitor.Log($"Couldn't load TMX spouse room layers for spouse {name}. Exception: {ex}", LogLevel.Error);
 					}
+					ModEntry.PMonitor.Log($"Loaded TMX spouse room layers for spouse {name}.");
 
 					indexInSpouseMapSheet = 0;
 				}
@@ -368,11 +369,11 @@ namespace MultipleSpouses
 					for (int y = 0; y < areaToRefurbish.Height; y++)
 					{
 						//PMonitor.Log($"x {x}, y {y}", LogLevel.Debug);
-						if (refurbishedMap.GetLayer(back).Tiles[mapReader.X + x, mapReader.Y + y] != null)
+						if (refurbishedMap.GetLayer(back)?.Tiles[mapReader.X + x, mapReader.Y + y] != null)
 						{
 							farmHouse.map.GetLayer("Back").Tiles[areaToRefurbish.X + x, areaToRefurbish.Y + y] = new StaticTile(farmHouse.map.GetLayer("Back"), farmHouse.map.GetTileSheet(refurbishedMap.GetLayer(back).Tiles[mapReader.X + x, mapReader.Y + y].TileSheet.Id), BlendMode.Alpha, refurbishedMap.GetLayer(back).Tiles[mapReader.X + x, mapReader.Y + y].TileIndex);
 						}
-						if (refurbishedMap.GetLayer(buildings).Tiles[mapReader.X + x, mapReader.Y + y] != null)
+						if (refurbishedMap.GetLayer(buildings)?.Tiles[mapReader.X + x, mapReader.Y + y] != null)
 						{
 							farmHouse.map.GetLayer("Buildings").Tiles[areaToRefurbish.X + x, areaToRefurbish.Y + y] = new StaticTile(farmHouse.map.GetLayer("Buildings"), farmHouse.map.GetTileSheet(refurbishedMap.GetLayer(buildings).Tiles[mapReader.X + x, mapReader.Y + y].TileSheet.Id), BlendMode.Alpha, refurbishedMap.GetLayer(buildings).Tiles[mapReader.X + x, mapReader.Y + y].TileIndex);
 
@@ -382,7 +383,7 @@ namespace MultipleSpouses
 						{
 							farmHouse.map.GetLayer("Buildings").Tiles[areaToRefurbish.X + x, areaToRefurbish.Y + y] = null;
 						}
-						if (y < areaToRefurbish.Height - 1 && refurbishedMap.GetLayer(front).Tiles[mapReader.X + x, mapReader.Y + y] != null)
+						if (y < areaToRefurbish.Height - 1 && refurbishedMap.GetLayer(front)?.Tiles[mapReader.X + x, mapReader.Y + y] != null)
 						{
 							farmHouse.map.GetLayer("Front").Tiles[areaToRefurbish.X + x, areaToRefurbish.Y + y] = new StaticTile(farmHouse.map.GetLayer("Front"), farmHouse.map.GetTileSheet(refurbishedMap.GetLayer(front).Tiles[mapReader.X + x, mapReader.Y + y].TileSheet.Id), BlendMode.Alpha, refurbishedMap.GetLayer(front).Tiles[mapReader.X + x, mapReader.Y + y].TileIndex);
 							typeof(GameLocation).GetMethod("adjustMapLightPropertiesForLamp", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(farmHouse, new object[] { refurbishedMap.GetLayer(front).Tiles[mapReader.X + x, mapReader.Y + y].TileIndex, areaToRefurbish.X + x, areaToRefurbish.Y + y, "Front" });
@@ -512,6 +513,7 @@ namespace MultipleSpouses
 
 		public static void ReplaceBed(FarmHouse farmHouse)
 		{
+			return;
 			try
 			{
 				Monitor.Log("Replacing bed");
@@ -729,7 +731,7 @@ namespace MultipleSpouses
 		}
 		internal static void ExpandKidsRoom(FarmHouse farmHouse)
 		{
-
+			return;
 			ModEntry.PMonitor.Log("Expanding kids room");
 
 			int extraWidth = Math.Max(ModEntry.config.ExtraCribs,0) * 3 + Math.Max(ModEntry.config.ExtraKidsRoomWidth, 0) + Math.Max(ModEntry.config.ExtraKidsBeds, 0) * 4;

@@ -1,0 +1,58 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/MegaStorageMod
+**
+*************************************************/
+
+{
+	"Name": "Large Chest",
+	"Description": "A large place to store your items.",
+	"Recipe": {
+		"Ingredients": [
+			{
+				"Object": 388,
+				"Count": 100
+			},
+			{
+				"Object": 334,
+				"Count": 5
+			},
+			{
+				"Object": 335,
+				"Count": 5
+			}
+		],
+		"IsDefault": true
+	},
+	"ReserveExtraIndexCount": 16,
+	"NameLocalization": {
+		//"es": "", //Spanish
+		"ko": "큰 상자",
+		"de": "Große Kiste", //German
+		//"fr": "", //French
+		//"hu": "", //Hungarian
+		//"it": "", //Italian
+		//"ja": "", //Japanese
+		//"pt": "", //Portuguese
+		//"ru": "", //Russian
+		//"tr": "", //Turkish
+		"zh": "大箱子" //Chinese (Simplified)
+	},
+	"DescriptionLocalization": {
+		//"es": "", //Spanish
+		"ko": "물건을 보관할 수 있는 넓은 상자.",
+		"de": "Eine größere Kiste, um deine Gegenstände zu lagern.", //German
+		//"fr": "", //French
+		//"hu": "", //Hungarian
+		//"it": "", //Italian
+		//"ja": "", //Japanese
+		//"pt": "", //Portuguese
+		//"ru": "", //Russian
+		//"tr": "", //Turkish
+		"zh": "一个比默认箱子更大的大箱子，用于存放更多物品。" //Chinese (Simplified)
+	}
+}

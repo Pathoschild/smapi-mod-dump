@@ -26,7 +26,7 @@ namespace JoysOfEfficiency.Huds
         private static readonly MineIcons Icons = new MineIcons();
         private static List<Monster> _lastMonsters = new List<Monster>();
 
-        public static string LastKilledMonster { get; private set; }
+        public static Monster LastKilledMonster { get; private set; }
 
         public static void DrawMineGui(MineShaft shaft)
         {
@@ -39,7 +39,7 @@ namespace JoysOfEfficiency.Huds
             {
                 if (!currentMonsters.Contains(mon) && mon.Name != "ignoreMe")
                 {
-                    LastKilledMonster = mon.Name;
+                    LastKilledMonster = mon;
                 }
             }
             _lastMonsters = currentMonsters.ToList();
@@ -47,8 +47,8 @@ namespace JoysOfEfficiency.Huds
             string ladderStr = null;
             if (LastKilledMonster != null)
             {
-                int kills = Game1.stats.getMonstersKilled(LastKilledMonster);
-                tallyStr = string.Format(Translation.Get("monsters.tally"), LastKilledMonster, kills);
+                int kills = Game1.stats.getMonstersKilled(LastKilledMonster.Name);
+                tallyStr = string.Format(Translation.Get("monsters.tally"), LastKilledMonster.displayName, kills);
             }
 
             string stonesStr;

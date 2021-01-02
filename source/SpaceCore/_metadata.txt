@@ -5,9 +5,9 @@ mods:
    SpaceCore
 
 latest commit:
-   commit f439c20e1c8ce1af5d0fcad29a53dbab9d437a13
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Dec 21 13:24:44 2020 -0500
+   commit e58da8b8d4b0ba867472a9e09449e68e367f3352
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Sat Dec 26 21:47:36 2020 -0500
    
-       New serialization API. 1.5.0
+       Fix winter crops; 1.5.1
    

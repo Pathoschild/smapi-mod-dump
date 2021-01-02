@@ -94,6 +94,16 @@
   "options.ChopTwigs": "Chop twigs (Axe)",
   "options.PriceBoxCoordinates": "Top-left coordinates for the information box",
 
+  "options.ThrowPower": "Bobber throwing strength",
+  "options.ThresholdStaminaPersentage": "Stamina threshold to stop fishing",
+
+  "options.ToggleAFKFishing":  "Toggle AFK Fishing mode",
+
+  "hud.afk.passedout": "You stopped fishing because you passed out.",
+  "hud.afk.on": "AFK Fishing enabled.",
+  "hud.afk.off": "AFK Fishing disabled.",
+  "hud.afk.tired":  "You stopped fishing because you felt tired.",
+
   "options.flower": "Flower:{0}",
   "options.R": "R",
   "options.G": "G",

@@ -1,0 +1,10 @@
+{
+  "Name": "AdventCalendarMod",
+  "Author": "Darzington",
+  "Version": "1.0.0",
+  "Description": "A Winter advent calendar which mails the player something nice each day",
+  "UniqueID": "darzington.AdventCalendarMod",
+  "EntryDll": "AdventCalendar.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

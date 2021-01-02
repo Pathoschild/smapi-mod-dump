@@ -36,6 +36,7 @@ using PyTK.CustomElementHandler;
 namespace ItemBags.Bags
 {
     /// <summary>Represents an <see cref="ItemBag"/> that can only store certain, pre-defined Items in it.</summary>
+    //[XmlType("Mods_BoundedBag")]
     [XmlRoot(ElementName = "BoundedBag", Namespace = "")]
     [KnownType(typeof(BundleBag))]
     [XmlInclude(typeof(BundleBag))]
@@ -87,9 +88,11 @@ namespace ItemBags.Bags
 
         /// <summary>If true, then when the player picks up an item that can be stored in this bag, it will automatically be stored if there is space for it.<para/>
         /// If multiple <see cref="BoundedBag"/> objects can store the item and have <see cref="Autofill"/>=true, then the item will be stored in the first one we can find that already has a stack of that item in it.</summary>
+        [XmlIgnore]
         public bool Autofill { get; set; }
 
         /// <summary>Key = the DisplayName of an item that is skipped when autofilling. Value = the Qualities of that item to skip.</summary>
+        [XmlIgnore]
         public Dictionary<string, HashSet<ObjectQuality>> ExcludedAutofillItems { get; private set; }
 
         public void ToggleItemAutofill(Object Item)
@@ -136,14 +139,18 @@ namespace ItemBags.Bags
         }
 
         /// <summary>The Objects that can be stored in this bag.</summary>
+        [XmlIgnore]
         public ReadOnlyCollection<AllowedObject> AllowedObjects { get; protected set; }
 
         /// <summary>The type that this Bag instance is using. The <see cref="BagType"/> defines things like the name, description, what kinds of items can be stored etc. 
         /// A <see cref="BagType"/> is unique, but there can be multiple <see cref="BoundedBag"/> instances that are using the same type's metadata.</summary>
+        [XmlIgnore]
         public BagType TypeInfo { get; protected set; }
+        [XmlIgnore]
         public BagSizeConfig SizeInfo { get; protected set; }
 
         private int _MaxStackSize { get; set; }
+        [XmlIgnore]
         public override int MaxStackSize { get { return _MaxStackSize; } }
 
         /// <summary>Default parameterless constructor intended for use by XML Serialization. Do not use this constructor to instantiate a bag.</summary>

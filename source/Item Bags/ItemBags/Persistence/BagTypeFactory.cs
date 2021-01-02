@@ -104,7 +104,7 @@ namespace ItemBags.Persistence
         public static BagType GetSmithingBagType()
         {
             List<BagSizeConfig.BagShop> DefaultSellers = new List<BagSizeConfig.BagShop>() { BagSizeConfig.BagShop.Clint };
-            HashSet<int> BigCraftableIds = new HashSet<int>() { 13 }; // Furnace
+            HashSet<int> BigCraftableIds = new HashSet<int>() { 13, 182 }; // Furnace, Geode Crusher
             double PriceMultiplier = 1.5;
 
             return new BagType()
@@ -174,18 +174,13 @@ namespace ItemBags.Persistence
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Giant] * PriceMultiplier), ItemBag.RoundingMode.Floor),
                         Items = new int[]
                         {
-                            378, 334, 380, 335, 384, 336, 386, 337,     // Copper Ore, Copper Bar, Iron Ore, Iron Bar, Gold Ore, Gold Bar, Iridium Ore, Iridium Bar
-                            382, 80, 82, 338, 535, 536, 537, 749,       // Coal, Quartz, Fire Quartz, Refined Quartz, Geode, Frozen Geode, Magma Geode, Omni Geode
-                            13                                          // Furnace
+                            378, 334, 380, 335, 384, 336, 386, 337, 909, 910,   // Copper Ore, Copper Bar, Iron Ore, Iron Bar, Gold Ore, Gold Bar, Iridium Ore, Iridium Bar, Radioactive Ore, Radioactive Bar
+                            382, 80, 82, 338, 535, 536, 537, 749, 13, 182       // Coal, Quartz, Fire Quartz, Refined Quartz, Geode, Frozen Geode, Magma Geode, Omni Geode, Furnace, Geode Crusher
                         }.Select(x => new StoreableBagItem(x, false, null, BigCraftableIds.Contains(x))).ToList(),
                         MenuOptions = new BagMenuOptions()
                         {
                             GroupByQuality = false,
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
-                            {
-                                Columns = 8,
-                                LineBreakIndices = new int[] { 7, 15 }
-                            }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 10 }
                         }
                     },
                     new BagSizeConfig()
@@ -195,18 +190,13 @@ namespace ItemBags.Persistence
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Massive] * PriceMultiplier), ItemBag.RoundingMode.Floor),
                         Items = new int[]
                         {
-                            378, 334, 380, 335, 384, 336, 386, 337,     // Copper Ore, Copper Bar, Iron Ore, Iron Bar, Gold Ore, Gold Bar, Iridium Ore, Iridium Bar
-                            382, 80, 82, 338, 535, 536, 537, 749,       // Coal, Quartz, Fire Quartz, Refined Quartz, Geode, Frozen Geode, Magma Geode, Omni Geode
-                            13                                          // Furnace
+                            378, 334, 380, 335, 384, 336, 386, 337, 909, 910,   // Copper Ore, Copper Bar, Iron Ore, Iron Bar, Gold Ore, Gold Bar, Iridium Ore, Iridium Bar, Radioactive Ore, Radioactive Bar
+                            382, 80, 82, 338, 535, 536, 537, 749, 13, 182       // Coal, Quartz, Fire Quartz, Refined Quartz, Geode, Frozen Geode, Magma Geode, Omni Geode, Furnace, Geode Crusher
                         }.Select(x => new StoreableBagItem(x, false, null, BigCraftableIds.Contains(x))).ToList(),
                         MenuOptions = new BagMenuOptions()
                         {
                             GroupByQuality = false,
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
-                            {
-                                Columns = 8,
-                                LineBreakIndices = new int[] { 7, 15 }
-                            }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 10 }
                         }
                     }
                 }
@@ -356,9 +346,9 @@ namespace ItemBags.Persistence
                             new int[] { },
                             new int[]
                             {
-                                378, 380, 384, 386, 535, 536, 537, 749,     // Copper Ore, Iron Ore, Gold Ore, Iridium Ore, Geode, Frozen Geode, Magma Geode, Omni Geode
-                                68, 66, 62, 70, 60, 64, 72, 74,             // Topaz, Amethyst, Aquamarine, Jade, Emerald, Ruby, Diamond, Prismatic Shard
-                                390, 382, 80, 86, 84, 82                    // Stone, Coal, Quartz, Earth Crystal, Frozen Tear, Fire Quartz
+                                378, 380, 384, 386, 909, 535, 536, 537, 749,    // Copper Ore, Iron Ore, Gold Ore, Iridium Ore, Radioactive Ore, Geode, Frozen Geode, Magma Geode, Omni Geode
+                                382, 68, 66, 62, 70, 60, 64, 72, 74,            // Coal, Topaz, Amethyst, Aquamarine, Jade, Emerald, Ruby, Diamond, Prismatic Shard
+                                390, 382, 80, 86, 84, 82, 848                   // Stone, Quartz, Earth Crystal, Frozen Tear, Fire Quartz, Cinder Shard
                             },
                             BigCraftableIds
                         ),
@@ -366,7 +356,7 @@ namespace ItemBags.Persistence
                         {
                             GroupByQuality = false,
                             GroupedLayoutOptions = new BagMenuOptions.GroupedLayout() { },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 8 }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 9 }
                         }
                     },
                     new BagSizeConfig()
@@ -379,9 +369,9 @@ namespace ItemBags.Persistence
                             new int[] { },
                             new int[]
                             {
-                                378, 380, 384, 386, 535, 536, 537, 749,     // Copper Ore, Iron Ore, Gold Ore, Iridium Ore, Geode, Frozen Geode, Magma Geode, Omni Geode
-                                68, 66, 62, 70, 60, 64, 72, 74,             // Topaz, Amethyst, Aquamarine, Jade, Emerald, Ruby, Diamond, Prismatic Shard
-                                390, 382, 80, 86, 84, 82                    // Stone, Coal, Quartz, Earth Crystal, Frozen Tear, Fire Quartz
+                                378, 380, 384, 386, 909, 535, 536, 537, 749,    // Copper Ore, Iron Ore, Gold Ore, Iridium Ore, Radioactive Ore, Geode, Frozen Geode, Magma Geode, Omni Geode
+                                382, 68, 66, 62, 70, 60, 64, 72, 74,            // Coal, Topaz, Amethyst, Aquamarine, Jade, Emerald, Ruby, Diamond, Prismatic Shard
+                                390, 382, 80, 86, 84, 82, 848                   // Stone, Quartz, Earth Crystal, Frozen Tear, Fire Quartz, Cinder Shard
                             },
                             BigCraftableIds
                         ),
@@ -389,7 +379,7 @@ namespace ItemBags.Persistence
                         {
                             GroupByQuality = false,
                             GroupedLayoutOptions = new BagMenuOptions.GroupedLayout() { },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 8 }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 9 }
                         }
                     }
                 }
@@ -399,6 +389,7 @@ namespace ItemBags.Persistence
         public static BagType GetResourceBagType()
         {
             List<BagSizeConfig.BagShop> DefaultSellers = new List<BagSizeConfig.BagShop>() { BagSizeConfig.BagShop.Robin, BagSizeConfig.BagShop.Pierre };
+            List<int> BigCraftableIds = new List<int>() { 231 }; // Solar Panel
 
             double PriceMultiplier = 1.4;
 
@@ -477,15 +468,15 @@ namespace ItemBags.Persistence
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Giant] * PriceMultiplier), ItemBag.RoundingMode.Floor),
                         Items = new int[]
                         {
-                            378, 334, 380, 335, 384, 336, 386, 337,
-                            390, 382, 771, 330, 388, 709, 338, 787
-                        }.Select(x => new StoreableBagItem(x, false)).ToList(),
+                            378, 334, 380, 335, 384, 336, 386, 337, 909, 910,
+                            390, 382, 771, 330, 388, 709, 338, 848, 787, 231
+                        }.Select(x => new StoreableBagItem(x, false, null, BigCraftableIds.Contains(x))).ToList(),
                         MenuOptions = new BagMenuOptions()
                         {
                             GroupByQuality = false,
                             UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
                             {
-                                Columns = 8,
+                                Columns = 10,
                             }
                         }
                     },
@@ -496,15 +487,15 @@ namespace ItemBags.Persistence
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Massive] * PriceMultiplier), ItemBag.RoundingMode.Floor),
                         Items = new int[]
                         {
-                            378, 334, 380, 335, 384, 336, 386, 337,
-                            390, 382, 771, 330, 388, 709, 338, 787
-                        }.Select(x => new StoreableBagItem(x, false)).ToList(),
+                            378, 334, 380, 335, 384, 336, 386, 337, 909, 910,
+                            390, 382, 771, 330, 388, 709, 338, 848, 787, 231
+                        }.Select(x => new StoreableBagItem(x, false, null, BigCraftableIds.Contains(x))).ToList(),
                         MenuOptions = new BagMenuOptions()
                         {
                             GroupByQuality = false,
                             UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
                             {
-                                Columns = 8,
+                                Columns = 10,
                             }
                         }
                     }
@@ -518,12 +509,15 @@ namespace ItemBags.Persistence
 
             List<int> AllowedObjectIds = new List<int>()
             {
+                37, 38, 39, 390, 388, 709,      // Wood/Stone/Dark Signs, Stone, Wood, Hardwood
+                325, 322, 323, 324, 298, 265,   // Gate + Wood/Stone/Iron/Hardwood Fences, Deconstructor
                 328, 401, 331, 333, 329, 293,   // Wood/Straw/Weathered/Crystal/Stone/Brick Floors
                 405, 407, 411, 415, 409,        // Wood/Gravel/Cobblestone/Stepping Stone/Crystal Paths
-                325, 322, 323, 324, 298,        // Gate + Wood/Stone/Iron/Hardwood Fences
-                390, 388, 709                   // Stone, Wood, Hardwood
             };
-            StoreableBagItem[] Items = AllowedObjectIds.Select(x => new StoreableBagItem(x, false, null, false)).ToArray();
+            List<int> BigCraftableIds = new List<int>() {
+                37, 38, 39, 265 // Wood/Stone/Dark Signs, Deconstructor
+            };
+            List<StoreableBagItem> Items = CreateStoreableItemList(new List<int>(), AllowedObjectIds, BigCraftableIds);
 
             BagMenuOptions MenuOptions = new BagMenuOptions()
             {
@@ -532,7 +526,7 @@ namespace ItemBags.Persistence
                 UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
                 {
                     Columns = 6,
-                    LineBreakIndices = new int[] { 5, 10, 15 }
+                    LineBreakIndices = new int[] { 5, 11, 17 }
                 }
             };
 
@@ -540,7 +534,7 @@ namespace ItemBags.Persistence
             {
                 Id = "c5b27c87-7a7d-485b-ab63-95389b41ce65",
                 Name = "Construction Bag",
-                Description = "A bag for storing fences, floors, path,\nand construction resources.",
+                Description = "A bag for storing signs, fences, floors, paths,\nand construction resources.",
                 IconSourceTexture = BagType.SourceTexture.Cursors,
                 IconSourceRect = new Rectangle(367, 309, 16, 16),
                 SizeSettings = GenerateSizeConfigs(DefaultSellers, MenuOptions, Items, 0.7, x => { })
@@ -549,7 +543,7 @@ namespace ItemBags.Persistence
 
         public static BagType GetTreeBagType()
         {
-            HashSet<int> BigCraftableIds = new HashSet<int>() { 105 }; // Tapper
+            HashSet<int> BigCraftableIds = new HashSet<int>() { 105, 264 }; // Tapper, Heavy Tapper
             List<BagSizeConfig.BagShop> DefaultSellers = new List<BagSizeConfig.BagShop>() { BagSizeConfig.BagShop.Robin, BagSizeConfig.BagShop.Pierre };
 
             double PriceMultiplier = 0.9;
@@ -568,8 +562,7 @@ namespace ItemBags.Persistence
                         Size = ContainerSize.Small,
                         Sellers = DefaultSellers,
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Small] * PriceMultiplier), ItemBag.RoundingMode.Floor),
-                        Items = new int[]
-                        {
+                        Items = new int[] {
                             388, 92, 309, 310, 311 // Wood, Sap, Acorn, Maple seed, Pine cone
                         }.Select(x => new StoreableBagItem(x, false, null, BigCraftableIds.Contains(x))).ToList(),
                         MenuOptions = new BagMenuOptions()
@@ -589,7 +582,7 @@ namespace ItemBags.Persistence
                         Items = new int[]
                         {
                             105, 725, 724, 726,     // Tapper, Oak Resin, Maple Syrup, Pine Tar
-                            309, 310, 311,          // Acorn, Maple seed, Pine cone
+                            292, 309, 310, 311,     // Mahogany Seed, Acorn, Maple seed, Pine cone
                             388, 709, 92            // Wood, hardwood, sap
                         }.Select(x => new StoreableBagItem(x, false, null, BigCraftableIds.Contains(x))).ToList(),
                         MenuOptions = new BagMenuOptions()
@@ -598,7 +591,7 @@ namespace ItemBags.Persistence
                             UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
                             {
                                 Columns = 4,
-                                LineBreakIndices = new int[] { 3, 6 }
+                                LineBreakIndices = new int[] { 3, 7 }
                             }
                         }
                     },
@@ -609,20 +602,14 @@ namespace ItemBags.Persistence
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Large] * PriceMultiplier), ItemBag.RoundingMode.Floor),
                         Items = new int[]
                         {
-                            629, 628, 630, 631, 633, 632,   // Apricot/Cherry/Orange/Peach/Apple/Pomegranate saplings
-                            309, 310, 311,                  // Acorn, Maple seed, Pine cone
-                            105, 725, 724, 726,             // Tapper, Oak Resin, Maple Syrup, Pine Tar
-                            388, 709, 92, 805               // Wood, hardwood, sap, Tree Fertilizer
+                            629, 628, 630, 631, 633, 632, 69, 835,      // Apricot/Cherry/Orange/Peach/Apple/Pomegranate/Banana/Mango saplings
+                            891, 292, 309, 310, 311, 725, 724, 726,     // Mushroom Tree Seed, Mahogany Seed, Acorn, Maple seed, Pine cone, Oak Resin, Maple Syrup, Pine Tar
+                            388, 709, 92, 805, 105, 264                 // Wood, hardwood, sap, Tree Fertilizer, Tapper, Heavy Tapper
                         }.Select(x => new StoreableBagItem(x, false, null, BigCraftableIds.Contains(x))).ToList(),
                         MenuOptions = new BagMenuOptions()
                         {
                             GroupByQuality = false,
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
-                            {
-                                Columns = 6,
-                                LineBreakIndices = new int[] { 5, 8, 12 },
-                                LineBreakHeights = new int[] { 0, 12, 0 }
-                            }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 8 }
                         }
                     },
                     new BagSizeConfig()
@@ -632,12 +619,11 @@ namespace ItemBags.Persistence
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Giant] * PriceMultiplier), ItemBag.RoundingMode.Floor),
                         Items = new int[]
                         {
-                            629, 628, 630, 631, 633, 632,   // Apricot/Cherry/Orange/Peach/Apple/Pomegranate saplings
-                            309, 310, 311,                  // Acorn, Maple seed, Pine cone
-                            105, 725, 724, 726,             // Tapper, Oak Resin, Maple Syrup, Pine Tar
-                            388, 709, 92, 805               // Wood, hardwood, sap, Tree Fertilizer
+                            629, 628, 630, 631, 633, 632, 69, 835,      // Apricot/Cherry/Orange/Peach/Apple/Pomegranate/Banana/Mango saplings
+                            891, 292, 309, 310, 311, 725, 724, 726,     // Mushroom Tree Seed, Mahogany Seed, Acorn, Maple seed, Pine cone, Oak Resin, Maple Syrup, Pine Tar
+                            388, 709, 92, 805, 105, 264                 // Wood, hardwood, sap, Tree Fertilizer, Tapper, Heavy Tapper
                         }.Select(x => new StoreableBagItem(x, false, null, BigCraftableIds.Contains(x))).Union(
-                            new int[] { 634, 638, 635, 636, 613, 637 }.Select(x => new StoreableBagItem(x, true)) // Fruits - Apricot/Cherry/Orange/Peach/Apple/Pomegranate
+                            new int[] { 634, 638, 635, 636, 613, 637, 91, 834 }.Select(x => new StoreableBagItem(x, true)) // Fruits - Apricot/Cherry/Orange/Peach/Apple/Pomegranate/Banana/Mango
                         ).ToList(),
                         MenuOptions = new BagMenuOptions()
                         {
@@ -647,12 +633,7 @@ namespace ItemBags.Persistence
                                 GroupsPerRow = 3,
                                 ShowValueColumn = true
                             },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
-                            {
-                                Columns = 6,
-                                LineBreakIndices = new int[] { 5, 8, 12 },
-                                LineBreakHeights = new int[] { 0, 12, 0 }
-                            }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 8 }
                         }
                     },
                     new BagSizeConfig()
@@ -662,12 +643,11 @@ namespace ItemBags.Persistence
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Massive] * PriceMultiplier), ItemBag.RoundingMode.Floor),
                         Items = new int[]
                         {
-                            629, 628, 630, 631, 633, 632,   // Apricot/Cherry/Orange/Peach/Apple/Pomegranate saplings
-                            309, 310, 311,                  // Acorn, Maple seed, Pine cone
-                            105, 725, 724, 726,             // Tapper, Oak Resin, Maple Syrup, Pine Tar
-                            388, 709, 92, 805               // Wood, hardwood, sap, Tree Fertilizer
+                            629, 628, 630, 631, 633, 632, 69, 835,      // Apricot/Cherry/Orange/Peach/Apple/Pomegranate/Banana/Mango saplings
+                            891, 292, 309, 310, 311, 725, 724, 726,     // Mushroom Tree Seed, Mahogany Seed, Acorn, Maple seed, Pine cone, Oak Resin, Maple Syrup, Pine Tar
+                            388, 709, 92, 805, 105, 264                 // Wood, hardwood, sap, Tree Fertilizer, Tapper, Heavy Tapper
                         }.Select(x => new StoreableBagItem(x, false, null, BigCraftableIds.Contains(x))).Union(
-                            new int[] { 634, 638, 635, 636, 613, 637 }.Select(x => new StoreableBagItem(x, true)) // Fruits - Apricot/Cherry/Orange/Peach/Apple/Pomegranate
+                            new int[] { 634, 638, 635, 636, 613, 637, 91, 834 }.Select(x => new StoreableBagItem(x, true)) // Fruits - Apricot/Cherry/Orange/Peach/Apple/Pomegranate/Banana/Mango
                         ).ToList(),
                         MenuOptions = new BagMenuOptions()
                         {
@@ -677,12 +657,7 @@ namespace ItemBags.Persistence
                                 GroupsPerRow = 3,
                                 ShowValueColumn = true
                             },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
-                            {
-                                Columns = 6,
-                                LineBreakIndices = new int[] { 5, 8, 12 },
-                                LineBreakHeights = new int[] { 0, 12, 0 }
-                            }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 8 }
                         }
                     }
                 }
@@ -691,7 +666,7 @@ namespace ItemBags.Persistence
 
         public static BagType GetAnimalProductBagType()
         {
-            HashSet<int> BigCraftableIds = new HashSet<int>() { 24, 16, 17, 19 }; // Mayonnaise Machine, Cheese Press, Loom, Oil Maker
+            HashSet<int> BigCraftableIds = new HashSet<int>() { 24, 16, 17, 19, 254 }; // Mayonnaise Machine, Cheese Press, Loom, Oil Maker, Ostrich Incubator
             List<BagSizeConfig.BagShop> DefaultSellers = new List<BagSizeConfig.BagShop>() { BagSizeConfig.BagShop.Marnie };
             double PriceMultiplier = 2.1;
 
@@ -763,10 +738,10 @@ namespace ItemBags.Persistence
                             new int[] 
                             {
                                 176, 174, 180, 182, // Egg (white), Large Egg (white), Egg (brown), Large Egg (brown)
-                                306, 442, 305, 107, // Mayonnaise, Duck Egg, Void Egg, Dinosaur Egg
+                                442, 305, 107, 289, // Duck Egg, Void Egg, Dinosaur Egg, Ostrich Egg
                                 184, 186, 436, 438, // Milk, Large Milk, Goat Milk, Large Goat Milk
-                                424, 426, 430, 440, // Cheese, Goat Cheese, Truffle, Wool
-                                444, 446            // Duck Feather, Rabbit's Foot
+                                424, 426, 440, 306, // Cheese, Goat Cheese, Wool, Mayonnaise
+                                444, 446, 430       // Duck Feather, Rabbit's Foot, Truffle
                             },
                             new int[] { 178, 428, 432, 307, 308, 807 }, // Hay, Cloth, Truffle Oil, Duck Mayonnaise, Void Mayonnaise, Dinosaur Mayonnaise
                             BigCraftableIds
@@ -792,15 +767,15 @@ namespace ItemBags.Persistence
                             new int[]
                             {
                                 176, 174, 180, 182, // Egg (white), Large Egg (white), Egg (brown), Large Egg (brown)
-                                306, 442, 305, 107, // Mayonnaise, Duck Egg, Void Egg, Dinosaur Egg
+                                442, 305, 107, 289, // Duck Egg, Void Egg, Dinosaur Egg, Ostrich Egg
                                 184, 186, 436, 438, // Milk, Large Milk, Goat Milk, Large Goat Milk
-                                424, 426, 430, 440, // Cheese, Goat Cheese, Truffle, Wool
-                                444, 446            // Duck Feather, Rabbit's Foot
+                                424, 426, 440, 306, // Cheese, Goat Cheese, Wool, Mayonnaise
+                                444, 446, 430       // Duck Feather, Rabbit's Foot, Truffle
                             },
                             new int[] 
                             {
                                 178, 428, 432, 307, 308, 807,   // Hay, Cloth, Truffle Oil, Duck Mayonnaise, Void Mayonnaise, Dinosaur Mayonnaise
-                                24, 16, 17, 19                  // Mayonnaise Machine, Cheese Press, Loom, Oil Maker
+                                24, 16, 17, 19, 254             // Mayonnaise Machine, Cheese Press, Loom, Oil Maker, Ostrich Incubator
                             }, 
                             BigCraftableIds
                         ),
@@ -829,15 +804,15 @@ namespace ItemBags.Persistence
                             new int[]
                             {
                                 176, 174, 180, 182, // Egg (white), Large Egg (white), Egg (brown), Large Egg (brown)
-                                306, 442, 305, 107, // Mayonnaise, Duck Egg, Void Egg, Dinosaur Egg
+                                442, 305, 107, 289, // Duck Egg, Void Egg, Dinosaur Egg, Ostrich Egg
                                 184, 186, 436, 438, // Milk, Large Milk, Goat Milk, Large Goat Milk
-                                424, 426, 430, 440, // Cheese, Goat Cheese, Truffle, Wool
-                                444, 446            // Duck Feather, Rabbit's Foot
+                                424, 426, 440, 306, // Cheese, Goat Cheese, Wool, Mayonnaise
+                                444, 446, 430       // Duck Feather, Rabbit's Foot, Truffle
                             },
                             new int[]
                             {
                                 178, 428, 432, 307, 308, 807,   // Hay, Cloth, Truffle Oil, Duck Mayonnaise, Void Mayonnaise, Dinosaur Mayonnaise
-                                24, 16, 17, 19                  // Mayonnaise Machine, Cheese Press, Loom, Oil Maker
+                                24, 16, 17, 19, 254             // Mayonnaise Machine, Cheese Press, Loom, Oil Maker, Ostrich Incubator
                             },
                             BigCraftableIds
                         ),
@@ -1039,8 +1014,8 @@ namespace ItemBags.Persistence
                             new int[] { },
                             new int[]
                             {
-                                766, 92, 684, 767, 286, 287, 157, 338,  // Slime, Sap, Bug Meat, Bat Wing, Cherry Bomb, Bomb, White Algae, Refined Quartz
-                                768, 769, 203, 717, 273, 96, 97, 98     // Solar Essence, Void Essence, Strange Bun, Crab, Rice Shoot, Dwarf Scroll I/II/III
+                                766, 92, 684, 767, 286, 287, 157, 338,      // Slime, Sap, Bug Meat, Bat Wing, Cherry Bomb, Bomb, White Algae, Refined Quartz
+                                881, 768, 769, 203, 717, 273, 96, 97, 98    // Bone Fragment, Solar Essence, Void Essence, Strange Bun, Crab, Rice Shoot, Dwarf Scroll I/II/III
                             },
                             BigCraftableIds
                         ),
@@ -1048,7 +1023,11 @@ namespace ItemBags.Persistence
                         {
                             GroupByQuality = false,
                             GroupedLayoutOptions = new BagMenuOptions.GroupedLayout() { },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 8 }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
+                            {
+                                Columns = 9,
+                                LineBreakIndices = new int[] { 7 }
+                            }
                         }
                     },
                     new BagSizeConfig()
@@ -1061,8 +1040,9 @@ namespace ItemBags.Persistence
                             new int[] { },
                             new int[]
                             {
-                                766, 684, 767, 768, 769, 814, 96, 97, 98, 99,   // Slime, Bug Meat, Bat Wing, Solar Essence, Void Essence, Squid Ink, Dwarf Scroll I-IV
-                                286, 287, 288, 203, 717, 157, 92, 273, 338      // Cherry Bomb, Bomb, Mega Bomb, Strange Bun, Crab, White Algae, Sap, Rice Shoot, Refined Quartz
+                                766, 684, 767, 881, 768, 769, 814,          //  Slime, Bug Meat, Bat Wing, Bone Fragment, Solar Essence, Void Essence, Squid Ink
+                                286, 287, 288, 96, 97, 98, 99,              //  Cherry Bomb, Bomb, Mega Bomb, Dwarf Scroll I-IV,
+                                203, 717, 157, 92, 273, 338                 //  Strange Bun, Crab, White Algae, Sap, Rice Shoot, Refined Quartz
                             },
                             BigCraftableIds
                         ),
@@ -1070,7 +1050,7 @@ namespace ItemBags.Persistence
                         {
                             GroupByQuality = false,
                             GroupedLayoutOptions = new BagMenuOptions.GroupedLayout() { },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 10 }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 7 }
                         }
                     },
                     new BagSizeConfig()
@@ -1083,9 +1063,9 @@ namespace ItemBags.Persistence
                             new int[] { },
                             new int[]
                             {
-                                766, 684, 767, 768, 769, 814, 96, 97,           // Slime, Bug Meat, Bat Wing, Solar Essence, Void Essence, Squid Ink, Dwarf Scroll I/II
-                                286, 287, 288, 92, 273, 338, 98, 99,            // Cherry Bomb, Bomb, Mega Bomb, Sap, Rice Shoot, Refined Quartz, Dwarf Scroll III/IV
-                                157, 717, 732, 203, 226, 243, 349, 773          // White Algae, Crab, Crab Cakes, Strange Bun, Spicy Eel, Miner's Treat, Energy Tonic, Life Elixir
+                                766, 684, 767, 881, 768, 769, 814, 96, 97,      // Slime, Bug Meat, Bat Wing, Bone Fragment, Solar Essence, Void Essence, Squid Ink, Dwarf Scroll I/II
+                                286, 287, 288, 92, 273, 157, 338, 98, 99,       // Cherry Bomb, Bomb, Mega Bomb, Sap, Rice Shoot, White Algae, Refined Quartz, Dwarf Scroll III/IV
+                                717, 732, 203, 226, 243, 349, 773               // Crab, Crab Cakes, Strange Bun, Spicy Eel, Miner's Treat, Energy Tonic, Life Elixir
                             },
                             BigCraftableIds
                         ),
@@ -1093,7 +1073,7 @@ namespace ItemBags.Persistence
                         {
                             GroupByQuality = false,
                             GroupedLayoutOptions = new BagMenuOptions.GroupedLayout() { },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 8 }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 9 }
                         }
                     }
                 }
@@ -1189,7 +1169,7 @@ namespace ItemBags.Persistence
                                 22, 259, 412, 416, 723, 392,        // Dandelion, Fiddlehead Fern, Winter Root, Snow Yam, Oyster, Nautilus Shell
                                 399, 296                            // Spring Onion, Salmonberry
                             },
-                            new int[] { },
+                            new int[] { 829 }, // Ginger
                             BigCraftableIds
                         ),
                         MenuOptions = new BagMenuOptions()
@@ -1201,7 +1181,7 @@ namespace ItemBags.Persistence
                                 ShowValueColumn = true,
                                 SlotSize = 64
                             },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 1 }
                         }
                     },
                     new BagSizeConfig()
@@ -1218,9 +1198,9 @@ namespace ItemBags.Persistence
                                 20, 402, 410, 283, 719, 422,    // Leek, Sweet Pea, Blackberry, Holly, Mussel, Purple Mushroom
                                 22, 259, 394, 412, 723, 257,    // Dandelion, Fiddlehead Fern, Rainbow Shell, Winter Root, Oyster, Morel
                                 399, 90, 393, 416, 392, 281,    // Spring Onion, Cactus Fruit, Coral, Snow Yam, Nautilus Shell, Chanterelle
-                                296, 88, 397                    // Salmonberry, Cocnut, Sea Urchin,
+                                296, 88, 397, 851               // Salmonberry, Cocnut, Sea Urchin, Magma Cap
                             },
-                            new int[] { },
+                            new int[] { 829 }, //  Ginger
                             BigCraftableIds
                         ),
                         MenuOptions = new BagMenuOptions()
@@ -1232,7 +1212,7 @@ namespace ItemBags.Persistence
                                 ShowValueColumn = true,
                                 SlotSize = 64
                             },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 1 }
                         }
                     },
                     new BagSizeConfig()
@@ -1249,9 +1229,9 @@ namespace ItemBags.Persistence
                                 20, 402, 410, 283, 719, 422,    // Leek, Sweet Pea, Blackberry, Holly, Mussel, Purple Mushroom
                                 22, 259, 394, 412, 723, 257,    // Dandelion, Fiddlehead Fern, Rainbow Shell, Winter Root, Oyster, Morel
                                 399, 90, 393, 416, 392, 281,    // Spring Onion, Cactus Fruit, Coral, Snow Yam, Nautilus Shell, Chanterelle
-                                296, 88, 397                    // Salmonberry, Cocnut, Sea Urchin,
+                                296, 88, 397, 851               // Salmonberry, Coconut, Sea Urchin, Magma Cap
                             },
-                            new int[] { },
+                            new int[] { 829 }, // Ginger
                             BigCraftableIds
                         ),
                         MenuOptions = new BagMenuOptions()
@@ -1263,7 +1243,7 @@ namespace ItemBags.Persistence
                                 ShowValueColumn = true,
                                 SlotSize = 64
                             },
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 1 }
                         }
                     }
                 }
@@ -1276,13 +1256,19 @@ namespace ItemBags.Persistence
             List<BagSizeConfig.BagShop> DefaultSellers = new List<BagSizeConfig.BagShop>() { BagSizeConfig.BagShop.Krobus, BagSizeConfig.BagShop.Dwarf };
             double PriceMultiplier = 1.05;
 
-            List<int> ArtifactIds = new List<int>()
-            {
+            List<int> RegularArtifactIds = new List<int>() {
                 96, 97, 98, 99, 114, 118, 110, 111, 112, 100, 101, 116,
                 105, 113, 115, 120, 589, 103, 586, 109, 117, 119, 121, 123,
                 579, 580, 581, 582, 583, 584, 585, 588, 587, 104, 122, 125,
                 106, 108, 107, 124, 126, 127
             };
+
+            List<int> GingerIslandArtifactIds = new List<int>() {
+                820, 821, 822, 823, 824, // Fossilized Skull, Fossilized Spine, Fossilized Tail, Fossilized Leg, Fossilized Ribs
+                825, 826, 827, 828 // Snake Skull, Snake Vertebrae, Mummified Bat, Mummified Frog
+            };
+
+            List<int> ArtifactIds = RegularArtifactIds.Union(GingerIslandArtifactIds).ToList();
 
             return new BagType()
             {
@@ -1301,7 +1287,7 @@ namespace ItemBags.Persistence
                         CapacityMultiplier = 10.0 / DefaultCapacities[ContainerSize.Small],
                         Items = CreateStoreableItemList(
                             new int[] { },
-                            ArtifactIds.Take(ArtifactIds.Count - ((int)ContainerSize.Massive - (int)ContainerSize.Small) * 6).ToArray(),
+                            RegularArtifactIds.Take(RegularArtifactIds.Count - ((int)ContainerSize.Massive - (int)ContainerSize.Small) * 6),
                             BigCraftableIds
                         ),
                         MenuOptions = new BagMenuOptions()
@@ -1319,7 +1305,7 @@ namespace ItemBags.Persistence
                         CapacityMultiplier = 25.0 / DefaultCapacities[ContainerSize.Medium],
                         Items = CreateStoreableItemList(
                             new int[] { },
-                            ArtifactIds.Take(ArtifactIds.Count - ((int)ContainerSize.Massive - (int)ContainerSize.Medium) * 6).ToArray(),
+                            RegularArtifactIds.Take(RegularArtifactIds.Count - ((int)ContainerSize.Massive - (int)ContainerSize.Medium) * 6),
                             BigCraftableIds
                         ),
                         MenuOptions = new BagMenuOptions()
@@ -1337,7 +1323,7 @@ namespace ItemBags.Persistence
                         CapacityMultiplier = 60.0 / DefaultCapacities[ContainerSize.Large],
                         Items = CreateStoreableItemList(
                             new int[] { },
-                            ArtifactIds.Take(ArtifactIds.Count - ((int)ContainerSize.Massive - (int)ContainerSize.Large) * 6).ToArray(),
+                            RegularArtifactIds.Take(RegularArtifactIds.Count - ((int)ContainerSize.Massive - (int)ContainerSize.Large) * 6),
                             BigCraftableIds
                         ),
                         MenuOptions = new BagMenuOptions()
@@ -1355,7 +1341,7 @@ namespace ItemBags.Persistence
                         CapacityMultiplier = 200.0 / DefaultCapacities[ContainerSize.Giant],
                         Items = CreateStoreableItemList(
                             new int[] { },
-                            ArtifactIds.Take(ArtifactIds.Count - ((int)ContainerSize.Massive - (int)ContainerSize.Giant) * 6).ToArray(),
+                            RegularArtifactIds,
                             BigCraftableIds
                         ),
                         MenuOptions = new BagMenuOptions()
@@ -1373,7 +1359,7 @@ namespace ItemBags.Persistence
                         //CapacityMultiplier = 999.0 / DefaultCapacities[ContainerSize.Massive],
                         Items = CreateStoreableItemList(
                             new int[] { },
-                            ArtifactIds.Take(ArtifactIds.Count - ((int)ContainerSize.Massive - (int)ContainerSize.Massive) * 6).ToArray(),
+                            ArtifactIds,
                             BigCraftableIds
                         ),
                         MenuOptions = new BagMenuOptions()
@@ -1402,9 +1388,9 @@ namespace ItemBags.Persistence
             };
             List<int> GoodSeeds = new List<int>() { 474, 481, 479, 493, 490 }; // Cauliflower Seeds, Blueberry Seeds, Melon Seeds, Cranberry Seeds, Pumpkin Seeds
             List<int> TrellisSeeds = new List<int>() { 473, 302, 301 }; // Bean Starter, Hops Starter, Grape Starter
-            List<int> Year2Seeds = new List<int>() { 476, 273, 489, 485 }; // Garlic Seeds, Rice Shoot, Artichoke Seeds, Red Cabbage Seeds
+            List<int> Year2Seeds = new List<int>() { 476, 273, 831, 489, 485 }; // Garlic Seeds, Rice Shoot, Taro Tuber, Artichoke Seeds, Red Cabbage Seeds
             List<int> DesertSeeds = new List<int>() { 802, 494, 478, 486 }; // Cactus Seeds, Beet Seeds, Rhubarb Seeds, Starfruit Seeds
-            List<int> SpecialSeeds = new List<int>() { 251, 433, 745, 499, 347 }; // Tea Sapling, Coffee Bean, Strawberry Seeds, Ancient Seeds, Rare Seed
+            List<int> SpecialSeeds = new List<int>() { 251, 433, 745, 833, 499, 347, 885 }; // Tea Sapling, Coffee Bean, Strawberry Seeds, Pineapple Seeds, Ancient Seeds, Rare Seed, Fiber Seeds
 
             return new BagType()
             {
@@ -2025,6 +2011,9 @@ namespace ItemBags.Persistence
             List<int> DesertFishIds = new List<int>() {
                 164, 165 // Sandfish, Scorpion Carp
             };
+            List<int> BeachFishIds = new List<int>() {
+                837, 838, 836 // Lionfish, Blue Discus, Stingray
+            };
             List<int> ForestFishIds = new List<int>() {
                 734 // Woodskip
             };
@@ -2035,7 +2024,9 @@ namespace ItemBags.Persistence
                 796, 795 // Slimejack, Void Salmon
             };
             List<int> LegendaryFishIds = new List<int>() {
-                160, 775, 682, 159, 163 // Angler, Glacierfish, Mutant Carp, Crimsonfish, Legend
+                899, 160, 902, 775,         //  Ms. Angler, Angler, Glacierfish Jr., Glacierfish, 
+                901, 682, 898, 159,         //  Radioactive Carp, Mutant Carp, Son of Crimsonfish, Crimsonfish, 
+                163, 900,                   //  Legend, Legend II
             };
 
             return new BagType()
@@ -2101,7 +2092,7 @@ namespace ItemBags.Persistence
                         CapacityMultiplier = 50.0 / DefaultCapacities[ContainerSize.Large],
                         Items = CreateStoreableItemList(
                             CrabPotFishIds.Union(SeasonlessCommonFishIds).Union(SpringFishIds).Union(SummerFishIds).Union(FallFishIds).Union(WinterFishIds)
-                            .Union(ForestFishIds).Union(DesertFishIds).Union(MineFishIds.Take(3)),
+                            .Union(ForestFishIds).Union(DesertFishIds).Union(BeachFishIds).Union(MineFishIds.Take(3)),
                             new List<int>() { 152, 153, 157, 685, 774, 710, 154, 219, 729, 213 }, // Seaweed, Green Algae, White Algae, Bait, Wild Bait, Crab Pot, Worm Bin, Trout Soup, Escargot, Fish Taco
                             BigCraftableIds
                         ),
@@ -2125,10 +2116,10 @@ namespace ItemBags.Persistence
                         CapacityMultiplier = 200.0 / DefaultCapacities[ContainerSize.Giant],
                         Items = CreateStoreableItemList(
                             CrabPotFishIds.Union(SeasonlessCommonFishIds).Union(SpringFishIds).Union(SummerFishIds).Union(FallFishIds).Union(WinterFishIds)
-                            .Union(ForestFishIds).Union(DesertFishIds).Union(MineFishIds).Union(NightMarketFishIds).Union(SpecialFishIds),
+                            .Union(ForestFishIds).Union(DesertFishIds).Union(BeachFishIds).Union(MineFishIds).Union(NightMarketFishIds).Union(SpecialFishIds),
                             new List<int>() {
-                                152, 153, 157, 685, 774, 710, 154, 166, // Seaweed, Green Algae, White Algae, Bait, Wild Bait, Crab Pot, Worm Bin, Treasure Chest
-                                219, 729, 213, 242, 728, 730 // Trout Soup, Escargot, Fish Taco, Dish O' the Sea, Fish Stew, Lobster Bisque
+                                152, 153, 157, 685, 774, 908, 154, 710, // Seaweed, Green Algae, White Algae, Bait, Wild Bait, Magic Bait, Worm Bin, Crab Pot
+                                219, 729, 213, 242, 728, 730, 166       // Trout Soup, Escargot, Fish Taco, Dish O' the Sea, Fish Stew, Lobster Bisque, Treasure Chest
                             },
                             BigCraftableIds
                         ),
@@ -2152,10 +2143,10 @@ namespace ItemBags.Persistence
                         //CapacityMultiplier = 9999.0 / DefaultCapacities[ContainerSize.Massive],
                         Items = CreateStoreableItemList(
                             CrabPotFishIds.Union(SeasonlessCommonFishIds).Union(SpringFishIds).Union(SummerFishIds).Union(FallFishIds).Union(WinterFishIds)
-                            .Union(ForestFishIds).Union(DesertFishIds).Union(MineFishIds).Union(NightMarketFishIds).Union(SpecialFishIds).Union(LegendaryFishIds),
+                            .Union(ForestFishIds).Union(DesertFishIds).Union(BeachFishIds).Union(MineFishIds).Union(NightMarketFishIds).Union(SpecialFishIds).Union(LegendaryFishIds),
                             new List<int>() {
-                                152, 153, 157, 685, 774, 710, 154, 166, // Seaweed, Green Algae, White Algae, Bait, Wild Bait, Crab Pot, Worm Bin, Treasure Chest
-                                219, 729, 213, 242, 728, 730, 265 // Trout Soup, Escargot, Fish Taco, Dish O' the Sea, Fish Stew, Lobster Bisque, Seafoam Pudding
+                                152, 153, 157, 685, 774, 908, 154, 710, // Seaweed, Green Algae, White Algae, Bait, Wild Bait, Magic Bait, Worm Bin, Crab Pot,
+                                219, 729, 213, 242, 728, 730, 265, 166  // Trout Soup, Escargot, Fish Taco, Dish O' the Sea, Fish Stew, Lobster Bisque, Seafoam Pudding, Treasure Chest
                             },
                             BigCraftableIds
                         ),
@@ -2179,15 +2170,16 @@ namespace ItemBags.Persistence
         {
             HashSet<int> BigCraftableIds = new HashSet<int>() {
                 8, 110, 113, 126, 136, 137, 138, 139, 140, 167, // Scarecrow, Rarecrows 1-8, Deluxe Scarecrow
-                25 // Seed Maker
+                25, 90, 238, 239, 248 // Seed Maker, Bone Mill, Mini-Obelisk, Farm Computer, Mini-Shipping Bin
             };
             List<BagSizeConfig.BagShop> DefaultSellers = new List<BagSizeConfig.BagShop>() { BagSizeConfig.BagShop.Marnie };
             double PriceMultiplier = 0.35;
 
             //Fertilizers: Basic Fertilizer 368, Quality Fertilizer 369, Basic Retaining Soil 370, Quality Retaining Soil 371, Speed-Gro 465, Deluxe Speed-Gro 466, Tree Fertilizer 805
+            //              Deluxe Fertilizier 919, Deluxe Retaining Soil 920, Hyper Speed-Gro 918
             //Scarecrows: Scarecrow 8, Rarecrows 110, 113, 126, 136, 137, 138, 139, 140, Deluxe Scarecrow 167
             //Sprinklers: Sprinkler 599, Quality Sprinkler 621, Iridium Sprinkler 645
-            //Totems: Warp Totem: Farm 688, Warp Totem: Mountains 689, Warp Totem: Beach 690, Warp Totem: Desert 261, Rain Totem 681
+            //Totems: Warp Totem: Farm 688, Warp Totem: Mountains 689, Warp Totem: Beach 690, Warp Totem: Desert 261, Rain Totem 681, Warp Totem: Island 886
             //Foods: Hashbrowns 210, Pepper Poppers 215, Tom Kha Soup 218, Complete Breakfast 201, Farmer's Lunch 240
             //Clay 330
 
@@ -2227,8 +2219,9 @@ namespace ItemBags.Persistence
                             new int[] { },
                             new int[] 
                             {
-                                8, 110, 113, 136, 137, 138, 139, 140, // Scarecrow, Rarecrows 1-8 except 3
-                                368, 370, 371, 465, 805, 599, 621, 330 // Basic Fertilizer, Basic Retaining Soil, Quality Retaining Soil, Speed-Gro, Tree Fertilizer, Sprinkler, Quality Sprinkler, Clay
+                                368, 369, 370, 371, 465, 466, 805, 599, 621, 330,   // Basic Fertilizer, Quality Fertilizer, Basic Retaining Soil, Quality Retaining Soil, 
+                                                                                    // Speed-Gro, Deluxe Speed-Gro, Tree Fertilizer, Sprinkler, Quality Sprinkler, Clay
+                                8, 110, 113, 126, 136, 137, 138, 139, 140           // Scarecrow, Rarecrows 1-8
                             },
                             BigCraftableIds
                         ),
@@ -2237,7 +2230,7 @@ namespace ItemBags.Persistence
                         {
                             GroupByQuality = true,
                             GroupedLayoutOptions = new BagMenuOptions.GroupedLayout(),
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 8 }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 10 }
                         }
                     },
                     new BagSizeConfig()
@@ -2249,9 +2242,12 @@ namespace ItemBags.Persistence
                             new int[] { },
                             new int[]
                             {
-                                8, 110, 113, 126, 136, 137, 138, 139, 140, // Scarecrow, Rarecrows 1-8
-                                368, 369, 370, 371, 465, 466, 805, 599, 621, 645, // Basic Fertilizer, Quality Fertilizer, Basic Retaining Soil, Quality Retaining Soil, Speed-Gro, Deluxe Speed-Gro, Tree Fertilizer, Sprinkler, Quality Sprinkler, Iridium Sprinkler
-                                25, 688, 681, 330, 210 // Seed Maker, Warp Totem: Farm, Rain Totem, Clay, Hashbrowns
+                                8, 110, 113, 126, 136, 137, 138, 139, 140, 167, // Scarecrow, Rarecrows 1-8, Deluxe Scarecrow
+                                368, 369, 919,          // Basic Fertilizer, Quality Fertilizer, Deluxe Fertilizer
+                                370, 371, 920,          // Basic Retaining Soil, Quality Retaining Soil, Deluxe Retaining Soil
+                                465, 466, 918, 805,     // Speed-Gro, Deluxe Speed-Gro, Hyper Speed-Gro, Tree Fertilizer
+                                599, 621, 645,          // Sprinkler, Quality Sprinkler, Iridium Sprinkler
+                                239, 248, 25, 688, 681, 330, 210 // Farm Computer, Min-Shipping Bin, Seed Maker, Warp Totem: Farm, Rain Totem, Clay, Hashbrowns
                             },
                             BigCraftableIds
                         ),
@@ -2260,11 +2256,7 @@ namespace ItemBags.Persistence
                         {
                             GroupByQuality = true,
                             GroupedLayoutOptions = new BagMenuOptions.GroupedLayout(),
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
-                            {
-                                Columns = 10,
-                                LineBreakIndices = new int[] { 8, 18 }
-                            }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 10 }
                         }
                     },
                     new BagSizeConfig()
@@ -2277,10 +2269,13 @@ namespace ItemBags.Persistence
                             new int[]
                             {
                                 8, 110, 113, 126, 136, 137, 138, 139, 140, 167, // Scarecrow, Rarecrows 1-8, Deluxe Scarecrow
-                                368, 369, 370, 371, 465, 466, 805, 599, 621, 645, // Basic Fertilizer, Quality Fertilizer, Basic Retaining Soil, Quality Retaining Soil, Speed-Gro, Deluxe Speed-Gro, Tree Fertilizer, Sprinkler, Quality Sprinkler, Iridium Sprinkler
-                                688, 689, 690, 261, 681, // Warp Totem: Farm, Warp Totem: Mountains, Warp Totem: Beach, Warp Totem: Desert, Rain Totem
-                                210, 215, 218, 201, // Hashbrowns, Pepper Poppers, Tom Kha Soup, Complete Breakfast
-                                25, 330 // Seed Maker, Clay
+                                368, 369, 919,          // Basic Fertilizer, Quality Fertilizer, Deluxe Fertilizer
+                                370, 371, 920,          // Basic Retaining Soil, Quality Retaining Soil, Deluxe Retaining Soil
+                                465, 466, 918, 805,     // Speed-Gro, Deluxe Speed-Gro, Hyper Speed-Gro, Tree Fertilizer
+                                599, 621, 645,          // Sprinkler, Quality Sprinkler, Iridium Sprinkler
+                                688, 689, 690, 261, 886, 681, 238, // Warp Totem: Farm, Warp Totem: Mountains, Warp Totem: Beach, Warp Totem: Desert, Warp Totem: Island, Rain Totem, Mini-Obelisk
+                                210, 215, 218, 201,     // Hashbrowns, Pepper Poppers, Tom Kha Soup, Complete Breakfast
+                                239, 248, 25, 330       // Farm Computer, Min-Shipping Bin, Seed Maker, Clay
                             },
                             BigCraftableIds
                         ),
@@ -2302,10 +2297,13 @@ namespace ItemBags.Persistence
                             new int[]
                             {
                                 8, 110, 113, 126, 136, 137, 138, 139, 140, 167, // Scarecrow, Rarecrows 1-8, Deluxe Scarecrow
-                                368, 369, 370, 371, 465, 466, 805, 599, 621, 645, // Basic Fertilizer, Quality Fertilizer, Basic Retaining Soil, Quality Retaining Soil, Speed-Gro, Deluxe Speed-Gro, Tree Fertilizer, Sprinkler, Quality Sprinkler, Iridium Sprinkler
-                                688, 689, 690, 261, 681, // Warp Totem: Farm, Warp Totem: Mountains, Warp Totem: Beach, Warp Totem: Desert, Rain Totem
-                                210, 215, 218, 201, 240, // Hashbrowns, Pepper Poppers, Tom Kha Soup, Complete Breakfast, Farmer's Lunch
-                                25, 330 // Seed Maker, Clay
+                                368, 369, 919,          // Basic Fertilizer, Quality Fertilizer, Deluxe Fertilizer
+                                370, 371, 920,          // Basic Retaining Soil, Quality Retaining Soil, Deluxe Retaining Soil
+                                465, 466, 918, 805,     // Speed-Gro, Deluxe Speed-Gro, Hyper Speed-Gro, Tree Fertilizer
+                                599, 621, 645,          // Sprinkler, Quality Sprinkler, Iridium Sprinkler
+                                688, 689, 690, 261, 886, 681, 238, // Warp Totem: Farm, Warp Totem: Mountains, Warp Totem: Beach, Warp Totem: Desert, Warp Totem: Island, Rain Totem, Mini-Obelisk
+                                210, 215, 218, 201, 240,    // Hashbrowns, Pepper Poppers, Tom Kha Soup, Complete Breakfast, Farmer's Lunch
+                                239, 248, 25, 90, 330       // Farm Computer, Min-Shipping Bin, Seed Maker, Bone Mill, Clay
                             },
                             BigCraftableIds
                         ),
@@ -2323,14 +2321,16 @@ namespace ItemBags.Persistence
 
         public static BagType GetFoodBagType()
         {
-            HashSet<int> BigCraftableIds = new HashSet<int>() { 12 }; // Keg
+            HashSet<int> AmiguousIds = new HashSet<int>() { 246 }; // Coffee Maker and Wheat Flour share the same Id
+
+            HashSet<int> BigCraftableIds = new HashSet<int>() { 12, 246 }; // Keg, Coffee Maker
             List<BagSizeConfig.BagShop> DefaultSellers = new List<BagSizeConfig.BagShop>() { BagSizeConfig.BagShop.Gus };
             double PriceMultiplier = 0.55;
 
             List<int> HasQualitiesIds = new List<int>() { 346, 459, 303 }; // Beer, Mead, Pale Ale
 
             List<int> Ingredients = new List<int>() {
-                246, 245, 247, 419, 724, 814 // Wheat Flour, Sugar, Oil, Vinegar, Rice, Maple Syrup, Squid Ink
+                246, 245, 247, 419, 724, 814, 921 // Wheat Flour, Sugar, Oil, Vinegar, Rice, Maple Syrup, Squid Ink, Squid Ink Ravioli
             };
 
             List<int> CraftedFoods = new List<int>() {
@@ -2338,31 +2338,36 @@ namespace ItemBags.Persistence
             };
 
             List<int> Medicines = new List<int>() {
-                349, 351 // Energy Tonic, Muscle Remedy
+                349, 351, 879 // Energy Tonic, Muscle Remedy, Monster Musk
             };
 
             List<int> Drinks = new List<int>() {
-                395, 253, 346, 459, 303, 12 // Coffee, Triple Shot Espresso, Beer, Mead, Pale Ale, Keg
+                395, 253, 873, 903, 346, 459, 303, 12, 246, 926 // Coffee, Triple Shot Espresso, Piña Colada, Ginger Ale, Beer, Mead, Pale Ale, Keg, Coffee Maker, Cookout Kit
             };
 
             List<int> Dishes = new List<int>() {
-                194, 229, 216, 227, 211, 198, // Fried Egg, Tortilla, Bread, Sashimi, Pancakes, Baked Fish
-                207, 219, 244, 456, 196, 199, // Bean Hotpot, Trout Soup, Roots Platter, Algae Soup, Salad, Parsnip Soup
-                200, 210, 224, 225, 233, 238, // Vegetable Medley, Hashbrowns, Spaghetti, Fried Eel, Ice Cream, Cranberry Sauce
-                195, 729, 727, 223, 202, 209, // Omelet, Escargot, Chowder, Cookie, Fried Calamari, Carp Surprise
-                214, 234, 240, 457, 733, 239, // Crispy Bass, Blueberry Tart, Farmer's Lunch, Pale Broth, Shrimp Cocktail, Stuffing
-                226, 612, 728, 241, 205, 208, // Spicy Eel, Cranberry Candy, Fish Stew, Survival Burger, Fried Mushroom, Glazed Yams
-                215, 220, 231, 243, 730, 605, // Pepper Poppers, Chocolate Cake, Eggplant Parmesan, Miner's Treat, Lobster Bisque, Artichoke Dip
-                618, 228, 237, 242, 203, 204, // Bruschetta, Maki Roll, Super Meal, Dish O' The Sea, Strange Bun, Lucky Lunch
-                218, 651, 232, 604, 611, 607, // Tom Kha Soup, Poppyseed Muffin, Rice Pudding, Plum Pudding, Blackberry Cobbler, Roasted Hazelnuts
-                732, 197, 206, 212, 236, 265, // Crab Cakes, Cheese Cauliflower, Pizza, Salmon Dinner, Pumpkin Soup, Seafoam Pudding
-                609, 731, 606, 648, 201, 235, // Radish Salad, Maple Bar, Stir Fry, Coleslaw, Complete Breakfast, Autumn's Bounty
-                649, 608, 222, 230, 610, 221, // Fiddlehead Risotto, Pumpkin Pie, Rhubarb Pie, Red Plate, Fruit Salad, Pink Cake
-                213 // Fish Taco
+                194, 229, 874, 216, 227, 211,       // Fried Egg, Tortilla, Bug Steak, Bread, Sashimi, Pancakes
+                198, 207, 219, 244, 456, 196,       // Baked Fish, Bean Hotpot, Trout Soup, Roots Platter, Algae Soup, Salad
+                199, 200, 210, 224, 225, 233,       // Parsnip Soup, Vegetable Medley, Hashbrowns, Spaghetti, Fried Eel, Ice Cream
+                238, 195, 729, 727, 223, 202,       // Cranberry Sauce, Omelet, Escargot, Chowder, Cookie, Fried Calamari
+                209, 214, 234, 240, 457, 733,       // Carp Surprise, Crispy Bass, Blueberry Tart, Farmer's Lunch, Pale Broth, Shrimp Cocktail
+                239, 226, 612, 728, 241, 205,       // Stuffing, Spicy Eel, Cranberry Candy, Fish Stew, Survival Burger, Fried Mushroom
+                208, 215, 220, 231, 243, 730,       // Glazed Yams, Pepper Poppers, Chocolate Cake, Eggplant Parmesan, Miner's Treat, Lobster Bisque
+                605, 618, 228, 237, 242, 203,       // Artichoke Dip, Bruschetta, Maki Roll, Super Meal, Dish O' The Sea, Strange Bun
+                204, 218, 651, 232, 604, 611,       // Lucky Lunch, Tom Kha Soup, Poppyseed Muffin, Rice Pudding, Plum Pudding, Blackberry Cobbler
+                607, 732, 197, 206, 212, 236,       // Roasted Hazelnuts, Crab Cakes, Cheese Cauliflower, Pizza, Salmon Dinner, Pumpkin Soup
+                265, 609, 731, 606, 648, 201,       // Seafoam Pudding, Radish Salad, Maple Bar, Stir Fry, Coleslaw, Complete Breakfast
+                235, 649, 608, 222, 230, 610,       // Autumn's Bounty, Fiddlehead Risotto, Pumpkin Pie, Rhubarb Pie, Red Plate, Fruit Salad
+                221, 213, 905, 904, 906, 907        // Pink Cake, Fish Taco, Mango Sticky Rice, Banana Pudding, Poi, Tropical Curry
             };
 
             List<int> MiscFoods = new List<int>() {
                 78 // Cave Carrot
+            };
+
+            BagType bt = new BagType
+            {
+                Description = ""
             };
 
             return new BagType()
@@ -2382,7 +2387,7 @@ namespace ItemBags.Persistence
                         Items = CreateStoreableItemList(
                             new int[] { },
                             Dishes.Take(16).Union(Ingredients.Take(4)),
-                            BigCraftableIds
+                            BigCraftableIds.Except(AmiguousIds)
                         ),
                         CapacityMultiplier = 10.0 / DefaultCapacities[ContainerSize.Small],
                         MenuOptions = new BagMenuOptions()
@@ -2400,7 +2405,7 @@ namespace ItemBags.Persistence
                         Items = CreateStoreableItemList(
                             new int[] { },
                             Dishes.Take(32).Union(Drinks.Take(2)).Union(CraftedFoods).Union(Ingredients.Take(6)),
-                            BigCraftableIds
+                            BigCraftableIds.Except(AmiguousIds)
                         ),
                         CapacityMultiplier = 30.0 / DefaultCapacities[ContainerSize.Medium],
                         MenuOptions = new BagMenuOptions()
@@ -2417,7 +2422,7 @@ namespace ItemBags.Persistence
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Large] * PriceMultiplier), ItemBag.RoundingMode.Floor),
                         Items = 
                             Dishes.Take(48).Union(Drinks.Take(5)).Union(CraftedFoods).Union(Medicines).Union(Ingredients)
-                            .Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x))).ToList(),
+                            .Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Except(AmiguousIds).Contains(x))).ToList(),
                         CapacityMultiplier = 100.0 / DefaultCapacities[ContainerSize.Large],
                         MenuOptions = new BagMenuOptions()
                         {
@@ -2435,19 +2440,21 @@ namespace ItemBags.Persistence
                         Size = ContainerSize.Giant,
                         Sellers = DefaultSellers.ToList(),
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Giant] * PriceMultiplier), ItemBag.RoundingMode.Floor),
-                        Items =
-                            Dishes.Take(64).Union(Drinks).Union(CraftedFoods).Union(Medicines).Union(MiscFoods).Union(Ingredients)
-                            .Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x))).ToList(),
+                        Items = ((Func<List<StoreableBagItem>>)(() => {
+                            IEnumerable<StoreableBagItem> DishItems = Dishes.Take(64).Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> DrinkItems = Drinks.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> CraftedItems = CraftedFoods.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> MedicineItems = Medicines.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> MiscItems = MiscFoods.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> IngredientItems = Ingredients.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Except(AmiguousIds).Contains(x)));
+                            return DishItems.Union(DrinkItems).Union(CraftedItems).Union(MedicineItems).Union(MiscItems).Union(IngredientItems).ToList();
+                        }))(),
                         CapacityMultiplier = 300.0 / DefaultCapacities[ContainerSize.Giant],
                         MenuOptions = new BagMenuOptions()
                         {
                             GroupByQuality = false,
                             GroupedLayoutOptions = new BagMenuOptions.GroupedLayout(),
-                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
-                            {
-                                Columns = 16,
-                                LineBreakIndices = new int[] { 15, 31, 47, 63, 78 }
-                            }
+                            UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout() { Columns = 16 }
                         }
                     },
                     new BagSizeConfig()
@@ -2455,9 +2462,15 @@ namespace ItemBags.Persistence
                         Size = ContainerSize.Massive,
                         Sellers = DefaultSellers.ToList(),
                         Price = ItemBag.RoundIntegerToSecondMostSignificantDigit((int)(DefaultPrices[ContainerSize.Massive] * PriceMultiplier), ItemBag.RoundingMode.Floor),
-                        Items =
-                            Dishes.Union(Drinks).Union(CraftedFoods).Union(Medicines).Union(MiscFoods).Union(Ingredients)
-                            .Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x))).ToList(),
+                        Items = ((Func<List<StoreableBagItem>>)(() => {
+                            IEnumerable<StoreableBagItem> DishItems = Dishes.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> DrinkItems = Drinks.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> CraftedItems = CraftedFoods.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> MedicineItems = Medicines.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> MiscItems = MiscFoods.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Contains(x)));
+                            IEnumerable<StoreableBagItem> IngredientItems = Ingredients.Select(x => new StoreableBagItem(x, HasQualitiesIds.Contains(x), null, BigCraftableIds.Except(AmiguousIds).Contains(x)));
+                            return DishItems.Union(DrinkItems).Union(CraftedItems).Union(MedicineItems).Union(MiscItems).Union(IngredientItems).ToList();
+                        }))(),
                         //CapacityMultiplier = 999.0 / DefaultCapacities[ContainerSize.Massive],
                         MenuOptions = new BagMenuOptions()
                         {
@@ -2466,7 +2479,7 @@ namespace ItemBags.Persistence
                             UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
                             {
                                 Columns = 16,
-                                LineBreakIndices = new int[] { 15, 31, 47, 63, Dishes.Count - 1, Dishes.Count - 1 + 15 }
+                                LineBreakIndices = new int[] { 15, 31, 47, 63, Dishes.Count - 1, Dishes.Count + 15 }
                             }
                         }
                     }
@@ -2496,8 +2509,8 @@ namespace ItemBags.Persistence
             };
 
             List<int> SpecialCrops = new List<int>() {
-                400, 266, 268, 454, 417 // Strawberry, Red Cabbage, Starfruit, Ancient Fruit, Sweet Gem Berry
-            };            
+                830, 400, 832, 266, 268, 454, 417 // Taro Root, Strawberry, Pineapple, Red Cabbage, Starfruit, Ancient Fruit, Sweet Gem Berry
+            };
 
             return new BagType()
             {

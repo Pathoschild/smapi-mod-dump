@@ -88,6 +88,7 @@ namespace ItemBags.Bags
     }
 
     /// <summary>A bag that can store most stackable objects.</summary>
+    //[XmlType("Mods_Rucksack")]
     [XmlRoot(ElementName = "Rucksack", Namespace = "")]
 #if ANDROID
     public class Rucksack : ItemBag
@@ -102,13 +103,17 @@ namespace ItemBags.Bags
         /// If multiple <see cref="ItemBag"/> objects can store the item and have Autofill=true, 
         /// then it will first prioritize a <see cref="BundleBag"/>, then <see cref="Rucksack"/> with <see cref="Rucksack.AutofillPriority"/>=<see cref="AutofillPriority.High"/>,<para/>
         /// then standard <see cref="BoundedBag"/>, then <see cref="Rucksack"/> with <see cref="Rucksack.AutofillPriority"/>=<see cref="AutofillPriority.Low"/>.</summary>
+        [XmlIgnore]
         public bool Autofill { get; set; }
 
         /// <summary>Determines the priority when choosing which bag to fill with a picked up item, when there are multiple bags that can be autofilled.<para/>
         /// Only relevant if <see cref="Autofill"/>=true</summary>
+        [XmlIgnore]
         public AutofillPriority AutofillPriority { get; set; }
 
+        [XmlIgnore]
         public SortingProperty SortProperty { get; set; }
+        [XmlIgnore]
         public SortingOrder SortOrder { get; set; }
 
         /// <summary>Cycles Autofill between On (Low Priority), On (High Priority), and Off</summary>
@@ -132,6 +137,7 @@ namespace ItemBags.Bags
 
         /// <summary>The # of inventory slots within this bag. Note that a single item could take up multiple slots if its <see cref="Object.Stack"/> is > <see cref="ItemBag.MaxStackSize"/>.<para/>
         /// In these cases, <see cref="ItemBag.Contents"/> would still only have 1 instance of the Object. So <see cref="NumSlots"/> does NOT restrict the size of the <see cref="ItemBag.Contents"/> list.</summary>
+        [XmlIgnore]
         public int NumSlots { get; protected set; }
 
         /// <summary>Returns true if this Bag isn't capable of storing more Quantity of the given Item 
@@ -232,6 +238,7 @@ namespace ItemBags.Bags
         }
 
         private int _MaxStackSize { get; set; }
+        [XmlIgnore]
         public override int MaxStackSize { get { return _MaxStackSize; } }
 
         /// <summary>Default parameterless constructor intended for use by XML Serialization. Do not use this constructor to instantiate a bag.</summary>

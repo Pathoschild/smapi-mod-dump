@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Sit n' Relax: Rest your butt",
+	"Author": "MissCoriel",
+	"Version": "1.5.0",
+	"Description": "Regenerate while sitting.",
+	"UniqueID": "misscoriel.sitnrelax",
+	"EntryDll": "SitnRelax.dll",
+	"MinimumApiVersion": "2.10.0",
+	"UpdateKeys": [ "Nexus: 7336" ]
+}

@@ -5,13 +5,9 @@ mods:
    Birthday Mail
 
 latest commit:
-   commit 4b857f38063bd138eeb4b0caf6d56af6046f24c6
+   commit 7aee2b4d419a768fcc1702073a0b5dee771afaaf
    Author: Kathryn Hazuka <KathrynHazuka@hotmail.com>
-   Date:   Sat Jan 4 14:33:56 2020 -0700
+   Date:   Tue Dec 29 11:23:19 2020 -0700
    
-       Major Update
-       
-       Translations
-       Simplified code based on improvements in SMAPI and ingame timing of events
-       Update to game version 1.4.3
+       Update README.md
    

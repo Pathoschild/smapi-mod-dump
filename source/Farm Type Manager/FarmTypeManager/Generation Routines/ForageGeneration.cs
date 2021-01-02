@@ -64,7 +64,7 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Checking forage settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
                         //validate the map name for the area
-                        List<GameLocation> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
+                        List<string> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
                         if (locations.Count == 0) //if no locations were found
                         {
                             Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Forage won't be spawned there.", LogLevel.Trace);
@@ -195,7 +195,7 @@ namespace FarmTypeManager
                                 //create a new saved object based on the randomly selected forage (still using a "blank" tile location)
                                 SavedObject forage = new SavedObject()
                                 {
-                                    MapName = locations[x].uniqueName.Value ?? locations[x].Name,
+                                    MapName = locations[x],
                                     Type = randomForage.Type,
                                     Name = randomForage.Name,
                                     ID = randomForage.ID,
@@ -226,14 +226,7 @@ namespace FarmTypeManager
                                 spawns.Add(forage); //add it to the list
                             }
 
-                            if (locations.Count > 1) //if this area targets multiple locations
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawns.Count}", LogLevel.Trace);
-                            }
-                            else //if this area only targets one location
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawns.Count}", LogLevel.Trace);
-                            }
+                            Utility.Monitor.Log($"Potential spawns at {locations[x]}: {spawns.Count}", LogLevel.Trace);
 
                             if (skippedSpawns > 0) //if any spawns were skipped due to their spawn chances
                             {

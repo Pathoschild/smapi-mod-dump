@@ -9,6 +9,11 @@
 *************************************************/
 
 {
+  "companionAccepted_Spouse": "Sounds good! Some fresh air and spending time with you would really brighten my day!$1",
+  "companionRejectedNight_Spouse": "Sorry, but I was about to go to bed. Maybe later, @. I am feeling a bit tired.",
+  "companionDismiss_Spouse": "It's alright! I had great time with you!$1#$b#Say my 'hi' to Marnie and Jas if you see them. Love you!",
+  "companionDismissAuto_Spouse": "Hey, it's been a lot of fun spending time with you but I am getting a bit worn out.#$b#You should probably go to bed too. See you at home, dear.",
+  "companionRecruited_Spouse": "So where are we going? Can we see Marnie and Jas later? I want to know how they're doing.",
   "companionAccepted": "Sure, I guess.",
   "companionRejected": "What do you want? I want to be alone.",
   "companionRejectedNight": "Sorry, @. I'm too tired to hang out.",

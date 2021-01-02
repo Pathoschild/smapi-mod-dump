@@ -5,9 +5,9 @@ mods:
    Surfing Festival
 
 latest commit:
-   commit b8ea12ae34e29caa4d3b4b0cbe3cc2e69d663eae
+   commit dd4092d26ca6c57edf672ead3b29550c9c7f6e59
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Aug 22 16:00:36 2020 -0400
+   Date:   Thu Dec 24 23:08:21 2020 -0500
    
-       Initial commit
+       Update cheap amulet json
    
