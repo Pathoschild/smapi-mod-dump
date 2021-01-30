@@ -21,6 +21,10 @@ namespace SpriteMaster.Types {
 		public static Span<T> AsSpan<T>(this T[] data) where T : unmanaged {
 			return new Span<T>(data);
 		}
+
+		public static Span<T> AsSpan<T>(this T[] data, int length) where T : unmanaged {
+			return new Span<T>(data, length);
+		}
 	}
 
 	[ImmutableObject(true)]

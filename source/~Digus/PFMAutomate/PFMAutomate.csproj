@@ -14,6 +14,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,12 +36,8 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>G:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\smapi-internal\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Automate">
-      <HintPath>G:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\Automate\Automate.dll</HintPath>
+      <HintPath>$(GamePath)\Mods\Automate\Automate.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

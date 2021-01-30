@@ -15,7 +15,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pathoschild.Stardew.Common.Input;
 using Pathoschild.Stardew.Common.Items.ItemData;
 using Pathoschild.Stardew.Common.UI;
 using StardewModdingAPI;
@@ -63,15 +62,21 @@ namespace Pathoschild.Stardew.Common
         ** Game
         ****/
         /// <summary>Get all game locations.</summary>
-        public static IEnumerable<GameLocation> GetLocations()
+        /// <param name="includeTempLevels">Whether to include temporary mine/dungeon locations.</param>
+        public static IEnumerable<GameLocation> GetLocations(bool includeTempLevels = false)
         {
-            return Game1.locations
+            var locations = Game1.locations
                 .Concat(
                     from location in Game1.locations.OfType<BuildableGameLocation>()
                     from building in location.buildings
                     where building.indoors.Value != null
                     select building.indoors.Value
                 );
+
+            if (includeTempLevels)
+                locations = locations.Concat(MineShaft.activeMines).Concat(VolcanoDungeon.activeLevels);
+
+            return locations;
         }
 
         /// <summary>Get a player's current tile position.</summary>
@@ -123,31 +128,6 @@ namespace Pathoschild.Stardew.Common
                 default:
                     return ItemType.Unknown;
             }
-        }
-
-        /****
-        ** Input handling
-        ****/
-        /// <summary>Parse a button configuration string into a buttons array.</summary>
-        /// <param name="raw">The raw config string.</param>
-        /// <param name="input">The API for checking input state.</param>
-        /// <param name="onInvalidButton">A callback invoked when a button value can't be parsed.</param>
-        public static KeyBinding ParseButtons(string raw, IInputHelper input, Action<string> onInvalidButton)
-        {
-            KeyBinding binding = new KeyBinding(raw, input.GetState, out string[] errors);
-            if (errors.Any())
-                onInvalidButton.Invoke(errors[0]);
-            return binding;
-        }
-
-        /// <summary>Parse a button configuration string into a buttons array.</summary>
-        /// <param name="raw">The raw config string.</param>
-        /// <param name="input">The API for checking input state.</param>
-        /// <param name="monitor">The monitor through which to log an error if a button value is invalid.</param>
-        /// <param name="field">The field name to report in logged errors.</param>
-        public static KeyBinding ParseButtons(string raw, IInputHelper input, IMonitor monitor, string field)
-        {
-            return CommonHelper.ParseButtons(raw, input, onInvalidButton: error => monitor.Log($"Ignored invalid key bindings for {field} in config.json ({error}); delete the file to regenerate it, or see https://stardewvalleywiki.com/Modding:Key_bindings for valid keys.", LogLevel.Error));
         }
 
         /****

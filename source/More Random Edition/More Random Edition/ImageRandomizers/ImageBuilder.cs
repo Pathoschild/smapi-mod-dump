@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -19,15 +18,39 @@ namespace Randomizer
 	public abstract class ImageBuilder
 	{
 		/// <summary>
-		/// The size of the width/height in px
+		/// The image width in px - used when determining whether to crop and when drawing the image itself
 		/// </summary>
-		protected const int SizeInPx = 16;
+		protected int ImageWidthInPx = 16;
 
+		/// <summary>
+		/// The image height in px - used when determining whether to crop and when drawing the image itself
+		/// </summary>
+		protected int ImageHeightInPx = 16;
+
+		/// <summary>
+		/// The offset width in px - used when positioning the image
+		/// </summary>
+		protected int OffsetWidthInPx = 16;
+
+		/// <summary>
+		/// The image height in px - used when positioning the image
+		/// </summary>
+		protected int OffsetHeightInPx = 16;
+
+		/// <summary>
+		/// The image height in px - this is the initial height to start drawing at
+		/// </summary>
+		protected int InitialHeightOffetInPx = 0;
 
 		/// <summary>
 		/// The name of the output file
 		/// </summary>
 		private const string OutputFileName = "randomizedImage.png";
+
+		/// <summary>
+		/// The path for all the custom images
+		/// </summary>
+		protected readonly string CustomImagesPath = Globals.GetFilePath("Assets/CustomImages");
 
 		/// <summary>
 		/// The path to the custom images
@@ -36,14 +59,14 @@ namespace Randomizer
 		{
 			get
 			{
-				return $"Mods/Randomizer/Assets/CustomImages/{SubDirectory}";
+				return $"{CustomImagesPath}/{SubDirectory}";
 			}
 		}
 
 		/// <summary>
 		/// The path to the custom images
 		/// </summary>
-		protected string BaseFileFullPath
+		public string BaseFileFullPath
 		{
 			get
 			{
@@ -91,7 +114,7 @@ namespace Randomizer
 		/// <summary>
 		/// The files to pull from - gets all images in the directory that don't include the base file
 		/// </summary>
-		private List<string> _filesToPullFrom { get; set; }
+		protected List<string> FilesToPullFrom { get; set; }
 
 		/// <summary>
 		/// Builds the image and saves the result into randomizedImage.png
@@ -100,45 +123,71 @@ namespace Randomizer
 		{
 			Bitmap finalImage = null;
 
-			try
+			finalImage = new Bitmap(BaseFileFullPath);
+			using (Graphics graphics = Graphics.FromImage(finalImage))
 			{
-				finalImage = new Bitmap(BaseFileFullPath);
-				Graphics graphics = Graphics.FromImage(finalImage);
-
-				_filesToPullFrom = GetAllCustomImages();
+				FilesToPullFrom = GetAllCustomImages();
 				foreach (Point position in PositionsToOverlay)
 				{
 					string randomFileName = GetRandomFileName(position);
+					if (string.IsNullOrWhiteSpace(randomFileName) || !ShouldSaveImage(position)) { continue; }
+
+					if (!File.Exists(randomFileName))
+					{
+						Globals.ConsoleError($"File {randomFileName} does not exist! Using default image instead.");
+						continue;
+					}
+
 					Bitmap bitmap = new Bitmap(randomFileName);
-					int xOffset = position.X * SizeInPx;
-					int yOffset = position.Y * SizeInPx;
-					graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, SizeInPx, SizeInPx));
+					if (bitmap.Width != ImageWidthInPx || bitmap.Height != ImageHeightInPx)
+					{
+						bitmap = CropImage(bitmap, ImageWidthInPx, ImageHeightInPx);
+					}
+
+					int xOffset = position.X * OffsetWidthInPx;
+					int yOffset = position.Y * OffsetHeightInPx + InitialHeightOffetInPx;
+
+					graphics.FillRectangle(
+						new SolidBrush(Color.FromArgb(0, 0, 1)),
+						new Rectangle(xOffset, yOffset, ImageWidthInPx, ImageHeightInPx));
+					graphics.DrawImage(bitmap, new Rectangle(xOffset, yOffset, ImageWidthInPx, ImageHeightInPx));
 				}
 
-				if (Globals.Config.RandomizeWeapons && Globals.Config.UseCustomWeaponImages_Needs_Above_Setting_On)
+				finalImage.MakeTransparent(Color.FromArgb(0, 0, 1));
+				if (ShouldSaveImage())
 				{
 					finalImage.Save(OutputFileFullPath);
 				}
 			}
-
-			catch (Exception ex)
-			{
-				if (finalImage != null)
-				{
-					finalImage.Dispose();
-				}
-				throw ex;
-			}
 		}
 
 		/// <summary>
-		/// Gets all the custom images from the directory excluding the base file name
+		/// Crops the given image
+		/// Based on https://stackoverflow.com/questions/734930/how-to-crop-an-image-using-c
+		/// </summary>
+		/// <param name="bitmap">The bitmap containing the original image</param>
+		/// <param name="width">The desired width</param>
+		/// <param name="height">The desired height</param>
+		/// <returns>The cropped image</returns>
+		public Bitmap CropImage(Bitmap bitmap, int width, int height)
+		{
+			Bitmap newBitmap = new Bitmap(bitmap);
+			Rectangle rect = new Rectangle(0, 0, width, height);
+			return newBitmap.Clone(rect, newBitmap.PixelFormat);
+		}
+
+		/// <summary>
+		/// Gets all the custom images from the given directory excluding the base file name
 		/// </summary>
 		/// <returns></returns>
 		private List<string> GetAllCustomImages()
 		{
 			List<string> files = Directory.GetFiles(ImageDirectory).ToList();
-			return files.Where(x => x.EndsWith(".png") && !x.Contains(BaseFileName)).ToList();
+			return files.Where(x =>
+				!x.EndsWith(OutputFileName) &&
+				!x.EndsWith(BaseFileName) &&
+				x.EndsWith(".png"))
+			.ToList();
 		}
 
 		/// <summary>
@@ -148,16 +197,44 @@ namespace Randomizer
 		/// <returns></returns>
 		protected virtual string GetRandomFileName(Point position)
 		{
-			return Globals.RNGGetAndRemoveRandomValueFromList(_filesToPullFrom);
+			string fileName = Globals.RNGGetAndRemoveRandomValueFromList(FilesToPullFrom);
+
+			if (string.IsNullOrEmpty(fileName))
+			{
+				Globals.ConsoleWarn($"Not enough images at directory (need more images, using default image): {ImageDirectory}");
+				return null;
+			}
+
+			return fileName;
+		}
+
+		/// <summary>
+		/// Whether we should actually save the image file, or if the setting is off
+		/// </summary>
+		/// <returns />
+		public abstract bool ShouldSaveImage();
+
+		/// <summary>
+		/// Whether we should actually save the image file, or if the setting is off
+		/// This is used to check individual images - default is to check for the entire image builder
+		/// </summary>
+		/// <param name="point">The point to check at</param>
+		/// <returns />
+		protected virtual bool ShouldSaveImage(Point point)
+		{
+			return ShouldSaveImage();
 		}
 
 		/// <summary>
 		/// Cleans up all replacement files
-		/// Should be called when the game is first loaded, and when you return to the title screen
+		/// Should be called when the game is first loaded
 		/// </summary>
 		public static void CleanUpReplacementFiles()
 		{
-			File.Delete($"Mods/Randomizer/Assets/CustomImages/Weapons/randomizedImage.png");
+			File.Delete(Globals.GetFilePath("Assets/CustomImages/Bundles/randomizedImage.png"));
+			File.Delete(Globals.GetFilePath("Assets/CustomImages/Weapons/randomizedImage.png"));
+			File.Delete(Globals.GetFilePath("Assets/CustomImages/SpringObjects/randomizedImage.png"));
+			File.Delete(Globals.GetFilePath("Assets/CustomImages/CropGrowth/randomizedImage.png"));
 		}
 	}
 }

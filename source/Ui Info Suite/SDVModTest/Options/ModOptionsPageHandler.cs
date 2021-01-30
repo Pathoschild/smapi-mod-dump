@@ -53,7 +53,7 @@ namespace UIInfoSuite.Options
             _helper = helper;
             ModConfig modConfig = _helper.ReadConfig<ModConfig>();
             _luckOfDay = new LuckOfDay(helper);
-            _showBirthdayIcon = new ShowBirthdayIcon(helper.Events);
+            _showBirthdayIcon = new ShowBirthdayIcon(helper);
             _showAccurateHearts = new ShowAccurateHearts(helper.Events);
             _locationOfTownsfolk = new LocationOfTownsfolk(helper, _options);
             _showWhenAnimalNeedsPet = new ShowWhenAnimalNeedsPet(helper);
@@ -117,7 +117,8 @@ namespace UIInfoSuite.Options
 
         private void OnButtonLeftClicked(object sender, EventArgs e)
         {
-            if (Game1.activeClickableMenu is GameMenu)
+            if (Game1.activeClickableMenu is GameMenu
+                && !GameMenu.forcePreventClose) // Don't activate when an action is being remapped
             {
                 SetActiveClickableMenuToModOptionsPage();
                 Game1.playSound("smallSelect");
@@ -149,7 +150,7 @@ namespace UIInfoSuite.Options
                 if (_modOptionsPageButton == null)
                 {
                     _modOptionsPage = new ModOptionsPage(_optionsElements, _helper.Events);
-                    _modOptionsPageButton = new ModOptionsPageButton(_helper.Events);
+                    _modOptionsPageButton = new ModOptionsPageButton(_helper);
                 }
 
                 _helper.Events.Display.RenderedActiveMenu += DrawButton;
@@ -169,8 +170,9 @@ namespace UIInfoSuite.Options
 
         private void DrawButton(object sender, EventArgs e)
         {
-            if (Game1.activeClickableMenu is GameMenu gameMenu &&
-                gameMenu.currentTab != 3) //don't render when the map is showing
+            if (Game1.activeClickableMenu is GameMenu gameMenu
+                && gameMenu.currentTab != 3 // Don't render when the map is showing
+                && !GameMenu.forcePreventClose) // Don't render when an action is being remapped
             {
                 if (gameMenu.currentTab == _modOptionsTabPageNumber)
                 {

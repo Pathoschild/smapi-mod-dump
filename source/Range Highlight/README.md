@@ -53,12 +53,15 @@ and not yet exploded shows its ranges (unless disabled in configuration).
 
 ### Compatibility
 
-Works with Stardew Valley 1.5, single player and multiplayer.
-No known incompatibilities with other mods, although if another mod also
-shows range highlights (e.g., UI Info Suite) then each mod will show
-its own highlight.  The result is not horrible, but you probably
-want to disable the other mod's range highlighting if possible (for example, by
-using UI Info Suite's in-game menu to disable its range highlighting).
+* Works with Stardew Valley 1.5 on Linux/Mac/Windows/Android.
+* Works in single player and multiplayer.
+* No known incompatibilities, but if you have another mod that also shows ranges (such as UI Info Suite) then each mod will apply its own highlighting. The result is not horrible, but you probably want to disable the range highlighting in the other mod if possible.  (You can do this from the in-game menu in UI Info Suite.)
+* If Prismatic Tools is installed then the range of the prismatic sprinkler will be the value read from its config.
+* If Better Junimos is installed then the range of Junimo Huts will be its configured value.
+* If Better Sprinklers is installed then the range of Sprinklers will use its configured ranges.  (Note that Better Sprinklers will still draw its own highlights in addition to the Range Highlight highlights.)
+* If Simple Sprinklers is installed then the range of Sprinklers will use its configured ranges.  (Range shown may be incorrect if the Simple Sprinkler configuration is /smaller/ than the base sprinkler range.)
+* If Line Sprinklers is installed then the ranges of the line sprinklers will be shown.  (Correctly, as of 2.4.0, rather than as if they were the non-line versions.)
+* May have issues in split-screen.  (I think it's working as of v2.2.1, but this is not regularly tested, so problems may creep back into later versions even if everything is working in v2.2.1.)
 
 ### Installation
 

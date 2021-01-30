@@ -10,8 +10,30 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Fixed bushes producing berries out of season once immediately after loading the save.
+
+## 1.20.1
+Released 23 January 2021.
+
+* Updated for multi-key bindings in SMAPI 3.9.
+* Fixed tappers on mahogany tree always producing one sap.
+* Fixed errors when a chest contains an invalid item stack.
+
+## 1.20
+Released 16 January 2021.
+
+* Added [full support for Junimo chests](README.md#junimo-chests), which enables distributed automation.
+* Removed old `config.json` migrations. If you changed the mod options in Automate 1.17.3 or earlier, and haven't played since then, you may need to do it again.
+* Moved the default machine priorities into `assets/data.json`. You can still override an entry in your `config.json`.
+* Lowered priority for mini-shipping bins by default (similar to shipping bins).
+* Fixed bushes not harvested out of season on the island farm.
+
+## 1.19.1
+Released 04 January 2021.
+
 * When you join a multiplayer game, Automate shows a warning that it needs to be installed by the main player. That message is now clearer and only shown if they don't have it installed.
-* Fixed automated slime egg incubators ignoring tiger slime eggs.
+* Fixed slime egg incubators ignoring tiger slime eggs.
+* Fixed deconstructor taking multiple inputs from the chest, but only producing output for the last one.
 
 ## 1.19
 Released 21 December 2020.

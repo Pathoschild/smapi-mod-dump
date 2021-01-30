@@ -19,6 +19,9 @@ indent_size = 2
 charset = utf-8-bom
 insert_final_newline = false
 
+[*.{json,md}]
+charset = utf-8-bom
+
 [*.{ttinclude,tt}]
 insert_final_newline = false
 
@@ -68,7 +71,7 @@ csharp_style_expression_bodied_accessors = true:suggestion
 csharp_style_inlined_variable_declaration = true:warning
 
 # avoid superfluous braces
-csharp_prefer_braces = false:suggestion
+csharp_prefer_braces = false:hint
 
 ##########
 ## Column guidelines

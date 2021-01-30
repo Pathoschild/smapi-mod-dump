@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/F1r3w477/TheseModsAintLoyal
+**
+*************************************************/
+
+{
+  "Name": "MoodyPlanet",
+  "Author": "Daniel McMenamy",
+  "Version": "1.5.3-v001",
+  "Description": "The world has feelings too, you know?",
+  "UniqueID": "f1r3w477.MoodyPlanet",
+  "EntryDll": "MoodyPlanetEvolution.dll",
+  "MinimumApiVersion": "3.7",
+  "UpdateKeys": [ "Nexus:2830" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Unidarkshin.LevelExtender",
+      "IsRequired": true
+    }
+  ]
+}

@@ -9,6 +9,55 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 2.6.0
+
+### User-visible Changes
+
+* Added bomb highlighting to things that explode but aren't bombs
+
+## Version 2.5.0
+
+### User-visible Changes
+
+* Improved performance of integrations with other sprinkler mods
+  on farms with lots of items (e.g., debris).
+
+### API Changes
+
+* Add a new signature of `AddItemRangeHighlighter` with
+  callbacks for the beginning and end of each "batch" of
+  highlight range calculation.
+
+## Version 2.4.0
+
+### User-visible Changes
+
+* Integration with Line Sprinklers mod (if installed)
+  to support line sprinkler ranges.
+
+* Update Better Sprinklers and Simple Sprinklers integrations
+  to not show sprinkler highlights if ShowSprinklerRange is
+  turned off in the configuration.
+
+## Version 2.3.0
+
+### User-visible Changes
+
+* Integration with Simple Sprinklers mod (if installed)
+  to use its defined sprinkler ranges.
+
+## Version 2.2.1
+
+### User-visible Changes
+
+* Fix split-screen issues (I hope).
+
+## Version 2.2.0
+
+### User-visible Changes
+
+* Show correct range for sprinklers with Pressure Nozzle.
+
 ## Version 2.1.0
 
 ### User-visible Changes

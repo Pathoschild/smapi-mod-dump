@@ -8,12 +8,14 @@
 **
 *************************************************/
 
+using CombineMachines.Helpers;
 using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +58,12 @@ namespace CombineMachines.Patches
                 prefix: new HarmonyMethod(typeof(PerformObjectDropInActionPatch), nameof(PerformObjectDropInActionPatch.Prefix)),
                 postfix: new HarmonyMethod(typeof(PerformObjectDropInActionPatch), nameof(PerformObjectDropInActionPatch.Postfix))
             );
+            //  Also patch the overridden performObjectDropInAction methods of some Object sub-types like Wood Chippers
+            Harmony.Patch(
+                original: AccessTools.Method(typeof(WoodChipper), nameof(WoodChipper.performObjectDropInAction)),
+                prefix: new HarmonyMethod(typeof(PerformObjectDropInActionPatch), nameof(PerformObjectDropInActionPatch.WoodChipper_Prefix)),
+                postfix: new HarmonyMethod(typeof(PerformObjectDropInActionPatch), nameof(PerformObjectDropInActionPatch.WoodChipper_Postfix))
+            );
 
             //  Patch StardewValley.Object.minutesElapsed to detect when a machines output is ready for collecting, and when that happens, increase the output quantity
             //  to account for how many machines were combined
@@ -75,12 +83,48 @@ namespace CombineMachines.Patches
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.drawInMenu), new Type[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }),
                 postfix: new HarmonyMethod(typeof(DrawInMenuPatch), nameof(DrawInMenuPatch.Postfix))
             );
+            //  Also patch the overridden draw methods of some Object sub-types like Crab Pots and Wood Chippers
+            Harmony.Patch(
+                original: AccessTools.Method(typeof(CrabPot), nameof(CrabPot.draw), new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
+                postfix: new HarmonyMethod(typeof(DrawPatch), nameof(DrawPatch.Postfix))
+            );
+            Harmony.Patch(
+                original: AccessTools.Method(typeof(WoodChipper), nameof(WoodChipper.draw), new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
+                postfix: new HarmonyMethod(typeof(DrawPatch), nameof(DrawPatch.Postfix))
+            );
 
             //  Patch StardewValley.Menus.InventoryMenu.draw to also draw a yellow border around other machines that the current CursorSlotItem can be combined with.
             Harmony.Patch(
                 original: AccessTools.Method(typeof(InventoryMenu), nameof(InventoryMenu.draw), new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(int) }),
                 postfix: new HarmonyMethod(typeof(InventoryMenuDrawPatch), nameof(InventoryMenuDrawPatch.Postfix))
             );
+
+            //  Patch StardewValley.Object.initNetFields to detect when StardewValley.Object.MinutesUntilReady/StardewValley.Object.Cask.agingRate changes (by subscribing to NetIntDelta.fieldChangeEvent), 
+            //  and modify the new MinutesUntilReady/agingRate based on the combined machine's processing power
+            //  (See also: UserConfig.ProcessingMode / UserConfig.ProcessingModeExclusions)
+            Harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), "initNetFields"),
+                postfix: new HarmonyMethod(typeof(MinutesUntilReadyPatch), nameof(MinutesUntilReadyPatch.Postfix))
+            );
+
+            //  Patch StardewValley.Objects.CrabPot.DayUpdate to not execute on combined crab pots so we can manually call the DayUpdate logic periodically, at our own calculated interval 
+            //  (Unlike other machines, CrabPots have their output item set during DayUpdate, which is normally only called once per day at the start of the day)
+            //  We will also set the output quantity in a postfix if Crab Pots are using UserConfig.ProcessingMode==ProcessingMode.MultiplyItems
+            Harmony.Patch(
+                original: AccessTools.Method(typeof(CrabPot), nameof(CrabPot.DayUpdate)),
+                prefix: new HarmonyMethod(typeof(CrabPot_DayUpdatePatch), nameof(CrabPot_DayUpdatePatch.Prefix)),
+                postfix: new HarmonyMethod(typeof(CrabPot_DayUpdatePatch), nameof(CrabPot_DayUpdatePatch.Postfix))
+            );
+
+            if (ModEntry.UserConfig.AllowCombiningScarecrows)
+            {
+                //  Patch StardewValley.Farm.addCrows to replace the hardcoded scarecrow radius of 9 (or 17 for deluxe scarecrows) with a value computed by our custom function
+                //  See also: ScarecrowPatches.GetScarecrowRadius
+                Harmony.Patch(
+                    original: AccessTools.Method(typeof(Farm), nameof(Farm.addCrows)),
+                    transpiler: new HarmonyMethod(typeof(ScarecrowPatches), nameof(ScarecrowPatches.Transpiler))
+                );
+            }
         }
     }
 }

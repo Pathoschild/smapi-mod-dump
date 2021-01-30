@@ -11,79 +11,79 @@
       "Enabled": true,
       "UpdatesPerSecond": 2.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "Buildable": {
       "Enabled": true,
       "UpdatesPerSecond": 2.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "CoverageForBeeHouses": {
       "Enabled": true,
       "UpdatesPerSecond": 60.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "CoverageForJunimoHuts": {
       "Enabled": true,
       "UpdatesPerSecond": 60.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "CoverageForScarecrows": {
       "Enabled": true,
       "UpdatesPerSecond": 60.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "CoverageForSprinklers": {
       "Enabled": true,
       "UpdatesPerSecond": 60.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "CropFertilizer": {
       "Enabled": true,
       "UpdatesPerSecond": 30.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "CropHarvest": {
       "Enabled": true,
       "UpdatesPerSecond": 2.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "CropWater": {
       "Enabled": true,
       "UpdatesPerSecond": 30.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "CropPaddyWater": {
       "Enabled": true,
       "UpdatesPerSecond": 30.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "Machines": {
       "Enabled": true,
       "UpdatesPerSecond": 2.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "TileGrid": {
       "Enabled": true,
       "UpdatesPerSecond": 1.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     },
     "Tillable": {
       "Enabled": true,
       "UpdatesPerSecond": 2.0,
       "UpdateWhenViewChange": true,
-      "ShortcutKey": null
+      "ShortcutKey": "None"
     }
   }
 }

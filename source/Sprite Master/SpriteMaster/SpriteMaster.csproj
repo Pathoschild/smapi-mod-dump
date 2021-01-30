@@ -1,142 +1,136 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(SolutionDir)SpriteMasterCommon.props" />
 
-  <PropertyGroup>
-    <AssemblyName>SpriteMaster</AssemblyName>
-    <RootNamespace>SpriteMaster</RootNamespace>
-    <Version>0.12.0</Version>
-    <TargetFramework>net45</TargetFramework>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <EnableHarmony>true</EnableHarmony>
-    <AssemblyVersion>0.12.0.*</AssemblyVersion>
-		<Deterministic>false</Deterministic>
-		<LangVersion>preview</LangVersion>
+	<PropertyGroup>
+		<AssemblyName>SpriteMaster</AssemblyName>
+		<EnableHarmony>true</EnableHarmony>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-		<Platforms>AnyCPU</Platforms>
-		<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
-		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
-		<Authors>mkuklinski</Authors>
-		<Company>Digital Carbide</Company>
-		<PackageLicenseFile>LICENSE.MD</PackageLicenseFile>
-		<Copyright>mkuklinski</Copyright>
-		<FileVersion>0.12.3.0</FileVersion>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<NullableReferenceTypes>true</NullableReferenceTypes>
-    <FileAlignment>512</FileAlignment>
-    <NoWarn>0162;7035</NoWarn>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<NoWarn>0162;7035</NoWarn>
 		<IgnoreModFilePatterns>\.dll\.config$, ILMerge, runtimes, net452, net450, net45</IgnoreModFilePatterns>
 		<Configurations>Debug;Release;Development</Configurations>
-		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-		<ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
-		<PackageId>SpriteMaster-SV</PackageId>
-		<Product>SpriteMaster-SV</Product>
-		<DebugType>portable</DebugType>
-		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-		<NeutralLanguage>English (United States)</NeutralLanguage>
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>TRACE</DefineConstants>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugSymbols>true</DebugSymbols>
-    <Optimize>true</Optimize>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<DebugSymbols>true</DebugSymbols>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="LZMA-SDK" Version="19.0.0" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0-rc.1.20451.14" />
-    <PackageReference Include="TeximpNet" Version="1.4.3" />
-    <PackageReference Include="Tomlyn" Version="0.1.2" />
-    <PackageReference Include="Zlib.Portable" Version="1.11.0" />
-    <PackageReference Include="ZstdNet" Version="1.3.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="LZMA-SDK" Version="19.0.0" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
+		<PackageReference Include="TeximpNet" Version="1.4.3" />
+		<PackageReference Include="Tomlyn" Version="0.1.2" />
+		<PackageReference Include="ZstdNet" Version="1.3.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Management">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="System.Runtime.Caching" />
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="System.Management">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="System.Runtime.Caching" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="$(SolutionDir)\LICENSE.MD">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="$(SolutionDir)\LICENSE.MD">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Runtime\Runtime.csproj" />
-    <ProjectReference Include="$(SolutionDir)\xBRZNet\xBRZ.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)\Runtime\Runtime.csproj" />
+		<ProjectReference Include="$(SolutionDir)\xBRZNet\xBRZ.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Update="System.Core">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Update="System.Data">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Update="System">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Update="System.Core">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Update="System.Drawing">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Update="System.Data">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Update="System.IO.Compression.FileSystem">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Update="System">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Update="System.Numerics">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Update="System.Drawing">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Update="System.Runtime.Serialization">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Update="System.IO.Compression.FileSystem">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Update="System.Xml">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Update="System.Numerics">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Update="System.Xml.Linq">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Update="System.Runtime.Serialization">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /D /V /Y /L $(SolutionDir)Libraries\nvtt.dll $(OutDir)nvtt.dll&#xD;&#xA;copy /D /V /Y /L $(SolutionDir)Libraries\libnvtt.so $(OutDir)libnvtt.so&#xD;&#xA;copy /D /V /Y /L $(SolutionDir)Libraries\libnvtt.dylib $(OutDir)libnvtt.dylib" />
-  </Target>
+	<ItemGroup>
+		<Reference Update="System.Xml">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Update="System.Xml.Linq">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="copy /D /V /Y /L $(SolutionDir)Libraries\nvtt.dll $(OutDir)nvtt.dll&#xD;&#xA;copy /D /V /Y /L $(SolutionDir)Libraries\libnvtt.so $(OutDir)libnvtt.so&#xD;&#xA;copy /D /V /Y /L $(SolutionDir)Libraries\libnvtt.dylib $(OutDir)libnvtt.dylib" />
+	</Target>
+
+	<ItemGroup>
+		<Reference Update="Stardew Valley">
+			<Aliases>destination</Aliases>
+		</Reference>
+	</ItemGroup>
 
 </Project>

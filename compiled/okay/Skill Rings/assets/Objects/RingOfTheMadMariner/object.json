@@ -1,0 +1,11 @@
+{
+  "Name": "Ring of the Mad Mariner",
+  "Description": "Contains a spirit which guides your hand.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 10000,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Willy",
+  "PurchasePrice": 25000,
+}

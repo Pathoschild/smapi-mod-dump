@@ -11,9 +11,11 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace MultipleSpouses
@@ -166,6 +168,24 @@ namespace MultipleSpouses
             catch (Exception ex)
             {
                 Monitor.Log($"Failed in {nameof(Farmer_getSpouse_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+            return true;
+        }
+
+        internal static bool Farmer_getChildren_Prefix(Farmer __instance, ref List<Child> __result)
+        {
+            try
+            {
+
+                if (EventPatches.startingLoadActors && Environment.StackTrace.Contains("command_loadActors") && !Environment.StackTrace.Contains("addActor") && !Environment.StackTrace.Contains("Dialogue") && !Environment.StackTrace.Contains("checkForSpecialCharacters") && Game1Patches.lastGotCharacter != null && __instance != null)
+                {
+                    __result = Utility.getHomeOfFarmer(__instance)?.getChildren()?.FindAll(c => c.Name.EndsWith($"({Game1Patches.lastGotCharacter})")) ?? new List<Child>();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(Farmer_getChildren_Prefix)}:\n{ex}", LogLevel.Error); 
             }
             return true;
         }

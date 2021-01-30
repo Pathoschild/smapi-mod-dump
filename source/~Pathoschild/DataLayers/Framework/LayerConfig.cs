@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewModdingAPI.Utilities;
+
 namespace Pathoschild.Stardew.DataLayers.Framework
 {
     /// <summary>Configures the settings for a data layer.</summary>
@@ -26,7 +28,7 @@ namespace Pathoschild.Stardew.DataLayers.Framework
         public bool UpdateWhenViewChange { get; set; } = true;
 
         /// <summary>The key binding which switches to this layer when the overlay is open.</summary>
-        public string ShortcutKey { get; set; }
+        public KeybindList ShortcutKey { get; set; } = new();
 
 
         /*********

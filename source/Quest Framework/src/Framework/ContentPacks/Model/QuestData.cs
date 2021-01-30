@@ -52,10 +52,7 @@ namespace QuestFramework.Framework.ContentPacks.Model
 
         public QuestData Translate(ITranslationHelper translation)
         {
-            var toTranslate = JObject.FromObject(this);
-
-            return TranslationUtils.Translate(translation, toTranslate)
-                .ToObject<QuestData>();
+            return TranslationUtils.Translate(translation, this);
         }
     }
 }

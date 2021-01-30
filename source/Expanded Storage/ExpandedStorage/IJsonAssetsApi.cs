@@ -13,12 +13,14 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+// ReSharper disable All
 
 namespace ExpandedStorage
 {
     public interface IJsonAssetsApi
     {
         void LoadAssets(string path);
+
         int GetObjectId(string name);
         int GetCropId(string name);
         int GetFruitTreeId(string name);
@@ -42,6 +44,7 @@ namespace ExpandedStorage
         List<string> GetAllHatsFromContentPack(string cp);
         List<string> GetAllWeaponsFromContentPack(string cp);
         List<string> GetAllClothingFromContentPack(string cp);
+        List<string> GetAllBootsFromContentPack(string cp);
 
         event EventHandler ItemsRegistered;
         event EventHandler IdsAssigned;

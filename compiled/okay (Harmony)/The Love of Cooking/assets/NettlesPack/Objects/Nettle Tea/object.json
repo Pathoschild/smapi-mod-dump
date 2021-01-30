@@ -1,0 +1,39 @@
+{
+    // Object data
+    "Name": "blueberry.cac.nettletea",
+    "Description": "...",
+    "Category": "ArtisanGoods",
+    "Edibility": 20,
+    "EdibleIsDrink": true,
+    "EdibleBuffs": {
+        "Farming": 0,
+        "Fishing": 0,
+        "Mining": 0,
+        "Luck": 0,
+        "Foraging": 0,
+        "MaxStamina": 0,
+        "MagnetRadius": 0,
+        "Speed": 0,
+        "Defense": 0,
+        "Attack": 0,
+        "Duration": 180
+    },
+    "Price": 85,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+        "Love": [ "Caroline", "Leah" ],
+        "Like": [ "Gus", "Linus", "Evelyn", "Harvey" ],
+        "Neutral": [ "Marnie", "Clint", "George", "Sebastian", "Abigail", "Elliott", "Emily", "Haley", "Jodi", "Kent", "Krobus", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Willy", "Wizard" ],
+        "Dislike": [ "Sam", "Haley", "Alex", "Kent", "Sandy", "Dwarf", "Demetrius" ],
+        "Hate": [ "Shane", "Jas", "" ]
+    }
+}

@@ -9,6 +9,7 @@
 *************************************************/
 
 using QuestFramework.Extensions;
+using QuestFramework.Framework.Menus;
 using QuestFramework.Quests;
 using StardewModdingAPI;
 using StardewValley;
@@ -142,21 +143,21 @@ namespace QuestFramework.Framework.Controllers
                         if (!farmhand.hasQuest(oldId.Value))
                             continue;
 
-                        var relevantIds = newIds.Where(i => i.Key == oldId.Key);
-                        if (relevantIds.Any())
+                        var relevantNameIds = newIds.Where(i => i.Key == oldId.Key);
+                        if (relevantNameIds.Any())
                         {
-                            var relevantId = relevantIds.First();
-                            var quest = Game1.player.questLog.Where(q => q.id.Value == oldId.Value).First();
-                            var managedQuest = this.QuestManager.Fetch(relevantId.Key);
-                            var questType = this.QuestManager.Fetch(relevantId.Key).CustomTypeId;
+                            var relevantNameIdPair = relevantNameIds.First();
+                            var quest = farmhand.questLog.Where(q => q.id.Value == oldId.Value).FirstOrDefault();
+                            var managedQuest = this.QuestManager.Fetch(relevantNameIdPair.Key);
+                            var questType = this.QuestManager.Fetch(relevantNameIdPair.Key).CustomTypeId;
 
-                            quest.id.Value = relevantId.Value;
+                            quest.id.Value = relevantNameIdPair.Value;
                             // quest.currentObjective = quest.id.Value.ToString();
                             quest.questType.Value = questType != -1
                                 ? questType
                                 : (int)managedQuest.BaseType;
 
-                            this.monitor.Log($"Updated ID for quest in quest log: #{oldId.Value} -> #{relevantId.Value} in {farmhand.Name}'s questlog (player id: {farmhand.UniqueMultiplayerID}).");
+                            this.monitor.Log($"Updated ID for quest in quest log: #{oldId.Value} -> #{relevantNameIdPair.Value} in {farmhand.Name}'s questlog (player id: {farmhand.UniqueMultiplayerID}).");
                         }
                         else
                         {
@@ -176,23 +177,26 @@ namespace QuestFramework.Framework.Controllers
             {
                 this.monitor.VerboseLog("Try refresh offered quest of the day");
 
-                var offers = this.OfferManager.GetMatchedOffers("Bulletinboard");
-                var offer = offers.FirstOrDefault();
-                var quest = offer != null ? this.QuestManager.Fetch(offer.QuestName) : null;
+                Random random = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed + Game1.dayOfMonth);
+                var offers = this.OfferManager.GetMatchedOffers("Bulletinboard").ToList();
 
-                if (quest == null || Game1.player.hasQuest(quest.id))
+                if (offers.Count > 0)
                 {
-                    this.monitor.VerboseLog("Offered quest is already accepted in questlog.");
-                    return;
+                    int which = random.Next(offers.Count);
+                    var offer = offers.ElementAtOrDefault(which < offers.Count ? which : 0);
+                    var quest = offer != null ? this.QuestManager.Fetch(offer.QuestName) : null;
+
+                    if (quest == null || Game1.player.hasQuest(quest.id))
+                    {
+                        this.monitor.VerboseLog("Offered quest is already accepted in questlog.");
+                        return;
+                    }
+
+                    Game1.questOfTheDay = Quest.getQuestFromId(quest.id);
+                    this.monitor.Log($"Added quest `{quest.Name}` to bulletin board as quest of the day. (Chosen from today {offers.Count} offered quests)");
                 }
 
-                Game1.questOfTheDay = Quest.getQuestFromId(quest.id);
-                this.monitor.Log($"Added quest `{quest.Name}` to bulletin board as quest of the day.");
-
-                if (offers.Count() > 1)
-                {
-                    this.monitor.Log("Multiple quests scheduled for this time to add on buletin board. First on the list was added, others are ignored.", LogLevel.Warn);
-                }
+                CustomBoard.todayQuests.Clear();
             }
         }
 

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7775
+IDs: aedenthorn.CustomSpousePatioWizard
+update keys: Nexus:7775, GitHub:aedenthorn/StardewValleyMods

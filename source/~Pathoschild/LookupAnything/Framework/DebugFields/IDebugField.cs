@@ -27,5 +27,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.DebugFields
 
         /// <summary>Whether the field should be highlighted for special attention.</summary>
         bool IsPinned { get; }
+
+        /// <summary>The debug category text.</summary>
+        public string OverrideCategory { get; set; }
     }
 }

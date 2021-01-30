@@ -98,6 +98,7 @@ namespace Randomizer
 						new RequiredItem((int)ObjectIndexes.WarpTotemFarm),
 						new RequiredItem((int)ObjectIndexes.WarpTotemBeach),
 						new RequiredItem((int)ObjectIndexes.WarpTotemMountains),
+						new RequiredItem((int)ObjectIndexes.WarpTotemDesert),
 						new RequiredItem((int)ObjectIndexes.RainTotem),
 					};
 					MinimumRequiredItems = Range.GetRandomValue(3, 4);
@@ -142,10 +143,6 @@ namespace Randomizer
 					{
 						(int)ObjectIndexes.RustySpur,
 						(int)ObjectIndexes.RustyCog,
-						(int)ObjectIndexes.Sunfish,
-						(int)ObjectIndexes.Octopus,
-						(int)ObjectIndexes.Sandfish,
-						(int)ObjectIndexes.Dorado,
 						(int)ObjectIndexes.Lobster,
 						(int)ObjectIndexes.Crab,
 						(int)ObjectIndexes.GlazedYams,
@@ -188,13 +185,6 @@ namespace Randomizer
 						(int)ObjectIndexes.GoldenMask,
 						(int)ObjectIndexes.GoldenRelic,
 						(int)ObjectIndexes.StrangeDoll1,
-						(int)ObjectIndexes.Pufferfish,
-						(int)ObjectIndexes.RainbowTrout,
-						(int)ObjectIndexes.Perch,
-						(int)ObjectIndexes.Carp,
-						(int)ObjectIndexes.Eel,
-						(int)ObjectIndexes.SeaCucumber,
-						(int)ObjectIndexes.Angler,
 						(int)ObjectIndexes.Hay,
 						(int)ObjectIndexes.Omelet,
 						(int)ObjectIndexes.CheeseCauliflower,

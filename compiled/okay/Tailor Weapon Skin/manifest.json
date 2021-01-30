@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Tailor Weapon Skins",
+  "Author": "Peasly Wellbott",
+  "Version": "1.0.0",
+  "Description": "Allows you to reskin weapons at the sewing machine.",
+  "UniqueID": "Wellbott.TailorWeaponSkins",
+  "EntryDll": "TailorWeaponSkins.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7797" ]
+}

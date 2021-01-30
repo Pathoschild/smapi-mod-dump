@@ -461,7 +461,7 @@ namespace Randomizer
 			"Brogues",
 			"Espadrilles",
 			"Heels",
-			"Loafters",
+			"Loafers",
 			"Kamiks",
 			"Mules",
 			"Mukluks",

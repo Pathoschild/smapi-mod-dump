@@ -20,6 +20,8 @@ namespace BNC.Twitch
 {
     class TwitchFly : Fly, ITwitchMonster
     {
+        public TwitchFly() { }
+
         public TwitchFly(Vector2 position, bool hard) : base(position, hard)
         {
         }
@@ -35,6 +37,8 @@ namespace BNC.Twitch
         public void setTwitchName(string username)
         {
             TwitchName = username;
+            this.Name = username;
+            this.displayName = username;
         }
 
         public override void draw(SpriteBatch b)

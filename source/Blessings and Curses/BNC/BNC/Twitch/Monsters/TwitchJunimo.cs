@@ -17,6 +17,7 @@ namespace BNC
 {
     class TwitchJunimo : Junimo, ITwitchMonster
     {
+        public TwitchJunimo() { }
 
         public TwitchJunimo(Vector2 position) : base(position, 0, true) { }
 
@@ -31,6 +32,8 @@ namespace BNC
         public void setTwitchName(string username)
         {
             TwitchName = username;
+            this.Name = username;
+            this.displayName = username;
         }
     }
 }

@@ -97,7 +97,8 @@ namespace QuestFramework.Api
                 modUid: manifest.UniqueID,
                 questManager: this.mod.QuestManager,
                 questOfferManager: this.mod.QuestOfferManager,
-                conditionManager: this.mod.ConditionManager);
+                conditionManager: this.mod.ConditionManager,
+                customBoardController: this.mod.CustomBoardController);
         }
 
         public void ForceRefresh()

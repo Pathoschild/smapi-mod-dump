@@ -1,0 +1,13 @@
+{
+  "BerryBushQuality": true,
+  "MushroomBoxQuality": true,
+  "TapperQualityOptions": 1,
+  "TapperQualityRequiresTapperPerk": false,
+  "BerryBushChanceToGetXP": 100,
+  "BerryBushXPAmount": 1,
+  "MushroomXPAmount": 1,
+  "TapperXPAmount": 3,
+  "CommonFiddleheadFern": true,
+  "ForageSurvivalBurger": true,
+  "AutomateHarvestsGrantXP": false
+}

@@ -1,0 +1,46 @@
+{
+	// Object data
+	"Name": "blueberry.cac.applepie",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 88,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 380,
+	"IsColored": false,
+	"DisableWithMod": "ppja.evenmorerecipes",
+
+	// Object purchase
+	"CanPurchase": true,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 300,
+	"PurchaseRequirements": [ "y 2" ],
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": 246, // Flour
+				"Count": 1
+			},
+			{
+				"Object": 245, // Sugar
+				"Count": 1
+			},
+			{
+				"Object": 613, // Apple
+				"Count": 2
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": false,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": null
+	},
+
+	// Gifting
+	"GiftTastes": {
+	}
+}

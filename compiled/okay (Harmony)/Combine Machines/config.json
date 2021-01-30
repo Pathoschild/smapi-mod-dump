@@ -1,12 +1,20 @@
 {
-  "CreatedByVersionString": "1.0.1",
+  "CreatedByVersionString": "1.0.7",
   "NumberOpacity": 1.0,
   "DrawToolTip": true,
   "ToolTipOffset": "0, 0",
+  "ToolTipShowDuration": true,
+  "ToolTipShowQuantity": true,
   "MinimumEffect": 0.25,
   "CombinePenalty": 0.03,
   "CombineKeyNames": [
     "LeftControl",
     "RightControl"
-  ]
+  ],
+  "ProcessingMode": "IncreaseSpeed",
+  "ProcessingModeExclusions": [
+    "Lightning Rod"
+  ],
+  "AllowCombiningScarecrows": true,
+  "FurnaceMultiplyCoalInputs": true
 }

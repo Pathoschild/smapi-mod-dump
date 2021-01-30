@@ -117,10 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="WARN_MTA" xml:space="preserve">
-    <value>当前游戏运行在MTA模式下，输入法已被禁用！！！</value>
-  </data>
-  <data name="WARN_UseSTALauncher" xml:space="preserve">
-    <value>如果你想要使用输入法，请使用**STALauncher**来启动游戏！！！</value>
+  <data name="WARN_STA_LAUNCHER" xml:space="preserve">
+    <value>运行在STA模式下， 请删除STALauncher！</value>
   </data>
 </root>

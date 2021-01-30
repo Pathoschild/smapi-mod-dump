@@ -68,6 +68,8 @@
 				"RequiredSeason": [ "spring", "summer" ], // Required season for the output to be possible. Default is no required season.
 				"RequiredWeather": [ "Sunny", "Windy" ], // [Sunny|Rainy|Stormy|Snowy|Windy] Required weather for the output to be possible. Default is no required weather.
 				"RequiredLocation": [ "Cellar", "FarmCave" ], // Required location for the output to be possible. Default is no required location.
+				"RequiredMail": [ "BackpackTip" ], // Required one of the mails to have been received by the player for the output to be possible. Default is no required mail.
+				"RequiredEvent": [ 611439 ], // Required one of events to have been seen by the player for the output to be possible. Default is no required event.
 				"RequiredOutdoors": true, // [true|false|null] If true, the output can only be produced outdoors. If false, the output can only be produced indoors. If the line is removed or the value is null, it there is no restriction.
 				"RequiredInputParentIdentifier": [ "22", "-80" ] // Required input parent for the output to be possible. Parent is the item that originated the input.(ex. Salmon Roe has Salmon as parent) The identifier is compared with the input parent on this order: Index, Name, Category, Context_Tag.
 				// All other properties that refer to the output can be used in the AdditionalOutputs. Remember to use commas to separate properties.
@@ -89,7 +91,8 @@
 			"GardenPot": true, //If it should look for crops inside garden pots. Default is false.
 			"FruitTree": true, //If it should look up for fruit trees. The identifier will be compared with the fruit. Default is false.
 			"BigCraftable": false //If it should look up for BigCraftables. The identifier will be compared with the held object. Default is false.
-		}
+		},
+		"WarningsLogLevel": "Warn" //[Warn|Info|Debug|Trace] Log level of messages warning the player that something was missing when loading the rule. Default is what is set on the content pack config.
 	}
 ]
 /* Additional Notes

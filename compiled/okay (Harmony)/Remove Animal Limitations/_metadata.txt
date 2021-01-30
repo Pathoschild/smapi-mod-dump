@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7838
+IDs: Hobbes.RemoveAnimalLimitations
+update keys: Nexus:7838

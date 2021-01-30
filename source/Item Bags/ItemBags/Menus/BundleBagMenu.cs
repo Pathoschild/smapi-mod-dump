@@ -38,7 +38,7 @@ namespace ItemBags.Menus
         public Item HoveredItem { get; private set; }
         public void UpdateHoveredItem(CursorMovedEventArgs e)
         {
-            if (Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+            if (Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
             {
                 HoveredItem = GetHoveredItem();
             }
@@ -163,7 +163,7 @@ namespace ItemBags.Menus
         {
             if (!IsJojaMember)
             {
-                if (Bounds.Contains(e.OldPosition.ScreenPixels.AsPoint()) || Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+                if (Bounds.Contains(e.OldPosition.LegacyScreenPixels().AsPoint()) || Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
                 {
                     BundleItem PreviouslyHovered = HoveredBundleItem;
 
@@ -173,7 +173,7 @@ namespace ItemBags.Menus
                         foreach (KeyValuePair<BundleItem, Rectangle> KVP in ItemSlotPositions)
                         {
                             Rectangle Rect = KVP.Value;
-                            if (Rect.GetOffseted(TopLeftScreenPosition).Contains(e.NewPosition.ScreenPixels.AsPoint()))
+                            if (Rect.GetOffseted(TopLeftScreenPosition).Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
                             {
                                 if (PreviouslyHovered != null && PreviouslyHovered != KVP.Key)
                                     SecondaryActionButtonPressedItem = null;
@@ -190,7 +190,7 @@ namespace ItemBags.Menus
                         foreach (KeyValuePair<BundleTask, Rectangle> KVP in TaskHeaderPositions)
                         {
                             Rectangle Rect = KVP.Value;
-                            if (Rect.GetOffseted(TopLeftScreenPosition).Contains(e.NewPosition.ScreenPixels.AsPoint()))
+                            if (Rect.GetOffseted(TopLeftScreenPosition).Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
                             {
                                 this.HoveredBundleTask = KVP.Key;
                                 this.IsNavigatingWithGamepad = false;

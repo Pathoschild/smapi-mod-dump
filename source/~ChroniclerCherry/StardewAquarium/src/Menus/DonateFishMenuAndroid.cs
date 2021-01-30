@@ -20,7 +20,6 @@ namespace StardewAquarium.Menus
     class DonateFishMenuAndroid : ShopMenu
     {
         public static bool Donated;
-        public static bool AchievementUnlock;
         public static bool PufferchickDonated;
 
 
@@ -29,7 +28,7 @@ namespace StardewAquarium.Menus
         public DonateFishMenuAndroid(IModHelper helper, IMonitor monitor) : base(new Dictionary<ISalable, int[]>())
         {
             //look android forced me to do this terrible thing don't judge me just pretend they're not static
-            Donated = AchievementUnlock = PufferchickDonated = false;
+            Donated = PufferchickDonated = false;
 
             /*
              *why do i have a whole custom class for something that gets immediately replaced by a vanilla one by smapi? bc screw u
@@ -43,7 +42,8 @@ namespace StardewAquarium.Menus
 
             foreach (int fish in fishes)
             {
-                Object display = new StardewValley.Object(fish, 1);
+                Object display = new Object(fish, 1);
+                display.DisplayName = "Donate " + display.DisplayName;
                 donations.Add(display,new int[] {0,1,fish,1});
             }
 
@@ -52,7 +52,7 @@ namespace StardewAquarium.Menus
 
         public void OnExit()
         {
-            Utils.DonationMenuExit(AchievementUnlock,Donated,PufferchickDonated);
+            Utils.DonationMenuExit(Donated,PufferchickDonated);
         }
     }
 }

@@ -1,15 +1,17 @@
 {
-  "HideOnKeyUp": false,
-  "ScrollAmount": 160,
-  "ProgressionMode": false,
-  "HighlightUnrevealedGiftTastes": false,
-  "ShowDataMiningFields": false,
-  "EnableTileLookups": false,
   "Controls": {
     "ToggleLookup": "F1",
     "ToggleSearch": "LeftShift + F1",
     "ScrollUp": "Up",
     "ScrollDown": "Down",
-    "ToggleDebug": ""
-  }
+    "ToggleDebug": "None"
+  },
+  "ProgressionMode": false,
+  "HighlightUnrevealedGiftTastes": false,
+  "HideOnKeyUp": false,
+  "EnableTargetRedirection": true,
+  "EnableTileLookups": false,
+  "ForceFullScreen": false,
+  "ScrollAmount": 160,
+  "ShowDataMiningFields": false
 }

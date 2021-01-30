@@ -3,14 +3,16 @@ url:
 
 mods:
    Animals Need Water
+   Fish Exclusions
+   Grapes All Year Round
    Incubate Pufferfish Eggs
    Puffer Eggs to Mayonnaise
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit 00b10d830209541b112a790028900f1fbc13299e
+   commit 104ba6ca76bde1a5a7f76047a62785001df899cb
    Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Fri Jan 1 14:14:29 2021 +0300
+   Date:   Fri Jan 29 19:48:38 2021 +0300
    
-       fix: fix update keys
+       feat: add brazilian portuguese translation by tramontina
    

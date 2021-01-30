@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
@@ -31,18 +32,19 @@ namespace RangeHighlight {
         private readonly IMonitor monitor;
         private readonly IModHelper helper;
         private readonly ModConfig config;
-        private readonly List<Tuple<Color, Point>> highlightTiles = new List<Tuple<Color, Point>>();
-        private readonly Mutex highlightTilesMutex = new Mutex();
         private readonly Texture2D tileTexture;
-        private bool showAllDownLastState = false;
-        private bool showAllToggleState = false;
+
+        private readonly PerScreen<List<Tuple<Color, Point>>> highlightTiles = new PerScreen<List<Tuple<Color, Point>>>(createNewState: () => new List<Tuple<Color, Point>>());
+        private readonly PerScreen<Mutex> highlightTilesMutex = new PerScreen<Mutex>(createNewState: () => new Mutex());
+        private readonly PerScreen<bool> showAllDownLastState = new PerScreen<bool>();
+        private readonly PerScreen<bool> showAllToggleState = new PerScreen<bool>();
 
         private class Highlighter<T> {
             public string uniqueId { get; }
             public SButton? hotkey { get; }
             public T highlighter { get; }
-            public bool hotkeyDownLastState = false;
-            public bool hotkeyToggleState = false;
+            private readonly PerScreen<bool> hotkeyDownLastState = new PerScreen<bool>();
+            internal readonly PerScreen<bool> hotkeyToggleState = new PerScreen<bool>();
 
             public Highlighter(string uniqueId, SButton? hotkey, T highlighter) {
                 this.uniqueId = uniqueId;
@@ -53,17 +55,21 @@ namespace RangeHighlight {
             public void UpdateHotkeyToggleState(IModHelper helper) {
                 if (this.hotkey is SButton hotkey) {
                     bool isDown = helper.Input.IsDown(hotkey);
-                    if (isDown && !hotkeyDownLastState)
-                        hotkeyToggleState = !hotkeyToggleState;
-                    hotkeyDownLastState = isDown;
+                    if (isDown && !hotkeyDownLastState.Value)
+                        hotkeyToggleState.Value = !hotkeyToggleState.Value;
+                    hotkeyDownLastState.Value = isDown;
                 }
             }
         }
         private class ItemHighlighter : Highlighter<ItemHighlightFunction> {
             public bool highlightOthersWhenHeld { get; }
-            public ItemHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, ItemHighlightFunction highlighter)
+            public Action onStart { get; }
+            public Action onFinish { get; }
+            public ItemHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, ItemHighlightFunction highlighter, Action onStart = null, Action onFinish = null)
                 : base(uniqueId, hotkey, highlighter) {
                 this.highlightOthersWhenHeld = highlightOthersWhenHeld;
+                this.onStart = onStart;
+                this.onFinish = onFinish;
             }
         }
         // NB: blueprintHighlighters and buildingHighlighters are parallel lists.  The highlighter in a blueprintHighlighter may be null.
@@ -82,9 +88,9 @@ namespace RangeHighlight {
         }
 
         private void OnRenderedWorld(object sender, RenderedWorldEventArgs e) {
-            if (highlightTilesMutex.WaitOne(0)) {
+            if (highlightTilesMutex.Value.WaitOne(0)) {
                 try {
-                    foreach (var tuple in highlightTiles) {
+                    foreach (var tuple in highlightTiles.Value) {
                         var point = tuple.Item2;
                         var tint = tuple.Item1;
                         Game1.spriteBatch.Draw(
@@ -100,7 +106,7 @@ namespace RangeHighlight {
 
                     }
                 } finally {
-                    highlightTilesMutex.ReleaseMutex();
+                    highlightTilesMutex.Value.ReleaseMutex();
                 }
             }
         }
@@ -108,16 +114,16 @@ namespace RangeHighlight {
         internal void AddHighlightTiles(Color color, bool[,] shape, int xOrigin, int yOrigin) {
             int xOffset = shape.GetLength(0) / 2;
             int yOffset = shape.GetLength(1) / 2;
-            if (highlightTilesMutex.WaitOne(0)) {
+            if (highlightTilesMutex.Value.WaitOne(0)) {
                 try {
                     for (int x = 0; x < shape.GetLength(0); ++x) {
                         for (int y = 0; y < shape.GetLength(1); ++y) {
                             if (shape[x, y])
-                                highlightTiles.Add(new Tuple<Color, Point>(color, new Point(xOrigin + x - xOffset, yOrigin + y - yOffset)));
+                                highlightTiles.Value.Add(new Tuple<Color, Point>(color, new Point(xOrigin + x - xOffset, yOrigin + y - yOffset)));
                         }
                     }
                 } finally {
-                    highlightTilesMutex.ReleaseMutex();
+                    highlightTilesMutex.Value.ReleaseMutex();
                 }
             }
         }
@@ -133,8 +139,8 @@ namespace RangeHighlight {
             buildingHighlighters.RemoveAll(elt => elt.uniqueId == uniqueId);
         }
 
-        public void AddItemHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, ItemHighlightFunction highlighter) {
-            itemHighlighters.Insert(0, new ItemHighlighter(uniqueId, hotkey, highlightOthersWhenHeld, highlighter));
+        public void AddItemHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, ItemHighlightFunction highlighter, Action onStart = null, Action onFinish = null) {
+            itemHighlighters.Insert(0, new ItemHighlighter(uniqueId, hotkey, highlightOthersWhenHeld, highlighter, onStart, onFinish));
         }
 
         public void RemoveItemHighlighter(string uniqueId) {
@@ -150,27 +156,28 @@ namespace RangeHighlight {
         }
 
         internal Vector2 GetCursorTile() {
-            // Work around bug in SMAPI 3.8.0
-            // return helper.Input.GetCursorPosition().Tile;
-            var mouse = Microsoft.Xna.Framework.Input.Mouse.GetState();
-            return new Vector2((Game1.viewport.X + mouse.X / Game1.options.zoomLevel) / Game1.tileSize,
-                (Game1.viewport.Y + mouse.Y / Game1.options.zoomLevel) / Game1.tileSize);
+            return helper.Input.GetCursorPosition().Tile;
+            // Work around bug in SMAPI 3.8.0 - fixed in 3.8.2
+            //var mouse = Microsoft.Xna.Framework.Input.Mouse.GetState();
+            //return new Vector2((Game1.viewport.X + mouse.X / Game1.options.zoomLevel) / Game1.tileSize,
+            //    (Game1.viewport.Y + mouse.Y / Game1.options.zoomLevel) / Game1.tileSize);
         }
 
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e) {
             if (!e.IsMultipleOf(6)) return; // only do this once every 0.1s or so
 
-            if (highlightTilesMutex.WaitOne()) {
+            if (highlightTilesMutex.Value.WaitOne()) {
                 try {
-                    highlightTiles.Clear();
+                    highlightTiles.Value.Clear();
                 } finally {
-                    highlightTilesMutex.ReleaseMutex();
+                    highlightTilesMutex.Value.ReleaseMutex();
                 }
             }
 
             if (Game1.eventUp || Game1.currentLocation == null) return;
             bool[] runBuildingHighlighter = new bool[buildingHighlighters.Count];
             bool[] runItemHighlighter = new bool[itemHighlighters.Count];
+            bool[] itemHighlighterStartCalled = new bool[itemHighlighters.Count];
             bool iterateBuildings = false;
             bool iterateItems = false;
 
@@ -214,6 +221,10 @@ namespace RangeHighlight {
                 string itemName = item.Name.ToLower();
                 int itemID = item.parentSheetIndex;
                 for (int i = 0; i < itemHighlighters.Count; ++i) {
+                    if (!itemHighlighterStartCalled[i]) {
+                        itemHighlighters[i].onStart?.Invoke();
+                        itemHighlighterStartCalled[i] = true;
+                    }
                     var ret = itemHighlighters[i].highlighter(item, itemID, itemName);
                     if (ret != null) {
                         var cursorTile = GetCursorTile();
@@ -229,19 +240,19 @@ namespace RangeHighlight {
 
             if (config.hotkeysToggle) {
                 bool showAllDown = helper.Input.IsDown(config.ShowAllRangesKey);
-                if (showAllDown && !showAllDownLastState)
-                    showAllToggleState = !showAllToggleState;
-                showAllDownLastState = showAllDown;
+                if (showAllDown && !showAllDownLastState.Value)
+                    showAllToggleState.Value = !showAllToggleState.Value;
+                showAllDownLastState.Value = showAllDown;
                 for (int i = 0; i < buildingHighlighters.Count; ++i) {
                     buildingHighlighters[i].UpdateHotkeyToggleState(helper);
-                    if (showAllToggleState || buildingHighlighters[i].hotkeyToggleState) {
+                    if (showAllToggleState.Value || buildingHighlighters[i].hotkeyToggleState.Value) {
                         runBuildingHighlighter[i] = true;
                         iterateBuildings = true;
                     }
                 }
                 for (int i = 0; i < itemHighlighters.Count; ++i) {
                     itemHighlighters[i].UpdateHotkeyToggleState(helper);
-                    if (showAllToggleState || itemHighlighters[i].hotkeyToggleState) {
+                    if (showAllToggleState.Value || itemHighlighters[i].hotkeyToggleState.Value) {
                         runItemHighlighter[i] = true;
                         iterateItems = true;
                     }
@@ -282,6 +293,10 @@ namespace RangeHighlight {
                     int itemID = item.parentSheetIndex;
                     for (int i = 0; i < itemHighlighters.Count; ++i) {
                         if (runItemHighlighter[i]) {
+                            if (!itemHighlighterStartCalled[i]) {
+                                itemHighlighters[i].onStart?.Invoke();
+                                itemHighlighterStartCalled[i] = true;
+                            }
                             var ret = itemHighlighters[i].highlighter(item, itemID, itemName);
                             if (ret != null) {
                                 AddHighlightTiles(ret.Item1, ret.Item2, (int)item.TileLocation.X, (int)item.TileLocation.Y);
@@ -305,7 +320,12 @@ namespace RangeHighlight {
                 }
 
             }
-        }
 
+            for (int i = 0; i < itemHighlighters.Count; ++i) {
+                if (itemHighlighterStartCalled[i]) {
+                    itemHighlighters[i].onFinish?.Invoke();
+                }
+            }
+        }
     }
 }

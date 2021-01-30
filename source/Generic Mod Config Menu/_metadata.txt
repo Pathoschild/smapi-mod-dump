@@ -5,9 +5,9 @@ mods:
    Generic Mod Config Menu
 
 latest commit:
-   commit 1ea5c87e0bbcc6f338da865cf571efa15d0f92e4
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Thu Dec 24 22:18:17 2020 -0500
+   commit de03da12a536e5b08a002d578b9af46eee94eb61
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Tue Jan 5 20:04:50 2021 -0500
    
-       Double click detection fix
+       1.2.1
    

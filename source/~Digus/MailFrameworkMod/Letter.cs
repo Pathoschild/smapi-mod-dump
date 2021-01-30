@@ -18,6 +18,9 @@ using StardewValley;
 
 namespace MailFrameworkMod
 {
+    /// <summary>
+    /// Represents a custom letter that needs to be delivered.
+    /// </summary>
     public class Letter
     {
         private string _id;
@@ -39,10 +42,14 @@ namespace MailFrameworkMod
         /// </summary>
         public string Text { get; private set; }
         /// <summary>
-        /// list of items to be added in the letter. If null or empty, no item is added
+        /// list of static items to be added in the letter. If null or empty, no item is added
         /// There is a bug with the game when adding more than one object. It draws one over the other, and when clicked the one showing is the last one to be picked.
         /// </summary>
         public List<Item> Items { get; private set; }
+        /// <summary>
+        /// a function that will be called to get items to be added to the letter. If null, or empty, no items is added
+        /// </summary>
+        public Func<Letter,List<Item>> DynamicItems { get; set; }
         /// <summary>
         /// name of the recipe to be learned with the letter
         /// </summary>

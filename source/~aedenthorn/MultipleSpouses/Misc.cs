@@ -160,6 +160,7 @@ namespace MultipleSpouses
 
             foreach (NPC spouse in allSpouses)
             {
+
                 int type = ModEntry.myRand.Next(0, 100);
 
                 Monitor.Log($"spouse rand {type}, bed: {ModEntry.config.PercentChanceForSpouseInBed} kitchen {ModEntry.config.PercentChanceForSpouseInKitchen}");
@@ -181,6 +182,14 @@ namespace MultipleSpouses
                         kitchenSpouse = spouse.Name;
                     }
                 }
+                else if(type < ModEntry.config.PercentChanceForSpouseInBed + ModEntry.config.PercentChanceForSpouseInKitchen + ModEntry.config.PercentChanceForSpouseAtPatio)
+                {
+                    if (!Game1.isRaining && !Game1.IsWinter && !spouse.Name.Equals("Krobus") && spouse.Schedule == null)
+                    {
+                        Monitor.Log("made patio spouse: " + spouse.Name);
+                        spouse.setUpForOutdoorPatioActivity();
+                    }
+                }
             }
 
             List<string> allBedSpouses = new List<string>(GetSpouses(farmer, 1).Keys.ToList());
@@ -195,6 +204,7 @@ namespace MultipleSpouses
 
                 if (!farmHouse.Equals(j.currentLocation))
                 {
+                    Monitor.Log("not in farm house");
                     continue;
                 }
 
@@ -225,25 +235,20 @@ namespace MultipleSpouses
                     j.setTilePosition(farmHouse.getRandomOpenPointInHouse(ModEntry.myRand));
                     j.setRandomAfternoonMarriageDialogue(Game1.timeOfDay, farmHouse, false);
                 }
+                else if(ModEntry.config.BuildAllSpousesRooms && roomSpouses.Contains(j.Name))
+                {
+                    int offset = roomSpouses.IndexOf(j.Name) * 7;
+                    j.setTilePosition((int)spot.X + offset, (int)spot.Y);
+                    j.faceDirection(ModEntry.myRand.Next(0, 4));
+                    j.setSpouseRoomMarriageDialogue();
+                    Monitor.Log($"{j.Name} loc: {(spot.X + offset)},{spot.Y}");
+                }
                 else
                 {
-
-                    if (!roomSpouses.Contains(j.Name))
-                    {
-                        j.setTilePosition(farmHouse.getRandomOpenPointInHouse(ModEntry.myRand));
-                        j.faceDirection(ModEntry.myRand.Next(0, 4));
-                        Monitor.Log($"{j.Name} spouse random loc");
-                        j.setRandomAfternoonMarriageDialogue(Game1.timeOfDay, farmHouse, false);
-                        continue;
-                    }
-                    else
-                    {
-                        int offset = roomSpouses.IndexOf(j.Name) * 7;
-                        j.setTilePosition((int)spot.X + offset, (int)spot.Y);
-                        j.faceDirection(ModEntry.myRand.Next(0, 4));
-                        j.setSpouseRoomMarriageDialogue();
-                        Monitor.Log($"{j.Name} loc: {(spot.X + offset)},{spot.Y}");
-                    }
+                    j.setTilePosition(farmHouse.getRandomOpenPointInHouse(ModEntry.myRand));
+                    j.faceDirection(ModEntry.myRand.Next(0, 4));
+                    Monitor.Log($"{j.Name} spouse random loc");
+                    j.setRandomAfternoonMarriageDialogue(Game1.timeOfDay, farmHouse, false);
                 }
             }
 
@@ -323,16 +328,17 @@ namespace MultipleSpouses
 
         public static bool HasSleepingAnimation(string name)
         {
-            Texture2D tex = Helper.Content.Load<Texture2D>($"Characters/{name}", ContentSource.GameContent);
-
             int sleepidx;
             string sleepAnim = SleepAnimation(name);
             if (sleepAnim == null)
                 return false;
-            else
-                sleepidx = int.Parse(sleepAnim.Split('/')[0]);
 
-            if ((sleepidx * 16) / 64 * 32 >= tex.Height)
+            sleepidx = int.Parse(sleepAnim.Split('/')[0]);
+
+            Texture2D tex = Helper.Content.Load<Texture2D>($"Characters/{name}", ContentSource.GameContent);
+            //Monitor.Log($"tex height for {name}: {tex.Height}");
+
+            if (sleepidx / 4 * 32 >= tex.Height)
             {
                 return false;
             }
@@ -357,14 +363,14 @@ namespace MultipleSpouses
         {
             int bedWidth = GetBedWidth(fh);
             Point bedStart = GetBedStart(fh);
-            Rectangle bed = new Rectangle(bedStart.X * 64, bedStart.Y * 64 + 64, bedWidth * 64, 3 * 64);
+            Rectangle bed = new Rectangle(bedStart.X * 64, bedStart.Y * 64, bedWidth * 64, 3 * 64);
             return box.Intersects(bed);
         }
         public static Vector2 GetSpouseBedPosition(FarmHouse fh, List<string> allBedmates, string name)
         {
             int bedWidth = GetBedWidth(fh);
             Point bedStart = GetBedStart(fh);
-            int x = 64 + (int)((allBedmates.IndexOf(name) + 1) / (float)(allBedmates.Count + 1) * (bedWidth - 2) * 64);
+            int x = 64 + (int)((allBedmates.IndexOf(name) + 1) / (float)(allBedmates.Count + 1) * (bedWidth - 1) * 64);
             return new Vector2(bedStart.X * 64 + x, bedStart.Y * 64 + ModEntry.bedSleepOffset - (GetTopOfHeadSleepOffset(name) * 4));
         }
         public static Vector2 GetFarmerBedPosition(FarmHouse fh)
@@ -375,8 +381,9 @@ namespace MultipleSpouses
 
         public static Point GetBedStart(FarmHouse fh)
         {
-            bool up = fh.upgradeLevel > 1;
-            return new Point(21 - (up ? (GetBedWidth(fh) / 2) - 1: 0) + (up ? 6 : 0), 2 + (up?9:0));
+            if (fh?.GetSpouseBed()?.GetBedSpot() == null)
+                return Point.Zero;
+            return new Point(fh.GetSpouseBed().GetBedSpot().X - 1, fh.GetSpouseBed().GetBedSpot().Y - 1);
         }
 
         public static int GetBedWidth(FarmHouse fh)
@@ -384,7 +391,7 @@ namespace MultipleSpouses
             if (ModEntry.config.CustomBed)
             {
                 bool up = fh.upgradeLevel > 1;
-                return Math.Min(up ? 9 : 6, Math.Max(ModEntry.config.BedWidth, 3));
+                return Math.Min(up ? 8 : 5, Math.Max(ModEntry.config.BedWidth, 3));
             }
             else
             {
@@ -482,7 +489,7 @@ namespace MultipleSpouses
             }
         }
 
-
+        /*
         public static Point getChildBed(FarmHouse farmhouse, string name)
         {
             List<NPC> children = farmhouse.characters.ToList().FindAll((n) => n is Child && n.Age == 3);
@@ -494,10 +501,13 @@ namespace MultipleSpouses
             }
             return new Point(22 + offset, 5);
         }
+        */
         public static bool ChangingKidsRoom()
         {
-            return ModEntry.config.ExtraCribs != 0 || ModEntry.config.ExtraKidsBeds != 0 || ModEntry.config.ExtraKidsRoomWidth != 0;
+            //return ModEntry.config.ExtraCribs != 0 || ModEntry.config.ExtraKidsBeds != 0 || ModEntry.config.ExtraKidsRoomWidth != 0;
+            return ModEntry.config.ExtraKidsRoomWidth > 0;
         }
+        
         
         public static int GetTopOfHeadSleepOffset(string name)
         {

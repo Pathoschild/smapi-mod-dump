@@ -20,5 +20,6 @@ namespace QuestFramework.Offers
     {
         public string NpcName { get; set; }
         public string DialogueText { get; set; }
+        public bool Secret { get; set; }
     }
 }

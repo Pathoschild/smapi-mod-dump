@@ -1,0 +1,10 @@
+{
+  "Name": "Prismatic Slime Finder",
+  "Author": "MrKoatl",
+  "Version": "1.0.0",
+  "Description": "Shows at which levels of the mine the prismatic slig is located.",
+  "UniqueID": "MrKoatl.PrismaticSlimeFinder",
+  "EntryDll": "PrismaticSlimeFinder.dll",
+  "MinimumApiVersion": "3.9.0",
+  "UpdateKeys": [ "Nexus:7866" ]
+}

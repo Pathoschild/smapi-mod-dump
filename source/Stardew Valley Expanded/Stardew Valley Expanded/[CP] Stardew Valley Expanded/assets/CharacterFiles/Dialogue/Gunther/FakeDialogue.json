@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+
+{ 
+  //SPECIAL DIALOGUE
+  "Introduction": "You must be Mr. @. Pleasure to meet you.^You must be Ms. @. Pleasure to meet you.",
+
+  "Mon": "Hello there.#$e#Find any interesting artifacts?",
+  "Tue": "Err. Hello.$0",
+  "Wed": "Hello Mr. @.^Hello Ms. @.",
+  "Thu": "Welcome to the Archaeology Office.",
+  "Fri": "Hi.$0",
+  "Sat": "Have plans for the weekend?",
+  "Sun": "Good day, Mr. @.^Good day, Ms. @.",
+
+}
+

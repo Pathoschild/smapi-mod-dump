@@ -14,9 +14,12 @@ automatically pull raw items from the chest and push processed items into it.
 * [Install](#install)
 * [Use](#use)
   * [Basic automation](#basic-automation)
-  * [Factories](#factories)
+  * [Examples](#examples)
+* [Automation techniques](#automation-techniques)
   * [Connectors](#connectors)
+  * [Machine pipelines](#machine-pipelines)
   * [Machine priority](#machine-priority)
+  * [Junimo chests](#junimo-chests)
 * [Configure](#configure)
   * [config.json](#configjson)
   * [In-game settings](#in-game-settings)
@@ -40,24 +43,25 @@ Machines connected to a chest will push their output into it, and pull ingredien
 of it.
 
 This can be used to automate...
+
 * [auto-grabbers](https://stardewvalleywiki.com/Auto-Grabber);
 * [bee houses](https://stardewvalleywiki.com/Bee_House);
-* bone mills;
+* [bone mills](https://stardewvalleywiki.com/Bone_Mill);
 * bushes (including [blackberry](https://stardewvalleywiki.com/Blackberry), [salmonberry](https://stardewvalleywiki.com/Salmonberry), and [tea](https://stardewvalleywiki.com/Tea_Bush) bushes);
 * [casks](https://stardewvalleywiki.com/Cask) (even outside the cellar);
 * [charcoal kilns](https://stardewvalleywiki.com/Charcoal_Kiln);
 * [cheese presses](https://stardewvalleywiki.com/Cheese_Press);
-* coffee makers;
+* [coffee makers](https://stardewvalleywiki.com/Coffee_Maker);
 * [crab pots](https://stardewvalleywiki.com/Crab_Pot);
 * [crystalariums](https://stardewvalleywiki.com/Crystalarium) (once started with the gem/mineral you want);
-* deconstructors;
+* [deconstructors](https://stardewvalleywiki.com/Deconstructor);
 * [fish ponds](https://stardewvalleywiki.com/Fish_Pond) (for output only);
 * [fruit trees](https://stardewvalleywiki.com/Fruit_Trees);
 * [furnaces](https://stardewvalleywiki.com/Furnace) (don't forget they also need coal);
 * [garbage cans](https://stardewvalleywiki.com/Garbage_Can);
-* geode crushers;
+* [geode crushers](https://stardewvalleywiki.com/Geode_Crusher)  (don't forget they also need coal);
 * [hay hoppers](https://stardewvalleywiki.com/Hay_Hopper);
-* hoppers (these act just like chests, except they're output-only);
+* [hoppers](https://stardewvalleywiki.com/Hopper) (these act just like chests, except they're output-only);
 * [Junimo huts](https://stardewvalleywiki.com/Junimo_Hut);
 * [incubators (for eggs)](https://stardewvalleywiki.com/Incubator);
 * [kegs](https://stardewvalleywiki.com/Keg);
@@ -65,7 +69,7 @@ This can be used to automate...
 * [looms](https://stardewvalleywiki.com/Loom);
 * [mayonnaise machines](https://stardewvalleywiki.com/Mayonnaise_Machine);
 * [mills](https://stardewvalleywiki.com/Mill);
-* mini-shipping bins;
+* [mini-shipping bins](https://stardewvalleywiki.com/Mini-Shipping_Bin);
 * [mushroom boxes](https://stardewvalleywiki.com/The_Cave#Mushrooms);
 * [oil makers](https://stardewvalleywiki.com/Oil_Maker);
 * [preserves jars](https://stardewvalleywiki.com/Preserves_Jar);
@@ -76,10 +80,10 @@ This can be used to automate...
 * [slime egg-presses](https://stardewvalleywiki.com/Slime_Egg);
 * [slime incubators](https://stardewvalleywiki.com/Slime_Incubator);
 * [soda machines](https://stardewvalleywiki.com/Soda_Machine);
-* solar panels;
+* [solar panels](https://stardewvalleywiki.com/Solar_Panel);
 * [statues of endless fortune](https://stardewvalleywiki.com/Statue_Of_Endless_Fortune);
 * [statues of perfection](https://stardewvalleywiki.com/Statue_of_Perfection);
-* statues of true perfection;
+* [statues of true perfection](https://stardewvalleywiki.com/Statue_Of_True_Perfection);
 * [tappers](https://stardewvalleywiki.com/Tapper);
 * [wood chippers](https://stardewvalleywiki.com/Wood_Chipper);
 * and [worm bins](https://stardewvalleywiki.com/Worm_Bin).
@@ -94,9 +98,8 @@ will be taken from all the chests, and output will be saved to chests in this or
 You can combine any number of chests and machines by placing them adjacent to each other, and you
 can press `U` (configurable) to highlight connected machines.
 
-### Factories
-A 'factory' is just a machine group which produces a certain output. Here are some example factories.
-You can increase production by just adding more machines.
+### Examples
+Here are some example machine group setups. You can increase production by just adding more machines.
 
 * **Automatic crab pots**  
   A worm bin produces bait, which is fed into the crab pots, which harvest fish and recycle trash.
@@ -123,6 +126,7 @@ You can increase production by just adding more machines.
   put back in the chest.
   > ![](screenshots/iridium-cheese-factory.png)
 
+## Automation techniques
 ### Connectors
 You can optionally configure objects or paths as connectors, which link machines together. For
 example, here are wooden paths used as connectors:
@@ -131,6 +135,40 @@ example, here are wooden paths used as connectors:
 
 Workbenches are the only connectors by default. You can edit the `config.json` to add connectors
 (see _[configure](#configure)_ below).
+
+### Machine pipelines
+A _pipeline_ is the directional flow of items along a set of machines. For example, milk in the
+chest gets processed in the cheese presses, then aged in the casks, then shipped:
+```
+ milk         cheese      aged 
+ ----------> ----------> ---------->
+┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+│  input   ││  cheese  ││   cask   ││ shipping │
+│  chest   ││  press   ││          ││   bin    │
+└──────────┘└──────────┘└──────────┘└──────────┘
+            ┌──────────┐┌──────────┐
+            │  cheese  ││   cask   │
+            │  press   ││          │
+            └──────────┘└──────────┘
+                        ┌──────────┐
+                        │   cask   │
+                        │          │
+                        └──────────┘
+```
+
+Automate doesn't _directly_ support pipelines: every machine (including the shipping bin) always
+has access to every connected chest.
+
+You can still have pipelines using [machine priorities](#machine-priority) though. The shipping bin
+has the lowest priority by default, so milk in the chest will go into the cheese press first
+automatically. The caveat is that **priority only matters when different machines are ready to take
+items**. For example, the shipping bin will happily take any remaining items if your other machines
+are all busy. There are two common solutions:
+
+* Add enough machines to handle all your input, so you never have unused items for the shipping bin.
+* Leave a space between the shipping bin and other machines, so it's not connected. When you're
+  ready to ship all the output, put down a [path connector](#connectors) temporarily so it pulls
+  all the available items.
 
 ### Machine priority
 The default order that machines are processed is unpredictable and subject to change, except that
@@ -151,6 +189,26 @@ predictable.
 
 Note that if all higher-priority machines are busy, any remaining items may go into lower-priority
 machines.
+
+### Junimo chests
+Every machine and chest connected to a [Junimo chest](https://stardewvalleywiki.com/Junimo_Chest)
+is part of a global machine group. This global group behaves just like a regular machine group
+(including for [machine priority](#machine-priority)), even if it's spread across many locations.
+
+For example, you can use this to distribute automation across the world:
+
+1. Junimo huts on your farm collect crops;
+2. kegs in a shed turn them into juice/wine;
+3. cellar casks age the juice/wine;
+4. the shipping bin collects the final output.
+
+Caveats:
+* Due to their special behaviour, you can't change input/output options for a Junimo chest. Junimo
+  chests are always automated if at least one is connected to a machine.
+ 
+  They have the highest priority for machine input, and the lowest priority for machine output.
+  (That is, items are only pushed into a Junimo chest if no other chest is available. Items are
+  still available to all machines in the global group either way.)
 
 ## Configure
 ### config.json
@@ -255,9 +313,10 @@ This adds four options for automate:
 ### Per-machine settings
 _This is advanced; most players won't need to configure Automate to this extent._
 
-You can set some options for individual machine types by [editing the `config.json`](#config.json),
+You can set some options for individual machine types by [editing the `config.json`](#configure),
 and adding an entry to the `MachineOverrides` field. If a machine isn't listed in that field, it'll
-use the default values. This works for all automated machines, including those added by other mods.
+use the default values defined in `assets/data.json`. This works for all automated machines,
+including those added by other mods.
 
 Each entry in `MachineOverrides` is identified by the internal machine type ID (_not_ the machine
 name you see in-game). You can [run the `automate summary` command](#console-command) to see a list
@@ -315,20 +374,22 @@ Enter `automate summary` directly in the SMAPI console to view a summary of your
 > ![](screenshots/console-command.png)
 
 ## FAQs
+### How many machines can I automate at once?
+There's no strict limit, since Automate optimises machine connections internally. I've officially
+tested with up to [630 machines in one group](https://community.playstarbound.com/threads/automate.131913/page-11#post-3238142)
+(which didn't cause any issues), and some players have thousands of automated machines.
+
+### Can I prevent a chest from being automated?
+Yep; see _[in-game settings](#in-game-settings)_.
+
 ### Why did my chests/machines disappear?
 Some common reasons:
-* NPCs destroy items placed in their path, so you shouldn't place anything where they can walk.
-  (You can use [path connectors](#connectors) to connect crab pots and trash cans to out-of-the-way
-  chests or machines.)
+* NPCs destroy items placed in their path. You can use [Non Destructive NPCs](https://www.nexusmods.com/stardewvalley/mods/5176)
+  to prevent that, or use [path connectors](#connectors) to connect machines away from NPC paths.
 * Festivals and the Night Market use temporary maps, so items placed there may disappear when the
   map is switched back to normal.
 
 Automate doesn't remove placed objects, so it's never at fault for disappearing chests or machines.
-
-### Is there a limit to how many machines can be connected?
-Automate optimises machine connections internally, so there's no upper limit. The most I've tried is
-[630 machines in one group](https://community.playstarbound.com/threads/automate.131913/page-11#post-3238142);
-that didn't cause any issues, so you can just keep adding more if you want.
 
 ### What's the order for chest/machine handling?
 When storing items, Automate prefers chests which either have the "Put items in this chest first" option (see
@@ -337,9 +398,6 @@ same type. The order when taking items is a bit more complicated. For more info,
 [technical documentation](technical.md).
 
 For machines, see [machine priority](#machine-priority).
-
-### What if I don't want a specific chest to be connected?
-See _[In-game settings](#in-game-settings)_.
 
 ### Can other mods extend Automate?
 Yep. Automate provides APIs that let other mods add custom machines/containers/connectors or make

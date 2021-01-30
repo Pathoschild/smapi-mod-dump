@@ -54,13 +54,13 @@ namespace ItemBags.Menus
         public Item HoveredItem { get; private set; }
         public void UpdateHoveredItem(CursorMovedEventArgs e)
         {
-            if (Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+            if (Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
             {
-                if (!GroupedOptions.IsEmptyMenu && GroupedOptions.Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+                if (!GroupedOptions.IsEmptyMenu && GroupedOptions.Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
                 {
                     HoveredItem = GroupedOptions.GetHoveredItem();
                 }
-                else if (!UngroupedOptions.IsEmptyMenu && UngroupedOptions.Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+                else if (!UngroupedOptions.IsEmptyMenu && UngroupedOptions.Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
                 {
                     HoveredItem = UngroupedOptions.GetHoveredItem();
                 }
@@ -159,16 +159,16 @@ namespace ItemBags.Menus
 
         public void OnMouseMoved(CursorMovedEventArgs e)
         {
-            CurrentMousePosition = e.NewPosition.ScreenPixels.AsPoint();
+            CurrentMousePosition = e.NewPosition.LegacyScreenPixels().AsPoint();
 
-            if (Bounds.Contains(e.OldPosition.ScreenPixels.AsPoint()) || Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+            if (Bounds.Contains(e.OldPosition.LegacyScreenPixels().AsPoint()) || Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
             {
-                if (!GroupedOptions.IsEmptyMenu && (GroupedOptions.Bounds.Contains(e.OldPosition.ScreenPixels.AsPoint()) || GroupedOptions.Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint())))
+                if (!GroupedOptions.IsEmptyMenu && (GroupedOptions.Bounds.Contains(e.OldPosition.LegacyScreenPixels().AsPoint()) || GroupedOptions.Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint())))
                 {
                     GroupedOptions.OnMouseMoved(e);
                 }
 
-                if (!UngroupedOptions.IsEmptyMenu && (UngroupedOptions.Bounds.Contains(e.OldPosition.ScreenPixels.AsPoint()) || UngroupedOptions.Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint())))
+                if (!UngroupedOptions.IsEmptyMenu && (UngroupedOptions.Bounds.Contains(e.OldPosition.LegacyScreenPixels().AsPoint()) || UngroupedOptions.Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint())))
                 {
                     UngroupedOptions.OnMouseMoved(e);
                 }

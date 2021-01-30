@@ -5,9 +5,9 @@ mods:
    Bookcase
 
 latest commit:
-   commit 0f5b68fb35fc1af1cf60bd352c9eea2333ca4174
+   commit a1402b700a4b12e12e168b55d78a9346943d1b42
    Author: Tyler Hancock <darklime@live.ca>
-   Date:   Fri Oct 26 22:37:23 2018 -0600
+   Date:   Thu Jan 28 00:07:57 2021 +0000
    
-       Updated version numbers
+       Enable deploymnet.
    

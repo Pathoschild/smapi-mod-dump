@@ -44,6 +44,8 @@ namespace ProducerFrameworkMod.ContentPack
         public List<string> RequiredSeason = new List<string>();
         public List<Weather> RequiredWeather = new List<Weather>();
         public List<string> RequiredLocation = new List<string>();
+        public List<string> RequiredMail = new List<string>();
+        public List<int> RequiredEvent = new List<int>();
         public bool? RequiredOutdoors = null;
         public List<string> RequiredInputParentIdentifier = new List<string>();
 

@@ -1,0 +1,49 @@
+{
+	// Object data
+	"Name": "blueberry.cac.stew",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 35,
+	"EdibleIsDrink": true,
+	"EdibleBuffs": {
+		"Farming": 0,
+		"Fishing": 0,
+		"Mining": 0,
+		"Luck": 0,
+		"Foraging": 0,
+		"MaxStamina": 0,
+		"MagnetRadius": 0,
+		"Speed": 0,
+		"Defense": 2,
+		"Attack": 0,
+		"Duration": 205
+	},
+	"Price": 130,
+	"IsColored": false,
+
+	// Object purchase
+	"CanPurchase": true,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 300,
+	"PurchaseRequirements": [ "y 1" ],
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": 78, // Cave Carrot
+				"Count": 2
+			},
+			{
+				"Object": 192, // Potato
+				"Count": 1
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": true,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": [ "y 1" ]
+	}
+}

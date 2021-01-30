@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPJAProducerConverter", "PP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFMAutomate", "PFMAutomate\PFMAutomate.csproj", "{811039FD-5162-4CE3-B13E-972AC5EC9A17}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailServicesMod", "MailServicesMod\MailServicesMod.csproj", "{E5E82134-CB84-4E97-AA3F-E067B0C697B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,13 @@ Global
 		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Release|Any CPU.Build.0 = Release|Any CPU
 		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Release|x86.ActiveCfg = Release|Any CPU
 		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Release|x86.Build.0 = Release|Any CPU
+		{E5E82134-CB84-4E97-AA3F-E067B0C697B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5E82134-CB84-4E97-AA3F-E067B0C697B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5E82134-CB84-4E97-AA3F-E067B0C697B2}.Debug|x86.ActiveCfg = Debug|x86
+		{E5E82134-CB84-4E97-AA3F-E067B0C697B2}.Debug|x86.Build.0 = Debug|x86
+		{E5E82134-CB84-4E97-AA3F-E067B0C697B2}.Release|Any CPU.ActiveCfg = Release|x86
+		{E5E82134-CB84-4E97-AA3F-E067B0C697B2}.Release|x86.ActiveCfg = Release|x86
+		{E5E82134-CB84-4E97-AA3F-E067B0C697B2}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

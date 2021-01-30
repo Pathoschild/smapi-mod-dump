@@ -25,6 +25,7 @@ namespace SVRichPresence {
 		bool SetTag(Mod mod, string key, string value);
 		bool SetTag(Mod mod, string key, NetString value);
 		bool SetTag(Mod mod, string key, int value);
+		bool SetTag(Mod mod, string key, float value);
 		bool SetTag(Mod mod, string key, decimal value, int roundDigits = -1);
 		bool SetTag(Mod mod, string key, double value, int roundDigits = -1);
 
@@ -38,6 +39,7 @@ namespace SVRichPresence {
 		bool SetTag(Mod mod, string key, Func<string> resolver, bool onlyWhenWorldReady = false);
 		bool SetTag(Mod mod, string key, Func<NetString> resolver, bool onlyWhenWorldReady = false);
 		bool SetTag(Mod mod, string key, Func<int> resolver, bool onlyWhenWorldReady = false);
+		bool SetTag(Mod mod, string key, Func<float> resolver, bool onlyWhenWorldReady = false);
 		bool SetTag(Mod mod, string key, Func<decimal> resolver, int roundDigits = -1, bool onlyWhenWorldReady = false);
 		bool SetTag(Mod mod, string key, Func<double> resolver, int roundDigits = -1, bool onlyWhenWorldReady = false);
 
@@ -123,6 +125,7 @@ namespace SVRichPresence {
 		bool SetTag(string key, string value);
 		bool SetTag(string key, NetString value);
 		bool SetTag(string key, int value);
+		bool SetTag(string key, float value);
 		bool SetTag(string key, decimal value, int roundDigits = -1);
 		bool SetTag(string key, double value, int roundDigits = -1);
 
@@ -136,6 +139,7 @@ namespace SVRichPresence {
 		bool SetTag(string key, Func<string> resolver, bool onlyWhenWorldReady = false);
 		bool SetTag(string key, Func<NetString> resolver, bool onlyWhenWorldReady = false);
 		bool SetTag(string key, Func<int> resolver, bool onlyWhenWorldReady = false);
+		bool SetTag(string key, Func<float> resolver, bool onlyWhenWorldReady = false);
 		bool SetTag(string key, Func<decimal> resolver, int roundDigits = -1, bool onlyWhenWorldReady = false);
 		bool SetTag(string key, Func<double> resolver, int roundDigits = -1, bool onlyWhenWorldReady = false);
 

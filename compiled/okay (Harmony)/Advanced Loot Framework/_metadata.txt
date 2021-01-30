@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7739
+IDs: aedenthorn.AdvancedLootFramework
+update keys: Nexus:7739, GitHub:aedenthorn/StardewValleyMods

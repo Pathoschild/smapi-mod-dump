@@ -21,7 +21,11 @@ namespace RangeHighlight {
             this.theMod = theMod;
             IntegratePrismaticTools();
             IntegrateBetterJunimos();
-            IntegrateBetterSprinklers();
+            if (theMod.config.ShowSprinklerRange) {
+                IntegrateBetterSprinklers();
+                IntegrateSimpleSprinklers();
+                IntegrateLineSprinklers();
+            }
         }
 
         private void IntegratePrismaticTools() {
@@ -39,21 +43,48 @@ namespace RangeHighlight {
                 theMod.Monitor.Log($"ignoring nonsense value {r} from Better Junimos for Junimo Hut radius", LogLevel.Info);
             }
         }
+        private void IntegrateSprinklerCommon(string highlighterName, Func<IDictionary<int,Vector2[]>> getCoverage, bool fallbackToDefault) {
+            theMod.api.RemoveItemRangeHighlighter("jltaylor-us.RangeHighlight/sprinkler");
+            IDictionary<int, bool[,]> coverageMask = new Dictionary<int, bool[,]>();
+            theMod.api.AddItemRangeHighlighter(highlighterName,
+                theMod.config.ShowSprinklerRangeKey,
+                theMod.config.ShowOtherSprinklersWhenHoldingSprinkler,
+                () => {
+                    foreach(var entry in getCoverage()) {
+                        coverageMask[entry.Key] = PointsToMask(entry.Value);
+                    }
+                },
+                (item, itemID, itemName) => {
+                    bool[,] tiles;
+                    if (coverageMask.TryGetValue(itemID, out tiles)) {
+                        return new Tuple<Color, bool[,]>(theMod.config.SprinklerRangeTint, tiles);
+                    } else if (fallbackToDefault) {
+                        return theMod.GetDefaultSprinklerHighlight(item, itemID, itemName);
+                    } else {
+                        return null;
+                    }
+                },
+                () => {
+                    coverageMask.Clear();
+                });
+        }
         private void IntegrateBetterSprinklers() {
             IBetterSprinklersApi api = theMod.helper.ModRegistry.GetApi<IBetterSprinklersApi>("Speeder.BetterSprinklers");
             if (api == null) return;
             theMod.api.RemoveItemRangeHighlighter("jltaylor-us.RangeHighlight/sprinkler");
-            theMod.api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/better-sprinkler",
-                theMod.config.ShowSprinklerRangeKey,
-                theMod.config.ShowOtherSprinklersWhenHoldingSprinkler,
-                (item, itemID, itemName) => {
-                    Vector2[] tiles;
-                    if (api.GetSprinklerCoverage().TryGetValue(itemID, out tiles)) {
-                        return new Tuple<Color, bool[,]>(theMod.config.SprinklerRangeTint, PointsToMask(tiles));
-                    } else {
-                        return null;
-                    }
-                });
+            IntegrateSprinklerCommon("jltaylor-us.RangeHighlight/better-sprinkler", api.GetSprinklerCoverage, false);
+        }
+        private void IntegrateSimpleSprinklers() {
+            ISimplerSprinklerApi api = theMod.helper.ModRegistry.GetApi<ISimplerSprinklerApi>("tZed.SimpleSprinkler");
+            if (api == null) return;
+            theMod.api.RemoveItemRangeHighlighter("jltaylor-us.RangeHighlight/sprinkler");
+            IntegrateSprinklerCommon("jltaylor-us.RangeHighlight/simple-sprinkler", api.GetNewSprinklerCoverage, false);
+        }
+        private void IntegrateLineSprinklers() {
+            ILineSprinklersApi api = theMod.helper.ModRegistry.GetApi<ILineSprinklersApi>("hootless.LineSprinklers");
+            if (api == null) return;
+            theMod.api.RemoveItemRangeHighlighter("jltaylor-us.RangeHighlight/sprinkler");
+            IntegrateSprinklerCommon("jltaylor-us.RangeHighlight/line-sprinkler", api.GetSprinklerCoverage, true);
         }
         private bool[,] PointsToMask(Vector2[] points) {
             int maxX = 0;
@@ -83,5 +114,11 @@ namespace RangeHighlight {
         int GetMaxGridSize();
         IDictionary<int, Vector2[]> GetSprinklerCoverage();
     }
-
+    public interface ISimplerSprinklerApi {
+        IDictionary<int, Vector2[]> GetNewSprinklerCoverage();
+    }
+    public interface ILineSprinklersApi {
+        int GetMaxGridSize();
+        IDictionary<int, Vector2[]> GetSprinklerCoverage();
+    }
 }

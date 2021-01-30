@@ -72,10 +72,10 @@ namespace CustomDeathPenaltyPlus
                 modHelper = helper;
             }
 
-            // Allow asset to be editted if name matches and any object references exist
+            // Allow asset to be edited if name matches and any object references exist
             public bool CanEdit<T>(IAssetInfo asset)
             {
-                return asset.AssetNameEquals("Strings\\StringsFromCSFiles") && PlayerStateRestorer.statedeath != null;
+                return asset.AssetNameEquals("Strings\\StringsFromCSFiles") && PlayerStateRestorer.statedeathps.Value != null;
             }
 
             // Edit asset
@@ -93,8 +93,8 @@ namespace CustomDeathPenaltyPlus
                 else
                 {
                     // No, edit strings to show amount lost
-                    stringeditor["Event.cs.1068"] = stringeditor["Event.cs.1068"].Replace("{0}",$"{(int)Math.Round(PlayerStateRestorer.statedeath.moneylost)}");
-                    stringeditor["Event.cs.1058"] = stringeditor["Event.cs.1058"].Replace("{0}", $"{(int)Math.Round(PlayerStateRestorer.statedeath.moneylost)}");
+                    stringeditor["Event.cs.1068"] = stringeditor["Event.cs.1068"].Replace("{0}",$"{(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}");
+                    stringeditor["Event.cs.1058"] = stringeditor["Event.cs.1058"].Replace("{0}", $"{(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}");
                 }
                 // Is RestoreItems true?
                 if (config.DeathPenalty.RestoreItems == true)

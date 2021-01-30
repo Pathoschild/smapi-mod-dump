@@ -9,6 +9,10 @@ for queries and analysis.**
 # AutoAnimalDoors
 This is a mod created for StardewValley which will automate the animal door opening/closing process for all your barns and coops.
 
+I appreciate all the support this mod has received! If you'd like to further support my work please use this link to [donate](http://paypal.me/JustKiddingStudios)
+
+~Thanks :) Aaron
+
 ## Features
 ### Opening animal doors automatically
 Your animal doors will open automatically at the time you specified in the config file no matter where your character is in the game world (you will hear the door opening sound). 
@@ -33,7 +37,9 @@ Consequently, you can disable this mod for barns or coops by setting the value t
 
 ## Config File
 
-The config file is where all the options for this mod can be set. It will be automatically created the first time the game is launched with this mod installed.
+Hey, you no longer have to use a config file, I integrated with [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098). Download and install that mod and configure all these settings in the game! :)
+
+Oh, you'd rather use the config file? That is okay too. The config file is where all the options for this mod can be set. It will be automatically created the first time the game is launched with this mod installed.
 
 You can find it in the mods install directory.
 

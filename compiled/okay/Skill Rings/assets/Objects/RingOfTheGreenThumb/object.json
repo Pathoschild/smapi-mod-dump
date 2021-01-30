@@ -1,0 +1,11 @@
+{
+  "Name": "Ring of the Green Thumb",
+  "Description": "Makes you better with plants, improving your farming.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 10000,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Pierre",
+  "PurchasePrice": 25000,
+}

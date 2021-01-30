@@ -1,0 +1,51 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/CooksAssistant
+**
+*************************************************/
+
+{
+	// Object data
+	"Name": "blueberry.cac.cake",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 45,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 110,
+	"IsColored": false,
+
+	// Object purchase
+	"CanPurchase": false,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 300,
+	"PurchaseRequirements": null,
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": 246, // Flour
+				"Count": 2
+			},
+			{
+				"Object": -5, // Egg
+				"Count": 2
+			},
+			{
+				"Object": -6, // Milk
+				"Count": 1
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": false,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": null
+	}
+}

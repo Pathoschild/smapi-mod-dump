@@ -8,12 +8,12 @@
 **
 *************************************************/
 
-using System;
-using System.Reflection;
-using StardewValley;
-using StardewValley.Menus;
 using Bookcase.Events;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
+using StardewValley.Menus;
+using System;
+using System.Reflection;
 
 
 namespace Bookcase.Patches {

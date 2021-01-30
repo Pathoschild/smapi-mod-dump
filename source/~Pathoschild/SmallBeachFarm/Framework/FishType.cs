@@ -17,6 +17,9 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework
         River,
 
         /// <summary>Fish that can be caught in the ocean.</summary>
-        Ocean
+        Ocean,
+
+        /// <summary>Fish from a non-open-water position, like a fish pond.</summary>
+        Default
     }
 }

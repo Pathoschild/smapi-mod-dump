@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7626
+IDs: Lis.MusicalCellar
+update keys: Nexus:7626, GitHub:lisamreynolds/MusicalCellar

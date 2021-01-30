@@ -7,6 +7,9 @@
     "generic.tomorrow": "amanhã",
     "generic.yesterday": "ontem",
 
+    // generic values
+    "generic.unknown": "unknown", // TODO
+
     // generic field values
     "generic.percent": "{{percent}}%",
     "generic.percent-chance-of": "{{percent}}% de chance de {{label}}",
@@ -189,6 +192,17 @@
     "location.undergroundMine.level": "Mina nível {{level}}",
     "location.witchSwamp": "Pântano da bruxa",
     "location.woods": "Bosque Secreto",
+
+    "location.caldera": "Ginger Island caldera", // TODO
+    "location.islandEast": "Ginger Island east", // TODO
+    "location.islandNorth": "Ginger Island north", // TODO
+    "location.islandSouth": "Ginger Island south", // TODO
+    "location.islandSouthEast": "Ginger Island southeast", // TODO
+    "location.islandSouthEastCave": "Ginger Island southeast cave", // TODO
+    "location.islandWest": "Ginger Island west", // TODO
+    "location.islandWest.fish-area-1": "Ginger Island west (ocean)", // TODO
+    "location.islandWest.fish-area-2": "Ginger Island west (pond)", // TODO
+
     "location.unknown-fish-area": "{{locationName}} (área de pesca {{id}})",
 
 
@@ -322,6 +336,8 @@
     // labels
     "crop.summary": "Plantação",
     "crop.harvest": "Próxima colheita",
+    "crop.fertilized": "Fertilized", // TODO
+    "crop.watered": "Watered", // TODO
 
     // values
     "crop.summary.dead": "Esta planta está morta.",
@@ -587,7 +603,7 @@
 
 
     /*********
-    ** Tile lookups > Fern Islands mermaid puzzle
+    ** Puzzles > Fern Islands mermaid puzzle
     *********/
     // labels
     // TODO
@@ -616,6 +632,7 @@
     *********/
     // labels
     "tile.description": "Um bloque posicionado no mapa. Isto está aparecendo pois você habilitou nas configurações.",
+    "tile.game-location": "Location", // TODO
     "tile.map-name": "Nome do mapa",
     "tile.tile": "Bloco",
     "tile.tile-index": "{{layerName}}: Indice do bloco",
@@ -658,7 +675,6 @@
     "tree.next-growth.winter": "Não pode crescer no inverno fora da estufa",
     "tree.next-growth.adjacent-trees": "Não pode crescer pois as outras árvores estão muito perto",
     "tree.next-growth.chance": "{{chance}}% Chance de crescer {{stage}} amanhã",
-    "tree.is-fertilized.effects": "garante crescimento diário, inclusive no inverno",
 
     // growth stages
     "tree.stages.seed": "Semente",

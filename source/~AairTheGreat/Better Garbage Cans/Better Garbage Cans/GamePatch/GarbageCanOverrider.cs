@@ -14,7 +14,6 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Locations;
-using StardewValley.Menus;
 using StardewValley.Network;
 using StardewValley.Objects;
 using System;
@@ -24,7 +23,7 @@ using xTile.Dimensions;
 
 namespace BetterGarbageCans.GamePatch
 {
-   static class GarbageCanOverrider
+    static class GarbageCanOverrider
    {
         public static void prefix_betterGarbageCans(Town __instance, Location tileLocation, ref Farmer who, ref IList<bool> ___garbageChecked) 
         {
@@ -47,16 +46,16 @@ namespace BetterGarbageCans.GamePatch
                             Game1.stats.incrementStat("trashCansChecked", 1);
                             BetterGarbageCansMod.Instance.garbageCans[(GARBAGE_CANS)index].LastTimeChecked = Game1.timeOfDay;
                             ___garbageChecked[index] = true;
-                            CreateSoundAndSparks(__instance, tileLocation, index);
+                            var foundGarbageHat = CreateSoundAndSparks(__instance, tileLocation, index);
                             CheckForNPCMessages(__instance, tileLocation, ref who);
-                            CheckForTreasure(__instance, tileLocation, index, ref who);
+                            CheckForTreasure(__instance, tileLocation, index, foundGarbageHat, ref who);
                         }
                     }
                 }
             }
         }
 
-        private static void CreateSoundAndSparks(GameLocation location, Location tileLocation, int index)
+        private static bool CreateSoundAndSparks(GameLocation location, Location tileLocation, int index)
         {
             Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + 777 + index * 77);
             bool flag1 = Game1.stats.getStat("trashCansChecked") > 20U && random.NextDouble() < 0.01;
@@ -130,22 +129,34 @@ namespace BetterGarbageCans.GamePatch
                     delayBeforeAnimationStart = Game1.random.Next(100)
                 });
             BetterGarbageCansMod.multiplayer.broadcastSprites(location, temporaryAnimatedSpriteList);
-            location.playSound("trashcan", NetAudio.SoundContext.Default);            
+            location.playSound("trashcan", NetAudio.SoundContext.Default);
+            
+            return flag2;
         }
 
-        private static void CheckForTreasure(GameLocation location, Location tileLocation, int index, ref Farmer player)
+        private static void CheckForTreasure(GameLocation location, Location tileLocation, int index, bool foundHat, ref Farmer player)
         {
-            Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + 777 + index + Game1.timeOfDay);
-            if (random.NextDouble() < BetterGarbageCansMod.Instance.config.baseChancePercent + Game1.player.DailyLuck)  
+            var playerHat = player.hat.Value;
+
+            if (foundHat && !player.hasItemInInventoryNamed("Garbage Hat")
+                && (playerHat == null || (playerHat != null && playerHat.which.Value != 66)))
             {
-                Item reward = GetTreasure(index, random);
-
-                if (reward != null)
+                player.addItemByMenuIfNecessary(new Hat(66), null);
+            }
+            else
+            {
+                Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + 777 + index + Game1.timeOfDay);
+                if (random.NextDouble() < BetterGarbageCansMod.Instance.config.baseChancePercent + Game1.player.DailyLuck)
                 {
-                    Vector2 origin = new Vector2((float)tileLocation.X + 0.5f, (float)(tileLocation.Y - 1)) * 64f;
+                    Item reward = GetTreasure(index, random);
 
-                    Game1.createItemDebris(reward, origin, 2, location, (int)origin.Y + 64);
-                    BetterGarbageCansMod.Instance.garbageCans[(GARBAGE_CANS)index].LastTimeFoundItem = Game1.timeOfDay;
+                    if (reward != null)
+                    {
+                        Vector2 origin = new Vector2((float)tileLocation.X + 0.5f, (float)(tileLocation.Y - 1)) * 64f;
+
+                        Game1.createItemDebris(reward, origin, 2, location, (int)origin.Y + 64);
+                        BetterGarbageCansMod.Instance.garbageCans[(GARBAGE_CANS)index].LastTimeFoundItem = Game1.timeOfDay;
+                    }
                 }
             }
         }
@@ -286,6 +297,10 @@ namespace BetterGarbageCans.GamePatch
                 int count = Game1.random.Next(treasure.MinAmount, treasure.MaxAmount);
                 reward = (Item)new StardewValley.Object(id, count);
             }
+
+            if (Game1.random.NextDouble() <= 0.25 && Game1.player.team.SpecialOrderRuleActive("DROP_QI_BEANS", (SpecialOrder)null))
+                reward = (Item)new StardewValley.Object(890, 1);
+
             return reward;
         }
 
@@ -352,6 +367,10 @@ namespace BetterGarbageCans.GamePatch
                     && !Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheaterJoja"))
                     parentSheetIndex = random.NextDouble() >= 0.25 ? 270 : 809;
             }
+
+            if (Game1.random.NextDouble() <= 0.25 && Game1.player.team.SpecialOrderRuleActive("DROP_QI_BEANS", (SpecialOrder)null))
+                parentSheetIndex = 890;
+
             return (Item)new StardewValley.Object(parentSheetIndex, 1);
         }
 

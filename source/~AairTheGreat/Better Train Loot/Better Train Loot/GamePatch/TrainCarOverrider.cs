@@ -38,15 +38,19 @@ namespace BetterTrainLoot.GamePatch
                 : 3.0 * BetterTrainLootMod.Instance.config.baseChancePercent + Game1.player.DailyLuck;  
             int maxNumberOfItems = (trainType != TRAINS.PRESENT_TRAIN) ? BetterTrainLootMod.Instance.config.maxNumberOfItemsPerTrain : 3 * BetterTrainLootMod.Instance.config.maxNumberOfItemsPerTrain;
 
-            if ((Game1.random.NextDouble() <= chance && BetterTrainLootMod.Instance.config.useCustomTrainTreasure && BetterTrainLootMod.numberOfRewardsPerTrain < maxNumberOfItems)
-                || BetterTrainLootMod.Instance.config.enableNoLimitTreasurePerTrain)
-            {                
-                Item reward = GetCustomTrainTreasure(trainType);
-
-                if (reward.ParentSheetIndex != -1)
+            if (BetterTrainLootMod.Instance.config.useCustomTrainTreasure)
+            {
+                if ((Game1.random.NextDouble() <= chance     
+                    && BetterTrainLootMod.numberOfRewardsPerTrain < maxNumberOfItems)
+                    || BetterTrainLootMod.Instance.config.enableNoLimitTreasurePerTrain)
                 {
-                    Game1.createObjectDebris(reward.ParentSheetIndex, (int)globalPosition.X / 64, (int)globalPosition.Y / 64, (int)((double)globalPosition.Y + 320.0), 0, 1f, (GameLocation)null);
-                    BetterTrainLootMod.numberOfRewardsPerTrain++;
+                    Item reward = GetCustomTrainTreasure(trainType);
+
+                    if (reward.ParentSheetIndex != -1)
+                    {
+                        Game1.createObjectDebris(reward.ParentSheetIndex, (int)globalPosition.X / 64, (int)globalPosition.Y / 64, (int)((double)globalPosition.Y + 320.0), 0, 1f, (GameLocation)null);
+                        BetterTrainLootMod.numberOfRewardsPerTrain++;
+                    }
                 }
             }
         }
@@ -82,11 +86,11 @@ namespace BetterTrainLoot.GamePatch
 
             Item reward;
             // Create reward item
-            if ((id >= 516 && id <= 534) || id == 810 || id == 811)
+            if ((id >= 516 && id <= 534) || id == 810 || id == 811 || id == 839 || (id >= 859 && id <= 863) || id == 887 || id == 888)
             {
                 reward = new Ring(id);                
             }
-            else if ((id >= 504 && id <= 515) || id == 804 || id == 806)
+            else if ((id >= 504 && id <= 515) || id == 804 || id == 806 || id == 853|| id == 854|| id ==855|| id == 878)
             {
                 reward = new Boots(id);                
             }

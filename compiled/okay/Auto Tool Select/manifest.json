@@ -1,7 +1,7 @@
 ﻿{
   "Name": "AutoToolSelect",
   "Author": "lolmaj",
-  "Version": "2.1",
+  "Version": "2.2",
   "Description": "Choose right tool from toolbox based on hovering tile",
   "UniqueID": "lolmaj.AutoToolSelect",
   "EntryDll": "AutoToolSelect.dll",
@@ -10,7 +10,7 @@
   "Dependencies": [
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
-      "IsRequired": true
+      "IsRequired": false
     }
   ]
 }

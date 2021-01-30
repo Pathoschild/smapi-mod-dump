@@ -30,7 +30,7 @@ namespace CombineMachines.Patches
             try
             {
                 //  Always return maximumStackSize = 1 if the machine has been merged with another machine
-                if (__instance.TryGetCombinedQuantity(out int CombinedQuantity))
+                if (__instance.IsCombinedMachine())
                 {
                     __result = 1;
                     return false;
@@ -54,7 +54,7 @@ namespace CombineMachines.Patches
             try
             {
                 //  Always return false if the machine has been merged with another machine
-                if (__instance.TryGetCombinedQuantity(out int CombinedQuantity))
+                if (__instance.IsCombinedMachine())
                 {
                     __result = false;
                     return false;
@@ -79,7 +79,7 @@ namespace CombineMachines.Patches
             {
                 //  Example: If you combined 3 furnaces together and placed it on a tile, then when you remove it, the Game will already refund 1 of them, so this patch is intended to
                 //  refund the other 2 combined quantity
-                if (__instance.bigCraftable.Value && __instance.TryGetCombinedQuantity(out int CombinedQuantity) && CombinedQuantity > 1)
+                if (__instance.IsCombinableObject() && __instance.TryGetCombinedQuantity(out int CombinedQuantity) && CombinedQuantity > 1)
                 {
                     SObject CombinedRefund = new SObject(Vector2.Zero, __instance.ParentSheetIndex, false) { Stack = CombinedQuantity - 1 };
                     Game1.createItemDebris(CombinedRefund, tileLocation * 64f, (Game1.player.FacingDirection + 2) % 4, null, -1);

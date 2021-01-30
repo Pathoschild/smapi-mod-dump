@@ -680,6 +680,8 @@ namespace InputFix
             }
             else
                 DrawByAcp(spriteBatch, new Acp(0, GetTextLength()), ref xPositionSoFar, TextColor, drawShadow);
+
+            KeyboardInput_.comp.Draw(spriteBatch);
         }
 
         protected virtual void DrawByAcp(SpriteBatch spriteBatch, Acp acp, ref float offset, Color color, bool drawShadow = true)

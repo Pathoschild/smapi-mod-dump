@@ -1,0 +1,8 @@
+{
+  "tier1SkillRingBoost": 1,
+  "tier2SkillRingBoost": 2,
+  "tier3SkillRingBoost": 5,
+  "tier1ExperienceRingBoost": 0.1,
+  "tier2ExperienceRingBoost": 0.2,
+  "tier3ExperienceRingBoost": 0.5
+}

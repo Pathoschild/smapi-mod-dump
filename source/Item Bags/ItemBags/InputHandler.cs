@@ -131,9 +131,8 @@ namespace ItemBags
         {
             try
             {
-                Point CursorPos = e.Cursor.ScreenPixels.AsAndroidCompatibleCursorPoint();
+                Point CursorPos = e.Cursor.LegacyScreenPixels().AsAndroidCompatibleCursorPoint();
                 bool IsGamepadInput = e.Button.TryGetController(out Buttons GamepadButtons);
-
 
                 if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is ItemBagMenu IBM)
                 {

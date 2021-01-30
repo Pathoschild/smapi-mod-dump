@@ -18,6 +18,7 @@ namespace EnaiumToolKit.Framework.Screen.Components
         public bool Hovered;
         public bool Visibled;
         public bool Enabled;
+        
         public int X;
         public int Y;
         public int Width;
@@ -57,6 +58,11 @@ namespace EnaiumToolKit.Framework.Screen.Components
         public virtual void MouseRightClicked(int x, int y)
         {
             OnRightClicked.Invoke();
+        }
+        
+        public virtual void MouseScrollWheelAction(int direction)
+        {
+            
         }
     }
 }

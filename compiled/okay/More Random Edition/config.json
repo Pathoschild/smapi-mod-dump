@@ -1,0 +1,46 @@
+{
+  "CreateSpoilerLog": true,
+  "CraftingRecipies": {
+    "Randomize": true,
+    "RandomizeLevels": true
+  },
+  "Weapons": {
+    "Randomize": true,
+    "UseCustomImages": true,
+    "RandomizeGalaxySwordName": true
+  },
+  "Boots": {
+    "Randomize": true,
+    "UseCustomImages": true
+  },
+  "Monsters": {
+    "Randomize": true,
+    "SwapUniqueDrops": true
+  },
+  "Crops": {
+    "Randomize": true,
+    "UseCustomImages": true
+  },
+  "Fish": {
+    "Randomize": true,
+    "UseCustomImages": true
+  },
+  "Bundles": {
+    "Randomize": true,
+    "ShowDescriptionsInBundleTooltips": true
+  },
+  "Music": {
+    "Randomize": true,
+    "RandomSongEachTransition": false
+  },
+  "RandomizeForagables": true,
+  "AddRandomArtifactItem": true,
+  "RandomizeBuildingCosts": true,
+  "RandomizeFruitTrees": true,
+  "RandomizeAnimalSkins": true,
+  "RandomizeNPCSkins": false,
+  "RandomizeNPCBirthdays": true,
+  "RandomizeIntroStory": true,
+  "RandomizeQuests": true,
+  "RandomizeRain": true
+}

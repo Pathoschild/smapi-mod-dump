@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="i18n\de.json" />
     <None Include="i18n\default.json" />
     <Compile Include="src\DataModels.cs" />
     <Compile Include="src\MobilePhoneModAPI.cs" />

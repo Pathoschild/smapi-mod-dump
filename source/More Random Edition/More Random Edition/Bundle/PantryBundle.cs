@@ -84,12 +84,16 @@ namespace Randomizer
 					break;
 				case BundleTypes.PantryRareFoods:
 					Name = Globals.GetTranslation("bundle-pantry-rare-foods");
+
+					SeedItem starFruitSeed = (SeedItem)ItemList.Items[(int)ObjectIndexes.StarfruitSeeds];
+					SeedItem gemBerrySeed = (SeedItem)ItemList.Items[(int)ObjectIndexes.RareSeed];
 					RequiredItems = new List<RequiredItem>
 					{
 						new RequiredItem((int)ObjectIndexes.AncientFruit),
-						new RequiredItem((int)ObjectIndexes.Starfruit),
-						new RequiredItem((int)ObjectIndexes.SweetGemBerry)
+						new RequiredItem(starFruitSeed.CropGrowthInfo.CropId),
+						new RequiredItem(gemBerrySeed.CropGrowthInfo.CropId),
 					};
+					MinimumRequiredItems = 2;
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.PantryDesert:
@@ -157,10 +161,6 @@ namespace Randomizer
 						(int)ObjectIndexes.ChewingStick,
 						(int)ObjectIndexes.AncientSeed,
 						(int)ObjectIndexes.DwarvishHelm,
-						(int)ObjectIndexes.SmallmouthBass,
-						(int)ObjectIndexes.Walleye,
-						(int)ObjectIndexes.Pike,
-						(int)ObjectIndexes.Stonefish,
 						(int)ObjectIndexes.Driftwood,
 						(int)ObjectIndexes.BrownEgg,
 						(int)ObjectIndexes.LargeBrownEgg,
@@ -221,11 +221,6 @@ namespace Randomizer
 						(int)ObjectIndexes.CactusFruit,
 						(int)ObjectIndexes.DwarfScrollII,
 						(int)ObjectIndexes.StrangeDoll2,
-						(int)ObjectIndexes.LargemouthBass,
-						(int)ObjectIndexes.Shad,
-						(int)ObjectIndexes.Slimejack,
-						(int)ObjectIndexes.Legend,
-						(int)ObjectIndexes.MutantCarp,
 						(int)ObjectIndexes.Snail,
 						(int)ObjectIndexes.Seaweed,
 						(int)ObjectIndexes.GreenAlgae,

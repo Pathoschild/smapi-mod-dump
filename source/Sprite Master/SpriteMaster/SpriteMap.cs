@@ -18,8 +18,8 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster {
 	internal sealed class SpriteMap {
-		private readonly SharedLock Lock = new SharedLock();
-		private readonly WeakCollection<ScaledTexture> ScaledTextureReferences = new WeakCollection<ScaledTexture>();
+		private readonly SharedLock Lock = new();
+		private readonly WeakCollection<ScaledTexture> ScaledTextureReferences = new();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		static private ulong SpriteHash (Texture2D texture, Bounds source, uint expectedScale) {
@@ -159,12 +159,13 @@ namespace SpriteMaster {
 							continue;
 						var textureName = scaledTexture.SafeName().ToLowerInvariant();
 						if (
+							!textureName.Contains(season.ToLowerInvariant()) &&
 							(
 								textureName.Contains("spring") ||
 								textureName.Contains("summer") ||
 								textureName.Contains("fall") ||
 								textureName.Contains("winter")
-							) && !textureName.Contains(season.ToLowerInvariant())
+							)
 						) {
 							purgeList.Add(scaledTexture);
 						}

@@ -13,6 +13,7 @@ using ItemBags.Helpers;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -165,79 +166,34 @@ namespace ItemBags.Persistence
         {
             IModHelper Helper = ItemBagsMod.ModInstance.Helper;
 
-#if NEVER //DEBUG
-            try
-            {
-                //  Retrieve the item Ids of various new items added by update 1.5
-
-                List<string> NewItemNames = new List<string>()
-                {
-                    "Bug Steak", "Banana Pudding", "Ginger", "Ginger Ale", "Ginger Beer", "Mango Sticky Rice", "Piña Colada", "Poi", "Taro Root", "Tropical Curry", "Squid Ink Ravioli",
-                    "Deluxe Fertilizer", "Deluxe Retaining Soil", "Hyper Speed-Gro",
-                    "Bone Fragment", "Fossilized Skull", "Fossilized Spine", "Fossilized Tail", "Fossilized Leg", "Fossilized Ribs", "Snake Skull", "Snake Vertebrae",
-                    "Cinder Shard", "Dragon Tooth", "Tiger Slime Egg", "Fairy Dust", "Golden Walnut", "Magma Cap", "Monster Musk", "Mummified Bat", "Mummified Frog", "Ostrich Egg", "Qi Gem", "Qi Seasoning",
-                    "Radioactive Ore", "Radioactive Bar", "Taro Tuber", "Mushroom Tree Seed", "Magic Bait",
-                    "Stingray", "Lionfish", "Blue Discus", "Glacierfish Jr.", "Legend II", "Ms. Angler", "Radioactive Carp", "Son of Crimsonfish",
-                    "Cookout Kit", "Coffee Maker", "Mahogany Seed", "Heavy Tapper", "Mango Sapling", "Mango", "Banana Sapling", "Banana",
-                    "Farm Computer", "Mini-Shipping Bin", "Warp Totem: Island", "Bone Mill", "Mini-Obelisk", "Ostrich Incubator", "Geode Crusher", "Pineapple Seeds", "Pineapple",
-                    "Dark Sign", "Deconstructor", "Hopper", "Solar Panel", "Fiber Seeds"
-                };
-
-                //Game1.objectInformation.GroupBy(x => x.Value).Select(x => x.First()).OrderBy(x => x.Value).ToDictionary(x => x.Value, x => x.Key);
-                Dictionary<string, int> AllItems = new Dictionary<string, int>();
-                foreach (var item in Game1.objectInformation)
-                {
-                    AllItems[item.Value.Split('/').First()] = item.Key;
-                }
-                foreach (var item in Game1.bigCraftablesInformation)
-                {
-                    AllItems[item.Value.Split('/').First()] = item.Key;
-                }
-
-                AllItems = AllItems.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
-
-                List<string> NotFound = new List<string>();
-
-                List<string> Result = new List<string>();
-
-                Dictionary<string, int> NewItems = new Dictionary<string, int>();
-                foreach (string Name in NewItemNames.OrderBy(x => x))
-                {
-                    if (!AllItems.TryGetValue(Name, out int Id))
-                    {
-                        NotFound.Add(Name);
-                    }
-                    else
-                    {
-                        NewItems.Add(Name, Id);
-
-                        Object Instance = new Object(Id, 1);
-                        bool HasQualities = CategoriesWithQualities.Contains(Instance.Category);
-                        bool IsStackable = Instance.maximumStackSize() > 1;
-                        string Category = Instance.getCategoryName();
-                        if (string.IsNullOrEmpty(Category))
-                            Category = Instance.Category.ToString();
-                        Result.Add(string.Format("{0} ({1}, {2}, {3}) (Quality={4})", Name, Id, Category, ItemBag.GetSingleItemPrice(Instance), HasQualities.ToString()));
-                    }
-                }
-
-                string NewItemInfo = string.Join("\n", Result);
-            }
-            catch (Exception) { }
-#endif
-
             //  Load modded items from JsonAssets the moment it finishes registering items
             if (Helper.ModRegistry.IsLoaded(ItemBagsMod.JAUniqueId))
             {
                 IJsonAssetsAPI API = Helper.ModRegistry.GetApi<IJsonAssetsAPI>(ItemBagsMod.JAUniqueId);
                 if (API != null)
                 {
-                    API.IdsFixed += (sender, e) => { OnJsonAssetsIdsFixed(API, ItemBagsMod.BagConfig); };
+                    API.IdsFixed += (sender, e) => { OnJsonAssetsIdsFixed(API, ItemBagsMod.BagConfig, true); };
                 }
             }
         }
 
-        private static void OnJsonAssetsIdsFixed(IJsonAssetsAPI API, BagConfig Target)
+        internal static void OnConnectedToHost()
+        {
+            if (!Context.IsMainPlayer)
+            {
+                IModHelper Helper = ItemBagsMod.ModInstance.Helper;
+                if (Helper.ModRegistry.IsLoaded(ItemBagsMod.JAUniqueId))
+                {
+                    IJsonAssetsAPI API = Helper.ModRegistry.GetApi<IJsonAssetsAPI>(ItemBagsMod.JAUniqueId);
+                    if (API != null)
+                    {
+                        OnJsonAssetsIdsFixed(API, ItemBagsMod.BagConfig, false);
+                    }
+                }
+            }
+        }
+
+        private static void OnJsonAssetsIdsFixed(IJsonAssetsAPI API, BagConfig Target, bool RevalidateInstances)
         {
             try
             {
@@ -245,6 +201,8 @@ namespace ItemBags.Persistence
 
                 if (ItemBagsMod.TemporaryModdedBagTypes.Any())
                 {
+                    ItemBagsMod.ModInstance.Monitor.Log("Loading Modded Bags type info", LogLevel.Debug);
+
                     Dictionary<string, int> AllBigCraftableIds = new Dictionary<string, int>();
                     foreach (System.Collections.Generic.KeyValuePair<int, string> KVP in Game1.bigCraftablesInformation)
                     {
@@ -295,7 +253,8 @@ namespace ItemBags.Persistence
                         }
                     }
 
-                    ItemBag.GetAllBags(true).ForEach(x => x.OnJsonAssetsItemIdsFixed(API, true));
+                    if (RevalidateInstances)
+                        ItemBag.GetAllBags(true).ForEach(x => x.OnJsonAssetsItemIdsFixed(API, true));
                 }
             }
             catch (Exception ex)

@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using System.Linq;
 using StardewValley.Locations;
@@ -105,6 +106,16 @@ namespace CustomDeathPenaltyPlus
         }
     }
 
+    /// <summary>Holds the booleans used by the mod to know what to load and when.</summary>
+    internal class Toggles
+    {
+        internal bool warptoinvisiblelocation = false;
+
+        internal bool loadstate = false;
+
+        internal bool shouldtogglepassoutdata = true;
+    }
+
     /// <summary>The mod entry point.</summary>
     public class ModEntry
         : Mod
@@ -113,11 +124,11 @@ namespace CustomDeathPenaltyPlus
 
         public static PlayerData PlayerData { get; private set; } = new PlayerData();
         public static Commands Commands { get; private set; } = new Commands();
+        internal static Toggles Toggles { get; private set; } = new Toggles();
 
-        private bool warptoinvisiblelocation = false;
+        private static readonly PerScreen<Toggles> togglesperscreen = new PerScreen<Toggles>(createNewState: () => Toggles);
 
-        private bool loadnewday = false;
-
+       
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -186,7 +197,7 @@ namespace CustomDeathPenaltyPlus
                     // Has player died?
                     && Game1.killScreen
                     // Has the players death state been saved?
-                    && PlayerStateRestorer.statedeath == null)
+                    && PlayerStateRestorer.statedeathps.Value == null)
                 {
                     // Save playerstate using DeathPenalty values
                     PlayerStateRestorer.SaveStateDeath();
@@ -202,116 +213,137 @@ namespace CustomDeathPenaltyPlus
                         && this.config.DeathPenalty.WakeupNextDayinClinic == true)
                     {
                         // Set warptoinvisiblelocation to true
-                        warptoinvisiblelocation = true;
+                        togglesperscreen.Value.warptoinvisiblelocation = true;
                     }
                 }
             }
 
             if(true
                 // Player death state has been saved
-                && PlayerStateRestorer.statedeath != null
+                && PlayerStateRestorer.statedeathps.Value != null
                 // An event is in progress, this would be the PlayerKilled event
-                && Game1.CurrentEvent != null
-                // The current clickable menu can be downcast to an ItemListMenu
-                && Game1.activeClickableMenu as ItemListMenu != null)
+                && Game1.CurrentEvent != null)
             {
-                // Will items be restored?
-                if(this.config.DeathPenalty.RestoreItems == true)
+                // Set loadstate to true so state will be loaded after event
+                togglesperscreen.Value.loadstate = true;
+
+                // Current active menu can be downcast to an itemlistmenu
+                if (Game1.activeClickableMenu as ItemListMenu != null)
                 {
-                    // Yes, we don't want that menu, so close it and end the event
+                    // Will items be restored?
+                    if (this.config.DeathPenalty.RestoreItems == true)
+                    {
+                        // Yes, we don't want that menu, so close it and end the event
 
-                    // Close the menu
-                    Game1.activeClickableMenu.exitThisMenuNoSound();
-                    // End the event
-                    Game1.CurrentEvent.exitEvent();
-                }
+                        // Close the menu
+                        Game1.activeClickableMenu.exitThisMenuNoSound();
+                        // End the event
+                        Game1.CurrentEvent.exitEvent();
+                    }
 
-                // Should the player be warped where they can't be seen?
-                if(warptoinvisiblelocation == true)
-                {
-                    // Yes, warp player to an invisible location
+                    // Load state earlier in multiplayer
+                    if (Context.IsMultiplayer == true)
+                    {
+                        // Restore playerstate using DeathPenalty values
+                        PlayerStateRestorer.LoadStateDeath();
 
-                    Game1.warpFarmer(Game1.currentLocation.NameOrUniqueName, 1000, 1000, false);
-                    // Set warptoinvisiblelocation to false to stop endless warp loop
-                    warptoinvisiblelocation = false;
-                }
+                        // Clear state if WakeupNextDayinClinic is false, other stuff needs to be done if it's true
+                        if(this.config.DeathPenalty.WakeupNextDayinClinic == false)
+                        {
+                            // Reset PlayerStateRestorer class with the statedeath field
+                            PlayerStateRestorer.statedeath = null;
+                            PlayerStateRestorer.statedeathps.Value = null;
 
-                if(this.config.DeathPenalty.WakeupNextDayinClinic == true)
-                {
-                    loadnewday = true;
-                }
+                            // State already loaded and cleared, set loadstate to false
+                            togglesperscreen.Value.loadstate = false;
+                        }
+                    }
+
+                    // Should the player be warped where they can't be seen?
+                    if (togglesperscreen.Value.warptoinvisiblelocation == true)
+                    {
+                        // Yes, warp player to an invisible location
+
+                        Game1.warpFarmer(Game1.currentLocation.NameOrUniqueName, 1000, 1000, false);
+                        // Set warptoinvisiblelocation to false to stop endless warp loop
+                        togglesperscreen.Value.warptoinvisiblelocation = false;
+                    }
+
+                }   
             }
 
             if(true
                 // Player death state has been saved
-                && PlayerStateRestorer.statedeath != null
+                && PlayerStateRestorer.statedeathps.Value != null
                 // No events are running
                 && Game1.CurrentEvent == null
-                // New day should be forced to load after event
-                && loadnewday == true)
+                // state should be loaded
+                && togglesperscreen.Value.loadstate == true)
             {
-                // Save necessary data to data model
-                ModEntry.PlayerData.DidPlayerWakeupinClinic = true;
+                // Set loadstate to false
+                togglesperscreen.Value.loadstate = false;
 
-                // Write data model to JSON file
-                this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
-
-                loadnewday = false;
-
-                // Is the game multiplayer?
-                if(Context.IsMultiplayer == false)
+                // Start new day if necessary
+                if (this.config.DeathPenalty.WakeupNextDayinClinic == true)
                 {
-                    // No, load new day immediately
+                    // Save necessary data to data model
+                    ModEntry.PlayerData.DidPlayerWakeupinClinic = true;
 
-                    Game1.NewDay(1.1f);
+                    // Write data model to JSON file
+                    this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
+
+                    // Is the game multiplayer?
+                    if (Context.IsMultiplayer == false)
+                    {
+                        // No, load new day immediately
+
+                        Game1.NewDay(1.1f);
+                    }
+
+                    else
+                    {
+                        // Yes, inform other players you're ready for a new day
+
+                        Game1.player.team.SetLocalReady("sleep", true);
+
+                        // Ensures new day will load, will become false after new day is loaded
+                        Game1.player.passedOut = true;
+
+                        // Create class instance to hold player's name
+                        Multiplayer multiplayer = new Multiplayer
+                        {
+                            PlayerWhoDied = Game1.player.Name
+                        };
+                                             
+                        // Send data from class instance to other players, message type is IDied
+                        this.Helper.Multiplayer.SendMessage(multiplayer, "IDied", modIDs: new[] { this.ModManifest.UniqueID });
+
+                        // Bring up a new menu that will launch a new day when all player's are ready
+                        Game1.activeClickableMenu = (IClickableMenu)new ReadyCheckDialog("sleep", false, (ConfirmationDialog.behavior)(_ => Game1.NewDay(1.1f)));
+
+                        // Add player to list of ready farmers if needed
+                        if (Game1.player.team.announcedSleepingFarmers.Contains(Game1.player)) return;
+                        Game1.player.team.announcedSleepingFarmers.Add(Game1.player);
+
+                        // Reset PlayerStateRestorer class with the statedeath field
+                        PlayerStateRestorer.statedeath = null;
+                        PlayerStateRestorer.statedeathps.Value = null;
+                    }
                 }
+
+                // Restore state after PlayerKilled event ends if new day hasn't been loaded
                 else
                 {
+                    // Restore Player state using DeathPenalty values
+                    PlayerStateRestorer.LoadStateDeath();
 
-                    // Yes, inform other players you're ready for a new day
-
-                    Game1.player.team.SetLocalReady("sleep", true);
-
-                    // Ensures new day will load, will become false after new day is loaded
-                    Game1.player.passedOut = true;
-
-                    // Create class instance to hold player's name
-                    Multiplayer multiplayer = new Multiplayer
-                    {
-                        PlayerWhoDied = Game1.player.Name
-                    };
-
-                    // Send data from class instance to other players, message type is IDied
-                    this.Helper.Multiplayer.SendMessage(multiplayer, "IDied", modIDs: new[] { this.ModManifest.UniqueID });
-
-                    // Bring up a new menu that will launch a new day when all player's are ready
-                    Game1.activeClickableMenu = (IClickableMenu)new ReadyCheckDialog("sleep", false, (ConfirmationDialog.behavior)(_ => Game1.NewDay(1.1f)));
-
-                    // Add player to list of ready farmers if needed
-                    if (Game1.player.team.announcedSleepingFarmers.Contains(Game1.player)) return;
-                    Game1.player.team.announcedSleepingFarmers.Add(Game1.player);
+                    // Reset PlayerStateRestorer class with the statedeath field
+                    PlayerStateRestorer.statedeath = null;
+                    PlayerStateRestorer.statedeathps.Value = null;
                 }
             }
 
-            // Restore state after PlayerKilled event ends if new day hasn't been loaded
-            if (true
-                // Player death state has been saved
-                && PlayerStateRestorer.statedeath != null
-                // No events are running
-                && Game1.CurrentEvent == null
-                // New day hasn't been forced
-                && loadnewday == false
-                // Player can move
-                && Game1.player.canMove)
-            {
-                // Restore Player state using DeathPenalty values
-                PlayerStateRestorer.LoadStateDeath();
-
-                // Reset PlayerStateRestorer class with the statedeath field
-                PlayerStateRestorer.statedeath = null;              
-            }
-
-            // Chack if time is 2am or the player has passed out
+            // Check if time is 2am or the player has passed out
             if (Game1.timeOfDay == 2600 || Game1.player.stamina <= -15)
             {
                 // Set DidPlayerPassOutYesterday to true and DidPlayerWakeupinClinic to false in data model
@@ -324,24 +356,42 @@ namespace CustomDeathPenaltyPlus
                     // Player is not in Cellar
                     && Game1.player.currentLocation as Cellar == null
                     // Player pass out state has not been saved
-                    && PlayerStateRestorer.statepassout == null)
+                    && PlayerStateRestorer.statepassoutps.Value == null)
                 {
                     // Save playerstate using PassOutPenalty values
                     PlayerStateRestorer.SaveStatePassout();
                     // Save amount lost to data model
-                    ModEntry.PlayerData.MoneyLostLastPassOut = (int)Math.Round(PlayerStateRestorer.statepassout.moneylost);
+                    ModEntry.PlayerData.MoneyLostLastPassOut = (int)Math.Round(PlayerStateRestorer.statepassoutps.Value.moneylost);
                 }
+
+                // Write data model to JSON file
+                this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
+            }
+
+            // Load state earlier if it is multiplayer and it isn't 2AM or later
+            if(Game1.timeOfDay < 2600 && Game1.player.canMove && Context.IsMultiplayer == true && PlayerStateRestorer.statepassoutps.Value != null)
+            {
+                // Load state and fix stamina
+                PlayerStateRestorer.LoadStatePassout();
+                Game1.player.stamina = (int)(Game1.player.maxStamina * this.config.PassOutPenalty.EnergytoRestorePercentage);
+
+                // Reset state
+                PlayerStateRestorer.statepassout = null;
+                PlayerStateRestorer.statepassoutps.Value = null;
+
+                // Set shouldtogglepassoutdata to false, this prevents DidPlayerPassOutYesterday from becoming true when player goes to bed
+                togglesperscreen.Value.shouldtogglepassoutdata = false;
             }
 
             // If player can stay up past 2am, discard saved values and reset changed properties in data model
-            if (Game1.timeOfDay == 2610)
+            if (Game1.timeOfDay == 2610 && PlayerStateRestorer.statepassoutps.Value != null)
             {
-                if (PlayerStateRestorer.statepassout != null)
-                {
-                    ModEntry.PlayerData.DidPlayerPassOutYesterday = false;
-                    ModEntry.PlayerData.MoneyLostLastPassOut = 0;
-                    PlayerStateRestorer.statepassout = null;
-                }
+                ModEntry.PlayerData.DidPlayerPassOutYesterday = false;
+                ModEntry.PlayerData.MoneyLostLastPassOut = 0;
+                PlayerStateRestorer.statepassout = null;
+                PlayerStateRestorer.statepassoutps.Value = null;
+                // Write data model to JSON file
+                this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
             }
         }
 
@@ -351,7 +401,7 @@ namespace CustomDeathPenaltyPlus
         private void DayEnding(object sender, DayEndingEventArgs e)
         {
             // Has the pass out state been saved after passing out?
-            if (PlayerStateRestorer.statepassout != null)
+            if (PlayerStateRestorer.statepassoutps.Value != null)
             {
                 //Yes, reload the state
 
@@ -360,10 +410,11 @@ namespace CustomDeathPenaltyPlus
 
                 // Reset PlayerStateRestorer class with the statepassout field
                 PlayerStateRestorer.statepassout = null;
+                PlayerStateRestorer.statepassoutps.Value = null;
             }
 
             // Is the day ending because player died?
-            if (PlayerStateRestorer.statedeath != null)
+            else if (PlayerStateRestorer.statedeathps.Value != null)
             {
                 //Yes, reload the state
 
@@ -372,6 +423,7 @@ namespace CustomDeathPenaltyPlus
 
                 // Reset PlayerStateRestorer class with the statedeath field
                 PlayerStateRestorer.statedeath = null;
+                PlayerStateRestorer.statedeathps.Value = null;
             }
         }
 
@@ -384,7 +436,7 @@ namespace CustomDeathPenaltyPlus
             this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
 
             // Has player not passed out but DidPlayerPassOutYesterday property is true?
-            if(ModEntry.PlayerData.DidPlayerPassOutYesterday == true && (Game1.player.isInBed.Value == true || ModEntry.PlayerData.DidPlayerWakeupinClinic == true))
+            if(ModEntry.PlayerData.DidPlayerPassOutYesterday == true && (Game1.player.isInBed.Value == true || ModEntry.PlayerData.DidPlayerWakeupinClinic == true) && togglesperscreen.Value.shouldtogglepassoutdata == true)
             {
                 // Yes, fix this so the new day will load correctly
 
@@ -407,6 +459,9 @@ namespace CustomDeathPenaltyPlus
 
             // Save change to respective JSON file
             this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
+
+            // Set shouldtogglepassoutdata if needed so DidPlayerPassOutYesterday will toggle normally again
+            togglesperscreen.Value.shouldtogglepassoutdata = true;
         }
 
         /// <summary>Raised after the game begins a new day</summary>
@@ -471,11 +526,14 @@ namespace CustomDeathPenaltyPlus
             {
                 Commands.DeathPenalty(args, this.Monitor, this.Helper);
             }
-            catch
+            catch (FormatException)
             {
-                this.Monitor.Log("Command failed, ensure correct format is used with appropriate values", LogLevel.Error);
+                this.Monitor.Log("Specified value could not be parsed, enter value as it would appear in the config", LogLevel.Error);
             }
-                        
+            catch (IndexOutOfRangeException)
+            {
+                this.Monitor.Log("Incorrect command format used.\nRequired format: deathpenalty <configoption> <value>", LogLevel.Error);
+            }
         }
         private void Setpp(string command, string[] args)
         {
@@ -483,9 +541,13 @@ namespace CustomDeathPenaltyPlus
             {
                 Commands.PassOutPenalty(args, this.Monitor, this.Helper);
             }
-            catch
+            catch (FormatException)
             {
-                this.Monitor.Log("Command failed, ensure correct format is used with appropriate values", LogLevel.Error);
+                this.Monitor.Log("Specified value could not be parsed, enter value as it would appear in the config", LogLevel.Error);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                this.Monitor.Log("Incorrect command format used.\nRequired format: passoutpenalty <configoption> <value>", LogLevel.Error);
             }
         }
         private void Info(string command, string[] args)
@@ -494,9 +556,9 @@ namespace CustomDeathPenaltyPlus
             {
                 Commands.ConfigInfo(args, this.Monitor);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
-                this.Monitor.Log("Command failed, ensure correct format is used", LogLevel.Error);
+                this.Monitor.Log("Incorrect command format used.\nRequired format: configinfo", LogLevel.Error);
             }
         }
     }

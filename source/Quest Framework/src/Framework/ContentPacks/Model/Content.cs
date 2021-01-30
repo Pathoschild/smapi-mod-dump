@@ -24,7 +24,8 @@ namespace QuestFramework.Framework.ContentPacks.Model
         public ISemanticVersion Format { get; set; }
         public List<QuestData> Quests { get; set; }
         public List<QuestOffer<JObject>> Offers { get; set; } = new List<QuestOffer<JObject>>();
-
+        public List<CustomBoardData> CustomBoards { get; set; } = new List<CustomBoardData>();
+        public List<CustomDropBoxData> CustomDropBoxes { get; set; }
         internal IContentPack Owner { get; set; }
 
         public Content Translate(ITranslationHelper translation)
@@ -32,8 +33,10 @@ namespace QuestFramework.Framework.ContentPacks.Model
             return new Content()
             {
                 Format = this.Format,
-                Quests = this.Quests.Select(q => q.Translate(translation)).ToList(),
-                Offers = this.Offers.Select(o => TranslationUtils.TranslateOffer(translation, o)).ToList(),
+                Quests = this.Quests?.Select(q => q.Translate(translation)).ToList(),
+                Offers = this.Offers?.Select(o => TranslationUtils.TranslateOffer(translation, o)).ToList(),
+                CustomBoards = this.CustomBoards?.Select(b => TranslationUtils.Translate(translation, b)).ToList(),
+                CustomDropBoxes = this.CustomDropBoxes?.Select(b => TranslationUtils.Translate(translation, b)).ToList(),
                 Owner = this.Owner,
             };
         }

@@ -113,6 +113,20 @@ namespace SpaceCore.Overrides
             SaveGame.serializer = InitializeSerializer( typeof( SaveGame ), vanillaMainTypes );
             SaveGame.farmerSerializer = InitializeSerializer( typeof( Farmer ), vanillaFarmerTypes );
             SaveGame.locationSerializer = InitializeSerializer( typeof( GameLocation ), vanillaGameLocationTypes );
+
+            if ( SpaceCore.instance.Helper.ModRegistry.IsLoaded( "Platonymous.Toolkit" ) )
+            {
+                //Log.trace( "Letting PyTK know we changed the serializers..." );
+                try
+                {
+                    var pytk = Type.GetType( "PyTK.PyTKMod, PyTK" );
+                    pytk.GetMethod( "SerializersReinitialized" ).Invoke( null, new object[] { null } );
+                }
+                catch ( Exception e )
+                {
+                    Log.trace( "Exception, probably because PyTK hasn't released yet: " + e );
+                }
+            }
         }
 
         public static XmlSerializer InitializeSerializer( Type baseType, Type[] extra = null )
@@ -121,7 +135,23 @@ namespace SpaceCore.Overrides
             if ( extra != null )
                 types.AddRange( extra );
             types.AddRange( SpaceCore.modTypes );
-            return new XmlSerializer( baseType, types.ToArray() );
+            var s = new XmlSerializer( baseType, types.ToArray() );
+
+            if ( SpaceCore.instance.Helper.ModRegistry.IsLoaded( "Platonymous.Toolkit" ) )
+            {
+                //Log.trace( "Letting PyTK know we changed the serializers..." );
+                try
+                {
+                    var pytk = Type.GetType( "PyTK.PyTKMod, PyTK" );
+                    pytk.GetMethod( "SerializersReinitialized" ).Invoke( null, new object[] { null } );
+                }
+                catch ( Exception e )
+                {
+                    Log.trace( "Exception, probably because PyTK hasn't released yet: " + e );
+                }
+            }
+
+            return s;
         }
     }
 

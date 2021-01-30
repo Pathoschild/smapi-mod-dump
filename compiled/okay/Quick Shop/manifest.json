@@ -1,12 +1,17 @@
 ﻿{
   "Name": "QuickShop",
   "Author": "Enaium",
-  "Version": "1.4.0",
+  "Version": "1.5.2",
   "Description": "Open shop quickly",
   "UniqueID": "Enaium.QuickShop",
   "EntryDll": "QuickShop.dll",
   "MinimumApiVersion": "3.8.0",
-  "UpdateKeys": ["GitHub:Enaium-StardewValleyMods/QuickShop"],
+  "UpdateKeys": [
+    "GitHub:Enaium-StardewValleyMods/QuickShop",
+    "Chucklefish:6081",
+    "CurseForge:436793",
+    "ModDrop:864170"
+  ],
   "Dependencies": [
     {
       "UniqueID": "Enaium.EnaiumToolKit",

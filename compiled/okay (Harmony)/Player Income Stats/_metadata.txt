@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/7373
 IDs: ha1fdaew.playerincomestats
-update keys: Nexus:7373
+update keys: Nexus:7373, GitHub:ha1fdaew/PlayerIncomeStats

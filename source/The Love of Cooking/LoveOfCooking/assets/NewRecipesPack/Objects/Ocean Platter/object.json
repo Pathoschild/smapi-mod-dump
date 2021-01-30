@@ -1,0 +1,55 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/CooksAssistant
+**
+*************************************************/
+
+{
+	// Object data
+	"Name": "blueberry.cac.oceanplatter",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 84,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 410,
+	"IsColored": false,
+
+	// Object purchase
+	"CanPurchase": false,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 300,
+	"PurchaseRequirements": null,
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": 198, // Baked Fish
+				"Count": 1
+			},
+			{
+				"Object": "blueberry.cac.lobster",
+				"Count": 1
+			},
+			{
+				"Object": 423, // Rice
+				"Count": 1
+			},
+			{
+				"Object": 723, // Oyster
+				"Count": 2
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": false,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": null
+	}
+}

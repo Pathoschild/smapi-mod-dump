@@ -12,7 +12,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
+
+## [2.4.1] - 2021-01-05
+### Removed
+- `discord` command used for Ask to Join (removed in last update)
+- Code that went unused from removal of Ask to Join
+- `{{ PercentComplete }}` tag due to lag issues
+
+### Changed
+- Commands changed from starting with `DiscordRP_` to just `Discord`
+  - `DiscordRP_Reload` -> `DiscordReload`
+  - `DiscordRP_Format` -> `DiscordFormat`
+  - `DiscordRP_Tags` -> `DiscordTags`
+
+## [2.4.0] - 2021-01-05
+### Added
+- `float` value support for tags in API
+
+### Changed
+- Migrated to "new" project format
+
+### Removed
+- Ask to Join support (Networking SDK no longer accessible)
+- `AllowAskToJoin` from config
+
+### Fixed
+- Supports Stardew Valley 1.5
 
 ## [2.3.1] - 2019-12-05
 ### Added
@@ -129,7 +155,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Removed Discord event handlers due to them not triggering.
 
-[Unreleased]: https://github.com/FayneAldan/SVRichPresence/compare/v2.3.1...HEAD
+[Unreleased]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.1...HEAD
+[2.4.1]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.0...v2.4.1
+[2.4.0]: https://github.com/FayneAldan/SVRichPresence/compare/v2.3.1...v2.4.0
 [2.3.1]: https://github.com/FayneAldan/SVRichPresence/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/FayneAldan/SVRichPresence/compare/2.3.0-beta1...v2.3.0
 [2.3.0-beta1]: https://github.com/FayneAldan/SVRichPresence/compare/2.2.2...2.3.0-beta1

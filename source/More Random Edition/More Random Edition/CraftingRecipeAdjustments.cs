@@ -59,6 +59,27 @@ namespace Randomizer
 		};
 
 		/// <summary>
+		/// Fix the cooking recipe display names so that the queen of sauce shows
+		/// can actually display the correct thing
+		/// </summary>
+		public static void FixCookingRecipeDisplayNames()
+		{
+			foreach (KeyValuePair<string, int> entry in CropDishesMap)
+			{
+				int id = entry.Value;
+				CookedItem item = (CookedItem)ItemList.Items[id];
+				item.OverrideDisplayName = GetDishName(entry.Value);
+			}
+
+			foreach (KeyValuePair<string, int> entry in FishDishesMap)
+			{
+				int id = entry.Value;
+				CookedItem item = (CookedItem)ItemList.Items[id];
+				item.OverrideDisplayName = GetDishName(entry.Value);
+			}
+		}
+
+		/// <summary>
 		/// Fixes the cooking recipe names and the crab pot recipe for the tapper profession if the
 		/// appropriate things are randomized
 		/// </summary>
@@ -69,13 +90,13 @@ namespace Randomizer
 
 			if (genericMenu is CraftingPage)
 			{
-				if (!Globals.Config.RandomizeFish && !Globals.Config.RandomizeCrops) { return; }
+				if (!Globals.Config.Fish.Randomize && !Globals.Config.Crops.Randomize) { return; }
 				FixCookingRecipeHoverText((CraftingPage)genericMenu);
 			}
 
 			else if (genericMenu is GameMenu && Game1.player.professions.Contains(TapperProfession))
 			{
-				if (!Globals.Config.RandomizeCraftingRecipes) { return; }
+				if (!Globals.Config.CraftingRecipies.Randomize) { return; }
 				ReduceCrabPotCost((GameMenu)genericMenu);
 			}
 		}
@@ -169,7 +190,7 @@ namespace Randomizer
 		/// <param name="recipe">The recipe</param>
 		private static void FixFishDish(CraftingRecipe recipe)
 		{
-			if (!Globals.Config.RandomizeFish) { return; }
+			if (!Globals.Config.Fish.Randomize) { return; }
 
 			if (FishDishesMap.ContainsKey(recipe.name))
 			{
@@ -183,7 +204,7 @@ namespace Randomizer
 		/// <param name="recipe">The recipe</param>
 		private static void FixCropDish(CraftingRecipe recipe)
 		{
-			if (!Globals.Config.RandomizeCrops) { return; }
+			if (!Globals.Config.Crops.Randomize) { return; }
 
 			if (CropDishesMap.ContainsKey(recipe.name))
 			{

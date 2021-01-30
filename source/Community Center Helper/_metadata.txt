@@ -5,9 +5,11 @@ mods:
    Community Center Helper
 
 latest commit:
-   commit 6f8f6f19e06547569ced38f83d6d05e28efa21db
+   commit b409fef8dd6f79bcbdfae797a5af8b4a9549b0a8
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Mon Dec 21 16:08:10 2020 -0800
+   Date:   Mon Jan 18 20:10:28 2021 -0800
    
-       1.2.0 update for Stardew 1.5
+       1.2.3 update
+       
+       Removed accidental debug messages, except Github source had already removed them, so just a version change in manifest
    

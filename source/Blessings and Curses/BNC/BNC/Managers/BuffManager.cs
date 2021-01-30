@@ -11,6 +11,7 @@
 using BNC.Configs;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace BNC
             AddBuff(new BuffOption("badfish", "Bad Fishing Advice", false).add_fishing(-5).addShortDesc("Debuff Fishing -5"));
             AddBuff(new BuffOption("w2", "+2 Weapon").add_attack(2).addShortDesc("Buff Attack +2"));
             AddBuff(new BuffOption("w4", "+4 Weapon").add_attack(4).addShortDesc("Buff Attack +4"));
+            AddBuff(new BuffOption("bombluck", "Bomb Luck!", false).add_defense(-1).addShortDesc("Bombs sometimes spawn around the player. Thats some bad luck...."));
+            AddBuff(new BuffOption("slimer", "Slimes!!", false).add_defense(1).addShortDesc("Slimes randomly spawn around you."));
             AddBuff(new BuffOption("beserk","Beserker", true, 600).add_attack(6).addShortDesc("Buff Attack +6").setGlow(Color.OrangeRed));
             AddBuff(new BuffOption("rusted","Rusted Weapon", false).add_attack(-2).addShortDesc("Debuff Attack -2"));
             AddBuff(new BuffOption("broken","Broken Weapon", false).add_attack(-4).addShortDesc("Debuff Attack -4"));
@@ -82,7 +85,22 @@ namespace BNC
             }
             return returnList.ToArray(); 
         }
-
+        /*
+        public static void UpdateTick()
+        {
+            foreach (var item in Game1.player.appliedSpecialBuffs())
+            {
+                if(item == "bombs")
+                {
+                    if(rand.NextDouble() < 0.05f)
+                    {
+                        Item bomb = Utility.getItemFromStandardTextDescription($"O 287 1", Game1.player);
+                        BombEvent.updateQueue.Enqueue(bomb);
+                    }
+                }
+            }
+        }
+        */
         public static BuffOption getIDtoBuff(string id)
         {
             if (CommonBuffs.ContainsKey(id))
@@ -105,9 +123,10 @@ namespace BNC
         {
             if(queuedBuff.Count() >= 1)
             {
-                buffPlayer(queuedBuff[0]);
-                queuedBuff.RemoveAt(0);
+                if(buffPlayer(queuedBuff[0]))
+                    queuedBuff.RemoveAt(0);
             }
+
         }
 
         public static void UpdateDay()
@@ -143,12 +162,52 @@ namespace BNC
 
         }
 
-        public static void buffPlayer(BuffOption buff)
+        public static void Update()
         {
+            foreach (var buff in Game1.buffsDisplay.otherBuffs.ToList())
+            {
+                if (buff == null && buff.source != null) continue;
+
+                if (buff.source.Equals("Bomb Luck!"))
+                {
+                    double i = rand.NextDouble();
+                    if (i < 0.01d)
+                    {
+                        Item bomb = Utility.getItemFromStandardTextDescription($"O 287 1", Game1.player);
+                        Actions.BombEvent.updateQueue.Enqueue(bomb);
+                    }
+                }
+
+                if (buff.source.Equals("Slimes!!"))
+                {
+                    double i = rand.NextDouble();
+                    if (i < 0.05d)
+                    {
+                        Spawner.addMonsterToSpawn(new GreenSlime(Vector2.Zero), "");
+                    }
+                }
+            }
+        }
+
+        public static bool buffPlayer(BuffOption buff)
+        {
+            List<StardewValley.Buff> Duppiclates = Game1.buffsDisplay.otherBuffs.Where(b => b.source == buff.displayName).ToList();
+            if (Duppiclates.Count() > 0)
+            {
+                BNC_Core.Logger.Log("Found Duplicates", StardewModdingAPI.LogLevel.Debug);
+
+                foreach (StardewValley.Buff buffitem in Game1.buffsDisplay.otherBuffs.ToArray())
+                {
+                        if(buffitem.source == buff.displayName)
+                        {
+                            buff.CombineBuffs(buffitem);
+                            Game1.buffsDisplay.otherBuffs.Remove(buffitem);
+                        }
+                }
+            }
+
+
             Buff buffselected = new Buff(buff.farming, buff.fishing, buff.mining, 0, 0, buff.foraging, buff.crafting, buff.maxStamina, buff.magneticRadius, buff.speed, buff.defense, buff.attack, buff.duration, buff.displayName, buff.displayName);
-
-            buffselected.source = buff.displayName;
-
             if (buff.color != Color.White)
                 buffselected.glow = buff.color;
 
@@ -160,6 +219,8 @@ namespace BNC
             }
 
             Game1.addHUDMessage(new HUDMessage(buff.shortdesc, buff.isBuff ? 4 : 3));
+
+            return true;
         }
 
         public static int setNextBuffDay(int number1, int number2)
@@ -292,6 +353,26 @@ namespace BNC
             public BuffOption setGlow(Color color)
             {
                 this.color = color;
+                return this;
+            }
+
+            public BuffOption CombineBuffs(Buff buff)
+            {
+                this.farming += buff.buffAttributes[0];
+                this.fishing += buff.buffAttributes[1];
+                this.mining += buff.buffAttributes[2];
+                this.luck += buff.buffAttributes[4];
+                this.foraging += buff.buffAttributes[5];
+                this.crafting += buff.buffAttributes[6];
+                this.maxStamina += buff.buffAttributes[7];
+                this.magneticRadius += buff.buffAttributes[8];
+                this.speed += buff.buffAttributes[9];
+                this.defense += buff.buffAttributes[10];
+                this.attack += buff.buffAttributes[11];
+
+                if (speed > 20)
+                    this.speed = 20;
+
                 return this;
             }
 

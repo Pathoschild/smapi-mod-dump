@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-  "FileVersion" :  1,
+  "FileVersion": 1,
   "AreaName": "Town",
   "numberOfOreSpotsPerDay": 50,
   "StartTime": 600,

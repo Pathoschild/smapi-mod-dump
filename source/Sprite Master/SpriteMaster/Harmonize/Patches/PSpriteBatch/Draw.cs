@@ -43,11 +43,13 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			out ScaledTexture scaledTexture,
 			bool create = false
 		) {
+			var invert = source.Invert;
 			scaledTexture = reference.FetchScaledTexture(
 				expectedScale: expectedScale,
 				source: ref source,
 				create: create
 			);
+			source.Invert = invert;
 			return scaledTexture != null;
 		}
 
@@ -96,7 +98,8 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 		}
 
 		[Conditional("DEBUG"), MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static void Validate (this in Rectangle source, Texture2D reference) {
+		private static void Validate (this in Rectangle sourceRect, Texture2D reference) {
+			Bounds source = sourceRect;
 			if (source.Left < 0 || source.Top < 0 || source.Right >= reference.Width || source.Bottom >= reference.Height) {
 				if (source.Right - reference.Width > 1 || source.Bottom - reference.Height > 1)
 					Debug.WarningLn($"Out of range source '{source}' for texture '{reference.SafeName()}' ({reference.Width}, {reference.Height})");
@@ -108,7 +111,10 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static bool IsWater(in Bounds bounds, Texture2D texture) {
-			return bounds.Right <= 640 && bounds.Top >= 2000 && texture.SafeName() == "LooseSprites/Cursors";
+			if (bounds.Right <= 640 && bounds.Top >= 2000 && texture.SafeName() == "LooseSprites/Cursors") {
+				return true;
+			}
+			return false;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -137,11 +143,18 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			Color color,
 			float rotation,
 			ref Vector2 origin,
-			SpriteEffects effects,
+			ref SpriteEffects effects,
 			float layerDepth,
 			ref ManagedTexture2D __state
 		) {
 			using var _ = Performance.Track();
+
+			if (destination.Width < 0 || destination.Height < 0) {
+				Debug.Trace("destination invert");
+			}
+			if (source.HasValue && (source.Value.Width < 0 || source.Value.Height < 0)) {
+				Debug.Trace("source invert");
+			}
 
 			GetDrawParameters(
 				texture: texture,
@@ -151,7 +164,9 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			);
 			var referenceRectangle = sourceRectangle;
 
-			var expectedScale2D = new Vector2(destination.Width, destination.Height) / new Vector2(sourceRectangle.Width, sourceRectangle.Height);
+			Bounds destinationBounds = destination;
+
+			var expectedScale2D = new Vector2(destinationBounds.Width, destinationBounds.Height) / new Vector2(sourceRectangle.Width, sourceRectangle.Height);
 			var expectedScale = (uint)((Math.Max(expectedScale2D.X, expectedScale2D.Y) * scaleFactor) + Config.Resample.ScaleBias).Clamp(2.0f, (float)Config.Resample.MaxScale).NextInt();
 
 			if (!texture.FetchScaledTexture(
@@ -174,9 +189,18 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 				// subpixel accuracy when scaled to the destination rectangle.
 
 				var originalSize = new Vector2(referenceRectangle.Width, referenceRectangle.Height);
-				var destinationSize = new Vector2(destination.Width, destination.Height);
+				var destinationSize = new Vector2(destinationBounds.Width, destinationBounds.Height);
 				var newScale = destinationSize / originalSize;
-				var newPosition = new Vector2(destination.X, destination.Y);
+				var newPosition = new Vector2(destinationBounds.X, destinationBounds.Y);
+
+				if (destinationBounds.Invert.X) {
+					effects ^= SpriteEffects.FlipHorizontally;
+				}
+				if (destinationBounds.Invert.Y) {
+					effects ^= SpriteEffects.FlipVertically;
+				}
+				
+				// TODO handle culling here for inverted sprites?
 
 				@this.Draw(
 					texture: resampledTexture,
@@ -204,7 +228,7 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			Color color,
 			float rotation,
 			ref Vector2 origin,
-			SpriteEffects effects,
+			ref SpriteEffects effects,
 			ref float layerDepth,
 			ref ManagedTexture2D __state
 		) {
@@ -214,6 +238,8 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			ScaledTexture scaledTexture;
 			ManagedTexture2D resampledTexture;
 
+			Bounds destinationBounds = destination;
+
 			if (__state == null) {
 				GetDrawParameters(
 					texture: texture,
@@ -222,7 +248,7 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 					scaleFactor: out var scaleFactor
 				);
 
-				var expectedScale2D = new Vector2(destination.Width, destination.Height) / new Vector2(sourceRectangle.Width, sourceRectangle.Height);
+				var expectedScale2D = new Vector2(destinationBounds.Width, destinationBounds.Height) / new Vector2(sourceRectangle.Width, sourceRectangle.Height);
 				var expectedScale = (uint)((Math.Max(expectedScale2D.X, expectedScale2D.Y) * scaleFactor) + Config.Resample.ScaleBias).Clamp(2.0f, (float)Config.Resample.MaxScale).NextInt();
 
 				if (!texture.FetchScaledTexture(
@@ -245,8 +271,12 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 				sourceRectangle = resampledTexture.Dimensions;
 			}
 
-
 			var scaledOrigin = origin / scaledTexture.Scale;
+
+			if (source.HasValue) {
+				sourceRectangle.Invert.X = (source.Value.Width < 0);
+				sourceRectangle.Invert.Y = (source.Value.Height < 0);
+			}
 
 			source = sourceRectangle;
 			origin = scaledOrigin;
@@ -322,6 +352,11 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			}
 			else {
 				adjustedOrigin *= scaledTexture.Scale;
+			}
+
+			if (source.HasValue) {
+				sourceRectangle.Invert.X = (source.Value.Width < 0);
+				sourceRectangle.Invert.Y = (source.Value.Height < 0);
 			}
 
 			texture = resampledTexture;

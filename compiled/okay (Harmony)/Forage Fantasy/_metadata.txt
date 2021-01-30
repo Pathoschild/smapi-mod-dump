@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7554
+IDs: Goldenrevolver.ForageFantasy
+update keys: Nexus:7554, GitHub:Goldenrevolver/Stardew-Valley-Mods

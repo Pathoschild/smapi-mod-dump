@@ -1,0 +1,11 @@
+{
+  "Name": "Ring of the Apprentice Fisher",
+  "Description": "You feel a little better at fishing while wearing this ring.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 1000,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Willy",
+  "PurchasePrice": 5000,
+}

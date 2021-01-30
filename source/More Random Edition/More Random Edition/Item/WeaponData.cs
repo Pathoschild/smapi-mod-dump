@@ -48,9 +48,12 @@ namespace Randomizer
 			{29, "Galaxy Hammer/It's made from an ultra-light material you've never seen before./70/90/1/-4/0/0/2/-1/-1/0/.02/3" },
 			{30, "Sam's Old Guitar/It's seen better days./1/3/1/-6/0/0/2/-1/-1/0/.02/3" },
 			{31, "Femur/An old, heavy bone caked in centuries of grime./6/11/1.5/-4/0/0/2/10/-1/0/.02/3" },
-			{32, "Slingshot/Requires stones for ammo./1/3/1/308/0/0/4/-1/-1/0/.02/3" },
-			{33, "Master Slingshot/Requires stones for ammo./1/3/1/308/0/0/4/-1/-1/0/.02/3" },
-			{34, "Galaxy Slingshot/It looks really powerful./1/3/1/308/0/0/4/-1/-1/0/.02/3" },
+
+			// Not randomizing right now
+			//{32, "Slingshot/Requires stones for ammo./1/3/1/308/0/0/4/-1/-1/0/.02/3" },
+			//{33, "Master Slingshot/Requires stones for ammo./1/3/1/308/0/0/4/-1/-1/0/.02/3" },
+			//{34, "Galaxy Slingshot/It looks really powerful./1/3/1/308/0/0/4/-1/-1/0/.02/3" },
+
 			{35, "Elliott's Pencil/Elliott used this to write his book. It's sharp!/1/3/1/308/0/0/1/-1/-1/0/.02/3" },
 			{36, "Maru's Wrench/A big, metal wrench. It smells like Maru./1/3/1/308/0/0/2/-1/-1/0/.02/3" },
 			{37, "Harvey's Mallet/It brings back memories of Harvey's clinic./1/3/1/308/0/0/2/-1/-1/0/.02/3" },
@@ -68,7 +71,20 @@ namespace Randomizer
 			{50, "Steel Falchion/Light and powerful./28/46/1/8/5/0/0/142/100/0/.02/3.4" },
 			{51, "Broken Trident/It came from the sea, but it's still sharp./15/26/.5/0/8/0/1/-1/-1/2/.02/3" },
 			{52, "Tempered Broadsword/It looks like it could withstand anything./29/44/1.2/-6/0/3/0/135/100/1/.02/3" },
-			{53, "Golden Scythe/It's more powerful than a normal scythe./13/13/1/0/0/0/0/-1/-1/2/.02/4" }
+
+			// 53 is the golden scythe, which isn't really a weapon
+
+			{54, "Dwarf Sword/It's ancient, but the blade never dulls./65/75/1/4/0/4/0/-1/-1/0/.02/3" },
+			{55, "Dwarf Hammer/It emits a very faint whirring sound./75/85/1/-8/0/2/2/-1/-1/0/.02/3" },
+			{56, "Dwarf Dagger/It's ancient, but the blade never dulls./32/38/1/3/0/6/1/-1/-1/0/.03/3" },
+			{57, "Dragontooth Cutlass/The blade was forged from a magical tooth./75/90/1/0/0/0/0/-1/-1/0/.02/4" },
+			{58, "Dragontooth Club/This club was crafted from a magical tooth./80/100/1.3/-8/0/0/2/-1/-1/0/.02/4" },
+			{59, "Dragontooth Shiv/The blade was forged from a magical tooth./40/50/1/0/0/0/1/-1/-1/0/.05/5" },
+			{60, "Ossified Blade/A large, sharp blade formed from bone./26/42/1.1/-4/0/1/0/142/100/0/.02/3" },
+			{61, "Iridium Needle/The point is unbelievably sharp, even down to the atomic level./20/35/.5/0/0/0/1/-1/-1/0/.1/7" },
+			{62, "Infinity Blade/The true form of the Galaxy Sword./80/100/1/8/0/2/0/-1/-1/0/.02/3" },
+			{63, "Infinity Gavel/The true form of the Galaxy Hammer./100/120/1/-4/0/1/2/-1/-1/0/.02/3" },
+			{64, "Infinity Dagger/The true form of the Galaxy Dagger./50/70/1/3/0/3/1/-1/-1/0/.06/3" },
 		};
 
 		public enum WeaponFields

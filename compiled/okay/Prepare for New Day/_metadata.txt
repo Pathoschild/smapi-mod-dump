@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7638
+IDs: igotnousername.PrepareNewDay
+update keys: Nexus:7638

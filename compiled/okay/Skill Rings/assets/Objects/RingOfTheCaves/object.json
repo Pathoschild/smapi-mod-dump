@@ -1,0 +1,11 @@
+{
+  "Name": "Ring of the Caves",
+  "Description": "Makes you feel stronger inside a cave, improving your mining.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 10000,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Dwarf",
+  "PurchasePrice": 25000,
+}

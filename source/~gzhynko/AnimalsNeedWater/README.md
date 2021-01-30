@@ -31,7 +31,7 @@ See [API docs](https://github.com/gzhynko/StardewMods/blob/master/AnimalsNeedWat
 | Italian | ✕ |
 | Japanese | ✕ |
 | Korean | ✕ |
-| Portuguese | ✕ |
+| Brazilian Portuguese | [✓](https://github.com/gzhynko/StardewMods/blob/master/AnimalsNeedWater/i18n/pt-BR.json) (credit to [tramontina](https://www.nexusmods.com/stardewvalley/users/36215665)) |
 | Russian | [✓](https://github.com/gzhynko/StardewMods/blob/master/AnimalsNeedWater/i18n/ru.json) |
 | Spanish | ✕ |
 | Turkish | ✕ |

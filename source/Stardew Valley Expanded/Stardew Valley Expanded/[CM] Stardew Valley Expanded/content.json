@@ -1,0 +1,45 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Music" : [
+	 
+	{   //crimson badlands theme
+		"Id": "CrimsonSands",
+		"File": "CrimsonSands.wav",
+		"Loop": true,
+		"Preload": true
+	},
+	{   //crimson badlands cave theme
+		"Id": "OminousCavern",
+		"File": "OminousCavern.wav",
+		"Loop": true,
+		"Preload": true
+	},
+	{   //castle village mage theme
+		"Id": "EnchantedWaltz",
+		"File": "EnchantedWaltz.wav",
+		"Loop": true,
+		"Preload": true
+	},
+	{   //sad theme
+		"Id": "Lament",
+		"File": "Lament.wav",
+		"Loop": true,
+		"Preload": true
+	},
+	{   //gotoro empire violinist
+		"Id": "HaruhiViolinSolo",
+		"File": "HaruhiViolinSolo.wav",
+		"Loop": true,
+		"Preload": true
+	},
+	]
+}

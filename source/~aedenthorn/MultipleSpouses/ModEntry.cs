@@ -21,8 +21,10 @@ using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using xTile;
+using Object = StardewValley.Object;
 
 namespace MultipleSpouses
 {
@@ -37,7 +39,7 @@ namespace MultipleSpouses
         public static string spouseToDivorce = null;
         public static Multiplayer mp;
         public static Random myRand;
-        public static int bedSleepOffset = 140;
+        public static int bedSleepOffset = 76;
         public static int divorceHeartsLost;
         public static string farmHelperSpouse = null;
         internal static NPC tempOfficialSpouse;
@@ -76,8 +78,9 @@ namespace MultipleSpouses
             Misc.Initialize(Monitor, Helper);
             Divorce.Initialize(Monitor, Helper);
             FurniturePatches.Initialize(Monitor, Helper, config);
+            ObjectPatches.Initialize(Monitor, Helper, config);
 
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
 
 
             // npc patches
@@ -166,28 +169,33 @@ namespace MultipleSpouses
             // Child patches
 
             harmony.Patch(
+               original: typeof(Character).GetProperty("displayName").GetMethod,
+               postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Character_displayName_Getter_Postfix))
+            );
+
+            harmony.Patch(
                original: AccessTools.Method(typeof(Child), nameof(Child.reloadSprite)),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_reloadSprite_Postfix))
             );
 
+/*
             harmony.Patch(
                original: AccessTools.Method(typeof(Child), nameof(Child.resetForPlayerEntry)),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_resetForPlayerEntry_Postfix))
             );
-
+*/
             harmony.Patch(
                original: AccessTools.Method(typeof(Child), nameof(Child.dayUpdate)),
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_dayUpdate_Prefix))
             );
-
+            /*
             harmony.Patch(
                original: AccessTools.Method(typeof(Child), nameof(Child.tenMinuteUpdate)),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_tenMinuteUpdate_Postfix))
             );
-
+            */
 
             // Location patches
-
 
             harmony.Patch(
                original: AccessTools.Method(typeof(Beach), nameof(Beach.checkAction)),
@@ -197,6 +205,16 @@ namespace MultipleSpouses
             harmony.Patch(
                original: AccessTools.Method(typeof(ManorHouse), nameof(ManorHouse.performAction)),
                prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.ManorHouse_performAction_Prefix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(FarmHouse), nameof(FarmHouse.checkAction)),
+               postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_checkAction_Postfix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(FarmHouse), nameof(FarmHouse.updateFarmLayout)),
+               postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_updateFarmLayout_Postfix))
             );
 
             harmony.Patch(
@@ -293,6 +311,11 @@ namespace MultipleSpouses
                prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_GetSpouseFriendship_Prefix))
             );
 
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Farmer), nameof(Farmer.getChildren)),
+               prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_getChildren_Prefix))
+            );
+
 
             // UI patches
 
@@ -330,12 +353,37 @@ namespace MultipleSpouses
                prefix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_command_playSound_Prefix))
             );
 
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Event), nameof(Event.command_loadActors)),
+               prefix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_command_loadActors_Prefix)),
+               postfix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_command_loadActors_Postfix))
+            );
+
+
+            // Object patches
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Object), nameof(Object.draw), new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
+               prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.Object_draw_Prefix))
+            );
 
             // Furniture patches
 
             harmony.Patch(
                original: AccessTools.Method(typeof(BedFurniture), nameof(BedFurniture.draw), new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
                prefix: new HarmonyMethod(typeof(FurniturePatches), nameof(FurniturePatches.BedFurniture_draw_Prefix))
+            );
+
+            // Game1 patches
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Game1), nameof(Game1.prepareSpouseForWedding)),
+               prefix: new HarmonyMethod(typeof(Game1Patches), nameof(Game1Patches.prepareSpouseForWedding_Prefix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Game1), nameof(Game1.getCharacterFromName), new Type[] { typeof(string), typeof(bool), typeof(bool) }), 
+               prefix: new HarmonyMethod(typeof(Game1Patches), nameof(Game1Patches.getCharacterFromName_Prefix))
             );
 
         }
@@ -379,9 +427,17 @@ namespace MultipleSpouses
                 Monitor.Log($"loading child asset for {asset.AssetName}");
 
                 string[] names = asset.AssetName.Split('_');
-                string parent = names[names.Length - 1];
-                Texture2D parentTexSheet = Helper.Content.Load<Texture2D>($"Characters/{parent}", ContentSource.GameContent);
                 Texture2D babySheet = Helper.Content.Load<Texture2D>(string.Join("_", names.Take(names.Length - 1)), ContentSource.GameContent);
+                Texture2D parentTexSheet = null;
+                string parent = names[names.Length - 1];
+                try
+                {
+                    parentTexSheet = Helper.Content.Load<Texture2D>($"Characters/{parent}", ContentSource.GameContent);
+                }
+                catch
+                {
+                    return (T)(object)babySheet;
+                }
                 if (parentTexSheet == null)
                 {
                     Monitor.Log($"couldn't find parent sheet for {asset.AssetName}");
@@ -552,9 +608,12 @@ namespace MultipleSpouses
             {
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
-                data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"] = Regex.Replace(data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"], "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 3", "");
-                data["choseToExplain"] = Regex.Replace(data["choseToExplain"], "(pause 1000/speak Sam \\\")[^$]+.a\\\"", $"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 4", "");
-                data["crying"] = Regex.Replace(data["crying"], "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 4", "");
+                string aData = data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"];
+                data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"] = Regex.Replace(aData, "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 3", "");
+                aData = data["choseToExplain"];
+                data["choseToExplain"] = Regex.Replace(aData, "(pause 1000/speak Sam \\\")[^$]+.a\\\"", $"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 4", "");
+                aData = data["crying"];
+                data["crying"] = Regex.Replace(aData, "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{PHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 4", "");
             }
             else if (asset.AssetNameEquals("Strings/StringsFromCSFiles"))
             {
@@ -609,7 +668,7 @@ namespace MultipleSpouses
                 List<string> keys = new List<string>(data.Keys);
                 foreach (string key in keys)
                 {
-                    data.Add($"marriage_{key}", data[key]);
+                    data[$"marriage_{key}"] = data[key]; 
                 }
             }
         }

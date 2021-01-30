@@ -49,7 +49,7 @@ Better Garbage Cans allows you to:
 * Fine-tune each garbage can item list.  Some items are only available at certain times.
 * Allow user to check the garbage cans multiple times a day.
 * While in a multiplayer game, each farmer/farmhand can get items from the cans.
-* Depending on where someone lives, there favorite item might be found in a garbage can the day before and on their birthday.
+* Depending on where someone lives, their favorite item might be found in a garbage can the day before and on their birthday.
 * Various configurable settings
 
 ## Configuration Setting

@@ -1,0 +1,8 @@
+{
+  "Name": "Ring of Knowledge",
+  "Description": "Provides you with the knowledge needed to level up, increasing experience.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 10000,
+  "Recipe": null,
+}

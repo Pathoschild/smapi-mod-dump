@@ -42,7 +42,7 @@ namespace SpriteMaster.Harmonize.Patches {
 				}
 				Contract.AssertNull(CurrentFinalizer.Value);
 				if (__instance is GraphicsResource resource) {
-					if (Config.LeakPreventTexture) {
+					if (Config.Garbage.LeakPreventTexture) {
 						if (!resource.IsDisposed) {
 							CurrentFinalizer.Value = resource;
 							try {
@@ -61,7 +61,7 @@ namespace SpriteMaster.Harmonize.Patches {
 					}
 				}
 				else if (__instance is IDisposable @this) {
-					if (Config.LeakPreventAll) {
+					if (Config.Garbage.LeakPreventAll) {
 						// does it have an 'IsDisposed' like much of XNA?
 						var type = @this.GetType();
 						const BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;

@@ -16,6 +16,9 @@ namespace MailFrameworkMod.ContentPack
         Tool,
         BigObject,
         BigCraftable,
-        Ring
+        Ring,
+        Furniture,
+        Weapon,
+        Boots
     }
 }

@@ -8,9 +8,7 @@
 **
 *************************************************/
 
-using Newtonsoft.Json.Linq;
 using QuestFramework.Framework.Stats;
-using QuestFramework.Framework.Store;
 using QuestFramework.Hooks;
 using StardewModdingAPI;
 using StardewValley;
@@ -18,10 +16,10 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using QuestFramework.Structures;
-using QuestFramework.Quests.State;
 using Newtonsoft.Json;
 using System.Linq;
-using System.Reflection;
+using QuestFramework.Extensions;
+using QuestFramework.Framework.Helpers;
 
 namespace QuestFramework.Quests
 {
@@ -30,12 +28,14 @@ namespace QuestFramework.Quests
     /// </summary>
     public class CustomQuest
     {
-        private int customTypeId;
-        private string trigger;
-        private string name;
+        private int _customTypeId;
+        private string _trigger;
+        private string _name;
+        private readonly CustomQuestObjective _defaultObjective;
 
         internal int id = -1;
-        
+        private List<CustomQuestObjective> _currentObjectives;
+
         public event EventHandler<IQuestInfo> Completed;
         public event EventHandler<IQuestInfo> Accepted;
         public event EventHandler<IQuestInfo> Removed;
@@ -63,19 +63,19 @@ namespace QuestFramework.Quests
 
         public string Name
         {
-            get => this.name;
+            get => this._name;
             set
             {
-                if (this.name != null)
+                if (this._name != null)
                     throw new InvalidOperationException("Quest name can't be changed!");
 
-                this.name = value;
+                this._name = value;
             }
         }
 
         public string Trigger 
         {
-            get => this.trigger;
+            get => this._trigger;
             set
             {
                 if (this is ITriggerLoader triggerLoader)
@@ -83,7 +83,7 @@ namespace QuestFramework.Quests
                     triggerLoader.LoadTrigger(value);
                 }
 
-                this.trigger = value;
+                this._trigger = value;
             }
         }
 
@@ -94,21 +94,26 @@ namespace QuestFramework.Quests
 
         public int CustomTypeId 
         { 
-            get => this.BaseType == QuestType.Custom ? this.customTypeId : -1; 
-            set => this.customTypeId = value >= 0 ? value : 0; 
+            get => this.BaseType == QuestType.Custom ? this._customTypeId : -1; 
+            set => this._customTypeId = value >= 0 ? value : 0; 
         }
 
         internal protected static IModHelper Helper => QuestFrameworkMod.Instance.Helper;
         internal protected static IMonitor Monitor => QuestFrameworkMod.Instance.Monitor;
         private static StatsManager StatsManager => QuestFrameworkMod.Instance.StatsManager;
 
+        public List<CustomQuestObjective> Objectives { get; }
+
         public CustomQuest()
         {
             this.BaseType = QuestType.Custom;
             this.NextQuests = new List<string>();
             this.Hooks = new List<Hook>();
+            this.Objectives = new List<CustomQuestObjective>();
             this.FriendshipGain = new Dictionary<string, int>();
             this.Tags = new Dictionary<string, string>();
+            this._defaultObjective = new CustomQuestObjective("default", "");
+            this._currentObjectives = new List<CustomQuestObjective>();
         }
 
         public CustomQuest(string name) : this()
@@ -190,6 +195,39 @@ namespace QuestFramework.Quests
         public CustomQuest<TState> AsStatefull<TState>() where TState : class, new()
         {
             return this as CustomQuest<TState>;
+        }
+
+        public void UpdateCurrentObjectives()
+        {
+            this._currentObjectives.Clear();
+
+            if (!this.IsInQuestLog())
+                return;
+
+            var questance = this.GetInQuestLog();
+
+            if (!string.IsNullOrEmpty(questance?.currentObjective))
+            {
+                this._defaultObjective.Text = questance.currentObjective ?? "";
+                this._currentObjectives.Add(this._defaultObjective);
+            }
+
+            if (this.Objectives.Any())
+            {
+                this._currentObjectives.AddRange(
+                    this.Objectives.Select(o => Utils.Clone(o)));
+            }
+
+            this.UpdateCurrentObjectives(this._currentObjectives);
+        }
+
+        protected virtual void UpdateCurrentObjectives(List<CustomQuestObjective> currentObjectives)
+        {
+        }
+
+        public List<CustomQuestObjective> GetCurrentObjectives()
+        {
+            return this._currentObjectives;
         }
 
         internal string NormalizeName(string name)

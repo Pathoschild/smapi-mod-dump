@@ -1,0 +1,13 @@
+url:
+   https://github.com/Janglinator/Secretariat.git
+
+mods:
+   Secretariat (Faster Horse)
+
+latest commit:
+   commit 6ffc838ef13d4ec1f98d5f147fdb156aa817ca5c
+   Author: Nathan Jangula <njangula@myriadmobile.com>
+   Date:   Wed Jan 13 14:07:41 2021 -0600
+   
+       Removed limitation for only main player having boosted horse
+   

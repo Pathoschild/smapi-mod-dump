@@ -1,0 +1,13 @@
+url:
+   https://github.com/AcidicNic/StardewValleyMods.git
+
+mods:
+   Special Orders Anywhere
+
+latest commit:
+   commit 8d8ecb8480f25524ad6426c2bcfcc437483d9f15
+   Author: Nicole Abadie <nic4096@gmail.com>
+   Date:   Sun Jan 17 18:16:56 2021 -0800
+   
+       readme updated
+   

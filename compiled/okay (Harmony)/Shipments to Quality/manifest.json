@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Quality from Shipments",
+  "Author": "JPAN",
+  "Version": "1.0.0",
+  "Description": "Allows you to always harvest a specific crop at a minimum star value after shipping a bunch of them. Defaults 250 for silver, 500 for gold and 1000 shipments for iridium.",
+  "UniqueID": "JPAN.QualityFromShipments",
+  "EntryDll": "ShipmentsToQuality.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

@@ -202,6 +202,17 @@
     "location.undergroundMine.level": "bánya {{level}}. szintje",
     "location.witchSwamp": "boszorkány mocsár",
     "location.woods": "titkos erdő",
+
+    "location.caldera": "Ginger Island caldera", // TODO
+    "location.islandEast": "Ginger Island east", // TODO
+    "location.islandNorth": "Ginger Island north", // TODO
+    "location.islandSouth": "Ginger Island south", // TODO
+    "location.islandSouthEast": "Ginger Island southeast", // TODO
+    "location.islandSouthEastCave": "Ginger Island southeast cave", // TODO
+    "location.islandWest": "Ginger Island west", // TODO
+    "location.islandWest.fish-area-1": "Ginger Island west (ocean)", // TODO
+    "location.islandWest.fish-area-2": "Ginger Island west (pond)", // TODO
+
     "location.unknown-fish-area": "{{locationName}} (Horgászhely: {{id}})",
 
 
@@ -602,7 +613,7 @@
 
 
     /*********
-    ** Tile lookups > Fern Islands mermaid puzzle
+    ** Puzzles > Fern Islands mermaid puzzle
     *********/
     // labels
     // TODO
@@ -631,6 +642,7 @@
     *********/
     // labels
     "tile.description": "Négyzet elhelyezkedése a térképen. Ez azért jelenik meg, mert engedélyezte a csempekeresést a konfigurációban.",
+    "tile.game-location": "Location", // TODO
     "tile.map-name": "Térkép neve",
     "tile.tile": "Négyzet",
     "tile.tile-index": "{{layerName}}: négyzetmutató",
@@ -670,10 +682,9 @@
     "tree.name.unknown": "Ismeretlen Fa",
     "tree.stage.done": "Teljesen megnőtt",
     "tree.stage.partial": "{{stageName}} ({{step}} / {{max}})",
-    "tree.next-growth.winter": "télen nem tud növekedni, csak ha üvegházban van",
+    "tree.next-growth.winter": "télen nem tud növekedni, csak ha üvegházban van, hacsak nem trágyázzák",
     "tree.next-growth.adjacent-trees": "nem tud nőni, mert egy vagy több fa túl közel van",
     "tree.next-growth.chance": "{{chance}}% eséllyel lesz {{stage}} holnapra",
-    "tree.is-fertilized.effects": "garantáltan naponta növekszik, még télen is",
 
     // growth stages
     "tree.stages.seed": "mag",

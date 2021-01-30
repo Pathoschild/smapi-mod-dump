@@ -40,7 +40,7 @@ namespace SpriteMaster.Resample {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static unsafe Results AnalyzeLegacy (Texture2D reference, in Span<int> data, Bounds rawSize, Bounds spriteSize, Vector2B Wrapped) {
+		internal static unsafe Results AnalyzeLegacy (Texture2D reference, in Types.Span<int> data, Bounds rawSize, Bounds spriteSize, Vector2B Wrapped) {
 			float edgeThreshold = Config.WrapDetection.edgeThreshold;
 
 			if (!reference.Anonymous() && Config.Resample.Padding.StrictList.Contains(reference.SafeName())) {

@@ -6,8 +6,9 @@
 		"Text": "Dear @^This is my custom mail.", // Text of the letter. You can use @ to put the players name and ^ for line breaks. You can also use the base game commands to add money, items and stuff. If an translation file is provide, you should put a translation key here.
 		"Attachments": [ // List of attachments. Remove the property to not attach items to the mail.
 			{
-				"Type": "Tool", // [Object|BigCraftable|Tool|Ring] Required. The type of item that will be attached. If not provided the item will be ignored.
-				"Name": "Axe" // Used to find the item index. That's required if using custom objects like Json Assets ones. Default is null.
+				"Type": "Tool", // [Object|BigCraftable|Tool|Ring|Furniture|Weapon|Boots] Required. The type of item that will be attached. If not provided the item will be ignored.
+				"Name": "Axe", // Used to find the item index. That's required if using custom objects like Json Assets ones. Default is null.
+				"UpgradeLevel": 1 // The upgrade level of the tool. 0 = stone, 1 = cooper, 2 = steel, 3 = gold, 4 = iridium. Ignored for the other types. Default is 0. 
 			},
 			{
 				"Type": "Object",

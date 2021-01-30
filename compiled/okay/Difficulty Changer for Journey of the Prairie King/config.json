@@ -1,11 +1,12 @@
 {
-  "alwaysInvincible": false,
-  "lives": 98,
-  "coins": 100,
+  "alwaysInvincible": true,
+  "lives": 99,
+  "coins": 99,
   "ammoLevel": 0,
   "bulletDamage": 0,
   "fireSpeedLevel": 5,
   "runSpeedLevel": 2,
   "useShotgun": false,
+  "useWheel": false,
   "waveTimer": 60
 }

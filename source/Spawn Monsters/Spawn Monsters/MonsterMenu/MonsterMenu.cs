@@ -25,8 +25,15 @@ namespace Spawn_Monsters.MonsterMenu
         private readonly List<IClickableMenu> tabs;
         private int current;
 
+        private const int menuWidth = 800;
+        private const int menuHeight = 800;
+
         public MonsterMenu()
-            : base(Game1.viewport.Width / 2 - (800 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2, 800 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2, true) {
+            : base(
+                  Game1.viewport.Width / 2 - (menuWidth + IClickableMenu.borderWidth * 2) / 2,
+                  Game1.viewport.Height / 2 - (menuHeight + IClickableMenu.borderWidth * 2) / 2,
+                  menuWidth + IClickableMenu.borderWidth * 2,
+                  menuHeight + IClickableMenu.borderWidth * 2, true) {
 
             Game1.playSound("bigSelect");
 

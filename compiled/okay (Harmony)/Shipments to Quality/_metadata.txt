@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7531
+IDs: JPAN.QualityFromShipments
+update keys: Nexus:7531

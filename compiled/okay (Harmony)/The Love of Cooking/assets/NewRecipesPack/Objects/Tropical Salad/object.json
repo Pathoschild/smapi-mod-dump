@@ -1,0 +1,41 @@
+{
+	// Object data
+	"Name": "blueberry.cac.tropicalsalad",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 98,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 425,
+	"IsColored": false,
+
+	// Object purchase
+	"CanPurchase": false,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 300,
+	"PurchaseRequirements": null,
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": 832, // Pineapple
+				"Count": 1
+			},
+			{
+				"Object": 613, // Apple
+				"Count": 1
+			},
+			{
+				"Object": 637, // Pomegranate
+				"Count": 1
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": false,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": null
+	}
+}

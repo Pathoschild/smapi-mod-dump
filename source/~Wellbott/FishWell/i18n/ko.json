@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Wellbott/StardewValleyMods
+**
+*************************************************/
+
+{
+    "fishWell.name": "작은 물고기 연못",
+    "fishWell.descriptionSlow": "물고기를 키울 수 있는 아담한 연못. 생산 속도는 일반 연못보다 느립니다.",
+	"fishWell.descriptionFast": "물고기를 키울 수 있는 아담한 연못."
+}

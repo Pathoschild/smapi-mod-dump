@@ -55,7 +55,7 @@ namespace CustomNPCExclusions
             }
             catch (Exception ex)
             {
-                ModEntry.Instance.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_WinterStarGifts)}\" has encountered an error. Transpiler \"{nameof(Game1_UpdateShopPlayerItemInventory)}\" will not be applied. Full error message:\n{ex.ToString()}", LogLevel.Error);
+                ModEntry.Instance.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_ShopDialog)}\" has encountered an error. Transpiler \"{nameof(Game1_UpdateShopPlayerItemInventory)}\" will not be applied. Full error message:\n{ex.ToString()}", LogLevel.Error);
                 return instructions; //return the original instructions
             }
         }
@@ -71,7 +71,7 @@ namespace CustomNPCExclusions
                 if (data.Value.Exists(entry =>
                     entry.StartsWith("All", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from everything
                     || entry.StartsWith("TownEvent", StringComparison.OrdinalIgnoreCase) //OR if this NPC is excluded from town events
-                    || entry.StartsWith("ShopDialog", StringComparison.OrdinalIgnoreCase) //OR this NPC is excluded from the Winter Star event
+                    || entry.StartsWith("ShopDialog", StringComparison.OrdinalIgnoreCase) //OR this NPC is excluded from dialog about the town shop
                 ))
                 {
                     excluded.Add(data.Key); //add this NPC's name to the excluded list

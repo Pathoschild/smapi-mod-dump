@@ -217,6 +217,15 @@ public interface IManagedQuestApi
     void ExposeQuestType<TQuest>(string type) where TQuest : CustomQuest, new();
 
     bool HasQuestType(string type);
+
+    /// <summary>
+    /// Register custom quest or special orders board
+    /// WARNING: Can't register new bopards when game is loaded. 
+    /// Please register all your boards when QF state is LAUNCHING 
+    /// (<see cref="QuestFramework.Events.IQuestFrameworkEvents.GettingReady"/> event)
+    /// </summary>
+    /// <param name="boardTrigger"></param>
+    void RegisterCustomBoard(CustomBoardTrigger boardTrigger);
 }
 ```
 

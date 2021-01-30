@@ -1,0 +1,13 @@
+url:
+   https://github.com/jag3dagster/AllowBeachSprinklers.git
+
+mods:
+   Allow Beach Sprinklers
+
+latest commit:
+   commit 23ad60cef7ba38f99c066fed466d283ffc412b68
+   Author: Jag <77469789+jag3dagster@users.noreply.github.com>
+   Date:   Tue Jan 19 18:00:11 2021 -0800
+   
+       Update README.md
+   

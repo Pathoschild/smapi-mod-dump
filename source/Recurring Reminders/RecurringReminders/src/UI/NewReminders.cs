@@ -79,7 +79,7 @@ namespace Dem1se.RecurringReminders.UI
                 Y = yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth - Game1.tileSize / 4 + Game1.tileSize / 2 + Game1.tileSize * 4,
                 Width = Game1.tileSize * 2,
                 Height = 180,
-                textLimit = 2,
+                textLimit = 3,
                 numbersOnly = true
             };
         }
@@ -109,11 +109,11 @@ namespace Dem1se.RecurringReminders.UI
         /// <summary>
         /// Checks if the page1 inputs are all valid
         /// </summary>
-        /// <returns>True if ok button is all the conditions are met, False if not. See method defenition for condition.</returns>
+        /// <returns>True if ok button is all the conditions are met, False if not. See method definition for conditions.</returns>
         private bool IsOkButtonReady()
         {
             if (string.IsNullOrEmpty(ReminderIntervalTextBox.Text)) return false;
-            if ( !string.IsNullOrEmpty(ReminderMessageTextBox.Text) && Convert.ToInt32(ReminderIntervalTextBox.Text) > 0 && Convert.ToInt32(ReminderIntervalTextBox.Text) < 29) return true;
+            if (!string.IsNullOrEmpty(ReminderMessageTextBox.Text) && Convert.ToInt32(ReminderIntervalTextBox.Text) > 0) return true;
             return false;
         }
 

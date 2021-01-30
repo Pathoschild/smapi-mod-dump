@@ -165,7 +165,7 @@ namespace SpriteMaster {
 		}
 
 		[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden(), MethodImpl(MethodImplOptions.AggressiveInlining)]
-		static internal void AssertNotZeroe<T> (this T value, in string message = null, Type exception = null) where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
+		static internal void AssertNotZero<T> (this T value, in string message = null, Type exception = null) where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
 			AssertNotEqual(
 				value,
 				(T)Convert.ChangeType(0, typeof(T)),

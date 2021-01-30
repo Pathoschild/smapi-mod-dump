@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Better Sort",
    "Author": "Jower",
-   "Version": "1.3.3",
+   "Version": "1.3.4",
    "Description": "Better inventory sorting",
    "UniqueID": "Jower.BetterSort",
    "EntryDll": "BetterSort.dll",

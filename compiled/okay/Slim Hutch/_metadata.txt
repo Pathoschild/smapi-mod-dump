@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7424
+IDs: Wellbott.SlimHutchCode
+update keys: Nexus:7424, GitHub:Wellbott/StardewValleyMods

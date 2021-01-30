@@ -1,0 +1,10 @@
+{
+    "Name": "VendingMachine",
+    "Author": "ActionJackson",
+    "Version": "1.0.1",
+    "Description": "Adds vending machines outside of shops, but at a premium!",
+    "UniqueID": "ActionJackson.VendingMachine",
+    "EntryDll": "VendingMachine.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": []
+  }

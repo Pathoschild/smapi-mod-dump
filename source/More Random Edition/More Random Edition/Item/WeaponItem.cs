@@ -56,7 +56,7 @@ namespace Randomizer
 		/// <returns />
 		public int GetBuyPrice()
 		{
-			if (!Globals.Config.RandomizeWeapons) { return GetOriginalBuyPrice(); }
+			if (!Globals.Config.Weapons.Randomize) { return GetOriginalBuyPrice(); }
 
 			return GetLevel() * 100 * 4;
 		}
@@ -68,12 +68,6 @@ namespace Randomizer
 		/// <returns />
 		public int GetLevel()
 		{
-			if (Name == "Unusual Pie Shieldbreaker of the Forest")
-			{
-				int hi = 5;
-				hi++;
-			}
-
 			int averageDamage = (Damage.MaxValue + Damage.MinValue) / 2;
 			double speedBonus = 1d + 0.1d * (Math.Max(0, Speed) + (Type == WeaponType.Dagger ? 15 : 0));
 			int statsBonus = (AddedPrecision / 2) + AddedDefense;

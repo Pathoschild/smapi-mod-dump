@@ -8,22 +8,19 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
-
 namespace HotbarHotswap
 {
     public class ModEntry : Mod
     {
-        private static IReflectionHelper _reflection;
-
         private readonly Dictionary<int, InputButton[]> _keyBindings = new Dictionary<int, InputButton[]>();
+        private static IReflectionHelper _reflection;
 
         public override void Entry(IModHelper helper)
         {
@@ -39,21 +36,18 @@ namespace HotbarHotswap
             _keyBindings[9] = Game1.options.inventorySlot10;
             _keyBindings[10] = Game1.options.inventorySlot11;
             _keyBindings[11] = Game1.options.inventorySlot12;
-
             _reflection = helper.Reflection;
-            InputEvents.ButtonPressed += Update;
+
+            helper.Events.Input.ButtonPressed += InputOnButtonPressed;
         }
 
-
-        private void Update(object sender, EventArgsInput e)
+        private void InputOnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!(Game1.activeClickableMenu is GameMenu)) return;
             var menuList = _reflection.GetField<List<IClickableMenu>>(Game1.activeClickableMenu, "pages").GetValue();
 
-            foreach (var menu in menuList)
+            foreach (var item in menuList.OfType<InventoryPage>().Select(menu => _reflection.GetField<Item>(menu, "hoveredItem").GetValue()))
             {
-                if (!(menu is InventoryPage)) continue;
-                var item = _reflection.GetField<Item>(menu, "hoveredItem").GetValue();
                 if (item == null) return;
 
                 var newSlot = -1;

@@ -30,6 +30,7 @@ namespace Randomizer
 		PlankCabin,
 		LogCabin,
 		Well,
-		FishPond
+		FishPond,
+		Stable
 	}
 }

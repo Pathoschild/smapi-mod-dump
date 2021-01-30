@@ -91,7 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="i18n\default.json" />
-    <None Include="i18n\JA-jp.json" />
+    <None Include="i18n\fr-FR.json" />
+    <None Include="i18n\ja-JP.json" />
+    <None Include="i18n\pt-BR.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>

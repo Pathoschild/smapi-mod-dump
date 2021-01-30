@@ -23,6 +23,7 @@ namespace ProducerFrameworkMod
     {
         public const string ProducerRulesJson = "ProducerRules.json";
         public const string ProducersConfigJson = "ProducersConfig.json";
+        public const string ContentPackConfigJson = "Config.json";
         public static IModHelper Helper;
 
         public DataLoader(IModHelper helper)
@@ -34,39 +35,59 @@ namespace ProducerFrameworkMod
         {
             foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
             {
-                string producersConfigJson = GetActualCaseForFileName(contentPack.DirectoryPath, ProducersConfigJson);
-                bool haveProducersConfigFile = producersConfigJson != null;
-                ProducerFrameworkModEntry.ModMonitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
-                if (haveProducersConfigFile)
+                LoadContentPack(contentPack, e);
+            }
+        }
+
+        public static bool LoadContentPack(IContentPack contentPack, EventArgs e)
+        {
+            string contentPackConfigJson = GetActualCaseForFileName(contentPack.DirectoryPath, ContentPackConfigJson);
+            bool haveContentPackConfigFile = contentPackConfigJson != null;
+            if (haveContentPackConfigFile)
+            {
+                ContentPackConfig contentPackConfig = contentPack.ReadJsonFile<ContentPackConfig>(contentPackConfigJson);
+                ContentPackConfigController.AddConfig(contentPackConfig, contentPack.Manifest.UniqueID);
+            }
+            else
+            {
+                ProducerFrameworkModEntry.ModMonitor.Log($"Content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an {ContentPackConfigJson} file.", LogLevel.Trace);
+            }
+
+            string producersConfigJson = GetActualCaseForFileName(contentPack.DirectoryPath, ProducersConfigJson);
+            bool haveProducersConfigFile = producersConfigJson != null;
+            ProducerFrameworkModEntry.ModMonitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+            if (haveProducersConfigFile)
+            {
+                List<ProducerConfig> producersConfigs = contentPack.ReadJsonFile<List<ProducerConfig>>(producersConfigJson);
+                ProducerController.AddProducersConfig(producersConfigs, contentPack.Manifest.UniqueID);
+            }
+            else
+            {
+                ProducerFrameworkModEntry.ModMonitor.Log($"Content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an {ProducersConfigJson} file.", LogLevel.Trace);
+            }
+
+            if (e is SaveLoadedEventArgs)
+            {
+                string producerRulesJson = GetActualCaseForFileName(contentPack.DirectoryPath, ProducerRulesJson);
+                bool haveProducerRulesFile = producerRulesJson != null;
+                if (haveProducerRulesFile)
                 {
-                    List<ProducerConfig> producersConfigs = contentPack.ReadJsonFile<List<ProducerConfig>>(producersConfigJson);
-                    ProducerController.AddProducersConfig(producersConfigs, contentPack.Manifest.UniqueID);
+                    List<ProducerRule> producerItems = contentPack.ReadJsonFile<List<ProducerRule>>(producerRulesJson);
+                    ProducerController.AddProducerItems(producerItems, contentPack.Translation, contentPack.Manifest.UniqueID);
                 }
                 else
                 {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"Content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an {ProducersConfigJson} file.", LogLevel.Trace);
+                    ProducerFrameworkModEntry.ModMonitor.Log($"Content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an {ProducerRulesJson} file.", LogLevel.Trace);
                 }
 
-                if (e is SaveLoadedEventArgs)
+                if (!haveProducerRulesFile && !haveProducersConfigFile)
                 {
-                    string producerRulesJson = GetActualCaseForFileName(contentPack.DirectoryPath, ProducerRulesJson);
-                    bool haveProducerRulesFile = producerRulesJson != null;
-                    if (haveProducerRulesFile)
-                    {
-                        List<ProducerRule> producerItems = contentPack.ReadJsonFile<List<ProducerRule>>(producerRulesJson);
-                        ProducerController.AddProducerItems(producerItems, contentPack.Translation);
-                    }
-                    else
-                    {
-                        ProducerFrameworkModEntry.ModMonitor.Log($"Content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an {ProducerRulesJson} file.", LogLevel.Trace);
-                    }
-
-                    if (!haveProducerRulesFile && !haveProducersConfigFile)
-                    {
-                        ProducerFrameworkModEntry.ModMonitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have any of the required files.", LogLevel.Warn);
-                    }
+                    ProducerFrameworkModEntry.ModMonitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have any of the required files.", LogLevel.Warn);
+                    return false;
                 }
             }
+
+            return true;
         }
 
         /// <summary>

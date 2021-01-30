@@ -5,9 +5,9 @@ mods:
    Get Glam
 
 latest commit:
-   commit c3816631fd0aa437d33c1038ce3ff7e8d6466a06
+   commit 9591e43be8fa4c2d7a89f9a5dc07ac4f81f68eb4
    Author: Chris <csgephardt@gmail.com>
-   Date:   Thu Dec 24 12:42:04 2020 -0500
+   Date:   Fri Jan 29 22:34:27 2021 -0500
    
-       Added summary comments to HarmonyHelper.
+       Bump Version to 1.2.0
    

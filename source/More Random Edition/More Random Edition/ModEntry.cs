@@ -71,11 +71,11 @@ namespace Randomizer
 		/// <param name="helper">Provides simplified APIs for writing mods</param>
 		public override void Entry(IModHelper helper)
 		{
-			ImageBuilder.CleanUpReplacementFiles();
-
 			_helper = helper;
 			Globals.ModRef = this;
 			Globals.Config = Helper.ReadConfig<ModConfig>();
+
+			ImageBuilder.CleanUpReplacementFiles();
 
 			this._modAssetLoader = new AssetLoader(this);
 			this._modAssetEditor = new AssetEditor(this);
@@ -84,70 +84,48 @@ namespace Randomizer
 
 			this.PreLoadReplacments();
 			helper.Events.GameLoop.SaveLoaded += (sender, args) => this.CalculateAllReplacements();
-			helper.Events.Multiplayer.PeerContextReceived += (sender, args) => FixParsnipSeedBox();
-
 			helper.Events.Display.RenderingActiveMenu += (sender, args) => _modAssetLoader.TryReplaceTitleScreen();
-			helper.Events.Display.MenuChanged += BundleMenuAdjustments.FixRingSelection;
-			helper.Events.Display.RenderingActiveMenu += (sender, args) => BundleMenuAdjustments.FixRingDeposits();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => _modAssetLoader.ReplaceTitleScreenAfterReturning();
-			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => ImageBuilder.CleanUpReplacementFiles();
 
-			if (Globals.Config.RandomizeMusic) { helper.Events.GameLoop.UpdateTicked += (sender, args) => this.TryReplaceSong(); }
+			if (Globals.Config.Music.Randomize) { helper.Events.GameLoop.UpdateTicked += (sender, args) => MusicRandomizer.TryReplaceSong(); }
 			if (Globals.Config.RandomizeRain) { helper.Events.GameLoop.DayEnding += _modAssetLoader.ReplaceRain; }
-			if (Globals.Config.RandomizeCrops || Globals.Config.RandomizeFish)
+
+			if (Globals.Config.Crops.Randomize)
+			{
+				helper.Events.Multiplayer.PeerContextReceived += (sender, args) => FixParsnipSeedBox();
+			}
+
+			if (Globals.Config.Crops.Randomize || Globals.Config.Fish.Randomize)
 			{
 				helper.Events.Display.RenderingActiveMenu += (sender, args) => CraftingRecipeAdjustments.HandleCraftingMenus();
+
+				// Fix for the Special Orders causing crashes
+				// Re-instate the object info when the save is first loaded for the session, and when saving so that the
+				// items have the correct names on the items sold summary screen
+				helper.Events.GameLoop.DayEnding += (sender, args) => _modAssetEditor.UndoObjectInformationReplacements();
+				helper.Events.GameLoop.SaveLoaded += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
+				helper.Events.GameLoop.Saving += (sender, args) => _modAssetEditor.RedoObjectInformationReplacements();
 			}
 
-			helper.Events.GameLoop.DayStarted += (sender, args) => UseOverriddenSubmarine();
-			helper.Events.GameLoop.DayEnding += (sender, args) => RestoreSubmarineLocation();
-		}
-
-
-		/// <summary>
-		/// The old submarine location
-		/// </summary>
-		private Submarine NormalSubmarineLocation { get; set; }
-
-		/// <summary>
-		/// Replaces the submarine location with an overridden one so that the fish that
-		/// appear there are correct
-		/// </summary>
-		public void UseOverriddenSubmarine()
-		{
-			int submarineIndex;
-			foreach (GameLocation location in Game1.locations)
+			if (Globals.Config.RandomizeForagables)
 			{
-				if (location.Name == "Submarine")
-				{
-					if (location.GetType() != typeof(OverriddenSubmarine))
-					{
-						NormalSubmarineLocation = (Submarine)location;
-					}
-
-					submarineIndex = Game1.locations.IndexOf(location);
-					Game1.locations[submarineIndex] = new OverriddenSubmarine();
-					break;
-				}
+				helper.Events.GameLoop.GameLaunched += (sender, args) => WildSeedAdjustments.ReplaceGetRandomWildCropForSeason();
 			}
-		}
 
-		/// <summary>
-		/// Restores the submarine location - this should be done before saving the game
-		/// to avoid a crash
-		/// </summary>
-		public void RestoreSubmarineLocation()
-		{
-			if (NormalSubmarineLocation == null) { return; }
-
-			int submarineIndex;
-			foreach (GameLocation location in Game1.locations)
+			if (Globals.Config.Fish.Randomize)
 			{
-				if (location.Name == "Submarine")
+				helper.Events.GameLoop.DayStarted += (sender, args) => OverriddenSubmarine.UseOverriddenSubmarine();
+				helper.Events.GameLoop.DayEnding += (sender, args) => OverriddenSubmarine.RestoreSubmarineLocation();
+			}
+
+			if (Globals.Config.Bundles.Randomize)
+			{
+				helper.Events.Display.MenuChanged += BundleMenuAdjustments.FixRingSelection;
+				helper.Events.Display.RenderingActiveMenu += (sender, args) => BundleMenuAdjustments.FixRingDeposits();
+
+				if (Globals.Config.Bundles.ShowDescriptionsInBundleTooltips)
 				{
-					submarineIndex = Game1.locations.IndexOf(location);
-					Game1.locations[submarineIndex] = NormalSubmarineLocation;
-					break;
+					helper.Events.Display.RenderedActiveMenu += (sender, args) => BundleMenuAdjustments.AddDescriptionsToBundleTooltips();
 				}
 			}
 		}
@@ -185,10 +163,22 @@ namespace Randomizer
 			_modAssetLoader.InvalidateCache();
 			_modAssetEditor.InvalidateCache();
 
+			// Ensure that the bundles get changed if they're meant to
+			Game1.GenerateBundles(Game1.bundleType, true);
+
 			ChangeDayOneForagables();
 			FixParsnipSeedBox();
 			OverriddenSeedShop.ReplaceShopStockMethod();
 			OverriddenAdventureShop.FixAdventureShopBuyAndSellPrices();
+		}
+
+		/// <summary>
+		/// A passthrough to calculate adn invalidate UI edits
+		/// Used when the lanauage is changed
+		/// </summary>
+		public void CalculateAndInvalidateUIEdits()
+		{
+			_modAssetEditor.CalculateAndInvalidateUIEdits();
 		}
 
 		/// <summary>
@@ -197,7 +187,6 @@ namespace Randomizer
 		/// </summary>
 		public void ChangeDayOneForagables()
 		{
-			// Replace all the foragables on day 1
 			SDate currentDate = SDate.Now();
 			if (currentDate.DaysSinceStart < 2)
 			{
@@ -210,9 +199,9 @@ namespace Randomizer
 					).ToList();
 
 				List<Item> newForagables =
-				ItemList.GetForagables(Seasons.Spring)
-					.Where(x => x.ShouldBeForagable) // Removes the 1/1000 items
-					.Cast<Item>().ToList();
+					ItemList.GetForagables(Seasons.Spring)
+						.Where(x => x.ShouldBeForagable) // Removes the 1/1000 items
+						.Cast<Item>().ToList();
 
 				foreach (GameLocation location in locations)
 				{
@@ -224,7 +213,7 @@ namespace Randomizer
 
 					foreach (Vector2 oldForagableKey in tiles)
 					{
-						Item newForagable = Globals.RNGGetRandomValueFromList(newForagables);
+						Item newForagable = Globals.RNGGetRandomValueFromList(newForagables, true);
 						location.Objects[oldForagableKey].ParentSheetIndex = newForagable.Id;
 						location.Objects[oldForagableKey].Name = newForagable.Name;
 					}
@@ -255,27 +244,6 @@ namespace Randomizer
 					itemInChest.Name = parsnipSeedsName;
 					itemInChest.DisplayName = parsnipSeedsName;
 				}
-			}
-		}
-
-		/// <summary>
-		/// The last song that played/is playing
-		/// </summary>
-		private string _lastCurrentSong { get; set; }
-
-		/// <summary>
-		/// Attempts to replace the current song with a different one
-		/// If the song was barely replaced, it doesn't do anything
-		/// </summary>
-		public void TryReplaceSong()
-		{
-			//Game1.addHUDMessage(new HUDMessage(Game1.currentSong?.Name));
-
-			string currentSong = Game1.currentSong?.Name;
-			if (this._modAssetEditor.MusicReplacements.TryGetValue(currentSong?.ToLower() ?? "", out string value) && _lastCurrentSong != currentSong)
-			{
-				_lastCurrentSong = value;
-				Game1.changeMusicTrack(value);
 			}
 		}
 	}

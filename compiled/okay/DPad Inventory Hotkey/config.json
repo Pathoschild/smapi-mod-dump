@@ -1,0 +1,10 @@
+{
+  "StartEnable": true,
+  "OptionalFunction": false,
+  "OptionalFunction2": false,
+  "DPadUp": "1",
+  "DPadDown": "2",
+  "DPadLeft": "3",
+  "DPadRight": "4",
+  "EnableKey": "None"
+}

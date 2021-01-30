@@ -58,43 +58,7 @@ namespace Dem1se.CustomReminders.Utilities
         /// <returns>{int} The pixel count of estimated witdth the string would take</returns>
         public static int EstimateStringDimension(string reminderMessage)
         {
-            int width = 0;
-            char[] characters = reminderMessage.ToCharArray();
-
-            // add time number
-            if (characters[1] == ' ')
-                // 1 digit time
-                width += 20;
-            else if (characters[1] == ':')
-                // 3 digit time
-                width += 80; // 20 extra for colon
-            else
-            {
-                if (characters[2] == ':')
-                    // 4 digit time
-                    width += 100; // 20 extra for colon
-                else
-                    // 2 digit time
-                    width += 40;
-            }
-            // add space
-            width += 24;
-            // add AM/PM
-            width += 68;
-            // add season
-            if (reminderMessage.Contains("Spring")) { width += 189; }
-            else if (reminderMessage.Contains("Summer")) { width += 196; }
-            else if (reminderMessage.Contains("Fall")) { width += 135; }
-            else { width += 186; }
-            // add space
-            width += 24;
-            // add two digits
-            width += 40;
-            // add year
-            width += 156;
-            // add two spaces
-            width += 48;
-            return width;
+            return StardewValley.BellsAndWhistles.SpriteText.getWidthOfString(reminderMessage) + 64;
         }
     }
 

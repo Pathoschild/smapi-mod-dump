@@ -49,6 +49,15 @@ namespace Randomizer
 		public int? MinimumRequiredItems { get; set; }
 		public BundleTypes BundleType { get; set; } = BundleTypes.None;
 
+		public string ImageNameSuffix { get; set; }
+		public string ImageName
+		{
+			get
+			{
+				return $"{BundleType.ToString()}{ImageNameSuffix}";
+			}
+		}
+
 		private static bool _isInitialized { get; set; }
 		private static List<BundleTypes> _randomBundleTypes { get; set; }
 
@@ -289,12 +298,16 @@ namespace Randomizer
 						letters.Replace(randomLetter, "");
 						potentialItems = RequiredItem.CreateList(
 							ItemList.Items.Values.Where(x =>
-								x.Name.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase) &&
+								(
+									(x.OverrideDisplayName == null && x.Name.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase)) ||
+									(x.OverrideDisplayName != null && x.OverrideDisplayName.StartsWith(randomLetter, StringComparison.InvariantCultureIgnoreCase))
+								) &&
 								x.Id > -4
 							).ToList()
 						);
 					} while (potentialItems.Count < 4);
 					Name = Globals.GetTranslation("bundle-random-letter", new { letter = randomLetter });
+					ImageNameSuffix = randomLetter;
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = 3;
 					break;
@@ -310,7 +323,10 @@ namespace Randomizer
 		protected void GenerateRandomReward()
 		{
 			Item reward = Globals.RNGGetRandomValueFromList(ItemList.Items.Values.Where(x =>
-				x.Id != (int)ObjectIndexes.TransmuteAu && x.Id != (int)ObjectIndexes.TransmuteFe).ToList());
+				x.Id != (int)ObjectIndexes.AnyFish &&
+				x.Id != (int)ObjectIndexes.TransmuteAu &&
+				x.Id != (int)ObjectIndexes.TransmuteFe).ToList()
+			);
 			int numberToGive = Range.GetRandomValue(1, 25);
 			if (!reward.CanStack) { numberToGive = 1; }
 

@@ -1,0 +1,28 @@
+{
+    // Object data
+    "Name": "blueberry.cac.eggsando_half",
+    "Description": "...",
+    "Category": "Junk",
+    "CategoryTextOverride": "",
+    "CategoryColorOverride": "0, 0, 0, 0",
+    "Edibility": 33,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 40,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+        "Like": [ "Evelyn", "Demetrius", "Vincent", "Jas", "Penny", "Gus", "Marnie", "Clint", "George", "Abigail", "Alex", "Caroline", "Elliott", "Emily", "Haley", "Jodi", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Sandy", "Willy", "Pam", "Shane" ],
+        "Neutral": [ "Kent", "Wizard" ],
+        "Dislike": [ "Leah", "Sebastian", "Dwarf", "Harvey" ],
+        "Hate": [ "Krobus" ]
+    }
+}

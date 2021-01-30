@@ -76,6 +76,8 @@
     <Compile Include="FileIO.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="EventPatches.cs" />
+    <Compile Include="Game1Patches.cs" />
+    <Compile Include="ObjectPatches.cs" />
     <Compile Include="UIPatches.cs" />
     <Compile Include="Maps.cs" />
     <Compile Include="ModConfig.cs" />
@@ -108,6 +110,7 @@
     <None Include="i18n\fr.json" />
     <None Include="i18n\es.json" />
     <None Include="i18n\default.json" />
+    <None Include="i18n\zh.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>

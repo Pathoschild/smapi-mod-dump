@@ -5,9 +5,9 @@ mods:
    Moody Planet
 
 latest commit:
-   commit a5cb13ab151c3af59bdf95ecb20b9de29e5c43c1
+   commit 25fba26f956e495957874626c69e8ca311e24e23
    Author: F1r3w477 <grillwar@gmail.com>
-   Date:   Fri Apr 12 19:30:47 2019 -0500
+   Date:   Mon Jan 25 00:13:26 2021 -0600
    
-       removal of trash
+       API update and code cleanup
    

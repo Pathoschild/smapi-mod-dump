@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Adopt & Skin",
   "Author": "Gathouria",
-  "Version": "3.2.0-beta.1.4",
+  "Version": "3.2.0-beta.1.6",
   "Description": "Adopt new pets, find wild horses, and randomize and select custom skins for everyone!",
   "UniqueID": "Gathouria.AdoptSkin",
   "EntryDll": "AdoptSkin.dll",

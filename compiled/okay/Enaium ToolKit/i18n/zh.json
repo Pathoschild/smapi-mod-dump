@@ -2,8 +2,5 @@
   "screenGui.component.textField.flipUp": "向上翻",
   "screenGui.component.textField.flipDown": "向下翻",
   "screenGui.component.textField.closeScreen": "关闭显示",
-  "screenGui.component.textField.Search": "搜索",
-  "enaiumToolKitScreen.element.button.testScreen": "测试界面",
-  "enaiumToolKitScreen.element.button.allScreenGui": "全部界面",
-  "allScreenGuiScreen.element.button.open": "打开"
+  "screenGui.component.textField.Search": "搜索"
 }

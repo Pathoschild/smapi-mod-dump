@@ -1,0 +1,25 @@
+{
+  //Letters
+  "mail.Wizard1": "@,^^The Junimos are pleased with your contributions to The Valley.^They had an idea to improve your greenhouse, I have translated these ideas into something Robin can use.^Talk to her if you want this upgrade.^^   -M. Rasmodius, Wizard",
+  "mail.Wizard1b": "@,^^Despite having removed them from their home in the Community Center the Junimos are pleased with your contributions to The Valley.^They had an idea to improve your greenhouse, I have translated these ideas into something Robin can use.^Talk to her if you want this upgrade.^^   -M. Rasmodius, Wizard",
+  "mail.Wizard2": "@,^^The Junimos continue to be impressed with your farm.^They had an idea to further improve your greenhouse, I have translated these ideas into something Robin can use.^Talk to her if you want this upgrade.^^   -M. Rasmodius, Wizard",
+  "mail.Wizard3": "@,^^The Junimos continue to be impressed with your farm.^They had one final idea to upgrade your farm's sprinkler system, I have translated these ideas into something Robin can use.^Talk to her if you want this upgrade.^^   -M. Rasmodius, Wizard",
+
+  //Shop Descriptions
+  "CarpenterShop.BluePrintName": "Sprinkler System Upgrade",
+  "CarpenterShop.FirstUpgradeDescription": "Automated Sprinklers on the ceiling of your greenhouse, runs every morning",
+  "CarpenterShop.SecondUpgradeDescription": "Automated Sprinklers on the ceiling of your greenhouse, runs every morning and night",
+  "CarpenterShop.FinalUpgradeDescription": "Hidden underground sprinklers all over the farm, runs morning and night",
+
+  //Menu Items
+  //Currently Unused, may never be used
+  //If used will be expanded
+
+  "menu.diff": "Difficulty",
+  "menu.diff-Easy": "Easy",
+  "menu.diff-Medium": "Medium",
+  "menu.diff-Hard": "Hard",
+  "menu.diff-Custom": "Custom"
+
+
+}

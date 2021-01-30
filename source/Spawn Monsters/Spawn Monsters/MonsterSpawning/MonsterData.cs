@@ -56,7 +56,24 @@ namespace Spawn_Monsters.Monsters
             Skeleton,
             SquidKid,
             PepperRex,
-            BigSlime
+            BigSlime,
+            HotHead,
+            RoyalSerpent,
+            PutridGhost,
+            BlueSquid,
+            DwarvishSentry,
+            Shooter,
+            Spider,
+            LavaLurk,
+            MagmaSprite,
+            MagmaSparker,
+            SkeletonMage,
+            FalseMagmaCap,
+            Spiker,
+            StickBug,
+            TigerSlime,
+            MagmaDuggy,
+            PrismaticSlime
         }
 
         private static readonly Dictionary<Monster, MonsterData> data = new Dictionary<Monster, MonsterData>() {
@@ -111,11 +128,31 @@ namespace Spawn_Monsters.Monsters
             { Monster.ShadowBrute, new MonsterData("Shadow Brute", typeof(ShadowBrute), new object[] { null }, "Shadow Brute", 16, 32) },
             { Monster.ShadowShaman, new MonsterData("Shadow Shaman", typeof(ShadowShaman), new object[] { null }, "Shadow Shaman") },
 
-            { Monster.Skeleton, new MonsterData("Skeleton", typeof(Skeleton), new object[] { null }, "Skeleton", 16, 32) },
+            { Monster.Skeleton, new MonsterData("Skeleton", typeof(Skeleton), new object[] { null, false }, "Skeleton", 16, 32) },
 
-            { Monster.SquidKid, new MonsterData("Squid Kid", typeof(SquidKid), new object[] { null }, "Squid Kid", 16, 16) }
+            { Monster.SquidKid, new MonsterData("Squid Kid", typeof(SquidKid), new object[] { null }, "Squid Kid", 16, 16) },
 
 
+            { Monster.DwarvishSentry, new MonsterData("Dwarvish Sentry", typeof(DwarvishSentry), new object[] { null }, "Dwarvish Sentry", 16, 16) },
+            { Monster.FalseMagmaCap, new MonsterData("False Magma Cap", typeof(RockCrab), new object[] { null, "False Magma Cap" }, "False Magma Cap") },
+            { Monster.HotHead, new MonsterData("Hot Head", typeof(HotHead), new object[] { null }, "Hot Head", 16, 16) },
+            { Monster.LavaLurk, new MonsterData("Lava Lurk", typeof(LavaLurk), new object[] { null }, "Lava Lurk", 16, 16) },
+            { Monster.MagmaSprite, new MonsterData("Magma Sprite", typeof(Bat), new object[] { null, -555 }, "Magma Sprite", 16, 16) },
+            { Monster.StickBug, new MonsterData("Stick Bug", typeof(RockCrab), new object[] { null }, "Stick Bug") },
+            { Monster.MagmaSparker, new MonsterData("Magma Sparker", typeof(Bat), new object[] { null, -556 }, "Magma Sparker", 16, 16) },
+            { Monster.MagmaDuggy, new MonsterData("Magma Duggy", typeof(DuggyFixed), new object[] {null, true }, "Magma Duggy")},
+            { Monster.Spiker, new MonsterData("Spiker", typeof(Spiker), new object[] { null, 0 }, "Spiker", 16, 16) },
+            { Monster.TigerSlime, new MonsterData("Tiger Slime", typeof(GreenSlime), new object[] { null, 0 }, "Tiger Slime")},
+
+
+            { Monster.Shooter, new MonsterData("Shadow Sniper", typeof(Shooter), new object[] { null }, "Shadow Sniper", 32, 32) },
+            { Monster.SkeletonMage, new MonsterData("Skeleton Mage", typeof(Skeleton), new object[] { null, true }, "Skeleton Mage", 16, 32) },
+            { Monster.Spider, new MonsterData("Spider", typeof(Leaper), new object[] { null }, "Spider", 32, 32, 0, 2) },
+            { Monster.PutridGhost, new MonsterData("Putrid Ghost", typeof(Ghost), new object[] { null, "Putrid Ghost" }, "Putrid Ghost") },
+            { Monster.BlueSquid, new MonsterData("Blue Squid", typeof(BlueSquid), new object[] { null }, "Blue Squid", 24, 24) },
+            { Monster.RoyalSerpent, new MonsterData("Royal Serpent", typeof(Serpent), new object[] { null, "Royal Serpent" }, "Royal Serpent", 32, 32) },
+
+            { Monster.PrismaticSlime, new MonsterData("Prismatic Slime", typeof(GreenSlime), new object[]{ null, 0 }, "Green Slime")},
         };
 
 
@@ -157,7 +194,7 @@ namespace Spawn_Monsters.Monsters
         }
 
         public ClickableMonsterComponent ToClickableMonsterComponent(Monster monster) {
-            return new ClickableMonsterComponent(monster, Texturename, 0, 0, Texturewidth * 4, Textureheight * 4, Texturewidth, Textureheight, StartingFrame, NumberOfFrames, AnimatingInterval, TextureColor);
+            return new ClickableMonsterComponent(monster, Texturename, 0, 0, monster == Monster.Spider ? 16 * 4 : Texturewidth * 4,  monster == Monster.Spider ? 16 * 4 : Textureheight * 4, Texturewidth, Textureheight, StartingFrame, NumberOfFrames, AnimatingInterval, TextureColor);
         }
 
         public static List<ClickableMonsterComponent> ToClickableMonsterComponents() {

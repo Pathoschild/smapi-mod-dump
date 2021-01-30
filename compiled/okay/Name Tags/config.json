@@ -1,0 +1,10 @@
+{
+  "TextColor": "White",
+  "OpenSetting": "N",
+  "RenderMonster": true,
+  "RenderPet": true,
+  "RenderHorse": true,
+  "RenderChild": true,
+  "RenderVillager": true,
+  "RenderJunimo": true
+}

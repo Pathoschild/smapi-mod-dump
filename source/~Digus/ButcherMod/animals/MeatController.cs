@@ -23,10 +23,14 @@ using Object = StardewValley.Object;
 
 namespace AnimalHusbandryMod.animals
 {
-    public class MeatController : AnimalStatusController
+    public class MeatController
     {
         public static bool CanGetMeatFrom(FarmAnimal farmAnimal)
         {
+            if (farmAnimal == null)
+            {
+                return false;
+            }
             if (farmAnimal.type.Value == "Dinosaur" && !DataLoader.ModConfig.DisableMeatFromDinosaur)
             {
                 return true;
@@ -208,7 +212,7 @@ namespace AnimalHusbandryMod.animals
             if (AnimalContestController.CanChangeParticipant(farmAnimal))
             {
                 AnimalContestController.RemoveAnimalParticipant(farmAnimal);
-                itemsToReturn.Add(new ParticipantRibbon());
+                itemsToReturn.Add(ToolsFactory.GetParticipantRibbon());
             }
 
             return itemsToReturn;

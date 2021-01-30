@@ -26,58 +26,24 @@ namespace Randomizer
 		{
 			int moneyAmount = 0;
 			BundleType = Globals.RNGGetAndRemoveRandomValueFromList(RoomBundleTypes);
-			string bundleNameFlavor = "";
+			int bundleNameFlavorID = 1;
 
 			switch (BundleType)
 			{
 				case BundleTypes.Vault2500:
-					bundleNameFlavor = Globals.RNGGetRandomValueFromList(new List<string>
-					{
-						Globals.GetTranslation("Vault2500-1"),
-						Globals.GetTranslation("Vault2500-2"),
-						Globals.GetTranslation("Vault2500-3"),
-						Globals.GetTranslation("Vault2500-4"),
-						Globals.GetTranslation("Vault2500-5"),
-						Globals.GetTranslation("Vault2500-6"),
-						Globals.GetTranslation("Vault2500-7")
-					});
+					bundleNameFlavorID = Range.GetRandomValue(1, 7);
 					moneyAmount = Range.GetRandomValue(500, 3500);
 					break;
 				case BundleTypes.Vault5000:
-					bundleNameFlavor = Globals.RNGGetRandomValueFromList(new List<string>
-					{
-						Globals.GetTranslation("Vault5000-1"),
-						Globals.GetTranslation("Vault5000-2"),
-						Globals.GetTranslation("Vault5000-3"),
-						Globals.GetTranslation("Vault5000-4"),
-						Globals.GetTranslation("Vault5000-5"),
-						Globals.GetTranslation("Vault5000-6")
-					});
+					bundleNameFlavorID = Range.GetRandomValue(1, 6);
 					moneyAmount = Range.GetRandomValue(4000, 7000);
 					break;
 				case BundleTypes.Vault10000:
-					bundleNameFlavor = Globals.RNGGetRandomValueFromList(new List<string>
-					{
-						Globals.GetTranslation("Vault10000-1"),
-						Globals.GetTranslation("Vault10000-2"),
-						Globals.GetTranslation("Vault10000-3"),
-						Globals.GetTranslation("Vault10000-4"),
-						Globals.GetTranslation("Vault10000-5"),
-						Globals.GetTranslation("Vault10000-6")
-					});
+					bundleNameFlavorID = Range.GetRandomValue(1, 6);
 					moneyAmount = Range.GetRandomValue(7500, 12500);
 					break;
 				case BundleTypes.Vault25000:
-					bundleNameFlavor = Globals.RNGGetRandomValueFromList(new List<string>
-					{
-						Globals.GetTranslation("Vault25000-1"),
-						Globals.GetTranslation("Vault25000-2"),
-						Globals.GetTranslation("Vault25000-3"),
-						Globals.GetTranslation("Vault25000-4"),
-						Globals.GetTranslation("Vault25000-5"),
-						Globals.GetTranslation("Vault25000-6"),
-						Globals.GetTranslation("Vault25000-7")
-					});
+					bundleNameFlavorID = Range.GetRandomValue(1, 7);
 					moneyAmount = Range.GetRandomValue(20000, 30000);
 					break;
 				default:
@@ -85,8 +51,12 @@ namespace Randomizer
 			}
 
 			RequiredItems = new List<RequiredItem> { new RequiredItem() { MoneyAmount = moneyAmount } };
+
 			string moneyString = moneyAmount.ToString("N0", new CultureInfo(Globals.ModRef.Helper.Translation.Locale));
+			string bundleNameFlavor = Globals.GetTranslation($"{BundleType.ToString()}-{bundleNameFlavorID}");
 			Name = $"{Globals.GetTranslation("vault-money-format", new { moneyString })}: {bundleNameFlavor}";
+			ImageNameSuffix = $"-{bundleNameFlavorID}";
+
 			Color = Globals.RNGGetRandomValueFromList(
 				Enum.GetValues(typeof(BundleColors)).Cast<BundleColors>().ToList());
 		}

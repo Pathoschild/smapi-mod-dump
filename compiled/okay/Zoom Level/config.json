@@ -7,5 +7,6 @@
   "ZoomLevelIncreaseValue": 0.05,
   "ZoomLevelDecreaseValue": -0.05,
   "MaxZoomOutLevelValue": 0.35,
-  "MaxZoomInLevelValue": 2.0
+  "MaxZoomInLevelValue": 2.0,
+  "DisableControllerButton": false
 }

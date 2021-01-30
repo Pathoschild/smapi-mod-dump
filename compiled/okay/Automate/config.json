@@ -12,10 +12,5 @@
     "BetterJunimos": true,
     "WarnForMissingBridgeMod": true
   },
-  "MachineOverrides": {
-    "ShippingBin": {
-      "Priority": -1,
-      "Enabled": true
-    }
-  }
+  "MachineOverrides": {}
 }

@@ -8,8 +8,8 @@
 **
 *************************************************/
 
-using StardewValley;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
 
 namespace Bookcase.Events {
 

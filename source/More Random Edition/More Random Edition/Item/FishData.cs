@@ -48,6 +48,8 @@ namespace Randomizer
 			{163, "Legend/5000/200/Fish -4/Legend/The king of all fish! They said he'd never be caught./Day^Winter" },
 			{164, "Sandfish/75/5/Fish -4/Sandfish/It tries to hide using camouflage./Day Night^Spring Summer Fall Winter" },
 			{165, "Scorpion Carp/150/-50/Fish -4/Scorpion Carp/It's like a regular carp but with a sharp stinger./Day Night^Spring Summer Fall Winter" },
+			{267, "Flounder/100/15/Fish -4/Flounder/It lives on the bottom, so both eyes are on top of its head./Day^Spring Summer" },
+			{269, "Midnight Carp/150/20/Fish -4/Midnight Carp/This shy fish only feels comfortable at night./Night^Fall Winter" },
 			{682, "Mutant Carp/1000/10/Fish -4/Mutant Carp/The strange waters of the sewer turned this carp into a monstrosity./Day^Spring Summer" },
 			{698, "Sturgeon/200/10/Fish -4/Sturgeon/An ancient bottom-feeder with a dwindling population. Females can live up to 150 years./Day^Spring Summer" },
 			{699, "Tiger Trout/150/10/Fish -4/Tiger Trout/A rare hybrid trout that cannot bear offspring of its own./Day^Spring Summer" },
@@ -102,6 +104,8 @@ namespace Randomizer
 			{163, "Legend/110/mixed/50/50/600 2000/spring/rainy/688 .05/5/0/.1/10" },
 			{164, "Sandfish/65/mixed/8/24/600 2000/spring summer fall winter/both/682 .2/1/.65/.1/0" },
 			{165, "Scorpion Carp/90/dart/12/32/600 2000/spring summer fall winter/both/683 .4/2/.15/.1/4" },
+			{267, "Flounder/50/sinker/4/16/600 2000/spring summer/both/680 .25/2/.15/.05/0" },
+			{269, "Midnight Carp/55/mixed/12/52/2200 2600/fall winter/both/682 .2/1/.33/.1/0" },
 			{682, "Mutant Carp/80/dart/36/36/600 2600/spring summer fall winter/both/688 .1/5/0/.02/0" },
 			{698, "Sturgeon/78/mixed/12/60/600 1900/summer winter/both/689 .35 682 .1/3/.35/.2/0" },
 			{699, "Tiger Trout/60/dart/10/20/600 1900/fall winter/both/688 .45 685 .2/3/.2/.1/0" },
@@ -242,7 +246,7 @@ namespace Randomizer
 						fish.AvailableSeasons.Add(Seasons.Winter);
 						break;
 					default:
-						Globals.ConsoleError($"Tries to parse {seasonString} into a season when parsing fish with input: {input}");
+						Globals.ConsoleError($"Tried to parse {seasonString} into a season when parsing fish with input: {input}");
 						return;
 				}
 			}

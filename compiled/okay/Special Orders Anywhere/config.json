@@ -1,0 +1,9 @@
+{
+  "ActivateKey": "P",
+  "CycleLeftKey": "OemOpenBrackets",
+  "CycleRightKey": "OemCloseBrackets",
+  "SpecialOrdersBeforeUnlocked": false,
+  "QiBeforeUnlocked": false,
+  "enableCalendar": true,
+  "enableDailyQuests": true
+}

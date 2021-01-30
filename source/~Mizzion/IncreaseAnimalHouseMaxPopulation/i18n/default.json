@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Mizzion/MyStardewMods
+**
+*************************************************/
+
+{
+  "upgrade_question": "Would you like to upgrade your {{current_building}} for {{next_cost}} gold? Your {{current_building}} will be changed from {{current_max_occupants}} to {{config_max_occupants}} max animals.",
+  "upgrade_answer_yes": "Yes",
+  "upgrade_answer_no": "No",
+  "upgrade_tooltip_text": "{{current_building}}'s current max occupants is {{max_animals}}"
+}

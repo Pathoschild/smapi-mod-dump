@@ -13,9 +13,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit c6a5315dd2b50ad03b802e41048388facfd471eb
+   commit 087c01a4df2e9eac8387726f173ea8e5852a69c2
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Tue Dec 22 02:49:16 2020 +0100
+   Date:   Fri Jan 15 17:32:16 2021 +0100
    
-       update for sdv 1.5, no code changes
+       fixed trash shaming issue
    

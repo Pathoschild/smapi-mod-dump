@@ -5,9 +5,9 @@ mods:
    Range Highlight
 
 latest commit:
-   commit d3f4c68f9c77175b9b375a783feb5fc3b8bae97a
+   commit caf287441ee6f2ccf47d526d74997ab7cd1adafb
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Tue Dec 22 18:49:02 2020 -0500
+   Date:   Thu Jan 28 21:55:12 2021 -0500
    
-       Add integration with Better Sprinklers; bump version to 2.1.0
+       Add bomb range highlight to things that explode but aren't bombs; v2.6.0
    

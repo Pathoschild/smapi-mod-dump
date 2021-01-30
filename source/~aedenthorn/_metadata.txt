@@ -2,35 +2,45 @@ url:
    https://github.com/aedenthorn/StardewValleyMods.git
 
 mods:
+   Advanced Loot Framework
    Another Jump Mod
    Boss Creatures
    Craftable Butterfly Hutches
+   Custom Chest Types
    Custom Dungeon Floors
    Custom Fixed Dialogue
    Custom Locks
    Custom Ore Nodes
    Custom Resource Clumps
    Custom Spouse Patio
+   Custom Spouse Patio Wizard
    Enhanced Loot Magnet
    Expert Sitting
    Familiars
    Fire Breath
+   Fishing Chests Expanded
    Friendly Divorce
    Fruit Tree Shaker
    Gem Isles
    Here Fishy
+   Instant Growth Powder
    Loose Audio Files
+   Map Teleport
    Mobile Arcade
    Mobile Audio Player
    Mobile Calendar
    Mobile Catalogues
    Mobile Phone
    Mobile Television
+   Modify This
+   Moveable Mailbox
    Multiple Spouses
    Murdercrows
    Non-Random Prairie King
+   Overworld Chests
    Pacifist Valley
    Placeable Mine Shafts
+   Quick Load
    Quick Responses
    Quotes
    Random NPCs
@@ -39,15 +49,17 @@ mods:
    Sixty-Nine Shirt
    Swim
    Transparent Objects
+   Trash Can Reactions
+   Treasure Chests Expanded
    Underground Secrets
    Video Player
    Witcher Mod
    Zombie Outbreak
 
 latest commit:
-   commit 2b5dd090e3d679199b7343c9c6495378c46b9c96
+   commit 5d57d078d95a56a2bd4e1e623b0eeabe7c37367e
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Thu Dec 31 10:06:19 2020 -0500
+   Date:   Fri Jan 29 23:06:38 2021 -0500
    
-       etc
+       teleport
    

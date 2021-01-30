@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/BiggerCraftables.git
+
+mods:
+   Bigger Craftables
+
+latest commit:
+   commit 143f48957301a43c5529f89042a1994c06122bb1
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Tue Jan 5 20:04:30 2021 -0500
+   
+       Finish touchup for initial release
+   

@@ -25,12 +25,13 @@ namespace Randomizer
 	{
 		private static JunimoNoteMenu _currentActiveBundleMenu { get; set; }
 
+
 		/// <summary>
 		/// Fixes the ability to highlight rings in the bundle menu
 		/// </summary>
 		public static void FixRingSelection(object sender, MenuChangedEventArgs e)
 		{
-			if (!Globals.Config.RandomizeBundles || !(e.NewMenu is JunimoNoteMenu))
+			if (!Globals.Config.Bundles.Randomize || !(e.NewMenu is JunimoNoteMenu))
 			{
 				_currentActiveBundleMenu = null;
 				return;
@@ -59,16 +60,59 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Adds tooltips for the bundle items so that you can see where to get fish
+		/// </summary>
+		public static void AddDescriptionsToBundleTooltips()
+		{
+			bool settingEnabled = Globals.Config.Bundles.Randomize && Globals.Config.Bundles.ShowDescriptionsInBundleTooltips;
+			if (!settingEnabled || _currentActiveBundleMenu == null) { return; }
+
+			foreach (ClickableTextureComponent ingredient in _currentActiveBundleMenu.ingredientList)
+			{
+				ingredient.hoverText = $"{ingredient.item.DisplayName}:\n{ingredient.item.getDescription()}";
+			}
+		}
+
+		/// <summary>
 		/// Fixes the ability to deposit rings into a bundle
 		/// </summary>
 		public static void FixRingDeposits()
 		{
 			if (_currentActiveBundleMenu == null) { return; }
+			ReplaceCanAcceptThisItemMethod();
 			ReplaceTryToDepositMethod();
 		}
 
 		/// <summary>
-		/// The new method that replaces Stardew Valley's Bundle.cs's tryToDepositThisItem with this file's NewTryToDepositItem
+		/// The new method to replace Stardew Valley's Bundle.cs's canAcceptThisItem
+		/// </summary>
+		/// <param name="item">The item you are trying to deposit</param>
+		/// <param name="slot">The slot you're trying to deposit to</param>
+		/// <param name="ignore_stack_count">Whether we don't care about stack count</param>
+		/// <returns>What item the player should get back after trying to depositing</returns>
+		public bool NewCanAcceptThisItem(SVItem item, ClickableTextureComponent slot, bool ignore_stack_count = false)
+		{
+			SVBundle bundle =
+				Globals.ModRef.Helper.Reflection
+					.GetField<SVBundle>(_currentActiveBundleMenu, "currentPageBundle", true)
+					.GetValue();
+
+			bool isRing = item is Ring;
+			if (!bundle.depositsAllowed || (!isRing && !(item is SVObject)))
+				return false;
+			SVObject @object = item as SVObject;
+			for (int index = 0; index < bundle.ingredients.Count; ++index)
+			{
+				if (isRing || bundle.IsValidItemForThisIngredientDescription(@object, bundle.ingredients[index]) &&
+					(ignore_stack_count || bundle.ingredients[index].stack <= item.Stack) &&
+					(slot == null || slot.item == null))
+					return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// The new method to replace Stardew Valley's Bundle.cs's tryToDepositThisItem
 		/// </summary>
 		/// <param name="item">The item you are trying to deposit</param>
 		/// <param name="slot">The slot you're trying to deposit to</param>
@@ -127,6 +171,25 @@ namespace Randomizer
 			if (!ringDeposited && item.Stack > 0)
 				return item;
 			return null;
+		}
+
+		/// <summary>
+		/// Replaces the canAcceptThisItem method in Stardew Valley's Bundle.cs with this file's NewCanAcceptThisItem method
+		/// NOTE: THIS IS UNSAFE CODE, CHANGE WITH EXTREME CAUTION
+		/// </summary>
+		public static void ReplaceCanAcceptThisItemMethod()
+		{
+			SVBundle bundle =
+				Globals.ModRef.Helper.Reflection
+					.GetField<SVBundle>(_currentActiveBundleMenu, "currentPageBundle", true)
+					.GetValue();
+
+			if (bundle == null) { return; }
+
+			var signature = new[] { typeof(SVItem), typeof(ClickableTextureComponent), typeof(bool) };
+			MethodInfo methodToReplace = bundle.GetType().GetMethod("canAcceptThisItem", signature);
+			MethodInfo methodToInject = typeof(BundleMenuAdjustments).GetMethod("NewCanAcceptThisItem");
+			Globals.RepointMethod(methodToReplace, methodToInject);
 		}
 
 		/// <summary>

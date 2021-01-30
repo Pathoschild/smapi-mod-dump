@@ -1,0 +1,32 @@
+﻿{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Cause.starvation": "starvation",
+  "Cause.dehydration": "dehydration",
+  "Cause.oldAge": "old age",
+  "Cause.illness": "illness",
+  "Cause.wildAnimalAttack": "a wild animal attack",
+  "Happiness.sad": "sad",
+  "Happiness.fine": "fine",
+  "Happiness.happy": "happy",
+  "Love.heart": "{{heartCount}} heart",
+  "Love.hearts": "{{heartCount}} hearts",
+  "AnimalDeathMessage": "Your {{animalType}} {{animalName}} died due to {{cause}}.\n{{animalName}} got {{entireAgeText}} old, was feeling {{happinessText}} and had {{loveString}} of friendship towards you.",
+  "Age.year": "{{yearCount}} year",
+  "Age.years": "{{yearCount}} years",
+  "Age.yearAndMonth": "{{yearCount}} year and {{monthCount}} month",
+  "Age.yearAndMonths": "{{yearCount}} year and {{monthCount}} months",
+  "Age.yearsAndMonth": "{{yearCount}} years and {{monthCount}} month",
+  "Age.yearsAndMonths": "{{yearCount}} years and {{monthCount}} months",
+  "Age.month": "{{monthCount}} month",
+  "Age.months": "{{monthCount}} months",
+  "Age.day": "{{dayCount}} day",
+  "Age.days": "{{dayCount}} days",
+  "SickAnimalMessage.oneAnimal": "{{firstAnimalName}} is ill.",
+  "SickAnimalMessage.twoAnimals": "{{firstAnimalName}} and {{secondAnimalName}} are ill.",
+  "SickAnimalMessage.threeAnimals": "{{firstAnimalName}}, {{secondAnimalName}} and {{thirdAnimalName}} are ill.",
+  "SickAnimalMessage.fourAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} and {{sickAnimalCount}} other animal are ill.",
+  "SickAnimalMessage.moreThanFourAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} and {{sickAnimalCount}} other animals are ill."
+}

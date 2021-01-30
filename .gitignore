@@ -1,4 +1,5 @@
 # large or unneeded files
+__MACOSX
 .DS_Store
 *.xwb
 *.xcf

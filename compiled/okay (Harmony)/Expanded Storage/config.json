@@ -1,7 +1,17 @@
 {
+  "AllowAccessCarriedChest": true,
+  "AllowCarryingChests": true,
   "AllowModdedCapacity": true,
-  "ExpandVanillaChests": true,
+  "AllowRestrictedStorage": true,
+  "AllowVacuumItems": true,
   "ExpandInventoryMenu": true,
   "ShowOverlayArrows": true,
-  "ShowSearchBar": true
+  "ShowSearchBar": true,
+  "ShowTabs": true,
+  "Controls": {
+    "ScrollUp": "DPadUp",
+    "ScrollDown": "DPadDown",
+    "PreviousTab": "DPadLeft",
+    "NextTab": "DPadRight"
+  }
 }

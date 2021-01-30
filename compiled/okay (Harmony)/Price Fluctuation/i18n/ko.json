@@ -1,7 +1,7 @@
 ﻿{
     "fluctuation": "가격 변동",
-    "prev": "이전 가격 변동",
-    "next": "다음 가격 변동",
+    "prev price fluctuation": "이전 가격 변동",
+    "next price fluctuation": "다음 가격 변동",
     "gold":"골드",
     "farming" : "농사",
     "foraging" : "채집",
@@ -10,4 +10,5 @@
     "cooking" : "요리",
     "other" : "기타",
     "open" : "열기",
+    "next" : "다음",
 }

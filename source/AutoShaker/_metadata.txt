@@ -1,0 +1,13 @@
+url:
+   https://github.com/jag3dagster/AutoShaker.git
+
+mods:
+   AutoShaker
+
+latest commit:
+   commit 1cf195e949a166b905470a35f7536d174767649c
+   Author: Jag <77469789+jag3dagster@users.noreply.github.com>
+   Date:   Fri Jan 29 22:46:55 2021 -0800
+   
+       Update README for 1.3.2 update
+   

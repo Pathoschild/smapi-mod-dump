@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Animals Don't Eat Grass",
+  "Author": "KarratKake",
+  "Version": "1.0.0",
+  "Description": "Animals don't consume grass when they graze outside.",
+  "UniqueID": "KarratKake.AnimalsDontEatGrass",
+  "EntryDll": "AnimalsDontEatGrass.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:7474:"]
+}

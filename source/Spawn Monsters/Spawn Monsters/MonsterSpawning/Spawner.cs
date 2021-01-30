@@ -44,7 +44,7 @@ namespace Spawn_Monsters.MonsterSpawning
         }
 
         public static bool IsOkToPlace(MonsterData.Monster monster, Vector2 tile) {
-            if (monster == MonsterData.Monster.Duggy) {
+            if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.MagmaDuggy) {
                 if (Game1.currentLocation.map.GetLayer("Back").Tiles[(int)tile.X, (int)tile.Y] != null) {
                     if (Game1.currentLocation.map.GetLayer("Back").Tiles[(int)tile.X, (int)tile.Y].TileIndexProperties.ContainsKey("Diggable")) {
                         return true;
@@ -68,17 +68,23 @@ namespace Spawn_Monsters.MonsterSpawning
                 }
 
                 args[0] = location;
-                Monster m = (Monster)Activator.CreateInstance(monsterData.Type, args);
+                Monster m = (Monster) Activator.CreateInstance(monsterData.Type, args);
                 m.currentLocation = Game1.currentLocation;
 
                 if (monster == MonsterData.Monster.GraySlime) {
                     int num = Game1.random.Next(120, 200);
-                    ((GreenSlime)m).color.Value = new Color(num, num, num);
+                    (m as GreenSlime).color.Value = new Color(num, num, num);
                     while (Game1.random.NextDouble() < 0.33)
                         m.objectsToDrop.Add(380);
                     m.Speed = 1;
                 } else if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem) {
                     m.setTileLocation(location); //For Tile-Locked Monsters like Duggy
+                } else if (monster == MonsterData.Monster.StickBug) {
+                    (m as RockCrab).makeStickBug();
+                } else if (monster == MonsterData.Monster.TigerSlime) {
+                    (m as GreenSlime).makeTigerSlime();
+                } else if (monster == MonsterData.Monster.PrismaticSlime) {
+                    (m as GreenSlime).makePrismatic();
                 }
 
                 Game1.currentLocation.addCharacter(m);

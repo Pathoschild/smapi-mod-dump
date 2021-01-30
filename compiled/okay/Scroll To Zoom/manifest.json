@@ -1,0 +1,10 @@
+﻿{
+    "Name": "ScrollToZoom",
+    "Author": "Tomwa",
+    "Version": "2.1",
+    "Description": "Allows you to scroll in and out using your mouse wheel and a modifier key",
+    "UniqueID": "Tomwa.ScrollToZoom",
+    "EntryDll": "ScrollToZoom.dll",
+    "MinimumApiVersion": "3.0",
+    "UpdateKeys": [ "Nexus:2163" ]
+}

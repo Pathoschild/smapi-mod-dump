@@ -18,6 +18,7 @@ namespace Randomizer
 		public string Path { get; set; }
 		public string SkillString { get; set; }
 		public int BaseLevelLearnedAt { get; set; }
+		public int OverrideBaseLevelLearnedAt { get; set; }
 		public bool IsLearnedOnLevelup
 		{
 			get { return SkillString.Length > 0; }
@@ -32,7 +33,7 @@ namespace Randomizer
 		/// <param name="path">The hard-coded path for this craftable item</param>
 		/// <param name="skillString">The name of the skill you need to level up to learn the recipe</param>
 		/// <param name="baseLevelLearnedAt">The base level you can learn this recipe at</param>
-		public CraftableItem(int id, string path, CraftableCategories category, string skillString = "", int baseLevelLearnedAt = 0) : base(id)
+		public CraftableItem(int id, string path, CraftableCategories category, string skillString = "", int baseLevelLearnedAt = 0, int overrideBaseLevelLearnedAt = -1) : base(id)
 		{
 			IsCraftable = true;
 			Path = path;
@@ -40,6 +41,11 @@ namespace Randomizer
 			SkillString = skillString;
 			BaseLevelLearnedAt = baseLevelLearnedAt;
 			DifficultyToObtain = ObtainingDifficulties.NonCraftingItem; // By default, craftable items won't be materials for other craftable items
+
+			if (overrideBaseLevelLearnedAt == -1)
+			{
+				OverrideBaseLevelLearnedAt = baseLevelLearnedAt;
+			}
 		}
 
 		/// <summary>
@@ -51,16 +57,16 @@ namespace Randomizer
 		/// </returns>
 		public int GetLevelLearnedAt()
 		{
-			if (!Globals.Config.RandomizeCraftingRecipeLevels_Needs_Above_Setting_On) { return BaseLevelLearnedAt; }
-
-			Range levelRange = new Range(BaseLevelLearnedAt - 3, BaseLevelLearnedAt + 3);
+			Range levelRange = new Range(OverrideBaseLevelLearnedAt - 3, OverrideBaseLevelLearnedAt + 3);
 			int generatedLevel = levelRange.GetRandomValue();
 			if (generatedLevel > 8) { return 9; }
 			if (generatedLevel < 1) { return 1; }
 			if (generatedLevel == 5)
 			{
-				return Globals.RNGGetNextBoolean() ? 4 : 6;
+				generatedLevel = Globals.RNGGetNextBoolean() ? 4 : 6;
 			}
+
+			if (!Globals.Config.CraftingRecipies.Randomize || !Globals.Config.CraftingRecipies.RandomizeLevels) { return BaseLevelLearnedAt; }
 
 			return generatedLevel;
 		}
@@ -84,7 +90,7 @@ namespace Randomizer
 				requiredItemsSpoilerString += $" - {itemName}: {amount}";
 			}
 
-			if (Globals.Config.RandomizeCraftingRecipes)
+			if (Globals.Config.CraftingRecipies.Randomize)
 			{
 				Globals.SpoilerWrite($"{Name} - {stringSuffix}");
 				Globals.SpoilerWrite(requiredItemsSpoilerString);
@@ -127,6 +133,9 @@ namespace Randomizer
 					break;
 				case CraftableCategories.Endgame:
 					craftingString = GetStringForEndgame();
+					break;
+				case CraftableCategories.Foragables:
+					craftingString = GetStringForForagables();
 					break;
 				default:
 					Globals.ConsoleError($"Invalid category when generating recipe for {Name}!");
@@ -445,6 +454,56 @@ namespace Randomizer
 			}
 
 			return $"{item1.GetStringForCrafting()} {item2.GetStringForCrafting()} {item3.GetStringForCrafting()}";
+		}
+
+		/// <summary>
+		/// Gets the string for the Foragable type
+		/// This will be 4 of any of the foragables of the appropriate season
+		/// </summary>
+		/// <returns />
+		private string GetStringForForagables()
+		{
+			Seasons season = Seasons.Spring;
+			switch (Id)
+			{
+				case (int)ObjectIndexes.SpringSeeds:
+					season = Seasons.Spring;
+					break;
+				case (int)ObjectIndexes.SummerSeeds:
+					season = Seasons.Summer;
+					break;
+				case (int)ObjectIndexes.FallSeeds:
+					season = Seasons.Fall;
+					break;
+				case (int)ObjectIndexes.WinterSeeds:
+					season = Seasons.Winter;
+					break;
+				default:
+					Globals.ConsoleError("Generated string for Foragable type for a non-wild seed! Using 1 wood instead...");
+					return $"{(int)ObjectIndexes.Wood} 1";
+			}
+
+			Dictionary<int, int> foragablesToUse = new Dictionary<int, int>();
+			for (int i = 0; i < 4; i++)
+			{
+				int foragableId = Globals.RNGGetRandomValueFromList(ItemList.GetForagables(season)).Id;
+				if (foragablesToUse.ContainsKey(foragableId))
+				{
+					foragablesToUse[foragableId]++;
+				}
+				else
+				{
+					foragablesToUse.Add(foragableId, 1);
+				}
+			}
+
+			string craftingString = "";
+			foreach (int id in foragablesToUse.Keys)
+			{
+				craftingString += $"{id} {foragablesToUse[id]} ";
+			}
+
+			return craftingString.Trim();
 		}
 	}
 }

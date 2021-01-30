@@ -35,6 +35,8 @@ namespace TrendyHaley {
         /// <summary>Implements <see cref="IAssetEditor.CanEdit"/>.</summary>
         public bool CanEdit<T>(IAssetInfo asset) {
             return asset.AssetNameEquals("Characters/Haley") ||
+                   asset.AssetNameEquals("Portraits/Haley_Beach") ||
+                   asset.AssetNameEquals("Characters/Haley_Beach") ||
                    asset.AssetNameEquals("Portraits/Haley") ||
                    asset.AssetNameEquals("LooseSprites/cowPhotos") ||
                    asset.AssetNameEquals("LooseSprites/cowPhotosWinter");
@@ -68,6 +70,14 @@ namespace TrendyHaley {
                 else {
                     overlay = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_overlay_hair_gray.png");
                 }
+
+                baseImage.PatchImage(ColorBlend(overlay, actualHairColor_), patchMode: PatchMode.Overlay);
+            }
+            else if (asset.AssetNameEquals("Characters/Haley_Beach") || asset.AssetNameEquals("Portraits/Haley_Beach")) {
+                this.Monitor.Log($"Edit asset {asset.AssetName}");
+
+                IAssetDataForImage baseImage = asset.AsImage();
+                Texture2D overlay = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_overlay_hair_gray.png");
 
                 baseImage.PatchImage(ColorBlend(overlay, actualHairColor_), patchMode: PatchMode.Overlay);
             }

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using Bookcase;
-
 namespace Bookcase.Utils {
 
     public class MathsUtils {

@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Delivery.Clint.UpgradeLetter": "Bem, sua ferramenta está pronta.^Pensei em mandar ela para você... para te poupar o trabalho de vir até aqui só para pegá-la.^Cuide-se.^ -Clint",
+    "Delivery.Clint.UpgradeLetter.Title": "Serviço de Entrega de Ferramentas do Clint",
+    "Shipment.Clint.UpgradeLetter": "Hã... oi...^Só gostaria de dizer que você pode me enviar uma das suas ferramentas pelo correio para eu melhora-la. Não se esqueça de enviar também o dinheiro e as barras de metal.^Mas eu só posso trabalhar em uma de cada vez, então não tente enviar mais de uma.^ - Clint, o ferreiro",
+    "Shipment.Clint.UpgradeLetter.Title": "Serviço de Melhoria de Ferramentas do Clint",
+    "Shipment.Clint.UpgradeLetter.ToolSent": "{{Tool}} enviado(a) pra melhoria.",
+    "Shipment.Clint.UpgradeLetter.NoBars": "Você não tem barras de metal suficientes para enviar o(a) {{Tool}} para melhoria.",
+    "Shipment.Clint.UpgradeLetter.NoMoney": "Você não tem dinheiro suficiente para enviar o(a) {{Tool}} para melhoria.",
+    "Shipment.Quest.ItemDelivery.NotEnoughItems": "{{Npc}} precisa de {{Number}} destes.",
+    "Shipment.Quest.DeliveryQuestsLetter": "Olá, @,^Eu só queria te informar que você também pode postar itens na sua caixa de correiro e eles serão entregues para a pessoa que os requisitou.^Nossa vila pode ser pequena, mas nosso serviço de correios é ótimo.^^  -Prefeito Lewis",
+    "Shipment.Quest.DeliveryQuestsLetter.Title": "Serviço de Envios da Vila Pelicanos"
+
+}

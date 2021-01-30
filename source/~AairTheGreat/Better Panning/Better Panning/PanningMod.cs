@@ -43,7 +43,7 @@ namespace BetterPanning
         internal ModConfig config; 
 
         internal Dictionary<TREASURE_GROUP, TreasureGroup> defaultTresureGroups;
-        internal Dictionary<string, Dictionary<TREASURE_GROUP, TreasureGroup>> areaTresureGroups;  //GameLocation.Name : <treasure>
+        internal Dictionary<string, Dictionary<TREASURE_GROUP, TreasureGroup>> areaTreasureGroups;  //GameLocation.Name : <treasure>
 
         internal HarmonyInstance harmony { get; private set; }
 
@@ -55,9 +55,7 @@ namespace BetterPanning
             helper.Events.Display.RenderedHud += Display_RenderedHud;
             helper.Events.Input.ButtonReleased += Input_ButtonReleased;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
-
-            ConfigStaticTranslationStrings();
-
+            
             try
             {
                 config = this.Helper.Data.ReadJsonFile<ModConfig>("config.json") ?? ModConfigDefaultConfig.CreateDefaultConfig("config.json");
@@ -72,7 +70,7 @@ namespace BetterPanning
             {
                 string treasureFile = Path.Combine("DataFiles", "Treasure.json");
                 defaultTresureGroups = this.Helper.Data.ReadJsonFile<Dictionary<TREASURE_GROUP, TreasureGroup>>(treasureFile) ?? TreasureGroupDefaultConfig.CreateTreasureGroup(treasureFile);
-                areaTresureGroups = new Dictionary<string, Dictionary<TREASURE_GROUP, TreasureGroup>>();
+                areaTreasureGroups = new Dictionary<string, Dictionary<TREASURE_GROUP, TreasureGroup>>();
 
                 harmony = HarmonyInstance.Create("com.aairthegreat.mod.panning");
                 harmony.Patch(typeof(Pan).GetMethod("getPanItems"), null, new HarmonyMethod(typeof(PanOverrider).GetMethod("postfix_getPanItems")));
@@ -103,7 +101,7 @@ namespace BetterPanning
         {
             openWaterTiles.Clear();
             modCreatedPanningSpot.Clear();
-            areaTresureGroups.Clear();
+            areaTreasureGroups.Clear();
 
             numberOfPanningSpotsGathered = 0;
             startup = true;
@@ -114,7 +112,8 @@ namespace BetterPanning
         }
 
         private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
-        {            
+        {
+            ConfigStaticTranslationStrings();
             if (config.useCustomPanningTreasure)
             {
                 VerifyInitValues();
@@ -165,7 +164,8 @@ namespace BetterPanning
                 {
                     playerPannedSpot = true;
                     hasPanningSpot = false;
-                    modCreatedPanningSpot[Game1.currentLocation] = false;
+                    modCreatedPanningSpot[Game1.player.currentLocation] = false;
+                    openWaterTiles[Game1.player.currentLocation.Name].UpdateCollectionCount();
                     numberOfPanningSpotsGathered++;
                     updatedNumberOfTimesGathered = true;
                 }
@@ -258,8 +258,13 @@ namespace BetterPanning
                 startup = false;
             }
 
-            //this.Monitor.Log($"Setting: numberOfPanningSpotsGathered ({numberOfPanningSpotsGathered}) to 0");
+            
             numberOfPanningSpotsGathered = 0; //new day, new chances!
+            foreach(var mapConfig in openWaterTiles.Values)
+            {
+                mapConfig.ResetCollectedPerDay();
+            }
+
             updatedNumberOfTimesGathered = false;
 
             if (config.useCustomPanningTreasure)
@@ -308,38 +313,42 @@ namespace BetterPanning
             
             if (Game1.MasterPlayer.mailReceived.Contains("ccFishTank")) //Original code excludes beach... not this code!
             {
-                if (numberOfPanningSpotsGathered <= config.maxNumberOfOrePointsGathered)
-                {
-                    UpdatePossibleTiles(location);
+                UpdatePossibleTiles(location);
 
-                    Point orePoint = location.orePanPoint.Value;                    
-                    if (!orePoint.Equals(Point.Zero) && !modCreatedPanningSpot[location])
-                    {                        
-                        if ((config.sp_alwaysCreatePanningSpots && Game1.getOnlineFarmers().Count == 1)
-                            || (config.mp_alwaysCreatePanningSpots && Context.IsMultiplayer && Game1.getOnlineFarmers().Count > 1))
+                if (openWaterTiles.TryGetValue(location.Name, out var mapConfig))
+                {
+                    if (numberOfPanningSpotsGathered < config.maxNumberOfOrePointsGathered &&
+                        mapConfig.GetNumberOfTimesCollectedPerDay() < mapConfig.NumberOfOreSpotsPerDay)
+                    {
+                        Point orePoint = location.orePanPoint.Value;
+                        if (!orePoint.Equals(Point.Zero) && !modCreatedPanningSpot[location])
+                        {
+                            if ((config.sp_alwaysCreatePanningSpots && Game1.getOnlineFarmers().Count == 1)
+                                || (config.mp_alwaysCreatePanningSpots && Context.IsMultiplayer && Game1.getOnlineFarmers().Count > 1))
+                            {
+                                if (Game1.random.NextDouble() <= config.chanceOfCreatingPanningSpot)
+                                {
+                                    CreatePanningSpot(location, mapConfig);
+                                }
+                            }
+                            else
+                            {
+                                hasPanningSpot = true;
+                                playerPannedSpot = false;
+                            }
+                        }
+                        else if (orePoint.Equals(Point.Zero))
                         {
                             if (Game1.random.NextDouble() <= config.chanceOfCreatingPanningSpot)
                             {
-                                CreatePanningSpot(location);
+                                CreatePanningSpot(location, mapConfig);
                             }
                         }
-                        else
-                        {
-                            hasPanningSpot = true;
-                            playerPannedSpot = false;
-                        }
                     }
-                    else if(orePoint.Equals(Point.Zero))
+                    else
                     {
-                        if (Game1.random.NextDouble() <= config.chanceOfCreatingPanningSpot)
-                        {
-                            CreatePanningSpot(location);
-                        }
+                        this.Monitor.Log($"Ores Gathered {numberOfPanningSpotsGathered} : max {config.maxNumberOfOrePointsGathered}");
                     }
-                }
-                else
-                {
-                    this.Monitor.Log($"Ores Gathered {numberOfPanningSpotsGathered} : max {config.maxNumberOfOrePointsGathered}");
                 }
             }
         }
@@ -444,22 +453,22 @@ namespace BetterPanning
             }           
         }
 
-        private void CreatePanningSpot(GameLocation location)
+        private void CreatePanningSpot(GameLocation location, MapOreConfig mapConfig)
         {
             Random random = new Random(Game1.timeOfDay + (int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed);
-            //List<Point> possibleTiles = openWaterTiles[location.Name];
-            var possibleTiles = openWaterTiles[location.Name];
-            if (possibleTiles.OreSpots.Count != 0)
+                      
+            if (mapConfig.OreSpots.Count != 0                
+                && Game1.timeOfDay >= mapConfig.StartTime 
+                && Game1.timeOfDay <= mapConfig.EndTime)
             {
                 for (int i = 0; i < 4; i++) // should only ever need to try once, but just in case...
                 {
-                    int indx = random.Next(0, possibleTiles.OreSpots.Count);
-                    Point newOrePoint = possibleTiles.OreSpots[indx];
+                    int indx = random.Next(0, mapConfig.OreSpots.Count);
+                    Point newOrePoint = mapConfig.OreSpots[indx];
 
                     // Double check to make sure it's a valid point/tile
-                    if (location.isOpenWater(newOrePoint.X, newOrePoint.Y) && FishingRod.distanceToLand(newOrePoint.X, newOrePoint.Y, location) <= 0)
+                    if (location.isWaterTile(newOrePoint.X, newOrePoint.Y) && FishingRod.distanceToLand(newOrePoint.X, newOrePoint.Y, location) <= 0)
                     {
-
                         if (Game1.player.currentLocation.Equals(location) && config.enableSplashSounds)
                         {
                             location.playSound("slosh");
@@ -505,13 +514,12 @@ namespace BetterPanning
             if (!openWaterTiles.ContainsKey(currentLocation.Name))
             {
                 string file = Path.Combine("DataFiles", $"{currentLocation.Name}.json");
-                if ( currentLocation.Name == "Farm")  // Special Case
+                if (currentLocation.Name == "Farm")  // Special Case
                 {
                     file = Path.Combine("DataFiles", farmFile);
                 }
 
                 MapOreConfig mapOreConfig = null;
-                //List<Point> possibleTiles = this.Helper.Data.ReadJsonFile<List<Point>>(file);
                 try
                 {
                     mapOreConfig = this.Helper.Data.ReadJsonFile<MapOreConfig>(file);
@@ -520,28 +528,44 @@ namespace BetterPanning
                 {
 
                 }
-                if (mapOreConfig == null) //No file was found...
+                if (mapOreConfig == null) //No file was found or old file...
                 {
-                    mapOreConfig = new MapOreConfig() 
-                        {  FileVersion = 1,
-                        AreaName = currentLocation.Name, 
-                        NumberOfOreSpotsPerDay = config.maxNumberOfOrePointsGathered, 
-                        StartTime = 0600, 
-                        EndTime = 2600, 
-                        CustomTreasure = false };
-                    
-                    var possibleTiles = new List<Point>();
+                    List<Point> possibleTiles = null; 
 
-                    int maxWidth = currentLocation.Map.GetLayer("Back").LayerWidth;
-                    int maxHeight = currentLocation.Map.GetLayer("Back").LayerHeight;
-                    for (int width = 0; width < maxWidth; width++)
+                    try // Trying to see if there is an old file...
                     {
-                        for (int height = 0; height < maxHeight; height++)
+                        possibleTiles = this.Helper.Data.ReadJsonFile<List<Point>>(file);
+                    }
+                    catch
+                    {
+
+                    }
+
+
+                    mapOreConfig = new MapOreConfig()
+                    {
+                        FileVersion = 1,
+                        AreaName = currentLocation.Name,
+                        NumberOfOreSpotsPerDay = config.maxNumberOfOrePointsGathered,
+                        StartTime = 0600,
+                        EndTime = 2600,
+                        CustomTreasure = false
+                    };
+
+                    if (possibleTiles == null)
+                    {
+                        possibleTiles = new List<Point>();
+                        int maxWidth = currentLocation.Map.GetLayer("Back").LayerWidth;
+                        int maxHeight = currentLocation.Map.GetLayer("Back").LayerHeight;
+                        for (int width = 0; width < maxWidth; width++)
                         {
-                            Point possibleOrePoint = new Point(width, height);
-                            if (currentLocation.isOpenWater(width, height) && FishingRod.distanceToLand(width, height, currentLocation) <= 0)
+                            for (int height = 0; height < maxHeight; height++)
                             {
-                                possibleTiles.Add(possibleOrePoint);
+                                Point possibleOrePoint = new Point(width, height);
+                                if (currentLocation.isWaterTile(width, height) && FishingRod.distanceToLand(width, height, currentLocation) <= 0)
+                                {
+                                    possibleTiles.Add(possibleOrePoint);
+                                }
                             }
                         }
                     }
@@ -552,16 +576,17 @@ namespace BetterPanning
                     {
                         this.Helper.Data.WriteJsonFile(file, mapOreConfig); // Write out new file since we had to try and find spawn points.
                     }
-                    else if (currentLocation.Name == "UndergroundMine20" 
-                        || currentLocation.Name == "UndergroundMine60" 
+                    else if (currentLocation.Name == "UndergroundMine20"
+                        || currentLocation.Name == "UndergroundMine60"
                         || currentLocation.Name == "UndergroundMine100")
                     {
                         this.Helper.Data.WriteJsonFile(file, mapOreConfig); // The only mine levels with water
-                    }                    
+                    }
                 }
                 if (mapOreConfig.FileVersion == 0)
                 {
                     mapOreConfig.FileVersion = 1;
+                    mapOreConfig.AreaName = currentLocation.Name;
                     mapOreConfig.StartTime = 600;
                     mapOreConfig.EndTime = 2600;
                     mapOreConfig.CustomTreasure = false;
@@ -572,7 +597,7 @@ namespace BetterPanning
                 {
                     string treasureFile = Path.Combine("DataFiles", $"{currentLocation.Name}_Treasure.json");
                     var tresureGroups = this.Helper.Data.ReadJsonFile<Dictionary<TREASURE_GROUP, TreasureGroup>>(treasureFile) ?? TreasureGroupDefaultConfig.CreateTreasureGroup(treasureFile);
-                    areaTresureGroups.Add(currentLocation.Name, tresureGroups);
+                    areaTreasureGroups.Add(currentLocation.Name, tresureGroups);
                 }
                 openWaterTiles.Add(currentLocation.Name, mapOreConfig);
             }

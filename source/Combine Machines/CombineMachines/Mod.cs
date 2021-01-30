@@ -17,6 +17,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +29,8 @@ namespace CombineMachines
 {
     public class ModEntry : Mod
     {
-        public static Version CurrentVersion = new Version(1, 0, 1); // Last updated 12/30/2020 (Don't forget to update manifest.json)
+        public static Version CurrentVersion = new Version(1, 0, 7); // Last updated 1/28/2021 (Don't forget to update manifest.json)
 
-        private const string UserConfigFilename = "config.json";
         private static UserConfig _UserConfig;
         public static UserConfig UserConfig
         {
@@ -58,7 +58,7 @@ namespace CombineMachines
                         {
                             List<string> ValidKeyNames = Enum.GetValues(typeof(SButton)).Cast<SButton>().Select(x => x.ToString()).OrderBy(x => x).ToList();
                             Logger.Log(string.Format("Warning - the following {0} keys were not recognized and have been ignored from your {1} settings: {2}\nValid key names are: {3}",
-                                UnrecognizedKeyNames.Count, UserConfigFilename, string.Join(", ", UnrecognizedKeyNames), string.Join(", ", ValidKeyNames)), LogLevel.Warn);
+                                UnrecognizedKeyNames.Count, UserConfig.DefaultFilename, string.Join(", ", UnrecognizedKeyNames), string.Join(", ", ValidKeyNames)), LogLevel.Warn);
                         }
                     }
                 }
@@ -70,24 +70,36 @@ namespace CombineMachines
         public static ModEntry ModInstance { get; private set; }
         public static IMonitor Logger { get { return ModInstance?.Monitor; } }
 
+        public static bool IsAutomateModInstalled { get; private set; }
+
+#if DEBUG
+        internal static LogLevel InfoLogLevel = LogLevel.Debug;
+#else
+        internal static LogLevel InfoLogLevel = LogLevel.Trace;
+#endif
+
         internal static void LogTrace(int CombinedQuantity, SObject Machine, Vector2 Position, string PropertyName, double PreviousValue, double NewValueBeforeRounding, double NewValue, double Modifier)
         {
-#if DEBUG
-            LogLevel LogLevel = LogLevel.Debug;
-#else
-            LogLevel LogLevel = LogLevel.Trace;
-#endif
             ModInstance.Monitor.Log(string.Format("{0}: ({1}) - Modified {2} at ({3},{4}) - Changed {5} from {6} to {7} ({8}% / Desired Value = {9})",
-                nameof(CombineMachines), CombinedQuantity, Machine.DisplayName, Position.X, Position.Y, PropertyName, PreviousValue, NewValue, (Modifier * 100.0).ToString("0.##"), NewValueBeforeRounding), LogLevel);
+                nameof(CombineMachines), CombinedQuantity, Machine.DisplayName, Position.X, Position.Y, PropertyName, PreviousValue, NewValue, (Modifier * 100.0).ToString("0.##"), NewValueBeforeRounding), InfoLogLevel);
         }
 
         public override void Entry(IModHelper helper)
         {
             ModInstance = this;
 
+            IsAutomateModInstalled = helper.ModRegistry.IsLoaded("Pathoschild.Automate");
+
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.Display.RenderedWorld += Display_RenderedWorld;
             helper.Events.Input.CursorMoved += Input_CursorMoved;
+
+            string CommandName = "combine_machines_reload_config";
+            string CommandHelp = "Reloads settings from the config.json file without requiring you to restart the game.";
+            helper.ConsoleCommands.Add(CommandName, CommandHelp, (string Name, string[] Args) => {
+                LoadUserConfig();
+                Logger.Log(string.Format("Configuration settings successfully reloaded. (Some settings may still require a full restart, such as {0}.", nameof(UserConfig.AllowCombiningScarecrows)), LogLevel.Info);
+            });
 
             LoadUserConfig();
 
@@ -99,14 +111,16 @@ namespace CombineMachines
         internal static void LoadUserConfig()
         {
             //  Load global user settings into memory
-            UserConfig GlobalUserConfig = ModInstance.Helper.Data.ReadJsonFile<UserConfig>(UserConfigFilename);
+            UserConfig GlobalUserConfig = UserConfig.Load(ModInstance.Helper.Data);
 #if DEBUG
             //GlobalUserConfig = null; // Force full refresh of config file for testing purposes
 #endif
-            if (GlobalUserConfig == null)
+            if (GlobalUserConfig == null || GlobalUserConfig.CreatedByVersion < CurrentVersion)
             {
-                GlobalUserConfig = new UserConfig() { CreatedByVersion = CurrentVersion };
-                ModInstance.Helper.Data.WriteJsonFile(UserConfigFilename, GlobalUserConfig);
+                if (GlobalUserConfig == null)
+                    GlobalUserConfig = new UserConfig();
+                GlobalUserConfig.CreatedByVersion = CurrentVersion;
+                ModInstance.Helper.Data.WriteJsonFile(UserConfig.DefaultFilename, GlobalUserConfig);
             }
             UserConfig = GlobalUserConfig;
         }
@@ -117,7 +131,7 @@ namespace CombineMachines
 
         private void Input_CursorMoved(object sender, CursorMovedEventArgs e)
         {
-            MouseScreenPosition = e.NewPosition.ScreenPixels;
+            MouseScreenPosition = e.NewPosition.LegacyScreenPixels();
             HoveredTile = new Vector2(
                 (int)((Game1.viewport.X + MouseScreenPosition.X / (Game1.options.zoomLevel / Game1.options.uiScale)) / Game1.tileSize),
                 (int)((Game1.viewport.Y + MouseScreenPosition.Y / (Game1.options.zoomLevel / Game1.options.uiScale)) / Game1.tileSize)
@@ -139,6 +153,14 @@ namespace CombineMachines
                         //  Such as: "Quantity: 5\nPower: 465%"
                         if (HoveredObject.TryGetCombinedQuantity(out int CombinedQuantity))
                         {
+                            Cask Cask = HoveredObject as Cask;
+                            bool IsCask = Cask != null;
+                            CrabPot CrabPot = HoveredObject as CrabPot;
+                            bool IsCrabPot = CrabPot != null;
+                            bool IsScarecrow = HoveredObject.IsScarecrow();
+
+                            bool HasHeldObject = HoveredObject.heldObject?.Value != null;
+
                             float UIScaleFactor = Game1.options.zoomLevel / Game1.options.uiScale;
 
                             SpriteFont DefaultFont = Game1.dialogueFont;
@@ -148,12 +170,78 @@ namespace CombineMachines
                             float LabelTextScale = 0.75f;
                             float ValueTextScale = 1.0f;
 
+                            bool ShowDurationInfo = UserConfig.ToolTipShowDuration && UserConfig.ShouldModifyProcessingSpeed(HoveredObject);
+                            bool ShowQuantityInfo = UserConfig.ToolTipShowQuantity && UserConfig.ShouldModifyInputsAndOutputs(HoveredObject);
+
+                            //  Compute row headers
                             List<string> RowHeaders = new List<string>() { Helper.Translation.Get("ToolTipQuantityLabel"), Helper.Translation.Get("ToolTipPowerLabel") };
+                            if (ShowDurationInfo)
+                            {
+                                if (IsCask)
+                                {
+                                    //RowHeaders.Add(Helper.Translation.Get("ToolTipCaskAgingRateLabel"));
+                                    if (HasHeldObject)
+                                        RowHeaders.Add(Helper.Translation.Get("ToolTipCaskDaysUntilIridiumLabel"));
+                                }
+                                else if (IsCrabPot)
+                                {
+                                    RowHeaders.Add(Helper.Translation.Get("ToolTipCrabPotProcessingIntervalLabel"));
+                                }
+                                else
+                                {
+                                    if (HasHeldObject)
+                                        RowHeaders.Add(Helper.Translation.Get("ToolTipMinutesRemainingLabel"));
+                                }
+                            }
+                            if (ShowQuantityInfo)
+                            {
+                                if (HasHeldObject && HoveredObject.HasModifiedOutput())
+                                    RowHeaders.Add(Helper.Translation.Get("ToolTipProducedQuantityLabel"));
+                            }
+                            if (IsScarecrow)
+                            {
+                                RowHeaders.Add(Helper.Translation.Get("ToolTipScarecrowRadiusLabel"));
+                            }
                             List<Vector2> RowHeaderSizes = RowHeaders.Select(x => DefaultFont.MeasureString(x) * LabelTextScale).ToList();
 
                             double ProcessingPower = UserConfig.ComputeProcessingPower(CombinedQuantity) * 100.0;
-                            string FormattedProcessingPower = string.Format("{0}%", ProcessingPower.ToString("#.#"));
+                            string FormattedProcessingPower = string.Format("{0}%", ProcessingPower.ToString("0.#"));
+
+                            //  Compute row values
                             List<string> RowValues = new List<string>() { CombinedQuantity.ToString(), FormattedProcessingPower };
+                            if (ShowDurationInfo)
+                            {
+                                if (IsCask)
+                                {
+                                    //RowValues.Add(Cask.agingRate.Value.ToString("0.##"));
+                                    if (HasHeldObject)
+                                        RowValues.Add(Math.Ceiling(Cask.daysToMature.Value / Cask.agingRate.Value).ToString("0.##"));
+                                }
+                                else if (IsCrabPot)
+                                {
+                                    CrabPot.TryGetProcessingInterval(out double Power, out double IntervalHours, out int IntervalMinutes);
+                                    RowValues.Add(IntervalMinutes.ToString());
+                                }
+                                else
+                                {
+                                    if (HasHeldObject)
+                                        RowValues.Add(HoveredObject.MinutesUntilReady.ToString("0.##"));
+                                }
+                            }
+                            if (ShowQuantityInfo)
+                            {
+                                if (HasHeldObject && HoveredObject.HasModifiedOutput())
+                                    RowValues.Add(HoveredObject.heldObject.Value.Stack.ToString());
+                            }
+                            if (IsScarecrow)
+                            {
+                                //  Subtract 1 because the game internally counts the scarecrow's occupied tile as part of its radius, but users usually would be confused by that
+                                //  So a typical user expects radius=8 for a regular scarecrow, even though the game does its calculations with radius=9
+                                int OriginalRadius = HoveredObject.GetScarecrowBaseRadius() - 1;
+                                int AlteredRadius = HoveredObject.GetScarecrowRadius() - 1;
+                                //RowValues.Add(string.Format("{0}-->{1}", OriginalRadius, AlteredRadius));
+                                RowValues.Add(AlteredRadius.ToString());
+                            }
                             List<Vector2> RowValueSizes = RowValues.Select(x => DrawHelpers.MeasureStringWithSpecialNumbers(x, ValueTextScale, 0.0f)).ToList();
 
                             //  Measure the tooltip
@@ -206,6 +294,14 @@ namespace CombineMachines
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
+#if NEVER //DEBUG
+            //  Testing the Scarecrow transpiler harmony patch
+            if (e.Button == SButton.R && Game1.activeClickableMenu == null && Game1.player.currentLocation is Farm farm)
+            {
+                farm.addCrows();
+            }
+#endif
+
             //  Detect when player clicks on a machine in their inventory while another machine of the same type is selected, and the CTRL key is held
             if (e.Button == SButton.MouseLeft && IsCombineKeyHeld(Helper.Input))
             {
@@ -254,7 +350,7 @@ namespace CombineMachines
             InventoryPage InvPage = GM.pages.First(x => x is InventoryPage) as InventoryPage;
             InventoryMenu InvMenu = InvPage.inventory;
 
-            Vector2 CursorPos = e.Cursor.ScreenPixels;
+            Vector2 CursorPos = e.Cursor.LegacyScreenPixels();
             int ClickedItemIndex = InvMenu.getInventoryPositionOfClick((int)CursorPos.X, (int)CursorPos.Y);
             bool IsValidInventorySlot = ClickedItemIndex >= 0 && ClickedItemIndex < InvMenu.actualInventory.Count;
             if (!IsValidInventorySlot)
@@ -268,7 +364,7 @@ namespace CombineMachines
         internal static bool CanCombine(SObject Machine1, SObject Machine2)
         {
             return Machine1 != null && Machine2 != null &&
-                Machine1.bigCraftable.Value && Machine2.bigCraftable.Value &&
+                Machine1.IsCombinableObject() && Machine2.IsCombinableObject() &&
                 Machine1.Stack >= 1 && Machine2.Stack >= 1 &&
                 Machine1.ParentSheetIndex == Machine2.ParentSheetIndex &&
                 (Machine1.IsCombinedMachine() || Machine2.IsCombinedMachine() || Machine1.canStackWith(Machine2));

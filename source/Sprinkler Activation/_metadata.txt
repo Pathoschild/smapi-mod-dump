@@ -1,0 +1,13 @@
+url:
+   https://github.com/Blaxsmith/SprinklerActivation.git
+
+mods:
+   Sprinkler Activation
+
+latest commit:
+   commit e88c6f59cd9394d5f37e1e0a98413686c69608d4
+   Author: Blaxsmith <37184639+Blaxsmith@users.noreply.github.com>
+   Date:   Sun Jan 17 05:23:04 2021 +0100
+   
+       Fixed pressure nozzles - version 1.0.3
+   

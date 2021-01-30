@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7541
+IDs: TheElm.ForecasterText
+update keys: Nexus:7541, GitHub:GStefanowich/SDV-Forecaster

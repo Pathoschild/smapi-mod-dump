@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-		<AssemblyName>xBRZ</AssemblyName>
-		<RootNamespace>SpriteMaster</RootNamespace>
+    <AssemblyName>xBRZ</AssemblyName>
+    <RootNamespace>SpriteMaster</RootNamespace>
     <ProjectGuid>{84EE293E-B938-4512-8A39-86FFC00ED267}</ProjectGuid>
     <OutputType>Library</OutputType>
-		<TargetFramework>net45</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <LangVersion>preview</LangVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -13,11 +13,11 @@
     <NullableReferenceTypes>true</NullableReferenceTypes>
     <ErrorReport>prompt</ErrorReport>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>portable</DebugType>
-		<OutputPath>bin\$(Configuration)\</OutputPath>
-		<BaseAddress>286261248</BaseAddress>
+    <ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <BaseAddress>286261248</BaseAddress>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">

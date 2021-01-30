@@ -1,0 +1,15 @@
+{
+  "Name": "Greenhouse Sprinklers",
+  "Author": "Bpendragon",
+  "Version": "1.4.0",
+  "Description": "Pay Robin off to add automatic sprinklers to the greenhouse, allowing 100% utilization",
+  "UniqueID": "Bpendragon.GreenhouseSprinklers",
+  "EntryDll": "GreenhouseSprinklers.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ],
+  "UpdateKeys": [ "Nexus:7456", "GitHub:Bpendragon/GreenhouseSprinklers" ]
+}

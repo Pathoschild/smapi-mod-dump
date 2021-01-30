@@ -25,16 +25,16 @@ namespace SpriteMaster.Metadata {
 		}
 
 		internal static readonly SharedLock DataCacheLock = new SharedLock();
-		private static MemoryCache DataCache = (Config.MemoryCache.Enabled) ? new MemoryCache(name: "DataCache", config: null) : null;
+		private static MemoryCache DataCache = (Config.MemoryCache.Enabled) ? new(name: "DataCache", config: null) : null;
 		private static long CurrentID = 0U;
 
-		public readonly SpriteDictionary SpriteTable = new SpriteDictionary();
+		public readonly SpriteDictionary SpriteTable = new();
 		private readonly string UniqueIDString = Interlocked.Increment(ref CurrentID).ToString();
 
-		public readonly SharedLock Lock = new SharedLock();
+		public readonly SharedLock Lock = new();
 
 		private volatile int CompressorCount = 0;
-		private readonly Semaphore CompressionSemaphore = new Semaphore(int.MaxValue, int.MaxValue);
+		private readonly Semaphore CompressionSemaphore = new(int.MaxValue, int.MaxValue);
 
 		public volatile bool TracePrinted = false;
 		public VolatileULong UpdateToken { get; private set; } = 0;

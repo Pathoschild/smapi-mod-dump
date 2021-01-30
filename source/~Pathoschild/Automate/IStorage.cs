@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using Pathoschild.Stardew.Automate.Framework;
 
 namespace Pathoschild.Stardew.Automate
 {

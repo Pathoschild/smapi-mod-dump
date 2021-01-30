@@ -28,11 +28,51 @@ namespace ToDew {
         /// Rendering for an individual row in the to-do list.
         /// </summary>
         private class MenuItem : ClickableComponent {
-            internal const int MenuItemHeight = 60;
+            const int MinMenuItemHeight = 40;
+            const int rightMarginReserve = 40;
+            const int borderWidth = 2;
+            const int leftMarginReserve = 70;
+            const int topPadding = 5;
+
             internal readonly ToDoList.ListItem todoItem;
-            public MenuItem(ToDoList.ListItem todoItem)
+            internal readonly int myIndex;
+            internal readonly int totalItemCount;
+            public MenuItem(ToDoList.ListItem todoItem, int index, int totalItemCount)
                 : base(Rectangle.Empty, "ToDo: " + todoItem.Text) {
                 this.todoItem = todoItem;
+                this.myIndex = index;
+                this.totalItemCount = totalItemCount;
+            }
+
+            public bool IsFirstItem { get => myIndex == 0; }
+            public bool IsLastItem { get => myIndex == totalItemCount - 1; }
+
+            public static readonly Rectangle smallUpArrow = new Rectangle(420, 459, 12, 12);
+            public static readonly Rectangle smallDownArrow = new Rectangle(420, 472, 12, 12);
+
+            private int lastX = 0;
+            private int lastY = 0;
+            private int lastWidth = 0;
+
+            private Rectangle upArrowBounds;
+            private Rectangle downArrowBounds;
+            private Rectangle insideBorderArea;
+            // computes all of the bounds for this object and sub-objects except total Height
+            private void ComputeBounds(int positionX, int positionY, int width) {
+                this.bounds.X = positionX;
+                this.bounds.Y = positionY;
+                this.bounds.Width = width;
+                this.insideBorderArea = new Rectangle(positionX + borderWidth * 2, positionY + borderWidth, width - borderWidth * 4, 0);
+                if (IsFirstItem) {
+                    upArrowBounds = Rectangle.Empty;
+                } else {
+                    upArrowBounds = new Rectangle(this.bounds.X + this.bounds.Width - rightMarginReserve + 8, this.bounds.Y + 8, smallUpArrow.Width, smallUpArrow.Height);
+                }
+                if (IsLastItem) {
+                    downArrowBounds = Rectangle.Empty;
+                } else {
+                    downArrowBounds = new Rectangle(this.bounds.X + this.bounds.Width - rightMarginReserve + 8, this.bounds.Y + 10 + smallUpArrow.Height, smallDownArrow.Width, smallDownArrow.Height);
+                }
             }
             /// <summary>Draw the ToDo List item to the screen.</summary>
             /// <param name="spriteBatch">The sprite batch being drawn.</param>
@@ -40,28 +80,66 @@ namespace ToDew {
             /// <param name="positionY">The Y position at which to draw the item.</param>
             /// <param name="width">The width to draw.</param>
             /// <param name="highlight">Whether to highlight the search result.</param>
-            public Vector2 Draw(SpriteBatch spriteBatch, int positionX, int positionY, int width, bool highlight = false) {
-                // update bounds
-                this.bounds.X = positionX;
-                this.bounds.Y = positionY;
-                this.bounds.Width = width;
-                this.bounds.Height = MenuItemHeight;
-                const int borderWidth = 2;
-                int leftMarginReserve = 70;
-                int topPadding = this.bounds.Height / 2;
+            public Vector2 Draw(SpriteBatch spriteBatch, int positionX, int positionY, int width, int mouseX, int MouseY) {
+                if (positionX != lastX || positionY != lastY || width != lastWidth) {
+                    // update bounds
+                    ComputeBounds(positionX, positionY, width);
+                }
+                Color highlightBorderColor = Color.Black;
+                bool mouseInButton = false;
 
                 // draw
-                if (highlight)
-                    spriteBatch.DrawLine(this.bounds.X, this.bounds.Y, new Vector2(this.bounds.Width, this.bounds.Height), Color.Beige);
+                var textSize = spriteBatch.DrawTextBlock(Game1.smallFont, todoItem.Text, new Vector2(this.bounds.X, this.bounds.Y) + new Vector2(leftMarginReserve, topPadding), this.bounds.Width - leftMarginReserve - rightMarginReserve); // text
+                this.bounds.Height = Math.Max(MinMenuItemHeight, topPadding + (int)textSize.Y);
+                this.insideBorderArea.Height = this.bounds.Height - borderWidth * 2;
                 spriteBatch.DrawLine(this.bounds.X, this.bounds.Y, new Vector2(this.bounds.Width, borderWidth), Color.Black); // border
-                spriteBatch.DrawTextBlock(Game1.smallFont, todoItem.Text, new Vector2(this.bounds.X, this.bounds.Y) + new Vector2(leftMarginReserve, topPadding), this.bounds.Width - leftMarginReserve); // text
+                if (!IsFirstItem) {
+                    bool highlight = upArrowBounds.Contains(mouseX, MouseY);
+                    spriteBatch.DrawSprite(Game1.mouseCursors, smallUpArrow, upArrowBounds.X, upArrowBounds.Y, null, highlight ? 1.2f : 1.0f);
+                    mouseInButton |= highlight;
+                }
+                if (!IsLastItem) {
+                    bool highlight = downArrowBounds.Contains(mouseX, MouseY);
+                    spriteBatch.DrawSprite(Game1.mouseCursors, smallDownArrow, downArrowBounds.X, downArrowBounds.Y, null, highlight ? 1.2f : 1.0f);
+                    mouseInButton |= highlight;
+                }
+                if (/* !mouseInButton &&*/ this.containsPoint(mouseX, MouseY)) {
+                    spriteBatch.DrawLine(this.bounds.X, this.bounds.Y + borderWidth, new Vector2(this.bounds.Width, borderWidth), highlightBorderColor);
+                    spriteBatch.DrawLine(this.bounds.X, this.bounds.Y + this.bounds.Height - borderWidth, new Vector2(this.bounds.Width, borderWidth), highlightBorderColor);
+                    spriteBatch.DrawLine(this.bounds.X, this.bounds.Y, new Vector2(borderWidth * 2, this.bounds.Height), highlightBorderColor);
+                    spriteBatch.DrawLine(this.bounds.X + this.bounds.Width - borderWidth * 2, this.bounds.Y, new Vector2(borderWidth * 2, this.bounds.Height), highlightBorderColor);
+                    if (IsLastItem) {
+                        // there is no item below us to draw a border, so let's do it ourselves so the highlight box doesn't look weird
+                        spriteBatch.DrawLine(this.bounds.X, this.bounds.Y + this.bounds.Height, new Vector2(this.bounds.Width, borderWidth), Color.Black); // border
+                        this.bounds.Height += borderWidth;
+                    }
+                }
 
                 // return size
                 return new Vector2(this.bounds.Width, this.bounds.Height);
             }
+
+            // presumes we aren't sent this message unless the mouse is actually within our bounds
+            public void receiveClick(int mouseX, int mouseY, ToDoList theList) {
+                if (upArrowBounds.Contains(mouseX, mouseY)) {
+                    theList.MoveItemUp(todoItem.Id);
+                    Game1.playSound("shwip");
+                    return;
+                }
+                if (downArrowBounds.Contains(mouseX, mouseY)) {
+                    theList.MoveItemDown(todoItem.Id);
+                    Game1.playSound("shwip");
+                    return;
+                }
+                if (insideBorderArea.Contains(mouseX, mouseY)) {
+                    theList.DeleteItem(todoItem.Id);
+                    Game1.playSound("trashcan");
+                    return;
+                }
+            }
         }
 
-        private readonly IMonitor Monitor;
+        private readonly ModEntry theMod;
         private readonly ToDoList theList;
         private List<MenuItem> menuItemList;
 
@@ -73,9 +151,11 @@ namespace ToDew {
         /// <summary>Force the CurrentScroll to the bottom (MaxScroll) after rendering all items</summary>
         /// Set after adding an item because adding is asynchronous for farmhands.  Cleared on other actions.
         private bool forceScrollToBottom = false;
+        /// <summary>The area where list items are rendered (used to filter mouse clicks)</summary>
+        private Rectangle contentArea = Rectangle.Empty;
 
-        public ToDoMenu(IMonitor monitor, ToDoList theList) {
-            this.Monitor = monitor;
+        public ToDoMenu(ModEntry theMod, ToDoList theList) {
+            this.theMod = theMod;
             this.theList = theList;
 
             // update size
@@ -98,9 +178,11 @@ namespace ToDew {
         }
 
         private void syncMenuItemList() {
-            menuItemList = new List<MenuItem>(theList.Items.Count);
-            foreach (ToDoList.ListItem item in theList.Items) {
-                menuItemList.Add(new MenuItem(item));
+            var items = theList.Items;
+            var itemCount = items.Count;
+            menuItemList = new List<MenuItem>(itemCount);
+            for (int i = 0; i < itemCount; i++) {
+                menuItemList.Add(new MenuItem(items[i], i, itemCount));
             }
         }
 
@@ -112,7 +194,7 @@ namespace ToDew {
             float topOffset = gutter;
             float contentWidth = this.width - gutter * 2;
             float contentHeight = this.height - gutter * 2;
-            float wrapWidth = this.width - leftOffset - gutter;
+            float bodyWidth = this.width - leftOffset - gutter;
 
 
             // get font
@@ -129,13 +211,13 @@ namespace ToDew {
                 backgroundBatch.Draw(Sprites.Letter.Sheet, new Vector2(this.xPositionOnScreen, this.yPositionOnScreen),
                     Sprites.Letter.Sprite, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
 
-                Vector2 titleSize = backgroundBatch.DrawTextBlock(font, "To-Dew List", new Vector2(x + leftOffset, y + topOffset), wrapWidth, bold: true);
-                Vector2 farmNameSize = backgroundBatch.DrawTextBlock(font, "for " + Game1.player.farmName + " Farm", new Vector2(x + leftOffset + titleSize.X + spaceWidth, y + topOffset), wrapWidth);
+                Vector2 titleSize = backgroundBatch.DrawTextBlock(font, "To-Dew List", new Vector2(x + leftOffset, y + topOffset), bodyWidth, bold: true);
+                Vector2 farmNameSize = backgroundBatch.DrawTextBlock(font, "for " + Game1.player.farmName + " Farm", new Vector2(x + leftOffset + titleSize.X + spaceWidth, y + topOffset), bodyWidth);
                 topOffset += Math.Max(titleSize.Y, farmNameSize.Y);
 
                 this.Textbox.X = x + (int)leftOffset;
                 this.Textbox.Y = y + (int)topOffset;
-                this.Textbox.Width = (int)wrapWidth;
+                this.Textbox.Width = (int)bodyWidth;
                 this.Textbox.Draw(backgroundBatch);
                 topOffset += this.Textbox.Height;
 
@@ -153,6 +235,7 @@ namespace ToDew {
                 try {
                     // begin draw
                     device.ScissorRectangle = new Rectangle(x + gutter, y + headerHeight, (int)contentWidth, (int)contentHeight - headerHeight);
+                    contentArea = device.ScissorRectangle;
                     contentBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, new RasterizerState { ScissorTestEnable = true });
 
                     //// scroll view
@@ -165,8 +248,7 @@ namespace ToDew {
                         int mouseX = Game1.getMouseX();
                         int mouseY = Game1.getMouseY();
                         foreach (MenuItem item in this.menuItemList) {
-                            bool isHighlighted = item.containsPoint(mouseX, mouseY);
-                            var objSize = item.Draw(contentBatch, x + (int)leftOffset, y + (int)topOffset, (int)wrapWidth, isHighlighted);
+                            var objSize = item.Draw(contentBatch, x + (int)leftOffset, y + (int)topOffset, (int)bodyWidth, mouseX, mouseY);
                             topOffset += objSize.Y;
                         }
                     }
@@ -198,7 +280,7 @@ namespace ToDew {
         /// <param name="key">The pressed input.</param>
         public override void receiveKeyPress(Keys key) {
             // deliberately avoid calling base, which may let another key close the menu
-            if (key.Equals(Keys.Escape))
+            if (key.Equals(Keys.Escape) || this.theMod.config.secondaryCloseButton.Equals(key.ToSButton()))
                 this.exitThisMenu();
 
             if (key.Equals(Keys.Enter)) {
@@ -208,6 +290,14 @@ namespace ToDew {
                 //this.MaxScroll += MenuItem.MenuItemHeight;
                 //this.CurrentScroll = this.MaxScroll;
                 Game1.playSound("coin");
+            }
+        }
+
+        public override void receiveGamePadButton(Buttons b) {
+            if (this.theMod.config.secondaryCloseButton.Equals(b.ToSButton())) {
+                this.exitThisMenu();
+            } else {
+                base.receiveGamePadButton(b);
             }
         }
 
@@ -224,10 +314,25 @@ namespace ToDew {
         /// <param name="playSound">Whether to enable sound.</param>
         public override void receiveLeftClick(int x, int y, bool playSound = true) {
             this.forceScrollToBottom = false;
+            if (!contentArea.Contains(x, y)) return;
             foreach (MenuItem match in this.menuItemList) {
                 if (match.containsPoint(x, y)) {
-                    this.theList.DeleteItem(match.todoItem.Id);
-                    Game1.playSound("trashcan");
+                    match.receiveClick(x, y, theList);
+                    return;
+                }
+            }
+        }
+
+        /// <summary>The method invoked when the player right-clicks on the menu UI.</summary>
+        /// <param name="x">The X-position of the cursor.</param>
+        /// <param name="y">The Y-position of the cursor.</param>
+        /// <param name="playSound">Whether to enable sound.</param>
+        public override void receiveRightClick(int x, int y, bool playSound = true) {
+            this.forceScrollToBottom = false;
+            if (!contentArea.Contains(x, y)) return;
+            foreach (MenuItem match in this.menuItemList) {
+                if (match.containsPoint(x, y)) {
+                    this.Textbox.Text = match.todoItem.Text;
                     return;
                 }
             }

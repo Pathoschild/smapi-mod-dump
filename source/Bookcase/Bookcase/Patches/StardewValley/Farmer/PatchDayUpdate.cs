@@ -8,10 +8,10 @@
 **
 *************************************************/
 
+using Bookcase.Events;
+using StardewValley;
 using System;
 using System.Reflection;
-using StardewValley;
-using Bookcase.Events;
 
 namespace Bookcase.Patches {
 

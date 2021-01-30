@@ -63,6 +63,9 @@
   "LeahGender": "Female",
   "LeahName": "Leah",
   "LeahSprite": "New",
+  "LeoGender": "Male",
+  "LeoName": "Leo",
+  "LeoSprite": "Vanilla",
   "LewisGender": "Female",
   "LewisName": "Lewa",
   "LewisSprite": "New",
@@ -165,5 +168,8 @@
   "VictorName": "Victoria",
   "VictorSprite": "New",
   "RazolynSprite": "",
+  "VeronicaGender": "Female",
+  "VeronicaName": "Veronica",
+  "VeronicaSprite": "Vanilla",
   "WormsSprite": "Chest"
 }

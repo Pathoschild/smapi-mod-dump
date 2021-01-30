@@ -5,9 +5,9 @@ mods:
    Hotbar Hotswap
 
 latest commit:
-   commit 6bfdf49fa40e6f6e4accfdc4651e77517255f782
+   commit d9e12b3543b20310d534d49db852f909c7226861
    Author: Jared <jaredlll08@gmail.com>
-   Date:   Thu Jul 19 12:31:19 2018 +0200
+   Date:   Mon Jan 4 03:20:43 2021 +0200
    
-       version update
+       initial files
    

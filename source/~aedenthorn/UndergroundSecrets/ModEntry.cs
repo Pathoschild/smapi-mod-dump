@@ -9,30 +9,28 @@
 *************************************************/
 
 using Harmony;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
-using System.Collections.Generic;
 using System.IO;
-using xTile;
 
 namespace UndergroundSecrets
 {
     public class ModEntry : Mod
-	{
+    {
 
-		public static ModEntry context;
+        public static ModEntry context;
 
-		internal static ModConfig Config;
+        internal static ModConfig Config;
         public static string tileSheetPath;
         internal static string tileSheetId = "z_underground_secrets";
+        public static ITreasureChestsExpandedApi treasureChestsExpandedApi = null;
 
         public override void Entry(IModHelper helper)
-		{
-			context = this;
-			Config = this.Helper.ReadConfig<ModConfig>();
+        {
+            context = this;
+            Config = this.Helper.ReadConfig<ModConfig>();
             if (!Config.EnableMod)
                 return;
 
@@ -53,6 +51,7 @@ namespace UndergroundSecrets
 
             //Helper.Events.Player.Warped += HelperEvents.Player_Warped;
             Helper.Events.GameLoop.UpdateTicked += HelperEvents.GameLoop_UpdateTicked;
+            Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched; 
 
             var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
 
@@ -81,7 +80,16 @@ namespace UndergroundSecrets
                 prefix: new HarmonyMethod(typeof(UndergroundPatches), nameof(UndergroundPatches.MineShaft_addLevelChests_prefix))
             );
 
-		}
+        }
+
+        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        {
+            treasureChestsExpandedApi = context.Helper.ModRegistry.GetApi<ITreasureChestsExpandedApi>("aedenthorn.TreasureChestsExpanded");
+            if (treasureChestsExpandedApi != null)
+            {
+                Monitor.Log($"loaded TreasureChestsExpanded API", LogLevel.Debug);
+            }
+        }
 
         /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
         /// <param name="asset">Basic metadata about the asset being loaded.</param>

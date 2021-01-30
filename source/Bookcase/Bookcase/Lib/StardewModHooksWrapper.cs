@@ -8,13 +8,13 @@
 **
 *************************************************/
 
-using StardewValley;
+using Bookcase.Events;
 using Microsoft.Xna.Framework.Input;
+using StardewValley;
 using StardewValley.Events;
 using System;
-using xTile.Dimensions;
 using System.Reflection;
-using Bookcase.Events;
+using xTile.Dimensions;
 
 namespace Bookcase.Lib {
 

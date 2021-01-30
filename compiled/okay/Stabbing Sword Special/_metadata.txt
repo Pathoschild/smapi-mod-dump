@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7683
+IDs: Wellbott.StabbingSwordSpecial
+update keys: Nexus:7683, GitHub:Wellbott/StardewValleyMods

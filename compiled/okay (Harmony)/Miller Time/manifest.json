@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Miller Time",
+  "Author": "Satozaki",
+  "Version": "1.0.0",
+  "Description": "Adds ability to add custom mill recipes.",
+  "UniqueID": "Satozaki.MillerTime",
+  "EntryDll": "MillerTime.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:7575" ]
+}

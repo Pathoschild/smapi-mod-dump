@@ -21,6 +21,7 @@ using CombineMachines.Helpers;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Objects;
 
 namespace CombineMachines.Patches
 {
@@ -46,7 +47,12 @@ namespace CombineMachines.Patches
 
                         float Scale = 3.0f;
                         float QuantityWidth = DrawHelpers.MeasureNumber(CombinedQuantity, Scale);
-                        Vector2 QuantityTopLeftPosition = new Vector2(BottomRightTilePosition.X - QuantityWidth, BottomRightTilePosition.Y - DrawHelpers.TinyDigitBaseHeight - Game1.tileSize / 8);
+                        Vector2 QuantityTopLeftPosition = new Vector2(BottomRightTilePosition.X - QuantityWidth, BottomRightTilePosition.Y - DrawHelpers.TinyDigitBaseHeight - Game1.tileSize / 4);
+
+                        //  Crab pots have an animation that makes them float up and down, and they're sort of shifted below the tile they're actually on, so shift our number down as well to compensate
+                        if (__instance is CrabPot)
+                            QuantityTopLeftPosition.Y += Game1.tileSize - Game1.tileSize / 8;
+
                         Utility.drawTinyDigits(CombinedQuantity, spriteBatch, QuantityTopLeftPosition, Scale, draw_layer + DrawLayerOffset, RenderColor);
                     }
                 }
@@ -119,7 +125,8 @@ namespace CombineMachines.Patches
                         {
                             for (int i = 0; i < InvMenu.capacity; i++)
                             {
-                                if (InvMenu.actualInventory[i] is SObject TargetObject && ModEntry.CanCombine(SourceObject, TargetObject))
+                                if (InvMenu.actualInventory.Count > i && InvMenu.inventory.Count > i &&
+                                    InvMenu.actualInventory[i] is SObject TargetObject && ModEntry.CanCombine(SourceObject, TargetObject))
                                 {
                                     Rectangle InventorySlotBounds = InvMenu.inventory[i].bounds;
 

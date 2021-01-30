@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "New Objects for Stardew Valley Expanded",
+	"Author": "FlashShifter",
+	"Description": "Adds new fish, objects, weapons, and crops",
+	"Version": "1.12.6",
+	"UniqueID": "FlashShifter.JA.SVE",
+	"UpdateKeys": ["Nexus:???"],
+	"ContentPackFor": {
+		"UniqueID": "spacechase0.JsonAssets",
+	},
+}

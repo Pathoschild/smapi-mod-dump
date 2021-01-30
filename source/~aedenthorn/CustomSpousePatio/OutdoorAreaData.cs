@@ -38,18 +38,20 @@ namespace CustomSpousePatio
         public List<SpecialTile> specialTiles = new List<SpecialTile>();
         public Point npcOffset = new Point(-1,-1);
         public string npcAnimation = null;
+        public string useTilesOf = null;
+
         public Point GetLocation()
         {
             if (location.X != -1)
                 return location;
-            return ModEntry.Config.DefaultSpouseAreaLocation;
+            return ModEntry.DefaultSpouseAreaLocation;
         }
         public Point NpcPos(string name)
         {
             if (npcOffset.X != -1)
                 return new Point(location.X + npcOffset.X, location.Y + +npcOffset.Y);
-            if (ModEntry.spousePatioLocations.ContainsKey(name))
-                return new Point(location.X + ModEntry.spousePatioLocations[name][0], location.Y + ModEntry.spousePatioLocations[name][1]);
+            if (ModEntry.spousePatioOffsets.ContainsKey(name))
+                return new Point(location.X + ModEntry.spousePatioOffsets[name].X, location.Y + ModEntry.spousePatioOffsets[name].Y);
             return new Point(location.X + 2, location.Y + 4);
         }
     }

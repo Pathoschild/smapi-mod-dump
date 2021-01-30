@@ -1,0 +1,25 @@
+{
+  //Letters
+  "mail.Wizard1": "@,^^Ich spüre die Freude der Junimos über deinen Beitrag, den du für das Tal leistest.^Sie hatten eine Idee, wie man dein Gewächshaus verbessern könnte. Ich habe diese Idee so übersetzt, dass Robin damit etwas anfangen kann.^Sprich mit ihr, wenn du diese Verbesserung haben möchtest.^^   -M. Rasmodius, Zauberer",
+  "mail.Wizard1b": "@,^^Auch wenn die Junimos aus dem Gemeindezentrum verschwunden sind, spüre ich ihre Freude über deinen Beitrag, den du für das Tal leistest.^Sie hatten eine Idee, wie man dein Gewächshaus verbessern könnte. Ich habe diese Idee so übersetzt, dass Robin damit etwas anfangen kann.^Sprich mit ihr, wenn du diese Verbesserung haben möchtest.^^   -M. Rasmodius, Zauberer",
+  "mail.Wizard2": "@,^^Die Junimos sind nach wie vor von dir und deiner Farm beeindruckt.^Sie hatten eine Idee für eine erneute Verbesserung deines Gewächshauses. Wieder habe ich diese Idee so übersetzt, dass Robin etwas daraus machen kann.^Sprich mit ihr, wenn du auch diese Verbesserung haben möchtest.^^   -M. Rasmodius, Zauberer",
+  "mail.Wizard3": "@,^^Die Junimos sind begeistert von dem, was du aus der Farm gemacht hast.^Sie hatten eine letzte Idee, die Sprinkleranlage deiner Farm zu verbessern. Ich habe diese Idee auch dieses Mal übersetzt, damit Robin daraus etwas machen kann.^Sprich mit ihr, wenn du diese letzte Verbesserung haben möchtest.^^   -M. Rasmodius, Zauberer",
+
+  //Shop Descriptions
+  "CarpenterShop.BluePrintName": "Verbesserung des Sprinklersystems",
+  "CarpenterShop.FirstUpgradeDescription": "Automatisierte Sprinkler an der Decke deines Gewächshauses bewässern jeden Morgen",
+  "CarpenterShop.SecondUpgradeDescription": "Automatisierte Sprinkler an der Decke deines Gewächshauses bewässern jeden Morgen und Abend",
+  "CarpenterShop.FinalUpgradeDescription": "Eine unterirdische Sprinkleranlage bewässert deine gesamte Farm morgens und abends",
+
+  //Menu Items
+  //Currently Unused, may never be used
+  //If used will be expanded
+
+  "menu.diff": "Schwierigkeit",
+  "menu.diff-Easy": "Leicht",
+  "menu.diff-Medium": "Mittel",
+  "menu.diff-Hard": "Schwer",
+  "menu.diff-Custom": "Benutzerdefiniert"
+
+
+}

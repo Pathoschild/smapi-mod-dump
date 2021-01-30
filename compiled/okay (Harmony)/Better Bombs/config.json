@@ -1,0 +1,7 @@
+{
+  "BreakClumps": true,
+  "CollectMinerals": true,
+  "DamageFarmers": false,
+  "Radius": 1.0,
+  "Damage": 1.0
+}

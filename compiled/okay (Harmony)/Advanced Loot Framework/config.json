@@ -1,0 +1,13 @@
+{
+  "EnableMod": true,
+  "ForbiddenWeapons": [
+    32,
+    34
+  ],
+  "ForbiddenBigCraftables": [
+    22,
+    23,
+    101
+  ],
+  "ForbiddenObjects": []
+}

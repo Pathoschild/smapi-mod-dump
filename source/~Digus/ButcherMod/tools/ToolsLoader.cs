@@ -42,6 +42,11 @@ namespace AnimalHusbandryMod.tools
             _toolsSpriteSheet = toolsSpriteSheet;
             _menuTilesSpriteSheet = menuTilesSpriteSheet;
             _customLetterBG = customLetterBG;
+
+            if (DataLoader.ModConfig.Softmode)
+            {
+                MeatCleaverOverrides.Suffix = ".Soft";
+            }
         }
 
         public bool CanEdit<T>(IAssetInfo asset)
@@ -73,7 +78,7 @@ namespace AnimalHusbandryMod.tools
 
                 asset.ReplaceWith(newSpriteSheet);
 
-                var newToolInitialParentIdex = (originalWidth / 16) * (originalHeight / 16);
+                var newToolInitialParentIndex = (originalWidth / 16) * (originalHeight / 16);
 
                 int offset = 0;
                 if (DataLoader.ModConfig.Softmode)
@@ -81,12 +86,14 @@ namespace AnimalHusbandryMod.tools
                     offset = 7;
                 }
 
-                MeatCleaver.initialParentTileIndex = newToolInitialParentIdex + offset;
-                MeatCleaver.indexOfMenuItemView = newToolInitialParentIdex + 26 + offset;
-                InseminationSyringe.InitialParentTileIndex = newToolInitialParentIdex + 14;
-                InseminationSyringe.IndexOfMenuItemView = newToolInitialParentIdex + 14;
-                FeedingBasket.InitialParentTileIndex = newToolInitialParentIdex + 15;
-                FeedingBasket.IndexOfMenuItemView = newToolInitialParentIdex + 15;
+                MeatCleaverOverrides.InitialParentTileIndex = newToolInitialParentIndex + offset;
+                MeatCleaverOverrides.IndexOfMenuItemView = newToolInitialParentIndex + 26 + offset;
+                InseminationSyringeOverrides.InitialParentTileIndex = newToolInitialParentIndex + 14;
+                InseminationSyringeOverrides.IndexOfMenuItemView = newToolInitialParentIndex + 14;
+                FeedingBasketOverrides.InitialParentTileIndex = newToolInitialParentIndex + 15;
+                FeedingBasketOverrides.IndexOfMenuItemView = newToolInitialParentIndex + 15;
+                ParticipantRibbonOverrides.InitialParentTileIndex = newToolInitialParentIndex + 16;
+                ParticipantRibbonOverrides.IndexOfMenuItemView = newToolInitialParentIndex + 16;
                 LoadMail();
             } else if (asset.AssetNameEquals("Maps\\MenuTiles"))
             {
@@ -112,8 +119,8 @@ namespace AnimalHusbandryMod.tools
 
                 var newMenuTitlesInitialParentIdex = (originalWidth / 64) * (originalHeight / 64);                
 
-                InseminationSyringe.AttachmentMenuTile = newMenuTitlesInitialParentIdex;
-                FeedingBasket.AttachmentMenuTile = newMenuTitlesInitialParentIdex + 1;
+                InseminationSyringeOverrides.AttachmentMenuTile = newMenuTitlesInitialParentIdex;
+                FeedingBasketOverrides.AttachmentMenuTile = newMenuTitlesInitialParentIdex + 1;
             }
         }
 
@@ -166,15 +173,25 @@ namespace AnimalHusbandryMod.tools
             Item item = items[i];
             if (item?.Name != null)
             {
-                if (item.Name.Contains("ButcherMod.MeatCleaver"))
+                if (item.Name.Contains("ButcherMod.MeatCleaver") || item.Name.Contains("AnimalHusbandryMod.tools.MeatCleaver"))
                 {
-                    items[i] = new MeatCleaver();
+                    items[i] = ToolsFactory.GetMeatCleaver();
                     AnimalHusbandryModEntry.monitor.Log($"An older version of the MeatCleaver found. Replacing it with the new one.", LogLevel.Debug);
                 }
-                else if (item.Name.Contains("ButcherMod.tools.InseminationSyringe"))
+                else if (item.Name.Contains("ButcherMod.tools.InseminationSyringe") || item.Name.Contains("AnimalHusbandryMod.tools.InseminationSyringe"))
                 {
-                    items[i] = new InseminationSyringe();
+                    items[i] = ToolsFactory.GetInseminationSyringe();
                     AnimalHusbandryModEntry.monitor.Log($"An older version of the InseminationSyringe found. Replacing it with the new one.", LogLevel.Debug);
+                }
+                else if (item.Name.Contains("AnimalHusbandryMod.tools.FeedingBasket"))
+                {
+                    items[i] = ToolsFactory.GetFeedingBasket();
+                    AnimalHusbandryModEntry.monitor.Log($"An older version of the FeedingBasket found. Replacing it with the new one.", LogLevel.Debug);
+                }
+                else if (item.Name.Contains("AnimalHusbandryMod.tools.ParticipantRibbon"))
+                {
+                    items[i] = ToolsFactory.GetParticipantRibbon();
+                    AnimalHusbandryModEntry.monitor.Log($"An older version of the ParticipantRibbon found. Replacing it with the new one.", LogLevel.Debug);
                 }
             }
         }
@@ -199,7 +216,7 @@ namespace AnimalHusbandryMod.tools
 
             bool MeatCleaverCondition(Letter l)
             {
-                return !DataLoader.ModConfig.DisableMeatToolLetter && HasAnimal() && !HasTool(typeof(MeatCleaver));
+                return !DataLoader.ModConfig.DisableMeatToolLetter && HasAnimal() && (!ItemUtility.HasModdedItem(MeatCleaverOverrides.MeatCleaverKey) || !Game1.player.mailReceived.Contains(l.Id));
             }
 
             List<string> validBuildingsForInsemination = new List<string>(new string[] { "Deluxe Barn", "Big Barn", "Deluxe Coop" });
@@ -215,24 +232,24 @@ namespace AnimalHusbandryMod.tools
                     return false;
                 });
                
-                return Context.IsMainPlayer && hasAnimalInValidBuildings && !HasTool(typeof(InseminationSyringe));
+                return hasAnimalInValidBuildings && (!ItemUtility.HasModdedItem(InseminationSyringeOverrides.InseminationSyringeKey) || !Game1.player.mailReceived.Contains(l.Id));
             }
 
             bool FeedingBasketCondition(Letter l)
             {
 
-                return Context.IsMainPlayer && !Game1.player.mailReceived.Contains("feedingBasket") && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 2 && (Game1.player.hasPet() || HasAnimal());
+                return !Game1.player.mailReceived.Contains(l.Id) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 2 && (Game1.player.hasPet() || HasAnimal());
             }
 
             bool FeedingBasketRedeliveryCondition(Letter l)
             {
                 
-                return Context.IsMainPlayer && Game1.player.mailReceived.Contains("feedingBasket") && !HasTool(typeof(FeedingBasket)) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 6;
+                return Game1.player.mailReceived.Contains("feedingBasket") && !ItemUtility.HasModdedItem(FeedingBasketOverrides.FeedingBasketKey) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 6;
             }
 
             if (!DataLoader.ModConfig.DisableMeat)
             {
-                Letter meatCleaverLetter = new Letter("meatCleaver", meatCleaverText, new List<Item> { new MeatCleaver() }, MeatCleaverCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
+                Letter meatCleaverLetter = new Letter("meatCleaver", meatCleaverText, new List<Item> { ToolsFactory.GetMeatCleaver() }, MeatCleaverCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
                 {
                     GroupId = "AHM.InterdimentionalFriend",
                     Title = meatCleaverTitle
@@ -244,7 +261,7 @@ namespace AnimalHusbandryMod.tools
             
             if (!DataLoader.ModConfig.DisablePregnancy)
             {
-                Letter inseminationSyringeLetter = new Letter("inseminationSyringe", DataLoader.i18n.Get("Tool.InseminationSyringe.Letter"), new List<Item> { new InseminationSyringe() }, InseminationSyringeCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
+                Letter inseminationSyringeLetter = new Letter("inseminationSyringe", DataLoader.i18n.Get("Tool.InseminationSyringe.Letter"), new List<Item> { ToolsFactory.GetInseminationSyringe() }, InseminationSyringeCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
                 {
                     GroupId = "AHM.InterdimentionalFriend",
                     Title = DataLoader.i18n.Get("Tool.InseminationSyringe.Letter.Title")
@@ -262,8 +279,8 @@ namespace AnimalHusbandryMod.tools
                     (
                         "participantRibbon"
                         , DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter")
-                        , new List<Item> { new ParticipantRibbon() }
-                        , (l) => SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && FarmerLoader.FarmerData.AnimalContestData.Count == 0
+                        , new List<Item> { ToolsFactory.GetParticipantRibbon() }
+                        , (l) => SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && AnimalContestController.GetContestCount() == 0 && !Game1.player.mailReceived.Contains(l.Id + AnimalContestController.GetNextContestDateKey())
                         , (l) =>
                         {
                             Game1.player.mailReceived.Add(l.Id + AnimalContestController.GetNextContestDateKey());
@@ -279,8 +296,8 @@ namespace AnimalHusbandryMod.tools
                     (
                         "participantRibbonRedelivery"
                         , DataLoader.i18n.Get("Tool.ParticipantRibbon.LetterRedelivery")
-                        , new List<Item> { new ParticipantRibbon() }
-                        , (l) => SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && FarmerLoader.FarmerData.AnimalContestData.Count > 0
+                        , new List<Item> { ToolsFactory.GetParticipantRibbon() }
+                        , (l) => SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && AnimalContestController.GetContestCount() > 0 && !Game1.player.mailReceived.Contains(l.Id + AnimalContestController.GetNextContestDateKey())
                         , (l) =>
                         {
                             Game1.player.mailReceived.Add(l.Id + AnimalContestController.GetNextContestDateKey());
@@ -300,7 +317,7 @@ namespace AnimalHusbandryMod.tools
                     (
                         "feedingBasket",
                         DataLoader.i18n.Get("Tool.FeedingBasket.Letter"),
-                        new List<Item> {new FeedingBasket()},
+                        new List<Item> {ToolsFactory.GetFeedingBasket()},
                         FeedingBasketCondition,
                         (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); }
                     )
@@ -314,7 +331,7 @@ namespace AnimalHusbandryMod.tools
                     (
                         "feedingBasketRedelivery",
                         DataLoader.i18n.Get("Tool.FeedingBasket.LetterRedelivery"),
-                        new List<Item> { new FeedingBasket() },
+                        new List<Item> { ToolsFactory.GetFeedingBasket() },
                         FeedingBasketRedeliveryCondition,
                         (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); }
                     )
@@ -325,55 +342,12 @@ namespace AnimalHusbandryMod.tools
             }
         }
 
-        private bool HasTool(Type toolClass)
-        {
-            bool hasInInventory = Game1.player.Items.Any(toolClass.IsInstanceOfType) || Game1.player.Items.Any((i) => i?.Name != null && i.Name.Contains(toolClass.FullName));
-            return hasInInventory || Game1.locations.Any((location) =>
-            {
-                if (location.objects.Values.ToList()
-                    .Exists((o) =>
-                    {
-                        if (o is Chest chest)
-                        {
-                            return chest.items.Any(toolClass.IsInstanceOfType) || chest.items.Any((i) => i?.Name != null && i.Name.Contains(toolClass.FullName));
-                        }
-                        return false;
-                    }))
-                {
-                    return true;
-                }
-                if (location is BuildableGameLocation bgl)
-                {
-                    return bgl.buildings.Any(((b) =>
-                    {
-                        if (b.indoors.Value is GameLocation gl)
-                        {
-                            if (gl.objects.Values.ToList()
-                                .Exists((o) =>
-                                {
-                                    if (o is Chest chest)
-                                    {
-                                        return chest.items.Any(toolClass.IsInstanceOfType) || chest.items.Any((i) => i?.Name != null && i.Name.Contains(toolClass.FullName));
-                                    }
-                                    return false;
-                                }))
-                            {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }));
-                }
-                return false;
-            });
-        }
-
         public void RemoveAllToolsCommand(string n, string[] d)
         {
-            ItemUtility.RemoveItemAnywhere(typeof(MeatCleaver));
-            ItemUtility.RemoveItemAnywhere(typeof(InseminationSyringe));
-            ItemUtility.RemoveItemAnywhere(typeof(FeedingBasket));
-            ItemUtility.RemoveItemAnywhere(typeof(ParticipantRibbon));
+            ItemUtility.RemoveModdedItemAnywhere(MeatCleaverOverrides.MeatCleaverKey);
+            ItemUtility.RemoveModdedItemAnywhere(InseminationSyringeOverrides.InseminationSyringeKey);
+            ItemUtility.RemoveModdedItemAnywhere(FeedingBasketOverrides.FeedingBasketKey);
+            ItemUtility.RemoveModdedItemAnywhere(ParticipantRibbonOverrides.ParticipantRibbonKey);
         }
     }
 }

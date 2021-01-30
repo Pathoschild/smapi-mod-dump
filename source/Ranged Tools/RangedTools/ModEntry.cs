@@ -168,7 +168,7 @@ namespace RangedTools
                     Farmer player = Game1.player;
                     if (player.CurrentTool != null && !player.UsingTool) // Have a tool selected, not in the middle of using it
                     {
-                        Vector2 mousePosition = convertCursorPosition(e.Cursor);
+                        Vector2 mousePosition = e.Cursor.AbsolutePixels;
                         
                         // If setting is enabled, face all mouse clicks when a tool/weapon is equipped.
                         if (withClick && shouldToolTurnToFace(player.CurrentTool))
@@ -199,22 +199,12 @@ namespace RangedTools
             try
             {
                 if (holdingToolButton()) // Update override location as long as a Tool Button is held (range validity checked later)
-                    specialClickLocation = convertCursorPosition(e.NewPosition);
+                    specialClickLocation = e.NewPosition.AbsolutePixels;
             }
             catch (Exception ex)
             {
                 Log("Error in cursor move: " + ex.Message + Environment.NewLine + ex.StackTrace);
             }
-        }
-        
-        /// <summary>Returns Vector2 global coordinates of mouse position, adjusted for scale.</summary>
-        /// <param name="cursor">The cursor position data.</param>
-        public static Vector2 convertCursorPosition(ICursorPosition cursor)
-        {
-            Vector2 mousePosition = Utility.ModifyCoordinatesFromUIScale(cursor.ScreenPixels);
-            mousePosition.X += Game1.viewport.X;
-            mousePosition.Y += Game1.viewport.Y;
-            return mousePosition;
         }
         
         /// <summary>Checks whether the given Farmer and mouse position are within extended range for the current tool.</summary>

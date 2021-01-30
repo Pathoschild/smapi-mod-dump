@@ -1,0 +1,33 @@
+{
+	// Object data
+	"Name": "blueberry.cac.bakedpotato",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 16,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 40,
+	"IsColored": false,
+
+	// Object purchase
+	"CanPurchase": false,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 100,
+	"PurchaseRequirements": null,
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": 192, // Potato
+				"Count": 1
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": false,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": null
+	}
+}

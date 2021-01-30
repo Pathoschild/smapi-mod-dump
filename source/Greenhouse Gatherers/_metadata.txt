@@ -1,0 +1,13 @@
+url:
+   https://github.com/Floogen/GreenhouseGatherers.git
+
+mods:
+   Greenhouse Gatherers
+
+latest commit:
+   commit a1232c6bfd061b0dc0a74e85a70765eb88d41b7c
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Fri Jan 29 18:26:57 2021 -0600
+   
+       v1.1.4 released
+   

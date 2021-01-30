@@ -1,0 +1,25 @@
+{
+  //Letters
+  "mail.Wizard1": "@,^^Os junimos estão muito agradecidos por suas contribuições.^Até tiveram uma ideia para melhorar a sua estufa, eu as transformei em algo que talvez a Robin possa achar útil.^Fale com ela se isto te interessa.^^   -M. Rasmodeu, feiticeiro",
+  "mail.Wizard1b": "@,^^Deixando de lado que você os retirou do seu lar, os Junimos estão impressionados com você.^Até tiveram uma ideia para melhorar a sua estufa, eu as transformei em algo que talvez a Robin possa achar útil.^Fale com ela se isto te interessa.^^   -M. Rasmodeu, feiticeiro",
+  "mail.Wizard2": "@,^^Parece que você tem uma facilidade em impressionar os Junimos.^Até tiveram uma ideia para melhorar ainda mais a sua estufa, eu as transformei em algo que talvez a Robin possa achar útil.^Fale com ela se isto te interessa.^^   -M. Rasmodeu, feiticeiro",
+  "mail.Wizard3": "@,^^Você nos inpressionou bastante, os Junimos estão estonteados com suas conquistas.^Eles tiveram uma última ideia para melhorar ainda mais a sua estufa, eu as transformei em algo que talvez a Robin possa achar útil.^Fale com ela se isto te interessa^^   -M. Rasmodeu, feiticeiro",
+
+  //Shop Descriptions
+  "CarpenterShop.BluePrintName": "Sistema de Melhorias de Aspressores",
+  "CarpenterShop.FirstUpgradeDescription": "Aspressores automatizados no teto de sua estufa, ativam todas as manhãs.",
+  "CarpenterShop.SecondUpgradeDescription": "Aspressores automatizados no teto de sua estufa, ativam todas as manhãs e todas as noites.",
+  "CarpenterShop.FinalUpgradeDescription": "Aspressores internos sobre toda a sua fazenda, ativam todas as manhãs e todas as noites.",
+
+  //Menu Items
+  //Currently Unused, may never be used
+  //If used will be expanded
+
+  "menu.diff": "Dificuldade",
+  "menu.diff-Easy": "Fácil",
+  "menu.diff-Medium": "Média",
+  "menu.diff-Hard": "Difícil",
+  "menu.diff-Custom": "Customizada"
+
+
+}

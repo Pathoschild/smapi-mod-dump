@@ -1,0 +1,22 @@
+{
+  "Enabled": true,
+  "LinusDialogue": "Data\\ExtraDialogue:Town_DumpsterDiveComment_Linus",
+  "ChildDialogue": "Data\\ExtraDialogue:Town_DumpsterDiveComment_Child",
+  "TeenDialogue": "Data\\ExtraDialogue:Town_DumpsterDiveComment_Teen",
+  "AdultDialogue": "Data\\ExtraDialogue:Town_DumpsterDiveComment_Adult",
+  "LinusEmote": 32,
+  "ChildEmote": 28,
+  "TeenEmote": 8,
+  "AdultPoints": -25,
+  "LinusPoints": 5,
+  "ChildPoints": -25,
+  "TeenPoints": -25,
+  "AdultEmote": 12,
+  "SpecificCharacters": {
+    "ExampeNPCName": {
+      "dialogue": "Characters\\Dialogue\\ExampleNPC:Town_DumpsterDiveComment",
+      "emote": 32,
+      "points": 10
+    }
+  }
+}

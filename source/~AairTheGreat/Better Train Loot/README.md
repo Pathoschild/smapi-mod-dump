@@ -88,12 +88,18 @@ Shows/hides the message when a train is passing thru the valley and you are not 
 #### showDesertTrainIsComingMessage
 Shows/hides the message when a train is passing thru the valley while you are in the desert.
 - Default Value: true 
+#### showIslandTrainIsComingMessage
+Shows/hides the message when a train is passing thru the valley while you are on the island.  
+- Default Value: false
 #### enableTrainWhistle
 When the train comes thru the valley and you are not in the desert, does it make a sound?  
 - Default Value: true 
-#### enableTrainWhistle
+#### enableDesertTrainWhistle
 When the train comes thru the valley and you are in the desert, does it make a sound?  
 - Default Value: true 
+#### enableIslandTrainWhistle
+When the train comes thru the valley and you are on the island, does it make a sound?  
+- Default Value: false
 #### baseChancePercent
 What is the chance to get something from a train.  The player's daily luck does factor into this.
 - Default Value: 0.20 

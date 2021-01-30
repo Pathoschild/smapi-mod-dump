@@ -1,0 +1,10 @@
+{
+  "Name": "AllowBeachSprinklers",
+  "Author": "Jag3Dagster",
+  "Version": "1.0.0",
+  "Description": "Allow the placement of sprinklers on the beach farm map.",
+  "UniqueID": "Jag3Dagster.AllowBeachSprinklers",
+  "EntryDll": "AllowBeachSprinklers.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7629" ]
+}

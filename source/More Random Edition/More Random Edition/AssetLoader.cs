@@ -115,7 +115,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Replaces the title screen graphics
+		/// Replaces the title screen graphics and refreshes the settings UI page
 		/// </summary>
 		/// <param name="titleMenu">The title menu - passed if we're already on the title screen</param>
 		private void ReplaceTitleScreen(TitleMenu titleMenu = null)
@@ -129,6 +129,8 @@ namespace Randomizer
 				LanguageCode code = _mod.Helper.Translation.LocaleEnum;
 				_mod.Helper.Reflection.GetMethod(titleMenu, "OnLanguageChange", true).Invoke(code);
 			}
+
+			_mod.CalculateAndInvalidateUIEdits();
 		}
 
 		/// <summary>
@@ -140,9 +142,10 @@ namespace Randomizer
 			// Clear any previous replacements
 			this._replacements.Clear();
 
-			if (Globals.Config.RandomizeCrops)
+			if (Globals.Config.Crops.Randomize)
 			{
-				AddReplacement("Maps/springobjects", "Assets/Maps/springobjects.png");
+				//TODO: probably get rid of this completely or move it somewhere
+				//AddReplacement("Maps/springobjects", "Assets/Maps/springobjects.png");
 			}
 
 			if (Globals.Config.RandomizeAnimalSkins)
@@ -239,14 +242,36 @@ namespace Randomizer
 		{
 			WeaponImageBuilder weaponImageBuilder = new WeaponImageBuilder();
 			weaponImageBuilder.BuildImage();
+			HandleImageReplacement(weaponImageBuilder, "TileSheets/weapons");
 
-			if (Globals.Config.RandomizeWeapons && Globals.Config.UseCustomWeaponImages_Needs_Above_Setting_On)
+			CropGrowthImageBuilder cropGrowthImageBuilder = new CropGrowthImageBuilder();
+			cropGrowthImageBuilder.BuildImage();
+			HandleImageReplacement(cropGrowthImageBuilder, "TileSheets/crops");
+
+			SpringObjectsImageBuilder springObjectsImageBuilder = new SpringObjectsImageBuilder(cropGrowthImageBuilder.CropIdsToImageNames);
+			springObjectsImageBuilder.BuildImage();
+			HandleImageReplacement(springObjectsImageBuilder, "Maps/springobjects");
+
+			BundleImageBuilder bundleImageBuilder = new BundleImageBuilder();
+			bundleImageBuilder.BuildImage();
+			HandleImageReplacement(bundleImageBuilder, "LooseSprites/JunimoNote");
+		}
+
+		/// <summary>
+		/// Handles actually adding the image replacement
+		/// If the image doesn't exist, sleep for 0.1 second increments until it does
+		/// </summary>
+		/// <param name="imageBuilder">The image builder</param>
+		/// <param name="xnbPath">The path to the xnb image to replace</param>
+		private void HandleImageReplacement(ImageBuilder imageBuilder, string xnbPath)
+		{
+			if (imageBuilder.ShouldSaveImage())
 			{
-				while (!File.Exists(weaponImageBuilder.OutputFileFullPath))
+				while (!File.Exists(imageBuilder.OutputFileFullPath))
 				{
 					Thread.Sleep(100);
 				}
-				AddReplacement("TileSheets/weapons", weaponImageBuilder.SMAPIOutputFilePath);
+				AddReplacement(xnbPath, imageBuilder.SMAPIOutputFilePath);
 			}
 		}
 

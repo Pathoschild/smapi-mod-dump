@@ -64,6 +64,30 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static bool IsBlock(this SurfaceFormat format) {
+			switch (format) {
+				case SurfaceFormat.Dxt1:
+				case SurfaceFormat.Dxt3:
+				case SurfaceFormat.Dxt5:
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static int BlockEdge(this SurfaceFormat format) {
+			switch (format) {
+				case SurfaceFormat.Dxt1:
+				case SurfaceFormat.Dxt3:
+				case SurfaceFormat.Dxt5:
+					return 4;
+				default:
+					return 1;
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static long SizeBytes (this Texture2D texture) => texture.Format.SizeBytes(texture.Area());
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -143,6 +167,16 @@ namespace SpriteMaster.Extensions {
 			newImage.UnlockBits(newBitmapData);
 
 			return newImage;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static bool IsValid (this ScaledTexture texture) {
+			return texture != null && texture.Texture != null && !texture.Texture.IsDisposed;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static bool IsDisposed(this ScaledTexture texture) {
+			return texture == null || (texture.Texture != null && texture.Texture.IsDisposed);
 		}
 	}
 }

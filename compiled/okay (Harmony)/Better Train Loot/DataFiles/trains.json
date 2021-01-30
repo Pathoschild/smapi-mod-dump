@@ -2587,6 +2587,12 @@
         "Name": "Cactus Seeds",
         "Enabled": true,
         "Rarity": "RARE"
+      },
+      {
+        "Id": 806,
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
       }
     ]
   },
@@ -3112,6 +3118,12 @@
       {
         "Id": 802,
         "Name": "Cactus Seeds",
+        "Enabled": true,
+        "Rarity": "RARE"
+      },
+      {
+        "Id": 806,
+        "Name": "Leprechaun Shoes",
         "Enabled": true,
         "Rarity": "RARE"
       }
@@ -3797,6 +3809,12 @@
         "Name": "Omni Geode",
         "Enabled": true,
         "Rarity": "UNCOMMON"
+      },
+      {
+        "Id": 806,
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
       }
     ]
   },
@@ -4822,6 +4840,12 @@
         "Name": "Pearl",
         "Enabled": true,
         "Rarity": "ULTRA_RARE"
+      },
+      {
+        "Id": 806,
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
       }
     ]
   },
@@ -5235,6 +5259,12 @@
         "Name": "Fiber",
         "Enabled": true,
         "Rarity": "COMMON"
+      },
+      {
+        "Id": 806,
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
       }
     ]
   },
@@ -5486,6 +5516,12 @@
         "Name": "Rhubarb Pie",
         "Enabled": true,
         "Rarity": "COMMON"
+      },
+      {
+        "Id": 806,
+        "Name": "Leprechaun Shoes",
+        "Enabled": true,
+        "Rarity": "RARE"
       }
     ]
   }

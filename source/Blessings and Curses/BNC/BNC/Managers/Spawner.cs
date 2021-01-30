@@ -19,6 +19,7 @@ using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using xTile.Dimensions;
 
 namespace BNC
 {
@@ -29,11 +30,7 @@ namespace BNC
 
         public static void Init()
         {
-            if (BNC_Core.config.Use_Bits_To_Spawn_Mobs)
-            {
-                BNC_Core.helper.Events.Display.RenderedHud += OnPostRender;
-            }
-               
+           BNC_Core.helper.Events.Display.RenderedHud += OnPostRender;
         }
 
 
@@ -68,7 +65,7 @@ namespace BNC
             }
         }
 
-        private static Vector2 getRangeFromPlayer(int range, int minRange = 3)
+        public static Vector2 getRangeFromPlayer(int range, int minRange = 3)
         {
             int xStart = Game1.player.getTileX() - range;
             int yStart = Game1.player.getTileY() - range;
@@ -76,9 +73,10 @@ namespace BNC
             int randX = Game1.random.Next(range * 2 + 2);
             int randY = Game1.random.Next(range * 2 + 2);
 
-
+            int trys = 0;
             Vector2 vector = new Vector2(xStart + randX, yStart + randY);
-            while (Vector2.Distance(vector, Game1.player.getTileLocation()) < minRange) {
+            
+            while (trys++ < 10 && Vector2.Distance(vector, Game1.player.getTileLocation()) < minRange && Game1.player.currentLocation.isTileOnMap(vector) && Game1.player.currentLocation.isTileLocationOpen(new Location((int)vector.X, (int)vector.Y)) && !Game1.player.currentLocation.isTileOccupiedForPlacement(vector)) {
                 vector.X = xStart + Game1.random.Next(range * 2 + 2);
                 vector.Y = yStart + Game1.random.Next(range * 2 + 2);
             }
@@ -99,14 +97,14 @@ namespace BNC
             WorldDate date = Game1.Date;
             bool beforeSword = date.DayOfMonth < 5 && date.Year == 1 && date.SeasonIndex == 1;
 
-            if(beforeSword)
+            if (beforeSword)
             {
                 m.MaxHealth = m.MaxHealth / 4; ;
                 m.Health = m.MaxHealth;
                 m.DamageToFarmer = m.DamageToFarmer / 3;
             }
 
-            if(minelvl <= 10)
+            if (minelvl <= 10)
             {
                 m.MaxHealth = m.MaxHealth / 2;
                 m.Health = m.MaxHealth;
@@ -120,9 +118,15 @@ namespace BNC
             return m;
         }
 
-        public static void addMonsterToSpawn(Monster m, string username)
+
+        public static void AddNPCToSpawn(NPC m, string username)
         {
-           SpawnList_AroundPlayer.Add(UpdateDifficulty(m), username);
+            SpawnList_AroundPlayer.Add(m, "bnc_"+username);
+        }
+
+            public static void addMonsterToSpawn(Monster m, string username)
+        {
+            SpawnList_AroundPlayer.Add(UpdateDifficulty(m), username);
         }
 
         public static void addSubToSpawn(NPC sub, string username)
@@ -132,8 +136,6 @@ namespace BNC
 
         public static void SpawnTwitchJunimo(string name)
         {
-            if (!BNC_Core.config.Spawn_Subscriber_Junimo)
-                return;
             Junimo j = new TwitchJunimo(Vector2.Zero);
             Spawner.addSubToSpawn(j, name);
         }
@@ -142,16 +144,23 @@ namespace BNC
         {
             if (!canSpawn() || pos.Equals(Game1.player.getTileLocation()) || !Game1.currentLocation.isTileLocationTotallyClearAndPlaceable(pos) || Game1.player.currentLocation.isTileOccupied(pos, ""))
             {
-                if(Config.ShowDebug())
+                if (Config.ShowDebug())
                     BNC_Core.Logger.Log($"Faild to spawn {m.displayName}:{username} at Tile:{pos.X},{pos.Y} Adding Back into Queue");
                 return false;
             }
 
-            ((ITwitchMonster)m).setTwitchName(username);
+            if(m is ITwitchMonster)
+                ((ITwitchMonster)m).setTwitchName(username);
+
+            m.displayName = username;
+            m.Name = username;
 
             m.setTilePosition((int)pos.X, (int)pos.Y);
-            Game1.player.currentLocation.characters.Add((NPC) m);
-            MobsSpawned.Add((ITwitchMonster)m);
+
+            Game1.player.currentLocation.characters.Add((NPC)m);
+
+            if(m is ITwitchMonster)
+                MobsSpawned.Add((ITwitchMonster)m);
 
             if (Config.ShowDebug())
                 BNC_Core.Logger.Log($"Spawning {m.displayName}:{username} at Tile:{pos.X},{pos.Y}..");
@@ -167,7 +176,7 @@ namespace BNC
             {
                 foreach (NPC mob in location.characters.ToArray())
                 {
-                    if(mob is ITwitchMonster && Config.Should_Respawn(Game1.random))
+                    if (mob is ITwitchMonster && Config.Should_Respawn(Game1.random))
                     {
                         location.characters.Remove(mob);
                     }
@@ -302,13 +311,13 @@ namespace BNC
                         break;
                 }
             }
-            return TypeReturn;  
+            return TypeReturn;
         }
 
 
         private static int[] GetBitRangeFromMonster(TwitchMobType type)
         {
-            int[] ranges = new int[]{ -1, -2 };
+            int[] ranges = new int[] { -1, -2 };
             switch (type)
             {
                 case TwitchMobType.Slime:
@@ -398,10 +407,26 @@ namespace BNC
                         int localY = npc.GetBoundingBox().Y - Game1.viewport.Y - (npc is Monster ? 60 : 30);
                         Utility.drawTextWithColoredShadow(Game1.spriteBatch, $"{((ITwitchMonster)npc).GetTwitchName()}", Game1.smallFont, new Vector2(localX, localY), Color.Wheat, Color.Black);
                     }
+                    else if(npc.Name.StartsWith("bnc_") || npc.displayName.StartsWith("bnc_"))
+                    {
+                        int localX = npc.GetBoundingBox().Center.X - Game1.viewport.X - ((int)Game1.smallFont.MeasureString(npc.displayName.Substring(4)).Length() / 2);
+                        int localY = npc.GetBoundingBox().Y - Game1.viewport.Y - (npc is Monster ? 60 : 30);
+                        Utility.drawTextWithColoredShadow(Game1.spriteBatch, $"{npc.displayName.Substring(4)}", Game1.smallFont, new Vector2(localX, localY), Color.Wheat, Color.Black);
+                    }
                 }
             }
+
         }
 
+        public static Dictionary<String, TwitchMobType> MobTypeToEnum = new Dictionary<String, TwitchMobType>() {
+            { "slime", TwitchMobType.Slime },
+            { "crab", TwitchMobType.Crab },
+            { "bug", TwitchMobType.Bug },
+            { "fly", TwitchMobType.Fly },
+            { "bat", TwitchMobType.Bat },
+            { "big_slime", TwitchMobType.BigSlime },
+        };
+        
         public enum TwitchMobType   { Slime, Crab, Bug, Fly, Bat, BigSlime }
     }
 }

@@ -33,6 +33,7 @@ namespace SpriteMaster.Types {
 
 		public Vector2I Offset;
 		public Vector2I Extent;
+		public Vector2B Invert;
 
 		public Vector2I Position {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -77,11 +78,21 @@ namespace SpriteMaster.Types {
 			set { Extent.X = value; }
 		}
 
+		public readonly int InvertedWidth {
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get { return Invert.X ? -Extent.X : Extent.X; }
+		}
+
 		public int Height {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			readonly get { return Extent.Y; }
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			set { Extent.Y = value; }
+		}
+
+		public readonly int InvertedHeight {
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get { return Invert.Y ? -Extent.Y : Extent.Y; }
 		}
 
 		[Browsable(false)]
@@ -118,16 +129,25 @@ namespace SpriteMaster.Types {
 
 		public readonly int Area => Extent.X * Extent.Y;
 
-		public readonly bool Degenerate => Extent.X <= 0 || Extent.Y <= 0;
+		public readonly bool Degenerate => Extent.X == 0 || Extent.Y == 0;
 
 		public readonly bool IsEmpty => Area == 0;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Bounds (Vector2I offset, Vector2I extent) {
-			Contract.AssertPositiveOrZero(extent.Width, $"{nameof(extent.Width)} is not positive");
-			Contract.AssertPositiveOrZero(extent.Height, $"{nameof(extent.Height)} is not positive");
+			//Contract.AssertNotZero(extent.Width, $"{nameof(extent.Width)} is zero");
+			//Contract.AssertNotZero(extent.Height, $"{nameof(extent.Height)} is zero");
 			Offset = offset;
 			Extent = extent;
+			Invert = new();
+			if (Extent.X < 0) {
+				Extent.X = -Extent.X;
+				Invert.X = true;
+			}
+			if (Extent.Y < 0) {
+				Extent.Y = -Extent.Y;
+				Invert.Y = true;
+			}
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -143,6 +163,7 @@ namespace SpriteMaster.Types {
 		public Bounds (in Bounds bounds) {
 			Offset = bounds.Offset;
 			Extent = bounds.Extent;
+			Invert = bounds.Invert;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -175,13 +196,13 @@ namespace SpriteMaster.Types {
 		readonly object ICloneable.Clone () => this;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator DrawingRectangle (in Bounds bounds) => new DrawingRectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+		public static implicit operator DrawingRectangle (in Bounds bounds) => new DrawingRectangle(bounds.X, bounds.Y, bounds.InvertedWidth, bounds.InvertedHeight);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator XNARectangle (in Bounds bounds) => new XNARectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+		public static implicit operator XNARectangle (in Bounds bounds) => new XNARectangle(bounds.X, bounds.Y, bounds.InvertedWidth, bounds.InvertedHeight);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static implicit operator XTileRectangle (in Bounds bounds) => new XTileRectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+		public static implicit operator XTileRectangle (in Bounds bounds) => new XTileRectangle(bounds.X, bounds.Y, bounds.InvertedWidth, bounds.InvertedHeight);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static implicit operator Bounds (in DrawingRectangle rect) => new Bounds(rect);
@@ -193,7 +214,7 @@ namespace SpriteMaster.Types {
 		public static implicit operator Bounds (in XTileRectangle rect) => new Bounds(rect);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public override readonly string ToString () => $"[{X}, {Y}, {Width}, {Height}]";
+		public override readonly string ToString () => $"[[{X}, {Y}] [{InvertedWidth}, {InvertedHeight}]]";
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public readonly int CompareTo (Bounds other) {

@@ -9,8 +9,6 @@
 *************************************************/
 
 using BetterGarbageCans.Data;
-using StardewValley;
-using System;
 using System.Collections.Generic;
 
 namespace BetterGarbageCans.Config

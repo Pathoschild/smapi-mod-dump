@@ -1,0 +1,9 @@
+## This file contains a list of GitHub separated mod repositories to sync.
+## Each line should contain a repository name.
+## Blank lines, or those starting with #, are ignored.
+
+# main mods
+NpcAdventures
+PurrplingCore
+QuestFramework
+DialogueEmotes

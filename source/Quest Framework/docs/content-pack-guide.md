@@ -8,6 +8,8 @@ for queries and analysis.**
 
 
 
+
+
 ← [README](../README.md)
 
 # Content pack guide
@@ -57,11 +59,17 @@ Your `quests.json` has this format:
 {
   "Format": "1.0", // this is required
   "Quests": [
-    // quests are defined here
+    // (optional) quests are defined here
   ],
   "Offers": [
-    // quest offers are defined here (optional)
-  ]
+    // (optional) quest offers are defined here
+  ],
+  "CustomBoards": [
+    // (optional) define your custom quest or special order boards here
+  ],
+  "CustomDropBoxes": [
+    // (optional) define your custom drop boxes for your special orders here
+  ],
 }
 ```
 
@@ -517,10 +525,10 @@ These are the available quests sources provided by native Quest Framework. Some 
 #### Bulletinboard
 
 Offers quest on bulletinboard located in front of the seeds shop (Pierre).
+Quest is offered on the board every day (morning).
 
 *This source NOT requires or accepts any offer details*
 
-**Example**
 ```js
 {
   "Format": "1.0",
@@ -550,6 +558,49 @@ Offers quest on bulletinboard located in front of the seeds shop (Pierre).
 }
 ```
 
+#### Custom board
+
+You can offer your quest on your custom quest board. Just use `Board:<boardName>` in quest offer field `OfferedBy`.
+Quest is offered on the board every day (morning).
+
+*This source NOT requires or accepts any offer details*
+
+```js
+{
+  "Format": "1.0",
+  "Quests": [
+    {
+      "Name": "bat_problem",
+      "Type": "Monster",
+      "Title": "The bat problem",
+      "Description": "Bats are attacking the town every night. Slay some bats and make town more safe.",
+      "Objective": "Slay 10 bats",
+      "Reward": 500, // 500g
+      "DaysLeft": 10,
+      "Cancelable": false,
+      "Trigger": "Bat 10"
+    }
+  ],
+  "Offers": [
+    {
+      "QuestName": "bat_problem",
+      "OfferedBy": "Board:TestBoard",
+    },
+      "When": {
+        "Weather": "sunny"
+      }
+    }
+  ],
+  "CustomBoards": [
+    {
+      "BoardName": "TestBoard",
+      "Location": "Farm",
+      "Tile": "70,8"
+    }
+  ]
+}
+```
+
 #### NPC
 
 NPC can offer your quest via dialogue (speak with them and get a quest)
@@ -559,8 +610,10 @@ Field        | Description
 ------------ | -----------
 NpcName      | (string) Which NPC offers this quest.
 DialogueText | (string) What to NPC say to offer this quest.
+Secret       | (bool) If this is `true`, then the quest exclamation mark indicator about NPC head is hidden. (default is `false`)
 
-**Example**
+*NOTE: If you are using a `Random` condition in offer conditions, it's highly recommended set `Secret` in the offer details to `true`. Otherwise the quest exclamaiton mark indicator may blink!*
+
 ```js
 {
   "Format": "1.0",
@@ -596,7 +649,8 @@ DialogueText | (string) What to NPC say to offer this quest.
 
 #### Mail
 
-Farmer can get a quest via received letter in their mailbox on the farm.
+Farmer can get a quest via received letter in their mailbox on the farm. 
+Letter with offered quest is delivered to player's mailbox in the morning.
 
 **Requires these offer details**
 Field        | Description 
@@ -604,7 +658,6 @@ Field        | Description
 Topic        | (string) Title or topic of the letter (optional)
 Text         | (string) Text of the quest source letter (required)
 
-**Example**
 ```js
 {
   "Format": "1.0",
@@ -633,6 +686,169 @@ Text         | (string) Text of the quest source letter (required)
         "Weather": "cloudy",
         "Seasons": "spring summer",
         "Days": "4 11 24"
+      }
+    }
+  ]
+}
+```
+
+## Custom boards (for quests and special orders)
+
+With the Quest Framework you can define your custom board for offer your custom quests or special orders. You can do it with field `CustomBoards` in root element of `quests.json` definition. This field provides an array with custom board definitions. Quest board definition contains these fields:
+
+Field name      | Type                   | Description
+--------------- | ---------------------- | -----------
+BoardName       | `string`               | Name of your custom board
+BoardType       | `enum`                 | Type of your board. Allowed values is `Quests`, `SpecialOrders`. Default value: `Quests`
+Location        | `string`               | Name of the location where is the board placed
+Tile            | `Point`                | Tile where is the board placed. Format is `<x>,<y>`.
+UnlockWhen      | `Dict<string, string>` | (optional) Required conditions to unlock this board. When this field is not defined, no conditions are required - The board is always unlocked.
+ShowIndicator   | `bool`                 | (optional) Show the `!` indicator on the board tile when the board has an active quest which can be accepted? (default is `true`)
+IndicatorOffset | `Vector2`              | (optional) Position offset of exclamation mark indicator on the board tile (offset is in px)
+Texture         | `string`               | (optional) Path to a custom background texture. Path can locate local PNG asset inside content pack folder or game asset. For locate background in game assets load this texture with **Content Patcher** first (or by another mod, which can inject custom game assets). If this field is not defined, then board menu uses default texture.
+
+Custom board is placed as actionable tile to specified position in defined location. If the board is unlocked and player clicks to the board tile a board menu is shown. This board menu offers quests which refers this board. How to refer custom board in quest or special order see bellow.
+
+### Custom quest board
+
+1. Define custom board in `quests.json` in field `CustomBoards`, give them a valid **name ** and specify the type as **Quests**. Also you can specify custom texture, unlock condition or disable the available quest indicator.
+2. Create a **quest offer** in `quests.json` and in their field `OfferedBy` set `Board:<yourCustomBoardName` like *Board:MyQuestBoard* if your board is named as *MyQuestBoard* in the custom board definition.
+
+```js
+// quests.json in your content pack folder
+{
+  /* ... */
+  "Offers": [
+    {
+      "QuestName": "bat_problem",
+      "OfferedBy": "Board:MyQuestBoard",
+    },
+      "When": {
+        "Weather": "sunny"
+      }
+    }
+  ],
+  "CustomBoards": [
+    {
+      "BoardName": "MyQuestBoard",
+      "Location": "Farm",
+      "Tile": "70,8",
+      "Texture": "LooseSprites/MyQuestBoard", // This texture is added with Content Patcher
+      "UnlockWhen": {
+        "DaysPlayed": 28 // This board can be open by player after 28 days from first game day.
+      }
+    }
+  ]
+}
+```
+
+*NOTE: Texture size for `Quests` board type must be `338x198 px`.*
+
+### Custom special orders board
+
+Custom special orders are defined with Quest Framework in `quests.json` in your QF content pack folder. Then you can refer your board in your special order in the content pack, which adds your special orders. Special Orders can't be defined directly with Quest Framework, you must define them with **Content Patcher** by editing content target `Data/SpecialOrders`. In your order definition set `QF:<boardName>` to field `OrderType`. This special order will be offered only in your custom special orders board.
+
+1. Define custom board in `quests.json` in field `CustomBoards`, give them a valid **name ** and specify the type as **SpecialOrders**. Also you can specify custom texture, unlock condition or disable the available quest indicator.
+2. In your order definition (in Content Patcher `content.json` in `EditData` change for `Data/SpecialOrders`) set `QF:<boardName>` to field `OrderType`. This special order will be offered only in your custom special orders board.
+
+```js
+// quests.json in your QF content pack
+{
+  /* ... */
+  "CustomBoards": [
+    {
+      "BoardName": "MySpecialOrdersBoard",
+      "Location": "Farm",
+      "Tile": "70,8",
+      "Texture": "LooseSprites/MySpecialOrdersBoard", // This texture is added with Content Patcher
+      "UnlockWhen": {
+        "DaysPlayed": 28 // This board can be open by player after 28 days from first game day.
+      }
+    }
+  ]
+}
+```
+```js
+// content.json in your Content Patcher content pack which adds your special orders
+{
+  /* ... */
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/SpecialOrders",
+      "Entries": {
+        "PurrplingCat.PurrplingOrders.AbbyRockLunch": {
+          "Name": "[PurrplingCat.PurrplingOrders.AbbyRockLunch_Name]",
+          "Requester": "Abigail",
+          "Duration": "Week",
+          "Repeatable": "True",
+          "RequiredTags": "",
+          "OrderType": "QF:MySpecialOrdersBoard", // Offer this order on MySpecialOrdersBoard custom special orders board
+          /* ... */
+        },
+        /* ... */
+      }
+    }
+  ]
+}
+```
+*NOTE: Special orders board custom background texture must be `338x198 px`*
+
+## Custom drop boxes (for special orders)
+
+If you need define special orders with objective type donation and do you want define your custom donation drop box for your special orders, we have good news for you. With Quest Framework you can do it! Just define your drop boxes in field `CustomDropBoxes` in root element of your `quests.json` file in your QF content pack folder. Then you can refer your drop boxes in your special orders defined with *Content Patcher* what you want.
+
+Field name | Type      | Description
+---------- | --------- | -----------
+Name       | `string`  | Name of your custom drop box.
+Location   | `string`  | Name of location where your drop box is placed.
+Tile       | `Point`   | Tile where is your drop box placed. Format is `<x>,<y>`.
+
+```js
+// quests.json in QF content pack folder
+{
+  /* ... */
+  "CustomDropBoxes": [
+    {
+      "Name": "MyDropBox",
+      "Location": "Farm",
+      "Tile": "69,8"
+    }
+  ]
+}
+```
+```js
+// content.json in your Content Patcher content pack
+{
+  /* ... */
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/SpecialOrders",
+      "Entries": {
+        "PurrplingCat.PurrplingOrders.AbbyRockLunch": {
+          "Name": "[PurrplingCat.PurrplingOrders.AbbyRockLunch_Name]",
+          "Requester": "Abigail",
+          "Duration": "Week",
+          "Repeatable": "True",
+          "RequiredTags": "",
+          "OrderType": "", // Or put `QF:<boardName>` you can specify which custom board offer this order (must be defined in `CustomBoards` in QF content pack field first)
+          "Objectives": [
+            {
+              "Type": "Donate",
+              "Text": "[Lumisteria.SpecialOrders.DemetriusCrabPotStudy_Objective_1_Text]",
+		      "RequiredCount": "25",
+              "Data": {
+                "DropBox": "MyDropBox", // Your drop box name here
+                "DropBoxGameLocation": "Farm",
+                "DropBoxIndicatorLocation": "69 7",
+                "AcceptedContextTags": "mineral_amethyst"
+              }
+            }
+          ],
+          /* ... */
+        },
+        /* ... */
       }
     }
   ]
@@ -668,7 +884,6 @@ If you add suffix `|bigcraftable` after item name, then Quest Framework looks in
     }
   ]
 }
-
 ```
 
 ## Outbound
@@ -679,8 +894,6 @@ You can add known quest in Quest Framework via NPC dialogues. You can define it 
 
 By place `[quest:<questname> <modUID>]` to the dialogue player get a quest when speak with NPC and this dialogue line is shown.
 
-#### Example
-
 ```js
 // Some dialogue definition file
 {
@@ -688,3 +901,5 @@ By place `[quest:<questname> <modUID>]` to the dialogue player get a quest when 
     "anotherDIalogue": "What's up? $h#$b#Are you interested to small fighting adventure?#$b#Bless your sword! [quest:slayMonsters purrplingcat.myquestmod]"
 }
 ```
+
+**NOTE:** By add quest via dialogue in this outbound way, you can't check the QF conditions and no exclamation mark will be shown above NPC head. But in this way you can offer a quest via question dialogue.

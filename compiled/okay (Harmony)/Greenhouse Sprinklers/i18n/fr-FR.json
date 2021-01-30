@@ -1,0 +1,25 @@
+{
+  //Letters
+  "mail.Wizard1": "@,^^Les Junimos sont ravis de vos contributions pour la Vallée. ^Ils ont eu une idée afin d'améliorer votre serre, et j'ai traduit ces idées en quelque chose que Robine peut vous mettre à disposition.^Allez lui parler si vous désirez cette amélioration.^^   -M. Rasmodius, Sorcier",
+  "mail.Wizard1b": "@,^^Malgré qu'ils aient été obligés de quitter le Centre Communautaire les Junimos sont heureux de vos contributions pour la Vallée.^Ils ont eu une idée afin d'améliorer votre serre, et j'ai traduit ces idées en quelque chose que Robine peut vous mettre à disposition.^Allez lui parler si vous désirez cette amélioration.^^   -M. Rasmodius, Sorcier",
+  "mail.Wizard2": "@,^^Les Junimos maintiennent leur intérêt envers votre ferme.^Ils ont eu une idée afin d'améliorer davantage votre serre, et j'ai traduit ces idées en quelque chose que Robine peut vous mettre à disposition.^Allez lui parler si vous désirez cette amélioration.^^   -M. Rasmodius, Sorcier",
+  "mail.Wizard3": "@,^^Les Junimos maintiennent leur intérêt envers votre ferme.^Ils ont eu une ultime idée afin d'améliorer le système d'irrigation de votre ferme, et j'ai traduit ces idées en quelque chose que Robine peut vous mettre à disposition.^Allez lui parler si vous désirez cette amélioration.^^   -M. Rasmodius, Sorcier",
+
+  //Shop Descriptions
+  "CarpenterShop.BluePrintName": "Amélioration du système d'Arroseurs Automatiques",
+  "CarpenterShop.FirstUpgradeDescription": "Arroseurs automatiques sur le toit de votre serre, fonctionnent chaque matin",
+  "CarpenterShop.SecondUpgradeDescription": "Arroseurs automatiques sur le toit de votre serre, fonctionnent chaque matin et nuit",
+  "CarpenterShop.FinalUpgradeDescription": "Arroseurs automatiques enfouis sous le sol de votre ferme, fonctionnent chaque matin et nuit",
+
+  //Menu Items
+  //Currently Unused, may never be used
+  //If used will be expanded
+
+  "menu.diff": "Difficulté",
+  "menu.diff-Easy": "Facile",
+  "menu.diff-Medium": "Moyen",
+  "menu.diff-Hard": "Difficile",
+  "menu.diff-Custom": "Personnalisé"
+
+
+}

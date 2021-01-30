@@ -40,7 +40,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Buildings
         /// <summary>The building's source rectangle in its spritesheet.</summary>
         private readonly Rectangle SourceRectangle;
 
-        /// <summary>The central registry for subject lookups.</summary>
+        /// <summary>Provides subject entries.</summary>
         private readonly ISubjectRegistry Codex;
 
 
@@ -48,7 +48,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Buildings
         ** Public methods
         *********/
         /// <summary>Construct an instance.</summary>
-        /// <param name="codex">Provides subject entries for target values.</param>
+        /// <param name="codex">Provides subject entries.</param>
         /// <param name="gameHelper">Provides utility methods for interacting with the game code.</param>
         /// <param name="building">The lookup target.</param>
         /// <param name="sourceRectangle">The building's source rectangle in its spritesheet.</param>
@@ -167,11 +167,11 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Buildings
                                     populationStr += Environment.NewLine + I18n.Building_FishPond_Population_NextSpawn(relativeDate: this.GetRelativeDateStr(nextSpawn));
                                 }
 
-                                yield return new ItemIconField(this.GameHelper, I18n.Building_FishPond_Population(), fish, text: populationStr);
+                                yield return new ItemIconField(this.GameHelper, I18n.Building_FishPond_Population(), fish, this.Codex, text: populationStr);
                             }
 
                             // output
-                            yield return new ItemIconField(this.GameHelper, I18n.Building_OutputReady(), pond.output.Value);
+                            yield return new ItemIconField(this.GameHelper, I18n.Building_OutputReady(), pond.output.Value, this.Codex);
 
                             // drops
                             int chanceOfAnyDrop = (int)Math.Round(Utility.Lerp(0.15f, 0.95f, pond.currentOccupants.Value / 10f) * 100);

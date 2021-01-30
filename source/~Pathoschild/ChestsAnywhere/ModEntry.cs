@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.ChestsAnywhere.Framework;
@@ -36,7 +35,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
         private ModConfig Config;
 
         /// <summary>The configured key bindings.</summary>
-        private ModConfigKeys Keys;
+        private ModConfigKeys Keys => this.Config.Controls;
 
         /// <summary>The internal mod settings.</summary>
         private ModData Data;
@@ -44,11 +43,11 @@ namespace Pathoschild.Stardew.ChestsAnywhere
         /// <summary>Encapsulates logic for finding chests.</summary>
         private ChestFactory ChestFactory;
 
-        /// <summary>The selected in-game inventory.</summary>
-        private readonly PerScreen<IList<Item>> SelectedInventory = new PerScreen<IList<Item>>();
+        /// <summary>The last selected chest.</summary>
+        private readonly PerScreen<ManagedChest> LastChest = new();
 
         /// <summary>The overlay for the current menu which which lets the player navigate and edit chests (or <c>null</c> if not applicable).</summary>
-        private readonly PerScreen<IStorageOverlay> CurrentOverlay = new PerScreen<IStorageOverlay>();
+        private readonly PerScreen<IStorageOverlay> CurrentOverlay = new();
 
 
         /*********
@@ -61,17 +60,15 @@ namespace Pathoschild.Stardew.ChestsAnywhere
             // initialize
             I18n.Init(helper.Translation);
             this.Config = helper.ReadConfig<ModConfig>();
-            this.Keys = this.Config.Controls.ParseControls(helper.Input, this.Monitor);
             this.Data = helper.Data.ReadJsonFile<ModData>("assets/data.json") ?? new ModData();
-            this.ChestFactory = new ChestFactory(helper.Data, helper.Multiplayer, helper.Reflection, this.Config.EnableShippingBin);
+            this.ChestFactory = new ChestFactory(helper.Multiplayer, helper.Reflection, this.Config.EnableShippingBin);
 
             // hook events
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
-            helper.Events.World.LocationListChanged += this.OnLocationListChanged;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.GameLoop.UpdateTicking += this.OnUpdateTicking;
             helper.Events.Display.RenderedHud += this.OnRenderedHud;
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
 
             // validate translations
             if (!helper.Translation.GetTranslations().Any())
@@ -101,19 +98,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
 
             // migrate legacy chest data
             if (Context.IsMainPlayer)
-                this.MigrateLegacyData();
-        }
-
-        /// <summary>The method invoked after locations are added or removed from the game.</summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnLocationListChanged(object sender, LocationListChangedEventArgs e)
-        {
-            if (Context.IsMultiplayer)
-            {
-                foreach (GameLocation location in e.Added)
-                    this.MigrateLegacyData(location);
-            }
+                Migrator.MigrateLegacyData(this.ChestFactory, this.Helper.Data);
         }
 
         /// <summary>The method invoked when the interface has finished rendering.</summary>
@@ -149,10 +134,10 @@ namespace Pathoschild.Stardew.ChestsAnywhere
             this.ChangeOverlayIfNeeded();
         }
 
-        /// <summary>The method invoked when the player presses a button.</summary>
+        /// <summary>Raised after the player presses any buttons on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        /// <param name="e">The event data.</param>
+        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
@@ -162,7 +147,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
                 ModConfigKeys keys = this.Keys;
 
                 // open menu
-                if (keys.Toggle.JustPressedUnique())
+                if (keys.Toggle.JustPressed())
                 {
                     // open if no conflict
                     if (Game1.activeClickableMenu == null)
@@ -223,7 +208,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
 
             // add overlay
             RangeHandler range = this.GetCurrentRange();
-            ManagedChest[] chests = this.ChestFactory.GetChests(range, excludeHidden: true, alwaysIncludeContainer: chest.Container).ToArray();
+            ManagedChest[] chests = this.ChestFactory.GetChests(range, excludeHidden: true, alwaysInclude: chest).ToArray();
             bool isAutomateInstalled = this.Helper.ModRegistry.IsLoaded("Pathoschild.Automate");
             switch (menu)
             {
@@ -239,7 +224,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
             // hook new overlay
             this.CurrentOverlay.Value.OnChestSelected += selected =>
             {
-                this.SelectedInventory.Value = selected.Container.Inventory;
+                this.LastChest.Value = selected;
                 Game1.activeClickableMenu = selected.OpenMenu();
             };
             this.CurrentOverlay.Value.OnAutomateOptionsChanged += this.NotifyAutomateOfChestUpdate;
@@ -262,8 +247,8 @@ namespace Pathoschild.Stardew.ChestsAnywhere
             RangeHandler range = this.GetCurrentRange();
             ManagedChest[] chests = this.ChestFactory.GetChests(range, excludeHidden: true).ToArray();
             ManagedChest selectedChest =
-                chests.FirstOrDefault(p => p.Container.IsSameAs(this.SelectedInventory.Value))
-                ?? chests.FirstOrDefault(p => p.Location == Game1.currentLocation)
+                ChestFactory.GetBestMatch(chests, this.LastChest.Value)
+                ?? chests.FirstOrDefault(p => object.ReferenceEquals(p.Location, Game1.currentLocation))
                 ?? chests.FirstOrDefault();
 
             // show error
@@ -335,31 +320,6 @@ namespace Pathoschild.Stardew.ChestsAnywhere
                 return I18n.Errors_NoChestsInRange();
 
             return I18n.Errors_NoChests();
-        }
-
-        /// <summary>Migrate legacy container data, if needed.</summary>
-        private void MigrateLegacyData()
-        {
-            // chests
-            foreach (var chest in this.ChestFactory.GetChests(RangeHandler.Unlimited()))
-                chest.Container.MigrateLegacyData();
-
-            // shipping bin
-            var binData = this.Helper.Data.ReadSaveData<ContainerData>("shipping-bin");
-            if (binData != null)
-            {
-                Farm farm = Game1.getFarm();
-                binData.ToModData(farm.modData, discriminator: ShippingBinContainer.ModDataDiscriminator);
-                this.Helper.Data.WriteSaveData<ContainerData>("shipping-bin", null);
-            }
-        }
-
-        /// <summary>Migrate legacy container data, if needed.</summary>
-        /// <param name="location">The location whose chests to migrate.</param>
-        private void MigrateLegacyData(GameLocation location)
-        {
-            foreach (var chest in this.ChestFactory.GetChests(RangeHandler.SpecificLocation(location)))
-                chest.Container.MigrateLegacyData();
         }
     }
 }

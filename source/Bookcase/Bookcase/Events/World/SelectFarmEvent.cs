@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using StardewValley;
 using StardewValley.Events;
 
 namespace Bookcase.Events {

@@ -1,0 +1,11 @@
+﻿{
+    "radioactive.prefix": "Radioactive",
+    "radioactiveBar.name": "Radioactive Bar",
+    "radioactiveBar.description": "A mystical ingot forged from legend itself.",
+    "radioactiveHoe": "Radioactive Hoe",
+    "radioactiveWatercan": "Radioactive Watering Can",
+    "radioactivePickaxe": "Radioactive Pickaxe",
+    "radioactiveAxe": "Radioactive Axe",
+    "radioactiveSprinkler.name": "Radioactive Sprinkler",
+    "radioactiveSprinkler.description": "Waters the 120 adjacenet tiles every morning.",
+}

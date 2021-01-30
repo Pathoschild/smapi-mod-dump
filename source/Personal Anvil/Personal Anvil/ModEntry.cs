@@ -30,71 +30,49 @@ namespace PersonalAnvil
             helper.Events.Input.ButtonPressed += OnButtonPressed;
         }
 
-        private void OnSaveLoaded(object sender,
-            SaveLoadedEventArgs e)
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            if (_jsonAssets == null)
-                return;
+            if (_jsonAssets == null) return;
             _anvilId = _jsonAssets.GetBigCraftableId("Anvil");
-
-            if (_anvilId == -1)
-                Monitor.Log("Could not get the ID for the Anvil item",
-                    LogLevel.Warn);
+            if (_anvilId == -1) Monitor.Log("Could not get the ID for the Anvil item", LogLevel.Warn);
         }
 
-        private void OnButtonPressed(object sender,
-            ButtonPressedEventArgs e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!Context.IsWorldReady)
-                return;
+            if (!Context.IsWorldReady) return;
             if (e.Button == SButton.MouseLeft)
             {
                 _leftClickXPos = (int) e.Cursor.ScreenPixels.X;
                 _leftClickYPos = (int) e.Cursor.ScreenPixels.Y;
             }
 
-            if (!e.Button.IsActionButton())
-                return;
-            var tile = Helper.Input.GetCursorPosition()
-                .Tile;
-            Game1.currentLocation.Objects.TryGetValue(tile,
-                out var obj);
-            if (obj == null || !obj.bigCraftable.Value)
-                return;
+            if (!e.Button.IsActionButton()) return;
+            var tile = Helper.Input.GetCursorPosition().Tile;
+            Game1.currentLocation.Objects.TryGetValue(tile, out var obj);
+            if (obj == null || !obj.bigCraftable.Value) return;
             if (obj.ParentSheetIndex.Equals(_anvilId))
                 Game1.activeClickableMenu = new WorkbenchGeodeMenu(Helper.Content);
         }
 
-        private void OnGameLaunched(object sender,
-            GameLaunchedEventArgs e)
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             _jsonAssets = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
-            _jsonAssets.LoadAssets(Path.Combine(Helper.DirectoryPath,
-                "assets"));
+            _jsonAssets.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets"));
         }
 
-        private void OnUpdateTicked(object sender,
-            UpdateTickedEventArgs e)
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!e.IsMultipleOf(4) ||
-                !Helper.Input.IsDown(SButton.MouseLeft) ||
-                !(Game1.activeClickableMenu is WorkbenchGeodeMenu menu))
-                return;
-            var clintNotBusy = menu.heldItem != null &&
-                               (menu.heldItem.Name.Contains("Geode") || menu.heldItem.ParentSheetIndex == 275) &&
-                               Game1.player.Money >= 0 &&
-                               menu.GeodeAnimationTimer <= 0;
-            var playerHasRoom = Game1.player.freeSpotsInInventory() > 1 ||
-                                Game1.player.freeSpotsInInventory() == 1 &&
-                                menu.heldItem != null &&
-                                menu.heldItem.Stack == 1;
+            // Re-send a left click to the geode menu if one is already not being broken, the player has the room and money for it, and the click was on the geode spot.
+            if (!e.IsMultipleOf(4) || !Helper.Input.IsDown(SButton.MouseLeft) ||
+                !(Game1.activeClickableMenu is WorkbenchGeodeMenu menu)) return;
+            var clintNotBusy = menu.heldItem != null && Utility.IsGeode(menu.heldItem) && menu.GeodeAnimationTimer <= 0;
 
-            if (clintNotBusy &&
-                playerHasRoom &&
-                menu.GeodeSpot.containsPoint(_leftClickXPos,
-                    _leftClickYPos))
-                menu.receiveLeftClick(_leftClickXPos,
-                    _leftClickYPos);
+            var playerHasRoom = Game1.player.freeSpotsInInventory() > 1 || Game1.player.freeSpotsInInventory() == 1 && menu.heldItem != null && menu.heldItem.Stack == 1;
+
+            if (clintNotBusy && playerHasRoom && menu.GeodeSpot.containsPoint(_leftClickXPos, _leftClickYPos))
+            {
+                menu.receiveLeftClick(_leftClickXPos, _leftClickYPos, false);
+            }
         }
     }
 

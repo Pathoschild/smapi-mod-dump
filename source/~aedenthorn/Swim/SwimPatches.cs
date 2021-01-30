@@ -25,17 +25,17 @@ using xTile.Tiles;
 namespace Swim
 {
     internal class SwimPatches
-	{
-		private static IMonitor Monitor;
-		private static ModConfig Config;
-		private static IModHelper Helper;
+    {
+        private static IMonitor Monitor;
+        private static ModConfig Config;
+        private static IModHelper Helper;
 
-		public static void Initialize(IMonitor monitor, IModHelper helper, ModConfig config)
-		{
-			Monitor = monitor;
-			Config = config;
-			Helper = helper;
-		}
+        public static void Initialize(IMonitor monitor, IModHelper helper, ModConfig config)
+        {
+            Monitor = monitor;
+            Config = config;
+            Helper = helper;
+        }
         public static void FarmerRenderer_draw_Prefix(Farmer who, ref bool __state)
         {
             try
@@ -267,6 +267,21 @@ namespace Swim
         }
 
 
+        public static void Wand_DoFunction_Prefix(ref Farmer who, ref bool __state)
+        {
+            if (who.bathingClothes)
+            {
+                who.bathingClothes.Value = false;
+                __state = true;
+            }
+        }
+        public static void Wand_DoFunction_Postfix(ref Farmer who, bool __state)
+        {
+            if(__state)
+            {
+                who.bathingClothes.Value = true;
+            }
+        }
         public static IEnumerable<CodeInstruction> Wand_DoFunction_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
 

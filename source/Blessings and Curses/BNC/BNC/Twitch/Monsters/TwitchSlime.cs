@@ -12,14 +12,17 @@ using BNC.Twitch;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Monsters;
+using System.Xml.Serialization;
 
 namespace BNC
 {
     class TwitchSlime : GreenSlime, ITwitchMonster
     {
+        public TwitchSlime() { }
 
         public TwitchSlime(Vector2 position, int currentMineLevel) : base(position, currentMineLevel) { }
 
+        [XmlIgnore]
         public string TwitchName { get; set; } = "null";
 
         public string GetTwitchName()
@@ -39,6 +42,8 @@ namespace BNC
         public void setTwitchName(string username)
         {
             TwitchName = username;
+            this.Name = username;
+            this.displayName = username;
         }
     }
 }

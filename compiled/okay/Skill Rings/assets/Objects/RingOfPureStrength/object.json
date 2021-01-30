@@ -1,0 +1,11 @@
+{
+  "Name": "Ring of Pure Strength",
+  "Description": "Makes you stronger, increasing combat effectiveness.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 10000,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Marlon",
+  "PurchasePrice": 25000,
+}

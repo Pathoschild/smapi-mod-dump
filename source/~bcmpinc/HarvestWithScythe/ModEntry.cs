@@ -95,8 +95,8 @@ namespace StardewHack.HarvestWithScythe
         }
     
 #region CanHarvest methods
-        public const int HARVEST_PLUCKING = 0;
-        public const int HARVEST_SCYTHING = 1;
+        public const int HARVEST_PLUCKING = Crop.grabHarvest;
+        public const int HARVEST_SCYTHING = Crop.sickleHarvest;
 
         /** Check whether the used harvest method is allowed for the given harvest mode. 
          * Method: 0 = plucking, 1 = scything.

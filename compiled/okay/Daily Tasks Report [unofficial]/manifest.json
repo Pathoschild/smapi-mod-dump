@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "DailyTasksReport",
 	"Author": "GuiNoya",
-	"Version": "1.4.2-unofficial.6-prism99",
+	"Version": "1.4.2-unofficial.7-prism99",
 	"Description": "Shows information about some daily tasks in your farm",
 	"UniqueID": "GuiNoya.DailyTasksReport",
 	"EntryDll": "DailyTasksReport.dll",

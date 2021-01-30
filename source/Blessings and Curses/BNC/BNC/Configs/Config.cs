@@ -43,7 +43,7 @@ namespace BNC.Configs
 
         public int Mine_Augment_Every_x_Levels { get; set; } = 5;
 
-        public int Twitch_Vote_Time_In_Secs { get; set; } = 45;
+        public int Twitch_Vote_Time_In_Secs { get; set; } = 20;
 
         public bool Show_Debug_Text { get; set; } = false;
 

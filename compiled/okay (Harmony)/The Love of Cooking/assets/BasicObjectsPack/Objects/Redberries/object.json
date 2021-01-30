@@ -1,0 +1,18 @@
+{
+    // Object data
+    "Name": "blueberry.cac.redberry",
+    "Description": "...",
+    "Category": "Fruit",
+    "Edibility": 12,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 24,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null
+}

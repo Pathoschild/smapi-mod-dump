@@ -31,5 +31,7 @@ namespace ZoomLevel
         public float MaxZoomOutLevelValue { get; set; } = 0.35f;
 
         public float MaxZoomInLevelValue { get; set; } = 2.00f;
+
+        public bool DisableControllerButton { get; set; } = false;
     }
 }

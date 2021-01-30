@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7651
+IDs: Wellbott.FishWell
+update keys: Nexus:7651, GitHub:Wellbott/StardewValleyMods

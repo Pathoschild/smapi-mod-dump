@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 443e0b8e2ddbfdf2b53e595de96ebb160d5f90e9
+   commit 6381f5869fd9def2b761c3a9deff0abcc9e5a559
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Fri Jan 1 13:38:14 2021 -0600
+   Date:   Sun Jan 10 11:46:20 2021 -0600
    
-       Fix BuriedItems being impassable in SDV 1.5
+       Add warning for areas with no spawn tiles, increment manifest
    

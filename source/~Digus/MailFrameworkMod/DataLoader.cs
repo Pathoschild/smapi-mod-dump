@@ -66,6 +66,9 @@ namespace MailFrameworkMod
                     {
                         Dictionary<int, string> objects = null;
                         Dictionary<int, string> bigObjects = null;
+                        Dictionary<int, string> furnitures = null;
+                        Dictionary<int, string> weapons = null;
+                        Dictionary<int, string> boots = null;
 
                         //Populate all Indexs based on the given name. Ignore the letter otherwise.
                         if (mailItem.CollectionConditions != null && mailItem.CollectionConditions.Any(c =>
@@ -178,26 +181,35 @@ namespace MailFrameworkMod
                                         }
                                         break;
                                     case ItemType.Tool:
+                                        Tool tool = null;
                                         switch (i.Name)
                                         {
                                             case "Axe":
-                                                attachments.Add(new Axe());
+                                                tool = new Axe();
                                                 break;
                                             case "Hoe":
-                                                attachments.Add(new Hoe());
+                                                tool = new Hoe();
                                                 break;
                                             case "Watering Can":
-                                                attachments.Add(new WateringCan());
+                                                tool = new WateringCan();
                                                 break;
                                             case "Scythe":
-                                                attachments.Add(new MeleeWeapon(47));
+                                                tool = new MeleeWeapon(47);
                                                 break;
                                             case "Pickaxe":
-                                                attachments.Add(new Pickaxe());
+                                                tool = new Pickaxe();
                                                 break;
                                             default:
                                                 MailFrameworkModEntry.ModMonitor.Log($"Tool with name {i.Name} not found for letter {mailItem.Id}.",LogLevel.Warn);
                                                 break;
+                                        }
+                                        if (tool != null)
+                                        {
+                                            if (i.Name != "Scythe")
+                                            {
+                                                tool.UpgradeLevel = i.UpgradeLevel;
+                                            }
+                                            attachments.Add(tool);
                                         }
                                         break;
                                     case ItemType.Ring:
@@ -228,6 +240,78 @@ namespace MailFrameworkMod
                                         else
                                         {
                                             MailFrameworkModEntry.ModMonitor.Log($"An index value is required to attach an ring for letter {mailItem.Id}.", LogLevel.Warn);
+                                        }
+                                        break;
+                                    case ItemType.Furniture:
+                                        if (i.Name != null)
+                                        {
+                                            furnitures = furnitures ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\Furniture", ContentSource.GameContent);
+                                            KeyValuePair<int, string> pair = furnitures.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                                            if (pair.Value != null)
+                                            {
+                                                i.Index = pair.Key;
+                                            }
+                                            else
+                                            {
+                                                MailFrameworkModEntry.ModMonitor.Log($"No furniture found with the name {i.Name} for letter {mailItem.Id}.", LogLevel.Warn);
+                                            }
+                                        }
+
+                                        if (i.Index.HasValue)
+                                        {
+                                            attachments.Add(Furniture.GetFurnitureInstance(i.Index.Value));
+                                        }
+                                        else
+                                        {
+                                            MailFrameworkModEntry.ModMonitor.Log($"An index value is required to attach a furniture for letter {mailItem.Id}.", LogLevel.Warn);
+                                        }
+                                        break;
+                                    case ItemType.Weapon:
+                                        if (i.Name != null)
+                                        {
+                                            weapons = weapons ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\Weapons", ContentSource.GameContent);
+                                            KeyValuePair<int, string> pair = weapons.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                                            if (pair.Value != null)
+                                            {
+                                                i.Index = pair.Key;
+                                            }
+                                            else
+                                            {
+                                                MailFrameworkModEntry.ModMonitor.Log($"No weapon found with the name {i.Name} for letter {mailItem.Id}.", LogLevel.Warn);
+                                            }
+                                        }
+
+                                        if (i.Index.HasValue)
+                                        {
+                                            attachments.Add(new MeleeWeapon(i.Index.Value));
+                                        }
+                                        else
+                                        {
+                                            MailFrameworkModEntry.ModMonitor.Log($"An index value is required to attach a weapon for letter {mailItem.Id}.", LogLevel.Warn);
+                                        }
+                                        break;
+                                    case ItemType.Boots:
+                                        if (i.Name != null)
+                                        {
+                                            boots = boots ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\Boots", ContentSource.GameContent);
+                                            KeyValuePair<int, string> pair = boots.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                                            if (pair.Value != null)
+                                            {
+                                                i.Index = pair.Key;
+                                            }
+                                            else
+                                            {
+                                                MailFrameworkModEntry.ModMonitor.Log($"No boots found with the name {i.Name} for letter {mailItem.Id}.", LogLevel.Warn);
+                                            }
+                                        }
+
+                                        if (i.Index.HasValue)
+                                        {
+                                            attachments.Add(new Boots(i.Index.Value));
+                                        }
+                                        else
+                                        {
+                                            MailFrameworkModEntry.ModMonitor.Log($"An index value is required to attach a boots for letter {mailItem.Id}.", LogLevel.Warn);
                                         }
                                         break;
                                 }

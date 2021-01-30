@@ -77,7 +77,7 @@ namespace CombineMachines.Helpers
                 }
             }
 
-            Vector2 TotalSize = new Vector2(SubstringSizes.Values.Sum(x => x.X), SubstringSizes.Values.Max(x => x.Y));
+            Vector2 TotalSize = new Vector2(SubstringSizes.Values.Sum(x => x.X), SubstringSizes.Values.DefaultIfEmpty(Vector2.Zero).Max(x => x.Y));
 
             Vector2 CurrentPosition = Position;
             foreach (string Substring in Substrings)

@@ -5,12 +5,9 @@ mods:
    Expanded Storage
 
 latest commit:
-   commit a5f6359882deec46253d24bb52a4a40486e602b5
-   Merge: e26c1ec 82d8953
-   Author: Matthew <ImJustMatt@users.noreply.github.com>
-   Date:   Thu Dec 31 19:28:56 2020 -0600
+   commit a6e123c7ea3e3d95f42a50da095ad608fcafa540
+   Author: Matthew <justmatt@outlook.com>
+   Date:   Thu Jan 28 00:52:19 2021 -0600
    
-       Merge pull request #3 from ImJustMatt/remove-extra-events
-       
-       Removed events that are no longer needed
+       Bump version
    

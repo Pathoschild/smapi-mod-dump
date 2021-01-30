@@ -5,9 +5,9 @@ mods:
    Blessings and Curses
 
 latest commit:
-   commit 62de9fd336691df5cf706d783ed0e390f98b1755
+   commit ec6f75edea324edfd9ee136d8f95905edb8b524b
    Author: GenDeathrow <gendeathrow@gmail.com>
-   Date:   Fri Jan 1 15:49:06 2021 -0600
+   Date:   Wed Jan 27 23:23:13 2021 -0600
    
-       Updated to latest version of stardew
+       Meteors, Gifts, and Fireballs Oh my
    

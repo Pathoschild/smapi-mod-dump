@@ -1,3 +1,0 @@
-page URL: https://github.com/Enaium-StardewValleyMods/TeleportPoint
-IDs: Enaium.TeleportPoint
-update keys: GitHub:Enaium-StardewValleyMods/TeleportPoint

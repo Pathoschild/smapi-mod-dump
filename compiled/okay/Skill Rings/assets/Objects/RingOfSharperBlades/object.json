@@ -1,0 +1,11 @@
+{
+  "Name": "Ring of Sharper Blades",
+  "Description": "Seems to make your swords sharper, increasing your combat skill.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 1000,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Marlon",
+  "PurchasePrice": 5000,
+}

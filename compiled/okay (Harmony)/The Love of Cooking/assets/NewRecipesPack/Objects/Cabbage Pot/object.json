@@ -1,0 +1,37 @@
+{
+	// Object data
+	"Name": "blueberry.cac.cabbagepot",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 30,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 65,
+	"IsColored": false,
+
+	// Object purchase
+	"CanPurchase": false,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 300,
+	"PurchaseRequirements": null,
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": 266, // Red Cabbage
+				"Count": 2
+			},
+			{
+				"Object": 24, // Parsnip
+				"Count": 2
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": false,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": null
+	}
+}

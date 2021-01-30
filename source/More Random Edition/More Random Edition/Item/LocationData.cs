@@ -201,8 +201,8 @@ namespace Randomizer
 				case Locations.Forest:
 					string forestSpringData = GetFishLocationDataForSeason(Seasons.Spring, "153 -1 145 0 143 0 137 1 132 0 706 0 702 0");
 					string forestSummerData = GetFishLocationDataForSeason(Seasons.Summer, "153 -1 145 0 144 -1 138 0 132 0 706 0 704 0 702 0");
-					string forestFallData = GetFishLocationDataForSeason(Seasons.Fall, "143 0 153 -1 140 -1 139 0 137 1 132 0 706 0 702 0 699 0");
-					string forestWinterData = GetFishLocationDataForSeason(Seasons.Winter, "699 0 143 0 153 -1 144 -1 141 -1 140 -1 132 0 707 0 702 0");
+					string forestFallData = GetFishLocationDataForSeason(Seasons.Fall, "143 0 153 -1 140 -1 139 0 137 1 132 0 706 0 702 0 699 0 269 1");
+					string forestWinterData = GetFishLocationDataForSeason(Seasons.Winter, "699 0 143 0 153 -1 144 -1 141 -1 140 -1 132 0 707 0 702 0 269 1");
 					return $"{forestSpringData}/{forestSummerData}/{forestFallData}/{forestWinterData}";
 				case Locations.Town:
 					string townSpringData = GetFishLocationDataForSeason(Seasons.Spring, "137 -1 132 -1 143 -1 145 -1 153 -1 706 -1");
@@ -213,14 +213,14 @@ namespace Randomizer
 				case Locations.Mountain:
 					string mountainSpringData = GetFishLocationDataForSeason(Seasons.Spring, "136 -1 142 -1 153 -1 702 -1 700 -1 163 -1");
 					string mountainSummerData = GetFishLocationDataForSeason(Seasons.Summer, "136 -1 142 -1 153 -1 138 -1 702 -1 700 -1 698 -1");
-					string mountainFallData = GetFishLocationDataForSeason(Seasons.Fall, "136 -1 140 -1 142 -1 153 -1 702 -1 700 -1");
-					string mountainWinterData = GetFishLocationDataForSeason(Seasons.Winter, "136 -1 140 -1 141 -1 153 -1 707 -1 702 -1 700 -1 698 -1");
+					string mountainFallData = GetFishLocationDataForSeason(Seasons.Fall, "136 -1 140 -1 142 -1 153 -1 702 -1 700 -1 269 -1");
+					string mountainWinterData = GetFishLocationDataForSeason(Seasons.Winter, "136 -1 140 -1 141 -1 153 -1 707 -1 702 -1 700 -1 698 -1 269 -1");
 					return $"{mountainSpringData}/{mountainSummerData}/{mountainFallData}/{mountainWinterData}";
 				case Locations.Railroad:
 					return $"-1/-1/-1/-1";
 				case Locations.Beach:
-					string beachSpringData = GetFishLocationDataForSeason(Seasons.Spring, "129 -1 131 -1 147 -1 148 -1 152 -1 708 -1");
-					string beachSummerData = GetFishLocationDataForSeason(Seasons.Summer, "128 -1 130 -1 146 -1 149 -1 150 -1 152 -1 155 -1 708 -1 701 -1");
+					string beachSpringData = GetFishLocationDataForSeason(Seasons.Spring, "129 -1 131 -1 147 -1 148 -1 152 -1 708 -1 267 -1");
+					string beachSummerData = GetFishLocationDataForSeason(Seasons.Summer, "128 -1 130 -1 146 -1 149 -1 150 -1 152 -1 155 -1 708 -1 701 -1 267 -1");
 					string beachFallData = GetFishLocationDataForSeason(Seasons.Fall, "129 -1 131 -1 148 -1 150 -1 152 -1 154 -1 155 -1 705 -1 701 -1");
 					string beachWinterData = GetFishLocationDataForSeason(Seasons.Winter, "708 -1 130 -1 131 -1 146 -1 147 -1 150 -1 151 -1 152 -1 154 -1 705 -1");
 					return $"{beachSpringData}/{beachSummerData}/{beachFallData}/{beachWinterData}";
@@ -256,7 +256,7 @@ namespace Randomizer
 			// in the backwoods, but doing this just to be safe
 			Locations location = (Location == Locations.Backwoods) ? Locations.Mountain : Location;
 
-			if (!Globals.Config.RandomizeFish) { return defaultString; }
+			if (!Globals.Config.Fish.Randomize) { return defaultString; }
 
 			List<int> allFishIds = FishItem.Get().Select(x => x.Id).ToList();
 			List<int> fishIds = FishItem.Get(location, season).Select(x => x.Id).ToList();

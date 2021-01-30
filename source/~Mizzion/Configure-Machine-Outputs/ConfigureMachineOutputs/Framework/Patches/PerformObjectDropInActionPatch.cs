@@ -10,9 +10,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
 using SObject = StardewValley.Object;
 
 namespace ConfigureMachineOutputs.Framework.Patches
@@ -66,6 +69,35 @@ namespace ConfigureMachineOutputs.Framework.Patches
             }
         }
 
+        //Check item input for the Deconstructor
+        public static SObject GetDeconstructorOutput(Item item)
+        {
+            if (!CraftingRecipe.craftingRecipes.ContainsKey(item.Name))
+            {
+                return null;
+            }
+            if (CraftingRecipe.craftingRecipes[item.Name].Split('/')[2].Split(' ').Count() > 1)
+            {
+                return null;
+            }
+            if (Utility.IsNormalObjectAtParentSheetIndex(item, 710))
+            {
+                return new SObject(334, 2);
+            }
+            string[] ingredients = CraftingRecipe.craftingRecipes[item.Name].Split('/')[0].Split(' ');
+            List<SObject> ingredient_objects = new List<SObject>();
+            for (int i = 0; i < ingredients.Count(); i += 2)
+            {
+                ingredient_objects.Add(new SObject(Convert.ToInt32(ingredients[i]), Convert.ToInt32(ingredients[i + 1])));
+            }
+            if (ingredient_objects.Count == 0)
+            {
+                return null;
+            }
+            ingredient_objects.Sort((SObject a, SObject b) => a.sellToStorePrice(-1L) * a.Stack - b.sellToStorePrice(-1L) * b.Stack);
+            return ingredient_objects.Last();
+        }
+
         //Method to make it easier checking if the player has enough resources.
         private static bool HasEnough(int item, int amt)
         {
@@ -107,6 +139,28 @@ namespace ConfigureMachineOutputs.Framework.Patches
                     return true;
                 }
             }
+            else if (machine.Name.Equals("Ostrich Incubator"))
+            {
+                if (machine.heldObject.Value == null && (int)inputItem.ParentSheetIndex == 289)
+                {
+                    machine.heldObject.Value = new SObject(inputItem.ParentSheetIndex, 1);
+                    if (!probe)
+                    {
+                        who.currentLocation.playSound("coin");
+                        machine.MinutesUntilReady = 15000;
+                        if (who.professions.Contains(2))
+                        {
+                            machine.MinutesUntilReady /= 2;
+                        }
+                        machine.ParentSheetIndex++;
+                        if (who?.currentLocation is AnimalHouse)
+                        {
+                            ((AnimalHouse) who.currentLocation).hasShownIncubatorBuildingFullMessage = false;
+                        }
+                    }
+                    return true;
+                }
+            }
             else if (machine.Name.Equals("Slime Incubator"))
             {
                 if (machine.heldObject.Value == null && inputItem.Name.Contains("Slime Egg"))
@@ -122,6 +176,178 @@ namespace ConfigureMachineOutputs.Framework.Patches
                     }
                     return true;
                 }
+            }
+            else if (machine.Name.Equals("Deconstructor"))
+            {
+                //Get Calculations
+                _input = 1;//_config.Machines.Deconstructor.CustomDeconstructorEnabled ? _config.Machines.Charcoal.CharcoalInputMultiplier : 1;
+                _minOut = _config.Machines.Deconstructor.CustomDeconstructorEnabled ? _config.Machines.Deconstructor.DeconstructorMinOutput : 1;
+                _maxOut = _config.Machines.Deconstructor.CustomDeconstructorEnabled ? _config.Machines.Deconstructor.DeconstructorMaxOutput : 1;
+                _rnd = new Random();
+                int totalInput = _config.Machines.Deconstructor.CustomDeconstructorEnabled ? _input * 1 : 1;
+                _output = _rnd.Next(_minOut, _maxOut) * _input;
+
+
+                SObject decon = GetDeconstructorOutput(inputItem);
+                if (decon != null)
+                {
+                    machine.heldObject.Value = new SObject(inputItem.ParentSheetIndex, 1);
+                    if (!probe)
+                    {
+                        machine.heldObject.Value = decon;
+                        machine.MinutesUntilReady = 60;
+                        machine.heldObject.Value.Stack = _output;
+                        Game1.playSound("furnace");
+                        Game1.player.removeItemsFromInventory(inputItem.ParentSheetIndex, 1);
+                    }
+
+                    return true;
+                }
+
+                return false;
+                /*
+                else if (this.name.Equals("Deconstructor"))
+                {
+                    Object deconstructor_output = this.GetDeconstructorOutput(dropIn);
+                    if (deconstructor_output != null)
+                    {
+                        this.heldObject.Value = new Object(dropIn.parentSheetIndex, 1);
+                        if (!probe)
+                        {
+                            this.heldObject.Value = deconstructor_output;
+                            this.MinutesUntilReady = 60;
+                            Game1.playSound("furnace");
+                            return true;
+                        }
+                        return true;
+                    }
+                    if (!probe)
+                    {
+                        if (Object.autoLoadChest == null)
+                        {
+                            Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Deconstructor_fail"));
+                        }
+                        return false;
+                    }
+                }*/
+            }
+            else if (machine.Name.Equals("Geode Crusher"))
+            {
+                _input = 1;//_config.Machines.GeodeCrusher.CustomGeodeCrusherEnabled ? _config.Machines.GeodeCrusher.GeodeCrusherInputMultiplier : 1;
+                _minOut = _config.Machines.GeodeCrusher.CustomGeodeCrusherEnabled ? _config.Machines.GeodeCrusher.GeodeCrusherMinOutput : 1;
+                _maxOut = _config.Machines.GeodeCrusher.CustomGeodeCrusherEnabled ? _config.Machines.GeodeCrusher.GeodeCrusherMaxOutput : 1;
+                _rnd = new Random();
+                int totalInput = _config.Machines.GeodeCrusher.CustomGeodeCrusherEnabled ? _input * 1 : 1;
+                _output = _rnd.Next(_minOut, _maxOut) * _input;
+
+                if (who.IsLocalPlayer && who.getTallyOfObject(382, false) <= 0)
+                {
+                    if (!probe && who.IsLocalPlayer && SObject.autoLoadChest == null)
+                    {
+                        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12772"));
+                    }
+                    return false;
+                }
+                //All passed now we process
+                SObject geode_item = (SObject)Utility.getTreasureFromGeode(inputItem);
+                if (machine.heldObject.Value == null)
+                {
+                    if (!Utility.IsGeode(inputItem, disallow_special_geodes: true) || geode_item == null)
+                    {
+                        return false;
+                    }
+
+                    machine.heldObject.Value = geode_item;
+                    if (!probe)
+                    {
+                        Game1.stats.GeodesCracked++;
+                        machine.MinutesUntilReady = 60;
+                        machine.heldObject.Value.Stack = _output;
+                    }
+                    if (probe)
+                    {
+                        return true;
+                    }
+                    machine.showNextIndex.Value = true;
+                    Utility.addSmokePuff(who.currentLocation, machine.TileLocation * 64f + new Vector2(4f, -48f), 200);
+                    Utility.addSmokePuff(who.currentLocation, machine.TileLocation * 64f + new Vector2(-16f, -56f), 300);
+                    Utility.addSmokePuff(who.currentLocation, machine.TileLocation * 64f + new Vector2(16f, -52f), 400);
+                    Utility.addSmokePuff(who.currentLocation, machine.TileLocation * 64f + new Vector2(32f, -56f), 200);
+                    Utility.addSmokePuff(who.currentLocation, machine.TileLocation * 64f + new Vector2(40f, -44f), 500);
+                    Game1.playSound("drumkit4");
+                    Game1.playSound("stoneCrack");
+                    DelayedAction.playSoundAfterDelay("steam", 200);
+                    machine.ConsumeInventoryItem(who, 382, 1);
+                    inputItem.Stack--;
+                    if (inputItem.Stack <= 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (machine.Name.Equals("Bone Mill"))
+            {
+                int numItemsToTake = 0;
+                int[] itemsToTakeNum = new[] {579, 580, 581, 582, 583, 584, 585, 586, 587, 588, 589, 820, 821, 822, 823, 824, 825, 826, 827, 828};
+
+                //Grab Config settings
+                _input = 1;//_config.Machines.BoneMill.CustomBoneMillEnabled ? _config.Machines.BoneMill.BoneMillInputMultiplier : 1;
+                _minOut = _config.Machines.BoneMill.CustomBoneMillEnabled ? _config.Machines.BoneMill.BoneMillMinOutput : 1;
+                _maxOut = _config.Machines.BoneMill.CustomBoneMillEnabled ? _config.Machines.BoneMill.BoneMillMaxOutput : 1;
+                _rnd = new Random();
+                int totalInput = _config.Machines.BoneMill.CustomBoneMillEnabled ? _input * 1 : 1;
+                _output = _rnd.Next(_minOut, _maxOut) * _input;
+
+                //Start to process machine
+                if (itemsToTakeNum.Contains(inputItem.ParentSheetIndex))
+                    numItemsToTake = 1;
+                else if (inputItem.ParentSheetIndex == 881)
+                    numItemsToTake = 5;
+                if (numItemsToTake == 0)
+                    return false;
+                else if (inputItem.Stack < numItemsToTake)
+                {
+                    if (SObject.autoLoadChest == null)
+                    {
+                        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:bonemill_5"));
+                    }
+                    return false;
+                }
+                int which = -1;
+                    int howMany = 1;
+                    switch (Game1.random.Next(4))
+                    {
+                        case 0:
+                            which = 466;
+                            howMany = _config.Machines.BoneMill.CustomBoneMillEnabled ? _output : 3;
+                            break;
+                        case 1:
+                            which = 465;
+                            howMany = _config.Machines.BoneMill.CustomBoneMillEnabled ? _output : 5;
+                            break;
+                        case 2:
+                            which = 369;
+                            howMany = _config.Machines.BoneMill.CustomBoneMillEnabled ? _output : 10;
+                            break;
+                        case 3:
+                            which = 805;
+                            howMany = _config.Machines.BoneMill.CustomBoneMillEnabled ? _output : 5;
+                            break;
+                    }
+                    if (Game1.random.NextDouble() < 0.1)
+                    {
+                        howMany *= 2;
+                    }
+                    machine.heldObject.Value = new SObject(which, howMany);
+                    if (!probe)
+                    {
+                        machine.ConsumeInventoryItem(who, inputItem, numItemsToTake);
+                        machine.MinutesUntilReady = 240;
+                        who.currentLocation.playSound("skeletonStep");
+                        DelayedAction.playSoundAfterDelay("skeletonHit", 150);
+                    }
+                
+               
             }
             else if (machine.Name.Equals("Keg"))
             {
@@ -172,6 +398,20 @@ namespace ConfigureMachineOutputs.Framework.Patches
                                 alphaFade = 0.005f
                             });
                             Game1.player.removeItemsFromInventory(inputItem.ParentSheetIndex, totalInput);
+                        }
+                        return false;
+                    case 815:
+                        machine.heldObject.Value = new SObject(Vector2.Zero, 614, "Green Tea", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                        if (!probe)
+                        {
+                            machine.heldObject.Value.name = "Green Tea";
+                            who.currentLocation.playSound("Ship");
+                            who.currentLocation.playSound("bubbles");
+                            machine.MinutesUntilReady = 180;
+                            mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(256, 1856, 64, 128), 80f, 6, 999999, machine.TileLocation * 64f + new Vector2(0f, -128f), flicker: false, flipped: false, (machine.TileLocation.Y + 1f) * 64f / 10000f + 0.0001f, 0f, Color.Lime * 0.75f, 1f, 0f, 0f, 0f)
+                            {
+                                alphaFade = 0.005f
+                            });
                         }
                         return false;
                     case 340: //Honey
@@ -225,40 +465,52 @@ namespace ConfigureMachineOutputs.Framework.Patches
                         switch (inputItem.Category)
                         {
                             case -79://Fruit
-                                machine.heldObject.Value = new SObject(Vector2.Zero, 348, inputItem.Name + " Wine",
-                                    false, true, false, false);
+                                machine.heldObject.Value = new StardewValley.Object(Vector2.Zero, 348, "BitchAss Wine", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
                                 machine.heldObject.Value.Price = inputItem.Price * 3;
                                 if (!probe)
                                 {
-                                    machine.heldObject.Value.Stack = _output;
-                                    machine.heldObject.Value.Name = inputItem.Name + " Wine";
-                                    machine.heldObject.Value.preserve.Value = new SObject.PreserveType?(SObject.PreserveType.Wine);
+                                    machine.heldObject.Value.Stack = PerformObjectDropInActionPatch._output;
+                                    machine.heldObject.Value.name = inputItem.Name + " Wine";
+                                    machine.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Wine;
+                                    machine.heldObject.Value.preservedParentSheetIndex.Value = inputItem.ParentSheetIndex;
                                     who.currentLocation.playSound("Ship");
                                     who.currentLocation.playSound("bubbles");
                                     machine.MinutesUntilReady = 10000;
-                                    mp.broadcastSprites(who.currentLocation,
-                                        new TemporaryAnimatedSprite("TileSheets\\animations",
-                                            new Rectangle(256, 1856, 64, 128), 80f, 6, 999999,
-                                            machine.TileLocation * 64f + new Vector2(0.0f, (float)sbyte.MinValue), false,
-                                            false,
-                                            (float)(((double)machine.TileLocation.Y + 1.0) * 64.0 / 10000.0 +
-                                                    9.99999974737875E-05), 0.0f, Color.Yellow * 0.75f, 1f, 0.0f, 0.0f, 0.0f,
-                                            false)
-                                        {
-                                            alphaFade = 0.005f
-                                        });
+                                    mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(256, 1856, 64, 128), 80f, 6, 999999, __instance.TileLocation * 64f + new Vector2(0f, -128f), flicker: false, flipped: false, (float)(((double)__instance.TileLocation.Y + 1.0) * 64.0 / 10000.0 + 9.99999974737875E-05), 0f, Color.Lavender * 0.75f, 1f, 0f, 0f, 0f)
+                                    {
+                                        alphaFade = 0.005f
+                                    });
                                     Game1.player.removeItemsFromInventory(inputItem.ParentSheetIndex, totalInput);
                                 }
                                 return false;
                             case -75://Vegetable
-                                machine.heldObject.Value = new SObject(Vector2.Zero, 350, inputItem.Name + " Juice",
+                                machine.heldObject.Value = new StardewValley.Object(Vector2.Zero, 350, "BitchAss Juice", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                                machine.heldObject.Value.Price = (int)((double)(inputItem.Price * 2.5));
+                                if (!probe)
+                                {
+                                    machine.heldObject.Value.Stack = PerformObjectDropInActionPatch._output;
+                                    machine.heldObject.Value.name = inputItem.Name + " Juice";
+                                    machine.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Juice;
+                                    machine.heldObject.Value.preservedParentSheetIndex.Value = inputItem.ParentSheetIndex;
+                                    who.currentLocation.playSound("Ship");
+                                    who.currentLocation.playSound("bubbles");
+                                    machine.MinutesUntilReady = 10000;
+                                    mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(256, 1856, 64, 128), 80f, 6, 999999, __instance.TileLocation * 64f + new Vector2(0f, -128f), flicker: false, flipped: false, (float)(((double)__instance.TileLocation.Y + 1.0) * 64.0 / 10000.0 + 9.99999974737875E-05), 0f, Color.Lavender * 0.75f, 1f, 0f, 0f, 0f)
+                                    {
+                                        alphaFade = 0.005f
+                                    });
+                                    Game1.player.removeItemsFromInventory(inputItem.ParentSheetIndex, totalInput);
+                                }
+                                return false;
+                                /*
+                                machine.heldObject.Value = new SObject(Vector2.Zero, 350, "Bitch Juice",
                                     false, true, false, false);
                                 machine.heldObject.Value.Price = (int)((double)(inputItem.Price * 2.5));
                                 if (!probe)
                                 {
                                     machine.heldObject.Value.Stack = _output;
-                                    machine.heldObject.Value.Name = inputItem.Name + " Juice";
-                                    machine.heldObject.Value.preserve.Value = new SObject.PreserveType?(SObject.PreserveType.Juice);
+                                    machine.heldObject.Value.name = inputItem.Name + " Juice";
+                                   machine.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Juice;//new SObject.PreserveType?(SObject.PreserveType.Juice);
                                     who.currentLocation.playSound("Ship");
                                     who.currentLocation.playSound("bubbles");
                                     machine.MinutesUntilReady = 4000;
@@ -275,7 +527,7 @@ namespace ConfigureMachineOutputs.Framework.Patches
                                         });
                                     Game1.player.removeItemsFromInventory(inputItem.ParentSheetIndex, totalInput);
                                 }
-                                return false;
+                                return false;*/
                         }
                         break;
                 }
@@ -334,6 +586,63 @@ namespace ConfigureMachineOutputs.Framework.Patches
                             Game1.player.removeItemsFromInventory(inputItem.ParentSheetIndex, totalInput);
                         }
                         return false;
+                }
+                switch ((int)inputItem.ParentSheetIndex)
+                {
+                    case 829:
+                        machine.heldObject.Value = new SObject(Vector2.Zero, 342, "Pickled " + inputItem.Name, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                        machine.heldObject.Value.Price = 50 + inputItem.Price * 2;
+                        if (!probe)
+                        {
+                            machine.heldObject.Value.name = "Pickled " + inputItem.Name;
+                            machine.heldObject.Value.Stack = _output;
+                            machine.heldObject.Value.preserve.Value = SObject.PreserveType.Pickle;
+                            machine.heldObject.Value.preservedParentSheetIndex.Value = inputItem.ParentSheetIndex;
+                            who.currentLocation.playSound("Ship");
+                            machine.MinutesUntilReady = 4000;
+                            mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(256, 1856, 64, 128), 80f, 6, 999999, machine.TileLocation * 64f + new Vector2(0f, -128f), flicker: false, flipped: false, (machine.TileLocation.Y + 1f) * 64f / 10000f + 0.0001f, 0f, Color.White * 0.75f, 1f, 0f, 0f, 0f)
+                            {
+                                alphaFade = 0.005f
+                            });
+                        }
+                        return false;
+                    case 812:
+                        {
+                            if ((int)inputItem.preservedParentSheetIndex.Value == 698)
+                            {
+                                machine.heldObject.Value = new SObject(445, 1);
+                                if (!probe)
+                                {
+                                    machine.MinutesUntilReady = 6000;
+                                    who.currentLocation.playSound("Ship");
+                                    mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(256, 1856, 64, 128), 80f, 6, 999999, machine.TileLocation * 64f + new Vector2(0f, -128f), flicker: false, flipped: false, (machine.TileLocation.Y + 1f) * 64f / 10000f + 0.0001f, 0f, Color.LightBlue * 0.75f, 1f, 0f, 0f, 0f)
+                                    {
+                                        alphaFade = 0.005f
+                                    });
+                                }
+                                return false;
+                            }
+                            SObject aged_roe = null;
+                            ColoredObject colored_object;
+                            aged_roe = (((colored_object = (inputItem as ColoredObject)) == null) ? new SObject(447, 1) : new ColoredObject(447, 1, colored_object.color));
+                            machine.heldObject.Value = aged_roe;
+                            machine.heldObject.Value.Price = inputItem.Price * 2;
+                            if (!probe)
+                            {
+                                machine.MinutesUntilReady = 4000;
+                                machine.heldObject.Value.Stack = _output;
+                                machine.heldObject.Value.name = "Aged " + inputItem.Name;
+                                machine.heldObject.Value.preserve.Value = SObject.PreserveType.AgedRoe;
+                                machine.heldObject.Value.Category = -26;
+                                machine.heldObject.Value.preservedParentSheetIndex.Value = inputItem.preservedParentSheetIndex.Value;
+                                who.currentLocation.playSound("Ship");
+                                mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(256, 1856, 64, 128), 80f, 6, 999999, machine.TileLocation * 64f + new Vector2(0f, -128f), flicker: false, flipped: false, (machine.TileLocation.Y + 1f) * 64f / 10000f + 0.0001f, 0f, Color.LightBlue * 0.75f, 1f, 0f, 0f, 0f)
+                                {
+                                    alphaFade = 0.005f
+                                });
+                            }
+                            return false;
+                        }
                 }
             }
             else if (machine.Name.Equals("Cheese Press"))

@@ -9,7 +9,9 @@
 *************************************************/
 
 using ItemBags.Bags;
+using ItemBags.Persistence;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -38,9 +40,7 @@ namespace ItemBags
             Helper.Events.Multiplayer.ModMessageReceived += Multiplayer_ModMessageReceived;
         }
 
-        private const string ForceResyncCommandType = "ForceFarmhandResync";
-
-        private static void Multiplayer_PeerContextReceived(object sender, StardewModdingAPI.Events.PeerContextReceivedEventArgs e)
+        private static void Multiplayer_PeerContextReceived(object sender, PeerContextReceivedEventArgs e)
         {
             //  Whenever a new client connects to the host, force the NetStrings that store bag data to get re-loaded on the other clients
             if (Context.IsMainPlayer)
@@ -64,22 +64,34 @@ namespace ItemBags
                 {
                     Helper.Multiplayer.SendMessage(PendingSync, ForceResyncCommandType, new string[] { ItemBagsMod.ModUniqueId }, new long[] { ConnectedFarmer.UniqueMultiplayerID });
                 }
+
+                Helper.Multiplayer.SendMessage("", OnConnectedCommandType, new string[] { ItemBagsMod.ModUniqueId }, new long[] { ConnectedFarmer.UniqueMultiplayerID });
             }
         }
 
-        private static void Multiplayer_ModMessageReceived(object sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
+        private const string ForceResyncCommandType = "ForceFarmhandResync";
+        private const string OnConnectedCommandType = "OnConnectedToHost";
+
+        private static void Multiplayer_ModMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
-            if (e.FromModID == ItemBagsMod.ModUniqueId && e.Type == ForceResyncCommandType)
+            if (e.FromModID == ItemBagsMod.ModUniqueId)
             {
-                Dictionary<int, string> LatestItemData = e.ReadAs<Dictionary<int, string>>();
-                foreach (KeyValuePair<int, string> KVP in LatestItemData)
+                if (e.Type == ForceResyncCommandType)
                 {
-                    int InventoryIndex = KVP.Key;
-                    string Data = KVP.Value;
-                    if (Game1.player.Items[InventoryIndex] is ItemBag IB)
+                    Dictionary<int, string> LatestItemData = e.ReadAs<Dictionary<int, string>>();
+                    foreach (var KVP in LatestItemData)
                     {
-                        IB.TryDeserializeFromString(Data, out Exception Error);
+                        int InventoryIndex = KVP.Key;
+                        string Data = KVP.Value;
+                        if (Game1.player.Items[InventoryIndex] is ItemBag IB)
+                        {
+                            IB.TryDeserializeFromString(Data, out Exception Error);
+                        }
                     }
+                }
+                else if (e.Type == OnConnectedCommandType)
+                {
+                    ModdedBag.OnConnectedToHost();
                 }
             }
         }

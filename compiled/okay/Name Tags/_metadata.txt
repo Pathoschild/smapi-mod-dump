@@ -1,0 +1,3 @@
+page URL: https://stardewvalley.curseforge.com/projects/nametags
+IDs: Enaium.NameTags
+update keys: GitHub:Enaium-StardewValleyMods/NameTags

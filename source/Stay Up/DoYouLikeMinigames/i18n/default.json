@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/su226/StardewValleyMods
+**
+*************************************************/
+
+{
+  "abigail_game": "Journey of the Prairie King",
+  "abigail_game_two": "JOTPK (2P)",
+  "calico_jack": "Calico Jack (Practice)",
+  "calico_jack_small": "Calico Jack (Small)",
+  "calico_jack_big": "Calico Jack (Big)",
+  "crane": "Crane (500g)",
+  "crane_practice": "Crane (Practice)",
+  "darts": "Darts",
+  "fishing": "Fair Fishing",
+  "minecart_endless": "Junimo Kart (Endless)",
+  "minecart_progress": "Junimo Kart (Progress)",
+  "old_minecart_endless": "Junimo Kart (Old Endless)",
+  "old_minecart_progress": "Junimo Kart (Old Progress)",
+  "slots": "Calico Spin",
+  "target": "Fair Slingshot",
+  "no_cinema": "Cinema doesn't exist",
+  "no_club_card": "You don't have club card",
+  "no_fair": "Haven't joined fair",
+  "no_friendship": "Not enough friendship to Abigail",
+  "no_island": "Haven't arrived island",
+  "no_money": "Not enough money",
+  "no_qi_coin": "Not enough Qi coin",
+  "no_skull_key": "You don't have skull key"
+}

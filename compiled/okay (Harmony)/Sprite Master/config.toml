@@ -1,15 +1,17 @@
 [Config]
-ConfigVersion = "0.11.3"
+ConfigVersion = "0.12.0"
 Enabled = true
 ToggleButton = "F11"
 PreferredMaxTextureDimension = 8192
-RequiredFreeMemory = 64
-RequiredFreeMemoryHysterisis = 1.5
-GarbageCollectAccountUnownedTextures = true
-GarbageCollectAccountOwnedTexture = true
+ShowIntroMessage = false
+DataStoreOverride = ""
+[Config.Garbage]
+CollectAccountUnownedTextures = true
+CollectAccountOwnedTextures = true
 LeakPreventTexture = false
 LeakPreventAll = false
-ShowIntroMessage = false
+RequiredFreeMemory = 64
+RequiredFreeMemoryHysterisis = 1.5
 [Config.Debug.Logging]
 LogInfo = true
 LogWarnings = true
@@ -27,7 +29,7 @@ ScaleBias = 0.1000000014901161
 MaxScale = 6
 MinimumTextureDimensions = 4
 EnableWrappedAddressing = true
-Blacklist = ["LooseSprites/Lighting/"]
+Blacklist = ["LooseSprites/Lighting/", "LooseSprites/Cloudy_Ocean_BG", "LooseSprites/Cloudy_Ocean_BG_Night"]
 [Config.Resample.BlockCompression]
 Enabled = true
 Synchronized = false
@@ -39,7 +41,7 @@ MinimumSizeTexels = 4
 IgnoreUnknown = false
 StrictList = ["LooseSprites/Cursors"]
 Whitelist = ["LooseSprites/font_bold", "Characters/Farmer/hairstyles", "Characters/Farmer/pants", "Characters/Farmer/shirts", "TileSheets/weapons", "TileSheets/bushes", "TerrainFeatures/grass", "TileSheets/debris", "TileSheets/animations", "Maps/springobjects", "Maps/summerobjects", "Maps/winterobjects", "Maps/fallobjects", "Buildings/houses", "TileSheets/furniture", "TerrainFeatures/tree1_spring", "TerrainFeatures/tree2_spring", "TerrainFeatures/tree3_spring", "TerrainFeatures/tree1_summer", "TerrainFeatures/tree2_summer", "TerrainFeatures/tree3_summer", "TerrainFeatures/tree1_fall", "TerrainFeatures/tree2_fall", "TerrainFeatures/tree3_fall", "TerrainFeatures/tree1_winter", "TerrainFeatures/tree2_winter", "TerrainFeatures/tree3_winter"]
-Blacklist = []
+Blacklist = ["LooseSprites/Cloudy_Ocean_BG", "LooseSprites/Cloudy_Ocean_BG_Night"]
 [Config.WrapDetection]
 edgeThreshold = 0.2000000029802322
 alphaThreshold = 1
@@ -52,9 +54,10 @@ MaxLoadsPerFrame = 2147483647
 [Config.MemoryCache]
 Enabled = true
 AlwaysFlush = false
-Compress = "LZ"
+Compress = "Zstd"
 Async = true
 [Config.FileCache]
 Enabled = true
-Compress = "LZ"
+Compress = "Zstd"
 ForceCompress = false
+PreferSystemCompression = false

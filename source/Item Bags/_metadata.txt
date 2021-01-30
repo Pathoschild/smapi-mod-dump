@@ -5,9 +5,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit d80de7f880b0847fa2f61c44e61fde88daae7f03
+   commit 6359fc6b67648723a2348c542cb95b239fdd54e2
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Sat Dec 26 20:45:27 2020 -0500
+   Date:   Mon Jan 4 16:42:22 2021 -0500
    
-       Allow crafting/cooking with items inside bags that are in fridges or attached to workbenches (previously only allowed crafting/cooking with items inside bags within your inventory)
+       Added compatibility with SMAPI 3.8.2+ which uses different coordinates for Cursor.ScreenPixels than previous versions of SMAPI
    

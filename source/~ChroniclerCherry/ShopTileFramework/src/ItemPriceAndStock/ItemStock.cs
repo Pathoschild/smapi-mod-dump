@@ -14,6 +14,7 @@ using ShopTileFramework.Utility;
 using StardewModdingAPI;
 using StardewValley;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ShopTileFramework.ItemPriceAndStock
 {
@@ -103,8 +104,21 @@ namespace ShopTileFramework.ItemPriceAndStock
                 }
             }
 
-            AddById(pricemultiplier);
-            AddByName(pricemultiplier);
+            if (ItemType != "Seed")
+            {
+                AddById(pricemultiplier);
+                AddByName(pricemultiplier);
+            }
+            else
+            {
+                if (ItemIDs != null)
+                    ModEntry.monitor.Log(
+                        "ItemType of \"Seed\" is a special itemtype used for parsing Seeds from JA Pack crops and trees and does not support input via ID. If adding seeds via ID, please use the ItemType \"Object\" instead to directly sell the seeds/saplings");
+                if (ItemNames != null)
+                    ModEntry.monitor.Log(
+                        "ItemType of \"Seed\" is a special itemtype used for parsing Seeds from JA Pack crops and trees and does not support input via Name. If adding seeds via Name, please use the ItemType \"Object\" instead to directly sell the seeds/saplings");
+            }
+
             AddByJAPack(pricemultiplier);
 
             ItemsUtil.RandomizeStock(_itemPriceAndStock, MaxNumItemsSoldInItemStock);
@@ -166,6 +180,7 @@ namespace ShopTileFramework.ItemPriceAndStock
 
                         foreach (string crop in crops)
                         {
+                            if (ExcludeFromJAPacks != null && ExcludeFromJAPacks.Contains(crop)) continue;
                             int id = ItemsUtil.GetSeedId(crop);
                             if (id >0)
                                 _builder.AddItemToStock(id, pricemultiplier);
@@ -177,6 +192,7 @@ namespace ShopTileFramework.ItemPriceAndStock
 
                         foreach (string tree in trees)
                         {
+                            if (ExcludeFromJAPacks != null && ExcludeFromJAPacks.Contains(tree)) continue;
                             int id = ItemsUtil.GetSaplingId(tree);
                             if (id > 0)
                                 _builder.AddItemToStock(id, pricemultiplier);
@@ -195,6 +211,7 @@ namespace ShopTileFramework.ItemPriceAndStock
 
                 foreach (string itemName in packs)
                 {
+                    if (ExcludeFromJAPacks != null && ExcludeFromJAPacks.Contains(itemName)) continue;
                     _builder.AddItemToStock(itemName, pricemultiplier);
                 }
             }

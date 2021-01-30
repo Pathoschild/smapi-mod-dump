@@ -150,6 +150,33 @@ namespace FarmTypeManager
                     }
                 }
 
+                //detect spawn areas with no included spawn tiles
+                foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas
+                {
+                    foreach (SpawnArea area in areas) //for each area in the current array
+                    {
+                        if (area.IncludeCoordinates == null || area.IncludeCoordinates.Length < 1) //if this area doesn't spawn on any coordinates
+                        {
+                            if (area.IncludeTerrainTypes == null || area.IncludeTerrainTypes.Length < 1) //if this area doesn't spawn on any terrain types
+                            {
+                                if ((area is LargeObjectSpawnArea lobjArea && lobjArea.FindExistingObjectLocations) == false) //if this area is NOT using existing large object locations
+                                {
+                                    Monitor.Log($"This spawn area's IncludeCoordinates and IncludeTerrainTypes are both empty, which means it has no valid spawn tiles.", LogLevel.Debug);
+                                    Monitor.Log($"Area: {area.UniqueAreaID}", LogLevel.Debug);
+                                    if (pack != null) //if this file is from a content pack
+                                    {
+                                        Monitor.Log($"Content pack: {pack.Manifest.Name}", LogLevel.Debug);
+                                    }
+                                    else //if this file is from FarmTypeManager/data
+                                    {
+                                        Monitor.Log($"File: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Debug);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 //detect invalid sound names and warn the user
                 //NOTE: this will not remove the invalid name, in case the problem is related to custom sound loading
                 foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas

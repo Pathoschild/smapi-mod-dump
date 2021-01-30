@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using ConfigureMachineOutputs.Framework.Configs;
 using StardewModdingAPI;
 using StardewValley;
 using SObject = StardewValley.Object;
@@ -89,10 +90,10 @@ namespace ConfigureMachineOutputs.Framework.Patches
                         _config.Machines.BeeHouse.BeeHouseMaxOutput)
                     : 1;
             }
-            if (machine.Name.Equals("Crystalarium") && !justCheckingForActivity)
+            if (machine.Name.Equals("Crystalarium") && !justCheckingForActivity && machine.heldObject.Value != null)
             {
                 machine.heldObject.Value.Stack = _config.Machines.Crystalarium.CustomCrystalariumEnabled 
-                    ? _config.Machines.Crystalarium.CrystalInputMultiplier 
+                    ? _rnd.Next(_config.Machines.Crystalarium.CrystalMinOutput, _config.Machines.Crystalarium.CystalMaxOutput) 
                     : 1;
             }
             if (machine.Name.Equals("Tapper") && !justCheckingForActivity)
@@ -116,6 +117,49 @@ namespace ConfigureMachineOutputs.Framework.Patches
                     : 1;
                 _maxOut = _config.Machines.LightningRod.CustomLightningRodEnabled
                     ? _config.Machines.LightningRod.LightningRodMaxOutput
+                    : 1;
+                _output = _rnd.Next(_minOut, _maxOut);
+                machine.heldObject.Value.Stack = _output;
+            }
+            if (machine.Name.Equals("Solar Panel") && !justCheckingForActivity && machine.heldObject.Value != null)
+            {
+                _minOut = _config.Machines.SolarPanel.CustomSolarPanelEnabled ? _config.Machines.SolarPanel.SolarPanelMinOutput
+                    : 1;
+                _maxOut = _config.Machines.SolarPanel.CustomSolarPanelEnabled
+                    ? _config.Machines.SolarPanel.SolarPanelMaxOutput
+                    : 1;
+                _output = _rnd.Next(_minOut, _maxOut);
+                machine.heldObject.Value.Stack = _output;
+            }
+
+            if (machine.Name.Equals("Wood Chipper") && !justCheckingForActivity && machine.heldObject.Value != null)
+            {
+                _minOut = _config.Machines.WoodChipper.CustomWoodChipperEnabled ? _config.Machines.WoodChipper.WoodChipperMinOutput
+                    : 1;
+                _maxOut = _config.Machines.WoodChipper.CustomWoodChipperEnabled
+                    ? _config.Machines.WoodChipper.WoodChipperMaxOutput
+                    : 1;
+                _output = _rnd.Next(_minOut, _maxOut);
+                machine.heldObject.Value.Stack = _output;
+            }
+            /*
+            if (machine.Name.Equals("Coffee Maker") && !justCheckingForActivity && machine.heldObject.Value != null)
+            {
+                _minOut = _config.Machines.CoffeeMaker.CustomCoffeeMakerEnabled ? _config.Machines.CoffeeMaker.CoffeeMakerMinOutput
+                    : 1;
+                _maxOut = _config.Machines.CoffeeMaker.CustomCoffeeMakerEnabled
+                    ? _config.Machines.CoffeeMaker.CoffeeMakerMaxOutput
+                    : 1;
+                _output = _rnd.Next(_minOut, _maxOut);
+                machine.heldObject.Value.Stack = _output;
+            }*/
+
+            if (machine.Name.Equals("Heavy Tapper") && !justCheckingForActivity && machine.heldObject.Value != null)
+            {
+                _minOut = _config.Machines.HeavyTapper.CustomHeavyTapperEnabled ? _config.Machines.HeavyTapper.HeavyTapperMinOutput
+                    : 1;
+                _maxOut = _config.Machines.HeavyTapper.CustomHeavyTapperEnabled
+                    ? _config.Machines.HeavyTapper.HeavyTapperMaxOutput
                     : 1;
                 _output = _rnd.Next(_minOut, _maxOut);
                 machine.heldObject.Value.Stack = _output;

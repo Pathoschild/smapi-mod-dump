@@ -16,6 +16,7 @@ using StardewValley;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace SpriteMaster {
 	internal static class DrawState {
@@ -37,9 +38,11 @@ namespace SpriteMaster {
 		internal static TextureAddressMode CurrentAddressModeU = DefaultSamplerState.AddressU;
 		internal static TextureAddressMode CurrentAddressModeV = DefaultSamplerState.AddressV;
 		internal static Blend CurrentBlendSourceMode = BlendState.AlphaBlend.AlphaSourceBlend;
-		internal static volatile bool TriggerGC = false;
+
+		internal static readonly Condition TriggerGC = new(false);
+
 		internal static SpriteSortMode CurrentSortMode = SpriteSortMode.Deferred;
-		internal static TimeSpan ExpectedFrameTime { get; private set; } = new TimeSpan(166_667); // default 60hz
+		internal static TimeSpan ExpectedFrameTime { get; private set; } = new(166_667); // default 60hz
 		internal static bool ForceSynchronous = false;
 
 		private static DateTime FrameStartTime = DateTime.Now;
@@ -107,17 +110,17 @@ namespace SpriteMaster {
 			*/
 
 			if (TriggerGC) {
-				ScaledTexture.PurgeTextures((Config.RequiredFreeMemory * Config.RequiredFreeMemoryHysterisis).NearestLong() * 1024 * 1024);
+				ScaledTexture.PurgeTextures((Config.Garbage.RequiredFreeMemory * Config.Garbage.RequiredFreeMemoryHysterisis).NearestLong() * 1024 * 1024);
 				//Garbage.Collect();
 				Garbage.Collect(compact: true, blocking: true, background: false);
 
-				TriggerGC = false;
+				TriggerGC.Set(false);
 			}
 
 			if (Config.AsyncScaling.CanFetchAndLoadSameFrame || !PushedUpdateThisFrame) {
 				var remaining = ActualRemainingFrameTime();
 				if (remaining < TimeSpan.Zero) {
-					Debug.TraceLn($"Over Time: {-remaining.TotalMilliseconds}");
+					//Debug.TraceLn($"Over Time: {-remaining.TotalMilliseconds}");
 				}
 				SynchronizedTasks.ProcessPendingActions(remaining);
 			}

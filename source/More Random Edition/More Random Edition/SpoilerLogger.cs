@@ -37,7 +37,7 @@ namespace Randomizer
 		{
 			if (!Globals.Config.CreateSpoilerLog) { return; }
 
-			Path = $"Mods/Randomizer/SpoilerLog-{farmName}.txt";
+			Path = Globals.GetFilePath($"SpoilerLog-{farmName}.txt");
 			File.Create(Path).Close();
 		}
 

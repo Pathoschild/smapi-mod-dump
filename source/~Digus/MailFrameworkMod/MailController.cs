@@ -17,6 +17,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace MailFrameworkMod
 {
@@ -24,9 +25,9 @@ namespace MailFrameworkMod
     {
         public static readonly string CustomMailId = "MailFrameworkPlaceholderId";
 
-        private static String _nextLetterId = "none";
-        private static readonly List<Letter> Letters = new List<Letter>();
-        private static Letter _shownLetter = null;
+        private static readonly PerScreen<string> NextLetterId = new PerScreen<string>(createNewState: () => "none");
+        private static readonly PerScreen<List<Letter>> Letters = new PerScreen<List<Letter>>(createNewState: () => new List<Letter>());
+        private static readonly PerScreen<Letter> ShownLetter = new PerScreen<Letter>();
         private static IModEvents _events => MailFrameworkModEntry.ModHelper.Events;
 
         /// <summary>
@@ -35,22 +36,27 @@ namespace MailFrameworkMod
         public static void UpdateMailBox()
         {
             List<Letter> newLetters = MailDao.GetValidatedLetters();
-            newLetters.RemoveAll((l)=>Letters.Contains(l));
+            newLetters.RemoveAll((l)=>Letters.Value.Contains(l));
             try
             {
-                while (Game1.mailbox.Contains(null))
+                while (Game1.player.mailbox.Contains(null))
                 {
-                    Game1.mailbox.Remove(null);
+                    Game1.player.mailbox.Remove(null);
                 }
-                if (newLetters.Count > 0) {
-                    IList<string> mailbox = new List<string>(Game1.mailbox);
-                    newLetters.ForEach((l) =>
-                    {
-                        mailbox.Insert(0, CustomMailId);
-                        Letters.Add(l);
-                    });
-                    Game1.player.mailbox.Set(mailbox);
+                while (Game1.player.mailbox.Contains(CustomMailId))
+                {
+                    Game1.player.mailbox.Remove(CustomMailId);
                 }
+                IList<string> mailbox = new List<string>(Game1.player.mailbox);
+                newLetters.ForEach((l) =>
+                {
+                    Letters.Value.Add(l);
+                });
+                Letters.Value.ForEach((l) =>
+                {
+                    mailbox.Insert(0, CustomMailId);
+                });
+                Game1.player.mailbox.Set(mailbox);
             }
             finally
             {
@@ -58,28 +64,53 @@ namespace MailFrameworkMod
             }
         }
 
-
         /// <summary>
         /// Call this method to unload any new letters still on the mailbox.
         /// </summary>
         public static void UnloadMailBox()
         {
-            List<String> tempMailBox = new List<string>();
-            while (Game1.mailbox.Count > 0)
+            List<string> tempMailBox = new List<string>();
+            while (Game1.player.mailbox.Count > 0)
             {
-                tempMailBox.Add(Game1.mailbox.First());
-                Game1.mailbox.RemoveAt(0);
+                tempMailBox.Add(Game1.player.mailbox.First());
+                Game1.player.mailbox.RemoveAt(0);
             }
-            foreach (Letter letter in Letters)
+            foreach (Letter letter in Letters.Value)
             {
                 tempMailBox.Remove(CustomMailId);
             }
-            foreach (String mail in tempMailBox)
+            foreach (string mail in tempMailBox)
             {
-                Game1.mailbox.Add(mail);
+                Game1.player.mailbox.Add(mail);
             }
             
-            Letters.Clear();
+            Letters.Value.Clear();
+        }
+
+        /// <summary>
+        /// Call this method to unload letters with the specified id from the mailbox. 
+        /// </summary>
+        /// <param name="id">the letter id</param>
+        public static void UnloadLetterMailbox(string id)
+        {
+            if (Letters.Value.Any(l => l.Id == id))
+            {
+                List<string> tempMailBox = new List<string>();
+                while (Game1.player.mailbox.Count > 0)
+                {
+                    tempMailBox.Add(Game1.player.mailbox.First());
+                    Game1.player.mailbox.RemoveAt(0);
+                }
+                foreach (var l in Letters.Value.Where(l => l.Id == id))
+                {
+                    tempMailBox.Remove(CustomMailId);
+                }
+                foreach (string mail in tempMailBox)
+                {
+                    Game1.player.mailbox.Add(mail);
+                }
+                Letters.Value.RemoveAll(l => l.Id == id);
+            }
         }
 
         /// <summary>
@@ -88,7 +119,7 @@ namespace MailFrameworkMod
         /// <returns></returns>
         public static bool HasCustomMail()
         {
-            return Letters.Count > 0;
+            return Letters.Value.Count > 0;
         }
 
         /// <summary>
@@ -97,148 +128,162 @@ namespace MailFrameworkMod
         /// </summary>
         public static void ShowLetter()
         {
-            if (_shownLetter == null)
+            if (ShownLetter.Value != null)
             {
-                if (Letters.Count > 0 && _nextLetterId == CustomMailId)
+                IList<string> mailbox = new List<string>(Game1.player.mailbox);
+                mailbox.Insert(0, CustomMailId);
+                Game1.player.mailbox.Set(mailbox);
+            }
+            else
+            {
+                if (Letters.Value.Count > 0 && NextLetterId.Value == CustomMailId)
                 {
-                    _shownLetter = Letters.First();
-                    var activeClickableMenu = new LetterViewerMenuExtended(_shownLetter.Text.Replace("@", Game1.player.Name),_shownLetter.Id);
-                    MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(activeClickableMenu,"whichBG").SetValue(_shownLetter.WhichBG);
-                    if (_shownLetter.LetterTexture != null)
-                    {
-                        activeClickableMenu.letterTexture = _shownLetter.LetterTexture;
-                    }
-                    activeClickableMenu.TextColor = _shownLetter.TextColor;
-                    if (_shownLetter.UpperRightCloseButtonTexture != null &&
-                        activeClickableMenu.upperRightCloseButton != null)
-                    {
-                        activeClickableMenu.upperRightCloseButton = new ClickableTextureComponent(new Rectangle(activeClickableMenu.xPositionOnScreen + activeClickableMenu.width - 36, activeClickableMenu.yPositionOnScreen - 8, 48, 48), _shownLetter.UpperRightCloseButtonTexture, new Rectangle(0, 0, 12, 12), 4f, false);
-                    }
+                    ShownLetter.Value = Letters.Value.First();
+                }
+            }
 
-                    Game1.activeClickableMenu = activeClickableMenu;
-                    _shownLetter.Items?.ForEach(
-                        (i) =>
-                        {
-                            var item = i.getOne();
-                            item.Stack = i.Stack;
-                            activeClickableMenu.itemsToGrab.Add
+            if (ShownLetter.Value != null)
+            {
+                var activeClickableMenu = new LetterViewerMenuExtended(ShownLetter.Value.Text.Replace("@", Game1.player.Name),ShownLetter.Value.Id);
+                MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(activeClickableMenu,"whichBG").SetValue(ShownLetter.Value.WhichBG);
+                if (ShownLetter.Value.LetterTexture != null)
+                {
+                    activeClickableMenu.letterTexture = ShownLetter.Value.LetterTexture;
+                }
+                activeClickableMenu.TextColor = ShownLetter.Value.TextColor;
+                if (ShownLetter.Value.UpperRightCloseButtonTexture != null &&
+                    activeClickableMenu.upperRightCloseButton != null)
+                {
+                    activeClickableMenu.upperRightCloseButton = new ClickableTextureComponent(new Rectangle(activeClickableMenu.xPositionOnScreen + activeClickableMenu.width - 36, activeClickableMenu.yPositionOnScreen - 8, 48, 48), ShownLetter.Value.UpperRightCloseButtonTexture, new Rectangle(0, 0, 12, 12), 4f, false);
+                }
+
+                Game1.activeClickableMenu = activeClickableMenu;
+                List<Item> attachments = new List<Item>();
+                if (ShownLetter.Value.Items != null)
+                {
+                    attachments.AddRange(ShownLetter.Value.Items);
+                }
+
+                List<Item> dynamicItems = ShownLetter.Value.DynamicItems?.Invoke(ShownLetter.Value);
+                if (dynamicItems != null)
+                {
+                    attachments.AddRange(dynamicItems);
+                }
+                attachments.ForEach(
+                    (i) =>
+                    {
+                        var item = i.getOne();
+                        item.Stack = i.Stack;
+                        activeClickableMenu.itemsToGrab.Add
+                        (
+                            new ClickableComponent
                             (
-                                new ClickableComponent
+                                new Rectangle
                                 (
-                                    new Rectangle
-                                    (
-                                        activeClickableMenu.xPositionOnScreen + activeClickableMenu.width / 2 -
-                                        12 * Game1.pixelZoom
-                                        , activeClickableMenu.yPositionOnScreen + activeClickableMenu.height -
-                                          Game1.tileSize / 2 - 24 * Game1.pixelZoom
-                                        , 24 * Game1.pixelZoom
-                                        , 24 * Game1.pixelZoom
-                                    )
-                                    , item
+                                    activeClickableMenu.xPositionOnScreen + activeClickableMenu.width / 2 -
+                                    12 * Game1.pixelZoom
+                                    , activeClickableMenu.yPositionOnScreen + activeClickableMenu.height -
+                                      Game1.tileSize / 2 - 24 * Game1.pixelZoom
+                                    , 24 * Game1.pixelZoom
+                                    , 24 * Game1.pixelZoom
                                 )
-                                {
-                                    myID = 104,
-                                    leftNeighborID = 101,
-                                    rightNeighborID = 102
-                                }
-                            );
-                            activeClickableMenu.backButton.rightNeighborID = 104;
-                            activeClickableMenu.forwardButton.leftNeighborID = 104;
-                            activeClickableMenu.populateClickableComponentList();
-                            activeClickableMenu.snapToDefaultClickableComponent();
-                        });
-                    if (_shownLetter.Recipe != null)
+                                , item
+                            )
+                            {
+                                myID = 104,
+                                leftNeighborID = 101,
+                                rightNeighborID = 102
+                            }
+                        );
+                        activeClickableMenu.backButton.rightNeighborID = 104;
+                        activeClickableMenu.forwardButton.leftNeighborID = 104;
+                        activeClickableMenu.populateClickableComponentList();
+                        activeClickableMenu.snapToDefaultClickableComponent();
+                    });
+                if (ShownLetter.Value.Recipe != null)
+                {
+                    string recipe = ShownLetter.Value.Recipe;
+                    Dictionary<string, string> cookingData = MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CookingRecipes", ContentSource.GameContent);
+                    Dictionary<string, string> craftingData = MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CraftingRecipes", ContentSource.GameContent);
+                    string recipeString = null;
+                    int dataArrayI18NSize = 0;
+                    string cookingOrCraftingText = null;
+                    if (cookingData.ContainsKey(recipe))
                     {
-                        string recipe = _shownLetter.Recipe;
-                        Dictionary<string, string> cookingData = MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CookingRecipes", ContentSource.GameContent);
-                        Dictionary<string, string> craftingData = MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CraftingRecipes", ContentSource.GameContent);
-                        string recipeString = null;
-                        int dataArrayI18NSize = 0;
-                        string cookingOrCraftingText = null;
-                        if (cookingData.ContainsKey(recipe))
+                        if (!Game1.player.cookingRecipes.ContainsKey(recipe))
                         {
-                            if (!Game1.player.cookingRecipes.ContainsKey(recipe))
-                            {
-                                Game1.player.cookingRecipes.Add(recipe, 0);
-                            }
-                            recipeString = cookingData[recipe];
-                            dataArrayI18NSize = 5;
-                            cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_cooking");
+                            Game1.player.cookingRecipes.Add(recipe, 0);
                         }
-                        else if (craftingData.ContainsKey(recipe))
+                        recipeString = cookingData[recipe];
+                        dataArrayI18NSize = 5;
+                        cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_cooking");
+                    }
+                    else if (craftingData.ContainsKey(recipe))
+                    {
+                        if (!Game1.player.craftingRecipes.ContainsKey(recipe))
                         {
-                            if (!Game1.player.craftingRecipes.ContainsKey(recipe))
-                            {
-                                Game1.player.craftingRecipes.Add(recipe, 0);
-                            }
-                            recipeString = craftingData[recipe];
-                            dataArrayI18NSize = 6;
-                            cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_crafting");
+                            Game1.player.craftingRecipes.Add(recipe, 0);
                         }
-                        else
-                        {
-                            MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' was not found. The mail will ignore it.", LogLevel.Warn);
-                        }
+                        recipeString = craftingData[recipe];
+                        dataArrayI18NSize = 6;
+                        cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_crafting");
+                    }
+                    else
+                    {
+                        MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' was not found. The mail will ignore it.", LogLevel.Warn);
+                    }
 
-                        if (recipeString != null)
+                    if (recipeString != null)
+                    {
+                        string learnedRecipe = recipe;
+                        if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
                         {
-                            string learnedRecipe = recipe;
-                            if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
+                            string[] strArray = recipeString.Split('/');
+                            if (strArray.Length < dataArrayI18NSize)
                             {
-                                string[] strArray = recipeString.Split('/');
-                                if (strArray.Length < dataArrayI18NSize)
-                                {
-                                    MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' does not have a internationalized name. The default name will be used.", LogLevel.Warn);
-                                }
-                                else
-                                {
-                                    learnedRecipe = strArray[strArray.Length - 1];
-                                }
-                            }
-
-                            if (MailFrameworkModEntry.ModHelper.Reflection.GetMethod(activeClickableMenu, "getTextColor").Invoke<int>() == -1)
-                            {
-                                MailFrameworkModEntry.ModHelper.Reflection
-                                    .GetField<String>(activeClickableMenu, "cookingOrCrafting").SetValue(cookingOrCraftingText);
-                                MailFrameworkModEntry.ModHelper.Reflection
-                                    .GetField<String>(activeClickableMenu, "learnedRecipe").SetValue(learnedRecipe);
+                                MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' does not have a internationalized name. The default name will be used.", LogLevel.Warn);
                             }
                             else
                             {
-                                activeClickableMenu.CookingOrCrafting = cookingOrCraftingText;
-                                activeClickableMenu.LearnedRecipe = learnedRecipe;
+                                learnedRecipe = strArray[strArray.Length - 1];
                             }
                         }
-                    }
 
-                    _events.Display.MenuChanged += OnMenuChanged;
+                        if (MailFrameworkModEntry.ModHelper.Reflection.GetMethod(activeClickableMenu, "getTextColor").Invoke<int>() == -1)
+                        {
+                            MailFrameworkModEntry.ModHelper.Reflection.GetField<String>(activeClickableMenu, "cookingOrCrafting").SetValue(cookingOrCraftingText);
+                            MailFrameworkModEntry.ModHelper.Reflection.GetField<String>(activeClickableMenu, "learnedRecipe").SetValue(learnedRecipe);
+                        }
+                        else
+                        {
+                            activeClickableMenu.CookingOrCrafting = cookingOrCraftingText;
+                            activeClickableMenu.LearnedRecipe = learnedRecipe;
+                        }
+                    }
                 }
-                else
+                activeClickableMenu.exitFunction = (IClickableMenu.onExit)Delegate.Combine(activeClickableMenu.exitFunction, (IClickableMenu.onExit)delegate
                 {
-                    UpdateNextLetterId();
-                }
+                    OnMenuClose(ShownLetter.Value);
+                });
+            }
+            else
+            {
+                UpdateNextLetterId();
             }
         }
 
         /// <summary>
-        /// Raised after a game menu is opened, closed, or replaced.
         /// Remove the showed letter from the list and calls the callback function.
         /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private static void OnMenuChanged(object sender, MenuChangedEventArgs e)
+        private static void OnMenuClose(Letter letter)
         {
-            if (e.NewMenu != null)
-                return;
-
-            if (_shownLetter != null)
-            { 
-                Letters.Remove(_shownLetter);
-                _shownLetter.Callback?.Invoke(_shownLetter);
-                _shownLetter = null;
+            if (letter != null)
+            {
+                Letters.Value.Remove(letter);
+                letter.Callback?.Invoke(letter);
+                ShownLetter.Value = null;
             }
             UpdateNextLetterId();
-            _events.Display.MenuChanged -= OnMenuChanged;
         }
 
         /// <summary>
@@ -246,36 +291,43 @@ namespace MailFrameworkMod
         /// </summary>
         private static void UpdateNextLetterId()
         {
-            if (Game1.mailbox.Count > 0)
+            if (Game1.player.mailbox.Count > 0)
             {
-                _nextLetterId = Game1.mailbox.First();
+                NextLetterId.Value = Game1.player.mailbox.First();
             }
             else
             {
-                _nextLetterId = "none";
+                NextLetterId.Value = "none";
             }
         }
 
-        public static bool mailbox(GameLocation __instance)
+        public static bool mailbox_prefix(GameLocation __instance)
         {
-            if (Game1.mailbox.Count > 0 && Game1.player.ActiveObject == null)
+            if (Game1.player.mailbox.Count > 0)
             {
-                if (Game1.mailbox.First<string>() == null)
+                if (Game1.player.mailbox.First<string>() == null)
                 {
-                    Game1.mailbox.RemoveAt(0);
+                    Game1.player.mailbox.RemoveAt(0);
                     return false;
-                } else if (Game1.mailbox.First<string>().Contains(CustomMailId))
+                } else if (Game1.player.mailbox.First<string>().Contains(CustomMailId))
                 {
-                    Game1.mailbox.RemoveAt(0);
+                    Game1.player.mailbox.RemoveAt(0);
                     MailController.ShowLetter();
                     return false;
                 }
-                else
-                {
-                    _events.Display.MenuChanged += OnMenuChanged;
-                }
-            }
+            } 
             return true;
+        }
+
+        public static void mailbox_postfix()
+        {
+            if (Game1.activeClickableMenu is LetterViewerMenu letterViewerMenu)
+            {
+                letterViewerMenu.exitFunction = (IClickableMenu.onExit)Delegate.Combine(letterViewerMenu.exitFunction, (IClickableMenu.onExit)delegate
+                {
+                    OnMenuClose(null);
+                });
+            }
         }
 
         public static bool receiveLeftClick(CollectionsPage __instance, int x, int y)

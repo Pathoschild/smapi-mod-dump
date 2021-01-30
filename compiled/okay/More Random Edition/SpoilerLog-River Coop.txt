@@ -1,0 +1,2298 @@
+==== FISH ====
+128: Start
+Difficulty: 52 - Level Req: 0 - Water depth: 2
+Available all day. Found all year. Habitat: Mines. 
+---
+129: Tillatongue
+Difficulty: 32 - Level Req: 0 - Water depth: 3
+Available all day except from 11:00am to 7:00pm. Found during: spring, summer, winter. Habitat: Ocean. 
+---
+130: Marapper
+Difficulty: 26 - Level Req: 0 - Water depth: 5
+Available from 6:00am to 1:00pm. Found during: summer. Habitat: Ocean. 
+---
+131: Pidine
+Difficulty: 20 - Level Req: 0 - Water depth: 1
+Available from 6:00am to 7:00pm. Found during: spring, fall, winter. Habitat: Ocean. 
+---
+132: Woovy
+Difficulty: 70 - Level Req: 0 - Water depth: 3
+Available all day. Found during: summer, winter. Habitat: Town, Forest. 
+---
+136: Bramet
+Difficulty: 69 - Level Req: 0 - Water depth: 1
+Available all day. Found during: spring, fall. Habitat: Ocean. 
+---
+137: Inah
+Difficulty: 86 - Level Req: 0 - Water depth: 2
+Available all day. Found all year. Habitat: Mines. 
+---
+138: Walado
+Difficulty: 50 - Level Req: 0 - Water depth: 4
+Available from 6:00pm to 2:00am. Found during: summer, fall. Habitat: Ocean. 
+---
+139: Rockk
+Difficulty: 40 - Level Req: 0 - Water depth: 2
+Available from 6:00am to 8:00pm. Found all year. Habitat: Desert. 
+---
+140: Moreye
+Difficulty: 16 - Level Req: 0 - Water depth: 3
+Available from 6:00am to 7:00pm. Found all year. Habitat: Mountains. 
+---
+141: Albaley
+Difficulty: 47 - Level Req: 0 - Water depth: 3
+Available from 6:00am to 7:00pm. Found during: summer, winter. Habitat: Mountains. 
+---
+142: Milkopus
+Difficulty: 21 - Level Req: 0 - Water depth: 2
+Available all day. Found all year. Habitat: Mountains. 
+---
+143: Angeail
+Difficulty: 74 - Level Req: 0 - Water depth: 3
+Found during: winter. Habitat: Ocean Floor.
+---
+144: Squiarp
+Difficulty: 50 - Level Req: 0 - Water depth: 2
+Available from 6:00am to 7:00pm. Found during: summer, fall, winter. Habitat: Ocean. Found only when it is rainy. 
+---
+145: Eeoach
+Difficulty: 19 - Level Req: 0 - Water depth: 1
+Available from 6:00am to 8:00pm. Found all year. Habitat: Desert. 
+---
+146: Moonkerel
+Difficulty: 36 - Level Req: 0 - Water depth: 3
+Found during: winter. Habitat: Ocean Floor.
+---
+147: Bigeye Dogio
+Difficulty: 73 - Level Req: 0 - Water depth: 3
+Available all day. Found all year. Habitat: Woods. 
+---
+148: Boxout
+Difficulty: 23 - Level Req: 0 - Water depth: 1
+Available from 6:00pm to 2:00am. Found all year. Habitat: Town, Forest. 
+---
+149: Koichore
+Difficulty: 17 - Level Req: 0 - Water depth: 1
+Available all day. Found during: spring, winter. Habitat: Ocean. 
+---
+150: Piranlet
+Difficulty: 41 - Level Req: 0 - Water depth: 3
+Available all day except from 11:00am to 6:00pm. Found during: fall, winter. Habitat: Ocean. 
+---
+151: Velenn
+Difficulty: 19 - Level Req: 0 - Water depth: 2
+Available all day. Found all year. Habitat: Mines. 
+---
+154: Bullm
+Difficulty: 15 - Level Req: 0 - Water depth: 3
+Available from 6:00pm to 2:00am. Found during: winter. Habitat: Ocean. 
+---
+155: Gobish
+Difficulty: 59 - Level Req: 0 - Water depth: 1
+Available all day. Found during: spring, summer, fall. Habitat: Mountains, Woods, Sewer. 
+---
+156: Trouskipper
+Difficulty: 63 - Level Req: 0 - Water depth: 3
+Available from 6:00am to 7:00pm. Found during: summer, winter. Habitat: Ocean. 
+---
+158: Hadshark
+Difficulty: 65 - Level Req: 3 - Water depth: 1
+Available from 6:00am to 7:00pm. Found during: spring, summer. Habitat: Town, Forest, Mines. Found only when it is sunny. 
+---
+161: Sonjack
+Difficulty: 94 - Level Req: 5 - Water depth: 3
+Available from 6:00am to 7:00pm. Found during: fall, winter. Habitat: Ocean, Mines. 
+---
+162: Void Dartock
+Difficulty: 62 - Level Req: 7 - Water depth: 1
+Available from 10:00pm to 2:00am. Found during: fall, winter. Habitat: Forest, Mountains, Mines. 
+---
+164: Rainbow Anchole
+Difficulty: 44 - Level Req: 0 - Water depth: 2
+Available from 9:00am to 2:00am. Found during: spring, summer, fall. Habitat: Town, Forest. Found only when it is rainy. 
+---
+165: Stingskip
+Difficulty: 22 - Level Req: 4 - Water depth: 3
+Found during: winter. Habitat: Ocean Floor.
+---
+267: Gostapia
+Difficulty: 71 - Level Req: 0 - Water depth: 2
+Available all day. Found all year. Habitat: Mines. 
+---
+269: Muddiru
+Difficulty: 52 - Level Req: 0 - Water depth: 1
+Available all day. Found during: spring, fall. Habitat: Town, Forest. 
+---
+698: Squeacod
+Difficulty: 46 - Level Req: 0 - Water depth: 3
+Available from 6:00am to 7:00pm. Found during: fall, winter. Habitat: Town, Forest. 
+---
+699: Flounma
+Difficulty: 15 - Level Req: 0 - Water depth: 3
+Available from 4:00pm to 2:00am. Found during: spring, fall. Habitat: Ocean. Found only when it is rainy. 
+---
+700: Maki
+Difficulty: 41 - Level Req: 0 - Water depth: 4
+Available from 6:00am to 12:00am. Found during: spring, fall, winter. Habitat: Town, Forest, Woods, Witch Swamp. Found only when it is rainy. 
+---
+701: Banow
+Difficulty: 18 - Level Req: 0 - Water depth: 2
+Available from 6:00am to 7:00pm. Found during: summer, winter. Habitat: Ocean. 
+---
+702: Polg
+Difficulty: 40 - Level Req: 0 - Water depth: 3
+Available from 6:00am to 7:00pm. Found during: fall. Habitat: Town, Forest. 
+---
+704: Hosh
+Difficulty: 19 - Level Req: 0 - Water depth: 1
+Available all day. Found all year. Habitat: Forest, Mountains. 
+---
+705: Tuha
+Difficulty: 59 - Level Req: 0 - Water depth: 3
+Available from 6:00am to 7:00pm. Found during: summer. Habitat: Forest. 
+---
+706: Baraling
+Difficulty: 67 - Level Req: 0 - Water depth: 2
+Available from 12:00pm to 2:00am. Found during: fall, winter. Habitat: Forest, Town, Mountains. Found only when it is rainy. 
+---
+707: Sharring
+Difficulty: 21 - Level Req: 0 - Water depth: 3
+Available from 6:00am to 2:00pm. Found during: summer, fall. Habitat: Ocean. 
+---
+708: Lemumber
+Difficulty: 39 - Level Req: 0 - Water depth: 2
+Available from 6:00am to 7:00pm. Found during: summer. Habitat: Forest, Town, Mountains. Found only when it is sunny. 
+---
+734: Kelpm
+Difficulty: 40 - Level Req: 0 - Water depth: 3
+Available all day. Found during: winter. Habitat: Town, Forest, Mountains. 
+---
+798: Dabray
+Difficulty: 17 - Level Req: 0 - Water depth: 4
+Available from 12:00pm to 4:00pm. Found during: summer. Habitat: Ocean. Found only when it is sunny. 
+---
+799: Halliad
+Difficulty: 70 - Level Req: 0 - Water depth: 1
+Available all day. Found during: winter. Habitat: Forest, Town, Mountains. 
+---
+800: Octopb
+Difficulty: 85 - Level Req: 0 - Water depth: 2
+Available from 6:00am to 8:00pm. Found during: spring, summer. Habitat: Ocean. 
+---
+159: Unghoti
+Difficulty: 95 - Level Req: 5 - Water depth: 4
+Available from 6:00am to 8:00pm. Found during: summer. Habitat: Ocean. This fish is legendary!
+---
+160: Brif
+Difficulty: 85 - Level Req: 3 - Water depth: 4
+Available all day. Found during: fall. Habitat: Town. This fish is legendary!
+---
+163: Groucuda
+Difficulty: 110 - Level Req: 10 - Water depth: 5
+Available from 6:00am to 8:00pm. Found during: spring. Habitat: Mountains. Found only when it is rainy. This fish is legendary!
+---
+775: Solag
+Difficulty: 100 - Level Req: 7 - Water depth: 5
+Available from 6:00am to 8:00pm. Found during: winter. Habitat: Forest. Found only when it is sunny. This fish is legendary!
+---
+682: Chufin
+Difficulty: 80 - Level Req: 0 - Water depth: 5
+Available all day. Found all year. Habitat: Sewer. This fish is legendary!
+---
+
+==== CROPS AND SEEDS ====
+262: Banadew - Seed Buy Price: 138G - Crop Sell Price: 276G
+472: Takes 10 days to mature. Plant during: spring. 
+---
+250: Boysengranite - Seed Buy Price: 40G - Crop Sell Price: 140G
+429: Takes 8 days to mature. Plant during: spring. 
+---
+274: McTato - Seed Buy Price: 64G - Crop Sell Price: 115G
+474: Takes 7 days to mature. Plant during: spring. 
+---
+417: Honeypaya - Seed Buy Price: 142G - Crop Sell Price: 241G
+476: Takes 9 days to mature. Plant during: spring. 
+---
+304: Radichoke - Seed Buy Price: 24G - Crop Sell Price: 12G
+473: Grows on a trellis. Takes 7 days to grow but keeps producing after that. Plant during: spring. 
+---
+276: Jojatrout - Seed Buy Price: 128G - Crop Sell Price: 243G
+477: Takes 7 days to mature. Plant during: spring. 
+---
+591: Forget-me-suckle - Seed Buy Price: 50G - Crop Sell Price: 75G
+475: This is a flower. Takes 7 days to mature. Plant during: spring. 
+---
+248: Tomaiander - Seed Buy Price: 48G - Crop Sell Price: 163G
+478: Takes 8 days to mature. Plant during: spring. 
+---
+272: Ruerillo - Seed Buy Price: 64G - Crop Sell Price: 108G
+745: Takes 6 days to grow but keeps producing after that. Plant during: spring. 
+---
+264: Savory Chocoto - Seed Buy Price: 20G - Crop Sell Price: 52G
+427: Takes 8 days to mature. Plant during: spring. 
+---
+300: Carrodropp - Seed Buy Price: 12G - Crop Sell Price: 24G
+273: Takes 10 days to mature. Plant during: spring. 
+---
+260: Aartinana - Seed Buy Price: 82G - Crop Sell Price: 92G
+481: Takes 9 days to grow but keeps producing after that. Plant during: summer. 
+---
+90: Watery - Seed Buy Price: 14G - Crop Sell Price: 7G
+487: Takes 7 days to grow but keeps producing after that. Plant during: summer, fall. Can only be grown indoors. 
+---
+398: Squaonion - Seed Buy Price: 22G - Crop Sell Price: 17G
+302: Grows on a trellis. Takes 8 days to grow but keeps producing after that. Plant during: summer. 
+---
+188: Vegelli - Seed Buy Price: 134G - Crop Sell Price: 54G
+482: Grows on a trellis. Takes 7 days to grow but keeps producing after that. Plant during: summer. 
+---
+252: Zucchiapple - Seed Buy Price: 100G - Crop Sell Price: 160G
+479: Takes 8 days to mature. Plant during: summer. 
+---
+284: Aprimelon - Seed Buy Price: 102G - Crop Sell Price: 255G
+453: Takes 7 days to mature. Plant during: summer. 
+---
+192: Caulicado - Seed Buy Price: 30G - Crop Sell Price: 102G
+484: Takes 6 days to mature. Plant during: summer. 
+---
+190: Moist Pearjube - Seed Buy Price: 20G - Crop Sell Price: 80G
+485: Takes 7 days to mature. Plant during: summer. 
+---
+593: Daffolilac - Seed Buy Price: 24G - Crop Sell Price: 88G
+486: This is a flower. Takes 7 days to mature. Plant during: summer. 
+---
+266: Dragopear - Seed Buy Price: 14G - Crop Sell Price: 32G
+455: Takes 5 days to mature. Plant during: summer. 
+---
+597: Ugly Viowort - Seed Buy Price: 42G - Crop Sell Price: 113G
+431: This is a flower. Takes 9 days to mature. Plant during: summer, fall. 
+---
+258: Hucklebean - Seed Buy Price: 150G - Crop Sell Price: 68G
+480: Takes 7 days to grow but keeps producing after that. Plant during: summer. 
+---
+254: Clementibarb - Seed Buy Price: 58G - Crop Sell Price: 110G
+483: Takes 5 days to mature. Plant during: summer, fall. 
+---
+278: Limeyam - Seed Buy Price: 28G - Crop Sell Price: 78G
+299: Takes 5 days to mature. Plant during: fall. 
+---
+376: Poihock - Seed Buy Price: 44G - Crop Sell Price: 110G
+489: This is a flower. Takes 8 days to mature. Plant during: fall. 
+---
+24: Tangeberry - Seed Buy Price: 68G - Crop Sell Price: 122G
+494: Takes 10 days to mature. Plant during: fall. 
+---
+271: Unmilled Lemofroot - Seed Buy Price: 12G - Crop Sell Price: 43G
+491: Takes 6 days to mature. Plant during: fall. Grows faster near water. 
+---
+282: Cold Cofferoot - Seed Buy Price: 50G - Crop Sell Price: 14G
+493: Takes 7 days to grow but keeps producing after that. Plant during: fall. 
+---
+270: Passionkorn - Seed Buy Price: 10G - Crop Sell Price: 8G
+488: Takes 9 days to grow but keeps producing after that. Plant during: fall. 
+---
+280: Crannfig - Seed Buy Price: 16G - Crop Sell Price: 54G
+425: Takes 10 days to mature. Plant during: fall. 
+---
+400: Alfaflour - Seed Buy Price: 74G - Crop Sell Price: 79G
+301: Takes 7 days to grow but keeps producing after that. Plant during: fall. 
+---
+268: Potarene - Seed Buy Price: 18G - Crop Sell Price: 61G
+490: Takes 8 days to mature. Plant during: fall. 
+---
+595: Snaplaurel - Seed Buy Price: 22G - Crop Sell Price: 70G
+492: This is a flower. Takes 8 days to mature. Plant during: fall. 
+---
+256: Egglait - Seed Buy Price: 12G - Crop Sell Price: 14G
+802: Takes 9 days to grow but keeps producing after that. Plant during: spring, summer, fall, winter. 
+---
+421: Bellaflower - Seed Buy Price: 58G - Crop Sell Price: 139G
+347: This is a flower. Takes 9 days to mature. Plant during: fall. 
+---
+
+==== FRUIT TREES ====
+Daffolilac Sapling
+Hardwood Sapling
+Clementibarb Seeds Sapling
+Anchor Sapling
+Ancient Doll Sapling
+Aquamarine Sapling
+
+==== BUILDINGS ====
+Silo - 80G
+ - Hardwood: 18 - Wood: 5 - Void Essence: 1
+===
+Mill - 2812G
+ - Stone: 15 - Fiber: 12 - Oak Resin: 1
+===
+Shipping Bin - 248G
+ - Fiber: 27
+===
+Coop - 3310G
+ - Wood: 25 - Hardwood: 16
+===
+Big Coop - 11361G
+ - Wood: 120 - Hardwood: 84
+===
+Deluxe Coop - 22453G
+ - Soapstone: 1 - Wood: 80
+===
+Barn - 6327G
+ - Pine Tar: 1 - Clay: 10
+===
+Big Barn - 11618G
+ - Fire Quartz: 3 - Fiber: 84
+===
+Deluxe Barn - 28685G
+ - Hashbrowns: 1 - Clay: 20
+===
+Slime Hutch - 11865G
+ - Wood: 45 - Purple Mushroom: 2 - Dragopear: 1
+===
+Shed - 12728G
+ - Clay: 5
+===
+Stone Cabin - 76G
+ - Stone: 30 - Driftwood: 1
+===
+Plank Cabin - 80G
+ - Clay: 8
+===
+Log Cabin - 94G
+ - Stone: 30
+===
+Well - 1109G
+ - Hardwood: 45
+===
+Fish Pond - 3923G
+ - Fiber: 12 - Geode: 2 - Cave Carrot: 6
+===
+Stable - 9039G
+ - Void Essence: 6 - Stone: 320
+===
+
+===== MONSTERS =====
+
+> Major monster drop swaps
+Slime -> Solar Essence
+Bat Wing -> Bat Wing
+Solar Essence -> Void Essence
+Bug Meat -> Squid Ink
+Void Essence -> Slime
+Squid Ink -> Bug Meat
+
+> Monster stats
+---
+Green Slime
+28 HP; 3 Damage; 0 Resilience; 1 Speed
+Miss chance: 3%
+Experience: 3
+Moves randomly for 1.384 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 4
+Extra drop: Broken Glasses at 5%
+---
+Dust Spirit
+49 HP; 7 Damage; 1 Resilience; 1 Speed
+Miss chance: 4%
+Experience: 2
+Moves randomly for 0 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 2
+Extra drop: White Egg at 5%
+---
+Bat
+23 HP; 8 Damage; 1 Resilience; 2 Speed
+Miss chance: 5%
+Experience: 3
+Moves randomly for 2.676 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 9
+Extra drop: Clam at 4%
+---
+Frost Bat
+39 HP; 6 Damage; 0 Resilience; 3 Speed
+Miss chance: 5%
+Experience: 6
+Moves randomly for 1.199 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 3
+Extra drop: Boysengranite Seeds at 3%
+---
+Lava Bat
+96 HP; 16 Damage; 2 Resilience; 3 Speed
+Miss chance: 1%
+Experience: 14
+Moves randomly for 1.532 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 1
+Extra drop: Wheat Flour at 8%
+---
+Iridium Bat
+301 HP; 24 Damage; 0 Resilience; 2 Speed
+Miss chance: 0%
+Experience: 17
+Moves randomly for 0 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 0
+Extra drop: Pine Cone at 6%
+---
+Stone Golem
+46 HP; 7 Damage; 6 Resilience; 3 Speed
+Miss chance: 3%
+Experience: 5
+Moves randomly for 0 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 1
+Extra drop: Topaz at 4%
+---
+Wilderness Golem
+37 HP; 3 Damage; 2 Resilience; 2 Speed
+Miss chance: 0%
+Experience: 3
+Moves randomly for 1.578 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 1
+Extra drop: Sap at 7%
+---
+Grub
+17 HP; 3 Damage; 1 Resilience; 2 Speed
+Miss chance: 4%
+Experience: 1
+Moves randomly for 0 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 1
+Extra drop: Pine Cone at 6%
+---
+Fly
+27 HP; 7 Damage; 2 Resilience; 4 Speed
+Miss chance: 3%
+Experience: 5
+Moves randomly for 0 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 0
+Extra drop: Stingskip at 0.3%
+---
+Frost Jelly
+116 HP; 8 Damage; 0 Resilience; 2 Speed
+Miss chance: 0%
+Experience: 5
+Moves randomly for 0.362 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 2
+Extra drop: Maple Seed at 8%
+---
+Sludge
+161 HP; 18 Damage; 0 Resilience; 4 Speed
+Miss chance: 4%
+Experience: 9
+Moves randomly for 0 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 2
+Extra drop: Squid Ink at 4%
+---
+Shadow Guy
+116 HP; 17 Damage; 3 Resilience; 2 Speed
+Miss chance: 1%
+Experience: 13
+Moves randomly for 0.315 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 2
+Extra drop: Stone at 7%
+---
+Ghost
+90 HP; 10 Damage; 4 Resilience; 3 Speed
+Miss chance: 0%
+Experience: 22
+Moves randomly for 0 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 1
+Extra drop: Sap at 5%
+---
+Carbon Ghost
+148 HP; 19 Damage; 4 Resilience; 1 Speed
+Miss chance: 0%
+Experience: 25
+Moves randomly for 0 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 1
+Extra drop: Coal at 5%
+---
+Duggy
+38 HP; 6 Damage; 0 Resilience; 1 Speed
+Miss chance: 4%
+Experience: 10
+Moves randomly for 0 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 0
+Extra drop: Wood at 6%
+---
+Rock Crab
+35 HP; 4 Damage; 0 Resilience; 2 Speed
+Miss chance: 5%
+Experience: 5
+Moves randomly for 0 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 0
+Extra drop: Wheat Flour at 8%
+---
+Lava Crab
+139 HP; 14 Damage; 2 Resilience; 2 Speed
+Miss chance: 4%
+Experience: 8
+Moves randomly for 0 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 0
+Extra drop: Crab at 4%
+---
+Iridium Crab
+281 HP; 19 Damage; 4 Resilience; 4 Speed
+Miss chance: 1%
+Experience: 27
+Moves randomly for 0 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 1
+Extra drop: Topaz at 4%
+---
+Squid Kid
+1 HP; 22 Damage; 3 Resilience; 3 Speed
+Miss chance: 5%
+Experience: 15
+Moves randomly for 0 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 3
+Extra drop: Sugar at 6%
+---
+Skeleton Warrior
+344 HP; 11 Damage; 3 Resilience; 3 Speed
+Miss chance: 1%
+Experience: 20
+Moves randomly for 0.279 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 1
+Extra drop: Joja Cola at 7%
+---
+Shadow Brute
+155 HP; 21 Damage; 1 Resilience; 2 Speed
+Miss chance: 5%
+Experience: 22
+Moves randomly for 0 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 1
+Extra drop: Cave Carrot at 5%
+---
+Shadow Shaman
+75 HP; 22 Damage; 2 Resilience; 4 Speed
+Miss chance: 3%
+Experience: 10
+Moves randomly for 0.54 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 1
+Extra drop: Fiber at 8%
+---
+Skeleton
+142 HP; 7 Damage; 2 Resilience; 3 Speed
+Miss chance: 0%
+Experience: 10
+Moves randomly for 0 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 1
+Extra drop: Squid Ink at 5%
+---
+Skeleton Mage
+58 HP; 7 Damage; 0 Resilience; 1 Speed
+Miss chance: 0%
+Experience: 4
+Moves randomly for 2.197 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 10
+Extra drop: Soggy Newspaper at 6%
+---
+Metal Head
+44 HP; 14 Damage; 10 Resilience; 2 Speed
+Miss chance: 3%
+Experience: 8
+Moves randomly for 1.078 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 1
+Extra drop: Coal at 6%
+---
+Spiker
+7 HP; 19 Damage; 5 Resilience; 4 Speed
+Miss chance: 2%
+Experience: 1
+Moves randomly for 0.324 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 4
+Extra drop: Trash at 5%
+---
+Bug
+2 HP; 6 Damage; 0 Resilience; 4 Speed
+Miss chance: 1%
+Experience: 1
+Moves randomly for 0 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 4
+Extra drop: Sugar at 5%
+---
+Mummy
+309 HP; 25 Damage; 0 Resilience; 4 Speed
+Miss chance: 0%
+Experience: 19
+Moves randomly for 2.008 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 4
+Extra drop: Green Algae at 5%
+---
+Big Slime
+61 HP; 3 Damage; 0 Resilience; 4 Speed
+Miss chance: 2%
+Experience: 3
+Moves randomly for 2.703 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 4
+Extra drop: Wood at 7%
+---
+Serpent
+166 HP; 29 Damage; 0 Resilience; 2 Speed
+Miss chance: 1%
+Experience: 27
+Moves randomly for 1.029 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 1
+Extra drop: Solar Essence at 5%
+---
+Pepper Rex
+374 HP; 13 Damage; 3 Resilience; 4 Speed
+Miss chance: 3%
+Experience: 10
+Moves randomly for 1.39 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 4
+Extra drop: Clay at 5%
+---
+Tiger Slime
+467 HP; 22 Damage; 0 Resilience; 1 Speed
+Miss chance: 5%
+Experience: 15
+Moves randomly for 0 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 3
+Extra drop: Acorn at 5%
+---
+Lava Lurk
+198 HP; 15 Damage; 5 Resilience; 4 Speed
+Miss chance: 3%
+Experience: 13
+Moves randomly for 0 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 3
+Extra drop: Clay at 5%
+---
+Hot Head
+240 HP; 23 Damage; 8 Resilience; 1 Speed
+Miss chance: 4%
+Experience: 15
+Moves randomly for 1.479 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 8
+Extra drop: Wood at 8%
+---
+Magma Sprite
+246 HP; 15 Damage; 9 Resilience; 3 Speed
+Miss chance: 5%
+Experience: 14
+Moves randomly for 1.803 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 2
+Extra drop: Broken Glasses at 5%
+---
+Magma Duggy
+358 HP; 20 Damage; 1 Resilience; 4 Speed
+Miss chance: 2%
+Experience: 9
+Moves randomly for 0.627 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 1
+Extra drop: Diamond at 4%
+---
+Magma Sparker
+324 HP; 13 Damage; 8 Resilience; 4 Speed
+Miss chance: 4%
+Experience: 9
+Moves randomly for 0.559 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 1
+Extra drop: Poihock Muffin at 4%
+---
+False Magma Cap
+296 HP; 11 Damage; 2 Resilience; 2 Speed
+Miss chance: 3%
+Experience: 11
+Moves randomly for 0 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 4
+Extra drop: White Algae at 3%
+---
+Dwarvish Sentry
+249 HP; 16 Damage; 5 Resilience; 4 Speed
+Miss chance: 0%
+Experience: 12
+Moves randomly for 0.694 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 3
+Extra drop: Soggy Newspaper at 7%
+---
+Putrid Ghost
+395 HP; 19 Damage; 4 Resilience; 3 Speed
+Miss chance: 5%
+Experience: 16
+Moves randomly for 0 seconds
+Jitteriness value: 0.01
+Threshold until the monster moves towards players: 3
+Extra drop: Chicken Statue at 2%
+---
+Shadow Sniper
+241 HP; 15 Damage; 2 Resilience; 3 Speed
+Miss chance: 2%
+Experience: 17
+Moves randomly for 0 seconds
+Jitteriness value: 0
+Threshold until the monster moves towards players: 2
+Extra drop: Squid Ink at 6%
+---
+Spider
+195 HP; 19 Damage; 3 Resilience; 4 Speed
+Miss chance: 1%
+Experience: 11
+Moves randomly for 2.946 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 3
+Extra drop: Wheat Flour at 5%
+---
+Royal Serpent
+186 HP; 28 Damage; 1 Resilience; 2 Speed
+Miss chance: 2%
+Experience: 20
+Moves randomly for 0 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 3
+Extra drop: Omni Geode at 5%
+---
+Blue Squid
+97 HP; 15 Damage; 3 Resilience; 1 Speed
+Miss chance: 2%
+Experience: 14
+Moves randomly for 0.227 seconds
+Jitteriness value: 0.02
+Threshold until the monster moves towards players: 1
+Extra drop: Sugar at 6%
+
+==== Foragables and Artifact Spots ====
+
+>> Desert <<
+
+Spring
+412: Winter Root | 0.4
+414: Crystal Fruit | 0.6
+20: Leek | 0.8
+587: Amphibian Fossil | 0.001
+
+Summer
+412: Winter Root | 0.5
+414: Crystal Fruit | 0.4
+20: Leek | 0.4
+209: Milkopus Surprise | 0.001
+
+Fall
+412: Winter Root | 0.3
+414: Crystal Fruit | 0.8
+20: Leek | 0.6
+607: Roasted Hazelnuts | 0.001
+
+Winter
+412: Winter Root | 0.4
+414: Crystal Fruit | 0.5
+20: Leek | 0.8
+139: Rockk | 0.001
+
+Extra digging item and rarity: Frozen Tear | 0.3
+
+>> BusStop <<
+
+Spring
+408: Hazelnut | 0.4
+638: Cherry | 0.7
+719: Mussel | 0.1
+20: Leek | 0.1
+420: Red Mushroom | 0.8
+90: Watery | 0.7
+394: Rainbow Shell | 0.5
+720: Shrimp | 0.001
+
+Summer
+637: Pomegranate | 0.8
+402: Sweet Pea | 0.7
+257: Morel | 0.7
+406: Wild Plum | 0.6
+18: Daffodil | 0.2
+397: Sea Urchin | 0.9
+259: Fiddlehead Fern | 0.7
+392: Nautilus Shell | 0.6
+283: Holly | 0.6
+408: Hazelnut | 0.001
+
+Fall
+634: Apricot | 0.8
+398: Squaonion | 0.7
+635: Orange | 0.7
+723: Oyster | 0.1
+88: Coconut | 0.6
+393: Coral | 0.5
+418: Crocus | 0.7
+180: Brown Egg | 0.001
+
+Winter
+613: Apple | 0.3
+404: Common Mushroom | 0.4
+16: Wild Horseradish | 0.7
+410: Blackberry | 0.1
+718: Cockle | 0.4
+22: Dandelion | 0.2
+416: Snow Yam | 0.7
+110: Rusty Spoon | 0.001
+
+Extra digging item and rarity: Torch | 0.38
+
+>> Forest <<
+
+Spring
+408: Hazelnut | 0.1
+638: Cherry | 0.6
+719: Mussel | 0.6
+20: Leek | 0.6
+420: Red Mushroom | 0.7
+90: Watery | 0.4
+394: Rainbow Shell | 0.7
+118: Glass Shards | 0.001
+
+Summer
+637: Pomegranate | 0.9
+402: Sweet Pea | 0.7
+257: Morel | 0.6
+406: Wild Plum | 0.9
+18: Daffodil | 0.7
+397: Sea Urchin | 0.6
+259: Fiddlehead Fern | 0.1
+392: Nautilus Shell | 0.6
+283: Holly | 0.8
+84: Frozen Tear | 0.001
+
+Fall
+634: Apricot | 0.5
+398: Squaonion | 0.5
+635: Orange | 0.4
+723: Oyster | 0.7
+88: Coconut | 0.7
+393: Coral | 0.1
+418: Crocus | 0.7
+720: Shrimp | 0.001
+
+Winter
+613: Apple | 0.6
+404: Common Mushroom | 0.6
+16: Wild Horseradish | 0.8
+410: Blackberry | 0.7
+718: Cockle | 0.8
+22: Dandelion | 0.6
+416: Snow Yam | 0.2
+548: Jamborite | 0.001
+
+Extra digging item and rarity: Aerinite | 0.2
+
+>> Town <<
+
+Spring
+408: Hazelnut | 0.7
+638: Cherry | 0.9
+719: Mussel | 0.6
+20: Leek | 0.4
+420: Red Mushroom | 0.7
+90: Watery | 0.6
+394: Rainbow Shell | 0.6
+22: Dandelion | 0.001
+
+Summer
+637: Pomegranate | 0.6
+402: Sweet Pea | 0.5
+257: Morel | 0.5
+406: Wild Plum | 0.7
+18: Daffodil | 0.4
+397: Sea Urchin | 0.1
+259: Fiddlehead Fern | 0.3
+392: Nautilus Shell | 0.4
+283: Holly | 0.7
+336: Gold Bar | 0.001
+
+Fall
+634: Apricot | 0.4
+398: Squaonion | 0.6
+635: Orange | 0.6
+723: Oyster | 0.6
+88: Coconut | 0.9
+393: Coral | 0.7
+418: Crocus | 0.5
+211: Pancakes | 0.001
+
+Winter
+613: Apple | 0.5
+404: Common Mushroom | 0.4
+16: Wild Horseradish | 0.5
+410: Blackberry | 0.7
+718: Cockle | 0.6
+22: Dandelion | 0.4
+416: Snow Yam | 0.6
+802: Egglait Seeds | 0.001
+
+Extra digging item and rarity: Earth Crystal | 0.33
+
+>> Mountain <<
+
+Spring
+408: Hazelnut | 0.7
+638: Cherry | 0.4
+719: Mussel | 0.5
+20: Leek | 0.5
+420: Red Mushroom | 0.7
+90: Watery | 0.9
+394: Rainbow Shell | 0.8
+182: Large Brown Egg | 0.001
+
+Summer
+637: Pomegranate | 0.8
+402: Sweet Pea | 0.7
+257: Morel | 0.2
+406: Wild Plum | 0.4
+18: Daffodil | 0.5
+397: Sea Urchin | 0.7
+259: Fiddlehead Fern | 0.6
+392: Nautilus Shell | 0.7
+283: Holly | 0.9
+612: Cold Cofferoot Candy | 0.001
+
+Fall
+634: Apricot | 0.7
+398: Squaonion | 0.7
+635: Orange | 0.7
+723: Oyster | 0.5
+88: Coconut | 0.8
+393: Coral | 0.3
+418: Crocus | 0.9
+229: Tortilla | 0.001
+
+Winter
+613: Apple | 0.7
+404: Common Mushroom | 0.2
+16: Wild Horseradish | 0.1
+410: Blackberry | 0.6
+718: Cockle | 0.4
+22: Dandelion | 0.2
+416: Snow Yam | 0.8
+608: Jojatrout Pie | 0.001
+
+Extra digging item and rarity: Tigerseye | 0.15
+
+>> Backwoods <<
+
+Spring
+408: Hazelnut | 0.6
+638: Cherry | 0.4
+719: Mussel | 0.5
+20: Leek | 0.7
+420: Red Mushroom | 0.5
+90: Watery | 0.3
+394: Rainbow Shell | 0.4
+472: Banadew Seeds | 0.001
+
+Summer
+637: Pomegranate | 0.4
+402: Sweet Pea | 0.7
+257: Morel | 0.4
+406: Wild Plum | 0.1
+18: Daffodil | 0.4
+397: Sea Urchin | 0.4
+259: Fiddlehead Fern | 0.5
+392: Nautilus Shell | 0.2
+283: Holly | 0.6
+202: Fried Calamari | 0.001
+
+Fall
+634: Apricot | 0.1
+398: Squaonion | 0.5
+635: Orange | 0.6
+723: Oyster | 0.6
+88: Coconut | 0.6
+393: Coral | 0.5
+418: Crocus | 0.7
+258: Hucklebean | 0.001
+
+Winter
+613: Apple | 0.5
+404: Common Mushroom | 0.4
+16: Wild Horseradish | 0.4
+410: Blackberry | 0.5
+718: Cockle | 0.9
+22: Dandelion | 0.1
+416: Snow Yam | 0.5
+545: Fluorapatite | 0.001
+
+Extra digging item and rarity: Maple Seed | 0.31
+
+>> Railroad <<
+
+Spring
+408: Hazelnut | 0.6
+638: Cherry | 0.9
+719: Mussel | 0.4
+20: Leek | 0.2
+420: Red Mushroom | 0.5
+90: Watery | 0.1
+394: Rainbow Shell | 0.7
+60: Emerald | 0.001
+
+Summer
+637: Pomegranate | 0.7
+402: Sweet Pea | 0.2
+257: Morel | 0.4
+406: Wild Plum | 0.2
+18: Daffodil | 0.4
+397: Sea Urchin | 0.6
+259: Fiddlehead Fern | 0.9
+392: Nautilus Shell | 0.8
+283: Holly | 0.5
+88: Coconut | 0.001
+
+Fall
+634: Apricot | 0.8
+398: Squaonion | 0.5
+635: Orange | 0.4
+723: Oyster | 0.7
+88: Coconut | 0.9
+393: Coral | 0.4
+418: Crocus | 0.7
+577: Fairy Stone | 0.001
+
+Winter
+613: Apple | 0.5
+404: Common Mushroom | 0.7
+16: Wild Horseradish | 0.3
+410: Blackberry | 0.5
+718: Cockle | 0.6
+22: Dandelion | 0.2
+416: Snow Yam | 0.5
+117: Anchor | 0.001
+
+Extra digging item and rarity: Green Algae | 0.6
+
+>> Beach <<
+
+Spring
+394: Rainbow Shell | 0.7
+372: Clam | 0.5
+636: Peach | 0.1
+281: Chanterelle | 0.7
+221: Pink Cake | 0.001
+
+Summer
+392: Nautilus Shell | 0.4
+372: Clam | 0.6
+636: Peach | 0.9
+281: Chanterelle | 0.7
+334: Copper Bar | 0.001
+
+Fall
+723: Oyster | 0.4
+372: Clam | 0.9
+636: Peach | 0.4
+281: Chanterelle | 0.3
+100: Chipped Amphora | 0.001
+
+Winter
+410: Blackberry | 0.3
+372: Clam | 0.4
+636: Peach | 0.8
+281: Chanterelle | 0.5
+444: Duck Feather | 0.001
+
+Extra digging item and rarity: Trash | 0.31
+
+>> Woods <<
+
+Spring
+396: Spice Berry | 0.5
+22: Dandelion | 0.2
+227: Sashimi | 0.001
+
+Summer
+396: Spice Berry | 0.4
+638: Cherry | 0.3
+216: Bread | 0.001
+
+Fall
+396: Spice Berry | 0.5
+412: Winter Root | 0.1
+605: McTato Dip | 0.001
+
+Winter
+396: Spice Berry | 0.4
+635: Orange | 0.4
+70: Jade | 0.001
+
+Extra digging item and rarity: Cave Carrot | 0.39
+
+>> UndergroundMine <<
+
+Spring
+
+Summer
+
+Fall
+
+Winter
+
+Extra digging item and rarity: Solar Essence | 0.3
+
+==== CRAFTING RECIPES ====
+Wood Fence - 
+ - Stone: 2
+---
+Stone Fence - Farming 4
+ - Stone: 2
+---
+Iron Fence - Farming 1
+ - Frozen Tear: 1 - Earth Crystal: 1
+---
+Hardwood Fence - Farming 4
+ - Geode: 1 - Copper Ore: 1 - Coal: 1
+---
+Gate - 
+ - Stone: 45 - Sugar: 1
+---
+Chest - 
+ - Solar Essence: 7
+---
+Torch - 
+ - Stone: 45 - Wood: 5
+---
+Scarecrow - Farming 1
+ - Diamond: 1 - Clay: 5
+---
+Bee House - Farming 4
+ - Fire Quartz: 1 - Squid Ink: 2
+---
+Keg - Farming 9
+ - Slime: 2 - Sugar: 4 - Trash: 1
+---
+Cask - 
+ - Frozen Geode: 2 - Broken CD: 1 - Stone: 50
+---
+Furnace - 
+ - Lemofroot: 1 - Earth Crystal: 3
+---
+Garden Pot - 
+ - Stone: 45 - Maple Seed: 3
+---
+Wood Sign - 
+ - Fiber: 12 - Soggy Newspaper: 1
+---
+Stone Sign - 
+ - Clay: 1
+---
+Cheese Press - Farming 9
+ - Coal: 5 - Torch: 1 - Solar Essence: 3
+---
+Mayonnaise Machine - Farming 1
+ - Frozen Geode: 1 - Acorn: 2 - Pine Cone: 1
+---
+Seed Maker - Farming 6
+ - Amethyst: 1 - Sugar: 1 - Soggy Newspaper: 1
+---
+Loom - Farming 6
+ - White Algae: 1 - Mixed Seeds: 1 - Wood: 5
+---
+Oil Maker - Farming 4
+ - Iron Ore: 5 - Squid Ink: 3
+---
+Recycling Machine - Fishing 3
+ - Geode: 1 - Solar Essence: 6 - Torch: 1
+---
+Worm Bin - Fishing 9
+ - Wild Plum: 3 - Crab: 1 - Oyster: 1
+---
+Preserves Jar - Farming 4
+ - Gold Bar: 1 - Geode: 1 - Broken CD: 1
+---
+Charcoal Kiln - Foraging 2
+ - Stone: 10 - Pine Cone: 3
+---
+Tapper - Foraging 1
+ - Squid Ink: 5 - Geode: 1 - Solar Essence: 1
+---
+Lightning Rod - Foraging 7
+ - Frozen Tear: 2 - Geode: 1
+---
+Slime Incubator - Combat 9
+ - Gold Ore: 3 - Periwinkle: 1 - Brown Egg: 1
+---
+Slime Egg-Press - Combat 8
+ - Aartinana Poppers: 1 - Hardwood: 1 - Fiber: 1
+---
+Crystalarium - Mining 6
+ - Maple Syrup: 1 - Joja Cola: 1 - Pine Cone: 2
+---
+Mini-Jukebox - 
+ - Refined Quartz: 1 - Broken Glasses: 1 - Maple Seed: 3
+---
+Sprinkler - Farming 4
+ - Periwinkle: 1 - Clay: 1
+---
+Quality Sprinkler - Farming 8
+ - Copper Bar: 2 - Acorn: 2 - Seaweed: 2
+---
+Iridium Sprinkler - Farming 9
+ - Salad: 1 - White Algae: 1 - Copper Ore: 1
+---
+Staircase - Mining 1
+ - Maple Syrup: 1 - Squid Ink: 5
+---
+Basic Fertilizer - Farming 1
+ - Stone: 2
+---
+Quality Fertilizer - Farming 9
+ - Fiber: 6 - Oil: 3
+---
+Basic Retaining Soil - Farming 7
+ - Stone: 2
+---
+Quality Retaining Soil - Farming 6
+ - Wood: 1
+---
+Speed-Gro - Farming 4
+ - Iron Ore: 1 - Squid Ink: 1
+---
+Deluxe Speed-Gro - Farming 9
+ - Ruby: 1 - Torch: 1
+---
+Cherry Bomb - Mining 4
+ - Wood: 25 - Sugar: 2
+---
+Bomb - Mining 3
+ - Refined Quartz: 1 - Earth Crystal: 2
+---
+Mega Bomb - Mining 6
+ - Battery: 1 - Squid Ink: 1 - Acorn: 1
+---
+Explosive Ammo - Combat 6
+ - Magma Geode: 1 - Torch: 1 - Sap: 1
+---
+Transmute (Fe) - Mining 4
+ - Cave Carrot: 2 - Torch: 1 - Copper Ore: 1
+---
+Transmute (Au) - Mining 7
+ - Ruby: 1 - Torch: 1
+---
+Wild Seeds (Sp) - Foraging 3
+ - Mussel: 1 - Cherry: 2 - Leek: 1
+---
+Wild Seeds (Su) - Foraging 3
+ - Morel: 1 - Sweet Pea: 1 - Wild Plum: 1 - Daffodil: 1
+---
+Wild Seeds (Fa) - Foraging 6
+ - Coconut: 2 - Oyster: 1 - Apricot: 1
+---
+Wild Seeds (Wi) - Foraging 4
+ - Dandelion: 4
+---
+Warp Totem: Farm - Foraging 8
+ - Clam: 1 - Solar Essence: 1
+---
+Warp Totem: Mountains - Foraging 6
+ - Fire Quartz: 1 - Coal: 1
+---
+Warp Totem: Beach - Foraging 3
+ - Purple Mushroom: 1 - Wood: 1 - Fiber: 1
+---
+Warp Totem: Desert - 
+ - Aquamarine: 1 - Cave Carrot: 1 - Sugar: 1
+---
+Rain Totem - Foraging 9
+ - Void Essence: 4 - Maple Syrup: 1 - Gold Bar: 1
+---
+Field Snack - Foraging 1
+ - Stone: 30 - Soggy Newspaper: 1
+---
+Jack-O-Lantern - 
+ - Red Mushroom: 1 - Ruerillo: 1
+---
+Wood Floor - 
+ - Fiber: 2
+---
+Straw Floor - 
+ - Stone: 2
+---
+Brick Floor - 
+ - Wood: 1
+---
+Weathered Floor - 
+ - Stone: 2
+---
+Crystal Floor - 
+ - Cave Carrot: 1 - Solar Essence: 1 - Copper Ore: 1
+---
+Stone Floor - 
+ - Stone: 2
+---
+Wood Path - 
+ - Wood: 2
+---
+Gravel Path - 
+ - Fiber: 1
+---
+Cobblestone Path - 
+ - Fiber: 1
+---
+Stepping Stone Path - 
+ - Wood: 2
+---
+Crystal Path - 
+ - Snail: 1 - Copper Ore: 1
+---
+Wild Bait - 
+ - Earth Crystal: 3
+---
+Bait - Fishing 1
+ - Fiber: 2
+---
+Spinner - Fishing 7
+ - Squid Ink: 1 - Torch: 1 - Earth Crystal: 1
+---
+Magnet - Fishing 9
+ - Copper Bar: 1 - Torch: 1
+---
+Trap Bobber - Fishing 8
+ - Oak Resin: 1 - Geode: 1 - Broken Glasses: 1
+---
+Cork Bobber - Fishing 9
+ - Jade: 1 - Broken Glasses: 1 - Acorn: 3
+---
+Dressed Spinner - Fishing 6
+ - Solar Essence: 6 - Earth Crystal: 3 - Quartz: 1
+---
+Treasure Hunter - Fishing 8
+ - White Algae: 2 - Torch: 1
+---
+Barbed Hook - Fishing 4
+ - Lemofroot: 1 - Clay: 4
+---
+Oil Of Garlic - Fishing 4
+ - Lucky Lunch: 1 - Fried Calamari: 1
+---
+Life Elixir - Fishing 4
+ - Alamite: 1 - Obsidian: 1
+---
+Crab Pot - Fishing 1
+ - Ruby: 1 - Copper Ore: 1
+---
+Iridium Band - Combat 9
+ - Dragopear Seeds: 1 - Roots Platter: 1 - Wood: 35
+---
+Wedding Ring - 
+ - Sea Urchin: 3 - Maple Seed: 3 - Pine Cone: 3
+---
+Ring of Yoba - Combat 7
+ - Orpiment: 1 - Potarene: 1
+---
+Sturdy Ring - Combat 1
+ - White Algae: 3 - Sugar: 1 - Green Algae: 1
+---
+Warrior Ring - Combat 2
+ - Slime: 5 - Quartz: 2
+---
+Tub o' Flowers - 
+ - Coal: 5
+---
+Wooden Brazier - 
+ - Wood: 20 - Oil: 3
+---
+Wicked Statue - 
+ - Quartz: 1
+---
+Stone Brazier - 
+ - Cave Carrot: 2
+---
+Gold Brazier - 
+ - Squid Ink: 3 - Quartz: 3 - Copper Ore: 1
+---
+Campfire - 
+ - Wood: 50 - Hay: 1
+---
+Stump Brazier - 
+ - Omni Geode: 1 - Soggy Newspaper: 1 - Mixed Seeds: 1
+---
+Carved Brazier - 
+ - Aquamarine: 1 - Sap: 5 - Hay: 1
+---
+Skull Brazier - 
+ - Torch: 1 - Quartz: 2 - Copper Ore: 5
+---
+Barrel Brazier - 
+ - White Algae: 2 - Coal: 1
+---
+Marble Brazier - 
+ - Carrodropp Seeds: 1 - Lobster: 1 - Frozen Tear: 3
+---
+Wood Lamp-post - 
+ - Clay: 1 - Earth Crystal: 1 - Copper Ore: 5
+---
+Iron Lamp-post - 
+ - White Egg: 1 - Earth Crystal: 1
+---
+
+==== BUNDLES ====
+CraftsRoom
+Bundle index: 13 - Resource Bundle
+Possible items: Wood: 150, Stone: 138, Fiber: 36, Clay: 48, Hardwood: 10
+Required: 5/5
+Reward: Pine Tar: 50
+---
+Bundle index: 14 - Orange Bundle
+Possible items: Fried Boxout: 1, Chanterelle: 1, Winter Root: 1, Pale Ale: 1, Crab: 1, Lobster: 1, Jack-O-Lantern: 1, Rusty Cog: 1
+Required: 5/8
+Reward: Quality Retaining Soil: 100
+---
+Bundle index: 15 - Happy Crops Bundle
+Possible items: Quality Fertilizer: 17, Basic Fertilizer: 12, Ruerillo: 1, Quality Retaining Soil: 12, Sprinkler: 2, Iridium Sprinkler: 1, Quality Sprinkler: 5, Basic Retaining Soil: 20
+Required: 7/8
+Reward: Pine Cone: 42
+---
+Bundle index: 16 - Yellow Bundle
+Possible items: Dandelion: 1, Straw Floor: 1, Lucky Lunch: 1, Daffodil: 1, Basic Fertilizer: 1, Pyrite: 1, Honey: 1, Strange Doll1: 1
+Required: 3/8
+Reward: Pine Cone: 35
+---
+Bundle index: 17 - Fall Foraging Bundle
+Possible items: Apricot: 1, Crocus: 1, Coral: 1, Orange: 1, Coconut: 1, Oyster: 1, Squaonion: 1
+Required: 6/7
+Reward: Duck Mayonnaise: 8
+---
+Bundle index: 19 - Random Bundle
+Possible items: Dolomite: 1, Ruerillo: 1, Soapstone: 1, Alfaflour Seeds: 1, Pyrite: 1, Fried Calamari: 1, Joja Cola: 1, Mudstone: 1
+Required: 4/8
+Reward: Quality Retaining Soil: 100
+---
+Pantry
+Bundle index: 0 - Desert Bundle
+Possible items: Iridium Ore: 5, Golden Relic: 1, Eeoach: 1, Winter Root: 2, Daffolilac Seeds: 5
+Required: 4/5
+Reward: Loom: 1
+---
+Bundle index: 1 - Spring Crops Bundle
+Possible items: Banadew: 1, Ancient Fruit: 1, Honeypaya: 1, Egglait: 1, McTato: 1, Jojatrout: 1, Savory Chocoto: 1, Boysengranite: 1
+Required: 6/8
+Reward: Ruerillo: 34
+---
+Bundle index: 2 - "P" Bundle
+Possible items: Prehistoric Tibia: 1, Pomegranate: 1, Potarene Seeds: 1, Polg: 1, Pancakes: 1, Passionkorn: 1, Pine Cone: 1, Pineapple: 1
+Required: 3/8
+Reward: Loom: 1
+---
+Bundle index: 3 - Rare Foods Bundle
+Possible items: Ancient Fruit: 1, Daffolilac: 1, Bellaflower: 1
+Required: 2/3
+Reward: Bee House: 1
+---
+Bundle index: 4 - Egg Bundle
+Possible items: Purple Slime Egg: 1, Thunder Egg: 1, Red Slime Egg: 1, Egglait Seeds: 1, Egglait: 1, Dinosaur Egg: 1, Large White Egg: 1, Brown Egg: 1
+Required: 5/8
+Reward: Stone: 999
+---
+Bundle index: 5 - Fall Crops Bundle
+Possible items: Ancient Fruit: 1, Watery: 1, Limeyam: 1, Egglait: 1, Alfaflour: 1, Potarene: 1, Bellaflower: 1, Unmilled Lemofroot: 1
+Required: 6/8
+Reward: Loom: 1
+---
+FishTank
+Bundle index: 6 - Night Fish Bundle
+Possible items: Boxout: 1, Tillatongue: 1, Baraling: 1, Piranlet: 1, Bullm: 1, Void Dartock: 1, Walado: 1, Flounma: 1
+Required: 4/8
+Reward: Recycling Machine: 1
+---
+Bundle index: 7 - Rain Fish Bundle
+Possible items: Flounma: 1, Moreye: 1, Baraling: 1, Rainbow Anchole: 1, Halliad: 1, Eeoach: 1, Trouskipper: 1, Moonkerel: 1
+Required: 4/8
+Reward: Dressed Spinner: 1
+---
+Bundle index: 8 - "D" Bundle
+Possible items: Dolomite: 1, Duck Mayonnaise: 1, Dragopear Seeds: 1, Dwarf ScrollIII: 1, Decorative Pot: 1, Drum Block: 1, Dish o' The Sea: 1, Dwarf ScrollIV: 1
+Required: 3/8
+Reward: Recycling Machine: 1
+---
+Bundle index: 9 - Unique Fish Bundle
+Possible items: Stingskip: 1, Gostapia: 1, Eeoach: 1, Bigeye Dogio: 1
+Required: 3/4
+Reward: Lead Bobber: 1
+---
+Bundle index: 10 - Town Fish Bundle
+Possible items: Squeacod: 1, Halliad: 1, Woovy: 1, Muddiru: 1, Maki: 1, Polg: 1, Rainbow Anchole: 1, Lemumber: 1
+Required: 4/8
+Reward: Chanterelle: 33
+---
+Bundle index: 11 - Blue Bundle
+Possible items: Hucklebean Tart: 1, Broken CD: 1, Aquamarine Ring: 1, Soapstone: 1, Battery: 1, Basic Retaining Soil: 1, Aquamarine: 1, Broken Glasses: 1
+Required: 6/8
+Reward: Wild Bait: 500
+---
+BoilerRoom
+Bundle index: 20 - Spoopy Bundle
+Possible items: Void Essence: 6, Bat Wing: 6, Jojatrout: 6, Ghost Crystal: 6, Purple Mushroom: 6, Trouskipper: 6
+Required: 3/6
+Reward: Mayonnaise Machine: 1
+---
+Bundle index: 21 - Explosive Bundle
+Possible items: Cherry Bomb: 2, Bomb: 3, Mega Bomb: 2
+Required: 3/3
+Reward: Purple Mushroom: 16
+---
+Bundle index: 22 - Metal Bundle
+Possible items: Copper Ore: 5, Iron Bar: 4, Copper Bar: 3, Iron Ore: 5, Gold Ore: 7, Iridium Bar: 5, Iridium Ore: 7
+Required: 7/7
+Reward: Gobish: 19
+---
+BulletinBoard
+Bundle index: 31 - Leah Bundle
+Possible items: Poihock Muffin: 1, Goat Cheese: 1, Truffle: 1, Stir Fry: 1, Salad: 1, Vegetable Medley: 1, Wine: 1
+Required: 5/7
+Reward: Spaghetti: 20
+---
+Bundle index: 32 - Evelyn Bundle
+Possible items: Stuffing: 1, Chocolate Cake: 1, Diamond: 1, Snaplaurel: 1, Aprimelon: 1, Forget-me-suckle: 1
+Required: 4/6
+Reward: Pizza: 10
+---
+Bundle index: 33 - Loved Bundle
+Possible items: Golden Pumpkin: 1, Pearl: 1, Prismatic Shard: 1, Rabbits Foot: 1
+Required: 2/4
+Reward: Bread: 8
+---
+Bundle index: 34 - Willy Bundle
+Possible items: Koichore: 1, Squeacod: 1, Mead: 1, Iridium Bar: 1, Jojatrout: 1, Angeail: 1, Diamond: 1, Bullm: 1
+Required: 6/8
+Reward: Gate: 19
+---
+Bundle index: 35 - Shane Bundle
+Possible items: Beer: 1, Aartinana: 1, Aartinana Poppers: 1, Pizza: 1
+Required: 3/4
+Reward: Crystal Floor: 14
+---
+Vault
+Bundle index: 23 - 6,468g: Chili's Lunch Bundle
+Reward: ??HMTGF??: 1
+---
+Bundle index: 24 - 20,658g: Mustang Bundle
+Reward: Lobster: 25
+---
+Bundle index: 25 - 11,818g: MLM Starter Kit Bundle
+Reward: Iridium Bar: 4
+---
+Bundle index: 26 - 1,270g: Cheapskate Bundle
+Reward: Gold Brazier: 1
+---
+Joja
+Bundle index: 36 - The Missing Bundle
+Possible items: Purple Slime Egg: 1, Stingskip: 1, Stir Fry: 1, Hardwood: 1, Zucchiapple Pie: 1
+Required: 5/5
+---
+==== MUSIC ====
+50s is now MainTheme
+AbigailFlute is now movie_wumbus
+AbigailFluteDuet is now cowboy_outlawsong
+aerobics is now fall_day_ambient
+breezy is now EmilyDream
+bugLevelLoop is now jaunty
+Cavern is now spring3
+christmasTheme is now breezy
+Cloth is now 50s
+CloudCountry is now honkytonky
+clubloop is now summer_day_ambient
+communityCenter is now shimmeringbastion
+cowboy_boss is now XOR
+cowboy_outlawsong is now Crystal Bells
+Cowboy_OVERWORLD is now tropical_island_day_ambient
+Cowboy_singing is now sam_acoustic1
+Cowboy_undead is now crane_game
+crane_game is now Overcast
+crane_game_fast is now Lava_Ambient
+Crystal Bells is now gusviolin
+desolate is now submarine_song
+distantBanjo is now CloudCountry
+echos is now Of Dwarves
+elliottPiano is now summer2
+EmilyDance is now movie_nature
+EmilyDream is now EmilyTheme
+EmilyTheme is now WizardSong
+event1 is now junimoKart_whaleMusic
+event2 is now spring1
+fall_day_ambient is now communityCenter
+fall1 is now spring_night_ambient
+fall2 is now spaceMusic
+fall3 is now mermaidSong
+fallFest is now winter2
+FlowerDance is now starshoot
+Frost_Ambient is now desolate
+grandpas_theme is now junimoKart_ghostMusic
+gusviolin is now MarlonsTheme
+harveys_theme_jazz is now Cowboy_singing
+heavy is now Cavern
+honkytonky is now fallFest
+Hospital_Ambient is now FlowerDance
+Icicles is now grandpas_theme
+jaunty is now junimoKart_slimeMusic
+jojaOfficeSoundscape is now SettlingIn
+junimoKart is now Saloon1
+junimoKart_ghostMusic is now SunRoom
+junimoKart_mushroomMusic is now cowboy_boss
+junimoKart_slimeMusic is now harveys_theme_jazz
+junimoKart_whaleMusic is now wedding
+junimoStarSong is now movie_classic
+kindadumbautumn is now junimoStarSong
+Lava_Ambient is now night_market
+libraryTheme is now fall2
+MainTheme is now movieTheater
+MarlonsTheme is now jojaOfficeSoundscape
+marnieShop is now woodsTheme
+mermaidSong is now Frost_Ambient
+moonlightJellies is now springtown
+movie_classic is now AbigailFlute
+movie_nature is now kindadumbautumn
+movie_wumbus is now heavy
+movieTheater is now fall1
+movieTheaterAfter is now winter_day_ambient
+musicboxsong is now sam_acoustic2
+Near The Planet Core is now christmasTheme
+night_market is now echos
+Of Dwarves is now AbigailFluteDuet
+Overcast is now libraryTheme
+playful is now tickTock
+poppy is now event1
+ragtime is now spirits_eve
+sadpiano is now musicboxsong
+Saloon1 is now marnieShop
+sam_acoustic1 is now bugLevelLoop
+sam_acoustic2 is now poppy
+sampractice is now tinymusicbox
+Secret Gnomes is now distantBanjo
+SettlingIn is now Cowboy_undead
+shaneTheme is now winter1
+shimmeringbastion is now movieTheaterAfter
+spaceMusic is now Upper_Ambient
+spirits_eve is now Cowboy_OVERWORLD
+spring_day_ambient is now tribal
+spring_night_ambient is now sampractice
+spring1 is now Icicles
+spring2 is now elliottPiano
+spring3 is now event2
+springtown is now playful
+starshoot is now moonlightJellies
+submarine_song is now fall3
+summer_day_ambient is now clubloop
+summer1 is now sweet
+summer2 is now crane_game_fast
+summer3 is now spring2
+SunRoom is now Volcano_Ambient
+sweet is now VolcanoMines
+tickTock is now Near The Planet Core
+tinymusicbox is now summer3
+title_night is now shaneTheme
+tribal is now ragtime
+Upper_Ambient is now title_night
+wavy is now spring_day_ambient
+wedding is now junimoKart_mushroomMusic
+winter_day_ambient is now Secret Gnomes
+winter1 is now wavy
+winter2 is now winter3
+winter3 is now Cloth
+WizardSong is now EmilyDance
+woodsTheme is now summer1
+XOR is now junimoKart
+tropical_island_day_ambient is now sadpiano
+VolcanoMines is now aerobics
+Volcano_Ambient is now Hospital_Ambient
+---
+
+==== QUESTS ====
+3: "Basic/The Mysterious Qi/You've found another note written by 'Mr. Qi'. The request is even more unusual this time./Place 10 Aprimelons inside Mayor Lewis' fridge./null/-1/0/-1/false"
+6: "ItemHarvest/Getting Started/If you want to become a farmer, you have to start with the basics. Use your hoe to till the soil, then use a seed packet on the tilled soil to sow a crop. Water every day until the crop is ready for harvest./Cultivate and harvest a Banadew./262/h7 8/100/-1/true"
+22: "Basic/Fish Casserole/Jodi swung by the farm to ask you to dinner at 7:00 PM. Her only request was that you bring a Bramet for her fish casserole./Enter Jodi's house with a Bramet at 7:00 PM./-1/-1/0/-1/true"
+101: "ItemDelivery/Shane's Request/Shane needs a fresh Passionkorn for a recipe and is asking for one./Bring Shane a Passionkorn./Shane 270/-1/1538/-1/true/Oh, that looks so delicious! Thank you, this is just what I wanted. It's going to be perfect for my yellow curry."
+103: "ItemDelivery/Robin Is Hungry/Robin is hankerin' for a Vegetable Medley. Nothing else will do. You can probably make one yourself if you have the ingredients./Bring Robin a Vegetable Medley./Robin 268/-1/1688/-1/true/Gimme that. *slurp*... Ahh, that's the stuff.#$b#It's real nice and hoppy... notes of citrus and pine, but with a robust body to keep it grounded.#$b#Thanks, kid. This means a lot to me. I knew I could count on you.$h"
+104: "ItemDelivery/Crop Research/Lewis needs a fresh Boysengranite for research purposes./Bring Lewis a Boysengranite./Lewis 250/-1/1988/-1/true/This is perfect! It's just what I need for my research. It's going to be hard not to eat it! Thanks a bunch."
+105: "ItemDelivery/Knee Therapy/Penny needs a Poihock to soothe an aching knee./Bring Penny a Poihock./Penny 376/-1/2829/-1/true/Took you long enough... hmmph... Well it's good and spicy at least. Thanks."
+106: "ItemDelivery/Cow's Delight/Penny wants to give some cows a special treat and is asking for a single bunch of Alfaflours./Bring Penny one bunch of Alfaflours./Penny 400/-1/551/-1/true/Oh, the Alfaflours I asked for! Thank you so much... the cows are going to love this!$h"
+108: "ItemDelivery/Carving Zucchiapples/Abigail wants to carve a Zucchiapple with Sam. Can you bring them one from the farm?/Bring Abigail a Zucchiapple./Abigail 252/-1/2955/-1/true/Oh, the Zucchiapple! It's a good one... Sam will be so happy to see this. Thanks, @!$h"
+109: "ItemDelivery/Fish Catching/Haley is challenging you to catch a Piranlet, saying that a true fishing master can figure out where to get it themselves./Bring Haley a Piranlet./Haley 150/-1/2039/-1/true/Hey, you did it! Not bad. Not bad at all. I'm impressed.#$b#Winter's a good time to break out the old fishing rod, isn't it?"
+110: "ItemDelivery/Lewis's Attempt/Lewis wants you to give Pam a Tangeberry Soup and wants you to say it's from them./Bring Pam a Tangeberry Soup./Pam 199/-1/0/-1/true/Oh, I love this! You're so sweet!$h#$b#Huh? It's from who?$u#$b#Oh, you got it from Lewis? Well I don't care where you got it from, it's beautiful! Thank you! *smooch*$h"
+111: "ItemDelivery/A Dark Reagent/Evelyn wants you to descend into the mines and find a Cheese Moist Pearjube for some kind of dark magic./Bring Evelyn a Cheese Moist Pearjube./Evelyn 197/-1/2557/-1/true/Ah, you've brought it. You've earned my gratitude, and a 2557g reward. Now go."
+112: "ItemDelivery/A Favor For Clint/Clint got a new hammer and wants to test it out on a variety of materials./Bring Clint a Potarene./Clint 268/-1/2319/-1/true/Hey, it's the Potarene I asked for. It looks strong... perfect.#$b#Thanks, @. I appreciate this."
+113: "ItemDelivery/Pierre's Request/Pierre wrote to you asking for 6 Tigerseyes./Bring Pierre 6 Tigerseyes./Pierre 562 6/-1/2995/-1/true/Oh, you brought it! I know I can always count on you, @.$h#$b#Mmhmm... This is perfect. It's exactly what I need. Thanks!"
+114: "ItemDelivery/Fish Stew/Willy wants to make fish stew, but needs an Angeail./Bring Willy an Angeail./Willy 143/-1/400/-1/true/*sniff*...*sniff*... What's that? Something smells like Angeail!#$b#Aha! You brought it! Thanks a million!"
+115: "ItemDelivery/Fresh Fruit/(no translation:Elliot-name) wants a taste of locally grown produce and is asking for a fresh Clementibarb./Bring (no translation:Elliot-name) a Clementibarb./Elliot 254/-1/2293/-1/true/Oh... You followed through! Thanks, this looks delicious!$h"
+116: "ItemDelivery/Chef's Gift/Haley wants to surprise Willy with a gift./Bring Haley a Potarene./Haley 268/-1/2607/-1/true/Oh, thank you, dear. This leek looks delicious. Willy will be so happy.#$b#Willy loves when I make eggs with Potarene for breakfast."
+117: "ItemDelivery/Vincent's Notice/Vincent will pay "top coin" to whoever brings in a plate of Ruerillo Parmesan. Apparently they're really craving the stuff./Bring Vincent some Ruerillo Parmesan./Vincent 417/-1/795/-1/true/It's about time! I was starting to get the shakes, I wanted this Ruerillo Parmesan so bad. *munch*... Mmm, now that's good.#$b#Thanks, @.$h"
+118: "ItemDelivery/Aquatic Research/Harvey is studying the toxin levels of the local Hosh and would like you to bring one./Bring Harvey a Hosh./Harvey 704/-1/974/-1/true/There you are. The specimen looks perfect. I'm going to get it on ice straight away. Thanks, @!"
+119: "ItemDelivery/A Soldier's Gift/Kent wants to give Pierre a Cold Cofferoot for their birthday./Bring Kent a Cold Cofferoot./Alex 282/-1/2133/-1/true/Hey. Shhh... Don't let Pierre see.#$b#Ah, this looks juicy. They'll love it. Thank you so much.$h"
+120: "ItemDelivery/Marnie's Needs/Marnie wants a Bug Meat, but won't explain what it's for. Maybe it's none of your business./Bring Marnie some Bug Meat./Marnie 684/-1/554/-1/true/You got the Bug Meat? Let me see...#$b#It's high quality... very slick. Great. Thank you."
+121: "ItemDelivery/Wanted: Milkopus/Gus put out a notice requesting a fresh Milkopus./Bring Gus a Milkopus./Emily 142/-1/1576/-1/true/Something smells like fresh Milkopus. Oh, that's good.$h#$b#Take care, friend."
+122: "ItemDelivery/Pierre Needs Juice/Pierre's TV Remote is dead. For some reason a Bigeye Dogio is needed to fix it./Bring Pierre a Bigeye Dogio./Pierre 147/-1/2679/-1/true/Hey, you pulled through with the Bigeye Dogio! Thanks, kid... You're a life-saver!$h"
+123: "ItemDelivery/Staff Of Riches/Penny is creating a staff of phenomenal riches. Who knows what it's for. The power of a Lobster is needed to finish it./Bring Penny a Lobster./Penny 715/-1/962/-1/true/Ah, precious Lobster. You've done well, @. You have my gratitude. Now, leave."
+124: "ItemDelivery/Catch a Moonkerel/Harvey is challenging you to catch a Moonkerel./Bring Harvey a Moonkerel./Harvey 146/-1/2756/-1/true/Hey, that's a real lunker! You've certainly got the angler's blood in you.$h"
+125: "ItemDelivery/Exotic Spirits/George wants to make a Pass-no-no, but the main ingredient is missing./Bring George a Passionkorn./George 270/-1/1523/-1/true/Passionkorn! Now there's a soothing sight for my eyes.$h#$b#It's going to be perfect for my Pass-no-no. Thanks!"
+
+==== WEAPONS ====
+0: Sweaty Cabbage Cleaver
+Type: SlashingSword
+Damage: 1 - 4
+Crit Chance / Multiplier: 0.025 / 3.8
+Knockback / Speed / AOE: 0.8 / 0 / 1
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 11 / 1
+---
+1: Ranger Board of Vengeance
+Type: ClubOrHammer
+Damage: 11 - 11
+Crit Chance / Multiplier: 0.028 / 4
+Knockback / Speed / AOE: 0.7 / 0 / 0
+Added Precision / Defense: 1 / 0
+Base / Min Mine Level Drop: 52 / 31
+---
+2: Steel Razer
+Type: SlashingSword
+Damage: 31 - 33
+Crit Chance / Multiplier: 0.02 / 3.9
+Knockback / Speed / AOE: 1.9 / -2 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 98 / 83
+---
+3: White Sikanda
+Type: SlashingSword
+Damage: 15 - 20
+Crit Chance / Multiplier: 0.027 / 3.4
+Knockback / Speed / AOE: 1.1 / -1 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 39 / 17
+---
+4: Shiny Car Townsaver of Friendship
+Type: SlashingSword
+Damage: 62 - 68
+Crit Chance / Multiplier: 0.029 / 3.7
+Knockback / Speed / AOE: 1.5 / 7 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: -1 / -1
+---
+5: Ultima Flame Brisingr of Conquest
+Type: SlashingSword
+Damage: 22 - 28
+Crit Chance / Multiplier: 0.021 / 3.5
+Knockback / Speed / AOE: 1.5 / 3 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 66 / 38
+---
+6: Crunchy Coral Pin
+Type: Dagger
+Damage: 12 - 33
+Crit Chance / Multiplier: 0.02 / 3.3
+Knockback / Speed / AOE: 0.8 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 44 / 21
+---
+7: Cereal Braveheart
+Type: SlashingSword
+Damage: 15 - 37
+Crit Chance / Multiplier: 0.022 / 3.8
+Knockback / Speed / AOE: 1.5 / 0 / 1
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 100 / 73
+---
+8: Wannabe Rune Mindsword of Fate
+Type: SlashingSword
+Damage: 32 - 47
+Crit Chance / Multiplier: 0.023 / 4
+Knockback / Speed / AOE: 0.7 / 0 / 0
+Added Precision / Defense: 5 / 0
+Base / Min Mine Level Drop: 110 / 99
+---
+9: Gemini Honedge of Instability
+Type: SlashingSword
+Damage: 46 - 58
+Crit Chance / Multiplier: 0.027 / 3.6
+Knockback / Speed / AOE: 1 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 105 / 87
+---
+10: Straw Barbarian Drum of Royalty
+Type: ClubOrHammer
+Damage: 17 - 34
+Crit Chance / Multiplier: 0.026 / 3.3
+Knockback / Speed / AOE: 1.2 / -10 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 82 / 65
+---
+11: Radical Tediore Spire of Clouds
+Type: SlashingSword
+Damage: 2 - 12
+Crit Chance / Multiplier: 0.026 / 3.2
+Knockback / Speed / AOE: 0.7 / 0 / 1
+Added Precision / Defense: 3 / 0
+Base / Min Mine Level Drop: 20 / -1
+---
+12: Sharp Jakobs Sharktooth
+Type: Dagger
+Damage: 1 - 3
+Crit Chance / Multiplier: 0.026 / 4
+Knockback / Speed / AOE: 0.7 / 0 / 0
+Added Precision / Defense: 1 / 0
+Base / Min Mine Level Drop: 8 / -1
+---
+13: Sacred Potato Scissors of Stealth
+Type: Dagger
+Damage: 8 - 26
+Crit Chance / Multiplier: 0.023 / 3.1
+Knockback / Speed / AOE: 0.5 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 22 / 6
+---
+14: Cat Shichishito
+Type: SlashingSword
+Damage: 22 - 43
+Crit Chance / Multiplier: 0.023 / 3.8
+Knockback / Speed / AOE: 1 / 0 / 0
+Added Precision / Defense: 1 / 0
+Base / Min Mine Level Drop: 62 / 41
+---
+15: Special Sagittarius Rod of Laughter
+Type: ClubOrHammer
+Damage: 6 - 13
+Crit Chance / Multiplier: 0.024 / 3
+Knockback / Speed / AOE: 1.3 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 60 / 41
+---
+16: Hyperion Slap Chop of Siege
+Type: Dagger
+Damage: 0 - 2
+Crit Chance / Multiplier: 0.028 / 3
+Knockback / Speed / AOE: 1.3 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 20 / 2
+---
+17: Musical Taurus Gadderhammer of Griffindor
+Type: ClubOrHammer
+Damage: 1 - 6
+Crit Chance / Multiplier: 0.02 / 3.5
+Knockback / Speed / AOE: 0.5 / 5 / 3
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 62 / 37
+---
+18: Inconvenient S&S Munitions Sickle
+Type: SlashingSword
+Damage: 4 - 8
+Crit Chance / Multiplier: 0.023 / 3.7
+Knockback / Speed / AOE: 0.9 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 104 / 90
+---
+19: Device Cheese Grater of Ravenclaw
+Type: Dagger
+Damage: 7 - 17
+Crit Chance / Multiplier: 0.023 / 3.7
+Knockback / Speed / AOE: 1.4 / -5 / 3
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 76 / 65
+---
+20: Black Bonecrusher of Ancients
+Type: ClubOrHammer
+Damage: 5 - 7
+Crit Chance / Multiplier: 0.025 / 3.8
+Knockback / Speed / AOE: 1.3 / 7 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 1 / -1
+---
+21: Cool Pisces Dragonslicer of Darkness
+Type: SlashingSword
+Damage: 4 - 13
+Crit Chance / Multiplier: 0.025 / 3.3
+Knockback / Speed / AOE: 0.9 / 6 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 31 / 19
+---
+22: Biggoron's Weapon
+Type: ClubOrHammer
+Damage: 2 - 6
+Crit Chance / Multiplier: 0.021 / 3.5
+Knockback / Speed / AOE: 0.6 / 2 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 8 / -1
+---
+23: Painful Joja Lathe of Old
+Type: SlashingSword
+Damage: 37 - 39
+Crit Chance / Multiplier: 0.029 / 3.3
+Knockback / Speed / AOE: 1.5 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: -1 / -1
+---
+24: Kokiri Harpoon
+Type: Dagger
+Damage: 11 - 21
+Crit Chance / Multiplier: 0.027 / 3
+Knockback / Speed / AOE: 1.4 / 0 / 4
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 30 / 7
+---
+25: Vladof Bowling Pin of Fatherhood
+Type: ClubOrHammer
+Damage: 0 - 5
+Crit Chance / Multiplier: 0.12 / 3
+Knockback / Speed / AOE: 0.9 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 18 / 3
+---
+26: Crystal Remote of Loyalty
+Type: ClubOrHammer
+Damage: 24 - 30
+Crit Chance / Multiplier: 0.026 / 3.8
+Knockback / Speed / AOE: 0.9 / -5 / 4
+Added Precision / Defense: 0 / 3
+Base / Min Mine Level Drop: 58 / 30
+---
+27: Scorpio Excalibur
+Type: SlashingSword
+Damage: 17 - 25
+Crit Chance / Multiplier: 0.022 / 3.4
+Knockback / Speed / AOE: 0.5 / 0 / 4
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 58 / 40
+---
+28: Aries Spork of Deliciousness
+Type: Dagger
+Damage: 32 - 55
+Crit Chance / Multiplier: 0.025 / 3.9
+Knockback / Speed / AOE: 0.8 / -10 / 0
+Added Precision / Defense: 3 / 2
+Base / Min Mine Level Drop: 110 / 89
+---
+29: Cancer Axe of Valor
+Type: SlashingSword
+Damage: 78 - 106
+Crit Chance / Multiplier: 0.028 / 3.2
+Knockback / Speed / AOE: 0.7 / 6 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: -1 / -1
+---
+30: Spicy Australium Shovel of Childhood
+Type: ClubOrHammer
+Damage: 1 - 4
+Crit Chance / Multiplier: 0.08 / 3.1
+Knockback / Speed / AOE: 1.6 / 0 / 2
+Added Precision / Defense: 6 / 0
+Base / Min Mine Level Drop: 4 / -1
+---
+31: Virgo Cutlass
+Type: SlashingSword
+Damage: 7 - 7
+Crit Chance / Multiplier: 0.02 / 4
+Knockback / Speed / AOE: 1 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 6 / -1
+---
+35: Maliwan Kikuichimonji of Justice
+Type: SlashingSword
+Damage: 1 - 4
+Crit Chance / Multiplier: 0.12 / 3.1
+Knockback / Speed / AOE: 0.7 / 0 / 0
+Added Precision / Defense: 5 / 0
+Base / Min Mine Level Drop: 5 / -1
+---
+36: Adamant Bat
+Type: ClubOrHammer
+Damage: 1 - 4
+Crit Chance / Multiplier: 0.026 / 3.4
+Knockback / Speed / AOE: 1.1 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 2 / -1
+---
+37: Kangaroo Table
+Type: ClubOrHammer
+Damage: 0 - 2
+Crit Chance / Multiplier: 0.025 / 3.2
+Knockback / Speed / AOE: 0.6 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 6 / -1
+---
+38: Coconono Sword-chucks of the Ocean
+Type: SlashingSword
+Damage: 1 - 2
+Crit Chance / Multiplier: 0.024 / 3
+Knockback / Speed / AOE: 1.6 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 10 / -1
+---
+39: Putrid Kebab Scimitar of Cleanliness
+Type: SlashingSword
+Damage: 2 - 5
+Crit Chance / Multiplier: 0.022 / 3.8
+Knockback / Speed / AOE: 0.8 / -1 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 20 / 9
+---
+40: Tempered Deku Saber of Pride
+Type: SlashingSword
+Damage: 0 - 4
+Crit Chance / Multiplier: 0.022 / 3.1
+Knockback / Speed / AOE: 1.3 / 0 / 3
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 20 / 5
+---
+41: Gaudy Dahl Longsword
+Type: SlashingSword
+Damage: 1 - 4
+Crit Chance / Multiplier: 0.03 / 3.2
+Knockback / Speed / AOE: 0.7 / 0 / 0
+Added Precision / Defense: 9 / 0
+Base / Min Mine Level Drop: 17 / -1
+---
+42: Dirty Pie Pizza Cutter
+Type: Dagger
+Damage: 2 - 2
+Crit Chance / Multiplier: 0.02 / 3.8
+Knockback / Speed / AOE: 0.5 / -3 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 14 / -1
+---
+43: Unusual Pudding Fork
+Type: Dagger
+Damage: 5 - 13
+Crit Chance / Multiplier: 0.08 / 3.1
+Knockback / Speed / AOE: 1 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 37 / 23
+---
+44: Void Ice Stalagmite of Fakeness
+Type: Dagger
+Damage: 9 - 17
+Crit Chance / Multiplier: 0.025 / 3.3
+Knockback / Speed / AOE: 0.6 / 308 / 3
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 40 / 17
+---
+45: Eridian Wyrmkiller
+Type: SlashingSword
+Damage: 21 - 37
+Crit Chance / Multiplier: 0.02 / 3.6
+Knockback / Speed / AOE: 1.1 / 0 / 0
+Added Precision / Defense: 10 / 0
+Base / Min Mine Level Drop: 90 / 77
+---
+46: Cleansing Iron Razor
+Type: Dagger
+Damage: 28 - 43
+Crit Chance / Multiplier: 0.026 / 3.7
+Knockback / Speed / AOE: 1.1 / 1 / 0
+Added Precision / Defense: 7 / 0
+Base / Min Mine Level Drop: 102 / 83
+---
+48: Butter Soulcutter of Motherhood
+Type: SlashingSword
+Damage: 28 - 46
+Crit Chance / Multiplier: 0.022 / 3.2
+Knockback / Speed / AOE: 0.9 / -11 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 61 / 34
+---
+49: Stabby Mithril Poker of Doom
+Type: Dagger
+Damage: 19 - 22
+Crit Chance / Multiplier: 0.022 / 4
+Knockback / Speed / AOE: 1.4 / 6 / 0
+Added Precision / Defense: 2 / 0
+Base / Min Mine Level Drop: 95 / 71
+---
+50: Godly Grandma's Barstool of Fury
+Type: ClubOrHammer
+Damage: 20 - 44
+Crit Chance / Multiplier: 0.03 / 3.4
+Knockback / Speed / AOE: 0.7 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 110 / 80
+---
+51: Mantle Wouldhealer of Courage
+Type: SlashingSword
+Damage: 17 - 26
+Crit Chance / Multiplier: 0.029 / 3.1
+Knockback / Speed / AOE: 1.3 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 26 / 13
+---
+52: Atlas Saw
+Type: SlashingSword
+Damage: 24 - 30
+Crit Chance / Multiplier: 0.026 / 3.9
+Knockback / Speed / AOE: 1.3 / 0 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 110 / 91
+---
+54: Vibrating Torgue Peeler of Wrath
+Type: Dagger
+Damage: 64 - 88
+Crit Chance / Multiplier: 0.09 / 3.1
+Knockback / Speed / AOE: 1.6 / -1 / 4
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 104 / 83
+---
+55: Strange Leo Dragnipur
+Type: SlashingSword
+Damage: 65 - 85
+Crit Chance / Multiplier: 0.025 / 3.8
+Knockback / Speed / AOE: 0.6 / -7 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 101 / 78
+---
+56: Lethal Plastic Stick of Bluntness
+Type: Dagger
+Damage: 29 - 39
+Crit Chance / Multiplier: 0.026 / 3.3
+Knockback / Speed / AOE: 1 / 6 / 4
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 82 / 60
+---
+57: Capricorn Spear
+Type: Dagger
+Damage: 69 - 89
+Crit Chance / Multiplier: 0.021 / 3.5
+Knockback / Speed / AOE: 1.3 / -2 / 4
+Added Precision / Defense: 5 / 1
+Base / Min Mine Level Drop: 106 / 79
+---
+58: Hot Dragon Pricker of Perspiration
+Type: Dagger
+Damage: 65 - 93
+Crit Chance / Multiplier: 0.02 / 3.3
+Knockback / Speed / AOE: 1.2 / 6 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 102 / 90
+---
+59: Dull Corn Pitchfork
+Type: SlashingSword
+Damage: 39 - 47
+Crit Chance / Multiplier: 0.027 / 3.9
+Knockback / Speed / AOE: 0.6 / -15 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 65 / 38
+---
+60: Steak Drumstick
+Type: ClubOrHammer
+Damage: 32 - 42
+Crit Chance / Multiplier: 0.023 / 3.7
+Knockback / Speed / AOE: 1.2 / -4 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 110 / 82
+---
+61: Wicked Pangolin Chopper
+Type: SlashingSword
+Damage: 20 - 45
+Crit Chance / Multiplier: 0.026 / 3.8
+Knockback / Speed / AOE: 0.8 / -16 / 3
+Added Precision / Defense: 9 / 0
+Base / Min Mine Level Drop: 82 / 67
+---
+62: Fangorious Aquarius Stonecutter
+Type: SlashingSword
+Damage: 65 - 98
+Crit Chance / Multiplier: 0.029 / 3.3
+Knockback / Speed / AOE: 0.9 / 0 / 0
+Added Precision / Defense: 4 / 0
+Base / Min Mine Level Drop: 101 / 75
+---
+63: Arcane Snom Trident
+Type: SlashingSword
+Damage: 80 - 106
+Crit Chance / Multiplier: 0.021 / 3.2
+Knockback / Speed / AOE: 0.6 / 7 / 0
+Added Precision / Defense: 2 / 0
+Base / Min Mine Level Drop: 102 / 77
+---
+64: Bronze Chance
+Type: SlashingSword
+Damage: 44 - 63
+Crit Chance / Multiplier: 0.02 / 4
+Knockback / Speed / AOE: 0.5 / -1 / 0
+Added Precision / Defense: 0 / 0
+Base / Min Mine Level Drop: 101 / 91
+---
+
+==== BOOTS ====
+Stoned Pie Gumboots: +1 defense; +0 immunity
+Master Slippers of Pain: +1 defense; +0 immunity
+Holy Butter Heels: +1 defense; +0 immunity
+Awesome Taurus Cowboy Boots of the Ocean: +1 defense; +1 immunity
+Dragon Mules: +1 defense; +3 immunity
+White Kamiks: +2 defense; +1 immunity
+Potato Cleats: +0 defense; +3 immunity
+Mystical Cereal Pumps: +4 defense; +2 immunity
+Eridian Flip-Flops: +2 defense; +4 immunity
+Stupid Capricorn Gold Shoes: +8 defense; +2 immunity
+Atlas Snowshoes of Harmony: +8 defense; +0 immunity
+Cat High Heels: +3 defense; +0 immunity
+Iron Waders of Politeness: +6 defense; +0 immunity
+Mithril Bowling Shoes of Motherhood: +4 defense; +0 immunity
+Dirty Car Army Boots: +8 defense; +2 immunity
+Corn Sandles of Death: +9 defense; +6 immunity
+Kebab Clogs of Envy: +7 defense; +3 immunity
+Scorpio Socks: +9 defense; +2 immunity
+
+===== NPC BIRTHDAYS =====
+Wizard: winter 16
+Abigail: fall 17
+Caroline: summer 4
+Clint: summer 6
+Demetrius: spring 4
+Willy: fall 2
+Elliott: fall 3
+Emily: spring 28
+Evelyn: summer 9
+George: fall 4
+Gus: summer 18
+Haley: summer 24
+Harvey: spring 14
+Jas: spring 17
+Jodi: winter 13
+Alex: summer 26
+Kent: summer 7
+Leah: fall 11
+Lewis: fall 9
+Linus: spring 25
+Marlon: summer 15
+Marnie: spring 16
+Maru: winter 22
+Pam: fall 24
+Penny: winter 21
+Pierre: summer 22
+Robin: winter 19
+Sam: summer 19
+Sebastian: fall 14
+Shane: fall 7
+Vincent: summer 28
+Dwarf: winter 23
+Sandy: winter 12
+Krobus: summer 16
+
+

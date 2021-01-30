@@ -1,0 +1,153 @@
+{
+  "ModEnabled": true,
+  "SDV_14": false,
+  "Machines": {
+    "SeedMaker": {
+      "CustomSeedMakerEnabled": true,
+      "MoreSeedsForQuality": true,
+      "SeedMakerInputMultiplier": 1,
+      "SeedMakerMinOutput": 2,
+      "SeedMakerMaxOutput": 5
+    },
+    "Keg": {
+      "CustomKegEnabled": true,
+      "KegInputMultiplier": 1,
+      "KegMinOutput": 1,
+      "KegMaxOutput": 2
+    },
+    "PreservesJar": {
+      "CustomPreservesJarEnabled": true,
+      "PreserveInputMultiplier": 1,
+      "PreserveMinOutput": 1,
+      "PreserveMaxOutput": 2
+    },
+    "CheesePress": {
+      "CustomCheesePressEnabled": true,
+      "CheesePressInputMultiplier": 1,
+      "CheesePressMinOutput": 1,
+      "CheesePressMaxOutput": 2
+    },
+    "Mayonnaise": {
+      "CustomMayoEnabled": true,
+      "MayoInputMultiplier": 1,
+      "MayoMinOutput": 1,
+      "MayoMaxOutput": 2
+    },
+    "Loom": {
+      "CustomLoomEnabled": true,
+      "LoomInputMultiplier": 1,
+      "LoomMinOutput": 1,
+      "LoomMaxOutput": 2
+    },
+    "OilMaker": {
+      "CustomOilMakerEnabled": true,
+      "OilMakerInputMultiplier": 1,
+      "OilMakerMinOutput": 1,
+      "OilMakerMaxOutput": 2
+    },
+    "Crystalarium": {
+      "CustomCrystalariumEnabled": true,
+      "CrystalInputMultiplier": 1,
+      "CrystalMinOutput": 1,
+      "CystalMaxOutput": 2
+    },
+    "Recycling": {
+      "CustomRecyclingEnabled": true,
+      "CustomRecyclingInputMultiplier": 1,
+      "ReplaceStoneWithOreEnabled": false,
+      "StoneMinOutput": 1,
+      "StoneMaxOutput": 4,
+      "StoneToCopperChance": 0.5,
+      "StoneToIronChance": 0.3,
+      "StoneToGoldChance": 0.19,
+      "StoneToIridiumChance": 0.01,
+      "ReplaceOreOutput": false,
+      "CopperMinOutput": 1,
+      "CopperMaxOutput": 2,
+      "IronMinOutput": 1,
+      "IronMaxOutput": 2,
+      "GoldMinOutput": 1,
+      "GoldMaxOutput": 2,
+      "IridiumMinOutput": 1,
+      "IridiumMaxOutput": 2,
+      "WoodMinOutput": 1,
+      "WoodMaxOutput": 2,
+      "RefinedQuartzMinOutput": 1,
+      "RefinedQuartzMaxOutput": 2,
+      "CoalMinOutput": 1,
+      "CoalMaxOutput": 2,
+      "ClothMinOutput": 1,
+      "ClothMaxOutput": 2,
+      "TorchMinOutput": 1,
+      "TorchMaxOutput": 2
+    },
+    "Furnace": {
+      "CustomFurnaceEnabled": true,
+      "FurnaceInputMultiplier": 1,
+      "FurnaceMinOutput": 1,
+      "FurnaceMaxOutput": 2
+    },
+    "Charcoal": {
+      "CustomCharcoalEnabled": true,
+      "CharcoalInputMultiplier": 1,
+      "CharcoalMinOutput": 1,
+      "CharcoalMaxOutput": 2
+    },
+    "SlimeEggPress": {
+      "CustomSlimeEggPressEnabled": true,
+      "SlimeInputMultiplier": 1,
+      "SlimeMinOutput": 1,
+      "SlimeMaxOutput": 2
+    },
+    "WormBin": {
+      "CustomWormBinEnabled": true,
+      "WormBinMinOutput": 1,
+      "WormBinMaxOutput": 2
+    },
+    "LightningRod": {
+      "CustomLightningRodEnabled": true,
+      "LightningRodMinOutput": 1,
+      "LightningRodMaxOutput": 2
+    },
+    "SolarPanel": {
+      "CustomSolarPanelEnabled": true,
+      "SolarPanelMinOutput": 1,
+      "SolarPanelMaxOutput": 2
+    },
+    "Tapper": {
+      "CustomTapperEnabled": true,
+      "TapperMinOutput": 1,
+      "TapperMaxOutput": 2
+    },
+    "HeavyTapper": {
+      "CustomHeavyTapperEnabled": true,
+      "HeavyTapperMinOutput": 1,
+      "HeavyTapperMaxOutput": 2
+    },
+    "BeeHouse": {
+      "CustomBeeHouseEnabled": true,
+      "BeeHouseMinOutput": 1,
+      "BeeHouseMaxOutput": 2
+    },
+    "Deconstructor": {
+      "CustomDeconstructorEnabled": true,
+      "DeconstructorMinOutput": 1,
+      "DeconstructorMaxOutput": 2
+    },
+    "GeodeCrusher": {
+      "CustomGeodeCrusherEnabled": true,
+      "GeodeCrusherMinOutput": 1,
+      "GeodeCrusherMaxOutput": 2
+    },
+    "BoneMill": {
+      "CustomBoneMillEnabled": true,
+      "BoneMillMinOutput": 1,
+      "BoneMillMaxOutput": 2
+    },
+    "WoodChipper": {
+      "CustomWoodChipperEnabled": true,
+      "WoodChipperMinOutput": 1,
+      "WoodChipperMaxOutput": 2
+    }
+  }
+}

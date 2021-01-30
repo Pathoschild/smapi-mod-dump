@@ -8,6 +8,27 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Fixed support for Seed Bag mod.
+
+## 4.13.2
+Released 23 January 2021.
+
+* Updated for multi-key bindings in SMAPI 3.9.
+
+## 4.13.1
+Released 17 January 2021.
+
+* Fixed issues when farmhands ride tractors in split-screen mode.
+
+## 4.13
+Released 16 January 2021.
+
+* The watering can now cools lava in the volcano dungeon.
+* Fixed tractor affecting other players' tools in split-screen mode.
+
+## 4.12.2
+Released 04 January 2021.
+
 * Updated to use `modData` field in Stardew Valley 1.5.
 * Internal refactoring to legacy data migrations.
 * Fixed tractor not summonable if it's currently in the volcano dungeon.

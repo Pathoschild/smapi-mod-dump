@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Demanding Shipping",
   "Author": "lech43",
-  "Version": "1.0.4",
+  "Version": "1.1.1",
   "Description": "You can ship the ordered goods with bonus.",
   "UniqueID": "lech43.DemandingShipping",
   "EntryDll": "DemandingShipping.dll",

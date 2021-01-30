@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7685
+IDs: aedenthorn.TreasureChestsExpanded
+update keys: Nexus:7685, GitHub:aedenthorn.StardewValleyMods

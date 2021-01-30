@@ -29,9 +29,43 @@ namespace SpriteMaster.Harmonize.Patches {
 		}
 		*/
 
+		private struct State {
+			bool Initialized;
+			bool IsFullscreen;
+			int Width;
+			int Height;
+
+			internal State(bool initialized) {
+				Initialized = initialized;
+				IsFullscreen = false;
+				Width = int.MinValue;
+				Height = int.MinValue;
+			}
+
+			internal bool Dirty(GraphicsDeviceManager instance) {
+				bool isFullscreen = instance.IsFullScreen;
+				int width = instance.PreferredBackBufferWidth;
+				int height = instance.PreferredBackBufferHeight;
+
+				if (!Initialized || IsFullscreen != isFullscreen || Width != width || Height != height) {
+					Initialized = true;
+					IsFullscreen = isFullscreen;
+					Width = width;
+					Height = height;
+					return true;
+				}
+				return false;
+			}
+		}
+		private static State LastState = new State(false);
+
 		[Harmonize("ApplyChanges", HarmonizeAttribute.Fixation.Prefix, PriorityLevel.First)]
 		internal static bool OnApplyChanges (GraphicsDeviceManager __instance) {
 			var @this = __instance;
+
+			if (!LastState.Dirty(@this)) {
+				return false;
+			}
 
 			DrawState.UpdateDeviceManager(@this);
 
@@ -45,12 +79,23 @@ namespace SpriteMaster.Harmonize.Patches {
 		}
 
 		private static bool DumpedSystemInfo = false;
+		private static WeakReference<GraphicsDevice> LastGraphicsDevice = null;
 
 		[Harmonize("ApplyChanges", HarmonizeAttribute.Fixation.Postfix, PriorityLevel.Last)]
 		internal static void OnApplyChangesPost (GraphicsDeviceManager __instance) {
 			var @this = __instance;
 
 			var device = @this.GraphicsDevice;
+
+			if (LastGraphicsDevice == null) {
+				LastGraphicsDevice = device.MakeWeak();
+			}
+			else if (!LastGraphicsDevice.TryGetTarget(out var lastDevice) || lastDevice != device) {
+				LastGraphicsDevice.SetTarget(device);
+			}
+			else {
+				return;
+			}
 
 			if (!DumpedSystemInfo) {
 				try {

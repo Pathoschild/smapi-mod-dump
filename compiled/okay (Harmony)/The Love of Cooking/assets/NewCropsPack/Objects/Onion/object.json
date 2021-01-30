@@ -1,0 +1,22 @@
+{
+    // Object data
+    "Name": "blueberry.cac.onion",
+    "Description": "...",
+    "Category": "Vegetable",
+    "Edibility": 10,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 50,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+    },
+}

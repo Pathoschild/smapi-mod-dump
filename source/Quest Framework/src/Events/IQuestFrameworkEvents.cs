@@ -24,7 +24,7 @@ namespace QuestFramework.Events
 
         /// <summary>
         /// Quest Framework getting ready.
-        /// Place for register quests, hooks and etc.
+        /// Place for register quests, boards, hooks and etc.
         /// </summary>
         event EventHandler<GettingReadyEventArgs> GettingReady;
 

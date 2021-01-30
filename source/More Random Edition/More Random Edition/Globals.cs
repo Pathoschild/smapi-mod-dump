@@ -9,8 +9,10 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace Randomizer
@@ -77,6 +79,16 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Gets the file path given the path from the mod directory
+		/// </summary>
+		/// <param name="pathFromModFolder">The path to the file from the mod folder</param>
+		/// <returns></returns>
+		public static string GetFilePath(string pathFromModFolder)
+		{
+			return Path.Combine(ModRef.Helper.DirectoryPath, pathFromModFolder);
+		}
+
+		/// <summary>
 		/// Gets a random boolean value
 		/// </summary>
 		/// <returns />
@@ -114,13 +126,19 @@ namespace Randomizer
 		/// </summary>
 		/// <typeparam name="T">The type of the list</typeparam>
 		/// <param name="list">The list</param>
+		/// <param name="useGame1RNG">Whether to use the Game1 rng's next value</param>
 		/// <returns />
-		public static T RNGGetRandomValueFromList<T>(List<T> list)
+		public static T RNGGetRandomValueFromList<T>(List<T> list, bool useGame1RNG = false)
 		{
 			if (list == null || list.Count == 0)
 			{
 				ConsoleError("Attempted to get a random value out of an empty list!");
 				return default(T);
+			}
+
+			if (useGame1RNG)
+			{
+				return list[Game1.random.Next(list.Count)];
 			}
 
 			return list[RNG.Next(list.Count)];

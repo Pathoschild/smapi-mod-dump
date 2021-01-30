@@ -43,7 +43,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Items\ItemData\ItemType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Items\ItemData\SearchableItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Items\ItemRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\KeyBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\AutomateUpdateChestMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ModDataDictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShirtSpriteInfo.cs" />
@@ -53,6 +52,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\CommonSprites.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\DropdownList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Dropdown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Cached.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HumanSortComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ConstraintSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\InvariantDictionary.cs" />

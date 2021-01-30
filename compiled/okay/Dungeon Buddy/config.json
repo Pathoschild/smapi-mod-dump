@@ -1,0 +1,8 @@
+{
+  "ignoreAllTreasure": false,
+  "ignoreMineTreasure": false,
+  "ignoreQuarryMineTreasure": false,
+  "ignoreSkullCavernTreasure": false,
+  "ignoreVolcanoDungeonTreasure": false,
+  "ignoreBreakableContainers": false
+}

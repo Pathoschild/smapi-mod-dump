@@ -10,8 +10,11 @@
 
 using CombineMachines.Helpers;
 using Harmony;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +74,12 @@ namespace CombineMachines.Patches
         private static PerformObjectDropInData PODIData { get; set; }
 
         [HarmonyPriority(Priority.First + 2)]
+        public static bool WoodChipper_Prefix(WoodChipper __instance, Item dropped_in_item, bool probe, Farmer who, ref bool __result)
+        {
+            return Prefix(__instance as SObject, dropped_in_item, probe, who, ref __result);
+        }
+
+        [HarmonyPriority(Priority.First + 2)]
         public static bool Prefix(SObject __instance, Item dropInItem, bool probe, Farmer who, ref bool __result)
         {
             try
@@ -91,6 +100,12 @@ namespace CombineMachines.Patches
                 PODIData = null;
                 return true;
             }
+        }
+
+        [HarmonyPriority(Priority.First + 2)]
+        public static void WoodChipper_Postfix(WoodChipper __instance, Item dropped_in_item, bool probe, Farmer who, ref bool __result)
+        {
+            Postfix(__instance as SObject, dropped_in_item, probe, who, ref __result);
         }
 
         [HarmonyPriority(Priority.First + 2)]
@@ -116,16 +131,28 @@ namespace CombineMachines.Patches
         /// <summary>Intended to be invoked whenever the player inserts materials into a machine that requires inputs, such as when placing copper ore into a furnace.</summary>
         private static void OnInputsInserted(PerformObjectDropInData PODIData)
         {
-            if (PODIData == null || PODIData.CurrentHeldObject == null || PODIData.Input == null || !Context.IsMainPlayer)
+            if (PODIData == null || PODIData.CurrentHeldObject == null || PODIData.Input == null)
+                return;
+
+            bool IsCurrentPlayer = (!Context.IsMultiplayer && !Context.IsSplitScreen) || PODIData.Farmer.UniqueMultiplayerID == Game1.player.UniqueMultiplayerID;
+            if (!IsCurrentPlayer)
                 return;
 
             SObject Machine = PODIData.Machine;
-            if (Machine == null || !Machine.TryGetCombinedQuantity(out int CombinedQuantity))
+            if (!ModEntry.UserConfig.ShouldModifyInputsAndOutputs(Machine) || !Machine.TryGetCombinedQuantity(out int CombinedQuantity))
                 return;
+
+            int SecondaryInputQuantityAvailable = int.MaxValue;
+            if (PODIData.Input.IsOre() && PODIData.Farmer != null && ModEntry.UserConfig.FurnaceMultiplyCoalInputs)
+            {
+                SecondaryInputQuantityAvailable = PODIData.Farmer.Items.Where(x => x != null && x.IsCoal()).Sum(x => x.Stack);
+            }
 
             //  Compute the maximum multiplier we can apply to the input and output based on how many more of the inputs the player has
             int PreviousInputQuantityUsed = PODIData.PreviousInputQuantity - PODIData.CurrentInputQuantity;
-            double MaxMultiplier = PreviousInputQuantityUsed == 0 ? PODIData.CurrentInputQuantity : Math.Abs(PODIData.PreviousInputQuantity * 1.0 / PreviousInputQuantityUsed);
+            double MaxMultiplier = Math.Min(SecondaryInputQuantityAvailable, PreviousInputQuantityUsed == 0 ? 
+                PODIData.CurrentInputQuantity : 
+                Math.Abs(PODIData.PreviousInputQuantity * 1.0 / PreviousInputQuantityUsed));
 
             //  Modify the output
             int PreviousOutputStack = PODIData.CurrentHeldObjectQuantity;
@@ -159,6 +186,27 @@ namespace CombineMachines.Patches
                     PODIData.Input.Stack = 1; // Just a failsafe to avoid glitched out Items with zero quantity, such as if the input came from a chest due to the Automate mod
                 }
             }
+
+            if (PODIData.Input.IsOre() && PODIData.Farmer != null && ModEntry.UserConfig.FurnaceMultiplyCoalInputs)
+            {
+                int RemainingCoalToConsume = RNGHelpers.WeightedRound(OutputEffect) - 1; // 1 coal was already automatically consumed by the vanilla function
+                for (int i = 0; i < PODIData.Farmer.Items.Count; i++)
+                {
+                    Item CurrentItem = PODIData.Farmer.Items[i];
+                    if (CurrentItem != null && CurrentItem.IsCoal())
+                    {
+                        int AmountToConsume = Math.Min(CurrentItem.Stack, RemainingCoalToConsume);
+                        CurrentItem.Stack -= AmountToConsume;
+                        RemainingCoalToConsume -= AmountToConsume;
+
+                        if (CurrentItem.Stack <= 0)
+                            PODIData.Farmer.removeItemFromInventory(i);
+
+                        if (RemainingCoalToConsume <= 0)
+                            break;
+                    }
+                }
+            }
         }
 
         private static int ComputeModifiedStack(int CombinedQuantity, double MaxEffect, int PreviousValue, out double Effect, out double ValueBeforeRandomization)
@@ -176,10 +224,87 @@ namespace CombineMachines.Patches
     {
         private static bool? WasReadyForHarvest = null;
 
+        internal const int MinutesPerHour = 60;
+
+        /// <summary>Returns the decimal number of hours between the given times (<paramref name="Time1"/> - <paramref name="Time2"/>).<para/>
+        /// For example: 800-624 = 1hr36m=1.6 hours</summary>
+        internal static double HoursDifference(int Time1, int Time2)
+        {
+            return Time1 / 100 - Time2 / 100 + (double)(Time1 % 100 - Time2 % 100) / MinutesPerHour;
+        }
+
+        /// <summary>Adds the given number of decimal hours to the given time, and returns the result in the same format that the game uses to store time (such as 650=6:50am)<para/>
+        /// EX: AddHours(640, 1.5) = 810 (6:40am + 1.5 hours = 8:10am)</summary>
+        internal static int AddHours(int Time, double Hours, bool RoundUpToMultipleOf10)
+        {
+            int OriginalHours = Time / 100;
+            int HoursToAdd = (int)Hours;
+
+            int OriginalMinutes = Time % 100;
+            int MinutesToAdd = (int)((Hours - Math.Floor(Hours)) * MinutesPerHour);
+
+            int TotalHours = OriginalHours + HoursToAdd;
+            int TotalMinutes = OriginalMinutes + MinutesToAdd;
+            if (RoundUpToMultipleOf10 && TotalMinutes % 10 != 0)
+            {
+                TotalMinutes += 10 - TotalMinutes % 10;
+            }
+
+            while (TotalMinutes >= MinutesPerHour)
+            {
+                TotalHours++;
+                TotalMinutes -= MinutesPerHour;
+            }
+
+            return TotalHours * 100 + TotalMinutes;
+        }
+
+        /// <summary>The time of day that CrabPots should begin processing.</summary>
+        private const int CrabPotDayStartTime = 600; // 6am
+        /// <summary>The time of day that CrabPots should stop processing.</summary>
+        private const int CrabPotDayEndTime = 2400; // 12am midnight (I know you can technically stay up until 2600=2am, but it seems unfair to the player to force them to stay up that late to collect from their crab pots)
+        internal static readonly double CrabPotHoursPerDay = HoursDifference(CrabPotDayEndTime, CrabPotDayStartTime);
+
         public static bool Prefix(SObject __instance, int minutes, GameLocation environment)
         {
             try
             {
+                if (__instance is CrabPot CrabPotInstance && CrabPotInstance.IsCombinedMachine() && ModEntry.UserConfig.ShouldModifyProcessingSpeed(CrabPotInstance))
+                {
+                    if (Game1.newDay)
+                    {
+                        CrabPotInstance.TryGetProcessingInterval(out double Power, out double IntervalHours, out int IntervalMinutes);
+                        CrabPot_DayUpdatePatch.InvokeDayUpdate(CrabPotInstance, environment);
+                        ModEntry.Logger.Log(string.Format("Forced {0}.{1} to execute at start of a new day for {2} with Power={3}% (Interval={4})",
+                            nameof(CrabPot), nameof(CrabPot.DayUpdate), nameof(CrabPot), (Power * 100).ToString("0.##"), IntervalMinutes), ModEntry.InfoLogLevel);
+                    }
+                    else
+                    {
+                        int CurrentTime = Game1.timeOfDay;
+                        if (CurrentTime >= CrabPotDayStartTime && CurrentTime < CrabPotDayEndTime)
+                        {
+                            CrabPotInstance.TryGetProcessingInterval(out double Power, out double IntervalHours, out int IntervalMinutes);
+
+                            //  Example:
+                            //  If Power = 360% (3.6), and the crab pot can process items from 6am to 12am (18 hours), then we'd want to call DayUpdate once every 18/3.6=5.0 hours.
+                            //  So the times to check for would be 600 (6am), 600+500=1100 (11am), 600+500+500=1600 (4pm), 600+500+500+500=2100 (9pm)
+                            int Time = CrabPotDayStartTime;
+                            while (Time <= CurrentTime)
+                            {
+                                if (CurrentTime == Time)
+                                {
+                                    CrabPot_DayUpdatePatch.InvokeDayUpdate(CrabPotInstance, environment);
+                                    ModEntry.Logger.Log(string.Format("Forced {0}.{1} to execute at Time={2} for {3} with Power={4}% (Interval={5}",
+                                        nameof(CrabPot), nameof(CrabPot.DayUpdate), CurrentTime, nameof(CrabPot), (Power * 100).ToString("0.##"), IntervalMinutes), ModEntry.InfoLogLevel);
+                                    break;
+                                }
+                                else
+                                    Time = AddHours(Time, IntervalHours, true);
+                            }
+                        }
+                    }
+                }
+
                 WasReadyForHarvest = __instance.readyForHarvest.Value;
                 return true;
             }
@@ -211,7 +336,8 @@ namespace CombineMachines.Patches
             {
                 try
                 {
-                    if (Machine.heldObject.Value != null && Machine.TryGetCombinedQuantity(out int CombinedQuantity) && !Machine.HasModifiedOutput())
+                    if (Machine.heldObject.Value != null && ModEntry.UserConfig.ShouldModifyInputsAndOutputs(Machine) && 
+                        Machine.TryGetCombinedQuantity(out int CombinedQuantity) && !Machine.HasModifiedOutput())
                     {
                         int PreviousOutputStack = Machine.heldObject.Value.Stack;
 
@@ -225,6 +351,207 @@ namespace CombineMachines.Patches
                 }
                 finally { Machine.SetHasModifiedOutput(false); }
             }
+        }
+    }
+
+    /// <summary>Intended to detect the moment that a machine's MinutesUntilReady is set increased, and at that moment,
+    /// reduce the MinutesUntilReady by a factor corresponding to the combined machine's processing power.<para/>
+    /// This action only takes effect if the config settings are set to <see cref="ProcessingMode.IncreaseSpeed"/>, or if the machine is an exclusion.<para/>
+    /// See also: <see cref="UserConfig.ProcessingMode"/>, <see cref="UserConfig.ProcessingModeExclusions"/></summary>
+    public static class MinutesUntilReadyPatch
+    {
+        private static readonly HashSet<Cask> CurrentlyModifying = new HashSet<Cask>();
+
+        public static void Postfix(SObject __instance)
+        {
+            try
+            {
+                if (Context.IsMainPlayer)
+                {
+                    if (__instance is Cask CaskInstance)
+                    {
+                        CaskInstance.agingRate.fieldChangeEvent += (field, oldValue, newValue) =>
+                        {
+                            try
+                            {
+                                //  Prevent recursive fieldChangeEvents from being invoked when our code sets Cask.agingRate.Value
+                                if (CurrentlyModifying.Contains(CaskInstance))
+                                    return;
+
+                                if (Context.IsMainPlayer && Context.IsWorldReady && oldValue != newValue)
+                                {
+                                    if (ModEntry.UserConfig.ShouldModifyProcessingSpeed(__instance) && __instance.TryGetCombinedQuantity(out int CombinedQuantity))
+                                    {
+                                        double DefaultAgingRate = CaskInstance.GetAgingMultiplierForItem(CaskInstance.heldObject.Value);
+
+                                        bool IsTrackedValueChange = false;
+                                        if (oldValue <= 0 && newValue > 0) // Handle the first time agingRate is initialized
+                                            IsTrackedValueChange = true;
+                                        else if (newValue == DefaultAgingRate) // Handle cases where the game tries to reset the agingRate
+                                            IsTrackedValueChange = true;
+
+                                        if (IsTrackedValueChange)
+                                        {
+                                            float PreviousAgingRate = CaskInstance.agingRate.Value;
+                                            double DurationMultiplier = ModEntry.UserConfig.ComputeProcessingPower(CombinedQuantity);
+                                            float NewAgingRate = (float)(DurationMultiplier * PreviousAgingRate);
+
+                                            if (NewAgingRate != PreviousAgingRate)
+                                            {
+                                                try
+                                                {
+                                                    CurrentlyModifying.Add(CaskInstance);
+                                                    CaskInstance.agingRate.Value = NewAgingRate;
+                                                }
+                                                finally { CurrentlyModifying.Remove(CaskInstance); }
+
+                                                ModEntry.Logger.Log(string.Format("Set {0} agingRate from {1} to {2} ({3}%)",
+                                                    __instance.Name, PreviousAgingRate, NewAgingRate, (DurationMultiplier * 100.0).ToString("0.##")), ModEntry.InfoLogLevel);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception Error)
+                            {
+                                ModEntry.Logger.Log(string.Format("Unhandled Error in {0}.{1}.FieldChangeEvent(Cask):\n{2}", nameof(MinutesUntilReadyPatch), nameof(Postfix), Error), LogLevel.Error);
+                            }
+                        };
+                    }
+                    else
+                    {
+                        __instance.minutesUntilReady.fieldChangeEvent += (field, oldValue, newValue) =>
+                        {
+                            try
+                            {
+                                if (Context.IsMainPlayer && Context.IsWorldReady && oldValue != newValue && oldValue < newValue && newValue > 0)
+                                {
+                                    if (ModEntry.UserConfig.ShouldModifyProcessingSpeed(__instance) && __instance.TryGetCombinedQuantity(out int CombinedQuantity))
+                                    {
+                                        int PreviousMinutes = __instance.MinutesUntilReady;
+                                        double DurationMultiplier = 1.0 / ModEntry.UserConfig.ComputeProcessingPower(CombinedQuantity);
+                                        double TargetValue = DurationMultiplier * PreviousMinutes;
+                                        int NewMinutes = RNGHelpers.WeightedRound(TargetValue);
+
+                                        //  Round to nearest 10 since the game processes machine outputs every 10 game minutes
+                                        //  EX: If NewValue = 38, then there is a 20% chance of rounding down to 30, 80% chance of rounding up to 40
+                                        int SmallestDigit = NewMinutes % 10;
+                                            NewMinutes = NewMinutes - SmallestDigit; // Round down to nearest 10
+                                        if (RNGHelpers.RollDice(SmallestDigit / 10.0))
+                                                NewMinutes += 10; // Round up
+
+                                        //  There seems to be a bug where there is no product if the machine is instantly done processing.
+                                        NewMinutes = Math.Max(10, NewMinutes); // temporary fix - require at least one 10-minute processing cycle
+
+                                        if (NewMinutes != PreviousMinutes)
+                                        {
+                                            __instance.MinutesUntilReady = NewMinutes;
+                                            if (NewMinutes <= 0)
+                                                __instance.readyForHarvest.Value = true;
+
+                                            ModEntry.Logger.Log(string.Format("Set {0} MinutesUntilReady from {1} to {2} ({3}%, Target value before weighted rounding = {4})",
+                                                __instance.Name, PreviousMinutes, NewMinutes, (DurationMultiplier * 100.0).ToString("0.##"), TargetValue.ToString("0.#")), ModEntry.InfoLogLevel);
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception Error)
+                            {
+                                ModEntry.Logger.Log(string.Format("Unhandled Error in {0}.{1}.FieldChangeEvent:\n{2}", nameof(MinutesUntilReadyPatch), nameof(Postfix), Error), LogLevel.Error);
+                            }
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModEntry.Logger.Log(string.Format("Unhandled Error in {0}.{1}:\n{2}", nameof(MinutesUntilReadyPatch), nameof(Postfix), ex), LogLevel.Error);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(CrabPot), nameof(CrabPot.DayUpdate))]
+    public static class CrabPot_DayUpdatePatch
+    {
+        /// <summary>Data that is retrieved just before <see cref="CrabPot.DayUpdate(GameLocation)"/> executes.</summary>
+        private class DayUpdateParameters
+        {
+            public SObject CrabPot { get; }
+            public SObject PreviousHeldObject { get; }
+            public SObject CurrentHeldObject { get { return CrabPot?.heldObject; } }
+            public int PreviousHeldObjectQuantity { get; }
+            public int CurrentHeldObjectQuantity { get { return CurrentHeldObject == null ? 0 : CurrentHeldObject.Stack; } }
+
+            public DayUpdateParameters(CrabPot CrabPot)
+            {
+                this.CrabPot = CrabPot;
+                this.PreviousHeldObject = CrabPot.heldObject;
+                this.PreviousHeldObjectQuantity = PreviousHeldObject != null ? PreviousHeldObject.Stack : 0;
+            }
+        }
+
+        private static DayUpdateParameters PrefixData { get; set; }
+
+        public static bool Prefix(CrabPot __instance, GameLocation location)
+        {
+            try
+            {
+                PrefixData = new DayUpdateParameters(__instance);
+                if (__instance.IsCombinedMachine())
+                {
+                    if (CurrentlyModifying.Contains(__instance) || !ModEntry.UserConfig.ShouldModifyProcessingSpeed(__instance))
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                ModEntry.Logger.Log(string.Format("Unhandled Error in {0}.{1}:\n{2}", nameof(CrabPot_DayUpdatePatch), nameof(Prefix), ex), LogLevel.Error);
+                return true;
+            }
+        }
+
+        public static void Postfix(CrabPot __instance, GameLocation location)
+        {
+            try
+            {
+                //  Check if the output item was just set
+                if (PrefixData != null && PrefixData.CrabPot == __instance && PrefixData.PreviousHeldObject == null && PrefixData.CurrentHeldObject != null)
+                {
+                    //  Modify the output quantity based on the combined machine's processing power
+                    if (__instance.IsCombinedMachine() && ModEntry.UserConfig.ShouldModifyInputsAndOutputs(__instance) && __instance.TryGetCombinedQuantity(out int CombinedQuantity))
+                    {
+                        double Power = ModEntry.UserConfig.ComputeProcessingPower(CombinedQuantity);
+                        double DesiredNewValue = PrefixData.CurrentHeldObjectQuantity * Power;
+                        int RoundedNewValue = RNGHelpers.WeightedRound(DesiredNewValue);
+                        __instance.heldObject.Value.Stack = RoundedNewValue;
+                        ModEntry.LogTrace(CombinedQuantity, PrefixData.CrabPot, PrefixData.CrabPot.TileLocation, "HeldObject.Stack", PrefixData.CurrentHeldObjectQuantity,
+                            DesiredNewValue, RoundedNewValue, Power);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModEntry.Logger.Log(string.Format("Unhandled Error in {0}.{1}:\n{2}", nameof(CrabPot_DayUpdatePatch), nameof(Postfix), ex), LogLevel.Error);
+            }
+        }
+
+        private static HashSet<CrabPot> CurrentlyModifying = new HashSet<CrabPot>();
+
+        internal static void InvokeDayUpdate(CrabPot instance, GameLocation location)
+        {
+            if (instance == null)
+                return;
+
+            try
+            {
+                CurrentlyModifying.Add(instance);
+                instance.DayUpdate(location);
+            }
+            finally { CurrentlyModifying.Remove(instance); }
         }
     }
 }

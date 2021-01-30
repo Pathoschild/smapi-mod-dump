@@ -1,0 +1,22 @@
+{
+  "ReloadConfigButton": "F5",
+  "ShowGlobalPlayTime": false,
+  "MenuPresence": {
+    "ForceSmallImage": false,
+    "Details": "",
+    "State": "In Menus",
+    "LargeImageText": "{{ Activity }}",
+    "SmallImageText": ""
+  },
+  "GamePresence": {
+    "ShowSeason": true,
+    "ShowFarmType": true,
+    "ShowWeather": true,
+    "ShowPlayTime": true,
+    "ForceSmallImage": false,
+    "Details": "{{ FarmName }} | {{ Money }}",
+    "State": "{{ GameInfo }}",
+    "LargeImageText": "{{ Activity }}",
+    "SmallImageText": "{{ Date }}"
+  }
+}

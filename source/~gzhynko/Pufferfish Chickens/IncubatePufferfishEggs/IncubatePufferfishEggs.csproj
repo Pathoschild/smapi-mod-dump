@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ModEntry.cs" />
-    <Compile Include="ObjectOverrides.cs" />
+    <Compile Include="HarmonyPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

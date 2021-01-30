@@ -1,0 +1,16 @@
+url:
+   https://github.com/StardewMods/SDVCustomChores.git
+
+mods:
+   Custom Chores
+   Help for Hire
+   Helpful Spouses
+
+latest commit:
+   commit e0086a5b0b9ac92c7cb037053a209e66495bd564
+   Merge: 04f68ca 070522e
+   Author: Matthew Lucas <justmatt@outlook.com>
+   Date:   Wed Feb 12 15:23:22 2020 +0000
+   
+       Merge branch 'develop' of matthew/sdv-custom-chores into master
+   

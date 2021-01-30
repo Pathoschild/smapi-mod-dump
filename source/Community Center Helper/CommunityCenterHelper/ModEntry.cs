@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 using Harmony;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
@@ -180,7 +181,9 @@ namespace CommunityCenterHelper
                 if (__instance.ingredientList == null || ingredientHoverText == null || ingredientHoverTitle == null)
                     return;
                 
-                int x = (int)input.GetCursorPosition().ScreenPixels.X, y = (int)input.GetCursorPosition().ScreenPixels.Y;
+                Vector2 mousePosition = Utility.ModifyCoordinatesForUIScale(input.GetCursorPosition().ScreenPixels);
+                int x = (int)mousePosition.X, y = (int)mousePosition.Y;
+                
                 for (int i = 0; i < __instance.ingredientList.Count; i++)
                 {
                     if (__instance.ingredientList[i].bounds.Contains(x, y))

@@ -32,7 +32,8 @@ namespace FishFinder
         {
             Instance = this;
             helper.Events.Display.RenderedHud += Display_RenderedHud;
-
+            helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            
             try
             {
                 config = this.Helper.Data.ReadJsonFile<ModConfig>("config.json") ?? ModConfigDefaultConfig.CreateDefaultConfig("config.json");
@@ -42,8 +43,12 @@ namespace FishFinder
             {
                 config = ModConfigDefaultConfig.UpdateConfigToLatest(config, "config.json") ?? ModConfigDefaultConfig.CreateDefaultConfig("config.json");
             }
+        }
+        private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+           
 
-            if (!helper.Translation.GetTranslations().Any())
+            if (!Helper.Translation.GetTranslations().Any())
                 this.Monitor.Log("The translation files in this mod's i18n folder seem to be missing. The mod will still work, but you'll see 'missing translation' messages. Try reinstalling the mod to fix this.", LogLevel.Warn);
 
             ConfigStaticTranslationStrings();
@@ -62,8 +67,6 @@ namespace FishFinder
             translations.Add("hud.southeast", Helper.Translation.Get("hud.southeast"));
             translations.Add("hud.west", Helper.Translation.Get("hud.west"));
             translations.Add("hud.east", Helper.Translation.Get("hud.east"));
-            //translations.Add("hud.direction", Helper.Translation.Get("hud.direction"));
-            //translations.Add("hud.distance", Helper.Translation.Get("hud.distance"));
         }
 
         private void Display_RenderedHud(object sender, RenderedHudEventArgs e)

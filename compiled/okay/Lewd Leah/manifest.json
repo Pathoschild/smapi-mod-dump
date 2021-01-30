@@ -1,10 +1,10 @@
 ﻿{
-  "Name": "lewdLeah",
-  "Author": "unknownDev",
-  "Version": "1.2.0",
-  "Description": "Makes Leah more open about her body and sexuality.",
-  "UniqueID": "unknownDev.lewdLeah",
-  "EntryDll": "lewdLeah.dll",
-  "MinimumApiVersion": "2.10.0",
+  "Name": "Lewd Leah",
+  "Author": "prowlingDemon",
+  "Version": "1.2.1",
+  "Description": "Lewdifies Leah ;)",
+  "UniqueID": "prowlingDemon.LewdLeah",
+  "EntryDll": "LewdLeah.dll",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:4402" ]
 }

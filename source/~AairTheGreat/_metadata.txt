@@ -8,10 +8,9 @@ mods:
    Fish Finder
 
 latest commit:
-   commit 02d5220f23bee4bf3c412d89ba230c5109c0fd9e
-   Merge: a9100b7 b3176a4
+   commit db6a37da3cacbf93b42e144c572e999a881b3968
    Author: Aair the Great <a_aair@hotmail.com>
-   Date:   Tue Dec 29 16:46:51 2020 -0800
+   Date:   Sun Jan 24 13:05:42 2021 -0800
    
-       Merge branch 'master' of https://github.com/AairTheGreat/StardewValleyMods
+       Moved translation loading to when the save is loaded vs. when game is started.
    

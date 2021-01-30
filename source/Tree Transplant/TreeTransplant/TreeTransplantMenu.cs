@@ -159,8 +159,8 @@ namespace TreeTransplant
 				return;
 
 			// get X and Y relative to the viewport
-			int x = Game1.getOldMouseX(ui_scale: false) + Game1.viewport.X;
-			int y = Game1.getOldMouseY(ui_scale: false) + Game1.viewport.Y;
+			int x = Game1.getOldMouseX(false) + Game1.viewport.X;
+			int y = Game1.getOldMouseY(false) + Game1.viewport.Y;
 
 			// checks if we moved more than a tile size and if so pan the screen
 			if (x - Game1.viewport.X < 64)
@@ -194,8 +194,8 @@ namespace TreeTransplant
 			};
 
 			// get the mouse position (don't use the x and y from the function)
-			var mouseX = Game1.getOldMouseX(ui_scale: false);
-			var mouseY = Game1.getOldMouseY(ui_scale: false);
+			var mouseX = Game1.getOldMouseX(false);
+			var mouseY = Game1.getOldMouseY(false);
 
 			// get cursor tile location
 			var tileLocation = new Vector2(
@@ -406,8 +406,8 @@ namespace TreeTransplant
 
 			// get cursor tile location
 			var tileLocation = new Vector2(
-				(Game1.viewport.X + Game1.getOldMouseX(ui_scale: false)) / Game1.tileSize,
-				(Game1.viewport.Y + Game1.getOldMouseY(ui_scale: false)) / Game1.tileSize
+				(Game1.viewport.X + Game1.getOldMouseX(false)) / Game1.tileSize,
+				(Game1.viewport.Y + Game1.getOldMouseY(false)) / Game1.tileSize
 			);
 
 			// start drawing in world and not UI

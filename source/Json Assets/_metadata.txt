@@ -5,12 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit a0b0e560b4caafd78244f73a00dd9210062180ea
-   Merge: 8f0d1eb c8ba7e2
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Thu Dec 24 23:55:08 2020 -0500
+   commit 646fd29de458e910e87d1097c18640be1023d0be
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Mon Jan 25 17:11:41 2021 -0500
    
-       Merge pull request #59 from CMAlbrecht/master
-       
-       Boots API
+       Fix equipped rings properly
    

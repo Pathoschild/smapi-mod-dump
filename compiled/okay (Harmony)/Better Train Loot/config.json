@@ -4,8 +4,10 @@
   "enableNoLimitTreasurePerTrain": false,
   "showTrainIsComingMessage": true,
   "showDesertTrainIsComingMessage": true,
+  "showIslandTrainIsComingMessage": false,
   "enableTrainWhistle": true,
   "enableDesertTrainWhistle": true,
+  "enableIslandTrainWhistle": false,
   "baseChancePercent": 0.2,
   "basePctChanceOfTrain": 0.15,
   "trainCreateDelay": 10000,
@@ -13,5 +15,5 @@
   "maxNumberOfItemsPerTrain": 5,
   "enableForceCreateTrain": false,
   "enableMultiplayerChatMessage": false,
-  "configVersion": 4
+  "configVersion": 5
 }

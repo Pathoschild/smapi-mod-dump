@@ -1,0 +1,19 @@
+url:
+   https://github.com/Goldenrevolver/Stardew-Valley-Mods.git
+
+mods:
+   A Tapper's Dream
+   Animals Die
+   Crab Pot Loot Has Quality and Bait Effects
+   Forage Fantasy
+   Harvest Moon FoMT-like Watering Can and Hoe Area
+   Just Relax
+   Watering Grants Experience and Crops Can Wither
+
+latest commit:
+   commit 37991751ba155b049ab1dcc531b39155f3d78c42
+   Author: Goldenrevolver <22944589+Goldenrevolver@users.noreply.github.com>
+   Date:   Sat Jan 30 01:46:19 2021 +0100
+   
+       Update for FoMT-like watering can and hoe area: buffed reach enchantment, fixed base game watering animation, refactoring
+   

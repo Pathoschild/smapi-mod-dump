@@ -202,6 +202,17 @@
     "location.undergroundMine.level": "矿井层数：{{level}}",
     "location.witchSwamp": "女巫的沼泽",
     "location.woods": "秘密森林",
+
+    "location.caldera": "Ginger Island caldera", // TODO
+    "location.islandEast": "Ginger Island east", // TODO
+    "location.islandNorth": "Ginger Island north", // TODO
+    "location.islandSouth": "Ginger Island south", // TODO
+    "location.islandSouthEast": "Ginger Island southeast", // TODO
+    "location.islandSouthEastCave": "Ginger Island southeast cave", // TODO
+    "location.islandWest": "Ginger Island west", // TODO
+    "location.islandWest.fish-area-1": "Ginger Island west (ocean)", // TODO
+    "location.islandWest.fish-area-2": "Ginger Island west (pond)", // TODO
+
     "location.unknown-fish-area": "{{locationName}} (钓鱼区 {{id}})",
 
 
@@ -604,7 +615,7 @@
 
 
     /*********
-    ** Tile lookups > Fern Islands mermaid puzzle
+    ** Puzzles > Fern Islands mermaid puzzle
     *********/
     // labels
     // TODO
@@ -633,6 +644,7 @@
     *********/
     // labels
     "tile.description": "地图上此位置的地格。显示此信息是因为你在设置中打开了地格信息显示功能。",
+    "tile.game-location": "Location", // TODO
     "tile.map-name": "地图名",
     "tile.tile": "地格",
     "tile.tile-index": "{{layerName}}：地格号",
@@ -672,10 +684,9 @@
     "tree.name.unknown": "未知",
     "tree.stage.done": "完全长成",
     "tree.stage.partial": "{{stageName}} (总共{{max}}个阶段中的第{{step}}阶段)",
-    "tree.next-growth.winter": "冬天在温室之外无法生长",
+    "tree.next-growth.winter": "除非施肥，冬天在温室之外无法生长",
     "tree.next-growth.adjacent-trees": "因其他树靠的太近无法生长",
     "tree.next-growth.chance": "有{{chance}}%几率明天成长到{{stage}}",
-    "tree.is-fertilized.effects": "即使在冬天也能保证每天生长",
 
     // growth stages
     "tree.stages.seed": "种子",

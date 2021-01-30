@@ -34,13 +34,16 @@ namespace BNC
 
         public static void Init()
         {
-            Augments.Add("health", new AugmentOption("health", "Monster Health Increase!", "Monster have 1.5x more health."));
-            Augments.Add("regen", new AugmentOption("regen", "Health Regen!", "Player regens health over time."));
+            Augments.Add("health",  new AugmentOption("health", "Monster Health Increase!", "Monster have 1.5x more health."));
+            Augments.Add("moreHealth", new AugmentOption("moreHealth", "Monster Health Increase!", "Monster have 2x more health."));
+            Augments.Add("regen",   new AugmentOption("regen", "Health Regen!", "Player regens health over time."));
             Augments.Add("stamina", new AugmentOption("stamina", "Stamina Regen!", "Player regens stamina over time."));
-            Augments.Add("attack", new AugmentOption("attack", "Monster Attack Increase!", "Monster have 1.5x more attack power"));
-            Augments.Add("exp", new AugmentOption("exp", "Monsters Extra Exp!", "Monster have 1.5x more experiance."));
-            Augments.Add("blood", new AugmentOption("blood", "Bleeding Out!", "Player loses health over time."));
-            Augments.Add("tired", new AugmentOption("tired", "Getting Tired!", "Player loses stamina over time."));
+            Augments.Add("attack",  new AugmentOption("attack", "Monster Attack Increase!", "Monster have 1.5x more attack power"));
+            Augments.Add("exp",     new AugmentOption("exp", "Monsters Extra Exp!", "Monster have 1.5x more experiance."));
+            Augments.Add("moreExp", new AugmentOption("moreExp", "Monsters Extra Extra Exp!", "Monster have 2x more experiance."));
+            Augments.Add("blood",   new AugmentOption("blood", "Bleeding Out!", "Player loses health over time."));
+            Augments.Add("tired",   new AugmentOption("tired", "Getting Tired!", "Player loses stamina over time."));
+            Augments.Add("speed",   new AugmentOption("speed", "Monsters are Faster", "They were given coffee."));
             //Augments.Add("slimed", new AugmentOption("slimed", "Slime Spawner", "Slimes spawn around the player"));
 
             // not entirely working
@@ -136,9 +139,15 @@ namespace BNC
                     case "exp":
                         BoostExp(m);
                         break;
+                    case "moreExp":
+                        BoostExp(m, 2);
+                        break;
+                    case "speed":
+                        BoostSpeed(m);
+                        break;
                     case "crabs":
                         int cnt = Game1.random.Next(2) + 1;
-                        for (int i = 0; i < cnt; i++) 
+                        for (int i = 0; i < cnt; i++)
                             queue.Add(new RockCrab(Vector2.Zero));
                         break;
                     case "extra":
@@ -228,20 +237,25 @@ namespace BNC
 
         }
 
-        private static void BoostHealth(Monster m)
+        private static void BoostHealth(Monster m, float x = 1.5f)
         {
-            m.MaxHealth = (int)Math.Round(m.MaxHealth * 1.5);
+            m.MaxHealth = (int)Math.Round(m.MaxHealth * x);
             m.Health = m.MaxHealth;
         }
 
-        private static void BoostExp(Monster m)
+        private static void BoostExp(Monster m, float x = 1.5f)
         {
-            m.ExperienceGained = (int)Math.Round(m.ExperienceGained * 1.5);
+            m.ExperienceGained = (int)Math.Round(m.ExperienceGained * x);
         }
 
-        private static void Harden(Monster m)
+        private static void BoostSpeed(Monster m, float x = 1.2f)
         {
-            m.DamageToFarmer = (int)Math.Round(m.DamageToFarmer * 1.5);
+            m.speed += (int)Math.Round(m.speed * x);
+        }
+
+        private static void Harden(Monster m, float x = 1.5f)
+        {
+            m.DamageToFarmer = (int)Math.Round(m.DamageToFarmer * x);
         }
 
 

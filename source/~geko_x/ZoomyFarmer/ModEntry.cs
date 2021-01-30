@@ -26,8 +26,11 @@ namespace Sprint {
 
 		public static ModConfig config;
 
-		private bool isPlayerSprinting = false;
-		private bool isPlayerToggleSprinting = false;
+		//private bool isPlayerSprinting = false;
+		//private bool isPlayerToggleSprinting = false;
+
+		private readonly PerScreen<bool> isPlayerSprinting = new PerScreen<bool>(createNewState: () => false);
+		private readonly PerScreen<bool> isPlayerToggleSprinting = new PerScreen<bool>(createNewState: () => false);
 
 		private int actualSprintSpeed = 0;
 		private float actualStaminaDrain = 0;
@@ -36,8 +39,11 @@ namespace Sprint {
 		private bool enableFloorSpeed = true;
 		private int additionalFloorSpeed = 0;
 
-		private Vector2 currentTile = new Vector2(0, 0);
-		private bool wasLastTilePath = false;
+		//private Vector2 currentTile = new Vector2(0, 0);
+		//private bool wasLastTilePath = false;
+
+		private readonly PerScreen<Vector2> currentTile = new PerScreen<Vector2>(createNewState: () => new Vector2(0, 0));
+		private readonly PerScreen<bool> wasLastTilePath = new PerScreen<bool>(createNewState: () => false);
 
 		private const string MESSAGE_SPRINT_SPEED = "SprintSpeed";
 		private const string MESSAGE_SPRINT_STAMINA = "Stamina";
@@ -79,11 +85,12 @@ namespace Sprint {
 
 			modhelper.Events.Multiplayer.PeerContextReceived += OnPeerContextReceived;
 			modhelper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
+
+			modhelper.Events.Input.ButtonPressed += OnButtonPressed;
+			modhelper.Events.Input.ButtonReleased += OnButtonReleased;
 		}
 
-		private void OnDayStarted(object sender, DayStartedEventArgs e) {
-			
-			
+		private void OnDayStarted(object sender, DayStartedEventArgs e) {			
 
 			if (Context.IsMainPlayer && !Game1.hasLocalClientsOnly) {
 				SendConfigSyncMessages(null);
@@ -91,8 +98,57 @@ namespace Sprint {
 
 			// If toggle sprinting and enableSprintWhenWaking, start sprinting now
 			if (config.toggleSprint && config.enableSprintWhenWaking) {
-				isPlayerToggleSprinting = true;
+				isPlayerToggleSprinting.Value = true;
 				StartSprint();
+			}
+
+		}
+
+		private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
+			if (!(e.Button == config.sprintKey || e.Button == config.alternateSprintKey))
+				return;
+
+			//Monitor.Log($"{e.Button} pressed by player {Context.ScreenId}", LogLevel.Warn);
+
+			if (!config.toggleSprint) {
+				StartSprint();
+			}
+
+		}
+
+		private void OnButtonReleased(object sender, ButtonReleasedEventArgs e) {
+
+
+			if (!(e.Button == config.sprintKey || e.Button == config.alternateSprintKey))
+				return;
+
+			/*
+			 * Toggle sprint
+			 */
+			if (config.toggleSprint) {
+				//if (modhelper.Input.GetState(config.sprintKey) == SButtonState.Released || modhelper.Input.GetState(config.alternateSprintKey) == SButtonState.Released) {
+
+					isPlayerToggleSprinting.Value = !isPlayerToggleSprinting.Value;
+
+					if (isPlayerToggleSprinting.Value) {
+						StartSprint();
+					} else {
+						StopSprint();
+					}
+				//}
+			}
+
+			/*
+			 * Hold to sprint - stop sprinting here
+			 */
+			else {
+				//if (modhelper.Input.GetState(config.sprintKey) == SButtonState.Pressed || modhelper.Input.GetState(config.alternateSprintKey) == SButtonState.Pressed) {
+				//	StartSprint();
+				//}
+
+				//if (modhelper.Input.GetState(config.sprintKey) == SButtonState.Released || modhelper.Input.GetState(config.alternateSprintKey) == SButtonState.Released) {
+					StopSprint();
+				//}
 			}
 
 		}
@@ -106,52 +162,21 @@ namespace Sprint {
 				return;
 
 			/*
-			 * Toggle sprint
-			 */
-			if (config.toggleSprint) {
-				if (modhelper.Input.GetState(config.sprintKey) == SButtonState.Released || modhelper.Input.GetState(config.alternateSprintKey) == SButtonState.Released) {
-
-					isPlayerToggleSprinting = !isPlayerToggleSprinting;
-
-					if (isPlayerToggleSprinting) {
-						StartSprint();
-					}
-
-					else {
-						StopSprint();
-					}
-				}
-			}
-
-			/*
-			 * Hold to sprint
-			 */
-			else {
-				if (modhelper.Input.GetState(config.sprintKey) == SButtonState.Pressed || modhelper.Input.GetState(config.alternateSprintKey) == SButtonState.Pressed) {
-					StartSprint();
-				}
-
-				if (modhelper.Input.GetState(config.sprintKey) == SButtonState.Released || modhelper.Input.GetState(config.alternateSprintKey) == SButtonState.Released) {
-					StopSprint();
-				}
-			}
-
-			/*
 			 * Floor tile speed boost
 			 */
 
-			if (this.isPlayerSprinting && this.enableFloorSpeed) {
+			if (this.isPlayerSprinting.Value && this.enableFloorSpeed) {
 
-				if(currentTile != Game1.player.getTileLocation()) {
+				if(currentTile.Value != Game1.player.getTileLocation()) {
 
-					currentTile = Game1.player.getTileLocation();
+					currentTile.Value = Game1.player.getTileLocation();
 					GameLocation location = Game1.player.currentLocation;
 
-					bool isThisTilePath = isTileAPath(location, currentTile);
+					bool isThisTilePath = isTileAPath(location, currentTile.Value);
 
 					Monitor.Log($"Stepping in new tile: {currentTile}. Is path: {isThisTilePath}", LogLevel.Trace);
 
-					if (isThisTilePath && wasLastTilePath) {
+					if (isThisTilePath && wasLastTilePath.Value) {
 
 						// Reset the current added speed and re-add, but with the tile mod
 						Game1.player.addedSpeed -= this.actualSprintIncrease;
@@ -168,13 +193,13 @@ namespace Sprint {
 						Game1.player.addedSpeed += this.actualSprintIncrease;
 					}
 
-					wasLastTilePath = isThisTilePath;
+					wasLastTilePath.Value = isThisTilePath;
 				}
 			}
 
 			// addedSpeed gets set to 0 every 10minUpdate.
 			// Re-add the sprint speed if we should be sprinting when this happens
-			if (this.isPlayerSprinting && Game1.player.addedSpeed == 0) {
+			if (this.isPlayerSprinting.Value && Game1.player.addedSpeed == 0) {
 				Game1.player.addedSpeed += this.actualSprintIncrease;
 			}
 
@@ -185,23 +210,23 @@ namespace Sprint {
 
 		private void StartSprint() {
 
-			if (this.isPlayerSprinting)
+			if (this.isPlayerSprinting.Value)
 				return;
 
 			if (Game1.player.stamina < this.actualStaminaDrain)
 				return;
 
-			this.isPlayerSprinting = true;
+			this.isPlayerSprinting.Value = true;
 			Game1.player.addedSpeed += this.actualSprintIncrease;
 		}
 
 		private void StopSprint() {
 
-			if (!this.isPlayerSprinting)
+			if (!this.isPlayerSprinting.Value)
 				return;
 
-			this.isPlayerSprinting = false;
-			this.isPlayerToggleSprinting = false;
+			this.isPlayerSprinting.Value = false;
+			this.isPlayerToggleSprinting.Value = false;
 			Game1.player.addedSpeed -= this.actualSprintIncrease;
 
 			// If for whatever reason the added speed is negative, just set it to 0
@@ -220,7 +245,7 @@ namespace Sprint {
 			if (!Context.IsPlayerFree)
 				return;
 
-			if (this.isPlayerSprinting && !Game1.paused && Game1.player.isMoving()) {
+			if (this.isPlayerSprinting.Value && !Game1.paused && Game1.player.isMoving()) {
 				float drain = Math.Min(Game1.player.Stamina, this.actualStaminaDrain);
 				Game1.player.Stamina -= drain;
 			}
@@ -259,7 +284,7 @@ namespace Sprint {
 
 		private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e) {
 
-			Monitor.Log($"Received mod message: {e.FromModID}:{e.Type}:{e.ReadAs<string>()}", LogLevel.Info);
+			//Monitor.Log($"Received mod message: {e.FromModID}:{e.Type}:{e.ReadAs<string>()}", LogLevel.Info);
 
 			if (e.FromModID == this.ModManifest.UniqueID) {
 				if (e.Type == MESSAGE_SPRINT_SPEED) {

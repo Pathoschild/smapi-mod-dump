@@ -22,11 +22,8 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
         /*********
         ** Fields
         *********/
-        /// <summary>The container's default internal name.</summary>
-        private readonly string DefaultName = "Chest";
-
         /// <summary>The in-game chest.</summary>
-        protected readonly Chest Chest;
+        internal readonly Chest Chest;
 
         /// <summary>The <see cref="ItemGrabMenu.context"/> value which indicates what opened the menu.</summary>
         private readonly object Context;
@@ -47,11 +44,8 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
         /// <summary>The persisted data for this container.</summary>
         public ContainerData Data { get; }
 
-        /// <summary>Whether the player can customize the container data.</summary>
-        public bool IsDataEditable { get; } = true;
-
         /// <summary>Whether Automate options can be configured for this chest.</summary>
-        public bool CanConfigureAutomate { get; } = true;
+        public bool CanConfigureAutomate => this.Chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest;
 
 
         /*********
@@ -68,7 +62,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
             this.Context = context;
             this.ShowColorPicker = showColorPicker;
             this.Reflection = reflection;
-            this.Data = ContainerData.FromModData(chest.modData, this.DefaultName);
+            this.Data = new ContainerData(chest.modData);
         }
 
         /// <summary>Get whether the inventory can accept the item type.</summary>
@@ -142,12 +136,6 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
         public void SaveData()
         {
             this.Data.ToModData(this.Chest.modData);
-        }
-
-        /// <summary>Migrate legacy container data, if needed.</summary>
-        public void MigrateLegacyData()
-        {
-            ContainerData.MigrateLegacyData(this.Chest, this.DefaultName);
         }
 
 

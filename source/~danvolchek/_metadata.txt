@@ -34,9 +34,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 00c5f305ca6eb1bc20ff78d57101a62017eba1d0
+   commit 05bcd207e6f6724cfd0c567cb81d471e7440451e
    Author: danvolchek <danvnad@gmail.com>
-   Date:   Mon Dec 21 13:24:11 2020 -0800
+   Date:   Sun Jan 3 16:04:07 2021 -0800
    
-       [Winter Grass] update for SDV 1.5
+       [Chat Commands] don't try to trim if string is already empty
    

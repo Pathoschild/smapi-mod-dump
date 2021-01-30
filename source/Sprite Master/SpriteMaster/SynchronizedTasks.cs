@@ -17,8 +17,8 @@ using LoadList = System.Collections.Generic.List<SpriteMaster.TextureAction>;
 
 namespace SpriteMaster {
 	internal static class SynchronizedTasks {
-		private static DoubleBuffer<ActionList> PendingActions = Config.AsyncScaling.Enabled ? new DoubleBuffer<ActionList>() : null;
-		private static DoubleBuffer<LoadList> PendingLoads = Config.AsyncScaling.Enabled ? new DoubleBuffer<LoadList>() : null;
+		private static DoubleBuffer<ActionList> PendingActions = Config.AsyncScaling.Enabled ? new() : null;
+		private static DoubleBuffer<LoadList> PendingLoads = Config.AsyncScaling.Enabled ? new() : null;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void AddPendingAction (in Action action) {

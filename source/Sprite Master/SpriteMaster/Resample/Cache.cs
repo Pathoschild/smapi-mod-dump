@@ -38,6 +38,7 @@ namespace SpriteMaster.Resample {
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private class CacheHeader {
+			public Compression.Algorithm Algorithm;
 			public ulong Assembly = AssemblyHash;
 			public ulong ConfigHash = SerializeConfig.GetWideHashCode();
 			public uint RefScale;
@@ -112,7 +113,49 @@ namespace SpriteMaster.Resample {
 			Saved = 1
 		}
 
-		private static readonly ConcurrentDictionary<string, SaveState> SavingMap = Config.FileCache.Enabled ? new ConcurrentDictionary<string, SaveState>() : null;
+		private sealed class Profiler {
+			private readonly object Lock = new object();
+			private ulong FetchCount = 0L;
+			private ulong SumFetchTime = 0L;
+			private ulong StoreCount = 0L;
+			private ulong SumStoreTime = 0L;
+
+			internal ulong MeanFetchTime { get {
+					lock (Lock) {
+						return SumFetchTime / FetchCount;
+					}
+				}
+			}
+
+			internal ulong MeanStoreTime {
+				get {
+					lock (Lock) {
+						return SumStoreTime / StoreCount;
+					}
+				}
+			}
+
+			internal Profiler() { }
+
+			internal ulong AddFetchTime(ulong time) {
+				lock(Lock) {
+					++FetchCount;
+					SumFetchTime += time;
+					return SumFetchTime / FetchCount;
+				}
+			}
+
+			internal ulong AddStoreTime(ulong time) {
+				lock(Lock) {
+					++StoreCount;
+					SumStoreTime += time;
+					return SumStoreTime / StoreCount;
+				}
+			}
+		}
+		private static readonly Profiler CacheProfiler = (Config.FileCache.Profile && Config.FileCache.Enabled) ? new Profiler() : null;
+
+		private static readonly ConcurrentDictionary<string, SaveState> SavingMap = Config.FileCache.Enabled ? new() : null;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool Fetch (
@@ -149,6 +192,8 @@ namespace SpriteMaster.Resample {
 					}
 
 					try {
+						long start_time = Config.FileCache.Profile ? DateTime.Now.Ticks : 0L;
+
 						using (var reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))) {
 							var header = CacheHeader.Read(reader);
 							header.Validate(path);
@@ -166,16 +211,17 @@ namespace SpriteMaster.Resample {
 							var rawData = reader.ReadBytes((int)dataLength);
 
 							if (rawData.HashXX() != dataHash) {
-								throw new IOException("Cache File is corrupted");
+								throw new IOException($"Cache File '{path}' is corrupted");
 							}
 
-							if (dataLength == uncompressedDataLength) {
-								data = rawData;
-							}
-							else {
-								data = Compression.Decompress(rawData, (int)uncompressedDataLength, Config.FileCache.Compress);
-							}
+							data = Compression.Decompress(rawData, (int)uncompressedDataLength, header.Algorithm);
 						}
+
+						if (Config.FileCache.Profile) {
+							var mean_ticks = CacheProfiler.AddFetchTime((ulong)(DateTime.Now.Ticks - start_time));
+							Debug.InfoLn($"Mean Time Per Fetch: {(double)mean_ticks / TimeSpan.TicksPerMillisecond} ms");
+						}
+						
 						return true;
 					}
 					catch (Exception ex) {
@@ -219,18 +265,26 @@ namespace SpriteMaster.Resample {
 			ThreadQueue.Queue((data) => {
 				Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 				using var _ = new AsyncTracker($"File Cache Write {path}");
+				bool failure = false;
 				try {
-					using (var writer = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))) {
+					long start_time = Config.FileCache.Profile ? DateTime.Now.Ticks : 0L;
 
+					using (var writer = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))) {
+						if (!writer.BaseStream.CanWrite) {
+							failure = true;
+							return;
+						}
 						var algorithm = (SystemCompression && !Config.FileCache.ForceCompress) ? Compression.Algorithm.None : Config.FileCache.Compress;
 
 						var compressedData = Compression.Compress(data, algorithm);
 
 						if (compressedData.Length >= data.Length) {
 							compressedData = data;
+							algorithm = Compression.Algorithm.None;
 						}
 
 						new CacheHeader() {
+							Algorithm = algorithm,
 							RefScale = refScale,
 							Size = size,
 							Format = format,
@@ -243,10 +297,27 @@ namespace SpriteMaster.Resample {
 						}.Write(writer);
 
 						writer.Write(compressedData);
+
+						if (Config.FileCache.Profile) {
+							writer.Flush();
+						}
 					}
 					SavingMap.TryUpdate(path, SaveState.Saved, SaveState.Saving);
+
+					if (Config.FileCache.Profile) {
+						var mean_ticks = CacheProfiler.AddStoreTime((ulong)(DateTime.Now.Ticks - start_time));
+						Debug.InfoLn($"Mean Time Per Store: {(double)mean_ticks / TimeSpan.TicksPerMillisecond} ms");
+					}
 				}
-				catch {
+				catch (IOException ex) {
+					Debug.TraceLn($"Failed to write texture cache file '{path}': {ex.Message}");
+					failure = true;
+				}
+				catch (Exception ex) {
+					Debug.WarningLn($"Internal Error writing texture cache file '{path}': {ex.Message}");
+					failure = true;
+				}
+				if (failure) {
 					try { File.Delete(path); } catch { }
 					SavingMap.TryRemove(path, out var _);
 				}
@@ -293,8 +364,6 @@ namespace SpriteMaster.Resample {
 			catch { /* Ignore failures */ }
 
 			if (Config.FileCache.Enabled) {
-				// Mark the directory as compressed because this is very space wasteful and we are currently not performing compression.
-				// https://stackoverflow.com/questions/624125/compress-a-folder-using-ntfs-compression-in-net
 				try {
 					// Create the directory path
 					Directory.CreateDirectory(LocalDataPath);
@@ -304,7 +373,11 @@ namespace SpriteMaster.Resample {
 				}
 				try {
 					if (Runtime.IsWindows) {
-						SystemCompression = NTFS.CompressDirectory(LocalDataPath);
+						// Use System compression if it is preferred and no other compression algorithm is supported for some reason.
+						// https://stackoverflow.com/questions/624125/compress-a-folder-using-ntfs-compression-in-net
+						if (Config.FileCache.PreferSystemCompression || (int)Config.FileCache.Compress <= (int)Compression.Algorithm.Deflate) {
+							SystemCompression = NTFS.CompressDirectory(LocalDataPath);
+						}
 					}
 				}
 				catch (Exception ex) {

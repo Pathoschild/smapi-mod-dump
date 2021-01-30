@@ -1,0 +1,16 @@
+﻿{
+  "Name": "NameTags",
+  "Author": "Enaium",
+  "Version": "1.2.1",
+  "Description": "Render name tags",
+  "UniqueID": "Enaium.NameTags",
+  "EntryDll": "NameTags.dll",
+  "MinimumApiVersion": "3.7.0",
+  "UpdateKeys": ["GitHub:Enaium-StardewValleyMods/NameTags"],
+  "Dependencies": [
+    {
+      "UniqueID": "Enaium.EnaiumToolKit",
+      "MinimumVersion": "1.3.5"
+    }
+  ]
+}

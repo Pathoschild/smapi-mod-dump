@@ -7,6 +7,9 @@
     "generic.tomorrow": "demain",
     "generic.yesterday": "hier",
 
+    // generic values
+    "generic.unknown": "unknown", // TODO
+
     // generic field values
     "generic.percent": "{{percent}}%",
     "generic.percent-chance-of": "{{percent}}% chance de {{label}}",
@@ -188,6 +191,17 @@
     "location.undergroundMine.level": "mine niveau {{level}}",
     "location.witchSwamp": "marais de la sorcière",
     "location.woods": "bois secret",
+
+    "location.caldera": "Ginger Island caldera", // TODO
+    "location.islandEast": "Ginger Island east", // TODO
+    "location.islandNorth": "Ginger Island north", // TODO
+    "location.islandSouth": "Ginger Island south", // TODO
+    "location.islandSouthEast": "Ginger Island southeast", // TODO
+    "location.islandSouthEastCave": "Ginger Island southeast cave", // TODO
+    "location.islandWest": "Ginger Island west", // TODO
+    "location.islandWest.fish-area-1": "Ginger Island west (ocean)", // TODO
+    "location.islandWest.fish-area-2": "Ginger Island west (pond)", // TODO
+
     "location.unknown-fish-area": "{{locationName}} (secteur de pêche {{id}})",
 
 
@@ -321,6 +335,8 @@
     // labels
     "crop.summary": "Culture",
     "crop.harvest": "Récolte",
+    "crop.fertilized": "Fertilized", // TODO
+    "crop.watered": "Watered", // TODO
 
     // values
     "crop.summary.dead": "Cette culture est morte.",
@@ -582,7 +598,7 @@
 
 
     /*********
-    ** Tile lookups > Fern Islands mermaid puzzle
+    ** Puzzles > Fern Islands mermaid puzzle
     *********/
     // labels
     "puzzle.island-mermaid.title": "Puzzle de la sirène des Îles",
@@ -608,6 +624,7 @@
     *********/
     // labels
     "tile.description": "Une case sur la carte. Ceci est affiché car vous avez activé la recherche des cases dans les paramètres.",
+    "tile.game-location": "Location", // TODO
     "tile.map-name": "Nom de la carte",
     "tile.tile": "Case",
     "tile.tile-index": "{{layerName}}: index de la case",
@@ -650,7 +667,6 @@
     "tree.next-growth.winter": "ne peut pousser en hiver en dehors de la serre",
     "tree.next-growth.adjacent-trees": "ne peut pousser car d'autres arbres sont trop près",
     "tree.next-growth.chance": "{{chance}}% de chance de grandir en {{stage}} demain",
-    "tree.is-fertilized.effects": "garantit une pousse quotidienne, même en hiver",
 
     // growth stages
     "tree.stages.seed": "graine",

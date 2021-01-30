@@ -5,9 +5,9 @@ mods:
    Go To Bed
 
 latest commit:
-   commit 71a8ac1019198171b27f90d436820dd945edb954
+   commit 0e61e880bb35ab7dc7b088637802a607b3abd136
    Author: Candidus <candidus@xmail.net>
-   Date:   Tue Dec 29 19:05:11 2020 +0100
+   Date:   Sun Jan 3 14:25:07 2021 +0100
    
-       Fix for SDV 1.5: Farmer was moved to first bed when there are multiple beds in the farm house.
+       Fix incompatibility with the island farm house.
    

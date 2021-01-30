@@ -1,0 +1,10 @@
+{
+  "Name": "Secretariat",
+  "Author": "Jangles",
+  "Version": "1.1.2",
+  "Description": "Race Horse",
+  "UniqueID": "jangles.secretariat",
+  "EntryDll": "Secretariat.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7537" ],
+}

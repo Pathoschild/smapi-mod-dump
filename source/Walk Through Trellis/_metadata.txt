@@ -5,12 +5,11 @@ mods:
    Walk Through Trellis
 
 latest commit:
-   commit eddd4c539b12cc692560617df86a8b80ed6a511a
+   commit 1510e207fe5858d742b27af3e45377025148ae56
    Author: TheOfficialTab <OfficialTabArtist@gmail.com>
-   Date:   Wed Apr 22 22:49:19 2020 -0400
+   Date:   Sun Jan 10 14:00:44 2021 -0500
    
-       1.0.5 for 3.0
+       These are the new files from the 1.0.6 update.
        
-       Got rid of useless comments and got rid of changing the XNB via code, instead only using live property changes to existing crops only with one more event trigger.
-       In otherwords, got rid of a useless portion of code, and made the rest of it more useful.
+       Rebuilt the existing code for the newest version of SMAPI to be compatible with the latest version of Stardew Valley.
    

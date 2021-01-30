@@ -36,11 +36,13 @@ namespace CombineMachines.Helpers
         {
             TrackedKeys = ModDataKeys.Distinct().ToList().AsReadOnly();
 
+            //  EDIT: These 2 event listeners probably aren't needed anymore? I think a hotfix update added similar logic to the vanilla game somewhere around Update 1.5.1 or 1.5.2,
             helper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
             helper.Events.World.ObjectListChanged += World_ObjectListChanged;
 
             HarmonyInstance Harmony = HarmonyInstance.Create(ModEntry.ModInstance.ModManifest.UniqueID);
 
+            //  EDIT: This patch probably isn't needed anymore? I think a hotfix update added similar logic to the vanilla game somewhere around Update 1.5.1 or 1.5.2
             //  Patch Item.getOne to copy the modData to the return value
             Harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.getOne)),

@@ -17,9 +17,9 @@ namespace StardewHack.GrassGrowth
     public class ModConfig {
         /** Whether grass growth & spreading should be suppressed entirely.*/
         public bool DisableGrowth = false;
-        /** Whether grass spreads almost everywhere. If false, grass spreading is limited to digable tiles.*/
+        /** Whether grass spreads almost everywhere. If false, grass spreading is limited to tillable tiles.*/
         public bool GrowEverywhere = true;
-        /** The chance that grass growth or spreads.*/
+        /** The chance that grass grows or spreads.*/
         public double GrowthChance = 0.65;
         /** The chance for each neighbouring tile that the grass will spreads there.*/
         public double SpreadChance = 0.25;

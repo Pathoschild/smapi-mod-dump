@@ -76,6 +76,22 @@ namespace BetterTrainLoot
                 string trainCarFile = Path.Combine("DataFiles", "trains.json");
                 trainCars = helper.Data.ReadJsonFile<Dictionary<TRAINS, TrainData>>(trainCarFile) ?? TrainDefaultConfig.CreateTrainCarData(trainCarFile);
 
+                bool updateLoot = false;
+                foreach(var train in  trainCars.Values)
+                {
+                    //updated list to include new base game treasure
+                    if (!train.HasItem(806))
+                    {
+                        train.treasureList.Add(new TrainTreasure(806, "Leprechaun Shoes", 0.01, LOOT_RARITY.RARE, true));
+                        updateLoot = true;
+                    }
+                }
+
+                if (updateLoot)
+                {
+                    helper.Data.WriteJsonFile(trainCarFile, trainCars);
+                }
+
                 SetupMultiplayerObject();
             }
         }

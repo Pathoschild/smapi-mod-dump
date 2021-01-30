@@ -41,6 +41,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
                     trackedStack.Reduce(1);
                     this.Machine.heldObject.Value = output;
                     this.Machine.MinutesUntilReady = 60;
+                    return true;
                 }
             }
 

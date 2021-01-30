@@ -23,6 +23,7 @@ using Pathoschild.Stardew.TractorMod.Framework.Config;
 using Pathoschild.Stardew.TractorMod.Framework.ModAttachments;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
@@ -71,10 +72,13 @@ namespace Pathoschild.Stardew.TractorMod
         private ModConfig Config;
 
         /// <summary>The configured key bindings.</summary>
-        private ModConfigKeys Keys;
+        private ModConfigKeys Keys => this.Config.Controls;
+
+        /// <summary>The backing field for <see cref="TractorManager"/>.</summary>
+        private PerScreen<TractorManager> TractorManagerImpl;
 
         /// <summary>The tractor being ridden by the current player.</summary>
-        private TractorManager TractorManager;
+        private TractorManager TractorManager => this.TractorManagerImpl.Value;
 
         /// <summary>The garage texture to apply.</summary>
         private Texture2D GarageTexture;
@@ -95,11 +99,15 @@ namespace Pathoschild.Stardew.TractorMod
         {
             // read config
             this.Config = helper.ReadConfig<ModConfig>();
-            this.Keys = this.Config.Controls.ParseControls(helper.Input, this.Monitor);
 
             // init
             I18n.Init(helper.Translation);
-            this.TractorManager = new TractorManager(this.Config, this.Keys, this.Helper.Reflection);
+            this.TractorManagerImpl = new(() =>
+            {
+                var manager = new TractorManager(this.Config, this.Keys, this.Helper.Reflection);
+                this.UpdateConfigFor(manager);
+                return manager;
+            });
             this.UpdateConfig();
 
             // hook events
@@ -111,7 +119,7 @@ namespace Pathoschild.Stardew.TractorMod
             events.GameLoop.Saved += this.OnSaved;
             events.Display.RenderedWorld += this.OnRenderedWorld;
             events.Display.MenuChanged += this.OnMenuChanged;
-            events.Input.ButtonPressed += this.OnButtonPressed;
+            events.Input.ButtonsChanged += this.OnButtonsChanged;
             events.World.NpcListChanged += this.OnNpcListChanged;
             events.World.LocationListChanged += this.OnLocationListChanged;
             events.GameLoop.UpdateTicked += this.OnUpdateTicked;
@@ -162,7 +170,6 @@ namespace Pathoschild.Stardew.TractorMod
             // add Generic Mod Config Menu integration
             new GenericModConfigMenuIntegrationForTractor(
                 getConfig: () => this.Config,
-                getKeys: () => this.Keys,
                 reset: () =>
                 {
                     this.Config = new ModConfig();
@@ -440,17 +447,17 @@ namespace Pathoschild.Stardew.TractorMod
             }
         }
 
-        /// <summary>The event called when the player presses a keyboard button.</summary>
+        /// <summary>Raised after the player presses any buttons on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        /// <param name="e">The event data.</param>
+        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
         {
             if (!this.IsEnabled || !Context.IsPlayerFree)
                 return;
 
-            if (this.Keys.SummonTractor.JustPressedUnique() && !Game1.player.isRidingHorse())
+            if (this.Keys.SummonTractor.JustPressed() && !Game1.player.isRidingHorse())
                 this.SummonTractor();
-            else if (this.Keys.DismissTractor.JustPressedUnique() && Game1.player.isRidingHorse())
+            else if (this.Keys.DismissTractor.JustPressed() && Game1.player.isRidingHorse())
                 this.DismissTractor(Game1.player.mount);
         }
 
@@ -480,15 +487,22 @@ namespace Pathoschild.Stardew.TractorMod
         /****
         ** Helper methods
         ****/
-        /// <summary>Apply the mod configuration if it changed.</summary>
+        /// <summary>Reapply the mod configuration.</summary>
         private void UpdateConfig()
         {
-            this.Keys = this.Config.Controls.ParseControls(this.Helper.Input, this.Monitor);
+            foreach (var pair in this.TractorManagerImpl.GetActiveValues())
+                this.UpdateConfigFor(pair.Value);
+        }
 
+        /// <summary>Apply the mod configuration to a tractor manager instance.</summary>
+        /// <param name="manager">The tractor manager to update.</param>
+        private void UpdateConfigFor(TractorManager manager)
+        {
             var modRegistry = this.Helper.ModRegistry;
             var reflection = this.Helper.Reflection;
             var toolConfig = this.Config.StandardAttachments;
-            this.TractorManager.UpdateConfig(this.Config, this.Keys, new IAttachment[]
+
+            manager.UpdateConfig(this.Config, this.Keys, new IAttachment[]
             {
                 new CustomAttachment(this.Config.CustomAttachments, modRegistry, reflection), // should be first so it can override default attachments
                 new AxeAttachment(toolConfig.Axe, modRegistry, reflection),

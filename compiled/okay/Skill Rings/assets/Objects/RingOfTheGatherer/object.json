@@ -1,0 +1,21 @@
+{
+  "Name": "Ring of the Gatherer",
+  "Description": "Guides you on the ways of foraging, increasing skill.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 10000,
+  "Recipe": {
+	"ResultCount": 1,
+	"Ingredients": [
+		{
+			"Object": 335,
+			"Count": 10
+		},
+		{
+			"Object": 340,
+			"Count": 3
+		}
+	],
+	"CanPurchase": false
+  },
+}

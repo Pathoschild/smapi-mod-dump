@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Piggy Bank Mod",
     "Author": "MindMeltMax",
-    "Version": "1.2.0",
+    "Version": "1.2.2",
     "Description": "Adds a piggy bank to store gold",
     "UniqueID": "MindMeltMax.PiggyBank",
     "UpdateKeys": [ "Nexus:6934" ],

@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
 
 namespace MultipleSpouses
 {
@@ -29,6 +28,7 @@ namespace MultipleSpouses
 
         public int PercentChanceForSpouseInBed { get; set; } = 25;
         public int PercentChanceForSpouseInKitchen { get; set; } = 25;
+        public int PercentChanceForSpouseAtPatio { get; set; } = 25;
         public int MaxGiftsPerDay { get; set; } = 1;
         //public bool RemoveSpouseOrdinaryDialogue { get; set; } = false;
         public int MinHeartsForKiss { get; set; } = 9;
@@ -49,6 +49,7 @@ namespace MultipleSpouses
         public int ChildGrowthMultiplier { get; set; } = 1;
         public bool ShowParentNames { get; set; } = false;
 
+        public bool DisableCustomSpousesRooms { get; set; } = false;
         public bool BuildAllSpousesRooms { get; set; } = true;
         public string SpouseRoomOrder { get; set; } = "";
         public int ExistingSpouseRoomOffsetX { get; set; } = 0;
@@ -57,10 +58,9 @@ namespace MultipleSpouses
         public int BedWidth { get; set; } = 3;
         public bool SleepOnCovers { get; set; } = false;
         public bool TransparentSheets { get; set; } = true;
-        public int ExistingBedOffsetX { get; set; } = 0;
-        public int ExistingBedOffsetY { get; set; } = 0;
-        public int ExtraCribs { get; set; } = 0;
-        public int ExtraKidsBeds { get; set; } = 0;
+        public float SheetTransparency { get; set; } = 0.75f;
+        //public int ExtraCribs { get; set; } = 0;
+        //public int ExtraKidsBeds { get; set; } = 0;
         public int ExtraKidsRoomWidth { get; set; } = 0;
         public int ExistingKidsRoomOffsetX { get; set; } = 0;
         public int ExistingKidsRoomOffsetY { get; set; } = 0;

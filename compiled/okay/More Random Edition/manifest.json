@@ -1,10 +1,10 @@
 {
   "Name": "More Random Edition",
   "Author": "Chikakoo; doomdonuts",
-  "Version": "0.3.2",
+  "Version": "0.4.3",
   "Description": "Randomizes many gameplay and visual aspects of the game, see the readme for more info.",
   "UniqueID": "Chikakoo.Randomizer",
   "EntryDll": "Randomizer.dll",
-  "MinimumApiVersion": "3.1",
+  "MinimumApiVersion": "3.8.3",
   "UpdateKeys": [ "GitHub:Chikakoo/stardew-valley-randomizer" ]
 }

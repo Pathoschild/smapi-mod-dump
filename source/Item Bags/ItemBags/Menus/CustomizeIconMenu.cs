@@ -34,7 +34,7 @@ namespace ItemBags.Menus
         public Item HoveredItem { get; private set; }
         public void UpdateHoveredItem(CursorMovedEventArgs e)
         {
-            if (Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+            if (Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
             {
                 HoveredItem = HoveredObject;
             }
@@ -168,7 +168,7 @@ namespace ItemBags.Menus
 
         public void OnMouseMoved(CursorMovedEventArgs e)
         {
-            Point NewPos = e.NewPosition.ScreenPixels.AsPoint();
+            Point NewPos = e.NewPosition.LegacyScreenPixels().AsPoint();
             if (TextureDestination.Contains(NewPos))
             {
                 Point RelativePos = new Point(NewPos.X - TextureDestination.X, NewPos.Y - TextureDestination.Y);
@@ -192,7 +192,7 @@ namespace ItemBags.Menus
 
         public void OnMouseButtonPressed(ButtonPressedEventArgs e)
         {
-            if (!Bounds.Contains(e.Cursor.ScreenPixels.AsPoint()))
+            if (!Bounds.Contains(e.Cursor.LegacyScreenPixels().AsPoint()))
                 IBM.CloseModalMenu();
             else
             {

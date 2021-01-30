@@ -11,6 +11,7 @@
 using QuestFramework.Extensions;
 using QuestFramework.Quests;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -22,14 +23,15 @@ namespace QuestFramework.Framework
     {
         public const int ID_ROOT = 9000;
         private readonly IMonitor monitor;
+        private readonly PerScreen<List<CustomQuest>> _quests;
 
-        public List<CustomQuest> Quests { get; }
+        public List<CustomQuest> Quests => this._quests.Value;
         public Dictionary<string, Func<CustomQuest>> Factories { get; }
 
         public QuestManager(IMonitor monitor)
         {
             this.monitor = monitor;
-            this.Quests = new List<CustomQuest>();
+            this._quests = new PerScreen<List<CustomQuest>>(() => new List<CustomQuest>());
             this.Factories = new Dictionary<string, Func<CustomQuest>>();
         }
 

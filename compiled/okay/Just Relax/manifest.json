@@ -1,0 +1,10 @@
+{
+  "Name": "Just Relax",
+  "Author": "Goldenrevolver",
+  "Version": "1.0.1",
+  "Description": "Regenerate health and stamina while in bed in singleplayer and always while sitting (with the speed of sleeping in multiplayer)",
+  "UniqueID": "Goldenrevolver.JustRelax",
+  "EntryDll": "JustRelax.dll",
+  "MinimumApiVersion": "3.8.2",
+  "UpdateKeys": [ "Nexus:7770" ]
+}

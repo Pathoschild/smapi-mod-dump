@@ -38,11 +38,13 @@ All | | Excludes the NPC from all content affected by this mod.
 TownEvent | | Excludes the NPC from all content in the "TownEvent" category (see below).
 TownQuest | | Excludes the NPC from all content in the "TownQuest" category (see below).
 IslandEvent | | Excludes the NPC from all content in the "IslandEvent" category (see below).
+OtherEvent | | Excludes the NPC from all content in the "OtherEvent" category (see below).
 ShopDialog | TownEvent | Excludes the NPC from randomly discussing items that players have sold to certain shops.
 WinterStar | TownEvent | Excludes the NPC from giving or receiving secret gifts at the Feast of the Winter Star festival.
 ItemDelivery | TownQuest | Excludes the NPC from randomized "item delivery" quests on the Help Wanted board.
 Socialize | TownQuest | Excludes the NPC from "socialize" quests, which currently includes the "Introductions" quest at the start of the game.
 IslandVisit | IslandEvent | Excludes the NPC from random visits to the Ginger Island resort.
+PerfectFriend | OtherEvent | Excludes the NPC from Stardew's "perfection score" tracker when it checks for maximum friendship with NPCs.
 
 ## Mod Examples
 This mod loads a new data asset into Stardew: `Data/CustomNPCExclusions`.

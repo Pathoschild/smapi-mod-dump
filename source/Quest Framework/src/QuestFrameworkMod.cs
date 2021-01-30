@@ -50,11 +50,13 @@ namespace QuestFramework
         internal Loader ContentPackLoader { get; private set; }
         internal QuestController QuestController { get; private set; }
         internal MailController MailController { get; private set; }
+        internal CustomBoardController CustomBoardController { get; private set; }
         internal QuestLogWatchdog QuestLogWatchdog { get; private set; }
         internal NetworkOperator NetworkOperator { get; private set; }
         internal EventManager EventManager { get; private set; }
 
         internal static QuestFrameworkMod Instance { get; private set; }
+        internal static Multiplayer Multiplayer { get; private set; }
         internal GamePatcher Patcher { get; private set; }
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
@@ -62,16 +64,18 @@ namespace QuestFramework
         public override void Entry(IModHelper helper)
         {
             Instance = this;
+            Multiplayer = helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
 
             this.Config = helper.ReadConfig<Config>();
             this.Bridge = new Bridge(helper.ModRegistry, this.Config.DebugMode);
             this.EventManager = new EventManager(this.Monitor);
             this.QuestManager = new QuestManager(this.Monitor);
             this.QuestStateStore = new QuestStateStore(helper.Data, this.Monitor);
+            this.CustomBoardController = new CustomBoardController(helper.Events);
             this.StatsManager = new StatsManager(helper.Multiplayer, helper.Data);
             this.ConditionManager = new ConditionManager(this.Monitor);
             this.QuestOfferManager = new QuestOfferManager(this.ConditionManager, this.QuestManager);
-            this.ContentPackLoader = new Loader(this.Monitor, this.QuestManager, this.QuestOfferManager);
+            this.ContentPackLoader = new Loader(this.Monitor, this.QuestManager, this.QuestOfferManager, this.ConditionManager, this.CustomBoardController);
             this.QuestController = new QuestController(this.QuestManager, this.QuestOfferManager, this.Monitor);
             this.MailController = new MailController(this.QuestManager, this.QuestOfferManager, this.Monitor);
             this.QuestLogWatchdog = new QuestLogWatchdog(helper.Events, this.EventManager, this.StatsManager, this.Monitor);
@@ -95,13 +99,14 @@ namespace QuestFramework
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
             helper.Events.GameLoop.ReturnedToTitle += this.OnReturnToTitle;
             helper.Events.Display.MenuChanged += this.OnQuestLogMenuChanged;
+            helper.Events.Player.Warped += this.OnPlayerWarped;
             this.NetworkOperator.InitReceived += this.OnNetworkInitMessageReceived;
 
             this.Patcher = new GamePatcher(this.ModManifest.UniqueID, this.Monitor, false);
 
             this.Patcher.Apply(
                 new Patches.QuestPatch(this.QuestManager, this.EventManager),
-                new Patches.LocationPatch(this.ConditionManager),
+                new Patches.LocationPatch(this.ConditionManager, this.CustomBoardController),
                 new Patches.Game1Patch(this.QuestManager, this.QuestOfferManager),
                 new Patches.DialoguePatch(this.QuestManager),
                 new Patches.NPCPatch(this.QuestManager, this.QuestOfferManager),
@@ -119,6 +124,12 @@ namespace QuestFramework
             var packs = helper.ContentPacks.GetOwned();
             if (packs.Any())
                 this.ContentPackLoader.LoadPacks(packs);
+        }
+
+        private void OnPlayerWarped(object sender, WarpedEventArgs e)
+        {
+            if (e.NewLocation != e.OldLocation)
+                this.ContentPackLoader.OnLocationChange(e.NewLocation);
         }
 
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -154,6 +165,7 @@ namespace QuestFramework
         {
             this.QuestController.RefreshAllManagedQuestsInQuestLog();
             this.QuestController.RefreshBulletinboardQuestOffer();
+            this.CustomBoardController.RefreshBoards();
             this.MailController.ReceiveQuestLetterToMailbox();
             this.EventManager.Refreshed.Fire(new EventArgs(), this);
         }
@@ -187,12 +199,14 @@ namespace QuestFramework
         {
             this.ChangeState(State.CLEANING);
             this.QuestController.Reset();
+            this.CustomBoardController.Reset();
             this.QuestManager.Quests.Clear();
             this.QuestOfferManager.Offers.Clear();
             this.ConditionManager.Clean();
             this.QuestStateStore.Clean();
             this.StatsManager.Clean();
             this.NetworkOperator.Reset();
+            this.ContentPackLoader.OnReturnedToTitle();
             this.hasInitialized = false;
             this.hasSaveLoaded = false;
             this.hasInitMessageArrived = false;
@@ -223,7 +237,7 @@ namespace QuestFramework
             if (!Context.IsMainPlayer && !this.hasInitMessageArrived)
                 return; // Init meessage must be received or player must be main player (singleplayer game or host in co-op)
             if (this.hasInitialized)
-                return; // Don't init again if it'S already initialized
+                return; // Don't init again if it's already initialized
 
             this.ChangeState(State.LAUNCHING);
 
@@ -231,7 +245,7 @@ namespace QuestFramework
             // (farmhands get initial state from init message from host)
             this.QuestStateStore.RestoreData();
             this.StatsManager.LoadStats();
-            this.ContentPackLoader.RegisterQuestsFromPacks();
+            this.ContentPackLoader.ApplyLoadedContentPacks();
 
             this.EventManager.GettingReady.Fire(new Events.GettingReadyEventArgs(), this);
             this.ChangeState(State.LAUNCHED);

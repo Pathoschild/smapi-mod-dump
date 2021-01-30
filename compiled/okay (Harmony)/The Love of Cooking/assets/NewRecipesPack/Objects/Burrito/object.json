@@ -1,0 +1,41 @@
+{
+	// Object data
+	"Name": "blueberry.cac.burrito",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 63,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 185,
+	"IsColored": false,
+
+	// Object purchase
+	"CanPurchase": true,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 220,
+	"PurchaseRequirements": [ "y 2" ],
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": 229, // Tortilla
+				"Count": 1
+			},
+			{
+				"Object": 423, // Rice
+				"Count": 1
+			},
+			{
+				"Object": 260, // Hot Pepper
+				"Count": 1
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": true,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": [ "y 2" ]
+	}
+}

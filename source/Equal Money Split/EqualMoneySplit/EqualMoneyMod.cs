@@ -28,11 +28,6 @@ namespace EqualMoneySplit
         /// The SMAPI API used to integrate mods with the base Stardew Valley game
         /// </summary>
         public static IModHelper SMAPI { get; private set; }
-        
-        /// <summary>
-        /// Checks if this is the first day the user is connecting for
-        /// </summary>
-        private bool isFirstDay = true;
 
         /// <summary>
         /// Entry point of EqualMoneyMod
@@ -43,50 +38,17 @@ namespace EqualMoneySplit
             Logger = base.Monitor;
             SMAPI = base.Helper;
 
-            SMAPI.Events.GameLoop.DayStarted += FirstDayEventSubscriptions;
+            EqualMoneyMod.SMAPI.Events.GameLoop.GameLaunched += OnGameLaunched;
         }
 
         /// <summary>
-        /// Subscribes to the events on the first day of any game session
+        /// Performs initial mod registrations
         /// </summary>
-        private void FirstDayEventSubscriptions(object sender, DayStartedEventArgs args)
+        /// <param name="sender">The sender of the DayEndingEvent event</param>
+        /// <param name="args">Event arguments for the DayEndingEvent event</param>
+        public void OnGameLaunched(object sender, GameLaunchedEventArgs args)
         {
-            if (!Context.IsMultiplayer)
-            {
-                Logger.Log("Multiplayer is not being used, but the mod is enabled.");
-            }
-            else if (!Game1.player.useSeparateWallets)
-            {
-                Logger.Log("WARNING: EqualMoneySplit cannot be run unless individual wallets are set up! You must either disable the mod or set up individual wallets!");
-                Game1.chatBox.addErrorMessage("WARNING: EqualMoneySplit cannot be run unless individual wallets are set up!");
-                EventSubscriber.Instance.RemoveSubscriptions();
-            }
-            else if (isFirstDay)
-            {
-                EventSubscriber.Instance.AddSubscriptions();
-
-                // Start subscribing to the event of returning to the title
-                SMAPI.Events.GameLoop.ReturnedToTitle += ReturnToTitleEventUnsubcriptions;
-                SMAPI.Events.GameLoop.DayStarted -= FirstDayEventSubscriptions;
-
-                // After our first day has started, it is no longer the start of the first day
-                isFirstDay = false;
-            }
-        }
-
-        /// <summary>
-        /// Removes event subscriptions when the player returns to the title
-        /// </summary>
-        private void ReturnToTitleEventUnsubcriptions(object sender, ReturnedToTitleEventArgs args)
-        {
-            EventSubscriber.Instance.RemoveSubscriptions();
-
-            // Re-add the first day event subscriptions
-            SMAPI.Events.GameLoop.DayStarted += FirstDayEventSubscriptions;
-            SMAPI.Events.GameLoop.ReturnedToTitle -= ReturnToTitleEventUnsubcriptions;
-
-            // If we exit to the menu, then we will need a new first day setup
-            isFirstDay = true;
+            EventSubscriber.Instance.AddRequiredSubscriptions();
         }
     }
 }

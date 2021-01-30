@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7854
+IDs: AlejandroAkbal.QuickSell
+update keys: Nexus:7854, GitHub:AlejandroAkbal/Stardew-Valley-Quick-Sell-Mod

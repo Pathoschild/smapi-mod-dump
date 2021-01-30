@@ -30,6 +30,8 @@ namespace SVRichPresence {
 			SetTag(mod, key, () => value);
 		public bool SetTag(Mod mod, string key, int value) =>
 			SetTag(mod, key, () => value);
+		public bool SetTag(Mod mod, string key, float value) =>
+			SetTag(mod, key, () => value);
 		public bool SetTag(Mod mod, string key, decimal value, int roundDigits = -1) =>
 			SetTag(mod, key, () => value, roundDigits);
 		public bool SetTag(Mod mod, string key, double value, int roundDigits = -1) =>
@@ -52,6 +54,8 @@ namespace SVRichPresence {
 		public bool SetTag(Mod mod, string key, Func<NetString> resolver, bool onlyWhenWorldReady = false) =>
 			SetTag(mod, key, () => resolver.Invoke().ToString(), onlyWhenWorldReady);
 		public bool SetTag(Mod mod, string key, Func<int> resolver, bool onlyWhenWorldReady = false) =>
+			SetTag(mod, key, () => resolver.Invoke().ToString(), onlyWhenWorldReady);
+		public bool SetTag(Mod mod, string key, Func<float> resolver, bool onlyWhenWorldReady = false) =>
 			SetTag(mod, key, () => resolver.Invoke().ToString(), onlyWhenWorldReady);
 		public bool SetTag(Mod mod, string key, Func<decimal> resolver, int roundDigits = -1, bool onlyWhenWorldReady = false) =>
 			SetTag(mod, key, () => {
@@ -154,6 +158,8 @@ namespace SVRichPresence {
 			api.SetTag(mod, key, value);
 		public bool SetTag(string key, int value) =>
 			api.SetTag(mod, key, value);
+		public bool SetTag(string key, float value) =>
+			api.SetTag(mod, key, value);
 		public bool SetTag(string key, decimal value, int roundDigits = -1) =>
 			api.SetTag(mod, key, value, roundDigits);
 		public bool SetTag(string key, double value, int roundDigits = -1) =>
@@ -164,6 +170,8 @@ namespace SVRichPresence {
 		public bool SetTag(string key, Func<NetString> resolver, bool onlyWhenWorldReady = false) =>
 			api.SetTag(mod, key, resolver, onlyWhenWorldReady);
 		public bool SetTag(string key, Func<int> resolver, bool onlyWhenWorldReady = false) =>
+			api.SetTag(mod, key, resolver, onlyWhenWorldReady);
+		public bool SetTag(string key, Func<float> resolver, bool onlyWhenWorldReady = false) =>
 			api.SetTag(mod, key, resolver, onlyWhenWorldReady);
 		public bool SetTag(string key, Func<decimal> resolver, int roundDigits = -1, bool onlyWhenWorldReady = false) =>
 			api.SetTag(mod, key, resolver, roundDigits, onlyWhenWorldReady);

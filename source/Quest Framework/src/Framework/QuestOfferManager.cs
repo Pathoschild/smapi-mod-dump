@@ -11,6 +11,7 @@
 using QuestFramework.Offers;
 using QuestFramework.Quests;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,13 @@ namespace QuestFramework.Framework
     {
         private readonly ConditionManager conditionManager;
         private readonly QuestManager questManager;
+        private readonly PerScreen<List<QuestOffer>> _offers;
 
-        public List<QuestOffer> Offers { get; }
+        public List<QuestOffer> Offers => this._offers.Value;
 
         public QuestOfferManager(ConditionManager conditionManager, QuestManager questManager)
         {
-            this.Offers = new List<QuestOffer>();
+            this._offers = new PerScreen<List<QuestOffer>>(() => new List<QuestOffer>());
             this.conditionManager = conditionManager;
             this.questManager = questManager;
         }

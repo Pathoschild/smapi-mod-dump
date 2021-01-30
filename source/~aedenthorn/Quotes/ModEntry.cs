@@ -19,10 +19,10 @@ using System.IO;
 namespace Quotes
 {
     public class ModEntry : Mod 
-	{
-		public static ModEntry context;
+    {
+        public static ModEntry context;
 
-		public static ModConfig Config;
+        public static ModConfig Config;
         private Random myRand;
 
         public static string[] quotestrings = new string[0];
@@ -43,13 +43,13 @@ namespace Quotes
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
-		{
-			context = this;
-			Config = Helper.ReadConfig<ModConfig>();
-			if (!Config.EnableMod)
-				return;
+        {
+            context = this;
+            Config = Helper.ReadConfig<ModConfig>();
+            if (!Config.EnableMod)
+                return;
 
-			myRand = new Random(Guid.NewGuid().GetHashCode());
+            myRand = new Random(Guid.NewGuid().GetHashCode());
 
             LoadQuotes();
 
@@ -64,12 +64,15 @@ namespace Quotes
 
         private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
         {
-            api = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
-            if (api != null)
+            if (Config.EnableApp)
             {
-                Texture2D appIcon = Helper.Content.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
-                bool success = api.AddApp(Helper.ModRegistry.ModID, "Random Quote", ShowRandomQuote, appIcon);
-                Monitor.Log($"loaded phone app successfully: {success}", LogLevel.Debug);
+                api = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
+                if (api != null)
+                {
+                    Texture2D appIcon = Helper.Content.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
+                    bool success = api.AddApp(Helper.ModRegistry.ModID, "Random Quote", ShowRandomQuote, appIcon);
+                    Monitor.Log($"loaded phone app successfully: {success}", LogLevel.Debug);
+                }
             }
         }
 

@@ -1,0 +1,22 @@
+{
+    // Object data
+    "Name": "blueberry.cac.carrot",
+    "Description": "...",
+    "Category": "Vegetable",
+    "Edibility": 16,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 40,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+    },
+}

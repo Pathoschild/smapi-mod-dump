@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.902
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkInProgress", "WorkInProgress", "{34698880-C8D5-40AE-BAC1-08FDE4359A9B}"
 EndProject
@@ -89,13 +89,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomMayo", "CustomMayo\Cu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Better Resource Clumps", "Better Resource Clumps\Better Resource Clumps.csproj", "{269C026A-2242-45DB-BAD2-5F53F0667D80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterMeteors", "BetterMeteors\BetterMeteors.csproj", "{08F693EE-73C8-439E-A25E-4FB7EE9399EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterMeteors", "BetterMeteors\BetterMeteors.csproj", "{08F693EE-73C8-439E-A25E-4FB7EE9399EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImprovedResourceClumps", "ImprovedResourceClumps\ImprovedResourceClumps.csproj", "{E4848F1D-F487-4E95-881A-7FA8F6DBA204}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IncreaseAnimalHouseMaxPopulation", "IncreaseAnimalHouseMaxPopulation\IncreaseAnimalHouseMaxPopulation.csproj", "{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Common\Common\Common.projitems*{3e12e768-bb9a-4038-beff-754c7612ec1c}*SharedItemsImports = 5
 		Common\Common\Common.projitems*{50cd60fb-0256-4e2d-b783-0a037cf59d78}*SharedItemsImports = 13
+		Common\Common\Common.projitems*{8f850419-0b44-4327-b11a-b020fd12f16a}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -398,6 +402,14 @@ Global
 		{E4848F1D-F487-4E95-881A-7FA8F6DBA204}.Release|Any CPU.ActiveCfg = Release|x86
 		{E4848F1D-F487-4E95-881A-7FA8F6DBA204}.Release|x86.ActiveCfg = Release|x86
 		{E4848F1D-F487-4E95-881A-7FA8F6DBA204}.Release|x86.Build.0 = Release|x86
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Debug|x86.Build.0 = Debug|Any CPU
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|x86.ActiveCfg = Release|Any CPU
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -435,6 +447,7 @@ Global
 		{269C026A-2242-45DB-BAD2-5F53F0667D80} = {D878CD74-D4A6-4F94-B422-4BFD98998D2A}
 		{08F693EE-73C8-439E-A25E-4FB7EE9399EA} = {D878CD74-D4A6-4F94-B422-4BFD98998D2A}
 		{E4848F1D-F487-4E95-881A-7FA8F6DBA204} = {D878CD74-D4A6-4F94-B422-4BFD98998D2A}
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728} = {34698880-C8D5-40AE-BAC1-08FDE4359A9B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB6C6B8C-9654-4232-A3DA-0819C7860DF5}

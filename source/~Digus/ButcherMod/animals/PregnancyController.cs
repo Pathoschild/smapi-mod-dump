@@ -20,54 +20,62 @@ using System.Collections.Generic;
 using System.Linq;
 using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.common;
+using Harmony;
+using StardewModdingAPI.Utilities;
 
 namespace AnimalHusbandryMod.animals
 {
     public class PregnancyController
     {
         private static IModEvents events => AnimalHusbandryModEntry.ModHelper.Events;
-        static Queue<FarmAnimal> parentAnimals = new Queue<FarmAnimal>();
-        static FarmAnimal parentAnimal = null;
+        static readonly PerScreen<Queue<FarmAnimal>> parentAnimals = new PerScreen<Queue<FarmAnimal>>(() => new Queue<FarmAnimal>());
+        static readonly PerScreen<FarmAnimal> parentAnimal = new PerScreen<FarmAnimal>();
 
         static List<string> animalsWithBirthTomorrow = new List<string>();
 
-        public static Boolean IsAnimalPregnant(long farmAnimalId)
+        public static bool IsAnimalPregnant(FarmAnimal farmAnimal)
         {
-            return FarmerLoader.FarmerData.PregnancyData.Exists(f => f.Id == farmAnimalId);
+            return farmAnimal?.GetDaysUntilBirth() != null;
         }
 
-        public static PregnancyItem GetPregnancyItem(long farmAnimalId)
+        public static void RemovePregnancy(FarmAnimal farmAnimal)
         {
-            return FarmerLoader.FarmerData.PregnancyData.Find(f => f.Id == farmAnimalId);
+            farmAnimal.ClearDaysUntilBirth();
+            farmAnimal.ClearAllowReproductionBeforeInsemination();
         }
 
-        public static void RemovePregnancyItem(long farmAnimalId)
+        public static void AddPregnancy(FarmAnimal farmAnimal, int daysUntilBirth)
         {
-            FarmerLoader.FarmerData.PregnancyData.RemoveAll(f => f.Id == farmAnimalId);
+            farmAnimal.SetDaysUntilBirth(daysUntilBirth);
+            farmAnimal.SetAllowReproductionBeforeInsemination(farmAnimal.allowReproduction.Value);
         }
 
-        public static void AddPregnancy(PregnancyItem pregnancyItem)
+        public static IEnumerable<FarmAnimal> AnimalsReadyForBirth()
         {
-            FarmerLoader.FarmerData.PregnancyData.Add(pregnancyItem);
+            return AnimalUtility.FindAnimals(
+                a=> 
+                {
+                    int? daysUntilBirth = a.GetDaysUntilBirth();
+                    return daysUntilBirth.HasValue && daysUntilBirth.Value <= 0;
+                }
+            );
         }
 
-        public static IEnumerable<PregnancyItem> AnimalsReadyForBirth()
+        public static IEnumerable<FarmAnimal> AnimalsReadyForBirthTomorrow()
         {
-            return FarmerLoader.FarmerData.PregnancyData.Where(p => p.DaysUntilBirth <= 0);
-        }
-
-        public static IEnumerable<PregnancyItem> AnimalsReadyForBirthTomorrow()
-        {
-            return FarmerLoader.FarmerData.PregnancyData.Where(p => p.DaysUntilBirth == 1);
+            return AnimalUtility.FindAnimals(
+                a =>
+                {
+                    int? daysUntilBirth = a.GetDaysUntilBirth();
+                    return daysUntilBirth.HasValue && daysUntilBirth.Value == 1;
+                }
+            );
         }
 
         public static bool CheckBuildingLimit(FarmAnimal animal)
         {
-            return CheckBuildingLimit((AnimalHouse)animal.home.indoors.Value);
-        }
+            AnimalHouse animalHouse = (AnimalHouse)animal.home.indoors.Value;
 
-        public static bool CheckBuildingLimit(AnimalHouse animalHouse)
-        {
             int? limit = null;
             switch (animalHouse.Name)
             {
@@ -107,45 +115,28 @@ namespace AnimalHusbandryMod.animals
                         break;
                     }
             }
-            return limit != null && animalHouse.animalsThatLiveHere.Count(a => IsAnimalPregnant(a)) >= limit;
-        }
-
-        public static FarmAnimal GetAnimal(long id)
-        {
-            FarmAnimal animal = Utility.getAnimal(id);
-            if (animal != null)
-            {
-                return animal;
-            }
-            else
-            {
-                AnimalHusbandryModEntry.monitor.Log($"The animal id '{id}' was not found in the game and its pregnancy data is being discarded.", LogLevel.Warn);
-                RemovePregnancyItem(id);
-                return null;
-            }
-                
+            return limit != null && animalHouse.animalsThatLiveHere.Count(a => IsAnimalPregnant(Utility.getAnimal(a))) >= limit;
         }
 
         public static void UpdatePregnancy()
         {
-            FarmerLoader.FarmerData.PregnancyData.ForEach(a => a.DaysUntilBirth--);
+            AnimalUtility
+                .FindAnimals(a => a.GetDaysUntilBirth().HasValue)
+                .ToList()
+                .ForEach(a=> a.SetDaysUntilBirth(a.GetDaysUntilBirth().Value - 1));
         }
 
         public static void CheckForBirth()
         {
-            foreach (PregnancyItem pregnancyItem in AnimalsReadyForBirth().ToList())
+            foreach (FarmAnimal animal in AnimalsReadyForBirth().ToList())
             {
-                FarmAnimal animal = GetAnimal(pregnancyItem.Id);
-                if (animal != null)
-                {
-                    parentAnimals.Enqueue(animal);
-                }
+                parentAnimals.Value.Enqueue(animal);
             }
             if (!DataLoader.ModConfig.DisableTomorrowBirthNotification)
             {
                 animalsWithBirthTomorrow = CheckBirthTomorrow();
             }
-            if (parentAnimals.Count > 0 || animalsWithBirthTomorrow.Count > 0)
+            if (parentAnimals.Value.Count > 0 || animalsWithBirthTomorrow.Count > 0)
             {
                 events.GameLoop.UpdateTicked += OnUpdateTicked;
             }
@@ -153,16 +144,7 @@ namespace AnimalHusbandryMod.animals
 
         public static List<string> CheckBirthTomorrow()
         {
-            List<string> animals = new List<string>();
-            foreach (PregnancyItem pregnancyItem in AnimalsReadyForBirthTomorrow().ToList())
-            {
-                FarmAnimal farmAnimal = GetAnimal(pregnancyItem.Id);
-                if (farmAnimal != null)
-                {
-                    animals.Add(farmAnimal.displayName);
-                }                
-            }
-            return animals;      
+            return AnimalsReadyForBirthTomorrow().ToList().Select(farmAnimal => farmAnimal.displayName).ToList();
         }
         
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
@@ -191,61 +173,85 @@ namespace AnimalHusbandryMod.animals
                 }
                 animalsWithBirthTomorrow.Clear();
             }
-            else if (parentAnimal == null)
+            else if (parentAnimal.Value == null)
             {
-                if (parentAnimals.Count > 0)
+                if (parentAnimals.Value.Count > 0)
                 {
-                    parentAnimal = parentAnimals.Dequeue();
-                    if ((parentAnimal.home.indoors.Value as AnimalHouse).isFull())
+                    parentAnimal.Value = parentAnimals.Value.Dequeue();
+                    if ((parentAnimal.Value.home.indoors.Value as AnimalHouse).isFull())
                     {
                         if (!DataLoader.ModConfig.DisableFullBuildingForBirthNotification)
                         {
-                            Game1.drawObjectDialogue(DataLoader.i18n.Get("Tool.InseminationSyringe.FullBuilding", new { animalName = parentAnimal.displayName, buildingType = parentAnimal.displayHouse }));
+                            Game1.drawObjectDialogue(DataLoader.i18n.Get("Tool.InseminationSyringe.FullBuilding", new { animalName = parentAnimal.Value.displayName, buildingType = parentAnimal.Value.displayHouse }));
                         }
-                        parentAnimal = null;
+                        parentAnimal.Value = null;
                     }
                     else
                     {
-                        Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Events:AnimalBirth", (object)parentAnimal.displayName, (object)parentAnimal.shortDisplayType()));
+                        Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Events:AnimalBirth", (object)parentAnimal.Value.displayName, (object)parentAnimal.Value.shortDisplayType()));
                     }
                 }
                 else
                 {
                     Game1.messagePause = false;
-                    events.GameLoop.UpdateTicked -= OnUpdateTicked;
+                    if (parentAnimals.GetActiveValues().All(q => q.Value.Count == 0))
+                    {
+                        events.GameLoop.UpdateTicked -= OnUpdateTicked;
+                    }
                 }
             }
             else if (Game1.activeClickableMenu == null)
             {
-                NamingMenu.doneNamingBehavior b = new NamingMenu.doneNamingBehavior(addNewHatchedAnimal);
-                string title = Game1.content.LoadString("Strings\\Events:AnimalNamingTitle", (object)parentAnimal.displayType);
-                Game1.activeClickableMenu = (IClickableMenu)new NamingMenu(b, title, (string)null);
+                if (parentAnimal.Value.ownerID.Value == Game1.player.UniqueMultiplayerID || (AnimalHusbandryModEntry.ModHelper.Multiplayer.GetConnectedPlayer(parentAnimal.Value.ownerID.Value) == null && Context.IsMainPlayer))
+                {
+                    NamingMenu.doneNamingBehavior b = new NamingMenu.doneNamingBehavior(addNewHatchedAnimal);
+                    string title = Game1.content.LoadString("Strings\\Events:AnimalNamingTitle", (object)parentAnimal.Value.displayType);
+                    Game1.activeClickableMenu = (IClickableMenu)new NamingMenu(b, title, (string)null);
+                }
+                else
+                {
+                    parentAnimal.Value = null;
+                }
             }
         }
 
         private static void addNewHatchedAnimal(string name)
         {
-            Building building = parentAnimal.home; 
-             FarmAnimal farmAnimal = new FarmAnimal(parentAnimal.type.Value, DataLoader.Helper.Multiplayer.GetNewID(), (long)Game1.player.UniqueMultiplayerID)
+            try
             {
-                Name = name,
-                displayName = name,
-                
-                home = building,
-                
-            };
-            farmAnimal.parentId.Value = parentAnimal.myID.Value;
-            farmAnimal.homeLocation.Value = new Vector2((float) building.tileX.Value, (float) building.tileY.Value);
-            farmAnimal.setRandomPosition(farmAnimal.home.indoors.Value);
-            (building.indoors.Value as AnimalHouse).animals.Add(farmAnimal.myID.Value, farmAnimal);
-            (building.indoors.Value as AnimalHouse).animalsThatLiveHere.Add(farmAnimal.myID.Value);
+                Building building = parentAnimal.Value.home;
+                FarmAnimal farmAnimal = new FarmAnimal(parentAnimal.Value.type.Value,
+                    DataLoader.Helper.Multiplayer.GetNewID(),
+                    parentAnimal.Value.ownerID.Value != 0
+                        ? parentAnimal.Value.ownerID.Value
+                        : (long) Game1.player.UniqueMultiplayerID)
+                {
+                    Name = name,
+                    displayName = name,
+                    home = building
+                };
+                farmAnimal.parentId.Value = parentAnimal.Value.myID.Value;
+                farmAnimal.homeLocation.Value = new Vector2((float) building.tileX.Value, (float) building.tileY.Value);
+                farmAnimal.setRandomPosition(farmAnimal.home.indoors.Value);
+                AnimalHouse animalHouse = (building.indoors.Value as AnimalHouse);
+                animalHouse?.animals.Add(farmAnimal.myID.Value, farmAnimal);
+                animalHouse?.animalsThatLiveHere.Add(farmAnimal.myID.Value);
 
-            PregnancyItem pregnacyItem = PregnancyController.GetPregnancyItem(parentAnimal.myID.Value);
-            parentAnimal.allowReproduction.Value = pregnacyItem.AllowReproductionBeforeInsemination;
-            PregnancyController.RemovePregnancyItem(pregnacyItem.Id);
-            parentAnimal = null;
+                bool? allowReproductionBeforeInsemination = parentAnimal.Value.GetAllowReproductionBeforeInsemination();
+                parentAnimal.Value.allowReproduction.Value = allowReproductionBeforeInsemination ?? parentAnimal.Value.allowReproduction.Value;
+                RemovePregnancy(parentAnimal.Value);
+            }
+            catch (Exception e)
+            {
+                AnimalHusbandryModEntry.monitor.Log($"Error while adding born baby '{name}'. The birth will be skipped.",LogLevel.Error);
+                AnimalHusbandryModEntry.monitor.Log($"Message from birth error above: {e.Message}");
+            }
+            finally
+            {
+                parentAnimal.Value = null;
+                Game1.exitActiveMenu();
+            }
 
-            Game1.exitActiveMenu();
         }
     }
 }

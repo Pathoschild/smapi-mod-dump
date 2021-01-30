@@ -9,6 +9,12 @@
 *************************************************/
 
 {
-	"ToolTipQuantityLabel": "Quantity:",
-	"ToolTipPowerLabel": "Power:"
+  "ToolTipQuantityLabel": "Mengenaufnahme:",
+  "ToolTipPowerLabel": "Geschwindigkeit:",
+  "ToolTipCaskAgingRateLabel": "Aging Rate:",
+  "ToolTipCaskDaysUntilIridiumLabel": "Days Until Iridium:",
+  "ToolTipMinutesRemainingLabel": "Minutes Remaining:",
+  "ToolTipProducedQuantityLabel": "Produced Quantity:",
+  "ToolTipCrabPotProcessingIntervalLabel": "Interval (Minutes):",
+  "ToolTipScarecrowRadiusLabel": "Radius:"
 }

@@ -10,6 +10,7 @@
 
 using BetterPanning.Data;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Objects;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,19 +21,25 @@ namespace BetterPanning.GamePatch
    {
         public static void postfix_getPanItems(ref List<Item> __result)
         {
-            __result = PanOverrider.GetTreasure();            
+            __result = PanOverrider.GetTreasure(__result);            
         }
 
-        internal static List<Item> GetTreasure()
+        internal static List<Item> GetTreasure(List<Item> gameLoot)
         {
             List<Item> rewards = new List<Item>();
             var location = Game1.player.currentLocation;
+
+            if (location is IslandLocation)
+            {
+                return gameLoot;
+            }
+
             //Treasure Groups
             List<TreasureGroup> possibleGroups;
 
-            if (PanningMod.Instance.areaTresureGroups.ContainsKey(location.Name))
+            if (PanningMod.Instance.areaTreasureGroups.ContainsKey(location.Name))
             {
-                possibleGroups = PanningMod.Instance.areaTresureGroups[location.Name].Values
+                possibleGroups = PanningMod.Instance.areaTreasureGroups[location.Name].Values
                 .Where(group => group.Enabled == true)
                 .OrderBy(group => group.GroupChance)
                 .ToList();
@@ -45,7 +52,8 @@ namespace BetterPanning.GamePatch
                 .ToList();
             }
             // Select rewards
-            double chance = 1f;
+            double chance = 1f;           
+            int lootCount = 0;
 
             while (possibleGroups.Count > 0 && Game1.random.NextDouble() <= chance)
             {
@@ -105,6 +113,12 @@ namespace BetterPanning.GamePatch
 
                 // Update chance
                 chance *= PanningMod.Instance.config.additionalLootChance + Game1.player.DailyLuck; 
+                if (lootCount > 2 && chance >= 1.0)
+                {
+                    break;
+                }
+
+                lootCount++;
             }
 
             return rewards;

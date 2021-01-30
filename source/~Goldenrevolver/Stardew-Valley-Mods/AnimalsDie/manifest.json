@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  "Name": "Animals Die - Old Age, Hunger, Illness",
+  "Author": "Goldenrevolver",
+  "Version": "1.6",
+  "Description": "Farm animals can die of old age, hunger or illness",
+  "UniqueID": "Goldenrevolver.AnimalsDie",
+  "EntryDll": "AnimalsDie.dll",
+  "MinimumApiVersion": "3.8.2",
+  "UpdateKeys": [ "Nexus:7769" ]
+}

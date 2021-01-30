@@ -1,0 +1,10 @@
+{
+	"Name": "Show Birthdays",
+	"Author": "Traktori",
+	"Version": "1.0.0",
+	"Description": "Allows the calendar to display multiple birthdays.",
+	"UniqueID": "Traktori.ShowBirthdays",
+	"EntryDll": "ShowBirthdays.dll",
+	"MinimumApiVersion": "3.8.0",
+	"UpdateKeys": []
+}

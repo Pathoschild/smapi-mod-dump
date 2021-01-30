@@ -11,6 +11,7 @@
     <AssemblyName>ProducerFrameworkMod</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <EnableHarmony>true</EnableHarmony>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
@@ -35,10 +36,6 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>G:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\smapi-internal\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\Users\Digus\.nuget\packages\newtonsoft.json\12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -52,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentPack\ContentPackConfig.cs" />
+    <Compile Include="ContentPack\ManifestData.cs" />
     <Compile Include="Controllers\AnimationController.cs" />
     <Compile Include="Api\IProducerFrameworkModAPI.cs" />
     <Compile Include="Api\ProducerFrameworkModApi.cs" />
@@ -68,6 +67,7 @@
     <Compile Include="ContentPack\StardewStats.cs" />
     <Compile Include="ContentPack\Weather.cs" />
     <Compile Include="ContentPack\WorkingTime.cs" />
+    <Compile Include="Controllers\ContentPackConfigController.cs" />
     <Compile Include="DataLoader.cs" />
     <Compile Include="Utils\GameUtils.cs" />
     <Compile Include="Controllers\LightSourceConfigController.cs" />
@@ -84,6 +84,9 @@
     <Compile Include="Controllers\StatsController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ContentPackTemplate\Config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ContentPackTemplate\manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -102,6 +105,7 @@
     <None Include="i18n\pt.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="i18n\ru.json" />
     <None Include="manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

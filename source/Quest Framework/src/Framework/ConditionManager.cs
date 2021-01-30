@@ -23,7 +23,7 @@ namespace QuestFramework.Framework
         private readonly IMonitor monitor;
 
         public List<Hook> Hooks { get; private set; }
-        public Dictionary<string, Func<string, CustomQuest, bool>> Conditions { get; }
+        public Dictionary<string, Func<string, object, bool>> Conditions { get; }
         
         [Obsolete("This hook API is deprecated. Will be replaced in future")]
         public Dictionary<string, HookObserver> Observers { get; }
@@ -72,7 +72,7 @@ namespace QuestFramework.Framework
             this.Observers.Add(hookObserver.Name, hookObserver);
         }
 
-        public bool CheckConditions(Dictionary<string, string> conditions, CustomQuest context, IEnumerable<string> ignore = null, bool ignoreUnknown = false)
+        public bool CheckConditions(Dictionary<string, string> conditions, object context, IEnumerable<string> ignore = null, bool ignoreUnknown = false)
         {
             bool flag = true;
 
@@ -92,10 +92,13 @@ namespace QuestFramework.Framework
             return flag;
         }
 
-        public bool CheckCondition(string condition, string value, CustomQuest context, bool ignoreUnknown = false)
+        public bool CheckCondition(string condition, string value, object context, bool ignoreUnknown = false)
         {
             bool isNot = false;
             string realConditionName = condition;
+            string contextName = context is CustomQuest managedQuest 
+                ? $"quest:{managedQuest.GetFullName()}" 
+                : context.ToString();
 
             if (condition == null || value == null)
                 return true;
@@ -116,7 +119,7 @@ namespace QuestFramework.Framework
                 if (this.monitor.IsVerbose)
                     this.monitor.Log(
                         $"Checked condition `{realConditionName}` for `{value}` " +
-                        $"in quest context `{context.GetFullName()}` " +
+                        $"in context `{contextName}` " +
                         $"returns {(isNot ? !result : result)}");
 
                 return isNot ? !result : result;
@@ -127,7 +130,7 @@ namespace QuestFramework.Framework
             }
 
             this.monitor.Log(
-                $"Checked unknown condition `{condition}` in quest context `{context.GetFullName()}`. Result for unknown conditions is always false.", LogLevel.Warn);
+                $"Checked unknown condition `{condition}` in context `{contextName}`. Result for unknown conditions is always false.", LogLevel.Warn);
             
             return false;
         }

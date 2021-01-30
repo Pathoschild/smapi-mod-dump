@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{6ab9a9b1-ef1f-427e-9190-7ae5b000191a}") = "GreatEnchanter", "GreatEnchanter.csproj", "{2c1a2e54-e523-4f28-a00c-ead2f5f94a77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2c1a2e54-e523-4f28-a00c-ead2f5f94a77}.Debug|x86.ActiveCfg = Debug|x86
+		{2c1a2e54-e523-4f28-a00c-ead2f5f94a77}.Debug|x86.Build.0 = Debug|x86
+		{2c1a2e54-e523-4f28-a00c-ead2f5f94a77}.Release|x86.ActiveCfg = Release|x86
+		{2c1a2e54-e523-4f28-a00c-ead2f5f94a77}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal

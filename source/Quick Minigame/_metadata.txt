@@ -1,0 +1,16 @@
+url:
+   https://github.com/Enaium-StardewValleyMods/QuickMinigame.git
+
+mods:
+   Quick Minigame
+
+latest commit:
+   commit 2ebd168fee953895eaa1b9e4aa0265e86676392a
+   Merge: d8b600d 5ee4c99
+   Author: Enaium <32991121+Enaium@users.noreply.github.com>
+   Date:   Wed Jan 20 22:02:31 2021 -0600
+   
+       Merge pull request #3 from Enaium-StardewValleyMods/develop
+       
+       Develop
+   

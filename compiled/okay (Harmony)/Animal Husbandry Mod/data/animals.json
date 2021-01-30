@@ -35,9 +35,9 @@
     ]
   },
   "Duck": {
-    "MinimalNumberOfMeat": 2,
-    "MaximumNumberOfMeat": 6,
-    "MinimumDaysBetweenTreats": 3,
+    "MinimalNumberOfMeat": 1,
+    "MaximumNumberOfMeat": 5,
+    "MinimumDaysBetweenTreats": 4,
     "LikedTreats": [
       78,
       278,

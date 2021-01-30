@@ -5,9 +5,9 @@ mods:
    Community Bundle Item Tooltip
 
 latest commit:
-   commit 18b008c46b9e9c0679a03e3feea97f4aeb56777d
+   commit 91d0695a099798a120144949599751f80de9e5b1
    Author: Musbah Sinno <musbahsinno@hotmail.com>
-   Date:   Fri Jan 1 20:43:06 2021 -0500
+   Date:   Sat Jan 2 00:16:50 2021 -0500
    
-       Added new languages
+       Added better language support + remix bundle fix
    

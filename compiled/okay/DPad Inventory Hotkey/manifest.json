@@ -1,0 +1,10 @@
+﻿{
+  "Name": "DPadInventoryHotkey",
+  "Author": "joljyo",
+  "Version": "1.0.0",
+  "Description": "Assign InventoryHotkey to DPad",
+  "UniqueID": "joljyo.DPadInventoryHotkey",
+  "EntryDll": "DPadInventoryHotkey.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:7507"]
+}

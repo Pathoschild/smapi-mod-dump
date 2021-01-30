@@ -29,7 +29,6 @@ namespace UndergroundSecrets
         private static IMonitor monitor;
         private static ModConfig config;
 
-
         public static void Initialize(IModHelper _helper, IMonitor _monitor, ModConfig _config)
         {
             helper = _helper;
@@ -117,12 +116,21 @@ namespace UndergroundSecrets
             monitor.Log($"solved, dropping chest!");
             shaft.playSound("yoba");
 
-            if (config.OverrideTreasureRooms && (helper.Reflection.GetField<NetBool>(shaft, "netIsTreasureRoom").GetValue().Value || (shaft.mineLevel < 121 && shaft.mineLevel % 20 == 0) || shaft.mineLevel == 10 || shaft.mineLevel == 50 || shaft.mineLevel == 70 || shaft.mineLevel == 90 || shaft.mineLevel == 110))
+            if (config.OverrideTreasureRooms && ((shaft.mineLevel < 121 && shaft.mineLevel % 20 == 0) || shaft.mineLevel == 10 || shaft.mineLevel == 50 || shaft.mineLevel == 70 || shaft.mineLevel == 90 || shaft.mineLevel == 110))
             {
                 addLevelChests(shaft);
                 return;
             }
-            shaft.overlayObjects[spot] = new Chest(0, new List<Item>() { MineShaft.getTreasureRoomItem() }, spot, false, 0);
+            if (ModEntry.treasureChestsExpandedApi == null)
+            {
+                shaft.overlayObjects[spot] = new Chest(0, new List<Item>() { MineShaft.getTreasureRoomItem() }, spot, false, 0);
+            }
+            else
+            {
+                monitor.Log($"dropping expanded chest!");
+
+                shaft.overlayObjects[spot] = ModEntry.treasureChestsExpandedApi.MakeChest(shaft.mineLevel, spot);
+            }
         }
 
         private static void addLevelChests(MineShaft shaft)
@@ -133,7 +141,6 @@ namespace UndergroundSecrets
             Color tint = Color.White;
             if (shaft.mineLevel % 20 == 0 && shaft.mineLevel % 40 != 0)
                 chestSpot.Y += 4f;
-
             int mineLevel = shaft.mineLevel;
             if (mineLevel == 10)
                 chestItem.Add(new Boots(506));
@@ -169,7 +176,9 @@ namespace UndergroundSecrets
                 tint = Color.Pink;
             }
             else if (helper.Reflection.GetField<NetBool>(shaft, "netIsTreasureRoom").GetValue().Value)
+            {
                 chestItem.Add(MineShaft.getTreasureRoomItem());
+            }
             if (chestItem.Count > 0 && !Game1.player.chestConsumedMineLevels.ContainsKey(shaft.mineLevel))
             {
                 shaft.overlayObjects[chestSpot] = new Chest(0, chestItem, chestSpot, false, 0)

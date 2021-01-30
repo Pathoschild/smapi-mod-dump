@@ -69,6 +69,9 @@ namespace SpriteMaster.Extensions {
 				case Vector2B v:
 					stream.Write(v.Packed);
 					break;
+				case Compression.Algorithm v:
+					stream.Write((int)v);
+					break;
 				case Resample.TextureFormat v:
 					stream.Write((int)(TeximpNet.Compression.CompressionFormat)v);
 					break;
@@ -97,8 +100,9 @@ namespace SpriteMaster.Extensions {
 				var _ when type == typeof(decimal) => (stream, obj) => stream.Write((decimal)obj),
 				var _ when type == typeof(Vector2I) => (stream, obj) => stream.Write(((Vector2I)obj).Packed),
 				var _ when type == typeof(Vector2B) => (stream, obj) => stream.Write(((Vector2B)obj).Packed),
+				var _ when type == typeof(Compression.Algorithm) => (stream, obj) => stream.Write((int)(Compression.Algorithm)obj),
 				var _ when type == typeof(Resample.TextureFormat) || type == typeof(Resample.TextureFormat?) =>
-					(stream, obj) => stream.Write((int)(TeximpNet.Compression.CompressionFormat)obj),
+					(stream, obj) => stream.Write((int)(TeximpNet.Compression.CompressionFormat)(Resample.TextureFormat)obj),
 				_ => throw new ArgumentException($"Type {type.FullName} cannot be serialized by BinaryReader")
 			};
 		}
@@ -127,6 +131,7 @@ namespace SpriteMaster.Extensions {
 				var _ when type == typeof(decimal) => (stream) => stream.ReadDecimal(),
 				var _ when type == typeof(Vector2I) => (stream) => new Vector2I(stream.ReadUInt64()),
 				var _ when type == typeof(Vector2B) => (stream) => new Vector2B(stream.ReadByte()),
+				var _ when type == typeof(Compression.Algorithm) => (stream) => (Compression.Algorithm)stream.ReadInt32(),
 				var _ when type == typeof(Resample.TextureFormat) || type == typeof(Resample.TextureFormat?) =>
 					(stream) => Resample.TextureFormat.Get((TeximpNet.Compression.CompressionFormat)stream.ReadInt32()),
 				_ => throw new ArgumentException($"Type {type.FullName} cannot be serialized by BinaryReader"),
@@ -155,6 +160,7 @@ namespace SpriteMaster.Extensions {
 				var _ when type == typeof(decimal) => sizeof(decimal),
 				var _ when type == typeof(Vector2I) => sizeof(ulong),
 				var _ when type == typeof(Vector2B) => sizeof(byte),
+				var _ when type == typeof(Compression.Algorithm) => sizeof(int),
 				var _ when type == typeof(Resample.TextureFormat) || type == typeof(Resample.TextureFormat?) => sizeof(int),
 				_ => throw new ArgumentException($"Type {type.FullName} cannot be serialized by BinaryReader"),
 			};

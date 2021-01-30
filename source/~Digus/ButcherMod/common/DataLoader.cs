@@ -369,7 +369,7 @@ namespace AnimalHusbandryMod.common
                         }
                         catch (Exception)
                         {
-                            AnimalHusbandryModEntry.monitor.Log($"Item to use in the syringe for {farmAnimal.Key} was not indentified.", LogLevel.Warn);
+                            AnimalHusbandryModEntry.monitor.Log($"Item to use in the syringe for {farmAnimal.Key} was not identified.", LogLevel.Warn);
                         }
                     }
                 }
@@ -394,8 +394,7 @@ namespace AnimalHusbandryMod.common
                     {
                         if (File.Exists(Path.Combine(contentPack.DirectoryPath, "customAnimals.json")))
                         {
-                            AnimalHusbandryModEntry.monitor.Log(
-                                $"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+                            AnimalHusbandryModEntry.monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
                             List<CustomAnimalItem> customAnimalItems = contentPack.ReadJsonFile<List<CustomAnimalItem>>("customAnimals.json");
                             foreach (CustomAnimalItem customAnimalItem in customAnimalItems)
                             {

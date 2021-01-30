@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7507
+IDs: joljyo.DPadInventoryHotkey
+update keys: Nexus:7507

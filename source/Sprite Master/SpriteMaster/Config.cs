@@ -28,6 +28,17 @@ namespace SpriteMaster {
 		}
 
 		internal sealed class ConfigIgnoreAttribute : Attribute { }
+		internal sealed class ConfigRetainAttribute : Attribute { }
+
+		internal sealed class ConfigOldNameAttribute : Attribute
+		{
+			public readonly string Name;
+
+			public ConfigOldNameAttribute(string name)
+			{
+				Name = name;
+			}
+		}
 
 		internal static readonly string ModuleName = typeof(Config).Namespace;
 
@@ -41,7 +52,7 @@ namespace SpriteMaster {
 
 		internal static string ConfigVersion = "";
 		[ConfigIgnore]
-		internal static string ClearConfigBefore = "0.12.0";
+		internal static string ClearConfigBefore = "0.12.0.0";
 
 		internal static bool Enabled = true;
 		internal static SButton ToggleButton = SButton.F11;
@@ -53,14 +64,10 @@ namespace SpriteMaster {
 		internal const int AbsoluteMaxTextureDimension = 16384;
 		internal const int BaseMaxTextureDimension = 4096;
 		internal static int PreferredMaxTextureDimension = 8192;
-		internal static int RequiredFreeMemory = 64;
-		internal static double RequiredFreeMemoryHysterisis = 1.5;
 		internal const bool ClampInvalidBounds = true;
 		internal const bool IgnoreUnknownTextures = false;
-		internal static bool GarbageCollectAccountUnownedTextures = true;
-		internal static bool GarbageCollectAccountOwnedTexture = true;
-		internal static bool LeakPreventTexture = false;
-		internal static bool LeakPreventAll = false;
+
+		[ConfigRetain]
 		internal static bool ShowIntroMessage = true;
 
 		internal enum Configuration {
@@ -68,21 +75,34 @@ namespace SpriteMaster {
 			Release
 		}
 
+		internal const Configuration BuildConfiguration =
 #if DEBUG
-		internal const Configuration BuildConfiguration = Configuration.Debug;
+			Configuration.Debug;
 #else
-		internal const Configuration BuildConfiguration = Configuration.Release;
+			Configuration.Release;
 #endif
 
 		internal const bool IsDebug = BuildConfiguration == Configuration.Debug;
 		internal const bool IsRelease = BuildConfiguration == Configuration.Release;
 
-		internal static readonly string LocalRoot = Path.Combine(
+		[ConfigIgnore]
+		internal static readonly string LocalRootDefault = Path.Combine(
 			Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
 			"StardewValley",
 			"Mods",
 			ModuleName
 		);
+		internal static string LocalRoot => (DataStoreOverride.Length == 0) ? LocalRootDefault : DataStoreOverride;
+		internal static string DataStoreOverride = "";
+
+		internal static class Garbage {
+			internal static bool CollectAccountUnownedTextures = true;
+			internal static bool CollectAccountOwnedTextures = true;
+			internal static bool LeakPreventTexture = false;
+			internal static bool LeakPreventAll = false;
+			internal static int RequiredFreeMemory = 64;
+			internal static double RequiredFreeMemoryHysterisis = 1.5;
+		}
 
 		internal static class Debug {
 			internal static class Logging {
@@ -115,7 +135,7 @@ namespace SpriteMaster {
 			internal static uint MaxScale = 6;
 			internal static int MinimumTextureDimensions = 4;
 			internal static bool EnableWrappedAddressing = true;
-			internal static readonly List<SurfaceFormat> SupportedFormats = new List<SurfaceFormat>() {
+			internal static readonly List<SurfaceFormat> SupportedFormats = new() {
 				SurfaceFormat.Color,
 				SurfaceFormat.Dxt5,
 				SurfaceFormat.Dxt3,
@@ -131,18 +151,20 @@ namespace SpriteMaster {
 				internal static CompressionQuality Quality = CompressionQuality.Highest;
 				internal static int HardAlphaDeviationThreshold = 7;
 			}
-			internal static List<string> Blacklist = new List<string>() {
-				"LooseSprites/Lighting/"
+			internal static List<string> Blacklist = new() {
+				"LooseSprites/Lighting/",
+				"LooseSprites/Cloudy_Ocean_BG",
+				"LooseSprites/Cloudy_Ocean_BG_Night"
 			};
 			internal static class Padding {
 				internal static bool Enabled = DevEnabled && true;
 				private const bool DevEnabled = true;
 				internal static int MinimumSizeTexels = 4;
 				internal static bool IgnoreUnknown = false;
-				internal static List<string> StrictList = new List<string>() {
+				internal static List<string> StrictList = new() {
 					"LooseSprites/Cursors"
 				};
-				internal static List<string> Whitelist = new List<string>() {
+				internal static List<string> Whitelist = new() {
 					"LooseSprites/font_bold",
 					"Characters/Farmer/hairstyles",
 					"Characters/Farmer/pants",
@@ -171,7 +193,9 @@ namespace SpriteMaster {
 					"TerrainFeatures/tree2_winter",
 					"TerrainFeatures/tree3_winter",
 				};
-				internal static List<string> Blacklist = new List<string>() {
+				internal static List<string> Blacklist = new() {
+				"LooseSprites/Cloudy_Ocean_BG",
+				"LooseSprites/Cloudy_Ocean_BG_Night"
 				};
 			}
 		}
@@ -208,6 +232,8 @@ namespace SpriteMaster {
 			internal const int LockSleepMS = 32;
 			internal static Compression.Algorithm Compress = Compression.BestAlgorithm;
 			internal static bool ForceCompress = false;
+			internal static bool PreferSystemCompression = false;
+			internal const bool Profile = false;
 		}
 	}
 }

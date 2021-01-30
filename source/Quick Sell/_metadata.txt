@@ -1,0 +1,13 @@
+url:
+   https://github.com/AlejandroAkbal/Stardew-Valley-Quick-Sell-Mod.git
+
+mods:
+   Quick Sell
+
+latest commit:
+   commit 57e2ff6d0e928fcecead54e4d306e45a653e1a1d
+   Author: Alejandro Akbal <37181533+VoidlessSeven7@users.noreply.github.com>
+   Date:   Fri Jan 29 10:32:16 2021 +0100
+   
+       style: add `this`
+   

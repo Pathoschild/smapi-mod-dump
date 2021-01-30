@@ -1,0 +1,21 @@
+{
+  "Name": "Ring of Deep Roots",
+  "Description": "Increases your foraging skill.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 1000,
+  "Recipe": {
+	"ResultCount": 1,
+	"Ingredients": [
+		{
+			"Object": 334,
+			"Count": 10
+		},
+		{
+			"Object": 330,
+			"Count": 5
+		}
+	],
+	"CanPurchase": false
+  },
+}

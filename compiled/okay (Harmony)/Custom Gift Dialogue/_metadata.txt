@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7304
+IDs: PurrplingCat.CustomGiftDialogue
+update keys: Nexus:7304, GitHub:purrplingcat/StardewMods

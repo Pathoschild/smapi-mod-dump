@@ -37,6 +37,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": null
@@ -97,6 +98,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": null
@@ -136,6 +138,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": null
@@ -284,6 +287,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": null
@@ -357,6 +361,7 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
+          "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": null

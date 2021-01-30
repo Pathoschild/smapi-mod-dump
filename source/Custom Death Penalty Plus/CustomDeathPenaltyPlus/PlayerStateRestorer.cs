@@ -11,7 +11,7 @@
 using StardewValley;
 using System;
 using StardewValley.Locations;
-using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace CustomDeathPenaltyPlus
 {
@@ -35,7 +35,11 @@ namespace CustomDeathPenaltyPlus
 
         public static PlayerDataTracker statedeath;
 
+        internal static readonly PerScreen<PlayerDataTracker> statedeathps = new PerScreen<PlayerDataTracker>(createNewState: () => statedeath);
+
         public static PlayerDataTracker statepassout;
+
+        internal static readonly PerScreen<PlayerDataTracker> statepassoutps = new PerScreen<PlayerDataTracker>(createNewState: () => statepassout);
 
         private static ModConfig config;
 
@@ -48,22 +52,22 @@ namespace CustomDeathPenaltyPlus
         // Saves player's current money, and amount to be lost, killed
         public static void SaveStateDeath()
         {
-            statedeath = new PlayerDataTracker(Game1.player.Money, Math.Min(config.DeathPenalty.MoneyLossCap, Game1.player.Money * (1 - config.DeathPenalty.MoneytoRestorePercentage)));
+            statedeathps.Value = new PlayerDataTracker(Game1.player.Money, Math.Min(config.DeathPenalty.MoneyLossCap, Game1.player.Money * (1 - config.DeathPenalty.MoneytoRestorePercentage)));
         }
 
         // Saves player's current money, and amount to be lost, passed out
         public static void SaveStatePassout()
         {
-            statepassout = new PlayerDataTracker(Game1.player.Money, Math.Min(config.PassOutPenalty.MoneyLossCap, Game1.player.Money * (1 - config.PassOutPenalty.MoneytoRestorePercentage)));
+            statepassoutps.Value = new PlayerDataTracker(Game1.player.Money, Math.Min(config.PassOutPenalty.MoneyLossCap, Game1.player.Money * (1 - config.PassOutPenalty.MoneytoRestorePercentage)));
         }
 
         // Load Player state, killed
         public static void LoadStateDeath()
         {
             // Change money to state saved in statedeath if money is lost
-            if(Game1.player.Money != statedeath.money)
+            if(Game1.player.Money != statedeathps.Value.money || Game1.currentLocation.NameOrUniqueName == "Hospital")
             {
-                Game1.player.Money = statedeath.money - (int)Math.Round(statedeath.moneylost);
+                Game1.player.Money = statedeathps.Value.money - (int)Math.Round(statedeathps.Value.moneylost);
             }
 
             // Restore stamina to amount as specified by config values
@@ -110,7 +114,7 @@ namespace CustomDeathPenaltyPlus
         public static void LoadStatePassout()
         {
             // Change money to state saved in statepassout
-            Game1.player.Money = statepassout.money - (int)Math.Round(statepassout.moneylost);
+            Game1.player.Money = statepassoutps.Value.money - (int)Math.Round(statepassoutps.Value.moneylost);
         }
     }
 }

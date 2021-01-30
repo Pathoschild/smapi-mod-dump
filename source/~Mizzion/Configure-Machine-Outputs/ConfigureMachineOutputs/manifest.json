@@ -11,10 +11,10 @@
 {
 	"Name": "Configure Machine Outputs",
 	"Author": "Mizzion",
-	"Version": "2.0.6",
+	"Version": "2.0.8",
 	"Description": "Allows the player to change the Input/Output amounts an most vanilla machines.",
 	"UniqueID": "mizzion.configuremachineOutputs",
 	"EntryDll": "ConfigureMachineOutputs.dll",
-	"MinimumApiVersion": "2.11",
+	"MinimumApiVersion": "3.8.3",
   "UpdateKeys": [ "Nexus:3490", "ModDrop:661367" ]
 }

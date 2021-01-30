@@ -11,7 +11,7 @@
 {
   "Name": "Chat Commands",
   "Author": "Cat",
-  "Version": "1.14.0",
+  "Version": "1.15.2",
   "Description": "Lets you run SMAPI commands from the chat window!",
   "UniqueID": "cat.chatcommands",
   "EntryDll": "ChatCommands.dll",

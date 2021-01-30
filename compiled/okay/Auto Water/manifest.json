@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AutoWater",
+  "Author": "Pickle",
+  "Version": "1.1.5",
+  "MinimumApiVersion": "3.2.0",
+  "description": "Automatically water your plants each day so that you can focus your energy and time elsewhere. ",
+  "UniqueID": "pickle.autowater",
+  "EntryDll": "AutoWater.dll",
+  "UpdateKeys": [ "Nexus:5463" ]
+}

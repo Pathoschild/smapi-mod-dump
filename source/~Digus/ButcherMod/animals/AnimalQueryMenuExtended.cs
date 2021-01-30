@@ -28,6 +28,10 @@ namespace AnimalHusbandryMod.animals
 {
     public class AnimalQueryMenuExtended : AnimalQueryMenu
     {
+        private const int region_treatStatus = 202;
+        private const int region_animalConstestIndicator = 203;
+        private const int region_meatButton = 204;
+
         private FarmAnimal _farmAnimal;
         private String _parentName;
         private TextBox _textBox;
@@ -47,21 +51,34 @@ namespace AnimalHusbandryMod.animals
         public AnimalQueryMenuExtended(FarmAnimal farmAnimal) : base(farmAnimal)
         {
             _farmAnimal = farmAnimal;
-            if (Context.IsMainPlayer && !DataLoader.ModConfig.DisablePregnancy)
+            if (!DataLoader.ModConfig.DisablePregnancy)
             {
-                if (PregnancyController.IsAnimalPregnant(this._farmAnimal.myID.Value))
+                if (PregnancyController.IsAnimalPregnant(this._farmAnimal))
                 {
-                    this.allowReproductionButton = null;
                     pregnantStatus = new ClickableTextureComponent(
                         new Microsoft.Xna.Framework.Rectangle(
                             this.xPositionOnScreen + AnimalQueryMenu.width + Game1.pixelZoom * 3,
                             this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 2 - IClickableMenu.borderWidth + Game1.pixelZoom,
                             Game1.pixelZoom * 11, Game1.pixelZoom * 11), DataLoader.LooseSprites,
-                        new Microsoft.Xna.Framework.Rectangle(34, 29, 11, 11), 4f, false);
+                        new Microsoft.Xna.Framework.Rectangle(34, 29, 11, 11), 4f, false)
+                    {
+                        myID = region_allowReproductionButton,
+                        downNeighborID = region_okButton,
+                        upNeighborID = region_sellButton,
+                        rightNeighborID = region_treatStatus
+                    };
+                    this.okButton.upNeighborID = region_allowReproductionButton;
+                    this.sellButton.downNeighborID = region_allowReproductionButton;
+                    if (Game1.options.SnappyMenus)
+                    {
+                        this.allClickableComponents.Remove(this.allowReproductionButton);
+                        this.allClickableComponents.Add(pregnantStatus);
+                    }
+                    this.allowReproductionButton = null;
                 }
             }
 
-            if (Context.IsMainPlayer && !DataLoader.ModConfig.DisableTreats && TreatsController.CanReceiveTreat(farmAnimal))
+            if (!DataLoader.ModConfig.DisableTreats && TreatsController.CanReceiveTreat(farmAnimal))
             {
                 if (TreatsController.IsReadyForTreat(farmAnimal))
                 {
@@ -70,7 +87,11 @@ namespace AnimalHusbandryMod.animals
                             this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4,
                             this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 2 - IClickableMenu.borderWidth,
                             Game1.tileSize, Game1.tileSize), DataLoader.ToolsSprites,
-                        new Microsoft.Xna.Framework.Rectangle(240, 0, 16, 16), 4f, false);
+                        new Microsoft.Xna.Framework.Rectangle(240, 0, 16, 16), 4f, false)
+                    {
+                        myID = region_treatStatus,
+                        leftNeighborID = region_allowReproductionButton
+                    };
                 }
                 else
                 {
@@ -79,28 +100,102 @@ namespace AnimalHusbandryMod.animals
                             this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4,
                             this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 2 - IClickableMenu.borderWidth,
                             Game1.tileSize, Game1.tileSize), DataLoader.LooseSprites,
-                        new Microsoft.Xna.Framework.Rectangle(16, 28, 16, 16), 4f, false);
+                        new Microsoft.Xna.Framework.Rectangle(16, 28, 16, 16), 4f, false)
+                    {
+                        myID = region_treatStatus,
+                        leftNeighborID = region_allowReproductionButton
+                    };
+                }
+                if (this.allowReproductionButton != null)
+                {
+                    this.allowReproductionButton.rightNeighborID = region_treatStatus;
+                }
+                if (Game1.options.SnappyMenus)
+                {
+                    this.allClickableComponents.Add(treatStatus);
                 }
             }
-            
-            if (AnimalContestController.IsParticipant(farmAnimal))
+
+            if (AnimalContestController.HasWon(farmAnimal))
             {
-                if (AnimalContestController.HasWon(farmAnimal))
+                animalContestIndicator = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4, this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 4 - IClickableMenu.borderWidth, Game1.tileSize, Game1.tileSize), DataLoader.LooseSprites, new Microsoft.Xna.Framework.Rectangle(AnimalContestController.HasFertilityBonus(this._farmAnimal) ? 48 : 64, 29, 16, 15), 4f, false)
                 {
-                    animalContestIndicator = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4, this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 4 - IClickableMenu.borderWidth, Game1.tileSize, Game1.tileSize), DataLoader.LooseSprites, new Microsoft.Xna.Framework.Rectangle(AnimalContestController.HasFertilityBonus(this._farmAnimal) ? 48 : 64, 29, 16, 15), 4f, false);
-                }
-                else
+                    myID = region_animalConstestIndicator,
+                    leftNeighborID = region_moveHomeButton
+                };
+                this.moveHomeButton.rightNeighborID = region_animalConstestIndicator;
+                if (Game1.options.SnappyMenus)
                 {
-                    animalContestIndicator = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4, this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 4 - IClickableMenu.borderWidth, Game1.tileSize, Game1.tileSize), DataLoader.ToolsSprites, new Microsoft.Xna.Framework.Rectangle(256, 0, 16, 16), 4f, false);
+                    this.allClickableComponents.Add(animalContestIndicator);
                 }
-                
+            }
+            else if (farmAnimal.GetDayParticipatedContest() != null)
+            {
+                animalContestIndicator = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4, this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 4 - IClickableMenu.borderWidth, Game1.tileSize, Game1.tileSize), DataLoader.ToolsSprites, new Microsoft.Xna.Framework.Rectangle(256, 0, 16, 16), 4f, false)
+                {
+                    myID = region_animalConstestIndicator,
+                    leftNeighborID = region_moveHomeButton
+                };
+                this.moveHomeButton.rightNeighborID = region_animalConstestIndicator;
+                if (Game1.options.SnappyMenus)
+                {
+                    this.allClickableComponents.Add(animalContestIndicator);
+                }
             }
 
             if (!DataLoader.ModConfig.DisableMeat && MeatController.CanGetMeatFrom(farmAnimal))
             {
                 if (!this._farmAnimal.isBaby())
                 {
-                    meatButton = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4, this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 3 - IClickableMenu.borderWidth, Game1.tileSize, Game1.tileSize), DataLoader.LooseSprites, new Microsoft.Xna.Framework.Rectangle(0, 28, 16, 16), 4f, false);
+                    meatButton = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4, this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 3 - IClickableMenu.borderWidth, Game1.tileSize, Game1.tileSize), DataLoader.LooseSprites, new Microsoft.Xna.Framework.Rectangle(0, 28, 16, 16), 4f, false)
+                    {
+                        myID = region_meatButton,
+                        leftNeighborID = region_sellButton
+                    };
+                }
+                this.sellButton.rightNeighborID = region_meatButton;
+                if (Game1.options.SnappyMenus)
+                {
+                    this.allClickableComponents.Add(meatButton);
+                }
+            }
+
+            if (this.animalContestIndicator != null)
+            {
+                this.moveHomeButton.rightNeighborID = region_animalConstestIndicator;
+                if (this.meatButton != null)
+                {
+                    this.meatButton.upNeighborID = region_animalConstestIndicator;
+                    this.animalContestIndicator.downNeighborID = region_meatButton;
+                }
+                else if (this.treatStatus != null)
+                {
+                    this.treatStatus.upNeighborID = region_animalConstestIndicator;
+                    this.animalContestIndicator.downNeighborID = region_treatStatus;
+                }
+            }
+
+            if (this.meatButton != null)
+            {
+                this.sellButton.rightNeighborID = region_meatButton;
+                if (this.treatStatus != null)
+                {
+                    this.treatStatus.upNeighborID = region_meatButton;
+                    this.meatButton.downNeighborID = region_treatStatus;
+                }
+            }
+
+            if (this.treatStatus != null)
+            {
+                if (this.pregnantStatus == null && this.allowReproductionButton == null)
+                {
+                    this.treatStatus.downNeighborID = region_okButton;
+                    if (this.meatButton == null && this.animalContestIndicator == null)
+                    {
+                        this.treatStatus.upNeighborID = region_sellButton;
+                        this.okButton.upNeighborID = region_treatStatus;
+                        this.sellButton.downNeighborID = region_treatStatus;
+                    }
                 }
             }
 
@@ -125,8 +220,8 @@ namespace AnimalHusbandryMod.animals
                     && buildingAt.buildingType.Value.Contains(this._farmAnimal.buildingTypeILiveIn.Value)
                     && ! ((AnimalHouse) buildingAt.indoors.Value).isFull()
                     && ! buildingAt.Equals((object)this._farmAnimal.home)
-                    && PregnancyController.IsAnimalPregnant(this._farmAnimal.myID.Value)
-                    && PregnancyController.CheckBuildingLimit(((AnimalHouse) buildingAt.indoors.Value))
+                    && PregnancyController.IsAnimalPregnant(this._farmAnimal)
+                    && PregnancyController.CheckBuildingLimit(this._farmAnimal)
                 )
                 {
                     if (this.okButton != null && this.okButton.containsPoint(x, y))
@@ -199,7 +294,7 @@ namespace AnimalHusbandryMod.animals
                 {
                     this.animalContestIndicator = null;
                     AnimalContestController.RemoveAnimalParticipant(this._farmAnimal);
-                    Game1.player.addItemByMenuIfNecessary(new ParticipantRibbon());
+                    Game1.player.addItemByMenuIfNecessary(ToolsFactory.GetParticipantRibbon());
                 }
             }
             else
@@ -207,7 +302,7 @@ namespace AnimalHusbandryMod.animals
                 if(this.yesButton.containsPoint(x, y) && AnimalContestController.CanChangeParticipant(this._farmAnimal))
                 {
                     AnimalContestController.RemoveAnimalParticipant(this._farmAnimal);
-                    MeatController.ThrowItem(new List<Item>(new Item[]{ new ParticipantRibbon() }), this._farmAnimal);
+                    MeatController.ThrowItem(new List<Item>(new Item[]{ ToolsFactory.GetParticipantRibbon() }), this._farmAnimal);
                 }
             }
 
@@ -222,10 +317,10 @@ namespace AnimalHusbandryMod.animals
                 Vector2 tile = new Vector2((float)((x + Game1.viewport.X) / Game1.tileSize), (float)((y + Game1.viewport.Y) / Game1.tileSize));
                 Farm locationFromName = Game1.getLocationFromName("Farm") as Farm;
                 Building buildingAt = locationFromName.getBuildingAt(tile);
-                if (buildingAt != null)
-                    if( buildingAt.color.Equals(Color.LightGreen * 0.8f)
-                    && PregnancyController.IsAnimalPregnant(this._farmAnimal.myID.Value)
-                    && PregnancyController.CheckBuildingLimit((buildingAt.indoors.Value as AnimalHouse)))
+                if (buildingAt != null 
+                    && buildingAt.color.Equals(Color.LightGreen * 0.8f)
+                    && PregnancyController.IsAnimalPregnant(this._farmAnimal)
+                    && PregnancyController.CheckBuildingLimit(this._farmAnimal))
                 {
                     buildingAt.color.Value = Color.Red * 0.8f;
                 }
@@ -246,16 +341,19 @@ namespace AnimalHusbandryMod.animals
                 {
                     if (this.pregnantStatus.containsPoint(x, y))
                     {
-                        int daysUtilBirth = PregnancyController.GetPregnancyItem(this._farmAnimal.myID.Value).DaysUntilBirth;
-                        if (daysUtilBirth > 1)
+                        int? daysUntilBirth = this._farmAnimal.GetDaysUntilBirth();
+                        if (daysUntilBirth.HasValue)
                         {
-                            _hoverText.SetValue(DataLoader.i18n.Get("Menu.AnimalQueryMenu.DaysUntilBirth", new { numberOfDays = daysUtilBirth }));
+                            _hoverText.SetValue(
+                                daysUntilBirth.Value > 1
+                                ? DataLoader.i18n.Get("Menu.AnimalQueryMenu.DaysUntilBirth", new {numberOfDays = daysUntilBirth.Value})
+                                : DataLoader.i18n.Get("Menu.AnimalQueryMenu.ReadyForBirth")
+                            );
                         }
                         else
                         {
-                            _hoverText.SetValue(DataLoader.i18n.Get("Menu.AnimalQueryMenu.ReadyForBirth"));
+                            this.pregnantStatus = null;
                         }
-                        
                     }
                 }
                 if (this.treatStatus != null)
@@ -292,8 +390,11 @@ namespace AnimalHusbandryMod.animals
                             string messageKey = AnimalContestController.HasWon(this._farmAnimal) 
                                 ? "Menu.AnimalQueryMenu.Winner" 
                                 : "Menu.AnimalQueryMenu.ContestParticipant";
-                            SDate date = AnimalContestController.GetParticipantDate(this._farmAnimal);
-                            _hoverText.SetValue(DataLoader.i18n.Get(messageKey, new { contestDate = Utility.getDateStringFor(date.Day, Utility.getSeasonNumber(date.Season), date.Year) }));
+                            SDate date = this._farmAnimal.GetDayParticipatedContest();
+                            if (date != null)
+                            {
+                                _hoverText.SetValue(DataLoader.i18n.Get(messageKey, new { contestDate = Utility.getDateStringFor(date.Day, Utility.getSeasonNumber(date.Season), date.Year) }));
+                            }
                         }
                     }
                     else

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7644
+IDs: MindMeltMax.ChestDisplays
+update keys: Nexus:7644

@@ -16,6 +16,7 @@ namespace BNC.Twitch
 {
     class TwitchBug : Bug, ITwitchMonster
     {
+        public TwitchBug() { }
         public TwitchBug(Vector2 position, int minelevel) : base(position, minelevel)  { }
 
         [XmlIgnore]
@@ -29,6 +30,8 @@ namespace BNC.Twitch
         public void setTwitchName(string username)
         {
             TwitchName = username;
+            this.Name = username;
+            this.displayName = username;
         }
     }
 }

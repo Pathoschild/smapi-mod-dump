@@ -1,0 +1,25 @@
+{
+  //Letters
+  "mail.Wizard1": "@,^^I Junimo sono soddisfatti dei tuoi contributi alla Valle.^Hanno avuto un'idea per migliorare la tua serra, ho tradotto queste idee in modo che Robin possa utilizzarle.^Parla con lei se vuoi questo miglioramento.^^   -M. Rasmodius, Mago",
+  "mail.Wizard1b": "@,^^Nonostante tu li abbia tolti dalla loro casa nel Centro della Comunità, i Junimo sono soddisfatti dei tuoi contributi alla Valle.^Hanno avuto un'idea per migliorare la tua serra, ho tradotto queste idee in modo che Robin possa utilizzarle.^Parla con lei se vuoi questo miglioramento.^^   -M. Rasmodius, Mago",
+  "mail.Wizard2": "@,^^I Junimo continuano ad essere soddisfatti della tua fattoria.^Hanno avuto un'idea per migliorare la tua serra, ho tradotto queste idee in modo che Robin possa utilizzarle.^Parla con lei se vuoi questo miglioramento.^^   -M. Rasmodius, Mago",
+  "mail.Wizard3": "@,^^I Junimo continuano ad essere soddisfatti della tua fattoria.^Hanno avuto un'idea per migliorare la tua serra, ho tradotto queste idee in modo che Robin possa utilizzarle.^Parla con lei se vuoi questo miglioramento.^^   -M. Rasmodius, Mago",
+
+  //Shop Descriptions
+  "CarpenterShop.BluePrintName": "Sistema di Miglioramento degli Irrigatori",
+  "CarpenterShop.FirstUpgradeDescription": "Irrigatori automatizzati sul soffitto della tua serra, si avviano ogni mattina",
+  "CarpenterShop.SecondUpgradeDescription": "Irrigatori automatizzati sul soffitto della tua serra, si avviano ogni mattina e sera",
+  "CarpenterShop.FinalUpgradeDescription": "Irrigatori sotterranei nascosti in tutta la fattoria, si avviano ogni mattina e sera",
+
+  //Menu Items
+  //Currently Unused, may never be used
+  //If used will be expanded
+
+  "menu.diff": "Difficoltà",
+  "menu.diff-Easy": "Facile",
+  "menu.diff-Medium": "Media",
+  "menu.diff-Hard": "Difficile",
+  "menu.diff-Custom": "Personalizzata"
+
+
+}

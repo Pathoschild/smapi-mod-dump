@@ -5,9 +5,9 @@ mods:
    Content Patcher Animations
 
 latest commit:
-   commit b86229c1522704148bb107524d3acb533d96ac63
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Aug 29 21:54:39 2020 -0400
+   commit b6514b4c1d29ff60bda8dc7e38ef50e5a535b543
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Thu Jan 14 18:06:27 2021 -0500
    
-       Bugfix for non-active patches, for next version. (Manifest update is from last release).
+       Untested reload command
    

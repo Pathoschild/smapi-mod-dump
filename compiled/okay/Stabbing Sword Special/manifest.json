@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Stabbing Sword Special",
+  "Author": "Peasly Wellbott",
+  "Version": "1.0.0",
+  "Description": "Replaces the special move of Swords with a stabbing flurry like a Dagger.",
+  "UniqueID": "Wellbott.StabbingSwordSpecial",
+  "EntryDll": "StabbingSwordSpecial.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ ]
+}

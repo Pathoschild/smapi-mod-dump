@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/6830
+IDs: blueberry.LoveOfCooking
+update keys: Nexus:6830, GitHub:b-b-blueberry/CooksAssistant

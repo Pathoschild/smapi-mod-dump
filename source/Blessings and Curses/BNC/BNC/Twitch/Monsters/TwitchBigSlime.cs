@@ -18,6 +18,9 @@ namespace BNC
 {
     class TwitchBigSlime : BigSlime, ITwitchMonster
     {
+
+        public TwitchBigSlime() { }
+
         public TwitchBigSlime(Vector2 position) : base(position, 0) {
             this.Health = health / 2;
             this.MaxHealth = maxHealth / 2;
@@ -44,6 +47,8 @@ namespace BNC
         public void setTwitchName(string username)
         {
             TwitchName = username;
+            this.Name = username;
+            this.displayName = username;
         }
     }
 }

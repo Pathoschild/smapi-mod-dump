@@ -1,5 +1,6 @@
 {
   "EnableMod": true,
+  "EnableApp": true,
   "QuoteColor": "143, 188, 139, 255",
   "QuoteCharPerLine": 50,
   "QuoteDurationPerLineMult": 1.0,

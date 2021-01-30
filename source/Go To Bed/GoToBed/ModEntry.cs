@@ -70,15 +70,22 @@ namespace GoToBed {
             if (whichAnswer.Equals("Yes")) {
                 this.Monitor.Log($"Farmer {Game1.player.Name} goes to bed", LogLevel.Debug);
 
-                FarmHouse farmHouse = Game1.player.currentLocation as FarmHouse;
+                // Only move farmer under the blanket if we are in farm house because
+                // the appropriate methods are part of class FarmHouse .
+                // Note that iterating over furniture would be possible but can't be done
+                // in a backward compatible way (NetCollection requires recompilation in 1.5).
+                FarmHouse farmHouse = null;
+                if (Game1.player.currentLocation is FarmHouse) {
+                    farmHouse = Game1.player.currentLocation as FarmHouse;
 
-                // Check SDV version: SMAPI 3.8 is not usable with SDV 1.4 .
-                bool isSDV14 = StardewModdingAPI.Constants.ApiVersion.IsOlderThan("3.8.0");
-                // Compatibility with SDV 1.4: Access old and new API via reflection.
-                IReflectedMethod getBed = isSDV14
-                                        ? this.Helper.Reflection.GetMethod(farmHouse, nameof(FarmHouse.getBedSpot))
-                                        : this.Helper.Reflection.GetMethod(farmHouse, "GetPlayerBedSpot");
-                Game1.player.position.Y = getBed.Invoke<Point>().Y * 64f + 24f;
+                    // Check SDV version: SMAPI 3.8 is not usable with SDV 1.4 .
+                    bool isSDV14 = StardewModdingAPI.Constants.ApiVersion.IsOlderThan("3.8.0");
+                    // Compatibility with SDV 1.4: Access old and new API via reflection.
+                    IReflectedMethod getBed = isSDV14
+                                            ? this.Helper.Reflection.GetMethod(farmHouse, nameof(FarmHouse.getBedSpot))
+                                            : this.Helper.Reflection.GetMethod(farmHouse, "GetPlayerBedSpot");
+                    Game1.player.position.Y = getBed.Invoke<Point>().Y * 64f + 24f;
+                }
 
                 // Take hat off. We could check for a hat and store it in the inventory
                 // overnight but this requires a free inventory slot and causes its own
@@ -87,8 +94,8 @@ namespace GoToBed {
                 // Simple and reliable.
                 Game1.player.changeIntoSwimsuit();
 
-                // Player is not married.
-                if (!Game1.player.isMarried() || Game1.timeOfDay > config_.SpouseGoToBedTime) {
+                // Player is not married or spouse already went to bed or current location is not farm house.
+                if (!Game1.player.isMarried() || Game1.timeOfDay > config_.SpouseGoToBedTime || farmHouse == null) {
                     FarmerSleep();
 
                     return;

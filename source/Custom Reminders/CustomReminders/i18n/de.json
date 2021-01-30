@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dem1se/CustomReminders
+**
+*************************************************/
+
+{
+  // Thanks to Tinkerbell (discord) for providing these translations
+
+  // New reminder page
+  "new-reminder.title": "Neue Erinnerung",
+  "new-reminder.reminder-message": "Erinnerungs Nachricht",
+  "new-reminder.reminder-time": "Zeitpunkt der Erinnerung",
+  "new-reminder.instruction": "Wähle die Stunde, Minute und ob AM oder PM",
+  "new-reminder.invalid-time": "Die eingegebene Zeit ist ungültig",
+
+  // Display reminder page
+  "display-reminder.title": "Erinnerungen",
+  "display-reminder.zero-reminders": "Keine Erinnerungen geplant",
+
+  // general strings
+  "date.year": "Jahr",
+  "date.season.summer": "Sommer",
+  "date.season.spring": "Frühling",
+  "date.season.fall": "Herbst",
+  "date.season.winter": "Winter"
+}

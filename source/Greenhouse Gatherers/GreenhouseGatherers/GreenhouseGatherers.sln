@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenhouseGatherers", "GreenhouseGatherers\GreenhouseGatherers.csproj", "{67067402-DAA7-4257-AF09-1A8C4C09CA9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenhouseGatherersAutomate", "GreenhouseGatherersAutomate\GreenhouseGatherersAutomate.csproj", "{B098E04E-CEA3-4821-A06F-C346252A405C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67067402-DAA7-4257-AF09-1A8C4C09CA9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67067402-DAA7-4257-AF09-1A8C4C09CA9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67067402-DAA7-4257-AF09-1A8C4C09CA9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67067402-DAA7-4257-AF09-1A8C4C09CA9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B098E04E-CEA3-4821-A06F-C346252A405C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B098E04E-CEA3-4821-A06F-C346252A405C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B098E04E-CEA3-4821-A06F-C346252A405C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B098E04E-CEA3-4821-A06F-C346252A405C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {47DF5981-17C3-4913-A227-DEE8E59F0695}
+	EndGlobalSection
+EndGlobal

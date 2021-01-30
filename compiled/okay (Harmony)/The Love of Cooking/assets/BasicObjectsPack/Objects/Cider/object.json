@@ -1,0 +1,27 @@
+{
+    // Object data
+    "Name": "blueberry.cac.cider",
+    "Description": "...",
+    "Category": "ArtisanGoods",
+    "Edibility": 22,
+    "EdibleIsDrink": true,
+    "EdibleBuffs": null,
+    "Price": 220,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+        "Love": [ "Leah", "Pam", "Willy" ],
+        "Like": [ "Demetrius", "Clint", "Gus", "Marnie", "George", "Sebastian", "Abigail", "Alex", "Caroline", "Dwarf", "Elliott", "Emily", "Evelyn", "Haley", "Harvey", "Jodi", "Kent", "Krobus", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Sandy", "Wizard" ],
+        "Neutral": null,
+        "Dislike": null,
+        "Hate": [ "Vincent", "Jas", "Penny" ]
+    }
+}

@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Wellbott/StardewValleyMods
+**
+*************************************************/
+
+{
+ "Format": "1.18",
+ "Changes": [
+       {
+			"Action": "Load",
+			"Target": "Buildings/Slime Hutch",
+			"FromFile": "assets/Slime Hutch.png"
+       },
+       {
+			"Action": "EditData",
+			"Target": "Data/Blueprints",
+			"Fields": {
+				"Slime Hutch": { 1:"7", 2:"4", 3:"3", 4:"3" }
+			}
+       }
+    ] 
+}

@@ -269,13 +269,28 @@ Here is an example of a treasure group entry looks like:
 ```
 
 ### Overview of DataFiles Folder
-Each game location/area can be configured to setup where panning spots can show up.  There is a limit on where spots can should up, so you can't just have a spot in the middle of land.  The files are used to finetune each area to limit unreachable panning spots being created.  The file is formated as a list of X and Y coordinates like:
+Each game location/area can be configured to setup where panning spots can show up.  There is a limit on where spots can should up, so you can't just have a spot in the middle of land.  The files are used to finetune each area to limit unreachable panning spots being created.  Each area can be configured to limit the number of panning spots are gathered and the start and end times the mod will create panning spots. 
+
+The ore spots is formated as a list of X and Y coordinates.
+
+The file is formated like: 
 ```
-[
-  "9, 36",
-  "9, 37"
-]
+{
+  "FileVersion": 1,
+  "AreaName": "Farm",
+  "NumberOfOreSpotsPerDay": 50,
+  "StartTime": 600,
+  "EndTime": 2600,
+  "CustomTreasure": false,
+  "OreSpots": [
+    "5, 19",
+    "5, 23",
+    ]
+}
 ```
+Notes: 
+- CustomTreasure is a placeholder for future work.
+- If the config.json maxNumberOfOrePointsGathered value is lower than what is in the area file, then it will use the config.json value.
 
 If a game location file is deleted then the next time a player goes to the that area the file will be recreated. 
 

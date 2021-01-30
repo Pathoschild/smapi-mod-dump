@@ -29,6 +29,7 @@ namespace CustomFixedDialogue
         private static string extraPrefix = "Data\\ExtraDialogue:";
         private static string charactersPrefix = "Strings\\Characters:";
 
+
         private static List<string> NPCexceptions = new List<string>()
         {
             "3954",
@@ -36,6 +37,9 @@ namespace CustomFixedDialogue
             "3981",
             "3987",
             "3969",
+            "4018",
+            "4020",
+            "4021",
         };
         private static List<string> extraExceptions = new List<string>()
         {
@@ -104,7 +108,7 @@ namespace CustomFixedDialogue
             "Morris_JojaCDConfirm",
             "Morris_BuyMovieTheater",
             "Morris_TheaterBought",
-            "Morris_NoMoreCD"
+            "Morris_NoMoreCD",
         };
         private static List<string> charactersAllowed = new List<string>()
         {
@@ -127,7 +131,6 @@ namespace CustomFixedDialogue
             "Saloon_neutralEvent_3",
             "Saloon_neutralEvent_4",
             "MovieInvite_InvitedBySomeoneElse",
-            "MovieInvite_FarmerAlreadySeen",
             "MovieInvite_AlreadySeen",
             "MovieInvite_Invited",
             "MovieInvite_Invited_Rude",
@@ -225,9 +228,25 @@ namespace CustomFixedDialogue
                 Monitor.Log($"Failed in {nameof(NPC_getHi_Postfix)}:\n{ex}", LogLevel.Error);
             }
         }
+        public static void convertToDwarvish_Prefix(ref string str)
+        {
+            try
+            {
+                FixString(Game1.getCharacterFromName("Dwarf"), ref str);
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(convertToDwarvish_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+        }
 
         public static void AddWrapperToString(string path, ref string text)
         {
+            if (text.Contains("\""))
+            {
+                Monitor.Log($"event string, not adding wrapper: {text}");
+                return;
+            }
             if (path.StartsWith(extraPrefix) && !extraExceptions.Contains(path.Substring(extraPrefix.Length)))
             {
                 string[] array = text.Split('/');
@@ -275,6 +294,7 @@ namespace CustomFixedDialogue
             {
                 string oldput = input;
                 var match = pattern1.Match(input);
+                string key = match.Groups["key"].Value;
                 Dictionary<string, string> dialogueDic = null;
                 try
                 {
@@ -283,9 +303,10 @@ namespace CustomFixedDialogue
                 catch(Exception ex)
                 {
                     Monitor.Log($"Error loading character dictionary for {speaker.Name}:\r\n{ex}");
+                    input = input.Replace($"^{suffix}{key}", "").Replace($"{prefix}{key}^", "");
+                    Monitor.Log($"reverted input: {input}");
                 }
 
-                string key = match.Groups["key"].Value;
 
                 if (dialogueDic != null && dialogueDic.ContainsKey(key))
                 {
@@ -303,7 +324,7 @@ namespace CustomFixedDialogue
                 if (input == oldput)
                 {
                     Monitor.Log($"Error editing input, aborting.", LogLevel.Error);
-                    break;
+                    return;
                 }
             }
         }

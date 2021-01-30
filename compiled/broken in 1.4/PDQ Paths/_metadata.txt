@@ -1,3 +1,0 @@
-page URL: https://stardewvalley.curseforge.com/projects/pdq-paths
-IDs: BlameJared.PDQPaths
-update keys: 

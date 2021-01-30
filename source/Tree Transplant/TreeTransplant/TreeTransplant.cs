@@ -39,8 +39,8 @@ namespace TreeTransplant
 		{
 			TreeTransplant.helper = helper;
 
-			helper.Events.GameLoop.GameLaunched += onGameLaunched;
-			helper.Events.Display.MenuChanged += onMenuChanged;
+			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+			helper.Events.Display.MenuChanged += OnMenuChanged;
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace TreeTransplant
 		/// </summary>
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
-		private void onGameLaunched(object sender, GameLaunchedEventArgs e)
+		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
 		{
 			// batch together the trees in a render texture for our menu
 			loadTreeTexture();
@@ -63,7 +63,7 @@ namespace TreeTransplant
 		/// </summary>
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
-		private void onMenuChanged(object sender, MenuChangedEventArgs e)
+		private void OnMenuChanged(object sender, MenuChangedEventArgs e)
 		{
 			// carpenter dialog in science house?
 			if (Game1.currentLocation?.Name == "ScienceHouse" && e.NewMenu is DialogueBox && Game1.currentLocation.lastQuestionKey == "carpenter" && Game1.IsMasterGame)
@@ -86,22 +86,33 @@ namespace TreeTransplant
 				return;
 
 			// create answer choices
-			var responseList = new List<Response>() { new Response("Shop", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Shop")) };
+			var options = new List<Response>() { new Response("Shop", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Shop")) };
 
 			// handle if the house can still be upgraded
 			if (Game1.IsMasterGame)
 			{
 				if (Game1.player.HouseUpgradeLevel < 3)
-					responseList.Add(new Response("Upgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_UpgradeHouse")));
-				else if ((Game1.MasterPlayer.mailReceived.Contains("ccIsComplete") || Game1.MasterPlayer.mailReceived.Contains("JojaMember") || Game1.MasterPlayer.hasCompletedCommunityCenter()) && (Game1.getLocationFromName("Town") as Town).daysUntilCommunityUpgrade.Value <= 0 && !Game1.MasterPlayer.mailReceived.Contains("pamHouseUpgrade"))
-					responseList.Add(new Response("CommunityUpgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_CommunityUpgrade")));
+					options.Add(new Response("Upgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_UpgradeHouse")));
+				else if ((Game1.MasterPlayer.mailReceived.Contains("ccIsComplete") || Game1.MasterPlayer.mailReceived.Contains("JojaMember") || Game1.MasterPlayer.hasCompletedCommunityCenter()) && (Game1.getLocationFromName("Town") as Town).daysUntilCommunityUpgrade.Value <= 0)
+				{
+					if (!Game1.MasterPlayer.mailReceived.Contains("pamHouseUpgrade") || !Game1.MasterPlayer.mailReceived.Contains("communityUpgradeShortcuts"))
+						options.Add(new Response("CommunityUpgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_CommunityUpgrade")));
+				}
 			}
-			else if (Game1.player.HouseUpgradeLevel < 2)
-				responseList.Add(new Response("Upgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_UpgradeCabin")));
+			else if (Game1.player.HouseUpgradeLevel < 3)
+				options.Add(new Response("Upgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_UpgradeCabin")));
 
-			responseList.Add(new Response("Tree", helper.Translation.Get("Carpenter_Option")));
-			responseList.Add(new Response("Construct", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Construct")));
-			responseList.Add(new Response("Leave", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Leave")));
+			if (Game1.player.HouseUpgradeLevel >= 2)
+			{
+				if (Game1.IsMasterGame)
+					options.Add(new Response("Renovate", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_RenovateHouse")));
+				else
+					options.Add(new Response("Renovate", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_RenovateCabin")));
+			}
+
+			options.Add(new Response("Tree", helper.Translation.Get("Carpenter_Option")));
+			options.Add(new Response("Construct", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Construct")));
+			options.Add(new Response("Leave", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Leave")));
 		
 			// set the custom key for our dialogue box
 			Game1.currentLocation.lastQuestionKey = "custom_carpenter";
@@ -109,7 +120,7 @@ namespace TreeTransplant
 			// create the question dialogue with our custom tag
 			science.createQuestionDialogue(
 				Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu"),
-				responseList.ToArray(),
+				options.ToArray(),
 				handleCarpenterMenuAnswer
 			);
 		}
@@ -135,6 +146,10 @@ namespace TreeTransplant
 					break;
 				case "Construct":
 					Game1.activeClickableMenu = new CarpenterMenu(false);
+					break;
+				case "Renovate":
+					Game1.player.forceCanMove();
+					HouseRenovation.ShowRenovationMenu();
 					break;
 				case "Tree":
 					Game1.activeClickableMenu = new TreeTransplantMenu();
@@ -281,9 +296,7 @@ namespace TreeTransplant
 		/// </summary>
 		private void loadFlipTexture()
 		{
-			flipTexture = Texture2D.FromStream(
-				Game1.graphics.GraphicsDevice,
-				new FileStream(Path.Combine(Helper.DirectoryPath, "assets", "flip.png"), FileMode.Open));
+			flipTexture = helper.Content.Load<Texture2D>(Path.Combine("assets", "flip.png"), ContentSource.ModFolder);
 		}
 	}
 }

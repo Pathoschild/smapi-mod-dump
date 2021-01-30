@@ -43,7 +43,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
 
         /// <summary>The machine recipes.</summary>
         /// <remarks>Derived from <see cref="Object.performObjectDropInAction"/>.</remarks>
-        public MachineRecipeData[] MachineRecipes { get; set; }
+        public MachineRecipesData[] MachineRecipes { get; set; }
 
         /// <summary>The shops that buy items from the player.</summary>
         /// <remarks>Derived from <see cref="StardewValley.Menus.ShopMenu"/> constructor.</remarks>
@@ -51,6 +51,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
 
         /// <summary>Added fish spawn rules.</summary>
         public IDictionary<int, FishSpawnData> CustomFishSpawnRules { get; set; }
+
+        /// <summary>The fishing location names to hide in the UI (e.g. because they're inaccessible in-game).</summary>
+        public HashSet<string> IgnoreFishingLocations { get; set; }
 
         /// <summary>The solutions for hardcoded in-game puzzles.</summary>
         public PuzzleSolutionsData PuzzleSolutions { get; set; }

@@ -34,12 +34,8 @@ namespace Randomizer
 			foreach (WeaponItem weapon in weaponDictionary.Values)
 			{
 				RandomizeWeapon(weapon, nameRandomizer);
-
-				if (weapon.Id != 53) //TODO: remove in 0.3.0 - here to prevent seed from changing
-				{
-					stringReplacements.Add(weapon.Id, weapon.ToString());
-					Weapons.Add(weapon.Id, weapon);
-				}
+				stringReplacements.Add(weapon.Id, weapon.ToString());
+				Weapons.Add(weapon.Id, weapon);
 			}
 
 			WriteToSpoilerLog(weaponDictionary);
@@ -73,7 +69,7 @@ namespace Randomizer
 			SetWeaponDescription(weapon);
 
 			string weaponName = nameRandomizer.GenerateRandomWeaponName(weapon.Type);
-			if (Globals.Config.RandomizeGalaxySwordName_Needs_Above_Setting_On || weapon.Name != "Galaxy Sword")
+			if ((Globals.Config.Weapons.Randomize && Globals.Config.Weapons.RandomizeGalaxySwordName) || weapon.Name != "Galaxy Sword")
 			{
 				weapon.OverrideName = weaponName;
 			}
@@ -380,7 +376,7 @@ namespace Randomizer
 		/// <param name="modifiedWeaponDictionary">The dictionary with changed info</param>
 		private static void WriteToSpoilerLog(Dictionary<int, WeaponItem> modifiedWeaponDictionary)
 		{
-			if (!Globals.Config.RandomizeWeapons) { return; }
+			if (!Globals.Config.Weapons.Randomize) { return; }
 
 			Globals.SpoilerWrite("==== WEAPONS ====");
 			foreach (int id in modifiedWeaponDictionary.Keys)

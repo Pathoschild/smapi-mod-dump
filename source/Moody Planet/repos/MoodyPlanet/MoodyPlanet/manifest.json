@@ -15,7 +15,7 @@
   "Description": "The world has feelings too, you know?",
   "UniqueID": "f1r3w477.MoodyPlanet",
   "EntryDll": "MoodyPlanet.dll",
-  "MinimumApiVersion": "2.7",
+  "MinimumApiVersion": "3.7",
   "UpdateKeys": [ "Nexus:2830" ],
   "Dependencies": [
     {

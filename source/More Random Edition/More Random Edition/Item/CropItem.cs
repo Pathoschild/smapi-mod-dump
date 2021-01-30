@@ -8,6 +8,9 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Randomizer
 {
 	/// <summary>
@@ -45,6 +48,20 @@ namespace Randomizer
 		public override string ToString()
 		{
 			return $"{Name}/{Price}/{CategoryString}/{Name}/{Description}";
+		}
+
+		/// <summary>
+		/// Gets all the crop items
+		/// </summary>
+		/// <param name="includeUnchangedCrops">Include unchanged crop items (ancient fruit)</param>
+		/// <returns />
+		public static List<CropItem> Get(bool includeUnchangedCrops = false)
+		{
+			return ItemList.Items.Values.Where(x =>
+				x.IsCrop &&
+				(includeUnchangedCrops || x.Id != (int)ObjectIndexes.AncientFruit))
+			.Cast<CropItem>()
+			.ToList();
 		}
 	}
 }

@@ -15,10 +15,11 @@ using SpriteMaster.Extensions;
 using TeximpNet.Compression;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 
 namespace SpriteMaster {
 	internal sealed class ManagedTexture2D : Texture2D {
-		private static long TotalAllocatedSize = 0;
+		private static long TotalAllocatedSize = 0L;
 		private static int TotalManagedTextures = 0;
 		private const bool UseMips = false;
 
@@ -26,16 +27,10 @@ namespace SpriteMaster {
 		public readonly ScaledTexture Texture;
 		public readonly Vector2I Dimensions;
 
-		internal static void DumpStats() {
-			var currentProcess = Process.GetCurrentProcess();
-			var workingSet = currentProcess.WorkingSet64;
-			var vmem = currentProcess.VirtualMemorySize64;
-			var gca = GC.GetTotalMemory(false);
-			Debug.InfoLn($"Total Managed Textures : {TotalManagedTextures}");
-			Debug.InfoLn($"Total Texture Size     : {TotalAllocatedSize.AsDataSize()}");
-			Debug.InfoLn($"Process Working Set    : {workingSet.AsDataSize()}");
-			Debug.InfoLn($"Process Virtual Memory : {vmem.AsDataSize()}");
-			Debug.InfoLn($"GC Allocated Memory    : {gca.AsDataSize()}");
+		internal static void DumpStats(List<string> output) {
+			output.Add("\tManagedTexture2D:");
+			output.Add($"\t\tTotal Managed Textures : {TotalManagedTextures}");
+			output.Add($"\t\tTotal Texture Size     : {TotalAllocatedSize.AsDataSize()}");
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

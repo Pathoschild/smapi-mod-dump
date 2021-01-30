@@ -11,10 +11,10 @@
 {
    "Name": "Bookcase",
    "Author": "Darkhax",
-   "Version": "0.6.0",
+   "Version": "1.0.0-no-op",
    "Description": "Additional utilities for making stardew mods and ensuring cross compatability.",
    "UniqueID": "darkhax.bookcase",
    "EntryDll": "Bookcase.dll",
-   "MinimumApiVersion": "2.0",
-   "UpdateKeys": ["GitHub:Stardew-Valley-Modding/Bookcase"]
+   "MinimumApiVersion": "3.0",
+   "UpdateKeys": ["CurseForge:297252"]
 }

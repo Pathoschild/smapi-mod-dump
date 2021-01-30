@@ -31,9 +31,9 @@ namespace Randomizer
 		public bool IsRainFish { get { return Weathers.Contains(Weather.Rainy); } }
 		public bool IsSunFish { get { return Weathers.Contains(Weather.Sunny); } }
 
-		public bool IsSpringFish { get { return AvailableSeasons.Contains(Seasons.Spring); } }
-		public bool IsSummerFish { get { return AvailableSeasons.Contains(Seasons.Summer); } }
-		public bool IsFallFish { get { return AvailableSeasons.Contains(Seasons.Fall); } }
+		public bool IsSpringFish { get { return AvailableSeasons.Contains(Seasons.Spring) && !IsSubmarineOnlyFish; } }
+		public bool IsSummerFish { get { return AvailableSeasons.Contains(Seasons.Summer) && !IsSubmarineOnlyFish; } }
+		public bool IsFallFish { get { return AvailableSeasons.Contains(Seasons.Fall) && !IsSubmarineOnlyFish; } }
 		public bool IsWinterFish { get { return AvailableSeasons.Contains(Seasons.Winter); } }
 
 		public int DartChance { get; set; }
@@ -47,17 +47,78 @@ namespace Randomizer
 		public int MinFishingLevel { get; set; }
 
 		/// <summary>
+		/// Returns whether this fish is a mines fish
+		/// These are the three hard-coded mines-specific fish
+		/// </summary>
+		public bool IsMinesFish
+		{
+			get
+			{
+				return new int[] { (int)ObjectIndexes.Stonefish, (int)ObjectIndexes.IcePip, (int)ObjectIndexes.LavaEel }.Contains(Id);
+			}
+		}
+
+		/// <summary>
+		/// Returns whether this is one of the 5 legendary fish
+		/// </summary>
+		public bool IsLegendaryFish
+		{
+			get
+			{
+				return IsLegendary(Id);
+			}
+		}
+
+		/// <summary>
+		/// Returns whether the given ID maps to one of the legendary fish
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public static bool IsLegendary(int id)
+		{
+			return new int[] {
+				(int)ObjectIndexes.Crimsonfish,
+				(int)ObjectIndexes.Angler,
+				(int)ObjectIndexes.Legend,
+				(int)ObjectIndexes.Glacierfish,
+				(int)ObjectIndexes.MutantCarp
+			}.Contains(id);
+		}
+
+		/// <summary>
+		/// Returns whether this fish is a submarine only fish
+		/// This will let us know whether it's actually a winter only fish as well
+		/// Used with retrieving season-specific fish and descriptions
+		/// </summary>
+		public bool IsSubmarineOnlyFish
+		{
+			get
+			{
+				return AvailableLocations.Count == 1 && AvailableLocations.Contains(Locations.NightMarket);
+			}
+		}
+
+		/// <summary>
 		/// The description - used in the tooltip
 		/// </summary>
 		public string Description
 		{
 			get
 			{
-				string timesString = GetTimesString();
 				string seasonsString = GetStringForSeasons();
 				string locationString = GetStringForLocations();
+
+				if (IsSubmarineOnlyFish)
+				{
+					return $"{seasonsString} {locationString}";
+				}
+
+				string timesString = GetTimesString();
 				string weatherString = GetStringForWeather();
-				return $"{timesString} {seasonsString} {locationString} {weatherString}";
+				string initialDescription = $"{timesString} {seasonsString} {locationString} {weatherString}";
+
+				string legendaryString = GetStringForLegendary();
+				return $"{initialDescription.Trim()} {legendaryString}";
 			}
 		}
 
@@ -157,7 +218,13 @@ namespace Randomizer
 		private string GetStringForSeasons()
 		{
 			if (AvailableSeasons.Count == 0) { return ""; }
-			if (AvailableSeasons.Count == 4)
+
+			if (IsSubmarineOnlyFish)
+			{
+				string winterSeason = Globals.GetTranslation($"seasons-winter");
+				return Globals.GetTranslation("fish-tooltip-seasons", new { seasons = winterSeason });
+			}
+			else if (AvailableSeasons.Count == 4)
 			{
 				return Globals.GetTranslation("fish-tooltip-seasons-all");
 			}
@@ -166,8 +233,8 @@ namespace Randomizer
 				.Select(x => x.ToString().ToLower())
 				.Select(x => Globals.GetTranslation($"seasons-{x}"))
 				.ToArray();
-			string seasons = string.Join(", ", seasonStrings);
 
+			string seasons = string.Join(", ", seasonStrings);
 			return Globals.GetTranslation("fish-tooltip-seasons", new { seasons });
 		}
 
@@ -195,6 +262,20 @@ namespace Randomizer
 
 			string weather = Globals.GetTranslation($"fish-weather-{Weathers[0].ToString().ToLower()}");
 			return Globals.GetTranslation("fish-tooltip-weather", new { weather });
+		}
+
+		/// <summary>
+		/// Gets the string to use for when the fish is a legendary fish
+		/// </summary>
+		/// <returns />
+		public string GetStringForLegendary()
+		{
+			if (!IsLegendaryFish)
+			{
+				return "";
+			}
+
+			return Globals.GetTranslation("fish-tooltip-legendary");
 		}
 
 		/// <summary>
@@ -243,7 +324,7 @@ namespace Randomizer
 				x.IsFish &&
 				x.Id != (int)ObjectIndexes.AnyFish &&
 				x.DifficultyToObtain != ObtainingDifficulties.Impossible &&
-				(includeLegendaries || (!includeLegendaries && x.DifficultyToObtain < ObtainingDifficulties.EndgameItem))
+				(includeLegendaries || (!includeLegendaries && !IsLegendary(x.Id)))
 			).ToList();
 		}
 
@@ -319,7 +400,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets all the fish that can be caught at a given location and season
+		/// Gets all the fish that can be caught at a given location
 		/// </summary>
 		/// <param name="location">The location</param>
 		/// <param name="includeLegendaries">Include the legendary fish</param>
@@ -352,10 +433,7 @@ namespace Randomizer
 		/// <returns />
 		public static List<Item> GetLegendaries()
 		{
-			return ItemList.Items.Values.Where(x =>
-				x.IsFish &&
-				x.DifficultyToObtain == ObtainingDifficulties.EndgameItem
-			).ToList();
+			return ItemList.Items.Values.Where(x => x.IsFish && IsLegendary(x.Id)).ToList();
 		}
 	}
 }

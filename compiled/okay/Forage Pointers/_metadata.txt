@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7781
+IDs: Bpendragon.ForagePointers
+update keys: Nexus:7781, GitHub:Bpendragon/ForagePointers

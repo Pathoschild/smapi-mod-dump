@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Enaium-StardewValleyMods/NameTags
+**
+*************************************************/
+
+{
+  "nameTags.toggle.renderMonster": "Monster",
+  "nameTags.toggle.renderMonster.description": "Name tag render monster",
+  "nameTags.toggle.renderPet": "Pet",
+  "nameTags.toggle.renderPet.description": "Name tag render pet",
+  "nameTags.toggle.renderHorse": "Horse",
+  "nameTags.toggle.renderHorse.description": "Name tag render horse",
+  "nameTags.toggle.renderChild": "Child",
+  "nameTags.toggle.renderChild.description": "Name tag render child",
+  "nameTags.toggle.renderVillager": "Villager",
+  "nameTags.toggle.renderVillager.description": "Name tag render villager",
+  "nameTags.toggle.renderJunimo": "Junimo",
+  "nameTags.toggle.renderJunimo.description": "Name tag render junimo",
+  "nameTags.button.nameTagColor": "Name tag color",
+  "nameTags.button.nameTagColor.description": "Name tag render color",
+  "nameTags.hp": "HP",
+  "nameTags.damage": "Damage",
+  "nameTags.friendship": "Friendship",
+  "nameTags.daysOld": "Days old",
+  "nameTags.friendly": "Friendly"
+}

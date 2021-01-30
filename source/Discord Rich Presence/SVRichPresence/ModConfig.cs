@@ -31,7 +31,6 @@ namespace SVRichPresence {
 		public bool ShowFarmType = true;
 		public bool ShowWeather = true;
 		public bool ShowPlayTime = true;
-		public bool AllowAskToJoin = true;
 		
 		public GamePresence() {
 			Details = "{{ FarmName }} | {{ Money }}";

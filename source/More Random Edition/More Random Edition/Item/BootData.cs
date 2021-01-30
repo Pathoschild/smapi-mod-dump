@@ -36,6 +36,10 @@ namespace Randomizer
 			new BootItem(515, "Cowboy Boots", 250, 2, 2, 11),
 			new BootItem(804, "Emily's Magic Boots", 250, 4, 4, 13),
 			new BootItem(806, "Leprechaun Shoes", 250, 2, 1, 14),
+			new BootItem(853, "Cinderclown Shoes", 1000, 6, 5, 15),
+			new BootItem(854, "Mermaid Boots", 1000, 5, 8, 16),
+			new BootItem(855, "Dragonscale Boots", 1000, 7, 0, 17),
+			new BootItem(878, "Crystal Shoes", 1000, 3, 5, 18)
 		};
 	}
 }

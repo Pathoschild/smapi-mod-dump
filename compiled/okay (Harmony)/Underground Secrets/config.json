@@ -1,5 +1,6 @@
 {
   "EnableMod": true,
+  "PuzzleChanceIncreaseRate": 0.3,
   "TilePuzzleBaseChance": 0.01,
   "LightPuzzleBaseChance": 0.01,
   "OfferingPuzzleBaseChance": 0.001,

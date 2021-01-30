@@ -29,6 +29,9 @@ namespace SpriteMaster.Harmonize.Patches {
 			try {
 				Marshal.Copy(handle.AddrOfPinnedObject(), byteData, 0, byteData.Length);
 			}
+			catch (Exception ex) {
+				Debug.Error(ex);
+			}
 			finally {
 				handle.Free();
 			}

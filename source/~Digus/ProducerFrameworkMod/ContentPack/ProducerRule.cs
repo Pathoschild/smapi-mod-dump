@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Design;
+using ProducerFrameworkMod.Controllers;
+using StardewModdingAPI;
 using Object = StardewValley.Object;
 
 namespace ProducerFrameworkMod.ContentPack
@@ -65,5 +67,12 @@ namespace ProducerFrameworkMod.ContentPack
         public StackConfig GoldQualityInput = new StackConfig();
         public StackConfig IridiumQualityInput = new StackConfig();
         public ColoredObjectConfig OutputColorConfig;
+
+        private LogLevel? _warningsLogLevel;
+        public LogLevel WarningsLogLevel
+        {
+            get => _warningsLogLevel.GetValueOrDefault(ModUniqueID == null ? LogLevel.Warn : ContentPackConfigController.GetDefaultWarningLogLevel(ModUniqueID));
+            set => _warningsLogLevel = value;
+        }
     }
 }

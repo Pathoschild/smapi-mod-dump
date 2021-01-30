@@ -14,21 +14,26 @@ using System.Linq;
 
 namespace GetGlam.Framework
 {
-    /// <summary>Class that allows new hats to be edited so they ignore hair</summary>
+    /// <summary>
+    /// Class that allows new hats to be edited so they ignore hair.
+    /// </summary>
     public class HatEditor : IAssetEditor
     {
-        //Instance of ModEntry
+        // Instance of ModEntry
         private ModEntry Entry;
 
-        /// <summary>HatEditor's Constructor</summary>
+        /// <summary>
+        /// HatEditor's Constructor.
+        /// </summary>
         /// <param name="entry">The instance of ModEntry</param>
         public HatEditor(ModEntry entry)
         {
-            //Set the field
             Entry = entry;
         }
 
-        /// <summary>Wether SMAPI can edit a specific asset</summary>
+        /// <summary>
+        /// Whether SMAPI can edit a specific asset.
+        /// </summary>
         /// <typeparam name="T">The type of asset</typeparam>
         /// <param name="asset">The asset in question</param>
         /// <returns></returns>
@@ -40,21 +45,31 @@ namespace GetGlam.Framework
             return false;
         }
 
-        /// <summary>When SMAPI tries to edit a specific asset</summary>
+        /// <summary>
+        /// When SMAPI tries to edit a specific asset.
+        /// </summary>
         /// <typeparam name="T">The type of asset</typeparam>
         /// <param name="asset">The asset in question</param>
         public void Edit<T>(IAssetData asset)
         {
             if (asset.AssetNameEquals("Data/hats"))
             {
-                //for each hat change the 2nd field to true
                 IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
-                foreach (int item in data.Keys.ToList())
-                {
-                    string[] fields = data[item].Split('/');
-                    fields[2] = "true";
-                    data[item] = string.Join("/", fields);
-                }
+                ChangeHatData(data);
+            }
+        }
+
+        /// <summary>
+        /// Changes second hat field to true.
+        /// </summary>
+        /// <param name="data">The dictionary of hat data.</param>
+        private void ChangeHatData(IDictionary<int, string> data)
+        {
+            foreach (int item in data.Keys.ToList())
+            {
+                string[] fields = data[item].Split('/');
+                fields[2] = "true";
+                data[item] = string.Join("/", fields);
             }
         }
     }

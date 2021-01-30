@@ -1,0 +1,18 @@
+{
+    // Object data
+    "Name": "blueberry.cac.sugarcane",
+    "Description": "...",
+    "Category": "Vegetable",
+    "Edibility": 8,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 30,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+}

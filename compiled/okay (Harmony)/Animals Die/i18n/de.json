@@ -1,0 +1,32 @@
+﻿{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Cause.starvation": "ist verhungert",
+  "Cause.dehydration": "ist verdurstet",
+  "Cause.oldAge": "ist an Altersschwäche gestorben",
+  "Cause.illness": "ist an Krankheit gestorben",
+  "Cause.wildAnimalAttack": "wurde von einem wilden Tier getötet",
+  "Happiness.sad": "traurig",
+  "Happiness.fine": "gut",
+  "Happiness.happy": "glücklich",
+  "Love.heart": "{{heartCount}} Herz",
+  "Love.hearts": "{{heartCount}} Herzen",
+  "AnimalDeathMessage": "Dein {{animalType}} {{animalName}} {{cause}}.\n{{animalName}} wurde {{entireAgeText}} alt, fühlte sich {{happinessText}} und hatte {{loveString}} an Freundschaft gegenüber dir.",
+  "Age.year": "{{yearCount}} Jahr",
+  "Age.years": "{{yearCount}} Jahre",
+  "Age.yearAndMonth": "{{yearCount}} Jahr und {{monthCount}} Monat",
+  "Age.yearAndMonths": "{{yearCount}} Jahr und {{monthCount}} Monate",
+  "Age.yearsAndMonth": "{{yearCount}} Jahre und {{monthCount}} Monat",
+  "Age.yearsAndMonths": "{{yearCount}} Jahre und {{monthCount}} Monate",
+  "Age.month": "{{monthCount}} Monat",
+  "Age.months": "{{monthCount}} Monate",
+  "Age.day": "{{dayCount}} Tag",
+  "Age.days": "{{dayCount}} Tage",
+  "SickAnimalMessage.oneAnimal": "{{firstAnimalName}} ist krank.",
+  "SickAnimalMessage.twoAnimals": "{{firstAnimalName}} und {{secondAnimalName}} sind krank.",
+  "SickAnimalMessage.threeAnimals": "{{firstAnimalName}}, {{secondAnimalName}} und {{thirdAnimalName}} sind krank.",
+  "SickAnimalMessage.fourAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} und {{sickAnimalCount}} anderes Tier sind krank.",
+  "SickAnimalMessage.moreThanFourAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} und {{sickAnimalCount}} andere Tiere sind krank."
+}

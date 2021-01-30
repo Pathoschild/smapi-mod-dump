@@ -1,0 +1,21 @@
+﻿{
+  "Name": "ModMenu",
+  "Author": "Enaium",
+  "Version": "1.0.1",
+  "Description": "ModMenu",
+  "UniqueID": "Enaium.ModMenu",
+  "EntryDll": "ModMenu.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [
+    "GitHub:Enaium-StardewValleyMods/ModMenu",
+    "Chucklefish:6085",
+    "CurseForge:436844",
+    "ModDrop:885574"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "Enaium.EnaiumToolKit",
+      "MinimumVersion": "1.4.2"
+    }
+  ]
+}

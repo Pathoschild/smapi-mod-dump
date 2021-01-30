@@ -23,8 +23,8 @@ namespace Spawn_Monsters
     {
 
         /*********
-		** Properties
-		*********/
+        ** Properties
+        *********/
         /// <summary>The mod configuration from the player.</summary>
         public ModConfig config;
 
@@ -36,6 +36,7 @@ namespace Spawn_Monsters
             helper.ConsoleCommands.Add("monster_list", "Shows a lists of all monsters available to spawn.", MonsterList);
             helper.ConsoleCommands.Add("monster_menu", "Shows a menu for spawning monsters", MonsterMenu);
             helper.ConsoleCommands.Add("farmer_position", "Prints the Farmer's current position", FarmerPosition);
+            helper.ConsoleCommands.Add("remove_prismatic_jelly", "Removes all Prismatic Jelly from your inventory", DeleteJelly);
 
             config = helper.ReadConfig<ModConfig>();
 
@@ -126,61 +127,16 @@ namespace Spawn_Monsters
             } else { Monitor.Log("Load a save first!"); }
         }
 
-        public void MonsterList(string command, string[] args) {
-            Monitor.Log("Monsters available to spawn:\n\n" +
-                "Slimes:\n" +
-                "\tGreen Slime\n" +
-                "\tFrost Jelly\n" +
-                "\tRed Sludge\n" +
-                "\tPurple Sludge\n" +
-                "\tYellow Slime\n" +
-                "\tBlack Slime\n" +
-                "\tGray Sludge\n\n" +
+        public void MonsterList(string command, string[] args)
+        {
+            var monsterList = new MonsterList();
 
-                "Bats:\n" +
-                "\tBat\n" +
-                "\tFrost Bat\n" +
-                "\tLava Bat\n" +
-                "\tIridium Bat\n\n" +
-
-                "Bugs:\n" +
-                "\tBug\n" +
-                "\tArmored Bug\n\n" +
-
-                "Flies: \n" +
-                "\tCave Fly\n" +
-                "\tGrub\n" +
-                "\tMutant Fly\n" +
-                "\tMutant Grub\n\n" +
-
-                "Ghosts:\n" +
-                "\tGhosts\n" +
-                "\tCarbon Ghost\n\n" +
-
-                "Crabs:\n" +
-                "\tRock Crab\n" +
-                "\tLava Crab\n" +
-                "\tIridium Crab\n\n" +
-
-                "Golems:\n" +
-                "\tRock Golem\n" +
-                "\tWilderness Golem\n\n" +
-
-                "Other:\n" +
-                "\tCursed Doll\n" +
-                "\tDuggy\n" +
-                "\tDust Sprite\n" +
-                "\tHaunted Skull\n" +
-                "\tMetal Head\n" +
-                "\tMummy\n" +
-                "\tSerpent\n" +
-                "\tShadow Brute\n" +
-                "\tShadow Shaman\n" +
-                "\tSkeleton\n" +
-                "\tSquid Kid\n\n" +
-
-                "Use these names with 'monster_spawn'\n" +
-                "Keep in mind that some monsters don't work properly outside of the farm and the mines!", LogLevel.Info);
+            Monitor.Log(
+                "Monsters available to spawn:\n\n" +
+                monsterList.ToString() +
+                "\n\nUse these names with 'monster_spawn'.\n" +
+                "Keep in mind that some monsters don't work properly outside of the farm and the mines!\n"
+            , LogLevel.Info);
         }
 
         public void MonsterMenu(string command, string[] args) {
@@ -193,6 +149,18 @@ namespace Spawn_Monsters
 
         public void FarmerPosition(string command, string[] args) {
             Monitor.Log("The Farmer's coordinates are: " + Game1.player.getTileLocation(), LogLevel.Info);
+        }
+
+        public void DeleteJelly(string command, string[] args) {
+            int amount = 0;
+            foreach(Item item in Game1.player.Items) {
+                // Prismatic Jelly is of category 0 (Object) and has the id 876
+                if (item != null && item.Category == 0 && item.ParentSheetIndex == 876) {
+                    Game1.player.removeItemFromInventory(item);
+                    amount += item.Stack;
+                }
+            }
+            Monitor.Log($"Removed {amount} Prismatic {(amount == 1 ? "Jelly" : "Jellies")} from your inventory.", LogLevel.Info);
         }
     }
 }

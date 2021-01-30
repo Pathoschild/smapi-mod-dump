@@ -1,0 +1,14 @@
+url:
+   https://github.com/Shalankwa/SDV_Mods.git
+
+mods:
+   Warp Multiplayer
+   Warp To Friends
+
+latest commit:
+   commit ea355cf3f584cdef3b34b1328bc56d4da4436763
+   Author: Jonathan Goodman <jgoodman@algomau.ca>
+   Date:   Sun Jul 21 01:28:50 2019 -0400
+   
+       refactoring
+   

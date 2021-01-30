@@ -1,0 +1,8 @@
+{
+  "Name": "Ring of Insight",
+  "Description": "Provides insights into what you are learning, increasing experience.",
+  "Category": "Ring",
+  "Price": 1000,
+  "Edibility": -300,
+  "Recipe": null,
+}

@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/su226/StardewValleyMods
+**
+*************************************************/
+
+{
+  "abigail_game": "草原之王的旅行",
+  "abigail_game_two": "草原之王的旅行 (双人)",
+  "calico_jack": "二十一点 (练习)",
+  "calico_jack_small": "二十一点 (小)",
+  "calico_jack_big": "二十一点 (大)",
+  "crane": "夹娃娃机 (500g)",
+  "crane_practice": "夹娃娃机 (练习)",
+  "darts": "飞镖",
+  "fishing": "展会钓鱼",
+  "minecart_endless": "祝尼魔赛车 (无尽模式)",
+  "minecart_progress": "祝尼魔赛车 (关卡模式)",
+  "old_minecart_endless": "祝尼魔赛车 (旧无尽模式)",
+  "old_minecart_progress": "祝尼魔赛车 (旧关卡模式)",
+  "slots": "印花老虎机",
+  "target": "展会弹弓",
+  "no_cinema": "没有电影院",
+  "no_club_card": "没有会员卡",
+  "no_fair": "没有参加过集市",
+  "no_friendship": "阿比盖尔的好感不够",
+  "no_island": "没有去过姜岛",
+  "no_money": "现金不足",
+  "no_qi_coin": "齐币不足",
+  "no_skull_key": "没有骷髅钥匙"
+}

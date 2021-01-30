@@ -1,11 +1,12 @@
 {
   "StopShadeSaplingGrowth": true,
+  "GrowthIgnoresStumps": false,
+  "SaveSprouts": 0,
   "NormalTreesGrowInWinter": true,
   "MushroomTreesGrowInWinter": false,
   "FruitTreesDontGrowInWinter": false,
-  "FasterNormalTreeGrowth": false,
-  "SafeSprouts": false,
   "BuffMahoganyTrees": false,
-  "GrowthIgnoresStumps": false,
+  "ShakingSeedChance": 5,
+  "FasterNormalTreeGrowth": false,
   "FruitTreeGrowth": 0
 }

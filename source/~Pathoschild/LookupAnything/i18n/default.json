@@ -201,6 +201,17 @@
     "location.undergroundMine.level": "mine level {{level}}",
     "location.witchSwamp": "witch's swamp",
     "location.woods": "secret woods",
+
+    "location.caldera": "Ginger Island caldera",
+    "location.islandEast": "Ginger Island east",
+    "location.islandNorth": "Ginger Island north",
+    "location.islandSouth": "Ginger Island south",
+    "location.islandSouthEast": "Ginger Island southeast",
+    "location.islandSouthEastCave": "Ginger Island southeast cave",
+    "location.islandWest": "Ginger Island west",
+    "location.islandWest.fish-area-1": "Ginger Island west (ocean)",
+    "location.islandWest.fish-area-2": "Ginger Island west (pond)",
+
     "location.unknown-fish-area": "{{locationName}} (fishing area {{id}})",
 
 
@@ -597,7 +608,7 @@
 
 
     /*********
-    ** Tile lookups > Fern Islands mermaid puzzle
+    ** Puzzles > Fern Islands mermaid puzzle
     *********/
     // labels
     "puzzle.island-mermaid.title": "Island Mermaid Puzzle",
@@ -623,6 +634,7 @@
     *********/
     // labels
     "tile.description": "A tile position on the map. This is displayed because you enabled tile lookups in the configuration.",
+    "tile.game-location": "Location",
     "tile.map-name": "Map name",
     "tile.tile": "Tile",
     "tile.tile-index": "{{layerName}}: tile index",
@@ -662,10 +674,9 @@
     "tree.name.unknown": "Unknown Tree",
     "tree.stage.done": "Fully grown",
     "tree.stage.partial": "{{stageName}} ({{step}} of {{max}})",
-    "tree.next-growth.winter": "can't grow in winter outside greenhouse",
+    "tree.next-growth.winter": "can't grow in winter outside greenhouse unless fertilized",
     "tree.next-growth.adjacent-trees": "can't grow because other trees are too close",
     "tree.next-growth.chance": "{{chance}}% chance to grow into {{stage}} tomorrow",
-    "tree.is-fertilized.effects": "guarantees daily growth, even in winter",
 
     // growth stages
     "tree.stages.seed": "seed",

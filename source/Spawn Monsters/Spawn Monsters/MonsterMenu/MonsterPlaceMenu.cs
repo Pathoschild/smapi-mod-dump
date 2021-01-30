@@ -45,7 +45,7 @@ namespace Spawn_Monsters
             //Warn users
             if (monster == MonsterData.Monster.ArmoredBug) {
                 Game1.addHUDMessage(new HUDMessage("Be aware that armored bugs are unkillable.", 2));
-            } else if (monster == MonsterData.Monster.Duggy) {
+            } else if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.MagmaDuggy) {
                 monsterTexture.CurrentFrame = 5;
                 Game1.addHUDMessage(new HUDMessage("Duggies can only be spawned on diggable tiles.", 2));
             }
@@ -68,7 +68,7 @@ namespace Spawn_Monsters
 
 
         private Vector2 WhereToPlace() {
-            if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem) {
+            if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem || monster == MonsterData.Monster.MagmaDuggy) {
                 return Game1.currentCursorTile;
             } else {
                 return new Vector2(Game1.getMouseX() + Game1.viewport.X - monsterData.Texturewidth, Game1.getMouseY() + Game1.viewport.Y - monsterData.Textureheight);
@@ -77,7 +77,7 @@ namespace Spawn_Monsters
 
 
         private Vector2 WhereToDraw() {
-            if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem) {
+            if (monster == MonsterData.Monster.Duggy || monster == MonsterData.Monster.WildernessGolem || monster == MonsterData.Monster.MagmaDuggy) {
                 return new Vector2((Game1.currentCursorTile.X * Game1.tileSize) - Game1.viewport.X, (Game1.currentCursorTile.Y * Game1.tileSize) - Game1.viewport.Y - Game1.tileSize / 2);
             } else {
                 return new Vector2(Game1.getMouseX() - monsterData.Texturewidth, Game1.getMouseY() - monsterData.Textureheight * 2.2f);

@@ -1,0 +1,25 @@
+{
+  //Letters
+  "mail.Wizard1": "@,^^Los Junimos están satisfechos con tus contribuciones al Valle.^Han tenido una idea para mejorar tu invernadero, he convertido estas ideas en algo que Robin pueda aprovechar.^Habla con ella si quieres esta mejora.^^   -M. Rasmodius, Mago",
+  "mail.Wizard1b": "@,^^A pesar de haberles sacado del Centro Cívico los Junimos están satisfechos con tu trabajo en el Valle.^Han tenido una idea para mejorar tu invernadero, he convertido estas ideas en algo que Robin pueda aprovechar.^Habla con ella si quieres esta mejora.^^   -M. Rasmodius, Mago",
+  "mail.Wizard2": "@,^^Los Junimos parecen seguir impresionados con tu granja.^Han tenido una idea para mejorar tu invernadero todavía más, he convertido estas ideas en algo que Robin pueda aprovechar.^Habla con ella si quieres esta mejora.^^   -M. Rasmodius, Mago",
+  "mail.Wizard3": "@,^^Los Junimos parecen seguir impresionados con tu granja.^Han tenido una última idea para mejorar el sistema de aspersores en tu granja, he convertido estas ideas en algo que Robin pueda aprovechar.^Habla con ella si quieres esta mejora.^^   -M. Rasmodius, Mago",
+
+  //Shop Descriptions
+  "CarpenterShop.BluePrintName": "Mejora del Sistema de Riego",
+  "CarpenterShop.FirstUpgradeDescription": "Aspersores automáticos en el techo del invernadero, se activa cada mañana",
+  "CarpenterShop.SecondUpgradeDescription": "Aspersores automáticos en el techo del invernadero, se activa cada mañana y noche",
+  "CarpenterShop.FinalUpgradeDescription": "Sistema oculto de aspersores en la granja, se activa cada mañana y noche",
+
+  //Menu Items
+  //Currently Unused, may never be used
+  //If used will be expanded
+
+  "menu.diff": "Dificultad",
+  "menu.diff-Easy": "Fácil",
+  "menu.diff-Medium": "Normal",
+  "menu.diff-Hard": "Difícil",
+  "menu.diff-Custom": "Personalizada"
+
+
+}

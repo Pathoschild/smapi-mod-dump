@@ -1,0 +1,16 @@
+﻿{
+  "Name": "TeleportPoint",
+  "Author": "Enaium",
+  "Version": "1.2.0",
+  "Description": "Record teleport point",
+  "UniqueID": "Enaium.TeleportPoint",
+  "EntryDll": "TeleportPoint.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": ["GitHub:Enaium-StardewValleyMods/TeleportPoint"],
+  "Dependencies": [
+    {
+      "UniqueID": "Enaium.EnaiumToolKit",
+      "MinimumVersion": "1.4.1"
+    }
+  ]
+}

@@ -2,5 +2,6 @@
   "EnableConsoleCommands": true,
   "EnableContentPacks": true,
   "EnableTraceLogMessages": true,
+  "EnableEPUDebugMessages": false,
   "MonsterLimitPerLocation": null
 }

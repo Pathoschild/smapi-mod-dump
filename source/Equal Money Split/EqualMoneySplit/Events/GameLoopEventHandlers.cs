@@ -8,11 +8,15 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
+using System.Linq;
 using EqualMoneySplit.Models;
 using EqualMoneySplit.MoneyNetwork;
 using EqualMoneySplit.Utils;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Objects;
 
 namespace EqualMoneySplit.Events
 {
@@ -41,9 +45,13 @@ namespace EqualMoneySplit.Events
         {
             EqualMoneyMod.Logger.Log($"DayEnding | {Game1.player.Name} has {Game1.player.Money} money");
 
-            // Calculate all money that will be earned from the shipping bin
-            PersistantFarmerData.ShippingBinMoney = ItemValueUtil.CalculateItemCollectionValue(Game1.player.personalShippingBin);
-            PersistantFarmerData.ShareToSend = MoneySplitUtil.GetPerPlayerShare(PersistantFarmerData.ShippingBinMoney);
+            // Calculate all money that will be earned from the shipping bins
+            IEnumerable<Item> miniShippingBinItems = GetMiniShippingBinItems();
+            int miniShippingBinsValue = ItemValueUtil.CalculateItemCollectionValue(miniShippingBinItems);
+            int mainShippingBinValue = ItemValueUtil.CalculateItemCollectionValue(Game1.player.personalShippingBin);
+
+            PersistantFarmerData.PersonalShippingBinsMoney = miniShippingBinsValue + mainShippingBinValue;
+            PersistantFarmerData.ShareToSend = MoneySplitUtil.GetPerPlayerShare(PersistantFarmerData.PersonalShippingBinsMoney);
 
             // Only send a notification if money has been earned
             if (PersistantFarmerData.ShareToSend != 0)
@@ -60,19 +68,32 @@ namespace EqualMoneySplit.Events
         /// <param name="args">Event arguments for the DayStarted event</param>
         public void OnDayStartedHandler(object sender, DayStartedEventArgs args)
         {
-            if (!Game1.player.useSeparateWallets)
-            {
-                EqualMoneyMod.Logger.Log("EqualMoneySplit cannot be run unless individual wallets are set up! You must either disable the mod or set up individual wallets!", StardewModdingAPI.LogLevel.Warn);
-                Game1.chatBox.addErrorMessage("ERROR: EqualMoneySplit cannot be run unless individual wallets are set up!");
-                EventSubscriber.Instance.RemoveSubscriptions();
-
+            if (!EventSubscriber.Instance.TrySetEventSubscriptions())
                 return;
-            }
 
             EqualMoneyMod.Logger.Log($"DayStarted | {Game1.player.Name} has {Game1.player.Money} money");
 
             PersistantFarmerData.ShareToSend = 0;
-            PersistantFarmerData.ShippingBinMoney = 0;
+            PersistantFarmerData.PersonalShippingBinsMoney = 0;
+        }
+
+        /// <summary>
+        /// Returns all the items in all the mini-shipping bins from all locations in the game
+        /// </summary>
+        /// <returns>All items in all the mini-shipping bins</returns>
+        private IEnumerable<Item> GetMiniShippingBinItems()
+        {
+            // A shipping bin may be in any location, so we need to find them in every location in the game
+            IEnumerable<Chest> allChests = Game1.locations.SelectMany(l => l.Objects.Values.OfType<Chest>());
+            List<Item> itemsInMiniShippingBins = new List<Item>();
+
+            foreach (Chest miniShippingBin in allChests.Where(c => c.SpecialChestType == Chest.SpecialChestTypes.MiniShippingBin))
+            {
+                IEnumerable<Item> currentPlayerItems = miniShippingBin.GetItemsForPlayer(Game1.player.UniqueMultiplayerID);
+                itemsInMiniShippingBins.AddRange(currentPlayerItems);
+            }
+
+            return itemsInMiniShippingBins;
         }
     }
 }

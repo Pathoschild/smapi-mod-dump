@@ -3,5 +3,6 @@
   "SkillReq": "Mining 6",
   "PercentDamage": 100,
   "PercentLevels": 100,
-  "PreventGoingToSkullCave": true
+  "PreventGoingToSkullCave": true,
+  "SkipConfirmOnShaftJump": false
 }

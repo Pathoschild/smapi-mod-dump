@@ -66,9 +66,9 @@ namespace ProducerFrameworkMod.ContentPack
                    && (WorkingOutdoors == null || location.IsOutdoors == WorkingOutdoors.Value);
         }
         
-        public bool CheckSeasonCondition()
+        public bool CheckSeasonCondition(GameLocation location)
         {
-            return WorkingSeason == null || WorkingSeason.Any(s => s == Game1.currentSeason);
+            return WorkingSeason == null || WorkingSeason.Any(s => s == location.GetSeasonForLocation());
         }
 
         public bool CheckCurrentTimeCondition()

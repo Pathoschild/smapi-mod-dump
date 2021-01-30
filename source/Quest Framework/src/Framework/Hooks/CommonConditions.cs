@@ -24,9 +24,9 @@ namespace QuestFramework.Framework.Hooks
     internal class CommonConditions
     {
         internal protected static IMonitor Monitor => QuestFrameworkMod.Instance.Monitor;
-        public static Dictionary<string, Func<string, CustomQuest, bool>> GetConditions()
+        public static Dictionary<string, Func<string, object, bool>> GetConditions()
         {
-            return new Dictionary<string, Func<string, CustomQuest, bool>>()
+            return new Dictionary<string, Func<string, object, bool>>()
             {
                 ["Weather"] = (valueToCheck, _) => GetCurrentWeatherName() == valueToCheck.ToLower(),
                 ["Date"] = (valueToCheck, _) => SDate.Now() == Utils.ParseDate(valueToCheck),
@@ -43,13 +43,13 @@ namespace QuestFramework.Framework.Hooks
                 ["MaxDaysPlayed"] = (valueToCheck, _) => Game1.Date.TotalDays <= Convert.ToInt32(valueToCheck),
                 ["DaysPlayed"] = (valueToCheck, _) => Game1.Date.TotalDays == Convert.ToInt32(valueToCheck),
                 ["IsPlayerMarried"] = (valueToCheck, _) => ParseBool(valueToCheck) == Game1.player.isMarried(),
-                ["QuestAcceptedInPeriod"] = (valueToCheck, managedQuest) => IsQuestAcceptedInPeriod(valueToCheck, managedQuest),
-                ["QuestAcceptedDate"] = (valueToCheck, managedQuest) => IsQuestAcceptedDate(Utils.ParseDate(valueToCheck), managedQuest),
-                ["QuestCompletedDate"] = (valueToCheck, managedQuest) => IsQuestCompletedDate(Utils.ParseDate(valueToCheck), managedQuest),
-                ["QuestAcceptedToday"] = (valueToCheck, managedQuest) => IsQuestAcceptedDate(SDate.Now(), managedQuest) == ParseBool(valueToCheck),
-                ["QuestCompletedToday"] = (valueToCheck, managedQuest) => IsQuestCompletedDate(SDate.Now(), managedQuest) == ParseBool(valueToCheck),
-                ["QuestNeverAccepted"] = (valueToCheck, managedQuest) => managedQuest.IsNeverAccepted() == ParseBool(valueToCheck),
-                ["QuestNeverCompleted"] = (valueToCheck, managedQuest) => managedQuest.IsNeverCompleted() == ParseBool(valueToCheck),
+                ["QuestAcceptedInPeriod"] = (valueToCheck, context) => IsQuestAcceptedInPeriod(valueToCheck, context as CustomQuest),
+                ["QuestAcceptedDate"] = (valueToCheck, context) => IsQuestAcceptedDate(Utils.ParseDate(valueToCheck), context as CustomQuest),
+                ["QuestCompletedDate"] = (valueToCheck, context) => IsQuestCompletedDate(Utils.ParseDate(valueToCheck), context as CustomQuest),
+                ["QuestAcceptedToday"] = (valueToCheck, context) => IsQuestAcceptedDate(SDate.Now(), context as CustomQuest) == ParseBool(valueToCheck),
+                ["QuestCompletedToday"] = (valueToCheck, context) => IsQuestCompletedDate(SDate.Now(), context as CustomQuest) == ParseBool(valueToCheck),
+                ["QuestNeverAccepted"] = (valueToCheck, context) => context is CustomQuest managedQuest && managedQuest.IsNeverAccepted() == ParseBool(valueToCheck),
+                ["QuestNeverCompleted"] = (valueToCheck, context) => context is CustomQuest managedQuest && managedQuest.IsNeverCompleted() == ParseBool(valueToCheck),
                 ["KnownCraftingRecipe"] = (valueToCheck, _) => Game1.player.craftingRecipes.ContainsKey(valueToCheck),
                 ["KnownCookingRecipe"] = (valueToCheck, _) => Game1.player.cookingRecipes.ContainsKey(valueToCheck),
                 ["IsCommunityCenterCompleted"] = (valueToCheck, _) => ParseBool(valueToCheck) == Game1.player.hasCompletedCommunityCenter(),
@@ -91,11 +91,17 @@ namespace QuestFramework.Framework.Hooks
 
         private static bool IsQuestAcceptedDate(SDate dateToCheck, CustomQuest managedQuest)
         {
+            if (managedQuest == null)
+                return false;
+
             return GetQuestStats(managedQuest).LastAccepted == dateToCheck;
         }
 
         private static bool IsQuestCompletedDate(SDate dateToCheck, CustomQuest managedQuest)
         {
+            if (managedQuest == null)
+                return false;
+
             return GetQuestStats(managedQuest).LastCompleted == dateToCheck;
         }
 

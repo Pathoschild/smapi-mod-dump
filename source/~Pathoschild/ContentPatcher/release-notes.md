@@ -18,6 +18,23 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 -->
 ## Upcoming release
+* Config fields consisting of a numeric range are now formatted as a slider in Generic Mod Config Menu.
+
+## 1.19.4
+Released 23 January 2021.
+
+* Updated for multi-key bindings in SMAPI 3.9.
+
+## 1.19.3
+Released 10 January 2021.
+
+* Fixed `Include` patches skipped if they have multiple `FromFile` values.
+* Fixed `FarmType` token returning `Custom` for the beach farm; it now returns `Beach` instead.
+* Fixed patches not applied for farmhands in some highly specific cases resulting in an _invalid input arguments_ error.
+
+## 1.19.2
+Released 04 January 2021.
+
 * Improved `patch summary` command:
   * Added optional arguments to filter by content packs IDs.
   * Long token values are now truncated to 200 characters by default to improve readability. You can use `patch summary full` to see the full summary.

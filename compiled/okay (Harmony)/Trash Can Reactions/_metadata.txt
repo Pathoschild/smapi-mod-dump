@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7643
+IDs: aedenthorn.TrashCanReactions
+update keys: Nexus:7643, GitHub:aedenthorn/StardewValleyMods

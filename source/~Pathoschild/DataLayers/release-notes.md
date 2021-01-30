@@ -7,7 +7,25 @@ for queries and analysis.**
 ----
 
 # Release notes
-## Upcoming release
+## 1.14.1
+Released 23 January 2021.
+
+* Updated for multi-key bindings in SMAPI 3.9.
+
+## 1.14
+Released 16 January 2021.
+
+* Reopening the menu now shows your last selected layer.
+* Improved translations. Thanks to LeecanIt (updated Italian)!
+
+## 1.13.3
+Released 10 January 2021.
+
+* Improved _water for paddy crops_ layer. (It's now updated for the latest game code, and no longer highlights untillable tiles.)
+
+## 1.13.2
+Released 04 January 2021.
+
 * Fixed sprinkler layer not showing range for older sprinkler mods in Stardew Valley 1.5.
 * Improved translations. Thanks to elCrimar (updated Spanish) and norges (updated German)!
 

@@ -1,0 +1,25 @@
+{
+    // Object data
+    "Name": "blueberry.cac.burntfood",
+    "Description": "...",
+    "Category": "Junk",
+    "Edibility": 18,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 80,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+        "Like": [ "Krobus" ],
+        "Neutral": [ "Dwarf", "Wizard" ],
+        "Dislike": [ "Kent", "Demetrius", "George", "Leah", "Haley", "Sandy", "Vincent", "Jas", "Gus", "Penny", "Shane", "Marnie", "Clint", "Sebastian", "Abigail", "Alex", "Caroline", "Elliott", "Emily", "Evelyn", "Haley", "Harvey", "Jodi", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Willy" ]
+    }
+}

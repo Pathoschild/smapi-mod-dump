@@ -23,6 +23,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Menus;
 using StardewValley.Monsters;
 
 namespace AnimalHusbandryMod.common
@@ -47,6 +48,8 @@ namespace AnimalHusbandryMod.common
         private static readonly Vector2 SquirrelOffset = new Vector2(-6f, -20f);
         private static readonly Vector2 CrabOffset = new Vector2(0f, -6f);
 
+        private static bool _shouldTimePass = true;
+
         public static void addSpecificTemporarySprite(Event __instance, ref string key, GameLocation location, string[] split)
         {
             if (!key.StartsWith("animalContest"))
@@ -55,6 +58,7 @@ namespace AnimalHusbandryMod.common
             }
             if (key == "animalContest")
             {
+                _shouldTimePass = false;
                 String outdoorsTextureName = null;
                 switch (SDate.Now().Season)
                 {
@@ -560,21 +564,55 @@ namespace AnimalHusbandryMod.common
             }
             else if (key == "animalContestEnding")
             {
-                AnimalContestController.EndEvent(FarmerLoader.FarmerData.AnimalContestData.Last());
+                _shouldTimePass = true;
+                if (Context.IsMainPlayer)
+                {
+                    AnimalContestController.EndEvent(FarmerLoader.FarmerData.AnimalContestData.Last());
+                }
             }
 
         }
 
         public static void skipEvent(Event __instance)
         {
-            if (FarmerLoader.FarmerData != null)
+            if (__instance.id == AnimalContestEventBuilder.GetEventId(SDate.Now()))
             {
-                AnimalContestItem lastAnimalContest = FarmerLoader.FarmerData.AnimalContestData.LastOrDefault();
-                if (lastAnimalContest != null && lastAnimalContest.EventId == __instance.id)
+                void OnClose(Farmer who = null)
                 {
-                    AnimalContestController.EndEvent(lastAnimalContest);
+                    Game1.exitActiveMenu();
+                    _shouldTimePass = true;
+                    if (Context.IsMainPlayer && FarmerLoader.FarmerData != null)
+                    {
+                        AnimalContestItem lastAnimalContest = FarmerLoader.FarmerData.AnimalContestData.LastOrDefault();
+                        if (lastAnimalContest != null && lastAnimalContest.EventId == __instance.id)
+                        {
+                            AnimalContestController.EndEvent(lastAnimalContest);
+                        }
+                    }
+                }
+                if (Game1.IsMultiplayer)
+                {
+                    Game1.player.team.SetLocalReady("animalContestEnd", ready: true);
+                    if (!Game1.player.team.IsReady("animalContestEnd"))
+                    {
+                        ReadyCheckDialog readyCheckDialog = new ReadyCheckDialog("animalContestEnd", allowCancel: false, onConfirm: OnClose);
+                        Game1.activeClickableMenu = readyCheckDialog;
+                    }
+                    else
+                    {
+                        _shouldTimePass = true;
+                    }
+                }
+                else
+                {
+                    OnClose();
                 }
             }
+        }
+
+        public static void shouldTimePass(ref bool __result)
+        {
+            __result = _shouldTimePass ? __result : _shouldTimePass;
         }
 
         private static void addTemporarySprite(GameLocation location, String textureName, Rectangle sourceRectangle , float x, float y)

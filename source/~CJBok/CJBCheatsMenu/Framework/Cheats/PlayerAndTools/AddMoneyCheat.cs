@@ -28,7 +28,7 @@ namespace CJBCheatsMenu.Framework.Cheats.PlayerAndTools
             foreach (int amount in new[] { 100, 1000, 10000, 100000 })
             {
                 yield return new CheatsOptionsButton(
-                    label: I18n.Money_AddAmount(amount: amount),
+                    label: I18n.Add_AmountGold(amount: amount),
                     slotWidth: context.SlotWidth,
                     toggle: () => this.AddMoney(amount)
                 );

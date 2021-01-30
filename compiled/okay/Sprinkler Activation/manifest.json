@@ -1,0 +1,10 @@
+{
+  "Name": "SprinklerActivation",
+  "Author": "Blaxsmith",
+  "Version": "1.0.3",
+  "Description": "Allows to manually activate sprinklers.",
+  "UniqueID": "Blaxsmith.SprinklerActivation",
+  "EntryDll": "SprinklerActivation.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7661" ]
+}

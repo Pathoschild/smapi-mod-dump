@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2590
+IDs: DJ-STLN.Krutonium.CombatControls, DJ-STLN.CombatControls
+update keys: Nexus:2590, GitHub:DJ-STLN/CombatControls

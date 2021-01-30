@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7769
+IDs: Goldenrevolver.AnimalsDie
+update keys: Nexus:7769, GitHub:Goldenrevolver/Stardew-Valley-Mods

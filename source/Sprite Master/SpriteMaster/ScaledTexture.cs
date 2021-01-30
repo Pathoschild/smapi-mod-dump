@@ -25,9 +25,9 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster {
 	internal sealed partial class ScaledTexture : IDisposable {
 		// TODO : This can grow unbounded. Should fix.
-		public static readonly SpriteMap SpriteMap = new SpriteMap();
+		public static readonly SpriteMap SpriteMap = new();
 
-		private static readonly LinkedList<WeakReference<ScaledTexture>> MostRecentList = new LinkedList<WeakReference<ScaledTexture>>();
+		private static readonly LinkedList<WeakReference<ScaledTexture>> MostRecentList = new();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static bool LegalFormat(Texture2D texture) {
@@ -131,10 +131,10 @@ namespace SpriteMaster {
 			return null;
 		}
 
-		private static readonly TexelTimer TexelAverage = new TexelTimer();
-		private static readonly TexelTimer TexelAverageCached = new TexelTimer();
-		private static readonly TexelTimer TexelAverageSync = new TexelTimer();
-		private static readonly TexelTimer TexelAverageCachedSync = new TexelTimer();
+		private static readonly TexelTimer TexelAverage = new();
+		private static readonly TexelTimer TexelAverageCached = new();
+		private static readonly TexelTimer TexelAverageSync = new();
+		private static readonly TexelTimer TexelAverageCachedSync = new();
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static TexelTimer GetTimer(bool cached, bool async) {
@@ -177,7 +177,13 @@ namespace SpriteMaster {
 			// TODO : We should really only populate the average when we are performing an expensive operation like GetData.
 			var begin = DateTime.Now;
 
-			bool isSprite = (!source.Offset.IsZero || source.Extent != texture.Extent());
+			TextureType textureType;
+			if (!source.Offset.IsZero || source.Extent != texture.Extent()) {
+				textureType = TextureType.Sprite;
+			}
+			else {
+				textureType = TextureType.Image;
+			}
 			SpriteInfo textureWrapper;
 			ulong hash;
 
@@ -193,13 +199,13 @@ namespace SpriteMaster {
 
 			try {
 				using (Performance.Track("Upscaler.GetHash"))
-					hash = Upscaler.GetHash(textureWrapper, isSprite);
+					hash = Upscaler.GetHash(textureWrapper, textureType);
 
 				var newTexture = new ScaledTexture(
 					assetName: texture.SafeName(),
 					textureWrapper: textureWrapper,
 					sourceRectangle: source,
-					isSprite: isSprite,
+					textureType: textureType,
 					hash: hash,
 					async: useAsync,
 					expectedScale: expectedScale
@@ -229,10 +235,10 @@ namespace SpriteMaster {
 		internal ManagedTexture2D Texture = null;
 		internal readonly string Name;
 		internal Vector2 Scale;
-		internal readonly bool IsSprite;
+		internal readonly TextureType TexType;
 		internal volatile bool IsReady = false;
 
-		internal Vector2B Wrapped = new Vector2B(false);
+		internal Vector2B Wrapped = Vector2B.False;
 
 		internal readonly WeakTexture Reference;
 		internal readonly Bounds OriginalSourceRectangle;
@@ -338,10 +344,10 @@ namespace SpriteMaster {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal ScaledTexture (string assetName, SpriteInfo textureWrapper, Bounds sourceRectangle, ulong hash, bool isSprite, bool async, uint expectedScale) {
+		internal ScaledTexture (string assetName, SpriteInfo textureWrapper, Bounds sourceRectangle, ulong hash, TextureType textureType, bool async, uint expectedScale) {
 			using var _ = Performance.Track();
 
-			IsSprite = isSprite;
+			TexType = textureType;
 			Hash = hash;
 			var source = textureWrapper.Reference;
 
@@ -352,7 +358,16 @@ namespace SpriteMaster {
 			SpriteMap.Add(source, this, sourceRectangle, expectedScale);
 
 			this.Name = source.Anonymous() ? assetName.SafeName() : source.SafeName();
-			originalSize = IsSprite ? sourceRectangle.Extent : new Vector2I(source);
+			switch (TexType) {
+				case TextureType.Sprite:
+					originalSize = sourceRectangle.Extent;
+					break;
+				case TextureType.Image:
+					originalSize = source.Extent();
+					break;
+				case TextureType.SlicedImage:
+					throw new NotImplementedException("Sliced Images not yet implemented");
+			}
 
 			if (async && Config.AsyncScaling.Enabled) {
 				ThreadQueue.Queue((SpriteInfo wrapper) => {
@@ -363,7 +378,7 @@ namespace SpriteMaster {
 						texture: this,
 						scale: ref refScale,
 						input: wrapper,
-						desprite: IsSprite,
+						textureType: TexType,
 						hash: Hash,
 						wrapped: ref Wrapped,
 						async: true
@@ -377,7 +392,7 @@ namespace SpriteMaster {
 					texture: this,
 					scale: ref refScale,
 					input: textureWrapper,
-					desprite: IsSprite,
+					textureType: TexType,
 					hash: Hash,
 					wrapped: ref Wrapped,
 					async: false
@@ -418,11 +433,19 @@ namespace SpriteMaster {
 			TotalMemoryUsage += (uint)texture.SizeBytes();
 			texture.Disposing += (object sender, EventArgs args) => { TotalMemoryUsage -= (uint)texture.SizeBytes(); };
 
-			if (IsSprite) {
-				Debug.TraceLn($"Creating HD Sprite [{texture.Format} x{refScale}]: {this.SafeName()} {sourceRectangle}");
-			}
-			else {
-				Debug.TraceLn($"Creating HD Spritesheet [{texture.Format} x{refScale}]: {this.SafeName()}");
+			switch (TexType) {
+				case TextureType.Sprite:
+					Debug.TraceLn($"Creating HD Sprite [{texture.Format} x{refScale}]: {this.SafeName()} {sourceRectangle}");
+					break;
+				case TextureType.Image:
+					Debug.TraceLn($"Creating HD Image [{texture.Format} x{refScale}]: {this.SafeName()}");
+					break;
+				case TextureType.SlicedImage:
+					Debug.TraceLn($"Creating HD Sliced Image [{texture.Format} x{refScale}]: {this.SafeName()}");
+					break;
+				default:
+					Debug.TraceLn($"Creating HD UNKNOWN [{texture.Format} x{refScale}]: {this.SafeName()}");
+					break;
 			}
 
 			this.Scale = (Vector2)texture.Dimensions / new Vector2(originalSize.Width, originalSize.Height);

@@ -177,7 +177,7 @@ namespace InputFix
                 text.Remove(start, Math.Abs(acp.Start - acp.End));
                 acp.Start = acp.End = start;
             }
-            if (_text != "" && (textLimit == -1 || text.Length + _text.Length < textLimit) && (Font.MeasureString(_text).X + Font.MeasureString(text).X) < Width - 16)
+            if (_text != "" && (textLimit == -1 || text.Length + _text.Length <= textLimit) && (Font.MeasureString(_text).X + Font.MeasureString(text).X) < Width - 16)
             {
                 text.Insert(acp.Start, _text);
                 acp.End += _text.Length;
@@ -454,6 +454,8 @@ namespace InputFix
             }
             else
                 DrawByAcp(spriteBatch, new Acp(0, GetTextLength()), ref offset, TextColor, drawShadow);
+
+            KeyboardInput_.comp.Draw(spriteBatch);
         }
 
         protected virtual void DrawByAcp(SpriteBatch spriteBatch, Acp acp, ref float offset, Color color, bool drawShadow = true)

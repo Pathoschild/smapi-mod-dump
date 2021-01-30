@@ -186,6 +186,19 @@ namespace SpaceCore.Interface
                 };
             }
             this.populateClickableComponentList();
+            RepositionOkButton();
+        }
+        public virtual void RepositionOkButton()
+        {
+            this.okButton.bounds = new Rectangle( base.xPositionOnScreen + base.width + 4, base.yPositionOnScreen + base.height - 64 - IClickableMenu.borderWidth, 64, 64 );
+            if ( this.okButton.bounds.Right > Game1.uiViewport.Width )
+            {
+                this.okButton.bounds.X = Game1.uiViewport.Width - 64;
+            }
+            if ( this.okButton.bounds.Bottom > Game1.uiViewport.Height )
+            {
+                this.okButton.bounds.Y = Game1.uiViewport.Height - 64;
+            }
         }
 
         public bool CanReceiveInput()
@@ -222,6 +235,7 @@ namespace SpaceCore.Interface
             this.xPositionOnScreen = Game1.viewport.Width / 2 - this.width / 2;
             this.yPositionOnScreen = Game1.viewport.Height / 2 - this.height / 2;
             this.okButton.bounds = new Rectangle(this.xPositionOnScreen + this.width + 4, this.yPositionOnScreen + this.height - 64 - IClickableMenu.borderWidth, 64, 64);
+            RepositionOkButton();
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -744,8 +758,8 @@ namespace SpaceCore.Interface
                     for (int index = 1; index < this.leftProfessionDescription.Count; ++index)
                         b.DrawString(Game1.smallFont, Game1.parseText(this.leftProfessionDescription[index], Game1.smallFont, this.width / 2 - 64), new Vector2((float)(this.xPositionOnScreen - 4 + IClickableMenu.spaceToClearSideBorder + 32), (float)(this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 128 + 8 + 64 * (index + 1))), this.leftProfessionColor);
                     b.DrawString(Game1.dialogueFont, this.rightProfessionDescription[0], new Vector2((float)(this.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + this.width / 2), (float)(this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 160)), this.rightProfessionColor);
-                    if (profPair.First.Icon != null)
-                        b.Draw(profPair.First.Icon, new Vector2((float)(this.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + this.width - 128), (float)(this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 160 - 16)), new Rectangle?(new Rectangle(0, 0, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+                    if (profPair.Second.Icon != null)
+                        b.Draw(profPair.Second.Icon, new Vector2((float)(this.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + this.width - 128), (float)(this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 160 - 16)), new Rectangle?(new Rectangle(0, 0, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
                     //b.Draw(Game1.mouseCursors, new Vector2((float)(this.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + this.width - 128), (float)(this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 160 - 16)), new Rectangle?(new Rectangle(this.professionsToChoose[1] % 6 * 16, 624 + this.professionsToChoose[1] / 6 * 16, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
                     for (int index = 1; index < this.rightProfessionDescription.Count; ++index)
                         b.DrawString(Game1.smallFont, Game1.parseText(this.rightProfessionDescription[index], Game1.smallFont, this.width / 2 - 48), new Vector2((float)(this.xPositionOnScreen - 4 + IClickableMenu.spaceToClearSideBorder + this.width / 2), (float)(this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + 128 + 8 + 64 * (index + 1))), this.rightProfessionColor);

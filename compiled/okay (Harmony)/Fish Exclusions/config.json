@@ -1,0 +1,8 @@
+{
+  "ItemsToExclude": {
+    "CommonExclusions": [],
+    "ConditionalExclusions": []
+  },
+  "ItemToCatchIfAllFishIsExcluded": 168,
+  "TimesToRetry": 20
+}

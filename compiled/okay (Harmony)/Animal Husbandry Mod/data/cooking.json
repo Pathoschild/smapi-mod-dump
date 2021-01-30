@@ -81,7 +81,7 @@
     "Defense": 6,
     "Attack": 0,
     "Duration": 780,
-    "Recipe": "642 1",
+    "Recipe": "642 2",
     "Amount": 1
   },
   "RabbitAuVin": {
@@ -200,7 +200,7 @@
     "Defense": 0,
     "Attack": 0,
     "Duration": 1440,
-    "Recipe": "642 1 637 1 250 1 416 1",
+    "Recipe": "642 2 637 1 250 1 416 1",
     "Amount": 1
   },
   "SteakWithMushrooms": {

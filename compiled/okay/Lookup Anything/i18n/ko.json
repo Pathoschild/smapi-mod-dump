@@ -7,6 +7,9 @@
     "generic.tomorrow": "내일",
     "generic.yesterday": "어제",
 
+    // generic values
+    "generic.unknown": "unknown", // TODO
+
     // generic field values 기본적 필드 값들
     "generic.percent": "{{percent}}%",
     "generic.percent-chance-of": "{{percent}}%의 확률로 {{label}}",
@@ -189,6 +192,17 @@
     "location.undergroundMine.level": "광산 레벨 {{level}}",
     "location.witchSwamp": "마녀의 늪",
     "location.woods": "비밀 숲",
+
+    "location.caldera": "Ginger Island caldera", // TODO
+    "location.islandEast": "Ginger Island east", // TODO
+    "location.islandNorth": "Ginger Island north", // TODO
+    "location.islandSouth": "Ginger Island south", // TODO
+    "location.islandSouthEast": "Ginger Island southeast", // TODO
+    "location.islandSouthEastCave": "Ginger Island southeast cave", // TODO
+    "location.islandWest": "Ginger Island west", // TODO
+    "location.islandWest.fish-area-1": "Ginger Island west (ocean)", // TODO
+    "location.islandWest.fish-area-2": "Ginger Island west (pond)", // TODO
+
     "location.unknown-fish-area": "{{locationName}} (낚시 장소 {{id}})",
 
 
@@ -322,6 +336,8 @@
     // labels
     "crop.summary": "작물",
     "crop.harvest": "수확",
+    "crop.fertilized": "Fertilized", // TODO
+    "crop.watered": "Watered", // TODO
 
     // values
     "crop.summary.dead": "이 작물은 시들었다.",
@@ -588,7 +604,7 @@
 
 
     /*********
-    ** Tile lookups > Fern Islands mermaid puzzle
+    ** Puzzles > Fern Islands mermaid puzzle
     *********/
     // labels
     // TODO
@@ -617,6 +633,7 @@
     *********/
     // labels
     "tile.description": "지도상의 타일 위치. 이는 당신이 '타일 찾아보기(tile lookup)'를 활성화 했기 때문에 표시됨.",
+    "tile.game-location": "Location", // TODO
     "tile.map-name": "맵 이름",
     "tile.tile": "타일",
     "tile.tile-index": "{{layerName}}: 타일 인덱스",
@@ -659,7 +676,6 @@
     "tree.next-growth.winter": "겨울에 온실 밖에서 성장 불가.",
     "tree.next-growth.adjacent-trees": "다른 나무들과 너무 가까와 성장 불가.",
     "tree.next-growth.chance": "내일 {{chance}}%의 확률로 다음으로 성장: {{stage}}",
-    "tree.is-fertilized.effects": "겨울에도 매일 성장 보장",
 
     // growth stages
     "tree.stages.seed": "씨앗",

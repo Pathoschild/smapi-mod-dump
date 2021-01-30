@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Pathoschild.Stardew.Common.Utilities;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using SObject = StardewValley.Object;
@@ -22,14 +23,8 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
         /*********
         ** Fields
         *********/
-        /// <summary>The season for which <see cref="BushMachine.InSeasonImpl"/> applies.</summary>
-        private string LastSeason;
-
-        /// <summary>The day of month for which <see cref="BushMachine.InSeasonImpl"/> applies.</summary>
-        private int LastDay;
-
-        /// <summary>Whether the bush was in-season as of the last check.</summary>
-        private bool InSeasonImpl;
+        /// <summary>Whether the bush is in season today.</summary>
+        private readonly Cached<bool> IsInSeason;
 
 
         /*********
@@ -39,7 +34,13 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
         /// <param name="bush">The underlying bush.</param>
         /// <param name="location">The machine's in-game location.</param>
         public BushMachine(Bush bush, GameLocation location)
-            : base(bush, location, GetTileAreaFor(bush)) { }
+            : base(bush, location, GetTileAreaFor(bush))
+        {
+            this.IsInSeason = new Cached<bool>(
+                getCacheKey: () => $"{Game1.GetSeasonForLocation(bush.currentLocation)},{Game1.dayOfMonth},{bush.overrideSeason.Value}",
+                fetchNew: this.RecalculateIsInSeason
+            );
+        }
 
         /// <summary>Get the output item.</summary>
         public override ITrackedStack GetOutput()
@@ -58,7 +59,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
         /// <summary>Get the machine's processing state.</summary>
         public override MachineState GetState()
         {
-            if (!this.InSeason())
+            if (!this.IsInSeason.Value)
                 return MachineState.Disabled;
 
             return this.Machine.tileSheetOffset.Value == 1
@@ -109,16 +110,28 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures
         }
 
         /// <summary>Get whether the bush is currently in-season to produce berries or tea leaves.</summary>
-        private bool InSeason()
+        private bool RecalculateIsInSeason()
         {
-            if (this.LastSeason != Game1.currentSeason || this.LastDay != Game1.dayOfMonth)
-            {
-                this.InSeasonImpl = this.Machine.inBloom(Game1.currentSeason, Game1.dayOfMonth);
-                this.LastSeason = Game1.currentSeason;
-                this.LastDay = Game1.dayOfMonth;
-            }
+            // get info
+            Bush bush = this.Machine;
+            string season = Game1.GetSeasonForLocation(bush.currentLocation);
+            int day = Game1.dayOfMonth;
 
-            return this.InSeasonImpl;
+            // check if in season
+            if (bush.tileSheetOffset.Value == 1)
+                return bush.inBloom(season, day);
+
+            // workaround: we want to know if it's in season, not whether it's currently blooming
+            int prevOffset = bush.tileSheetOffset.Value;
+            try
+            {
+                bush.tileSheetOffset.Value = 1;
+                return bush.inBloom(season, day);
+            }
+            finally
+            {
+                bush.tileSheetOffset.Value = prevOffset;
+            }
         }
     }
 }

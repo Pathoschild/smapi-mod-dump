@@ -44,11 +44,11 @@ namespace ItemBags.Menus
             {
                 HoveredItem = CustomizeIconMenu.HoveredObject as Item;
             }
-            else if (InventoryMenu.Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+            else if (InventoryMenu.Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
             {
                 HoveredItem = InventoryMenu.HoveredItem;
             }
-            else if (Content.Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+            else if (Content.Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
             {
                 HoveredItem = Content.HoveredItem;
             }
@@ -339,20 +339,20 @@ namespace ItemBags.Menus
             }
             else
             {
-                if (InventoryMenu.Bounds.Contains(e.OldPosition.ScreenPixels.AsPoint()) || InventoryMenu.Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+                if (InventoryMenu.Bounds.Contains(e.OldPosition.LegacyScreenPixels().AsPoint()) || InventoryMenu.Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
                 {
                     InventoryMenu.OnMouseMoved(e);
                 }
 
-                if (Content.Bounds.Contains(e.OldPosition.ScreenPixels.AsPoint()) || Content.Bounds.Contains(e.NewPosition.ScreenPixels.AsPoint()))
+                if (Content.Bounds.Contains(e.OldPosition.LegacyScreenPixels().AsPoint()) || Content.Bounds.Contains(e.NewPosition.LegacyScreenPixels().AsPoint()))
                 {
                     Content.OnMouseMoved(e);
                 }
 
                 if (IsLeftSidebarVisible || IsRightSidebarVisible)
                 {
-                    Point OldPos = e.OldPosition.ScreenPixels.AsPoint();
-                    Point NewPos = e.NewPosition.ScreenPixels.AsPoint();
+                    Point OldPos = e.OldPosition.LegacyScreenPixels().AsPoint();
+                    Point NewPos = e.NewPosition.LegacyScreenPixels().AsPoint();
 
                     if (LeftSidebarButtonBounds.Any(x => x.Contains(OldPos) || x.Contains(NewPos)) ||
                         RightSidebarButtonBounds.Any(x => x.Contains(OldPos) || x.Contains(NewPos)))

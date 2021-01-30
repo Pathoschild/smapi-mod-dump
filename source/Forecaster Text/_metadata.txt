@@ -1,0 +1,13 @@
+url:
+   https://github.com/GStefanowich/SDV-Forecaster.git
+
+mods:
+   Forecaster Text
+
+latest commit:
+   commit 85c7cb12f5736d284e26d1923f13f94c58f9727b
+   Author: Greg <GStefanowich@users.noreply.github.com>
+   Date:   Wed Jan 6 10:56:03 2021 -0500
+   
+       Initial Commit For Stardew Valley 1.5
+   

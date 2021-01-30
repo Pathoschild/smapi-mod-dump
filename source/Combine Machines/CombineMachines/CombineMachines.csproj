@@ -63,6 +63,7 @@
     <Compile Include="Patches\GeneralPatches.cs" />
     <Compile Include="Patches\PatchesHandler.cs" />
     <Compile Include="Patches\ProcessingPatches.cs" />
+    <Compile Include="Patches\ScarecrowPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserConfig.cs" />
   </ItemGroup>

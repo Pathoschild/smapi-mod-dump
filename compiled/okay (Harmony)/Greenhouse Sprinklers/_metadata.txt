@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7456
+IDs: Bpendragon.GreenhouseSprinklers
+update keys: Nexus:7456, GitHub:Bpendragon/GreenhouseSprinklers

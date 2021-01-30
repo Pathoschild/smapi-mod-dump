@@ -48,7 +48,7 @@ namespace SpriteMaster {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static ulong GetHash (SpriteInfo input, bool desprite) {
+		internal static ulong GetHash (SpriteInfo input, TextureType textureType) {
 			// Need to make Hashing.CombineHash work better.
 			ulong hash = Hash.Combine(input.Reference.SafeName()?.GetHashCode(), input.Reference.Meta().GetHash(input));
 
@@ -58,13 +58,13 @@ namespace SpriteMaster {
 				}
 			}
 
-			if (desprite) {
+			if (textureType == TextureType.Sprite) {
 				hash = Hash.Combine(hash, input.Size.Hash());
 			}
 			return hash;
 		}
 
-		private static readonly WeakSet<Texture2D> GarbageMarkSet = Config.GarbageCollectAccountUnownedTextures ? new WeakSet<Texture2D>() : null;
+		private static readonly WeakSet<Texture2D> GarbageMarkSet = Config.Garbage.CollectAccountUnownedTextures ? new() : null;
 
 		// This basically just changes it from AXYZ to AZYX, which is what's expected in output.
 		private static Bitmap GetDumpBitmap (Bitmap source) {
@@ -138,17 +138,22 @@ namespace SpriteMaster {
 		}
 
 		private static bool IsWater(SpriteInfo input) {
-			return input.Size.Right <= 640 && input.Size.Top >= 2000 && input.Size.Extent.MinOf >= WaterBlock && input.Reference.SafeName() == "LooseSprites/Cursors";
+			var bounds = input.Size;
+			var texture = input.Reference;
+			if (bounds.Right <= 640 && bounds.Top >= 2000 && bounds.Extent.MinOf >= WaterBlock && texture.SafeName() == "LooseSprites/Cursors") {
+				return true;
+			}
+			return false;
 		}
 
-		private static Span<int> DownSample (byte[] data, in Bounds bounds, uint referenceWidth, uint block, bool blend = false) {
+		private static Types.Span<int> DownSample (byte[] data, in Bounds bounds, uint referenceWidth, uint block, bool blend = false) {
 			uint blockSize = block * block;
 			uint halfBlock = blend ? 0 : (block >> 1);
 			var blockOffset = bounds.Offset * (int)block;
 
 			// Rescale the data down, doing an effective point sample from 4x4 blocks to 1 texel.
-			var veryRawData = new Span<byte>(data).As<uint>();
-			var rawData = new Span<int>(new int[bounds.Area]);
+			var veryRawData = new Types.Span<byte>(data).As<uint>();
+			var rawData = new Types.Span<int>(new int[bounds.Area]);
 			foreach (uint y in 0..bounds.Extent.Height) {
 				var ySourceOffset = (((y * block) + (uint)blockOffset.Y) + halfBlock) * referenceWidth;
 				var yDestinationOffset = y * (uint)bounds.Extent.X;
@@ -201,7 +206,7 @@ namespace SpriteMaster {
 			ScaledTexture texture,
 			bool async,
 			SpriteInfo input,
-			bool desprite,
+			TextureType textureType,
 			bool isWater,
 			bool isFont,
 			in Bounds spriteBounds,
@@ -223,8 +228,22 @@ namespace SpriteMaster {
 			var rawSize = textureSize;
 			Bounds rawBounds = textureSize;
 
-			var inputSize = desprite ? spriteBounds.Extent : rawSize;
-			var inputBounds = desprite ? spriteBounds : rawSize;
+			Vector2I inputSize;
+			Bounds inputBounds;
+			switch (textureType) {
+				case TextureType.Sprite:
+					inputSize = spriteBounds.Extent;
+					inputBounds = spriteBounds;
+					break;
+				case TextureType.Image:
+					inputSize = rawSize;
+					inputBounds = rawSize;
+					break;
+				case TextureType.SlicedImage:
+					throw new NotImplementedException("Sliced Images not yet implemented");
+				default:
+					throw new NotImplementedException("Unknown Texture Type provided");
+			}
 
 			var rawTextureData = input.Data;
 
@@ -276,7 +295,7 @@ namespace SpriteMaster {
 			var scaledDimensions = spriteBounds.Extent * scale;
 
 			// Water in the game is pre-upscaled by 4... which is weird.
-			Span<int> rawData;
+			Types.Span<int> rawData;
 			if (isWater && WaterBlock != 1) {
 				rawData = DownSample(data: rawTextureData, bounds: inputBounds, referenceWidth: (uint)input.ReferenceSize.Width, block: WaterBlock);
 				rawSize = inputBounds.Extent;
@@ -342,7 +361,7 @@ namespace SpriteMaster {
 						if (Config.Resample.Padding.Whitelist.Contains(input.Reference.SafeName())) {
 							shouldPad = Vector2B.True;
 						}
-						else if (Config.Resample.Padding.Blacklist.Contains(input.Reference.SafeName())) {
+						else if (isWater || Config.Resample.Padding.Blacklist.Contains(input.Reference.SafeName())) {
 							shouldPad = Vector2B.False;
 						}
 					}
@@ -607,7 +626,7 @@ namespace SpriteMaster {
 			data = bitmapData;
 		}
 
-		internal static ManagedTexture2D Upscale (ScaledTexture texture, ref uint scale, SpriteInfo input, bool desprite, ulong hash, ref Vector2B wrapped, bool async) {
+		internal static ManagedTexture2D Upscale (ScaledTexture texture, ref uint scale, SpriteInfo input, TextureType textureType, ulong hash, ref Vector2B wrapped, bool async) {
 			// Try to process the texture twice. Garbage collect after a failure, maybe it'll work then.
 			foreach (var _ in 0.To(1)) {
 				try {
@@ -615,7 +634,7 @@ namespace SpriteMaster {
 						texture: texture,
 						scale: ref scale,
 						input: input,
-						desprite: desprite,
+						textureType: textureType,
 						hash: hash,
 						wrapped: ref wrapped,
 						async: async
@@ -630,10 +649,10 @@ namespace SpriteMaster {
 			return null;
 		}
 
-		private static unsafe ManagedTexture2D UpscaleInternal (ScaledTexture texture, ref uint scale, SpriteInfo input, bool desprite, ulong hash, ref Vector2B wrapped, bool async) {
+		private static unsafe ManagedTexture2D UpscaleInternal (ScaledTexture texture, ref uint scale, SpriteInfo input, TextureType textureType, ulong hash, ref Vector2B wrapped, bool async) {
 			var spriteFormat = TextureFormat.Color;
 
-			if (Config.GarbageCollectAccountUnownedTextures && GarbageMarkSet.Add(input.Reference)) {
+			if (Config.Garbage.CollectAccountUnownedTextures && GarbageMarkSet.Add(input.Reference)) {
 				Garbage.Mark(input.Reference);
 				input.Reference.Disposing += (obj, _) => {
 					Garbage.Unmark((Texture2D)obj);
@@ -645,10 +664,15 @@ namespace SpriteMaster {
 
 			var spriteBounds = input.Size;
 			var textureSize = input.ReferenceSize;
-			var inputSize = desprite ? spriteBounds.Extent : textureSize;
+			var inputSize = textureType switch {
+				TextureType.Sprite => spriteBounds.Extent,
+				TextureType.Image => textureSize,
+				TextureType.SlicedImage => throw new NotImplementedException("Sliced Images not yet implemented"),
+				_ => throw new NotImplementedException("Unknown Image Type provided")
+			};
 
-			var isWater = desprite && IsWater(input);
-			var isFont = desprite && !isWater && IsFont(input);
+			var isWater = (textureType == TextureType.Sprite) && IsWater(input);
+			var isFont = (textureType == TextureType.Sprite) && !isWater && IsFont(input);
 
 			var BlockSize = isWater ? WaterBlock : isFont ? FontBlock : 0U;
 
@@ -685,24 +709,30 @@ namespace SpriteMaster {
 				}
 
 				if (bitmapData == null) {
-					CreateNewTexture(
-						async: async,
-						texture: texture,
-						input: input,
-						desprite: desprite,
-						isWater: isWater,
-						isFont: isFont,
-						spriteBounds: in spriteBounds,
-						textureSize: in textureSize,
-						hashString: hashString,
-						wrapped: ref wrapped,
-						scale: ref scale,
-						size: out newSize,
-						format: out spriteFormat,
-						padding: out texture.Padding,
-						blockPadding: out texture.BlockPadding,
-						data: out bitmapData
-					);
+					try {
+						CreateNewTexture(
+							async: async,
+							texture: texture,
+							input: input,
+							textureType: textureType,
+							isWater: isWater,
+							isFont: isFont,
+							spriteBounds: in spriteBounds,
+							textureSize: in textureSize,
+							hashString: hashString,
+							wrapped: ref wrapped,
+							scale: ref scale,
+							size: out newSize,
+							format: out spriteFormat,
+							padding: out texture.Padding,
+							blockPadding: out texture.BlockPadding,
+							data: out bitmapData
+						);
+					}
+					catch (OutOfMemoryException) {
+						Debug.Error($"OutOfMemoryException thrown trying to create texture [texture: {texture.SafeName()}, bounds: {spriteBounds}, textureSize: {textureSize}, scale: {scale}]");
+						throw;
+					}
 
 					try {
 						Cache.Save(cachePath, scale, newSize, spriteFormat, wrapped, texture.Padding, texture.BlockPadding, bitmapData);

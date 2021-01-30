@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <GamePath>I:\Program Files (x86)\Steam\steamapps\common\Stardew Valley</GamePath>
+    <EnableHarmony>true</EnableHarmony>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -53,11 +53,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(GamePath)\smapi-internal\0Harmony.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="PyTK">
       <HintPath>$(GamePath)\Mods\PyTK\PyTK.dll</HintPath>
       <Private>False</Private>
@@ -74,6 +69,7 @@
   <ItemGroup>
     <Compile Include="animals\Animal.cs" />
     <Compile Include="animals\AnimalContestController.cs" />
+    <Compile Include="common\AnimalUtility.cs" />
     <Compile Include="animals\data\AnimalContestData.cs" />
     <Compile Include="animals\data\CustomAnimalItem.cs" />
     <Compile Include="animals\data\DinosaurItem.cs" />
@@ -87,7 +83,6 @@
     <Compile Include="animals\data\AnimalContestItem.cs" />
     <Compile Include="animals\data\AnimalContestScore.cs" />
     <Compile Include="animals\data\AnimalStatus.cs" />
-    <Compile Include="animals\AnimalStatusController.cs" />
     <Compile Include="animals\data\AnimalBuildingData.cs" />
     <Compile Include="animals\data\AnimalData.cs" />
     <Compile Include="animals\data\AnimalItem.cs" />
@@ -110,6 +105,7 @@
     <Compile Include="animals\events\MaruAct.cs" />
     <Compile Include="animals\events\ShaneAct.cs" />
     <Compile Include="animals\events\WillyAct.cs" />
+    <Compile Include="animals\FarmAnimalExtension.cs" />
     <Compile Include="animals\FarmAnimalOverrides.cs" />
     <Compile Include="animals\events\VincentAct.cs" />
     <Compile Include="animals\events\VincentAnimal.cs" />
@@ -126,7 +122,6 @@
     <Compile Include="animals\TreatsController.cs" />
     <Compile Include="common\EventOverrides.cs" />
     <Compile Include="common\ItemUtility.cs" />
-    <Compile Include="common\MultiplayerOverrides.cs" />
     <Compile Include="meats\MeatOverrides.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="animals\data\RabbitItem.cs" />
@@ -145,13 +140,15 @@
     <Compile Include="farmer\FarmerLoader.cs" />
     <Compile Include="farmer\FarmerData.cs" />
     <Compile Include="recipes\TrashBearOverrides.cs" />
-    <Compile Include="tools\ParticipantRibbon.cs" />
-    <Compile Include="tools\FeedingBasket.cs" />
-    <Compile Include="tools\InseminationSyringe.cs" />
-    <Compile Include="tools\MeatCleaver.cs" />
+    <Compile Include="tools\FeedingBasketOverrides.cs" />
+    <Compile Include="tools\InseminationSyringeOverrides.cs" />
+    <Compile Include="tools\MeatCleaverOverrides.cs" />
     <Compile Include="AnimalHusbandryModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="recipes\MeatFridayChannel.cs" />
+    <Compile Include="tools\ParticipantRibbonOverrides.cs" />
+    <Compile Include="tools\ToolOverridesBase.cs" />
+    <Compile Include="tools\ToolsFactory.cs" />
     <Compile Include="tools\ToolsLoader.cs" />
   </ItemGroup>
   <ItemGroup>

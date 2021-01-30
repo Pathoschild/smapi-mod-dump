@@ -1,0 +1,24 @@
+{
+    // Object data
+    "Name": "blueberry.cac.nettles",
+    "Description": "...",
+    "Category": "Greens",
+    "Edibility": -18,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 35,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+        "Dislike": [ "Caroline", "Leah", "Linus" ],
+        "Hate": [ "Vincent", "Jas", "Marnie", "Clint", "George", "Sebastian", "Abigail", "Alex", "Caroline", "Demetrius", "Dwarf", "Elliott", "Emily", "Evelyn", "Haley", "Harvey", "Jodi", "Kent", "Krobus", "Leah", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Sandy", "Willy", "Wizard", "Shane", "Pam", "Gus" ]
+    }
+}

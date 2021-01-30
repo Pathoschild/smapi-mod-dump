@@ -24,18 +24,35 @@ namespace Randomizer
 		{
 			Boots.Clear();
 			WeaponAndArmorNameRandomizer nameRandomizer = new WeaponAndArmorNameRandomizer();
+			List<string> descriptions = NameAndDescriptionRandomizer.GenerateBootDescriptions(BootData.AllBoots.Count);
 
 			Dictionary<int, string> bootReplacements = new Dictionary<int, string>();
 			List<BootItem> bootsToUse = new List<BootItem>();
-			foreach (BootItem originalBoot in BootData.AllBoots)
+
+			for (int i = 0; i < BootData.AllBoots.Count; i++)
 			{
+				BootItem originalBoot = BootData.AllBoots[i];
 				int statPool = Globals.RNGGetIntWithinPercentage(originalBoot.Defense + originalBoot.Immunity, 30);
 				int defense = Range.GetRandomValue(0, statPool);
 				int immunity = statPool - defense;
 
+				if ((defense + immunity) == 0)
+				{
+					if (Globals.RNGGetNextBoolean())
+					{
+						defense = 1;
+					}
+
+					else
+					{
+						immunity = 1;
+					}
+				}
+
 				BootItem newBootItem = new BootItem(
 					originalBoot.Id,
 					nameRandomizer.GenerateRandomBootName(),
+					descriptions[i],
 					originalBoot.NotActuallyPrice,
 					defense,
 					immunity,
@@ -61,7 +78,7 @@ namespace Randomizer
 		/// <param name="bootsToUse">The boot data that was used</param>
 		public static void WriteToSpoilerLog(List<BootItem> bootsToUse)
 		{
-			if (!Globals.Config.RandomizeBoots) { return; }
+			if (!Globals.Config.Boots.Randomize) { return; }
 
 			Globals.SpoilerWrite("==== BOOTS ====");
 			foreach (BootItem bootToAdd in bootsToUse)

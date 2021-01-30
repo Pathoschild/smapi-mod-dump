@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using PurrplingCore;
 using QuestFramework.Extensions;
 using QuestFramework.Quests;
+using QuestFramework.Structures;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
@@ -31,21 +32,13 @@ namespace QuestFramework.Framework.Menus
 
         private int lastQuestPage = -1;
         private Item rewardItem;
+        private List<CustomQuestObjective> _currentObjectives;
 
-        private List<List<IQuest>> Pages => Reflection.GetField<List<List<IQuest>>>(this, "pages").GetValue();
-        private int QuestPage => Reflection.GetField<int>(this, "questPage").GetValue();
-        private int CurrentPage => Reflection.GetField<int>(this, "currentPage").GetValue();
+        protected List<List<IQuest>> Pages => Reflection.GetField<List<List<IQuest>>>(this, "pages").GetValue();
+        protected int QuestPage => Reflection.GetField<int>(this, "questPage").GetValue();
+        protected int CurrentPage => Reflection.GetField<int>(this, "currentPage").GetValue();
 
-        public Quest CurrentQuest
-        {
-            get
-            {
-                if (this.Pages.ElementAtOrDefault(this.CurrentPage) == null || this.Pages[this.CurrentPage].ElementAtOrDefault(this.QuestPage) == null)
-                    return null;
-
-                return this.Pages[this.CurrentPage][this.QuestPage] as Quest;
-            }
-        }
+        public Quest CurrentQuest => this._shownQuest as Quest;
 
         public override void update(GameTime time)
         {
@@ -71,7 +64,7 @@ namespace QuestFramework.Framework.Menus
                     case RewardType.Object:
                     case RewardType.Weapon:
                         Game1.playSound("coin");
-                        Game1.player.addItemByMenuIfNecessary(this.rewardItem, (ItemGrabMenu.behaviorOnItemSelect)null);
+                        Game1.player.addItemByMenuIfNecessary(this.rewardItem, null);
                         this.rewardItem = null;
                         break;
                 }
@@ -83,6 +76,21 @@ namespace QuestFramework.Framework.Menus
             }
 
             base.receiveLeftClick(x, y, playSound);
+            this.LoadManagedQuestObjectives();
+        }
+
+        private void LoadManagedQuestObjectives()
+        {
+            if (this.QuestPage != -1 && this.QuestPage != this.lastQuestPage)
+            {
+                if (this._shownQuest is Quest quest && quest.IsManaged())
+                {
+                    var managedQuest = quest.AsManagedQuest();
+
+                    managedQuest.UpdateCurrentObjectives();
+                    this._currentObjectives = managedQuest.GetCurrentObjectives();
+                }
+            }
         }
 
         private bool IsClickedOnRewardBox(int x, int y)
@@ -122,7 +130,7 @@ namespace QuestFramework.Framework.Menus
 
         public override void draw(SpriteBatch b)
         {
-            if (this.CurrentQuest != null && this.CurrentQuest.IsManaged())
+            if (this.QuestPage != -1 && this.CurrentQuest != null && this.CurrentQuest.IsManaged())
             {
                 this.DrawWindow(b);
                 this.DrawManagedQuestDetails(b);
@@ -191,19 +199,20 @@ namespace QuestFramework.Framework.Menus
                 this.yPositionOnScreen + 32, 
                 color: managedQuest.Colors?.TitleColor ?? -1);
 
-            if (this.CurrentQuest.dailyQuest.Value && this.CurrentQuest.daysLeft.Value > 0)
+            if (this.CurrentQuest.IsTimedQuest() && this.CurrentQuest.GetDaysLeft() > 0)
             {
-                Utility.drawWithShadow(b, Game1.mouseCursors,
-                    new Vector2(this.xPositionOnScreen + 32, this.yPositionOnScreen + 48 - 8),
-                    new Rectangle(410, 501, 9, 9), Color.White, 0.0f, Vector2.Zero, 4f, false, 0.99f, -1, -1, 0.35f);
+                var left_text = Game1.parseText((this.CurrentQuest.GetDaysLeft() > 1)
+                    ? Game1.content.LoadString("Strings\\StringsFromCSFiles:QuestLog.cs.11374", this.CurrentQuest.GetDaysLeft())
+                    : (Game1.IsEnglish()
+                        ? "Final Day"
+                        : Game1.content.LoadString("Strings\\StringsFromCSFiles:QuestLog.cs.11375", this.CurrentQuest.GetDaysLeft())),
+                    Game1.dialogueFont, base.width - 128);
+
+                Utility.drawWithShadow(b, Game1.mouseCursors, new Vector2(this.xPositionOnScreen + 32, this.yPositionOnScreen + 48 - 8), new Rectangle(410, 501, 9, 9), Color.White, 0f, Vector2.Zero, 4f, flipped: false, 0.99f);
 
                 if (managedQuest.Colors != null && managedQuest.Colors.ObjectiveColor != -1)
                 {
-                    b.DrawString(Game1.dialogueFont,
-                        Game1.parseText(this.CurrentQuest.daysLeft.Value > 1
-                            ? Game1.content.LoadString(@"Strings\StringsFromCSFiles:QuestLog.cs.11374", this.CurrentQuest.daysLeft.Value)
-                            : Game1.content.LoadString(@"Strings\StringsFromCSFiles:QuestLog.cs.11375", this.CurrentQuest.daysLeft.Value),
-                            Game1.dialogueFont, this.width - 128),
+                    b.DrawString(Game1.dialogueFont, left_text,
                         new Vector2(this.xPositionOnScreen + 80, this.yPositionOnScreen + 48 - 8),
                         SpriteText.getColorFromIndex(managedQuest.Colors.ObjectiveColor),
                         0.0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
@@ -211,30 +220,42 @@ namespace QuestFramework.Framework.Menus
                 else
                 {
                     Utility.drawTextWithShadow(
-                        b,
-                        Game1.parseText(this.CurrentQuest.daysLeft.Value > 1
-                            ? Game1.content.LoadString(@"Strings\StringsFromCSFiles:QuestLog.cs.11374", this.CurrentQuest.daysLeft.Value)
-                            : Game1.content.LoadString(@"Strings\StringsFromCSFiles:QuestLog.cs.11375", this.CurrentQuest.daysLeft.Value),
-                            Game1.dialogueFont, this.width - 128),
-                        Game1.dialogueFont, new Vector2(this.xPositionOnScreen + 80, this.yPositionOnScreen + 48 - 8),
-                        Game1.textColor, 1f, -1f, -1, -1, 1f, 3);
+                    b, left_text, Game1.dialogueFont,
+                    new Vector2(this.xPositionOnScreen + 80, this.yPositionOnScreen + 48 - 8),
+                    Game1.textColor);
                 }
             }
 
-            if (managedQuest.Colors != null && managedQuest.Colors.TextColor != -1)
+            string description = Game1.parseText(this.CurrentQuest.GetDescription(), Game1.dialogueFont, base.width - 128);
+            Rectangle cached_scissor_rect = b.GraphicsDevice.ScissorRectangle;
+            Vector2 description_size = Game1.dialogueFont.MeasureString(description);
+            Rectangle scissor_rect = default(Rectangle);
+            scissor_rect.X = this.xPositionOnScreen + 32;
+            scissor_rect.Y = this.yPositionOnScreen + 96;
+            scissor_rect.Height = this.yPositionOnScreen + this.height - 32 - scissor_rect.Y;
+            scissor_rect.Width = base.width - 64;
+            this._scissorRectHeight = scissor_rect.Height;
+            scissor_rect = Utility.ConstrainScissorRectToScreen(scissor_rect);
+            b.End();
+            b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, new RasterizerState
             {
-                b.DrawString(Game1.dialogueFont, Game1.parseText(this.CurrentQuest.questDescription, Game1.dialogueFont, this.width - 128), new Vector2(this.xPositionOnScreen + 64, this.yPositionOnScreen + 96), SpriteText.getColorFromIndex(managedQuest.Colors.TextColor), 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-            }
-            else
-            {
-                Utility.drawTextWithShadow(b, Game1.parseText(this.CurrentQuest.questDescription, Game1.dialogueFont, this.width - 128), Game1.dialogueFont, new Vector2(this.xPositionOnScreen + 64, this.yPositionOnScreen + 96),
-                    managedQuest.Colors != null ? SpriteText.getColorFromIndex(managedQuest.Colors.TextColor) : Game1.textColor,
-                    1f, -1f, -1, -1, 1f, 3);
-            }
+                ScissorTestEnable = true
+            });
+            Game1.graphics.GraphicsDevice.ScissorRectangle = scissor_rect;
+            Utility.drawTextWithShadow(
+                    b, description, Game1.dialogueFont,
+                    new Vector2(this.xPositionOnScreen + 64, (float)this.yPositionOnScreen - this.scrollAmount + 96f),
+                    managedQuest.Colors != null && managedQuest.Colors.TextColor != -1
+                        ? SpriteText.getColorFromIndex(managedQuest.Colors.TextColor)
+                        : Game1.textColor, shadowIntensity: 0);
 
-            float y = (float)(this.yPositionOnScreen + 96 + (double)Game1.dialogueFont.MeasureString(Game1.parseText(this.CurrentQuest.questDescription, Game1.dialogueFont, this.width - 128)).Y + 32.0);
-            if (this.CurrentQuest.completed.Value)
+            float yPos = (float)(this.yPositionOnScreen + 96) + description_size.Y + 32f - this.scrollAmount;
+
+            if (this.CurrentQuest.ShouldDisplayAsComplete())
             {
+                b.End();
+                b.GraphicsDevice.ScissorRectangle = cached_scissor_rect;
+                b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
                 SpriteText.drawString(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:QuestLog.cs.11376"), this.xPositionOnScreen + 32 + 4, this.rewardBox.bounds.Y + 21 + 4, color: managedQuest.Colors?.TitleColor ?? -1);
                 this.rewardBox.draw(b);
 
@@ -266,33 +287,70 @@ namespace QuestFramework.Framework.Menus
             }
             else
             {
-                Utility.drawWithShadow(
-                    b, Game1.mouseCursors,
-                    new Vector2(this.xPositionOnScreen + 96 + (float)(8.0 * Game1.dialogueButtonScale / 10.0), y),
-                    new Rectangle(412, 495, 5, 4), Color.White, 1.570796f, Vector2.Zero, -1f, false, -1f, -1, -1, 0.35f);
-
-                if (managedQuest.Colors != null && managedQuest.Colors.ObjectiveColor != -1)
+                if (this._currentObjectives != null && this._currentObjectives.Any())
                 {
-                    b.DrawString(Game1.dialogueFont,
-                        Game1.parseText(this.CurrentQuest.currentObjective, Game1.dialogueFont, this.width - 128),
-                        new Vector2(this.xPositionOnScreen + 128, y - 8f),
-                        SpriteText.getColorFromIndex(managedQuest.Colors.ObjectiveColor),
-                        0.0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-                }
-                else
-                {
-                    Utility.drawTextWithShadow(b,
-                        Game1.parseText(this.CurrentQuest.currentObjective, Game1.dialogueFont, this.width - 256),
-                        Game1.dialogueFont, new Vector2(this.xPositionOnScreen + 128, y - 8f),
-                        managedQuest.Colors != null ? SpriteText.getColorFromIndex(managedQuest.Colors.ObjectiveColor) : Color.DarkBlue,
-                        1f, -1f, -1, -1, 1f, 3);
-                }
+                    foreach (var objective in this._currentObjectives)
+                    {
+                        Utility.drawWithShadow(
+                            b, Game1.mouseCursors,
+                            new Vector2((float)(this.xPositionOnScreen + 96) + 8f * Game1.dialogueButtonScale / 10f, yPos),
+                            new Rectangle(412, 495, 5, 4), Color.White, (float)Math.PI / 2f, Vector2.Zero);
 
-                if (this.CurrentQuest.canBeCancelled.Value)
+                        this.DrawObjective(b, objective, managedQuest.Colors, ref yPos);
+                    }
+                }
+                this._contentHeight = yPos + this.scrollAmount - scissor_rect.Y;
+                b.End();
+                b.GraphicsDevice.ScissorRectangle = cached_scissor_rect;
+                b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+
+                if (this.CurrentQuest.CanBeCancelled())
                 {
                     this.cancelQuestButton.draw(b);
                 }
+                if (this.NeedsScroll())
+                {
+                    if (this.scrollAmount > 0f)
+                    {
+                        b.Draw(Game1.staminaRect, new Rectangle(scissor_rect.X, scissor_rect.Top, scissor_rect.Width, 4), Color.Black * 0.15f);
+                    }
+                    if (this.scrollAmount < this._contentHeight - this._scissorRectHeight)
+                    {
+                        b.Draw(Game1.staminaRect, new Rectangle(scissor_rect.X, scissor_rect.Bottom - 4, scissor_rect.Width, 4), Color.Black * 0.15f);
+                    }
+                }
             }
+
+            if (NeedsScroll())
+            {
+                upArrow.draw(b);
+                downArrow.draw(b);
+                scrollBar.draw(b);
+            }
+        }
+
+        private void DrawObjective(SpriteBatch b, CustomQuestObjective objective, QuestLogColors colors, ref float yPos)
+        {
+            var parsed_objective = Game1.parseText(objective.Text, Game1.dialogueFont, this.width - 128);
+
+            if (colors != null && colors.ObjectiveColor != -1)
+            {
+                b.DrawString(Game1.dialogueFont,
+                    parsed_objective,
+                    new Vector2(this.xPositionOnScreen + 128, yPos - 8f),
+                    objective.IsCompleted ? Game1.unselectedOptionColor : SpriteText.getColorFromIndex(colors.ObjectiveColor),
+                    0.0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+            }
+            else
+            {
+                Utility.drawTextWithShadow(b,
+                    parsed_objective,
+                    Game1.dialogueFont, new Vector2(this.xPositionOnScreen + 128, yPos - 8f),
+                    objective.IsCompleted ? Game1.unselectedOptionColor : Color.DarkBlue,
+                    1f, -1f, -1, -1, 1f, 3);
+            }
+
+            yPos += Game1.dialogueFont.MeasureString(parsed_objective).Y;
         }
     }
 }

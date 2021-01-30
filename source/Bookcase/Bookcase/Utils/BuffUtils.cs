@@ -9,9 +9,9 @@
 *************************************************/
 
 using StardewValley;
-using System.Reflection;
 using StardewValley.Menus;
 using System.Collections.Generic;
+using System.Reflection;
 
 
 namespace Bookcase.Utils {

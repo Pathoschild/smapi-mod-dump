@@ -47,3 +47,10 @@
 1.1.2:
 	-fixed English text (thanks to overwritten)
 	-fixed walking animation. (Pet behavior was reset too often)
+
+1.1.3:
+	-recompiled for new game version 1.5
+
+1.1.4:
+	-fixed pet position on beach map
+	-fixed trash shaming still occurring under some circumstances

@@ -5,9 +5,9 @@ mods:
    SpaceCore
 
 latest commit:
-   commit e58da8b8d4b0ba867472a9e09449e68e367f3352
+   commit d4d7480d76e7dc97c20a779582dbd22b72bce25e
    Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Sat Dec 26 21:47:36 2020 -0500
+   Date:   Thu Jan 28 14:10:50 2021 -0500
    
-       Fix winter crops; 1.5.1
+       Some stuff; 1.5.3
    

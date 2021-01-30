@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7517
+IDs: TheMightyAmondee.CustomTokens
+update keys: Nexus:7517, GitHub:TheMightyAmondee/CustomTokens

@@ -125,6 +125,10 @@ namespace RangeHighlight {
             rangeHighlighter.AddItemHighlighter(uniqueId, hotkey, highlightOthersWhenHeld, highlighter);
         }
 
+        void IRangeHighlightAPI.AddItemRangeHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, Action onRangeCalculationStart, Func<Item, int, string, Tuple<Color, bool[,]>> highlighter, Action onRangeCalculationFinish) {
+            rangeHighlighter.AddItemHighlighter(uniqueId, hotkey, highlightOthersWhenHeld, highlighter, onRangeCalculationStart, onRangeCalculationFinish);
+        }
+
         public void RemoveBuildingRangeHighlighter(string uniqueId) {
             rangeHighlighter.RemoveBuildingHighlighter(uniqueId);
         }

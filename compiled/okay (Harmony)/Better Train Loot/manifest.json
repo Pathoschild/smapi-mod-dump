@@ -1,11 +1,11 @@
 {
   "Name": "Better Train Loot",
   "Author": "AairTheGreat",
-  "Version": "1.0.6",
+  "Version": "1.0.7",
   "Description": "Hopefully makes train loot more interesting",
   "UniqueID": "AairTheGreat.BetterTrainLoot",
   "EntryDll": "Better Train Loot.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.8.0",
   "UpdateKeys": [
     "GitHub:AairTheGreat/StardewValleyMods",
     "Nexus:4234"

@@ -1,0 +1,20 @@
+{
+  "Name": "JojaOnline",
+  "Author": "PeacefulEnd",
+  "Version": "1.2.2",
+  "Description": "Purchasing from Joja Corporation has never been easier!",
+  "UniqueID": "PeacefulEnd.JojaOnline",
+  "EntryDll": "JojaOnline.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7486" ],
+  "Dependencies": [
+   {
+      "UniqueID": "DIGUS.MailFrameworkMod",
+      "IsRequired": true
+   },
+   {
+      "UniqueID": "aedenthorn.MobilePhone",
+      "IsRequired": false
+   }
+]
+}

@@ -19,8 +19,10 @@ namespace EqualMoneySplit.Events
 {
     public class MultiplayerEventHandlers
     {
-        public void OnPeerContextReceived(object sender, PeerContextReceivedEventArgs args)
+        public void OnPeerConnected(object sender, PeerConnectedEventArgs args)
         {
+            EventSubscriber.Instance.TrySetEventSubscriptions();
+
             Task requestTask = Task.Run(() =>
             {
                 bool hasPlayerConnected = Game1.getOnlineFarmers().Any(f => f.UniqueMultiplayerID == args.Peer.PlayerID); ;
@@ -42,6 +44,10 @@ namespace EqualMoneySplit.Events
                     CheckForValidModInstall(args.Peer, args.Peer.PlayerID.ToString());
             });
         }
+        public void OnPeerDisconnected(object sender, PeerDisconnectedEventArgs args)
+        {
+            EventSubscriber.Instance.TrySetEventSubscriptions();
+        }
 
         /// <summary>
         /// Displays an error message if a user does not have EqualMoneySplit installed properly
@@ -50,8 +56,8 @@ namespace EqualMoneySplit.Events
         /// <param name="newPlayerName"></param>
         private void CheckForValidModInstall(IMultiplayerPeer newPlayerData, string newPlayerName)
         {
-            var currentPlayerMod = EqualMoneyMod.SMAPI.ModRegistry.Get(Models.Constants.ModId);
-            var newPlayerModData = newPlayerData.GetMod(Models.Constants.ModId);
+            IModInfo currentPlayerMod = EqualMoneyMod.SMAPI.ModRegistry.Get(Models.Constants.ModId);
+            IMultiplayerPeerMod newPlayerModData = newPlayerData.GetMod(Models.Constants.ModId);
             string errorMessage = "";
 
             if (!newPlayerData.HasSmapi)
@@ -61,9 +67,9 @@ namespace EqualMoneySplit.Events
             else if (newPlayerModData == null)
                 errorMessage = $"Player {newPlayerName} does not have EqualMoneySplit installed! EqualMoneySplit will not function properly!";
             else if (newPlayerModData.Version.IsOlderThan(currentPlayerMod.Manifest.Version))
-                errorMessage = $"Player {newPlayerName} has an older version ({newPlayerModData.Version.ToString()}) EqualMoneySplit than yours ({currentPlayerMod.Manifest.Version.ToString()})! EqualMoneySplit will not function properly!";
+                errorMessage = $"Player {newPlayerName} has an older version ({newPlayerModData.Version}) EqualMoneySplit than yours ({currentPlayerMod.Manifest.Version})! EqualMoneySplit will not function properly!";
             else if (newPlayerModData.Version.IsNewerThan(currentPlayerMod.Manifest.Version))
-                errorMessage = $"Player {newPlayerName} has a newer version ({newPlayerModData.Version.ToString()}) of EqualMoneySplit than yours ({currentPlayerMod.Manifest.Version.ToString()})! EqualMoneySplit will not function properly!";
+                errorMessage = $"Player {newPlayerName} has a newer version ({newPlayerModData.Version}) of EqualMoneySplit than yours ({currentPlayerMod.Manifest.Version})! EqualMoneySplit will not function properly!";
 
             if (!string.IsNullOrEmpty(errorMessage))
                 Game1.chatBox.addErrorMessage(errorMessage);

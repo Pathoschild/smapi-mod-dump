@@ -22,7 +22,7 @@ namespace SpriteMaster {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public void Dispose () {}
 		}
-		private static readonly DummyDisposable Dummy = new DummyDisposable();
+		private static readonly DummyDisposable Dummy = new();
 #else
 		internal struct PerformanceTrackerDisposable : IDisposable {
 			internal readonly string Name;

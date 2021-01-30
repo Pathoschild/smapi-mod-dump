@@ -174,7 +174,7 @@ namespace Randomizer
 		/// <param name="swaps">The swaps</param>
 		private static void SwapMonsterItemDrops(Monster monster, Dictionary<int, int> swaps)
 		{
-			if (!Globals.Config.SwapUniqueMonsterDrops_Needs_Above_Setting_On) { return; }
+			if (!Globals.Config.Monsters.Randomize || !Globals.Config.Monsters.SwapUniqueDrops) { return; }
 
 			foreach (ItemDrop itemDrop in monster.ItemDrops)
 			{
@@ -242,7 +242,7 @@ namespace Randomizer
 		/// <param name="monsterItemSwaps">The item swaps performed</param>
 		private static void WriteSwapInfoToSpoilerLog(Dictionary<int, int> monsterItemSwaps)
 		{
-			if (!Globals.Config.RandomizeMonsters) { return; }
+			if (!Globals.Config.Monsters.Randomize) { return; }
 
 			Globals.SpoilerWrite("===== MONSTERS =====");
 			Globals.SpoilerWrite("");
@@ -261,7 +261,7 @@ namespace Randomizer
 		/// <param name="extraItemDrops">The map of monsters to their extra item drop</param>
 		private static void WriteMonsterInfoToSpoilerLog(List<Monster> allMonsters, Dictionary<string, ItemDrop> extraItemDrops)
 		{
-			if (!Globals.Config.RandomizeMonsters) { return; }
+			if (!Globals.Config.Monsters.Randomize) { return; }
 
 			Globals.SpoilerWrite("");
 			Globals.SpoilerWrite("> Monster stats");
@@ -279,7 +279,6 @@ namespace Randomizer
 				Globals.SpoilerWrite($"Jitteriness value: {monster.Jitteriness}");
 				Globals.SpoilerWrite($"Threshold until the monster moves towards players: {monster.MovesTowardPlayerThreshold}");
 				Globals.SpoilerWrite($"Extra drop: {extraDrop.ItemToDrop.Name} at {extraDrop.Probability * 100}%");
-
 			}
 
 			Globals.SpoilerWrite("");

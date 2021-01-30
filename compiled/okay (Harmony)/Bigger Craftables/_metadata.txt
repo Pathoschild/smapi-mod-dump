@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7530
+IDs: spacechase0.BiggerCraftables
+update keys: Nexus:7530, GitHub:spacechase0/BiggerCraftables

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -16,6 +17,8 @@ using xTile.Layers;
 using xTile.Tiles;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
+using StardewValley.Locations;
 using StardewValley.Menus;
 
 namespace TrainStation
@@ -26,6 +29,7 @@ namespace TrainStation
         public static ModEntry Instance;
 
         private List<TrainStop> TrainStops;
+        private List<BoatStop> BoatStops;
         private IConditionsChecker ConditionsApi;
 
         public override void Entry(IModHelper helper)
@@ -37,6 +41,17 @@ namespace TrainStation
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.Display.MenuChanged += Display_MenuChanged;
+            helper.Events.Player.Warped += Player_Warped;
+        }
+
+        private void Player_Warped(object sender, StardewModdingAPI.Events.WarpedEventArgs e)
+        {
+            if (e.NewLocation.Name != "Railroad") return;
+
+            string property = e.NewLocation.doesTileHaveProperty(Config.TicketStationX, Config.TicketStationY,
+                "Action", "Buildings");
+            if (property != "TrainStation")
+                DrawInTicketStation();
         }
 
         private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
@@ -84,14 +99,27 @@ namespace TrainStation
             Layer buildingsLayer = railway.map.GetLayer("Buildings");
             Layer frontLayer = railway.map.GetLayer("Front");
 
-            string tilesheetPath =$"Maps\\{Game1.currentSeason}_outdoorsTileSheet";
-            TileSheet outdoorsTilesheet = railway.map.TileSheets.FirstOrDefault(t => t.ImageSource == tilesheetPath);
+            TileSheet outdoorsTilesheet = railway.map.TileSheets[1];
 
-            //draw the ticket station
-            buildingsLayer.Tiles[Config.TicketStationX, Config.TicketStationY] =
-                new StaticTile(buildingsLayer, outdoorsTilesheet, BlendMode.Alpha, TicketStationBottomTile);
-            frontLayer.Tiles[Config.TicketStationX, Config.TicketStationY - 1] =
-                new StaticTile(frontLayer, outdoorsTilesheet, BlendMode.Alpha, TicketStationTopTile);
+            try
+            {
+                //draw the ticket station
+                buildingsLayer.Tiles[Config.TicketStationX, Config.TicketStationY] =
+                    new StaticTile(buildingsLayer, outdoorsTilesheet, BlendMode.Alpha, TicketStationBottomTile);
+                frontLayer.Tiles[Config.TicketStationX, Config.TicketStationY - 1] =
+                    new StaticTile(frontLayer, outdoorsTilesheet, BlendMode.Alpha, TicketStationTopTile);
+            }
+            catch (Exception e)
+            {
+                Monitor.Log(e.ToString(),LogLevel.Error);
+                Monitor.Log("Train station has recovered from a crash and will continue to function, however the ticket station may be invisible or looked glitched. This is caused by the map mod you are using changing tilesheet orders through renaming vanilla tilesheets or not naming custom tilesheets properly. Please report this to the map mod you are using to fix this issue.",LogLevel.Alert);
+                //draw anything from the tilesheet
+                buildingsLayer.Tiles[Config.TicketStationX, Config.TicketStationY] =
+                    new StaticTile(buildingsLayer, outdoorsTilesheet, BlendMode.Alpha, 1);
+                frontLayer.Tiles[Config.TicketStationX, Config.TicketStationY - 1] =
+                    new StaticTile(frontLayer, outdoorsTilesheet, BlendMode.Alpha, 1);
+            }
+
 
             //set the TrainStation property
             railway.setTileProperty(Config.TicketStationX, Config.TicketStationY, "Buildings", "Action", "TrainStation");
@@ -113,13 +141,23 @@ namespace TrainStation
                 TranslatedName = Helper.Translation.Get("TrainStationDisplayName")
             };
 
+            //create stop in willy's boat room
+            BoatStop BoatTunnelStop = new BoatStop()
+            {
+                TargetMapName = "BoastTunnel",
+                StopID = "Cherry.TrainStation",
+                TargetX = 4,
+                TargetY = 9,
+                Cost = 0,
+                TranslatedName = Helper.Translation.Get("BoatStationDisplayName")
+            };
+
             ContentPack content = new ContentPack();
             content.TrainStops = new List<TrainStop>();
-            content.TrainStops.Add(RailRoadStop);
-
-            Helper.Data.WriteJsonFile("example.json", content);
+            content.BoatStops = new List<BoatStop>();
 
             TrainStops = new List<TrainStop>() { RailRoadStop };
+            BoatStops = new List<BoatStop>(){ BoatTunnelStop };
 
             foreach (IContentPack pack in Helper.ContentPacks.GetOwned())
             {
@@ -130,14 +168,30 @@ namespace TrainStation
                 }
 
                 ContentPack cp = pack.LoadAsset<ContentPack>("TrainStops.json");
-                for (int i = 0; i < cp.TrainStops.Count; i++)
+                if (cp.TrainStops != null)
                 {
-                    TrainStop stop = cp.TrainStops.ElementAt(i);
-                    stop.StopID = $"{pack.Manifest.UniqueID}{i}"; //assigns a unique stopID to every stop
-                    stop.TranslatedName = Localize(stop.LocalizedDisplayName);
+                    for (int i = 0; i < cp.TrainStops.Count; i++)
+                    {
+                        TrainStop stop = cp.TrainStops.ElementAt(i);
+                        stop.StopID = $"{pack.Manifest.UniqueID}{i}"; //assigns a unique stopID to every stop
+                        stop.TranslatedName = Localize(stop.LocalizedDisplayName);
 
-                    TrainStops.Add(cp.TrainStops.ElementAt(i));
+                        TrainStops.Add(cp.TrainStops.ElementAt(i));
+                    }
                 }
+
+                if (cp.BoatStops != null)
+                {
+                    for (int i = 0; i < cp.BoatStops.Count; i++)
+                    {
+                        BoatStop stop = cp.BoatStops.ElementAt(i);
+                        stop.StopID = $"{pack.Manifest.UniqueID}{i}"; //assigns a unique stopID to every stop
+                        stop.TranslatedName = Localize(stop.LocalizedDisplayName);
+
+                        BoatStops.Add(cp.BoatStops.ElementAt(i));
+                    }
+                }
+
             }
 
         }
@@ -150,6 +204,17 @@ namespace TrainStation
                 {
                     Monitor.Log($"Could not find location {stop.TargetMapName}", LogLevel.Warn);
                     TrainStops.RemoveAt(i);
+                }
+
+            }
+
+            for (int i = BoatStops.Count - 1; i >= 0; i--)
+            {
+                BoatStop stop = BoatStops[i];
+                if (Game1.getLocationFromName(stop.TargetMapName) == null)
+                {
+                    Monitor.Log($"Could not find location {stop.TargetMapName}", LogLevel.Warn);
+                    BoatStops.RemoveAt(i);
                 }
 
             }
@@ -178,11 +243,54 @@ namespace TrainStation
 
             string tileProperty = Game1.currentLocation.doesTileHaveProperty((int)grabTile.X, (int)grabTile.Y, "Action", "Buildings");
 
-            if (tileProperty != "TrainStation")
-                return;
-
             VanillaPreconditionsMethod = Helper.Reflection.GetMethod(Game1.currentLocation, "checkEventPrecondition");
-            OpenTrainMenu();
+            if (tileProperty == "TrainStation")
+            {
+                OpenTrainMenu();
+            } else if (BoatStops.Count > 0 && tileProperty == "BoatTicket" && Game1.MasterPlayer.hasOrWillReceiveMail("willyBoatFixed"))
+            {
+                OpenBoatMenu();
+                Helper.Input.Suppress(e.Button);
+            }
+
+        }
+
+        public void OpenBoatMenu()
+        {
+            Response[] responses = GetBoatReponses().ToArray();
+
+            Game1.currentLocation.createQuestionDialogue(Helper.Translation.Get("ChooseDestination"), responses, BoatDestinationPicked);
+        }
+
+        private List<Response> GetBoatReponses()
+        {
+            List<Response> responses = new List<Response>();
+
+            foreach (BoatStop stop in BoatStops)
+            {
+                if (stop.TargetMapName == Game1.currentLocation.Name) //remove stops to the current map
+                    continue;
+
+                if (!ConditionsApi.CheckConditions(stop.Conditions)) //remove stops that don't meet conditions
+                    continue;
+
+                string displayName = $"{stop.TranslatedName}";
+
+                if (stop.Cost > 0)
+                {
+                    displayName += $" - {stop.Cost}g";
+                }
+
+                responses.Add(new Response(stop.StopID, displayName));
+            }
+
+            if (Game1.currentLocation is BoatTunnel tunnel)
+            {
+                responses.Add(new Response("GingerIsland",this.Helper.Translation.Get("GingerIsland") + $" - {tunnel.GetTicketPrice()}g"));
+            }
+            responses.Add(new Response("Cancel", Helper.Translation.Get("MenuCancelOption")));
+
+            return responses;
         }
 
         public void OpenTrainMenu()
@@ -228,6 +336,38 @@ namespace TrainStation
         ** Warp after choosing destination **
         *************************************/
 
+        private void BoatDestinationPicked(Farmer who, string whichAnswer)
+        {
+            if (whichAnswer == "Cancel")
+                return;
+
+            if (whichAnswer == "GingerIsland")
+            {
+
+                if (Game1.currentLocation is BoatTunnel tunnel)
+                {
+                    if (Game1.player.Money >= tunnel.GetTicketPrice())
+                    {
+                        Game1.player.Money -= tunnel.GetTicketPrice();
+                        tunnel.StartDeparture();
+                    }
+                    else if (Game1.player.Money < tunnel.GetTicketPrice())
+                    {
+                        Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:BusStop_NotEnoughMoneyForTicket"));
+                    }
+                }
+            }
+
+            foreach (BoatStop stop in BoatStops)
+            {
+                if (stop.StopID == whichAnswer)
+                {
+                    AttemptToWarpBoat(stop);
+                }
+            }
+        }
+
+
         private void DestinationPicked(Farmer who, string whichAnswer)
         {
             if (whichAnswer == "Cancel")
@@ -243,6 +383,18 @@ namespace TrainStation
         }
         string destinationMessage;
         ICue cue;
+
+        private void AttemptToWarpBoat(BoatStop stop)
+        {
+
+            if (!TryToChargeMoney(stop.Cost))
+            {
+                Game1.drawObjectDialogue(Helper.Translation.Get("NotEnoughMoney", new { DestinationName = stop.TranslatedName }));
+                return;
+            }
+            LocationRequest request = Game1.getLocationRequest(stop.TargetMapName);
+            Game1.warpFarmer(request, stop.TargetX, stop.TargetY, stop.FacingDirectionAfterWarp);
+        }
         private void AttemptToWarp(TrainStop stop)
         {
 
@@ -297,7 +449,7 @@ namespace TrainStation
 
         private bool CheckConditions(string conditions)
         {
-            if (conditions == null || conditions.Length == 0)
+            if (string.IsNullOrEmpty(conditions))
                 return true;
 
             int result = VanillaPreconditionsMethod.Invoke<int>("-5005/" + conditions);
@@ -352,6 +504,7 @@ namespace TrainStation
     public class ContentPack
     {
         public List<TrainStop> TrainStops { get; set; }
+        public List<BoatStop> BoatStops { get; set; }
     }
 
     public class TrainStop
@@ -369,9 +522,25 @@ namespace TrainStation
         internal string TranslatedName;
     }
 
+    public class BoatStop
+    {
+        public string TargetMapName { get; set; }
+            public Dictionary<string, string> LocalizedDisplayName { get; set; }
+
+            public int TargetX { get; set; }
+            public int TargetY { get; set; }
+            public int Cost { get; set; } = 0;
+            public int FacingDirectionAfterWarp { get; set; } = 2;
+            public string[] Conditions { get; set; }
+
+            internal string StopID; //assigned by the mod's uniqueID and the number of stops from that pack
+            internal string TranslatedName;
+    }
+
     public interface IApi
     {
         void OpenTrainMenu();
+        void OpenBoatMenu();
     }
 
     public class Api : IApi
@@ -379,6 +548,11 @@ namespace TrainStation
         public void OpenTrainMenu()
         {
             ModEntry.Instance.OpenTrainMenu();
+        }
+
+        public void OpenBoatMenu()
+        {
+            ModEntry.Instance.OpenBoatMenu();
         }
     }
 

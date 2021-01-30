@@ -5,9 +5,17 @@ mods:
    Ui Info Suite
 
 latest commit:
-   commit f5bf465e9b2a149c511fa6ad30ed38131870757d
-   Author: U-Gamer\Cdaragorn <707092+cdaragorn@users.noreply.github.com>
-   Date:   Sun Oct 25 23:01:06 2020 -0600
+   commit 963114b1e9605a0c6179ee00946cdf5184ad8b8a
+   Author: MihÃ¡ly Hunyady <megamegax@users.noreply.github.com>
+   Date:   Sat Jan 16 18:39:33 2021 +0100
    
-       Fixed small bug that could display multiple hands. Added turkish translation.
+       Hungarian translation with some extra translations I've found missing. (#58)
+       
+       * add hungarian translation
+       
+       * translate NPCBirthday and UI Mod Options texts
+       
+       * fix imports
+       
+       * translation fix
    

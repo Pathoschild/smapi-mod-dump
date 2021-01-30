@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Cherryrar (functions)",
   "Author": "Edu Anttunes",
-  "Version": "1.1.0",
+  "Version": "1.2.0",
   "Description": "Agora você pode se vestir como a Cherry!",
   "UniqueID": "Cherryrar.Functions",
   "EntryDll": "Cherry.dll",

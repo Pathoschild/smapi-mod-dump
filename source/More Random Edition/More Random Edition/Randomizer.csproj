@@ -33,9 +33,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -50,9 +47,13 @@
     <Compile Include="AssetEditor.cs" />
     <Compile Include="AssetLoader.cs" />
     <Compile Include="BundleMenuAdjustments.cs" />
+    <Compile Include="CookingChannel.cs" />
     <Compile Include="CraftingRecipeAdjustments.cs" />
     <Compile Include="Enums\QuestItemTypes.cs" />
+    <Compile Include="ImageRandomizers\BundleImageBuilder.cs" />
+    <Compile Include="ImageRandomizers\CropGrowthImageBuilder.cs" />
     <Compile Include="ImageRandomizers\ImageBuilder.cs" />
+    <Compile Include="ImageRandomizers\SpringObjectsImageBuilder.cs" />
     <Compile Include="ImageRandomizers\WeaponImageBuilder.cs" />
     <Compile Include="NPCs\BirthdayRandomizer.cs" />
     <Compile Include="BlueprintRandomizer.cs" />
@@ -166,8 +167,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="SpoilerLogger.cs" />
-    <Compile Include="StringsRandomizer.cs" />
+    <Compile Include="StringsAdjustments.cs" />
     <Compile Include="WeaponRandomizer.cs" />
+    <Compile Include="WildSeedAdjustments.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Characters\Abigail.xnb">
@@ -503,6 +505,9 @@
     <None Include="Assets\TileSheets\crittersBears.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Assets\TileSheets\crittersBlueBunny.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\TileSheets\crittersseagullcrow.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -530,7 +535,11 @@
     <None Include="i18n\zh.json" />
     <None Include="manifest.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig">
+      <Version>3.2.2</Version>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Maps\springobjects.png" />
     <Content Include="Assets\Minigames\TitleButtons.png" />

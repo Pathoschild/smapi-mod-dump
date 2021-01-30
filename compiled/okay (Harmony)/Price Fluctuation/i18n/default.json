@@ -1,7 +1,7 @@
 ﻿{
     "fluctuation": "Price Fluctuation",
-    "prev": "Prev Price Fluctuation",
-    "next": "Next Price Fluctuation",
+    "prev price fluctuation": "Prev Price Fluctuation",
+    "next price fluctuation": "Next Price Fluctuation",
     "gold" : "g",
     "farming" : "Farming",
     "fishing" : "Fishing",
@@ -10,4 +10,5 @@
     "cooking" : "Cooking",
     "other" : "Other",
     "open" : "Open",
+    "next" : "Next",
 }

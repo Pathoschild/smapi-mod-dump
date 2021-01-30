@@ -18,11 +18,12 @@ using AnimalHusbandryMod.common;
 using AnimalHusbandryMod.farmer;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Characters;
 using Object = StardewValley.Object;
 
 namespace AnimalHusbandryMod.animals
 {
-    public class TreatsController : AnimalStatusController
+    public class TreatsController
     {
         public static bool CanReceiveTreat(FarmAnimal farmAnimal)
         {
@@ -51,78 +52,69 @@ namespace AnimalHusbandryMod.animals
                 ;
         }
 
-        public static bool IsLikedTreatPet(int itemId)
-        {
-            return DataLoader.AnimalData.Pet.LikedTreatsId.Contains(itemId);
-        }
-
-        public static bool IsLikedTreat(FarmAnimal farmAnimal, int itemId)
+        public static bool IsLikedTreat(Character character, int itemId)
         {
             try
             {
-                return GetTreatItem(farmAnimal).LikedTreatsId.Contains(itemId);
+                if (character is Pet)
+                {
+                    return DataLoader.AnimalData.Pet.LikedTreatsId.Contains(itemId);
+                }
+                else if (character is FarmAnimal farmAnimal)
+                {
+
+                    return GetTreatItem(farmAnimal).LikedTreatsId.Contains(itemId);
+                }
             }
             catch (Exception)
             {
-                return false;
+                // ignored
             }
+            return false;
         }
 
-        public static bool IsReadyForTreatPet()
+        public static bool IsReadyForTreat(Character character)
         {
-            return DaysUntilNextTreatPet() <= 0;
+            return DaysUntilNextTreat(character) <= 0;
         }
 
-        public static bool IsReadyForTreat(FarmAnimal farmAnimal)
-        {
-            return DaysUntilNextTreat(farmAnimal) <= 0;
-        }
-
-        public static int DaysUntilNextTreatPet()
-        {
-            return DaysUntilNextTreat(AnimalData.PetId, DataLoader.AnimalData.Pet);
-        }
-
-        public static int DaysUntilNextTreat(FarmAnimal farmAnimal)
+        public static int DaysUntilNextTreat(Character character)
         {
             try
             {
-                return DaysUntilNextTreat(farmAnimal.myID.Value, GetTreatItem(farmAnimal));
+                if (character is Pet)
+                {
+                    return DaysUntilNextTreat(character, DataLoader.AnimalData.Pet);
+                }
+                else if (character is FarmAnimal farmAnimal)
+                {
+                    return DaysUntilNextTreat(farmAnimal, GetTreatItem(farmAnimal));
+                }
             }
             catch (Exception)
             {
-                return 0;
+                // ignored
             }
+
+            return 0;
         }
 
-        public static int DaysUntilNextTreat(long id, TreatItem treatItem)
+        public static int DaysUntilNextTreat(Character character, TreatItem treatItem)
         {
-            if (GetAnimalStatus(id).LastDayFeedTreat == null)
+            SDate lastDayFeedTreat = character.GetLastDayFeedTreat();
+            if (lastDayFeedTreat == null)
             {
                 return 0;
             }
-            return GetAnimalStatus(id).LastDayFeedTreat.DaysSinceStart + treatItem.MinimumDaysBetweenTreats - SDate.Now().DaysSinceStart;
+            return lastDayFeedTreat.DaysSinceStart + treatItem.MinimumDaysBetweenTreats - SDate.Now().DaysSinceStart;
         }
 
-        public static void FeedAnimalTreat(FarmAnimal farmAnimal, Object treat)
+        public static void FeedAnimalTreat(Character character, Object treat)
         {
-            FeedAnimalTreat(farmAnimal.myID.Value, treat);
-        }
+            character.SetLastDayFeedTreat(SDate.Now());
 
-        public static void FeedPetTreat(Object treat)
-        {
-            FeedAnimalTreat(AnimalData.PetId, treat);
-        }
-
-        private static void FeedAnimalTreat(long id, Object treat)
-        {
-            AnimalStatus animalStatus = GetAnimalStatus(id);
-            animalStatus.LastDayFeedTreat = SDate.Now();
-            if (!animalStatus.FeedTreatsQuantity.ContainsKey(treat.ParentSheetIndex))
-            {
-                animalStatus.FeedTreatsQuantity[treat.ParentSheetIndex] = 0;
-            }
-            animalStatus.FeedTreatsQuantity[treat.ParentSheetIndex]++;
+            int quantity = character.GetFeedTreatsQuantity(treat.ParentSheetIndex);
+            character.SetFeedTreatsQuantity(treat.ParentSheetIndex, quantity+1);
         }
 
         public static TreatItem GetTreatItem(FarmAnimal farmAnimal)

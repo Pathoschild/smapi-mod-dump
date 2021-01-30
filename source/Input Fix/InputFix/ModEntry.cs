@@ -9,11 +9,11 @@
 *************************************************/
 
 using Harmony;
+using InputFix.Properties;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using System;
-using System.Reflection;
 using System.Threading;
 
 namespace InputFix
@@ -24,7 +24,6 @@ namespace InputFix
         public static IMonitor monitor;
         public static IModHelper _helper;
         public static NotifyHelper notifyHelper;
-        private static int mainThreadId;
 
         /*********
         ** Public methods
@@ -37,7 +36,12 @@ namespace InputFix
             monitor = Monitor;
             _helper = helper;
             notifyHelper = new NotifyHelper(monitor, _helper);
-            mainThreadId = Thread.CurrentThread.ManagedThreadId;
+
+            if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
+            {
+                ModEntry.notifyHelper.Notify(Resources.WARN_STA_LAUNCHER, NotifyPlace.Monitor, NotifyMoment.GameLaunched, LogLevel.Warn);
+                ModEntry.notifyHelper.Notify(Resources.WARN_STA_LAUNCHER, NotifyPlace.GameHUD, NotifyMoment.SaveLoaded);
+            }
 
             KeyboardInput_.Initialize(Game1.game1.Window);
 
@@ -45,26 +49,12 @@ namespace InputFix
             HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID);
             harmony.PatchAll();
 
-            Type type = AccessTools.TypeByName("Microsoft.Xna.Framework.WindowsGameHost");
-            MethodInfo m_idle = AccessTools.Method(type, "ApplicationIdle");
-            harmony.Patch(m_idle, null, new HarmonyMethod(typeof(ModEntry), "PumpMessage"));
-
             //compatible with ChatCommands
             if (Helper.ModRegistry.Get("cat.chatcommands") != null)
             {
                 notifyHelper.NotifyMonitor("Compatible with ChatCommands");
                 Compatibility.PatchChatCommands(monitor, harmony);
             }
-        }
-
-        private static void PumpMessage()
-        {
-            ImeSharp.ImeSharp.PumpMsg(KeyboardInput_.iMEControl);
-        }
-
-        public static bool isMainThread()
-        {
-            return Thread.CurrentThread.ManagedThreadId == mainThreadId;
         }
 
         private void RegCommand(IModHelper helper)

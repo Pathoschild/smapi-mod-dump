@@ -1,3 +1,0 @@
-page URL: https://stardewvalley.curseforge.com/projects/trash-trash
-IDs: BlameJared.TrashTrash
-update keys: GitHub:jaredlll08/Trash-Trash

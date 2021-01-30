@@ -26,9 +26,18 @@ namespace ConfigureMachineOutputs.Framework.Configs
         public SlimeEggPressConfig SlimeEggPress = new SlimeEggPressConfig();
         public WormBinConfig WormBin = new WormBinConfig();
         public LightningRodConfig LightningRod = new LightningRodConfig();
+        public SolarPanelConfig SolarPanel = new SolarPanelConfig();
         public TapperConfig Tapper = new TapperConfig();
+        public HeavyTapperConfig HeavyTapper = new HeavyTapperConfig();
         //public IncubatorConfig Incubator = new IncubatorConfig();
+        //public OstrichIncubatorConfig OstrichIncubator = new OstrichIncubatorConfig();
         public BeeHouseConfig BeeHouse = new BeeHouseConfig();
         //public SlimeIncubatorConfig SlimeIncubator = new SlimeIncubatorConfig();
+        public DeconstructorConfig Deconstructor = new DeconstructorConfig();
+        public GeodeCrusherConfig GeodeCrusher = new GeodeCrusherConfig();
+        public BoneMillConfig BoneMill = new BoneMillConfig();
+        public WoodChipperConfig WoodChipper = new WoodChipperConfig();
+        //public CoffeeMakerConfig CoffeeMaker = new CoffeeMakerConfig();
+        
     }
 }

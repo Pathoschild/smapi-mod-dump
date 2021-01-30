@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit cd40944c803fedf203712b607c214a999aa70001
+   commit 3a62601750109f38ddaa86876e8ab46618298d38
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Thu Dec 31 18:21:33 2020 +0100
+   Date:   Fri Jan 8 15:13:57 2021 +0100
    
-       Fixed incompatibility with chests anywhere mod.
+       Add config option for amount of rings.
    

@@ -1,0 +1,50 @@
+{
+	// Object data
+	"Name": "blueberry.cac.hotcocoa",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 75,
+	"EdibleIsDrink": true,
+	"EdibleBuffs": {
+		"Farming": 0,
+		"Fishing": 0,
+		"Mining": 0,
+		"Luck": 0,
+		"Foraging": 0,
+		"MaxStamina": 0,
+		"MagnetRadius": 0,
+		"Speed": 0,
+		"Defense": 2,
+		"Attack": 0,
+		"Duration": 90
+	},
+	"Price": 200,
+	"IsColored": false,
+	"DisableWithMod": "ppja.artisanvalleymachinegoods",
+
+	// Object purchase
+	"CanPurchase": false,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 300,
+	"PurchaseRequirements": null,
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": -6, // Category:Milk
+				"Count": 1
+			},
+			{
+				"Object": 223, // Cookie
+				"Count": 1
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": false,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": null
+	}
+}

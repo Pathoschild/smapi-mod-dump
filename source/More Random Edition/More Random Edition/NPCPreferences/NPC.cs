@@ -62,6 +62,7 @@ namespace Randomizer
 				ItemList.Items[(int)ObjectIndexes.WarpTotemBeach],
 				ItemList.Items[(int)ObjectIndexes.WarpTotemFarm],
 				ItemList.Items[(int)ObjectIndexes.WarpTotemMountains],
+				ItemList.Items[(int)ObjectIndexes.WarpTotemDesert],
 				ItemList.Items[(int)ObjectIndexes.WhiteAlgae],
 				ItemList.Items[(int)ObjectIndexes.Slime],
 				ItemList.Items[(int)ObjectIndexes.BugMeat],

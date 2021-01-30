@@ -31,9 +31,13 @@ namespace AutoAnimalDoors.StardewValleyWrapper
                 {
                     foreach (StardewValley.Buildings.Building stardewBuilding in this.StardewValleyFarm.buildings)
                     {
-                        if (stardewBuilding is StardewValley.Buildings.Barn || stardewBuilding is StardewValley.Buildings.Coop)
+                        if (stardewBuilding is StardewValley.Buildings.Barn)
                         {
-                            buildings.Add(new Buildings.AnimalBuilding(stardewBuilding, this));
+                            buildings.Add(new Buildings.Barn(stardewBuilding as StardewValley.Buildings.Barn, this));
+                        }
+                        else if (stardewBuilding is StardewValley.Buildings.Coop)
+                        {
+                            buildings.Add(new Buildings.Coop(stardewBuilding as StardewValley.Buildings.Coop, this));
                         }
                         else
                         {

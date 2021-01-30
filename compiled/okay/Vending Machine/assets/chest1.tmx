@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="1" height="2" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="6">
+ <tileset firstgid="1" name="Craftables" tilewidth="16" tileheight="16" tilecount="576" columns="8">
+  <image source="Craftables.png" width="128" height="1152"/>
+ </tileset>
+ <layer id="1" name="Buildings" width="1" height="2">
+  <data encoding="csv">
+0,
+460
+</data>
+ </layer>
+ <layer id="2" name="Front" width="1" height="2">
+  <data encoding="csv">
+452,
+0
+</data>
+ </layer>
+ <objectgroup id="4" name="Buildings"/>
+ <objectgroup id="3" name="Back"/>
+</map>

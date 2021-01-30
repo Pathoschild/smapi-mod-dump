@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7768
+IDs: Goldenrevolver.WateringGrantsXP
+update keys: Nexus:7768, GitHub:Goldenrevolver/Stardew-Valley-Mods

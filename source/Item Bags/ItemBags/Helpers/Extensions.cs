@@ -78,6 +78,17 @@ namespace ItemBags.Helpers
             return XDifference * XDifference + YDifference * YDifference;
         }
 
+        public static bool IsLegacyCursorPosition { get { return !Constants.ApiVersion.IsNewerThan("3.8.1"); } }
+
+        /// <summary>Returns <see cref="ICursorPosition.ScreenPixels"/>, always adjusted for UI Scaling. SMAPI version 3.8.1 and earlier used to always do this, but changes were made to SMAPI 3.8.2+.</summary>
+        public static Vector2 LegacyScreenPixels(this ICursorPosition value)
+        {
+            if (IsLegacyCursorPosition)
+                return value.ScreenPixels;
+            else
+                return Utility.ModifyCoordinatesForUIScale(value.ScreenPixels);
+        }
+
         #region Split List
         //Taken from: https://stackoverflow.com/questions/3514740/how-to-split-an-array-into-a-group-of-n-elements-each
         private static IEnumerable<TList> Split<TList, T>(this TList value, int countOfEachPart) where TList : IEnumerable<T>

@@ -27,7 +27,6 @@ using StardewValley.Locations;
 using StardewValley.Monsters;
 using StardewValley.Network;
 using StardewValley.Objects;
-using SObject = StardewValley.Object;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
 {
@@ -37,11 +36,14 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /*********
         ** Fields
         *********/
-        /// <summary>The NPC type.s</summary>
+        /// <summary>The NPC type.</summary>
         private readonly SubjectType TargetType;
 
         /// <summary>The lookup target.</summary>
         private readonly NPC Target;
+
+        /// <summary>Provides subject entries.</summary>
+        private readonly ISubjectRegistry Codex;
 
         /// <summary>Simplifies access to private game code.</summary>
         private readonly IReflectionHelper Reflection;
@@ -51,6 +53,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
 
         /// <summary>Whether to highlight item gift tastes which haven't been revealed in the NPC profile.</summary>
         private readonly bool HighlightUnrevealedGiftTastes;
+
+        /// <summary>Whether to look up the original entity when the game spawns a temporary copy.</summary>
+        private readonly bool EnableTargetRedirection;
 
         /// <summary>Whether the NPC is Gourmand in the Fern Islands farm cave.</summary>
         private readonly bool IsGourmand;
@@ -66,6 +71,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         ** Public methods
         *********/
         /// <summary>Construct an instance.</summary>
+        /// <param name="codex">Provides subject entries.</param>
         /// <param name="gameHelper">Provides utility methods for interacting with the game code.</param>
         /// <param name="npc">The lookup target.</param>
         /// <param name="type">The NPC type.</param>
@@ -73,13 +79,16 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <param name="reflectionHelper">Simplifies access to private game code.</param>
         /// <param name="progressionMode">Whether to only show content once the player discovers it.</param>
         /// <param name="highlightUnrevealedGiftTastes">Whether to highlight item gift tastes which haven't been revealed in the NPC profile.</param>
+        /// <param name="enableTargetRedirection">Whether to look up the original entity when the game spawns a temporary copy.</param>
         /// <remarks>Reverse engineered from <see cref="NPC"/>.</remarks>
-        public CharacterSubject(GameHelper gameHelper, NPC npc, SubjectType type, Metadata metadata, IReflectionHelper reflectionHelper, bool progressionMode, bool highlightUnrevealedGiftTastes)
+        public CharacterSubject(ISubjectRegistry codex, GameHelper gameHelper, NPC npc, SubjectType type, Metadata metadata, IReflectionHelper reflectionHelper, bool progressionMode, bool highlightUnrevealedGiftTastes, bool enableTargetRedirection)
             : base(gameHelper)
         {
+            this.Codex = codex;
             this.Reflection = reflectionHelper;
             this.ProgressionMode = progressionMode;
             this.HighlightUnrevealedGiftTastes = highlightUnrevealedGiftTastes;
+            this.EnableTargetRedirection = enableTargetRedirection;
 
             // initialize
             this.Target = npc;
@@ -197,7 +206,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
 
                 string ageDesc = isGrown
                     ? I18n.Npc_Child_Age_DescriptionGrown(label: I18n.For(stage))
-                    : I18n.Npc_Child_Age_DescriptionPartial(label: I18n.For(stage), count: daysToNext, nextLabel: stage + 1);
+                    : I18n.Npc_Child_Age_DescriptionPartial(label: I18n.For(stage), count: daysToNext, nextLabel: I18n.For(stage + 1));
 
                 yield return new PercentageBarField(I18n.Npc_Child_Age(), child.daysOld.Value, daysAtNext, Color.Green, Color.Gray, ageDesc);
             }
@@ -324,7 +333,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
             {
                 this.Reflection.GetMethod(trashBear, "updateItemWanted").Invoke();
                 int itemWantedIndex = this.Reflection.GetField<int>(trashBear, "itemWantedIndex").GetValue();
-                yield return new ItemIconField(this.GameHelper, I18n.TrashBearOrGourmand_ItemWanted(), new SObject(itemWantedIndex, 1));
+                yield return new ItemIconField(this.GameHelper, I18n.TrashBearOrGourmand_ItemWanted(), this.GameHelper.GetObjectBySpriteIndex(itemWantedIndex), this.Codex);
             }
 
             // show progress
@@ -335,6 +344,11 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <param name="npc">The NPC for which to show info.</param>
         private IEnumerable<ICustomField> GetDataForVillager(NPC npc)
         {
+            // special case: Abigail in the mines is a temporary instance with the name
+            // 'AbigailMine', so the info shown will be incorrect.
+            if (this.EnableTargetRedirection && npc.Name == "AbigailMine" && npc.currentLocation?.Name == "UndergroundMine20")
+                npc = Game1.getCharacterFromName("Abigail") ?? npc;
+
             // social fields (birthday, friendship, gifting, etc)
             if (this.GameHelper.IsSocialVillager(npc))
             {
@@ -366,14 +380,18 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
                     yield return new GenericField(I18n.Npc_Friendship(), I18n.Npc_Friendship_NotMet());
 
                 // gift tastes
-                IDictionary<GiftTaste, GiftTasteModel[]> giftTastes = this.GetGiftTastes(npc);
-                yield return this.GetGiftTasteField(I18n.Npc_LovesGifts(), giftTastes, GiftTaste.Love);
-                yield return this.GetGiftTasteField(I18n.Npc_LikesGifts(), giftTastes, GiftTaste.Like);
-                yield return this.GetGiftTasteField(I18n.Npc_NeutralGifts(), giftTastes, GiftTaste.Neutral);
-                if (this.ProgressionMode || this.HighlightUnrevealedGiftTastes)
                 {
-                    yield return this.GetGiftTasteField(I18n.Npc_DislikesGifts(), giftTastes, GiftTaste.Dislike);
-                    yield return this.GetGiftTasteField(I18n.Npc_HatesGifts(), giftTastes, GiftTaste.Hate);
+                    IDictionary<GiftTaste, GiftTasteModel[]> giftTastes = this.GetGiftTastes(npc);
+                    IDictionary<string, bool> ownedItems = CharacterGiftTastesField.GetOwnedItemsCache(this.GameHelper);
+
+                    yield return this.GetGiftTasteField(I18n.Npc_LovesGifts(), giftTastes, ownedItems, GiftTaste.Love);
+                    yield return this.GetGiftTasteField(I18n.Npc_LikesGifts(), giftTastes, ownedItems, GiftTaste.Like);
+                    yield return this.GetGiftTasteField(I18n.Npc_NeutralGifts(), giftTastes, ownedItems, GiftTaste.Neutral);
+                    if (this.ProgressionMode || this.HighlightUnrevealedGiftTastes)
+                    {
+                        yield return this.GetGiftTasteField(I18n.Npc_DislikesGifts(), giftTastes, ownedItems, GiftTaste.Dislike);
+                        yield return this.GetGiftTasteField(I18n.Npc_HatesGifts(), giftTastes, ownedItems, GiftTaste.Hate);
+                    }
                 }
             }
         }
@@ -381,10 +399,11 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <summary>Get a list of gift tastes for an NPC.</summary>
         /// <param name="label">The field label.</param>
         /// <param name="giftTastes">The gift taste data.</param>
+        /// <param name="ownedItemsCache">A lookup cache for owned items, as created by <see cref="CharacterGiftTastesField.GetOwnedItemsCache"/>.</param>
         /// <param name="taste">The gift taste to display.</param>
-        private ICustomField GetGiftTasteField(string label, IDictionary<GiftTaste, GiftTasteModel[]> giftTastes, GiftTaste taste)
+        private ICustomField GetGiftTasteField(string label, IDictionary<GiftTaste, GiftTasteModel[]> giftTastes, IDictionary<string, bool> ownedItemsCache, GiftTaste taste)
         {
-            return new CharacterGiftTastesField(this.GameHelper, label, giftTastes, taste, onlyRevealed: this.ProgressionMode, highlightUnrevealed: this.HighlightUnrevealedGiftTastes);
+            return new CharacterGiftTastesField(label, giftTastes, taste, onlyRevealed: this.ProgressionMode, highlightUnrevealed: this.HighlightUnrevealedGiftTastes, ownedItemsCache);
         }
 
         /*****

@@ -34,8 +34,8 @@ namespace SpriteMaster.Extensions.Compressors {
 		}
 
 		private static class Options {
-			internal static readonly ZstdNet.CompressionOptions CompressionDefault = new ZstdNet.CompressionOptions(ZstdNet.CompressionOptions.DefaultCompressionLevel);
-			internal static readonly ZstdNet.DecompressionOptions DecompressionDefault = new ZstdNet.DecompressionOptions(null);
+			internal static readonly ZstdNet.CompressionOptions CompressionDefault = new(ZstdNet.CompressionOptions.DefaultCompressionLevel);
+			internal static readonly ZstdNet.DecompressionOptions DecompressionDefault = new(null);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

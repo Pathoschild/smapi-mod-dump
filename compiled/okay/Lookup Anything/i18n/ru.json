@@ -7,6 +7,9 @@
     "generic.tomorrow": "завтра",
     "generic.yesterday": "вчера",
 
+    // generic values
+    "generic.unknown": "unknown", // TODO
+
     // generic field values
     "generic.percent": "{{percent}}%",
     "generic.percent-chance-of": "{{percent}}% шанса для {{label}}",
@@ -189,6 +192,17 @@
     "location.undergroundMine.level": "уровень шахты {{level}}",
     "location.witchSwamp": "болото ведьмы",
     "location.woods": "тайный лес",
+
+    "location.caldera": "Ginger Island caldera", // TODO
+    "location.islandEast": "Ginger Island east", // TODO
+    "location.islandNorth": "Ginger Island north", // TODO
+    "location.islandSouth": "Ginger Island south", // TODO
+    "location.islandSouthEast": "Ginger Island southeast", // TODO
+    "location.islandSouthEastCave": "Ginger Island southeast cave", // TODO
+    "location.islandWest": "Ginger Island west", // TODO
+    "location.islandWest.fish-area-1": "Ginger Island west (ocean)", // TODO
+    "location.islandWest.fish-area-2": "Ginger Island west (pond)", // TODO
+
     "location.unknown-fish-area": "{{locationName}} (рыболовный район {{id}})",
 
 
@@ -322,6 +336,8 @@
     // labels
     "crop.summary": "Культура",
     "crop.harvest": "Урожай",
+    "crop.fertilized": "Fertilized", // TODO
+    "crop.watered": "Watered", // TODO
 
     // values
     "crop.summary.dead": "Этот урожай завял.",
@@ -588,7 +604,7 @@
 
 
     /*********
-    ** Tile lookups > Fern Islands mermaid puzzle
+    ** Puzzles > Fern Islands mermaid puzzle
     *********/
     // labels
     // TODO
@@ -617,6 +633,7 @@
     *********/
     // labels
     "tile.description": "Позиция тайла на карте. Это отображается, потому что вы включили просмотр тайлов в конфигурационном файле мода.",
+    "tile.game-location": "Location", // TODO
     "tile.map-name": "Название локации",
     "tile.tile": "Тайл",
     "tile.tile-index": "{{layerName}}: индекс тайла",
@@ -659,7 +676,6 @@
     "tree.next-growth.winter": "не может расти зимой вне теплицы",
     "tree.next-growth.adjacent-trees": "не может расти, т.к рядом нет места.",
     "tree.next-growth.chance": "20% шанс, что завтра вырастит в {{stage}}",
-    "tree.is-fertilized.effects": "Гарантирует ежедневный рост, даже зимой",
 
     // growth stages
     "tree.stages.seed": "семя",

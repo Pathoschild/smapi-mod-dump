@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AcidicNic/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "PelicanFiber",
+  "Author": "jwdred",
+  "Version": "4.0.0",
+  "Description": "Order stuff over the internet, and save all kinds of money!",
+  "UniqueID": "jwdred.PelicanFiber",
+  "EntryDll": "PelicanFiber.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [  ]
+}

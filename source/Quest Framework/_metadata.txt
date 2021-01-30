@@ -5,9 +5,9 @@ mods:
    Quest Framework
 
 latest commit:
-   commit d0cb56f6869e7eec3d0927eab93ff0962e3afdd2
-   Author: Ellen Jana FawkesovÃ¡ <4710267+purrplingcat@users.noreply.github.com>
-   Date:   Tue Dec 22 19:19:40 2020 +0100
+   commit f8e6c8b27146556f663c991d71dfbfff2a0a468d
+   Author: PurrplingCat <git@purrplingcat.com>
+   Date:   Sun Jan 17 20:07:11 2021 +0100
    
-       Update README.md
+       Release 1.3.1
    

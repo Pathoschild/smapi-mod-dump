@@ -19,10 +19,15 @@ namespace EnaiumToolKit.Framework.Screen.Components
     public class TextField : Component
     {
         private TextBox _textBox;
-        public string Text => _textBox.Text;
 
-        public TextField(string description, int x, int y, int width, int height) : base("", description, x, y, width,
-            height)
+        public string Text
+        {
+            get => _textBox.Text;
+            set => _textBox.Text = value;
+        }
+
+        public TextField(string title, string description, int x, int y, int width, int height) : base(title,
+            description, x, y, width, height)
         {
             _textBox = new TextBox(Game1.content.Load<Texture2D>("LooseSprites\\textBox"), null, Game1.dialogueFont,
                 Game1.textColor)

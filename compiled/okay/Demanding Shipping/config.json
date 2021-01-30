@@ -1,13 +1,15 @@
 {
   "BasicCrateIncome": 250,
   "CrateIncomePerFarmerLevel": 30,
+  "MaxQuantity": 20,
+  "MinQuantity": 1,
   "RerollChance": 2,
   "Bonus": [
     5,
     10,
-    10
+    20
   ],
-  "EnableGiftAtFullLoad": true,
+  "EnableGiftAtFullLoad": false,
   "GiftList": [
     74,
     337,
@@ -53,5 +55,6 @@
     901,
     902,
     889
-  ]
+  ],
+  "ConditionObjects": {}
 }

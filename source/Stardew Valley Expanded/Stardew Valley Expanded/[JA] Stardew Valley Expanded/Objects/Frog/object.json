@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Frog",
+	"Description": "It's very slimy.",
+	"Category": "Fish",
+	"Edibility": -30,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 250,
+	"IsColored": false,
+	"GiftTastes":
+	{
+		"Love": [ "Sebastian", "Abigail", "Vincent", "Morgan" ],
+		"Like": [ "Elliott", "Willy", "Harvey", "Demetrius", "Wizard" ],
+		"Dislike": [ "Martin" ],
+		"Hate": [ "George", "Kent", "Jodi", "Claire", "Olivia", "Shane", "Haley", "Maru", "Pam", "Clint", "Jas", "Andy", "Gus" ]
+	},
+}

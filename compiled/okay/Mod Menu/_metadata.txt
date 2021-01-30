@@ -1,0 +1,3 @@
+page URL: https://www.moddrop.com/stardew-valley/mod/885574
+IDs: Enaium.ModMenu
+update keys: GitHub:Enaium-StardewValleyMods/ModMenu, Chucklefish:6085, CurseForge:436844, ModDrop:885574

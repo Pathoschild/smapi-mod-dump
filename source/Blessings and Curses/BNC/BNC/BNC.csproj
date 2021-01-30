@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,16 +32,23 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lib.Harmony.2.0.4\lib\net45\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Humanizer, Version=2.8.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.Core.2.8.26\lib\netstandard2.0\Humanizer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,6 +74,42 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Meteor.cs" />
+    <Compile Include="CloneJson.cs" />
+    <Compile Include="Managers\AugmentManager.cs" />
+    <Compile Include="Managers\Augments\BaseAugment.cs" />
+    <Compile Include="Managers\Augments\Phasing.cs" />
+    <Compile Include="Managers\Augments\Trolls.cs" />
+    <Compile Include="Managers\Augments\Teleport.cs" />
+    <Compile Include="Managers\Augments\Extra.cs" />
+    <Compile Include="Managers\Augments\Crabs.cs" />
+    <Compile Include="Managers\Augments\Speed.cs" />
+    <Compile Include="Managers\Augments\Exp.cs" />
+    <Compile Include="Managers\Augments\Harder.cs" />
+    <Compile Include="Managers\Augments\Health.cs" />
+    <Compile Include="Managers\Augments\Regen.cs" />
+    <Compile Include="Managers\Augments\Stamina.cs" />
+    <Compile Include="Managers\Augments\Tired.cs" />
+    <Compile Include="Managers\Augments\Blood.cs" />
+    <Compile Include="TwitchApp\Actions\BaseAction.cs" />
+    <Compile Include="TwitchApp\Actions\Gift.cs" />
+    <Compile Include="TwitchApp\Actions\ITickable.cs" />
+    <Compile Include="TwitchApp\Actions\FireballEvent.cs" />
+    <Compile Include="TwitchApp\Actions\ScreenFlash.cs" />
+    <Compile Include="TwitchApp\Actions\BombEvent.cs" />
+    <Compile Include="TwitchApp\Actions\MeteorStorm.cs" />
+    <Compile Include="TwitchApp\Actions\SpawnCat.cs" />
+    <Compile Include="TwitchApp\Actions\Weather.cs" />
+    <Compile Include="TwitchApp\Actions\Command.cs" />
+    <Compile Include="TwitchApp\Actions\CustomBuff.cs" />
+    <Compile Include="TwitchApp\Actions\GiveStamina.cs" />
+    <Compile Include="TwitchApp\Actions\GiveMoney.cs" />
+    <Compile Include="TwitchApp\Actions\MessageAction.cs" />
+    <Compile Include="TwitchApp\Actions\HealPlayer.cs" />
+    <Compile Include="TwitchApp\Actions\Spawn.cs" />
+    <Compile Include="TwitchApp\Actions\Buff.cs" />
+    <Compile Include="TwitchApp\ActionManager.cs" />
+    <Compile Include="TwitchApp\TwitchAppIntergration.cs" />
     <Compile Include="Managers\BuffManager.cs" />
     <Compile Include="BNC_Core.cs" />
     <Compile Include="Managers\MineBuffManager.cs" />
@@ -92,7 +136,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\Meteor.png" />
     <Content Include="assets\Statue.png" />
+    <Content Include="music\MeteorInbound.mp3" />
+    <Content Include="todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

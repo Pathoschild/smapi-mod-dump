@@ -16,7 +16,7 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Extensions {
 	public static class Statistics {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static unsafe double StandardDeviation (this in Span<int> data, int startIndex = 0, int count = 0) {
+		public static unsafe double StandardDeviation (this in Types.Span<int> data, int startIndex = 0, int count = 0) {
 			return StandardDeviation((int*)data.Pointer, data.Length, startIndex, count);
 		}
 

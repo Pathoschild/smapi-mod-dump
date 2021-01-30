@@ -42,7 +42,9 @@ namespace ShopTileFramework.Shop
             "DwarfShop",
             "GusShop",
             "QiShop",
-            "WillyShop"};
+            "WillyShop",
+            "HatMouse"
+        };
 
 
         /// <summary>

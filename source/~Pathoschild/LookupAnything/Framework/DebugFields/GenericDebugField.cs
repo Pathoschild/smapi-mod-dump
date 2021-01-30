@@ -18,17 +18,20 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.DebugFields
         /*********
         ** Accessors
         *********/
-        /// <summary>A short field label.</summary>
+        /// <inheritdoc />
         public string Label { get; protected set; }
 
-        /// <summary>The field value.</summary>
+        /// <inheritdoc />
         public string Value { get; protected set; }
 
-        /// <summary>Whether the field should be displayed.</summary>
+        /// <inheritdoc />
         public bool HasValue { get; protected set; }
 
-        /// <summary>Whether the field should be highlighted for special attention.</summary>
+        /// <inheritdoc />
         public bool IsPinned { get; protected set; }
+
+        /// <inheritdoc />
+        public string OverrideCategory { get; set; }
 
 
         /*********

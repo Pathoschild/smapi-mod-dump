@@ -117,7 +117,7 @@ namespace SpriteMaster.Extensions {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void MarkOwned(SurfaceFormat format, int texels) {
-			if (!Config.GarbageCollectAccountOwnedTexture)
+			if (!Config.Garbage.CollectAccountOwnedTextures)
 				return;
 			Contract.AssertPositiveOrZero(texels);
 			var size = format.SizeBytes(texels);
@@ -126,7 +126,7 @@ namespace SpriteMaster.Extensions {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void UnmarkOwned (SurfaceFormat format, int texels) {
-			if (!Config.GarbageCollectAccountOwnedTexture)
+			if (!Config.Garbage.CollectAccountOwnedTextures)
 				return;
 			Contract.AssertPositiveOrZero(texels);
 			var size = format.SizeBytes(texels);
@@ -135,7 +135,7 @@ namespace SpriteMaster.Extensions {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void MarkUnowned (SurfaceFormat format, int texels) {
-			if (!Config.GarbageCollectAccountUnownedTextures)
+			if (!Config.Garbage.CollectAccountUnownedTextures)
 				return;
 			Contract.AssertPositiveOrZero(texels);
 			var size = format.SizeBytes(texels);
@@ -144,7 +144,7 @@ namespace SpriteMaster.Extensions {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void UnmarkUnowned (SurfaceFormat format, int texels) {
-			if (!Config.GarbageCollectAccountUnownedTextures)
+			if (!Config.Garbage.CollectAccountUnownedTextures)
 				return;
 			Contract.AssertPositiveOrZero(texels);
 			var size = format.SizeBytes(texels);

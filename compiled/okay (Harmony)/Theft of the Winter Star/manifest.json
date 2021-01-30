@@ -1,7 +1,7 @@
 {
   "Name": "Theft of the Winter Star",
   "Author": "spacechase0, ParadigmNomad",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Someone stole the deocrations for the Feast of the Winter Star!",
   "UniqueID": "spacechase0.TheftOfTheWinterStar",
   "EntryDll": "TheftOfTheWinterStar.dll",
@@ -16,6 +16,6 @@
       "MinimumVersion": "1.5.3"
     }
   ],
-  "UpdateKeys": [ "Nexus:", "Chucklefish:" ],
+  "UpdateKeys": [ "Nexus:5062", "Chucklefish:5915" ],
   "spacechase0": "theft-of-the-winter-star"
 }

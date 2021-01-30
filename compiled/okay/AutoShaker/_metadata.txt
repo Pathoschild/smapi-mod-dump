@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7736
+IDs: Jag3Dagster.AutoShaker
+update keys: Nexus:7736, GitHub:jag3dagster/AutoShaker

@@ -1,0 +1,22 @@
+{
+    "Custom": [
+        // HARD: Baker's Bundle
+        [ "O Cookout Kit 2", "Rhubarb Pie 1 0 Strange Bun 1 0 blueberry.cac.applepie 1 0 Chocolate Cake 1 0 Maple Bar 1 0", "5", "1" ],
+
+        // EASY: Picnicker's Bundle
+        [ "O blueberry.cac.chocolate 5", "Hashbrowns 1 0 Cheese Cauliflower 1 0 blueberry.cac.burrito 1 0 Farmer's Lunch 1 0", "4", "2" ],
+
+        // MEDIUM: Diner's Bundle
+        [ "BO Oil Maker 1", "Glazed Yams 1 0 blueberry.cac.waffles 1 1 Blueberry Tart 1 2 Pepper Poppers 1 0", "4", "3" ]
+    ],
+    "Vanilla": [
+        // HARD: Baker's Bundle
+        [ "O Cookout Kit 2", "Rhubarb Pie 1 0 Strange Bun 1 0 Fruit Salad 1 0 Chocolate Cake 1 0 Maple Bar 1 0", "5", "1" ],
+
+        // EASY: Picnicker's Bundle
+        [ "O Sugar 5", "Hashbrowns 1 0 Cheese Cauliflower 1 0 Cookie 1 0 Farmer's Lunch 1 0", "4", "2" ],
+
+        // MEDIUM: Diner's Bundle
+        [ "BO Oil Maker 1", "Glazed Yams 1 0 Survival Burger 1 1 Blueberry Tart 1 2 Pepper Poppers 1 0", "4", "3" ]
+    ]
+}

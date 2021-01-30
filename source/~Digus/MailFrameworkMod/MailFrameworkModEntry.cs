@@ -65,7 +65,8 @@ namespace MailFrameworkMod
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
-                prefix: new HarmonyMethod(typeof(MailController), nameof(MailController.mailbox))
+                prefix: new HarmonyMethod(typeof(MailController), nameof(MailController.mailbox_prefix)),
+                postfix: new HarmonyMethod(typeof(MailController), nameof(MailController.mailbox_postfix))
             );
 
             harmony.Patch(
@@ -82,18 +83,7 @@ namespace MailFrameworkMod
         /// <param name="e">The event arguments.</param>
         private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
-            Helper.Events.Display.MenuChanged -= OnMenuChanged;
             MailController.UnloadMailBox();
-        }
-        /// <summary>
-        /// Raised after the player loads a save slot and the world is initialised.
-        /// Loads the menu changed method.
-        /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnSaveLoaded(object sender, EventArgs e)
-        {
-            Helper.Events.Display.MenuChanged += OnMenuChanged;
         }
 
         /// <summary>
@@ -111,21 +101,6 @@ namespace MailFrameworkMod
             MailController.UpdateMailBox();
 
         }
-
-        /// <summary>
-        /// Raised after a game menu is opened, closed, or replaced.
-        /// Here it invoke the MailController to show a custom mail when the it's a LetterViewerMenu, called from open the mailbox and there is CustomMails to be delivered
-        /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
-        {
-            if (e.NewMenu is LetterViewerMenu && this.Helper.Reflection.GetField<string>(e.NewMenu, "mailTitle").GetValue() != null && MailController.HasCustomMail())
-            {
-                MailController.ShowLetter();
-            }
-        }
-
 
         /// <summary>
         /// Raised before the game begins writes data to the save file (except the initial save creation).

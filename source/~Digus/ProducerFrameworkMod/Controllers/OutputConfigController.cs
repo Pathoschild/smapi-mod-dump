@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using StardewModdingAPI;
 using Object = StardewValley.Object;
 
 namespace ProducerFrameworkMod.Controllers
@@ -38,9 +39,11 @@ namespace ProducerFrameworkMod.Controllers
         {
             List<OutputConfig> filteredOutputConfigs = FilterOutputConfig(producerRuleOutputConfig, o => o.RequiredInputQuality.Count == 0 || o.RequiredInputQuality.Any(q => q == input?.Quality), "Quality");
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.FuelList.All(f => fuelSearch(f.Item1, f.Item2)), "Fuel");
-            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredSeason.Count == 0 || o.RequiredSeason.Any(q => q == Game1.currentSeason), "Season");
+            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredSeason.Count == 0 || o.RequiredSeason.Any(q => q == location.GetSeasonForLocation()), "Season");
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredWeather.Count == 0 || o.RequiredWeather.Any(q => q == GameUtils.GetCurrentWeather()), "Weather");
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredLocation.Count == 0 || o.RequiredLocation.Any(q => q == location.Name), "Location");
+            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredMail.Count == 0 || o.RequiredMail.Any(q => Game1.player.mailReceived.Contains(q)), "Mail");
+            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredEvent.Count == 0 || o.RequiredEvent.Any(q => Game1.player.eventsSeen.Contains(q)), "Event");
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredOutdoors == null || o.RequiredOutdoors == location.IsOutdoors, "Location");
             if (input != null)
             {
@@ -90,13 +93,22 @@ namespace ProducerFrameworkMod.Controllers
             List<OutputConfig> result = outputConfigs.FindAll(filterPredicate);
             if (result.Count == 0)
             {
+                Translation translation;
                 if (inputForName != null)
                 {
-                    throw new RestrictionException(DataLoader.Helper.Translation.Get($"Message.Requirement.{messageSuffix}", new { objectName = new Object(inputForName.ParentSheetIndex,1).DisplayName}));
+                    translation = DataLoader.Helper.Translation.Get($"Message.Requirement.{messageSuffix}", new { objectName = new Object(inputForName.ParentSheetIndex,1).DisplayName});
                 }
                 else
                 {
-                    throw new RestrictionException(DataLoader.Helper.Translation.Get($"Message.Requirement.{messageSuffix}"));
+                    translation = DataLoader.Helper.Translation.Get($"Message.Requirement.{messageSuffix}");
+                }
+                if (translation.HasValue())
+                {
+                    throw new RestrictionException(translation);
+                }
+                else
+                {
+                    throw new RestrictionException();
                 }
             }
             return result;

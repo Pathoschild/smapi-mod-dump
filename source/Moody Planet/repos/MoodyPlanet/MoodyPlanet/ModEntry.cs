@@ -56,7 +56,6 @@ namespace MoodyPlanet
 
             helper.Events.GameLoop.DayStarted += TimeEvents_AfterDayStarted;
             helper.Events.GameLoop.OneSecondUpdateTicked += GameEvents_OneSecondTick;
-            helper.Events.GameLoop.DayStarted += TimeEvents_AfterDayStarted1;
             helper.Events.GameLoop.GameLaunched += GameEvents_FirstUpdateTick;
             helper.ConsoleCommands.Add("mood", "Tells player world mood.", this.tellMood);
             helper.ConsoleCommands.Add("moodmultis", "Tells player world MoodMultipliers.", this.tellMultipliers);
@@ -395,6 +394,14 @@ namespace MoodyPlanet
 
             if (Context.IsWorldReady)
             {
+                if (Context.IsWorldReady)
+                {
+                    hashofm.RemoveRange(0, hashofm.Count);
+                    blackhash.RemoveRange(0, blackhash.Count);
+                    if (mpdebug)
+                        Monitor.Log($"-MOODY--PLANET->Removed Monsters from List ||| {blackhash.Count}, |/| {hashofm.Count} |||<--DEBUG--");
+                }
+
                 x = wnd.Next(1, 12); 
                 z = wnd.Next(1, 100);
                 a = wnd.Next(1, 100);
@@ -579,16 +586,6 @@ namespace MoodyPlanet
             this.Monitor.Log(mood);
 
 
-        }
-        private void TimeEvents_AfterDayStarted1(object sender, EventArgs e)
-        {
-            if (Context.IsWorldReady)
-            {
-                hashofm.RemoveRange(0, hashofm.Count);
-                blackhash.RemoveRange(0, blackhash.Count);
-                if (mpdebug)
-                Monitor.Log($"-MOODY--PLANET->Removed Monsters from List ||| {blackhash.Count}, |/| {hashofm.Count} |||<--DEBUG--");
-            }
         }
 
         private void GameEvents_OneSecondTick(object sender, EventArgs e)

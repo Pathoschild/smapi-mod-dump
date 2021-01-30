@@ -9,6 +9,7 @@ mods:
    Data Layers
    Debug Mode
    Fast Animations
+   Horse Flute Anywhere
    Lookup Anything
    No Debug Mode
    Noclip Mode
@@ -19,9 +20,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 809391182a11adb664b659b70646731151dda0c7
+   commit 38a4e5f5c0c29a7a71e5d92e6c01902a0377e76e
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Thu Dec 31 19:37:11 2020 -0500
+   Date:   Wed Jan 27 19:10:22 2021 -0500
    
-       update for moveable greenhouse and shipping bin
+       fix item scan not checking island farmhouse fridge (#606)
    

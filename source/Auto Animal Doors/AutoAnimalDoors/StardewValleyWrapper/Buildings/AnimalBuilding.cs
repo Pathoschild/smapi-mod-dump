@@ -16,7 +16,7 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
 
     public enum AnimalBuildingType { BARN, COOP, OTHER };
 
-    class AnimalBuilding : Building
+    abstract class AnimalBuilding : Building
     {
         private Farm Farm { get; set; }
 
@@ -85,6 +85,18 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
         {
             if (this.building.animalDoor.Value != null && !this.building.isUnderConstruction())
             {
+
+                if (!building.animalDoorOpen.Value)
+                {
+                    StardewValley.Game1.player.currentLocation.playSound("doorCreak");
+                }
+                else
+                {
+                    StardewValley.Game1.player.currentLocation.playSound("doorCreakReverse");
+                }
+
+                building.animalDoorOpen.Value = !building.animalDoorOpen.Value;
+                AnimateDoorStateChange();
                 int xPositionOfAnimalDoor = this.building.animalDoor.X + this.building.tileX.Value;
                 int yPositionOfAnimalDoor = this.building.animalDoor.Y + this.building.tileY.Value;
 
@@ -108,43 +120,11 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
             }
         }
 
-        public AnimalBuildingType Type
-        {
-            get
-            {
-                string buildingTypeString = this.building.buildingType.Value.ToLower();
-                if (buildingTypeString.Contains("coop"))
-                {
-                    return AnimalBuildingType.COOP;
-                } else if (buildingTypeString.Contains("barn"))
-                {
-                    return AnimalBuildingType.BARN;
-                }
+        abstract protected void AnimateDoorStateChange();
 
-                return AnimalBuildingType.OTHER;
-            }
-        }
+        abstract public AnimalBuildingType Type { get; }
 
-        public int UpgradeLevel
-        {
-            get
-            {
-                switch (this.building.buildingType.Value.ToLower())
-                {
-                    case "coop":
-                    case "barn":
-                        return 1;
-                    case "big coop":
-                    case "big barn":
-                        return 2;
-                    case "deluxe coop":
-                    case "deluxe barn":
-                        return 3;
-                }
-
-                return 4;
-            }
-        }
+        abstract public int UpgradeLevel { get; }
 
     }
 }

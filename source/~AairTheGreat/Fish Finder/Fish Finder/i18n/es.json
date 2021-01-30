@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AairTheGreat/StardewValleyMods
+**
+*************************************************/
+
+{
+  // edit- hud labels
+  "hud.foundFishingSpot": "Encontré un lugar de pesca!",
+  "hud.noFishingSpot": "No se encontró lugar de pesca!",
+  "hud.north": "arriba",
+  "hud.northwest": "arriba, izquierda",
+  "hud.northeast": "arriba, derecha",
+  "hud.south": "abajo",
+  "hud.southwest": "abajo, izquierda",
+  "hud.southeast": "abajo, derecha",
+  "hud.west": "izquierda",
+  "hud.east": "derecha",
+  "hud.direction": "En la dirección {{direction}}.",
+  "hud.distance": "Aproximadamente {{distance}} cuadros de distancia."
+}

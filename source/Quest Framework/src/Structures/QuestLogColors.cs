@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace QuestFramework.Structures
 {
-    public class QuestLogColors
+    public sealed class QuestLogColors
     {
         public int TitleColor { get; set; } = -1;
         public int TextColor { get; set; } = -1;

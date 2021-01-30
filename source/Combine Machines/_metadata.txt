@@ -5,9 +5,9 @@ mods:
    Combine Machines
 
 latest commit:
-   commit 4d3db8f7b736a2bea7d3ab6262f93c9521e362c1
+   commit a75ce8d154ecf3d59081ff7dd168327473c239a5
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Thu Dec 31 15:46:14 2020 -0500
+   Date:   Thu Jan 28 17:55:05 2021 -0500
    
-       Changed the RenderedActiveMenu logic to be a HarmonyPatch to maintain draw order (such as ensuring the mouse cursor is drawn overtop of our additional rendering)
+       Added config option to make furnaces consume extra coal if producing more than 1 bar in a single processing cycle.
    

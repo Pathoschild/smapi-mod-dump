@@ -100,7 +100,7 @@ namespace Randomizer
 		BulletinClint,
 		BulletinDemetrius,
 		BulletinDwarf,
-		BulletinElliot,
+		BulletinElliott,
 		BulletinEmily,
 		BulletinEvelyn,
 		BulletinGeorge,

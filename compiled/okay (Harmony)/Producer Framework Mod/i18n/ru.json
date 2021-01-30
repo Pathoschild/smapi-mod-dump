@@ -1,0 +1,15 @@
+{
+	"Message.Requirement.Amount": "Необходимо {{amount}} шт. следующего объекта: {{objectName}}",
+	"Message.Requirement.Quality": "Необходимо другое качество данного предмета.",
+	"Message.Requirement.Fuel": "Необходимый ингредиент отсутствует.",
+	"Message.Requirement.Season": "Для создания требуется другое время года.",
+	"Message.Requirement.Weather": "Для производства требуется другая погода.",
+	"Message.Requirement.Location": "Для создания нужна другая локация.",
+	"Message.Requirement.InputParent": "Требуется другой вид следующего объекта: {{objectName}}",
+	"Message.Condition.Location": "Невозможно создать здесь.",
+	"Message.Condition.Season": "Невозможно создать в данное время года.",
+	"Object.Category.Meat": "Мясо (любое)",
+	"Object.Category.MetalResources": "Металлы (любые)",
+	"Object.Category.BuildingResources": "Стройматериалы (любые)",
+	"Object.Category.TappedTreeProduct": "Продукция из подсоченных деревьев (любая)"
+}

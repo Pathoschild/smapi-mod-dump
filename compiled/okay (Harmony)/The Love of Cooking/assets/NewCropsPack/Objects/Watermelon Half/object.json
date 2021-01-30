@@ -1,0 +1,26 @@
+{
+    // Object data
+    "Name": "blueberry.cac.watermelon_half",
+    "Description": "...",
+    "Category": "Junk",
+    "CategoryTextOverride": "",
+    "CategoryColorOverride": "0, 0, 0, 0",
+    "Edibility": 16,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 87,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+        "Dislike": [ "Shane" ],
+        "Hate": [ "Lewis" ]
+    },
+}

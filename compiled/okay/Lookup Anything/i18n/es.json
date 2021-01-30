@@ -7,6 +7,9 @@
     "generic.tomorrow": "Mañana",
     "generic.yesterday": "ayer",
 
+    // generic values
+    "generic.unknown": "unknown", // TODO
+
     // generic field values
     "generic.percent": "{{percent}}%",
     "generic.percent-chance-of": "{{percent}}% {{label}}",
@@ -189,6 +192,17 @@
     "location.undergroundMine.level": "nivel {{level}} de las minas",
     "location.witchSwamp": "pantano de la bruja",
     "location.woods": "bosque secreto",
+
+    "location.caldera": "Ginger Island caldera", // TODO
+    "location.islandEast": "Ginger Island east", // TODO
+    "location.islandNorth": "Ginger Island north", // TODO
+    "location.islandSouth": "Ginger Island south", // TODO
+    "location.islandSouthEast": "Ginger Island southeast", // TODO
+    "location.islandSouthEastCave": "Ginger Island southeast cave", // TODO
+    "location.islandWest": "Ginger Island west", // TODO
+    "location.islandWest.fish-area-1": "Ginger Island west (ocean)", // TODO
+    "location.islandWest.fish-area-2": "Ginger Island west (pond)", // TODO
+
     "location.unknown-fish-area": "{{locationName}} (zona de pesca {{id}})",
 
     /*********
@@ -321,6 +335,8 @@
     // labels
     "crop.summary": "Cultivo",
     "crop.harvest": "Cosecha",
+    "crop.fertilized": "Fertilized", // TODO
+    "crop.watered": "Watered", // TODO
 
     // values
     "crop.summary.dead": "Esta cosecha está muerta.",
@@ -587,7 +603,7 @@
 
 
     /*********
-    ** Tile lookups > Fern Islands mermaid puzzle
+    ** Puzzles > Fern Islands mermaid puzzle
     *********/
     // labels
     // TODO
@@ -617,6 +633,7 @@
     // labels
     // note from translator: better not to translate the technical terms
     "tile.description": "Una casilla en el mapa. Esto se muestra porque activaste «tile lookups» en la configuracion.",
+    "tile.game-location": "Location", // TODO
     "tile.map-name": "Nombre del mapa",
     "tile.tile": "Casilla",
     "tile.tile-index": "{{layerName}}: tile index",
@@ -659,7 +676,6 @@
     "tree.next-growth.winter": "no puede crecer en invierno fuera del invernadero",
     "tree.next-growth.adjacent-trees": "no puede crecer porque otros árboles estan muy cerca",
     "tree.next-growth.chance": "{{chance}}% de probabilidad de evolucionar a «{{stage}}» mañana",
-    "tree.is-fertilized.effects": "asegura el crecimiento diario, incluso en invierno",
 
     // growth stages
     "tree.stages.seed": "Semilla",

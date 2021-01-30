@@ -9,8 +9,11 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.8.1
+Released 04 January 2021.
+
 * Fixed issues when moving greenhouse or default shipping bin in Stardew Valley 1.5.
+* Fixed fishing in fish ponds on the small beach farm.
 
 ## 1.8
 Released 12 September 2020.

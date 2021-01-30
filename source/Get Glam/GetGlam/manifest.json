@@ -11,7 +11,7 @@
 {
   "Name": "Get Glam",
   "Author": "MartyrPher",
-  "Version": "1.1.0",
+  "Version": "1.2.0-beta",
   "MinimumApiVersion": "3.7.4",
   "Description": "Stardew Valley Gets Glam.",
   "UniqueID": "MartyrPher.GetGlam",
@@ -20,6 +20,10 @@
   "Dependencies": [
     {
       "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.JsonAssets",
       "IsRequired": false
     }
   ]

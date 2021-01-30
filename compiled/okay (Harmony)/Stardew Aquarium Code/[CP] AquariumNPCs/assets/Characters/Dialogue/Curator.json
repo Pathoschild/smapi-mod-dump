@@ -1,9 +1,0 @@
-{
-    "Mon": "How are you today, lad? I hope things are going well in town.^How are you today, lass? I hope things are going well in town.",
-    "Tue": "What grand timing! I'd just brewed a pot of tea. Fancy a cuppa? [614]$3",
-    "Wed": "And how's my old friend Willy! Next time you see him, tell him Old Henry says Hello!",
-    "Thu": "Hello lad!^Hello lass#$b#I'm chuffed to bits that you're helping me with my project.$1",
-    "Fri": "%The Curator is reading a newspaper.#$b#Ah, good day young chap.^Good day young lass.#$b#Just catching up on the latest news. Did you know there's been sightings of mermaids off the Cerulean coast?$3",
-    "Sat": "In my younger days, I used to be quite the angler you know.$3#$b#Oh, I caught some whoppers!#$b#Told a few too, when it comes to that!$1",
-    "Sun": "Don't forget to say 'Hello' to sweet Goldie. She loves attention.#$b#Did you know goldfish can live up to 43 years, and have very good memories?$1"
-}

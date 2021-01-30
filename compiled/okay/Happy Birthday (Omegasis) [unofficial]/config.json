@@ -1,0 +1,51 @@
+{
+  "minimumFriendshipLevelForBirthdayWish": 2,
+  "translationInfo": {
+    "LanguageNames": [
+      "English",
+      "Spanish",
+      "Chinese",
+      "Japanese",
+      "Russian",
+      "German",
+      "Portuguese",
+      "Italian",
+      "French",
+      "Korean",
+      "Turkish",
+      "Hungarian"
+    ],
+    "CurrentTranslation": "English",
+    "TranslationFileExtensions": {
+      "English": "en-US",
+      "Spanish": "es-ES",
+      "Chinese": "zh-CN",
+      "Japanese": "ja-JP",
+      "Russian": "ru-RU",
+      "German": "de-DE",
+      "Portuguese": "pt-BR",
+      "Italian": "it-IT",
+      "French": "fr-FR",
+      "Hungarian": "hu-HU",
+      "Turkish": "tr-TR",
+      "Korean": "ko-KR"
+    },
+    "TranslationCodes": {
+      "English": "en",
+      "Spanish": "es",
+      "Chinese": "zh",
+      "Japanese": "ja",
+      "Russian": "ru",
+      "German": "de",
+      "Portuguese": "pt",
+      "Italian": "it",
+      "French": "fr",
+      "Hungarian": "hu",
+      "Turkish": "tr",
+      "Korean": "ko"
+    }
+  },
+  "defaultToEnglishTranslation": true,
+  "KeyBinding": "O",
+  "autoSetTranslation": true
+}

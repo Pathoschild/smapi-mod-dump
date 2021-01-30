@@ -28,15 +28,15 @@ namespace InputFix
         private static void Postfix()
         {
             //Dont change except mainthread
-            if (ModEntry.isMainThread() && !Compatibility.ignore && KeyboardInput_.iMEControl != null)
+            if (!Compatibility.ignore && KeyboardInput_.api != null)
                 if ((Game1.keyboardDispatcher.Subscriber is ITextBox && (Game1.keyboardDispatcher.Subscriber as ITextBox).AllowIME)
                     || (Game1.keyboardDispatcher.Subscriber is TextBox && !(Game1.keyboardDispatcher.Subscriber as TextBox).numbersOnly))
                 {
-                    KeyboardInput_.iMEControl.EnableIME();
+                    KeyboardInput_.api.setState(true);
                 }
                 else
                 {
-                    KeyboardInput_.iMEControl.DisableIME();
+                    KeyboardInput_.api.setState(false);
                 }
         }
     }

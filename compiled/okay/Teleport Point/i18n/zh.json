@@ -1,0 +1,11 @@
+﻿{
+  "teleportPoint.button.teleport.title": "传送",
+  "teleportPoint.button.record.title": "记录传送点",
+  "teleportPoint.button.delete.title": "删除",
+  "teleportPoint.title.naming.title": "命名",
+  "teleportPoint.label.teleportPointList.title": "传送点列表",
+  "teleportPoint.label.teleportPoint.title": "传送点",
+  "teleportPoint.naming.textField.name.description": "名称",
+  "teleportPoint.naming.button.done.title": "完成",
+  "teleportPoint.naming.button.cancel.title": "取消"
+}

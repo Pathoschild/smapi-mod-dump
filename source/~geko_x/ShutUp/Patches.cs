@@ -25,7 +25,7 @@ namespace ShutUp {
 
 			try {
 				if (ModEntry.config.sounds.Contains(cueName)) {
-					ModEntry.monitor.Log($"Shutting {cueName} up", LogLevel.Info);
+					//ModEntry.monitor.Log($"Shutting {cueName} up", LogLevel.Info);
 
 					return false;
 				}

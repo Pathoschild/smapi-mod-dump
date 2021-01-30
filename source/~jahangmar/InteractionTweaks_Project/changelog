@@ -19,4 +19,10 @@
 	-added Korean translation (thanks to overwritten)
 	-added Russian translation (thanks to VengelmBjorn)
 
+1.4.1:
+	-recompiled for SDV 1.5
 
+1.4.2:
+	-fixed bugs in carpenter menu due to new game version
+	-fixed minor graphical glitches in carpenter menu
+	-fixed bug that was letting player not put fish in fish tank

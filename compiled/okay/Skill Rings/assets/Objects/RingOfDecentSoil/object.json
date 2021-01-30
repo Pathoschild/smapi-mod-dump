@@ -1,0 +1,11 @@
+{
+  "Name": "Ring of Decent Soil",
+  "Description": "Increases the quality of your soil, improving farming a little.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 1000,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Pierre",
+  "PurchasePrice": 5000,
+}

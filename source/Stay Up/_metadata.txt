@@ -1,0 +1,13 @@
+url:
+   https://github.com/su226/StardewValleyMods.git
+
+mods:
+   Stay Up
+
+latest commit:
+   commit 11e06d0425f4b8cfa28159ceb442350d02505635
+   Author: su226 <1368981939@qq.com>
+   Date:   Sun Jan 17 16:23:22 2021 +0800
+   
+       [StayUp] Tired emote supression no longer need patching game code.
+   

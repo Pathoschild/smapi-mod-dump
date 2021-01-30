@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7842
+IDs: Digus.MailServicesMod
+update keys: Nexus:7842, GitHub:Digus/StardewValleyMods

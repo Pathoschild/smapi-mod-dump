@@ -1,10 +1,10 @@
 {
   "Name": "Time Freezes at Midnight",
   "Author": "JBtheShadow",
-  "Version": "1.0.0",
-  "Description": "I was too spoiled by the SNES Harvest Moon and how the day only advanced when you went to bed, soooo I decided to try and emulate that in Stardew Valley too",
+  "Version": "1.2.0",
+  "Description": "Time stops advancing at 12:00 AM (by default)",
   "UniqueID": "JBtheShadow.TimeFreezesAtMidnight",
   "EntryDll": "TimeFreezesAtMidnight.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:7425" ]
 }

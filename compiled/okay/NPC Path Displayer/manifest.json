@@ -1,0 +1,16 @@
+{
+    "Name": "Path Display",
+    "Author": "Akago",
+    "Version": "1.0.1",
+    "Description": "This mod on activation will render boxes over any spots the NPCs will walk. Does not include the Island or marriage right now.",
+    "UniqueID": "akago.PathDisplay",
+    "EntryDll": "PathDisplay.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:7563" ],
+    "Dependencies": [
+        {
+            "UniqueID": "Platonymous.Toolkit",
+            "IsRequired": true
+        }
+    ]
+}

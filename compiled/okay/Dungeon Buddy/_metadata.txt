@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7864
+IDs: SwiftSails.DungeonBuddy
+update keys: Nexus:7864

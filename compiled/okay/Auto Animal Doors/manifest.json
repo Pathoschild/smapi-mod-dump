@@ -1,0 +1,16 @@
+﻿{
+  "Name": "AutoAnimalDoors",
+  "Author": "Aaron Taggart",
+  "Version": "3.0.0",
+  "Description": "Open and close the doors automatically for your animals.",
+  "UniqueID": "AaronTaggart.AutoAnimalDoors",
+  "EntryDll": "AutoAnimalDoors.dll",
+  "MinimumApiVersion": "3.9.1",
+  "UpdateKeys": [ "Nexus:1019" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

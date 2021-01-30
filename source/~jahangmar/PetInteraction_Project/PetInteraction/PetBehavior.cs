@@ -84,7 +84,7 @@ namespace PetInteraction
                 return;
 
             petState = state;
-            ModEntry.Log("Set state to " + petState);
+            //ModEntry.Log("Set state to " + petState);
 
             switch (state)
             {

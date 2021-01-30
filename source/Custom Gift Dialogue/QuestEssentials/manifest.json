@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Quest Essentials",
+  "Author": "PurrplingCat",
+  "Version": "1.0.0-alpha",
+  "Description": "Adds new quest types and some extra stuff for quests",
+  "UniqueID": "PurrplingCat.QuestEssentials",
+  "EntryDll": "QuestEssentials.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "PurrplingCat.QuestFramework",
+      "MinimumVersion": "1.2.0-alpha"
+    }
+  ]
+}

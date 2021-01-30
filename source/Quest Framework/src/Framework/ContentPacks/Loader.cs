@@ -14,8 +14,9 @@ using Newtonsoft.Json.Linq;
 using PurrplingCore.Lexing;
 using PurrplingCore.Lexing.LexTokens;
 using QuestFramework.Framework.ContentPacks.Model;
+using QuestFramework.Framework.Controllers;
 using QuestFramework.Framework.Helpers;
-using QuestFramework.Offers;
+using QuestFramework.Framework.Structures;
 using QuestFramework.Quests;
 using StardewModdingAPI;
 using StardewValley;
@@ -29,14 +30,18 @@ namespace QuestFramework.Framework.ContentPacks
     class Loader
     {
         private readonly Regex allowedChars = new Regex("^[a-zA-Z0-9_-]*$");
+        private readonly List<KeyValuePair<IContentPack, CustomDropBoxData>> dropBoxes;
 
-        public Loader(IMonitor monitor, QuestManager manager, QuestOfferManager scheduleManager)
+        public Loader(IMonitor monitor, QuestManager manager, QuestOfferManager scheduleManager, ConditionManager conditionManager, CustomBoardController customBoardController)
         {
             this.Contents = new List<Content>();
             this.ValidContents = new List<Content>();
             this.Monitor = monitor;
             this.Manager = manager;
             this.ScheduleManager = scheduleManager;
+            this.ConditionManager = conditionManager;
+            this.CustomBoardController = customBoardController;
+            this.dropBoxes = new List<KeyValuePair<IContentPack, CustomDropBoxData>>();
         }
 
         public List<Content> Contents { get; }
@@ -44,6 +49,8 @@ namespace QuestFramework.Framework.ContentPacks
         public IMonitor Monitor { get; }
         public QuestManager Manager { get; }
         public QuestOfferManager ScheduleManager { get; }
+        public ConditionManager ConditionManager { get; }
+        public CustomBoardController CustomBoardController { get; }
 
         public void LoadPacks(IEnumerable<IContentPack> contentPacks)
         {
@@ -133,10 +140,77 @@ namespace QuestFramework.Framework.ContentPacks
                 }
             }
 
+            this.RegisterBoards(content.Owner, content.CustomBoards);
+            this.RegisterDropBoxes(content.Owner, content.CustomDropBoxes);
+
             // Add quest schedules
             foreach (var offer in content.Offers)
             {
                 this.ScheduleManager.AddOffer(offer);
+            }
+        }
+
+        private void RegisterDropBoxes(IContentPack pack, List<CustomDropBoxData> customDropBoxes)
+        {
+            if (customDropBoxes == null)
+                return;
+
+            foreach (var dropBoxData in customDropBoxes)
+                this.dropBoxes.Add(new KeyValuePair<IContentPack, CustomDropBoxData>(pack, dropBoxData));
+        }
+
+        public void OnLocationChange(GameLocation location)
+        {
+            foreach (var dropBox in this.dropBoxes)
+            {
+
+                if (location?.Name != dropBox.Value.Location)
+                {
+                    continue;
+                }
+
+                if (location.doesTileHaveProperty(dropBox.Value.Tile.X, dropBox.Value.Tile.Y, "Action", "Buildings") != null)
+                {
+                    this.Monitor.Log($"({dropBox.Key.Manifest.UniqueID}) Cannot add drop box on tile `{dropBox.Value.Tile}` in `{dropBox.Value.Location}`: This tile is reserved for another action.", LogLevel.Error);
+                    continue;
+                }
+
+                location.setTileProperty(dropBox.Value.Tile.X, dropBox.Value.Tile.Y, "Buildings", "Action", $"DropBox {dropBox.Value.Name}");
+                this.Monitor.Log($"({dropBox.Key.Manifest.UniqueID}) Added drop box on tile `{dropBox.Value.Tile}` in `{dropBox.Value.Location}`");
+            }
+        }
+
+        public void OnReturnedToTitle()
+        {
+            this.dropBoxes.Clear();
+        }
+
+        private void RegisterBoards(IContentPack pack, List<CustomBoardData> customBoards)
+        {
+            if (customBoards == null)
+                return;
+
+            CustomBoardTrigger trigger;
+
+            foreach (var boardData in customBoards)
+            {
+                trigger = new CustomBoardTrigger()
+                {
+                    BoardName = boardData.BoardName,
+                    BoardType = boardData.BoardType,
+                    LocationName = boardData.Location,
+                    Tile = boardData.Tile,
+                    IndicatorOffset = boardData.IndicatorOffset,
+                    ShowIndicator = boardData.ShowIndicator,
+                    Texture = this.LoadTexture(pack, boardData.Texture),
+                };
+
+                if (boardData.UnlockWhen != null)
+                {
+                    trigger.unlockConditionFunc = () => this.ConditionManager.CheckConditions(boardData.UnlockWhen, new object());
+                }
+
+                this.CustomBoardController.RegisterBoardTrigger(trigger);
             }
         }
 
@@ -177,8 +251,9 @@ namespace QuestFramework.Framework.ContentPacks
             };
         }
 
-        public void RegisterQuestsFromPacks()
+        public void ApplyLoadedContentPacks()
         {
+            this.dropBoxes.Clear();
             this.ValidContents.ForEach(content => this.Apply(content.Translate(content.Owner.Translation)));
 
         }
@@ -317,17 +392,37 @@ namespace QuestFramework.Framework.ContentPacks
             {
                 try
                 {
-                    managedQuest.Texture = content.Owner.LoadAsset<Texture2D>(questData.Texture);
+                    managedQuest.Texture = this.LoadTexture(content.Owner, questData.Texture);
                 } 
                 catch (ContentLoadException ex)
                 {
-                    this.Monitor.Log($"Couldn't load quest background texture file `{questData.Texture}`: {ex.Message}");
+                    this.Monitor.Log($"Couldn't load quest background texture file `{questData.Texture}`: {ex.Message}", LogLevel.Error);
                 }
             }
 
             questData.PopulateExtendedData(managedQuest);
 
             return managedQuest;
+        }
+
+        private Texture2D LoadTexture(IContentPack pack, string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return null;
+
+            try
+            {
+                if (pack.HasFile(path))
+                    return pack.LoadAsset<Texture2D>(path);
+
+                return Game1.content.Load<Texture2D>(path);
+            }
+            catch (ContentLoadException ex)
+            {
+                this.Monitor.Log($"({pack.Manifest.UniqueID}) Cannot load texture `{path}`: {ex.Message}");
+
+                return null;
+            }
         }
 
         private int ParseReward(JToken reward, RewardType rewardType)

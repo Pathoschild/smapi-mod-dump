@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7782
+IDs: GZhynko.FishExclusions
+update keys: Nexus:7782, GitHub:gzhynko/StardewMods

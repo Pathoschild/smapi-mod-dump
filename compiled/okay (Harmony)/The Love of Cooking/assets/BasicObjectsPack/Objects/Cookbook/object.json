@@ -1,0 +1,21 @@
+{
+    // Object data
+    "Name": "blueberry.cac.cookbook",
+    "Description": "...",
+    "Category": "Junk",
+    "Edibility": 0,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 0,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 0,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {}
+}

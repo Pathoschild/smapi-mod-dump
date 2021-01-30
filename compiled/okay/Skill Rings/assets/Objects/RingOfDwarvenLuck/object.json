@@ -1,0 +1,8 @@
+{
+  "Name": "Ring of Dwarven Luck",
+  "Description": "The luck of the dwarves shines upon you while mining.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 50000,
+  "Recipe": null,
+}

@@ -43,10 +43,13 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Framework\Gui\ComponentScreen.cs" />
         <Compile Include="Framework\Gui\EnaiumToolKitScreen.cs" />
-        <Compile Include="Framework\Gui\TestScreen.cs" />
+        <Compile Include="Framework\Gui\ElementScreen.cs" />
         <Compile Include="Framework\Screen\Components\Button.cs" />
         <Compile Include="Framework\Screen\Components\Component.cs" />
+        <Compile Include="Framework\Screen\Components\Slot.cs" />
+        <Compile Include="Framework\Screen\Components\Slots\LabelSlot.cs" />
         <Compile Include="Framework\Screen\Components\TextField.cs" />
         <Compile Include="Framework\Screen\Elements\Button.cs" />
         <Compile Include="Framework\Screen\Elements\ColorButton.cs" />
@@ -55,6 +58,7 @@
         <Compile Include="Framework\Screen\Elements\ModeButton.cs" />
         <Compile Include="Framework\Screen\Elements\ToggleButton.cs" />
         <Compile Include="Framework\Screen\Elements\ValueButton.cs" />
+        <Compile Include="Framework\Screen\GuiScreen.cs" />
         <Compile Include="Framework\Screen\ScreenGui.cs" />
         <Compile Include="Framework\Utils\ColorUtils.cs" />
         <Compile Include="Framework\Utils\FontUtils.cs" />

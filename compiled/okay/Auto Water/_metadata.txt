@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5463
+IDs: pickle.autowater
+update keys: Nexus:5463, Nexus:1666

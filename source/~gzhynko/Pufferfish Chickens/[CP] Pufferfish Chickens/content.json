@@ -14,14 +14,14 @@
   "Changes": 
    [
    
-     // Adds a new event featuring Willy, who gives player the Pufferfish egg.
-	 /* Trigger conditions: 
-	    Map: Farm;
-	    Weather: Sunny;
-	    At least one free inventory slot available;
-		At least 50 friendship points with Willy;
-		Played for at least 42 days.
-	 */ 
+    // Adds a new event featuring Willy, who gives player the Pufferfish egg.
+    /* Trigger conditions: 
+      Map: Farm;
+      Weather: Sunny;
+      At least one free inventory slot available;
+      At least 50 friendship points with Willy;
+      Played for at least 42 days.
+    */ 
 	 
      {
        "Action": "EditData",

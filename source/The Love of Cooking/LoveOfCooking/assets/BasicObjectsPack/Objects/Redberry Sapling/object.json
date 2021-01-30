@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/CooksAssistant
+**
+*************************************************/
+
+{
+    // Object data
+    "Name": "blueberry.cac.redberry_seeds",
+    "Description": "...",
+    "Category": "Seeds",
+    "Edibility": -300,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 820,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 1800,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+    }
+}

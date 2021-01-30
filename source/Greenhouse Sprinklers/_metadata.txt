@@ -1,0 +1,13 @@
+url:
+   https://github.com/Bpendragon/GreenhouseSprinklers.git
+
+mods:
+   Greenhouse Sprinklers
+
+latest commit:
+   commit ab4412a90bc0310c6b049fb894f3877186d2d579
+   Author: David Camp <Bpendragon@users.noreply.github.com>
+   Date:   Mon Jan 18 13:11:07 2021 -0800
+   
+       Finalize version upgrade
+   

@@ -18,12 +18,16 @@ namespace ProducerFrameworkMod
 {
     public class RestrictionException : Exception
     {
+        public bool ShowMessage;
+
         public RestrictionException()
         {
+            ShowMessage = false;
         }
 
         public RestrictionException(string message) : base(message)
         {
+            ShowMessage = true;
         }
     }
 }

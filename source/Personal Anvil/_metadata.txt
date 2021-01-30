@@ -5,9 +5,9 @@ mods:
    Personal Anvil
 
 latest commit:
-   commit f5792db760d9c15913eb49d62831b09b40e8ff3a
+   commit 7b7ef645b492b0fd08cc354d141e06391650618c
    Author: Ishan Jalan <ishan1337@gmail.com>
-   Date:   Sat Dec 5 19:13:34 2020 +0530
+   Date:   Sat Jan 23 03:07:29 2021 +0530
    
-       Updated to 1.0.10 / Increased animation speed, added new sprite, refactoring
+       1.5 Compatibility with updated logic and Golden Coconut compat.
    

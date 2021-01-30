@@ -1,0 +1,10 @@
+{
+  "Name": "Crab Pot Loot Has Quality And Bait Effects",
+  "Author": "Goldenrevolver",
+  "Version": "1.0.1",
+  "Description": "Crab pot loot has quality based on fishing skill and perks and different kinds of bait have effects",
+  "UniqueID": "Goldenrevolver.CrabPotQuality",
+  "EntryDll": "CrabPotQuality.dll",
+  "MinimumApiVersion": "3.8.2",
+  "UpdateKeys": [ "Nexus:7767" ]
+}

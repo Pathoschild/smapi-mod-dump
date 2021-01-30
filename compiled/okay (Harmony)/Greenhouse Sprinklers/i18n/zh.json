@@ -1,0 +1,25 @@
+{
+  //Letters
+  "mail.Wizard1": "@,^^看到你为星露谷做出的贡献，祝尼魔们很高兴。^它们提出了一个好主意来帮你改善温室，我把这些想法翻译成了罗宾可以实施的点子。^如果想升级你的温室，就去找罗宾谈谈吧。^^   -M. 拉斯莫迪斯 法师",
+  "mail.Wizard1b": "@,^^虽然祝尼魔们已经被移出了它们在社区中心的家，看到你为星露谷做出的贡献，它们还是很高兴。^它们提出了一个好主意来帮你改善温室，我把这些想法翻译成了罗宾可以实施的点子。^如果想升级你的温室，就去找罗宾谈谈吧。^^   -M. 拉斯莫迪斯 法师",
+  "mail.Wizard2": "@,^^你的农场一直以来都让祝尼魔们印象深刻。^它们提出了一个好主意来帮你改善温室，我把这些想法翻译成了罗宾可以实施的点子。^如果想升级你的温室，就去找罗宾谈谈吧。^^   -M. 拉斯莫迪斯 法师",
+  "mail.Wizard3": "@,^^你的农场一直以来都让祝尼魔们印象深刻。^它们提出了一个最好、也是最终的主意——升级整个农场的洒水系统， 我把这些想法翻译成了罗宾可以实施的点子。^如果想升级你的温室，就去找罗宾谈谈吧。^^   -M. 拉斯莫迪斯 法师",
+
+  //Shop Descriptions
+  "CarpenterShop.BluePrintName": "温室洒水系统升级",
+  "CarpenterShop.FirstUpgradeDescription": "温室天花板安装自动洒水器，每天早晨浇灌一次",
+  "CarpenterShop.SecondUpgradeDescription": "温室天花板安装自动洒水器，每天早晨和晚上各浇灌一次",
+  "CarpenterShop.FinalUpgradeDescription": "安装遍布整个农场的隐藏式地下洒水器，每天早晨和晚上各浇灌一次",
+
+  //Menu Items
+  //Currently Unused, may never be used
+  //If used will be expanded
+
+  "menu.diff": "Difficulty",
+  "menu.diff-Easy": "Easy",
+  "menu.diff-Medium": "Medium",
+  "menu.diff-Hard": "Hard",
+  "menu.diff-Custom": "Custom"
+
+
+}

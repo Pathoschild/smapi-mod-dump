@@ -19,8 +19,8 @@ namespace SpriteMaster {
 #endif
 
 #if DEBUG
-		private static readonly object TrackerLock = Enabled ? new object() : null;
-		private static readonly HashSet<AsyncTracker> Trackers = Enabled ? new HashSet<AsyncTracker>() : null;
+		private static readonly object TrackerLock = Enabled ? new() : null;
+		private static readonly HashSet<AsyncTracker> Trackers = Enabled ? new() : null;
 
 		private readonly string Name;
 #endif

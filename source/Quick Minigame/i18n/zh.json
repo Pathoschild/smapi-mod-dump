@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Enaium-StardewValleyMods/QuickMinigame
+**
+*************************************************/
+
+{
+  "quickMinigame.button": "玩",
+  "quickMinigame.button.darts": "飞镖",
+  "quickMinigame.button.slots": "老虎机",
+  "quickMinigame.button.prairieKing": "草原之王",
+  "quickMinigame.button.calicoJack": "21点",
+  "quickMinigame.button.craneGame": "抓娃娃机",
+  "quickMinigame.button.minecart": "祝尼魔赛车"
+}

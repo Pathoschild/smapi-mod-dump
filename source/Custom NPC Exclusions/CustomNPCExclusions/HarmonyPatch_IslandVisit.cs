@@ -42,8 +42,8 @@ namespace CustomNPCExclusions
 
                 if (exclusions.Exists(entry =>
                     entry.StartsWith("All", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from everything
-                    || entry.StartsWith("IslandEvent", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from town quests
-                    || entry.StartsWith("IslandVisit", StringComparison.OrdinalIgnoreCase) //OR if this NPC is excluded from item delivery quests
+                    || entry.StartsWith("IslandEvent", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from island events
+                    || entry.StartsWith("IslandVisit", StringComparison.OrdinalIgnoreCase) //OR if this NPC is excluded from visting the island resort
                 ))
                 {
                     ModEntry.Instance.Monitor.Log($"Excluded NPC from possible island visit: {npc.Name}", LogLevel.Trace);

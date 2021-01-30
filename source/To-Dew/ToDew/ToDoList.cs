@@ -55,8 +55,9 @@ namespace ToDew {
         /// <summary>
         /// The data model used to send the ListData between mod instances in multiplayer.
         /// </summary>
-        /// Because SMAPI (at least as of 3.8.1) does not support deserializing an ISemanticVersion
+        /// Because SMAPI before 3.8.2 does not support deserializing an ISemanticVersion
         /// in the network code, even though it does in the save file code.
+        /// (see https://github.com/Pathoschild/SMAPI/issues/745)
         public class NetworkListData {
             public string DataFormatVersion { get; set; } = CurrentDataFormatVersion.ToString();
             public List<ListItem> Items { get; set; } = new List<ListItem>();
@@ -173,6 +174,52 @@ namespace ToDew {
             }
         }
 
+        private void DoMoveItem(long id, int direction) {
+            var list = theList.Items;
+            int idx = list.FindIndex(li => li.Id == id);
+            if (idx >= 0) {
+                int newIdx = idx + direction;
+                if (newIdx >= 0 && newIdx < list.Count) {
+                    var tmp = list[newIdx];
+                    list[newIdx] = list[idx];
+                    list[idx] = tmp;
+                    Save();
+                } else {
+                    if (theMod.config.debug) {
+                        theMod.Monitor.Log($"DoMoveItem could not move item {id} into position {newIdx}", LogLevel.Debug);
+                    }
+                }
+            } else {
+                if (theMod.config.debug) {
+                    theMod.Monitor.Log($"DoMoveItem did not find item {id}", LogLevel.Debug);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Move the given item up in the list
+        /// </summary>
+        /// <param name="id">The ID of the item to move</param>
+        public void MoveItemUp(long id) {
+            if (Context.IsMainPlayer) {
+                DoMoveItem(id, -1);
+            } else {
+                SendToHost(MessageType.MoveItemUp, id);
+            }
+        }
+
+        /// <summary>
+        /// Move the given item down in the list
+        /// </summary>
+        /// <param name="id">The ID of the item to move</param>
+        public void MoveItemDown(long id) {
+            if (Context.IsMainPlayer) {
+                DoMoveItem(id, 1);
+            } else {
+                SendToHost(MessageType.MoveItemDown, id);
+            }
+        }
+
         private void SendToHost<T>(string messageType, T val) {
             if (theMod.config.debug) {
                 theMod.Monitor.Log($"Sending message {messageType} to host {Game1.MasterPlayer.UniqueMultiplayerID}", LogLevel.Debug);
@@ -189,6 +236,8 @@ namespace ToDew {
             public const string RequestList = "RequestList";
             public const string AddItem = "AddItem";
             public const string DeleteItem = "DeleteItem";
+            public const string MoveItemUp = "MoveItemUp";
+            public const string MoveItemDown = "MoveItemDown";
 
             // messages sent from the host
             public const string ListData = "ListData";
@@ -212,6 +261,12 @@ namespace ToDew {
                         break;
                     case MessageType.DeleteItem:
                         DoDeleteItem(e.ReadAs<long>());
+                        break;
+                    case MessageType.MoveItemUp:
+                        DoMoveItem(e.ReadAs<long>(), -1);
+                        break;
+                    case MessageType.MoveItemDown:
+                        DoMoveItem(e.ReadAs<long>(), 1);
                         break;
                     default:
                         theMod.Monitor.Log($"Ignoring unexpected message type {e.Type} from player {e.FromPlayerID} ({Game1.getFarmer(e.FromPlayerID)?.Name})",

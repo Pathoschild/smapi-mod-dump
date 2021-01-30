@@ -194,6 +194,18 @@ namespace Randomizer
 				});
 			}
 			int lowestLevelReached = MineShaft.lowestLevelReached;
+			if (MineShaft.lowestLevelReached >= 40)
+				dictionary.Add((ISalable)new Slingshot(32), new int[2]
+				{
+					500,
+					maxValue
+				});
+			if (MineShaft.lowestLevelReached >= 70)
+				dictionary.Add((ISalable)new Slingshot(33), new int[2]
+				{
+					1000,
+					maxValue
+				});
 			if (Game1.player.craftingRecipes.ContainsKey("Explosive Ammo"))
 				dictionary.Add((ISalable)new Object(441, int.MaxValue, false, -1, 0), new int[2]
 				{
@@ -276,7 +288,7 @@ namespace Randomizer
 		/// </summary>
 		public static void FixAdventureShopBuyAndSellPrices()
 		{
-			if (Globals.Config.RandomizeWeapons || Globals.Config.RandomizeBoots)
+			if (Globals.Config.Weapons.Randomize || Globals.Config.Boots.Randomize)
 			{
 				MethodInfo methodToReplace = typeof(Utility).GetMethod("getAdventureShopStock");
 				MethodInfo methodToInject = typeof(OverriddenAdventureShop).GetMethod("NewGetAdventureShopStock");

@@ -1,0 +1,10 @@
+{
+  "Name": "Experience Updates",
+  "Author": "Quipex",
+  "Version": "1.0.1",
+  "Description": "Displays when the player gains experience",
+  "UniqueID": "Quipex.ExperienceUpdates",
+  "EntryDll": "ExperienceUpdates.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7581" ]
+}

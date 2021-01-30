@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ChroniclerCherry/stardew-valley-mods
+**
+*************************************************/
+
+{
+	"NotEnoughMoney":"No tienes suficiente dinero para pagar el boleto hacia {{DestinationName}}",
+	"MenuCancelOption":"Cancelar",
+	"NoDestinations":"No hay destinos disponibles",
+	"ChooseDestination":"Elige tu destino",
+	"TrainStationDisplayName":"Estación de stardew Valley",
+	"ArrivalMessage":"Has llegado a {{DestinationName}}"
+}

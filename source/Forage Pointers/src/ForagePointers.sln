@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForagePointers", "ForagePointers.csproj", "{968FF366-CB5A-4D5D-917B-74D2BC1B13A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F02B8885-6F57-424D-82F4-8537E2306BBA}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{968FF366-CB5A-4D5D-917B-74D2BC1B13A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{968FF366-CB5A-4D5D-917B-74D2BC1B13A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{968FF366-CB5A-4D5D-917B-74D2BC1B13A8}.Debug|x86.ActiveCfg = Debug|x86
+		{968FF366-CB5A-4D5D-917B-74D2BC1B13A8}.Debug|x86.Build.0 = Debug|x86
+		{968FF366-CB5A-4D5D-917B-74D2BC1B13A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{968FF366-CB5A-4D5D-917B-74D2BC1B13A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{968FF366-CB5A-4D5D-917B-74D2BC1B13A8}.Release|x86.ActiveCfg = Release|x86
+		{968FF366-CB5A-4D5D-917B-74D2BC1B13A8}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8FC3B99-60D8-4033-BC00-5335805941A4}
+	EndGlobalSection
+EndGlobal

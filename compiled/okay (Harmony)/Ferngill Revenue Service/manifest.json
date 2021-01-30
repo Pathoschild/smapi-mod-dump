@@ -1,0 +1,13 @@
+﻿{
+  "Name": "FerngillRevenueService",
+  "Author": "KarratKake",
+  "Version": "1.1.4", // fixed locally
+  "Description": "Keep your gameplay difficult and engaging with taxes and bills",
+  "UniqueID": "KarratKake.FerngillRevenueService",
+  "EntryDll": "FerngillRevenueService.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:7566"],
+  "Dependencies": [
+   { "UniqueID": "Pathoschild.ContentPatcher", "IsRequired": false }
+]
+}

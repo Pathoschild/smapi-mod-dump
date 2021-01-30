@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7831
+IDs: spacechase0.ManaBar
+update keys: Nexus:7831, GitHub:spacechase0/ManaBar

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+	<PropertyGroup>
+		<RootNamespace>SpriteMaster</RootNamespace>
+		<Product>SpriteMaster-SV</Product>
+		<PackageId>SpriteMaster-SV</PackageId>
+		<Authors>Digital Carbide</Authors>
+		<Company>Digital Carbide</Company>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Copyright>mkuklinski</Copyright>
+
+		<Version>0.12.0-RC1</Version>
+		<AssemblyVersion>0.12.0.*</AssemblyVersion>
+		<FileVersion>0.12.0.0</FileVersion>
+		
+		<TargetFramework>net452</TargetFramework>
+		<FileAlignment>512</FileAlignment>
+		<LangVersion>preview</LangVersion>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<NullableReferenceTypes>true</NullableReferenceTypes>
+		<ErrorReport>prompt</ErrorReport>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+		<ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>pdbonly</DebugType>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<BaseAddress>285736960</BaseAddress>
+		<Deterministic>false</Deterministic>
+		<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+	</PropertyGroup>
+</Project>

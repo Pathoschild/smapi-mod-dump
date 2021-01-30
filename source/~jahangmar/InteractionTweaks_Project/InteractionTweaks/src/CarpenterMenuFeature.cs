@@ -61,6 +61,7 @@ namespace InteractionTweaks
             woodObject = ObjectFactory.getItemFromDescription(ObjectFactory.regularObject, Object.wood, 1); 
             stoneObject = ObjectFactory.getItemFromDescription(ObjectFactory.regularObject, Object.stone, 1);
             Helper.Events.Display.MenuChanged += Display_MenuChanged;
+            Helper.Events.Display.WindowResized += Display_WindowResized;
         }
 
         public static new void Disable()
@@ -68,6 +69,13 @@ namespace InteractionTweaks
             //enabled = false;
             Helper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
+
+        static void Display_WindowResized(object sender, WindowResizedEventArgs e)
+        {
+            if (Game1.activeClickableMenu is CarpenterMenu carpenterMenu)
+                SetupButtons(carpenterMenu);
+        }
+
 
         static void Display_MenuChanged(object sender, StardewModdingAPI.Events.MenuChangedEventArgs e)
         {
@@ -100,15 +108,25 @@ namespace InteractionTweaks
             if (!setupBlueprints)
                 SetupBlueprints(carpenterMenu);
 
+            bool onFarm = Helper.Reflection.GetField<bool>(carpenterMenu, "onFarm").GetValue();
+
+            if (e.Button.Equals(SButton.Escape))
+            {
+                if (onFarm)
+                    moneyButtonEnabled = false;
+                return;
+            }
+
             if (!e.Button.Equals(SButton.MouseLeft))
                 return;
-
-            Helper.Input.Suppress(e.Button);
 
             int X = Game1.getMouseX();
             int Y = Game1.getMouseY();
 
-            bool onFarm = Helper.Reflection.GetField<bool>(carpenterMenu, "onFarm").GetValue();
+            if (!(carpenterMenu.GetChildMenu() is BuildingPaintMenu))
+                Helper.Input.Suppress(e.Button);
+            else
+                return;
 
             if (!onFarm && moneyButton.containsPoint(X, Y))
             {
@@ -119,7 +137,7 @@ namespace InteractionTweaks
             {
                 bool demolishing = Helper.Reflection.GetField<bool>(carpenterMenu, "demolishing").GetValue();
                 bool moving = Helper.Reflection.GetField<bool>(carpenterMenu, "moving").GetValue();
-                if (demolishing || moving)
+                if (demolishing || moving || Helper.Reflection.GetField<ClickableTextureComponent>(carpenterMenu, "cancelButton").GetValue().containsPoint(X, Y))
                 {
                     moneyButtonEnabled = false;
                 }
@@ -132,7 +150,10 @@ namespace InteractionTweaks
             }
 
             Monitor.Log("carpenterMenu.receiveLeftClick", LogLevel.Trace);
-            carpenterMenu.receiveLeftClick(X, Y);
+            if (carpenterMenu.GetChildMenu() != null)
+                carpenterMenu.GetChildMenu().receiveLeftClick(X, Y);
+            else
+                carpenterMenu.receiveLeftClick(X, Y);
 
             if (!onFarm && moneyButtonEnabled)
             {
@@ -176,8 +197,9 @@ namespace InteractionTweaks
                 return;
             CarpenterMenu carpenterMenu = (CarpenterMenu)Game1.activeClickableMenu;
             bool onFarm = Helper.Reflection.GetField<bool>(carpenterMenu, "onFarm").GetValue();
-            if (onFarm)
+            if (onFarm || Game1.IsFading())
                 return;
+
 
             moneyButton.draw(e.SpriteBatch);
 
@@ -238,9 +260,17 @@ namespace InteractionTweaks
             ingredInfoWood = Helper.Translation.Get("menu.carpenteringredinfo", new { itemname = woodObject.DisplayName });
             ingredInfoStone = Helper.Translation.Get("menu.carpenteringredinfo", new { itemname = stoneObject.DisplayName });
 
-            cancelTexture = new ClickableTextureComponent("CMON", new Rectangle(carpenterMenu.xPositionOnScreen + carpenterMenu.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 256 - 20 - 64 - 10 + 5, carpenterMenu.yPositionOnScreen + carpenterMenu.maxHeightOfBuildingViewer + 64 + 5, 64 - 8, 64 - 8), null, hoverTextOn, Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(267, 469, 16, 16), 3.0f, false);
+            int xPositionOnScreen = xPositionOnScreen = Game1.uiViewport.Width / 2 - carpenterMenu.maxWidthOfBuildingViewer - IClickableMenu.spaceToClearSideBorder;
+            int yPositionOnScreen = Game1.uiViewport.Height / 2 - carpenterMenu.maxHeightOfBuildingViewer / 2 - IClickableMenu.spaceToClearTopBorder + 32;
+            int width = carpenterMenu.maxWidthOfBuildingViewer + carpenterMenu.maxWidthOfDescription + IClickableMenu.spaceToClearSideBorder * 2 + 64;
+            int height = carpenterMenu.maxHeightOfBuildingViewer + IClickableMenu.spaceToClearTopBorder;
+            int x = xPositionOnScreen + width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20 - 64 - 20;
+            int y = yPositionOnScreen + carpenterMenu.maxHeightOfBuildingViewer + 64;
+            //int x = carpenterMenu.xPositionOnScreen + carpenterMenu.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20 - 64 - 10;
+            //int y = carpenterMenu.yPositionOnScreen + carpenterMenu.maxHeightOfBuildingViewer + 64;
+            cancelTexture = new ClickableTextureComponent("CMON", new Rectangle(x + 5, y + 5, 64 - 8, 64 - 8), null, hoverTextOn, Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(267, 469, 16, 16), 3.0f, false);
 
-            moneyButton = new ClickableTextureComponent("MON", new Rectangle(carpenterMenu.xPositionOnScreen + carpenterMenu.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 256 - 20 - 64 - 10, carpenterMenu.yPositionOnScreen + carpenterMenu.maxHeightOfBuildingViewer + 64, 64, 64), null, hoverTextOn, Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(0, 384, 16, 16), 4f, false)
+            moneyButton = new ClickableTextureComponent("MON", new Rectangle(x, y, 64, 64), null, hoverTextOn, Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(0, 384, 16, 16), 4f, false)
             {
                 myID = moneyButtonID,
                 leftNeighborID = CarpenterMenu.region_forwardButton,

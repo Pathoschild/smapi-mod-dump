@@ -12,11 +12,7 @@ using Bookcase.Events;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bookcase.Patches {
     /// <summary>
@@ -25,9 +21,10 @@ namespace Bookcase.Patches {
     public class CollectionsPageDrawPatch : IGamePatch {
         public Type TargetType => typeof(CollectionsPage);
 
-        public MethodBase TargetMethod => TargetType.GetMethod("draw");
+        public MethodBase TargetMethod => TargetType.GetMethod("draw", new Type[] { typeof(SpriteBatch) }, null);
 
-        public static void Prefix(ref SpriteBatch b, ref CollectionsPage __instance){
+
+        public static void Prefix(ref SpriteBatch b, ref CollectionsPage __instance) {
             FieldInfo currentTab = __instance.GetType().GetField("currentTab", BindingFlags.NonPublic | BindingFlags.Instance);
             FieldInfo currentPage = __instance.GetType().GetField("currentPage", BindingFlags.NonPublic | BindingFlags.Instance);
             FieldInfo hoverText = __instance.GetType().GetField("hoverText", BindingFlags.NonPublic | BindingFlags.Instance);

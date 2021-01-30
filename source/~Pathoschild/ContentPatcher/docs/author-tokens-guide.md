@@ -530,7 +530,7 @@ may add upgrade levels beyond that.
 <td>FarmType</td>
 <td>
 
-The [farm type](https://stardewvalleywiki.com/The_Farm#Farm_Maps). Possible values: `Standard`,
+The [farm type](https://stardewvalleywiki.com/The_Farm#Farm_Maps). Possible values: `Standard`, `Beach`,
 `FourCorners`, `Forest`, `Hilltop`, `Riverland`, `Wilderness`, `Custom`.
 
 </td>
@@ -1045,10 +1045,9 @@ This token is dynamic and may behave in unexpected ways; see below to avoid surp
 <ol>
 <li>
 
-**Dynamic.** Random tokens rechoose each time they're evaluated, generally when a new day starts.
-
-The randomness is seeded with the save ID and in-game date, so reloading the save won't change
-which choices were made.
+**Dynamic.** Random tokens rechoose when they're evaluated, generally when a new day starts. The
+randomness is seeded with the game seed + in-game date + input string, so reloading the save won't
+change which choices were made.
 
 </li>
 <li>
@@ -1081,6 +1080,22 @@ if all the choices are 'true' or 'false', or numeric contexts if all the choices
 
 </li>
 </ul>
+
+### Update rate
+A `Random` token changes its choices on day start by default. If you want randomization to change
+within a day, you need to make two changes:
+
+* Specify a [patch update rate](author-guide.md#update-rate) so the patch itself updates more often.
+* Use a [pinned key](#pinned-key) to set the seed to a value which changes more often. For example,
+  this would change every time the in-game time changes:
+  ```
+  {{Random: a, b, c |key={{Time}} }}
+  ```
+  Note that `{{Random}}` tokens with the same key will synchronize their values. You can make the
+  key unique to avoid that:
+  ```
+  {{Random: a, b, c |key=Abigail portraits {{Time}} }}
+  ```
 
 ### Pinned keys
 <dl>

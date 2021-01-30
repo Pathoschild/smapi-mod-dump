@@ -30,25 +30,36 @@ along with this program.If not, see<https://www.gnu.org/licenses/>.
 
 */
 
+
+using StardewModdingAPI;
 using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using StardewValley;
-using StardewValley.Locations;
+using System.Reflection;
 
 namespace StardewValleyEasyPrairieKing
 {
     public class ModConfig
     {
 
-        public bool alwaysInvincible{ get; set; } = false;
-        public int lives { get; set; } = 98;
-        public int coins { get; set; } = 100;
+        public bool alwaysInvincible{ get; set; } = true;
+        public int lives { get; set; } = 99;
+        public int coins { get; set; } = 99;
         public int ammoLevel { get; set; } = 0;
         public int bulletDamage { get; set; } = 0;
         public int fireSpeedLevel { get; set; } = 5;
         public int runSpeedLevel { get; set; } = 2;
         public bool useShotgun { get; set; } = false;
+        public bool useWheel { get; set;  } = false;
         public int waveTimer { get; set; } = 60;
+        //public SButton? menuKey { get; set; } = SButton.RightControl;
+
+        public object this[string memberName]
+        {
+            set
+            {
+                Type type = this.GetType();
+                PropertyInfo info = type.GetProperty(memberName);
+                info.SetValue(this, value, null);
+            }
+        }
     }
 }

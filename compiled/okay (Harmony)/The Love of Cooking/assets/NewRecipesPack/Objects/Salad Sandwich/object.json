@@ -1,0 +1,29 @@
+{
+    // Object data
+    "Name": "blueberry.cac.saladsando",
+    "Description": "...",
+    "Category": "Junk",
+    "CategoryTextOverride": "",
+    "CategoryColorOverride": "0, 0, 0, 0",
+    "Edibility": 33,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 195,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+        "Love": [ "Leah", "Demetrius" ],
+        "Like": [ "Vincent", "Jas", "Penny", "Gus", "Marnie", "Clint", "Evelyn", "George", "Abigail", "Alex", "Caroline", "Elliott", "Emily", "Haley", "Jodi", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Sandy", "Willy", "Pam" ],
+        "Neutral": [ "Kent", "Wizard" ],
+        "Dislike": [ "Shane", "Sebastian", "Dwarf", "Harvey" ],
+        "Hate": [ "Krobus" ]
+    }
+}

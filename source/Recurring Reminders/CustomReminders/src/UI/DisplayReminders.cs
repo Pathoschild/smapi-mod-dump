@@ -17,6 +17,7 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using StardewModdingAPI.Utilities;
 
 namespace Dem1se.CustomReminders.UI
 {
@@ -25,6 +26,11 @@ namespace Dem1se.CustomReminders.UI
     /// </summary>
     public class DisplayReminders : IClickableMenu
     {
+        private readonly int XPos = (int)(Game1.viewport.Width * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (632 + IClickableMenu.borderWidth * 2) / 2;
+        private readonly int YPos = (int)(Game1.viewport.Height * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - Game1.tileSize;
+        private readonly int UIWidth = 632 + IClickableMenu.borderWidth * 2;
+        private readonly int UIHeight = 600 + IClickableMenu.borderWidth * 2 + Game1.tileSize;
+
         private readonly List<ClickableTextureComponent> DeleteButtons = new List<ClickableTextureComponent>();
         private readonly List<ClickableComponent> ReminderMessages = new List<ClickableComponent>();
         private readonly List<ClickableTextureComponent> Boxes = new List<ClickableTextureComponent>();
@@ -44,9 +50,8 @@ namespace Dem1se.CustomReminders.UI
         /// <summary>Construct an instance.</summary>
         /// <param name="page1OnChangeBehaviour">Required to switch to the New Reminder menu (as its constructor requires this callback function)</param>
         public DisplayReminders(Action<string, string, int> page1OnChangeBehaviour)
-            : base(Game1.viewport.Width / 2 - (632 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - Game1.tileSize, 632 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2 + Game1.tileSize)
         {
-            //this.MenuButton = Utilities.Utilities.GetMenuButton();
+            base.initialize(XPos, YPos, UIWidth, UIHeight);
             this.Page1OnChangeBehaviour = page1OnChangeBehaviour;
 
             SetUpUI();
@@ -128,12 +133,19 @@ namespace Dem1se.CustomReminders.UI
         }
 
         /// <summary>This fills the Reminders list by reading all the reminder files</summary>
-        private void PopulateRemindersList()
+        private void PopulateRemindersList() 
         {
+            SDate now = SDate.Now();
             foreach (string AbsoulutePath in Directory.GetFiles(Path.Combine(Utilities.Globals.Helper.DirectoryPath, "data", Utilities.Globals.SaveFolderName)))
             {
                 string RelativePath = Utilities.Extras.MakeRelativePath(AbsoulutePath);
-                Reminders.Add(Utilities.Globals.Helper.Data.ReadJsonFile<ReminderModel>(RelativePath));
+                ReminderModel Reminder = Utilities.Globals.Helper.Data.ReadJsonFile<ReminderModel>(RelativePath);
+                //Json-x-ly Notes: Threw this check in since now there are entries that are spent, but still awaiting cleanup. Implies to the user that the Reminder is gone.
+                // -- Changing the "Reminder.Time < Game1.timeOfDay" to "Reminder.Time <= Game1.timeOfDay" determines if the entry is left in the list for the actual moment in time it's triggered.
+                // If Reminder is today or earlier and Reminders Time is earlier then now, omit the entry.
+                if (Reminder.DaysSinceStart <= now.DaysSinceStart && Reminder.Time < Game1.timeOfDay) continue;
+                
+                Reminders.Add(Reminder);
             }
         }
 
@@ -206,7 +218,7 @@ namespace Dem1se.CustomReminders.UI
             Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, width, height - 12, false, true);
 
             // draw title scroll
-            SpriteText.drawStringWithScrollCenteredAt(b, Utilities.Globals.Helper.Translation.Get("display-reminder.title"), Game1.viewport.Width / 2, yPositionOnScreen, Utilities.Globals.Helper.Translation.Get("display-reminder.title"));
+            SpriteText.drawStringWithScrollCenteredAt(b, Utilities.Globals.Helper.Translation.Get("display-reminder.title"), Game1.options.uiScale <= 1.25f ? XPos + (UIWidth / 2) : XPos - Game1.tileSize * 2 - 32, Game1.options.uiScale <= 1.25f ? YPos - (Game1.tileSize / 4) : YPos + Game1.tileSize * 3, Utilities.Globals.Helper.Translation.Get("display-reminder.title"));
 
             // draw boxes
             foreach (ClickableTextureComponent box in Boxes)
@@ -217,9 +229,22 @@ namespace Dem1se.CustomReminders.UI
             {
                 string text = "";
                 Color color = Game1.textColor;
-                Utility.drawTextWithShadow(b, label.name, Game1.smallFont, new Vector2(label.bounds.X, label.bounds.Y), color);
+                Utility.drawTextWithShadow(
+                    b,
+                    label.name,
+                    Game1.smallFont,
+                    new Vector2(label.bounds.X, label.bounds.Y),
+                    color
+                );
                 if (text.Length > 0)
-                    Utility.drawTextWithShadow(b, text, Game1.smallFont, new Vector2((label.bounds.X + Game1.tileSize / 3) - Game1.smallFont.MeasureString(text).X / 2f, (label.bounds.Y + Game1.tileSize / 2)), color);
+                    Utility.drawTextWithShadow(
+                        b,
+                        text,
+                        Game1.smallFont,
+                        new Vector2((label.bounds.X + Game1.tileSize / 3) - Game1.smallFont.MeasureString(text).X / 2f,
+                        (label.bounds.Y + Game1.tileSize / 2)),
+                        color
+                    );
             }
             if (Reminders.Count > (PageIndex + 1) * 5)
                 NextPageButton.draw(b);

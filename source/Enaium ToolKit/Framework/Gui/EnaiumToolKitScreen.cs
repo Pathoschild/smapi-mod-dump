@@ -18,10 +18,14 @@ namespace EnaiumToolKit.Framework.Gui
     {
         public EnaiumToolKitScreen() : base("Enaium toolKit")
         {
-            AddElement(new Button(GetTranslation("enaiumToolKitScreen.element.button.testScreen"),
-                GetTranslation("enaiumToolKitScreen.element.button.testScreen"))
+            AddElement(new Button("ElementScreen", "Element test")
             {
-                OnLeftClicked = () => { Game1.activeClickableMenu = new TestScreen(); }
+                OnLeftClicked = () => { OpenScreenGui(new ElementScreen()); }
+            });
+
+            AddElement(new Button("ComponentScreen", "Component test")
+            {
+                OnLeftClicked = () => { OpenScreenGui(new ComponentScreen()); }
             });
         }
 

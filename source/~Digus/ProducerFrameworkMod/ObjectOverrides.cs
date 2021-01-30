@@ -52,7 +52,7 @@ namespace ProducerFrameworkMod
                 {
                     failLocationCondition = true;
                 }
-                if (!producerConfig.CheckSeasonCondition())
+                if (!producerConfig.CheckSeasonCondition(location))
                 {
                     failSeasonCondition = true;
                 }
@@ -85,8 +85,8 @@ namespace ProducerFrameworkMod
                         throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Condition.Season"));
                     }
 
-                    ProducerRuleController.ValidateIfInputStackLessThanRequired(producerRule, input);
-                    ProducerRuleController.ValidateIfAnyFuelStackLessThanRequired(producerRule, who);
+                    ProducerRuleController.ValidateIfInputStackLessThanRequired(producerRule, input, probe);
+                    ProducerRuleController.ValidateIfAnyFuelStackLessThanRequired(producerRule, who, probe);
 
                     OutputConfig outputConfig = ProducerRuleController.ProduceOutput(producerRule, __instance,
                         (i, q) => who.hasItemInInventory(i, q), who, location, producerConfig, input, probe);
@@ -116,7 +116,7 @@ namespace ProducerFrameworkMod
                 catch (RestrictionException e)
                 {
                     __result = false;
-                    if (e.Message != null && !probe && who.IsLocalPlayer)
+                    if (e.ShowMessage && e.Message != null && !probe && who.IsLocalPlayer)
                     {
                         Game1.showRedMessage(e.Message);
                     }
@@ -263,7 +263,7 @@ namespace ProducerFrameworkMod
                 {
                     return Vector2.Zero;
                 }
-                else if (!producerConfig.CheckSeasonCondition())
+                else if (!producerConfig.CheckSeasonCondition(Game1.currentLocation))
                 {
                     return Vector2.Zero;
                 }
@@ -294,7 +294,7 @@ namespace ProducerFrameworkMod
             if (ProducerController.GetProducerConfig(producer.Name) is ProducerConfig producerConfig)
             {
                 if (producerConfig.ProducingAnimation is Animation producingAnimation && producer.minutesUntilReady > 0 && producingAnimation.RelativeFrameIndex.Any()
-                    && producerConfig.CheckSeasonCondition() && producerConfig.CheckWeatherCondition() && producerConfig.CheckCurrentTimeCondition())
+                    && producerConfig.CheckSeasonCondition(Game1.currentLocation) && producerConfig.CheckWeatherCondition() && producerConfig.CheckCurrentTimeCondition())
                 {
                     int frame = producingAnimation.RelativeFrameIndex[((Game1.ticks + GetLocationSeed(producer.TileLocation)) % (producingAnimation.RelativeFrameIndex.Count * producingAnimation.FrameInterval)) / producingAnimation.FrameInterval];
                     spriteBatch.Draw(texture, destinationRectangle, new Rectangle?(Object.getSourceRectForBigCraftable(producer.ParentSheetIndex + frame)), color, rotation, origin, effects, layerDepth);
@@ -329,7 +329,7 @@ namespace ProducerFrameworkMod
                     }
                     if (producerConfig.NoInputStartMode != null)
                     {
-                        if (producerConfig.CheckSeasonCondition() && NoInputStartMode.Placement == producerConfig.NoInputStartMode)
+                        if (producerConfig.CheckSeasonCondition(who.currentLocation) && NoInputStartMode.Placement == producerConfig.NoInputStartMode)
                         {
                             if (ProducerController.GetProducerItem(__instance.Name, null) is ProducerRule producerRule)
                             {
@@ -341,7 +341,7 @@ namespace ProducerFrameworkMod
                 }
                 catch (RestrictionException e)
                 {
-                    if (e.Message != null && who.IsLocalPlayer)
+                    if (e.ShowMessage && e.Message != null && who.IsLocalPlayer)
                     {
                         Game1.showRedMessage(e.Message);
                     }
@@ -396,14 +396,14 @@ namespace ProducerFrameworkMod
                                 {
                                     throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Condition.Location"));
                                 }
-                                else if(producerConfig.CheckSeasonCondition())
+                                else if(producerConfig.CheckSeasonCondition(who.currentLocation))
                                 {
                                     __result = ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => false, who, who.currentLocation, producerConfig) != null;
                                 }
                             }
                             catch (RestrictionException e)
                             {
-                                if (e.Message != null && who.IsLocalPlayer)
+                                if (e.ShowMessage && e.Message != null && who.IsLocalPlayer)
                                 {
                                     Game1.showRedMessage(e.Message);
                                 }
@@ -425,7 +425,7 @@ namespace ProducerFrameworkMod
                 {
                     if (ProducerController.GetProducerItem(__instance.Name, null) is ProducerRule producerRule)
                     {
-                        if (!producerConfig.CheckSeasonCondition() || ! producerConfig.CheckLocationCondition(location))
+                        if (!producerConfig.CheckSeasonCondition(location) || ! producerConfig.CheckLocationCondition(location))
                         {
                             ProducerRuleController.ClearProduction(__instance, location);
                             return false;

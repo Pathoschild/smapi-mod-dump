@@ -9,25 +9,33 @@
 *************************************************/
 
 using System.Collections.Generic;
+using System.Linq;
+using StardewValley;
 
 namespace AnimalsNeedWater
 {
     public interface IAnimalsNeedWaterAPI
     {
-        List<ModEntry.AnimalLeftThirsty> GetAnimalsLeftThirstyYesterday();
+        List<long> GetAnimalsLeftThirstyYesterday();
+        bool WasAnimalLeftThirstyYesterday(FarmAnimal animal);
 
         List<string> GetCoopsWithWateredTrough();
         List<string> GetBarnsWithWateredTrough();
 
-        bool IsAnimalFull(string displayName);
-        List<string> GetFullAnimals();
+        bool IsAnimalFull(FarmAnimal animal);
+        List<long> GetFullAnimals();
     }
 
     public class API : IAnimalsNeedWaterAPI
     {
-        public List<ModEntry.AnimalLeftThirsty> GetAnimalsLeftThirstyYesterday()
+        public List<long> GetAnimalsLeftThirstyYesterday()
         {
-            return ModEntry.instance.AnimalsLeftThirstyYesterday;
+            return ModEntry.Instance.AnimalsLeftThirstyYesterday.ConvertAll(i => i.myID.Value);
+        }
+
+        public bool WasAnimalLeftThirstyYesterday(FarmAnimal animal)
+        {
+            return ModEntry.Instance.AnimalsLeftThirstyYesterday.Contains(animal);
         }
 
         public List<string> GetCoopsWithWateredTrough()
@@ -40,17 +48,14 @@ namespace AnimalsNeedWater
             return ModData.BarnsWithWateredTrough;
         }
 
-        public bool IsAnimalFull(string displayName)
+        public bool IsAnimalFull(FarmAnimal animal)
         {
-            // just to make this stuff non-case-sensitive
-            List<string> LowerFullAnimals = ModData.FullAnimals.ConvertAll(s => s.ToLower());
-
-            return LowerFullAnimals.Contains(displayName.ToLower());
+            return ModData.FullAnimals.Contains(animal);
         }
 
-        public List<string> GetFullAnimals()
+        public List<long> GetFullAnimals()
         {
-            return ModData.FullAnimals;
+            return ModData.FullAnimals.ConvertAll(i => i.myID.Value);
         }
     }
 }

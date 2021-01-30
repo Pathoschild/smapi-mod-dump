@@ -1,4 +1,13 @@
 {
   "hotkey": "L",
-  "debug": false
+  "secondaryCloseButton": "ControllerBack",
+  "debug": false,
+  "overlay": {
+    "enabled": true,
+    "hotkey": "None",
+    "maxWidth": 600,
+    "maxItems": 10,
+    "backgroundColor": "0, 0, 0, 50",
+    "textColor": "203, 203, 203, 203"
+  }
 }

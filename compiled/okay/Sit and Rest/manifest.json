@@ -1,10 +1,10 @@
 {
   "Name": "SitAndRest",
   "Author": "Krutonium",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Sit when you're weary",
   "UniqueID": "krutonium.sitandrest",
   "EntryDll": "SitAndRest.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": ["Nexus:7403"]
 }

@@ -8,7 +8,8 @@
 **
 *************************************************/
 
-using Pathoschild.Stardew.Common.Input;
+using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace Pathoschild.Stardew.Automate.Framework.Models
 {
@@ -19,17 +20,6 @@ namespace Pathoschild.Stardew.Automate.Framework.Models
         ** Accessors
         *********/
         /// <summary>The keys which toggle the automation overlay.</summary>
-        public KeyBinding ToggleOverlay { get; }
-
-
-        /*********
-        ** Public methods
-        *********/
-        /// <summary>Construct an instance.</summary>
-        /// <param name="toggleOverlay">The keys which toggle the automation overlay.</param>
-        public ModConfigKeys(KeyBinding toggleOverlay)
-        {
-            this.ToggleOverlay = toggleOverlay;
-        }
+        public KeybindList ToggleOverlay { get; set; } = KeybindList.ForSingle(SButton.U);
     }
 }

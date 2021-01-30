@@ -1,0 +1,16 @@
+url:
+   https://github.com/b-b-blueberry/CooksAssistant.git
+
+mods:
+   The Love of Cooking
+
+latest commit:
+   commit 8d0a12b5b214096e718ff5b45be09e3963be4a75
+   Merge: 57fa541 3aa3918
+   Author: blueberry <36073351+b-b-blueberry@users.noreply.github.com>
+   Date:   Fri Jan 22 12:24:20 2021 +1100
+   
+       Merge pull request #1 from LeecanIt/patch-1
+       
+       Create it.json
+   

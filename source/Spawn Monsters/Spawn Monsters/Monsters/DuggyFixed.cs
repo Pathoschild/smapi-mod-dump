@@ -23,6 +23,10 @@ namespace Spawn_Monsters
 
         }
 
+        public DuggyFixed(Vector2 pos, bool magmaDuggy) : base(pos, magmaDuggy) { 
+            
+        }
+
         public override void behaviorAtGameTick(GameTime time) {
             //base.behaviorAtGameTick(time); !I cant explain why but it works like this
             isEmoting = false;

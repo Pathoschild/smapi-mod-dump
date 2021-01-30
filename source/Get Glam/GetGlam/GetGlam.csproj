@@ -53,7 +53,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Framework\CharacterLoader.cs" />
+    <Compile Include="Framework\ContentEditors\AccessoryEditor.cs" />
+    <Compile Include="Framework\ContentEditors\DresserEditor.cs" />
+    <Compile Include="Framework\ContentEditors\HairEditor.cs" />
+    <Compile Include="Framework\ContentEditors\SkinEditor.cs" />
     <Compile Include="Framework\ContentLoader.cs" />
+    <Compile Include="Framework\ContentLoaders\AccessoryLoader.cs" />
+    <Compile Include="Framework\ContentLoaders\BaseLoader.cs" />
+    <Compile Include="Framework\ContentLoaders\DresserLoader.cs" />
+    <Compile Include="Framework\ContentLoaders\FaceNoseLoader.cs" />
+    <Compile Include="Framework\ContentLoaders\HairLoader.cs" />
+    <Compile Include="Framework\ContentLoaders\ShoeLoader.cs" />
+    <Compile Include="Framework\ContentLoaders\SkinColorLoader.cs" />
     <Compile Include="Framework\ContentPackHelper.cs" />
     <Compile Include="Framework\DataModels\AccessoryModel.cs" />
     <Compile Include="Framework\DataModels\SkinColorModel.cs" />
@@ -63,12 +74,20 @@
     <Compile Include="Framework\DataModels\FavoriteModel.cs" />
     <Compile Include="Framework\DataModels\HairModel.cs" />
     <Compile Include="Framework\DresserHandler.cs" />
-    <Compile Include="Framework\FavoriteMenu.cs" />
-    <Compile Include="Framework\GlamMenu.cs" />
+    <Compile Include="Framework\DresserHandlerJson.cs" />
+    <Compile Include="Framework\Menus\Components\ComponentButtons.cs" />
+    <Compile Include="Framework\Menus\Components\ComponentLabels.cs" />
+    <Compile Include="Framework\Menus\Components\ComponentLeftButtons.cs" />
+    <Compile Include="Framework\Menus\Components\ComponentRightButtons.cs" />
+    <Compile Include="Framework\Menus\FavoriteMenu.cs" />
+    <Compile Include="Framework\Menus\GlamMenu.cs" />
     <Compile Include="Framework\HarmonyHelper.cs" />
     <Compile Include="Framework\HatEditor.cs" />
     <Compile Include="Framework\ImageInjector.cs" />
+    <Compile Include="Framework\Menus\GlamMenuComponents.cs" />
+    <Compile Include="Framework\Menus\SearchMenu.cs" />
     <Compile Include="Framework\Patches\SkinColorPatch.cs" />
+    <Compile Include="Framework\PlayerChanger.cs" />
     <Compile Include="Framework\SaveLoadMenuPatcher.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="Framework\Patches\AccessoryPatch.cs" />
@@ -76,6 +95,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\json\BigCraftables\GlamDresser\big-craftable.json" />
+    <None Include="assets\json\content-pack.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -95,6 +116,7 @@
     <Content Include="assets\female_face1_nose1_bald.png" />
     <Content Include="assets\female_face1_nose2.png" />
     <Content Include="assets\female_face1_nose2_bald.png" />
+    <Content Include="assets\json\BigCraftables\GlamDresser\big-craftable.png" />
     <Content Include="assets\male_face0_nose0.png" />
     <Content Include="assets\male_face0_nose0_bald.png" />
     <Content Include="assets\male_face0_nose1.png" />

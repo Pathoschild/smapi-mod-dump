@@ -25,15 +25,11 @@ using Utility = StardewValley.Utility;
 
 namespace SVRichPresence {
 	public class RichPresenceMod : Mod {
-		private static readonly Color blurple = new Color(114, 137, 218);
 		private static readonly string clientId = "444517509148966923";
 		private static readonly string steamId = "413150";
-		private readonly Random rand = new Random();
 		private ModConfig config = new ModConfig();
 		private IRichPresenceAPI api;
 		private DiscordRpcClient client;
-		private readonly JoinRequestMessage[] requests = new JoinRequestMessage[ushort.MaxValue + 1];
-		private ushort lastRequestID = 0;
 
 		public override void Entry(IModHelper helper) {
 #if DEBUG
@@ -73,82 +69,24 @@ namespace SVRichPresence {
 			client.OnReady += (sender, e) => {
 				Monitor.Log("Connected to Discord: " + e.User.ToString(), LogLevel.Info);
 			};
-			client.OnJoin += (sender, args) => {
-				Monitor.Log("Attempting to join game: " + args.Secret, LogLevel.Info);
-				JoinGame(args.Secret);
-			};
-			client.OnJoinRequested += (sender, msg) => {
-				string name = msg.User.Username;
-				string tag = msg.User.ToString();
-				ushort id = (ushort)rand.Next(ushort.MinValue, ushort.MaxValue);
-				requests[id] = msg;
-				lastRequestID = id;
-				string hex = id.ToString("X");
-				Monitor.Log(tag + " wants to join your game via Discord.", LogLevel.Alert);
-				Monitor.Log("To respond type \"discord " + hex + " yes/no\" or just \"discord yes/no\"", LogLevel.Info);
-				Game1.chatBox.addMessage(name + " wants to join your game via Discord.\nTo respond check the console or use Discord or its overlay.", blurple);
-			};
 			client.Initialize();
-			client.SetSubscription(EventType.Join | EventType.JoinRequest);
 
 			#region Console Commands
-			Helper.ConsoleCommands.Add("discord",
-				"Respond to a Discord join request.",
-				(command, args) => {
-					// Yes, I know this code is a mess.
-					switch (args[0].ToLower()) {
-						case "yes":
-						case "y":
-							Respond(lastRequestID, true);
-							break;
-						case "no":
-						case "n":
-							Respond(lastRequestID, false);
-							break;
-						default:
-							try {
-								var id = ushort.Parse(args[0], System.Globalization.NumberStyles.HexNumber);
-								switch (args[1].ToLower()) {
-									case "yes":
-									case "y":
-										Respond(id, true);
-										break;
-									case "no":
-									case "n":
-										Respond(id, false);
-										break;
-									default:
-										Monitor.Log("Invalid response.", LogLevel.Error);
-										break;
-								}
-							} catch (Exception) {
-								Monitor.Log("Invalid request ID.", LogLevel.Error);
-							}
-							break;
-					}
-				}
-			);
-			Helper.ConsoleCommands.Add("DiscordRP_Join",
-				"Join a co-op game via invite code.",
-				(string command, string[] args) => {
-					JoinGame(string.Join(" ", args));
-				}
-			);
-			Helper.ConsoleCommands.Add("DiscordRP_Reload",
+			Helper.ConsoleCommands.Add("DiscordReload",
 				"Reloads the config for Discord Rich Presence.",
 				(string command, string[] args) => {
 					LoadConfig();
 					Monitor.Log("Config reloaded.", LogLevel.Info);
 				}
 			);
-			Helper.ConsoleCommands.Add("DiscordRP_Format",
+			Helper.ConsoleCommands.Add("DiscordFormat",
 				"Formats and prints a provided configuration string.",
 				(string command, string[] args) => {
 					string text = api.FormatText(string.Join(" ", args));
 					Monitor.Log("Result: " + text, LogLevel.Info);
 				}
 			);
-			Helper.ConsoleCommands.Add("DiscordRP_Tags",
+			Helper.ConsoleCommands.Add("DiscordTags",
 				"Lists tags usable for configuration strings.",
 				(string command, string[] args) => {
 					IDictionary<string, string> tags =
@@ -228,7 +166,6 @@ namespace SVRichPresence {
 			tagReg.SetTag("PetName", () => Game1.player.hasPet() ? Game1.player.getPetDisplayName() : api.None, true);
 			tagReg.SetTag("Location", () => Game1.currentLocation.Name, true);
 			tagReg.SetTag("RomanticInterest", () => Utility.getTopRomanticInterest(Game1.player)?.getName() ?? api.None, true);
-			tagReg.SetTag("PercentComplete", () => Utility.percentGameComplete(), true);
 
 			tagReg.SetTag("Money", () => {
 				// Copied from LoadGameMenu
@@ -269,23 +206,6 @@ namespace SVRichPresence {
 			#endregion
 		}
 
-		private void Respond(ushort id, Boolean response) {
-			var request = requests[id];
-			if (request == null)
-				Monitor.Log("Request ID doesn't exist.", LogLevel.Error);
-			client.Respond(request, response);
-			Monitor.Log("Responding to join request. This may fail if 30 seconds have passed.", LogLevel.Info);
-			requests[id] = null;
-		}
-
-		private void JoinGame(string inviteCode) {
-			Game1.ExitToTitle(() => {
-				object lobby = Program.sdk.Networking.GetLobbyFromInviteCode(inviteCode);
-				if (lobby == null) return;
-				TitleMenu.subMenu = new FarmhandMenu(Program.sdk.Networking.CreateClient(lobby));
-			});
-		}
-
 		public override object GetApi() => api;
 
 		private void HandleButton(object sender, ButtonReleasedEventArgs e) {
@@ -302,6 +222,7 @@ namespace SVRichPresence {
 
 		private void LoadConfig() => config = Helper.ReadConfig<ModConfig>();
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members")]
 		private void SaveConfig() => Helper.WriteConfig(config);
 
 		private Timestamps timestampSession;
@@ -339,15 +260,12 @@ namespace SVRichPresence {
 					assets.SmallImageKey = "weather_" + WeatherKey();
 				if (conf.ShowPlayTime)
 					presence.Timestamps = timestampFarm;
-				if (Context.IsMultiplayer && conf.AllowAskToJoin)
+				if (Context.IsMultiplayer)
 					try {
 						presence.Party = new Party {
 							ID = Game1.MasterPlayer.UniqueMultiplayerID.ToString(),
 							Size = Game1.numberOfPlayers(),
 							Max = Game1.getFarm().getNumberBuildingsConstructed("Cabin") + 1
-						};
-						presence.Secrets = new Secrets {
-							JoinSecret = Game1.server.getInviteCode()
 						};
 					} catch { }
 			}

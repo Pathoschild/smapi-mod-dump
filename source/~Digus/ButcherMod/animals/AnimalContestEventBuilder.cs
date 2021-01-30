@@ -20,6 +20,7 @@ using AnimalHusbandryMod.farmer;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Characters;
 
 namespace AnimalHusbandryMod.animals
 {
@@ -54,25 +55,23 @@ namespace AnimalHusbandryMod.animals
             Random random = new Random((int)((long)Game1.uniqueIDForThisGame * 100000 + contestDate.Year* 1000 + Utility.getSeasonNumber(contestDate.Season) *100 + contestDate.Day));
 
             //Player and Participant init
-            long? contestParticipantId = AnimalContestController.ContestParticipantId(contestDate);
-            AnimalStatus participantAnimalStatus = contestParticipantId != null ? AnimalStatusController.GetAnimalStatus((long)contestParticipantId): null;
-            bool isPlayerJustWatching = participantAnimalStatus == null;
-            bool isParticipantPet = !isPlayerJustWatching && participantAnimalStatus.Id == AnimalData.PetId;
-            FarmAnimal farmAnimal = null;
+            Character contestParticipant = AnimalContestController.ContestParticipant(contestDate);
+            bool isPlayerJustWatching = contestParticipant == null;
+            bool isParticipantPet = !isPlayerJustWatching && contestParticipant is Pet;
+            FarmAnimal farmAnimal = contestParticipant as FarmAnimal;
             if (isParticipantPet)
             {
-                AnimalContestController.TemporalyRemovePet();
+                AnimalContestController.TemporallyRemovePet();
             }
             else if (!isPlayerJustWatching)
             {
-                farmAnimal = AnimalContestController.GetAnimal(participantAnimalStatus.Id);
                 if (farmAnimal == null)
                 {
                     isPlayerJustWatching = true;
                 }
                 else
                 {
-                    AnimalContestController.TemporalyRemoveFarmAnimal(farmAnimal);
+                    AnimalContestController.TemporallyRemoveFarmAnimal(farmAnimal);
                 }
             }
 
@@ -91,7 +90,7 @@ namespace AnimalHusbandryMod.animals
                 ParticipantId = isParticipantPet ? AnimalData.PetId : farmAnimal?.myID.Value,
                 PlayerAnimal = isParticipantPet ? Game1.player.catPerson ? "Cat" : "Dog" : farmAnimal?.type.Value
             };
-            animalContestInfo = PickTheWinner(animalContestInfo, history, participantAnimalStatus, farmAnimal, contenders[2]);
+            animalContestInfo = PickTheWinner(animalContestInfo, history, farmAnimal, contenders[2]);
 
             // Deciding who will be present
             bool isHaleyWatching = Game1.player.eventsSeen.Contains(14) || Game1.player.spouse == "Haley";
@@ -248,7 +247,7 @@ namespace AnimalHusbandryMod.animals
             initialPosition.Append("/specificTemporarySprite animalContest/skippable");
             initialPosition.Append(GetContendersAnimalPosition(contenders, marnieAnimal, isPlayerJustWatching, linusAlternateAnimal));
 
-            initialPosition.Append("/viewport 28 65 true");
+            initialPosition.Append("/broadcastEvent/viewport 28 65 true");
 
             StringBuilder eventAction = new StringBuilder();
             if (isHaleyWatching)
@@ -364,13 +363,13 @@ namespace AnimalHusbandryMod.animals
             {
                 eventAction.Append($"{i18n.Get("AnimalContest.Dialog.Lewis.ClosureSuccessOtherTimes")}\"");
             }
-            String winnerAnimalName = animalContestInfo.Winner == "Farmer" 
-                ? farmAnimal.displayName 
-                : animalContestInfo.Winner == "Emily" 
-                    ? i18n.Get("AnimalContest.Dialog.Lewis.EmilyUnnamedParrot") 
+            String winnerAnimalName = animalContestInfo.Winner == "Farmer"
+                ? farmAnimal.displayName
+                : animalContestInfo.Winner == "Emily"
+                    ? i18n.Get("AnimalContest.Dialog.Lewis.EmilyUnnamedParrot")
                     : "%name";
-            String winnerName = animalContestInfo.Winner=="Farmer"?"@":animalContestInfo.Winner;
-            eventAction.Append($"/stopMusic/pause 200/speak Lewis \"{ i18n.Get("AnimalContest.Dialog.Lewis.WinnerAnnouncement", new {winnerName, winnerAnimalName})}\"");
+            String winnerName = animalContestInfo.Winner == "Farmer" ? "@" : animalContestInfo.Winner;
+            eventAction.Append($"/stopMusic/pause 200/speak Lewis \"{ i18n.Get("AnimalContest.Dialog.Lewis.WinnerAnnouncement", new { winnerName, winnerAnimalName })}\"");
             eventAction.Append("/playMusic event1/emote Alex 56 true/pause 60");
             if (animalContestInfo.Winner == "Farmer")
             {
@@ -455,7 +454,7 @@ namespace AnimalHusbandryMod.animals
                 string bonusType = contestDate.Season == "spring" || contestDate.Season == "summer" ? i18n.Get("AnimalContest.Message.Reward.Fertility") : i18n.Get("AnimalContest.Message.Reward.Production");
                 eventAction.Append($"/playSound reward/message \"{i18n.Get("AnimalContest.Message.Reward", new { animalName = farmAnimal.displayName, bonusType })}\"");
             }
-            eventAction.Append("/specificTemporarySprite animalContestEnding/end");
+            eventAction.Append("/specificTemporarySprite animalContestEnding/waitForOtherPlayers animalContestEnd/end");
 
             string script = initialPosition.ToString() + eventAction.ToString();
             
@@ -480,24 +479,24 @@ namespace AnimalHusbandryMod.animals
                    || (Game1.player.spouse == "Abigail" && animalContestInfo.Contenders.Contains("Abigail"));
         }
 
-        private static AnimalContestItem PickTheWinner(AnimalContestItem animalContestInfo, List<AnimalContestItem> history, AnimalStatus participantAnimalStatus, FarmAnimal farmAnimal, string thirdContender)
+        private static AnimalContestItem PickTheWinner(AnimalContestItem animalContestInfo, List<AnimalContestItem> history, FarmAnimal farmAnimal, string thirdContender)
         {
             if (farmAnimal != null)
             {
                 int friendshipPoints = farmAnimal.friendshipTowardFarmer.Value / 195;
                 int monthsOld = (farmAnimal.age.Value + 1) / 28 + 1;
                 int agePoints = monthsOld < 4 ? monthsOld : Math.Max(0, 5 - (monthsOld + 1) / 2);
-                int treatVariatyPoints = Math.Min(3, participantAnimalStatus.FeedTreatsQuantity.Keys.Count);
+                int treatVarietyPoints = Math.Min(3, farmAnimal.GetFeedTreatsQuantityCount());
                 int weeksOld = (farmAnimal.age.Value + 1) / 7 + 1;
-                int treatAveragePoints = Math.Min(3, (participantAnimalStatus.FeedTreatsQuantity.Values.Sum() * 3) / weeksOld);
+                int treatAveragePoints = Math.Min(3, (farmAnimal.GetFeedTreatsQuantitySum() * 3) / weeksOld);
                 int parentWinnerPoints = history.Exists(h => h.Winner == "Farmer" && h.ParticipantId == farmAnimal.parentId.Value) ? 1 : 0;
 
-                animalContestInfo.FarmAnimalScore = new AnimalContestScore(friendshipPoints, monthsOld, agePoints, treatVariatyPoints, treatAveragePoints, parentWinnerPoints);
+                animalContestInfo.FarmAnimalScore = new AnimalContestScore(friendshipPoints, monthsOld, agePoints, treatVarietyPoints, treatAveragePoints, parentWinnerPoints);
                 int totalPoints = animalContestInfo.FarmAnimalScore.TotalPoints;
                 if (
                     (totalPoints >= DataLoader.AnimalContestData.MinPointsToGaranteeWin)
                     || (totalPoints >= DataLoader.AnimalContestData.MinPointsToPossibleWin
-                        && agePoints > 0 && ((treatVariatyPoints > 0 && treatAveragePoints > 0) || DataLoader.ModConfig.DisableTreats) && friendshipPoints > 0
+                        && agePoints > 0 && ((treatVarietyPoints > 0 && treatAveragePoints > 0) || DataLoader.ModConfig.DisableTreats) && friendshipPoints > 0
                         && history.Count(h => h.Winner != "Farmer") >= history.Count(h => h.Winner == "Farmer"))
                 )
                 {
@@ -773,7 +772,7 @@ namespace AnimalHusbandryMod.animals
             return String.Format(key, id, seasons, day, time);
         }
 
-        private static int GetEventId(SDate date)
+        public static int GetEventId(SDate date)
         {
             return Convert.ToInt32($"6572{date.Year:00}{Utility.getSeasonNumber(date.Season)}{date.Day:00}");
         }

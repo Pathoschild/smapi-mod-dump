@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/JojaOnline
+**
+*************************************************/
+
+{
+  "Name": "JojaOnline",
+  "Author": "PeacefulEnd",
+  "Version": "REPLACE_ME_WITH_VERSION",
+  "Description": "Purchasing from Joja Corporation has never been easier!",
+  "UniqueID": "PeacefulEnd.JojaOnline",
+  "EntryDll": "JojaOnline.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7486" ],
+  "Dependencies": [
+   {
+      "UniqueID": "DIGUS.MailFrameworkMod",
+      "IsRequired": true
+   },
+   {
+      "UniqueID": "aedenthorn.MobilePhone",
+      "IsRequired": false
+   }
+]
+}

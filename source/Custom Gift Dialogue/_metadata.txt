@@ -1,0 +1,13 @@
+url:
+   https://github.com/purrplingcat/StardewMods.git
+
+mods:
+   Custom Gift Dialogue
+
+latest commit:
+   commit 18911a6b59235d0f9252d5cf010f766fb0a43667
+   Author: Ellen Jana FawkesovÃ¡ <4710267+purrplingcat@users.noreply.github.com>
+   Date:   Tue Jan 19 08:24:35 2021 +0100
+   
+       CGD: Added dependency note to docs
+   

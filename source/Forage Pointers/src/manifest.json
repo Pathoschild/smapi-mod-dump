@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Bpendragon/ForagePointers
+**
+*************************************************/
+
+{
+  "Name": "Forage Pointers",
+  "Author": "Bpendragon",
+  "Version": "1.0.0",
+  "Description": "Adds little arrows over forage, radius increases with foraging level",
+  "UniqueID": "Bpendragon.ForagePointers",
+  "EntryDll": "ForagePointers.dll",
+  "UpdateKeys": [ "Nexus:7781", "GitHub:Bpendragon/ForagePointers" ]
+}

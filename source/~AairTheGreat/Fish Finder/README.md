@@ -69,7 +69,12 @@ It possible that you decided to edit the config file and now it's not working as
  
 ## Localization
 
-Currently this mod does support localization but currently it only has english. 
+Currently this mod does support localization.  Currently this mod has:
+1. English
+2. Simpilified Chinese
+3. Spanish
+4. Russian
+
 
 ## Thank You!
 * [Concerned Ape](https://twitter.com/concernedape) - Creator of Stardew Valley.
@@ -77,6 +82,9 @@ Currently this mod does support localization but currently it only has english.
 * [Stardew Wiki](https://stardewvalleywiki.com) - To the people maintaining this very useful site.
 * [Teh's Fishing Overhaul](https://www.nexusmods.com/stardewvalley/mods/866) - TehPers, helped inspire the HUD used in this mod
 * Nexus user Nogohoho - For suggesting this mod idea.
+* Github user asqwedcxz741 - For the Simplified Chinese translation
+* Github user Dmitrey Kupcov - For the Russian translation
+* Nexus user kaog1992 - For the Spanish translation
 * To my testers: SparkyTheCat and My Better Half  -- Thank you!
 
 ## See Also

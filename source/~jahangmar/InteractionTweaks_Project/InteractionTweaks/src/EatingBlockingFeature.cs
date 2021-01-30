@@ -72,7 +72,8 @@ namespace InteractionTweaks
                     || location.isActionableTile((int)grabTileVec.X, (int)grabTileVec.Y + 1, player)
                     || location.objects.ContainsKey(grabTileVec) && ((bool)location.objects[grabTileVec].isSpawnedObject) //forage and animal products
                     || location.terrainFeatures.ContainsKey(grabTileVec) && location.terrainFeatures[grabTileVec] is HoeDirt hoeDirt && hoeDirt.crop != null && hoeDirt.crop.currentPhase.Value == hoeDirt.crop.phaseDays.Count-1 && hoeDirt.crop.dayOfCurrentPhase == 0//crops ready for harvest
-                    || (location is Farm && grabTileVec.X >= 71 && grabTileVec.X <= 72 && grabTileVec.Y >= 13 && grabTileVec.Y <= 14) //shippingBin on Farm map
+                    //|| (location is Farm && grabTileVec.X >= 71 && grabTileVec.X <= 72 && grabTileVec.Y >= 13 && grabTileVec.Y <= 14) //shippingBin on Farm map
+                    || objAtGrabTile is FishTankFurniture
                     || Game1.getFarm().getAllFarmAnimals().Exists((animal) => animal.currentLocation == location && AnimalCollision(animal, cursorMapPos)) //animals
                     || CanGift(cursorMapTile, grabTileVec) //talking and gifting
                     || location is Farm farm && farm.getBuildingAt(grabTileVec) is FishPond

@@ -1,0 +1,10 @@
+﻿ {
+  "Name": "Unbreakable Tackles",
+  "Author": "MindMeltMax",
+  "Version": "1.0.0",
+  "Description": "Never again will you're tackles break",
+  "UniqueID": "MindMeltMax.UnbreakableTackles",
+  "EntryDll": "Unbreakable Tackles.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["nexus:XXXX"]
+}

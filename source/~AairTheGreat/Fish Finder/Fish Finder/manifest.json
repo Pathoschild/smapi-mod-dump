@@ -11,7 +11,7 @@
 {
   "Name": "Fish Finder",
   "Author": "AairTheGreat",
-  "Version": "1.0.0",
+  "Version": "1.0.2",
   "Description": "Hopefully makes finding fishing spots easier",
   "UniqueID": "AairTheGreat.FishFinder",
   "EntryDll": "Fish Finder.dll",

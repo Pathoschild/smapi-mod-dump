@@ -9,5 +9,5 @@
 *************************************************/
 
 {
-	"prepare": "Get ready! Wave {0} incoming!",
+    "prepare": "Get ready! Wave {0} incoming!",
 }

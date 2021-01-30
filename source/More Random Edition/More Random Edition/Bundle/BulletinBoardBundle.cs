@@ -103,9 +103,9 @@ namespace Randomizer
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
-				case BundleTypes.BulletinElliot:
-					Name = Globals.GetTranslation("Elliot-name");
-					potentialItems = RequiredItem.CreateList(Elliot.Loves);
+				case BundleTypes.BulletinElliott:
+					Name = Globals.GetTranslation("Elliott-name");
+					potentialItems = RequiredItem.CreateList(Elliott.Loves);
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Red;
@@ -296,8 +296,6 @@ namespace Randomizer
 					Name = Globals.GetTranslation("bundle-bulletin-pink");
 					potentialItems = RequiredItem.CreateList(new List<int>
 					{
-						(int)ObjectIndexes.Blobfish,
-						(int)ObjectIndexes.VoidSalmon,
 						(int)ObjectIndexes.Shrimp,
 						(int)ObjectIndexes.StrangeBun,
 						(int)ObjectIndexes.SalmonDinner,
@@ -326,7 +324,6 @@ namespace Randomizer
 						(int)ObjectIndexes.OrnamentalFan,
 						(int)ObjectIndexes.DinosaurEgg,
 						(int)ObjectIndexes.ChickenStatue,
-						(int)ObjectIndexes.Ghostfish,
 						(int)ObjectIndexes.WhiteAlgae,
 						(int)ObjectIndexes.WhiteEgg,
 						(int)ObjectIndexes.LargeWhiteEgg,

@@ -15,6 +15,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Dem1se.CustomReminders
 {
@@ -24,16 +25,18 @@ namespace Dem1se.CustomReminders
         /// <summary> Object containing the read data from config file.</summary>
         private ModConfig Config;
         protected string NotificationSound;
+        /// <summary> List of absolute file paths to reminders that have matured and are awaiting cleanup </summary>
+        private Queue<string> DeleteQueue = new Queue<string>();
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            // Load the Config
+            // Load the config
             Config = Helper.ReadConfig<ModConfig>();
             Monitor.Log("Config loaded and read.");
 
-            // set up statics (utilities.cs)
+            // Set up globals (utilities.cs)
             Utilities.Globals.Helper = Helper;
             Utilities.Globals.Monitor = Monitor;
 
@@ -45,9 +48,30 @@ namespace Dem1se.CustomReminders
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.GameLoop.TimeChanged += ReminderNotifier;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            helper.Events.GameLoop.Saved += OnSaved;
             helper.Events.Multiplayer.ModMessageReceived += Multiplayer.Multiplayer.OnModMessageReceived;
             helper.Events.Multiplayer.PeerContextReceived += Multiplayer.Multiplayer.OnPeerConnected;
             helper.Events.GameLoop.GameLaunched += MobilePhoneModAPI.MobilePhoneMod.HookToMobilePhoneMod;
+        }
+
+        /// <summary> Loops through any mature reminders since last save and deletes their file </summary>
+        //Json-x-ly Notes: Alternatively we could just parse the files again and cleanup any old entries if we'd like to avoid maintaining a collection
+        private void OnSaved(object sender, SavedEventArgs ev) 
+        {
+            for (var i = 0; i < DeleteQueue.Count; i++) 
+            {
+                string AbsolutePath = DeleteQueue.Dequeue();
+                try 
+                {
+                    if (File.Exists(AbsolutePath)) {
+                        File.Delete(AbsolutePath);
+                    }
+                } 
+                catch (Exception e)
+                {
+                    Monitor.Log(e.Message, LogLevel.Error);
+                }
+            }
         }
 
         ///<summary> Defines what happens when a save is loaded</summary>
@@ -73,6 +97,12 @@ namespace Dem1se.CustomReminders
                 Directory.CreateDirectory(Path.Combine(Helper.DirectoryPath, "data", Utilities.Globals.SaveFolderName));
                 Monitor.Log("Reminders directory created successfully.", LogLevel.Info);
             }
+            
+            //Json-x-ly Notes: Wipes the Queue for the new save context
+            DeleteQueue.Clear();
+
+            //Json-x-ly Notes: Checks to see if there are any mature reminders at start of day on load
+            ReminderNotifierLoop(Game1.timeOfDay);
         }
 
         /// <summary> Defines what happens when user press the config button </summary>
@@ -142,13 +172,19 @@ namespace Dem1se.CustomReminders
         }
 
         /// <summary> Loop that checks if any reminders are mature.</summary>
-        private void ReminderNotifier(object sender, TimeChangedEventArgs ev)
+        private void ReminderNotifier(object sender, TimeChangedEventArgs ev) {
+            ReminderNotifierLoop(ev.NewTime);
+        }
+
+        // Json-x-ly Notes: Separated for OnSaveLoaded check since loading a new game does not send a TimeChanged event for the 600 hour 
+        private void ReminderNotifierLoop(int newTime) 
         {
             // returns function if game time isn't multiple of 30 in-game minutes.
-            string timeString = Convert.ToString(ev.NewTime);
+            string timeString = Convert.ToString(newTime);
             if (!(timeString.EndsWith("30") || timeString.EndsWith("00"))) return;
 
             // Loops through all the reminder files and evaluates if they are current.
+            
             #region ReminderNotifierloop
             SDate currentDate = SDate.Now();
             foreach (string filePathAbsolute in Directory.EnumerateFiles(Path.Combine(Helper.DirectoryPath, "data", Utilities.Globals.SaveFolderName)))
@@ -159,16 +195,17 @@ namespace Dem1se.CustomReminders
                     string filePathRelative = Utilities.Extras.MakeRelativePath(filePathAbsolute);
 
                     // Read the reminder and notify if mature
-                    Monitor.Log($"Processing {ev.NewTime}");
+                    Monitor.Log($"Processing {newTime}");
                     ReminderModel Reminder = Helper.Data.ReadJsonFile<ReminderModel>(filePathRelative);
                     if (Reminder.DaysSinceStart == currentDate.DaysSinceStart)
                     {
-                        if (Reminder.Time == ev.NewTime)
+                        if (Reminder.Time == newTime)
                         {
                             Game1.addHUDMessage(new HUDMessage(Reminder.ReminderMessage, 2));
                             Game1.playSound(NotificationSound);
                             Monitor.Log($"Reminder notified for {Reminder.DaysSinceStart}: {Reminder.ReminderMessage}", LogLevel.Info);
-                            File.Delete(filePathAbsolute);
+                            // Store the path for deletion later.
+                            DeleteQueue.Enqueue(filePathAbsolute);
                         }
                         /* this is a very rare case (should be impossible) and won't happen normally, but I've still included it just in case,
                          * (to avoid sedimentary files hogging the performance unnecessarily) */

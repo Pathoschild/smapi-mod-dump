@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using QuestFramework.Framework.Structures;
 using QuestFramework.Offers;
 using QuestFramework.Quests;
 using System;
@@ -49,8 +50,8 @@ namespace QuestFramework.Api
         /// <summary>
         /// Register custom quest (vanilla or custom type)
         /// WARNING: Can't register new quests when game is loaded. 
-        /// Please register all your quests and quest types before game will be loaded. 
-        /// (Before Content.IsWorldReady is true)
+        /// Please register all your quests when QF state is LAUNCHING 
+        /// (<see cref="QuestFramework.Events.IQuestFrameworkEvents.GettingReady"/> event)
         /// </summary>
         /// <param name="quest">Quest template</param>
         void RegisterQuest(CustomQuest quest);
@@ -113,5 +114,14 @@ namespace QuestFramework.Api
         void ExposeQuestType<TQuest>(string type) where TQuest : CustomQuest, new();
 
         bool HasQuestType(string type);
+
+        /// <summary>
+        /// Register custom quest or special orders board
+        /// WARNING: Can't register new bopards when game is loaded. 
+        /// Please register all your boards when QF state is LAUNCHING 
+        /// (<see cref="QuestFramework.Events.IQuestFrameworkEvents.GettingReady"/> event)
+        /// </summary>
+        /// <param name="boardTrigger"></param>
+        void RegisterCustomBoard(CustomBoardTrigger boardTrigger);
     }
 }

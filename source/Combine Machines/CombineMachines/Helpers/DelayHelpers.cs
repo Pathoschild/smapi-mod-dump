@@ -88,13 +88,8 @@ namespace CombineMachines.Helpers
                     }
                     catch (Exception ex)
                     {
-#if DEBUG
-                        LogLevel LogLevel = LogLevel.Debug;
-#else
-                        LogLevel LogLevel = LogLevel.Trace;
-#endif
                         string ErrorMsg = string.Format("Unhandled Error in {0}.{1}.{2}:\n{3}", nameof(DelayHelpers), nameof(QueuedAction), nameof(HandleTick), ex);
-                        ModEntry.Logger.Log(ErrorMsg, LogLevel);
+                        ModEntry.Logger.Log(ErrorMsg, ModEntry.InfoLogLevel);
                     }
 
                     return true;

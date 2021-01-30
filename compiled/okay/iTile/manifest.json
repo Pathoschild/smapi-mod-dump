@@ -1,0 +1,10 @@
+﻿{
+	"Name": "iTile",
+	"Author": "ha1fdaew",
+	"Version": "1.0.0-beta",
+	"Description": "In-game map editing tool",
+	"UniqueID": "ha1fdaew.iTile",
+	"EntryDll": "iTile.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:7512" ]
+}

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
 using StardewValley.Characters;
 using StardewValley.Locations;
 using System;
@@ -32,19 +33,43 @@ namespace MultipleSpouses
             Monitor = monitor;
         }
 
+        public static void FarmHouse_checkAction_Postfix(FarmHouse __instance, Location tileLocation)
+        {
+            try
+            {
+                if (__instance.map.GetLayer("Buildings").Tiles[tileLocation] != null)
+                {
+                    int tileIndex = __instance.map.GetLayer("Buildings").Tiles[tileLocation].TileIndex;
+                    if (tileIndex == 2173 && Game1.player.eventsSeen.Contains(463391) && Game1.player.friendshipData.ContainsKey("Emily") && Game1.player.friendshipData["Emily"].IsMarried())
+                    {
+                        TemporaryAnimatedSprite t = __instance.getTemporarySpriteByID(5858585);
+                        if (t != null && t is EmilysParrot)
+                        {
+                            (t as EmilysParrot).doAction();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(FarmHouse_getWalls_Postfix)}:\n{ex}", LogLevel.Error);
+            }
+        }
+        
         public static void FarmHouse_getWalls_Postfix(FarmHouse __instance, ref List<Microsoft.Xna.Framework.Rectangle> __result)
         {
             try
             {
+                //Monitor.Log($"Getting walls for {__instance}");
                 if (__instance.owner == null)
                     return;
-                int ecribs = Math.Max(ModEntry.config.ExtraCribs, 0);
+                //int ecribs = Math.Max(ModEntry.config.ExtraCribs, 0);
                 int espace = Math.Max(ModEntry.config.ExtraKidsRoomWidth, 0);
-                int ebeds = Math.Max(ModEntry.config.ExtraKidsBeds, 0);
+                //int ebeds = Math.Max(ModEntry.config.ExtraKidsBeds, 0);
 
-                if (__instance.upgradeLevel > 1 && ecribs + espace + ebeds > 0)
+                if (__instance.upgradeLevel > 1 && espace > 0)
                 {
-                    int x = (ecribs * 3) + espace + (ebeds * 4);
+                    int x = espace;
                     __result.Remove(new Microsoft.Xna.Framework.Rectangle(15, 1, 13, 3));
                     __result.Add(new Microsoft.Xna.Framework.Rectangle(15, 1, 13 + x, 3));
                 }
@@ -78,14 +103,15 @@ namespace MultipleSpouses
         {
             try
             {
+                //Monitor.Log($"Getting floors for {__instance}");
                 if (__instance.owner == null)
                     return;
-                int ecribs = Math.Max(ModEntry.config.ExtraCribs, 0);
+                //int ecribs = Math.Max(ModEntry.config.ExtraCribs, 0);
                 int espace = Math.Max(ModEntry.config.ExtraKidsRoomWidth, 0);
-                int ebeds = Math.Max(ModEntry.config.ExtraKidsBeds, 0);
-                if (__instance.upgradeLevel > 1 && ecribs + espace + ebeds > 0)
+                //int ebeds = Math.Max(ModEntry.config.ExtraKidsBeds, 0);
+                if (__instance.upgradeLevel > 1 && espace > 0)
                 {
-                    int x = (ecribs * 3) + espace + (ebeds * 4);
+                    int x = espace;
                     __result.Remove(new Microsoft.Xna.Framework.Rectangle(15, 3, 13, 6));
                     __result.Add(new Microsoft.Xna.Framework.Rectangle(15, 3, 13 + x, 6));
                 }
@@ -147,8 +173,27 @@ namespace MultipleSpouses
                 Monitor.Log($"Failed in {nameof(Beach_resetLocalState_Postfix)}:\n{ex}", LogLevel.Error);
             }
         }
+        
 
-
+        public static void FarmHouse_updateFarmLayout_Postfix(ref FarmHouse __instance)
+        {
+            try
+            {
+                if (Misc.ChangingKidsRoom())
+                {
+                    Monitor.Log($"Changing kids room for {__instance}");
+                    if (__instance.upgradeLevel > 1 && __instance.upgradeLevel < 4)
+                    {
+                        //NPCPatches.SetCribs(__instance);
+                        Maps.ExpandKidsRoom(__instance);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(FarmHouse_resetLocalState_Postfix)}:\n{ex}", LogLevel.Error);
+            }
+        }
         public static void FarmHouse_resetLocalState_Postfix(ref FarmHouse __instance)
         {
             try
@@ -167,10 +212,6 @@ namespace MultipleSpouses
                 {
                     f.position.Value = Misc.GetFarmerBedPosition(__instance);
                 }
-                if (ModEntry.config.CustomBed && __instance.upgradeLevel > 0)
-                {
-                    Maps.ReplaceBed(__instance);
-                }
                 if(__instance.upgradeLevel > 0 && __instance.upgradeLevel < 4)
                 {
                     Maps.BuildSpouseRooms(__instance);
@@ -180,7 +221,7 @@ namespace MultipleSpouses
                 {
                     if(__instance.upgradeLevel > 1 && __instance.upgradeLevel < 4)
                     {
-                        NPCPatches.SetCribs(__instance);
+                        //NPCPatches.SetCribs(__instance);
                         Maps.ExpandKidsRoom(__instance);
                     }
                 }

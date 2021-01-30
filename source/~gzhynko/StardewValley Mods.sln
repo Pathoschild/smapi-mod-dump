@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PufferEggsToMayonnaise", "Pufferfish Chickens\PufferEggsToMayonnaise\PufferEggsToMayonnaise.csproj", "{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalsNeedWater", "AnimalsNeedWater\AnimalsNeedWater.csproj", "{944C8530-211B-4660-BE73-6E883A12BD9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PEMAutomate", "Pufferfish Chickens\PEMAutomate\PEMAutomate.csproj", "{F579BA85-A723-4473-B093-C86B454985B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IncubatePufferfishEggs", "Pufferfish Chickens\IncubatePufferfishEggs\IncubatePufferfishEggs.csproj", "{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrapesAllYearRound", "GrapesAllYearRound\GrapesAllYearRound.csproj", "{4367BAEA-29EE-47A7-8017-FB8C9177B698}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishExclusions", "FishExclusions\FishExclusions.csproj", "{771DAAF1-FEC1-41DD-B28E-F3F35EA12133}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{944C8530-211B-4660-BE73-6E883A12BD9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{944C8530-211B-4660-BE73-6E883A12BD9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{944C8530-211B-4660-BE73-6E883A12BD9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{944C8530-211B-4660-BE73-6E883A12BD9D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F579BA85-A723-4473-B093-C86B454985B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F579BA85-A723-4473-B093-C86B454985B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F579BA85-A723-4473-B093-C86B454985B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F579BA85-A723-4473-B093-C86B454985B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D06B5D6-9D1C-46B2-83E8-A1EBCC7D5FC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4367BAEA-29EE-47A7-8017-FB8C9177B698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4367BAEA-29EE-47A7-8017-FB8C9177B698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4367BAEA-29EE-47A7-8017-FB8C9177B698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4367BAEA-29EE-47A7-8017-FB8C9177B698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{771DAAF1-FEC1-41DD-B28E-F3F35EA12133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{771DAAF1-FEC1-41DD-B28E-F3F35EA12133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{771DAAF1-FEC1-41DD-B28E-F3F35EA12133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{771DAAF1-FEC1-41DD-B28E-F3F35EA12133}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

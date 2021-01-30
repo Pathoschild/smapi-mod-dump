@@ -1,0 +1,10 @@
+{
+  "IsShakerActive": true,
+  "ToggleShaker": "LeftAlt + H, RightAlt + H",
+  "ShakeRegularTrees": true,
+  "ShakeFruitTrees": true,
+  "FruitsReadyToShake": 1,
+  "ShakeBushes": true,
+  "UsePlayerMagnetism": false,
+  "ShakeDistance": 2
+}

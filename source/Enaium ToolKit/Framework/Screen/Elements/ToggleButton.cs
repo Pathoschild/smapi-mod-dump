@@ -13,6 +13,7 @@ using EnaiumToolKit.Framework.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardewValley.Menus;
 
 namespace EnaiumToolKit.Framework.Screen.Elements
 {
@@ -39,12 +40,13 @@ namespace EnaiumToolKit.Framework.Screen.Elements
                 color = Color.Red;
             }
 
+            Render2DUtils.DrawButton(b, x, y, Width, Height, color);
             if (Hovered)
             {
-                color = Color.Wheat;
+                IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(375, 357, 3, 3), x, y, Width, Height,
+                    Color.Black, 4f, false);
             }
 
-            Render2DUtils.DrawButton(b, x, y, Width, Height, color);
             FontUtils.DrawHvCentered(b, Title, x + Width / 2, y + Height / 2);
         }
 

@@ -6,5 +6,6 @@
   "AdditionalFriendshipPointsForWateredTroughWithAnimalsInsideBuilding": 15,
   "NegativeFriendshipPointsForNotWateredTrough": 20,
   "AnimalsCanDrinkOutside": true,
-  "AnimalsCanOnlyDrinkFromWaterBodies": true
+  "AnimalsCanOnlyDrinkFromWaterBodies": true,
+  "CleanerTroughs": false
 }

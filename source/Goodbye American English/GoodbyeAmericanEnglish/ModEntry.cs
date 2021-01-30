@@ -119,13 +119,13 @@ namespace GoodbyeAmericanEnglish
         public override void Entry(IModHelper helper)
         {
             this.config = this.Helper.ReadConfig<ModConfig>();
+
         }
 
         // Return true if an asset name matches
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            
-            foreach(var name in NPCs)
+            foreach (var name in NPCs)
             {
                 // If asset name contains any iteration in NPCs array, return true
                 if (false
@@ -155,6 +155,7 @@ namespace GoodbyeAmericanEnglish
                     || asset.AssetNameEquals("Strings\\StringsFromMaps")
                     || asset.AssetNameEquals("Strings\\Notes")
                     || asset.AssetNameEquals("Strings\\Characters")
+                    || asset.AssetNameEquals("Strings\\SpecialOrderStrings")
                     || asset.AssetNameEquals("Data\\ObjectInformation")
                     || asset.AssetNameEquals("Data\\TV\\TipChannel")
                     || asset.AssetNameEquals("Data\\TV\\CookingChannel")
@@ -168,11 +169,14 @@ namespace GoodbyeAmericanEnglish
                     || asset.AssetNameEquals("Data\\Bundles")
                     || asset.AssetNameEquals("Data\\weapons")
                     || asset.AssetNameEquals("Data\\hats")
+                    || asset.AssetNameEquals("Data\\Fish")
+                    || asset.AssetNameEquals("Data\\RandomBundles")
                     || asset.AssetNameEquals("Data\\ObjectContextTags")
                     || asset.AssetNameEquals("Data\\Concessions")
                     || asset.AssetNameEquals("Data\\Movies")
                     || asset.AssetNameEquals("Data\\MoviesReactions")
                     || asset.AssetNameEquals("Data\\Festivals\\spring13")
+                    || asset.AssetNameEquals("Data\\Festivals\\spring24")
                     || asset.AssetNameEquals("Data\\Festivals\\summer11")
                     || asset.AssetNameEquals("Data\\Festivals\\summer28")
                     || asset.AssetNameEquals("Data\\Festivals\\fall27")
@@ -185,7 +189,6 @@ namespace GoodbyeAmericanEnglish
         // Edit game assets
         public void Edit<T>(IAssetData asset)
         {
-           
             // Method to hold common word replacements and conditions
             void SpellingFixer()
             {
@@ -237,10 +240,14 @@ namespace GoodbyeAmericanEnglish
                         data[key] = data[key].Replace("autumning", "falling");
                         data[key] = data[key].Replace("autumn on", "fall on");
                         data[key] = data[key].Replace("autumns", "falls");
+                        data[key] = data[key].Replace("autumn asleep", "fall asleep");
                         data[key] = data[key].Replace("autumn prey", "fall prey");
                         data[key] = data[key].Replace("autumnFest", "fallFest");
                         data[key] = data[key].Replace("Autumn Of Planet", "Fall Of Planet");
                         data[key] = data[key].Replace("autumn_", "fall_");
+                        data[key] = data[key].Replace("curtains autumn", "curtains fall");
+                        data[key] = data[key].Replace("autumn for", "fall for");
+                        data[key] = data[key].Replace("LinusAutumn", "LinusFall");
                     }
 
                     // Correct word replacement that shouldn't occur
@@ -367,7 +374,9 @@ namespace GoodbyeAmericanEnglish
             // Edit Object information data
             else if (asset.AssetNameEquals("Data\\ObjectInformation"))
             {
+               
                 IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
+
                 foreach (int key in new List<int>(data.Keys))
                 {
                     // Skip replacement if string is any of the following
@@ -389,7 +398,7 @@ namespace GoodbyeAmericanEnglish
                         // Only replace string value for a specific key
                         if (key == 497)
                         {
-                            data[key] = data[key].Replace("Fall", "Autumn");
+                            data[key] = data[key].Replace("/Fall", "/Autumn");
                         }
 
                         else if (key == 487)
@@ -400,12 +409,39 @@ namespace GoodbyeAmericanEnglish
                     // Replace string with new word
                     
                     data[key] = data[key].Replace("color", "colour");
-                    data[key] = data[key].Replace("favorite", "favourite");
-                    data[key] = data[key].Replace("ize", "ise");
+                    data[key] = data[key].Replace("avor", "avour");
+                    data[key] = data[key].Replace("/Fossilized", "/Fossilised");
+                    data[key] = data[key].Replace("/Deluxe Fertilizer", "/Deluxe Fertiliser");
+                    data[key] = data[key].Replace("/Quality Fertilizer", "/Quality Fertiliser");
+                    data[key] = data[key].Replace("/Basic Fertilizer","/Basic Fertiliser");
+                    data[key] = data[key].Replace("/Tree Fertilizer", "/Tree Fertiliser");
+                    data[key] = data[key].Replace("appetizer", "appetiser");
+                    data[key] = data[key].Replace("fertilize", "fertilise");
                     data[key] = data[key].Replace("theater", "theatre");
                     data[key] = data[key].Replace("zation", "sation");
 
-                    
+                    try
+                    {
+                        Dictionary<int, string> namereplacer = this.Helper.Content.Load<Dictionary<int, string>>("NameReplacer.json", ContentSource.ModFolder);
+
+                        if (namereplacer != null)
+                        {
+                            foreach (int itemid in new List<int>(namereplacer.Keys))
+                            {
+                                string[] fields = namereplacer[itemid].Split('/');
+
+                                if (fields[0] == "O")
+                                {
+                                    data[itemid] = data[itemid].Replace($"/{fields[1]}", $"/{fields[2]}");
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        this.Monitor.LogOnce("NameReplacer.json not found");
+                    }
+                   
                 }
             }
 
@@ -428,6 +464,12 @@ namespace GoodbyeAmericanEnglish
 
             // Edit egg festival data
             else if (asset.AssetNameEquals("Data\\Festivals\\spring13"))
+            {
+                SpellingFixer();
+            }
+
+            // Edit flower dance data
+            else if (asset.AssetNameEquals("Data\\Festivals\\spring24"))
             {
                 SpellingFixer();
             }
@@ -476,7 +518,7 @@ namespace GoodbyeAmericanEnglish
                 foreach (int key in new List<int>(data.Keys))
                 {
                     // Replace specified string with new string
-                    data[key] = data[key].Replace("favorite", "favourite");
+                    data[key] = data[key].Replace("avor", "avour");
                     data[key] = data[key].Replace("mom", "mum");
                 }
             }
@@ -522,6 +564,7 @@ namespace GoodbyeAmericanEnglish
 
                 // Replace specified key value with new value
                 data[209] = "Mini-Jukebox/1500/-300/Crafting -9/Allows you to play your favourite tunes./true/true/0/Mini-Jukebox";
+                data[90] = "Bone Mill/0/-300/Crafting -9/Turns bone items into fertilisers./true/true/0/Bone Mill";
             }
 
             // Patch Intro tilesheet with new sign image
@@ -647,6 +690,28 @@ namespace GoodbyeAmericanEnglish
                 ConcessionsDescriptionEditor(16, "fiber", "fibre");
                 // Rock candy
                 ConcessionsDescriptionEditor(23, "Flavored", "Flavoured");
+
+                try
+                {
+                    Dictionary<int, string> namereplacer = this.Helper.Content.Load<Dictionary<int, string>>("NameReplacer.json", ContentSource.ModFolder);
+
+                    if (namereplacer != null)
+                    {
+                        foreach (int itemid in new List<int>(namereplacer.Keys))
+                        {
+                            string[] fields = namereplacer[itemid].Split('/');
+
+                            if (fields[0] == "C")
+                            {
+                                Snacks[itemid].DisplayName = Snacks[itemid].DisplayName.Replace(fields[1], fields[2]);
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    this.Monitor.LogOnce("NameReplacer.json not found");
+                }
             }
 
             // Edit objectcontexttag data
@@ -659,6 +724,67 @@ namespace GoodbyeAmericanEnglish
                     // Replace specified string with new string
                     data[key] = data[key].Replace("fertilizer", "fertiliser");
                 }
+            }
+
+            //Edit random bundles
+            else if (asset.AssetNameEquals("Data\\RandomBundles") && this.config.FalltoAutumn == true)
+            {
+                var bundle = asset.Data as List<StardewValley.GameData.RandomBundleData>;
+
+                void BundleNameReplacer(int roomindex, int bundlesetindex, int bundleindex, string newname)
+                {
+                    bundle[roomindex].BundleSets[bundlesetindex].Bundles[bundleindex].Name = newname;
+                }
+
+                BundleNameReplacer(0, 0, 2, "Autumn Foraging");
+                BundleNameReplacer(1, 0, 2, "Autumn Crops");
+
+            }
+
+            // Edit fish data to convert inches to centimetres
+            else if (asset.AssetNameEquals("Data\\Fish") && this.config.MetricSystem == true)
+            {
+                IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
+
+                foreach (int key in new List<int>(data.Keys))
+                {
+                    // Skip replacement for trap fish, they don't have a size
+                    if(false 
+                        || key == 715 
+                        || key == 717 
+                        || key == 723 
+                        || key == 372 
+                        || key == 720 
+                        || key == 718 
+                        || key == 719 
+                        || key == 721 
+                        || key == 716 
+                        || key == 722)
+                    {
+                        continue;
+                    }
+
+                    string[] fields = data[key].Split('/');
+
+                    fields[3] = ((int)Math.Round((int.Parse(fields[3]) * 2.54))).ToString();
+                    fields[4] = ((int)Math.Round((int.Parse(fields[4]) * 2.54))).ToString();
+
+                    data[key] = string.Join("/", fields);
+                }
+            }
+
+            // Edit special order strings
+            else if (asset.AssetNameEquals("Strings\\SpecialOrderStrings"))
+            {
+
+                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+
+                // Replace specified string with new string
+                data["Gus_Name"] = data["Gus_Name"].Replace("Omelet", "Omelette");
+                data["Gus_RE_Greeting_0"] = data["Gus_RE_Greeting_0"].Replace("omelet", "omelette");
+                data["Gus_RE_Greeting_1"] = data["Gus_RE_Greeting_1"].Replace("omelet", "omelette");
+                data["Evelyn_Text"] = data["Evelyn_Text"].Replace("avor", "avour");
+
             }
         }
     }

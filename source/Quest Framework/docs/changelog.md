@@ -8,9 +8,33 @@ for queries and analysis.**
 
 # Changelog
 
-## Upcoming version
+## 1.3.1
 
+- Fixed problems with reintegrate quests
+
+## 1.3.0
+
+### Common changes
+
+- Quest bulletin board in town now chooses random quest when is offered more quests of the day in the same day
+- Added custom drop box support for special orders
+- Added texture loader for content packs (allows load texture added by Content Patcher)
+- When NPC offers you a quest via dialogue, an indicator is shown above their head. (You can disable it in config.json)
+- Added support for custom quest and special order boards (in any location what you want)
+- Managed quests are scrollable in questlog if content needs scroll (like special orders)
+- Added support for multiple objectives (for future features)
 - Fixed some multiplayer problems
+
+### For Content Pack modders
+
+- Added extra optional field `Secret` for `OfferDetails` of `NPC` quest offer.
+- Added field `CustomDropBoxes` for define custom drop boxes for special orders (see docs)
+- Added field `CustomBoards` for define custom quest or special order boards (see docs)
+
+### For SMAPI modders
+
+- New managed API method `RegisterCustomBoard`
+- New CustomQuest apis: `GetCurrentObjectives`, `UpdateUpdateCurrentObjectives` methods for define multiple objectives for a quest. (You must handle objectives manually in your quest code)
 
 ## 1.2.1
 

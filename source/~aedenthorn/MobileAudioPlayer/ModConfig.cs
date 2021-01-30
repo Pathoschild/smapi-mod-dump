@@ -10,7 +10,7 @@
 
 using Microsoft.Xna.Framework;
 
-namespace MobileAudioPlayer
+namespace MapTeleport
 {
     public class ModConfig
     {

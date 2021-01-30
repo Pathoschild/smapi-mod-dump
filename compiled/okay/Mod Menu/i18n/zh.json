@@ -1,0 +1,9 @@
+﻿{
+  "modMenu.name": "名称",
+  "modMenu.author": "作者",
+  "modMenu.version": "版本",
+  "modMenu.description": "描述",
+  "modMenu.dependencies": "依赖",
+  "modMenu.button.website": "网站",
+  "modMenu.button.modMenu": "模组菜单"
+}

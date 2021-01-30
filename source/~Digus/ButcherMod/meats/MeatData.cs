@@ -31,7 +31,7 @@ namespace AnimalHusbandryMod.meats
             Beef = new MeatItem(100,15);
             Pork = new MeatItem(1250, 30);
             Chicken = new MeatItem(250, 15);
-            Duck = new MeatItem(800, 20);
+            Duck = new MeatItem(400, 20);
             Rabbit = new MeatItem(2500, 20);
             Mutton = new MeatItem(650, 20);
         }

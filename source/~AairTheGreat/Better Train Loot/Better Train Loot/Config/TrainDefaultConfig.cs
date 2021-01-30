@@ -499,6 +499,7 @@ namespace BetterTrainLoot.Config
             treasures.Add(CreateTreasure(773, "Life Elixir", LOOT_RARITY.RARE));
             treasures.Add(CreateTreasure(787, "Battery Pack", LOOT_RARITY.ULTRA_RARE));
             treasures.Add(CreateTreasure(802, "Cactus Seeds", LOOT_RARITY.RARE));
+            treasures.Add(CreateTreasure(806, "Leprechaun Shoes", LOOT_RARITY.RARE));
 
             return treasures;
         }
@@ -593,6 +594,7 @@ namespace BetterTrainLoot.Config
             treasures.Add(CreateTreasure(770, "Mixed Seeds", LOOT_RARITY.COMMON));
             treasures.Add(CreateTreasure(787, "Battery Pack", LOOT_RARITY.ULTRA_RARE));
             treasures.Add(CreateTreasure(802, "Cactus Seeds", LOOT_RARITY.RARE));
+            treasures.Add(CreateTreasure(806, "Leprechaun Shoes", LOOT_RARITY.RARE));
 
             return treasures;
         }
@@ -713,6 +715,7 @@ namespace BetterTrainLoot.Config
             treasures.Add(CreateTreasure(588, "Palm Fossil", LOOT_RARITY.RARE));
             treasures.Add(CreateTreasure(589, "Trilobite", LOOT_RARITY.RARE));
             treasures.Add(CreateTreasure(749, "Omni Geode", LOOT_RARITY.UNCOMMON));
+            treasures.Add(CreateTreasure(806, "Leprechaun Shoes", LOOT_RARITY.RARE));
 
             return treasures;
         }
@@ -890,6 +893,7 @@ namespace BetterTrainLoot.Config
             treasures.Add(CreateTreasure(773, "Life Elixir", LOOT_RARITY.RARE));
             treasures.Add(CreateTreasure(787, "Battery Pack", LOOT_RARITY.ULTRA_RARE));
             treasures.Add(CreateTreasure(797, "Pearl", LOOT_RARITY.ULTRA_RARE));
+            treasures.Add(CreateTreasure(806, "Leprechaun Shoes", LOOT_RARITY.RARE));
 
             return treasures;
         }
@@ -965,6 +969,7 @@ namespace BetterTrainLoot.Config
             treasures.Add(CreateTreasure(722, "Periwinkle", LOOT_RARITY.UNCOMMON));
             treasures.Add(CreateTreasure(723, "Oyster", LOOT_RARITY.UNCOMMON));
             treasures.Add(CreateTreasure(771, "Fiber", LOOT_RARITY.COMMON));
+            treasures.Add(CreateTreasure(806, "Leprechaun Shoes", LOOT_RARITY.RARE));
 
             return treasures;
         } 
@@ -1013,7 +1018,7 @@ namespace BetterTrainLoot.Config
             treasures.Add(CreateTreasure(308, "Void Mayonnaise", LOOT_RARITY.COMMON));
             treasures.Add(CreateTreasure(230, "Red Plate", LOOT_RARITY.COMMON));
             treasures.Add(CreateTreasure(222, "Rhubarb Pie", LOOT_RARITY.COMMON));
-
+            treasures.Add(CreateTreasure(806, "Leprechaun Shoes", LOOT_RARITY.RARE));
             return treasures;
         }
 

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Teh's Fishing Overhaul",
   "Author": "TehPers",
-  "Version": "2.1.5-unofficial.1-Mendaere",
+  "Version": "2.1.5-unofficial.2-libraryaddict",
   "Description": "A complete overhaul of vanilla fishing, with a huge amount of customization.",
   "UniqueID": "TehPers.FishingOverhaul",
   "EntryDll": "TehPers.FishingOverhaul.dll",

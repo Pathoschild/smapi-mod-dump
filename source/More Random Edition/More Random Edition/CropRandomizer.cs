@@ -125,7 +125,7 @@ namespace Randomizer
 				cropInfoToAdd.CanScythe = Globals.RNGGetNextBoolean(10);
 				cropInfoToAdd.DaysToRegrow = cropInfoToAdd.RegrowsAfterHarvest ? Range.GetRandomValue(1, 7) : -1;
 
-				if (!Globals.Config.RandomizeCrops) { continue; } // Preserve the original seasons/etc
+				if (!Globals.Config.Crops.Randomize) { continue; } // Preserve the original seasons/etc
 				CropGrowthInformation.CropIdsToInfo[originalValue] = cropInfoToAdd;
 			}
 
@@ -211,7 +211,7 @@ namespace Randomizer
 				seed.Price = GetRandomSeedPrice();
 				crop.Price = CalculateCropPrice(seed);
 
-				if (!Globals.Config.RandomizeCrops) { continue; }
+				if (!Globals.Config.Crops.Randomize) { continue; }
 
 				editedObjectInfo.ObjectInformationReplacements[crop.Id] = crop.ToString();
 				editedObjectInfo.ObjectInformationReplacements[seed.Id] = seed.ToString();
@@ -225,7 +225,7 @@ namespace Randomizer
 		/// <param name="coffeeName">The name of the coffee item</param>
 		private static void SetUpCoffee(EditedObjectInformation editedObjectInfo, string coffeeName)
 		{
-			if (!Globals.Config.RandomizeCrops) { return; }
+			if (!Globals.Config.Crops.Randomize) { return; }
 
 			Item coffee = ItemList.Items[(int)ObjectIndexes.Coffee];
 			coffee.OverrideName = $"Hot {coffeeName}";
@@ -262,7 +262,7 @@ namespace Randomizer
 		/// <param name="editedObjectInfo">The object info containing changes to apply</param>
 		private static void SetUpCookedFood(EditedObjectInformation editedObjectInfo)
 		{
-			if (!Globals.Config.RandomizeCrops) { return; }
+			if (!Globals.Config.Crops.Randomize) { return; }
 
 			string cauliflower = ItemList.Items[(int)ObjectIndexes.Cauliflower].Name;
 			string parsnip = ItemList.Items[(int)ObjectIndexes.Parsnip].Name;
@@ -341,7 +341,7 @@ namespace Randomizer
 				{ (int)ObjectIndexes.SpicyEel, $"Spicy {eel}/175/46/Cooking -7/{GetRecipeNameAndDescription((int)ObjectIndexes.SpicyEel, eel)}/food/0 0 0 0 1 0 0 0 0 1 0/600"}
 			};
 
-			if (Globals.Config.RandomizeCrops)
+			if (Globals.Config.Crops.Randomize)
 			{
 				foreach (KeyValuePair<int, string> pair in cropItemReplacements)
 				{
@@ -349,7 +349,7 @@ namespace Randomizer
 				}
 			}
 
-			if (Globals.Config.RandomizeFish)
+			if (Globals.Config.Fish.Randomize)
 			{
 				foreach (KeyValuePair<int, string> pair in fishItemReplacements)
 				{
@@ -483,7 +483,7 @@ namespace Randomizer
 		private static void WriteToSpoilerLog()
 		{
 
-			if (Globals.Config.RandomizeCrops)
+			if (Globals.Config.Crops.Randomize)
 			{
 				Globals.SpoilerWrite("==== CROPS AND SEEDS ====");
 				foreach (SeedItem seedItem in ItemList.GetSeeds())

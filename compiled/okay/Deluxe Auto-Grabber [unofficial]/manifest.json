@@ -1,20 +1,10 @@
-/*************************************************
-**
-** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
-** for queries and analysis.
-**
-** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://github.com/stokastic/CoopGrabber
-**
-*************************************************/
-
-{
-   "Name": "DeluxeGrabber",
-   "Author": "stokastic",
-   "Version": "2.5.3-unofficial.5.frogfrag",
-   "Description": "Allows use of autograbber for coops, crops, and forage",
-   "UniqueID": "stokastic.DeluxeGrabber",
-   "EntryDll": "DeluxeGrabber.dll",
-   "MinimumApiVersion": "2.7",
-   "UpdateKeys": [ "Nexus:2462" ]
+﻿{
+  "Name": "Deluxe Auto-Grabber",
+  "Author": "stokastic",
+  "Version": "2.5.3-unofficial.6-Frogfrag.",
+  "Description": "Allows use of autograbber for coops, crops, and forage",
+  "UniqueID": "stokastic.DeluxeGrabber",
+  "EntryDll": "DeluxeGrabber.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:2462" ]
 }

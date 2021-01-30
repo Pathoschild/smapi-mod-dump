@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7759
+IDs: GZhynko.GrapesAllYearRound
+update keys: Nexus:7759, GitHub:gzhynko/StardewMods

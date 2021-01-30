@@ -18,7 +18,7 @@ namespace EnaiumToolKit.Framework.Utils
 {
     public static class FontUtils
     {
-        public static void Draw(SpriteBatch b, String text, int x, int y)
+        public static void Draw(SpriteBatch b, string text, int x, int y)
         {
             Utility.drawTextWithShadow(b, text, Game1.dialogueFont,
                 new Vector2(x, y), Game1.textColor, 1f,
@@ -26,26 +26,27 @@ namespace EnaiumToolKit.Framework.Utils
                 -1, -1, 0.0f);
         }
 
-        public static void DrawHCentered(SpriteBatch b, String text, int x, int y)
+        public static void DrawHCentered(SpriteBatch b, string text, int x, int y)
         {
+            var v = Game1.dialogueFont.MeasureString(text);
             Utility.drawTextWithShadow(b, text, Game1.dialogueFont,
-                new Vector2(x - SpriteText.getWidthOfString(text) / 2, y), Game1.textColor, 1f,
+                new Vector2(x - GetWidth(text) / 2, y) + v, Game1.textColor, 1f,
                 -1f,
                 -1, -1, 0.0f);
         }
 
-        public static void DrawVCentered(SpriteBatch b, String text, int x, int y)
+        public static void DrawVCentered(SpriteBatch b, string text, int x, int y)
         {
             Utility.drawTextWithShadow(b, text, Game1.dialogueFont,
-                new Vector2(x, y - SpriteText.getHeightOfString(text) / 2), Game1.textColor, 1f,
+                new Vector2(x, y - GetHeight(text) / 2), Game1.textColor, 1f,
                 -1f,
                 -1, -1, 0.0f);
         }
 
-        public static void DrawHvCentered(SpriteBatch b, String text, int x, int y)
+        public static void DrawHvCentered(SpriteBatch b, string text, int x, int y)
         {
             Utility.drawTextWithShadow(b, text, Game1.dialogueFont,
-                new Vector2(x - SpriteText.getWidthOfString(text) / 2, y - SpriteText.getHeightOfString(text) / 2),
+                new Vector2(x - GetWidth(text) / 2, y - GetHeight(text) / 2),
                 Game1.textColor, 1f,
                 -1f,
                 -1, -1, 0.0f);

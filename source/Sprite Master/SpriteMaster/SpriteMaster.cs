@@ -17,6 +17,8 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime;
@@ -29,25 +31,46 @@ namespace SpriteMaster {
 		private static readonly bool DotNet = (Runtime.Framework == Runtime.FrameworkType.DotNET);
 		private readonly Thread MemoryPressureThread = null;
 		private readonly Thread GarbageCollectThread = null;
-		private readonly object CollectLock = DotNet ? new object () : null;
+		private readonly object CollectLock = DotNet ? new() : null;
 		internal static string AssemblyPath { get; private set; }
+
+		internal static void DumpStats() {
+			var currentProcess = Process.GetCurrentProcess();
+			var workingSet = currentProcess.WorkingSet64;
+			var vmem = currentProcess.VirtualMemorySize64;
+			var gc_allocated = GC.GetTotalMemory(false);
+
+			var lines = new List<string>();
+
+			lines.Add("SpriteMaster Stats Dump:");
+			lines.Add("\tVM:");
+			lines.Add($"\t\tProcess Working Set    : {workingSet.AsDataSize()}");
+			lines.Add($"\t\tProcess Virtual Memory : {vmem.AsDataSize()}:");
+			lines.Add($"\t\tGC Allocated Memory    : {gc_allocated.AsDataSize()}:");
+			lines.Add("");
+
+			ManagedTexture2D.DumpStats(lines);
+
+			foreach (var line in lines) {
+				Debug.InfoLn(line);
+			}
+		}
 
 		private void MemoryPressureLoop() {
 			for (;;) {
-				if (DrawState.TriggerGC) {
-					Thread.Sleep(128);
+				if (DrawState.TriggerGC && DrawState.TriggerGC.Wait()) {
 					continue;
 				}
 
 				lock (CollectLock) {
 					try {
-						using var _ = new MemoryFailPoint(Config.RequiredFreeMemory);
+						using var _ = new MemoryFailPoint(Config.Garbage.RequiredFreeMemory);
 						Thread.Sleep(128);
 					}
 					catch (InsufficientMemoryException) {
-						Debug.WarningLn($"Less than {(Config.RequiredFreeMemory * 1024 * 1024).AsDataSize(decimals: 0)} available for block allocation, forcing full garbage collection");
+						Debug.WarningLn($"Less than {(Config.Garbage.RequiredFreeMemory * 1024 * 1024).AsDataSize(decimals: 0)} available for block allocation, forcing full garbage collection");
 						MTexture2D.PurgeDataCache();
-						DrawState.TriggerGC = true;
+						DrawState.TriggerGC.Set(true);
 						Thread.Sleep(10000);
 					}
 				}
@@ -56,19 +79,20 @@ namespace SpriteMaster {
 
 		private void GarbageCheckLoop() {
 			try {
-				for (; ; ) {
+				for(;;) {
 					GC.RegisterForFullGCNotification(10, 10);
 					GC.WaitForFullGCApproach();
 					if (Garbage.ManualCollection) {
+						Thread.Sleep(128);
 						continue;
 					}
 					lock (CollectLock) {
-						while (DrawState.TriggerGC) {
-							Thread.Sleep(32);
+						if (DrawState.TriggerGC && DrawState.TriggerGC.Wait()) {
+							continue;
 						}
 
 						MTexture2D.PurgeDataCache();
-						DrawState.TriggerGC = true;
+						DrawState.TriggerGC.Set(true);
 						// TODO : Do other cleanup attempts here.
 					}
 				}
@@ -146,7 +170,8 @@ namespace SpriteMaster {
 
 				if (IsVersionOutdated(Config.ConfigVersion)) {
 					Debug.WarningLn("config.toml is out of date, rewriting it.");
-					SerializeConfig.Load(tempStream);
+
+					SerializeConfig.Load(tempStream, retain: true);
 					Config.ConfigVersion = Config.CurrentVersion;
 				}
 			}
@@ -163,8 +188,22 @@ namespace SpriteMaster {
 			ConfigureHarmony();
 			help.Events.Input.ButtonPressed += OnButtonPressed;
 
-			help.ConsoleCommands.Add("spritemaster_stats", "Dump SpriteMaster Statistics", (_, _1) => { ManagedTexture2D.DumpStats(); });
+			help.ConsoleCommands.Add("spritemaster_stats", "Dump SpriteMaster Statistics", (_, _1) => { DumpStats(); });
 			help.ConsoleCommands.Add("spritemaster_memory", "Dump SpriteMaster Memory", (_, _1) => { Debug.DumpMemory(); });
+			help.ConsoleCommands.Add("spritemaster_gc", "Trigger Spritemaster GC", (_, _1) => {
+				lock (CollectLock) {
+					Garbage.Collect(compact: true, blocking: true, background: false);
+					DrawState.TriggerGC.Set(true);
+				}
+			});
+			help.ConsoleCommands.Add("spritemaster_purge", "Trigger Spritemaster Purge", (_, _1) => {
+				lock (CollectLock) {
+					Garbage.Collect(compact: true, blocking: true, background: false);
+					MTexture2D.PurgeDataCache();
+					Garbage.Collect(compact: true, blocking: true, background: false);
+					DrawState.TriggerGC.Set(true);
+				}
+			});
 
 			//help.ConsoleCommands.Add("night", "make it dark", (_, _1) => { help.ConsoleCommands.Trigger("world_settime", new string[] { "2100" }); });
 

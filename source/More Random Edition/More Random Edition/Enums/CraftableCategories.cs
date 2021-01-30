@@ -49,7 +49,12 @@ namespace Randomizer
 		/// <summary>
 		/// Use this for all endgame things, such as Iridium sprinklers
 		/// </summary>
-		Endgame
+		Endgame,
 
+		/// <summary>
+		/// A special setting used by wild seeds - this will result in foragables from the current season
+		/// being needed to craft the item
+		/// </summary>
+		Foragables
 	}
 }

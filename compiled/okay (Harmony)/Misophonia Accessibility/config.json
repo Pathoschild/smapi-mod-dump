@@ -2,6 +2,7 @@
   "Enabled": true,
   "SoundsToDisable": {
     "DisableEatSound": true,
-    "DisableDrinkSound": false
+    "DisableDrinkSound": false,
+    "DisableBubblesSound": false
   }
 }

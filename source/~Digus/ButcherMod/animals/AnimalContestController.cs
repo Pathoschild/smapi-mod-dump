@@ -21,86 +21,48 @@ using Harmony;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Characters;
 
 namespace AnimalHusbandryMod.animals
 {
-    public class AnimalContestController : AnimalStatusController
+    public class AnimalContestController
     {
+
+        private const string AnimalContestCountKey = "DIGUS.ANIMALHUSBANDRYMOD/AnimalContest.Count";
+
         private static FarmAnimal _temporaryFarmAnimal = null;
 
-        public static bool IsParticipant(FarmAnimal farmAnimal)
+        public static bool IsNextParticipant(Character character)
         {
-            return GetAnimalStatus(farmAnimal.myID.Value).DayParticipatedContest != null;
-        }
-
-        public static bool IsParticipantPet()
-        {
-            SDate dayParticipatedContest = GetAnimalStatus(AnimalData.PetId).DayParticipatedContest;
+            SDate dayParticipatedContest = character.GetDayParticipatedContest();
             return dayParticipatedContest != null && dayParticipatedContest > SDate.Now();
         }
 
-        public static bool HasParticipated(FarmAnimal farmAnimal)
+        public static bool HasParticipated(Character character)
         {
-            SDate dayParticipatedContest = GetAnimalStatus(farmAnimal.myID.Value).DayParticipatedContest;
+            SDate dayParticipatedContest = character.GetDayParticipatedContest();
             return dayParticipatedContest != null && dayParticipatedContest <= SDate.Now();
         }
 
-        public static bool HasWon(FarmAnimal farmAnimal)
+        public static bool HasWon(Character character)
         {
-            return GetAnimalStatus(farmAnimal.myID.Value).HasWon??false;
+            return character.GetHasWon()??false;
         }
 
-        public static bool CanChangeParticipant(FarmAnimal farmAnimal)
+        public static bool CanChangeParticipant(Character character)
         {
-            return CanChangeParticipant(farmAnimal.myID.Value);
+            return character.GetDayParticipatedContest() > SDate.Now();
         }
 
-        public static bool CanChangeParticipantPet()
+        public static void MakeAnimalParticipant(Character character)
         {
-            return CanChangeParticipant(AnimalData.PetId);
+            character.SetDayParticipatedContest(GetNextContestDate());
         }
 
-        private static bool CanChangeParticipant(long id)
+        public static void RemoveAnimalParticipant(Character character)
         {
-            return GetAnimalStatus(id).DayParticipatedContest > SDate.Now();
-        }
-
-        public static SDate GetParticipantDate(FarmAnimal farmAnimal)
-        {
-            return GetAnimalStatus(farmAnimal.myID.Value).DayParticipatedContest;
-        }
-
-        public static void MakeAnimalParticipant(FarmAnimal farmAnimal)
-        {
-            MakeAnimalParticipant(farmAnimal.myID.Value);
-        }
-
-        public static void MakePetParticipant()
-        {
-            MakeAnimalParticipant(AnimalData.PetId);
-        }
-
-        private static void MakeAnimalParticipant(long id)
-        {
-            AnimalStatus animalStatus = GetAnimalStatus(id);
-            animalStatus.DayParticipatedContest = GetNextContestDate();
-        }
-
-        public static void RemoveAnimalParticipant(FarmAnimal farmAnimal)
-        {
-            RemoveAnimalParticipant(farmAnimal.myID.Value);
-        }
-
-        public static void RemovePetParticipant()
-        {
-            RemoveAnimalParticipant(AnimalData.PetId);
-        }
-
-        private static void RemoveAnimalParticipant(long id)
-        {
-            AnimalStatus animalStatus = GetAnimalStatus(id);
-            animalStatus.DayParticipatedContest = null;
+            character.ClearDayParticipatedContest();
         }
 
         public static bool IsContestDate()
@@ -128,15 +90,17 @@ namespace AnimalHusbandryMod.animals
             return $"{date.Year:00}{Utility.getSeasonNumber(date.Season)}{date.Day:00}";
         }
 
-        public static long? GetNextContestParticipantId()
+        public static Character GetNextContestParticipant()
         {
-            return ContestParticipantId(GetNextContestDate());
+            return ContestParticipant(GetNextContestDate());
         }
 
-        public static long? ContestParticipantId(SDate contestDate)
+        public static Character ContestParticipant(SDate contestDate)
         {
-            AnimalStatus animalStatus = FarmerLoader.FarmerData.AnimalData.Find(s => s.DayParticipatedContest == contestDate);
-            return animalStatus?.Id;
+            Pet pet = Game1.player.getPet();
+            return pet.GetDayParticipatedContest() == contestDate
+                ? (Character) pet
+                : AnimalUtility.FindAnimals(a => a.GetDayParticipatedContest() == contestDate).FirstOrDefault();
         }
 
         public static void EndEvent(AnimalContestItem animalContestItem, bool participated = true)
@@ -153,12 +117,12 @@ namespace AnimalHusbandryMod.animals
                 if (animalContestItem.ParticipantId.HasValue)
                 {
                     long participantIdValue = animalContestItem.ParticipantId.Value;
-                    AnimalStatus animalStatus = GetAnimalStatus(participantIdValue);
-                    animalStatus.HasWon = (animalStatus.HasWon ?? false) || animalContestItem.Winner == "Farmer";
+                    Character participant = null;
                     if (participantIdValue != AnimalData.PetId)
                     {
                         if (_temporaryFarmAnimal != null)
                         {
+                            participant = _temporaryFarmAnimal;
                             if (participated)
                             {
                                 _temporaryFarmAnimal.friendshipTowardFarmer.Value = Math.Min(1000, _temporaryFarmAnimal.friendshipTowardFarmer.Value + DataLoader.AnimalContestData.FarmAnimalFriendshipForParticipating);
@@ -174,82 +138,98 @@ namespace AnimalHusbandryMod.animals
                     }
                     else
                     {
+                        participant = Game1.player.getPet();
                         if (participated)
                         {
-                            Pet pet = Game1.player.getPet();
+                            Pet pet = (Pet) participant;
                             pet.friendshipTowardFarmer.Value = Math.Min(Pet.maxFriendship, pet.friendshipTowardFarmer.Value + DataLoader.AnimalContestData.PetFriendshipForParticipating);
                         }
                         AnimalContestController.ReAddPet();
                     }
+                    participant?.SetHasWon((participant.GetHasWon() ?? false) || animalContestItem.Winner == "Farmer");
                 }
             }
         }
 
-        public static FarmAnimal GetAnimal(long id)
+        public static void TemporallyRemoveFarmAnimal(FarmAnimal farmAnimal)
         {
-            if (_temporaryFarmAnimal?.myID.Value == id)
+            if(Context.IsMainPlayer)
             {
-                return _temporaryFarmAnimal;
-            }
-            FarmAnimal animal = Utility.getAnimal(id);
-            if (animal != null)
-            {
-                return animal;
-            }
-            else
-            {
-                AnimalHusbandryModEntry.monitor.Log($"The animal id '{id}' was not found in the game and its animal status data is being discarded.", LogLevel.Warn);
-                RemoveAnimalStatus(id);
-                return null;
+                if (farmAnimal.currentLocation is Farm farm)
+                {
+                    farm.animals.Remove(farmAnimal.myID.Value);
+                    _temporaryFarmAnimal = farmAnimal;
+                }
+                else if (farmAnimal.currentLocation is AnimalHouse animalHouse)
+                {
+                    animalHouse.animals.Remove(farmAnimal.myID.Value);
+                    _temporaryFarmAnimal = farmAnimal;
+                }
             }
         }
 
-        public static void TemporalyRemoveFarmAnimal(FarmAnimal farmAnimal)
+        public static void TemporallyRemovePet()
         {
-            if (farmAnimal.currentLocation is Farm farm)
+            if (Context.IsMainPlayer)
             {
-                farm.animals.Remove(farmAnimal.myID.Value);
-                _temporaryFarmAnimal = farmAnimal;
+                Game1.player.getPet().IsInvisible = true;
             }
-            else if (farmAnimal.currentLocation is AnimalHouse animalHouse)
-            {
-                animalHouse.animals.Remove(farmAnimal.myID.Value);
-                _temporaryFarmAnimal = farmAnimal;
-            }
-        }
-
-        public static void TemporalyRemovePet()
-        {
-            Game1.player.getPet().IsInvisible = true;
         }
 
         public static void ReAddFarmAnimal(long participantIdValue)
         {
-            if (_temporaryFarmAnimal != null && _temporaryFarmAnimal.myID.Value == participantIdValue)
+            if (Context.IsMainPlayer)
             {
-                (_temporaryFarmAnimal.home.indoors.Value as AnimalHouse)?.animals.Add(_temporaryFarmAnimal.myID.Value, _temporaryFarmAnimal);
+                if (_temporaryFarmAnimal != null && _temporaryFarmAnimal.myID.Value == participantIdValue)
+                {
+                    (_temporaryFarmAnimal.home.indoors.Value as AnimalHouse)?.animals.Add(
+                        _temporaryFarmAnimal.myID.Value, _temporaryFarmAnimal);
+                }
+
+                _temporaryFarmAnimal = null;
             }
-            _temporaryFarmAnimal = null;
         }
 
         public static void ReAddPet()
         {
-            Game1.player.getPet().IsInvisible = false;
+            if (Context.IsMainPlayer)
+            {
+                Game1.player.getPet().IsInvisible = false;
+            }
         }
 
         public static void CleanTemporaryParticipant()
         {
-            _temporaryFarmAnimal = null;
+            if (Context.IsMainPlayer)
+            {
+                _temporaryFarmAnimal = null;
+            }
         }
 
         public static bool HasFertilityBonus(FarmAnimal farmAnimal)
         {
-            return HasWon(farmAnimal) && new[]{ "spring" , "summer"}.Contains(GetParticipantDate(farmAnimal).Season);
+            return HasWon(farmAnimal) && new[]{ "spring" , "summer"}.Contains(farmAnimal.GetDayParticipatedContest()?.Season);
         }
 
         public static bool HasProductionBonus(FarmAnimal farmAnimal)
         {
-            return HasWon(farmAnimal) && new[] { "fall", "winter" }.Contains(GetParticipantDate(farmAnimal).Season);
+            return HasWon(farmAnimal) && new[] { "fall", "winter" }.Contains(farmAnimal.GetDayParticipatedContest()?.Season);
+        }
+
+        public static void UpdateContestCount()
+        {
+            Game1.getFarm().modData[AnimalContestCountKey] = FarmerLoader.FarmerData?.AnimalContestData.Count.ToString();
+        }
+
+        public static int GetContestCount()
+        {
+            int result = 0;
+            if (Game1.getFarm().modData.ContainsKey(AnimalContestCountKey))
+            {
+                int.TryParse(Game1.getFarm().modData[AnimalContestCountKey], out result);
+            }
+            return result;
+            
         }
     }
 }

@@ -28,9 +28,9 @@ namespace AnimalHusbandryMod.animals.data
 
         public DuckItem()
         {
-            MinimalNumberOfMeat = 2;
-            MaximumNumberOfMeat = 6;
-            MinimumDaysBetweenTreats = 3;
+            MinimalNumberOfMeat = 1;
+            MaximumNumberOfMeat = 5;
+            MinimumDaysBetweenTreats = 4;
             LikedTreats = new object[] { 78, 278, 207 };
             LikedTreatsId = new HashSet<int>();
             MinimumNumberOfFeatherChances = 0;

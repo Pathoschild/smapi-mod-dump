@@ -65,6 +65,6 @@ namespace ShutUp {
 	}
 
 	class ModConfig {
-		public string[] sounds { get; set; } = new[] { "dog_pant", "dog_bark" };
+		public string[] sounds { get; set; } = new[] { "" };
 	}
 }

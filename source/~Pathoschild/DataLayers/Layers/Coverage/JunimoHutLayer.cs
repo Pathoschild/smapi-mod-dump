@@ -13,7 +13,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.DataLayers.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
@@ -50,10 +49,8 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Coverage
         /// <summary>Construct an instance.</summary>
         /// <param name="config">The data layer settings.</param>
         /// <param name="mods">Handles access to the supported mod integrations.</param>
-        /// <param name="input">The API for checking input state.</param>
-        /// <param name="monitor">Writes messages to the SMAPI log.</param>
-        public JunimoHutLayer(LayerConfig config, ModIntegrations mods, IInputHelper input, IMonitor monitor)
-            : base(I18n.JunimoHuts_Name(), config, input, monitor)
+        public JunimoHutLayer(LayerConfig config, ModIntegrations mods)
+            : base(I18n.JunimoHuts_Name(), config)
         {
             // init
             this.Mods = mods;

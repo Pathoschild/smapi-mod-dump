@@ -26,6 +26,10 @@ namespace AnimalHusbandryMod.common
     {
         private static readonly List<CustomEvent> CustomEvents = new List<CustomEvent>();
 
+        private const string SyncEventKey = "DIGUS.ANIMALHUSBANDRYMOD/AnimalContest.SyncEvent";
+
+        private const char EventKeySeparator = ':';
+
         public bool CanEdit<T>(IAssetInfo asset)
         {
             return asset.AssetNameEquals("Data\\Events\\Town");
@@ -40,49 +44,77 @@ namespace AnimalHusbandryMod.common
                 {
                     data[customEvent.Key] = customEvent.Script;
                 }
+                CheckSyncEvent(data);
             }
         }
 
         public static void CheckEventDay()
         {
-            CustomEvents.Clear();
-            if (Context.IsMainPlayer && !DataLoader.ModConfig.DisableAnimalContest && AnimalContestController.IsContestDate())
+            if (Context.IsMainPlayer)
             {
-                AnimalContestController.CleanTemporaryParticipant();
-                CustomEvents.Add(AnimalContestEventBuilder.CreateEvent(SDate.Now()));
-                DataLoader.Helper.Content.InvalidateCache("Data\\Events\\Town");
-                Game1.showGlobalMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2640", DataLoader.i18n.Get("AnimalContest.Message.Name")) + Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2637"));
+                CustomEvents.Clear();
+                if (!DataLoader.ModConfig.DisableAnimalContest && AnimalContestController.IsContestDate())
+                {
+                    AnimalContestController.CleanTemporaryParticipant();
+                    CustomEvent customEvent = AnimalContestEventBuilder.CreateEvent(SDate.Now());
+                    SyncEvent(customEvent);
+                    CustomEvents.Add(customEvent);
+                    DataLoader.Helper.Content.InvalidateCache("Data\\Events\\Town");
+                    Game1.showGlobalMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2640", DataLoader.i18n.Get("AnimalContest.Message.Name")) + Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2637"));
+                }
+                else
+                {
+                    Game1.getFarm().modData.Remove(SyncEventKey);
+                }
+
+                AnimalContestController.UpdateContestCount();
             }
         }
 
         public static void CheckUnseenEvents()
         {
-            CustomEvents.ForEach(e =>
+            if (Context.IsMainPlayer)
             {
-                var id = Convert.ToInt32(e.Key.Split('/')[0]);
-                if (!Game1.player.eventsSeen.Contains(id))
+                CustomEvents.ForEach(e =>
                 {
-                    if (FarmerLoader.FarmerData.AnimalContestData.Find(i => i.EventId == id) is var animalContestInfo && animalContestInfo != null)
+                    var id = Convert.ToInt32(e.Key.Split('/')[0]);
+                    if (!Game1.player.eventsSeen.Contains(id))
                     {
-                        AnimalContestController.EndEvent(animalContestInfo, false);
+                        if (FarmerLoader.FarmerData.AnimalContestData.Find(i => i.EventId == id) is var
+                                animalContestInfo && animalContestInfo != null)
+                        {
+                            AnimalContestController.EndEvent(animalContestInfo, false);
+                        }
                     }
-                }
-            });
-        }
-
-        public static void BroadcastEvent(int evtId)
-        {
-            CustomEvent customEvent = CustomEvents.FirstOrDefault(e => e.Key.StartsWith(evtId + "/"));
-            if (customEvent != null)
-            {
-                DataLoader.Helper.Multiplayer.SendMessage(customEvent, "animalContestEvent");
+                });
             }
         }
 
-        public static void AddEvent(CustomEvent customEvent)
+        public static void EventListener()
         {
-            CustomEvents.Add(customEvent);
-            DataLoader.Helper.Content.InvalidateCache("Data\\Events\\Town");
+            Game1.getFarm().modData.OnValueAdded += (k, v) =>
+            {
+                if (k == "TempEventScript")
+                {
+                    DataLoader.Helper.Content.InvalidateCache("Data\\Events\\Town");
+                }
+            };
+        }
+
+        private static void SyncEvent(CustomEvent customEvent)
+        {
+            Game1.getFarm().modData[SyncEventKey] = customEvent.Key + EventKeySeparator + customEvent.Script;
+        }
+
+        private static void CheckSyncEvent(IDictionary<string, string> eventData)
+        {
+            if (!Context.IsMainPlayer && Game1.getFarm().modData.ContainsKey(SyncEventKey))
+            {
+                string eventInfo = Game1.getFarm().modData[SyncEventKey];
+                string eventKey = eventInfo.Split(EventKeySeparator)[0];
+                string eventScript = eventInfo.Substring(eventInfo.IndexOf(EventKeySeparator) + 1);
+                eventData[eventKey] = eventScript;
+            }
         }
     }
 }

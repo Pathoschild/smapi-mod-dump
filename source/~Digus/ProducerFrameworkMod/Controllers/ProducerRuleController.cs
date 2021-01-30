@@ -44,15 +44,22 @@ namespace ProducerFrameworkMod.Controllers
         /// </summary>
         /// <param name="producerRule">the producer rule to check</param>
         /// <param name="input">The input to check</param>
-        public static void ValidateIfInputStackLessThanRequired(ProducerRule producerRule, Object input)
+        public static void ValidateIfInputStackLessThanRequired(ProducerRule producerRule, Object input, bool probe)
         {
             int requiredStack = producerRule.InputStack;
             if (input.Stack < requiredStack)
             {
-                throw new RestrictionException(DataLoader.Helper.Translation.Get(
-                    "Message.Requirement.Amount"
-                    , new { amount = requiredStack, objectName = Lexicon.makePlural(input.DisplayName, requiredStack == 1) }
-                ));
+                if (!probe)
+                {
+                    throw new RestrictionException(DataLoader.Helper.Translation.Get(
+                        "Message.Requirement.Amount"
+                        , new { amount = requiredStack, objectName = Lexicon.makePlural(input.DisplayName, requiredStack == 1) }
+                    ));
+                }
+                else
+                {
+                    throw new RestrictionException();
+                }
             }
         }
 
@@ -61,22 +68,29 @@ namespace ProducerFrameworkMod.Controllers
         /// </summary>
         /// <param name="producerRule">the producer tule to check</param>
         /// <param name="who">The farmer to check</param>
-        public static void ValidateIfAnyFuelStackLessThanRequired(ProducerRule producerRule, Farmer who)
+        public static void ValidateIfAnyFuelStackLessThanRequired(ProducerRule producerRule, Farmer who, bool probe)
         {
             foreach (Tuple<int, int> fuel in producerRule.FuelList)
             {
                 if (!who.hasItemInInventory(fuel.Item1, fuel.Item2))
                 {
-                    if (fuel.Item1 >= 0)
+                    if (!probe)
                     {
-                        Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation",ContentSource.GameContent);
-                        var objectName = Lexicon.makePlural(ObjectUtils.GetObjectParameter(objects[fuel.Item1], (int) ObjectParameter.DisplayName), fuel.Item2 == 1);
-                        throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Requirement.Amount", new {amount = fuel.Item2, objectName}));
+                        if (fuel.Item1 >= 0)
+                        {
+                            Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation",ContentSource.GameContent);
+                            var objectName = Lexicon.makePlural(ObjectUtils.GetObjectParameter(objects[fuel.Item1], (int) ObjectParameter.DisplayName), fuel.Item2 == 1);
+                            throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Requirement.Amount", new {amount = fuel.Item2, objectName}));
+                        }
+                        else
+                        {
+                            var objectName = ObjectUtils.GetCategoryName(fuel.Item1);
+                            throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Requirement.Amount", new {amount = fuel.Item2, objectName}));
+                        }
                     }
                     else
                     {
-                        var objectName = ObjectUtils.GetCategoryName(fuel.Item1);
-                        throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Requirement.Amount", new {amount = fuel.Item2, objectName}));
+                        throw new RestrictionException();
                     }
                 }
             }

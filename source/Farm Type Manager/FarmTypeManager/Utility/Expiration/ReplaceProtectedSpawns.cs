@@ -141,7 +141,7 @@ namespace FarmTypeManager
                             else //if a new ID could not be generated
                             {
                                 uninstalled++; //increment uninstalled mod tracker
-                                Monitor.Log($"Failed to generated a new ID for a saved forage item overnight. Item name: {saved.Name}", LogLevel.Trace);
+                                Monitor.LogOnce($"Couldn't find a valid ID for a previously saved forage item. Item name: {saved.Name}", LogLevel.Trace);
                             }
                         }
                         else //if this object's tile is obstructed
@@ -183,13 +183,21 @@ namespace FarmTypeManager
                                         if (saved.Name.Contains(':')) //if this is "category:name"
                                         {
                                             string[] categoryAndName = saved.Name.Split(':');
-                                            int? newID = GetItemID(categoryAndName[0], categoryAndName[1]);
+                                            saved.ID = GetItemID(categoryAndName[0], categoryAndName[1]);
                                         }
                                         else //if this is just an object name
-                                            saved.ID = GetItemID("object", saved.Name); 
+                                            saved.ID = GetItemID("object", saved.Name);
                                     }
 
-                                    SpawnForage(saved, location, saved.Tile); //respawn it
+                                    if (saved.ID.HasValue) //if a valid ID was found for this object
+                                    {
+                                        SpawnForage(saved, location, saved.Tile); //respawn it
+                                    }
+                                    else
+                                    {
+                                        uninstalled++; //increment uninstalled mod tracker
+                                        Monitor.LogOnce($"Couldn't find a valid ID for a previously saved forage object. Object name: {saved.Name}", LogLevel.Trace);
+                                    }
                                 }
                                 else //if this is ore
                                 {
@@ -205,11 +213,7 @@ namespace FarmTypeManager
                     }
                 }
 
-                Monitor.VerboseLog($"Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}.");
-                if (uninstalled > 0) //if any objects could not respawn due to missing mod data
-                {
-                    Monitor.Log($"{uninstalled} objects could not be respawned overnight due to missing item mods.", LogLevel.Debug);
-                }
+                Monitor.Log($"Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}. Skipped due to missing item types: {uninstalled}.", LogLevel.Trace);
             }
         }
     }

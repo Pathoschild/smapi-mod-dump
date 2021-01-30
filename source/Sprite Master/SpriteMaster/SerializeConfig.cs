@@ -39,7 +39,14 @@ namespace SpriteMaster {
 			return HashClass(typeof(Config));
 		}
 
-		private static bool Parse (DocumentSyntax Data) {
+		private static bool IsValidField(FieldInfo field)
+		{
+			return !(field == null || field.IsPrivate || field.IsInitOnly || !field.IsStatic || field.IsLiteral || field.HasAttribute<Config.ConfigIgnoreAttribute>());
+		}
+
+		// TODO validate that different config elements aren't sharing 'OldName' attributes. That'd be hard to diagnose.
+
+		private static bool Parse (DocumentSyntax Data, bool retain) {
 			try {
 				foreach (var table in Data.Tables) {
 					string tableName = "";
@@ -57,17 +64,51 @@ namespace SpriteMaster {
 							var trimmedElement = element.Trim();
 							summedClass += $".{trimmedElement}";
 							var child = configClass.GetNestedType(trimmedElement, StaticFlags);
-							if (child == null || child.IsNestedPrivate || child.GetCustomAttribute<Config.ConfigIgnoreAttribute>() != null)
+							if (child == null || child.IsNestedPrivate || child.HasAttribute<Config.ConfigIgnoreAttribute>())
 								throw new InvalidDataException($"Configuration Child Class '{summedClass}' does not exist");
+							if (retain && child.HasAttribute<Config.ConfigRetainAttribute>())
+							{
+								configClass = null;
+								break;
+							}
 							configClass = child;
+						}
+
+						if (configClass == null)
+						{
+							// If this is null, it meant that we are supposed to skip it as that should be the only way to get here.
+							if (!retain)
+								throw new InvalidOperationException("configClass was null when retain was 'false'");
+							continue;
 						}
 
 						foreach (var value in table.Items) {
 							try {
 								var keyString = value.Key.ToString().Trim();
 								var field = configClass.GetField(keyString, StaticFlags);
-								if (field == null || field.IsPrivate || field.IsInitOnly || !field.IsStatic || field.IsLiteral)
+								if (!IsValidField(field))
+								{
+									var fields = configClass.GetFields(StaticFlags);
+									foreach (var subField in fields)
+									{
+										if (!subField.GetAttribute<Config.ConfigOldNameAttribute>(out var attrib))
+										{
+											continue;
+										}
+										if (attrib.Name == keyString && IsValidField(subField))
+										{
+											field = subField;
+											break;
+										}
+									}
+								}
+								if (!IsValidField(field))
 									throw new InvalidDataException($"Configuration Value '{summedClass}.{keyString}' does not exist");
+
+								if (retain && field.HasAttribute<Config.ConfigRetainAttribute>())
+								{
+									continue;
+								}
 
 								object fieldValue = field.GetValue(null);
 								switch (fieldValue) {
@@ -187,7 +228,7 @@ namespace SpriteMaster {
 				if (field.IsPrivate || field.IsInitOnly || !field.IsStatic || field.IsLiteral)
 					continue;
 
-				if (field.GetCustomAttribute<Config.ConfigIgnoreAttribute>() != null) {
+				if (field.HasAttribute<Config.ConfigIgnoreAttribute>()) {
 					continue;
 				}
 
@@ -263,7 +304,7 @@ namespace SpriteMaster {
 			foreach (var child in children) {
 				if (child.IsNestedPrivate)
 					continue;
-				if (child.GetCustomAttribute<Config.ConfigIgnoreAttribute>() != null) {
+				if (child.HasAttribute<Config.ConfigIgnoreAttribute>()) {
 					continue;
 				}
 				var childKey = new KeySyntax(typeof(Config).Name);
@@ -281,11 +322,11 @@ namespace SpriteMaster {
 			}
 		}
 
-		internal static bool Load (MemoryStream stream) {
+		internal static bool Load (MemoryStream stream, bool retain = false) {
 			try {
 				string ConfigText = System.Text.Encoding.UTF8.GetString(stream.ToArray());
 				var Data = Toml.Parse(ConfigText);
-				return Parse(Data);
+				return Parse(Data, retain);
 			}
 			catch (Exception ex) {
 				ex.PrintWarning();
@@ -293,7 +334,7 @@ namespace SpriteMaster {
 			}
 		}
 
-		internal static bool Load (string ConfigPath) {
+		internal static bool Load (string ConfigPath, bool retain = false) {
 			if (!File.Exists(ConfigPath)) {
 				return false;
 			}
@@ -301,7 +342,7 @@ namespace SpriteMaster {
 			try {
 				string ConfigText = File.ReadAllText(ConfigPath);
 				var Data = Toml.Parse(ConfigText, ConfigPath);
-				return Parse(Data);
+				return Parse(Data, retain);
 			}
 			catch (Exception ex) {
 				ex.PrintWarning();

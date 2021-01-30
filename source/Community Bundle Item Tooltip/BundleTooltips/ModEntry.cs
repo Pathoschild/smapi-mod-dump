@@ -43,8 +43,6 @@ namespace StardewValleyBundleTooltips
         Dictionary<int, int[][]> bundles;
         Dictionary<int, string[]> bundleNamesAndSubNames;
 
-        string language = "";
-
 
         /*********
         ** Public methods
@@ -128,7 +126,7 @@ namespace StardewValleyBundleTooltips
                             string itemName = "";
                             if (Game1.objectInformation.ContainsKey(bundle.Value[i][0]))
                             {
-                                if(language == "")
+                                if(LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en)
                                     itemName = Game1.objectInformation[bundle.Value[i][0]].Split('/')[0];
                                 else
                                     itemName = Game1.objectInformation[bundle.Value[i][0]].Split('/')[4];
@@ -242,44 +240,8 @@ namespace StardewValleyBundleTooltips
 
         private Dictionary<int, int[][]> getBundles()
         {
-            switch (LocalizedContentManager.CurrentLanguageCode)
-            {
-                case LocalizedContentManager.LanguageCode.ja:
-                    language = ".ja-JP";
-                    break;
-                case LocalizedContentManager.LanguageCode.ru:
-                    language = ".ru-RU";
-                    break;
-                case LocalizedContentManager.LanguageCode.pt:
-                    language = ".pt-BR";
-                    break;
-                case LocalizedContentManager.LanguageCode.es:
-                    language = ".es-ES";
-                    break;
-                case LocalizedContentManager.LanguageCode.de:
-                    language = ".de-DE";
-                    break;
-                case LocalizedContentManager.LanguageCode.zh:
-                    language = ".zh-CN";
-                    break;
-                case LocalizedContentManager.LanguageCode.tr:
-                    language = ".tr-TR";
-                    break;
-                case LocalizedContentManager.LanguageCode.ko:
-                    language = ".ko-KR";
-                    break;
-                case LocalizedContentManager.LanguageCode.it:
-                    language = ".it-IT";
-                    break;
-                case LocalizedContentManager.LanguageCode.hu:
-                    language = ".hu-HU";
-                    break;
-                case LocalizedContentManager.LanguageCode.fr:
-                    language = ".fr-FR";
-                    break;
-            }
 
-            Dictionary<string, string> dictionary = Game1.content.Load<Dictionary<string, string>>("Data\\Bundles" + language);
+            Dictionary<string, string> dictionary = Game1.netWorldState.Value.BundleData;
 
             Dictionary<int, int[][]> bundles = new Dictionary<int, int[][]>();
             bundleNamesAndSubNames = new Dictionary<int, string[]>();
@@ -287,20 +249,20 @@ namespace StardewValleyBundleTooltips
             foreach (KeyValuePair<string, string> keyValuePair in dictionary)
             {
                 //format of the values are itemID itemAmount itemQuality
-
-                //if bundleIndex is between 23 and 26, then they're vault bundles so don't add to dictionary
-
                 string[] split = keyValuePair.Key.Split('/');
                 string bundleName = split[0];
+                string bundleSubName = keyValuePair.Value.Split('/')[0];
 
-                string bundleSubName;
-
-                if (language == "")
-                    bundleSubName = keyValuePair.Value.Split('/')[0];
-                else
-                    bundleSubName = keyValuePair.Value.Split('/')[4];
+                if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
+                {
+                    bundleName = Game1.content.LoadString("Strings\\Locations:CommunityCenter_AreaName_" + bundleName.Replace(" ", ""));
+                    string[] splitBundleSubName = keyValuePair.Value.Split('/');
+                    bundleSubName = splitBundleSubName[splitBundleSubName.Length - 1].Replace("\n","");
+                }
 
                 int bundleIndex = Convert.ToInt32(split[1]);
+
+                //if bundleIndex is between 23 and 26, then they're vault bundles so don't add to dictionary
                 if (!(bundleIndex >= 23 && bundleIndex <= 26))
                 {
                     //creating an array for the bundle names

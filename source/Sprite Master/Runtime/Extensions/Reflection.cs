@@ -36,6 +36,12 @@ namespace SpriteMaster.Extensions {
 		public static T GetValue<T> (this FieldInfo field, object instance) => (T)field.GetValue(instance);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool HasAttribute<T>(this MemberInfo member) where T : Attribute
+		{
+			return member.GetCustomAttribute<T>() != null;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool GetAttribute<T> (this MemberInfo member, out T attribute) where T : Attribute {
 			attribute = member.GetCustomAttribute<T>();
 			return attribute != null;

@@ -1,0 +1,37 @@
+{
+	// Object data
+	"Name": "blueberry.cac.onionsoup",
+	"Description": "...",
+	"Category": "Cooking",
+	"Edibility": 68,
+	"EdibleIsDrink": true,
+	"EdibleBuffs": null,
+	"Price": 320,
+	"IsColored": false,
+
+	// Object purchase
+	"CanPurchase": false,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 300,
+	"PurchaseRequirements": null,
+
+	// Recipe
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+				"Object": 248, // Garlic
+				"Count": 3
+			},
+			{
+				"Object": 424, // Cheese
+				"Count": 1
+			}
+		],
+		// Recipe purchase
+		"CanPurchase": false,
+		"PurchaseFrom": "Gus",
+		"PurchasePrice": 500,
+		"PurchaseRequirements": null
+	}
+}

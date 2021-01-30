@@ -33,11 +33,11 @@ namespace QuestFramework.Framework.ContentPacks
 
         public static QuestOffer<JObject> TranslateOffer(ITranslationHelper translation, QuestOffer<JObject> offer)
         {
-            return Translate(translation, JObject.FromObject(offer))
+            return TranslateJObject(translation, JObject.FromObject(offer))
                 .ToObject<QuestOffer<JObject>>();
         }
 
-        public static JObject Translate(ITranslationHelper translation, JObject jObject)
+        public static JObject TranslateJObject(ITranslationHelper translation, JObject jObject)
         {
             var transJObject = new JObject(jObject);
 
@@ -49,12 +49,20 @@ namespace QuestFramework.Framework.ContentPacks
             return transJObject;
         }
 
+        public static T Translate<T>(ITranslationHelper translation, T toTranslate)
+        {
+            JObject _toTranslate = JObject.FromObject(toTranslate);
+
+            return TranslateJObject(translation, _toTranslate)
+                .ToObject<T>();
+        }
+
         private static JToken TranslateToken(ITranslationHelper translation, JToken token)
         {
             if (token.Type == JTokenType.String)
                 return Translate(token.Value<string>(), translation);
             if (token.Type == JTokenType.Object)
-                return Translate(translation, token.Value<JObject>());
+                return TranslateJObject(translation, token.Value<JObject>());
 
             return token;
         }

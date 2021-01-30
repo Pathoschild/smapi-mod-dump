@@ -1,0 +1,11 @@
+{
+  "Name": "Ring of the Wieldy Pick",
+  "Description": "Makes your pickaxe easier to handle, increasing mining skill.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 1000,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Dwarf",
+  "PurchasePrice": 5000,
+}

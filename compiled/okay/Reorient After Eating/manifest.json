@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Reorient After Eating",
+  "Author": "PunningLinguist",
+  "Version": "1.0.1",
+  "Description": "Always faces the player in the direction they originally were after eating food, instead of always facing south.",
+  "UniqueID": "PunningLinguist.ReorientAfterEating",
+  "EntryDll": "ReorientAfterEating.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:7585", "GitHub:amconners/ReorientAfterEating" ]
+}

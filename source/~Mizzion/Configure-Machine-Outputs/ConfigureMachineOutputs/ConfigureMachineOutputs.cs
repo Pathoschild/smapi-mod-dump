@@ -28,7 +28,7 @@ namespace ConfigureMachineOutputs
     {
         private CmoConfig _config;
         //public static readonly Type[] PatchedTypes = { typeof(Furniture), typeof(Wallpaper) };
-        private bool _debugging = false;
+        private bool _debugging = true;
 
 
         private PerformObjectDropInActionPatch podia;

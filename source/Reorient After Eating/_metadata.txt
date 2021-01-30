@@ -1,0 +1,13 @@
+url:
+   https://github.com/amconners/ReorientAfterEating.git
+
+mods:
+   Reorient After Eating
+
+latest commit:
+   commit 1c6a14c2b8c65b6d5f673da730be272a0b43ab08
+   Author: Ashley Megan Conners <meganvconners@gmail.com>
+   Date:   Mon Jan 11 14:15:48 2021 -0500
+   
+       1.0.1 release notes
+   

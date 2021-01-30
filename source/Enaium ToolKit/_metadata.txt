@@ -5,12 +5,12 @@ mods:
    Enaium ToolKit
 
 latest commit:
-   commit b49ecdd52ee02101547d0605ac7bbafc2431c5f2
-   Merge: 6494713 18538fd
+   commit 7d6fd7de1ed8b4c7a0535f2bffe161ba0b4f2b12
+   Merge: 3d22646 f166805
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Mon Dec 21 22:31:05 2020 -0600
+   Date:   Sun Jan 17 06:45:14 2021 -0600
    
-       Merge pull request #10 from Enaium-StardewValleyMods/develop
+       Merge pull request #13 from Enaium-StardewValleyMods/develop
        
        Develop
    

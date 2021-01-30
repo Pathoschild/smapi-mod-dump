@@ -11,7 +11,7 @@
 {
   "Name": "Transparent Objects",
   "Author": "aedenthorn",
-  "Version": "0.2.1",
+  "Version": "0.3.0",
   "Description": "Makes objects transparent when you walk behind them.",
   "UniqueID": "aedenthorn.TransparentObjects",
   "EntryDll": "TransparentObjects.dll",

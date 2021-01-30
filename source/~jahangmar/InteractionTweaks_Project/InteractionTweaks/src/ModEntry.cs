@@ -72,7 +72,7 @@ namespace InteractionTweaks
             });
             */
 
-            //Helper.ConsoleCommands.Add("carpenter_menu", "", (arg1, arg2) => Game1.activeClickableMenu = new StardewValley.Menus.CarpenterMenu());
+            Helper.ConsoleCommands.Add("carpenter_menu", "", (arg1, arg2) => Game1.activeClickableMenu = new StardewValley.Menus.CarpenterMenu());
 
         }
 
@@ -83,7 +83,7 @@ namespace InteractionTweaks
             if (config.AdventurersGuildShopFeature || config.SellableItemsFeature)
                 AdventurersGuildFeature.Enable();
             if (config.CarpenterMenuFeature)
-                CarpenterMenuFeature.Enable();
+                 CarpenterMenuFeature.Enable();
             if (config.SellableItemsFeature)
                 FishingRodFeature.Enable();
             if (config.SellableItemsFeature)

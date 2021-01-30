@@ -1,8 +1,16 @@
 {
-  "RequireFishCaughtForFullInfo": true,
-  "UncaughtFishAlwaysShowName": true,
-  "UncaughtFishAlwaysShowLocation": false,
-  "UncaughtFishAlwaysShowSeason": false,
-  "UncaughtFishAlwaysShowTime": false,
-  "UncaughtFishAlwaysShowWeather": false
+  "CaughtFishData": {
+    "AlwaysShowName": true,
+    "AlwaysShowLocation": true,
+    "AlwaysShowSeason": true,
+    "AlwaysShowTime": true,
+    "AlwaysShowWeather": true
+  },
+  "UncaughtFishData": {
+    "AlwaysShowName": true,
+    "AlwaysShowLocation": false,
+    "AlwaysShowSeason": false,
+    "AlwaysShowTime": false,
+    "AlwaysShowWeather": false
+  }
 }

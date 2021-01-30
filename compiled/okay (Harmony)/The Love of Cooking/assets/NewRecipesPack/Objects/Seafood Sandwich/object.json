@@ -1,0 +1,29 @@
+{
+    // Object data
+    "Name": "blueberry.cac.seafoodsando",
+    "Description": "...",
+    "Category": "Junk",
+    "CategoryTextOverride": "",
+    "CategoryColorOverride": "0, 0, 0, 0",
+    "Edibility": 47,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 200,
+    "IsColored": false,
+    "Recipe": null,
+
+    // Object purchase
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+
+    // Gifting
+    "GiftTastes": {
+        "Love": [ "Willy", "Demetrius" ],
+        "Like": [ "Vincent", "Jas", "Penny", "Gus", "Leah", "Marnie", "Clint", "Evelyn", "George", "Abigail", "Alex", "Caroline", "Elliott", "Emily", "Haley", "Jodi", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Sandy", "Pam" ],
+        "Neutral": [ "Kent", "Wizard" ],
+        "Dislike": [ "Shane", "Sebastian", "Dwarf", "Harvey" ],
+        "Hate": [ "Krobus" ]
+    }
+}

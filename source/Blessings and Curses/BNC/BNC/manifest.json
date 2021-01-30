@@ -11,7 +11,7 @@
 {
    "Name": "Blessings And Curses",
    "Author": "GenDeathrow",
-   "Version": "1.1.2",
+   "Version": "1.2.12",
    "Description": "Recieve blessings or curses and combat augments, Also has Twitch chat integration",
    "UniqueID": "gendeathrow.BNC",
    "EntryDll": "BNC.dll",

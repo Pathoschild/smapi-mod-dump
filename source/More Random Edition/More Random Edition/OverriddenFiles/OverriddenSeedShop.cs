@@ -34,76 +34,67 @@ namespace Randomizer
 		public static Dictionary<ISalable, int[]> NewShopStock()
 		{
 			Dictionary<ISalable, int[]> stock = new Dictionary<ISalable, int[]>();
-			if (Game1.currentSeason.Equals("spring"))
+			addStock(stock, 472, -1, "spring");
+			addStock(stock, 473, -1, "spring");
+			addStock(stock, 474, -1, "spring");
+			addStock(stock, 475, -1, "spring");
+			addStock(stock, 427, -1, "spring");
+			addStock(stock, 477, -1, "spring");
+			addStock(stock, 429, -1, "spring");
+			if (Game1.year > 1)
 			{
-				addStock(stock, 472, -1);
-				addStock(stock, 473, -1);
-				addStock(stock, 474, -1);
-				addStock(stock, 475, -1);
-				addStock(stock, 427, -1);
-				addStock(stock, 477, -1);
-				addStock(stock, 429, -1);
-				if (Game1.year > 1)
-				{
-					addStock(stock, 476, -1);
-					addStock(stock, 273, -1);
-				}
+				addStock(stock, 476, -1, "spring");
+				addStock(stock, 273, -1, "spring");
 			}
-			if (Game1.currentSeason.Equals("summer"))
-			{
-				addStock(stock, 479, -1);
-				addStock(stock, 480, -1);
-				addStock(stock, 481, -1);
-				addStock(stock, 482, -1);
-				addStock(stock, 483, -1);
-				addStock(stock, 484, -1);
-				addStock(stock, 453, -1);
-				addStock(stock, 455, -1);
-				addStock(stock, 302, -1);
-				addStock(stock, 487, -1);
-				addStock(stock, 431, 100);
-				if (Game1.year > 1)
-					addStock(stock, 485, -1);
-			}
-			if (Game1.currentSeason.Equals("fall"))
-			{
-				addStock(stock, 490, -1);
-				addStock(stock, 487, -1);
-				addStock(stock, 488, -1);
-				addStock(stock, 491, -1);
-				addStock(stock, 492, -1);
-				addStock(stock, 493, -1);
-				addStock(stock, 483, -1);
-				addStock(stock, 431, 100);
-				addStock(stock, 425, -1);
-				addStock(stock, 299, -1);
-				addStock(stock, 301, -1);
-				if (Game1.year > 1)
-					addStock(stock, 489, -1);
-			}
-			addStock(stock, 297, -1);
+			addStock(stock, 479, -1, "summer");
+			addStock(stock, 480, -1, "summer");
+			addStock(stock, 481, -1, "summer");
+			addStock(stock, 482, -1, "summer");
+			addStock(stock, 483, -1, "summer");
+			addStock(stock, 484, -1, "summer");
+			addStock(stock, 453, -1, "summer");
+			addStock(stock, 455, -1, "summer");
+			addStock(stock, 302, -1, "summer");
+			addStock(stock, 487, -1, "summer");
+			addStock(stock, 431, 100, "summer");
+			if (Game1.year > 1)
+				addStock(stock, 485, -1, "summer");
+			addStock(stock, 490, -1, "fall");
+			addStock(stock, 487, -1, "fall");
+			addStock(stock, 488, -1, "fall");
+			addStock(stock, 491, -1, "fall");
+			addStock(stock, 492, -1, "fall");
+			addStock(stock, 493, -1, "fall");
+			addStock(stock, 483, -1, "fall");
+			addStock(stock, 431, 100, "fall");
+			addStock(stock, 425, -1, "fall");
+			addStock(stock, 299, -1, "fall");
+			addStock(stock, 301, -1, "fall");
+			if (Game1.year > 1)
+				addStock(stock, 489, -1, "fall");
+			addStock(stock, 297, -1, (string)null);
 			if (!Game1.player.craftingRecipes.ContainsKey("Grass Starter"))
 				stock.Add((ISalable)new StardewValley.Object(297, 1, true, -1, 0), new int[2]
 				{
-					1000,
-					1
+				1000,
+				1
 				});
-			addStock(stock, 245, -1);
-			addStock(stock, 246, -1);
-			addStock(stock, 423, -1);
-			addStock(stock, 247, -1);
-			addStock(stock, 419, -1);
+			addStock(stock, 245, -1, (string)null);
+			addStock(stock, 246, -1, (string)null);
+			addStock(stock, 423, -1, (string)null);
+			addStock(stock, 247, -1, (string)null);
+			addStock(stock, 419, -1, (string)null);
 			if ((int)Game1.stats.DaysPlayed >= 15)
 			{
-				addStock(stock, 368, 50);
-				addStock(stock, 370, 50);
-				addStock(stock, 465, 50);
+				addStock(stock, 368, 50, (string)null);
+				addStock(stock, 370, 50, (string)null);
+				addStock(stock, 465, 50, (string)null);
 			}
 			if (Game1.year > 1)
 			{
-				addStock(stock, 369, 75);
-				addStock(stock, 371, 75);
-				addStock(stock, 466, 75);
+				addStock(stock, 369, 75, (string)null);
+				addStock(stock, 371, 75, (string)null);
+				addStock(stock, 466, 75, (string)null);
 			}
 			Random random = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2);
 			int which = random.Next(112);
@@ -112,8 +103,8 @@ namespace Randomizer
 			Wallpaper wallpaper1 = new Wallpaper(which, false);
 			stock.Add((ISalable)wallpaper1, new int[2]
 			{
-		wallpaper1.salePrice(),
-		int.MaxValue
+				wallpaper1.salePrice(),
+				int.MaxValue
 			});
 			Wallpaper wallpaper2 = new Wallpaper(random.Next(56), true);
 			stock.Add((ISalable)wallpaper2, new int[2]
@@ -140,6 +131,9 @@ namespace Randomizer
 			if (Game1.player.hasAFriendWithHeartLevel(8, true))
 				addStock(stock, 458, -1);
 
+			// There is also a reselling feature that we're removing for simplicity
+			// We potentially should add this back in at some point
+
 			return stock;
 		}
 
@@ -150,16 +144,47 @@ namespace Randomizer
 		/// <param name="stock"></param>
 		/// <param name="parentSheetIndex"></param>
 		/// <param name="buyPrice"></param>
-		private static void addStock(Dictionary<ISalable, int[]> stock, int parentSheetIndex, int buyPrice = -1)
+		private static void addStock(Dictionary<ISalable, int[]> stock, int parentSheetIndex, int buyPrice = -1, string item_season = null)
 		{
-			int num = buyPrice * 2;
+			float num1 = 2f;
+			int num2 = buyPrice;
 			StardewValley.Object @object = new StardewValley.Object(Vector2.Zero, parentSheetIndex, 1);
 			if (buyPrice == -1)
-				num = @object.salePrice();
+			{
+				num2 = @object.salePrice();
+				num1 = 1f;
+			}
+			else if (@object.isSapling())
+				num1 *= Game1.MasterPlayer.difficultyModifier;
+			if (item_season != null && item_season != Game1.currentSeason)
+			{
+				if (!Game1.MasterPlayer.hasOrWillReceiveMail("PierreStocklist"))
+					return;
+				num1 *= 1.5f;
+			}
+			int num3 = (int)((double)num2 * (double)num1);
+			if (item_season != null)
+			{
+				foreach (KeyValuePair<ISalable, int[]> keyValuePair in stock)
+				{
+					if (keyValuePair.Key != null && keyValuePair.Key is StardewValley.Object)
+					{
+						StardewValley.Object key = keyValuePair.Key as StardewValley.Object;
+						if (Utility.IsNormalObjectAtParentSheetIndex(key, parentSheetIndex))
+						{
+							if (keyValuePair.Value.Length == 0 || num3 >= keyValuePair.Value[0])
+								return;
+							keyValuePair.Value[0] = num3;
+							stock[(ISalable)key] = keyValuePair.Value;
+							return;
+						}
+					}
+				}
+			}
 			stock.Add((ISalable)@object, new int[2]
 			{
-				num,
-				int.MaxValue
+		num3,
+		int.MaxValue
 			});
 		}
 

@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/Displays.git
+
+mods:
+   Displays
+
+latest commit:
+   commit 03cc994723b5074a166a54e264ea29500c9ef296
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Thu Jan 14 18:09:31 2021 -0500
+   
+       Initial commit
+   

@@ -10,6 +10,73 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Fixed NPC lookups showing gift tastes for flavored variants in 1.32.3.
+* Fixed tree lookups incorrectly stating that a fertilized tree won't grow in winter.
+* Fixed error when trying to lookup on the 'help wanted' screen.
+* Fixed untranslated text in child lookup.
+* Fixed 'number owned' field not counting items in the island farmhouse fridge.
+* Improved translations. Thanks to carloshbcabral (updated Portuguese) and Kareolis (updated Russian)!
+
+## 1.32.3
+Released 23 January 2021.
+
+* Updated for multi-key bindings in SMAPI 3.9.
+* Fixed NPC lookups taking a long time to open when using mods that add a large number of custom items.
+* Fixed support for mods which add gift tastes by context tag.
+* Fixed coffee crops not showing next harvest date.
+* Fixed lookup background too short when 'force full-screen' is enabled in split-screen mode.
+
+## 1.32.2
+Released 17 January 2021.
+
+* Fixed some crop fields not shown for growing mixed seeds.
+* Improved translations. Thanks to norges (updated German)!
+
+## 1.32.1
+Released 16 January 2021.
+
+* The search menu now shows unlimited results.
+* Fixed search menu letting you click on off-screen results.
+* Fixed swapped labels for deluxe/quality fertilizers.
+* Fixed tea bush lookups not showing winter growth dates on the Ginger Island farm.
+* Fixed datamining mode not showing non-datamining fields in 1.32.
+* Improved translations. Thanks to LeecanIt (updated Italian)!
+
+## 1.32
+Released 11 January 2021.
+
+* Added 'force full-screen' option (disabled by default).
+* Added missing mill recipe for rice.
+* Improved data mining info:
+  * Added `GameLocation` fields to tile lookups.
+  * Fields are now sorted by reverse inheritance. <small>(For example, for a pet lookup you'll see the fields/properties declared directly on `Pet` first, then those on `NPC`, then those on `Character`.)</small>
+  * Fixed duplicate entries for inherited fields.
+* Fixed new 'needed for' bundle logic in 1.31.1.
+* Fixed search UI hiding some results if they had the same name.
+* Improved translations. Thanks to LeecanIt (updated Italian)!
+
+## 1.31.1
+Released 10 January 2021.
+
+* Added names for Ginger Island fishing locations.
+* Fixed rare issue where item lookup fails due to mismatched bundle game data.
+
+## 1.31
+Released 08 January 2021.
+
+* Added support for NPC lookups at festivals.
+* Added target redirection, which fixes an issue where looking up Abigail in the mines wouldn't show her real data.
+* Added lookup links in item icon fields.
+* Updated for new machine recipes in Stardew Valley 1.5.
+* Tree 'is fertilized' field now links to the tree fertilizer lookup if applicable.
+* Fixed furnace not showing wilted bouquet recipe.
+* Fixed furniture placed outside cabins/farmhouses/sheds not counted for 'owned' stats.
+* Fixed items counted more than once for 'owned' stats if they're in a Junimo chest.
+* Fixed mahogany tree lookups showing wrong percentage growth chance.
+
+## 1.30
+Released 04 January 2021.
+
 * Looking up a planted crop now shows its water and fertilizer state.
 
 ## 1.29

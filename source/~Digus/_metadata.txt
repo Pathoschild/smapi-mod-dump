@@ -10,18 +10,19 @@ mods:
    Custom Kissing
    Everlasting Baits and Unbreakable Tackles
    Mail Framework
+   Mail Services Mod
    PPJA Producer Converter
    Producer Framework Mod
    Producer Framework Mod → PFMAutomate
    Water Retaining Field
 
 latest commit:
-   commit 90308d64aa3eb58a3421a4c2ef82f757d0730181
-   Merge: dcf4e38 b0fb5b1
+   commit ffbee97f0e17afce9601e854935743d0ec79d7c5
+   Merge: 98dcbe9 79ea896
    Author: Digus <32422267+Digus@users.noreply.github.com>
-   Date:   Tue Dec 29 04:27:19 2020 -0300
+   Date:   Fri Jan 29 02:24:53 2021 -0300
    
-       Merge pull request #101 from Digus/develop
+       Merge pull request #123 from Digus/develop
        
        Develop
    

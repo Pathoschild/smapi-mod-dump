@@ -29,14 +29,15 @@ namespace CustomNPCExclusions
         public override void Entry(IModHelper helper)
         {
             Instance = this; //set the reference to this mod's current instance
+            HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID); //create a Harmony instance for this mod
 
             //apply all Harmony patches
-            HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID); //create a Harmony instance for this mod
             HarmonyPatch_ItemDeliveryQuest.ApplyPatch(harmony);
             HarmonyPatch_SocializeQuest.ApplyPatch(harmony);
             HarmonyPatch_WinterStarGifts.ApplyPatch(harmony);
             HarmonyPatch_ShopDialog.ApplyPatch(harmony);
             HarmonyPatch_IslandVisit.ApplyPatch(harmony);
+            HarmonyPatch_PerfectionFriendship.ApplyPatch(harmony);
         }
 
         /// <summary>Get whether this mod can load the initial version of the given asset.</summary>
