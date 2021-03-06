@@ -7,6 +7,7 @@ mods:
    Crop Transplant
    Custom Cask Mod
    Custom Crystalarium Mod
+   Custom Crystalarium Mod → CCRMAutomate
    Custom Kissing
    Everlasting Baits and Unbreakable Tackles
    Mail Framework
@@ -17,12 +18,12 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit ffbee97f0e17afce9601e854935743d0ec79d7c5
-   Merge: 98dcbe9 79ea896
+   commit e5ff76a3e54b7d3eea93ef5b24a1e469f9d7b05b
+   Merge: ebf7f47 8e02fac
    Author: Digus <32422267+Digus@users.noreply.github.com>
-   Date:   Fri Jan 29 02:24:53 2021 -0300
+   Date:   Wed Mar 3 03:34:06 2021 -0300
    
-       Merge pull request #123 from Digus/develop
+       Merge pull request #156 from Digus/develop
        
        Develop
    

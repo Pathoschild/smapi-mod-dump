@@ -119,9 +119,9 @@
 	// Community Centre edits when using the Cooking bundle
 	"world.community_centre.kitchen": "Кухня",
 	"world.community_centre.reward": "Кухонные принадлежности",
-	"world.community_centre.bundle.1": "Пикниковый",
-	"world.community_centre.bundle.2": "Пекарский",
-	"world.community_centre.bundle.3": "Обеденный",
+	"world.community_centre.bundle.1": "Пекарский",
+	"world.community_centre.bundle.2": "Обеденный",
+	"world.community_centre.bundle.3": "Пикниковый",
 	"world.community_centre.newjunimoline": "Чтобы выразить нашу благодарность... Мы приберемся после твоего ухода.",
 
 	// Object names

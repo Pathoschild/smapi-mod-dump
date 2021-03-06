@@ -1,0 +1,12 @@
+{
+  "Name": "Ostrich Mayonnaise",
+  "Description": "It's a thick, aromatic mayonnaise.",
+  "Category": "ArtisanGoods",
+  "Edibility": 200,
+  "Price": 650,
+  "IsColored": false,
+  "Recipe": null,
+  "GiftTastes": {
+    "Love": [ "Leo" ]
+  }
+}

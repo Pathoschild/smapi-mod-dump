@@ -1,0 +1,14 @@
+{
+  "UpgradePrice1": 200000,
+  "UpgradePrice2": 500000,
+  "UpgradeMaterials1": {
+    "390": 300,
+    "335": 20,
+    "330": 50
+  },
+  "UpgradeMaterials2": {
+    "390": 500,
+    "787": 30,
+    "645": 25
+  }
+}

@@ -5,9 +5,12 @@ mods:
    Magic
 
 latest commit:
-   commit add8422e5ba53a447f71b610dcd7eb88b3495d05
-   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Thu Dec 31 16:35:27 2020 -0500
+   commit 40d4f6b7d4d1ebb743ddb2c1d3c48f337ca2ff0b
+   Merge: add8422 93270ad
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sun Feb 28 22:44:34 2021 -0500
    
-       Every location has resource clumps now, so use that. Fixes #20
+       Merge pull request #21 from yura496/master
+       
+       Add i18n/ko.json
    

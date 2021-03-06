@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kakashigr/stardew-radioactivetools
+**
+*************************************************/
+
+{
+    "radioactive.prefix": "Radioactive",
+    "radioactiveHoe": "Prismatische Hacke",
+    "radioactiveWatercan": "Prismatische Gießkanne",
+    "radioactivePickaxe": "Prismatische Spitzhacke",
+    "radioactiveAxe": "Prismatische Axt",
+    "radioactiveRod.name": "Radioactive Rod",
+    "radioactiveRod.description": "The radiation emissions help at night",
+    "radioactiveSprinkler.name": "Prismatischer Sprinkler",
+    "radioactiveSprinkler.description": "Bewässert jeden Morgen 120 Felder um sich herum.",
+    "radioactiveFertilizer.name": "Radioactive Fertilizer",
+    "radioactiveFertilizer.description": "Makes the plants grow super fast"
+}

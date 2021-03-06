@@ -18,7 +18,7 @@ namespace ForageFantasy
     {
         public static bool IsHarvestableBush(Bush bush)
         {
-            return bush != null && !bush.townBush && bush.inBloom(Game1.GetSeasonForLocation(bush.currentLocation), Game1.dayOfMonth) && bush.size == 1;
+            return bush != null && !bush.townBush && bush.inBloom(Game1.GetSeasonForLocation(bush.currentLocation), Game1.dayOfMonth) && bush.size.Value != Bush.greenTeaBush && bush.size.Value != Bush.walnutBush;
         }
 
         public static void RewardBerryXP(ForageFantasy mod)
@@ -35,11 +35,13 @@ namespace ForageFantasy
         {
             int shakeOff;
 
-            if (Game1.currentSeason == "spring")
+            string season = (bush.overrideSeason == -1) ? Game1.GetSeasonForLocation(bush.currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason);
+
+            if (season == "spring")
             {
                 shakeOff = 296;
             }
-            else if (Game1.currentSeason == "fall")
+            else if (season == "fall")
             {
                 shakeOff = 410;
             }
@@ -62,9 +64,7 @@ namespace ForageFantasy
 
                     if (mod.Config.BerryBushQuality)
                     {
-                        int quality = ForageFantasy.DetermineForageQuality(Game1.player);
-
-                        ((StardewObject)item.item).Quality = quality;
+                        ((StardewObject)item.item).Quality = ForageFantasy.DetermineForageQuality(Game1.player);
                     }
                 }
             }

@@ -57,8 +57,26 @@ namespace IndustrialFurnace
 
         public void AddItemsToSmeltedChest(int objectId, int amount)
         {
-            StardewValley.Object item = new StardewValley.Object(objectId, amount);
-            output.addItem(item);
+            //Keep creating stacks of max size if needed to avoid going over it.
+            while (amount > 0)
+			{
+                StardewValley.Object item = new StardewValley.Object(objectId, amount);
+
+				if (item.Stack > item.maximumStackSize())
+				{
+                    item.Stack = item.maximumStackSize();
+                    amount -= item.maximumStackSize();
+				}
+                else
+				{
+                    amount = 0;
+				}
+
+				if (item != null && Utility.canItemBeAddedToThisInventoryList(item, output.items, 36))
+                {
+                    output.addItem(item);
+                }
+            }
         }
 
 

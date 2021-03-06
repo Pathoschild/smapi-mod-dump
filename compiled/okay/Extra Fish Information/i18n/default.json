@@ -1,6 +1,6 @@
 {
-    "new-description.trapper.fish": " Found in the {{location}}.",
-    "new-description.normal.fish": " Found {{weather}} from {{schedule}}.\n\nLocations:\n{{locations}}",
+    "new-description.trapper.fish": "Found in the {{location}}.",
+    "new-description.normal.fish": "Found {{weather}} from {{schedule}}.\n\nLocations:\n{{locations}}",
 
     "location.freshwater": "freshwater",
     "location.ocean": "ocean",

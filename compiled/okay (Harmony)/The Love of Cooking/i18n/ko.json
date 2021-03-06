@@ -116,9 +116,9 @@
 	// Community Centre edits when using the Cooking bundle
 	"world.community_centre.kitchen": "부엌",
 	"world.community_centre.reward": "요리물품",
-	"world.community_centre.bundle.1": "소풍객의",
-	"world.community_centre.bundle.2": "제빵사의",
-	"world.community_centre.bundle.3": "식당의",
+	"world.community_centre.bundle.1": "제빵사의",
+	"world.community_centre.bundle.2": "식당의",
+	"world.community_centre.bundle.3": "소풍객의",
 	"world.community_centre.newjunimoline": "정말 고맙다모... 우리가 치워주겠다모.",
 
 	// Object names

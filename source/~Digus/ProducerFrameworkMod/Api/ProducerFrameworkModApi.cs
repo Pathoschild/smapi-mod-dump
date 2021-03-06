@@ -92,22 +92,41 @@ namespace ProducerFrameworkMod.Api
 
                     List<Dictionary<string, object>> fuel = new List<Dictionary<string, object>>();
 
-                    outputRuleMap["Ingredients"] = new List<Dictionary<string, object>>((List<Dictionary<string, object>>)ruleMap["Ingredients"])
+                    List<Dictionary<string, object>> ingredientInput = ingredients;
+                    if (outputConfig.RequiredInputStack.HasValue)
+                    {
+                        ingredientInput = new List<Dictionary<string, object>>
+                        {
+                            new Dictionary<string, object>()
+                            {
+                                {"ID", producerRule.InputKey},
+                                {"Count", outputConfig.RequiredInputStack.Value}
+                            }
+                        };
+                    }
+                    outputRuleMap["Ingredients"] = new List<Dictionary<string, object>>(ingredientInput)
                         .Union(outputConfig.FuelList
                             .Select(f => new Dictionary<string, object>() { { "ID", f.Item1 }, { "Count", f.Item2 } })
                             .ToList()
                         ).ToList();
 
-                    outputRuleMap["MinOutput"] = new int[]
+                    List<int> minOutput = new List<int>
                     {
-                        outputConfig.OutputStack, outputConfig.SilverQualityInput.OutputStack,
-                        outputConfig.GoldQualityInput.OutputStack, outputConfig.IridiumQualityInput.OutputStack
-                    }.Min();
-                    outputRuleMap["MaxOutput"] = new int[]
+                        outputConfig.OutputStack
+                    };
+                    if (outputConfig.SilverQualityInput.Probability > 0) minOutput.Add(outputConfig.SilverQualityInput.OutputStack);
+                    if (outputConfig.GoldQualityInput.Probability > 0) minOutput.Add(outputConfig.GoldQualityInput.OutputStack);
+                    if (outputConfig.IridiumQualityInput.Probability > 0) minOutput.Add(outputConfig.IridiumQualityInput.OutputStack);
+                    outputRuleMap["MinOutput"] = minOutput.Min();
+                    List<int> maxOutput = new List<int>
                     {
-                        outputConfig.OutputMaxStack, outputConfig.SilverQualityInput.OutputMaxStack,
-                        outputConfig.GoldQualityInput.OutputMaxStack, outputConfig.IridiumQualityInput.OutputMaxStack
-                    }.Max();
+                        outputConfig.OutputMaxStack
+                    };
+                    if (outputConfig.SilverQualityInput.Probability > 0) maxOutput.Add(outputConfig.SilverQualityInput.OutputMaxStack);
+                    if (outputConfig.GoldQualityInput.Probability > 0) maxOutput.Add(outputConfig.GoldQualityInput.OutputMaxStack);
+                    if (outputConfig.IridiumQualityInput.Probability > 0) maxOutput.Add(outputConfig.IridiumQualityInput.OutputMaxStack);
+                    outputRuleMap["MaxOutput"] = Math.Max(minOutput.Min(), maxOutput.Max());
+
                     double outputProbability = outputConfig.OutputProbability * 100;
                     outputRuleMap["OutputChance"] = outputProbability;
                     probabilities += outputProbability;

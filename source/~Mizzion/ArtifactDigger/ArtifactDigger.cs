@@ -55,7 +55,8 @@ namespace ArtifactDigger
             //Events
             helper.Events.GameLoop.SaveLoaded += OnSaveLoad;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
-            helper.Events.Display.RenderedHud += OnHudRendered;
+            //helper.Events.Display.RenderedHud += OnHudRendered;
+            helper.Events.Display.RenderedWorld += OnHudRendered;
             helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
         }
 
@@ -120,7 +121,7 @@ namespace ArtifactDigger
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">RenderedHud event args</param>
-        public void OnHudRendered(object sender, RenderedHudEventArgs e)
+        public void OnHudRendered(object sender, RenderedWorldEventArgs e)
         {
             if (_buildingPlacementTiles == null)
                 _buildingPlacementTiles = Game1.content.Load<Texture2D>("LooseSprites\\buildingPlacementTiles");

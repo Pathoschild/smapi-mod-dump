@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kenny2892/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Name": "Kelly's Flower Dancing",
+	"Author": "kelly2892",
+	"Version": "1.2.0",
+	"MinimumApiVersion": "3.9.0",
+	"UniqueID": "kelly2892.flower.dancing.harmony",
+	"Description": "Make the farmer actaully dance at the flower festival",
+	"EntryDll": "FlowerDancing.dll",
+	"Dependencies": 
+	[
+		{
+			"UniqueID": "kelly2892.flower.dance.attire",
+			"IsRequired": true
+		}
+	],
+	"UpdateKeys": [ "Nexus:8107" ]
+}

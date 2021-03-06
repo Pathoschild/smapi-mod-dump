@@ -69,76 +69,117 @@ namespace CombineMachines.Patches
 
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            foreach (CodeInstruction instruction in instructions)
+            List<CodeInstruction> original = instructions.ToList();
+            List<CodeInstruction> patched = new List<CodeInstruction>();
+
+            //  Find the IL code that is basically doing this:
+            //  int radius = this.objects[s].Name.Contains("Deluxe") ? 17 : 9;
+            //  (Located in StardewValley.Farm.addCrows(), 5 instructions before it attempts to compare the item's name to "Deluxe")
+            int startIndex = -1;
+            for (int i = 0; i < original.Count; i++)
             {
-#if NEVER // DEBUG
+                CodeInstruction current = original[i];
+                if (current.opcode == OpCodes.Ldstr)
+                {
+                    string value = (string)current.operand;
+                    if (value.Equals("Deluxe", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        int startOffset = 5;
+                        startIndex = i - startOffset;
+                    }
+                }
+            }
+
+            for (int i = 0; i < original.Count; i++)
+            {
+                CodeInstruction current = original[i];
+
+#if NEVER //DEBUG
                 //  Make the crows extremely common for testing purposes
 
                 //  Before: if (Game1.random.NextDouble() < 0.3)
                 //  After:  if (Game1.random.NextDouble() < 1.0)
-                if (instruction.opcode == OpCodes.Ldc_R8)
+                if (current.opcode == OpCodes.Ldc_R8)
                 {
-                    double doubleValue = (double)instruction.operand;
+                    double doubleValue = (double)current.operand;
                     if (doubleValue == 0.3)
                     {
-                        instruction.operand = 1.0;
+                        current.operand = 1.0;
                     }
                 }
 
                 //  Before: while (attempts < 10)
                 //  After:  while (attempts < 127)
-                if (instruction.opcode == OpCodes.Ldc_I4_S)
+                if (current.opcode == OpCodes.Ldc_I4_S)
                 {
-                    sbyte value = (sbyte)instruction.operand;
+                    sbyte value = (sbyte)current.operand;
                     if (value == 10)
                     {
-                        instruction.operand = sbyte.MaxValue;
+                        current.operand = sbyte.MaxValue;
                     }
                 }
 
                 //  Before: int potentialCrows = Math.Min(4, numCrops / 16);
                 //  After:  int potentialCrows = Math.Min(500, numCrops / 16);
-                if (instruction.opcode == OpCodes.Ldc_I4_4)
+                if (current.opcode == OpCodes.Ldc_I4_4)
                 {
-                    instruction.opcode = OpCodes.Ldc_I4;
-                    instruction.operand = 500;
+                    current.opcode = OpCodes.Ldc_I4;
+                    current.operand = 500;
                 }
 #endif
 
-                if (instruction.opcode == OpCodes.Ldc_I4_S)
+                if (i != startIndex)
+                    patched.Add(current);
+                else
                 {
-                    sbyte value = (sbyte)instruction.operand;
-                    if (value == 9 || value == 17)
+                    //  Replace these 12 instructions:
+                    /*
+                        IL_01af: ldarg.0
+						IL_01b0: ldfld class StardewValley.Network.OverlaidDictionary StardewValley.GameLocation::objects
+						IL_01b5: ldloc.s s
+						IL_01b7: callvirt instance class StardewValley.Object StardewValley.Network.OverlaidDictionary::get_Item(valuetype [Microsoft.Xna.Framework]Microsoft.Xna.Framework.Vector2)
+						IL_01bc: callvirt instance string StardewValley.Item::get_Name()
+						IL_01c1: ldstr "Deluxe"
+						IL_01c6: callvirt instance bool [mscorlib]System.String::Contains(string)
+						IL_01cb: brtrue.s IL_01d1
+
+						IL_01cd: ldc.i4.s 9
+						IL_01cf: br.s IL_01d3
+
+						IL_01d1: ldc.i4.s 17
+
+						IL_01d3: stloc.s radius
+                    */
+                    //  Which are basically just doing this:
+                    //  int radius = this.objects[s].Name.Contains("Deluxe") ? 17 : 9;
+
+                    //  Patch them with instructions that will instead do this:
+                    //  int radius = this.objects[s].GetScarecrowRadius();
+
+                    List<CodeInstruction> radiusInstructions = new List<CodeInstruction>()
                     {
-                        //  Intended logic: "int radius = this.objects[s].GetScarecrowRadius();" where this refers to StardewValley.Farm (sub-type of GameLocation)
-                        //  Push 'this' onto the stack
-                        yield return new CodeInstruction(OpCodes.Ldarg_0);
+                        //  Push 'this' onto the stack ('this' is StardewValley.Farm instance)
+                        new CodeInstruction(OpCodes.Ldarg_0),
                         //  Call this.objects[s]
-                        yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(GameLocation), nameof(GameLocation.objects)));
-                        yield return new CodeInstruction(OpCodes.Ldloc_S, 15);
-                        yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(OverlaidDictionary), "get_Item", new Type[] { typeof(Vector2) }));
+                        new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(GameLocation), nameof(GameLocation.objects))),
+                        new CodeInstruction(OpCodes.Ldloc_S, 15),
+                        new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(OverlaidDictionary), "get_Item", new Type[] { typeof(Vector2) })),
                         //  Call my custom extension method to compute the desired radius
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ScarecrowPatches), nameof(GetScarecrowRadius), new Type[] { typeof(SObject) }));
-                        //  Store the value to the 'radius' local variable
-                        yield return new CodeInstruction(OpCodes.Stloc_S, 16);
+                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ScarecrowPatches), nameof(GetScarecrowRadius), new Type[] { typeof(SObject) })),
+                        //  Store the value to the 'radius' local variable which is local variable with index=16
+                        new CodeInstruction(OpCodes.Stloc_S, 16)
 
                         //  TODO: Do I need to pop 'this' from the stack? 
-                        //yield return new CodeInstruction(OpCodes.Pop);
+                        //new CodeInstruction(OpCodes.Pop)
                         //  Even if I should, it probably doesn't matter since it is probably already be at the very bottom of the stack? Idk
+                    };
 
-                        //  Clear the current instruction that would normally push a hardcoded value of 9 or 17 onto the stack (the scarecrow's radius)
-                        instruction.opcode = OpCodes.Nop;
-                        yield return instruction;
-
-                        //  Push our computed value onto the stack instead
-                        yield return new CodeInstruction(OpCodes.Ldloc_S, 16);
-
-                        continue;
-                    }
+                    patched.AddRange(radiusInstructions);
+                    i += 12 - 1;
                 }
-
-                yield return instruction;
             }
+
+            return patched.AsEnumerable();
         }
     }
 }

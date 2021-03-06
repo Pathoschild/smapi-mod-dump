@@ -21,15 +21,28 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 using AnimalHusbandryMod.cooking;
-using PyTK.CustomTV;
 
 namespace AnimalHusbandryMod.recipes
 {
-    public class MeatFridayChannel
+    public class MeatFridayChannel : Channel
     {
-        private TemporaryAnimatedSprite _queenSprite;
-
         private readonly Dictionary<int, string> _recipes;
+
+        public string GetName => "MeatFriday";
+        public string GetScreenTextureName => Game1.mouseCursorsName;
+        public Rectangle GetScreenSourceRectangle => new Rectangle(602, 361, 42, 28);
+
+        public string GetDisplayName  {
+            get {
+                Boolean rerun = Game1.stats.DaysPlayed % 2 == 0U;
+                string name = DataLoader.i18n.Get("TV.MeatFriday.ChannelDisplayName");
+                if (rerun)
+                {
+                    name += " " + DataLoader.i18n.Get("TV.MeatFriday.ReRunDisplaySuffix"); ;
+                }
+                return name;
+            }
+        }
 
         public MeatFridayChannel()
         {
@@ -43,25 +56,27 @@ namespace AnimalHusbandryMod.recipes
             _recipes.Add(8, Cooking.WinterDuck.GetRecipeChannelString());
         }
 
-        public void CheckChannelDay()
+        public bool CheckChannelDay()
         {
-            CustomTVMod.removeKey("MeatFriday");
-
-            if(SDate.Now().DayOfWeek == DayOfWeek.Friday)
+            if (!DataLoader.ModConfig.DisableMeat && SDate.Now().DayOfWeek == DayOfWeek.Friday)
             {
                 int recipe = GetRecipeNumber();
                 if (recipe >= 2)
                 {
-                    Boolean rerun = Game1.stats.DaysPlayed % 2 == 0U;
-
-                    string name = DataLoader.i18n.Get("TV.MeatFriday.ChannelDisplayName");
-                    if (rerun)
-                    {
-                        name += " " + DataLoader.i18n.Get("TV.MeatFriday.ReRunDisplaySuffix"); ;
-                    }
-                    CustomTVMod.addChannel("MeatFriday", name, ShowQueenAnnouncement);
+                    return true;
                 }
             }
+            return false;
+        }
+
+        public string[] GetEpisodesText()
+        {
+            return new string[]
+            {
+                DataLoader.i18n.Get("TV.MeatFriday.Announcement")
+                , GetRecipePresentation()
+                , GetAddRecipeText()
+            };
         }
 
         private static int GetRecipeNumber()
@@ -69,19 +84,16 @@ namespace AnimalHusbandryMod.recipes
             return (int)(Game1.stats.DaysPlayed % 112U / 14) + 1;
         }
 
-        private void ShowQueenAnnouncement(TV tv, TemporaryAnimatedSprite sprite, StardewValley.Farmer farmer, string answer)
+        private string GetRecipePresentation()
         {
-            _queenSprite = new TemporaryAnimatedSprite(Game1.mouseCursorsName, new Rectangle(602, 361, 42, 28), 150f, 2, 999999, tv.getScreenPosition(), false, false, (float)((double)(tv.boundingBox.Bottom - 1) / 10000.0 + 9.99999974737875E-06), 0.0f, Color.White, tv.getScreenSizeModifier(), 0.0f, 0.0f, 0.0f, false);
-            CustomTVMod.showProgram(_queenSprite, DataLoader.i18n.Get("TV.MeatFriday.Announcement"), ShowRecipePresentation);
+            return _recipes[GetRecipeNumber()].Split('/')[1];
         }
 
-        private void ShowRecipePresentation()
-        {
-            string text = _recipes[GetRecipeNumber()].Split('/')[1];
-            CustomTVMod.showProgram(_queenSprite, text, AddRecipe);
-        }
-
-        private void AddRecipe()
+        /// <summary>
+        /// Get the add recipe text and also add the recipe if not known.
+        /// </summary>
+        /// <returns>The add recipe text</returns>
+        private string GetAddRecipeText()
         {
             string[] recipeSplit = _recipes[GetRecipeNumber()].Split('/');
             string recipeKey = recipeSplit[0];
@@ -96,7 +108,7 @@ namespace AnimalHusbandryMod.recipes
             {
                 addRecipeText = Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13151", (object) recipeName);
             }
-            CustomTVMod.showProgram(_queenSprite, addRecipeText, CustomTVMod.endProgram);
+            return addRecipeText;
         }
     }
 }

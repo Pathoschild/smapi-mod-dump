@@ -19,18 +19,17 @@ This documentation is for adding support for custom locations with **NPC Map Loc
   - [Video tutorial](#video-tutorial)
   - [Seasonal maps](#seasonal-maps)
 - [Loading the custom map](#loading-the-custom-map)
-  - [Folder selection](#folder-selection)
 - [Unknown locations](#unknown-locations)
 - [Adding points](#adding-points)
   - [Example](#example)
-    - [Farm types](#farm-types)
+  - [Farm types](#farm-types)
   - [Single points](#single-points)
   - [Adding location tooltips](#adding-location-tooltips)
+  - [Excluding locations](#excluding-locations)
   - [Testing and validating](#testing-and-validating)
-  - [Common issues](#common-issues)
-- [See also](#see-also)
+- [Custom Npcs](#custom-npcs)
+  - [Excluding NPCs](#excluding-npcs)
 - [Get additional help](#get-additional-help)
-- [Excluding Custom NPCs (For Developers)](#exclude-custom-npcs)
 
 ## How tracking works
 
@@ -44,7 +43,16 @@ Ideally, the custom location is drawn accurately in proportion onto the map such
 
 ## Creating an accurate map
 
-Creating a custom map is recommended if you are looking to add/modify a lot of areas on the map or need to do a recolor of the map. If you are looking to add just a few buildings or a small area, consider creating a [Content Pack for Content Patcher](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editimage) instead with `"PatchMode": "Overlay"`. Do not **`"Replace"`** the map as it will cause a conflict with NPC Map Locations.
+Creating a custom map is recommended if you are looking to add/modify a lot of areas on the map or need to do a recolor of the map. Mod authors should **`"Replace"`** the map through Content Patcher:
+
+```js
+{
+   "Action": "EditImage",
+   "Target": "LooseSprites/map",
+   "FromFile": "Assets/Maps/WorldMaps/{{Season}}_map.png",
+   "PatchMode": "Replace"
+}
+```
 
 In order to draw a custom location accurately, the recommended method is to use the actual tilemap of the custom location and tracing it. Using the [Map Image Export mod](https://www.nexusmods.com/stardewvalley/mods/1073), you can get a render of the whole tilemap of the location. Using this as a reference, you can resize and overlay the tilemap to accurately trace it onto the map.
 
@@ -60,6 +68,7 @@ Here are the steps I take to create accurate modifications:
 ### Video tutorial
 
 [Here is a short video guide on the process](https://streamable.com/xzfnc). In this example I am creating a map for Grandpa's Grove farm by Jessebot.
+NOTE: This video guide is outdated, but the method is still the same.
 
 ### Seasonal maps
 
@@ -67,38 +76,16 @@ NPC Map Locations also provides seasonal maps that dynamically load with the gam
 
 ## Loading the custom map
 
-NPC Map Locations will dynamically load the correct map based on other mods that are installed. For example, the mod will load the recolored map for Eemie's Recolour if it detects the Content Pack for that mod. The custom maps (if placed correctly, following the steps below) will load if the mod that adds the custom location is installed.
-
-### Folder selection
-
-When the game is launched, NPC Map Locations automatically chooses one folder to load the map from. The folder names can match combinations of mods:
-
-| format  | effect                        |
-| ------- | ----------------------------- |
-| `A`     | Requires mod ID `A`.          |
-| `A ~ B` | Requires mod ID `A` _or_ `B`. |
-| `A, B`  | Requires _both_ `A` and `B`.  |
-
-Where the mod ID is the `UniqueID` for the mod's `manifest.json`.
-
-`~` is meant for alternative IDs, so it has precedence. For example, `A ~ B, C ~ D` means
-`(A or B) and (C or D)`.
-
-If multiple folders match, the first one alphabetically which matches more mods is used (e.g.
-`A, B` has priority over `A`). If none match, the `_default` folder is used.
+NPC Map Locations provides its own default maps, however when in use with any mods that modify the world, the mod author should provide their owns maps using through Content Patcher.
 
 The folder should include the following files:
-
-- customlocations.json (only if there are custom locations)
 - spring_map.png
 - fall_map.png (if adding seasonal maps)
 - summer_map.png (if adding seasonal maps)
 - winter_map.png (if adding seasonal maps)
 - buildings.png (use the provided and modify if desired)
 
-You can use the template [with seasonal maps](https://github.com/Bouhm/stardew-valley-mods/tree/master/NPCMapLocations/maps/_template) or [without seasonal maps](https://github.com/Bouhm/stardew-valley-mods/tree/master/NPCMapLocations/maps/_template_no_seasonal) to get started.
-
-Refer to the [maps](https://github.com/Bouhm/stardew-valley-mods/tree/master/NPCMapLocations/maps) for some examples on the naming convention.
+If not using seasonal maps, just a "spring_map.png" map will suffice.
 
 ## Unknown locations
 
@@ -114,26 +101,35 @@ NPC Map Locations will try its best to figure out where custom locations are. Ea
 
 ## Adding points
 
-Any custom locations that need tracking need to be included in `maps\customlocations.json`. The format for adding one location is as shown:
+Any custom locations that need tracking need to be included in the `content.json` of the mods that adds custom locations to the game.
+The target MUST be exactly as below.
 
 ```js
-"LocationName": [
-  {
-    MapX: 0,
-    MapY: 0,
-    TileX: 300,
-    TileY: 300
-  },
-  {
-    MapX: 100,
-    MapY: 80,
-    TileX: 500,
-    TileY: 450
+{   
+  "Action": "EditData",
+  "Target": "Mods/Bouhm.NPCMapLocations/Locations",
+  "Entries": {
+    "[LocationName]": {
+      "MapVectors": [
+        {
+          MapX: 0,
+          MapY: 0,
+          TileX: 300,
+          TileY: 300
+        },
+        {
+          MapX: 100,
+          MapY: 80,
+          TileX: 500,
+          TileY: 450
+        }
+      ]
+    }
   }
-]
+}
 ```
 
-Where `LocationName` is the name of the location. Each field between the curly brackets represents one point that maps the tile position to the pixel position on the map.
+Where `[LocationName]` is the name of the location. Each field between the curly brackets represents one point that maps the tile position to the pixel position on the map.
 
 **It is important to note that when getting the pixel positions on the map, you will need to upscale the map image (Nearest Neighbor) by 4 times since that is the zoom scale used in the game.**
 
@@ -158,33 +154,36 @@ From these two actions we have the following information: the LocationName "Town
 For tracking, we add an entry for `"TownEast"` in `"CustomMapLocations"`. We input the two points for the top-left corner of the bounding box and the bottom-right corner of the bounding box.
 
 ```js
-"CustomMapLocations": {
-  "TownEast": [
-    {
-      MapX: 960,
-      MapY: 337,
-      TileX: 0,
-      TileY: 0
-    },
-    {
-      MapX: 1060,
-      MapY: 413,
-      TileX: 40,
-      TileY: 30
+{   
+  "Action": "EditData",
+  "Target": "Mods/Bouhm.NPCMapLocations/Locations",
+  "Entries": {
+    "TownEast": {
+      "MapVectors": [
+        {
+          MapX: 960,
+          MapY: 337,
+          TileX: 0,
+          TileY: 0
+        },
+        {
+          MapX: 1060,
+          MapY: 413,
+          TileX: 40,
+          TileY: 30
+        }
+      ]
     }
-  ]
-},
+  }
+}
 ```
-
-### A video tutorial is available here:
-https://streamable.com/x439m5
 
 Tips:
 - In config/globals.json, set "DEBUG_MODE" to true.
-- In the SMAPI console, use `debug warp [locationname] to quickly move to the map.
+- In the SMAPI console, use `debug warp [LocationName] to quickly move to the map.
 - Use control + right click to move the player around the map in debug mode.
 
-#### Farm types
+### Farm types
 
 Sometimes a mod will change a farm only based on the farm type. If you want to specify points for any farm, you can leave the location name as "Farm" but for specific farm types, you will need to use the following:
 - "Farm_Default"
@@ -193,20 +192,28 @@ Sometimes a mod will change a farm only based on the farm type. If you want to s
 - "Farm_Hills"
 - "Farm_Wilderness"
 - "Farm_FourCorners"
+- "Farm_Beach"
 
 ### Single points
 
 Instead of an area with tracking, if you want to display the character in a location in a single point on the map, you only need to specify the `MapX` and `MapY` like so:
 
 ```js
-"CustomMapLocations": {
-  "PointOfInterest": [
-    {
-      MapX: 36,
-      MapY: 469
+{   
+  "Action": "EditData",
+  "Target": "Mods/Bouhm.NPCMapLocations/Locations",
+  "Entries": {
+    "[LocationName]": {
+      "MapVectors": [
+        {
+          MapX: 36,
+          MapY: 469
+        }
+      ]
     },
-  ]
-},
+  ...
+  }
+}
 ```
 
 Other points are not needed because we're simply showing the character at (36, 469) on the map in that location without needing to do any calcualtions.
@@ -215,20 +222,27 @@ Other points are not needed because we're simply showing the character at (36, 4
 
 ### Adding location tooltips
 
-Users can add location tooltips when the player hovers the custom location if they choose to. The format includes the name of the location, the pixel position representng the top-left corner, the width and height of the bouding box where the tooltip hover should trigger, and the primary and secondary text that should display in the tooltip.
+Mod authors can add map tooltips when the player hovers the custom location if they choose to. The format includes the name of the location, the pixel position representng the top-left corner, the width and height of the bouding box where the tooltip hover should trigger, and the primary and secondary text that should display in the tooltip.
 
 ![Tooltips](https://i.imgur.com/UJSgR6l.png)
 
 For this we need the top-left corner and the width and height of the bounding box.
 
 ```js
-"CustomMapTooltips": {
-  "TownEast": {
-    "X": 960,
-    "Y": 337,
-    "Width": 100,
-    "Height": 76,
-    "PrimaryText": "Town East"
+{   
+  "Action": "EditData",
+  "Target": "Mods/Bouhm.NPCMapLocations/Locations",
+  "Entries": {
+    "TownEast": {
+      ...
+      "MapTooltip": {
+        "X": 960,
+        "Y": 337,
+        "Width": 100,
+        "Height": 76,
+        "PrimaryText": "Town East"
+      }
+    }
   }
 }
 ```
@@ -236,30 +250,77 @@ For this we need the top-left corner and the width and height of the bounding bo
 For adding just this one location, our final JSON file will look like this:
 
 ```js
-{
-  "CustomMapLocations": {
-    "TownEast": [
-      {
-        MapX: 557,
-        MapY: 516,
-        TileX: 0,
-        TileY: 0
-      },
-      {
-        MapX: 678,
-        MapY: 580,
-        TileX: 40,
-        TileY: 30
-      }
-    ]
-  },
-  "CustomMapTooltips": {
+{   
+  "Action": "EditData",
+  "Target": "Mods/Bouhm.NPCMapLocations/Locations",
+  "Entries": {
     "TownEast": {
-      "X": 960,
-      "Y": 337,
-      "Width": 100,
-      "Height": 76,
-      "PrimaryText": "Town East"
+      "MapVectors": [
+        {
+          MapX: 960,
+          MapY: 337,
+          TileX: 0,
+          TileY: 0
+        },
+        {
+          MapX: 1060,
+          MapY: 413,
+          TileX: 40,
+          TileY: 30
+        }
+      ],
+      "MapToolip": {
+        "X": 960,
+        "Y": 337,
+        "Width": 100,
+        "Height": 76,
+        "PrimaryText": "Town East"
+      }
+    }
+  }
+}
+```
+### Excluding locations
+For any custom locations that should be HIDDEN from the map (ex. when a character is in that location, they should not show up on the map), they need to be added to the LocationExclusions field.
+
+```js
+{   
+  "Action": "EditData",
+  "Target": "Mods/Bouhm.NPCMapLocations/Locations",
+  "Entries": {
+    "Claire_WarpRoom": {
+      "Exclude": true
+    }
+  }
+}
+```
+
+## Custom NPCs
+For custom npcs that need the cropping adjusted for their markers on the map, we use the same method but with a different target:
+This time instead of the [LocationName], we use the name of the NPC for the key.
+Use the field "MarkerCropOffset" with an integer value. See https://www.nexusmods.com/stardewvalley/articles/99 for details.
+
+```js
+{   
+  "Action": "EditData",
+  "Target": "Mods/Bouhm.NPCMapLocations/NPCs",
+  "Entries": {
+    "Andy": {
+      "MarkerCropOffset": -1
+    }
+  }
+}
+```
+
+### Excluding NPCs
+For any NPCs that should be HIDDEN from the map, we use the field `Exclude` which can be value `true` or `false` (not including the field is effectively the same as `false`).
+```js
+{   
+  "Action": "EditData",
+  "Target": "Mods/Bouhm.NPCMapLocations/NPCs",
+  "Entries": {
+    "Claire_Joja": {
+      "Exclude": true
     }
   }
 }
@@ -267,45 +328,9 @@ For adding just this one location, our final JSON file will look like this:
 
 ### Testing and validating
 
-After making the changes to the config, make sure to use the [JSON validator](https://json.smapi.io/) (select 'None' for JSON format) to make sure the JSON does not contain any errors.
-
-For the example above, we can see that this is valid json.
-
-![json-validator](https://i.imgur.com/jofId5l.png)
-
+After making the changes to the config, make sure to use the [JSON validator](https://json.smapi.io/) to make sure the JSON does not contain any errors.
 If the JSON is valid, you can go into game and test the newly added custom locations on the map. If the JSON is not valid, SMAPI will throw an error and the game will crash.
-
-### Common issues
-
-If the character does not show up in the map in the custom locations, there are a few possible issues to troubleshoot:
-
-- The folder containing the custom map is not named correctly
-  - You can confirm this by checking the SMAPI console or the [logs](log.smapi.io) and looking for the message that indicates which map NPC Map Locations has loaded.
-- The location is not properly added in `customlocations.json`. It must be added in properly by its exact location name, provided with `DEBUG_MODE` info.
-
-## See also
-
-- [Data file that adds support for Stardew Valley Expanded locations](https://github.com/Bouhm/stardew-valley-mods/blob/master/NPCMapLocations/maps/flashShifter.stardewValleyExpandedCP/customlocations.json)
-- [My other mod that also shows characters while inherently supporting all custom locations](https://www.nexusmods.com/stardewvalley/mods/3045)
 
 ## Get additional help
 
-You can reach me on [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/239) and leave a comment there, or you can ping me `@Bouhm` on the [Stardew Valley Discord](https://discord.gg/stardewvalley) in the `#modding` channel.
-
-## Excluding Custom NPCs from the map (For Developers)
-
-If you are a developer for a Custom NPC mod, you can choose to always exclude your NPC from showing up in NPC Map Locations by adding a custom field in NPCDispositions.
-The easiest way to do this is by adding to NPCDispositions through [Content Patcher](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editdata). The field to add is `ExludeFromMap`.
-This is an example of what the patch would look like:
-
-```
-{
-  "Action": "EditData",
-  "Target": "Data/NPCDispositions",
-  "Entries": {
-    "ExcludeFromMap": "true"
-  }
-}
-```
-
-(Shoutout to @kdau for this suggestion.)
+Visit [Stardew Valley Discord](https://discord.gg/stardewvalley) in the `#using-mods` channel.

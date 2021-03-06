@@ -32,7 +32,7 @@ namespace MultipleSpouses
     {
         private static IMonitor Monitor;
         private static ModConfig config;
-        private static IModHelper PHelper;
+        private static IModHelper Helper;
         public static Dictionary<string, Map> tmxSpouseRooms = new Dictionary<string, Map>();
         public static Dictionary<string, int> roomIndexes = new Dictionary<string, int>{
             { "Abigail", 0 },
@@ -55,7 +55,7 @@ namespace MultipleSpouses
         {
             Monitor = monitor;
             config = ModEntry.config;
-            PHelper = ModEntry.PHelper;
+            Helper = ModEntry.PHelper;
         }
 
         public static void BuildSpouseRooms(FarmHouse farmHouse)
@@ -134,6 +134,8 @@ namespace MultipleSpouses
 
                 Monitor.Log($"Map has sheets: {string.Join(", ", sheets)}");
 
+                int startx = 29;
+
                 int ox = ModEntry.config.ExistingSpouseRoomOffsetX;
                 int oy = ModEntry.config.ExistingSpouseRoomOffsetY;
                 if (farmHouse.upgradeLevel > 1)
@@ -146,56 +148,56 @@ namespace MultipleSpouses
 
                 for (int i = 0; i < 7; i++)
                 {
-                    farmHouse.setMapTileIndex(ox + 29 + i, oy + 11, 0, "Buildings", indoor);
-                    farmHouse.removeTile(ox + 29 + i, oy + 9, "Front");
-                    farmHouse.removeTile(ox + 29 + i, oy + 10, "Buildings");
-                    farmHouse.setMapTileIndex(ox + 28 + i, oy + 10, 165, "Front", indoor);
-                    farmHouse.removeTile(ox + 29 + i, oy + 10, "Back");
+                    farmHouse.setMapTileIndex(ox + startx + i, oy + 11, 0, "Buildings", indoor);
+                    farmHouse.removeTile(ox + startx + i, oy + 9, "Front");
+                    farmHouse.removeTile(ox + startx + i, oy + 10, "Buildings");
+                    farmHouse.setMapTileIndex(ox + startx - 1 + i, oy + 10, 165, "Front", indoor);
+                    farmHouse.removeTile(ox + startx + i, oy + 10, "Back");
                 }
                 for (int i = 0; i < 8; i++)
                 {
-                    farmHouse.setMapTileIndex(ox + 28 + i, oy + 10, 165, "Front", indoor);
+                    farmHouse.setMapTileIndex(ox + startx - 1 + i, oy + 10, 165, "Front", indoor);
                 }
                 for (int i = 0; i < 10; i++)
                 {
-                    farmHouse.removeTile(ox + 35, oy + 0 + i, "Buildings");
-                    farmHouse.removeTile(ox + 35, oy + 0 + i, "Front");
+                    farmHouse.removeTile(ox + startx + 6, oy + 0 + i, "Buildings");
+                    farmHouse.removeTile(ox + startx + 6, oy + 0 + i, "Front");
                 }
                 for (int i = 0; i < 7; i++)
                 {
                     // horiz hall
-                    farmHouse.setMapTileIndex(ox + 29 + i, oy + 10, (i % 2 == 0 ? 352: 336), "Back", floorsheet);
+                    farmHouse.setMapTileIndex(ox + startx + i, oy + 10, (i % 2 == 0 ? 352: 336), "Back", floorsheet);
                 }
 
 
                 for (int i = 0; i < 7; i++)
                 {
-                    //farmHouse.removeTile(ox + 28, oy + 4 + i, "Back");
+                    //farmHouse.removeTile(ox + startx - 1, oy + 4 + i, "Back");
                     //farmHouse.setMapTileIndex(ox + 28, oy + 4 + i, (i % 2 == 0 ? 352 : ModEntry.config.HallTileEven), "Back", 0);
                 }
 
 
-                farmHouse.removeTile(ox + 28, oy + 9, "Front");
-                farmHouse.removeTile(ox + 28, oy + 10, "Buildings");
+                farmHouse.removeTile(ox + startx - 1, oy + 9, "Front");
+                farmHouse.removeTile(ox + startx - 1, oy + 10, "Buildings");
                 
                 if(farmHouse.upgradeLevel > 1) 
-                    farmHouse.setMapTileIndex(ox + 28, oy + 10, 163, "Front", indoor);
-                farmHouse.removeTile(ox + 35, oy + 0, "Front");
-                farmHouse.removeTile(ox + 35, oy + 0, "Buildings");
+                    farmHouse.setMapTileIndex(ox + startx - 1, oy + 10, 163, "Front", indoor);
+                farmHouse.removeTile(ox + startx + 6, oy + 0, "Front");
+                farmHouse.removeTile(ox + startx + 6, oy + 0, "Buildings");
 
 
 
                 int count = -1;
 
-                ExtendMap(farmHouse, ox + 37 + (7* spousesWithRooms.Count));
+                ExtendMap(farmHouse, ox + startx + 8 + (7* spousesWithRooms.Count));
 
                 // remove and rebuild spouse rooms
                 for (int j = 0; j < spousesWithRooms.Count; j++)
                 {
-                    farmHouse.removeTile(ox + 35 + (7 * count), oy + 0, "Buildings");
+                    farmHouse.removeTile(ox + startx + 6 + (7 * count), oy + 0, "Buildings");
                     for (int i = 0; i < 10; i++)
                     {
-                        farmHouse.removeTile(ox + 35 + (7 * count), oy + 1 + i, "Buildings");
+                        farmHouse.removeTile(ox + startx + 6 + (7 * count), oy + 1 + i, "Buildings");
                     }
                     BuildOneSpouseRoom(farmHouse, spousesWithRooms[j], count++);
                 }
@@ -203,12 +205,12 @@ namespace MultipleSpouses
                 Monitor.Log($"Building far wall");
 
                 // far wall
-                farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 0, 11, "Buildings", indoor);
+                farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 0, 11, "Buildings", indoor);
                 for (int i = 0; i < 10; i++)
                 {
-                    farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 1 + i, 68, "Buildings", indoor);
+                    farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 1 + i, 68, "Buildings", indoor);
                 }
-                farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 10, 130, "Front", indoor);
+                farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 10, 130, "Front", indoor);
             }
             catch (Exception ex)
             {
@@ -233,11 +235,11 @@ namespace MultipleSpouses
                 Map refurbishedMap;
                 if (name == "")
                 {
-                    refurbishedMap = PHelper.Content.Load<Map>("Maps\\" + farmHouse.Name + ((farmHouse.upgradeLevel == 0) ? "" : ((farmHouse.upgradeLevel == 3) ? "2" : string.Concat(farmHouse.upgradeLevel))) + "_marriage", ContentSource.GameContent);
+                    refurbishedMap = Helper.Content.Load<Map>("Maps\\" + farmHouse.Name + ((farmHouse.upgradeLevel == 0) ? "" : ((farmHouse.upgradeLevel == 3) ? "2" : string.Concat(farmHouse.upgradeLevel))) + "_marriage", ContentSource.GameContent);
                 }
                 else
                 {
-                    refurbishedMap = PHelper.Content.Load<Map>("Maps\\spouseRooms", ContentSource.GameContent);
+                    refurbishedMap = Helper.Content.Load<Map>("Maps\\spouseRooms", ContentSource.GameContent);
                 }
                 int indexInSpouseMapSheet = -1;
 
@@ -342,7 +344,16 @@ namespace MultipleSpouses
 
                 Monitor.Log($"Building {name}'s room", LogLevel.Debug);
 
-                Microsoft.Xna.Framework.Rectangle areaToRefurbish = (farmHouse.upgradeLevel == 1) ? new Microsoft.Xna.Framework.Rectangle(36 + (7 * count), 1, 6, 9) : new Microsoft.Xna.Framework.Rectangle(42 + (7 * count), 10, 6, 9);
+                int startx = 29;
+                int ox = ModEntry.config.ExistingSpouseRoomOffsetX;
+                int oy = ModEntry.config.ExistingSpouseRoomOffsetY;
+                if (farmHouse.upgradeLevel > 1)
+                {
+                    ox += 6;
+                    oy += 9;
+                }
+
+                Microsoft.Xna.Framework.Rectangle areaToRefurbish = new Microsoft.Xna.Framework.Rectangle(startx + 7 + ox + (7 * count), 1 + oy, 6, 9);
 
                 Point mapReader;
                 if (name == "")
@@ -367,15 +378,6 @@ namespace MultipleSpouses
                 int floorsheet = sheetNames.IndexOf("walls_and_floors");
                 int indoor = sheetNames.IndexOf("indoor");
 
-
-                int ox = ModEntry.config.ExistingSpouseRoomOffsetX;
-                int oy = ModEntry.config.ExistingSpouseRoomOffsetY;
-                if (farmHouse.upgradeLevel > 1)
-                { 
-                    ox += 6;
-                    oy += 9;
-                }
-
                 if (ModEntry.config.BuildAllSpousesRooms)
                 {
 
@@ -384,41 +386,41 @@ namespace MultipleSpouses
                     for (int i = 0; i < 7; i++)
                     {
                         // bottom wall
-                        farmHouse.setMapTileIndex(ox + 36 + i + (count * 7), oy + 10, 165, "Front", indoor);
-                        farmHouse.setMapTileIndex(ox + 36 + i + (count * 7), oy + 11, 0, "Buildings", indoor);
+                        farmHouse.setMapTileIndex(ox + startx + 7 + i + (count * 7), oy + 10, 165, "Front", indoor);
+                        farmHouse.setMapTileIndex(ox + startx + 7 + i + (count * 7), oy + 11, 0, "Buildings", indoor);
 
 
-                        farmHouse.removeTile(ox + 35 + (7 * count), oy + 4 + i, "Back");
+                        farmHouse.removeTile(ox + startx + 6 + (7 * count), oy + 4 + i, "Back");
 
                         if (count % 2 == 0)
                         {
                             // vert hall
-                            farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 4 + i, (i % 2 == 0 ? 352 : 336), "Back", floorsheet);
+                            farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 4 + i, (i % 2 == 0 ? 352 : 336), "Back", floorsheet);
                             // horiz hall
-                            farmHouse.setMapTileIndex(ox + 36 + i + (count * 7), oy + 10, (i % 2 == 0 ? 336 : 352), "Back", floorsheet);
+                            farmHouse.setMapTileIndex(ox + startx + 7 + i + (count * 7), oy + 10, (i % 2 == 0 ? 336 : 352), "Back", floorsheet);
                         }
                         else
                         {
                             // vert hall
                             
-                            farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 4 + i, (i % 2 == 0 ? 336 : 352), "Back", floorsheet);
+                            farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 4 + i, (i % 2 == 0 ? 336 : 352), "Back", floorsheet);
                             // horiz hall
-                            farmHouse.setMapTileIndex(ox + 36 + i + (count * 7), oy + 10, (i % 2 == 0 ? 352 : 336), "Back", floorsheet);
+                            farmHouse.setMapTileIndex(ox + startx + 7 + i + (count * 7), oy + 10, (i % 2 == 0 ? 352 : 336), "Back", floorsheet);
                         }
                     }
 
                     for (int i = 0; i < 6; i++)
                     {
                         // top wall
-                        farmHouse.setMapTileIndex(ox + 36 + i + (count * 7), oy + 0, 2, "Buildings", indoor);
+                        farmHouse.setMapTileIndex(ox + startx + 7 + i + (count * 7), oy + 0, 2, "Buildings", indoor);
                     }
 
                     // vert wall
-                    farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 0, 87, "Buildings", untitled);
-                    farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 1, 99, "Buildings", untitled);
-                    farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 2, 111, "Buildings", untitled);
-                    farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 3, 123, "Buildings", untitled);
-                    farmHouse.setMapTileIndex(ox + 35 + (7 * count), oy + 4, 135, "Buildings", untitled);
+                    farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 0, 87, "Buildings", untitled);
+                    farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 1, 99, "Buildings", untitled);
+                    farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 2, 111, "Buildings", untitled);
+                    farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 3, 123, "Buildings", untitled);
+                    farmHouse.setMapTileIndex(ox + startx + 6 + (7 * count), oy + 4, 135, "Buildings", untitled);
 
                 }
                 for (int x = 0; x < areaToRefurbish.Width; x++)
@@ -497,7 +499,7 @@ namespace MultipleSpouses
                 if(name == "Sebastian" && Game1.netWorldState.Value.hasWorldStateID("sebastianFrog"))
                 {
                     Monitor.Log("building Sebastian's terrarium");
-                    Vector2 spot = new Vector2(37 + (7 * count) + ox, 7 + oy);
+                    Vector2 spot = new Vector2(startx + 8 + (7 * count) + ox, 7 + oy);
                     farmHouse.removeTile((int)spot.X, (int)spot.Y - 1, "Front");
                     farmHouse.removeTile((int)spot.X + 1, (int)spot.Y - 1, "Front");
                     farmHouse.removeTile((int)spot.X + 2, (int)spot.Y - 1, "Front");
@@ -636,10 +638,12 @@ namespace MultipleSpouses
             int height = 9;
             int startx = 15;
             int starty = 0;
-            int ox = ModEntry.config.ExistingKidsRoomOffsetX;
-            int oy = ModEntry.config.ExistingKidsRoomOffsetY;
+            //int ox = ModEntry.config.ExistingKidsRoomOffsetX;
+            int ox = 0;
+            //int oy = ModEntry.config.ExistingKidsRoomOffsetY;
+            int oy = 0;
 
-            Map map = PHelper.Content.Load<Map>("Maps\\" + farmHouse.Name + "2"+ (Misc.GetSpouses(farmHouse.owner,1).Count > 0? "_marriage":""), ContentSource.GameContent);
+            Map map = Helper.Content.Load<Map>("Maps\\" + farmHouse.Name + "2"+ (Misc.GetSpouses(farmHouse.owner,1).Count > 0? "_marriage":""), ContentSource.GameContent);
 
             List<string> sheets = new List<string>();
             for (int i = 0; i < map.TileSheets.Count; i++)
@@ -726,6 +730,22 @@ namespace MultipleSpouses
                 {
                     Monitor.Log($"Adding building tile at {startx + roomWidth + ox + i},{ 9 + oy}");
                     farmHouse.setMapTileIndex(x, 9 + oy, 0, "Buildings");
+                }
+            }
+
+            Microsoft.Xna.Framework.Rectangle? crib_location = farmHouse.GetCribBounds();
+            if(crib_location != null)
+            {
+                Monitor.Log($"Adding cribs");
+                for (int i = 0; i < Misc.GetExtraCribs(); i++)
+                {
+                    Microsoft.Xna.Framework.Rectangle rect = new Microsoft.Xna.Framework.Rectangle(crib_location.Value.X + i * 3, crib_location.Value.Y, crib_location.Value.Width, crib_location.Value.Height); 
+                    Monitor.Log($"Adding crib at {rect}");
+                    Map override_map = Game1.game1.xTileContent.Load<Map>("Maps\\FarmHouse_Crib_" + farmHouse.cribStyle.Value);
+                    HashSet<string> amo = Helper.Reflection.GetField<HashSet<string>>(farmHouse, "_appliedMapOverrides").GetValue();
+                    amo.Remove($"crib{i + 2}");
+                    Helper.Reflection.GetField<HashSet<string>>(farmHouse, "_appliedMapOverrides").SetValue(amo);
+                    farmHouse.ApplyMapOverride(override_map, $"crib{i+2}", null, rect);
                 }
             }
         }

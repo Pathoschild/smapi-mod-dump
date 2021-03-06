@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.pizza_half",
     "Description": "...",
     "Category": "Junk",
@@ -11,23 +10,53 @@
     "Price": 110,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,
     "PurchaseRequirements": null,
-
-    // Gifting
     "GiftTastes": {
-        "Like": [ "Sam", "Shane", "Gus", "Penny", "Marnie", "Clint", "George", "Sebastian", "Abigail", "Alex", "Caroline", "Demetrius", "Dwarf", "Emily", "Evelyn", "Haley", "Jodi", "Vincent", "Jas", "Kent", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Pam", "Sandy", "Wizard" ],
-        "Dislike": [ "Elliott", "Harvey", "Krobus", "Willy" ],
-        "Hate": [ "Leah" ]
+        "Like": [
+            "Sam",
+            "Shane",
+            "Gus",
+            "Penny",
+            "Marnie",
+            "Clint",
+            "George",
+            "Sebastian",
+            "Abigail",
+            "Alex",
+            "Caroline",
+            "Demetrius",
+            "Dwarf",
+            "Emily",
+            "Evelyn",
+            "Haley",
+            "Jodi",
+            "Vincent",
+            "Jas",
+            "Kent",
+            "Lewis",
+            "Linus",
+            "Maru",
+            "Pierre",
+            "Robin",
+            "Pam",
+            "Sandy",
+            "Wizard"
+        ],
+        "Dislike": [
+            "Elliott",
+            "Harvey",
+            "Krobus",
+            "Willy"
+        ],
+        "Hate": [
+            "Leah"
+        ]
     },
-
-    // Localisation
     "NameLocalization": {
+        "en": "Pizza Slice"
     },
-    "DescriptionLocalization": {
-    }
+    "DescriptionLocalization": {}
 }

@@ -1,33 +1,30 @@
-{
-	// Object data
-	"Name": "blueberry.cac.lobster",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 24,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": null,
-	"Price": 150,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 715, // Lobster
-				"Count": 1
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.lobster",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 24,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 150,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 715,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Lobster Bake"
+    }
 }

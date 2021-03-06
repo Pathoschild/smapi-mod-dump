@@ -1,7 +1,7 @@
 ﻿{
   "Name": "ExtraFishInformation",
   "Author": "Ceasg",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Updates fish descriptions to include when and where they can be caught.",
   "UniqueID": "Ceasg.ExtraFishInformation",
   "EntryDll": "ExtraFishInformation.dll",

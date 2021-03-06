@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.seafoodsando",
     "Description": "...",
     "Category": "Junk",
@@ -11,19 +10,56 @@
     "Price": 200,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,
     "PurchaseRequirements": null,
-
-    // Gifting
     "GiftTastes": {
-        "Love": [ "Willy", "Demetrius" ],
-        "Like": [ "Vincent", "Jas", "Penny", "Gus", "Leah", "Marnie", "Clint", "Evelyn", "George", "Abigail", "Alex", "Caroline", "Elliott", "Emily", "Haley", "Jodi", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Sandy", "Pam" ],
-        "Neutral": [ "Kent", "Wizard" ],
-        "Dislike": [ "Shane", "Sebastian", "Dwarf", "Harvey" ],
-        "Hate": [ "Krobus" ]
+        "Love": [
+            "Willy",
+            "Demetrius"
+        ],
+        "Like": [
+            "Vincent",
+            "Jas",
+            "Penny",
+            "Gus",
+            "Leah",
+            "Marnie",
+            "Clint",
+            "Evelyn",
+            "George",
+            "Abigail",
+            "Alex",
+            "Caroline",
+            "Elliott",
+            "Emily",
+            "Haley",
+            "Jodi",
+            "Lewis",
+            "Linus",
+            "Maru",
+            "Pierre",
+            "Robin",
+            "Sam",
+            "Sandy",
+            "Pam"
+        ],
+        "Neutral": [
+            "Kent",
+            "Wizard"
+        ],
+        "Dislike": [
+            "Shane",
+            "Sebastian",
+            "Dwarf",
+            "Harvey"
+        ],
+        "Hate": [
+            "Krobus"
+        ]
+    },
+    "NameLocalization": {
+        "en": "Seafood Sandwich"
     }
 }

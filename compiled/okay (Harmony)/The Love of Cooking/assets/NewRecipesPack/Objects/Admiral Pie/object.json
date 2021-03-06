@@ -1,53 +1,50 @@
-{
-	// Object data
-	"Name": "blueberry.cac.admiralpie",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 81,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": {
-		"Farming": 0,
-		"Fishing": 1,
-		"Mining": 0,
-		"Luck": 0,
-		"Foraging": 0,
-		"MaxStamina": 18,
-		"MagnetRadius": 0,
-		"Speed": 0,
-		"Defense": 0,
-		"Attack": 0,
-		"Duration": 103
-	},
-	"Price": 395,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 246, // Flour
-				"Count": 1
-			},
-			{
-				"Object": -6, // Milk
-				"Count": 1
-			},
-			{
-				"Object": -4, // Fish
-				"Count": 2
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.admiralpie",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 81,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": {
+        "Farming": 0,
+        "Fishing": 1,
+        "Mining": 0,
+        "Luck": 0,
+        "Foraging": 0,
+        "MaxStamina": 18,
+        "MagnetRadius": 0,
+        "Speed": 0,
+        "Defense": 0,
+        "Attack": 0,
+        "Duration": 103
+    },
+    "Price": 395,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 246,
+                "Count": 1
+            },
+            {
+                "Object": -6,
+                "Count": 1
+            },
+            {
+                "Object": -4,
+                "Count": 2
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Admiral Pie"
+    }
 }

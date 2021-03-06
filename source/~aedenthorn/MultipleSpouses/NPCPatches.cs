@@ -28,11 +28,13 @@ namespace MultipleSpouses
     public static class NPCPatches
     {
         private static IMonitor Monitor;
+        private static ModConfig Config;
 
         // call this method from your Entry class
-        public static void Initialize(IMonitor monitor)
+        public static void Initialize(IMonitor monitor, ModConfig config)
         {
             Monitor = monitor;
+            Config = config;
         }
 
         public static string[] csMarriageDialoguesReplace = new string[]
@@ -201,7 +203,7 @@ namespace MultipleSpouses
                         __result = true;
                         return false;
                     }
-                    if (__instance.Sprite.CurrentAnimation == null && !__instance.hasTemporaryMessageAvailable() && __instance.currentMarriageDialogue.Count == 0 && __instance.CurrentDialogue.Count == 0 && Game1.timeOfDay < 2200 && !__instance.isMoving() && who.ActiveObject == null && (!__instance.hasBeenKissedToday || ModEntry.config.UnlimitedDailyKisses))
+                    if (__instance.Sprite.CurrentAnimation == null && !__instance.hasTemporaryMessageAvailable() && __instance.currentMarriageDialogue.Count == 0 && __instance.CurrentDialogue.Count == 0 && Game1.timeOfDay < 2200 && !__instance.isMoving() && who.ActiveObject == null && (!__instance.hasBeenKissedToday || Config.UnlimitedDailyKisses))
                     {
                         __instance.faceGeneralDirection(who.getStandingPosition(), 0, false);
                         who.faceGeneralDirection(__instance.getStandingPosition(), 0, false);
@@ -271,7 +273,7 @@ namespace MultipleSpouses
                                 facingRight = false;
                             }
                             bool flip = (facingRight && __instance.FacingDirection == 3) || (!facingRight && __instance.FacingDirection == 1);
-                            if (who.getFriendshipHeartLevelForNPC(__instance.Name) >= ModEntry.config.MinHeartsForKiss)
+                            if (who.getFriendshipHeartLevelForNPC(__instance.Name) >= Config.MinHeartsForKiss)
                             {
                                 int delay = Game1.IsMultiplayer ? 1000 : 10;
                                 __instance.movementPause = delay;
@@ -284,7 +286,7 @@ namespace MultipleSpouses
                                     who.changeFriendship(10, __instance);
                                 }
 
-                                if (!ModEntry.config.RoommateRomance && who.friendshipData[__instance.Name].RoommateMarriage)
+                                if (!Config.RoommateRomance && who.friendshipData[__instance.Name].RoommateMarriage)
                                 {
                                     ModEntry.mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite[]
                                     {
@@ -306,7 +308,7 @@ namespace MultipleSpouses
                                         }
                                     });
                                 }
-                                if (ModEntry.config.RealKissSound && Kissing.kissEffect != null && (ModEntry.config.RoommateRomance || !who.friendshipData[__instance.Name].RoommateMarriage))
+                                if (Config.RealKissSound && Kissing.kissEffect != null && (Config.RoommateRomance || !who.friendshipData[__instance.Name].RoommateMarriage))
                                 {
                                     Kissing.kissEffect.Play();
                                 }
@@ -559,7 +561,7 @@ namespace MultipleSpouses
                 }
 /*
                 return;
-                if (ModEntry.config.RemoveSpouseOrdinaryDialogue && __instance.Name != Game1.player.spouse && __instance.currentMarriageDialogue.Count > 0)
+                if (Config.RemoveSpouseOrdinaryDialogue && __instance.Name != Game1.player.spouse && __instance.currentMarriageDialogue.Count > 0)
                 {
                     __instance.CurrentDialogue.Clear();
                     foreach (MarriageDialogueReference mdr in __instance.currentMarriageDialogue)
@@ -617,7 +619,7 @@ namespace MultipleSpouses
             Misc.ResetSpouses(who);
             Friendship friendship = who.friendshipData[__instance.Name];
             WorldDate weddingDate = new WorldDate(Game1.Date);
-            weddingDate.TotalDays += Math.Max(1,ModEntry.config.DaysUntilMarriage);
+            weddingDate.TotalDays += Math.Max(1,Config.DaysUntilMarriage);
             while (!Game1.canHaveWeddingOnDay(weddingDate.DayOfMonth, weddingDate.Season))
             {
                 weddingDate.TotalDays++;
@@ -744,13 +746,14 @@ namespace MultipleSpouses
             {
                 if (Misc.GetSpouses(who,1).ContainsKey(__instance.Name))
                 {
+                    Monitor.Log($"Gift to spouse {__instance.name}");
                     __state = new List<int> { 
                         who.friendshipData[__instance.Name].GiftsThisWeek,
                         who.friendshipData[__instance.Name].GiftsToday,
                         0
                     };
                     who.friendshipData[__instance.Name].GiftsThisWeek = 0;
-                    if (ModEntry.config.MaxGiftsPerDay < 0 || who.friendshipData[__instance.Name].GiftsToday < ModEntry.config.MaxGiftsPerDay)
+                    if (Config.MaxGiftsPerDay < 0 || who.friendshipData[__instance.Name].GiftsToday < Config.MaxGiftsPerDay)
                     {
                         who.friendshipData[__instance.Name].GiftsToday = 0;
                     }
@@ -762,6 +765,7 @@ namespace MultipleSpouses
                 }
                 if (who.ActiveObject.ParentSheetIndex == 808 && __instance.Name.Equals("Krobus"))
                 {
+                    Monitor.Log($"Pendant to {__instance.name}");
                     if (who.getFriendshipHeartLevelForNPC(__instance.Name) >= 10 && who.houseUpgradeLevel >= 1 && !who.isEngaged())
                     {
                         typeof(NPC).GetMethod("engagementResponse", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[] { who, true });
@@ -770,13 +774,15 @@ namespace MultipleSpouses
                 }
                 if (who.ActiveObject.ParentSheetIndex == 458)
                 {
+                    Monitor.Log($"Try give bouquet to {__instance.name}");
+
                     if (Misc.GetSpouses(who, 1).ContainsKey(__instance.Name))
                     {
                         who.spouse = __instance.Name;
                         Misc.ResetSpouses(who);
                         Game1.currentLocation.playSound("dwop", NetAudio.SoundContext.NPC);
                         FarmHouse fh = Utility.getHomeOfFarmer(who);
-                        if (ModEntry.config.BuildAllSpousesRooms)
+                        if (Config.BuildAllSpousesRooms)
                         {
                             Maps.BuildSpouseRooms(fh);
                         }
@@ -803,9 +809,9 @@ namespace MultipleSpouses
                         }
                         if (__instance.datable && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].IsDivorced())
                         {
-                            if (ModEntry.config.FriendlyDivorce)
+                            if (Config.FriendlyDivorce)
                             {
-                                who.friendshipData[__instance.Name].Points = ModEntry.config.MinPointsToDate;
+                                who.friendshipData[__instance.Name].Points = Config.MinPointsToDate;
                                 who.friendshipData[__instance.Name].Status = FriendshipStatus.Friendly;
                             }
                             else
@@ -815,13 +821,13 @@ namespace MultipleSpouses
                                 return false;
                             }
                         }
-                        if (__instance.datable && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < ModEntry.config.MinPointsToDate / 2f)
+                        if (__instance.datable && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < Config.MinPointsToDate / 2f)
                         {
                             __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3958") : Game1.LoadStringByGender(__instance.gender, "Strings\\StringsFromCSFiles:NPC.cs.3959"), __instance));
                             Game1.drawDialogue(__instance);
                             return false;
                         }
-                        if (__instance.datable && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < ModEntry.config.MinPointsToDate)
+                        if (__instance.datable && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < Config.MinPointsToDate)
                         {
                             __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3960") : Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3961"), __instance));
                             Game1.drawDialogue(__instance);
@@ -849,6 +855,7 @@ namespace MultipleSpouses
                 }
                 else if (who.ActiveObject.ParentSheetIndex == 460)
                 {
+                    Monitor.Log($"Try give pendant to {__instance.name}");
                     if (who.isEngaged())
                     {
                         Monitor.Log($"Tried to give pendant while engaged");
@@ -857,7 +864,7 @@ namespace MultipleSpouses
                         Game1.drawDialogue(__instance);
                         return false;
                     }
-                    if (!__instance.datable || __instance.isMarriedOrEngaged() || (who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < ModEntry.config.MinPointsToMarry * 0.6f))
+                    if (!__instance.datable || __instance.isMarriedOrEngaged() || (who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < Config.MinPointsToMarry * 0.6f))
                     {
                         Monitor.Log($"Tried to give pendant to someone not datable");
 
@@ -870,7 +877,7 @@ namespace MultipleSpouses
                         Game1.drawDialogue(__instance);
                         return false;
                     }
-                    else if (__instance.datable && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < ModEntry.config.MinPointsToMarry)
+                    else if (__instance.datable && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < Config.MinPointsToMarry)
                     {
                         Monitor.Log($"Tried to give pendant to someone not marriable");
 
@@ -908,7 +915,7 @@ namespace MultipleSpouses
                 }
                 else if (who.ActiveObject.parentSheetIndex == 809 && !who.ActiveObject.bigCraftable)
                 {
-                    Monitor.Log($"Tried to give movie ticket");
+                    Monitor.Log($"Tried to give movie ticket to {__instance.name}");
                     if (Misc.GetSpouses(who, 1).ContainsKey(__instance.Name) && Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && !__instance.Name.Equals("Krobus") && who.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && !Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason) && Game1.timeOfDay <= 2100 && __instance.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && MovieTheater.GetResponseForMovie(__instance) != "reject")
                     {
                         Monitor.Log($"Tried to give movie ticket to spouse");
@@ -1046,10 +1053,10 @@ namespace MultipleSpouses
                 {
                     return;
                 }
-                if (!ModEntry.config.ShowParentNames && __instance.Name.EndsWith(")"))
+                if (!Config.ShowParentNames && __instance.Name.EndsWith(")"))
                 {
                     __result = Regex.Replace(string.Join(" ", names), @" \([^)]+\)", "");
-                    Monitor.Log($"set child display name to: {__result}");
+                    //Monitor.Log($"set child display name to: {__result}");
                 }
             }
             catch (Exception ex)
@@ -1064,21 +1071,28 @@ namespace MultipleSpouses
                 if (__instance.Name == null)
                     return;
                 string[] names = __instance.Name.Split(' ');
-                if (names.Length < 2 || names[names.Length - 1].Length < 3)
+                string parent;
+                if (names.Length > 1 && __instance.displayName.EndsWith(")"))
                 {
-                    return;
+                    parent = names[names.Length - 1].Substring(1, names[names.Length - 1].Length - 2);
+                    __instance.modData["aedenthorn.MultipleSpouses/OtherParent"] = parent;
                 }
-                if (!ModEntry.config.ShowParentNames && __instance.displayName.EndsWith(")"))
+
+                if (!__instance.modData.ContainsKey("aedenthorn.MultipleSpouses/OtherParent"))
+                    return;
+
+                parent = __instance.modData["aedenthorn.MultipleSpouses/OtherParent"];
+
+                if (!Config.ShowParentNames && __instance.displayName.EndsWith(")"))
                 {
                     __instance.displayName = Regex.Replace(string.Join(" ", names), @" \([^)]+\)", "");
                 }
 
-                if (!ModEntry.config.ChildrenHaveHairOfSpouse)
+                if (!Config.ChildrenHaveHairOfSpouse)
                     return;
 
-                string parent = names[names.Length - 1].Substring(1, names[names.Length - 1].Length - 2);
                 __instance.Sprite.textureName.Value += $"_{parent}";
-                Monitor.Log($"set child texture to: {__instance.Sprite.textureName.Value}");
+                Monitor.Log($"set child {__instance.name}, parent {parent} texture to: {__instance.Sprite.textureName.Value}");
             }
             catch (Exception ex)
             {
@@ -1087,14 +1101,13 @@ namespace MultipleSpouses
         }
 
 
-        /*
         public static void Child_resetForPlayerEntry_Postfix(ref Child __instance, GameLocation l)
         {
             try
             {
                 if (l is FarmHouse && (__instance.age == 0 || __instance.age == 1))
                 {
-                    SetCribs(l);
+                    SetCribs(l as FarmHouse);
                 }
             }
             catch (Exception ex)
@@ -1102,44 +1115,71 @@ namespace MultipleSpouses
                 Monitor.Log($"Failed in {nameof(Child_resetForPlayerEntry_Postfix)}:\n{ex}", LogLevel.Error);
             }
         }
-        */
-        /*
-        public static void SetCribs(GameLocation location)
+
+        public static void SetCribs(FarmHouse farmHouse)
         {
 
-            if (ModEntry.config.ExtraCribs < 0)
+            if (Config.ExtraCribs <= 0)
                 return;
 
-            int babies = 0;
-            foreach (NPC npc in location.characters)
+            Rectangle? rect = farmHouse.GetCribBounds();
+            if (rect == null)
+                return;
+
+            int idx = 0;
+            foreach (NPC npc in farmHouse.characters)
             {
                 if (npc is Child && (npc.age == 0 || npc.age == 1))
                 {
-                    if (ModEntry.config.ExtraCribs >= babies)
+
+                    Vector2 offset = new Vector2(0f, -24f);
+                    if (ModEntry.config.ExtraCribs < idx)
                     {
-                        npc.Position = new Vector2(16f + (3 * babies), 4f) * 64f + new Vector2(0f, -24f);
+                        offset = new Vector2(-24f, 0f);
                     }
-                    else
-                    {
-                        int crib = babies % (ModEntry.config.ExtraCribs+1);
-                        npc.Position = new Vector2(15f + (3 * crib), 4f) * 64f + new Vector2(24f, -48f);
-                    }
-                    babies++;
+
+                    int crib = idx % (Config.ExtraCribs + 1);
+                    Vector2 tilePos = new Vector2(rect.Value.X + 1 + (3 * crib), rect.Value.Y + 2);
+                    npc.Position = tilePos * 64f + offset;
+                    Monitor.Log($"placing child {npc.name} in crib at {tilePos}");
+                    idx++;
                 }
             }
         }
-        */
+
         public static void Child_dayUpdate_Prefix(Child __instance)
         {
             try
             {
-                __instance.daysOld.Value += Math.Max(0, (ModEntry.config.ChildGrowthMultiplier - 1));
+                __instance.daysOld.Value += Math.Max(0, (Config.ChildGrowthMultiplier - 1));
 
             }
             catch (Exception ex)
             {
                 Monitor.Log($"Failed in {nameof(Child_dayUpdate_Prefix)}:\n{ex}", LogLevel.Error);
             }
+        }
+
+        public static bool Child_isInCrib_Prefix(Child __instance, ref bool __result)
+        {
+            try
+            {
+                int cribs = Misc.GetExtraCribs();
+                Rectangle? rectq = (__instance.currentLocation as FarmHouse).GetCribBounds();
+                if(cribs > 0 && rectq != null)
+                {
+                    Rectangle rect = rectq.Value;
+                    rect.Width += cribs * 3;
+                    __result = rect.Contains(__instance.getTileLocationPoint());
+                    Monitor.Log($"{__instance.name} is in crib? {__result}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(Child_isInCrib_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+            return true;
         }
         /*
         public static void Child_tenMinuteUpdate_Postfix(Child __instance)

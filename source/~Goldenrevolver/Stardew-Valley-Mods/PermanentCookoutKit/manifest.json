@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  "Name": "Better Cookout Kit And Charcoal Kiln",
+  "Author": "Goldenrevolver",
+  "Version": "1.1.1",
+  "Description": "Makes cookout kits not disappear overnight. Instead the fire goes out and you need to reignite it. Also changes the charcoal kiln.",
+  "UniqueID": "Goldenrevolver.PermanentCookoutKit",
+  "EntryDll": "PermanentCookoutKit.dll",
+  "MinimumApiVersion": "3.9.1",
+  "UpdateKeys": [ "Nexus:8035" ]
+}

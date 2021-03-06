@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+{
+    "sort-0": "Sort By Friendship (Desc)",
+    "sort-1": "Sort By Name (Asc)",
+    "sort-2": "Sort By Name (Desc)",
+    "sort-3": "Sort By Friendship (Asc)",
+}

@@ -1,0 +1,13 @@
+url:
+   https://github.com/TheMightyAmondee/SkullCavernToggle.git
+
+mods:
+   Skull Cavern Toggle
+
+latest commit:
+   commit 86db8631bd4bf124117718ef58792f32352ef660
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Mon Feb 22 17:21:29 2021 +1100
+   
+       renamed solution
+   

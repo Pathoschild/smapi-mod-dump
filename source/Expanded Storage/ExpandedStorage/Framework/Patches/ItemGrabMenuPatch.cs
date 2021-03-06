@@ -8,106 +8,221 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using Common.HarmonyPatches;
-using ExpandedStorage.Framework.UI;
+using System.Reflection.Emit;
 using Harmony;
+using ImJustMatt.Common.PatternPatches;
+using ImJustMatt.ExpandedStorage.Framework.Extensions;
+using ImJustMatt.ExpandedStorage.Framework.Models;
+using ImJustMatt.ExpandedStorage.Framework.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-namespace ExpandedStorage.Framework.Patches
+// ReSharper disable InvertIf
+// ReSharper disable InconsistentNaming
+
+namespace ImJustMatt.ExpandedStorage.Framework.Patches
 {
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "InvertIf")]
-    [SuppressMessage("ReSharper", "ArrangeTypeMemberModifiers")]
-    internal class ItemGrabMenuPatch : HarmonyPatch
+    internal class ItemGrabMenuPatch : MenuPatch
     {
-        private readonly Type _type = typeof(ItemGrabMenu);
         private static IReflectionHelper _reflection;
 
-        internal ItemGrabMenuPatch(IMonitor monitor, ModConfig config, IReflectionHelper reflection)
-            : base(monitor, config)
+        internal ItemGrabMenuPatch(IMonitor monitor, ModConfig config, IReflectionHelper reflection) : base(monitor, config)
         {
             _reflection = reflection;
         }
 
         protected internal override void Apply(HarmonyInstance harmony)
         {
-            if (Config.AllowModdedCapacity)
-            {
-                harmony.Patch(AccessTools.Constructor(_type, new[] {typeof(IList<Item>), T.Bool, T.Bool, typeof(InventoryMenu.highlightThisItem), typeof(ItemGrabMenu.behaviorOnItemSelect), T.String, typeof(ItemGrabMenu.behaviorOnItemSelect), T.Bool, T.Bool, T.Bool, T.Bool, T.Bool, T.Int, typeof(Item), T.Int, T.Object }),
-                    transpiler: new HarmonyMethod(GetType(), nameof(CapacityPatches)));
-            }
-            
-            if (Config.AllowModdedCapacity && Config.ExpandInventoryMenu || Config.ShowSearchBar)
-            {
-                harmony.Patch(AccessTools.Constructor(_type, new[] {typeof(IList<Item>), T.Bool, T.Bool, typeof(InventoryMenu.highlightThisItem), typeof(ItemGrabMenu.behaviorOnItemSelect), T.String, typeof(ItemGrabMenu.behaviorOnItemSelect), T.Bool, T.Bool, T.Bool, T.Bool, T.Bool, T.Int, typeof(Item), T.Int, T.Object }),
-                    postfix: new HarmonyMethod(GetType(), nameof(ConstructorPostfix)));
-            }
-            
-            if (Config.ExpandInventoryMenu || Config.ShowOverlayArrows || Config.ShowTabs || Config.ShowSearchBar)
-            {
-                harmony.Patch(AccessTools.Method(_type, nameof(ItemGrabMenu.draw), new []{typeof(SpriteBatch)}),
-                    transpiler: new HarmonyMethod(GetType(), nameof(DrawPatches)));
-            }
+            var constructor = AccessTools.Constructor(typeof(ItemGrabMenu),
+                new[]
+                {
+                    typeof(IList<Item>),
+                    typeof(bool),
+                    typeof(bool),
+                    typeof(InventoryMenu.highlightThisItem),
+                    typeof(ItemGrabMenu.behaviorOnItemSelect),
+                    typeof(string),
+                    typeof(ItemGrabMenu.behaviorOnItemSelect),
+                    typeof(bool),
+                    typeof(bool),
+                    typeof(bool),
+                    typeof(bool),
+                    typeof(bool),
+                    typeof(int),
+                    typeof(Item),
+                    typeof(int),
+                    typeof(object)
+                });
+
+            harmony.Patch(
+                constructor,
+                transpiler: new HarmonyMethod(GetType(), nameof(ConstructorTranspiler))
+            );
+
+            harmony.Patch(
+                constructor,
+                postfix: new HarmonyMethod(GetType(), nameof(ConstructorPostfix))
+            );
+
+            harmony.Patch(
+                AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.draw), new[] {typeof(SpriteBatch)}),
+                transpiler: new HarmonyMethod(GetType(), nameof(DrawTranspiler))
+            );
+
+            harmony.Patch(
+                AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.gameWindowSizeChanged)),
+                postfix: new HarmonyMethod(GetType(), nameof(GameWindowSizeChangedPostfix))
+            );
+
+            harmony.Patch(
+                AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.setSourceItem)),
+                postfix: new HarmonyMethod(GetType(), nameof(SetSourceItemPostfix))
+            );
+
+            harmony.Patch(
+                AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.RepositionSideButtons)),
+                postfix: new HarmonyMethod(GetType(), nameof(RepositionSideButtonsPostfix))
+            );
         }
 
         /// <summary>Loads default chest InventoryMenu when storage has modded capacity.</summary>
-        static IEnumerable<CodeInstruction> CapacityPatches(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction> ConstructorTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             var patternPatches = new PatternPatches(instructions, Monitor);
-            
-            patternPatches
-                .Find(IL.Isinst(typeof(Chest)), IL.Callvirt(typeof(Chest), nameof(Chest.GetActualCapacity)), OC.Ldc_I4_S, OC.Beq)
-                .Log("Changing jump condition to Bge 12.")
-                .Patch(JumpCapacityPatch);
 
             patternPatches
-                .Find(IL.Newobj(typeof(InventoryMenu), T.Int, T.Int, T.Bool, typeof(IList<Item>), typeof(InventoryMenu.highlightThisItem), T.Int, T.Int, T.Int, T.Int, T.Bool),
-                    IL.Stfld(typeof(ItemGrabMenu), nameof(ItemGrabMenu.ItemsToGrabMenu)))
-                .Find(OC.Ldc_I4_M1)
+                .Find(
+                    new CodeInstruction(OpCodes.Isinst, typeof(Chest)),
+                    new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(Chest), nameof(Chest.GetActualCapacity))),
+                    new CodeInstruction(OpCodes.Ldc_I4_S),
+                    new CodeInstruction(OpCodes.Beq)
+                )
+                .Log("Changing jump condition from Beq 36 to Bge 10.")
+                .Patch(delegate(LinkedList<CodeInstruction> list)
+                {
+                    var jumpCode = list.Last.Value;
+                    list.RemoveLast();
+                    list.RemoveLast();
+                    list.AddLast(new CodeInstruction(OpCodes.Ldc_I4_S, (byte) 10));
+                    list.AddLast(new CodeInstruction(OpCodes.Bge, jumpCode.operand));
+                });
+
+            var inventoryMenuConstructor = AccessTools.Constructor(typeof(InventoryMenu), new[]
+            {
+                typeof(int),
+                typeof(int),
+                typeof(bool),
+                typeof(IList<Item>),
+                typeof(InventoryMenu.highlightThisItem),
+                typeof(int),
+                typeof(int),
+                typeof(int),
+                typeof(int),
+                typeof(bool)
+            });
+
+            patternPatches
+                .Find(
+                    new CodeInstruction(OpCodes.Newobj, inventoryMenuConstructor),
+                    new CodeInstruction(OpCodes.Stfld, AccessTools.Field(typeof(ItemGrabMenu), nameof(ItemGrabMenu.ItemsToGrabMenu)))
+                )
+                .Find(
+                    new CodeInstruction(OpCodes.Ldc_I4_M1),
+                    new CodeInstruction(OpCodes.Ldc_I4_3)
+                )
                 .Log("Overriding default values for capacity and rows.")
-                .Patch(CapacityRowsPatch)
-                .Skip(1);
+                .Patch(delegate(LinkedList<CodeInstruction> list)
+                {
+                    list.RemoveLast();
+                    list.RemoveLast();
+                    list.AddLast(new CodeInstruction(OpCodes.Ldarg_S, (byte) 16));
+                    list.AddLast(new CodeInstruction(OpCodes.Call, MenuCapacity));
+                    list.AddLast(new CodeInstruction(OpCodes.Ldarg_S, (byte) 16));
+                    list.AddLast(new CodeInstruction(OpCodes.Call, MenuRows));
+                });
 
             foreach (var patternPatch in patternPatches)
                 yield return patternPatch;
 
             if (!patternPatches.Done)
-                Monitor.Log($"Failed to apply all patches in {nameof(CapacityPatches)}", LogLevel.Warn);
+                Monitor.Log($"Failed to apply all patches in {nameof(ConstructorTranspiler)}", LogLevel.Warn);
         }
 
-        static void ConstructorPostfix(ItemGrabMenu __instance)
+        private static void ConstructorPostfix(ItemGrabMenu __instance)
         {
-            var sourceItemReflected = _reflection.GetField<Item>(__instance, "sourceItem");
-            var sourceItem = sourceItemReflected.GetValue();
+            var storage = ExpandedStorage.GetStorage(__instance.context);
+            if (storage == null || __instance.context is ShippingBin)
+                return;
+
+            var menuConfig = storage.Menu;
+
+            __instance.ItemsToGrabMenu.rows = menuConfig.Rows;
+            if (menuConfig.Capacity > 0)
+                __instance.ItemsToGrabMenu.capacity = menuConfig.Capacity;
+
             if (__instance.context is not Chest chest)
-                return;
-            
-            var config = ExpandedStorage.GetConfig(chest);
-            if (config == null)
-                return;
+                chest = null;
 
-            if (chest.SpecialChestType != Chest.SpecialChestTypes.None)
+            if (ExpandedStorage.HeldChest.Value != null
+                && chest != null
+                && !ReferenceEquals(ExpandedStorage.HeldChest.Value, chest))
             {
-                // Add color picker back to special Expanded Storage Chests
-                var colorPickerChest = new Chest(true, sourceItem.ParentSheetIndex);
-                var chestColorPicker = new DiscreteColorPicker(
-                    __instance.xPositionOnScreen,
-                    __instance.yPositionOnScreen - 64 - IClickableMenu.borderWidth * 2,
-                    0,
-                    colorPickerChest);
+                var reflectedBehaviorFunction = _reflection.GetField<ItemGrabMenu.behaviorOnItemSelect>(__instance, "behaviorFunction");
+                reflectedBehaviorFunction.SetValue(delegate(Item item, Farmer who)
+                {
+                    var tmp = chest.addItem(item);
+                    if (tmp == null)
+                    {
+                        ExpandedStorage.HeldChest.Value.GetItemsForPlayer(who.UniqueMultiplayerID).Remove(item);
+                        ExpandedStorage.HeldChest.Value.clearNulls();
+                        MenuViewModel.RefreshItems();
+                    }
 
-                colorPickerChest.playerChoiceColor.Value = chest.playerChoiceColor.Value;
-                chestColorPicker.colorSelection = chestColorPicker.getSelectionFromColor(chest.playerChoiceColor.Value);
-                __instance.chestColorPicker = chestColorPicker;
+                    chest.ShowMenu();
+                    if (Game1.activeClickableMenu is ItemGrabMenu menu)
+                        menu.heldItem = tmp;
+                });
 
+                __instance.behaviorOnItemGrab = delegate(Item item, Farmer who)
+                {
+                    __instance.heldItem = ExpandedStorage.HeldChest.Value.addItem(item);
+                    if (__instance.heldItem == null)
+                    {
+                        chest.GetItemsForPlayer(who.UniqueMultiplayerID).Remove(item);
+                        chest.clearNulls();
+                        MenuViewModel.RefreshItems();
+                    }
+                };
+
+                __instance.inventory = new InventoryMenu(
+                    __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2,
+                    __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + 192 - 16,
+                    false,
+                    ExpandedStorage.HeldChest.Value.GetItemsForPlayer(Game1.player.UniqueMultiplayerID),
+                    chest.HighlightMethod(storage));
+            }
+            else
+            {
+                __instance.inventory.highlightMethod = chest.HighlightMethod(storage);
+            }
+
+            if (__instance.chestColorPicker != null)
+            {
+                if (!storage.PlayerColor)
+                    __instance.colorPickerToggleButton = null;
+                __instance.chestColorPicker = null;
+                __instance.discreteColorPickerCC = null;
+                __instance.populateClickableComponentList();
+                __instance.SetupBorderNeighbors();
+            }
+            else if (storage.PlayerColor)
+            {
                 __instance.colorPickerToggleButton = new ClickableTextureComponent(
                     new Rectangle(__instance.xPositionOnScreen + __instance.width,
                         __instance.yPositionOnScreen + __instance.height / 3 - 64 + -160, 64, 64),
@@ -121,168 +236,149 @@ namespace ExpandedStorage.Framework.Patches
                     leftNeighborID = 53921,
                     region = 15923
                 };
-
-                var discreteColorPickerCC = new List<ClickableComponent>();
-                for (var i = 0; i < chestColorPicker.totalColors; i++)
-                {
-                    discreteColorPickerCC.Add(
-                        new ClickableComponent(
-                            new Rectangle(
-                                chestColorPicker.xPositionOnScreen + IClickableMenu.borderWidth / 2 + i * 9 * 4,
-                                chestColorPicker.yPositionOnScreen + IClickableMenu.borderWidth / 2, 36, 28), "")
-                        {
-                            myID = i + 4343,
-                            rightNeighborID = i < chestColorPicker.totalColors - 1 ? i + 4343 + 1 : -1,
-                            leftNeighborID = i > 0 ? i + 4343 - 1 : -1,
-                            downNeighborID = __instance.ItemsToGrabMenu.inventory.Count > 0 ? 53910 : 0
-                        });
-                }
-
-                __instance.discreteColorPickerCC = discreteColorPickerCC;
-
                 __instance.populateClickableComponentList();
+                __instance.SetupBorderNeighbors();
             }
 
-            if (Config.ShowSearchBar && config.ShowSearchBar)
+            if (storage.Option("ShowSearchBar", true) == StorageConfig.Choice.Enable)
             {
-                var padding = ExpandedMenu.Padding(__instance);
-                __instance.yPositionOnScreen -= padding;
-                __instance.height += padding;
+                __instance.yPositionOnScreen -= menuConfig.Padding;
+                __instance.height += menuConfig.Padding;
                 if (__instance.chestColorPicker != null)
-                    __instance.chestColorPicker.yPositionOnScreen -= padding;
+                    __instance.chestColorPicker.yPositionOnScreen -= menuConfig.Padding;
             }
 
-            if (Config.AllowModdedCapacity && Config.ExpandInventoryMenu)
+            if (Config.ExpandInventoryMenu)
             {
-                var offset = ExpandedMenu.Offset(__instance);
-                __instance.height += offset;
-                __instance.inventory.movePosition(0, offset);
-                __instance.okButton.bounds.Y += offset;
-                __instance.trashCan.bounds.Y += offset;
-                __instance.dropItemInvisibleButton.bounds.Y += offset;
+                __instance.height += menuConfig.Offset;
+                __instance.inventory.movePosition(0, menuConfig.Offset);
+                if (__instance.okButton != null)
+                    __instance.okButton.bounds.Y += menuConfig.Offset;
+                if (__instance.trashCan != null)
+                    __instance.trashCan.bounds.Y += menuConfig.Offset;
+                if (__instance.dropItemInvisibleButton != null)
+                    __instance.dropItemInvisibleButton.bounds.Y += menuConfig.Offset;
+                __instance.RepositionSideButtons();
             }
-            
-            if (Game1.options.SnappyMenus)
-                __instance.snapToDefaultClickableComponent();
-            __instance.SetupBorderNeighbors();
+        }
+
+        /// <summary>Set color picker to HSL Color Picker.</summary>
+        private static void GameWindowSizeChangedPostfix(ItemGrabMenu __instance)
+        {
+            var storage = ExpandedStorage.GetStorage(__instance.context);
+            if (storage == null || __instance.context is ShippingBin)
+                return;
+
+            __instance.chestColorPicker = storage.PlayerColor ? MenuView.ColorPicker : null;
+        }
+
+        /// <summary>Set color picker to HSL Color Picker.</summary>
+        private static void SetSourceItemPostfix(ItemGrabMenu __instance, Item item)
+        {
+            var storage = ExpandedStorage.GetStorage(__instance.context);
+            if (storage == null || __instance.context is ShippingBin)
+                return;
+
+            __instance.chestColorPicker = storage.PlayerColor ? MenuView.ColorPicker : null;
+        }
+
+        /// <summary>Reposition side buttons with offset.</summary>
+        private static void RepositionSideButtonsPostfix(ItemGrabMenu __instance)
+        {
+            var storage = ExpandedStorage.GetStorage(__instance.context);
+            if (storage == null || __instance.context is ShippingBin)
+                return;
+
+            var menuConfig = storage.Menu;
+
+            if (Config.ExpandInventoryMenu && menuConfig.Offset < 0)
+            {
+                if (__instance.colorPickerToggleButton != null)
+                    __instance.colorPickerToggleButton.bounds.Y += menuConfig.Offset / 2;
+                if (__instance.fillStacksButton != null)
+                    __instance.fillStacksButton.bounds.Y += menuConfig.Offset / 2;
+                if (__instance.organizeButton != null)
+                    __instance.organizeButton.bounds.Y += menuConfig.Offset / 2;
+            }
         }
 
         /// <summary>Patch UI elements for ItemGrabMenu.</summary>
-        static IEnumerable<CodeInstruction> DrawPatches(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction> DrawTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             var patternPatches = new PatternPatches(instructions, Monitor);
 
-            if (Config.ShowTabs)
-            {
-                patternPatches
-                    .Find(IL.Callvirt(typeof(SpriteBatch), nameof(SpriteBatch.Draw)))
-                    .Log("Adding Overlay DrawUnder method to ItemGrabMenu.")
-                    .Patch(OverlayPatch(typeof(ExpandedMenu), nameof(ExpandedMenu.DrawUnder)));
-            }
+            patternPatches
+                .Find(
+                    new CodeInstruction(OpCodes.Callvirt,
+                        AccessTools.Method(typeof(SpriteBatch), nameof(SpriteBatch.Draw)))
+                )
+                .Log("Adding DrawUnderlay method to ItemGrabMenu.")
+                .Patch(delegate(LinkedList<CodeInstruction> list)
+                {
+                    list.AddLast(new CodeInstruction(OpCodes.Ldarg_1));
+                    list.AddLast(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(MenuView), nameof(MenuView.DrawUnderlay))));
+                });
 
             // Offset backpack icon
             if (Config.ExpandInventoryMenu)
-            {
                 patternPatches
-                    .Find(IL.Ldfld(typeof(ItemGrabMenu), nameof(ItemGrabMenu.showReceivingMenu)))
-                    .Find(IL.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)))
+                    .Find(
+                        new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ItemGrabMenu), nameof(ItemGrabMenu.showReceivingMenu)))
+                    )
+                    .Find(
+                        new CodeInstruction(OpCodes.Ldfld, IClickableMenuYPositionOnScreen)
+                    )
                     .Log("Adding Offset to yPositionOnScreen for Backpack sprite.")
-                    .Patch(AddOffsetPatch(typeof(ExpandedMenu), nameof(ExpandedMenu.Offset)))
+                    .Patch(OffsetPatch(MenuOffset, OpCodes.Add))
                     .Repeat(3);
-            }
 
             // Add top padding
-            if (Config.ShowSearchBar)
-            {
-                patternPatches
-                    .Find(IL.Ldfld(typeof(ItemGrabMenu), nameof(ItemGrabMenu.ItemsToGrabMenu)),
-                        IL.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
-                        IL.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
-                        OC.Sub,
-                        IL.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.spaceToClearTopBorder)),
-                        OC.Sub)
-                    .Log("Adding top padding offset to drawDialogueBox.y.")
-                    .Patch(AddOffsetPatch(typeof(ExpandedMenu), nameof(ExpandedMenu.Padding), Operation.Sub));
-                
-                patternPatches
-                    .Find(IL.Ldfld(typeof(ItemGrabMenu), nameof(ItemGrabMenu.ItemsToGrabMenu)),
-                        IL.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.height)),
-                        IL.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.spaceToClearTopBorder)),
-                        OC.Add,
-                        IL.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
-                        OC.Ldc_I4_2,
-                        OC.Mul,
-                        OC.Add)
-                    .Log("Adding top padding offset to drawDialogueBox.height.")
-                    .Patch(AddOffsetPatch(typeof(ExpandedMenu), nameof(ExpandedMenu.Padding)));
-            }
-            
+            patternPatches
+                .Find(
+                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ItemGrabMenu), nameof(ItemGrabMenu.ItemsToGrabMenu))),
+                    new CodeInstruction(OpCodes.Ldfld, IClickableMenuYPositionOnScreen),
+                    new CodeInstruction(OpCodes.Ldsfld, IClickableMenuBorderWidth),
+                    new CodeInstruction(OpCodes.Sub),
+                    new CodeInstruction(OpCodes.Ldsfld, IClickableMenuSpaceToClearTopBorder),
+                    new CodeInstruction(OpCodes.Sub)
+                )
+                .Log("Adding top padding offset to drawDialogueBox.y.")
+                .Patch(OffsetPatch(MenuPadding, OpCodes.Sub));
+
+            patternPatches
+                .Find(
+                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ItemGrabMenu), nameof(ItemGrabMenu.ItemsToGrabMenu))),
+                    new CodeInstruction(OpCodes.Ldfld, IClickableMenuHeight),
+                    new CodeInstruction(OpCodes.Ldsfld, IClickableMenuSpaceToClearTopBorder),
+                    new CodeInstruction(OpCodes.Add),
+                    new CodeInstruction(OpCodes.Ldsfld, IClickableMenuBorderWidth),
+                    new CodeInstruction(OpCodes.Ldc_I4_2),
+                    new CodeInstruction(OpCodes.Mul),
+                    new CodeInstruction(OpCodes.Add)
+                )
+                .Log("Adding top padding offset to drawDialogueBox.height.")
+                .Patch(OffsetPatch(MenuPadding, OpCodes.Add));
+
             // Draw arrows under hover text
-            if (Config.ShowOverlayArrows || Config.ShowSearchBar || Config.ShowTabs)
-            {
-                patternPatches
-                    .Find(IL.Ldfld(typeof(ItemGrabMenu), nameof(ItemGrabMenu.organizeButton)),
-                        OC.Ldarg_1,
-                        IL.Callvirt(typeof(ClickableTextureComponent), nameof(ClickableTextureComponent.draw), typeof(SpriteBatch)))
-                    .Log("Adding Overlay Draw method to ItemGrabMenu.")
-                    .Patch(OverlayPatch(typeof(ExpandedMenu), nameof(ExpandedMenu.Draw)));
-            }
-            
+            patternPatches
+                .Find(
+                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ItemGrabMenu), nameof(ItemGrabMenu.junimoNoteIcon))),
+                    new CodeInstruction(OpCodes.Ldarg_1),
+                    new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(ClickableTextureComponent), nameof(ClickableTextureComponent.draw), new[] {typeof(SpriteBatch)})),
+                    new CodeInstruction(OpCodes.Ldarg_0)
+                )
+                .Log("Adding DrawOverlay method to ItemGrabMenu.")
+                .Patch(delegate(LinkedList<CodeInstruction> list)
+                {
+                    list.AddLast(new CodeInstruction(OpCodes.Ldarg_1));
+                    list.AddLast(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(MenuView), nameof(MenuView.DrawOverlay))));
+                });
+
             foreach (var patternPatch in patternPatches)
                 yield return patternPatch;
-            
+
             if (!patternPatches.Done)
-                Monitor.Log($"Failed to apply all patches in {nameof(DrawPatches)}", LogLevel.Warn);
+                Monitor.Log($"Failed to apply all patches in {nameof(DrawTranspiler)}", LogLevel.Warn);
         }
-
-        /// <summary>Replaces jump condition for Inventory Menu to >= 12</summary>
-        /// <param name="instructions">List of instructions preceding patch</param>
-        private static void JumpCapacityPatch(LinkedList<CodeInstruction> instructions)
-        {
-            var instruction = instructions.Last.Value;
-            instructions.RemoveLast();
-            instructions.RemoveLast();
-            instructions.AddLast(IL.Ldc_I4_S((byte) 12));
-            instructions.AddLast(IL.Bge(instruction.operand));
-        }
-        
-        /// <summary>Replaced capacity and rows to ExpandedMenu.Capacity and ExpandedMenu.Rows</summary>
-        /// <param name="instructions">List of instructions preceding patch</param>
-        private static void CapacityRowsPatch(LinkedList<CodeInstruction> instructions)
-        {
-            instructions.RemoveLast();
-            instructions.AddLast(IL.Ldarg_S((byte) 16));
-            instructions.AddLast(IL.Call(typeof(ExpandedMenu), nameof(ExpandedMenu.Capacity), typeof(object)));
-            instructions.AddLast(IL.Ldarg_S((byte) 16));
-            instructions.AddLast(IL.Call(typeof(ExpandedMenu), nameof(ExpandedMenu.Rows), typeof(object)));
-        }
-        
-        /// <summary>Adds a call to a draw function accepting SpriteBatch</summary>
-        /// <param name="type">Class which the function belongs to</param>
-        /// <param name="method">Method name of the draw function</param>
-        private static Action<LinkedList<CodeInstruction>> OverlayPatch(Type type, string method) =>
-            instructions =>
-            {
-                instructions.AddLast(OC.Ldarg_1);
-                instructions.AddLast(IL.Call(type, method, typeof(SpriteBatch)));
-            };
-
-        private enum Operation
-        {
-            Add,
-            Sub
-        }
-        
-        /// <summary>Adds a value to the end of the stack</summary>
-        /// <param name="type">Class which the function belongs to</param>
-        /// <param name="method">Method name of the draw function</param>
-        /// <param name="operation">Whether to add or subtract the value.</param>
-        private static Action<LinkedList<CodeInstruction>> AddOffsetPatch(Type type, string method, Operation operation = Operation.Add) =>
-            instructions =>
-            {
-                instructions.AddLast(OC.Ldarg_0);
-                instructions.AddLast(IL.Call(type, method, typeof(MenuWithInventory)));
-                instructions.AddLast(operation == Operation.Sub ? OC.Sub : OC.Add);
-            };
     }
 }

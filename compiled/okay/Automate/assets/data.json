@@ -1,4 +1,4 @@
-{
+﻿{
     /**
      * The floor IDs and names that can be used in the ConnectorNames field in config.json.
      */
@@ -16,6 +16,20 @@
         "10": "Brick Floor",
         "11": "Rustic Plank Floor",
         "12": "Stone Walkway Floor"
+    },
+
+    /**
+     * The default machine-specific overrides.
+     *
+     * Don't edit this section directly! Instead copy an entry into your config.json to replace it.
+     */
+    "DefaultMachineOverrides": {
+        "ShippingBin": {
+            "Priority": -1
+        },
+        "MiniShippingBin": {
+            "Priority": -2
+        }
     },
 
     /**
@@ -57,19 +71,5 @@
             "SuggestedId": "Traktori.AM.QualityScrubber",
             "SuggestedUrl": "https://www.nexusmods.com/stardewvalley/mods/5663?tab=files"
         }
-    ],
-
-    /**
-     * The default machine-specific overrides.
-     *
-     * Don't edit this section directly! Instead copy an entry into your config.json to replace it.
-     */
-    "DefaultMachineOverrides": {
-        "ShippingBin": {
-            "Priority": -1
-        },
-        "MiniShippingBin": {
-            "Priority": -2
-        }
-    }
+    ]
 }

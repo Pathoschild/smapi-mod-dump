@@ -7,6 +7,11 @@ for queries and analysis.**
 ----
 
 # Release notes
+## 1.14.2
+Released 06 February 2021.
+
+* Fixed the top-left legend not scaling with the game's UI scale option.
+
 ## 1.14.1
 Released 23 January 2021.
 

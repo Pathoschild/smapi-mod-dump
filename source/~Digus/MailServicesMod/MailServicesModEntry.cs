@@ -37,6 +37,7 @@ namespace MailServicesMod
             ModMonitor = Monitor;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         }
 
         /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialized at this point, so this is a good time to set up mod integrations.</summary>
@@ -64,6 +65,33 @@ namespace MailServicesMod
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
                 prefix: new HarmonyMethod(typeof(ItemShipmentQuestOverrides), nameof(ItemShipmentQuestOverrides.mailbox))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogueAction)),
+                prefix: new HarmonyMethod(typeof(GuildRecoveryOverrides), nameof(GuildRecoveryOverrides.answerDialogueAction))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Item), nameof(Item.actionWhenPurchased)),
+                prefix: new HarmonyMethod(typeof(GuildRecoveryOverrides), nameof(GuildRecoveryOverrides.actionWhenPurchased))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
+                prefix: new HarmonyMethod(typeof(GiftShipmentOverrides), nameof(GiftShipmentOverrides.mailbox))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogueAction)),
+                prefix: new HarmonyMethod(typeof(GiftShipmentOverrides), nameof(GiftShipmentOverrides.answerDialogueAction))
+            );
+        }
+
+
+        /// <summary>Raised after the player loads a save slot and the world is initialized.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            GuildRecoveryController.ClearItemsToRecover();
         }
     }
 }

@@ -1,0 +1,13 @@
+url:
+   https://github.com/AHilyard/UpgradeablePan.git
+
+mods:
+   Upgradable Pan
+
+latest commit:
+   commit 140787a94669ffe74cd9144e999ae1d30a01778f
+   Author: Anthony Hilyard <anthony.hilyard@gmail.com>
+   Date:   Sat Feb 13 16:46:38 2021 -0800
+   
+       Added media to repository.
+   

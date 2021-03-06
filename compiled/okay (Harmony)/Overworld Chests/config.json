@@ -3,7 +3,7 @@
   "AllowIndoorSpawns": true,
   "OnlyAllowLocations": "",
   "DisallowLocations": "",
-  "RoundNumberOfChestsUp": true,
+  "RoundNumberOfChestsUp": false,
   "RespawnInterval": 7,
   "ChestDensity": 0.001,
   "Mult": 100,
@@ -13,33 +13,21 @@
   "MaxItemValue": -1,
   "CoinBaseMin": 20,
   "CoinBaseMax": 100,
-  "RarityChance": 0.1,
+  "RarityChance": 0.2,
   "IncreaseRate": 0.3,
-  "ItemListTypes": [
-    "Weapon",
-    "Shirt",
-    "Pants",
-    "Hat",
-    "Boots",
-    "BigCraftable",
-    "Ring",
-    "Seed",
-    "Mineral",
-    "Relic"
-  ],
-  "ItemListAllTypesDoNotEditJustCopyFromHere": [
-    "Weapon",
-    "Shirt",
-    "Pants",
-    "Hat",
-    "Boots",
-    "BigCraftable",
-    "Ring",
-    "Cooking",
-    "Seed",
-    "Mineral",
-    "Fish",
-    "Relic",
-    "BasicObject"
-  ]
+  "ItemListChances": {
+    "MeleeWeapon": 100,
+    "Shirt": 0,
+    "Pants": 0,
+    "Hat": 0,
+    "Boots": 100,
+    "BigCraftable": 100,
+    "Ring": 100,
+    "Seed": 100,
+    "Mineral": 100,
+    "Relic": 100,
+    "Cooking": 0,
+    "Fish": 0,
+    "BasicObject": 0
+  }
 }

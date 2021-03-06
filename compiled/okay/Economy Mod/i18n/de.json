@@ -1,0 +1,27 @@
+{
+    "PostponedPaymentText": "Aufgeschobene Zahlung",
+    "CurrentLotValueText": "Aktueller Grundstückswert",
+    "PaymentModeText": "Zahlungsmethode",
+    "DailyText": "Täglich",
+    "WeeklyText": "Wöchentlich",
+    "YearlyText": "Jährlich",
+    "TaxValueText": "Steuerwert",
+    "SeparateWalletsText": "Separate Geldbörse",
+    "ValidFarmersText": "Gültige Bauern",
+    "TaxEachFarmerText": "Steuer für jeden Bauern",
+    "PayText": "Bezahlen",
+    "PostponeText": "Aufschieben",
+    "TaxAboveThresholdText": "Wenn wir die Steuern bezahlen, sind wir bankrott!",
+    "PostponeChatText": "#playerName# hat die Zahlung aufgeschoben, neuer Wert: #Tax#g",
+    "TaxPaidText": "Steuer bezahlt, Wert: #Tax#g",
+    "PayTax_NotEnoughMoneyText": "Sie haben nicht genug Geld, um zu bezahlen.",
+    "PlayerPaidTaxesMaleText": "#playerName# hat seine Steuern bezahlt",
+    "PlayerPaidTaxesFemaleText": "#playerName# hat ihre Steuern bezahlt",
+    "Sidetab_TaxPaymentReportText": "Steuerzahlung und Bericht",
+
+    "BalanceReportText": "Wirtschaftsbericht",
+    "CurrentTaxBalance": "Ausstehender Steuerbetrag",
+	
+	"NextScheduledTaxText": "Nächste geplante Steuer:",
+    "NoBillsForYouText": "Derzeit gibt es keine Rechnungen für Sie :)"
+}

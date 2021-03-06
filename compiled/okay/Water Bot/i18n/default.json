@@ -1,0 +1,7 @@
+{
+  "process.start": "Time to Start Watering!",
+  "process.end": "Finished Watering",
+  "process.interrupt": "Stopped Watering",
+  "process.exhausted": "Tired of Watering",
+  "process.waterless": "Could not Find Water!"
+}

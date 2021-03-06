@@ -1,0 +1,10 @@
+﻿{
+  "Name": "IslandSecret",
+  "Author": "Edu Anttunes",
+  "Version": "1.0.0",
+  "Description": "There is a hidden secret map in Ginger Island. This mod allows you to teleport there!",
+  "UniqueID": "IslandSecret",
+  "EntryDll": "IslandSecret.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:8096" ]
+}

@@ -1,0 +1,13 @@
+url:
+   https://github.com/Enaium-StardewValleyMods/Labeling.git
+
+mods:
+   Labeling
+
+latest commit:
+   commit 488060bbbcdfede7bc80a83dd81eea44cfde02f9
+   Author: Enaium <32991121+Enaium@users.noreply.github.com>
+   Date:   Thu Feb 4 12:43:22 2021 +0800
+   
+       first commit
+   

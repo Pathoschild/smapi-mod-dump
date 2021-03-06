@@ -47,7 +47,7 @@ namespace CropTransplantMod
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            new DataLoader(Helper);
+            new DataLoader(Helper, ModManifest);
 
             var harmony = HarmonyInstance.Create("Digus.CropTransplantMod");
 

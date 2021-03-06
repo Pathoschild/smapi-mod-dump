@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Ophaneom/Stardew-Valley-Mods
+**
+*************************************************/
+
+To do:
+
+Create a level extender-like system. (Lvl 11+, exp multipliers and scalar necessary exp)
+Auto position adjusts system to experience popups. (To avoid the screen right position problems)
+Add some commands. (Like the config.json, but in the console :-P)
+Fix character creating key bug.
+Fix manifest version
+Optimize code.

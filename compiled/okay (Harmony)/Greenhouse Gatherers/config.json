@@ -3,6 +3,7 @@
   "DoJunimosHarvestFromPots": true,
   "DoJunimosAppearAfterHarvest": true,
   "DoJunimosHarvestFromFruitTrees": true,
+  "DoJunimosHarvestFromFlowers": true,
   "DoJunimosSowSeedsAfterHarvest": true,
   "ForceRecipeUnlock": false,
   "EnableHarvestMessage": true,

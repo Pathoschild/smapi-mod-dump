@@ -75,7 +75,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailOrder", "MailOrder\Mail
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfiniteBackpack", "Infinite Backpack\InfiniteBackpack.csproj", "{BEEA6138-51DB-4F40-A7C5-069E712B1F34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoToolSelector", "AutoToolSelector\AutoToolSelector.csproj", "{FCB25A51-E91A-479C-8D04-6B06BB6D87E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoToolSelector", "AutoToolSelector\AutoToolSelector.csproj", "{FCB25A51-E91A-479C-8D04-6B06BB6D87E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationCleaner", "LocationCleaner\LocationCleaner.csproj", "{580DE6D5-F35F-4E96-9826-3BD817DC9879}"
 EndProject
@@ -93,7 +93,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterMeteors", "BetterMete
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImprovedResourceClumps", "ImprovedResourceClumps\ImprovedResourceClumps.csproj", "{E4848F1D-F487-4E95-881A-7FA8F6DBA204}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IncreaseAnimalHouseMaxPopulation", "IncreaseAnimalHouseMaxPopulation\IncreaseAnimalHouseMaxPopulation.csproj", "{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IncreaseAnimalHouseMaxPopulation", "IncreaseAnimalHouseMaxPopulation\IncreaseAnimalHouseMaxPopulation.csproj", "{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewCheater", "StardewCheater\StardewCheater.csproj", "{66280CEE-E539-4C72-9744-DDD94196FFF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewTaxes", "StardewTaxes\StardewTaxes.csproj", "{F893D8D1-96AA-4939-AC52-D222724D29A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResetTerrainFeaturesRedux", "ResetTerrainFeaturesRedux\ResetTerrainFeaturesRedux.csproj", "{E0837DA3-09DC-4724-8AE7-19C826AD334C}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -348,8 +354,8 @@ Global
 		{FCB25A51-E91A-479C-8D04-6B06BB6D87E5}.Debug|x86.Build.0 = Debug|Any CPU
 		{FCB25A51-E91A-479C-8D04-6B06BB6D87E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCB25A51-E91A-479C-8D04-6B06BB6D87E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FCB25A51-E91A-479C-8D04-6B06BB6D87E5}.Release|x86.ActiveCfg = Release|Any CPU
-		{FCB25A51-E91A-479C-8D04-6B06BB6D87E5}.Release|x86.Build.0 = Release|Any CPU
+		{FCB25A51-E91A-479C-8D04-6B06BB6D87E5}.Release|x86.ActiveCfg = Release|x86
+		{FCB25A51-E91A-479C-8D04-6B06BB6D87E5}.Release|x86.Build.0 = Release|x86
 		{580DE6D5-F35F-4E96-9826-3BD817DC9879}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{580DE6D5-F35F-4E96-9826-3BD817DC9879}.Debug|x86.ActiveCfg = Debug|x86
 		{580DE6D5-F35F-4E96-9826-3BD817DC9879}.Debug|x86.Build.0 = Debug|x86
@@ -408,8 +414,32 @@ Global
 		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Debug|x86.Build.0 = Debug|Any CPU
 		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|x86.ActiveCfg = Release|Any CPU
-		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|x86.Build.0 = Release|Any CPU
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|x86.ActiveCfg = Release|x86
+		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728}.Release|x86.Build.0 = Release|x86
+		{66280CEE-E539-4C72-9744-DDD94196FFF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66280CEE-E539-4C72-9744-DDD94196FFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66280CEE-E539-4C72-9744-DDD94196FFF3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{66280CEE-E539-4C72-9744-DDD94196FFF3}.Debug|x86.Build.0 = Debug|Any CPU
+		{66280CEE-E539-4C72-9744-DDD94196FFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66280CEE-E539-4C72-9744-DDD94196FFF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66280CEE-E539-4C72-9744-DDD94196FFF3}.Release|x86.ActiveCfg = Release|x86
+		{66280CEE-E539-4C72-9744-DDD94196FFF3}.Release|x86.Build.0 = Release|x86
+		{F893D8D1-96AA-4939-AC52-D222724D29A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F893D8D1-96AA-4939-AC52-D222724D29A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F893D8D1-96AA-4939-AC52-D222724D29A4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F893D8D1-96AA-4939-AC52-D222724D29A4}.Debug|x86.Build.0 = Debug|Any CPU
+		{F893D8D1-96AA-4939-AC52-D222724D29A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F893D8D1-96AA-4939-AC52-D222724D29A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F893D8D1-96AA-4939-AC52-D222724D29A4}.Release|x86.ActiveCfg = Release|x86
+		{F893D8D1-96AA-4939-AC52-D222724D29A4}.Release|x86.Build.0 = Release|x86
+		{E0837DA3-09DC-4724-8AE7-19C826AD334C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0837DA3-09DC-4724-8AE7-19C826AD334C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0837DA3-09DC-4724-8AE7-19C826AD334C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E0837DA3-09DC-4724-8AE7-19C826AD334C}.Debug|x86.Build.0 = Debug|Any CPU
+		{E0837DA3-09DC-4724-8AE7-19C826AD334C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0837DA3-09DC-4724-8AE7-19C826AD334C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0837DA3-09DC-4724-8AE7-19C826AD334C}.Release|x86.ActiveCfg = Release|x86
+		{E0837DA3-09DC-4724-8AE7-19C826AD334C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -448,6 +478,9 @@ Global
 		{08F693EE-73C8-439E-A25E-4FB7EE9399EA} = {D878CD74-D4A6-4F94-B422-4BFD98998D2A}
 		{E4848F1D-F487-4E95-881A-7FA8F6DBA204} = {D878CD74-D4A6-4F94-B422-4BFD98998D2A}
 		{CEDD2ADA-ADD5-4FF1-91F3-0112E1374728} = {34698880-C8D5-40AE-BAC1-08FDE4359A9B}
+		{66280CEE-E539-4C72-9744-DDD94196FFF3} = {34698880-C8D5-40AE-BAC1-08FDE4359A9B}
+		{F893D8D1-96AA-4939-AC52-D222724D29A4} = {34698880-C8D5-40AE-BAC1-08FDE4359A9B}
+		{E0837DA3-09DC-4724-8AE7-19C826AD334C} = {34698880-C8D5-40AE-BAC1-08FDE4359A9B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB6C6B8C-9654-4232-A3DA-0819C7860DF5}

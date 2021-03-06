@@ -27,23 +27,26 @@ namespace MoreMultiplayerInfo.EventHandlers
         private readonly ReadyCheckHandler _readyCheckHandler;
 
         private readonly IMonitor _monitor;
+        
+        private readonly IModHelper _helper;
 
         public PlayerIconMenu(ReadyCheckHandler readyCheckHandler, IMonitor monitor, IModHelper helper)
         {
             _readyCheckHandler = readyCheckHandler;
             _monitor = monitor;
+            _helper = helper;
             Icons = new List<PlayerIcon>();
 
-            GameEvents.UpdateTick += SetupIcons;
+            _helper.Events.GameLoop.UpdateTicked += SetupIcons;
 
-            GraphicsEvents.Resize += SetupIcons;
+            _helper.Events.Display.WindowResized += SetupIcons;
         }
 
         private void SetupIcons(object sender, EventArgs e)
         {
             if (!Context.IsWorldReady) return;
 
-            GameEvents.UpdateTick -= SetupIcons;
+            _helper.Events.GameLoop.UpdateTicked -= SetupIcons;
 
             SetupIcons();
         }

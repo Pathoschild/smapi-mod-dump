@@ -14,17 +14,12 @@ namespace Quick_Sell
 {
     internal class ModUtils
     {
-        private readonly ModConfig Config;
-
-        public ModUtils(ModConfig config)
+        public static void SendHUDMessage(string message, int type = HUDMessage.newQuest_type)
         {
-            this.Config = config;
-        }
+            if (ModEntry.Config.EnableHUDMessages == false)
+                return;
 
-        public void SendHUDMessage(string message, int type = HUDMessage.newQuest_type)
-        {
-            if (this.Config.EnableHUDMessages == true)
-                Game1.addHUDMessage(new HUDMessage(message, type));
+            Game1.addHUDMessage(new HUDMessage(message, type));
         }
     }
 }

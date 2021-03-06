@@ -1,0 +1,6 @@
+0.1.3
+- Fixed the crashing issue present in 0.1.2
+- Cleanup and general typo-fixes
+- Fix a issue where reverse TypeId would wrongly report sdv.object:* instances as sdv.craftable:* instances
+- Added a texture stitching system under the TextureStitcher namespace
+- Added a more advanced localization system under the I18n namespace

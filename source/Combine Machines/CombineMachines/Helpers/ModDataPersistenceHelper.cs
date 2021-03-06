@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,18 +37,33 @@ namespace CombineMachines.Helpers
         {
             TrackedKeys = ModDataKeys.Distinct().ToList().AsReadOnly();
 
-            //  EDIT: These 2 event listeners probably aren't needed anymore? I think a hotfix update added similar logic to the vanilla game somewhere around Update 1.5.1 or 1.5.2,
+            //  EDIT: These 2 event listeners probably aren't needed anymore? I think a hotfix update added similar logic to the vanilla game somewhere around Update 1.5.1 or 1.5.2
+            //  EDIT2: This logic seems like it's still needed for sub-types of StardewValley.Object
+            //  Decompile StardewValley.exe, and look at StardewValley.Object.placementAction, which seems to be creating new instances of
+            //  certain sub-types like CrabPot/Cask/WoodChipper, without also calling Item._getOneFrom(Item source) to retain the modData
             helper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
             helper.Events.World.ObjectListChanged += World_ObjectListChanged;
 
             HarmonyInstance Harmony = HarmonyInstance.Create(ModEntry.ModInstance.ModManifest.UniqueID);
 
-            //  EDIT: This patch probably isn't needed anymore? I think a hotfix update added similar logic to the vanilla game somewhere around Update 1.5.1 or 1.5.2
+            //  EDIT: These patches probably aren't needed anymore? I think a hotfix update added similar logic to the vanilla game somewhere around Update 1.5.1 or 1.5.2
             //  Patch Item.getOne to copy the modData to the return value
             Harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.getOne)),
                 postfix: new HarmonyMethod(typeof(GetOnePatch), nameof(GetOnePatch.Postfix))
             );
+            //Harmony.Patch(
+            //    original: AccessTools.Method(typeof(WoodChipper), nameof(WoodChipper.getOne)),
+            //    postfix: new HarmonyMethod(typeof(GetOnePatch), nameof(GetOnePatch.WoodChipper_Postfix))
+            //);
+            //Harmony.Patch(
+            //    original: AccessTools.Method(typeof(Cask), nameof(Cask.getOne)),
+            //    postfix: new HarmonyMethod(typeof(GetOnePatch), nameof(GetOnePatch.Cask_Postfix))
+            //);
+            //Harmony.Patch(
+            //    original: AccessTools.Method(typeof(CrabPot), nameof(CrabPot.getOne)),
+            //    postfix: new HarmonyMethod(typeof(GetOnePatch), nameof(GetOnePatch.CrabPot_Postfix))
+            //);
         }
 
         [HarmonyPatch(typeof(SObject), nameof(SObject.getOne))]
@@ -64,6 +80,10 @@ namespace CombineMachines.Helpers
                     ModEntry.Logger.Log(string.Format("Unhandled Error in {0}.{1}:\n{2}", nameof(GetOnePatch), nameof(Postfix), ex), LogLevel.Error);
                 }
             }
+
+            public static void WoodChipper_Postfix(WoodChipper __instance, Item __result) { Postfix(__instance as SObject, __result); }
+            public static void Cask_Postfix(Cask __instance, Item __result) { Postfix(__instance as SObject, __result); }
+            public static void CrabPot_Postfix(CrabPot __instance, Item __result) { Postfix(__instance as SObject, __result); }
         }
 
         private static Item PreviousHeldItem = null;
@@ -103,6 +123,10 @@ namespace CombineMachines.Helpers
                     if (Source.modData.TryGetValue(ModDataKey, out string Value))
                     {
                         Target.modData[ModDataKey] = Value;
+                        Target.modDataForSerialization[ModDataKey] = Value;
+#if NEVER //DEBUG
+                        ModEntry.Logger.Log(string.Format("Copied modData: {0}={1}", ModDataKey, Value), ModEntry.InfoLogLevel);
+#endif
                     }
                 }
             }

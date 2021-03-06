@@ -24,7 +24,12 @@ namespace SpriteMaster.Extensions.Compressors {
 					if (!Enumerable.SequenceEqual(dummyData, uncompressedData)) {
 						throw new Exception("Original and Uncompressed Data Mismatch");
 					}
+					Debug.InfoLn("System.IO Compression is supported");
 					return true;
+				}
+				catch (DllNotFoundException) {
+					Debug.InfoLn($"System.IO Compression not supported");
+					return false;
 				}
 				catch (Exception ex) {
 					Debug.InfoLn($"System.IO Compression not supported: '{ex.ToString()}'");

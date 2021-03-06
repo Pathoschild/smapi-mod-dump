@@ -50,7 +50,15 @@ namespace MailFrameworkMod
                 IList<string> mailbox = new List<string>(Game1.player.mailbox);
                 newLetters.ForEach((l) =>
                 {
-                    Letters.Value.Add(l);
+                    if (l.AutoOpen)
+                    {
+                        if (l.Recipe != null) GetAndLearnRecipe(l.Recipe, out var s, out var i, out var t);
+                        l.Callback?.Invoke(l);
+                    }
+                    else
+                    {
+                        Letters.Value.Add(l);
+                    }
                 });
                 Letters.Value.ForEach((l) =>
                 {
@@ -203,35 +211,7 @@ namespace MailFrameworkMod
                 if (ShownLetter.Value.Recipe != null)
                 {
                     string recipe = ShownLetter.Value.Recipe;
-                    Dictionary<string, string> cookingData = MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CookingRecipes", ContentSource.GameContent);
-                    Dictionary<string, string> craftingData = MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CraftingRecipes", ContentSource.GameContent);
-                    string recipeString = null;
-                    int dataArrayI18NSize = 0;
-                    string cookingOrCraftingText = null;
-                    if (cookingData.ContainsKey(recipe))
-                    {
-                        if (!Game1.player.cookingRecipes.ContainsKey(recipe))
-                        {
-                            Game1.player.cookingRecipes.Add(recipe, 0);
-                        }
-                        recipeString = cookingData[recipe];
-                        dataArrayI18NSize = 5;
-                        cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_cooking");
-                    }
-                    else if (craftingData.ContainsKey(recipe))
-                    {
-                        if (!Game1.player.craftingRecipes.ContainsKey(recipe))
-                        {
-                            Game1.player.craftingRecipes.Add(recipe, 0);
-                        }
-                        recipeString = craftingData[recipe];
-                        dataArrayI18NSize = 6;
-                        cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_crafting");
-                    }
-                    else
-                    {
-                        MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' was not found. The mail will ignore it.", LogLevel.Warn);
-                    }
+                    GetAndLearnRecipe(recipe, out string recipeString, out int dataArrayI18NSize, out string cookingOrCraftingText);
 
                     if (recipeString != null)
                     {
@@ -248,17 +228,8 @@ namespace MailFrameworkMod
                                 learnedRecipe = strArray[strArray.Length - 1];
                             }
                         }
-
-                        if (MailFrameworkModEntry.ModHelper.Reflection.GetMethod(activeClickableMenu, "getTextColor").Invoke<int>() == -1)
-                        {
-                            MailFrameworkModEntry.ModHelper.Reflection.GetField<String>(activeClickableMenu, "cookingOrCrafting").SetValue(cookingOrCraftingText);
-                            MailFrameworkModEntry.ModHelper.Reflection.GetField<String>(activeClickableMenu, "learnedRecipe").SetValue(learnedRecipe);
-                        }
-                        else
-                        {
-                            activeClickableMenu.CookingOrCrafting = cookingOrCraftingText;
-                            activeClickableMenu.LearnedRecipe = learnedRecipe;
-                        }
+                        activeClickableMenu.cookingOrCrafting = cookingOrCraftingText;
+                        activeClickableMenu.learnedRecipe = learnedRecipe;
                     }
                 }
                 activeClickableMenu.exitFunction = (IClickableMenu.onExit)Delegate.Combine(activeClickableMenu.exitFunction, (IClickableMenu.onExit)delegate
@@ -269,6 +240,47 @@ namespace MailFrameworkMod
             else
             {
                 UpdateNextLetterId();
+            }
+        }
+
+        private static void GetAndLearnRecipe(string recipe, out string recipeString, out int dataArrayI18NSize,
+            out string cookingOrCraftingText)
+        {
+            Dictionary<string, string> cookingData =
+                MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CookingRecipes",
+                    ContentSource.GameContent);
+            Dictionary<string, string> craftingData =
+                MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CraftingRecipes",
+                    ContentSource.GameContent);
+            recipeString = null;
+            dataArrayI18NSize = 0;
+            cookingOrCraftingText = null;
+            if (cookingData.ContainsKey(recipe))
+            {
+                if (!Game1.player.cookingRecipes.ContainsKey(recipe))
+                {
+                    Game1.player.cookingRecipes.Add(recipe, 0);
+                }
+
+                recipeString = cookingData[recipe];
+                dataArrayI18NSize = 5;
+                cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_cooking");
+            }
+            else if (craftingData.ContainsKey(recipe))
+            {
+                if (!Game1.player.craftingRecipes.ContainsKey(recipe))
+                {
+                    Game1.player.craftingRecipes.Add(recipe, 0);
+                }
+
+                recipeString = craftingData[recipe];
+                dataArrayI18NSize = 6;
+                cookingOrCraftingText = Game1.content.LoadString("Strings\\UI:LearnedRecipe_crafting");
+            }
+            else
+            {
+                MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' was not found. The mail will ignore it.",
+                    LogLevel.Warn);
             }
         }
 
@@ -342,7 +354,7 @@ namespace MailFrameworkMod
                     if (clickableComponent.containsPoint(x, y))
                     {
                         Letter letter = MailDao.FindLetter(clickableComponent.name.Split(' ')[0]);
-                        if (letter != null)
+                        if (letter != null && !letter.AutoOpen)
                         {
                             LetterViewerMenuExtended letterViewerMenu = new LetterViewerMenuExtended(letter.Text.Replace("@", Game1.player.Name), letter.Id, true);
                             MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(letterViewerMenu, "whichBG").SetValue(letter.WhichBG);

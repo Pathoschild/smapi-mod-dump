@@ -1,0 +1,16 @@
+{
+  "Name": "Stardew Notification",
+  "Author": "monopandora, maintained by Sakorona",
+  "Version": "1.8.6",
+  "Description": "Daily Notification mod for Stardew Valley",
+  "UniqueID": "mondopandora.stardewnotification",
+  "EntryDll": "StardewNotification.dll",
+  "MinimumApiVersion": "3.0",
+  "ModUpdater": {
+    "Repository": "SDVMods",
+    "User": "Sakorona",
+    "Directory": "_releases",
+    "ModFolder": "StardewNotification"
+  },
+  "UpdateKeys": [ "Nexus:4713" ]
+}

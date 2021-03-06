@@ -16,40 +16,24 @@ namespace Quick_Sell
 {
     internal class ModPlayer
     {
-        private readonly IModHelper Helper;
-        private readonly ModConfig Config;
-
-        private readonly ModUtils Utils;
-        private ModLogger Logger;
-
-        public ModPlayer(IModHelper helper, ModConfig config, ModLogger logger, ModUtils utils)
-        {
-            this.Config = config;
-            this.Helper = helper;
-
-            this.Logger = logger;
-
-            this.Utils = utils;
-        }
-
-        public void RemoveItemFromPlayerInventory(Item item)
+        public static void RemoveItemFromPlayerInventory(Item item)
         {
             Game1.player.removeItemFromInventory(item);
         }
 
-        public void AddItemToPlayerShippingBin(Item item)
+        public static void AddItemToShippingBin(Item item)
         {
             Game1.getFarm().getShippingBin(Game1.player).Add(item);
         }
 
-        public Item GetHeldItem()
+        public static void OrganizeShippingBin()
         {
-            Item heldItem = Game1.player.CurrentItem;
+            var shippingBinItems = Game1.getFarm().getShippingBin(Game1.player);
 
-            return heldItem;
+            ItemGrabMenu.organizeItemsInList(shippingBinItems);
         }
 
-        public Item GetHoveredItem()
+        public static Item GetHoveredItem()
         {
             IClickableMenu currentMenu = (Game1.activeClickableMenu as GameMenu)?.GetCurrentPage() ?? Game1.activeClickableMenu;
             Item currentItem = null;
@@ -66,30 +50,27 @@ namespace Quick_Sell
                 //    break;
 
                 case InventoryPage menu:
-                    currentItem = Game1.player.CursorSlotItem ?? this.Helper.Reflection.GetField<Item>(menu, "hoveredItem").GetValue();
+                    currentItem = Game1.player.CursorSlotItem ?? ModEntry.Helper.Reflection.GetField<Item>(menu, "hoveredItem").GetValue();
                     break;
 
                 default:
                     string message = "You are not in the inventory!";
 
-                    this.Logger.Debug(message);
-                    this.Utils.SendHUDMessage(message, HUDMessage.error_type);
+                    ModLogger.Trace(message);
+                    ModUtils.SendHUDMessage(message, HUDMessage.error_type);
                     break;
             }
 
             return currentItem;
         }
 
-        public bool CheckIfItemCanBeShipped(Item item)
+        public static bool CheckIfItemCanBeShipped(Item item)
         {
-            if (this.Config.CheckIfItemsCanBeShipped == true)
-            {
-                Object itemTmp = item as Object;
+            Object itemAsObject = item as Object;
 
-                if (itemTmp == null || itemTmp.canBeShipped() == false)
-                {
-                    return false;
-                }
+            if (itemAsObject == null || itemAsObject.canBeShipped() == false)
+            {
+                return false;
             }
 
             return true;

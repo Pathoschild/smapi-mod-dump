@@ -3,6 +3,7 @@ url:
 
 mods:
    Animals Need Water
+   Event Black Bars
    Fish Exclusions
    Grapes All Year Round
    Incubate Pufferfish Eggs
@@ -10,9 +11,9 @@ mods:
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit 104ba6ca76bde1a5a7f76047a62785001df899cb
+   commit 92fafdb731047b3a880c7d18905323af546e3a28
    Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Fri Jan 29 19:48:38 2021 +0300
+   Date:   Tue Feb 9 20:32:58 2021 +0300
    
-       feat: add brazilian portuguese translation by tramontina
+       fix: fix building texture getting changed regardless of its type
    

@@ -39,7 +39,7 @@ namespace PFMAutomate
         /*********
         ** Private methods
         *********/
-        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
+        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialized at this point, so this is a good time to set up mod integrations.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -50,11 +50,22 @@ namespace PFMAutomate
             var harmony = HarmonyInstance.Create("Digus.PFMAutomate");
 
             Assembly automateAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName.StartsWith("Automate,"));
-            MethodInfo methodInfo = AccessTools.GetDeclaredMethods(automateAssembly.GetType("Pathoschild.Stardew.Automate.Framework.AutomationFactory")).Find(m=> m.GetParameters().Any(p=>p.ParameterType == typeof(SObject)));
+            MethodInfo automateMethodInfo = AccessTools.GetDeclaredMethods(automateAssembly.GetType("Pathoschild.Stardew.Automate.Framework.AutomationFactory")).Find(m=> m.GetParameters().Any(p=>p.ParameterType == typeof(SObject)));
             harmony.Patch(
-                original: methodInfo,
+                original: automateMethodInfo,
                 postfix: new HarmonyMethod(typeof(AutomateOverrides), nameof(AutomateOverrides.GetFor))
             );
+
+            Assembly ccrmAutomateAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.StartsWith("CCRMAutomate,"));
+            if (ccrmAutomateAssembly != null)
+            {
+                MethodInfo ccrmAutomateMethodInfo = AccessTools.GetDeclaredMethods(ccrmAutomateAssembly.GetType("CCRMAutomate.Automate.CustomCrystalariumAutomationFactory")).Find(m => m.GetParameters().Any(p => p.ParameterType == typeof(SObject)));
+                harmony.Patch(
+                    original: ccrmAutomateMethodInfo,
+                    postfix: new HarmonyMethod(typeof(CCRMAutomateOverrides), nameof(CCRMAutomateOverrides.GetFor))
+                );
+            }
+            
         }
     }
 }

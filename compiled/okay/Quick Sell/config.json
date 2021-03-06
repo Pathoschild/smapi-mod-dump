@@ -1,5 +1,5 @@
 {
-  "SellKey": "MouseMiddle",
+  "SellKey": "MouseMiddle, LeftStick",
   "CheckIfItemsCanBeShipped": true,
   "EnableHUDMessages": false
 }

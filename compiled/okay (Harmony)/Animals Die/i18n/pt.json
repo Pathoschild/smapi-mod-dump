@@ -1,0 +1,32 @@
+{
+  /*
+	Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Cause.starvation": "fome",
+  "Cause.dehydration": "sede",
+  "Cause.oldAge": "causas naturais",
+  "Cause.illness": "complicação de uma doença",
+  "Cause.wildAnimalAttack": "atacado por um animal selvagem",
+  "Happiness.sad": "triste",
+  "Happiness.fine": "bem",
+  "Happiness.happy": "feliz",
+  "Love.heart": "{{heartCount}} coração",
+  "Love.hearts": "{{heartCount}} corações",
+  "AnimalDeathMessage": "Seu {{animalType}} {{animalName}} morreu de {{cause}}.\n{{animalName}} tinha {{entireAgeText}} anos de idade, estava se sentindo {{happinessText}} e tinha {{loveString}} de amizade com você.",
+  "Age.year": "{{yearCount}} ano de idade",
+  "Age.years": "{{yearCount}} anos de idade",
+  "Age.yearAndMonth": "{{yearCount}} ano e {{monthCount}} mês",
+  "Age.yearAndMonths": "{{yearCount}} ano e {{monthCount}} meses",
+  "Age.yearsAndMonth": "{{yearCount}} anos e {{monthCount}} mês",
+  "Age.yearsAndMonths": "{{yearCount}} anos e {{monthCount}} meses",
+  "Age.month": "{{monthCount}} mês",
+  "Age.months": "{{monthCount}} meses",
+  "Age.day": "{{dayCount}} dia",
+  "Age.days": "{{dayCount}} dias",
+  "SickAnimalMessage.oneAnimal": "{{firstAnimalName}} está doente.",
+  "SickAnimalMessage.twoAnimals": "{{firstAnimalName}} e {{secondAnimalName}} estão doentes.",
+  "SickAnimalMessage.threeAnimals": "{{firstAnimalName}}, {{secondAnimalName}} e {{thirdAnimalName}} estão doentes.",
+  "SickAnimalMessage.fourAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} e {{sickAnimalCount}} outro animal está doente.",
+  "SickAnimalMessage.moreThanFourAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} e {{sickAnimalCount}} outros animais estão doentes."
+}

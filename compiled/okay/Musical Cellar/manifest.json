@@ -1,0 +1,10 @@
+{
+  "Name": "MusicalCellar",
+  "Author": "Lis",
+  "Version": "1.1.1",
+  "Description": "Play farmhouse jukebox music in the cellar",
+  "UniqueID": "Lis.MusicalCellar",
+  "EntryDll": "MusicalCellar.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:7626", "Github:lisamreynolds/MusicalCellar"]
+}

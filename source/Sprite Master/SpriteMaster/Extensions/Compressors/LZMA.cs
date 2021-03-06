@@ -26,7 +26,12 @@ namespace SpriteMaster.Extensions.Compressors {
 					if (!Enumerable.SequenceEqual(dummyData, uncompressedData)) {
 						throw new Exception("Original and Uncompressed Data Mismatch");
 					}
+					Debug.InfoLn("LZMA Compression is supported");
 					return true;
+				}
+				catch (DllNotFoundException) {
+					Debug.InfoLn($"LZMA Compression not supported");
+					return false;
 				}
 				catch (Exception ex) {
 					Debug.InfoLn($"LZMA Compression not supported: '{ex.ToString()}'");

@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Crystal Ball",
+  "Author": "Thom Smith",
+  "Version": "0.0.1",
+  "Description": "Adds a crystal ball that changes color depending on your daily luck.",
+  "UniqueID": "Thom1729.CrystalBall",
+  "EntryDll": "CrystalBall.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

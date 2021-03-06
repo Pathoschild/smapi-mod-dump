@@ -15,7 +15,8 @@ namespace FishingChestsExpanded
     public class ModConfig
     {
         public bool EnableMod { get; set; } = true;
-        public float BaseChanceForTreasureChest { get; set; } = -1f;
+        public int VanillaLootChance { get; set; } = 0;
+        public int ChanceForTreasureChest { get; set; } = -1;
         public int MaxItems { get; set; } = 5;
         public int ItemsBaseMaxValue { get; set; } = 100;
         public int MinItemValue { get; set; } = 20;
@@ -23,13 +24,21 @@ namespace FishingChestsExpanded
         public int CoinBaseMin { get; set; } = 20;
         public int CoinBaseMax { get; set; } = 100;
         public float IncreaseRate { get; set; } = 0.2f;
-        public List<string> ItemListTypes { get; set; } = new List<string>
+        public Dictionary<string, int> ItemListChances { get; set; } = new Dictionary<string, int>
         {
-            "Weapon", "Shirt", "Pants", "Hat", "Boots", "BigCraftable", "Ring", "Seed", "Mineral", "Relic"
-        };
-        public List<string> ItemListAllTypesDoNotEditJustCopyFromHere { get; set; } = new List<string>
-        {
-            "Weapon", "Shirt", "Pants", "Hat", "Boots", "BigCraftable", "Ring", "Cooking", "Seed", "Mineral", "Fish", "Relic", "BasicObject"
+            {"MeleeWeapon", 100},
+            {"Shirt", 0},
+            {"Pants", 0},
+            {"Hat", 0},
+            {"Boots", 100},
+            {"BigCraftable", 100},
+            {"Ring", 100},
+            {"Seed", 100},
+            {"Mineral", 100},
+            {"Relic", 100},
+            {"Cooking", 0},
+            {"Fish", 0},
+            {"BasicObject", 0}
         };
     }
 }

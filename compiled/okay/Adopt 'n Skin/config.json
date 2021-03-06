@@ -1,4 +1,6 @@
 {
+  "PuddleX": 0,
+  "PuddleY": 0,
   "OneTileHorse": true,
   "PetAndHorseNameTags": true,
   "HorseWhistleKey": "R",
@@ -7,6 +9,7 @@
   "WalkThroughPets": false,
   "DisperseCuddlePuddle": true,
   "CuddleExplosionRadius": 5,
+  "CustomPetLocation": false,
   "WildHorseSpawn": true,
   "StraySpawn": true,
   "WildHorseSpawnLocations": [

@@ -1,0 +1,13 @@
+{
+  "FogChanceInEarlySpring": 0.4,
+  "FogChanceInLateSpring": 0.2,
+  "FogChanceInEarlySummer": 0.1,
+  "FogChanceInLateSummer": 0.15,
+  "FogChanceInEarlyFall": 0.6,
+  "FogChanceInLateFall": 0.5,
+  "FogChanceInEarlyWinter": 0.2,
+  "FogChanceInLateWinter": 0.2,
+  "UseLighterFog": false,
+  "DisplayFogInTheDesert": false,
+  "EveningWeatherFogChance": 0.35
+}

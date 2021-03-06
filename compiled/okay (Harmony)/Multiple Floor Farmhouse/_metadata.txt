@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8077
+IDs: aedenthorn.MultiStoryFarmhouse
+update keys: Nexus:8077, GitHub:aedenthorn/StardewValleyMods

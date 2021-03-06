@@ -1,41 +1,38 @@
-{
-	// Object data
-	"Name": "blueberry.cac.kebab",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 48,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": null,
-	"Price": 97,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 229, // Tortilla
-				"Count": 1
-			},
-			{
-				"Object": 256, // Tomato
-				"Count": 1
-			},
-			{
-				"Object": 259, // Fiddlehead Fern
-				"Count": 1
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.kebab",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 48,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 97,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 229,
+                "Count": 1
+            },
+            {
+                "Object": 256,
+                "Count": 1
+            },
+            {
+                "Object": 259,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Kebab"
+    }
 }

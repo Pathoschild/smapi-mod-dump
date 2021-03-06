@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Enaium-StardewValleyMods/Labeling
+**
+*************************************************/
+
+{
+  "labeling.message.firstPos": "Record the first position",
+  "labeling.message.secondPos": "Record the second position",
+  "labeling.naming.button.done.title": "Done",
+  "labeling.naming.button.cancel.title": "Cancel",
+  "labeling.naming.textField.name.description": "Name",
+  "labeling.deleteLabeling.button.delete.title": "Delete",
+  "labeling.labelingGui.title": "Labeling",
+  "labeling.labelingGui.record": "Record labeling",
+  "labeling.labelingGui.display": "Display",
+  "labeling.labelingGui.color": "Color"
+}

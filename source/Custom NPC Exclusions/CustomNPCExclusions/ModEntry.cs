@@ -36,8 +36,10 @@ namespace CustomNPCExclusions
             HarmonyPatch_SocializeQuest.ApplyPatch(harmony);
             HarmonyPatch_WinterStarGifts.ApplyPatch(harmony);
             HarmonyPatch_ShopDialog.ApplyPatch(harmony);
-            HarmonyPatch_IslandVisit.ApplyPatch(harmony);
+            HarmonyPatch_IslandVisit.ApplyPatch(harmony, helper);
             HarmonyPatch_PerfectionFriendship.ApplyPatch(harmony);
+            HarmonyPatch_MovieInvitation.ApplyPatch(harmony);
+            HarmonyPatch_Greetings.ApplyPatch(harmony);
         }
 
         /// <summary>Get whether this mod can load the initial version of the given asset.</summary>

@@ -1,0 +1,9 @@
+{
+  "Name": "MoreSlimes",
+  "Author": "Ded4lif",
+  "Version": "1.6.1",
+  "Description": "Adds More Slimes!",
+  "UniqueID": "Ded4lif.MoreSlimes",
+  "EntryDll": "MoreSlimes.dll",
+  "UpdateKeys": ["Nexus:7526"]
+}

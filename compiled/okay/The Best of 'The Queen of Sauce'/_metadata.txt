@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7985
+IDs: Bpendragon.BestOfQOS
+update keys: GitHub:Bpendragon/Best-of-Queen-of-Sauce, Nexus:7985

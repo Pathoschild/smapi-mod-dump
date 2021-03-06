@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using ConfigureMachineOutputs.Framework.Configs;
 using StardewModdingAPI;
 using StardewValley;
 using SObject = StardewValley.Object;
@@ -96,14 +95,14 @@ namespace ConfigureMachineOutputs.Framework.Patches
                     ? _rnd.Next(_config.Machines.Crystalarium.CrystalMinOutput, _config.Machines.Crystalarium.CystalMaxOutput) 
                     : 1;
             }
-            if (machine.Name.Equals("Tapper") && !justCheckingForActivity)
+            if (machine.Name.Equals("Tapper") && !justCheckingForActivity && machine.heldObject.Value != null)
             {
                 _minOut = _config.Machines.Tapper.CustomTapperEnabled ? _config.Machines.Tapper.TapperMinOutput : 1;
                 _maxOut = _config.Machines.Tapper.CustomTapperEnabled ? _config.Machines.Tapper.TapperMaxOutput : 1;
                 _output = _rnd.Next(_minOut, _maxOut);
                 machine.heldObject.Value.Stack = _output;
             }
-            if (machine.Name.Equals("Worm Bin") && !justCheckingForActivity)
+            if (machine.Name.Equals("Worm Bin") && !justCheckingForActivity && machine.heldObject.Value != null)
             {
                 _minOut = _config.Machines.WormBin.CustomWormBinEnabled ? _config.Machines.WormBin.WormBinMinOutput : 1;
                 _maxOut = _config.Machines.WormBin.CustomWormBinEnabled ? _config.Machines.WormBin.WormBinMaxOutput : 6;

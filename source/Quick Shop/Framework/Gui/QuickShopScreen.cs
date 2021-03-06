@@ -37,8 +37,10 @@ namespace QuickShop.Framework.Gui
             {
                 OnLeftClicked = () =>
                 {
-                    Game1.activeClickableMenu =
-                        new ShopMenu(new List<ISalable>(Utility.getShopStock(true)), who: "Pierre");
+                    if (Game1.getLocationFromName("SeedShop") is SeedShop locationFromName)
+                    {
+                        OpenScreenGui(new ShopMenu(locationFromName.shopStock(), who: "Pierre"));
+                    }
                 }
             });
 

@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+[
+    {
+        "Name": "Grave Stone", //Name of the cloner. Required.
+        "GetObjectBackOnChange": true, //If true, you'll get the item you placed before back from the cloner when you place a new item or remove the cloner from the ground. Default is false.
+        "GetObjectBackImmediately": false, //If true, the cloner will let you get the item you placed back immediately. Also, the ﻿GetObjectBackOnChange option will be ignored. Default is false.
+        "UsePfmForInput": false, // If true, it won't let you place the object listed on CloningData into the cloner. You will need PFM to create input rules, and the cloning data will be used to restart the machine when the output is picked up.
+        "CloningData": { // Pair of identifier and time in game minutes for the object to be cloned. The identifier can be the Index, the Category or the Name of the object.
+            "Peach": 10, //Name identifier
+            "136": 30, //Index identifier
+            "-5": 60 //Category identifier
+        }
+    }
+]

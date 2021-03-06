@@ -302,33 +302,38 @@ namespace CombineMachines
             }
 #endif
 
-            //  Detect when player clicks on a machine in their inventory while another machine of the same type is selected, and the CTRL key is held
-            if (e.Button == SButton.MouseLeft && IsCombineKeyHeld(Helper.Input))
+            if (IsCombineKeyHeld(Helper.Input))
             {
-                if (Game1.activeClickableMenu is GameMenu GM && GM.currentTab == GameMenu.inventoryTab)
+                if (Game1.activeClickableMenu is GameMenu GM && GM.currentTab == GameMenu.inventoryTab && TryGetClickedInventoryItem(GM, e, out Item ClickedItem, out int ClickedItemIndex))
                 {
-                    if (TryGetClickedInventoryItem(GM, e, out Item ClickedItem, out int ClickedItemIndex))
+                    //  Detect when player clicks on a machine in their inventory while another machine of the same type is selected
+                    if (e.Button == SButton.MouseLeft && Game1.player.CursorSlotItem is SObject SourceObj && ClickedItem is SObject TargetObj && CanCombine(SourceObj, TargetObj))
                     {
-                        if (Game1.player.CursorSlotItem is SObject SourceObj && ClickedItem is SObject TargetObj && CanCombine(SourceObj, TargetObj))
+                        if (!SourceObj.TryGetCombinedQuantity(out int SourceQuantity))
+                            SourceQuantity = SourceObj.Stack;
+                        if (!TargetObj.TryGetCombinedQuantity(out int TargetQuantity))
+                            TargetQuantity = TargetObj.Stack;
+
+                        TargetObj.SetCombinedQuantity(SourceQuantity + TargetQuantity);
+                        Game1.player.CursorSlotItem = null;
+
+                        //  Clicking an item will make the game set it to the new CursorSlotItem, but since we just combined them, we want the CursorSlotItem to be empty
+                        DelayHelpers.InvokeLater(1, () =>
                         {
-                            if (!SourceObj.TryGetCombinedQuantity(out int SourceQuantity))
-                                SourceQuantity = SourceObj.Stack;
-                            if (!TargetObj.TryGetCombinedQuantity(out int TargetQuantity))
-                                TargetQuantity = TargetObj.Stack;
-
-                            TargetObj.SetCombinedQuantity(SourceQuantity + TargetQuantity);
-                            Game1.player.CursorSlotItem = null;
-
-                            //  Clicking an item will make the game set it to the new CursorSlotItem, but since we just combined them, we want the CursorSlotItem to be empty
-                            DelayHelpers.InvokeLater(1, () =>
+                            if (Game1.player.CursorSlotItem != null && Game1.player.Items[ClickedItemIndex] == null)
                             {
-                                if (Game1.player.CursorSlotItem != null && Game1.player.Items[ClickedItemIndex] == null)
-                                {
-                                    Game1.player.Items[ClickedItemIndex] = Game1.player.CursorSlotItem;
-                                    Game1.player.CursorSlotItem = null;
-                                }
-                            });
-                        }
+                                Game1.player.Items[ClickedItemIndex] = Game1.player.CursorSlotItem;
+                                Game1.player.CursorSlotItem = null;
+                            }
+                        });
+                    }
+                    //  Right-clicking a combined machine splits it to its un-combined state
+                    else if (e.Button == SButton.MouseRight && Game1.player.CursorSlotItem == null && ClickedItem is SObject ClickedObject 
+                        && ClickedObject.IsCombinedMachine() && ClickedObject.TryGetCombinedQuantity(out int CombinedQuantity) && CombinedQuantity > 1)
+                    {
+                        ClickedObject.modData.Remove(ModDataQuantityKey);
+                        ClickedObject.Stack += CombinedQuantity - 1;
+                        Logger.Log(string.Format("De-combined {0} (Stack={1})", ClickedObject.DisplayName, CombinedQuantity), InfoLogLevel);
                     }
                 }
             }

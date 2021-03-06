@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8038
+IDs: aedenthorn.MoveablePetBowl
+update keys: Nexus:8038, GitHub:aedenthorn/StardewValleyMods

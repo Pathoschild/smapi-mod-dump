@@ -1,0 +1,13 @@
+url:
+   https://github.com/b-b-blueberry/GreenhouseEntryPatch.git
+
+mods:
+   Greenhouse Entry Begone!
+
+latest commit:
+   commit 237fb637507baeba062dae79d7a718ae7b52422d
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Fri Mar 5 20:25:10 2021 +1100
+   
+       Add project files.
+   

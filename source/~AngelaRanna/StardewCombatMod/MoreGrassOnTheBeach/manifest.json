@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AngelaRanna/StardewMods
+**
+*************************************************/
+
+{
+   "Name": "More Grass on the Beach",
+   "Author": "AngelaRanna",
+   "Version": "1.0.1",
+   "Description": "Spawns more grass each day start on the beach to help it support animal heavy games.",
+   "UniqueID": "AngelaRanna.MoreGrassOnTheBeach",
+   "EntryDll": "MoreGrassOnTheBeach.dll",
+   "MinimumApiVersion": "2.8.2",
+   "UpdateKeys": [
+       "Nexus:8117"
+   ]
+}

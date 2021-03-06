@@ -1,37 +1,34 @@
-{
-	// Object data
-	"Name": "blueberry.cac.mornay",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 52,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": null,
-	"Price": 180,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 716, // Crayfish
-				"Count": 2
-			},
-			{
-				"Object": 274, // Artichoke
-				"Count": 1
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.mornay",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 52,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 180,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 716,
+                "Count": 2
+            },
+            {
+                "Object": 274,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Cray Mornay"
+    }
 }

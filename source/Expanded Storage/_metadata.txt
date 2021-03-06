@@ -5,9 +5,9 @@ mods:
    Expanded Storage
 
 latest commit:
-   commit a6e123c7ea3e3d95f42a50da095ad608fcafa540
+   commit 7bd39bb99da00b57c3730ad789984313fc987e5c
    Author: Matthew <justmatt@outlook.com>
-   Date:   Thu Jan 28 00:52:19 2021 -0600
+   Date:   Wed Mar 3 23:44:16 2021 -0600
    
-       Bump version
+       Update release notes
    

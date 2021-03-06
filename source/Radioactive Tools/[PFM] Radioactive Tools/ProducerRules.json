@@ -1,0 +1,59 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kakashigr/stardew-radioactivetools
+**
+*************************************************/
+
+[
+
+    {
+        "ProducerName": "Bar Grinder",
+        "InputIdentifier": "334",
+        "InputStack": 1,
+        "MinutesUntilReady": 30,
+        "OutputIdentifier": "378",
+	"OutputStack": 2,
+        "Sounds": ["furnace"],
+    },
+    {
+        "ProducerName": "Bar Grinder",
+        "InputIdentifier": "335",
+        "InputStack": 1,
+        "MinutesUntilReady": 30,
+        "OutputIdentifier": "380",
+	"OutputStack": 2,
+        "Sounds": ["furnace"],
+    },
+    {
+        "ProducerName": "Bar Grinder",
+        "InputIdentifier": "336",
+        "InputStack": 1,
+        "MinutesUntilReady": 30,
+        "OutputIdentifier": "384",
+	"OutputStack": 2,
+        "Sounds": ["furnace"],
+    },
+    {
+        "ProducerName": "Bar Grinder",
+        "InputIdentifier": "337",
+        "InputStack": 1,
+        "MinutesUntilReady": 30,
+        "OutputIdentifier": "386",
+	"OutputStack": 2,
+        "Sounds": ["furnace"],
+    },
+    {
+        "ProducerName": "Bar Grinder",
+        "InputIdentifier": "910",
+        "InputStack": 1,
+        "MinutesUntilReady": 30,
+        "OutputIdentifier": "909",
+	"OutputStack": 2,
+        "Sounds": ["furnace"],
+    },
+   
+]

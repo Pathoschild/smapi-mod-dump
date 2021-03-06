@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Linq;
+using AnimalsNeedWater.Types;
 using StardewValley;
 
 namespace AnimalsNeedWater

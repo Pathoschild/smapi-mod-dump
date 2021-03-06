@@ -104,7 +104,7 @@ namespace ProducerFrameworkMod
                                 RemoveItemsFromInventory(who, fuel.Item1, fuel.Item2);
                             }
 
-                            input.Stack -= producerRule.InputStack;
+                            input.Stack -= outputConfig.RequiredInputStack ?? producerRule.InputStack;
                             __result = input.Stack <= 0;
                         }
                         else

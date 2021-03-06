@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Let Me Rest!",
+  "Author": "Ophaneom",
+  "Version": "1.0.0",
+  "Description": "Let the player rest without sleep",
+  "UniqueID": "Ophaneom.LetMeRest",
+  "EntryDll": "LetMeRest.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ ]
+}

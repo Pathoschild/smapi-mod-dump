@@ -1,45 +1,42 @@
-{
-	// Object data
-	"Name": "blueberry.cac.oceanplatter",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 84,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": null,
-	"Price": 410,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 198, // Baked Fish
-				"Count": 1
-			},
-			{
-				"Object": "blueberry.cac.lobster",
-				"Count": 1
-			},
-			{
-				"Object": 423, // Rice
-				"Count": 1
-			},
-			{
-				"Object": 723, // Oyster
-				"Count": 2
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.oceanplatter",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 84,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 410,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 198,
+                "Count": 1
+            },
+            {
+                "Object": "blueberry.cac.lobster",
+                "Count": 1
+            },
+            {
+                "Object": 423,
+                "Count": 1
+            },
+            {
+                "Object": 723,
+                "Count": 2
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Ocean Platter"
+    }
 }

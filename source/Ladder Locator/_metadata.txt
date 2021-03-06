@@ -5,9 +5,9 @@ mods:
    Ladder Locator
 
 latest commit:
-   commit ebd7fc4c001d5734745f44b203407fbd1d2f9215
+   commit 546ad53722b05e4f59c1d12d18d98baac7b9571c
    Author: Yuri Moens <yuri.moens@gmail.com>
-   Date:   Sat Nov 30 14:32:40 2019 +0100
+   Date:   Wed Feb 17 15:17:44 2021 +0100
    
-       Update for SDV 1.4
+       Revert version number to 1.4.0
    

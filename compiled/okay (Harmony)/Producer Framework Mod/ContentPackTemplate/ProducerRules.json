@@ -54,6 +54,7 @@
 				"OutputIdentifier": "Apple", //This is required. Works the same as the OutputIdentifier described in the rule.
 				"MinutesUntilReady": 100, //The amount of minutes it takes to produce this output. This will override the default MinutesUntilReady set in the rule. Should be divisible by 10.
 				"RequiredInputQuality": [ 0, 1 ], // Required input quality for the output to be possible. Default is no required quality.
+				"RequiredInputStack": 8, // Required input stack to be equal or greater to this value for the output to be possible. This amount will be consumed instead of InputStack value. It can be less than the InputStack value, but the player still need to have at least the value set on InputStack for the rule to be triggered. Default is no required stack.
 				"RequiredFuel": { "Coal": 1 }, //Required fuel for the output to be possible. These fuels will be consumed in additional to the rule defined fuels. The format is a pair of identifier and stack amount, following the same rules of the other fuel property. Default is no required fuel.
 				"RequiredSeason": [ "spring", "summer" ], // Required season for the output to be possible. Default is no required season.
 				"RequiredWeather": [ "Sunny", "Windy" ], // [Sunny|Rainy|Stormy|Snowy|Windy] Required weather for the output to be possible. Default is no required weather.

@@ -63,7 +63,7 @@ namespace MailFrameworkMod
         /// </summary>
         public Action<Letter> Callback { get; set; }
         /// <summary>
-        /// the id of the letter background. 0 = classic, 1 = notepad, 2 = piramds
+        /// the id of the letter background. 0 = classic, 1 = notepad, 2 = pyramids
         /// </summary>
         public int WhichBG;
         /// <summary>
@@ -74,8 +74,14 @@ namespace MailFrameworkMod
         /// number of the text color. -1 = Dark Red, 0 = Black, 1 = Sky Blue, 2 = Red, 3 = Blue Violet, 4 = White, 5 = Orange Red, 6 = Lime Green, 7 = Cyan, 8 = Darkest Gray
         /// </summary>
         public int? TextColor;
-
+        /// <summary>
+        /// custom texture to replace the game default close button. must follow the same proportions
+        /// </summary>
         public Texture2D UpperRightCloseButtonTexture;
+        /// <summary>
+        /// when conditions are met any recipe will be learned and the callback will be called. the letter won't show in the mailbox
+        /// </summary>
+        public bool AutoOpen;
 
         /// <summary>
         /// Creates a letter.

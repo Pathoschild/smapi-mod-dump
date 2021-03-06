@@ -15,6 +15,7 @@ This document helps mod authors update their content packs for newer versions of
 ## Contents
 * [FAQs](#faqs)
 * [Migration guides](#migration-guides)
+  * [1.20](#120)
   * [1.18](#118)
   * [1.17](#117)
   * [1.15](#115)
@@ -77,6 +78,18 @@ Feel free to [ask on Discord](https://smapi.io/community#Discord) if you need he
 ## Migration guides
 These changes only apply when you set the `Format` version in your `content.json` to the listed
 version or higher. See [release notes](../release-notes.md) for a full list of changes.
+
+## 1.21
+Not released yet.
+
+* **The `Enabled` field no longer allows tokens.** You should use `When` for conditional logic
+  instead.
+
+## 1.20
+Released 06 February 2021.
+
+* **The `Weather` token now returns weather for the _current location context_ (i.e. island or
+  valley) by default**. You can use `{{Weather: Valley}}` to match the previous behavior.
 
 ### 1.18
 Released 12 September 2020.

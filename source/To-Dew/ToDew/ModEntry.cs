@@ -10,6 +10,7 @@
 
 // Copyright 2020 Jamie Taylor
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -21,6 +22,7 @@ namespace ToDew {
     /// <summary>The configuration data model.</summary>
     public class ModConfig {
         public SButton hotkey = SButton.L;
+        public KeybindList hotkeyList = new KeybindList();
         public SButton secondaryCloseButton = SButton.ControllerBack;
         public bool debug = false;
         public OverlayConfig overlay = new OverlayConfig();
@@ -29,20 +31,23 @@ namespace ToDew {
     /// Encapsulates the game lifecycle events and orchestrates the UI (ToDoMenu) data
     /// model (ToDoList) bits.
     public class ModEntry : Mod {
-        private ToDoList list;
-        private ToDoOverlay overlay;
+        private readonly PerScreen<ToDoList> list = new PerScreen<ToDoList>();
+        private readonly PerScreen<ToDoOverlay> overlay = new PerScreen<ToDoOverlay>();
         internal ModConfig config;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper) {
+            I18n.Init(helper.Translation);
             this.config = helper.ReadConfig<ModConfig>();
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.Multiplayer.PeerConnected += this.OnPeerConnected;
             helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
             helper.Events.GameLoop.GameLaunched += onLaunched;
             helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
+            helper.Events.GameLoop.Saving += onSaving;
+            helper.Events.GameLoop.DayStarted += onDayStarted;
         }
 
         private void onLaunched(object sender, GameLaunchedEventArgs e) {
@@ -50,9 +55,9 @@ namespace ToDew {
             var api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
             if (api != null) {
                 api.RegisterModConfig(ModManifest, () => config = new ModConfig(), () => Helper.WriteConfig(config));
-                api.RegisterSimpleOption(ModManifest, "Hotkey", "The key to bring up the to-do list", () => config.hotkey, (SButton val) => config.hotkey = val);
-                api.RegisterSimpleOption(ModManifest, "Secondary Close Button", "An alternate key (besides ESC) to close the to-do list", () => config.secondaryCloseButton, (SButton val) => config.secondaryCloseButton = val);
-                api.RegisterSimpleOption(ModManifest, "Debug", "Enable debugging output in the log", () => config.debug, (bool val) => config.debug = val);
+                api.RegisterSimpleOption(ModManifest, I18n.Config_Hotkey(), I18n.Config_Hotkey_Desc(), () => config.hotkey, (SButton val) => config.hotkey = val);
+                api.RegisterSimpleOption(ModManifest, I18n.Config_SecondaryCloseButton(), I18n.Config_SecondaryCloseButton_Desc(), () => config.secondaryCloseButton, (SButton val) => config.secondaryCloseButton = val);
+                api.RegisterSimpleOption(ModManifest, I18n.Config_Debug(), I18n.Config_Debug_Desc(), () => config.debug, (bool val) => config.debug = val);
                 OverlayConfig.RegisterConfigMenuOptions(() => config.overlay, api, ModManifest);
             }
 
@@ -69,7 +74,7 @@ namespace ToDew {
                 originalTexture.GetData(0, sourceRectangle, data, 0, data.Length);
                 cropTexture.SetData(data);
 
-                phoneApi.AddApp(Helper.ModRegistry.ModID, "To-Dew", () => { Game1.activeClickableMenu = new ToDoMenu(this, this.list); } , cropTexture);
+                phoneApi.AddApp(Helper.ModRegistry.ModID, "To-Dew", () => { Game1.activeClickableMenu = new ToDoMenu(this, this.list.Value); } , cropTexture);
             }
         }
 
@@ -78,7 +83,7 @@ namespace ToDew {
                 Monitor.Log($"Received mod message {e.Type} from {e.FromModID}", LogLevel.Debug);
             }
             if (e.FromModID.Equals(this.ModManifest.UniqueID)) {
-                list?.ReceiveModMessage(e);
+                list.Value?.ReceiveModMessage(e);
             }
         }
 
@@ -93,35 +98,43 @@ namespace ToDew {
                 this.Monitor.Log("OnSaveLoaded", LogLevel.Debug);
                 this.Monitor.Log($"My multiplayer ID: {Game1.player.UniqueMultiplayerID}", LogLevel.Debug);
             }
-            list = new ToDoList(this);
+            list.Value = new ToDoList(this);
             if (config.overlay.enabled) {
-                overlay = new ToDoOverlay(this, list);
+                overlay.Value = new ToDoOverlay(this, list.Value);
             }
         }
 
-        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e) {
-            list = null;
-            overlay?.Dispose();
-            overlay = null;
+        private void onDayStarted(object sender, DayStartedEventArgs e) {
+            list.Value?.RefreshVisibility();
         }
 
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
+        private void onSaving(object sender, SavingEventArgs e) {
+            list.Value?.PreSaveCleanup();
+        }
+
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e) {
+            list.Value = null;
+            overlay.Value?.Dispose();
+            overlay.Value = null;
+        }
+
+        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e) {
             if (Context.IsWorldReady
                 && Context.IsPlayerFree
-                && list != null
-                && !this.list.IncompatibleMultiplayerHost) {
+                && list.Value != null
+                && !this.list.Value.IncompatibleMultiplayerHost) {
 
-                if (e.Button == this.config.hotkey) {
+                if (e.Pressed.Contains(this.config.hotkey) || this.config.hotkeyList.JustPressed()) {
                     if (Game1.activeClickableMenu != null)
                         Game1.exitActiveMenu();
-                    Game1.activeClickableMenu = new ToDoMenu(this, this.list);
+                    Game1.activeClickableMenu = new ToDoMenu(this, this.list.Value);
                 }
-                if (e.Button == this.config.overlay.hotkey) {
-                    if (overlay != null) {
-                        overlay.Dispose();
-                        overlay = null;
+                if (e.Pressed.Contains(this.config.overlay.hotkey) || this.config.overlay.hotkeyList.JustPressed()) {
+                    if (overlay.Value != null) {
+                        overlay.Value.Dispose();
+                        overlay.Value = null;
                     } else if (config.overlay.enabled) {
-                        overlay = new ToDoOverlay(this, list);
+                        overlay.Value = new ToDoOverlay(this, list.Value);
                     }
                 }
             }

@@ -1,10 +1,10 @@
 ﻿{
   "Name": "RunningKey",
   "Author": "Strato35",
-  "Version": "1.0.5",
+  "Version": "1.0.6",
   "Description": "Running by pressing a key",
   "UniqueID": "Strato35.RunningKey",
   "EntryDll": "RunningKey.dll",
-  "MinimumApiVersion": "3.8.0",
+  "MinimumApiVersion": "3.9.1",
   "UpdateKeys": [ "Nexus:5527" ]
 }

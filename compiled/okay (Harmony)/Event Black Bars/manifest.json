@@ -1,0 +1,10 @@
+﻿{
+  "Name": "EventBlackBars",
+  "Author": "GZhynko",
+  "Version": "1.0.0",
+  "Description": "Adds cutscene-like black bars to the top and the bottom of the screen during an event.",
+  "UniqueID": "GZhynko.EventBlackBars",
+  "EntryDll": "EventBlackBars.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7962" ]
+}

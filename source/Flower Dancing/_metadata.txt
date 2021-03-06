@@ -1,0 +1,13 @@
+url:
+   https://github.com/kenny2892/StardewValleyMods.git
+
+mods:
+   Flower Dancing
+
+latest commit:
+   commit 39d7921e15bab93f086cbb6c72b06ed4cd0675a2
+   Author: Kenny <jessetuan@comcast.net>
+   Date:   Tue Mar 2 19:50:01 2021 -0800
+   
+       Made "Generic Mod Config Menu" Optional
+   

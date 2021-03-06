@@ -9,6 +9,23 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 2.7.0
+
+### User-visible Changes
+
+* Added `showHeldBombRange` config option.  Note that the `ShowBombRange`
+  option must be on for either `showHeldBombRange` or `showPlacedBombRange`
+  to have effect.
+
+* Key configurations now use the features introduced in SMAPI 3.9 to support
+  multi-key bindings.  See [the wiki](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Multi-key_bindings)
+  for details on the syntax.
+
+### API Changes
+
+* All API functions that take an `SButton` argument are now deprecated in favor
+  of new versions that take a `KeybindList` argument.
+
 ## Version 2.6.0
 
 ### User-visible Changes

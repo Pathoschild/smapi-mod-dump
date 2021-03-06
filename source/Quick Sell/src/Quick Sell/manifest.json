@@ -11,7 +11,7 @@
 {
     "Name": "Quick Sell",
     "Author": "Alejandro Akbal",
-    "Version": "0.1.1",
+    "Version": "0.3.0",
     "Description": "Move any item into the Shipping Bin with the press of a button.",
     "UniqueID": "AlejandroAkbal.QuickSell",
     "EntryDll": "Quick_Sell.dll",

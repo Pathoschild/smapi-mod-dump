@@ -5,9 +5,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit 6359fc6b67648723a2348c542cb95b239fdd54e2
+   commit 2f9a70b141dc7a3f02e9dfd93ccbea5e2ee42b00
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Mon Jan 4 16:42:22 2021 -0500
+   Date:   Sun Feb 28 14:16:08 2021 -0500
    
-       Added compatibility with SMAPI 3.8.2+ which uses different coordinates for Cursor.ScreenPixels than previous versions of SMAPI
+       Bugfix if Bag Size is deserialized after the bag's TypeId, which could result in the TypeId using the data for a smaller size of the bag than it should.
    

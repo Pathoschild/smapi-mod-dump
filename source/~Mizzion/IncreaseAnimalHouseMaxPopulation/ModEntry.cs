@@ -14,7 +14,6 @@ using System.Linq;
 using IncreaseAnimalHouseMaxPopulation.Framework;
 using IncreaseAnimalHouseMaxPopulation.Framework.Configs;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -32,11 +31,11 @@ namespace IncreaseAnimalHouseMaxPopulation
 
         public SButton RefreshConfig;
 
-        public ITranslationHelper i18n;
+        public ITranslationHelper I18N;
 
-        public Building CurrentHoveredBuilding = null;
+        public Building CurrentHoveredBuilding;
 
-        public Building CurrentHoveredBuildingDummy = null;
+        public Building CurrentHoveredBuildingDummy;
 
         public List<string> AnimalHouseBuildings = new List<string>
         {
@@ -44,14 +43,14 @@ namespace IncreaseAnimalHouseMaxPopulation
             "Deluxe Coop"
         };
 
-        public int Cost = 0;
+        public int Cost;
 
         public bool IsTestBuild = false;
 
         public override void Entry(IModHelper helper)
         {
-            this.Config = helper.ReadConfig<ModConfig>();
-            this.i18n = helper.Translation;
+            Config = helper.ReadConfig<ModConfig>();
+            I18N = helper.Translation;
             helper.Events.GameLoop.GameLaunched += GameLaunched;
             helper.Events.GameLoop.DayStarted += DayStarted;
             helper.Events.GameLoop.DayEnding += DayEnding;
@@ -61,7 +60,7 @@ namespace IncreaseAnimalHouseMaxPopulation
             helper.Events.Display.RenderingHud += RenderingHud;
             helper.ConsoleCommands.Add("pop_reset", "Deletes the save data for Increased Animal House Population.",
                 ResetSave);
-            this.DoSanityCheck();
+            DoSanityCheck();
         }
 
         private void GameLaunched(object sender, GameLaunchedEventArgs e)
@@ -76,64 +75,67 @@ namespace IncreaseAnimalHouseMaxPopulation
                 return;
             }
 
-            if (e.IsDown(this.RefreshConfig))
+            if (e.IsDown(RefreshConfig))
             {
-                this.Config = base.Helper.ReadConfig<ModConfig>();
-                this.DoSanityCheck();
-                base.Monitor.Log("Reloaded the configuration file.", LogLevel.Debug);
+                Config = Helper.ReadConfig<ModConfig>();
+                DoSanityCheck();
+                Monitor.Log("Reloaded the configuration file.", LogLevel.Debug);
             }
 
-            if (e.IsDown(SButton.F6) && this.IsTestBuild)
+            if (e.IsDown(SButton.F6) && IsTestBuild)
             {
-                this.DoPopChange(this.Config.MaxBarnPopulation, this.Config.MaxCoopPopulation);
+                DoPopChange(Config.MaxBarnPopulation, Config.MaxCoopPopulation);
             }
 
-            if (!e.IsDown(SButton.MouseLeft) || this.CurrentHoveredBuilding == null ||
+            if (!e.IsDown(SButton.MouseLeft) || CurrentHoveredBuilding == null ||
+                !AnimalHouseBuildings.Contains(CurrentHoveredBuilding.buildingType.Value) ||
+                /*
+                this.CurrentHoveredBuilding.buildingType.Value.Contains("Shipping Bin") ||
                 this.CurrentHoveredBuilding.buildingType.Value.Contains("Cabin") ||
                 this.CurrentHoveredBuilding.buildingType.Value.Contains("Silo") ||
-                this.CurrentHoveredBuilding.buildingType.Value.Contains("Mill") ||
-                this._data.buildings.ContainsKey(this.CurrentHoveredBuilding.indoors.Value.uniqueName.Value) ||
+                this.CurrentHoveredBuilding.buildingType.Value.Contains("Mill") ||*/
+                _data.Buildings.ContainsKey(CurrentHoveredBuilding.indoors.Value.uniqueName.Value) && _data.Buildings != null ||
                 Game1.activeClickableMenu != null)
             {
                 return;
             }
 
-            Vector2 tLocation = this.GetCursorLocation();
-            if (!this.AnimalHouseBuildings.Any((string ab) =>
-                this.CurrentHoveredBuilding.buildingType.Contains(ab) &&
-                this.CurrentHoveredBuilding.indoors.Value != null) || this.CurrentHoveredBuilding == null)
+            Vector2 tLocation = GetCursorLocation();
+            if (!AnimalHouseBuildings.Any(ab =>
+                CurrentHoveredBuilding.buildingType.Contains(ab) &&
+                CurrentHoveredBuilding.indoors.Value != null) || CurrentHoveredBuilding == null)
             {
                 return;
             }
 
-            int freeOrNot = ((!this.Config.Cheats.EnableFree) ? this.Config.CostPerPopulationIncrease : 0);
+            int freeOrNot = ((!Config.Cheats.EnableFree) ? Config.CostPerPopulationIncrease : 0);
             //Lets calculate the difference between max and current max population
-            int currentMaxOccupants = ((AnimalHouse) this.CurrentHoveredBuilding.indoors.Value).animalLimit.Value; //(AnimalHouse)this.CurrentHoveredBuilding.indoors
-            this.Cost = (this.CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn")
-                ? ((this.Config.MaxBarnPopulation - currentMaxOccupants)* freeOrNot)
-                : ((this.Config.MaxCoopPopulation - currentMaxOccupants) * freeOrNot));
+            int currentMaxOccupants = ((AnimalHouse) CurrentHoveredBuilding.indoors.Value).animalLimit.Value; //(AnimalHouse)this.CurrentHoveredBuilding.indoors
+            Cost = (CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn")
+                ? ((Config.MaxBarnPopulation - currentMaxOccupants)* freeOrNot)
+                : ((Config.MaxCoopPopulation - currentMaxOccupants) * freeOrNot));
             
-            this.CurrentHoveredBuildingDummy = this.CurrentHoveredBuilding;
-            string question = this.i18n.Get("upgrade_question", new
+            CurrentHoveredBuildingDummy = CurrentHoveredBuilding;
+            string question = I18N.Get("upgrade_question", new
             {
-                current_building = this.CurrentHoveredBuilding.buildingType.Value,
-                next_cost = this.Cost,
+                current_building = CurrentHoveredBuilding.buildingType.Value,
+                next_cost = Cost,
                 current_max_occupants = currentMaxOccupants,
-                config_max_occupants = this.CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn") ? this.Config.MaxBarnPopulation : this.Config.MaxCoopPopulation
+                config_max_occupants = CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn") ? Config.MaxBarnPopulation : Config.MaxCoopPopulation
             });
             Game1.getFarm().createQuestionDialogue(question, Game1.getFarm().createYesNoResponses(),
                 delegate(Farmer _, string answer)
                 {
                     if (answer == "Yes")
                     {
-                        if (Game1.player.Money >= this.Cost)
+                        if (Game1.player.Money >= Cost)
                         {
-                            Game1.player.Money -= this.Cost;
-                            this.DoPopChange(this.CurrentHoveredBuildingDummy);
+                            Game1.player.Money -= Cost;
+                            DoPopChange(CurrentHoveredBuildingDummy);
                         }
                         else
                         {
-                            Game1.showRedMessage($"You don't have {this.Cost} gold.");
+                            Game1.showRedMessage($"You don't have {Cost} gold.");
                         }
                     }
                 });
@@ -141,35 +143,35 @@ namespace IncreaseAnimalHouseMaxPopulation
 
         private void Saving(object sender, SavingEventArgs e)
         {
-            base.Helper.Data.WriteSaveData(base.Helper.ModRegistry.ModID, this._data);
+            Helper.Data.WriteSaveData(Helper.ModRegistry.ModID, _data);
         }
 
         private void RenderingHud(object sender, RenderingHudEventArgs e)
         {
-            if (this.CurrentHoveredBuilding != null && Game1.activeClickableMenu == null &&
-                (this.Config.EnableDebugMode || this.Config.EnableHoverTip) && this.AnimalHouseBuildings.Any(
-                    (string ab) => this.CurrentHoveredBuilding.buildingType.Contains(ab) &&
-                                   this.CurrentHoveredBuilding.indoors.Value != null))
+            if (CurrentHoveredBuilding != null && Game1.activeClickableMenu == null &&
+                (Config.EnableDebugMode || Config.EnableHoverTip) && AnimalHouseBuildings.Any(
+                    ab => CurrentHoveredBuilding.buildingType.Contains(ab) &&
+                            CurrentHoveredBuilding.indoors.Value != null))
             {
-                Translation tipText = this.i18n.Get("upgrade_tooltip_text", new
+                Translation tipText = I18N.Get("upgrade_tooltip_text", new
                 {
-                    current_building = this.CurrentHoveredBuilding.buildingType.Value,
-                    max_animals = ((AnimalHouse) this.CurrentHoveredBuilding.indoors.Value).animalLimit
+                    current_building = CurrentHoveredBuilding.buildingType.Value,
+                    max_animals = ((AnimalHouse) CurrentHoveredBuilding.indoors.Value).animalLimit
                 });
                 IClickableMenu.drawHoverText(Game1.spriteBatch, tipText, Game1.smallFont);
             }
 
-            if (this.CurrentHoveredBuilding != null)
+            if (CurrentHoveredBuilding != null)
             {
-                int p = (this.CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn")
-                    ? this.Config.MaxBarnPopulation
-                    : this.Config.MaxCoopPopulation);
-                AnimalHouse obj = this.CurrentHoveredBuilding.indoors.Value as AnimalHouse;
+                int p = (CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn")
+                    ? Config.MaxBarnPopulation
+                    : Config.MaxCoopPopulation);
+                AnimalHouse obj = CurrentHoveredBuilding.indoors.Value as AnimalHouse;
                 if ((obj == null || obj.animalLimit.Value != p) &&
-                    this.CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe") &&
-                    !this.CurrentHoveredBuilding.buildingType.Value.Contains("Cabin") &&
-                    !this.CurrentHoveredBuilding.buildingType.Value.Contains("Silo") &&
-                    !this.CurrentHoveredBuilding.buildingType.Value.Contains("Mill") &&
+                    CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe") &&
+                    !CurrentHoveredBuilding.buildingType.Value.Contains("Cabin") &&
+                    !CurrentHoveredBuilding.buildingType.Value.Contains("Silo") &&
+                    !CurrentHoveredBuilding.buildingType.Value.Contains("Mill") &&
                     Game1.activeClickableMenu == null)
                 {
                     Game1.mouseCursor = 4;
@@ -181,7 +183,7 @@ namespace IncreaseAnimalHouseMaxPopulation
         {
             if (Context.IsWorldReady && e.IsMultipleOf(4u))
             {
-                this.CurrentHoveredBuilding =
+                CurrentHoveredBuilding =
                     (Game1.currentLocation as BuildableGameLocation)?.getBuildingAt(Game1.currentCursorTile);
             }
         }
@@ -193,36 +195,36 @@ namespace IncreaseAnimalHouseMaxPopulation
                 return;
             }
 
-            if (this._data != null && this._data.buildings.Count > 0)
+            if (_data != null && _data.Buildings.Count > 0)
             {
-                foreach (KeyValuePair<string, bool> b in this._data.buildings)
+                foreach (KeyValuePair<string, bool> b in _data.Buildings)
                 {
                     IEnumerable<Building> bb = Game1.getFarm().buildings
-                        .Where((Building bbb) => bbb.indoors.Value.uniqueName.Value.Equals(b.Key));
+                        .Where(bbb => bbb.indoors.Value.uniqueName.Value.Equals(b.Key));
                     foreach (Building build in bb)
                     {
                         int pop = (build.buildingType.Value.Contains("Deluxe Barn")
-                            ? this.Config.MaxBarnPopulation
-                            : this.Config.MaxCoopPopulation);
+                            ? Config.MaxBarnPopulation
+                            : Config.MaxCoopPopulation);
                         if (((AnimalHouse) build.indoors.Value).animalLimit.Value != pop)
                         {
-                            this.DoPopChange(build, showLog: true, doRestore: true);
+                            DoPopChange(build, showLog: true, doRestore: true);
                         }
                     }
                 }
             }
 
-            if (this.Config.Cheats.EnableFree)
+            if (Config.Cheats.EnableFree)
             {
-                this.DoPopChange(this.Config.MaxBarnPopulation, this.Config.MaxCoopPopulation);
+                DoPopChange(Config.MaxBarnPopulation, Config.MaxCoopPopulation);
             }
         }
 
         private void DayEnding(object sender, DayEndingEventArgs e)
         {
-            if (this.Config.AutoFeedExtraAnimals)
+            if (Config.AutoFeedExtraAnimals)
             {
-                this.DoFeeding(Game1.getFarm());
+                DoFeeding(Game1.getFarm());
             }
         }
 
@@ -233,8 +235,8 @@ namespace IncreaseAnimalHouseMaxPopulation
                 return;
             }
 
-            this._data = base.Helper.Data.ReadSaveData<PlayerData>(base.Helper.ModRegistry.ModID) ?? new PlayerData();
-            if (!this._data.buildings.Any())
+            _data = Helper.Data.ReadSaveData<PlayerData>(Helper.ModRegistry.ModID) ?? new PlayerData();
+            if (!_data.Buildings.Any())
             {
                 return;
             }
@@ -245,37 +247,40 @@ namespace IncreaseAnimalHouseMaxPopulation
                 while (enumerator.MoveNext())
                 {
                     Building b = enumerator.Current;
-                    AnimalHouse bb = b.indoors.Value as AnimalHouse;
-                    if (bb == null)
+                    if (b != null)
                     {
-                        continue;
-                    }
-
-                    foreach (KeyValuePair<string, bool> building in this._data.buildings)
-                    {
-                        if (building.Key.Equals(bb.uniqueName.Value))
+                        AnimalHouse bb = b.indoors.Value as AnimalHouse;
+                        if (bb == null)
                         {
-                            this.DoPopChange(bb.getBuilding(), showLog: true, doRestore: true);
+                            continue;
+                        }
+
+                        foreach (KeyValuePair<string, bool> building in _data.Buildings)
+                        {
+                            if (building.Key.Equals(bb.uniqueName.Value))
+                            {
+                                DoPopChange(bb.getBuilding(), showLog: true, doRestore: true);
+                            }
                         }
                     }
                 }
             }
             finally
             {
-                ((IDisposable) enumerator).Dispose();
+                enumerator.Dispose();
             }
         }
 
         private bool CheckClick()
         {
-            if (this.CurrentHoveredBuilding == null)
+            if (CurrentHoveredBuilding == null)
             {
                 return false;
             }
 
-            Vector2 curTile = this.GetCursorLocation();
-            if (this.AnimalHouseBuildings.Any((string ahb) => this.CurrentHoveredBuilding.buildingType.Contains(ahb)) &&
-                this.CurrentHoveredBuilding.indoors.Value != null &&
+            Vector2 curTile = GetCursorLocation();
+            if (AnimalHouseBuildings.Any(ahb => CurrentHoveredBuilding.buildingType.Contains(ahb)) &&
+                CurrentHoveredBuilding.indoors.Value != null &&
                 Utility.tileWithinRadiusOfPlayer((int) curTile.X, (int) curTile.Y, 4, Game1.player))
             {
                 return true;
@@ -286,26 +291,26 @@ namespace IncreaseAnimalHouseMaxPopulation
 
         private void DoPopChange(int maxBarnPop, int maxCoopPop, bool showLog = true)
         {
-            foreach (Building b2 in Game1.getFarm().buildings.Where((Building b) =>
+            foreach (Building b2 in Game1.getFarm().buildings.Where(b =>
                 b.buildingType.Value.Contains("Deluxe Barn") || b.buildingType.Value.Contains("Deluxe Coop")))
             {
                 int pop = (b2.buildingType.Value.Contains("Deluxe Barn") ? maxBarnPop : maxCoopPop);
-                if (this.Config.AutoFeedExtraAnimals)
+                if (Config.AutoFeedExtraAnimals)
                 {
-                    this.DoFeeding((AnimalHouse) b2.indoors.Value);
+                    DoFeeding((AnimalHouse) b2.indoors.Value);
                 }
 
                 if (((AnimalHouse) b2.indoors.Value).animalLimit.Value != pop)
                 {
                     ((AnimalHouse) b2.indoors.Value).animalLimit.Value = pop;
                     b2.maxOccupants.Value = pop;
-                    this._data.buildings.Add(b2.indoors.Value.uniqueName.Value, value: true);
-                    if (this.Config.EnableDebugMode)
+                    _data.Buildings.Add(b2.indoors.Value.uniqueName.Value, value: true);
+                    if (Config.EnableDebugMode)
                     {
                         Game1.showGlobalMessage($"Set {b2.buildingType.Value} to {b2.maxOccupants.Value}");
                     }
 
-                    base.Monitor.Log($"Set {b2.buildingType.Value} to {b2.maxOccupants.Value}",
+                    Monitor.Log($"Set {b2.buildingType.Value} to {b2.maxOccupants.Value}",
                         showLog ? LogLevel.Debug : LogLevel.Trace);
                 }
             }
@@ -314,11 +319,11 @@ namespace IncreaseAnimalHouseMaxPopulation
         private void DoPopChange(Building b, bool showLog = true, bool doRestore = false)
         {
             int pop = (b.buildingType.Value.Contains("Deluxe Barn")
-                ? this.Config.MaxBarnPopulation
-                : this.Config.MaxCoopPopulation);
-            if (this.Config.AutoFeedExtraAnimals)
+                ? Config.MaxBarnPopulation
+                : Config.MaxCoopPopulation);
+            if (Config.AutoFeedExtraAnimals)
             {
-                this.DoFeeding((AnimalHouse) b.indoors.Value);
+                DoFeeding((AnimalHouse) b.indoors.Value);
             }
 
             if (((AnimalHouse) b.indoors.Value).animalLimit.Value != pop)
@@ -327,15 +332,15 @@ namespace IncreaseAnimalHouseMaxPopulation
                 b.maxOccupants.Value = pop;
                 if (!doRestore)
                 {
-                    this._data.buildings.Add(b.indoors.Value.uniqueName.Value, value: true);
+                    _data.Buildings.Add(b.indoors.Value.uniqueName.Value, value: true);
                 }
 
-                if (this.Config.EnableDebugMode)
+                if (Config.EnableDebugMode)
                 {
                     Game1.showGlobalMessage($"Set {b.buildingType.Value} to {b.maxOccupants.Value}");
                 }
 
-                base.Monitor.Log($"Set {b.buildingType.Value} to {b.maxOccupants.Value}",
+                Monitor.Log($"Set {b.buildingType.Value} to {b.maxOccupants.Value}",
                     showLog ? LogLevel.Debug : LogLevel.Trace);
             }
         }
@@ -344,17 +349,21 @@ namespace IncreaseAnimalHouseMaxPopulation
         {
             if (ah == null)
             {
-                base.Monitor.Log("There was an error while trying to load the animal house. Code:1");
+                Monitor.Log("There was an error while trying to load the animal house. Code:1");
                 return;
             }
 
             foreach (KeyValuePair<long, FarmAnimal> a in ah.animals.Pairs)
             {
-                a.Value.fullness.Value = byte.MaxValue;
-                a.Value.daysSinceLastFed.Value = 1;
-                if (this.Config.EnableDebugMode)
+                if (a.Value.fullness.Value != byte.MaxValue && Game1.getFarm().piecesOfHay.Value >= 1)
                 {
-                    base.Monitor.Log($"Fed: {a.Value.Name}, new Fullnes: {a.Value.fullness.Value}");
+                    a.Value.fullness.Value = byte.MaxValue;
+                    a.Value.daysSinceLastFed.Value = 1;
+                    Game1.getFarm().piecesOfHay.Value--;
+                    if (Config.EnableDebugMode)
+                    {
+                        Monitor.Log($"Fed: {a.Value.Name}, new Fullness: {a.Value.fullness.Value}");
+                    }
                 }
             }
         }
@@ -366,7 +375,7 @@ namespace IncreaseAnimalHouseMaxPopulation
                 return;
             }
 
-            foreach (Building b2 in loc.buildings.Where((Building b) =>
+            foreach (Building b2 in loc.buildings.Where(b =>
                 b.buildingType.Value.Contains("Deluxe Barn") || b.buildingType.Value.Contains("Deluxe Coop")))
             {
                 AnimalHouse ah = b2.indoors.Value as AnimalHouse;
@@ -377,19 +386,25 @@ namespace IncreaseAnimalHouseMaxPopulation
 
                 foreach (KeyValuePair<long, FarmAnimal> a in ah.animals.Pairs)
                 {
-                    if (a.Value.fullness.Value != byte.MaxValue)
+                    if (a.Value.fullness.Value != byte.MaxValue && Game1.getFarm().piecesOfHay.Value >= 1)
                     {
                         a.Value.fullness.Value = byte.MaxValue;
                         a.Value.daysSinceLastFed.Value = 1;
-                        if (this.Config.EnableDebugMode)
+                        Game1.getFarm().piecesOfHay.Value--;
+                        if (Config.EnableDebugMode)
                         {
-                            base.Monitor.Log($"Fed: {a.Value.Name}, new Fullnes: {a.Value.fullness.Value}");
+                            Monitor.Log($"Fed: {a.Value.Name}, new Fullness: {a.Value.fullness.Value}");
                         }
                     }
                 }
             }
         }
 
+        private bool doHayRemoval(AnimalHouse ah)
+        {
+
+            return false;
+        }
         private Vector2 GetCursorLocation()
         {
             return new Vector2((Game1.getOldMouseX() + Game1.viewport.X) / 64,
@@ -402,36 +417,36 @@ namespace IncreaseAnimalHouseMaxPopulation
 
         private void DoSanityCheck()
         {
-            if (this.Config.MaxBarnPopulation <= 0)
+            if (Config.MaxBarnPopulation <= 0)
             {
-                this.Config.MaxBarnPopulation = 1;
-                base.Helper.WriteConfig(this.Config);
-                base.Monitor.Log("The configured MaxBarnPopulation wasn't higher than Zero, it has been set to 1",
+                Config.MaxBarnPopulation = 1;
+                Helper.WriteConfig(Config);
+                Monitor.Log("The configured MaxBarnPopulation wasn't higher than Zero, it has been set to 1",
                     LogLevel.Debug);
             }
 
-            if (this.Config.MaxCoopPopulation <= 0)
+            if (Config.MaxCoopPopulation <= 0)
             {
-                this.Config.MaxCoopPopulation = 1;
-                base.Helper.WriteConfig(this.Config);
-                base.Monitor.Log("The configured MaxCoopPopulation wasn't higher than Zero, it has been set to 1",
+                Config.MaxCoopPopulation = 1;
+                Helper.WriteConfig(Config);
+                Monitor.Log("The configured MaxCoopPopulation wasn't higher than Zero, it has been set to 1",
                     LogLevel.Debug);
             }
 
-            if (!Enum.TryParse<SButton>(this.Config.RefreshConfigButton.ToString(), ignoreCase: true,
-                out this.RefreshConfig))
+            if (!Enum.TryParse(Config.RefreshConfigButton.ToString(), ignoreCase: true,
+                out RefreshConfig))
             {
-                this.RefreshConfig = SButton.F5;
-                base.Monitor.Log("There was an error parsing the RefreshConfigButton. It was reset to F5");
+                RefreshConfig = SButton.F5;
+                Monitor.Log("There was an error parsing the RefreshConfigButton. It was reset to F5");
             }
         }
 
         private void ResetSave(string command, string[] args)
         {
-            if (this._data != null)
+            if (_data != null)
             {
-                this._data?.buildings.Clear();
-                base.Monitor.Log("Save data was reset.", LogLevel.Debug);
+                _data?.Buildings.Clear();
+                Monitor.Log("Save data was reset.", LogLevel.Debug);
             }
         }
     }

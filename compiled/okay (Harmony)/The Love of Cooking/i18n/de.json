@@ -117,9 +117,9 @@
 	// Community Centre edits when using the Cooking bundle
 	"world.community_centre.kitchen": "Küche",
 	"world.community_centre.reward": "Kochzeugs",
-	"world.community_centre.bundle.1": "Picknick",
-	"world.community_centre.bundle.2": "Bäcker",
-	"world.community_centre.bundle.3": "Imbiss",
+	"world.community_centre.bundle.1": "Bäcker",
+	"world.community_centre.bundle.2": "Imbiss",
+	"world.community_centre.bundle.3": "Picknick",
 	"world.community_centre.newjunimoline": "Um unsere Dankbarkeit zu zeigen... werden wir aufräumen sobald du gehst.",
 
 	// Object names

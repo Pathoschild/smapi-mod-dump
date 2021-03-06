@@ -1,0 +1,8 @@
+{
+	"duration-label": "Cycle Duration",
+	"duration-desc": "Sprite cycle duration in draw cycles",
+	"type-label": "Cycle Type",
+	"type-desc": "How the sprites cycle",
+	"icon-label": "Show Icon",
+	"icon-desc": "Show icon for shared birthdays",
+}

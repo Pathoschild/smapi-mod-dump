@@ -1,0 +1,10 @@
+{
+  "Name": "Randomizer",
+  "Author": "Tooshi",
+  "Version": "1.1.1", // fixed locally
+  "Description": "Randomizes many gameplay and visual aspects of the game, more info at https://docs.google.com/document/d/1J5uzCfa_eXXqJBeg0f2nsXd3hKf46znbP_tl2Ey70Gk",
+  "UniqueID": "Tooshi.Randomizer",
+  "EntryDll": "Randomizer.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ "GitHub:cTooshi/stardew-valley-randomizer" ]
+}

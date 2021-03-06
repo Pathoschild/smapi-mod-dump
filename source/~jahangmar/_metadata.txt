@@ -2,7 +2,7 @@ url:
    https://github.com/jahangmar/StardewValleyMods.git
 
 mods:
-   Compost
+   Compost&#44; Pests&#44; and Cultivation
    Dismantle Craftables
    Don't Eat That
    Fall To Autumn

@@ -1,0 +1,32 @@
+﻿{
+	"Name": "The Curator's Hat",
+	"Description": "The hat of a Curator, very sophisticated!",
+	"ShowHair": false,
+	"IgnoreHairstyleOffset": true,
+    "NameLocalization": {
+        "ko": "큐레이터의 모자",
+        //"fr": "", //French
+        //"pt": "", //Portuguese
+        //"ru": "", //Russian
+        //"zh": "", //Chinese
+		//"es": "", //Spanish
+		//"de": "", //German
+		//"hu": "", //Hungarian
+		//"it": "", //Italian
+		//"ja": "", //Japanese
+		//"tr": "", //Turkish
+    },
+    "DescriptionLocalization": {
+        "ko": "큐레이터의 모자입니다. 참 세련되죠!",
+        //"fr": "", //French
+        //"pt": "", //Portuguese
+        //"ru": "", //Russian
+        //"zh": "", //Chinese
+		//"es": "", //Spanish
+		//"de": "", //German
+		//"hu": "", //Hungarian
+		//"it": "", //Italian
+		//"ja": "", //Japanese
+		//"tr": "", //Turkish
+    }
+}

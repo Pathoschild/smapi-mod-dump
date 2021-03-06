@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SubModules\BerryBushLogic.cs" />
+    <Compile Include="SubModules\DeluxeGrabberCompatibility.cs" />
     <Compile Include="SubModules\FernAndBurgerLogic.cs" />
     <Compile Include="ForageFantasy.cs" />
     <Compile Include="ForageFantasyConfig.cs" />

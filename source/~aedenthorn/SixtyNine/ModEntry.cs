@@ -8,19 +8,13 @@
 **
 *************************************************/
 
-using Harmony;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Characters;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using xTile.Dimensions;
 
 namespace SixtyNine
 {

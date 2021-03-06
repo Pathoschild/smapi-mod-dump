@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.pinkcake_half",
     "Description": "...",
     "Category": "Cooking",
@@ -9,16 +8,50 @@
     "Price": 200,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,
     "PurchaseRequirements": null,
-
-    // Gifting
     "GiftTastes": {
-        "Like": [ "Haley", "Jas", "Marnie", "Vincent", "Gus", "Clint", "George", "Sebastian", "Abigail", "Alex", "Caroline", "Demetrius", "Dwarf", "Elliott", "Emily", "Evelyn", "Jodi", "Kent", "Lewis", "Penny", "Linus", "Maru", "Pierre", "Pam", "Shane", "Robin", "Sam", "Sandy", "Wizard" ],
-        "Dislike": [ "Harvey", "Krobus", "Leah", "Willy" ]
+        "Like": [
+            "Haley",
+            "Jas",
+            "Marnie",
+            "Vincent",
+            "Gus",
+            "Clint",
+            "George",
+            "Sebastian",
+            "Abigail",
+            "Alex",
+            "Caroline",
+            "Demetrius",
+            "Dwarf",
+            "Elliott",
+            "Emily",
+            "Evelyn",
+            "Jodi",
+            "Kent",
+            "Lewis",
+            "Penny",
+            "Linus",
+            "Maru",
+            "Pierre",
+            "Pam",
+            "Shane",
+            "Robin",
+            "Sam",
+            "Sandy",
+            "Wizard"
+        ],
+        "Dislike": [
+            "Harvey",
+            "Krobus",
+            "Leah",
+            "Willy"
+        ]
+    },
+    "NameLocalization": {
+        "en": "Pink Cake Slice"
     }
 }

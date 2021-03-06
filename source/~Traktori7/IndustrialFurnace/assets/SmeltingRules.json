@@ -44,6 +44,14 @@
 			"OutputItemAmount": 1
 		},
 		{
+			"InputItemName": "Radioactive Ore",
+			"InputItemID": 909,
+			"InputItemAmount": 4,
+			"OutputItemName": "Radioactive Bar",
+			"OutputItemID": 910,
+			"OutputItemAmount": 1
+		},
+		{
 			"InputItemName": "Quartz",
 			"InputItemID": 80,
 			"InputItemAmount": 2,

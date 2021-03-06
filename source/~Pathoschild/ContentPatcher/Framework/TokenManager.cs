@@ -34,7 +34,7 @@ namespace ContentPatcher.Framework
         private readonly GenericTokenContext GlobalContext;
 
         /// <summary>The available tokens defined within the context of each content pack.</summary>
-        private readonly Dictionary<IContentPack, ModTokenContext> LocalTokens = new Dictionary<IContentPack, ModTokenContext>();
+        private readonly Dictionary<IContentPack, ModTokenContext> LocalTokens = new();
 
         /// <summary>The installed mod IDs.</summary>
         private readonly InvariantHashSet InstalledMods;
@@ -54,7 +54,7 @@ namespace ContentPatcher.Framework
 
         /// <summary>The tokens which should always be used with a specific update rate.</summary>
         public Tuple<UpdateRate, string, InvariantHashSet>[] TokensWithSpecialUpdateRates { get; } = {
-            Tuple.Create(UpdateRate.OnLocationChange, "location tokens", new InvariantHashSet { ConditionType.LocationName.ToString(), ConditionType.IsOutdoors.ToString() }),
+            Tuple.Create(UpdateRate.OnLocationChange, "location tokens", new InvariantHashSet { ConditionType.LocationContext.ToString(), ConditionType.LocationName.ToString(), ConditionType.LocationUniqueName.ToString(), ConditionType.IsOutdoors.ToString() }),
             Tuple.Create(UpdateRate.OnTimeChange, "time tokens", new InvariantHashSet { ConditionType.Time.ToString() })
         };
 
@@ -177,15 +177,17 @@ namespace ContentPatcher.Framework
 
             // date and weather
             yield return new ConditionTypeValueProvider(ConditionType.Day, () => SDate.Now().Day.ToString(CultureInfo.InvariantCulture), NeedsBasicInfo, allowedValues: Enumerable.Range(0, 29).Select(p => p.ToString())); // day 0 = new-game intro
-            yield return new ConditionTypeValueProvider(ConditionType.DayEvent, () => this.GetDayEvent(), NeedsBasicInfo);
+            yield return new ConditionTypeValueProvider(ConditionType.DayEvent, this.GetDayEvent, NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.DayOfWeek, () => SDate.Now().DayOfWeek.ToString(), NeedsBasicInfo, allowedValues: Enum.GetNames(typeof(DayOfWeek)));
             yield return new ConditionTypeValueProvider(ConditionType.DaysPlayed, () => Game1.stats.DaysPlayed.ToString(CultureInfo.InvariantCulture), NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.Season, () => SDate.Now().Season, NeedsBasicInfo, allowedValues: new[] { "Spring", "Summer", "Fall", "Winter" });
             yield return new ConditionTypeValueProvider(ConditionType.Year, () => SDate.Now().Year.ToString(CultureInfo.InvariantCulture), NeedsBasicInfo);
-            yield return new ConditionTypeValueProvider(ConditionType.Weather, this.GetCurrentWeather, NeedsBasicInfo, allowedValues: Enum.GetNames(typeof(Weather)));
+            yield return new WeatherValueProvider(NeedsBasicInfo);
             yield return new TimeValueProvider(NeedsBasicInfo);
 
             // player
+            yield return new LocalOrHostPlayerValueProvider(ConditionType.DailyLuck, player => player.DailyLuck.ToString(CultureInfo.InvariantCulture), NeedsBasicInfo);
+            yield return new LocalOrHostPlayerValueProvider(ConditionType.FarmhouseUpgrade, player => player.HouseUpgradeLevel.ToString(), NeedsBasicInfo);
             yield return new LocalOrHostPlayerValueProvider(ConditionType.HasConversationTopic, player => player.activeDialogueEvents.Keys, NeedsBasicInfo);
             yield return new LocalOrHostPlayerValueProvider(ConditionType.HasDialogueAnswer, this.GetDialogueAnswers, NeedsBasicInfo);
             yield return new LocalOrHostPlayerValueProvider(ConditionType.HasFlag, this.GetFlags, NeedsBasicInfo);
@@ -195,7 +197,9 @@ namespace ContentPatcher.Framework
             yield return new ConditionTypeValueProvider(ConditionType.HasWalletItem, this.GetWalletItems, NeedsBasicInfo, allowedValues: Enum.GetNames(typeof(WalletItem)));
             yield return new ConditionTypeValueProvider(ConditionType.IsMainPlayer, () => Context.IsMainPlayer.ToString(), NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.IsOutdoors, () => Game1.currentLocation?.IsOutdoors.ToString(), NeedsBasicInfo);
+            yield return new ConditionTypeValueProvider(ConditionType.LocationContext, () => ((LocationContext?)Game1.currentLocation?.GetLocationContext())?.ToString(), NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.LocationName, () => Game1.currentLocation?.Name, NeedsBasicInfo);
+            yield return new ConditionTypeValueProvider(ConditionType.LocationUniqueName, () => Game1.currentLocation?.NameOrUniqueName, NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.PlayerGender, () => (Game1.player.IsMale ? Gender.Male : Gender.Female).ToString(), NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.PlayerName, () => Game1.player.Name, NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.PreferredPet, () => (Game1.player.catPerson ? PetType.Cat : PetType.Dog).ToString(), NeedsBasicInfo);
@@ -208,7 +212,6 @@ namespace ContentPatcher.Framework
 
             // world
             yield return new ConditionTypeValueProvider(ConditionType.FarmCave, () => this.GetEnum(Game1.player.caveChoice.Value, FarmCaveType.None).ToString(), NeedsBasicInfo);
-            yield return new ConditionTypeValueProvider(ConditionType.FarmhouseUpgrade, () => Game1.player.HouseUpgradeLevel.ToString(), NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.FarmName, () => Game1.player.farmName.Value, NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.FarmType, () => this.GetEnum(Game1.whichFarm, FarmType.Custom).ToString(), NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.IsCommunityCenterComplete, () => this.GetIsCommunityCenterComplete().ToString(), NeedsBasicInfo);
@@ -225,6 +228,7 @@ namespace ContentPatcher.Framework
             // string manipulation
             yield return new LetterCaseValueProvider(ConditionType.Lowercase);
             yield return new LetterCaseValueProvider(ConditionType.Uppercase);
+            yield return new RenderValueProvider();
 
             // metadata
             yield return new ImmutableValueProvider(ConditionType.HasMod.ToString(), installedMods, canHaveMultipleValues: true);
@@ -249,22 +253,6 @@ namespace ContentPatcher.Framework
             return Enum.IsDefined(typeof(TEnum), value)
                 ? (TEnum)(object)value
                 : defaultValue;
-        }
-
-        /// <summary>Get the current weather from the game state.</summary>
-        private string GetCurrentWeather()
-        {
-            if (Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason) || (SaveGame.loaded?.weddingToday ?? Game1.weddingToday))
-                return Weather.Sun.ToString();
-
-            if (Game1.isSnowing)
-                return Weather.Snow.ToString();
-            if (Game1.isRaining)
-                return (Game1.isLightning ? Weather.Storm : Weather.Rain).ToString();
-            if (SaveGame.loaded?.isDebrisWeather ?? Game1.isDebrisWeather)
-                return Weather.Wind.ToString();
-
-            return Weather.Sun.ToString();
         }
 
         /// <summary>Get the event IDs seen by the player.</summary>

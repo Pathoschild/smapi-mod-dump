@@ -100,7 +100,10 @@ namespace SpriteMaster.Types {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			readonly get { return Offset.X; }
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set { Offset.X = value; }
+			set {
+				Extent.X += (Offset.X - value);
+				Offset.X = value;
+			}
 		}
 
 		[Browsable(false)]
@@ -108,7 +111,10 @@ namespace SpriteMaster.Types {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			readonly get { return Offset.Y; }
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set { Offset.Y = value; }
+			set {
+				Extent.Y += (Offset.Y - value);
+				Offset.Y = value;
+			}
 		}
 
 		[Browsable(false)]
@@ -116,7 +122,7 @@ namespace SpriteMaster.Types {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			readonly get { return Offset.X + Extent.X; }
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set { Extent.X = value - Offset.X; }
+			set { Width = value - Offset.X; }
 		}
 
 		[Browsable(false)]
@@ -124,7 +130,7 @@ namespace SpriteMaster.Types {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			readonly get { return Offset.Y + Extent.Y; }
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set { Extent.Y = value - Offset.Y; }
+			set { Height = value - Offset.Y; }
 		}
 
 		public readonly int Area => Extent.X * Extent.Y;

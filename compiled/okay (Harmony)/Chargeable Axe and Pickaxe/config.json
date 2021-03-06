@@ -1,0 +1,50 @@
+{
+  "AxeConfig": {
+    "EnableAxeCharging": true,
+    "RequiredUpgradeForCharging": 1,
+    "RadiusAtEachPowerLevel": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "ShowAxeAffectedTiles": true,
+    "ClearFruitTreeSeeds": false,
+    "ClearFruitTreeSaplings": false,
+    "CutGrownFruitTrees": false,
+    "ClearTreeSeeds": false,
+    "ClearTreeSaplings": false,
+    "CutGrownTrees": false,
+    "CutTappedTrees": false,
+    "CutGiantCrops": false,
+    "ClearBushes": true,
+    "ClearLiveCrops": false,
+    "ClearDeadCrops": true,
+    "ClearDebris": true
+  },
+  "PickaxeConfig": {
+    "EnablePickaxeCharging": true,
+    "RequiredUpgradeForCharging": 1,
+    "RadiusAtEachPowerLevel": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "ShowPickaxeAffectedTiles": true,
+    "BreakBouldersAndMeteorites": true,
+    "HarvestMineSpawns": true,
+    "BreakMineContainers": true,
+    "ClearObjects": false,
+    "ClearFlooring": false,
+    "ClearDirt": true,
+    "ClearBushes": true,
+    "ClearLiveCrops": false,
+    "ClearDeadCrops": true,
+    "ClearDebris": true
+  },
+  "RequireModkey": true,
+  "Modkey": "LeftShift",
+  "StaminaCostMultiplier": 1.0,
+  "ShockwaveDelay": 200
+}

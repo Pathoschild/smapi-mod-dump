@@ -30,6 +30,11 @@ namespace CustomOreNodes
         public int exp;
         public Texture2D texture;
 
+        public CustomOreNode()
+        {
+
+        }
+
         public CustomOreNode(string nodeInfo)
         {
             int i = 0;
@@ -70,6 +75,14 @@ namespace CustomOreNodes
         public float expMult = 1f;
         public float dropChanceMult = 1f;
         public float dropMult = 1f;
+        public int minDifficulty = -1;
+        public int maxDifficulty = -1;
+
+        public OreLevelRange()
+        {
+
+        }
+
         public OreLevelRange(string infos)
         {
             string[] infoa = infos.Split(',');

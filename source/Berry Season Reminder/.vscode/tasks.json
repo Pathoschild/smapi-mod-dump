@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AHilyard/BerrySeasonReminder
+**
+*************************************************/
+
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "mybuild",
+			"command": "C:/progra~2/micros~3/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe",
+			"type": "shell",
+			"args": [
+				"BerrySeasonReminder.csproj",
+				"/t:Build",
+				"/p:Configuration=Debug",
+				"/p:Platform=\"AnyCPU\""
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

@@ -1,0 +1,13 @@
+url:
+   https://github.com/Floogen/SereneGreenhouse.git
+
+mods:
+   Serene Greenhouse
+
+latest commit:
+   commit 5eda849c8ea56efa8ab26ea2a9e8c1e6d2f1e6f1
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Mon Feb 8 10:25:20 2021 -0600
+   
+       Added Nexus update key
+   

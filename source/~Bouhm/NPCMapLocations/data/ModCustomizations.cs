@@ -24,54 +24,111 @@ namespace NPCMapLocations
   // Handles custom maps (recolors of the mod map), custom NPCs, custom sprites, custom names, etc.
   public class ModCustomizations
   {
-    private readonly HashSet<string> NpcCustomizations;
-    private readonly CustomData CustomData;
-    public readonly string MapsRootPath = "maps";
-
     public Dictionary<string, MapVector[]> MapVectors { get; set; }
     public Dictionary<string, string> Names { get; set; }
-    public Dictionary<string, CustomLocation> Locations { get; set; }
-    public List<string> LocationBlacklist { get; set; }
-    public Dictionary<string, int> NpcMarkerOffsets { get; set; }
-    public List<ClickableComponent> Tooltips { get; set; }
+    public HashSet<string> LocationExclusions { get; set; }
+    public Dictionary<string, MapTooltip> Tooltips { get; set; }
+
+    public readonly string MapsRootPath = "maps";
     public string MapsPath { get; set; }
 
     public ModCustomizations()
     {
-      MapsPath = GetCustomMapFolderName();
-      if (MapsPath != null)
-        MapsPath = Path.Combine(MapsRootPath, MapsPath);
-      else
+      //MapsPath = GetCustomMapFolderName();
+      //if (MapsPath != null)
+      //  MapsPath = Path.Combine(MapsRootPath, MapsPath);
+      //else
         MapsPath = Path.Combine(MapsRootPath, "_default");
 
-      CustomData = ModMain.Helper.Data.ReadJsonFile<CustomData>(Path.Combine(MapsPath, "customlocations.json")) ?? new CustomData();
-      MapVectors = new Dictionary<string, MapVector[]>();
       Names = new Dictionary<string, string>();
-      NpcCustomizations = new HashSet<string>();
-      Locations = new Dictionary<string, CustomLocation>();
-      Tooltips = new List<ClickableComponent>();
+      MapVectors = new Dictionary<string, MapVector[]>();
+      Tooltips = new Dictionary<string, MapTooltip>();
+      LocationExclusions = new HashSet<string>();
+    }
+
+    public void LoadCustomData(Dictionary<string, JObject> CustomNpcJson, Dictionary<string, JObject> CustomLocationJson)
+    {
+      LoadCustomLocations(CustomLocationJson);
+      LoadCustomNpcs(CustomNpcJson);
+    }
+
+    private void LoadCustomLocations(Dictionary<string, JObject> customLocationJson)
+    {
+      foreach (var locationData in customLocationJson)
+      {
+        var location = locationData.Value;
+        if (location.ContainsKey("MapVectors"))
+        {
+          AddCustomMapLocation(locationData.Key, (JArray)location.GetValue("MapVectors"));
+        }
+        if (location.ContainsKey("MapTooltip"))
+        {
+          AddTooltip(locationData.Key, (JObject)location.GetValue("MapTooltip"));
+        }
+        if (location.ContainsKey("Exclude"))
+        {
+          if ((bool) location.GetValue("Exclude"))
+          {
+            LocationExclusions.Add(locationData.Key);
+          }
+        }
+      }
     }
 
     // Handles customizations for NPCs
     // Custom NPCs and custom names or sprites for existing NPCs
-    private void LoadCustomNpcs()
+    private void LoadCustomNpcs(Dictionary<string, JObject> customNpcJson)
     {
-      foreach (var npc in ModMain.GetVillagers())
+      var npcMarkerOffsets = ModConstants.NpcMarkerOffsets;
+      var npcExclusions = ModMain.Globals.NpcExclusions;
+
+      foreach (var npcData in customNpcJson)
       {
-        GetNpcCrop(npc);
-        GetCustomName(npc);
+        var npc = npcData.Value;
+
+        if (npc.ContainsKey("Exclude"))
+        {
+          if ((bool)npc.GetValue("Exclude"))
+          {
+            npcExclusions.Add(npcData.Key);
+            continue;
+          }
+        }
+
+        if (npc.ContainsKey("MarkerCropOffset"))
+        {
+          npcMarkerOffsets[npcData.Key] = (int)npc.GetValue("MarkerCropOffset");
+        }
+        else
+        {
+          var gameNpc = Game1.getCharacterFromName(npcData.Key);
+          if (gameNpc != null)
+          {
+            // If custom crop offset is not specified, default to 0
+            if (!npcMarkerOffsets.TryGetValue(gameNpc.Name, out var crop)) npcMarkerOffsets[gameNpc.Name] = 0;
+
+            // Children sprites are short so give them a booster seat
+            if (gameNpc is Child)
+            {
+              npcMarkerOffsets[gameNpc.Name] += 7;
+            }
+          }
+        }
       }
 
-      // For farmhands, custom NPCs can't be found so rely on config
-      if (Context.IsMultiplayer && !Context.IsMainPlayer)
-      {
-        var CustomNpcMarkerOffsets = ModMain.Globals.CustomNpcMarkerOffsets;
+      // Merge customizations into globals config
+      ModMain.Globals.NpcMarkerOffsets = MergeDictionaries(npcMarkerOffsets, ModMain.Globals.NpcMarkerOffsets);
+      ModMain.Globals.NpcExclusions = npcExclusions;
 
-        if (CustomNpcMarkerOffsets != null && CustomNpcMarkerOffsets.Count > 0) { 
-          foreach (var villager in CustomNpcMarkerOffsets)
-          {
-            NpcMarkerOffsets[villager.Key] = villager.Value;
-          }
+      foreach (var character in Utility.getAllCharacters())
+      {
+        // Handle any modified NPC names 
+        // Specifically mods that change names in dialogue files (displayName)
+        if (!Names.TryGetValue(character.Name, out var customName))
+        {
+          var displayName = (character.displayName != null && Game1.IsEnglish()) ? character.displayName : character.Name;
+
+          Names.Add(character.Name, displayName);
         }
       }
 
@@ -93,15 +150,8 @@ namespace NPCMapLocations
         }
       }
 
-      if (NpcCustomizations.Count != 0)
-      {
-        var names = "Adjusted markers for ";
-        foreach (var name in NpcCustomizations) names += name + ", ";
-
-        ModMain.IMonitor.Log(names.Substring(0, names.Length - 2), LogLevel.Debug);
-      }
-
       ModMain.Helper.Data.WriteJsonFile($"config/{Constants.SaveFolderName}.json", ModMain.Config);
+      ModMain.Helper.Data.WriteJsonFile($"config/globals.json", ModMain.Globals);
     }
 
     /// <summary>Get the folder from which to load tilesheet overrides for compatibility with other mods, if applicable.</summary>
@@ -150,152 +200,59 @@ namespace NPCMapLocations
       return folderName;
     }
 
-    public void LoadCustomData()
+    private void AddTooltip(string locationName, JObject tooltip)
     {
-      LoadTooltips();
-      LoadMarkerCropOffsets();
-      LoadCustomNpcs();
-      LoadCustomMapLocations();
-      LocationBlacklist = CustomData.LocationBlacklist;
-    }
+      Tooltips[locationName] = new MapTooltip(
+        (int)tooltip.GetValue("X"),
+        (int)tooltip.GetValue("Y"),
+        (int)tooltip.GetValue("Width"),
+        (int)tooltip.GetValue("Height"),
+        (string)tooltip.GetValue("PrimaryText"),
+        (string)tooltip.GetValue("SecondaryText")
+      );
 
-    private void LoadTooltips()
-    {
-      foreach (var tooltip in CustomData.CustomMapTooltips)
+      if (tooltip.ContainsKey("SecondaryText"))
       {
-        string text = tooltip.Value.GetValue("SecondaryText") != null
-          ? (string) tooltip.Value.GetValue("PrimaryText") + Environment.NewLine + tooltip.Value.GetValue("SecondaryText")
-          : (string) tooltip.Value.GetValue("PrimaryText");
-
-        Tooltips.Add(new ClickableComponent(
-          new Rectangle(
-            (int) tooltip.Value.GetValue("X"),
-            (int) tooltip.Value.GetValue("Y"),
-            (int) tooltip.Value.GetValue("Width"),
-            (int) tooltip.Value.GetValue("Height")
-          ),
-          text
-        ));
+        Tooltips[locationName].SecondaryText = (string)tooltip.GetValue("SecondaryText");
       }
-    }
-
-    private void LoadMarkerCropOffsets()
-    {
-      NpcMarkerOffsets = ModConstants.NpcMarkerOffsets;
     }
 
     // Any custom locations with given location on the map
-    private void LoadCustomMapLocations()
+    private void AddCustomMapLocation(string locationName, JArray mapLocations)
     {
-      foreach (var mapVectors in CustomData.CustomMapLocations)
+      var mapVectors = mapLocations.ToObject<JObject[]>();
+      var mapVectorArr = new MapVector[mapVectors.Length];
+      for (var i = 0; i < mapVectors.Length; i++)
       {
-        var mapVectorArr = new MapVector[mapVectors.Value.Length];
-        for (var i = 0; i < mapVectors.Value.Length; i++)
-        {
-          var mapVector = mapVectors.Value[i];
+        var mapVector = mapVectors[i];
 
-          // Marker doesn't need to specify corresponding Tile position
-          if (mapVector.GetValue("TileX") == null || mapVector.GetValue("TileY") == null)
-            mapVectorArr[i] = new MapVector(
-              (int)mapVector.GetValue("MapX"),
-              (int)mapVector.GetValue("MapY")
-            );
-          // Region must specify corresponding Tile positions for
-          // Calculations on movement within location
-          else
-            mapVectorArr[i] = new MapVector(
-              (int)mapVector.GetValue("MapX"),
-              (int)mapVector.GetValue("MapY"),
-              (int)mapVector.GetValue("TileX"),
-              (int)mapVector.GetValue("TileY")
-            );      
-        }
-
-        MapVectors.Add(mapVectors.Key, mapVectorArr);
-      }
-
-      // Automatically adjust tracking for modded maps that are sized differently from vanilla map
-      foreach (var location in Game1.locations)
-      {
-        var locationName = location.uniqueName.Value ?? location.Name;
-
-        if (!location.IsOutdoors || locationName == "Summit" || MapVectors.ContainsKey(locationName) ||
-            !ModConstants.MapVectors.TryGetValue(locationName, out var mapVector)) continue;
-        if (mapVector.LastOrDefault().TileX != location.Map.DisplayWidth / Game1.tileSize ||
-            mapVector.LastOrDefault().TileY != location.Map.DisplayHeight / Game1.tileSize)
-          MapVectors.Add(locationName,
-            new[]
-            {
-              mapVector.FirstOrDefault(),
-              new MapVector(
-                mapVector.LastOrDefault().MapX,
-                mapVector.LastOrDefault().MapY,
-                location.Map.DisplayWidth / Game1.tileSize,
-                location.Map.DisplayHeight / Game1.tileSize
-              )
-            });
-      }
-
-      var customLocations = MapVectors.Keys.ToArray();
-      if (MapVectors.Keys.Count > 0)
-      {
-        if (customLocations.Length == 1)
-        {
-          ModMain.IMonitor.Log($"Handled tracking for custom location: {customLocations[0]}.", LogLevel.Debug);
-        }
+        // Marker doesn't need to specify corresponding Tile position
+        if (mapVector.GetValue("TileX") == null || mapVector.GetValue("TileY") == null)
+          mapVectorArr[i] = new MapVector(
+            (int)mapVector.GetValue("MapX"),
+            (int)mapVector.GetValue("MapY")
+          );
+        // Region must specify corresponding Tile positions for
+        // Calculations on movement within location
         else
-        {
-          var locationList = "";
-          for (var i = 0; i < customLocations.Length; i++)
-          {
-            locationList += customLocations[i] + (i + 1 == customLocations.Length ? "" : ", ");
-          }
-
-          ModMain.IMonitor.Log($"Handled tracking for custom locations: {locationList}.", LogLevel.Debug);
-        }
+          mapVectorArr[i] = new MapVector(
+            (int)mapVector.GetValue("MapX"),
+            (int)mapVector.GetValue("MapY"),
+            (int)mapVector.GetValue("TileX"),
+            (int)mapVector.GetValue("TileY")
+          );
       }
+
+      MapVectors.Add(locationName, mapVectorArr);
     }
 
-    // Handle any modified NPC names 
-    // Specifically mods that change names in dialogue files (displayName)
-    public void GetCustomName(NPC npc)
+    // Merge dictionaries, in case of key conflict d1 takes precendence
+    private Dictionary<string, T> MergeDictionaries<T>(Dictionary<string, T> d1, Dictionary<string, T> d2)
     {
-      if (npc is Horse) return;
-
-      if (!Names.TryGetValue(npc.Name, out var customName))
-      {
-        Names.Add(npc.Name, npc.displayName ?? npc.Name);
-        // Handle custom NPCs meant to replace existing NPCs
-        if (!npc.Name.Equals(npc.displayName) || ModMain.Globals.CustomNpcMarkerOffsets.ContainsKey(npc.displayName))
-        {
-          NpcCustomizations.Add(npc.Name);
-        }
-      }
-    }
-
-    // Load user-specified NPC crops for custom sprites
-    private void GetNpcCrop(NPC npc)
-    {
-      var CustomNpcMarkerOffsets = ModMain.Globals.CustomNpcMarkerOffsets;
-
-      if (CustomNpcMarkerOffsets != null && CustomNpcMarkerOffsets.Count > 0)
-        foreach (var villager in CustomNpcMarkerOffsets)
-        {
-          if (npc.Name.Equals(villager.Key))
-          {
-            NpcMarkerOffsets[npc.Name] = villager.Value;
-            NpcCustomizations.Add(npc.Name);
-          }
-        }
-
-      // If custom crop offset is not specified, default to 0
-      if (!NpcMarkerOffsets.TryGetValue(npc.Name, out var crop)) NpcMarkerOffsets[npc.Name] = 0;
-
-      // Children sprites are short so give them a booster seat
-      if (npc is Child)
-      {
-        NpcMarkerOffsets[npc.Name] += 7;
-      }
+      var dictionaries = new Dictionary<string, T>[] { d1, d2 };
+      return dictionaries.SelectMany(dict => dict)
+              .ToLookup(pair => pair.Key, pair => pair.Value)
+              .ToDictionary(group => group.Key, group => group.First());
     }
 
     public class CustomLocation
@@ -312,12 +269,5 @@ namespace NPCMapLocations
         LocVector = new Vector2(toAreaRect.Value<int>("X"), toAreaRect.Value<int>("Y"));
       }
     }
-  }
-
-  public class CustomData
-  {
-    public Dictionary<string, JObject[]> CustomMapLocations { get; set; } = new Dictionary<string, JObject[]>();
-    public Dictionary<string, JObject> CustomMapTooltips { get; set; } = new Dictionary<string, JObject>();
-    public List<string> LocationBlacklist { get; set; } = new List<string>();
   }
 }

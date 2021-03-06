@@ -1,0 +1,15 @@
+﻿{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Yes": "満足",
+  "No": "まだ",
+  "GotPetted": "なでなで：{{value}}",
+  "GotWater": "飲みもの：{{value}}",
+  "GotFood": "食べもの：{{value}}",
+  "Friendship": "なつき度：{{value}}",
+  "AteEnough": "{{name}}はもうお腹いっぱい！",
+  "AteFood": "{{name}}は{{foodName}}を食べた。",
+  "HorseWarning": "You cannot do that while riding a horse!"
+}

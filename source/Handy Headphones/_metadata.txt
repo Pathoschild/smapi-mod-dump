@@ -1,0 +1,13 @@
+url:
+   https://github.com/Floogen/HandyHeadphones.git
+
+mods:
+   Handy Headphones
+
+latest commit:
+   commit 689a0a2ff153d3c0cb43ab7ace0c8df29f0f8a07
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Sat Feb 6 07:24:25 2021 -0600
+   
+       Unified formatting
+   

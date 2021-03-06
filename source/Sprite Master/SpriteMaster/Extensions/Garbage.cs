@@ -21,8 +21,17 @@ namespace SpriteMaster.Extensions {
 		private static readonly MethodInfo CompactingCollect = null;
 		public static volatile bool ManualCollection = false;
 
+		private static void ExecuteSafe(Action call) {
+			try {
+				call.Invoke();
+			}
+			catch (Exception) {
+				// ignore the exception
+			}
+		}
+
 		static Garbage () {
-			GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
+			ExecuteSafe(() => GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency);
 
 			var methods = typeof(GC).GetMethods("Collect", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 			foreach (var method in methods) {
@@ -49,7 +58,7 @@ namespace SpriteMaster.Extensions {
 		public static void MarkCompact() {
 			Debug.TraceLn("Marking for Compact");
 #if !NETFRAMEWORK || !(NET20 || NET35 || NET40 || NET45)
-			GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+			ExecuteSafe(() => GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce);
 #endif
 		}
 
@@ -61,29 +70,40 @@ namespace SpriteMaster.Extensions {
 				if (compact) {
 					MarkCompact();
 				}
-				var latencyMode = GCSettings.LatencyMode;
+
 				try {
-					if (blocking) {
-						GCSettings.LatencyMode = GCLatencyMode.Batch;
-					}
-					if (compact && CompactingCollect != null) {
-						CompactingCollect.Invoke(null, new object[] {
+					var latencyMode = GCSettings.LatencyMode;
+					try {
+						if (blocking) {
+							GCSettings.LatencyMode = GCLatencyMode.Batch;
+						}
+						if (compact && CompactingCollect != null) {
+							CompactingCollect.Invoke(null, new object[] {
 							int.MaxValue,
 							background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
 							blocking,
 							true
 					});
+						}
+						else {
+							GC.Collect(
+								generation: int.MaxValue,
+								mode: background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
+								blocking: blocking
+							);
+						}
 					}
-					else {
-						GC.Collect(
-							generation: int.MaxValue,
-							mode: background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
-							blocking: blocking
-						);
+					finally {
+						GCSettings.LatencyMode = latencyMode;
 					}
 				}
-				finally {
-					GCSettings.LatencyMode = latencyMode;
+				catch (Exception) {
+					// Just in case the user's GC doesn't support the preivous properties like LatencyMode
+					GC.Collect(
+						generation: int.MaxValue,
+						mode: background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
+						blocking: blocking
+					);
 				}
 			}
 			finally {

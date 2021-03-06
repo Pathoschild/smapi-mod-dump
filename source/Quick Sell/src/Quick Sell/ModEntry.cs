@@ -14,37 +14,23 @@ using StardewValley;
 
 namespace Quick_Sell
 {
-    /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-        /*********
-        ** Properties
-        *********/
+        public static Mod Instance;
 
-        /// <summary>The mod configuration from the player.</summary>
-        private ModConfig Config;
+        public static IModHelper Helper;
 
-        private ModLogger Logger;
+        public static ModConfig Config;
 
-        private ModUtils Utils;
-        private ModPlayer Player;
-
-        /*********
-        ** Public methods
-        *********/
-
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            this.Config = this.Helper.ReadConfig<ModConfig>();
+            Instance = this;
 
-            this.Logger = new ModLogger(this.Monitor);
+            Helper = helper;
 
-            this.Utils = new ModUtils(this.Config);
-            this.Player = new ModPlayer(helper, this.Config, this.Logger, this.Utils);
+            Config = Helper.ReadConfig<ModConfig>();
 
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -58,33 +44,35 @@ namespace Quick_Sell
             //if (!Game1.displayHUD)
             //    return;
 
-            if (e.Button == this.Config.SellKey)
-                this.OnSellButtonPressed(sender, e);
+            if (Config.SellKey.JustPressed())
+                OnSellButtonPressed(sender, e);
         }
 
         private void OnSellButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            Item item = this.Player.GetHoveredItem();
+            Item item = ModPlayer.GetHoveredItem();
 
             if (item == null)
             {
-                this.Logger.Debug("Item was null.");
+                ModLogger.Trace("Item was null.");
                 return;
             }
 
-            this.Logger.Debug($"{Game1.player.Name} pressed {e.Button} and has selected {item}.");
+            ModLogger.Trace($"{Game1.player.Name} pressed {e.Button} and has selected {item}.");
 
-            if (!this.Player.CheckIfItemCanBeShipped(item))
+            if (Config.CheckIfItemsCanBeShipped == true && ModPlayer.CheckIfItemCanBeShipped(item) == false)
             {
-                this.Logger.Debug("Item was null or couldn't be shipped.");
+                ModLogger.Info("Item can't be shipped.");
                 return;
             }
 
-            this.Player.AddItemToPlayerShippingBin(item);
+            ModPlayer.AddItemToShippingBin(item);
 
-            this.Player.RemoveItemFromPlayerInventory(item);
+            ModPlayer.OrganizeShippingBin();
 
-            this.Utils.SendHUDMessage($"Sent {item.Stack} {item.DisplayName} to the Shipping Bin!");
+            ModPlayer.RemoveItemFromPlayerInventory(item);
+
+            ModUtils.SendHUDMessage($"Sent {item.Stack} {item.DisplayName} to the Shipping Bin!");
 
             Game1.playSound("Ship");
         }

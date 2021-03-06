@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/theLion/smapi-mods.git
+
+mods:
+   Chargeable Axe and Pickaxe
+
+latest commit:
+   commit 0f5e651e70e59b8db32a439c3d2908716483277c
+   Author: The Lion <matheus_is@live.com>
+   Date:   Thu Mar 4 17:53:25 2021 -0300
+   
+       several professions added
+   

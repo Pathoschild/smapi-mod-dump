@@ -150,7 +150,7 @@ namespace ProducerFrameworkMod.Controllers
                     }
                     producer.initializeLightSource(tileLocation, false);
 
-                    producerRule.IncrementStatsOnInput.ForEach(s => StatsController.IncrementStardewStats(s, producerRule.InputStack));
+                    producerRule.IncrementStatsOnInput.ForEach(s => StatsController.IncrementStardewStats(s, outputConfig.RequiredInputStack ?? producerRule.InputStack));
                 }
 
             }

@@ -1,0 +1,15 @@
+﻿{
+    "Message.Requirement.Amount": "需要 {{amount}} {{objectName}}",
+    "Message.Requirement.Quality": "需要不同的质量",
+    "Message.Requirement.Fuel": "缺少必需成分",
+    "Message.Requirement.Season": "需要不同的季节",
+    "Message.Requirement.Weather": "需要不同的天气",
+    "Message.Requirement.Location": "需要其他位置",
+    "Message.Requirement.InputParent": "需要其他类型的{{objectName}}",
+    "Message.Condition.Location": "不能在此运作",
+    "Message.Condition.Season": "不能在这个季节运作",
+    "Object.Category.Meat": "肉 (任何)",
+    "Object.Category.MetalResources": "金属资源（任何）",
+    "Object.Category.BuildingResources": "建筑资源（任何）",
+    "Object.Category.TappedTreeProduct": "轻击树产品（任何）"
+}

@@ -493,29 +493,29 @@ namespace NPCMapLocations
       // Villager names
       if (whichOption > 12 && npcMarkers != null)
 			{
-        isChecked = !ModMain.Globals.NpcBlacklist.Contains(npcMarkers.ElementAt(whichOption - 13).Key);
+        isChecked = !ModMain.Globals.NpcExclusions.Contains(npcMarkers.ElementAt(whichOption - 13).Key);
         return;
       }
 
       switch (whichOption)
 			{
         case 0:
-          isChecked = ModMain.Config.ShowMinimap;
+          isChecked = ModMain.Globals.ShowMinimap;
           return;
         case 6:
-					isChecked = ModMain.Config.OnlySameLocation;
+					isChecked = ModMain.Globals.OnlySameLocation;
 					return;
 				case 7:
 					isChecked = ModMain.Config.ByHeartLevel;
 					return;
         case 10:
-					isChecked = ModMain.Config.MarkQuests;
+					isChecked = ModMain.Globals.ShowQuests;
 					return;
 				case 11:
-					isChecked = ModMain.Config.ShowHiddenVillagers;
+					isChecked = ModMain.Globals.ShowHiddenVillagers;
 					return;
 				case 12:
-					isChecked = ModMain.Config.ShowTravelingMerchant;
+					isChecked = ModMain.Globals.ShowTravelingMerchant;
 					return;
 				default:
 					return;
@@ -534,31 +534,31 @@ namespace NPCMapLocations
 			if (whichOption > 12 && npcMarkers != null)
 			{
 				if (isChecked)
-          ModMain.Globals.NpcBlacklist.Remove(npcMarkers.ElementAt(whichOption - 13).Key);
+          ModMain.Globals.NpcExclusions.Remove(npcMarkers.ElementAt(whichOption - 13).Key);
 				else
-          ModMain.Globals.NpcBlacklist.Add(npcMarkers.ElementAt(whichOption - 13).Key);
+          ModMain.Globals.NpcExclusions.Add(npcMarkers.ElementAt(whichOption - 13).Key);
 			}
 			else
 			{
 				switch (whichOption)
 				{
           case 0:
-            ModMain.Config.ShowMinimap = isChecked;
+            ModMain.Globals.ShowMinimap = isChecked;
             break;
           case 6:
-					  ModMain.Config.OnlySameLocation = isChecked;
+					  ModMain.Globals.OnlySameLocation = isChecked;
 						break;
 					case 7:
 					  ModMain.Config.ByHeartLevel = isChecked;
 						break;
           case 10:
-					  ModMain.Config.MarkQuests = isChecked;
+					  ModMain.Globals.ShowQuests = isChecked;
 						break;
 					case 11:
-					  ModMain.Config.ShowHiddenVillagers = isChecked;
+					  ModMain.Globals.ShowHiddenVillagers = isChecked;
 						break;
 					case 12:
-					  ModMain.Config.ShowTravelingMerchant = isChecked;
+					  ModMain.Globals.ShowTravelingMerchant = isChecked;
 						break;
 					default:
 						break;
@@ -731,14 +731,14 @@ namespace NPCMapLocations
 			switch (whichOption)
 			{
 				case 1:
-					selected = (int) MathHelper.Clamp(((int) Math.Floor((ModMain.Config.MinimapWidth - 75) / 15.0)), 0,
+					selected = (int) MathHelper.Clamp(((int) Math.Floor((ModMain.Globals.MinimapWidth - 75) / 15.0)), 0,
 						options.Count - 1);
-					options[selected] = ModMain.Config.MinimapWidth;
+          options[selected] = ModMain.Globals.MinimapWidth;
 					break;
 				case 2:
-					selected = (int) MathHelper.Clamp(((int) Math.Floor((ModMain.Config.MinimapHeight - 45) / 15.0)), 0,
+					selected = (int) MathHelper.Clamp(((int) Math.Floor((ModMain.Globals.MinimapHeight - 45) / 15.0)), 0,
 						options.Count - 1);
-					options[selected] = ModMain.Config.MinimapHeight;
+					options[selected] = ModMain.Globals.MinimapHeight;
 					break;
 				default:
 					break;
@@ -771,10 +771,10 @@ namespace NPCMapLocations
 			switch (whichOption)
 			{
 				case 1:
-				  ModMain.Config.MinimapWidth = options[selected];
+				  ModMain.Globals.MinimapWidth = options[selected];
 					break;
 				case 2:
-				  ModMain.Config.MinimapHeight = options[selected];
+				  ModMain.Globals.MinimapHeight = options[selected];
 					break;
 				default:
 					break;
@@ -797,7 +797,7 @@ namespace NPCMapLocations
 
     public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
     {
-			greyedOut = !ModMain.Config.ShowMinimap;
+			greyedOut = !ModMain.Globals.ShowMinimap;
 			b.Draw(Game1.mouseCursors, new Vector2(slotX + minusButton.X, slotY + minusButton.Y), minusButtonSource,
 				Color.White * (greyedOut ? 0.33f : 1f) * (selected == 0 ? 0.5f : 1f), 0f, Vector2.Zero, 4f, SpriteEffects.None,
 				0.4f);

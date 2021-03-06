@@ -57,6 +57,9 @@ namespace ContentPatcher.Framework.Conditions
         /// <summary>An event ID the player saw.</summary>
         HasSeenEvent,
 
+        /// <summary>The player's daily luck.</summary>
+        DailyLuck,
+
         /// <summary>The response IDs for the player's answers to question dialogues.</summary>
         HasDialogueAnswer,
 
@@ -69,8 +72,14 @@ namespace ContentPatcher.Framework.Conditions
         /// <summary>Whether the player's current location is outdoors.</summary>
         IsOutdoors,
 
+        /// <summary>The general world area.</summary>
+        LocationContext,
+
         /// <summary>The name of the player's current location.</summary>
         LocationName,
+
+        /// <summary>The unique name of the player's current location. This differs from <see cref="LocationName"/> for constructed building interiors.</summary>
+        LocationUniqueName,
 
         /// <summary>The gender of the current player.</summary>
         PlayerGender,
@@ -141,11 +150,14 @@ namespace ContentPatcher.Framework.Conditions
         /****
         ** String manipulation
         ****/
+        /// <summary>A token which transforms its input text to lowercase.</summary>
+        Lowercase,
+
         /// <summary>A random value selected from the given input.</summary>
         Random,
 
-        /// <summary>A token which transforms its input text to lowercase.</summary>
-        Lowercase,
+        /// <summary>A token which returns a string representation of its input text.</summary>
+        Render,
 
         /// <summary>A token which transforms its input text to uppercase.</summary>
         Uppercase,

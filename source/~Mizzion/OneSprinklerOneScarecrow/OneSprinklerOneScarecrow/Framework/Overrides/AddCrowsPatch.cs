@@ -25,7 +25,7 @@ namespace OneSprinklerOneScarecrow.Framework.Overrides
         {
             foreach (var obj in __instance.Objects.Pairs)
             {
-                if (obj.Value.Name == "Haxarecrow")
+                if (obj.Value.Name == "Haxor Scarecrow")
                 {
                     _monitor.Log("No crows ran");
                     return false;

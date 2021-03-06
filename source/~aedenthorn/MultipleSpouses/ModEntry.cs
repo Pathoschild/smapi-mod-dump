@@ -66,7 +66,7 @@ namespace MultipleSpouses
             helper.Events.GameLoop.DayEnding += HelperEvents.GameLoop_DayEnding;
             helper.Events.GameLoop.ReturnedToTitle += HelperEvents.GameLoop_ReturnedToTitle;
 
-            NPCPatches.Initialize(Monitor);
+            NPCPatches.Initialize(Monitor, config);
             LocationPatches.Initialize(Monitor);
             FarmerPatches.Initialize(Monitor, Helper);
             Maps.Initialize(Monitor);
@@ -75,7 +75,7 @@ namespace MultipleSpouses
             EventPatches.Initialize(Monitor, Helper);
             HelperEvents.Initialize(Monitor, Helper);
             FileIO.Initialize(Monitor, Helper);
-            Misc.Initialize(Monitor, Helper);
+            Misc.Initialize(Monitor, Helper, config);
             Divorce.Initialize(Monitor, Helper);
             FurniturePatches.Initialize(Monitor, Helper, config);
             ObjectPatches.Initialize(Monitor, Helper, config);
@@ -178,15 +178,19 @@ namespace MultipleSpouses
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_reloadSprite_Postfix))
             );
 
-/*
             harmony.Patch(
                original: AccessTools.Method(typeof(Child), nameof(Child.resetForPlayerEntry)),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_resetForPlayerEntry_Postfix))
             );
-*/
+
             harmony.Patch(
                original: AccessTools.Method(typeof(Child), nameof(Child.dayUpdate)),
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_dayUpdate_Prefix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Child), nameof(Child.isInCrib)),
+               prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.Child_isInCrib_Prefix))
             );
             /*
             harmony.Patch(
@@ -235,14 +239,14 @@ namespace MultipleSpouses
                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogue)),
                prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.GameLocation_answerDialogue_prefix))
             );
+            harmony.Patch(
+               original: AccessTools.Method(typeof(FarmHouse), "resetLocalState"),
+               postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_resetLocalState_Postfix))
+            );
 
             harmony.Patch(
                original: AccessTools.Method(typeof(Beach), "resetLocalState"),
                postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.Beach_resetLocalState_Postfix))
-            );
-            harmony.Patch(
-               original: AccessTools.Method(typeof(FarmHouse), "resetLocalState"),
-               postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_resetLocalState_Postfix))
             );
 
             harmony.Patch(
@@ -568,11 +572,6 @@ namespace MultipleSpouses
             {
                 return true;
             }
-            if (config.CustomBed && asset.AssetNameEquals("Maps/farmhouse_tiles"))
-            {
-                Monitor.Log($"can edit farmhouse tiles");
-                return true;
-            }
             if (config.RomanceAllVillagers && (asset.AssetName.StartsWith("Characters/schedules") || asset.AssetName.StartsWith("Characters\\schedules")))
             {
                 string name = asset.AssetName.Replace("Characters/schedules/","").Replace("Characters\\schedules\\","");
@@ -655,10 +654,6 @@ namespace MultipleSpouses
                         data[friend + "1"] = "";
                     }
                 }
-            }
-            else if (asset.AssetNameEquals("Maps/farmhouse_tiles"))
-            {
-                asset.AsImage().PatchImage(Helper.Content.Load<Texture2D>("assets/beds.png"), new Rectangle(!config.TransparentSheets && config.SleepOnCovers ? 48 : config.TransparentSheets? 96 : 0, 0, 48, 96), new Rectangle(128, 192, 48, 96));
             }
             else if (asset.AssetName.StartsWith("Characters/schedules") || asset.AssetName.StartsWith("Characters\\schedules"))
             {

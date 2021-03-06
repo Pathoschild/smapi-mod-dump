@@ -25,6 +25,7 @@ namespace AnimalHusbandryMod.meats
         public MeatItem Duck;
         public MeatItem Rabbit;
         public MeatItem Mutton;
+        public MeatItem Ostrich;
 
         public MeatData()
         {
@@ -34,6 +35,7 @@ namespace AnimalHusbandryMod.meats
             Duck = new MeatItem(400, 20);
             Rabbit = new MeatItem(2500, 20);
             Mutton = new MeatItem(650, 20);
+            Ostrich = new MeatItem(10500, 60);
         }
 
         public MeatItem getMeatItem(Meat meatEnum)
@@ -52,6 +54,8 @@ namespace AnimalHusbandryMod.meats
                     return Rabbit;
                 case Meat.Mutton:
                     return Mutton;
+                case Meat.Ostrich:
+                    return Ostrich;
                 default:
                     throw new ArgumentException("Invalid Meat");
             }

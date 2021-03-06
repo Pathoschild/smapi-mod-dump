@@ -1,0 +1,12 @@
+﻿{
+  "labeling.message.firstPos": "记录第一个位置",
+  "labeling.message.secondPos": "记录第二个位置",
+  "labeling.naming.button.done.title": "完成",
+  "labeling.naming.button.cancel.title": "取消",
+  "labeling.naming.textField.name.description": "名字",
+  "labeling.deleteLabeling.button.delete.title": "删除",
+  "labeling.labelingGui.title": "贴标",
+  "labeling.labelingGui.record": "记录一个贴标",
+  "labeling.labelingGui.display": "显示",
+  "labeling.labelingGui.color": "颜色"
+}

@@ -1,45 +1,42 @@
-{
-	// Object data
-	"Name": "blueberry.cac.roast",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 89,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": null,
-	"Price": 440,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 238, // Cran. Sauce
-				"Count": 1
-			},
-			{
-				"Object": 244, // Roots Platter
-				"Count": 1
-			},
-			{
-				"Object": 239, // Stuffing
-				"Count": 1
-			},
-			{
-				"Object": 192, // Potato
-				"Count": 1
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.roast",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 89,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 440,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 238,
+                "Count": 1
+            },
+            {
+                "Object": 244,
+                "Count": 1
+            },
+            {
+                "Object": 239,
+                "Count": 1
+            },
+            {
+                "Object": 192,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Hot Pot Roast"
+    }
 }

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/1471
 IDs: DevinLematty.LevelExtender, Devin_Lematty.Level_Extender, Devin Lematty.Level Extender
-update keys: Nexus:1471, GitHub:unidarkshin/Stardew-Mods
+update keys: Nexus:1471

@@ -5,9 +5,9 @@ mods:
    Item Tooltips
 
 latest commit:
-   commit 185cfea1f46547ed69bef67738efaae36666e3f6
+   commit b6f6b2f844b1d48bf87747f166dadc4194413770
    Author: Jared <jaredlll08@gmail.com>
-   Date:   Sat Jan 2 01:05:09 2021 +0200
+   Date:   Tue Feb 2 21:00:02 2021 +0200
    
-       don't print reesponse
+       undo jenkins test
    

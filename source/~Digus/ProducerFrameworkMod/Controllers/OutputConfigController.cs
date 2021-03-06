@@ -38,6 +38,7 @@ namespace ProducerFrameworkMod.Controllers
         public static OutputConfig ChooseOutput(List<OutputConfig> producerRuleOutputConfig, Random random, Func<int,int,bool> fuelSearch, GameLocation location, Object input = null)
         {
             List<OutputConfig> filteredOutputConfigs = FilterOutputConfig(producerRuleOutputConfig, o => o.RequiredInputQuality.Count == 0 || o.RequiredInputQuality.Any(q => q == input?.Quality), "Quality");
+            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => !o.RequiredInputStack.HasValue || input.stack >= o.RequiredInputStack.Value, "InputStack");
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.FuelList.All(f => fuelSearch(f.Item1, f.Item2)), "Fuel");
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredSeason.Count == 0 || o.RequiredSeason.Any(q => q == location.GetSeasonForLocation()), "Season");
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredWeather.Count == 0 || o.RequiredWeather.Any(q => q == GameUtils.GetCurrentWeather()), "Weather");
@@ -230,12 +231,12 @@ namespace ProducerFrameworkMod.Controllers
                     {
                         inputName = outputConfig.OutputGenericParentName;
                     }
-                    else if (input?.preservedParentSheetIndex.Value > 0)
+                    else if (input?.preservedParentSheetIndex.Value > 0 && Game1.objectInformation.ContainsKey(input.preservedParentSheetIndex.Value))
                     {
                         inputName = ObjectUtils.GetObjectParameter(Game1.objectInformation[input.preservedParentSheetIndex.Value], (int) ObjectParameter.Name);
                     }
                 }
-                else if (input?.preservedParentSheetIndex.Value > 0)
+                else if (input?.preservedParentSheetIndex.Value > 0 && Game1.objectInformation.ContainsKey(input.ParentSheetIndex))
                 {
                     inputName = ObjectUtils.GetObjectParameter(Game1.objectInformation[input.ParentSheetIndex], (int)ObjectParameter.Name);
                 }

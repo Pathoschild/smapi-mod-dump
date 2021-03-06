@@ -110,7 +110,7 @@ namespace ItemBags.Persistence
                 this.Contents = Bag.Contents.Where(x => x != null).Select(x => new BagItem(x)).ToArray();
             }
 
-            if (Bag.IsUsingDefaultIcon() || !Bag.IconTexturePosition.HasValue)
+            if (!Bag.IsUsingCustomIcon)
             {
                 this.IsCustomIcon = false;
                 this.OverriddenIcon = new Rectangle();
@@ -118,7 +118,7 @@ namespace ItemBags.Persistence
             else
             {
                 this.IsCustomIcon = true;
-                this.OverriddenIcon = Bag.IconTexturePosition.Value;
+                this.OverriddenIcon = Bag.CustomIconTexturePosition.Value;
             }
         }
 

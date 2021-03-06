@@ -35,6 +35,7 @@
 	"menu.cooking_recipe.favourite_label": "Favourite",
 	"menu.cooking_recipe.quantity_label": "How many?",
 	"menu.cooking_recipe.which_label": "Which would you like to make?",
+	"menu.cooking_recipe.autofill_label": "Auto-fill ingredients",
 
 	"menu.cooking_recipe.buff.0": "Farming",
 	"menu.cooking_recipe.buff.1": "Fishing",
@@ -127,9 +128,9 @@
 	// Community Centre edits when using the Cooking bundle
 	"world.community_centre.kitchen": "Kitchen",
 	"world.community_centre.reward": "Cooking stuff",
-	"world.community_centre.bundle.1": "Picnicker's",
-	"world.community_centre.bundle.2": "Baker's",
-	"world.community_centre.bundle.3": "Diner's",
+	"world.community_centre.bundle.1": "Baker's",
+	"world.community_centre.bundle.2": "Diner's",
+	"world.community_centre.bundle.3": "Picnicker's",
 	"world.community_centre.newjunimoline": "To show our gratitude... We'll tidy up as you go.",
 
 	// Notifications strings

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7911
+IDs: Goldenrevolver.HorseOverhaul
+update keys: Nexus:7911, GitHub:Goldenrevolver/Stardew-Valley-Mods

@@ -379,7 +379,7 @@ namespace CustomDeathPenaltyPlus
                 PlayerStateRestorer.statepassout = null;
                 PlayerStateRestorer.statepassoutps.Value = null;
 
-                // Set shouldtogglepassoutdata to false, this prevents DidPlayerPassOutYesterday from becoming true when player goes to bed
+                // Set shouldtogglepassoutdata to false, this prevents DidPlayerPassOutYesterday from becoming false when player goes to bed
                 togglesperscreen.Value.shouldtogglepassoutdata = false;
             }
 

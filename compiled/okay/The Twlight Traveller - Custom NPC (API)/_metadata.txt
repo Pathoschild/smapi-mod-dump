@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8158
+IDs: Eris.APICut
+update keys: Nexus:8158

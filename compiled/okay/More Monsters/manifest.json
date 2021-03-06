@@ -1,9 +1,0 @@
-{
-  "Name": "More Monsters",
-  "Author": "Ded4lif",
-  "Version": "1.5.1", // fixed locally
-  "Description": "TODO: fill in this description.",
-  "UniqueID": "Ded4lif.MoreMonsters",
-  "EntryDll": "MoreMonsters.dll",
-  "UpdateKeys": []
-}

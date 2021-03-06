@@ -15,20 +15,35 @@ using System.Text;
 using System.Threading.Tasks;
 using AnimalHusbandryMod.common;
 using Microsoft.Xna.Framework;
-using PyTK.CustomTV;
-using PyTK.Extensions;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 
 namespace AnimalHusbandryMod.animals
 {
-    public class LivingWithTheAnimalsChannel
+    public class LivingWithTheAnimalsChannel : Channel
     {
-        private TemporaryAnimatedSprite _showSprite;
-
         private readonly Dictionary<int, Episode> _episodes;
-        public static readonly string LivingWithTheAnimals = "LivingWithTheAnimals";
+
+        public string GetName => "LivingWithTheAnimals";
+        public string GetScreenTextureName => DataLoader.LooseSpritesName;
+        public Rectangle GetScreenSourceRectangle => new Rectangle(0, 0, 42, 28);
+
+        public string GetDisplayName
+        {
+            get
+            {
+                string name = DataLoader.i18n.Get("TV.LivingWithTheAnimals.ChannelDisplayName");
+                if (GetCurrentEpisode() is Episode episode)
+                {
+                    if (episode.Rerun)
+                    {
+                        name += " " + DataLoader.i18n.Get("TV.LivingWithTheAnimals.ReRunDisplaySuffix"); ;
+                    }
+                }
+                return name;
+            }
+        }
 
         public LivingWithTheAnimalsChannel()
         {
@@ -84,7 +99,7 @@ namespace AnimalHusbandryMod.animals
             /*06*/
             /*09*/_episodes.Add(43, new Episode("TV.LivingWithTheAnimals.Episode.RedCabbage", false, false, true));
             /*13*/
-            /*16*/
+            /*16*/_episodes.Add(45, new Episode("TV.LivingWithTheAnimals.Episode.TreatsOstrich", false, false, true));
             /*20*/
             /*23*/
             /*27*/_episodes.Add(48, new Episode("TV.LivingWithTheAnimals.Episode.Amaranth", false, false, true));
@@ -108,38 +123,25 @@ namespace AnimalHusbandryMod.animals
             /*27*/_episodes.Add(64, new Episode("TV.LivingWithTheAnimals.Episode.Retirement", false, false, false));
         }
 
-        public void CheckChannelDay()
+        public bool CheckChannelDay()
         {
-            CustomTVMod.removeKey(LivingWithTheAnimals);
-
             if (SDate.Now().DayOfWeek == DayOfWeek.Tuesday || SDate.Now().DayOfWeek == DayOfWeek.Saturday)
             {
-                if (GetCurrentEpisode() is Episode episode )
+                if (GetCurrentEpisode() is Episode)
                 {
-                    string name = DataLoader.i18n.Get("TV.LivingWithTheAnimals.ChannelDisplayName");
-                    if (episode.Rerun)
-                    {
-                        name += " " + DataLoader.i18n.Get("TV.LivingWithTheAnimals.ReRunDisplaySuffix"); ;
-                    }
-                    
-                    CustomTVMod.addChannel(LivingWithTheAnimals, name, ShowAnnouncement);
+                    return true;
                 }
             }
+            return false;
         }
 
-        private Episode GetCurrentEpisode()
+        public string[] GetEpisodesText()
         {
-            if (this._episodes.TryGetValue(GetShowNumber(),out Episode episode))
+            return new string[]
             {
-                if ((!episode.AboutMeat || !DataLoader.ModConfig.DisableMeat)
-                    && (!episode.AboutPregnancy || !DataLoader.ModConfig.DisablePregnancy)
-                    && (!episode.AboutTreats || !DataLoader.ModConfig.DisableTreats)
-                    && (!episode.AboutContest || !DataLoader.ModConfig.DisableAnimalContest))
-                {
-                    return episode;
-                }
-            }
-            return null;
+                DataLoader.i18n.Get("TV.LivingWithTheAnimals.Announcement")
+                , GetEpisodePresentation()
+            };
         }
 
         private static int GetShowNumber()
@@ -147,13 +149,7 @@ namespace AnimalHusbandryMod.animals
             return (int)(Game1.stats.DaysPlayed % 224U / 3.5) + 1;
         }
 
-        private void ShowAnnouncement(TV tv, TemporaryAnimatedSprite sprite, StardewValley.Farmer farmer, string answer)
-        {
-            _showSprite = new TemporaryAnimatedSprite(DataLoader.LooseSpritesName, new Rectangle(0, 0, 42, 28), 150f, 2, 999999, tv.getScreenPosition(), false, false, (float)((double)(tv.boundingBox.Bottom - 1) / 10000.0 + 9.99999974737875E-06), 0.0f, Color.White, tv.getScreenSizeModifier(), 0.0f, 0.0f, 0.0f, false);
-            CustomTVMod.showProgram(_showSprite, DataLoader.i18n.Get("TV.LivingWithTheAnimals.Announcement"), ShowPresentation);
-        }
-
-        private void ShowPresentation()
+        private string GetEpisodePresentation()
         {
             string text = DataLoader.i18n.Get(_episodes[GetShowNumber()].Text);
             if (text.Contains("|"))
@@ -167,7 +163,22 @@ namespace AnimalHusbandryMod.animals
                     text = text.Split('|')[0];
                 }
             }
-            CustomTVMod.showProgram(_showSprite, text, CustomTVMod.endProgram);
+            return text;
+        }
+
+        private Episode GetCurrentEpisode()
+        {
+            if (this._episodes.TryGetValue(GetShowNumber(), out Episode episode))
+            {
+                if ((!episode.AboutMeat || !DataLoader.ModConfig.DisableMeat)
+                    && (!episode.AboutPregnancy || !DataLoader.ModConfig.DisablePregnancy)
+                    && (!episode.AboutTreats || !DataLoader.ModConfig.DisableTreats)
+                    && (!episode.AboutContest || !DataLoader.ModConfig.DisableAnimalContest))
+                {
+                    return episode;
+                }
+            }
+            return null;
         }
     }
 

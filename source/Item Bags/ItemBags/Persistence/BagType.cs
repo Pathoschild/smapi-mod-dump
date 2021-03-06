@@ -155,20 +155,25 @@ namespace ItemBags.Persistence
             };
         }
 
-        internal Texture2D GetIconTexture()
+        internal static Texture2D GetIconTexture(SourceTexture Source)
         {
-            if (IconSourceTexture == SourceTexture.SpringObjects)
+            if (Source == SourceTexture.SpringObjects)
                 return Game1.objectSpriteSheet;
-            else if (IconSourceTexture == SourceTexture.Craftables)
+            else if (Source == SourceTexture.Craftables)
                 return Game1.bigCraftableSpriteSheet;
-            else if (IconSourceTexture == SourceTexture.Debris)
+            else if (Source == SourceTexture.Debris)
                 return Game1.debrisSpriteSheet;
-            else if (IconSourceTexture == SourceTexture.Tools)
+            else if (Source == SourceTexture.Tools)
                 return Game1.toolSpriteSheet;
-            else if (IconSourceTexture == SourceTexture.Cursors)
+            else if (Source == SourceTexture.Cursors)
                 return Game1.mouseCursors;
             else
                 return null;
+        }
+
+        internal Texture2D GetIconTexture()
+        {
+            return GetIconTexture(this.IconSourceTexture);
         }
 
         [OnSerializing]

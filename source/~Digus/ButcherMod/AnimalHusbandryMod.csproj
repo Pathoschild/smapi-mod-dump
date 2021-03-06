@@ -53,10 +53,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PyTK">
-      <HintPath>$(GamePath)\Mods\PyTK\PyTK.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -69,6 +65,7 @@
   <ItemGroup>
     <Compile Include="animals\Animal.cs" />
     <Compile Include="animals\AnimalContestController.cs" />
+    <Compile Include="animals\data\OstrichItem.cs" />
     <Compile Include="common\AnimalUtility.cs" />
     <Compile Include="animals\data\AnimalContestData.cs" />
     <Compile Include="animals\data\CustomAnimalItem.cs" />
@@ -109,6 +106,7 @@
     <Compile Include="animals\FarmAnimalOverrides.cs" />
     <Compile Include="animals\events\VincentAct.cs" />
     <Compile Include="animals\events\VincentAnimal.cs" />
+    <Compile Include="common\Channel.cs" />
     <Compile Include="common\CustomEvent.cs" />
     <Compile Include="animals\events\EventGreenSlime.cs" />
     <Compile Include="common\EventsLoader.cs" />
@@ -122,6 +120,8 @@
     <Compile Include="animals\TreatsController.cs" />
     <Compile Include="common\EventOverrides.cs" />
     <Compile Include="common\ItemUtility.cs" />
+    <Compile Include="common\TvController.cs" />
+    <Compile Include="common\TvOverrides.cs" />
     <Compile Include="meats\MeatOverrides.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="animals\data\RabbitItem.cs" />
@@ -191,7 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

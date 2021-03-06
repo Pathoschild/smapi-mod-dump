@@ -65,7 +65,7 @@ namespace ForageFantasy
 
         public bool ForageSurvivalBurger { get; set; } = true;
 
-        public bool AutomateHarvestsGrantXP { get; set; } = false;
+        public bool AutomationHarvestsGrantXP { get; set; } = false;
 
         private static string[] TQChoices { get; set; } = new string[] { "Disabled", "Forage Level Based", "Forage Level Based (No Botanist)", "Tree Age Based (Months)", "Tree Age Based (Years)" };
 
@@ -142,12 +142,12 @@ namespace ForageFantasy
             api.RegisterSimpleOption(manifest, "Berry Bush XP Amount", "Amount of XP gained per bush. For reference:\nChopping down a tree is 12XP, a foraging good is 7XP\nNegative values will be reset to 0.", () => config.BerryBushXPAmount, (int val) => config.BerryBushXPAmount = val);
             api.RegisterSimpleOption(manifest, "Mushroom Box XP Amount", "For reference:\nChopping down a tree is 12XP, a foraging good is 7XP\nNegative values will be reset to 0.", () => config.MushroomXPAmount, (int val) => config.MushroomXPAmount = val);
             api.RegisterSimpleOption(manifest, "Tapper XP Amount", "For reference:\nChopping down a tree is 12XP, a foraging good is 7XP\nNegative values will be reset to 0.", () => config.TapperXPAmount, (int val) => config.TapperXPAmount = val);
-            api.RegisterSimpleOption(manifest, "Automate Harvests Grant XP", "Whether automatic harvests with the Automate mod should grant XP. Keep in mind that Automate always only affects the host.", () => config.AutomateHarvestsGrantXP, (bool val) => config.AutomateHarvestsGrantXP = val);
+            api.RegisterSimpleOption(manifest, "Automation Harvests Grant XP", "Whether automatic harvests with the Automate, Deluxe\nGrabber Redux or One Click Shed Reloader should grant XP.\nKeep in mind that some of those only affect the host.", () => config.AutomationHarvestsGrantXP, (bool val) => config.AutomationHarvestsGrantXP = val);
 
             api.RegisterLabel(manifest, "Other Features", null);
 
             api.RegisterSimpleOption(manifest, "Common Fiddlehead Fern¹", "Fiddlehead fern is available outside of the secret forest\nand added to the wild seeds pack and summer foraging bundle.", () => config.CommonFiddleheadFern, (bool val) => config.CommonFiddleheadFern = val);
-            api.RegisterSimpleOption(manifest, "Forage Survival Burger¹", "Forage based early game crafting recipes and even more efficient cooking recipes.", () => config.ForageSurvivalBurger, (bool val) => config.ForageSurvivalBurger = val);
+            api.RegisterSimpleOption(manifest, "Forage Survival Burger¹", "Forage based early game crafting recipes\nand even more efficient cooking recipes.", () => config.ForageSurvivalBurger, (bool val) => config.ForageSurvivalBurger = val);
 
             // this is a spacer
             api.RegisterLabel(manifest, string.Empty, null);

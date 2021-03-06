@@ -1,0 +1,10 @@
+{
+  "Name": "APICut",
+  "Author": "Eris",
+  "Version": "1.2.0", // fixed locally
+  "Description": "API Housemate 1.0",
+  "UniqueID": "Eris.APICut",
+  "EntryDll": "APICut.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

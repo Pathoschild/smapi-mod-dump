@@ -1,0 +1,63 @@
+{
+    // Строки для конфигурации Generic Mod Config Menu
+    "config.hotkey": "Горячая клавиша",
+    "config.hotkey.desc": "Клавиша для открытия списка дел",
+    "config.secondary-close-button": "Дополнительная клавиша для закрытия списка",
+    "config.secondary-close-button.desc": "Альтернативная клавиша (помимо ESC) для закрытия списка дел",
+    "config.debug": "Отладка",
+    "config.debug.desc": "Включить ведение журнала отладки",
+    "config.overlay": "Оверлей",
+    "config.overlay.desc": "Настроить активный оверлей для отображения списка дел",
+    "config.overlay.enabled": "Включен",
+    "config.overlay.enabled.desc": "Включить оверлей?",
+    "config.overlay.hotkey": "Горячая клавиша",
+    "config.overlay.hotkey.desc": "Горячая клавиша для отображения оверлея",
+    "config.overlay.hide-at-festivals": "Не показывать на праздниках",
+    "config.overlay.hide-at-festivals.desc": "Скрывать оверлей на праздниках?",
+    "config.overlay.max-width": "Максимальная ширина",
+    "config.overlay.max-width.desc": "Максимальная ширина оверлея в пикселях",
+    "config.overlay.max-items": "Максимальное количество элементов списка",
+    "config.overlay.max-items.desc": "Максимальное количество элементов списка, отображающихся в оверлее",
+
+    // Оверлей
+    "overlay.header": "Список дел",
+
+    // Сообщения журнала консоли
+    "message.save-version-newer": "Информация о списке в этом сохранении имеет более новую версию формата ({{saveFormatVersion}}), чем текущая версия ({{modFormatVersion}}) в моде {{modName}}. Следующее сохранение будет использовать текущую старую версию, что приведет к потере некоторых данных, добавленных в более новой версии.",
+    "message.save-version-old": "Используется список дел с версией формата {{saveFormatVersion}}. Он будет обновлен до текущей версии формата ({{modFormatVersion}}) при следующем сохранении.",
+    "message.host-no-mod": "У хоста не установлен {{modName}}; список отключен.",
+    "message.host-different-mod-version": "У хоста установлена ​​версия мода {{modName}} - {{hostVersion}}, а у вас установлена ​​версия {{myVersion}}. Попытка продолжить.",
+    "message.ignoring-unknown-message-type": "Игнорирование неожиданного типа сообщения {{messageType}} от игрока {{fromId}} ({{fromName}})",
+    "message.host-newer-data-format-minor": "Хост использует более новую версию мода {{modName}} ({{hostVersion}}), чем у вас ({{myVersion}}), но мы сделаем все возможное, чтобы решить это.",
+    "message.host-newer-data-format-major": "Хост использует более новую версию мода {{modName}} ({{hostVersion}}), чем у вас ({{myVersion}}). Поскольку хост имеет другой основной номер версии, мы не будем пытаться разрешить эту ситуацию.",
+    "message.host-old-data-format": "Хост использует более новую версию формата ({{hostVersion}}), которая старше текущей версии формата ({{myVersion}}). Некоторые функции могут быть недоступны.",
+    "message.current-item-deleted": "Предмет {{itemId}} был удален другим игроком",
+
+    // список меню
+    "menu.list.title-bold-part": "Список дел",
+    "menu.list.title-rest": "для фермы {{farmName}}",
+    "menu.textbox.title": "Добавить задачу", // не уверен, что TitleText действительно где-нибудь отображается
+    // меню конфигурации (редактировать)
+    "menu.edit.title": "Меню редактирования",
+    "menu.edit.header": "Заголовок",
+    "menu.edit.bold": "Жирный",
+    "menu.edit.repeating": "Повторяющийся",
+    "menu.edit.hide-in-overlay": "Не показывать в оверлее",
+    "menu.edit.show-when": "Показывать элемент, когда:",
+    "menu.edit.raining-on-farm": "На ферме идет дождь",
+    "menu.edit.not-raining-on-farm": "На ферме не идет дождь",
+    "menu.edit.raining-on-island": "На острове идет дождь",
+    "menu.edit.not-raining-on-island": "На острове не идет дождь",
+    "menu.edit.only-days": "Показывать только в эти дни:",
+    "menu.edit.week": "Неделя:",
+    "menu.edit.only-season": "Показывать только в сезоны:",
+
+    // полные названия дней (поскольку в игре есть переводы только для коротких названий)
+    "sunday": "Воскресенье",
+    "monday": "Понедельник",
+    "tuesday": "Вторник",
+    "wednesday": "Среда",
+    "thursday": "Четверг",
+    "friday": "Пятница",
+    "saturday": "Суббота"
+}

@@ -6,12 +6,12 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit fee99835298ee71abb9425f0862984ddf9bb0a8d
-   Merge: 1f8c660 995e75f
-   Author: Brian Pak <bbouhm@gmail.com>
-   Date:   Tue Dec 22 12:38:17 2020 -0800
+   commit a6e9df84c0f376fb15eb8b5122374402bc3abaca
+   Merge: bc73ccf ad65480
+   Author: Brian Pak <brianbpak@gmail.com>
+   Date:   Thu Mar 4 19:32:00 2021 -0800
    
-       Merge pull request #63 from DrewScoggins/Update15
+       Merge pull request #74 from Pathoschild/fix-warp-error
        
-       Update mod to work with SDV 1.5
+       Fix error when a location has invalid warp targets
    

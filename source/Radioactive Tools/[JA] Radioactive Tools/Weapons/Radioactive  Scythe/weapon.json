@@ -1,0 +1,62 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kakashigr/stardew-radioactivetools
+**
+*************************************************/
+
+{
+    "Name": "Radioactive Scythe",
+    "Description": "A truly powerful scythe",
+    "Type": "Sword",
+    "MinimumDamage": 140,
+    "MaximumDamage": 280,
+    "Knockback": 3,
+    "Accuracy": 20,
+    "Defense": 5,
+    "Speed": 5,
+    "MineDropVar": -1,
+    "MineDropMinimumLevel": -1,
+    "ExtraSwingArea": 7,
+    "CritChance": 0.07, 
+    "CritMultiplier": 7,
+    "CanPurchase": true,
+    "PurchaseFrom": "Krobus",
+    "PurchasePrice": 150000,
+    "PurchaseRequirements": [
+        "f Krobus 1500",
+	"y 2"
+    ],
+    "NameLocalization":
+        { 
+            //"es": "", //Spansih
+            //"ko": "", //Korean
+            //"de": "", //German
+            //"fr": "", //French
+            //"hu": "", //Hungarian
+            //"it": "", //Italian
+            //"ja": "", //Japanese
+            //"pt": "", //Portuguese
+            //"ru": "", //Russian
+            //"tr": "", //Turkish
+            //"zh": "", //Chinese (Simplified)
+        },
+    "DescriptionLocalization": //Used for localization. 
+        { 
+            //"es": "", //Spansih
+            //"ko": "", //Korean
+            //"de": "", //German
+            //"fr": "", //French
+            //"hu": "", //Hungarian
+            //"it": "", //Italian
+            //"ja": "", //Japanese
+            //"pt": "", //Portuguese
+            //"ru": "", //Russian
+            //"tr": "", //Turkish
+            //"zh": "", //Chinese (Simplified)
+        }
+
+}

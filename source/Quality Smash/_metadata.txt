@@ -1,0 +1,13 @@
+url:
+   https://github.com/jn84/QualitySmash.git
+
+mods:
+   Quality Smash
+
+latest commit:
+   commit 642f837cf2d1fa925745d2f041ce2721e74eebe8
+   Author: BuildTools <unconfigured@null.spigotmc.org>
+   Date:   Tue Feb 9 20:52:44 2021 -0500
+   
+       Fix an issue where catching a fish/junk/treasure with a full inventory would cause a crash
+   

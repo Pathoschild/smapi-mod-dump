@@ -1,0 +1,13 @@
+url:
+   https://github.com/UnkLegacy/QiSprinklers.git
+
+mods:
+   Qi Sprinklers
+
+latest commit:
+   commit 806e26261646a98300dbac26156401780626dae2
+   Author: UnkLegacy <UnkLegacy@gmail.com>
+   Date:   Mon Feb 1 19:16:55 2021 -0500
+   
+       Enabling the Island to be watered in the morning automatically.
+   

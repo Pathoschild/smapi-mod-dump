@@ -1,0 +1,24 @@
+{
+  //Letters
+  "mail.Wizard1": "@,^^ 주니모들은 그대가 마을에 기여한 것에 만족하고 있네.^그들은 그대의 온실을 개선할 수 있는 아이디어를 가지고 있으며,^난 이 아이디어를 로빈이 활용할 수 있게 바꿔놓았네.^온실 업그레이드를 원하면 그녀에게 말해보게.^^   - M. 라스모디우스, 마법사",
+  "mail.Wizard1b": "@,^^ 주니모들은 마을 회관에서 떠났지만, 그대가 마을에 기여한 것에 만족하고 있네..^그들은 그대의 온실을 개선할 수 있는 아이디어를 가지고 있으며,^난 이 아이디어를 로빈이 활용할 수 있게 바꿔놓았네.^온실 업그레이드를 원하면 그녀에게 말해보게.^^   - M. 라스모디우스, 마법사",
+  "mail.Wizard2": "@,^^ 주니모들은 계속 그대의 농장에 깊은 인상을 받고 있네.^그들은 그대의 온실을 개선할 수 있는 아이디어를 가지고 있으며,^난 이 아이디어를 로빈이 활용할 수 있게 바꿔놓았네.^온실 업그레이드를 원하면 그녀에게 말해보게.^^   - M. 라스모디우스, 마법사",
+  "mail.Wizard3": "@,^^ 주니모들은 계속 그대의 농장에 깊은 인상을 받고 있네.^그들은 농장의 스프링클러 시스템을 업그레이드하기 위한 마지막 아이디어를 가지고 있으며, 난 이 아이디어를 로빈이 활용 할 수 있게 바꿔놓았네.^온실 업그레이드를 원하면 그녀에게 말해보게..^^   - M. 라스모디우스, 마법사",
+
+  //Shop Descriptions
+  "CarpenterShop.BluePrintName": "스프링클러 시스템 업그레이드",
+  "CarpenterShop.FirstUpgradeDescription": "온실 천장에 설치된 자동 스프링클러는 매일 아침 작동합니다.",
+  "CarpenterShop.SecondUpgradeDescription": "온실 천장에 설치된 자동 스프링클러는 매일 아침과 밤에 작동합니다.",
+  "CarpenterShop.FinalUpgradeDescription": "농장 곳곳에 숨겨진 지하 스프링클러는 매일 아침과 밤에 작동합니다.",
+
+  //Menu Items
+  //Currently Unused, may never be used
+  //If used will be expanded
+
+  "menu.diff": "난이도",
+  "menu.diff-Easy": "쉬움",
+  "menu.diff-Medium": "보통",
+  "menu.diff-Hard": "어려움",
+  "menu.diff-Custom": "사용자 지정"
+
+}

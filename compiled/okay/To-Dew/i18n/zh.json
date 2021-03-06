@@ -1,0 +1,63 @@
+{
+    //通用Mod Config菜单配置的字符串
+    "config.hotkey": "热键",
+    "config.hotkey.desc": "显示待办事项清单的钥匙",
+    "config.secondary-close-button": "第二关闭按钮",
+    "config.secondary-close-button.desc": "备用键（除了ESC以外）用于关闭待办事项",
+    "config.debug": "调试",
+    "config.debug.desc": "在日志中启用调试输出",
+    "config.overlay": "叠加",
+    "config.overlay.desc": "配置显示列表的永远在线覆盖",
+    "config.overlay.enabled": "Enabled",
+    "config.overlay.enabled.desc": "是否启用了叠加功能？",
+    "config.overlay.hotkey": "热键",
+    "config.overlay.hotkey.desc": "要显示或隐藏的热键",
+    "config.overlay.hide-at-festivals": "隐藏在节日",
+    "config.overlay.hide-at-festivals.desc": "在节日期间隐藏叠加层？",
+    "config.overlay.max-width": "最大宽度",
+    "config.overlay.max-width.desc": "覆盖层的最大宽度,以像素为单位",
+    "config.overlay.max-items": "最大项目",
+    "config.overlay.max-items.desc": "在叠加层中显示的最大项目数",
+
+    //叠加
+    "overlay.header": "露珠清单",
+
+    //控制台日志消息
+    "message.save-version-newer": "此保存中的列表信息使用的是比此版本的{{modName}}使用的版本（{{modFormatVersion}}）更新的格式版本（{{saveFormatVersion}}）。下一次保存将使用该旧版本,这将导致丢失在新版本中添加的所有属性。",
+    "message.save-version-older": "以格式{{saveFormatVersion}}读取列表信息。在下一次保存时它将更新为当前格式版本（{{modFormatVersion}}）。",
+    "message.host-no-mod": "主机未安装{{modName}}；已禁用列表。",
+    "message.host-different-mod-version": "主机安装了{{modName}}的{{hostVersion}}版本,但是您安装了{{myVe​​rsion}}版本。无论如何都尝试进行。",
+    "message.ignoring-unexpected-message-type": "忽略播放器{{fromId}}（{{fromName}}）的意外消息类型{{messageType}}",
+    "message.host-newer-data-format-minor": "主机使用的数据格式版本（{{hostVersion}}）比此版本的{{modName}}使用的版本（{{myVe​​rsion}}）,但我们'将竭尽所能。",
+    "message.host-newer-data-format-major": "主机正在使用比此{{modName}}版本（{{myVe​​rsion}}）版本更高的数据格式版本（{{hostVersion}}）。具有不同的主要版本号,我们不会尝试处理它。",
+    "message.host-older-data-format": "主机正在使用数据格式版本{{hostVersion}},它比当前格式版本（{{myVe​​rsion}}）要早。某些功能可能不可用。",
+    "message.current-item-deleted": "项目{{itemId}}已被其他玩家删除",
+
+    //清单选单
+    "menu.list.title-bold-part": "露珠清单",
+    "menu.list.title-rest": "用于{{farmName}}农场",
+    "menu.textbox.title": "添加待办事项", //不确定TitleText是否实际显示在任何地方
+    //项目配置（编辑）菜单
+    "menu.edit.title": "编辑项",
+    "menu.edit.header": "标题",
+    "menu.edit.bold": "粗体",
+    "menu.edit.repeating": "重复",
+    "menu.edit.hide-in-overlay": "隐藏在叠加中",
+    "menu.edit.show-when": "显示项目何时: ",
+    "menu.edit.raining-on-farm": "在农场上雨",
+    "menu.edit.not-raining-on-farm": "农场没有下雨",
+    "menu.edit.raining-on-island": "在岛上下雨",
+    "menu.edit.not-raining-on-island": "岛上没有下雨",
+    "menu.edit.only-days": "仅在以下日子显示: ",
+    "menu.edit.week": "周: ",
+    "menu.edit.only-season": "仅显示在: ",
+
+    //全日名称（因为游戏仅对短名称进行翻译）
+    "sunday": "星期日",
+    "monday": "周一",
+    "tuesday": "星期二",
+    "wednesday": "星期三",
+    "thursday": "周四",
+    "friday": "星期五",
+    "saturday": "周六"
+}

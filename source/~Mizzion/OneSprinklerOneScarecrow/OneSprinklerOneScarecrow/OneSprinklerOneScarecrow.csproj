@@ -22,20 +22,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="[JA]OneSprinklerOneScarecrow\BigCraftables\HaxorCrow\big-craftable.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    <None Update="Assets\HaxorScareCrow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="[JA]OneSprinklerOneScarecrow\BigCraftables\HaxorCrow\big-craftable.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    <None Update="Assets\HaxorSprinkler.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="[JA]OneSprinklerOneScarecrow\BigCraftables\HaxorSprinkler\big-craftable.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    <None Update="i18n\de.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="[JA]OneSprinklerOneScarecrow\BigCraftables\HaxorSprinkler\big-craftable.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    <None Update="i18n\ko.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="[JA]OneSprinklerOneScarecrow\manifest.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    <None Update="i18n\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

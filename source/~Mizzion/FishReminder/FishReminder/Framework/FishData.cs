@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using System.Security.Policy;
-
 namespace FishReminder.Framework
 {
     internal class FishData

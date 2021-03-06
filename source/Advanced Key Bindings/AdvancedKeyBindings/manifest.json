@@ -11,7 +11,7 @@
 {
   "Name": "AdvancedKeyBindings",
   "Author": "Drachenkatze",
-  "Version": "1.0.2",
+  "Version": "1.0.3-unofficial.1-minervamaga",
   "Description": "Adds key bindings to various functions",
   "UniqueID": "Drachenkatze.AdvancedKeyBindings",
   "EntryDll": "AdvancedKeyBindings.dll",

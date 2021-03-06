@@ -51,15 +51,32 @@ Use the scroll gesture on your mouse or trackpad to scroll the list if it
 has more items than fit on one screen.  (Arrows will appear to indicate
 that there are more items.)
 
-Click a list item to remove it from the list.
+Click a list item to mark it done.  Items that have been marked as done
+will not appear in the overlay, and will be removed from the list at
+the end of the day (or reset to not done if they are repeating items).
 
 Use the small up and down arrows to the right of items to reorder them.
+Use the small configure icon to the right of an item to edit its per-item
+properties (see "Item Editing" below).
 
 Right-clicking on an item will copy its text to the textbox (replacing
 whatever is there).  The textbox implementation is from the base game,
 and as far as I can tell you can only add or remove characters from the
 end.  If you see any open-source mods that have more advanced text editing
 capabilities then let me know and I'll take a look to see how they're done.
+
+### Item Editing
+
+The item configuration screen allows you to edit the item text, move the
+item to the top or bottom of the list, delete the item, or set any of several
+properties:
+
+A Header item can help you organize your list by acting as a header or separator
+in the list.  It cannot be marked as "done".
+
+Repeating items have their "done-ness" reset each day.
+
+Item visibility can be set based on the weather, day of the week, and season.
 
 ## Configuration
 
@@ -70,12 +87,16 @@ whether it is enabled at all).
 
 If [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
 is installed then there will be an entry for To-Dew in the in-game config
-menu.
+menu.  A few configuration options are only available in `config.json` because
+there is no editor for values of that type in Generic Mod Config Menu.  For
+example, there are configuration options to allow multi-key bindings
+(introduced in SMAPI 3.9) for the hotkey and overlay hotkey, but these are
+not available in the in-game config menu.
 
 
 ## Compatibility
 
-Works with Stardew Valley 1.5 / SMAPI 3.8, single and multiplayer (but see
+Works with Stardew Valley 1.5 / SMAPI 3.9, single and multiplayer (but see
 further notes on Multiplayer below).  No known incompatibilities with
 other mods.
 
@@ -83,6 +104,9 @@ I have no idea what things do or do not work with split-screen.  As
 far as I can tell you have to have controllers to even start split-screen,
 and I don't.
 
+Translations are included for several languages, but the translations are
+all via Google Translate, so they are probably not very good.  (Thanks to
+nexusmods user Newrotd for updates to the Russian translation.)
 
 ## Multiplayer Support
 

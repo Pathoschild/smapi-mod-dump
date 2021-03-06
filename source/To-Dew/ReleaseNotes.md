@@ -9,6 +9,65 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.8.2
+
+* Hide the overlay during events
+
+## Version 1.8.1
+
+* Updates to Russian translation from nexusmods user Newrotd
+
+## Version 1.8.0
+
+* Now includes translations for several languages.  The translations
+  are all via Google Translate, so they're probably not very good.
+
+## Version 1.7.0
+
+* Add `hotkeyList` and `overlay.hotkeyList` config options.  These do
+  the same thing as `hotkey` and `overlay.hotkey`, but support the
+  multi-key bindings added in SMAPI 3.9.  Increase required SMAPI
+  version to 3.9.  I did not just update the existing config options
+  because I think it would be rude to overwrite a multi-key binding
+  when edited in the Generic Mod Config Menu (which doesn't support
+  multi-key bindings).
+
+* Add configuration of item visibility based on week.
+
+* Add configuration option to hide the overlay while at festivals.
+
+## Version 1.6.1
+
+* Suppress overlay during in-game screenshots
+
+## Version 1.6.0
+
+* Add configuration of item visibility based on season.
+
+* Make "move item" buttons bigger; move them to be side-by-side
+  rather than stacked vertically.
+
+* Attempt to fix some of the split-screen issues (untested).
+  There should no longer be cross-talk between different players'
+  copies of the list.  The overlay toggle should be independent.
+
+## Version 1.5.0
+
+* Major new functionality
+  * Mark items done rather than deleting immediately
+  * Per-item configuration
+    * Repeating items
+    * Control visibility based on weather
+    * Control visibility based on day of week
+    * Hide in overlay
+    * Bold text
+    * set as header (can't be marked done)
+    * move item to top or bottom of list
+
+
+* Fix overlay not moving down in some areas with a floor level
+
+
 ## Version 1.4.3
 
 * Fix a couple of bugs that could result in a System.NullReferenceException

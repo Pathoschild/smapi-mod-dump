@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kakashigr/stardew-radioactivetools
+**
+*************************************************/
+
+{
+    "radioactive.prefix": "五彩",
+    "radioactiveHoe": "五彩锄头",
+    "radioactiveWatercan": "五彩水壶",
+    "radioactivePickaxe": "五彩镐",
+    "radioactiveAxe": "五彩斧",
+    "radioactiveRod.name": "Radioactive Rod",
+    "radioactiveRod.description": "The radiation emissions help at night",
+    "radioactiveSprinkler.name": "五彩洒水器",
+    "radioactiveSprinkler.description": "每天早晨自动给附近的120块地浇水。",
+    "radioactiveFertilizer.name": "Radioactive Fertilizer",
+    "radioactiveFertilizer.description": "Makes the plants grow super fast"
+}

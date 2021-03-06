@@ -8,9 +8,9 @@ mods:
    Quality Scrubber for Automate
 
 latest commit:
-   commit 8a1b5d810224b5dc06b740ecbe900444a0b72138
+   commit 132da32c5cb3a080133ac1077e3d94682202c4f3
    Author: KiviKivi9133 <salonenkyosti@gmail.com>
-   Date:   Wed Apr 15 05:00:08 2020 +0300
+   Date:   Fri Feb 26 03:37:53 2021 +0200
    
-       Changed automate integration mods' version numbers to match the main mods' to stop SMAPI from notifying of updates that don't exist.
+       Stop the player from using the furnace before it has been completed
    

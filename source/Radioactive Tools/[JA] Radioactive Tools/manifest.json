@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kakashigr/stardew-radioactivetools
+**
+*************************************************/
+
+{
+	"Name": "JA pack for Radioactive Tools",
+	"Author": "kakashigr",
+	"Version": "1.2.7",
+	"Description": "Adds new items for Radioactive Tools",
+    	"UniqueID": "kakashigr.JA.RadioactiveTools",
+	"UpdateKeys": [ "Nexus:7630" ],
+	"ContentPackFor": {
+		"UniqueID": "spacechase0.JsonAssets",
+	},
+}

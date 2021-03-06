@@ -1,0 +1,54 @@
+{
+	//General
+	"mod.name" : "钓鱼助手",
+	"mod.status.enable" : "启用",
+	"mod.status.disable" : "禁用",
+
+	//HUD messages
+	"hud.message.mod.toggle" : "{0} 钓鱼助手。",
+	"hud.message.cast.power" : "{0} 最大抛竿力量。",
+	"hud.message.catch.treasure" : "{0} 捕获宝藏。",
+	"hud.message.request.disable" : "模组将在任务完成后禁用。",
+	"hud.message.force.enable" : "再次按下 {0} 以强制启用。",
+	"hud.message.low.stamina" : "低能量。",
+	"hud.message.inventory.full" : "物品栏已满。",
+	"hud.message.auto.disable" : "在 {0} 自动禁用模组",
+	"hud.message.config.saved" : "正在保存新配置",
+
+	//Config Menu
+	"menu.config.header.control": "控制",
+	"menu.config.button.toggle.mod": "开关模组按钮",
+	"menu.config.button.max.cast.power": "抛竿力量按钮",
+	"menu.config.button.catch.treasure": "捕获宝藏按钮",
+	"menu.config.button.open.menu": "打开菜单按钮",
+	"menu.config.reset.control": "重置",
+	"menu.config.press-new-key": "按下新按键…",
+
+	"menu.config.header.general": "常规",
+	"menu.config.label.mod.status.position": "模组状态位置",
+	"menu.config.label.enable.auto.pause.fishing": "启用自动暂停钓鱼",
+	"menu.config.label.pause.fishing.time": "暂停钓鱼时间",
+
+	"menu.config.header.fishing.rod": "鱼竿",
+	"menu.config.label.infinite.bait": "无限鱼饵",
+	"menu.config.label.infinite.tackle": "无限钓具",
+
+	"menu.config.header.mini-game": "迷你钓鱼游戏",
+	"menu.config.label.always.perfect": "总是完美",
+	"menu.config.label.always.catch.double": "总是钓到两条鱼",
+	"menu.config.label.always.treasure": "总是找到宝藏",
+	"menu.config.label.instant.fishbite": "立即咬钩",
+	"menu.config.label.instant.catch.fish": "立即捕获鱼",
+	"menu.config.label.instant.catch.treasure": "立即捕获宝藏",
+	"menu.config.label.fish.difficulty.multiplier": "鱼类难度系数",
+	"menu.config.label.fish.difficulty.additive": "鱼类难度附加值",
+	"menu.config.description.fish.difficulty": "可以在配置文件中设置其他值。",
+	"menu.config.description.android-config-note": "你可以在钓鱼助手和虚拟键盘（Virtual Keyboard）模组的配置文件中更改屏幕上的按钮。",
+
+	"menu.config.header.fish.info": "鱼类信息",
+	"menu.config.label.fishinfo.display.position": "鱼类信息位置",
+	"menu.config.label.show.fish.name": "显示鱼的名称",
+	"menu.config.label.show.treasure": "显示宝藏",
+	"menu.config.label.show.uncaught.fish": "显示未捕获的鱼",
+	"menu.config.label.show.legendaly.fish": "显示传说鱼类",
+}

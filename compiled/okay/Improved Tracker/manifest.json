@@ -1,0 +1,10 @@
+{
+	"Name": "Improved Tracker",
+	"Author": "Anthony Hilyard",
+	"Version": "1.0.0",
+	"Description": "Improves the foraging Tracker profession to be more in-line with the Botanist profession by tracking additional things.",
+	"UniqueID": "com.anthonyhilyard.improvedtracker",
+	"EntryDll": "ImprovedTracker.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": []
+  }

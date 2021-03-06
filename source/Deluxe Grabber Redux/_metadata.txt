@@ -1,0 +1,13 @@
+url:
+   https://github.com/ferdaber/sdv-mods.git
+
+mods:
+   Deluxe Grabber Redux
+
+latest commit:
+   commit 62d5fa4df4c6a27ece199561db0a385ca2753614
+   Author: ferdaber <ferd312@gmail.com>
+   Date:   Sat Feb 6 14:14:20 2021 -0500
+   
+       add example images
+   

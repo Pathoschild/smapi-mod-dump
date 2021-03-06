@@ -90,7 +90,7 @@ namespace ItemBags.Persistence
 
         //  Categories can be found here: https://stardewvalleywiki.com/Modding:Object_data#Categories
         /// <summary>Object instances belonging to these categories can have different values in <see cref="Object.Quality"/>. This list might not be accurate.</summary>
-        private static readonly ReadOnlyCollection<int> CategoriesWithQualities = new List<int>() {
+        internal static readonly ReadOnlyCollection<int> CategoriesWithQualities = new List<int>() {
             Object.FishCategory, Object.EggCategory, Object.MilkCategory, Object.meatCategory,
             Object.sellAtPierresAndMarnies, Object.artisanGoodsCategory, /*Object.syrupCategory,*/
             Object.VegetableCategory, Object.FruitsCategory, Object.flowersCategory, Object.GreensCategory
@@ -476,6 +476,24 @@ namespace ItemBags.Persistence
             this.HasQualities = HasQualities;
             this.SizeString = Size.ToString();
             this.ObjectId = null;
+        }
+
+        public ModdedItem(Object Item, bool HasStableId)
+        {
+            if (HasStableId)
+            {
+                this.Name = null;
+                this.ObjectId = Item.ParentSheetIndex;
+            }
+            else
+            {
+                this.Name = Item.DisplayName;
+                this.ObjectId = null;
+            }
+
+            this.IsBigCraftable = Item.bigCraftable.Value;
+            this.HasQualities = ModdedBag.CategoriesWithQualities.Contains(Item.Category);
+            this.SizeString = ContainerSize.Small.ToString();
         }
 
         [JsonIgnore]

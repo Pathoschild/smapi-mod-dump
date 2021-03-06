@@ -5,9 +5,9 @@ mods:
    NPC Adventures
 
 latest commit:
-   commit fbd67320be9c900580cffac2baa989aaddc5be55
+   commit c084f53e385bb204eb5f1e3e1711476c003b5079
    Author: Ellen Jana FawkesovÃ¡ <4710267+purrplingcat@users.noreply.github.com>
-   Date:   Wed Dec 23 12:50:02 2020 +0100
+   Date:   Thu Feb 4 14:00:40 2021 +0100
    
-       Update README.md
+       Update FUNDING.yml
    

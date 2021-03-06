@@ -41,10 +41,29 @@ namespace SpriteMaster.Resample {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static unsafe Results AnalyzeLegacy (Texture2D reference, in Types.Span<int> data, Bounds rawSize, Bounds spriteSize, Vector2B Wrapped) {
+			Vector2B boundsInverted = Vector2B.False;
+
+			if (spriteSize.Width < 0 || spriteSize.Height < 0) {
+				Debug.ErrorLn($"Inverted Sprite Bounds Value leaked to AnalyzeLegacy: {spriteSize}");
+
+				boundsInverted.X = spriteSize.Width < 0;
+				boundsInverted.Y = spriteSize.Height < 0;
+
+				spriteSize.Width = Math.Abs(spriteSize.Width);
+				spriteSize.Height = Math.Abs(spriteSize.Height);
+			}
+
+			if (rawSize.Width < 0 || rawSize.Height < 0) {
+				Debug.ErrorLn($"Inverted Raw Bounds Value leaked to AnalyzeLegacy: {rawSize}");
+
+				rawSize.Width = Math.Abs(rawSize.Width);
+				rawSize.Height = Math.Abs(rawSize.Height);
+			}
+
 			float edgeThreshold = Config.WrapDetection.edgeThreshold;
 
 			if (!reference.Anonymous() && Config.Resample.Padding.StrictList.Contains(reference.SafeName())) {
-				var ratio = (float)Math.Max(spriteSize.Width, spriteSize.Height) / (float)Math.Min(spriteSize.Width, spriteSize.Height);
+				var ratio = (float)spriteSize.Extent.MaxOf / (float)spriteSize.Extent.MinOf;
 				if (ratio >= 4.0f) {
 					edgeThreshold = 2.0f;
 				}
@@ -124,6 +143,7 @@ namespace SpriteMaster.Resample {
 				}
 			}
 
+			// TODO : Should we flip these values based upon boundsInverted?
 			return new Results(
 				wrapped: Wrapped,
 				wrappedX: WrappedX,

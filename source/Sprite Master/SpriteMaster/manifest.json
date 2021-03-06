@@ -11,7 +11,7 @@
 {
   "Name": "SpriteMaster",
   "Author": "mkukli",
-  "Version": "0.12.0",
+  "Version": "0.12.1",
   "Description": "Resamples sprites on the fly using xBRZ to improve resolution and crispness.",
   "UniqueID": "DigitalCarbide.SpriteMaster",
   "EntryDll": "SpriteMaster.dll",

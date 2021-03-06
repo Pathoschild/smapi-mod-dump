@@ -1,0 +1,6 @@
+﻿{
+    "upgrade1.name": "Invernadero grande",
+    "upgrade1.description": "Incrementa el espacio de cultivo a 15x15.",
+    "upgrade2.name": "Invernadero de lujo",
+    "upgrade2.description": "Incrementa el espacio de cultivo a 21x21. ¡Incluye sistema de riego automático!"
+}

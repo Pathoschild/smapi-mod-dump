@@ -5,9 +5,12 @@ mods:
    Combine Machines
 
 latest commit:
-   commit a75ce8d154ecf3d59081ff7dd168327473c239a5
-   Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Thu Jan 28 17:55:05 2021 -0500
+   commit f5980893bcfbbd7e0a9fbc8dd8d86aa82178604e
+   Merge: 463b608 59783bf
+   Author: SlayerDharok <kevinaugustino@hotmail.com>
+   Date:   Tue Mar 2 20:03:08 2021 -0500
    
-       Added config option to make furnaces consume extra coal if producing more than 1 bar in a single processing cycle.
+       Merge pull request #1 from ForryS/patch-1
+       
+       Russian translation
    

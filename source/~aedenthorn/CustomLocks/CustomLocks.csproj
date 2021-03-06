@@ -72,7 +72,7 @@
   <ItemGroup>
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
-    <Compile Include="ObjectPatches.cs" />
+    <Compile Include="CustomLocksPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

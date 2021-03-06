@@ -18,7 +18,42 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 -->
 ## Upcoming release
+* Added support for [creating custom locations](docs/author-guide.md#custom-locations).
+* Added `AddWarps` field in [`EditMap` patches](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editmap).
+* Added new tokens:
+  * [`Render`](docs/author-tokens-guide.md#string-manipulation) to allow string comparison in `When` blocks.
+  * `DailyLuck` to get a player's daily luck (thanks to Thom1729!).
+* The `FarmhouseUpgrade` token can now check either the current player (default) or the host player.
+* The `Enabled` field no longer allows tokens (in format version 1.21.0+).
+* Improved default `LogName` for patches with multiple `Target` or `FromFile` values.
+* Improved split-screen support.
+* Fixed changes through Generic Mod Config Menu not correctly updating dynamic tokens and `Enabled` fields.
+* Fixed `patch reload` command not reapplying format migrations to reloaded patches.
+* Fixed error patching `Data\Concessions` using `EditData`.
+
+**Update note for mod authors:**  
+If you use tokens in the `Enabled` field, updating the `Format` field to `1.21.0` or later will
+cause errors. See the [migration guide](docs/author-migration-guide.md) for more info.
+
+## 1.20
+Released 06 February 2021. See the [release highlights](https://www.patreon.com/posts/47213526).
+
+* Improved tokens:
+  * Added `LocationContext` (the world area recognized by the game like `Island` or `Valley`).
+  * Added `LocationUniqueName` (the unique name for constructed building and cabin interiors).
+  * `Weather` now returns weather for the current location context by default, instead of always returning the valley's weather.
+  * You can now use an optional argument like `{{Weather: Valley}}` to get the weather for a specific context.
+* You can now set translation token values through `i18n` token arguments.
+* Added console commands:
+  * `patch dump applied` shows all active patches grouped by target in their apply order, including whether each patch is applied.
+  * `patch dump order` shows the global definition order for all loaded patches.
+* Fixed patch order not guaranteed when `Include` patches get reloaded.
+* Improved performance for content packs using tokenized conditions in patches updated on time change.
 * Config fields consisting of a numeric range are now formatted as a slider in Generic Mod Config Menu.
+
+**Update note for mod authors:**  
+If you use the `Weather` token, updating the `Format` field to `1.20.0` or later changes its
+behavior. See the [migration guide](docs/author-migration-guide.md) for more info.
 
 ## 1.19.4
 Released 23 January 2021.

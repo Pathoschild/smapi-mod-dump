@@ -9,16 +9,11 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Harmony;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
 namespace Better_Resource_Clumps

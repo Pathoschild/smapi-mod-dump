@@ -1,0 +1,15 @@
+﻿{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Yes": "Sí",
+  "No": "No",
+  "GotPetted": "Acariciado: {{value}}",
+  "GotWater": "Hidratado: {{value}}",
+  "GotFood": "Alimentado: {{value}}",
+  "Friendship": "Amistad: {{value}}",
+  "AteEnough": "{{name}} ha comido suficiente por hoy.",
+  "AteFood": "{{name}} se ha comido tu {{foodName}}.",
+  "HorseWarning": "You cannot do that while riding a horse!"
+}

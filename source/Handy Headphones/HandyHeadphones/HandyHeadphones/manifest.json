@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/HandyHeadphones
+**
+*************************************************/
+
+{
+  "Name": "HandyHeadphones",
+  "Author": "PeacefulEnd",
+  "Version": "REPLACE_ME_WITH_VERSION",
+  "Description": "Play any in-game music you'd like, anywhere!",
+  "UniqueID": "PeacefulEnd.HandyHeadphones",
+  "EntryDll": "HandyHeadphones.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7936" ],
+  "Dependencies": [
+   {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": true
+   }
+]
+}

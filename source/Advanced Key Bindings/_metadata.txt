@@ -5,10 +5,12 @@ mods:
    Advanced Key Bindings
 
 latest commit:
-   commit c530c93ebcca5753459ab8b3e97b2ad95ca47ede
-   Author: Drachenkaetzchen <felicia@drachenkatze.org>
-   Date:   Fri Jan 17 01:49:01 2020 +0100
+   commit 64c205c686b6726fdd08c3c03e349cccbb6da0d9
+   Merge: c530c93 2036b61
+   Author: Felicia Hummel <felicia@drachenkatze.org>
+   Date:   Wed Feb 10 22:33:39 2021 +0100
    
-       Bugfix: Animals can be placed in buildings under construction
-       New Feature: Quick jump to movable and demolishable buildings
+       Merge pull request #2 from minervamaga/master
+       
+       Update to SDV 1.5.4
    

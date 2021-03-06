@@ -1,0 +1,10 @@
+{
+    "Name": "OmniSwing",
+    "Author": "Alejandro Akbal",
+    "Version": "0.1.2",
+    "Description": "Automatically swing your weapon.",
+    "UniqueID": "AlejandroAkbal.OmniSwing",
+    "EntryDll": "OmniSwing.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:7877" ]
+}

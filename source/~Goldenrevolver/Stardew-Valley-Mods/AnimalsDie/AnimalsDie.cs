@@ -16,6 +16,15 @@ namespace AnimalsDie
     using System.Collections.Generic;
     using System.Text;
 
+    public enum Cause
+    {
+        starvation,
+        dehydration,
+        oldAge,
+        illness,
+        wildAnimalAttack
+    }
+
     public enum AnimalType
     {
         Sheep,
@@ -45,7 +54,7 @@ namespace AnimalsDie
         bool IsAnimalFull(FarmAnimal animal);
     }
 
-    //// planned features: healing item, display messages
+    //// planned features: healing item, display mood messages
 
     public class AnimalsDie : Mod
     {
@@ -54,6 +63,8 @@ namespace AnimalsDie
         public readonly List<Tuple<FarmAnimal, string>> AnimalsToKill = new List<Tuple<FarmAnimal, string>>();
 
         public readonly List<FarmAnimal> SickAnimals = new List<FarmAnimal>();
+
+        public readonly List<FarmAnimal> CheckedToday = new List<FarmAnimal>();
 
         public FarmAnimal WildAnimalVictim { get; set; }
 
@@ -72,10 +83,11 @@ namespace AnimalsDie
 
             Helper.Events.GameLoop.GameLaunched += delegate { SetupWaterMod(); AnimalsDieConfig.SetUpModConfigMenu(Config, this, WaterMod != null); };
 
-            Helper.Events.GameLoop.DayStarted += delegate { OnDayStarted(); };
+            Helper.Events.GameLoop.Saving += delegate { Serialize(); };
+            Helper.Events.GameLoop.SaveLoaded += delegate { ResetVariables(); Deserialize(); };
+            Helper.Events.GameLoop.ReturnedToTitle += delegate { ResetVariables(); AnimalsToKill.Clear(); };
 
-            Helper.Events.GameLoop.SaveLoaded += delegate { ResetVariables(); };
-            Helper.Events.GameLoop.ReturnedToTitle += delegate { ResetVariables(); };
+            Helper.Events.GameLoop.DayStarted += delegate { OnDayStarted(); };
             Helper.Events.GameLoop.UpdateTicked += delegate { TryToSendMessage(); };
 
             Patcher.PatchAll(this);
@@ -444,6 +456,41 @@ namespace AnimalsDie
         /// <param name="cause"></param>
         private void KillAnimal(FarmAnimal animal, string cause)
         {
+            // one more check in case this happens with a re-kill and the user changed configs inbetween
+            if (Enum.TryParse(cause, out Cause c))
+            {
+                switch (c)
+                {
+                    case Cause.starvation:
+                        if (!Config.DeathByStarvation)
+                        {
+                            return;
+                        }
+                        break;
+
+                    case Cause.dehydration:
+                        if (!Config.DeathByDehydrationWithAnimalsNeedWaterMod)
+                        {
+                            return;
+                        }
+                        break;
+
+                    case Cause.oldAge:
+                        if (!Config.DeathByOldAge)
+                        {
+                            return;
+                        }
+                        break;
+
+                    case Cause.illness:
+                        if (!Config.DeathByIllness)
+                        {
+                            return;
+                        }
+                        break;
+                }
+            }
+
             VerboseLog($"Killed {animal.name} due to {cause}");
 
             // right before this Utility.fixAllAnimals gets called, so if it's still not fixed then... it truly doesn't have a home and I don't need to remove it
@@ -467,10 +514,79 @@ namespace AnimalsDie
 
         private void ResetVariables()
         {
+            if (!Context.IsMainPlayer)
+            {
+                return;
+            }
+
             WildAnimalVictim = null;
             Messages.Clear();
-            AnimalsToKill.Clear();
             SickAnimals.Clear();
+            CheckedToday.Clear();
+            // don't reset animals to kill here!
+        }
+
+        private void Serialize()
+        {
+            if (!Context.IsMainPlayer)
+            {
+                return;
+            }
+
+            string output = string.Empty;
+
+            if (AnimalsToKill.Count > 0)
+            {
+                output += $"{AnimalsToKill[0].Item1.myID.Value},{AnimalsToKill[0].Item2}";
+            }
+
+            for (int i = 1; i < AnimalsToKill.Count; i++)
+            {
+                output += $",{AnimalsToKill[i].Item1.myID.Value},{AnimalsToKill[i].Item2}";
+            }
+
+            if (Game1.getFarm().modData.ContainsKey($"{ModManifest.UniqueID}/animalsToKill"))
+            {
+                Game1.getFarm().modData[$"{ModManifest.UniqueID}/animalsToKill"] = output;
+            }
+            else
+            {
+                Game1.getFarm().modData.Add($"{ModManifest.UniqueID}/animalsToKill", output);
+            }
+        }
+
+        private void Deserialize()
+        {
+            if (!Context.IsMainPlayer)
+            {
+                return;
+            }
+
+            AnimalsToKill.Clear();
+
+            try
+            {
+                Game1.getFarm().modData.TryGetValue($"{ModManifest.UniqueID}/animalsToKill", out string input);
+
+                if (!string.IsNullOrEmpty(input))
+                {
+                    Game1.getFarm().modData[$"{ModManifest.UniqueID}/animalsToKill"] = string.Empty;
+                    DebugLog(input);
+
+                    var list = input.Split(',');
+
+                    for (int i = 0; i < list.Length; i += 2)
+                    {
+                        var id = long.Parse(list[i]);
+
+                        AnimalsToKill.Add(new Tuple<FarmAnimal, string>(Utility.getAnimal(id), list[i + 1]));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorLog("Couldn't parse animals to re-kill. There may be animals that died on the last day you played, but got \"revived\" because I can't kill them again now", e);
+            }
         }
 
         private void SetupWaterMod()
@@ -486,6 +602,7 @@ namespace AnimalsDie
                 return;
             }
 
+            CheckedToday.Clear();
             CheckHomeStatus();
             KillAnimals();
             DisplayIllMessage();
@@ -508,7 +625,7 @@ namespace AnimalsDie
         {
             if (WildAnimalVictim != null)
             {
-                CalculateDeathMessage(WildAnimalVictim, "wildAnimalAttack");
+                CalculateDeathMessage(WildAnimalVictim, Cause.wildAnimalAttack.ToString());
                 WildAnimalVictim = null;
             }
 
@@ -525,6 +642,12 @@ namespace AnimalsDie
 
         private void DisplayIllMessage()
         {
+            if (!Config.IllnessMessages)
+            {
+                SickAnimals.Clear();
+                return;
+            }
+
             switch (SickAnimals.Count)
             {
                 case 0:

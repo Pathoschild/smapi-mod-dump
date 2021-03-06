@@ -7,6 +7,7 @@
   "ShowOtherSprinklersWhenHoldingSprinkler": true,
   "ShowOtherScarecrowsWhenHoldingScarecrow": true,
   "ShowOtherBeehousesWhenHoldingBeehouse": false,
+  "showHeldBombRange": true,
   "showPlacedBombRange": true,
   "showBombInnerRange": false,
   "showBombOuterRange": true,

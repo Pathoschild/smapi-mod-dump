@@ -25,7 +25,12 @@ namespace SpriteMaster.Extensions.Compressors {
 					if (!Enumerable.SequenceEqual(dummyData, uncompressedData)) {
 						throw new Exception("Original and Uncompressed Data Mismatch");
 					}
+					Debug.InfoLn("Deflate Compression is supported");
 					return true;
+				}
+				catch (DllNotFoundException) {
+					Debug.InfoLn($"Deflate Compression not supported");
+					return false;
 				}
 				catch (Exception ex) {
 					Debug.InfoLn($"Deflate Compression not supported: '{ex.ToString()}'");

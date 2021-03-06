@@ -1,41 +1,38 @@
-{
-	// Object data
-	"Name": "blueberry.cac.porridge",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 36,
-	"EdibleIsDrink": true,
-	"EdibleBuffs": null,
-	"Price": 180,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 406, // Wild Plum
-				"Count": 1
-			},
-			{
-				"Object": 262, // Wheat
-				"Count": 1
-			},
-			{
-				"Object": -6, // Category:Milk
-				"Count": 1
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.porridge",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 36,
+    "EdibleIsDrink": true,
+    "EdibleBuffs": null,
+    "Price": 180,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 406,
+                "Count": 1
+            },
+            {
+                "Object": 262,
+                "Count": 1
+            },
+            {
+                "Object": -6,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Plum Porridge"
+    }
 }

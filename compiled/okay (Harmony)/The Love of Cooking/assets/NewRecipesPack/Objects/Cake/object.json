@@ -1,41 +1,38 @@
-{
-	// Object data
-	"Name": "blueberry.cac.cake",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 45,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": null,
-	"Price": 110,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 246, // Flour
-				"Count": 2
-			},
-			{
-				"Object": -5, // Egg
-				"Count": 2
-			},
-			{
-				"Object": -6, // Milk
-				"Count": 1
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.cake",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 45,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 110,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 246,
+                "Count": 2
+            },
+            {
+                "Object": -5,
+                "Count": 2
+            },
+            {
+                "Object": -6,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Cake"
+    }
 }

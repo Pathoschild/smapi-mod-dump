@@ -70,7 +70,7 @@ namespace InstantGrowthPowder
             if(__instance.isCropAtTile(tileLocation.X, tileLocation.Y) && !(__instance.terrainFeatures[new Vector2(tileLocation.X, tileLocation.Y)] as HoeDirt).crop.fullyGrown)
             {
                 (__instance.terrainFeatures[new Vector2(tileLocation.X, tileLocation.Y)] as HoeDirt).crop.growCompletely();
-                who.CurrentItem.Stack--;
+                who.reduceActiveItemByOne();
                 __instance.playSound("yoba");
                 __result = true;
                 return false;
@@ -82,9 +82,11 @@ namespace InstantGrowthPowder
                 if (i != null && i is Child && i.GetBoundingBox().Intersects(tileRect) && (i.Age < 3))
                 {
                     i.Age = 3;
-                    SHelper.Reflection.GetField<int>(i, "daysOld").SetValue(55);
+                    (i as Child).daysOld.Value = 55;
+                    i.speed = 4;
+                    i.reloadSprite();
 
-                    who.CurrentItem.Stack--;
+                    who.reduceActiveItemByOne();
                     __instance.playSound("yoba");
                     __result = true;
                     return false;
@@ -106,7 +108,7 @@ namespace InstantGrowthPowder
                         }
                         i.Value.daysSinceLastLay.Value = 99;
 
-                        who.CurrentItem.Stack--;
+                        who.reduceActiveItemByOne();
                         __instance.playSound("yoba");
                         __result = true;
                         return false;
@@ -125,7 +127,7 @@ namespace InstantGrowthPowder
                     (__instance.terrainFeatures[v.Key] as Tree).dayUpdate(Game1.currentLocation, v.Key);
                     (__instance.terrainFeatures[v.Key] as Tree).fertilized.Value = false;
 
-                    who.CurrentItem.Stack--;
+                    who.reduceActiveItemByOne();
                     __instance.playSound("yoba");
                     __result = true;
                     return false;
@@ -137,7 +139,7 @@ namespace InstantGrowthPowder
                     tree.growthStage.Value = 4;
                     __instance.terrainFeatures[v.Key] = tree;
 
-                    who.CurrentItem.Stack--;
+                    who.reduceActiveItemByOne();
                     __instance.playSound("yoba");
                     __result = true;
                     return false;
@@ -149,7 +151,7 @@ namespace InstantGrowthPowder
                     Game1.currentLocation.terrainFeatures[v.Key] = bush;
                     Game1.currentLocation.terrainFeatures[v.Key].loadSprite();
 
-                    who.CurrentItem.Stack--;
+                    who.reduceActiveItemByOne();
                     __instance.playSound("yoba");
                     __result = true;
                     return false;
@@ -162,7 +164,7 @@ namespace InstantGrowthPowder
                 {
                     (v.Value as IndoorPot).hoeDirt.Value.crop.growCompletely();
 
-                    who.CurrentItem.Stack--;
+                    who.reduceActiveItemByOne();
                     __instance.playSound("yoba");
                     __result = true;
                     return false;
@@ -173,7 +175,7 @@ namespace InstantGrowthPowder
                     (v.Value as IndoorPot).bush.Value.datePlanted.Value -= 20 - (v.Value as IndoorPot).bush.Value.getAge();
                     (v.Value as IndoorPot).bush.Value.loadSprite();
 
-                    who.CurrentItem.Stack--;
+                    who.reduceActiveItemByOne();
                     __instance.playSound("yoba");
                     __result = true;
                     return false;

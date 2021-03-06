@@ -6,14 +6,15 @@
 		"Text": "Dear @^This is my custom mail.", // Text of the letter. You can use @ to put the players name and ^ for line breaks. You can also use the base game commands to add money, items and stuff. If an translation file is provide, you should put a translation key here.
 		"Attachments": [ // List of attachments. Remove the property to not attach items to the mail.
 			{
-				"Type": "Tool", // [Object|BigCraftable|Tool|Ring|Furniture|Weapon|Boots] Required. The type of item that will be attached. If not provided the item will be ignored.
-				"Name": "Axe", // Used to find the item index. That's required if using custom objects like Json Assets ones. Default is null.
-				"UpgradeLevel": 1 // The upgrade level of the tool. 0 = stone, 1 = cooper, 2 = steel, 3 = gold, 4 = iridium. Ignored for the other types. Default is 0. 
+				"Type": "Object", // [Object|BigCraftable|Tool|Ring|Furniture|Weapon|Boots] Required. The type of item that will be attached. If not provided the item will be ignored.
+				"Name": "Cave Carrot", // Used to find the item index. That's required if using custom objects like Json Assets ones. If not provided, the index will be used. Default is null.
+				"Index": 78, // The index of an item. If no name is provided or an item for the name is not found, the index is used. Otherwise, the attachment is ignored.
+				"Stack": 1 // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1;
 			},
 			{
-				"Type": "Object",
-				"Index": 78, // The index of item. If not provided and no index if found for the name, the attachment is ignored.
-				"Stack": 1 // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1;
+				"Type": "Tool", // When using tool, only supported ones can be attached.
+				"Name": "Axe", // [Axe|Hoe|Watering Can|Pickaxe|Scythe|Golden Scythe|Milk Pail|Shears|Fishing Rod|Pan|Return Scepter] Required for tools. The name of the supported tool. Otherwise, the attachment is ignored.
+				"UpgradeLevel": 1 // The upgrade level of the tool. Regular tools: 0 = stone, 1 = cooper, 2 = steel, 3 = gold, 4 = iridium. Fishing Rod: 0 = Bamboo Pole, 1 = Training Rod, 2 = Fiberglass Rod, 3 = Iridium Rod. Ignored for the other types. Default is 0. 
 			}
 		],
 		"Recipe": "Recipe Name", // Remove the line if you don't want to attach a recipe to the mail. It will only work if you have no other attachments to the mail.
@@ -22,7 +23,8 @@
 		"TextColor": -1, //Remove this line to use the default color. -1 = Dark Red, 0 = Black, 1 = Sky Blue, 2 = Red, 3 = Blue Violet, 4 = White, 5 = Orange Red, 6 = Lime Green, 7 = Cyan, 8 = Darkest Gray
 		"UpperRightCloseButton": "CustomCloseButton.png", // Name of the file in your content pack that has the custom close button to use. It should be 12 x 12 . If null or removed it will use the default button.
         "Repeatable": false, // If true the mod won't check it the letter Id has already been delivered. Default is false.
-		// CONDITIONS FOR DELIVERY
+		"AutoOpen":  false, // If true the mod will open the letter at the begin of the day after the conditions are met. The letter id will be marked as read and if there is a recipe set, it will be learned. Since the letter will never show, visual properties like title, text, background... will never be used, as well as the attachments.
+        // CONDITIONS FOR DELIVERY
         //Below are conditions for the delivery. Remove any of the lines if you don't want to check that condition.
 		"Date": "10 spring Y1", // Must be that date or after it. The format is "[1-28] [spring|summer|fall|winter] Y[1-999]".
 		"Days": [7,14,21,28], // Must be one of the days in the list.

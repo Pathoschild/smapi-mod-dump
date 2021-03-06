@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AnimalsNeedWater.Patching;
+using AnimalsNeedWater.Types;
 using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -55,6 +56,7 @@ namespace AnimalsNeedWater
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.Saved += HandleDayUpdate;
             helper.Events.GameLoop.DayEnding += OnDayEnding;
+            helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
 
             DetermineTroughPlacementProfile();
         }
@@ -64,6 +66,11 @@ namespace AnimalsNeedWater
         public override object GetApi()
         {
             return new API();
+        }
+        
+        public void SendTroughWateredMessage(Type buildingType, string building)
+        {
+            SendMessageToSelf(new TroughWateredMessage(buildingType, building), "TroughWateredMessage");
         }
         
         #endregion
@@ -501,6 +508,42 @@ namespace AnimalsNeedWater
             ModMonitor.VerboseLog("Done patching.");
         }
 
+        private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
+            if (e.FromModID != ModManifest.UniqueID || e.Type != "TroughWateredMessage") return;
+            
+            TroughWateredMessage message = e.ReadAs<TroughWateredMessage>();
+
+            if (message.BuildingType == typeof(Coop))
+            {
+                ModData.CoopsWithWateredTrough.Add(message.BuildingUniqueName);
+            }
+            else
+            {
+                ModData.BarnsWithWateredTrough.Add(message.BuildingUniqueName);
+            }
+            
+            string locationName = message.BuildingUniqueName;
+            string locationNameWithoutUnique = Game1.getLocationFromName(locationName).Name;
+            Building building = ((AnimalHouse)Game1.getLocationFromName(locationName)).getBuilding();
+
+            switch (building.nameOfIndoorsWithoutUnique.ToLower())
+            {
+                case "coop":
+                    ChangeCoopTexture(building, false);
+                    break;
+                case "coop2":
+                    ChangeBigCoopTexture(building, false);
+                    break;
+            }
+                
+            if (string.Equals(Game1.currentLocation.NameOrUniqueName, message.BuildingUniqueName,
+                StringComparison.CurrentCultureIgnoreCase))
+            {
+                HarmonyPatchExecutors.CheckForWateredTroughs(building, locationName, locationNameWithoutUnique);
+            }
+        }
+
         /// <summary> Raised after the save is loaded. </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
@@ -657,11 +700,13 @@ namespace AnimalsNeedWater
 
         private void PlaceWateringSystems()
         {
+            if (!Config.WateringSystemInDeluxeBuildings) return;
+            
             foreach (Building building in Game1.getFarm().buildings)
             {
                 switch (building.nameOfIndoorsWithoutUnique.ToLower())
                 {
-                    case "coop3" when Config.WateringSystemInDeluxeBuildings:
+                    case "coop3":
                     {
                         var gameLocation = building.indoors.Value;
 
@@ -680,7 +725,7 @@ namespace AnimalsNeedWater
                             frontLayer.Tiles[CurrentTroughPlacementProfile.coop3WateringSystem.TileX, CurrentTroughPlacementProfile.coop3WateringSystem.TileY] = new StaticTile(frontLayer, tilesheet, BlendMode.Alpha, tileIndex: CurrentTroughPlacementProfile.coop3WateringSystem.SystemTilesheetIndex);
                         break;
                     }
-                    case "barn3" when Config.WateringSystemInDeluxeBuildings:
+                    case "barn3":
                     {
                         var gameLocation = building.indoors.Value;
 
@@ -701,6 +746,11 @@ namespace AnimalsNeedWater
                     }
                 }
             }
+        }
+
+        private void SendMessageToSelf(object message, string messageType)
+        {
+            Helper.Multiplayer.SendMessage(message, messageType, new[] { ModManifest.UniqueID });
         }
 
         private string NextSeason(string season)

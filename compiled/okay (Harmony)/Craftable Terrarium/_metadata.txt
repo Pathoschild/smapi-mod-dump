@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8031
+IDs: aedenthorn.Terrarium
+update keys: Nexus:8031, GitHub:aedenthorn/StardewValleyMods

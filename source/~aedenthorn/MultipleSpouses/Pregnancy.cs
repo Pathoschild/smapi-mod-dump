@@ -69,7 +69,7 @@ namespace MultipleSpouses
                 Friendship friendship = f.friendshipData[spouse.Name];
                 List<Child> kids = f.getChildren();
                 bool can = spouse.daysAfterLastBirth <= 0 && Utility.getHomeOfFarmer(f).upgradeLevel >= 2 && friendship.DaysUntilBirthing < 0 && heartsWithSpouse >= 10 && friendship.DaysMarried >= 7 && (ModEntry.config.MaxChildren < 0 || kids.Count == 0 || (kids.Count < ModEntry.config.MaxChildren));
-                ModEntry.PMonitor.Log($"Checking ability to get pregnant: {spouse.Name} {can}{(friendship.DaysUntilBirthing >= 0 ? " Already pregnant! Gives birth in: "+friendship.DaysUntilBirthing:"")}");
+                ModEntry.PMonitor.Log($"Checking ability to get pregnant: {spouse.Name} {can}:{(Utility.getHomeOfFarmer(f).upgradeLevel < 2 ? $" house level too low {Utility.getHomeOfFarmer(f).upgradeLevel}":"")}{(friendship.DaysMarried < 7 ? $" not married long enough {friendship.DaysMarried}":"")}{(friendship.DaysUntilBirthing >= 0 ? "Already pregnant! Gives birth in: "+friendship.DaysUntilBirthing:"")}");
                 if (can && Game1.player.currentLocation == Game1.getLocationFromName(Game1.player.homeLocation) && ModEntry.myRand.NextDouble() < ModEntry.config.BabyRequestChance)
                 {
                     ModEntry.PMonitor.Log("Making a baby!");
@@ -164,12 +164,12 @@ namespace MultipleSpouses
                         }
                     }
                     while (collision_found);
-                    Child baby = new Child($"{newBabyName} ({lastBirthingSpouse.Name})", ___isMale, isDarkSkinned, Game1.player)
+                    Child baby = new Child(newBabyName, ___isMale, isDarkSkinned, Game1.player)
                     {
                         Age = 0,
                         Position = new Vector2(16f, 4f) * 64f + new Vector2(0f + ModEntry.myRand.Next(-64, 48), -24f + ModEntry.myRand.Next(-24, 24)),
-                        displayName = $"{newBabyName}"
                     };
+                    baby.modData["aedenthorn.MultipleSpouses/OtherParent"] = lastBirthingSpouse.Name;
 
                     Utility.getHomeOfFarmer(Game1.player).characters.Add(baby);
                     Game1.playSound("smallSelect");

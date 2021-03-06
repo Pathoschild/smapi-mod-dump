@@ -10,9 +10,16 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Fixed error opening dressers in rare cases.
+* Fixed lag in some cases when opening a chest menu that can't be linked to a chest.
+* Improved translations. Thanks to derJuba007 (updated German), horizon98 (updated Chinese), and zNatural (updated Spanish)!
+
+## 1.20.9
+Released 06 February 2021.
+
 * Fixed exit keys not working after editing a textbox option and closing the edit UI.
 * Fixed textboxes not deselected when you click outside them.
-* Improved translations. Thanks to carloshbcabral (updated Portuguese)!
+* Improved translations. Thanks to carloshbcabral (updated Portuguese) and Treize-Chronos (updated French)!
 
 ## 1.20.8
 Released 26 January 2021.

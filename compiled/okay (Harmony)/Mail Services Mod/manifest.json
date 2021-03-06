@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Mail Services Mod",
     "Author": "Digus",
-    "Version": "1.1.0",
+    "Version": "1.3.1",
     "Description": "Custom mail services.",
     "UniqueID": "Digus.MailServicesMod",
     "EntryDll": "MailServicesMod.dll",
@@ -9,7 +9,7 @@
     "Dependencies": [
         {
             "UniqueID": "DIGUS.MailFrameworkMod",
-            "MinimumVersion": "1.9.0"
+            "MinimumVersion": "1.9.1"
         }
     ],
     "UpdateKeys": [ "Nexus:7842" ]

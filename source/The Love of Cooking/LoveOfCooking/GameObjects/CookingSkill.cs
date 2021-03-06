@@ -24,16 +24,6 @@ namespace LoveOfCooking.GameObjects
 		protected static readonly string ProfessionI18nId = "menu.cooking_skill.tier{0}_path{1}{2}";
 		internal const float DebugExperienceRate = 1f;
 
-		public enum ProfId
-		{
-			ImprovedOil,
-			Restoration,
-			GiftBoost,
-			SaleValue,
-			ExtraPortion,
-			BuffDuration
-		}
-
 		public static readonly int GiftBoostValue = 10;
 		public static readonly int SaleValue = 30;
 		public static readonly int ExtraPortionChance = 4;
@@ -66,6 +56,8 @@ namespace LoveOfCooking.GameObjects
 			{ 9, new List<string> { "gardenpie", "seafoodsando", "curry", "kebab", "oceanplatter" } },
 			{ 10, new List<string>() },
 		};
+
+		public static readonly Dictionary<string, int> FoodsThatBuffCookingSkill = new Dictionary<string, int>();
 
 		public class SkillProfession : Profession
 		{

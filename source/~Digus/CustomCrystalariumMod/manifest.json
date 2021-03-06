@@ -11,11 +11,11 @@
 {
   "Name": "Custom Crystalarium Mod",
   "Author": "Digus",
-  "Version": "1.1.4",
-  "Description": "Adds a way to customize the crystalarium machine.",
+  "Version": "1.2.2",
+  "Description": "Adds a way to customize the crystalarium machine. Adds a way to create custom cloners using content packs.",
   "UniqueID": "DIGUS.CustomCrystalariumMod",
   "EntryDll": "CustomCrystalariumMod.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.8.0",
   "Dependencies": [
 	  {
 		  "UniqueID": "DIGUS.MailFrameworkMod",

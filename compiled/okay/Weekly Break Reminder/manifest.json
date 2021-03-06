@@ -1,0 +1,10 @@
+﻿{
+  "Name": "WeeklyBreakReminder",
+  "Author": "Treehat",
+  "Version": "1.1.0",
+  "Description": "Provides a reminder to take a break once every in-game week.",
+  "UniqueID": "Treehat.WeeklyBreakReminder",
+  "EntryDll": "WeeklyBreakReminder.dll",
+  "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:8194" ]
+}

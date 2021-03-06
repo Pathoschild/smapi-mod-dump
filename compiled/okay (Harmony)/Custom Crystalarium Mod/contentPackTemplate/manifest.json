@@ -1,0 +1,17 @@
+﻿{
+	"Name": "[CCRM] Name of your pack",
+	"Author": "Your name",
+	"Version": "1.0.0",
+	"Description": "Adds configuration of my cloner data to Custom Crystalarium Mod.",
+	"UniqueID": "YourName.YouPackNameForCustomCrystalariumMod",
+	"MinimumApiVersion": "3.9.0",
+	"UpdateKeys": [],
+	"Dependencies": [
+		{
+			"UniqueID": "YourName.YourOthersPacksAndMods"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.CustomCrystalariumMod"
+	}
+}

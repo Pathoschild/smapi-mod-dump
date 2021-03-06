@@ -44,9 +44,9 @@ You can configure this mod via `config.json` file in the mod folder:
 
 ## Create gift reaction dialogues
 
-**Gift tastes for NPCs is needed to in `Data/NPCGiftTastes`. This mod changes only the dialogue of the reaction, but not if the NPC likes or dislikes an item. Also this mod doesn't affect friendship points. This is still in "hands" of NPCGiftTastes asset in SDV!**
+**Gift tastes for NPCs are needed to place in `Data/NPCGiftTastes`. This mod changes only the dialogue of the reaction, but not if the NPC likes or dislikes an item. Also this mod doesn't affect friendship points. This is still in "hands" of NPCGiftTastes asset in SDV!**
 
-Add custom gift dialogues is very easy. Just add into game content `Characters/Dialogue/<NpcName>` and add lines witch these possible keys:
+Add custom gift dialogues is very easy. Just add into game content `Characters/Dialogue/<NpcName>` and add lines with these possible keys:
 
 - `GiftReaction_<ObjectName>` - Reaction dialogue for concrete gifted item. The `<ObjectName>` is a name of an object for which your NPC speaks a dialogue when this item was gifted to them. Spaces in the object name must be replaced with underscore `_` in the dialogue line key.
 - `GiftReactionCategory_<CategoryNumber>` - Reaction for all object of concrete category.

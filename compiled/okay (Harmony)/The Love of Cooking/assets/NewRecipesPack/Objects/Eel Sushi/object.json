@@ -1,41 +1,38 @@
-{
-	// Object data
-	"Name": "blueberry.cac.unagi",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 40,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": null,
-	"Price": 240,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 148, // Eel
-				"Count": 1
-			},
-			{
-				"Object": 423, // Rice
-				"Count": 1
-			},
-			{
-				"Object": 152, // Seaweed
-				"Count": 1
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.unagi",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 40,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 240,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 148,
+                "Count": 1
+            },
+            {
+                "Object": 423,
+                "Count": 1
+            },
+            {
+                "Object": 152,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Eel Sushi"
+    }
 }

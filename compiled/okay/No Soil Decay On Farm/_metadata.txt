@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8071
+IDs: A_Dude.NoSoilDecayOnFarm
+update keys: Nexus:8071

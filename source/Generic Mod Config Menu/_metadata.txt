@@ -5,9 +5,9 @@ mods:
    Generic Mod Config Menu
 
 latest commit:
-   commit de03da12a536e5b08a002d578b9af46eee94eb61
+   commit 032217c75ea38dfaf873cc2147a645731765c6c8
    Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Tue Jan 5 20:04:50 2021 -0500
+   Date:   Thu Mar 4 18:19:40 2021 -0500
    
-       1.2.1
+       Method for overriding page display name (also in 1.3.1).
    

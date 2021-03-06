@@ -5,9 +5,9 @@ mods:
    Stay Up
 
 latest commit:
-   commit 11e06d0425f4b8cfa28159ceb442350d02505635
+   commit b6b6e95519a057c6bba7ad6fabcb8f12e157a5e8
    Author: su226 <1368981939@qq.com>
-   Date:   Sun Jan 17 16:23:22 2021 +0800
+   Date:   Mon Feb 1 19:20:12 2021 +0800
    
-       [StayUp] Tired emote supression no longer need patching game code.
+       [StayUp] Bump version to 1.1.2
    

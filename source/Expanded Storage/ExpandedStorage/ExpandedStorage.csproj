@@ -2,26 +2,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>ExpandedStorage</AssemblyName>
-        <RootNamespace>ExpandedStorage</RootNamespace>
-        <Version>1.5.0-beta.1</Version>
+        <RootNamespace>ImJustMatt.ExpandedStorage</RootNamespace>
+        <Version>1.6.2</Version>
         <TargetFramework>net452</TargetFramework>
-        <Platforms>x86</Platforms>
-        <PlatformTarget>x86</PlatformTarget>
         <EnableHarmony>true</EnableHarmony>
-        <LangVersion>9</LangVersion>
-        <Authors>furyx639</Authors>
-        <Title>ExpandedStorage</Title>
-        <Description>Mod which allows Content Packs to add custom storage.</Description>
-        <PackageLicenseUrl>https://github.com/ImJustMatt/ExpandedStorage/blob/master/LICENSE</PackageLicenseUrl>
-        <RepositoryUrl>https://github.com/ImJustMatt/ExpandedStorage</RepositoryUrl>
-        <PackageId>furyx639.ExpandedStorage</PackageId>
     </PropertyGroup>
+    
     <ItemGroup>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="assets" />
-      <Folder Include="screenshots" />
-    </ItemGroup>
+    
+    <Import Project="..\build\common.targets" />
     <Import Project="..\Common\Common.projitems" Label="Shared" />
 </Project>

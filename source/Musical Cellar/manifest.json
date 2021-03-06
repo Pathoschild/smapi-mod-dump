@@ -11,7 +11,7 @@
 {
   "Name": "MusicalCellar",
   "Author": "Lis",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Play farmhouse jukebox music in the cellar",
   "UniqueID": "Lis.MusicalCellar",
   "EntryDll": "MusicalCellar.dll",

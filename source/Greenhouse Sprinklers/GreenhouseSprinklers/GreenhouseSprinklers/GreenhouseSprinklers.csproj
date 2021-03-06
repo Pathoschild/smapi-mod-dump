@@ -52,6 +52,9 @@
     <LangVersion>latest</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
@@ -96,6 +99,8 @@
     </None>
     <None Include="i18n\es.json" />
     <None Include="i18n\it.json" />
+    <None Include="i18n\ko.json" />
+    <None Include="i18n\ru.json" />
     <None Include="i18n\zh.json" />
     <None Include="LICENSE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

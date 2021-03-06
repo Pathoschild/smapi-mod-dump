@@ -1,0 +1,13 @@
+url:
+   https://github.com/dmcrider/LastDayToPlant.git
+
+mods:
+   Last Day to Plant
+
+latest commit:
+   commit dcc83f42a0f92552aaf6b2c9b8a34fbb0e0c817d
+   Author: Daylon Crider <dmcrider@users.noreply.github.com>
+   Date:   Thu Feb 25 12:39:53 2021 -0700
+   
+       Update README.md
+   

@@ -73,7 +73,7 @@ Here's what you can change:
   `DisableEatAndDrinkConfirmation` | `false` | If `true`, the confirmation prompt before eating or drinking won't be shown.
 
 ## Compatibility
-Fast Animations is compatible with Stardew Valley 1.4+ on Linux/Mac/Windows, both single-player and
+Fast Animations is compatible with Stardew Valley 1.5+ on Linux/Mac/Windows, both single-player and
 multiplayer.
 
 Multiplayer notes:

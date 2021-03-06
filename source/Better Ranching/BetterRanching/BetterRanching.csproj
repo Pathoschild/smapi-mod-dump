@@ -36,9 +36,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BetterRanchingApi.cs" />
     <Compile Include="GameExtensions.cs" />
     <Compile Include="GameConstants.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="ModConfig.cs" />
     <Compile Include="BetterRanching.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

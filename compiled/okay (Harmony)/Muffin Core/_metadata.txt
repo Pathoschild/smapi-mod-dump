@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8070
+IDs: kabi-chan.MuffinCore
+update keys: Nexus:8070

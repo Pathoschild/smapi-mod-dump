@@ -47,6 +47,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 
@@ -122,7 +123,10 @@ namespace RangeHighlight {
         ///   the function should return <c>null</c>.  (Note that returning an
         ///   empty <c>bool[,]</c> will result in no highlighting, but counts
         ///   as a match so that no other highlighters will be processed for the building</param>
-        void AddBuildingRangeHighlighter(string uniqueId, SButton? hotkey, Func<Building,Tuple<Color,bool[,],int,int>> highlighter);
+        void AddBuildingRangeHighlighter(string uniqueId, KeybindList hotkey, Func<Building, Tuple<Color, bool[,], int, int>> highlighter);
+        /// <summary>Add a highlighter for buildings.</summary>
+        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
+        void AddBuildingRangeHighlighter(string uniqueId, SButton? hotkey, Func<Building, Tuple<Color, bool[,], int, int>> highlighter);
         /// <summary>Add a highlighter for buildings that also allows for highlighting during placement.</summary>
         /// <param name="uniqueId">
         ///   An ID by which the highlighter can be removed later.
@@ -146,6 +150,11 @@ namespace RangeHighlight {
         ///   the function should return <c>null</c>.  (Note that returning an
         ///   empty <c>bool[,]</c> will result in no highlighting, but counts
         ///   as a match so that no other highlighters will be processed for the building</param>
+        void AddBuildingRangeHighlighter(string uniqueId, KeybindList hotkey,
+                Func<BluePrint, Tuple<Color, bool[,], int, int>> blueprintHighlighter,
+                Func<Building, Tuple<Color, bool[,], int, int>> buildingHighlighter);
+        /// <summary>Add a highlighter for buildings that also allows for highlighting during placement.</summary>
+        [Obsolete("This AddBuildingRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
         void AddBuildingRangeHighlighter(string uniqueId, SButton? hotkey,
                 Func<BluePrint, Tuple<Color, bool[,], int, int>> blueprintHighlighter,
                 Func<Building, Tuple<Color, bool[,], int, int>> buildingHighlighter);
@@ -190,6 +199,9 @@ namespace RangeHighlight {
         ///   the function should return <c>null</c>.  (Note that returning an
         ///   empty <c>bool[,]</c> will result in no highlighting, but counts
         ///   as a match so that no other highlighters will be processed for the item</param>
+        void AddItemRangeHighlighter(string uniqueId, KeybindList hotkey, bool highlightOthersWhenHeld, Func<Item, int, string, Tuple<Color, bool[,]>> highlighter);
+        /// <summary>Add a highlighter for items.</summary>
+        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
         void AddItemRangeHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, Func<Item, int, string, Tuple<Color, bool[,]>> highlighter);
         /// <summary>
         ///   Add a highlighter for items, with callbacks to bracket the round of range highlight calculation.
@@ -226,6 +238,9 @@ namespace RangeHighlight {
         ///   range calculation.  Called if and only if the <paramref name="onRangeCalculationStart"/>
         ///   function was called.
         /// </param>
+        void AddItemRangeHighlighter(string uniqueId, KeybindList hotkey, bool highlightOthersWhenHeld, Action onRangeCalculationStart, Func<Item, int, string, Tuple<Color, bool[,]>> highlighter, Action onRangeCalculationFinish);
+        /// <summary>Add a highlighter for items with bracketing callbacks.</summary>
+        [Obsolete("This AddItemRangeHighlighter signature is deprecated.  Use the non-deprecated one instead.")]
         void AddItemRangeHighlighter(string uniqueId, SButton? hotkey, bool highlightOthersWhenHeld, Action onRangeCalculationStart, Func<Item, int, string, Tuple<Color, bool[,]>> highlighter, Action onRangeCalculationFinish);
         /// <summary>
         ///   Remove any item range highlighters added with the given <c>uniqueId</c>

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static ItemBags.Persistence.BagSizeConfig;
+using SObject = StardewValley.Object;
 
 namespace ItemBags
 {
@@ -367,6 +368,234 @@ namespace ItemBags
                     Monitor.Log(string.Format("ItemBags: Unhandled error while executing command: {0}", ex.Message), LogLevel.Error);
                 }
             });
+
+            CommandName = "generate_category_modded_bag";
+            CommandHelp = string.Format("Creates a json file that defines a modded Item Bag for a particular category of items.\n"
+                + "Arguments: <IncludeVanillaItems> <IncludeModdedItems> <SortingOrder> <BagName> <CategoryIdOrName>\n"
+                + "IncludeVanillaItems: Possible values are 'true' or 'false' (without the quotes).\n\tIf true, the generated bag will be able to store vanilla (non-modded) items of the desired category(s).\n"
+                + "IncludeModdedItems: Possible values are 'true' or 'false' (without the quotes).\n\tIf true, the generated bag will be able to store modded items of the desired category(s).\n"
+                + "SortingOrder: A comma-separated list of what properties to sort the items by before exporting them.\n\tValid properties are {0}/{1}/{2}/{3}.\n\tYou can also choose {4} or {5} order for each property.\n\t"
+                + "For example, '{6}-{7},{8}-{9}' would first sort by the {10} name in {11} order,\n\tand then sort by the item {12} in {13} order.\n"
+                + "BagName: The name of the exported bag.\n\tIf the name is multiple words, enclose it in double quotes.\n"
+                + "CategoryIdOrName: The name of the category, or its internal Id.\n\tMost categories can be found here: https://stardewcommunitywiki.com/Modding:Object_data#Categories \n\tYou can specify as many categories as you want.\n\tIf a category name is multiple words long, enclose it in double quotes.\n"
+                + "Example: {14} true true \"Dairy Bag\" -5 -6\n\t"
+                + "This would generate a bag that can store any items belonging to the Egg or Milk categories.\n\tNote that those categories are both named 'Animal Product', so to avoid amibiguity,\n\tthe category ids were used instead of the name.",
+                SortingProperty.Name, SortingProperty.Id, SortingProperty.Category, SortingProperty.SingleValue, 
+                SortingOrder.Ascending, SortingOrder.Descending, 
+                SortingProperty.Category, SortingOrder.Ascending, SortingProperty.Id, SortingOrder.Descending, SortingProperty.Category, SortingOrder.Ascending, SortingProperty.Id, SortingOrder.Descending,
+                CommandName);
+            Helper.ConsoleCommands.Add(CommandName, CommandHelp, (string Name, string[] Args) =>
+            {
+                try
+                {
+                    if (!Context.IsWorldReady)
+                    {
+                        Monitor.Log("Unable to execute command: You must load a save file before using this command.", LogLevel.Alert);
+                    }
+                    else if (Args.Length < 5)
+                    {
+                        Monitor.Log(string.Format("Unable to execute command: Required arguments missing. Type 'help {0}' for more details on using this command.", CommandName), LogLevel.Alert);
+                    }
+                    else if (!bool.TryParse(Args[0], out bool IncludeVanillaItems))
+                    {
+                        Monitor.Log(string.Format("Unable to execute command: '{0}' is not a valid value for the IncludeVanillaItems parameter. Expected values are 'true' or 'false' (without the quotes)", Args[0]), LogLevel.Alert);
+                    }
+                    else if (!bool.TryParse(Args[1], out bool IncludeModdedItems))
+                    {
+                        Monitor.Log(string.Format("Unable to execute command: '{0}' is not a valid value for the IncludeModdedItems parameter. Expected values are 'true' or 'false' (without the quotes)", Args[1]), LogLevel.Alert);
+                    }
+                    else
+                    {
+                        string[] SortingArgs = Args[2].Split(',');
+                        if (SortingArgs.Length == 0)
+                        {
+                            Monitor.Log(string.Format("Unable to execute command: '{0}' is not a valid value for the SortingOrder parameter. Type 'help {1}' for more details on using this command.", Args[2], CommandName), LogLevel.Alert);
+                        }
+                        else
+                        {
+                            bool IsOrderValid = true;
+                            List<Persistence.KeyValuePair<SortingProperty, SortingOrder>> OrderBy = new List<Persistence.KeyValuePair<SortingProperty, SortingOrder>>();
+                            foreach (string Value in SortingArgs)
+                            {
+                                string PropertyName;
+                                string OrderName;
+                                if (Value.Contains('-'))
+                                {
+                                    PropertyName = Value.Split('-')[0];
+                                    OrderName = Value.Split('-')[1];
+                                }
+                                else
+                                {
+                                    PropertyName = Value;
+                                    OrderName = SortingOrder.Ascending.ToString();
+                                }
+
+                                if (!Enum.TryParse(PropertyName, out SortingProperty Property))
+                                {
+                                    Monitor.Log(string.Format("Unable to execute command: '{0}' is not a valid sorting property. Expected values are: {1} {2} {3} {4}. " +
+                                        "Type 'help {5}' for more details on using this command.", 
+                                        PropertyName, SortingProperty.Name, SortingProperty.Id, SortingProperty.Category, SortingProperty.SingleValue, CommandName), LogLevel.Alert);
+                                    IsOrderValid = false;
+                                    break;
+                                }
+
+                                if (!Enum.TryParse(OrderName, out SortingOrder Direction))
+                                {
+                                    Monitor.Log(string.Format("Unable to execute command: '{0}' is not a valid sorting direction. Expected values are: {1} or {2}. " +
+                                        "Type 'help {3}' for more details on using this command.",
+                                        OrderName, SortingOrder.Ascending, SortingOrder.Descending, CommandName), LogLevel.Alert);
+                                    IsOrderValid = false;
+                                    break;
+                                }
+
+                                OrderBy.Add(new Persistence.KeyValuePair<SortingProperty, SortingOrder>(Property, Direction));
+                            }
+
+                            if (IsOrderValid)
+                            {
+                                string BagName = Args[3];
+
+                                HashSet<string> CategoryValues = new HashSet<string>(Args.Skip(4));
+
+                                //  Get all modded item names
+                                HashSet<string> ModdedItemNames = new HashSet<string>();
+                                IJsonAssetsAPI API = Helper.ModRegistry.GetApi<IJsonAssetsAPI>(ItemBagsMod.JAUniqueId);
+                                if (API != null)
+                                {
+                                    foreach (string ItemName in API.GetAllBigCraftableIds().Keys)
+                                        ModdedItemNames.Add(ItemName);
+                                    foreach (string ItemName in API.GetAllObjectIds().Keys)
+                                        ModdedItemNames.Add(ItemName);
+                                }
+
+                                //  Get the items that match the desired conditions
+                                List<SObject> TargetItems = new List<SObject>();
+                                foreach (var KVP in Game1.objectInformation)
+                                {
+                                    int Id = KVP.Key;
+                                    SObject Instance = new SObject(Id, 1);
+                                    bool IsModdedItem = ModdedItemNames.Contains(Instance.DisplayName);
+
+                                    if ((IsModdedItem && IncludeModdedItems) || (!IsModdedItem && IncludeVanillaItems))
+                                    {
+                                        if (CategoryValues.Contains(Instance.getCategoryName()) || CategoryValues.Contains(Instance.Category.ToString()))
+                                        {
+                                            TargetItems.Add(Instance);
+                                        }
+                                    }
+                                }
+                                foreach (var KVP in Game1.bigCraftablesInformation)
+                                {
+                                    int Id = KVP.Key;
+                                    SObject Instance = new SObject(Vector2.Zero, Id, false);
+                                    bool IsModdedItem = ModdedItemNames.Contains(Instance.DisplayName);
+
+                                    if ((IsModdedItem && IncludeModdedItems) || (!IsModdedItem && IncludeVanillaItems))
+                                    {
+                                        if (CategoryValues.Contains(Instance.getCategoryName()) || CategoryValues.Contains(Instance.Category.ToString()))
+                                        {
+                                            TargetItems.Add(Instance);
+                                        }
+                                    }
+                                }
+
+                                List<string> Names = TargetItems.Select(x => x.DisplayName).ToList();
+
+                                //  Sort the items
+                                IOrderedEnumerable<SObject> SortedItems = ApplySorting(TargetItems, OrderBy[0].Key, OrderBy[0].Value);
+                                Names = SortedItems.Select(x => x.DisplayName).ToList();
+                                foreach (var KVP in OrderBy.Skip(1))
+                                {
+                                    SortedItems = ApplySorting(SortedItems, KVP.Key, KVP.Value);
+                                    Names = SortedItems.Select(x => x.DisplayName).ToList();
+                                }
+
+                                //  Generate the bag
+                                List<ContainerSize> AllSizes = Enum.GetValues(typeof(ContainerSize)).Cast<ContainerSize>().ToList();
+                                ModdedBag ModdedBag = new ModdedBag()
+                                {
+                                    IsEnabled = true,
+                                    ModUniqueId = ItemBagsMod.ModUniqueId,
+                                    Guid = ModdedBag.StringToGUID(ItemBagsMod.ModUniqueId + BagName).ToString(),
+                                    BagName = BagName,
+                                    BagDescription = "A bag for storing items of specific category(s)",
+                                    IconTexture = BagType.SourceTexture.SpringObjects,
+                                    IconPosition = new Rectangle(),
+                                    Prices = AllSizes.ToDictionary(x => x, x => BagTypeFactory.DefaultPrices[x]),
+                                    Capacities = AllSizes.ToDictionary(x => x, x => BagTypeFactory.DefaultCapacities[x]),
+                                    Sellers = AllSizes.ToDictionary(x => x, x => new List<BagShop>() { BagShop.Pierre }),
+                                    MenuOptions = AllSizes.ToDictionary(x => x, x => new BagMenuOptions()
+                                    {
+                                        GroupedLayoutOptions = new BagMenuOptions.GroupedLayout()
+                                        {
+                                            GroupsPerRow = 5
+                                        },
+                                        UngroupedLayoutOptions = new BagMenuOptions.UngroupedLayout()
+                                        {
+                                            Columns = 18
+                                        }
+                                    }),
+                                    Items = SortedItems.Select(x => new ModdedItem(x, !ModdedItemNames.Contains(x.DisplayName))).ToList()
+                                };
+
+                                string OutputDirectory = Path.Combine(Helper.DirectoryPath, "assets", "Modded Bags");
+                                string DesiredFilename = string.Format("Category-{0}", BagName);
+                                string CurrentFilename = DesiredFilename;
+                                int CurrentIndex = 0;
+                                while (File.Exists(Path.Combine(OutputDirectory, CurrentFilename + ".json")))
+                                {
+                                    CurrentIndex++;
+                                    CurrentFilename = string.Format("{0} ({1})", DesiredFilename, CurrentIndex);
+                                }
+
+                                string RelativePath = Path.Combine("assets", "Modded Bags", CurrentFilename + ".json");
+                                Helper.Data.WriteJsonFile(RelativePath, ModdedBag);
+
+                                Monitor.Log(string.Format("File exported to: {0}\nYou will need to re-launch the game for this file to be loaded.", Path.Combine(Helper.DirectoryPath, RelativePath)), LogLevel.Alert);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Log(string.Format("ItemBags: Unhandled error while executing command: {0}", ex.Message), LogLevel.Error);
+                }
+            });
+        }
+
+        private static IOrderedEnumerable<SObject> ApplySorting(IEnumerable<SObject> Source, SortingProperty Property, SortingOrder Direction)
+        {
+            if (Source is IOrderedEnumerable<SObject> OrderedSource)
+            {
+                if (Direction == SortingOrder.Ascending)
+                    return OrderedSource.ThenBy(x => GetSortValue(x, Property));
+                else
+                    return OrderedSource.ThenByDescending(x => GetSortValue(x, Property));
+            }
+            else
+            {
+                if (Direction == SortingOrder.Ascending)
+                    return Source.OrderBy(x => GetSortValue(x, Property));
+                else
+                    return Source.OrderByDescending(x => GetSortValue(x, Property));
+            }
+        }
+
+        private static string GetSortValue(SObject Instance, SortingProperty Property)
+        {
+            switch (Property)
+            {
+                case SortingProperty.Name:
+                    return Instance.DisplayName;
+                case SortingProperty.Id:
+                    return Instance.ParentSheetIndex.ToString("D4");
+                case SortingProperty.Category:
+                    return string.Format("{0} {1}", Instance.getCategoryName(), Instance.getCategorySortValue().ToString("D3"));
+                case SortingProperty.SingleValue:
+                    return ItemBag.GetSingleItemPrice(Instance).ToString("D6");
+                default:
+                    throw new NotImplementedException(string.Format("Unimplemented {0} '{1}' in {2}.{3}", nameof(SortingProperty), Property, nameof(CommandHandler), nameof(GetSortValue)));
+            }
         }
 
         private static void RegisterReloadConfigCommand()

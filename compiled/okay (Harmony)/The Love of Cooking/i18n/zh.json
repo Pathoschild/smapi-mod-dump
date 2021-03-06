@@ -117,9 +117,9 @@
 	// Community Centre edits when using the Cooking bundle
 	"world.community_centre.kitchen": "厨房",
 	"world.community_centre.reward": "料理道具",
-	"world.community_centre.bundle.1": "野餐",
-	"world.community_centre.bundle.2": "烘焙",
-	"world.community_centre.bundle.3": "餐厅",
+	"world.community_centre.bundle.1": "烘焙",
+	"world.community_centre.bundle.2": "餐厅",
+	"world.community_centre.bundle.3": "野餐",
 	"world.community_centre.newjunimoline": "为了表示我们对你的感谢... 在你走后我们将会把这里打扫干净.",
 
 	// Object names

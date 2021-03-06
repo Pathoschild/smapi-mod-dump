@@ -33,7 +33,7 @@ namespace MoreMultiplayerInfo
 
             _iconMenu = new PlayerIconMenu(_readyCheckHandler, monitor, helper);
             _iconMenu.PlayerIconClicked += PlayerIconClicked;
-            StardewModdingAPI.Events.SaveEvents.AfterLoad += SaveEvents_AfterLoad;
+            helper.Events.GameLoop.SaveLoaded += SaveEvents_AfterLoad;
         }
 
         private void SaveEvents_AfterLoad(object sender, System.EventArgs e)
@@ -49,8 +49,6 @@ namespace MoreMultiplayerInfo
             var player = PlayerHelpers.GetPlayerWithUniqueId(input.PlayerId);
 
             Game1.activeClickableMenu = new PlayerInformationMenu(player.UniqueMultiplayerID, _helper);
-
-
         }
 
     }

@@ -11,7 +11,7 @@
 {
   "Name": "Overworld Chests",
   "Author": "aedenthorn",
-  "Version": "0.4.1",
+  "Version": "0.5.3",
   "Description": "Adds random chests to the Stardew Valley World.",
   "UniqueID": "aedenthorn.OverworldChests",
   "EntryDll": "OverworldChests.dll",
@@ -30,7 +30,8 @@
       },
       {
         "UniqueID": "aedenthorn.AdvancedLootFramework",
-        "IsRequired": true
+        "IsRequired": true,
+        "MinimumVersion": "0.4.0"
       },
   ]
 }

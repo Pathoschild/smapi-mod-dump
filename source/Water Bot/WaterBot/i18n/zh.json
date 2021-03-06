@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/andyruwruw/stardew-valley-water-bot
+**
+*************************************************/
+
+{
+  "process.start": "是时候开始浇水了",
+  "process.end": "完成浇水",
+  "process.interrupt": "浇水停止了",
+  "process.exhausted": "厌倦了浇水",
+  "process.waterless": "找不到水"
+}

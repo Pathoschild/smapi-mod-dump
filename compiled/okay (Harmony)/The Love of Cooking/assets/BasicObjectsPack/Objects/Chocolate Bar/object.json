@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.chocolate",
     "Description": "...",
     "Category": "Junk",
@@ -23,18 +22,54 @@
     "Price": 280,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 560,
     "PurchaseRequirements": null,
-
-    // Gifting
     "GiftTastes": {
-        "Love": [ "Haley", "Sandy", "Vincent", "Jas" ],
-        "Like": [ "Gus", "Penny", "Shane", "Marnie", "Clint", "Sebastian", "Abigail", "Alex", "Caroline", "Elliott", "Emily", "Evelyn", "Haley", "Harvey", "Jodi", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Willy" ],
-        "Neutral": [ "Krobus", "Dwarf", "Demetrius", "Wizard" ],
-        "Dislike": [ "Kent", "George", "Leah" ]
+        "Love": [
+            "Haley",
+            "Sandy",
+            "Vincent",
+            "Jas"
+        ],
+        "Like": [
+            "Gus",
+            "Penny",
+            "Shane",
+            "Marnie",
+            "Clint",
+            "Sebastian",
+            "Abigail",
+            "Alex",
+            "Caroline",
+            "Elliott",
+            "Emily",
+            "Evelyn",
+            "Haley",
+            "Harvey",
+            "Jodi",
+            "Lewis",
+            "Linus",
+            "Maru",
+            "Pierre",
+            "Robin",
+            "Sam",
+            "Willy"
+        ],
+        "Neutral": [
+            "Krobus",
+            "Dwarf",
+            "Demetrius",
+            "Wizard"
+        ],
+        "Dislike": [
+            "Kent",
+            "George",
+            "Leah"
+        ]
+    },
+    "NameLocalization": {
+        "en": "Chocolate Bar"
     }
 }

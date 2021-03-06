@@ -4,5 +4,6 @@
   "AllowOutsideTime": true,
   "AllowStrangerHomeEntry": false,
   "AllowStrangerRoomEntry": false,
+  "AllowAdventureGuildEntry": false,
   "IgnoreEvents": false
 }

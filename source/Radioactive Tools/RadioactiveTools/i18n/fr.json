@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kakashigr/stardew-radioactivetools
+**
+*************************************************/
+
+{
+    "radioactive.prefix": "Radioactif",
+    "radioactiveHoe": "Houe Radioactive",
+    "radioactiveWatercan": "Arrosoir Radioactif",
+    "radioactivePickaxe": "Pioche Radioactive",
+    "radioactiveAxe": "Hache Radioactive",
+    "radioactiveRod.name": "Canne à Pêche Radioactive",
+    "radioactiveRod.description": "Les émissions radioactives sont utiles la nuit",
+    "radioactiveSprinkler.name": "Arroseur Radioactif",
+    "radioactiveSprinkler.description": "Arrose les 120 cases adjacentes chaque matin.",
+    "radioactiveFertilizer.name": "Fertilisant Radioactif",
+    "radioactiveFertilizer.description": "Avec, vos plantes grandiront beaucoup plus vite !!"
+}

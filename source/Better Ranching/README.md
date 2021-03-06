@@ -7,11 +7,11 @@ for queries and analysis.**
 ----
 
 # Stardew Valley Mod - Better Ranching
-Stardew Valley mod that prevents doomed milking/shearing attempts and adds an indicator when animals can be petted, milked, or sheared: https://www.nexusmods.com/stardewvalley/mods/859/
+Stardew Valley mod that prevents failing milking/shearing attempts and adds an indicator when animals can be petted, milked, or sheared: https://www.nexusmods.com/stardewvalley/mods/859/
 
 Compatible with Stardew Valley 1.5.0+ on Linux, Mac, and Windows. Requires SMAPI 3.0 or later.
 
-**New Update (1.8.0):** Updated to work with Stardew Valley v1.5 and fixed zoom / UI scaling issues! Shout out to [corrinr](https://github.com/corrinr) for releasing an unofficial patch while I worked on this!
+**New Update 1.8.1 (2/13/21):** Added API so that other mods can use the pet / item bubbles. This was requested for compatibility for the fantastic [Horse Overhaul mod!](https://www.nexusmods.com/stardewvalley/mods/7911)
 
 ![Preview image](/better_ranching_preview.gif)
 
@@ -63,6 +63,10 @@ Compatible with Stardew Valley 1.5.0+ on Linux, Mac, and Windows. Requires SMAPI
 * 1.8.0:
     * Made compatible with SDV 1.5
     * Fixed UI / Zoom scaling issues
+* 1.8.1:
+    * Added API for better compatibility with other mods
+    * Fixed bubbles showing up during cutscenes
+    * Cleaned up / refactored code
 <h2>Contributors</h2>
 
 * Urbanyeti -- https://github.com/urbanyeti

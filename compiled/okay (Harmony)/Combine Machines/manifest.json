@@ -1,7 +1,7 @@
 {
   "Name": "Combine Machines",
   "Author": "SlayerDharok",
-  "Version": "1.0.7-beta",
+  "Version": "1.0.7",
   "Description": "Use multiple copies of the same machine on each other to combine their processing capabilities.",
   "UniqueID": "SlayerDharok.CombineMachines",
   "EntryDll": "CombineMachines.dll",

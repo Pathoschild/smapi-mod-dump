@@ -37,7 +37,7 @@ namespace MoreMultiplayerInfo.EventHandlers
             ReadyPlayers = new Dictionary<long, HashSet<string>>();
             ReadyChecks = new Dictionary<string, HashSet<long>>();
             
-            GameEvents.OneSecondTick += UpdateReadyChecks;
+            helper.Events.GameLoop.UpdateTicked += UpdateReadyChecks;
         }
         
         private void UpdateReadyChecks(object sender, EventArgs e)

@@ -62,7 +62,7 @@ namespace MailServicesMod
         {
             try
             {
-                if (Game1.player.mailbox.Count == 0 && Game1.player.CurrentTool is Tool tool)
+                if (!DataLoader.ModConfig.DisableToolShipmentService && Game1.player.mailbox.Count == 0 && Game1.player.CurrentTool is Tool tool)
                 {
                     if (Game1.player.toolBeingUpgraded.Value == null)
                     {

@@ -6,6 +6,7 @@
   "DaysToDieDueToStarvation": 5,
   "DaysToDieDueToDehydrationWithAnimalsNeedWaterMod": 3,
   "IllnessScoreToDie": 7,
+  "IllnessMessages": true,
   "MinAgeCow": 14,
   "MaxAgeCow": 16,
   "MinAgeChicken": 5,

@@ -5,9 +5,9 @@ mods:
    Unlimited Players
 
 latest commit:
-   commit ba84b7229e61d8c89e1420ef52b9875f6978a639
+   commit 1163e373a82aab6352c5c132edd0fb0ce7582197
    Author: Jan Brodersen (Armitxes) <4rmitxes@gmail.com>
-   Date:   Sat Feb 15 02:08:15 2020 +0100
+   Date:   Sat Feb 27 18:10:30 2021 +0100
    
-       Stable stand
+       Fixes for Stardew Valley v1.5+
    

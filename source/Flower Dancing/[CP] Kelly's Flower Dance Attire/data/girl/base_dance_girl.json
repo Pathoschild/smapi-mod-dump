@@ -1,0 +1,112 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kenny2892/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Changes": 
+	[
+		{
+			"LogName": "Flower Dance - Girl - Base - Dancing - 1",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base",
+			"FromFile": "assets/farmer_girl_base/base/base_{{Female-Base-Attire}}_dance_1.png",
+			"ToArea": { "X": 0, "Y": 352, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Base - Dancing - 2",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base",
+			"FromFile": "assets/farmer_girl_base/base/base_{{Female-Base-Attire}}_dance_2.png",
+			"ToArea": { "X": 16, "Y": 352, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Base - Dancing - 3",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base",
+			"FromFile": "assets/farmer_girl_base/base/base_{{Female-Base-Attire}}_dance_3.png",
+			"ToArea": { "X": 64, "Y": 352, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Base - Dancing - 4",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base",
+			"FromFile": "assets/farmer_girl_base/base/base_{{Female-Base-Attire}}_dance_4.png",
+			"ToArea": { "X": 80, "Y": 480, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Base - Dancing - 5",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base",
+			"FromFile": "assets/farmer_girl_base/base/base_{{Female-Base-Attire}}_dance_5.png",
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Base - Dancing - 6",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base",
+			"FromFile": "assets/farmer_girl_base/base/base_{{Female-Base-Attire}}_dance_6.png",
+			"ToArea": { "X": 64, "Y": 512, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Base - Dancing - Guy Pos",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base",
+			"FromFile": "assets/farmer_girl_base/base/base_{{Female-Base-Attire}}_dance_guy.png",
+			"ToArea": { "X": 48, "Y": 160, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+    ]
+}

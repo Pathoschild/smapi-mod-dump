@@ -627,22 +627,28 @@ namespace SpriteMaster {
 		}
 
 		internal static ManagedTexture2D Upscale (ScaledTexture texture, ref uint scale, SpriteInfo input, TextureType textureType, ulong hash, ref Vector2B wrapped, bool async) {
-			// Try to process the texture twice. Garbage collect after a failure, maybe it'll work then.
-			foreach (var _ in 0.To(1)) {
-				try {
-					return UpscaleInternal(
-						texture: texture,
-						scale: ref scale,
-						input: input,
-						textureType: textureType,
-						hash: hash,
-						wrapped: ref wrapped,
-						async: async
-					);
+			try {
+				// Try to process the texture twice. Garbage collect after a failure, maybe it'll work then.
+				foreach (var _ in 0.To(1)) {
+					try {
+						return UpscaleInternal(
+							texture: texture,
+							scale: ref scale,
+							input: input,
+							textureType: textureType,
+							hash: hash,
+							wrapped: ref wrapped,
+							async: async
+						);
+					}
+					catch (OutOfMemoryException) {
+						Debug.WarningLn("OutOfMemoryException encountered during Upscale, garbage collecting and deferring.");
+						Garbage.Collect(compact: true, blocking: true, background: false);
+					}
 				}
-				catch (OutOfMemoryException) {
-					Garbage.Collect(compact: true, blocking: true, background: false);
-				}
+			}
+			catch (Exception ex) {
+				Debug.Error($"Internal Error processing '{input}'", ex);
 			}
 
 			texture.Texture = null;

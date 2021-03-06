@@ -45,5 +45,6 @@ namespace MailFrameworkMod.ContentPack
         public List<string> RecipeKnown;
         public bool RequireAllRecipeKnown;
         public List<string> RecipeNotKnown;
+        public bool AutoOpen;
     }
 }

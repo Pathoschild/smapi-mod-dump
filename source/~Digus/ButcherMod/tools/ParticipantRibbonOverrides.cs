@@ -53,7 +53,7 @@ namespace AnimalHusbandryMod.tools
             __result = DataLoader.i18n.Get("Tool.ParticipantRibbon.Description");
         }
 
-        public static void canBeTrashed(MilkPail __instance, ref bool __result)
+        public static void canBeTrashed(Tool __instance, ref bool __result)
         {
             if (!IsParticipantRibbon(__instance)) return;
 
@@ -266,7 +266,7 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        private static bool IsParticipantRibbon(MilkPail tool)
+        private static bool IsParticipantRibbon(Tool tool)
         {
             return tool.modData.ContainsKey(ParticipantRibbonKey);
         }

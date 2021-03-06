@@ -1,3 +1,26 @@
 {
-  "ShowDialogOnItemDelivery": false
+  "DisableToolDeliveryService": false,
+  "DisableToolShipmentService": false,
+  "DisableQuestService": false,
+  "DisableGiftService": false,
+  "ShowDialogOnItemDelivery": false,
+  "GiftChoicePageSize": 5,
+  "EnableJealousyFromMailedGifts": false,
+  "EnableGiftToNpcWithMaxFriendship": false,
+  "DisablePerPlayerConfig": false,
+  "PlayerRecoveryConfig": {
+    "-3108584238293906145": {
+      "PlayerName": "Alex",
+      "DisableRecoveryConfigInGameChanges": false,
+      "EnableRecoveryService": false,
+      "RecoverAllItems": false,
+      "RecoverForFree": false,
+      "DisableClearLostItemsOnRandomRecovery": false
+    }
+  },
+  "DisableRecoveryConfigInGameChanges": false,
+  "EnableRecoveryService": false,
+  "RecoverAllItems": false,
+  "RecoverForFree": false,
+  "DisableClearLostItemsOnRandomRecovery": false
 }

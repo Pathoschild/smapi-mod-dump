@@ -373,11 +373,18 @@ namespace ItemBags.Bags
         public string DescriptionAlias { get; protected set; }
 
         [XmlIgnore]
-        public ContainerSize Size { get; protected set; }
+        private ContainerSize _Size;
+        [XmlElement("Size")]
+        public ContainerSize Size {
+            get { return _Size; }
+            set { _Size = value; OnSizeChanged?.Invoke(this, EventArgs.Empty); }
+        }
+        public event EventHandler<EventArgs> OnSizeChanged;
+
         /// <summary>Never Add/Remove from this List directly. Use <see cref="MoveToBag(Object, int, out int, bool, IList{Item})"/> and <see cref="MoveFromBag(Object, int, out int, bool, IList{Item}, int)"/></summary>
         [XmlArray("BagContents")]
         [XmlArrayItem("BagItem")]
-        public List<Object> Contents { get; }
+        public List<Object> Contents { get; set; }
         /// <summary>Invoked when Items are added to or removed from the bag</summary>
         [XmlIgnore]
         public EventHandler<EventArgs> OnContentsChanged;
@@ -395,7 +402,7 @@ namespace ItemBags.Bags
         /// <summary>Key = An Object that was recently added to this bag's <see cref="Contents"/>, or had it's Quantity increased.<para/>
         /// Value = DateTime of when that event happened. Only stores up to 1 KeyValuePair for each distinct Object, and only the most recent <see cref="RecentlyModifiedHistorySize"/> changes</summary>
         [XmlIgnore]
-        internal Dictionary<Object, DateTime> RecentlyModified { get; private set; }
+        internal Dictionary<Object, DateTime> RecentlyModified { get; private set; } = new Dictionary<Object, DateTime>();
 
         /// <summary>The sum of the value of all items stored in this bag</summary>
         [XmlIgnore]
@@ -403,17 +410,49 @@ namespace ItemBags.Bags
         public virtual bool IsEmpty() { return Contents == null || !Contents.Any(x => x != null); }
 
         [XmlIgnore]
-        public Texture2D Icon { get; set; }
-        /// <summary>The SourceRectangle portion of the <see cref="Icon"/> Texture</summary>
-        [XmlElement("IconTexturePosition")]
-        public Rectangle? IconTexturePosition { get; set; }
+        private BagType.SourceTexture? _CustomIconSourceTexture;
+        [XmlElement("CustomIconSourceTexture")]
+        public BagType.SourceTexture? CustomIconSourceTexture
+        {
+            get { return _CustomIconSourceTexture; }
+            set
+            {
+                if (CustomIconSourceTexture != value)
+                {
+                    _CustomIconSourceTexture = value;
+                    if (CustomIconSourceTexture == null)
+                        CustomIconTexture = Game1.objectSpriteSheet;
+                    else
+                        CustomIconTexture = BagType.GetIconTexture(CustomIconSourceTexture.Value);
+                }
+            }
+        }
+
+        [XmlIgnore]
+        protected Texture2D CustomIconTexture { get; private set; }
+
+        [XmlElement("CustomIconTexturePosition")]
+        public Rectangle? CustomIconTexturePosition { get; set; }
+
+        [XmlIgnore]
+        public bool IsUsingCustomIcon { get { return CustomIconSourceTexture.HasValue && CustomIconTexture != null && CustomIconTexturePosition.HasValue; } }
+
+        [XmlIgnore]
+        protected Texture2D DefaultIconTexture { get; set; } = Game1.objectSpriteSheet;
+        [XmlIgnore]
+        protected Rectangle DefaultIconTexturePosition { get; set; } = new Rectangle();
+
+        [XmlIgnore]
+        public Texture2D Icon { get { return CustomIconTexture ?? DefaultIconTexture; } }
+        [XmlIgnore]
+        public Rectangle IconTexturePosition { get { return IsUsingCustomIcon ? CustomIconTexturePosition.Value : DefaultIconTexturePosition; } }
 
         /// <summary>An offset to use when rendering <see cref="Icon"/>. If zero/null, then the additional icon would appear in the center of the bag's inventory icon.</summary>
-        [XmlElement("IconRenderOffset")]
+        [XmlIgnore]
         public Vector2? IconRenderOffset { get; }
-        [XmlElement("IconScale")]
+        [XmlIgnore]
         public float IconScale { get; }
-        [XmlElement("IconTransparency")]
+        [XmlIgnore]
         public float IconTransparency { get; }
 
         /// <summary>The maximum number of the same item that can be stored in a single slot of this bag.</summary>
@@ -429,6 +468,7 @@ namespace ItemBags.Bags
             return ValidateContentsIds(API, AllowResyncing);
         }
 
+        [XmlIgnore]
         private bool HasValidatedContentsIds { get; set; } = false;
 
         /// <summary>Intended to be invoked exactly one time per bag instance when a save file is loaded. Checks if an Item Id of a modded item added through Json Assets has changed since the last game session ended.<para/>
@@ -527,8 +567,8 @@ namespace ItemBags.Bags
             this.RecentlyModified = new Dictionary<Object, DateTime>();
             this.DescriptionAlias = Description;
 
-            this.Icon = Icon;
-            this.IconTexturePosition = IconTexturePosition;
+            this.DefaultIconTexture = Icon;
+            this.DefaultIconTexturePosition = IconTexturePosition ?? new Rectangle();
             this.IconRenderOffset = IconRenderOffset;
             this.IconScale = IconScale;
             this.IconTransparency = IconTransparency;
@@ -541,6 +581,7 @@ namespace ItemBags.Bags
         public bool IsBagInUse { get { return IsContentsMenuOpen || CraftingHandler.IsUsingForCrafting(this); } }
         //private bool IgnoreNextDeserialize { get; set; }
 
+        [XmlIgnore]
         public NetString BagInstanceString { get; }
         private void BagInstanceString_fieldChangeEvent(NetString field, string oldValue, string newValue)
         {
@@ -730,7 +771,6 @@ namespace ItemBags.Bags
 
         /// <summary>Reverts this Bag's icon back to default values</summary>
         public abstract void ResetIcon();
-        public abstract bool IsUsingDefaultIcon();
         public virtual bool CanCustomizeIcon() { return true; }
 
         public abstract bool IsFull(Object Item);

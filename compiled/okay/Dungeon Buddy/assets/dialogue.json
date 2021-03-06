@@ -1,0 +1,10 @@
+{
+  "Introduction": "*Awk* Hello!$2",
+  "Mon": "Find treasure?$0",
+  "Tue": "Good jungle! Much food!$2",
+  "Wed": "%{DungeonBuddy} seems preoccupied with a coconut.%revealtasteDungeonBuddy88",
+  "Thu": "*Awk* {DungeonBuddy} good {DungeonBuddyGender}!$1",
+  "Fri": "Uh-oh. Mutiny! *Sad Whistle*$0",
+  "Sat": "Want big walnut! *Awk* It's a door, dummy!$1",
+  "Sun": "Rain birds won't give {DungeonBuddy} treasure. Find own treasure!$2"
+}

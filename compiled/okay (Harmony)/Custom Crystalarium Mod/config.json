@@ -1,5 +1,6 @@
 {
   "DisableLetter": false,
   "GetObjectBackOnChange": false,
-  "GetObjectBackImmediately": false
+  "GetObjectBackImmediately": false,
+  "OverrideContentPackGetObjectProperties": false
 }

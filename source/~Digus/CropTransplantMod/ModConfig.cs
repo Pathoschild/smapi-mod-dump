@@ -14,18 +14,20 @@ namespace CropTransplantMod
 {
     public class ModConfig
     {
-        public bool GetGradenPotEarlier;
+        public bool GetGardenPotEarlier;
+        public bool EnableUnlimitedRangeToTransplant;
         public float CropTransplantEnergyCost = 4;
         public bool EnablePlacementOfCropsOutsideOutOfTheFarm;
         public bool EnablePlacementOfFruitTreesOutOfTheFarm;
         public bool EnablePlacementOfFruitTreesOnAnyTileType;
         public bool EnablePlacementOfFruitTreesNextToAnotherTree;
+        public bool EnablePlacementOfFruitTreesBlockedGrowth;
         public bool EnablePlacementOfTreesOnAnyTileType;
         public bool EnableToPlantTeaBushesOutOfTheFarm;
         public bool EnableToPlantTeaBushesOnAnyTileType;
         public bool EnableSoilTileUnderTrees = true;
-        public List<float> FruitTreeTransplantEnergyCostPerStage = new List<float> { 4f, 4f, 4f, 4f, 20f };
-        public List<float> TreeTransplantEnergyCostPerStage = new List<float> { 4f, 4f, 8f, 12f, 20f };
+        public List<float> FruitTreeTransplantEnergyCostPerStage = new List<float> { 4f, 4f, 8f, 12f, 20f };
+        public List<float> TreeTransplantEnergyCostPerStage = new List<float> { 4f, 4f, 4f, 4f, 20f };
         public int TreeTransplantMaxStage = 4;
         public int FruitTreeTransplantMaxStage = 3;
     }

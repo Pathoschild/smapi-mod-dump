@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="$(SolutionDir)SpriteMasterCommon.props" />
 
@@ -7,6 +7,9 @@
 		<PackageId>SpriteMaster Runtime</PackageId>
 		<ProjectGuid>{D8AB0188-41C5-4669-AD33-231DA9401FA0}</ProjectGuid>
 		<OutputType>Library</OutputType>
+		<Version>0.12.1-RC2</Version>
+		<FileVersion>0.12.1.0</FileVersion>
+		<AssemblyVersion>0.12.1.*</AssemblyVersion>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">

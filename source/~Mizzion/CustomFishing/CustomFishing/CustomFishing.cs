@@ -69,12 +69,12 @@ namespace CustomFishing
             //SaveEvents.AfterLoad += AfterLoad;
             helper.Events.GameLoop.UpdateTicked += UpdateTick;
             //GameEvents.UpdateTick += UpdateTick;
-            helper.Events.Display.Rendered += DrawTick;
+            helper.Events.Display.RenderedWorld += DrawTick;
             //GraphicsEvents.OnPostRenderEvent += DrawTick;
             helper.Events.Input.ButtonPressed += KeyPressed;
             //ControlEvents.KeyPressed += KeyPressed;
         }
-        public void DrawTick(object sender, RenderedEventArgs e)
+        public void DrawTick(object sender, RenderedWorldEventArgs e)
         {
             bool inCave = Game1.currentLocation is MineShaft || Game1.currentLocation is FarmCave;
             if (_showMessage)

@@ -1,0 +1,15 @@
+﻿{
+  "Name": "AbilitiesExperienceBars",
+  "Author": "Ophaneom",
+  "Version": "1.1.1", // fixed locally
+  "Description": "Adds experience bars and some more tweaks to the game.",
+  "UniqueID": "Ophaneom.AbilitiesExperienceBars",
+  "EntryDll": "AbilitiesExperienceBars.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8048" ],
+  "Dependencies": [
+		{
+			"UniqueID": "spacechase0.SpaceCore"
+		}
+	]
+}

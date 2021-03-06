@@ -5,9 +5,9 @@ mods:
    Quick Sell
 
 latest commit:
-   commit 57e2ff6d0e928fcecead54e4d306e45a653e1a1d
+   commit 6dd5261a17000bf58ef5a350c74c76202b741f99
    Author: Alejandro Akbal <37181533+VoidlessSeven7@users.noreply.github.com>
-   Date:   Fri Jan 29 10:32:16 2021 +0100
+   Date:   Tue Feb 2 11:29:58 2021 +0100
    
-       style: add `this`
+       docs: add keybindings explanation
    

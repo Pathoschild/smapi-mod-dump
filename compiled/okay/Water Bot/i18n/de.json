@@ -1,0 +1,7 @@
+{
+  "process.start": "Zeit, die Pflanzen zu gießen!",
+  "process.end": "Fertige Bewässerung",
+  "process.interrupt": "Gehört auf zu gießen",
+  "process.exhausted": "Müde vom Gießen",
+  "process.waterless": "Konnte kein Wasser finden!"
+}

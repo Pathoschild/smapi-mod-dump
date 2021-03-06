@@ -67,11 +67,11 @@ namespace AnimalsNeedWater.Patching
 
         /// <summary> Patch for the warpFarmer method. </summary>
         [HarmonyPriority(500)]
-        public static void WarpFarmer(Game1 __instance, ref string locationName, ref int tileX, ref int tileY, ref int facingDirectionAfterWarp, ref bool isStructure)
+        public static void WarpFarmer(ref string locationName, ref int tileX, ref int tileY, ref int facingDirectionAfterWarp, ref bool isStructure)
         {
             try
             {
-                HarmonyPatchExecutors.WarpFarmerExecutor(__instance, ref locationName, ref tileX, ref tileY,
+                HarmonyPatchExecutors.WarpFarmerExecutor(ref locationName, ref tileX, ref tileY,
                     ref facingDirectionAfterWarp, ref isStructure);
             }
             catch (Exception e)

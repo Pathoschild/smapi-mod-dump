@@ -3,9 +3,12 @@ url:
 
 mods:
    Advanced Loot Framework
+   Advanced Melee Framework
+   Animated Parrot and Perch
    Another Jump Mod
    Boss Creatures
    Craftable Butterfly Hutches
+   Craftable Terrarium
    Custom Chest Types
    Custom Dungeon Floors
    Custom Fixed Dialogue
@@ -34,11 +37,14 @@ mods:
    Mobile Television
    Modify This
    Moveable Mailbox
+   Moveable Pet Bowl
+   Multiple Floor Farmhouse
    Multiple Spouses
    Murdercrows
    Non-Random Prairie King
    Overworld Chests
    Pacifist Valley
+   Persistent Grange Display
    Placeable Mine Shafts
    Quick Load
    Quick Responses
@@ -47,6 +53,7 @@ mods:
    Realistic Random Names
    Show Players Behind Buildings
    Sixty-Nine Shirt
+   Social Page Order Button
    Swim
    Transparent Objects
    Trash Can Reactions
@@ -57,9 +64,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 5d57d078d95a56a2bd4e1e623b0eeabe7c37367e
+   commit 820fc9b2501fef1cba6931ec51fd16e53e2591f6
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Fri Jan 29 23:06:38 2021 -0500
+   Date:   Fri Feb 19 17:43:16 2021 -0500
    
-       teleport
+       spouses
    

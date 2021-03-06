@@ -1,0 +1,85 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/kakashigr/stardew-radioactivetools
+**
+*************************************************/
+
+{
+    "Name": "Radioactive Potion", //The name you would like your object to have, this should be identical to the subfolder name.
+    "Description": "Actualise the best version of yourself", //Description of the product.
+    "Category": "Crafting", //Set to either Crafting or Cooking depending on the menu you want it to appear in. 
+    "Edibility": 250, //Edibility is for health, energy is calculated by the game. For inedibile items, set to -300.
+    "EdibleIsDrink": true, //Set to true or false depending on which animation you want to show (drinking or eating).
+    "EdibleBuffs": //Either set to null or include all required valid fields. It will not work if you only use the needed fields. 
+    {
+        "Farming": 0,
+        "Fishing": 0,
+        "Mining": 0,
+        "Luck": 25,
+        "Foraging": 0,
+        "MaxStamina": 50,
+        "MagnetRadius": 150,
+        "Speed": 5,
+        "Defense": 10,
+        "Attack": 50,
+        "Duration": 300,
+    },
+    "Price": 7500, //How much your item sells for.
+    "IsColored": false, //Set to false.
+
+    "Recipe": //Begins the recipe block.
+    {
+        "ResultCount": 1, //How many of the product does the recipe produce.
+        "Ingredients": [
+        {
+            "Object": 909, //If using a vanilla object, you will have to use the objects ID number.
+            "Count": 15,
+        },
+        {
+            "Object": 454, //You can add up to five different ingredients to a recipe.
+            "Count": 5,
+        }, 
+      ],
+
+    //This block is the same as above. When placed inside the Recipe block it will make the recipe purchaseable.
+    "CanPurchase": true, //Set this to true if IsDefault is set to false or excluded from the json.
+    "PurchaseFrom": "Dwarf", //7Who you can purchase the recipe from. Valid entries are: Willy, Pierre, Robin, Sandy, Krobus, Clint, Harvey, Marlon, and Dwarf. If an NPC isn't listed here they can't be used. Pierre is the default vendor.
+    "PurchasePrice": 500000, //How much you can purchase the recipe for.
+    "PurchaseRequirements": ["y 2", "f Dwarf 1500"], //See Event Preconditions (https://stardewvalleywiki.com/Modding:Event_data#Event_preconditions). 
+    },
+
+ // Localization
+
+    "NameLocalization":
+    {
+        //"es": "", //Spansih
+        //"ko": "", //Korean
+        //"de": "", //German
+        "fr": "Potion Radioactive", //French
+        //"hu": "", //Hungarian
+        //"it": "", //Italian
+        //"ja": "", //Japanese
+        //"pt": "", //Portuguese
+        //"ru": "", //Russian
+        //"tr": "", //Turkish
+        //"zh": "", //Chinese (Simplified)
+    },
+    "DescriptionLocalization":
+    {
+        //"es": "", //Spansih
+        //"ko": "", //Korean
+        //"de": "", //German
+        "fr": "Réalisez le meilleur de vous-même.", //French
+        //"hu": "", //Hungarian
+        //"it": "", //Italian
+        //"ja": "", //Japanese
+        //"pt": "", //Portuguese
+        //"ru": "", //Russian
+        //"tr": "", //Turkish
+        //"zh": "", //Chinese (Simplified)
+    },
+}

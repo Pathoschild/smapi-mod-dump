@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.saladsando_half",
     "Description": "...",
     "Category": "Junk",
@@ -11,18 +10,54 @@
     "Price": 75,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,
     "PurchaseRequirements": null,
-
-    // Gifting
     "GiftTastes": {
-        "Like": [ "Leah", "Demetrius", "Vincent", "Jas", "Penny", "Gus", "Marnie", "Clint", "Evelyn", "George", "Abigail", "Alex", "Caroline", "Elliott", "Emily", "Haley", "Jodi", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Sandy", "Willy", "Pam" ],
-        "Neutral": [ "Kent", "Wizard" ],
-        "Dislike": [ "Shane", "Sebastian", "Dwarf", "Harvey" ],
-        "Hate": [ "Krobus" ]
+        "Like": [
+            "Leah",
+            "Demetrius",
+            "Vincent",
+            "Jas",
+            "Penny",
+            "Gus",
+            "Marnie",
+            "Clint",
+            "Evelyn",
+            "George",
+            "Abigail",
+            "Alex",
+            "Caroline",
+            "Elliott",
+            "Emily",
+            "Haley",
+            "Jodi",
+            "Lewis",
+            "Linus",
+            "Maru",
+            "Pierre",
+            "Robin",
+            "Sam",
+            "Sandy",
+            "Willy",
+            "Pam"
+        ],
+        "Neutral": [
+            "Kent",
+            "Wizard"
+        ],
+        "Dislike": [
+            "Shane",
+            "Sebastian",
+            "Dwarf",
+            "Harvey"
+        ],
+        "Hate": [
+            "Krobus"
+        ]
+    },
+    "NameLocalization": {
+        "en": "Salad Sandwich Half"
     }
 }

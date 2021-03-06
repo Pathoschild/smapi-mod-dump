@@ -1,0 +1,16 @@
+{
+  "Name": "HandyHeadphones",
+  "Author": "PeacefulEnd",
+  "Version": "1.0.1",
+  "Description": "Play any in-game music you'd like, anywhere!",
+  "UniqueID": "PeacefulEnd.HandyHeadphones",
+  "EntryDll": "HandyHeadphones.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:7936" ],
+  "Dependencies": [
+   {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": true
+   }
+]
+}

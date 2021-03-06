@@ -71,7 +71,7 @@ namespace PFMAutomate.Automate
             return new TrackedItem(_machine.heldObject.Value, onEmpty: Reset);
         }
 
-        internal void Reset(Item item)
+        public void Reset(Item item)
         {
             ProducerRuleController.ClearProduction(_machine, Location);
             if (ProducerController.GetProducerConfig(_machine.Name) is ProducerConfig producerConfig)
@@ -119,12 +119,20 @@ namespace PFMAutomate.Automate
                             {
                                 try
                                 {
+                                    if (objectInput != null) objectInput.Stack = inputConsumable.Consumables.Count;
                                     OutputConfig outputConfig = ProducerRuleController.ProduceOutput(producerRule, _machine,
                                         (i, q) => input.TryGetIngredient(i, q, out IConsumable fuel), null, Location,
                                         producerConfig, objectInput,noSoundAndAnimation:true);
                                     if (outputConfig != null)
                                     {
-                                        inputConsumable.Take();
+                                        if (outputConfig.RequiredInputStack.HasValue)
+                                        {
+                                            inputConsumable.Consumables.Reduce(outputConfig.RequiredInputStack.Value);
+                                        }
+                                        else
+                                        {
+                                            inputConsumable.Reduce();
+                                        }
                                         requiredFuels.ForEach(f => f.Reduce());
                                         List<IConsumable> outputRequiredFuels = GetRequiredFuels(outputConfig, input);
                                         outputRequiredFuels.ForEach(f => f.Reduce()); 

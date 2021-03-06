@@ -1,0 +1,3 @@
+page URL: https://stardewvalley.curseforge.com/projects/improved-tracker
+IDs: com.anthonyhilyard.improvedtracker
+update keys: GitHub:AHilyard/ImprovedTracker

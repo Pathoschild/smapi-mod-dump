@@ -155,7 +155,7 @@ namespace ExtraFishInformation
                             extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.unknown") });
                         }
 
-                        newDescription = description + extraInfo;
+                        newDescription = $"{description} {extraInfo}";
                     }
                     else  // handle all other fish
                     {
@@ -163,7 +163,7 @@ namespace ExtraFishInformation
                         string weather = ParseWeather(fishInfoSections[7]);
                         string schedule = ParseTimes(fishInfoSections[5], timeIn24Hours);
                         string extraInfo = i18n.Get("new-description.normal.fish", new { weather = weather, schedule = schedule, locations = locations });
-                        newDescription = description + extraInfo;
+                        newDescription = $"{description} {extraInfo}";
                     } // end if/else statement
 
                     // repack object sections

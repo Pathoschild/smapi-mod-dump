@@ -1,0 +1,13 @@
+url:
+   https://github.com/AHilyard/WeaponsOnDisplay.git
+
+mods:
+   Weapons on Display
+
+latest commit:
+   commit b697ab9be065163e5b5d749ed0fcbe7831ea029b
+   Author: Anthony Hilyard <anthony.hilyard@gmail.com>
+   Date:   Mon Feb 15 14:37:26 2021 -0800
+   
+       Initial commit.
+   

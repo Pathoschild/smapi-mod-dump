@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7886
+IDs: aedenthorn.AdvancedMeleeFramework
+update keys: Nexus:7886, GitHub:aedenthorn/StardewValleyMods

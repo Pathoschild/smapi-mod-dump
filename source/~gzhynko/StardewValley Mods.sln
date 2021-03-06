@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrapesAllYearRound", "Grape
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishExclusions", "FishExclusions\FishExclusions.csproj", "{771DAAF1-FEC1-41DD-B28E-F3F35EA12133}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBlackBars", "EventBlackBars\EventBlackBars.csproj", "{741A952A-D974-4206-A517-81CF50C05AD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{771DAAF1-FEC1-41DD-B28E-F3F35EA12133}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{771DAAF1-FEC1-41DD-B28E-F3F35EA12133}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{771DAAF1-FEC1-41DD-B28E-F3F35EA12133}.Release|Any CPU.Build.0 = Release|Any CPU
+		{741A952A-D974-4206-A517-81CF50C05AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{741A952A-D974-4206-A517-81CF50C05AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{741A952A-D974-4206-A517-81CF50C05AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{741A952A-D974-4206-A517-81CF50C05AD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

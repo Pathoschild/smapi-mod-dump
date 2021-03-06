@@ -117,9 +117,9 @@
 	// Community Centre edits when using the Cooking bundle
 	"world.community_centre.kitchen": "Cucina",
 	"world.community_centre.reward": "Roba da cucina",
-	"world.community_centre.bundle.1": "del partecipante al Picnic",
-	"world.community_centre.bundle.2": "del Fornaio",
-	"world.community_centre.bundle.3": "del Diner",
+	"world.community_centre.bundle.1": "del Fornaio",
+	"world.community_centre.bundle.2": "del Diner",
+	"world.community_centre.bundle.3": "del Picnic",
 	"world.community_centre.newjunimoline": "Per mostrare la nostra gratitudine... Riordineremo mentre vai avanti.",
 
 	// Notifications strings

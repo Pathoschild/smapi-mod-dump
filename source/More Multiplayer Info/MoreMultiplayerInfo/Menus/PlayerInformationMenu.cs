@@ -60,7 +60,7 @@ namespace MoreMultiplayerInfo
             PlayerId = playerUniqueMultiplayerId;
             _helper = helper;
 
-            GraphicsEvents.Resize += Resize;
+            helper.Events.Display.WindowResized += Resize;
 
                 _configOptions = ConfigHelper.GetOptions();
 
@@ -278,7 +278,7 @@ namespace MoreMultiplayerInfo
 
             if (this._optionsIcon.containsPoint(x, y))
             {
-                var optionsMenu = new OptionsMenu<ModConfigOptions>(_helper, 500, 425, PlayerId, ConfigHelper.GetOptions());
+                var optionsMenu = new OptionsMenu<ModConfigOptions>(_helper, 500, 325, PlayerId, ConfigHelper.GetOptions());
 
                 Game1.activeClickableMenu = optionsMenu;
             }
@@ -297,7 +297,7 @@ namespace MoreMultiplayerInfo
             this.exitThisMenu(playSound);
 
             Game1.onScreenMenus.Remove(this);
-            GraphicsEvents.Resize -= Resize;
+            _helper.Events.Display.WindowResized -= Resize;
         }
         
 

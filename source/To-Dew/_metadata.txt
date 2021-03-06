@@ -5,9 +5,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit 06e2069b479c787411eba6ba0490b9b3412ca237
+   commit 93c7058050a5697285fe934a2faca11718f74fa1
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sat Jan 23 19:04:43 2021 -0500
+   Date:   Mon Mar 1 11:01:12 2021 -0500
    
-       fix typo in readme
+       Hide overlay during events; v1.8.2
    

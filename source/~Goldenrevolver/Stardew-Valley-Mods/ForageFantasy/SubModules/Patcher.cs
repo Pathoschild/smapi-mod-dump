@@ -103,6 +103,117 @@ namespace ForageFantasy
                     mod.ErrorLog($"Error while trying to patch Automate. Please report this to the mod page of {mod.ModManifest.Name}, not Automate:", e);
                 }
             }
+
+            if (mod.Helper.ModRegistry.IsLoaded("BitwiseJonMods.OneClickShedReloader"))
+            {
+                try
+                {
+                    mod.DebugLog("This mod patches OneClickShedReloader. If you notice issues with OneClickShedReloader, make sure it happens without this mod before reporting it to the OneClickShedReloader page.");
+
+                    // this is so ugly but I can't include a reference
+                    Assembly assembly = null;
+
+                    foreach (var item in AppDomain.CurrentDomain.GetAssemblies())
+                    {
+                        if (item.GetName().Name.Trim() == "BitwiseJonMods.OneClickShedReloader")
+                        {
+                            assembly = item;
+                            break;
+                        }
+                    }
+
+                    if (assembly == null)
+                    {
+                        mod.ErrorLog($"Error while trying to patch OneClickShedReloader. Please report this to the mod page of {mod.ModManifest.Name}, not OneClickShedReloader.");
+                        return;
+                    }
+
+                    var handler = assembly.GetType("BitwiseJonMods.BuildingContentsHandler");
+                    var entry = assembly.GetType("BitwiseJonMods.ModEntry");
+
+                    harmony.Patch(
+                       original: AccessTools.Method(handler, "TryAddItemToPlayerInventory"),
+                       prefix: new HarmonyMethod(typeof(Patcher), nameof(TryAddItemToPlayerInventory_Pre))
+                    );
+
+                    harmony.Patch(
+                       original: AccessTools.Method(handler, "TryAddItemToPlayerInventory"),
+                       postfix: new HarmonyMethod(typeof(Patcher), nameof(TryAddItemToPlayerInventory_Post))
+                    );
+
+                    harmony.Patch(
+                       original: AccessTools.Method(entry, "HarvestAllItemsInBuilding"),
+                       postfix: new HarmonyMethod(typeof(Patcher), nameof(ReduceQualityAfterHarvest))
+                    );
+                }
+                catch (Exception e)
+                {
+                    mod.ErrorLog($"Error while trying to patch OneClickShedReloader. Please report this to the mod page of {mod.ModManifest.Name}, not OneClickShedReloader:", e);
+                }
+            }
+        }
+
+        public static bool TryAddItemToPlayerInventory_Pre(ref Farmer player, ref Item item, ref StardewObject container)
+        {
+            try
+            {
+                if (TapperAndMushroomQualityLogic.IsMushroomBox(container))
+                {
+                    if (mod.Config.MushroomBoxQuality)
+                    {
+                        (item as StardewObject).Quality = ForageFantasy.DetermineForageQuality(player);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                mod.ErrorLog("There was an exception in a patch", e);
+                return true;
+            }
+        }
+
+        public static void TryAddItemToPlayerInventory_Post(ref StardewObject container, ref bool __result)
+        {
+            try
+            {
+                // I can't reduce the quality of a non successfully harvested box here,
+                // because it doesn't get called if the method throws a inventoryfull exception
+                if (__result && TapperAndMushroomQualityLogic.IsMushroomBox(container))
+                {
+                    if (mod.Config.AutomationHarvestsGrantXP)
+                    {
+                        TapperAndMushroomQualityLogic.RewardMushroomBoxExp(mod);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                mod.ErrorLog("There was an exception in a patch", e);
+            }
+        }
+
+        public static void ReduceQualityAfterHarvest(ref GameLocation location)
+        {
+            // reduce quality of non successfully harvested items and reset in general
+            try
+            {
+                foreach (var item in location.Objects.Values)
+                {
+                    if (TapperAndMushroomQualityLogic.IsMushroomBox(item))
+                    {
+                        if (item.heldObject != null && item.heldObject.Value != null)
+                        {
+                            item.heldObject.Value.Quality = StardewObject.lowQuality;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                mod.ErrorLog("There was an exception in a patch", e);
+            }
         }
 
         public static bool PatchTapperAndMushroomQuality(ref StardewObject __instance, ref Farmer who, ref bool justCheckingForActivity)
@@ -227,7 +338,7 @@ namespace ForageFantasy
         {
             try
             {
-                if (mod.Config.AutomateHarvestsGrantXP)
+                if (mod.Config.AutomationHarvestsGrantXP)
                 {
                     TapperAndMushroomQualityLogic.RewardMushroomBoxExp(mod);
                 }
@@ -256,7 +367,7 @@ namespace ForageFantasy
         {
             try
             {
-                if (mod.Config.AutomateHarvestsGrantXP)
+                if (mod.Config.AutomationHarvestsGrantXP)
                 {
                     TapperAndMushroomQualityLogic.RewardTapperExp(mod);
                 }
@@ -283,13 +394,18 @@ namespace ForageFantasy
             }
         }
 
-        public static void PatchPostBushMachineXP()
+        public static void PatchPostBushMachineXP(ref object __instance)
         {
             try
             {
-                if (mod.Config.AutomateHarvestsGrantXP)
+                if (mod.Config.AutomationHarvestsGrantXP)
                 {
-                    BerryBushLogic.RewardBerryXP(mod);
+                    var bush = mod.Helper.Reflection.GetProperty<Bush>(__instance, "Machine").GetValue();
+
+                    if (bush.size.Value != Bush.greenTeaBush && bush.size.Value != Bush.walnutBush)
+                    {
+                        BerryBushLogic.RewardBerryXP(mod);
+                    }
                 }
 
                 // I can't give quality because I would need to get the return value of type TrackedItem, but Harmony only gives me null if I define object __result (unlike with variables)

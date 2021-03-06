@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7900
+IDs: PeacefulEnd.MultipleMiniObelisks
+update keys: Nexus:7900, GitHub:Floogen/MultipleMiniObelisks

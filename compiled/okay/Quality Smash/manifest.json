@@ -1,0 +1,13 @@
+{
+  "Name": "Quality Smash",
+  "Author": "barfytheclown",
+  "Version": "1.1.1",
+  "Description": "Too many items? Smash 'em to reduce their quality",
+  "UniqueID": "barfytheclown.QualitySmash",
+  "EntryDll": "QualitySmash.dll",
+  "MinimumApiVersion": "3.9.1",
+  "UpdateKeys": [
+    "GitHub:jn84/QualitySmash",
+    "Nexus:7907"
+  ]
+}

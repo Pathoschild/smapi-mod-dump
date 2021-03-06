@@ -8,119 +8,231 @@
 **
 *************************************************/
 
-using System.Diagnostics.CodeAnalysis;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using ImJustMatt.ExpandedStorage.Framework.Integrations;
+using ImJustMatt.ExpandedStorage.Framework.Models;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
-namespace ExpandedStorage.Framework
+namespace ImJustMatt.ExpandedStorage.Framework
 {
-    [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
-    public class ModConfig
+    internal class ModConfig
     {
-        /// <summary>Allow carried chests to be accessed while in inventory.</summary>
-        public bool AllowAccessCarriedChest { get; set; } = true;
-        
-        /// <summary>Allow chests to be picked up and placed with items.</summary>
-        public bool AllowCarryingChests { get; set; } = true;
-
-        /// <summary>Whether to allow modded storage to have capacity other than 36 slots.</summary>
-        public bool AllowModdedCapacity { get; set; } = true;
-
-        /// <summary>Allows storages to accept specific items.</summary>
-        public bool AllowRestrictedStorage { get; set; } = true;
-
-        /// <summary>Allows storages to pull items directly into their inventory.</summary>
-        public bool AllowVacuumItems { get; set; } = true;
-
-        /// <summary>Adds three extra rows to the Inventory Menu.</summary>
-        public bool ExpandInventoryMenu { get; set; } = true;
-        
-        /// <summary>Adds clickable arrows to indicate when there are more items in the chest.</summary>
-        public bool ShowOverlayArrows { get; set; } = true;
-
-        /// <summary>Allows filtering Inventory Menu by searching for the the item name.</summary>
-        public bool ShowSearchBar { get; set; } = true;
-
-        /// <summary>Allows showing tabs in the Chest Menu.</summary>
-        public bool ShowTabs { get; set; } = true;
+        /// <summary>Enable controller config settings.</summary>
+        public bool Controller { get; set; } = true;
 
         /// <summary>Control scheme for Expanded Storage features.</summary>
         public ModConfigKeys Controls { get; set; } = new();
 
-        public static void RegisterModConfig(IManifest modManifest, IGenericModConfigMenuAPI modConfigApi, ModConfig config)
+        /// <summary>Default config for unconfigured storages.</summary>
+        public StorageConfig DefaultStorage { get; set; } = new()
         {
-            modConfigApi.RegisterLabel(modManifest,
+            Tabs = new List<string> {"Crops", "Seeds", "Materials", "Cooking", "Fishing", "Equipment", "Clothing", "Misc"}
+        };
+
+        /// <summary>Default tabs for unconfigured storages.</summary>
+        public IDictionary<string, StorageTab> DefaultTabs { get; set; } = new Dictionary<string, StorageTab>
+        {
+            {
+                "Clothing", new StorageTab("Shirts.png",
+                    "category_clothing",
+                    "category_boots", "category_hat")
+            },
+            {
+                "Cooking",
+                new StorageTab("Cooking.png",
+                    "category_syrup",
+                    "category_artisan_goods",
+                    "category_ingredients",
+                    "category_sell_at_pierres_and_marnies",
+                    "category_sell_at_pierres",
+                    "category_meat",
+                    "category_cooking",
+                    "category_milk",
+                    "category_egg")
+            },
+            {
+                "Crops",
+                new StorageTab("Crops.png",
+                    "category_greens",
+                    "category_flowers",
+                    "category_fruits",
+                    "category_vegetable")
+            },
+            {
+                "Equipment",
+                new StorageTab("Tools.png",
+                    "category_equipment",
+                    "category_ring",
+                    "category_tool",
+                    "category_weapon")
+            },
+            {
+                "Fishing",
+                new StorageTab("Fish.png",
+                    "category_bait",
+                    "category_fish",
+                    "category_tackle",
+                    "category_sell_at_fish_shop")
+            },
+            {
+                "Materials",
+                new StorageTab("Minerals.png",
+                    "category_monster_loot",
+                    "category_metal_resources",
+                    "category_building_resources",
+                    "category_minerals",
+                    "category_crafting",
+                    "category_gem")
+            },
+            {
+                "Misc",
+                new StorageTab("Misc.png",
+                    "category_big_craftable",
+                    "category_furniture",
+                    "category_junk")
+            },
+            {
+                "Seeds",
+                new StorageTab("Seeds.png",
+                    "category_seeds",
+                    "category_fertilizer")
+            }
+        };
+
+        /// <summary>Only vacuum to storages in the first row of player inventory.</summary>
+        public bool VacuumToFirstRow { get; set; } = true;
+
+        /// <summary>Adds three extra rows to the Inventory Menu.</summary>
+        public bool ExpandInventoryMenu { get; set; } = true;
+
+        /// <summary>Symbol used to search items by context tags.</summary>
+        public string SearchTagSymbol { get; set; } = "#";
+
+        protected internal string SummaryReport => string.Join("\n",
+            "Expanded Storage Configuration",
+            $"{"Config Option",-20} | Current Value",
+            $"{new string('-', 21)}|{new string('-', 15)}",
+            $"{"Next Tab",-20} | {Controls.NextTab}",
+            $"{"Previous Tab",-20} | {Controls.PreviousTab}",
+            $"{"Scroll Up",-20} | {Controls.ScrollUp}",
+            $"{"Scroll Down",-20} | {Controls.ScrollDown}",
+            $"{"Show Crafting",-20} | {Controls.OpenCrafting}",
+            $"{"Resize Menu",-20} | {ExpandInventoryMenu}",
+            $"{"Search Tag Symbol",-20} | {SearchTagSymbol}",
+            $"{"Vacuum First Row",-20} | {VacuumToFirstRow}",
+            $"{"Enable Controller",-20} | {Controller}",
+            string.Join("\n",
+                StorageConfig.StorageOptions.Keys
+                    .Where(option => DefaultStorage.Option(option) != StorageConfig.Choice.Unspecified)
+                    .Select(option => $"{option,-20} | {DefaultStorage.Option(option)}")
+            )
+        );
+
+        internal void CopyFrom(ModConfig config)
+        {
+            Controls = config.Controls;
+            Controller = config.Controller;
+            VacuumToFirstRow = config.VacuumToFirstRow;
+            ExpandInventoryMenu = config.ExpandInventoryMenu;
+            SearchTagSymbol = config.SearchTagSymbol;
+            DefaultStorage = new Storage();
+            DefaultStorage.CopyFrom(config.DefaultStorage);
+            DefaultTabs.Clear();
+            foreach (var tab in config.DefaultTabs)
+            {
+                var newTab = new StorageTab();
+                newTab.CopyFrom(tab.Value);
+                DefaultTabs.Add(tab.Key, newTab);
+            }
+        }
+
+        public static void RegisterModConfig(IManifest manifest, IGenericModConfigMenuAPI modConfigAPI, ModConfig config)
+        {
+            // Controls
+            modConfigAPI.RegisterLabel(manifest,
                 "Controls",
                 "Controller/Keyboard controls");
-            modConfigApi.RegisterSimpleOption(modManifest,
+
+            modConfigAPI.RegisterSimpleOption(manifest,
                 "Scroll Up",
                 "Button for scrolling up",
                 () => config.Controls.ScrollUp.Keybinds.Single(kb => kb.IsBound).Buttons.First(),
                 value => config.Controls.ScrollUp = KeybindList.ForSingle(value));
-            modConfigApi.RegisterSimpleOption(modManifest,
+            modConfigAPI.RegisterSimpleOption(manifest,
                 "Scroll Down",
                 "Button for scrolling down",
                 () => config.Controls.ScrollDown.Keybinds.Single(kb => kb.IsBound).Buttons.First(),
                 value => config.Controls.ScrollDown = KeybindList.ForSingle(value));
-            modConfigApi.RegisterSimpleOption(modManifest,
+            modConfigAPI.RegisterSimpleOption(manifest,
                 "Previous Tab",
                 "Button for switching to the previous tab",
                 () => config.Controls.PreviousTab.Keybinds.Single(kb => kb.IsBound).Buttons.First(),
                 value => config.Controls.PreviousTab = KeybindList.ForSingle(value));
-            modConfigApi.RegisterSimpleOption(modManifest,
+            modConfigAPI.RegisterSimpleOption(manifest,
                 "Next Tab",
                 "Button for switching to the next tab",
                 () => config.Controls.NextTab.Keybinds.Single(kb => kb.IsBound).Buttons.First(),
                 value => config.Controls.NextTab = KeybindList.ForSingle(value));
-            modConfigApi.RegisterLabel(modManifest,
-                "Global Toggles",
-                "Enable/Disable features (restart to revert patches)");
-            modConfigApi.RegisterSimpleOption(modManifest,
-                "Carry Chest",
-                "Uncheck to globally disable carrying chests",
-                () => config.AllowCarryingChests,
-                value => config.AllowCarryingChests = value);
-            modConfigApi.RegisterSimpleOption(modManifest,
-                "Access Carried Chest",
-                "Uncheck to globally disable accessing chest items for carried chests",
-                () => config.AllowAccessCarriedChest,
-                value => config.AllowAccessCarriedChest = value);
-            modConfigApi.RegisterSimpleOption(modManifest,
-                "Expand Inventory Menu",
-                "Uncheck to globally disable resizing the inventory menu",
+
+            // Tweaks
+            modConfigAPI.RegisterLabel(manifest,
+                "Tweaks",
+                "Modify behavior for certain features");
+
+            modConfigAPI.RegisterSimpleOption(manifest,
+                "Enable Controller",
+                "Enables settings designed to improve controller compatibility",
+                () => config.Controller,
+                value => config.Controller = value);
+            modConfigAPI.RegisterSimpleOption(manifest,
+                "Resize Inventory Menu",
+                "Allows the inventory menu to have 4-6 rows instead of the default 3",
                 () => config.ExpandInventoryMenu,
                 value => config.ExpandInventoryMenu = value);
-            modConfigApi.RegisterSimpleOption(modManifest,
-                "Modded Capacity",
-                "Uncheck to globally disable non-vanilla capacity (36 item slots)",
-                () => config.AllowModdedCapacity,
-                value => config.AllowModdedCapacity = value);
-            modConfigApi.RegisterSimpleOption(modManifest,
-                "Restricted Storage",
-                "Uncheck to globally disable allow/block lists for chest items",
-                () => config.AllowRestrictedStorage,
-                value => config.AllowRestrictedStorage = value);
-            modConfigApi.RegisterSimpleOption(modManifest,
-                "Show Overlay Arrows",
-                "Uncheck to globally disable adding arrow buttons",
-                () => config.ShowOverlayArrows,
-                value => config.ShowOverlayArrows = value);
-            modConfigApi.RegisterSimpleOption(modManifest,
-                "Show Search Bar",
-                "Uncheck to globally disable carrying chests",
-                () => config.ShowSearchBar,
-                value => config.ShowSearchBar = value);
-            modConfigApi.RegisterSimpleOption(modManifest,
-                "Show Tabs",
-                "Uncheck to globally disable chest tabs",
-                () => config.ShowTabs,
-                value => config.ShowTabs = value);
-            modConfigApi.RegisterSimpleOption(modManifest,
-                "Vacuum Items",
-                "Uncheck to globally disable chests picking up items",
-                () => config.AllowVacuumItems,
-                value => config.AllowVacuumItems = value);
+            modConfigAPI.RegisterSimpleOption(manifest,
+                "Search Symbol",
+                "Symbol used to search items by context tag",
+                () => config.SearchTagSymbol,
+                value => config.SearchTagSymbol = value);
+            modConfigAPI.RegisterSimpleOption(manifest,
+                "Vacuum To First Row",
+                "Uncheck to allow vacuuming to any chest in player inventory",
+                () => config.VacuumToFirstRow,
+                value => config.VacuumToFirstRow = value);
+
+            // Default Storage Config
+            var optionChoices = Enum.GetNames(typeof(StorageConfig.Choice));
+
+            Func<string> OptionGet(string option)
+            {
+                return () => config.DefaultStorage.Option(option).ToString();
+            }
+
+            Action<string> OptionSet(string option)
+            {
+                return value =>
+                {
+                    if (Enum.TryParse(value, out StorageConfig.Choice choice))
+                        config.DefaultStorage.SetOption(option, choice);
+                };
+            }
+
+            modConfigAPI.RegisterLabel(manifest,
+                "Default Storage",
+                "Default config for unconfigured storages.");
+
+            modConfigAPI.RegisterSimpleOption(manifest, "Capacity", "Number of item slots the storage will contain",
+                () => config.DefaultStorage.Capacity,
+                value => config.DefaultStorage.Capacity = value);
+
+            foreach (var option in StorageConfig.StorageOptions)
+            {
+                modConfigAPI.RegisterChoiceOption(manifest, option.Key, option.Value,
+                    OptionGet(option.Key), OptionSet(option.Key), optionChoices);
+            }
         }
     }
 }

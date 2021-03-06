@@ -56,6 +56,7 @@ This can be used to automate...
 * [crystalariums](https://stardewvalleywiki.com/Crystalarium) (once started with the gem/mineral you want);
 * [deconstructors](https://stardewvalleywiki.com/Deconstructor);
 * [fish ponds](https://stardewvalleywiki.com/Fish_Pond) (for output only);
+* [trees](https://stardewvalleywiki.com/Fruit_Trees);
 * [fruit trees](https://stardewvalleywiki.com/Fruit_Trees);
 * [furnaces](https://stardewvalleywiki.com/Furnace) (don't forget they also need coal);
 * [garbage cans](https://stardewvalleywiki.com/Garbage_Can);
@@ -128,8 +129,8 @@ Here are some example machine group setups. You can increase production by just 
 
 ## Automation techniques
 ### Connectors
-You can optionally configure objects or paths as connectors, which link machines together. For
-example, here are wooden paths used as connectors:
+You can optionally configure specific furniture/objects/paths as connectors, which link machines
+together. For example, here are wooden paths used as connectors:
 
 > ![](screenshots/connectors.png)
 
@@ -300,15 +301,20 @@ Installing [Chests Anywhere](https://www.nexusmods.com/stardewvalley/mods/518) l
 per-chest options directly in-game:
 > ![](screenshots/chests-anywhere-config.png)
 
-This adds four options for automate:
-* **Store items in this chest:** Automate will push machine output into this chest.
-* **Store items in this chest first:** Automate will push machine output into this chest first, and
-  only try other chests if it's full.
-* **Take items from this chest:** Automate will take machine input from this chest.
-* **Take items from this chest first:** Automate will take machine input from this chest first, and
-  only try other chests if it doesn't have any input for a machine.
+This adds two dropdowns for Automate:
 
-(To do this without Chests Anywhere, see the [technical documentation](technical.md).)
+* Put items:
+  * **Put items in this chest** (default).
+  * **Put items in this chest first:** Automate will push machine output into this chest first, and
+    only try other chests if it's full.
+  * **Never put items in this chest.**
+* Take items:
+  * **Take items from this chest** (default).
+  * **Take items from this chest first:** Automate will take machine input from this chest first,
+    and only try other chests if it doesn't have any input for a machine.
+  * **Never take items from this chest.**
+
+(To configure chest automation from another mod, see the [technical documentation](technical.md).)
 
 ### Per-machine settings
 _This is advanced; most players won't need to configure Automate to this extent._
@@ -345,7 +351,7 @@ field | purpose
 `Priority` | The order in which this machine should be processed relative to other machines (default `0`). Higher values are processed first for both input and output.
 
 ## Compatibility
-Automate is compatible with Stardew Valley 1.4+ on Linux/Mac/Windows, both single-player and
+Automate is compatible with Stardew Valley 1.5+ on Linux/Mac/Windows, both single-player and
 multiplayer. In multiplayer mode, only the main player can automate machines; other players can
 keep it installed and use the overlay, their mod just won't automate anything.
 

@@ -1,0 +1,10 @@
+{
+  "Name": "Drop It! - Drop Item Hotkey",
+  "Author": "Goldenrevolver",
+  "Version": "1.0",
+  "Description": "Adds a configurable hotkey to drop your currently selected item",
+  "UniqueID": "Goldenrevolver.DropItHotkey",
+  "EntryDll": "DropItHotkey.dll",
+  "MinimumApiVersion": "3.9.1",
+  "UpdateKeys": [ "Nexus:7971" ]
+}

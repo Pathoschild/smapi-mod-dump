@@ -1,0 +1,3 @@
+page URL: https://stardewvalley.curseforge.com/projects/labeling
+IDs: Enaium.Labeling
+update keys: GitHub:Enaium-StardewValleyMods/Labeling

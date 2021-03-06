@@ -1,0 +1,13 @@
+url:
+   https://github.com/DecidedlyHuman/StardewMods.git
+
+mods:
+   Player Co-ordinate HUD
+
+latest commit:
+   commit 2b3f3aebc6dd1cdda5e0ce6f7d3825fa6e842594
+   Author: DecidedlyHuman <69521518+DecidedlyHuman@users.noreply.github.com>
+   Date:   Fri Feb 19 18:24:19 2021 +0000
+   
+       PC: Update version in manifest.json.
+   

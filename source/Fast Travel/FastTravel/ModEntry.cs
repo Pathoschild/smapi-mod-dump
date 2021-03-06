@@ -14,6 +14,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using System.Text;
 
 namespace FastTravel
 {
@@ -21,15 +22,22 @@ namespace FastTravel
 	public class ModEntry : Mod
 	{
 		public static ModConfig Config;
+        private ITranslationHelper translationHelper;
+        private CommandHandler CommandHandler;
 
 		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
 			Config = helper.ReadConfig<ModConfig>();
+            this.translationHelper = helper.Translation;
 
-			helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            this.CommandHandler = new CommandHandler(this.Monitor, Config);
+
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
 			helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+
+            helper.ConsoleCommands.Add("ft_helper", "Run commands to help in develop mode.", this.CommandHandler.HandleCommand);
 		}
 
 		/// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
@@ -50,12 +58,13 @@ namespace FastTravel
 		{
 			if (!Context.IsWorldReady)
 				return;
-
-			// toggle balanced mode
-			if (e.Button == SButton.N)
+			
+            // toggle balanced mode
+            if (e.Button == SButton.N)
 			{
 				Config.BalancedMode = !Config.BalancedMode;
-				Game1.showGlobalMessage($"Balanced Mode: {Config.BalancedMode}");
+                string message = translationHelper.Get("BALANCED_MODE");
+                Game1.showGlobalMessage($"{message}: {Config.BalancedMode}");
 				return;
 			}
 
@@ -71,33 +80,40 @@ namespace FastTravel
 				// (This is done after getting the map/menu to prevent spamming notifications when the player isn't in the menu)
 				if (Config.BalancedMode && Game1.player.mount == null)
 				{
-					Game1.showGlobalMessage("You can't fast travel without a horse!");
+					Game1.showGlobalMessage(translationHelper.Get("BALANCED_MODE_NEED_HORSE"));
 					Game1.exitActiveMenu();
 					return;
 				}
 
 				int x = (int) e.Cursor.ScreenPixels.X;
 				int y = (int) e.Cursor.ScreenPixels.Y;
-				foreach (ClickableComponent point in mapPage.points)
+                foreach (ClickableComponent point in mapPage.points)
 				{
 					// If the player isn't hovering over this point, don't worry about anything.
 					if (!point.containsPoint(x, y))
 						continue;
 
-					// Lonely Stone is blocked because it's not an actual place
-					// TODO - Fix the visual bug with Quarry
-					if (point.name == "Lonely Stone")
-						continue;
+                    if (Config.DebugMode)
+                    {
+                        StringBuilder reportDebug = new StringBuilder();
+                        reportDebug.AppendLine("\n #### FastTravel Debug ####");
+                        reportDebug.AppendLine($"   point.myID: {point.myID}");
+                        reportDebug.AppendLine($"   point.name: {point.name}");
+                        reportDebug.AppendLine($"   point.region: {point.region}");
+                        reportDebug.AppendLine(" ###############");
+                        this.Monitor.Log(reportDebug.ToString(), LogLevel.Warn);
+                    }
 
-					// Make sure the location is valid
-					if (!FastTravelUtils.PointExistsInConfig(point))
+                    // Make sure the location is valid
+                    if (!FastTravelUtils.PointExistsInConfig(point))
 					{
-						Monitor.Log($"Failed to find a warp for point [{point.name}]!", LogLevel.Warn);
+                        string message = translationHelper.Get("WARP_FAILED").ToString().Replace("{0}", $"[{point.name}]"); 
+                        Monitor.Log(message, LogLevel.Warn);
 
-						// Right now this closes the map and opens the players bag and doesn't give
-						// the player any information in game about what just happened
-						// so we tell them a warp point wasnt found and close the menu.
-						Game1.showGlobalMessage("No warp point found.");
+                        // Right now this closes the map and opens the players bag and doesn't give
+                        // the player any information in game about what just happened
+                        // so we tell them a warp point wasnt found and close the menu.
+                        Game1.showGlobalMessage(translationHelper.Get("WARP_NOT_FOUND"));
 						Game1.exitActiveMenu();
 						continue;
 					}
@@ -106,15 +122,23 @@ namespace FastTravel
 					GameLocation targetLocation = FastTravelUtils.GetLocationForMapPoint(point);
 					FastTravelPoint targetPoint = FastTravelUtils.GetFastTravelPointForMapPoint(point);
 
-					if (!CheckBalancedTransition(targetPoint, out string errorMessage))
+                    if (!CheckBalancedTransition(targetPoint, out string errorMessage))
 					{
 						Game1.showGlobalMessage(errorMessage);
 						Game1.exitActiveMenu();
 						return;
 					}
 
-					// Dismount the player if they're going to calico desert, since the bus glitches with mounts.
-					if (targetPoint.GameLocationIndex == 28 && Game1.player.mount != null)
+
+                    if (!CheckValidationBeforeTeleport(targetPoint, out string errorValidationMessage))
+                    {
+                        Game1.showGlobalMessage(errorValidationMessage);
+                        Game1.exitActiveMenu();
+                        return;
+                    }
+
+                    // Dismount the player if they're going to calico desert, since the bus glitches with mounts.
+                    if (targetPoint.GameLocationIndex == 28 && Game1.player.mount != null)
 						Game1.player.mount.dismount();
 					
 					// Warp the player to their location, and exit the map.
@@ -124,14 +148,12 @@ namespace FastTravel
 					// Lets check for warp status and give the player feed back on what happened to the warp.
 					// We are doing this check on a thread because we have to wait until the warp has finished
 					// to check its result.
-					var locationNames = new[] {targetPoint.RerouteName, targetLocation.Name};
-					var t1 = new Thread(CheckIfWarped);
-					t1.Start(locationNames);
+					var newThread = new Thread(CheckIfWarped);
+                    newThread.Start(targetLocation.Name);
 				}
 			}
 		}
 
-		// TODO - Convert inline int/string declarations to a constant class
 		private bool CheckBalancedTransition(FastTravelPoint targetPoint, out string errorMessage)
 		{
 			errorMessage = "";
@@ -139,40 +161,48 @@ namespace FastTravel
 				return true;
 
 			// Block fast travel to calico entirely when balanced
-			if (targetPoint.GameLocationIndex == 28)
+			if (targetPoint.GameLocationIndex == Consts.GameLocationDesertCalico)
 			{
-				errorMessage = "Fast-Travel to Calico Desert is disabled in balanced mode!";
+				errorMessage = translationHelper.Get("DISABLED").ToString().Replace("{0}", targetPoint.MapName);
 				return false;	
 			}
-
-			// Block fast travel to the mines unless it has been unlocked.
-			if (targetPoint.GameLocationIndex == 25 && !Game1.player.mailReceived.Contains("CF_Mines"))
-			{
-				errorMessage = "You must unlock the Mines before fast travel is available in balanced mode!";
-				return false;
-			}
-
+            
 			return true;
 		}
+
+        private bool CheckValidationBeforeTeleport(FastTravelPoint targetPoint, out string errorMessage)
+        {
+            errorMessage = "";
+            bool hasValidations = targetPoint.requires != null && targetPoint.requires?.mails.Length > 0;
+            if (hasValidations)
+            {
+                var validateTargetPoint = FastTravelUtils.CheckPointRequiredMails(targetPoint.requires?.mails);
+                if (!validateTargetPoint.isValid)
+                {
+                    errorMessage = translationHelper.Get($"mail.{validateTargetPoint.messageKeyId}");
+                    return false;
+                }
+            }
+            return true;
+        }
 		
-		private void CheckIfWarped(object locationNames)
+		private void CheckIfWarped(object locationName)
 		{
-			var locNames = (string[]) locationNames;
+			var locName = (string) locationName;
 
 			// We need to wait atleast 1.5 seconds to let the location change complete before checking for it.
-			Thread.Sleep(1500);
+			Thread.Sleep(Consts.MillisecondsToCheckIfWarped);
 
-			// If RerouteName is null we want the LocationName instead.
-			// 0 = RerouteName, 1 = LocationName
-			var tmpLocName = locNames[0] ?? locNames[1];
+            // Check if we are at the new location and if its a festival day.
+            bool hasFestivalToday = Game1.currentLocation.Name != locName && Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason);
 
-			// Check if we are at the new location and if its a festival day.
-			if (Game1.currentLocation.Name != tmpLocName && Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason))
-				// If there is a festival and we werent able to warp let the player know.
-				Game1.showGlobalMessage("Today's festival is being set up. Try going later.");
+            if (hasFestivalToday)
+				Game1.showGlobalMessage(translationHelper.Get("TODAY_HAS_FESTIVAL"));
 			else
-				// Finally, if we managed to warp log that we were warped.
-				this.Monitor.Log($"Warping player to {tmpLocName}");
+            {
+                string message = translationHelper.Get("WARP_FAILED").ToString().Replace("{0}", $"[{locName}]");
+                this.Monitor.Log(message);
+            }
 		}
 	}
 }

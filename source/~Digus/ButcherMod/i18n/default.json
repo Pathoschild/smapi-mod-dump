@@ -22,6 +22,8 @@
 	"Meat.Rabbit.Description":"The meat of a rabbit. It's very lean.",
 	"Meat.Mutton.Name":"Mutton",
 	"Meat.Mutton.Description":"The meat from sheep or goat.",
+	"Meat.Ostrich.Name": "Ostrich",
+	"Meat.Ostrich.Description": "The meat from a ostrich. Very much like a lean beef.",
 	//Cooking
 	"Cooking.Meatloaf.Name":"Meatloaf",
 	"Cooking.Meatloaf.Description":"A dense meat casserole with a sweet tomato glaze.",
@@ -123,6 +125,7 @@
 	"TV.LivingWithTheAnimals.Episode.Melon": "Pigs can eat almost anything, but what can you give as a treat to make them love you? Melons! Give them big fresh juice melons regularly and they'll find more truffle than you can handle.",
 	"TV.LivingWithTheAnimals.Episode.HeritageAnimalContest": "Animal Contest Tip: Most animal contest judges won't admit it, but they're a little biased when evaluating an animal that the parent is a previous winner. It's almost as if they get a bonus point for just that. Keep that in mind.",
 	"TV.LivingWithTheAnimals.Episode.RedCabbage": "Red cabbages are starting to bloom, so it's time for the ultimate rabbit tip. Red cabbage is their favorite treat by far. Just don't give them too much as it can make them a little gassy.",
+	"TV.LivingWithTheAnimals.Episode.TreatsOstrich": "I recently had the opportunity to see an ostrich in person and they sure are the largest bird there is. But I was told they're quite docile and can be raised in a barn. They're an easy animal to please and will like any vegetable as a treat. How to get one, you might be asking. That, unfortunatly, they didn't tell me.",
 	"TV.LivingWithTheAnimals.Episode.Amaranth": "You might already know this one, but here it's anyway. Amaranth is a delight to cows. An amaranth fed cow will grow faster than any other animal. Sock some up in fall if you plan to raise cows.",
 	"TV.LivingWithTheAnimals.Episode.Yam": "Yams take some time to grow, so you should probably start planting them now if you want get two harvest this fall. I know they're not the most profitable vegetables, but sheeps don't care. It's their favorite treat, so if you want happy sheeps, you'll want some yams.",
 	"TV.LivingWithTheAnimals.Episode.Artichoke": "Artichoke, like tomato, is wrongly considered vegetables by most people, but it's actually a flower. Goats couldn't care less, it's their favorite treat and they'll eat whatever you call it.",

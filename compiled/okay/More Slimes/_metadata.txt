@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7526
+IDs: Ded4lif.MoreSlimes, Ded4lif.MoreMonsters
+update keys: Nexus:7526

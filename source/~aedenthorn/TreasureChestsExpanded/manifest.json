@@ -11,7 +11,7 @@
 {
   "Name": "TreasureChestsExpanded",
   "Author": "aedenthorn",
-  "Version": "0.2.0",
+  "Version": "0.3.0",
   "Description": "Expands the pool of rewards from treasure chests in the Skull Cave.",
   "UniqueID": "aedenthorn.TreasureChestsExpanded",
   "EntryDll": "TreasureChestsExpanded.dll",
@@ -30,7 +30,8 @@
       },
       {
         "UniqueID": "aedenthorn.AdvancedLootFramework",
-        "IsRequired": true
+        "IsRequired": true,
+        "MinimumVersion": "0.4.0"
       },
   ]
 }

@@ -1,0 +1,7 @@
+{
+  "process.start": "È ora di iniziare ad annaffiare!",
+  "process.end": "Irrigazione finita",
+  "process.interrupt": "Irrigazione interrotta",
+  "process.exhausted": "Stanco di annaffiare",
+  "process.waterless": "Impossibile trovare l'acqua!"
+}

@@ -11,10 +11,10 @@
 {
     "Name": "To-Dew",
     "Author": "Jamie Taylor",
-    "Version": "1.4.3",
+    "Version": "1.8.2",
     "Description": "An in-game To-do list",
     "UniqueID": "jltaylor-us.ToDew",
     "EntryDll": "ToDew.dll",
-    "MinimumApiVersion": "3.8.0",
+    "MinimumApiVersion": "3.9.0",
     "UpdateKeys": [ "Nexus:7409", "GitHub:jltaylor-us/StardewToDew" ]
 }

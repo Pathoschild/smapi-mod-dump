@@ -28,7 +28,7 @@ namespace MailServicesMod
         {
             try
             {
-                if (Game1.player.mailbox.Count == 0 && Game1.player.ActiveObject != null )
+                if (!DataLoader.ModConfig.DisableQuestService && Game1.player.mailbox.Count == 0 && Game1.player.ActiveObject != null)
                 {
                     foreach (Quest quest in Game1.player.questLog)
                     {

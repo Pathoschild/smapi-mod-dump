@@ -1,0 +1,11 @@
+﻿
+	{
+	"Name": "Pudding Plus Colored Slime Drops",
+	  "Author": "TerryDBS",
+	  "Version": "2.0.0", // fixed locally
+	  "Description": "Allows for colored slime drops",
+	  "UniqueID": "TerryDBS.ColoredSlimeDrops",
+	  "EntryDll": "ClassLibrary2.dll",
+	  "MinimumApiVersion": "3.0.0",
+	  "UpdateKeys": ["Nexus:7048"]
+	}

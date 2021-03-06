@@ -1,41 +1,38 @@
-{
-	// Object data
-	"Name": "blueberry.cac.skewers",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 58,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": null,
-	"Price": 280,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 613, // Apple
-				"Count": 1
-			},
-			{
-				"Object": 24, // Parsnip
-				"Count": 1
-			},
-			{
-				"Object": 272, // Eggplant
-				"Count": 1
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.skewers",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 58,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 280,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 613,
+                "Count": 1
+            },
+            {
+                "Object": 24,
+                "Count": 1
+            },
+            {
+                "Object": 272,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Pineapple Skewers"
+    }
 }

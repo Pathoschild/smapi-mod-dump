@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8048
+IDs: Ophaneom.AbilitiesExperienceBars
+update keys: Nexus:8048, GitHub:Ophaneom/Stardew-Valley-Mods

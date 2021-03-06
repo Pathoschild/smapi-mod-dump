@@ -23,6 +23,7 @@ namespace CustomLocks
         public bool AllowOutsideTime { get; set; } = true;
         public bool AllowStrangerHomeEntry { get; set; } = false;
         public bool AllowStrangerRoomEntry { get; set; } = false;
+        public bool AllowAdventureGuildEntry { get; set; } = false;
         public bool IgnoreEvents { get; set; } = false;
     }
 }

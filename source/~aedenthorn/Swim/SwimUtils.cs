@@ -111,6 +111,7 @@ namespace Swim
             }
             else
             {
+                Game1.changeMusicTrack("none", false, Game1.MusicContext.Default);
             }
 
             Game1.playSound("pullItemFromWater");

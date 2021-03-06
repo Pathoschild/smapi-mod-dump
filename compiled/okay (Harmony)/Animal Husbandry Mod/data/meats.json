@@ -22,5 +22,9 @@
   "Mutton": {
     "Price": 650,
     "Edibility": 20
+  },
+  "Ostrich": {
+    "Price": 10500,
+    "Edibility": 60
   }
 }

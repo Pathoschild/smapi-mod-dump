@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.cake_half",
     "Description": "...",
     "Category": "Junk",
@@ -11,17 +10,52 @@
     "Price": 40,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,
     "PurchaseRequirements": null,
-
-    // Gifting
     "GiftTastes": {
-        "Like": [ "Haley", "Sandy", "Vincent", "Jas", "Gus", "Penny", "Shane", "Marnie", "Clint", "Sebastian", "Abigail", "Alex", "Caroline", "Elliott", "Emily", "Evelyn", "Haley", "Harvey", "Jodi", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Sam", "Willy" ],
-        "Neutral": [ "Krobus", "Dwarf", "Demetrius", "Wizard" ],
-        "Dislike": [ "Kent", "George", "Leah" ]
+        "Like": [
+            "Haley",
+            "Sandy",
+            "Vincent",
+            "Jas",
+            "Gus",
+            "Penny",
+            "Shane",
+            "Marnie",
+            "Clint",
+            "Sebastian",
+            "Abigail",
+            "Alex",
+            "Caroline",
+            "Elliott",
+            "Emily",
+            "Evelyn",
+            "Haley",
+            "Harvey",
+            "Jodi",
+            "Lewis",
+            "Linus",
+            "Maru",
+            "Pierre",
+            "Robin",
+            "Sam",
+            "Willy"
+        ],
+        "Neutral": [
+            "Krobus",
+            "Dwarf",
+            "Demetrius",
+            "Wizard"
+        ],
+        "Dislike": [
+            "Kent",
+            "George",
+            "Leah"
+        ]
+    },
+    "NameLocalization": {
+        "en": "Cake Slice"
     }
 }

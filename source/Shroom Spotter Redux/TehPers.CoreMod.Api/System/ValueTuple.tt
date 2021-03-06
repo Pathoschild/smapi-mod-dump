@@ -1,0 +1,185 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#
+	// Helper
+	void ForEachTuple(int count, Action<string, string[], string[], string[]> callback) {
+		string[] genericNames = Enumerable.Range(1, count).Select(n => $"T{n}").ToArray();
+		string[] itemNames = Enumerable.Range(1, count).Select(n => $"Item{n}").ToArray();
+		string[] itemArgumentNames = Enumerable.Range(1, count).Select(n => $"item{n}").ToArray();
+
+		for (int i = 1; i <= count; i++) {
+			string[] curGenericNames = genericNames.Take(i).ToArray();
+			string[] curItemNames = itemNames.Take(i).ToArray();
+			string[] curItemArgumentNames = itemArgumentNames.Take(i).ToArray();
+			string curGenericList = curGenericNames.Any() ? $"<{string.Join(", ", curGenericNames)}>" : string.Empty;
+			string tupleName = $"ValueTuple{curGenericList}";
+			callback(tupleName, curGenericNames, curItemNames, curItemArgumentNames);
+		}
+	}
+
+	// Initialization
+	const int maxTypes = 8;
+#>
+using System.Collections;
+using System.Collections.Generic;
+
+// ReSharper disable once CheckNamespace
+namespace System {
+	public readonly partial struct ValueTuple {
+<#
+	ForEachTuple(maxTypes, (tupleName, curGenericNames, curItemNames, curItemArgumentNames) => {
+		if (curGenericNames.Length < maxTypes) {
+#>
+
+		public static <#= tupleName #> Create<#= (curGenericNames.Any() ? $"<{string.Join(", ", curGenericNames)}>" : string.Empty) #>(<#= string.Join(", ", curGenericNames.Select((genericName, i) => $"{genericName} {curItemArgumentNames[i]}")) #>) {
+			return new <#= tupleName #>(<#= string.Join(", ", curItemArgumentNames) #>);
+		}
+<#
+		}
+#>
+
+		// internal static int CombineHashes(<#= string.Join(", ", Enumerable.Range(1, curGenericNames.Length).Select(n => $"int h{n}")) #>) {
+		// 	return h<#= curGenericNames.Length #> ^ ValueTuple.CombineHashes(<#= string.Join(", ", Enumerable.Range(1, curGenericNames.Length - 1).Select(n => $"h{n}")) #>);
+		// }
+<#
+	});
+	
+	{
+		string[] curGenericNames = Enumerable.Range(1, maxTypes).Select(n => $"T{n}").ToArray();
+		string[] curItemArgumentNames = Enumerable.Range(1, maxTypes).Select(n => $"item{n}").ToArray();
+		string returnType = $"ValueTuple<{string.Join(", ", curGenericNames.Take(maxTypes - 1))}, ValueTuple<T{maxTypes}>>";
+#>
+
+		public static <#= returnType #> Create<#= $"<{string.Join(", ", curGenericNames)}>" #>(<#= string.Join(", ", curGenericNames.Select((genericName, i) => $"{genericName} {curItemArgumentNames[i]}")) #>) {
+			return new <#= returnType #>(<#= string.Join(", ", curItemArgumentNames.Take(maxTypes - 1)) #>, new ValueTuple<<#= curGenericNames.Last() #>>(<#= curItemArgumentNames.Last() #>));
+		}
+<#
+	}
+#>
+	}
+<#
+
+	ForEachTuple(maxTypes, (tupleName, curGenericNames, curItemNames, curItemArgumentNames) => {
+		int curTypes = curGenericNames.Length;
+#>
+
+	[Serializable]
+	public readonly struct <#= tupleName #> : IEquatable<<#= tupleName #>>, IStructuralEquatable, IStructuralComparable, IComparable, IComparable<<#= tupleName #>>
+	{
+<#
+		for (int curItem = 0; curItem < curTypes; curItem++) {
+#>
+		public readonly <#= curGenericNames[curItem] #> <#= curItemNames[curItem] #>;
+<#
+		}
+#>
+
+		public ValueTuple(<#= string.Join(", ", Enumerable.Range(0, curTypes).Select(i => $"{curGenericNames[i]} {curItemArgumentNames[i]}")) #>) {
+<#
+			for (int i = 0; i < curTypes; i++) {
+#>
+			this.<#= curItemNames[i] #> = <#= curItemArgumentNames[i] #>;
+<#
+			}
+#>
+		}
+
+        public override bool Equals(object obj) {
+            return obj is <#= tupleName #> other && this.Equals(other);
+        }
+
+		public bool Equals(<#= tupleName #> other) {
+            return <#= string.Join("\n                && ", Enumerable.Range(0, curTypes).Select(i => $"EqualityComparer<{curGenericNames[i]}>.Default.Equals(this.{curItemNames[i]}, other.{curItemNames[i]})")) #>;
+        }
+
+		public bool Equals(object other, IEqualityComparer comparer) {
+            if (!(other is <#= tupleName #> otherTuple)) {
+				return false;
+			}
+
+			return <#= string.Join("\n                && ", Enumerable.Range(0, curTypes).Select(i => $"comparer.Equals(this.{curItemNames[i]}, otherTuple.{curItemNames[i]})")) #>;
+        }
+
+        public int CompareTo(object obj) {
+			return obj is <#= tupleName #> other ? this.CompareTo(other) : throw new ArgumentException();
+		}
+
+        public int CompareTo(<#= tupleName #> other) {
+<#
+			for (int i = 0; i < curTypes; i++) {
+				string comparison = $"Comparer<{curGenericNames[i]}>.Default.Compare(this.{curItemNames[i]}, other.{curItemNames[i]})";
+				if (i == curTypes - 1) {
+#>
+			return <#= comparison #>;		
+<#
+				} else if (i == 0) {
+#>
+			int result = <#= comparison #>;
+			if (result != 0) {
+				return result;
+			}
+
+<#
+				} else {
+#>
+			result = <#= comparison #>;
+			if (result != 0) {
+				return result;
+			}
+
+<#
+				}
+			}
+#>
+        }
+
+		public int CompareTo(object obj, IComparer comparer) {
+			if (!(obj is <#= tupleName #> other)) {
+				throw new ArgumentException();
+			}
+<#
+			for (int i = 0; i < curTypes; i++) {
+#>
+
+<#
+				string comparison = $"comparer.Compare(this.{curItemNames[i]}, other.{curItemNames[i]})";
+				if (i == curTypes - 1) {
+#>
+			return <#= comparison #>;		
+<#
+				} else if (i == 0) {
+#>
+			int result = <#= comparison #>;
+			if (result != 0) {
+				return result;
+			}
+<#
+				} else {
+#>
+			result = <#= comparison #>;
+			if (result != 0) {
+				return result;
+			}
+<#
+				}
+			}
+#>
+        }
+
+		public override int GetHashCode() {
+			return ValueTuple.CombineHashes(<#= string.Join(", ", curItemNames.Select(item => $"this.{item}?.GetHashCode() ?? 0")) #>);
+		}
+
+        public int GetHashCode(IEqualityComparer comparer) {
+            return ValueTuple.CombineHashes(<#= string.Join(", ", curItemNames.Select(item => $"comparer.GetHashCode(this.{item})")) #>);
+        }
+	}
+<#
+	});
+#>
+}

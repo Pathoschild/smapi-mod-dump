@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.cabbage",
     "Description": "...",
     "Category": "Vegetable",
@@ -9,14 +8,12 @@
     "Price": 145,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,
     "PurchaseRequirements": null,
-
-    // Gifting
-    "GiftTastes": {
-    },
+    "GiftTastes": {},
+    "NameLocalization": {
+        "en": "Cabbage"
+    }
 }

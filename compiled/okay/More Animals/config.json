@@ -4,6 +4,7 @@
   "AnimalsOnly": false,
   "BalancedPetTypes": true,
   "BalancedPetSkins": true,
+  "ForceUniqueSkins": false,
   "DisableDailyLimit": false,
   "ExtraTypes": [],
   "AdoptionPrice": 500,

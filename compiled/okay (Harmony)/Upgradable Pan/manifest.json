@@ -1,0 +1,10 @@
+{
+	"Name": "Upgradable Pan",
+	"Author": "Anthony Hilyard",
+	"Version": "1.0.0",
+	"Description": "Makes the copper pan into a proper tool by allowing you to upgrade it like any other tool!",
+	"UniqueID": "com.anthonyhilyard.upgradablepan",
+	"EntryDll": "UpgradablePan.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": []
+  }

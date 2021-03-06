@@ -1,0 +1,8 @@
+{
+    "Name": "Headphones",
+    "Description": "A handy pair of headphones! Equip to pick a track to listen to.",
+    "ShowHair": true,
+    "IgnoreHairstyleOffset": false,
+    "CanPurchase": true,
+    "PurchasePrice": 1000
+}

@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/strobel1ght/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Linked Skills",
+    "Author": "TehPers",
+    "Version": "1.0.0-beta.1",
+    "Description": "Links the skills of each player in multiplayer so they're always the same.",
+    "UniqueID": "TehPers.LinkedStats",
+    "EntryDll": "TehPers.LinkedStats.dll",
+    "MinimumApiVersion": "2.7",
+    "UpdateKeys": [],
+    "Dependencies": []
+}

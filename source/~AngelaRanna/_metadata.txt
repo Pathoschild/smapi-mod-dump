@@ -5,14 +5,11 @@ mods:
    Angel's Existing Weapon Updater
    Angel's Lead Rod Drop Rate Fixer
    Angel's Weapon Rebalance
-   What Does The Fox Say
 
 latest commit:
-   commit 35805a256fa9debef323ac9af2ad9ddb94434a54
+   commit 28b077c1b4869ae06f7dcf36e1c34d0dbd1a2c6b
    Author: SIMON\Zach <whitewolf9024@hotmail.com>
-   Date:   Wed Jan 6 19:34:54 2021 -0700
+   Date:   Thu Feb 18 22:52:10 2021 -0700
    
-       -New balance pass at precision to fix weapon levels.
-       -Returned forest sword's base damage to vanilla since it got its defense back.
-       -Nerfed the early hammers' top damage - saw my wife being carried to mid-ice mines with just the femur.
+       Added MoreGrassOnTheBeach, removed solution file for Combat Mod.
    

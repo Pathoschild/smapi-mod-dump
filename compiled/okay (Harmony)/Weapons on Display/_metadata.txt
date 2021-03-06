@@ -1,0 +1,3 @@
+page URL: https://stardewvalley.curseforge.com/projects/weapons-on-display
+IDs: com.anthonyhilyard.WeaponsOnDisplay
+update keys: GitHub:AHilyard/WeaponsOnDisplay

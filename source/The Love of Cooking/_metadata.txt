@@ -5,12 +5,10 @@ mods:
    The Love of Cooking
 
 latest commit:
-   commit 8d0a12b5b214096e718ff5b45be09e3963be4a75
-   Merge: 57fa541 3aa3918
-   Author: blueberry <36073351+b-b-blueberry@users.noreply.github.com>
-   Date:   Fri Jan 22 12:24:20 2021 +1100
+   commit ff3178ede5b6b838d2644be27a51d8ffe0629eef
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Mon Feb 22 11:24:18 2021 +1100
    
-       Merge pull request #1 from LeecanIt/patch-1
-       
-       Create it.json
+       RELEASE 1.0.11+:
+       Added English name localisations to asset files to avoid problems with common display name draw logic for recipes and items in English locale.
    

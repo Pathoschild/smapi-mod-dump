@@ -1,0 +1,15 @@
+﻿{
+    "Message.Requirement.Amount": "{{objectName}}が{{amount}}必要",
+    "Message.Requirement.Quality": "違う品質が必要",
+    "Message.Requirement.Fuel": "必要な材料が足りていない",
+    "Message.Requirement.Season": "今の季節では利用できない",
+    "Message.Requirement.Weather": "今の天気では利用できない",
+    "Message.Requirement.Location": "この場所では利用できない",
+    "Message.Requirement.InputParent": "{{objectName}}が必要",
+    "Message.Condition.Location": "ここでは動かない",
+    "Message.Condition.Season": "今の季節では動かない",
+    "Object.Category.Meat": "肉類 (Any)",
+    "Object.Category.MetalResources": "金属素材 (Any)",
+    "Object.Category.BuildingResources": "建築素材 (Any)",
+    "Object.Category.TappedTreeProduct": "樹液 (Any)"
+}

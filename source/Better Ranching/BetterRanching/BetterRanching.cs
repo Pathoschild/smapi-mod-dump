@@ -11,9 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -21,20 +19,27 @@ using StardewValley.Characters;
 
 namespace BetterRanching
 {
-	/// <summary>The mod entry class loaded by SMAPI.</summary>
-	public class BetterRanching : Mod
+    /// <summary>The mod entry class loaded by SMAPI.</summary>
+    public class BetterRanching : Mod
 	{
 		private FarmAnimal AnimalBeingRanched { get; set; }
 		private ModConfig Config { get; set; }
+		private BetterRanchingApi Api {get; set; }
 
 		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
 			Config = helper.ReadConfig<ModConfig>();
+			Api = new BetterRanchingApi(Config);
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			helper.Events.Display.RenderedWorld += OnRenderedWorld;
 			helper.Events.Input.ButtonPressed += OnButtonPressed;
+		}
+
+		public override object GetApi()
+		{
+			return new BetterRanchingApi(Config);
 		}
 
 		/// <summary>Raised after the game state is updated (≈60 times per second).</summary>
@@ -126,7 +131,7 @@ namespace BetterRanching
 
 			if (animal == null)
 			{
-				this.Helper.Input.OverwriteState(button, $"{ranchAction} Failed");
+				Helper.Input.OverwriteState(button, $"{ranchAction} Failed");
 				return;
 			}
 
@@ -139,17 +144,17 @@ namespace BetterRanching
 				}
 				else
 				{
-					this.Helper.Input.OverwriteState(button, "Inventory Full");
+					Helper.Input.OverwriteState(button, "Inventory Full");
 				}
 			}
 			else if (animal?.isBaby() == true && animal.toolUsedForHarvest.Equals(toolName))
 			{
-				this.Helper.Input.OverwriteState(button);
+				Helper.Input.OverwriteState(button);
 				DelayedAction.showDialogueAfterDelay($"Baby {animal.Name} will produce {ranchProduct} in {animal.ageWhenMature.Value - animal.age.Value} days.", 0);
 			}
 			else
 			{
-				this.Helper.Input.OverwriteState(button, $"{ranchAction} Failed");
+				Helper.Input.OverwriteState(button, $"{ranchAction} Failed");
 			}
 		}
 
@@ -174,105 +179,19 @@ namespace BetterRanching
 
 			foreach (FarmAnimal farmAnimal in farmAnimalList)
 			{
-				DrawItemBubble(Game1.spriteBatch, farmAnimal);
+				Api.DrawItemBubble(Game1.spriteBatch, farmAnimal, AnimalBeingRanched == farmAnimal);
 			}
 
-			if (Config.DisplayHearts)
+
+			if (Config.DisplayHearts && !Game1.eventUp)
 			{
 				foreach (NPC npc in currentLocation.characters)
 				{
 					if (npc is Pet pet)
 					{
-						DrawItemBubble(Game1.spriteBatch, pet);
+						Api.DrawHeartBubble(Game1.spriteBatch, pet, () => !(pet.lastPetDay.Values.Any(day => day == Game1.Date.TotalDays)));
 					}
 				}
-			}
-		}
-
-		public void DrawItemBubble(SpriteBatch spriteBatch, FarmAnimal animal)
-		{
-			bool hasProduce = AnimalBeingRanched != animal && (animal.CanBeRanched(GameConstants.Tools.MilkPail) || animal.CanBeRanched(GameConstants.Tools.Shears));
-			Rectangle? sourceRectangle = new Rectangle(218, 428, 7, 6);
-
-			if ((Config.DisplayProduce && hasProduce) || (Config.DisplayHearts && !animal.wasPet.Value))
-			{
-				float num = (float)(4.0 * Math.Round(Math.Sin(DateTime.Now.TimeOfDay.TotalMilliseconds / 250.0), 2));
-				if (animal.isCoopDweller() && !animal.isBaby()) { num -= Game1.tileSize * 1 / 2; }
-
-				// Thought Bubble
-				spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(animal.Position.X + (animal.Sprite.getWidth() / 2),
-					animal.Position.Y - (Game1.tileSize * 4 / 3) + num)),
-					new Rectangle(141, 465, 20, 24),
-					Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-					0);
-
-				if (Config.DisplayHearts && !animal.wasPet.Value)
-				{
-					if (Config.DisplayProduce && hasProduce)
-					{
-						// Small Heart
-						spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(animal.Position.X + (animal.Sprite.getWidth() / 2) + (Game1.tileSize * .65)),
-						   animal.Position.Y - (Game1.tileSize * 4 / 10) + num)),
-							sourceRectangle,
-							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), Game1.pixelZoom, SpriteEffects.None,
-							1);
-					}
-					else
-					{
-						// Big Heart
-						spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(animal.Position.X + (animal.Sprite.getWidth() / 2) + (Game1.tileSize * 1.1)),
-						   animal.Position.Y - (Game1.tileSize * 1 / 10) + num)),
-							sourceRectangle,
-							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), (float)Game1.pixelZoom * 5 / 3, SpriteEffects.None,
-							1);
-					}
-				}
-
-				if (Config.DisplayProduce && hasProduce)
-				{
-					if (Config.DisplayHearts && !animal.wasPet.Value)
-					{
-						// Small Milk
-						spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(animal.Position.X + (animal.Sprite.getWidth() / 2) + (Game1.tileSize * .85)),
-						   animal.Position.Y - (Game1.tileSize * 7 / 10) + num)),
-							Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, animal.currentProduce.Value, 16, 16),
-							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), (float)(Game1.pixelZoom * .60), SpriteEffects.None,
-							1);
-					}
-					else
-					{
-						// Big Milk
-						spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(animal.Position.X + (animal.Sprite.getWidth() / 2) + (Game1.tileSize * .625)),
-						   animal.Position.Y - (Game1.tileSize * 7 / 10) + num)),
-							Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, animal.currentProduce.Value, 16, 16),
-							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), Game1.pixelZoom, SpriteEffects.None,
-							1);
-					}
-				}
-			}
-		}
-
-		public void DrawItemBubble(SpriteBatch spriteBatch, Pet pet)
-		{
-			Rectangle? sourceRectangle = new Rectangle(218, 428, 7, 6);
-			bool wasPet = pet.lastPetDay.Values.Any(day => day == Game1.Date.TotalDays);
-			if (!wasPet)
-			{
-				float num = (float)(4.0 * Math.Round(Math.Sin(DateTime.Now.TimeOfDay.TotalMilliseconds / 250.0), 2)) - (Game1.tileSize * 1 / 2);
-
-				// Thought Bubble
-				spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(pet.Position.X + (pet.Sprite.getWidth() / 2),
-					pet.Position.Y - (Game1.tileSize * 4 / 3) + num)),
-					new Rectangle(141, 465, 20, 24),
-					Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-					0);
-
-				// Big Heart
-				spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(pet.Position.X + (pet.Sprite.getWidth() / 2) + (Game1.tileSize * 1.1)),
-				   pet.Position.Y - (Game1.tileSize * 1 / 10) + num)),
-					sourceRectangle,
-					Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), (float)Game1.pixelZoom * 5 / 3, SpriteEffects.None,
-					1);
 			}
 		}
 	}

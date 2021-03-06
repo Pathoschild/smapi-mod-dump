@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster {
@@ -30,6 +31,8 @@ namespace SpriteMaster {
 
 		private static readonly string LocalLogPath = Path.Combine(Config.LocalRoot, $"{ModuleName}.log");
 		private static readonly StreamWriter LogFile = null;
+
+		private static readonly object IOLock = new();
 
 		static Debug () {
 			if (Config.Debug.Logging.OwnLogFile) {
@@ -145,8 +148,14 @@ namespace SpriteMaster {
 		static internal void Error<T> (T exception, [CallerMemberName] string caller = null) where T : Exception {
 			if (!Config.Debug.Logging.LogInfo)
 				return;
-			ErrorLn($"Exception: {exception.Message}", caller: caller);
-			ErrorLn(exception.GetStackTrace(), caller: caller);
+			ErrorLn($"Exception: {exception.Message}\n{exception.GetStackTrace()}", caller: caller);
+		}
+
+		[DebuggerStepThrough, DebuggerHidden()]
+		static internal void Error<T>(string message, T exception, [CallerMemberName] string caller = null) where T : Exception {
+			if (!Config.Debug.Logging.LogInfo)
+				return;
+			ErrorLn($"{message}\nException: {exception.Message}\n{exception.GetStackTrace()}", caller: caller);
 		}
 
 		[DebuggerStepThrough, DebuggerHidden()]
@@ -252,16 +261,17 @@ namespace SpriteMaster {
 
 		[DebuggerStepThrough, DebuggerHidden()]
 		static private void DebugWriteStr (string str, LogLevel level) {
-			var strings = str.Split(new[] { '\n', '\r' });
-			var lastIndex = strings.Length - 1;
-			if (strings[lastIndex] == "") {
-				strings[lastIndex] = null;
+			var lines = str.Lines(removeEmpty: true);
+			var fullString = string.Join("\n", lines);
+			lock (IOLock) {
+				SpriteMaster.Self.Monitor.Log(fullString);
+				/*
+				foreach (var line in lines) {
+					SpriteMaster.Self.Monitor.Log(line.TrimEnd(), level);
+				}
+				*/
 			}
-			foreach (var line in strings) {
-				if (line == null)
-					continue;
-				SpriteMaster.Self.Monitor.Log(line.TrimEnd(), level);
-			}
+
 		}
 	}
 }

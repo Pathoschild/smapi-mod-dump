@@ -20,9 +20,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 38a4e5f5c0c29a7a71e5d92e6c01902a0377e76e
+   commit e442dd15165376414c1c0483848bb51c98f0e9ba
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Jan 27 19:10:22 2021 -0500
+   Date:   Thu Mar 4 23:11:09 2021 -0500
    
-       fix item scan not checking island farmhouse fridge (#606)
+       update release notes & translation docs
    

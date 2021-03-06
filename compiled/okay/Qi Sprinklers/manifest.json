@@ -1,0 +1,10 @@
+{
+  "Name": "Qi Sprinklers",
+  "Author": "UnknownLegacy",
+  "Version": "1.0.3",
+  "Description": "Adds Qi Sprinklers to the game.  Qi Sprinklers are Iridium Sprinklers with Pressure Nozzles and easy Enrichers.",
+  "UniqueID": "UnknownLegacy.QiSprinklers",
+  "EntryDll": "QiSprinklers.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:7904" ]
+}

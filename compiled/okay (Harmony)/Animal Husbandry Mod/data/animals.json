@@ -107,6 +107,15 @@
       418
     ]
   },
+  "Ostrich": {
+    "MinimumDaysBetweenTreats": 3,
+    "LikedTreats": [
+      78,
+      -75
+    ],
+    "MinimalNumberOfMeat": 1,
+    "MaximumNumberOfMeat": 1
+  },
   "CustomAnimals": [
     {
       "Name": "Golden Chicken",

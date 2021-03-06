@@ -32,7 +32,7 @@ namespace ItemBags
 {
     public class ItemBagsMod : Mod
     {
-        public static Version CurrentVersion = new Version(1, 5, 4); // Last updated 1/3/2020 (Don't forget to update manifest.json)
+        public static Version CurrentVersion = new Version(2, 0, 0); // Last updated 1/31/2020 (Don't forget to update manifest.json)
         public const string ModUniqueId = "SlayerDharok.Item_Bags";
         public const string JAUniqueId = "spacechase0.JsonAssets";
         public const string SpaceCoreUniqueId = "spacechase0.SpaceCore";
@@ -66,19 +66,9 @@ namespace ItemBags
         {
             ModInstance = this;
 
-            if (Constants.TargetPlatform != GamePlatform.Android) // Android version saves items without the use of PyTK. See Helpers\SaveLoadHelpers.cs
+            if (Helper.ModRegistry.IsLoaded("Entoarox.EntoaroxFramework"))
             {
-                //  SpaceCore v1.5.0 introduced a breaking change to the game's saving/loading logic that is not compatible with my custom items
-                if (Helper.ModRegistry.IsLoaded(SpaceCoreUniqueId))
-                {
-                    IModInfo SpaceCoreInfo = Helper.ModRegistry.Get(SpaceCoreUniqueId);
-                    if (SpaceCoreInfo.Manifest.Version.IsNewerThan("1.4.1"))
-                    {
-                        throw new InvalidOperationException("This mod is not compatible with SpaceCore v1.5.0 due to the changes SpaceCore makes to the game's save serializer, " +
-                            "which are not compatible with PyTK's CustomElementHandler.ISaveElement that this mod utilizes. " +
-                            "To use Item Bags, consider downgrading to an earlier version of SpaceCore such as v1.3.5.");
-                    }
-                }
+                Monitor.Log("Entoarox Framework overrides the game's save serializer and may cause errors when trying to save your game with this mod installed.", LogLevel.Warn);
             }
 
             LoadUserConfig();
@@ -119,32 +109,18 @@ namespace ItemBags
                     }
                 }
 
-                //  Add compatibility with v1.5.0 of SpaceCore (v1.5.0 added changes that use Harmony to override the game's XmlSerializer for saving/loading save files)
-                /*if (Helper.ModRegistry.IsLoaded(SpaceCoreUniqueId))
+                //  Register custom types for serialization
+#if !ANDROID
+                if (Helper.ModRegistry.IsLoaded(SpaceCoreUniqueId))
                 {
                     IModInfo SpaceCoreInfo = Helper.ModRegistry.Get(SpaceCoreUniqueId);
-                    if (SpaceCoreInfo.Manifest.Version.IsNewerThan("1.4.0"))
-                    {
-                        try
-                        {
-                            SpaceCoreAPI API = Helper.ModRegistry.GetApi<SpaceCoreAPI>(SpaceCoreUniqueId);
-                            if (API != null)
-                            {
-                                //  I couldn't get this to work with PyTK. Most of my items' data is loaded via PyTK's ISaveElement.rebuild function, which doesn't play nicely with SpaceCore
-                                //  (I'm not sure what's happening, but I assume that either rebuild isn't getting called, or it's getting called before SpaceCore finishes deserializing, so the data is overwritten with default values.)
-                                API.RegisterSerializerType(typeof(BoundedBag));
-                                API.RegisterSerializerType(typeof(BundleBag));
-                                API.RegisterSerializerType(typeof(OmniBag));
-                                API.RegisterSerializerType(typeof(Rucksack));
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Monitor.Log(string.Format("Failed to bind to SpaceCore's Mod API. If your bags are not loading or you have errors while saving, " +
-                                "try downgrading to SpaceCore version 1.4.0! Error: {0}", ex.Message), LogLevel.Warn);
-                        }
-                    }
-                }*/
+                    SpaceCoreAPI API = Helper.ModRegistry.GetApi<SpaceCoreAPI>(SpaceCoreUniqueId);
+                    API.RegisterSerializerType(typeof(BoundedBag));
+                    API.RegisterSerializerType(typeof(BundleBag));
+                    API.RegisterSerializerType(typeof(OmniBag));
+                    API.RegisterSerializerType(typeof(Rucksack));
+                }
+#endif
 
                 ModdedBag.OnGameLaunched();
             };

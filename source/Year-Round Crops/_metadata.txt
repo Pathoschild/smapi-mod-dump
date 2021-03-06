@@ -1,0 +1,13 @@
+url:
+   https://github.com/vincebel7/YearRoundCrops.git
+
+mods:
+   Year-Round Crops
+
+latest commit:
+   commit 48d32cde422a92dadf6adb2795f6d6749dbc5f9a
+   Author: Vince Belanger <vincebel@protonmail.com>
+   Date:   Thu Mar 4 13:51:11 2021 -0500
+   
+       Add project files.
+   

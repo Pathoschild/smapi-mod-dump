@@ -109,6 +109,7 @@ namespace Quotes
             }
         }
 
+
         private void Display_Rendering(object sender, StardewModdingAPI.Events.RenderingEventArgs e)
         {
             if (Game1.fadeToBlackAlpha > 0)

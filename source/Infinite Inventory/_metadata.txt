@@ -1,0 +1,13 @@
+url:
+   https://github.com/unidarkshin/Stardew-Mods.git
+
+mods:
+   Infinite Inventory
+
+latest commit:
+   commit 8d57ec22df4736ef151ab56d171def57b373c08f
+   Author: unidarkshin <devinlematty@gmail.com>
+   Date:   Fri Jan 29 16:57:07 2021 -0500
+   
+       le sk upd
+   

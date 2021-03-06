@@ -97,8 +97,8 @@ namespace AnimalHusbandryMod.common
             }
             Helper.Data.WriteJsonFile("data\\cooking.json", CookingData);
 
-            // load TV channel
-            LivingWithTheAnimalsChannel = new LivingWithTheAnimalsChannel();
+            // load Livin' With The Animals channel
+            TvController.AddChannel(new LivingWithTheAnimalsChannel());
 
             // add editors (must happen *after* data is initialised above, since SMAPI may reload affected assets immediately)
             var editors = Helper.Content.AssetEditors;
@@ -136,6 +136,7 @@ namespace AnimalHusbandryMod.common
                 data[(int)Meat.Duck] = Meat.Duck.GetObjectString();
                 data[(int)Meat.Rabbit] = Meat.Rabbit.GetObjectString();
                 data[(int)Meat.Mutton] = Meat.Mutton.GetObjectString();
+                data[(int)Meat.Ostrich] = Meat.Ostrich.GetObjectString();
 
                 //COOKING
 

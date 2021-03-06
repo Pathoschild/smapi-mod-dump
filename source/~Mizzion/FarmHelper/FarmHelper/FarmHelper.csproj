@@ -7,13 +7,13 @@
     <TargetFramework>net452</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
 
-    <EnableHarmony>true</EnableHarmony>
+    <EnableHarmony>false</EnableHarmony>
 
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
   </ItemGroup>
 
   <ItemGroup>

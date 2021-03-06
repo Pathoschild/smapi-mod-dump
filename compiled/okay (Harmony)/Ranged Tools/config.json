@@ -1,0 +1,16 @@
+{
+  "AxeRange": 1,
+  "PickaxeRange": 1,
+  "HoeRange": 1,
+  "WateringCanRange": 1,
+  "SeedRange": 1,
+  "ObjectPlaceRange": 1,
+  "AxeUsableOnPlayerTile": false,
+  "PickaxeUsableOnPlayerTile": true,
+  "HoeUsableOnPlayerTile": true,
+  "ToolAlwaysFaceClick": true,
+  "WeaponAlwaysFaceClick": true,
+  "ToolHitLocationDisplay": 1,
+  "AllowRangedChargeEffects": false,
+  "CustomRangeOnClickOnly": true
+}

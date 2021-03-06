@@ -1,0 +1,40 @@
+﻿{
+  // Notification messages
+  "travelingMerchant": "마차상인이 마을에 도착했다",
+  "queenSauce": "오늘은 소스의 여왕이 방송하는 날이다",
+  "luckyDay": "오늘은 운이 좋다!",
+  "unluckyDay":  "오늘은 운이 나쁘다", 
+
+  // Festivals
+  "fMsg": "오늘은 {{fest}} (이)가 하는 날이다!",
+  "festival": "축제",
+  "EggFestival": "달걀 축제",
+  "FlowerDance": "봄 꽃 무도회",
+  "Luau": "루아우",
+  "MoonlightJellies": "달빛 해파리의 춤",
+  "ValleyFair": "스타듀밸리 품평회",
+  "SpiritsEve": "성령제",
+  "IceFestival": "얼음 축제",
+  "WinterStar": "겨울 별 축제",
+  "NightMarket":  "야시장",
+  "SecretSantaReminder": "{{charName}} (이)가 너의 비밀 산타다!",
+
+  "Salmonberry": "새먼베리 계절",
+  "Seashells": "조개 껍질이 해변가에 있다",
+  "Blackberry": "블랙베리 계절",
+
+  // Locations
+  "CaveMushroom": "동굴버섯 수확 준비가 끝났다",
+  "CaveFruit": "동굴과일 수확 준비가 끝났다",
+
+  "birthday": "오늘은{{charName}}의 생일!",
+  "birthdayReminder": "오늘 {{charName}}에게 선물주는 것을 잊지말자!",
+  "toolPickup": "{{toolName}} 업그레이드가 완료되었다",
+
+  "readyHarvest": "{{cropName}} 수확 준비가 끝났다",
+  "greenhouse_crops": "온실작물 수확 준비가 끝났다",
+  "autoGrabber" :  "자동 채집기 수확 준비가 끝났다 ",
+  "hayMessage" : "사일로에 건초 {{hayAmt}} 개가 있다",
+  "noHayMessage": "사일로에 건초가 없다",
+  "FishPond" : "물고기 연못 수확 준비가 끝났다"
+}

@@ -35,6 +35,26 @@
       <Link>NOTICE</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="i18n\default.json" />
+    <None Include="I18n.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>I18n.cs</LastGenOutput>
+    </None>
+    <None Include="i18n\es.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="i18n\de.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="i18n\ru.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="i18n\fr.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="i18n\zh.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build" />
@@ -42,6 +62,13 @@
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathoschild.Stardew.ModTranslationClassBuilder">
+      <HintPath>..\packages\Pathoschild.Stardew.ModTranslationClassBuilder.1.0.0\lib\net452\Pathoschild.Stardew.ModTranslationClassBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModEntry.cs" />
@@ -49,6 +76,12 @@
     <Compile Include="ShamelesslyCopiedFromPathoschild.cs" />
     <Compile Include="ToDoList.cs" />
     <Compile Include="ToDoOverlay.cs" />
+    <Compile Include="I18n.cs">
+      <DependentUpon>I18n.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="i18n\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

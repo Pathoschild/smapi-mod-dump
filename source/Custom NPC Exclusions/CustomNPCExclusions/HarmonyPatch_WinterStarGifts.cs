@@ -107,8 +107,8 @@ namespace CustomNPCExclusions
             {
                 if (data.Value.Exists(entry =>
                     entry.StartsWith("All", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from everything
-                    || entry.StartsWith("TownEvent", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from town events
-                    || entry.StartsWith("WinterStar", StringComparison.OrdinalIgnoreCase) //OR this NPC is excluded from the Winter Star event
+                 || entry.StartsWith("TownEvent", StringComparison.OrdinalIgnoreCase) //OR if this NPC is excluded from town events
+                 || entry.StartsWith("WinterStar", StringComparison.OrdinalIgnoreCase) //OR this NPC is excluded from the Winter Star event
                 ))
                 {
                     excluded.Add(data.Key); //add this NPC's name to the excluded list

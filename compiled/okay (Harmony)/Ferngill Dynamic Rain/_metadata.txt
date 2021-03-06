@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/604
+IDs: KoihimeNakamura.DynamicRainAndWind
+update keys: Nexus:604, GitHub:Sakorona/SDVMods

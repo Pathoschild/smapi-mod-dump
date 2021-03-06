@@ -1,0 +1,62 @@
+﻿{
+	//General
+	"mod.name" : "Fishing Assistant",
+	"mod.status.enable" : "Ativado",
+	"mod.status.disable" : "Desativado",
+	"general.position.left" : "Esquerda",
+	"general.position.right" : "Direita",
+	"general.position.top" : "Acima",
+	"general.position.bottom" : "Abaixo",
+	"general.position.upper-right" : "Acima, à direita",
+	"general.position.upper-left" : "Acima, à esquerda",
+	"general.position.lower-right" : "Abaixo, à direita",
+	"general.position.lower-left" : "Abaixo, à esquerda",
+ 
+	//HUD messages
+	"hud.message.mod.toggle" : "{0} Fishing Assistant - Assistente de Pesca.",
+	"hud.message.cast.power" : "{0} Barra de distância Máx..",
+	"hud.message.catch.treasure" : "{0} Pegar tesouro.",
+	"hud.message.request.disable" : "Mod será desativado após execução atual.",
+	"hud.message.force.enable" : "Pressione {0} novamente para forçar ativação.",
+	"hud.message.low.stamina" : "Pouca energia.",
+	"hud.message.inventory.full" : "Inventário cheio.",
+	"hud.message.auto.disable" : "Desativar mod automaticamente em {0}",
+	"hud.message.config.saved" : "Salvar nova configuração",
+ 
+	//Config Menu
+	"menu.config.header.control": "Controle",
+	"menu.config.button.toggle.mod": "Tecla de alternância de mod",
+	"menu.config.button.max.cast.power": "Tecla de barra de distância",
+	"menu.config.button.catch.treasure": "Tecla de pegar tesouros",
+	"menu.config.button.open.menu": "Tecla menu button Abrir botão ",
+	"menu.config.reset.control": "Resetar",
+	"menu.config.press-new-key": "Pressione nova tecla...",
+ 
+	"menu.config.header.general": "Geral",
+	"menu.config.label.mod.status.position": "Status de posição do mod",
+	"menu.config.label.enable.auto.pause.fishing": "Ativar pausa automática ao pescar",
+	"menu.config.label.pause.fishing.time": "Tempo de pausa ao pescar",
+ 
+	"menu.config.header.fishing.rod": "Vara de pesca",
+	"menu.config.label.infinite.bait": "Isca infinita",
+	"menu.config.label.infinite.tackle": "Anzol infinito",
+ 
+	"menu.config.header.mini-game": "Mini-game de pesca",
+	"menu.config.label.always.perfect": "Perfeição absoluta",
+	"menu.config.label.always.catch.double": "Sempre capturar dois peixes",
+	"menu.config.label.always.treasure": "Sempre encontrar Tesouros",
+	"menu.config.label.instant.fishbite": "Mordida instantânea de peixe",
+	"menu.config.label.instant.catch.fish": "Captura instantânea de peixe",
+	"menu.config.label.instant.catch.treasure": "Captura instantânea de tesouro",
+	"menu.config.label.fish.difficulty.multiplier": "Multiplicador de dificuldade de peixe",
+	"menu.config.label.fish.difficulty.additive": "Adicional de Dificuldade de Peixes",
+	"menu.config.description.fish.difficulty": "Outros valores fora esses que podem ser selecionados nos arquivos externos de configurações.",
+	"menu.config.description.android-config-note": "Você pode mudar as teclas nos arquivos de configuração externos para os mods Fishing Assistant e Virtual Keyboard.",
+ 
+	"menu.config.header.fish.info": "Informações sobre os peixes",
+	"menu.config.label.fishinfo.display.position": "Localização dos peixes",
+	"menu.config.label.show.fish.name": "Mostrar nome dos peixes",
+	"menu.config.label.show.treasure": "Mostrar tesouros",
+	"menu.config.label.show.uncaught.fish": "Mostrar peixes não capturados",
+	"menu.config.label.show.legendaly.fish": "Mostrar peixes lendários",
+}

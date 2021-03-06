@@ -1,0 +1,14 @@
+url:
+   https://github.com/PhillZitt/BetterBombs.git
+
+mods:
+   Better Bombs
+
+latest commit:
+   commit 1909b6547fc13965bdb0f5ce4a47ce56042d624a
+   Author: PhillZitt <phill.zitt@gmail.com>
+   Date:   Tue Jan 26 20:17:50 2021 -0700
+   
+       Add note about large radius values
+       Bump version
+   

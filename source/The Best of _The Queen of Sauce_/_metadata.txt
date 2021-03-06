@@ -1,0 +1,13 @@
+url:
+   https://github.com/Bpendragon/Best-of-Queen-of-Sauce.git
+
+mods:
+   The Best of "The Queen of Sauce"
+
+latest commit:
+   commit d8956749ceb99dad2c337f56b6f7fc048a3bcbde
+   Author: David Camp <Bpendragon@users.noreply.github.com>
+   Date:   Thu Mar 4 13:45:07 2021 -0800
+   
+       Added French tranlation from [Schneitizel](https://github.com/Schneitizel)
+   

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8203
+IDs: blueberry.GreenhouseEntryBegone
+update keys: Nexus:8203, GitHub:b-b-blueberry/GreenhouseEntryPatch

@@ -1,0 +1,49 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RuntimeIdentifiers>win-x86;win7-x86;win-x64;win7-x64</RuntimeIdentifiers>
+    <GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley</GamePath>
+    <PlatformTarget>x86</PlatformTarget>
+	<EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+	<Compile Include="UpgradablePan.cs"/>
+	<Compile Include="PanHat.cs"/>
+	<Compile Include="UtilityPatches.cs"/>
+	<Compile Include="ToolPatches.cs"/>
+	<Compile Include="PanPatches.cs"/>
+	<Compile Include="ItemPatches.cs"/>
+	<Compile Include="InventoryPagePatches.cs"/>
+	<Compile Include="FarmerRendererPatches.cs"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build"/>
+    <Reference Include="Microsoft.Build.Framework"/>
+    <Reference Include="Microsoft.Build.Utilities.v4.0"/>
+    <Reference Include="System"/>
+    <Reference Include="System.Core"/>
+    <Reference Include="System.IO.Compression"/>
+    <Reference Include="System.Web.Extensions"/>
+    <Reference Include="System.Xml.Linq"/>
+    <Reference Include="System.Data.DataSetExtensions"/>
+    <Reference Include="Microsoft.CSharp"/>
+    <Reference Include="System.Data"/>
+    <Reference Include="System.Net.Http"/>
+    <Reference Include="System.Xml"/>
+	<Reference Include="System.ValueTuple"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2"/>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+</Project>

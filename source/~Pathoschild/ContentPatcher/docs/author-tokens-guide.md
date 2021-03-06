@@ -201,7 +201,8 @@ This can also be used with range tokens:
 <td>Weather</td>
 <td>
 
-The weather type. Possible values:
+The weather type in the current world area (or the area specified with a
+[`LocationContext`](#playertype) argument). Possible values:
 
 value   | meaning
 ------- | -------
@@ -210,6 +211,9 @@ value   | meaning
 `Storm` | Rain is falling with lightning.
 `Snow`  | Snow is falling.
 `Wind`  | The wind is blowing with visible debris (e.g. flower petals in spring and leaves in fall).
+
+ℹ See _[update rate](author-guide.md#update-rate)_ before using this token without specifying a
+location context.
 
 </td>
 </tr>
@@ -229,6 +233,38 @@ The year number (like `1` or `2`).
 <tr>
 <th>condition</th>
 <th>purpose</th>
+</tr>
+
+<tr valign="top">
+<td>DailyLuck</td>
+<td>
+
+The [daily luck](https://stardewvalleywiki.com/Luck) for the current player (or the player specified
+with a [`PlayerType`](#playertype) argument).
+
+This is a decimal value usually between -0.1 and 0.1. This **cannot** be compared using the
+`{{Range}}` token, which produces a range of integer values. The value can only be safely compared
+using [query expressions](#query-expressions). For example:
+
+```js
+"When": {
+   "Query: {{DailyLuck}} < 0": true // spirits unhappy today
+}
+```
+
+</td>
+</tr>
+
+<tr valign="top">
+<td>FarmhouseUpgrade</td>
+<td>
+
+The [farmhouse upgrade level](https://stardewvalleywiki.com/Farmhouse#Upgrades) for the current
+player (or the player specified with a [`PlayerType`](#playertype) argument). The normal values are
+0 (initial farmhouse), 1 (adds kitchen), 2 (add children's bedroom), and 3 (adds cellar). Mods may
+add upgrade levels beyond that.
+
+</td>
 </tr>
 
 <tr valign="top">
@@ -378,10 +414,31 @@ Whether the player is outdoors. Possible values: `true`, `false`.
 </tr>
 
 <tr valign="top">
-<td>LocationName</td>
+<td>LocationContext</td>
 <td>
 
-The internal name of the player's current location (visible using [Debug Mode](https://www.nexusmods.com/stardewvalley/mods/679)).
+The general world area recognize by the game. Possible values: `Island` (locations on
+[Ginger Island](https://stardewvalleywiki.com/Ginger_Island)) and `Valley` (anywhere else).
+
+ℹ See _[update rate](author-guide.md#update-rate)_ before using this token.
+
+</td>
+</tr>
+
+<tr valign="top">
+<td>LocationName<br />LocationUniqueName</td>
+<td>
+
+The internal name of the player's current location, like `FarmHouse` or `Town`. You can see the name
+for the current location using [Debug Mode](https://www.nexusmods.com/stardewvalley/mods/679) or
+[`patch summary`](author-guide.md#patch-summary).
+
+Notes:
+* Temporary festival maps always have the location name "Temp".
+* `LocationName` and `LocationUniqueName` are identical except inside constructed buildings, cabins,
+  and farmhand cellars. For example, a coop might have `LocationName` "Deluxe Coop" and
+  `LocationUniqueName` "Coop7379e3db-1c12-4963-bb93-23a1323a25f7". The `LocationUniqueName` can be
+  used as the target location for warp properties.
 
 ℹ See _[update rate](author-guide.md#update-rate)_ before using this token.
 
@@ -506,17 +563,6 @@ conditional map spawn logic.
 
 The [farm cave](https://stardewvalleywiki.com/The_Cave) type. Possible values: `None`, `Bats`,
 `Mushrooms`.
-
-</td>
-</tr>
-
-<tr valign="top">
-<td>FarmhouseUpgrade</td>
-<td>
-
-The [farmhouse upgrade level](https://stardewvalleywiki.com/Farmhouse#Upgrades). The normal values
-are 0 (initial farmhouse), 1 (adds kitchen), 2 (add children's bedroom), and 3 (adds cellar). Mods
-may add upgrade levels beyond that.
 
 </td>
 </tr>
@@ -672,7 +718,7 @@ parsed input matches one of the above forms.
 <tr>
 <th>condition</th>
 <th>purpose</th>
-
+</tr>
 <tr valign="top">
 <td>Lowercase<br />Uppercase</td>
 <td>
@@ -693,6 +739,31 @@ Change to all capital letters.<br />Example: `{{Uppercase:It's a warm {{Season}}
 
 </dd>
 </dl>
+</td>
+</tr>
+<tr valign="top">
+<td>Render</td>
+<td>
+
+Get the string representation of the input argument. This is mainly useful in `When` blocks to
+compare the rendered value directly (instead of comparing token set values):
+
+```js
+"When": {
+   "Render:{{season}} {{day}}": "spring 14"
+}
+```
+
+This isn't needed in other contexts, where you can use token placeholders directly. For example,
+these two entries are equivalent:
+
+```js
+"Entries": {
+   "Mon": "It's a lovely {{season}} {{day}}!",
+   "Mon": "It's a lovely {{Render: {{season}} {{day}} }}!",
+}
+```
+
 </td>
 </tr>
 </table>
@@ -974,7 +1045,7 @@ patch is applied. See below for more details.
 
 ```js
 {
-   "Format": "1.19.0",
+   "Format": "1.20.0",
    "ConfigSchema": {
       "Material": {
          "AllowValues": "Wood, Metal",
@@ -1210,7 +1281,7 @@ crop sprites depending on the weather:
 
 ```js
 {
-   "Format": "1.19.0",
+   "Format": "1.20.0",
    "DynamicTokens": [
       {
          "Name": "Style",
@@ -1243,7 +1314,7 @@ Query expressions are evaluated using the `Query` token. It can be used as a pla
 and can include nested tokens. Here's an example which includes all of those:
 ```js
 {
-   "Format": "1.19.0",
+   "Format": "1.20.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -1368,7 +1439,7 @@ which work just like normal Content Patcher tokens. For example, this patch uses
 Assets:
 ```js
 {
-   "Format": "1.19.0",
+   "Format": "1.20.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -1388,7 +1459,7 @@ To use a mod-provided token, at least one of these must be true:
   which lists the mod:
   ```js
   {
-     "Format": "1.19.0",
+     "Format": "1.20.0",
      "Changes": [
         {
            "Action": "EditData",
@@ -1406,6 +1477,21 @@ To use a mod-provided token, at least one of these must be true:
 
 ## Constants
 These are predefined values used in tokens.
+
+### `LocationContext`
+value | meaning
+----- | -------
+`Island` | Locations on the [Ginger Island](https://stardewvalleywiki.com/Ginger_Island).
+`Valley` | Any other location.
+
+The location context can be specified as an [input argument](#input-arguments) for tokens that
+support it, defaulting to the current location. For example:
+
+example | meaning
+------- | -------
+`{{Weather}}`<br />`{{Weather: current}}` | Get weather for the current location.
+`{{Weather: island}}` | Get the weather on Ginger Island.
+`{{Weather: valley}}` | Get the weather in the valley.
 
 ### `PlayerType`
 value | meaning

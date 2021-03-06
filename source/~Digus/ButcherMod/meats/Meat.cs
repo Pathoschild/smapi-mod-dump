@@ -30,6 +30,8 @@ namespace AnimalHusbandryMod.meats
         [Description("Rabbit")]
         Rabbit = 643,
         [Description("Mutton")]
-        Mutton = 644        
+        Mutton = 644,
+        [Description("Ostrich")]
+        Ostrich = 620
     }
 }

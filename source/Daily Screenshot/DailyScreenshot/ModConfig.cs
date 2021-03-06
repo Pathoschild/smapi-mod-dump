@@ -64,6 +64,21 @@ namespace DailyScreenshot
         public const int DEFAULT_END_TIME = 2600;
 
         /// <summary>
+        /// Configurable toggle for auditory effects when taking screenshot.
+        /// </summary>
+        public bool auditoryEffects = true;
+
+        /// <summary>
+        /// Configurable toggle for visual effects when taking screenshot.
+        /// </summary>
+        public bool visualEffects = true;
+
+        /// <summary>
+        /// Configurable toggle for ingame notifications when taking screenshot.
+        /// </summary>
+        public bool screenshotNotifications = true;
+
+        /// <summary>
         /// Rules loaded from the config file
         /// </summary>
         public List<ModRule> SnapshotRules { get; set; } = new List<ModRule>();

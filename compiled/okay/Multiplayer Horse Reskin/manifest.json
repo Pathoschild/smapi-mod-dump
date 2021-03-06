@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Multiplayer Horse Reskin",
   "Author": "DelphinWave",
-  "Version": "1.0.4",
+  "Version": "1.1.2",
   "Description": "Choose different skins for horses in multiplayer",
   "UniqueID": "DelphinWave.MultiplayerHorseReskin",
   "EntryDll": "MultiplayerHorseReskin.dll",

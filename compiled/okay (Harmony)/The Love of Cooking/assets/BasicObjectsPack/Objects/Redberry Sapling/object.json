@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.redberry_seeds",
     "Description": "...",
     "Category": "Seeds",
@@ -9,14 +8,12 @@
     "Price": 820,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 1800,
     "PurchaseRequirements": null,
-
-    // Gifting
-    "GiftTastes": {
+    "GiftTastes": {},
+    "NameLocalization": {
+        "en": "Redberry Sapling"
     }
 }

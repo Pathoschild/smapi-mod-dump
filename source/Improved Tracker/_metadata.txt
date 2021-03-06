@@ -1,0 +1,13 @@
+url:
+   https://github.com/AHilyard/ImprovedTracker.git
+
+mods:
+   Improved Tracker
+
+latest commit:
+   commit 3fad5d265b9a622874fca014d45d5192ce0983da
+   Author: Anthony Hilyard <anthony.hilyard@gmail.com>
+   Date:   Sat Feb 13 16:47:06 2021 -0800
+   
+       Updated icon.png, since it was ugly.
+   

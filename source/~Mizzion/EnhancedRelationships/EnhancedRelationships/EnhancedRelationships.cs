@@ -25,6 +25,7 @@ namespace EnhancedRelationships
         private List<NPC> BirthdayMessageQueue = new List<NPC>();
         private IDictionary<string, int> GaveNpcGift = new Dictionary<string, int>();
         private IDictionary<string, string> NpcGifts = new Dictionary<string, string>();
+        private bool debugging = true;
         public bool CanEdit<T>(IAssetInfo asset)
         {
             return asset.AssetNameEquals(@"Data\mail");
@@ -87,38 +88,54 @@ namespace EnhancedRelationships
         }
         private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
         {
-            //Birthday tests was in AfterDay Started
-            this.BirthdayMessageQueue.Clear();
-            var today = SDate.Now();
-                if(today.DaysSinceStart != 1)
+            try
             {
-                var yesterday = SDate.Now().AddDays(-1);
-                foreach (GameLocation location in Game1.locations)
+                //Birthday tests was in AfterDay Started
+                this.BirthdayMessageQueue.Clear();
+                var today = SDate.Now();
+                if (today.DaysSinceStart != 1)
                 {
-                    foreach (NPC characterz in location.characters)
-                        DoLogic(characterz, yesterday.Day, yesterday.Season);
-                }
+                    var yesterday = SDate.Now().AddDays(-1);
+                    foreach (GameLocation location in Game1.locations)
+                    {
+                        foreach (NPC characterz in location.characters)
+                            DoLogic(characterz, yesterday.Day, yesterday.Season);
+                    }
 
-                foreach (NPC birthdayMessage in this.BirthdayMessageQueue)
-                    birthdayMessage.CurrentDialogue.Push(new Dialogue(PickRandomDialogue(), birthdayMessage));
+                    foreach (NPC birthdayMessage in this.BirthdayMessageQueue)
+                        birthdayMessage.CurrentDialogue.Push(new Dialogue(PickRandomDialogue(), birthdayMessage));
+                }
             }
+            catch (Exception ex)
+            {
+                this.Monitor.Log(ex.ToString());
+            }
+           
         }
        
         private void SaveEvents_BeforeSave(object sender, EventArgs e)
         {
             if (!this.Config.GetMail)
                 return;
-            var tomorrow = SDate.Now().AddDays(1);
-            foreach (GameLocation location in Game1.locations)
+            try
             {
-                foreach (NPC npc in location.characters)
+                var tomorrow = SDate.Now().AddDays(1);
+                foreach (GameLocation location in Game1.locations)
                 {
-                    if (npc.isBirthday(tomorrow.Season, tomorrow.Day))
+                    foreach (NPC npc in location.characters)
                     {
-                        Game1.mailbox.Add($"birthDayMail{npc.Name}");
+                        if (npc.isBirthday(tomorrow.Season, tomorrow.Day))
+                        {
+                            Game1.mailbox.Add($"birthDayMail{npc.Name}");
+                        }
                     }
                 }
-            }            
+            }
+            catch (Exception ex)
+            {
+                this.Monitor.Log(ex.ToString());
+            }
+                      
         }
         private void DoLogic(NPC npc, int day, string season)
         {
@@ -140,11 +157,16 @@ namespace EnhancedRelationships
             if (this.Config.EnableMissedBirthdays && npc.isBirthday(season, day) && GiftGiven == false)
             {
                 int amount = !this.Config.EnableRounded ? (int)Math.Floor((double)basicAmount * (double)this.Config.BirthdayMultiplier * (double)this.Config.BirthdayHeartMultiplier[index] + (double)basicAmount * (double)this.Config.HeartMultiplier[index]) : (int)Math.Ceiling((double)basicAmount * (double)this.Config.BirthdayMultiplier * (double)this.Config.BirthdayHeartMultiplier[index] + (double)basicAmount * (double)this.Config.HeartMultiplier[index]);
-                amount = amount * -1;
+                amount *= -1;
                 Game1.player.changeFriendship(amount, npc);
                 this.BirthdayMessageQueue.Add(npc);
+                if (debugging)
+                {
+                    this.Monitor.Log($"Message should have been added for {npc.Name}");
+                }
+
                 GaveNpcGift.Remove(npc.Name);
-                //this.Monitor.Log($"Decreased Friendship {amount} With : {npc.Name}");
+                this.Monitor.Log($"Decreased Friendship {amount} With : {npc.Name}");
             }
             else
             {
@@ -152,7 +174,11 @@ namespace EnhancedRelationships
                     return;
                 int amount = !this.Config.EnableRounded ? (int)Math.Floor((double)basicAmount * (double)this.Config.HeartMultiplier[index]) : (int)Math.Ceiling((double)basicAmount * (double)this.Config.HeartMultiplier[index]);
                 Player.changeFriendship(amount, npc);
-                //this.Monitor.Log($"Increased Friendship {amount} With : {npc.Name}");
+                if (debugging)
+                {
+                    this.Monitor.Log($"Increased Friendship {amount} With : {npc.Name}");
+                }
+                
             }
         }
         private string PickRandomDialogue()
@@ -176,13 +202,13 @@ namespace EnhancedRelationships
                 if (o.Value.Contains('/'))
                 {
                    foreach (var n in o.Value.Split('/')[1].Split(' '))
-                    {
-                        StardewValley.Object obj = new StardewValley.Object(Convert.ToInt32(n), 1, false, -1, 0);
-                        if(obj.DisplayName != "Error Item")
-                            giftNames += $"{obj.DisplayName}, ";
-                    }
-                    results.Add(o.Key, giftNames.Substring(0, giftNames.Length - 2));
-                    giftNames = "";
+                   {
+                       StardewValley.Object obj = new StardewValley.Object(Convert.ToInt32(n), 1, false, -1, 0);
+                       if(obj.DisplayName != "Error Item")
+                           giftNames += $"{obj.DisplayName}, ";
+                   }
+                   results.Add(o.Key, giftNames.Substring(0, giftNames.Length - 2));
+                   giftNames = "";
                 }
             }
             return results;

@@ -9,6 +9,8 @@
 *************************************************/
 
 using SpriteMaster.Types;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions {
@@ -45,6 +47,14 @@ namespace SpriteMaster.Extensions {
 				return str;
 			}
 			return $"{quote}{str}{quote}";
+		}
+
+		private static readonly char[] NewlineChars = new[] { '\n', '\r' };
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IEnumerable<string> Lines (this string str, bool removeEmpty = false) {
+			var strings = str.Split(NewlineChars);
+			var validLines = removeEmpty ? strings.Where(l => (l != null && l.Length > 0)) : strings.Where(l => l != null);
+			return validLines;
 		}
 	}
 }

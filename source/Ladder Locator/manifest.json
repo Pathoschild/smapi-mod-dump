@@ -11,10 +11,10 @@
 {
     "Name": "LadderLocator",
     "Author": "ChaosEnergy",
-    "Version": "1.2.1-unofficial.1-Strobe",
-    "Description": "Finds ladders in the mines.",
+    "Version": "1.4.0",
+    "Description": "Finds ladders and ores in the mines.",
     "UniqueID": "ChaosEnergy.LadderLocator",
     "EntryDll": "LadderLocator.dll",
-    "MinimumApiVersion": "2.9",
+    "MinimumApiVersion": "3.9",
     "UpdateKeys": [ "Nexus:3094" ]
 }

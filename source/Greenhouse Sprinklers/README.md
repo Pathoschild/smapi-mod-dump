@@ -122,7 +122,7 @@ This mod exposes a single token `Bpendragon.GreenhouseSprinklers/GreenHouseLevel
 * `"0"` - No Upgrades applied
 * `"1"` - First Upgrade applied, in my visual updates this adds a "controller" near the outside door, and some Quality Sprinklers in the rafters
 * `"2"` - Second Upgrade applied, rafter sprinklers upgraded to Iridium
-* `"3"` - All upgrades applid. Adds a pipe from the controller into the ground (indicating that it's also running teh underground sprinklers)
+* `"3"` - All upgrades applied. Adds a pipe from the controller into the ground (indicating that it's also running teh underground sprinklers)
 
 If you want to see visual updates in other mods/content packs, please ask those creators *nicely* to add the integration.
 
@@ -134,5 +134,7 @@ If you want to see visual updates in other mods/content packs, please ask those 
 * Italian - [Leecanit](https://github.com/LeecanIt)
 * Chinese - [Cccchelsea226](https://github.com/Cccchelsea226)
 * Spanish - [ManHeII](https://github.com/ManHeII)
+* Korean - [Wally232](https://github.com/Wally232)
+* Russian - [CatMartin](https://github.com/CatMartin)
 
 To help with translating this mod please see [this issue](https://github.com/StardewModders/mod-translations/issues/38) at the `StardewModders/mod-translations` repo

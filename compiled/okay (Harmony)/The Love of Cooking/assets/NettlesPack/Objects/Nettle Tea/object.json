@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.nettletea",
     "Description": "...",
     "Category": "ArtisanGoods",
@@ -21,19 +20,57 @@
     "Price": 85,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,
     "PurchaseRequirements": null,
-
-    // Gifting
     "GiftTastes": {
-        "Love": [ "Caroline", "Leah" ],
-        "Like": [ "Gus", "Linus", "Evelyn", "Harvey" ],
-        "Neutral": [ "Marnie", "Clint", "George", "Sebastian", "Abigail", "Elliott", "Emily", "Haley", "Jodi", "Kent", "Krobus", "Lewis", "Linus", "Maru", "Pierre", "Robin", "Willy", "Wizard" ],
-        "Dislike": [ "Sam", "Haley", "Alex", "Kent", "Sandy", "Dwarf", "Demetrius" ],
-        "Hate": [ "Shane", "Jas", "" ]
+        "Love": [
+            "Caroline",
+            "Leah"
+        ],
+        "Like": [
+            "Gus",
+            "Linus",
+            "Evelyn",
+            "Harvey"
+        ],
+        "Neutral": [
+            "Marnie",
+            "Clint",
+            "George",
+            "Sebastian",
+            "Abigail",
+            "Elliott",
+            "Emily",
+            "Haley",
+            "Jodi",
+            "Kent",
+            "Krobus",
+            "Lewis",
+            "Linus",
+            "Maru",
+            "Pierre",
+            "Robin",
+            "Willy",
+            "Wizard"
+        ],
+        "Dislike": [
+            "Sam",
+            "Haley",
+            "Alex",
+            "Kent",
+            "Sandy",
+            "Dwarf",
+            "Demetrius"
+        ],
+        "Hate": [
+            "Shane",
+            "Jas",
+            ""
+        ]
+    },
+    "NameLocalization": {
+        "en": "Nettle Tea"
     }
 }

@@ -1,0 +1,13 @@
+url:
+   https://github.com/kakashigr/stardew-radioactivetools.git
+
+mods:
+   Radioactive Tools
+
+latest commit:
+   commit e029ec2ae1e90effd992ce4cb52d617b87403fec
+   Author: kakashigr <kakashigr@users.noreply.github.com>
+   Date:   Thu Feb 18 02:27:19 2021 +0200
+   
+       remove DS_Store files
+   

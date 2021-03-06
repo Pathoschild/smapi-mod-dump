@@ -71,24 +71,24 @@ namespace Increased_Artifact_Spots
                     continue;
 
                 for (int i = 0; i < Config.AverageArtifactSpots; i++)
-                    {
-                        int randomWidth = Game1.random.Next(loc.Map.DisplayWidth / Game1.tileSize);
-                        int randomHeight = Game1.random.Next(loc.Map.DisplayHeight / Game1.tileSize);
-                        Vector2 newLoc = new Vector2(randomWidth, randomHeight);
-                        if (!loc.isTileLocationTotallyClearAndPlaceable(newLoc) ||
-                            loc.getTileIndexAt(randomWidth, randomHeight, "AlwaysFront") != -1 ||
-                            (loc.getTileIndexAt(randomWidth, randomHeight, "Front") != -1 ||
-                             loc.isBehindBush(newLoc)) ||
-                            (loc.doesTileHaveProperty(randomWidth, randomHeight, "Diggable", "Back") == null &&
-                             (!Game1.currentSeason.Equals("winter") ||
-                              loc.doesTileHaveProperty(randomWidth, randomHeight, "Type", "Back") == null ||
-                              !loc.doesTileHaveProperty(randomWidth, randomHeight, "Type", "Back").Equals("Grass"))) ||
-                            (loc.Name.Equals("Forest") && randomWidth >= 93 && randomHeight <= 22)) continue;
-                        loc.objects.Add(newLoc, new Object(newLoc, 590, 1));
-                        locations.Add(new Tuple<string, Vector2>(loc.Name, newLoc));
-                        //locDictionary.Add(loc.Name, newLoc);
-                        SpawnedSpots++;
-                    }
+                {
+                    int randomWidth = Game1.random.Next(loc.Map.DisplayWidth / Game1.tileSize);
+                    int randomHeight = Game1.random.Next(loc.Map.DisplayHeight / Game1.tileSize);
+                    Vector2 newLoc = new Vector2(randomWidth, randomHeight);
+                    if (!loc.isTileLocationTotallyClearAndPlaceable(newLoc) ||
+                        loc.getTileIndexAt(randomWidth, randomHeight, "AlwaysFront") != -1 ||
+                        (loc.getTileIndexAt(randomWidth, randomHeight, "Front") != -1 ||
+                         loc.isBehindBush(newLoc)) ||
+                        (loc.doesTileHaveProperty(randomWidth, randomHeight, "Diggable", "Back") == null &&
+                         (!Game1.currentSeason.Equals("winter") ||
+                          loc.doesTileHaveProperty(randomWidth, randomHeight, "Type", "Back") == null ||
+                          !loc.doesTileHaveProperty(randomWidth, randomHeight, "Type", "Back").Equals("Grass"))) ||
+                        (loc.Name.Equals("Forest") && randomWidth >= 93 && randomHeight <= 22)) continue;
+                    loc.objects.Add(newLoc, new Object(newLoc, 590, 1));
+                    locations.Add(new Tuple<string, Vector2>(loc.Name, newLoc));
+                    //locDictionary.Add(loc.Name, newLoc);
+                    SpawnedSpots++;
+                }
                 if (debugging)
                     this.Monitor.Log($"Location Name: {loc.Name}, IsFarm: {loc.IsFarm}, IsOutDoors: {loc.IsOutdoors}.", LogLevel.Alert);
             }

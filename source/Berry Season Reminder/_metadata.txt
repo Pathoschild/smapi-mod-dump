@@ -1,0 +1,13 @@
+url:
+   https://github.com/AHilyard/BerrySeasonReminder.git
+
+mods:
+   Berry Season Reminder
+
+latest commit:
+   commit cfaca9eef06d9b698d2ec6da874842d63621d1cc
+   Author: Anthony Hilyard <anthony.hilyard@gmail.com>
+   Date:   Sat Feb 13 22:10:43 2021 -0800
+   
+       Updated manifest with correct UniqueID.
+   

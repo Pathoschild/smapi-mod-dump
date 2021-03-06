@@ -33,15 +33,13 @@
   "ShowParentNames": false,
   "DisableCustomSpousesRooms": false,
   "BuildAllSpousesRooms": true,
-  "SpouseRoomOrder": ",Abigail",
+  "SpouseRoomOrder": "Abigail",
+  "SpouseSleepOrder": "Abigail",
   "ExistingSpouseRoomOffsetX": 0,
   "ExistingSpouseRoomOffsetY": 0,
-  "CustomBed": false,
-  "BedWidth": 3,
-  "SleepOnCovers": false,
-  "TransparentSheets": true,
-  "SheetTransparency": 0.75,
+  "CustomBed": true,
+  "BedWidth": 8,
+  "SheetTransparency": 1.0,
   "ExtraKidsRoomWidth": 0,
-  "ExistingKidsRoomOffsetX": 0,
-  "ExistingKidsRoomOffsetY": 0
+  "ExtraCribs": 0
 }

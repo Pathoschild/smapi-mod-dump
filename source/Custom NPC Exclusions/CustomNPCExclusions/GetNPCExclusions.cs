@@ -18,6 +18,9 @@ namespace CustomNPCExclusions
 {
     public partial class ModEntry
     {
+        /// <summary>The set of characters that may separate each "entry" in an NPC's exclusion data. Any number or combination of them is allowed between each asset.</summary>
+        private static readonly char[] delimiters = new[] { ' ', ',', '/', '\\' };
+
         private static int cacheTime = 0;
         private static int cacheDays = 0;
         /// <summary>The current cache of NPC exclusion data. <see cref="ExclusionData"/> should be referenced instead.</summary>
@@ -42,9 +45,10 @@ namespace CustomNPCExclusions
         /// <summary>Loads and parses the current exclusion data for a specific NPC name.</summary>
         /// <param name="name">The name of the NPC.</param>
         /// <returns>A list of each entry in this NPC's exclusion data.</returns>
-        public static List<string> GetNPCExclusions(string name)
+        public static List<string> GetNPCExclusions(string name, bool forceCacheUpdate = false)
         {
-            char[] delimiters = new[] { ' ', ',', '/', '\\' }; //allowed characters between each "entry" in an NPC's exclusion data
+            if (forceCacheUpdate)
+                exclusionData = null; //clear cached exclusion data
 
             string dataForThisNPC = null;
             foreach (string key in ExclusionData.Keys) //for each NPC name in the exclusion data
@@ -63,10 +67,12 @@ namespace CustomNPCExclusions
         }
 
         /// <summary>Loads and parses the current exclusion data for all NPC names.</summary>
+        /// <param name="forceCacheUpdate">If true, exclusion data will be cleared and reloaded before use.</param>
         /// <returns>A case-insensitive dictionary of NPC names (keys) and lists of exclusion data entries (values).</returns>
-        public static Dictionary<string, List<string>> GetAllNPCExclusions()
+        public static Dictionary<string, List<string>> GetAllNPCExclusions(bool forceCacheUpdate = false)
         {
-            char[] delimiters = new[] { ' ', ',', '/', '\\' }; //allowed characters between each "entry" in an NPC's exclusion data
+            if (forceCacheUpdate)
+                exclusionData = null; //clear cached exclusion data
 
             Dictionary<string, List<string>> parsedExclusions = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase); //create a case-insensitive exclusion dictionary
 

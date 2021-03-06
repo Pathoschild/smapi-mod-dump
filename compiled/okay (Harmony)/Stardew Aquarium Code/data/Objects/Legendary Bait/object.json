@@ -13,29 +13,29 @@
 		/*gift tastes go here*/
 	},
 	"NameLocalization": {
-		//"ko": "",
-		//"fr": "",
-		//"pt": "",
-		//"ru": "",
-		//"zh": "",
-		//"es": "",
-		//"de": "H",
-		//"hu": "", *Hungarian
-		//"it": "", *Italian
-		//"ja": "", *Japanese
-		//"tr": "", *Turkish
+		"ko": "전설의 미끼",
+		//"fr": "", //French
+		//"pt": "", //Portuguese
+		//"ru": "", //Russian
+		//"zh": "", //Chinese
+		//"es": "", //Spanish
+		//"de": "",//German
+		//"hu": "", //Hungarian
+		//"it": "", //Italian
+		//"ja": "", //Japanese
+		//"tr": "", //Turkish
 	},
 	"DescriptionLocalization": {
-		//"ko": "",
-		//"fr": "",
-		//"pt": "",
-		//"ru": "",
-		//"zh": "",
-		//"es": "",
-		//"de": "",
-		//"hu": "", *Hungarian
-		//"it": "", *Italian
-		//"ja": "", *Japanese
-		//"tr": "", *Turkish
+		"ko": "아주 희귀한 물고기들이 이 미끼에 이끌립니다...",
+		//"fr": "", //French
+		//"pt": "", //Portuguese
+		//"ru": "", //Russian
+		//"zh": "", //Chinese
+		//"es": "", //Spanish
+		//"de": "", //German
+		//"hu": "", //Hungarian
+		//"it": "", //Italian
+		//"ja": "", //Japanese
+		//"tr": "", //Turkish
 	}
 }

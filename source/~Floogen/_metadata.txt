@@ -1,0 +1,17 @@
+url:
+   https://github.com/Floogen/GreenhouseGatherers.git
+
+mods:
+   Greenhouse Gatherers
+   Greenhouse Gatherers Automate
+
+latest commit:
+   commit 475a72fc479bedfd11b9aad2ac93aa400e06bfaa
+   Merge: 205d334 cfcea7f
+   Author: Floogen <31755155+Floogen@users.noreply.github.com>
+   Date:   Wed Mar 3 16:33:57 2021 -0600
+   
+       v1.2.0 released
+       
+       Fix for DoJunimosEatExcessCrops and Expanded Storage support.
+   

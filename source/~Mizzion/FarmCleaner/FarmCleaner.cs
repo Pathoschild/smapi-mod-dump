@@ -10,15 +10,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Drawing;
 using System.Linq;
 using FarmCleaner.Framework.Configs;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using SObject = StardewValley.Object;

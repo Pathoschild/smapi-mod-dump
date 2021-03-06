@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-# Extra Fish Information [1.2.0]
+# Extra Fish Information [1.2.1]
 
 This mod adds extra info to the descriptions for each fish, which will help you find the fish you're hoping to catch!
 
@@ -46,6 +46,7 @@ The mod should work fine with [Teh's Fishing Overhaul](https://www.nexusmods.com
 - 1.1.0: Added configuration ability to choose between 24 hour time and 12 hour time
 - 1.1.1: Fixed localisation issue, should now provide info correctly for non-English localisations (please note that the extra info will still be in English)
 - 1.2.0: Implemented translations, included rough French translation to begin with (please note that location names will still be in English as they are pulled straight from the game code) & implemented better exception handling
+- 1.2.1: Added Portuguese translation (thanks [websterl3o](https://github.com/websterl3o)!)
 
 ## Source code
 Source code is available on my [GitHub](https://github.com/ceasg/StardewValleyMods).

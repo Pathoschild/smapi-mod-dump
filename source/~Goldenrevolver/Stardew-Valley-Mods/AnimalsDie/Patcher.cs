@@ -141,6 +141,16 @@ namespace AnimalsDie
                     return true;
                 }
 
+                if (mod.CheckedToday.Contains(__instance))
+                {
+                    // sometimes the base game calls FarmAnimal.dayUpdate twice because it gets called by both the farm and the animal house
+                    return true;
+                }
+                else
+                {
+                    mod.CheckedToday.Add(__instance);
+                }
+
                 bool wasLeftOutLastNight = false;
                 if (!(animal.home.indoors.Value as AnimalHouse).animals.ContainsKey(animal.myID) && environtment is Farm)
                 {
@@ -170,7 +180,7 @@ namespace AnimalsDie
 
                 if (mod.Config.DeathByStarvation && starvation >= mod.Config.DaysToDieDueToStarvation)
                 {
-                    mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, "starvation"));
+                    mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, Cause.starvation.ToString()));
                     return true;
                 }
 
@@ -184,7 +194,7 @@ namespace AnimalsDie
 
                     if (mod.Config.DeathByDehydrationWithAnimalsNeedWaterMod && dehydration >= mod.Config.DaysToDieDueToDehydrationWithAnimalsNeedWaterMod)
                     {
-                        mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, "dehydration"));
+                        mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, Cause.dehydration.ToString()));
                         return true;
                     }
                 }
@@ -193,7 +203,7 @@ namespace AnimalsDie
 
                 if (mod.Config.DeathByIllness && illness >= mod.Config.IllnessScoreToDie)
                 {
-                    mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, "illness"));
+                    mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, Cause.illness.ToString()));
                     return true;
                 }
                 else if (illness >= mod.Config.IllnessScoreToDie / 2)
@@ -203,7 +213,7 @@ namespace AnimalsDie
 
                 if (mod.Config.DeathByOldAge && mod.ShouldDieOfOldAge(animal))
                 {
-                    mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, "oldAge"));
+                    mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, Cause.oldAge.ToString()));
                     return true;
                 }
 

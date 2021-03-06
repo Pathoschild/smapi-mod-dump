@@ -368,7 +368,7 @@ namespace AnimalHusbandryMod.animals
                 : animalContestInfo.Winner == "Emily"
                     ? i18n.Get("AnimalContest.Dialog.Lewis.EmilyUnnamedParrot")
                     : "%name";
-            String winnerName = animalContestInfo.Winner == "Farmer" ? "@" : animalContestInfo.Winner;
+            String winnerName = animalContestInfo.Winner == "Farmer" ? "@" : Game1.getCharacterFromName(animalContestInfo.Winner).getName(); 
             eventAction.Append($"/stopMusic/pause 200/speak Lewis \"{ i18n.Get("AnimalContest.Dialog.Lewis.WinnerAnnouncement", new { winnerName, winnerAnimalName })}\"");
             eventAction.Append("/playMusic event1/emote Alex 56 true/pause 60");
             if (animalContestInfo.Winner == "Farmer")

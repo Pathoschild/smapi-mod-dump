@@ -116,6 +116,8 @@ namespace SpriteMaster {
 				internal const bool DumpReference = false;
 				internal const bool DumpResample = false;
 			}
+
+			internal const bool MacOSTestMode = false;
 		}
 
 		internal static class DrawState {
@@ -143,7 +145,7 @@ namespace SpriteMaster {
 				SurfaceFormatExt.HasSurfaceFormat("Dxt1a") ? SurfaceFormatExt.GetSurfaceFormat("Dxt1a") : SurfaceFormat.Color
 			};
 			internal static class BlockCompression {
-				internal static bool Enabled = DevEnabled && (!Runtime.IsMacintosh || MacSupported) && true; // I cannot build a proper libnvtt for OSX presently.
+				internal static bool Enabled = DevEnabled && ((!Runtime.IsMacintosh && !Debug.MacOSTestMode) || MacSupported) && true; // I cannot build a proper libnvtt for OSX presently.
 				[ConfigIgnore]
 				private const bool MacSupported = false;
 				private const bool DevEnabled = true;

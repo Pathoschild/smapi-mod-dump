@@ -60,6 +60,8 @@ namespace AnimalsDie
 
         public int IllnessScoreToDie { get; set; } = 7;
 
+        public bool IllnessMessages { get; set; } = true;
+
         public int MinAgeCow { get; set; } = 14;
 
         public int MaxAgeCow { get; set; } = 16;

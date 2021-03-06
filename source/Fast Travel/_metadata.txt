@@ -5,9 +5,12 @@ mods:
    Fast Travel
 
 latest commit:
-   commit 24297ef8c206e9d5cdd941a92585d2a93f569d6b
-   Author: Mckenon <MckenonDev@gmail.com>
-   Date:   Thu Nov 12 23:27:26 2020 -0600
+   commit fe751e42728c39f9d1fea33dc69b1a5d6a976625
+   Merge: 24297ef 8e6b0db
+   Author: Mckenon <DeathGameDev@gmail.com>
+   Date:   Sat Feb 27 17:55:36 2021 -0600
    
-       Code cleanup, require visit to the mines before fast travel in balanced mode
+       Merge pull request #14 from MatheusHAS/feature/fix-when-in-another-languages
+       
+       Feature/fix when in another languages
    

@@ -9,18 +9,13 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.GameData.Movies;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
-using StardewValley.Util;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Object = StardewValley.Object;
@@ -62,8 +57,21 @@ namespace MobileCatalogues
                 case "hat-catalogue":
                     OpenHatMouseCatalogue();
                     break;
+                case "clothing-catalogue":
+                    OpenClothingCatalogue();
+                    break;
+                case "dwarf-catalogue":
+                    OpenDwarfCatalogue();
+                    break;
+                case "krobus-catalogue":
+                    OpenKrobusCatalogue();
+                    break;
+                case "guild-catalogue":
+                    OpenGuildCatalogue();
+                    break;
             }
         }
+
         public static void OpenCatalogue()
         {
             Monitor.Log("Opening catalogue");
@@ -127,6 +135,35 @@ namespace MobileCatalogues
             Monitor.Log("Opening hat catalogue");
             DelayedOpen(new ShopMenu(dict, 0, "HatMouse", null, null, null));
         }
+
+        public static void OpenClothingCatalogue()
+        {
+            Monitor.Log("Opening clothing catalogue");
+            DelayedOpen(new ShopMenu(GetAllClothing(), 0, "Clothing", null, null, null));
+        }
+
+
+        private static void OpenDwarfCatalogue()
+        {
+            var dict = Utility.getDwarfShopStock();
+            AdjustPrices(ref dict, false);
+            Game1.activeClickableMenu = new ShopMenu(dict, 0, "Dwarf", null, null, null);
+        }
+
+        private static void OpenKrobusCatalogue()
+        {
+            var dict = new Sewer().getShadowShopStock();
+            AdjustPrices(ref dict, false);
+            Game1.activeClickableMenu = new ShopMenu(dict, 0, "Krobus", null, null, null);
+        }
+
+        private static void OpenGuildCatalogue()
+        {
+            var dict = Utility.getAdventureShopStock();
+            AdjustPrices(ref dict, false);
+            Game1.activeClickableMenu = new ShopMenu(dict, 0, "Marlon", null, null, null);
+        }
+
 
         private static async void DelayedOpen(ShopMenu menu)
         {
@@ -240,6 +277,21 @@ namespace MobileCatalogues
             return items;
         }
 
+        private static Dictionary<ISalable, int[]> GetAllClothing()
+        {
+            Dictionary<ISalable, int[]> stock = new Dictionary<ISalable, int[]>();
+            foreach (KeyValuePair<int, string> v in Game1.content.Load<Dictionary<int, string>>("Data\\ClothingInformation"))
+            {
+                Clothing c = new Clothing(v.Key);
+                stock.Add(c, new int[]
+                {
+                    Config.FreeClothingCatalogue ? 0 : (int)Math.Round(c.salePrice() * Config.PriceMult),
+                    int.MaxValue
+                });
+            }
+            return stock;
+        }
+
         private static void AdjustPrices(ref Dictionary<ISalable, int[]> dict, bool free)
         {
             ISalable[] keys = dict.Keys.ToArray();
@@ -256,5 +308,6 @@ namespace MobileCatalogues
             }
             return false;
         }
+
     }
 }

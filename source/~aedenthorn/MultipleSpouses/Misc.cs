@@ -25,13 +25,16 @@ namespace MultipleSpouses
     {
         private static Dictionary<string, int> topOfHeadOffsets = new Dictionary<string, int>();
 
-        public static IMonitor Monitor;
-        public static IModHelper Helper;
+        private static IMonitor Monitor;
+        private static IModHelper Helper;
+        private static ModConfig Config;
+
         // call this method from your Entry class
-        public static void Initialize(IMonitor monitor, IModHelper helper)
+        public static void Initialize(IMonitor monitor, IModHelper helper, ModConfig config)
         {
             Monitor = monitor;
             Helper = helper;
+            Config = config;
         }
 
         public static Dictionary<string, NPC> GetSpouses(Farmer farmer, int all)
@@ -78,7 +81,7 @@ namespace MultipleSpouses
 
         public static List<string> ReorderSpousesForRooms(List<string> spousesWithRooms)
         {
-            List<string> configSpouses = ModEntry.config.SpouseRoomOrder.Split(',').ToList();
+            List<string> configSpouses = ModEntry.config.SpouseRoomOrder.Split(',').Where(s => s.Length > 0).ToList();
             List<string> spouses = new List<string>();
             foreach(string s in configSpouses)
             {
@@ -98,6 +101,34 @@ namespace MultipleSpouses
             if(configString != ModEntry.config.SpouseRoomOrder)
             {
                 ModEntry.config.SpouseRoomOrder = configString;
+                Helper.WriteConfig(ModEntry.config);
+            }
+
+            return spouses;
+        }
+
+        public static List<string> ReorderSpousesForSleeping(List<string> sleepSpouses)
+        {
+            List<string> configSpouses = ModEntry.config.SpouseSleepOrder.Split(',').Where(s => s.Length > 0).ToList();
+            List<string> spouses = new List<string>();
+            foreach(string s in configSpouses)
+            {
+                if (sleepSpouses.Contains(s))
+                    spouses.Add(s);
+            }
+
+            foreach (string s in sleepSpouses)
+            {
+                if (!spouses.Contains(s))
+                {
+                    spouses.Add(s);
+                    configSpouses.Add(s);
+                }
+            }
+            string configString = string.Join(",", configSpouses);
+            if(configString != ModEntry.config.SpouseSleepOrder)
+            {
+                ModEntry.config.SpouseSleepOrder = configString;
                 Helper.WriteConfig(ModEntry.config);
             }
 
@@ -167,7 +198,7 @@ namespace MultipleSpouses
                 
                 if(type < ModEntry.config.PercentChanceForSpouseInBed)
                 {
-                    if (bedSpouses.Count < GetBedWidth(farmHouse) && (ModEntry.config.RoommateRomance || !farmer.friendshipData[spouse.Name].IsRoommate()) && HasSleepingAnimation(spouse.Name))
+                    if (bedSpouses.Count < GetBedWidth(farmHouse) - 1 && (ModEntry.config.RoommateRomance || !farmer.friendshipData[spouse.Name].IsRoommate()) && HasSleepingAnimation(spouse.Name))
                     {
                         Monitor.Log("made bed spouse: " + spouse.Name);
                         bedSpouses.Add(spouse.Name);
@@ -391,7 +422,7 @@ namespace MultipleSpouses
             if (ModEntry.config.CustomBed)
             {
                 bool up = fh.upgradeLevel > 1;
-                return Math.Min(up ? 8 : 5, Math.Max(ModEntry.config.BedWidth, 3));
+                return Math.Min(up ? 9 : 6, Math.Max(ModEntry.config.BedWidth, 3));
             }
             else
             {
@@ -563,6 +594,11 @@ namespace MultipleSpouses
             }
             topOfHeadOffsets.Add(name, top);
             return top;
+        }
+
+        public static int GetExtraCribs()
+        {
+            return Math.Min(Config.ExtraCribs, (10 + Config.ExtraKidsRoomWidth) / 3);
         }
     }
 }

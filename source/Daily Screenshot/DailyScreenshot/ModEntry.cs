@@ -394,6 +394,54 @@ namespace DailyScreenshot
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            // add Generic Mod Config Menu integration
+            var gmcmApi = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+            if (gmcmApi != null)
+            {
+                gmcmApi.RegisterModConfig(ModManifest, () => m_config = new ModConfig(), () => Helper.WriteConfig(m_config));
+                gmcmApi.RegisterLabel(ModManifest, "Effect control", "Toggel auditory and visual effects as well as notifications.");
+
+                gmcmApi.RegisterSimpleOption(
+                    ModManifest,
+                    "Auditory effects",
+                    "Toggles if a camera sound plays whenever a screenshot was taken.",
+                    () => m_config.auditoryEffects,
+                    (bool val) => m_config.auditoryEffects = val
+                );
+
+                gmcmApi.RegisterSimpleOption(
+                    ModManifest,
+                    "Visual effects",
+                    "Toggles if the screen flashes whenever a screenshot was taken.",
+                    () => m_config.visualEffects,
+                    (bool val) => m_config.visualEffects = val
+                );
+
+                gmcmApi.RegisterSimpleOption(
+                    ModManifest,
+                    "Notifications",
+                    "Toggles if a notification is displayed whenever a screenshot was taken.",
+                    () => m_config.screenshotNotifications,
+                    (bool val) => m_config.screenshotNotifications = val
+                );
+
+
+                gmcmApi.RegisterLabel(
+                    ModManifest, 
+                    "!!!DISCLAIMER!!! (Hover to reveal)",
+                    "This \"Generic Mod Config Menu\" integration does not \ninclude all possible mod configurations!\n"
+                    + "To configure the screenshot rules edit the config.json \nfile located at your Mods folder.\n"
+                    + "For this purpose, read the config section on the \nrespective download page.\n\n"
+                    + "Note, that using the default button below will reset \nthe entire config file (including the screenshot rules)!\n"
+                    + "Changing and saving the settings shown here \nwill NOT override/reset your set screenshot rules."
+                );
+
+                MInfo("Added \"DailyScreenshot\" config menu with \"Generic Mod Config Menu\".");
+            }
+            else {
+                MInfo("This mod supports the \"Generic Mod Config Menu\" mod but it is not installed!");
+            }
+
             // Move this to OnDayStart and only register what is needed
             Helper.Events.GameLoop.DayStarted += OnDayStarted;
             Helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
@@ -529,7 +577,12 @@ namespace DailyScreenshot
         private void TakeScreenshot(ModRule rule)
         {
             string ssPath = rule.GetFileName();
-            Game1.flashAlpha = 1f;
+
+            if (m_config.visualEffects)
+            {
+                Game1.flashAlpha = 1f;
+            }
+
             if (null != ssPath)
             {
                 MTrace($"ssPath = \"{ssPath}\"");
@@ -543,7 +596,12 @@ namespace DailyScreenshot
             );
             FileInfo mapScreenshot = new FileInfo(Path.Combine(DefaultSSdirectory.FullName, mapScreenshotPath));
             MTrace($"Snapshot saved to {mapScreenshot.FullName}");
-            Game1.playSound("cameraNoise");
+
+            if (m_config.auditoryEffects)
+            {
+                Game1.playSound("cameraNoise");
+            }
+
             if (ModConfig.DEFAULT_STRING != rule.Directory)
             {
                 EnqueueAction(() =>
@@ -560,8 +618,15 @@ namespace DailyScreenshot
         /// </summary>
         /// <param name="rule">Rule to use for HUD message</param>
         // Adding space based on user feedback
-        private void DisplayRuleHUD(ModRule rule) =>
-            Game1.addHUDMessage(new HUDMessage(" " + rule.Name, HUDMessage.screenshot_type));
+        private void DisplayRuleHUD(ModRule rule)
+        {
+            if (m_config.screenshotNotifications)
+            {
+                Game1.addHUDMessage(
+                    new HUDMessage(" " + rule.Name, HUDMessage.screenshot_type)
+                );
+            }
+        }
 
         /// <summary>
         /// Recursively cleanup empty directories

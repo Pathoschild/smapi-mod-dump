@@ -20,7 +20,12 @@ Move any item into the Shipping Bin instantly with the press of a button.
 
 ## How to use
 
-Middle click any item in your inventory to send them to the Shipping Bin.
+Press the `keybind` on any item in your inventory to send it to the Shipping Bin.
+
+Default keybindings
+
+- Mouse & Keyboard: Middle click
+- Controller: Left stick click
 
 This mod is configurable, check `Stardew Valley/Mods/Quick Sell/config.json` for its settings.
 

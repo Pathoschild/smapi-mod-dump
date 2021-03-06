@@ -1,7 +1,7 @@
 {
     "Name": "Radioactive Tools",
     "Author": "kakashigr",
-    "Version": "1.2.3",
+    "Version": "1.2.7",
     "Description": "Adds radioactive tools and sprinklers to the game.",
     "UniqueID": "kakashigr.RadioactiveTools",
     "EntryDll": "RadioactiveTools.dll",

@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Yes": "Да",
+  "No": "Нет",
+  "GotPetted": "Поглажен(-а): {{value}}",
+  "GotWater": "Получил(-а) воду: {{value}}",
+  "GotFood": "Получил(-а) еду: {{value}}",
+  "Friendship": "Дружба: {{value}}",
+  "AteEnough": "{{name}} не голоден/голодна.",
+  "AteFood": "{{name}} съел {{foodName}}.",
+  "HorseWarning": "You cannot do that while riding a horse!"
+}

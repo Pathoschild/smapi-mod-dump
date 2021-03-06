@@ -12,6 +12,8 @@
 using System;
 using StardewModdingAPI;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI.Utilities;
+
 namespace RangeHighlight {
     internal class ModConfig {
         public bool ShowJunimoRange { get; set; } = true;
@@ -24,14 +26,15 @@ namespace RangeHighlight {
         public bool ShowOtherScarecrowsWhenHoldingScarecrow { get; set; } = true;
         public bool ShowOtherBeehousesWhenHoldingBeehouse { get; set; } = false;
 
+        public bool showHeldBombRange { get; set; } = true;
         public bool showPlacedBombRange { get; set; } = true;
         public bool showBombInnerRange { get; set; } = false;
         public bool showBombOuterRange { get; set; } = true;
-        public SButton ShowAllRangesKey { get; set; } = SButton.LeftShift;
-        public SButton ShowSprinklerRangeKey { get; set; } = SButton.R;
-        public SButton ShowScarecrowRangeKey { get; set; } = SButton.O;
-        public SButton ShowBeehouseRangeKey { get; set; } = SButton.H;
-        public SButton ShowJunimoRangeKey { get; set; } = SButton.J;
+        public KeybindList ShowAllRangesKey { get; set; } = KeybindList.ForSingle(SButton.LeftShift);
+        public KeybindList ShowSprinklerRangeKey { get; set; } = KeybindList.ForSingle(SButton.R);
+        public KeybindList ShowScarecrowRangeKey { get; set; } = KeybindList.ForSingle(SButton.O);
+        public KeybindList ShowBeehouseRangeKey { get; set; } = KeybindList.ForSingle(SButton.H);
+        public KeybindList ShowJunimoRangeKey { get; set; } = KeybindList.ForSingle(SButton.J);
         public bool hotkeysToggle { get; set; } = false;
 
         public Color JunimoRangeTint { get; set; } = Color.White * 0.7f;

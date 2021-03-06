@@ -70,9 +70,8 @@ namespace OverworldChests
             {
                 Monitor.Log($"loaded AdvancedLootFramework API", LogLevel.Debug);
             }
-            treasuresList = advancedLootFrameworkApi.LoadPossibleTreasures(Config.ItemListTypes, Config.MinItemValue, Config.MaxItemValue);
+            treasuresList = advancedLootFrameworkApi.LoadPossibleTreasures(Config.ItemListChances.Where(p => p.Value > 0).ToDictionary(s => s.Key, s => s.Value).Keys.ToArray(), Config.MinItemValue, Config.MaxItemValue);
             Monitor.Log($"Got {treasuresList.Count} possible treasures");
-
         }
 
         private static bool Chest_draw_Prefix(Chest __instance)
@@ -93,7 +92,7 @@ namespace OverworldChests
             var spawn = Helper.Data.ReadSaveData<LastOverWorldChestSpawn>("lastOverworldChestSpawn") ?? new LastOverWorldChestSpawn();
             int days = Game1.Date.TotalDays - spawn.lastOverworldChestSpawn;
             Monitor.Log($"Last spawn: {days} days ago");
-            if (spawn.lastOverworldChestSpawn < 1 || days < 2 || (Config.RespawnInterval > 0 && days >= Config.RespawnInterval)) 
+            if (spawn.lastOverworldChestSpawn < 1 || Game1.Date.TotalDays < 2 || (Config.RespawnInterval > 0 && days >= Config.RespawnInterval)) 
             {
                 Monitor.Log($"Respawning chests", LogLevel.Debug);
                 spawn.lastOverworldChestSpawn = Game1.Date.TotalDays;
@@ -144,7 +143,7 @@ namespace OverworldChests
                         double fraction = Math.Pow(myRand.NextDouble(), 1 / Config.RarityChance);
                         int level = (int)Math.Ceiling(fraction * Config.Mult);
                         //Monitor.Log($"Adding expanded chest of value {level} to {l.name}");
-                        chest = advancedLootFrameworkApi.MakeChest(treasuresList, Config.MaxItems, Config.MinItemValue, Config.MaxItemValue, level, Config.IncreaseRate, Config.ItemsBaseMaxValue, Config.CoinBaseMin, Config.CoinBaseMax, freeTile);
+                        chest = advancedLootFrameworkApi.MakeChest(treasuresList, Config.ItemListChances, Config.MaxItems, Config.MinItemValue, Config.MaxItemValue, level, Config.IncreaseRate, Config.ItemsBaseMaxValue, Config.CoinBaseMin, Config.CoinBaseMax, freeTile);
                         chest.playerChoiceColor.Value = MakeTint(fraction);
                     }
                     chest.name = namePrefix;

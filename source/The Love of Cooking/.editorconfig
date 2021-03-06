@@ -8,3 +8,12 @@ csharp_style_var_when_type_is_apparent = true:silent
 
 # IDE0008: Use explicit type
 csharp_style_var_for_built_in_types = true:silent
+
+# IDE0048: Add parentheses for clarity
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:suggestion
+
+# IDE0058: Expression value is never used
+csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+
+# IDE0047: Remove unnecessary parentheses
+dotnet_diagnostic.IDE0047.severity = silent

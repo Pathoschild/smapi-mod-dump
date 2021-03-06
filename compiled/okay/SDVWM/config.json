@@ -1,10 +1,11 @@
 {
   "tempType": "F",
   "hotTemp": 70,
-  "coldTemp": 30,
+  "coldTemp": 40,
   "WindSpeed": 6.0,
   "HUDMode": "Normal",
   "EnableLogging": false,
   "EnableSeasonalConditions": true,
-  "EnableExhaustion": true
+  "EnableExhaustion": true,
+  "ExhaustionTimer": 120
 }

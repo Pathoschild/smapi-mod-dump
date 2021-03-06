@@ -1,0 +1,8 @@
+{
+    "Name": "Studio Headphones",
+    "Description": "A pair of studio headphones with a pufferchick logo! Equip to test in-game sounds.",
+    "ShowHair": true,
+    "IgnoreHairstyleOffset": false,
+    "CanPurchase": true,
+    "PurchasePrice": 1000
+}

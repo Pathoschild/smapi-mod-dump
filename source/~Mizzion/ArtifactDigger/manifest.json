@@ -11,7 +11,7 @@
 {
   "Name": "ArtifactDigger",
   "Author": "Mizzion",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Description": "A mod that will dig up artifact spots in a pre-defined radius.",
   "UniqueID": "mizzion.artifactdigger",
   "EntryDll": "ArtifactDigger.dll",

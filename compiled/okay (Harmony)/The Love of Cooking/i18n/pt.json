@@ -117,9 +117,9 @@
 	// Community Centre edits when using the Cooking bundle 
 	"world.community_centre.kitchen": "Cozinha",
 	"world.community_centre.reward": "Coisas de culinária",
-	"world.community_centre.bundle.1": "Piquenique",
-	"world.community_centre.bundle.2": "Padeiro",
-	"world.community_centre.bundle.3": "Janta",
+	"world.community_centre.bundle.1": "Padeiro",
+	"world.community_centre.bundle.2": "Janta",
+	"world.community_centre.bundle.3": "Piquenique",
 	"world.community_centre.newjunimoline": "Para mostrar nossa gratidão ... Vamos arrumar enquanto você avança.",
 
 	// Object names

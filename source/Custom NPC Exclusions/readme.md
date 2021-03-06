@@ -39,11 +39,14 @@ TownEvent | | Excludes the NPC from all content in the "TownEvent" category (see
 TownQuest | | Excludes the NPC from all content in the "TownQuest" category (see below).
 IslandEvent | | Excludes the NPC from all content in the "IslandEvent" category (see below).
 OtherEvent | | Excludes the NPC from all content in the "OtherEvent" category (see below).
+MovieInvite | TownEvent | Excludes the NPC from receiving a Movie Ticket. This will use custom text from "Strings/Characters:MovieInvite_CantInvite_**NPCName**" if available.
 ShopDialog | TownEvent | Excludes the NPC from randomly discussing items that players have sold to certain shops.
 WinterStar | TownEvent | Excludes the NPC from giving or receiving secret gifts at the Feast of the Winter Star festival.
 ItemDelivery | TownQuest | Excludes the NPC from randomized "item delivery" quests on the Help Wanted board.
 Socialize | TownQuest | Excludes the NPC from "socialize" quests, which currently includes the "Introductions" quest at the start of the game.
 IslandVisit | IslandEvent | Excludes the NPC from random visits to the Ginger Island resort.
+BeGreeted | OtherEvent | Excludes the NPC from being greeted by other NPCs while traveling.
+Greet | OtherEvent | Excludes the NPC from greeting other NPCs while traveling.
 PerfectFriend | OtherEvent | Excludes the NPC from Stardew's "perfection score" tracker when it checks for maximum friendship with NPCs.
 
 ## Mod Examples

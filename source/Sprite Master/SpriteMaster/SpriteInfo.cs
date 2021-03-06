@@ -26,6 +26,10 @@ namespace SpriteMaster {
 		// For statistics and throttling
 		internal readonly bool WasCached;
 
+		public override string ToString() {
+			return $"SpriteInfo[Name: '{Reference.Name}', ReferenceSize: {ReferenceSize}, Size: {Size}]";
+		}
+
 		internal byte[] Data = default;
 		private VolatileULong _Hash = Hashing.Default;
 		public ulong Hash {

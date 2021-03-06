@@ -9,68 +9,90 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using StardewValley.Objects;
+using System.Linq;
+using ImJustMatt.ExpandedStorage.API;
 
-namespace ExpandedStorage.Framework.Models
+namespace ImJustMatt.ExpandedStorage.Framework.Models
 {
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    internal class StorageConfig
+    public class StorageConfig : IStorageConfig
     {
-        /// <summary>Storage Name must match the name from Json Assets.</summary>
-        public string StorageName;
-
-        /// <summary>Modded capacity allows storing more/less than vanilla (36).</summary>
-        public int Capacity;
-
-        /// <summary>Allows storage to be picked up by the player.</summary>
-        public bool CanCarry;
-        
-        /// <summary>Allows storage to be access while carried.</summary>
-        public bool AccessCarried;
-
-        /// <summary>Debris will be loaded straight into this chest's inventory for allowed items.</summary>
-        public bool VacuumItems;
-
-        /// <summary>Show search bar above chest inventory.</summary>
-        public bool ShowSearchBar;
-        
-        /// <summary>Allows the storage to be </summary>
-        public bool IsPlaceable;
-        
-        /// <summary>When specified, storage may only hold items with allowed context tags.</summary>
-        public IList<string> AllowList;
-
-        /// <summary>When specified, storage may hold allowed items except for those with blocked context tags.</summary>
-        public IList<string> BlockList;
-
-        /// <summary>List of tabs to show on chest menu.</summary>
-        public IList<string> Tabs;
-        
-        internal StorageConfig() : this(null) {}
-        internal StorageConfig(
-            string storageName,
-            int capacity = Chest.capacity,
-            bool canCarry = true,
-            bool accessCarried = false,
-            bool showSearchBar = false,
-            bool isPlaceable = true,
-            IList<string> allowList = null,
-            IList<string> blockList = null,
-            IList<string> tabs = null)
+        public enum Choice
         {
-            StorageName = storageName;
-            Capacity = capacity;
-            CanCarry = canCarry;
-            AccessCarried = accessCarried;
-            ShowSearchBar = showSearchBar;
-            IsPlaceable = isPlaceable;
-            AllowList = allowList ?? new List<string>();
-            BlockList = blockList ?? new List<string>();
-            Tabs = tabs ?? new List<string>();
+            Unspecified,
+            Enable,
+            Disable
         }
-        internal static StorageConfig Clone(StorageConfig config) =>
-            new StorageConfig(config.StorageName, config.Capacity, config.CanCarry, config.AccessCarried, config.ShowSearchBar, config.IsPlaceable, config.AllowList, config.BlockList, config.Tabs);
+
+        public static readonly IDictionary<string, string> StorageOptions = new Dictionary<string, string>
+        {
+            {"AccessCarried", "Allow storage to be access while carried"},
+            {"CanCarry", "Allow storage to be picked up"},
+            {"ShowSearchBar", "Show search bar above chest inventory"},
+            {"ShowTabs", "Show tabs below chest inventory"},
+            {"VacuumItems", "Allow storage to automatically collect dropped items"}
+        };
+
+        /// <summary>Default storage settings for unspecified options</summary>
+        private static StorageConfig _defaultConfig;
+
+        internal StorageMenu Menu => new(Capacity == 0 ? _defaultConfig : this);
+
+        internal int ActualCapacity => Capacity == 0 ? _defaultConfig.Capacity : Capacity;
+
+        public int Capacity { get; set; }
+        public HashSet<string> EnabledFeatures { get; set; } = new() {"CanCarry", "ShowSearchBar", "ShowTabs"};
+        public HashSet<string> DisabledFeatures { get; set; } = new();
+        public IList<string> Tabs { get; set; } = new List<string>();
+
+        internal void SetDefault()
+        {
+            _defaultConfig = this;
+        }
+
+        internal Choice Option(string option, bool globalOverride = false)
+        {
+            if (DisabledFeatures.Contains(option))
+                return Choice.Disable;
+            if (EnabledFeatures.Contains(option))
+                return Choice.Enable;
+            return globalOverride ? _defaultConfig.Option(option) : Choice.Unspecified;
+        }
+
+        internal void SetOption(string option, Choice choice)
+        {
+            EnabledFeatures.Remove(option);
+            DisabledFeatures.Remove(option);
+            switch (choice)
+            {
+                case Choice.Disable:
+                    DisabledFeatures.Add(option);
+                    break;
+                case Choice.Enable:
+                    EnabledFeatures.Add(option);
+                    break;
+            }
+        }
+
+        internal void CopyFrom(IStorageConfig config)
+        {
+            if (config.Capacity != 0) Capacity = config.Capacity;
+
+            foreach (var enabledFeature in config.EnabledFeatures)
+            {
+                SetOption(enabledFeature, Choice.Enable);
+            }
+
+            foreach (var disabledFeature in config.DisabledFeatures)
+            {
+                SetOption(disabledFeature, Choice.Disable);
+            }
+
+            if (config.Tabs.Any())
+                Tabs.Clear();
+            foreach (var tab in config.Tabs)
+            {
+                Tabs.Add(tab);
+            }
+        }
     }
 }

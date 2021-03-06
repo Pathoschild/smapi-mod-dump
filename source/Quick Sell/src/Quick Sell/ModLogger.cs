@@ -14,21 +14,16 @@ namespace Quick_Sell
 {
     internal class ModLogger
     {
-        private readonly IMonitor Monitor;
+        private static readonly IMonitor Monitor = ModEntry.Instance.Monitor;
 
-        public ModLogger(IMonitor monitor)
+        public static void Trace(string message)
         {
-            this.Monitor = monitor;
+            Monitor.Log(message, LogLevel.Trace);
         }
 
-        public void Debug(string message)
+        public static void Info(string message)
         {
-            this.Monitor.Log(message, LogLevel.Debug);
-        }
-
-        public void Warn(string message)
-        {
-            this.Monitor.Log(message, LogLevel.Warn);
+            Monitor.Log(message, LogLevel.Info);
         }
     }
 }

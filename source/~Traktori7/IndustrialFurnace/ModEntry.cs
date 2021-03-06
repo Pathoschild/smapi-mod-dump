@@ -393,7 +393,6 @@ namespace IndustrialFurnace
             // Reset stuff
             modSaveData = null;
             furnaces.Clear();
-            furnaces.Clear();
         }
 
 
@@ -461,7 +460,7 @@ namespace IndustrialFurnace
                 return;
             
             // This might fix the android issue, also lets the player place items with both clicks
-            if (e.Button.IsActionButton() || e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight)
+            if (e.Button.IsActionButton() || e.Button.IsUseToolButton() || e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight)
             {
                 // Assumes furnaces can be built only on the farm and checks if player is on the farm map
                 if (!Game1.currentLocation.IsFarm || !Game1.currentLocation.IsOutdoors)
@@ -469,15 +468,30 @@ namespace IndustrialFurnace
 
                 foreach (IndustrialFurnaceController furnace in furnaces)
                 {
-                    // The clicked tile
-                    Vector2 tile = e.Cursor.GrabTile;
+                    Vector2 tile;
                     Building building = furnace.furnace;
 
-                    // Allow only clicks that happen when the cursor is above the furnace to prevent trapping android and possibly controller users
-                    Vector2 cursorPosition = e.Cursor.Tile;
-                    if (!building.occupiesTile(cursorPosition))
+                    if (building.daysOfConstructionLeft.Value > 0)
+                    {
+                        Monitor.Log("Trying to use furnace that hasn't been completed yet");
                         continue;
+                    }
 
+                    // Handle the input checking differently on controllers
+                    if (Game1.options.gamepadControls)
+					{
+                        tile = new Vector2((int)Game1.player.GetToolLocation().X / 64, (int)Game1.player.GetToolLocation().Y / 64);
+                        //Monitor.Log("Player pressed button " + e.Button.ToString() + " Tool Location is " + tile.ToString(), LogLevel.Debug);
+                    }
+                    else
+					{
+                        tile = e.Cursor.GrabTile;
+                        //Monitor.Log("Normal click detected on location " + tile.ToString(), LogLevel.Debug);
+
+                        // Allow only clicks that happen when the cursor is above the furnace to prevent trapping android users
+                        if (!building.occupiesTile(e.Cursor.Tile))
+                            continue;
+					}
 
                     // The mouth of the furnace
                     if (tile.X == building.tileX.Value + 1 && tile.Y == building.tileY.Value + 1)
@@ -939,7 +953,6 @@ namespace IndustrialFurnace
         private void InitializeFurnaceControllers(bool readSaveData)
         {
             // Initialize the lists to prevent data leaking from previous games
-            furnaces.Clear();
             furnaces.Clear();
 
             // Load the saved data. If not present, initialize new

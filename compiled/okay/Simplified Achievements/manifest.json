@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Simplified Achievements",
+  "Author": "cel10e",
+  "Version": "1.0.0",
+  "Description": "Makes five in-game achievements easier to acquire: Gourmet Chef, Craft Master, Master Angler, Full Shipment, and Protector of the Valley. Configurable to exclude Ginger Island content, modded content, or both.",
+  "UniqueID": "cel10e.SimplifiedAchievements",
+  "EntryDll": "SimplifiedAchievements.dll",
+  "MinimumApiVersion": "3.9.0",
+  "UpdateKeys": []
+}

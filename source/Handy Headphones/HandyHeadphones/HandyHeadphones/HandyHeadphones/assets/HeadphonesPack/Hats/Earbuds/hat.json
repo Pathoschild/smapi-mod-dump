@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/HandyHeadphones
+**
+*************************************************/
+
+{
+    "Name": "Earbuds",
+    "Description": "A handy pair of earbuds! Equip to pick a track to listen to.",
+    "ShowHair": true,
+    "IgnoreHairstyleOffset": false,
+    "CanPurchase": true,
+    "PurchasePrice": 1000
+}

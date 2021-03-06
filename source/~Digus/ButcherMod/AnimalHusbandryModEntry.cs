@@ -18,12 +18,12 @@ using AnimalHusbandryMod.tools;
 using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PyTK.CustomElementHandler;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Menus;
+using StardewValley.Objects;
 using StardewValley.Tools;
 using SObject = StardewValley.Object;
 
@@ -113,6 +113,7 @@ namespace AnimalHusbandryMod
                 ModHelper.ConsoleCommands.Add("config_create_customanimaltemplates", "Add custom animal templates in the data\\animal.json file for every loaded custom animal.", DataLoader.AddCustomAnimalsTemplateCommand);
                 ModHelper.ConsoleCommands.Add("config_reload_contentpacks_animalhusbandrymod", "Reload all content packs for animal husbandry mod.",DataLoader.LoadContentPacksCommand);
                 ModHelper.ConsoleCommands.Add("world_removealltools_animalhusbandrymod", "Remove all custom tools added by the animal husbandry mod.",DataLoader.ToolsLoader.RemoveAllToolsCommand);
+                ModHelper.ConsoleCommands.Add("world_makepetvisible", "Force the pet to become visible, in case your pet doesn't reaper after the animal contest.", (n, d) => Game1.player.getPet().IsInvisible = false);
 
                 if (DataLoader.ModConfig.AddMeatCleaverToInventoryKey != null || DataLoader.ModConfig.AddInseminationSyringeToInventoryKey != null || DataLoader.ModConfig.AddFeedingBasketToInventoryKey != null)
                 {
@@ -330,6 +331,15 @@ namespace AnimalHusbandryMod
                         prefix: new HarmonyMethod(typeof(ParticipantRibbonOverrides), nameof(ParticipantRibbonOverrides.DoFunction))
                     );
                 }
+
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.createQuestionDialogue), new Type[]{ typeof(string), typeof(Response[]), typeof(GameLocation.afterQuestionBehavior), typeof(NPC) }),
+                    prefix: new HarmonyMethod(typeof(TvOverrides), nameof(TvOverrides.createQuestionDialogue))
+                );
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(TV), nameof(TV.checkForAction)),
+                    postfix: new HarmonyMethod(typeof(TvOverrides), nameof(TvOverrides.checkForAction_postfix))
+                );
             }
         }
 
@@ -362,11 +372,6 @@ namespace AnimalHusbandryMod
                 EventsLoader.CheckEventDay();
             }
 
-            DataLoader.LivingWithTheAnimalsChannel.CheckChannelDay();
-            if (!DataLoader.ModConfig.DisableMeat)
-            {
-                DataLoader.RecipeLoader.MeatFridayChannel.CheckChannelDay();
-            }
             if (!DataLoader.ModConfig.DisablePregnancy)
             {
                 PregnancyController.CheckForBirth();

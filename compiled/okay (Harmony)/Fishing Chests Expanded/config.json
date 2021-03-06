@@ -1,6 +1,7 @@
 {
   "EnableMod": true,
-  "BaseChanceForTreasureChest": -1.0,
+  "VanillaLootChance": 0,
+  "ChanceForTreasureChest": -1,
   "MaxItems": 5,
   "ItemsBaseMaxValue": 100,
   "MinItemValue": 20,
@@ -8,31 +9,19 @@
   "CoinBaseMin": 20,
   "CoinBaseMax": 100,
   "IncreaseRate": 0.2,
-  "ItemListTypes": [
-    "Weapon",
-    "Shirt",
-    "Pants",
-    "Hat",
-    "Boots",
-    "BigCraftable",
-    "Ring",
-    "Seed",
-    "Mineral",
-    "Relic"
-  ],
-  "ItemListAllTypesDoNotEditJustCopyFromHere": [
-    "Weapon",
-    "Shirt",
-    "Pants",
-    "Hat",
-    "Boots",
-    "BigCraftable",
-    "Ring",
-    "Cooking",
-    "Seed",
-    "Mineral",
-    "Fish",
-    "Relic",
-    "BasicObject"
-  ]
+  "ItemListChances": {
+    "MeleeWeapon": 100,
+    "Shirt": 0,
+    "Pants": 0,
+    "Hat": 0,
+    "Boots": 100,
+    "BigCraftable": 100,
+    "Ring": 100,
+    "Seed": 100,
+    "Mineral": 100,
+    "Relic": 100,
+    "Cooking": 0,
+    "Fish": 0,
+    "BasicObject": 0
+  }
 }

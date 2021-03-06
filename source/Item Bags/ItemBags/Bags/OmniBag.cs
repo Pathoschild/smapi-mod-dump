@@ -30,18 +30,19 @@ using PyTK.CustomElementHandler;
 namespace ItemBags.Bags
 {
     /// <summary>A bag that can store other bags inside of it.</summary>
-    //[XmlType("Mods_OmniBag")]
+    [XmlType("Mods_OmniBag")]
     [XmlRoot(ElementName = "OmniBag", Namespace = "")]
 #if ANDROID
     public class OmniBag : ItemBag
 #else
-    public class OmniBag : ItemBag, ISaveElement
+    public class OmniBag : ItemBag//, ISaveElement
 #endif
     {
         public const string OmniBagTypeId = "6eb4c15d-3ad3-4b47-aab5-eb2f5daa8b3f";
 
-        [XmlIgnore]
-        public List<ItemBag> NestedBags { get; }
+        [XmlArray("NestedBag")]
+        [XmlArrayItem("NestedBag")]
+        public List<ItemBag> NestedBags { get; set; }
         public override bool IsEmpty() { return base.IsEmpty() && (NestedBags == null || NestedBags.All(x => x.IsEmpty())); }
 
 #region Lookup Anything Compatibility
@@ -97,8 +98,8 @@ namespace ItemBags.Bags
 
             if (SavedData.IsCustomIcon)
             {
-                this.Icon = Game1.objectSpriteSheet;
-                this.IconTexturePosition = SavedData.OverriddenIcon;
+                this.CustomIconSourceTexture = BagType.SourceTexture.SpringObjects;
+                this.CustomIconTexturePosition = SavedData.OverriddenIcon;
             }
         }
 
@@ -149,8 +150,8 @@ namespace ItemBags.Bags
 
                 if (Data.IsCustomIcon)
                 {
-                    this.Icon = Game1.objectSpriteSheet;
-                    this.IconTexturePosition = Data.OverriddenIcon;
+                    this.CustomIconSourceTexture = BagType.SourceTexture.SpringObjects;
+                    this.CustomIconTexturePosition = Data.OverriddenIcon;
                 }
                 else
                 {
@@ -208,8 +209,13 @@ namespace ItemBags.Bags
             DrawInMenu(GrayscaleTexture, null, new Vector2(16 - GrayscaleTexture.Width, 16 - GrayscaleTexture.Height) * 2f, 1f, spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
         }
 
-        public override bool IsUsingDefaultIcon() { return this.Icon == null; }
-        public override void ResetIcon() { this.Icon = null; }
+        public override void ResetIcon()
+        {
+            this.DefaultIconTexture = null;
+            this.DefaultIconTexturePosition = new Rectangle();
+            this.CustomIconSourceTexture = null;
+            this.CustomIconTexturePosition = null;
+        }
 
         public override bool IsValidBagObject(Object Item) { return false; }
         public bool IsValidBag(ItemBag IB) { return IB != null && !(IB is OmniBag) && IB.Size <= this.Size; }

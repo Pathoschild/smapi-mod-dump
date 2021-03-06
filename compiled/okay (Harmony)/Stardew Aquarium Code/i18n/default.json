@@ -35,9 +35,9 @@
 	"PanelCool": "This panel has a lot of buttons on it, better not touch it.",
 	"Lever": "Sorry but that lever won't get you anywhere.",
 	"Bench": "These benches look brand new...",
-	"LegendaryBook": "A Fisherman's guide to the Legendary Fish",
+	"LegendaryBook": "A Fisherman's guide to the Legendary Fish.",
 	"MinesBook": "The Mines : What kind of fish may live there ?",
-	"BaitBook": "Bait and how to use it right",
+	"BaitBook": "Bait and how to use it right.",
 	"Dropped": "Looks like someone has little empathy for books...",
 	"PetBook": "Fish Encyclopedia: Volume 1.",
 	"Dwarf": "This reminds you of someone... But you can't tell who...",
@@ -162,9 +162,9 @@
 	"MNFBook2": "Kitty Slimes, Dragons and other magical creatures.",
 	"MNFBook3": "The Mythical City of Ghibli.",
 	"MNFBook4": "A building catalog. Aquariums and how to build them.",
-	"Tea": "Someone left their cup of tea on the table. Its still hot.",
+	"Tea": "Someone left their cup of tea on the table. It's still hot.",
 	"Boat": "An old boat with lots of holes in it.",
-	"Cactus": "You carefully reach out and touch the cactus. Lucky for you its not real.",
+	"Cactus": "You carefully reach out and touch the cactus. Lucky for you it's not real.",
 	"Vase": "A beautiful curved vase.",
 	"Coconut": "You try to shake the tree. But nothing happens... What did you expect, a coconut would fall down?",
 
@@ -292,6 +292,46 @@
 	"Tank_Tui": "The Moon spirit Tui, crossed over from the spirit world to create the Spirit Oasis. Here it assumed the form of a white Koi fish. Should it be disconnected from the Ocean Spirit the world will be out of balance, returning both fish to this pond will restore the balance.",
 	"Tank_La": "The Ocean spirit La, crossed over from the spirit world to create the Spirit Oasis. Here it assumed the form of a black Koi fish. Should it be disconnected from the Moon Spirit the world will be out of balance, returning both fish to this pond will restore the balance.",
 
+	//1.4.0 dialogue boxes
+
+	"RSVRoom": "Step through this door to see our fish from Ridgeside Village and other rare specimens.",
+	"RSVBook1": "Stardew Fishing Magazine 13#...Lullaby Carp, the rare catch of the fall.",
+	"RSVBook2": "Stardew Fishing Magazine 7#...Bladetail Sturgeon, the rare summer sturgeon of Ridgeside Village.",
+	"RSVBook3": "Stardew Fishing Magazine 9#...Cardia Septal Jellyfish, a rare marine jellyfish.",
+	"RSVBook4": "Stardew Fishing Magazine 2#...Crimson Spiked Clam, a rare marine shellfish said to be found during spring.",
+	"RSVBook5": "Stardew Fishing Magazine 10#...Fairytale Lionfish, fairytale or real?^^Rumored to have seen in ocean waters near Stardew on the 2nd Wednesday of the season.",
+	"RSVBook6": "Stardew Fishing Magazine 3#...Fixer Eel, a rare eel found during spring & summer at 'The Ridge'.",
+	"RSVBook7": "Stardew Fishing Magazine 1#...Golden Rose Fin, a reader writes they caught this rare fish on the last saturday of the season near 'The Ridge'.",
+	"RSVBook8": "Stardew Fishing Magazine 69#...Caped Tree Frog, Amphibian or Fish? Amphibian!^^...Spotted on a weekend near 'The Ridge' in fall.",
+	"RSVBook9": "Stardew Fishing Magazine 5#...Harvester Trout, the rare spring Trout of Ridgeside Village.",
+	"RSVBook10": "Stardew Fishing Magazine 1#...Pebble Back Crab, the rare summer crustacean of Ridgeside Village.",
+	"SmallPlant": "A small plant that has just begun sprouting, it has been watered recently.",
+	"CuratorBedroom": "This is the Curator's bedroom, it's currently locked.",
+	"MNFIslandRoom": "The sign next to the door says: Jungle Room.",
+	"IslandBag": "You open the bag...#......#.........#It's empty.",
+	"Cheater": "You have been bamboozled.",
+	"PearlFish": "The Pearl Fish is a pink fish that preys on smaller shellfish, sometimes leaving behind indigestible parts such as pearls which it's so named after.",
+
+	//1.4.0 Fish Descriptions
+
+	"Tank_PearlFish": "This beautiful pink fish preys on smaller shellfish, sometimes leaving behind indigestible parts such as pearls which it's so named after.",
+	// RSV Fish
+	"Tank_PebbleBackCrab": "The Pebble Back Crab is a rare species of crustacean. They are so named for their unique behavior of collecting pebbles and other minerals and using them to decorate their shell. They for unknown reasons prefer to decorate themselves with rare and expensive minerals and gems, which makes them ideal targets for anglers trying to earn some profit.",
+	"Tank_HarvesterTrout": "The Harvester Trout is an infamous species of trout, it earned its name for harvesting crops that were close to water. Anglers keeping them in fish ponds have reported they occasionally yield seeds, even so called 'Ancient Seeds'.",
+	"Tank_FixerEel": "The Fixer Eel is a rare species of eel. They have almost been hunted to extinction due to local superstition claiming they can fix 'anything', hence its name Fixer Eel. ",
+	"Tank_LullabyCarp": "The Lullaby Carp is a rare species of carp. They have been known to occasionally produce harmonic melodies, how it produces these sounds is still a mystery.",
+	"Tank_GoldenRoseFin": "The Golden Rose Fin can easily be recognized by its golden colours and flowy fins. When it swims it almost looks like it's dancing through the water.",
+	"Tank_BladetailSturgeon": "The Bladetail Surgeon possess a very shard tail fins. These fins can quite dangerous, but it's unknown if they are used for hunting or self defense.",
+	"Tank_CardiaSeptalJellyfish": "The Cardia Septal Jellyfish is a very unique species of jellyfish. Unlike other jellyfish that are occasionally hermaphrodites, this species has two fused bodies. One distinctly male and one distinctly female, not much else is known about this rare jellyfish.",
+	"Tank_CrimsonSpikedClam": "The Crimson Spiked Clam is an endangered and rare species of bivalve mollusc. Like other bivalves it can create pearls, but this species have for unknown reasons been known to occasionally produce rubies instead of pearls.",
+	"Tank_FairytaleLionfish": "The Fairytale Lionfish has developed vibrant coloured scales as part of its camouflage. Superstitious legends say that it brings luck, some tales even mention a 'Prismatic Shard'.",
+	"Tank_CapedTreeFrog": "The Caped Tree Frog is a rare species of amphibian. The coloration on its back resembles a cape hence the named Caped Tree Frog.",
+	// SVE Fish
+	"Tank_Kittyfish": "The Kittyfish is a magical fish... or cat? Further research required.",
+	// MNF
+	"Tank_ClownTriggerfish": "The Clown Triggerfish or 'Bigspotted Triggerfish' as it's also known as, is a marine fish belonging Triggerfish family. Like most Triggerfish it has aggressive behaviour and will defend its territory.",
+	"Tank_Bonnethead": "The Bonnethead Shark or 'Shovelhead Shark' as it's also known as, is a small species of hammerhead shark. It's an active tropical shark that feeds mainly on crustaceans. The females tends to be larger than the males.",
+	"Tank_BlackGhostKnifefish": "The Black Ghost Knifefish is a tropical freshwater fish that belongs to a family of ray-finned fish called Ghost Knifefish. This species is capable of generating weak electric discharges which can be used for both communication and electrolocation.",
 
 	//npc dialogue such long
 

@@ -9,7 +9,6 @@
 *************************************************/
 
 {
-    // Object data
     "Name": "blueberry.cac.sugarcane",
     "Description": "...",
     "Category": "Vegetable",
@@ -19,10 +18,11 @@
     "Price": 30,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,
     "PurchaseRequirements": null,
+    "NameLocalization": {
+        "en": "Sugar Cane"
+    }
 }

@@ -1,8 +1,8 @@
 {
    "Name": "SDVWM",
    "Author": "SixthTitan",
-   "Version": "2.2.3",
-   "Description": "Location based Weather System for Stardew Valley",
+   "Version": "2.3.1", // fixed locally
+   "Description": "Modular Real World Weather Forecast System",
    "UniqueID": "SixthTitan.SDVWM",
    "EntryDll": "SDVWM.dll",
    "MinimumApiVersion": "2.9",

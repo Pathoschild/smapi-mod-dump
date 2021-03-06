@@ -1,0 +1,9 @@
+{
+  "EnableMod": true,
+  "FloorNames": [
+    "ManyRooms",
+    "EmptyHall"
+  ],
+  "MainFloorStairsX": 7,
+  "MainFloorStairsY": 22
+}

@@ -9,5 +9,5 @@
   "TapperXPAmount": 3,
   "CommonFiddleheadFern": true,
   "ForageSurvivalBurger": true,
-  "AutomateHarvestsGrantXP": false
+  "AutomationHarvestsGrantXP": false
 }

@@ -1,5 +1,4 @@
-{
-    // Object data
+﻿{
     "Name": "blueberry.cac.watermelon",
     "Description": "...",
     "Category": "Fruit",
@@ -9,17 +8,22 @@
     "Price": 230,
     "IsColored": false,
     "Recipe": null,
-
-    // Object purchase
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,
     "PurchaseRequirements": null,
-
-    // Gifting
     "GiftTastes": {
-        "Love": [ "Sandy" ],
-        "Dislike": [ "Shane" ],
-        "Hate": [ "Lewis" ]
+        "Love": [
+            "Sandy"
+        ],
+        "Dislike": [
+            "Shane"
+        ],
+        "Hate": [
+            "Lewis"
+        ]
     },
+    "NameLocalization": {
+        "en": "Watermelon"
+    }
 }

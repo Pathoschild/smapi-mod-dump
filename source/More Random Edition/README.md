@@ -117,6 +117,10 @@ Note the following:
 * Add settings for more things, such as stats that can be modified on weapons, possible random names, etc.
   
 ## Known Issues
+* Special orders:
+  * With certain orders, there's no guarantee that any of the item being requested will be possible to get (fish, crops, etc.)
+    * There's also no way of actually knowing whether the fish is actually valid for the special order
+  * We need to modify the ObjectContextTags to take the randomization in mind so that these orders will actually be possible
 * Music restarts when you transition screens, even if it's the same song
 * This mod does not fully support other languages (but it does for the most part)
   * Randomly generated weapon/crop names are English

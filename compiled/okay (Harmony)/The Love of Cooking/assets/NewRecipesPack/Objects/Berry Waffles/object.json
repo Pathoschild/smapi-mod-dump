@@ -1,53 +1,50 @@
-{
-	// Object data
-	"Name": "blueberry.cac.waffles",
-	"Description": "...",
-	"Category": "Cooking",
-	"Edibility": 45,
-	"EdibleIsDrink": false,
-	"EdibleBuffs": {
-		"Farming": 0,
-		"Fishing": 0,
-		"Mining": 1,
-		"Luck": 0,
-		"Foraging": 1,
-		"MaxStamina": 20,
-		"MagnetRadius": 0,
-		"Speed": 0,
-		"Defense": 0,
-		"Attack": 0,
-		"Duration": 142
-	},
-	"Price": 380,
-	"IsColored": false,
-
-	// Object purchase
-	"CanPurchase": false,
-	"PurchaseFrom": "Gus",
-	"PurchasePrice": 300,
-	"PurchaseRequirements": null,
-
-	// Recipe
-	"Recipe": {
-		"ResultCount": 1,
-		"Ingredients": [
-			{
-				"Object": 262, // Wheat
-				"Count": 1
-			},
-			{
-				"Object": 258, // Blueberry
-				"Count": 2
-			},
-			{
-				"Object": 724, // Maple Syrup
-				"Count": 1
-			}
-		],
-		// Recipe purchase
-		"CanPurchase": false,
-		"PurchaseFrom": "Gus",
-		"PurchasePrice": 500,
-		"PurchaseRequirements": null
-	}
+﻿{
+    "Name": "blueberry.cac.waffles",
+    "Description": "...",
+    "Category": "Cooking",
+    "Edibility": 45,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": {
+        "Farming": 0,
+        "Fishing": 0,
+        "Mining": 1,
+        "Luck": 0,
+        "Foraging": 1,
+        "MaxStamina": 20,
+        "MagnetRadius": 0,
+        "Speed": 0,
+        "Defense": 0,
+        "Attack": 0,
+        "Duration": 142
+    },
+    "Price": 380,
+    "IsColored": false,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 300,
+    "PurchaseRequirements": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 262,
+                "Count": 1
+            },
+            {
+                "Object": 258,
+                "Count": 2
+            },
+            {
+                "Object": 724,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
+    "NameLocalization": {
+        "en": "Berry Waffles"
+    }
 }

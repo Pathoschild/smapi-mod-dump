@@ -26,6 +26,7 @@ namespace NPCMapLocations
     private readonly bool drawPamHouseUpgrade;
     private readonly bool drawMovieTheaterJoja;
     private readonly bool drawMovieTheater;
+    private readonly bool drawIsland;
     private readonly Dictionary<long, FarmerMarker> FarmerMarkers;
     private readonly ModCustomizations Customizations;
 
@@ -66,11 +67,12 @@ namespace NPCMapLocations
       drawPamHouseUpgrade = Game1.MasterPlayer.mailReceived.Contains("pamHouseUpgrade");
       drawMovieTheaterJoja = Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheaterJoja");
       drawMovieTheater = Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater");
+      drawIsland = Game1.MasterPlayer.hasOrWillReceiveMail("Visited_Island");
 
-      mmX = ModMain.Config.MinimapX;
-      mmY = ModMain.Config.MinimapY;
-      mmWidth = ModMain.Config.MinimapWidth * Game1.pixelZoom;
-      mmHeight = ModMain.Config.MinimapHeight * Game1.pixelZoom;
+      mmX = ModMain.Globals.MinimapX;
+      mmY = ModMain.Globals.MinimapY;
+      mmWidth = ModMain.Globals.MinimapWidth * Game1.pixelZoom;
+      mmHeight = ModMain.Globals.MinimapHeight * Game1.pixelZoom;
     }
 
     private Dictionary<string, bool> ConditionalNpcs { get; }
@@ -103,8 +105,8 @@ namespace NPCMapLocations
 
     public void HandleMouseRelease()
     {
-      ModMain.Config.MinimapX = mmX;
-      ModMain.Config.MinimapY = mmY;
+      ModMain.Globals.MinimapX = mmX;
+      ModMain.Globals.MinimapY = mmY;
       ModMain.Helper.Data.WriteJsonFile($"config/{Constants.SaveFolderName}.json", ModMain.Config);
       dragStarted = false;
 
@@ -139,8 +141,8 @@ namespace NPCMapLocations
     }
     public void Resize()
     {
-      mmWidth = ModMain.Config.MinimapWidth * Game1.pixelZoom;
-      mmHeight = ModMain.Config.MinimapHeight * Game1.pixelZoom;
+      mmWidth = ModMain.Globals.MinimapWidth * Game1.pixelZoom;
+      mmHeight = ModMain.Globals.MinimapHeight * Game1.pixelZoom;
     }
 
     public void Update()
@@ -149,7 +151,7 @@ namespace NPCMapLocations
       // Positions relative to the map are not.
 
       center = ModMain.LocationToMap(Game1.player.currentLocation.uniqueName.Value ?? Game1.player.currentLocation.Name, Game1.player.getTileX(),
-        Game1.player.getTileY(), Customizations.MapVectors, Customizations.LocationBlacklist, true);
+        Game1.player.getTileY(), Customizations.MapVectors, Customizations.LocationExclusions, true);
 
       // Player in unknown location, use previous location as center
       if (center.Equals(ModMain.UNKNOWN) && prevCenter != null)
@@ -327,6 +329,12 @@ namespace NPCMapLocations
              0f,
             Vector2.Zero, 4f, SpriteEffects.None, 0.861f);
           break;
+        case 6:
+          b.Draw(ModMain.Map, new Vector2(farmX, farmY + 172),
+            new Rectangle(131 + farmCropX, 302 + farmCropY, farmCropWidth, farmCropHeight), color,
+            0f,
+            Vector2.Zero, 4f, SpriteEffects.None, 0.861f);
+          break;
       }
 
       if (drawPamHouseUpgrade)
@@ -347,6 +355,44 @@ namespace NPCMapLocations
             new Rectangle(275, 181, 15, 11), color,
             0f, Vector2.Zero, 4f, SpriteEffects.None, 0.861f);
         }
+      }
+
+      if (drawIsland)
+      {
+        var islandWidth = 40;
+        var islandHeight = 30;
+        var islandImageX = 208;
+        var islandImageY = 363;
+        var mapX = 1040;
+        var mapY = 600;
+
+        if (ModMain.Globals.UseDetailedIsland)
+        {
+          islandWidth = 45;
+          islandHeight = 40;
+          islandImageX = 248;
+          islandImageY = 363;
+          mapX = 1020;
+          mapY = 560;
+        }
+
+        var islandX = NormalizeToMap(MathHelper.Clamp(offsetMmLoc.X + mapX, offsetMmX, offsetMmX + mmWidth));
+        var islandY = NormalizeToMap(MathHelper.Clamp(offsetMmLoc.Y + mapY, mmY, mmY + mmHeight) + 2);
+        var islandCropX = (int)MathHelper.Clamp((offsetMmX - offsetMmLoc.X - mapX) / Game1.pixelZoom, 0, islandWidth);
+        var islandCropY = (int)MathHelper.Clamp((mmY - offsetMmLoc.Y - mapY) / Game1.pixelZoom, 0, islandHeight);
+
+        // Check if island crop extends outside of minimap
+        var islandCropWidth = (islandX / Game1.pixelZoom + islandWidth > (offsetMmX + mmWidth) / Game1.pixelZoom) ? (int)((offsetMmX + mmWidth - islandX) / Game1.pixelZoom) : islandWidth - islandCropX;
+        var islandCropHeight = (islandY / Game1.pixelZoom + islandHeight > (mmY + mmHeight) / Game1.pixelZoom) ? (int)((mmY + mmHeight - islandY) / Game1.pixelZoom) : islandHeight - islandCropY;
+
+        // Check if island crop extends beyond island size
+        if (islandCropX + islandCropWidth > islandWidth)
+          islandCropWidth = islandWidth - islandCropX;
+
+        if (islandCropY + islandCropHeight > islandHeight)
+          islandCropHeight = islandHeight - islandCropY;
+
+        b.Draw(ModMain.Map, new Vector2(islandX, islandY), new Rectangle(islandImageX + islandCropX, islandImageY + islandCropY, islandCropWidth, islandCropHeight), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.861f);
       }
 
       //
@@ -385,7 +431,7 @@ namespace NPCMapLocations
       //
       // ===== Traveling Merchant =====
       //
-      if (ModMain.Config.ShowTravelingMerchant && ConditionalNpcs["Merchant"])
+      if (ModMain.Globals.ShowTravelingMerchant && ConditionalNpcs["Merchant"])
       {
         Vector2 merchantLoc = new Vector2(ModConstants.MapVectors["Merchant"][0].MapX, ModConstants.MapVectors["Merchant"][0].MapY);
         if (IsWithinMapArea(merchantLoc.X - 16, merchantLoc.Y - 16))
@@ -410,8 +456,8 @@ namespace NPCMapLocations
           // Skip if no specified location
           if (marker.Sprite == null
               || !IsWithinMapArea(marker.MapX, marker.MapY)
-              || ModMain.Globals.NpcBlacklist.Contains(name)
-              || (!ModMain.Config.ShowHiddenVillagers && marker.IsHidden)
+              || ModMain.Globals.NpcExclusions.Contains(name)
+              || (!ModMain.Globals.ShowHiddenVillagers && marker.IsHidden)
               || (ConditionalNpcs.ContainsKey(name) && !ConditionalNpcs[name])
           )
             continue;
@@ -439,7 +485,7 @@ namespace NPCMapLocations
           }
 
           // Icons for birthday/quest
-          if (ModMain.Config.MarkQuests)
+          if (ModMain.Globals.ShowQuests)
           {
             if (marker.IsBirthday && (Game1.player.friendshipData.ContainsKey(name) && Game1.player.friendshipData[name].GiftsToday == 0))
               b.Draw(Game1.mouseCursors,

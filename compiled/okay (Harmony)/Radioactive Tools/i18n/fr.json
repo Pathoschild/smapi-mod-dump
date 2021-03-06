@@ -1,0 +1,13 @@
+{
+    "radioactive.prefix": "Radioactif",
+    "radioactiveHoe": "Houe Radioactive",
+    "radioactiveWatercan": "Arrosoir Radioactif",
+    "radioactivePickaxe": "Pioche Radioactive",
+    "radioactiveAxe": "Hache Radioactive",
+    "radioactiveRod.name": "Canne à Pêche Radioactive",
+    "radioactiveRod.description": "Les émissions radioactives sont utiles la nuit",
+    "radioactiveSprinkler.name": "Arroseur Radioactif",
+    "radioactiveSprinkler.description": "Arrose les 120 cases adjacentes chaque matin.",
+    "radioactiveFertilizer.name": "Fertilisant Radioactif",
+    "radioactiveFertilizer.description": "Avec, vos plantes grandiront beaucoup plus vite !!"
+}

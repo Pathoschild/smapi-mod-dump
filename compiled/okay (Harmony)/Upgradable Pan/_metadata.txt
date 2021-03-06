@@ -1,0 +1,3 @@
+page URL: https://stardewvalley.curseforge.com/projects/upgradable-pan
+IDs: com.anthonyhilyard.upgradablepan
+update keys: GitHub:AHilyard/UpgradeablePan

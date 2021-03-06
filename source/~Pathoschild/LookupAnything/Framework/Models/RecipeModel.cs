@@ -11,8 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Items.ItemData;
+using Pathoschild.Stardew.LookupAnything.Framework.Fields.Models;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Objects;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Models
@@ -68,6 +71,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
 
         /// <summary>Whether the recipe must be learned before it can be used.</summary>
         public bool MustBeLearned { get; }
+
+        /// <summary>The sprite and display text for a non-standard recipe output.</summary>
+        public RecipeItemEntry SpecialOutput { get; }
 
 
         /*********
@@ -125,7 +131,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
                 key: recipe.name,
                 type: recipe.isCookingRecipe ? RecipeType.Cooking : RecipeType.Crafting,
                 displayType: recipe.isCookingRecipe ? I18n.RecipeType_Cooking() : I18n.RecipeType_Crafting(),
-                ingredients: recipe.recipeList.Select(p => new RecipeIngredientModel(new [] { p.Key }, p.Value)),
+                ingredients: recipe.recipeList.Select(p => new RecipeIngredientModel(new[] { p.Key }, p.Value)),
                 item: item => recipe.createItem(),
                 mustBeLearned: true,
                 minOutput: recipe.numberProducedPerCraft,
@@ -135,6 +141,29 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
         {
             this.OutputItemIndex = recipe.itemToProduce[0];
             this.OutputItemType = this.GetItemType(recipe, this.OutputItemIndex.Value);
+        }
+
+        /// <summary>Construct an instance.</summary>
+        /// <param name="blueprint">The building blueprint.</param>
+        /// <param name="building">A sample building constructed by the blueprint.</param>
+        public RecipeModel(BluePrint blueprint, Building building)
+            : this(
+                key: blueprint.name,
+                type: RecipeType.BuildingBlueprint,
+                displayType: I18n.Building_Construction(),
+                ingredients: blueprint.itemsRequired
+                    .Select(ingredient => new RecipeIngredientModel(new[] { ingredient.Key }, ingredient.Value))
+                    .ToArray(),
+                item: _ => null,
+                mustBeLearned: false,
+                machineParentSheetIndex: null,
+                isForMachine: _ => false
+            )
+        {
+            this.SpecialOutput = new RecipeItemEntry(
+                new SpriteInfo(building.texture.Value, building.getSourceRectForMenu()),
+                building.buildingType.Value
+            );
         }
 
         /// <summary>Construct an instance.</summary>

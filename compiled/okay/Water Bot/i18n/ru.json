@@ -1,0 +1,7 @@
+{
+  "process.start": "Пора начинать полив!",
+  "process.end": "Законченный полив",
+  "process.interrupt": "Прекращение полива",
+  "process.exhausted": "Устали поливать",
+  "process.waterless": "Не удалось найти воду!"
+}

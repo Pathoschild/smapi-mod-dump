@@ -1,0 +1,7 @@
+{
+  "process.start": "Temps de commencer à arroser!",
+  "process.end": "Arrosage terminé",
+  "process.interrupt": "Arrosage arrêté",
+  "process.exhausted": "Fatigué d'arroser",
+  "process.waterless": "Impossible de trouver de l'eau!"
+}

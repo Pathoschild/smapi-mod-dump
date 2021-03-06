@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Deluxe Grabber Redux",
+  "Author": "ferdaber",
+  "Version": "1.3.0",
+  "Description": "Allows use of autograbber for harvesting crops, slime balls, fruit trees, bushes, forageable items, and artifact spots.",
+  "UniqueID": "ferdaber.DeluxeGrabberRedux",
+  "EntryDll": "DeluxeGrabberRedux.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:7920"]
+}

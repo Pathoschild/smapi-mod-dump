@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Ranged Tools",
+  "Author": "vgperson",
+  "Version": "1.2.5",
+  "Description": "Allows customization of the range tools can be used at with mouse clicks.",
+  "UniqueID": "vgperson.RangedTools",
+  "EntryDll": "RangedTools.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:6935" ]
+}

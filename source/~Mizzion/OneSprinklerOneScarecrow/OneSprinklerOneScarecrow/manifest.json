@@ -11,15 +11,10 @@
 {
     "Name": "OneSprinklerOneScarecrow",
     "Author": "Mizzion",
-    "Version": "1.0.7",
-    "Description": "Main mod for [JA]OneSprinklerOneScarecrow.",
+    "Version": "2.0.0",
+    "Description": "Adds a Scarecrow that will scare away all crows, adds a Sprinkler that will water all hoed dirt.",
     "UniqueID": "mizzion.onesprinkleronescarecrow",
     "EntryDll": "OneSprinklerOneScarecrow.dll",
     "MinimumApiVersion": "3.8.0",
-  "UpdateKeys": [ "Nexus:3633", "ModDrop:661376" ],
-    "Dependencies": [
-        {
-            "UniqueID": "spacechase0.JsonAssets"
-        }
-    ]
+  "UpdateKeys": [ "Nexus:3633", "ModDrop:661376" ]
 }

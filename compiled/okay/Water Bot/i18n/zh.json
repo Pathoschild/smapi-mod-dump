@@ -1,0 +1,7 @@
+{
+  "process.start": "是时候开始浇水了",
+  "process.end": "完成浇水",
+  "process.interrupt": "浇水停止了",
+  "process.exhausted": "厌倦了浇水",
+  "process.waterless": "找不到水"
+}

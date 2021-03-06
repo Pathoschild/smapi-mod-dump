@@ -15,6 +15,56 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Extensions.Compressors {
 	// TODO : Implement a continual training dictionary so each stream doesn't require its own dictionary for in-memory compression.
 	internal static class Zstd {
+		private sealed class Compressor : IDisposable {
+			private readonly ZstdNet.Compressor Delegate;
+
+			internal Compressor() : this(Zstd.Options.CompressionDefault) {}
+			internal Compressor(ZstdNet.CompressionOptions options) {
+				Delegate = new ZstdNet.Compressor(options);
+			}
+
+			public void Dispose() {
+				try {
+					Delegate.Dispose();
+				}
+				catch (DllNotFoundException) {
+					// This eliminates an invalid call to a DLL that isn't present.
+					GC.SuppressFinalize(Delegate);
+				}
+			}
+
+			internal byte[] Wrap(byte[] data) {
+				return Delegate.Wrap(data);
+			}
+		}
+
+		private sealed class Decompressor : IDisposable {
+			private readonly ZstdNet.Decompressor Delegate;
+
+			internal Decompressor() : this(Zstd.Options.DecompressionDefault) { }
+			internal Decompressor(ZstdNet.DecompressionOptions options) {
+				Delegate = new ZstdNet.Decompressor(options);
+			}
+
+			public void Dispose() {
+				try {
+					Delegate.Dispose();
+				}
+				catch (DllNotFoundException) {
+					// This eliminates an invalid call to a DLL that isn't present.
+					GC.SuppressFinalize(Delegate);
+				}
+			}
+
+			internal byte[] Unwrap(byte[] data) {
+				return Delegate.Unwrap(data);
+			}
+
+			internal byte[] Unwrap(byte[] data, int size) {
+				return Delegate.Unwrap(data, size);
+			}
+		}
+
 		internal static bool IsSupported {
 			get {
 				try {
@@ -24,7 +74,15 @@ namespace SpriteMaster.Extensions.Compressors {
 					if (!Enumerable.SequenceEqual(dummyData, uncompressedData)) {
 						throw new Exception("Original and Uncompressed Data Mismatch");
 					}
+					if (Config.Debug.MacOSTestMode) {
+						throw new Exception("Mac OS Test Mode Enabled, Zstd not supported");
+					}
+					Debug.InfoLn("Zstd Compression is supported");
 					return true;
+				}
+				catch (DllNotFoundException) {
+					Debug.InfoLn($"Zstd Compression not supported");
+					return false;
 				}
 				catch (Exception ex) {
 					Debug.InfoLn($"Zstd Compression not supported: '{ex.ToString()}'");
@@ -39,13 +97,13 @@ namespace SpriteMaster.Extensions.Compressors {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ZstdNet.Compressor GetEncoder() {
-			return new ZstdNet.Compressor(Options.CompressionDefault);
+		private static Compressor GetEncoder() {
+			return new Compressor(Options.CompressionDefault);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ZstdNet.Decompressor GetDecoder() {
-			return new ZstdNet.Decompressor(Options.DecompressionDefault);
+		private static Decompressor GetDecoder() {
+			return new Decompressor(Options.DecompressionDefault);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

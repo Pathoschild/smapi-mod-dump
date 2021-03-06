@@ -1,5 +1,7 @@
 {
   "ChangeItemKey": "OemQuotes",
   "ItemScale": 0.5,
-  "Transparency": 1.0
+  "Transparency": 1.0,
+  "DisplayQuality": true,
+  "RetainItem": false
 }

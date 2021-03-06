@@ -212,35 +212,32 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
             // recipes
             if (showInventoryFields)
             {
-                switch (itemType)
-                {
-                    // for ingredient
-                    case ItemType.Object:
-                        {
-                            RecipeModel[] recipes = this.GameHelper.GetRecipesForIngredient(this.DisplayItem).ToArray();
-                            if (recipes.Any())
-                                yield return new RecipesForIngredientField(this.GameHelper, I18n.Item_Recipes(), item, recipes);
-                        }
-                        break;
+                RecipeModel[] recipes =
+                    // recipes that take this item as ingredient
+                    this.GameHelper.GetRecipesForIngredient(this.DisplayItem)
+                    .Concat(this.GameHelper.GetRecipesForIngredient(item))
 
-                    // for machine
-                    case ItemType.BigCraftable:
-                        {
-                            RecipeModel[] recipes = this.GameHelper.GetRecipesForMachine(this.DisplayItem as SObject).ToArray();
-                            if (recipes.Any())
-                                yield return new RecipesForMachineField(this.GameHelper, I18n.Item_Recipes(), recipes);
-                        }
-                        break;
-                }
+                    // recipes which produce this item
+                    .Concat(this.GameHelper.GetRecipesForOutput(this.DisplayItem))
+                    .Concat(this.GameHelper.GetRecipesForOutput(item))
+
+                    // recipes for a machine
+                    .Concat(this.GameHelper.GetRecipesForMachine(this.DisplayItem as SObject))
+                    .Concat(this.GameHelper.GetRecipesForMachine(item as SObject))
+                    .ToArray();
+
+                if (recipes.Any())
+                    yield return new ItemRecipesField(this.GameHelper, I18n.Item_Recipes(), item, recipes.ToArray());
             }
 
-            // fish
+            // fish spawn rules
             if (item.Category == SObject.FishCategory)
-            {
-                // spawn rules
                 yield return new FishSpawnRulesField(this.GameHelper, I18n.Item_FishSpawnRules(), item.ParentSheetIndex);
 
-                // fish pond data
+            // fish pond data
+            // derived from FishPond::doAction and FishPond::isLegalFishForPonds
+            if (!item.HasContextTag("fish_legendary") && (item.Category == SObject.FishCategory || Utility.IsNormalObjectAtParentSheetIndex(item, 393/*coral*/) || Utility.IsNormalObjectAtParentSheetIndex(item, 397/*sea urchin*/)))
+            {
                 foreach (FishPondData fishPondData in Game1.content.Load<List<FishPondData>>("Data\\FishPondData"))
                 {
                     if (!fishPondData.RequiredTags.All(item.HasContextTag))
@@ -666,6 +663,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                     (
                         from recipe in this.GameHelper.GetRecipesForIngredient(this.DisplayItem)
                         let item = recipe.CreateItem(this.DisplayItem)
+                        where item != null
                         orderby item.DisplayName
                         select new { recipe.Type, item.DisplayName, TimesCrafted = recipe.GetTimesCrafted(Game1.player) }
                     )
@@ -680,6 +678,17 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                 string[] uncraftedNames = (from recipe in recipes where recipe.Type == RecipeType.Crafting && recipe.TimesCrafted <= 0 select recipe.DisplayName).ToArray();
                 if (uncraftedNames.Any())
                     neededFor.Add(I18n.Item_NeededFor_CraftMaster(recipes: string.Join(", ", uncraftedNames)));
+            }
+
+            // quests
+            {
+                string[] quests = this.GameHelper
+                    .GetQuestsWhichNeedItem(obj)
+                    .Select(p => p.DisplayText)
+                    .OrderBy(p => p)
+                    .ToArray();
+                if (quests.Any())
+                    neededFor.Add(I18n.Item_NeededFor_Quests(quests: string.Join(", ", quests)));
             }
 
             // yield
@@ -701,19 +710,30 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
 
             // get community center
             CommunityCenter communityCenter = Game1.locations.OfType<CommunityCenter>().First();
-            if (communityCenter.areAllAreasComplete() && communityCenter.isBundleComplete(36))
-                yield break;
+            bool IsBundleOpen(int id)
+            {
+                try
+                {
+                    return !communityCenter.isBundleComplete(id);
+                }
+                catch
+                {
+                    return false; // invalid bundle data
+                }
+            }
 
             // get bundles
-            foreach (BundleModel bundle in this.GameHelper.GetBundleData())
+            if (!communityCenter.areAllAreasComplete() || IsBundleOpen(36))
             {
-                // ignore completed bundle
-                if (communityCenter.isBundleComplete(bundle.ID))
-                    continue;
+                foreach (BundleModel bundle in this.GameHelper.GetBundleData())
+                {
+                    if (!IsBundleOpen(bundle.ID))
+                        continue;
 
-                bool isMissing = this.GetIngredientsFromBundle(bundle, item).Any(p => this.IsIngredientNeeded(bundle, p));
-                if (isMissing)
-                    yield return bundle;
+                    bool isMissing = this.GetIngredientsFromBundle(bundle, item).Any(p => this.IsIngredientNeeded(bundle, p));
+                    if (isMissing)
+                        yield return bundle;
+                }
             }
         }
 
@@ -755,7 +775,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
                 int[] iridiumItems = this.Constants.ItemsWithIridiumQuality;
                 var prices = new Dictionary<ItemQuality, int>();
                 var sample = (SObject)item.getOne();
-                foreach (ItemQuality quality in Enum.GetValues(typeof(ItemQuality)))
+                foreach (ItemQuality quality in CommonHelper.GetEnumValues<ItemQuality>())
                 {
                     if (quality == ItemQuality.Iridium && !iridiumItems.Contains(item.ParentSheetIndex) && !iridiumItems.Contains(item.Category))
                         continue;
@@ -810,7 +830,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
             // present in the community center data. This seems to be caused by some mods like
             // Challenging Community Center Bundles in some cases.
             if (!communityCenter.bundles.TryGetValue(bundle.ID, out bool[] items) || ingredient.Index >= items.Length)
-                return true; 
+                return true;
 
             return !items[ingredient.Index];
         }

@@ -64,7 +64,6 @@ namespace Bpendragon.GreenhouseSprinklers
             Dictionary<int, int> buildMats;
             int money;
             UpgradeCost cost =  Config.DifficultySettings.Find(x => x.Difficulty == difficulty);
-            int days;
             if (level == 1)
             {
                 desc = I18n.CarpenterShop_FirstUpgradeDescription();
@@ -92,7 +91,8 @@ namespace Bpendragon.GreenhouseSprinklers
                 nameOfBuildingToUpgrade = "Greenhouse",
                 itemsRequired = buildMats,
                 maxOccupants = MaxOccupantsID,
-                blueprintType = "Upgrades"
+                blueprintType = "Upgrades",
+                daysToConstruct = 2
             };
         }
     }

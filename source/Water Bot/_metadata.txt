@@ -1,0 +1,13 @@
+url:
+   https://github.com/andyruwruw/stardew-valley-water-bot.git
+
+mods:
+   Water Bot
+
+latest commit:
+   commit 29148f6a60d95c6cdf6bdf6d966dc65f8e09754a
+   Author: Andrew Young <andrew@youngshome.com>
+   Date:   Mon Mar 1 02:32:21 2021 -0800
+   
+       CHANGELOG 1.2.1
+   

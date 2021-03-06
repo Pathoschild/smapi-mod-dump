@@ -51,7 +51,7 @@ namespace ContentPatcher.Framework
         private readonly Func<string, string> NormalizeAssetName;
 
         /// <summary>Handles parsing raw strings into tokens.</summary>
-        private readonly Lexer Lexer = new Lexer();
+        private readonly Lexer Lexer = new();
 
 
         /*********
@@ -77,10 +77,11 @@ namespace ContentPatcher.Framework
         /// <summary>Load patches for a content pack.</summary>
         /// <param name="contentPack">The content pack for which to load patches.</param>
         /// <param name="rawPatches">The raw patches to load.</param>
+        /// <param name="rootIndexPath">The path of indexes from the root <c>content.json</c> to the root which is loading patches; see <see cref="IPatch.IndexPath"/>.</param>
         /// <param name="path">The path to the patches from the root content file.</param>
         /// <param name="reindex">Whether to reindex the patch list immediately.</param>
         /// <param name="parentPatch">The parent <see cref="PatchType.Include"/> patch for which the patches are being loaded, if any.</param>
-        public void LoadPatches(RawContentPack contentPack, PatchConfig[] rawPatches, LogPathBuilder path, bool reindex, Patch parentPatch)
+        public void LoadPatches(RawContentPack contentPack, PatchConfig[] rawPatches, int[] rootIndexPath, LogPathBuilder path, bool reindex, Patch parentPatch)
         {
             // get fake patch context (so patch tokens are available in patch validation)
             ModTokenContext modContext = this.TokenManager.TrackLocalTokens(contentPack.ContentPack);
@@ -103,15 +104,17 @@ namespace ContentPatcher.Framework
                 .ToArray();
 
             // preprocess patches
-            this.NamePatches(patches);
             patches = this.SplitPatches(patches).ToArray();
+            this.UniquelyNamePatches(patches);
 
             // load patches
+            int index = -1;
             foreach (PatchConfig patch in patches)
             {
+                index++;
                 var localPath = path.With(patch.LogName);
                 this.Monitor.VerboseLog($"   loading {localPath}...");
-                this.LoadPatch(contentPack, patch, tokenParser, localPath, reindex: false, parentPatch, logSkip: reasonPhrase => this.Monitor.Log($"Ignored {localPath}: {reasonPhrase}", LogLevel.Warn));
+                this.LoadPatch(contentPack, patch, tokenParser, rootIndexPath.Concat(new[] { index }).ToArray(), localPath, reindex: false, parentPatch, logSkip: reasonPhrase => this.Monitor.Log($"Ignored {localPath}: {reasonPhrase}", LogLevel.Warn));
             }
 
             // rebuild indexes
@@ -245,16 +248,29 @@ namespace ContentPatcher.Framework
                 {
                     foreach (string fromFile in AlwaysIterate(fromFiles))
                     {
+                        // create patch
                         var newPatch = new PatchConfig(patch)
                         {
                             Target = target,
                             FromFile = fromFile
                         };
 
-                        if (targets.Length > 1)
-                            newPatch.LogName += $" > {target}";
-                        if (fromFiles.Length > 1)
-                            newPatch.LogName += $" from {fromFile}";
+                        // add descriptive log name
+                        if (string.IsNullOrWhiteSpace(patch.LogName))
+                        {
+                            // Include {target} from {fromFile}
+                            patch.LogName = this.GetDefaultPatchName(newPatch);
+                            if (fromFiles.Length > 1)
+                                patch.LogName += $" from {fromFile}";
+                        }
+                        else
+                        {
+                            // Custom Name > {target} from {fromFile}
+                            if (targets.Length > 1)
+                                newPatch.LogName += $" > {target}";
+                            if (fromFiles.Length > 1)
+                                newPatch.LogName += $" from {fromFile}";
+                        }
 
                         yield return newPatch;
                     }
@@ -264,18 +280,13 @@ namespace ContentPatcher.Framework
 
         /// <summary>Set a unique name for all patches in a content pack.</summary>
         /// <param name="patches">The patches to name.</param>
-        private void NamePatches(PatchConfig[] patches)
+        private void UniquelyNamePatches(PatchConfig[] patches)
         {
             // add default log names
             foreach (PatchConfig patch in patches)
             {
                 if (string.IsNullOrWhiteSpace(patch.LogName))
-                {
-                    if (Enum.TryParse(patch.Action, ignoreCase: true, out PatchType type) && type == PatchType.Include)
-                        patch.LogName = $"{type} {PathUtilities.NormalizePath(patch.FromFile)}";
-                    else
-                        patch.LogName = $"{patch.Action} {PathUtilities.NormalizePath(patch.Target)}";
-                }
+                    patch.LogName = this.GetDefaultPatchName(patch);
             }
 
             // make names unique within content pack
@@ -285,6 +296,15 @@ namespace ContentPatcher.Framework
                 foreach (PatchConfig patch in patchGroup)
                     patch.LogName += $" #{++i}";
             }
+        }
+
+        /// <summary>Get the default name for a patch, without accounting for unique discriminators.</summary>
+        /// <param name="patch">The patch to name.</param>
+        private string GetDefaultPatchName(PatchConfig patch)
+        {
+            return Enum.TryParse(patch.Action, ignoreCase: true, out PatchType type) && type == PatchType.Include
+                ? $"{type} {PathUtilities.NormalizePath(patch.FromFile)}"
+                : $"{patch.Action} {PathUtilities.NormalizePath(patch.Target)}";
         }
 
         /// <summary>Unload patches matching a condition.</summary>
@@ -307,11 +327,12 @@ namespace ContentPatcher.Framework
         /// <param name="rawContentPack">The content pack being loaded.</param>
         /// <param name="entry">The change to load.</param>
         /// <param name="tokenParser">Handles low-level parsing and validation for tokens.</param>
+        /// <param name="indexPath">The path of indexes from the root <c>content.json</c> to this patch; see <see cref="IPatch.IndexPath"/>.</param>
         /// <param name="path">The path to the patch from the root content file.</param>
         /// <param name="reindex">Whether to reindex the patch list immediately.</param>
         /// <param name="parentPatch">The parent <see cref="PatchType.Include"/> patch for which the patches are being loaded, if any.</param>
         /// <param name="logSkip">The callback to invoke with the error reason if loading it fails.</param>
-        private bool LoadPatch(RawContentPack rawContentPack, PatchConfig entry, TokenParser tokenParser, LogPathBuilder path, bool reindex, Patch parentPatch, Action<string> logSkip)
+        private bool LoadPatch(RawContentPack rawContentPack, PatchConfig entry, TokenParser tokenParser, int[] indexPath, LogPathBuilder path, bool reindex, Patch parentPatch, Action<string> logSkip)
         {
             var pack = rawContentPack.ContentPack;
             PatchType? action = null;
@@ -406,6 +427,7 @@ namespace ContentPatcher.Framework
 
                             // save
                             patch = new IncludePatch(
+                                indexPath: indexPath,
                                 path: path,
                                 assetName: null,
                                 conditions: conditions,
@@ -429,6 +451,7 @@ namespace ContentPatcher.Framework
 
                             // save
                             patch = new LoadPatch(
+                                indexPath: indexPath,
                                 path: path,
                                 assetName: targetAsset,
                                 conditions: conditions,
@@ -482,6 +505,7 @@ namespace ContentPatcher.Framework
 
                             // save
                             patch = new EditDataPatch(
+                                indexPath: indexPath,
                                 path: path,
                                 assetName: targetAsset,
                                 conditions: conditions,
@@ -494,6 +518,7 @@ namespace ContentPatcher.Framework
                                 contentPack: pack,
                                 parentPatch: parentPatch,
                                 monitor: this.Monitor,
+                                reflection: this.Reflection,
                                 normalizeAssetName: this.NormalizeAssetName,
                                 tryParseFields: TryParseFields
                             );
@@ -524,6 +549,7 @@ namespace ContentPatcher.Framework
 
                             // save
                             patch = new EditImagePatch(
+                                indexPath: indexPath,
                                 path: path,
                                 assetName: targetAsset,
                                 conditions: conditions,
@@ -581,8 +607,8 @@ namespace ContentPatcher.Framework
                                     return TrackSkip($"{errorPrefix} > {nameof(EditMapPatchTile.SetTilesheet)} is invalid: {error}");
 
                                 // index
-                                IManagedTokenString index = null;
-                                if (tile.SetIndex != null && !this.TryParseInt(tile.SetIndex, tokenParser, immutableRequiredModIDs, localPath.With(nameof(tile.SetIndex)), out error, out index))
+                                IManagedTokenString setIndex = null;
+                                if (tile.SetIndex != null && !this.TryParseInt(tile.SetIndex, tokenParser, immutableRequiredModIDs, localPath.With(nameof(tile.SetIndex)), out error, out setIndex))
                                     return TrackSkip($"{errorPrefix} > {nameof(EditMapPatchTile.SetIndex)} is invalid: {error}");
 
                                 // properties
@@ -609,11 +635,21 @@ namespace ContentPatcher.Framework
                                 mapTiles.Add(new EditMapPatchTile(
                                     layer: layer,
                                     position: position,
-                                    setIndex: index,
+                                    setIndex: setIndex,
                                     setTilesheet: tilesheet,
                                     setProperties: tileProperties,
                                     remove: remove
                                 ));
+                            }
+
+                            // parse warps
+                            var addWarps = new List<IManagedTokenString>();
+                            for (int i = 0; i < entry.AddWarps.Length; i++)
+                            {
+                                LogPathBuilder localPath = path.With(nameof(entry.AddWarps), i.ToString());
+                                if (!tokenParser.TryParseString(entry.AddWarps[i], immutableRequiredModIDs, localPath, out string warpError, out IManagedTokenString parsed))
+                                    return TrackSkip($"{nameof(PatchConfig.AddWarps)} > '{entry.AddWarps[i]}' is invalid: {warpError}");
+                                addWarps.Add(parsed);
                             }
 
                             // parse text operations
@@ -634,13 +670,14 @@ namespace ContentPatcher.Framework
                                 return TrackSkip($"the {nameof(PatchConfig.PatchMode)} is invalid. Expected one of these values: [{string.Join(", ", Enum.GetNames(typeof(PatchMapMode)))}]");
 
                             // validate
-                            if (fromAsset == null && !mapProperties.Any() && !mapTiles.Any() && !textOperations.Any())
-                                return TrackSkip($"must specify at least one of {nameof(entry.FromFile)}, {nameof(entry.MapProperties)}, {nameof(entry.MapTiles)}, or {nameof(entry.TextOperations)}");
+                            if (fromAsset == null && !mapProperties.Any() && !mapTiles.Any() && !addWarps.Any() && !textOperations.Any())
+                                return TrackSkip($"must specify at least one of {nameof(entry.AddWarps)}, {nameof(entry.FromFile)}, {nameof(entry.MapProperties)}, {nameof(entry.MapTiles)}, or {nameof(entry.TextOperations)}");
                             if (fromAsset != null && entry.ToArea == null)
                                 return TrackSkip($"must specify {nameof(entry.ToArea)} when using {nameof(entry.FromFile)} (use \"Action\": \"Load\" if you want to replace the whole map file)");
 
                             // save
                             patch = new EditMapPatch(
+                                indexPath: indexPath,
                                 path: path,
                                 assetName: targetAsset,
                                 conditions: conditions,
@@ -650,6 +687,7 @@ namespace ContentPatcher.Framework
                                 patchMode: patchMode,
                                 mapProperties: mapProperties,
                                 mapTiles: mapTiles,
+                                addWarps: addWarps,
                                 textOperations: textOperations,
                                 updateRate: updateRate,
                                 contentPack: pack,
@@ -869,9 +907,9 @@ namespace ContentPatcher.Framework
             {
                 // get lexical tokens
                 ILexToken[] lexTokens = this.Lexer.ParseBits(name, impliedBraces: true).ToArray();
-                foreach (ILexToken cur in lexTokens)
+                for (int i = 0; i < lexTokens.Length; i++)
                 {
-                    if (!tokenParser.Migrator.TryMigrate(cur, out error))
+                    if (!tokenParser.Migrator.TryMigrate(ref lexTokens[i], out error))
                         return Fail(error, out error, out condition, out immutableRequiredModIDs);
                 }
 
@@ -996,33 +1034,15 @@ namespace ContentPatcher.Framework
             if (!this.TryParseBoolean(rawValue, tokenParser, assumeModIds, path, out error, out IManagedTokenString tokenString))
                 return false;
 
-            // validate & extract tokens
+            // validate that it has no tokens
             string text = rawValue;
             if (tokenString.HasAnyTokens)
             {
-                // only one token allowed
-                if (!tokenString.IsSingleTokenOnly)
-                {
-                    error = "can't be treated as a true/false value because it contains multiple tokens.";
-                    return false;
-                }
-
-                // parse token
-                LexTokenToken lexToken = tokenString.GetTokenPlaceholders(recursive: false).Single();
-                IToken token = tokenParser.Context.GetToken(lexToken.Name, enforceContext: false);
-                IInputArguments input = new InputArguments(new TokenString(lexToken.InputArgs, tokenParser.Context, path.With("input")));
-
-                // check token options
-                if (token == null || token.IsMutable || !token.IsReady)
-                {
-                    error = $"can only use static tokens in this field, consider using a {nameof(PatchConfig.When)} condition instead.";
-                    return false;
-                }
-
-                text = token.GetValues(input).First();
+                error = "cannot contain tokens.";
+                return false;
             }
 
-            // parse text
+            // parse as boolean
             if (!bool.TryParse(text, out parsed))
             {
                 error = $"can't parse {tokenString.Raw} as a true/false value.";

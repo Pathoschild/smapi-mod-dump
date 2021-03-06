@@ -5,9 +5,9 @@ mods:
    Custom NPC Exclusions
 
 latest commit:
-   commit a06d2a5f02eb56f81c87de8d04db39907e5d8264
+   commit 472119b47f6913bfc8dceb78af3746c49fa23c6a
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Tue Jan 12 16:24:54 2021 -0600
+   Date:   Wed Feb 17 18:56:35 2021 -0600
    
-       Add PerfectFriend and related settings, increment version
+       Fix/tweak "MovieInvite" text key in readme.md
    

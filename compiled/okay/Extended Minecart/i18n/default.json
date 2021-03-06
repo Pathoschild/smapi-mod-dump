@@ -11,5 +11,6 @@
     "destination.desert": "Desert",
     "destination.woods": "Woods",
     "destination.beach": "Beach",
-    "destination.wizard": "Wizard"
+    "destination.wizard": "Wizard",
+    "destination.cancel":  "Stay here",
 }

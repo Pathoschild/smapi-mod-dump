@@ -20,16 +20,15 @@ using StardewValley;
 using StardewValley.Locations;
 using AnimalHusbandryMod.cooking;
 using DataLoader = AnimalHusbandryMod.common.DataLoader;
+using AnimalHusbandryMod.common;
 
 namespace AnimalHusbandryMod.recipes
 {
     public class RecipesLoader : IAssetEditor
     {
-        public MeatFridayChannel MeatFridayChannel { get; }
-
         public RecipesLoader()
         {
-            MeatFridayChannel = new MeatFridayChannel();
+            TvController.AddChannel(new MeatFridayChannel());
         }
 
         public bool CanEdit<T>(IAssetInfo asset)

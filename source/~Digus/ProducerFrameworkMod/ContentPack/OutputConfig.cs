@@ -40,6 +40,7 @@ namespace ProducerFrameworkMod.ContentPack
         public StackConfig IridiumQualityInput = new StackConfig();
         public ColoredObjectConfig OutputColorConfig;
         public Dictionary<string, int> RequiredFuel = new Dictionary<string, int>();
+        public int? RequiredInputStack;
         public List<int> RequiredInputQuality = new List<int>();
         public List<string> RequiredSeason = new List<string>();
         public List<Weather> RequiredWeather = new List<Weather>();

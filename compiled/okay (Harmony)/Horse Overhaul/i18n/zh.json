@@ -1,0 +1,15 @@
+﻿{
+  /*
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
+    You can change the position of the {{placeHolder}} where they need to be in the sentence.
+  */
+  "Yes": "是",
+  "No": "否",
+  "GotPetted": "得到爱抚：{{value}}",
+  "GotWater": "得到饮水：{{value}}",
+  "GotFood": "得到喂食：{{value}}",
+  "Friendship": "友好值：{{value}}",
+  "AteEnough": "{{name}}今天吃的够多了。",
+  "AteFood": "{{name}}吃下了你喂的{{foodName}}。",
+  "HorseWarning": "You cannot do that while riding a horse!"
+}

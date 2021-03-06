@@ -5,11 +5,9 @@ mods:
    Community Center Helper
 
 latest commit:
-   commit b409fef8dd6f79bcbdfae797a5af8b4a9549b0a8
+   commit 244a8904b3decd6f475d9da6ba172238d6837afc
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Mon Jan 18 20:10:28 2021 -0800
+   Date:   Tue Feb 9 14:09:41 2021 -0800
    
-       1.2.3 update
-       
-       Removed accidental debug messages, except Github source had already removed them, so just a version change in manifest
+       1.2.4 update (Spanish)
    
