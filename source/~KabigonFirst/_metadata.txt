@@ -7,9 +7,9 @@ mods:
    Mine Assist
 
 latest commit:
-   commit 5c2a93ba1e222f4eb79a26eaee4b29c86499ebdf
-   Author: KabigonFirst <kabigonfirst@gmail.com>
-   Date:   Fri Jul 6 10:58:14 2018 -0400
+   commit 35015f1d5c863adc018579f8cac7e481d784d82c
+   Author: KabigonFirst <39769823+KabigonFirst@users.noreply.github.com>
+   Date:   Tue Mar 23 11:48:08 2021 -0400
    
-       support multiplayer mode; add ways to access menu; modify whole structure of menu
+       Update README.md
    

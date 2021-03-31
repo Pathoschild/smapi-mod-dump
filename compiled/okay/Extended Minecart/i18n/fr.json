@@ -1,0 +1,16 @@
+{
+    "choose-destination": "Choisissez la destination",
+    "needs-refuel.question": "Le minecart est à court de carburant. Utiliser {{Amount}} charbons pour faire le plein ? ",
+    "needs-refuel.no-coal": "Le minecart est à court de carburant et nécessite {{Amount}} charbon pour être ravitaillé.",
+
+    "destination.farm": "Ferme",
+    "destination.town": "Ville",
+    "destination.mine": "Mine",
+    "destination.bus": "Bus",
+    "destination.quarry": "Carrière",
+    "destination.desert": "Desert",
+    "destination.woods": "Bois",
+    "destination.beach": "Plage",
+    "destination.wizard": "Tour du sorcier",
+    "destination.cancel": "rester ici"
+}

@@ -49,3 +49,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 3.0:
 * Changed how StardewHack finds the methods it wants to patch.
 * Fix incompatibility with SkillPrestige.CookingSkill causing `Failed to find method` errors.
+
+#### 4.0:
+* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+

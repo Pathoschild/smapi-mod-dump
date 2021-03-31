@@ -1,0 +1,13 @@
+url:
+   https://github.com/aRooooooba/SortingChests.git
+
+mods:
+   Sorting Chests
+
+latest commit:
+   commit 2307966cd5e592347599df64f8f2984376dd6e4f
+   Author: aRooooooba <lxjarooba@gmail.com>
+   Date:   Tue Mar 16 17:55:28 2021 -0400
+   
+       version updated
+   

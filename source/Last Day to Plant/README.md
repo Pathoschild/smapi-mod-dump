@@ -9,11 +9,13 @@ for queries and analysis.**
 # Release History
 Check out the [roadmap](https://github.com/dmcrider/LastDayToPlant/projects/1). Don't see a feature you want? [Create an issue](https://github.com/dmcrider/LastDayToPlant/issues/new)
 
-v1.2.0 - Automatically check for Agriculturist skill (determined by the main player in multiplayer). Added flag for base crops in preparation for mod compatibility (coming soon)
+v2.0.1 - Added support for other mods.
 
-v1.1.0 - Added configuration settings. Will now show messages when it is the last day to use each type of Speed Gro
+v1.2.0 - Automatically check for Agriculturist skill (determined by the main player in multiplayer). Added flag for base crops in preparation for mod compatibility (coming soon).
 
-v1.0.0 - Initial Release
+v1.1.0 - Added configuration settings. Will now show messages when it is the last day to use each type of Speed Gro.
+
+v1.0.0 - Initial Release.
 
 # Install
 - Download from [NexusMods](https://www.nexusmods.com/stardewvalley/mods/7917) (recommended) or from the [latest release](/dmcrider/LastDayToPlant/releases/latest)
@@ -27,13 +29,19 @@ The configuration options work like this: In addition to a notification on Day 1
 The `config.json` file looks like this:
 
     {
+      "IncludeBaseGameCrops": true,
       "ShowBaseCrops": true,
       "ShowSpeedGro": false,
       "ShowDeluxeSpeedGro": false,
-      "ShowHyperSpeedGro": false
+      "ShowHyperSpeedGro": false,
+      "PPJAFruitsAndVeggiesPath": "",
+      "PPJAFantasyCropsPath": "",
+      "PPJAAncientCropsPath": "",
+      "PPJACannabisKitPath": "",
+      "BonstersFruitAndVeggiesPath": "",
     }
 
-The `IsAgriculturist` flag that was present in previous versions has been removed and is now automatically determined (based on the main player, if in multiplayer).
+Any option that ends with "Path" expects a full path to the root folder of that mod. For example, `"PPJAFruitsAndVeggiesPath": "D:/Steam/steamapps/common/Stardew Valley/Mods/Fruits and Veggies/[PPJA] Fruits and Veggies"`. If you have any issues getting the path right, let me know via [GitHub](https://github.com/dmcrider/LastDayToPlant/issues).
 
 # Running into issues?
 If something is going wrong, please let me know by [submitting an issue on GitHub](https://github.com/dmcrider/LastDayToPlant/issues/new), or email me directly at [mods@dayloncrider.com](mailto:mods@dayloncrider.com). I try my best to test multiple scenarios, but I can't test everything.
@@ -44,10 +52,13 @@ Want early access? Have a desire to help test releases before they go public? Se
 - English
 - Spanish
 - Brazilian Portuguese
-- French (In Progress)
+- Russian
+
+I am aware that some translations are not getting the translated crop name. I am looking into this and hope to have a fix soon.
 
 # Special Thanks
 [@Duckexza](https://github.com/Duckexza) - Brazilian translation
+[@4x4cheesecake](https://github.com/4x4cheesecake) - Fix for [#16](https://github.com/dmcrider/LastDayToPlant/issues/16)
 
 [@4x4cheesecake](https://github.com/4x4cheesecake) - Fix for [#16](https://github.com/dmcrider/LastDayToPlant/issues/16)
 

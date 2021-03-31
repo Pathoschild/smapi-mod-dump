@@ -1,0 +1,10 @@
+{
+  "Name": "DewCord Rich Presence",
+  "Author": "explosivetortellini",
+  "Version": "1.0.0",
+  "Description": "I like to use discord, and I mainly run Linux. The current Discord RP mod doesn't support Linux so I decided to take matters into my own hands and build it up from scratch.",
+  "UniqueID": "explosivetortellini.StardewValleyDRP",
+  "EntryDll": "StardewValleyDRP.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8348" ]
+}

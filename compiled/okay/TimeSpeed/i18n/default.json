@@ -1,0 +1,12 @@
+﻿{
+    "message.config-reloaded": "Time feels differently now...",
+    "message.speed-changed": "10 minutes feels like {{seconds}} seconds.",
+    "message.time-stopped": "Hey, you stopped the time!",
+    "message.time-resumed": "Time feels as usual now...",
+
+    "message.on-time-change.time-stopped": "Time suddenly stops...",
+
+    "message.on-location-change.time-stopped-globally": "Looks like time stopped everywhere...",
+    "message.on-location-change.time-stopped-here": "It feels like time is frozen here...",
+    "message.on-location-change.time-speed-here": "10 minutes feels more like {{seconds}} seconds here..."
+}

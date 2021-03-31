@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 3a62601750109f38ddaa86876e8ab46618298d38
+   commit dfb84b755ceeeffe7aca3dc9dd00f981dc1f1d1a
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Fri Jan 8 15:13:57 2021 +0100
+   Date:   Wed Mar 31 05:28:43 2021 +0200
    
-       Add config option for amount of rings.
+       [Tilled soil decay] Add integration with Generic Mod Config Menu
    

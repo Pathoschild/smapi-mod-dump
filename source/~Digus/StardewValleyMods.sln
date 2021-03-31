@@ -31,9 +31,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFMAutomate", "PFMAutomate\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailServicesMod", "MailServicesMod\MailServicesMod.csproj", "{E5E82134-CB84-4E97-AA3F-E067B0C697B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcaneTableMod", "ArcaneTableMod\ArcaneTableMod.csproj", "{E3288291-E574-4CDA-86AE-475439D855E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArcaneTableMod", "ArcaneTableMod\ArcaneTableMod.csproj", "{E3288291-E574-4CDA-86AE-475439D855E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCRMAutomate", "CCRMAutomate\CCRMAutomate.csproj", "{482DA12A-F70B-4353-8BDC-421116063C96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CCRMAutomate", "CCRMAutomate\CCRMAutomate.csproj", "{482DA12A-F70B-4353-8BDC-421116063C96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GemLampPostsMod", "GemLampPostsMod\GemLampPostsMod.csproj", "{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -166,6 +168,12 @@ Global
 		{482DA12A-F70B-4353-8BDC-421116063C96}.Release|Any CPU.ActiveCfg = Release|x86
 		{482DA12A-F70B-4353-8BDC-421116063C96}.Release|x86.ActiveCfg = Release|x86
 		{482DA12A-F70B-4353-8BDC-421116063C96}.Release|x86.Build.0 = Release|x86
+		{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}.Debug|x86.ActiveCfg = Debug|x86
+		{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}.Debug|x86.Build.0 = Debug|x86
+		{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}.Release|Any CPU.ActiveCfg = Release|x86
+		{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}.Release|x86.ActiveCfg = Release|x86
+		{979CECE2-32AB-439C-AC4A-AA8F7F4B38E4}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,9 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit 646fd29de458e910e87d1097c18640be1023d0be
+   commit 94a520d3a6e6a9d916b00ea750220d4970ed92fb
    Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Mon Jan 25 17:11:41 2021 -0500
+   Date:   Wed Mar 10 17:05:56 2021 -0500
    
-       Fix equipped rings properly
+       Make stuff load even earlier for random bundles
    

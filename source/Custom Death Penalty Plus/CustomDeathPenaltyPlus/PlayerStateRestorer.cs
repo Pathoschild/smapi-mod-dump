@@ -43,6 +43,39 @@ namespace CustomDeathPenaltyPlus
 
         private static ModConfig config;
 
+        // Change friendship of marriage candidate NPCs
+        public static void ApplyFriendshipChange(string name)
+        {            
+            var configvalue = config.OtherPenalties.HarveyFriendshipChange;
+
+            if (name == "Maru")
+            {
+                configvalue = config.OtherPenalties.MaruFriendshipChange;
+            }
+
+
+            if (Game1.player.friendshipData.ContainsKey(name) && (Game1.currentLocation.NameOrUniqueName == "Hospital" || config.OtherPenalties.WakeupNextDayinClinic == true))
+            {
+                //Yes, change friendship level
+                if (configvalue < 0)
+                {
+                    Game1.player.changeFriendship(Math.Max(configvalue, -Game1.player.getFriendshipLevelForNPC(name)), Game1.getCharacterFromName(name, true));
+                }
+                else if (Game1.player.friendshipData[name].Status == FriendshipStatus.Married)
+                {
+                    Game1.player.changeFriendship(Math.Min(configvalue, (3749 - Game1.player.getFriendshipLevelForNPC(name))), Game1.getCharacterFromName(name, true));
+                }
+                else if (Game1.player.friendshipData[name].Status == FriendshipStatus.Dating)
+                {
+                    Game1.player.changeFriendship(Math.Min(configvalue, (2749 - Game1.player.getFriendshipLevelForNPC(name))), Game1.getCharacterFromName(name, true));
+                }
+                else
+                {
+                    Game1.player.changeFriendship(Math.Min(configvalue, (2249 - Game1.player.getFriendshipLevelForNPC(name))), Game1.getCharacterFromName(name, true));
+                }
+            }
+        }
+
         // Allows the class to access the ModConfig properties
         public static void SetConfig(ModConfig config)
         {
@@ -101,13 +134,12 @@ namespace CustomDeathPenaltyPlus
                 Game1.player.itemsLostLastDeath.Clear();
             }
 
-            // Is FriendshipPenalty greater than 0?
-            if(config.DeathPenalty.FriendshipPenalty > 0 && Game1.player.friendshipData.ContainsKey("Harvey") && (Game1.currentLocation.NameOrUniqueName == "Hospital" || config.DeathPenalty.WakeupNextDayinClinic == true))
-            {
-                //Yes, change friendship level for Harvey
+            ApplyFriendshipChange("Harvey");
 
-                Game1.player.changeFriendship(-Math.Min(config.DeathPenalty.FriendshipPenalty, Game1.player.getFriendshipLevelForNPC("Harvey")), Game1.getCharacterFromName("Harvey", true));
-            } 
+            if (Game1.Date.DayOfWeek == DayOfWeek.Tuesday || Game1.Date.DayOfWeek == DayOfWeek.Thursday)
+            {
+                ApplyFriendshipChange("Maru");
+            }
         }
 
         // Load Player state, passed out

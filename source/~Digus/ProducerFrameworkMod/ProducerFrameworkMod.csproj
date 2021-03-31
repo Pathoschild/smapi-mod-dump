@@ -83,7 +83,7 @@
     <Compile Include="ProducerFrameworkModEntry.cs" />
     <Compile Include="Controllers\ProducerRuleController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\NameUtils.cs" />
+    <Compile Include="Utils\ObjectTranslationExtension.cs" />
     <Compile Include="RestrictionException.cs" />
     <Compile Include="Utils\SoundUtil.cs" />
     <Compile Include="Controllers\StatsController.cs" />
@@ -108,10 +108,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="i18n\ja.json" />
+    <None Include="i18n\ko.json" />
     <None Include="i18n\pt.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="i18n\ru.json" />
+    <None Include="i18n\tr.json" />
     <None Include="i18n\zh.json" />
     <None Include="manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

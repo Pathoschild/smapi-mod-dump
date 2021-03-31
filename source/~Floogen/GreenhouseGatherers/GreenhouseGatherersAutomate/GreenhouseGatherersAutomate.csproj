@@ -60,7 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GreenhouseGatherersAutomate\AutomateModResources.cs" />
-    <Compile Include="GreenhouseGatherersAutomate\Patches\AutomationFactoryPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GreenhouseGatherersAutomate\Automate\HarvestStatueFactory.cs" />
     <Compile Include="GreenhouseGatherersAutomate\Automate\HarvestStatueMachine.cs" />
@@ -81,7 +80,7 @@
     <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
   </Target>
   <Target Name="PostBuildMacros">
-    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+    <GetAssemblyIdentity AssemblyFiles="..\releases\latest\GreenhouseGatherers\GreenhouseGatherers\GreenhouseGatherers.dll">
       <Output TaskParameter="Assemblies" ItemName="Targets" />
     </GetAssemblyIdentity>
     <ItemGroup>

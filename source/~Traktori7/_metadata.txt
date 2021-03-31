@@ -6,11 +6,12 @@ mods:
    Industrial Furnace for Automate
    Quality Scrubber
    Quality Scrubber for Automate
+   Show Birthdays
 
 latest commit:
-   commit 132da32c5cb3a080133ac1077e3d94682202c4f3
+   commit d2c3c452c7b3271b2fc191a02c2d920d769b2a69
    Author: KiviKivi9133 <salonenkyosti@gmail.com>
-   Date:   Fri Feb 26 03:37:53 2021 +0200
+   Date:   Tue Mar 16 00:41:14 2021 +0200
    
-       Stop the player from using the furnace before it has been completed
+       Added Hungarian translation by martin66789
    

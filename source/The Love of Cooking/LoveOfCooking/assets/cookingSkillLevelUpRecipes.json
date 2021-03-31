@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/CooksAssistant
+**
+*************************************************/
+
+{
+	"0": [],
+	"1": [ "burrito", "fritters" ],
+	"2": [ "porridge", "breakfast" ],
+	"3": [ "lobster", "loadedpotato", "stuffedpotato" ],
+	"4": [ "cake", "hotcocoa", "waffles", "mornay" ],
+	"5": [],
+	"6": [ "redberrypie", "unagi", "cabbagepot", "stew", "onionsoup" ],
+	"7": [ "applepie", "eggsando", "skewers", "tropicalsalad", "burger" ],
+	"8": [ "admiralpie", "saladsando", "dwarfstew", "roast", "hunters" ],
+	"9": [ "gardenpie", "seafoodsando", "curry", "kebab", "oceanplatter" ],
+	"10": []
+}

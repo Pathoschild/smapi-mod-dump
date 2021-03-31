@@ -1,0 +1,13 @@
+url:
+   https://github.com/purrplingcat/QuestFramework.git
+
+mods:
+   Quest Framework
+
+latest commit:
+   commit 26bb949a663900246bf88008df33c674c56c42c7
+   Author: PurrplingCat <git@purrplingcat.com>
+   Date:   Sat Feb 27 16:15:11 2021 +0100
+   
+       Release 1.3.4
+   

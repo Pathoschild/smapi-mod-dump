@@ -89,32 +89,7 @@ namespace CustomDeathPenaltyPlus
                         }
                         break;
                     }
-                case "friendship":
-                case "friendshippenalty":
-                    {
-                        if (int.Parse(args[1]) < 0)
-                        {
-                            monitor.Log("Value specified is not in the valid range for FriendshipPenalty", LogLevel.Error);
-                        }
-                        else
-                        {
-                            dp.FriendshipPenalty = int.Parse(args[1]);
-                            monitor.Log($"FriendshipPenalty set to {args[1]}", LogLevel.Info);
-                        }
-                        helper.Content.InvalidateCache("Data\\Events\\Hospital");
-                        break;
-                    }
-                case "nextday":
-                case "wakeupnextdayinclinic":
-                    {
-                        
-                        dp.WakeupNextDayinClinic = bool.Parse(args[1]);
-                        monitor.Log($"WakeupNextDayinClinic set to {args[1]}", LogLevel.Info);
-                        helper.Content.InvalidateCache("Data\\Events\\IslandSouth");
-                        helper.Content.InvalidateCache("Data\\Events\\Mine");
-                        helper.Content.InvalidateCache("Data\\Events\\Hospital");
-                        break;
-                    }
+                    
                 default:
                     {
                         monitor.Log("Invalid config option specified" +
@@ -123,9 +98,8 @@ namespace CustomDeathPenaltyPlus
                             "\n- moneylosscap OR cap" +
                             "\n- moneytorestorepercentage OR money" +
                             "\n- healthtorestorepercentage OR health" +
-                            "\n- energytorestorepercentage OR energy" +
-                            "\n- friendshippenalty OR friendship" +
-                            "\n- wakeupnextdayinclinic OR nextday", LogLevel.Error);
+                            "\n- energytorestorepercentage OR energy", 
+                            LogLevel.Error);
                         break;
                     }
             }
@@ -185,7 +159,56 @@ namespace CustomDeathPenaltyPlus
                             "\n\nAvailable options:" +
                             "\n\n- moneylosscap OR cap" +
                             "\n- moneytorestorepercentage OR money" +
-                            "\n- energytorestorepercentage OR energy", LogLevel.Error);
+                            "\n- energytorestorepercentage OR energy",
+                            LogLevel.Error);
+                        break;
+                    }
+            }
+            helper.WriteConfig(config);
+        }
+
+        public void OtherPenalty(string[] args, IMonitor monitor, IModHelper helper)
+        {
+            var op = config.OtherPenalties;
+
+            switch (args[0])
+            {
+                case "nextday":
+                case "wakeupnextdayinclinic":
+                    {
+
+                        op.WakeupNextDayinClinic = bool.Parse(args[1]);
+                        monitor.Log($"WakeupNextDayinClinic set to {args[1]}", LogLevel.Info);
+                        helper.Content.InvalidateCache("Data\\Events\\IslandSouth");
+                        helper.Content.InvalidateCache("Data\\Events\\Mine");
+                        helper.Content.InvalidateCache("Data\\Events\\Hospital");
+                        break;
+                    }
+                case "harvey":
+                case "harveyfriendshipchange":
+                    {                       
+                        op.HarveyFriendshipChange = int.Parse(args[1]);
+                        monitor.Log($"HarveyFriendshipChange set to {args[1]}", LogLevel.Info);
+                        helper.Content.InvalidateCache("Data\\Events\\Hospital");
+                        break;
+                    }
+
+                case "maru":
+                case "marufriendshipchange":
+                    {
+                        op.MaruFriendshipChange = int.Parse(args[1]);
+                        monitor.Log($"MaruFriendshipChange set to {args[1]}", LogLevel.Info);
+                        helper.Content.InvalidateCache("Data\\Events\\Hospital");
+                        break;
+                    }
+                default:
+                    {
+                        monitor.Log("Invalid config option specified" +
+                            "\n\nAvailable options:" +           
+                            "\n\n- wakeupnextdayinclinic OR nextday" +
+                            "\n- harveyfriendshipchange OR harvey" +
+                            "\n- marufriendshipchange OR maru", 
+                            LogLevel.Error);
                         break;
                     }
             }
@@ -201,12 +224,14 @@ namespace CustomDeathPenaltyPlus
                 $"\nMoneytoRestorePercentage: {config.DeathPenalty.MoneytoRestorePercentage}" +
                 $"\nEnergytoRestorePercentage: {config.DeathPenalty.EnergytoRestorePercentage}" +
                 $"\nHealthtoRestorePercentage: {config.DeathPenalty.HealthtoRestorePercentage}" +
-                $"\nWakeupNextDayinClinic: {config.DeathPenalty.WakeupNextDayinClinic.ToString().ToLower()}" +
-                $"\nFriendshipPenalty: {config.DeathPenalty.FriendshipPenalty}" +
                 $"\n\nPassOutPenalty" +
                 $"\n\nMoneyLossCap: {config.PassOutPenalty.MoneyLossCap}" +
                 $"\nMoneytoRestorePercentage: {config.PassOutPenalty.MoneytoRestorePercentage}" +
-                $"\nEnergytoRestorePercentage: {config.PassOutPenalty.EnergytoRestorePercentage}",
+                $"\nEnergytoRestorePercentage: {config.PassOutPenalty.EnergytoRestorePercentage}" + 
+                $"\n\nOtherPenalties" +
+                $"\n\n\nWakeupNextDayinClinic: { config.OtherPenalties.WakeupNextDayinClinic.ToString().ToLower()}" +
+                $"\nHarveyFriendshipChange: {config.OtherPenalties.HarveyFriendshipChange}" +
+                $"\nMaruFriendshipChange: {config.OtherPenalties.MaruFriendshipChange}",
                 LogLevel.Info);
         }
     }    

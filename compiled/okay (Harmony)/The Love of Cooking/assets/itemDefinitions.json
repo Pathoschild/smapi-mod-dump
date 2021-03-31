@@ -1,0 +1,136 @@
+﻿{
+	"StartingRecipes": [
+		"Fried Egg",
+		"blueberry.cac.bakedpotato"
+	],
+	"CookbookMailDate": [
+		"14",
+		"1",
+		"1"
+	],
+	"NpcKitchenFriendshipRequired": [
+		"7"
+	],
+	"RegenBaseRate": [
+		"128"
+	],
+	"RegenSkillModifiers": [
+		"Combat:0.02",
+		"Foraging:0.0012",
+		"Cooking:0.005",
+		"blueberry.LoveOfCooking.CookingSkill:0.005"
+	],
+	"IndoorsTileIndexesThatActAsCookingStations": [
+		"498",
+		"499",
+		"632",
+		"633"
+	],
+	"NettlesUsableLevel": [
+		"2"
+	],
+	"NettlesUsableMachines": [
+		"Keg"
+	],
+	"NettlesLocations": [
+		"Mountain",
+		"Forest",
+		"Railroad",
+		"Farm"
+	],
+	"FoodsThatGiveLeftovers": [
+		"Pizza",
+		"Chocolate Cake",
+		"Pink Cake",
+		"blueberry.cac.cake",
+		"blueberry.cac.seafoodsando",
+		"blueberry.cac.eggsando",
+		"blueberry.cac.saladsando",
+		"blueberry.cac.watermelon"
+	],
+	"MarmaladeFoods": [
+		"Lemon",
+		"Lime",
+		"Citron",
+		"Yuzu",
+		"Grapefruit",
+		"Pomelo",
+		"Orange",
+		"Mandarin",
+		"Satsuma"
+	],
+	"PizzayFoods": [
+		"pizza",
+		"pitta",
+		"calzone",
+		"tortilla"
+	],
+	"PancakeyFoods": [
+		"pancake",
+		"crepe",
+		"hotcake"
+	],
+	"CakeyFoods": [
+		"bread",
+		"bun",
+		"cake",
+		"cakes",
+		"pie",
+		"pudding",
+		"bake",
+		"biscuit",
+		"brownie",
+		"brownies",
+		"cobbler",
+		"cookie",
+		"cookies",
+		"crumble",
+		"cupcake",
+		"fingers",
+		"muffin",
+		"quiche",
+		"tart",
+		"turnover"
+	],
+	"BakeyFoods": [
+		"cookie",
+		"roast",
+		"bake",
+		"cupcake"
+	],
+	"SaladyFoods": [
+		"coleslaw",
+		"salad",
+		"lunch",
+		"taco",
+		"roll",
+		"sashimi",
+		"sushi",
+		"sandwich",
+		"unagi"
+	],
+	"DrinkyFoods": [
+		"candy",
+		"cocoa",
+		"chocolate",
+		"milkshake",
+		"smoothie",
+		"milk",
+		"tea",
+		"coffee",
+		"espresso",
+		"mocha",
+		"latte",
+		"cappucino",
+		"drink"
+	],
+	"SoupyFoods": [
+		"soup",
+		"bisque",
+		"chowder",
+		"stew",
+		"pot",
+		"broth",
+		"stock"
+	]
+}

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/8087
 IDs: misscoriel.PositionTool
-update keys: Nexus:8087
+update keys: Nexus:8087, GitHub:MissCoriel/Position-Tool

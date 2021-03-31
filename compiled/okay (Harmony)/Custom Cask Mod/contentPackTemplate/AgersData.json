@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Name": "Chicken Statue", //Name of the ager. Required.
+        "EnableAgingAnywhere": true, //If true, the player will be able to place items in the ager anywhere. Otherwise, it will work only where the cask normally works.
+        "EnableMoreThanOneQualityIncrementPerDay": false, //If true, the ager will be able to increase more than one quality lever per day. Otherwise it will only increase one quality level per day, even if the aging rate would allow for faster increase.
+        "AgingData": { // Pair of identifier and aging rate. The identifier can be the Index, the Category or the Name of the object. To calculate the amount of days it take to age an object, divide 56 by the aging rate, rounded up. That's the number of days to age from no quality to iridium quality. Gold quality is half that value, and silver quality is one quarter of that value.
+            "342": 2.67, //Example with Id.
+            "-5": 2.0, //Example with Category. It's always a negative numbers.
+            "Salmon": 4.0 //Example with Name. It's required for json assets objects, since you can't know the Id it will choose for each mod user.
+        }
+    }
+]

@@ -1,6 +1,7 @@
 ﻿[
 	{
 		"ProducerName": "ProducerName", //Name of the producer
+        "AdditionalProducerNames": [ "ProducerName2", "ProducerName3" ], //Additional names of the producer. The config will be completely copied to the producer names in the list.
 		"AlternateFrameProducing": true, //If the producer should use the alternate frame when producing.
 		"AlternateFrameWhenReady": true, //If the producer should use the alternate frame and ready for harvest.
 		"DisableBouncingAnimationWhileWorking": false, // If the producer bouncing animation while working should be disabled.
@@ -8,6 +9,10 @@
 		"IncrementStatsOnOutput": { //Pairs of "stats:object" that identify what should be incremented.
 			"GoatCheeseMade": "Goat Cheese", //First value is the stats to be incremented, second value is which output should be produced for the stat to be incremented. The identifier can be the index, name, category or context tag of the output. Will increment the stats by the amount of the stack.
 			"CheeseMade": null //If the identifier is null, any output will match.
+		},
+		"IncrementStatsLabelOnOutput": { //Pairs of "statsLabel:object" that identify what should be incremented. You can add your own custom stats label. MFM also support stats label for conditions. Default is null.
+			"timesEnchanted": "Magic Bait", //First value is the stats label to be incremented, second value is which output should be produced for the stat to be incremented. The identifier can be the index, name, category or context tag of the output. Will increment the stats label by the amount of the stack.
+			"modId.myItemProduced": null //If the identifier is null, any output will match.
 		},
 		"MultipleStatsIncrement": true, //If all stats that match should be incremented. If false, just the first match will be increased. Default is false.
 		"LightSource": { // Defines the light source the producer should use when working. Default is null.
@@ -34,12 +39,18 @@
 		"OverrideMod": [ "IdOfTheMod.ToOverride" ], //If defined, this config can override the configs for the same producer from the mods in the list. Otherwise the first one to be loaded will be used.
 		"ProducingAnimation": { // Set a configuration for animating the producing state of the machine. Default is null.
 			"RelativeFrameIndex": [ 2, 3, 4, 5, 6, 7 ], //Index and order of the frames that should be used for the animation. Index start at zero, the base frame and index of the non producing state. Extra frames are content from that frame. Extra frames can be added with Json Assets or Content Patcher.
-			"FrameInterval": 10 // Amount of game ticks between frames. Default is 10
+			"FrameInterval": 10, // Amount of game ticks between frames. Default is 10
+			"AdditionalAnimations": { //Animation that should be played depending on the object inside the machine. Pair of output identifier and list of frames. Identifier can be Name, Index or Category. Default is null.
+				"Salmon": [ 8, 9, 10 ],
+				"131": [ 8, 11, 12 ],
+				"-4": [ 8, 13, 14 ]
+			}
 		},
 		"ReadyAnimation": null //Set a configuration for animating the ready state of the machine. Same format of configuration as WorkingAnimation. Default is null.
 	}
 ]
 /* Additional Notes
  * Possible stats: [SeedsSown|ItemsShipped|ItemsCooked|ItemsCrafted|ChickenEggsLayed|DuckEggsLayed|CowMilkProduced|GoatMilkProduced|RabbitWoolProduced|SheepWoolProduced|CheeseMade|GoatCheeseMade|TrufflesFound|StoneGathered|RocksCrushed|DirtHoed|GiftsGiven|TimesUnconscious|AverageBedtime|TimesFished|FishCaught|BouldersCracked|StumpsChopped|StepsTaken|MonstersKilled|DiamondsFound|PrismaticShardsFound|OtherPreciousGemsFound|CaveCarrotsFound|CopperFound|IronFound|CoalFound|CoinsFound|GoldFound|IridiumFound|BarsSmelted|BeveragesMade|PreservesMade|PiecesOfTrashRecycled|MysticStonesCrushed|DaysPlayed|WeedsEliminated|SticksChopped|NotesFound|QuestsCompleted|StarLevelCropsShipped|CropsShipped|ItemsForaged|SlimesKilled|GeodesCracked|GoodFriends|IndividualMoneyEarned]
+ * Vanilla stats label: [exMemoriesWiped|childrenTurnedToDoves|trashCansChecked|boatRidesToIsland|beachFarmSpawns|hardModeMonstersKilled|timesEnchanted]
  * Note that not all stats are correctly counted by the game.
  */

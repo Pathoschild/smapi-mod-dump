@@ -12,15 +12,17 @@ Custom Death Penalty Plus allows the death penalty (and pass out penalty as of 1
 Current options allow configuration for:
 
 **Death Penalty**
-- Disabling item loss
-- Amount of money lost, including max amount that can be lost
-- Amount of health and energy to restore
-- A more realistic option for dying, disabled by default
-- A friendship penalty with Harvey
+- Disable item loss
+- Set a capped amount of money to lose (money lost will never be greater than this value)
+- Set a percentage of money, health and/or energy to restore
 
 **Pass Out Penalty**
 - Amount of money lost, including max amount that can be lost
 - Amount of energy to restore next day
+
+**Other Penalties (applied on death)**
+- Set a more realistic penalty for dying
+- Set a friendship change with Harvey and Maru (separately)
 
 ### Installation:
 1. Install the latest version of SMAPI
@@ -47,6 +49,7 @@ Command | Format | Action
 ------------ | -------------|----------------
 deathpenalty | deathpenalty &lt;configvalue&gt; &lt;value&gt; | changes the deathpenalty config values
 passoutpenalty | passoutpenalty &lt;configvalue&gt; &lt;value&gt; | changes the passoutpenalty config values
+otherpenalty | otherpenalty &lt;configvalue&gt; &lt;value&gt; | changes the otherpenalties config values
 configinfo | configinfo | displays the current config settings in the SMAPI console
 
 where config value is the name of the config option in the config file in lower case and the value is the value as it would appear in the config file.
@@ -61,7 +64,8 @@ moneytorestorepercentage | money
 healthtorestorepercentage | health
 energytorestorepercentage | energy
 wakeupnextdayinclinic | nextday
-friendshippenalty | friendship
+harveyfriendshipchange | harvey
+marufriendshipchange | maru
  
 ### Versions:
 1.0.0 - Initial release
@@ -75,5 +79,7 @@ friendshippenalty | friendship
 1.2.2 - Fixed bug where money would not restore correctly when passing out
 
 1.3.0 - Updated for Stardew Valley 1.5, added debug commands
+
+1.3.4 - Changes to friendship so that friendship can be added too. Maru can also have her friendship changed on death.
 
 

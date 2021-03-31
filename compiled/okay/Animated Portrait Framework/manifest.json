@@ -1,0 +1,10 @@
+{
+  "Name": "Animated Portrait",
+  "Author": "akai",
+  "Version": "1.0.0",
+  "Description": "Make Portraits Animated",
+  "UniqueID": "akai.AnimatedPortrait",
+  "EntryDll": "AnimatedPortrait.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

@@ -174,10 +174,10 @@ namespace Kisekae.Config
             }
             if (SaveName != null) {
                 //s_env.Monitor.Log("Save a config:"+ Path.Combine("psconfigs", $"{SaveName}.json"));
-                s_env.Helper.WriteJsonFile(Path.Combine("psconfigs", $"{SaveName}.json"), this);
+                s_env.Helper.Data.WriteJsonFile(Path.Combine("psconfigs", $"{SaveName}.json"), this);
             } else if (s_perSaveConfigPath != null) {
                 //s_env.Monitor.Log("Save the config:"+ s_perSaveConfigPath);
-                s_env.Helper.WriteJsonFile(s_perSaveConfigPath, this);
+                s_env.Helper.Data.WriteJsonFile(s_perSaveConfigPath, this);
             }
         }
     }

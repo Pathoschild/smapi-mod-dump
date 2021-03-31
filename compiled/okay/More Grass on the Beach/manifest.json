@@ -1,7 +1,7 @@
 ﻿{
    "Name": "More Grass on the Beach",
    "Author": "AngelaRanna",
-   "Version": "1.0.1",
+   "Version": "1.0.2",
    "Description": "Spawns more grass each day start on the beach to help it support animal heavy games.",
    "UniqueID": "AngelaRanna.MoreGrassOnTheBeach",
    "EntryDll": "MoreGrassOnTheBeach.dll",

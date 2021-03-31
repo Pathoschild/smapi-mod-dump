@@ -1,7 +1,7 @@
 {
   "Name": "Position Tool",
   "Author": "MissCoriel",
-  "Version": "2.0.0",
+  "Version": "2.1.0",
   "Description": "Create a List of Coordinates",
   "UniqueID": "misscoriel.PositionTool",
   "EntryDll": "Position Tool.dll",

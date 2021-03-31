@@ -64,6 +64,9 @@ namespace CJBItemSpawner.Framework
         /// <summary>Handles writing to the SMAPI console and log.</summary>
         private readonly IMonitor Monitor;
 
+        /// <summary>Manages the gamepad text entry UI.</summary>
+        private readonly TextEntryManager TextEntryManager;
+
         /// <summary>The base draw method.</summary>
         /// <remarks>This circumvents an issue where <see cref="ItemGrabMenu.draw(SpriteBatch)"/> can't be called directly due to a conflicting overload.</remarks>
         private readonly Action<SpriteBatch> BaseDraw;
@@ -105,7 +108,7 @@ namespace CJBItemSpawner.Framework
         private bool CanScrollDown => this.TopRowIndex < this.MaxTopRowIndex;
 
         /// <summary>Whether the user explicitly selected the textbox by clicking on it, so the selection should be maintained.</summary>
-        private bool TextboxExplicitlySelected;
+        private bool IsSearchBoxSelectedExplicitly;
 
         /****
         ** UI components
@@ -143,6 +146,9 @@ namespace CJBItemSpawner.Framework
         /// <summary>The current opacity of the <see cref="SearchIcon"/>, which fades out when selected and back in when deselected.</summary>
         private float SearchIconOpacity = 1f;
 
+        /// <summary>Whether the search icon is transitioning between the selected/unselected states.</summary>
+        private bool IsSearchBoxSelectionChanging => this.SearchIconOpacity > 0 && this.SearchIconOpacity < 1;
+
 
         /*********
         ** Accessors
@@ -157,9 +163,10 @@ namespace CJBItemSpawner.Framework
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="spawnableItems">The items available to spawn.</param>
+        /// <param name="textEntryManager">Manages the gamepad text entry UI.</param>
         /// <param name="content">The content helper for loading assets.</param>
         /// <param name="monitor">Handles writing to the SMAPI console and log.</param>
-        public ItemMenu(SpawnableItem[] spawnableItems, IContentHelper content, IMonitor monitor)
+        public ItemMenu(SpawnableItem[] spawnableItems, TextEntryManager textEntryManager, IContentHelper content, IMonitor monitor)
             : base(
                 inventory: new List<Item>(),
                 reverseGrab: false,
@@ -174,11 +181,12 @@ namespace CJBItemSpawner.Framework
             )
         {
             // init settings
+            this.TextEntryManager = textEntryManager;
+            this.Monitor = monitor;
             this.BaseDraw = this.GetBaseDraw();
             this.ItemsInView = this.ItemsToGrabMenu.actualInventory;
             this.AllItems = spawnableItems;
             this.Categories = this.GetDisplayCategories(spawnableItems).ToArray();
-            this.Monitor = monitor;
 
             // init assets
             this.StarOutlineTexture = content.Load<Texture2D>("assets/empty-quality.png");
@@ -186,8 +194,7 @@ namespace CJBItemSpawner.Framework
             this.SortLabelIndent = this.GetSpaceIndent(Game1.smallFont, this.SortTexture.Width) + " ";
 
             // init base UI
-            if (!this.IsAndroid)
-                this.drawBG = false; // handled manually to draw arrows between background and menu
+            this.drawBG = false; // handled manually to draw arrows between background and menu on Android, and fix UI scaling issues on all platforms
             this.behaviorOnItemGrab = this.OnItemGrab;
 
             // init custom UI
@@ -242,7 +249,7 @@ namespace CJBItemSpawner.Framework
             // textbox
             else if (this.SearchBoxBounds.Contains(x, y))
             {
-                if (!this.SearchBox.Selected || !this.TextboxExplicitlySelected)
+                if (!this.SearchBox.Selected || !this.IsSearchBoxSelectedExplicitly)
                     this.SelectSearchBox(explicitly: true);
             }
 
@@ -284,13 +291,21 @@ namespace CJBItemSpawner.Framework
         public override void receiveKeyPress(Keys key)
         {
             bool inDropdown = this.CategoryDropdown.IsExpanded;
+            bool isEscape = key == Keys.Escape;
+            bool isExitButton =
+                isEscape
+                || Game1.options.doesInputListContain(Game1.options.menuButton, key)
+                || Game1.options.doesInputListContain(Game1.options.cancelButton, key);
 
-            // deselect textbox
-            if (this.SearchBox.Selected && key == Keys.Escape)
+            // clear textbox
+            if (isEscape && (this.IsSearchBoxSelectedExplicitly || (this.SearchBox.Selected && !string.IsNullOrEmpty(this.SearchBox.Text))))
+            {
+                this.SearchBox.Text = "";
                 this.DeselectSearchBox();
+            }
 
             // close dropdown
-            else if (inDropdown && key == Keys.Escape)
+            else if (inDropdown && isExitButton)
                 this.SetDropdown(false);
 
             // allow trashing any item
@@ -318,9 +333,13 @@ namespace CJBItemSpawner.Framework
                     this.ScrollView(direction);
             }
 
-            // default behavior
-            else if (!this.SearchBox.Selected)
-                base.receiveKeyPress(key);
+            // default behavior (unless we're already handling a searchbox selection change)
+            else
+            {
+                bool isIgnoredExitKey = this.SearchBox.Selected && isExitButton && !isEscape;
+                if (!isIgnoredExitKey && !this.IsSearchBoxSelectionChanging)
+                    base.receiveKeyPress(key);
+            }
         }
 
         /// <summary>Handle a controller button press by the player.</summary>
@@ -330,13 +349,17 @@ namespace CJBItemSpawner.Framework
             bool isExitKey = button == Buttons.B || button == Buttons.Y || button == Buttons.Start;
             bool inDropdown = this.CategoryDropdown.IsExpanded;
 
-            // cancel dropdown
-            if (isExitKey && inDropdown)
-                this.CategoryDropdown.IsExpanded = false;
+            // handle search box
+            if (this.SearchBox.Selected)
+            {
+                // open on-screen keyboard
+                if (button == Buttons.A)
+                    Game1.showTextEntry(this.SearchBox);
 
-            // cancel search box
-            else if (isExitKey && this.SearchBox.Selected)
-                this.DeselectSearchBox();
+                // cancel search box
+                else if (isExitKey || button == Buttons.LeftShoulder || button == Buttons.RightShoulder)
+                    this.DeselectSearchBox();
+            }
 
             // navigate category dropdown
             else if (button == Buttons.LeftTrigger && !inDropdown)
@@ -369,7 +392,7 @@ namespace CJBItemSpawner.Framework
         public override void performHoverAction(int x, int y)
         {
             // handle search box selected
-            if (!this.TextboxExplicitlySelected)
+            if (!this.IsSearchBoxSelectedExplicitly && !Game1.options.gamepadControls && Game1.lastCursorMotionWasMouse)
             {
                 bool overSearchBox = this.SearchBoxBounds.Contains(x, y);
                 if (this.SearchBox.Selected != overSearchBox)
@@ -389,8 +412,12 @@ namespace CJBItemSpawner.Framework
         /// <param name="time">The current game time.</param>
         public override void update(GameTime time)
         {
-            // deselect textbox
-            if (this.TextboxExplicitlySelected && !this.SearchBox.Selected)
+            // deselect textbox when text entry closes
+            if (this.SearchBox.Selected && this.TextEntryManager.JustClosed())
+                this.DeselectSearchBox(snapToItems: true);
+
+            // update state when search box is deselected
+            if (this.IsSearchBoxSelectedExplicitly && !this.SearchBox.Selected)
                 this.DeselectSearchBox();
 
             // update search text
@@ -421,26 +448,20 @@ namespace CJBItemSpawner.Framework
         /// <param name="spriteBatch">The sprite batch being drawn.</param>
         public override void draw(SpriteBatch spriteBatch)
         {
+            // draw background overlay
+            spriteBatch.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
+
             // draw arrows under base UI, so tooltips are drawn over them
-            void DrawArrows()
-            {
-                if (this.CanScrollUp)
-                    this.UpArrow.draw(spriteBatch);
-                if (this.CanScrollDown)
-                    this.DownArrow.draw(spriteBatch);
-            }
-            if (!this.IsAndroid)
-            {
-                spriteBatch.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), Color.Black * 0.5f); // replicate base.drawBG so arrows are above it
-                CommonHelper.DrawTab(this.SearchBoxBounds.X, this.SearchBoxBounds.Y - CommonHelper.ButtonBorderWidth / 2, this.SearchBoxBounds.Width - CommonHelper.ButtonBorderWidth * 3 / 2, this.SearchBoxBounds.Height - CommonHelper.ButtonBorderWidth, out _, drawShadow: this.IsAndroid);
-                DrawArrows();
-                this.BaseDraw(spriteBatch);
-            }
-            else
-            {
-                this.BaseDraw(spriteBatch);
-                DrawArrows();
-            }
+            if (this.CanScrollUp)
+                this.UpArrow.draw(spriteBatch);
+            if (this.CanScrollDown)
+                this.DownArrow.draw(spriteBatch);
+            this.BaseDraw(spriteBatch);
+
+            // draw search box
+            CommonHelper.DrawTab(this.SearchBoxBounds.X, this.SearchBoxBounds.Y - CommonHelper.ButtonBorderWidth / 2, this.SearchBoxBounds.Width - CommonHelper.ButtonBorderWidth * 3 / 2, this.SearchBoxBounds.Height - CommonHelper.ButtonBorderWidth, out _, drawShadow: this.IsAndroid);
+            this.SearchBox.Draw(spriteBatch);
+            spriteBatch.Draw(this.SearchIcon.texture, this.SearchIcon.bounds, this.SearchIcon.sourceRect, Color.White * this.SearchIconOpacity);
 
             // draw buttons
             CommonHelper.DrawTab(this.QualityButton.bounds.X, this.QualityButton.bounds.Y, this.QualityButton.bounds.Width - CommonHelper.ButtonBorderWidth, this.QualityButton.bounds.Height - CommonHelper.ButtonBorderWidth, out Vector2 qualityIconPos, drawShadow: this.IsAndroid);
@@ -455,19 +476,16 @@ namespace CJBItemSpawner.Framework
 
             // draw category dropdown
             {
-                Vector2 position = new Vector2(this.CategoryDropdown.bounds.X + this.CategoryDropdown.bounds.Width - 3 * Game1.pixelZoom, this.CategoryDropdown.bounds.Y + 2 * Game1.pixelZoom);
-                Rectangle sourceRect = new Rectangle(437, 450, 10, 11); // down triangle
+                Vector2 position = new Vector2(
+                    x: this.CategoryDropdown.bounds.X + this.CategoryDropdown.bounds.Width - 3 * Game1.pixelZoom,
+                    y: this.CategoryDropdown.bounds.Y + 2 * Game1.pixelZoom
+                );
+                Rectangle sourceRect = new Rectangle(437, 450, 10, 11);
                 spriteBatch.Draw(Game1.mouseCursors, position, sourceRect, Color.White, 0, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None, 1f);
                 if (this.CategoryDropdown.IsExpanded)
-                    spriteBatch.Draw(Game1.mouseCursors, new Vector2(position.X + 2 * Game1.pixelZoom, position.Y + 3 * Game1.pixelZoom), new Rectangle(sourceRect.X + 2, sourceRect.Y + 3, 5, 6), Color.White, 0, Vector2.Zero, Game1.pixelZoom, SpriteEffects.FlipVertically, 1f); // right triangle
-
+                    spriteBatch.Draw(Game1.mouseCursors, new Vector2(position.X + 2 * Game1.pixelZoom, position.Y + 3 * Game1.pixelZoom), new Rectangle(sourceRect.X + 2, sourceRect.Y + 3, 5, 6), Color.White, 0, Vector2.Zero, Game1.pixelZoom, SpriteEffects.FlipVertically, 1f);  // right triangle
                 this.CategoryDropdown.Draw(spriteBatch);
             }
-
-            // draw search box
-            this.SearchBox.Draw(spriteBatch);
-            spriteBatch.Draw(this.SearchIcon.texture, this.SearchIcon.bounds, this.SearchIcon.sourceRect, Color.White * this.SearchIconOpacity);
-            //this.SearchIcon.draw(spriteBatch, Color.White * this.SearchIconOpacity, 1);
 
             // redraw cursor over new UI
             this.drawMouse(spriteBatch);
@@ -624,11 +642,14 @@ namespace CJBItemSpawner.Framework
             // rightward flow across custom UI
             this.QualityButton.rightNeighborID = this.SortButton.myID;
             this.SortButton.rightNeighborID = this.CategoryDropdown.myID;
-            this.CategoryDropdown.rightNeighborID = this.UpArrow.myID;
+            this.CategoryDropdown.rightNeighborID = this.SearchBoxArea.myID;
+            this.SearchBoxArea.rightNeighborID = this.UpArrow.myID;
             this.UpArrow.downNeighborID = this.DownArrow.myID;
 
             // leftward flow across custom UI
-            this.UpArrow.upNeighborID = this.CategoryDropdown.myID;
+            this.UpArrow.upNeighborID = this.SearchBoxArea.myID;
+            this.UpArrow.leftNeighborID = slots[10].myID;
+            this.SearchBoxArea.leftNeighborID = this.CategoryDropdown.myID;
             this.CategoryDropdown.leftNeighborID = this.SortButton.myID;
             this.SortButton.leftNeighborID = this.QualityButton.myID;
 
@@ -636,6 +657,7 @@ namespace CJBItemSpawner.Framework
             this.QualityButton.downNeighborID = slots[0].myID;
             this.SortButton.downNeighborID = slots[1].myID;
             this.CategoryDropdown.DefaultDownNeighborId = slots[5].myID;
+            this.SearchBoxArea.downNeighborID = slots[10].myID;
             this.DownArrow.leftNeighborID = slots.Last().myID;
             this.DownArrow.downNeighborID = this.trashCan.myID;
 
@@ -673,6 +695,11 @@ namespace CJBItemSpawner.Framework
             this.CategoryDropdown.IsExpanded = expanded;
             this.inventory.highlightMethod = item => !expanded;
             this.ItemsToGrabMenu.highlightMethod = item => !expanded;
+            if (!expanded && !Game1.lastCursorMotionWasMouse)
+            {
+                this.setCurrentlySnappedComponentTo(this.CategoryDropdown.myID);
+                this.snapCursorToCurrentSnappedComponent();
+            }
         }
 
         /// <summary>Switch to the next category.</summary>
@@ -730,16 +757,25 @@ namespace CJBItemSpawner.Framework
         private void SelectSearchBox(bool explicitly)
         {
             this.SearchBox.Selected = true;
-            this.TextboxExplicitlySelected = explicitly;
+            this.IsSearchBoxSelectedExplicitly = explicitly;
             this.SearchBox.Width = this.SearchBoxBounds.Width;
         }
 
         /// <summary>Set the search textbox non-selected.</summary>
-        private void DeselectSearchBox()
+        /// <param name="snapToItems">Whether to snap the gamepad cursor to the item grid, if applicable.</param>
+        private void DeselectSearchBox(bool snapToItems = false)
         {
+            Game1.closeTextEntry();
+
             this.SearchBox.Selected = false;
-            this.TextboxExplicitlySelected = false;
+            this.IsSearchBoxSelectedExplicitly = false;
             this.SearchBox.Width = this.SearchIcon.bounds.X - this.SearchBox.X + this.SearchIcon.bounds.Width + 10 - this.SearchIcon.bounds.Width - 6 * Game1.pixelZoom;
+
+            if (snapToItems && Game1.options.gamepadControls && !Game1.lastCursorMotionWasMouse)
+            {
+                this.setCurrentlySnappedComponentTo(this.ItemsToGrabMenu.inventory.First().myID);
+                this.snapCursorToCurrentSnappedComponent();
+            }
         }
 
         /// <summary>Reset the items shown in the view.</summary>

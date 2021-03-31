@@ -39,3 +39,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 3.0:
 * Added support for greenhouse soil.
+
+#### 4.0:
+* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+

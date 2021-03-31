@@ -30,14 +30,14 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace BarkingUpTheRightTree.Patches
 {
-    /// <summary>Contains patches for patching game code in the <see cref="StardewValley.TerrainFeatures.Tree"/> class.</summary>
+    /// <summary>Contains patches for patching game code in the <see cref="Tree"/> class.</summary>
     internal static class TreePatch
     {
         /*********
         ** Internal Methods
         *********/
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.loadTexture()"/> method.</summary>
-        /// <param name="__instance">The <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <summary>The prefix for the <see cref="Tree.loadTexture()"/> method.</summary>
+        /// <param name="__instance">The <see cref="Tree"/> instance being patched.</param>
         /// <param name="__result">The return value of the method being patched.</param>
         /// <returns><see langword="true"/> if the original method should get ran; otherwise, <see langword="false"/> (this depends on if the tree is custom).</returns>
         /// <remarks>This is used to intercept the tree texture loading to add the custom textures.</remarks>
@@ -61,10 +61,10 @@ namespace BarkingUpTheRightTree.Patches
             return false;
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.dayUpdate(GameLocation, Vector2)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Tree.dayUpdate(GameLocation, Vector2)"/> method.</summary>
         /// <param name="environment">The location of the tree being patched.</param>
         /// <param name="tileLocation">The tile location of the tree being patched.</param>
-        /// <param name="__instance">The <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">The <see cref="Tree"/> instance being patched.</param>
         /// <returns><see langword="false"/>, meaning the original method will not get ran.</returns>
         /// <remarks>This is used to </remarks>
         internal static bool DayUpdatePrefix(GameLocation environment, Vector2 tileLocation, Tree __instance)
@@ -147,11 +147,11 @@ namespace BarkingUpTheRightTree.Patches
             return false;
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.shake(Microsoft.Xna.Framework.Vector3, bool, StardewValley.GameLocation)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Tree.shake(Vector3, bool, GameLocation)"/> method.</summary>
         /// <param name="tileLocation">The tile location of the tree being patched.</param>
         /// <param name="doEvenIfStillShaking">Whether the shake action can be started if the tree is still shaking.</param>
         /// <param name="location">The location of the tree being patched.</param>
-        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">The current <see cref="Tree"/> instance being patched.</param>
         /// <returns><see langword="true"/>, meaning the original method will get ran.</returns>
         /// <remarks>This is used to drop custom debris when a custom tree is shaken.</remarks>
         internal static bool ShakePrefix(Vector2 tileLocation, bool doEvenIfStillShaking, GameLocation location, Tree __instance)
@@ -197,15 +197,15 @@ namespace BarkingUpTheRightTree.Patches
             return true;
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.performToolAction(StardewValley.Tool, int, Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Tree.performToolAction(Tool, int, Vector2, GameLocation)"/> method.</summary>
         /// <param name="t">The tool being used.</param>
         /// <param name="explosion">The explosion damage the tree is receiving.</param>
         /// <param name="tileLocation">The tile location of the tree being patched.</param>
         /// <param name="location">The location of the tree being patched.</param>
-        /// <param name="__instance">The <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">The <see cref="Tree"/> instance being patched.</param>
         /// <param name="__result">The return value of the method being patched.</param>
         /// <returns><see langword="false"/>, meaning the original method will not get ran.</returns>
-        /// <remarks>This reimplements the original method to add the <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/> functionality, to drop the custom wood when using an axe with the <see cref="StardewValley.ShavingEnchantment"/>, and to make sure trees can only be cut down when the are allowed (based on map tile data and tool level requirements).</remarks>
+        /// <remarks>This reimplements the original method to add the <see cref="BarkRemover"/> functionality, to drop the custom wood when using an axe with the <see cref="ShavingEnchantment"/>, and to make sure trees can only be cut down when the are allowed (based on map tile data and tool level requirements).</remarks>
         internal static bool PerformToolActionPrefix(Tool t, int explosion, Vector2 tileLocation, GameLocation location, Tree __instance, ref bool __result)
         {
             // validate
@@ -442,7 +442,7 @@ namespace BarkingUpTheRightTree.Patches
             return false;
         }
 
-        /// <summary>The transpiler for the <see cref="StardewValley.TerrainFeatures.Tree.tickUpdate(Microsoft.Xna.Framework.GameTime, Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation)"/> method.</summary>
+        /// <summary>The transpiler for the <see cref="Tree.tickUpdate(GameTime, Vector2, GameLocation)"/> method.</summary>
         /// <param name="instructions">The IL instructions.</param>
         /// <returns>The new IL instructions.</returns>
         /// <remarks>This is used to stop the tree from dropping wood and sap, when cut down (not as a stump).<br/>This is to make it drop the custom wood debris in <see cref="BarkingUpTheRightTree.Patches.TreePatch.TickUpdatePrefix(Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation, StardewValley.TerrainFeatures.Tree)"/> patch, this was done as a <see cref="StardewValley.TerrainFeatures.Tree"/> instance can't be retrieved in a transpile but can in a prefix (and as such can't get the wood id for the tree being cut down).<br/>The debris type is set to 21, this is because <see cref="System.Reflection.Emit.OpCodes.Ldc_I4_S"/> only accepts an <see langword="sbyte"/> and <see cref="sbyte.MaxValue"/> isn't big enough to be outside of the game object ids range. As such 21 was used as it's an unused id and isn't an 'aliased' id (check the <see langword="switch"/> in <see cref="StardewValley.Debris(int, int, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, float)"/> constructor for the 'aliased' types).</remarks>
@@ -490,10 +490,10 @@ namespace BarkingUpTheRightTree.Patches
             }
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.tickUpdate(Microsoft.Xna.Framework.GameTime, Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Tree.tickUpdate(GameTime, Vector2, GameLocation)"/> method.</summary>
         /// <param name="tileLocation">The tile location of the tree being patched.</param>
         /// <param name="location">The location of the tree being patched.</param>
-        /// <param name="__instance">The <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">The <see cref="Tree"/> instance being patched.</param>
         /// <returns><see langword="true"/>, meaning the original method will get ran.</returns>
         /// <remarks>This is used to spawn the custom wood debris when cutting down a tree (that isn't a stump).</remarks>
         internal static bool TickUpdatePrefix(Vector2 tileLocation, GameLocation location, Tree __instance)
@@ -541,10 +541,10 @@ namespace BarkingUpTheRightTree.Patches
             return true;
         }
 
-        /// <summary>The transpiler for the <see cref="StardewValley.TerrainFeatures.Tree.performTreeFall(StardewValley.Tool, int, Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation)"/> method.</summary>
+        /// <summary>The transpiler for the <see cref="Tree.performTreeFall(Tool, int, Vector2, GameLocation)"/> method.</summary>
         /// <param name="instructions">The IL instructions.</param>
         /// <returns>The new IL instructions.</returns>
-        /// <remarks>This is used to stop the tree from dropping wood and sap, when cut down (as a stump).<br/>This is to make it drop the custom wood debris in <see cref="BarkingUpTheRightTree.Patches.TreePatch.TickUpdatePrefix(Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation, StardewValley.TerrainFeatures.Tree)"/>, this was done as a <see cref="StardewValley.TerrainFeatures.Tree"/> instance can't be retrieved in a transpile but can in a prefix (and as such can't get the wood id for the tree being cut down).<br/>The debris type is set to 21, this is because <see cref="System.Reflection.Emit.OpCodes.Ldc_I4_S"/> only accepts an <see langword="sbyte"/> and <see cref="sbyte.MaxValue"/> isn't big enough to be outside of the game object ids range. As such 21 was used as it's an unused id and isn't an 'aliased' id (check the <see langword="switch"/> in <see cref="StardewValley.Debris(int, int, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, float)"/> constructor for the 'aliased' types).</remarks>
+        /// <remarks>This is used to stop the tree from dropping wood and sap, when cut down (as a stump).<br/>This is to make it drop the custom wood debris in <see cref="TreePatch.TickUpdatePrefix(Vector2, GameLocation, Tree)"/>, this was done as a <see cref="Tree"/> instance can't be retrieved in a transpile but can in a prefix (and as such can't get the wood id for the tree being cut down).<br/>The debris type is set to 21, this is because <see cref="OpCodes.Ldc_I4_S"/> only accepts an <see langword="sbyte"/> and <see cref="sbyte.MaxValue"/> isn't big enough to be outside of the game object ids range. As such 21 was used as it's an unused id and isn't an 'aliased' id (check the <see langword="switch"/> in <see cref="Debris(int, int, Vector2, Vector2, float)"/> constructor for the 'aliased' types).</remarks>
         internal static IEnumerable<CodeInstruction> PerformTreeFallTranspile(IEnumerable<CodeInstruction> instructions)
         {
             for (int i = 0; i < instructions.Count(); i++)
@@ -592,11 +592,11 @@ namespace BarkingUpTheRightTree.Patches
             }
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.performTreeFall(StardewValley.Tool, int, Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Tree.performTreeFall(Tool, int, Vector2, GameLocation)"/> method.</summary>
         /// <param name="t">The tool that was used to cut down the tree.</param>
         /// <param name="tileLocation">The tile location of the tree being patched.</param>
         /// <param name="location">The location of the tree being patched.</param>
-        /// <param name="__instance">The <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">The <see cref="Tree"/> instance being patched.</param>
         /// <returns><see langword="true"/> if the original method should get ran; otherwise, <see langword="false"/> (depending on if the tree is allowed to be cut down based on tile data and tool level requirements).</returns>
         /// <remarks>This is used to spawn the custom wood debris when cutting down a tree (that's a stump) and to make sure the tree can only be cut down if allowed (based on map tile data and tool level).</remarks>
         internal static bool PerformTreeFallPrefix(Tool t, Vector2 tileLocation, GameLocation location, Tree __instance)
@@ -634,10 +634,10 @@ namespace BarkingUpTheRightTree.Patches
             return true;
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.performBushDestroyPrefix(Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Tree.performBushDestroyPrefix(Vector2, GameLocation)"/> method.</summary>
         /// <param name="tileLocation">The tile location of the tree being patched.</param>
         /// <param name="location">The location of the tree being patched.</param>
-        /// <param name="__instance">The <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">The <see cref="Tree"/> instance being patched.</param>
         /// <returns><see langword="true"/> if the original method should get ran; otherwise, <see langword="false"/> (depending on if the tree is custom).</returns>
         /// <remarks>This is used to spawn the custom wood debris when cutting down a tree bush.</remarks>
         internal static bool PerformBushDestroyPrefix(Vector2 tileLocation, GameLocation location, Tree __instance)
@@ -655,9 +655,9 @@ namespace BarkingUpTheRightTree.Patches
             return false;
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.performBushDestroyPrefix(Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Tree.performBushDestroyPrefix(Vector2, GameLocation)"/> method.</summary>
         /// <param name="tileLocation">The tile location of the tree being patched.</param>
-        /// <param name="__instance">The <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">The <see cref="Tree"/> instance being patched.</param>
         /// <returns><see langword="true"/> if the original method should get ran; otherwise, <see langword="false"/> (depending on if the tree is custom).</returns>
         /// <remarks>This is used to spawn the custom wood debris when cutting down a tree sprout.</remarks>
         internal static bool PerformSproutDestroyPrefix(Vector2 tileLocation, Tree __instance)
@@ -672,11 +672,11 @@ namespace BarkingUpTheRightTree.Patches
             return false;
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.performSeedDestroy(StardewValley.Tool, Microsoft.Xna.Framework.Vector2, StardewValley.GameLocation)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Tree.performSeedDestroy(Tool, Vector2, GameLocation)"/> method.</summary>
         /// <param name="t">The tool that was used to destroy the seed.</param>
         /// <param name="tileLocation">The tile location of the tree being patched.</param>
         /// <param name="location">The location of the tree being patched.</param>
-        /// <param name="__instance">The <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">The <see cref="Tree"/> instance being patched.</param>
         /// <returns><see langword="false"/>, meaning the original method will not get ran.</returns>
         /// <remarks>This reimplements the original method so the custom tree seeds will drop the item when they are destroyed and to make sure the seed can only be destroyed if allowed (based on map tile data and tool level).</remarks>
         internal static bool PerformSeedDestroyPrefix(Tool t, Vector2 tileLocation, GameLocation location, Tree __instance)
@@ -715,9 +715,9 @@ namespace BarkingUpTheRightTree.Patches
             return false;
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.UpdateTapperProduct(StardewValley.Object, StardewValley.Object)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Tree.UpdateTapperProduct(StardewValley.Object, StardewValley.Object)"/> method.</summary>
         /// <param name="tapper_instance">The tapper object on the tree.</param>
-        /// <param name="__instance">The <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">The <see cref="Tree"/> instance being patched.</param>
         /// <returns><see langword="true"/> if the original method should get ran; otherwise, <see langword="false"/> (this depends on if the tree is custom).</returns>
         /// <remarks>This is used to add the custom tapper products.</remarks>
         internal static bool UpdateTapperProductPrefix(StardewValley.Object tapper_instance, Tree __instance)
@@ -740,10 +740,10 @@ namespace BarkingUpTheRightTree.Patches
             return false;
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Tree.draw(Microsoft.Xna.Framework.Graphics.SpriteBatch, Microsoft.Xna.Framework.Vector2)"/> method.</summary>
-        /// <param name="spriteBatch">The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to draw the tree to.</param>
+        /// <summary>The prefix for the <see cref="Tree.draw(SpriteBatch, Vector2)"/> method.</summary>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw the tree to.</param>
         /// <param name="tileLocation">The tile location of the tree being patched.</param>
-        /// <param name="__instance">THe current <see cref="StardewValley.TerrainFeatures.Tree"/> instance being patched.</param>
+        /// <param name="__instance">THe current <see cref="Tree"/> instance being patched.</param>
         /// <returns><see langword="true"/> if the original method should get ran; otherwise, <see langword="false"/> (this depends on if the tree is custom).</returns>
         /// <remarks>This is used to draw trees with the different tree sprite sheet layouts.</remarks>
         internal static bool DrawPrefix(SpriteBatch spriteBatch, Vector2 tileLocation, Tree __instance)

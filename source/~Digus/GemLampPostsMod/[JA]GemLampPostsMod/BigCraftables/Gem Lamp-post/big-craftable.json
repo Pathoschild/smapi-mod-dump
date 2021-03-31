@@ -1,0 +1,56 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Gem Lamp-post",
+    "Description": "Lamp-post powered by gems energy.",
+    "Price": 100,
+    "ProvidesLight": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 335,
+                "Count": 1
+            },
+            {
+                "Object": 768,
+                "Count": 3
+            }
+        ],
+        "CanPurchase": false
+    },
+    "NameLocalization": {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        "pt": "Poste de luz de gema"
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    },
+    "DescriptionLocalization": {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        "pt": "Poste de luz energizado por gemas."
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    }
+}

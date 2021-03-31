@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Reflection.Emit;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -38,6 +37,13 @@ namespace StardewHack.AlwaysScrollMap
             Patch((Microsoft.Xna.Framework.Point p)=>Game1.UpdateViewPort(false, p), Game1_UpdateViewPort);
             
             Helper.Events.Input.ButtonPressed += ToggleScroll;
+        }
+        
+        protected override void InitializeApi(GenericModConfigMenuAPI api)
+        {
+            api.RegisterSimpleOption(ModManifest, "Enabled indoors", "Always scroll map indoors", () => config.EnabledIndoors, (bool val) => config.EnabledIndoors = val);
+            api.RegisterSimpleOption(ModManifest, "Enabled outdoors", "Always scroll map outdoors", () => config.EnabledOutdoors, (bool val) => config.EnabledOutdoors = val);
+            api.RegisterSimpleOption(ModManifest, "Toggle", "Toggle scrolling in current location", () => config.ToggleScroll, (SButton val) => config.ToggleScroll = val);
         }
 
         private void ToggleScroll(object sender, ButtonPressedEventArgs e) {

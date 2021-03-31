@@ -10,10 +10,10 @@
 
 {
   "Name": "Clean Cellar",
-  "Author": "EpicBellyFlop45",
+  "Author": "Satozaki",
   "Version": "1.1.2",
   "Description": "Cleans the textures and removes the barrels in the Cellar",
-  "UniqueID": "EpicBellyFlop45.CleanCellar",
+  "UniqueID": "Satozaki.CleanCellar",
   "EntryDll": "CleanCellar.dll",
   "MinimumApiVersion": "2.7",
   "UpdateKeys": [ "Nexus:2975" ]

@@ -9,11 +9,11 @@
 *************************************************/
 
 {
-  "Name": "Better10Hearts",
-  "Author": "EpicBellyFlop45",
+  "Name": "Better 10 Hearts",
+  "Author": "Satozaki",
   "Version": "1.1.1",
   "Description": "10 Hearts with an NPC gives better perks",
-  "UniqueID": "EpicBellyFlop45.Better10Hearts",
+  "UniqueID": "Satozaki.Better10Hearts",
   "EntryDll": "Better10Hearts.dll",
   "MinimumApiVersion": "3.0",
   "UpdateKeys": [ "Nexus:3605" ]

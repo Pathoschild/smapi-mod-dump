@@ -32,11 +32,11 @@ namespace TimeSpeed.Framework
         ** Public methods
         *********/
         /// <summary>Construct an instance.</summary>
-        /// <param name="previousProgess">The previous progress value.</param>
+        /// <param name="previousProgress">The previous progress value.</param>
         /// <param name="newProgress">The new progress value.</param>
-        public TickProgressChangedEventArgs(double previousProgess, double newProgress)
+        public TickProgressChangedEventArgs(double previousProgress, double newProgress)
         {
-            this.PreviousProgress = previousProgess;
+            this.PreviousProgress = previousProgress;
             this.NewProgress = newProgress;
         }
     }

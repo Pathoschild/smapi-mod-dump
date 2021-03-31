@@ -1,6 +1,7 @@
 ﻿[
 	{ // All lines that have a default value can be removed and that value will be used.
 		"ProducerName": "ProducerName", //Name of the producer. Required.
+		"AdditionalProducerNames": [ "ProducerName2", "ProducerName3" ], //Additional names of the producer. The rule will be completely copied to the producer names in the list.
 		"InputIdentifier": "fruit_tree_item", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 2, //The required stack of the input. Default value is 1.
 		"ExcludeIdentifiers": [ "Peach" ], //List of identifiers to exclude from the rule. Follow the same rules for InputIdentifier. Default value is null.
@@ -20,6 +21,7 @@
 		"OutputGenericParentNameTranslationKey": "MyMod.MyOutput", //The translation key. This is the key in the i18n file where the mod will look for the OutputGenericParentName in other languages. Default is null.
 		"PreserveType": "Wine", //[Wine|Jelly|Pickle|Juice|Roe|AgedRoe] - If the output is one of the vanilla game Preserves Type. Default is null.
 		"KeepInputParentIndex": true, // When true the input of the preserved parent index will be used as the parent index of the output.
+		"ReplaceWithInputParentIndex": true, // When true the input of the preserved parent index will be used as the output index.
 		"InputPriceBased": true, //If the base price of the output should be replaced with the base price of the input. Default is false.
 		"OutputPriceIncrement": 200, //Increment the base price by this amount. Default is 0.
 		"OutputPriceMultiplier": 2.5, //Multiply the base price by this amount. Default is 1.
@@ -73,6 +75,7 @@
 		"PlacingAnimationOffsetX": 0, //The offset of the X axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.
 		"PlacingAnimationOffsetY": -32, //The offset of the Y axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.
 		"IncrementStatsOnInput": [ "PiecesOfTrashRecycled" ], // Game stats to increment when a input is placed. Will increment the stats by the amount of the stack. Vanilla machines already increment stats when an item is removed from the machine. Only the Recycle Machine increment the stats on input. Default is an empty list.
+		"IncrementStatsLabelOnInput": [ "ModId.MyCustomProduct" ], // Game stats label to increment when a input is placed. Will increment the stats by the amount of the stack. Can be any label text you want. MFM also support stats label for conditions. Check vanilla stats label at the end of the file. Default is an empty list.
 		"OverrideMod": [ "IdOfTheMod.ToOverride" ], //If defined, this rule can override rules with the same producer/input combination from the mods in the list. Otherwise the first one to be loaded will be used.
 		"LookForInputWhenReady": { // Set this config if you want to look for a specific object when ready. If the rule has an input, it will consume the input on placement, check restrictions to choose the output, but won't apply name, price, quality and similar modifications based on that input. The found object when ready will be used for these modifications instead.
 			"Range": 5, //Max range the input will be looked for. A negative number will be considered no limit (will stop at 150 to avoid crash). Default is -1.
@@ -88,5 +91,6 @@
 ]
 /* Additional Notes
  * Possible stats: [SeedsSown|ItemsShipped|ItemsCooked|ItemsCrafted|ChickenEggsLayed|DuckEggsLayed|CowMilkProduced|GoatMilkProduced|RabbitWoolProduced|SheepWoolProduced|CheeseMade|GoatCheeseMade|TrufflesFound|StoneGathered|RocksCrushed|DirtHoed|GiftsGiven|TimesUnconscious|AverageBedtime|TimesFished|FishCaught|BouldersCracked|StumpsChopped|StepsTaken|MonstersKilled|DiamondsFound|PrismaticShardsFound|OtherPreciousGemsFound|CaveCarrotsFound|CopperFound|IronFound|CoalFound|CoinsFound|GoldFound|IridiumFound|BarsSmelted|BeveragesMade|PreservesMade|PiecesOfTrashRecycled|MysticStonesCrushed|DaysPlayed|WeedsEliminated|SticksChopped|NotesFound|QuestsCompleted|StarLevelCropsShipped|CropsShipped|ItemsForaged|SlimesKilled|GeodesCracked|GoodFriends|IndividualMoneyEarned]
+ * Vanilla stats label: [exMemoriesWiped|childrenTurnedToDoves|trashCansChecked|boatRidesToIsland|beachFarmSpawns|hardModeMonstersKilled|timesEnchanted]
  * Note that not all stats are correctly counted by the game.
  */

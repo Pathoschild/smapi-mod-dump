@@ -1,0 +1,13 @@
+url:
+   https://github.com/TheMightyAmondee/EasierSpecialOrders.git
+
+mods:
+   Easier Special Orders
+
+latest commit:
+   commit 4ec1e0bd12db622b9b6134edd4895fff961f0b1d
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Thu Mar 25 18:35:13 2021 +1100
+   
+       updated manifest
+   

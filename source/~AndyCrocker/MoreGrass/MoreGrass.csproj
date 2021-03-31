@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <LangVersion>8.0</LangVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -57,6 +58,7 @@
     <Compile Include="Patches\GrassPatch.cs" />
     <Compile Include="Patches\WinterGrassPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpritePool.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ContentPackConfig.cs" />

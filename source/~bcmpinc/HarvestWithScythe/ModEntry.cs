@@ -25,9 +25,13 @@ namespace StardewHack.HarvestWithScythe
         HAND,
         SCYTHE,
         BOTH, // I.e. determined by whether the scythe is equipped.
+        GOLD, // I.e. hand, unless the golden scythe is equipped.
     }
 
     public class ModConfig {
+        /** Whether a sword can be used instead of a normal scythe. */
+        public bool HarvestWithSword = false;
+    
         public class HarvestModeClass {
             /** How should flowers be harvested? 
              * Any Crop that is `programColored` is considered a flower. */
@@ -82,30 +86,84 @@ namespace StardewHack.HarvestWithScythe
     {
     
         public override void HackEntry(IModHelper helper) {
+            Patch((MeleeWeapon w)=>w.isScythe(-1), MeleeWeapon_isScythe);
             Patch((Crop c)=>c.harvest(0,0,null,null), Crop_harvest);
             Patch((HoeDirt hd)=>hd.performToolAction(null, 0, new Vector2(), null), HoeDirt_performToolAction);
             Patch((HoeDirt hd)=>hd.performUseAction(new Vector2(), null), HoeDirt_performUseAction);
 
             // If forage harvesting is configured to allow scythe.
-            if (config.HarvestMode.Forage != HarvestModeEnum.HAND) {
-                Patch((StardewValley.Object o)=>o.performToolAction(null, null), Object_performToolAction);
-                Patch((GameLocation gl)=>gl.checkAction(new xTile.Dimensions.Location(), new xTile.Dimensions.Rectangle(), null), GameLocation_checkAction);
-            }
-
+            Patch((StardewValley.Object o)=>o.performToolAction(null, null), Object_performToolAction);
+            Patch((GameLocation gl)=>gl.checkAction(new xTile.Dimensions.Location(), new xTile.Dimensions.Rectangle(), null), GameLocation_checkAction);
         }
-    
+        
+        static string writeEnum(HarvestModeEnum val) {
+            switch (val) {
+                case HarvestModeEnum.HAND: return "Hand";
+                case HarvestModeEnum.SCYTHE: return "Scythe";
+                case HarvestModeEnum.BOTH: return "Both";
+                case HarvestModeEnum.GOLD: return "Gold";
+                default: throw new Exception("Invalid HarvestModeEnum value");
+            }
+        }
+        
+        static HarvestModeEnum parseEnum(string val) {
+            HarvestModeEnum res;
+            Enum.TryParse<HarvestModeEnum>(val, true, out res);
+            return res;
+        }
+        
+        protected override void InitializeApi(GenericModConfigMenuAPI api)
+        {
+            api.RegisterSimpleOption(ModManifest, "Harvest With Sword", "Whether a sword can be used instead of a normal scythe.", () => config.HarvestWithSword, (bool val) => config.HarvestWithSword = val);
+        
+            string[] options = { "Hand", "Scythe", "Both", "Gold" };
+            string options_desc = "Valid values are:\n" +
+                " · Hand: only pluckable;\n" +
+                " · Scythe: only scythable;\n" +
+                " · Both: both pluckable and scythable;\n" +
+                " · Gold: like 'both', but requires the golden scythe.";
+            api.RegisterLabel(ModManifest, "HarvestMode", options_desc);
+            api.RegisterChoiceOption(ModManifest, "Flowers", "How flowers can be harvested.", () => writeEnum(config.HarvestMode.Flowers), (string val) => config.HarvestMode.Flowers = parseEnum(val), options);
+            api.RegisterChoiceOption(ModManifest, "Forage", "How forage can be harvested.", () => writeEnum(config.HarvestMode.Forage), (string val) => config.HarvestMode.Forage = parseEnum(val), options);
+            api.RegisterChoiceOption(ModManifest, "SpringOnion", "How spring onions can be harvested.", () => writeEnum(config.HarvestMode.SpringOnion), (string val) => config.HarvestMode.SpringOnion = parseEnum(val), options);
+            api.RegisterChoiceOption(ModManifest, "PluckableCrops", "How crops that normally can only be harvested by hand can be harvested.", () => writeEnum(config.HarvestMode.PluckableCrops), (string val) => config.HarvestMode.PluckableCrops = parseEnum(val), options);
+            api.RegisterChoiceOption(ModManifest, "ScythableCrops", "How crops that normally can only be harvested with a scythe can be harvested.", () => writeEnum(config.HarvestMode.ScythableCrops), (string val) => config.HarvestMode.ScythableCrops = parseEnum(val), options);
+        }
+
+        static bool getHarvestWithSword() {
+            return getInstance().config.HarvestWithSword;
+        }
+
+        void MeleeWeapon_isScythe() {
+            BeginCode().Append(
+                Instructions.Call(GetType(), nameof(getHarvestWithSword)),
+                Instructions.Brfalse(AttachLabel(BeginCode()[0])),
+                Instructions.Ldc_I4_1(),
+                Instructions.Ret()
+            );
+        }
+
+
 #region CanHarvest methods
         public const int HARVEST_PLUCKING = Crop.grabHarvest;
         public const int HARVEST_SCYTHING = Crop.sickleHarvest;
 
-        /** Check whether the used harvest method is allowed for the given harvest mode. 
-         * Method: 0 = plucking, 1 = scything.
-         */
+        /** Check whether the used harvest method is allowed for the given harvest mode. */
         public static bool CanHarvest(HarvestModeEnum mode, int method) {
             // If mode is BOTH, then set mode depending on whether the scythe is currently equipped.
             if (mode == HarvestModeEnum.BOTH) {
                 var t = Game1.player.CurrentTool;
-                if (t is MeleeWeapon && (t as MeleeWeapon).isScythe(-1)) {
+                if (t is MeleeWeapon && ((t as MeleeWeapon).isScythe())) {
+                    mode = HarvestModeEnum.SCYTHE;
+                } else {
+                    mode = HarvestModeEnum.HAND;
+                }
+            }
+
+            // If mode is GOLD, then set mode depending on whether the golden scythe is currently equipped.
+            if (mode == HarvestModeEnum.GOLD) {
+                var t = Game1.player.CurrentTool;
+                if (t.InitialParentTileIndex == MeleeWeapon.goldenScythe) {
                     mode = HarvestModeEnum.SCYTHE;
                 } else {
                     mode = HarvestModeEnum.HAND;
@@ -503,15 +561,6 @@ namespace StardewHack.HarvestWithScythe
             var code = BeginCode();
             Label begin = AttachLabel(code[0]);
             code.Prepend(
-                // Check if Tool is scythe.
-                Instructions.Ldarg_1(),
-                Instructions.Isinst(typeof(MeleeWeapon)),
-                Instructions.Brfalse(begin),
-                Instructions.Ldarg_1(),
-                Instructions.Isinst(typeof(MeleeWeapon)),
-                Instructions.Ldc_I4_M1(),
-                Instructions.Callvirt(typeof(MeleeWeapon), nameof(MeleeWeapon.isScythe), typeof(int)),
-                Instructions.Brfalse(begin),
                 // Hook
                 Instructions.Ldarg_0(),
                 Instructions.Ldarg_1(),
@@ -524,41 +573,43 @@ namespace StardewHack.HarvestWithScythe
         }
 
         public static bool ScytheForage(StardewValley.Object o, Tool t, GameLocation loc) {
-            if (o.IsSpawnedObject && !o.questItem.Value && o.isForage(loc) && CanHarvestObject(o, HARVEST_SCYTHING)) {
-                var who = t.getLastFarmerToUse();
-                var vector = o.TileLocation;
-                // For objects stored in GameLocation.Objects, the TileLocation is not always set.
-                // So determine its location by looping trough all such objects.
+            if (t is MeleeWeapon && (t as MeleeWeapon).isScythe()) {
+                // TODO: Consider removing some of these checks.
+                if (o.IsSpawnedObject && !o.questItem.Value && o.isForage(loc) && CanHarvestObject(o, HARVEST_SCYTHING)) {
+                    var who = t.getLastFarmerToUse();
+                    var vector = o.TileLocation;
+                    // For objects stored in GameLocation.Objects, the TileLocation is not always set.
+                    // So determine its location by looping trough all such objects.
 #pragma warning disable RECS0018 // Comparison of floating point numbers with equality operator
-                if (vector.X==0 && vector.Y==0) {
+                    if (vector.X==0 && vector.Y==0) {
 #pragma warning restore RECS0018 // Comparison of floating point numbers with equality operator
-                    foreach (System.Collections.Generic.KeyValuePair<Vector2, StardewValley.Object> pair in loc.Objects.Pairs) {
-                        if (pair.Value.Equals(o)) {
-                            vector = pair.Key;
-                            break;
+                        foreach (System.Collections.Generic.KeyValuePair<Vector2, StardewValley.Object> pair in loc.Objects.Pairs) {
+                            if (pair.Value.Equals(o)) {
+                                vector = pair.Key;
+                                break;
+                            }
                         }
                     }
-                }
-                Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)vector.X + (int)vector.Y * 777);
-                if (who.professions.Contains(16)) {
-                    o.Quality = 4;
-                } else if (random.NextDouble() < (double)((float)who.ForagingLevel / 30)) {
-                    o.Quality = 2;
-                } else if (random.NextDouble() < (double)((float)who.ForagingLevel / 15)) {
-                    o.Quality = 1;
-                }
-                vector *= 64.0f;
-                who.gainExperience(2, 7);
-                Game1.createItemDebris(o.getOne(), vector, -1, null, -1);
-                Game1.stats.ItemsForaged += 1;
-                if (who.professions.Contains(13) && random.NextDouble() < 0.2) {
-                    Game1.createItemDebris(o.getOne(), vector, -1, null, -1);
+                    Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)vector.X + (int)vector.Y * 777);
+                    if (who.professions.Contains(16)) {
+                        o.Quality = 4;
+                    } else if (random.NextDouble() < (double)((float)who.ForagingLevel / 30)) {
+                        o.Quality = 2;
+                    } else if (random.NextDouble() < (double)((float)who.ForagingLevel / 15)) {
+                        o.Quality = 1;
+                    }
+                    vector *= 64.0f;
                     who.gainExperience(2, 7);
+                    Game1.createItemDebris(o.getOne(), vector, -1, null, -1);
+                    Game1.stats.ItemsForaged += 1;
+                    if (who.professions.Contains(13) && random.NextDouble() < 0.2) {
+                        Game1.createItemDebris(o.getOne(), vector, -1, null, -1);
+                        who.gainExperience(2, 7);
+                    }
+                    return true;
                 }
-                return true;
-            } else {
-                return false;
-            }
+            } 
+            return false;
         }
 
         void GameLocation_checkAction() {
@@ -657,6 +708,7 @@ namespace StardewHack.HarvestWithScythe
         
         static void TryScythe() {
             // Copied from HoeDirt.performUseAction()
+            // TODO: Filter items that are not considered forage.
             if (Game1.player.CurrentTool != null && Game1.player.CurrentTool is MeleeWeapon && (Game1.player.CurrentTool as MeleeWeapon).isScythe()) {
                 Game1.player.CanMove = false;
                 Game1.player.UsingTool = true;
@@ -670,7 +722,7 @@ namespace StardewHack.HarvestWithScythe
             } 
         }
 
-#endregion
+        #endregion
     }
 }
 

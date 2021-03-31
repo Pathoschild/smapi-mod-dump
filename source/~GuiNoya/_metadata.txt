@@ -7,9 +7,9 @@ mods:
    Zoom Level Keybinding
 
 latest commit:
-   commit 02296025d522c4c38d5b2b38bd42aca4ec6ae212
-   Author: Guilherme Noya <GuiNoya@users.noreply.github.com>
-   Date:   Tue Mar 19 13:16:39 2019 -0300
+   commit c0f5f6015fca2815c5b2bb47b99dc303623b35cc
+   Author: Guilherme Noya <gui.noya@gmail.com>
+   Date:   Tue Mar 23 21:22:17 2021 -0300
    
-       Update TODO.md
+       Update packages
    

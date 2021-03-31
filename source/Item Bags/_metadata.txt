@@ -5,9 +5,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit 2f9a70b141dc7a3f02e9dfd93ccbea5e2ee42b00
+   commit 8301250096e67c56a1b5e8809fa1b93627e3ff7b
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Sun Feb 28 14:16:08 2021 -0500
+   Date:   Sun Mar 21 00:35:20 2021 -0400
    
-       Bugfix if Bag Size is deserialized after the bag's TypeId, which could result in the TypeId using the data for a smaller size of the bag than it should.
+       Added hungarian localization
    

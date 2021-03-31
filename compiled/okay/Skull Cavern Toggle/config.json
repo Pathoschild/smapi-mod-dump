@@ -1,3 +1,5 @@
 {
-  "ToggleDifficulty": "Z"
+  "ShrineToggle": true,
+  "ToggleDifficulty": "Z",
+  "MustCompleteQuest": true
 }

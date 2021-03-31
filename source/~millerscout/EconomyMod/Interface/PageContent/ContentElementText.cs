@@ -42,7 +42,7 @@ namespace EconomyMod.Interface.PageContent
 
 
 
-        public void draw(SpriteBatch b, int slotX, int slotY)
+        public void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu clickableMenu = null)
         {
             label = dynamicLabel == null ? label : dynamicLabel();
             Utility.drawTextWithShadow(b, label, Game1.dialogueFont, new Vector2(slotX + bounds.X + (int)labelOffset.X, slotY + bounds.Y + (int)labelOffset.Y + 12), Game1.textColor);

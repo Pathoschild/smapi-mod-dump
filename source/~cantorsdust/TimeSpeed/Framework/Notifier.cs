@@ -22,14 +22,14 @@ namespace TimeSpeed.Framework
         /// <param name="message">The message to display.</param>
         public void QuickNotify(string message)
         {
-            Game1.hudMessages.Add(new HUDMessage(message, 2) { timeLeft = 1000 });
+            Game1.addHUDMessage(new HUDMessage(message, HUDMessage.newQuest_type) { timeLeft = 1000 });
         }
 
         /// <summary>Display a message for two seconds.</summary>
         /// <param name="message">The message to display.</param>
         public void ShortNotify(string message)
         {
-            Game1.hudMessages.Add(new HUDMessage(message, 2) { timeLeft = 2000 });
+            Game1.addHUDMessage(new HUDMessage(message, HUDMessage.newQuest_type) { timeLeft = 2000 });
         }
     }
 }

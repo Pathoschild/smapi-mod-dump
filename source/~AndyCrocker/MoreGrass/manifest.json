@@ -11,7 +11,7 @@
 {
   "Name": "More Grass",
   "Author": "Satozaki",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "Description": "Loads custom grass sprites",
   "UniqueID": "EpicBellyFlop45.MoreGrass",
   "EntryDll": "MoreGrass.dll",

@@ -1,0 +1,51 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+[
+    {
+        "Id": "GemLampPosts.Recipe",
+        "Title": "lamp.recipe.letter.title",
+        "GroupId": "Digus.GemLampPosts",
+        "Text": "lamp.recipe.letter",
+        "Recipe": "Gem Lamp-post",
+        "WhichBG": 2,
+        "TextColor": 7,
+        "FriendshipConditions": [{ "NpcName": "Wizard", "FriendshipLevel": 5 }],
+        "CollectionConditions": [
+            { "Collection": "Minerals", "Index": 60, "Amount": 1 },
+            { "Collection": "Minerals", "Index": 62, "Amount": 1 },
+            { "Collection": "Minerals", "Index": 64, "Amount": 1 },
+            { "Collection": "Minerals", "Index": 66, "Amount": 1 },
+            { "Collection": "Minerals", "Index": 68, "Amount": 1 },
+            { "Collection": "Minerals", "Index": 70, "Amount": 1 },
+            { "Collection": "Minerals", "Index": 72, "Amount": 1 }
+        ]
+    },
+    {
+        "Id": "GemLampPosts.NewRecipes",
+        "Title": "lamp.shop.letter.title",
+        "GroupId": "Digus.GemLampPosts",
+        "Text": "lamp.shop.letter",
+        "WhichBG": 2,
+        "TextColor": 7,
+        "MailReceived": [ "GemLampPosts.Recipe" ],
+        "FriendshipConditions": [{ "NpcName": "Dwarf", "FriendshipLevel": 2 }],
+        "CollectionConditions": [{ "Collection": "Crafting", "Name": "Gem Lamp-post", "Amount": 1 }]
+    },
+    {
+        "Id": "GemComposer.Recipe",
+        "Title": "composer.recipe.letter.title",
+        "GroupId": "Digus.GemLampPosts",
+        "Text": "composer.recipe.letter",
+        "Recipe": "Gem Composer", 
+        "FriendshipConditions": [{ "NpcName": "Demetrius", "FriendshipLevel": 4 }],
+        "StatsConditions": [{ "StatsLabel": "GemDustProduced", "Amount": 5 }]
+    }
+]

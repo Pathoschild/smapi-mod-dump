@@ -1,0 +1,4 @@
+﻿{
+    "message.enabled": "You can now recatch legendary fish. Press {{key}} again to disable it.",
+    "message.disabled": "You can no longer recatch legendary fish. Press {{key}} again to enable it."
+}

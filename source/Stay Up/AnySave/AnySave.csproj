@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnySave.cs" />
+    <Compile Include="AnySaveApi.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Data.cs" />
   </ItemGroup>

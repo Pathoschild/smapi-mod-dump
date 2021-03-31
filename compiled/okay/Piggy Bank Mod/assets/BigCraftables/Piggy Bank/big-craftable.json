@@ -13,12 +13,12 @@
                 "Count": 10
             }
         ],
-        "IsDefault": false
+        "IsDefault": false,
+        "CanPurchase": true,
+        "PurchaseFrom": "Robin",
+        "PurchasePrice": 2500,
+        "PurchaseRequirements": null
     },
-    "CanPurchase": true,
-    "PurchaseFrom": "Robin",
-    "PurchasePrice": 2500,
-    "PurchaseRequirements": null,
     "NameLocalization":
     {
         //"es": "",

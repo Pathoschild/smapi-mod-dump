@@ -61,7 +61,7 @@ Only **true** and **false** are accepted, this specifies whether the default gra
 3. Extract the .zip mod file into your StardewValley/Mods folder and run the game using SMAPI.
 
 ## Use
-Add any content packs to the **StardewValley/Mods** file and run the same using SMAPI.
+Add any content packs to the **StardewValley/Mods** file and run the game using SMAPI.
 
 ## Compatibility
 More Grass is compatible with Stardew Valley 1.4+ on Windows/Mac/Linus, both single player and multiplayer. To view reported bug visit both the issues on this repo and bug reports on [Nexus](https://www.nexusmods.com/stardewvalley/mods/5398?tab=bugs).

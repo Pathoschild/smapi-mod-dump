@@ -10,6 +10,22 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Improved translations. Thanks to J3yEreN (updated Turkish!).
+
+## 1.20.12
+Released 27 March 2021.
+
+* Added world areas for Ginger Island in balanced mode.
+* Fixed compatibility with [unofficial 64-bit mode](https://stardewvalleywiki.com/Modding:Migrate_to_64-bit_on_Windows).
+
+## 1.20.11
+Released 08 March 2021.
+
+* Fixed shipping bin UI frozen if you have Expanded Storage installed.
+
+## 1.20.10
+Released 07 March 2021.
+
 * Fixed error opening dressers in rare cases.
 * Fixed lag in some cases when opening a chest menu that can't be linked to a chest.
 * Improved translations. Thanks to derJuba007 (updated German), horizon98 (updated Chinese), and zNatural (updated Spanish)!

@@ -8,10 +8,13 @@
 **
 *************************************************/
 
+using System;
 using Harmony;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Objects;
+using SObject = StardewValley.Object;
 
 namespace CustomCaskMod
 {
@@ -47,7 +50,7 @@ namespace CustomCaskMod
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            new DataLoader(Helper);
+            new DataLoader(Helper, ModManifest);
 
             var harmony = HarmonyInstance.Create("Digus.CustomCaskMod");
 
@@ -63,6 +66,18 @@ namespace CustomCaskMod
                 original: AccessTools.Method(typeof(Cask), nameof(Cask.checkForMaturity)),
                 prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.checkForMaturity))
             );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.placementAction)),
+                prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.placementAction))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Cask), nameof(Cask.performToolAction)),
+                transpiler: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.performToolAction_Transpiler))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Cask), nameof(Cask.performObjectDropInAction)),
+                transpiler: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.performObjectDropInAction_Transpiler))
+            );
         }
 
         /// <summary>Raised after the player loads a save slot and the world is initialized.</summary>
@@ -70,7 +85,7 @@ namespace CustomCaskMod
         /// <param name="e">The event data.</param>
         public static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            DataLoader.FillCaskDataIds();
+            DataLoader.LoadContentPacksCommand();
         }
     }
 }

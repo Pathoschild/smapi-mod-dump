@@ -1,3 +1,7 @@
 {
-  "Multiplier": 1.0
+  "Multiplier": 1.0,
+  "SittingVerification": true,
+  "RidingVerification": true,
+  "StandingVerification": true,
+  "EnableSecrets": true
 }

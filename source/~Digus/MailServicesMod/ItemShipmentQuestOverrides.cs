@@ -40,28 +40,36 @@ namespace MailServicesMod
                                 NPC npc = Game1.getCharacterFromName(itemDeliveryQuest.target.Value);
                                 if (item.Stack >= itemDeliveryQuest.number.Value)
                                 {
-                                    Game1.player.ActiveObject.Stack -= (int) itemDeliveryQuest.number.Value - 1;
-                                    if (DataLoader.ModConfig.ShowDialogOnItemDelivery)
+                                    if (Game1.player.Money >= DataLoader.ModConfig.QuestServiceFee)
                                     {
-                                        itemDeliveryQuest.reloadDescription();
-                                        npc.CurrentDialogue.Push(new Dialogue(itemDeliveryQuest.targetMessage, npc));
-                                        Game1.drawDialogue(npc);
-                                    }
-                                    Game1.player.reduceActiveItemByOne();
-                                    if ((bool) itemDeliveryQuest.dailyQuest.Value)
-                                    {
-                                        Game1.player.changeFriendship(150, npc);
-                                        if (itemDeliveryQuest.deliveryItem.Value == null)
+                                        ShopMenu.chargePlayer(Game1.player, 0, DataLoader.ModConfig.QuestServiceFee);
+                                        Game1.player.ActiveObject.Stack -= (int)itemDeliveryQuest.number.Value - 1;
+                                        if (DataLoader.ModConfig.ShowDialogOnItemDelivery)
                                         {
-                                            itemDeliveryQuest.deliveryItem.Value = new SObject(Vector2.Zero, itemDeliveryQuest.item.Value, 1);
+                                            itemDeliveryQuest.reloadDescription();
+                                            npc.CurrentDialogue.Push(new Dialogue(itemDeliveryQuest.targetMessage, npc));
+                                            Game1.drawDialogue(npc);
                                         }
-                                        itemDeliveryQuest.moneyReward.Value = itemDeliveryQuest.deliveryItem.Value.Price * 3;
+                                        Game1.player.reduceActiveItemByOne();
+                                        if ((bool)itemDeliveryQuest.dailyQuest.Value)
+                                        {
+                                            Game1.player.changeFriendship(150, npc);
+                                            if (itemDeliveryQuest.deliveryItem.Value == null)
+                                            {
+                                                itemDeliveryQuest.deliveryItem.Value = new SObject(Vector2.Zero, itemDeliveryQuest.item.Value, 1);
+                                            }
+                                            itemDeliveryQuest.moneyReward.Value = itemDeliveryQuest.deliveryItem.Value.Price * 3;
+                                        }
+                                        else
+                                        {
+                                            Game1.player.changeFriendship(255, npc);
+                                        }
+                                        itemDeliveryQuest.questComplete();
                                     }
                                     else
                                     {
-                                        Game1.player.changeFriendship(255, npc);
+                                        Game1.drawObjectDialogue(DataLoader.I18N.Get("Shipment.Quest.ItemDelivery.NoMoney"));
                                     }
-                                    itemDeliveryQuest.questComplete();
                                 }
                                 else
                                 {

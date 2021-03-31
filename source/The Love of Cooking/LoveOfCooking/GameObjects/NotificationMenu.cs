@@ -26,13 +26,23 @@ namespace LoveOfCooking.GameObjects
 {
 	public class NotificationMenu : IClickableMenu
 	{
-		private const int RootId = 6830 * 10000;
+		private const int RootId = ModEntry.NexusId + 10000;
+
+		// Notifications
+		internal enum Notification
+		{
+			BundleMultiplayerWarning,
+			CabinBuiltWarning,
+		}
+		internal static NotificationButton NotificationButton = new NotificationButton();
+		internal static List<Notification> PendingNotifications = new List<Notification>();
+		internal static bool HasUnreadNotifications;
 
 		// Notifications from modmail
-		private List<ModEntry.Notification> _notifications;
-		private List<List<ModEntry.Notification>> _pages;
+		private List<Notification> _notifications;
+		private List<List<Notification>> _pages;
 		private List<ClickableComponent> _notificationButtons;
-		private ModEntry.Notification? _currentNotification;
+		private Notification? _currentNotification;
 
 		// Main menu buttons
 		private Point _closeButtonDefaultPosition;
@@ -73,7 +83,7 @@ namespace LoveOfCooking.GameObjects
 			_letterTexture = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\letterBG");
 
 			Game1.playSound("bigSelect");
-			ModEntry.HasUnreadNotifications = false;
+			HasUnreadNotifications = false;
 
 			// Menu dimensions
 			var scale = 4f;
@@ -171,18 +181,18 @@ namespace LoveOfCooking.GameObjects
 
 		private void PaginateNotifications()
 		{
-			_notifications = ModEntry.PendingNotifications;
-			_pages = new List<List<ModEntry.Notification>>();
+			_notifications = PendingNotifications;
+			_pages = new List<List<Notification>>();
 
 			for (var i = 0; i < _notifications.Count; ++i)
 			{
 				if (_pages.Count <= i / NotificationsPerPage)
-					_pages.Add(new List<ModEntry.Notification>());
+					_pages.Add(new List<Notification>());
 				_pages[i / NotificationsPerPage].Add(_notifications[i]);
 			}
 
 			if (_pages.Count == 0)
-				_pages.Add(new List<ModEntry.Notification>());
+				_pages.Add(new List<Notification>());
 
 			_currentPage = Math.Min(Math.Max(_currentPage, 0), _pages.Count - 1);
 			Log.D($"Pagination - notifications: {_notifications.Count}, pages: {_pages.Count}, currentPage: {_currentPage}",
@@ -204,7 +214,7 @@ namespace LoveOfCooking.GameObjects
 			_declineButton.sourceRect = _declineIconSourceRect;
 			_acceptButton.sourceRect = _acceptIconSourceRect;
 
-			if (_currentNotification == ModEntry.Notification.BundleMultiplayerWarning)
+			if (_currentNotification == Notification.BundleMultiplayerWarning)
 			{
 				_declineButton.visible = true;
 
@@ -284,7 +294,7 @@ namespace LoveOfCooking.GameObjects
 			snapCursorToCurrentSnappedComponent();
 		}
 
-		private void OpenNotification(bool playSound, ModEntry.Notification notification)
+		private void OpenNotification(bool playSound, Notification notification)
 		{
 			if (playSound)
 				Game1.playSound("shwip");
@@ -305,9 +315,9 @@ namespace LoveOfCooking.GameObjects
 			_showNotification = false;
 			_letterScale = 0f;
 
-			if (ModEntry.PendingNotifications.Count == 0)
+			if (PendingNotifications.Count == 0)
 			{
-				ModEntry.RemoveNotificationButton();
+				RemoveNotificationButton();
 			}
 
 			if (!_showMailbox)
@@ -380,11 +390,11 @@ namespace LoveOfCooking.GameObjects
 				{
 					switch (_currentNotification)
 					{
-						case ModEntry.Notification.BundleMultiplayerWarning:
+						case Notification.BundleMultiplayerWarning:
 							Log.I("Enabled custom bundle data in a possible multiplayer game."
 								+ "\nReload the save if you need bundles disabled again for playing with friends.");
-							ModEntry.Instance.SetCommunityCentreKitchenForThisSession(true);
-							ModEntry.Instance.LoadBundleData();
+							Bundles.SetCommunityCentreKitchenForThisSession(true);
+							Bundles.LoadBundleData();
 							break;
 					}
 					TrashNotification(playSound: false);
@@ -393,7 +403,7 @@ namespace LoveOfCooking.GameObjects
 				{
 					switch (_currentNotification)
 					{
-						case ModEntry.Notification.BundleMultiplayerWarning:
+						case Notification.BundleMultiplayerWarning:
 							Log.I("Declined to load bundle data in a possible multiplayer game."
 								+ "\nReload the save if you need bundles enabled for playing singleplayer.");
 							break;
@@ -457,9 +467,9 @@ namespace LoveOfCooking.GameObjects
 			{
 				Game1.exitActiveMenu();
 				Game1.playSound("bigDeSelect");
-				if (ModEntry.PendingNotifications.Count == 0)
+				if (PendingNotifications.Count == 0)
 				{
-					ModEntry.RemoveNotificationButton();
+					RemoveNotificationButton();
 				}
 			}
 
@@ -600,7 +610,7 @@ namespace LoveOfCooking.GameObjects
 
 					// Accept/decline notification buttons
 					_acceptButton.draw(b);
-					if (_currentNotification == ModEntry.Notification.BundleMultiplayerWarning)
+					if (_currentNotification == Notification.BundleMultiplayerWarning)
 					{
 						_declineButton.draw(b);
 					}
@@ -625,6 +635,42 @@ namespace LoveOfCooking.GameObjects
 			// Cursor
 			Game1.mouseCursorTransparency = 1f;
 			drawMouse(b);
+		}
+
+		internal static void AddNotificationButton()
+		{
+			if (Game1.onScreenMenus.Contains(NotificationButton))
+				return;
+
+			Log.D("Adding NotificationButton to HUD",
+				ModEntry.Instance.Config.DebugMode);
+			Game1.onScreenMenus.Add(NotificationButton);
+		}
+
+		internal static void RemoveNotificationButton()
+		{
+			if (!Game1.onScreenMenus.Contains(NotificationButton))
+				return;
+
+			Log.D("Removing NotificationButton from HUD",
+				ModEntry.Instance.Config.DebugMode);
+			Game1.onScreenMenus.Remove(NotificationButton);
+		}
+
+		internal static void AddNewPendingNotification(Notification notification)
+		{
+			// Ignore duplicate notifications
+			if (PendingNotifications.Contains(notification))
+				return;
+
+			Log.D($"Sending {notification.ToString()} notification",
+				ModEntry.Instance.Config.DebugMode);
+
+			Game1.playSound("give_gift");
+			Game1.showGlobalMessage("Love of Cooking: " + ModEntry.Instance.i18n.Get($"notification.{notification.ToString().ToLower()}.inspect"));
+			HasUnreadNotifications = true;
+			PendingNotifications.Add(notification);
+			AddNotificationButton();
 		}
 	}
 }

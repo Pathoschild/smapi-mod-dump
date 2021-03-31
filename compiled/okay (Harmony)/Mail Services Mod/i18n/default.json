@@ -9,6 +9,7 @@
     "Shipment.Clint.UpgradeLetter.NoMoney": "You don't have enough money to send the {{Tool}} to upgrade.",
     // Item Delivery Quest Service
     "Shipment.Quest.ItemDelivery.NotEnoughItems": "{{Npc}} needs {{Number}} of them.",
+    "Shipment.Quest.ItemDelivery.NoMoney": "You don't have enough money to send the quest item.",
     "Shipment.Quest.DeliveryQuestsLetter": "Dear @,^I just want to let you know that you can also post items in your mailbox and they will be delivered to the person that requested them.^We may be a small town but our mail service is great.^^  -Mayor Lewis",
     "Shipment.Quest.DeliveryQuestsLetter.Title": "Pelican Town Shipment Service",
     // Adventure Guild Recovery Service
@@ -30,5 +31,6 @@
     "Shipment.Gift.Next": "Next>",
     "Shipment.Gift.None": "No one",
     "Shipment.Gift.Question": "Send {{Gift}} to...",
-    "Shipment.Gift.GiftSent": "{{Gift}} sent to {{Npc}}"
+    "Shipment.Gift.GiftSent": "{{Gift}} sent to {{Npc}}",
+    "Shipment.Gift.NoMoney": "You don't have enough money to send the gift."
 }

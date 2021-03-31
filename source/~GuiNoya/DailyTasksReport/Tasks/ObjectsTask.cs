@@ -271,9 +271,20 @@ namespace DailyTasksReport.Tasks
                             : heldObject.Quality == 4 ? "Iridium "
                             : "";
                     }
-                    stringBuilder.Append(
-                        $"{machine.name} with {quality}{heldObject.Name} at {location.Key.Name} ({position.X}, {position.Y})^");
-                    usedLines++;
+                    try
+                    {
+                        stringBuilder.Append(
+                            $"{machine.name} with {quality}{heldObject.Name} at {location.Key.Name} ({position.X}, {position.Y})^");
+                        usedLines++;
+                    }
+                    catch (Exception ex)
+                    {
+                        string sError = "err: ";
+                        sError = (location.Key.Name == null ? "l.k.n" : location.Key.Name);
+                        sError += (machine == null ? "m.n" : machine.name);
+                        sError += (heldObject == null ? "h.n" : heldObject.Name);
+                        stringBuilder.Append(sError);
+                    }
                 }
         }
 

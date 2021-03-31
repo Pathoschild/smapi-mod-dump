@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -24,6 +25,26 @@ namespace MoreGrass.Patches
         /*********
         ** Internal Methods
         *********/
+        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Grass.reduceBy(int, Microsoft.Xna.Framework.Vector2, bool)"/> method.</summary>
+        /// <param name="tileLocation">The tile location of the grass.</param>
+        /// <param name="showDebris">Whether debris should be drawn.</param>
+        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <param name="__result">The return value of the method being patched.</param>
+        /// <returns><see langword="true"/> if the original method should get ran; otherwise <see langword="false"/> (depending on the mod configuration).</returns>
+        /// <remarks>This is used so animals won't eat grass if the configuration forbids them from it.</remarks>
+        internal static bool ReduceByPrefix(Vector2 tileLocation, bool showDebris, Grass __instance, ref bool __result)
+        {
+            // ensure animals aren't allowed to eat grass
+            if (ModEntry.Instance.Config.CanAnimalsEatGrass)
+                return true;
+
+            // reimplement the method and force the return value to be false (meaning the grass won't get destroyed)
+            if (showDebris)
+                Game1.createRadialDebris(Game1.currentLocation, __instance.textureName(), new Rectangle(2, 8, 8, 8), 1, ((int)tileLocation.X + 1) * 64, ((int)tileLocation.Y + 1) * 64, Game1.random.Next(6, 14), (int)tileLocation.Y + 1, Color.White, 4);
+            __result = false;
+            return false;
+        }
+
         /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Grass.seasonUpdate(bool)"/> method.</summary>
         /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
         /// <param name="__result">Whether all the grass should be killed (this is the return value of the original method).</param>
@@ -54,10 +75,10 @@ namespace MoreGrass.Patches
             Texture2D grassTexture = null;
             switch (Game1.currentSeason)
             {
-                case "spring": grassTexture = ModEntry.Instance.SpringGrassSprites[Game1.random.Next(ModEntry.Instance.SpringGrassSprites.Count)]; break;
-                case "summer": grassTexture = ModEntry.Instance.SummerGrassSprites[Game1.random.Next(ModEntry.Instance.SummerGrassSprites.Count)]; break;
-                case "fall": grassTexture = ModEntry.Instance.FallGrassSprites[Game1.random.Next(ModEntry.Instance.FallGrassSprites.Count)]; break;
-                case "winter": grassTexture = ModEntry.Instance.WinterGrassSprites[Game1.random.Next(ModEntry.Instance.WinterGrassSprites.Count)]; break;
+                case "spring": grassTexture = ModEntry.Instance.SpringSpritePool.GetRandomSprite(); break;
+                case "summer": grassTexture = ModEntry.Instance.SummerSpritePool.GetRandomSprite(); break;
+                case "fall": grassTexture = ModEntry.Instance.FallSpritePool.GetRandomSprite(); break;
+                case "winter": grassTexture = ModEntry.Instance.WinterSpritePool.GetRandomSprite(); break;
             }
 
             __instance.texture = new Lazy<Texture2D>(() => grassTexture);
@@ -77,10 +98,10 @@ namespace MoreGrass.Patches
             {
                 switch (Game1.currentSeason)
                 {
-                    case "spring": newWhichWeed[i] = random.Next(ModEntry.Instance.SpringGrassSprites.Count); break;
-                    case "summer": newWhichWeed[i] = random.Next(ModEntry.Instance.SummerGrassSprites.Count); break;
-                    case "fall": newWhichWeed[i] = random.Next(ModEntry.Instance.FallGrassSprites.Count); break;
-                    case "winter": newWhichWeed[i] = random.Next(ModEntry.Instance.WinterGrassSprites.Count); break;
+                    case "spring": newWhichWeed[i] = random.Next(ModEntry.Instance.SpringSpritePool.Count); break;
+                    case "summer": newWhichWeed[i] = random.Next(ModEntry.Instance.SummerSpritePool.Count); break;
+                    case "fall": newWhichWeed[i] = random.Next(ModEntry.Instance.FallSpritePool.Count); break;
+                    case "winter": newWhichWeed[i] = random.Next(ModEntry.Instance.WinterSpritePool.Count); break;
                 }
             }
 
@@ -110,10 +131,10 @@ namespace MoreGrass.Patches
             var textures = new List<Texture2D>();
             switch (Game1.currentSeason)
             {
-                case "spring": textures = ModEntry.Instance.SpringGrassSprites; break;
-                case "summer": textures = ModEntry.Instance.SummerGrassSprites; break;
-                case "fall": textures = ModEntry.Instance.FallGrassSprites; break;
-                case "winter": textures = ModEntry.Instance.WinterGrassSprites; break;
+                case "spring": textures = ModEntry.Instance.SpringSpritePool.Sprites; break;
+                case "summer": textures = ModEntry.Instance.SummerSpritePool.Sprites; break;
+                case "fall": textures = ModEntry.Instance.FallSpritePool.Sprites; break;
+                case "winter": textures = ModEntry.Instance.WinterSpritePool.Sprites; break;
             }
 
             // draw the grass

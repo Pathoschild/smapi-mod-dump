@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Lober Cat",
+  "Author": "codyflagstaff",
+  "Version": "1.0.0",
+  "Description": "Lober",
+  "UniqueID": "codyflagstaff.lobercat",
+  "EntryDll": "LoberCat.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:8219"]
+}

@@ -1,0 +1,8 @@
+{
+  "LogDatesToConsole": false,
+  "ShowAnniversaryOnCal": true,
+  "ShowChildrenBirthdaysOnCal": true,
+  "ShowPlayerBirthdaysOnCal": false,
+  "PlayerBirthdaySeason": "spring",
+  "PlayerBirthdayDay": 1
+}

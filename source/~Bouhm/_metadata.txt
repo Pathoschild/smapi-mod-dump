@@ -6,12 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit a6e9df84c0f376fb15eb8b5122374402bc3abaca
-   Merge: bc73ccf ad65480
+   commit 33ea59df51c87a359b49f5caac22533512cc8a33
    Author: Brian Pak <brianbpak@gmail.com>
-   Date:   Thu Mar 4 19:32:00 2021 -0800
+   Date:   Sun Mar 7 00:56:20 2021 -0800
    
-       Merge pull request #74 from Pathoschild/fix-warp-error
-       
-       Fix error when a location has invalid warp targets
+       Update README.md
    

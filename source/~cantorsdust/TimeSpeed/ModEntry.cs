@@ -23,14 +23,11 @@ namespace TimeSpeed
         /*********
         ** Properties
         *********/
-        /// <summary>Whether time features should be enabled.</summary>
-        private bool ShouldEnable => Context.IsWorldReady && Context.IsMainPlayer;
-
         /// <summary>Displays messages to the user.</summary>
-        private readonly Notifier Notifier = new Notifier();
+        private readonly Notifier Notifier = new();
 
         /// <summary>Provides helper methods for tracking time flow.</summary>
-        private readonly TimeHelper TimeHelper = new TimeHelper();
+        private readonly TimeHelper TimeHelper = new();
 
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
@@ -57,8 +54,8 @@ namespace TimeSpeed
         /// <summary>The number of seconds per 10-game-minutes to apply.</summary>
         private int TickInterval
         {
-            get => _tickInterval;
-            set => _tickInterval = Math.Max(value, 0);
+            get => this._tickInterval;
+            set => this._tickInterval = Math.Max(value, 0);
         }
 
 
@@ -78,19 +75,19 @@ namespace TimeSpeed
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
             helper.Events.Player.Warped += this.OnWarped;
 
             // add time freeze/unfreeze notification
             {
                 bool wasPaused = false;
-                helper.Events.Display.RenderingHud += (sender, args) =>
+                helper.Events.Display.RenderingHud += (_, _) =>
                 {
                     wasPaused = Game1.paused;
                     if (this.Frozen) Game1.paused = true;
                 };
 
-                helper.Events.Display.RenderedHud += (sender, args) =>
+                helper.Events.Display.RenderedHud += (_, _) =>
                 {
                     Game1.paused = wasPaused;
                 };
@@ -104,7 +101,7 @@ namespace TimeSpeed
         /****
         ** Event handlers
         ****/
-        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <summary>Raised after the player loads a save slot and the world is initialized.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -118,24 +115,28 @@ namespace TimeSpeed
         /// <param name="e">The event arguments.</param>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
+            if (!this.ShouldEnable())
+                return;
+
             this.UpdateScaleForDay(Game1.currentSeason, Game1.dayOfMonth);
             this.UpdateSettingsForLocation(Game1.currentLocation);
         }
 
-        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <summary>Raised after the player presses or releases any buttons on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
         {
-            if (!this.ShouldEnable || !Context.IsPlayerFree)
+            if (!this.ShouldEnable(forInput: true))
                 return;
 
-            SButton key = e.Button;
-            if (key == this.Config.Keys.FreezeTime)
+            if (this.Config.Keys.FreezeTime.JustPressed())
                 this.ToggleFreeze();
-            else if (key == this.Config.Keys.IncreaseTickInterval || key == this.Config.Keys.DecreaseTickInterval)
-                this.ChangeTickInterval(increase: key == Config.Keys.IncreaseTickInterval);
-            else if (key == this.Config.Keys.ReloadConfig)
+            else if (this.Config.Keys.IncreaseTickInterval.JustPressed())
+                this.ChangeTickInterval(increase: true);
+            else if (this.Config.Keys.DecreaseTickInterval.JustPressed())
+                this.ChangeTickInterval(increase: false);
+            else if (this.Config.Keys.ReloadConfig.JustPressed())
                 this.ReloadConfig();
         }
 
@@ -144,7 +145,7 @@ namespace TimeSpeed
         /// <param name="e">The event arguments.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
         {
-            if (!this.ShouldEnable || !e.IsLocalPlayer)
+            if (!this.ShouldEnable() || !e.IsLocalPlayer)
                 return;
 
             this.UpdateSettingsForLocation(e.NewLocation);
@@ -155,7 +156,7 @@ namespace TimeSpeed
         /// <param name="e">The event arguments.</param>
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
-            if (!this.ShouldEnable)
+            if (!this.ShouldEnable())
                 return;
 
             this.UpdateFreezeForTime(Game1.timeOfDay);
@@ -166,6 +167,9 @@ namespace TimeSpeed
         /// <param name="e">The event arguments.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
+            if (!this.ShouldEnable())
+                return;
+
             this.TimeHelper.Update();
         }
 
@@ -174,7 +178,7 @@ namespace TimeSpeed
         /// <param name="e">The event arguments.</param>
         private void OnTickProgressed(object sender, TickProgressChangedEventArgs e)
         {
-            if (!this.ShouldEnable)
+            if (!this.ShouldEnable())
                 return;
 
             if (this.Frozen)
@@ -196,13 +200,28 @@ namespace TimeSpeed
         /****
         ** Methods
         ****/
+        /// <summary>Get whether time features should be enabled.</summary>
+        /// <param name="forInput">Whether to check for input handling.</param>
+        private bool ShouldEnable(bool forInput = false)
+        {
+            // is loaded and host player (farmhands can't change time)
+            if (!Context.IsWorldReady || !Context.IsMainPlayer)
+                return false;
+
+            // only handle keys if the player is free, or currently watching an event
+            if (forInput && !Context.IsPlayerFree && !Game1.eventUp)
+                return false;
+
+            return true;
+        }
+
         /// <summary>Reload <see cref="Config"/> from the config file.</summary>
         private void ReloadConfig()
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
             this.UpdateScaleForDay(Game1.currentSeason, Game1.dayOfMonth);
             this.UpdateSettingsForLocation(Game1.currentLocation);
-            this.Notifier.ShortNotify("Time feels differently now...");
+            this.Notifier.ShortNotify(this.Helper.Translation.Get("message.config-reloaded"));
         }
 
         /// <summary>Increment or decrement the tick interval, taking into account the held modifier key if applicable.</summary>
@@ -231,8 +250,10 @@ namespace TimeSpeed
                 this.TickInterval = this.TickInterval + change;
 
             // log change
-            this.Notifier.QuickNotify($"10 minutes feels like {TickInterval / 1000} seconds.");
-            this.Monitor.Log($"Tick length set to {TickInterval / 1000d: 0.##} seconds.", LogLevel.Info);
+            this.Notifier.QuickNotify(
+                this.Helper.Translation.Get("message.speed-changed", new { seconds = this.TickInterval / 1000 })
+            );
+            this.Monitor.Log($"Tick length set to {this.TickInterval / 1000d: 0.##} seconds.", LogLevel.Info);
         }
 
         /// <summary>Toggle whether time is frozen.</summary>
@@ -241,13 +262,13 @@ namespace TimeSpeed
             if (!this.Frozen)
             {
                 this.FrozenGlobally = true;
-                this.Notifier.QuickNotify("Hey, you stopped the time!");
+                this.Notifier.QuickNotify(this.Helper.Translation.Get("message.time-stopped"));
                 this.Monitor.Log("Time is frozen globally.", LogLevel.Info);
             }
             else
             {
                 this.Frozen = false;
-                this.Notifier.QuickNotify("Time feels as usual now...");
+                this.Notifier.QuickNotify(this.Helper.Translation.Get("message.time-resumed"));
                 this.Monitor.Log($"Time is temporarily unfrozen at \"{Game1.currentLocation.Name}\".", LogLevel.Info);
             }
         }
@@ -259,7 +280,7 @@ namespace TimeSpeed
             if (this.Config.ShouldFreeze(time))
             {
                 this.FrozenGlobally = true;
-                this.Notifier.ShortNotify("Time suddenly stops...");
+                this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-time-change.time-stopped"));
                 this.Monitor.Log($"Time automatically set to frozen at {Game1.timeOfDay}.", LogLevel.Info);
             }
         }
@@ -280,11 +301,11 @@ namespace TimeSpeed
             if (this.Config.LocationNotify)
             {
                 if (this.FrozenGlobally)
-                    this.Notifier.ShortNotify("Looks like time stopped everywhere...");
+                    this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-stopped-globally"));
                 else if (this.FrozenAtLocation)
-                    this.Notifier.ShortNotify("It feels like time is frozen here...");
+                    this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-stopped-here"));
                 else
-                    this.Notifier.ShortNotify($"10 minutes feels more like {TickInterval / 1000} seconds here...");
+                    this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-speed-here", new { seconds = this.TickInterval / 1000 }));
             }
         }
 

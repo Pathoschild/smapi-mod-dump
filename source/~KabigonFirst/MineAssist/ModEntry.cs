@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -61,10 +60,10 @@ namespace MineAssist {
                 return;
             }
 
-            InputEvents.ButtonPressed += inputEvents_ButtonPressed;
-            InputEvents.ButtonReleased += inputEvents_ButtonReleased;
-            GameEvents.UpdateTick += gameEvents_UpdateTick;
-            GraphicsEvents.OnPostRenderEvent += GraphicsEvents_OnPostRenderEvent;
+            helper.Events.Input.ButtonPressed += onButtonPressed;
+            helper.Events.Input.ButtonReleased += onButtonReleased;
+            helper.Events.GameLoop.UpdateTicked += onUpdateTick;
+            helper.Events.Display.Rendered += onRendered;
         }
 
         public void switchMode(string modeName) {
@@ -80,10 +79,10 @@ namespace MineAssist {
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked when the player presses a controller, keyboard, or mouse button.</summary>
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void inputEvents_ButtonPressed(object sender, EventArgsInput e) {
+        private void onButtonPressed(object sender, ButtonPressedEventArgs e) {
 #if DEBUG
             this.Monitor.Log($"Pressed {e.Button}.");
 #endif
@@ -95,7 +94,7 @@ namespace MineAssist {
             //if current key is modify key, mark the key
             if (isModifyKey(e.Button)) {
                 m_modify = e.Button;
-                e.SuppressButton();
+                this.Helper.Input.Suppress(e.Button);
                 return;
             }
             //not modify key. Now check if the key combination is in the config
@@ -117,10 +116,13 @@ namespace MineAssist {
             }
             //command is there so just overide and execute it
             m_curCmd.exec(m_cmdcfg.par);
-            e.SuppressButton();
+            this.Helper.Input.Suppress(e.Button);
         }
 
-        private void inputEvents_ButtonReleased(object sender, EventArgsInput e) {
+        /// <summary>Raised after the player releases a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void onButtonReleased(object sender, ButtonReleasedEventArgs e) {
 #if DEBUG
             this.Monitor.Log($"Released {e.Button}.");
 #endif
@@ -136,7 +138,7 @@ namespace MineAssist {
                 if (m_cmdcfg!= null && e.Button == m_cmdcfg.modifyKey) {
                     stopCmd();
                 }
-                e.SuppressButton();
+                this.Helper.Input.Suppress(e.Button);
                 return;
             }
             //it's action key, mark released
@@ -147,16 +149,23 @@ namespace MineAssist {
             if (m_cmdcfg != null && e.Button == m_cmdcfg.key) {
                 stopCmd();
             }
-            e.SuppressButton();
+            this.Helper.Input.Suppress(e.Button);
         }
 
-        private void GraphicsEvents_OnPostRenderEvent(object sender, EventArgs e) {
+        /// <summary>Raised after the game draws to the sprite patch in a draw tick, just before the final sprite batch is rendered to the screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void onRendered(object sender, RenderedEventArgs e) {
             if (m_curCmd != null && !m_curCmd.isFinish) {
                 m_curCmd.updateGraphic();
                 return;
             }
         }
-        private void gameEvents_UpdateTick(object sender, EventArgs e) {
+        
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void onUpdateTick(object sender, UpdateTickedEventArgs e) {
             //if last command is not finished, update it
             if (m_curCmd != null && !m_curCmd.isFinish) {
                 m_curCmd.update();

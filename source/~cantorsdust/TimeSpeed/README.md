@@ -15,7 +15,8 @@ Compatible with Stardew Valley 1.2+ on Linux, Mac, and Windows.
 ## Contents
 * [Install](#install)
 * [Use](#use)
-* [Versions](#versions)
+* [Configure](#configure)
+* [Compatibility](#compatibility)
 * [See also](#see-also)
 
 ## Install
@@ -33,24 +34,24 @@ key | effect
 `.` | Slow down time by one second per 10-game-minutes. Combine with `Control` to increase by 100 seconds, `Shift` to increase by 10 seconds, or `Alt` to increase by 0.1 seconds.
 `B` | Reload the config settings from file.
 
+## Configure
 The mod creates a `config.json` file the first time you run it. You can open the file in a text
 editor to configure the mod:
 
 setting | effect
 :------ | :-----
 `DefaultTickLength` | The default number of seconds per 10-game-minutes, or `null` to freeze time globally. The game uses 7 seconds by default.
-`TickLengthsByLocation` | The number of seconds per 10-game-minutes (or `null` to freeze time) for each location. You can use location names or these values: `Mine`, `Indoors`, or `Outdoors`.
-`EnableOnFestivalDays` | Whether to change tick length on festival days.
-`FreezeTimeAt` | The time at which to freeze time everywhere (or `null` to disable this). This should be 24-hour military time (e.g. 800 for 8am, 1600 for 8pm, etc). (Be careful the number doesn't start with a zero, due to a bug in the underlying parser.)
-`LocationNotify` | Whether to show a message about the time settings when you enter a location.
-`Keys` | The keyboard/controller/mouse bindings used to control the flow of time. See [available keys](https://stardewvalleywiki.com/Modding:Key_bindings#Available_bindings). Set a key to `null` to disable it.
+`TickLengthsByLocation` | The number of seconds per 10-game-minutes (or `null` to freeze time) for each location. You can use location names, predefined areas (`DeepWoods`, `Mine`, `SkullCavern`, `VolcanoDungeon`), or location types (`Indoors` or `Outdoors`).
+`EnableOnFestivalDays` | Whether to change tick length on festival days. Default true.
+`FreezeTimeAt` | The time at which to freeze time everywhere (or `null` to disable this). This should be 24-hour military time (e.g. 800 for 8am, 1600 for 8pm, etc). (Be careful the number doesn't start with a zero, due to a bug in the underlying parser.) Defaults to disabled.
+`LocationNotify` | Whether to show a message about the time settings when you enter a location. Default false.
+`Keys` | The keyboard/controller/mouse bindings used to control the flow of time. See [available keys](https://stardewvalleywiki.com/Modding:Key_bindings#Available_bindings). Set a key to `"None"` (including the quotes) to disable it.
 
 ## Compatibility
-* Works with Stardew Valley 1.3 on Linux/Mac/Windows.
-* Works in single-player, and in multiplayer if you're the main player. (The mod will disable itself if you're not the main player, so it's safe to keep installed.)
+* Works with Stardew Valley 1.5 on Linux/Mac/Windows.
+* Works in single-player, multiplayer, and split-screen mode. In multiplayer you must be the main player. (The mod will disable itself if you're not the main player, so it's safe to keep installed.)
 * No known mod conflicts.
 
 ## See also
 * [Release notes](release-notes.md)
 * [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/169)
-* [Discussion thread](https://community.playstarbound.com/threads/storm-and-smapi-timespeed-mod-configurable-day-lengths.107876/)

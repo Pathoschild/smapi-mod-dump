@@ -26,7 +26,7 @@
 
 	"menu.config.header.general": "Общее",
 	"menu.config.label.mod.status.position": "Расположение статуса мода",
-	"menu.config.label.enable.auto.pause.fishing": "Включить авто-паузу во время рыбалки",
+	"menu.config.label.auto.pause.fishing": "Включить авто-паузу во время рыбалки",
 	"menu.config.label.pause.fishing.time": "Пауза во время рыбалки",
 
 	"menu.config.header.fishing.rod": "Рыбная удочка",

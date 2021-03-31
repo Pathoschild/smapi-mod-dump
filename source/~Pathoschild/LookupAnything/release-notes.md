@@ -9,14 +9,36 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.34
+Released 27 March 2021.
+
+* Improved tailoring recipes in item lookups:
+  * Added reverse lookup (i.e. see tailoring recipes which produce the current item).
+  * Added full ingredient list for tailoring recipes.
+  * Tailoring recipes are now faded if you haven't discovered them yet.
+  * The produced item's icon now reflects the dye effect of the spool item.
+  * Fixed tailoring recipes shown that aren't actually accessible in-game due to higher-priority recipes.
+* You can now look up...
+  * items in the tailoring UI's spool and output slots;
+  * disabled items in the tailoring UI's inventory box.
+* Fixed torches on fences counted as owned 93 times due to a game quirk.
+* Fixed compatibility with [unofficial 64-bit mode](https://stardewvalleywiki.com/Modding:Migrate_to_64-bit_on_Windows).
+
+## 1.33
+Released 07 March 2021.
+
 * Improved item recipes field:
+  * Overhauled recipe layout (in collaboration with cofiem) to be more consistent and better handle long recipes.
   * Added recipes which create the item (thanks to cofiem!).
   * Added building construction recipes (thanks to cofiem!).
-  * Revamped recipe layout (in collaboration with cofiem).
-* Added quests and special orders to 'needed for' field (thanks to cofiem!).
-* Fixed some cooking/crafting recipes not shown in some cases.
-* Fixed monster lookup drop probability under 1% chance shown as 0%.
+  * Fixed the pickled ginger recipe shown as 'pickles'.
+  * Fixed some cooking/crafting recipes not shown in some cases.
+  * Fixed error when showing recipes from a broken machine.
+* You can now look up...
+  * unknown recipes from the cooking UI.
+  * player inventory from the shop UI.
+* Added quests and special orders to the item 'needed for' field (thanks to cofiem!).
+* Fixed monster lookup drop probabilities under 1% chance shown as 0%.
 * Fixed island shrine puzzle lookup showing untranslated text for some languages.
 * Improved translations. Thanks to horizon98 and mcBegins2Snow (updated Chinese), psychochicken80 (updated German), wally232 (updated Korean), and zNatural (updated Spanish)!
 

@@ -7,6 +7,12 @@ for queries and analysis.**
 ----
 
 # Release notes
+## 1.4.4
+Released 26 March 2021 for SMAPI 3.9.5 or later. Updated by Pathoschild.
+
+* Moved `data.json` into the conventional `assets` folder.
+* Fixed compatibility with [unofficial 64-bit mode](https://stardewvalleywiki.com/Modding:Migrate_to_64-bit_on_Windows).
+
 ## 1.4.3
 Released 26 November 2019 for SMAPI 3.0 or later. Updated by Pathoschild.
 

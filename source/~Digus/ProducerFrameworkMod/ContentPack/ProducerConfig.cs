@@ -23,11 +23,13 @@ namespace ProducerFrameworkMod.ContentPack
         public string ModUniqueID;
         public List<string> OverrideMod = new List<string>();
         public string ProducerName;
+        public List<string> AdditionalProducerNames = new List<string>();
         public bool AlternateFrameProducing;
         public bool AlternateFrameWhenReady;
         public bool DisableBouncingAnimationWhileWorking;
         public NoInputStartMode? NoInputStartMode;
         public Dictionary<StardewStats, string> IncrementStatsOnOutput;
+        public Dictionary<string, string> IncrementStatsLabelOnOutput;
         public bool MultipleStatsIncrement;
         public LightSourceConfig LightSource;
         public WorkingTime WorkingTime;
@@ -41,6 +43,7 @@ namespace ProducerFrameworkMod.ContentPack
         public ProducerConfig()
         {
             IncrementStatsOnOutput = new Dictionary<StardewStats, string>();
+            IncrementStatsLabelOnOutput = new Dictionary<string, string>();
         }
 
         public ProducerConfig(string producerName, bool alternateFrameProducing = false, bool alternateFrameWhenReady = false) :
@@ -155,6 +158,21 @@ namespace ProducerFrameworkMod.ContentPack
         public void IncrementStats(Item output)
         {
             foreach (KeyValuePair<StardewStats, string> keyValuePair in this.IncrementStatsOnOutput)
+            {
+                if (keyValuePair.Value == null
+                    || keyValuePair.Value == output.Name
+                    || keyValuePair.Value == output.ParentSheetIndex.ToString()
+                    || keyValuePair.Value == output.Category.ToString()
+                    || output.HasContextTag(keyValuePair.Value))
+                {
+                    StatsController.IncrementStardewStats(keyValuePair.Key, output.Stack);
+                    if (!this.MultipleStatsIncrement)
+                    {
+                        break;
+                    }
+                }
+            }
+            foreach (KeyValuePair<string, string> keyValuePair in this.IncrementStatsLabelOnOutput)
             {
                 if (keyValuePair.Value == null
                     || keyValuePair.Value == output.Name

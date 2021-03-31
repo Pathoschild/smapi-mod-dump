@@ -25,9 +25,11 @@ mods:
    Time Freeze
 
 latest commit:
-   commit 5ded80f371633b45eba024be04a95a153abbb642
-   Author: JoshuaNavarro <janavarro95@gmail.com>
-   Date:   Sat Apr 6 16:00:46 2019 -0700
+   commit ad30dc6b917a18c4cb763fb608cc314bd68b6774
+   Author: Joshua Navarro <janavarro95@users.noreply.github.com>
+   Date:   Tue Mar 30 17:22:26 2021 -0700
    
-       Tested content packs and got them working properly.
+       Create LICENSE file.
+       
+       This repository was basically already under a "do whatever you want" agreement written in some places, but now it has a legal license so that any and all work can continue with it without worry.
    

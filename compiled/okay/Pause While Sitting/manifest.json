@@ -1,0 +1,10 @@
+{
+  "Name": "Pause While Sitting",
+  "Author": "heyseth",
+  "Version": "1.0.0",
+  "Description": "Pauses time while the player is sitting",
+  "UniqueID": "heyseth.sitpause",
+  "EntryDll": "heysethSitPause.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8295" ]
+}

@@ -34,7 +34,7 @@
  
 	"menu.config.header.general": "Geral",
 	"menu.config.label.mod.status.position": "Status de posição do mod",
-	"menu.config.label.enable.auto.pause.fishing": "Ativar pausa automática ao pescar",
+	"menu.config.label.auto.pause.fishing": "Ativar pausa automática ao pescar",
 	"menu.config.label.pause.fishing.time": "Tempo de pausa ao pescar",
  
 	"menu.config.header.fishing.rod": "Vara de pesca",

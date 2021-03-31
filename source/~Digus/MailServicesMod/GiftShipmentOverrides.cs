@@ -28,7 +28,15 @@ namespace MailServicesMod
             {
                 if (!DataLoader.ModConfig.DisableGiftService && Game1.player.mailbox.Count == 0 && Game1.player.ActiveObject != null && Game1.player.ActiveObject.canBeGivenAsGift())
                 {
-                    return GiftShipmentController.CreateResponsePage(0);
+                    if (Game1.player.Money >= DataLoader.ModConfig.GiftServiceFee)
+                    {
+                        return GiftShipmentController.CreateResponsePage(0);
+                    }
+                    else
+                    {
+                        Game1.drawObjectDialogue(DataLoader.I18N.Get("Shipment.Gift.NoMoney"));
+                        return false;
+                    }
                 }
             }
             catch (Exception e)

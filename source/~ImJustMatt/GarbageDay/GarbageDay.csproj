@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>GarbageDay</AssemblyName>
+        <RootNamespace>ImJustMatt.GarbageDay</RootNamespace>
+        <Version>2.0.1-beta.1</Version>
+        <TargetFramework>net452</TargetFramework>
+        <EnableHarmony>true</EnableHarmony>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ExpandedStorage\ExpandedStorage.csproj">
+            <Private>False</Private>
+        </ProjectReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="BigCraftables\Garbage Can\big-craftable.json" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="BigCraftables\Garbage Can\big-craftable.png" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="expanded-storage.json" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="content-pack.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <Import Project="..\build\common.targets" />
+    <Import Project="..\Common\Common.projitems" Label="Shared" />
+</Project>

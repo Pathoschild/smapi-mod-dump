@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
-
 namespace Su226.AnySave {
   class PathData {
     public string map;
@@ -34,10 +32,7 @@ namespace Su226.AnySave {
     public bool swimSuit;
     public string horse;
   }
-  class SaveData {
-    public IDictionary<string, CharacterData> character;
-    public IDictionary<long, FarmerData> farmer;
-    public IDictionary<long, string[]> ship;
+  class TimeData {
     public int time;
   }
 }

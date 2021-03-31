@@ -64,7 +64,8 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <param name="machines">The machines in the group.</param>
         /// <param name="containers">The containers in the group.</param>
         /// <param name="tiles">The tiles comprising the group.</param>
-        public MachineGroup(string locationKey, IEnumerable<IMachine> machines, IEnumerable<IContainer> containers, IEnumerable<Vector2> tiles)
+        /// <param name="buildStorage">Build a storage manager for the given containers.</param>
+        public MachineGroup(string locationKey, IEnumerable<IMachine> machines, IEnumerable<IContainer> containers, IEnumerable<Vector2> tiles, Func<IContainer[], StorageManager> buildStorage)
         {
             this.LocationKey = locationKey;
             this.Machines = machines.ToArray();
@@ -72,7 +73,7 @@ namespace Pathoschild.Stardew.Automate.Framework
             this.Tiles = tiles.ToArray();
 
             this.IsJunimoGroup = this.Containers.Any(p => p.IsJunimoChest);
-            this.StorageManager = new StorageManager(this.Containers);
+            this.StorageManager = buildStorage(this.Containers);
         }
 
         /// <inheritdoc />

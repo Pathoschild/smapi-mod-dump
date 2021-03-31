@@ -42,13 +42,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgerController.cs" />
     <Compile Include="CaskOverrides.cs" />
+    <Compile Include="CustomAger.cs" />
     <Compile Include="DataLoader.cs" />
+    <Compile Include="integrations\GenericModConfigMenuApi.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="CustomCaskModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="contentPackTemplate\AgersData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="contentPackTemplate\CaskData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

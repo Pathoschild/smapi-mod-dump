@@ -9,9 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Kisekae.Framework;
 using Kisekae.Config;
 using Microsoft.Xna.Framework;
@@ -78,8 +75,8 @@ namespace Kisekae {
             m_loadMenuPatcher.init();
 
             // hook events
-            InputEvents.ButtonPressed += Events_ButtonPressed;
-            SaveEvents.AfterLoad += Events_AfterLoad;
+            helper.Events.Input.ButtonPressed  += OnButtonPressed;
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         }
 
         /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
@@ -104,16 +101,16 @@ namespace Kisekae {
         /*********
         ** Private methods
         *********/
-        /// <summary>Open the customisation menu if the player activated the dresser.</summary>
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void Events_ButtonPressed(object sender, EventArgsInput e) {
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
             if (!m_isLoaded) {
                 return;
             }
 
-            // check if current input activate the dresser
-            if (e.IsActionButton) {
+            // open the customisation menu if the player activated the dresser
+            if (e.Button.IsActionButton()) {
                 if (Game1.player.UsingTool || Game1.pickingTool || Game1.menuUp || (Game1.eventUp && !Game1.currentLocation.currentEvent.playerControlSequence) || Game1.nameSelectUp || Game1.numberOfSelectedItems != -1 || Game1.fadeToBlack || Game1.activeClickableMenu != null) {
                     return;
                 }
@@ -128,7 +125,7 @@ namespace Kisekae {
                 if ((propertyValue != null && propertyValue == "WizardShrine")) {
                     Game1.currentLocation.afterQuestion = Answer_WizardShrine;
                     Game1.currentLocation.createQuestionDialogue(Game1.content.LoadString("Strings\\Locations:WizardTower_WizardShrine").Replace('\n', '^'), Game1.currentLocation.createYesNoResponses(), "WizardShrine");
-                    e.SuppressButton();
+                    this.Helper.Input.Suppress(e.Button);
                     return;
                 }
 
@@ -143,7 +140,7 @@ namespace Kisekae {
             // open menu
             Game1.playSound("bigDeSelect");
             OpenMenu();
-            e.SuppressButton();
+            this.Helper.Input.Suppress(e.Button);
         }
 
         /// <summary>Process the answer in front of Wizard Shrine.</summary>
@@ -163,12 +160,12 @@ namespace Kisekae {
             }
         }
 
-        /// <summary>Patch player after load.</summary>
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void Events_AfterLoad(object sender, EventArgs e) {
+        private void OnSaveLoaded(object sender, EventArgs e) {
             // load config
-            m_playerConfig = this.Helper.ReadJsonFile<LocalConfig>(LocalConfig.s_perSaveConfigPath) ?? new LocalConfig();
+            m_playerConfig = this.Helper.Data.ReadJsonFile<LocalConfig>(LocalConfig.s_perSaveConfigPath) ?? new LocalConfig();
             // patch player textures
             m_farmerPatcher.m_farmer = Game1.player;
             m_farmerPatcher.m_config = m_playerConfig;

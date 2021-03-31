@@ -560,7 +560,7 @@ namespace ShowBirthdays
 				for (int i = 0; i < npcs.Count; i++)
 				{
 					// This should filter out NPCs you haven't met yet, maybe...
-					if (npcs[i].CanSocialize || !hideUnmet)
+					if (ShowNPC(npcs[i], hideUnmet))
 					{
 						list.Add(npcs[i]);
 					}
@@ -573,6 +573,18 @@ namespace ShowBirthdays
 			public void AddNPC(NPC n)
 			{
 				npcs.Add(n);
+			}
+
+
+			internal bool ShowNPC(NPC npc, bool hideUnmet)
+			{
+				if (!hideUnmet)
+					return true;
+				if (npc.CanSocialize)
+					return true;
+				else if (Game1.player.friendshipData.ContainsKey(npc.Name))
+					return true;
+				return false;
 			}
 
 

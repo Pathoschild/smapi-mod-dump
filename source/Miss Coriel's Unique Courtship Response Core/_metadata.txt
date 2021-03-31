@@ -1,0 +1,13 @@
+url:
+   https://github.com/MissCoriel/UniqueCourtshipResponseCore.git
+
+mods:
+   Miss Coriel's Unique Courtship Response Core
+
+latest commit:
+   commit a539f082d573e5f3bca52de3f9927c936a20d02f
+   Author: Omega Terra Coriel <44127678+MissCoriel@users.noreply.github.com>
+   Date:   Sun Mar 21 09:49:35 2021 -0500
+   
+       Content Patcher mod made for Vanilla NPCs
+   

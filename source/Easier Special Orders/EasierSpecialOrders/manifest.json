@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TheMightyAmondee/EasierSpecialOrders
+**
+*************************************************/
+
+{
+  "Name": "Easier Special Orders",
+  "Author": "TheMightyAmondee",
+  "Description": "Removes collection requirements from two part special orders, lowers requirements for Qi challenges.",
+  "Version": "1.0.0",
+  "UniqueID": "TheMightyAmondee.EasierSpecialOrders",
+  "EntryDll": "EasierSpecialOrders.dll",
+  "UpdateKeys": ["Nexus:8432"]
+}

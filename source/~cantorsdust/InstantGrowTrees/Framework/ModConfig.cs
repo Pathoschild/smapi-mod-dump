@@ -17,9 +17,9 @@ namespace InstantGrowTrees.Framework
         ** Accessors
         *********/
         /// <summary>The configuration for fruit trees.</summary>
-        public FruitTreeConfig FruitTrees { get; set; } = new FruitTreeConfig();
+        public FruitTreeConfig FruitTrees { get; set; } = new();
 
         /// <summary>The configuration for non-fruit trees.</summary>
-        public RegularTreeConfig NonFruitTrees { get; set; } = new RegularTreeConfig();
+        public RegularTreeConfig NonFruitTrees { get; set; } = new();
     }
 }

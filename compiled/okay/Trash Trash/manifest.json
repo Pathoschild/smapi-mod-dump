@@ -1,7 +1,7 @@
 {
   "Name": "TrashTrash",
   "Author": "Jaredlll08",
-  "Version": "2.0.2",
+  "Version": "2.0.3",
   "Description": "Makes it easy to quickly trash 'Trash' quality items without opening the inventory!",
   "UniqueID": "BlameJared.TrashTrash",
   "EntryDll": "TrashTrash.dll",

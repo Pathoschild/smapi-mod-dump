@@ -30,15 +30,14 @@ namespace StardewHack.Library
             }
             
             // Check incompatible mods.
-            CheckIncompatible(helper, "bcmpinc.AlwaysScrollMap",    new SemanticVersion(3,0,0));
-            CheckIncompatible(helper, "bcmpinc.CraftCounter",       new SemanticVersion(3,0,0));
+            CheckIncompatible(helper, "bcmpinc.AlwaysScrollMap",    new SemanticVersion(4,0,0));
             CheckIncompatible(helper, "bcmpinc.FixAnimalTools",     new SemanticVersion(3,0,0));
-            CheckIncompatible(helper, "bcmpinc.GrassGrowth",        new SemanticVersion(3,0,0));
-            CheckIncompatible(helper, "bcmpinc.HarvestWithScythe",  new SemanticVersion(3,0,0));
-            CheckIncompatible(helper, "bcmpinc.MovementSpeed",      new SemanticVersion(3,0,0));
-            CheckIncompatible(helper, "bcmpinc.TilledSoilDecay",    new SemanticVersion(3,0,0));
-            CheckIncompatible(helper, "bcmpinc.TreeSpread",         new SemanticVersion(3,0,0));
-            CheckIncompatible(helper, "bcmpinc.WearMoreRings",      new SemanticVersion(3,0,0));
+            CheckIncompatible(helper, "bcmpinc.GrassGrowth",        new SemanticVersion(4,0,0));
+            CheckIncompatible(helper, "bcmpinc.HarvestWithScythe",  new SemanticVersion(4,0,0));
+            CheckIncompatible(helper, "bcmpinc.MovementSpeed",      new SemanticVersion(4,0,0));
+            CheckIncompatible(helper, "bcmpinc.TilledSoilDecay",    new SemanticVersion(4,0,0));
+            CheckIncompatible(helper, "bcmpinc.TreeSpread",         new SemanticVersion(4,0,0));
+            CheckIncompatible(helper, "bcmpinc.WearMoreRings",      new SemanticVersion(4,0,0));
             CheckIncompatible(helper, "spacechase0.BiggerBackpack", new SemanticVersion(3,0,0));
             
             // Register event to show warning in case some mod's patches failed to apply cleanly.

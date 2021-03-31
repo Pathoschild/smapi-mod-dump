@@ -1,6 +1,0 @@
-﻿{
-"MachinesWhitelist": ["Mayonnaise Machine", "Bee House", "Cheese Press", "Loom", "Oil Maker", "Furnace", "Kiln", "Crystalarium", "Recycling Machine", "Seed Maker", "Slime Incubator", "Ostrich Incubator", "Slime Egg-Press", "Worm Bin", "Bone Mill", "Geode Crusher", "Mini-Jukebox", "Farm Computer", "Hopper", "Alembic", "Butter Churn", "Dehydrator", "Drying Rack", "Espresso Machine", "Extruder", "Grinder", "Ice Cream Machine", "Infuser", "Juicer", "Pepper Blender", "Smoker", "Soap Press", "Sorbet Machine", "Still", "Pulveriser", "Gem Polisher", "Mineral Washer", "Rock Smasher", "Rehydrator", "Cloche", "Auto Miner", "Distillery", "Preserves Press", "Baker's Oven", "Baker's Mixer", "Soda", "Carbonator", "Maker", "Machine" ],
-"KegWhitelist": ["Preserves Jar", "Keg", "Cask", "Tapper", "Heavy Tapper", "Foreign Cask", "Glass Jar", "Yogurt Jar", "Wax Barrel", "Vinegar Cask"]
-
-
-}

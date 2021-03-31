@@ -4,13 +4,16 @@
     "MoneyLossCap": 500,
     "MoneytoRestorePercentage": 0.95,
     "EnergytoRestorePercentage": 0.1,
-    "HealthtoRestorePercentage": 0.5,
-    "WakeupNextDayinClinic": false,
-    "FriendshipPenalty": 0
+    "HealthtoRestorePercentage": 0.5
   },
   "PassOutPenalty": {
     "MoneyLossCap": 500,
     "MoneytoRestorePercentage": 0.95,
     "EnergytoRestorePercentage": 0.5
+  },
+  "OtherPenalties": {
+    "WakeupNextDayinClinic": false,
+    "HarveyFriendshipChange": 0,
+    "MaruFriendshipChange": 0
   }
 }

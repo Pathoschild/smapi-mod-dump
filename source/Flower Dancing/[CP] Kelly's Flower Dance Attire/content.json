@@ -50,9 +50,21 @@
 		},
 		
 		{
-			"LogName": "Flower Dance - Girl - Arms - Walk - Include",
+			"LogName": "Flower Dance - Girl - Arms - Dance - Include",
 			"Action": "Include",
 			"FromFile": "data/girl/arms_dance_girl.json"
+		},
+		
+		{
+			"LogName": "Flower Dance - Girl - Bald Arms - Walk - Include",
+			"Action": "Include",
+			"FromFile": "data/girl/arms_bald_walk_girl.json"
+		},
+		
+		{
+			"LogName": "Flower Dance - Girl - Bald Arms - Dance - Include",
+			"Action": "Include",
+			"FromFile": "data/girl/arms_bald_dance_girl.json"
 		},
 		
 		{
@@ -90,6 +102,18 @@
 			"LogName": "Flower Dance - Guy - Arms - Dance - Include",
 			"Action": "Include",
 			"FromFile": "data/guy/arms_dance_guy.json"
+		},
+		
+		{
+			"LogName": "Flower Dance - Guy - Bald Arms - Walk - Include",
+			"Action": "Include",
+			"FromFile": "data/guy/arms_bald_walk_guy.json"
+		},
+		
+		{
+			"LogName": "Flower Dance - Guy - Bald Arms - Dance - Include",
+			"Action": "Include",
+			"FromFile": "data/guy/arms_bald_dance_guy.json"
 		},
 		
 		{

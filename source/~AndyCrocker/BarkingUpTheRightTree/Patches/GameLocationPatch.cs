@@ -16,14 +16,14 @@ using StardewValley.TerrainFeatures;
 
 namespace BarkingUpTheRightTree.Patches
 {
-    /// <summary>Contains patches for patching game code in the <see cref="StardewValley.GameLocation"/> class.</summary>
+    /// <summary>Contains patches for patching game code in the <see cref="GameLocation"/> class.</summary>
     internal static class GameLocationPatch
     {
         /*********
         ** Internal Methods
         *********/
-        /// <summary>The prefix for the <see cref="StardewValley.GameLocation.loadObjects()"/> method.</summary>
-        /// <param name="__instance">The <see cref="StardewValley.GameLocation"/> instance being patched.</param>
+        /// <summary>The prefix for the <see cref="GameLocation.loadObjects()"/> method.</summary>
+        /// <param name="__instance">The <see cref="GameLocation"/> instance being patched.</param>
         /// <returns><see langword="true"/>, meaning the original method will get ran.</returns>
         /// <remarks>This is used to load any custom trees that have been placed using tile data on a map.</remarks>
         internal static bool LoadObjectsPrefix(GameLocation __instance)

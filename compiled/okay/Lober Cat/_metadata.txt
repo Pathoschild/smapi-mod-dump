@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8219
+IDs: codyflagstaff.lobercat
+update keys: Nexus:8219

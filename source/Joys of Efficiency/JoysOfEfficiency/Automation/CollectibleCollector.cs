@@ -9,10 +9,13 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
 using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 using SVObject = StardewValley.Object;
 
 namespace JoysOfEfficiency.Automation
@@ -28,6 +31,12 @@ namespace JoysOfEfficiency.Automation
             foreach (SVObject obj in Util.GetObjectsWithin<SVObject>(reach))
                 if (obj.IsSpawnedObject || obj.isAnimalProduct())
                     CollectObj(location, obj);
+
+            Hoe hoe = Util.FindToolFromInventory<Hoe>(true);
+            if (hoe == null) return;
+            foreach (KeyValuePair<Vector2, HoeDirt> kv in Util.GetFeaturesWithin<HoeDirt>(reach))
+                if (IsGinger(kv.Value.crop))
+                    CollectGinger(location, kv.Key, kv.Value);
         }
         private static void CollectObj(GameLocation loc, SVObject obj)
         {
@@ -95,6 +104,27 @@ namespace JoysOfEfficiency.Automation
                 return;
             }
             obj.Quality = quality;
+        }
+
+        private static bool IsGinger(Crop crop)
+        {
+            return crop != null && crop.forageCrop && crop.whichForageCrop == Crop.forageCrop_ginger;
+        }
+
+        private static void CollectGinger(GameLocation loc, Vector2 pos, HoeDirt dirt)
+        {
+            Farmer who = Game1.player;
+            float stamina = 2 - who.FarmingLevel * 0.1f;
+            if (who.Stamina < stamina)
+            {
+                return;
+            }
+
+            if (dirt.crop.hitWithHoe((int)pos.X, (int)pos.Y, loc,dirt))
+            {
+                who.Stamina -= stamina;
+                dirt.destroyCrop(pos, true, loc);
+            }
         }
     }
 }

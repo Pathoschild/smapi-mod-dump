@@ -44,7 +44,7 @@
 			"Action": "EditImage",
 			"Target": "Characters/Farmer/farmer_girl_base",
 			"FromFile": "assets//farmer_girl_base/arms/arms_{{Female-Base-Attire}}_walking_3.png",
-			"ToArea": { "X": 160, "Y": 0, "Width": 16, "Height": 32 },
+			"ToArea": { "X": 128, "Y": 0, "Width": 16, "Height": 32 },
 			"Update": "OnLocationChange",
 			"When":
 			{
@@ -58,7 +58,7 @@
 			"Action": "EditImage",
 			"Target": "Characters/Farmer/farmer_girl_base",
 			"FromFile": "assets//farmer_girl_base/arms/arms_{{Female-Base-Attire}}_walking_4.png",
-			"ToArea": { "X": 176, "Y": 32, "Width": 16, "Height": 32 },
+			"ToArea": { "X": 96, "Y": 32, "Width": 16, "Height": 32 },
 			"Update": "OnLocationChange",
 			"When":
 			{
@@ -72,7 +72,7 @@
 			"Action": "EditImage",
 			"Target": "Characters/Farmer/farmer_girl_base",
 			"FromFile": "assets//farmer_girl_base/arms/arms_{{Female-Base-Attire}}_walking_5.png",
-			"ToArea": { "X": 96, "Y": 512, "Width": 16, "Height": 32 },
+			"ToArea": { "X": 112, "Y": 32, "Width": 16, "Height": 32 },
 			"Update": "OnLocationChange",
 			"When":
 			{

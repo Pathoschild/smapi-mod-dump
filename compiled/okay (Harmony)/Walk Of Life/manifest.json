@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Walk Of Life",
+	"Author": "VonLoewe",
+	"Version": "0.5.0",
+	"Description": "An awesome overhaul of Stardew professions.",
+	"UniqueID": "thelion.AwesomeProfessions",
+	"EntryDll": "AwesomeProfessions.dll",
+	"MinimumApiVersion": "3.8.0",
+	"UpdateKeys": [ "Nexus:8111" ]
+}

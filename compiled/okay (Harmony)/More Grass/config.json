@@ -1,4 +1,5 @@
 {
+  "CanAnimalsEatGrass": true,
   "CanGrassLiveInSpring": true,
   "CanGrassLiveInSummer": true,
   "CanGrassLiveInFall": true,

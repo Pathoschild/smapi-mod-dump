@@ -75,22 +75,15 @@ namespace LoveOfCooking.Core.HarmonyPatches
 				// TODO: SYSTEM: Finish integrating cooking skill profession bonuses into cooking minus new menu
 
 				// Apply extra portion bonuses to the amount cooked
-				if (ModEntry.CookingSkillApi.HasProfession(GameObjects.ICookingSkillAPI.Profession.ExtraPortion)
-					&& Game1.random.NextDouble() * 10 < GameObjects.CookingSkill.ExtraPortionChance)
+				if (ModEntry.CookingSkillApi.HasProfession(GameObjects.ICookingSkillAPI.Profession.ExtraPortion) && ModEntry.CookingSkillApi.RollForExtraPortion())
 				{
 					//qualityStacks[0] += numPerCraft;
 				}
 
-				// Apply sale price bonuses to the cooked items
-				if (ModEntry.CookingSkillApi.HasProfession(GameObjects.ICookingSkillAPI.Profession.SaleValue))
-				{
-					//item.Price += item.Price * CookingSkill.SaleValue / 100;
-				}
-
 				// Update tracked stats
-				if (!ModEntry.FoodCookedToday.ContainsKey(item.Name))
-					ModEntry.FoodCookedToday[item.Name] = 0;
-				ModEntry.FoodCookedToday[item.Name] += item.Stack;
+				if (!ModEntry.Instance.States.Value.FoodCookedToday.ContainsKey(item.Name))
+					ModEntry.Instance.States.Value.FoodCookedToday[item.Name] = 0;
+				ModEntry.Instance.States.Value.FoodCookedToday[item.Name] += item.Stack;
 
 				// Add cooking skill experience
 				ModEntry.CookingSkillApi.CalculateExperienceGainedFromCookingItem(

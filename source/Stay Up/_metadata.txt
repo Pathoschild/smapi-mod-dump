@@ -5,9 +5,9 @@ mods:
    Stay Up
 
 latest commit:
-   commit b6b6e95519a057c6bba7ad6fabcb8f12e157a5e8
+   commit 504b698a24a462710888d4a15176faef52b2819d
    Author: su226 <1368981939@qq.com>
-   Date:   Mon Feb 1 19:20:12 2021 +0800
+   Date:   Tue Mar 30 14:55:02 2021 +0800
    
-       [StayUp] Bump version to 1.1.2
+       [FieldRing] Initial version.
    

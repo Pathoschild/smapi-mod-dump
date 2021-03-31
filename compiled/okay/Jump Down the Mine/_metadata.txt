@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8357
+IDs: flowoeB.JumpDownTheMine
+update keys: Nexus:8357

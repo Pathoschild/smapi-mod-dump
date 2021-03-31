@@ -23,6 +23,9 @@
     "CurrentTaxBalance": "Pending tax amount",
 
     "NextScheduledTaxText": "Next scheduled tax:",
-    "NoBillsForYouText": "There's no bills for you right now :)"
+    "NoBillsForYouText": "There's no bills for you right now :)",
+
+    ///Options
+    "ChkTaxAfterFirstYear": "Fees occur only after the first year"
 
 }

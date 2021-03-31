@@ -135,7 +135,7 @@ namespace SelfServiceShop
                     if (_config.IceCreamStand &&
                         (_config.ShopsAlwaysOpen || _config.IceCreamInAllSeasons || SDate.Now().Season == "summer"))
                     {
-                        var d = new Dictionary<Item, int[]>
+                        var d = new Dictionary<ISalable, int[]>
                         {
                             {new Object(233, 1), new[] {250, int.MaxValue}}
                         };

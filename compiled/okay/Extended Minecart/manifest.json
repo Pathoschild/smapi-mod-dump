@@ -1,7 +1,7 @@
 {
   "Name": "Extended Minecart",
   "Author": "Entoarox",
-  "Version": "1.12.0",
+  "Version": "1.13.0",
   "Description": "More destinations for your minecart needs!",
   "UniqueID": "Entoarox.ExtendedMinecart",
   "EntryDll": "ExtendedMinecart.dll",
@@ -10,7 +10,7 @@
   "Dependencies": [
     {
         "UniqueID": "Entoarox.Utilities",
-        "MinimumVersion": "0.2.0"
+        "MinimumVersion": "0.3.0"
     }
   ]
 }

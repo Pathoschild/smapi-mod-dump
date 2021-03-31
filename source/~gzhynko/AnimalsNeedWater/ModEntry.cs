@@ -439,11 +439,9 @@ namespace AnimalsNeedWater
             }
             
             ModData.FullAnimals = new List<FarmAnimal>();
-
-            List<object> nextDayAndSeasonList = GetNextDayAndSeason(Game1.dayOfMonth, Game1.currentSeason);
             
-            // Check if tomorrow is a festival day. If not, empty the troughs.
-            if (!Utility.isFestivalDay((int)nextDayAndSeasonList[0], (string)nextDayAndSeasonList[1]))
+            // Check whether there is a festival today. If not, empty the troughs.
+            if (!Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason))
             {
                 EmptyWaterTroughs();
             }
@@ -454,6 +452,17 @@ namespace AnimalsNeedWater
                     if (building is Coop)
                     {
                         ModData.CoopsWithWateredTrough.Add(building.nameOfIndoors.ToLower());
+
+                        switch (building.nameOfIndoorsWithoutUnique.ToLower())
+                        {
+                            case "coop":
+                                ChangeCoopTexture(building, false);
+                                break;
+                            
+                            case "coop2":
+                                ChangeBigCoopTexture(building, false);
+                                break;
+                        }
                     }
                     else if (building is Barn)
                     {
@@ -775,29 +784,7 @@ namespace AnimalsNeedWater
 
             return newSeason;
         }
-        
-        private List<object> GetNextDayAndSeason(int currDay, string currSeason)
-        {
-            if (currDay + 1 <= 28)
-            {
-                List<object> returnList = new List<object>
-                {
-                    currDay + 1,
-                    currSeason
-                };
-                return returnList;
-            }
-            else
-            {
-                List<object> returnList = new List<object>
-                {
-                    1,
-                    NextSeason(currSeason)
-                };
-                return returnList;
-            }
-        }
-        
+
         #endregion
     }
 }

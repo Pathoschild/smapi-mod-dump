@@ -143,6 +143,7 @@ namespace ProducerFrameworkMod.Api
                     outputRuleMap["OutputTranslationKey"] = outputConfig.OutputTranslationKey;
                     outputRuleMap["PreserveType"] = outputConfig.PreserveType;
                     outputRuleMap["KeepInputParentIndex"] = outputConfig.KeepInputParentIndex;
+                    outputRuleMap["ReplaceWithInputParentIndex"] = outputConfig.ReplaceWithInputParentIndex;
                     outputRuleMap["RequiredInputQuality"] = outputConfig.RequiredInputQuality;
                     outputRuleMap["RequiredSeason"] = outputConfig.RequiredSeason;
                     outputRuleMap["RequiredWeather"] = outputConfig.RequiredWeather?.Select(w=> w.ToString()).ToList();

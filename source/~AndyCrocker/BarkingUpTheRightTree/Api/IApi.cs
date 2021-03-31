@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using BarkingUpTheRightTree.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace BarkingUpTheRightTree
         /// <param name="shakingProducts">The items the tree can drop whenever it's shaken.</param>
         /// <param name="includeIfModIsPresent">The tree will only get loaded if atleast one of the listed mods are present.</param>
         /// <param name="excludeIfModIsPresent">The tree will only get loaded if none of the listed mods are present.</param>
-        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/> tool on it.</param>
+        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkRemover"/> tool on it.</param>
         /// <param name="modName">The name of the mod adding the trees (this is only used for logging the name of tree conflicts).</param>
         /// <param name="unfertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's unfertilised.</param>
         /// <param name="fertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's fertilised.</param>
@@ -63,7 +64,7 @@ namespace BarkingUpTheRightTree
         /// <param name="shakingProducts">The items the tree can drop whenever it's shaken.</param>
         /// <param name="includeIfModIsPresent">The tree will only get loaded if atleast one of the listed mods are present.</param>
         /// <param name="excludeIfModIsPresent">The tree will only get loaded if none of the listed mods are present.</param>
-        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/> tool on it.</param>
+        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkRemover"/> tool on it.</param>
         /// <param name="unfertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's unfertilised.</param>
         /// <param name="fertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's fertilised.</param>
         /// <returns><see langword="true"/> if data was successfully retrieved; otherwise, <see langword="false"/>.</returns>
@@ -82,7 +83,7 @@ namespace BarkingUpTheRightTree
         /// <param name="shakingProducts">The items the tree can drop whenever it's shaken.</param>
         /// <param name="includeIfModIsPresent">The tree will only get loaded if atleast one of the listed mods are present.</param>
         /// <param name="excludeIfModIsPresent">The tree will only get loaded if none of the listed mods are present.</param>
-        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/> tool on it.</param>
+        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkRemover"/> tool on it.</param>
         /// <param name="unfertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's unfertilised.</param>
         /// <param name="fertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's fertilised.</param>
         /// <returns><see langword="true"/> if data was successfully retrieved; otherwise, <see langword="false"/>.</returns>
@@ -101,7 +102,7 @@ namespace BarkingUpTheRightTree
         /// <param name="shakingProducts">The items the tree can drop whenever it's shaken.</param>
         /// <param name="includeIfModIsPresent">The tree will only get loaded if atleast one of the listed mods are present.</param>
         /// <param name="excludeIfModIsPresent">The tree will only get loaded if none of the listed mods are present.</param>
-        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/> tool on it.</param>
+        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkRemover"/> tool on it.</param>
         /// <param name="unfertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's unfertilised.</param>
         /// <param name="fertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's fertilised.</param>
         /// <returns><see langword="true"/> if data was successfully retrieved; otherwise, <see langword="false"/>.</returns>
@@ -120,7 +121,7 @@ namespace BarkingUpTheRightTree
         /// <param name="shakingProducts">The items the tree can drop whenever it's shaken.</param>
         /// <param name="includeIfModIsPresent">The tree will only get loaded if atleast one of the listed mods are present.</param>
         /// <param name="excludeIfModIsPresent">The tree will only get loaded if none of the listed mods are present.</param>
-        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/> tool on it.</param>
+        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkRemover"/> tool on it.</param>
         /// <param name="unfertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's unfertilised.</param>
         /// <param name="fertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's fertilised.</param>
         /// <returns><see langword="true"/> if data was successfully retrieved; otherwise, <see langword="false"/>.</returns>

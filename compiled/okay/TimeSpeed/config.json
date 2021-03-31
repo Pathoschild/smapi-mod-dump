@@ -3,9 +3,11 @@
   "TickLengthByLocation": {
     "Indoors": 14.0,
     "Outdoors": 7.0,
-    "Mine": 7.0
+    "Mine": 7.0,
+    "SkullCavern": 7.0,
+    "VolcanoDungeon": 7.0
   },
-  "EnableOnFestivalDays": false,
+  "EnableOnFestivalDays": true,
   "FreezeTimeAt": null,
   "LocationNotify": false,
   "Keys": {

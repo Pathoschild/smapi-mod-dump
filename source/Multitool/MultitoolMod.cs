@@ -11,18 +11,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using xTile.Dimensions;
-using xTile.ObjectModel;
-using xTile.Tiles;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley.TerrainFeatures;
-using StardewValley.Locations;
 using StardewValley;
 using MultitoolMod.Framework;
-using SObject = StardewValley.Object;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace MultitoolMod
 {
@@ -40,37 +32,44 @@ namespace MultitoolMod
         public override void Entry(IModHelper helper)
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
-            helper.Events.Input.ButtonPressed += this.onButtonPressed;
+            helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
             this.multitool = new Multitool(this);
         }
 
-        private void onButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
         {
             // ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady)
                 return;
-            if (e.Button == this.Config.InfoButton)
+
+            if (this.Config.InfoButton.JustPressed())
             {
+                multitool.cursor = e.Cursor;
                 int x = (int)e.Cursor.AbsolutePixels.X;
                 int y = (int)e.Cursor.AbsolutePixels.Y;
-                int xtile = (int)x / Game1.tileSize;
-                int ytile = (int)y / Game1.tileSize;
+                //int xtile = (int)x / Game1.tileSize;
+                //int ytile = (int)y / Game1.tileSize;
+                int xtile = (int)e.Cursor.Tile.X;
+                int ytile = (int)e.Cursor.Tile.Y;
                 GameLocation location = Game1.player.currentLocation;
-                Vector2 tileVec = new Vector2(xtile, ytile);
+                Vector2 tileVec = e.Cursor.Tile;
                 IDictionary<String, System.Object> properties = multitool.Get_Properties(x, y);
                 string formattedProperties = $"At {x}/{y} (tile {xtile}/{ytile}) found the following properties: " + multitool.Format_Properties(properties);
                 this.Monitor.Log(formattedProperties);
                 Game1.addHUDMessage(new HUDMessage(formattedProperties));
             }
-            else if (e.Button == this.Config.ToolButton)
+            else if (this.Config.ToolButton.JustPressed())
             {
+                multitool.cursor = e.Cursor;
                 int powerupLevel = 1;
                 int x = (int)e.Cursor.AbsolutePixels.X;
                 int y = (int)e.Cursor.AbsolutePixels.Y;
-                int xtile = (int)x / Game1.tileSize;
-                int ytile = (int)y / Game1.tileSize;
+                //int xtile = (int)x / Game1.tileSize;
+                //int ytile = (int)y / Game1.tileSize;
+                int xtile = (int)e.Cursor.Tile.X;
+                int ytile = (int)e.Cursor.Tile.Y;
                 GameLocation location = Game1.player.currentLocation;
-                Vector2 tileVec = new Vector2(xtile, ytile);
+                Vector2 tileVec = e.Cursor.Tile;
                 multitool.DoFunction(Game1.currentLocation, x, y, powerupLevel, Game1.player);
             }
             // else if ( e.Button == this.Config.CleanButton ){

@@ -15,6 +15,7 @@ catch legendary fish again and again.
 ## Contents
 * [Install](#install)
 * [Use](#use)
+* [Configure](#configure)
 * [Compatibility](#compatibility)
 * [See also](#see-also)
 
@@ -26,12 +27,19 @@ catch legendary fish again and again.
 ## Use
 Just install the mod and play the game. You'll be able to catch the legendary fish repeatedly.
 
+## Configure
+The mod creates a `config.json` file the first time you run it. You can open the file in a text
+editor to configure the mod:
+
+setting | effect
+:------ | :-----
+`ToggleKey` | A [keybind](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings) that toggles whether you can recatch legendary fish in-game. There's no keybind by default.
+
 ## Compatibility
-* Works with Stardew Valley 1.3 on Linux/Mac/Windows.
-* Works in single-player and multiplayer.
+* Works with Stardew Valley 1.5 on Linux/Mac/Windows.
+* Works in single-player, multiplayer, and split-screen mode.
 * No known mod conflicts.
 
 ## See also
 * [Release notes](release-notes.md)
 * [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/172)
-* [Discussion thread](https://community.playstarbound.com/threads/storm-and-smapi-recatchlegendaryfish.110140/)

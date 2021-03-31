@@ -19,6 +19,7 @@
     "Shipment.Clint.UpgradeLetter.NoMoney": "{{Tool}}을/를 업그레이드하기 위해 필요한 비용이 충분하지 않습니다.",
     // Item Delivery Quest Service
     "Shipment.Quest.ItemDelivery.NotEnoughItems": "{{Npc}}은/는 이것이 {{Number}}개가 필요합니다.",
+    "Shipment.Quest.ItemDelivery.NoMoney": "퀘스트 아이템을 보낼 배송비가 부족합니다.",
     "Shipment.Quest.DeliveryQuestsLetter": "@에게,^우편함으로 택배를 보낼 수 있다는 걸 알려주려고 해. 누군가 네게 요청한 물건을 보내주려면 소포를 우편함에 넣어둬. 요청한 사람에게 정확하게 보내줄거야.^우리 마을은 작지만 우리 우편 서비스는 참 훌륭해. 얼마나 빠르고 정확한지 너도 감탄하게 될거야.^^  -루이스 시장",
     "Shipment.Quest.DeliveryQuestsLetter.Title": "펠리칸 마을 배송 서비스",
     // Adventure Guild Recovery Service
@@ -40,5 +41,6 @@
     "Shipment.Gift.Next": "다음 페이지>",
     "Shipment.Gift.None": "그만둔다",
     "Shipment.Gift.Question": "{{Gift}}을/를 누구에게 보낼까...",
-    "Shipment.Gift.GiftSent": "{{Gift}}을/를 {{Npc}}에게 보냈다."
+    "Shipment.Gift.GiftSent": "{{Gift}}을/를 {{Npc}}에게 보냈다.",
+    "Shipment.Gift.NoMoney": "선물을 보낼 배송비가 부족합니다."
 }

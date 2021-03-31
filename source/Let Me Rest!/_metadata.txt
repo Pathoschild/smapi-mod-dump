@@ -1,0 +1,13 @@
+url:
+   https://github.com/Ophaneom/Let-Me-Rest.git
+
+mods:
+   Let Me Rest!
+
+latest commit:
+   commit dd7ccfdefa70d42e0803db2d9a1cf116602e1ad5
+   Author: Gustavo Hinkel <78951385+Ophaneom@users.noreply.github.com>
+   Date:   Wed Mar 24 00:41:00 2021 -0300
+   
+       .
+   

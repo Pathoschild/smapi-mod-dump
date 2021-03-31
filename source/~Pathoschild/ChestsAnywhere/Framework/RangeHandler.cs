@@ -30,7 +30,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
         private readonly string CurrentZone;
 
         /// <summary>A location => zone lookup if <see cref="Range"/> is <see cref="ChestRange.CurrentWorldArea"/>.</summary>
-        private readonly IDictionary<GameLocation, string> WorldAreaZones;
+        private readonly Lazy<IDictionary<GameLocation, string>> WorldAreaZones;
 
 
         /*********
@@ -44,8 +44,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
         {
             this.Range = range;
 
-            if (range == ChestRange.CurrentWorldArea)
-                this.WorldAreaZones = this.GetWorldAreaZones(worldAreas);
+            this.WorldAreaZones = new(() => this.GetWorldAreaZones(worldAreas));
             this.CurrentZone = this.GetZone(currentLocation, range);
         }
 
@@ -91,12 +90,12 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
                     return "*";
 
                 case ChestRange.CurrentWorldArea:
-                    if (location is MineShaft mine)
-                        return mine.mineLevel <= 120 ? "Mine" : "SkullCave"; // match entrance name
-
-                    return this.WorldAreaZones.TryGetValue(location, out string zone)
-                        ? zone
-                        : location.Name;
+                    return location switch
+                    {
+                        MineShaft mine => mine.mineLevel <= 120 ? "Mine" : "SkullCave",
+                        VolcanoDungeon => "VolcanoDungeon",
+                        _ => this.WorldAreaZones.Value.TryGetValue(location, out string zone) ? zone : location.Name
+                    };
 
                 case ChestRange.CurrentLocation:
                     return location.Name;

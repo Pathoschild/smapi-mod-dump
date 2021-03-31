@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8342
+IDs: TheMightyAmondee.EasierSpecialOrders
+update keys: Nexus:8342, GitHub:TheMightyAmondee/EasierSpecialOrders

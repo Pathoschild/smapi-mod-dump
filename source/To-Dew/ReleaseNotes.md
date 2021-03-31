@@ -9,6 +9,10 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.8.3
+
+* Fix typo causing visiblity by week to not work
+
 ## Version 1.8.2
 
 * Hide the overlay during events

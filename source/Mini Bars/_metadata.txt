@@ -1,0 +1,13 @@
+url:
+   https://github.com/Ophaneom/Mini-Bars.git
+
+mods:
+   Mini Bars
+
+latest commit:
+   commit f4ab5afa68d6896a8dc17bbaf3b5d84ba69833aa
+   Author: Gustavo Hinkel <78951385+Ophaneom@users.noreply.github.com>
+   Date:   Sat Mar 27 22:37:27 2021 -0300
+   
+       Update Config.cs
+   

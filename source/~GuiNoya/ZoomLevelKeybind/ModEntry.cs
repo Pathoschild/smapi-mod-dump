@@ -60,9 +60,9 @@ namespace ZoomLevelKeybind
         private void IncreaseZoom()
         {
             if (_config.UnlimitedZoom)
-                Game1.options.zoomLevel = Game1.options.zoomLevel >= 3f ? 3f : (float)Math.Round(Game1.options.zoomLevel + 0.05, 2);
+                Game1.options.desiredBaseZoomLevel = Game1.options.zoomLevel >= 3f ? 3f : (float)Math.Round(Game1.options.zoomLevel + 0.05, 2);
             else
-                Game1.options.zoomLevel = Game1.options.zoomLevel >= 1.25f ? 1.25f : (float)Math.Round(Game1.options.zoomLevel + 0.05, 2);
+                Game1.options.desiredBaseZoomLevel = Game1.options.zoomLevel >= 1.25f ? 1.25f : (float)Math.Round(Game1.options.zoomLevel + 0.05, 2);
 
             Program.gamePtr.refreshWindowSettings();
         }
@@ -70,11 +70,11 @@ namespace ZoomLevelKeybind
         private void DecreaseZoom()
         {
             if (_config.UnlimitedZoom)
-                Game1.options.zoomLevel = Game1.options.zoomLevel <= 0.05f ? 0.05f : (float)Math.Round(Game1.options.zoomLevel - 0.05, 2);
+                Game1.options.desiredBaseZoomLevel = Game1.options.zoomLevel <= 0.05f ? 0.05f : (float)Math.Round(Game1.options.zoomLevel - 0.05, 2);
             else if (_config.MoreZoom)
-                Game1.options.zoomLevel = Game1.options.zoomLevel <= 0.35f ? 0.35f : (float)Math.Round(Game1.options.zoomLevel - 0.05, 2);
+                Game1.options.desiredBaseZoomLevel = Game1.options.zoomLevel <= 0.35f ? 0.35f : (float)Math.Round(Game1.options.zoomLevel - 0.05, 2);
             else
-                Game1.options.zoomLevel = Game1.options.zoomLevel <= 0.75f ? 0.75f : (float)Math.Round(Game1.options.zoomLevel - 0.05, 2);
+                Game1.options.desiredBaseZoomLevel = Game1.options.zoomLevel <= 0.75f ? 0.75f : (float)Math.Round(Game1.options.zoomLevel - 0.05, 2);
 
             Program.gamePtr.refreshWindowSettings();
         }

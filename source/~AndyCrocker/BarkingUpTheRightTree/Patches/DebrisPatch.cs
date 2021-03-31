@@ -9,19 +9,21 @@
 *************************************************/
 
 using Harmony;
+using Microsoft.Xna.Framework;
+using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 
 namespace BarkingUpTheRightTree.Patches
 {
-    /// <summary>Contains patches for patching game code in the <see cref="StardewValley.Debris"/> class.</summary>
+    /// <summary>Contains patches for patching game code in the <see cref="Debris"/> class.</summary>
     internal class DebrisPatch
     {
         /*********
         ** Internal Methods
         *********/
-        /// <summary>The transpiler for the <see cref="StardewValley.Debris(int, int, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, float)"/> constructor.</summary>
+        /// <summary>The transpiler for the <see cref="Debris(int, int, Vector2, Vector2, float)"/> constructor.</summary>
         /// <param name="instructions">The IL instructions.</param>
         /// <returns>The new IL instructions.</returns>
         /// <remarks>This is used to change the final debris type (in the base game passing an id of '68', for example, doesn't necessarily mean the actual debris chunks will have that same id. They can be offset by 1, this is to allow some debris to have varients, not all items have multiple varients though so this should be removed. This does have the side effect of removing the feature for all items, including ones with multiple varients, but it'll be quite unnoticable anyway).</remarks>

@@ -11,9 +11,9 @@ mods:
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit 92fafdb731047b3a880c7d18905323af546e3a28
+   commit 3738c43beee226f7e4bf1b4d51d309a3619ae52c
    Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Tue Feb 9 20:32:58 2021 +0300
+   Date:   Thu Mar 11 15:40:51 2021 +0300
    
-       fix: fix building texture getting changed regardless of its type
+       fix: fix troughs being filled the day before a festival
    

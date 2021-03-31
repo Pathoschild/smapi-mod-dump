@@ -8,14 +8,18 @@
 **
 *************************************************/
 
-using BFAVToFAVRModConverter.Models;
+using BfavToFavrModConverter.Bfav;
+using BfavToFavrModConverter.Favr;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace BFAVToFAVRModConverter
+using Action = BfavToFavrModConverter.Favr.Action;
+
+namespace BfavToFavrModConverter
 {
     /// <summary>The application entry point.</summary>
     public class Program
@@ -24,7 +28,7 @@ namespace BFAVToFAVRModConverter
         ** Public Methods
         *********/
         /// <summary>The application entry point.</summary>
-        /// <param name="args">The command line arguments.</param>
+        /// <param name="args">The command-line arguments.</param>
         public static void Main(string[] args)
         {
             try
@@ -32,8 +36,9 @@ namespace BFAVToFAVRModConverter
                 if (args.Length < 2)
                 {
                     Logger.WriteLine("Invalid args supplied", ConsoleColor.Red);
-                    Logger.WriteLine("Press any key to exit...", ConsoleColor.White);
+                    Logger.WriteLine("Press any key to exit...");
                     Console.ReadKey();
+                    return;
                 }
 
                 // the folder that contains the bfav mod folders
@@ -52,20 +57,19 @@ namespace BFAVToFAVRModConverter
                     var bfavModFolderName = GetDirectoryRootName(modDirectory);
                     var favrModFolderName = bfavModFolderName.Replace("BFAV", "FAVR");
 
-                    Logger.WriteLine($"Converting {GetDirectoryRootName(modDirectory)} to {favrModFolderName}", ConsoleColor.White);
+                    Logger.WriteLine($"Converting {GetDirectoryRootName(modDirectory)} to {favrModFolderName}");
 
                     ConvertBFAVModFolder(modDirectory, Path.Combine(destinationFolder, favrModFolderName));
                 }
             }
             catch (Exception ex)
             {
-                Logger.WriteLine($"Converter failed and couldn't recover: {ex.Message}\n{ex.StackTrace}", ConsoleColor.Red);
+                Logger.WriteLine($"Converter failed and couldn't recover: {ex}", ConsoleColor.Red);
             }
 
-            Logger.WriteLine("Press any key to exit...", ConsoleColor.White);
+            Logger.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
-
 
         /*********
         ** Private Methods
@@ -78,29 +82,33 @@ namespace BFAVToFAVRModConverter
             // deserialize, convert, and serialize manifest.json
             Logger.WriteLine("Converting manifest.json file", ConsoleColor.Gray);
             var bfavManifest = DeserializeJsonFile<ModManifest>(Path.Combine(bfavFolderPath, "manifest.json"));
-            if (bfavManifest == default)
+            if (bfavManifest == null)
+            {
+                Logger.WriteLine("Couldn't find BFAV manifest.json, skipping", ConsoleColor.Red);
                 return;
+            }
+
             var favrManifest = ConvertBfavManifest(bfavManifest);
             SerializeObjectToJson(favrManifest, Path.Combine(destinationFavrFolderPath, "manifest.json"));
 
             // deserialize, convert, and serialize content.json files
             var bfavContent = DeserializeJsonFile<BfavContent>(Path.Combine(bfavFolderPath, "content.json"));
-            if (bfavContent == default)
+            if (bfavContent == null)
                 return;
-            var favrContents = ConvertBfavContent(bfavContent);
-            foreach (var favrContent in favrContents)
+            var favrAnimals = ConvertBfavContent(bfavContent);
+            foreach (var favrAnimal in favrAnimals)
             {
-                Logger.WriteLine($"Converting content.json file for animal: {favrContent.Name}", ConsoleColor.Gray);
-                SerializeObjectToJson(favrContent, Path.Combine(destinationFavrFolderPath, favrContent.Name, "content.json"));
+                Logger.WriteLine($"Creating content.json file for animal: {favrAnimal.Name}", ConsoleColor.Gray);
+                SerializeObjectToJson(favrAnimal, Path.Combine(destinationFavrFolderPath, favrAnimal.Name, "content.json"));
             }
 
             // copy over sprite sheets
             foreach (var bfavCategory in bfavContent.Categories)
             {
-                var favrContent = favrContents.Where(content => content.Name == (bfavCategory.AnimalShop?.Name ?? bfavCategory.Category)).FirstOrDefault();
+                var favrContent = favrAnimals.Where(animal => animal.Name == (bfavCategory.AnimalShop?.Name ?? bfavCategory.Category)).FirstOrDefault();
                 if (favrContent == null)
                 {
-                    Logger.WriteLine($"Couldn't find FAVRContent related to animal: {bfavCategory.Category}. Manual conversion required.", ConsoleColor.Red);
+                    Logger.WriteLine($"Couldn't find FAVR animal related to BFAV animal: {bfavCategory.Category}. Manual conversion required.", ConsoleColor.Red);
                     continue;
                 }
 
@@ -109,62 +117,14 @@ namespace BFAVToFAVRModConverter
             }
         }
 
-        /// <summary>Read an serialize the file at the given path.</summary>
-        /// <typeparam name="T">The type to serialize the object to.</typeparam>
-        /// <param name="path">The path containing the file to serialize.</param>
-        /// <returns>The file serialized.</returns>
-        private static T DeserializeJsonFile<T>(string path)
-        {
-            try
-            {
-                T serializedObject;
-
-                using (var reader = File.OpenText(path))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializedObject = (T)serializer.Deserialize(reader, typeof(T));
-                }
-
-                return serializedObject;
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine($"Failed to deserialize object: {ex.Message}\n{ex.StackTrace}", ConsoleColor.Red);
-                return default;
-            }
-        }
-
-        /// <summary>Serilize the given object to the given path</summary>
-        /// <param name="objectToSerialize">The object to serilize.</param>
-        /// <param name="path">The path to serialize the object to.</param>
-        private static void SerializeObjectToJson(object objectToSerialize, string path)
-        {
-            try
-            {
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-
-                using (StreamWriter streamWriter = new StreamWriter(path))
-                using (JsonWriter jsonWriter = new JsonTextWriter(streamWriter))
-                {
-                    jsonWriter.Formatting = Formatting.Indented;
-
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Serialize(jsonWriter, objectToSerialize);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine($"Failed to serialize object: {ex.Message}\n{ex.StackTrace}", ConsoleColor.Red);
-            }
-        }
-
         /// <summary>Convert the given <see cref="ModManifest"/> from the BFAV version to the FAVR version.</summary>
         /// <param name="bfavManifest">The <see cref="ModManifest"/> to convert.</param>
         /// <returns>The converted pased <see cref="ModManifest"/>.</returns>
         private static ModManifest ConvertBfavManifest(ModManifest bfavManifest)
         {
-            bfavManifest.ContentPackFor["UniqueID"] = "EpicBellyFlop45.FarmAnimalVarietyRedux";
+            bfavManifest.ContentPackFor["UniqueID"] = "Satozaki.FarmAnimalVarietyRedux";
+            if (bfavManifest.ContentPackFor.ContainsKey("MinimumVersion"))
+                bfavManifest.ContentPackFor.Remove("MinimumVersion");
 
             return new ModManifest(
                 name: bfavManifest.Name.Replace("BFAV", "FAVR"),
@@ -180,134 +140,85 @@ namespace BFAVToFAVRModConverter
         /// <summary>Convert the given <see cref="BfavContent"/> to <see cref="FavrContent"/>.</summary>
         /// <param name="bfavContent">The <see cref="BfavContent"/> to convert.</param>
         /// <returns>The converted passed <see cref="BfavContent"/>.</returns>
-        private static IEnumerable<FavrContent> ConvertBfavContent(BfavContent bfavContent)
+        private static List<FavrCustomAnimal> ConvertBfavContent(BfavContent bfavContent)
         {
+            var favrAnimals = new List<FavrCustomAnimal>();
+
             foreach (var category in bfavContent.Categories)
             {
-                // create the animal sub types
-                var subTypes = new List<FavrAnimalSubType>();
+                Logger.WriteLine($"Converting animal: {category.AnimalShop?.Name ?? category.Category}", ConsoleColor.Gray);
+
+                // create the animal subtypes
+                var subtypes = new List<FavrCustomAnimalType>();
                 foreach (var type in category.Types)
                 {
-                    var typeData = type.Data.Split('/');
+                    var splitDataString = type.Data.Split('/');
 
-                    var productId = typeData[2];
-                    var deluxeProductId = typeData[3];
-                    
-                    // check if the (deluxe)product ids are valid ids, or it they should have api tokens added to them
+                    var productId = splitDataString[2];
+                    var deluxeProductId = splitDataString[3];
+                    var meatId = splitDataString[23];
+
+                    // check if the (deluxe|meat)product ids are valid ids, or it they should have api tokens added to them
                     if (!int.TryParse(productId, out _))
                         productId = $"spacechase0.JsonAssets:GetObjectId:{productId}";
-
                     if (!int.TryParse(deluxeProductId, out _))
                         deluxeProductId = $"spacechase0.JsonAssets:GetObjectId:{deluxeProductId}";
+                    if (!int.TryParse(meatId, out _))
+                        meatId = $"spacechase0.JsonAssets:GetObjectId:{meatId}";
 
-                    // create an FavrAnimalProduce to house the products
-                    var produce = new FavrAnimalProduce(
-                        allSeasons: new FavrAnimalProduceSeason(
-                            products: productId == "-1" ? null : new List<FavrAnimalProduct> { new FavrAnimalProduct(productId, (HarvestType)Convert.ToInt32(typeData[13]), typeData[22]) },
-                            deluxeProducts: deluxeProductId == "-1" ? null : new List<FavrAnimalProduct> { new FavrAnimalProduct(deluxeProductId, (HarvestType)Convert.ToInt32(typeData[13]), typeData[22]) })
-                    );
+                    // convert produce
+                    var toolName = splitDataString[22];
 
-                    subTypes.Add(new FavrAnimalSubType(
-                            name: type.Type,
-                            produce: produce
-                        )
-                    );
+                    // determine tool harvest sound as FAVR requires packs to be explicit
+                    string toolHarvestSound = null;
+                    if (toolName.ToLower() == "shears")
+                        toolHarvestSound = "scissors";
+                    else if (toolName.ToLower() == "milk pail")
+                        toolHarvestSound = "Milking";
+
+                    var produce = new FavrAnimalProduce(defaultProductId: productId, upgradedProductId: deluxeProductId, harvestType: (HarvestType)Convert.ToInt32(splitDataString[13]), toolHarvestSound: toolHarvestSound, daysToProduce: Convert.ToInt32(splitDataString[0]), toolName: toolName);
+
+                    subtypes.Add(new FavrCustomAnimalType(
+                        action: Action.Add,
+                        name: type.Type,
+                        isBuyable: true,
+                        isIncubatable: true,
+                        produce: new List<FavrAnimalProduce> { produce },
+                        daysTillMature: Convert.ToByte(splitDataString[1]),
+                        soundId: splitDataString[4],
+                        frontAndBackSpriteWidth: Convert.ToInt32(splitDataString[16]),
+                        frontAndBackSpriteHeight: Convert.ToInt32(splitDataString[17]),
+                        sideSpriteWidth: Convert.ToInt32(splitDataString[18]),
+                        sideSpriteHeight: Convert.ToInt32(splitDataString[19]),
+                        meatId: meatId,
+                        happinessDrain: Convert.ToByte(splitDataString[21])
+                    ));
                 }
 
-                var dataString = category.Types[0].Data; // use types[0] as the data used here is common on all sub types
-                var splitDataString = dataString.Split('/');
+                var action = Action.Add;
+                bool? buyable = category.AnimalShop != null;
+                if (category.Action.ToLower() == "update")
+                {
+                    Logger.WriteLine("Manual audit required, when an animal has an action of 'Update' the internal name needs to be specified in the FAVR pack", ConsoleColor.Red);
+                    action = Action.Edit;
+                    buyable = null; // inherit buyablility from the pack who added the animal
+                }
 
-                var dataStringValid = ValidateBfavContentDataString(splitDataString, category.Types[0].Type);
-                if (!dataStringValid)
-                    continue;
-
-                yield return new FavrContent(
-                    name: category.Category,
-                    buyable: category.AnimalShop != null,
-                    updatePreviousAnimal: category.Action == "Update",
+                favrAnimals.Add(new FavrCustomAnimal(
+                    action: action,
+                    internalName: action == Action.Add ? null : "input animal internal name here",
+                    name: category.AnimalShop?.Name ?? category.Category,
+                    buyable: (buyable.HasValue && !buyable.Value) ? false : null, // turn 'true' into null (so it gets ommited from the final favr file as that's the default value)
+                    canSwim: false,
                     animalShopInfo: new FavrAnimalShopInfo(
                         description: category.AnimalShop?.Description,
                         buyPrice: category.AnimalShop?.Price ?? 0),
-                    types: subTypes,
-                    daysToProduce: Convert.ToInt32(splitDataString[0]),
-                    daysTillMature: Convert.ToInt32(splitDataString[1]),
-                    soundId: splitDataString[4],
-                    frontAndBackSpriteWidth: Convert.ToInt32(splitDataString[16]),
-                    frontAndBackSpriteHeight: Convert.ToInt32(splitDataString[17]),
-                    sideSpriteWidth: Convert.ToInt32(splitDataString[18]),
-                    sideSpriteHeight: Convert.ToInt32(splitDataString[19]),
-                    fullnessDrain: Convert.ToByte(splitDataString[20]),
-                    happinessDrain: Convert.ToByte(splitDataString[21]),
+                    types: subtypes,
                     buildings: category.Buildings
-                );
-            }
-        }
-
-        /// <summary>Validate a BFAV content.json data string.</summary>
-        /// <param name="dataString">The data string to validate.</param>
-        /// <param name="bfavAnimalName">The name of the animal the data string belongs to. This is only used for error logging.</param>
-        /// <returns>Whether the passed datastring is valid.</returns>
-        private static bool ValidateBfavContentDataString(string[] dataString, string bfavAnimalName)
-        {
-            var isValid = true;
-
-            // days to produce
-            if (!int.TryParse(dataString[0], out _))
-            {
-                isValid = false;
-                Logger.WriteLine($"The 'DaysToProduce' data wasn't valid for ${bfavAnimalName}", ConsoleColor.Red);
+                ));
             }
 
-            // days till mature
-            if (!int.TryParse(dataString[0], out _))
-            {
-                isValid = false;
-                Logger.WriteLine($"The 'DaysTillMature' data wasn't valid for ${bfavAnimalName}", ConsoleColor.Red);
-            }
-
-            // front And Back Sprite Width
-            if (!int.TryParse(dataString[0], out _))
-            {
-                isValid = false;
-                Logger.WriteLine($"The 'FrontAndBackSpriteWidth' data wasn't valid for ${bfavAnimalName}", ConsoleColor.Red);
-            }
-
-            // front And Back Sprite Height
-            if (!int.TryParse(dataString[0], out _))
-            {
-                isValid = false;
-                Logger.WriteLine($"The 'FrontAndBackSpriteHeight' data wasn't valid for ${bfavAnimalName}", ConsoleColor.Red);
-            }
-
-            // side Sprite Width
-            if (!int.TryParse(dataString[0], out _))
-            {
-                isValid = false;
-                Logger.WriteLine($"The 'SideSpriteWidth' data wasn't valid for ${bfavAnimalName}", ConsoleColor.Red);
-            }
-
-            // side Sprite Height
-            if (!int.TryParse(dataString[0], out _))
-            {
-                isValid = false;
-                Logger.WriteLine($"The 'SideSpriteHeight' data wasn't valid for ${bfavAnimalName}", ConsoleColor.Red);
-            }
-
-            // fullness Drain
-            if (!byte.TryParse(dataString[0], out _))
-            {
-                isValid = false;
-                Logger.WriteLine($"The 'FullnessDrain' data wasn't valid for ${bfavAnimalName}", ConsoleColor.Red);
-            }
-
-            // happiness Drain
-            if (!byte.TryParse(dataString[0], out _))
-            {
-                isValid = false;
-                Logger.WriteLine($"The 'HappinessDrain' data wasn't valid for ${bfavAnimalName}", ConsoleColor.Red);
-            }
-
-            return isValid;
+            return favrAnimals;
         }
 
         /// <summary>Move and rename all the spritesheets to the correct format.</summary>
@@ -315,7 +226,7 @@ namespace BFAVToFAVRModConverter
         /// <param name="destinationFavrFolderPath">The destination folder path where the favr mod will be converted to.</param>
         /// <param name="bfavCategory">The animal whose sprite sheets to convert.</param>
         /// <param name="favrContent">The favrContent corrosponding to the passed bfavCategory.</param>
-        private static void MoveSpriteSheets(string bfavFolderPath, string destinationFavrFolderPath, BfavCategory bfavCategory, FavrContent favrContent)
+        private static void MoveSpriteSheets(string bfavFolderPath, string destinationFavrFolderPath, BfavCategory bfavCategory, FavrCustomAnimal favrContent)
         {
             try
             {
@@ -334,27 +245,31 @@ namespace BFAVToFAVRModConverter
                     );
                 }
 
-                foreach (var subType in bfavCategory.Types)
+                foreach (var subtype in bfavCategory.Types)
                 {
                     // adult sprite sheet
-                    var adultSpriteSheetPath = Path.Combine(bfavFolderPath, subType.Sprites.Adult);
+                    var adultSpriteSheetPath = Path.Combine(bfavFolderPath, subtype.Sprites.Adult);
 
                     // baby sprite sheet
                     var babySpriteSheetPath = "";
-                    if (!string.IsNullOrEmpty(subType.Sprites.Baby) && subType.Sprites.Baby.ToLower() != subType.Sprites.Adult.ToLower()) // ensure it's not the same as the adult, some mods use the same sprite sheet. this would create duplicates of the sprite sheet otherwise
-                        babySpriteSheetPath = Path.Combine(bfavFolderPath, subType.Sprites.Baby);
+                    if (!string.IsNullOrEmpty(subtype.Sprites.Baby) && subtype.Sprites.Baby.ToLower() != subtype.Sprites.Adult.ToLower()) // ensure it's not the same as the adult, some mods use the same sprite sheet. this would create duplicates of the sprite sheet otherwise
+                        babySpriteSheetPath = Path.Combine(bfavFolderPath, subtype.Sprites.Baby);
 
                     // harvested sprite sheet
                     var harvestedSpriteSheetPath = "";
-                    if (!string.IsNullOrEmpty(subType.Sprites.ReadyForHarvest))
-                        harvestedSpriteSheetPath = Path.Combine(bfavFolderPath, subType.Sprites.ReadyForHarvest);
+                    if (!string.IsNullOrEmpty(subtype.Sprites.ReadyForHarvest))
+                        harvestedSpriteSheetPath = Path.Combine(bfavFolderPath, subtype.Sprites.ReadyForHarvest);
+
+                    // if there is a harvested and adult sheet, swap them (as favr stored sheets as Harvested_ while bfav stores them as Ready to Harvest_)
+                    if (!string.IsNullOrEmpty(adultSpriteSheetPath) && !string.IsNullOrEmpty(harvestedSpriteSheetPath))
+                        (adultSpriteSheetPath, harvestedSpriteSheetPath) = (harvestedSpriteSheetPath, adultSpriteSheetPath);
 
                     // copy over sprite sheets
                     if (!string.IsNullOrEmpty(adultSpriteSheetPath))
                     {
                         File.Copy(
                             sourceFileName: adultSpriteSheetPath,
-                            destFileName: Path.Combine(favrAssetsFolder, $"{subType.Type}.png"),
+                            destFileName: Path.Combine(favrAssetsFolder, $"{subtype.Type}.png"),
                             overwrite: true
                         );
                     }
@@ -363,7 +278,7 @@ namespace BFAVToFAVRModConverter
                     {
                         File.Copy(
                             sourceFileName: babySpriteSheetPath,
-                            destFileName: Path.Combine(favrAssetsFolder, $"Baby {subType.Type}.png"),
+                            destFileName: Path.Combine(favrAssetsFolder, $"Baby {subtype.Type}.png"),
                             overwrite: true
                         );
                     }
@@ -372,7 +287,7 @@ namespace BFAVToFAVRModConverter
                     {
                         File.Copy(
                             sourceFileName: harvestedSpriteSheetPath,
-                            destFileName: Path.Combine(favrAssetsFolder, $"Harvested {subType.Type}.png"),
+                            destFileName: Path.Combine(favrAssetsFolder, $"Harvested {subtype.Type}.png"),
                             overwrite: true
                         );
                     }
@@ -380,7 +295,57 @@ namespace BFAVToFAVRModConverter
             }
             catch (Exception ex)
             {
-                Logger.WriteLine($"Failed to move sprites: {ex.Message}\n{ex.StackTrace}", ConsoleColor.Red);
+                Logger.WriteLine($"Failed to move sprites: {ex}", ConsoleColor.Red);
+            }
+        }
+
+        /// <summary>Deserialises a file at the given path.</summary>
+        /// <typeparam name="T">The type to deserialise the file to.</typeparam>
+        /// <param name="file">The file to deserialise.</param>
+        /// <returns>The file deserialised.</returns>
+        private static T DeserializeJsonFile<T>(string file)
+        {
+            try
+            {
+                using (var reader = File.OpenText(file))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    return (T)serializer.Deserialize(reader, typeof(T));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Failed to deserialize object: {ex}", ConsoleColor.Red);
+                return default;
+            }
+        }
+
+        /// <summary>Serilises the given object to the given file.</summary>
+        /// <param name="objectToSerialize">The object to serilise.</param>
+        /// <param name="file">The file to serialisze the object to.</param>
+        private static void SerializeObjectToJson(object objectToSerialize, string file)
+        {
+            try
+            {
+                if (!Directory.Exists(file))
+                    Directory.CreateDirectory(Path.GetDirectoryName(file));
+
+                using (StreamWriter streamWriter = new StreamWriter(file))
+                using (JsonWriter jsonWriter = new JsonTextWriter(streamWriter))
+                {
+                    jsonWriter.Formatting = Formatting.Indented;
+
+                    JsonSerializer serializer = JsonSerializer.Create(new JsonSerializerSettings()
+                    {
+                        DefaultValueHandling = DefaultValueHandling.Ignore,
+                        Converters = new List<JsonConverter>() { new StringEnumConverter() }
+                    });
+                    serializer.Serialize(jsonWriter, objectToSerialize);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Failed to serialize object: {ex}", ConsoleColor.Red);
             }
         }
 
@@ -390,7 +355,7 @@ namespace BFAVToFAVRModConverter
         private static string GetDirectoryRootName(string path)
         {
             var splitDirectory = path.Split(Path.DirectorySeparatorChar);
-            return splitDirectory[splitDirectory.Count() - 1];
+            return splitDirectory[splitDirectory.Length - 1];
         }
     }
 }

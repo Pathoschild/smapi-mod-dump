@@ -8,10 +8,12 @@
 **
 *************************************************/
 
+using BarkingUpTheRightTree.Models.Converted;
+
 namespace BarkingUpTheRightTree.Models.Parsed
 {
     /// <summary>Represents a product that a tree drops within specified seasons.</summary>
-    /// <remarks>This is a version of <see cref="BarkingUpTheRightTree.Models.Converted.SeasonalTimedProduct"/> that inherits from <see cref="BarkingUpTheRightTree.Models.Parsed.ParsedTimedProduct"/> because <see cref="BarkingUpTheRightTree.Models.Parsed.ParsedTimedProduct.Product"/> is <see langword="string"/>.<br/>The reason this is done is so content packs can have tokens in place of the ids to call mod APIs to get the id (so JsonAsset items can be used for example).</remarks>
+    /// <remarks>This is a version of <see cref="SeasonalTimedProduct"/> that inherits from <see cref="ParsedTimedProduct"/> because <see cref="ParsedTimedProduct.Product"/> is <see langword="string"/>.<br/>The reason this is done is so content packs can have tokens in place of the ids to call mod APIs to get the id (so JsonAsset items can be used for example).</remarks>
     public class ParsedSeasonalTimedProduct : ParsedTimedProduct
     {
         /*********

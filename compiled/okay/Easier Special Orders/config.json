@@ -1,0 +1,12 @@
+{
+  "RemoveCollectionObjective": true,
+  "EasierQiChallenges": {
+    "ShipLessQiFruit": false,
+    "DonateLessPrismaticShards": false,
+    "LowerJunimoKartScore": false,
+    "ShipLessCookedItems": false,
+    "GiveLessGifts": false,
+    "MoreTimeForExtendedFamily": false,
+    "LessItemsForQisPrismaticGrange": false
+  }
+}

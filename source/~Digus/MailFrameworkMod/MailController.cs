@@ -216,18 +216,20 @@ namespace MailFrameworkMod
                     if (recipeString != null)
                     {
                         string learnedRecipe = recipe;
-                        if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
+                        
+                        string[] strArray = recipeString.Split('/');
+                        if (strArray.Length < dataArrayI18NSize)
                         {
-                            string[] strArray = recipeString.Split('/');
-                            if (strArray.Length < dataArrayI18NSize)
+                            if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
                             {
                                 MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' does not have a internationalized name. The default name will be used.", LogLevel.Warn);
                             }
-                            else
-                            {
-                                learnedRecipe = strArray[strArray.Length - 1];
-                            }
                         }
+                        else if (strArray[strArray.Length - 1] != "null")
+                        {
+                            learnedRecipe = strArray[strArray.Length - 1];
+                        }
+                        
                         activeClickableMenu.cookingOrCrafting = cookingOrCraftingText;
                         activeClickableMenu.learnedRecipe = learnedRecipe;
                     }

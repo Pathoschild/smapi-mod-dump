@@ -5,36 +5,26 @@
     <RootNamespace>BiggerBackpack</RootNamespace>
     <Version>1.6.0</Version>
     <TargetFramework>net452</TargetFramework>
-    <Platforms>x86</Platforms>
-    <PlatformTarget>x86</PlatformTarget>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
   <!-- required for MonoDevelop compatibility -->
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' " />
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Any CPU' " />
 
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StardewHack\StardewHack.csproj">
-      <Private>false</Private>
-    </ProjectReference>
+    <ProjectReference Include="..\StardewHack\StardewHack.csproj" Private="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="README.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="backpack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="JunimoNote.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Update="README.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="backpack.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="JunimoNote.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

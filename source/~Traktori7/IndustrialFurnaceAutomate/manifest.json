@@ -16,7 +16,7 @@
 	"UniqueID": "Traktori.AM.IndustrialFurnace",
 	"EntryDll": "IndustrialFurnaceAutomate.dll",
 	"MinimumApiVersion": "3.8.0",
-	"UpdateKeys": [],
+	"UpdateKeys": [ "Nexus:5568@Automate" ],
 	"Dependencies":
 	[
 		{

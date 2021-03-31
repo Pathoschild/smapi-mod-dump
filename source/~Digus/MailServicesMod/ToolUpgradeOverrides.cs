@@ -75,7 +75,7 @@ namespace MailServicesMod
                                 .FirstOrDefault();
                             if (cost != null)
                             {
-                                int price = cost[0];
+                                int price = cost[0] + DataLoader.ModConfig.ToolShipmentServiceFee;
                                 int barIndex = cost[2];
                                 const int barCount = 5;
                                 if (Game1.player.Money >= price)

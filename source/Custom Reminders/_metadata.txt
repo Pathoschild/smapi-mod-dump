@@ -5,13 +5,11 @@ mods:
    Custom Reminders
 
 latest commit:
-   commit 8a5084c7721176c158e4e9175c1da8baa08c2d2c
-   Merge: 099f208 f6494d1
-   Author: Nithish <dem1se.io@protonmail.com>
-   Date:   Sat Jan 16 12:32:46 2021 +0530
+   commit 256b129c7cad550b26b203387ecfe231922efe78
+   Author: Dem1se <dem1se.io@protonmail.com>
+   Date:   Wed Mar 10 15:43:50 2021 +0530
    
-       Merge pull request #11 from Json-x-ly/master
-       
-       PR For Issue #10 - Collects spent reminders and deletes them at end of day
-       Fix 0600 reminders not popping
+       Prep for release 1.7.4
+       - Reminders get deleted at end of day now instead of after notifying
+       - Fix reminders set for 6:00 AM not notifying
    

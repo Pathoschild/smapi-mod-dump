@@ -41,20 +41,20 @@ namespace AllProfessions
         public override void Entry(IModHelper helper)
         {
             // read data
-            this.ProfessionsToGain = this.GetProfessionsToGain(this.Helper.Data.ReadJsonFile<ModData>("data.json")).ToArray();
+            this.ProfessionsToGain = this.GetProfessionsToGain(this.Helper.Data.ReadJsonFile<ModData>("assets/data.json")).ToArray();
             if (!this.ProfessionsToGain.Any())
             {
                 this.Monitor.Log("The data.json file is missing or invalid; try reinstalling the mod.", LogLevel.Error);
                 return;
             }
 
-            // log if data.json is customised
-            string dataPath = Path.Combine(this.Helper.DirectoryPath, "data.json");
+            // log if data.json is customized
+            string dataPath = Path.Combine(this.Helper.DirectoryPath, "assets", "data.json");
             if (File.Exists(dataPath))
             {
                 string hash = this.GetFileHash(dataPath);
                 if (hash != this.DataFileHash)
-                    this.Monitor.Log($"Using a custom data.json file (MD5 hash: {hash}).", LogLevel.Trace);
+                    this.Monitor.Log($"Using a custom data.json file (MD5 hash: {hash}).");
             }
 
             // hook event
@@ -85,12 +85,11 @@ namespace AllProfessions
         /// <param name="absolutePath">The absolute file path.</param>
         private string GetFileHash(string absolutePath)
         {
-            using (FileStream stream = File.OpenRead(absolutePath))
-            using (MD5 md5 = MD5.Create())
-            {
-                var hash = md5.ComputeHash(stream);
-                return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-            }
+            using FileStream stream = File.OpenRead(absolutePath);
+            using MD5 md5 = MD5.Create();
+
+            byte[] hash = md5.ComputeHash(stream);
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
         }
 
         /// <summary>Get the profession levels to gain for each skill level.</summary>

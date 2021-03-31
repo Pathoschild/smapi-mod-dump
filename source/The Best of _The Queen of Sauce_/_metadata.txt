@@ -5,9 +5,9 @@ mods:
    The Best of "The Queen of Sauce"
 
 latest commit:
-   commit d8956749ceb99dad2c337f56b6f7fc048a3bcbde
+   commit 12b58fd0b0d894315d7c00f45361c6672e02d68c
    Author: David Camp <Bpendragon@users.noreply.github.com>
-   Date:   Thu Mar 4 13:45:07 2021 -0800
+   Date:   Sun Mar 28 15:54:13 2021 -0700
    
-       Added French tranlation from [Schneitizel](https://github.com/Schneitizel)
+       Add German, and experimental 64-bit support
    

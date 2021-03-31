@@ -11,7 +11,7 @@
 {
   "Name": "StayUp",
   "Author": "su226",
-  "Version": "1.1.2",
+  "Version": "1.1.3",
   "Description": "No need to sleep anymore!",
   "UniqueID": "Su226.StayUp",
   "EntryDll": "StayUp.dll",

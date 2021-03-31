@@ -6,12 +6,10 @@ mods:
    Greenhouse Gatherers Automate
 
 latest commit:
-   commit 475a72fc479bedfd11b9aad2ac93aa400e06bfaa
-   Merge: 205d334 cfcea7f
-   Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Wed Mar 3 16:33:57 2021 -0600
+   commit c4c5e0c5028cf1de37ac9d9a3db542f726fb1c6a
+   Merge: 13ce4ce e8a67d1
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Sat Mar 20 18:52:40 2021 -0500
    
-       v1.2.0 released
-       
-       Fix for DoJunimosEatExcessCrops and Expanded Storage support.
+       Merge branch 'development' into main
    

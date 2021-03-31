@@ -1,6 +1,12 @@
 {
+  "IncludeBaseGameCrops": true,
   "ShowBaseCrops": true,
   "ShowSpeedGro": false,
   "ShowDeluxeSpeedGro": false,
-  "ShowHyperSpeedGro": false
+  "ShowHyperSpeedGro": false,
+  "PPJAFruitsAndVeggiesPath": "",
+  "PPJAFantasyCropsPath": "",
+  "PPJAAncientCropsPath": "",
+  "PPJACannabisKitPath": "",
+  "BonstersFruitAndVeggiesPath": ""
 }

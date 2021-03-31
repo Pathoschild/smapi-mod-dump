@@ -32,7 +32,7 @@ Makes forage more visible over the course of the playthrough. When within a cert
 ## Installation
 
 1. Install [SMAPI](https://smapi.io)
-2. Download the latest release from the [Github Release Page](https://github.com/Bpendragon/GreenhouseSprinklers/releases) or [Nexus](https://www.nexusmods.com/stardewvalley/mods/7456?tab=files) (you can also use Nexus to download to their mod manager)
+2. Download the latest release from the [Github Release Page](https://github.com/Bpendragon/GreenhouseSprinklers/releases) or [Nexus](https://www.nexusmods.com/stardewvalley/mods/7781) (you can also use Nexus to download to their mod manager)
 3. Unzip the Folder into your `StardewValley/Mods` folder
 4. Run the game
 5. After running the game once you can set the options config (see [Configuration](#configuration) section below)

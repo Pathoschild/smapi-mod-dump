@@ -286,13 +286,8 @@ namespace CrabNet
                     return false;
                 }
                 Dictionary<int, string> dictionary = this.Helper.Content.Load<Dictionary<int, string>>("Data\\Fish", ContentSource.GameContent);
-                if (dictionary.ContainsKey(pot.heldObject.Value.ParentSheetIndex))
-                {
-                    string[] strArray = dictionary[pot.heldObject.Value.ParentSheetIndex].Split('/');
-                    int minValue = strArray.Length > 5 ? Convert.ToInt32(strArray[5]) : 1;
-                    int num = strArray.Length > 5 ? Convert.ToInt32(strArray[6]) : 10;
-                    farmer.caughtFish(pot.heldObject.Value.ParentSheetIndex, Game1.random.Next(minValue, num + 1));
-                }
+                if (this.GetFishSize(pot.heldObject.Value.ParentSheetIndex, out int minSize, out int maxSize))
+                    farmer.caughtFish(pot.heldObject.Value.ParentSheetIndex, Game1.random.Next(minSize, maxSize + 1));
                 pot.readyForHarvest.Value = false;
                 pot.heldObject.Value = null;
                 pot.tileIndexToShow = 710;
@@ -302,6 +297,37 @@ namespace CrabNet
                 return true;
             }
             return false;
+        }
+
+        /// <summary>Get the minimum and maximum size for a fish.</summary>
+        /// <param name="parentSheetIndex">The parent sheet index for the fish.</param>
+        /// <param name="minSize">The minimum fish size.</param>
+        /// <param name="maxSize">The maximum fish size.</param>
+        private bool GetFishSize(int parentSheetIndex, out int minSize, out int maxSize)
+        {
+            minSize = -1;
+            maxSize = -1;
+
+            // get data
+            Dictionary<int, string> data = this.Helper.Content.Load<Dictionary<int, string>>("Data\\Fish", ContentSource.GameContent);
+            if (!data.TryGetValue(parentSheetIndex, out string rawFields) || rawFields == null || !rawFields.Contains("/"))
+                return false;
+
+            // get field indexes
+            string[] fields = rawFields.Split('/');
+            int minSizeIndex = fields[1] == "trap"
+                ? 5
+                : 3;
+            int maxSizeIndex = minSizeIndex + 1;
+            if (fields.Length <= maxSizeIndex)
+                return false;
+
+            // parse fields
+            if (!int.TryParse(fields[minSizeIndex], out minSize))
+                minSize = 1;
+            if (!int.TryParse(fields[maxSizeIndex], out maxSize))
+                maxSize = 10;
+            return true;
         }
 
         private bool PerformObjectDropInAction(SObject dropIn, Farmer farmer, CrabPot pot)

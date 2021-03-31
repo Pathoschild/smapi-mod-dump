@@ -1,0 +1,13 @@
+url:
+   https://github.com/tesla1889tv/ControlValleyMod.git
+
+mods:
+   Control Valley
+
+latest commit:
+   commit 65accba504af28569a98b94cfafac2bb19bf570a
+   Author: tesla1889tv <itsglizzytime@gmail.com>
+   Date:   Sun Mar 28 14:21:17 2021 -0500
+   
+       Bump patch version
+   

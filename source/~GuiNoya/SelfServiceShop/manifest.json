@@ -15,6 +15,6 @@
 	"Description": "Enables you to buy in the shop if no one is at the counter but the owner is at the location",
 	"UniqueID": "GuiNoya.SelfServiceShop",
 	"EntryDll": "SelfServiceShop.dll",
-	"MinimumApiVersion": "2.10.2",
+	"MinimumApiVersion": "3.1.0",
 	"UpdateKeys": [ "Nexus:1622" ]
 }

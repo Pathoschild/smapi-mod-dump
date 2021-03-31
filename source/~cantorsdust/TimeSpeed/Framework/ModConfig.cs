@@ -25,10 +25,10 @@ namespace TimeSpeed.Framework
         /// <summary>The default number of seconds per 10-game-minutes, or <c>null</c> to freeze time globally. The game uses 7 seconds by default.</summary>
         public double? DefaultTickLength { get; set; } = 7.0;
 
-        /// <summary>The number of seconds per 10-game-minutes (or <c>null</c> to freeze time) for each location. The key can be a location name, 'Mine', or <see cref="LocationType"/>.</summary>
+        /// <summary>The number of seconds per 10-game-minutes (or <c>null</c> to freeze time) for each location. The key can be a location name or <see cref="LocationType"/> value.</summary>
         /// <remarks>Most location names can be found at "\Stardew Valley\Content\Maps" directory. They usually match the file name without its extension. 'Mine' is a special case which includes all mine maps.</remarks>
         /// <example>
-        /// This will set the Mines and Skull Cavern to 28 seconds per 10-game-minutes, freeze time indoors and use <see cref="DefaultTickLength"/> for outdoors:
+        /// This will set the Mines to 28 seconds per 10-game-minutes, freeze time indoors and use <see cref="DefaultTickLength"/> for outdoors:
         /// <code>
         /// "TickLengthByLocation": {
         ///     "Mine": 28,
@@ -52,15 +52,17 @@ namespace TimeSpeed.Framework
         /// }
         /// </code>
         /// </example>
-        public Dictionary<string, double?> TickLengthByLocation { get; set; } = new Dictionary<string, double?>
+        public Dictionary<string, double?> TickLengthByLocation { get; set; } = new(StringComparer.OrdinalIgnoreCase)
         {
             { LocationType.Indoors.ToString(), 14 },
             { LocationType.Outdoors.ToString(), 7 },
-            { LocationType.Mine.ToString(), 7 }
+            { LocationType.Mine.ToString(), 7 },
+            { LocationType.SkullCavern.ToString(), 7 },
+            { LocationType.VolcanoDungeon.ToString(), 7 }
         };
 
         /// <summary>Whether to change tick length on festival days.</summary>
-        public bool EnableOnFestivalDays { get; set; } = false;
+        public bool EnableOnFestivalDays { get; set; } = true;
 
         /// <summary>The time at which to freeze time everywhere (or <c>null</c> to disable this). This should be 24-hour military time (e.g. 800 for 8am, 1600 for 8pm, etc).</summary>
         public int? FreezeTimeAt { get; set; } = null;
@@ -68,8 +70,8 @@ namespace TimeSpeed.Framework
         /// <summary>Whether to show a message about the time settings when you enter a location.</summary>
         public bool LocationNotify { get; set; } = false;
 
-        /// <summary>The keyboard bindings used to control the flow of time. See available keys at <a href="https://msdn.microsoft.com/en-us/library/microsoft.xna.framework.input.keys.aspx" />. Set a key to null to disable it.</summary>
-        public ModControlsConfig Keys { get; set; } = new ModControlsConfig();
+        /// <summary>The keyboard bindings used to control the flow of time. See available keys at <a href="https://msdn.microsoft.com/en-us/library/microsoft.xna.framework.input.keys.aspx" />.</summary>
+        public ModControlsConfig Keys { get; set; } = new();
 
 
         /*********
@@ -108,12 +110,12 @@ namespace TimeSpeed.Framework
         /*********
         ** Private methods
         *********/
-        /// <summary>The method called after the config file is deserialised.</summary>
-        /// <param name="context">The deserialisation context.</param>
+        /// <summary>The method called after the config file is deserialized.</summary>
+        /// <param name="context">The deserialization context.</param>
         [OnDeserialized]
         private void OnDeserializedMethod(StreamingContext context)
         {
-            this.TickLengthByLocation = new Dictionary<string, double?>(this.TickLengthByLocation, StringComparer.OrdinalIgnoreCase);
+            this.TickLengthByLocation = new(this.TickLengthByLocation, StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>Get the tick length to apply for a given location, or <c>null</c> to freeze time.</summary>
@@ -123,15 +125,38 @@ namespace TimeSpeed.Framework
             // check by location name
             if (this.TickLengthByLocation.TryGetValue(location.Name, out double? tickLength))
                 return tickLength;
-            if (location is MineShaft && this.TickLengthByLocation.TryGetValue(LocationType.Mine.ToString(), out tickLength))
-                return tickLength;
 
             // check by location type
-            if (this.TickLengthByLocation.TryGetValue((location.IsOutdoors ? LocationType.Outdoors : LocationType.Indoors).ToString(), out tickLength))
-                return tickLength;
+            foreach (LocationType type in this.GetLocationTypes(location))
+            {
+                if (this.TickLengthByLocation.TryGetValue(type.ToString(), out tickLength))
+                    return tickLength;
+            }
 
             // default
             return this.DefaultTickLength;
+        }
+
+        /// <summary>Get the applicable location types in priority order.</summary>
+        /// <param name="location">The location to check.</param>
+        private IEnumerable<LocationType> GetLocationTypes(GameLocation location)
+        {
+            // specific type
+            if (location is MineShaft shaft)
+            {
+                yield return shaft.mineLevel <= 120
+                    ? LocationType.Mine
+                    : LocationType.SkullCavern;
+            }
+            else if (location is VolcanoDungeon)
+                yield return LocationType.VolcanoDungeon;
+            else if (location.Name == "DeepWoods" || location.Name.StartsWith("DeepWoods_"))
+                yield return LocationType.DeepWoods;
+
+            // indoors or outdoors
+            yield return location.IsOutdoors
+                ? LocationType.Outdoors
+                : LocationType.Indoors;
         }
     }
 }

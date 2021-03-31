@@ -5,9 +5,9 @@ mods:
    Flower Dancing
 
 latest commit:
-   commit 39d7921e15bab93f086cbb6c72b06ed4cd0675a2
-   Author: Kenny <jessetuan@comcast.net>
-   Date:   Tue Mar 2 19:50:01 2021 -0800
+   commit 8f4c8ad2ecd1959fe17b9282caaa70fa5d296eb0
+   Author: kenny2892 <50684573+kenny2892@users.noreply.github.com>
+   Date:   Tue Mar 23 21:35:15 2021 -0700
    
-       Made "Generic Mod Config Menu" Optional
+       Adding Link
    

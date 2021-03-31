@@ -1,0 +1,10 @@
+﻿{
+	"Name": "DailyPetTheAnimals",
+	"Author": "flowoeB",
+	"Version": "1.0.0",
+	"Description": "Pets all farm animals once per day",
+	"UniqueID": "flowoeB.DailyPetTheAnimals",
+	"EntryDll": "DailyPetTheAnimals.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": []
+}

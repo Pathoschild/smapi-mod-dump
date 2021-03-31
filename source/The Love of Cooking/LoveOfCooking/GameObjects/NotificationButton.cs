@@ -41,7 +41,7 @@ namespace LoveOfCooking.GameObjects
 		public NotificationButton()
 			: base(Game1.viewport.Width - 300 + 32, 8, 300, 284)
 		{
-			var sourceRect = new Rectangle(AssetManager.IconPosition.X, AssetManager.IconPosition.Y, 11, 14);
+			var sourceRect = new Rectangle(AssetManager.NotificationIconTargetArea.X, AssetManager.NotificationIconTargetArea.Y, 11, 14);
 			_position = new Vector2(xPositionOnScreen, yPositionOnScreen);
 			Button = new ClickableTextureComponent(
 				new Rectangle(xPositionOnScreen + 220, yPositionOnScreen + 240, 44, 46),
@@ -56,7 +56,7 @@ namespace LoveOfCooking.GameObjects
 
 		public override bool isWithinBounds(int x, int y)
 		{
-			return Button.containsPoint(x, y) && ModEntry.PendingNotifications.Count > 0;
+			return Button.containsPoint(x, y) && NotificationMenu.PendingNotifications.Count > 0;
 		}
 
 		public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -112,7 +112,7 @@ namespace LoveOfCooking.GameObjects
 				}
 			}
 
-			if (ModEntry.PendingNotifications.Count <= 0)
+			if (NotificationMenu.PendingNotifications.Count <= 0)
 				return;
 
 			b.Draw(Game1.mouseCursors,
@@ -125,7 +125,7 @@ namespace LoveOfCooking.GameObjects
 				SpriteEffects.None,
 				0.99f - 1f / 10000f);
 
-			if (_pulseTimer <= 0 || !ModEntry.HasUnreadNotifications)
+			if (_pulseTimer <= 0 || !NotificationMenu.HasUnreadNotifications)
 				return;
 
 			var scaleMult = 1f / (Math.Max(300f, Math.Abs(_pulseTimer % 1000 - 500)) / 500f);

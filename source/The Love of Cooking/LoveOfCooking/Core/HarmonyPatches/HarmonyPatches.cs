@@ -9,6 +9,7 @@
 *************************************************/
 
 using Harmony; // el diavolo
+using StardewValley;
 using System;
 
 namespace LoveOfCooking.Core.HarmonyPatches
@@ -43,6 +44,71 @@ namespace LoveOfCooking.Core.HarmonyPatches
 			catch (Exception ex)
 			{
 				Log.E("" + ex);
+			}
+			try
+			{
+				// Perform other miscellaneous patches
+
+				// Upgrade cooking tool in any instance it's claimed by the player, including through interactions with Clint's shop and mail delivery
+				harmony.Patch(
+					original: AccessTools.Method(typeof(StardewValley.Tools.GenericTool), "actionWhenClaimed"),
+					prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(GenericTool_ActionWhenClaimed_Prefix)));
+				// Handle sale price bonus profession for Cooking skill by affecting object sale multipliers
+				harmony.Patch(
+					original: AccessTools.Method(typeof(StardewValley.Object), "getPriceAfterMultipliers"),
+					prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Object_GetPriceAfterMultipliers_Postfix)));
+			}
+			catch (Exception ex)
+			{
+				Log.E("" + ex);
+			}
+		}
+
+		public static void GenericTool_ActionWhenClaimed_Prefix(ref StardewValley.Tools.GenericTool __instance)
+		{
+			if (Tools.IsThisCookingTool(__instance))
+			{
+				Log.D($"Collected {__instance?.Name ?? "null cooking tool"} (index {__instance.IndexOfMenuItemView})",
+					ModEntry.Instance.Config.DebugMode);
+				++ModEntry.Instance.States.Value.CookingToolLevel;
+			}
+		}
+
+		public static void Object_GetPriceAfterMultipliers_Postfix(StardewValley.Object __instance, ref float __result,
+			float startPrice, long specificPlayerID = -1L)
+		{
+			if (ModEntry.CookingSkillApi.IsEnabled())
+			{
+				var multiplier = 1f;
+				foreach (Farmer player in Game1.getAllFarmers())
+				{
+					if (Game1.player.useSeparateWallets)
+					{
+						if (specificPlayerID == -1)
+						{
+							if (player.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID || !player.isActive())
+							{
+								continue;
+							}
+						}
+						else if (player.UniqueMultiplayerID != specificPlayerID)
+						{
+							continue;
+						}
+					}
+					else if (!player.isActive())
+					{
+						continue;
+					}
+
+					// Add bonus price for having the sale value Cooking skill profession
+					if (ModEntry.CookingSkillApi.HasProfession(GameObjects.ICookingSkillAPI.Profession.SalePrice, player.UniqueMultiplayerID)
+						&& __instance.Category == ModEntry.CookingCategory)
+					{
+						multiplier *= GameObjects.CookingSkill.SalePriceModifier;
+					}
+				}
+				__result += startPrice * multiplier;
 			}
 		}
 	}

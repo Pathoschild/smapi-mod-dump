@@ -10,11 +10,14 @@
 
 {
   "Name": "Farm Animal Variety Redux",
-  "Author": "EpicBellyFlop45",
+  "Author": "Satozaki",
   "Version": "1.0.0",
   "Description": "Adds ability to load custom animals",
-  "UniqueID": "EpicBellyFlop45.FarmAnimalVarietyRedux",
+  "UniqueID": "Satozaki.FarmAnimalVarietyRedux",
   "EntryDll": "FarmAnimalVarietyRedux.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:" ]
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:" ],
+  "Dependencies": [
+    { "UniqueID": "Pathoschild.ContentPatcher", "Required": false }
+  ]
 }

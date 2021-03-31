@@ -20,12 +20,15 @@ namespace MailServicesMod
     {
         public bool DisableToolDeliveryService;
         public bool DisableToolShipmentService;
+        public int ToolShipmentServiceFee;
         public bool DisableQuestService;
+        public int QuestServiceFee;
         public bool DisableGiftService;
-        public bool ShowDialogOnItemDelivery;
+        public int GiftServiceFee;
         public int GiftChoicePageSize = 5;
         public bool EnableJealousyFromMailedGifts;
         public bool EnableGiftToNpcWithMaxFriendship;
+        public bool ShowDialogOnItemDelivery;
         public bool DisablePerPlayerConfig;
         public Dictionary<long, PlayerRecoveryConfig> PlayerRecoveryConfig = new Dictionary<long, PlayerRecoveryConfig>();
     }

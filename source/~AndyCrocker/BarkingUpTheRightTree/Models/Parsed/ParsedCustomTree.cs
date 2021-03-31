@@ -8,13 +8,15 @@
 **
 *************************************************/
 
+using BarkingUpTheRightTree.Models.Converted;
+using BarkingUpTheRightTree.Tools;
 using System;
 using System.Collections.Generic;
 
 namespace BarkingUpTheRightTree.Models.Parsed
 {
     /// <summary>Represents a custom tree.</summary>
-    /// <remarks>This is a version of <see cref="BarkingUpTheRightTree.Models.Converted.CustomTree"/> that uses <see cref="BarkingUpTheRightTree.Models.Parsed.ParsedTapperTimedProduct"/> and <see cref="BarkingUpTheRightTree.Models.Parsed.ParsedTimedProduct"/>.<br/>The reason this is done is so content packs can have tokens in place of the ids to call mod APIs to get the id (so JsonAsset items can be used for example).</remarks>
+    /// <remarks>This is a version of <see cref="CustomTree"/> that uses <see cref="ParsedTapperTimedProduct"/> and <see cref="ParsedTimedProduct"/>.<br/>The reason this is done is so content packs can have tokens in place of the ids to call mod APIs to get the id (so JsonAsset items can be used for example).</remarks>
     public class ParsedCustomTree
     {
         /*********
@@ -47,7 +49,7 @@ namespace BarkingUpTheRightTree.Models.Parsed
         /// <summary>The tree will only get loaded if none of the listed mods are present.</summary>
         public List<string> ExcludeIfModIsPresent { get; set; }
 
-        /// <summary>The item the tree drops when using the <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/> tool on it.</summary>
+        /// <summary>The item the tree drops when using the <see cref="BarkRemover"/> tool on it.</summary>
         public ParsedTimedProduct BarkProduct { get; set; }
 
         /// <summary>The chance the tree has to grow a stage (at the start of each day) when it's unfertilised.</summary>
@@ -70,7 +72,7 @@ namespace BarkingUpTheRightTree.Models.Parsed
         /// <param name="shakingProducts">The items the tree can drop whenever it's shaken.</param>
         /// <param name="includeIfModIsPresent">The tree will only get loaded if atleast one of the listed mods are present.</param>
         /// <param name="excludeIfModIsPresent">The tree will only get loaded if none of the listed mods are present.</param>
-        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/> tool on it.</param>
+        /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkRemover"/> tool on it.</param>
         /// <param name="unfertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's unfertilised.</param>
         /// <param name="fertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's fertilised.</param>
         public ParsedCustomTree(string name, ParsedTapperTimedProduct tappedProduct, string wood, bool dropsSap, string seed, int requiredToolLevel, List<ParsedSeasonalTimedProduct> shakingProducts, List<string> includeIfModIsPresent, List<string> excludeIfModIsPresent, ParsedTimedProduct barkProduct, float unfertilisedGrowthChance, float fertilisedGrowthChance)

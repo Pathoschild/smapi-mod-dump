@@ -1,5 +1,6 @@
 {
   "moreGrassOnOtherFarms": false,
   "moreRocksOnTheMines": true,
-  "moreForageInTheForest": false
+  "moreForageInTheForest": false,
+  "numberOfSpawns": 1
 }

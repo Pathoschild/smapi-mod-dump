@@ -17,8 +17,8 @@ The movement speed and charging times can be configured in the mod's `config.jso
 ## Config
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
 
-* `MovementSpeedMultiplier`: The movement speed is multiplied by this amount. The default is 1.5, meaning 50% faster movement. Set this to 1 to disable the increase in movement speed. 
-* `ToolChargeDelay`: Time required for charging the hoe or watering can in ms. Normally this is 600ms. The default is 600/1.5 = 400, meaning 50% faster charging. Set this to 600 to disable faster tool charging.
+* `MovementSpeedMultiplier`: The movement speed is multiplied by this amount. The mod's default is 1.5, meaning 50% faster movement. Set this to 1 to disable the increase in movement speed. 
+* `ToolChargeDelay`: Time required for charging the hoe or watering can in ms. Normally this is 600ms. The mod's default is 600/1.5 = 400, meaning 50% faster charging. Set this to 600 to disable faster tool charging.
 
 ## Dependencies
 This mod requires the following mods to be installed:
@@ -43,3 +43,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 3.1:
 * Updated for Stardew Valley 1.5
+
+#### 4.0:
+* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).

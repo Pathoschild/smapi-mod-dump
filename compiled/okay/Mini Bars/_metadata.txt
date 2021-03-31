@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8329
+IDs: Ophaneom.MiniBars
+update keys: Nexus:8329, GitHub:Ophaneom/Mini-Bars

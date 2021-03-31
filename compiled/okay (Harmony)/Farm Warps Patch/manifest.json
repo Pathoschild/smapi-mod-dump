@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Farm Warps Patch",
+  "Author": "tlitookilakin",
+  "Version": "1.0.0",
+  "Description": "Patches the farm obelisk to work correctly with custom farm warps.",
+  "UniqueID": "tlitookilakin.farmwarpspatch",
+  "EntryDll": "FarmWarpsPatch.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8236", "Moddrop:926207" ]
+}

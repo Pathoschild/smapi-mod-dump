@@ -22,6 +22,7 @@ namespace LastDayToPlant
         private List<Crop> SpringCrops;
         private List<Crop> SummerCrops;
         private List<Crop> FallCrops;
+        private List<Crop> WinterCrops;
 
         private const int DaysInAMonth = 28;
         private IModHelper MyHelper;
@@ -31,10 +32,68 @@ namespace LastDayToPlant
         {
             MyHelper = helper;
             MyConfig = MyHelper.ReadConfig<ModConfig>();
-            this.Monitor.Log("Config Loaded", LogLevel.Info);
-            SpringCrops = SetSpringCrops();
-            SummerCrops = SetSummerCrops();
-            FallCrops = SetFallCrops();
+
+            if (MyConfig.IncludeBaseGameCrops)
+            {
+                SpringCrops = SetSpringCrops();
+                SummerCrops = SetSummerCrops();
+                FallCrops = SetFallCrops();
+                WinterCrops = new List<Crop>();
+            }
+            else
+            {
+                SpringCrops = new List<Crop>();
+                SummerCrops = new List<Crop>();
+                FallCrops = new List<Crop>();
+                WinterCrops = new List<Crop>();
+            }
+
+            List<ModCompat> modsToShow = new List<ModCompat>();
+
+            // Load Mods
+            if(MyConfig.PPJAFruitsAndVeggiesPath != "")
+            {
+                this.Monitor.Log("Loading [PPJA] Fruits and Veggies", LogLevel.Info);
+                ModCompat ppjaFruitsAndVeggies = new ModCompat("[PPJA] Fruits and Veggies", MyConfig.PPJAFruitsAndVeggiesPath + @"\[JA] Fruits and Veggies\Crops\");
+                modsToShow.Add(ppjaFruitsAndVeggies);
+            }
+
+            if (MyConfig.PPJAFantasyCropsPath != "")
+            {
+                this.Monitor.Log("Loading [PPJA] Fantasy Crops", LogLevel.Info);
+                ModCompat ppjaFruitsAndVeggies = new ModCompat("[PPJA] Fantasy Crops", MyConfig.PPJAFantasyCropsPath + @"\[JA] Fantasy Crops\Crops\");
+                modsToShow.Add(ppjaFruitsAndVeggies);
+            }
+
+            if (MyConfig.PPJAAncientCropsPath != "")
+            {
+                this.Monitor.Log("Loading [PPJA] Ancient Crops", LogLevel.Info);
+                ModCompat ppjaFruitsAndVeggies = new ModCompat("[PPJA] Ancient Crops", MyConfig.PPJAAncientCropsPath + @"\[JA] Ancient Crops\Crops\");
+                modsToShow.Add(ppjaFruitsAndVeggies);
+            }
+
+            if (MyConfig.PPJACannabisKitPath != "")
+            {
+                this.Monitor.Log("Loading [PPJA] Cannabis Kit", LogLevel.Info);
+                ModCompat ppjaFruitsAndVeggies = new ModCompat("[PPJA] Cannabis Kit", MyConfig.PPJACannabisKitPath + @"\[JA] Cannabis Kit\Crops\");
+                modsToShow.Add(ppjaFruitsAndVeggies);
+            }
+
+            if (MyConfig.BonstersFruitAndVeggiesPath != "")
+            {
+                this.Monitor.Log("Loading Bonster's Fruit & Veggies", LogLevel.Info);
+                ModCompat ppjaFruitsAndVeggies = new ModCompat("Bonster's Fruit & Veggies", MyConfig.BonstersFruitAndVeggiesPath + @"\Crops\");
+                modsToShow.Add(ppjaFruitsAndVeggies);
+            }
+
+            foreach (ModCompat mod in modsToShow)
+            {
+                ModCompatResult result = mod.LoadCrops(SpringCrops, SummerCrops, FallCrops, WinterCrops, MyHelper);
+
+                if (result == ModCompatResult.Success) { continue; }
+
+                this.Monitor.Log($"Unable to load {mod.Name}. Error Code: {result}", LogLevel.Error);
+            }
 
             MyHelper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
         }
@@ -69,7 +128,8 @@ namespace LastDayToPlant
                     ShowCrops(FallCrops, currentDay);
                     break;
                 case "winter":
-                    return; // No crops to plant in winter
+                    ShowCrops(WinterCrops, currentDay);
+                    break;
                 default:
                     return;
             }

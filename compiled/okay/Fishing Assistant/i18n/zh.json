@@ -3,6 +3,14 @@
 	"mod.name" : "钓鱼助手",
 	"mod.status.enable" : "启用",
 	"mod.status.disable" : "禁用",
+	"general.position.left" : "左侧",
+	"general.position.right" : "右侧",
+	"general.position.top" : "顶部",
+	"general.position.bottom" : "底部",
+	"general.position.upper-right" : "右上角",
+	"general.position.upper-left" : "左上角",
+	"general.position.lower-right" : "右下角",
+	"general.position.lower-left" : "左下角",	
 
 	//HUD messages
 	"hud.message.mod.toggle" : "{0} 钓鱼助手。",
@@ -14,7 +22,9 @@
 	"hud.message.inventory.full" : "物品栏已满。",
 	"hud.message.auto.disable" : "在 {0} 自动禁用模组",
 	"hud.message.config.saved" : "正在保存新配置",
-
+	"hud.message.auto.attach.bait" : "自动安装鱼饵：{0}",
+	"hud.message.auto.attach.tackle" : "自动安装钓具：{0}",
+	
 	//Config Menu
 	"menu.config.header.control": "控制",
 	"menu.config.button.toggle.mod": "开关模组按钮",
@@ -26,12 +36,24 @@
 
 	"menu.config.header.general": "常规",
 	"menu.config.label.mod.status.position": "模组状态位置",
-	"menu.config.label.enable.auto.pause.fishing": "启用自动暂停钓鱼",
+	"menu.config.label.auto.pause.fishing": "自动暂停钓鱼",
 	"menu.config.label.pause.fishing.time": "暂停钓鱼时间",
+	"menu.config.label.auto.eat.food": "自动吃食物",
+	"menu.config.label.energy.to.eat.food": "吃的能量",
+	"menu.config.label.allow.eat.fish": "允许吃鱼",
+	"menu.config.etc.allow.eat.fish.warning": "小心，传说之鱼可能会被吃掉。",
+	"menu.config.etc.when-low-energy": "低能量时",
 
 	"menu.config.header.fishing.rod": "鱼竿",
+	"menu.config.label.auto.attach.bait": "自动安装鱼饵",
+	"menu.config.label.auto.attach.tackle": "自动安装钓具",
 	"menu.config.label.infinite.bait": "无限鱼饵",
 	"menu.config.label.infinite.tackle": "无限钓具",
+	"menu.config.label.enchantment.auto-hook": "添加自动上钩附魔",
+	"menu.config.label.enchantment.efficient": "添加省力附魔",
+	"menu.config.label.enchantment.master": "添加精通附魔",
+	"menu.config.label.enchantment.preserving": "添加耐用附魔",
+	"menu.config.label.enchantment.when-held": "仅在持有时添加附魔",
 
 	"menu.config.header.mini-game": "迷你钓鱼游戏",
 	"menu.config.label.always.perfect": "总是完美",

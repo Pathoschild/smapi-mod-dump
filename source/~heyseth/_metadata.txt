@@ -1,0 +1,14 @@
+url:
+   https://github.com/heyseth/SDVMods.git
+
+mods:
+   Pause While Sitting
+   Remember Your Umbrella
+
+latest commit:
+   commit e6dbcbf971ee35641a9776d3e20f1703a08c4cde
+   Author: heyseth <sethmillerp@gmail.com>
+   Date:   Tue Mar 30 11:57:17 2021 -0700
+   
+       Initial release
+   

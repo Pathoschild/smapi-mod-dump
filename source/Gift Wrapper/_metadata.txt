@@ -1,0 +1,13 @@
+url:
+   https://github.com/b-b-blueberry/GiftWrapper.git
+
+mods:
+   Gift Wrapper
+
+latest commit:
+   commit df90db0b76f09841385f9e64aed0455ff32d2f22
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Tue Mar 9 22:28:09 2021 +1100
+   
+       Added new Nexus mod page media.
+   

@@ -7,6 +7,13 @@ for queries and analysis.**
 ----
 
 # Release notes
+## 1.7
+Released 26 March 2021 for SMAPI 3.9.5 or later. Updated by Pathoschild.
+
+* Added optional key to toggle recatch mode.
+* Updated for split-screen mode in Stardew Valley 1.5.
+* Fixed compatibility with [unofficial 64-bit mode](https://stardewvalleywiki.com/Modding:Migrate_to_64-bit_on_Windows).
+
 ## 1.6.2
 Released 26 November 2019 for SMAPI 3.0 or later. Updated by Pathoschild.
 

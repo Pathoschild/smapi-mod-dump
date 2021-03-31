@@ -5,9 +5,12 @@ mods:
    Multitool
 
 latest commit:
-   commit e28fa18e235f771a1c55702bb9385b8b95863de7
-   Author: miome <miome.geo@yahoo.com>
-   Date:   Thu Feb 20 19:44:18 2020 -0500
+   commit ed3a190bd9523c8a3cc2381db0be8d54df86455a
+   Merge: 22808fe 4717672
+   Author: Miome <miome.geo@yahoo.com>
+   Date:   Sun Mar 21 15:31:57 2021 -0400
    
-       Update compatibility info
+       Merge pull request #2 from Pathoschild/multi-key-bindings
+       
+       Add support for multi-key bindings
    

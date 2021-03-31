@@ -5,12 +5,9 @@ mods:
    Combine Machines
 
 latest commit:
-   commit f5980893bcfbbd7e0a9fbc8dd8d86aa82178604e
-   Merge: 463b608 59783bf
-   Author: SlayerDharok <kevinaugustino@hotmail.com>
-   Date:   Tue Mar 2 20:03:08 2021 -0500
+   commit 4362fc824515cd8d155709dd9ea22b2b17f05216
+   Author: Kevin Augustino <kevinaugustino@hotmail.com>
+   Date:   Sat Mar 6 20:21:51 2021 -0500
    
-       Merge pull request #1 from ForryS/patch-1
-       
-       Russian translation
+       Added controller support. SButton.MouseLeft and SButton.MouseRight replaced with IsUseToolButton and IsActionButton
    

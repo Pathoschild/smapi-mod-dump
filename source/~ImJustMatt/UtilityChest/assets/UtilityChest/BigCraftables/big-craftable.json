@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Utility Chest",
+  "Description": "\"The true crimefighter always carries everything he needs in his utility belt, Robin.\" - Batman",
+  "NameLocalization": {
+    //"es": "", //Spanish
+    //"ko": "",
+    //"de": "", //German
+    //"fr": "", //French
+    //"hu": "", //Hungarian
+    //"it": "", //Italian
+    //"ja": "", //Japanese
+    //"pt": "", //Portuguese
+    //"ru": "", //Russian
+    //"tr": "", //Turkish
+    //"zh": "" //Chinese (Simplified)
+  },
+  "DescriptionLocalization": {
+    //"es": "", //Spanish
+    //"ko": "",
+    //"de": "", //German
+    //"fr": "", //French
+    //"hu": "", //Hungarian
+    //"it": "", //Italian
+    //"ja": "", //Japanese
+    //"pt": "", //Portuguese
+    //"ru": "", //Russian
+    //"tr": "", //Turkish
+    //"zh": "" //Chinese (Simplified)
+  }
+}

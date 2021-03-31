@@ -43,6 +43,7 @@ namespace MultitoolMod.Framework
         public Hoe hoe;
         public IDictionary<string, Tool> attachedTools;
         public MultitoolMod mod;
+        public ICursorPosition cursor;
 
         public Multitool(MultitoolMod m)
         {

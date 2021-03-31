@@ -21,10 +21,10 @@ namespace LastDayToPlant
     {
         public string Name { get; set; }
         public int DaysToMature { get; set; }
-        public string Message { get; private set; }
-        public string MessageSpeedGro { get; private set; }
-        public string MessageDelxueSpeedGro { get; private set; }
-        public string MessageHyperSpeedGro { get; private set; }
+        public string Message { get; set; }
+        public string MessageSpeedGro { get; set; }
+        public string MessageDelxueSpeedGro { get; set; }
+        public string MessageHyperSpeedGro { get; set; }
 
 
         public Crop(string name, int daysToMature)
@@ -46,6 +46,11 @@ namespace LastDayToPlant
             };
 
             return crop;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

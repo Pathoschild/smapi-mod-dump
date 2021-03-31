@@ -1,0 +1,64 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Gem Composer",
+    "Description": "Can turn gem dust into new gems.",
+    "Price": 50,
+    "ProvidesLight": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 390,
+                "Count": 99
+            },
+            {
+                "Object": 336,
+                "Count": 5
+            },
+            {
+                "Object": 910,
+                "Count": 1
+            },
+            {
+                "Object": 787,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false
+    },
+    "NameLocalization": {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        "pt": "Recompositor de Gemas"
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    },
+    "DescriptionLocalization": {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        "pt": "Recompõe pó de gema em novas gemas."
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    }
+}

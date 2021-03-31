@@ -36,12 +36,11 @@ namespace CustomDeathPenaltyPlus
         /// <returns>The built string</returns>
         static string ResponseBuilder(string person, string location)
         {
-           
             // Create new string to build on
             StringBuilder response = new StringBuilder($"speak Harvey \"{person} found you unconscious {location}... I had to perform an emergency surgery on you!#$b#Be a little more careful next time, okay?$s\"");
 
             // Is WakeupNextDayinClinic true?
-            if (config.DeathPenalty.WakeupNextDayinClinic == true)
+            if (config.OtherPenalties.WakeupNextDayinClinic == true)
             {
                 // Yes, build string accordingly
 
@@ -49,11 +48,15 @@ namespace CustomDeathPenaltyPlus
             }
 
             // Is FriendshipPenalty greater than 0?
-            if (config.DeathPenalty.FriendshipPenalty > 0)
+            if (config.OtherPenalties.HarveyFriendshipChange < 0)
             {
                 // Yes, build string accordingly
 
                 response.Replace("Be a little more careful next time, okay?", "You really need to be more careful, I don't like having to patch you up after you do something dangerous.");
+            }
+            else if(config.OtherPenalties.HarveyFriendshipChange > 0)
+            {
+                response.Replace("Be a little more careful next time, okay?$s", "While it's nice to see you, I hate having to patch you up...#$b#Please be a little more careful next time, okay?$s");
             }
 
             // Return the built string
@@ -178,7 +181,7 @@ namespace CustomDeathPenaltyPlus
                 var eventedits = asset.AsDictionary<string, string>().Data;
 
                 // Is WakeupNextDayinClinic true?
-                if (config.DeathPenalty.WakeupNextDayinClinic == true)
+                if (config.OtherPenalties.WakeupNextDayinClinic == true)
                 {
                     eventedits["PlayerKilled"] = $"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}","in the mine")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
                 }
@@ -209,7 +212,7 @@ namespace CustomDeathPenaltyPlus
                 var eventedits = asset.AsDictionary<string, string>().Data;
 
                 // Is WakeupNextDayinClinic true?
-                if (config.DeathPenalty.WakeupNextDayinClinic == true)
+                if (config.OtherPenalties.WakeupNextDayinClinic == true)
                 {
                     eventedits["PlayerKilled"] = $"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}", "on the island shore")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
                 }

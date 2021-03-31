@@ -77,6 +77,10 @@ namespace GreenhouseGatherers.GreenhouseGatherers.Objects
             base.type.Value = "Crafting";
             base.bigCraftable.Value = true;
             base.canBeSetDown.Value = true;
+
+            // Setting SpecialChestType to -1 so we can bypass Automate's default chest logic
+            // TODO: Make this only happen if Automate is installed
+            this.SpecialChestType = (SpecialChestTypes)(-1);
         }
 
         public void SpawnJunimos(GameLocation location, int maxJunimosToSpawn = -1)

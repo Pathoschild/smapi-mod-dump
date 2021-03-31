@@ -15,7 +15,7 @@ using System.Xml.Serialization;
 namespace BarkingUpTheRightTree.Tools
 {
     /// <summary>Represents the bark remover tool.</summary>
-    [XmlType("Mods_BURT_BarkRemover")]
+    [XmlType("Mods_BURT_BarkRemover")] // this is required for SpaceCore to be able to serialise the tool
     public class BarkRemover : Tool
     {
         /*********
@@ -25,8 +25,8 @@ namespace BarkingUpTheRightTree.Tools
         public BarkRemover()
             : base("Bark Remover", 0, 546, 572, false) { }
 
-        /// <summary>Gets a new instance of <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/>.</summary>
-        /// <returns>A new <see cref="BarkingUpTheRightTree.Tools.BarkRemover"/> instance.</returns>
+        /// <summary>Gets a new instance of <see cref="BarkRemover"/>.</summary>
+        /// <returns>A new <see cref="BarkRemover"/> instance.</returns>
         public override Item getOne() => new BarkRemover();
 
         /// <summary>Whether the bark remover can be trashed.</summary>

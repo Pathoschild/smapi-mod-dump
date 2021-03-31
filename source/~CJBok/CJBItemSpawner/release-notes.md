@@ -9,6 +9,26 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 2.1.2
+Released 27 March 2021 for SMAPI 3.9.5 or later.
+
+* Fixed compatibility with [unofficial 64-bit mode](https://stardewvalleywiki.com/Modding:Migrate_to_64-bit_on_Windows).
+
+## 2.1.1
+Released 21 March 2021 for SMAPI 3.9 or later.
+
+* Closing the gamepad text entry UI now snaps to the item grid.
+* Fixed menu exiting if you type 'e' in the search box with 2.1.
+* Fixed unable to deselect textbox with 2.1.
+
+## 2.1
+Released 20 March 2021 for SMAPI 3.9 or later.
+
+* Added support for [multi-key bindings](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Multi-key_bindings).
+* Improved controller support (thanks to b-b-blueberry!).
+* Fixed menu background not handling UI scaling correctly.
+* Improved translations. Thanks to Alucard92 (updated Spanish), horizon98 (updated Chinese), Kareolis (updated Russian), and KediDili (updated Turkish)!
+
 ## 2.0.2
 Released 21 December 2020 for SMAPI 3.8 or later.
 

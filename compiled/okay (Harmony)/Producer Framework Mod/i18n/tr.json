@@ -1,0 +1,15 @@
+﻿{
+	"Message.Requirement.Amount": "{{amount}} kadar {{objectName}} gerekli",
+	"Message.Requirement.Quality": "Farklı kalite gerekli",
+	"Message.Requirement.Fuel": "Gerekli malzeme eksik",
+	"Message.Requirement.Season": "Farklı mevsim gerekli",
+	"Message.Requirement.Weather": "Farklı hava durumu gerekli",
+	"Message.Requirement.Location": "Farklı konum gerekli",
+	"Message.Requirement.InputParent": "Farklı tür {{objectName}} gerekli",
+	"Message.Condition.Location": "Burada çalışamaz",
+	"Message.Condition.Season": "Bu mevsimde çalışamaz",
+	"Object.Category.Meat": "Et (Herhangi)",
+	"Object.Category.MetalResources": "Metal Kaynak (Herhangi)",
+	"Object.Category.BuildingResources": "İnşaat Malzemesi (Herhangi)",
+	"Object.Category.TappedTreeProduct": "Akıtılmış Ağaç Ürünü (Herhangi)"
+}

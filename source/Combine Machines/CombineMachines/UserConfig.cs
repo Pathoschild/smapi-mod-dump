@@ -115,7 +115,10 @@ namespace CombineMachines
 
             this.MinimumEffect = 0.25;
             this.CombinePenalty = 0.03;
-            this.CombineKeyNames = new List<string>() { SButton.LeftControl.ToString(), SButton.RightControl.ToString() };
+            this.CombineKeyNames = new List<string>() {
+                SButton.LeftControl.ToString(), SButton.RightControl.ToString(),
+                SButton.LeftShoulder.ToString(), SButton.RightShoulder.ToString()
+            };
 
             this.ProcessingMode = ModEntry.IsAutomateModInstalled ? ProcessingMode.IncreaseSpeed : ProcessingMode.MultiplyItems;
             if (ProcessingMode == ProcessingMode.IncreaseSpeed)

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4721
+IDs: blueberry.GiftWrapper
+update keys: Nexus:4721, GitHub:b-b-blueberry/GiftWrapper

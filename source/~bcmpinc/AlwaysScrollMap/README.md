@@ -29,6 +29,7 @@ This mod requires the following mods to be installed:
 
 * [SMAPI](https://www.nexusmods.com/stardewvalley/mods/2400)
 * [StardewHack](https://www.nexusmods.com/stardewvalley/mods/3213)
+* [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) - optional
 
 ## Known bugs
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
@@ -51,3 +52,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 2.0:
 * Updated for Stardew Valley 1.4
+
+#### 4.0:
+* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).

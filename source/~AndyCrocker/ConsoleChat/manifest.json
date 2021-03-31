@@ -10,10 +10,10 @@
 
 {
   "Name": "Console Chat",
-  "Author": "EpicBellyFlop45",
+  "Author": "Satozaki",
   "Version": "1.0.1",
   "Description": "Logs chat in console, and enables you to speak from console",
-  "UniqueID": "EpicBellyFlop45.ConsoleChat",
+  "UniqueID": "Satozaki.ConsoleChat",
   "EntryDll": "ConsoleChat.dll",
   "MinimumApiVersion": "2.9",
   "UpdateKeys": [ "Nexus:3768" ]

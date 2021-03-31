@@ -79,7 +79,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 
 		public static void HasCompletedCommunityCentre_Postfix(Farmer __instance, ref bool __result)
 		{
-			__result &= __instance.mailReceived.Contains("cc" + ModEntry.CommunityCentreAreaName);
+			__result &= __instance.mailReceived.Contains("cc" + Bundles.CommunityCentreAreaName);
 		}
 
 		/// <summary>
@@ -89,9 +89,9 @@ namespace LoveOfCooking.Core.HarmonyPatches
 		{
 			try
 			{
-				if (areaNumber != ModEntry.CommunityCentreAreaNumber || ModEntry.IsCommunityCentreComplete() || ModEntry.IsAbandonedJojaMartBundleAvailable())
+				if (areaNumber != Bundles.CommunityCentreAreaNumber || Bundles.IsCommunityCentreComplete() || Bundles.IsAbandonedJojaMartBundleAvailable())
 					return true;
-				__result = ModEntry.CommunityCentreAreaName;
+				__result = Bundles.CommunityCentreAreaName;
 				return false;
 			}
 			catch (Exception e)
@@ -109,9 +109,9 @@ namespace LoveOfCooking.Core.HarmonyPatches
 		{
 			try
 			{
-				if (name != ModEntry.CommunityCentreAreaName)
+				if (name != Bundles.CommunityCentreAreaName)
 					return true;
-				__result = ModEntry.CommunityCentreAreaNumber;
+				__result = Bundles.CommunityCentreAreaNumber;
 				return false;
 			}
 			catch (Exception e)
@@ -130,9 +130,9 @@ namespace LoveOfCooking.Core.HarmonyPatches
 			try
 			{
 				Log.T($"CC_AreaNumberFromLocation_Prefix(tileLocation={tileLocation.ToString()})");
-				if (!new Rectangle(0, 0, 11, 11).Contains(Utility.Vector2ToPoint(tileLocation)) || ModEntry.IsCommunityCentreComplete() || ModEntry.IsAbandonedJojaMartBundleAvailable())
+				if (!new Rectangle(0, 0, 11, 11).Contains(Utility.Vector2ToPoint(tileLocation)) || Bundles.IsCommunityCentreComplete() || Bundles.IsAbandonedJojaMartBundleAvailable())
 					return true;
-				__result = ModEntry.CommunityCentreAreaNumber;
+				__result = Bundles.CommunityCentreAreaNumber;
 				return false;
 			}
 			catch (Exception e)
@@ -150,7 +150,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 		{
 			try
 			{
-				if (areaNumber != ModEntry.CommunityCentreAreaNumber || ModEntry.IsCommunityCentreComplete() || ModEntry.IsAbandonedJojaMartBundleAvailable())
+				if (areaNumber != Bundles.CommunityCentreAreaNumber || Bundles.IsCommunityCentreComplete() || Bundles.IsAbandonedJojaMartBundleAvailable())
 					return true;
 				__result = ModEntry.Instance.Helper.Translation.Get("world.community_centre.kitchen");
 				return false;
@@ -170,7 +170,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 		{
 			try
 			{
-				if (areaNumber != ModEntry.CommunityCentreAreaNumber || ModEntry.IsCommunityCentreComplete() || ModEntry.IsAbandonedJojaMartBundleAvailable())
+				if (areaNumber != Bundles.CommunityCentreAreaNumber || Bundles.IsCommunityCentreComplete() || Bundles.IsAbandonedJojaMartBundleAvailable())
 					return true;
 				__result = ModEntry.Instance.Helper.Translation.Get("world.community_centre.kitchen");
 				return false;
@@ -192,12 +192,12 @@ namespace LoveOfCooking.Core.HarmonyPatches
 			try
 			{
 				Log.T($"CC_LoadArea_Prefix(area={area})");
-				if (area != ModEntry.CommunityCentreAreaNumber || ModEntry.IsCommunityCentreComplete() || ModEntry.IsAbandonedJojaMartBundleAvailable())
+				if (area != Bundles.CommunityCentreAreaNumber || Bundles.IsCommunityCentreComplete() || Bundles.IsAbandonedJojaMartBundleAvailable())
 					return true;
 
-				var areaToRefurbish = area != ModEntry.CommunityCentreAreaNumber
+				var areaToRefurbish = area != Bundles.CommunityCentreAreaNumber
 					? ModEntry.Instance.Helper.Reflection.GetMethod(__instance, "getAreaBounds").Invoke<Rectangle>(area)
-					: ModEntry.CommunityCentreArea;
+					: Bundles.CommunityCentreArea;
 				var refurbishedMap = Game1.game1.xTileContent.Load<Map>("Maps\\CommunityCenter_Refurbished");
 
 				//PyTK.Extensions.PyMaps.mergeInto(__instance.Map, refurbishedMap, Vector2.Zero, ModEntry.CommunityCentreArea);
@@ -227,9 +227,9 @@ namespace LoveOfCooking.Core.HarmonyPatches
 							{
 								Game1.player.Position = new Vector2(2080f, 576f);
 							}
-							if (refurbishedMap.GetLayer("Buildings").Tiles[x, y].TileIndex == 634)
+							if (refurbishedMap.GetLayer("Buildings").Tiles[x, y].TileIndex == Bundles.FridgeTileIndexes[1])
 							{
-								ModEntry.CommunityCentreFridgePosition = new Vector2(x, y);
+								Bundles.FridgeTilePosition = new Vector2(x, y);
 							}
 						}
 						else
@@ -290,10 +290,10 @@ namespace LoveOfCooking.Core.HarmonyPatches
 			try
 			{
 				Log.T($"CC_IsJunimoNoteAtArea_Prefix(area={area})");
-				if (area != ModEntry.CommunityCentreAreaNumber || ModEntry.IsCommunityCentreComplete() || ModEntry.IsAbandonedJojaMartBundleAvailable())
+				if (area != Bundles.CommunityCentreAreaNumber || Bundles.IsCommunityCentreComplete() || Bundles.IsAbandonedJojaMartBundleAvailable())
 					return true;
 
-				var p = ModEntry.CommunityCentreNotePosition;
+				var p = Bundles.CommunityCentreNotePosition;
 				__result = __instance.map.GetLayer("Buildings").Tiles[p.X, p.Y] != null;
 				return false;
 			}
@@ -313,17 +313,17 @@ namespace LoveOfCooking.Core.HarmonyPatches
 		{
 			try
 			{
-				if (ModEntry.IsCommunityCentreComplete() && ModEntry.IsAbandonedJojaMartBundleAvailable()
-					&& (Game1.netWorldState.Value.BundleData.Keys.Any(key => key.StartsWith(ModEntry.CommunityCentreAreaName))))
+				if (Bundles.IsCommunityCentreComplete() && Bundles.IsAbandonedJojaMartBundleAvailable()
+					&& (Game1.netWorldState.Value.BundleData.Keys.Any(key => key.StartsWith(Bundles.CommunityCentreAreaName))))
 				{
 					Log.D($"ShouldNoteAppearInArea removing custom bundle data.",
 						ModEntry.Instance.Config.DebugMode);
-					ModEntry.Instance.SaveAndUnloadBundleData();
+					Bundles.SaveAndUnloadBundleData();
 				}
 
-				if (area != ModEntry.CommunityCentreAreaNumber)
+				if (area != Bundles.CommunityCentreAreaNumber)
 					return true;
-				__result = !ModEntry.Instance.IsCommunityCentreKitchenCompleted()
+				__result = !Bundles.IsCommunityCentreKitchenComplete()
 					&& __instance.numberOfCompleteBundles() > (ModEntry.Instance.Config.DebugMode ? 0 : 2);
 				return false;
 			}
@@ -351,10 +351,10 @@ namespace LoveOfCooking.Core.HarmonyPatches
 			{
 				Log.T($"CC_AddJunimoNote_Prefix(area={area})");
 
-				if (area != ModEntry.CommunityCentreAreaNumber || ModEntry.IsCommunityCentreComplete() || ModEntry.IsAbandonedJojaMartBundleAvailable())
+				if (area != Bundles.CommunityCentreAreaNumber || Bundles.IsCommunityCentreComplete() || Bundles.IsAbandonedJojaMartBundleAvailable())
 					return true;
 
-				var p = ModEntry.CommunityCentreNotePosition;
+				var p = Bundles.CommunityCentreNotePosition;
 
 				var tileFrames = CommunityCenter.getJunimoNoteTileFrames(area, __instance.Map);
 				const string layer = "Buildings";
@@ -420,13 +420,13 @@ namespace LoveOfCooking.Core.HarmonyPatches
 			{
 				var viewportTargets = ModEntry.Instance.Helper.Reflection.GetField<List<int>>(
 					__instance, "junimoNotesViewportTargets").GetValue();
-				if (viewportTargets.Count < 1 || viewportTargets[0] != ModEntry.CommunityCentreAreaNumber || !ModEntry.Instance.IsCommunityCentreKitchenEnabledByHost())
+				if (viewportTargets.Count < 1 || viewportTargets[0] != Bundles.CommunityCentreAreaNumber || !Bundles.IsCommunityCentreKitchenEnabledByHost())
 					return true;
 
 				var reachedTarget = ModEntry.Instance.Helper.Reflection.GetMethod(__instance, "afterViewportGetsToJunimoNotePosition");
 				var endFunction = ModEntry.Instance.Helper.Reflection.GetMethod(__instance, "setViewportToNextJunimoNoteTarget");
 
-				var p = ModEntry.CommunityCentreNotePosition;
+				var p = Bundles.CommunityCentreNotePosition;
 				Game1.moveViewportTo(new Vector2(p.X, p.Y) * 64f, 5f, 2000, () => reachedTarget.Invoke(), () => endFunction.Invoke());
 				return false;
 			}
@@ -451,12 +451,12 @@ namespace LoveOfCooking.Core.HarmonyPatches
 		{
 			try
 			{
-				if (!ModEntry.Instance.IsCommunityCentreKitchenEnabledByHost())
+				if (!Bundles.IsCommunityCentreKitchenEnabledByHost())
 					return true;
 
-				ModEntry.Instance.DrawStarInCommunityCentre(__instance);
+				Bundles.DrawStarInCommunityCentre(__instance);
 
-				var junimo = __instance.getJunimoForArea(ModEntry.CommunityCentreAreaNumber);
+				var junimo = __instance.getJunimoForArea(Bundles.CommunityCentreAreaNumber);
 				junimo.Position = new Vector2(22f, 12f) * 64f;
 				junimo.stayStill();
 				junimo.faceDirection(1);
@@ -480,10 +480,10 @@ namespace LoveOfCooking.Core.HarmonyPatches
 		{
 			try
 			{
-				if (!ModEntry.Instance.IsCommunityCentreKitchenEnabledByHost())
+				if (!Bundles.IsCommunityCentreKitchenEnabledByHost())
 					return true;
 
-				__instance.getJunimoForArea(ModEntry.CommunityCentreAreaNumber).Position = new Vector2(22f, 12f) * 64f;
+				__instance.getJunimoForArea(Bundles.CommunityCentreAreaNumber).Position = new Vector2(22f, 12f) * 64f;
 			}
 			catch (Exception e)
 			{
@@ -496,7 +496,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 		{
 			try
 			{
-				if (!ModEntry.IsAbandonedJojaMartBundleAvailable())
+				if (!Bundles.IsAbandonedJojaMartBundleAvailable())
 				{
 					__result = Game1.content.LoadString("Strings\\Locations:CommunityCenter_AreaCompletion" + __instance.areasComplete.Count(_ => _), Game1.player.Name);
 				}
@@ -519,20 +519,20 @@ namespace LoveOfCooking.Core.HarmonyPatches
 				var phaseField = ModEntry.Instance.Helper.Reflection.GetField<int>(__instance, "restoreAreaPhase");
 				var phase = phaseField.GetValue();
 
-				if (timer == 0 || !ModEntry.Instance.IsCommunityCentreKitchenEnabledByHost())
+				if (timer == 0 || !Bundles.IsCommunityCentreKitchenEnabledByHost())
 				{
 					return true;
 				}
 
-				if (index != ModEntry.CommunityCentreAreaNumber)
+				if (index != Bundles.CommunityCentreAreaNumber)
 				{
 					// Reload the incomplete custom bundle area if the Pantry was just completed, as it overrides the area
 					if (phase == 3 && timer == 2000 && Game1.IsMasterGame && Game1.currentLocation is CommunityCenter
 						&& index == 0
-						&& __instance.areasComplete.Count > ModEntry.CommunityCentreAreaNumber
-						&& !__instance.areasComplete[ModEntry.CommunityCentreAreaNumber])
+						&& __instance.areasComplete.Count > Bundles.CommunityCentreAreaNumber
+						&& !__instance.areasComplete[Bundles.CommunityCentreAreaNumber])
 					{
-						ModEntry.Instance.CheckAndTryToUnrenovateKitchen();
+						Bundles.CheckAndTryToUnrenovateKitchen();
 					}
 					return true;
 				}
@@ -573,8 +573,8 @@ namespace LoveOfCooking.Core.HarmonyPatches
 						case 1:
 							if (Game1.IsMasterGame && Game1.random.NextDouble() < 0.4)
 							{
-								var area = new Rectangle(ModEntry.CommunityCentreArea.X, ModEntry.CommunityCentreArea.Y,
-									ModEntry.CommunityCentreArea.Width + 12, ModEntry.CommunityCentreArea.Height + 6);
+								var area = new Rectangle(Bundles.CommunityCentreArea.X, Bundles.CommunityCentreArea.Y,
+									Bundles.CommunityCentreArea.Width + 12, Bundles.CommunityCentreArea.Height + 6);
 								var v = Utility.getRandomPositionInThisRectangle(area, Game1.random);
 								var i = new Junimo(v * 64f, index, temporary: true);
 								if (!__instance.isCollidingPosition(i.GetBoundingBox(), Game1.viewport, i))
@@ -673,11 +673,11 @@ namespace LoveOfCooking.Core.HarmonyPatches
 								{
 									if (!junimo.holdingBundle.Value)
 									{
-										junimo.Position = Utility.getRandomAdjacentOpenTile(Utility.PointToVector2(ModEntry.CommunityCentreNotePosition), __instance) * 64f;
+										junimo.Position = Utility.getRandomAdjacentOpenTile(Utility.PointToVector2(Bundles.CommunityCentreNotePosition), __instance) * 64f;
 										var iter = 0;
 										while (__instance.isCollidingPosition(junimo.GetBoundingBox(), Game1.viewport, junimo) && iter < 20)
 										{
-											junimo.Position = Utility.getRandomPositionInThisRectangle(ModEntry.CommunityCentreArea, Game1.random) * 64f;
+											junimo.Position = Utility.getRandomPositionInThisRectangle(Bundles.CommunityCentreArea, Game1.random) * 64f;
 											iter++;
 										}
 										if (iter < 20)

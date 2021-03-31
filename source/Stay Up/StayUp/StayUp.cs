@@ -81,7 +81,7 @@ namespace Su226.StayUp {
             this.pos = null;
             Point point = dungeon.startPosition.Value;
             Game1.warpFarmer(request, point.X, point.Y, 2);
-          } else if (map.StartsWith("UndergroundMine")) {
+          } else if (request.Location is MineShaft) {
             this.pos = null;
             Game1.warpFarmer(request, 6, 6, 2);
           } else {
@@ -134,11 +134,12 @@ namespace Su226.StayUp {
         Game1.timeOfDay = 150;
       }
       if (e.NewTime == 600 && this.canCallNewDay) {
-        this.NewDayStayUp();
+        this.SavePlayer();
+        this.NewDay();
       }
     }
 
-    private void NewDayStayUp() {
+    private void SavePlayer() {
       Monitor.Log("Save player data.");
       this.restoreData = true;
       this.map = Game1.player.currentLocation.NameOrUniqueName;
@@ -154,17 +155,27 @@ namespace Su226.StayUp {
         this.horsePos = this.horse.Position;
         this.horseFacing = this.horse.FacingDirection;
       }
+    }
+
+    private void NewDay() {
       Monitor.Log("Start new day.");
-      Game1.player.passedOut = true;
+      ReadyCheckDialog.behavior doNewDay = delegate {
+        Game1.player.lastSleepLocation.Value = Game1.player.currentLocation.NameOrUniqueName;
+        Game1.player.lastSleepPoint.Value = Game1.player.getTileLocationPoint();
+        Game1.dialogueUp = false; // Close "Go to bed" dialogue to prevent stuck.
+        Game1.currentMinigame = null;
+        Game1.activeClickableMenu?.emergencyShutDown();
+        Game1.activeClickableMenu = null;
+        Game1.newDay = true;
+        Game1.newDaySync = new NewDaySynchronizer();
+        Game1.fadeScreenToBlack();
+        Game1.fadeToBlackAlpha = M.Config.smoothSaving ? 0f : 1.2f;
+      };
       if (Game1.IsMultiplayer) {
         Game1.activeClickableMenu?.emergencyShutDown();
-        Game1.activeClickableMenu = new ReadyCheckDialog("sleep", false, delegate {
-          Game1.dialogueUp = false; // Close "Go to bed" dialogue to prevent stuck.
-          Game1.NewDay(0f);
-        }, null);
+        Game1.activeClickableMenu = new ReadyCheckDialog("sleep", false, doNewDay);
       } else {
-        Game1.NewDay(0f);
-        Game1.fadeToBlackAlpha = M.Config.smoothSaving ? 0f : 1.2f;
+        doNewDay(null);
       }
     }
   }

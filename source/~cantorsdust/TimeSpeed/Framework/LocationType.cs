@@ -19,7 +19,16 @@ namespace TimeSpeed.Framework
         /// <summary>The location is outside.</summary>
         Outdoors,
 
-        /// <summary>The mines or skull cavern.</summary>
-        Mine
+        /// <summary>The generated locations from the Deep Woods mod.</summary>
+        DeepWoods,
+
+        /// <summary>The normal mines.</summary>
+        Mine,
+
+        /// <summary>The skull cavern.</summary>
+        SkullCavern,
+
+        /// <summary>The volcano dungeon.</summary>
+        VolcanoDungeon
     }
 }

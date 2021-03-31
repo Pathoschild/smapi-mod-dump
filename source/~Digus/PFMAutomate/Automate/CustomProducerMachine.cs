@@ -76,7 +76,7 @@ namespace PFMAutomate.Automate
             ProducerRuleController.ClearProduction(_machine, Location);
             if (ProducerController.GetProducerConfig(_machine.Name) is ProducerConfig producerConfig)
             {
-                if (producerConfig.NoInputStartMode != null || producerConfig.IncrementStatsOnOutput.Count > 0)
+                if (producerConfig.NoInputStartMode != null || producerConfig.IncrementStatsOnOutput.Count > 0 || producerConfig.IncrementStatsLabelOnOutput.Count > 0)
                 {
                     producerConfig.IncrementStats(item);
                     if (producerConfig.NoInputStartMode == NoInputStartMode.Placement)

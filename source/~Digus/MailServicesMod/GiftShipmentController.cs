@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StardewValley.Menus;
 
 namespace MailServicesMod
 {
@@ -65,6 +66,7 @@ namespace MailServicesMod
             NPC npc = Game1.getCharacterFromName(npcName);
             string giftName = Game1.player.ActiveObject.DisplayName;
             npc.receiveGift(Game1.player.ActiveObject, Game1.player, true, 1, DataLoader.ModConfig.ShowDialogOnItemDelivery);
+            ShopMenu.chargePlayer(Game1.player, 0, DataLoader.ModConfig.GiftServiceFee);
             Game1.player.reduceActiveItemByOne();
             if (!DataLoader.ModConfig.ShowDialogOnItemDelivery)
             {

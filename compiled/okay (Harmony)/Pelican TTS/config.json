@@ -8,6 +8,8 @@
   "ReadLetters": true,
   "ReadHudMessages": true,
   "Rate": 100,
+  "LanguageCode": "",
+  "ReadScreenKey": "N",
   "Voices": {
     "Default": {
       "Voice": "Salli",
@@ -153,5 +155,7 @@
       "Voice": "Brian",
       "Pitch": 0.0
     }
-  }
+  },
+  "UseNeuralVoices": true,
+  "Server": "USA"
 }

@@ -15,6 +15,7 @@ for queries and analysis.**
     - [Long Description](#long-description)
     - [Changelog](#changelog)
     - [Installation](#installation)
+    - [Uninstallation](#uninstallation)
     - [Dependencies](#dependencies)
     - [Conflicts](#conflicts)
         - [Known Compatible Mods](#known-compatible-mods)
@@ -55,6 +56,12 @@ There are 3 levels of upgrade that will unlock as you become more friendly with 
 3. Unzip the Folder into your `StardewValley/Mods` folder
 4. Run the game
 5. After running the game once you can set the options config (see [Configuration](#configuration) section below)
+
+## Uninstallation
+
+1. Remove the folder from your mods folder.
+
+This mod is set up to use the `ModData` Dictionary provided by ConcernedApe. It will leave a small token in your save file after uninstallation, however this won't affect anything.
 
 ## Dependencies
 

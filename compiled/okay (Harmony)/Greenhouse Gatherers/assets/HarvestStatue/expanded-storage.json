@@ -2,6 +2,7 @@
   "Harvest Statue": {
     "Frames": 1,
     "PlayerColor": false,
+    "PlayerConfig": false,
     "Capacity": 36,
     "VacuumItems": false,
     "IsPlaceable": true,

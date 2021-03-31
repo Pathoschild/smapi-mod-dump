@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2296
-IDs: Kabigon.MineAssist
-update keys: Nexus:2296, Chucklefish:5353, GitHub:KabigonFirst/StardewValleyMods

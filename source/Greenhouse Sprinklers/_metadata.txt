@@ -5,12 +5,11 @@ mods:
    Greenhouse Sprinklers
 
 latest commit:
-   commit b7a95aac516029a47224f6804298f1d00bb59503
-   Merge: 18bed2f 86c561e
+   commit 12f786d16d9b3d1934b98f255abfb68f845a1692
    Author: David Camp <Bpendragon@users.noreply.github.com>
-   Date:   Sun Feb 7 11:32:27 2021 -0800
+   Date:   Sat Mar 13 11:02:03 2021 -0800
    
-       Merge pull request #8 from Bpendragon/v142-staging
+       Update README.md
        
-       V142 staging
+       Adds uninstallation instructions
    

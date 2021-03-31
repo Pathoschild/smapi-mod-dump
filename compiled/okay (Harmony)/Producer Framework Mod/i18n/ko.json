@@ -1,0 +1,15 @@
+﻿{
+    "Message.Requirement.Amount": "{{objectName}} {{amount}}개 필요",
+    "Message.Requirement.Quality": "다른 품질 필요",
+    "Message.Requirement.Fuel": "필수 재료 누락",
+    "Message.Requirement.Season": "다른 계절 필요",
+    "Message.Requirement.Weather": "다른 날씨 필요",
+    "Message.Requirement.Location": "다른 위치 필요",
+    "Message.Requirement.InputParent": "다른 종류의 {{objectName}} 필요",
+    "Message.Condition.Location": "여기서 할 수 없습니다.",
+    "Message.Condition.Season": "이번 계절에는 할 수 없습니다.",
+    "Object.Category.Meat": "고기 (Any)",
+    "Object.Category.MetalResources": "금속 자원 (Any)",
+    "Object.Category.BuildingResources": "건축 자원 (Any)",
+    "Object.Category.TappedTreeProduct": "나무 수액 (Any)"
+}

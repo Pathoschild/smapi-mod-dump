@@ -11,13 +11,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using StardewModdingAPI.Utilities;
 
 namespace Dem1se.CustomReminders.UI
 {
@@ -133,7 +133,7 @@ namespace Dem1se.CustomReminders.UI
         }
 
         /// <summary>This fills the Reminders list by reading all the reminder files</summary>
-        private void PopulateRemindersList() 
+        private void PopulateRemindersList()
         {
             SDate now = SDate.Now();
             foreach (string AbsoulutePath in Directory.GetFiles(Path.Combine(Utilities.Globals.Helper.DirectoryPath, "data", Utilities.Globals.SaveFolderName)))
@@ -144,7 +144,7 @@ namespace Dem1se.CustomReminders.UI
                 // -- Changing the "Reminder.Time < Game1.timeOfDay" to "Reminder.Time <= Game1.timeOfDay" determines if the entry is left in the list for the actual moment in time it's triggered.
                 // If Reminder is today or earlier and Reminders Time is earlier then now, omit the entry.
                 if (Reminder.DaysSinceStart <= now.DaysSinceStart && Reminder.Time < Game1.timeOfDay) continue;
-                
+
                 Reminders.Add(Reminder);
             }
         }

@@ -1,12 +1,15 @@
 {
   "DisableToolDeliveryService": false,
   "DisableToolShipmentService": false,
+  "ToolShipmentServiceFee": 0,
   "DisableQuestService": false,
+  "QuestServiceFee": 0,
   "DisableGiftService": false,
-  "ShowDialogOnItemDelivery": false,
+  "GiftServiceFee": 0,
   "GiftChoicePageSize": 5,
   "EnableJealousyFromMailedGifts": false,
   "EnableGiftToNpcWithMaxFriendship": false,
+  "ShowDialogOnItemDelivery": false,
   "DisablePerPlayerConfig": false,
   "PlayerRecoveryConfig": {
     "-3108584238293906145": {

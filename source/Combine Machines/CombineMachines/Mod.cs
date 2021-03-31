@@ -29,7 +29,7 @@ namespace CombineMachines
 {
     public class ModEntry : Mod
     {
-        public static Version CurrentVersion = new Version(1, 0, 7); // Last updated 1/28/2021 (Don't forget to update manifest.json)
+        public static Version CurrentVersion = new Version(1, 0, 8); // Last updated 3/6/2021 (Don't forget to update manifest.json)
 
         private static UserConfig _UserConfig;
         public static UserConfig UserConfig
@@ -307,7 +307,7 @@ namespace CombineMachines
                 if (Game1.activeClickableMenu is GameMenu GM && GM.currentTab == GameMenu.inventoryTab && TryGetClickedInventoryItem(GM, e, out Item ClickedItem, out int ClickedItemIndex))
                 {
                     //  Detect when player clicks on a machine in their inventory while another machine of the same type is selected
-                    if (e.Button == SButton.MouseLeft && Game1.player.CursorSlotItem is SObject SourceObj && ClickedItem is SObject TargetObj && CanCombine(SourceObj, TargetObj))
+                    if (SButtonExtensions.IsUseToolButton(e.Button) /*e.Button == SButton.MouseLeft*/ && Game1.player.CursorSlotItem is SObject SourceObj && ClickedItem is SObject TargetObj && CanCombine(SourceObj, TargetObj))
                     {
                         if (!SourceObj.TryGetCombinedQuantity(out int SourceQuantity))
                             SourceQuantity = SourceObj.Stack;
@@ -328,7 +328,7 @@ namespace CombineMachines
                         });
                     }
                     //  Right-clicking a combined machine splits it to its un-combined state
-                    else if (e.Button == SButton.MouseRight && Game1.player.CursorSlotItem == null && ClickedItem is SObject ClickedObject 
+                    else if (SButtonExtensions.IsActionButton(e.Button) /*e.Button == SButton.MouseRight*/ && Game1.player.CursorSlotItem == null && ClickedItem is SObject ClickedObject 
                         && ClickedObject.IsCombinedMachine() && ClickedObject.TryGetCombinedQuantity(out int CombinedQuantity) && CombinedQuantity > 1)
                     {
                         ClickedObject.modData.Remove(ModDataQuantityKey);

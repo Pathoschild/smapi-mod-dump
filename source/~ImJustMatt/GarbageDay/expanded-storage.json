@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/StardewMods
+**
+*************************************************/
+
+{
+  "Garbage Can": {
+    "Image": "GarbageCan.png",
+    "Frames": 3,
+    "PlayerColor": true,
+    "PlayerConfig": false,
+    "OpenNearby": 1,
+    "OpenNearbySound": "trashcanlid",
+    "CloseNearbySound": "trashcanlid",
+    "OpenSound": "trashcan",
+    "Capacity": 12,
+    "EnabledFeatures": ["Indestructible"],
+    "DisabledFeatures": ["CanCarry", "ShowSearchBar", "ShowColorPicker", "ShowTabs", "VacuumItems"]
+  }
+}

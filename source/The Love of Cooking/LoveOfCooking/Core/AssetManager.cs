@@ -24,7 +24,7 @@ namespace LoveOfCooking
 		private static Config Config => ModEntry.Instance.Config;
 		private static ITranslationHelper i18n => ModEntry.Instance.Helper.Translation;
 
-		private static readonly Dictionary<string, int> BuffIndex = new Dictionary<string, int>
+		private readonly Dictionary<string, int> BuffIndex = new Dictionary<string, int>
 		{
 			{ "Farming", 0},
 			{ "Fishing", 1},
@@ -35,18 +35,23 @@ namespace LoveOfCooking
 			{ "Magnetism", 8},
 			{ "Speed", 9},
 			{ "Defense", 10},
-			{ "Attack", 11},
-			{ "Cooking", 12},
+			{ "Attack", 11}
 		};
-		internal static readonly Point IconPosition = new Point(506, 372);
+		internal static readonly Rectangle NotificationIconTargetArea = new Rectangle(506, 372, 11, 14);
+		private readonly List<string> _gameContentAssetPaths;
 
-		public AssetManager() {}
+		public AssetManager()
+		{
+			// Populate all custom asset paths from ModEntry values
+			_gameContentAssetPaths = typeof(ModEntry)
+				.GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+				.Where(field => field.Name.StartsWith("GameContent") && field.Name.EndsWith("Path"))
+				.Select(field => (string)field.GetValue(ModEntry.Instance)).ToList();
+		}
 
 		public bool CanLoad<T>(IAssetInfo asset)
 		{
-			return asset.AssetNameEquals(ModEntry.GameContentSpriteSheetPath)
-				|| asset.AssetNameEquals(ModEntry.GameContentBundleDataPath)
-				|| asset.AssetNameEquals(ModEntry.MapTileSheetPath);
+			return _gameContentAssetPaths.Contains(asset.AssetName);
 		}
 
 		// TODO: UPDATE: Add context tags to all new objects
@@ -57,40 +62,27 @@ namespace LoveOfCooking
 				ModEntry.Instance.Config.DebugMode);
 			if (asset.AssetNameEquals(ModEntry.GameContentSpriteSheetPath))
 			{
-				return (T) (object) ModEntry.Instance.Helper.Content.Load<Texture2D>($"{ModEntry.LocalSpriteSheetPath}.png");
+				return (T)(object)ModEntry.Instance.Helper.Content.Load<Texture2D>($"{ModEntry.LocalSpriteSheetPath}.png");
 			}
 			if (asset.AssetNameEquals(ModEntry.GameContentBundleDataPath))
 			{
-				return (T) (object) ModEntry.Instance.Helper.Content.Load<Dictionary<string, Dictionary<string, List<string>>>>($"{ModEntry.LocalBundleDataPath}.json");
+				return (T)(object)ModEntry.Instance.Helper.Content.Load<Dictionary<string, Dictionary<string, List<string>>>>($"{ModEntry.LocalBundleDataPath}.json");
 			}
-			if (asset.AssetNameEquals(ModEntry.MapTileSheetPath))
+			if (asset.AssetNameEquals(ModEntry.GameContentIngredientBuffDataPath))
 			{
-				// Take bar counter sprite from townInterior sheet
-				var sourceImage = Game1.content.Load<Texture2D>(@"Maps/townInterior");
-				var sourceArea = new Rectangle(352, 448, 16, 16);
-				// Take plate sprite from custom mapSprites sheet
-				var destImage = ModEntry.Instance.Helper.Content.Load<Texture2D>($"{ModEntry.MapTileSheetPath}.png");
-				var destArea = new Rectangle(0, 0, 16, 16);
-
-				// Take plate pixels
-				var platePixels = new Color[destArea.Width * destArea.Height];
-				destImage.GetData(0, destArea, platePixels, 0, platePixels.Length);
-				// Take bar counter pixels
-				var barPixels = new Color[sourceArea.Width * sourceArea.Height];
-				sourceImage.GetData(0, sourceArea, barPixels, 0, platePixels.Length);
-				// Overlay plate pixels onto bar pixels
-				for (var row = 0; row < destArea.Height; ++row)
-				for (var column = 0; column < destArea.Width; ++column)
-				{
-					var index = row + column * destArea.Width;
-					if (platePixels[index].A > 0)
-						barPixels[index] = platePixels[index];
-				}
-				// Replace old pixels with new plate-on-bar pixels
-				destImage.SetData(0, destArea, barPixels, 0, barPixels.Length);
-
-				// Apply sprite changes
-				return (T) (object) destImage;
+				return (T)(object)ModEntry.Instance.Helper.Content.Load<Dictionary<string, string>>($"{ModEntry.LocalIngredientBuffDataPath}.json");
+			}
+			if (asset.AssetNameEquals(ModEntry.GameContentDefinitionsPath))
+			{
+				return (T)(object)ModEntry.Instance.Helper.Content.Load<Dictionary<string, List<string>>>($"{ModEntry.LocalDefinitionsPath}.json");
+			}
+			if (asset.AssetNameEquals(ModEntry.GameContentSkillRecipeTablePath))
+			{
+				return (T)(object)ModEntry.Instance.Helper.Content.Load<Dictionary<string, List<string>>>($"{ModEntry.LocalSkillRecipeTablePath}.json");
+			}
+			if (asset.AssetNameEquals(ModEntry.GameContentSkillValuesPath))
+			{
+				return (T)(object)ModEntry.Instance.Helper.Content.Load<Dictionary<string, string>>($"{ModEntry.LocalSkillValuesPath}.json");
 			}
 			return (T) (object) null;
 		}
@@ -133,7 +125,7 @@ namespace LoveOfCooking
 				// Do this even with community centre changes disabled, in case we join as farmhand to a player who has it enabled
 				
 				var data = asset.AsDictionary<string, string>().Data;
-				ModEntry.BundleStartIndex = 1 + data.Keys.ToList().Max(key => int.Parse(key.Split('/')[1]));
+				Bundles.BundleStartIndex = 1 + data.Keys.ToList().Max(key => int.Parse(key.Split('/')[1]));
 			}
 			else if (asset.AssetNameEquals(@"Data/BigCraftablesInformation"))
 			{
@@ -147,7 +139,7 @@ namespace LoveOfCooking
 					var nameData = data[pair.Key];
 					split[4] = i18n.Get($"item.{name[2]}.description").ToString();
 					split[8] = i18n.Get($"item.{name[2]}.name").ToString();
-					data[pair.Key] = ModEntry.SplitToString(split);
+					data[pair.Key] = string.Join("/", split);
 					if (ModEntry.PrintRename)
 						Log.D($"Named craftable {name[2]} ({data[pair.Key].Split('/')[5]})", ModEntry.Instance.Config.DebugMode);
 				}
@@ -172,7 +164,7 @@ namespace LoveOfCooking
 					var split = new string[6];
 					data[pair.Key].Split('/').CopyTo(split, 0);
 					split[5] = i18n.Get($"item.{name[2]}.name").ToString();
-					data[pair.Key] = ModEntry.SplitToString(split);
+					data[pair.Key] = string.Join("/", split);
 					if (ModEntry.PrintRename)
 						Log.D($"Named recipe {name[2]} ({data[pair.Key].Split('/')[5]})", ModEntry.Instance.Config.DebugMode);
 				}
@@ -189,18 +181,9 @@ namespace LoveOfCooking
 				{
 					// Substitute in the actual custom ingredients for custom recipes if custom ingredients are enabled
 					var enabled = Config.AddNewCropsAndStuff;
-					var overlappingMods = ModEntry.Instance.Helper.ModRegistry.IsLoaded("PPJA.FruitsAndVeggies");
 					Dictionary<string, string> recipeData = null;
-					if (enabled || overlappingMods)
+					if (enabled || ModEntry.UsingPPJACrops)
 					{
-						var customCropIds = new Dictionary<string, int>
-						{
-							{ "onion", ModEntry.JsonAssets.GetObjectId(overlappingMods ? "Onion" : ModEntry.ObjectPrefix + "onion") },
-							{ "cabbage", ModEntry.JsonAssets.GetObjectId(overlappingMods ? "Cabbage" : ModEntry.ObjectPrefix + "cabbage") },
-							{ "carrot", ModEntry.JsonAssets.GetObjectId(overlappingMods ? "Carrot" : ModEntry.ObjectPrefix + "carrot") },
-							{ "chocolate", ModEntry.JsonAssets.GetObjectId(overlappingMods ? "Chocolate Bar" : ModEntry.ObjectPrefix + "chocolate") },
-						};
-
 						// Update recipe data for recipes planned to use vanilla objects or best-available common custom objects
 						recipeData = new Dictionary<string, string>
 						{
@@ -212,14 +195,14 @@ namespace LoveOfCooking
 							// Coleslaw: Vinegar 1 Mayonnaise 1
 							{
 								"Coleslaw",
-								$"{customCropIds["cabbage"]} 1"
+								$"{ModEntry.JsonAssets.GetObjectId(ModEntry.CabbageName)} 1"
 								+ " 419 1 306 1"
 							},
 							// Cookies: Flour 1 Category:Egg 1 Chocolate Bar 1
 							{
 								"Cookies",
 								"246 1 -5 1"
-								+ $" {customCropIds["chocolate"]} 1"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.ChocolateName)} 1"
 							},
 							// Pizza: Flour 2 Tomato 2 Cheese 2
 							{
@@ -243,7 +226,7 @@ namespace LoveOfCooking
 								{
 									"Chocolate Cake",
 									$"{ModEntry.JsonAssets.GetObjectId(ModEntry.ObjectPrefix + "cake")} 1"
-									+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.ObjectPrefix + "chocolate")} 1"
+									+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.ChocolateName)} 1"
 								}
 							};
 							recipeData = recipeData.Union(exclusiveCustomData).ToDictionary(pair => pair.Key, pair => pair.Value);
@@ -263,65 +246,65 @@ namespace LoveOfCooking
 							{
 								ModEntry.ObjectPrefix + "burger",
 								"216 1 284 1"
-								+ $" {customCropIds["onion"]} 1"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.OnionName)} 1"
 								+ " 266 1"
 							},
 							// Cabbage Pot: Cabbage 2 Onion 2
 							{
 								ModEntry.ObjectPrefix + "cabbagepot",
-								$"{customCropIds["cabbage"]} 2"
-								+ $" {customCropIds["onion"]} 2"
+								$"{ModEntry.JsonAssets.GetObjectId(ModEntry.CabbageName)} 2"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.OnionName)} 2"
 							},
 							// Garden Pie: Flour 1 Cabbage 1 Onion 1 Tomato 1
 							{
 								ModEntry.ObjectPrefix + "gardenpie",
 								"246 1"
-								+ $" {customCropIds["cabbage"]} 1"
-								+ $" {customCropIds["onion"]} 1"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.CabbageName)} 1"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.OnionName)} 1"
 								+ " 256 1"
 							},
 							// Hearty Stew: Carrot 2 Potato 1
 							{
 								ModEntry.ObjectPrefix + "stew",
-								$"{customCropIds["carrot"]} 2"
+								$"{ModEntry.JsonAssets.GetObjectId(ModEntry.CarrotName)} 2"
 								+ " 192 1"
 							},
 							// Hot Cocoa: Milk (Any) 1 Chocolate Bar 1
 							{
 								ModEntry.ObjectPrefix + "hotcocoa",
 								"-6 1"
-								+ $" {customCropIds["chocolate"]} 1"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.ChocolateName)} 1"
 							},
 							// Hot Pot Roast: Cranberry Sauce 1 Roots Platter 1 Stuffing 1 Onion 1
 							{
 								ModEntry.ObjectPrefix + "roast",
 								"238 1 244 1 239 1"
-								+ $" {customCropIds["onion"]} 1"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.OnionName)} 1"
 							},
 							// Hunter's Plate: Potato 1 Cabbage 1 Horseradish 1
 							{
 								ModEntry.ObjectPrefix + "hunters",
 								"192 1"
-								+ $" {customCropIds["cabbage"]} 1"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.CabbageName)} 1"
 								+ " 16 1"
 							},
 							// Kebab: Tortilla 1 Tomato 1 Cabbage 1
 							{
 								ModEntry.ObjectPrefix + "kebab",
 								"229 1 256 1"
-								+ $" {customCropIds["cabbage"]} 1"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.CabbageName)} 1"
 							},
 							// Onion Soup: Onion 1 Garlic 1 Cheese 1
 							{
 								ModEntry.ObjectPrefix + "onionsoup",
-								$"{customCropIds["onion"]} 1"
+								$"{ModEntry.JsonAssets.GetObjectId(ModEntry.OnionName)} 1"
 								+ " 248 1 424 1"
 							},
 							// Pineapple Skewers: Pineapple 1 Onion 1 Eggplant 1
 							{
 								ModEntry.ObjectPrefix + "skewers",
 								"832 1"
-								+ $" {customCropIds["onion"]} 1"
+								+ $" {ModEntry.JsonAssets.GetObjectId(ModEntry.OnionName)} 1"
 								+ " 272 1"
 							},
 							// Redberry Pie: Flour 1 Sugar 1 Redberries 3
@@ -400,7 +383,7 @@ namespace LoveOfCooking
 			{
 				// Edit fields of vanilla objects to revalue and recategorise some produce
 
-				if (ModEntry.JsonAssets == null || Game1.currentLocation == null)
+				if (ModEntry.JsonAssets == null || ModEntry.IngredientBuffChart == null || Game1.currentLocation == null)
 					return;
 
 				var data = asset.AsDictionary<int, string>().Data;
@@ -440,7 +423,7 @@ namespace LoveOfCooking
 					};
 					
 					// Apply above recipe changes
-					foreach (var obj in objectData.Where(o => !ModEntry.FoodsThatGiveLeftovers.Contains(data[o.Key].Split('/')[0])))
+					foreach (var obj in objectData.Where(o => !ModEntry.ItemDefinitions["FoodsThatGiveLeftovers"].Contains(data[o.Key].Split('/')[0])))
 						data[obj.Key] = ModEntry.UpdateEntry(data[obj.Key], obj.Value);
 
 					if (Config.AddRecipeRebalancing)
@@ -484,10 +467,9 @@ namespace LoveOfCooking
 						Config.DebugMode);
 					return;
 				}
-
 				if (!ModEntry.RedberriesEnabled)
 				{
-					Log.D($"Did not edit {asset.AssetName}: Redberries are disabled in system.",
+					Log.D($"Did not edit {asset.AssetName}: Redberries not yet enabled in code.",
 						Config.DebugMode);
 					return;
 				}
@@ -531,13 +513,11 @@ namespace LoveOfCooking
 
 				// Prime a canvas as a clipboard to hold in sequence both a copy of the vanilla icon
 				// and our custom icon to merge together into some particular open space in Cursors
-				const int iconW = 11;
-				const int iconH = 14;
 				var data = asset.AsImage().Data;
-				var canvas = new Color[iconW * iconH];
-				var texture = new Texture2D(Game1.graphics.GraphicsDevice, iconW, iconH);
-				var vanillaIconArea = new Rectangle(383, 493, iconW, iconH);
-				var targetArea = new Rectangle(IconPosition.X, IconPosition.Y, iconW, iconH);
+				var canvas = new Color[NotificationIconTargetArea.Width * NotificationIconTargetArea.Height];
+				var texture = new Texture2D(Game1.graphics.GraphicsDevice, NotificationIconTargetArea.Width, NotificationIconTargetArea.Height);
+				var vanillaIconArea = new Rectangle(383, 493, NotificationIconTargetArea.Width, NotificationIconTargetArea.Height);
+				var targetArea = NotificationIconTargetArea;
 
 				// Patch in a copy of the vanilla quest log icon
 				data.GetData(0, vanillaIconArea, canvas, 0, canvas.Length);
@@ -545,15 +525,15 @@ namespace LoveOfCooking
 				asset.AsImage().PatchImage(texture, null, targetArea, PatchMode.Replace);
 
 				// Chroma-key our custom icon with colours from the vanilla icon
-				var colorSampleA = canvas[iconW * 5 + 1];
-				var colorSampleB = canvas[iconW * 11 + 1];
+				var colorSampleA = canvas[NotificationIconTargetArea.Width * 5 + 1];
+				var colorSampleB = canvas[NotificationIconTargetArea.Width * 11 + 1];
 
 				var colorR = new Color(255, 0, 0);
 				var colorC = new Color(255, 0, 255);
 				var colorG = new Color(0, 255, 0);
 				var colorA = new Color(0, 0, 0, 0);
 
-				ModEntry.SpriteSheet.GetData(0, new Rectangle(0, 0, iconW, iconH), canvas, 0, canvas.Length);
+				ModEntry.SpriteSheet.GetData(0, new Rectangle(0, 0, NotificationIconTargetArea.Width, NotificationIconTargetArea.Height), canvas, 0, canvas.Length);
 
 				for (var i = 0; i < canvas.Length; ++i)
 				{
@@ -649,7 +629,7 @@ namespace LoveOfCooking
 				var image = asset.AsImage();
 
 				// Openable fridge in the kitchen
-				var destArea = ModEntry.DummyOpenFridgeSpriteArea; // Target some unused area of the sheet for this location
+				var destArea = Bundles.FridgeOpenedSpriteArea; // Target some unused area of the sheet for this location
 
 				var sourceArea = new Rectangle(320, 224, destArea.Width, destArea.Height); // Apply base fridge sprite
 				image.PatchImage(image.Data, sourceArea, destArea, PatchMode.Replace);
@@ -686,11 +666,11 @@ namespace LoveOfCooking
 				var data = asset.AsDictionary<string, string>().Data;
 
 				// Add area name
-				data["CommunityCenter_AreaName_" + ModEntry.CommunityCentreAreaName] = i18n.Get("world.community_centre.kitchen");
+				data["CommunityCenter_AreaName_" + Bundles.CommunityCentreAreaName] = i18n.Get("world.community_centre.kitchen");
 
 				// Insert a new AreaCompletion line to account for our extra bundle
 				const int newJunimoLineNumber = 3;
-				for (var i = ModEntry.CommunityCentreAreaNumber + 1; i > newJunimoLineNumber; --i)
+				for (var i = Bundles.CommunityCentreAreaNumber + 1; i > newJunimoLineNumber; --i)
 				{
 					var below = data["CommunityCenter_AreaCompletion" + (i - 1)];
 					data["CommunityCenter_AreaCompletion" + i] = below;
@@ -711,7 +691,7 @@ namespace LoveOfCooking
 				}
 
 				var data = asset.AsDictionary<string, string>().Data;
-				data["JunimoNote_Reward" + ModEntry.CommunityCentreAreaName] = i18n.Get("world.community_centre.reward");
+				data["JunimoNote_Reward" + Bundles.CommunityCentreAreaName] = i18n.Get("world.community_centre.reward");
 				asset.AsDictionary<string, string>().ReplaceWith(data);
 			}
 			else if (asset.AssetNameEquals(@"TileSheets/tools"))
@@ -736,39 +716,42 @@ namespace LoveOfCooking
 		private void RebuildBuffs(ref IDictionary<int, string> data)
 		{
 			// Reconstruct buffs of all cooking items in the game using our ingredients-to-buffs chart
-			var ingredientsChart =
-				ModEntry.Instance.Helper.Content.Load<Dictionary<string, string>>($"{ModEntry.BuffDataPath}.json");
 			var cookingRecipes = Game1.content.Load<Dictionary<string, string>>(@"Data/CookingRecipes");
 			var keys = new int[data.Keys.Count];
 			data.Keys.CopyTo(keys, 0);
 			foreach (var key in keys)
 			{
 				var objectSplit = data[key].Split('/');
-				if (!objectSplit[3].Contains("-7")
+				if (!objectSplit[3].Contains(ModEntry.CookingCategory.ToString())
 				    || !cookingRecipes.ContainsKey(objectSplit[0]) // v-- Json Assets custom recipe convention for unused fields
 				    || cookingRecipes[objectSplit[0]].Split('/')[1].StartsWith("what"))
 					continue;
 				var ingredients = cookingRecipes[objectSplit[0]].Split('/')[0].Split(' ');
-				var buffArray = new[] { "0","0","0","0","0","0","0","0","0","0","0","0","0" };
+				var buffArray = new string[BuffIndex.Values.Max() + 1];
+				for (int i = 0; i < buffArray.Length; ++i)
+					buffArray[i] = "0";
 				var buffDuration = 0;
 
 				// Populate buff values using ingredients for this object in CookingRecipes
 				for (var i = 0; i < ingredients.Length; i += 2)
 				{
 					var o = new Object(int.Parse(ingredients[i]), 0);
-					var buffSplit = ingredientsChart.ContainsKey(o.Name)
-						? ingredientsChart[o.Name].Split(' ')
+					var buffSplit = ModEntry.IngredientBuffChart.ContainsKey(o.Name)
+						? ModEntry.IngredientBuffChart[o.Name].Split(' ')
 						: null;
-					if (o.ParentSheetIndex >= 2000
-						)
+					if (o.ParentSheetIndex >= 2000)
 					{
+						// Skip custom items
 						break;
 					}
 					else
 					{
+						// Reapply buffs at random, seeded by their name, ensuring buffs are consistent to foods between games
 						var random = new Random(1337 + o.Name.GetHashCode());
+						// Each ingredient has a roughly 1 in 6 chance of having some buff
 						if (random.NextDouble() < 0.175f)
 						{
+							// Buff keys are taken from valid values listed in BuffIndex, and values range from 0 to 3
 							buffSplit = new[] {
 								BuffIndex.Keys.ToArray()[random.Next(BuffIndex.Count)],
 								random.Next(4).ToString()
@@ -785,10 +768,6 @@ namespace LoveOfCooking
 						{
 							objectSplit[1] =
 								(int.Parse(objectSplit[1]) + o.Edibility / 8 * buffValue).ToString();
-						}
-						else if (ModEntry.CookingAddedLevelsEnabled && buffName == "Cooking")
-						{
-							// TODO: UPDATE: Cooking Skill added level buffs in foods
 						}
 						else
 						{

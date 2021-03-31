@@ -14,8 +14,8 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Dem1se.CustomReminders
 {
@@ -56,17 +56,18 @@ namespace Dem1se.CustomReminders
 
         /// <summary> Loops through any mature reminders since last save and deletes their file </summary>
         //Json-x-ly Notes: Alternatively we could just parse the files again and cleanup any old entries if we'd like to avoid maintaining a collection
-        private void OnSaved(object sender, SavedEventArgs ev) 
+        private void OnSaved(object sender, SavedEventArgs ev)
         {
-            for (var i = 0; i < DeleteQueue.Count; i++) 
+            for (var i = 0; i < DeleteQueue.Count; i++)
             {
                 string AbsolutePath = DeleteQueue.Dequeue();
-                try 
+                try
                 {
-                    if (File.Exists(AbsolutePath)) {
+                    if (File.Exists(AbsolutePath))
+                    {
                         File.Delete(AbsolutePath);
                     }
-                } 
+                }
                 catch (Exception e)
                 {
                     Monitor.Log(e.Message, LogLevel.Error);
@@ -97,7 +98,7 @@ namespace Dem1se.CustomReminders
                 Directory.CreateDirectory(Path.Combine(Helper.DirectoryPath, "data", Utilities.Globals.SaveFolderName));
                 Monitor.Log("Reminders directory created successfully.", LogLevel.Info);
             }
-            
+
             //Json-x-ly Notes: Wipes the Queue for the new save context
             DeleteQueue.Clear();
 
@@ -109,7 +110,7 @@ namespace Dem1se.CustomReminders
         private void OnButtonPressed(object sender, ButtonPressedEventArgs ev)
         {
             // ignore if player hasn't loaded a save yet
-            if (!Context.IsWorldReady) return; 
+            if (!Context.IsWorldReady) return;
             if (Game1.activeClickableMenu != null || (!Context.IsPlayerFree) || ev.Button != Config.CustomRemindersButton) return;
 
             ShowReminderMenu();
@@ -172,19 +173,20 @@ namespace Dem1se.CustomReminders
         }
 
         /// <summary> Loop that checks if any reminders are mature.</summary>
-        private void ReminderNotifier(object sender, TimeChangedEventArgs ev) {
+        private void ReminderNotifier(object sender, TimeChangedEventArgs ev)
+        {
             ReminderNotifierLoop(ev.NewTime);
         }
 
         // Json-x-ly Notes: Separated for OnSaveLoaded check since loading a new game does not send a TimeChanged event for the 600 hour 
-        private void ReminderNotifierLoop(int newTime) 
+        private void ReminderNotifierLoop(int newTime)
         {
             // returns function if game time isn't multiple of 30 in-game minutes.
             string timeString = Convert.ToString(newTime);
             if (!(timeString.EndsWith("30") || timeString.EndsWith("00"))) return;
 
             // Loops through all the reminder files and evaluates if they are current.
-            
+
             #region ReminderNotifierloop
             SDate currentDate = SDate.Now();
             foreach (string filePathAbsolute in Directory.EnumerateFiles(Path.Combine(Helper.DirectoryPath, "data", Utilities.Globals.SaveFolderName)))

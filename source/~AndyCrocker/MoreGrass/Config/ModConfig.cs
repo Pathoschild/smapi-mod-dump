@@ -16,6 +16,10 @@ namespace MoreGrass.Config
         /*********
         ** Accessors
         *********/
+        /// <summary>Whether animals can eat grass.</summary>
+        /// <remarks>This is mainly here so players can keep grass for aesthetic reasons, instead of animals eating it all.</remarks>
+        public bool CanAnimalsEatGrass { get; set; } = true;
+
         /// <summary>Whether grass can live in spring.</summary>
         public bool CanGrassLiveInSpring { get; set; } = true;
 
@@ -28,16 +32,16 @@ namespace MoreGrass.Config
         /// <summary>Whether grass can live in winter.</summary>
         public bool CanGrassLiveInWinter { get; set; } = true;
 
-        /// <summary>Whether grass can spread in spring</summary>
+        /// <summary>Whether grass can spread in spring.</summary>
         public bool CanGrassGrowInSpring { get; set; } = true;
 
-        /// <summary>Whether grass can spread in summer</summary>
+        /// <summary>Whether grass can spread in summer.</summary>
         public bool CanGrassGrowInSummer { get; set; } = true;
 
-        /// <summary>Whether grass can spread in fall</summary>
+        /// <summary>Whether grass can spread in fall.</summary>
         public bool CanGrassGrowInFall { get; set; } = true;
 
-        /// <summary>Whether grass can spread in winter</summary>
+        /// <summary>Whether grass can spread in winter.</summary>
         public bool CanGrassGrowInWinter { get; set; } = false;
     }
 }

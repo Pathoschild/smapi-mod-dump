@@ -4,7 +4,7 @@
 	"Version": "1.0.0",
 	"Description": "Adds custom mails for my mod.",
 	"UniqueID": "YourName.YouPackNameForMailFrameworkMod",
-	"MinimumApiVersion": "2.11.3",
+	"MinimumApiVersion": "3.8.0",
 	"UpdateKeys": [],
 	"Dependencies": [
 		{
@@ -12,6 +12,7 @@
 		}
 	],
 	"ContentPackFor": {
-		"UniqueID": "DIGUS.MailFrameworkMod"
+		"UniqueID": "DIGUS.MailFrameworkMod",
+        "MinimumVersion": "1.10.1"
 	}
 }

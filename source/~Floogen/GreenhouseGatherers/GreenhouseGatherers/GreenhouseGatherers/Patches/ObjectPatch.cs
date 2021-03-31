@@ -29,6 +29,7 @@ namespace GreenhouseGatherers.GreenhouseGatherers.Patches
             return AccessTools.Method(typeof(StardewValley.Object), nameof(StardewValley.Object.placementAction));
         }
 
+        [HarmonyPriority(Priority.VeryHigh)]
         internal static bool Prefix(Object __instance, GameLocation location, int x, int y, Farmer who = null)
         {
             if (__instance.name == "Harvest Statue")

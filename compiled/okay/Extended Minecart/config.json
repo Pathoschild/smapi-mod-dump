@@ -6,5 +6,6 @@
   "WoodsDestinationEnabled": true,
   "BeachDestinationEnabled": true,
   "WizardDestinationEnabled": true,
-  "DefaultFarmStationPoint": "74, 11"
+  "DefaultFarmStationPoint": "74, 11",
+  "RefuelCost": 5
 }

@@ -14,6 +14,12 @@ namespace CustomFurniture
     {
         public int id { get; set; }
         public string texture { get; set; }
+
+        public string textureOverlay { get; set; }
+
+        public string textureUnderlay { get; set; }
+
+
         public bool fromContent { get; set; }
         public string name { get; set; }
         public string description { get; set; }
@@ -46,6 +52,8 @@ namespace CustomFurniture
             conditions = "none";
             sellAtShop = true;
             texture = "example.png";
+            textureOverlay = null;
+            textureUnderlay = null;
             name = "Furniture";
             description = "Furniture";
             type = "decor";

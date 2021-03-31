@@ -199,7 +199,7 @@ namespace EconomyMod.Interface
 
         private void DrawCalendar(object sender, RenderedActiveMenuEventArgs e)
         {
-            if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is Billboard bill)
+            if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is Billboard bill  && bill.calendarDays != null)
             {
 
                 if (CalendarBool == null)
@@ -269,8 +269,15 @@ namespace EconomyMod.Interface
 
                     if (sideTabs.ContainsKey(page.pageGroup))
                     {
-                        foreach (var tab in sideTabs[page.pageGroup])
+                        for (int i = 0; i < sideTabs[page.pageGroup].Count; i++)
                         {
+
+                            var tab = sideTabs[page.pageGroup][i];
+
+                            if (tab.bounds.X != InterfaceHelper.GetSideTabSizeForPage(page, i).X)
+                            {
+                                tab.bounds = InterfaceHelper.GetSideTabSizeForPage(page, i);
+                            }
                             tab.draw(Game1.spriteBatch);
 
 
@@ -425,12 +432,24 @@ namespace EconomyMod.Interface
             width = 64;
             height = 64;
             GameMenu activeClickableMenu = Game1.activeClickableMenu as GameMenu;
-            xPositionOnScreen = activeClickableMenu.xPositionOnScreen + activeClickableMenu.width - 304 + 64 * indexPosition;
+            this.indexPosition = indexPosition;
+            UpdatePosition();
             yPositionOnScreen = activeClickableMenu.yPositionOnScreen + 16;
             Bounds = new Rectangle(xPositionOnScreen, yPositionOnScreen, width, height);
             this.texture = texture;
             this.hoverText = hoverText;
+            activeWindowSize = currentActiveSize();
 
+        }
+
+        private void UpdatePosition()
+        {
+            xPositionOnScreen = currentActiveSize() - 304 + 64 * indexPosition;
+        }
+
+        private int currentActiveSize()
+        {
+            return Game1.activeClickableMenu.xPositionOnScreen + Game1.activeClickableMenu.width;
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -442,7 +461,11 @@ namespace EconomyMod.Interface
         }
         public override void draw(SpriteBatch b)
         {
-            base.draw(b);
+            if (activeWindowSize != currentActiveSize())
+            {
+                UpdatePosition();
+            }
+
 
             Game1.spriteBatch.Draw(Game1.mouseCursors,
                 new Vector2(xPositionOnScreen, yPositionOnScreen),
@@ -460,6 +483,7 @@ namespace EconomyMod.Interface
             {
                 IClickableMenu.drawHoverText(Game1.spriteBatch, hoverText, Game1.smallFont);
             }
+            base.draw(b);
 
         }
 
@@ -467,6 +491,8 @@ namespace EconomyMod.Interface
         public Action LeftClickAction { get; set; }
         private Texture2D texture;
         private string hoverText;
+        private int activeWindowSize;
+        private int indexPosition;
     }
 
     public class SidetabData

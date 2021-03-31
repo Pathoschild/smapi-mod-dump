@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace TheLion.AwesomeTools.Configs
+namespace TheLion.AwesomeTools
 {
 	/// <summary>Configuration for the pickaxe shockwave.</summary>
 	public class PickaxeConfig

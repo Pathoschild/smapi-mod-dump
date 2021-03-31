@@ -87,6 +87,7 @@ namespace StardewHack
         public static CodeInstruction Ldloc_2() => new CodeInstruction(OpCodes.Ldloc_2);
         public static CodeInstruction Ldloc_3() => new CodeInstruction(OpCodes.Ldloc_3);
         public static CodeInstruction Ldloc   (LocalBuilder local) => new CodeInstruction(OpCodes.Ldloc,    local);
+
         public static CodeInstruction Ldloc_S (LocalBuilder local) => new CodeInstruction(OpCodes.Ldloc_S,  local);
         public static CodeInstruction Ldloca  (LocalBuilder local) => new CodeInstruction(OpCodes.Ldloca,   local);
         public static CodeInstruction Ldloca_S(LocalBuilder local) => new CodeInstruction(OpCodes.Ldloca_S, local);
@@ -97,6 +98,8 @@ namespace StardewHack
         public static CodeInstruction Mul() => new CodeInstruction(OpCodes.Mul);
 
         // N
+        public static CodeInstruction Neg() => new CodeInstruction(OpCodes.Neg);
+
         public static CodeInstruction Nop() => new CodeInstruction(OpCodes.Nop);
 
         // P

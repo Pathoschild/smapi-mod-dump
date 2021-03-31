@@ -180,6 +180,11 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     setValue: value => context.Config.FastStatueOfPerfection = value
                 ),
                 new CheatsOptionsCheckbox(
+                    label: GameI18n.GetBigCraftableName(280),
+                    value: context.Config.FastStatueOfTruePerfection,
+                    setValue: value => context.Config.FastStatueOfTruePerfection = value
+                ),
+                new CheatsOptionsCheckbox(
                     label: GameI18n.GetBigCraftableName(105),
                     value: context.Config.FastTapper,
                     setValue: value => context.Config.FastTapper = value
@@ -289,6 +294,7 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                     "Solar Panel" => config.FastSolarPanel,
                     "Statue Of Endless Fortune" => config.FastStatueOfEndlessFortune,
                     "Statue Of Perfection" => config.FastStatueOfPerfection,
+                    "Statue Of True Perfection" => config.FastStatueOfTruePerfection,
                     "Tapper" => config.FastTapper,
                     "Worm Bin" => config.FastWormBin,
                     _ => false
@@ -331,6 +337,7 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
                         case "Soda Machine":
                         case "Statue Of Endless Fortune":
                         case "Statue Of Perfection":
+                        case "Statue Of True Perfection":
                             if (!hasItem)
                             {
                                 machine.DayUpdate(location);

@@ -1,0 +1,16 @@
+url:
+   https://github.com/ImJustMatt/StardewMods.git
+
+mods:
+   Custom Bundles
+   Expanded Storage
+   Expanded Storage → XSAutomate
+   Garbage Day
+
+latest commit:
+   commit 01e93f67ff4cafe13f19f63fa98b0f25d2e4df24
+   Author: Matthew <justmatt@outlook.com>
+   Date:   Mon Mar 29 19:21:42 2021 -0500
+   
+       Reduce passed args to Config.RegisterModConfig
+   

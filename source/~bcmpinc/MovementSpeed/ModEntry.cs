@@ -19,9 +19,9 @@ namespace StardewHack.MovementSpeed
 {
     
     public class ModConfig {
-        /** The movement speed is multiplied by this amount. The default is 1.5, meaning 50% faster movement. */
+        /** The movement speed is multiplied by this amount. The mod's default is 1.5, meaning 50% faster movement. Set this to 1 to disable the increase in movement speed. */
         public float MovementSpeedMultiplier = 1.5f;
-        /** Time required for charging the hoe or watering can in ms. Normally this is 600ms. The default is 600/1.5 = 400, meaning 50% faster charging. */
+        /** Time required for charging the hoe or watering can in ms. Normally this is 600ms. The default is 600/1.5 = 400, meaning 50% faster charging. Set this to 600 to disable faster tool charging. */
         public int ToolChargeDelay = 400;
     }
     
@@ -38,7 +38,16 @@ namespace StardewHack.MovementSpeed
                 Patch(typeof(Game1), "UpdateControlInput", Game1_UpdateControlInput);
             }
         }
-    
+
+        protected override void InitializeApi(GenericModConfigMenuAPI api)
+        {
+            api.RegisterClampedOption(ModManifest, "Movement Speed Multiplier", "The movement speed is multiplied by this amount. The mod's default is 1.5, meaning 50% faster movement. Set this to 1 to disable the increase in movement speed.", () => config.MovementSpeedMultiplier, (float val) => config.MovementSpeedMultiplier = val, 0, 5);
+            api.RegisterClampedOption(ModManifest, "Tool Charge Delay", "Time required for charging the hoe or watering can in ms. Normally this is 600ms. The default is 600/1.5 = 400, meaning 50% faster charging. Set this to 600 to disable faster tool charging.", () => config.ToolChargeDelay, (int val) => config.ToolChargeDelay = val, 100, 600);
+        }
+
+        static float getMovementSpeedMultiplier() => getInstance().config.MovementSpeedMultiplier;
+        static int getToolChargeDelay() => getInstance().config.ToolChargeDelay;
+
         // Add a multiplier to the movement speed.
         void Farmer_getMovementSpeed() {
             var code = FindCode(
@@ -47,7 +56,10 @@ namespace StardewHack.MovementSpeed
                 OpCodes.Ldc_R4,
                 Instructions.Stfld(typeof(Farmer), nameof(Farmer.movementMultiplier))
             );
-            code[1].operand = 0.066f * config.MovementSpeedMultiplier;
+            code.Insert(2,
+                Instructions.Call(GetType(), nameof(getMovementSpeedMultiplier)),
+                Instructions.Mul()
+            );
         }
 
         // Change (reduce) the time it takses to charge tools (hoe & water can).
@@ -74,7 +86,7 @@ namespace StardewHack.MovementSpeed
                 OpCodes.Mul,
                 OpCodes.Conv_I4,
                 Instructions.Stfld(typeof(Farmer), nameof(Farmer.toolHold))
-            )[1].operand = (float)config.ToolChargeDelay;
+            )[1] = Instructions.Call(GetType(), nameof(getToolChargeDelay));
         }
     }
 }

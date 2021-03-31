@@ -89,8 +89,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="i18n\de.json" />
     <None Include="i18n\default.json" />
     <None Include="i18n\es.json" />
+    <None Include="i18n\fr.json" />
     <None Include="i18n\tr.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />

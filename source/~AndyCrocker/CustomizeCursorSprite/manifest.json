@@ -10,10 +10,10 @@
 
 {
   "Name": "Customize Cursor Sprite",
-  "Author": "EpicBellyFlop45",
+  "Author": "Satozaki",
   "Version": "1.0.0",
   "Description": "Allows you to make custom cursors easier",
-  "UniqueID": "EpicBellyFlop45.CustomizeCursorSprite",
+  "UniqueID": "Satozaki.CustomizeCursorSprite",
   "EntryDll": "CustomizeCursorSprite.dll",
   "MinimumApiVersion": "2.7",
   "UpdateKeys": [ "Nexus:3014" ]

@@ -1,0 +1,13 @@
+url:
+   https://github.com/MissCoriel/Event-Repeater.git
+
+mods:
+   Event Repeater
+
+latest commit:
+   commit a71dcde79967f6a1bb09f3e7d7389ca627ac2646
+   Author: Omega Terra Coriel <44127678+MissCoriel@users.noreply.github.com>
+   Date:   Sun Feb 14 20:36:06 2021 -0600
+   
+       Update to 6.0
+   

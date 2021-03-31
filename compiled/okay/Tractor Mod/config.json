@@ -40,10 +40,21 @@
     "MilkPail": {
       "Enable": true
     },
-    "MeleeWeapon": {
+    "MeleeBlunt": {
+      "AttackMonsters": false,
+      "BreakMineContainers": true
+    },
+    "MeleeDagger": {
       "AttackMonsters": false,
       "ClearDeadCrops": true,
-      "BreakMineContainers": true
+      "BreakMineContainers": true,
+      "HarvestGrass": false
+    },
+    "MeleeSword": {
+      "AttackMonsters": false,
+      "ClearDeadCrops": true,
+      "BreakMineContainers": true,
+      "HarvestGrass": false
     },
     "PickAxe": {
       "ClearDebris": true,

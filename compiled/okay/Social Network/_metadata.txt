@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8255
+IDs: Cecidelus.SocialNetwork
+update keys: Nexus:8255

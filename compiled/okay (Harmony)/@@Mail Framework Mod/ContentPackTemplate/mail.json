@@ -44,17 +44,17 @@
 		],
 		"StatsConditions": // Each stats of the list must have a value equal or higher what is defined. Choose a StatsName or a StatsLabel
 		[
-			{ 
+			{
 				"StatsName": "CheeseMade", //[SeedsSown|ItemsShipped|ItemsCooked|ItemsCrafted|ChickenEggsLayed|DuckEggsLayed|CowMilkProduced|GoatMilkProduced|RabbitWoolProduced|SheepWoolProduced|CheeseMade|GoatCheeseMade|TrufflesFound|StoneGathered|RocksCrushed|DirtHoed|GiftsGiven|TimesUnconscious|AverageBedtime|TimesFished|FishCaught|BouldersCracked|StumpsChopped|StepsTaken|MonstersKilled|DiamondsFound|PrismaticShardsFound|OtherPreciousGemsFound|CaveCarrotsFound|CopperFound|IronFound|CoalFound|CoinsFound|GoldFound|IridiumFound|BarsSmelted|BeveragesMade|PreservesMade|PiecesOfTrashRecycled|MysticStonesCrushed|DaysPlayed|WeedsEliminated|SticksChopped|NotesFound|QuestsCompleted|StarLevelCropsShipped|CropsShipped|ItemsForaged|SlimesKilled|GeodesCracked|GoodFriends|IndividualMoneyEarned] Default is null.
-				"StatsLabel": "Name", // [exMemoriesWiped|childrenTurnedToDoves|trashCansChecked] This are the currently games stats that are identified by label, if more are added, they should also be supported. It will also identify custom stats labels added by other mods. Default is null.
+				"StatsLabel": "Name", // [exMemoriesWiped|childrenTurnedToDoves|trashCansChecked|boatRidesToIsland|beachFarmSpawns|hardModeMonstersKilled|timesEnchanted] This are the current game stats that are identified by label, if more are added, they should also be supported. It will also identify custom stats labels added by other mods. Default is null.
 				"Amount": 1 // The amount the status should be equal or greater for the condition to be valid.
 			}
 		],
 		"CollectionConditions": // Each collection condition of the list must have a value equal or higher than the defined amount.
 		[
 			{ 
-				"Collection": "Minerals", //[Shipped|Fish|Artifacts|Minerals|Cooking] Required.
-				"Name":  "", //The name of the object. If a name is given, it will look for that name instead of using the index. If the name is not found, the letter is ignored. Default is null.
+				"Collection": "Minerals", //[Shipped|Fish|Artifacts|Minerals|Cooking|Crafting] Required.
+				"Name":  "", //The name of the object or recipe for 'Crafting' collection. For object, if a name is given, it will look for that name instead of using the index. If the name is not found, the letter is ignored. Default is null.
 				"Index": 72, // The index of the object. Will be overridden if a Name is given, so you can remove the line in that case.
 				"Amount": 10 // The amount the object in the collection should be equal or greater for the condition to be valid.
 			}

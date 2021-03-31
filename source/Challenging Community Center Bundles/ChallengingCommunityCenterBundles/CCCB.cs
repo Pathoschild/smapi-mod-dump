@@ -21,6 +21,8 @@ namespace CCCB
     {
         private ModConfig Config;
         private Dictionary<string, string> CustomBundleData;
+        private Dictionary<string, string> OldBundleData = new Dictionary<string, string>();
+        private Dictionary<string, string> NewBundleData = new Dictionary<string, string>();
         private Dictionary<string, Dictionary<string, string>> BundlePacks = new Dictionary<string, Dictionary<string, string>>();
 
         public override void Entry(IModHelper helper)
@@ -70,17 +72,24 @@ namespace CCCB
                     return;
                 }   
             }
-
+            
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.GameLoop.Saving += this.OnSaving;
+            helper.Events.GameLoop.Saved += this.OnSaved;
         }
 
+        //Set up the new bundles
         private void OnSaveLoaded(object sender, EventArgs e)
         {
+            this.OldBundleData.Clear();
+            this.NewBundleData.Clear();
+
             if (Context.IsWorldReady)
             {
                 var api = this.Helper.ModRegistry.GetApi<IJsonAssetsAPI>("spacechase0.JsonAssets");
 
                 Dictionary<string, string> BundleData = Game1.netWorldState.Value.BundleData;
+
                 for (int index = 0; index < BundleData.Count; index++)
                 {
                     string[] BundleName = BundleData.ElementAt(index).Value.Split('/'); //The Name of the Game Bundles
@@ -99,12 +108,26 @@ namespace CCCB
                             }
                         }
 
-                        this.Monitor.Log($"Old Bundle: " + Game1.netWorldState.Value.BundleData[Key], LogLevel.Info);
-                        this.Monitor.Log($"Set Bundle " + BundleData.ElementAt(index).Key + " to " + this.CustomBundleData[BundleName[0]], LogLevel.Info);
-                        Game1.netWorldState.Value.BundleData[Key] = this.CustomBundleData[BundleName[0]];
+                        //Save the old bundle data to secure the savegame
+                        this.OldBundleData.Add(Key, BundleData[Key]);
+                        //Get the new bundle data
+                        this.NewBundleData.Add(Key, this.CustomBundleData[BundleName[0]]);
                     }
                 }
+                Game1.netWorldState.Value.SetBundleData(this.NewBundleData);
             }
+        }
+
+        //Change the data back to the vanilla bundles for saving (and hopefully saving all savegames)
+        private void OnSaving(object sender, EventArgs e)
+        {
+            Game1.netWorldState.Value.SetBundleData(this.OldBundleData);
+        }
+
+        //Change the bundles back to the new data after save was completed
+        private void OnSaved(object sender, EventArgs e)
+        {
+            Game1.netWorldState.Value.SetBundleData(this.NewBundleData);
         }
     }
 

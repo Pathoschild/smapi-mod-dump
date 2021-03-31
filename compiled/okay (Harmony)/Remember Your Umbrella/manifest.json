@@ -1,0 +1,10 @@
+{
+  "Name": "Remember Your Umbrella",
+  "Author": "heyseth",
+  "Version": "1.0.1", // fixed locally
+  "Description": "Adds working umbrellas to Stardew Valley!",
+  "UniqueID": "heyseth.umbrellas",
+  "EntryDll": "heysethUmbrellas.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8366" ]
+}

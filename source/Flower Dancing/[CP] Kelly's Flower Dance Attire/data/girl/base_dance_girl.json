@@ -108,5 +108,103 @@
 				"LocationName": "Temp",				
 			}
 		},
+
+		{
+			"LogName": "Flower Dance - Girl - Bald - Dancing - 1",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base_bald",
+			"FromFile": "assets/farmer_girl_base/base/bald_{{Female-Base-Attire}}_dance_1.png",
+			"ToArea": { "X": 0, "Y": 352, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Bald - Dancing - 2",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base_bald",
+			"FromFile": "assets/farmer_girl_base/base/bald_{{Female-Base-Attire}}_dance_2.png",
+			"ToArea": { "X": 16, "Y": 352, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Bald - Dancing - 3",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base_bald",
+			"FromFile": "assets/farmer_girl_base/base/bald_{{Female-Base-Attire}}_dance_3.png",
+			"ToArea": { "X": 64, "Y": 352, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Bald - Dancing - 4",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base_bald",
+			"FromFile": "assets/farmer_girl_base/base/bald_{{Female-Base-Attire}}_dance_4.png",
+			"ToArea": { "X": 80, "Y": 480, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Bald - Dancing - 5",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base_bald",
+			"FromFile": "assets/farmer_girl_base/base/bald_{{Female-Base-Attire}}_dance_5.png",
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Bald - Dancing - 6",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base_bald",
+			"FromFile": "assets/farmer_girl_base/base/bald_{{Female-Base-Attire}}_dance_6.png",
+			"ToArea": { "X": 64, "Y": 512, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
+
+		{
+			"LogName": "Flower Dance - Girl - Bald - Dancing - Guy Pos",
+			"Action": "EditImage",
+			"Target": "Characters/Farmer/farmer_girl_base_bald",
+			"FromFile": "assets/farmer_girl_base/base/bald_{{Female-Base-Attire}}_dance_guy.png",
+			"ToArea": { "X": 48, "Y": 160, "Width": 16, "Height": 32 },
+			"Update": "OnLocationChange",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Temp",				
+			}
+		},
     ]
 }

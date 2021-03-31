@@ -1,0 +1,13 @@
+url:
+   https://github.com/Ophaneom/Abilities-Experience-Bars.git
+
+mods:
+   Abilities - Experience Bars
+
+latest commit:
+   commit 7c179c154ac62568683711fc29bdac2e9e5ac26e
+   Author: Gustavo Hinkel <78951385+Ophaneom@users.noreply.github.com>
+   Date:   Sun Mar 21 14:15:33 2021 -0300
+   
+       Adjusted HU language
+   

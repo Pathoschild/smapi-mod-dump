@@ -154,7 +154,7 @@ namespace DailyTasksReport.UI
             _isMouseOnPlusButton = false;
         }
 
-        public override void draw(SpriteBatch b, int slotX, int slotY)
+        public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
         {
             b.Draw(Game1.mouseCursors, new Vector2(slotX + _minusButton.X, slotY + _minusButton.Y), MinusButtonSource,
                 Color.White * (greyedOut ? 0.33f : 1f) * (_selectedQuality == 0 ? 0.5f : 1f), 0.0f, Vector2.Zero,

@@ -8,11 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewValley;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -41,22 +36,22 @@ namespace CampfireCooking {
                 return;
             }
 
-            InputEvents.ButtonReleased += inputEvents_ButtonReleased;
-            MenuEvents.MenuClosed += menuEvents_MenuClosed;
+            helper.Events.Input.ButtonReleased += onButtonReleased;
+            helper.Events.Display.MenuChanged += onMenuChanged;
         }
 
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked when the player release a controller, keyboard, or mouse button.</summary>
+        /// <summary>Raised after the player releases a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void inputEvents_ButtonReleased(object sender, EventArgsInput e) {
+        private void onButtonReleased(object sender, ButtonReleasedEventArgs e) {
             //only when player is ready shall we start process button event
             if(!Context.IsWorldReady || !Context.IsPlayerFree) {
                 return;
             }
-            if(!e.IsActionButton) {
+            if(!e.Button.IsActionButton()) {
                 return;
             }
             tryCampfireCooking();
@@ -67,16 +62,20 @@ namespace CampfireCooking {
             */
         }
 
-        private void menuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e) {
-            if(!m_isMenuOn) {
-                return;
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void onMenuChanged(object sender, MenuChangedEventArgs e) {
+            // on menu closed
+            if (m_isMenuOn && e.NewMenu == null)
+            {
+                //SObject cf = tryGetCampfire();
+                //if(cf == null) {
+                    //return;
+                //}
+                //cf.checkForAction(Game1.player);
+                m_isMenuOn = false;
             }
-            //SObject cf = tryGetCampfire();
-            //if(cf == null) {
-                //return;
-            //}
-            //cf.checkForAction(Game1.player);
-            m_isMenuOn = false;
         }
 
         private void tryCampfireCooking() {

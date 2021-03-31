@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CustomCaskMod.integrations;
 using MailFrameworkMod;
 using StardewModdingAPI;
 using StardewValley;
@@ -20,13 +21,16 @@ namespace CustomCaskMod
 {
     internal class DataLoader
     {
+        private const string CaskDataJson = "CaskData.json";
+        private const string AgersDataJson = "AgersData.json";
+
         public static IModHelper Helper;
         public static ITranslationHelper I18N;
         public static ModConfig ModConfig;
         public static Dictionary<object, float> CaskData;
         public static Dictionary<int, float> CaskDataId =  new Dictionary<int, float>();
 
-        public DataLoader(IModHelper helper)
+        public DataLoader(IModHelper helper, IManifest manifest)
         {
             Helper = helper;
             I18N = helper.Translation;
@@ -36,48 +40,82 @@ namespace CustomCaskMod
             DataLoader.Helper.Data.WriteJsonFile("data\\CaskData.json", CaskData);
             DataLoader.LoadContentPacksCommand();
 
-            if (!ModConfig.DisableLetter)
-            {
-                MailDao.SaveLetter
+            MailDao.SaveLetter
+            (
+                new Letter
                 (
-                    new Letter
-                    (
-                        "CustomCaskRecipe"
-                        , I18N.Get("CustomCask.RecipeLetter")
-                        , "Cask"
-                        , (l) => !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CustomCask.Letter") && (Utility.getHomeOfFarmer(Game1.player).upgradeLevel >= 3 || ModConfig.EnableCasksAnywhere) && !Game1.player.craftingRecipes.ContainsKey("Cask")
-                        , (l) => Game1.player.mailReceived.Add(l.Id)
-                    )
-                );
-                MailDao.SaveLetter
+                    "CustomCaskRecipe"
+                    , I18N.Get("CustomCask.RecipeLetter")
+                    , "Cask"
+                    , (l) => !DataLoader.ModConfig.DisableLetter && !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CustomCask") && (Utility.getHomeOfFarmer(Game1.player).upgradeLevel >= 3 || ModConfig.EnableCasksAnywhere) && !Game1.player.craftingRecipes.ContainsKey("Cask")
+                    , (l) => Game1.player.mailReceived.Add(l.Id)
+                )
+            );
+            MailDao.SaveLetter
+            (
+                new Letter
                 (
-                    new Letter
-                    (
-                        "CustomCask"
-                        , I18N.Get("CustomCask.Letter")
-                        , (l) => !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CustomCask.RecipeLetter") && (Utility.getHomeOfFarmer(Game1.player).upgradeLevel >= 3 || ModConfig.EnableCasksAnywhere) && Game1.player.craftingRecipes.ContainsKey("Cask")
-                        , (l) => Game1.player.mailReceived.Add(l.Id)
-                    )
-                );
-            }
+                    "CustomCask"
+                    , I18N.Get("CustomCask.Letter")
+                    , (l) => !DataLoader.ModConfig.DisableLetter && !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CustomCaskRecipe") && (Utility.getHomeOfFarmer(Game1.player).upgradeLevel >= 3 || ModConfig.EnableCasksAnywhere) && Game1.player.craftingRecipes.ContainsKey("Cask")
+                    , (l) => Game1.player.mailReceived.Add(l.Id)
+                )
+            );
+            
+            CreateConfigMenu(manifest);
         }
 
         public static void LoadContentPacksCommand(string command = null, string[] args = null)
         {
+            Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
             foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
             {
-                if (File.Exists(Path.Combine(contentPack.DirectoryPath, "CaskData.json")))
+                bool hasFile = false;
+                if (File.Exists(Path.Combine(contentPack.DirectoryPath, CaskDataJson)))
                 {
-                    CustomCaskModEntry.ModMonitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
-                    Dictionary<object, float> caskData = contentPack.ReadJsonFile<Dictionary<object, float>>("CaskData.json");
+                    hasFile = true;
+                    CustomCaskModEntry.ModMonitor.Log($"Reading file {AgersDataJson} from content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+                    Dictionary<object, float> caskData = contentPack.ReadJsonFile<Dictionary<object, float>>(CaskDataJson);
                     foreach (var caskItem in caskData)
                     {
                         DataLoader.CaskData[caskItem.Key] = caskItem.Value;
                     }
                 }
-                else
+                if (File.Exists(Path.Combine(contentPack.DirectoryPath, AgersDataJson)))
                 {
-                    CustomCaskModEntry.ModMonitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an CaskData.json file.", LogLevel.Warn);
+                    hasFile = true;
+                    CustomCaskModEntry.ModMonitor.Log($"Reading file {AgersDataJson} from content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+                    List<CustomAger> agersData = contentPack.ReadJsonFile<List<CustomAger>>(AgersDataJson);
+                    foreach (CustomAger customAger in agersData)
+                    {
+                        if (customAger.Name != "Cask")
+                        {
+                            customAger.ModUniqueID = contentPack.Manifest.UniqueID;
+                            if (AgerController.GetAger(customAger.Name) is CustomAger currentAger)
+                            {
+                                if (currentAger.ModUniqueID != customAger.ModUniqueID)
+                                {
+                                    CustomCaskModEntry.ModMonitor.Log($"Both mods '{currentAger.ModUniqueID}' and '{customAger.ModUniqueID}' have data for  '{customAger.Name}'. You should report the problem to these mod's authors. Data from mod '{currentAger.ModUniqueID}' will be used.", LogLevel.Warn);
+                                    continue;
+                                }
+                            }
+                            customAger.AgingData.ToList().ForEach(d =>
+                            {
+                                int? id = GetId(d.Key, objects);
+                                if (id.HasValue) customAger.AgingDataId[id.Value] = d.Value;
+                            });
+                            AgerController.SetAger(customAger);
+                        }
+                        else
+                        {
+                            CustomCaskModEntry.ModMonitor.Log($"Cask data can't be added on {AgersDataJson} file. Use {CaskDataJson} file instead.", LogLevel.Warn);
+                        }
+                    }
+                }
+
+                if (!hasFile)
+                {
+                    CustomCaskModEntry.ModMonitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt doesn't have both {CaskDataJson} and {AgersDataJson} files.", LogLevel.Warn);
                 }
             }
             FillCaskDataIds();
@@ -101,6 +139,38 @@ namespace CustomCaskMod
                     }
                 }
             });
+        }
+
+        private static int? GetId(object identifier, Dictionary<int, string> objects)
+        {
+            if (Int32.TryParse(identifier.ToString(), out int id))
+            {
+                return id;
+            }
+            else
+            {
+                KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(identifier + "/"));
+                if (pair.Value != null)
+                {
+                    return pair.Key;
+                }
+            }
+            return null;
+        }
+
+        private void CreateConfigMenu(IManifest manifest)
+        {
+            GenericModConfigMenuApi api = Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (api != null)
+            {
+                api.RegisterModConfig(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
+
+                api.RegisterSimpleOption(manifest, "Disable Letter", "You won't receive the letter about Custom Cask changes and the cask recipe in case you don't know it.", () => DataLoader.ModConfig.DisableLetter, (bool val) => DataLoader.ModConfig.DisableLetter = val);
+
+                api.RegisterSimpleOption(manifest, "Casks Anywhere", "Casks will accept items anywhere.", () => DataLoader.ModConfig.EnableCasksAnywhere, (bool val) => DataLoader.ModConfig.EnableCasksAnywhere = val);
+
+                api.RegisterSimpleOption(manifest, "Quality++", "Casks will be able to increase more than one quality lever per day.", () => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay, (bool val) => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay = val);
+            }
         }
     }
 }

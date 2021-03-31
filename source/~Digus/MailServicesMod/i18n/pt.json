@@ -19,6 +19,7 @@
     "Shipment.Clint.UpgradeLetter.NoMoney": "Você não tem dinheiro suficiente para enviar o(a) {{Tool}} para melhoria.",
     // Item Delivery Quest Service
     "Shipment.Quest.ItemDelivery.NotEnoughItems": "{{Npc}} precisa de {{Number}} destes.",
+    "Shipment.Quest.ItemDelivery.NoMoney": "Você não tem dinheiro suficiente para enviar o item da quest.",
     "Shipment.Quest.DeliveryQuestsLetter": "Olá, @,^Eu só queria te informar que você também pode postar itens na sua caixa de correiro e eles serão entregues para a pessoa que os requisitou.^Nossa vila pode ser pequena, mas nosso serviço de correios é ótimo.^^  -Prefeito Lewis",
     "Shipment.Quest.DeliveryQuestsLetter.Title": "Serviço de Envios da Vila Pelicanos",
     // Adventure Guild Recovery Service
@@ -40,5 +41,6 @@
     "Shipment.Gift.Next": "Próximo>",
     "Shipment.Gift.None": "Ninguém",
     "Shipment.Gift.Question": "Enviar {{Gift}} para...",
-    "Shipment.Gift.GiftSent": "{{Gift}} enviado(a) para {{Npc}}"
+    "Shipment.Gift.GiftSent": "{{Gift}} enviado(a) para {{Npc}}",
+    "Shipment.Gift.NoMoney": "Você não tem dinheiro suficiente para enviar o presente."
 }

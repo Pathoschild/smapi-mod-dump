@@ -15,6 +15,7 @@ using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
@@ -30,7 +31,8 @@ namespace JoysOfEfficiency.Automation
 
         public static void OnEighthUpdate()
         {
-            if (!(Game1.currentLocation is Farm farm))
+            GameLocation farm = Game1.currentLocation;
+            if (!(farm is Farm || farm is IslandWest))
             {
                 return;
             }
@@ -63,7 +65,7 @@ namespace JoysOfEfficiency.Automation
             }
         }
 
-        private static void CutWeeds(Farm farm, Object obj, Vector2 loc)
+        private static void CutWeeds(GameLocation farm, Object obj, Vector2 loc)
         {
             Reflection.GetMethod(obj, "cutWeed").Invoke(Game1.player, farm);
             farm.removeObject(loc, false);

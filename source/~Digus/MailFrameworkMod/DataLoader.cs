@@ -75,10 +75,10 @@ namespace MailFrameworkMod
                         Dictionary<int, string> weapons = null;
                         Dictionary<int, string> boots = null;
 
-                        //Populate all Indexs based on the given name. Ignore the letter otherwise.
+                        //Populate all Indexes based on the given name. Ignore the letter otherwise.
                         if (mailItem.CollectionConditions != null && mailItem.CollectionConditions.Any(c =>
                         {
-                            if (c.Name != null)
+                            if (c.Name != null && c.Collection != Collection.Crafting)
                             {
                                 objects = objects ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
                                 KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(c.Name + "/"));
@@ -94,7 +94,7 @@ namespace MailFrameworkMod
                                 }
                             }
                             return false;
-                        })) break;
+                        })) continue;
 
                         bool Condition(Letter l) => 
                             (!Game1.player.mailReceived.Contains(l.Id) || mailItem.Repeatable)
@@ -113,6 +113,7 @@ namespace MailFrameworkMod
                                     || (c.Collection == Collection.Artifacts && Game1.player.archaeologyFound.ContainsKey(c.Index) && Game1.player.archaeologyFound[c.Index][0] >= c.Amount)
                                     || (c.Collection == Collection.Minerals && Game1.player.mineralsFound.ContainsKey(c.Index) && Game1.player.mineralsFound[c.Index] >= c.Amount)
                                     || (c.Collection == Collection.Cooking && Game1.player.recipesCooked.ContainsKey(c.Index) && Game1.player.recipesCooked[c.Index] >= c.Amount)
+                                    || (c.Collection == Collection.Crafting && Game1.player.craftingRecipes.ContainsKey(c.Name) && Game1.player.craftingRecipes[c.Name] >= c.Amount)
                                     )))
                             && (mailItem.RandomChance == null || new Random((int)(((ulong)Game1.stats.DaysPlayed * 1000000000000000) + (((ulong)l.Id.GetHashCode()) % 1000000000 * 1000000) + Game1.uniqueIDForThisGame % 1000000)).NextDouble() < mailItem.RandomChance)
                             && (mailItem.Buildings == null || (mailItem.RequireAllBuildings ? mailItem.Buildings.TrueForAll(b=> Game1.getFarm().isBuildingConstructed(b)) : mailItem.Buildings.Any(b => Game1.getFarm().isBuildingConstructed(b))))
@@ -347,7 +348,7 @@ namespace MailFrameworkMod
                             MailDao.SaveLetter(
                                 new Letter(
                                     mailItem.Id
-                                    , hasTranslation? contentPack.Translation.Get(mailItem.Text) : mailItem.Text
+                                    , hasTranslation && mailItem.Text != null ? contentPack.Translation.Get(mailItem.Text) : mailItem.Text
                                     , attachments
                                     , Condition
                                     , (l) => Game1.player.mailReceived.Add(l.Id)
@@ -367,7 +368,7 @@ namespace MailFrameworkMod
                             MailDao.SaveLetter(
                                 new Letter(
                                     mailItem.Id
-                                    , hasTranslation ? contentPack.Translation.Get(mailItem.Text) : mailItem.Text
+                                    , hasTranslation && mailItem.Text != null ? contentPack.Translation.Get(mailItem.Text) : mailItem.Text
                                     , mailItem.Recipe
                                     , Condition
                                     , (l) => Game1.player.mailReceived.Add(l.Id)

@@ -336,7 +336,7 @@ namespace DailyTasksReport.UI
             }
         }
 
-        public override void draw(SpriteBatch b, int slotX, int slotY)
+        public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
         {
             if (whichOption == -1)
             {

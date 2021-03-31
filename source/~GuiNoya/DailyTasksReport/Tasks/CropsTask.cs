@@ -32,10 +32,10 @@ namespace DailyTasksReport.Tasks
 
         // 0 = Farm, 1 = Greenhouse
         private static readonly List<Tuple<Vector2, HoeDirt>>[] Crops =
-            {new List<Tuple<Vector2, HoeDirt>>(), new List<Tuple<Vector2, HoeDirt>>()};
+            {new List<Tuple<Vector2, HoeDirt>>(), new List<Tuple<Vector2, HoeDirt>>(), new List<Tuple<Vector2, HoeDirt>>()};
 
         private static readonly List<Tuple<Vector2, FruitTree>>[] FruitTrees =
-            {new List<Tuple<Vector2, FruitTree>>(), new List<Tuple<Vector2, FruitTree>>()};
+            {new List<Tuple<Vector2, FruitTree>>(), new List<Tuple<Vector2, FruitTree>>(), new List<Tuple<Vector2, FruitTree>>()};
 
         private static CropsTaskId _who = CropsTaskId.None;
 
@@ -44,16 +44,26 @@ namespace DailyTasksReport.Tasks
             _config = config;
             _id = id;
 
-            if (id == CropsTaskId.UnwateredCropFarm || id == CropsTaskId.UnharvestedCropFarm ||
-                id == CropsTaskId.DeadCropFarm || id == CropsTaskId.FruitTreesFarm)
+            switch (id)
             {
-                _index = 0;
-                _locationName = "Farm";
-            }
-            else
-            {
-                _index = 1;
-                _locationName = "Greenhouse";
+                case CropsTaskId.UnwateredCropFarm:
+                case CropsTaskId.UnharvestedCropFarm:
+                case CropsTaskId.DeadCropFarm:
+                case CropsTaskId.FruitTreesFarm:
+                    _index = 0;
+                    _locationName = "Farm";
+                    break;
+                case CropsTaskId.UnwateredCropWestIsland:
+                case CropsTaskId.UnharvestedCropWestIsland:
+                case CropsTaskId.DeadCropWestIsland:
+                case CropsTaskId.FruitTreesWestIsland:
+                    _index = 2;
+                    _locationName = "IslandWest";
+                    break;
+                default:
+                    _index = 1;
+                    _locationName = "Greenhouse";
+                    break;
             }
 
             SettingsMenu.ReportConfigChanged += SettingsMenu_ReportConfigChanged;
@@ -65,21 +75,25 @@ namespace DailyTasksReport.Tasks
             {
                 case CropsTaskId.UnwateredCropFarm:
                 case CropsTaskId.UnwateredCropGreenhouse:
+                case CropsTaskId.UnwateredCropWestIsland:
                     Enabled = _config.UnwateredCrops;
                     break;
 
                 case CropsTaskId.UnharvestedCropFarm:
                 case CropsTaskId.UnharvestedCropGreenhouse:
+                case CropsTaskId.UnharvestedCropWestIsland:
                     Enabled = _config.UnharvestedCrops;
                     break;
 
                 case CropsTaskId.DeadCropFarm:
                 case CropsTaskId.DeadCropGreenhouse:
+                case CropsTaskId.DeadCropWestIsland:
                     Enabled = _config.DeadCrops;
                     break;
 
                 case CropsTaskId.FruitTreesFarm:
                 case CropsTaskId.FruitTreesGreenhouse:
+                case CropsTaskId.FruitTreesWestIsland:
                     Enabled = _config.FruitTrees > 0;
                     break;
 
@@ -99,6 +113,7 @@ namespace DailyTasksReport.Tasks
             if (_who != _id) return;
 
             GameLocation location = Game1.locations.OfType<Farm>().FirstOrDefault();
+
             foreach (var pair in location.terrainFeatures.Pairs)
                 if (pair.Value is FruitTree tree && tree.fruitsOnTree.Value > 0)
                     FruitTrees[0].Add(new Tuple<Vector2, FruitTree>(pair.Key, tree));
@@ -107,6 +122,11 @@ namespace DailyTasksReport.Tasks
             foreach (var pair in location.terrainFeatures.Pairs)
                 if (pair.Value is FruitTree tree && tree.fruitsOnTree.Value > 0)
                     FruitTrees[1].Add(new Tuple<Vector2, FruitTree>(pair.Key, tree));
+
+            location = Game1.locations.FirstOrDefault(l => l.Name == "IslandWest");
+            foreach (var pair in location.terrainFeatures.Pairs)
+                if (pair.Value is FruitTree tree && tree.fruitsOnTree.Value > 0)
+                    FruitTrees[2].Add(new Tuple<Vector2, FruitTree>(pair.Key, tree));
         }
 
         public override string GeneralInfo(out int usedLines)
@@ -131,6 +151,7 @@ namespace DailyTasksReport.Tasks
             {
                 case CropsTaskId.UnwateredCropFarm:
                 case CropsTaskId.UnwateredCropGreenhouse:
+                case CropsTaskId.UnwateredCropWestIsland:
                     count = Crops[_index].Count(pair =>
                         pair.Item2.state.Value == HoeDirt.dry && pair.Item2.needsWatering() && !pair.Item2.crop.dead.Value);
                     if (count > 0)
@@ -142,6 +163,7 @@ namespace DailyTasksReport.Tasks
 
                 case CropsTaskId.UnharvestedCropFarm:
                 case CropsTaskId.UnharvestedCropGreenhouse:
+                case CropsTaskId.UnharvestedCropWestIsland:
                     count = Crops[_index].Count(pair => pair.Item2.readyForHarvest());
                     if (count > 0)
                     {
@@ -152,6 +174,7 @@ namespace DailyTasksReport.Tasks
 
                 case CropsTaskId.DeadCropFarm:
                 case CropsTaskId.DeadCropGreenhouse:
+                case CropsTaskId.DeadCropWestIsland:
                     count = Crops[_index].Count(pair => pair.Item2.crop.dead.Value);
                     if (count > 0)
                     {
@@ -162,6 +185,7 @@ namespace DailyTasksReport.Tasks
 
                 case CropsTaskId.FruitTreesFarm:
                 case CropsTaskId.FruitTreesGreenhouse:
+                case CropsTaskId.FruitTreesWestIsland:
                     count = FruitTrees[_index].Count(p => p.Item2.fruitsOnTree.Value >= _config.FruitTrees);
                     if (count > 0)
                     {
@@ -189,6 +213,7 @@ namespace DailyTasksReport.Tasks
 
             switch (_id)
             {
+                case CropsTaskId.UnwateredCropWestIsland:
                 case CropsTaskId.UnwateredCropFarm:
                     stringBuilder.Append("Unwatered crops:^");
                     usedLines++;
@@ -196,18 +221,21 @@ namespace DailyTasksReport.Tasks
                     break;
 
                 case CropsTaskId.UnharvestedCropFarm:
+                case CropsTaskId.UnharvestedCropWestIsland:
                     stringBuilder.Append("Ready to harvest crops:^");
                     usedLines++;
                     skipNextPage = true;
                     break;
 
                 case CropsTaskId.DeadCropFarm:
+                case CropsTaskId.DeadCropWestIsland:
                     stringBuilder.Append("Dead crops:^");
                     usedLines++;
                     skipNextPage = true;
                     break;
 
                 case CropsTaskId.FruitTreesFarm:
+                case CropsTaskId.FruitTreesWestIsland:
                     stringBuilder.Append("Fruit trees with fruits:^");
                     usedLines++;
                     skipNextPage = true;
@@ -221,22 +249,26 @@ namespace DailyTasksReport.Tasks
             {
                 case CropsTaskId.UnwateredCropFarm:
                 case CropsTaskId.UnwateredCropGreenhouse:
+                case CropsTaskId.UnwateredCropWestIsland:
                     EchoForCrops(ref stringBuilder, ref usedLines, pair =>
                         pair.Item2.state.Value == HoeDirt.dry && pair.Item2.needsWatering() && !pair.Item2.crop.dead.Value);
                     break;
 
                 case CropsTaskId.UnharvestedCropFarm:
                 case CropsTaskId.UnharvestedCropGreenhouse:
+                case CropsTaskId.UnharvestedCropWestIsland:
                     EchoForCrops(ref stringBuilder, ref usedLines, pair => pair.Item2.readyForHarvest());
                     break;
 
                 case CropsTaskId.DeadCropFarm:
                 case CropsTaskId.DeadCropGreenhouse:
+                case CropsTaskId.DeadCropWestIsland:
                     EchoForCrops(ref stringBuilder, ref usedLines, pair => pair.Item2.crop.dead.Value);
                     break;
 
                 case CropsTaskId.FruitTreesFarm:
                 case CropsTaskId.FruitTreesGreenhouse:
+                case CropsTaskId.FruitTreesWestIsland:
                     if (_config.FruitTrees == 0) break;
                     foreach (var tuple in FruitTrees[_index].Where(t => t.Item2.fruitsOnTree.Value >= _config.FruitTrees))
                     {
@@ -260,8 +292,16 @@ namespace DailyTasksReport.Tasks
         {
             foreach (var item in Crops[_index].Where(predicate))
             {
-                stringBuilder.Append(
-                    $"{ObjectsNames[item.Item2.crop.indexOfHarvest.Value]} at {_locationName} ({item.Item1.X}, {item.Item1.Y})^");
+                if (ObjectsNames.ContainsKey(item.Item2.crop.indexOfHarvest.Value))
+                {
+                    stringBuilder.Append(
+                        $"{ObjectsNames[item.Item2.crop.indexOfHarvest.Value]} at {_locationName} ({item.Item1.X}, {item.Item1.Y})^");
+                }
+                else
+                {
+                    stringBuilder.Append(
+                        $"Unknown Id: {item.Item2.crop.indexOfHarvest.Value} at {_locationName} ({item.Item1.X}, {item.Item1.Y})^");
+                }
                 count++;
             }
         }
@@ -304,29 +344,35 @@ namespace DailyTasksReport.Tasks
             {
                 Crops[0].Clear();
                 Crops[1].Clear();
+                Crops[2].Clear();
                 FruitTrees[0].Clear();
                 FruitTrees[1].Clear();
+                FruitTrees[2].Clear();
             }
 
             switch (_id)
             {
                 case CropsTaskId.UnwateredCropFarm:
                 case CropsTaskId.UnwateredCropGreenhouse:
+                case CropsTaskId.UnwateredCropWestIsland:
                     Enabled = _config.UnwateredCrops;
                     break;
 
                 case CropsTaskId.UnharvestedCropFarm:
                 case CropsTaskId.UnharvestedCropGreenhouse:
+                case CropsTaskId.UnharvestedCropWestIsland:
                     Enabled = _config.UnharvestedCrops;
                     break;
 
                 case CropsTaskId.DeadCropFarm:
                 case CropsTaskId.DeadCropGreenhouse:
+                case CropsTaskId.DeadCropWestIsland:
                     Enabled = _config.DeadCrops;
                     break;
 
                 case CropsTaskId.FruitTreesFarm:
                 case CropsTaskId.FruitTreesGreenhouse:
+                case CropsTaskId.FruitTreesWestIsland:
                     Enabled = _config.FruitTrees > 0;
                     break;
 
@@ -346,7 +392,11 @@ namespace DailyTasksReport.Tasks
         DeadCropFarm = 4,
         DeadCropGreenhouse = 5,
         FruitTreesFarm = 6,
-        FruitTreesGreenhouse = 7
+        FruitTreesGreenhouse = 7,
+        UnwateredCropWestIsland = 8,
+        UnharvestedCropWestIsland = 9,
+        DeadCropWestIsland = 10,
+        FruitTreesWestIsland = 11
     }
 }
 

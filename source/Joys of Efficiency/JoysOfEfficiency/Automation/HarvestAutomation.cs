@@ -247,6 +247,7 @@ namespace JoysOfEfficiency.Automation
                                     num2 = 310;
                                     break;
                                 case 6:
+                                case 9:
                                     num2 = 88;
                                     break;
                                 default:

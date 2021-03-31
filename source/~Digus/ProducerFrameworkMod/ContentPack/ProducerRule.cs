@@ -24,6 +24,7 @@ namespace ProducerFrameworkMod.ContentPack
         public string ModUniqueID;
         public List<string> OverrideMod = new List<string>();
         public string ProducerName;
+        public List<string> AdditionalProducerNames = new List<string>();
         public string InputIdentifier;
         public int InputStack = 1;
         public List<string> ExcludeIdentifiers;
@@ -40,6 +41,7 @@ namespace ProducerFrameworkMod.ContentPack
         public float PlacingAnimationOffsetX = 0.0f;
         public float PlacingAnimationOffsetY = 0.0f;
         public List<StardewStats> IncrementStatsOnInput = new List<StardewStats>();
+        public List<string> IncrementStatsLabelOnInput = new List<string>();
         public InputSearchConfig LookForInputWhenReady;
 
         // Generated attributes
@@ -56,6 +58,7 @@ namespace ProducerFrameworkMod.ContentPack
         public string OutputGenericParentNameTranslationKey;
         public Object.PreserveType? PreserveType;
         public bool KeepInputParentIndex;
+        public bool ReplaceWithInputParentIndex;
         public bool InputPriceBased;
         public int OutputPriceIncrement = 0;
         public double OutputPriceMultiplier = 1;

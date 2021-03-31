@@ -96,13 +96,6 @@ namespace CustomDeathPenaltyPlus
                 monitor.Log($"HealthtoRestorePercentage in DeathPenalty is invalid, default value will be used instead... {changes.HealthtoRestorePercentage} isn't a decimal between 0 and 1, excluding 0", LogLevel.Warn);
                 changes.HealthtoRestorePercentage = 0.50;
             }
-
-            // Reconcile FriendshipPenalty if the value is -ve
-            if (changes.FriendshipPenalty < 0)
-            {
-                monitor.Log("FriendshipPenalty is invalid, default value will be used instead... A negative number? Harvey isn't going to like you more if you die...", LogLevel.Warn);
-                changes.FriendshipPenalty = 0;
-            }
         }
     }
 
@@ -146,6 +139,7 @@ namespace CustomDeathPenaltyPlus
             // Add console commands
             helper.ConsoleCommands.Add("deathpenalty", "Changes the death penalty settings\n format: deathpenalty <configoption> <value>", this.Setdp);
             helper.ConsoleCommands.Add("passoutpenalty", "Changes the pass out penalty settings\n format: passoutpenalty <configoption> <value>", this.Setpp);
+            helper.ConsoleCommands.Add("otherpenalty", "Changes the other penalty settings\n format: otherpenalty <configoption> <value>", this.Setop);
             helper.ConsoleCommands.Add("configinfo", "Displays the current config settings", this.Info);
 
             // Allow other classes to use the ModConfig
@@ -164,7 +158,7 @@ namespace CustomDeathPenaltyPlus
             this.config.DeathPenalty.Reconcile(this.Monitor);
 
             // Is WakeupNextDayinClinic true or is FriendshipPenalty greater than 0?
-            if (this.config.DeathPenalty.WakeupNextDayinClinic == true || this.config.DeathPenalty.FriendshipPenalty > 0)
+            if (this.config.OtherPenalties.WakeupNextDayinClinic == true || this.config.OtherPenalties.HarveyFriendshipChange != 0)
             {
                 // Yes, edit some events
 
@@ -210,7 +204,7 @@ namespace CustomDeathPenaltyPlus
                         // It is multiplayer
                         && Context.IsMultiplayer == true 
                         // WakeupNextDayinClinic is true
-                        && this.config.DeathPenalty.WakeupNextDayinClinic == true)
+                        && this.config.OtherPenalties.WakeupNextDayinClinic == true)
                     {
                         // Set warptoinvisiblelocation to true
                         togglesperscreen.Value.warptoinvisiblelocation = true;
@@ -248,7 +242,7 @@ namespace CustomDeathPenaltyPlus
                         PlayerStateRestorer.LoadStateDeath();
 
                         // Clear state if WakeupNextDayinClinic is false, other stuff needs to be done if it's true
-                        if(this.config.DeathPenalty.WakeupNextDayinClinic == false)
+                        if (this.config.OtherPenalties.WakeupNextDayinClinic == false)
                         {
                             // Reset PlayerStateRestorer class with the statedeath field
                             PlayerStateRestorer.statedeath = null;
@@ -284,7 +278,7 @@ namespace CustomDeathPenaltyPlus
                 togglesperscreen.Value.loadstate = false;
 
                 // Start new day if necessary
-                if (this.config.DeathPenalty.WakeupNextDayinClinic == true)
+                if (this.config.OtherPenalties.WakeupNextDayinClinic == true)
                 {
                     // Save necessary data to data model
                     ModEntry.PlayerData.DidPlayerWakeupinClinic = true;
@@ -548,6 +542,22 @@ namespace CustomDeathPenaltyPlus
             catch (IndexOutOfRangeException)
             {
                 this.Monitor.Log("Incorrect command format used.\nRequired format: passoutpenalty <configoption> <value>", LogLevel.Error);
+            }
+        }
+
+        private void Setop(string command, string[] args)
+        {
+            try
+            {
+                Commands.OtherPenalty(args, this.Monitor, this.Helper);
+            }
+            catch (FormatException)
+            {
+                this.Monitor.Log("Specified value could not be parsed, enter value as it would appear in the config", LogLevel.Error);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                this.Monitor.Log("Incorrect command format used.\nRequired format: otherpenalty <configoption> <value>", LogLevel.Error);
             }
         }
         private void Info(string command, string[] args)

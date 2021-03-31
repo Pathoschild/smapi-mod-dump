@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8295
+IDs: heyseth.sitpause
+update keys: Nexus:8295, GitHub:heyseth/SDVMods

@@ -1,10 +1,10 @@
 ﻿{
-  "Name": "Recatch Legendary Fish",
-  "Author": "cantorsdust",
-  "Version": "1.6.2",
-  "Description": "Lets you catch legendary fish again and again.",
-  "UniqueID": "cantorsdust.RecatchLegendaryFish",
-  "EntryDll": "RecatchLegendaryFish.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:172" ]
+    "Name": "Recatch Legendary Fish",
+    "Author": "cantorsdust and Pathoschild",
+    "Version": "1.7.0",
+    "Description": "Lets you catch legendary fish again and again.",
+    "UniqueID": "cantorsdust.RecatchLegendaryFish",
+    "EntryDll": "RecatchLegendaryFish.dll",
+    "MinimumApiVersion": "3.9.5",
+    "UpdateKeys": [ "Nexus:172" ]
 }

@@ -25,5 +25,15 @@ namespace ProducerFrameworkMod.Controllers
             var statusValue = ProducerFrameworkModEntry.Helper.Reflection.GetProperty<uint>(Game1.stats, stats.ToString());
             statusValue.SetValue(statusValue.GetValue() + (uint) amount);
         }
+        
+        /// <summary>
+        /// Increment the given stats label for the given amout
+        /// </summary>
+        /// <param name="label">The stat label to increment</param>
+        /// <param name="amount">The amount to increment</param>
+        public static void IncrementStardewStats(string label, int amount = 1)
+        {
+            Game1.stats.incrementStat(label, amount);
+        }
     }
 }

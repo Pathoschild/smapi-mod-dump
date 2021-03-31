@@ -14,34 +14,42 @@ using Microsoft.Xna.Framework.Graphics;
 using MoreGrass.Config;
 using MoreGrass.Patches;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
 namespace MoreGrass
 {
     /// <summary>The mod entry point.</summary>
-    public class ModEntry : Mod
+    public class ModEntry : Mod, IAssetEditor
     {
+        /*********
+        ** Fields
+        *********/
+        /// <summary>Whether the default game sprites should get reloaded.</summary>
+        /// <remarks>This is the case when a mod invalidates the games grass cache (if a mod retextures the sprites for example).</remarks>
+        private bool ReloadDefaultSprites = false;
+
+
         /*********
         ** Accessors 
         *********/
         /// <summary>The mod configuration.</summary>
         public ModConfig Config { get; private set; }
 
-        /// <summary>The list of all loaded spring grass sprites.</summary>
-        public List<Texture2D> SpringGrassSprites { get; private set; } = new List<Texture2D>();
+        /// <summary>The sprite pool for spring grass sprites.</summary>
+        public SpritePool SpringSpritePool { get; } = new SpritePool();
 
-        /// <summary>The list of all loaded summer grass sprites.</summary>
-        public List<Texture2D> SummerGrassSprites { get; private set; } = new List<Texture2D>();
+        /// <summary>The sprite pool for summer grass sprites.</summary>
+        public SpritePool SummerSpritePool { get; } = new SpritePool();
 
-        /// <summary>The list of all loaded fall grass sprites.</summary>
-        public List<Texture2D> FallGrassSprites { get; private set; } = new List<Texture2D>();
+        /// <summary>The sprite pool for fall grass sprites.</summary>
+        public SpritePool FallSpritePool { get; } = new SpritePool();
 
-        /// <summary>The list of all loaded winter grass sprites.</summary>
-        public List<Texture2D> WinterGrassSprites { get; private set; } = new List<Texture2D>();
+        /// <summary>The sprite pool for winter grass sprites.</summary>
+        public SpritePool WinterSpritePool { get; } = new SpritePool();
 
         /// <summary>The singleton instance of <see cref="MoreGrass.ModEntry"/>.</summary>
         public static ModEntry Instance { get; private set; }
@@ -57,26 +65,53 @@ namespace MoreGrass
             Instance = this;
             Config = this.Helper.ReadConfig<ModConfig>();
 
+            this.Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+
             ApplyHarmonyPatches();
-            bool loadDefaultGrass = LoadContentPacks();
-            if (loadDefaultGrass)
-                LoadDefaultGrass();
-            else
-                this.Monitor.Log("Skipping loading default sprites due to content pack config");
+            LoadContentPacks();
+            LoadDefaultGrass(this.Helper.Content.Load<Texture2D>(Path.Combine("TerrainFeatures", "grass"), ContentSource.GameContent));
 
-            // once all content packs are loaded, make sure there is atleast one sprite in each sprite pool
-            ValidateSpritePools();
+            this.Monitor.Log($"A total of {SpringSpritePool.Count} spring sprites have been loaded");
+            this.Monitor.Log($"A total of {SummerSpritePool.Count} summer sprites have been loaded");
+            this.Monitor.Log($"A total of {FallSpritePool.Count} fall sprites have been loaded");
+            this.Monitor.Log($"A total of {WinterSpritePool.Count} winter sprites have been loaded");
 
-            this.Monitor.Log($"A total of {SpringGrassSprites.Count} spring sprites have been loaded");
-            this.Monitor.Log($"A total of {SummerGrassSprites.Count} summer sprites have been loaded");
-            this.Monitor.Log($"A total of {FallGrassSprites.Count} fall sprites have been loaded");
-            this.Monitor.Log($"A total of {WinterGrassSprites.Count} winter sprites have been loaded");
+            this.Monitor.Log($"Have default sprites been including in spring? {SpringSpritePool.IncludeDefaultGrass}");
+            this.Monitor.Log($"Have default sprites been including in summer? {SummerSpritePool.IncludeDefaultGrass}");
+            this.Monitor.Log($"Have default sprites been including in fall? {FallSpritePool.IncludeDefaultGrass}");
+            this.Monitor.Log($"Have default sprites been including in winter? {WinterSpritePool.IncludeDefaultGrass}");
         }
+
+        /// <inheritdoc/>
+        /// <remarks>This is used to detect when the grass sprite's are getting edited (so the local cache can be reconstructed with the edited version).</remarks>
+        public bool CanEdit<T>(IAssetInfo asset)
+        {
+            if (asset.AssetName.ToLower() == Path.Combine("terrainfeatures", "grass"))
+                ReloadDefaultSprites = true;
+
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public void Edit<T>(IAssetData asset) { }
 
 
         /*********
         ** Private Methods 
         *********/
+        /// <summary>Invoked once per tick.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        /// <remarks>This is used to reconstruct the default grass cache after it gets edited.</remarks>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (!ReloadDefaultSprites)
+                return;
+
+            LoadDefaultGrass(this.Helper.Content.Load<Texture2D>(Path.Combine("TerrainFeatures", "grass"), ContentSource.GameContent));
+            ReloadDefaultSprites = false;
+        }
+
         /// <summary>Applies the harmony patches for patching game code.</summary>
         private void ApplyHarmonyPatches()
         {
@@ -84,6 +119,11 @@ namespace MoreGrass
             var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
 
             // apply the patches
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Grass), nameof(Grass.reduceBy)),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(GrassPatch), nameof(GrassPatch.ReduceByPrefix)))
+            );
+
             harmony.Patch(
                 original: AccessTools.Method(typeof(Grass), nameof(Grass.seasonUpdate)),
                 prefix: new HarmonyMethod(AccessTools.Method(typeof(GrassPatch), nameof(GrassPatch.SeasonUpdatePrefix)))
@@ -133,26 +173,24 @@ namespace MoreGrass
 
         /// <summary>Loads all the content packs for the mod.</summary>
         /// <returns><see langword="true"/> if the default grass sprites should get loaded; otherwise, <see langword="false"/>.</returns>
-        private bool LoadContentPacks()
+        private void LoadContentPacks()
         {
-            var loadDefaultGrass = true;
+            var includeDefaultGrass = true;
 
             foreach (var contentPack in this.Helper.ContentPacks.GetOwned())
             {
                 this.Monitor.Log($"Loading {contentPack.Manifest.Name}");
 
-                // read the content pack config file
-                var contentPackConfig = contentPack.ReadJsonFile<ContentPackConfig>("config.json");
-                if (contentPackConfig == null)
-                    contentPack.WriteJsonFile("config.json", new ContentPackConfig());
+                // read the content pack config file (and rewrite it to make sure one gets created if it doesn't already exist)
+                var contentPackConfig = contentPack.ReadJsonFile<ContentPackConfig>("config.json") ?? new ContentPackConfig();
+                contentPack.WriteJsonFile("config.json", contentPackConfig);
 
-                // check if default grass shouldn't be loaded
+                // check if default grass shouldn't be included
                 if (!contentPackConfig.EnableDefaultGrass)
-                    loadDefaultGrass = false;
+                    includeDefaultGrass = false;
 
                 // load seasonal grass sprites
-                var seasons = new[] { "spring", "summer", "fall", "winter" };
-                foreach (var season in seasons)
+                foreach (var season in new[] { "spring", "summer", "fall", "winter" })
                 {
                     var seasonFolder = Path.Combine(contentPack.DirectoryPath, season);
                     if (!Directory.Exists(seasonFolder))
@@ -163,7 +201,10 @@ namespace MoreGrass
                 }
             }
 
-            return loadDefaultGrass;
+            SpringSpritePool.IncludeDefaultGrass = includeDefaultGrass;
+            SummerSpritePool.IncludeDefaultGrass = includeDefaultGrass;
+            FallSpritePool.IncludeDefaultGrass = includeDefaultGrass;
+            WinterSpritePool.IncludeDefaultGrass = includeDefaultGrass;
         }
 
         /// <summary>Loads all the sprites from the specified directory into the correct sprite pool.</summary>
@@ -193,83 +234,57 @@ namespace MoreGrass
                 // add the texture to the correct sprite pool
                 switch (season)
                 {
-                    case "spring": SpringGrassSprites.Add(grassTexture); break;
-                    case "summer": SummerGrassSprites.Add(grassTexture); break;
-                    case "fall": FallGrassSprites.Add(grassTexture); break;
-                    case "winter": WinterGrassSprites.Add(grassTexture); break;
+                    case "spring": SpringSpritePool.AddCustomGrass(grassTexture); break;
+                    case "summer": SummerSpritePool.AddCustomGrass(grassTexture); break;
+                    case "fall": FallSpritePool.AddCustomGrass(grassTexture); break;
+                    case "winter": WinterSpritePool.AddCustomGrass(grassTexture); break;
                 }
             }
         }
 
         /// <summary>Loads the default grass sprites into the sprite pools.</summary>
-        private void LoadDefaultGrass()
+        /// <param name="grassTexture">The grass texture.</param>
+        private void LoadDefaultGrass(Texture2D grassTexture)
         {
-            var seasons = new[] { "spring", "summer", "fall", "winter" };
-            foreach (var season in seasons)
-                LoadDefaultGrass(season);
-        }
-
-        /// <summary>Loads the default game grass sprites for the given season into its respective sprite pool.</summary>
-        /// <param name="season">The season of grass sprites to load.</param>
-        private void LoadDefaultGrass(string season)
-        {
-            // calculate the default grass bounds
-            var yOffset = 0;
-            switch (season)
+            foreach (var season in new[] { "spring", "summer", "fall", "winter" })
             {
-                case "summer": yOffset = 21; break;
-                case "fall": yOffset = 41; break;
-                case "winter": yOffset = 81; break;
-            }
-            var grassBounds = new[] { new Rectangle(0, yOffset, 15, 20), new Rectangle(16, yOffset, 15, 20), new Rectangle(30, yOffset, 15, 20) };
-
-            // load the individual grass sprites in the correct sprite pool using the above calculated bounds
-            var grassTexture = this.Helper.Content.Load<Texture2D>(Path.Combine("TerrainFeatures", "grass"), ContentSource.GameContent);
-            foreach (var grassBound in grassBounds)
-            {
-                // create a new texture using the grassBound
-                var grassSprite = new Texture2D(Game1.graphics.GraphicsDevice, grassBound.Width, grassBound.Height);
-                var grassData = new Color[grassBound.Width * grassBound.Height];
-                grassTexture.GetData(0, grassBound, grassData, 0, grassData.Length);
-                grassSprite.SetData(grassData);
-
-                // add sprite to correct sprite pool
+                // clear any existing default grass sprites in the sprite pool
                 switch (season)
                 {
-                    case "spring": SpringGrassSprites.Add(grassSprite); break;
-                    case "summer": SummerGrassSprites.Add(grassSprite); break;
-                    case "fall": FallGrassSprites.Add(grassSprite); break;
-                    case "winter": WinterGrassSprites.Add(grassSprite); break;
+                    case "spring": SpringSpritePool.ClearDefaultGrass(); break;
+                    case "summer": SummerSpritePool.ClearDefaultGrass(); break;
+                    case "fall": FallSpritePool.ClearDefaultGrass(); break;
+                    case "winter": WinterSpritePool.ClearDefaultGrass(); break;
                 }
-            }
-        }
-        
-        /// <summary>Ensures there is atleast one sprite in each season pool.</summary>
-        /// <remarks>If there is a sprite pool without any sprites, then the default grass sprites for that season will get loaded.</remarks>
-        private void ValidateSpritePools()
-        {
-            if (SpringGrassSprites.Count == 0)
-            {
-                Monitor.Log("Loading default spring sprites as no loaded sprites found.");
-                LoadDefaultGrass("spring");
-            }
 
-            if (SummerGrassSprites.Count == 0)
-            {
-                Monitor.Log("Loading default summer sprites as no loaded sprites found.");
-                LoadDefaultGrass("summer");
-            }
+                // calculate the default grass bounds
+                var yOffset = 0;
+                switch (season)
+                {
+                    case "summer": yOffset = 21; break;
+                    case "fall": yOffset = 41; break;
+                    case "winter": yOffset = 81; break;
+                }
+                var grassBounds = new[] { new Rectangle(0, yOffset, 15, 20), new Rectangle(16, yOffset, 15, 20), new Rectangle(30, yOffset, 15, 20) };
 
-            if (FallGrassSprites.Count == 0)
-            {
-                Monitor.Log("Loading default fall sprites as no loaded sprites found.");
-                LoadDefaultGrass("fall");
-            }
+                // load the individual grass sprites in the correct sprite pool using the above calculated bounds
+                foreach (var grassBound in grassBounds)
+                {
+                    // create a new texture using the grassBound
+                    var grassSprite = new Texture2D(Game1.graphics.GraphicsDevice, grassBound.Width, grassBound.Height);
+                    var grassData = new Color[grassBound.Width * grassBound.Height];
+                    grassTexture.GetData(0, grassBound, grassData, 0, grassData.Length);
+                    grassSprite.SetData(grassData);
 
-            if (WinterGrassSprites.Count == 0)
-            {
-                Monitor.Log("Loading default winter sprites as no loaded sprites found.");
-                LoadDefaultGrass("winter");
+                    // add sprite to correct sprite pool
+                    switch (season)
+                    {
+                        case "spring": SpringSpritePool.AddDefaultGrass(grassSprite); break;
+                        case "summer": SummerSpritePool.AddDefaultGrass(grassSprite); break;
+                        case "fall": FallSpritePool.AddDefaultGrass(grassSprite); break;
+                        case "winter": WinterSpritePool.AddDefaultGrass(grassSprite); break;
+                    }
+                }
             }
         }
     }

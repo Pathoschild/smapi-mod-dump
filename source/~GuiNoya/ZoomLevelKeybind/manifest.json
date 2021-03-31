@@ -15,6 +15,6 @@
 	"Description": "Add keybinds to decrease and increase zoom levels",
 	"UniqueID": "GuiNoya.ZoomLevelKeybind",
 	"EntryDll": "ZoomLevelKeybind.dll",
-	"MinimumApiLevel": "2.10.2",
+	"MinimumApiLevel": "3.1.0",
 	"UpdateKeys": [ "Nexus:1621" ]
 }

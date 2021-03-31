@@ -1,7 +1,7 @@
 {
   "Name": "MoreSlimes",
   "Author": "Ded4lif",
-  "Version": "1.6.1",
+  "Version": "1.7.0",
   "Description": "Adds More Slimes!",
   "UniqueID": "Ded4lif.MoreSlimes",
   "EntryDll": "MoreSlimes.dll",

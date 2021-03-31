@@ -8,18 +8,11 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
-using xTile.Display;
 using xTile.Layers;
 using xTile.Tiles;
 
@@ -37,6 +30,8 @@ namespace Kisekae.Framework {
         *********/
         /// <summary>Global Mod Interface.</summary>
         private IMod m_env;
+        /// <summary>The available SMAPI events.</summary>
+        private IModEvents m_events => m_env.Helper.Events;
         /// <summary>Original farm house level, if level up we need to patch dresser again.</summary>
         private int FarmHouseLevel = 0;
         /// <summary>Whether this is the first day since the player loaded their save.</summary>
@@ -52,9 +47,9 @@ namespace Kisekae.Framework {
         }
 
         public void init() {
-            TimeEvents.AfterDayStarted += this.Events_AfterDayStarted;
-            SaveEvents.AfterLoad += this.Events_AfterLoad;
-            SaveEvents.AfterReturnToTitle += Events_AfterReturnToTitle;
+            m_events.GameLoop.DayStarted += this.OnDayStarted;
+            m_events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            m_events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         }
 
         /// <summary>Check if the dresser is in the location.</summary>
@@ -69,10 +64,10 @@ namespace Kisekae.Framework {
             return true;
         }
 
-        /// <summary>The event handler called when the mouse state changes.</summary>
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void Events_AfterDayStarted(object sender, EventArgs e) {
+        private void OnDayStarted(object sender, DayStartedEventArgs e) {
             FarmHouse farmhouse = (FarmHouse)Game1.getLocationFromName("FarmHouse");
             if (m_isFirstDay || farmhouse.upgradeLevel != this.FarmHouseLevel) {
                 this.FarmHouseLevel = farmhouse.upgradeLevel;
@@ -82,17 +77,17 @@ namespace Kisekae.Framework {
             }
         }
 
-        /// <summary>The event handler called when the player stops a session and returns to the title screen..</summary>
+        /// <summary>Raised after the game returns to the title screen.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void Events_AfterReturnToTitle(object sender, EventArgs e) {
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e) {
             m_isFirstDay = true;
         }
 
-        /// <summary>The event handler called when the player loads a save and the world is ready.</summary>
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void Events_AfterLoad(object sender, EventArgs e) {
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e) {
             //PatchFarmhouseTilesheet((FarmHouse)Game1.getLocationFromName("FarmHouse"));
         }
 

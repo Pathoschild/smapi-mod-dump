@@ -10,18 +10,18 @@
 
 using System;
 
-namespace BFAVToFAVRModConverter
+namespace BfavToFavrModConverter
 {
-    /// <summary>The wrapper around the <see cref="Console"/> for easier logging with colour.</summary>
+    /// <summary>A wrapper around <see cref="Console"/> for easier logging with colour.</summary>
     public static class Logger
     {
         /*********
         ** Public Methods
         *********/
-        /// <summary>Write the given text to the console output.</summary>
+        /// <summary>Writes the given text to the console output.</summary>
         /// <param name="text">The text to display.</param>
         /// <param name="colour">The colour to display the text in.</param>
-        public static void WriteLine(string text, ConsoleColor colour)
+        public static void WriteLine(string text, ConsoleColor colour = ConsoleColor.White)
         {
             Console.ForegroundColor = colour;
             Console.WriteLine(text);

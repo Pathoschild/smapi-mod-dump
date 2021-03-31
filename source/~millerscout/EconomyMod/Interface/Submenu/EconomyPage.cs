@@ -111,6 +111,10 @@ namespace EconomyMod.Interface.Submenu
             int currentItemIndex = 0;
             for (int i = 0; i < Slots.Count; ++i)
             {
+                if (Slots[i].bounds.X != xPositionOnScreen + Game1.tileSize / 4)
+                {
+                    Slots[i].bounds = new Rectangle(xPositionOnScreen + Game1.tileSize / 4, yPositionOnScreen + Game1.tileSize * 5 / 4 + Game1.pixelZoom + i * (height - Game1.tileSize * 2) / 7, width - Game1.tileSize / 2, (height - Game1.tileSize * 2) / 7 + Game1.pixelZoom);
+                }
                 if (currentItemIndex >= 0 &&
                     currentItemIndex + i < Elements.Count)
                 {
@@ -138,6 +142,10 @@ namespace EconomyMod.Interface.Submenu
         {
             if (taxation.State != null && taxation.State.PendingTaxAmount != 0)
             {
+                if (payButton.bounds.X != xPositionOnScreen + 64)
+                {
+                    payButton.bounds = new Rectangle(xPositionOnScreen + 64, Game1.activeClickableMenu.height + 50, (int)Game1.dialogueFont.MeasureString("_____________").X, 96);
+                }
                 var qtd = taxation.State.AllTaxScheduled.Count();
                 IClickableMenu.drawTextureBox(Game1.spriteBatch, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), payButton.bounds.X, payButton.bounds.Y, payButton.bounds.Width, payButton.bounds.Height, (payButton.scale > 0f) ? Color.Wheat : Color.White, 4f);
                 Utility.drawTextWithShadow(Game1.spriteBatch, Util.Helper.Translation.Get("PayText"), Game1.dialogueFont, new Vector2(payButton.bounds.Center.X, payButton.bounds.Center.Y + 4) - Game1.dialogueFont.MeasureString(Util.Helper.Translation.Get("PayText")) / 2f, Game1.textColor, 1f, -1f, -1, -1, 0f);

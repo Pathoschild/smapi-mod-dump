@@ -1,0 +1,10 @@
+﻿{
+    "Name": "SocialNetwork",
+    "Author": "Cecidelus",
+    "Version": "1.0.0",
+    "Description": "Makes your friendsship with each character affects your friendship with their friends and family.",
+    "UniqueID": "Cecidelus.SocialNetwork",
+    "EntryDll": "SocialNetwork.dll",
+    "MinimumApiVersion": "3.9.0",
+    "UpdateKeys": [ "Nexus:8255" ]
+}

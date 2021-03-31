@@ -1,7 +1,7 @@
 {
     "choose-destination": "Choose destination",
-    "needs-refuel.question": "The minecart has run out of fuel. Use 5 coal to refuel it?",
-    "needs-refuel.no-coal": "The minecart is out of fuel and requires 5 coal to be refueled.",
+    "needs-refuel.question": "The minecart has run out of fuel. Use {{Amount}} coal to refuel it?",
+    "needs-refuel.no-coal": "The minecart is out of fuel and requires {{Amount}} coal to be refueled.",
 
     "destination.farm": "Farm",
     "destination.town": "Town",
@@ -12,5 +12,5 @@
     "destination.woods": "Woods",
     "destination.beach": "Beach",
     "destination.wizard": "Wizard",
-    "destination.cancel":  "Stay here",
+    "destination.cancel": "Stay here"
 }

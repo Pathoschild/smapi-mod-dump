@@ -5,10 +5,30 @@ mods:
    The Love of Cooking
 
 latest commit:
-   commit ff3178ede5b6b838d2644be27a51d8ffe0629eef
+   commit b36ac46bdd2e563f8ea502987376a0bd4a5d790b
    Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Mon Feb 22 11:24:18 2021 +1100
+   Date:   Mon Mar 15 15:22:06 2021 +1100
    
-       RELEASE 1.0.11+:
-       Added English name localisations to asset files to avoid problems with common display name draw logic for recipes and items in English locale.
+       RELEASE: 1.0.11+
+       Implemented SMAPI split-screen coop compatibility; moved per-player instance variables to a per-player, per-session State container, and changed how contextual event watchers are handled.
+       Relegated all custom bundle and tool methods and values to their own Bundles and Tools static classes.
+       Removed unused code relating to CookingTakesTime and map edits.
+       Start of compatibility with Level Extender.
+       Added compatibility with spacechase0's Generic Mod Config Menu.
+       Moved Cooking skill level up recipes table to their own data file.
+       Moved some mod constant values to a more easily-accessible ItemDefinitions data file.
+       Moved Cooking skill constant values to a CookingSkillValues data file and opened up accessibility.
+       Changed CookingSkill.SaleValue to CookingSkill.SalePriceModifier, and price bonus is now handled in Object_GetPriceAfterMultipliers_Postfix.
+       Moved usages of CookingSkill.ExtraPortionChance to CookingSkillAPI.RollForExtraPortion().
+       Fixed cooking menu being raised when players are attempting to submit items to an NPC's kitchen for a Special Order.
+       Fixed occasional errors and bugs when using spacechase0's Cooking Skill crafting menu.
+       Fixed recipes from previous levels not being unlocked when gaining more than 1 level in the Cooking skill per day.
+       Fixed blank recipes filling Cooking skill level-up page.
+       Fixed a number of bugs with simultaneous cooking menus in split-screen local coop.
+       Added behaviour to back-fill any missing recipes to the player's cooking recipe list, which should cover the player for any changes made to the recipe level-up table later on.
+       Adjusted the Cooking skill level-up recipe list to include Redberry Pie.
+       Prevented buff reassignment from assigning not-implemented Cooking skill buff to ingredients.
+       FoodHealsOverTime no longer considers Life Elixir when negating instant healing.
+       Corrected default ingredients for Pineapple Skewers recipe.
+       Corrected item category for Pink Cake Slice.
    

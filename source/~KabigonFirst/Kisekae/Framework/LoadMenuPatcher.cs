@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using StardewValley;
 using StardewValley.Menus;
@@ -28,6 +27,8 @@ namespace Kisekae.Framework {
         *********/
         /// <summary>Global Mod Interface.</summary>
         private IMod m_env;
+        /// <summary>The available SMAPI events.</summary>
+        private IModEvents m_events => m_env.Helper.Events;
         /// <summary>The core component responsible to reshape farmer </summary>
         private FarmerMakeup m_farmerPatcher;
         /// <summary>The last patched load menu, if the game hasn't loaded yet.</summary>
@@ -48,15 +49,15 @@ namespace Kisekae.Framework {
             // load per-save configs
             ReadLocalConfigs(m_farmerConfigs);
 
-            SaveEvents.AfterReturnToTitle += SaveEvents_AfterReturnToTitle;
+            m_events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
             // patch load menu hook
-            GameEvents.UpdateTick += Event_PatchLoadMenu;
+            m_events.GameLoop.UpdateTicked += OnUpdateTicked_PatchLoadMenu;
         }
 
-        /// <summary>The event handler called when the player stops a session and returns to the title screen..</summary>
+        /// <summary>Raised after the game returns to the title screen.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void SaveEvents_AfterReturnToTitle(object sender, EventArgs e) {
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e) {
             // reset state
             m_previousLoadMenu = null;
             m_farmers.Clear();
@@ -66,13 +67,13 @@ namespace Kisekae.Framework {
             ReadLocalConfigs(m_farmerConfigs);
 
             // restore load-menu patcher
-            GameEvents.UpdateTick += Event_PatchLoadMenu;
+            m_events.GameLoop.UpdateTicked += OnUpdateTicked_PatchLoadMenu;
         }
 
         /// <summary>The event handler to monitor if load menu is active and patch it.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void Event_PatchLoadMenu(object sender, EventArgs e) {
+        private void OnUpdateTicked_PatchLoadMenu(object sender, UpdateTickedEventArgs e) {
             // patch load menu
             if (!Game1.hasLoadedGame) {
                 if (Game1.activeClickableMenu is TitleMenu && TitleMenu.subMenu is LoadGameMenu loadMenu) {
@@ -88,7 +89,7 @@ namespace Kisekae.Framework {
             this.m_farmers.Clear();
             this.m_farmerConfigs.Clear();
             if (!string.IsNullOrEmpty(LocalConfig.s_perSaveConfigPath)) {
-                GameEvents.UpdateTick -= Event_PatchLoadMenu;
+                m_events.GameLoop.UpdateTicked -= OnUpdateTicked_PatchLoadMenu;
             }
         }
 
@@ -107,19 +108,19 @@ namespace Kisekae.Framework {
 
         private void Event_PatchLoadMenuFarmer(object sender, EventArgs e) {
             if (!(Game1.activeClickableMenu is TitleMenu)) {
-                GameEvents.UpdateTick -= Event_PatchLoadMenuFarmer;
+                m_events.GameLoop.UpdateTicked -= Event_PatchLoadMenuFarmer;
                 return;
             }
 
             // get load menu
             LoadGameMenu loadMenu = TitleMenu.subMenu as LoadGameMenu;
             if (loadMenu == null || loadMenu != m_previousLoadMenu) {
-                GameEvents.UpdateTick -= Event_PatchLoadMenuFarmer;
+                m_events.GameLoop.UpdateTicked -= Event_PatchLoadMenuFarmer;
                 return;
             }
 
             PatchLoadMenuFarmerTexture();
-            GameEvents.UpdateTick -= Event_PatchLoadMenuFarmer;
+            m_events.GameLoop.UpdateTicked -= Event_PatchLoadMenuFarmer;
         }
 
         /// <summary>Patch the textures in the load menu if it's active.</summary>
@@ -172,7 +173,7 @@ namespace Kisekae.Framework {
             m_env.Helper.Reflection.GetMethod(loadMenu, "addSaveFiles").Invoke(m_farmers);
 
             // override textures. Since the texture will be override after addSaveFiles, do it in next UpdateTick
-            GameEvents.UpdateTick += Event_PatchLoadMenuFarmer;
+            m_events.GameLoop.UpdateTicked += Event_PatchLoadMenuFarmer;
         }
 
         /// <summary>Read all per-save configs from disk.</summary>
@@ -193,11 +194,11 @@ namespace Kisekae.Framework {
             foreach (string saveDir in directories) {
                 // get config
                 string localConfigPath = Path.Combine("psconfigs", $"{new DirectoryInfo(saveDir).Name}.json");
-                LocalConfig farmerConfig = m_env.Helper.ReadJsonFile<LocalConfig>(localConfigPath);
+                LocalConfig farmerConfig = m_env.Helper.Data.ReadJsonFile<LocalConfig>(localConfigPath);
                 if (farmerConfig == null) {
                     farmerConfig = new LocalConfig();
                     m_env.Monitor.Log("create new save:"+ localConfigPath, LogLevel.Info);
-                    m_env.Helper.WriteJsonFile(localConfigPath, farmerConfig);
+                    m_env.Helper.Data.WriteJsonFile(localConfigPath, farmerConfig);
                 }
                 farmerConfig.SaveName = new DirectoryInfo(saveDir).Name;
                 cfg[farmerConfig.SaveName] = farmerConfig;

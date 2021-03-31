@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework.Input;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -46,7 +47,7 @@ namespace GenericModConfigMenu
             configButton.Callback = (Element e) =>
             {
                 Game1.playSound("newArtifact");
-                TitleMenu.subMenu = new ModConfigMenu();
+                TitleMenu.subMenu = new ModConfigMenu( false );
             };
 
             ui.AddChild(configButton);
@@ -55,6 +56,7 @@ namespace GenericModConfigMenu
             helper.Events.GameLoop.UpdateTicking += onUpdate;
             helper.Events.Display.WindowResized += onWindowResized;
             helper.Events.Display.Rendered += onRendered;
+            helper.Events.Display.MenuChanged += onMenuChanged;
             helper.Events.Input.MouseWheelScrolled += onMouseWheelScrolled;
         }
 
@@ -76,6 +78,7 @@ namespace GenericModConfigMenu
             public string dummyString2 = "Default";
             internal static string[] dummyString2Choices = new string[] { "Default", "Kitties", "Cats", "Meow" };
             public SButton dummyKeybinding = SButton.K;
+            public KeybindList dummyKeybinding2 = new KeybindList( new Keybind( SButton.LeftShift, SButton.S ) );
             public Color dummyColor = Color.White;
         }
         public DummyConfig config;
@@ -90,12 +93,16 @@ namespace GenericModConfigMenu
             config = Helper.ReadConfig<DummyConfig>();
             var api = Helper.ModRegistry.GetApi<IApi>(ModManifest.UniqueID);
             api.RegisterModConfig(ModManifest, () => config = new DummyConfig(), () => Helper.WriteConfig(config));
+            api.SetDefaultIngameOptinValue( ModManifest, true );
             api.RegisterLabel(ModManifest, "Dummy Label", "Testing labels");
             api.RegisterParagraph( ModManifest, "Testing paragraph text. These are smaller than labels and should wrap based on length. In theory. They should also (in theory) support multiple rows. Whether that will look good or not is another question. But hey, it looks like it worked! Imagine that. Should I support images in documentation, too?" );
             api.RegisterImage( ModManifest, "Maps\\springobjects", new Rectangle( 32, 48, 16, 16 ) );
             api.RegisterImage( ModManifest, "Portraits\\Penny", null, 1 );
+            api.SetDefaultIngameOptinValue( ModManifest, false );
             api.RegisterPageLabel( ModManifest, "Go to page: Simple Options", "", "Simple Options" );
+            api.SetDefaultIngameOptinValue( ModManifest, true );
             api.RegisterPageLabel( ModManifest, "Go to page: Complex Options", "", "Complex Options" );
+            api.SetDefaultIngameOptinValue( ModManifest, false );
             api.StartNewPage( ModManifest, "Simple Options" );
             api.RegisterPageLabel( ModManifest, "Back to main page", "", "" );
             api.RegisterSimpleOption(ModManifest, "Dummy Bool", "Testing a checkbox", () => config.dummyBool, (bool val) => config.dummyBool = val);
@@ -103,11 +110,13 @@ namespace GenericModConfigMenu
             api.RegisterClampedOption(ModManifest, "Dummy Int (2)", "Testing an int (range)", () => config.dummyInt2, (int val) => config.dummyInt2 = val, 0, 100);
             api.RegisterSimpleOption(ModManifest, "Dummy Float (1)", "Testing a float (simple)", () => config.dummyFloat1, (float val) => config.dummyFloat1 = val);
             api.RegisterClampedOption(ModManifest, "Dummy Float (2)", "Testing a float (range)", () => config.dummyFloat2, (float val) => config.dummyFloat2 = val, 0, 1);
+            api.SetDefaultIngameOptinValue( ModManifest, true );
             api.StartNewPage( ModManifest, "Complex Options" );
             api.RegisterPageLabel( ModManifest, "Back to main page", "", "" );
             api.RegisterSimpleOption(ModManifest, "Dummy String (1)", "Testing a string", () => config.dummyString1, (string val) => config.dummyString1 = val);
             api.RegisterChoiceOption(ModManifest, "Dummy String (2)", "Testing a dropdown box", () => config.dummyString2, (string val) => config.dummyString2 = val, DummyConfig.dummyString2Choices);
             api.RegisterSimpleOption(ModManifest, "Dummy Keybinding", "Testing a keybinding", () => config.dummyKeybinding, (SButton val) => config.dummyKeybinding = val);
+            api.RegisterSimpleOption(ModManifest, "Dummy Keybinding 2", "Testing a keybinding list", () => config.dummyKeybinding2, (KeybindList val) => config.dummyKeybinding2 = val);
 
             api.RegisterLabel(ModManifest, "", "");
 
@@ -180,6 +189,17 @@ namespace GenericModConfigMenu
         {
             if ( isTitleMenuInteractable() )
                 ui.Draw(e.SpriteBatch);
+        }
+
+        private void onMenuChanged( object sender, MenuChangedEventArgs e )
+        {
+            if ( e.NewMenu is GameMenu gm )
+            {
+                ( gm.pages[ GameMenu.optionsTab ] as OptionsPage ).options.Add( new OptionsButton( "Mod Options", () =>
+                {
+                    Game1.activeClickableMenu = new ModConfigMenu( true );
+                } ) );
+            }
         }
 
         private void onMouseWheelScrolled(object sender, MouseWheelScrolledEventArgs e)
