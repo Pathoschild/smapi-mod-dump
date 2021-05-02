@@ -125,7 +125,11 @@ namespace LoveOfCooking.GameObjects
 				{
 					Icon = textures[i], // <-- Skill profession icon is applied here
 					Name = i18n.Get($"{id}{extra}.name"),
-					Description = i18n.Get($"{id}{extra}.description", new {SalePriceModifier, RestorationAltValue})
+					Description = i18n.Get($"{id}{extra}.description",
+					new {
+						SaleValue = SalePriceModifier,
+						RestorationAltValue = RestorationAltValue,
+					})
 				};
 				// Skill professions are paired and applied
 				Professions.Add(profession);

@@ -6,13 +6,7 @@ for queries and analysis.**
 
 ----
 
-**Pull Request For**: ""
+**Mod:**
 
-**Fixes**:
--
--
--
--
-- etc
-
-See [Pull Request Collaboration Guidelines](https://github.com/JessebotX/StardewMods/blob/master/contributing.md#pull-requests)
+**Fixes**
+- Item 1

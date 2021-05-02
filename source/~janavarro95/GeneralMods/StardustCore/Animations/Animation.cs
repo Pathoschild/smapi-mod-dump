@@ -24,7 +24,8 @@ namespace StardustCore.Animations
         public int frameDuration;
 
         /// <summary>The duration until the next frame.</summary>
-        public int frameCountUntilNextAnimation;
+        private int frameCountUntilNextAnimation;
+
 
         [XmlIgnore]
         public NetFields NetFields { get; } = new NetFields();
@@ -34,6 +35,18 @@ namespace StardustCore.Animations
             this.sourceRectangle = new Rectangle(0, 0, 16, 16);
             this.frameCountUntilNextAnimation = -1;
             this.frameDuration = -1;
+        }
+
+        public Animation(int xPos, int yPos, int width, int height)
+        {
+            this.sourceRectangle = new Rectangle(xPos, yPos, width, height);
+            this.frameCountUntilNextAnimation = -1;
+            this.frameDuration = -1;
+        }
+        public Animation(int xPos, int yPos, int width, int height,int existsForXFrames)
+        {
+            this.sourceRectangle = new Rectangle(xPos, yPos, width, height);
+            this.frameDuration = existsForXFrames;
         }
 
         /// <summary>Constructor that causes the animation frame count to be set to -1; This forces it to never change.</summary>
@@ -64,6 +77,10 @@ namespace StardustCore.Animations
         public void startAnimation()
         {
             this.frameCountUntilNextAnimation = this.frameDuration;
+        }
+        public bool finished()
+        {
+            return this.frameCountUntilNextAnimation == 0;
         }
     }
 }

@@ -16,5 +16,9 @@
   "UniqueID": "Omegasis.Revitalize",
   "EntryDll": "Revitalize.dll",
   "MinimumApiVersion": "2.10.1",
-  "UpdateKeys": []
+  "UpdateKeys": [],
+  "Dependencies": [
+    { "UniqueID": "Omegasis.StardustCore" },
+    { "UniqueID": "Platonymous.Toolkit" }
+  ]
 }

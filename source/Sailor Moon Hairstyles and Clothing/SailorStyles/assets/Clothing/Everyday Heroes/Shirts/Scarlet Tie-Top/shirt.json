@@ -10,14 +10,8 @@
 
 {
     "Name": "Scarlet Tie-Top",
-    "Description": "For when you want to show you put effort into looking relaxed.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Corbata Escarlata"
-    },
-    "DescriptionLocalization": {
-        "es": "Para cuando quieres demostrar que te esfuerzas por lucir relajado."
-    }
+    "Dyeable": false
 }

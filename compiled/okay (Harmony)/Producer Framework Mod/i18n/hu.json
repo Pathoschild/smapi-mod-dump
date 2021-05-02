@@ -1,0 +1,15 @@
+﻿{
+	"Message.Requirement.Amount": "Szükséges {{amount}} {{objectName}}",
+	"Message.Requirement.Quality": "Más minőséget igényel.",
+	"Message.Requirement.Fuel": "Hiányzik egy szükséges összetevő.",
+	"Message.Requirement.Season": "Ebben az évszakban nem működik.",
+	"Message.Requirement.Weather": "Az aktuális időjárás alatt nem működik.",
+	"Message.Requirement.Location": "Nem használható ezen a helyen.",
+	"Message.Requirement.InputParent": "Más típusú {{objectName}} szükséges.",
+	"Message.Condition.Location": "Itt nem működik.",
+	"Message.Condition.Season": "Ebben az évszakban nem működik.",
+	"Object.Category.Meat": "Hús (Bármilyen)",
+	"Object.Category.MetalResources": "Fém alapanayg (Bármilyen)",
+	"Object.Category.BuildingResources": "Építőanyag (Bármilyen)",
+	"Object.Category.TappedTreeProduct": "Megcsapolt fa nedv (Bármilyen)"
+}

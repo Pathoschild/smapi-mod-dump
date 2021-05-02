@@ -1,0 +1,9 @@
+﻿{
+	"Name": "East Scarpe (SMAPI)",
+	"Author": "LemurKat and kdau",
+	"Version": "1.7.0",
+	"Description": "Custom logic for LemurKat's East Scarpe map",
+	"UniqueID": "LemurKat.EastScarpe.SMAPI",
+	"EntryDll": "EastScarpe.dll",
+	"MinimumApiVersion": "3.5.0"
+}

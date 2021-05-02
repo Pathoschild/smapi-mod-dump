@@ -11,13 +11,14 @@
 {
 	"Name": "[MFM]Gem Lamp-posts Mod",
 	"Author": "Digus",
-	"Version": "1.0.0",
+	"Version": "1.0.1",
 	"Description": "Adds letters to receive and enable the recipes for Gem Lamp-posts and Gem Composer.",
 	"UniqueID": "Digus.GemLampPostForMailFrameworkMod",
-	"MinimumApiVersion": "3.0.0",
-	"UpdateKeys": [],
+	"MinimumApiVersion": "3.9.0",
+    "UpdateKeys": [ "Nexus:8292" ],
+	"Dependencies": [ { "UniqueID": "Digus.GemLampPostsMod" } ],
 	"ContentPackFor": {
 		"UniqueID": "DIGUS.MailFrameworkMod",
-        "MinimumVersion": "1.10.1"
-    }
+		"MinimumVersion": "1.10.1"
+	}
 }

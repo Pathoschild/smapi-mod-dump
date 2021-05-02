@@ -15,18 +15,14 @@ assignees: ''
 
 ---
 
-**Mod you are referring to**:
+**Mod:**
 
-**Singleplayer or Multiplayer**:
+**Singleplayer/Multiplayer/**:
 
-**Reproducible**: 
+**Bug description:**
 
-"_(If yes, please explain how and post any resources that are required here on the bug report)_"
+**Steps to reproduce:** 
 
-**Description**:
-
-**Provide SMAPI Log**:
+**Provide SMAPI Log:**
 
 _(To get SMAPI log, upload your log to [https://log.smapi.io/](https://log.smapi.io/) (Instructions given over there), and post it here)_
-
-_See [Issues Posting Contribution Guidelines](https://github.com/JessebotX/StardewMods/blob/master/contributing.md#issues)_

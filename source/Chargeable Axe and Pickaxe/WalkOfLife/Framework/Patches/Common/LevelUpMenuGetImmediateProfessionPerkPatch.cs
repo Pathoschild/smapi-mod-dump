@@ -12,75 +12,80 @@ using Harmony;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
-using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Emit;
-using TheLion.Common.Harmony;
 
 namespace TheLion.AwesomeProfessions
 {
 	internal class LevelUpMenuGetImmediateProfessionPerkPatch : BasePatch
 	{
-		private static ILHelper _Helper { get; set; }
-
-		/// <summary>Construct an instance.</summary>
-		internal LevelUpMenuGetImmediateProfessionPerkPatch()
-		{
-			_Helper = new ILHelper(Monitor);
-		}
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		protected internal override void Apply(HarmonyInstance harmony)
+		/// <inheritdoc/>
+		public override void Apply(HarmonyInstance harmony)
 		{
 			harmony.Patch(
-				AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.getImmediateProfessionPerk)),
+				original: AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.getImmediateProfessionPerk)),
 				transpiler: new HarmonyMethod(GetType(), nameof(LevelUpMenuGetImmediateProfessionPerkTranspiler)),
 				postfix: new HarmonyMethod(GetType(), nameof(LevelUpMenuGetImmediateProfessionPerkPostfix))
 			);
 		}
 
 		#region harmony patches
+
 		/// <summary>Patch to move bonus health from Defender to Brute.</summary>
-		protected static IEnumerable<CodeInstruction> LevelUpMenuGetImmediateProfessionPerkTranspiler(IEnumerable<CodeInstruction> instructions)
+		private static IEnumerable<CodeInstruction> LevelUpMenuGetImmediateProfessionPerkTranspiler(IEnumerable<CodeInstruction> instructions)
 		{
-			_Helper.Attach(instructions).Log($"Patching method {typeof(LevelUpMenu)}::{nameof(LevelUpMenu.getImmediateProfessionPerk)}.");
+			Helper.Attach(instructions).Trace($"Patching method {typeof(LevelUpMenu)}::{nameof(LevelUpMenu.getImmediateProfessionPerk)}.");
 
 			/// From: case <defender_id>:
 			/// To: case <brute_id>:
 
 			try
 			{
-				_Helper
+				Helper
 					.FindFirst(
 						new CodeInstruction(OpCodes.Ldc_I4_S, operand: Farmer.defender)
 					)
-					.SetOperand(Utility.ProfessionMap.Forward["brute"]);
+					.SetOperand(Utility.ProfessionMap.Forward["Brute"]);
 			}
 			catch (Exception ex)
 			{
-				_Helper.Error($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}").Restore();
+				Helper.Error($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}").Restore();
 			}
 
-			return _Helper.Flush();
+			return Helper.Flush();
 		}
 
 		/// <summary>Patch to add modded immediate profession perks.</summary>
-		protected static void LevelUpMenuGetImmediateProfessionPerkPostfix(int whichProfession)
+		private static void LevelUpMenuGetImmediateProfessionPerkPostfix(int whichProfession)
 		{
-			if (Utility.ProfessionMap.Reverse[whichProfession] == "angler") FishingRod.maxTackleUses = 40;
-			else if (Utility.ProfessionMap.Reverse[whichProfession] == "aquarist")
+			try
 			{
-				foreach (Building b in Game1.getFarm().buildings)
-				{
-					if ((b.owner.Equals(Game1.player.UniqueMultiplayerID) || !Game1.IsMultiplayer) && b is FishPond)
-						(b as FishPond).UpdateMaximumOccupancy();
-				}
-			}
+				if (!Utility.ProfessionMap.TryGetReverseValue(whichProfession, out var professionName)) return;
 
-			AwesomeProfessions.EventManager.SubscribeEventsForProfession(whichProfession);
+				// add immediate perks
+				if (professionName.Equals("Aquarist"))
+				{
+					foreach (var b in Game1.getFarm().buildings.Where(b => (b.owner.Value.Equals(Game1.player.UniqueMultiplayerID) || !Game1.IsMultiplayer) && b is FishPond && !b.isUnderConstruction()))
+					{
+						var pond = (FishPond)b;
+						pond.UpdateMaximumOccupancy();
+					}
+				}
+
+				// initialize mod data, assets and helpers
+				Utility.InitializeModData(whichProfession);
+
+				// subscribe events
+				AwesomeProfessions.EventManager.SubscribeEventsForProfession(whichProfession);
+			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(LevelUpMenuGetImmediateProfessionPerkPostfix)}:\n{ex}");
+			}
 		}
+
 		#endregion harmony patches
 	}
 }

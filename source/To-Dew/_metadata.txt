@@ -5,9 +5,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit fe1c33132166344276bd65fbe8e9a84e5663c15c
+   commit 73aefffe6da84eefcc0fc78a472a259f21d2d95b
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sun Mar 14 19:18:51 2021 -0400
+   Date:   Sat Apr 3 20:03:17 2021 -0400
    
-       fix typo causing visibility filter by week to not work; v1.8.3
+       Make weeks start on Monday (not Sunday) to match the game calendar; v1.8.4
    

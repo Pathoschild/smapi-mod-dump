@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8541
+IDs: LunaticShade.SkillfulClothes
+update keys: Nexus:8541, GitHub:LunaticShade/StardewValley.SkillfulClothes

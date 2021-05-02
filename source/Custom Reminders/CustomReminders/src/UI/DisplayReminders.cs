@@ -136,10 +136,15 @@ namespace Dem1se.CustomReminders.UI
         private void PopulateRemindersList()
         {
             SDate now = SDate.Now();
-            foreach (string AbsoulutePath in Directory.GetFiles(Path.Combine(Utilities.Globals.Helper.DirectoryPath, "data", Utilities.Globals.SaveFolderName)))
+            foreach (string absoulutePath in Directory.GetFiles(Path.Combine(Utilities.Globals.Helper.DirectoryPath, "data", Utilities.Globals.SaveFolderName)))
             {
-                string RelativePath = Utilities.Extras.MakeRelativePath(AbsoulutePath);
-                ReminderModel Reminder = Utilities.Globals.Helper.Data.ReadJsonFile<ReminderModel>(RelativePath);
+                string relativePath = Utilities.Extras.MakeRelativePath(absoulutePath);
+                
+                // make sure the file is a Json. Fix for Vortex generated files causing issues.
+                if (!relativePath.ToLower().EndsWith(".json"))
+                    continue;
+
+                ReminderModel Reminder = Utilities.Globals.Helper.Data.ReadJsonFile<ReminderModel>(relativePath);
                 //Json-x-ly Notes: Threw this check in since now there are entries that are spent, but still awaiting cleanup. Implies to the user that the Reminder is gone.
                 // -- Changing the "Reminder.Time < Game1.timeOfDay" to "Reminder.Time <= Game1.timeOfDay" determines if the entry is left in the list for the actual moment in time it's triggered.
                 // If Reminder is today or earlier and Reminders Time is earlier then now, omit the entry.

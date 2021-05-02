@@ -1,0 +1,10 @@
+﻿{
+  "Name": "ReverseProposal",
+  "Author": "GreenOnion24",
+  "Version": "1.0.2", // fixed locally
+  "Description": "<One or two sentences about the mod>",
+  "UniqueID": "GreenOnion24.ReverseProposal",
+  "EntryDll": "ReverseProposal.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8526"]
+}

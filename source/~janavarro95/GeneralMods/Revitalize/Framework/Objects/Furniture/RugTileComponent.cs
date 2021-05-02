@@ -28,14 +28,16 @@ namespace Revitalize.Framework.Objects.Furniture
 
         }
 
-        public RugTileComponent(BasicItemInformation Info) : base(Info)
+        public RugTileComponent(CustomObjectData PyTKData,BasicItemInformation Info) : base(PyTKData,Info)
         {
             this.info.ignoreBoundingBox = true;
+            this.Price = Info.price;
         }
 
-        public RugTileComponent(BasicItemInformation Info, Vector2 TileLocation) : base(Info, TileLocation)
+        public RugTileComponent(CustomObjectData PyTKData,BasicItemInformation Info, Vector2 TileLocation) : base(PyTKData,Info, TileLocation)
         {
             this.info.ignoreBoundingBox = true;
+            this.Price = Info.price;
         }
 
 
@@ -54,7 +56,7 @@ namespace Revitalize.Framework.Objects.Furniture
 
         public override Item getOne()
         {
-            RugTileComponent component = new RugTileComponent(this.info);
+            RugTileComponent component = new RugTileComponent(this.data,this.info.Copy());
             component.containerObject = this.containerObject;
             component.offsetKey = this.offsetKey;
             return component;
@@ -62,68 +64,54 @@ namespace Revitalize.Framework.Objects.Furniture
 
         public override ICustomObject recreate(Dictionary<string, string> additionalSaveData, object replacement)
         {
-            //instead of using this.offsetkey.x use get additional save data function and store offset key there
-
             Vector2 offsetKey = new Vector2(Convert.ToInt32(additionalSaveData["offsetKeyX"]), Convert.ToInt32(additionalSaveData["offsetKeyY"]));
+            string GUID = additionalSaveData["GUID"];
             RugTileComponent self = Revitalize.ModCore.Serializer.DeserializeGUID<RugTileComponent>(additionalSaveData["GUID"]);
-            if (self == null)
+            if (ModCore.IsNullOrDefault<RugTileComponent>(self)) return null;
+            try
             {
-                return null;
+                if (!Revitalize.ModCore.ObjectGroups.ContainsKey(additionalSaveData["ParentGUID"]))
+                {
+                    RugMultiTiledObject obj = (RugMultiTiledObject)Revitalize.ModCore.Serializer.DeserializeGUID<RugMultiTiledObject>(additionalSaveData["ParentGUID"]);
+                    self.containerObject = obj;
+                    self.containerObject.removeComponent(offsetKey);
+                    self.containerObject.addComponent(offsetKey, self);
+                    Revitalize.ModCore.ObjectGroups.Add(additionalSaveData["ParentGUID"], obj);
+                }
+                else
+                {
+                    self.containerObject = Revitalize.ModCore.ObjectGroups[additionalSaveData["ParentGUID"]];
+                    self.containerObject.removeComponent(offsetKey);
+                    self.containerObject.addComponent(offsetKey, self);
+                }
+            }
+            catch (Exception err)
+            {
+                ModCore.log(err);
             }
 
-            if (!Revitalize.ModCore.ObjectGroups.ContainsKey(additionalSaveData["ParentGUID"]))
-            {
-                //Get new container
-                RugMultiTiledObject obj = (RugMultiTiledObject)Revitalize.ModCore.Serializer.DeserializeGUID<RugMultiTiledObject>(additionalSaveData["ParentGUID"]);
-                self.containerObject = obj;
-                obj.addComponent(offsetKey, self);
-                //Revitalize.ModCore.log("ADD IN AN OBJECT!!!!");
-                Revitalize.ModCore.ObjectGroups.Add(additionalSaveData["ParentGUID"], obj);
-            }
-            else
-            {
-                self.containerObject = Revitalize.ModCore.ObjectGroups[additionalSaveData["ParentGUID"]];
-                Revitalize.ModCore.ObjectGroups[additionalSaveData["GUID"]].addComponent(offsetKey, self);
-                //Revitalize.ModCore.log("READD AN OBJECT!!!!");
-            }
-
-            return (ICustomObject)self;
+            return self;
         }
 
         public override Dictionary<string, string> getAdditionalSaveData()
         {
             Dictionary<string, string> saveData = base.getAdditionalSaveData();
             Revitalize.ModCore.Serializer.SerializeGUID(this.containerObject.childrenGuids[this.offsetKey].ToString(), this);
-
+            this.containerObject.getAdditionalSaveData();
             return saveData;
 
-        }
-
-
-        /// <summary>
-        ///Used to manage graphics for chairs that need to deal with special "layering" for transparent chair backs. Otherwise the player would be hidden.
-        /// </summary>
-        public void checkForSpecialUpSittingAnimation()
-        {
-            if (this.info.facingDirection == Enums.Direction.Up && Revitalize.ModCore.playerInfo.sittingInfo.SittingObject == this.containerObject)
-            {
-                string animationKey = "Sitting_" + (int)Enums.Direction.Up;
-                if (this.animationManager.animations.ContainsKey(animationKey))
-                {
-                    this.animationManager.setAnimation(animationKey);
-                }
-            }
         }
 
         /// <summary>What happens when the object is drawn at a tile location.</summary>
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
         {
+            /*
             if (this.info.ignoreBoundingBox == true)
             {
                 x *= -1;
                 y *= -1;
             }
-
+            */
             if (this.info == null)
             {
                 Revitalize.ModCore.log("info is null");
@@ -138,7 +126,7 @@ namespace Revitalize.Framework.Objects.Furniture
                 if (this.animationManager.getExtendedTexture() == null)
                     ModCore.ModMonitor.Log("Tex Extended is null???");
 
-                spriteBatch.Draw(this.displayTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize), y * Game1.tileSize)), new Rectangle?(this.animationManager.currentAnimation.sourceRectangle), this.info.drawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, (float)(y * Game1.tileSize) / 10000f));
+                spriteBatch.Draw(this.displayTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize), y * Game1.tileSize)), new Rectangle?(this.animationManager.currentAnimation.sourceRectangle), this.info.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, (float)(y * Game1.tileSize) / 10000f));
                 // Log.AsyncG("ANIMATION IS NULL?!?!?!?!");
             }
 
@@ -146,7 +134,7 @@ namespace Revitalize.Framework.Objects.Furniture
             {
                 //Log.AsyncC("Animation Manager is working!");
                 float addedDepth = 0;
-                this.animationManager.draw(spriteBatch, this.displayTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize), y * Game1.tileSize)), new Rectangle?(this.animationManager.currentAnimation.sourceRectangle), this.info.drawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, 0.0001f));
+                this.animationManager.draw(spriteBatch, this.displayTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize), y * Game1.tileSize)), new Rectangle?(this.animationManager.currentAnimation.sourceRectangle), this.info.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, 0.0001f));
                 try
                 {
                     this.animationManager.tickAnimation();

@@ -10,14 +10,8 @@
 
 {
     "Name": "School Uniform - Mercury",
-    "Description": "A plain middle-school uniform.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Uniforme Escolar - Mercury"
-    },
-    "DescriptionLocalization": {
-        "es": "Un uniforme sencillo de secundaria."
-    }
+    "Dyeable": false
 }

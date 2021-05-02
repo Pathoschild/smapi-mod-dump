@@ -1,6 +1,6 @@
 {
   "HideGreenhouseTiles": true,
-  "HideGreenhouseShadow": true,
+  "HideGreenhouseShadow": false,
   "GreenhouseSoftShadow": false,
   "HideAllOtherShadows": false,
   "HideBarnShadow": false,

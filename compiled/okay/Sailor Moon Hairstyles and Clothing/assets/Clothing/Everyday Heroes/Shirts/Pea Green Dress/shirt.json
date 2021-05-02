@@ -1,14 +1,8 @@
 {
     "Name": "Pea Green Dress",
-    "Description": "A bright green dress top. It'd look silly without the bottom half.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless",
-    "NameLocalization": {
-        "es": "Vestido Verde Guisante"
-    },
-    "DescriptionLocalization": {
-        "es": "Un top de vestido verde brillante. Se vería tonto sin la mitad inferior."
-    }
+    "Metadata": "Sleeveless"
 }

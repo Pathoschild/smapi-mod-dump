@@ -5,13 +5,13 @@
     <RootNamespace>GreenhouseEntryPatch</RootNamespace>
     <Version>1.0.0</Version>
     <TargetFramework>net452</TargetFramework>
-    <Platforms>x86</Platforms>
+    <Platforms>x86;AnyCPU</Platforms>
     <PlatformTarget>x86</PlatformTarget>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
   </ItemGroup>
 
 </Project>

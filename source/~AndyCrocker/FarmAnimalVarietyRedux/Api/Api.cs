@@ -339,9 +339,7 @@ namespace FarmAnimalVarietyRedux
                             EditProduce(internalAnimalName, internalSubtypeName, produce);
                             break;
                         case (Action.Delete):
-                            var defaultProductId = ResolveToken(produce.DefaultProductId);
-                            var upgradedProductId = ResolveToken(produce.UpgradedProductId);
-                            DeleteProduce(internalAnimalName, internalSubtypeName, defaultProductId, upgradedProductId);
+                            DeleteProduce(internalAnimalName, internalSubtypeName, produce.UniqueName);
                             break;
                         default:
                             ModEntry.Instance.Monitor.Log($"Action: {produce.Action} on animal: {animal.InternalName} subtype: {subtype.InternalName} produce: <DefaultProductId: {produce.DefaultProductId}, UpgradedProductId: {produce.UpgradedProductId}> is invalid", LogLevel.Error);
@@ -402,15 +400,15 @@ namespace FarmAnimalVarietyRedux
             }
 
             // ensure produce doesn't already exist
-            var defaultProductId = ResolveToken(produceToAdd.DefaultProductId ?? "-1");
-            var upgradedProductId = ResolveToken(produceToAdd.UpgradedProductId ?? "-1");
-            if (produces.Any(produce => produce.DefaultProductId == defaultProductId && produce.UpgradedProductId == upgradedProductId))
+            if (produces.Any(produce => produce.UniqueName.ToLower() == produceToAdd.UniqueName.ToLower()))
             {
-                ModEntry.Instance.Monitor.Log($"Cannot add produce to animal as animal already has the produce: produce: <DefaultProductId: {defaultProductId}, UpgradedProductId: {upgradedProductId}>", LogLevel.Error);
+                ModEntry.Instance.Monitor.Log($"Cannot add produce to animal as animal already has a produce with the unique name: {produceToAdd.UniqueName}", LogLevel.Error);
                 return;
             }
 
-            produces.Add(new AnimalProduce(defaultProductId, produceToAdd.DefaultProductMinFriendship ?? 0, produceToAdd.DefaultProductMaxFriendship ?? 1000, upgradedProductId, produceToAdd.UpgradedProductMinFriendship ?? 200, produceToAdd.UpgradedProductMaxFriendship ?? 1000, produceToAdd.PercentChanceForUpgradedProduct, produceToAdd.UpgradedProductIsRare ?? false, produceToAdd.HarvestType ?? HarvestType.Lay, produceToAdd.DaysToProduce ?? 1, produceToAdd.ProduceFasterWithCoopMaster ?? false, produceToAdd.ProduceFasterWithShepherd ?? false, produceToAdd.ToolName, produceToAdd.ToolHarvestSound, produceToAdd.Amount ?? 1, produceToAdd.Seasons, produceToAdd.PercentChance ?? 100, produceToAdd.PercentChanceForOneExtra ?? 0, produceToAdd.RequiresMale, produceToAdd.RequiresCoopMaster, produceToAdd.RequiresShepherd, produceToAdd.StandardQualityOnly ?? false));
+            var defaultProductId = ResolveToken(produceToAdd.DefaultProductId ?? "-1");
+            var upgradedProductId = ResolveToken(produceToAdd.UpgradedProductId ?? "-1");
+            produces.Add(new AnimalProduce(produceToAdd.UniqueName, defaultProductId, produceToAdd.DefaultProductMinFriendship ?? 0, produceToAdd.DefaultProductMaxFriendship ?? 1000, upgradedProductId, produceToAdd.UpgradedProductMinFriendship ?? 200, produceToAdd.UpgradedProductMaxFriendship ?? 1000, produceToAdd.PercentChanceForUpgradedProduct, produceToAdd.UpgradedProductIsRare ?? false, produceToAdd.HarvestType ?? HarvestType.Lay, produceToAdd.DaysToProduce ?? 1, produceToAdd.ProduceFasterWithCoopMaster ?? false, produceToAdd.ProduceFasterWithShepherd ?? false, produceToAdd.ToolName, produceToAdd.ToolHarvestSound, produceToAdd.Amount ?? 1, produceToAdd.Seasons, produceToAdd.PercentChance ?? 100, produceToAdd.PercentChanceForOneExtra ?? 0, produceToAdd.RequiresMale, produceToAdd.RequiresCoopMaster, produceToAdd.RequiresShepherd, produceToAdd.StandardQualityOnly ?? false));
         }
 
         /// <summary>Edits a produce.</summary>
@@ -443,12 +441,10 @@ namespace FarmAnimalVarietyRedux
                 return;
             }
 
-            var defaultProductId = ResolveToken(newProduceValues.DefaultProductId);
-            var upgradedProductId = ResolveToken(newProduceValues.UpgradedProductId);
-            var produce = subtype.Produce.FirstOrDefault(p => p.DefaultProductId == defaultProductId && p.UpgradedProductId == upgradedProductId);
+            var produce = subtype.Produce.FirstOrDefault(p => p.UniqueName.ToLower() == newProduceValues.UniqueName.ToLower());
             if (produce == null)
             {
-                ModEntry.Instance.Monitor.Log($"Couldn't find produce: <DefaultProductId: {defaultProductId}, UpgradedProductId: {upgradedProductId}> in animal subtype with internal name of: {internalSubtypeName} in animal with internal name of: {internalAnimalName} while trying to edit it", LogLevel.Error);
+                ModEntry.Instance.Monitor.Log($"Couldn't find produce with a unique name of: {newProduceValues.UniqueName} in animal subtype with internal name of: {internalSubtypeName} in animal with internal name of: {internalAnimalName} while trying to edit it", LogLevel.Error);
                 return;
             }
 
@@ -478,10 +474,9 @@ namespace FarmAnimalVarietyRedux
         /// <summary>Deletes a produce.</summary>
         /// <param name="internalAnimalName">The internal name of the animal containing the subtype to change.</param>
         /// <param name="internalSubtypeName">The internal name of the subtype to change.</param>
-        /// <param name="defaultProductId">The default product id of the produce to delete.</param>
-        /// <param name="upgradedProductId">The upgraded product is of the produce to delete.</param>
+        /// <param name="uniqueName">The unique name of the produce to delete.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="internalAnimalName"/> or <paramref name="internalSubtypeName"/> is <see langword="null"/>.</exception>
-        private void DeleteProduce(string internalAnimalName, string internalSubtypeName, int defaultProductId, int upgradedProductId)
+        private void DeleteProduce(string internalAnimalName, string internalSubtypeName, string uniqueName)
         {
             // validate
             if (internalAnimalName == null)
@@ -504,10 +499,10 @@ namespace FarmAnimalVarietyRedux
                 return;
             }
 
-            var produce = subtype.Produce.FirstOrDefault(p => p.DefaultProductId == defaultProductId && p.UpgradedProductId == upgradedProductId);
+            var produce = subtype.Produce.FirstOrDefault(p => p.UniqueName.ToLower() == uniqueName.ToLower());
             if (produce == null)
             {
-                ModEntry.Instance.Monitor.Log($"Couldn't find produce: <DefaultProductId: {defaultProductId}, UpgradedProductId: {upgradedProductId}> in animal subtype with internal name of: {internalSubtypeName} in animal with internal name of: {internalAnimalName} while trying to edit it", LogLevel.Error);
+                ModEntry.Instance.Monitor.Log($"Couldn't find produce with a unique name of: {uniqueName} in animal subtype with internal name of: {internalSubtypeName} in animal with internal name of: {internalAnimalName} while trying to edit it", LogLevel.Error);
                 return;
             }
 

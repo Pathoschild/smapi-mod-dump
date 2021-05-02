@@ -5,9 +5,13 @@ mods:
    Greenhouse Entry Begone!
 
 latest commit:
-   commit 237fb637507baeba062dae79d7a718ae7b52422d
+   commit 0f744719daa12d3ff5ebac1f2329841e050ebf58
    Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Fri Mar 5 20:25:10 2021 +1100
+   Date:   Tue Apr 20 15:28:27 2021 +1000
    
-       Add project files.
+       RELEASE 1.2.0:
+       Platform changed to 'Any CPU'.
+       Moved expensive per-tick checks for enabled config options per building to a global list.
+       Replaced constant shadow colour with a basic colour finder to support most sprite recolours.
+       Fixed wonky logic for matching building names to config options.
    

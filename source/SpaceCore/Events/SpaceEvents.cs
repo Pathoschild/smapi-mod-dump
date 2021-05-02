@@ -138,7 +138,7 @@ namespace SpaceCore.Events
             Util.invokeEvent("SpaceEvents.AfterGiftGiven", AfterGiftGiven.GetInvocationList(), farmer, arg);
         }
 
-        internal static bool InvokeBeforeWarp(ref LocationRequest req, int targetX, int targetY, int facing)
+        internal static bool InvokeBeforeWarp(ref LocationRequest req, ref int targetX, ref int targetY, ref int facing)
         {
             Log.trace("Event: BeforeWarp");
             if (BeforeWarp == null)
@@ -146,6 +146,9 @@ namespace SpaceCore.Events
             var arg = new EventArgsBeforeWarp(req, targetX, targetY, facing);
             bool ret = Util.invokeEventCancelable("SpaceEvents.BeforeWarp", BeforeWarp.GetInvocationList(), Game1.player, arg);
             req = arg.WarpTargetLocation;
+            targetX = arg.WarpTargetX;
+            targetY = arg.WarpTargetY;
+            facing = arg.WarpTargetFacing;
             return ret;
         }
 

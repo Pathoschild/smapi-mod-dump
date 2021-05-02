@@ -84,7 +84,6 @@ namespace StardewHack.HarvestWithScythe
      */
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
-    
         public override void HackEntry(IModHelper helper) {
             Patch((MeleeWeapon w)=>w.isScythe(-1), MeleeWeapon_isScythe);
             Patch((Crop c)=>c.harvest(0,0,null,null), Crop_harvest);
@@ -94,8 +93,21 @@ namespace StardewHack.HarvestWithScythe
             // If forage harvesting is configured to allow scythe.
             Patch((StardewValley.Object o)=>o.performToolAction(null, null), Object_performToolAction);
             Patch((GameLocation gl)=>gl.checkAction(new xTile.Dimensions.Location(), new xTile.Dimensions.Rectangle(), null), GameLocation_checkAction);
+
+            helper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
         }
-        
+
+        /** Keeps track of whether the player is mounted. 
+         * This is used to support compatibility with the tractor mod.
+         * Normally this can be checked with `Game1.player.mount != null`, however
+         * when using tools, that mod sets mount temporarily to null.
+         */
+        static bool PlayerIsMounted = false;
+
+        static void GameLoop_UpdateTicking(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e) {
+            PlayerIsMounted = Game1.player.mount != null;
+        }
+
         static string writeEnum(HarvestModeEnum val) {
             switch (val) {
                 case HarvestModeEnum.HAND: return "Hand";
@@ -117,17 +129,18 @@ namespace StardewHack.HarvestWithScythe
             api.RegisterSimpleOption(ModManifest, "Harvest With Sword", "Whether a sword can be used instead of a normal scythe.", () => config.HarvestWithSword, (bool val) => config.HarvestWithSword = val);
         
             string[] options = { "Hand", "Scythe", "Both", "Gold" };
-            string options_desc = "Valid values are:\n" +
+            string options_desc = 
                 " · Hand: only pluckable;\n" +
                 " · Scythe: only scythable;\n" +
                 " · Both: both pluckable and scythable;\n" +
                 " · Gold: like 'both', but requires the golden scythe.";
-            api.RegisterLabel(ModManifest, "HarvestMode", options_desc);
+            api.RegisterParagraph(ModManifest, options_desc);
             api.RegisterChoiceOption(ModManifest, "Flowers", "How flowers can be harvested.", () => writeEnum(config.HarvestMode.Flowers), (string val) => config.HarvestMode.Flowers = parseEnum(val), options);
             api.RegisterChoiceOption(ModManifest, "Forage", "How forage can be harvested.", () => writeEnum(config.HarvestMode.Forage), (string val) => config.HarvestMode.Forage = parseEnum(val), options);
             api.RegisterChoiceOption(ModManifest, "SpringOnion", "How spring onions can be harvested.", () => writeEnum(config.HarvestMode.SpringOnion), (string val) => config.HarvestMode.SpringOnion = parseEnum(val), options);
             api.RegisterChoiceOption(ModManifest, "PluckableCrops", "How crops that normally can only be harvested by hand can be harvested.", () => writeEnum(config.HarvestMode.PluckableCrops), (string val) => config.HarvestMode.PluckableCrops = parseEnum(val), options);
             api.RegisterChoiceOption(ModManifest, "ScythableCrops", "How crops that normally can only be harvested with a scythe can be harvested.", () => writeEnum(config.HarvestMode.ScythableCrops), (string val) => config.HarvestMode.ScythableCrops = parseEnum(val), options);
+            api.RegisterLabel(ModManifest, "HarvestMode", null);
         }
 
         static bool getHarvestWithSword() {
@@ -429,12 +442,18 @@ namespace StardewHack.HarvestWithScythe
             Game1.createItemDebris(dropped_item, vector, -1, null, -1);
         }
 
-#region Patch HoeDirt
+        #region Patch HoeDirt
+
+        static readonly InstructionMatcher HoeDirt_crop = InstructionMatcher.AnyOf(
+            Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+            Instructions.Callvirt_get(typeof(HoeDirt), nameof(HoeDirt.crop))
+        );
+
         void HoeDirt_performToolAction() {
             // Find the first (and only) harvestMethod==1 check.
             var HarvestMethodCheck = FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                HoeDirt_crop,
                 Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
                 OpCodes.Call, // Netcode implicit conversion
                 OpCodes.Ldc_I4_1,
@@ -473,7 +492,7 @@ namespace StardewHack.HarvestWithScythe
             // after the following crop!=null check.
             HarvestMethodCheck.FindNext(
                 OpCodes.Ldarg_0,
-                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                HoeDirt_crop,
                 Instructions.Ldfld(typeof(Crop), nameof(Crop.dead)),
                 OpCodes.Call, // Netcode
                 OpCodes.Brfalse
@@ -492,7 +511,7 @@ namespace StardewHack.HarvestWithScythe
             var harvest_hand = FindCode(
                 // if ((int)crop.harvestMethod == 0) {
                 OpCodes.Ldarg_0,
-                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                HoeDirt_crop,
                 Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
                 OpCodes.Call, // NetCode implicit cast.
                 OpCodes.Brtrue
@@ -526,7 +545,7 @@ namespace StardewHack.HarvestWithScythe
             var harvest_scythe = FindCode(
                 // if ((int)crop.harvestMethod == 1) {
                 OpCodes.Ldarg_0,
-                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                HoeDirt_crop,
                 Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
                 OpCodes.Call, // NetCode implicit cast.
                 OpCodes.Ldc_I4_1,
@@ -709,7 +728,7 @@ namespace StardewHack.HarvestWithScythe
         static void TryScythe() {
             // Copied from HoeDirt.performUseAction()
             // TODO: Filter items that are not considered forage.
-            if (Game1.player.CurrentTool != null && Game1.player.CurrentTool is MeleeWeapon && (Game1.player.CurrentTool as MeleeWeapon).isScythe()) {
+            if (!PlayerIsMounted && Game1.player.CurrentTool != null && Game1.player.CurrentTool is MeleeWeapon && (Game1.player.CurrentTool as MeleeWeapon).isScythe()) {
                 Game1.player.CanMove = false;
                 Game1.player.UsingTool = true;
                 Game1.player.canReleaseTool = true;
@@ -721,7 +740,7 @@ namespace StardewHack.HarvestWithScythe
                 ((MeleeWeapon)Game1.player.CurrentTool).setFarmerAnimating (Game1.player);
             } 
         }
-
+        
         #endregion
     }
 }

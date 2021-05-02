@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+[
+    {
+        "Name": "Hardwood Cask",
+        "EnableAgingAnywhere": false,
+        "EnableMoreThanOneQualityIncrementPerDay": false,
+        "AgingData": {
+            "426": 8.0,
+            "424": 8.0,
+            "348": 2.0,
+            "459": 4.0,
+            "303": 3.33,
+            "346": 4.0,
+            "342": 5.33,
+            "724": 4.0
+        }
+    },
+    {
+        "Name": "Radioactive Cask",
+        "EnableAgingAnywhere": true,
+        "EnableMoreThanOneQualityIncrementPerDay": false,
+        "AgingData": {
+            "426": 16.0,
+            "424": 16.0,
+            "348": 4.0,
+            "459": 8.0,
+            "303": 6.66,
+            "346": 8.0,
+            "342": 10.66,
+            "724": 8.0
+        }
+    }
+]

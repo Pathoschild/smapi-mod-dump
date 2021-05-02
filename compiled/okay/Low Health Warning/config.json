@@ -1,0 +1,9 @@
+{
+  "LowHealthSound": "drumkit0",
+  "LowHealthWarning": "Low Health!",
+  "CriticalHealthSound": "drumkit0",
+  "CriticalHealthWarning": "Health is critical, do something!!",
+  "AttentionSound": "whistle",
+  "AttentionInterval": 5,
+  "AttentionScreenGlow": true
+}

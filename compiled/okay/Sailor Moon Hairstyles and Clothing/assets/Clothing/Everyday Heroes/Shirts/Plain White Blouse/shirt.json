@@ -1,13 +1,7 @@
 {
     "Name": "Plain White Blouse",
-    "Description": "A pure white top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Blusa Blanca Lisa"
-    },
-    "DescriptionLocalization": {
-        "es": "Un top blanco puro."
-    }
+    "Dyeable": false
 }

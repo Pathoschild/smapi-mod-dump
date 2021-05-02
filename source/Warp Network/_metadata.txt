@@ -1,0 +1,13 @@
+url:
+   https://github.com/tlitookilakin/WarpNetwork.git
+
+mods:
+   Warp Network
+
+latest commit:
+   commit 54236d54c4ce01768ab54ea07fc9e6c9f78683a4
+   Author: Wren <Wren@MYSTERY-SHACK>
+   Date:   Fri Apr 23 20:34:53 2021 -0400
+   
+       Add ability to always hide a destination in the menu.
+   

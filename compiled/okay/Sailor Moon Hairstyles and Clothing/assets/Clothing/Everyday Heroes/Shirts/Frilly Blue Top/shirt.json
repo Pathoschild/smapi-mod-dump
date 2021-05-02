@@ -1,13 +1,7 @@
 {
     "Name": "Frilly Blue Top",
-    "Description": "A short-cut top with blue flowing fabric and frilly trim.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Top Azul con Volantes"
-    },
-    "DescriptionLocalization": {
-        "es": "Un top corto con tela fluida azul y ribetes con volantes."
-    }
+    "Dyeable": false
 }

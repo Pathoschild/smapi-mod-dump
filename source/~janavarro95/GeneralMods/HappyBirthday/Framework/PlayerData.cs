@@ -18,5 +18,7 @@ namespace Omegasis.HappyBirthday.Framework
 
         /// <summary>The player's current birthday season.</summary>
         public string BirthdaySeason;
+
+        public string favoriteBirthdayGift;
     }
 }

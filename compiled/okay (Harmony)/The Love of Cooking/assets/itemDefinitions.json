@@ -9,22 +9,28 @@
 		"1"
 	],
 	"NpcKitchenFriendshipRequired": [
-		"7"
+		"6"
 	],
 	"RegenBaseRate": [
 		"128"
 	],
-	"RegenSkillModifiers": [
-		"Combat:0.02",
-		"Foraging:0.0012",
-		"Cooking:0.005",
-		"blueberry.LoveOfCooking.CookingSkill:0.005"
+	"RegenSpeedScale": [
+		"2.5"
 	],
-	"IndoorsTileIndexesThatActAsCookingStations": [
-		"498",
-		"499",
-		"632",
-		"633"
+	"AutoConsumeOilAndSeasoning": [
+		"false"
+	],
+	"NettlesLocations": [
+		"Farm",
+		"Forest",
+		"Railroad"
+	],
+	"NettlesAddedRange": [
+		"1",
+		"3"
+	],
+	"NettlesDailyChancePerLocation": [
+		"0.15"
 	],
 	"NettlesUsableLevel": [
 		"2"
@@ -32,11 +38,20 @@
 	"NettlesUsableMachines": [
 		"Keg"
 	],
-	"NettlesLocations": [
-		"Mountain",
-		"Forest",
-		"Railroad",
-		"Farm"
+	"NettlesHarvestingTools": [
+		"Axe"
+	],
+	"RegenSkillModifiers": [
+		"Combat:0.02",
+		"Foraging:0.0012",
+		"Cooking:0.005",
+		"blueberry.LoveOfCooking.CookingSkill:0.005"
+	],
+	"BurnChanceBase": [
+		"0.22"
+	],
+	"BurnChancePerIngredient": [
+		"0.0035"
 	],
 	"FoodsThatGiveLeftovers": [
 		"Pizza",
@@ -49,15 +64,15 @@
 		"blueberry.cac.watermelon"
 	],
 	"MarmaladeFoods": [
-		"Lemon",
-		"Lime",
-		"Citron",
-		"Yuzu",
-		"Grapefruit",
-		"Pomelo",
-		"Orange",
-		"Mandarin",
-		"Satsuma"
+		"lemon",
+		"lime",
+		"citron",
+		"yuzu",
+		"grapefruit",
+		"pomelo",
+		"orange",
+		"mandarin",
+		"satsuma"
 	],
 	"PizzayFoods": [
 		"pizza",

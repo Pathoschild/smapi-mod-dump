@@ -1,0 +1,27 @@
+﻿{
+  "261": {
+    "Destination": "desert",
+    "IgnoreDisabled": true,
+    "Color": "#FFC800"
+  },
+  "688": {
+    "Destination": "farm",
+    "IgnoreDisabled":  true,
+    "Color": "#32CD32"
+  },
+  "689": {
+    "Destination": "mountain",
+    "IgnoreDisabled":  true,
+    "Color": "#FF4500"
+  },
+  "690": {
+    "Destination": "beach",
+    "IgnoreDisabled":  true,
+    "Color": "#ADD8E6"
+  },
+  "886": {
+    "Destination": "island",
+    "IgnoreDisabled":  true,
+    "Color": "#ADD8E6"
+  }
+}

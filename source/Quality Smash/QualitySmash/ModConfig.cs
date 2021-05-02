@@ -119,7 +119,7 @@ namespace QualitySmash
                 "be affected by 'Smash Colors'",
                 "Defaults:",
                 "    591 = Tulip",
-                "    597 = Summer Spangle",
+                "    593 = Summer Spangle",
                 "",
                 "Flowers not used in recipes"
             };

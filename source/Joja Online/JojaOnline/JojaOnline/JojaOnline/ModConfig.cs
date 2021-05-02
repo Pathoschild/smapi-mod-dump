@@ -20,6 +20,7 @@ namespace JojaOnline.JojaOnline
     public class ModConfig
     {
         public bool areAllSeedsAvailableBeforeYearOne { get; set; }
+        public bool doCopyPiereeSeedStock { get; set; }
         public bool giveJojaMemberDiscount { get; set; }
         public bool giveJojaPrimeShipping { get; set; }
         public int minSalePercentage { get; set; }
@@ -30,6 +31,7 @@ namespace JojaOnline.JojaOnline
         public ModConfig()
         {
             this.areAllSeedsAvailableBeforeYearOne = false;
+            this.doCopyPiereeSeedStock = true;
             this.giveJojaMemberDiscount = false;
             this.giveJojaPrimeShipping = false;
 

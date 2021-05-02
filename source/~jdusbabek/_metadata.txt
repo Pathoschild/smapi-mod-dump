@@ -10,12 +10,12 @@ mods:
    Replanter
 
 latest commit:
-   commit 48cc7e7a7f064318f4a91bc8ad9ac279cafb5299
-   Merge: 0a71951 4370e76
+   commit e6cf1f3cfb3e33b3c9ade8d6fddb3d055966a6af
+   Merge: 48cc7e7 eeb3470
    Author: John Dusbabek <jdusbabek@gmail.com>
-   Date:   Mon Mar 29 07:55:38 2021 -0600
+   Date:   Sun Apr 25 11:33:41 2021 -0600
    
-       Merge pull request #16 from Pathoschild/update-code
+       Merge pull request #17 from strobel1ght/master
        
-       Update for 64-bit SMAPI, minor updates & fixes
+       Updating prices for 1.5 (Mail Order Pigs)
    

@@ -1,0 +1,18 @@
+{
+  "Parrot Pot": {
+    "Frames": 1,
+    "PlayerColor": false,
+    "PlayerConfig": false,
+    "Capacity": 36,
+    "VacuumItems": false,
+    "IsPlaceable": true,
+    "AccessCarried": false,
+    "CanCarry": false,
+    "OpenSound": "stoneStep",
+    "DisabledFeatures": [
+      "AccessCarried",
+      "VacuumItems",
+      "CanCarry"
+    ]
+  }
+}

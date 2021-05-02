@@ -13,9 +13,9 @@
         "MaxStamina": 0,
         "MagnetRadius": 0,
         "Speed": 0,
-        "Defense": 0,
+        "Defense": 1,
         "Attack": 0,
-        "Duration": 180
+        "Duration": 62
     },
     "Price": 85,
     "IsColored": false,
@@ -30,44 +30,41 @@
             "Leah"
         ],
         "Like": [
-            "Gus",
-            "Linus",
+            "Emily",
             "Evelyn",
-            "Harvey"
+            "George",
+            "Gus",
+            "Harvey",
+            "Linus",
+            "Marnie"
         ],
         "Neutral": [
-            "Marnie",
-            "Clint",
-            "George",
-            "Sebastian",
             "Abigail",
+            "Clint",
+            "Dwarf",
             "Elliott",
-            "Emily",
-            "Haley",
             "Jodi",
-            "Kent",
-            "Krobus",
             "Lewis",
-            "Linus",
-            "Maru",
-            "Pierre",
-            "Robin",
+            "Sebastian",
             "Willy",
             "Wizard"
         ],
         "Dislike": [
-            "Sam",
-            "Haley",
             "Alex",
+            "Demetrius",
+            "Haley",
             "Kent",
-            "Sandy",
-            "Dwarf",
-            "Demetrius"
+            "Krobus",
+            "Maru",
+            "Pierre",
+            "Robin",
+            "Sam",
+            "Sandy"
         ],
         "Hate": [
-            "Shane",
             "Jas",
-            ""
+            "Shane",
+            "Vincent"
         ]
     },
     "NameLocalization": {

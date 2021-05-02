@@ -247,7 +247,7 @@ namespace JojaOnline.JojaOnline.UI
             {
                 return new Rectangle((int)((float)this.xPositionOnScreen + (float)x * this.scale), (int)((float)this.yPositionOnScreen + (float)y * this.scale), (int)((float)width * this.scale), (int)((float)height * this.scale));
             }
-            
+
             return new Rectangle(x, y, width, height);
         }
 
@@ -261,7 +261,7 @@ namespace JojaOnline.JojaOnline.UI
             Game1.dayTimeMoneyBox.drawMoneyBox(b);
 
             // See if we're checking out
-            if (isCheckingOut) 
+            if (isCheckingOut)
             {
                 b.Draw(JojaResources.GetJojaCheckoutBackground(), new Rectangle(this.xPositionOnScreen + IClickableMenu.borderWidth - 8, this.yPositionOnScreen + IClickableMenu.borderWidth + 56, this.width - (IClickableMenu.borderWidth * 2) + 16, this.height - 128), new Rectangle(0, 0, 150, 200), Color.White);
 
@@ -287,7 +287,7 @@ namespace JojaOnline.JojaOnline.UI
                     Utility.drawTextWithShadow(b, $"{item.DisplayName} x{item.Stack}", Game1.dialogueFont, new Vector2(this.xPositionOnScreen + this.width / 4, GetScaledYCoordinate(rowStart + 10 + (rowSpacing * uniqueItemCount))), Color.White, textScale, 0.5f, numShadows: 0, shadowIntensity: 0);
 
                     int stackCost = item.Stack * itemsInCart[item][0];
-                    Utility.drawTextWithShadow(b, stackCost + "g", Game1.dialogueFont, new Vector2((int)(this.xPositionOnScreen + this.width - this.width / 6 - IClickableMenu.borderWidth), GetScaledYCoordinate(rowStart + 10 + (rowSpacing * uniqueItemCount))), Color.White, textScale, 0.5f, numShadows: 0, shadowIntensity: 0);
+                    Utility.drawTextWithShadow(b, stackCost + "g", Game1.dialogueFont, new Vector2((int)(this.xPositionOnScreen + this.width - this.width / 6 - IClickableMenu.borderWidth), GetScaledYCoordinate(rowStart + 10 + (rowSpacing * uniqueItemCount))), item == randomSaleItem ? Color.Cyan : Color.White, textScale, 0.5f, numShadows: 0, shadowIntensity: 0);
 
                     stackCount += item.Stack;
                     subTotal += stackCost;
@@ -470,7 +470,7 @@ namespace JojaOnline.JojaOnline.UI
 
             if (!itemsInCart.ContainsKey(item) && numberToBuy > 0)
             {
-                itemsInCart.Add(item, new int[] { this.itemPriceAndStock[item][0], numberToBuy });
+                itemsInCart.Add(item, new int[] { item == randomSaleItem ? ((int)(itemPriceAndStock[item][0] - (itemPriceAndStock[item][0] * randomSalePercentageOff))) : this.itemPriceAndStock[item][0], numberToBuy });
             }
             else if (itemsInCart.ContainsKey(item) && itemPriceAndStock[item][1] >= itemsInCart[item][1] + numberToBuy)
             {
@@ -780,7 +780,7 @@ namespace JojaOnline.JojaOnline.UI
             }
 
             // Create the ClickableTextureComponent object
-            Rectangle bounds = new Rectangle((int) x, (int) y, sourceRect.Width, sourceRect.Height);
+            Rectangle bounds = new Rectangle((int)x, (int)y, sourceRect.Width, sourceRect.Height);
             ClickableTextureComponent quantityIcon = new ClickableTextureComponent(bounds, sourceTexture, sourceRect, scale * 4f)
             {
                 name = "shoppingCartQuantity"

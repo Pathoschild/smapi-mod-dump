@@ -10,14 +10,8 @@
 
 {
     "Name": "Lemon Blouse and Blazer",
-    "Description": "A tangy, sweet-and-sour top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Lemon Blouse and Blazer"
-    },
-    "DescriptionLocalization": {
-        "es": "A tangy, sweet-and-sour top."
-    }
+    "Dyeable": false
 }

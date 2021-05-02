@@ -10,14 +10,8 @@
 
 {
     "Name": "Studious Shirt",
-    "Description": "Shirt, tie, and pocket protector. Ideal study material.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Camisa Estudiosa"
-    },
-    "DescriptionLocalization": {
-        "es": "Camisa, corbata y protector de bolsillo. Material de estudio ideal."
-    }
+    "Dyeable": false
 }

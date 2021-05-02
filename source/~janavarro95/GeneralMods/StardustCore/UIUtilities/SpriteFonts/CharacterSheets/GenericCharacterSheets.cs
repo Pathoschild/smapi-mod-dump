@@ -17,9 +17,26 @@ namespace StardustCore.UIUtilities.SpriteFonts.CharacterSheets
     {
         public Dictionary<char, TexturedCharacter> CharacterAtlus;
 
+
+        public GenericCharacterSheets()
+        {
+
+        }
+
+        public GenericCharacterSheets(string Path)
+        {
+
+        }
+
         public virtual TexturedCharacter getTexturedCharacter(char c)
         {
-            return new TexturedCharacter();
+            var original = this.CharacterAtlus[c];
+            return TexturedCharacter.Copy(original);
+        }
+
+        public virtual GenericCharacterSheets create(string Path)
+        {
+            return new GenericCharacterSheets(Path);
         }
     }
 }

@@ -10,6 +10,7 @@
     <RootNamespace>BetterMixedSeeds</RootNamespace>
     <AssemblyName>BetterMixedSeeds</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>8.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -46,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Api.cs" />
+    <Compile Include="Api\IApi.cs" />
     <Compile Include="Models\Config\Crop.cs" />
     <Compile Include="Models\Config\CropMod.cs" />
     <Compile Include="Models\Config\ModConfig.cs" />

@@ -10,14 +10,8 @@
 
 {
     "Name": "Brown Belted Camisole",
-    "Description": "A camisole top to be worn with a matching skirt.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Camisola con Cinturón Marrón"
-    },
-    "DescriptionLocalization": {
-        "es": "Un top de camisola para usar con una falda a juego."
-    }
+    "Dyeable": false
 }

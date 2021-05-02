@@ -1,13 +1,7 @@
 {
     "Name": "Blue Overalls on Green",
-    "Description": "A pair of loose-fitting overalls with a long-sleeved top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Overol Azul sobre Verde"
-    },
-    "DescriptionLocalization": {
-        "es": "Un par de overoles holgados con una camiseta de manga larga.."
-    }
+    "Dyeable": false
 }

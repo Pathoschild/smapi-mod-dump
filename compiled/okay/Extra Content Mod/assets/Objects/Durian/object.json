@@ -1,0 +1,9 @@
+{
+  "Name": "Durian",
+  "Description": "An exquisite fruit that has a unique taste; though it may not be for everyone's palate.",
+  "Category": "Fruit",
+  "Edibility": 65,
+  "Price": 205,
+  "IsColored": false,
+  "Recipe": null
+}

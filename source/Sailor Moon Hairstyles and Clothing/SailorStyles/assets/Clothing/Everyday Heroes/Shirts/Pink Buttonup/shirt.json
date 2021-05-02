@@ -10,14 +10,8 @@
 
 {
     "Name": "Pink Buttonup",
-    "Description": "A bright pink shirt.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Abotonado Rosa"
-    },
-    "DescriptionLocalization": {
-        "es": "Una camisa rosa brillante."
-    }
+    "Dyeable": false
 }

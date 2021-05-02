@@ -10,14 +10,8 @@
 
 {
     "Name": "Green Down Jacket",
-    "Description": "A jacket packed with duck down worn over an orange sweater. Very warm!",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Chaqueta Verde"
-    },
-    "DescriptionLocalization": {
-        "es": "Una chaqueta repleta de ánade abajo sobre un suéter naranja. ¡Muy cálido!"
-    }
+    "Dyeable": false
 }

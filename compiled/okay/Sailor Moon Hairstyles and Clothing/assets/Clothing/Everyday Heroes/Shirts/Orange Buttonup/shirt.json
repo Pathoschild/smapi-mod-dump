@@ -1,13 +1,7 @@
 {
     "Name": "Orange Buttonup",
-    "Description": "A striking buttonup top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Botón Naranja"
-    },
-    "DescriptionLocalization": {
-        "es": "Un llamativo top abotonado."
-    }
+    "Dyeable": false
 }

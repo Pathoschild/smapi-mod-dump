@@ -11,7 +11,7 @@
 {
   "Name": "Remember Your Umbrella",
   "Author": "heyseth",
-  "Version": "1.0.0",
+  "Version": "1.0.2",
   "Description": "Adds working umbrellas to Stardew Valley!",
   "UniqueID": "heyseth.umbrellas",
   "EntryDll": "heysethUmbrellas.dll",

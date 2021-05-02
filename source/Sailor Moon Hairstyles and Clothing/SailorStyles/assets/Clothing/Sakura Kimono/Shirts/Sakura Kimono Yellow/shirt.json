@@ -10,15 +10,9 @@
 
 {
     "Name": "Sakura Kimono Yellow Upper",
-    "Description": "A yellow kimono, upper half.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "DefaultColor": "255, 255, 255, 255",
-    "NameLocalization": {
-        "es": "Kimono Sakura Amarillo Superior"
-    },
-    "DescriptionLocalization": {
-        "es": "Un kimono amarillo, mitad superior."
-    }
+    "DefaultColor": "255, 255, 255, 255"
 }

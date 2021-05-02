@@ -1,13 +1,7 @@
 {
     "Name": "Black Dress Top",
-    "Description": "A black dress worn over a white top. It wouldn't do without the bottom half.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Top de Vestido Negro"
-    },
-    "DescriptionLocalization": {
-        "es": "Un vestido negro sobre un top blanco. No funcionaría sin la mitad inferior."
-    }
+    "Dyeable": false
 }

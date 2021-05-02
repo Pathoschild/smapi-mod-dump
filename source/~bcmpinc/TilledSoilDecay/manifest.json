@@ -15,7 +15,7 @@
    "Description": "Delays decay of watered tilled soil.",
    "UniqueID": "bcmpinc.TilledSoilDecay",
    "EntryDll": "TilledSoilDecay.dll",
-   "MinimumApiVersion": "3.1.0",
+   "MinimumApiVersion": "3.9.0",
    "UpdateKeys": ["Nexus:2738"],
    "Dependencies": [{
       "UniqueID": "bcmpinc.StardewHack",

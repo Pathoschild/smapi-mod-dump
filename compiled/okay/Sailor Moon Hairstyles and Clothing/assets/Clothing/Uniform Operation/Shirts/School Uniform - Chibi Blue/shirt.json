@@ -1,13 +1,7 @@
 {
     "Name": "School Uniform - Chibi Blue",
-    "Description": "A children's school uniform.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Uniforme Escolar - Chibi Azul"
-    },
-    "DescriptionLocalization": {
-        "es": "Un uniforme escolar para niños."
-    }
+    "Dyeable": false
 }

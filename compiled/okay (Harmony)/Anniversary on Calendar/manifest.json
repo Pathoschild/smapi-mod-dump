@@ -1,8 +1,8 @@
 {
-  "Name": "Anniversay on Calendar",
+  "Name": "Anniversary on Calendar",
   "Author": "greentodd",
-  "Version": "1.1.1",
-  "Description": "Adds player's wedding anniversary to the game calendar",
+  "Version": "1.2.0",
+  "Description": "Adds wedding anniversary & children's birthdays to the game calendar (+ see future months)",
   "UniqueID": "greentodd.CalendarAnniversary",
   "EntryDll": "CalendarAnniversary.dll",
   "MinimumApiVersion": "3.9.4",

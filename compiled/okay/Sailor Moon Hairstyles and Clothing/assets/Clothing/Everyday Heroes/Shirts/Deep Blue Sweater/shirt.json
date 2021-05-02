@@ -1,13 +1,7 @@
 {
     "Name": "Deep Blue Sweater",
-    "Description": "A blue sweater with a stunning, rich dye.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Suéter Azul Profundo"
-    },
-    "DescriptionLocalization": {
-        "es": "Un suéter azul con un impresionante y rico tinte."
-    }
+    "Dyeable": false
 }

@@ -23,6 +23,9 @@ namespace FarmAnimalVarietyRedux.Models.Parsed
         /// <remarks>If this is either <see cref="Action.Edit"/> or <see cref="Action.Delete"/> then <see cref="DefaultProductId"/> and <see cref="UpgradedProductId"/> must all be specified from the recipe you're changing (this is because these 2 properties are used to identify recipes, this also means that these properties in a recipe cannot be changed with <see cref="Action.Edit"/>).</remarks>
         public Action Action { get; set; }
 
+        /// <summary>The unique name for the produce.</summary>
+        public string UniqueName { get; set; }
+
         /// <summary>The id of the default product.</summary>
         public string DefaultProductId { get; set; } = "-1";
 
@@ -102,6 +105,7 @@ namespace FarmAnimalVarietyRedux.Models.Parsed
 
         /// <summary>Constructs an instance.</summary>
         /// <param name="action">How the animal produce data should be interpreted.</param>
+        /// <param name="uniqueName">The unique name for the produce.</param>
         /// <param name="defaultProductId">The id of the default product.</param>
         /// <param name="defaultProductMinFriendship">The minimum friendship required for the default product to drop.</param>
         /// <param name="defaultProductMaxFriendship">The maximum friendship allowed for the default product to drop.</param>
@@ -109,6 +113,7 @@ namespace FarmAnimalVarietyRedux.Models.Parsed
         /// <param name="upgradedProductMinFriendship">The minimum friendship required for the upgraded product to drop.</param>
         /// <param name="upgradedProductMaxFriendship">The maximum friendship allowed for the upgraded product to drop.</param>
         /// <param name="percentChanceForUpgradedProduct">The percent chance of the updated product to drop.</param>
+        /// <param name="upgradedProductIsRare">Whether the upgraded product is a 'rare product' (like the Rabbit Foot or Duck Feather).</param>
         /// <param name="harvestType">The harvest type of the product.</param>
         /// <param name="daysToProduce">The number of days between each time the item gets produced.</param>
         /// <param name="produceFasterWithCoopMaster">Whether <see cref="DaysToProduce"/> should be reduced by one if the player has the Coop Master profession.</param>
@@ -123,9 +128,10 @@ namespace FarmAnimalVarietyRedux.Models.Parsed
         /// <param name="requiresCoopMaster">Whether the player must have the Coop Master profession for the animal to produce the item.</param>
         /// <param name="requiresShepherd">Whether the player must have the Shepherd profession for the animal to produce the item.</param>
         /// <param name="standardQualityOnly">Whether the product should be standard quality only.</param>
-        public ParsedAnimalProduce(Action action = Action.Add, string defaultProductId = "-1", int? defaultProductMinFriendship = 0, int? defaultProductMaxFriendship = 1000, string upgradedProductId = "-1", int? upgradedProductMinFriendship = 200, int? upgradedProductMaxFriendship = 1000, float? percentChanceForUpgradedProduct = null, bool? upgradedProductIsRare = false, HarvestType harvestType = FarmAnimalVarietyRedux.HarvestType.Lay, int? daysToProduce = 1, bool? produceFasterWithCoopMaster = false, bool? produceFasterWithShepherd = false, string toolName = null, string toolHarvestSound = null, int? amount = 1, string[] seasons = null, float? percentChance = 100, float percentChanceForOneExtra = 0, bool? requiresMale = null, bool? requiresCoopMaster = null, bool? requiresShepherd = null, bool standardQualityOnly = false)
+        public ParsedAnimalProduce(Action action, string uniqueName, string defaultProductId = "-1", int? defaultProductMinFriendship = 0, int? defaultProductMaxFriendship = 1000, string upgradedProductId = "-1", int? upgradedProductMinFriendship = 200, int? upgradedProductMaxFriendship = 1000, float? percentChanceForUpgradedProduct = null, bool? upgradedProductIsRare = false, HarvestType harvestType = FarmAnimalVarietyRedux.HarvestType.Lay, int? daysToProduce = 1, bool? produceFasterWithCoopMaster = false, bool? produceFasterWithShepherd = false, string toolName = null, string toolHarvestSound = null, int? amount = 1, string[] seasons = null, float? percentChance = 100, float percentChanceForOneExtra = 0, bool? requiresMale = null, bool? requiresCoopMaster = null, bool? requiresShepherd = null, bool standardQualityOnly = false)
         {
             Action = action;
+            UniqueName = uniqueName;
             DefaultProductId = defaultProductId;
             DefaultProductMinFriendship = defaultProductMinFriendship;
             DefaultProductMaxFriendship = defaultProductMaxFriendship;

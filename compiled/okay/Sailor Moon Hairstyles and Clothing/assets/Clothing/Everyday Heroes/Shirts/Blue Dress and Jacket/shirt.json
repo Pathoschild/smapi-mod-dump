@@ -1,13 +1,7 @@
 {
     "Name": "Blue Dress and Jacket",
-    "Description": "A summer jacket over a blue dress. It simply won't do without the bottom half.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Vestido Azul y Chaqueta"
-    },
-    "DescriptionLocalization": {
-        "es": "Una chaqueta de verano sobre un vestido azul. Simplemente no funcionará sin la mitad inferior."
-    }
+    "Dyeable": false
 }

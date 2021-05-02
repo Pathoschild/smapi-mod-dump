@@ -34,9 +34,23 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 05bcd207e6f6724cfd0c567cb81d471e7440451e
-   Author: danvolchek <danvnad@gmail.com>
-   Date:   Sun Jan 3 16:04:07 2021 -0800
+   commit 233c3607d45286c5db595ce724350058d1a4ce31
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Sun Apr 25 17:01:05 2021 -0400
    
-       [Chat Commands] don't try to trim if string is already empty
+       Update for Stardew Valley 1.5 and 64-bit SMAPI, minor fixes (#22)
+       
+       * fix hardcoded paths
+       
+       * fix button suppression in Pong
+       
+       * update NuGet packages
+       
+       * update for Stardew Valley 1.5
+       
+       * update for 64-bit SMAPI
+       
+       * update sprinkler & scarecrow range for Stardew Valley 1.5
+       
+       * remove unneeded dependency on SMAPI toolkit
    

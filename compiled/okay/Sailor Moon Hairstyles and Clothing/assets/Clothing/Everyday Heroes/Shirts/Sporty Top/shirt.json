@@ -1,13 +1,7 @@
 {
     "Name": "Sporty Top",
-    "Description": "A red two-tone top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Top Deportivo"
-    },
-    "DescriptionLocalization": {
-        "es": "Un top rojo de dos tonos."
-    }
+    "Dyeable": false
 }

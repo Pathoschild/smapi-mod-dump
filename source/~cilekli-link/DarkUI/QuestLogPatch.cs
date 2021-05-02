@@ -24,9 +24,9 @@ namespace DarkUI
 {
     [HarmonyPatch(typeof(QuestLog))]
     [HarmonyPatch("draw")]
+    [HarmonyPatch(new Type[] { typeof(SpriteBatch) })]
     class QuestLogPatch
     {
-#pragma warning disable AvoidImplicitNetFieldCast // Netcode types shouldn't be implicitly converted
         static bool Prefix(SpriteBatch b, QuestLog __instance, List<List<Quest>> ___pages, int ___currentPage, int ___questPage = -1, string ___hoverText = "")
         {
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);

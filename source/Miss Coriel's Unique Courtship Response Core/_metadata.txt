@@ -5,9 +5,9 @@ mods:
    Miss Coriel's Unique Courtship Response Core
 
 latest commit:
-   commit a539f082d573e5f3bca52de3f9927c936a20d02f
+   commit 0f9d56a6caac7cc4575022724677fa4630709491
    Author: Omega Terra Coriel <44127678+MissCoriel@users.noreply.github.com>
-   Date:   Sun Mar 21 09:49:35 2021 -0500
+   Date:   Wed Apr 7 07:04:52 2021 -0500
    
-       Content Patcher mod made for Vanilla NPCs
+       Add files via upload
    

@@ -18,6 +18,9 @@ namespace BfavToFavrModConverter.Favr
         /*********
         ** Accessors
         *********/
+        /// <summary>The unique name of the produce.</summary>
+        public string UniqueName { get; set; } = "0";
+
         /// <summary>The id of the default product.</summary>
         [DefaultValue("-1")]
         public string DefaultProductId { get; set; }

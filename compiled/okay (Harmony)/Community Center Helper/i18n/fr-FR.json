@@ -101,6 +101,7 @@
 	"clearWeeds": "Détruire de la mauvaise herbe",
 	"harvestHay": "Récolté en fauchant du gazon ou du {{wheat}}",
 	"trash": "Déchet de pêche, casiers à crabes ou poubelles de la ville",
+	"trashCan": "Poubelles de la ville",
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Chambre de Marnie (dans la quête du short du Maire, le 3 d'été)",
@@ -172,10 +173,19 @@
 	"waterMines60": "dans les mines, étage 60",
 	"waterMines100": "dans les mines, étage 100",
 	"waterSwamp": "dans le marais de la Sorcière",
+	"waterIsland": "dans l'Île Gingembre",
+	"waterIslandRiver": "dans la rivière de l'Île Gingembre",
+	"waterIslandOcean": "dans l'océan de l'Île Gingembre",
+	"waterIslandOceanWest": "dans l'océan de l'Île Gingembre (ouest)",
+	"waterIslandCove": "dans le caverne des pirates",
 	"waterAnglerSpot": "tout au Nord de la rivière de la ville",
 	"waterCrimsonfishSpot": "sur le ponton tout à l'est de la plage",
 	"waterGlacierfishSpot": "au point le plus bas de la forêt, sur la petite île",
 	"waterLegendSpot": "autour de l'arbre au fond du lac de la Montagne",
+	"waterBlueMoonVineyard": "dans le Vignoble Blue Moon", // SVE
+	"waterShearwaterBridge": "dans le Pont Shearwater", // SVE
+	"waterForestWest": "dans la forêt (ouest)", // SVE
+	"waterAdventurerSummit": "dans le Sommet", // SVE
 	"waterUnknown": "dans ???",
 	
 	// Water Types (for crab pot suggestions)
@@ -291,7 +301,7 @@
 	"recipeSourceSaloon": "Saloon",
 	"recipeSourceTV": "TV ({{date}})",
 	"recipeSourceTVAlreadyAired": "TV (Rediffusion du Mercredi, ou {{date}})",
-	"recipeSourceFriendship": "{{hearts}}+ coeurs avec {{person}}", // sent in mail when you have enough hearts
+	"recipeSourceFriendship": "{{hearts}}+ coeurs avec {{person}}", // sent in mail or available for purchase when you have enough hearts
 	"recipeSourceHeartEvent": "{{hearts}}-coeurs {{person}} événement", // received from heart event specifically
 	"recipeSourceFirstCopper": "obtenir {{copperOre}}",
 	"recipeSourceAfterGreenhouse": "réparer la serre",

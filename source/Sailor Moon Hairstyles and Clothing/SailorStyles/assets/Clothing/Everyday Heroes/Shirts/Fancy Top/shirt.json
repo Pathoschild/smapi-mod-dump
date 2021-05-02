@@ -10,14 +10,8 @@
 
 {
     "Name": "Fancy Top",
-    "Description": "A blue dress shirt with a green pattern.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Top Elegante"
-    },
-    "DescriptionLocalization": {
-        "es": "Una camisa de vestir azul con un estampado verde."
-    }
+    "Dyeable": false
 }

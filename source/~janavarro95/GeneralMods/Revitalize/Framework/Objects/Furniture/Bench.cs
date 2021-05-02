@@ -28,15 +28,15 @@ namespace Revitalize.Framework.Objects.Furniture
 
         public List<long> playersSittingHere = new List<long>();
 
-        public Bench(BasicItemInformation info, Vector2 TilePosition) : base(info, TilePosition)
+        public Bench(CustomObjectData PyTKData, BasicItemInformation info, Vector2 TilePosition) : base(PyTKData,info, TilePosition)
         {
-
+            this.Price = info.price;
         }
 
 
-        public Bench(BasicItemInformation info,Vector2 TilePosition, Dictionary<Vector2,MultiTiledComponent> Objects) : base(info, TilePosition, Objects)
+        public Bench(CustomObjectData PyTKData, BasicItemInformation info,Vector2 TilePosition, Dictionary<Vector2,MultiTiledComponent> Objects) : base(PyTKData,info, TilePosition, Objects)
         {
-
+            this.Price = info.price;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Revitalize.Framework.Objects.Furniture
                 objs.Add(pair.Key, (MultiTiledComponent)pair.Value);
             }
 
-            return new Bench(this.info, this.TileLocation, objs);
+            return new Bench(this.data,this.info.Copy(), this.TileLocation, objs);
         }
 
 
@@ -112,6 +112,33 @@ namespace Revitalize.Framework.Objects.Furniture
             else
             {
                 return Revitalize.ModCore.ObjectGroups[additionalSaveData["GUID"]];
+            }
+        }
+
+        public override void recreate()
+        {
+            Dictionary<Vector2, Guid> guids = new Dictionary<Vector2, Guid>();
+
+            foreach (KeyValuePair<Vector2, Guid> pair in this.childrenGuids)
+            {
+                guids.Add(pair.Key, pair.Value);
+            }
+
+            foreach (KeyValuePair<Vector2, Guid> pair in guids)
+            {
+                this.childrenGuids.Remove(pair.Key);
+                ChairTileComponent component = Revitalize.ModCore.Serializer.DeserializeGUID<ChairTileComponent>(pair.Value.ToString());
+                component.InitNetFields();
+                this.removeComponent(pair.Key);
+                this.addComponent(pair.Key, component);
+
+
+            }
+            this.InitNetFields();
+
+            if (!Revitalize.ModCore.ObjectGroups.ContainsKey(this.guid.ToString()))
+            {
+                Revitalize.ModCore.ObjectGroups.Add(this.guid.ToString(), this);
             }
         }
 

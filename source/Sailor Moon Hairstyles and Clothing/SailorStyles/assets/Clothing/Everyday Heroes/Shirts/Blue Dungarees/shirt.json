@@ -10,14 +10,8 @@
 
 {
     "Name": "Blue Dungarees",
-    "Description": "A big pair of overalls over a white top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Peto Azul"
-    },
-    "DescriptionLocalization": {
-        "es": "Un gran overol sobre un top blanco."
-    }
+    "Dyeable": false
 }

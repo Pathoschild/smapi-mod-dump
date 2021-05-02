@@ -1,0 +1,10 @@
+{
+  "Config": null,
+  "ExperimentalFeatures": false,
+  "MaxDancePairs": 6,
+  "NPCsHaveRandomPartners": false,
+  "ForceHeteroPartners": true,
+  "AllowNonBinaryPartners": false,
+  "AllowTouristPartners": false,
+  "DancerBlackList": ""
+}

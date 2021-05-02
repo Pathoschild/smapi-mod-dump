@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
-using TheLion.Common.Classes;
+using TheLion.Common;
 
 namespace TheLion.AwesomeTools
 {
@@ -43,14 +43,17 @@ namespace TheLion.AwesomeTools
 						who.FarmerSprite.setCurrentFrame(176);
 						__instance.Update(0, 0, who);
 						break;
+
 					case 1:
 						who.FarmerSprite.setCurrentFrame(168);
 						__instance.Update(1, 0, who);
 						break;
+
 					case 2:
 						who.FarmerSprite.setCurrentFrame(160);
 						__instance.Update(2, 0, who);
 						break;
+
 					case 3:
 						who.FarmerSprite.setCurrentFrame(184);
 						__instance.Update(3, 0, who);
@@ -78,14 +81,17 @@ namespace TheLion.AwesomeTools
 						who.FarmerSprite.setCurrentFrame(176);
 						__instance.Update(0, 0, who);
 						break;
+
 					case 1:
 						who.FarmerSprite.setCurrentFrame(168);
 						__instance.Update(1, 0, who);
 						break;
+
 					case 2:
 						who.FarmerSprite.setCurrentFrame(160);
 						__instance.Update(2, 0, who);
 						break;
+
 					case 3:
 						who.FarmerSprite.setCurrentFrame(184);
 						__instance.Update(3, 0, who);
@@ -135,10 +141,7 @@ namespace TheLion.AwesomeTools
 						return;
 
 					CircleTileGrid grid = new CircleTileGrid(tileLocation, radius);
-					foreach (Vector2 tile in grid)
-					{
-						__result.Add(tile);
-					}
+					__result.AddRange(grid);
 				}
 			}
 		}
@@ -149,11 +152,7 @@ namespace TheLion.AwesomeTools
 		{
 			protected static bool Prefix(ref Tool __instance)
 			{
-				if (__instance is Axe && !AwesomeTools.Config.AxeConfig.ShowAxeAffectedTiles || __instance is Pickaxe && !AwesomeTools.Config.PickaxeConfig.ShowPickaxeAffectedTiles)
-				{
-					return false;
-				}
-				return true;
+				return (__instance is not Axe || AwesomeTools.Config.AxeConfig.ShowAxeAffectedTiles) && (__instance is not Pickaxe || AwesomeTools.Config.PickaxeConfig.ShowPickaxeAffectedTiles);
 			}
 		}
 	}

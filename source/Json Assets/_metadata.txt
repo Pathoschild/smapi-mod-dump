@@ -5,9 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit 94a520d3a6e6a9d916b00ea750220d4970ed92fb
+   commit ace9bb37817b99d349310e34c6efbbc24080c21f
    Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Wed Mar 10 17:05:56 2021 -0500
+   Date:   Sat Apr 10 23:07:25 2021 -0400
    
-       Make stuff load even earlier for random bundles
+       Update casks
    

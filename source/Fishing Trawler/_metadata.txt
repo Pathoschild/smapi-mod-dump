@@ -1,0 +1,13 @@
+url:
+   https://github.com/Floogen/FishingTrawler.git
+
+mods:
+   Fishing Trawler
+
+latest commit:
+   commit 7a3322d6fdc298b07d9ee030cc29115cd3b7bd4d
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Thu Apr 22 14:03:43 2021 -0500
+   
+       v1.3.3 released
+   

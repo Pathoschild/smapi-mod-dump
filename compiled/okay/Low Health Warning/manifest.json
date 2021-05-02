@@ -1,10 +1,10 @@
 {
   "Name": "LowHealthWarning",
   "Author": "NMVH5",
-  "Version": "1.1.1", // fixed locally
+  "Version": "1.2.0",
   "Description": "Provide a more obvious indicator when your health is low.",
   "UniqueID": "nmvh5.LowHealthWarning",
   "EntryDll": "LowHealthWarning.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:8326"]
 }

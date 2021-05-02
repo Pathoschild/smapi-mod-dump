@@ -12,78 +12,80 @@ using Harmony;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
-using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Emit;
-using TheLion.Common.Harmony;
 
 namespace TheLion.AwesomeProfessions
 {
 	internal class LevelUpMenuRemoveImmediateProfessionPerkPatch : BasePatch
 	{
-		private static ILHelper _Helper { get; set; }
-
-		/// <summary>Construct an instance.</summary>
-		internal LevelUpMenuRemoveImmediateProfessionPerkPatch()
-		{
-			_Helper = new ILHelper(Monitor);
-		}
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		protected internal override void Apply(HarmonyInstance harmony)
+		/// <inheritdoc/>
+		public override void Apply(HarmonyInstance harmony)
 		{
 			harmony.Patch(
-				AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.removeImmediateProfessionPerk)),
+				original: AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.removeImmediateProfessionPerk)),
 				transpiler: new HarmonyMethod(GetType(), nameof(LevelUpMenuRemoveImmediateProfessionPerkTranspiler)),
 				postfix: new HarmonyMethod(GetType(), nameof(LevelUpMenuRemoveImmediateProfessionPerkPostfix))
 			);
 		}
 
 		#region harmony patches
+
 		/// <summary>Patch to move bonus health from Defender to Brute.</summary>
-		protected static IEnumerable<CodeInstruction> LevelUpMenuRemoveImmediateProfessionPerkTranspiler(IEnumerable<CodeInstruction> instructions)
+		private static IEnumerable<CodeInstruction> LevelUpMenuRemoveImmediateProfessionPerkTranspiler(IEnumerable<CodeInstruction> instructions)
 		{
-			_Helper.Attach(instructions).Log($"Patching method {typeof(LevelUpMenu)}::{nameof(LevelUpMenu.removeImmediateProfessionPerk)}.");
+			Helper.Attach(instructions).Trace($"Patching method {typeof(LevelUpMenu)}::{nameof(LevelUpMenu.removeImmediateProfessionPerk)}.");
 
 			/// From: case <defender_id>:
 			/// To: case <brute_id>:
 
 			try
 			{
-				_Helper
+				Helper
 					.FindFirst(
-						new CodeInstruction(OpCodes.Ldc_I4_S, operand: 27)
+						new CodeInstruction(OpCodes.Ldc_I4_S, operand: Farmer.defender)
 					)
-					.SetOperand(Utility.ProfessionMap.Forward["brute"]);
+					.SetOperand(Utility.ProfessionMap.Forward["Brute"]);
 			}
 			catch (Exception ex)
 			{
-				_Helper.Error($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}").Restore();
+				Helper.Error($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}").Restore();
 			}
 
-			return _Helper.Flush();
+			return Helper.Flush();
 		}
 
 		/// <summary>Patch to remove modded immediate profession perks.</summary>
-		protected static void LevelUpMenuRemoveImmediateProfessionPerkPostfix(int whichProfession)
+		private static void LevelUpMenuRemoveImmediateProfessionPerkPostfix(int whichProfession)
 		{
-			if (whichProfession == Utility.ProfessionMap.Forward["angler"]) FishingRod.maxTackleUses = 20;
-			else if (whichProfession == Utility.ProfessionMap.Forward["aquarist"])
+			try
 			{
-				foreach (Building b in Game1.getFarm().buildings)
+				if (!Utility.ProfessionMap.TryGetReverseValue(whichProfession, out var professionName)) return;
+
+				// remove immediate perks
+				if (professionName.Equals("Aquarist"))
 				{
-					if ((b.owner.Equals(Game1.player.UniqueMultiplayerID) || !Game1.IsMultiplayer) && b is FishPond && b.maxOccupants.Value > 10)
+					foreach (var b in Game1.getFarm().buildings.Where(b => (b.owner.Value.Equals(Game1.player.UniqueMultiplayerID) || !Game1.IsMultiplayer) && b is FishPond && !b.isUnderConstruction() && b.maxOccupants.Value > 10))
 					{
 						b.maxOccupants.Set(10);
 						b.currentOccupants.Value = Math.Min(b.currentOccupants.Value, b.maxOccupants.Value);
 					}
 				}
-			}
 
-			AwesomeProfessions.EventManager.UnsubscribeEventsForProfession(whichProfession);
+				// clean unnecessary mod data
+				Utility.CleanModData(whichProfession);
+
+				// unsubscribe unnecessary events
+				AwesomeProfessions.EventManager.UnsubscribeProfessionEvents(whichProfession);
+			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(LevelUpMenuRemoveImmediateProfessionPerkPostfix)}:\n{ex}");
+			}
 		}
+
 		#endregion harmony patches
 	}
 }

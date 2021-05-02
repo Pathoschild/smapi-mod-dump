@@ -1,7 +1,7 @@
 {
   "Name": "JojaOnline",
   "Author": "PeacefulEnd",
-  "Version": "1.2.2",
+  "Version": "1.2.4",
   "Description": "Purchasing from Joja Corporation has never been easier!",
   "UniqueID": "PeacefulEnd.JojaOnline",
   "EntryDll": "JojaOnline.dll",

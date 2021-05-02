@@ -1,0 +1,10 @@
+{
+	"Name": "bwdyworks",
+	"Author": "ceruleandeep",
+	"Version": "0.9.3",
+	"Description": "Basically a membership card for bwdy's secret club.",
+	"EntryDll": "bwdyworks.dll",
+	"MinimumApiVersion": "2.11",
+	"UniqueID": "ceruleandeep.bwdyworks",
+	"UpdateKeys": [ "Nexus:8616@bwdyworks" ]
+}

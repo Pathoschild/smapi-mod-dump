@@ -17,6 +17,19 @@ Better Mixed Seeds supports any mod that adds crops using Json Assets
 2. Install the latest version of [this mod](https://www.nexusmods.com/stardewvalley/mods/3012).
 3. Extract the .zip mod file into your StardewValley/Mods folder and run the game using SMAPI.
 
+## API
+#### ForceExcludeCrop(params string[] cropNames)
+
+This overrides the players configuration to forcibly exclude crops from being dropped from mixed seeds.
+
+Parameter | Description
+--------- | -----------
+cropNames | The names of the crops to foribly exclude
+
+**Note: This should be a last resort for mod authors who have added hard to get, highly profitable crops which can't be implemented alongside BMS without destroying in-game economy**
+
+Due to players have no way of overriding this, it's suggested to add a config option on your mod to determine whether this api should get called so players can let Better Mixed Seeds drop the crops if they really want.
+
 ## Use
 First, open the game using SMAPI like normal, this will generate a config.json file in the Mods/BetterMixedSeeds folder.
 Then using the below section configure the mixed seeds to your liking.

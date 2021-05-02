@@ -1,0 +1,15 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- metadata -->
+    <Authors>Alpha_Omegasis</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/janavarro95/Stardew_Valley_Mods.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
+    <!-- build settings -->
+    <RootNamespace>Omegasis.$(AssemblyName)</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DeployModZipTo Condition="'$(Configuration)' == 'Release'">$(SolutionDir)\_releases</DeployModZipTo>
+  </PropertyGroup>
+</Project>

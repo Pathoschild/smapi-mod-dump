@@ -102,8 +102,8 @@ namespace Omegasis.BuyBackCollectables.Framework
             this.Collections.Add(BuyBackMenu.MineralsTab, new List<List<ClickableTextureComponent>>());
             this.SideTabs.Add(new ClickableTextureComponent("", new Rectangle(this.xPositionOnScreen - Game1.tileSize * 3 / 4, this.yPositionOnScreen + Game1.tileSize * 6, Game1.tileSize, Game1.tileSize), "", Game1.content.LoadString("Strings\\UI:Collections_Cooking"), Game1.mouseCursors, new Rectangle(688, 64, 16, 16), Game1.pixelZoom));
             this.Collections.Add(BuyBackMenu.CookingTab, new List<List<ClickableTextureComponent>>());
-            this.SideTabs.Add(new ClickableTextureComponent("", new Rectangle(this.xPositionOnScreen - Game1.tileSize * 3 / 4, this.yPositionOnScreen + Game1.tileSize * 7, Game1.tileSize, Game1.tileSize), "", Game1.content.LoadString("Strings\\UI:Collections_Achievements"), Game1.mouseCursors, new Rectangle(656, 80, 16, 16), Game1.pixelZoom));
-            this.Collections.Add(BuyBackMenu.AchievementsTab, new List<List<ClickableTextureComponent>>());
+            //this.SideTabs.Add(new ClickableTextureComponent("", new Rectangle(this.xPositionOnScreen - Game1.tileSize * 3 / 4, this.yPositionOnScreen + Game1.tileSize * 7, Game1.tileSize, Game1.tileSize), "", Game1.content.LoadString("Strings\\UI:Collections_Achievements"), Game1.mouseCursors, new Rectangle(656, 80, 16, 16), Game1.pixelZoom));
+            //this.Collections.Add(BuyBackMenu.AchievementsTab, new List<List<ClickableTextureComponent>>());
             this.BackButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + Game1.tileSize * 3 / 4, this.yPositionOnScreen + this.height - 20 * Game1.pixelZoom, 12 * Game1.pixelZoom, 11 * Game1.pixelZoom), Game1.mouseCursors, new Rectangle(352, 495, 12, 11), Game1.pixelZoom);
             this.ForwardButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + this.width - Game1.tileSize / 2 - 15 * Game1.pixelZoom, this.yPositionOnScreen + this.height - 20 * Game1.pixelZoom, 12 * Game1.pixelZoom, 11 * Game1.pixelZoom), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), Game1.pixelZoom);
             int[] array = new int[this.SideTabs.Count];
@@ -165,8 +165,9 @@ namespace Omegasis.BuyBackCollectables.Framework
                 this.Collections[selectedTab].Last().Add(new ClickableTextureComponent(entry.Key + " " + drawShadow, new Rectangle(x2, num5, Game1.tileSize, Game1.tileSize), null, "", Game1.objectSpriteSheet, Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, entry.Key, 16, 16), Game1.pixelZoom, drawShadow));
                 array[selectedTab]++;
             }
-            if (this.Collections[5].Count == 0)
-                this.Collections[5].Add(new List<ClickableTextureComponent>());
+            /*
+            //if (this.Collections[5].Count == 0)
+                //this.Collections[5].Add(new List<ClickableTextureComponent>());
             foreach (KeyValuePair<int, string> current2 in Game1.achievements)
             {
                 bool flag = Game1.player.achievements.Contains(current2.Key);
@@ -179,6 +180,7 @@ namespace Omegasis.BuyBackCollectables.Framework
                     array[5]++;
                 }
             }
+            */
         }
 
 
@@ -231,9 +233,9 @@ namespace Omegasis.BuyBackCollectables.Framework
             }
             foreach (ClickableTextureComponent current2 in this.Collections[this.CurrentTab][this.CurrentPage])
             {
-                if (current2.containsPoint(x, y) && this.NewItem != null && Game1.player.money >= this.Value)
+                if (current2.containsPoint(x, y) && this.NewItem != null && Game1.player.Money >= this.Value)
                 {
-                    Game1.player.money -= this.Value;
+                    Game1.player.Money -= this.Value;
                     Game1.playSound("coin");
                     Game1.player.addItemByMenuIfNecessary(this.NewItem);
                 }
@@ -246,9 +248,9 @@ namespace Omegasis.BuyBackCollectables.Framework
         /// <param name="playSound">Whether to enable sound.</param>
         public override void receiveRightClick(int x, int y, bool playSound = true)
         {
-            if (this.NewItem != null && Game1.player.money >= this.Value)
+            if (this.NewItem != null && Game1.player.Money >= this.Value)
             {
-                Game1.player.money -= this.Value;
+                Game1.player.Money -= this.Value;
                 Game1.player.addItemByMenuIfNecessary(this.NewItem);
                 Game1.playSound("coin");
             }

@@ -8,10 +8,12 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Locations;
 
 namespace Su226.AnySave {
   class M {
@@ -27,11 +29,42 @@ namespace Su226.AnySave {
       M.Config = helper.ReadConfig<Config>();
       M.Api = new AnySaveApi();
 
+      M.Api.RegisterLocationHandler(NormalHandler);
+      M.Api.RegisterLocationHandler(MineHandler);
+      M.Api.RegisterLocationHandler(VolcanoHandler);
+
       helper.Events.Input.ButtonPressed += this.OnButtonPressed;
       helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
       helper.Events.GameLoop.Saved += this.OnSaved;
       helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
       helper.Events.GameLoop.DayEnding += this.OnDayEnding;
+    }
+
+    private bool NormalHandler(string map, float x, float y, int facing) {
+      LocationRequest request = Game1.getLocationRequest(map);
+      request.OnWarp += delegate {
+        Game1.player.Position = new Vector2(x, y);
+      };
+      Game1.warpFarmer(request, 0, 0, facing);
+      return true;
+    }
+
+    private bool MineHandler(string map, float x, float y, int facing) {
+      if (map.StartsWith("UndergroundMine")) {
+        Game1.warpFarmer(map, 6, 6, 2);
+        return true;
+      }
+      return false;
+    }
+
+    private bool VolcanoHandler(string map, float x, float y, int facing) {
+      if (map.StartsWith("VolcanoDungeon")) {
+        LocationRequest request = Game1.getLocationRequest(map);
+        Point pos = ((VolcanoDungeon)request.Location).startPosition.Value;
+        Game1.warpFarmer(request, pos.X, pos.Y, 0);
+        return true;
+      }
+      return false;
     }
 
     public override object GetApi() {

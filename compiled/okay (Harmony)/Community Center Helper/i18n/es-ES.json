@@ -101,6 +101,7 @@
 	"clearWeeds": "Destruye maleza",
 	"harvestHay": "Recolecta de hierba o {{wheat}}",
 	"trash": "Recoge basura al pescar, de Trampas para Cangrejos o cubos de basura",
+	"trashCan": "Cubos de basura",
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Habitación de Marnie (misión Los calzoncillos del alcalde el 3 de Verano)",
@@ -172,10 +173,19 @@
 	"waterMines60": "en el nivel de mina 60",
 	"waterMines100": "en el nivel de mina 100",
 	"waterSwamp": "en el pantano de la Bruja",
+	"waterIsland": "en la Isla Jengibre",
+	"waterIslandRiver": "en el río de Isla Jengibre",
+	"waterIslandOcean": "en el Océan de Isla Jengibre",
+	"waterIslandOceanWest": "en el Océan de Isla Jengibre (Oeste)",
+	"waterIslandCove": "en la Cueva pirata",
 	"waterAnglerSpot": "en la parte norte del río del Pueblo",
 	"waterCrimsonfishSpot": "en la orilla este de la Playa",
 	"waterGlacierfishSpot": "en el punto sur de la isla central del Bosque Tizón",
 	"waterLegendSpot": "cerca del tronco en el lago de la Montaña",
+	"waterBlueMoonVineyard": "en el Viñedo Luna Azul", // SVE
+	"waterShearwaterBridge": "en el Puente Shearwater ", // SVE
+	"waterForestWest": "en el Bosque Tizón (Oeste)", // SVE
+	"waterAdventurerSummit": "en el Cumbre", // SVE
 	"waterUnknown": "en ???",
 	
 	// Water Types (for crab pot suggestions)
@@ -291,7 +301,7 @@
 	"recipeSourceSaloon": "Salón",
 	"recipeSourceTV": "TV ({{date}})",
 	"recipeSourceTVAlreadyAired": "TV (reestreno del Miércoles, o {{date}})",
-	"recipeSourceFriendship": "{{hearts}}+ corazones con {{person}}", // sent in mail when you have enough hearts
+	"recipeSourceFriendship": "{{hearts}}+ corazones con {{person}}", // sent in mail or available for purchase when you have enough hearts
 	"recipeSourceHeartEvent": "evento de {{hearts}} corazones de {{person}}", // received from heart event specifically
 	"recipeSourceFirstCopper": "obtén {{copperOre}}",
 	"recipeSourceAfterGreenhouse": "arregla el Invernadero",

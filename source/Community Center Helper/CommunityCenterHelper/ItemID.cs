@@ -71,6 +71,7 @@ namespace CommunityCenterHelper
         public const int IT_RedSnapper = 150;
         public const int IT_Squid = 151;
         public const int IT_Seaweed = 152;
+        public const int IT_GreenAlgae = 153;
         public const int IT_SeaCucumber = 154;
         public const int IT_SuperCucumber = 155;
         public const int IT_Ghostfish = 156;
@@ -125,6 +126,7 @@ namespace CommunityCenterHelper
         public const int IT_Sashimi = 227;
         public const int IT_MakiRoll = 228;
         public const int IT_Tortilla = 229;
+        public const int IT_RedPlate = 230;
         public const int IT_EggplantParmesan = 231;
         public const int IT_RicePudding = 232;
         public const int IT_IceCream = 233;
@@ -141,6 +143,7 @@ namespace CommunityCenterHelper
         public const int IT_Kale = 250;
         public const int IT_TeaSapling = 251;
         public const int IT_Rhubarb = 252;
+        public const int IT_TripleShotEspresso = 253;
         public const int IT_Melon = 254;
         public const int IT_Tomato = 256;
         public const int IT_Morel = 257;
@@ -162,6 +165,7 @@ namespace CommunityCenterHelper
         public const int IT_Pumpkin = 276;
         public const int IT_WiltedBouquet = 277;
         public const int IT_BokChoy = 278;
+        public const int IT_MagicRockCandy = 279;
         public const int IT_Yam = 280;
         public const int IT_Chanterelle = 281;
         public const int IT_Cranberries = 282;
@@ -181,6 +185,7 @@ namespace CommunityCenterHelper
         public const int IT_Acorn = 309;
         public const int IT_MapleSeed = 310;
         public const int IT_PineCone = 311;
+        public const int IT_WoodFence = 322;
         public const int IT_Clay = 330;
         public const int IT_CopperBar = 334;
         public const int IT_IronBar = 335;
@@ -333,8 +338,10 @@ namespace CommunityCenterHelper
         public const int IT_PineTar = 726;
         public const int IT_Chowder = 727;
         public const int IT_FishStew = 728;
+        public const int IT_Escargot = 729;
         public const int IT_MapleBar = 731;
         public const int IT_CrabCakes = 732;
+        public const int IT_ShrimpCocktail = 733;
         public const int IT_Woodskip = 734;
         public const int IT_JackOLantern = 746;
         public const int IT_OmniGeode = 749;
@@ -346,10 +353,12 @@ namespace CommunityCenterHelper
         public const int IT_Fiber = 771;
         public const int IT_OilOfGarlic = 772;
         public const int IT_LifeElixir = 773;
+        public const int IT_WildBait = 774;
         public const int IT_Glacierfish = 775;
         public const int IT_BatteryPack = 787;
         public const int IT_LuckyPurpleShorts = 789;
         public const int IT_VoidSalmon = 795;
+        public const int IT_Slimejack = 796;
         public const int IT_Pearl = 797;
         public const int IT_MidnightSquid = 798;
         public const int IT_SpookFish = 799;

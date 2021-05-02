@@ -10,14 +10,8 @@
 
 {
     "Name": "Sakura Kimono Purple Lower",
-    "Description": "A purple kimono, lower half.",
+    "Description": "...",
     "Price": 50,
     "Dyeable": false,
-    "DefaultColor": "255, 255, 255, 255",
-    "NameLocalization": {
-        "es": "Kimono Sakura  Purpura Inferior"
-    },
-    "DescriptionLocalization": {
-        "es": "Un kimono morado, mitad inferior."
-    }
+    "DefaultColor": "255, 255, 255, 255"
 }

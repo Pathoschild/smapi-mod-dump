@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Better Doors",
   "Author": "Cat",
-  "Version": "1.0.1-unofficial.1-slamerz",
+  "Version": "1.0.3-unofficial.1-strobe",
   "Description": "Lets map makers add better doors to their maps.",
   "UniqueID": "cat.betterdoors",
   "EntryDll": "BetterDoors.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.0.0-beta",
   "UpdateKeys": [ "Nexus:3797" ]
 }

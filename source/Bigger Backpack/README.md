@@ -52,3 +52,6 @@ To remove the mod, first run `player_setbackpacksize 36` in the SMAPI console an
 
 #### 3.0:
 * Allow content patcher mods, such as [Garden Variety UI](https://www.nexusmods.com/stardewvalley/mods/3879) to override the custom assets used in this mod.
+
+#### 4.0
+* Add 64-bit support.

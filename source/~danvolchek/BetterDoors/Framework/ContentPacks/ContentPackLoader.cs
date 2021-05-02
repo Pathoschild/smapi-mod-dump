@@ -16,7 +16,6 @@ using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using SemanticVersion = StardewModdingAPI.Toolkit.SemanticVersion;
 
 namespace BetterDoors.Framework.ContentPacks
 {

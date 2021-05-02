@@ -10,30 +10,32 @@
 
 using StardewModdingAPI.Events;
 using StardewValley;
+using System;
+using System.Globalization;
 using System.IO;
+using TheLion.Common;
 
 namespace TheLion.AwesomeProfessions
 {
 	internal class ConservationistDayEndingEvent : DayEndingEvent
 	{
-		/// <summary>Construct an instance.</summary>
-		internal ConservationistDayEndingEvent() { }
-
-		/// <summary>Raised before the game ends the current day. Receive Conservationist mail from the FRS about taxation bracket.</summary>
-		/// <param name="sender">The event sender.</param>
-		/// <param name="e">The event arguments.</param>
+		/// <inheritdoc/>
 		public override void OnDayEnding(object sender, DayEndingEventArgs e)
 		{
-			if (Game1.dayOfMonth == 28 && Data.WaterTrashCollectedThisSeason > 0)
-			{
-				Data.ConservationistTaxBonusThisSeason = Data.WaterTrashCollectedThisSeason / Config.TrashNeededForNextTaxLevel / 100f;
-				if (Data.ConservationistTaxBonusThisSeason > 0)
-				{
-					AwesomeProfessions.ModHelper.Content.InvalidateCache(Path.Combine("Data", "mail"));
-					Game1.addMailForTomorrow("ConservationistTaxNotice");
-				}
+			if (!AwesomeProfessions.Content.AssetEditors.ContainsType(typeof(FRSMailEditor)))
+				AwesomeProfessions.Content.AssetEditors.Add(new FRSMailEditor());
 
-				Data.WaterTrashCollectedThisSeason = 0;
+			uint trashCollectedThisSeason;
+			if (Game1.dayOfMonth == 28 && (trashCollectedThisSeason = AwesomeProfessions.Data.ReadField($"{AwesomeProfessions.UniqueID}/WaterTrashCollectedThisSeason", uint.Parse)) > 0)
+			{
+				var taxBonusNextSeason = Math.Min(trashCollectedThisSeason / AwesomeProfessions.Config.TrashNeededForNextTaxLevel / 100f, 0.37f);
+				AwesomeProfessions.Data.WriteField($"{AwesomeProfessions.UniqueID}/ActiveTaxBonusPercent", taxBonusNextSeason.ToString(CultureInfo.InvariantCulture));
+				if (taxBonusNextSeason > 0)
+				{
+					AwesomeProfessions.Content.InvalidateCache(Path.Combine("Data", "mail"));
+					Game1.addMailForTomorrow($"{AwesomeProfessions.UniqueID}/ConservationistTaxNotice");
+				}
+				AwesomeProfessions.Data.WriteField($"{AwesomeProfessions.UniqueID}/WaterTrashCollectedThisSeason", "0");
 			}
 		}
 	}

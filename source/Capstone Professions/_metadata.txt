@@ -5,9 +5,12 @@ mods:
    Capstone Professions
 
 latest commit:
-   commit a316f38480f1dd67e9424e0ea21a5c64a914406b
-   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Thu Jan 14 18:39:56 2021 -0500
+   commit 54b2ae70d0a3025d1628b6b90837d93883b4fa8d
+   Merge: a316f38 04b615f
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Thu Apr 1 22:28:33 2021 -0400
    
-       Initial commit
+       Merge pull request #1 from rikai/patch-1
+       
+       Minor Updates to manifest.json
    

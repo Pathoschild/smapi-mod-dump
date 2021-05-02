@@ -101,6 +101,7 @@
 	"clearWeeds": "雑草から取れる",
 	"harvestHay": "草や{{wheat}}から収穫",
 	"trash": "釣りのゴミ、カニかご、ゴミ箱",
+	"trashCan": "ゴミ箱",
 	
 	// Miscellaneous Sources
 	"luckyShorts": "マーニーの部屋（「町長のパンツ」クエセト、夏の3日）",
@@ -172,10 +173,19 @@
 	"waterMines60": "鉱山60F",
 	"waterMines100": "鉱山100F",
 	"waterSwamp": "魔女の沼",
+	"waterIsland": "ジンジャーアイランド",
+	"waterIslandRiver": "ジンジャーアイランドの川",
+	"waterIslandOcean": "ジンジャーアイランドの海",
+	"waterIslandOceanWest": "ジンジャーアイランドの海（西）",
+	"waterIslandCove": "海賊の入り江",
 	"waterAnglerSpot": "町の川の最北端",
 	"waterCrimsonfishSpot": "海の東側の岸か桟橋",
 	"waterGlacierfishSpot": "シンダーサップの森の中央島の最南端",
 	"waterLegendSpot": "山の湖の丸太のあたり",
+	"waterBlueMoonVineyard": "ブルームーンヴィニヤード", // SVE (no existing translation, but...)
+	"waterShearwaterBridge": "シアーウォーター橋", // SVE (no existing translation, but...)
+	"waterForestWest": "シンダーサップの森（西）", // SVE
+	"waterAdventurerSummit": "冒険者の山頂", // SVE (no existing translation, but...)
 	"waterUnknown": "???",
 	
 	// Water Types (for crab pot suggestions)
@@ -291,7 +301,7 @@
 	"recipeSourceSaloon": "酒場",
 	"recipeSourceTV": "テレビ（{{date}}）",
 	"recipeSourceTVAlreadyAired": "テレビ（水曜日の再放送か、{{date}}）",
-	"recipeSourceFriendship": "{{person}}の友好度が{{hearts}}ハート時", // sent in mail when you have enough hearts
+	"recipeSourceFriendship": "{{person}}の友好度が{{hearts}}ハート時", // sent in mail or available for purchase when you have enough hearts
 	"recipeSourceHeartEvent": "{{person}}の{{hearts}}ハートイベント", // received from heart event specifically
 	"recipeSourceFirstCopper": "初めての{{copperOre}}入手後",
 	"recipeSourceAfterGreenhouse": "温室の完成後",

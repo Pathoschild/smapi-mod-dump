@@ -10,34 +10,40 @@
 
 using Harmony;
 using StardewValley.Menus;
+using System;
 
 namespace TheLion.AwesomeProfessions
 {
 	internal class LevelUpMenuGetProfessionNamePatch : BasePatch
 	{
-		/// <summary>Construct an instance.</summary>
-		internal LevelUpMenuGetProfessionNamePatch() { }
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		protected internal override void Apply(HarmonyInstance harmony)
+		/// <inheritdoc/>
+		public override void Apply(HarmonyInstance harmony)
 		{
 			harmony.Patch(
-				AccessTools.Method(typeof(LevelUpMenu), name: "getProfessionName"),
+				original: AccessTools.Method(typeof(LevelUpMenu), name: "getProfessionName"),
 				prefix: new HarmonyMethod(GetType(), nameof(LevelUpMenuGetProfessionNamePrefix))
 			);
 		}
 
 		#region harmony patches
-		/// <summary>Patch to apply modded profession names.</summary>
-		protected static bool LevelUpMenuGetProfessionNamePrefix(ref string __result, int whichProfession)
-		{
-			if (!Utility.ProfessionMap.Contains(whichProfession)) return true; // run original logic
 
-			__result = Utility.ProfessionMap.Reverse[whichProfession];
-			return false; // don't run original logic
+		/// <summary>Patch to apply modded profession names.</summary>
+		private static bool LevelUpMenuGetProfessionNamePrefix(ref string __result, int whichProfession)
+		{
+			try
+			{
+				if (!Utility.ProfessionMap.Contains(whichProfession)) return true; // run original logic
+
+				__result = Utility.ProfessionMap.Reverse[whichProfession];
+				return false; // don't run original logic
+			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(LevelUpMenuGetProfessionNamePrefix)}:\n{ex}");
+				return true; // default to original logic
+			}
 		}
+
 		#endregion harmony patches
 	}
-
 }

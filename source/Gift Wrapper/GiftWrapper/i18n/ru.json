@@ -16,7 +16,8 @@
 	"item.default.name": "???",
 	"item.default.description": "???",
 
-	"message.giftopened": "{{Recipient}} открыл(а) подарок от {{Sender}}! Внутри него: {{ItemName}} {{OneOrMany}} шт.",
+	"message.giftopened": "{{Recipient}} открыл(а) подарок от {{Sender}}! Внутри него: {{ItemName}} шт.",
+	"message.giftopened_quantity": "{{Recipient}} открыл(а) подарок от {{Sender}}! Внутри него: {{ItemName}} {{ItemQuantity}} шт.",
 	"message.giftwrapped": "{{WrappedGiftName}} ({{ItemName}})",
 
 	"error.wrapping": "Это нельзя упаковать.",

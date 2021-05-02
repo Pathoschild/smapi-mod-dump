@@ -189,6 +189,7 @@ SeasonsAllowedOutdoors   | `"["spring", "summer", "fall"]"` | The seasons the su
 #### Produce Properties
 Property                        | Default value                              | Description
 ------------------------------- | :----------------------------------------: | -----------
+UniqueName                      |                                            | The unique string to identify this produce among others on the same subtype, therefore this only needs to be unique among other produce on the same subtype.
 Action                          | `"Add"`                                    | See [Special Properties](#special-properties) for details.
 DefaultProductId                | `"-1"`                                     | The id of the default product (also accepts api tokens, see [Api Tokens](#api-tokens).)
 DefaultProductMinFriendship     | `0`                                        | The minimum friendship required for the default product to drop.
@@ -216,7 +217,7 @@ StandardQualityOnly             | `false`                                    | W
 #### Special properties
 Property     | Description
 ------------ | -----------
-Action       | Determines how the data should be interpreted. The allowed values are: `"Add"`, `"Edit"`, and `"Delete"`. **Note:** if this is either `"Edit"` or `"Delete"` then the `InternalName` (or in the case of produce, the `DefaultProductId` and `UpgradedProductId`) *must* be specified in order to be valid.
+Action       | Determines how the data should be interpreted. The allowed values are: `"Add"`, `"Edit"`, and `"Delete"`. **Note:** if this is either `"Edit"` or `"Delete"` then the `InternalName` (or in the case of produce, the `UniqueName`) *must* be specified in order to be valid.
 InternalName | The internal name of the animal or animal subtype (case insensitive). This is set to the `mod unique id.name` for example if the mod: `Satozaki.CustomAnimals` adds an animal: `Elephant` the internal name of the animal will be: `Satozaki.CustomAnimals.Elephant`, if the animal has a subtype called `Grey Elephant` then the subtype's internal name will be `Satozaki.CustomAnimals.Grey Elephant`. Any animals that are added by the game have a `unique id` of `game`, for example: `game.Chicken`. **Note:** The internal name cannot be changed, so even if a pack edits the animal name the internal name won't be updated to reflect the name change, this is by design so multiple packs can edit the same animal without worrying about other packs changing the name of the animal. Finally, this is only required when the `Action` is either `"Edit"` or `"Delete"` as it gets automatically generated when the action is `"Add"`.
 
 #### Api Tokens

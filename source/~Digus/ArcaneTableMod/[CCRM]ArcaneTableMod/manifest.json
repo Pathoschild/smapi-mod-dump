@@ -11,17 +11,13 @@
 {
 	"Name": "[CCRM]Arcane Table Mod",
 	"Author": "Digus",
-	"Version": "1.0.0",
+	"Version": "1.1.0",
 	"Description": "Create the rule to replicate monster tool with the Arcane Table.",
 	"UniqueID": "Digus.ArcaneTableForCustomCrystalariumMod",
 	"MinimumApiVersion": "3.9.0",
 	"UpdateKeys": [ "Nexus:8178" ],
-	"Dependencies": [
-		{
-			"UniqueID": "Digus.ArcaneTableMod"
-		}
-	],
-	"ContentPackFor": {
+	"Dependencies": [ { "UniqueID": "Digus.ArcaneTableMod" } ],
+    "ContentPackFor": {
 		"UniqueID": "DIGUS.CustomCrystalariumMod"
 	}
 }

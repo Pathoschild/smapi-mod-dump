@@ -12,7 +12,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/.idea.PersonalAnvil/riderModule.iml" filepath="$PROJECT_DIR$/.idea/.idea.PersonalAnvil/riderModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/.idea.PersonalAnvil/.idea/riderModule.iml" filepath="$PROJECT_DIR$/.idea/.idea.PersonalAnvil/.idea/riderModule.iml" />
     </modules>
   </component>
 </project>

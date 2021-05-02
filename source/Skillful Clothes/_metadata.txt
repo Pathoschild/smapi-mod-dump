@@ -1,0 +1,13 @@
+url:
+   https://github.com/LunaticShade/StardewValley.SkillfulClothes.git
+
+mods:
+   Skillful Clothes
+
+latest commit:
+   commit e15122cddbc7ec4cbf158d8072da5af40c7a4ec9
+   Author: LunaticShade <lunaticshade@googlemail.com>
+   Date:   Wed Apr 21 13:43:38 2021 +0200
+   
+       Added pdb path override
+   

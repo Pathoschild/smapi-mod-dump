@@ -30,6 +30,19 @@ namespace Omegasis.NightOwl
     /// <summary>The mod entry point.</summary>
     public class NightOwl : Mod
     {
+
+        /*********
+        ** Static Fields
+        *********/
+        /// <summary>
+        /// Events that are handled after the player has warped after they have stayed up late.
+        /// </summary>
+        public static Dictionary<string, Func<bool>> PostWarpCharacter = new Dictionary<string, Func<bool>>();
+        /// <summary>
+        /// Events that are handled when the player has stayed up late and are going to collapse.
+        /// </summary>
+        public static Dictionary<string, Func<bool>> OnPlayerStayingUpLate = new Dictionary<string, Func<bool>>();
+
         /*********
         ** Fields
         *********/
@@ -81,10 +94,11 @@ namespace Omegasis.NightOwl
         /// <summary>Determines whehther or not to rewarp the player's horse to them.</summary>
         private bool shouldWarpHorse;
 
-        /// <summary>Event in the night taht simulates the earthquake event that should happen.</summary>
+        /// <summary>Event in the night that simulates the earthquake event that should happen.</summary>
         StardewValley.Events.SoundInTheNightEvent eve;
 
         private List<NetByte> oldAnimalHappiness;
+
 
 
         /*********
@@ -108,6 +122,10 @@ namespace Omegasis.NightOwl
             this.shouldWarpHorse = false;
         }
 
+        public override object GetApi()
+        {
+            return new NightOwlAPI();
+        }
 
         /*********
         ** Private methods
@@ -127,7 +145,13 @@ namespace Omegasis.NightOwl
                     if (Context.IsWorldReady && this.JustStartedNewDay && this.Config.KeepPositionAfterCollapse)
                     {
                         if (this.PreCollapseMap != null)
+                        {
                             Game1.warpFarmer(this.PreCollapseMap, this.PreCollapseTile.X, this.PreCollapseTile.Y, false);
+                            foreach (var v in PostWarpCharacter)
+                            {
+                                v.Value.Invoke();
+                            }
+                        }
 
                         this.PreCollapseMap = null;
                         this.JustStartedNewDay = false;
@@ -158,7 +182,7 @@ namespace Omegasis.NightOwl
             }
 
             if (this.Config.KeepMoneyAfterCollapse)
-                Game1.player.money += collapseFee;
+                Game1.player.Money += collapseFee;
         }
 
         /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
@@ -193,7 +217,13 @@ namespace Omegasis.NightOwl
                     if (this.Config.KeepPositionAfterCollapse)
                     {
                         if (!Game1.weddingToday)
+                        {
                             Game1.warpFarmer(this.PreCollapseMap, this.PreCollapseTile.X, this.PreCollapseTile.Y, false);
+                            foreach(var v in PostWarpCharacter)
+                            {
+                                v.Value.Invoke();
+                            }
+                        }
                     }
 
                     if (this.horse != null && this.shouldWarpHorse)
@@ -206,7 +236,7 @@ namespace Omegasis.NightOwl
                     if (this.isBathing)
                         Game1.player.swimming.Value = true;
 
-                    //Reflction to ensure that the railroad becomes properly unblocked.
+                    //Reflection to ensure that the railroad becomes properly unblocked.
                     if (Game1.dayOfMonth == 1 && Game1.currentSeason == "summer" && Game1.year == 1)
                     {
                         Mountain mountain = (Mountain)Game1.getLocationFromName("Mountain");
@@ -314,7 +344,7 @@ namespace Omegasis.NightOwl
                     this.PreCollapseMap = Game1.player.currentLocation.Name;
                     this.PreCollapseStamina = Game1.player.stamina;
                     this.PreCollapseHealth = Game1.player.health;
-                    this.PreCollapseMoney = Game1.player.money;
+                    this.PreCollapseMoney = Game1.player.Money;
                     this.isInSwimSuit = Game1.player.bathingClothes.Value;
                     this.isBathing = Game1.player.swimming.Value;
 
@@ -324,12 +354,17 @@ namespace Omegasis.NightOwl
 
                     if (Game1.activeClickableMenu != null) Game1.activeClickableMenu.exitThisMenu(true); //Exit menus.
 
-                    Game1.timeOfDay += 2400; //Recalculate for the sake of technically being up a whole day.
+                    //Game1.timeOfDay += 2400; //Recalculate for the sake of technically being up a whole day. Why did I put this here?
 
                     //Reset animal happiness since it drains over night.
                     for (int i = 0; i < this.oldAnimalHappiness.Count; i++)
                     {
                         Game1.getFarm().getAllFarmAnimals()[i].happiness.Value = this.oldAnimalHappiness[i].Value;
+                    }
+
+                    foreach(var v in OnPlayerStayingUpLate)
+                    {
+                        v.Value.Invoke();
                     }
 
                     Game1.player.startToPassOut();

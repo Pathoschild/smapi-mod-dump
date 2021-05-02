@@ -10,14 +10,8 @@
 
 {
     "Name": "Sailor Chibi Moon",
-    "Description": "A cute little sailor suit covered in bows.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Sailor Chibi Moon"
-    },
-    "DescriptionLocalization": {
-        "es": "Un lindo traje de marinero cubierto de lazos."
-    }
+    "Dyeable": false
 }

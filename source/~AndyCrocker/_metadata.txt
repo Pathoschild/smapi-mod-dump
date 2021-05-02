@@ -13,9 +13,9 @@ mods:
    More Grass
 
 latest commit:
-   commit 230b7627dc3887c8b6117bdda67abb09d11ffd58
+   commit 1ba0c364cdd0fbc19ca2541956b80ce951e6f060
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Thu Mar 25 17:10:56 2021 +0000
+   Date:   Sun Apr 25 20:32:00 2021 +0100
    
-       [BarkingUpTheRightTree] Clean up documentation
+       [FarmAnimalVarietyRedux] Update README to add the 'UniqueName' property
    

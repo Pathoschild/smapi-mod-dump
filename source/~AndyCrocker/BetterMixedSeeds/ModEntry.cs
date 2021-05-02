@@ -56,11 +56,17 @@ namespace BetterMixedSeeds
         /*********
         ** Accessors 
         *********/
+        /// <summary>The list of crop names that other mods have explicitly set to forcibly exclude, ignoring user configuration.</summary>
+        public List<string> CropsToExclude { get; } = new List<string>();
+
         /// <summary>The list of seeds that mixed seeds can plant.</summary>
         public List<Seed> Seeds { get; private set; }
 
         /// <summary>The mod configuration.</summary>
         public ModConfig Config { get; private set; }
+
+        /// <summary>Provides basic crop apis.</summary>
+        public IApi Api { get; private set; }
 
         /// <summary>The singleton instance for <see cref="ModEntry"/>.</summary>
         public static ModEntry Instance { get; private set; }
@@ -74,14 +80,16 @@ namespace BetterMixedSeeds
         public override void Entry(IModHelper helper)
         {
             Instance = this;
+            Api = new Api();
 
-            // load the config
             Config = this.Helper.ReadConfig<ModConfig>();
 
-            // add event handlers
             this.Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             this.Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         }
+
+        /// <inheritdoc/>
+        public override object GetApi() => Api;
 
 
         /*********
@@ -152,9 +160,20 @@ namespace BetterMixedSeeds
             // get the enabled seeds
             Seeds = GetAllEnabledSeeds();
 
+            // remove any seeds that mods have foricbly excluded
+            for (int i = 0; i < Seeds.Count; i++)
+            {
+                var seed = Seeds[i];
+                if (CropsToExclude.Any(cropToExclude => cropToExclude.ToLower() == seed.CropName.ToLower()))
+                {
+                    this.Monitor.Log($"Forcibly removed seed: {seed}");
+                    Seeds.RemoveAt(i--);
+                }
+            }
+
             // log current seeds
             foreach (var seed in Seeds)
-                this.Monitor.Log($"Added seed: Id: {seed.Id}, CropName: {seed.CropName}, DropChance: {seed.DropChance}, Season: {seed.Season}, IsTrellis: {seed.IsTrellis}, YearRequirement: {seed.YearRequirement}");
+                this.Monitor.Log($"Added seed: {seed}");
 
             // add harmony patches
             ApplyHarmonyPatches();

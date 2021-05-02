@@ -16,8 +16,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
-using Revitalize.Framework.Graphics;
 using StardewValley;
+using StardustCore.UIUtilities;
 
 namespace Revitalize.Framework.Utilities.Serialization.Converters
 {
@@ -36,11 +36,11 @@ namespace Revitalize.Framework.Utilities.Serialization.Converters
             string textureName = reader.Value as string;
             //ModCore.log(textureName);
             if (string.IsNullOrEmpty(textureName)) return new Texture2D(Game1.graphics.GraphicsDevice, 2, 2);
-            string[] names = textureName.Split('.');
+            string[] names = textureName.Split('_');
             if (names.Length == 0) return null;
 
             if (!TextureManager.TextureManagers.ContainsKey(names[0])) return null;
-            return textureName == null ? null : Revitalize.Framework.Graphics.TextureManager.TextureManagers[names[0]].getTexture(names[1]).texture;
+            return textureName == null ? null : TextureManager.TextureManagers[names[0]][names[1]].getTexture(names[2]).texture;
         }
 
         public override bool CanConvert(Type objectType)

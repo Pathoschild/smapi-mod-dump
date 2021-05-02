@@ -17,6 +17,16 @@ namespace Vocalization
     public class ModConfig
     {
 
+        /// <summary>The volume at which the sound for voices is played at.</summary>
+        public decimal voiceVolume = 1;
+
+        /// <summary>
+        /// Should the mod automatically mute the game's npc dialogue typing sound?
+        /// </summary>
+        public bool muteDialogueTyping = true;
+
+        public string menuHotkey = "Y";
+
         /// <summary>Handles all of the translation information and parsing.</summary>
         public TranslationInfo translationInfo = new TranslationInfo();
 
@@ -26,8 +36,11 @@ namespace Vocalization
         /// <summary>The current mode for the mod.</summary>
         public string currentMode = "Full";
 
-        /// <summary>The volume at which the sound for voices is played at.</summary>
-        public decimal voiceVolume = 1;
+        public bool ShopDialogueEnabled=true;
+        public bool TVDialogueEnabled = true;
+        public bool LetterDialogueEnabled = true;
+
+        public bool Developer_ScrapeOnlyEnglishDialogue=true;
 
         /// <summary>Validates</summary>
         public void verifyValidMode()

@@ -1,0 +1,42 @@
+{
+    "Name": "Escape Rope", //The name you would like your object to have, this should be identical to the subfolder name.
+    "Description": "Use this rope to escape from the mines.", //Description of the product.
+    "Category": "MonsterLoot", //This should match the crop.json Type or for fruit trees should be one of the following: Flower, Fruit, Vegetable, Gem, Fish, Egg, Milk, Cooking, Crafting, Mineral, Meat, Metal, Junk, Syrup, MonsterLoot, ArtisanGoods, AnimalGoods, and Seeds.
+    "CategoryTextOverride": "Tool", //(optional) Visually allows you to alter what category the item appears as. Examples include: `herb`, `spice`, `hybrid`.
+    "CategoryColorOverride": "255, 255, 255, 255", //(optional) Works the same as `Colors` field using RGBA, but only allows one input. Alters the text color of the category
+    "Edibility": -300, //Edibility is for health, energy is calculated by the game. For inedibile items, set to -300.
+    "Price": 500, //How much your item sells for.
+    "IsColored": false, //(optional) Set this value to true if your product is colored. Primairly applies to flowers.
+    "Recipe": null, //Set to null.
+    "CanPurchase": true, //Set this to true if IsDefault is set to false or excluded from the json.
+    "PurchaseFrom": "Dwarf", //Who you can purchase the weapon from. Valid entries are: Willy, Pierre, Robin, Sandy, Krobus, Clint, Harvey, Marlon, and Dwarf
+
+    // Localization
+
+    "NameLocalization": {
+        "es": "Cuerda Huida", //Spansih
+        "ko": "동굴탈출로프", //Korean
+        "de": "Fluchtseil", //German
+        "fr": "Corde Sortie", //French
+        "hu": "", //Hungarian
+        "it": "Fune di fuga", //Italian
+        "ja": "あなぬけのヒモ", //Japanese
+        "pt": "", //Portuguese Corda de Fuga
+        "ru": "", //Russian Спасательный Канат
+        "tr": "", //Turkish
+        "zh": "離洞繩" //Chinese (Simplified)
+    },
+    "DescriptionLocalization": {
+        "es": "Permite salir instantáneamente de la cueva.", //Spansih
+        "ko": "", //Korean
+        "de": "Verwende das Seil, um aus der Mine zu entkommen.", //German
+        "fr": "Pour sortir rapidement d'une cave ou d'un souterrain.", //French
+        "hu": "", //Hungarian
+        "it": "Per fuggire da grotte e sotterranei.", //Italian
+        "ja": "どうくつや ダンジョンを ぬけだせる", //Japanese
+        "pt": "", //Portuguese
+        "ru": "", //Russian
+        "tr": "", //Turkish
+        "zh": "从洞窟或迷宫中脱离" //Chinese (Simplified)
+    }
+}

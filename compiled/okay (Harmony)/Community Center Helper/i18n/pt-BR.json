@@ -101,6 +101,7 @@
 	"clearWeeds": "Destrua ervas-daninhas",
 	"harvestHay": "Colete de grama ou {{wheat}}",
 	"trash": "Lixo vindo da pesca, Covos, ou latas de lixo",
+	"trashCan": "Latas de lixo",
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Quarto da Marnie (na missão do Prefeito dos shorts perdidos no Verão 3)",
@@ -172,10 +173,19 @@
 	"waterMines60": "nas Minas nível 60",
 	"waterMines100": "nas Minas nível 100",
 	"waterSwamp": "no Pantâno da Bruxa",
+	"waterIsland": "nas Ilha Gengibre",
+	"waterIslandRiver": "no rio da Ilha Gengibre",
+	"waterIslandOcean": "no oceano da Ilha Gengibre",
+	"waterIslandOceanWest": "no oceano da Ilha Gengibre (Oeste)",
+	"waterIslandCove": "na Caverna do Pirata",
 	"waterAnglerSpot": "ao extremo Norte do rio da cidade",
 	"waterCrimsonfishSpot": "no pier leste da Praia (depois da ponte)",
 	"waterGlacierfishSpot": "ao extremo sul da ilha principal da Floresta Cinzaseiva",
 	"waterLegendSpot": "em volta do tronco no Lago da Montanha",
+	"waterBlueMoonVineyard": "na Blue Moon Vineyard", // SVE (no existing translation)
+	"waterShearwaterBridge": "na Shearwater Bridge", // SVE (no existing translation)
+	"waterForestWest": "na Floresta Cinzaseiva (Oeste)", // SVE
+	"waterAdventurerSummit": "na Adventurer Summit", // SVE (no existing translation)
 	"waterUnknown": "na ???",
 	
 	// Water Types (for crab pot suggestions)
@@ -291,7 +301,7 @@
 	"recipeSourceSaloon": "Saloon",
 	"recipeSourceTV": "TV ({{date}})",
 	"recipeSourceTVAlreadyAired": "TV (Reprise de Quarta, ou {{date}})",
-	"recipeSourceFriendship": "{{hearts}}+ corações com {{person}}", // sent in mail when you have enough hearts
+	"recipeSourceFriendship": "{{hearts}}+ corações com {{person}}", // sent in mail or available for purchase when you have enough hearts
 	"recipeSourceHeartEvent": "{{hearts}}-corações {{person}} evento", // received from heart event specifically
 	"recipeSourceFirstCopper": "obtenha {{copperOre}}",
 	"recipeSourceAfterGreenhouse": "conserte da estufa",

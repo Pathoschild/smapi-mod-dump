@@ -28,15 +28,13 @@ namespace GiftWrapper
 
 		public T Load<T>(IAssetInfo asset)
 		{
-			return (T)(object)Helper.Content.Load<Texture2D>($"{ModEntry.LocalTexturePath}.png");
+			return (T)(object)Helper.Content.Load<Texture2D>(ModEntry.LocalTexturePath + ".png");
 		}
 
 		public bool CanEdit<T>(IAssetInfo asset)
 		{
 			return asset.AssetNameEquals(@"Data/ObjectInformation")
-				|| asset.AssetNameEquals(@"Strings/UI")
-				//|| asset.AssetNameEquals(@"TileSheets/tools") // Tool-based method for wrapped gifts
-				;
+				|| asset.AssetNameEquals(@"Strings/UI");
 		}
 
 		public void Edit<T>(IAssetData asset)
@@ -72,40 +70,21 @@ namespace GiftWrapper
 
 				// Add global chat message for gifts opened
 				// Format message tokens so that they can be later tokenised by the game in multiplayer.globalChatInfoMessage()
-				const string i18nKey = "message.giftopened";
-				data.Add("Chat_" + ModEntry.AssetPrefix + i18nKey,
-					i18n.Get(i18nKey, new
-					{
-						Recipient = "{0}",
-						Sender = "{1}",
-						OneOrMany = "{2}",
-						ItemName = "{3}"
-					}));
+				foreach (string i18nKey in new [] { "message.giftopened", "message.giftopened.quantity" })
+				{
+					data.Add("Chat_" + ModEntry.AssetPrefix + i18nKey,
+						i18n.Get(i18nKey, new
+						{
+							Recipient = "{0}",
+							Sender = "{1}",
+							ItemName = "{2}",
+							ItemQuantity = "{3}"
+						}));
+				}
 
 				asset.AsDictionary<string, string>().ReplaceWith(data);
 				return;
 			}
-			/*
-			if (asset.AssetNameEquals(@"TileSheets/tools"))
-			{
-				// Insert wrapped gift icon into the tools sheet in some unused area
-				int objectIndex = ModEntry.JsonAssets.GetObjectId(ModEntry.AssetPrefix + ModEntry.WrappedGiftName);
-				if (objectIndex < 0)
-					return;
-				asset.AsImage().PatchImage(
-					source: Game1.objectSpriteSheet,
-					sourceArea: Game1.getSourceRectForStandardTileSheet(
-						tileSheet: Game1.objectSpriteSheet,
-						tilePosition: objectIndex,
-						width: 16, height: 16),
-					targetArea: Game1.getSourceRectForStandardTileSheet(
-						tileSheet: asset.AsImage().Data,
-						tilePosition: ModEntry.WrappedGiftToolsSheetIndex,
-						width: 16, height: 16),
-					patchMode: PatchMode.Replace);
-				return;
-			}
-			*/
 		}
 	}
 }

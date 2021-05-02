@@ -19,10 +19,10 @@ namespace Revitalize.Framework.Crafting
 {
     public class StatCost
     {
-        int health;
-        int stamina;
-        int magic;
-        int gold;
+        public int health;
+        public int stamina;
+        public int magic;
+        public int gold;
 
         public StatCost(int Stamina = 0, int Health = 0, int Gold = 0, int Magic = 0){
             this.stamina = Stamina;
@@ -57,7 +57,7 @@ namespace Revitalize.Framework.Crafting
         /// </summary>
         public void payCost()
         {
-            if (canSafelyAffordCost())
+            if (this.canSafelyAffordCost())
             {
                 Game1.player.stamina -= this.stamina;
                 Game1.player.health -= this.health;

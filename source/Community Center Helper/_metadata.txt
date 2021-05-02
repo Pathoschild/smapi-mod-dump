@@ -5,9 +5,11 @@ mods:
    Community Center Helper
 
 latest commit:
-   commit 244a8904b3decd6f475d9da6ba172238d6837afc
+   commit 45b7a7c9040a490994316fbda9cb87f8387df994
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Tue Feb 9 14:09:41 2021 -0800
+   Date:   Sat Apr 3 21:03:04 2021 -0700
    
-       1.2.4 update (Spanish)
+       1.3.0 update
+       
+       Added items to cover latest version of Challenging Community Center Bundles (including SVE options), added island locations for fish
    

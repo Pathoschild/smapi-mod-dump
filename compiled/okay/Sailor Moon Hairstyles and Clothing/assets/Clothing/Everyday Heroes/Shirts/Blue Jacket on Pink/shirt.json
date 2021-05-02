@@ -1,13 +1,7 @@
 {
     "Name": "Blue Jacket on Pink",
-    "Description": "A comfortable jacket with a pink shirt.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Chaqueta Azul sobre Rosa"
-    },
-    "DescriptionLocalization": {
-        "es": "Una chaqueta cómoda con una camisa rosa.."
-    }
+    "Dyeable": false
 }

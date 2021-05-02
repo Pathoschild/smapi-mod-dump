@@ -11,9 +11,9 @@ mods:
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit 3738c43beee226f7e4bf1b4d51d309a3619ae52c
+   commit b70798a64a71296f4317c4a237648543bfaf3cb2
    Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Thu Mar 11 15:40:51 2021 +0300
+   Date:   Tue Apr 27 22:00:12 2021 +0300
    
-       fix: fix troughs being filled the day before a festival
+       fix: fix game crashing due to null crops in HoeDirtUpdate
    

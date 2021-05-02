@@ -12,6 +12,5 @@
     "BetterJunimos": true,
     "WarnForMissingBridgeMod": true
   },
-  "MachineOverrides": {},
-  "PreventRemovingStacks": false
+  "MachineOverrides": {}
 }

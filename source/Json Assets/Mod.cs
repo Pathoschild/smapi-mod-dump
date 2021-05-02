@@ -1200,10 +1200,11 @@ namespace JsonAssets
 
             var menu = e.NewMenu as ShopMenu;
             bool hatMouse = menu != null && menu?.potraitPersonDialogue?.Replace( "\n", "" ) == Game1.parseText(Game1.content.LoadString("Strings\\StringsFromCSFiles:ShopMenu.cs.11494"), Game1.dialogueFont, 304).Replace( "\n", "" );
+            bool qiGemShop = menu?.storeContext == "QiGemShop";
             string portraitPerson = menu?.portraitPerson?.Name;
             if (portraitPerson == null && Game1.currentLocation?.Name == "Hospital")
                 portraitPerson = "Harvey";
-            if (menu == null || (portraitPerson == null || portraitPerson == "") && !hatMouse)
+            if (menu == null || (portraitPerson == null || portraitPerson == "") && !hatMouse && !qiGemShop)
                 return;
             bool doAllSeeds = Game1.player.hasOrWillReceiveMail( "PierreStocklist" );
 
@@ -1214,7 +1215,7 @@ namespace JsonAssets
 
             foreach ( var entry in shopData )
             {
-                if ( !( entry.PurchaseFrom == portraitPerson || ( entry.PurchaseFrom == "HatMouse" && hatMouse ) ) )
+                if ( !( entry.PurchaseFrom == portraitPerson || ( entry.PurchaseFrom == "HatMouse" && hatMouse) || (entry.PurchaseFrom == "QiGemShop" && qiGemShop)) )
                     continue;
 
                 bool normalCond = true;
@@ -1236,7 +1237,14 @@ namespace JsonAssets
                 if ( item is StardewValley.Object obj2 && obj2.IsRecipe && Game1.player.knowsRecipe( obj2.Name ) )
                     continue;
                 forSale.Add( item );
-                itemPriceAndStock.Add( item, new int[] { price, ( item is StardewValley.Object obj3 && obj3.IsRecipe ) ? 1 : int.MaxValue } );
+                if (qiGemShop)
+                {
+                    itemPriceAndStock.Add(item, new int[] { 0, (item is StardewValley.Object obj3 && obj3.IsRecipe) ? 1 : int.MaxValue, 858, price });
+                }
+                else
+                {
+                    itemPriceAndStock.Add( item, new int[] { price, ( item is StardewValley.Object obj3 && obj3.IsRecipe ) ? 1 : int.MaxValue } );
+                }
             }
 
             ((Api)api).InvokeAddedItemsToShop();
@@ -1757,7 +1765,7 @@ namespace JsonAssets
                 else
                     fence.ParentSheetIndex = -fence.whichType.Value;
             }
-            else if ( obj.GetType() == typeof( SObject ) )
+            else if ( obj.GetType() == typeof( SObject ) || obj.GetType() == typeof( Cask ) )
             {
                 if (!obj.bigCraftable.Value)
                 {

@@ -1,13 +1,7 @@
 {
     "Name": "Yellow-Green Dress",
-    "Description": "A deep green dress over a yellow top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Vestido Amarillo y Verde"
-    },
-    "DescriptionLocalization": {
-        "es": "Un vestido verde oscuro sobre un top amarillo."
-    }
+    "Dyeable": false
 }

@@ -4,7 +4,7 @@
     <RootNamespace>SailorStyles</RootNamespace>
     <Version>1.0.0</Version>
     <TargetFramework>net452</TargetFramework>
-    <Platforms>x86</Platforms>
+    <Platforms>x86;AnyCPU</Platforms>
     <PlatformTarget>x86</PlatformTarget>
     <IgnoreModFilePatterns>TMXTile\.(?:dll|pdb)</IgnoreModFilePatterns>
   </PropertyGroup>

@@ -10,14 +10,8 @@
 
 {
     "Name": "Blue Hoodie on Green",
-    "Description": "A casual hoodie with a green shirt.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Sudadera con Capucha Azul sobre Verde"
-    },
-    "DescriptionLocalization": {
-        "es": "Una sudadera casual con una camisa verde.."
-    }
+    "Dyeable": false
 }

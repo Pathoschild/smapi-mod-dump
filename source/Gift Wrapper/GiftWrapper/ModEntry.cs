@@ -14,6 +14,7 @@ using SpaceCore.Events;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
@@ -36,7 +37,7 @@ namespace GiftWrapper
 		public const string GiftWrapName = "giftwrap";
 		public const string WrappedGiftName = "wrappedgift";
 
-		internal static readonly string GameContentTexturePath = @$"{AssetPrefix}Assets/Sprites";
+		internal static readonly string GameContentTexturePath = Path.Combine(AssetPrefix + "Assets", "Sprites");
 		internal static readonly string LocalTexturePath = Path.Combine("assets", "sprites");
 		internal static readonly string ContentPackPath = Path.Combine("assets", "ContentPack");
 		internal const int GiftWrapFriendshipBoost = 25;
@@ -171,6 +172,9 @@ namespace GiftWrapper
 				}
 			}
 
+			if (Game1.player.isRidingHorse() || Game1.player.isInBed.Value
+				|| Game1.player.temporarilyInvincible || Game1.IsFading())
+				return;
 
 			Vector2 screenPos = new Vector2(e.Cursor.ScreenPixels.X, e.Cursor.ScreenPixels.Y);
 			Location tilePos = new Location((int)e.Cursor.ScreenPixels.X, (int)e.Cursor.ScreenPixels.Y);
@@ -253,10 +257,16 @@ namespace GiftWrapper
 			else
 			{
 				// Place held gift wrap and wrapped gifts on the ground when left-clicking
-				bool canPlaceHere = Game1.currentLocation.isTileLocationTotallyClearAndPlaceableIgnoreFloors(e.Cursor.GrabTile)
+				bool isPlaceableTile = Game1.currentLocation.isTileLocationTotallyClearAndPlaceableIgnoreFloors(e.Cursor.GrabTile)
 					&& !Game1.currentLocation.Objects.ContainsKey(e.Cursor.GrabTile);
-				if (this.IsPlacementButton(e.Button) && canPlaceHere)
+				bool isPlaceableLocation = !(Game1.currentLocation is Mine || Game1.currentLocation.Name.StartsWith("UndergroundMine") || Game1.currentLocation.isTemp());
+				if (this.IsPlacementButton(e.Button) && isPlaceableTile)
 				{
+					if (!isPlaceableLocation)
+					{
+						Game1.showRedMessage(i18n.Get("error.location"));
+						return;
+					}
 					const string placementSound = "throwDownITem"; // not a typo
 					if (Game1.player.ActiveObject != null && Game1.player.ActiveObject.Name == AssetPrefix + GiftWrapName)
 					{
@@ -356,8 +366,7 @@ namespace GiftWrapper
 			if (!string.IsNullOrEmpty(sound))
 				Game1.playSound(sound);
 
-			if (wrappedGift == null || location == null
-				|| (location.Objects.ContainsKey(tilePosition) && location.Objects[tilePosition] != null))
+			if (wrappedGift == null || location == null || (location.Objects.ContainsKey(tilePosition) && location.Objects[tilePosition] != null))
 			{
 				return false;
 			}
@@ -383,34 +392,50 @@ namespace GiftWrapper
 			{
 				bool isDefined = Enum.IsDefined(typeof(GiftType), giftToWrap.GetType().Name);
 				bool isBigCraftable = giftToWrap is StardewValley.Object bc && bc.bigCraftable.Value;
+				if (!isDefined)
+				{
+					// Avoid adding items with undefined behaviour
+					Game1.showRedMessage(i18n.Get("error.wrapping", new { ItemName = wrappedGift.DisplayName }));
+					wrappedGift = null;
+				}
 
 				// Define all the data to be serialised into the wrapped gift's modData
 				long giftSender = Game1.player.UniqueMultiplayerID;
+				string giftName = giftToWrap.Name;
 				int giftId = giftToWrap is Hat hat
-						? hat.which.Value
-						: giftToWrap is MeleeWeapon weapon
-							? Game1.content.Load<Dictionary<int, string>>(@"Data/weapons").First(pair => pair.Value.Split('/')[0] == weapon.Name).Key
-							: giftToWrap is Boots boots
-								? boots.indexInTileSheet.Value
-								: giftToWrap.ParentSheetIndex;
+					? hat.which.Value
+					: giftToWrap is MeleeWeapon weapon
+						? Game1.content.Load<Dictionary<int, string>>(@"Data/weapons").First(pair => pair.Value.Split('/')[0] == weapon.Name).Key
+						: giftToWrap is Boots boots
+							? boots.indexInTileSheet.Value
+							: giftToWrap.ParentSheetIndex;
+				int giftParentId = giftToWrap is StardewValley.Object o
+					? o.preservedParentSheetIndex.Value
+					: -1;
 				int giftType = isBigCraftable
-						? (int)GiftType.BigCraftable
-						: isDefined
-							? (int)Enum.Parse(typeof(GiftType), giftToWrap.GetType().Name)
-							: -1;
-				int giftStack = giftToWrap is StardewValley.Object
-						? giftToWrap.Stack
+					? (int)GiftType.BigCraftable
+					: isDefined
+						? (int)Enum.Parse(typeof(GiftType), giftToWrap.GetType().Name)
 						: -1;
-				int giftQuality = giftToWrap is StardewValley.Object o
-						? o.Quality
-						: giftToWrap is Boots boots1
-							? boots1.appliedBootSheetIndex.Value
-							: -1;
+				int giftStack = giftToWrap is StardewValley.Object
+					? giftToWrap.Stack
+					: -1;
+				int giftQuality = giftToWrap is StardewValley.Object o1
+					? o1.Quality
+					: giftToWrap is Boots boots1
+						? boots1.appliedBootSheetIndex.Value
+						: -1;
+				int giftPreserve = giftToWrap is StardewValley.Object o2
+					? o2.preserve.Value.HasValue ? (int)o2.preserve.Value : -1
+					: -1;
+				int giftHoney = giftToWrap is StardewValley.Object o3 // We use 0 for honeyType as HoneyType.Wild == -1.
+					? o3.honeyType.Value.HasValue ? (int)o3.honeyType.Value.Value : 0
+					: 0;
 				string giftColour = giftToWrap is Clothing c
-						? string.Join("/", new [] { c.clothesColor.Value.R, c.clothesColor.Value.G, c.clothesColor.Value.B, c.clothesColor.Value.A })
-						: giftToWrap is Boots boots2
-							? boots2.indexInColorSheet.ToString()
-							: "-1";
+					? string.Join("/", new [] { c.clothesColor.Value.R, c.clothesColor.Value.G, c.clothesColor.Value.B, c.clothesColor.Value.A })
+					: giftToWrap is Boots boots2
+						? boots2.indexInColorSheet.ToString()
+						: "-1";
 
 				// Convert the gift item's modData into a serialisable form to be added to the wrapped gift's modData
 				Dictionary<string, string> giftDataRaw = new Dictionary<string, string>();
@@ -418,19 +443,18 @@ namespace GiftWrapper
 					giftDataRaw.Add(pair.Key, pair.Value.Value);
 				string giftDataSerialised = JsonConvert.SerializeObject(giftDataRaw);
 
-				if (giftType == -1)
-				{
-					// Avoid adding items with undefined behaviour
-					Game1.showRedMessage(i18n.Get("error.wrapping", new { ItemName = wrappedGift.DisplayName }));
-				}
-				else if (Game1.currentLocation.Objects.Remove(placedGiftWrapPosition))
+				if (Game1.currentLocation.Objects.Remove(placedGiftWrapPosition))
 				{
 					// Add all fields into wrapped gift's modData
 					wrappedGift.modData[AssetPrefix + "giftsender"] = giftSender.ToString();
+					wrappedGift.modData[AssetPrefix + "giftname"] = giftName;
 					wrappedGift.modData[AssetPrefix + "giftid"] = giftId.ToString();
+					wrappedGift.modData[AssetPrefix + "giftparentid"] = giftParentId.ToString();
 					wrappedGift.modData[AssetPrefix + "gifttype"] = giftType.ToString();
 					wrappedGift.modData[AssetPrefix + "giftstack"] = giftStack.ToString();
 					wrappedGift.modData[AssetPrefix + "giftquality"] = giftQuality.ToString();
+					wrappedGift.modData[AssetPrefix + "giftpreserve"] = giftPreserve.ToString();
+					wrappedGift.modData[AssetPrefix + "gifthoney"] = giftHoney.ToString();
 					wrappedGift.modData[AssetPrefix + "giftcolour"] = giftColour;
 					wrappedGift.modData[AssetPrefix + "giftdata"] = giftDataSerialised;
 
@@ -449,20 +473,33 @@ namespace GiftWrapper
 
 		public Item UnpackItem(ModDataDictionary modData, string recipientName)
 		{
-			string[] fields = new[] { "giftsender", "giftid", "gifttype", "giftstack", "giftquality", "giftcolour", "giftdata" };
+			string[] fields = new[] { 
+				"giftsender", "giftname", "giftid", 
+				"giftparentid", "gifttype", "giftstack", 
+				"giftquality", "giftpreserve", "gifthoney",
+				"giftcolour", "giftdata" };
 			if (fields.Any(field => !modData.ContainsKey(AssetPrefix + field)))
 			{
+				string msg = fields.Where(field => !modData.ContainsKey(field))
+					.Aggregate("This gift is missing data:", (str, field) => str + "\n" + field)
+					+ "\nIf this gift was placed before updating, please revert to the previous version and collect the gift!"
+					+ "\nOtherwise, leave a report on the mod page for Gift Wrapper with your log file (https://smapi.io/log).";
+				Monitor.Log(msg, LogLevel.Warn);
 				return null;
 			}
 
 			// Parse the wrapped gift's serialised modData fields to use in rebuilding its gift item
 			long giftSender = long.Parse(modData[AssetPrefix + fields[0]]);
-			int giftId = int.Parse(modData[AssetPrefix + fields[1]]);
-			int giftType = int.Parse(modData[AssetPrefix + fields[2]]);
-			int giftStack = int.Parse(modData[AssetPrefix + fields[3]]);
-			int giftQuality = int.Parse(modData[AssetPrefix + fields[4]]);
-			string giftColour = modData[AssetPrefix + fields[5]];
-			string giftData = modData[AssetPrefix + fields[6]];
+			string giftName = modData[AssetPrefix + fields[1]];
+			int giftId = int.Parse(modData[AssetPrefix + fields[2]]);
+			int giftParentId = int.Parse(modData[AssetPrefix + fields[3]]);
+			int giftType = int.Parse(modData[AssetPrefix + fields[4]]);
+			int giftStack = int.Parse(modData[AssetPrefix + fields[5]]);
+			int giftQuality = int.Parse(modData[AssetPrefix + fields[6]]);
+			int giftPreserve = int.Parse(modData[AssetPrefix + fields[7]]);
+			int giftHoney = int.Parse(modData[AssetPrefix + fields[8]]);
+			string giftColour = modData[AssetPrefix + fields[9]];
+			string giftData = modData[AssetPrefix + fields[10]];
 			Item actualGift = null;
 			switch (giftType)
 			{
@@ -497,6 +534,13 @@ namespace GiftWrapper
 					break;
 				case (int)GiftType.Object:
 					actualGift = new StardewValley.Object(parentSheetIndex: giftId, initialStack: giftStack) { Quality = giftQuality };
+					actualGift.Name = giftName;
+					if (giftParentId != -1)
+						((StardewValley.Object)actualGift).preservedParentSheetIndex.Value = giftParentId;
+					if (giftPreserve != -1)
+						((StardewValley.Object)actualGift).preserve.Value = (StardewValley.Object.PreserveType)giftPreserve;
+					if (giftHoney != 0)
+						((StardewValley.Object)actualGift).honeyType.Value = (StardewValley.Object.HoneyType)giftHoney;
 					break;
 			}
 
@@ -516,11 +560,11 @@ namespace GiftWrapper
 			{
 				// Show a message to all players to celebrate this wonderful event
 				Multiplayer multiplayer = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
-				multiplayer.globalChatInfoMessage(AssetPrefix + "message.giftopened",
+				multiplayer.globalChatInfoMessage(AssetPrefix + (giftStack > 1 ? "message.giftopened_quantity" : "message.giftopened"),
 					recipientName, // Recipient's name
 					Game1.getFarmer(giftSender).Name, // Sender's name
-					giftStack > 1 ? giftStack.ToString() : "a", // Gift quantity
-					actualGift.DisplayName); // Gift name
+					actualGift.DisplayName, // Gift name
+					giftStack.ToString());	// Gift quantity
 			}
 
 			return actualGift;

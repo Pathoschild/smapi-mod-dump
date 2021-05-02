@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/dtomlinson-ga/EarlyCommunityUpgrades
+**
+*************************************************/
+
+{
+  "ScienceHouse_Carpenter_CommunityUpgrade1": "...那是什么？你想为潘姆建一间房子吗？好主意！^我只需要{{woodPieces}}块木头和{{goldPieces}}金...",
+  "ScienceHouse_Carpenter_CommunityUpgrade2": "……什么？你想让我在山谷周围加几条捷径？我当然能办到！ 我只需要 {{goldPieces}} 金……",
+  "ScienceHouse_Carpenter_NotEnoughWood3": "抱歉...钱是有，但我还缺{{woodPieces}}块木头。"
+
+}

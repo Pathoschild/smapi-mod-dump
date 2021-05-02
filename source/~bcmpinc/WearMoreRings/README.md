@@ -14,7 +14,7 @@ Configure the amount of ring slots in your inventory. By default adds 6 addition
 ## Config
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
 
-* `Rings`: Number of ring slots available. Normally this is 2. Default = 8. Max = 20.
+* `Rings`: Number of ring slots available. Normally this is 2, this mod increases it to 8. Max = 20.
 
 ## Console Commands
 * `player_resetmodifiers`: Clears buffs, then resets and reapplies the modifiers applied by boots & rings.
@@ -84,3 +84,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 3.4:
 * Rearanged ring slots. The right ring is now positioned in the first column, second from the top.
 * Added config parameter `Rings` for the amount of ring slots. Anything above 8 will result in text overlaying the ring slots.
+
+#### 4.0:
+* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+* Add 64-bit support

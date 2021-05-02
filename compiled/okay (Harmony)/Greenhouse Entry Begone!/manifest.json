@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Greenhouse Entry Begone!",
     "Author": "blueberry",
-    "Version": "1.1.0",
+    "Version": "1.2.0",
     "Description": "Hides the greenhouse entry tiles and shadows. Also allows hiding other farm building shadows!",
     "UniqueID": "blueberry.GreenhouseEntryBegone",
     "EntryDll": "GreenhouseEntryPatch.dll",

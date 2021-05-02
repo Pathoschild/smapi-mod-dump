@@ -44,7 +44,7 @@
     "ClearDebris": true
   },
   "RequireModkey": true,
-  "Modkey": "LeftShift",
+  "Modkey": "LeftShift, LeftShoulder",
   "StaminaCostMultiplier": 1.0,
   "ShockwaveDelay": 200
 }

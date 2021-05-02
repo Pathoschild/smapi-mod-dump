@@ -1,13 +1,7 @@
 {
     "Name": "Purple Jacket on Pink",
-    "Description": "A tough jacket over a soft, stripey shirt.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Chaqueta Morada sobre Rosa"
-    },
-    "DescriptionLocalization": {
-        "es": "Una chaqueta resistente sobre una camisa suave a rayas."
-    }
+    "Dyeable": false
 }

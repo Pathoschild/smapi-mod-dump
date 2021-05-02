@@ -10,15 +10,9 @@
 
 {
     "Name": "Sakura Kimono Red Upper",
-    "Description": "A red kimono, upper half.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "DefaultColor": "255, 255, 255, 255",
-    "NameLocalization": {
-        "es": "Kimono Sakura Rojo Superior"
-    },
-    "DescriptionLocalization": {
-        "es": "Un kimono rojo, mitad superior."
-    }
+    "DefaultColor": "255, 255, 255, 255"
 }

@@ -1,5 +1,13 @@
 {
   "EnableMod": true,
+  "MakeTransparent": true,
+  "RequireButtonDown": false,
+  "ToggleButton": "NumPad0",
   "MinTransparency": 0.1,
-  "TransparencyMaxDistance": 192
+  "TransparencyMaxDistance": 192,
+  "Exceptions": [
+    "Ornamental Hay Bale",
+    "Log Section",
+    "Campfire"
+  ]
 }

@@ -1,4 +1,6 @@
 {
   "enableWetness": false,
-  "staminaDrainRate": 2.0
+  "staminaDrainRate": 2.0,
+  "goodRainHats": "",
+  "bestRainHats": ""
 }

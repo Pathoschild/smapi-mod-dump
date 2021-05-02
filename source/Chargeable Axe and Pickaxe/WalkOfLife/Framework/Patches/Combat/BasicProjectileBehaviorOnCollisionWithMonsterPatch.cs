@@ -13,50 +13,50 @@ using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
-using StardewValley.Projectiles;
 using StardewValley.Network;
+using StardewValley.Projectiles;
+using System;
 
 namespace TheLion.AwesomeProfessions
 {
 	internal class BasicProjectileBehaviorOnCollisionWithMonsterPatch : BasePatch
 	{
-		private static IReflectionHelper _Reflection { get; set; }
-
-		/// <summary>Construct an instance.</summary>
-		/// <param name="reflection">Interface for accessing otherwise inaccessible code.</param>
-		internal BasicProjectileBehaviorOnCollisionWithMonsterPatch(IReflectionHelper reflection)
-		{
-			_Reflection = reflection;
-		}
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		protected internal override void Apply(HarmonyInstance harmony)
+		/// <inheritdoc/>
+		public override void Apply(HarmonyInstance harmony)
 		{
 			harmony.Patch(
-				AccessTools.Method(typeof(BasicProjectile), nameof(BasicProjectile.behaviorOnCollisionWithMonster)),
+				original: AccessTools.Method(typeof(BasicProjectile), nameof(BasicProjectile.behaviorOnCollisionWithMonster)),
 				prefix: new HarmonyMethod(GetType(), nameof(BasicProjectileBehaviorOnCollisionWithMonsterPrefix))
 			);
 		}
 
 		#region harmony patches
+
 		/// <summary>Patch for Rascal slingshot damage increase with travel time.</summary>
-		protected static bool BasicProjectileBehaviorOnCollisionWithMonsterPrefix(ref BasicProjectile __instance, ref NetBool ___damagesMonsters, ref NetCharacterRef ___theOneWhoFiredMe, ref int ___travelTime, NPC n, GameLocation location)
+		private static bool BasicProjectileBehaviorOnCollisionWithMonsterPrefix(ref BasicProjectile __instance, ref NetBool ___damagesMonsters, ref NetCharacterRef ___theOneWhoFiredMe, ref int ___travelTime, NPC n, GameLocation location)
 		{
-			Farmer who = ___theOneWhoFiredMe.Get(location) is Farmer ? ___theOneWhoFiredMe.Get(location) as Farmer : Game1.player;
-			if (!Utility.SpecificPlayerHasProfession("rascal", who)) return true; // run original logic
-
-			if (!___damagesMonsters) return false; // don't run original logic
-
-			_Reflection.GetMethod(__instance, name: "explosionAnimation").Invoke(location);
-			if (n is Monster)
+			try
 			{
-				int damageToMonster = (int)(__instance.damageToFarmer.Value * Utility.GetRascalBonusDamageForTravelTime(___travelTime));
+				if (!___damagesMonsters || n is not Monster) return true; // run original logic
+				
+				var who = ___theOneWhoFiredMe.Get(location) is Farmer
+					? ___theOneWhoFiredMe.Get(location) as Farmer
+					: Game1.player;
+				if (!Utility.SpecificPlayerHasProfession("Rascal", who)) return true; // run original logic
+
+				AwesomeProfessions.Reflection.GetMethod(__instance, name: "explosionAnimation")?.Invoke(location);
+				var damageToMonster = (int) (__instance.damageToFarmer.Value * Utility.GetRascalBonusDamageForTravelTime(___travelTime));
 				location.damageMonster(n.GetBoundingBox(), damageToMonster, damageToMonster + 1, isBomb: false, who);
+
+				return false; // don't run original logic
 			}
-			
-			return false; // don't run original logic
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(BasicProjectileBehaviorOnCollisionWithMonsterPrefix)}:\n{ex}", LogLevel.Error);
+				return true; // default to original logic
+			}
 		}
-		#endregion
+
+		#endregion harmony patches
 	}
 }

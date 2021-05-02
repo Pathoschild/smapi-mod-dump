@@ -44,7 +44,7 @@ namespace ResponseCore
                 ["refusal_knownA"] = Helper.Translation.Get("refusal_knownA"),
                 ["refusal_knownB"] = Helper.Translation.Get("refusal_knownB"),
                 ["refusal_botherA"] = Helper.Translation.Get("refusal_botherA"),
-                ["refusal_botherB"] = Helper.Translation.Get("default.refusal_botherB"),
+                ["refusal_botherB"] = Helper.Translation.Get("refusal_botherB"),
                 ["refusal_no_heartsA"] = Helper.Translation.Get("refusal_no_heartsA"),
                 ["refusal_no_heartsB"] = Helper.Translation.Get("refusal_no_heartsB"),
                 ["birthdayLoveA"] = Helper.Translation.Get("birthdayLoveA"),

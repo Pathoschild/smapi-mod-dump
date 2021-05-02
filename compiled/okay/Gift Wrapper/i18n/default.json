@@ -6,10 +6,12 @@
 	"item.default.name": "???",
 	"item.default.description": "???",
 
-	"message.giftopened": "{{Recipient}} just opened a gift from {{Sender}}! It was {{OneOrMany}} {{ItemName}}.",
+	"message.giftopened": "{{Recipient}} just opened a gift from {{Sender}}! It was {{ItemName}}.",
+	"message.giftopened_quantity": "{{Recipient}} just opened a gift from {{Sender}}! It was {{ItemQuantity}} {{ItemName}}.",
 	"message.giftwrapped": "{{WrappedGiftName}} ({{ItemName}})",
 
 	"error.wrapping": "This can't be gift wrapped.",
+	"error.location": "Can't place that here!",
 
 	"menu.infopanel.body": "Place an item in the box to wrap it up!\n\nLeave it under another player's Winter Star tree to give them something nice to wake up to. Wrapped gifts are better for making friends in town, too!",
 

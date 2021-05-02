@@ -11,7 +11,7 @@
 {
     "Name": "Gift Wrapper",
     "Author": "blueberry",
-    "Version": "1.0.1",
+    "Version": "1.0.2",
     "Description": "Give the gift of gifts in multiplayer!",
     "UniqueID": "blueberry.GiftWrapper",
     "EntryDll": "GiftWrapper.dll",

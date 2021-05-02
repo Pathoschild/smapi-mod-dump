@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Name": "[MFM]Advanced Casks Mod",
+	"Author": "Digus",
+	"Version": "1.0.1",
+	"Description": "Letter to receive the advanced casks.",
+	"UniqueID": "Digus.AdvancedCasksForMailFrameworkMod",
+	"MinimumApiVersion": "3.9.0",
+    "UpdateKeys": [ "Nexus:8413" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Digus.AdvancedCasksMod"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.MailFrameworkMod"
+	}
+}

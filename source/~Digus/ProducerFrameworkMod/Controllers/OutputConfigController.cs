@@ -224,7 +224,23 @@ namespace ProducerFrameworkMod.Controllers
             who = who ?? Game1.player;
             if (outputConfig.PreserveType.HasValue)
             {
-                outputName = ObjectUtils.GetPreserveName(outputConfig.PreserveType.Value, input?.Name??"");
+                string inputName = input?.Name ?? outputConfig.OutputGenericParentName ?? "";
+                if (outputConfig.KeepInputParentIndex)
+                {
+                    if (input?.preservedParentSheetIndex.Value == -1)
+                    {
+                        inputName = outputConfig.OutputGenericParentName;
+                    }
+                    else if (input?.preservedParentSheetIndex.Value > 0 && Game1.objectInformation.ContainsKey(input.preservedParentSheetIndex.Value))
+                    {
+                        inputName = ObjectUtils.GetObjectParameter(Game1.objectInformation[input.preservedParentSheetIndex.Value], (int)ObjectParameter.Name);
+                    }
+                }
+                else if (input?.preservedParentSheetIndex.Value > 0 && Game1.objectInformation.ContainsKey(input.ParentSheetIndex))
+                {
+                    inputName = ObjectUtils.GetObjectParameter(Game1.objectInformation[input.ParentSheetIndex], (int)ObjectParameter.Name);
+                }
+                outputName = ObjectUtils.GetPreserveName(outputConfig.PreserveType.Value, inputName);
                 output.preserve.Value = outputConfig.PreserveType;
                 inputUsed = true;
             }

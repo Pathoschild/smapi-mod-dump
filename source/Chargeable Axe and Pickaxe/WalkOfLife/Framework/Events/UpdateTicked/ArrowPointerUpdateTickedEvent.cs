@@ -8,20 +8,18 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
+using System.IO;
 
 namespace TheLion.AwesomeProfessions
 {
 	internal class ArrowPointerUpdateTickedEvent : UpdateTickedEvent
 	{
-		/// <summary>Construct an instance.</summary>
-		internal ArrowPointerUpdateTickedEvent() { }
-
-		/// <summary>Raised after the game state is updated. Update tracking pointer offset for Prospector and Scavenger.</summary>
-		/// <param name="sender">The event sender.</param>
-		/// <param name="e">The event arguments.</param>
+		/// <inheritdoc/>
 		public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 		{
+			Utility.ArrowPointer ??= new ArrowPointer(AwesomeProfessions.Content.Load<Texture2D>(Path.Combine("assets", "cursor.png")));
 			if (e.Ticks % 4 == 0) Utility.ArrowPointer.Bob();
 		}
 	}

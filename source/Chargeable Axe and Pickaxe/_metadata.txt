@@ -5,9 +5,9 @@ mods:
    Chargeable Axe and Pickaxe
 
 latest commit:
-   commit 7381e4d52d8155916b8325e81e6a296b92971d41
+   commit 3b5d1e02bd81874e96628099d6230d9e6434b37d
    Author: The Lion <matheus_is@live.com>
-   Date:   Wed Mar 24 19:17:56 2021 -0300
+   Date:   Thu Apr 22 01:39:32 2021 -0300
    
-       added Slimemaster
+       Automate integration.
    

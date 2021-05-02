@@ -5,11 +5,9 @@ mods:
    Ranged Tools
 
 latest commit:
-   commit ace6d009f5559441d875a015ce14db20126b0dc1
+   commit 9177a167dfeccd6973eee63029d51bf0ae88b67a
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Wed Jan 6 20:13:30 2021 -0800
+   Date:   Fri Apr 2 00:55:39 2021 -0700
    
-       1.2.5 update
-       
-       Removed cursor position scale adjustment added back in 1.1.0, since SMAPI's cursor position now properly accounts for scale, and these adjustments were making them wrong again
+       Update README.md
    

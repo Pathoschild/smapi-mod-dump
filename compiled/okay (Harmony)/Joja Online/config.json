@@ -1,5 +1,6 @@
 {
   "areAllSeedsAvailableBeforeYearOne": false,
+  "doCopyPiereeSeedStock": true,
   "giveJojaMemberDiscount": false,
   "giveJojaPrimeShipping": false,
   "minSalePercentage": 5,

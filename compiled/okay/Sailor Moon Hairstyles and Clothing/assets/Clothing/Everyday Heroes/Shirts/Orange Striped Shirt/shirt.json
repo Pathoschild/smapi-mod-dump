@@ -1,13 +1,7 @@
 {
     "Name": "Orange Striped Shirt",
-    "Description": "A shirt sporting thick, colourful stripes.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Camisa Rayas Anaranjada"
-    },
-    "DescriptionLocalization": {
-        "es": "Una camisa con rayas gruesas y coloridas."
-    }
+    "Dyeable": false
 }

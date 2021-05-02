@@ -287,7 +287,33 @@
             /* The fish's motion type. Mixed = 0, dart = 1, smooth = 2, sinker = 3, and floater = 4. */
             "MotionType": "MIXED"
         },
+        "902": {
+            /* The difficulty of this fish. */
+            "Difficulty": 100,
+            
+            /* The minimum size of the fish. */
+            "MinSize": 27,
+            
+            /* The maximum size of the fish. */
+            "MaxSize": 27,
+            
+            /* The fish's motion type. Mixed = 0, dart = 1, smooth = 2, sinker = 3, and floater = 4. */
+            "MotionType": "MIXED"
+        },
         "160": {
+            /* The difficulty of this fish. */
+            "Difficulty": 85,
+            
+            /* The minimum size of the fish. */
+            "MinSize": 18,
+            
+            /* The maximum size of the fish. */
+            "MaxSize": 18,
+            
+            /* The fish's motion type. Mixed = 0, dart = 1, smooth = 2, sinker = 3, and floater = 4. */
+            "MotionType": "SMOOTH"
+        },
+        "899": {
             /* The difficulty of this fish. */
             "Difficulty": 85,
             
@@ -353,6 +379,19 @@
             "MotionType": "MIXED"
         },
         "163": {
+            /* The difficulty of this fish. */
+            "Difficulty": 110,
+            
+            /* The minimum size of the fish. */
+            "MinSize": 50,
+            
+            /* The maximum size of the fish. */
+            "MaxSize": 50,
+            
+            /* The fish's motion type. Mixed = 0, dart = 1, smooth = 2, sinker = 3, and floater = 4. */
+            "MotionType": "MIXED"
+        },
+        "900": {
             /* The difficulty of this fish. */
             "Difficulty": 110,
             
@@ -586,6 +625,19 @@
             /* The fish's motion type. Mixed = 0, dart = 1, smooth = 2, sinker = 3, and floater = 4. */
             "MotionType": "MIXED"
         },
+        "898": {
+            /* The difficulty of this fish. */
+            "Difficulty": 95,
+            
+            /* The minimum size of the fish. */
+            "MinSize": 20,
+            
+            /* The maximum size of the fish. */
+            "MaxSize": 20,
+            
+            /* The fish's motion type. Mixed = 0, dart = 1, smooth = 2, sinker = 3, and floater = 4. */
+            "MotionType": "MIXED"
+        },
         "734": {
             /* The difficulty of this fish. */
             "Difficulty": 50,
@@ -600,6 +652,19 @@
             "MotionType": "MIXED"
         },
         "682": {
+            /* The difficulty of this fish. */
+            "Difficulty": 80,
+            
+            /* The minimum size of the fish. */
+            "MinSize": 36,
+            
+            /* The maximum size of the fish. */
+            "MaxSize": 36,
+            
+            /* The fish's motion type. Mixed = 0, dart = 1, smooth = 2, sinker = 3, and floater = 4. */
+            "MotionType": "DART"
+        },
+        "901": {
             /* The difficulty of this fish. */
             "Difficulty": 80,
             

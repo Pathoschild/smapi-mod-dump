@@ -5,9 +5,9 @@ mods:
    Quality Smash
 
 latest commit:
-   commit 642f837cf2d1fa925745d2f041ce2721e74eebe8
+   commit 45c6201100bf926c9a69baf5df91142edc4a0b61
    Author: BuildTools <unconfigured@null.spigotmc.org>
-   Date:   Tue Feb 9 20:52:44 2021 -0500
+   Date:   Sun Apr 18 14:27:50 2021 -0400
    
-       Fix an issue where catching a fish/junk/treasure with a full inventory would cause a crash
+       Fix description typo in ModConfig
    

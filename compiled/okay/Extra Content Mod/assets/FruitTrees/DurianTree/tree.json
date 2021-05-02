@@ -1,0 +1,10 @@
+{
+  "Name": "Durian Tree",
+  "Product": "Durian",
+  "SaplingName": "Durian Tree Sapling",
+  "SaplingDescription": "A sapling that will grow into a durian tree",
+  "Season": "summer",
+  "SaplingPurchasePrice": 8750,
+  "SaplingPurchaseFrom": "Pierre",
+  "SaplingPurchaseRequirements" :  null
+}

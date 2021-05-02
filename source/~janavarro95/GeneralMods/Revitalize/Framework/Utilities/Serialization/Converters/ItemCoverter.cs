@@ -21,7 +21,7 @@ using StardewValley;
 
 namespace Revitalize.Framework.Utilities.Serialization.Converters
 {
-    public class ItemCoverter:Newtonsoft.Json.JsonConverter
+    public class ItemCoverter : Newtonsoft.Json.JsonConverter
     {
         public static Dictionary<string, Type> AllTypes = new Dictionary<string, Type>();
 
@@ -33,19 +33,21 @@ namespace Revitalize.Framework.Utilities.Serialization.Converters
                 Converters = new List<JsonConverter>()
                 {
                     new Framework.Utilities.Serialization.Converters.RectangleConverter(),
-                    new Framework.Utilities.Serialization.Converters.Texture2DConverter()
+                    new Framework.Utilities.Serialization.Converters.Texture2DConverter(),
+                    Serializer.NetFieldConverter
+                    //new NetFieldConverter()
                 },
                 Formatting = Formatting.Indented,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 NullValueHandling = NullValueHandling.Include
             };
+            this.settings.ContractResolver = new ContractResolvers.NetFieldContract();
         }
 
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             string convertedString = JsonConvert.SerializeObject((Item)value, this.settings);
-            DefaultContractResolver resolver = serializer.ContractResolver as DefaultContractResolver;
             writer.WriteStartObject();
             writer.WritePropertyName("Type");
             serializer.Serialize(writer, value.GetType().FullName.ToString());
@@ -72,8 +74,9 @@ namespace Revitalize.Framework.Utilities.Serialization.Converters
                 return null;
             }
 
-            JObject jo = JObject.Load(reader);
+            JObject jo = null;
 
+            jo = JObject.Load(reader);
             string t = jo["Type"].Value<string>();
 
             //See if the type has already been cached and if so return it for deserialization.
@@ -85,7 +88,7 @@ namespace Revitalize.Framework.Utilities.Serialization.Converters
 
             Assembly asm = typeof(StardewValley.Object).Assembly;
             Type type = null;
-            
+
             type = asm.GetType(t);
 
             if (type == null)
@@ -96,7 +99,7 @@ namespace Revitalize.Framework.Utilities.Serialization.Converters
 
             if (type == null)
             {
-                foreach(Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+                foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
                     asm = assembly;
                     type = asm.GetType(t);
@@ -112,7 +115,7 @@ namespace Revitalize.Framework.Utilities.Serialization.Converters
             //Cache the newly found type.
             AllTypes.Add(t, type);
 
-            return JsonConvert.DeserializeObject(jo["Item"].ToString(),type, this.settings);
+            return JsonConvert.DeserializeObject(jo["Item"].ToString(), type, this.settings);
             /*
             if (t== typeof(StardewValley.Tools.Axe).FullName.ToString())
             {
@@ -126,17 +129,13 @@ namespace Revitalize.Framework.Utilities.Serialization.Converters
                 Revitalize.ModCore.log("DESERIALIZE Multi Tile Object!!!");
                 return JsonConvert.DeserializeObject<Revitalize.Framework.Objects.MultiTiledObject>(jo["Item"].ToString(), this.settings);
                 // return jo["Item"].Value<Revitalize.Framework.Objects.MultiTiledObject>();
-
             }
             else if (t == typeof(Revitalize.Framework.Objects.MultiTiledComponent).FullName.ToString())
             {
-
                 Revitalize.ModCore.log("DESERIALIZE Multi Tile Component!!!");
                 return JsonConvert.DeserializeObject<Revitalize.Framework.Objects.MultiTiledComponent>(jo["Item"].ToString(), this.settings);
                 // return jo["Item"].Value<Revitalize.Framework.Objects.MultiTiledObject>();
-
             }
-
             else
             {
                
@@ -152,7 +151,7 @@ namespace Revitalize.Framework.Utilities.Serialization.Converters
 
         public override bool CanConvert(Type objectType)
         {
-            return IsSameOrSubclass(typeof(StardewValley.Item),objectType);
+            return this.IsSameOrSubclass(typeof(StardewValley.Item), objectType);
         }
 
         /// <summary>

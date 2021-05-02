@@ -15,11 +15,8 @@ assignees: ''
 
 ---
 
-**Feature for which mod**:
+**Mod:**
 
-**Explain Feature**:
-Other Ideas:
-- is it related to a problem? explain.
-- provide additional context (links, screenshots etc.) if necessary.
+**Description:**
 
-_See [Features Contribution Guidelines](https://github.com/JessebotX/StardewMods/blob/master/contributing.md#issues)_
+

@@ -10,14 +10,8 @@
 
 {
     "Name": "Blue Jacket on Green",
-    "Description": "A hard-wearing jacket with a green top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Chaqueta Azul sobre Verde"
-    },
-    "DescriptionLocalization": {
-        "es": "Una chaqueta resistente con un top verde."
-    }
+    "Dyeable": false
 }

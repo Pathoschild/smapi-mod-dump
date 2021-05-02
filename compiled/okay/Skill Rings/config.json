@@ -1,4 +1,6 @@
 {
+  "tier1SkillRingPrice": 5000,
+  "tier2SkillRingPrice": 25000,
   "tier1SkillRingBoost": 1,
   "tier2SkillRingBoost": 2,
   "tier3SkillRingBoost": 5,

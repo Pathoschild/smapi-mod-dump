@@ -1,0 +1,13 @@
+url:
+   https://github.com/elfuun1/FlowerDanceFix.git
+
+mods:
+   Flower Dance Fix
+
+latest commit:
+   commit 541ae46dc0aad75426fedfebdecd754f7a9ce5b5
+   Author: Meghan Emily Griffiths <megriffi@uwaterloo.ca>
+   Date:   Sat May 1 20:33:37 2021 -0400
+   
+       Latest Commit (custom FDF sprite failure to launch)
+   

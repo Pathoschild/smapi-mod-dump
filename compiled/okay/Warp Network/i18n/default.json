@@ -1,0 +1,17 @@
+﻿{
+  "ui-fail": "Nothing happens...",
+  "ui-label": "Where would you like to go?",
+  "ui-cancel": "Cancel",
+  "cfg-warpsenabled.label": "Vanilla Warps Enabled",
+  "cfg-warpsenabled.desc": "When to enable the vanilla warps.",
+  "cfg-farmenabled.label": "Farm Warp Enabled",
+  "cfg-farmenabled.desc": "When to enable the farm warp.",
+  "cfg-accessdisabled.label": "Access From Disabled",
+  "cfg-accessdisabled.desc": "Access the network from disabled destinations.",
+  "cfg-accesswand.label": "Access From Return Scepter",
+  "cfg-accesswand.desc": "Access the network using the return scepter.",
+  "cfg-obeliskpatch.label": "Patch Vanilla Obelisks",
+  "cfg-obeliskpatch.desc": "Override the warps on the vanilla obelisks to work with custom destination coordinates.",
+  "cfg-menu.label": "Enable Warp Network Menu",
+  "cfg-menu.desc": "Enable the Warp Network menu. When this is disabled, the warp network can't be accessed from any of the statues."
+}

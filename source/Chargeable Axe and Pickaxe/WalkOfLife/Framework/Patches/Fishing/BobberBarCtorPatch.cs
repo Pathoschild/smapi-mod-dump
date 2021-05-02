@@ -16,27 +16,35 @@ namespace TheLion.AwesomeProfessions
 {
 	internal class BobberBarCtorPatch : BasePatch
 	{
-		/// <summary>Construct an instance.</summary>
-		internal BobberBarCtorPatch() { }
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		protected internal override void Apply(HarmonyInstance harmony)
+		/// <inheritdoc/>
+		public override void Apply(HarmonyInstance harmony)
 		{
 			harmony.Patch(
-				AccessTools.Constructor(typeof(BobberBar), new Type[] { typeof(int), typeof(float), typeof(bool), typeof(int) }),
+				original: AccessTools.Constructor(typeof(BobberBar), new[] { typeof(int), typeof(float), typeof(bool), typeof(int) }),
 				postfix: new HarmonyMethod(GetType(), nameof(BobberBarCtorPostfix))
 			);
 		}
 
 		#region harmony patches
+
 		/// <summary>Patch for Aquarist bonus bobber height.</summary>
-		protected static void BobberBarCtorPostfix(ref BobberBar __instance, ref int ___bobberBarHeight, ref float ___bobberBarPos)
+		private static void BobberBarCtorPostfix(ref int ___bobberBarHeight, ref float ___bobberBarPos)
 		{
-			int bonusBobberHeight = Utility.GetAquaristBonusBobberBarHeight();
+			int bonusBobberHeight;
+			try
+			{
+				bonusBobberHeight = Utility.GetAquaristBonusBobberBarHeight();
+			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(BobberBarCtorPostfix)}:\n{ex}");
+				return;
+			}
+			
 			___bobberBarHeight += bonusBobberHeight;
 			___bobberBarPos -= bonusBobberHeight;
 		}
+
 		#endregion harmony patches
 	}
 }

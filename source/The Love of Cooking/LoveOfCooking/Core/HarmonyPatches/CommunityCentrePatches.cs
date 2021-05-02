@@ -227,7 +227,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 							{
 								Game1.player.Position = new Vector2(2080f, 576f);
 							}
-							if (refurbishedMap.GetLayer("Buildings").Tiles[x, y].TileIndex == Bundles.FridgeTileIndexes[1])
+							if (refurbishedMap.GetLayer("Buildings").Tiles[x, y].TileIndex == Bundles.FridgeTileIndexes[Bundles.FridgeTilesToUse][1])
 							{
 								Bundles.FridgeTilePosition = new Vector2(x, y);
 							}

@@ -9,7 +9,6 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using PyTK.Extensions;
 using System;
 
 namespace Arcade2048
@@ -148,7 +147,7 @@ namespace Arcade2048
         {
             get{
                 float percentage = (Math.Min(value, winValue) / winValue);
-                return baseColor.setSaturation(percentage * 100);
+                return Game2048.setSaturation(baseColor,percentage * 100);
             }
         }
 

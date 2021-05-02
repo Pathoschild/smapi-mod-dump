@@ -38,7 +38,7 @@ namespace StardewHack.Library
             CheckIncompatible(helper, "bcmpinc.TilledSoilDecay",    new SemanticVersion(4,0,0));
             CheckIncompatible(helper, "bcmpinc.TreeSpread",         new SemanticVersion(4,0,0));
             CheckIncompatible(helper, "bcmpinc.WearMoreRings",      new SemanticVersion(4,0,0));
-            CheckIncompatible(helper, "spacechase0.BiggerBackpack", new SemanticVersion(3,0,0));
+            CheckIncompatible(helper, "spacechase0.BiggerBackpack", new SemanticVersion(4,0,0));
             
             // Register event to show warning in case some mod's patches failed to apply cleanly.
             Helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;

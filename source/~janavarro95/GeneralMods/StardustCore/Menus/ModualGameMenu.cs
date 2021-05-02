@@ -18,6 +18,7 @@ using StardewValley;
 using StardewValley.Menus;
 using StardustCore.UIUtilities;
 using StardustCore.UIUtilities.MenuComponents;
+using StardustCore.UIUtilities.MenuComponents.ComponentsV1;
 
 namespace StardustCore.Menus
 {

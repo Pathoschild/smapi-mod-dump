@@ -5,9 +5,11 @@ mods:
    Gift Wrapper
 
 latest commit:
-   commit df90db0b76f09841385f9e64aed0455ff32d2f22
+   commit 20e5f496f8aa7ff13d72058a5602f29b6e745bf0
    Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Tue Mar 9 22:28:09 2021 +1100
+   Date:   Tue Apr 20 16:27:20 2021 +1000
    
-       Added new Nexus mod page media.
+       RELEASE 1.0.2+
+       Normalised asset paths.
+       Removed old Tool-based gift code.
    

@@ -11,7 +11,7 @@
 {
   "Name": "Personal Anvil",
   "Author": "Strobe",
-  "Version": "1.2.0",
+  "Version": "1.3.0-beta1",
   "Description": "Allows players to build an anvil to break geodes, troves and Golden Coconuts anytime, anywhere free of cost!",
   "UniqueID": "Strobe.PersonalAnvil",
   "EntryDll": "PersonalAnvil.dll",

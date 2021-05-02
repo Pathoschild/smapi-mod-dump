@@ -35,11 +35,13 @@ namespace Revitalize.Framework.Utilities.Serialization.Converters
 
 
             //string str = reader.ReadAsString();
+            str = str.Replace("{", "");
+            str = str.Replace("}", "");
             str = str.Replace(",", "");
 
             string[] values = str.Split(' ');
-            double x = Convert.ToDouble(values[0]);
-            double y = Convert.ToDouble(values[1]);
+            double x = Convert.ToDouble(values[0].Split(':')[1]);
+            double y = Convert.ToDouble(values[1].Split(':')[1]);
 
 
             return new Vector2((float)x, (float)y);

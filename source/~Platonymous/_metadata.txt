@@ -48,9 +48,9 @@ mods:
    Visualize
 
 latest commit:
-   commit f2c343dce2d40efb4c148c1953f5bd8d1c33aa65
+   commit 61fa8bc06046dfc91d57e4040548f81a34e3d4d2
    Author: David <david@millionideas.de>
-   Date:   Mon Mar 15 14:52:20 2021 +0100
+   Date:   Wed Apr 14 14:40:20 2021 +0200
    
-       update releases
+       removed unneeded patches
    

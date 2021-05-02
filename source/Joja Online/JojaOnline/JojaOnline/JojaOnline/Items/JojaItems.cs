@@ -41,7 +41,6 @@ namespace JojaOnline.JojaOnline.Items
             monitor.Log("Successfully hooked into spacechase0.JsonAssets.", LogLevel.Debug);
         }
 
-        // TODO: Make this a Dictionary<string, int> and return all custom items from this project
         public static int GetJojaPrimeMembershipID()
         {
             if (jsonAssetApi is null)
@@ -50,6 +49,21 @@ namespace JojaOnline.JojaOnline.Items
             }
 
             return jsonAssetApi.GetObjectId("Joja Prime");
+        }
+
+        public static bool IsJsonAssetApiConnected()
+        {
+            if (jsonAssetApi is null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static IJsonAssetApi GetJsonAssetApi()
+        {
+            return jsonAssetApi;
         }
     }
 }

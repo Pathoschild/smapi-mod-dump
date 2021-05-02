@@ -11,10 +11,10 @@
 {
   "Name": "Buy Back Collectables",
   "Author": "Alpha_Omegasis",
-  "Version": "1.7.0",
+  "Version": "1.9.0",
   "Description": "Lets you buy back any obtained collectable.",
   "UniqueID": "Omegasis.BuyBackCollectables",
   "EntryDll": "BuyBackCollectables.dll",
-  "MinimumApiVersion": "2.10.1",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:507" ]
 }

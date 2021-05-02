@@ -9,6 +9,10 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.8.4
+
+* Make weeks start on Monday (not Sunday) to match the game calendar.
+
 ## Version 1.8.3
 
 * Fix typo causing visiblity by week to not work

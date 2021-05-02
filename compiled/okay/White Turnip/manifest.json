@@ -1,0 +1,9 @@
+﻿{
+  "Name": "WhiteTurnip",
+  "Author": "ejun0",
+  "Version": "0.1.0",
+  "Description": "Add white turnip.",
+  "UniqueID": "ejun0.WhiteTurnip",
+  "EntryDll": "WhiteTurnip.dll",
+  "MinimumApiVersion": "3.0.0"
+}

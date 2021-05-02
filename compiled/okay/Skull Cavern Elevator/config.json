@@ -1,5 +1,6 @@
 {
-  "elevatorStep": 5,
-  "difficulty": 1.0,
-  "firstLevelElevatorActive": true
+  "ElevatorStep": 5,
+  "Difficulty": 1.0,
+  "FirstLevelElevatorActive": true,
+  "ElevatorCostPerStep": 0
 }

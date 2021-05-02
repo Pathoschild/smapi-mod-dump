@@ -9,9 +9,10 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using System;
 
-namespace TheLion.Common.Integrations.GenericModConfigMenu
+namespace TheLion.Common.Integrations
 {
 	/// <summary>Handles the logic for integrating with the Generic Mod Configuration Menu mod.</summary>
 	/// <typeparam name="TConfig">The mod configuration type.</typeparam>
@@ -32,7 +33,6 @@ namespace TheLion.Common.Integrations.GenericModConfigMenu
 
 		/// <summary>Save and apply the current config model.</summary>
 		private readonly Action SaveAndApply;
-
 
 		/// <summary>Construct an instance.</summary>
 		/// <param name="modRegistry">API for fetching metadata about loaded mods.</param>
@@ -62,9 +62,7 @@ namespace TheLion.Common.Integrations.GenericModConfigMenu
 		public GenericModConfigMenuIntegration<TConfig> RegisterConfig()
 		{
 			AssertLoaded();
-
 			ModApi.RegisterModConfig(ConsumerManifest, Reset, SaveAndApply);
-
 			return this;
 		}
 
@@ -74,9 +72,27 @@ namespace TheLion.Common.Integrations.GenericModConfigMenu
 		public GenericModConfigMenuIntegration<TConfig> AddLabel(string label, string description = null)
 		{
 			AssertLoaded();
-
 			ModApi.RegisterLabel(ConsumerManifest, label, description);
+			return this;
+		}
 
+		/// <summary>Start a new form page.</summary>
+		/// <param name="pageName">The name of the page.</param>
+		public GenericModConfigMenuIntegration<TConfig> AddNewPage(string pageName)
+		{
+			AssertLoaded();
+			ModApi.StartNewPage(ConsumerManifest, pageName);
+			return this;
+		}
+
+		/// <summary>Add a label to a different form page.</summary>
+		/// <param name="label">The label text.</param>
+		/// <param name="description">A description shown on hover, if any.</param>
+		/// <param name="page">The target page name.</param>
+		public GenericModConfigMenuIntegration<TConfig> AddPageLabel(string label, string description = null, string page = "")
+		{
+			AssertLoaded();
+			ModApi.RegisterPageLabel(ConsumerManifest, label, description, page);
 			return this;
 		}
 
@@ -216,7 +232,7 @@ namespace TheLion.Common.Integrations.GenericModConfigMenu
 		/// <param name="get">Get the current value.</param>
 		/// <param name="set">Set a new value.</param>
 		/// <param name="enable">Whether the field is enabled.</param>
-		public GenericModConfigMenuIntegration<TConfig> AddKeyBinding(string label, string description, Func<TConfig, SButton> get, Action<TConfig, SButton> set, bool enable = true)
+		public GenericModConfigMenuIntegration<TConfig> AddKeyBinding(string label, string description, Func<TConfig, KeybindList> get, Action<TConfig, KeybindList> set, bool enable = true)
 		{
 			AssertLoaded();
 

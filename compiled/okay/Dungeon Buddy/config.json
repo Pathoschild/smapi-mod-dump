@@ -1,8 +1,11 @@
 {
+  "buddyFollows": true,
   "ignoreAllTreasure": false,
   "ignoreMineTreasure": false,
   "ignoreQuarryMineTreasure": false,
   "ignoreSkullCavernTreasure": false,
   "ignoreVolcanoDungeonTreasure": false,
-  "ignoreBreakableContainers": false
+  "ignoreBreakableContainers": false,
+  "h2_findOstrichEggs": false,
+  "h2_ignoreBoots": false
 }

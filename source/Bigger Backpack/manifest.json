@@ -11,15 +11,15 @@
 {
   "Name": "Bigger Backpack",
   "Author": "spacechase0, yoseiri, bcmpinc",
-  "Version": "3.0",
+  "Version": "4.0",
   "Description": "Adds another backpack size.",
   "UniqueID": "spacechase0.BiggerBackpack",
   "EntryDll": "BiggerBackpack.dll",
-  "MinimumApiVersion": "3.1.0",
+  "MinimumApiVersion": "3.9.0",
   "UpdateKeys": [ "Nexus:1845", "Chucklefish:5191" ],
   "spacechase0": "bigger-backpack",
   "Dependencies": [{
     "UniqueID": "bcmpinc.StardewHack",
-    "MinimumVersion": "3.0"
+    "MinimumVersion": "4.0"
   }]
 }

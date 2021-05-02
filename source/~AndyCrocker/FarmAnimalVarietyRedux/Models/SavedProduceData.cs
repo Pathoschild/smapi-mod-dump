@@ -16,11 +16,8 @@ namespace FarmAnimalVarietyRedux.Models
         /*********
         ** Accessors
         *********/
-        /// <summary>The id of the default product.</summary>
-        public int DefaultProductId { get; set; }
-
-        /// <summary>The id of the upgraded product.</summary>
-        public int UpgradedProductId { get; set; }
+        /// <summary>The unique name of the produce.</summary>
+        public string UniqueName { get; set; }
 
         /// <summary>The days until the animal can produce this produce again.</summary>
         public int DaysLeft { get; set; }
@@ -30,13 +27,11 @@ namespace FarmAnimalVarietyRedux.Models
         ** Public Methods
         *********/
         /// <summary>Constructs an instance.</summary>
-        /// <param name="defaultProductId">The id of the default product.</param>
-        /// <param name="upgradedProduceId">The id of the upgraded product.</param>
+        /// <param name="uniqueName">The unique name of the produce.</param>
         /// <param name="daysLeft">The days until the animal can produce this produce again.</param>
-        public SavedProduceData(int defaultProductId, int upgradedProduceId, int daysLeft)
+        public SavedProduceData(string uniqueName, int daysLeft)
         {
-            DefaultProductId = defaultProductId;
-            UpgradedProductId = upgradedProduceId;
+            UniqueName = uniqueName;
             DaysLeft = daysLeft;
         }
     }

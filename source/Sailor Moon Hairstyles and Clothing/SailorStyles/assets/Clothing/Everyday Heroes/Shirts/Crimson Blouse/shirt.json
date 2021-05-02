@@ -10,14 +10,8 @@
 
 {
     "Name": "Crimson Blouse",
-    "Description": "A fancy blouse in a rich red.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Blusa Carmesí"
-    },
-    "DescriptionLocalization": {
-        "es": "Una blusa elegante en un rojo intenso."
-    }
+    "Dyeable": false
 }

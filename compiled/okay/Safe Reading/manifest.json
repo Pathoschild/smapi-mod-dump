@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SafeReading",
+  "Author": "LunaticShade",
+  "Version": "1.0.0",
+  "Description": "Players won't get damage when in menus / dialog boxes in multiplayer mode",
+  "UniqueID": "LunaticShade.SafeReading",
+  "EntryDll": "SafeReading.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8564" ]
+}

@@ -5,9 +5,9 @@ mods:
    Joja Online
 
 latest commit:
-   commit c614165593b3c47ba58e7245c91ca1d9d6724362
+   commit 07c55e9b9988df8731420bfab846c1d7cddb9d69
    Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
-   Date:   Wed Jan 13 07:40:29 2021 -0600
+   Date:   Sun Apr 18 15:34:50 2021 -0500
    
-       v1.2.2 released
+       v1.2.3 released
    

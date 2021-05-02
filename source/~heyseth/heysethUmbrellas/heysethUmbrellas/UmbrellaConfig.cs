@@ -23,5 +23,7 @@ namespace heysethUmbrellas
     {
         public bool enableWetness = false;
         public float staminaDrainRate = 2.0f;
+        public string goodRainHats = "";
+        public string bestRainHats = "";
     }
 }

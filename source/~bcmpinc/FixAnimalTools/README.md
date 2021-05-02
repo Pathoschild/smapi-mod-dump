@@ -26,3 +26,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 2.0:
 * Updated for Stardew Valley 1.4
+
+#### 4.0:
+* Add 64-bit support

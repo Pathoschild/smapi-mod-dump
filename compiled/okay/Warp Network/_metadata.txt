@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8567
+IDs: tlitookilakin.warpnetwork
+update keys: Nexus:8567, GitHub:tlitookilakin/WarpNetwork

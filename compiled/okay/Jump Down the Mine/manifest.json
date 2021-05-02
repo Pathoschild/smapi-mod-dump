@@ -1,10 +1,10 @@
 ﻿{
   "Name": "JumpDownTheMine",
   "Author": "flowoeB",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Press J to jump down 100 levels, K for 1000",
   "UniqueID": "flowoeB.JumpDownTheMine",
   "EntryDll": "JumpDownTheMine.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:8357" ]
 }

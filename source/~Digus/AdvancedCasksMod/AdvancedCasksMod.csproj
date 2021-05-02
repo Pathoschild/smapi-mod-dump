@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>AdvancedCasksMod</AssemblyName>
+    <RootNamespace>AdvancedCasksMod</RootNamespace>
+    <Version>1.0.0</Version>
+    <TargetFramework>net452</TargetFramework>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnableHarmony>true</EnableHarmony>
+    <IgnoreModFilePatterns>\.dll$, \.pdb$</IgnoreModFilePatterns>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="[CCM]AdvancedCasksMod\AgersData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[CCM]AdvancedCasksMod\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[JA]AdvancedCasksMod\BigCraftables\Radioactive Cask\big-craftable.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[JA]AdvancedCasksMod\BigCraftables\Hardwood Cask\big-craftable.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[JA]AdvancedCasksMod\BigCraftables\Hardwood Cask\big-craftable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[JA]AdvancedCasksMod\BigCraftables\Radioactive Cask\big-craftable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[JA]AdvancedCasksMod\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[MFM]AdvancedCasksMod\i18n\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[MFM]AdvancedCasksMod\i18n\ko.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[MFM]AdvancedCasksMod\i18n\pt.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[MFM]AdvancedCasksMod\mail.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="[MFM]AdvancedCasksMod\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

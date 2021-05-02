@@ -205,13 +205,13 @@ namespace ToDew {
             private static readonly Rectangle trashSource = new Rectangle(564, 102, 18, 26);
             private static readonly Rectangle trashLidSource = new Rectangle(564, 129, 18, 10);
             private static readonly ToDoList.DayVisibility[] daysOfWeek = {
-                ToDoList.DayVisibility.Sunday,
                 ToDoList.DayVisibility.Monday,
                 ToDoList.DayVisibility.Tuesday,
                 ToDoList.DayVisibility.Wednesday,
                 ToDoList.DayVisibility.Thurdsay,
                 ToDoList.DayVisibility.Friday,
                 ToDoList.DayVisibility.Saturday,
+                ToDoList.DayVisibility.Sunday,
             };
             private static readonly ToDoList.DayVisibility[] seasons = {
                 ToDoList.DayVisibility.Spring,
@@ -246,14 +246,14 @@ namespace ToDew {
             private Rectangle[] seasonsCheckboxes = new Rectangle[seasons.Length];
             private Rectangle[] weeksCheckboxes = new Rectangle[weeks.Length];
             private string[] dayOfWeekNames = {
-                I18n.Sunday(),
                 I18n.Monday(),
                 I18n.Tuesday(),
                 I18n.Wednesday(),
                 I18n.Thursday(),
                 I18n.Friday(),
                 I18n.Saturday(),
-                I18n.Sunday()
+                I18n.Sunday(),
+                I18n.Sunday(),
             };
 
             private const int trashScale = 3;

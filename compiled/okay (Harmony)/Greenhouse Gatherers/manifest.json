@@ -1,7 +1,7 @@
 {
   "Name": "GreenhouseGatherers",
   "Author": "PeacefulEnd",
-  "Version": "1.2.3",
+  "Version": "1.2.4",
   "Description": "Placeable, craftable items that let Junimos harvest crops inside buildings.",
   "UniqueID": "PeacefulEnd.GreenhouseGatherers",
   "EntryDll": "GreenhouseGatherers.dll",

@@ -44,7 +44,7 @@ namespace ResponseCore
                 ["birthdayDislikeA"] = Helper.Translation.Get("birthdayDislikeA"),
                 ["birthdayDislikeB"] = Helper.Translation.Get("birthdayDislikeB"),
                 ["birthdayNeutralA"] = Helper.Translation.Get("birthdayNeutralA"),
-                ["birthdayNeutralA"] = Helper.Translation.Get("birthdayNeutralB"),
+                ["birthdayNeutralB"] = Helper.Translation.Get("birthdayNeutralB"),
                 ["giftquestion_yes"] = Helper.Translation.Get("giftquestion_yes"),
                 ["giftquestion_lie"] = Helper.Translation.Get("giftquestion_lie"),
                 ["breakUp"] = Helper.Translation.Get("breakUp"),

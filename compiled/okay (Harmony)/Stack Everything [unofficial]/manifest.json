@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Stack Everything",
+  "Author": "Cat",
+  "Version": "3.0.3-unofficial.1-strobe",
+  "Description": "Lets you stack Furniture, Tackle, and Wallpapers up to 999.",
+  "UniqueID": "cat.stackeverything",
+  "EntryDll": "StackEverything.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:2053" ]
+}

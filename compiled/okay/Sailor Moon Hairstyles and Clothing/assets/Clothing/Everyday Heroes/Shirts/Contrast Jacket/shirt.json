@@ -1,13 +1,7 @@
 {
     "Name": "Contrast Jacket",
-    "Description": "A pure white jacket with a dark black top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Chaqueta de Contraste"
-    },
-    "DescriptionLocalization": {
-        "es": "Una chaqueta blanca pura con un top negro oscuro."
-    }
+    "Dyeable": false
 }

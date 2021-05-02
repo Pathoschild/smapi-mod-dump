@@ -1,7 +1,7 @@
 {
   "Name": "More Rain",
   "Author": "Alpha_Omegasis",
-  "Version": "1.9.0",
+  "Version": "1.10.0",
   "Description": "Change how much it rains in the game.",
   "UniqueID": "Omegasis.MoreRain",
   "EntryDll": "MoreRain.dll",

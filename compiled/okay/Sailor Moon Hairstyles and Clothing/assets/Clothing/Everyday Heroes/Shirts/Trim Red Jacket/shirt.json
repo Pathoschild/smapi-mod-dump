@@ -1,13 +1,7 @@
 {
     "Name": "Trim Red Jacket",
-    "Description": "A bright red jacket with white frilly trim.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Chaqueta Ribeta Roja"
-    },
-    "DescriptionLocalization": {
-        "es": "Una chaqueta roja brillante con ribetes blancos."
-    }
+    "Dyeable": false
 }

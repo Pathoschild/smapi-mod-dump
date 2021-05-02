@@ -11,8 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using PyTK;
-using PyTK.Extensions;
+using PlatoTK;
 using StardewValley;
 using StardewValley.Minigames;
 using System;
@@ -35,9 +34,9 @@ namespace Arcade2048
         public int score = 0;
         bool quit = false;
 
-        Color boardColor = Color.Beige.setLight(60);
+        Color boardColor = setLight(Color.Beige,60);
         Color backGroundColor = Color.DarkSlateGray;
-        Color backGroundColor2 = Color.DarkSlateGray.setLight(120);
+        Color backGroundColor2 = setLight(Color.DarkSlateGray,120);
         int backgroundTileSize = 0;
         int backgroundW = 0;
         int backgroundH = 0;
@@ -66,10 +65,13 @@ namespace Arcade2048
 
         bool inMoveCycle = false;
 
+        private IPlatoHelper plato;
+
         #region start
 
-        public Game2048()
+        public Game2048(IPlatoHelper helper)
         {
+            plato = helper;
             setupBoard();
         }
 
@@ -91,11 +93,11 @@ namespace Arcade2048
         {
             if (Tiles.Count < tileNumber * tileNumber)
             {
-                List<Point> free = tileBackgrounds.FindAll(b => !Tiles.Exists(t => t.GridPosition == b.toVector2()));
+                List<Point> free = tileBackgrounds.FindAll(b => !Tiles.Exists(t => t.GridPosition == new Vector2(b.X,b.Y)));
 
                 int r = random.Next(0, free.Count - 1);
                   
-                Tiles.Add(new Tile(free[r].toVector2(), 1));
+                Tiles.Add(new Tile(new Vector2(free[r].X, free[r].Y), 1));
 
                 return true;
             }
@@ -152,7 +154,7 @@ namespace Arcade2048
 
         private void drawRectangle(SpriteBatch b, Rectangle rect, Color color)
         {
-            b.Draw(PyUtils.getWhitePixel(), rect, color);
+            b.Draw(plato.Content.Textures.WhitePixel, rect, color);
         }
 
         private Texture2D getBackground(SpriteBatch b)
@@ -191,7 +193,7 @@ namespace Arcade2048
             drawRectangle(b, boardSquare, boardColor);
 
             foreach (Point tile in tileBackgrounds)
-                drawTile(b, tile.toVector2(), tileSpaceBackground);
+                drawTile(b, new Vector2(tile.X,tile.Y), tileSpaceBackground);
         }
 
         private Rectangle drawTile(SpriteBatch b, Vector2 position, Color color)
@@ -224,6 +226,40 @@ namespace Arcade2048
             int y = ((drawTileSize - fontHeight) / 2) + tileSquare.Y;
 
             b.DrawString(Game1.dialogueFont, text, new Vector2(x, y), textColor, 0f, Vector2.Zero, fontScale, SpriteEffects.None, 1f);
+        }
+
+        public static Color setSaturation(Color t, float saturation, Vector3? saturationMultiplier = null)
+        {
+            Vector3 m = saturationMultiplier.HasValue ? saturationMultiplier.Value : new Vector3(0.2125f, 0.7154f, 0.0721f);
+            float l = m.X * t.R + m.Y * t.G + m.Z * t.B;
+            float s = 1f - (saturation / 100);
+
+            float newR = t.R;
+            float newG = t.G;
+            float newB = t.B;
+
+            if (s != 0)
+            {
+                newR = newR + s * (l - newR);
+                newG = newG + s * (l - newG);
+                newB = newB + s * (l - newB);
+            }
+
+            t.R = (byte)MathHelper.Min(newR, 255);
+            t.G = (byte)MathHelper.Min(newG, 255);
+            t.B = (byte)MathHelper.Min(newB, 255);
+
+            return t;
+        }
+
+        public static Color setLight(Color t, float light)
+        {
+            float l = light / 100;
+            t.R = (byte)Math.Min(t.R * l, 255);
+            t.G = (byte)Math.Min(t.G * l, 255);
+            t.B = (byte)Math.Min(t.B * l, 255);
+
+            return t;
         }
 
         public void drawMenu(SpriteBatch b)
@@ -320,7 +356,7 @@ namespace Arcade2048
 
                 if (!inMoveCycle)
                 {
-                    Tiles.useAll(t => { t.isMoving = true; t.hasmerged = false; });
+                    Tiles.ForEach(t => { t.isMoving = true; t.hasmerged = false; });
                     spawnRandomTile();
                 }
             }

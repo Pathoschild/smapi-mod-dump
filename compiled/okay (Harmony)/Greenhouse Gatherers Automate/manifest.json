@@ -1,7 +1,7 @@
 {
   "Name": "GreenhouseGatherersAutomate",
   "Author": "PeacefulEnd",
-  "Version": "1.2.3",
+  "Version": "1.2.4",
   "Description": "Allows custom behavior with Pathoschild's Automate mod.",
   "UniqueID": "PeacefulEnd.GreenhouseGatherers.Automate",
   "EntryDll": "GreenhouseGatherersAutomate.dll",

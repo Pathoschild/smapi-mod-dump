@@ -85,55 +85,130 @@ namespace Omegasis.MoreRain
             {
                 case "spring":
                     // set rain
-                    if (chance <= this.Config.SpringRainChance)
+                    if (this.Config.PrioritizeSpringStorms)
                     {
-                        Game1.weatherForTomorrow = Game1.weather_rain;
-                        this.VerboseLog("It will rain tomorrow.");
-                        return;
+                        if (chance <= this.Config.SpringThunderChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_lightning;
+                            this.VerboseLog("It will be stormy tomorrow.");
+                            return;
+                        }
+                        if (chance <= this.Config.SpringRainChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_rain;
+                            this.VerboseLog("It will rain tomorrow.");
+                            return;
+                        }
                     }
-
-                    if (chance <= this.Config.SpringThunderChance)
+                    else
                     {
-                        Game1.weatherForTomorrow = Game1.weather_lightning;
-                        this.VerboseLog("It will be stormy tomorrow.");
-                        return;
+                        if (chance <= this.Config.SpringRainChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_rain;
+                            this.VerboseLog("It will rain tomorrow.");
+                            return;
+                        }
+
+                        if (chance <= this.Config.SpringThunderChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_lightning;
+                            this.VerboseLog("It will be stormy tomorrow.");
+                            return;
+                        }
                     }
                     break;
 
                 case "summer":
                     // set rain
-                    if (chance <= this.Config.SummerRainChance)
+                    if (this.Config.PrioritizeSummerStorms)
                     {
-                        Game1.weatherForTomorrow = Game1.weather_rain;
-                        this.VerboseLog("It will rain tomorrow.");
-                        return;
+                        if (chance <= this.Config.SummerThunderChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_lightning;
+                            this.VerboseLog("It will be stormy tomorrow.");
+                            return;
+                        }
+                        if (chance <= this.Config.SummerRainChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_rain;
+                            this.VerboseLog("It will rain tomorrow.");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (chance <= this.Config.SummerRainChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_rain;
+                            this.VerboseLog("It will rain tomorrow.");
+                            return;
+                        }
+                        if (chance <= this.Config.SummerThunderChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_lightning;
+                            this.VerboseLog("It will be stormy tomorrow.");
+                            return;
+                        }
                     }
 
-
-                    if (chance <= this.Config.SummerThunderChance)
-                    {
-                        Game1.weatherForTomorrow = Game1.weather_lightning;
-                        this.VerboseLog("It will be stormy tomorrow.");
-                        return;
-                    }
                     break;
 
                 case "fall":
                 case "autumn":
                     // set rain
-                    if (chance <= this.Config.FallRainChance)
+
+                    if (this.Config.PrioritizeFallStorms)
                     {
-                        Game1.weatherForTomorrow = Game1.weather_rain;
-                        this.VerboseLog("It will rain tomorrow.");
-                        return;
+                        if (chance <= this.Config.FallThunderChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_lightning;
+                            this.VerboseLog("It will be stormy tomorrow.");
+                            return;
+                        }
+
+                        if (this.Config.SnowInFall)
+                        {
+                            if (chance <= this.Config.FallSnowChance)
+                            {
+                                Game1.weatherForTomorrow = Game1.weather_snow;
+                                this.VerboseLog("It will snow tomorrow.");
+                            }
+                        }
+
+                        if (chance <= this.Config.FallRainChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_rain;
+                            this.VerboseLog("It will rain tomorrow.");
+                            return;
+                        }
+
+                    }
+                    else
+                    {
+                        if (chance <= this.Config.FallRainChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_rain;
+                            this.VerboseLog("It will rain tomorrow.");
+                            return;
+                        }
+
+                        if (this.Config.SnowInFall)
+                        {
+                            if (chance <= this.Config.FallSnowChance)
+                            {
+                                Game1.weatherForTomorrow = Game1.weather_snow;
+                                this.VerboseLog("It will snow tomorrow.");
+                            }
+                        }
+
+                        if (chance <= this.Config.FallThunderChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_lightning;
+                            this.VerboseLog("It will be stormy tomorrow.");
+                            return;
+                        }
                     }
 
-                    if (chance <= this.Config.FallThunderChance)
-                    {
-                        Game1.weatherForTomorrow = Game1.weather_lightning;
-                        this.VerboseLog("It will be stormy tomorrow.");
-                        return;
-                    }
                     break;
 
                 case "winter":
@@ -143,10 +218,13 @@ namespace Omegasis.MoreRain
                         Game1.weatherForTomorrow = Game1.weather_snow;
                         this.VerboseLog("It will snow tomorrow.");
                     }
-                    else
+                    if (this.Config.RainInWinter)
                     {
-                        //StardewValley.Game1.weatherForTomorrow = StardewValley.Game1.weather_sunny;
-                        this.VerboseLog("It will not snow tomorrow.");
+                        if (chance <= this.Config.WinterRainChance)
+                        {
+                            Game1.weatherForTomorrow = Game1.weather_rain;
+                            this.VerboseLog("It will snow tomorrow.");
+                        }
                     }
                     break;
             }

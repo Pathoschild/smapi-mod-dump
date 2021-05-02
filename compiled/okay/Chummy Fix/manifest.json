@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Chummy Fix",
+  "Author": "ItsLittany",
+  "Version": "1.1.0",
+  "Description": "Fix the odds of your pond's chum bucket to your choice",
+  "UniqueID": "itslittany.ChummyFix",
+  "EntryDll": "Chummy Fix.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6363" ]
+}

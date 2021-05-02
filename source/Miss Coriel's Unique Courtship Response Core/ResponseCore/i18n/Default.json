@@ -57,7 +57,7 @@
   "NPC.cs.3970": "$q 10001 refusal_no_heartsA#?!...#$r 10001 0 refusal_no_heartsA# Will you marry me?",
   "NPC.cs.3971": "$q 10001 refusal_no_heartsB#?!...#$r 10001 0 refusal_no_heartsB# Will you marry me?",
   "NPC.cs.3972": "$q 10001 refusal_knownA#?!...#$r 10001 0 refusal_knownA# Will you marry me?",
-  "NPC.cs.3973": "$q 10001 refusal_knownB#?!...#$r 10001 0 recusalB# Will you marry me?",
+  "NPC.cs.3973": "$q 10001 refusal_knownB#?!...#$r 10001 0 refusal_knownB# Will you marry me?",
   "NPC.cs.3974": "$q 10001 refusal_botherA#?!...#$r 10001 0 refusal_botherA# Will you marry me?",
   "NPC.cs.3975": "$q 10001 refusal_botherB#?!...#$r 10001 0 refusal_botherB# Will you marry me?",
   "NPC.cs.4274": "$q 10001 birthdayLoveA#...#$r 10001 0 birthdayLoveA# [Happy Birthday]", //love
@@ -65,7 +65,7 @@
   "NPC.cs.4276": "$q 10001 birthdayLikeA#...#$r 10001 0 birthdayLikeA# [Happy Birthday]", //like
   "NPC.cs.4277": "$q 10001 birthdayLikeB#...#$r 10001 0 birthdayLikeB# [Happy Birthday]", //like
   "NPC.cs.4278": "$q 10001 birthdayDislikeA#...#$r 10001 0 birthdayDislikeA# [Happy Birthday]", //hate
-  "NPC.cs.4279": "$q 10001 birthdayDislike#...#$r 10001 0 birthdayDislike# [Happy Birthday]", //dislike
+  "NPC.cs.4279": "$q 10001 birthdayDislikeB#...#$r 10001 0 birthdayDislikeB# [Happy Birthday]", //dislike
   "NPC.cs.4280": "$q 10001 birthdayNeutralA#...#$r 10001 0 birthdayNeutralA# [Happy Birthday]", //neutral
   "NPC.cs.4281": "$q 10001 birthdayNeutralB#...#$r 10001 0 birthdayNeutralB# [Happy Birthday]" //neutral
 

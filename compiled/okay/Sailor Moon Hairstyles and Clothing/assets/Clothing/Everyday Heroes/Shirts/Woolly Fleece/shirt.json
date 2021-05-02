@@ -1,13 +1,7 @@
 {
     "Name": "Woolly Fleece",
-    "Description": "There couldn't possibly be anything more comfortable.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Lana Lanuda"
-    },
-    "DescriptionLocalization": {
-        "es": "No podría haber nada más cómodo."
-    }
+    "Dyeable": false
 }

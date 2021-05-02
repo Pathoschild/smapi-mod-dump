@@ -5,9 +5,9 @@ mods:
    Player Co-ordinate HUD
 
 latest commit:
-   commit 2b3f3aebc6dd1cdda5e0ce6f7d3825fa6e842594
+   commit 0b61485d1eabe365530381ac2dd5b871065581e2
    Author: DecidedlyHuman <69521518+DecidedlyHuman@users.noreply.github.com>
-   Date:   Fri Feb 19 18:24:19 2021 +0000
+   Date:   Sat Apr 10 09:51:51 2021 +0100
    
-       PC: Update version in manifest.json.
+       A license is also important!
    

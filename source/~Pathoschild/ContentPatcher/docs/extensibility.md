@@ -8,9 +8,10 @@ for queries and analysis.**
 
 ← [README](../README.md)
 
-This document helps SMAPI mod authors extend Content Patcher with custom functionality.
+This doc helps SMAPI mod authors extend Content Patcher with custom functionality.
 
-**See the [main README](../README.md) for other info**.
+**To use Content Patcher conditions in your mod, see the [conditions API](conditions-api.md). See
+the [main README](../README.md) for other info**.
 
 ## Contents
 * [Overview](#overview)
@@ -90,7 +91,7 @@ argument   | type | purpose
 That's it! Now any content pack which lists your mod as a dependency can use the token in its fields:
 ```js
 {
-   "Format": "1.21.0",
+   "Format": "1.22.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -288,7 +289,7 @@ api.RegisterToken(this.ModManifest, "Initials", new InitialsToken());
 That's it! Now any content pack which lists your mod as a dependency can use the token in its fields:
 ```js
 {
-   "Format": "1.21.0",
+   "Format": "1.22.0",
    "Changes": [
       {
          "Action": "EditData",

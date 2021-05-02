@@ -3,4 +3,12 @@
     	"label.child_with": "Cocukla",
     	"label.adopted_with": "İle benimsendi",
     	"label.unknow": "Bilinmeyen",
+
+	"label.age": "Yaş",
+	"label.next": "Sonraki",
+	"label.days": "Günler",
+	"label.newborn": "Yeni doğan",
+	"label.baby": "bebek",
+	"label.crawler": "Emekleyen çocuk",
+	"label.child": "Çocuk",
     }

@@ -1,6 +1,6 @@
 {
   "AddCookingMenu": true,
-  "AddCookingCommunityCentreBundles": true,
+  "AddCookingCommunityCentreBundles": false,
   "AddCookingSkillAndRecipes": true,
   "AddCookingToolProgression": true,
   "AddNewCropsAndStuff": true,

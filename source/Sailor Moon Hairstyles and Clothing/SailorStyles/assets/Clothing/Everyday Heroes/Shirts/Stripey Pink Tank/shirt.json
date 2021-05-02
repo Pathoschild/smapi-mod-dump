@@ -10,15 +10,9 @@
 
 {
     "Name": "Stripey Pink Tank",
-    "Description": "A sleeveless top with pink-on-pink stripes.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless",
-    "NameLocalization": {
-        "es": "Camiseta sin Mangas Rosada a Rayas"
-    },
-    "DescriptionLocalization": {
-        "es": "Una blusa sin mangas con rayas rosa sobre rosa."
-    }
+    "Metadata": "Sleeveless"
 }

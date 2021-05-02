@@ -5,9 +5,9 @@ mods:
    Personal Anvil
 
 latest commit:
-   commit 7b7ef645b492b0fd08cc354d141e06391650618c
+   commit 36510c974148312d3f208d7b952fc8e0ee4c227e
    Author: Ishan Jalan <ishan1337@gmail.com>
-   Date:   Sat Jan 23 03:07:29 2021 +0530
+   Date:   Mon Apr 5 20:59:40 2021 +0530
    
-       1.5 Compatibility with updated logic and Golden Coconut compat.
+       Minor refactoring
    

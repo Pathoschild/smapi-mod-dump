@@ -71,7 +71,7 @@ By default (true), this mod only takes effect when pressing a "use tool" button 
 
 This mod affects the "use tool" function (adding an override for what tile the tool acts upon), as well as a range-checking function (in order to extend range of seed/object placement). If ToolHitLocationDisplay is anything but 0, it also adds a bit to the player's draw method to change the hit location display logic. I aimed to make these as unobtrusive as I could.
 
-However, because the "use tool" function in particular is completely overriden in many cases, it's possible that similar tool functionality mods operating in the same area may not work, or cause this mod to not work. This might be something I could fix on a case-by-case basis, but who knows.
+However, because the "use tool" function in particular is completely overriden in many cases, it's possible that similar tool functionality mods operating in the same area may not work, or cause this mod to not work. I've added a specific fix for a conflict with the Expanded Storage mod; other conflicts may or may not be fixable on a case-by-case basis.
 
 ## Download
 

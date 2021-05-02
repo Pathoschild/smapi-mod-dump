@@ -1,0 +1,15 @@
+url:
+   https://github.com/Floogen/GreenhouseGatherers.git
+
+mods:
+   Greenhouse Gatherers
+   Greenhouse Gatherers Automate
+
+latest commit:
+   commit b65cae5df95eba2bd9a7eff39dc199d71ef7ed8b
+   Merge: c4c5e0c 16b79be
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Sat May 1 15:56:59 2021 -0500
+   
+       Merge branch 'development' into main
+   

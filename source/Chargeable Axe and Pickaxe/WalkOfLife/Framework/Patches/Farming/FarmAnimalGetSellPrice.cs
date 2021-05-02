@@ -10,38 +10,44 @@
 
 using Harmony;
 using StardewValley;
+using System;
 
 namespace TheLion.AwesomeProfessions
 {
 	internal class FarmAnimalGetSellPricePatch : BasePatch
 	{
-		/// <summary>Construct an instance.</summary>
-		internal FarmAnimalGetSellPricePatch() { }
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		protected internal override void Apply(HarmonyInstance harmony)
+		/// <inheritdoc/>
+		public override void Apply(HarmonyInstance harmony)
 		{
 			harmony.Patch(
-				AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.getSellPrice)),
+				original: AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.getSellPrice)),
 				prefix: new HarmonyMethod(GetType(), nameof(FarmAnimalGetSellPricePrefix))
 			);
 		}
 
 		#region harmony patches
+
 		/// <summary>Patch to adjust Breeder animal sell price.</summary>
-		protected static bool FarmAnimalGetSellPricePrefix(ref FarmAnimal __instance, ref int __result)
+		private static bool FarmAnimalGetSellPricePrefix(ref FarmAnimal __instance, ref int __result)
 		{
-			Farmer who = Game1.getFarmer(__instance.ownerID.Value);
-			if (Utility.SpecificPlayerHasProfession("breeder", who))
+			double adjustedFriendship;
+			try
 			{
-				double adjustedFriendship = Utility.GetProducerAdjustedFriendship(__instance);
-				__result = (int)(__instance.price.Value * adjustedFriendship);
-				return false; // don't run original logic
+				var owner = Game1.getFarmer(__instance.ownerID.Value);
+				if (!Utility.SpecificPlayerHasProfession("Breeder", owner)) return true; // run original logic
+
+				adjustedFriendship = Utility.GetProducerAdjustedFriendship(__instance);
+			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(FarmAnimalGetSellPricePrefix)}:\n{ex}");
+				return true; // default to original logic
 			}
 
-			return true; // run original logic
+			__result = (int)(__instance.price.Value * adjustedFriendship);
+			return false; // don't run original logic
 		}
+
 		#endregion harmony patches
 	}
 }

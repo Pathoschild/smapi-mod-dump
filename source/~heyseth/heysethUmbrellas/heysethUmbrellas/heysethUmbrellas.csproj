@@ -50,9 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FarmerRendererPatches.cs" />
+    <Compile Include="IJsonAssetsAPI.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ToolOverridesBase.cs" />
     <Compile Include="UmbrellaConfig.cs" />
     <Compile Include="UmbrellaPatch.cs" />
   </ItemGroup>

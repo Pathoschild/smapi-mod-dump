@@ -1,13 +1,7 @@
 {
     "Name": "Black Top and Blazer",
-    "Description": "A fancy jacket sitting over a black top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Top Negro y Blazer"
-    },
-    "DescriptionLocalization": {
-        "es": "Una elegante chaqueta sentada sobre un top negro."
-    }
+    "Dyeable": false
 }

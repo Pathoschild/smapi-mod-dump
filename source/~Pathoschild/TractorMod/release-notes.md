@@ -7,7 +7,9 @@ for queries and analysis.**
 ----
 
 # Release notes
-## Upcoming release
+## 4.14.1
+Released 17 April 2021.
+
 * Improved translations. Thanks to J3yEreN (updated Turkish!).
 
 ## 4.14

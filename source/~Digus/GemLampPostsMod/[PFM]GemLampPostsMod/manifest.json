@@ -11,11 +11,12 @@
 {
 	"Name": "[PFM]Gem Lamp Posts Mod",
 	"Author": "Digus",
-	"Version": "1.0.0",
+	"Version": "1.0.1",
 	"Description": "Creates the rules for the Gem Lamp-posts and Gem Composer.",
 	"UniqueID": "Digus.GemLampPostsForProducerFramework",
-	"MinimumApiVersion": "3.0.0",
-	"UpdateKeys": [],
+	"MinimumApiVersion": "3.9.0",
+	"UpdateKeys": [ "Nexus:8292" ],
+    "Dependencies": [ { "UniqueID": "Digus.GemLampPostsMod" } ],
 	"ContentPackFor": {
 		"UniqueID": "DIGUS.ProducerFrameworkMod",
 		"MinimumVersion": "1.7.0"

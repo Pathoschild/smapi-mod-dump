@@ -11,7 +11,7 @@
 {
   "Name": "CustomReminders",
   "Author": "Dem1se",
-  "Version": "1.7.4",
+  "Version": "1.7.5",
   "Description": "Lets players set in-game reminder through a new menu.",
   "UniqueID": "Dem1se.CustomReminders",
   "EntryDll": "CustomReminders.dll",

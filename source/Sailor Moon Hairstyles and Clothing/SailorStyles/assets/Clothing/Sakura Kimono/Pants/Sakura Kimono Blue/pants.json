@@ -10,14 +10,8 @@
 
 {
     "Name": "Sakura Kimono Blue Lower",
-    "Description": "A blue kimono, lower half.",
+    "Description": "...",
     "Price": 50,
     "Dyeable": false,
-    "DefaultColor": "255, 255, 255, 255",
-    "NameLocalization": {
-        "es": "Kimono Sakura Azul Lower"
-    },
-    "DescriptionLocalization": {
-        "es": "Un kimono azul, mitad inferior."
-    }
+    "DefaultColor": "255, 255, 255, 255"
 }

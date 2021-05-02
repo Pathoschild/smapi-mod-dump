@@ -25,20 +25,24 @@ namespace Vocalization.Framework
         /// <summary>The audio clip that plays when the current voice mode is "SimpleAndHeartEvents".</summary>
         public string simpleAndHeartEvents;
 
+        public bool isHeartEvent;
+
         public VoiceAudioOptions()
         {
             this.simple = "";
             this.full = "";
             this.heartEvents = "";
             this.simpleAndHeartEvents = "";
+            this.isHeartEvent = false;
         }
 
-        public VoiceAudioOptions(string simple, string full, string heartEvent, string simpleAndHeartEvent)
+        public VoiceAudioOptions(string simple, string full, string heartEvent, string simpleAndHeartEvent,bool IsHeartEvent)
         {
             this.simple = simple;
             this.full = full;
             this.heartEvents = heartEvent;
             this.simpleAndHeartEvents = simpleAndHeartEvent;
+            this.isHeartEvent = IsHeartEvent;
         }
 
         public string getAudioClip()

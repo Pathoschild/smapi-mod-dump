@@ -3,4 +3,12 @@
     	"label.child_with": "Gyerek",
     	"label.adopted_with": "Elfogadta",
     	"label.unknow": "Ismeretlen",
+
+	"label.age": "Kor",
+	"label.next": "Következő",
+	"label.days": "Napok",
+	"label.newborn": "Újszülött",
+	"label.baby": "csecsemő",
+	"label.crawler": "Kúszó gyermek",
+	"label.child": "Gyermek ",
     }

@@ -101,6 +101,7 @@
 	"clearWeeds": "Destroy weeds",
 	"harvestHay": "Harvest from grass or {{wheat}}",
 	"trash": "Trash from fishing, Crab Pots, or garbage cans",
+	"trashCan": "Trash from garbage cans",
 	
 	// Miscellaneous Sources
 	"luckyShorts": "Marnie's room (in Mayor's Shorts quest on Summer 3)",
@@ -172,10 +173,19 @@
 	"waterMines60": "on Mines Floor 60",
 	"waterMines100": "on Mines Floor 100",
 	"waterSwamp": "in Witch's Swamp",
+	"waterIsland": "on Ginger Island",
+	"waterIslandRiver": "in river on Ginger Island",
+	"waterIslandOcean": "in ocean on Ginger Island",
+	"waterIslandOceanWest": "in ocean on Ginger Island (West)",
+	"waterIslandCove": "in Pirate Cove",
 	"waterAnglerSpot": "at far north of Town river",
 	"waterCrimsonfishSpot": "from Beach east shore/pier",
 	"waterGlacierfishSpot": "from southernmost tip of Cindersap Forest center island",
 	"waterLegendSpot": "around log in Mountain lake",
+	"waterBlueMoonVineyard": "in Blue Moon Vineyard", // SVE
+	"waterShearwaterBridge": "at Shearwater Bridge", // SVE
+	"waterForestWest": "in Cindersap Forest (West)", // SVE
+	"waterAdventurerSummit": "at Adventurer Summit", // SVE
 	"waterUnknown": "in ???",
 	
 	// Water Types (for crab pot suggestions)
@@ -291,7 +301,7 @@
 	"recipeSourceSaloon": "Saloon",
 	"recipeSourceTV": "TV ({{date}})",
 	"recipeSourceTVAlreadyAired": "TV (Wednesday rerun, or {{date}})",
-	"recipeSourceFriendship": "{{hearts}}+ hearts with {{person}}", // sent in mail when you have enough hearts
+	"recipeSourceFriendship": "{{hearts}}+ hearts with {{person}}", // sent in mail or available for purchase when you have enough hearts
 	"recipeSourceHeartEvent": "{{hearts}}-heart {{person}} event", // received from heart event specifically
 	"recipeSourceFirstCopper": "obtain {{copperOre}}",
 	"recipeSourceAfterGreenhouse": "fix greenhouse",

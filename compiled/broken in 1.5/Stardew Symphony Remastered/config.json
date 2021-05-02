@@ -1,9 +1,0 @@
-{
-  "WaitForSongToFinishBeforeMusicSwap": true,
-  "MinimumDelayBetweenSongsInMilliseconds": 5000,
-  "MaximumDelayBetweenSongsInMilliseconds": 60000,
-  "KeyBinding": "L",
-  "DisableStardewMusic": false,
-  "EnableDebugLog": false,
-  "LocationsToIgnoreWarpMusicChange": {}
-}

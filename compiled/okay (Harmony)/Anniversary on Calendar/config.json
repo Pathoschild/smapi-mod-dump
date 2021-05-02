@@ -4,5 +4,6 @@
   "ShowChildrenBirthdaysOnCal": true,
   "ShowPlayerBirthdaysOnCal": false,
   "PlayerBirthdaySeason": "spring",
-  "PlayerBirthdayDay": 1
+  "PlayerBirthdayDay": 1,
+  "FutureCalOn": true
 }

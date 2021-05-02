@@ -41,7 +41,12 @@ namespace LoveOfCooking
 		// We use Linus' tent interior for the dummy area, since there's surely no conceivable way it'd be in the community centre
 		public static readonly Rectangle FridgeOpenedSpriteArea = new Rectangle(32, 560, 16, 32);
 		public static readonly Vector2 FridgeChestPosition = new Vector2(ModEntry.NexusId);
-		public static readonly int[] FridgeTileIndexes = new int[] { 602, 634 };
+		public static string FridgeTilesToUse = "Vanilla";
+		public static readonly Dictionary<string, int[]> FridgeTileIndexes = new Dictionary<string, int[]>
+		{
+			{ "Vanilla", new [] { 602, 634, 1122, 1154 } },
+			{ "SVE", new [] { 432, 440, 432, 442 } }
+		};
 		public static Vector2 FridgeTilePosition = Vector2.Zero;
 		public static int BundleStartIndex;
 		public static int BundleCount;
@@ -50,6 +55,7 @@ namespace LoveOfCooking
 
 		internal static void RegisterEvents()
 		{
+			Helper.Events.GameLoop.Saving += GameLoop_Saving;
 			Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
 			Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
 			Helper.Events.Player.Warped += Player_Warped;
@@ -149,6 +155,19 @@ namespace LoveOfCooking
 
 		internal static void SaveLoadedBehaviours()
 		{
+			FridgeTilesToUse = Helper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP") ? "SVE" : "Vanilla";
+
+			try
+			{
+				// Reset per-world config values
+				var savedConfig = Helper.ReadConfig<Config>();
+				Config.AddCookingCommunityCentreBundles = savedConfig.AddCookingCommunityCentreBundles;
+			}
+			catch (Exception e)
+			{
+				Log.E("" + e);
+			}
+
 			var cc = GetCommunityCentre();
 
 			// Check for sending warnings re: multiplayer and bundles
@@ -167,7 +186,7 @@ namespace LoveOfCooking
 			{
 				cc.Objects.Add(FridgeChestPosition, new Chest(true, FridgeChestPosition));
 			}
-
+			
 			PrintBundleData(GetCommunityCentre());
 			Log.D("End of default world bundle data. Now unloading custom bundles.",
 				Config.DebugMode);
@@ -203,6 +222,14 @@ namespace LoveOfCooking
 					LoadBundleData();
 				}
 			}
+		}
+
+		private static void GameLoop_Saving(object sender, SavingEventArgs e)
+		{
+			// Save local (and/or persistent) community centre data
+			Log.D("Unloading world bundle data at end of day.",
+				Config.DebugMode);
+			SaveAndUnloadBundleData();
 		}
 
 		private static void Display_MenuChanged(object sender, MenuChangedEventArgs e)
@@ -267,10 +294,10 @@ namespace LoveOfCooking
 			{
 				cc1.Map.GetLayer("Front")
 					.Tiles[(int)FridgeTilePosition.X, (int)FridgeTilePosition.Y - 1]
-					.TileIndex = FridgeTileIndexes[0];
+					.TileIndex = FridgeTileIndexes[FridgeTilesToUse][0];
 				cc1.Map.GetLayer("Buildings")
 					.Tiles[(int)FridgeTilePosition.X, (int)FridgeTilePosition.Y]
-					.TileIndex = FridgeTileIndexes[1];
+					.TileIndex = FridgeTileIndexes[FridgeTilesToUse][1];
 				return;
 			}
 		}
@@ -347,15 +374,15 @@ namespace LoveOfCooking
 
 				// Open Community Centre fridge door
 				if (Game1.currentLocation is CommunityCenter cc && IsCommunityCentreKitchenComplete()
-					&& tile != null && tile.TileIndex == FridgeTileIndexes[1])
+					&& tile != null && tile.TileIndex == FridgeTileIndexes[FridgeTilesToUse][1])
 				{
 					// Change tile to use custom open-fridge sprite
 					Game1.currentLocation.Map.GetLayer("Front")
 						.Tiles[(int)FridgeTilePosition.X, (int)FridgeTilePosition.Y - 1]
-						.TileIndex = 1122;
+						.TileIndex = FridgeTileIndexes[FridgeTilesToUse][2];
 					Game1.currentLocation.Map.GetLayer("Buildings")
 						.Tiles[(int)FridgeTilePosition.X, (int)FridgeTilePosition.Y]
-						.TileIndex = 1154;
+						.TileIndex = FridgeTileIndexes[FridgeTilesToUse][3];
 
 					// Open the fridge as a chest
 					((Chest)cc.Objects[FridgeChestPosition]).fridge.Value = true;
@@ -506,15 +533,10 @@ namespace LoveOfCooking
 			{
 				for (var y = 0; y < h; y++)
 				{
-					if (cc.Map.GetLayer("Buildings").Tiles[x, y] != null)
+					if (cc.Map.GetLayer("Buildings").Tiles[x, y] != null
+						&& cc.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == FridgeTileIndexes[FridgeTilesToUse][1])
 					{
-						cc.Map.GetLayer("Buildings").Tiles[x, y] = new StaticTile(
-							cc.Map.GetLayer("Buildings"), cc.Map.TileSheets[0],
-							BlendMode.Alpha, cc.Map.GetLayer("Buildings").Tiles[x, y].TileIndex);
-						if (cc.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == FridgeTileIndexes[1])
-						{
-							return new Vector2(x, y);
-						}
+						return new Vector2(x, y);
 					}
 				}
 			}

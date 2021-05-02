@@ -1,13 +1,7 @@
 {
     "Name": "Green Jacket and Sweater",
-    "Description": "A warm sweater-jacket combo.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Chaqueta Verde y Suéter"
-    },
-    "DescriptionLocalization": {
-        "es": "Una combinación cálida de suéter y chaqueta."
-    }
+    "Dyeable": false
 }

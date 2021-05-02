@@ -1,14 +1,8 @@
 {
     "Name": "Sakura Kimono Purple Upper",
-    "Description": "A purple kimono, upper half.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "DefaultColor": "255, 255, 255, 255",
-    "NameLocalization": {
-        "es": "Kimono Sakura Purpura Superior"
-    },
-    "DescriptionLocalization": {
-        "es": "Un kimono morado, mitad superior."
-    }
+    "DefaultColor": "255, 255, 255, 255"
 }

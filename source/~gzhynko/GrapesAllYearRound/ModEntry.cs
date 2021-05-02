@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace GrapesAllYearRound
 {
@@ -22,7 +23,7 @@ namespace GrapesAllYearRound
     public class ModEntry : Mod, IAssetEditor
     {
         #region Public methods
-        
+
         /// <summary> The mod entry point, called after the mod is first loaded. </summary>
         /// <param name="helper"> Provides simplified APIs for writing mods. </param>
         public override void Entry(IModHelper helper)
@@ -75,7 +76,12 @@ namespace GrapesAllYearRound
         private void ApplyHarmonyPatches()
         {
             var harmony = HarmonyInstance.Create("GZhynko.GrapesAllYearRound");
-
+            
+            harmony.Patch(
+                AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.dayUpdate)),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.HoeDirtDayUpdate))
+            );
+            
             harmony.Patch(
                 AccessTools.Method(typeof(Crop), nameof(Crop.newDay)),
                 postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.CropNewDay))

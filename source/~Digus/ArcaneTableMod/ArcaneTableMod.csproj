@@ -55,6 +55,9 @@
     <None Update="[MFM]ArcaneTableMod\i18n\default.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="[MFM]ArcaneTableMod\i18n\ko.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="[MFM]ArcaneTableMod\i18n\pt.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

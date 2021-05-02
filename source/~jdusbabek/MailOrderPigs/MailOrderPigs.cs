@@ -114,13 +114,13 @@ namespace MailOrderPigs
 
             return new List<Object>
             {
-                new Object(100, 1, false, 400) { name = "Chicken", Type = locationName.Equals("Coop") || locationName.Equals("Deluxe Coop") || locationName.Equals("Big Coop") ? null : "You gotta be in a Coop" },
-                new Object(100, 1, false, 750) { name = "Dairy Cow", Type = locationName.Equals("Barn") || locationName.Equals("Deluxe Barn") || locationName.Equals("Big Barn") ? null : "You gotta be in a Barn" },
-                new Object(100, 1, false, 2000) { name = "Goat", Type = locationName.Equals("Big Barn") || locationName.Equals("Deluxe Barn") ? null : "You gotta be in a Big Barn" },
-                new Object(100, 1, false, 2000) { name = "Duck", Type = locationName.Equals("Big Coop") || locationName.Equals("Deluxe Coop") ? null : "You gotta be in a Big Coop" },
-                new Object(100, 1, false, 4000) { name = "Sheep", Type = locationName.Equals("Deluxe Barn") ? null : "You gotta be in a Deluxe Barn" },
-                new Object(100, 1, false, 4000) { name = "Rabbit", Type = locationName.Equals("Deluxe Coop") ? null : "You gotta be in a Deluxe Coop" },
-                new Object(100, 1, false, 8000) { name = "Pig", Type = locationName.Equals("Deluxe Barn") ? null : "You gotta be in a Deluxe Barn" }
+                new Object(100, 1, false, 800) { name = "Chicken", Type = locationName.Equals("Coop") || locationName.Equals("Deluxe Coop") || locationName.Equals("Big Coop") ? null : "You gotta be in a Coop" },
+                new Object(100, 1, false, 1500) { name = "Dairy Cow", Type = locationName.Equals("Barn") || locationName.Equals("Deluxe Barn") || locationName.Equals("Big Barn") ? null : "You gotta be in a Barn" },
+                new Object(100, 1, false, 4000) { name = "Goat", Type = locationName.Equals("Big Barn") || locationName.Equals("Deluxe Barn") ? null : "You gotta be in a Big Barn" },
+                new Object(100, 1, false, 1200) { name = "Duck", Type = locationName.Equals("Big Coop") || locationName.Equals("Deluxe Coop") ? null : "You gotta be in a Big Coop" },
+                new Object(100, 1, false, 8000) { name = "Sheep", Type = locationName.Equals("Deluxe Barn") ? null : "You gotta be in a Deluxe Barn" },
+                new Object(100, 1, false, 8000) { name = "Rabbit", Type = locationName.Equals("Deluxe Coop") ? null : "You gotta be in a Deluxe Coop" },
+                new Object(100, 1, false, 16000) { name = "Pig", Type = locationName.Equals("Deluxe Barn") ? null : "You gotta be in a Deluxe Barn" }
             };
         }
     }

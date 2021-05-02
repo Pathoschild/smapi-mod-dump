@@ -48,7 +48,7 @@ In addition to the bundles (both normal and remixed) in the base game, the follo
 - Adventurer's Bundle to Gemologist's Bundle (by LenneDalben)
 - The Impossible Bundle (by Mossy)
 - Minerva's Harder Community Center Bundles
-- Challenging Community Center Bundles (for PPJA) (by Alja)
+- Challenging Community Center Bundles (by Alja)
 
 Note that even unsupported bundle mods should have at least partial support. Any items not covered will just not show any suggestions.
 

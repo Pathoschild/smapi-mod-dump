@@ -1,0 +1,8 @@
+{
+  "VanillaWarpsEnabled": "AfterObelisk",
+  "FarmWarpEnabled": "AfterObelisk",
+  "AccessFromDisabled": false,
+  "AccessFromWand": false,
+  "PatchObelisks": true,
+  "MenuEnabled": true
+}

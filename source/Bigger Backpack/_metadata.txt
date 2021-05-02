@@ -5,9 +5,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit 99490db3fb9bedc88f4c7c9096b69057b768de33
+   commit c4411a9a4c90322133941b1c66ebc1fad6f91ba0
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Tue Mar 30 12:26:49 2021 +0200
+   Date:   Sun Apr 11 12:32:11 2021 +0200
    
-       Suppress architecture warning
+       Bump smapi version
    

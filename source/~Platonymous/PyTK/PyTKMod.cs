@@ -93,8 +93,15 @@ namespace PyTK
         {
             _instance = this;
 
-            Config = helper.ReadConfig<PyTKConfig>();
-
+            try
+            {
+                Config = helper.ReadConfig<PyTKConfig>();
+            }
+            catch
+            {
+                Config = new PyTKConfig();
+                helper.WriteConfig(Config);
+            }
             hInstance = HarmonyInstance.Create("Platonymous.PyTK.Rev");
             helper.Events.Display.RenderingWorld += (s,e) =>
             {
@@ -424,74 +431,9 @@ namespace PyTK
                });
             };
 
-            Monitor.Log("Patching: GetModFile", LogLevel.Trace);
-
-            try
-            {
-                instance.Patch(
-                   original: AccessTools.Method(Type.GetType("StardewModdingAPI.Framework.ContentManagers.ModContentManager, StardewModdingAPI"), "GetModFile"),
-                   prefix: new HarmonyMethod(this.GetType().GetMethod("GetModFile", BindingFlags.Public | BindingFlags.Static))
-               );
-            }
-            catch
-            {
-                Monitor.Log("Failed to Patch: GetModFile, this Error may not be critical", LogLevel.Info);
-            }
-
-            Monitor.Log("Patching: NormalizeTilesheetPaths", LogLevel.Trace);
-            try
-            {
-                instance.Patch(
-                   original: AccessTools.Method(Type.GetType("StardewModdingAPI.Framework.ContentManagers.ModContentManager, StardewModdingAPI"), "NormalizeTilesheetPaths"),
-                   postfix: new HarmonyMethod(this.GetType().GetMethod("NormalizeTilesheetPaths", BindingFlags.Public | BindingFlags.Static))
-               );
-            }
-            catch
-            {
-                Monitor.Log("Failed to Patch: NormalizeTilesheetPaths, this Error may not be critical", LogLevel.Info);
-            }
-
             setupLoadIntercepter(instance);
         }
-
-        private static List<string> excludeTileSheetsFromModFolder = new List<string>();
-
-        public static void GetModFile(ref string path)
-        {
-            if (excludeTileSheetsFromModFolder.Contains(Path.GetFileNameWithoutExtension(path)))
-                path = "Excluded_" + path;
-        }
-
-        public static void NormalizeTilesheetPaths(Map map)
-        {
-
-            excludeTileSheetsFromModFolder.Clear();
-
-            if (!map.TileSheets.Any())
-                return;
-
-
-            foreach (xTile.Tiles.TileSheet tilesheet in map.TileSheets)
-            {
-                if ((tilesheet.Properties.TryGetValue("@Vanilla", out xTile.ObjectModel.PropertyValue vanillaProperty) && vanillaProperty != null) ||
-                    (tilesheet.Properties.TryGetValue("@IgnoreLocalFile", out xTile.ObjectModel.PropertyValue ignoreProperty) && ignoreProperty != null))
-                {
-                    bool isOutdoors = map.Properties.TryGetValue("Outdoors", out xTile.ObjectModel.PropertyValue outdoorsProperty) && outdoorsProperty != null;
-
-                    string filename = Path.GetFileNameWithoutExtension(tilesheet.ImageSource);
-                    bool isSeasonal = filename.StartsWith("spring_", StringComparison.CurrentCultureIgnoreCase)
-                        || filename.StartsWith("summer_", StringComparison.CurrentCultureIgnoreCase)
-                        || filename.StartsWith("fall_", StringComparison.CurrentCultureIgnoreCase)
-                        || filename.StartsWith("winter_", StringComparison.CurrentCultureIgnoreCase);
-                    if (isOutdoors && isSeasonal)
-                        filename = $"{Game1.currentSeason}_{filename.Substring(filename.IndexOf("_", StringComparison.CurrentCultureIgnoreCase) + 1)}";
-                   
-                    excludeTileSheetsFromModFolder.AddOrReplace(filename);
-                }
-            }
-        }
-
-
+       
         private void setupLoadIntercepter(HarmonyInstance harmony)
         {
              Monitor.Log("Patching: FromStream", LogLevel.Trace);
@@ -611,8 +553,8 @@ namespace PyTK
 
                     if (data.Animation is Animation anim)
                     {
-                        tileHeight = anim.FrameHeight == -1 ? texture.Height : anim.FrameHeight;
-                        tileWidth = anim.FrameWidth == -1 ? texture.Width : anim.FrameWidth;
+                        tileHeight = anim.FrameHeight == -1 ? texture.Height : Math.Min(texture.Height, anim.FrameHeight);
+                        tileWidth = anim.FrameWidth == -1 ? texture.Width : Math.Min(texture.Width, anim.FrameWidth);
                         fps = anim.FPS;
                         loop = anim.Loop;
 
@@ -656,6 +598,9 @@ namespace PyTK
             var sr = !sourceArea.HasValue ? s : sourceArea.Value;
             var tr = !targetArea.HasValue ? sr : targetArea.Value;
 
+            if (__instance.Data is ScaledTexture2D && !(source is ScaledTexture2D))
+                return true;
+
             if (source is ScaledTexture2D scaled)
             {
                 if (a == tr && patchMode == PatchMode.Replace)
@@ -673,7 +618,7 @@ namespace PyTK
                     __instance.Data.getArea(tr).GetData(data);
                     scaled.SetData<Color>(data);
                 }
-
+                
                 if (__instance.Data is MappedTexture2D map)
                     map.Set(tr, source);
                 else
@@ -685,6 +630,8 @@ namespace PyTK
                 return false;
             }else if(__instance.Data is ScaledTexture2D sc)
             {
+
+
                 __instance.ReplaceWith(new MappedTexture2D(__instance.Data, new Dictionary<Rectangle?, Texture2D>() { { tr, (sr.Width != source.Width || sr.Height != source.Height) ? source.getArea(sr) : source } }));
                 return false;
             }

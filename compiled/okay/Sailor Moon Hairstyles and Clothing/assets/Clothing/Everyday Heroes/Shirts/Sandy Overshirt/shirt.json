@@ -1,13 +1,7 @@
 {
     "Name": "Sandy Overshirt",
-    "Description": "A beige shirt and red undershirt.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Sobrecamisa Arenosa"
-    },
-    "DescriptionLocalization": {
-        "es": "Una camisa beige y una camiseta roja."
-    }
+    "Dyeable": false
 }

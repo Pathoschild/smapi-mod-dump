@@ -17,25 +17,30 @@ namespace TheLion.AwesomeProfessions
 {
 	internal class TemporaryAnimatedSpriteCtorPatch : BasePatch
 	{
-		/// <summary>Construct an instance.</summary>
-		internal TemporaryAnimatedSpriteCtorPatch() { }
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		protected internal override void Apply(HarmonyInstance harmony)
+		/// <inheritdoc/>
+		public override void Apply(HarmonyInstance harmony)
 		{
 			harmony.Patch(
-				AccessTools.Constructor(typeof(TemporaryAnimatedSprite), new Type[] { typeof(int), typeof(float), typeof(int), typeof(int), typeof(Vector2), typeof(bool), typeof(bool), typeof(GameLocation), typeof(Farmer) }),
+				original: AccessTools.Constructor(typeof(TemporaryAnimatedSprite), new[] { typeof(int), typeof(float), typeof(int), typeof(int), typeof(Vector2), typeof(bool), typeof(bool), typeof(GameLocation), typeof(Farmer) }),
 				postfix: new HarmonyMethod(GetType(), nameof(TemporaryAnimatedSpriteCtorPostfix))
 			);
 		}
 
 		#region harmony patches
+
 		/// <summary>Patch to increase Demolitionist bomb radius.</summary>
-		protected static void TemporaryAnimatedSpriteCtorPostfix(ref TemporaryAnimatedSprite __instance, Farmer owner)
+		private static void TemporaryAnimatedSpriteCtorPostfix(ref TemporaryAnimatedSprite __instance, Farmer owner)
 		{
-			if (Utility.SpecificPlayerHasProfession("demolitionist", owner)) ++__instance.bombRadius;
+			try
+			{
+				if (Utility.SpecificPlayerHasProfession("Demolitionist", owner)) ++__instance.bombRadius;
+			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(TemporaryAnimatedSpriteCtorPostfix)}:\n{ex}");
+			}
 		}
+
 		#endregion harmony patches
 	}
 }

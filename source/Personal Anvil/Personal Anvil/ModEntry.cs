@@ -64,10 +64,12 @@ namespace PersonalAnvil
         {
             // Re-send a left click to the geode menu if one is already not being broken, the player has the room and money for it, and the click was on the geode spot.
             if (!e.IsMultipleOf(4) || !Helper.Input.IsDown(SButton.MouseLeft) ||
-                !(Game1.activeClickableMenu is WorkbenchGeodeMenu menu)) return;
+                !(Game1.activeClickableMenu is WorkbenchGeodeMenu menu))
+                return;
             var clintNotBusy = menu.heldItem != null && Utility.IsGeode(menu.heldItem) && menu.GeodeAnimationTimer <= 0;
 
-            var playerHasRoom = Game1.player.freeSpotsInInventory() > 1 || Game1.player.freeSpotsInInventory() == 1 && menu.heldItem != null && menu.heldItem.Stack == 1;
+            var playerHasRoom = Game1.player.freeSpotsInInventory() > 1 || Game1.player.freeSpotsInInventory() == 1 &&
+                menu.heldItem != null && menu.heldItem.Stack == 1;
 
             if (clintNotBusy && playerHasRoom && menu.GeodeSpot.containsPoint(_leftClickXPos, _leftClickYPos))
             {

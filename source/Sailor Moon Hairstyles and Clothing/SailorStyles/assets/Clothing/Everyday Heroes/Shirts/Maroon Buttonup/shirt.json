@@ -10,14 +10,8 @@
 
 {
     "Name": "Maroon Buttonup",
-    "Description": "A deep red sweater with a tall collar.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Maroon Buttonup"
-    },
-    "DescriptionLocalization": {
-        "es": "A deep red sweater with a tall collar."
-    }
+    "Dyeable": false
 }

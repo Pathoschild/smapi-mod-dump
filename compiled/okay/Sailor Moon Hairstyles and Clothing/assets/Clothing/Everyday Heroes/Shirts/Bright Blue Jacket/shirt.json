@@ -1,13 +1,7 @@
 {
     "Name": "Bright Blue Jacket",
-    "Description": "A blue jacket sporting white trim.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Chaqueta Azul Brillante"
-    },
-    "DescriptionLocalization": {
-        "es": "Una chaqueta azul con ribete blanco deportivo."
-    }
+    "Dyeable": false
 }

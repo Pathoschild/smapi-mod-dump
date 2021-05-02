@@ -12,12 +12,15 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace Su226.AnySave {
-  class AnySaveApi {
-    private Regex escapingRegex = new Regex(@"[^A-Za-z0-9]");
+  public class AnySaveApi {
+    public delegate bool LocationHandler(string map, float x, float y, int facing);
+    private Regex EscapingRegex = new Regex(@"[^A-Za-z0-9]");
+    private IList<LocationHandler> LocationHandlers = new List<LocationHandler>();
 
     ////////////////////////////////
     // Player
@@ -43,14 +46,18 @@ namespace Su226.AnySave {
       return data;
     }
 
+    public void RegisterLocationHandler(LocationHandler handler) {
+      LocationHandlers.Add(handler);
+    }
+
     public void RestoreCurrentPlayer(FarmerData data) {
       M.Monitor.Log(string.Format("Restoring current player."));
       // Restore actual position
-      LocationRequest request = Game1.getLocationRequest(data.map);
-      request.OnWarp += delegate {
-        Game1.player.Position = new Vector2(data.x, data.y);
-      };
-      Game1.warpFarmer(request, 0, 0, data.facing);
+      foreach (LocationHandler handler in LocationHandlers.Reverse()) {
+        if (handler(data.map, data.x, data.y, data.facing)) {
+          break;
+        }
+      }
       Game1.fadeToBlackAlpha = 1.2f;
       // Restore swimming
       if (data.swimSuit) {
@@ -65,7 +72,7 @@ namespace Su226.AnySave {
     // NPC
     ////////////////////////////////
     public string Escape(string s) {
-      return this.escapingRegex.Replace(s, match => "-" + ((int)match.Value[0]).ToString() + "-");
+      return this.EscapingRegex.Replace(s, match => "-" + ((int)match.Value[0]).ToString() + "-");
     }
 
     public string GetNpcKey(NPC c) {

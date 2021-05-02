@@ -1,13 +1,7 @@
 {
     "Name": "School Uniform - Moon",
-    "Description": "A middle-school uniform decorated with a shining brooch.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Uniforme Escolar - Moon"
-    },
-    "DescriptionLocalization": {
-        "es": "Un uniforme de secundaria decorado con un brillante broche."
-    }
+    "Dyeable": false
 }

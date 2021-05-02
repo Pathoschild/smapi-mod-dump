@@ -5,30 +5,19 @@ mods:
    The Love of Cooking
 
 latest commit:
-   commit b36ac46bdd2e563f8ea502987376a0bd4a5d790b
+   commit 29e2d647090f60e576a570151d0989702ab2f061
    Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Mon Mar 15 15:22:06 2021 +1100
+   Date:   Thu Apr 1 11:06:15 2021 +1100
    
-       RELEASE: 1.0.11+
-       Implemented SMAPI split-screen coop compatibility; moved per-player instance variables to a per-player, per-session State container, and changed how contextual event watchers are handled.
-       Relegated all custom bundle and tool methods and values to their own Bundles and Tools static classes.
-       Removed unused code relating to CookingTakesTime and map edits.
-       Start of compatibility with Level Extender.
-       Added compatibility with spacechase0's Generic Mod Config Menu.
-       Moved Cooking skill level up recipes table to their own data file.
-       Moved some mod constant values to a more easily-accessible ItemDefinitions data file.
-       Moved Cooking skill constant values to a CookingSkillValues data file and opened up accessibility.
-       Changed CookingSkill.SaleValue to CookingSkill.SalePriceModifier, and price bonus is now handled in Object_GetPriceAfterMultipliers_Postfix.
-       Moved usages of CookingSkill.ExtraPortionChance to CookingSkillAPI.RollForExtraPortion().
-       Fixed cooking menu being raised when players are attempting to submit items to an NPC's kitchen for a Special Order.
-       Fixed occasional errors and bugs when using spacechase0's Cooking Skill crafting menu.
-       Fixed recipes from previous levels not being unlocked when gaining more than 1 level in the Cooking skill per day.
-       Fixed blank recipes filling Cooking skill level-up page.
-       Fixed a number of bugs with simultaneous cooking menus in split-screen local coop.
-       Added behaviour to back-fill any missing recipes to the player's cooking recipe list, which should cover the player for any changes made to the recipe level-up table later on.
-       Adjusted the Cooking skill level-up recipe list to include Redberry Pie.
-       Prevented buff reassignment from assigning not-implemented Cooking skill buff to ingredients.
-       FoodHealsOverTime no longer considers Life Elixir when negating instant healing.
-       Corrected default ingredients for Pineapple Skewers recipe.
-       Corrected item category for Pink Cake Slice.
+       RELEASE 1.0.12+:
+       Reworked nettle bush spawn logic to have a greater consistency in adding nettles to the world.
+       Nettle bushes are now globally cleared after each season.
+       Nettle bushes no longer check to spawn at Mountain, given no weeds spawn there.
+       Nettle bushes once again correctly drop nettles, usable with the keg.
+       Nettle bush sprite reworked.
+       Custom bushes now use SpaceCore serialisation rather than PyTK.
+       Community centre kitchen usable fridge no longer causes visual bugs when using Stardew Valley Expanded.
+       Community centre no longer scrambles custom tiles when using other mods which add new tilesets to the map.
+       Corrected bug in i18n token for SaleValue cooking skill profession.
+       Increased food health/energy regeneration speed by 2.5x.
    

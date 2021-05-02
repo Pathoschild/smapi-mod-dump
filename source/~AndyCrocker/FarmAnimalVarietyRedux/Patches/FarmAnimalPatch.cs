@@ -112,7 +112,7 @@ namespace FarmAnimalVarietyRedux.Patches
                     // most likely means the user has butchered their mod list so it's kinda on them anyway
                 }
             }
-            
+
             // set the animal type
             if (isTypeASubtype)
                 __instance.type.Value = type;
@@ -139,7 +139,7 @@ namespace FarmAnimalVarietyRedux.Patches
             {
                 var savedProduceData = new List<SavedProduceData>();
                 foreach (var produce in animalSubtypeData.Produce)
-                    savedProduceData.Add(new SavedProduceData(produce.DefaultProductId, produce.UpgradedProductId, 0));
+                    savedProduceData.Add(new SavedProduceData(produce.UniqueName, 0));
 
                 __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(savedProduceData);
             }
@@ -218,14 +218,14 @@ namespace FarmAnimalVarietyRedux.Patches
 
                 // add any produce that are missing
                 foreach (var animalSubtypeProduce in animalSubtype.Produce)
-                    if (!parsedProduces.Any(parsedProduce => parsedProduce.DefaultProductId == animalSubtypeProduce.DefaultProductId && parsedProduce.UpgradedProductId == animalSubtypeProduce.UpgradedProductId))
-                        parsedProduces.Add(new SavedProduceData(animalSubtypeProduce.DefaultProductId, animalSubtypeProduce.UpgradedProductId, 0));
+                    if (!parsedProduces.Any(parsedProduce => parsedProduce.UniqueName.ToLower() == animalSubtypeProduce.UniqueName.ToLower()))
+                        parsedProduces.Add(new SavedProduceData(animalSubtypeProduce.UniqueName, 0));
 
                 // remove any produce that should no longer be there
                 for (int i = 0; i < parsedProduces.Count; i++)
                 {
                     var parsedProduce = parsedProduces[i];
-                    if (!animalSubtype.Produce.Any(produce => produce.DefaultProductId == parsedProduce.DefaultProductId && produce.UpgradedProductId == parsedProduce.UpgradedProductId))
+                    if (!animalSubtype.Produce.Any(produce => produce.UniqueName.ToLower() == parsedProduce.UniqueName.ToLower()))
                         parsedProduces.RemoveAt(i--);
                 }
 
@@ -523,7 +523,7 @@ namespace FarmAnimalVarietyRedux.Patches
 
                 // get the modData products that are valid to be dropped
                 var validProduces = Utilities.GetValidAnimalProduce(animalProduces, __instance);
-                var produces = parsedProduces.Where(product => product.DaysLeft <= 0 && validProduces.Any(animalProduct => animalProduct.DefaultProductId == product.DefaultProductId && animalProduct.UpgradedProductId == product.UpgradedProductId));
+                var produces = parsedProduces.Where(product => product.DaysLeft <= 0 && validProduces.Any(animalProduct => animalProduct.UniqueName.ToLower() == product.UniqueName.ToLower()));
 
                 // ensure there was a produce that could be dropped
                 if (produces.Count() == 0)
@@ -534,7 +534,7 @@ namespace FarmAnimalVarietyRedux.Patches
 
                 // choose the product to drop
                 var parsedProduceToDrop = produces.ElementAt(Game1.random.Next(produces.Count()));
-                var produceToDrop = validProduces.First(produce => produce.DefaultProductId == parsedProduceToDrop.DefaultProductId && produce.UpgradedProductId == parsedProduceToDrop.UpgradedProductId);
+                var produceToDrop = validProduces.First(produce => produce.UniqueName.ToLower() == parsedProduceToDrop.UniqueName.ToLower());
                 var forageId = -1;
                 var shouldDropUpgraded = Utilities.ShouldDropUpgradedProduct(produceToDrop, __instance);
                 if (shouldDropUpgraded != null)
@@ -577,9 +577,13 @@ namespace FarmAnimalVarietyRedux.Patches
                 var amount = Utilities.DetermineDropAmount(produceToDrop);
                 var quality = Utilities.DetermineProductQuality(__instance, produceToDrop);
                 if (location == Game1.currentLocation)
-                    AnimateForage(__instance, (Farmer farmer) => { SpawnForagedItem(forageId, amount, quality, __instance, shouldDropUpgraded.Value, produceToDrop); });
+                    AnimateForage(__instance, (Farmer farmer) => { SpawnForagedItem(forageId, amount, quality, __instance); });
                 else
-                    SpawnForagedItem(forageId, amount, quality, __instance, shouldDropUpgraded.Value, produceToDrop);
+                    SpawnForagedItem(forageId, amount, quality, __instance);
+
+                // update parsed products to reset object
+                parsedProduces.First(produce => produce.UniqueName.ToLower() == produceToDrop.UniqueName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(produceToDrop);
+                __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(parsedProduces);
             }
 
             __result = false;
@@ -1036,7 +1040,7 @@ namespace FarmAnimalVarietyRedux.Patches
                 {
                     parsedProduce.DaysLeft = Math.Max(0, parsedProduce.DaysLeft - 1);
 
-                    var animalProduce = subtype.Produce.FirstOrDefault(ap => ap.DefaultProductId == parsedProduce.DefaultProductId && ap.UpgradedProductId == parsedProduce.UpgradedProductId);
+                    var animalProduce = subtype.Produce.FirstOrDefault(ap => ap.UniqueName.ToLower() == parsedProduce.UniqueName.ToLower());
                     if (animalProduce == null)
                         continue;
 
@@ -1059,25 +1063,26 @@ namespace FarmAnimalVarietyRedux.Patches
                 // get the modData products that have a lay harvest type, and that is pending to drop (zero 'days till next produce' in modData)
                 var validProduces = Utilities.GetValidAnimalProduce(animalProduces, __instance);
                 var produces = parsedProduces
-                    .Where(product => product.DaysLeft <= 0 && validProduces.Any(animalProduct => animalProduct.DefaultProductId == product.DefaultProductId && animalProduct.UpgradedProductId == product.UpgradedProductId));
+                    .Where(product => product.DaysLeft <= 0 && validProduces.Any(animalProduct => animalProduct.UniqueName.ToLower() == product.UniqueName.ToLower()));
 
                 // spawn objects
                 if (produces.Count() > 0)
                     foreach (var produce in produces)
                     {
-                        var animalProduce = animalProduces.FirstOrDefault(ap => ap.DefaultProductId == produce.DefaultProductId && ap.UpgradedProductId == produce.UpgradedProductId);
+                        var animalProduce = animalProduces.FirstOrDefault(ap => ap.UniqueName.ToLower() == produce.UniqueName.ToLower());
                         if (animalProduce == null)
                             continue;
 
                         // determine item to drop (default or upgraded)
+                        var uniqueProduceName = ""; // unique name is kept track to update the saved data
                         var productId = -1;
                         var shouldDropUpgraded = Utilities.ShouldDropUpgradedProduct(animalProduce, __instance);
                         if (shouldDropUpgraded != null)
                         {
                             if (shouldDropUpgraded.Value)
-                                productId = animalProduce.UpgradedProductId;
+                                (uniqueProduceName, productId) = (animalProduce.UniqueName, animalProduce.UpgradedProductId);
                             else
-                                productId = animalProduce.DefaultProductId;
+                                (uniqueProduceName, productId) = (animalProduce.UniqueName, animalProduce.DefaultProductId);
                         }
 
                         if (productId == -1)
@@ -1089,10 +1094,7 @@ namespace FarmAnimalVarietyRedux.Patches
                             continue;
 
                         // update parsed productss to reset object
-                        if (shouldDropUpgraded.Value)
-                            parsedProduces.First(produce => produce.UpgradedProductId == productId).DaysLeft = Utilities.DetermineDaysToProduce(animalProduce);
-                        else
-                            parsedProduces.First(produce => produce.DefaultProductId == productId).DaysLeft = Utilities.DetermineDaysToProduce(animalProduce);
+                        parsedProduces.First(produce => produce.UniqueName.ToLower() == uniqueProduceName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(animalProduce);
                     }
 
                 // update modData
@@ -1248,11 +1250,9 @@ namespace FarmAnimalVarietyRedux.Patches
         /// <param name="stackSize">The stack size of the object.</param>
         /// <param name="quality">The quality of the product being produced (4 = iridium, 2 = gold, 1 = silver, 0 = normal)</param>
         /// <param name="animal">The animal to spawn forage produce for.</param>
-        /// <param name="shouldDropUpgraded">Whether the upgraded product in <paramref name="produceToDrop"/> is being dropped.</param>
-        /// <param name="produceToDrop">The produce the that is being foraged.</param>
         /// <returns><see langword="true"/> if the object was successfully spawned; otherwise, <see langword="false"/>.</returns>
         /// <remarks>This also updates the modData with the resetted DaysToProduce, this is because the method can be delayed if it's a callback from an animation, this resulted in the modData not being updated and animals endlessly producing forage produce.</remarks>
-        private static void SpawnForagedItem(int id, int stackSize, int quality, FarmAnimal animal, bool shouldDropUpgraded, AnimalProduce produceToDrop)
+        private static void SpawnForagedItem(int id, int stackSize, int quality, FarmAnimal animal)
         {
             var objectToSpawn = new StardewValley.Object(animal.getTileLocation(), id, stackSize) { Quality = quality };
             objectToSpawn.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"] = ""; // this is used so we can tell if this object should keep it's stack size when being picked up (no value is expected, just the keys presence)
@@ -1273,18 +1273,6 @@ namespace FarmAnimalVarietyRedux.Patches
                     if (random.NextDouble() <= animal.friendshipTowardFarmer / 1500f)
                         return;
                 }
-
-                // update parsed products to reset object
-                var parsedProduces = new List<SavedProduceData>();
-                if (animal.modData.TryGetValue($"{ModEntry.Instance.ModManifest.UniqueID}/produces", out var productsString))
-                    parsedProduces = JsonConvert.DeserializeObject<List<SavedProduceData>>(productsString);
-
-                if (shouldDropUpgraded)
-                    parsedProduces.First(produce => produce.UpgradedProductId == id).DaysLeft = Utilities.DetermineDaysToProduce(produceToDrop);
-                else
-                    parsedProduces.First(produce => produce.DefaultProductId == id).DaysLeft = Utilities.DetermineDaysToProduce(produceToDrop);
-
-                animal.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(parsedProduces);
             }
         }
 

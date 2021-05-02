@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/IslandGatherers
+**
+*************************************************/
+
+{
+  "Parrot Pot": {
+    "Frames": 1,
+    "PlayerColor": false,
+    "PlayerConfig": false,
+    "Capacity": 36,
+    "VacuumItems": false,
+    "IsPlaceable": true,
+    "AccessCarried": false,
+    "CanCarry": false,
+    "OpenSound": "stoneStep",
+    "DisabledFeatures": [
+      "AccessCarried",
+      "VacuumItems",
+      "CanCarry"
+    ]
+  }
+}

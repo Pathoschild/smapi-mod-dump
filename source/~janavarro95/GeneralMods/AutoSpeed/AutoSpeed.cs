@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
+using System.Linq;
 using Omegasis.AutoSpeed.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -19,11 +21,23 @@ namespace Omegasis.AutoSpeed
     public class AutoSpeed : Mod
     {
         /*********
+        **Static Fields
+        *********/
+        /// <summary>
+        /// All of the speed that is added together for auto speed. This is used for mod authors to hook in their speed boosts before auto speed applies the default speed boost.
+        /// </summary>
+        public Dictionary<string, int> combinedAddedSpeed;
+
+        /*********
         ** Fields
         *********/
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
 
+        /// <summary>
+        /// A static reference to expose public fields.
+        /// </summary>
+        public static AutoSpeed Instance;
 
         /*********
         ** Public methods
@@ -34,6 +48,17 @@ namespace Omegasis.AutoSpeed
         {
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             this.Config = helper.ReadConfig<ModConfig>();
+            this.combinedAddedSpeed = new Dictionary<string, int>();
+            Instance = this;
+        }
+
+        /// <summary>
+        /// Returns a copy of the mods' api.
+        /// </summary>
+        /// <returns></returns>
+        public override object GetApi()
+        {
+            return new AutoSpeedAPI();
         }
 
 
@@ -46,7 +71,10 @@ namespace Omegasis.AutoSpeed
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (Context.IsPlayerFree)
-                Game1.player.addedSpeed = this.Config.Speed;
+            {
+                int addedSpeed = this.combinedAddedSpeed.Values.Sum();
+                Game1.player.addedSpeed = this.Config.Speed+addedSpeed;
+            }
         }
     }
 }

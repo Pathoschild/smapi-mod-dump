@@ -9,14 +9,14 @@
 *************************************************/
 
 {
-  "Name": "GemLampPostsMod",
-  "Author": "ModAuthor",
-  "Version": "1.0.0",
-  "Description": "Mod Template",
-  "UniqueID": "ModAuthor.SMAPIMod",
-  "MinimumApiVersion": "2.11",
-  "UpdateKeys": [ "Nexus:" ],
-  "ContentPackFor": {
-    "UniqueID": "Pathoschild.ContentPatcher"
-  }
+    "Name": "GemLampPostsMod",
+    "Author": "Digus",
+    "Version": "1.0.1",
+    "Description": "Fake manifest. Remove it if you find it.",
+    "UniqueID": "Digus.GemLampPostsMod",
+    "MinimumApiVersion": "2.11",
+    "UpdateKeys": [ "Nexus:8292" ],
+    "ContentPackFor": {
+        "UniqueID": "Pathoschild.ContentPatcher"
+    }
 }

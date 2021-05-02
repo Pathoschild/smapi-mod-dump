@@ -25,11 +25,12 @@ mods:
    Time Freeze
 
 latest commit:
-   commit ad30dc6b917a18c4cb763fb608cc314bd68b6774
+   commit 202cf60230d2e14af4ca152c98fc3b6d2f854286
+   Merge: 9ebade83 e589653f
    Author: Joshua Navarro <janavarro95@users.noreply.github.com>
-   Date:   Tue Mar 30 17:22:26 2021 -0700
+   Date:   Tue Apr 6 17:39:42 2021 -0700
    
-       Create LICENSE file.
+       Merge pull request #75 from janavarro95/minor-cleanup
        
-       This repository was basically already under a "do whatever you want" agreement written in some places, but now it has a legal license so that any and all work can continue with it without worry.
+       Update project structure, minor cleanup & fixes
    

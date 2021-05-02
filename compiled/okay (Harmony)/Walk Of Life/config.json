@@ -1,13 +1,10 @@
 {
   "UseModdedProfessionIcons": true,
-  "UseAltProducerIcon": true,
-  "ModKey": "LeftShift",
-  "OenologyFameNeededForMaxValue": 5000,
-  "ForagesNeededForBestQuality": 200,
-  "MineralsNeededForBestQuality": 200,
-  "ScavengerHuntTimeLimitSeconds": 43,
-  "ProspectorHuntTimeLimitSeconds": 22,
+  "ModKey": "LeftShift, LeftShoulder",
+  "ArtisanLevelUpDifficulty": 0,
+  "ForagesNeededForBestQuality": 500,
+  "MineralsNeededForBestQuality": 500,
   "ChanceToStartTreasureHunt": 0.2,
   "TreasureTileDetectionDistance": 3.0,
-  "TrashNeededForNextTaxLevel": 50
+  "TrashNeededForNextTaxLevel": 100
 }

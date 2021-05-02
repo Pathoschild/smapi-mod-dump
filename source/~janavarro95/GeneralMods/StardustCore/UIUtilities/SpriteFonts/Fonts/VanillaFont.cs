@@ -23,8 +23,6 @@ namespace StardustCore.UIUtilities.SpriteFonts.Fonts
         public VanillaFont()
         {
             this.path = Path.Combine(SpriteFonts.FontDirectory, "Vanilla");
-            if (!Directory.Exists(this.path))
-                Directory.CreateDirectory(this.path);
             this.characterSheet = new VanillaCharacterSheet(this.path);
         }
 

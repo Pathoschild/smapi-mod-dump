@@ -1,14 +1,8 @@
 {
     "Name": "Sailor Pluto",
-    "Description": "A sleeveless sailor suit in a tall fit.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless",
-    "NameLocalization": {
-        "es": "Sailor Pluto"
-    },
-    "DescriptionLocalization": {
-        "es": "Un traje de marinero sin mangas con un corte alto."
-    }
+    "Metadata": "Sleeveless"
 }

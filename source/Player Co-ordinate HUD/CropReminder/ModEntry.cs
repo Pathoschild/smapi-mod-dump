@@ -30,6 +30,8 @@ namespace CropReminder
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            // This is a heavy WIP, and will not be completed for some time. Do not build this project.
+            // It would be pointless. There is no functionality here yet.
             throw new NotImplementedException();
         }
     }

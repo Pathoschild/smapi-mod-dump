@@ -1,0 +1,9 @@
+﻿{
+  "Name": "RadioactiveGeodes",
+  "Author": "justastranger",
+  "Version": "1.0.2",
+  "Description": "Creates a chance that a geode returning iridium can instead give radioactive ore if hard mode is enabled in the mines.",
+  "UniqueID": "jas.RadioactiveGeodes",
+  "EntryDll": "RadioactiveGeodes.dll",
+  "MinimumApiVersion": "3.9.0"
+}

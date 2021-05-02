@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8508
+IDs: shaklin.SebastianFrogTankSwitch
+update keys: Nexus:8508

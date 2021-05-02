@@ -32,7 +32,7 @@ namespace DarkUI
         private static int moneyMadeAccumulator;
         private static int moneyShineTimer;
         static bool Prefix(SpriteBatch b, Vector2 position, int target, MoneyDial __instance, bool ___playSounds)
-        { 
+        {
             if (__instance.previousTargetValue != target)
             {
                 speed = (target - __instance.currentValue) / 100;
@@ -59,15 +59,15 @@ namespace DarkUI
                     __instance.currentValue = target;
                 if (soundTimer <= 0)
                 {
-                    if (__instance.currentValue < target && ___playSounds)
-                        Game1.playSound("moneyDial");
+                    if (___playSounds && __instance.onPlaySound != null)
+                        __instance.onPlaySound(Math.Sign(target - __instance.currentValue));
                     soundTimer = Math.Max(6, 100 / (Math.Abs(speed) + 1));
                     if (Game1.random.NextDouble() < 0.4)
                     {
                         if (target > __instance.currentValue)
-                            __instance.animations.Add(new TemporaryAnimatedSprite(Game1.random.Next(10, 12), position + new Vector2((float)Game1.random.Next(30, 190), (float)Game1.random.Next(-32, 48)), Color.Gold, 8, false, 100f, 0, -1, -1f, -1, 0));
+                            __instance.animations.Add(new TemporaryAnimatedSprite(Game1.random.Next(10, 12), position + new Vector2((float)Game1.random.Next(30, 190), (float)Game1.random.Next(-32, 48)), Color.Gold));
                         else if (target < __instance.currentValue)
-                            __instance.animations.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(356, 449, 1, 1), 999999f, 1, 44, position + new Vector2((float)Game1.random.Next(160), (float)Game1.random.Next(-32, 32)), false, false, 1f, 0.01f, Color.White, (float)(Game1.random.Next(1, 3) * 4), -1f / 1000f, 0.0f, 0.0f, false)
+                            __instance.animations.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(356, 449, 1, 1), 999999f, 1, 44, position + new Vector2((float)Game1.random.Next(160), (float)Game1.random.Next(-32, 32)), false, false, 1f, 0.01f, Color.White, (float)(Game1.random.Next(1, 3) * 4), -1f / 1000f, 0.0f, 0.0f)
                             {
                                 motion = new Vector2((float)Game1.random.Next(-30, 40) / 10f, (float)Game1.random.Next(-30, -5) / 10f),
                                 acceleration = new Vector2(0.0f, 0.25f)
@@ -80,7 +80,7 @@ namespace DarkUI
                 if (__instance.animations[index].update(Game1.currentGameTime))
                     __instance.animations.RemoveAt(index);
                 else
-                    __instance.animations[index].draw(b, true, 0, 0, 1f);
+                    __instance.animations[index].draw(b, true);
             }
             int num1 = 0;
             int num2 = (int)Math.Pow(10.0, (double)(__instance.numDigits - 1));
@@ -97,5 +97,6 @@ namespace DarkUI
             }
             return false;
         }
-    } 
-}
+    }
+} 
+

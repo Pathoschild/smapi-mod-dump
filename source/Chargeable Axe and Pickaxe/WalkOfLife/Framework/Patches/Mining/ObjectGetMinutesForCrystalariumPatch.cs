@@ -9,6 +9,7 @@
 *************************************************/
 
 using Harmony;
+using StardewValley;
 using System;
 using SObject = StardewValley.Object;
 
@@ -16,25 +17,31 @@ namespace TheLion.AwesomeProfessions
 {
 	internal class ObjectGetMinutesForCrystalariumPatch : BasePatch
 	{
-		/// <summary>Construct an instance.</summary>
-		internal ObjectGetMinutesForCrystalariumPatch() { }
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		protected internal override void Apply(HarmonyInstance harmony)
+		/// <inheritdoc/>
+		public override void Apply(HarmonyInstance harmony)
 		{
 			harmony.Patch(
-				AccessTools.Method(typeof(SObject), name: "getMinutesForCrystalarium"),
+				original: AccessTools.Method(typeof(SObject), name: "getMinutesForCrystalarium"),
 				postfix: new HarmonyMethod(GetType(), nameof(ObjectGetMinutesForCrystalariumPostfix))
 			);
 		}
 
 		#region harmony patches
-		/// <summary>Patch to speed up Gemologist crystalarium processing time.</summary>
-		protected static void ObjectGetMinutesForCrystalariumPostfix(ref int __result)
+
+		/// <summary>Patch to speed up crystalarium processing time for each Gemologist.</summary>
+		private static void ObjectGetMinutesForCrystalariumPostfix(ref SObject __instance, ref int __result)
 		{
-			if (Utility.AnyPlayerHasProfession("gemologist", out int n)) __result = (int)(__result * Math.Pow(0.75, n));
+			try
+			{
+				var owner = Game1.getFarmer(__instance.owner.Value);
+				if (Utility.SpecificPlayerHasProfession("Gemologist", owner)) __result = (int)(__result * 0.75);
+			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(ObjectGetMinutesForCrystalariumPostfix)}:\n{ex}");
+			}
 		}
+
 		#endregion harmony patches
 	}
 }

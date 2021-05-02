@@ -1,13 +1,7 @@
 {
     "Name": "Orange Blouse",
-    "Description": "A simple orange top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Blusa Naranja"
-    },
-    "DescriptionLocalization": {
-        "es": "Un simple top naranja."
-    }
+    "Dyeable": false
 }

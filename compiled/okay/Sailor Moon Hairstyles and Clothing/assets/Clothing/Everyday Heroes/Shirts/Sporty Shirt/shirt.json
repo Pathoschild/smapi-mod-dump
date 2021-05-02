@@ -1,13 +1,7 @@
 {
     "Name": "Sporty Shirt",
-    "Description": "A slim blue top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Camisa Deportiva"
-    },
-    "DescriptionLocalization": {
-        "es": "Un top azul delgado."
-    }
+    "Dyeable": false
 }

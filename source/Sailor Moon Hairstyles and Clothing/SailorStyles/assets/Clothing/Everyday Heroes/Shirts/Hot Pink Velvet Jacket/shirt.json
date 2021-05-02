@@ -10,14 +10,8 @@
 
 {
     "Name": "Hot Pink Velvet Jacket",
-    "Description": "The black trim takes the edge off this all-pink outfit.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Chaqueta de Terciopelo Rosa"
-    },
-    "DescriptionLocalization": {
-        "es": "El ribete negro le quita el borde a este atuendo totalmente rosa."
-    }
+    "Dyeable": false
 }

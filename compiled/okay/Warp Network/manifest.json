@@ -1,0 +1,19 @@
+﻿{
+  "Name": "Warp Network",
+  "Author": "tlitookilakin",
+  "Version": "1.0.0",
+  "Description": "Adds a warp network acessible via the warp statues",
+  "UniqueID": "tlitookilakin.warpnetwork",
+  "EntryDll": "WarpNetwork.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8567" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    },
+    {
+      "UniqueID": "pathoschild.ContentPatcher",
+      "Required":  "false"
+    }
+  ]
+}

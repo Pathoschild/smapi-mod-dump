@@ -34,8 +34,34 @@ namespace Omegasis.TimeFreeze
         public override void Entry(IModHelper helper)
         {
             this.Config = helper.ReadConfig<ModConfig>();
-
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
+        }
+
+        private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            foreach (GameLocation loc in Game1.locations)
+            {
+                if (this.Config.freezeTimeInThisLocation.ContainsKey(loc.Name) == false)
+                {
+                    if (loc.IsOutdoors)
+                    {
+                        this.Config.freezeTimeInThisLocation.Add(loc.Name, false);
+                    }
+                    else
+                    {
+                        this.Config.freezeTimeInThisLocation.Add(loc.Name, true);
+                    }
+                }
+            }
+
+            //Patch in the underground mine shaft.
+            if (this.Config.freezeTimeInThisLocation.ContainsKey("UndergroundMine") == false)
+            {
+                this.Config.freezeTimeInThisLocation.Add("UndergroundMine", true);
+            }
+            
+            this.Helper.WriteConfig<ModConfig>(this.Config);
         }
 
 
@@ -121,7 +147,9 @@ namespace Omegasis.TimeFreeze
             {
                 Farmer player = Game1.player;
                 if (this.ShouldFreezeTime(player, player.currentLocation))
+                {
                     Game1.gameTimeInterval = 0;
+                }
                 //else
                 //    Game1.gameTimeInterval = this.oldInterval;
             }
@@ -132,30 +160,45 @@ namespace Omegasis.TimeFreeze
         /// <param name="location">The location to check.</param>
         private bool ShouldFreezeTime(Farmer player, GameLocation location)
         {
-            if (this.Config.PassTimeWhileInsideMine)
+            
+            if (Game1.showingEndOfNightStuff) return false;
+            if (this.Config.freezeTimeInThisLocation.ContainsKey(location.Name))
             {
-                if (location.Name == "Mine" || location.Name.StartsWith("UndergroundMine"))
-                    return false;
+                if (location.Name.Equals("SkullCave") || location.Name.StartsWith("SkullCave"))
+                {
+                    return this.Config.freezeTimeInThisLocation["SkullCave"];
+                }
+
+                if (player.swimming.Value)
+                {
+                    if (this.Config.PassTimeWhileSwimmingInBathhouse && location is BathHousePool)
+                        return false;
+                }
+
+                return this.Config.freezeTimeInThisLocation[location.Name];
             }
 
-            if (this.Config.PassTimeWhileInsideSkullCave)
+            if (location.NameOrUniqueName.StartsWith("UndergroundMine"))
             {
-                if (location.Name == "SkullCave" || location.Name.StartsWith("SkullCave"))
-                    return false;
+                return this.Config.freezeTimeInThisLocation["UndergroundMine"];
             }
 
+            //Skull cave check.
+            if (location.Name.Equals("SkullCave") || location.Name.StartsWith("SkullCave"))
+            {
+                return this.Config.freezeTimeInThisLocation["SkullCave"];
+            }
+
+
+            //this.Monitor.Log(Game1.player.currentLocation.NameOrUniqueName, LogLevel.Info);
+
+            //If for some reason the location wasn't accounted for then just freeze time there by default.
             if (location.IsOutdoors)
                 return false;
-
-            if (player.swimming.Value)
+            else
             {
-                if (this.Config.PassTimeWhileSwimmingInBathhouse && location is BathHousePool)
-                    return false;
-                if (this.Config.PassTimeWhileSwimming)
-                    return false;
+                return true;
             }
-
-            return true;
         }
     }
 }

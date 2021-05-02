@@ -26,7 +26,7 @@ namespace DarkUI
         {
             h = helper;
             h.Events.Display.RenderingActiveMenu += Display_RenderingActiveMenu;
-            var harmony = HarmonyInstance.Create("zazizu.DarkUI");
+            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 

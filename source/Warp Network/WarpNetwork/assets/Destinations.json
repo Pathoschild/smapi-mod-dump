@@ -1,0 +1,47 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tlitookilakin/WarpNetwork
+**
+*************************************************/
+
+{
+  "farm": {
+    "location": "Farm",
+    "x": 48,
+    "y": 7,
+    "enabled": false,
+    "label": "Farm"
+  },
+  "mountain": {
+    "location": "Mountain",
+    "x": 31,
+    "y": 20,
+    "enabled": false,
+    "label": "Mountains"
+  },
+  "beach": {
+    "location": "Beach",
+    "x": 20,
+    "y": 4,
+    "enabled": false,
+    "label": "Beach"
+  },
+  "desert": {
+    "location": "Desert",
+    "x": 35,
+    "y": 43,
+    "enabled": false,
+    "label": "Desert"
+  },
+  "island": {
+    "location": "IslandSouth",
+    "x": 11,
+    "y": 11,
+    "enabled": false,
+    "label":  "Ginger Island"
+  }
+}

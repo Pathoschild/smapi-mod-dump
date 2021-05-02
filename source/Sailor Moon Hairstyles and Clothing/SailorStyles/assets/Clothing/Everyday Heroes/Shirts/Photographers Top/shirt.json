@@ -10,14 +10,8 @@
 
 {
     "Name": "Photographers Top",
-    "Description": "Apparel for an incredible scoop.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Top de Fotógrafo"
-    },
-    "DescriptionLocalization": {
-        "es": "Ropa para una primicia asombrosa."
-    }
+    "Dyeable": false
 }

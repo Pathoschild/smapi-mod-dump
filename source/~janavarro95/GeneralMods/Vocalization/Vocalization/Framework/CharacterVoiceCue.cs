@@ -147,6 +147,7 @@ namespace Vocalization.Framework
                         this.dialogueFileNames.Add("MarriageDialogue" + this.name + ".xnb");
 
                         this.dataFileNames.Add("EngagementDialogue.xnb");
+                        this.dataFileNames.Add("NPCGiftTastes.xnb");
 
                         this.stringsFileNames.Add("StringsFromCSFiles.xnb");
                         this.stringsFileNames.Add(this.name + ".xnb");

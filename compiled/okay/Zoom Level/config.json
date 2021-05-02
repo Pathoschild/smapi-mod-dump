@@ -1,12 +1,11 @@
 {
-  "IncreaseZoomKey": "OemPeriod",
-  "DecreaseZoomKey": "OemComma",
-  "IncreaseZoomButton": "RightStick",
-  "DecreaseZoomButton": "LeftStick",
+  "IncreaseZoomOrUI": "OemPeriod, RightStick",
+  "DecreaseZoomOrUI": "OemComma, LeftStick",
+  "HoldToChangeUIKeys": "LeftShift, RightShift, LeftTrigger + RightTrigger",
   "SuppressControllerButton": true,
+  "ZoomAndUIControlEverywhere": false,
   "ZoomLevelIncreaseValue": 0.05,
   "ZoomLevelDecreaseValue": -0.05,
-  "MaxZoomOutLevelValue": 0.35,
-  "MaxZoomInLevelValue": 2.0,
-  "DisableControllerButton": false
+  "MaxZoomOutLevelAndUIValue": 0.35,
+  "MaxZoomInLevelAndUIValue": 2.0
 }

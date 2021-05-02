@@ -10,14 +10,8 @@
 
 {
     "Name": "Stripey Green Shirt",
-    "Description": "A colourful stripey shirt.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Camisa Verde a Rayas"
-    },
-    "DescriptionLocalization": {
-        "es": "Una colorida camisa a rayas."
-    }
+    "Dyeable": false
 }

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Perfection Tweaker",
+  "Author": "shekurika",
+  "Version": "1.0.0",
+  "Description": "Allows to tweak requirements for Perfection",
+  "UniqueID": "shekurika.PerfectionTweaker",
+  "EntryDll": "PerfectionTweaker.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:8615"]
+}

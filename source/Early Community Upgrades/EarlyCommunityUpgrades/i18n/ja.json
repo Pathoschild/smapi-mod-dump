@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/dtomlinson-ga/EarlyCommunityUpgrades
+**
+*************************************************/
+
+{
+  "ScienceHouse_Carpenter_CommunityUpgrade1": "えっ、 なになに？パムに 家を 建てて あげたいの？それ いいわね！ それじゃあ 木材が {{woodPieces}}個と 費用は {{goldPieces}}g ってとこかな",
+  "ScienceHouse_Carpenter_CommunityUpgrade2": "…どうしたの？谷の周りにいくつか近道を作って欲しいですって？もちろん、私ならできるよ！ {{goldPieces}}gは必要かな…",
+  "ScienceHouse_Carpenter_NotEnoughWood3": "ごめんなさい…お金は 足りてるけど、 木材も {{woodPieces}}個 必要なの"
+
+}

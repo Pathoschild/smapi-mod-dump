@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tlitookilakin/WarpNetwork
+**
+*************************************************/
+
+{
+  "Name": "Warp Network",
+  "Author": "tlitookilakin",
+  "Version": "1.0.1",
+  "Description": "Adds a warp network acessible via the warp statues",
+  "UniqueID": "tlitookilakin.warpnetwork",
+  "EntryDll": "WarpNetwork.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8567", "Moddrop:951720" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    },
+    {
+      "UniqueID": "pathoschild.ContentPatcher",
+      "Required":  "false"
+    }
+  ]
+}

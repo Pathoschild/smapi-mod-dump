@@ -1,13 +1,7 @@
 {
     "Name": "Violet Shirt and Tie",
-    "Description": "This top is surely the height of smart-casual.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Camisa Violeta y Corbata"
-    },
-    "DescriptionLocalization": {
-        "es": "Este top es sin duda el colmo del intelectual-casual."
-    }
+    "Dyeable": false
 }

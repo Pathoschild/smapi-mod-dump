@@ -1,0 +1,13 @@
+url:
+   https://github.com/Bifibi/SDVEscapeRope.git
+
+mods:
+   Escape Rope
+
+latest commit:
+   commit d82c08c759c5ee5ec1e72dcc0cbf8e4117011dd7
+   Author: Lestoph Wuwald <lc.wuwald@gmail.com>
+   Date:   Sat Apr 24 12:07:11 2021 +0200
+   
+       Update readme
+   

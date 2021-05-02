@@ -64,10 +64,12 @@ namespace MailServicesMod
         internal static void GiftToNpc(string npcName)
         {
             NPC npc = Game1.getCharacterFromName(npcName);
-            string giftName = Game1.player.ActiveObject.DisplayName;
-            npc.receiveGift(Game1.player.ActiveObject, Game1.player, true, 1, DataLoader.ModConfig.ShowDialogOnItemDelivery);
-            ShopMenu.chargePlayer(Game1.player, 0, DataLoader.ModConfig.GiftServiceFee);
-            Game1.player.reduceActiveItemByOne();
+            Farmer who = Game1.player;
+            string giftName = who.ActiveObject.DisplayName;
+            npc.receiveGift(who.ActiveObject, who, true, 1, DataLoader.ModConfig.ShowDialogOnItemDelivery);
+            ShopMenu.chargePlayer(who, 0, DataLoader.ModConfig.GiftServiceFee);
+            who.reduceActiveItemByOne();
+            who.completeQuest(25);
             if (!DataLoader.ModConfig.ShowDialogOnItemDelivery)
             {
                 Game1.drawObjectDialogue(DataLoader.I18N.Get("Shipment.Gift.GiftSent", new { Gift = giftName, Npc = npc.displayName }));
@@ -75,16 +77,16 @@ namespace MailServicesMod
             if (DataLoader.ModConfig.EnableJealousyFromMailedGifts)
             {
                 if (npc.datable.Value 
-                    && Game1.player.spouse != null 
-                    && !Game1.player.spouse.Contains(npc.Name) 
-                    && !Game1.player.spouse.Contains("Krobus") 
-                    && Utility.isMale(Game1.player.spouse) == Utility.isMale(npc.Name) 
-                    && Game1.random.NextDouble() < 0.3 - (double)((float)Game1.player.LuckLevel / 100f) - Game1.player.DailyLuck 
+                    && who.spouse != null 
+                    && !who.spouse.Contains(npc.Name) 
+                    && !who.spouse.Contains("Krobus") 
+                    && Utility.isMale(who.spouse) == Utility.isMale(npc.Name) 
+                    && Game1.random.NextDouble() < 0.3 - (double)((float)who.LuckLevel / 100f) - who.DailyLuck 
                     && !npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth) 
-                    && Game1.player.friendshipData[npc.Name].IsDating())
+                    && who.friendshipData[npc.Name].IsDating())
                 {
-                    NPC spouse = Game1.getCharacterFromName(Game1.player.spouse);
-                    Game1.player.changeFriendship(-30, spouse);
+                    NPC spouse = Game1.getCharacterFromName(who.spouse);
+                    who.changeFriendship(-30, spouse);
                     spouse.CurrentDialogue.Clear();
                     spouse.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3985", npc.displayName), spouse));
                 }

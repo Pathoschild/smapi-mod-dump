@@ -6,11 +6,12 @@ for queries and analysis.**
 
 ----
 
-# No longer maintained. Works for SDV upto 1.3
+# No longer maintained. Works for SDV upto 1.3.
+See below for alternatives
 # My Mods for Stardew Valley
 * **Mining Assist Mod**
   _A mod that is useful for mining. You can setup shortcut key bindings to use tools/weapons/item or craft items quickly._
-  Will create new project for SDV 1.5 and SMAPI 5
+  See https://github.com/KabigonFirst/MineAssist for SDV 1.5 and SMAPI 3.x
 * **Campfire Cooking Mod**
   _Happy cooking with Campfire._
   Use Limited Campfire Cooking instead. See https://stardewvalleywiki.com/Modding:Mod_compatibility

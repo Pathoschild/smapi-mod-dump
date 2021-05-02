@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 
 namespace Omegasis.BillboardAnywhere.Framework
@@ -16,6 +17,21 @@ namespace Omegasis.BillboardAnywhere.Framework
     internal class ModConfig
     {
         /// <summary>The key which shows the billboard menu.</summary>
-        public SButton KeyBinding { get; set; } = SButton.B;
+        public SButton CalendarKeyBinding { get; set; } = SButton.B;
+        /// <summary>The key which shows the quest menu.</summary>
+        public SButton QuestBoardKeyBinding { get; set; } = SButton.H;
+        /// <summary>The offset for the calendar button from the active menu</summary>
+        public Vector2 CalendarOffsetFromMenu { get; set; } = new Vector2(-100, 0);
+        /// <summary>The offset for the quest button from the active menu</summary>
+        public Vector2 QuestOffsetFromMenu { get; set; } = new Vector2(-200, 0);
+
+        /// <summary>
+        /// If true the calendar button is enabled for the in-game menu.
+        /// </summary>
+        public bool EnableInventoryCalendarButton { get; set; } = true;
+        /// <summary>
+        /// If true the quest button is enabled for the in-game menu.
+        /// </summary>
+        public bool EnableInventoryQuestButton { get; set; } = true;
     }
 }

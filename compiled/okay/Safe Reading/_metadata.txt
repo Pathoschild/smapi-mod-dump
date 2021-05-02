@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8564
+IDs: LunaticShade.SafeReading
+update keys: Nexus:8564, GitHub:LunaticShade/StardewValley.SafeReading

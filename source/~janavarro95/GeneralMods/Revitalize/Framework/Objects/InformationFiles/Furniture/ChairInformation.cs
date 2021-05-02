@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Revitalize.Framework.Objects.InformationFiles.Furniture
 {
-    public class ChairInformation:FurnitureInformation
+    public class ChairInformation
     {
         public bool canSitHere;
 

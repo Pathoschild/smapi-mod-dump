@@ -26,19 +26,19 @@ namespace Revitalize.Framework.Objects.Furniture
 
         }
 
-        public RugMultiTiledObject(BasicItemInformation Info) : base(Info)
+        public RugMultiTiledObject(CustomObjectData PyTKData, BasicItemInformation Info) : base(PyTKData,Info)
         {
-
+            this.Price = Info.price;
         }
 
-        public RugMultiTiledObject(BasicItemInformation Info, Vector2 TilePosition) : base(Info, TilePosition)
+        public RugMultiTiledObject(CustomObjectData PyTKData, BasicItemInformation Info, Vector2 TilePosition) : base(PyTKData,Info, TilePosition)
         {
-
+            this.Price = Info.price;
         }
 
-        public RugMultiTiledObject(BasicItemInformation Info, Vector2 TilePosition, Dictionary<Vector2, MultiTiledComponent> Objects) : base(Info, TilePosition, Objects)
+        public RugMultiTiledObject(CustomObjectData PyTKData, BasicItemInformation Info, Vector2 TilePosition, Dictionary<Vector2, MultiTiledComponent> Objects) : base(PyTKData,Info, TilePosition, Objects)
         {
-
+            this.Price = Info.price;
 
         }
 
@@ -47,17 +47,7 @@ namespace Revitalize.Framework.Objects.Furniture
         /// </summary>
         public override void rotate()
         {
-            Revitalize.ModCore.log("Rotate!");
-            foreach (KeyValuePair<Vector2, StardewValley.Object> pair in this.objects)
-            {
-                (pair.Value as RugTileComponent).rotate();
-            }
-            foreach (KeyValuePair<Vector2, StardewValley.Object> pair in this.objects)
-            {
-                (pair.Value as RugTileComponent).checkForSpecialUpSittingAnimation();
-            }
-
-            base.rotate();
+            
         }
 
         public override Item getOne()
@@ -69,7 +59,7 @@ namespace Revitalize.Framework.Objects.Furniture
             }
 
 
-            return new RugMultiTiledObject(this.info, this.TileLocation, objs);
+            return new RugMultiTiledObject(this.data,this.info.Copy(), this.TileLocation, objs);
         }
 
 
@@ -112,6 +102,33 @@ namespace Revitalize.Framework.Objects.Furniture
             }
 
 
+        }
+
+        public override void recreate()
+        {
+            Dictionary<Vector2, Guid> guids = new Dictionary<Vector2, Guid>();
+
+            foreach (KeyValuePair<Vector2, Guid> pair in this.childrenGuids)
+            {
+                guids.Add(pair.Key, pair.Value);
+            }
+
+            foreach (KeyValuePair<Vector2, Guid> pair in guids)
+            {
+                this.childrenGuids.Remove(pair.Key);
+                RugTileComponent component = Revitalize.ModCore.Serializer.DeserializeGUID<RugTileComponent>(pair.Value.ToString());
+                component.InitNetFields();
+                this.removeComponent(pair.Key);
+                this.addComponent(pair.Key, component);
+
+
+            }
+            this.InitNetFields();
+
+            if (!Revitalize.ModCore.ObjectGroups.ContainsKey(this.guid.ToString()))
+            {
+                Revitalize.ModCore.ObjectGroups.Add(this.guid.ToString(), this);
+            }
         }
 
 

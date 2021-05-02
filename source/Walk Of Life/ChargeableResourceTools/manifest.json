@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/theLion/smapi-mods/-/tree/master/WalkOfLife
+**
+*************************************************/
+
+{
+	"Name": "Chargeable Resource Tools",
+	"Author": "VonLoewe",
+	"Version": "1.2.0",
+	"Description": "Charge your Axe and Pickaxe to unleash a powerful shockwave!",
+	"UniqueID": "thelion.AwesomeTools",
+	"EntryDll": "AwesomeTools.dll",
+	"MinimumApiVersion": "3.8.0",
+	"UpdateKeys": [ "Nexus:7965" ]
+}

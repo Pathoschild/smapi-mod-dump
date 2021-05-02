@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <EnableHarmony>true</EnableHarmony>
+    <EnableModZip>false</EnableModZip>
+    <EnableModDeploy>false</EnableModDeploy>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AEFCC987-FDF8-434A-934A-7F8F0A066CD4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FishingTrawler</RootNamespace>
+    <AssemblyName>FishingTrawler</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="PyTK">
+      <HintPath>E:\SteamLibrary\steamapps\common\Stardew Valley\Mods\PyTK\PyTK.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="BmFont">
+      <HintPath>$(GamePath)\BmFont.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FishingTrawler\API\ApiManager.cs" />
+    <Compile Include="FishingTrawler\API\Interfaces\IContentPatcherAPI.cs" />
+    <Compile Include="FishingTrawler\API\Interfaces\IGenericModConfigMenuAPI.cs" />
+    <Compile Include="FishingTrawler\GameLocations\TrawlerCabin.cs" />
+    <Compile Include="FishingTrawler\GameLocations\TrawlerHull.cs" />
+    <Compile Include="FishingTrawler\GameLocations\TrawlerSurface.cs" />
+    <Compile Include="FishingTrawler\Messages\TrawlerEventMessage.cs" />
+    <Compile Include="FishingTrawler\Messages\DepartureMessage.cs" />
+    <Compile Include="FishingTrawler\Messages\TrawlerNotificationMessage.cs" />
+    <Compile Include="FishingTrawler\Messages\TrawlerSyncMessage.cs" />
+    <Compile Include="FishingTrawler\ModConfig.cs" />
+    <Compile Include="FishingTrawler\Objects\Rewards\AnglerRing.cs" />
+    <Compile Include="FishingTrawler\Objects\Rewards\AncientFlag.cs" />
+    <Compile Include="FishingTrawler\Objects\CustomMail.cs" />
+    <Compile Include="FishingTrawler\Objects\Murphy.cs" />
+    <Compile Include="FishingTrawler\Objects\Tools\BailingBucket.cs" />
+    <Compile Include="FishingTrawler\Objects\Trawler.cs" />
+    <Compile Include="FishingTrawler\ModEntry.cs" />
+    <Compile Include="FishingTrawler\ModResources.cs" />
+    <Compile Include="FishingTrawler\Objects\TrawlerRewards.cs" />
+    <Compile Include="FishingTrawler\Patches\Locations\IslandSouthEastPatch.cs" />
+    <Compile Include="FishingTrawler\Patches\Locations\GameLocationPatch.cs" />
+    <Compile Include="FishingTrawler\Patches\Locations\BeachPatch.cs" />
+    <Compile Include="FishingTrawler\Patches\Patch.cs" />
+    <Compile Include="FishingTrawler\UI\TrawlerUI.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\BeachPatchEmpty.tmx">
+      <Link>[CP] FishingTrawler\assets\BeachPatchEmpty.tmx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\BeachPatchMurphy.tmx">
+      <Link>[CP] FishingTrawler\assets\BeachPatchMurphy.tmx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\FishingTrawler.tmx">
+      <Link>FishingTrawler\assets\Maps\FishingTrawler.tmx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\IslandBeachPatchEmpty.tmx">
+      <Link>[CP] FishingTrawler\assets\IslandBeachPatchEmpty.tmx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\IslandBeachPatchMurphy.tmx">
+      <Link>[CP] FishingTrawler\assets\IslandBeachPatchMurphy.tmx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\TrawlerCabin.tmx">
+      <Link>FishingTrawler\assets\Maps\TrawlerCabin.tmx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\TrawlerHull.tmx">
+      <Link>FishingTrawler\assets\Maps\TrawlerHull.tmx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="FishingTrawler\assets\TrawlerItems\content-pack.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="FishingTrawler\i18n\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="FishingTrawler\i18n\ko.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="FishingTrawler\i18n\tr.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="[CP] FishingTrawler\content.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="[CP] FishingTrawler\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\AnglerRing.png">
+      <Link>FishingTrawler\assets\Objects\AnglerRing.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\BailingBucket.png">
+      <Link>FishingTrawler\assets\Objects\BailingBucket.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\BeachPatch.png">
+      <Link>[CP] FishingTrawler\assets\BeachPatch.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\BellsAndWhistles.png">
+      <Link>FishingTrawler\assets\Maps\BellsAndWhistles.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\Flags.png">
+      <Link>FishingTrawler\assets\Objects\Flags.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\FlagsAnimated.png">
+      <Link>FishingTrawler\assets\Maps\FlagsAnimated.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\Murphy.png">
+      <Link>FishingTrawler\assets\Characters\Murphy.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\MurphyPortrait.png">
+      <Link>FishingTrawler\assets\Characters\MurphyPortrait.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\Trawler.png">
+      <Link>FishingTrawler\assets\Objects\Trawler.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\TrawlerCabin.png">
+      <Link>FishingTrawler\assets\Maps\TrawlerCabin.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\TrawlerTiles.png">
+      <Link>FishingTrawler\assets\Maps\TrawlerTiles.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Sprite Sandbox\StardewMods\FishingTrawler\TrawlerUI.png">
+      <Link>FishingTrawler\assets\UI\TrawlerUI.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.2\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <VersionNumber Include="$([System.Text.RegularExpressions.Regex]::Replace(&quot;%(Targets.Version)&quot;, &quot;^(.+?)(\.0+)$&quot;, &quot;$1&quot;))" />
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+    $(PostBuildEventDependsOn);
+    PostBuildMacros;
+  </PostBuildEventDependsOn>
+    <PostBuildEvent>mkdir "$(TargetDir)$(ProjectName)"
+
+powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '@(VersionNumber)' | sc -LiteralPath \"$f\" })"
+move "$(TargetDir)manifest.json" "$(TargetDir)$(ProjectName)"
+move "$(TargetDir)$(ProjectName).dll" "$(TargetDir)$(ProjectName)"
+move "$(TargetDir)$(ProjectName).pdb" "$(TargetDir)$(ProjectName)"
+
+powershell Remove-Item -Path '$(SolutionDir)releases\latest\$(SolutionName)\$(ProjectName)"' -Recurse -Force
+xcopy /s /y /i "$(TargetDir)" "$(SolutionDir)releases\latest\$(SolutionName)"
+7z a -tzip "$(SolutionDir)releases\$(SolutionName)-@(VersionNumber).zip" "$(SolutionDir)releases\latest\$(SolutionName)"
+
+xcopy /s /y /i "$(SolutionDir)releases\latest\$(SolutionName)" "$(GameModsPath)\$(SolutionName)"</PostBuildEvent>
+  </PropertyGroup>
+  <ProjectExtensions />
+  <Target Name="CopyLinkedFiles" BeforeTargets="Build">
+    <Copy SourceFiles="%(Content.Identity)" DestinationFiles="%(Content.Link)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" Condition="'%(Content.Link)'&#xD;&#xA;!= ''" />
+  </Target>
+</Project>

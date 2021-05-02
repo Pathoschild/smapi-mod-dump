@@ -37,6 +37,7 @@ namespace RangedTools
         
         public static bool eventUpReset = false;
         public static bool eventUpOld = false;
+        public static int tileRadiusOverride = 0;
         
         /***************************
          ** Mod Injection Methods **
@@ -76,6 +77,18 @@ namespace RangedTools
                                  typeof(ModEntry), nameof(ModEntry.Postfix_draw),
                                  new Type[] { typeof(SpriteBatch) });
                 }
+                
+                if (helper.ModRegistry.IsLoaded("furyx639.ExpandedStorage")) // Additional methods to fix Expanded Storage conflict
+                {
+                    patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.playerCanPlaceItemHere),
+                                typeof(ModEntry), nameof(ModEntry.Prefix_playerCanPlaceItemHere));
+                    
+                    patchPostfix(harmonyInstance, typeof(Utility), nameof(Utility.playerCanPlaceItemHere),
+                                 typeof(ModEntry), nameof(ModEntry.Postfix_playerCanPlaceItemHere));
+                    
+                    patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.withinRadiusOfPlayer),
+                                typeof(ModEntry), nameof(ModEntry.Prefix_withinRadiusOfPlayer));
+                }
             }
             catch (Exception e)
             {
@@ -109,7 +122,7 @@ namespace RangedTools
             }
             catch (Exception e)
             {
-                Log("Error in code patching: " + e.Message + Environment.NewLine + e.StackTrace);
+                Log("Error in code patching: " + e.InnerException + Environment.NewLine + e.StackTrace);
             }
         }
         
@@ -139,7 +152,7 @@ namespace RangedTools
             }
             catch (Exception e)
             {
-                Log("Error in code patching: " + e.Message + Environment.NewLine + e.StackTrace);
+                Log("Error in code patching: " + e.InnerException + Environment.NewLine + e.StackTrace);
             }
         }
         
@@ -482,6 +495,64 @@ namespace RangedTools
             {
                 Game1.eventUp = eventUpOld;
                 eventUpReset = false;
+            }
+        }
+        
+        /// <summary>Prefix to Utility.playerCanPlaceItemHere used if Extended Storage is installed.
+        /// Extended Storage has a postfix to this method that uses withinRadiusOfPlayer, so this sets an override for it.</summary>
+        /// <param name="location">The location being tested.</param>
+        /// <param name="item">The object being tested.</param>
+        /// <param name="x">The X position.</param>
+        /// <param name="y">The Y position.</param>
+        /// <param name="f">The Farmer placing the object.</param>
+        public static void Prefix_playerCanPlaceItemHere(GameLocation location, Item item, int x, int y, Farmer f)
+        {
+            try
+            {
+                tileRadiusOverride = item.category == StardewValley.Object.SeedsCategory
+                                  || item.category == StardewValley.Object.fertilizerCategory? Config.SeedRange
+                                                                                             : Config.ObjectPlaceRange;
+            }
+            catch (Exception e)
+            {
+                Log("Error in playerCanPlaceItemHere: " + e.Message + Environment.NewLine + e.StackTrace);
+            }
+        }
+        
+        /// <summary>Postfix to Utility.playerCanPlaceItemHere to reset override set by prefix.</summary>
+        public static void Postfix_playerCanPlaceItemHere()
+        {
+            tileRadiusOverride = 0;
+        }
+        
+        /// <summary>Rewrite of Utility.withinRadiusOfPlayer to add an override for the tileRadius argument.</summary>
+        /// <param name="__result">The result of the function.</param>
+        /// <param name="x">The X position.</param>
+        /// <param name="y">The Y position.</param>
+        /// <param name="tileRadius">The allowed radius, overriden if tileRadiusOverride is set.</param>
+        /// <param name="f">The Farmer placing the object.</param>
+        public static bool Prefix_withinRadiusOfPlayer(ref bool __result, int x, int y, int tileRadius, Farmer f)
+        {
+            try
+            {
+                if (tileRadiusOverride == -1)
+                {
+                    __result = true;
+                    return false; // Don't do original function anymore
+                }
+                
+                if (tileRadiusOverride != 0)
+                    tileRadius = tileRadiusOverride;
+                
+                Point point = new Point(x / 64, y / 64);
+                Vector2 tileLocation = f.getTileLocation();
+                __result = (double)Math.Abs((float)point.X - tileLocation.X) <= (double)tileRadius && (double)Math.Abs((float)point.Y - tileLocation.Y) <= (double)tileRadius;
+                return false; // Don't do original function anymore
+            }
+            catch (Exception e)
+            {
+                Log("Error in withinRadiusOfPlayer: " + e.Message + Environment.NewLine + e.StackTrace);
+                return true; // Go to original function
             }
         }
         

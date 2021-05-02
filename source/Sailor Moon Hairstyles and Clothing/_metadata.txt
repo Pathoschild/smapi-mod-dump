@@ -5,9 +5,15 @@ mods:
    Sailor Moon Hairstyles and Clothing
 
 latest commit:
-   commit e5948578ad60cc7c5b0c3006dbea8d6224b88a95
-   Author: razikh-git <pocketsathome@gmail.com>
-   Date:   Mon Sep 14 01:11:16 2020 +1000
+   commit ccb7c9bab08ef106e5ac7863817895de5e9ad648
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Sun Apr 25 08:45:34 2021 +1000
    
-       Release 4.2+: The ol' 'rebase remove head' manouevre
+       RELEASE 4.3.0:
+       Overall project and code cleanup.
+       Centralised all item localisations into i18n files.
+       Ensured only one player may use the cat shop at a time to prevent null reference exceptions in shop menu.
+       Changed hairstyle unique ID system to be based on the Nexus update key.
+       Removed most debug/trace logging.
+       Renamed and reorganised mod media.
    

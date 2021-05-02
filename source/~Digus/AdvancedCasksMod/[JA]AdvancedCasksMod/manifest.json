@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "[JA]Advanced Casks Mod",
+    "Author": "Digus",
+    "Version": "1.0.1",
+    "Description": "Adds advanced casks to the game.",
+    "UniqueID": "Digus.AdvancedCasksMod",
+    "MinimumApiVersion": "3.9.0",
+    "UpdateKeys": [ "Nexus:8413" ],
+    "ContentPackFor": {
+        "UniqueID": "spacechase0.JsonAssets"
+    }
+}

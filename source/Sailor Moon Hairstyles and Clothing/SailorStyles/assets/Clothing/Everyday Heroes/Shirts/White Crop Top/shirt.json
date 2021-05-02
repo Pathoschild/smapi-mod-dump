@@ -10,14 +10,8 @@
 
 {
     "Name": "White Crop Top",
-    "Description": "A short-cut shirt in plain white.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Top Corto Blanco"
-    },
-    "DescriptionLocalization": {
-        "es": "Una camisa de corte corto en blanco liso."
-    }
+    "Dyeable": false
 }

@@ -10,14 +10,8 @@
 
 {
     "Name": "Green Hoodie and Coat",
-    "Description": "A double-layered stack of comfy coats.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Sudadera y Abrigo Verde"
-    },
-    "DescriptionLocalization": {
-        "es": "Una pila de abrigos cómodos de doble capa."
-    }
+    "Dyeable": false
 }

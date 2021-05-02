@@ -8,35 +8,30 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using StardewValley;
-using StardewValley.Menus;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using xTile.ObjectModel;
-using xTile.Tiles;
-
 namespace SailorStyles
 {
 	public class ModEntry : Mod
 	{
 		internal static ModEntry Instance;
-
-		internal Config Config;
+		internal static Config Config;
+		internal static IJsonAssetsApi JsonAssets;
 		internal ITranslationHelper i18n => Helper.Translation;
-		
-		private NPC _catNpc;
-		private Dictionary<ISalable, int[]> _catShopStock;
-		private static IJsonAssetsApi _ja;
+
+		private static NPC CatNpc = null;
+		private static readonly Dictionary<ISalable, int[]> CatShopStock = new Dictionary<ISalable, int[]>();
+
 
 		public override object GetApi()
 		{
@@ -48,128 +43,128 @@ namespace SailorStyles
 			Instance = this;
 			Config = helper.ReadConfig<Config>();
 
-			helper.Events.Input.ButtonReleased += OnButtonReleased;
-			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-			helper.Events.GameLoop.DayStarted += OnDayStarted;
-			helper.Events.GameLoop.DayEnding += OnDayEnding;
+			helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+			helper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
+			helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+			helper.Events.GameLoop.DayEnding += this.OnDayEnding;
+			helper.Events.Input.ButtonReleased += this.OnButtonReleased;
 
-			helper.Content.AssetLoaders.Add(new Editors.NpcLoader(helper));
-			helper.Content.AssetEditors.Add(new Editors.NpcLoader(helper));
+			var npcloader = new Editors.NpcManager();
+			helper.Content.AssetLoaders.Add(npcloader);
+			helper.Content.AssetEditors.Add(npcloader);
+			
+			var objecteditor = new Editors.ObjectDisplayNameEditor();
+			helper.Content.AssetEditors.Add(objecteditor);
 
 			if (Config.EnableHairstyles)
-				helper.Content.AssetEditors.Add(new Editors.HairstylesEditor(helper));
-		}
-		
-		#region Game Events
-
-		private void OnButtonReleased(object sender, ButtonReleasedEventArgs e)
-		{
-			e.Button.TryGetKeyboard(out var keyPressed);
-
-			if (Game1.activeClickableMenu != null || Game1.player.UsingTool || Game1.pickingTool || Game1.menuUp
-			    || (Game1.eventUp && !Game1.currentLocation.currentEvent.playerControlSequence)
-			    || Game1.nameSelectUp ||Game1.numberOfSelectedItems != -1)
-				return;
-
-			if (e.Button.IsActionButton())
 			{
-				var tile = Utility.Vector2ToPoint(e.Cursor.GrabTile);
-				if (Game1.currentLocation.doesEitherTileOrTileIndexPropertyEqual(
-					tile.X, tile.Y, "Action", "Buildings", ModConsts.CatId))
-					CatShop();
+				var hairloader = new Editors.HairstylesManager();
+				helper.Content.AssetLoaders.Add(hairloader);
+				helper.Content.AssetEditors.Add(hairloader);
 			}
 		}
 
+		#region Game Events
+
 		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
 		{
-			_catShopStock = new Dictionary<ISalable, int[]>();
+			GenerateCat();
 
-			_ja = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
-			if (_ja == null)
+			JsonAssets = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
+			if (JsonAssets == null)
 			{
 				Log.E("Can't access the Json Assets API. Is the mod installed correctly?");
 				return;
 			}
 			
-			foreach (var pack in ModConsts.HatPacks)
-				_ja.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets", ModConsts.HatsDir, pack));
-			foreach (var pack in ModConsts.ClothingPacks)
-				_ja.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets", ModConsts.ClothingDir, pack));
+			foreach (string pack in ModConsts.HatPacks)
+				JsonAssets.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets", ModConsts.HatsDir, pack));
+			foreach (string pack in ModConsts.ClothingPacks)
+				JsonAssets.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets", ModConsts.ClothingDir, pack));
 		}
-		
+
+		private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
+		{
+			Helper.Content.InvalidateCache(Path.Combine("Data", "hats"));
+			Helper.Content.InvalidateCache(Path.Combine("Data", "ClothingInformation"));
+		}
+
 		private void OnDayStarted(object sender, DayStartedEventArgs e)
 		{
-			Log.D($"Today's {Game1.shortDayDisplayNameFromDayOfSeason(Game1.dayOfMonth)} the "
-			      + $"{Game1.dayOfMonth}th of {Game1.CurrentSeasonDisplayName}: "
-			      + $"{(ShouldAddCatShop() ? "nice day for a cat" : "nothing special")}",
-				Config.DebugMode);
-			if (ShouldAddCatShop())
+			if (ShouldAddCatShopToday())
 			{
-				var location = Game1.getLocationFromName(ModConsts.CatLocation);
-				AddTiles(location);
-				AddNpcs(location);
-				CatShopRestock();
-
-				Log.D($"Cat status: {(_catNpc != null ? "cute" : "nowhere")}",
-					Config.DebugMode);
-				Log.D($"Shop status: {(_catShopStock.Count > 0 ? "fluffy" : "skinny")}",
-					Config.DebugMode);
+				GameLocation location = Game1.getLocationFromName(ModConsts.CatLocation);
+				AddCatToLocation(location);
+				RestockCatShop();
 			}
 		}
 		
 		private void OnDayEnding(object sender, DayEndingEventArgs e)
 		{
-			var location = Game1.getLocationFromName(ModConsts.CatLocation);
-			RemoveNpcs(location);
-			RemoveTiles(location);
+			GameLocation location = Game1.getLocationFromName(ModConsts.CatLocation);
+			RemoveCatFromLocation(location);
+		}
+
+		private void OnButtonReleased(object sender, ButtonReleasedEventArgs e)
+		{
+			if (e.Button.IsActionButton()
+				&& Game1.game1.IsActive && Context.IsPlayerFree
+				&& Game1.currentLocation?.isCharacterAtTile(e.Cursor.GrabTile) is NPC npc
+				&& npc?.Name == ModConsts.CatId)
+			{
+				this.UseCatShop();
+			}
 		}
 
 		#endregion
 
-		#region Manager Methods
+		#region Cat Methods
 
-		public bool ShouldAddCatShop()
+		private static void GenerateCat()
 		{
-			var facts = Game1.dayOfMonth % 7 <= 1 || 
-			            (Instance.Config.DebugMode && Instance.Config.DebugCaturday);
-			Log.D($"Cat should be added: {(facts ? "yes!" : "no..")}",
-				Config.DebugMode);
-			return facts;
-		}
-
-		private void AddNpcs(GameLocation location)
-		{
-			Log.D("Adding cat..",
-				Config.DebugMode);
-
-			if (location == null || location.getCharacterFromName(ModConsts.CatId) != null)
+			if (CatNpc != null)
 				return;
-			_catNpc = new NPC(
-				new AnimatedSprite(ModConsts.CatSpritesheet, 0, 16, 32),
-				new Vector2(ModConsts.CatX, ModConsts.CatY) * 64.0f,
-				ModConsts.CatLocation,
-				2,
-				ModConsts.CatId,
-				false,
-				null,
-				Helper.Content.Load<Texture2D>(
-					Path.Combine("Portraits", ModConsts.CatId),
-					ContentSource.GameContent));
-			ForceNpcSchedule(_catNpc);
-			location.addCharacter(_catNpc);
+
+			CatNpc = new NPC(
+				sprite: new AnimatedSprite(ModConsts.GameContentCatSpritesPath, 0, 16, 32),
+				position: Utility.PointToVector2(ModConsts.CatPosition) * 64.0f,
+				defaultMap: ModConsts.CatLocation,
+				facingDirection: 2,
+				name: ModConsts.CatId,
+				datable: false,
+				schedule: null,
+				portrait: Game1.content.Load
+					<Texture2D>
+					(ModConsts.GameContentCatPortraitPath))
+			{
+				Age = 2,
+				Breather = false
+			};
 		}
 
-		private void ForceNpcSchedule(NPC npc)
+		public static bool ShouldAddCatShopToday()
+		{
+			bool goodDay = Game1.stats.DaysPlayed > 3 && Game1.dayOfMonth % 7 <= 1;
+			bool debugging = Config.DebugMode && Config.DebugCaturday;
+			return goodDay || debugging;
+		}
+
+		private static void AddCatToLocation(GameLocation location)
+		{
+			if (!Context.IsMainPlayer || location == null || location.getCharacterFromName(ModConsts.CatId) != null)
+				return;
+			CatNpc.modData.Remove(ModConsts.CatMutexKey);
+			ForceNpcSchedule(CatNpc);
+			location.addCharacter(CatNpc);
+		}
+
+		private static void ForceNpcSchedule(NPC npc)
 		{
 			try
 			{
 				npc.Schedule = npc.getSchedule(Game1.dayOfMonth);
 				npc.ignoreScheduleToday = false;
 				npc.followSchedule = true;
-				if (Constants.TargetPlatform != GamePlatform.Android)
-					npc.scheduleTimeToTry = 9999999;
-				else
-					Helper.Reflection.GetField<int>(npc, "scheduleTimeToTry").SetValue(9999999);
 			}
 			catch (Exception e)
 			{
@@ -178,89 +173,59 @@ namespace SailorStyles
 			}
 		}
 
-		private void RemoveNpcs(GameLocation location)
+		private static void RemoveCatFromLocation(GameLocation location)
 		{
-			if (location.getCharacterFromName(ModConsts.CatId) != null)
+			if (Context.IsMainPlayer && CatNpc != null)
 			{
-				Log.D("Removing cat..",
-					Config.DebugMode);
-				location.characters.Remove(_catNpc);
+				CatNpc.modData.Remove(ModConsts.CatMutexKey);
+				if (location?.getCharacterFromName(CatNpc.Name) != null)
+				{
+					location.characters.Remove(CatNpc);
+				}
 			}
-			_catNpc = null;
-		}
-
-		private void AddTiles(GameLocation location)
-		{
-			var map = location.Map;
-			var sheet = map.GetTileSheet("outdoors");
-			var layer = map.GetLayer("Buildings");
-			const BlendMode mode = BlendMode.Additive;
-			if (layer.Tiles[ModConsts.CatX, ModConsts.CatY] == null)
-				// Adds a magic blank buildings tile to hold the CatShop property if none is there
-				// (there usually isnt, and its probably a problem for the cat if there is)
-				layer.Tiles[ModConsts.CatX, ModConsts.CatY] = new StaticTile(layer, sheet, mode, ModConsts.DummyTileIndex);
-			layer.Tiles[ModConsts.CatX, ModConsts.CatY].Properties["Action"] = new PropertyValue(ModConsts.CatId);
-		}
-
-		private void RemoveTiles(GameLocation location)
-		{
-			var map = location.Map;
-			var layer = map?.GetLayer("Buildings");
-			var tile = layer?.Tiles[ModConsts.CatX, ModConsts.CatY];
-			if (tile == null)
-				return;
-			Log.D($"Cleaning up {location.NameOrUniqueName}",
-				Config.DebugMode);
-			if (Game1.currentLocation.doesEitherTileOrTileIndexPropertyEqual(
-				ModConsts.CatX, ModConsts.CatY, "Action", "Buildings", ModConsts.CatId))
-				tile.Properties["Action"] = null;
-			if (tile.TileIndex == ModConsts.DummyTileIndex)
-				layer.Tiles[ModConsts.CatX, ModConsts.CatY] = null;
 		}
 
 		#endregion
 
 		#region CatShop Methods
 
-		private void CatShopRestock()
-		{
-			_catShopStock.Clear();
-			PopulateShop(true);
-			PopulateShop(false);
-		}
-
-		private static string GetContentPackId(string name)
+		internal static string ContentPackNameToId(string name)
 		{
 			return Regex.Replace(ModConsts.ContentPackPrefix + name,
 				"[^a-zA-Z0-9_.]", "");
 		}
 
-		private int GetContentPackCost(string name)
+		private static int GetContentPackCost(string name)
 		{
 			return ModConsts.ClothingPackCosts.ContainsKey(name)
 				? ModConsts.ClothingPackCosts[name]
 				: ModConsts.DefaultClothingCost;
 		}
 
-		private void PopulateShop(bool isHat)
+		private static void RestockCatShop()
+		{
+			CatShopStock.Clear();
+			PopulateCatShop(isHat: true);
+			PopulateCatShop(isHat: false);
+		}
+
+		private static void PopulateCatShop(bool isHat)
 		{
 			try
 			{
-				var random = new Random();
-				var stock = new List<string>();
-				var contentPacks = isHat
+				List<string> stock = new List<string>();
+				IEnumerable<string> contentPacks = isHat
 					? ModConsts.HatPacks
 					: ModConsts.ClothingPacks.Concat(Config.ExtraContentPacksToSellInTheShop);
 				
-				foreach (var contentPack in contentPacks)
+				foreach (string contentPack in contentPacks)
 				{
-					var contentPackId = !ModConsts.HatPacks.Contains(contentPack)
-					                    && !ModConsts.ClothingPacks.Contains(contentPack)
+					string contentPackId = !ModConsts.HatPacks.Contains(contentPack) && !ModConsts.ClothingPacks.Contains(contentPack)
 						? contentPack 
-						: GetContentPackId(contentPack);
-					var contentNames = isHat
-						? _ja.GetAllHatsFromContentPack(contentPackId)
-						: _ja.GetAllClothingFromContentPack(contentPackId);
+						: ContentPackNameToId(contentPack);
+					List<string> contentNames = isHat
+						? JsonAssets.GetAllHatsFromContentPack(contentPackId)
+						: JsonAssets.GetAllClothingFromContentPack(contentPackId);
 					if (contentNames == null || contentNames.Count < 1)
 					{
 						if (!ModConsts.HatPacks.Contains(contentPack) && !ModConsts.ClothingPacks.Contains(contentPack))
@@ -269,21 +234,19 @@ namespace SailorStyles
 								Config.DebugMode);
 							continue;
 						}
-						Log.E($"Failed to populate content from {contentPack}\n({contentPackId}).");
-						throw new NullReferenceException();
+						throw new NullReferenceException($"Failed to add content from {contentPack}\n({contentPackId}).");
 					}
 					if (contentPack.EndsWith("Kimono"))
-						contentNames.RemoveAll(n => n.EndsWith("wer"));
-
-					Log.D($"Stocking content from {contentPack}\n({contentPackId}).",
-						Config.DebugMode);
+					{
+						contentNames.RemoveAll(name => name.EndsWith("wer"));
+					}
 
 					stock.Clear();
-					var currentQty = 0;
-					var goalQty = Math.Max(1, contentNames.Count / ModConsts.CatShopQtyRatio);
+					int currentQty = 0;
+					int goalQty = Math.Max(1, contentNames.Count / ModConsts.CatShopQtyRatio);
 					while (currentQty < goalQty)
 					{
-						var name = contentNames[random.Next(contentNames.Count - 1)];
+						string name = contentNames[Game1.random.Next(contentNames.Count - 1)];
 
 						if (stock.Contains(name))
 							continue;
@@ -296,18 +259,14 @@ namespace SailorStyles
 						stock.Add(name.Replace("Upp", "Low"));
 					}
 
-					foreach (var name in stock)
+					foreach (string name in stock)
 					{
-						Log.D($"CatShop: Adding {name}",
-							Config.DebugMode);
 						if (isHat)
-							_catShopStock.Add(new StardewValley.Objects.Hat(
-								_ja.GetHatId(name)), new[]
-								{ GetContentPackCost(contentPack), 1 });
+							CatShopStock.Add(new StardewValley.Objects.Hat(
+								JsonAssets.GetHatId(name)), new[] { GetContentPackCost(contentPack), 1 });
 						else
-							_catShopStock.Add(new StardewValley.Objects.Clothing(
-								_ja.GetClothingId(name)), new[]
-								{ GetContentPackCost(contentPack), 1 });
+							CatShopStock.Add(new StardewValley.Objects.Clothing(
+								JsonAssets.GetClothingId(name)), new[] { GetContentPackCost(contentPack), 1 });
 					}
 				}
 			}
@@ -319,20 +278,35 @@ namespace SailorStyles
 			}
 		}
 
-		private void CatShop()
+		private void UseCatShop()
 		{
-			Game1.playSound("cat");
-			
-			var random = new Random((int)((long)Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed));
-			var whichDialogue = ModConsts.ShopDialogueRoot + random.Next(6);
-			if (whichDialogue.EndsWith("5"))
+			// Choose a shop dialogue visible in large viewports
+			Random random = new Random((int)((long)Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed));
+			string whichDialogue = ModConsts.ShopDialogueRoot + (1 + random.Next(5));
+			if (whichDialogue.EndsWith("5")) // Dialogue 5 is seasonal
 				whichDialogue += $".{Game1.currentSeason}";
-			var text = i18n.Get(whichDialogue);
-			
-			Game1.activeClickableMenu = new ShopMenu(_catShopStock);
-			((ShopMenu) Game1.activeClickableMenu).portraitPerson = _catNpc;
-			((ShopMenu)Game1.activeClickableMenu).potraitPersonDialogue
-				= Game1.parseText(text, Game1.dialogueFont, 304);
+			Translation text = i18n.Get(whichDialogue);
+
+			Game1.playSound("cat");
+			if (CatNpc.modData.ContainsKey(ModConsts.CatMutexKey))
+			{
+				//Game1.playSound("cancel");
+			}
+			else
+			{
+				// Open the cat shop
+				CatNpc.modData[ModConsts.CatMutexKey] = "";
+				ShopMenu shopMenu = new ShopMenu(itemPriceAndStock: CatShopStock)
+				{
+					portraitPerson = CatNpc,
+					potraitPersonDialogue = Game1.parseText(text: text, whichFont: Game1.dialogueFont, width: 304)
+				};
+				Game1.activeClickableMenu = shopMenu;
+				Game1.activeClickableMenu.exitFunction = delegate
+				{
+					CatNpc.modData.Remove(ModConsts.CatMutexKey);
+				};
+			}
 		}
 
 		#endregion

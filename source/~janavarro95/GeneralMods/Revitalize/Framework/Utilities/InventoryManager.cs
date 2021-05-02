@@ -9,6 +9,8 @@
 *************************************************/
 
 using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 using StardewValley;
 
 namespace Revitalize.Framework.Utilities
@@ -23,46 +25,85 @@ namespace Revitalize.Framework.Utilities
         public int MaxCapacity { get; private set; }
 
         /// <summary>How many items are currently stored in the inventory.</summary>
-        public int ItemCount => this.items.Count;
+        public int ItemCount => this.items.Where(i => i != null).Count();
 
         /// <summary>The actual contents of the inventory.</summary>
-        public List<Item> items;
+        public IList<Item> items;
+
+        /// <summary>
+        /// Items that are to be buffered into the inventory manager if possible.
+        /// </summary>
+        public IList<Item> bufferItems;
 
         /// <summary>Checks if the inventory is full or not.</summary>
-        public bool IsFull => this.ItemCount >= this.capacity;
+        public bool IsFull => this.ItemCount >= this.capacity && this.items.Where(i=>i==null).Count()==0;
 
         /// <summary>Checks to see if this core object actually has a valid inventory.</summary>
         public bool HasInventory => this.capacity > 0;
 
+        [JsonIgnore]
+        public bool hasItemsInBuffer
+        {
+            get
+            {
+                return this.bufferItems.Count > 0;
+            }
+        }
+
+        public int displayRows;
+        public int displayColumns;
+
+        [JsonIgnore]
+        public bool requiresUpdate;
         public InventoryManager()
         {
             this.capacity = 0;
             this.setMaxLimit(0);
             this.items = new List<Item>();
+            this.bufferItems = new List<Item>();
         }
 
         /// <summary>Construct an instance.</summary>
-        public InventoryManager(List<Item> items)
+        public InventoryManager(List<Item> items,int DisplayRows=6,int DisplayColumns=6)
         {
             this.capacity = int.MaxValue;
             this.setMaxLimit(int.MaxValue);
             this.items = items;
+            this.bufferItems = new List<Item>();
+            this.displayRows = DisplayRows;
+            this.displayColumns = DisplayColumns;
+        }
+
+        public InventoryManager(IList<Item> items, int Capacity= int.MaxValue, int DisplayRows = 6, int DisplayColumns = 6)
+        {
+            this.capacity = Capacity;
+            this.setMaxLimit(int.MaxValue);
+            this.items = items;
+            this.bufferItems = new List<Item>();
+            this.displayRows = DisplayRows;
+            this.displayColumns = DisplayColumns;
         }
 
         /// <summary>Construct an instance.</summary>
-        public InventoryManager(int capacity)
+        public InventoryManager(int capacity, int DisplayRows = 6, int DisplayColumns = 6)
         {
             this.capacity = capacity;
             this.MaxCapacity = int.MaxValue;
             this.items = new List<Item>();
+            this.bufferItems = new List<Item>();
+            this.displayRows = DisplayRows;
+            this.displayColumns = DisplayColumns;
         }
 
         /// <summary>Construct an instance.</summary>
-        public InventoryManager(int capacity, int MaxCapacity)
+        public InventoryManager(int capacity, int MaxCapacity, int DisplayRows = 6, int DisplayColumns = 6)
         {
             this.capacity = capacity;
             this.setMaxLimit(MaxCapacity);
             this.items = new List<Item>();
+            this.bufferItems = new List<Item>();
+            this.displayRows = DisplayRows;
+            this.displayColumns = DisplayColumns;
         }
 
         /// <summary>Add the item to the inventory.</summary>
@@ -74,14 +115,24 @@ namespace Revitalize.Framework.Utilities
             }
             else
             {
-                foreach (Item self in this.items)
+                for(int i = 0; i < this.items.Count; i++)
                 {
+                    Item self = this.items[i];
                     if (self != null && self.canStackWith(item))
                     {
-                        self.addToStack(item.Stack);
+                        self.addToStack(item);
+                        this.requiresUpdate = true;
+                        return true;
+                    }
+                    if (self == null)
+                    {
+                        self = item;
+                        this.requiresUpdate=true;
                         return true;
                     }
                 }
+
+                this.requiresUpdate = true;
                 this.items.Add(item);
                 return true;
             }
@@ -110,6 +161,7 @@ namespace Revitalize.Framework.Utilities
             if (item.Stack == 1)
                 return item;
 
+            this.requiresUpdate = true;
             item.Stack = item.Stack - 1;
             return item.getOne();
         }
@@ -117,6 +169,7 @@ namespace Revitalize.Framework.Utilities
         /// <summary>Empty the inventory.</summary>
         public void clear()
         {
+            this.requiresUpdate = true;
             this.items.Clear();
         }
 
@@ -130,13 +183,44 @@ namespace Revitalize.Framework.Utilities
         public void resizeCapacity(int Amount)
         {
             if (this.capacity + Amount < this.MaxCapacity)
+            {
                 this.capacity += Amount;
+                this.requiresUpdate = true;
+            }
         }
 
         /// <summary>Sets the upper limity of the capacity size for the inventory.</summary>
         public void setMaxLimit(int amount)
         {
             this.MaxCapacity = amount;
+            this.requiresUpdate = true;
+        }
+
+        public bool canReceieveThisItem(Item I)
+        {
+            if (this.IsFull) return false;
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Returns a new inventory manager without the items but with the capacity limits.
+        /// </summary>
+        /// <returns></returns>
+        public InventoryManager Copy()
+        {
+            return new InventoryManager(this.capacity, this.MaxCapacity,this.displayRows,this.displayColumns);
+        }
+
+        public void dumpBufferToItems()
+        {
+            foreach(Item I in this.bufferItems)
+            {
+                this.addItem(I);
+            }
+            this.bufferItems.Clear();
         }
     }
 }

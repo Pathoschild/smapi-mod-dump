@@ -26,7 +26,7 @@
     "NameLocalization": {
         "en": "Arcane Table",
         // "es": "",
-        // "ko": "",
+        "ko": "마법의 테이블",
         // "de": "",
         // "fr": "",
         // "hu": "",
@@ -39,7 +39,7 @@
     },
     "DescriptionLocalization": {
         // "es": "",
-        // "ko": "",
+        "ko": "몬스터 부산물을 재현할 수 있는 마법적 힘이 깃들어 있습니다.",
         // "de": "",
         // "fr": "",
         // "hu": "",

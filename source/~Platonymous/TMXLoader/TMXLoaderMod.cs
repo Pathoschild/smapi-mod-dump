@@ -234,9 +234,13 @@ namespace TMXLoader
 
         private void updateRainDrops()
         {
+            if (Constants.TargetPlatform == GamePlatform.Android)
+                return;
+
             for (int index = 0; index < Game1.rainDrops.Length; ++index)
             {
-                Game1.updateRaindropPosition();
+                if (AccessTools.Method(typeof(Game1), "updateRaindropPosition") is MethodInfo rainMethod)
+                    rainMethod.Invoke(null,null);
 
                 if (Game1.rainDrops[index].frame == 0)
                 {
@@ -381,7 +385,7 @@ namespace TMXLoader
                 removeSavedBuildable(toRemove,false, false);
         }
        
-        private void removeSavedBuildable(SaveBuildable toRemove, bool pay, bool distribute)
+        internal void removeSavedBuildable(SaveBuildable toRemove, bool pay, bool distribute)
         {
             try
             {
@@ -456,7 +460,7 @@ namespace TMXLoader
             }
         }
 
-        private string getLocationName(string uniqueId)
+        internal string getLocationName(string uniqueId)
         {
             return "BuildableIndoors" + "-" + uniqueId;
         }
@@ -509,7 +513,7 @@ namespace TMXLoader
                 return null;
         }
 
-        private void buildBuildableEdit(bool pay, BuildableEdit edit, GameLocation location, Point position, Dictionary<string, string> colors,  string uniqueId = null, string playerName = null, long playerId = -1, bool distribute = true)
+        internal void buildBuildableEdit(bool pay, BuildableEdit edit, GameLocation location, Point position, Dictionary<string, string> colors,  string uniqueId = null, string playerName = null, long playerId = -1, bool distribute = true)
         {
             if (uniqueId == null)
                     uniqueId = ((ulong)Helper.Multiplayer.GetNewID()).ToString();
@@ -754,7 +758,7 @@ namespace TMXLoader
             return map;
         }
 
-        private bool setLocationObjects(SaveLocation loc)
+        internal bool setLocationObjects(SaveLocation loc)
         {
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.ConformanceLevel = ConformanceLevel.Auto;
@@ -860,7 +864,7 @@ namespace TMXLoader
         }
 
 
-        private SaveLocation getLocationSaveData(GameLocation location)
+        internal SaveLocation getLocationSaveData(GameLocation location)
         {
            // PyTK.CustomElementHandler.SaveHandler.ReplaceAll(location, Game1.locations);
             string objects = "";
@@ -2181,13 +2185,13 @@ namespace TMXLoader
 
             if (remove)
             {
-                var rlist = new List<SaveBuildable>(buildablesBuild.Where(bbe => bbe.Location == Game1.currentLocation.Name || showAll));
+                var rlist = new List<SaveBuildable>(buildablesBuild.Where(bbe =>bbe.Location == Game1.currentLocation.Name || showAll));
                 rlist.Reverse();
 
                 foreach (var bb in rlist)
                 {
                     var b = buildables.Find(bd => bd.id == bb.Id);
-                    if (b == null)
+                    if (b == null || b.set == "Hidden")
                         continue;
 
                     if (set != i18n.Get("All") && b.translations[helper.Translation.LocaleEnum.ToString()].getSetName() != set)
@@ -2233,7 +2237,7 @@ namespace TMXLoader
                 List<string> sets = new List<string>() { i18n.Get("All") };
                 Dictionary<string, int> bSets = new Dictionary<string, int>();
                 int cBd = 0;
-                foreach (var b in buildables.Where(c => PyUtils.checkEventConditions(c.conditions, Game1.currentLocation)))
+                foreach (var b in buildables.Where(c => c.set != "Hidden" && PyUtils.checkEventConditions(c.conditions, Game1.currentLocation)))
                 {
                     if (!bSets.ContainsKey(b.translations[helper.Translation.LocaleEnum.ToString()].getSetName()))
                         bSets.Add(b.translations[helper.Translation.LocaleEnum.ToString()].getSetName(), 0);

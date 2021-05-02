@@ -1,7 +1,7 @@
 {
   "Name": "Fall 28 Snow Day",
   "Author": "Alpha_Omegasis",
-  "Version": "1.7.1",
+  "Version": "1.8.0",
   "Description": "Makes it snow on Fall 28, which makes a good explanation for all the snow on the next day.",
   "UniqueID": "Omegasis.Fall28SnowDay",
   "EntryDll": "Fall28SnowDay.dll",

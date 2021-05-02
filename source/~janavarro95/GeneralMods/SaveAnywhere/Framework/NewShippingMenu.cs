@@ -36,6 +36,40 @@ namespace Omegasis.SaveAnywhere.Framework
             : base(items)
         {
             this.SavedYet = reflection.GetField<bool>(this, "savedYet");
+
+
+            NetCollection<Item> shippingBin = Game1.getFarm().getShippingBin(Game1.player);
+            if (Game1.player.useSeparateWallets || !Game1.player.useSeparateWallets && Game1.player.IsMainPlayer)
+            {
+                int num = 0;
+                foreach (Item obj in shippingBin)
+                {
+                    if (obj is Object)
+                        num += (obj as Object).sellToStorePrice(-1L) * obj.Stack;
+                }
+                Game1.player.Money += num;
+                Game1.getFarm().getShippingBin(Game1.player).Clear();
+            }
+
+            if (Game1.player.useSeparateWallets && Game1.player.IsMainPlayer)
+            {
+                foreach (Farmer allFarmhand in Game1.getAllFarmhands())
+                {
+                    if (!allFarmhand.isActive() && !allFarmhand.isUnclaimedFarmhand)
+                    {
+                        int num = 0;
+                        foreach (Item obj in Game1.getFarm().getShippingBin(allFarmhand))
+                        {
+                            if (obj is Object)
+                                num += (obj as Object).sellToStorePrice(allFarmhand.UniqueMultiplayerID) * obj.Stack;
+                        }
+                        Game1.player.team.AddIndividualMoney(allFarmhand, num);
+                        Game1.getFarm().getShippingBin(allFarmhand).Clear();
+                    }
+                }
+            }
+
+
         }
 
         /// <summary>Overrides some base functionality of the shipping menu to enable proper closing.</summary>

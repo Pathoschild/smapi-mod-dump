@@ -8,3 +8,10 @@
 **
 *************************************************/
 
+{
+	"Name": "Beige Buttonup",
+	"Description": "...",
+	"HasFemaleVariant": false,
+	"Price": 50,
+	"Dyeable": false
+}

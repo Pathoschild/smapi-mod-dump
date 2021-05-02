@@ -28,15 +28,8 @@ namespace StardewHack.MovementSpeed
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
         public override void HackEntry(IModHelper helper) {
-            // If movement speed is different than the game's default.
-            if (Math.Abs(config.MovementSpeedMultiplier - 1) > 1e-3) {
-                Patch((Farmer f)=>f.getMovementSpeed(), Farmer_getMovementSpeed);
-            }
-            
-            // If the configured charge time is different than the game's default.
-            if (config.ToolChargeDelay != 600) {
-                Patch(typeof(Game1), "UpdateControlInput", Game1_UpdateControlInput);
-            }
+            Patch((Farmer f)=>f.getMovementSpeed(), Farmer_getMovementSpeed);
+            Patch(typeof(Game1), "UpdateControlInput", Game1_UpdateControlInput);
         }
 
         protected override void InitializeApi(GenericModConfigMenuAPI api)
@@ -46,7 +39,7 @@ namespace StardewHack.MovementSpeed
         }
 
         static float getMovementSpeedMultiplier() => getInstance().config.MovementSpeedMultiplier;
-        static int getToolChargeDelay() => getInstance().config.ToolChargeDelay;
+        static float getToolChargeDelay() => getInstance().config.ToolChargeDelay;
 
         // Add a multiplier to the movement speed.
         void Farmer_getMovementSpeed() {

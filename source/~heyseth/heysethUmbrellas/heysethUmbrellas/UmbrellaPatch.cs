@@ -22,7 +22,7 @@ using StardewValley.Tools;
 
 namespace heysethUmbrellas
 {
-    public class UmbrellaPatch : ToolOverridesBase
+    public class UmbrellaPatch
     {
         private static IMonitor Monitor;
 
@@ -37,6 +37,53 @@ namespace heysethUmbrellas
 			{
 				if (hoveredItem is object)
 				{
+					string[] words = { };
+					if (ModEntry.Config.enableWetness)
+                    {
+						if (ModEntry.customBestHats.Contains(hoveredItem.Name))
+						{
+							words = ("\n\nProvides major rain protection.").Split(' ');
+						}
+						else if (ModEntry.customGoodHats.Contains(hoveredItem.Name))
+						{
+							words = ("\n\nProvides moderate rain protection.").Split(' ');
+						}
+						else if (ModEntry.bestHatNames.Contains(hoveredItem.Name))
+						{
+							words = ("\n\nProvides major rain protection.").Split(' ');
+						}
+						else if (ModEntry.goodHatNames.Contains(hoveredItem.Name))
+						{
+							words = ("\n\nProvides moderate rain protection.").Split(' ');
+						} else if (hoveredItem.Name == "Rain Coat")
+                        {
+							words = ("\n\nProvides slight rain protection.").Split(' ');
+						}
+					}
+					
+					if (words.Length > 0)
+                    {
+						// There has got to be a better way to do this
+						int lengthCutoff = 0;
+						lengthCutoff = text.ToString().Split('\n')[0].Length;
+
+						text.Append("");
+
+						string line = "";
+						foreach (string word in words)
+						{
+							if ((line + word).Length > lengthCutoff)
+							{
+								text.AppendLine(line);
+								line = "";
+							}
+							line += string.Format("{0} ", word);
+						}
+
+						if (line.Length > 0)
+							text.Append(line);
+					}
+
 					if (ModEntry.umbrellaNames.Contains(hoveredItem.Name))
 					{
 						return false;
@@ -233,7 +280,7 @@ namespace heysethUmbrellas
 							descriptionWidth = Math.Max(minimum_size, (int)Game1.dialogueFont.MeasureString((boldTitleText == null) ? "" : boldTitleText).X);
 
 							// Hide the weapon tooltip
-							Utility.drawTextWithShadow(b, Game1.parseText("This is sure to keep you dry!", Game1.smallFont, descriptionWidth), font, new Vector2(x + 16, y4 + 16 + 4), Game1.textColor);
+							Utility.drawTextWithShadow(b, text.ToString().Split('#')[0], font, new Vector2(x + 16, y4 + 16 + 4), Game1.textColor); ;
 							//hoveredItem.drawTooltip(b, ref x, ref y4, font, alpha, text);
 						}
 						else if (text != null && text.Length != 0 && (text.Length != 1 || text[0] != ' '))

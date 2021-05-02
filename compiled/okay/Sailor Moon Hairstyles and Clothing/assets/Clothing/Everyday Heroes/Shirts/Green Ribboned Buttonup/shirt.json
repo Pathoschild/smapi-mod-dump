@@ -1,14 +1,8 @@
 {
     "Name": "Green Ribboned Buttonup",
-    "Description": "The whole front is adorned with little pink bows.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless",
-    "NameLocalization": {
-        "es": "Abotonado con Cinta Verde"
-    },
-    "DescriptionLocalization": {
-        "es": "Todo el frente está adornado con pequeños lazos rosados."
-    }
+    "Metadata": "Sleeveless"
 }

@@ -14,14 +14,31 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardustCore.UIUtilities.MenuComponents.ComponentsV1;
 
 namespace StardustCore.UIUtilities
 {
     public class IClickableMenuExtended : StardewValley.Menus.IClickableMenu
     {
+        /// <summary>
+        /// All stings to be displayed on this menu.
+        /// </summary>
         public List<SpriteFonts.Components.TexturedString> texturedStrings;
-        public List<MenuComponents.Button> buttons;
+        /// <summary>
+        /// All buttons belonging to this menu.
+        /// </summary>
+        public List<Button> buttons;
+        /// <summary>
+        /// The background color of this menu.
+        /// </summary>
         public Color dialogueBoxBackgroundColor;
+
+        public Texture2D menuBackgroundTexture;
+
+
+        /// <summary>
+        /// The textures used for this menu.
+        /// </summary>
         public List<Texture2DExtended> menuTextures;
 
         public bool showRightCloseButton;
@@ -34,7 +51,10 @@ namespace StardustCore.UIUtilities
             this.showRightCloseButton = showCloseButton;
         }
 
-
+        /// <summary>
+        /// Get a clone of this menu.
+        /// </summary>
+        /// <returns></returns>
         public virtual IClickableMenuExtended clone()
         {
             return new IClickableMenuExtended(this.xPositionOnScreen, this.yPositionOnScreen, this.width, this.height, this.showRightCloseButton);
@@ -468,5 +488,46 @@ namespace StardustCore.UIUtilities
         }
 
         public override void update(GameTime time) { }
+
+        /// <summary>
+        /// Gets a relative position for teh component on the menu.
+        /// </summary>
+        /// <param name="relativeOffset">A vector representing a relative offset. (.1,.1) means the new position should be set 10% away from the left and 10% away from the top in respect to teh edges of the menu.</param>
+        /// <returns></returns>
+        public Vector2 getRelativePositionToMenu(Vector2 relativeOffset)
+        {
+            return new Vector2(this.xPositionOnScreen + ( relativeOffset.X * this.width), this.yPositionOnScreen + (relativeOffset.Y * this.height));
+        }
+
+        public Vector2 getRelativePositionToMenu(float relx, float rely)
+        {
+            return new Vector2(this.xPositionOnScreen + (relx * this.width), this.yPositionOnScreen + (rely * this.height));
+        }
+
+        /// <summary>
+        /// Gets an absolute position away from the edge of the menu.
+        /// </summary>
+        /// <param name="relativeOffset"></param>
+        /// <returns></returns>
+        public Vector2 getFixedPositionFromMenu(Vector2 relativeOffset)
+        {
+            return new Vector2(this.xPositionOnScreen + relativeOffset.X, this.yPositionOnScreen + relativeOffset.Y);
+        }
+        /// <summary>
+        /// Gets an absolute position away from the edge of the menu.
+        /// </summary>
+        /// <param name="relx"></param>
+        /// <param name="rely"></param>
+        /// <returns></returns>
+        public Vector2 getFixedPositionFromMenu(float relx, float rely)
+        {
+            return new Vector2(this.xPositionOnScreen + relx, this.yPositionOnScreen + rely);
+        }
+
+        public virtual void exitMenu(bool playSound=true)
+        {
+            //Do extra stuff here.
+            this.exitThisMenu(playSound);
+        }
     }
 }

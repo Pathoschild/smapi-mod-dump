@@ -11,11 +11,11 @@
 {
     "Name": "[JA]Gem Lamp Posts Mod",
     "Author": "Digus",
-    "Version": "1.0.0",
+    "Version": "1.0.1",
     "Description": "Adds Lamp-posts to the game that are fueled by Gems. Gem dust can be used to create new gems with the Gem Composer.",
     "UniqueID": "Digus.GemLampPostsMod",
-    "MinimumApiVersion": "3.0.0",
-    "UpdateKeys": [ "Nexus:" ],
+    "MinimumApiVersion": "3.9.0",
+    "UpdateKeys": [ "Nexus:8292" ],
     "ContentPackFor": {
         "UniqueID": "spacechase0.JsonAssets"
     }

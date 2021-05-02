@@ -10,14 +10,8 @@
 
 {
     "Name": "Maroon Top",
-    "Description": "A reddish-brown two-tone top.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Top Granate"
-    },
-    "DescriptionLocalization": {
-        "es": "Una parte superior de dos tonos marrón rojizo."
-    }
+    "Dyeable": false
 }

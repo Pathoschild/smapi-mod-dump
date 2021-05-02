@@ -10,14 +10,8 @@
 
 {
     "Name": "Collared Shirt and Sweater",
-    "Description": "A comfy green sweater.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Camisa y Suéter con Cuello"
-    },
-    "DescriptionLocalization": {
-        "es": "Un cómodo suéter verde."
-    }
+    "Dyeable": false
 }

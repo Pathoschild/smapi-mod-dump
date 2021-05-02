@@ -46,6 +46,13 @@ namespace Vocalization.Framework
             this.TranslationFileExtensions.Add(LanguageName.Russian, ".ru-RU.xnb");
             this.TranslationFileExtensions.Add(LanguageName.German, ".de-DE.xnb");
             this.TranslationFileExtensions.Add(LanguageName.Portuguese, ".pt-BR.xnb");
+            //1.3 languages.
+            this.TranslationFileExtensions.Add(LanguageName.Italian,".it-IT.xnb");
+            this.TranslationFileExtensions.Add(LanguageName.French, ".fr-FR.xnb");
+            this.TranslationFileExtensions.Add(LanguageName.Hungarian, ".hu-HU.xnb");
+            this.TranslationFileExtensions.Add(LanguageName.Turkish, ".tr-TR.xnb");
+            this.TranslationFileExtensions.Add(LanguageName.Korean, ".ko-KR.xnb");
+            
 
             this.TranslationCodes.Add(LanguageName.English, LocalizedContentManager.LanguageCode.en);
             this.TranslationCodes.Add(LanguageName.Spanish, LocalizedContentManager.LanguageCode.es);
@@ -54,6 +61,12 @@ namespace Vocalization.Framework
             this.TranslationCodes.Add(LanguageName.Russian, LocalizedContentManager.LanguageCode.ru);
             this.TranslationCodes.Add(LanguageName.German, LocalizedContentManager.LanguageCode.de);
             this.TranslationCodes.Add(LanguageName.Portuguese, LocalizedContentManager.LanguageCode.pt);
+            //1.3 languages
+            this.TranslationCodes.Add(LanguageName.Italian, LocalizedContentManager.LanguageCode.it);
+            this.TranslationCodes.Add(LanguageName.French, LocalizedContentManager.LanguageCode.fr);
+            this.TranslationCodes.Add(LanguageName.Hungarian, LocalizedContentManager.LanguageCode.hu);
+            this.TranslationCodes.Add(LanguageName.Turkish, LocalizedContentManager.LanguageCode.tr);
+            this.TranslationCodes.Add(LanguageName.Korean, LocalizedContentManager.LanguageCode.ko);
         }
 
         /// <summary>Get the language name from a string.</summary>

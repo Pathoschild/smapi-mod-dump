@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8569
+IDs: TheMightyAmondee.Shoplifter
+update keys: Nexus:8569, GitHub:TheMightyAmondee/Shoplifter

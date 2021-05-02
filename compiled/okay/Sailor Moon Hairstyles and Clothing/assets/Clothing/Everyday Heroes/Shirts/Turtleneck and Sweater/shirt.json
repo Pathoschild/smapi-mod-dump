@@ -1,13 +1,7 @@
 {
     "Name": "Turtleneck and Sweater",
-    "Description": "Suited for the coldest winters, when even your sweater needs a sweater.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Cuello de Tortuga y Suéter"
-    },
-    "DescriptionLocalization": {
-        "es": "Adecuado para los inviernos más fríos, cuando incluso su suéter necesita un suéter."
-    }
+    "Dyeable": false
 }

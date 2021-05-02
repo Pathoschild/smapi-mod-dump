@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Digus/StardewValleyMods
+**
+*************************************************/
+
+{
+    "recipe.letter": "잘 지내는가, 젊은 필멸자.^자네가 '몬스터'라 칭해지는 종족들을 사냥해왔다고 들었다.^자네가 그것들의 부산물을 얻길 원하는 거라면, 최근 내가 그 부산물을 복제할 수 있는 테이블을 만들었네.^테이블 위에 올려놓은 후, 시간이 다소 걸릴걸세.^테이블을 만드는 방법을 동봉하지. 현명하게 사용하게.^ -M. 라스모디우스, 마법사",
+    "recipe.letter.title": "마법사의 마법 테이블"
+}

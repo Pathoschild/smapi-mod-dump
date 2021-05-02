@@ -1,14 +1,8 @@
 {
     "Name": "Green Sleeveless Turtleneck",
-    "Description": "A bold choice of outfit.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
     "Dyeable": false,
-    "Metadata": "Sleeveless",
-    "NameLocalization": {
-        "es": "Cuello de Tortuga Verde sin Mangas"
-    },
-    "DescriptionLocalization": {
-        "es": "Una atrevida elección de atuendo."
-    }
+    "Metadata": "Sleeveless"
 }

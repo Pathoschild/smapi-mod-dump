@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit dfb84b755ceeeffe7aca3dc9dd00f981dc1f1d1a
+   commit b869a78bbf871f10222019e1f801d8ca8cfbc5e1
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Wed Mar 31 05:28:43 2021 +0200
+   Date:   Mon Apr 12 12:57:57 2021 +0200
    
-       [Tilled soil decay] Add integration with Generic Mod Config Menu
+       [HarvestWithScythe] Move settings hint from tooltip to paragraph.
    

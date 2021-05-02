@@ -9,6 +9,9 @@ for queries and analysis.**
 # RELEASE NOTES
 Health & Stamina Regeneration: [(nexus download)](https://www.nexusmods.com/stardewvalley/mods/3207)
 
+## v2.0.2 (May 1, 2021)
+- Support for local multiplayer ([#10](https://github.com/JessebotX/StardewValleyMods/pull/10) - [diocloid](https://github.com/diocloid)
+
 ## v2.0.1 (August 28, 2020)
 - Integration with [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
 - Added 1 new configuration option (affects both Health and Stamina unless you have one disabled)

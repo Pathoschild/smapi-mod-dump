@@ -1,7 +1,7 @@
 ﻿{
   "Name": "DungeonBuddy",
   "Author": "SwiftSails",
-  "Version": "1.1.1",
+  "Version": "1.2.0",
   "Description": "Adds a configurable NPC parrot to the game to alert to the presence of treasure.",
   "UniqueID": "SwiftSails.DungeonBuddy",
   "EntryDll": "DungeonBuddy.dll",
@@ -14,7 +14,7 @@
     },
     {
       "UniqueID": "Esca.CustomNPCExclusions",
-      "MinimumVersion": "1.2.0",
+      "MinimumVersion": "1.3.0",
       "IsRequired": true
     }
   ]

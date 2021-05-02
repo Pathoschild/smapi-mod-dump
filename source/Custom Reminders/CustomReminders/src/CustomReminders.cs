@@ -196,6 +196,10 @@ namespace Dem1se.CustomReminders
                     // make relative path from absolute path
                     string filePathRelative = Utilities.Extras.MakeRelativePath(filePathAbsolute);
 
+                    // make sure the file is a Json. Fix for Vortex generated files causing issues.
+                    if (!filePathRelative.ToLower().EndsWith(".json"))
+                        continue;
+
                     // Read the reminder and notify if mature
                     Monitor.Log($"Processing {newTime}");
                     ReminderModel Reminder = Helper.Data.ReadJsonFile<ReminderModel>(filePathRelative);

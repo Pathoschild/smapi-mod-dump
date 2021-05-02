@@ -9,7 +9,6 @@
 *************************************************/
 
 using StardewModdingAPI;
-using SemanticVersion = StardewModdingAPI.Toolkit.SemanticVersion;
 
 namespace BetterDoors.Framework.Mapping.Properties
 {

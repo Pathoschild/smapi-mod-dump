@@ -311,14 +311,17 @@ namespace CommunityCenterHelper
                         return strFishBase("waterOcean", "6am", "7pm", seasonList: new string[] { "spring", "fall", "winter" });
                     
                     case ItemID.IT_Tuna:
-                        return strFishBase("waterOcean", "6am", "7pm", seasonList: new string[] { "summer", "winter" });
+                        return strFishBase("waterOcean", "6am", "7pm", seasonList: new string[] { "summer", "winter" })
+                             + (isIslandKnown()? "\n" + strFishBase(waterList: new string[] { "waterIslandOcean", "waterIslandCove" },
+                                                                   start: "6am", end: "7pm") : "");
                     
                     case ItemID.IT_RedSnapper:
                         return strFishBase("waterOcean", "6am", "7pm", seasonList: new string[] { "summer", "fall", "winter" },
                                            weatherKey: "weatherRain");
                     
                     case ItemID.IT_Tilapia:
-                        return strFishBase("waterOcean", "6am", "2pm", seasonList: new string[] { "summer", "fall" });
+                        return strFishBase("waterOcean", "6am", "2pm", seasonList: new string[] { "summer", "fall" })
+                             + (isIslandKnown()? "\n" + strFishBase("waterIslandRiver", "6am", "2pm") : "");
                     
                     // Night Fishing Bundle
                     
@@ -375,7 +378,9 @@ namespace CommunityCenterHelper
                     // Specialty Fish Bundle
                     
                     case ItemID.IT_Pufferfish:
-                        return strFishBase("waterOcean", "12pm", "4pm", "summer", "weatherSun");
+                        return strFishBase("waterOcean", "12pm", "4pm", seasonKey: "summer", weatherKey: "weatherSun")
+                             + (isIslandKnown()? "\n" + strFishBase(waterList: new string[] { "waterIslandOcean", "waterIslandCove" },
+                                                                   start: "12pm", end: "4pm", weatherKey: "weatherSun") : "");
                     
                     case ItemID.IT_Ghostfish:
                         return strFishBase("waterMines") + "\n"
@@ -1067,7 +1072,9 @@ namespace CommunityCenterHelper
                         return strFishBase("waterOcean", seasonList: new string[] { "spring", "winter" });
                     
                     case ItemID.IT_Flounder:
-                        return strFishBase("waterOcean", "6am", "8pm", seasonList: new string[] { "spring", "summer" });
+                        return strFishBase("waterOcean", "6am", "8pm", seasonList: new string[] { "spring", "summer" })
+                             + (isIslandKnown()? "\n" + strFishBase(waterList: new string[] { "waterIslandOcean", "waterIslandCove" },
+                                                                    start: "6am", end: "8pm") : "");
                     
                     case ItemID.IT_Halibut:
                         return strFishBase("waterOcean", "6am", "11am", start2: "7pm", end2: "2am",
@@ -1077,10 +1084,13 @@ namespace CommunityCenterHelper
                     
                     case ItemID.IT_MidnightCarp:
                         return strFishBase(waterList: new string[] { "waterMountain", "waterForestPond" },
-                                           start: "10pm", end: "2am", seasonList: new string[] { "fall", "winter" });
+                                           start: "10pm", end: "2am", seasonList: new string[] { "fall", "winter" })
+                             + (isIslandKnown()? "\n" + strFishBase("waterIslandRiver", "10pm", "2am") : "");
                     
                     case ItemID.IT_SuperCucumber:
                         return strFishBase("waterOcean", "6pm", "2am", seasonList: new string[] { "summer", "fall" }) + "\n"
+                             + (isIslandKnown()? strFishBase(waterList: new string[] { "waterIslandOcean", "waterIslandCove" },
+                                                             start: "6pm", end: "2am") + "\n" : "")
                              + str.Get("fishSubmarine");
                     
                     case ItemID.IT_Squid:
@@ -1279,6 +1289,7 @@ namespace CommunityCenterHelper
                     
                     case ItemID.IT_Octopus:
                         return strFishBase("waterOcean", "6am", "1pm", "summer") + "\n"
+                             + (isIslandKnown()? strFishBase("waterIslandOceanWest", "6am", "1pm") + "\n" : "")
                              + str.Get("fishSubmarine");
                     
                     // [Bundle Overhaul] Specialty Fish Bundle
@@ -1878,7 +1889,57 @@ namespace CommunityCenterHelper
                         else
                             return "";
                     
-                    /********** [Challenging PPJA] Boiler Room **********/
+                    /********** [Challenging Bundles Vanilla] Crafts Room **********/
+                    
+                    // [Challenging Vanilla] Construction Bundle
+                    
+                    case ItemID.IT_WoodFence:
+                        return strCraftRecipe("Wood Fence");
+                    
+                    /********** [Challenging Bundles Vanilla] Bulletin Board **********/
+                    
+                    // [Challenging Vanilla] Chef's Bundle
+                    
+                    case ItemID.IT_TripleShotEspresso:
+                        return strCookRecipe("Triple Shot Espresso");
+                    
+                    case ItemID.IT_Escargot:
+                        return strCookRecipe("Escargot");
+                   
+                    case ItemID.IT_ShrimpCocktail:
+                        return strCookRecipe("Shrimp Cocktail");
+                    
+                    // [Challenging Vanilla] Fodder Bundle
+                    
+                    case ItemID.IT_Seaweed:
+                        return strFishBase("waterOcean") + "\n"
+                             + (fixedBridgeToEastBeach()? strLocationalForage("locationBeachEast")
+                                                        : strLocationalForage(locationLiteral: str.Get("locationBeachEastInaccessible",
+                                                                              new { wood = getItemName(ItemID.IT_Wood) }))) + "\n"
+                             + str.Get("trashCan");
+                    
+                    case ItemID.IT_GreenAlgae:
+                        return strFishBase("waterRivers") + "\n"
+                             + str.Get("trashCan");
+                    
+                    case ItemID.IT_WildBait:
+                        return strCraftRecipe("Wild Bait");
+                    
+                    // [Challenging Vanilla] Field Research Bundle
+                    
+                    case ItemID.IT_RedPlate:
+                        return strCookRecipe("Red Plate");
+                    
+                    /********** [Challenging Bundles Vanilla] The Missing Bundle **********/
+                    
+                    case ItemID.IT_MagicRockCandy:
+                        return strBuyFrom("shopDesertTrader") + "\n"
+                             + strDroppedByMonster("Haunted Skull");
+                    
+                    case ItemID.IT_Slimejack:
+                        return strFishBase("waterBugLand");
+                    
+                    /********** [Challenging Bundles PPJA] Boiler Room **********/
                     
                     // [Challenging PPJA] Adventurer's Bundle
                     
@@ -1895,7 +1956,7 @@ namespace CommunityCenterHelper
                         return strLocationalArtifact(locationList: new string[] { "locationForest", "locationMountains" }) + "\n"
                              + strFishingChest(2);
                     
-                    /********** [Challenging PPJA] Bulletin Board **********/
+                    /********** [Challenging Bundles PPJA] Bulletin Board **********/
                     
                     // [Challenging PPJA] Dye Bundle
                     
@@ -2263,6 +2324,75 @@ namespace CommunityCenterHelper
                     
                     case "Ice Cream Brownie":
                         return strCookRecipe("Ice Cream Brownie");
+                    
+                    /********** [Challenging Bundles Vanilla_SVE] Fish Tank **********/
+                    
+                    // [Challenging Vanilla_SVE] River Fish Bundle
+                    
+                    case "Butterfish":
+                        return strFishBase("waterShearwaterBridge",
+                                           seasonList: new string[] { "spring", "summer", "fall" }, weatherKey: "weatherSun");
+                    
+                    // [Challenging Vanilla_SVE] Lake Fish Bundle
+                    
+                    case "Minnow":
+                        return strFishBase(waterList: new string[] { "waterBlueMoonVineyard", "waterShearwaterBridge", "waterAdventurerSummit" },
+                                           start: "6am", end: "6pm");
+                    
+                    // [Challenging Vanilla_SVE] Ocean Fish Bundle
+                    
+                    case "Clownfish":
+                        return strFishBase(waterList: new string[] { "waterBeach", "waterBlueMoonVineyard" },
+                                           start: "10am", end: "5pm", weatherKey: "weatherSun")
+                             + (isIslandKnown()? "\n" + strFishBase("waterIsland", "10am", "5pm", weatherKey: "weatherSun") : "");
+                    
+                    case "Starfish":
+                        return strFishBase(waterList: new string[] { "waterBeach", "waterBlueMoonVineyard" },
+                                           seasonList: new string[] { "spring", "summer", "fall" }, start: "6am", end: "10pm")
+                             + (isIslandKnown()? "\n" + strFishBase("waterIsland", "6am", "10pm") : "");
+                    
+                    // [Challenging Vanilla_SVE] Specialty Fish Bundle
+                    
+                    case "Puppyfish":
+                        return strFishBase("waterShearwaterBridge", seasonList: new string[] { "spring", "summer", "fall" }) + "\n"
+                             + strFishBase("waterForestWest", seasonKey: "summer");
+                    
+                    /********** [Challenging Bundles Vanilla_SVE] Bulletin Board **********/
+                    
+                    // [Challenging Vanilla_SVE] Chef's Bundle
+                    
+                    case "Big Bark Burger":
+                        return strCookRecipe("Big Bark Burger");
+                        // (cooking recipe from saloon if you have 5 hearts with gus)
+                    
+                    case "Glazed Butterfish":
+                        return strCookRecipe("Glazed Butterfish") + "\n"
+                             + strFishPond(fishItemName: "Butterfish", numRequired: 10);
+                    
+                    // [Challenging Vanilla_SVE] Field Research Bundle
+                    
+                    case "King Salmon":
+                        return strFishBase("waterForestWest", "6am", "10pm", seasonList: new string[] { "spring", "summer" });
+                    
+                    // [Challenging Vanilla_SVE] Enchanter's Bundle
+                    
+                    case "Frog":
+                        return strFishBase("waterMountain", "6pm", "2am",
+                                           seasonList: new string[] { "spring", "summer" }, weatherKey: "weatherRain");
+                    
+                    /********** [Challenging Bundles Vanilla_SVE] The Missing Bundle **********/
+                    
+                    case "Void Pebble":
+                        return strFishPond(fishItemName: "Void Eel", numRequired: 8) + "\n"
+                             + strDroppedByMonster("Mummy") + "\n"
+                             + strDroppedByMonster("Serpent") + "\n"
+                             + strDroppedByMonster("Carbon Ghost");
+                    
+                    case "Void Salmon Sushi":
+                        return strCookRecipe("Void Salmon Sushi");
+                    
+                    case "Void Delight":
+                        return strCookRecipe("Void Delight");
                 }
                 
                 return ModEntry.debugShowUnknownIDs? "??? (ID: " + id + ")" : "";
@@ -2716,8 +2846,15 @@ namespace CommunityCenterHelper
         /// <summary>Suggestion for getting item from a fish pond with a minimum population of a certain fish.</summary>
         /// <param name="fishItemID">Item ID of the fish.</param>
         /// <param name="numRequired">Minimum number of fish required in the pond for item to spawn.</param>
-        private static string strFishPond(int fishItemID, int numRequired)
+        /// <param name="fishItemName">String reference for mod-added fish.</param>
+        private static string strFishPond(int fishItemID = -1, int numRequired = 1, string fishItemName = "")
         {
+            if (fishItemName != "")
+            {
+                if (!findItemIDByName(fishItemName, out fishItemID))
+                    return "";
+            }
+            
             return str.Get("fishPond", new { fish = getItemName(fishItemID), num = numRequired });
         }
         
@@ -2754,6 +2891,9 @@ namespace CommunityCenterHelper
                 {
                     case "Green Slime":
                         locationKey = "monsterAreaMinesAndSkull";
+                        break;
+                    case "Haunted Skull":
+                        locationKey = "monsterAreaMinesAll";
                         break;
                     case "Bug":
                     case "Cave Fly":
@@ -3582,6 +3722,22 @@ namespace CommunityCenterHelper
                         }
                     }
                     break;
+                
+                // SVE Cooking Recipes
+                case "Big Bark Burger":
+                case "Glazed Butterfish":
+                    recipeSources += separator + str.Get("shopSaloon")
+                                   + parenthesize(str.Get("recipeSourceFriendship",
+                                                  new { person = getPersonName("Gus"), hearts = 5 }));
+                    break;
+                
+                case "Void Salmon Sushi":
+                case "Void Delight":
+                    if (isSewerKnown())
+                        recipeSources += separator + str.Get("shopKrobus")
+                                       + parenthesize(str.Get("recipeSourceFriendship",
+                                                              new { person = getPersonName("Krobus"), hearts = 10 }));
+                    break;
             }
             
             if (recipeSources.Equals("")) // No sources were found (usually due to leaving out spoilers)
@@ -3761,7 +3917,7 @@ namespace CommunityCenterHelper
                 for (int i = 1; i < strings.Length; i++)
                 {
                     if (strings[i] != "")
-                        result += str.Get("multipleThingSeparator") + strings[i];
+                        result += (result != ""? str.Get("multipleThingSeparator") : "") + strings[i];
                 }
                 return result;
             }
@@ -3850,13 +4006,19 @@ namespace CommunityCenterHelper
         /// <summary>Returns whether it's okay to mention the Witch's Swamp, either due to spoiler policy or having unlocked it.</summary>
         private static bool isWitchSwampKnown()
         {
-            return Config.ShowSpoilers || Game1.MasterPlayer.mailReceived.Contains("witchStatueGone");
+            return Config.ShowSpoilers || Game1.MasterPlayer.hasOrWillReceiveMail("witchStatueGone");
+        }
+        
+        /// <summary>Returns whether it's okay to mention Ginger Island, either due to spoiler policy or having unlocked it.</summary>
+        private static bool isIslandKnown()
+        {
+            return Config.ShowSpoilers || Game1.MasterPlayer.hasOrWillReceiveMail("seenBoatJourney");
         }
         
         /// <summary>Returns whether it's okay to mention the volcano, either due to spoiler policy or having unlocked it.</summary>
         private static bool isVolcanoKnown()
         {
-            return Config.ShowSpoilers || Game1.MasterPlayer.mailReceived.Contains("islandNorthCaveOpened");
+            return Config.ShowSpoilers || Game1.MasterPlayer.hasOrWillReceiveMail("islandNorthCaveOpened");
         }
         
         /// <summary>Returns whether it's okay to mention the Movie Theather, either due to spoiler policy or having unlocked it.</summary>

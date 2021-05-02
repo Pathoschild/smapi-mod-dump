@@ -12,77 +12,68 @@ using Harmony;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
-using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using TheLion.Common.Harmony;
+using System.Linq;
 
 namespace TheLion.AwesomeProfessions
 {
 	internal class LevelUpMenuRevalidateHealthPatch : BasePatch
 	{
-		private static ILHelper _Helper { get; set; }
-
-		/// <summary>Construct an instance.</summary>
-		internal LevelUpMenuRevalidateHealthPatch()
-		{
-			_Helper = new ILHelper(Monitor);
-		}
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		protected internal override void Apply(HarmonyInstance harmony)
+		/// <inheritdoc/>
+		public override void Apply(HarmonyInstance harmony)
 		{
 			harmony.Patch(
-				AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.RevalidateHealth)),
+				original: AccessTools.Method(typeof(LevelUpMenu), nameof(LevelUpMenu.RevalidateHealth)),
 				transpiler: new HarmonyMethod(GetType(), nameof(LevelUpMenuRevalidateHealthTranspiler)),
 				postfix: new HarmonyMethod(GetType(), nameof(LevelUpMenuRevalidateHealthPostfix))
 			);
 		}
 
 		#region harmony patches
+
 		/// <summary>Patch to move bonus health from Defender to Brute.</summary>
-		protected static IEnumerable<CodeInstruction> LevelUpMenuRevalidateHealthTranspiler(IEnumerable<CodeInstruction> instructions)
+		private static IEnumerable<CodeInstruction> LevelUpMenuRevalidateHealthTranspiler(IEnumerable<CodeInstruction> instructions)
 		{
-			_Helper.Attach(instructions).Log($"Patching method {typeof(LevelUpMenu)}::{nameof(LevelUpMenu.RevalidateHealth)}.");
+			Helper.Attach(instructions).Trace($"Patching method {typeof(LevelUpMenu)}::{nameof(LevelUpMenu.RevalidateHealth)}.");
 
 			/// From: if (farmer.professions.Contains(<defender_id>))
 			/// To: if (farmer.professions.Contains(<brute_id>))
 
 			try
 			{
-				_Helper
+				Helper
 					.FindProfessionCheck(Farmer.defender)
 					.Advance()
-					.SetOperand(Utility.ProfessionMap.Forward["brute"]);
+					.SetOperand(Utility.ProfessionMap.Forward["Brute"]);
 			}
 			catch (Exception ex)
 			{
-				_Helper.Error($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}").Restore();
+				Helper.Error($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}").Restore();
 			}
 
-			return _Helper.Flush();
+			return Helper.Flush();
 		}
 
 		/// <summary>Patch revalidate modded immediate profession perks.</summary>
-		protected static void LevelUpMenuRevalidateHealthPostfix(Farmer farmer)
+		private static void LevelUpMenuRevalidateHealthPostfix(Farmer farmer)
 		{
-			// revalidate tackle health
-			int expectedMaxTackleUses = 20;
-			if (Utility.SpecificPlayerHasProfession("angler", farmer)) expectedMaxTackleUses *= 2;
-
-			FishingRod.maxTackleUses = expectedMaxTackleUses;
-
-			// revalidate fish pond capacity
-			foreach (Building b in Game1.getFarm().buildings)
+			try
 			{
-				if ((b.owner.Equals(farmer.UniqueMultiplayerID) || !Game1.IsMultiplayer) && b is FishPond)
+				// revalidate fish pond capacity
+				foreach (var b in Game1.getFarm().buildings.Where(b => (b.owner.Value.Equals(farmer.UniqueMultiplayerID) || !Game1.IsMultiplayer) && b is FishPond && !b.isUnderConstruction()))
 				{
-					(b as FishPond).UpdateMaximumOccupancy();
-					b.currentOccupants.Value = Math.Min(b.currentOccupants.Value, b.maxOccupants.Value);
+					var pond = (FishPond)b;
+					pond.UpdateMaximumOccupancy();
+					pond.currentOccupants.Value = Math.Min(pond.currentOccupants.Value, pond.maxOccupants.Value);
 				}
 			}
+			catch (Exception ex)
+			{
+				Monitor.Log($"Failed in {nameof(LevelUpMenuRevalidateHealthPostfix)}:\n{ex}");
+			}
 		}
+
 		#endregion harmony patches
 	}
 }

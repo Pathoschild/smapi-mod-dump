@@ -24,8 +24,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointAndPlant", "PointAndPl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Replanter", "Replanter\Replanter.csproj", "{44F105FC-1767-4357-97E2-30145A837B88}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SortMyStuff", "SortMyStuff\SortMyStuff.csproj", "{3DBCB972-83EB-42B9-9399-BF45562287F0}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Common\Common.projitems*{2cc63da9-c0ff-4922-a816-8cbf6c539839}*SharedItemsImports = 5
@@ -66,10 +64,6 @@ Global
 		{44F105FC-1767-4357-97E2-30145A837B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44F105FC-1767-4357-97E2-30145A837B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44F105FC-1767-4357-97E2-30145A837B88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3DBCB972-83EB-42B9-9399-BF45562287F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3DBCB972-83EB-42B9-9399-BF45562287F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3DBCB972-83EB-42B9-9399-BF45562287F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3DBCB972-83EB-42B9-9399-BF45562287F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

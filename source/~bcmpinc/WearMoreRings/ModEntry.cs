@@ -40,13 +40,9 @@ namespace StardewHack.WearMoreRings
             if (config.Rings < 0) {
                 config.Rings = 0;
             }
-            if (config.Rings == 2) {
-                getInstance().Monitor.Log("Rings set to 2. Mod is disabled.", LogLevel.Warn);
-                return;
-            }
             if (config.Rings > 20) {
                 config.Rings = 20;
-                getInstance().Monitor.Log("Rings limited to 20. You only have so many fingers... And toes.", LogLevel.Warn);
+                getInstance().Monitor.Log("Rings limited to 20. You only have so many fingers... and toes.", LogLevel.Warn);
             }
         
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
@@ -63,6 +59,10 @@ namespace StardewHack.WearMoreRings
             Patch((InventoryPage ip)=>ip.performHoverAction(0,0), InventoryPage_performHoverAction);
             Patch((InventoryPage ip)=>ip.receiveLeftClick(0,0,false), InventoryPage_receiveLeftClick);
             Patch(()=>new Ring(0), Ring_ctor);
+        }
+
+        protected override void InitializeApi(GenericModConfigMenuAPI api) {
+            api.RegisterClampedOption(ModManifest, "Rings", "How many ring slots are available.", () => config.Rings, (int val) => config.Rings = val, 0, 20);
         }
 
         #region API

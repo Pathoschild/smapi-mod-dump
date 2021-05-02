@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8552
+IDs: PeacefulEnd.IslandGatherers
+update keys: Nexus:8552, GitHub:Floogen/IslandGatherers

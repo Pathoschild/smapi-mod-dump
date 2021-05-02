@@ -698,6 +698,9 @@ namespace LoveOfCooking
 			{
 				// Patch in tool sprites for cooking equipment
 
+				if (ModEntry.SpriteSheet == null)
+					return;
+				
 				if (!ModEntry.Instance.Config.AddCookingToolProgression)
 				{
 					Log.D($"Did not edit {asset.AssetName}: Cooking equipment is disabled in config file.",

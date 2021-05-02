@@ -5,9 +5,12 @@ mods:
    Preexisting Relationship
 
 latest commit:
-   commit eb319629d399613ccd5cbb60953ab7f78c6bef9a
-   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Mon Jan 25 17:15:07 2021 -0500
+   commit a109e6257034596a4df001a0b83f38e568762967
+   Merge: eb31962 ab9d310
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Thu Apr 1 22:27:39 2021 -0400
    
-       Initial commit
+       Merge pull request #1 from rikai/patch-1
+       
+       Minor Updates to manifest.json
    

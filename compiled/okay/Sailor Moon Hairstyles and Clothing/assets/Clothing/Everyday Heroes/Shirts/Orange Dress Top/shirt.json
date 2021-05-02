@@ -1,13 +1,7 @@
 {
     "Name": "Orange Dress Top",
-    "Description": "A yellow top under a loose orange dress. It needs the lower half.",
+    "Description": "...",
     "HasFemaleVariant": false,
     "Price": 50,
-    "Dyeable": false,
-    "NameLocalization": {
-        "es": "Top de Vestido Naranja"
-    },
-    "DescriptionLocalization": {
-        "es": "Un top amarillo debajo de un vestido naranja suelto. Necesita la mitad inferior."
-    }
+    "Dyeable": false
 }

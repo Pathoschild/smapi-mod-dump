@@ -11,7 +11,7 @@
 {
     "Name": "Mail Services Mod",
     "Author": "Digus",
-    "Version": "1.4.0",
+    "Version": "1.4.1",
     "Description": "Mail services to send and receive item using the mailbox.",
     "UniqueID": "Digus.MailServicesMod",
     "EntryDll": "MailServicesMod.dll",

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Replanter",
+  "Author": "jwdred",
+  "Version": "1.1.1-unofficial.5-strobe",
+  "Description": "Harvest and replant fields that are ready.",
+  "UniqueID": "jwdred.Replanter",
+  "EntryDll": "Replanter.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:589" ]
+}

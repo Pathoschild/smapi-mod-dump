@@ -62,6 +62,11 @@
           "DropChance": 1.0
         },
         {
+          "Name": "Grape",
+          "Enabled": true,
+          "DropChance": 1.0
+        },
+        {
           "Name": "Ancient Fruit",
           "Enabled": true,
           "DropChance": 1.0
@@ -162,6 +167,11 @@
         },
         {
           "Name": "Hops",
+          "Enabled": true,
+          "DropChance": 1.0
+        },
+        {
+          "Name": "Grape",
           "Enabled": true,
           "DropChance": 1.0
         },
@@ -306,6 +316,11 @@
         {
           "Name": "Cactus Fruit",
           "Enabled": false,
+          "DropChance": 1.0
+        },
+        {
+          "Name": "Grape",
+          "Enabled": true,
           "DropChance": 1.0
         },
         {
