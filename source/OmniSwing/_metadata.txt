@@ -1,5 +1,6 @@
-url:
-   https://github.com/AlejandroAkbal/Stardew-Valley-OmniSwing-Mod.git
+urls:
+   web: https://github.com/AlejandroAkbal/Stardew-Valley-OmniSwing-Mod
+   Git: https://github.com/AlejandroAkbal/Stardew-Valley-OmniSwing-Mod.git
 
 mods:
    OmniSwing

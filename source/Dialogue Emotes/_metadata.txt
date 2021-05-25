@@ -1,5 +1,6 @@
-url:
-   https://github.com/purrplingcat/DialogueEmotes.git
+urls:
+   web: https://github.com/purrplingcat/DialogueEmotes
+   Git: https://github.com/purrplingcat/DialogueEmotes.git
 
 mods:
    Dialogue Emotes

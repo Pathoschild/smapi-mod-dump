@@ -1,5 +1,6 @@
-url:
-   https://github.com/tlcasebeer/SivsMarriageMod.git
+urls:
+   web: https://github.com/tlcasebeer/SivsMarriageMod
+   Git: https://github.com/tlcasebeer/SivsMarriageMod.git
 
 mods:
    Siv's Marriage

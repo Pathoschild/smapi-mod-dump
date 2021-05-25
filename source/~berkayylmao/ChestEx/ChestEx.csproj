@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -42,7 +42,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -52,7 +52,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <GamePath>C:\Oyunlar\Stardew Valley</GamePath>
@@ -61,12 +61,18 @@
     <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.Annotations, Version=2021.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2021.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,18 +81,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LanguageExtensions.cs" />
+    <Compile Include="CustomChestConfigHelpers.cs" />
+    <Compile Include="LanguageExtensions\LanguageExtensions.cs" />
     <Compile Include="GlobalVars.cs" />
+    <Compile Include="CustomChestConfig.cs" />
     <Compile Include="Types\BaseTypes\Colours.cs" />
-    <Compile Include="Types\BaseTypes\ICustomItemGrabMenu.cs" />
-    <Compile Include="Types\BaseTypes\ICustomItemGrabMenu.MenuWithInventoryCtorParams.cs" />
-    <Compile Include="Types\BaseTypes\ICustomItemGrabMenuItem.BasicComponent.cs" />
-    <Compile Include="Types\BaseTypes\ICustomItemGrabMenuItem.cs" />
-    <Compile Include="Types\BaseTypes\ICustomMenu.cs" />
-    <Compile Include="Types\BaseTypes\ICustomMenu.EventHandlerResult.cs" />
-    <Compile Include="Types\BaseTypes\ICustomMenu.MouseStateEx.cs" />
-    <Compile Include="Types\BaseTypes\ICustomMenuItem.BasicComponent.cs" />
-    <Compile Include="Types\BaseTypes\ICustomMenuItem.cs" />
+    <Compile Include="Types\BaseTypes\CustomButton.cs" />
+    <Compile Include="Types\BaseTypes\CustomItemGrabMenu.cs" />
+    <Compile Include="Types\BaseTypes\CustomItemGrabMenu.MenuWithInventoryCtorParams.cs" />
+    <Compile Include="Types\BaseTypes\CustomItemGrabMenuTexturedItemPreset.cs" />
+    <Compile Include="Types\BaseTypes\CustomItemGrabMenuItem.BasicComponent.cs" />
+    <Compile Include="Types\BaseTypes\CustomItemGrabMenuItem.cs" />
+    <Compile Include="Types\BaseTypes\CustomMenu.cs" />
+    <Compile Include="Types\BaseTypes\CustomMenu.EventHandlerResult.cs" />
+    <Compile Include="Types\BaseTypes\CustomMenu.MouseStateEx.cs" />
+    <Compile Include="Types\BaseTypes\CustomItemGrabMenuTexturedItem.cs" />
+    <Compile Include="Types\BaseTypes\CustomMenuTexturedItem.cs" />
+    <Compile Include="Types\BaseTypes\CustomMenuItem.BasicComponent.cs" />
+    <Compile Include="Types\BaseTypes\CustomMenuItem.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,20 +107,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Types\BaseTypes\ISVObjectInCustomItemGrabMenu.cs" />
-    <Compile Include="Types\BaseTypes\ISVObjectInCustomMenu.cs" />
-    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ChestColouringPanel.ColourPalette.cs" />
-    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ChestColouringPanel.cs" />
-    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ConfigPanel.ConfigButton.cs" />
-    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ConfigPanel.cs" />
+    <Compile Include="Types\BaseTypes\CustomNumericUpDownBox.cs" />
+    <Compile Include="Types\BaseTypes\CustomTextBox.cs" />
+    <Compile Include="Types\BaseTypes\SVObjectInCustomItemGrabMenu.cs" />
+    <Compile Include="Types\BaseTypes\SVObjectInCustomMenu.cs" />
+    <Compile Include="Types\BaseTypes\TexturePresets.cs" />
+    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ChestConfigPanel.ColourPalette.cs" />
+    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ChestConfigPanel.cs" />
     <Compile Include="Types\CustomTypes\ChestExMenu\MainMenu.cs" />
     <Compile Include="Types\CustomTypes\ExtendedSVObjects\ExtendedChestInCustomItemGrabMenu.cs" />
     <Compile Include="Types\CustomTypes\ExtendedSVObjects\ExtendedChest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ChestEx.licenseheader" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
+    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ChestConfigPanel.ChestSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -118,11 +131,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.1\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.1\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.1\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.3.2.1\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
   </Target>
 </Project>

@@ -1,0 +1,24 @@
+﻿[
+  {
+    "Call": "I'm feeling good about today",
+    "Response": "Me too!",
+    "When": {
+      "Query: {{DailyLuck}} > 0.02": true
+    }
+  },
+  {
+    "Call": "It's your lucky day @",
+    "Response": "Is it? *smooch*",
+    "When": {
+      "Query: {{DailyLuck}} > 0.07": true
+    }
+  },
+  {
+    "Call": "I want to hide under the covers!",
+    "Response": "Let's hide together~",
+    "When": {
+      "Query: {{DailyLuck}} < -0.07": true,
+      "Time": "{{Range: 0600, 1200}}"
+    }
+  }
+]

@@ -8,161 +8,266 @@
 **
 *************************************************/
 
-//
-//    Copyright (C) 2020 Berkay Yigit <berkaytgy@gmail.com>
-//
+#region License
+
+// clang-format off
+// 
+//    ChestEx (StardewValleyMods)
+//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+// 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
 //    by the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
-//
+// 
 //    This program is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU Affero General Public License for more details.
-//
+// 
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program. If not, see <https://www.gnu.org/licenses/>.
-//
+// 
+// clang-format on
+
+#endregion
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using ChestEx.LanguageExtensions;
+using ChestEx.Types.BaseTypes;
 using ChestEx.Types.CustomTypes.ChestExMenu.Items;
+using ChestEx.Types.CustomTypes.ExtendedSVObjects;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using StardewValley;
 using StardewValley.Menus;
 
+using Object = System.Object;
+
 namespace ChestEx.Types.CustomTypes.ChestExMenu {
-   public class MainMenu : BaseTypes.ICustomItemGrabMenu {
-      // Private:
+  public class MainMenu : CustomItemGrabMenu {
+    // Protected:
+  #region Protected
 
-      // Protected:
+    protected ChestConfigPanel mConfigPanel;
 
-      // Overrides:
+    // Overrides:
+  #region Overrides
 
-      protected override BaseTypes.ICustomItemGrabMenu clone() {
-         return new MainMenu(
-            this.ItemsToGrabMenu.actualInventory, false, true,
-            new InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems), this.sv_behaviorFunction, null,
-            this.behaviorOnItemGrab, false, true, true, true, true, this.source, this.sv_sourceItem,
-            this.whichSpecialButton, this.context);
+    protected override void CreateOrganizationButtons(Boolean createChestColorPicker, Boolean createOrganizeButton, Boolean createFillStacksButton) {
+      Rectangle source_menu_bounds = this.mSourceInventoryOptions.mBounds;
+      Rectangle player_menu_bounds = this.mPlayerInventoryOptions.mBounds;
+
+      if (createChestColorPicker && this.mSourceType != ExtendedChest.ChestType.Fridge && this.mConfigPanel is null) {
+        this.mConfigPanel = new ChestConfigPanel(this);
+        this.mConfigPanel.SetVisible(true);
+        this.mMenuItems.Add(this.mConfigPanel);
+        this.allClickableComponents?.Add(this.mConfigPanel);
       }
 
-      // Public:
+      if (createFillStacksButton)
+        this.fillStacksButton =
+          new CustomItemGrabMenuTexturedItemPreset(this,
+                                                   CustomItemGrabMenuTexturedItemPreset.ButtonType.FillStacks,
+                                                   new Rectangle(source_menu_bounds.Right + 16, source_menu_bounds.Top + 90, 64, 64)) {
+            myID           = region_fillStacksButton,
+            upNeighborID   = this.colorPickerToggleButton?.myID ?? -500,
+            downNeighborID = region_organizeButton,
+            leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+            region         = region_organizationButtons
+          };
 
-      // Overrides:
+      if (createOrganizeButton)
+        this.organizeButton =
+          new CustomItemGrabMenuTexturedItemPreset(this,
+                                                   CustomItemGrabMenuTexturedItemPreset.ButtonType.Organize,
+                                                   new Rectangle(source_menu_bounds.Right + 16, source_menu_bounds.Top + 170, 64, 64)) {
+            myID           = region_organizeButton,
+            upNeighborID   = region_fillStacksButton,
+            downNeighborID = region_trashCan,
+            leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+            region         = region_organizationButtons
+          };
 
-      public override void draw(SpriteBatch b) {
-         /*
-          *    
-          *                             /---------------------------------\
-          *                             |                     | ConfigBTN |
-          *                             |                     \-----------|
-          *       /-------\             |                                 |
-          *       |       |             |                                 |
-          *       | Dummy |             |      this.ItemsToGrabMenu       |
-          *       | Chest |             |  (config + colour palette too)  |
-          *       |       |             |                                 |
-          *       \-------/             |                                 |
-          *                             \---------------------------------/
-          *   /----------------\   
-          *   | ChestsAnywhere |   
-          *   \----------------/              /----------------------\
-          *                                   |    this.inventory    |
-          *                                   \----------------------/
-          *    
-          *    
-         */
+      this.okButton = new CustomItemGrabMenuTexturedItemPreset(this,
+                                                               CustomItemGrabMenuTexturedItemPreset.ButtonType.OK,
+                                                               new Rectangle(player_menu_bounds.Right + 16, player_menu_bounds.Bottom - 96, 64, 64)) {
+        myID = region_okButton, upNeighborID = region_trashCan, leftNeighborID = 11
+      };
 
-         Action<SpriteBatch> _ = base.draw;
-         _(b);
+      for (Int32 i = 0; i < this.inventory.inventory.Count; i += 11)
+        if (this.inventory.inventory[i] is ClickableComponent cc)
+          cc.rightNeighborID = this.okButton.myID;
+    }
+
+  #endregion
+
+  #endregion
+
+    // Public:
+  #region Public
+
+    // Overrides:
+  #region Overrides
+
+    public override void draw(SpriteBatch b) {
+      /*
+       *    
+       *                       __________ /---------------------------------\
+       *                       | Config | |                                 |
+       *                       |  BTN   | |                                 |
+       *       /-------\       ‾‾‾‾‾‾‾‾‾‾ |                                 |
+       *       |       |       __________ |                                 |
+       *       | Dummy |       | Colour | |      this.ItemsToGrabMenu       |
+       *       | Chest |       |  PLT   | |  (config + colour palette too)  |
+       *       |       |       ‾‾‾‾‾‾‾‾‾‾ |                                 |
+       *       \-------/       __________ |                                 |
+       *                       | Colour | |                                 |
+       *                       |  RAW   | |                                 |
+       *                       ‾‾‾‾‾‾‾‾‾‾ |                                 |
+       *   /----------------\             \---------------------------------/
+       *   | ChestsAnywhere |   
+       *   \----------------/                  /----------------------\
+       *                                       |    this.inventory    |
+       *                                       \----------------------/
+       *    
+       *    
+      */
+
+      if (!this.mIsVisible) return;
+
+      Rectangle player_menu_bounds = this.mPlayerInventoryOptions.mBounds;
+
+      if (this.drawBG) b.Draw(Game1.fadeToBlackRect, GlobalVars.gUIViewport, Color.Black * 0.5f);
+
+      // draw backpack icon next to player inventory
+      var backpack_size = new Point(player_menu_bounds.Height / 4, player_menu_bounds.Height / 4);
+      b.Draw(Game1.uncoloredMenuTexture,
+             new Vector2(player_menu_bounds.X - backpack_size.X - 24, player_menu_bounds.Y + player_menu_bounds.Height / 2 - backpack_size.Y / 2 + 24),
+             Game1.getSourceRectForStandardTileSheet(Game1.uncoloredMenuTexture, 38),
+             Color.White,
+             0f,
+             Vector2.Zero,
+             backpack_size.X / 64.0f,
+             SpriteEffects.None,
+             0.86f);
+
+      // the rest of the owl
+      Action<SpriteBatch> _ = base.draw;
+      _(b);
+
+      // draw mouse
+      Game1.mouseCursorTransparency = 1.0f;
+      this.drawMouse(b);
+    }
+
+  #endregion
+
+  #endregion
+
+    // Constructors:
+  #region Constructors
+
+    public MainMenu(IList<Item>          inventory,                    Boolean reverseGrab, Boolean showReceivingMenu, InventoryMenu.highlightThisItem highlightFunction,
+                    behaviorOnItemSelect behaviorOnItemSelectFunction, String  message, behaviorOnItemSelect behaviorOnItemGrab = null, Boolean snapToBottom = false,
+                    Boolean              canBeExitedWithKey = false,   Boolean playRightClickSound = true, Boolean allowRightClick = true, Boolean showOrganizeButton = false,
+                    Int32                source             = 0,       Item    sourceItem          = null, Int32 whichSpecialButton = -1, Object context = null) : base(inventory,
+                                                                                                                                                                        reverseGrab,
+                                                                                                                                                                        showReceivingMenu,
+                                                                                                                                                                        highlightFunction,
+                                                                                                                                                                        behaviorOnItemSelectFunction,
+                                                                                                                                                                        message,
+                                                                                                                                                                        behaviorOnItemGrab,
+                                                                                                                                                                        snapToBottom,
+                                                                                                                                                                        canBeExitedWithKey,
+                                                                                                                                                                        playRightClickSound,
+                                                                                                                                                                        allowRightClick,
+                                                                                                                                                                        showOrganizeButton,
+                                                                                                                                                                        source,
+                                                                                                                                                                        sourceItem,
+                                                                                                                                                                        whichSpecialButton,
+                                                                                                                                                                        context) {
+      base.UnregisterInputEvents();
+
+      Rectangle ui_viewport = GlobalVars.gUIViewport;
+
+      this.ItemsToGrabMenu = new InventoryMenu(ui_viewport.Width / 2
+                                               - this.ItemsToGrabMenu.width / 2
+                                               /* chest icon padding */ + this.ItemsToGrabMenu.width / 24
+                                               /* organize buttons padding */ - (64 + 16),
+                                               Math.Max(GlobalVars.gIsChestsAnywhereLoaded ? 96 : 48, (Int32)(ui_viewport.Height * 0.5f - this.ItemsToGrabMenu.height * 0.75f)),
+                                               false,
+                                               this.ItemsToGrabMenu.actualInventory,
+                                               this.ItemsToGrabMenu.highlightMethod,
+                                               Config.Get().GetCapacity(),
+                                               Config.Get().mRows,
+                                               this.ItemsToGrabMenu.horizontalGap,
+                                               this.ItemsToGrabMenu.verticalGap,
+                                               this.ItemsToGrabMenu.drawSlots);
+      this.ItemsToGrabMenu.populateClickableComponentList();
+      this.mSourceInventoryOptions.mBounds = this.ItemsToGrabMenu.GetDialogueBoxRectangle();
+      this.mSourceInventoryOptions.SetVisible(this.mSourceInventoryOptions.mIsVisible);
+
+      foreach (ClickableComponent cc in this.ItemsToGrabMenu.inventory.Where(cc => cc != null)) {
+        cc.myID            += region_itemsToGrabMenuModifier;
+        cc.upNeighborID    += region_itemsToGrabMenuModifier;
+        cc.rightNeighborID += region_itemsToGrabMenuModifier;
+        cc.downNeighborID  =  ClickableComponent.CUSTOM_SNAP_BEHAVIOR;
+        cc.leftNeighborID  += region_itemsToGrabMenuModifier;
+        cc.fullyImmutable  =  true;
       }
 
-      // Constructors:
+      this.inventory = new InventoryMenu(this.mSourceInventoryOptions.mBounds.Center.X - this.inventory.width / 2 - 4,
+                                         Math.Min(ui_viewport.Height - this.inventory.height - 32, this.mSourceInventoryOptions.mBounds.Bottom + 32),
+                                         false,
+                                         null,
+                                         this.inventory.highlightMethod,
+                                         this.inventory.capacity,
+                                         this.inventory.rows,
+                                         this.inventory.horizontalGap,
+                                         this.inventory.verticalGap,
+                                         this.inventory.drawSlots);
+      this.mPlayerInventoryOptions.mBounds = this.inventory.GetDialogueBoxRectangle();
+      this.mPlayerInventoryOptions.SetVisible(this.mPlayerInventoryOptions.mIsVisible);
 
-      // TODO: Add custom menu background colour support
-      public MainMenu(IList<StardewValley.Item> inventory,
-                  Boolean reverseGrab,
-                  Boolean showReceivingMenu,
-                  InventoryMenu.highlightThisItem highlightFunction,
-                  ItemGrabMenu.behaviorOnItemSelect behaviorOnItemSelectFunction,
-                  String message,
-                  ItemGrabMenu.behaviorOnItemSelect behaviorOnItemGrab = null,
-                  Boolean snapToBottom = false,
-                  Boolean canBeExitedWithKey = false,
-                  Boolean playRightClickSound = true,
-                  Boolean allowRightClick = true,
-                  Boolean showOrganizeButton = false,
-                  Int32 source = 0,
-                  StardewValley.Item sourceItem = null,
-                  Int32 whichSpecialButton = -1,
-                  Object context = null)
-         : base(inventory, reverseGrab, showReceivingMenu, highlightFunction, behaviorOnItemSelectFunction, message, behaviorOnItemGrab, snapToBottom, canBeExitedWithKey, playRightClickSound, allowRightClick, showOrganizeButton, source, sourceItem, whichSpecialButton, context) {
-         // recreate menu
-         {
-            var game_viewport = GlobalVars.GameViewport;
+      this.SetBounds(this.mSourceInventoryOptions.mBounds.X,
+                     this.mSourceInventoryOptions.mBounds.Y,
+                     this.mSourceInventoryOptions.mBounds.Width,
+                     this.mSourceInventoryOptions.mBounds.Height + this.mSourceInventoryOptions.mBounds.Y + 32 + this.mPlayerInventoryOptions.mBounds.Height);
 
-            this.inventory = new InventoryMenu(
-               game_viewport.Width - this.inventory.width - Convert.ToInt32(game_viewport.Width / (12.0f * StardewValley.Game1.options.zoomLevel)),
-               game_viewport.Height - this.inventory.height - (game_viewport.Height / Convert.ToInt32(8.0f * StardewValley.Game1.options.zoomLevel)),
-               false, null,
-               this.inventory.highlightMethod, this.inventory.capacity, this.inventory.rows,
-               this.inventory.horizontalGap, this.inventory.verticalGap, this.inventory.drawSlots);
+      // handle organization buttons
+      {
+        this.CreateOrganizationButtons(true, true, true);
 
-            this.ItemsToGrabMenu = new InventoryMenu(
-               game_viewport.Width - this.ItemsToGrabMenu.width - Convert.ToInt32(game_viewport.Width / (12.0f * StardewValley.Game1.options.zoomLevel)),
-               game_viewport.Height / Convert.ToInt32(8.0f * StardewValley.Game1.options.zoomLevel),
-               false, this.ItemsToGrabMenu.actualInventory,
-               this.ItemsToGrabMenu.highlightMethod, this.ItemsToGrabMenu.capacity, this.ItemsToGrabMenu.rows,
-               this.ItemsToGrabMenu.horizontalGap, this.ItemsToGrabMenu.verticalGap, this.ItemsToGrabMenu.drawSlots);
+        if (this.dropItemInvisibleButton is not null)
+          this.dropItemInvisibleButton.bounds = new Rectangle(this.mSourceInventoryOptions.mBounds.Right,
+                                                              this.mSourceInventoryOptions.mBounds.Top,
+                                                              ui_viewport.Width - this.mSourceInventoryOptions.mBounds.Right,
+                                                              this.mPlayerInventoryOptions.mBounds.Bottom);
 
-            this.ItemsToGrabMenu.populateClickableComponentList();
-            for (Int32 i = 0; i < this.ItemsToGrabMenu.inventory.Count; i++) {
-               if (this.ItemsToGrabMenu.inventory[i] != null) {
-                  this.ItemsToGrabMenu.inventory[i].myID += ItemGrabMenu.region_itemsToGrabMenuModifier;
-                  this.ItemsToGrabMenu.inventory[i].upNeighborID += ItemGrabMenu.region_itemsToGrabMenuModifier;
-                  this.ItemsToGrabMenu.inventory[i].rightNeighborID += ItemGrabMenu.region_itemsToGrabMenuModifier;
-                  this.ItemsToGrabMenu.inventory[i].downNeighborID = ClickableComponent.CUSTOM_SNAP_BEHAVIOR;
-                  this.ItemsToGrabMenu.inventory[i].leftNeighborID += ItemGrabMenu.region_itemsToGrabMenuModifier;
-                  this.ItemsToGrabMenu.inventory[i].fullyImmutable = true;
-               }
-            }
-
-            this.PlayerInventoryOptions.Bounds = this.inventory.GetRectangleForDialogueBox();
-            this.SourceInventoryOptions.Bounds = this.ItemsToGrabMenu.GetRectangleForDialogueBox();
-
-            this.SetBounds(
-               this.SourceInventoryOptions.Bounds.X,
-               this.SourceInventoryOptions.Bounds.Y,
-               this.SourceInventoryOptions.Bounds.Width,
-               this.SourceInventoryOptions.Bounds.Height
-                  + (this.PlayerInventoryOptions.Bounds.Y - (this.SourceInventoryOptions.Bounds.Y + this.SourceInventoryOptions.Bounds.Height))
-                  + this.PlayerInventoryOptions.Bounds.Height);
-
-            // handle organization buttons
-            {
-               this.createOrganizationButtons(false, false, false);
-               this.okButton = this.trashCan = null;
-               if (!(this.dropItemInvisibleButton is null)) {
-                  this.dropItemInvisibleButton.bounds = new Rectangle(
-                     this.PlayerInventoryOptions.Bounds.X + (this.PlayerInventoryOptions.Bounds.Width / 2),
-                     this.PlayerInventoryOptions.Bounds.Y - ((this.PlayerInventoryOptions.Bounds.Y - (this.SourceInventoryOptions.Bounds.Y + this.SourceInventoryOptions.Bounds.Height)) / 2),
-                     64, 64);
-               }
-            }
-
-            this.populateClickableComponentList();
-            if (StardewValley.Game1.options.SnappyMenus)
-               this.snapToDefaultClickableComponent();
-            this.SetupBorderNeighbors();
-         }
-
-         this.MenuItems.Add(new ConfigPanel(this));
-         this.MenuItems.Add(new ChestColouringPanel(this));
+        this.trashCan.bounds = new Rectangle(this.mPlayerInventoryOptions.mBounds.Right + 16,
+                                             this.mPlayerInventoryOptions.mBounds.Top + 96,
+                                             this.trashCan.bounds.Width,
+                                             this.trashCan.bounds.Height);
       }
-   }
+
+      // TODO:
+      // absolute position/tile position for chest saving?
+      // need to sync farmhand hinges color to farmer MP
+      // gamepad interaction is fucked
+
+      this.populateClickableComponentList();
+      if (Game1.options.SnappyMenus) this.snapToDefaultClickableComponent();
+      this.SetupBorderNeighbors();
+
+      base.RegisterInputEvents();
+    }
+
+  #endregion
+  }
 }

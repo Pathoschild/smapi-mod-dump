@@ -11,7 +11,7 @@
 {
 	"Name":"Custom Tokens",
 	"Author":"TheMightyAmondee",
-	"Version":"1.3.1",
+	"Version":"1.4.0",
 	"Description":"Provides some custom tokens for use with Content Patcher",
 	"UniqueID": "TheMightyAmondee.CustomTokens",
 	"EntryDll":"CustomTokens.dll",

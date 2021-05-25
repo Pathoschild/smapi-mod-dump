@@ -9,6 +9,7 @@
 *************************************************/
 
 using SkillfulClothes.Effects;
+using SkillfulClothes.Effects.Special;
 using SkillfulClothes.Types;
 using StardewModdingAPI;
 using StardewValley;
@@ -26,7 +27,7 @@ namespace SkillfulClothes
     /// and replaces items if necessary
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    abstract class EquippedClothingObserver<T>
+    abstract class EquippedClothingItemObserver<T>
     {
         bool isSuspended = false;
 
@@ -38,14 +39,14 @@ namespace SkillfulClothes
         /// </summary>
         int? currentIndex;
 
+        Item currentItem;
+
         /// <summary>
         /// The effect of the currently equipped piece of clothing         
         /// </summary>
         IEffect currentEffect;
 
-        Dictionary<T, IEffect> effects;
-
-        public EquippedClothingObserver(Dictionary<T, IEffect> effects, IModHelper helper)
+        public EquippedClothingItemObserver()
         {
             if (!typeof(T).IsEnum)
             {
@@ -53,7 +54,6 @@ namespace SkillfulClothes
             }
 
             clothingName = typeof(T).Name;
-            this.effects = effects;
         }
 
         public void Update(Farmer farmer)
@@ -66,10 +66,14 @@ namespace SkillfulClothes
             }            
         }
 
-        protected abstract int GetCurrentIndex(Farmer farmer);        
+        protected abstract int GetCurrentIndex(Farmer farmer);
+
+        protected abstract Item GetCurrentItem(Farmer farmer);
 
         protected void ClothingChanged(Farmer farmer, int newIndex)
         {
+            bool initialUpdate = !currentIndex.HasValue;
+
             currentIndex = newIndex;
 
             T ev = (T)(object)currentIndex;
@@ -78,14 +82,17 @@ namespace SkillfulClothes
             // remove old effect
             if (currentEffect != null)
             {
-                currentEffect.Remove(farmer);
+                currentEffect.Remove(currentItem, EffectChangeReason.ItemRemoved);
                 currentEffect = null;
-            }            
+            }
 
-            if (effects.TryGetValue(ev, out currentEffect)) {
+            currentItem = GetCurrentItem(farmer);
+
+
+            if (ItemDefinitions.GetEffectByIndex<T>(currentIndex ?? -1, out currentEffect)) {
                 if (!isSuspended)
                 {
-                    currentEffect.Apply(farmer);                    
+                    currentEffect.Apply(currentItem, initialUpdate ? EffectChangeReason.DayStart : EffectChangeReason.ItemPutOn);                    
                 }
             } else
             {
@@ -97,73 +104,87 @@ namespace SkillfulClothes
         /// <summary>
         /// Disable the currently active effect
         /// </summary>
-        public void Suspend(Farmer farmer)
+        public void Suspend(Farmer farmer, EffectChangeReason reason)
         {
             if (!isSuspended)
             {
                 Logger.Debug($"Suspend {clothingName} effects");
                 isSuspended = true;
-                currentEffect?.Remove(farmer);
+                currentEffect?.Remove(currentItem, reason);
             }
         }
 
-        public void Restore(Farmer farmer)
+        /// <summary>
+        /// Re-apply the current effects (after having them suspended)
+        /// </summary>
+        /// <param name="farmer"></param>
+        public void Restore(Farmer farmer, EffectChangeReason reason)
         {
             if (isSuspended)
             {
                 Logger.Debug($"Restore {clothingName} effects");
                 isSuspended = false;
-                currentEffect?.Apply(farmer);                
+                currentEffect?.Apply(currentItem, reason);                
             }
         }
 
         public void Reset(Farmer farmer)
         {
             currentIndex = null;
-            currentEffect?.Remove(farmer);
+            currentEffect?.Remove(currentItem, EffectChangeReason.Reset);
             currentEffect = null;
+        }
+
+        public bool HasRingEffect(int ringIndex)
+        {
+            if (isSuspended) return false;
+
+            if(currentEffect is EffectSet set)
+            {
+                return set.Effects.Any(x => (x is RingEffect re) && (int)re.Ring == ringIndex);
+            } else 
+            { 
+                return (currentEffect is RingEffect re) && (int)re.Ring == ringIndex;
+            }
         }
     }
 
-    class ShirtObserver : EquippedClothingObserver<Shirt>
+    class ShirtObserver : EquippedClothingItemObserver<Shirt>
     {
-        public ShirtObserver(IModHelper helper)
-            : base(PredefinedEffects.ShirtEffects, helper)
-        {
-            // --
-        }
-
         protected override int GetCurrentIndex(Farmer farmer)
         {
             return farmer.shirtItem.Value?.parentSheetIndex ?? -1;
         }
+
+        protected override Item GetCurrentItem(Farmer farmer)
+        {
+            return farmer.shirtItem.Value;
+        }
     }
 
-    class PantsObserver : EquippedClothingObserver<Pants>
+    class PantsObserver : EquippedClothingItemObserver<Pants>
     {
         protected override int GetCurrentIndex(Farmer farmer)
         {
             return farmer.pantsItem.Value?.parentSheetIndex ?? -1;
         }
 
-        public PantsObserver(IModHelper helper)
-            : base(PredefinedEffects.PantsEffects, helper)
+        protected override Item GetCurrentItem(Farmer farmer)
         {
-            // --
+            return farmer.pantsItem.Value;
         }
     }
 
-    class HatObserver : EquippedClothingObserver<Types.Hat>
+    class HatObserver : EquippedClothingItemObserver<Types.Hat>
     {
-        public HatObserver(IModHelper helper)
-            : base(PredefinedEffects.HatEffects, helper)
-        {
-            // --
-        }
-
         protected override int GetCurrentIndex(Farmer farmer)
         {
             return farmer.hat.Value?.which ?? -1;
+        }
+
+        protected override Item GetCurrentItem(Farmer farmer)
+        {
+            return farmer.hat.Value;
         }
     }
 }

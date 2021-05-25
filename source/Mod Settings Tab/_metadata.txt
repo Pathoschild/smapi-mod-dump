@@ -1,5 +1,6 @@
-url:
-   https://github.com/GilarF/SVM.git
+urls:
+   web: https://github.com/GilarF/SVM
+   Git: https://github.com/GilarF/SVM.git
 
 mods:
    Mod Settings Tab

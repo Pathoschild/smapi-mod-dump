@@ -1,5 +1,6 @@
-url:
-   https://github.com/Drynwynn/StardewValleyMods.git
+urls:
+   web: https://github.com/Drynwynn/StardewValleyMods
+   Git: https://github.com/Drynwynn/StardewValleyMods.git
 
 mods:
    Fishing Automaton

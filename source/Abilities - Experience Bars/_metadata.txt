@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ophaneom/Abilities-Experience-Bars.git
+urls:
+   web: https://github.com/Ophaneom/Abilities-Experience-Bars
+   Git: https://github.com/Ophaneom/Abilities-Experience-Bars.git
 
 mods:
    Abilities - Experience Bars

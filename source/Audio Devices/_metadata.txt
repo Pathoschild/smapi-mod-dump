@@ -1,5 +1,6 @@
-url:
-   https://github.com/maxvollmer/AudioDevices.git
+urls:
+   web: https://github.com/maxvollmer/AudioDevices
+   Git: https://github.com/maxvollmer/AudioDevices.git
 
 mods:
    Audio Devices

@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/JsonAssets.git
+urls:
+   web: https://github.com/spacechase0/JsonAssets
+   Git: https://github.com/spacechase0/JsonAssets.git
 
 mods:
    Json Assets

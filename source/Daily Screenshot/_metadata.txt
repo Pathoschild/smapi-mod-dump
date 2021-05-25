@@ -1,5 +1,6 @@
-url:
-   https://github.com/CompSciLauren/stardew-valley-daily-screenshot-mod.git
+urls:
+   web: https://github.com/CompSciLauren/stardew-valley-daily-screenshot-mod
+   Git: https://github.com/CompSciLauren/stardew-valley-daily-screenshot-mod.git
 
 mods:
    Daily Screenshot

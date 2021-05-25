@@ -1,5 +1,6 @@
-url:
-   https://github.com/Armitxes/StardewValley_UnlimitedPlayers.git
+urls:
+   web: https://github.com/Armitxes/StardewValley_UnlimitedPlayers
+   Git: https://github.com/Armitxes/StardewValley_UnlimitedPlayers.git
 
 mods:
    Unlimited Players

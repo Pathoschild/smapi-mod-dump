@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Hakej/Animal-Pet-Status
+   Git: https://github.com/Hakej/Animal-Pet-Status.git
+
+mods:
+   Animal Pet Status
+
+latest commit:
+   commit 9449bd38d54a373cf1b3372249848ebbc42af4aa
+   Author: MichaÅ‚ Uszak <michaluszak97@gmail.com>
+   Date:   Thu May 13 16:26:06 2021 +0200
+   
+       Update README.md
+   

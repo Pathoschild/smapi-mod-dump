@@ -1,5 +1,6 @@
-url:
-   https://github.com/bwdymods/SDV-Moongates.git
+urls:
+   web: https://github.com/bwdymods/SDV-Moongates
+   Git: https://github.com/bwdymods/SDV-Moongates.git
 
 mods:
    Moongates

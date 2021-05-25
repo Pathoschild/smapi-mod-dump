@@ -78,6 +78,7 @@
     <Compile Include="Community Center\BundleTask.cs" />
     <Compile Include="Community Center\CommunityCenterBundles.cs" />
     <Compile Include="CraftingHandler.cs" />
+    <Compile Include="EntoaroxFrameworkAPI.cs" />
     <Compile Include="Helpers\DrawHelpers.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\OrderedDictionary.cs" />

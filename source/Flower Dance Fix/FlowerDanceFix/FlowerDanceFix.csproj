@@ -58,11 +58,14 @@
     <Compile Include="CustomDance.cs" />
     <Compile Include="EventPatched.cs" />
     <Compile Include="GenericModConfigMenuAPI.cs" />
+    <Compile Include="ImportantMethodsCopiedForReference.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
+    <Compile Include="OriginalMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CustomAnimations.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>

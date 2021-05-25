@@ -81,16 +81,22 @@ namespace FarmAnimalVarietyRedux.Patches
         /// <summary>The post fix for the <see cref="Object.getOne()"/> method.</summary>
         /// <param name="__instance">The <see cref="Object"/> instance being patched.</param>
         /// <param name="__result">The return value of the original method.</param>
-        /// <remarks>This is used to retain the stack size of the object if it was produced by an animal.</remarks>
+        /// <remarks>This is used to retain the stack size of the object if it was produced by an animal and to ensure the Botanist profession doesn't increase the quality of foraged or laid produce that should be standard quality.</remarks>
         internal static void GetOnePostFix(Object __instance, ref Item __result)
         {
-            // check if the object has the required flag
-            if (!__instance.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"))
-                return;
+            // ensure the stack size is correct
+            if (__instance.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"))
+            {
+                __result.Stack = __instance.Stack;
+                __instance.modData.Remove($"{ModEntry.Instance.ModManifest.UniqueID}/producedItem");
+            }
 
-            // update the stack size of the returned item
-            __result.Stack = __instance.Stack;
-            __instance.modData.Remove($"{ModEntry.Instance.ModManifest.UniqueID}/producedItem");
+            // ensure the quality is correct
+            if (__instance.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/producedShouldBeStandardQuality"))
+            {
+                (__result as Object).Quality = 0;
+                __instance.modData.Remove($"{ModEntry.Instance.ModManifest.UniqueID}/producedShouldBeStandardQuality");
+            }
         }
 
         /// <summary>The transpiler for the <see cref="Object.performObjectDropInAction(Item, bool, Farmer)"/> method.</summary>

@@ -1,5 +1,6 @@
-url:
-   https://github.com/TheMightyAmondee/EasierSpecialOrders.git
+urls:
+   web: https://github.com/TheMightyAmondee/EasierSpecialOrders
+   Git: https://github.com/TheMightyAmondee/EasierSpecialOrders.git
 
 mods:
    Easier Special Orders

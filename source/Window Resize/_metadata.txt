@@ -1,5 +1,6 @@
-url:
-   https://github.com/thatnzguy/WindowResize.git
+urls:
+   web: https://github.com/thatnzguy/WindowResize
+   Git: https://github.com/thatnzguy/WindowResize.git
 
 mods:
    Window Resize

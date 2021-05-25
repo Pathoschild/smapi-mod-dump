@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/StardewEditor.git
+urls:
+   web: https://github.com/spacechase0/StardewEditor
+   Git: https://github.com/spacechase0/StardewEditor.git
 
 mods:
    Stardew Editor

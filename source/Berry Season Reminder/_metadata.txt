@@ -1,5 +1,6 @@
-url:
-   https://github.com/AHilyard/BerrySeasonReminder.git
+urls:
+   web: https://github.com/AHilyard/BerrySeasonReminder
+   Git: https://github.com/AHilyard/BerrySeasonReminder.git
 
 mods:
    Berry Season Reminder

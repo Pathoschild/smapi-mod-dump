@@ -1,0 +1,3 @@
+page URL: https://stardewvalley.curseforge.com/projects/armor-ore
+IDs: GMFF.ArmorOre
+update keys: 

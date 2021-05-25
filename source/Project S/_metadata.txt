@@ -1,5 +1,6 @@
-url:
-   https://github.com/NolanEastburn/ProjectS.git
+urls:
+   web: https://github.com/NolanEastburn/ProjectS
+   Git: https://github.com/NolanEastburn/ProjectS.git
 
 mods:
    Project S

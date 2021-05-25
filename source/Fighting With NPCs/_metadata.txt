@@ -1,5 +1,6 @@
-url:
-   https://github.com/eduanttunes/sv_fighting_with_npcs.git
+urls:
+   web: https://github.com/eduanttunes/sv_fighting_with_npcs
+   Git: https://github.com/eduanttunes/sv_fighting_with_npcs.git
 
 mods:
    Fighting With NPCs

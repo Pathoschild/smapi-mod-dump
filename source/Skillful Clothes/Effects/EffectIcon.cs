@@ -24,7 +24,9 @@ namespace SkillfulClothes.Effects
         None,
         Popularity,
         Health,
+        MaxHealth,
         Energy,
+        MaxEnergy,
         Attack,
         Defense,
         CriticalHitRate,
@@ -36,23 +38,24 @@ namespace SkillfulClothes.Effects
         SkillForaging,
         SkillMining,
         SkillCombat,
-        SkillLuck
-
+        SkillLuck,
+        Yoba
     }
 
     static class EffectIconExtensions
     {
         public static void Draw(this EffectIcon icon, SpriteBatch spriteBatch, Vector2 location)
         {
-            if (icon == EffectIcon.None) return;
-            // Game1.mouseCursors = LooseSprites/Cursors
+            if (icon == EffectIcon.None) return;            
 
+            Texture2D texture = Game1.mouseCursors;
             Rectangle? rect = null;
 
             switch (icon)
             {                
-                case EffectIcon.Health: rect = new Rectangle(0, 438, 10, 10); break;
+                case EffectIcon.Health: rect = new Rectangle(0, 438, 10, 10); break;                
                 case EffectIcon.Energy: rect = new Rectangle(0, 428, 10, 10); break;
+                case EffectIcon.MaxEnergy: rect = new Rectangle(80, 428, 10, 10); break;
                 case EffectIcon.Defense: rect = new Rectangle(110, 428, 10, 10); break;
                 case EffectIcon.SaveFromDeath: rect = new Rectangle(140, 428, 10, 10); break;
                 case EffectIcon.Attack: rect = new Rectangle(120, 428, 10, 10); break;
@@ -66,14 +69,23 @@ namespace SkillfulClothes.Effects
                 case EffectIcon.SkillLuck: rect = new Rectangle(50, 428, 10, 10); break;
                 case EffectIcon.SkillForaging: rect = new Rectangle(60, 428, 10, 10); break;
                 case EffectIcon.Popularity:
-                    // draw smiley (which is actualy 13x13)
+                    // draw smiley (which is actualy 13x13, so we use a smaller scaling factor)
                     Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new Vector2(location.X, location.Y + 2), new Rectangle(157, 515, 13, 13), Color.White, 0f, Vector2.Zero, 2f, flipped: false, 0.95f);
+                    break;
+                // icons from custom texture
+                case EffectIcon.MaxHealth:
+                    texture = EffectHelper.Textures.LooseSprites;
+                    rect = new Rectangle(0, 0, 10, 10);
+                    break;
+                case EffectIcon.Yoba:
+                    texture = EffectHelper.Textures.LooseSprites;
+                    rect = new Rectangle(10, 0, 10, 10);
                     break;
             }
 
             if (rect.HasValue)
             {                              
-                Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, location, rect.Value, Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
+                Utility.drawWithShadow(spriteBatch, texture, location, rect.Value, Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
             }            
         }
     }

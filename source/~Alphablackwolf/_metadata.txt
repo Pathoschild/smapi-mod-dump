@@ -1,5 +1,6 @@
-url:
-   https://github.com/Alphablackwolf/SkillPrestige.git
+urls:
+   web: https://github.com/Alphablackwolf/SkillPrestige
+   Git: https://github.com/Alphablackwolf/SkillPrestige.git
 
 mods:
    Skill Prestige

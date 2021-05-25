@@ -1,5 +1,6 @@
-url:
-   https://github.com/ha1fdaew/PlayerIncomeStats.git
+urls:
+   web: https://github.com/ha1fdaew/PlayerIncomeStats
+   Git: https://github.com/ha1fdaew/PlayerIncomeStats.git
 
 mods:
    Player Income Stats

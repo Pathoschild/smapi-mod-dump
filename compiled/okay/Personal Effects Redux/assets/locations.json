@@ -1,12 +1,62 @@
 ﻿[
   {
-    "NPC": "Aspen",
+    "NPC": "Abigail",
     "Location": "FarmHouse",
     "LocationType": "Home",
     "LocationGender": "Any",
     "Description": "Test location",
     "X": 3,
     "Y": 6,
+    "Rarity": "never"
+  },
+  {
+    "NPC": "Abigail",
+    "Location": "FarmHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "Test location",
+    "X": 4,
+    "Y": 6,
+    "Rarity": "never"
+  },
+  {
+    "NPC": "Abigail",
+    "Location": "FarmHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "Test location",
+    "X": 5,
+    "Y": 6,
+    "Rarity": "never"
+  },
+  {
+    "NPC": "Haley",
+    "Location": "FarmHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "Test location",
+    "X": 6,
+    "Y": 9,
+    "Rarity": "never"
+  },
+  {
+    "NPC": "Penny",
+    "Location": "FarmHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "Test location",
+    "X": 7,
+    "Y": 9,
+    "Rarity": "never"
+  },
+  {
+    "NPC": "Leah",
+    "Location": "FarmHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "Test location",
+    "X": 5,
+    "Y": 9,
     "Rarity": "never"
   },
   {
@@ -2136,7 +2186,7 @@
     "LocationGender": "Any",
     "Description": "behind the saloon, hidden",
     "X": 44,
-    "Y": 48,
+    "Y": 67,
     "Rarity": "very_rare"
   },
   {

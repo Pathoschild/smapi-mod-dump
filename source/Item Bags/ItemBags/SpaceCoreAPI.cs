@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace ItemBags
 {
     /// <summary>Taken from: https://github.com/spacechase0/SpaceCore_SDV/blob/master/Api.cs</summary>
-    public interface SpaceCoreAPI
+    public interface ISpaceCoreAPI
     {
         string[] GetCustomSkills();
         int GetLevelForCustomSkill(Farmer farmer, string skill);

@@ -1,5 +1,6 @@
-url:
-   https://github.com/MadaraUchiha/NonDestructiveNPCs.git
+urls:
+   web: https://github.com/MadaraUchiha/NonDestructiveNPCs
+   Git: https://github.com/MadaraUchiha/NonDestructiveNPCs.git
 
 mods:
    Non Destructive NPCs

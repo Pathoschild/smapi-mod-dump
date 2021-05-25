@@ -1,5 +1,6 @@
-url:
-   https://github.com/maxvollmer/LeftyMode.git
+urls:
+   web: https://github.com/maxvollmer/LeftyMode
+   Git: https://github.com/maxvollmer/LeftyMode.git
 
 mods:
    Lefty Mode

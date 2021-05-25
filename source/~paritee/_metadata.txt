@@ -1,5 +1,6 @@
-url:
-   https://github.com/paritee/Paritee.StardewValley.Frameworks.git
+urls:
+   web: https://github.com/paritee/Paritee.StardewValley.Frameworks
+   Git: https://github.com/paritee/Paritee.StardewValley.Frameworks.git
 
 mods:
    Animal Birth Every Night

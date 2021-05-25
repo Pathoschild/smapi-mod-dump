@@ -1,5 +1,6 @@
-url:
-   https://github.com/AcidicNic/StardewValleyMods.git
+urls:
+   web: https://github.com/AcidicNic/StardewValleyMods
+   Git: https://github.com/AcidicNic/StardewValleyMods.git
 
 mods:
    Special Orders Anywhere

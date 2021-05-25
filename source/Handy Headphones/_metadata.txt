@@ -1,5 +1,6 @@
-url:
-   https://github.com/Floogen/HandyHeadphones.git
+urls:
+   web: https://github.com/Floogen/HandyHeadphones
+   Git: https://github.com/Floogen/HandyHeadphones.git
 
 mods:
    Handy Headphones

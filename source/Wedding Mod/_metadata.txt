@@ -1,5 +1,6 @@
-url:
-   https://github.com/Opalie/Wedding.git
+urls:
+   web: https://github.com/Opalie/Wedding
+   Git: https://github.com/Opalie/Wedding.git
 
 mods:
    Wedding Mod

@@ -1,5 +1,6 @@
-url:
-   https://github.com/demiacle/UiModSuite.git
+urls:
+   web: https://github.com/demiacle/UiModSuite
+   Git: https://github.com/demiacle/UiModSuite.git
 
 mods:
    UI Mod Suite

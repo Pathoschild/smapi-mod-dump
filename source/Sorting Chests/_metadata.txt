@@ -1,5 +1,6 @@
-url:
-   https://github.com/aRooooooba/SortingChests.git
+urls:
+   web: https://github.com/aRooooooba/SortingChests
+   Git: https://github.com/aRooooooba/SortingChests.git
 
 mods:
    Sorting Chests

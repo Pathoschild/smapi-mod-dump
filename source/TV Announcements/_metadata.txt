@@ -1,5 +1,6 @@
-url:
-   https://github.com/Zyin055/TVAnnouncements.git
+urls:
+   web: https://github.com/Zyin055/TVAnnouncements
+   Git: https://github.com/Zyin055/TVAnnouncements.git
 
 mods:
    TV Announcements

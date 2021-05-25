@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8725
+IDs: hakej.animalpetstatus
+update keys: Nexus:8725, GitHub:Hakej/Animal-Pet-Status

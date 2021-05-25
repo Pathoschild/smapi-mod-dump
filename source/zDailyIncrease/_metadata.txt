@@ -1,5 +1,6 @@
-url:
-   https://github.com/thakyZ/zDailyIncrease.git
+urls:
+   web: https://github.com/thakyZ/zDailyIncrease
+   Git: https://github.com/thakyZ/zDailyIncrease.git
 
 mods:
    zDailyIncrease

@@ -1,5 +1,6 @@
-url:
-   https://github.com/rikai/Grandfathers-Heirlooms.git
+urls:
+   web: https://github.com/rikai/Grandfathers-Heirlooms
+   Git: https://github.com/rikai/Grandfathers-Heirlooms.git
 
 mods:
    Grandfather's Heirlooms

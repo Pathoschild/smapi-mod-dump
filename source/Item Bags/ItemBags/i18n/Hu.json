@@ -55,9 +55,9 @@
   "CropBagDescription": "Táska a termesztett gyümölcsök, zöldségek és a virágok tárolására.",
 
   "BundleBagName": "Csomag táska",
-  "BundleBagDescription": "Táska a Közösségi házban található csomagok \náltal álőírt tárgyka tárolásához.",
+  "BundleBagDescription": "Táska a Közösségi házban található csomagok \náltal álőírt tárgyak tárolására.",
   "RucksackName": "Hátizsák",
-  "RucksackDescription": "Egy táska, amely képes tárolni a legtöbb szokásos tárgyat.",
+  "RucksackDescription": "Egy hátizsák, amely képes tárolni a legtöbb tárgyat.",
   "OmniBagName": "Mindenható táska",
   "OmniBagDescription": "Táska más táskák tárolására.",
 
@@ -67,18 +67,18 @@
   "SizeGiantName": "Óriás",
   "SizeMassiveName": "Hatalmas",
 
-  "DepositAllToolTip": "Minden elem behelyezése \na leltárból a táskába",
+  "DepositAllToolTip": "Minden elem elhelyezése \na leltárból a táskába",
   "WithdrawAllToolTip": "Mindne elem elhelyezése \na táskából a leltárba",
-  "AutofillOnToolTip": "Automatikus kitöltés (jelenleg be)\nHa be van kapcsolva, a tárgyak automatikusan \na táskába kerülnek.",
-  "AutofillOffToolTip": "Automatiksu kitöltés (jelenleg ki)\nHa be van kapcsolva, a tárgyak automatikusan \na táskába kerülnek.",
+  "AutofillOnToolTip": "Automatikus kitöltés (Jelenleg be)\nHa be van kapcsolva, a tárgyak automatikusan \na táskába kerülnek.",
+  "AutofillOffToolTip": "Automatiksu kitöltés (Jelenleg ki)\nHa be van kapcsolva, a tárgyak automatikusan \na táskába kerülnek.",
   "HelpInfoToolTip": "Jobb kattintás az 1db átvitelhez (megismételhető).\nTartsa lenyomva a Shift billentyűt a többszörös átvitelhez.\nFél mennyiség átviteléhez nyomja meg a Ctrl billentyűt.",
   "CustomizeIconToolTip": "Táska testreszabás ikon",
   "BundleTaskCompletedToolTip": "Ez a csomag teljes!",
-  "BundleTaskIncompleteToolTip": "{{CompletedCount}}/{{TotalCount}} tételek befelyezve\n{{ReadyToCompleteCount}}/{{TotalCount}} tételek készen állbak\n{{RequiredCount}}/{{TotalCount}} Required",
+  "BundleTaskIncompleteToolTip": "{{CompletedCount}}/{{TotalCount}} tételek befelyezve\n{{ReadyToCompleteCount}}/{{TotalCount}} tételek készen állnak\n{{RequiredCount}}/{{TotalCount}} szükséges",
 
-  "RucksackAutofillLowPriorityToolTip": "Automatikus kitöltés (Jelenleg be - Alacsony prioritás)\nHa be van kapcsolva, a felvett tárgyak automatikusan a hátizsákba \nkerülnek, ha már van benne egy elem.\n\nJelenlegi prioritás - Alacsony (Ezt a táskát a hagyományos táskák után automatikusan feltölti.)",
-  "RucksackAutofillHighPriorityToolTip": "Automaatikus kitöltés (Jelenleg be - Magas prioritás)\nHa be van kapcsolva, a felvett tárgyak automatikusan a hátizsákba \nkerülnek, ha már van belőle egy elem.\n\nJelenlegi prioritás - Magas (Ezt a táskát a hagyományos táskák előtt automatikusan feltölti.)",
-  "RucksackAutofillOffToolTip": "Automatikus kitöltés (Jelenleg ki)\nHa be van kapcsolva, a felvett tárgyak automatikusan a hátizsákba \nkerülnek, ha már van belőle egy elem.",
+  "RucksackAutofillLowPriorityToolTip": "Automatikus kitöltés (Jelenleg be - Alacsony prioritás)\nHa be van kapcsolva, a felvett tárgyak automatikusan a hátizsákba \nkerülnek, ha már van benne egy elem.\n\nJelenlegi prioritás - Alacsony (Ezt a táskát a hagyományos táskák után tölti fel automatikusan.)",
+  "RucksackAutofillHighPriorityToolTip": "Automaatikus kitöltés (Jelenleg be - Magas prioritás)\nHa be van kapcsolva, a felvett tárgyak automatikusan a hátizsákba \nkerülnek, ha már van benne egy elem.\n\nJelenlegi prioritás - Magas (Ezt a táskát a hagyományos táskák előtt tölti fel automatikusan.)",
+  "RucksackAutofillOffToolTip": "Automatikus kitöltés (Jelenleg ki)\nHa be van kapcsolva, a felvett tárgyak automatikusan a hátizsákba \nkerülnek, ha már van benne egy elem.",
 
   "RucksackSortPropertyTimeToolTip": "Tulajdon válogatás - Idő\n\nAz elemek abban a sorrendben jelennek meg, \nahogyan hozzá lettek adva a hátizsákhoz.",
   "RucksackSortPropertyNameToolTip": "Tulajdon válogatás - Termék név",
@@ -93,10 +93,10 @@
   "RucksackSortOrderDescendingToolTip": "Rendezési sorrend - Csökkenő",
 
   "BagCategoryName": "Tároló",
-  "CapacityDescription": "Minden egyesből {{count}} bír",
+  "CapacityDescription": "Mindenből maximum {{count}}db.",
   "OmniBagCapacityDescription": "Maximális táska méret: {{size}}",
-  "LargeBundleBagUnstoreableRooms": "Hirdetőtábla, Elhagyott Joja Mart",
-  "CustomizeIconInstructions": "Kattintson egy elemre, hogy a táska ikonaként használja:",
+  "LargeBundleBagUnstoreableRooms": "Hirdetőtábla, Elhagyott JojaMart",
+  "CustomizeIconInstructions": "Kattints egy elemre, hogy a táska ikonjaként használd:",
   "UseDefaultIconButtonText": "Alapértelmezett",
   "CloseButtonText": "Bezárás"
 }

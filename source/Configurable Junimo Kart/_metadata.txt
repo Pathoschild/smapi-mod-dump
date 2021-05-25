@@ -1,5 +1,6 @@
-url:
-   https://gitlab.com/tophatsquid/sdv-configurable-junimo-kart.git
+urls:
+   web: https://gitlab.com/tophatsquid/sdv-configurable-junimo-kart
+   Git: https://gitlab.com/tophatsquid/sdv-configurable-junimo-kart.git
 
 mods:
    Configurable Junimo Kart

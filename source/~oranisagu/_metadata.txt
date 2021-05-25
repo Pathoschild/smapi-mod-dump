@@ -1,5 +1,6 @@
-url:
-   https://github.com/oranisagu/SDV-FarmAutomation.git
+urls:
+   web: https://github.com/oranisagu/SDV-FarmAutomation
+   Git: https://github.com/oranisagu/SDV-FarmAutomation.git
 
 mods:
    Farm Automation: Barn Door Automation

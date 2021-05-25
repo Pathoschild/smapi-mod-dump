@@ -1,5 +1,6 @@
-url:
-   https://github.com/DeathGameDev/SDV-FastTravel.git
+urls:
+   web: https://github.com/DeathGameDev/SDV-FastTravel
+   Git: https://github.com/DeathGameDev/SDV-FastTravel.git
 
 mods:
    Fast Travel

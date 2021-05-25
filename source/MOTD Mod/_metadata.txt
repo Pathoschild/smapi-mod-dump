@@ -1,5 +1,6 @@
-url:
-   https://github.com/rfht/MOTDMod.git
+urls:
+   web: https://github.com/rfht/MOTDMod
+   Git: https://github.com/rfht/MOTDMod.git
 
 mods:
    MOTD Mod

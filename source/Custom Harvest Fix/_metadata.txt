@@ -1,5 +1,6 @@
-url:
-   https://github.com/mytigio/CustomHarvestFix.git
+urls:
+   web: https://github.com/mytigio/CustomHarvestFix
+   Git: https://github.com/mytigio/CustomHarvestFix.git
 
 mods:
    Custom Harvest Fix

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Enaium-StardewValleyMods/QuickMinigame.git
+urls:
+   web: https://github.com/Enaium-StardewValleyMods/QuickMinigame
+   Git: https://github.com/Enaium-StardewValleyMods/QuickMinigame.git
 
 mods:
    Quick Minigame

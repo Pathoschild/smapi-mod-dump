@@ -1,5 +1,6 @@
-url:
-   https://github.com/b-b-blueberry/GreenhouseEntryPatch.git
+urls:
+   web: https://github.com/b-b-blueberry/GreenhouseEntryPatch
+   Git: https://github.com/b-b-blueberry/GreenhouseEntryPatch.git
 
 mods:
    Greenhouse Entry Begone!

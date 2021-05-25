@@ -1,5 +1,6 @@
-url:
-   https://github.com/SwizzyStudios/SV-SwizzyMeads.git
+urls:
+   web: https://github.com/SwizzyStudios/SV-SwizzyMeads
+   Git: https://github.com/SwizzyStudios/SV-SwizzyMeads.git
 
 mods:
    Swizzy Meads

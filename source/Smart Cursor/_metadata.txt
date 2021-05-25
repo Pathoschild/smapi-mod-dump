@@ -1,5 +1,6 @@
-url:
-   https://github.com/stokastic/SmartCursor.git
+urls:
+   web: https://github.com/stokastic/SmartCursor
+   Git: https://github.com/stokastic/SmartCursor.git
 
 mods:
    Smart Cursor

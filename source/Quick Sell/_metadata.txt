@@ -1,5 +1,6 @@
-url:
-   https://github.com/AlejandroAkbal/Stardew-Valley-Quick-Sell-Mod.git
+urls:
+   web: https://github.com/AlejandroAkbal/Stardew-Valley-Quick-Sell-Mod
+   Git: https://github.com/AlejandroAkbal/Stardew-Valley-Quick-Sell-Mod.git
 
 mods:
    Quick Sell

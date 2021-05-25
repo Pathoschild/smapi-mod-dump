@@ -1,13 +1,14 @@
-url:
-   https://github.com/Videogamers0/SDV-ItemBags.git
+urls:
+   web: https://github.com/Videogamers0/SDV-ItemBags
+   Git: https://github.com/Videogamers0/SDV-ItemBags.git
 
 mods:
    Item Bags
 
 latest commit:
-   commit 8301250096e67c56a1b5e8809fa1b93627e3ff7b
+   commit db6bf8816f5e6de7416d8ca897d8a0b15f61ec4d
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Sun Mar 21 00:35:20 2021 -0400
+   Date:   Tue May 18 18:53:43 2021 -0400
    
-       Added hungarian localization
+       Add compatibility with Entoarox Framework by disabling their mod's logic that overrides the game's save serializer.
    

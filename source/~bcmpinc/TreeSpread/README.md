@@ -46,3 +46,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
 * Added retain seed config option.
 * Add 64-bit support
+
+#### 4.2:
+* Fix issue with `OnlyPreventTapped` being applied when set to false, causing trees to spread when they shouldn't.

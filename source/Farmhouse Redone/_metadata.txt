@@ -1,5 +1,6 @@
-url:
-   https://github.com/mjSurber/FarmHouseRedone.git
+urls:
+   web: https://github.com/mjSurber/FarmHouseRedone
+   Git: https://github.com/mjSurber/FarmHouseRedone.git
 
 mods:
    Farmhouse Redone

@@ -1,0 +1,18 @@
+{
+  "Name": "Tapper Report",
+  "Author": "pepoluan",
+  "Version": "1.0.0",
+  "MinimumApiVersion": "3.9.5",
+  "Description": "Make report of Tappers state (done/not) per location",
+  "UniqueID": "pepoluan.TapperReport",
+  "EntryDll": "TapperReport.dll",
+  "UpdateKeys": [ "Nexus:8700" ],
+  "Meta:Repository": "https://sourceforge.net/p/sdvmod-tapper-report",
+  "Meta:Changelog": {
+    "0.9.0": "Initial Public Release",
+    "0.9.1": "Some metafixing",
+    "0.9.5": "Preliminary support for gamepad",
+    "0.9.9": "Change target to .Net 4.5 not 4.5.2",
+    "1.0.0": "Lots of internal optimization, periodic check feature, config refresh, and config menu"
+  }
+}

@@ -1,5 +1,6 @@
-url:
-   https://github.com/purrplingcat/QuestFramework.git
+urls:
+   web: https://github.com/purrplingcat/QuestFramework
+   Git: https://github.com/purrplingcat/QuestFramework.git
 
 mods:
    Quest Framework

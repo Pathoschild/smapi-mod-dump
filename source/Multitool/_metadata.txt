@@ -1,5 +1,6 @@
-url:
-   https://github.com/miome/MultitoolMod.git
+urls:
+   web: https://github.com/miome/MultitoolMod
+   Git: https://github.com/miome/MultitoolMod.git
 
 mods:
    Multitool

@@ -1,5 +1,6 @@
-url:
-   https://github.com/ChristinaEd/ChefHelperAddToFridges.git
+urls:
+   web: https://github.com/ChristinaEd/ChefHelperAddToFridges
+   Git: https://github.com/ChristinaEd/ChefHelperAddToFridges.git
 
 mods:
    Chef Helper - Add to Fridges

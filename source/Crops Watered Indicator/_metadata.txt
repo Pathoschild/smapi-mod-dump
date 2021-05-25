@@ -1,5 +1,6 @@
-url:
-   https://github.com/snowe2010/starbound-mods.git
+urls:
+   web: https://github.com/snowe2010/starbound-mods
+   Git: https://github.com/snowe2010/starbound-mods.git
 
 mods:
    Crops Watered Indicator

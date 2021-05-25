@@ -1,5 +1,6 @@
-url:
-   https://github.com/Paradox355/SDVMods.git
+urls:
+   web: https://github.com/Paradox355/SDVMods
+   Git: https://github.com/Paradox355/SDVMods.git
 
 mods:
    Relationship Tracker

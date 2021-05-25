@@ -1,5 +1,6 @@
-url:
-   https://github.com/Gorzalt/StardewValleyMods.git
+urls:
+   web: https://github.com/Gorzalt/StardewValleyMods
+   Git: https://github.com/Gorzalt/StardewValleyMods.git
 
 mods:
    Kawakami - Healer NPC

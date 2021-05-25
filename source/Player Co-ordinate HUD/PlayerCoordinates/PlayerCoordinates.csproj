@@ -45,6 +45,7 @@
     <ItemGroup>
         <Compile Include="FileHandler.cs" />
         <Compile Include="Globals.cs" />
+        <Compile Include="Helpers\GenericModConfigMenuAPI.cs" />
         <Compile Include="ModConfig.cs" />
         <Compile Include="ModEntry.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

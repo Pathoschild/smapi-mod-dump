@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/FlowerColorPicker.git
+urls:
+   web: https://github.com/spacechase0/FlowerColorPicker
+   Git: https://github.com/spacechase0/FlowerColorPicker.git
 
 mods:
    Flower Color Picker

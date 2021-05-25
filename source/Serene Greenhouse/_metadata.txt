@@ -1,5 +1,6 @@
-url:
-   https://github.com/Floogen/SereneGreenhouse.git
+urls:
+   web: https://github.com/Floogen/SereneGreenhouse
+   Git: https://github.com/Floogen/SereneGreenhouse.git
 
 mods:
    Serene Greenhouse

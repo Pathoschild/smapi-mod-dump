@@ -1,5 +1,6 @@
-url:
-   https://github.com/hootless/StardewMods.git
+urls:
+   web: https://github.com/hootless/StardewMods
+   Git: https://github.com/hootless/StardewMods.git
 
 mods:
    Bus Locations

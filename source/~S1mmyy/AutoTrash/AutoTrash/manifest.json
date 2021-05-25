@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/S1mmyy/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "AutoTrash",
+  "Author": "S1mmyy",
+  "Version": "1.2.0",
+  "Description": "Trashes items specified by the player when they're picked up.",
+  "UniqueID": "S1mmyy.AutoTrash",
+  "EntryDll": "AutoTrash.dll",
+  "MinimumApiVersion": "3.1",
+  "UpdateKeys": [ "Nexus:5140" ]
+}

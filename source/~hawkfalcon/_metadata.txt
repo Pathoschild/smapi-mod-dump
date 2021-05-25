@@ -1,5 +1,6 @@
-url:
-   https://github.com/hawkfalcon/Stardew-Mods.git
+urls:
+   web: https://github.com/hawkfalcon/Stardew-Mods
+   Git: https://github.com/hawkfalcon/Stardew-Mods.git
 
 mods:
    Better Junimos

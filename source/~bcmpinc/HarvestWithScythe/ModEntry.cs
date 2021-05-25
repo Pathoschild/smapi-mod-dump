@@ -193,6 +193,8 @@ namespace StardewHack.HarvestWithScythe
     
         /** Determine whether the given crop can be harvested using the given method. */
         public static bool CanHarvestCrop(Crop crop, int method) {
+            if (PlayerIsMounted) return true;
+
             // Get harvest settings from config
             ModConfig.HarvestModeClass config = getInstance().config.HarvestMode;
             HarvestModeEnum mode;
@@ -211,6 +213,8 @@ namespace StardewHack.HarvestWithScythe
         /** Determine whether the given object can be harvested using the given method. 
          * Assumes that isForage() returned true. */
         public static bool CanHarvestObject(StardewValley.Object obj, int method) {
+            if (PlayerIsMounted) return true;
+
             // Get harvest settings from config
             ModConfig.HarvestModeClass config = getInstance().config.HarvestMode;
             HarvestModeEnum mode = config.Forage;

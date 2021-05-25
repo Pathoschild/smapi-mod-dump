@@ -1,5 +1,6 @@
-url:
-   https://github.com/PhantomGamers/StardewPortChanger.git
+urls:
+   web: https://github.com/PhantomGamers/StardewPortChanger
+   Git: https://github.com/PhantomGamers/StardewPortChanger.git
 
 mods:
    Server Port Changer

@@ -65,6 +65,8 @@ namespace FarmTypeManager
         /// <summary>Saves and removes objects/data that cannot be handled by Stardew Valley's save process.</summary>
         private void SaveAnywhere_BeforeSave()
         {
+            Utility.GameIsSaving = true;
+
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
 
             SaveAnywhereIsSaving = true; //set the "saving" flag
@@ -75,6 +77,8 @@ namespace FarmTypeManager
         /// <summary>Restores saved objects/data that could not be handled by Stardew Valley's save process.</summary>
         private void SaveAnywhere_AfterSave()
         {
+            Utility.GameIsSaving = false;
+
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
 
             AfterMidDaySave();

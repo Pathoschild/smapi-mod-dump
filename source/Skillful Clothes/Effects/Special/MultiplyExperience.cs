@@ -20,8 +20,6 @@ namespace SkillfulClothes.Effects.Special
 {
     class MultiplyExperience : SingleEffect
     {
-        Farmer farmer;
-
         int? lastXp;
 
         Skill skill;
@@ -35,16 +33,15 @@ namespace SkillfulClothes.Effects.Special
             this.multiplier = multiplier;
         }
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
-            this.farmer = farmer;
             lastXp = null;
             EffectHelper.ModHelper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
         }
 
         private void GameLoop_UpdateTicking(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e)
         {
-            int currentXp = farmer.experiencePoints[(int)skill];
+            int currentXp = Game1.player.experiencePoints[(int)skill];
 
             // atm the xp which lead to a level gain a not multiplied
             if (lastXp.HasValue && currentXp > lastXp)
@@ -52,13 +49,13 @@ namespace SkillfulClothes.Effects.Special
                 int gainedXp = currentXp - lastXp.Value;
                 int additionalXp = (int)(gainedXp * (multiplier - 1));
                 Logger.Debug($"XP = {gainedXp} + {additionalXp}");
-                farmer.gainExperience((int)skill, additionalXp);
+                Game1.player.gainExperience((int)skill, additionalXp);
             }
 
-            lastXp = farmer.experiencePoints[(int)skill];
+            lastXp = Game1.player.experiencePoints[(int)skill];
         }
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
             EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;
         }

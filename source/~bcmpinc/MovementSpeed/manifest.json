@@ -11,7 +11,7 @@
 {
    "Name": "Movement Speed",
    "Author": "bcmpinc",
-   "Version": "4.0",
+   "Version": "4.1",
    "Description": "Changes the player's movement speed and charging time of the hoe and watering can.",
    "UniqueID": "bcmpinc.MovementSpeed",
    "EntryDll": "MovementSpeed.dll",

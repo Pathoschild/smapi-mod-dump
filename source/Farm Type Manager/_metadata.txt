@@ -1,13 +1,14 @@
-url:
-   https://github.com/Esca-MMC/FarmTypeManager.git
+urls:
+   web: https://github.com/Esca-MMC/FarmTypeManager
+   Git: https://github.com/Esca-MMC/FarmTypeManager.git
 
 mods:
    Farm Type Manager
 
 latest commit:
-   commit 6381f5869fd9def2b761c3a9deff0abcc9e5a559
+   commit 10f2bb51e3db0cb027d0c0769c7a539a1fff83ac
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun Jan 10 11:46:20 2021 -0600
+   Date:   Sun May 23 03:03:43 2021 -0500
    
-       Add warning for areas with no spawn tiles, increment manifest
+       Opt into GMCM in-game setting changes
    

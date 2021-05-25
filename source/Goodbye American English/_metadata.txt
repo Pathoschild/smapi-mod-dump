@@ -1,5 +1,6 @@
-url:
-   https://github.com/TheMightyAmondee/GoodbyeAmericanEnglish.git
+urls:
+   web: https://github.com/TheMightyAmondee/GoodbyeAmericanEnglish
+   Git: https://github.com/TheMightyAmondee/GoodbyeAmericanEnglish.git
 
 mods:
    Goodbye American English

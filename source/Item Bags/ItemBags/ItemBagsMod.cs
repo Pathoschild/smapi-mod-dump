@@ -37,6 +37,7 @@ namespace ItemBags
         public const string JAUniqueId = "spacechase0.JsonAssets";
         public const string SpaceCoreUniqueId = "spacechase0.SpaceCore";
         public const string SaveAnywhereUniqueId = "Omegasis.SaveAnywhere";
+        public const string EntoaroxFrameworkUniqueId = "Entoarox.EntoaroxFramework";
 
         internal static ItemBagsMod ModInstance { get; private set; }
         internal static string Translate(string Key, Dictionary<string, string> Parameters = null)
@@ -66,9 +67,11 @@ namespace ItemBags
         {
             ModInstance = this;
 
-            if (Helper.ModRegistry.IsLoaded("Entoarox.EntoaroxFramework"))
+            if (Helper.ModRegistry.IsLoaded(EntoaroxFrameworkUniqueId) && Helper.ModRegistry.Get(EntoaroxFrameworkUniqueId).Manifest.Version.IsOlderThan("2.5.5"))
             {
-                Monitor.Log("Entoarox Framework overrides the game's save serializer and may cause errors when trying to save your game with this mod installed.", LogLevel.Warn);
+                Monitor.Log("WARNING - Your game may fail to save with ItemBags and Entoarox Framework installed, " +
+                    "since both of these mods attempt to override the game's save serializer to handle saving/loading of custom items. " +
+                    "Consider updating to a newer version of Entoarox Framework to resolve this compatibility issue.", LogLevel.Warn);
             }
 
             LoadUserConfig();
@@ -109,12 +112,32 @@ namespace ItemBags
                     }
                 }
 
+                //  Add compatibility with Entoarox Framework mod
+                //  (By default, Entoarox Framework overrides the game's save serializer. SpaceCore also overrides the serializer, causing a conflicts since this mod relies on SpaceCore to handle saving/loading items)
+                if (Helper.ModRegistry.IsLoaded(EntoaroxFrameworkUniqueId) && !Helper.ModRegistry.Get(EntoaroxFrameworkUniqueId).Manifest.Version.IsOlderThan("2.5.5"))
+                {
+                    try
+                    {
+                        IEntoaroxFrameworkAPI API = Helper.ModRegistry.GetApi<IEntoaroxFrameworkAPI>(EntoaroxFrameworkUniqueId);
+                        if (API != null)
+                        {
+                            //  Disable Entoarox Frameworks logic for overriding the save serializer
+                            API.HoistSerializerOwnership();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Monitor.Log(string.Format("Failed to bind to Entoarox Framework's Mod API. Your game may crash while saving with Entoarox Framework! Error: {0}", ex.Message), LogLevel.Warn);
+                    }
+                }
+
+
                 //  Register custom types for serialization
 #if !ANDROID
                 if (Helper.ModRegistry.IsLoaded(SpaceCoreUniqueId))
                 {
                     IModInfo SpaceCoreInfo = Helper.ModRegistry.Get(SpaceCoreUniqueId);
-                    SpaceCoreAPI API = Helper.ModRegistry.GetApi<SpaceCoreAPI>(SpaceCoreUniqueId);
+                    ISpaceCoreAPI API = Helper.ModRegistry.GetApi<ISpaceCoreAPI>(SpaceCoreUniqueId);
                     API.RegisterSerializerType(typeof(BoundedBag));
                     API.RegisterSerializerType(typeof(BundleBag));
                     API.RegisterSerializerType(typeof(OmniBag));

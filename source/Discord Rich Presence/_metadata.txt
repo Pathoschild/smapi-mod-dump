@@ -1,5 +1,6 @@
-url:
-   https://github.com/FayneAldan/SVRichPresence.git
+urls:
+   web: https://github.com/FayneAldan/SVRichPresence
+   Git: https://github.com/FayneAldan/SVRichPresence.git
 
 mods:
    Discord Rich Presence

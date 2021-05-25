@@ -1,5 +1,6 @@
-url:
-   https://github.com/littleraskol/ReRegeneration.git
+urls:
+   web: https://github.com/littleraskol/ReRegeneration
+   Git: https://github.com/littleraskol/ReRegeneration.git
 
 mods:
    ReRegeneration

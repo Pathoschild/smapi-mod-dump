@@ -1,5 +1,6 @@
-url:
-   https://github.com/iSkLz/ExperienceMultiplier.git
+urls:
+   web: https://github.com/iSkLz/ExperienceMultiplier
+   Git: https://github.com/iSkLz/ExperienceMultiplier.git
 
 mods:
    Experience Rate Multiplier

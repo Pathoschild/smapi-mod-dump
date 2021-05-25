@@ -1,5 +1,6 @@
-url:
-   https://github.com/pomepome/CasksOnGround.git
+urls:
+   web: https://github.com/pomepome/CasksOnGround
+   Git: https://github.com/pomepome/CasksOnGround.git
 
 mods:
    Casks on Ground

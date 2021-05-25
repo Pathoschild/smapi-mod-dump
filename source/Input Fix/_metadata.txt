@@ -1,5 +1,6 @@
-url:
-   https://github.com/Windmill-City/InputFix.git
+urls:
+   web: https://github.com/Windmill-City/InputFix
+   Git: https://github.com/Windmill-City/InputFix.git
 
 mods:
    Input Fix

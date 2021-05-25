@@ -1,5 +1,6 @@
-url:
-   https://github.com/clockworkhound/SDV-ChildBedConfig.git
+urls:
+   web: https://github.com/clockworkhound/SDV-ChildBedConfig
+   Git: https://github.com/clockworkhound/SDV-ChildBedConfig.git
 
 mods:
    Child Bed Config

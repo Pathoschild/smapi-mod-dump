@@ -1,5 +1,6 @@
-url:
-   https://github.com/bmarquismarkail/SV_BetterQualityMoreSeeds.git
+urls:
+   web: https://github.com/bmarquismarkail/SV_BetterQualityMoreSeeds
+   Git: https://github.com/bmarquismarkail/SV_BetterQualityMoreSeeds.git
 
 mods:
    Better Quality More Seeds

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Zoryn4163/SMAPI-Mods.git
+urls:
+   web: https://github.com/Zoryn4163/SMAPI-Mods
+   Git: https://github.com/Zoryn4163/SMAPI-Mods.git
 
 mods:
    Better RNG

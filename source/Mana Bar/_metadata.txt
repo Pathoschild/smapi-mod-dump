@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/ManaBar.git
+urls:
+   web: https://github.com/spacechase0/ManaBar
+   Git: https://github.com/spacechase0/ManaBar.git
 
 mods:
    Mana Bar

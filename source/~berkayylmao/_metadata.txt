@@ -1,14 +1,15 @@
-url:
-   https://github.com/berkayylmao/StardewValleyMods.git
+urls:
+   web: https://github.com/berkayylmao/StardewValleyMods
+   Git: https://github.com/berkayylmao/StardewValleyMods.git
 
 mods:
    ChestEx
    Ship Anything
 
 latest commit:
-   commit dcee00fa3b838cea3de0e89cc5c763a0774ca302
-   Author: Berkay YÄ°ÄžÄ°T <berkayyigit@anadolu.edu.tr>
-   Date:   Sat Oct 17 13:49:20 2020 +0300
+   commit aa5c5e10c8d9743f964d2272ef2a9a60b120d318
+   Author: Berkay YiÄŸit <berkaytgy@gmail.com>
+   Date:   Sun May 23 18:09:00 2021 +0300
    
-       Refactoring
+       [ChestEx] Remove leftover code
    

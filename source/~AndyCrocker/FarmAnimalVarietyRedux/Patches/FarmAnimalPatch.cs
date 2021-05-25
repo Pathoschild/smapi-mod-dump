@@ -435,6 +435,15 @@ namespace FarmAnimalVarietyRedux.Patches
             // handle eating behavior
             if (__instance.isEating)
             {
+                // stop the animal from eating if they're in their house (this was causing the animal to infinitely loop their eating animation)
+                if (__instance.currentLocation == __instance.home.indoors.Value)
+                {
+                    __instance.isEating.Value = false;
+                    __instance.Halt();
+                    __result = false;
+                    return false;
+                }
+
                 // don't try to eat if the animal is 'inside' the building (when they're spawned on the farm when let out in the day)
                 if (__instance.home != null && __instance.home.getRectForAnimalDoor().Intersects(__instance.GetBoundingBox()))
                 {
@@ -576,13 +585,16 @@ namespace FarmAnimalVarietyRedux.Patches
                 // spawn the forage, animate the animal if the player is in the location
                 var amount = Utilities.DetermineDropAmount(produceToDrop);
                 var quality = Utilities.DetermineProductQuality(__instance, produceToDrop);
+
+                var shouldSpawnAgain = true;
                 if (location == Game1.currentLocation)
-                    AnimateForage(__instance, (Farmer farmer) => { SpawnForagedItem(forageId, amount, quality, __instance); });
+                    AnimateForage(__instance, (Farmer farmer) => { shouldSpawnAgain = SpawnForagedItem(forageId, amount, quality, produceToDrop.StandardQualityOnly, __instance); });
                 else
-                    SpawnForagedItem(forageId, amount, quality, __instance);
+                    shouldSpawnAgain = SpawnForagedItem(forageId, amount, quality, produceToDrop.StandardQualityOnly, __instance);
 
                 // update parsed products to reset object
-                parsedProduces.First(produce => produce.UniqueName.ToLower() == produceToDrop.UniqueName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(produceToDrop);
+                if (!shouldSpawnAgain)
+                    parsedProduces.First(produce => produce.UniqueName.ToLower() == produceToDrop.UniqueName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(produceToDrop);
                 __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(parsedProduces);
             }
 
@@ -620,8 +632,8 @@ namespace FarmAnimalVarietyRedux.Patches
             if (Game1.timeOfDay >= ModEntry.Instance.Config.BedTime + 100 || __instance.pauseTimer > 0)
                 return false;
 
-            // give animal a chance to eat if it's hungry
-            if (__instance.fullness.Value < 255 && !__instance.IsActuallySwimming() && Game1.random.NextDouble() < .002f && !__instance.isEating.Value)
+            // let animal eat when swimming
+            if (__instance.fullness.Value < 255 && __instance.IsActuallySwimming() && Game1.random.NextDouble() < .002f && !__instance.isEating.Value)
                 __instance.Eat(__instance.currentLocation);
 
             if (!Game1.IsClient && Game1.random.NextDouble() < .007f && __instance.uniqueFrameAccumulator == -1)
@@ -708,7 +720,7 @@ namespace FarmAnimalVarietyRedux.Patches
         internal static bool MakeSoundPrefix(FarmAnimal __instance)
         {
             // ensure sounds should be played
-            if (__instance.currentLocation == Game1.currentLocation)
+            if (__instance.currentLocation != Game1.currentLocation || Game1.options.muteAnimalSounds)
                 return false;
 
             var animal = ModEntry.Instance.Api.GetAnimalByInternalSubtypeName(__instance.type);
@@ -1149,7 +1161,7 @@ namespace FarmAnimalVarietyRedux.Patches
 
             // increase animal fullness, happiness, and friendship
             __instance.Sprite.loop = false;
-            __instance.fullness.Value = (byte)Math.Min(byte.MaxValue, fullnessGain);
+            __instance.fullness.Value = (byte)Math.Min(byte.MaxValue, __instance.fullness.Value + fullnessGain);
             if (__instance.moodMessage != 5 && __instance.moodMessage != 6 && !Game1.isRaining)
             {
                 __instance.happiness.Value = byte.MaxValue;
@@ -1249,13 +1261,16 @@ namespace FarmAnimalVarietyRedux.Patches
         /// <param name="id">The id of the object to spawn.</param>
         /// <param name="stackSize">The stack size of the object.</param>
         /// <param name="quality">The quality of the product being produced (4 = iridium, 2 = gold, 1 = silver, 0 = normal)</param>
+        /// <param name="standardQualityOnly">Whether the spawned object should have it's quality forced to be normal (this is used to counter the botanist profession).</param>
         /// <param name="animal">The animal to spawn forage produce for.</param>
-        /// <returns><see langword="true"/> if the object was successfully spawned; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the object should be able to spawned again in the same day; otherwise, <see langword="false"/>.</returns>
         /// <remarks>This also updates the modData with the resetted DaysToProduce, this is because the method can be delayed if it's a callback from an animation, this resulted in the modData not being updated and animals endlessly producing forage produce.</remarks>
-        private static void SpawnForagedItem(int id, int stackSize, int quality, FarmAnimal animal)
+        private static bool SpawnForagedItem(int id, int stackSize, int quality, bool standardQualityOnly, FarmAnimal animal)
         {
             var objectToSpawn = new StardewValley.Object(animal.getTileLocation(), id, stackSize) { Quality = quality };
             objectToSpawn.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"] = ""; // this is used so we can tell if this object should keep it's stack size when being picked up (no value is expected, just the keys presence)
+            if (standardQualityOnly)
+                objectToSpawn.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/producedShouldBeStandardQuality"] = "";
 
             if (Utility.spawnObjectAround(Utility.getTranslatedVector2(animal.getTileLocation(), animal.FacingDirection, 1), objectToSpawn, Game1.getFarm()))
             {
@@ -1267,13 +1282,14 @@ namespace FarmAnimalVarietyRedux.Patches
                 if (animal.modData.TryGetValue($"{ModEntry.Instance.ModManifest.UniqueID}/allowForageRepeats", out var allowForageRepeatsString))
                     if (bool.TryParse(allowForageRepeatsString, out var allowForageRepeatsParsed))
                         allowForageRepeats = allowForageRepeatsParsed;
-                if (allowForageRepeats)
-                {
-                    var random = new Random((int)(animal.myID / 2) + (int)Game1.stats.DaysPlayed + Game1.timeOfDay);
-                    if (random.NextDouble() <= animal.friendshipTowardFarmer / 1500f)
-                        return;
-                }
+                if (!allowForageRepeats)
+                    return false;
+
+                var random = new Random((int)(animal.myID / 2) + (int)Game1.stats.DaysPlayed + Game1.timeOfDay);
+                return random.NextDouble() <= animal.friendshipTowardFarmer / 1500f;
             }
+
+            return true;
         }
 
         /// <summary>Spawns a laid item.</summary>

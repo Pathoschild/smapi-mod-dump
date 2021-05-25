@@ -1,0 +1,22 @@
+{
+  "Name": "Even Better RNG",
+  "Author": "pepoluan",
+  "Version": "1.7.2",
+  "Description": "Replace SDV RNG with high-performance XoShiRo(128|256)**",
+  "UniqueID": "pepoluan.EvenBetterRNG",
+  "EntryDLL": "EvenBetterRNG.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Chucklefish:6117", "Nexus:8680" ],
+  "Meta:Repository": "https://sourceforge.net/p/sdvmod-even-better-rng/",
+  "Meta:Changelog": {
+    "0.0.1": "Proof of concept",
+    "1.0.0": "Initial Release",
+    "1.1.0": "Attach to DayStart instead of SaveLoaded, add Reload (F5) functionality",
+    "1.2.0": "Implement support for Generic Mod Config Menu, cap the gaussian result, and change the gaussian stdev",
+    "1.5.0": "Provide API for other SMAPI mods",
+    "1.6.0": "Use XoShiRo256** for 64-bit, change hotkey to KeybindList to allow modifier keys (RightShift, LeftCtrl, etc), instrumentation",
+    "1.7.0": "Add some CLI, add experimental periodic forcing",
+    "1.7.1": "Add GetNamedRandom API, remove premature capping in GaussianLuck, optimize GaussianLuck calculation",
+    "1.7.2": "Periodic forcing is now enforced, experimental per-tick forcing implemented"
+  }
+}

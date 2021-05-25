@@ -1,5 +1,6 @@
-url:
-   https://github.com/pomepome/StackCheckFix.git
+urls:
+   web: https://github.com/pomepome/StackCheckFix
+   Git: https://github.com/pomepome/StackCheckFix.git
 
 mods:
    Stack Check Fix

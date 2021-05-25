@@ -31,7 +31,8 @@ namespace FarmTypeManager
 
             Utility.DayIsEnding = true; //set the "day is ending" flag
 
-            Utility.MonsterTracker.Clear(); //clear any tracked monster data (note: this should happen *before* handling monster expiration/removal)
+            Utility.TimedSpawns.Clear(); //clear any remaining spawns for the day (avoiding a known issue with mid-save/overnight time changes)
+            Utility.MonsterTracker.Clear(); //clear any tracked monster data (preventing loot drops when monsters are removed by this process)
 
             if (Utility.FarmDataList == null) { return; } //if the farm data list is blank, do nothing
 

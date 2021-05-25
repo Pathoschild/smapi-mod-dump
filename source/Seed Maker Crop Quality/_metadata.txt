@@ -1,5 +1,6 @@
-url:
-   https://github.com/Noomklaw/SV_BetterQualityMoreSeeds.git
+urls:
+   web: https://github.com/Noomklaw/SV_BetterQualityMoreSeeds
+   Git: https://github.com/Noomklaw/SV_BetterQualityMoreSeeds.git
 
 mods:
    Seed Maker Crop Quality

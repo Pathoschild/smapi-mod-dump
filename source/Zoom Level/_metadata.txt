@@ -1,13 +1,14 @@
-url:
-   https://github.com/thespbgamer/ZoomLevel.git
+urls:
+   web: https://github.com/thespbgamer/ZoomLevel
+   Git: https://github.com/thespbgamer/ZoomLevel.git
 
 mods:
    Zoom Level
 
 latest commit:
-   commit 95ee5d560dcb0a71bbb4165d20070b42b96f6039
-   Author: thespbgamer <30112696+thespbgamer@users.noreply.github.com>
-   Date:   Sat May 1 20:37:45 2021 +0100
+   commit 8fe5632c2a3c9ae706370a5e08000e0990cc055d
+   Author: thespbgamer <thespbgamer@outlook.com>
+   Date:   Mon May 17 13:27:52 2021 +0100
    
-       Update CHANGELOG.md
+       updated changelog
    

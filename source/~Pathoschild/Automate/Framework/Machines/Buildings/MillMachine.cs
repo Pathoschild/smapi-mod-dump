@@ -20,7 +20,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Buildings
 {
     /// <summary>A mill machine that accepts input and provides output.</summary>
     /// <remarks>Derived from <see cref="Mill.doAction"/>.</remarks>
-    internal class MillMachine : BaseMachine<Mill>
+    internal class MillMachine : BaseMachineForBuilding<Mill>
     {
         /*********
         ** Fields

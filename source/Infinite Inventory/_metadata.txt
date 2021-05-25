@@ -1,5 +1,6 @@
-url:
-   https://github.com/unidarkshin/Stardew-Mods.git
+urls:
+   web: https://github.com/unidarkshin/Stardew-Mods
+   Git: https://github.com/unidarkshin/Stardew-Mods.git
 
 mods:
    Infinite Inventory

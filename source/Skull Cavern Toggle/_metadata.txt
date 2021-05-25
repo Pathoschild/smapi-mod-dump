@@ -1,13 +1,15 @@
-url:
-   https://github.com/TheMightyAmondee/SkullCavernToggle.git
+urls:
+   web: https://github.com/TheMightyAmondee/SkullCavernToggle
+   Git: https://github.com/TheMightyAmondee/SkullCavernToggle.git
 
 mods:
    Skull Cavern Toggle
 
 latest commit:
-   commit 9583913eb49322be465a4e9a75cf99741550532f
-   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Sun Mar 14 07:19:47 2021 +1100
+   commit fdddb774e11cc2cb0bfaf9318ef2454ad57d6bfd
+   Merge: 3aaffe1 9583913
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Mon May 3 09:52:37 2021 +1000
    
-       Update README.md
+       Merge branch 'master' of https://github.com/TheMightyAmondee/SkullCavernToggle
    

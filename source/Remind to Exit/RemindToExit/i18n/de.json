@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://sourceforge.net/projects/sdvmod-remind-to-exit/
+**
+*************************************************/
+
+{
+  "config.hotkey.desc": "Wirkt sich nur aus, wenn 'Enabled' wahr ist",
+  "config.hotkeycustmsg.desc": "Wirkt sich nur aus, wenn 'Enabled' wahr ist",
+  "reminder.disabled": "Die Beenden-Erinnerung ist deaktiviert.",
+  "reminder.enabled": "Beenden-Erinnerung ist aktiviert",
+  "reminder.title": "ERINNERUNG:",
+  "reminder.body-default": "Sie werden daran erinnert, das Spiel zu beenden.",
+  "reminder-ui.custom-msg-label": "Benutzerdefinierte Erinnerungsmeldung"
+}

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/nofilenamed/XPMultiplier
+   Git: https://github.com/nofilenamed/XPMultiplier.git
+
+mods:
+   XPMultiplier
+
+latest commit:
+   commit 58ef66527d534ca5524d8469981b49d36893e01a
+   Author: nofilenamed <nofilenamed@gmail.com>
+   Date:   Mon May 3 16:01:11 2021 +0200
+   
+       Delete XPMultiplier.csproj
+   

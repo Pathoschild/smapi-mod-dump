@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ilyaki/ArtifactSystemFixed.git
+urls:
+   web: https://github.com/Ilyaki/ArtifactSystemFixed
+   Git: https://github.com/Ilyaki/ArtifactSystemFixed.git
 
 mods:
    Artifact System Fixed

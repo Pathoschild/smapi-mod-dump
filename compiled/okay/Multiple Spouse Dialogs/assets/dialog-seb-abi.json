@@ -1,0 +1,212 @@
+﻿[
+  {
+    "Call": "Ready for band practice?",
+    "Response": "You know it!",
+    "Callers": "Abigail Sebastian",
+    "Responders": "Abigail Sebastian"
+  },
+  {
+    "Call": "Have you seen the frog crickets?",
+    "Response": "Don't tell me they got out again",
+    "Callers": "Abigail Sebastian",
+    "Responders": "Abigail Sebastian"
+  },
+  {
+    "Call": "When's our next Solarion game?",
+    "Response": "Dunno, I'll ask Sam",
+    "Callers": "Abigail Sebastian",
+    "Responders": "Abigail Sebastian"
+  },
+  {
+    "Call": "Thinking about wearing black today",
+    "Response": "Great, then we'll match!",
+    "Callers": "Abigail Sebastian",
+    "Responders": "Abigail Sebastian"
+  },
+  {
+    "Call": "Your hair looks great today!",
+    "Response": "Thanks, yours too!",
+    "Callers": "Abigail Sebastian",
+    "Responders": "Abigail Sebastian"
+  },
+  {
+    "Call": "Was that a ghost?",
+    "Response": "Probably",
+    "Callers": "Abigail Sebastian",
+    "Responders": "Abigail Sebastian"
+  },
+  {
+    "Call": "Did we plant pumpkins?",
+    "Response": "Make mine a soup",
+    "Callers": "Abigail",
+    "Responders": "Sebastian",
+    "When": {
+      "Season": "Fall"
+    }
+  },
+  {
+    "Call": "Brr, it's cold",
+    "Response": "Just how I like it",
+    "Callers": "Abigail",
+    "Responders": "Sebastian",
+    "When": {
+      "Season": "Winter"
+    }
+  },
+  {
+    "Call": "Let's make snowgoons!",
+    "Response": "Snowgoon army!",
+    "Callers": "Abigail",
+    "Responders": "Sebastian",
+    "When": {
+      "Season": "Winter"
+    }
+  },
+  {
+    "Call": "It's a bit too chilly",
+    "Response": "I got a big blanket~",
+    "Callers": "Sebastian",
+    "Responders": "Abigail",
+    "When": {
+      "Season": "Winter"
+    }
+  },
+  {
+    "Call": "I can't find this bug",
+    "Response": "Did you miss a comma?",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "What do you think of this logo?",
+    "Response": "Ooh, sharp!",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Want to hear a joke? Our dads",
+    "Response": "Ouch! But still funny",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Give me a hand with the chores?",
+    "Response": "Only if you kiss me ;)",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Your gremlin is shrieking again",
+    "Response": "His name is David.",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Ugh, I need some alone time",
+    "Response": "Okay, take a break!",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "You smell like blackberry cobbler",
+    "Response": "I deny everything!",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Think I saw a snake in the field",
+    "Response": "Did you get pics?",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Whose turn is it to make the bed?",
+    "Response": "Not it!",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Gotta focus on this code package",
+    "Response": "You got this!",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Wanna go on a bike ride?",
+    "Response": "Do I??",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Abby...",
+    "Response": "Am I in trouble?",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  },
+  {
+    "Call": "Seb, can you help me study later?",
+    "Response": "Calc II again? Sure",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "Wanna hear a joke?",
+    "Response": "Do I have to? ...Just kidding. :)",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "Thinking about the mines today",
+    "Response": "Save me a Frozen Tear",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "Sebby....",
+    "Response": "Dare I ask?",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "It's so quiet out here",
+    "Response": "Yeah, it's nice",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "Guess what I found?",
+    "Response": "Don't bring it in the house!",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "Rec me a book?",
+    "Response": "Tried 'Sieges of Darkness'?",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "I love you, Seb <",
+    "Response": "*mumble* m-me too...",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "Do you love me, Seb?",
+    "Response": "Why else would I marry you?",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "It's so fun to tease you, Seb",
+    "Response": "Fun for me, too--I mean, uh...",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "Help me with this level?",
+    "Response": "Pass me a controller",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  }
+]

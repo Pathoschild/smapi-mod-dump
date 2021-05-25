@@ -1,5 +1,6 @@
-url:
-   https://github.com/valruno/ChooseRandomFarmEvent.git
+urls:
+   web: https://github.com/valruno/ChooseRandomFarmEvent
+   Git: https://github.com/valruno/ChooseRandomFarmEvent.git
 
 mods:
    Choose Random Farm Event

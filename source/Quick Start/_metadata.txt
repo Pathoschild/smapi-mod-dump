@@ -1,5 +1,6 @@
-url:
-   https://github.com/Brian-Wuest/Quick_Start.git
+urls:
+   web: https://github.com/Brian-Wuest/Quick_Start
+   Git: https://github.com/Brian-Wuest/Quick_Start.git
 
 mods:
    Quick Start

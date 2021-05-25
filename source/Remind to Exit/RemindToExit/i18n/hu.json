@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://sourceforge.net/projects/sdvmod-remind-to-exit/
+**
+*************************************************/
+
+{
+  "config.hotkey.desc": "Csak akkor lesz hatása, ha az 'Enabled' értéke igaz.",
+  "config.hotkeycustmsg.desc": "Csak akkor lesz hatása, ha az 'Enabled' értéke igaz.",
+  "reminder.disabled": "A kilépési emlékeztető le van tiltva",
+  "reminder.enabled": "A kilépési emlékeztető engedélyezve van",
+  "reminder.title": "Emlékeztető:",
+  "reminder.body-default": "A játékból való kilépésre emlékeztetünk.",
+  "reminder-ui.custom-msg-label": "Egyéni emlékeztető üzenet"
+}

@@ -1,5 +1,6 @@
-url:
-   https://github.com/lambui/StardewValleyMod_OmniFarm.git
+urls:
+   web: https://github.com/lambui/StardewValleyMod_OmniFarm
+   Git: https://github.com/lambui/StardewValleyMod_OmniFarm.git
 
 mods:
    OmniFarm

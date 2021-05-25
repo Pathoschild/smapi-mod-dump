@@ -1,5 +1,6 @@
-url:
-   https://github.com/KirbyLink/FestivalEndTimeTweak.git
+urls:
+   web: https://github.com/KirbyLink/FestivalEndTimeTweak
+   Git: https://github.com/KirbyLink/FestivalEndTimeTweak.git
 
 mods:
    Festival End Time Tweak

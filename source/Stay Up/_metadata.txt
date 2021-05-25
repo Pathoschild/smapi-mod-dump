@@ -1,5 +1,6 @@
-url:
-   https://github.com/su226/StardewValleyMods.git
+urls:
+   web: https://github.com/su226/StardewValleyMods
+   Git: https://github.com/su226/StardewValleyMods.git
 
 mods:
    Stay Up

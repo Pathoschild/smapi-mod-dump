@@ -1,5 +1,6 @@
-url:
-   https://github.com/yuri-moens/LadderLocator.git
+urls:
+   web: https://github.com/yuri-moens/LadderLocator
+   Git: https://github.com/yuri-moens/LadderLocator.git
 
 mods:
    Ladder Locator

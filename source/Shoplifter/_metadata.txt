@@ -1,16 +1,14 @@
-url:
-   https://github.com/TheMightyAmondee/Shoplifter.git
+urls:
+   web: https://github.com/TheMightyAmondee/Shoplifter
+   Git: https://github.com/TheMightyAmondee/Shoplifter.git
 
 mods:
    Shoplifter
 
 latest commit:
-   commit 2cb9fd5fd51c43767fd37a0fedf430df5d05e04e
-   Merge: ff14f0f 5a49e8e
+   commit e380b82b073f2ece593c6e9cc771ec0cabff4641
    Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Fri Apr 30 19:26:57 2021 +1000
+   Date:   Wed May 19 20:14:00 2021 +1000
    
-       Merge pull request #1 from TheMightyAmondee/add-license-1
-       
-       Create LICENSE
+       Update README.md
    

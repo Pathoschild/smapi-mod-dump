@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/chawolbaka/HaltEventTime
+   Git: https://github.com/chawolbaka/HaltEventTime.git
+
+mods:
+   Halt Event Time
+
+latest commit:
+   commit b73c4924aa784966504a8aec57c0ef237b3f5164
+   Author: chawol <chawolbaka@hotmail.com>
+   Date:   Fri May 21 15:41:42 2021 +0800
+   
+       Add UpdateKey
+   

@@ -114,7 +114,7 @@ namespace FarmAnimalVarietyRedux
         /// <returns><see langword="true"/> if the subtype has different spritesheets for harvested versions; otherwise, <see langword="false"/>.</returns>
         public bool HasDifferentSpriteSheetWhenHarvested(string internalAnimalName, string internalAnimalSubtypeName)
         {
-            var managedAssets = RegisteredAssets.Where(registeredAsset => registeredAsset.InternalAnimalName.ToLower() == internalAnimalName.ToLower() && registeredAsset.InternalAnimalSubtypeName?.ToLower() == internalAnimalSubtypeName.ToLower());
+            var managedAssets = RegisteredAssets.Where(registeredAsset => registeredAsset.InternalAnimalName.ToLower() == internalAnimalName.ToLower() && registeredAsset.InternalAnimalSubtypeName?.ToLower() == internalAnimalSubtypeName.ToLower() && registeredAsset.IsHarvested);
             if (managedAssets.Count() == 0)
                 return false;
 

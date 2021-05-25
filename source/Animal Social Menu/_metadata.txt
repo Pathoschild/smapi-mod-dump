@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/AnimalSocialMenu.git
+urls:
+   web: https://github.com/spacechase0/AnimalSocialMenu
+   Git: https://github.com/spacechase0/AnimalSocialMenu.git
 
 mods:
    Animal Social Menu

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Sasara2201/More-Weapons-SDV-Mod-.git
+urls:
+   web: https://github.com/Sasara2201/More-Weapons-SDV-Mod-
+   Git: https://github.com/Sasara2201/More-Weapons-SDV-Mod-.git
 
 mods:
    More Weapons

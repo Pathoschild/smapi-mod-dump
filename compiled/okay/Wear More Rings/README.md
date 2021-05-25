@@ -1,12 +1,12 @@
 # Wear More Rings
 
 ## Description
-Adds up to 18 additional ring slots to your inventory.
+Configure the amount of ring slots in your inventory. By default adds 6 additional ring slots.
 
 ## Config
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
 
-* `Rings`: Number of ring slots available. Normally this is 2. Default = 8. Max = 20.
+* `Rings`: Number of ring slots available. Normally this is 2, this mod increases it to 8. Max = 20.
 
 ## Console Commands
 * `player_resetmodifiers`: Clears buffs, then resets and reapplies the modifiers applied by boots & rings.
@@ -22,6 +22,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 * This mod does not support android / mobile.
 * While rings from the [Giant Crop Ring](https://www.nexusmods.com/stardewvalley/mods/1182) mod can be equipped in the additional slots, their effects won't be applied. Rings from the [MoreRings](https://www.nexusmods.com/stardewvalley/mods/2054) mod, v1.0.3+ should work though.
+* This mod is incompatible with [Multiplayer Time](https://www.nexusmods.com/stardewvalley/mods/2543). Using both will cause save game corruption. This can (hopefully) be fixed by uninstalling either of these mods. If you keep Multiplayer Time, the mod should resolve the issue automatically. If you use Wear More Rings you need to execute the `player_resetmodifiers` console command manually.
 
 ## Changes
 #### 1.0:
@@ -75,3 +76,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 3.4:
 * Rearanged ring slots. The right ring is now positioned in the first column, second from the top.
 * Added config parameter `Rings` for the amount of ring slots. Anything above 8 will result in text overlaying the ring slots.
+
+#### 4.0:
+* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+* Add 64-bit support

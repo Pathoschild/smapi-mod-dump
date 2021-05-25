@@ -1,0 +1,10 @@
+{
+  "Name": "Configurable Special Orders Unlock",
+  "Author": "Vertigon",
+  "Version": "0.1.0",
+  "Description": "Mod to configure the unlock requirements of the Special Orders Board.",
+  "UniqueID": "Vertigon.ConfigurableSpecialOrdersUnlock",
+  "EntryDll": "ConfigurableSpecialOrdersUnlock.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8690" ]
+}

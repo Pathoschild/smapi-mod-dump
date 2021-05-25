@@ -1,5 +1,6 @@
-url:
-   https://github.com/Alhifar/WaitAroundSMAPI.git
+urls:
+   web: https://github.com/Alhifar/WaitAroundSMAPI
+   Git: https://github.com/Alhifar/WaitAroundSMAPI.git
 
 mods:
    Wait Around

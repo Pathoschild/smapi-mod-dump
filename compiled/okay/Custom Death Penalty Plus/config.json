@@ -14,6 +14,8 @@
   "OtherPenalties": {
     "WakeupNextDayinClinic": false,
     "HarveyFriendshipChange": 0,
-    "MaruFriendshipChange": 0
+    "MaruFriendshipChange": 0,
+    "MoreRealisticWarps": false,
+    "DebuffonDeath": false
   }
 }

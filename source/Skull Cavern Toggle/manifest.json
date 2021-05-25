@@ -11,7 +11,7 @@
 {
 	"Name":"Skull Cavern Toggle",
 	"Author":"TheMightyAmondee",
-	"Version":"1.1.0",
+	"Version":"1.1.1",
 	"Description":"Toggles Skull Cavern difficulty",
 	"UniqueID": "TheMightyAmondee.SkullCavernToggle",
 	"EntryDll":"SkullCavernToggle.dll",

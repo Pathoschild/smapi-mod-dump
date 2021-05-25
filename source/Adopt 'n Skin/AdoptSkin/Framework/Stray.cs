@@ -70,13 +70,6 @@ namespace AdoptSkin.Framework
             // Put that thing where it belongs
             PetInstance.currentLocation = Marnies;
             Game1.warpCharacter(PetInstance, Marnies, CreationLocation);
-
-            if (ModEntry.Config.NotifyStraySpawn)
-            {
-                string message = $"A stray pet is available to adopt at Marnie's!";
-                ModEntry.SMonitor.Log(message, LogLevel.Debug);
-                Game1.chatBox.addInfoMessage(message);
-            }
         }
 
 

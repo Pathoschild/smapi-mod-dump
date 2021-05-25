@@ -1,5 +1,6 @@
-url:
-   https://github.com/Underscore76/SDVPracticeMod.git
+urls:
+   web: https://github.com/Underscore76/SDVPracticeMod
+   Git: https://github.com/Underscore76/SDVPracticeMod.git
 
 mods:
    Speedrun Practice Mod

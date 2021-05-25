@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ilyaki/Server-Browser.git
+urls:
+   web: https://github.com/Ilyaki/Server-Browser
+   Git: https://github.com/Ilyaki/Server-Browser.git
 
 mods:
    Server Browser

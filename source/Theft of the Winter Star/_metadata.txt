@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/TheftOfTheWinterStar.git
+urls:
+   web: https://github.com/spacechase0/TheftOfTheWinterStar
+   Git: https://github.com/spacechase0/TheftOfTheWinterStar.git
 
 mods:
    Theft of the Winter Star

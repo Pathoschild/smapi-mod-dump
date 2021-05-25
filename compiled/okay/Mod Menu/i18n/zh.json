@@ -4,6 +4,9 @@
   "modMenu.version": "版本",
   "modMenu.description": "描述",
   "modMenu.dependencies": "依赖",
-  "modMenu.button.website": "网站",
-  "modMenu.button.modMenu": "模组菜单"
+  "modMenu.button.homePage": "主页",
+  "modMenu.button.issues": "问题",
+  "modMenu.button.modMenu": "模组菜单",
+  "modMenu.button.setting": "设置",
+  "modMenu.button.update": "更新"
 }

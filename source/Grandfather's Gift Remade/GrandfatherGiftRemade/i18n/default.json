@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://sourceforge.net/projects/sdvmod-grandfather-s-gift-re/
+**
+*************************************************/
+
+{
+  "weapon.name": "Elf Blade",
+  "weapon.desc": "Only the nimble hands of an elf could craft this.",
+  "full_inventory": "Your inventory is full, so you put the weapon back into the chest.",
+  "narration1": "Before you went to bed last night, you noticed a loose board.^^Too tired to pull it up you went to bed with the intention of checking what's underneath first thing in the morning.^",
+  "narration2": "As soon as you wake up, you pry open the loose board and find a wooden chest hidden underneath.^^Within, there is a letter written in Grandfather's cursive writing, and a dagger wrapped in a silk cloth bearing some kind of heraldry marking.^^You started reading...^",
+  "letter": "Dear @,^^    Stardew Valley wasn't a peaceful place when I started the farm. Yet I persevered, made friends, and had a ... relationship with an Elf princess. But alas, our differences meant that we were not meant to be together.^^   Nevertheless, as we said our goodbyes, she gave me this dagger that you have discovered, as a token to remember her by.^^    May this dagger serves you -- and your future family -- as well as it had served me, and mine.^^Love,^Grandpa.^"
+}

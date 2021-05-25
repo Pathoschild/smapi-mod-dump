@@ -1,5 +1,6 @@
-url:
-   https://github.com/M3ales/ChestNaming.git
+urls:
+   web: https://github.com/M3ales/ChestNaming
+   Git: https://github.com/M3ales/ChestNaming.git
 
 mods:
    Chest Naming

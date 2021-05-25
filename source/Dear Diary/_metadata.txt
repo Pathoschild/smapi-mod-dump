@@ -1,5 +1,6 @@
-url:
-   https://github.com/MissCoriel/Dear-Diary.git
+urls:
+   web: https://github.com/MissCoriel/Dear-Diary
+   Git: https://github.com/MissCoriel/Dear-Diary.git
 
 mods:
    Dear Diary

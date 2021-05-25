@@ -1,5 +1,6 @@
-url:
-   https://github.com/OfficialRenny/InfiniteJunimoCartLives.git
+urls:
+   web: https://github.com/OfficialRenny/InfiniteJunimoCartLives
+   Git: https://github.com/OfficialRenny/InfiniteJunimoCartLives.git
 
 mods:
    Infinite Junimo Cart Lives

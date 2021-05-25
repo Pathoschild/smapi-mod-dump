@@ -1,5 +1,6 @@
-url:
-   https://github.com/Videogamers0/SDV-MachineAugmentors.git
+urls:
+   web: https://github.com/Videogamers0/SDV-MachineAugmentors
+   Git: https://github.com/Videogamers0/SDV-MachineAugmentors.git
 
 mods:
    Machine Augmentors

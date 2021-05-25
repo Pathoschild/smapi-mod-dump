@@ -1,5 +1,6 @@
-url:
-   https://github.com/mjSurber/Map-Utilities.git
+urls:
+   web: https://github.com/mjSurber/Map-Utilities
+   Git: https://github.com/mjSurber/Map-Utilities.git
 
 mods:
    Map Utilities

@@ -1,5 +1,6 @@
-url:
-   https://github.com/joaniedavis/RandomHairMod.git
+urls:
+   web: https://github.com/joaniedavis/RandomHairMod
+   Git: https://github.com/joaniedavis/RandomHairMod.git
 
 mods:
    Random Hair Color

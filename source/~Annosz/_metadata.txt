@@ -1,5 +1,6 @@
-url:
-   https://github.com/Annosz/StardewValleyModding.git
+urls:
+   web: https://github.com/Annosz/StardewValleyModding
+   Git: https://github.com/Annosz/StardewValleyModding.git
 
 mods:
    Cheaper Beach Bridge Repair

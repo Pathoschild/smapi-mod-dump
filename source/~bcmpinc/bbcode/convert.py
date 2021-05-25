@@ -27,6 +27,10 @@ for f in files:
     text = re.sub("^[*](.+)", "[list]\n[*]\\1\n[/list]", text, flags=re.MULTILINE)
     text = re.sub("\[/list\]\n\[list\]\n", "", text)
 
+    # Remove extraneous line breaks
+    text = re.sub("\n+\[list\]", "[list]", text)
+    text = re.sub("\[/list\]\n+", "[/list]", text)
+
     with open(name+".txt", "w") as file:
         file.write(text)
         

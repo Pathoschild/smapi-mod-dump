@@ -1,5 +1,6 @@
-url:
-   https://github.com/Seawolf87/DailyFarmPhoto.git
+urls:
+   web: https://github.com/Seawolf87/DailyFarmPhoto
+   Git: https://github.com/Seawolf87/DailyFarmPhoto.git
 
 mods:
    Daily Farm Photo

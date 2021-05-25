@@ -1,5 +1,6 @@
-url:
-   https://github.com/rockinrolla/ZoomMod.git
+urls:
+   web: https://github.com/rockinrolla/ZoomMod
+   Git: https://github.com/rockinrolla/ZoomMod.git
 
 mods:
    Zoom Mod / Zoom Out Extreme

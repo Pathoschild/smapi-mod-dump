@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/BetterMeteorites.git
+urls:
+   web: https://github.com/spacechase0/BetterMeteorites
+   Git: https://github.com/spacechase0/BetterMeteorites.git
 
 mods:
    Better Meteorites

@@ -33,81 +33,79 @@ namespace FarmTypeManager
             /// <returns>The spawned ore's parentSheetIndex. Null if spawn failed.</returns>
             public static int? SpawnOre(string oreName, GameLocation location, Vector2 tile)
             {
-                StardewValley.Object ore = null; //ore object, to be spawned into the world later
+                StardewValley.Object ore = null; //the ore object to spawn
                 switch (oreName.ToLower()) //avoid any casing issues in method calls by making this lower-case
                 {
                     case "stone":
                         ore = new StardewValley.Object(tile, 668 + (RNG.Next(2) * 2), 1); //either of the two random stones spawned in the vanilla hilltop quarry
-                        ore.MinutesUntilReady = 2; //durability, i.e. number of hits with basic pickaxe required to break the ore (each pickaxe level being +1 damage)
                         break;
                     case "geode":
-                        ore = new StardewValley.Object(tile, 75, 1); //"regular" geode rock, as spawned on vanilla hilltop quarries 
-                        ore.MinutesUntilReady = 3;
+                        ore = new StardewValley.Object(tile, 75, 1);
                         break;
                     case "frozengeode":
-                        ore = new StardewValley.Object(tile, 76, 1); //frozen geode rock
-                        ore.MinutesUntilReady = 5;
+                        ore = new StardewValley.Object(tile, 76, 1);
                         break;
                     case "magmageode":
-                        ore = new StardewValley.Object(tile, 77, 1); //magma geode rock
-                        ore.MinutesUntilReady = 7;
+                        ore = new StardewValley.Object(tile, 77, 1);
+                        break;
+                    case "omnigeode":
+                        ore = new StardewValley.Object(tile, 819, "Stone", true, false, false, false);
                         break;
                     case "gem":
-                        ore = new StardewValley.Object(tile, (RNG.Next(7) + 1) * 2, "Stone", true, true, false, false); //any of the possible gem rocks
-                        ore.MinutesUntilReady = 5;
+                        ore = new StardewValley.Object(tile, (RNG.Next(7) + 1) * 2, "Stone", true, false, false, false); //any of the specific gem nodes (NOT the gem node with ID 44, which was considered excessively high-reward)
                         break;
                     case "copper":
-                        ore = new StardewValley.Object(tile, 751, 1); //copper ore
-                        ore.MinutesUntilReady = 3;
+                        ore = new StardewValley.Object(tile, 751, 1);
                         break;
                     case "iron":
-                        ore = new StardewValley.Object(tile, 290, 1); //iron ore
-                        ore.MinutesUntilReady = 4;
+                        ore = new StardewValley.Object(tile, 290, 1);
                         break;
                     case "gold":
-                        ore = new StardewValley.Object(tile, 764, 1); //gold ore
-                        ore.MinutesUntilReady = 8;
+                        ore = new StardewValley.Object(tile, 764, 1);
                         break;
                     case "iridium":
-                        ore = new StardewValley.Object(tile, 765, 1); //iridium ore
-                        ore.MinutesUntilReady = 16;
+                        ore = new StardewValley.Object(tile, 765, 1);
                         break;
                     case "mystic":
-                        ore = new StardewValley.Object(tile, 46, "Stone", true, true, false, false); //mystic stone, a.k.a. mystic ore
-                        ore.MinutesUntilReady = 12;
+                        ore = new StardewValley.Object(tile, 46, "Stone", true, false, false, false);
                         break;
                     case "radioactive":
                         ore = new StardewValley.Object(tile, 95, "Stone", true, false, false, false);
-                        ore.MinutesUntilReady = 25;
                         break;
                     case "diamond":
-                        ore = new StardewValley.Object(tile, 2, "Stone", true, true, false, false);
-                        ore.MinutesUntilReady = 5;
+                        ore = new StardewValley.Object(tile, 2, "Stone", true, false, false, false);
                         break;
                     case "ruby":
-                        ore = new StardewValley.Object(tile, 4, "Stone", true, true, false, false);
-                        ore.MinutesUntilReady = 5;
+                        ore = new StardewValley.Object(tile, 4, "Stone", true, false, false, false);
                         break;
                     case "jade":
-                        ore = new StardewValley.Object(tile, 6, "Stone", true, true, false, false);
-                        ore.MinutesUntilReady = 5;
+                        ore = new StardewValley.Object(tile, 6, "Stone", true, false, false, false);
                         break;
                     case "amethyst":
-                        ore = new StardewValley.Object(tile, 8, "Stone", true, true, false, false);
-                        ore.MinutesUntilReady = 5;
+                        ore = new StardewValley.Object(tile, 8, "Stone", true, false, false, false);
                         break;
                     case "topaz":
-                        ore = new StardewValley.Object(tile, 10, "Stone", true, true, false, false);
-                        ore.MinutesUntilReady = 5;
+                        ore = new StardewValley.Object(tile, 10, "Stone", true, false, false, false);
                         break;
                     case "emerald":
-                        ore = new StardewValley.Object(tile, 12, "Stone", true, true, false, false);
-                        ore.MinutesUntilReady = 5;
+                        ore = new StardewValley.Object(tile, 12, "Stone", true, false, false, false);
                         break;
                     case "aquamarine":
-                        ore = new StardewValley.Object(tile, 14, "Stone", true, true, false, false);
-                        ore.MinutesUntilReady = 5;
+                        ore = new StardewValley.Object(tile, 14, "Stone", true, false, false, false);
                         break;
+                    case "mussel":
+                        ore = new StardewValley.Object(tile, 25, "Stone", true, false, false, false);
+                        break;
+                    case "fossil":
+                        ore = new StardewValley.Object(tile, 816 + RNG.Next(2), 1); //either of the two random fossil nodes
+                        break;
+                    case "clay":
+                        ore = new StardewValley.Object(tile, 818, 1);
+                        break;
+                    case "cindershard":
+                        ore = new StardewValley.Object(tile, 843 + RNG.Next(2), "Stone", true, false, false, false);
+                        break;
+
                     default: break;
                 }
 
@@ -116,6 +114,10 @@ namespace FarmTypeManager
                     Utility.Monitor.Log($"The ore to be spawned (\"{oreName}\") doesn't match any known ore types. Make sure that name isn't misspelled in your config file.", LogLevel.Info);
                     return null;
                 }
+
+                int? durability = Utility.GetDefaultDurability(ore.ParentSheetIndex); //try to get this ore type's default durability
+                if (durability.HasValue) //if a default exists
+                    ore.MinutesUntilReady = durability.Value; //use it
 
                 Utility.Monitor.VerboseLog($"Spawning ore. Type: {oreName}. Location: {tile.X},{tile.Y} ({location.Name}).");
                 location.setObject(tile, ore); //actually spawn the ore object into the world

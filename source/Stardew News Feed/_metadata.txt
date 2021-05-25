@@ -1,5 +1,6 @@
-url:
-   https://github.com/Mikesnorth/StardewNewsFeed.git
+urls:
+   web: https://github.com/Mikesnorth/StardewNewsFeed
+   Git: https://github.com/Mikesnorth/StardewNewsFeed.git
 
 mods:
    Stardew News Feed

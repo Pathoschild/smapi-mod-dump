@@ -1,5 +1,6 @@
-url:
-   https://github.com/FerMod/StardewMods.git
+urls:
+   web: https://github.com/FerMod/StardewMods
+   Git: https://github.com/FerMod/StardewMods.git
 
 mods:
    Multiplayer Emotes

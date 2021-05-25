@@ -1,5 +1,6 @@
-url:
-   https://github.com/Esca-MMC/PollenSprites.git
+urls:
+   web: https://github.com/Esca-MMC/PollenSprites
+   Git: https://github.com/Esca-MMC/PollenSprites.git
 
 mods:
    Pollen Sprites

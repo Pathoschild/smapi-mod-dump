@@ -11,7 +11,7 @@
 {
    "Name": "Harvest With Scythe",
    "Author": "bcmpinc",
-   "Version": "4.0",
+   "Version": "4.1",
    "Description": "Allows you to harvest all crops and forage using the scythe. They can also still be plucked.",
    "UniqueID": "bcmpinc.HarvestWithScythe",
    "EntryDll": "HarvestWithScythe.dll",

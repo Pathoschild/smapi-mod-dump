@@ -1,16 +1,17 @@
-url:
-   https://github.com/Enaium-StardewValleyMods/NameTags.git
+urls:
+   web: https://github.com/Enaium-StardewValleyMods/NameTags
+   Git: https://github.com/Enaium-StardewValleyMods/NameTags.git
 
 mods:
    Name Tags
 
 latest commit:
-   commit b3ad0c30a55ca088411dc96194a2a386ba5b909a
-   Merge: bb7cab1 b288640
+   commit 706d89c410d0478e0ccef1cc63108803d5494bbc
+   Merge: b3ad0c3 6cc06d5
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Sun Jan 3 03:28:31 2021 -0600
+   Date:   Tue May 4 15:09:19 2021 +0800
    
-       Merge pull request #3 from Enaium-StardewValleyMods/develop
+       Merge pull request #4 from Enaium-StardewValleyMods/develop
        
-       Develop
+       Update manifest.json
    

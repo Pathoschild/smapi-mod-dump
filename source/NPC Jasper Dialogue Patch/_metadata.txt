@@ -1,5 +1,6 @@
-url:
-   https://github.com/Jonqora/NPCJasperFix.git
+urls:
+   web: https://github.com/Jonqora/NPCJasperFix
+   Git: https://github.com/Jonqora/NPCJasperFix.git
 
 mods:
    NPC Jasper Dialogue Patch

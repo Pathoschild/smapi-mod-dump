@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ilyaki/ServerBookmarker.git
+urls:
+   web: https://github.com/Ilyaki/ServerBookmarker
+   Git: https://github.com/Ilyaki/ServerBookmarker.git
 
 mods:
    Server Bookmarker

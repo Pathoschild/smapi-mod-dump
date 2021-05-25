@@ -1,0 +1,15 @@
+urls:
+   web: https://sourceforge.net/p/sdvmod-24h-harmony/
+   Mercurial: http://hg.code.sf.net/p/sdvmod-24h-harmony/code
+
+mods:
+   24-Hour Clock Patcher
+
+latest commit:
+   changeset:   63:1f11e91d1b98
+   tag:         tip
+   user:        Pandu POLUAN <pepoluan@gmail.com>
+   date:        Mon May 24 23:49:56 2021 +0700
+   summary:     Change subrepo from SSH-authenticated to HTTP RO
+   
+   

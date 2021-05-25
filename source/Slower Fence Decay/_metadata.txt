@@ -1,5 +1,6 @@
-url:
-   https://gitlab.com/speeder1/FenceSlowDecayMod.git
+urls:
+   web: https://gitlab.com/speeder1/FenceSlowDecayMod
+   Git: https://gitlab.com/speeder1/FenceSlowDecayMod.git
 
 mods:
    Slower Fence Decay

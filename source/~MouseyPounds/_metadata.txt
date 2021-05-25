@@ -1,5 +1,6 @@
-url:
-   https://github.com/MouseyPounds/stardew-mods.git
+urls:
+   web: https://github.com/MouseyPounds/stardew-mods
+   Git: https://github.com/MouseyPounds/stardew-mods.git
 
 mods:
    Anything Ponds

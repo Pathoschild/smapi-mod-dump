@@ -205,11 +205,13 @@ namespace SkullCavernToggle
             }
 
             // Using shrine
-            else if (true && 
+            else if (true &&
                 (false
                 // Correct button is pressed
-                || e.Button == SButton.MouseRight 
+                || e.Button == SButton.MouseRight
                 || e.Button == SButton.ControllerA)
+                // World is ready
+                && Context.IsWorldReady == true
                 // Correct location
                 && Game1.currentLocation.NameOrUniqueName == "SkullCave"
                 // Player can move

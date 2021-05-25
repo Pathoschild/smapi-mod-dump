@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Floogen/CustomCompanions
+   Git: https://github.com/Floogen/CustomCompanions.git
+
+mods:
+   Custom Companions
+
+latest commit:
+   commit a52661b7a7465635bd4d67ebf90d4293aa1d2caf
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Fri May 14 19:52:11 2021 -0500
+   
+       v1.4.4 released
+   

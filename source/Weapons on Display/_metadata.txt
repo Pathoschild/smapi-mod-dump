@@ -1,5 +1,6 @@
-url:
-   https://github.com/AHilyard/WeaponsOnDisplay.git
+urls:
+   web: https://github.com/AHilyard/WeaponsOnDisplay
+   Git: https://github.com/AHilyard/WeaponsOnDisplay.git
 
 mods:
    Weapons on Display

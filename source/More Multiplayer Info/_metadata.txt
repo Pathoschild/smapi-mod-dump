@@ -1,5 +1,6 @@
-url:
-   https://github.com/cheesysteak/stardew-steak.git
+urls:
+   web: https://github.com/cheesysteak/stardew-steak
+   Git: https://github.com/cheesysteak/stardew-steak.git
 
 mods:
    More Multiplayer Info

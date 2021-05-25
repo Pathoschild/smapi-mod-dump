@@ -1,5 +1,6 @@
-url:
-   https://github.com/silentoak/StardewMods.git
+urls:
+   web: https://github.com/silentoak/StardewMods
+   Git: https://github.com/silentoak/StardewMods.git
 
 mods:
    Quality Products

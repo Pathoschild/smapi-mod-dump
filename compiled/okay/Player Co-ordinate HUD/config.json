@@ -1,5 +1,5 @@
 {
-  "CoordinateHUDToggle": "F8",
-  "LogCoordinates": "F9",
-  "SwitchToCursorCoords": "F10"
+  "CoordinateHUDToggle": "F5",
+  "LogCoordinates": "F6",
+  "SwitchToCursorCoords": "F7"
 }

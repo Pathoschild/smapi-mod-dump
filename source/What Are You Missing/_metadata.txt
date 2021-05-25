@@ -1,5 +1,6 @@
-url:
-   https://github.com/LukeSeewald/PublicStardewValleyMods.git
+urls:
+   web: https://github.com/LukeSeewald/PublicStardewValleyMods
+   Git: https://github.com/LukeSeewald/PublicStardewValleyMods.git
 
 mods:
    What Are You Missing

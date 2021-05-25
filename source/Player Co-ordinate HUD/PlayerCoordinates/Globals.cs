@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-
 namespace PlayerCoordinates
 {
     public struct Coordinates
@@ -22,7 +20,7 @@ namespace PlayerCoordinates
             y = newY;
         }
 
-        public static implicit operator Coordinates(Vector2 v)
+        public static implicit operator Coordinates(Microsoft.Xna.Framework.Vector2 v)
         {
             return new Coordinates((int)v.X, (int)v.Y);
         }

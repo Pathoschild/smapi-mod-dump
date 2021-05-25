@@ -1,5 +1,6 @@
-url:
-   https://github.com/littleraskol/Sprint-And-Dash-Redux.git
+urls:
+   web: https://github.com/littleraskol/Sprint-And-Dash-Redux
+   Git: https://github.com/littleraskol/Sprint-And-Dash-Redux.git
 
 mods:
    Sprint and Dash Redux

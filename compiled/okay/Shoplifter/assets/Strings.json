@@ -1,23 +1,28 @@
 ﻿{
   "TheMightyAmondee.Shoplifter/Banned": "You've been banned for shoplifting. Don't push your luck...",
-  "TheMightyAmondee.Shoplifter/AlreadyShoplifted": "You've already shoplifted today. That's enough...",
-  "TheMightyAmondee.Shoplifter/BanFromShop":"#$b#As this is the third time you've shoplifted from me in a month @, I'm going to have to ban you for a few days.$2",
+  "TheMightyAmondee.Shoplifter/AlreadyShoplifted": "You've already shoplifted {0} times today. That's enough...",
+  "TheMightyAmondee.Shoplifter/AlreadyShopliftedSameShop":"There's nothing to steal here...",
+  "TheMightyAmondee.Shoplifter/BanFromShop":"#$b#You've shoplifted from me enough this month @, I'm going to have to ban you for {0} days.$2",
 
   "TheMightyAmondee.Shoplifter/CaughtGeneric": "You're seriously shoplifting @?$2#$b#*sigh* I'm going to have to fine you {0}g for this.$2",
   "TheMightyAmondee.Shoplifter/CaughtPierre": "You're shoplifting??!! What were you thinking?!$4#$b#Pay the {0}g fine and I'll let you go @.$3",
   "TheMightyAmondee.Shoplifter/CaughtWilly": "I can tell when you're shoplifting @... The smell follows you...$2#$b#I'm fining you {0}g for this.$2",
   "TheMightyAmondee.Shoplifter/CaughtRobin": "Really @? Did you think you could get a free TV... I don't keep my big items there...$3#$b#I'm fining you {0}g for this... Maybe that will deter you.$2",
   "TheMightyAmondee.Shoplifter/CaughtMarnie": "Stealing my hay are we @? Just cause I'm never at my shop that doesn't mean you can steal from me.$4#$b#If you pay the {0}g fine I won't involve Lewis...$3",
-  "TheMightyAmondee.Shoplifter/CaughtGus": "I know today's special looks good @, but you still need to pay for it.$3#$b#*sigh* If you pay a fine of {0}g I'll forget you were shoplifting, ok?$2",
+  "TheMightyAmondee.Shoplifter/CaughtGus": "I know today's special looks good @, but you still need to pay for it.$3#$b#*sigh* If you pay a fine of {0}g I'll forget you were shoplifting, okay?$2",
   "TheMightyAmondee.Shoplifter/CaughtHarvey": "What do you think you're doing @? That stuff is dangerous without doctor's advice...$8#$b#I'm fining you {0}g for shoplifting @, it's that serious.$5",
   "TheMightyAmondee.Shoplifter/CaughtClint": "You're robbing me @! I thought you were a better person than this.$3#$b#You know the fine for shoplifting is {0}g right? It's what I have to charge you for this.$2",
+  "TheMightyAmondee.Shoplifter/CaughtSandy": "Being away from others doesn't make my place easier to steal from, @.$2#$b#Pay the {0}g fine and I'll forget this happened.$2",
+  "TheMightyAmondee.Shoplifter/CaughtAlex": "Are you seriously that desperate for ice-cream, @?$7#$b#I never thought I'd actually have to fine someone, but that's going to cost you {0}g.$2",
 
-  "TheMightyAmondee.Shoplifter/CaughtGeneric_NoMoney": "You're seriously shoplifting @?$2#$b#*sigh* I'd fine you, but you have no money!$2",
+  "TheMightyAmondee.Shoplifter/CaughtGeneric_NoMoney": "You're seriously shoplifting @?$2#$b#*sigh* I'd fine you, but you have can't afford it!$2",
   "TheMightyAmondee.Shoplifter/CaughtPierre_NoMoney": "You're shoplifting??!! What were you thinking?!$4#$b#You're lucky you can't afford a fine!$3",
-  "TheMightyAmondee.Shoplifter/CaughtWilly_NoMoney": "I can tell when you're shoplifting @... The smell follows you...$2#$b#Please return that stuff. I can't fine you if you have no money.$2",
-  "TheMightyAmondee.Shoplifter/CaughtRobin_NoMoney": "Really @? Did you think you could get a free TV... I don't keep my big items there...$3#$b#Since you have no money, I'll let the fine slide this time.$2",
-  "TheMightyAmondee.Shoplifter/CaughtMarnie_NoMoney": "Stealing my hay are we @? Just cause I'm never at my shop that doesn't mean you can steal from me.$4#$b#There's usually a fine, but since you have no money I can't charge you.$3",
+  "TheMightyAmondee.Shoplifter/CaughtWilly_NoMoney": "I can tell when you're shoplifting @... The smell follows you...$2#$b#Please return that stuff. I can't fine you if you can't afford it.$2",
+  "TheMightyAmondee.Shoplifter/CaughtRobin_NoMoney": "Really @? Did you think you could get a free TV... I don't keep my big items there...$3#$b#Since you can't afford it, I'll let the fine slide this time.$2",
+  "TheMightyAmondee.Shoplifter/CaughtMarnie_NoMoney": "Stealing my hay are we @? Just cause I'm never at my shop that doesn't mean you can steal from me.$4#$b#There's usually a fine, but since you have can't afford it I can't charge you.$3",
   "TheMightyAmondee.Shoplifter/CaughtGus_NoMoney": "I know today's special looks good @, but you still need to pay for it.$3#$b#*sigh* I'll give you a break and not fine you this time.$2",
   "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "What do you think you're doing @? That stuff is dangerous without doctor's advice...$8#$b#You can't afford the fine so I won't charge you this time, but don't shoplift again.$5",
-  "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "You're robbing me @! I thought you were a better person than this.$3#$b#I won't fine you this time @, since you have no money anyway.$2"
+  "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "You're robbing me @! I thought you were a better person than this.$3#$b#I won't fine you this time @, since you have can't afford it anyway.$2",
+  "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Being away from others doesn't make my place easier to steal from, @.$2#$b#Don't worry about the fine this time @, just leave.$2",
+  "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Are you seriously that desperate for ice-cream, @?$7#$b#I'll let you off with a warning this time.$5"
 }

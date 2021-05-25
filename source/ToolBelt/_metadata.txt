@@ -1,18 +1,15 @@
-url:
-   https://gitlab.com/yuri0r/toolbelt.git
+urls:
+   web: https://gitlab.com/yuri0r/toolbelt
+   Git: https://gitlab.com/yuri0r/toolbelt.git
 
 mods:
    ToolBelt
 
 latest commit:
-   commit c5fd56a0e86bb72875136de330259dcbd6a5317d
-   Merge: 0b770c5 18f46c4
-   Author: yuri <macktrinz@yahoo.de>
-   Date:   Sat Apr 24 09:12:41 2021 +0000
+   commit cd0756a04d9ed7cc6acb5652150344d5631ebc54
+   Merge: c5f00f0 9bc707d
+   Author: yuri0r <macktrinz@gmail.com>
+   Date:   Tue May 4 18:09:14 2021 +0200
    
-       Merge branch '1.0.1' into 'master'
-       
-       1.0.1
-       
-       See merge request yuri0r/toolbelt!1
+       Merge branch 'master' of gitlab.com:yuri0r/toolbelt
    

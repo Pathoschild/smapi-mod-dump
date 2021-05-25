@@ -1,5 +1,6 @@
-url:
-   https://github.com/OfficialTab/walk-through-trellis.git
+urls:
+   web: https://github.com/OfficialTab/walk-through-trellis
+   Git: https://github.com/OfficialTab/walk-through-trellis.git
 
 mods:
    Walk Through Trellis

@@ -2,6 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <EnableHarmony>true</EnableHarmony>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9B783E0A-69E2-4699-B8CC-EDAFA914032D}</ProjectGuid>
@@ -51,14 +52,11 @@
   <ItemGroup>
     <Compile Include="DeathAndExhaustionTokens.cs" />
     <Compile Include="LocationTokens.cs" />
-    <Compile Include="MarriageTokens.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="PlayerData.cs" />
-    <Compile Include="PlayerDataToWrite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestData.cs" />
-    <Compile Include="TrackerCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/ExtendedReach.git
+urls:
+   web: https://github.com/spacechase0/ExtendedReach
+   Git: https://github.com/spacechase0/ExtendedReach.git
 
 mods:
    Extended Reach

@@ -1,5 +1,6 @@
-url:
-   https://github.com/bmarquismarkail/SV_BuildersList.git
+urls:
+   web: https://github.com/bmarquismarkail/SV_BuildersList
+   Git: https://github.com/bmarquismarkail/SV_BuildersList.git
 
 mods:
    Builder's List

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Platonymous/Stardew-Valley-Mods.git
+urls:
+   web: https://github.com/Platonymous/Stardew-Valley-Mods
+   Git: https://github.com/Platonymous/Stardew-Valley-Mods.git
 
 mods:
    Arcade 2048

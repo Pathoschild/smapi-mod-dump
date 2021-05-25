@@ -1,5 +1,6 @@
-url:
-   https://github.com/jaredlll08/Item-Tooltips.git
+urls:
+   web: https://github.com/jaredlll08/Item-Tooltips
+   Git: https://github.com/jaredlll08/Item-Tooltips.git
 
 mods:
    Item Tooltips

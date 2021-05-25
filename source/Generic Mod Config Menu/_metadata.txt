@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/GenericModConfigMenu.git
+urls:
+   web: https://github.com/spacechase0/GenericModConfigMenu
+   Git: https://github.com/spacechase0/GenericModConfigMenu.git
 
 mods:
    Generic Mod Config Menu

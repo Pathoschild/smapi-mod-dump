@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/Magic.git
+urls:
+   web: https://github.com/spacechase0/Magic
+   Git: https://github.com/spacechase0/Magic.git
 
 mods:
    Magic

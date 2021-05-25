@@ -1,5 +1,6 @@
-url:
-   https://github.com/nman130/Stardew-Mods.git
+urls:
+   web: https://github.com/nman130/Stardew-Mods
+   Git: https://github.com/nman130/Stardew-Mods.git
 
 mods:
    Menus Everywhere

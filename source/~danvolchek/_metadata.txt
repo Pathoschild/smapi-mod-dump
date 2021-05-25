@@ -1,5 +1,6 @@
-url:
-   https://github.com/danvolchek/StardewMods.git
+urls:
+   web: https://github.com/danvolchek/StardewMods
+   Git: https://github.com/danvolchek/StardewMods.git
 
 mods:
    Auto Stacker

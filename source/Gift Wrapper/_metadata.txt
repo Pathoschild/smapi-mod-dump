@@ -1,5 +1,6 @@
-url:
-   https://github.com/b-b-blueberry/GiftWrapper.git
+urls:
+   web: https://github.com/b-b-blueberry/GiftWrapper
+   Git: https://github.com/b-b-blueberry/GiftWrapper.git
 
 mods:
    Gift Wrapper

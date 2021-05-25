@@ -1,5 +1,6 @@
-url:
-   https://github.com/davicr/StardewHypnos.git
+urls:
+   web: https://github.com/davicr/StardewHypnos
+   Git: https://github.com/davicr/StardewHypnos.git
 
 mods:
    Stardew Hypnos - Sleeping Overhaul

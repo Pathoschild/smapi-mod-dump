@@ -1,5 +1,6 @@
-url:
-   https://github.com/SourceZh/MultiplayerIdle.git
+urls:
+   web: https://github.com/SourceZh/MultiplayerIdle
+   Git: https://github.com/SourceZh/MultiplayerIdle.git
 
 mods:
    Multiplayer Idle

@@ -36,8 +36,11 @@ namespace FarmTypeManager
             /// <returns>A list of all locations with a <see cref="GameLocation.NameOrUniqueName"/> matching the provided name.</returns>
             public static List<string> GetAllLocationsFromName(string name)
             {
-                if (name.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase) //if the name is a mineshaft level
-                    || (Game1.getLocationFromName(name) != null)) //OR if the name is a typical, easily retrieved location (NOTE: do not check this for mineshaft levels; they will spawn things, advance elevator progress, etc)
+                //NOTE: Do not "preload" mine levels; they will instantiate and spawn things, advance elevator progress, etc. This might also apply to volcano levels.
+
+                if (name.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase) //if the name is a mine level
+                    || name.StartsWith("VolcanoDungeon", StringComparison.OrdinalIgnoreCase) //if the name is a volcano level
+                    || (Game1.getLocationFromName(name) != null)) //OR if the name is a typical, easily retrieved location 
                 {
                     return new List<string>() { name }; //return a list containing the name
                 }

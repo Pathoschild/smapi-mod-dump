@@ -1,5 +1,6 @@
-url:
-   https://github.com/M3ales/FishingLogbook.git
+urls:
+   web: https://github.com/M3ales/FishingLogbook
+   Git: https://github.com/M3ales/FishingLogbook.git
 
 mods:
    Fishing Logbook

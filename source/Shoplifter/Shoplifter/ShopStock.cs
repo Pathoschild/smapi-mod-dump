@@ -48,7 +48,7 @@ namespace Shoplifter
 			GameLocation location = Game1.currentLocation;
 			Dictionary<ISalable, int[]> stock = new Dictionary<ISalable, int[]>();
 			HashSet<int> stockIndices = new HashSet<int>();
-			Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed);
+			Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + ModEntry.PerScreenShopliftCounter.Value);
 			int stocklimit = random.Next(1, maxstock + 1);
 			int index;
 
@@ -126,7 +126,7 @@ namespace Shoplifter
 						}
 
 						// Add object id to array
-						if ((shopstock.Key as StardewValley.Object) != null && (shopstock.Key as StardewValley.Object).bigCraftable == false && CurrentStock.Contains((shopstock.Key as StardewValley.Object).parentSheetIndex) == false)
+						if ((shopstock.Key as StardewValley.Object) != null && (shopstock.Key as StardewValley.Object).bigCraftable == false)
 						{
 							index = (shopstock.Key as StardewValley.Object).parentSheetIndex;
 
@@ -197,6 +197,10 @@ namespace Shoplifter
 						}
 					}
 					break;
+				// Icecream Stand
+				case "IceCreamStand":
+					CurrentStock.Add(233);
+					break;
 
 				// Sandy's shop
 				case "SandyShop":
@@ -230,6 +234,9 @@ namespace Shoplifter
 							CurrentStock.Add(371);
 							break;
 					}
+					break;
+				default:
+					CurrentStock.Add(340);
 					break;
 			}
 

@@ -1,5 +1,6 @@
-url:
-   https://github.com/SoapStuff/Remote-Fridge-Storage.git
+urls:
+   web: https://github.com/SoapStuff/Remote-Fridge-Storage
+   Git: https://github.com/SoapStuff/Remote-Fridge-Storage.git
 
 mods:
    Remote Fridge Storage

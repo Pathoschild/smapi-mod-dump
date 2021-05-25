@@ -13,25 +13,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SkillfulClothes.Types;
 using StardewValley;
 
 namespace SkillfulClothes.Effects.Special
 {
     class AutoRevive : SingleEffect
     {
-        Farmer farmer;
-
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SaveFromDeath, "Restore health to 50% once");
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
-            this.farmer = farmer;
-
             EffectHelper.ModHelper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
         }
 
         private void GameLoop_UpdateTicking(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e)
         {
+            Farmer farmer = Game1.player;
             if (farmer.health <= 0)
             {             
                 farmer.health = farmer.maxHealth / 2;     
@@ -40,12 +38,9 @@ namespace SkillfulClothes.Effects.Special
             }
         }
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
-            if (this.farmer == farmer)
-            {
-                EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;
-            }
-        }
+            EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;
+        }        
     }
 }

@@ -1,5 +1,6 @@
-url:
-   https://github.com/minervamaga/FeelingLucky.git
+urls:
+   web: https://github.com/minervamaga/FeelingLucky
+   Git: https://github.com/minervamaga/FeelingLucky.git
 
 mods:
    Feeling Lucky?

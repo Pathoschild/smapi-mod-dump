@@ -16,19 +16,20 @@ using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace MoreGrass.Patches
 {
-    /// <summary>Contains patches for patching game code in the <see cref="StardewValley.TerrainFeatures.Grass"/> class.</summary>
+    /// <summary>Contains patches for patching game code in the <see cref="Grass"/> class.</summary>
     internal class GrassPatch
     {
         /*********
         ** Internal Methods
         *********/
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Grass.reduceBy(int, Microsoft.Xna.Framework.Vector2, bool)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Grass.reduceBy(int, Vector2, bool)"/> method.</summary>
         /// <param name="tileLocation">The tile location of the grass.</param>
         /// <param name="showDebris">Whether debris should be drawn.</param>
-        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <param name="__instance">The current <see cref="Grass"/> instance that is being patched.</param>
         /// <param name="__result">The return value of the method being patched.</param>
         /// <returns><see langword="true"/> if the original method should get ran; otherwise <see langword="false"/> (depending on the mod configuration).</returns>
         /// <remarks>This is used so animals won't eat grass if the configuration forbids them from it.</remarks>
@@ -45,8 +46,8 @@ namespace MoreGrass.Patches
             return false;
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Grass.seasonUpdate(bool)"/> method.</summary>
-        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <summary>The prefix for the <see cref="Grass.seasonUpdate(bool)"/> method.</summary>
+        /// <param name="__instance">The current <see cref="Grass"/> instance that is being patched.</param>
         /// <param name="__result">Whether all the grass should be killed (this is the return value of the original method).</param>
         /// <returns><see langword="false"/>, meaning the original method will not get ran.</returns>
         /// <remarks>This is used to determine if grass should get killed at the beginning of a new season based on the mod configuration.</remarks>
@@ -67,8 +68,8 @@ namespace MoreGrass.Patches
             return false;
         }
 
-        /// <summary>The post fix for the <see cref="StardewValley.TerrainFeatures.Grass.loadSprite"/> method.</summary>
-        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <summary>The post fix for the <see cref="Grass.loadSprite"/> method.</summary>
+        /// <param name="__instance">The current <see cref="Grass"/> instance that is being patched.</param>
         /// <remarks>This is used to load the custom grass sprite.</remarks>
         internal static void LoadSpritePostFix(Grass __instance)
         {
@@ -85,8 +86,23 @@ namespace MoreGrass.Patches
             __instance.grassSourceOffset.Value = 0;
         }
 
-        /// <summary>The post fix for the <see cref="StardewValley.TerrainFeatures.Grass.setUpRandom(Vector2)"/> method.</summary>
-        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <summary>The transpiler for the <see cref="Grass.performToolAction(Tool, int, Vector2, GameLocation)"/> method.</summary>
+        /// <param name="instructions">The IL instructions.</param>
+        /// <returns>The new IL instructions.</returns>
+        /// <remarks>This is used to change the colour of the break animation of grass in winter.</remarks>
+        internal static IEnumerable<CodeInstruction> PerformToolActionTranspiler(IEnumerable<CodeInstruction> instructions)
+        {
+            foreach (var instruction in instructions)
+            {
+                if (instruction.opcode == OpCodes.Call && instruction.operand == typeof(Color).GetMethod("get_Green", BindingFlags.Public | BindingFlags.Static))
+                    instruction.operand = typeof(Color).GetMethod("get_DarkTurquoise", BindingFlags.Public | BindingFlags.Static);
+
+                yield return instruction;
+            }
+        }
+
+        /// <summary>The post fix for the <see cref="Grass.setUpRandom(Vector2)"/> method.</summary>
+        /// <param name="__instance">The current <see cref="Grass"/> instance that is being patched.</param>
         /// <remarks>This is used for setting the 'whichWeed' member which ensures the custom sprite is drawn correctly.</remarks>
         internal static void SetupRandomPostFix(Vector2 tileLocation, Grass __instance)
         {
@@ -109,10 +125,10 @@ namespace MoreGrass.Patches
             typeof(Grass).GetField("whichWeed", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, newWhichWeed);
         }
 
-        /// <summary>The prefix for the <see cref="StardewValley.TerrainFeatures.Grass.draw(SpriteBatch, Vector2)(bool)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="Grass.draw(SpriteBatch, Vector2)(bool)"/> method.</summary>
         /// <param name="spriteBatch">The sprite batch to draw the grass to.</param>
         /// <param name="tileLocation">The tile location of the current grass being drawn.</param>
-        /// <param name="__instance">The current <see cref="StardewValley.TerrainFeatures.Grass"/> instance that is being patched.</param>
+        /// <param name="__instance">The current <see cref="Grass"/> instance that is being patched.</param>
         /// <returns><see langword="false"/>, meaning the original method will not get ran.</returns>
         /// <remarks>This is used to draw the grass sprites.</remarks>
         internal static bool DrawPrefix(SpriteBatch spriteBatch, Vector2 tileLocation, Grass __instance)
@@ -128,24 +144,36 @@ namespace MoreGrass.Patches
             var flip = (bool[])typeof(Grass).GetField("flip", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
 
             // cache the textures
+            var defaultTextures = new List<Texture2D>();
             var textures = new List<Texture2D>();
             switch (Game1.currentSeason)
             {
-                case "spring": textures = ModEntry.Instance.SpringSpritePool.Sprites; break;
-                case "summer": textures = ModEntry.Instance.SummerSpritePool.Sprites; break;
-                case "fall": textures = ModEntry.Instance.FallSpritePool.Sprites; break;
-                case "winter": textures = ModEntry.Instance.WinterSpritePool.Sprites; break;
+                case "spring": textures = ModEntry.Instance.SpringSpritePool.Sprites; defaultTextures = ModEntry.Instance.SpringSpritePool.DefaultSprites; break;
+                case "summer": textures = ModEntry.Instance.SummerSpritePool.Sprites; defaultTextures = ModEntry.Instance.SummerSpritePool.DefaultSprites; break;
+                case "fall":   textures = ModEntry.Instance.FallSpritePool.Sprites;   defaultTextures = ModEntry.Instance.FallSpritePool.DefaultSprites;   break;
+                case "winter": textures = ModEntry.Instance.WinterSpritePool.Sprites; defaultTextures = ModEntry.Instance.WinterSpritePool.DefaultSprites; break;
             }
 
             // draw the grass
             for (int i = 0; i < __instance.numberOfWeeds; i++)
             {
+                var useDefaultGrass = false;
+                var grassId = whichWeed[i];
+
+                // force default grass based on configuration
+                var random = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed / 28 + (int)tileLocation.X * 7 * (int)tileLocation.Y * 11 + i);
+                if (random.NextDouble() < (ModEntry.Instance.Config.PercentConverageOfDefaultGrass / 100f))
+                {
+                    useDefaultGrass = true;
+                    grassId = random.Next(defaultTextures.Count);
+                }
+
                 var globalPosition = i != 4
                     ? tileLocation * 64f + new Vector2(x: i % 2 * 64 / 2 + offset3[i] * 4 - 4 + 30, y: i / 2 * 64 / 2 + offset4[i] * 4 + 40)
                     : tileLocation * 64f + new Vector2(x: 16 + offset1[i] * 4 - 4 + 30, y: 16 + offset2[i] * 4 + 40);
                 
                 spriteBatch.Draw(
-                    texture: textures[whichWeed[i]],
+                    texture: useDefaultGrass ? defaultTextures[grassId] : textures[grassId],
                     position: Game1.GlobalToLocal(Game1.viewport, globalPosition),
                     sourceRectangle: new Rectangle(0, 0, 15, 20),
                     color: Color.White,

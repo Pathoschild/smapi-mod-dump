@@ -1,5 +1,6 @@
-url:
-   https://github.com/Esca-MMC/CustomNPCExclusions.git
+urls:
+   web: https://github.com/Esca-MMC/CustomNPCExclusions
+   Git: https://github.com/Esca-MMC/CustomNPCExclusions.git
 
 mods:
    Custom NPC Exclusions

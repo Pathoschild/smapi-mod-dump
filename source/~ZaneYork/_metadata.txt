@@ -1,5 +1,6 @@
-url:
-   https://github.com/ZaneYork/SDV_Mods.git
+urls:
+   web: https://github.com/ZaneYork/SDV_Mods
+   Git: https://github.com/ZaneYork/SDV_Mods.git
 
 mods:
    Custom Crops Decay

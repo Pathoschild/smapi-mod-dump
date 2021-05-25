@@ -1,5 +1,6 @@
-url:
-   https://github.com/Speshkitty/CustomiseChildBedroom.git
+urls:
+   web: https://github.com/Speshkitty/CustomiseChildBedroom
+   Git: https://github.com/Speshkitty/CustomiseChildBedroom.git
 
 mods:
    Customise Child Bedroom

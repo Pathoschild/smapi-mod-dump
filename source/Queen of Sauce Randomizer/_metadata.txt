@@ -1,5 +1,6 @@
-url:
-   https://github.com/Speshkitty/QueenOfSauceRandomiser.git
+urls:
+   web: https://github.com/Speshkitty/QueenOfSauceRandomiser
+   Git: https://github.com/Speshkitty/QueenOfSauceRandomiser.git
 
 mods:
    Queen of Sauce Randomizer

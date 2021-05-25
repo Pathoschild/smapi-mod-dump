@@ -10,10 +10,10 @@
 
 {
    "Name": "ShipAnything",
-   "Author": "Berkay Yigit (berkay2578)",
-   "Version": "1.1.0",
+   "Author": "Berkay Yigit (berkayylmao)",
+   "Version": "1.1.1",
    "Description": "Allows you to put anything into the shipping bin.",
-   "UniqueID": "berkay2578.ShipAnything",
+   "UniqueID": "berkayylmao.ShipAnything",
    "EntryDll": "ShipAnything.dll",
    "MinimumApiVersion": "3.0.0",
    "UpdateKeys": [

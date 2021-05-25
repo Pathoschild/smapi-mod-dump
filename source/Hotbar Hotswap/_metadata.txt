@@ -1,5 +1,6 @@
-url:
-   https://github.com/jaredlll08/HotbarHotswap.git
+urls:
+   web: https://github.com/jaredlll08/HotbarHotswap
+   Git: https://github.com/jaredlll08/HotbarHotswap.git
 
 mods:
    Hotbar Hotswap

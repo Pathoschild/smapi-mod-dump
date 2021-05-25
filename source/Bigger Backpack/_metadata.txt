@@ -1,13 +1,14 @@
-url:
-   https://github.com/spacechase0/BiggerBackpack.git
+urls:
+   web: https://github.com/spacechase0/BiggerBackpack
+   Git: https://github.com/spacechase0/BiggerBackpack.git
 
 mods:
    Bigger Backpack
 
 latest commit:
-   commit c4411a9a4c90322133941b1c66ebc1fad6f91ba0
+   commit b7d0650cc238433a3247b57d106d32233f82c16e
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sun Apr 11 12:32:11 2021 +0200
+   Date:   Thu May 6 21:58:54 2021 +0200
    
-       Bump smapi version
+       Bump version to 4.1 to avoid confusion with non-official release
    

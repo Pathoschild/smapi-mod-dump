@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/Displays.git
+urls:
+   web: https://github.com/spacechase0/Displays
+   Git: https://github.com/spacechase0/Displays.git
 
 mods:
    Displays

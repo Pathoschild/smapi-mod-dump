@@ -1,5 +1,6 @@
-url:
-   https://github.com/demiacle/QualityOfLifeMods.git
+urls:
+   web: https://github.com/demiacle/QualityOfLifeMods
+   Git: https://github.com/demiacle/QualityOfLifeMods.git
 
 mods:
    Improved Quality of Life

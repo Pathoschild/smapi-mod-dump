@@ -1,5 +1,6 @@
-url:
-   https://github.com/JohnsonNicholas/SDVMods.git
+urls:
+   web: https://github.com/JohnsonNicholas/SDVMods
+   Git: https://github.com/JohnsonNicholas/SDVMods.git
 
 mods:
    Solar Eclipse Event

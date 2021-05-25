@@ -1,0 +1,6 @@
+{
+  "NotifyUnwateredCrops": false,
+  "NotifyTime": 800,
+  "NotifyPierre": true,
+  "NotifyCrops": true
+}

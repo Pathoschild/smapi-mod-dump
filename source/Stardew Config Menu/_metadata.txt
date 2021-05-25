@@ -1,5 +1,6 @@
-url:
-   https://github.com/StardewConfigFramework/StardewConfigMenu.git
+urls:
+   web: https://github.com/StardewConfigFramework/StardewConfigMenu
+   Git: https://github.com/StardewConfigFramework/StardewConfigMenu.git
 
 mods:
    Stardew Config Menu

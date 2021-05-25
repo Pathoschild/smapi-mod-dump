@@ -1,5 +1,6 @@
-url:
-   https://github.com/cilekli-link/SDVMods.git
+urls:
+   web: https://github.com/cilekli-link/SDVMods
+   Git: https://github.com/cilekli-link/SDVMods.git
 
 mods:
    Dark User Interface

@@ -1,5 +1,6 @@
-url:
-   https://github.com/mus-candidus/CellarAvailable.git
+urls:
+   web: https://github.com/mus-candidus/CellarAvailable
+   Git: https://github.com/mus-candidus/CellarAvailable.git
 
 mods:
    Cellar Available

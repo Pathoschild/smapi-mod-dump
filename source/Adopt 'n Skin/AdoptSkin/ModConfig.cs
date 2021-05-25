@@ -34,6 +34,14 @@ namespace AdoptSkin
         public int CuddleExplosionRadius { get; set; } = 5;
 
 
+        /// <summary>Whether or not to spawn pets at a custom location, rather than the map's default location. By default, this is set to FALSE.</summary>
+        public bool CustomPetLocation { get; set; } = false;
+        /// <summary>The custom Pet spawn X location on the Farm map. This variable is only looked at if CustomPetLocation is set to TRUE.</summary>
+        public int PuddleX = 0;
+        /// <summary>The custom Pet spawn Y location on the Farm map. This variable is only looked at if CustomPetLocation is set to TRUE.</summary>
+        public int PuddleY = 0;
+
+
 
         /// <summary>Determines whether wild adoptable horses can spawn in the map after the player obtains a stable</summary>
         public bool WildHorseSpawn { get; set; } = true;

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Heart Level Notifications",
+  "Author": "StultusV",
+  "Version": "1.0.1",
+  "Description": "Notifies the player when they've gained or lost a heart with a villager",
+  "UniqueID": "StultusV.HeartLevelNotifications",
+  "EntryDll": "SVHeartNotifications.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8655" ]
+}

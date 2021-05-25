@@ -1,5 +1,6 @@
-url:
-   https://github.com/LajnaLegenden/Stardew_Valley_Mods.git
+urls:
+   web: https://github.com/LajnaLegenden/Stardew_Valley_Mods
+   Git: https://github.com/LajnaLegenden/Stardew_Valley_Mods.git
 
 mods:
    24h Clock

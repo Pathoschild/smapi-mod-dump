@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/CookingSkill.git
+urls:
+   web: https://github.com/spacechase0/CookingSkill
+   Git: https://github.com/spacechase0/CookingSkill.git
 
 mods:
    Cooking Skill

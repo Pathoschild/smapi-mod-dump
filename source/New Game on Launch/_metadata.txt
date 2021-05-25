@@ -1,5 +1,6 @@
-url:
-   https://github.com/4ppleCracker/NewGameOnLaunch.git
+urls:
+   web: https://github.com/4ppleCracker/NewGameOnLaunch
+   Git: https://github.com/4ppleCracker/NewGameOnLaunch.git
 
 mods:
    New Game on Launch

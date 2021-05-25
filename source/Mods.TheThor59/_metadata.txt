@@ -1,5 +1,6 @@
-url:
-   https://github.com/TheThor59/StardewMods.git
+urls:
+   web: https://github.com/TheThor59/StardewMods
+   Git: https://github.com/TheThor59/StardewMods.git
 
 mods:
    Enemy Health Bars

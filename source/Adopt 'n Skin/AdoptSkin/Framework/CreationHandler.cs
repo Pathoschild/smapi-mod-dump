@@ -80,18 +80,45 @@ namespace AdoptSkin.Framework
             if (!ModEntry.Config.ChanceAffectedByLuck)
                 luckBonus = 0;
 
-            // Only allow the host player to load in strays and wild horses
-            if (!Context.IsMainPlayer)
-                return;
-            // Check chances for Stray and WildHorse to spawn, add creation to update loop if spawn should occur
-            if (ModEntry.Config.StraySpawn && FirstPetReceived && Randomizer.Next(0, 100) - luckBonus < StrayChance)
-                ModEntry.SHelper.Events.GameLoop.UpdateTicked += this.PlaceStray;
-            if (ModEntry.Config.WildHorseSpawn && FirstHorseReceived && Randomizer.Next(0, 100) - luckBonus < WildHorseChance)
-                ModEntry.SHelper.Events.GameLoop.UpdateTicked += this.PlaceWildHorse;
+            // Only allow the host player to load in strays and wild horses and move pets
+            if (Context.IsMainPlayer)
+            {
+                // Check chances for Stray and WildHorse to spawn, add creation to update loop if spawn should occur
+                if (ModEntry.Config.StraySpawn && FirstPetReceived && Randomizer.Next(0, 100) - luckBonus < StrayChance)
+                    ModEntry.SHelper.Events.GameLoop.UpdateTicked += this.PlaceStray;
+                if (ModEntry.Config.WildHorseSpawn && FirstHorseReceived && Randomizer.Next(0, 100) - luckBonus < WildHorseChance)
+                    ModEntry.SHelper.Events.GameLoop.UpdateTicked += this.PlaceWildHorse;
 
-            // Spread out pets from around water dish
-            if (ModEntry.Config.DisperseCuddlePuddle)
-                ModEntry.SHelper.Events.Player.Warped += this.SpreadPets;
+                // Spread out pets from around water dish
+                if (ModEntry.Config.DisperseCuddlePuddle)
+                    ModEntry.SHelper.Events.Player.Warped += this.SpreadPets;
+
+                // Spawn notification for strays
+                if (StrayInfo != null && ModEntry.Config.NotifyStraySpawn)
+                {
+                    string message = $"A stray pet is available to adopt at Marnie's!";
+                    ModEntry.SMonitor.Log(message, LogLevel.Debug);
+                    //Game1.chatBox.addInfoMessage(message);
+                    Game1.showGlobalMessage(message);
+                }
+
+                // Spawn notifications for wild horses
+                if (HorseInfo != null && ModEntry.Config.NotifyHorseSpawn)
+                {
+                    string message = $"A wild horse has been spotted!";
+                    ModEntry.SMonitor.Log(message, LogLevel.Debug);
+                    //Game1.chatBox.addInfoMessage(message);
+                    Game1.showGlobalMessage(message);
+                }
+                if (HorseInfo != null && ModEntry.Config.NotifyHorseSpawnLocation)
+                {
+                    string message = $"Wild horse spotted at: {HorseInfo.Map.Name} -- {HorseInfo.Tile.X}, {HorseInfo.Tile.Y}";
+                    ModEntry.SMonitor.Log(message, LogLevel.Debug);
+                    //Game1.chatBox.addInfoMessage(message);
+                    Game1.showGlobalMessage(message);
+                }
+            }
+            
         }
 
 
@@ -140,7 +167,12 @@ namespace AdoptSkin.Framework
         internal void SpreadPets(object sender, WarpedEventArgs e)
         {
             // ** TODO: Only one pet on farmer's bed
-            // TODO: If no pets, handle error
+
+            // Only allow host player to move pets
+            if (!Context.IsMainPlayer)
+                return;
+
+            // TODO: If no pets, handle error. Does this error?
             List<Pet> pets = ModApi.GetPets().ToList();
 
             // No pets are in the game
@@ -169,8 +201,17 @@ namespace AdoptSkin.Framework
             else
             {
                 // Place everyone at the correct starting point, at the water dish
-                foreach (Pet pet in ModApi.GetPets())
-                    pet.setAtFarmPosition();
+                if (ModEntry.Config.CustomPetLocation == false)
+                    foreach (Pet pet in ModApi.GetPets())
+                        pet.setAtFarmPosition();
+                // Place pets at custom spawn point if enabled in the Config
+                else
+                {
+                    Vector2 location = new Vector2(ModEntry.Config.PuddleX, ModEntry.Config.PuddleY);
+                    foreach (Pet pet in ModApi.GetPets())
+                        pet.setTileLocation(location);
+                }
+
 
                 // Find area to warp pets to
                 Farm farm = Game1.getFarm();

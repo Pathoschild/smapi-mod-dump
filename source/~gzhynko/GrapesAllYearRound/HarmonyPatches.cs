@@ -18,10 +18,13 @@ namespace GrapesAllYearRound
     public class HarmonyPatches
     {
         /// <summary> Patch for the HoeDirt.dayUpdate </summary>
-        public static bool HoeDirtDayUpdate(HoeDirt __instance)
+        public static bool HoeDirtDayUpdate(HoeDirt __instance, GameLocation environment)
         {
             // Avoid running if no crop is planted.
             if (__instance.crop == null) return true;
+
+            // Avoid running if this crop is in the greenhouse.
+            if (environment.isGreenhouse) return true;
             
             // Skip the original method if the planted crop is grape and the current season is winter to prevent it from dying.
             if (__instance.crop.indexOfHarvest == 398 && Game1.currentSeason == "winter") return false;
@@ -33,6 +36,8 @@ namespace GrapesAllYearRound
         public static void CropNewDay(Crop __instance, int state, int fertilizer, int xTile, int yTile,
             GameLocation environment)
         {
+            if (environment.isGreenhouse) return; // return if the crop is planted in the greenhouse.
+            
             if (__instance.indexOfHarvest != 398) return; // return if this crop is not grape.
             
             // Return if this crop is still growing,

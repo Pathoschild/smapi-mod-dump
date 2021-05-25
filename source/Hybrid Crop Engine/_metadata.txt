@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/HybridCropEngine.git
+urls:
+   web: https://github.com/spacechase0/HybridCropEngine
+   Git: https://github.com/spacechase0/HybridCropEngine.git
 
 mods:
    Hybrid Crop Engine

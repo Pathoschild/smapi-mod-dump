@@ -1,5 +1,6 @@
-url:
-   https://github.com/Crystallyne/EnergyCount.git
+urls:
+   web: https://github.com/Crystallyne/EnergyCount
+   Git: https://github.com/Crystallyne/EnergyCount.git
 
 mods:
    Energy Count

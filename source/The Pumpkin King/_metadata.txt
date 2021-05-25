@@ -1,5 +1,6 @@
-url:
-   https://github.com/KirbyLink/PumpkinKing.git
+urls:
+   web: https://github.com/KirbyLink/PumpkinKing
+   Git: https://github.com/KirbyLink/PumpkinKing.git
 
 mods:
    The Pumpkin King

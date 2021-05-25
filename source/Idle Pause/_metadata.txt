@@ -1,5 +1,6 @@
-url:
-   https://github.com/veleek/IdlePause.git
+urls:
+   web: https://github.com/veleek/IdlePause
+   Git: https://github.com/veleek/IdlePause.git
 
 mods:
    Idle Pause

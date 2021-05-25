@@ -1,5 +1,6 @@
-url:
-   https://github.com/instafluff/SpelldewValley.git
+urls:
+   web: https://github.com/instafluff/SpelldewValley
+   Git: https://github.com/instafluff/SpelldewValley.git
 
 mods:
    Spelldew Valley

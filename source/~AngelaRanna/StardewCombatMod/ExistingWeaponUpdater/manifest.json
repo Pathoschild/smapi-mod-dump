@@ -11,7 +11,7 @@
 {
    "Name": "Angel's existing weapon updater",
    "Author": "AngelaRanna",
-   "Version": "0.5.0",
+   "Version": "0.5.1",
    "Description": "Updates all weapons on game load and inventory add to keep them in line with installed mods.",
    "UniqueID": "AngelaRanna.ExistingWeaponsUpdater",
    "EntryDll": "ExistingWeaponUpdater.dll",

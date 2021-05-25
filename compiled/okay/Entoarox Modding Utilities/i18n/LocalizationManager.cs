@@ -18,7 +18,7 @@ namespace Entoarox.Utilities.I18n
     public class LocalizationManager
     {
         private const LanguageCode Default = LanguageCode.en;
-        public static Func<string, string, string, Translation> GetTranslation;
+        private static Func<string, string, string, Translation> GetTranslation;
 
         static LocalizationManager()
         {
@@ -31,6 +31,7 @@ namespace Entoarox.Utilities.I18n
                     var param1 = Expression.Parameter(typeof(string));
                     var param2 = Expression.Parameter(typeof(string));
                     GetTranslation = Expression.Lambda<Func<string, string, string, Translation>>(Expression.New(ctor, param0, param1, param2), param0, param1, param2).Compile();
+                    GetTranslation("", "", "");
                 }
                 catch(Exception e)
                 {
@@ -155,12 +156,12 @@ namespace Entoarox.Utilities.I18n
                             }
                             catch { }
                         }
-                        return new[] { "(invalid key: " + key + ')' };
+                        return new[] { "(invalid key: " + key.Replace('#', '/') + ')' };
                     }
                 }
                 return null;
             }
-            return new[] { "(invalid key: " + key + ')' };
+            return new[] { "(invalid key: " + key.Replace('#', '/') + ')' };
         }
 
         public Translation Get(string key)

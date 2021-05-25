@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/SurfingFestival.git
+urls:
+   web: https://github.com/spacechase0/SurfingFestival
+   Git: https://github.com/spacechase0/SurfingFestival.git
 
 mods:
    Surfing Festival

@@ -1,5 +1,6 @@
-url:
-   https://github.com/janavarro95/Stardew_Valley_Mods.git
+urls:
+   web: https://github.com/janavarro95/Stardew_Valley_Mods
+   Git: https://github.com/janavarro95/Stardew_Valley_Mods.git
 
 mods:
    Advanced Save Backup

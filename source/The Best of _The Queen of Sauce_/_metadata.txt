@@ -1,5 +1,6 @@
-url:
-   https://github.com/Bpendragon/Best-of-Queen-of-Sauce.git
+urls:
+   web: https://github.com/Bpendragon/Best-of-Queen-of-Sauce
+   Git: https://github.com/Bpendragon/Best-of-Queen-of-Sauce.git
 
 mods:
    The Best of "The Queen of Sauce"

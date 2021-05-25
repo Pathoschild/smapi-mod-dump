@@ -1,5 +1,6 @@
-url:
-   https://github.com/maxvollmer/BetterSkullCavernFalling.git
+urls:
+   web: https://github.com/maxvollmer/BetterSkullCavernFalling
+   Git: https://github.com/maxvollmer/BetterSkullCavernFalling.git
 
 mods:
    Better Skull Cavern Falling

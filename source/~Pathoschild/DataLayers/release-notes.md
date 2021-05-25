@@ -7,6 +7,9 @@ for queries and analysis.**
 ----
 
 # Release notes
+## Upcoming release
+* Improved translations. Thanks to martin66789 (updated Hungarian)!
+
 ## 1.14.3
 Released 27 March 2021.
 

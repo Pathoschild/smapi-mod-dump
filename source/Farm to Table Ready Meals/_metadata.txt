@@ -1,5 +1,6 @@
-url:
-   https://github.com/Speshkitty/FarmToTableReadyMeals.git
+urls:
+   web: https://github.com/Speshkitty/FarmToTableReadyMeals
+   Git: https://github.com/Speshkitty/FarmToTableReadyMeals.git
 
 mods:
    Farm to Table Ready Meals

@@ -1,5 +1,6 @@
-url:
-   https://github.com/bogie5464/HuggableScarecrows.git
+urls:
+   web: https://github.com/bogie5464/HuggableScarecrows
+   Git: https://github.com/bogie5464/HuggableScarecrows.git
 
 mods:
    Huggable Scarecrows

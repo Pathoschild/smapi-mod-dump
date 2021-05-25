@@ -35,7 +35,7 @@ namespace BarkingUpTheRightTree.Patches
         internal static void IsWildTreeSeedPostFix(int index, ref bool __result)
         {
             // set result to true if there are any custom trees with the passed object as its seed
-            if (ModEntry.Instance.Api.GetAllTrees().Any(customTree => customTree.Seed == index))
+            if (ModEntry.Instance.CustomTrees.Any(customTree => customTree.SeedId == index))
                 __result = true;
         }
 
@@ -106,8 +106,8 @@ namespace BarkingUpTheRightTree.Patches
                 if (tree.growthStage < 5 || tree.stump || location.Objects.ContainsKey(placementTile))
                     return false;
                 
-                var isTreeCustom = ModEntry.Instance.Api.GetTreeById(tree.treeType, out _, out _, out var tappedProduct, out _, out _, out _, out _, out _, out _, out _, out _, out _, out _);
-                if (isTreeCustom && tappedProduct.Product == -1) // ensure there is a valid tapped product if the tree is custom
+                var isTreeCustom = ModEntry.Instance.Api.GetTreeById(tree.treeType, out var customTree);
+                if (isTreeCustom && customTree.TappedProduct.ProductId == -1) // ensure there is a valid tapped product if the tree is custom
                     return false;
                 
                 // place tapper
@@ -124,9 +124,9 @@ namespace BarkingUpTheRightTree.Patches
             }
 
             // try to get a tree whose seed is the object trying to be planted
-            if (!ModEntry.Instance.Api.GetAllTrees().Any(tree => tree.Seed == __instance.ParentSheetIndex)) // object being placed either isn't a tree or is a base game tree
+            if (!ModEntry.Instance.CustomTrees.Any(tree => tree.SeedId == __instance.ParentSheetIndex)) // object being placed either isn't a tree or is a base game tree
                 return true;
-            var customTree = ModEntry.Instance.Api.GetAllTrees().FirstOrDefault(tree => tree.Seed == __instance.ParentSheetIndex);
+            var customTreeFromSeed = ModEntry.Instance.CustomTrees.FirstOrDefault(tree => tree.SeedId == __instance.ParentSheetIndex);
 
             // ensure tree can be planted (checks tile data for NoSpawn spots etc)
             var canPlaceWildTreeSeed = typeof(Object).GetMethod("canPlaceWildTreeSeed", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -138,9 +138,9 @@ namespace BarkingUpTheRightTree.Patches
             }
 
             // plant tree
-            var newTree = new Tree(customTree.Id);
+            var newTree = new Tree(customTreeFromSeed.Id);
             newTree.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/daysTillBarkHarvest"] = "0";
-            newTree.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/daysTillNextShakeProducts"] = JsonConvert.SerializeObject(new int[customTree.ShakingProducts.Count]);
+            newTree.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/daysTillNextShakeProducts"] = JsonConvert.SerializeObject(new int[customTreeFromSeed.ShakingProducts.Count]);
 
             location.terrainFeatures.Remove(placementTile);
             location.terrainFeatures.Add(placementTile, newTree);
@@ -155,7 +155,7 @@ namespace BarkingUpTheRightTree.Patches
         /// <remarks>This is used so the game knows the custom tree seeds are placeable objects.</remarks>
         internal static void IsPlaceablePostFix(Object __instance, ref bool __result)
         {
-            if (ModEntry.Instance.Api.GetAllTrees().Any(tree => tree.Seed == __instance.ParentSheetIndex))
+            if (ModEntry.Instance.CustomTrees.Any(tree => tree.SeedId == __instance.ParentSheetIndex))
                 __result = true;
         }
 
@@ -165,7 +165,7 @@ namespace BarkingUpTheRightTree.Patches
         /// <remarks>This is used so trees can be planted under the feet of the farmer.</remarks>
         internal static void IsPassablePostFix(Object __instance, ref bool __result)
         {
-            if (ModEntry.Instance.Api.GetAllTrees().Any(tree => tree.Seed == __instance.ParentSheetIndex))
+            if (ModEntry.Instance.CustomTrees.Any(tree => tree.SeedId == __instance.ParentSheetIndex))
                 __result = true;
         }
 
@@ -235,7 +235,7 @@ namespace BarkingUpTheRightTree.Patches
                     return false;
 
                 // ensure object isn't a custom tree seed
-                if (ModEntry.Instance.Api.GetAllTrees().Any(customTree => customTree.Seed == __instance.ParentSheetIndex))
+                if (ModEntry.Instance.CustomTrees.Any(customTree => customTree.SeedId == __instance.ParentSheetIndex))
                     return false;
 
                 __instance.draw(spriteBatch, xScreen / 64, yScreen / 64, .5f);

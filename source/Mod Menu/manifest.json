@@ -11,7 +11,7 @@
 {
   "Name": "ModMenu",
   "Author": "Enaium",
-  "Version": "1.0.1",
+  "Version": "1.1.1",
   "Description": "ModMenu",
   "UniqueID": "Enaium.ModMenu",
   "EntryDll": "ModMenu.dll",
@@ -27,5 +27,13 @@
       "UniqueID": "Enaium.EnaiumToolKit",
       "MinimumVersion": "1.4.2"
     }
-  ]
+  ],
+  "Custom": {
+    "ModMenu": {
+      "Contact": {
+        "HomePage": "https://github.com/Enaium-StardewValleyMods/ModMenu",
+        "Issues": "https://github.com/Enaium-StardewValleyMods/ModMenu/issues"
+      }
+    }
+  }
 }

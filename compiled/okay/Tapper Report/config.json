@@ -1,0 +1,7 @@
+{
+  "HotKey": "F9",
+  "GamePadHotKey": "DPadLeft",
+  "Separator": " | ",
+  "CheckNewFinishedContinually": true,
+  "CheckEvery": 6
+}

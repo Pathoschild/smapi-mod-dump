@@ -1,5 +1,6 @@
-url:
-   https://github.com/simonbru/WarpAnimals.git
+urls:
+   web: https://github.com/simonbru/WarpAnimals
+   Git: https://github.com/simonbru/WarpAnimals.git
 
 mods:
    Warp Animals

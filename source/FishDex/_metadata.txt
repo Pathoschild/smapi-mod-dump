@@ -1,5 +1,6 @@
-url:
-   https://github.com/rupak0577/FishDex.git
+urls:
+   web: https://github.com/rupak0577/FishDex
+   Git: https://github.com/rupak0577/FishDex.git
 
 mods:
    FishDex

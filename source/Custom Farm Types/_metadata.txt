@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/CustomFarmTypes.git
+urls:
+   web: https://github.com/spacechase0/CustomFarmTypes
+   Git: https://github.com/spacechase0/CustomFarmTypes.git
 
 mods:
    Custom Farm Types

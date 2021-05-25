@@ -1,5 +1,6 @@
-url:
-   https://github.com/cdaragorn/Ui-Info-Suite.git
+urls:
+   web: https://github.com/cdaragorn/Ui-Info-Suite
+   Git: https://github.com/cdaragorn/Ui-Info-Suite.git
 
 mods:
    Ui Info Suite

@@ -1,5 +1,6 @@
-url:
-   https://github.com/JPANv2/Stardew-Valley-Tree-Changes.git
+urls:
+   web: https://github.com/JPANv2/Stardew-Valley-Tree-Changes
+   Git: https://github.com/JPANv2/Stardew-Valley-Tree-Changes.git
 
 mods:
    Tree Changes

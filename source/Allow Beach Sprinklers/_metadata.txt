@@ -1,5 +1,6 @@
-url:
-   https://github.com/jag3dagster/AllowBeachSprinklers.git
+urls:
+   web: https://github.com/jag3dagster/AllowBeachSprinklers
+   Git: https://github.com/jag3dagster/AllowBeachSprinklers.git
 
 mods:
    Allow Beach Sprinklers

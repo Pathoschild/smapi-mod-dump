@@ -1,5 +1,6 @@
-url:
-   https://github.com/Traktori7/StardewValleyMods.git
+urls:
+   web: https://github.com/Traktori7/StardewValleyMods
+   Git: https://github.com/Traktori7/StardewValleyMods.git
 
 mods:
    Industrial Furnace

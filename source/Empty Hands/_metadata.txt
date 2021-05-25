@@ -1,5 +1,6 @@
-url:
-   https://github.com/quicksilverfox/StardewMods.git
+urls:
+   web: https://github.com/quicksilverfox/StardewMods
+   Git: https://github.com/quicksilverfox/StardewMods.git
 
 mods:
    Empty Hands

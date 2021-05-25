@@ -115,13 +115,10 @@ namespace CustomDeathPenaltyPlus
     {
         private ModConfig config;
 
-        public static PlayerData PlayerData { get; private set; } = new PlayerData();
-        public static Commands Commands { get; private set; } = new Commands();
-        internal static Toggles Toggles { get; private set; } = new Toggles();
+        private static readonly PerScreen<Toggles> togglesperscreen = new PerScreen<Toggles>(createNewState: () => new Toggles());
 
-        private static readonly PerScreen<Toggles> togglesperscreen = new PerScreen<Toggles>(createNewState: () => Toggles);
+        public static string location;
 
-       
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -136,16 +133,12 @@ namespace CustomDeathPenaltyPlus
             // Read the mod config for values and create one if one does not currently exist
             this.config = this.Helper.ReadConfig<ModConfig>();
 
-            // Add console commands
-            helper.ConsoleCommands.Add("deathpenalty", "Changes the death penalty settings\n format: deathpenalty <configoption> <value>", this.Setdp);
-            helper.ConsoleCommands.Add("passoutpenalty", "Changes the pass out penalty settings\n format: passoutpenalty <configoption> <value>", this.Setpp);
-            helper.ConsoleCommands.Add("otherpenalty", "Changes the other penalty settings\n format: otherpenalty <configoption> <value>", this.Setop);
+            // Add console command
             helper.ConsoleCommands.Add("configinfo", "Displays the current config settings", this.Info);
 
             // Allow other classes to use the ModConfig
             PlayerStateRestorer.SetConfig(this.config);
-            AssetEditor.SetConfig(this.config);
-            Commands.SetConfig(this.config);
+            AssetEditor.SetConfig(this.config, this.ModManifest);
         }
 
         /// <summary>Raised after the game is launched, right before the first game tick</summary>
@@ -157,6 +150,12 @@ namespace CustomDeathPenaltyPlus
             this.config.PassOutPenalty.Reconcile(this.Monitor);
             this.config.DeathPenalty.Reconcile(this.Monitor);
 
+            if (this.config.OtherPenalties.WakeupNextDayinClinic == true && this.config.OtherPenalties.MoreRealisticWarps == true)
+            {
+                this.config.OtherPenalties.MoreRealisticWarps = false;
+                this.Monitor.Log("WakeupNextDayinClinic and MoreRealisticWarps cannot both be true as they can conflict.\nSetting MoreRealisticWarps to false...", LogLevel.Warn);
+            }
+
             // Is WakeupNextDayinClinic true or is FriendshipPenalty greater than 0?
             if (this.config.OtherPenalties.WakeupNextDayinClinic == true || this.config.OtherPenalties.HarveyFriendshipChange != 0)
             {
@@ -166,6 +165,15 @@ namespace CustomDeathPenaltyPlus
                 this.Helper.Content.AssetEditors.Add(new AssetEditor.MineEventFixes(Helper));
                 //Edit IslandSouthEvents
                 this.Helper.Content.AssetEditors.Add(new AssetEditor.IslandSouthEventFixes(Helper));
+                //Edit HospitalEvents
+                this.Helper.Content.AssetEditors.Add(new AssetEditor.HospitalEventFixes(Helper));
+            }
+
+            // Is MoreRealisticWarps true?
+            else if (this.config.OtherPenalties.MoreRealisticWarps == true)
+            {
+                // Yes, edit an event
+
                 //Edit HospitalEvents
                 this.Helper.Content.AssetEditors.Add(new AssetEditor.HospitalEventFixes(Helper));
             }
@@ -182,14 +190,29 @@ namespace CustomDeathPenaltyPlus
         /// <param name="e">The event data.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
+            // Reload events if needed
+            if (true
+                // Player has died, before killscreen is true
+                && Game1.player.health <= 0 
+                // death state has not been saved
+                && PlayerStateRestorer.statedeathps.Value == null
+                // location of death hasn't been saved
+                && location == null 
+                // MoreRealisticWarps is true
+                && this.config.OtherPenalties.MoreRealisticWarps == true)
+            {
+                // Save location of death
+                location = Game1.currentLocation.NameOrUniqueName;
+                // Reload events
+                this.Helper.Content.InvalidateCache("Data\\Events\\Hospital");
+            }
 
-            //Check if player died each half second
+            // Check if player died each half second
             if (e.IsMultipleOf(30))
             {
-
                 if (true
                     // Has player died?
-                    && Game1.killScreen
+                    && Game1.killScreen == true
                     // Has the players death state been saved?
                     && PlayerStateRestorer.statedeathps.Value == null)
                 {
@@ -245,7 +268,6 @@ namespace CustomDeathPenaltyPlus
                         if (this.config.OtherPenalties.WakeupNextDayinClinic == false)
                         {
                             // Reset PlayerStateRestorer class with the statedeath field
-                            PlayerStateRestorer.statedeath = null;
                             PlayerStateRestorer.statedeathps.Value = null;
 
                             // State already loaded and cleared, set loadstate to false
@@ -263,12 +285,51 @@ namespace CustomDeathPenaltyPlus
                         togglesperscreen.Value.warptoinvisiblelocation = false;
                     }
 
-                }   
+                    // Set player exit location for event
+                    else if (true 
+                        && this.config.OtherPenalties.MoreRealisticWarps == true  
+                        && location != null)
+                    {
+                        if (location == "SkullCave" 
+                            || (location.StartsWith("UndergroundMine") == true 
+                            && Game1.currentLocation.NameOrUniqueName != "Mine"))
+                        {
+                            Game1.CurrentEvent.setExitLocation("SkullCave", 3, 5);
+                        }
+
+                        else if (true 
+                            && (false 
+                            || ModEntry.location.StartsWith("Farm") == true 
+                            || Game1.getLocationFromName(ModEntry.location) as FarmHouse != null) 
+                            && location.StartsWith("IslandFarm") == false)
+                        {
+                            int tileX = 12;
+                            int tileY = 18;
+                            switch (Game1.player.houseUpgradeLevel)
+                            {
+                                case 0:
+                                    tileX = 3;
+                                    tileY = 9;
+                                    break;
+                                case 1:
+                                    tileX = 9;
+                                    tileY = 8;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            Game1.CurrentEvent.setExitLocation(Game1.player.homeLocation.Value, tileX, tileY);
+                        }
+                        location = null;
+                    }
+                }
             }
 
             if(true
                 // Player death state has been saved
                 && PlayerStateRestorer.statedeathps.Value != null
+                // Player isn't warping
+                && Game1.isWarping == false
                 // No events are running
                 && Game1.CurrentEvent == null
                 // state should be loaded
@@ -281,10 +342,8 @@ namespace CustomDeathPenaltyPlus
                 if (this.config.OtherPenalties.WakeupNextDayinClinic == true)
                 {
                     // Save necessary data to data model
-                    ModEntry.PlayerData.DidPlayerWakeupinClinic = true;
+                    Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerWakeupinClinic"] = "true";
 
-                    // Write data model to JSON file
-                    this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
 
                     // Is the game multiplayer?
                     if (Context.IsMultiplayer == false)
@@ -315,13 +374,12 @@ namespace CustomDeathPenaltyPlus
                         // Bring up a new menu that will launch a new day when all player's are ready
                         Game1.activeClickableMenu = (IClickableMenu)new ReadyCheckDialog("sleep", false, (ConfirmationDialog.behavior)(_ => Game1.NewDay(1.1f)));
 
-                        // Add player to list of ready farmers if needed
-                        if (Game1.player.team.announcedSleepingFarmers.Contains(Game1.player)) return;
-                        Game1.player.team.announcedSleepingFarmers.Add(Game1.player);
-
                         // Reset PlayerStateRestorer class with the statedeath field
-                        PlayerStateRestorer.statedeath = null;
                         PlayerStateRestorer.statedeathps.Value = null;
+
+                        // Add player to list of ready farmers if needed
+                        if (Game1.player.team.announcedSleepingFarmers.Contains(Game1.player) == true) return;
+                        Game1.player.team.announcedSleepingFarmers.Add(Game1.player);
                     }
                 }
 
@@ -332,7 +390,6 @@ namespace CustomDeathPenaltyPlus
                     PlayerStateRestorer.LoadStateDeath();
 
                     // Reset PlayerStateRestorer class with the statedeath field
-                    PlayerStateRestorer.statedeath = null;
                     PlayerStateRestorer.statedeathps.Value = null;
                 }
             }
@@ -341,8 +398,8 @@ namespace CustomDeathPenaltyPlus
             if (Game1.timeOfDay == 2600 || Game1.player.stamina <= -15)
             {
                 // Set DidPlayerPassOutYesterday to true and DidPlayerWakeupinClinic to false in data model
-                ModEntry.PlayerData.DidPlayerPassOutYesterday = true;
-                ModEntry.PlayerData.DidPlayerWakeupinClinic = false;
+                Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday"] = "true";
+                Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerWakeupinClinic"] = "false";
 
                 if (true
                     // Player is not in FarmHouse
@@ -355,22 +412,21 @@ namespace CustomDeathPenaltyPlus
                     // Save playerstate using PassOutPenalty values
                     PlayerStateRestorer.SaveStatePassout();
                     // Save amount lost to data model
-                    ModEntry.PlayerData.MoneyLostLastPassOut = (int)Math.Round(PlayerStateRestorer.statepassoutps.Value.moneylost);
+                    Game1.player.modData[$"{this.ModManifest.UniqueID}.MoneyLostLastPassOut"] = $"{(int)Math.Round(PlayerStateRestorer.statepassoutps.Value.moneylost)}";
                 }
-
-                // Write data model to JSON file
-                this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
             }
 
             // Load state earlier if it is multiplayer and it isn't 2AM or later
-            if(Game1.timeOfDay < 2600 && Game1.player.canMove && Context.IsMultiplayer == true && PlayerStateRestorer.statepassoutps.Value != null)
+            if (Game1.timeOfDay < 2600 
+                && Game1.player.canMove == true 
+                && Context.IsMultiplayer == true 
+                && PlayerStateRestorer.statepassoutps.Value != null)
             {
                 // Load state and fix stamina
                 PlayerStateRestorer.LoadStatePassout();
                 Game1.player.stamina = (int)(Game1.player.maxStamina * this.config.PassOutPenalty.EnergytoRestorePercentage);
 
                 // Reset state
-                PlayerStateRestorer.statepassout = null;
                 PlayerStateRestorer.statepassoutps.Value = null;
 
                 // Set shouldtogglepassoutdata to false, this prevents DidPlayerPassOutYesterday from becoming false when player goes to bed
@@ -380,12 +436,9 @@ namespace CustomDeathPenaltyPlus
             // If player can stay up past 2am, discard saved values and reset changed properties in data model
             if (Game1.timeOfDay == 2610 && PlayerStateRestorer.statepassoutps.Value != null)
             {
-                ModEntry.PlayerData.DidPlayerPassOutYesterday = false;
-                ModEntry.PlayerData.MoneyLostLastPassOut = 0;
-                PlayerStateRestorer.statepassout = null;
+                Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday"] = "false";
+                Game1.player.modData[$"{this.ModManifest.UniqueID}.MoneyLostLastPassOut"] = "0";                
                 PlayerStateRestorer.statepassoutps.Value = null;
-                // Write data model to JSON file
-                this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
             }
         }
 
@@ -403,7 +456,6 @@ namespace CustomDeathPenaltyPlus
                 PlayerStateRestorer.LoadStatePassout();
 
                 // Reset PlayerStateRestorer class with the statepassout field
-                PlayerStateRestorer.statepassout = null;
                 PlayerStateRestorer.statepassoutps.Value = null;
             }
 
@@ -416,7 +468,6 @@ namespace CustomDeathPenaltyPlus
                 PlayerStateRestorer.LoadStateDeath();
 
                 // Reset PlayerStateRestorer class with the statedeath field
-                PlayerStateRestorer.statedeath = null;
                 PlayerStateRestorer.statedeathps.Value = null;
             }
         }
@@ -426,34 +477,31 @@ namespace CustomDeathPenaltyPlus
         /// <param name="e">The event data.</param>
         private void Saving(object sender, SavingEventArgs e)
         {
-            // Save data from data model to respective JSON file
-            this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
-
             // Has player not passed out but DidPlayerPassOutYesterday property is true?
-            if(ModEntry.PlayerData.DidPlayerPassOutYesterday == true && (Game1.player.isInBed.Value == true || ModEntry.PlayerData.DidPlayerWakeupinClinic == true) && togglesperscreen.Value.shouldtogglepassoutdata == true)
+            if (Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday"] == "true" 
+                && (Game1.player.isInBed.Value == true 
+                || Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerWakeupinClinic"] == "true") 
+                && togglesperscreen.Value.shouldtogglepassoutdata == true)
             {
                 // Yes, fix this so the new day will load correctly
 
-                // Change DidPlayerPassOutYesterday property to false
-                ModEntry.PlayerData.DidPlayerPassOutYesterday = false;
+                // Change DidPlayerPassOutYesterday field to false
+                Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday"] = "false";
             }
 
             // Is DidPlayerWakeupinClinic true?
-            if(ModEntry.PlayerData.DidPlayerWakeupinClinic == true)
+            if (Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerWakeupinClinic"] == "true")
             {               
                 //Is player in bed or has player passed out? (player has not died)
-                if(Game1.player.isInBed.Value == true || ModEntry.PlayerData.DidPlayerPassOutYesterday == true)
+                if (Game1.player.isInBed.Value == true || Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday"] == "true")
                 {
                     // Yes, fix this so the new day will load correctly
 
-                    // Change property to false
-                    ModEntry.PlayerData.DidPlayerWakeupinClinic = false;
+                    // Change field to false
+                    Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerWakeupinClinic"] = "false";
                 }
             }
-
-            // Save change to respective JSON file
-            this.Helper.Data.WriteJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json", ModEntry.PlayerData);
-
+          
             // Set shouldtogglepassoutdata if needed so DidPlayerPassOutYesterday will toggle normally again
             togglesperscreen.Value.shouldtogglepassoutdata = true;
         }
@@ -464,11 +512,23 @@ namespace CustomDeathPenaltyPlus
         private void DayStarted(object sender, DayStartedEventArgs e)
         {
 
-            // Read player's JSON file for any needed values, create new instance if data doesn't exist
-            ModEntry.PlayerData = this.Helper.Data.ReadJsonFile<PlayerData>($"data\\{Constants.SaveFolderName}.json") ?? new PlayerData();
-          
+            if (!Game1.player.modData.ContainsKey($"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday"))
+            {
+                Game1.player.modData.Add($"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday", "false");
+            }
+
+            if (!Game1.player.modData.ContainsKey($"{this.ModManifest.UniqueID}.MoneyLostLastPassOut"))
+            {
+                Game1.player.modData.Add($"{this.ModManifest.UniqueID}.MoneyLostLastPassOut", "0");
+            }
+
+            if (!Game1.player.modData.ContainsKey($"{this.ModManifest.UniqueID}.DidPlayerWakeupinClinic"))
+            {
+                Game1.player.modData.Add($"{this.ModManifest.UniqueID}.DidPlayerWakeupinClinic", "false");
+            }
+
             // Did player pass out yesterday?
-            if (ModEntry.PlayerData.DidPlayerPassOutYesterday == true)
+            if (Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday"] == "true")
             {
                 // Yes, fix player state
 
@@ -480,7 +540,7 @@ namespace CustomDeathPenaltyPlus
             }
 
             // Did player wake up in clinic?
-            if(ModEntry.PlayerData.DidPlayerWakeupinClinic == true)
+            if(Game1.player.modData[$"{this.ModManifest.UniqueID}.DidPlayerWakeupinClinic"] == "true")
             {
                 // Yes, fix player state
 
@@ -513,58 +573,29 @@ namespace CustomDeathPenaltyPlus
             }
         }
 
-        // Define console commands
-        private void Setdp(string command, string[] args)
-        {
-            try
-            {
-                Commands.DeathPenalty(args, this.Monitor, this.Helper);
-            }
-            catch (FormatException)
-            {
-                this.Monitor.Log("Specified value could not be parsed, enter value as it would appear in the config", LogLevel.Error);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                this.Monitor.Log("Incorrect command format used.\nRequired format: deathpenalty <configoption> <value>", LogLevel.Error);
-            }
-        }
-        private void Setpp(string command, string[] args)
-        {
-            try
-            {
-                Commands.PassOutPenalty(args, this.Monitor, this.Helper);
-            }
-            catch (FormatException)
-            {
-                this.Monitor.Log("Specified value could not be parsed, enter value as it would appear in the config", LogLevel.Error);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                this.Monitor.Log("Incorrect command format used.\nRequired format: passoutpenalty <configoption> <value>", LogLevel.Error);
-            }
-        }
-
-        private void Setop(string command, string[] args)
-        {
-            try
-            {
-                Commands.OtherPenalty(args, this.Monitor, this.Helper);
-            }
-            catch (FormatException)
-            {
-                this.Monitor.Log("Specified value could not be parsed, enter value as it would appear in the config", LogLevel.Error);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                this.Monitor.Log("Incorrect command format used.\nRequired format: otherpenalty <configoption> <value>", LogLevel.Error);
-            }
-        }
+        // Define console command
         private void Info(string command, string[] args)
         {
             try
             {
-                Commands.ConfigInfo(args, this.Monitor);
+                this.Monitor.Log($"Current config settings:" +
+                        $"\n\nDeathPenalty" +
+                        $"\n\nRestoreItems: {config.DeathPenalty.RestoreItems.ToString().ToLower()}" +
+                        $"\nMoneyLossCap: {config.DeathPenalty.MoneyLossCap}" +
+                        $"\nMoneytoRestorePercentage: {config.DeathPenalty.MoneytoRestorePercentage}" +
+                        $"\nEnergytoRestorePercentage: {config.DeathPenalty.EnergytoRestorePercentage}" +
+                        $"\nHealthtoRestorePercentage: {config.DeathPenalty.HealthtoRestorePercentage}" +
+                        $"\n\nPassOutPenalty" +
+                        $"\n\nMoneyLossCap: {config.PassOutPenalty.MoneyLossCap}" +
+                        $"\nMoneytoRestorePercentage: {config.PassOutPenalty.MoneytoRestorePercentage}" +
+                        $"\nEnergytoRestorePercentage: {config.PassOutPenalty.EnergytoRestorePercentage}" +
+                        $"\n\nOtherPenalties" +
+                        $"\n\nWakeupNextDayinClinic: { config.OtherPenalties.WakeupNextDayinClinic.ToString().ToLower()}" +
+                        $"\nHarveyFriendshipChange: {config.OtherPenalties.HarveyFriendshipChange}" +
+                        $"\nMaruFriendshipChange: {config.OtherPenalties.MaruFriendshipChange}" +
+                        $"\nMoreRealisticWarps: {config.OtherPenalties.MoreRealisticWarps.ToString().ToLower()}" +
+                        $"\nDebuffonDeath: {config.OtherPenalties.DebuffonDeath.ToString().ToLower()}",
+                        LogLevel.Info);
             }
             catch (IndexOutOfRangeException)
             {

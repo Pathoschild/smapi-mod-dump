@@ -1,5 +1,6 @@
-url:
-   https://github.com/hcoona/StardewValleyMods.git
+urls:
+   web: https://github.com/hcoona/StardewValleyMods
+   Git: https://github.com/hcoona/StardewValleyMods.git
 
 mods:
    Fishing Adjust

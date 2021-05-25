@@ -1,5 +1,6 @@
-url:
-   https://github.com/trienow/Stardew-CraftPriority.git
+urls:
+   web: https://github.com/trienow/Stardew-CraftPriority
+   Git: https://github.com/trienow/Stardew-CraftPriority.git
 
 mods:
    Craft Priority

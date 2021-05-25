@@ -1,5 +1,6 @@
-url:
-   https://github.com/GuiNoya/SVMods.git
+urls:
+   web: https://github.com/GuiNoya/SVMods
+   Git: https://github.com/GuiNoya/SVMods.git
 
 mods:
    Daily Tasks Report

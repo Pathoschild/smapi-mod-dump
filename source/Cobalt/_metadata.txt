@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/Cobalt.git
+urls:
+   web: https://github.com/spacechase0/Cobalt
+   Git: https://github.com/spacechase0/Cobalt.git
 
 mods:
    Cobalt

@@ -1,5 +1,6 @@
-url:
-   https://github.com/heyseth/SDVMods.git
+urls:
+   web: https://github.com/heyseth/SDVMods
+   Git: https://github.com/heyseth/SDVMods.git
 
 mods:
    Pause While Sitting

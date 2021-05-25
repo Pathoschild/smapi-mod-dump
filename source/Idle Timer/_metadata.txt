@@ -1,5 +1,6 @@
-url:
-   https://github.com/emperorzuul/SMAPI_MODS.git
+urls:
+   web: https://github.com/emperorzuul/SMAPI_MODS
+   Git: https://github.com/emperorzuul/SMAPI_MODS.git
 
 mods:
    Idle Timer

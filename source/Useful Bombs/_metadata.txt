@@ -1,5 +1,6 @@
-url:
-   https://github.com/pomepome/UsefulBombs.git
+urls:
+   web: https://github.com/pomepome/UsefulBombs
+   Git: https://github.com/pomepome/UsefulBombs.git
 
 mods:
    Useful Bombs

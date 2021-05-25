@@ -1,5 +1,6 @@
-url:
-   https://github.com/Felix-Dev/StardewMods.git
+urls:
+   web: https://github.com/Felix-Dev/StardewMods
+   Git: https://github.com/Felix-Dev/StardewMods.git
 
 mods:
    Archaeology House Content Management Helper

@@ -1,5 +1,6 @@
-url:
-   https://github.com/bikinavisho/RainCoatWhenRaining.git
+urls:
+   web: https://github.com/bikinavisho/RainCoatWhenRaining
+   Git: https://github.com/bikinavisho/RainCoatWhenRaining.git
 
 mods:
    Raincoat When Raining

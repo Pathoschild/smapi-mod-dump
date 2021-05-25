@@ -1,5 +1,6 @@
-url:
-   https://github.com/ferdaber/sdv-mods.git
+urls:
+   web: https://github.com/ferdaber/sdv-mods
+   Git: https://github.com/ferdaber/sdv-mods.git
 
 mods:
    Deluxe Grabber Redux

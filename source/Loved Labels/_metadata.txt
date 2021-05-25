@@ -1,5 +1,6 @@
-url:
-   https://github.com/AdvizeGH/LovedLabels.git
+urls:
+   web: https://github.com/AdvizeGH/LovedLabels
+   Git: https://github.com/AdvizeGH/LovedLabels.git
 
 mods:
    Loved Labels

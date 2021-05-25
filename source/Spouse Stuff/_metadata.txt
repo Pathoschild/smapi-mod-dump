@@ -1,5 +1,6 @@
-url:
-   https://github.com/sikker/SpouseStuff.git
+urls:
+   web: https://github.com/sikker/SpouseStuff
+   Git: https://github.com/sikker/SpouseStuff.git
 
 mods:
    Spouse Stuff

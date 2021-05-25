@@ -1,5 +1,6 @@
-url:
-   https://github.com/aleksanderwaagr/Stardew-ChangeProfessions.git
+urls:
+   web: https://github.com/aleksanderwaagr/Stardew-ChangeProfessions
+   Git: https://github.com/aleksanderwaagr/Stardew-ChangeProfessions.git
 
 mods:
    Change Professions

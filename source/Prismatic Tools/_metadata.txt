@@ -1,5 +1,6 @@
-url:
-   https://github.com/stokastic/PrismaticTools.git
+urls:
+   web: https://github.com/stokastic/PrismaticTools
+   Git: https://github.com/stokastic/PrismaticTools.git
 
 mods:
    Prismatic Tools

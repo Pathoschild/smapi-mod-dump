@@ -1,3 +1,5 @@
 {
-  "CustomSkillPage": true
+  "CustomSkillPage": true,
+  "WalletLegacyStyle": false,
+  "WalletOnRightOfSkillPage": false
 }

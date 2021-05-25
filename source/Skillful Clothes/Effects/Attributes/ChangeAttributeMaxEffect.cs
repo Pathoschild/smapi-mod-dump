@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SkillfulClothes.Types;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -38,32 +39,32 @@ namespace SkillfulClothes.Effects.Attributes
             this.amount = amount;
         }        
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
-            int curr = GetCurrentValue(farmer);
-            int max = GetMaxValue(farmer);
+            int curr = GetCurrentValue(Game1.player);
+            int max = GetMaxValue(Game1.player);
             if (curr == max)
             {
                 // if attribute is full, keep it full                
-                SetMaxValue(farmer, max + amount);
-                SetCurrentValue(farmer, curr + amount);                
+                SetMaxValue(Game1.player, max + amount);
+                SetCurrentValue(Game1.player, curr + amount);                
             }
             else
             {
-                SetMaxValue(farmer, max + amount);
+                SetMaxValue(Game1.player, max + amount);
             }
 
             Logger.Debug($"Max{AttributeName} + {amount}");
         }
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
-            int newValue = GetMaxValue(farmer) - amount;
-            if (GetCurrentValue(farmer) > newValue)
+            int newValue = GetMaxValue(Game1.player) - amount;
+            if (GetCurrentValue(Game1.player) > newValue)
             {
-                SetCurrentValue(farmer, newValue);                
+                SetCurrentValue(Game1.player, newValue);                
             }
-            SetMaxValue(farmer, newValue);            
+            SetMaxValue(Game1.player, newValue);            
 
             Logger.Debug($"Max{AttributeName} - {amount}");
         }

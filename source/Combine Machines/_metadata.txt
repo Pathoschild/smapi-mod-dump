@@ -1,5 +1,6 @@
-url:
-   https://github.com/Videogamers0/SDV-CombineMachines.git
+urls:
+   web: https://github.com/Videogamers0/SDV-CombineMachines
+   Git: https://github.com/Videogamers0/SDV-CombineMachines.git
 
 mods:
    Combine Machines

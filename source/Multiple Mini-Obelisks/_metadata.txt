@@ -1,5 +1,6 @@
-url:
-   https://github.com/Floogen/MultipleMiniObelisks.git
+urls:
+   web: https://github.com/Floogen/MultipleMiniObelisks
+   Git: https://github.com/Floogen/MultipleMiniObelisks.git
 
 mods:
    Multiple Mini-Obelisks

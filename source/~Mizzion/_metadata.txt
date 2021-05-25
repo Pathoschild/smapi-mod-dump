@@ -1,5 +1,6 @@
-url:
-   https://github.com/Mizzion/MyStardewMods.git
+urls:
+   web: https://github.com/Mizzion/MyStardewMods
+   Git: https://github.com/Mizzion/MyStardewMods.git
 
 mods:
    Artifact Digger

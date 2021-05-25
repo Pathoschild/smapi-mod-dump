@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ilyaki/BattleRoyalley.git
+urls:
+   web: https://github.com/Ilyaki/BattleRoyalley
+   Git: https://github.com/Ilyaki/BattleRoyalley.git
 
 mods:
    Battle Royalley

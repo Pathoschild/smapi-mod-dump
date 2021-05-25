@@ -1,5 +1,6 @@
-url:
-   https://github.com/dphile/SDVBetterIridiumTools.git
+urls:
+   web: https://github.com/dphile/SDVBetterIridiumTools
+   Git: https://github.com/dphile/SDVBetterIridiumTools.git
 
 mods:
    Better Iridium Tool Area

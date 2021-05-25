@@ -853,7 +853,7 @@ namespace FarmAnimalVarietyRedux.Menus
                 var animal = ModEntry.Instance.Api.GetAnimalByInternalSubtypeName(AnimalBeingPurchased.type);
                 if (animal != null)
                     buildings = Utilities.ConstructBuildingString(animal.Buildings);
-                var housingString = $"Choose a {buildings} for your new {animal.Name}";
+                var housingString = $"Choose a {buildings} for your new {AnimalBeingPurchased.type.Value.Split('.').Last()}";
 
                 SpriteText.drawStringWithScrollBackground(
                     b: b,
@@ -1105,7 +1105,7 @@ namespace FarmAnimalVarietyRedux.Menus
 
                     // space available
                     var indoors = building.indoors.Value as AnimalHouse;
-                    var spaceAvailableText = $"{indoors.Animals.Keys.Count()}/{indoors.animalLimit.Value}";
+                    var spaceAvailableText = $"{indoors.animalsThatLiveHere.Count}/{indoors.animalLimit.Value}";
                     var spaceAvailableTextWidth = Game1.dialogueFont.MeasureString(spaceAvailableText).X;
                     spriteBatch.DrawString(
                         spriteFont: Game1.dialogueFont,

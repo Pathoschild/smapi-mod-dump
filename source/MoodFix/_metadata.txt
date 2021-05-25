@@ -1,5 +1,6 @@
-url:
-   https://github.com/vaindil/sdv-moodfix.git
+urls:
+   web: https://github.com/vaindil/sdv-moodfix
+   Git: https://github.com/vaindil/sdv-moodfix.git
 
 mods:
    MoodFix

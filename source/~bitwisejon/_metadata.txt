@@ -1,5 +1,6 @@
-url:
-   https://github.com/bitwisejon/StardewValleyMods.git
+urls:
+   web: https://github.com/bitwisejon/StardewValleyMods
+   Git: https://github.com/bitwisejon/StardewValleyMods.git
 
 mods:
    Instant Buildings From Farm

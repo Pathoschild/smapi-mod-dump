@@ -1,5 +1,6 @@
-url:
-   https://github.com/bogie5464/SiloReport.git
+urls:
+   web: https://github.com/bogie5464/SiloReport
+   Git: https://github.com/bogie5464/SiloReport.git
 
 mods:
    Silo Report

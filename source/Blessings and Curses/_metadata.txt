@@ -1,5 +1,6 @@
-url:
-   https://github.com/GenDeathrow/SDV_BlessingsAndCurses.git
+urls:
+   web: https://github.com/GenDeathrow/SDV_BlessingsAndCurses
+   Git: https://github.com/GenDeathrow/SDV_BlessingsAndCurses.git
 
 mods:
    Blessings and Curses

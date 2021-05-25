@@ -1,5 +1,6 @@
-url:
-   https://github.com/jamespfluger/Stardew-MisophoniaAccessibility.git
+urls:
+   web: https://github.com/jamespfluger/Stardew-MisophoniaAccessibility
+   Git: https://github.com/jamespfluger/Stardew-MisophoniaAccessibility.git
 
 mods:
    Misophonia Accessibility

@@ -14,27 +14,39 @@ Only basic items that are currently available to your character can be shoplifte
 
 Ready for a spree of petty crime? Just don't get caught...
 
+By default:
 Any villager within 7 tiles of you when you shoplift will lose 2 hearts of friendship. If the villager also happens to be the shopkeeper or their family/employee they will also fine you the value of your current funds up to 1000g.
 
-If you get caught by the shopkeeper or their family/employee three times within a 28 day period, you'll receive a three day ban from entering the shop. You're given a clean slate 28 days after the first time shoplifting, a second shoplift won't carry over. Lucky you!
+If you get caught by the shopkeeper or their family/employee three times within a 28 day period, you'll receive a three day ban from entering the shop, this excludes the Icecream Stand. You're given a clean slate 28 days after the first time shoplifting, a second shoplift won't carry over. Lucky you!
 
 You can only successfully shoplift once per day, you're not that bad are you?
 
-The shops you can shoplift from are: Willy's Shop, Pierre's General Store, Carpenter, Marnie's Ranch, Harvey's Clinic, Saloon, Blacksmith, Sandy's Oasis. 
+Version 1.1.0 added a config so shoplifting preferences can be changed, including: 
+- The maximum shoplifts per day, setting this to 0 is equivalent to setting it to 1
+- How many times the same shop can be shoplifted each day, setting this to 0 is equivalent to setting it to 1
+- How many times you must be caught before being banned, setting this to 0 is equivalent to setting it to 1
+- How many days you are banned for, set to 0 if you don't want to be banned
+- Maximum fine amount
+- Maximum friendship penalty
+
+When changing the config, ensure only positive whole numbers or zero are entered so the config can be parsed. The mod will use the default values if it can't parse the config.
+
+The shops you can shoplift from are: Willy's Shop, Pierre's General Store, Carpenter, Marnie's Ranch, Harvey's Clinic, Saloon, Blacksmith, Sandy's Oasis, Icecream Stand.
 If you're wondering why all shops aren't included it's because the shopkeeper never leaves said store, you'll never get away with it. Custom shops cannot be shoplifted from.
 
 Boring specifics are listed below:
 
-Shop | Who can ban you | Stock exclusions | Max number of different items | Max quantity of each item
------|-----------------|------------------|-------------------------------|--------------------------
-Willy's Shop | Willy | Any furniture, fish tanks, fishing rods | 3 | 3
-Pierre's General Store | Pierre, Caroline, Abigail | Recipes, wallpaper, flooring | 5 | 5
-Carpenter | Robin, Demetrius, Maru, Sebastian | Recipes, any furniture, workbench | 2 | 20
-Marnie's Ranch | Marnie, Shane | Decorations, tools, heater | 1 | 15
-Harvey's Clinic | Harvey, Maru | None | 1 | 3
-Saloon | Gus, Emily | Recipes | 2 | 1
-Blacksmith | Clint | None | 3 | 10
-Sandy's Oasis | Sandy | Furniture, clothing | 3 | 3
+Shop | Who can catch you | Stock exclusions | Max number of different items | Max quantity of each item | Bannable
+-----|-----------------|------------------|-------------------------------|-------------------------- | --------
+Willy's Shop | Willy | Any furniture, fish tanks, fishing rods | 3 | 3 | Yes
+Pierre's General Store | Pierre, Caroline, Abigail | Recipes, wallpaper, flooring | 5 | 5 | Yes
+Carpenter | Robin, Demetrius, Maru, Sebastian | Recipes, any furniture, workbench | 2 | 20 | Yes
+Marnie's Ranch | Marnie, Shane | Decorations, tools, heater | 1 | 15 | Yes
+Harvey's Clinic | Harvey, Maru | None | 1 | 3 | Yes
+Saloon | Gus, Emily | Recipes | 2 | 1 | Yes
+Blacksmith | Clint | None | 3 | 10 | Yes
+Sandy's Oasis | Sandy | Furniture, clothing | 3 | 3 | Yes
+Icecream Stand | Alex | None | 1 | 5 | No
 
 ## Compatibilty ##
 
@@ -44,6 +56,8 @@ Compatibile with shop tile framework in that altered stock will be considered wh
 
 ## Versions ##
 1.0.0 - Initial release
+
+1.1.0 - Made shoplifting preferences configurable, added Icecream Stand as shopliftable
 
 
 

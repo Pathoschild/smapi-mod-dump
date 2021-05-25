@@ -1,5 +1,6 @@
-url:
-   https://github.com/BayesianBandit/ConfigureMachineSpeed.git
+urls:
+   web: https://github.com/BayesianBandit/ConfigureMachineSpeed
+   Git: https://github.com/BayesianBandit/ConfigureMachineSpeed.git
 
 mods:
    Configure Machine Speed

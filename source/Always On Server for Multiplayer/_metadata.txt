@@ -1,5 +1,6 @@
-url:
-   https://github.com/funny-snek/Always-On-Server-for-Multiplayer.git
+urls:
+   web: https://github.com/funny-snek/Always-On-Server-for-Multiplayer
+   Git: https://github.com/funny-snek/Always-On-Server-for-Multiplayer.git
 
 mods:
    Always On Server for Multiplayer

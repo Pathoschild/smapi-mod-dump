@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/dtomlinson-ga/ConfigurableSpecialOrdersUnlock
+**
+*************************************************/
+
+{
+  "Name": "Configurable Special Orders Unlock",
+  "Author": "Vertigon",
+  "Version": "0.1.0",
+  "Description": "Mod to configure the unlock requirements of the Special Orders Board.",
+  "UniqueID": "Vertigon.ConfigurableSpecialOrdersUnlock",
+  "EntryDll": "ConfigurableSpecialOrdersUnlock.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8690" ]
+}

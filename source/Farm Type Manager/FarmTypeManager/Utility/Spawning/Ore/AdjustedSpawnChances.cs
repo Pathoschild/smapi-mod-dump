@@ -49,13 +49,13 @@ namespace FarmTypeManager
                     {
                         //skill is too low to spawn this object; leave it at 0%
                     }
-                    else if (objType.Value == skillLevel)
-                    {
-                        chance = startChances[objType.Key]; //skill is the minimum required; use the starting chance
-                    }
                     else if (skillLevel >= 10)
                     {
                         chance = maxChances[objType.Key]; //level 10 skill; use the max level chance
+                    }
+                    else if (objType.Value == skillLevel)
+                    {
+                        chance = startChances[objType.Key]; //skill is the minimum required; use the starting chance
                     }
                     else //skill is somewhere in between "starting" and "level 10", so do math to set the chance somewhere in between them (i forgot the term for this kind of averaging, sry)
                     {

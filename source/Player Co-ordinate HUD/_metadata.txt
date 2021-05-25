@@ -1,13 +1,14 @@
-url:
-   https://github.com/DecidedlyHuman/StardewMods.git
+urls:
+   web: https://github.com/DecidedlyHuman/StardewMods
+   Git: https://github.com/DecidedlyHuman/StardewMods.git
 
 mods:
    Player Co-ordinate HUD
 
 latest commit:
-   commit 0b61485d1eabe365530381ac2dd5b871065581e2
-   Author: DecidedlyHuman <69521518+DecidedlyHuman@users.noreply.github.com>
-   Date:   Sat Apr 10 09:51:51 2021 +0100
+   commit 751b2069077a30e8e96728523fc46b2a8096f34c
+   Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
+   Date:   Tue May 18 09:00:07 2021 +0100
    
-       A license is also important!
+       Oops. Cleaned up unnecessary using directives.
    

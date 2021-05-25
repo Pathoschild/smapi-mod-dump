@@ -1,5 +1,6 @@
-url:
-   https://github.com/Floogen/IslandGatherers.git
+urls:
+   web: https://github.com/Floogen/IslandGatherers
+   Git: https://github.com/Floogen/IslandGatherers.git
 
 mods:
    Island Gatherers

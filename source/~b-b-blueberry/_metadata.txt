@@ -1,5 +1,6 @@
-url:
-   https://github.com/b-b-blueberry/BlueberryMushroomMachine.git
+urls:
+   web: https://github.com/b-b-blueberry/BlueberryMushroomMachine
+   Git: https://github.com/b-b-blueberry/BlueberryMushroomMachine.git
 
 mods:
    Mushroom Propagator - Grow More Mushrooms

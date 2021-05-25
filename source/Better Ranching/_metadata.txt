@@ -1,5 +1,6 @@
-url:
-   https://github.com/urbanyeti/stardew-better-ranching.git
+urls:
+   web: https://github.com/urbanyeti/stardew-better-ranching
+   Git: https://github.com/urbanyeti/stardew-better-ranching.git
 
 mods:
    Better Ranching

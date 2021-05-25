@@ -1,5 +1,6 @@
-url:
-   https://github.com/ADoby/SimpleSprinkler.git
+urls:
+   web: https://github.com/ADoby/SimpleSprinkler
+   Git: https://github.com/ADoby/SimpleSprinkler.git
 
 mods:
    Simple Sprinkler

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "XPMultiplier",
+  "Author": "nofilenamed",
+  "Version": "1.0.0",
+  "Description": "Allows changing the rare you gain experience at.",
+  "UniqueID": "NFN.XPMUL",
+  "EntryDll": "XPMultiplier.dll",
+  "MinimumApiVersion": "3.9.0",
+  "UpdateKeys": ["Nexus:8649"]
+}

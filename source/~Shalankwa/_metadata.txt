@@ -1,5 +1,6 @@
-url:
-   https://github.com/Shalankwa/SDV_Mods.git
+urls:
+   web: https://github.com/Shalankwa/SDV_Mods
+   Git: https://github.com/Shalankwa/SDV_Mods.git
 
 mods:
    Warp Multiplayer

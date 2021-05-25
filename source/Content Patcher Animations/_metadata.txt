@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/ContentPatcherAnimations.git
+urls:
+   web: https://github.com/spacechase0/ContentPatcherAnimations
+   Git: https://github.com/spacechase0/ContentPatcherAnimations.git
 
 mods:
    Content Patcher Animations

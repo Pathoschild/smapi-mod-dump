@@ -1,0 +1,62 @@
+﻿{
+  "give_flowersA": "네가 나한테 그런 감정을 느끼는 줄 몰랐어.$1#$b#그럼 우리 이제 사귀는 거 맞지?$4",
+  "give_flowersB": "이걸 나한테? 나도 같은 마음이야!#$b#우리 사이 관계도 앞으로 많이 달라지겠네.$1",
+  "give_pendant": "내가 생각하는 그런 의미로 주는 거야?!#$b#물론이지! 승낙할게!$1#$b#내가 루이스에게 말씀드릴게... 우리 결혼식은 3일 뒤에 있을 거야.#$b#결혼식 당일에 늦지 마.$4",
+  "stardrop_gift": "@, 넌 정말 멋진 남편이야. 네 덕에 난 특별한 사람이 된 것 같아.$4^@, 넌 정말 멋진 아내야. 네 덕에 난 특별한 사람이 된 것 같아.$4#$b#이 선물이 내가 얼마나 행복한지를 네게 대신 전해 주면 좋겠어.",
+  "rejectNPCA": "그런 감정을 얘기하기엔 너무 이르지 않아?",
+  "rejectNPCB": "음... 고맙지만 사양할게...",
+  "reject_two_heartA": "우리 만난 적도 거의 없는데... 소름끼치게 왜 그래?$2",
+  "reject_two_heartB": "이런 결정을 내리기엔, 넌 내가 어떤 사람인지도 모르잖아.",
+  "reject_four_heartA": "...그게.. 그러니까... 우린 그냥 친구야... 게다가 너와 내가 그 정도까지 친한 것도 아닌 것 같아.",
+  "reject_four_heartB": "어... 있지... 난 우리 사이 우정을 깨고 싶은 마음은 전혀 없어.$1",
+  "engageA": "나한테 왜 이걸 주는 거야? 너 이미 약혼했잖아...$2#$b#나한테 이러지 마...$2",
+  "engageB": "이건 옳지 못해...$2",
+  "marriedA": "네 이런 행동을 %spouse(이)가 원할 것 같진 않은데.$2",
+  "marriedB": "나한테 이러지 말고 %spouse에게 더 잘 해, @.$5",
+  "refusal_knownA": "난 아직 준비가 덜 됐어.",
+  "refusal_knownB": "우린 친구 사이야, @.#$b#네가 날 소중한 사람으로 대해주는 게 먼저라고 생각해.$1",
+  "refusal_botherA": "너 이미 나한테 물어봤잖아? 우리 아직 결혼 못해...$5",
+  "refusal_botherB": "내 인내심의 끈이 점점 가늘어 지고 있는데, @.$5",
+  "refusal_no_heartsA": "이건 지나치게 이르다고 생각 안 들어?",
+  "refusal_no_heartsB": "뭐야?! 우리 방금 만났어.$1",
+  "birthdayLoveA": "세상에! 너무 멋진 선물이다!#$b#정말 고마워.$1",
+  "birthdayLoveB": "네가 엄청난 걸 선물로 들고 올 것 같단 생각을 했었는데! 고마워, 이거 정말 끝내준다!$1",
+  "birthdayLikeA": "오! 내 생일 선물을 챙겨와 줬구나!#$b#정말 기쁘다, 고마워!$1",
+  "birthdayLikeB": "날 위한 거야? 정말 멋지다, 고마워.",
+  "birthdayDislikeA": "이건... 농담이지?$5",
+  "birthdayDislikeB": "윽, 끔찍해... 나한테 왜 그래?$5",
+  "birthdayNeutralA": "오! 내 생일 선물이야?  음, 고맙게 받을게.",
+  "birthdayNeutralB": "내 생일이 네 생각보다 훨씬 이르게 닥쳤나?#$b#그래도 선물은 고마워, @.",
+  "giftquestion_yes": "그렇구나... 넌 언제나 상냥한 사람이네.$1",
+  "giftquestion_lie": "나한테 꼭 거짓말을 해야겠어? 나도 다 아는데!$5#$b#내가 이런 걱정까지 해야겠어?!$2",
+  "breakUp": "오... 그럼 우리 그냥 친구로 지내야겠네...",
+  "NPC.cs.3962": "$q 10001 give_flowersA#?!...#$r 10001 0 give_flowersA# [부케를 건넵니다]",
+  "NPC.cs.3963": "$q 10001 give_flowersB#?!...#$r 10001 0 give_flowersB# [부케를 건넵니다]",
+  "NPC.cs.3980": "$q 10001 give_pendant#?!...#$r 10001 0 give_pendant# 나랑 결혼해 줄래?",
+  "NPC.cs.4001": "$q 10001 stardrop_gift#?!...#$r 10001 0 stardrop_gift# 날 위한 거야?",
+  "NPC.cs.3956": "$q 10001 rejectNPCA#?!...#$r 10001 0 rejectNPCA#[부케를 건넵니다]",
+  "NPC.cs.3957": "$q 10001 rejectNPCB#?!...#$r 10001 0 rejectNPCB#[부케를 건넵니다]",
+  "NPC.cs.3958": "$q 10001 reject_two_heartA#?!...#$r 10001 0 reject_two_heartA#[부케를 건넵니다]",
+  "NPC.cs.3959": "$q 10001 reject_two_heartB#?!...#$r 10001 0 reject_two_heartB#[부케를 건넵니다]",
+  "NPC.cs.3960": "$q 10001 reject_four_heartA#?!...#$r 10001 0 reject_four_heartA#[부케를 건넵니다]",
+  "NPC.cs.3961": "$q 10001 reject_four_heartB#?!...#$r 10001 0 reject_four_heartB#[부케를 건넵니다]",
+  "NPC.cs.3965": "$q 10001 engageA#?!...#$r 10001 0 engageA# 나랑 결혼해 줄래?",
+  "NPC.cs.3966": "$q 10001 engageB#?!...#$r 10001 0 engageB# 나랑 결혼해 줄래?",
+  "NPC.cs.3967": "$q 10001 marriedA#?!...#$r 10001 0 marriedA# 나랑 결혼해 줄래?",
+  "NPC.cs.3968": "$q 10001 marriedB#?!...#$r 10001 0 marriedB# 나랑 결혼해 줄래?",
+  "NPC.cs.3970": "$q 10001 refusal_no_heartsA#?!...#$r 10001 0 refusal_no_heartsA# 나랑 결혼해 줄래?",
+  "NPC.cs.3971": "$q 10001 refusal_no_heartsB#?!...#$r 10001 0 refusal_no_heartsB# 나랑 결혼해 줄래?",
+  "NPC.cs.3972": "$q 10001 refusal_knownA#?!...#$r 10001 0 refusal_knownA# 나랑 결혼해 줄래?",
+  "NPC.cs.3973": "$q 10001 refusal_knownB#?!...#$r 10001 0 refusal_knownB# 나랑 결혼해 줄래?",
+  "NPC.cs.3974": "$q 10001 refusal_botherA#?!...#$r 10001 0 refusal_botherA# 나랑 결혼해 줄래?",
+  "NPC.cs.3975": "$q 10001 refusal_botherB#?!...#$r 10001 0 refusal_botherB# 나랑 결혼해 줄래?",
+  "NPC.cs.4274": "$q 10001 birthdayLoveA#...#$r 10001 0 birthdayLoveA# [생일 축하해]", //love
+  "NPC.cs.4275": "$q 10001 birthdayLoveB#...#$r 10001 0 birthdayLoveB# [생일 축하해]", //love
+  "NPC.cs.4276": "$q 10001 birthdayLikeA#...#$r 10001 0 birthdayLikeA# [생일 축하해]", //like
+  "NPC.cs.4277": "$q 10001 birthdayLikeB#...#$r 10001 0 birthdayLikeB# [생일 축하해]", //like
+  "NPC.cs.4278": "$q 10001 birthdayDislikeA#...#$r 10001 0 birthdayDislikeA# [생일 축하해]", //hate
+  "NPC.cs.4279": "$q 10001 birthdayDislikeB#...#$r 10001 0 birthdayDislikeB# [생일 축하해]", //dislike
+  "NPC.cs.4280": "$q 10001 birthdayNeutralA#...#$r 10001 0 birthdayNeutralA# [생일 축하해]", //neutral
+  "NPC.cs.4281": "$q 10001 birthdayNeutralB#...#$r 10001 0 birthdayNeutralB# [생일 축하해]" //neutral
+
+}

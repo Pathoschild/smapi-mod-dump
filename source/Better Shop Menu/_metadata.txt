@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/BetterShopMenu.git
+urls:
+   web: https://github.com/spacechase0/BetterShopMenu
+   Git: https://github.com/spacechase0/BetterShopMenu.git
 
 mods:
    Better Shop Menu

@@ -12,13 +12,13 @@ using StardewValley;
 
 namespace MoreGrass.Patches
 {
-    /// <summary>Contains patches for patching game code in the <see cref="StardewValley.GameLocation"/> class.</summary>
+    /// <summary>Contains patches for patching game code in the <see cref="GameLocation"/> class.</summary>
     internal class GameLocationPatch
     {
         /*********
         ** Internal Methods
         *********/
-        /// <summary>The prefix for the <see cref="StardewValley.GameLocation.growWeedGrass(int)"/> method.</summary>
+        /// <summary>The prefix for the <see cref="GameLocation.growWeedGrass(int)"/> method.</summary>
         /// <returns><see langword="true"/> if the original method should get ran; otherwise, <see langword="false"/> (whether grass can grow).</returns>
         /// <remarks>This is used to determine if grass can grow based on the mod configuration.</remarks>
         internal static bool GrowWeedGrassPrefix()

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Chikakoo/stardew-valley-randomizer.git
+urls:
+   web: https://github.com/Chikakoo/stardew-valley-randomizer
+   Git: https://github.com/Chikakoo/stardew-valley-randomizer.git
 
 mods:
    More Random Edition

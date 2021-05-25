@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/FireArcadeGame.git
+urls:
+   web: https://github.com/spacechase0/FireArcadeGame
+   Git: https://github.com/spacechase0/FireArcadeGame.git
 
 mods:
    Pyromancer's Journey

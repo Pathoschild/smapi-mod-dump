@@ -1,5 +1,6 @@
-url:
-   https://github.com/Igorious/Stardew_Valley_Showcase_Mod.git
+urls:
+   web: https://github.com/Igorious/Stardew_Valley_Showcase_Mod
+   Git: https://github.com/Igorious/Stardew_Valley_Showcase_Mod.git
 
 mods:
    Showcase

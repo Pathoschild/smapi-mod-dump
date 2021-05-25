@@ -1,5 +1,6 @@
-url:
-   https://github.com/mus-candidus/ImagEd.git
+urls:
+   web: https://github.com/mus-candidus/ImagEd
+   Git: https://github.com/mus-candidus/ImagEd.git
 
 mods:
    ImagEd

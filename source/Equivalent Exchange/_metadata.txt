@@ -1,5 +1,6 @@
-url:
-   https://github.com/MercuriusXeno/EquivalentExchange.git
+urls:
+   web: https://github.com/MercuriusXeno/EquivalentExchange
+   Git: https://github.com/MercuriusXeno/EquivalentExchange.git
 
 mods:
    Equivalent Exchange

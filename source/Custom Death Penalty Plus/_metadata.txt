@@ -1,13 +1,15 @@
-url:
-   https://github.com/TheMightyAmondee/CustomDeathPenaltyPlus.git
+urls:
+   web: https://github.com/TheMightyAmondee/CustomDeathPenaltyPlus
+   Git: https://github.com/TheMightyAmondee/CustomDeathPenaltyPlus.git
 
 mods:
    Custom Death Penalty Plus
 
 latest commit:
-   commit e94d795f5ce2b7c930111cdc48d9e3b774f9b172
-   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Sat Mar 13 22:19:40 2021 +1100
+   commit bb0df92aa7b0fb98a8f6fb2b8dd14093caffbdc3
+   Merge: 7f3a4c6 e94d795
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Sun May 23 21:19:55 2021 +1000
    
-       Update README.md
+       Merge branch 'master' of https://github.com/TheMightyAmondee/CustomDeathPenaltyPlus into master
    

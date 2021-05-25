@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ilyaki/NetworkOptimizer.git
+urls:
+   web: https://github.com/Ilyaki/NetworkOptimizer
+   Git: https://github.com/Ilyaki/NetworkOptimizer.git
 
 mods:
    Network Optimizer

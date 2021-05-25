@@ -1,5 +1,6 @@
-url:
-   https://github.com/MaciejMarkuszewski/StardewValleyMod.git
+urls:
+   web: https://github.com/MaciejMarkuszewski/StardewValleyMod
+   Git: https://github.com/MaciejMarkuszewski/StardewValleyMod.git
 
 mods:
    Multiplayer Time

@@ -9,9 +9,14 @@
 *************************************************/
 
 using StardewModdingAPI;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
+using StardewValley.Locations;
 using StardewValley;
 using System;
 using System.Text;
+
+
 
 namespace CustomDeathPenaltyPlus
 {
@@ -21,11 +26,14 @@ namespace CustomDeathPenaltyPlus
     internal class AssetEditor
     {
         private static ModConfig config;
-
+        private static IManifest manifest;
+       
         // Allows the class to access the ModConfig properties
-        public static void SetConfig(ModConfig config)
+        public static void SetConfig(ModConfig config, IManifest manifest)
         {
             AssetEditor.config = config;
+            AssetEditor.manifest = manifest;
+
         }
 
         /// <summary>
@@ -86,19 +94,45 @@ namespace CustomDeathPenaltyPlus
             {
                 var stringeditor = asset.AsDictionary<string, string>().Data;
 
-                // Has player not lost any money?
-                if (config.DeathPenalty.MoneyLossCap == 0 || config.DeathPenalty.MoneytoRestorePercentage == 1)
+                if (config.OtherPenalties.MoreRealisticWarps == true 
+                    && (ModEntry.location.StartsWith("Farm") == true 
+                    || Game1.getLocationFromName(ModEntry.location) as FarmHouse != null 
+                    || ModEntry.location.StartsWith("UndergroundMine") == true
+                    || ModEntry.location == "SkullCave") 
+                    && ModEntry.location.StartsWith("IslandFarm") == false)
                 {
-                    // Yes, edit strings to show this special case
-                    stringeditor["Event.cs.1068"] = "Dr. Harvey didn't charge me for the hospital visit, how nice. ";
-                    stringeditor["Event.cs.1058"] = "Fortunately, I still have all my money";
+                    if (config.DeathPenalty.MoneyLossCap == 0 || config.DeathPenalty.MoneytoRestorePercentage == 1)
+                    {
+                        // Yes, edit strings to show this special case
+                        stringeditor["Event.cs.1068"] = "I still seem to have all my money. ";
+                        stringeditor["Event.cs.1058"] = "Fortunately, I still have all my money";
+                    }
+                    else
+                    {
+                        // No, edit strings to show amount lost
+                        stringeditor["Event.cs.1068"] = $"I seem to have lost {(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}g. I wonder how that happened... ";
+                        stringeditor["Event.cs.1058"] = stringeditor["Event.cs.1058"].Replace("{0}", $"{(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}");
+                    }
+
+                    stringeditor["Event.cs.1070"] = "Fortunately, I have no money to lose. That could have been bad.";
                 }
                 else
                 {
-                    // No, edit strings to show amount lost
-                    stringeditor["Event.cs.1068"] = stringeditor["Event.cs.1068"].Replace("{0}",$"{(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}");
-                    stringeditor["Event.cs.1058"] = stringeditor["Event.cs.1058"].Replace("{0}", $"{(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}");
+                    // Has player not lost any money?
+                    if (config.DeathPenalty.MoneyLossCap == 0 || config.DeathPenalty.MoneytoRestorePercentage == 1)
+                    {
+                        // Yes, edit strings to show this special case
+                        stringeditor["Event.cs.1068"] = "Dr. Harvey didn't charge me for the hospital visit, how nice. ";
+                        stringeditor["Event.cs.1058"] = "Fortunately, I still have all my money";
+                    }
+                    else
+                    {
+                        // No, edit strings to show amount lost
+                        stringeditor["Event.cs.1068"] = stringeditor["Event.cs.1068"].Replace("{0}", $"{(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}");
+                        stringeditor["Event.cs.1058"] = stringeditor["Event.cs.1058"].Replace("{0}", $"{(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}");
+                    }
                 }
+               
                 // Is RestoreItems true?
                 if (config.DeathPenalty.RestoreItems == true)
                 {
@@ -134,12 +168,10 @@ namespace CustomDeathPenaltyPlus
             {
                 var maileditor = asset.AsDictionary<string, string>().Data;
 
-                var data = ModEntry.PlayerData;
-
-                
+                var data = Game1.player.modData;               
 
                 // Has player not lost any money?
-                if (data.MoneyLostLastPassOut == 0)
+                if (data[$"{manifest.UniqueID}.MoneyLostLastPassOut"] == "0")
                 {
                     // Yes, edit strings to show this special case
                     maileditor["passedOut1_Billed_Male"] = maileditor["passedOut1_Billed_Male"].Replace("You've been billed {0}g for this service", "Be thankful you haven't been billed for this service");
@@ -150,9 +182,9 @@ namespace CustomDeathPenaltyPlus
                 else
                 {
                     // No, edit strings to show amount lost
-                    maileditor["passedOut1_Billed_Male"] = maileditor["passedOut1_Billed_Male"].Replace("{0}", $"{data.MoneyLostLastPassOut}");
-                    maileditor["passedOut1_Billed_Female"] = maileditor["passedOut1_Billed_Female"].Replace("{0}", $"{data.MoneyLostLastPassOut}"); ;
-                    maileditor["passedOut3_Billed"] = maileditor["passedOut3_Billed"].Replace("{0}", $"{data.MoneyLostLastPassOut}");
+                    maileditor["passedOut1_Billed_Male"] = maileditor["passedOut1_Billed_Male"].Replace("{0}", $"{data[$"{manifest.UniqueID}.MoneyLostLastPassOut"]}");
+                    maileditor["passedOut1_Billed_Female"] = maileditor["passedOut1_Billed_Female"].Replace("{0}", $"{data[$"{manifest.UniqueID}.MoneyLostLastPassOut"]}"); ;
+                    maileditor["passedOut3_Billed"] = maileditor["passedOut3_Billed"].Replace("{0}", $"{data[$"{manifest.UniqueID}.MoneyLostLastPassOut"]}");
                 }
             }
         }
@@ -169,7 +201,7 @@ namespace CustomDeathPenaltyPlus
                 modHelper = helper;
             }
 
-            // Allow asset to be editted if name matches
+            // Allow asset to be edited if name matches
             public bool CanEdit<T>(IAssetInfo asset)
             {
                 return asset.AssetNameEquals("Data\\Events\\Mine");
@@ -180,10 +212,13 @@ namespace CustomDeathPenaltyPlus
             {
                 var eventedits = asset.AsDictionary<string, string>().Data;
 
+                IDictionary<string, string> events = modHelper.Content.Load<Dictionary<string, string>>("assets\\Events.json", ContentSource.ModFolder);
                 // Is WakeupNextDayinClinic true?
                 if (config.OtherPenalties.WakeupNextDayinClinic == true)
                 {
-                    eventedits["PlayerKilled"] = $"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}","in the mine")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
+                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledMine"], Game1.player.Name, ResponseBuilder("{0}", "in the mine"));
+                        //$"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}", "in the mine")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
+
                 }
             }
         }
@@ -200,7 +235,7 @@ namespace CustomDeathPenaltyPlus
                 modHelper = helper;
             }
 
-            // Allow asset to be editted if name matches
+            // Allow asset to be edited if name matches
             public bool CanEdit<T>(IAssetInfo asset)
             {
                 return asset.AssetNameEquals("Data\\Events\\IslandSouth");
@@ -211,10 +246,13 @@ namespace CustomDeathPenaltyPlus
             {
                 var eventedits = asset.AsDictionary<string, string>().Data;
 
+                IDictionary<string, string> events = modHelper.Content.Load<Dictionary<string, string>>("assets\\Events.json", ContentSource.ModFolder);
+
                 // Is WakeupNextDayinClinic true?
                 if (config.OtherPenalties.WakeupNextDayinClinic == true)
                 {
-                    eventedits["PlayerKilled"] = $"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}", "on the island shore")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
+                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledIsland"], Game1.player.Name, ResponseBuilder("{0}", "on the island shore"));
+                    //$"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}", "on the island shore")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
                 }
             }
         }
@@ -231,7 +269,7 @@ namespace CustomDeathPenaltyPlus
                 modHelper = helper;
             }
 
-            // Allow asset to be editted if name matches
+            // Allow asset to be edited if name matches
             public bool CanEdit<T>(IAssetInfo asset)
             {
                 return asset.AssetNameEquals("Data\\Events\\Hospital");
@@ -240,9 +278,49 @@ namespace CustomDeathPenaltyPlus
             // Edit asset
             public void Edit<T>(IAssetData asset)
             {
-               var eventedits = asset.AsDictionary<string, string>().Data;
+                var eventedits = asset.AsDictionary<string, string>().Data;
 
-               eventedits["PlayerKilled"] = $"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/pause 1500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("Someone", "and battered")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
+                IDictionary<string, string> events = modHelper.Content.Load<Dictionary<string, string>>("assets\\Events.json", ContentSource.ModFolder);
+
+                eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledHospital"], Game1.player.Name, ResponseBuilder("Someone", "and battered"));
+                //$"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/pause 1500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("Someone", "and battered")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
+
+                if (ModEntry.location != null 
+                    && (ModEntry.location.StartsWith("UndergroundMine") == true 
+                    || ModEntry.location == "SkullCave")
+                    && config.OtherPenalties.MoreRealisticWarps == true)
+                {
+                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledSkullCave"], Game1.player.Name);
+                    //$"none/-100 -100/farmer 3 5 2 MrQi 4 4 2/changeLocation SkullCave/pause 1500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Hey, kid! You okay?\"/viewport 3 5 true/pause 1000/speak MrQi \"I found you battered and unconscious down there, kid... I hope you weren't doing something stupid.$1#$b#Just be more careful in the caverns next time, okay. There's still lots of potential in you, kid!\"/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
+
+                }
+                else if (ModEntry.location != null 
+                    && (ModEntry.location.StartsWith("Farm") 
+                    || Game1.getLocationFromName(ModEntry.location) as FarmHouse != null) 
+                    && config.OtherPenalties.MoreRealisticWarps == true 
+                    && ModEntry.location.StartsWith("IslandFarm") == false)
+                {
+                    var cabin = (Context.IsMainPlayer ? "FarmHouse" : Game1.player.homeLocation.Value) ?? "FarmHouse";
+                    // Get tile where player should spawn, same as (doorX, doorY - 2) position  
+                    int tileX = 12;
+                    int tileY = 18;
+                    switch (Game1.player.houseUpgradeLevel)
+                    {
+                        case 0:
+                            tileX = 3;
+                            tileY = 9;
+                            break;
+                        case 1:
+                            tileX = 9;
+                            tileY = 8;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledFarm"], tileX, tileY, cabin);
+                    //$"none/-100 -100/farmer {tileX} {tileY} 2/changeLocation {cabin}/pause 1500/showFrame 5/message \"...\"/pause 1000/message \"...What just happened?\"/viewport {tileX} {tileY} true/pause 1000/showFrame 0/pause 1000/emote farmer 28/message \"Something bad must have happened to me... I have no idea how I got here...\"/pause 500/hospitaldeath/end";
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
-url:
-   https://github.com/thejcannon/Stardew-FoodBuffStacking.git
+urls:
+   web: https://github.com/thejcannon/Stardew-FoodBuffStacking
+   Git: https://github.com/thejcannon/Stardew-FoodBuffStacking.git
 
 mods:
    Food Buff Stacking

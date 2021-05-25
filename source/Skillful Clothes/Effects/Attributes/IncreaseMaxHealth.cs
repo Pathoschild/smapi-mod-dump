@@ -21,7 +21,7 @@ namespace SkillfulClothes.Effects.Attributes
     {
         public override string AttributeName => "Health";
 
-        public override EffectIcon Icon => EffectIcon.Health;
+        public override EffectIcon Icon => EffectIcon.MaxHealth;
 
         public IncreaseMaxHealth(int amount)
             : base(amount)

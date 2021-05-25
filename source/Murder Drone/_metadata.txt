@@ -1,5 +1,6 @@
-url:
-   https://github.com/camcamcamcam/murderdrone.git
+urls:
+   web: https://github.com/camcamcamcam/murderdrone
+   Git: https://github.com/camcamcamcam/murderdrone.git
 
 mods:
    Murder Drone

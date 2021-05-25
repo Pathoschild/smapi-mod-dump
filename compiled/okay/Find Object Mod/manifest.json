@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Find Object Mod",
+  "Author": "Tran Minh Thong",
+  "Version": "1.0.0",
+  "Description": "It is a Mod assists you in finding objects and characters in the player's map.",
+  "UniqueID": "find.object.mod",
+  "EntryDll": "FindObjectMod.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": [ "Nexus:8594" ]
+}

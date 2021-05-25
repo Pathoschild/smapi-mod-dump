@@ -1,5 +1,6 @@
-url:
-   https://github.com/jlfulmer/PetEnhancementMod.git
+urls:
+   web: https://github.com/jlfulmer/PetEnhancementMod
+   Git: https://github.com/jlfulmer/PetEnhancementMod.git
 
 mods:
    Pet Enhancement Mod

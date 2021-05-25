@@ -29,22 +29,30 @@ namespace EarlyCommunityUpgrades
 
 		public static bool TryLoadModConfigMenu()
 		{
-			// Check to see if Generic Mod Config Menu is installed
-			if (!Globals.Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
+			try
 			{
-				Globals.Monitor.Log("GenericModConfigMenu not present - skipping mod menu setup");
+				// Check to see if Generic Mod Config Menu is installed
+				if (!Globals.Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
+				{
+					Globals.Monitor.Log("GenericModConfigMenu not present - skipping mod menu setup");
+					return false;
+				}
+
+				api = Globals.Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+				api.RegisterModConfig(Globals.Manifest,
+					() => Globals.Config = new ModConfig(),
+					() => Globals.Helper.WriteConfig(Globals.Config)
+				);
+
+				RegisterModOptions();
+				return true;
+			}
+			catch (Exception e)
+			{
+				Globals.Monitor.Log("Failed to register GMCM menu - skipping mod menu setup", StardewModdingAPI.LogLevel.Error);
+				Globals.Monitor.Log(e.Message, StardewModdingAPI.LogLevel.Error);
 				return false;
 			}
-
-			api = Globals.Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
-			api.RegisterModConfig(Globals.Manifest,
-				() => Globals.Config = new ModConfig(),
-				() => Globals.Helper.WriteConfig(Globals.Config)
-			);
-
-			RegisterModOptions();
-			return true;
-
 		}
 
 		public static void RegisterModOptions()

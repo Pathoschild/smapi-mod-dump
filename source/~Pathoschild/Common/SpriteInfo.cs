@@ -10,7 +10,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pathoschild.Stardew.LookupAnything;
 
 namespace Pathoschild.Stardew.Common
 {

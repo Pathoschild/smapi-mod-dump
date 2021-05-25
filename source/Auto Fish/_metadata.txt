@@ -1,5 +1,6 @@
-url:
-   https://github.com/WhiteMinds/mod-sv-autofish.git
+urls:
+   web: https://github.com/WhiteMinds/mod-sv-autofish
+   Git: https://github.com/WhiteMinds/mod-sv-autofish.git
 
 mods:
    Auto Fish

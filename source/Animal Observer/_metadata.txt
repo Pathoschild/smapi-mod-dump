@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/nofilenamed/AnimalObserver
+   Git: https://github.com/nofilenamed/AnimalObserver.git
+
+mods:
+   Animal Observer
+
+latest commit:
+   commit 46488dd9e11faba989eb9e8300e37fa11d44fe24
+   Author: nofilenamed <nofilenamed@gmail.com>
+   Date:   Tue May 18 14:45:26 2021 +0200
+   
+       now with truffle ready show
+   

@@ -1,5 +1,6 @@
-url:
-   https://github.com/MartyrPher/GetGlam.git
+urls:
+   web: https://github.com/MartyrPher/GetGlam
+   Git: https://github.com/MartyrPher/GetGlam.git
 
 mods:
    Get Glam

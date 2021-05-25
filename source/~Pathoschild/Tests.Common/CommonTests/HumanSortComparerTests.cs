@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using Common.Utilities;
 using NUnit.Framework;
 using Pathoschild.Stardew.Common.Utilities;
 

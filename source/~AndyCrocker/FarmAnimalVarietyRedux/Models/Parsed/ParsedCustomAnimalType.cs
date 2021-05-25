@@ -180,7 +180,7 @@ namespace FarmAnimalVarietyRedux.Models.Parsed
             var oldCount = Produce.Count;
             Produce = Produce.Distinct(new ParsedAnimalProduceEqualityComparer()).ToList();
             if (Produce.Count != oldCount)
-                ModEntry.Instance.Monitor.Log($"Atleast one produce has been removed from animal subtype: {InternalName} as it had the same DefaultId and UpgradedId as another produce in the same subtype", LogLevel.Error);
+                ModEntry.Instance.Monitor.Log($"Atleast one produce has been removed from animal subtype: {InternalName} as it had the same {nameof(AnimalProduce.UniqueName)} as another produce in the same subtype", LogLevel.Error);
 
             return true;
         }

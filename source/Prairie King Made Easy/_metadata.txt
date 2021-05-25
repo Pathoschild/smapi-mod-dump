@@ -1,5 +1,6 @@
-url:
-   https://github.com/mucchan/sv-mod-prairie-king.git
+urls:
+   web: https://github.com/mucchan/sv-mod-prairie-king
+   Git: https://github.com/mucchan/sv-mod-prairie-king.git
 
 mods:
    Prairie King Made Easy

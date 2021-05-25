@@ -1,5 +1,6 @@
-url:
-   https://github.com/Pathoschild/StardewMods.git
+urls:
+   web: https://github.com/Pathoschild/StardewMods
+   Git: https://github.com/Pathoschild/StardewMods.git
 
 mods:
    Automate
@@ -20,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit a8c4e00157f127b4cf75ffdc4fc36f4b4b4b95de
+   commit 1826eddaf1f1df1c16246809290f5b7f617b0151
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Apr 28 22:08:33 2021 -0400
+   Date:   Sat May 22 22:48:00 2021 -0400
    
-       fix edge cases in monster drop lookups
+       fix readme render bug on GitHub
    

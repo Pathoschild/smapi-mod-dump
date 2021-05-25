@@ -1,5 +1,6 @@
-url:
-   https://github.com/AairTheGreat/StardewValleyMods.git
+urls:
+   web: https://github.com/AairTheGreat/StardewValleyMods
+   Git: https://github.com/AairTheGreat/StardewValleyMods.git
 
 mods:
    Better Garbage Cans

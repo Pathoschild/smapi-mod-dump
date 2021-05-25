@@ -1,5 +1,6 @@
-url:
-   https://github.com/CKextreme/StardewValley-Mods.git
+urls:
+   web: https://github.com/CKextreme/StardewValley-Mods
+   Git: https://github.com/CKextreme/StardewValley-Mods.git
 
 mods:
    AFK Timer

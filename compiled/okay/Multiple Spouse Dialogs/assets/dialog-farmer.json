@@ -1,0 +1,138 @@
+﻿[
+  {
+    "Call": "My handsome farmer",
+    "Responders": "Farmer",
+    "When": {
+      "PlayerGender": "male"
+    }
+  },
+  {
+    "Call": "My gorgeous farmer",
+    "Responders": "Farmer",
+    "When": {
+      "PlayerGender": "female"
+    }
+  },
+  {
+    "Call": "So handsome <",
+    "Responders": "Farmer",
+    "When": {
+      "PlayerGender": "male"
+    }
+  },
+  {
+    "Call": "So pretty <",
+    "Responders": "Farmer",
+    "When": {
+      "PlayerGender": "female"
+    }
+  },
+  {
+    "Call": "Nearly time to change crops",
+    "When": {
+      "Season": "Spring",
+      "Day": "{{Range: 26, 28}}"
+    }
+  },
+  {
+    "Call": "Thought about fall crops?",
+    "When": {
+      "Season": "Summer",
+      "Day": "{{Range: 26, 28}}"
+    }
+  },
+  {
+    "Call": "Ready for winter?",
+    "When": {
+      "Season": "Fall",
+      "Day": "{{Range: 26, 28}}"
+    }
+  },
+  {
+    "Call": "What are we planting next?",
+    "When": {
+      "Season": "Winter",
+      "Day": "{{Range: 26, 28}}"
+    }
+  },
+  {
+    "Call": "Take care today babe!",
+    "Responders": "Farmer",
+    "When": {
+      "Query: {{DailyLuck}} < -0.07": true,
+      "Time": "{{Range: 0600, 1200}}"
+    }
+  },
+  {
+    "Call": "A house for Pam? So proud <",
+    "Responders": "Farmer",
+    "When": {
+      "HasConversationTopic": "pamHouseUpgrade"
+    }
+  },
+  {
+    "Call": "A house for Pam... was that you?",
+    "Responders": "Farmer",
+    "When": {
+      "HasConversationTopic": "pamHouseUpgradeAnonymous"
+    }
+  },
+  {
+    "Call": "My brave warrior",
+    "Responders": "Farmer",
+    "When": {
+      "HasProfession": "Fighter, Scout"
+    }
+  },
+  {
+    "Call": "Be brave, be careful!",
+    "Responders": "Farmer",
+    "When": {
+      "HasProfession": "Fighter, Scout",
+      "Time": "{{Range: 0600, 1200}}"
+    }
+  },
+  {
+    "Call": "Catch us a big fish",
+    "Responders": "Farmer",
+    "When": {
+      "HasProfession": "Fisher"
+    }
+  },
+  {
+    "Call": "Catch us a big crab",
+    "Responders": "Farmer",
+    "When": {
+      "HasProfession": "Trapper"
+    }
+  },
+  {
+    "Call": "Find me a sea treasure!",
+    "Responders": "Farmer",
+    "When": {
+      "HasProfession": "Pirate"
+    }
+  },
+  {
+    "Call": "My strong lumberjack",
+    "Responders": "Farmer",
+    "When": {
+      "HasProfession": "Forester"
+    }
+  },
+  {
+    "Call": "My strong miner",
+    "Responders": "Farmer",
+    "When": {
+      "HasProfession": "Miner, Geologist"
+    }
+  },
+  {
+    "Call": "Foraging today?",
+    "Responders": "Farmer",
+    "When": {
+      "Time": "{{Range: 0600, 1200}}",
+      "HasProfession": "Gatherer"
+    }
+  }
+]

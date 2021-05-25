@@ -1,5 +1,6 @@
-url:
-   https://github.com/bwdymods/SDV-Lockpicks.git
+urls:
+   web: https://github.com/bwdymods/SDV-Lockpicks
+   Git: https://github.com/bwdymods/SDV-Lockpicks.git
 
 mods:
    Lockpicks

@@ -1,5 +1,6 @@
-url:
-   https://github.com/andyruwruw/stardew-valley-water-bot.git
+urls:
+   web: https://github.com/andyruwruw/stardew-valley-water-bot
+   Git: https://github.com/andyruwruw/stardew-valley-water-bot.git
 
 mods:
    Water Bot

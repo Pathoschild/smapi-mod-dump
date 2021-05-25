@@ -1,14 +1,17 @@
-url:
-   https://github.com/TheMightyAmondee/CustomTokens.git
+urls:
+   web: https://github.com/TheMightyAmondee/CustomTokens
+   Git: https://github.com/TheMightyAmondee/CustomTokens.git
 
 mods:
    Custom Tokens
 
 latest commit:
-   commit 191e876fbe61cf88e3a74d4ac0a51e0743eb9eca
-   Merge: 67a1083 4a2a3ae
-   Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Sat Jan 30 10:04:55 2021 +1100
+   commit b8816ba37515813d6c39e0a5bed30b8ca9a19dac
+   Merge: 191e876 dd44097
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Mon May 17 12:07:55 2021 +1000
    
-       Merge branch 'TokensToAdd' into master
+       Merge pull request #4 from TheMightyAmondee/Version2.0
+       
+       Version2.0
    

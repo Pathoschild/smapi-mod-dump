@@ -1,5 +1,6 @@
-url:
-   https://github.com/GStefanowich/SDV-Forecaster.git
+urls:
+   web: https://github.com/GStefanowich/SDV-Forecaster
+   Git: https://github.com/GStefanowich/SDV-Forecaster.git
 
 mods:
    Forecaster Text

@@ -67,20 +67,6 @@ namespace AdoptSkin.Framework
 
             // Put that thing where it belongs
             Game1.warpCharacter(HorseInstance, Map, Tile);
-
-            // Spawn notifications
-            if (ModEntry.Config.NotifyHorseSpawn)
-            {
-                string message = $"A wild horse has been spotted!";
-                ModEntry.SMonitor.Log(message, LogLevel.Debug);
-                Game1.chatBox.addInfoMessage(message);
-            }
-            if (ModEntry.Config.NotifyHorseSpawnLocation)
-            {
-                string message = $"Wild horse spotted at: {Map.Name} -- {Tile.X}, {Tile.Y}";
-                ModEntry.SMonitor.Log(message, LogLevel.Debug);
-                Game1.chatBox.addInfoMessage(message);
-            }
         }
 
 

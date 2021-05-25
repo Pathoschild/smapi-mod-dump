@@ -1,5 +1,6 @@
-url:
-   https://github.com/ChroniclerCherry/stardew-valley-mods.git
+urls:
+   web: https://github.com/ChroniclerCherry/stardew-valley-mods
+   Git: https://github.com/ChroniclerCherry/stardew-valley-mods.git
 
 mods:
    Catalogues Anywhere

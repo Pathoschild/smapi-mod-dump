@@ -1,5 +1,6 @@
-url:
-   https://github.com/Drachenkaetzchen/AdvancedKeyBindings.git
+urls:
+   web: https://github.com/Drachenkaetzchen/AdvancedKeyBindings
+   Git: https://github.com/Drachenkaetzchen/AdvancedKeyBindings.git
 
 mods:
    Advanced Key Bindings

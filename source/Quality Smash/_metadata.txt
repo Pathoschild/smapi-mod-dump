@@ -1,5 +1,6 @@
-url:
-   https://github.com/jn84/QualitySmash.git
+urls:
+   web: https://github.com/jn84/QualitySmash
+   Git: https://github.com/jn84/QualitySmash.git
 
 mods:
    Quality Smash

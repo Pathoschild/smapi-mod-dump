@@ -1,5 +1,6 @@
-url:
-   https://github.com/MindMeltMax/Stardew-Valley-Mods.git
+urls:
+   web: https://github.com/MindMeltMax/Stardew-Valley-Mods
+   Git: https://github.com/MindMeltMax/Stardew-Valley-Mods.git
 
 mods:
    Joja's Hauntings

@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/S1mmyy/StardewMods
+   Git: https://github.com/S1mmyy/StardewMods.git
+
+mods:
+   Item AutoTrasher
+   Skull Cavern Drill
+
+latest commit:
+   commit f3b94ff0dc5e93d5a3e656c563284b2fb3d9a8e6
+   Author: S1mmyy <58746715+S1mmyy@users.noreply.github.com>
+   Date:   Thu May 20 17:08:20 2021 -0400
+   
+       Delete Skull Cavern Drill.sln
+   

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Gaphodil/BetterJukebox.git
+urls:
+   web: https://github.com/Gaphodil/BetterJukebox
+   Git: https://github.com/Gaphodil/BetterJukebox.git
 
 mods:
    Better Jukebox

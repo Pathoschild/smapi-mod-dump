@@ -10,10 +10,10 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
-using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 
@@ -24,15 +24,29 @@ namespace ToolBelt
         private List<ToolBeltButton> buttons = new List<ToolBeltButton>();
         protected int buttonRadius;
         protected int lowestButtonY = -1;
+        protected int animtime;
+        protected int age;
+        protected float animProgress = 0f;
 
-        public bool gamepadMode;
+        protected bool gamepadMode;
 
         protected ToolBeltButton selectedButton;
         protected int wheelIndex = -1;
 
-        public ToolBeltMenu()
+        IModHelper Helper;
+        ModConfig Config;
+        ModEntry Mod;
+
+
+
+        public ToolBeltMenu(IModHelper helper, ModEntry mod, ModConfig config)
         {
-            buttonRadius = 24;
+            Helper = helper;
+            Mod = mod;
+            Config = config;
+
+            animtime = Config.AnimationMilliseconds;
+            buttonRadius = 26;
 
             width = 256;
             height = 256;
@@ -41,39 +55,23 @@ namespace ToolBelt
             snapToPlayerPosition();
         }
 
-        public void updateToolList(Dictionary<Tool, int> dict)
+        public void updateToolList(SortedDictionary<Item, int> dict)
         {
             //essentially re init the menu
             int count = 0;
             gamepadMode = false;
             buttons.Clear();
             selectedButton = null;
+            age = 0;
+            animProgress = 0f;
 
-            foreach (KeyValuePair<Tool, int> kv in dict)
+            foreach (KeyValuePair<Item, int> kv in dict)
             {
-                buttons.Add(makeToolButton(kv.Key, kv.Value));
+                buttons.Add(new ToolBeltButton(kv.Value, kv.Key, Helper));
                 count++;
             }
 
-            updateButtonRadius();
-            repositionButtons();
-        }
-
-        private ToolBeltButton makeToolButton(Tool tool, int index)
-        {
-            Rectangle toolRect;
-            Texture2D baseTexture;
-            if (tool is MeleeWeapon | tool is Sword | tool is Slingshot)
-            {
-                baseTexture = Tool.weaponsTexture;
-                toolRect = Game1.getSquareSourceRectForNonStandardTileSheet(baseTexture, 16, 16, tool.indexOfMenuItemView);
-            }
-            else
-            {
-                baseTexture = Game1.toolSpriteSheet;
-                toolRect = Game1.getSquareSourceRectForNonStandardTileSheet(baseTexture, 16, 16, tool.indexOfMenuItemView);
-            }
-            return new ToolBeltButton(new Rectangle(0, 0, 64, 64), baseTexture, toolRect, 4f, index, tool, true);
+            snapToPlayerPosition();
         }
 
         public int closeAndReturnSelected()
@@ -85,18 +83,48 @@ namespace ToolBelt
 
         public override void update(GameTime time)
         {
+            age += time.ElapsedGameTime.Milliseconds;
+            if (age > animtime)
+            {
+                age = animtime;
+            }
+            if (animtime > 0)
+            {
+                animProgress = (float)age / (float)animtime;
+            }
+            else
+            {
+                animProgress = 1f;
+            }
+
             snapToPlayerPosition();
             Vector2 offset = default(Vector2);
-            if (!gamepadMode && Game1.options.gamepadControls && (Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Right.X) > 0.5f || Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Right.Y) > 0.5f))
+            float xState = 0;
+            float yState = 0;
+
+            if (Config.LeftStickSelection)
+            {
+                xState = Game1.input.GetGamePadState().ThumbSticks.Left.X;
+                yState = Game1.input.GetGamePadState().ThumbSticks.Left.Y;
+            }
+            else
+            {
+                xState = Game1.input.GetGamePadState().ThumbSticks.Right.X;
+                yState = Game1.input.GetGamePadState().ThumbSticks.Right.Y;
+            }
+
+            if (!gamepadMode && Game1.options.gamepadControls && (Math.Abs(xState) > 0.5f || Math.Abs(yState) > 0.5f))
             {
                 gamepadMode = true;
             }
 
             if (gamepadMode)
             {
-                if (Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Right.X) > 0.5f || Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Right.Y) > 0.5f)
+
+
+                if (Math.Abs(xState) > 0.5f || Math.Abs(yState) > 0.5f)
                 {
-                    offset = new Vector2(Game1.input.GetGamePadState().ThumbSticks.Right.X, Game1.input.GetGamePadState().ThumbSticks.Right.Y);
+                    offset = new Vector2(xState, yState);
                     offset.Y *= -1f;
                     offset.Normalize();
                     float highest_dot = -1f;
@@ -115,7 +143,7 @@ namespace ToolBelt
                 }
                 else
                 {
-                    ModEntry.swapItem(closeAndReturnSelected());
+                    Mod.swapItem(closeAndReturnSelected());
                 }
             }
 
@@ -130,7 +158,7 @@ namespace ToolBelt
 
             x = (int)Utility.ModifyCoordinateFromUIScale(x);
             y = (int)Utility.ModifyCoordinateFromUIScale(y);
-            
+
             for (int i = 0; i < buttons.Count; i++)
             {
                 if (buttons[i].containsPoint(x, y))
@@ -153,7 +181,7 @@ namespace ToolBelt
         {
             x = (int)Utility.ModifyCoordinateFromUIScale(x);
             y = (int)Utility.ModifyCoordinateFromUIScale(y);
-            ModEntry.swapItem(closeAndReturnSelected());
+            Mod.swapItem(closeAndReturnSelected());
             base.receiveLeftClick(x, y, playSound);
         }
 
@@ -191,15 +219,16 @@ namespace ToolBelt
 
         protected void repositionButtons()
         {
+            updateButtonRadius();
             lowestButtonY = -1;
             int x;
             int y;
             for (int i = 0; i < buttons.Count; i++)
             {
                 ClickableTextureComponent button = buttons[i];
-                float radians = Utility.Lerp(0f, (float)Math.PI * 2f, (float)i / (float)buttons.Count);
+                float radians = Utility.Lerp(0f, (float)Math.PI * 2f, ((float)i / (float)buttons.Count));
                 x = (int)((float)(xPositionOnScreen + width / 2 + (int)(Math.Cos(radians) * (double)buttonRadius) * 4) - (float)button.bounds.Width / 2f);
-                y = (int)((float)(yPositionOnScreen + height / 2 + (int)((0.0 - Math.Sin(radians)) * (double)buttonRadius) * 4) - (float)button.bounds.Height / 2f);                
+                y = (int)((float)(yPositionOnScreen + height / 2 + (int)((0.0 - Math.Sin(radians)) * (double)buttonRadius) * 4) - (float)button.bounds.Height / 2f);
                 button.bounds.X = x;
                 button.bounds.Y = y;
                 if (lowestButtonY < y) lowestButtonY = y;
@@ -208,27 +237,35 @@ namespace ToolBelt
 
         private void updateButtonRadius()
         {
-            buttonRadius = 25;
-            if(buttons.Count > 7)
+            if (buttons.Count > 6)
             {
-                buttonRadius = buttons.Count * 4;
+                buttonRadius = buttons.Count * 5;
             }
+            else
+            {
+                buttonRadius = 26;
+            }
+            buttonRadius = (int)(animProgress * (float)buttonRadius);
+
         }
 
         public override void draw(SpriteBatch b)
         {
             Game1.StartWorldDrawInUI(b);
-            
+
+
+
+            foreach (ToolBeltButton button in buttons)
+            {
+                button.draw(b, (float)Math.Pow(animProgress, 8), Config.UseBackdrop);
+            }
+
             if (!gamepadMode)
             {
                 Game1.mouseCursorTransparency = 1f;
                 drawMouse(b);
             }
-            
-            foreach (ClickableTextureComponent button in buttons)
-            {
-                button.draw(b);
-            }
+
 
             if (selectedButton != null)
             {
@@ -236,5 +273,11 @@ namespace ToolBelt
             }
             Game1.EndWorldDrawInUI(b);
         }
+
+        public override bool autoCenterMouseCursorForGamepad()
+        {
+            return false;
+        }
+
     }
 }

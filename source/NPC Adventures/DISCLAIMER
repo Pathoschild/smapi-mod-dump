@@ -1,0 +1,29 @@
+An important appendix for licence file
+======================================
+
+1. If you create a derived project that you wish to publish, 
+you are required to ask for a permission.
+
+2. Please make and publish unofficial update by following these instructions: https://stardewvalleywiki.com/Modding:Mod_compatibility#Creating_an_unofficial_update. 
+All responsibility and guarantees takes author of this unofficial patch.
+
+3. All program code (whole C# source code etc) are under AGPL-3.0 license and they are opensource, except the contents described in rule 4.
+
+4. NPC Adventures content is copyrighted and you are not allowed use all content included in folders 
+`/ContentSources`, '/assets' and `/locale` in other projects. 
+If you want add or change content directly in NPC Adventures, 
+you are permited to send pull request to repo https://github.com/purrplingcat/NpcAdventures 
+and distribute it as unofficial NPC Adventures update. Just keep project and author name in your fork.
+(All content like dialogues or events are written by Nymeria and Arknir and these contents are not open source 
+due to it's created by 3rd party persons and they have all permissions for these contents)
+
+5. Content packs created by 3rd party authors for NPC Adventures 
+are always under license declared by their authors and these limitations are not applied.
+
+6. Please don't redistribute unchanged binaries on any other sites. NPC Adventures is originally distributed on Nexusmods. 
+If you downloaded this mod from any other place than https://www.nexusmods.com/stardewvalley/mods/4582, it's stolen copy 
+and original author can't grant you any support with this mod. 
+If you have a problems and you downloaded this mod from another site than original Nexusmods page, download the original copy first.
+
+7. If you create derived project based on NPC Adventures on Nexusmods and you opt-in your project for donation points, 
+it will be fair share some points with PurrplingCat too.

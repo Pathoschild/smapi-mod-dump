@@ -216,6 +216,18 @@ namespace AdoptSkin
             }
         }
 
+        /// <summary>Initiate A&S data on farm</summary>
+        public void UpdateCreatureCount()
+        {
+            // TODO: Put this where it belongs. Use to load game, then check in UpdateTicked to make sure all farmhands and host have animals and skins known
+            if (Game1.getFarm() != null)
+            {
+                Game1.getFarm().modData[$"{this.ModManifest.UniqueID}/count-farmanimals"] = Game1.getFarm().getAllFarmAnimals().Count.ToString();
+                Game1.getFarm().modData[$"{this.ModManifest.UniqueID}/count-pets"] = ModApi.GetPets().Count().ToString();
+                Game1.getFarm().modData[$"{this.ModManifest.UniqueID}/count-horses"] = ModApi.GetHorses().Count().ToString();
+            }
+        }
+
 
         /// <summary>Standardize internal types and file names to have no spaces and to be entirely lowercase. </summary>
         public static string Sanitize(string input)
@@ -604,6 +616,10 @@ namespace AdoptSkin
         /// <summary>Checks horses known to be currently ridden and re-adds them to the map if they've been dismounted.</summary>
         internal static void HorseDismountedCheck()
         {
+            // Only allow the host player to alter horse locations
+            if (!Context.IsMainPlayer)
+                return;
+
             List<Horse> dismounted = new List<Horse>();
             foreach (Horse horse in BeingRidden)
             {

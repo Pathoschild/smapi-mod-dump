@@ -1,5 +1,6 @@
-url:
-   https://github.com/skuldomg/catGifts.git
+urls:
+   web: https://github.com/skuldomg/catGifts
+   Git: https://github.com/skuldomg/catGifts.git
 
 mods:
    Cat Gifts

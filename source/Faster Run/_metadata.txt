@@ -1,5 +1,6 @@
-url:
-   https://github.com/KathrynHazuka/StardewValley_FasterRun.git
+urls:
+   web: https://github.com/KathrynHazuka/StardewValley_FasterRun
+   Git: https://github.com/KathrynHazuka/StardewValley_FasterRun.git
 
 mods:
    Faster Run

@@ -1,5 +1,6 @@
-url:
-   https://github.com/HeroOfTheWinds/BlueChickensInMultiplayer.git
+urls:
+   web: https://github.com/HeroOfTheWinds/BlueChickensInMultiplayer
+   Git: https://github.com/HeroOfTheWinds/BlueChickensInMultiplayer.git
 
 mods:
    Blue Chickens in Multiplayer

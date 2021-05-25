@@ -50,7 +50,7 @@ namespace EscapeRope
             if (Game1.menuUp || Game1.player.hasMenuOpen || e.IsSuppressed() || !e.Button.IsActionButton() || Game1.eventUp || !Context.IsPlayerFree) return;
 
             Item currentItem = Game1.player.CurrentItem;
-            if (currentItem != null && currentItem.ParentSheetIndex != this.escapeRopeId) // works
+            if (currentItem == null || (currentItem != null && currentItem.ParentSheetIndex != this.escapeRopeId)) // works
             {
                 return;
             }

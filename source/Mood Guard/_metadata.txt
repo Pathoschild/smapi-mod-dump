@@ -1,5 +1,6 @@
-url:
-   https://github.com/YonKuma/MoodGuard.git
+urls:
+   web: https://github.com/YonKuma/MoodGuard
+   Git: https://github.com/YonKuma/MoodGuard.git
 
 mods:
    Mood Guard

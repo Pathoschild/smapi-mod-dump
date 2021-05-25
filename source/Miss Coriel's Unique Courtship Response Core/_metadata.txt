@@ -1,5 +1,6 @@
-url:
-   https://github.com/MissCoriel/UniqueCourtshipResponseCore.git
+urls:
+   web: https://github.com/MissCoriel/UniqueCourtshipResponseCore
+   Git: https://github.com/MissCoriel/UniqueCourtshipResponseCore.git
 
 mods:
    Miss Coriel's Unique Courtship Response Core

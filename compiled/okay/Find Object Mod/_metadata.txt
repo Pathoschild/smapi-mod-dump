@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8594
+IDs: find.object.mod
+update keys: Nexus:8594

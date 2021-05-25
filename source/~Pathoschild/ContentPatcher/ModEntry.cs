@@ -62,7 +62,8 @@ namespace ContentPatcher
             new Migration_1_19(),
             new Migration_1_20(),
             new Migration_1_21(),
-            new Migration_1_22()
+            new Migration_1_22(),
+            new Migration_1_23()
         };
 
         /// <summary>The special validation logic to apply to assets affected by patches.</summary>
@@ -146,7 +147,7 @@ namespace ContentPatcher
                 }
 
                 // cycle textures
-                else if (this.DebugOverlay != null)
+                else if (this.DebugOverlay.Value != null)
                 {
                     if (this.Keys.DebugPrevTexture.JustPressed())
                         this.DebugOverlay.Value.PrevTexture();
@@ -233,14 +234,13 @@ namespace ContentPatcher
             InvariantHashSet installedMods = new InvariantHashSet(
                 (contentPacks.Select(p => p.Manifest.UniqueID))
                 .Concat(helper.ModRegistry.GetAll().Select(p => p.Manifest.UniqueID))
-                .OrderByIgnoreCase(p => p)
+                .OrderByHuman()
             );
 
             // log custom tokens
             {
                 var tokensByMod = (
-                    from token in this.QueuedModTokens
-                    orderby token.Name
+                    from token in this.QueuedModTokens.OrderByHuman(p => p.Name)
                     group token by token.Mod into modGroup
                     select new { ModName = modGroup.Key.Name, ModPrefix = modGroup.First().NamePrefix, TokenNames = modGroup.Select(p => p.NameWithoutPrefix).ToArray() }
                 );

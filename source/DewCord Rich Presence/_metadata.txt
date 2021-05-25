@@ -1,5 +1,6 @@
-url:
-   https://github.com/explosivetortellini/StardewValleyDRP.git
+urls:
+   web: https://github.com/explosivetortellini/StardewValleyDRP
+   Git: https://github.com/explosivetortellini/StardewValleyDRP.git
 
 mods:
    DewCord Rich Presence

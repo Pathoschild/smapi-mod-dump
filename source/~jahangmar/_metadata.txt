@@ -1,5 +1,6 @@
-url:
-   https://github.com/jahangmar/StardewValleyMods.git
+urls:
+   web: https://github.com/jahangmar/StardewValleyMods
+   Git: https://github.com/jahangmar/StardewValleyMods.git
 
 mods:
    Compost&#44; Pests&#44; and Cultivation

@@ -33,6 +33,13 @@ namespace BarkingUpTheRightTree
     public class ModEntry : Mod, IAssetEditor
     {
         /*********
+        ** Constants
+        *********/
+        /// <summary>The start id of custom trees.</summary>
+        public const int CustomTreesStartId = 50;
+
+
+        /*********
         ** Fields
         *********/
         /// <summary>The sprite for the <see cref="BarkRemover"/>.</summary>
@@ -99,14 +106,14 @@ namespace BarkingUpTheRightTree
             foreach (var rawTree in RawCustomTrees)
             {
                 // create objects
-                var tappedProductObject = new TapperTimedProduct(rawTree.Data.TappedProduct.DaysBetweenProduce, ResolveToken(rawTree.Data.TappedProduct.Product), rawTree.Data.TappedProduct.Amount);
-                var barkProductObject = new TimedProduct(rawTree.Data.BarkProduct.DaysBetweenProduce, ResolveToken(rawTree.Data.BarkProduct.Product), rawTree.Data.BarkProduct.Amount);
+                var tappedProductObject = new TapperTimedProduct(rawTree.Data.TappedProduct.DaysBetweenProduce, ResolveToken(rawTree.Data.TappedProduct.ProductId), rawTree.Data.TappedProduct.Amount);
+                var barkProductObject = new TimedProduct(rawTree.Data.BarkProduct.DaysBetweenProduce, ResolveToken(rawTree.Data.BarkProduct.ProductId), rawTree.Data.BarkProduct.Amount);
                 var shakingProductObjects = new List<SeasonalTimedProduct>();
                 foreach (var shakingProduct in rawTree.Data.ShakingProducts)
-                    shakingProductObjects.Add(new SeasonalTimedProduct(shakingProduct.DaysBetweenProduce, ResolveToken(shakingProduct.Product), shakingProduct.Amount, shakingProduct.Seasons));
+                    shakingProductObjects.Add(new SeasonalTimedProduct(shakingProduct.DaysBetweenProduce, ResolveToken(shakingProduct.ProductId), shakingProduct.Amount, shakingProduct.Seasons));
 
                 // add tree
-                CustomTrees.Add(new CustomTree(rawTree.Id, rawTree.Data.Name, rawTree.Texture, tappedProductObject, ResolveToken(rawTree.Data.Wood), rawTree.Data.DropsSap, ResolveToken(rawTree.Data.Seed), rawTree.Data.RequiredToolLevel, shakingProductObjects, rawTree.Data.IncludeIfModIsPresent, rawTree.Data.ExcludeIfModIsPresent, barkProductObject, rawTree.Data.UnfertilisedGrowthChance, rawTree.Data.FertilisedGrowthChance));
+                CustomTrees.Add(new CustomTree(rawTree.Id, rawTree.Data.Name, rawTree.Texture, tappedProductObject, ResolveToken(rawTree.Data.WoodId), rawTree.Data.DropsSap, ResolveToken(rawTree.Data.SeedId), rawTree.Data.RequiredToolLevel, rawTree.Data.IsStumpInWinter, shakingProductObjects, rawTree.Data.IncludeIfModIsPresent, rawTree.Data.ExcludeIfModIsPresent, barkProductObject, rawTree.Data.UnfertilisedGrowthChance, rawTree.Data.FertilisedGrowthChance));
             }
         }
 
@@ -134,7 +141,7 @@ namespace BarkingUpTheRightTree
 
             // the tree name wasn't present, generate a new id and save it to the tree types file
             var typeId = -1;
-            for (int i = 20; typeId == -1; i++) // start i at 20 to accomodate for base game trees
+            for (int i = ModEntry.CustomTreesStartId; typeId == -1; i++)
             {
                 // ensure the id isn't already used by a different tree
                 if (IdMap.Any(typeMap => typeMap.Value == i))
@@ -180,6 +187,7 @@ namespace BarkingUpTheRightTree
             this.Helper.Events.GameLoop.Saving += OnSaving;
             this.Helper.Events.GameLoop.Saved += OnSaved;
             this.Helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+            this.Helper.Events.GameLoop.DayStarted += OnDayStarted;
             this.Helper.Events.Display.MenuChanged += OnMenuChanged;
         }
 
@@ -253,6 +261,40 @@ namespace BarkingUpTheRightTree
             ConvertRawTrees();
         }
 
+        /// <summary>Invoked when a new day starts.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        /// <remarks>This is used to emulate the behavior of map trees having a 50% chance of regrowing when outside of the farm.</remarks>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            foreach (var location in Game1.locations)
+            {
+                if (location is Farm) // trees shouldn't regrow on the farm
+                    continue;
+
+                for (int x = 0; x < location.Map.Layers[0].LayerWidth; x++)
+                    for (int y = 0; y < location.Map.Layers[0].LayerHeight; y++)
+                    {
+                        if (Game1.random.NextDouble() < .5) // trees have a 50/50 chance of regrowing
+                            continue;
+
+                        // check if the tile has the "Tree" property
+                        var treeName = location.doesTileHaveProperty(x, y, "Tree", "Back");
+                        if (treeName == null)
+                            continue;
+
+                        // ensure tree has been loaded and get required data
+                        if (!Api.GetRawTreeByName(treeName, out var rawTree))
+                            continue;
+
+                        // place tree
+                        var tileLocation = new Vector2(x, y);
+                        if (!location.terrainFeatures.ContainsKey(tileLocation) && !location.objects.ContainsKey(tileLocation))
+                            location.terrainFeatures.Add(tileLocation, new Tree(rawTree.Id, 2));
+                    }
+            }
+        }
+
         /// <summary>Invoked when the <see cref="Game1.activeClickableMenu"/> changes.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
@@ -268,7 +310,7 @@ namespace BarkingUpTheRightTree
                 return;
 
             // ensure there is atleast one custom tree that has bark to be harvested
-            if (Api.GetAllTrees().All(tree => tree.BarkProduct.Product == -1))
+            if (CustomTrees.All(tree => tree.BarkProduct.ProductId == -1))
             {
                 this.Monitor.Log("BarkRemover wasn't added due to no trees with bark");
                 return;
@@ -299,7 +341,7 @@ namespace BarkingUpTheRightTree
                             continue;
 
                         // ensure tree has been loaded and get required data
-                        if (!Api.GetRawTreeByName(treeName, out var treeId, out _, out _, out _, out _, out _, out _, out var shakingProducts, out _, out _, out _, out _, out _))
+                        if (!Api.GetRawTreeByName(treeName, out var rawTree))
                         {
                             this.Monitor.Log($"No tree with the name: {treeName} could be found. (Will not be planted on map)", LogLevel.Warn);
                             continue;
@@ -308,14 +350,19 @@ namespace BarkingUpTheRightTree
                         // place tree
                         var tileLocation = new Vector2(x, y);
                         if (!location.terrainFeatures.ContainsKey(tileLocation) && !location.objects.ContainsKey(tileLocation))
-                        {
-                            var tree = new Tree(treeId, 5);
-                            tree.modData[$"{this.ModManifest.UniqueID}/daysTillBarkHarvest"] = "0";
-                            tree.modData[$"{this.ModManifest.UniqueID}/daysTillNextShakeProducts"] = JsonConvert.SerializeObject(new int[shakingProducts.Count]);
-                            if (location.doesTileHaveProperty(x, y, "NonChoppable", "Back") != null)
-                                tree.modData[$"{this.ModManifest.UniqueID}/nonChoppable"] = string.Empty; // the value is unused as only the presence of the key is checked to see if the tree is choppable
-                            location.terrainFeatures.Add(tileLocation, tree);
-                        }
+                            location.terrainFeatures.Add(tileLocation, new Tree(rawTree.Id, 5));
+
+                        // reset tree data
+                        if (!location.terrainFeatures.TryGetValue(tileLocation, out var terrainFeature))
+                            continue;
+
+                        if (!(terrainFeature is Tree tree))
+                            continue;
+
+                        tree.modData[$"{this.ModManifest.UniqueID}/daysTillBarkHarvest"] = "0";
+                        tree.modData[$"{this.ModManifest.UniqueID}/daysTillNextShakeProducts"] = JsonConvert.SerializeObject(new int[rawTree.Data.ShakingProducts.Count]);
+                        if (location.doesTileHaveProperty(x, y, "NonChoppable", "Back") != null)
+                            tree.modData[$"{this.ModManifest.UniqueID}/nonChoppable"] = string.Empty; // the value is unused as only the presence of the key is checked to see if the tree is choppable
                     }
         }
 
@@ -326,7 +373,7 @@ namespace BarkingUpTheRightTree
             foreach (var location in Game1.locations)
                 foreach (var terrainFeature in location.terrainFeatures.Values)
                 {
-                    if (!(terrainFeature is Tree tree) || tree.treeType < 20)
+                    if (!(terrainFeature is Tree tree) || tree.treeType < ModEntry.CustomTreesStartId)
                         continue;
 
                     // save the current id and change the id to be a default tree (this is so if the mod is uninstalled it doesn't ruin the save)
@@ -366,7 +413,7 @@ namespace BarkingUpTheRightTree
                         int.TryParse(tree.modData[$"{this.ModManifest.UniqueID}/treeId"], out var customId);
 
                         // ensure a tree with this id exists
-                        if (!Api.GetTreeById(customId, out _, out _, out _, out _, out _, out _, out _, out _, out _, out _, out _, out _, out _))
+                        if (!Api.GetTreeById(customId, out _))
                         {
                             // get tree name from id mapping file
                             var name = "[Unknown]";
@@ -537,13 +584,13 @@ namespace BarkingUpTheRightTree
                         var treeData = contentPack.ReadJsonFile<ParsedCustomTree>(Path.Combine(treePath.Name, "content.json"));
 
                         // create tuples
-                        var tappedProduct = (treeData.TappedProduct?.DaysBetweenProduce ?? 0, treeData.TappedProduct?.Product, treeData.TappedProduct?.Amount ?? 0);
-                        var barkProduct = (treeData.BarkProduct?.DaysBetweenProduce ?? 0, treeData.BarkProduct?.Product, treeData.BarkProduct?.Amount ?? 0);
+                        var tappedProduct = (treeData.TappedProduct?.DaysBetweenProduce ?? 0, treeData.TappedProduct?.ProductId, treeData.TappedProduct?.Amount ?? 0);
+                        var barkProduct = (treeData.BarkProduct?.DaysBetweenProduce ?? 0, treeData.BarkProduct?.ProductId, treeData.BarkProduct?.Amount ?? 0);
                         var shakingProducts = new List<(int DaysBetweenProduce, string Product, int Amount, string[] Seasons)>();
                         foreach (var shakingProduct in treeData.ShakingProducts)
-                            shakingProducts.Add((shakingProduct.DaysBetweenProduce, shakingProduct.Product, shakingProduct.Amount, shakingProduct.Seasons));
+                            shakingProducts.Add((shakingProduct.DaysBetweenProduce, shakingProduct.ProductId, shakingProduct.Amount, shakingProduct.Seasons));
 
-                        Api.AddTree($"{contentPack.Manifest.UniqueID}.{treeData.Name}", treeTexture, tappedProduct, treeData.Wood, treeData.DropsSap, treeData.Seed, treeData.RequiredToolLevel, shakingProducts, treeData.IncludeIfModIsPresent, treeData.ExcludeIfModIsPresent, barkProduct, contentPack.Manifest.Name, treeData.UnfertilisedGrowthChance, treeData.FertilisedGrowthChance);
+                        Api.AddTree($"{contentPack.Manifest.UniqueID}.{treeData.Name}", treeTexture, tappedProduct, treeData.WoodId, treeData.DropsSap, treeData.SeedId, treeData.RequiredToolLevel, treeData.IsStumpInWinter, shakingProducts, treeData.IncludeIfModIsPresent, treeData.ExcludeIfModIsPresent, barkProduct, contentPack.Manifest.Name, treeData.UnfertilisedGrowthChance, treeData.FertilisedGrowthChance);
                     }
                 }
                 catch (Exception ex)

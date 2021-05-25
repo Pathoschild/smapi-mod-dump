@@ -1,5 +1,6 @@
-url:
-   https://github.com/miketweaver/DailyNews.git
+urls:
+   web: https://github.com/miketweaver/DailyNews
+   Git: https://github.com/miketweaver/DailyNews.git
 
 mods:
    Daily News

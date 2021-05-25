@@ -1,5 +1,6 @@
-url:
-   https://github.com/taggartaa/AutoAnimalDoors.git
+urls:
+   web: https://github.com/taggartaa/AutoAnimalDoors
+   Git: https://github.com/taggartaa/AutoAnimalDoors.git
 
 mods:
    Auto Animal Doors

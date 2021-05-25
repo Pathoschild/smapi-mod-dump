@@ -1,5 +1,6 @@
-url:
-   https://github.com/yoshimax2/Befriend-Marlon-and-Gunther.git
+urls:
+   web: https://github.com/yoshimax2/Befriend-Marlon-and-Gunther
+   Git: https://github.com/yoshimax2/Befriend-Marlon-and-Gunther.git
 
 mods:
    Befriend Marlon and Gunther

@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/BiggerCraftables.git
+urls:
+   web: https://github.com/spacechase0/BiggerCraftables
+   Git: https://github.com/spacechase0/BiggerCraftables.git
 
 mods:
    Bigger Craftables

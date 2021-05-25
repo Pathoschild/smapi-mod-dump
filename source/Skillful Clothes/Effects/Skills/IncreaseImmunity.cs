@@ -29,6 +29,6 @@ namespace SkillfulClothes.Effects.Skills
 
         protected override EffectIcon Icon => EffectIcon.Immunity;
 
-        protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.immunity += amount;
+        protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.immunity = Math.Max(0, farmer.immunity + amount);
     }
 }

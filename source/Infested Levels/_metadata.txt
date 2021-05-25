@@ -1,5 +1,6 @@
-url:
-   https://github.com/benrpatterson/InfestedLevels.git
+urls:
+   web: https://github.com/benrpatterson/InfestedLevels
+   Git: https://github.com/benrpatterson/InfestedLevels.git
 
 mods:
    Infested Levels

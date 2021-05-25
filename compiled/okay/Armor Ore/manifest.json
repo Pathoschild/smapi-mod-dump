@@ -1,0 +1,10 @@
+﻿{
+  "Name": "ArmorOre",
+  "Author": "GMFF",
+  "Version": "1.0",
+  "Description": "This mod is do ore for armor.",
+  "UniqueID": "GMFF.ArmorOre",
+  "EntryDll": "ArmorOre.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

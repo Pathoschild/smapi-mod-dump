@@ -45,8 +45,10 @@ namespace FarmTypeManager
                         continue; //skip to the next object
                     }
 
-                    if (saved.DaysUntilExpire.HasValue //if this saved object has an expiration setting
-                        && saved.MapName.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase)) //AND if this saved object was in a mine level (i.e. temporary location)
+                    //if this saved object has an expiration setting, AND the target map is a known temporary location
+                    if (saved.DaysUntilExpire.HasValue
+                        && (saved.MapName.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase) //mine level
+                        || saved.MapName.StartsWith("VolcanoDungeon", StringComparison.OrdinalIgnoreCase))) //volcano level
                     {
                         saved.DaysUntilExpire = 1; //force this object to expire below
                     }

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ophaneom/Let-Me-Rest.git
+urls:
+   web: https://github.com/Ophaneom/Let-Me-Rest
+   Git: https://github.com/Ophaneom/Let-Me-Rest.git
 
 mods:
    Let Me Rest!

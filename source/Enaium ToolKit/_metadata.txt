@@ -1,5 +1,6 @@
-url:
-   https://github.com/Enaium-StardewValleyMods/EnaiumToolKit.git
+urls:
+   web: https://github.com/Enaium-StardewValleyMods/EnaiumToolKit
+   Git: https://github.com/Enaium-StardewValleyMods/EnaiumToolKit.git
 
 mods:
    Enaium ToolKit

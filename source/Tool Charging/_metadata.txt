@@ -1,5 +1,6 @@
-url:
-   https://github.com/mralbobo/stardew-tool-charging.git
+urls:
+   web: https://github.com/mralbobo/stardew-tool-charging
+   Git: https://github.com/mralbobo/stardew-tool-charging.git
 
 mods:
    Tool Charging

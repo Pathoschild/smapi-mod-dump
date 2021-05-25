@@ -36,8 +36,8 @@ namespace FarmTypeManager
                 List<Tuple<Vector2, Vector2>> vectorPairs = new List<Tuple<Vector2, Vector2>>(); //pairs of x,y coordinates representing areas on the map (to be scanned for existing tiles)
 
                 //parse the "raw" string representing two coordinates into actual numbers, populating "vectorPairs"
-                string[] xyxy = vectorString.Split(new char[] { ',', '/', ';' }); //split the string into separate strings based on various delimiter symbols
-                if (xyxy.Length != 4) //if "xyxy" didn't split into the right number of strings, it's probably formatted poorly
+                string[] xyxy = vectorString?.Split(new char[] { ',', '/', ';' }); //split the string into separate strings based on various delimiter symbols
+                if (xyxy?.Length != 4) //if "xyxy" didn't split into the right number of strings, it's probably formatted poorly
                 {
                     Monitor.Log($"Issue: This include/exclude area for the \"{location.Name}\" map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
                 }

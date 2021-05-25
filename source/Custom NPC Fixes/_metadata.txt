@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/CustomNPCFixes.git
+urls:
+   web: https://github.com/spacechase0/CustomNPCFixes
+   Git: https://github.com/spacechase0/CustomNPCFixes.git
 
 mods:
    Custom NPC Fixes

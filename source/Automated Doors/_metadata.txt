@@ -1,5 +1,6 @@
-url:
-   https://github.com/azah/AutomatedDoors.git
+urls:
+   web: https://github.com/azah/AutomatedDoors
+   Git: https://github.com/azah/AutomatedDoors.git
 
 mods:
    Automated Doors

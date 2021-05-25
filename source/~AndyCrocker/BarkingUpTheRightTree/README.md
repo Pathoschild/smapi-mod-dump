@@ -51,6 +51,7 @@ for queries and analysis.**
 	    "DropsSap": false,
         "Seed": "id",
         "RequiredToolLevel": 2,
+        "IsStumpInWinter": true,
         "UnfertilisedGrowthChance": 0.2,
         "FertilisedGrowthChance": 1,
         "ShakingProducts": [
@@ -83,6 +84,7 @@ for queries and analysis.**
 * **Wood**: This is the product that the tree drops when it gets cut down.
 * **Seed**: This is the item to plant for the tree to grow.
 * **RequiredToolLevel**: The required tool level to harvest this the tree (this also applies to all growth stages except the initial seed stage).
+* **IsStumpInWinter**: Whether the tree turns into a stump in winter, like the mushroom tree.
 * **UnfertilisedGrowthChance**: The 0 => 1 chance that the tree has to grow a stage at the beginning of each day when it's not fertilised.
 * **FertilisedGrowthChance**: The 0 => 1 chance that the tree has to grow a stage at the beginning of each day when it's fertilised.
 * **ShakingProducts**: This is a list of products that drop when the tree is shaken

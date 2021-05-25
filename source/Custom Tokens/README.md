@@ -31,7 +31,14 @@ Custom Tokens is a mod that provides some basic additional tokens for Content Pa
 - Tokens used must be prefixed with the mod's unique ID e.g TheMightyAmondee.CustomTokens/MineLevel
 - Many tokens require an update rate faster than CP's default as they can change throughout the day
 
-### Getting old save files up to speed:
+### Limitations:
+Previous quest determination was removed in version 1.4.0 due to issues (unreliable, buggy and incorrectly added cancelled quests as complete). Therefore, only newly completed quests are recorded in the token. Version 1.4.0 uses Harmony for more reliable quest recording, just FYI.
+
+Necessary token values are now stored in the save file, data files can be deleted as of version 1.4.0
+
+The mod works best with new save files due to these limitations, while it will still work fine with old save files, some tokens will be missing values.
+
+### Getting old save files up to speed (Version 1.3.1 and below):
 Old or current save files require some additional set-up. This isn't strictly necessary but may result in incorrect token values.
 
 A per-save JSON file will be generated after the day is started for each save so the mod can track values not tracked by the game. This is found in the data folder located in the mod folder. These values can be adjusted as needed as they will have an initial value of 0, which may not be accurate for older saves. Ensure the old tracker value is also updated to the same value as the current tracker value when changing values

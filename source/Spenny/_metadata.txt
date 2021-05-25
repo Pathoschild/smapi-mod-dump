@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/Spenny.git
+urls:
+   web: https://github.com/spacechase0/Spenny
+   Git: https://github.com/spacechase0/Spenny.git
 
 mods:
    Spenny

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Dem1se/CustomReminders.git
+urls:
+   web: https://github.com/Dem1se/CustomReminders
+   Git: https://github.com/Dem1se/CustomReminders.git
 
 mods:
    Custom Reminders

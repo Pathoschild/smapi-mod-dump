@@ -1,5 +1,6 @@
-url:
-   https://github.com/phrasefable/StardewMods.git
+urls:
+   web: https://github.com/phrasefable/StardewMods
+   Git: https://github.com/phrasefable/StardewMods.git
 
 mods:
    Aggressive Acorns

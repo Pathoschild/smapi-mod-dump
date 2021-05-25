@@ -62,6 +62,9 @@ namespace FarmAnimalVarietyRedux
         /// <summary>Whether the content packs have been loaded.</summary>
         public bool ContentPacksLoaded { get; private set; }
 
+        /// <summary>Contains all the animals that the current <see cref="CustomPurchaseAnimalsMenu"/> should contain.</summary>
+        internal List<StardewValley.Object> AnimalsInPurchaseMenu { get; set; } = new List<StardewValley.Object>();
+
         /// <summary>Contains all animals that were parsed from the save.</summary>
         /// <remarks>The reason this is done is because when the animals need to be retreived to convert them to custom animals, the farm buildings aren't accessible from the <see cref="GameLocation"/> yet, so the references are stored from when they're created to be changed.</remarks>
         internal List<FarmAnimal> ParsedAnimals { get; private set; } = new List<FarmAnimal>();
@@ -117,6 +120,7 @@ namespace FarmAnimalVarietyRedux
             CustomIncubatorRecipes.Clear();
 
             LoadDefaultAnimals();
+            LoadDefaultRecipes();
 
             LoadJAEarly(); // loading Json Assets early is only required on connecting clients. Game1.IsClient can't be used as that hasn't been set yet. even though this is ran on the host, it shouldn't have any affect
 
@@ -253,7 +257,7 @@ namespace FarmAnimalVarietyRedux
             if (e.NewMenu is AnimalQueryMenu animalQueryMenu)
                 Game1.activeClickableMenu = new CustomAnimalQueryMenu((FarmAnimal)typeof(AnimalQueryMenu).GetField("animal", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(animalQueryMenu));
             else if (e.NewMenu is PurchaseAnimalsMenu)
-                Game1.activeClickableMenu = new CustomPurchaseAnimalsMenu(Utility.getPurchaseAnimalStock());
+                Game1.activeClickableMenu = new CustomPurchaseAnimalsMenu(AnimalsInPurchaseMenu);
         }
 
         /// <summary>Invoked when the player uses a tool.</summary>
@@ -384,6 +388,16 @@ namespace FarmAnimalVarietyRedux
             );
 
             harmony.Patch(
+                original: AccessTools.Constructor(typeof(PurchaseAnimalsMenu), new[] { typeof(List<StardewValley.Object>) }),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(PurchaseAnimalsMenuPatch), nameof(PurchaseAnimalsMenuPatch.ConstructorPrefix)))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(PurchaseAnimalsMenu), nameof(PurchaseAnimalsMenu.draw), new[] { typeof(SpriteBatch) }),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(PurchaseAnimalsMenuPatch), nameof(PurchaseAnimalsMenuPatch.DrawPrefix)))
+            );
+
+            harmony.Patch(
                 original: typeof(FarmAnimal).GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, new Type[0], null), // need manual reflection here as Harmony 1.2.0.1 doesn't have a way to differentiate between instance and static constuctors,
                 prefix: new HarmonyMethod(AccessTools.Method(typeof(FarmAnimalPatch), nameof(FarmAnimalPatch.ConstructorPrefix)))
             );
@@ -432,6 +446,11 @@ namespace FarmAnimalVarietyRedux
             harmony.Patch(
                 original: AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.dayUpdate)),
                 prefix: new HarmonyMethod(AccessTools.Method(typeof(FarmAnimalPatch), nameof(FarmAnimalPatch.DayUpdatePrefix)))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.Eat)),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(FarmAnimalPatch), nameof(FarmAnimalPatch.EatPrefix)))
             );
 
             harmony.Patch(
@@ -646,12 +665,6 @@ namespace FarmAnimalVarietyRedux
                     }
                 }
 
-                if (animalData.Subtypes.Count == 0)
-                {
-                    this.Monitor.Log($"No subtypes for the animal: {animalName} were loaded, skipping", LogLevel.Error);
-                    continue;
-                }
-
                 // load subtype assets
                 for (int i = 0; i < animalData.Subtypes.Count; i++)
                 {
@@ -665,6 +678,7 @@ namespace FarmAnimalVarietyRedux
                         if (!AreAssetsValid(contentPack, animalName, subtype.Name))
                         {
                             this.Monitor.Log($"Sprite sheets for subtype: {subtype.Name}, animal: {internalAnimalName} aren't valid, skipping", LogLevel.Error);
+                            animalData.Subtypes.RemoveAt(i--);
                             continue;
                         }
                     }
@@ -693,6 +707,13 @@ namespace FarmAnimalVarietyRedux
 
                     RegisterAssets(animalUniqueModId, subtypeUniqueModId, contentPack, animalName, subtype.Name);
                     RegisterAsset(Path.Combine(animalName, "shopdisplay.png"), $"{animalUniqueModId}.{animalName}", contentPack);
+                }
+
+                // ensure there are valid subtypes
+                if (animalData.Subtypes.Count == 0)
+                {
+                    this.Monitor.Log($"No subtypes for the animal: {animalName} were loaded, skipping", LogLevel.Error);
+                    continue;
                 }
 
                 if (!animalsByAction.ContainsKey(animalData.Action))
@@ -799,20 +820,20 @@ namespace FarmAnimalVarietyRedux
             // TODO: ideally make this automatic, however, due to how hardcoded a lot of animal logic is this may not be feasible
             var animalSubtypes = new List<ParsedCustomAnimalType>
             {
-                new ParsedCustomAnimalType(Action.Add, "", "White Chicken", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "176", upgradedProductId: "174") }, 3, "cluck", 16, 16, 16, 16, "641", 4, 35, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Brown Chicken", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "180", upgradedProductId: "182") }, 3, "cluck", 16, 16, 16, 16, "641", 7, 20, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Blue Chicken", Game1.player.eventsSeen.Contains(3900074), false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "176", upgradedProductId: "174") }, 3, "cluck", 16, 16, 16, 16, "641", 7, 20, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Void Chicken", false, false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "305") }, 3, "cluck", 16, 16, 16, 16, "641", 4, 20, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Golden Chicken", false, false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "928") }, 3, "cluck", 16, 16, 16, 16, "641", 7, 20, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Duck", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "442", upgradedProductId: "444", upgradedProductIsRare: true, daysToProduce: 2) }, 5, "Duck", 16, 16, 16, 16, "642", 3, 40, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Rabbit", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "440", upgradedProductId: "446", upgradedProductIsRare: true, daysToProduce: 4) }, 6, "rabbit", 16, 16, 16, 16, "643", 10, 25),
-                new ParsedCustomAnimalType(Action.Add, "", "Dinosaur", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "107", daysToProduce: 7) }, 0, null, 16, 16, 16, 16, "644", 1, 40, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "White Cow", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "184", upgradedProductId: "186", harvestType: HarvestType.Tool, toolName: "milk pail", toolHarvestSound: "Milking") }, 5, "cow", 32, 32, 32, 32, "639", 15, 25, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Brown Cow", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "184", upgradedProductId: "186", harvestType: HarvestType.Tool, toolName: "milk pail", toolHarvestSound: "Milking") }, 5, "cow", 32, 32, 32, 32, "639", 15, 25, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Goat", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "436", upgradedProductId: "438", harvestType: HarvestType.Tool, toolName: "milk pail", toolHarvestSound: "Milking") }, 5, "goat", 32, 32, 32, 32, "644", 10, 25, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Pig", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "430", harvestType: HarvestType.Forage) }, 10, "pig", 32, 32, 32, 32, "640", 20, 25),
-                new ParsedCustomAnimalType(Action.Add, "", "Sheep", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "440", daysToProduce: 3, harvestType: HarvestType.Tool, toolName: "shears", toolHarvestSound: "scissors", produceFasterWithShepherd: true) }, 4, "sheep", 32, 32, 32, 32, "644", 15, 25, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Ostrich", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "289", daysToProduce: 7) }, 7, "Ostrich", 32, 32, 32, 32, "644", 15, 25, isMale: false)
+                new ParsedCustomAnimalType(Action.Add, "", "White Chicken", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "176", upgradedProductId: "174") }, 3, "cluck", 16, 16, 16, 16, "641", 4, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Brown Chicken", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "180", upgradedProductId: "182") }, 3, "cluck", 16, 16, 16, 16, "641", 7, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Blue Chicken", Game1.player.eventsSeen.Contains(3900074), false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "176", upgradedProductId: "174") }, 3, "cluck", 16, 16, 16, 16, "641", 7, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Void Chicken", false, false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "305") }, 3, "cluck", 16, 16, 16, 16, "641", 4, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Golden Chicken", false, false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "928") }, 3, "cluck", 16, 16, 16, 16, "641", 7, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Duck", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "442", upgradedProductId: "444", upgradedProductIsRare: true, daysToProduce: 2) }, 5, "Duck", 16, 16, 16, 16, "642", 3, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Rabbit", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "440", upgradedProductId: "446", upgradedProductIsRare: true, daysToProduce: 4) }, 6, "rabbit", 16, 16, 16, 16, "643", 10),
+                new ParsedCustomAnimalType(Action.Add, "", "Dinosaur", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "107", daysToProduce: 7) }, 0, null, 16, 16, 16, 16, "644", 1, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "White Cow", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "184", upgradedProductId: "186", harvestType: HarvestType.Tool, toolName: "milk pail", toolHarvestSound: "Milking") }, 5, "cow", 32, 32, 32, 32, "639", 15, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Brown Cow", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "184", upgradedProductId: "186", harvestType: HarvestType.Tool, toolName: "milk pail", toolHarvestSound: "Milking") }, 5, "cow", 32, 32, 32, 32, "639", 15, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Goat", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "436", upgradedProductId: "438", harvestType: HarvestType.Tool, toolName: "milk pail", toolHarvestSound: "Milking") }, 5, "goat", 32, 32, 32, 32, "644", 10, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Pig", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "430", harvestType: HarvestType.Forage) }, 10, "pig", 32, 32, 32, 32, "640", 20),
+                new ParsedCustomAnimalType(Action.Add, "", "Sheep", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "440", daysToProduce: 3, harvestType: HarvestType.Tool, toolName: "shears", toolHarvestSound: "scissors", produceFasterWithShepherd: true) }, 4, "sheep", 32, 32, 32, 32, "644", 15, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Ostrich", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "289", daysToProduce: 7) }, 7, "Ostrich", 32, 32, 32, 32, "644", 15, isMale: false)
             };
 
             var animals = new List<ParsedCustomAnimal>
@@ -868,6 +889,20 @@ namespace FarmAnimalVarietyRedux
                 AssetManager.RegisterAsset(internalAnimalName, Path.Combine("LooseSprites", "Cursors"), animalShopIconRectangles[animal.Name]);
                 Api.AddAnimal("game", animal, null);
             }
+        }
+
+        /// <summary>Loads all the default incubator recipes.</summary>
+        private void LoadDefaultRecipes()
+        {
+            ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "176", 1, 9000, "game.White Chicken")); // white egg
+            ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "174", 1, 9000, "game.White Chicken")); // large white egg
+            ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "180", 1, 9000, "game.Brown Chicken")); // brown egg
+            ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "182", 1, 9000, "game.Brown Chicken")); // large brown egg
+            ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "305", 1, 9000, "game.Void Chicken")); // void egg
+            ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "928", 1, 9000, "game.Golden Chicken")); // golden egg
+            ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "442", 1, 9000, "game.Duck")); // duck egg
+            ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "107", 1, 18000, "game.Dinosaur")); // dinosaur egg
+            ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Ostrich, "289", 1, 15000, "game.Ostrich")); // ostrich egg
         }
     }
 }

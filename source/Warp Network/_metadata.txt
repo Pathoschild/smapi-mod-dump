@@ -1,5 +1,6 @@
-url:
-   https://github.com/tlitookilakin/WarpNetwork.git
+urls:
+   web: https://github.com/tlitookilakin/WarpNetwork
+   Git: https://github.com/tlitookilakin/WarpNetwork.git
 
 mods:
    Warp Network

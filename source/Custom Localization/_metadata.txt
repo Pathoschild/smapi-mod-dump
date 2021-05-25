@@ -1,5 +1,6 @@
-url:
-   https://github.com/ZaneYork/SDV_CustomLocalization.git
+urls:
+   web: https://github.com/ZaneYork/SDV_CustomLocalization
+   Git: https://github.com/ZaneYork/SDV_CustomLocalization.git
 
 mods:
    Custom Localization

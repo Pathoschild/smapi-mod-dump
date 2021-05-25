@@ -1,5 +1,6 @@
-url:
-   https://github.com/jamespfluger/Stardew-TimeOfThePrairieKing.git
+urls:
+   web: https://github.com/jamespfluger/Stardew-TimeOfThePrairieKing
+   Git: https://github.com/jamespfluger/Stardew-TimeOfThePrairieKing.git
 
 mods:
    Time of the Prairie King

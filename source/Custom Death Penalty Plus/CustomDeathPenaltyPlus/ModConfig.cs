@@ -40,6 +40,8 @@ namespace CustomDeathPenaltyPlus
             public bool WakeupNextDayinClinic { get; set; } = false;
             public int HarveyFriendshipChange { get; set; } = 0;
             public int MaruFriendshipChange { get; set; } = 0;
+            public bool MoreRealisticWarps { get; set; } = false;
+            public bool DebuffonDeath { get; set; } = false;
         }
     }
 }

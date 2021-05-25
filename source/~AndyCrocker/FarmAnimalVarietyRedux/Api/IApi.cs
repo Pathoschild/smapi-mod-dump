@@ -21,6 +21,17 @@ namespace FarmAnimalVarietyRedux
         /*********
         ** Public Methods
         *********/
+        /// <summary>Gets whether the specified name is an internal name.</summary>
+        /// <param name="name">The name to determine the type of.</param>
+        /// <returns><see langword="true"/>, if the name is an internal name; otherwise, <see langword="false"/>.</returns>
+        public bool IsInternalName(string name);
+
+        /// <summary>Gets the internal name of an animal from it's display name.</summary>
+        /// <param name="name">The display name to get the internal name of.</param>
+        /// <returns><paramref name="name"/>, if it's already an internal name, the internal name of <paramref name="name"/> if one could be found; otherwise, <see langword="null"/>.</returns>
+        /// <remarks>Note: this should be avoided if at all possible, this will break if there are multiple animals with the same display name.</remarks>
+        public string GetInternalName(string name);
+
         /// <summary>Adds tools to a list to hide the error message when using said tool on an animal.</summary>
         /// <param name="toolNames">The names of the tools </param>
         public void SkipErrorMessagesForTools(params string[] toolNames);

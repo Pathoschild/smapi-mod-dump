@@ -1,5 +1,6 @@
-url:
-   https://github.com/MissCoriel/Sit-n-Relax.git
+urls:
+   web: https://github.com/MissCoriel/Sit-n-Relax
+   Git: https://github.com/MissCoriel/Sit-n-Relax.git
 
 mods:
    Sit n' Relax: Rest Your Butt

@@ -1,5 +1,6 @@
-url:
-   https://github.com/M3ales/RelationshipTooltips.git
+urls:
+   web: https://github.com/M3ales/RelationshipTooltips
+   Git: https://github.com/M3ales/RelationshipTooltips.git
 
 mods:
    Relationship Tooltips

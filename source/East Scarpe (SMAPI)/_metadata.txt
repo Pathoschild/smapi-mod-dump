@@ -1,5 +1,6 @@
-url:
-   https://gitlab.com/kdau/eastscarpe.git
+urls:
+   web: https://gitlab.com/kdau/eastscarpe
+   Git: https://gitlab.com/kdau/eastscarpe.git
 
 mods:
    East Scarpe (SMAPI)

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Husky110/ChillInYourFarmHouse.git
+urls:
+   web: https://github.com/Husky110/ChillInYourFarmHouse
+   Git: https://github.com/Husky110/ChillInYourFarmHouse.git
 
 mods:
    Chill in Your Farmhouse

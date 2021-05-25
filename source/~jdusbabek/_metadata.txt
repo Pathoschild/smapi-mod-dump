@@ -1,5 +1,6 @@
-url:
-   https://github.com/jdusbabek/stardewvalley.git
+urls:
+   web: https://github.com/jdusbabek/stardewvalley
+   Git: https://github.com/jdusbabek/stardewvalley.git
 
 mods:
    Animal Sitter

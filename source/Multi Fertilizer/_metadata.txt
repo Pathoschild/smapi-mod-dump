@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/MultiFertilizer.git
+urls:
+   web: https://github.com/spacechase0/MultiFertilizer
+   Git: https://github.com/spacechase0/MultiFertilizer.git
 
 mods:
    Multi Fertilizer

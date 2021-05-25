@@ -1,5 +1,6 @@
-url:
-   https://github.com/Xebeth/StardewValley-SpeedMod.git
+urls:
+   web: https://github.com/Xebeth/StardewValley-SpeedMod
+   Git: https://github.com/Xebeth/StardewValley-SpeedMod.git
 
 mods:
    Speed Mod

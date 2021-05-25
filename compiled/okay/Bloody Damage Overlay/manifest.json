@@ -1,0 +1,13 @@
+{
+  "Name": "Damage Overlay",
+  "Author": "pepoluan",
+  "Version": "0.1.0",
+  "Description": "Damage overlay on low health",
+  "UniqueID": "pepoluan.DamageOverlay",
+  "EntryDll": "DamageOverlay.dll",
+  "UpdateKeys": [],
+  "Meta:Changelog": {
+    "0.0.1": "Proof of Concept",
+    "0.1.0": "Prototype"
+  }
+}

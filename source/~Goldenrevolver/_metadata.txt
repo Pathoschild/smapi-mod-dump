@@ -1,5 +1,6 @@
-url:
-   https://github.com/Goldenrevolver/Stardew-Valley-Mods.git
+urls:
+   web: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+   Git: https://github.com/Goldenrevolver/Stardew-Valley-Mods.git
 
 mods:
    A Tapper's Dream

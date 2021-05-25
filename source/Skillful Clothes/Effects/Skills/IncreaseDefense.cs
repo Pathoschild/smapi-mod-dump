@@ -23,7 +23,7 @@ namespace SkillfulClothes.Effects.Skills
 
         public override string SkillName => "Defense";        
 
-        protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.resilience += amount;
+        protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.resilience = Math.Max(0, farmer.resilience + amount);
 
         public IncreaseDefense(int amount)
             : base(amount)

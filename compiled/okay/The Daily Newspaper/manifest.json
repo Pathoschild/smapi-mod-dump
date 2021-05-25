@@ -1,0 +1,10 @@
+{
+  "Name": "The Daily Paper",
+  "Author": "Neat",
+  "Version": "1.0.0",
+  "Description": "Delivers a daily newspaper to the users front door containing information typically found on the TV.",
+  "UniqueID": "neat.newspaper",
+  "EntryDll": "Newspaper.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

@@ -1,5 +1,6 @@
-url:
-   https://github.com/robbiev/SilentScarecrows.git
+urls:
+   web: https://github.com/robbiev/SilentScarecrows
+   Git: https://github.com/robbiev/SilentScarecrows.git
 
 mods:
    Silent Scarecrows

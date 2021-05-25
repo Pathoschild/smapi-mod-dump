@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/ExperienceBars.git
+urls:
+   web: https://github.com/spacechase0/ExperienceBars
+   Git: https://github.com/spacechase0/ExperienceBars.git
 
 mods:
    Experience Bars

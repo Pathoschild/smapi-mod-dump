@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/JunimosAcceptCash.git
+urls:
+   web: https://github.com/spacechase0/JunimosAcceptCash
+   Git: https://github.com/spacechase0/JunimosAcceptCash.git
 
 mods:
    Junimos Accept Cash

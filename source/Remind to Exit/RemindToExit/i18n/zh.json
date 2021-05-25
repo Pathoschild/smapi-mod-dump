@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://sourceforge.net/projects/sdvmod-remind-to-exit/
+**
+*************************************************/
+
+{
+  "config.hotkey.desc": "只有当 'Enabled' 为真时才会有效果",
+  "config.hotkeycustmsg.desc": "只有当 'Enabled' 为真时才会有效果",
+  "reminder.disabled": "退出提醒被禁用",
+  "reminder.enabled": "启用退出提醒",
+  "reminder.title": "提醒。",
+  "reminder.body-default": "正在提醒你退出游戏。",
+  "reminder-ui.custom-msg-label": "自定义提醒信息"
+}

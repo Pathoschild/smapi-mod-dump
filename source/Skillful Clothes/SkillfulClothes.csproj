@@ -50,12 +50,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClothingObserver.cs" />
+    <Compile Include="Effects\Buffs\ICustomBuff.cs" />
+    <Compile Include="Effects\Buffs\CustomBuff.cs" />
+    <Compile Include="Effects\Buffs\MaxHealthBuff.cs" />
+    <Compile Include="Effects\Buffs\MaxStaminaBuff.cs" />
     <Compile Include="Effects\SingleEffect.cs" />
     <Compile Include="Effects\EffectIcon.cs" />
     <Compile Include="Effects\Skills\IncreaseFishingBarByCaughtFish.cs" />
     <Compile Include="Effects\Skills\IncreaseSkillLevel.cs" />
+    <Compile Include="Effects\Special\GlowEffect.cs" />
     <Compile Include="Effects\Special\IncreasePopularity.cs" />
     <Compile Include="Effects\Special\MultiplyExperience.cs" />
+    <Compile Include="Effects\Special\OvernightHealthBuff.cs" />
+    <Compile Include="Effects\Special\OvernightStaminaBuff.cs" />
+    <Compile Include="Effects\RingEffect.cs" />
     <Compile Include="EquippedClothingObserver.cs" />
     <Compile Include="Effects\Attributes\ChangeAttributeMaxEffect.cs" />
     <Compile Include="Effects\EffectDescriptionLine.cs" />
@@ -68,15 +77,19 @@
     <Compile Include="Effects\Skills\IncreaseSpeed.cs" />
     <Compile Include="Effects\Skills\IncreaseImmunity.cs" />
     <Compile Include="Effects\Skills\IncreaseAttack.cs" />
-    <Compile Include="Effects\PredefinedEffects.cs" />
     <Compile Include="Effects\Attributes\AttributeRegenEffect.cs" />
     <Compile Include="EffectHelper.cs" />
     <Compile Include="Effects\Attributes\HealthRegen.cs" />
     <Compile Include="Effects\Attributes\StaminaRegen.cs" />
     <Compile Include="Effects\Special\AutoRevive.cs" />
-    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="ItemDefinitions.cs" />
+    <Compile Include="Patches\ClothingTextEditor.cs" />
+    <Compile Include="Patches\HarmonyPatches.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="SkillfulClothes.cs" />
+    <Compile Include="ModTextures.cs" />
+    <Compile Include="Types\EffectChangeReason.cs" />
+    <Compile Include="Types\ExtItemInfo.cs" />
+    <Compile Include="SkillfulClothesEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkillfulClothesConfig.cs" />
     <Compile Include="Types\ClothingDrawWrapper.cs" />
@@ -92,9 +105,13 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\loose_sprites.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <!-- do not leak local paths in pdb -->    
+    <!-- do not leak local paths in pdb -->
     <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
     <PathMap>$(AppOutputBase)=X:\$(MSBuildProjectName)\</PathMap>
   </PropertyGroup>

@@ -251,6 +251,11 @@ namespace Pathoschild.Stardew.TractorMod
                         if (tractor != null)
                             TractorManager.SetTractorInfo(tractor);
 
+                        // normalize ownership
+                        garage.owner.Value = 0;
+                        if (tractor != null)
+                            tractor.ownerId.Value = 0;
+
                         // apply textures
                         this.ApplyTextures(garage);
                         this.ApplyTextures(tractor);

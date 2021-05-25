@@ -1,5 +1,6 @@
-url:
-   https://github.com/iSkLz/DecraftingMod.git
+urls:
+   web: https://github.com/iSkLz/DecraftingMod
+   Git: https://github.com/iSkLz/DecraftingMod.git
 
 mods:
    Decrafting Mod

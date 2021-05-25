@@ -1,5 +1,6 @@
-url:
-   https://github.com/Floogen/JojaOnline.git
+urls:
+   web: https://github.com/Floogen/JojaOnline
+   Git: https://github.com/Floogen/JojaOnline.git
 
 mods:
    Joja Online

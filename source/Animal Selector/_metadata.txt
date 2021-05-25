@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/rikai/AnimalSelector
+   Git: https://github.com/rikai/AnimalSelector.git
+
+mods:
+   Animal Selector
+
+latest commit:
+   commit 4dfa9f7be841a15b659e14c90469a2ac22163105
+   Author: Richard Korman <winter.blood@gmail.com>
+   Date:   Mon May 17 21:41:02 2021 -0700
+   
+       v1.5.1 Fixes solution error, Added update keys to manifest.json
+   

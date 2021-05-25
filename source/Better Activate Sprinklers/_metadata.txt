@@ -1,5 +1,6 @@
-url:
-   https://github.com/yuri-moens/BetterActivateSprinklers.git
+urls:
+   web: https://github.com/yuri-moens/BetterActivateSprinklers
+   Git: https://github.com/yuri-moens/BetterActivateSprinklers.git
 
 mods:
    Better Activate Sprinklers

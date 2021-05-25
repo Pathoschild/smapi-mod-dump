@@ -19,7 +19,7 @@ namespace CustomTokens
     public class LocationTokens
     {
 
-        internal void UpdateLoactionTokens(IMonitor monitor, PerScreen<PlayerData> data)
+        internal void UpdateLocationTokens(IMonitor monitor, PerScreen<PlayerData> data)
         {
             // Get current location as a MineShaft
             var mineShaft = Game1.currentLocation as MineShaft;

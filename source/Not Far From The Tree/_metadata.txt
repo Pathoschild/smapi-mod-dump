@@ -1,5 +1,6 @@
-url:
-   https://github.com/GStefanowich/SDV-NFFTT.git
+urls:
+   web: https://github.com/GStefanowich/SDV-NFFTT
+   Git: https://github.com/GStefanowich/SDV-NFFTT.git
 
 mods:
    Not Far From The Tree

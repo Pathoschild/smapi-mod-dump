@@ -1,5 +1,6 @@
-url:
-   https://github.com/funny-snek/anticheat-and-servercode.git
+urls:
+   web: https://github.com/funny-snek/anticheat-and-servercode
+   Git: https://github.com/funny-snek/anticheat-and-servercode.git
 
 mods:
    Anti-Cheat Client

@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/WeaponReskinner.git
+urls:
+   web: https://github.com/spacechase0/WeaponReskinner
+   Git: https://github.com/spacechase0/WeaponReskinner.git
 
 mods:
    Weapon Reskinner

@@ -29,6 +29,23 @@ namespace FarmAnimalVarietyRedux
         ** Public Methods
         *********/
         /// <inheritdoc/>
+        public bool IsInternalName(string name) => name.Contains('.');
+
+        /// <inheritdoc/>
+        public string GetInternalName(string name)
+        {
+            if (IsInternalName(name))
+                return name;
+
+            // try to get an internal name
+            foreach (var customAnimal in ModEntry.Instance.CustomAnimals)
+                if (customAnimal.Name.ToLower() == name.ToLower())
+                    return customAnimal.InternalName;
+
+            return null;
+        }
+
+        /// <inheritdoc/>
         public void SkipErrorMessagesForTools(params string[] toolNames) => ModEntry.Instance.SkipErrorMessagesForTools.AddRange(toolNames);
 
         /// <inheritdoc/>

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Entoarox/StardewMods.git
+urls:
+   web: https://github.com/Entoarox/StardewMods
+   Git: https://github.com/Entoarox/StardewMods.git
 
 mods:
    Advanced Location Loader

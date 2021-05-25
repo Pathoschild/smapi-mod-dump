@@ -1,5 +1,6 @@
-url:
-   https://github.com/Floogen/CosmeticRings.git
+urls:
+   web: https://github.com/Floogen/CosmeticRings
+   Git: https://github.com/Floogen/CosmeticRings.git
 
 mods:
    Cosmetic Rings

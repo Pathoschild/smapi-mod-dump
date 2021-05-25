@@ -97,6 +97,7 @@
     <Compile Include="Patches\BuildableGameLocationPatch.cs" />
     <Compile Include="Patches\MilkPailPatch.cs" />
     <Compile Include="Patches\ObjectPatch.cs" />
+    <Compile Include="Patches\PurchaseAnimalsMenuPatch.cs" />
     <Compile Include="Patches\ShearsPatch.cs" />
     <Compile Include="Patches\UtilityPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

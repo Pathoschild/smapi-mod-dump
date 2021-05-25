@@ -1,5 +1,6 @@
-url:
-   https://github.com/KirbyLink/BeeHouseFix.git
+urls:
+   web: https://github.com/KirbyLink/BeeHouseFix
+   Git: https://github.com/KirbyLink/BeeHouseFix.git
 
 mods:
    Bee House Flower Range Fix

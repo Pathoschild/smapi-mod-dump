@@ -1,5 +1,6 @@
-url:
-   https://github.com/gr3ger/Stardew_JJB.git
+urls:
+   web: https://github.com/gr3ger/Stardew_JJB
+   Git: https://github.com/gr3ger/Stardew_JJB.git
 
 mods:
    Jiggly Junimo Bundles

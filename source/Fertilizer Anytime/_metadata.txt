@@ -1,5 +1,6 @@
-url:
-   https://github.com/stoobinator/Stardew-Valley-Fertilizer-Anytime.git
+urls:
+   web: https://github.com/stoobinator/Stardew-Valley-Fertilizer-Anytime
+   Git: https://github.com/stoobinator/Stardew-Valley-Fertilizer-Anytime.git
 
 mods:
    Fertilizer Anytime

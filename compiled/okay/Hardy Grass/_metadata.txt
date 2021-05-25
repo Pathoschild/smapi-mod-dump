@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8772
+IDs: DiscipleOfEris.HardyGrass
+update keys: Nexus:8772, GitHub:DiscipleOfEris/HardyGrass

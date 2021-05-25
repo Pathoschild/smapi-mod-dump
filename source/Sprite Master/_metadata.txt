@@ -1,5 +1,6 @@
-url:
-   https://github.com/ameisen/SV-SpriteMaster.git
+urls:
+   web: https://github.com/ameisen/SV-SpriteMaster
+   Git: https://github.com/ameisen/SV-SpriteMaster.git
 
 mods:
    Sprite Master

@@ -25,6 +25,8 @@ namespace FarmTypeManager
         /// <summary>Tasks performed before the game saves.</summary>
         private void GameLoop_Saving(object sender, SavingEventArgs e)
         {
+            Utility.GameIsSaving = true;
+
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
             if (Utility.DayIsEnding || SaveAnywhereIsSaving) { return; } //if a specialized save process is already handling this, don't do anything
 
@@ -36,7 +38,8 @@ namespace FarmTypeManager
         {
             Utility.Monitor.Log($"Mid-day save event started. Saving and removing custom objects/data.", LogLevel.Trace);
 
-            Utility.MonsterTracker.Clear(); //clear any tracked monster data (note: this should happen *before* handling monster expiration/removal)
+            Utility.TimedSpawns.Clear(); //clear any remaining spawns for the day (avoiding a known issue with mid-save/overnight time changes)
+            Utility.MonsterTracker.Clear(); //clear any tracked monster data (preventing loot drops when monsters are removed by this process)
 
             if (Utility.FarmDataList == null) { return; } //if the farm data list is blank, do nothing
 

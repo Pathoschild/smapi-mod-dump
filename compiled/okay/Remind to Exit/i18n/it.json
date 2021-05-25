@@ -1,0 +1,9 @@
+{
+  "config.hotkey.desc": "Avrà effetto solo se 'Enabled' è vero",
+  "config.hotkeycustmsg.desc": "Avrà effetto solo se 'Enabled' è vero",
+  "reminder.disabled": "Il promemoria di uscita è disabilitato",
+  "reminder.enabled": "Il promemoria di uscita è abilitato",
+  "reminder.title": "Promemoria:",
+  "reminder.body-default": "Ti viene ricordato di uscire dal gioco.",
+  "reminder-ui.custom-msg-label": "Messaggio di promemoria personalizzato"
+}

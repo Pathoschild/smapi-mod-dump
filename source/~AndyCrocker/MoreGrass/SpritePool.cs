@@ -38,8 +38,11 @@ namespace MoreGrass
         /// <summary>Gets the number of sprites in the sprite pool.</summary>
         public int Count => Sprites.Count;
 
+        /// <summary>The default grass sprites in the sprite pool.</summary>
+        public List<Texture2D> DefaultSprites => new List<Texture2D>(DefaultGrassSprites);
+
         /// <summary>The currently active sprites in the sprite pool.</summary>
-        public List<Texture2D> Sprites => (IncludeDefaultGrass) ? AllGrassSprites : CustomGrassSprites;
+        public List<Texture2D> Sprites => (IncludeDefaultGrass) ? AllGrassSprites : new List<Texture2D>(CustomGrassSprites);
 
         /// <summary>Whether the default sprites should be including in the resulting sprite collection.</summary>
         public bool IncludeDefaultGrass
@@ -75,7 +78,7 @@ namespace MoreGrass
         }
 
         /// <summary>Gets a random sprite from the sprite pool.</summary>
-        /// <param name="random">The <see cref="System.Random"/> object to use (if <see langword="null"/> is specified, then the <see cref="StardewValley.Game1.random"/> instance will be used).</param>
+        /// <param name="random">The <see cref="Random"/> object to use (if <see langword="null"/> is specified, then the <see cref="Game1.random"/> instance will be used).</param>
         /// <returns>A random sprite from the sprite pool.</returns>
         public Texture2D GetRandomSprite(Random random = null)
         {

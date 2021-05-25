@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "NPC": "Aspen",
     "Variant": 1,
@@ -164,7 +164,7 @@
   {
     "NPC": "Sam",
     "Variant": 2,
-    "Description": "They smell like %pronoun1%.",
+    "Description": "They smell like %obj_pronoun%.",
     "Price": 16
   },
   {

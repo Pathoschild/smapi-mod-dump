@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ilyaki/SplitScreen.git
+urls:
+   web: https://github.com/Ilyaki/SplitScreen
+   Git: https://github.com/Ilyaki/SplitScreen.git
 
 mods:
    Split Screen

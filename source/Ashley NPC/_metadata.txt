@@ -1,5 +1,6 @@
-url:
-   https://github.com/Club559/AshleyMod.git
+urls:
+   web: https://github.com/Club559/AshleyMod
+   Git: https://github.com/Club559/AshleyMod.git
 
 mods:
    Ashley NPC

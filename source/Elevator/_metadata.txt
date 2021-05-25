@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ilyaki/Elevator.git
+urls:
+   web: https://github.com/Ilyaki/Elevator
+   Git: https://github.com/Ilyaki/Elevator.git
 
 mods:
    Elevator

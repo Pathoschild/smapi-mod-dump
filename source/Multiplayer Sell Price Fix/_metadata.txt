@@ -1,5 +1,6 @@
-url:
-   https://github.com/Unremarkable/Stardew-Valley-Multiplayer-Sell-Price-Fix.git
+urls:
+   web: https://github.com/Unremarkable/Stardew-Valley-Multiplayer-Sell-Price-Fix
+   Git: https://github.com/Unremarkable/Stardew-Valley-Multiplayer-Sell-Price-Fix.git
 
 mods:
    Multiplayer Sell Price Fix

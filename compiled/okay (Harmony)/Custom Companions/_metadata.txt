@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8626
+IDs: PeacefulEnd.CustomCompanions
+update keys: Nexus:8626, GitHub:Floogen/CustomCompanions

@@ -1,5 +1,6 @@
-url:
-   https://github.com/vgperson/CommunityCenterHelper.git
+urls:
+   web: https://github.com/vgperson/CommunityCenterHelper
+   Git: https://github.com/vgperson/CommunityCenterHelper.git
 
 mods:
    Community Center Helper

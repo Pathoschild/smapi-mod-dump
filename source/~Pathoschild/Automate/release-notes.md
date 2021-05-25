@@ -9,6 +9,9 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Crab pots and fish ponds now use the player who owns them for XP or profession checks (see a [summary for each machine](README.md#in-multiplayer-who-gets-xp-and-whose-professions-apply)).
+
 ## 1.22.1
 Released 17 April 2021.
 

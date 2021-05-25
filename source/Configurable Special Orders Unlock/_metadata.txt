@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/dtomlinson-ga/ConfigurableSpecialOrdersUnlock
+   Git: https://github.com/dtomlinson-ga/ConfigurableSpecialOrdersUnlock.git
+
+mods:
+   Configurable Special Orders Unlock
+
+latest commit:
+   commit 272e66a1718173940bbc294ff3b6a41c1f0fb104
+   Author: dtomlinson-ga <dtomlinson-ga@users.noreply.github.com>
+   Date:   Sat May 8 18:44:38 2021 -0400
+   
+       Adjust README
+   

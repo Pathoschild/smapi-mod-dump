@@ -1,5 +1,6 @@
-url:
-   https://github.com/TehPers/StardewValleyMods.git
+urls:
+   web: https://github.com/TehPers/StardewValleyMods
+   Git: https://github.com/TehPers/StardewValleyMods.git
 
 mods:
    Shroom Spotter

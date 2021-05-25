@@ -1,5 +1,6 @@
-url:
-   https://github.com/Stardew-Valley-Modding/Bookcase.git
+urls:
+   web: https://github.com/Stardew-Valley-Modding/Bookcase
+   Git: https://github.com/Stardew-Valley-Modding/Bookcase.git
 
 mods:
    Bookcase

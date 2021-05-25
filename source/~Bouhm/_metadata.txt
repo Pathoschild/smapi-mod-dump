@@ -1,5 +1,6 @@
-url:
-   https://github.com/Bouhm/stardew-valley-mods.git
+urls:
+   web: https://github.com/Bouhm/stardew-valley-mods
+   Git: https://github.com/Bouhm/stardew-valley-mods.git
 
 mods:
    Location Compass

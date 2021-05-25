@@ -1,5 +1,6 @@
-url:
-   https://github.com/MaciejMarkuszewski/StardewValleyAutoToolSelect.git
+urls:
+   web: https://github.com/MaciejMarkuszewski/StardewValleyAutoToolSelect
+   Git: https://github.com/MaciejMarkuszewski/StardewValleyAutoToolSelect.git
 
 mods:
    Auto Tool Select

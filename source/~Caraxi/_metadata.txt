@@ -1,5 +1,6 @@
-url:
-   https://github.com/Caraxi/StardewValleyMods.git
+urls:
+   web: https://github.com/Caraxi/StardewValleyMods
+   Git: https://github.com/Caraxi/StardewValleyMods.git
 
 mods:
    Auto Load Game

@@ -1,5 +1,6 @@
-url:
-   https://github.com/stokastic/CoopGrabber.git
+urls:
+   web: https://github.com/stokastic/CoopGrabber
+   Git: https://github.com/stokastic/CoopGrabber.git
 
 mods:
    Deluxe Auto-Grabber

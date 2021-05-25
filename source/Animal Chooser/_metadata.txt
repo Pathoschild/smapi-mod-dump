@@ -1,5 +1,6 @@
-url:
-   https://github.com/stokastic/AnimalChooser.git
+urls:
+   web: https://github.com/stokastic/AnimalChooser
+   Git: https://github.com/stokastic/AnimalChooser.git
 
 mods:
    Animal Chooser

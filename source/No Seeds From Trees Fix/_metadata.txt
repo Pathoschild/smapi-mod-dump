@@ -1,5 +1,6 @@
-url:
-   https://github.com/KirbyLink/NoSeedsFromTreesFix.git
+urls:
+   web: https://github.com/KirbyLink/NoSeedsFromTreesFix
+   Git: https://github.com/KirbyLink/NoSeedsFromTreesFix.git
 
 mods:
    No Seeds From Trees Fix

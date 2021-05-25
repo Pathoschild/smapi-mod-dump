@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/FlowerRain.git
+urls:
+   web: https://github.com/spacechase0/FlowerRain
+   Git: https://github.com/spacechase0/FlowerRain.git
 
 mods:
    Flower Rain

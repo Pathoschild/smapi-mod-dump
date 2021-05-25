@@ -11,7 +11,7 @@
 {
   "Name": "Mobile Catalogues",
   "Author": "aedenthorn",
-  "Version": "0.8.0",
+  "Version": "0.8.1",
   "Description": "Online shopping for your mobile phone.",
   "UniqueID": "aedenthorn.MobileCatalogues",
   "EntryDll": "MobileCatalogues.dll",

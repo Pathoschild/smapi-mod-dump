@@ -1,5 +1,6 @@
-url:
-   https://github.com/PhillZitt/BetterBombs.git
+urls:
+   web: https://github.com/PhillZitt/BetterBombs
+   Git: https://github.com/PhillZitt/BetterBombs.git
 
 mods:
    Better Bombs

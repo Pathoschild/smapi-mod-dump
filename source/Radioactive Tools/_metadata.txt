@@ -1,5 +1,6 @@
-url:
-   https://github.com/kakashigr/stardew-radioactivetools.git
+urls:
+   web: https://github.com/kakashigr/stardew-radioactivetools
+   Git: https://github.com/kakashigr/stardew-radioactivetools.git
 
 mods:
    Radioactive Tools

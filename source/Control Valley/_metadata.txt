@@ -1,5 +1,6 @@
-url:
-   https://github.com/tesla1889tv/ControlValleyMod.git
+urls:
+   web: https://github.com/tesla1889tv/ControlValleyMod
+   Git: https://github.com/tesla1889tv/ControlValleyMod.git
 
 mods:
    Control Valley

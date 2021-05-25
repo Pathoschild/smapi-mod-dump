@@ -1,5 +1,6 @@
-url:
-   https://github.com/ylsama/RightClickMoveMode.git
+urls:
+   web: https://github.com/ylsama/RightClickMoveMode
+   Git: https://github.com/ylsama/RightClickMoveMode.git
 
 mods:
    Right Click Move Mode

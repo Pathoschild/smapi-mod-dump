@@ -38,6 +38,10 @@
         <Reference Include="Microsoft.Build" />
         <Reference Include="Microsoft.Build.Framework" />
         <Reference Include="Microsoft.Build.Utilities.v4.0" />
+        <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+          <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
@@ -46,6 +50,9 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Framework\Entity\ContactEntity.cs" />
+        <Compile Include="Framework\Entity\CustomEntity.cs" />
+        <Compile Include="Framework\Entity\ModMenuEntity.cs" />
         <Compile Include="Framework\Screen\ModMenuScreen.cs" />
         <Compile Include="ModEntry.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

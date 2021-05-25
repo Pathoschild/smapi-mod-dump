@@ -9,7 +9,9 @@
 *************************************************/
 
 using StardewValley;
+using System.Collections.Generic;
 using System;
+using Microsoft.Xna.Framework;
 using StardewValley.Locations;
 using StardewModdingAPI.Utilities;
 
@@ -33,15 +35,13 @@ namespace CustomDeathPenaltyPlus
             }
         }
 
-        public static PlayerDataTracker statedeath;
+        internal static readonly PerScreen<PlayerDataTracker> statedeathps = new PerScreen<PlayerDataTracker>(createNewState: () => null);
 
-        internal static readonly PerScreen<PlayerDataTracker> statedeathps = new PerScreen<PlayerDataTracker>(createNewState: () => statedeath);
-
-        public static PlayerDataTracker statepassout;
-
-        internal static readonly PerScreen<PlayerDataTracker> statepassoutps = new PerScreen<PlayerDataTracker>(createNewState: () => statepassout);
+        internal static readonly PerScreen<PlayerDataTracker> statepassoutps = new PerScreen<PlayerDataTracker>(createNewState: () => null);
 
         private static ModConfig config;
+
+        private static readonly int[] debuffs = { 12, 14, 17, 25, 26, 27 };
 
         // Change friendship of marriage candidate NPCs
         public static void ApplyFriendshipChange(string name)
@@ -54,7 +54,7 @@ namespace CustomDeathPenaltyPlus
             }
 
 
-            if (Game1.player.friendshipData.ContainsKey(name) && (Game1.currentLocation.NameOrUniqueName == "Hospital" || config.OtherPenalties.WakeupNextDayinClinic == true))
+            if (Game1.player.friendshipData.ContainsKey(name) == true && (Game1.currentLocation.NameOrUniqueName == "Hospital" || config.OtherPenalties.WakeupNextDayinClinic == true))
             {
                 //Yes, change friendship level
                 if (configvalue < 0)
@@ -108,6 +108,42 @@ namespace CustomDeathPenaltyPlus
 
             // Restore health to amount as specified by config values
             Game1.player.health = Math.Max((int)(Game1.player.maxHealth * config.DeathPenalty.HealthtoRestorePercentage), 1);
+
+            // Apply debuff if needed
+            if (config.OtherPenalties.DebuffonDeath == true)
+            {
+                // Remove negative debuffs
+                foreach(int debuff in debuffs)
+                {
+                    if (Game1.player.hasBuff(debuff))
+                    {
+                        Game1.buffsDisplay.removeOtherBuff(debuff);
+                    }
+                }
+
+                if (Game1.currentLocation as IslandLocation != null)
+                {
+                    var burntdebuff = new Buff(12)
+                    {
+                        totalMillisecondsDuration = 60000,
+                        millisecondsDuration = 60000,
+                        glow = Color.White
+                    };
+                    Game1.buffsDisplay.addOtherBuff(burntdebuff);
+                }
+                else
+                {
+                    Random random = new Random((int)(Game1.uniqueIDForThisGame / Game1.player.stats.DaysPlayed + Game1.player.stats.timesUnconscious));
+
+                    var applieddebuff = new Buff((int)debuffs.GetValue(random.Next(1, debuffs.Length)))
+                    {
+                        totalMillisecondsDuration = 60000,
+                        millisecondsDuration = 60000,
+                        glow = Color.White
+                    };
+                    Game1.buffsDisplay.addOtherBuff(applieddebuff);
+                }
+            }
 
             // Is RestoreItems true?
             if (config.DeathPenalty.RestoreItems == true)

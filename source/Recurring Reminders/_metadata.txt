@@ -1,5 +1,6 @@
-url:
-   https://github.com/dem1se/SDVMods.git
+urls:
+   web: https://github.com/dem1se/SDVMods
+   Git: https://github.com/dem1se/SDVMods.git
 
 mods:
    Recurring Reminders

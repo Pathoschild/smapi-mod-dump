@@ -1,5 +1,6 @@
-url:
-   https://github.com/Brian-Wuest/Instacrops.git
+urls:
+   web: https://github.com/Brian-Wuest/Instacrops
+   Git: https://github.com/Brian-Wuest/Instacrops.git
 
 mods:
    InstaCrops

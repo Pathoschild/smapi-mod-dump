@@ -41,6 +41,7 @@ namespace FarmTypeManager
                 }
 
                 api.RegisterModConfig(ModManifest, () => ResetConfigToDefault(), () => Helper.WriteConfig(Utility.MConfig)); //register "revert to default" and "write" methods for this mod's config
+                api.SetDefaultIngameOptinValue(ModManifest, true); //allow in-game setting changes (rather than just at the main menu)
 
                 //register an option for each of this mod's config settings
                 api.RegisterSimpleOption(ModManifest, "Enable console commands", "Uncheck this box to disable FTM's console commands, e.g. for mod compatibility.\nNOTE: This will not take effect until Stardew Valley is restarted.", () => Utility.MConfig.EnableConsoleCommands, (bool val) => Utility.MConfig.EnableConsoleCommands = val);
@@ -127,6 +128,7 @@ namespace FarmTypeManager
     public interface GenericModConfigMenuAPI
     {
         void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
+        void SetDefaultIngameOptinValue(IManifest mod, bool optedIn);
 
         void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
         void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet);

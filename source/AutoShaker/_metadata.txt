@@ -1,5 +1,6 @@
-url:
-   https://github.com/jag3dagster/AutoShaker.git
+urls:
+   web: https://github.com/jag3dagster/AutoShaker
+   Git: https://github.com/jag3dagster/AutoShaker.git
 
 mods:
    AutoShaker

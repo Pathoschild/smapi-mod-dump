@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/MoreGiantCrops.git
+urls:
+   web: https://github.com/spacechase0/MoreGiantCrops
+   Git: https://github.com/spacechase0/MoreGiantCrops.git
 
 mods:
    More Giant Crops

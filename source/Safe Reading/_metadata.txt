@@ -1,5 +1,6 @@
-url:
-   https://github.com/LunaticShade/StardewValley.SafeReading.git
+urls:
+   web: https://github.com/LunaticShade/StardewValley.SafeReading
+   Git: https://github.com/LunaticShade/StardewValley.SafeReading.git
 
 mods:
    Safe Reading

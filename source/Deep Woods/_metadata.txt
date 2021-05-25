@@ -1,5 +1,6 @@
-url:
-   https://github.com/maxvollmer/DeepWoodsMod.git
+urls:
+   web: https://github.com/maxvollmer/DeepWoodsMod
+   Git: https://github.com/maxvollmer/DeepWoodsMod.git
 
 mods:
    Deep Woods

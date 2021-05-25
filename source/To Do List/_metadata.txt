@@ -1,5 +1,6 @@
-url:
-   https://github.com/eleanoot/stardew-to-do-mod.git
+urls:
+   web: https://github.com/eleanoot/stardew-to-do-mod
+   Git: https://github.com/eleanoot/stardew-to-do-mod.git
 
 mods:
    To Do List

@@ -1,5 +1,6 @@
-url:
-   https://github.com/ZaneYork/CustomToolEffect.git
+urls:
+   web: https://github.com/ZaneYork/CustomToolEffect
+   Git: https://github.com/ZaneYork/CustomToolEffect.git
 
 mods:
    Custom Tool Effect

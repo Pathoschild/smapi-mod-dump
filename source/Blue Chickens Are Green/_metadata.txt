@@ -1,5 +1,6 @@
-url:
-   https://github.com/explosivetortellini/bluechickensaregreen.git
+urls:
+   web: https://github.com/explosivetortellini/bluechickensaregreen
+   Git: https://github.com/explosivetortellini/bluechickensaregreen.git
 
 mods:
    Blue Chickens Are Green

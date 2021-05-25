@@ -1,5 +1,6 @@
-url:
-   https://github.com/pomepome/PassableObjects.git
+urls:
+   web: https://github.com/pomepome/PassableObjects
+   Git: https://github.com/pomepome/PassableObjects.git
 
 mods:
    Passable Objects

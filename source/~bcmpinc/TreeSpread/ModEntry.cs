@@ -67,13 +67,13 @@ namespace StardewHack.TreeSpread
             spread.length -= 4;
 
             spread.Prepend(
-                // if (!tapped && !config.OnlyPreventTapped)
+                // if (!tapped && config.OnlyPreventTapped)
                 Instructions.Ldarg_0(),
                 Instructions.Ldfld(typeof(Tree), nameof(Tree.tapped)),
                 Instructions.Call_get(typeof(NetBool), nameof(NetBool.Value)),
                 Instructions.Brtrue(AttachLabel(spread.End[0])),
                 Instructions.Call(GetType(), nameof(isOnlyPreventTapped)),
-                Instructions.Brtrue(AttachLabel(spread.End[0]))
+                Instructions.Brfalse(AttachLabel(spread.End[0]))
             );
             spread.ReplaceJump(6, spread[0]);
 

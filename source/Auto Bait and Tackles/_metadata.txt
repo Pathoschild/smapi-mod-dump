@@ -1,5 +1,6 @@
-url:
-   https://github.com/Alison-Li/AutoBaitAndTacklesMod.git
+urls:
+   web: https://github.com/Alison-Li/AutoBaitAndTacklesMod
+   Git: https://github.com/Alison-Li/AutoBaitAndTacklesMod.git
 
 mods:
    Auto Bait and Tackles

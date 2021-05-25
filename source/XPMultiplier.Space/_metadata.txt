@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/nofilenamed/XPMultiplier.Space
+   Git: https://github.com/nofilenamed/XPMultiplier.Space.git
+
+mods:
+   XPMultiplier.Space
+
+latest commit:
+   commit abde01f8e23cb25227fd014ed84c94e2bee5cd2e
+   Author: nofilenamed <nofilenamed@gmail.com>
+   Date:   Tue May 18 14:05:15 2021 +0200
+   
+       initial
+   

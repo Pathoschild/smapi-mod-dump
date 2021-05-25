@@ -1,5 +1,6 @@
-url:
-   https://github.com/Esca-MMC/CustomTracker.git
+urls:
+   web: https://github.com/Esca-MMC/CustomTracker
+   Git: https://github.com/Esca-MMC/CustomTracker.git
 
 mods:
    Custom Tracker

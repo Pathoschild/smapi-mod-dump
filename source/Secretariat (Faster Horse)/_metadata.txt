@@ -1,5 +1,6 @@
-url:
-   https://github.com/Janglinator/Secretariat.git
+urls:
+   web: https://github.com/Janglinator/Secretariat
+   Git: https://github.com/Janglinator/Secretariat.git
 
 mods:
    Secretariat (Faster Horse)

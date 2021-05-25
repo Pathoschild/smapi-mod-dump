@@ -1,0 +1,10 @@
+﻿{
+  "Name": "HaltEventTime",
+  "Author": "chawol",
+  "Version": "1.0.0",
+  "Description": "Stop time when watching event",
+  "UniqueID": "chawol.HaltEventTime",
+  "EntryDll": "HaltEventTime.dll",
+  "MinimumApiVersion": "3.3.0",
+  "UpdateKeys": []
+}

@@ -1,0 +1,9 @@
+﻿{
+  "config.hotkey.desc": "Sólo tendrá efecto si 'Enabled' es verdadero",
+  "config.hotkeycustmsg.desc": "Sólo tendrá efecto si 'Enabled' es verdadero",
+  "reminder.disabled": "El recordatorio de salida está desactivado",
+  "reminder.enabled": "El recordatorio de salida está activado",
+  "reminder.title": "Recordatorio:",
+  "reminder.body-default": "Se le recuerda que debe salir del juego.",
+  "reminder-ui.custom-msg-label": "Mensaje recordatorio personalizado"
+}

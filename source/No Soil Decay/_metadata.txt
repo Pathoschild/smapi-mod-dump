@@ -1,5 +1,6 @@
-url:
-   https://github.com/ThatNorthernMonkey/NoSoilDecay.git
+urls:
+   web: https://github.com/ThatNorthernMonkey/NoSoilDecay
+   Git: https://github.com/ThatNorthernMonkey/NoSoilDecay.git
 
 mods:
    No Soil Decay

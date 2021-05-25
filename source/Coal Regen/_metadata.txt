@@ -1,5 +1,6 @@
-url:
-   https://github.com/AbbyNode/StardewValley-CoalRegen.git
+urls:
+   web: https://github.com/AbbyNode/StardewValley-CoalRegen
+   Git: https://github.com/AbbyNode/StardewValley-CoalRegen.git
 
 mods:
    Coal Regen

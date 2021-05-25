@@ -1,5 +1,6 @@
-url:
-   https://github.com/JDvickery/Sauvignon-in-Stardew.git
+urls:
+   web: https://github.com/JDvickery/Sauvignon-in-Stardew
+   Git: https://github.com/JDvickery/Sauvignon-in-Stardew.git
 
 mods:
    Sauvignon in Stardew

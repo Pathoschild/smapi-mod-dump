@@ -1,5 +1,6 @@
-url:
-   https://github.com/CompSciLauren/stardew-valley-cozy-clothing-mod.git
+urls:
+   web: https://github.com/CompSciLauren/stardew-valley-cozy-clothing-mod
+   Git: https://github.com/CompSciLauren/stardew-valley-cozy-clothing-mod.git
 
 mods:
    Cozy Clothing

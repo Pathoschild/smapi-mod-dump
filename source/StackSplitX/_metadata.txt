@@ -1,5 +1,6 @@
-url:
-   https://github.com/tstaples/StackSplitX.git
+urls:
+   web: https://github.com/tstaples/StackSplitX
+   Git: https://github.com/tstaples/StackSplitX.git
 
 mods:
    StackSplitX

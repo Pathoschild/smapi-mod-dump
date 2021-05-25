@@ -1,13 +1,15 @@
-url:
-   https://github.com/LunaticShade/StardewValley.SkillfulClothes.git
+urls:
+   web: https://github.com/LunaticShade/StardewValley.SkillfulClothes
+   Git: https://github.com/LunaticShade/StardewValley.SkillfulClothes.git
 
 mods:
    Skillful Clothes
 
 latest commit:
-   commit e15122cddbc7ec4cbf158d8072da5af40c7a4ec9
+   commit 515ef0f5544fb15d6f8daff55861928d95cb2771
    Author: LunaticShade <lunaticshade@googlemail.com>
-   Date:   Wed Apr 21 13:43:38 2021 +0200
+   Date:   Thu May 13 22:07:53 2021 +0200
    
-       Added pdb path override
+       Added GlowEffect
+       Refactored RingEffect (now only realizes isWearingRing shim, other effects should be implemented as separate effects)
    

@@ -1,0 +1,69 @@
+﻿[
+  {
+    "Call": "Let's make snow angels!",
+    "Response": "I'll get my gloves",
+    "When": {
+      "Weather": "Snow"
+    }
+  },
+  {
+    "Call": "Brr so cold",
+    "Response": "Let's grab a blanket",
+    "When": {
+      "Season": "Winter"
+    }
+  },
+  {
+    "Call": "Lovely weather",
+    "Response": "So many flowers",
+    "When": {
+      "Season": "Spring",
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Call": "Love the sound of rain at night",
+    "Response": "Sleep well babe",
+    "When": {
+      "Weather": "Rain",
+      "Time": "{{Range: 2000, 2600}}"
+    }
+  },
+  {
+    "Call": "So much pollen",
+    "Response": "*achoo* I know!",
+    "When": {
+      "Season": "Spring",
+      "Weather": "Wind"
+    }
+  },
+  {
+    "Call": "I'm getting sweaty",
+    "Response": "rowr!",
+    "When": {
+      "Season": "Summer"
+    }
+  },
+  {
+    "Call": "Love this season",
+    "Response": "So crisp",
+    "When": {
+      "Season": "Fall"
+    }
+  },
+  {
+    "Call": "Gotta rake leaves",
+    "Response": "Want help?",
+    "When": {
+      "Season": "Fall",
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Call": "Is that lightning?",
+    "Response": "Yipes",
+    "When": {
+      "Weather": "Storm"
+    }
+  }
+]

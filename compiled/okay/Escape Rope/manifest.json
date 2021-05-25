@@ -1,12 +1,12 @@
 {
   "Name": "EscapeRope",
   "Author": "lestoph",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Adds an escape rope item to SDV, which can be used to escape the mines.",
   "UniqueID": "lestoph.EscapeRope",
   "EntryDll": "EscapeRope.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [],
+  "UpdateKeys": [ "nexus:8576" ],
   "Dependencies": [
     {
         "UniqueID": "spacechase0.JsonAssets",

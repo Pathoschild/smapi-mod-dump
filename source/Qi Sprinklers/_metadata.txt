@@ -1,5 +1,6 @@
-url:
-   https://github.com/UnkLegacy/QiSprinklers.git
+urls:
+   web: https://github.com/UnkLegacy/QiSprinklers
+   Git: https://github.com/UnkLegacy/QiSprinklers.git
 
 mods:
    Qi Sprinklers

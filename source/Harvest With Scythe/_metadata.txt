@@ -1,5 +1,6 @@
-url:
-   https://github.com/ThatNorthernMonkey/HarvestWithScythe.git
+urls:
+   web: https://github.com/ThatNorthernMonkey/HarvestWithScythe
+   Git: https://github.com/ThatNorthernMonkey/HarvestWithScythe.git
 
 mods:
    Harvest With Scythe

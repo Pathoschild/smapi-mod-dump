@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ilyaki/StackToNearbyChests.git
+urls:
+   web: https://github.com/Ilyaki/StackToNearbyChests
+   Git: https://github.com/Ilyaki/StackToNearbyChests.git
 
 mods:
    Stack to Nearby Chests

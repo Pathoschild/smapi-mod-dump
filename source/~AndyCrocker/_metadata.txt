@@ -1,5 +1,6 @@
-url:
-   https://github.com/AndyCrocker/StardewMods.git
+urls:
+   web: https://github.com/AndyCrocker/StardewMods
+   Git: https://github.com/AndyCrocker/StardewMods.git
 
 mods:
    Better 10 Hearts
@@ -13,9 +14,9 @@ mods:
    More Grass
 
 latest commit:
-   commit 1ba0c364cdd0fbc19ca2541956b80ce951e6f060
+   commit d37c5983f0f2b0d31d46cbdaf3eb3e1fdaa59d47
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Sun Apr 25 20:32:00 2021 +0100
+   Date:   Mon May 24 16:03:49 2021 +0100
    
-       [FarmAnimalVarietyRedux] Update README to add the 'UniqueName' property
+       [FarmAnimalVarietyRedux] Fix flash when opening animal purchase menu
    

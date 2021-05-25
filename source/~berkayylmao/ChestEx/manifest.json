@@ -9,22 +9,22 @@
 *************************************************/
 
 {
-  "Name": "ChestEx",
-  "Author": "berkayylmao",
-  "Version": "1.4.0",
-  "Description": "Increase the capacity of your chests/fridge, today!",
-  "UniqueID": "berkayylmao.ChestEx",
-  "EntryDll": "ChestEx.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:4180" ],
-  "Dependencies": [
-     {
-        "UniqueID": "Pathoschild.Automate",
-        "IsRequired": false
-     },
-     {
-        "UniqueID": "Pathoschild.ChestsAnywhere",
-        "IsRequired": false
-     }
-  ]
+	"Name": "ChestEx",
+	"Author": "berkayylmao",
+	"Version": "2.0.1",
+	"Description": "Get more out of your chests and fridges! Set custom sizes, colours, names and more...",
+	"UniqueID": "berkayylmao.ChestEx",
+	"EntryDll": "ChestEx.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": ["Nexus:4180"],
+	"Dependencies": [
+		{
+			"UniqueID": "Pathoschild.Automate",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "Pathoschild.ChestsAnywhere",
+			"IsRequired": false
+		}
+	]
 }

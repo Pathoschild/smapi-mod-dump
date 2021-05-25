@@ -155,6 +155,7 @@ namespace AdoptSkin.Framework
             {
                 //SMonitor.Log("Multiplayer Farmhand detected. Adopt & Skin has been disabled.", LogLevel.Debug);
                 SMonitor.Log("Host detected! Let's WRECK IT", LogLevel.Debug);
+
                 // Load skin and category maps
                 ModEntry.SkinMap = SHelper.Data.ReadSaveData<Dictionary<long, int>>("skin-map") ?? new Dictionary<long, int>();
                 ModEntry.IDToCategory = SHelper.Data.ReadSaveData<Dictionary<long, ModEntry.CreatureCategory>>("id-to-category") ?? new Dictionary<long, ModEntry.CreatureCategory>();
@@ -219,7 +220,6 @@ namespace AdoptSkin.Framework
                 //return;
             }
 
-            
 
             // Refresh skins via skinmap
             LoadCreatureSkins();

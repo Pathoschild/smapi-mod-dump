@@ -1,5 +1,6 @@
-url:
-   https://github.com/AngelaRanna/StardewMods.git
+urls:
+   web: https://github.com/AngelaRanna/StardewMods
+   Git: https://github.com/AngelaRanna/StardewMods.git
 
 mods:
    Angel's Existing Weapon Updater
@@ -7,9 +8,12 @@ mods:
    Angel's Weapon Rebalance
 
 latest commit:
-   commit 28b077c1b4869ae06f7dcf36e1c34d0dbd1a2c6b
+   commit 6673bc6375e247f5178a14e9eb3f9cca16dd420d
    Author: SIMON\Zach <whitewolf9024@hotmail.com>
-   Date:   Thu Feb 18 22:52:10 2021 -0700
+   Date:   Mon May 3 19:55:44 2021 -0700
    
-       Added MoreGrassOnTheBeach, removed solution file for Combat Mod.
+       -Added hasmod to Make Marlon Real so they don't both try to load and invisible Gil.
+       -Removed hasmod on SVE - when they moved the guild they got rid of the Gil sprite.
+       -Moved MoreGrassOnTheBeach to the correct level in the tree.
+       -Recompiled the Existing Weapon Updater for SVE 1.5.
    

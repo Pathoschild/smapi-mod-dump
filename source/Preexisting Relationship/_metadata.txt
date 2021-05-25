@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/PreexistingRelationships.git
+urls:
+   web: https://github.com/spacechase0/PreexistingRelationships
+   Git: https://github.com/spacechase0/PreexistingRelationships.git
 
 mods:
    Preexisting Relationship

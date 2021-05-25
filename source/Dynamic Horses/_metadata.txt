@@ -1,5 +1,6 @@
-url:
-   https://github.com/Bpendragon/DynamicHorses.git
+urls:
+   web: https://github.com/Bpendragon/DynamicHorses
+   Git: https://github.com/Bpendragon/DynamicHorses.git
 
 mods:
    Dynamic Horses

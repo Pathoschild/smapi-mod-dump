@@ -36,53 +36,24 @@ namespace FarmTypeManager
             {
                 StardewValley.Object forageObj;
 
-                switch (index) //if this object ID cannot normally be picked up
+                if (CanBePickedUp(index)) //if this object can be picked up
                 {
-                    case 0: //weeds
-                    case 2: //stone
-                    case 4: //
-                    case 75: //stone
-                    case 76: //
-                    case 77: //
-                    case 294: //twig
-                    case 295: //
-                    case 313: //weeds
-                    case 314: //
-                    case 315: //
-                    case 316: //
-                    case 317: //
-                    case 318: //
-                    case 319: //ice crystals (called "weeds" in the object data)
-                    case 320: //
-                    case 321: //
-                    case 343: //stone
-                    case 450: //
-                    case 452: //weeds
-                    case 668: //stone
-                    case 670: //
-                    case 674: //weeds
-                    case 675: //
-                    case 751: //stone
-                    case 760: //
-                    case 762: //
-                    case 764: //
-                    case 765: //
-                    case 784: //weeds
-                    case 792: //weeds (forest farm, spring version)
-                    case 793: //forest farm weed (forest farm, summer version)
-                    case 794: //forest farm weed (forest farm, fall version)
-                    case 590: //artifact dig spot
+                    forageObj = new StardewValley.Object(tile, index, null, false, true, false, true); //generate the object (use the constructor that allows pickup)
 
-                        forageObj = new StardewValley.Object(tile, index, 1); //use an alternative constructor
-                        Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                        location.objects.Add(tile, forageObj); //add the object directly to the objects list
-                        return true;
+                    Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                    return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
                 }
+                else //if this object CANNOT be picked up
+                {
+                    forageObj = new StardewValley.Object(tile, index, 1); //generate the object (use the constructor that prevents pickup)
+                    int? durability = GetDefaultDurability(index); //try to get this item's default durability
+                    if (durability.HasValue) //if a default exists
+                        forageObj.MinutesUntilReady = durability.Value; //use it
 
-                //no special case for this object ID was found, so use the typical spawn method
-                forageObj = new StardewValley.Object(tile, index, null, false, true, false, true); //generate the forage object
-                Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
+                    Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                    location.objects.Add(tile, forageObj); //add the object directly to the objects list
+                    return true;
+                }
             }
 
             /// <summary>Generates a item from a saved object and places it on the specified map and tile.</summary>

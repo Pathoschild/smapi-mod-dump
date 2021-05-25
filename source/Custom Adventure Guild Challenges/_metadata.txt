@@ -1,5 +1,6 @@
-url:
-   https://github.com/defenthenation/StardewMod-CustomSlayerChallenges.git
+urls:
+   web: https://github.com/defenthenation/StardewMod-CustomSlayerChallenges
+   Git: https://github.com/defenthenation/StardewMod-CustomSlayerChallenges.git
 
 mods:
    Custom Adventure Guild Challenges

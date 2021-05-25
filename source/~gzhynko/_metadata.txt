@@ -1,5 +1,6 @@
-url:
-   https://github.com/gzhynko/StardewMods.git
+urls:
+   web: https://github.com/gzhynko/StardewMods
+   Git: https://github.com/gzhynko/StardewMods.git
 
 mods:
    Animals Need Water
@@ -11,9 +12,9 @@ mods:
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit b70798a64a71296f4317c4a237648543bfaf3cb2
+   commit a0fe0c997d9fb090839fa751f6722873d4acd017
    Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Tue Apr 27 22:00:12 2021 +0300
+   Date:   Fri May 21 22:35:17 2021 +0300
    
-       fix: fix game crashing due to null crops in HoeDirtUpdate
+       fix: fix grapes not working properly in the greenhouse
    

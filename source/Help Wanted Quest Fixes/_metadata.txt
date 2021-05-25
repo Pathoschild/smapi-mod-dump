@@ -1,5 +1,6 @@
-url:
-   https://github.com/gembree/HelpWantedQuestFixes.git
+urls:
+   web: https://github.com/gembree/HelpWantedQuestFixes
+   Git: https://github.com/gembree/HelpWantedQuestFixes.git
 
 mods:
    Help Wanted Quest Fixes

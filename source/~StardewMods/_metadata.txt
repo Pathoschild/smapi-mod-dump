@@ -1,5 +1,6 @@
-url:
-   https://github.com/StardewMods/SDVCustomChores.git
+urls:
+   web: https://github.com/StardewMods/SDVCustomChores
+   Git: https://github.com/StardewMods/SDVCustomChores.git
 
 mods:
    Custom Chores

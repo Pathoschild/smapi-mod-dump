@@ -1,0 +1,573 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>XoshiroPRNG.Net</name>
+    </assembly>
+    <members>
+        <member name="T:Xoshiro.Base.IRandomU">
+            <summary>
+            The "Unleashed" interface for 32-bit PRNGs: This interface enables
+            fetching of higher-strength full-range random numbers direct from the 
+            PRNG's algorithm.
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.Next">
+            <summary>
+            Returns a non-negative 32-bit integer from the PRNG, in the range of [0, int.MaxValue)
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.Next(System.Int32)">
+            <summary>
+            Returns a non-negative 32-bit integer from the PRNG, in the range of [0, maxValue)
+            </summary>
+            <param name="maxValue">Must be &gt;0</param>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.Next(System.Int32,System.Int32)">
+            <summary>
+            Returns the next 32-bit integer from the PRNG, in the range of [minValue, maxValue).
+            Can be negative.
+            </summary>
+            <param name="minValue">Must be &lt;= maxValue. Can be negative.</param>
+            <param name="maxValue">Must be &gt;= minValue. Can be negative</param>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.NextBytes(System.Byte[])">
+            <summary>
+            Fills an array of bytes with the octets of the next number(s) from the PRNG
+            </summary>
+            <param name="buffer">Must NOT be null</param>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.NextDouble">
+            <summary>
+            Returns a double precision floating-point number from the PRNG.
+            Range is [0, 1.0)
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.NextFloat">
+            <summary>
+            Returns a single precision floating-point number by using 24 of the 32 bits
+            of the next number from the PRNG. Range is [0, 1.0)
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.NextU">
+            <summary>
+            Returns an unsigned 32-bit integer in the range of [0, UInt32.MaxValue]
+            inclusive at both ends ("full range")
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.NextU(System.UInt32)">
+            <summary>
+            Returns an unsigned 32-bit integer in the range of [0, maxValue)
+            </summary>
+            <param name="maxValue">Must be &gt;1</param>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.NextU(System.UInt32,System.UInt32)">
+            <summary>
+            Returns an unsigned 32-bit integer in the range of [minValue, maxValue)
+            </summary>
+            <param name="minValue">Must be &lt; maxValue-1</param>
+            <param name="maxValue">Must be &gt; minValue+1</param>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.Next64">
+            <summary>
+            Returns a signed 64-bit integer (63 bits of randomness) in the range of
+            [0, Int64.MaxValue] inclusive at both ends ("full range")
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.Next64(System.Int64)">
+            <summary>
+            Returns a signed 64-bit integer (63 bits of randomness) in the range of
+            [0, Int64.MaxValue)
+            </summary>
+            <param name="maxValue">Must be &gt;1</param>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.Next64(System.Int64,System.Int64)">
+            <summary>
+            Returns a signed 64-bit integer (63 bits of randomness) in the range of
+            [minValue, maxValue), can be negative.
+            </summary>
+            <param name="minValue">Must be &lt; maxValue-1; can be negative</param>
+            <param name="maxValue">Must be &gt; minValue+1; can be negative</param>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.Next64U">
+            <summary>
+            Returns an unsigned 64-bit integer in the range of [0, UInt64.MaxValue]
+            inclusive at both ends.
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.Next64U(System.UInt64)">
+            <summary>
+            Returns an unsigned 64-bit integer in the range of [0, maxValue)
+            </summary>
+            <param name="maxValue">Must be &gt;1</param>
+        </member>
+        <member name="M:Xoshiro.Base.IRandomU.Next64U(System.UInt64,System.UInt64)">
+            <summary>
+            Returns an unsigned 64-bit integer in the range of [minValue, maxValue)
+            </summary>
+        </member>
+        <member name="T:Xoshiro.Base.IRandom64U">
+            <summary>
+            The "Unleashed" interface for 64-bit PRNGs: This interface enables
+            fetching of higher-strength full-range random numbers direct from the 
+            PRNG's algorithm.
+            </summary>
+        </member>
+        <member name="P:Xoshiro.Base.IRandom64U.FoldMethod">
+            <summary>
+            Specifies how to 'fold' 64-bit numbers generated by the PRNG into
+            32-bit numbers. <para>See <see cref="T:Xoshiro.Base.Fold64To32Method"/> for an explanation
+            of the methods</para>
+            </summary>
+            <see cref="T:Xoshiro.Base.Fold64To32Method"/>
+        </member>
+        <member name="T:Xoshiro.Base.Fold64To32Method">
+            <summary>
+            Methods of folding a 64-bit value into a 32-bit value
+            </summary>
+        </member>
+        <member name="F:Xoshiro.Base.Fold64To32Method.XorMethod">
+            <summary>
+            XOR the upper and lower parts of the 64-bit value into a 32-bit value
+            </summary>
+        </member>
+        <member name="F:Xoshiro.Base.Fold64To32Method.ChunkMethod">
+            <summary>
+            Returns the upper 32-bit part first, then the next iteration return the
+            lower part
+            </summary>
+        </member>
+        <member name="T:Xoshiro.Base.SplitMix64">
+            <summary>
+            A generator to quickly generate 64- or 32-bit states for the PRNGs.
+            DO NOT USE THIS CLASS AS A PRNG.
+            </summary>
+        </member>
+        <member name="F:Xoshiro.Base.SplitMix64.FoldMethod">
+            <summary>
+            Specifies the method used to fold 64-bit integers into 32-bit integers.
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.SplitMix64.#ctor(System.Int64,Xoshiro.Base.Fold64To32Method)">
+            <summary>
+            Instantiates a SplitMix64 object with a given initial state.
+            </summary>
+            <param name="seed">Initial State</param>
+            <param name="foldMethod"><see cref="T:Xoshiro.Base.Fold64To32Method"/></param>
+        </member>
+        <member name="M:Xoshiro.Base.SplitMix64.Next">
+            <summary>
+            Get one UInt64 number from the SplitMix64 generator
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.SplitMix64.FillArray64(System.UInt64[])">
+            <summary>
+            Fill an array of UInt64 with the next numbers from the SplitMix64 generator
+            </summary>
+            <param name="arr">Must not be null</param>
+        </member>
+        <member name="M:Xoshiro.Base.SplitMix64.FillArray32(System.UInt32[])">
+            <summary>
+            Fill an array of UInt32 by folding the next numbers from the SplitMix64
+            generator
+            </summary>
+            <param name="arr">Must not be null</param>
+        </member>
+        <member name="T:Xoshiro.Base.XoshiroBase">
+            <summary>
+            Base class of all Xoshiro/Xoroshiro PRNG Family
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.NextU">
+            <summary>
+            Fetch an Unsigned 32-bit integer from the PRNG.
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.Next64U">
+            <summary>
+            Fetch an Unsigned 64-bit integer from the PRNG.
+            <para>Note: This is full range of [0, UInt64.MaxValue]</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.Next64U(System.UInt64)">
+            <summary>
+            Fetch an Unsigned 64-bit integer from the PRNG, within the range [0, maxValue)
+            </summary>
+            <param name="maxValue">Must be &gt;1</param>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.Next64U(System.UInt64,System.UInt64)">
+            <summary>
+            Fetch an Unsigned 64-bit integer from the PRNG, within the range [minValue, maxValue)
+            </summary>
+            <param name="minValue">Must be &lt; maxValue-1</param>
+            <param name="maxValue">Must be &gt; minValue+1</param>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.Next64">
+            <summary>
+            Fetch the next Signed 64-bit integer from the PRNG.
+            <para>Note: This is full range of [0, long.MaxValue]</para>
+            <para>WARNING: Only 63 bits of randomness!</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.Next64(System.Int64)">
+            <summary>
+            Fetch a non-negative Signed 64-bit integer from the PRNG, within the range [0, maxValue).
+            <para>WARNING: Only 63 bits of randomness!</para>
+            </summary>
+            <param name="maxValue">Must be &gt;1</param>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.Next64(System.Int64,System.Int64)">
+            <summary>
+            Fetch a Signed 64-bit integer from the PRNG, within the range [minValue, maxValue)
+            <para>Note: (maxValue-minValue) must be within [0, long.MaxValue]</para>
+            <para>WARNING: Only 63 bits of randomness!</para>
+            </summary>
+            <param name="minValue">Must be &lt; maxValue-1; can be negative</param>
+            <param name="maxValue">Must be &gt; minValue+1; can be negative</param>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.NextU(System.UInt32)">
+            <summary>
+            Fetch an Unsigned 32-bit integer from the PRNG, within the range [0, maxValue)
+            </summary>
+            <param name="maxValue">Must be &gt; 0</param>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.NextU(System.UInt32,System.UInt32)">
+            <summary>
+            Fetch an Unsigned 32-bit integer from the PRNG, within the range [minValue, maxValue)
+            </summary>
+            <param name="minValue">Must be &lt; maxValue-1</param>
+            <param name="maxValue">Must be &gt; minValue+1</param>
+            <returns></returns>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.Next">
+            <summary>
+            Fetch a non-negative Signed 32-bit integer from the PRNG.
+            <para>WARNING: This method will NOT return int.MaxValue,
+            similar to System.Random.Next()</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.Next(System.Int32)">
+            <summary>
+            Fetch a non-negative Signed 32-bit integer from the PRNG, within the range [0, maxValue)
+            </summary>
+            <param name="maxValue">Numbers returned must be less than this. Must be &gt;1</param>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.Next(System.Int32,System.Int32)">
+            <summary>
+            Fetch a Signed 32-bit integer from the PRNG, within the range [minValue, maxValue).
+            </summary>
+            <param name="minValue">Must be &lt;= maxValue. Can be negative.</param>
+            <param name="maxValue">Must be &gt;= minValue. Can be negative.</param>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.NextInt">
+            <summary>
+            Fetch a Signed 32-bit integer from the PRNG.
+            <para>Note: This is full range of [int.MinValue, int.MaxValue], inclusive at both ends.</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.Base.XoshiroBase.NextIntNonNegative">
+            <summary>
+            Fetch a non-negative, Signed 32-bit integer from the PRNG.
+            <para>Note: This is full non-negative range of [0, int.MaxValue], inclusive at both ends.</para>
+            </summary>
+        </member>
+        <member name="T:Xoshiro.PRNG64.XoRoShiRo128plus">
+            <summary>
+            A very fast PRNG with 128-bit state, suitable for generating random floating-point numbers.
+            </summary>
+            <remarks>
+            <para>Due to some apparent weaknesses of the output's lower-orded bits, it is NOT
+            recommended to use this PRNG to generate random 64-bit integers. (Double precision
+            floating-point numbers only use the upper 53 bits.)</para>
+            </remarks>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoRoShiRo128plus.#ctor">
+            <summary>
+            Default (Null) Constructor with seed taken from DateTime.UtcNow.Ticks
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoRoShiRo128plus.#ctor(System.Int64)">
+            <summary>
+            Constructor with custom seed, which will be expanded into states
+            by the SplitMix64 algorithm.
+            </summary>
+            <param name="seed">seed to initialize the state of SplitMix64</param>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoRoShiRo128plus.#ctor(System.UInt64[])">
+            <summary>
+            Constructor with custom initial state.
+            <para>WARNING: DO NOT use this constructor unless you know exactly
+            what you're doing!</para>
+            </summary>
+            <param name="initialStates">Array (minimum of 2 elements) containing the
+            initial state</param>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoRoShiRo128plus.Next64U">
+            <summary>
+            Fetch an Unsigned 64-bit integer from the PRNG.
+            </summary>
+        </member>
+        <member name="T:Xoshiro.PRNG64.XoRoShiRo128starstar">
+            <summary>
+            A fast PRNG with 128-bit state, suitable for generating 64-bit random numbers
+            (integer and floating-point).
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoRoShiRo128starstar.#ctor">
+            <summary>
+            Default (Null) Constructor with seed taken from DateTime.UtcNow.Ticks
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoRoShiRo128starstar.#ctor(System.Int64)">
+            <summary>
+            Constructor with custom seed, which will be expanded into states
+            by the SplitMix64 algorithm.
+            </summary>
+            <param name="seed">seed to initialize the state of SplitMix64</param>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoRoShiRo128starstar.#ctor(System.UInt64[])">
+            <summary>
+            Constructor with custom initial state.
+            <para>WARNING: DO NOT use this constructor unless you know exactly
+            what you're doing!</para>
+            </summary>
+            <param name="initialStates">Array (minimum of 2 elements) containing the
+            initial state</param>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoRoShiRo128starstar.Next64U">
+            <summary>
+            Fetch an Unsigned 64-bit integer from the PRNG.
+            </summary>
+        </member>
+        <member name="T:Xoshiro.PRNG64.XoShiRo256plus">
+            <summary>
+            A fast PRNG with 256-bit state, suitable for generating random double precision
+            floating-point numbers.
+            </summary>
+            <remarks>
+            <para>Due to some apparent weaknesses of the output's lower-orded bits, it is NOT
+            recommended to use this PRNG to generate random 64-bit integers. (Double precision
+            floating-point numbers only use the upper 53 bits.)</para>
+            </remarks>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoShiRo256plus.#ctor">
+            <summary>
+            Default (Null) Constructor with seed taken from DateTime.UtcNow.Ticks
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoShiRo256plus.#ctor(System.Int64)">
+            <summary>
+            Constructor with custom seed, which will be expanded into states
+            by the SplitMix64 algorithm.
+            </summary>
+            <param name="seed">seed to initialize the state of SplitMix64</param>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoShiRo256plus.#ctor(System.UInt64[])">
+            <summary>
+            Constructor with custom initial state.
+            <para>WARNING: DO NOT use this constructor unless you know exactly
+            what you're doing!</para>
+            </summary>
+            <param name="initialStates">Array (minimum of 4 elements) containing the
+            initial state</param>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoShiRo256plus.Next64U">
+            <summary>
+            Fetch an Unsigned 64-bit integer from the PRNG.
+            </summary>
+        </member>
+        <member name="T:Xoshiro.PRNG64.XoShiRo256starstar">
+            <summary>
+            A fast PRNG with 256-bit state, suitable for generating all-purpose random numbers
+            (64-bit integers and double precision floating-point).
+            </summary>
+            <remarks>
+            If, however, one has to generate only 64-bit floating-point numbers (by extracting
+            the upper 53 bits) xoshiro256+ is a slightly (≈15%) faster generator with analogous
+            statistical properties. For general usage, one has to consider that [the plus version's]
+            lowest bits have low linear complexity and will fail linearity tests.
+            </remarks>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoShiRo256starstar.#ctor">
+            <summary>
+            Default (Null) Constructor with seed taken from DateTime.UtcNow.Ticks
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoShiRo256starstar.#ctor(System.Int64)">
+            <summary>
+            Constructor with custom seed, which will be expanded into states
+            by the SplitMix64 algorithm.
+            </summary>
+            <param name="seed">seed to initialize the state of SplitMix64</param>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoShiRo256starstar.#ctor(System.UInt64[])">
+            <summary>
+            Constructor with custom initial state.
+            <para>WARNING: DO NOT use this constructor unless you know exactly
+            what you're doing!</para>
+            </summary>
+            <param name="initialStates">Array (minimum of 4 elements) containing the
+            initial state</param>
+        </member>
+        <member name="M:Xoshiro.PRNG64.XoShiRo256starstar.Next64U">
+            <summary>
+            Fetch an Unsigned 64-bit integer from the PRNG.
+            </summary>
+        </member>
+        <member name="T:Xoshiro.PRNG64.Xoshiro64Base">
+            <summary>
+            The base class for all PRNGs that natively output 64-bit integers.
+            </summary>
+            <remarks><para>You'll notice that all internal state variables are also
+            64 bits.</para></remarks>
+        </member>
+        <member name="P:Xoshiro.PRNG64.Xoshiro64Base.FoldMethod">
+            <summary>
+            Sets the desired folding method to convert the 64-bit PRNG output to 32 bits.
+            </summary>
+            <see cref="T:Xoshiro.Base.Fold64To32Method"/>
+        </member>
+        <member name="M:Xoshiro.PRNG64.Xoshiro64Base.NextU">
+            <summary>
+            Fetch a folded Unsigned 32-bit integer from the PRNG.
+            <para>Note: This is full range of [0, UInt32.MaxValue]</para>
+            <para>This is</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG64.Xoshiro64Base.NextBytes(System.Byte[])">
+            <summary>
+            Fill an array of bytes with the next numbers from the PRNG.
+            </summary>
+            <param name="buffer">Cannot be null</param>
+        </member>
+        <member name="M:Xoshiro.PRNG64.Xoshiro64Base.Sample">
+            <summary>
+            Fetch a non-negative double precision floating-point number, within the range [0, 1.0)
+            <para>WARNING: Only 53 bits of randomness!</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG64.Xoshiro64Base.NextDouble">
+            <summary>
+            Fetch a non-negative double precision floating-point number, within the range [0, 1.0)
+            <para>WARNING: Only 53 bits of randomness!</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG64.Xoshiro64Base.NextFloat">
+            <summary>
+            Fetch a non-negative single precision floating-point number, within the range [0, 1.0)
+            <para>WARNING: Only 24 bits of randomness!</para>
+            </summary>
+        </member>
+        <member name="T:Xoshiro.PRNG32.XoShiRo128plus">
+            <summary>
+            A very fast PRNG with 128-bit state, suitable for generating random
+            single precision floating-point numbers.
+            </summary>
+            <remarks>
+            <para>Due to some apparent weaknesses of the output's lower-orded bits, it is NOT
+            recommended to use this PRNG to generate random 32-bit integers. (Single precision
+            floating-point numbers only use the upper 23 bits.)</para>
+            </remarks>
+        </member>
+        <member name="M:Xoshiro.PRNG32.XoShiRo128plus.#ctor">
+            <summary>
+            Default (Null) Constructor with seed taken from DateTime.UtcNow.Ticks
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG32.XoShiRo128plus.#ctor(System.Int64)">
+            <summary>
+            Constructor with custom seed, which will be expanded into states
+            by the SplitMix64 algorithm.
+            </summary>
+            <param name="seed">seed to initialize the state of SplitMix64</param>
+        </member>
+        <member name="M:Xoshiro.PRNG32.XoShiRo128plus.#ctor(System.UInt32[])">
+            <summary>
+            Constructor with custom initial state.
+            <para>WARNING: DO NOT use this constructor unless you know exactly
+            what you're doing!</para>
+            </summary>
+            <param name="initialStates">Array (minimum of 4 elements) containing the
+            initial state</param>
+        </member>
+        <member name="M:Xoshiro.PRNG32.XoShiRo128plus.NextU">
+            <summary>
+            Fetch an Unsigned 32-bit integer from the PRNG.
+            </summary>
+        </member>
+        <member name="T:Xoshiro.PRNG32.XoShiRo128starstar">
+            <summary>
+            A very fast PRNG with 128-bit state, suitable for generating random
+            32-bit integers and single precision floating-point numbers.
+            </summary>
+            <remarks>
+            If, however, one has to generate only 32-bit floating-point numbers (by extracting
+            the upper 23 bits) xoshiro128+ might be slightly faster, with analogous
+            statistical properties. For general usage, one has to consider that [the plus version's]
+            lowest bits have low linear complexity and will fail linearity tests.
+            </remarks>
+        </member>
+        <member name="M:Xoshiro.PRNG32.XoShiRo128starstar.#ctor">
+            <summary>
+            Default (Null) Constructor with seed taken from DateTime.UtcNow.Ticks
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG32.XoShiRo128starstar.#ctor(System.Int64)">
+            <summary>
+            Constructor with custom seed, which will be expanded into states
+            by the SplitMix64 algorithm.
+            </summary>
+            <param name="seed">seed to initialize the state of SplitMix64</param>
+        </member>
+        <member name="M:Xoshiro.PRNG32.XoShiRo128starstar.#ctor(System.UInt32[])">
+            <summary>
+            Constructor with custom initial state.
+            <para>WARNING: DO NOT use this constructor unless you know exactly
+            what you're doing!</para>
+            </summary>
+            <param name="initialStates">Array (minimum of 4 elements) containing the
+            initial state</param>
+        </member>
+        <member name="M:Xoshiro.PRNG32.XoShiRo128starstar.NextU">
+            <summary>
+            Fetch an Unsigned 32-bit integer from the PRNG.
+            </summary>
+        </member>
+        <member name="T:Xoshiro.PRNG32.Xoshiro32Base">
+            <summary>
+            The base class for all PRNGs that natively output 32-bit integers.
+            </summary>
+            <remarks><para>You'll notice that all internal state variables are also
+            32 bits.</para></remarks>
+        </member>
+        <member name="M:Xoshiro.PRNG32.Xoshiro32Base.NextBytes(System.Byte[])">
+            <summary>
+            Fill an array of bytes with the next numbers from the PRNG.
+            </summary>
+            <param name="buffer">Cannot be null</param>
+        </member>
+        <member name="M:Xoshiro.PRNG32.Xoshiro32Base.Sample">
+            <summary>
+            Fetch a non-negative double precision floating-point number, within the range [0, 1.0)
+            <para>WARNING: Only 24 bits of randomness!</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG32.Xoshiro32Base.NextDouble">
+            <summary>
+            Fetch a non-negative double precision floating-point number, within the range [0, 1.0)
+            <para>WARNING: Only 24 bits of randomness!</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG32.Xoshiro32Base.NextFloat">
+            <summary>
+            Fetch a non-negative single precision floating-point number, within the range [0, 1.0)
+            <para>WARNING: Only 24 bits of randomness!</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG32.Xoshiro32Base.Next64U">
+            <summary>
+            Fetch an Unsigned 64-bit integer by appending two consecutive 32-bit integers from the PRNG.
+            <para>Note: This is full range of [0, UInt64.MaxValue]</para>
+            </summary>
+        </member>
+    </members>
+</doc>

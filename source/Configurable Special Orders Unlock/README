@@ -1,0 +1,14 @@
+Configurable Special Orders Unlock
+by Vertigon
+
+This mod seeks to make the Special Orders board more immediately accessible to the player. It does so by allowing the player (or host, if playing online) to modify
+the date on which the Special Orders board is unlocked, and optionally whether or not to skip the corresponding cutscene.
+
+Note: This mod has not been thoroughly tested for multiplayer use. Please report any issues you come across on the Nexus mod page.
+
+If you have any issues:
+Make sure SMAPI is up-to-date.
+Make sure GMCM is up-to-date if you are using it.
+Make sure you do not have any other mods installed which modify the Special Orders board installation cutscene (occurs on Fall 2 of Year 1 in Town).
+You can reach me on the Stardew Valley discord (Vertigon#1851) or on the Nexus mod page.
+Please provide a SMAPI log so that I can assist you better.

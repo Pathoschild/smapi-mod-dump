@@ -1,5 +1,6 @@
-url:
-   https://github.com/joelra/SDV-PassableLadders.git
+urls:
+   web: https://github.com/joelra/SDV-PassableLadders
+   Git: https://github.com/joelra/SDV-PassableLadders.git
 
 mods:
    Passable Ladders

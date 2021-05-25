@@ -1,5 +1,6 @@
-url:
-   https://github.com/deLaDude/ChefsCloset.git
+urls:
+   web: https://github.com/deLaDude/ChefsCloset
+   Git: https://github.com/deLaDude/ChefsCloset.git
 
 mods:
    Chefs Closet

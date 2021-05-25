@@ -1,5 +1,6 @@
-url:
-   https://github.com/Permamiss/Auto-Eat.git
+urls:
+   web: https://github.com/Permamiss/Auto-Eat
+   Git: https://github.com/Permamiss/Auto-Eat.git
 
 mods:
    Auto-Eat

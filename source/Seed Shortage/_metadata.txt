@@ -1,5 +1,6 @@
-url:
-   https://github.com/xynerorias/Seed-Shortage.git
+urls:
+   web: https://github.com/xynerorias/Seed-Shortage
+   Git: https://github.com/xynerorias/Seed-Shortage.git
 
 mods:
    Seed Shortage

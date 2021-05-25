@@ -1,5 +1,6 @@
-url:
-   https://github.com/lisamreynolds/MusicalCellar.git
+urls:
+   web: https://github.com/lisamreynolds/MusicalCellar
+   Git: https://github.com/lisamreynolds/MusicalCellar.git
 
 mods:
    Musical Cellar

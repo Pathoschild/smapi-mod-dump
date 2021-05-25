@@ -1,5 +1,6 @@
-url:
-   https://github.com/MissCoriel/Position-Tool.git
+urls:
+   web: https://github.com/MissCoriel/Position-Tool
+   Git: https://github.com/MissCoriel/Position-Tool.git
 
 mods:
    Miss Coriel's Position Tool

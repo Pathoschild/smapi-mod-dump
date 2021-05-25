@@ -1,5 +1,6 @@
-url:
-   https://github.com/minervamaga/StandardizedKrobus.git
+urls:
+   web: https://github.com/minervamaga/StandardizedKrobus
+   Git: https://github.com/minervamaga/StandardizedKrobus.git
 
 mods:
    Standardized Krobus

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SkillfulClothes.Types;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -37,19 +38,19 @@ namespace SkillfulClothes.Effects
             return new EffectSet(effects);
         }
 
-        public void Apply(Farmer farmer)
+        public void Apply(Item sourceItem, EffectChangeReason reason)
         {
             foreach(var effect in Effects)
             {
-                effect.Apply(farmer);
+                effect.Apply(sourceItem, reason);
             }
         }
 
-        public void Remove(Farmer farmer)
+        public void Remove(Item sourceItem, EffectChangeReason reason)
         {
             foreach (var effect in Effects)
             {
-                effect.Remove(farmer);
+                effect.Remove(sourceItem, reason);
             }
         }
     }

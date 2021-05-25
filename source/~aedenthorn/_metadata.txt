@@ -1,5 +1,6 @@
-url:
-   https://github.com/aedenthorn/StardewValleyMods.git
+urls:
+   web: https://github.com/aedenthorn/StardewValleyMods
+   Git: https://github.com/aedenthorn/StardewValleyMods.git
 
 mods:
    Advanced Loot Framework
@@ -64,9 +65,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit b162b23d03bec09378adbb3572b16f26b15cc775
+   commit 690a185df72e70faec55bc5474fed3ed7c521639
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sat Apr 24 23:14:14 2021 -0400
+   Date:   Wed May 19 20:29:50 2021 -0400
    
-       spouse kids room
+       etc
    

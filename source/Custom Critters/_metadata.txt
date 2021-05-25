@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/CustomCritters.git
+urls:
+   web: https://github.com/spacechase0/CustomCritters
+   Git: https://github.com/spacechase0/CustomCritters.git
 
 mods:
    Custom Critters

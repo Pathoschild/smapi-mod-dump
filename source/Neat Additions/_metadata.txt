@@ -1,5 +1,6 @@
-url:
-   https://github.com/Ilyaki/NeatAdditions.git
+urls:
+   web: https://github.com/Ilyaki/NeatAdditions
+   Git: https://github.com/Ilyaki/NeatAdditions.git
 
 mods:
    Neat Additions

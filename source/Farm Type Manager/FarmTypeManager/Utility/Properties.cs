@@ -119,6 +119,9 @@ namespace FarmTypeManager
             /// <summary>Set to true when the "DayEnding" SMAPI event begins, then set to false when SMAPI's "DayStarted" event ends. Used to detect Android/mod-related save events.</summary>
             public static bool DayIsEnding { get; set; } = false;
 
+            /// <summary>Set to true while the Stardew is currently saving the game, whether mid-day or end-of-day.</summary>
+            public static bool GameIsSaving { get; set; } = false;
+
             /// <summary>Enumerated list of farm types, in the order used by Stardew's internal code (e.g. Farm.cs)</summary>
             public enum FarmTypes { Standard, Riverland, Forest, Hilltop, Wilderness, FourCorners, Beach }
 

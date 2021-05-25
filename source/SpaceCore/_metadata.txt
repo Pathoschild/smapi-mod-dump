@@ -1,14 +1,14 @@
-url:
-   https://github.com/spacechase0/SpaceCore_SDV.git
+urls:
+   web: https://github.com/spacechase0/SpaceCore_SDV
+   Git: https://github.com/spacechase0/SpaceCore_SDV.git
 
 mods:
    SpaceCore
 
 latest commit:
-   commit bd6f7d7edf4023d421037cf153a3d25211c64d1a
-   Merge: 85568d2 0a74d0d
+   commit 372ab7db5f4807eb7a39094705ad5c7a1394c631
    Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Tue Apr 13 20:26:38 2021 -0400
+   Date:   Tue May 18 20:05:23 2021 -0400
    
-       Merge remote-tracking branch 'origin/master'
+       1.5.6
    

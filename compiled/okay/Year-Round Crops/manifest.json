@@ -1,10 +1,10 @@
 ﻿{
   "Name": "YearRoundCrops",
   "Author": "vincebel",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Plant any crop, any season",
   "UniqueID": "vincebel.YearRoundCrops",
   "EntryDll": "YearRoundCrops.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:8196" ]
 }

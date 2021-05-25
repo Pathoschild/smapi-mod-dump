@@ -1,5 +1,6 @@
-url:
-   https://github.com/KirbyLink/UnderdarkSewer.git
+urls:
+   web: https://github.com/KirbyLink/UnderdarkSewer
+   Git: https://github.com/KirbyLink/UnderdarkSewer.git
 
 mods:
    Underdark Sewer

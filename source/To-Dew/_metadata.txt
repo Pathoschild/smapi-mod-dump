@@ -1,5 +1,6 @@
-url:
-   https://github.com/jltaylor-us/StardewToDew.git
+urls:
+   web: https://github.com/jltaylor-us/StardewToDew
+   Git: https://github.com/jltaylor-us/StardewToDew.git
 
 mods:
    To-Dew

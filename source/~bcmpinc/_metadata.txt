@@ -1,5 +1,6 @@
-url:
-   https://github.com/bcmpinc/StardewHack.git
+urls:
+   web: https://github.com/bcmpinc/StardewHack
+   Git: https://github.com/bcmpinc/StardewHack.git
 
 mods:
    Always Scroll Map
@@ -15,9 +16,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit b869a78bbf871f10222019e1f801d8ca8cfbc5e1
+   commit 5a5e6c8e04d83af7d07953a1bb93a3e1abefe2bb
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Mon Apr 12 12:57:57 2021 +0200
+   Date:   Sat May 22 12:26:59 2021 +0200
    
-       [HarvestWithScythe] Move settings hint from tooltip to paragraph.
+       fix #57: OnlyPreventTapped setting was applied when false.
    

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8732
+IDs: StultusV.PassiveFriendship
+update keys: Nexus:8732, GitHub:JudeRV/Stardew-PassiveFriendship

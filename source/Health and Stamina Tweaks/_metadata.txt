@@ -1,5 +1,6 @@
-url:
-   https://github.com/SvardXI/HAS_Tweaks.git
+urls:
+   web: https://github.com/SvardXI/HAS_Tweaks
+   Git: https://github.com/SvardXI/HAS_Tweaks.git
 
 mods:
    Health and Stamina Tweaks

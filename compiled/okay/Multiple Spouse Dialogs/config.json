@@ -1,0 +1,12 @@
+{
+  "EnableMod": true,
+  "MinHeartsForChat": 9,
+  "AllowSpousesToChat": true,
+  "ChatWithPlayer": true,
+  "SpouseChatChance": 0.05,
+  "MinDistanceToChat": 100.0,
+  "MaxDistanceToChat": 350.0,
+  "MinSpouseChatInterval": 10.0,
+  "PreventRelativesFromChatting": false,
+  "ExtraDebugOutput": false
+}

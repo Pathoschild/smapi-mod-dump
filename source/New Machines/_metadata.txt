@@ -1,5 +1,6 @@
-url:
-   https://github.com/Igorious/StardevValleyNewMachinesMod.git
+urls:
+   web: https://github.com/Igorious/StardevValleyNewMachinesMod
+   Git: https://github.com/Igorious/StardevValleyNewMachinesMod.git
 
 mods:
    New Machines

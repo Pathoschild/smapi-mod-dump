@@ -1,5 +1,6 @@
-url:
-   https://github.com/xirsoi/MayonnaisePlusPlus.git
+urls:
+   web: https://github.com/xirsoi/MayonnaisePlusPlus
+   Git: https://github.com/xirsoi/MayonnaisePlusPlus.git
 
 mods:
    Mayonnaise++

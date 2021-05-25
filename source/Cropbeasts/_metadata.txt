@@ -1,5 +1,6 @@
-url:
-   https://gitlab.com/kdau/cropbeasts.git
+urls:
+   web: https://gitlab.com/kdau/cropbeasts
+   Git: https://gitlab.com/kdau/cropbeasts.git
 
 mods:
    Cropbeasts

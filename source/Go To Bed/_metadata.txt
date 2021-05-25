@@ -1,13 +1,14 @@
-url:
-   https://github.com/mus-candidus/GoToBed.git
+urls:
+   web: https://github.com/mus-candidus/GoToBed
+   Git: https://github.com/mus-candidus/GoToBed.git
 
 mods:
    Go To Bed
 
 latest commit:
-   commit 0e61e880bb35ab7dc7b088637802a607b3abd136
+   commit 08363a2d28bf7c25ceec35b588bf779b6d2ca444
    Author: Candidus <candidus@xmail.net>
-   Date:   Sun Jan 3 14:25:07 2021 +0100
+   Date:   Tue May 18 21:09:53 2021 +0200
    
-       Fix incompatibility with the island farm house.
+       Fix: Entering the farm house after 2200 puts spouse to sleep immediately: Add a transpiler for FarmHouse.resetSharedState() to be able to change the hardcoded time 2200 .
    

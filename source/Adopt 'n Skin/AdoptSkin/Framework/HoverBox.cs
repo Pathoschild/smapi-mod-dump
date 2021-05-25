@@ -77,9 +77,9 @@ namespace AdoptSkin.Framework
         {
             // ** MAY NEED TO CHANGE FOR MULTIPLAYER **
             if (Game1.player.currentLocation == creature.currentLocation &&
-                (int)mousePos.X >= creature.getTileX() && (int)mousePos.X <= (creature.getTileX() + creature.GetSpriteWidthForPositioning()) &&
-                //1.4 CODE: (int)mousePos.X >= creature.getLeftMostTileX().X && (int)mousePos.X <= creature.getRightMostTileX().X &&
+                (int)mousePos.X >= creature.getTileX() && (int)mousePos.X <= (creature.getTileX() + (creature.GetSpriteWidthForPositioning() / Game1.tileSize)) &&
                     (int)mousePos.Y <= creature.getTileY() && (int)mousePos.Y >= (creature.getTileY() - 1))
+                //1.4 CODE: (int)mousePos.X >= creature.getLeftMostTileX().X && (int)mousePos.X <= creature.getRightMostTileX().X &&
                 return true;
 
             return false;

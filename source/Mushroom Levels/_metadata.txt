@@ -1,5 +1,6 @@
-url:
-   https://github.com/benrpatterson/MushroomLevels.git
+urls:
+   web: https://github.com/benrpatterson/MushroomLevels
+   Git: https://github.com/benrpatterson/MushroomLevels.git
 
 mods:
    Mushroom Levels

@@ -68,7 +68,8 @@ namespace FarmTypeManager
                     
                     //validate the "only spawn if a player is present" setting
                     if (spawns[0].SpawnArea.SpawnTiming.OnlySpawnIfAPlayerIsPresent //if the setting is enabled
-                        || spawns[0].SavedObject.MapName.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase)) //OR if the target map is a mineshaft level (i.e. temporary)
+                        || spawns[0].SavedObject.MapName.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase) //OR if the target map is a mine level
+                        || spawns[0].SavedObject.MapName.StartsWith("VolcanoDungeon", StringComparison.OrdinalIgnoreCase)) //OR if the target map is a volcano level
                     {
                         FarmerCollection farmers = Game1.getOnlineFarmers(); //get all active players
 

@@ -1,5 +1,6 @@
-url:
-   https://github.com/embolden/Heartbeat.git
+urls:
+   web: https://github.com/embolden/Heartbeat
+   Git: https://github.com/embolden/Heartbeat.git
 
 mods:
    Heartbeat

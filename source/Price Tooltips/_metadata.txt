@@ -1,5 +1,6 @@
-url:
-   https://github.com/Stardew-Valley-Modding/PriceTooltips.git
+urls:
+   web: https://github.com/Stardew-Valley-Modding/PriceTooltips
+   Git: https://github.com/Stardew-Valley-Modding/PriceTooltips.git
 
 mods:
    Price Tooltips

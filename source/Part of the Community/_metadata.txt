@@ -1,5 +1,6 @@
-url:
-   https://github.com/bmarquismarkail/SV_PotC.git
+urls:
+   web: https://github.com/bmarquismarkail/SV_PotC
+   Git: https://github.com/bmarquismarkail/SV_PotC.git
 
 mods:
    Part of the Community

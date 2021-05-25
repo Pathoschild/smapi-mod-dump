@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/MoreGrassStarters.git
+urls:
+   web: https://github.com/spacechase0/MoreGrassStarters
+   Git: https://github.com/spacechase0/MoreGrassStarters.git
 
 mods:
    More Grass Starters

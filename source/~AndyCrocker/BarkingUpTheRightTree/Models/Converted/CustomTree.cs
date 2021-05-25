@@ -33,17 +33,20 @@ namespace BarkingUpTheRightTree.Models.Converted
         /// <summary>The item the tree drops when using a tapper on it.</summary>
         public TapperTimedProduct TappedProduct { get; }
 
-        /// <summary>The item the tree drops when it gets cut down.</summary>
-        public int Wood { get; }
+        /// <summary>The id of the item the tree drops when it gets cut down.</summary>
+        public int WoodId { get; }
 
         /// <summary>Whether the tree drops sap when it gets cut down.</summary>
         public bool DropsSap { get; }
 
-        /// <summary>The item to plant to grow the tree.</summary>
-        public int Seed { get; }
+        /// <summary>The id of the item to plant to grow the tree.</summary>
+        public int SeedId { get; }
 
         /// <summary>The required tool level to cut down the tree.</summary>
         public int RequiredToolLevel { get; }
+
+        /// <summary>Whether the tree turns into a stump in winter, like the mushroom tree.</summary>
+        public bool IsStumpInWinter { get; }
 
         /// <summary>The items the tree can drop whenever it's shaken.</summary>
         public List<SeasonalTimedProduct> ShakingProducts { get; }
@@ -72,26 +75,28 @@ namespace BarkingUpTheRightTree.Models.Converted
         /// <param name="name">The name of the tree.</param>
         /// <param name="texture">The texture for the tree.</param>
         /// <param name="tappedProduct">The item the tree drops when using a tapper on it.</param>
-        /// <param name="wood">The item the tree drops when it gets cut down.</param>
+        /// <param name="woodId">The id of the item the tree drops when it gets cut down.</param>
         /// <param name="dropsSap">Whether the tree drops sap when it gets cut down.</param>
-        /// <param name="seed">The item to plant to grow the tree.</param>
+        /// <param name="seedId">The id of the item to plant to grow the tree.</param>
         /// <param name="requiredToolLevel">The required tool level to cut down the tree.</param>
+        /// <param name="isStumpInWinter">Whether the tree turns into a stump in winter, like the mushroom tree.</param>
         /// <param name="shakingProducts">The items the tree can drop whenever it's shaken.</param>
         /// <param name="includeIfModIsPresent">The tree will only get loaded if atleast one of the listed mods are present.</param>
         /// <param name="excludeIfModIsPresent">The tree will only get loaded if none of the listed mods are present.</param>
         /// <param name="barkProduct">The item the tree drops when using the <see cref="BarkRemover"/> tool on it.</param>
         /// <param name="unfertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's unfertilised.</param>
         /// <param name="fertilisedGrowthChance">The chance the tree has to grow a stage (at the start of each day) when it's fertilised.</param>
-        public CustomTree(int id, string name, Texture2D texture, TapperTimedProduct tappedProduct, int wood, bool dropsSap, int seed, int requiredToolLevel, List<SeasonalTimedProduct> shakingProducts, List<string> includeIfModIsPresent, List<string> excludeIfModIsPresent, TimedProduct barkProduct, float unfertilisedGrowthChance, float fertilisedGrowthChance)
+        public CustomTree(int id, string name, Texture2D texture, TapperTimedProduct tappedProduct, int woodId, bool dropsSap, int seedId, int requiredToolLevel, bool isStumpInWinter, List<SeasonalTimedProduct> shakingProducts, List<string> includeIfModIsPresent, List<string> excludeIfModIsPresent, TimedProduct barkProduct, float unfertilisedGrowthChance, float fertilisedGrowthChance)
         {
             Id = id;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Texture = texture ?? throw new ArgumentNullException(nameof(texture));
             TappedProduct = tappedProduct;
-            Wood = wood;
+            WoodId = woodId;
             DropsSap = dropsSap;
-            Seed = seed;
+            SeedId = seedId;
             RequiredToolLevel = requiredToolLevel;
+            IsStumpInWinter = isStumpInWinter;
             ShakingProducts = shakingProducts ?? new List<SeasonalTimedProduct>();
             IncludeIfModIsPresent = includeIfModIsPresent ?? new List<string>();
             ExcludeIfModIsPresent = excludeIfModIsPresent ?? new List<string>();

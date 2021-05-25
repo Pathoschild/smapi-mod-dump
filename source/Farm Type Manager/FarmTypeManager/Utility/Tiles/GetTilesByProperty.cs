@@ -43,26 +43,26 @@ namespace FarmTypeManager
                 {
                     for (int x = 0; x < mapX; x++) //loops for each tile on the map, from the top left (x,y == 0,0) to bottom right, moving horizontally first
                     {
-                        Vector2 tile = new Vector2(x, y);
                         if (type.Equals("all", StringComparison.OrdinalIgnoreCase)) //if the "property" to be matched is "All" (a special exception)
                         {
-                            //add any clear tiles, regardless of properties
-                            tiles.Add(tile); //add to list of tiles
+                            tiles.Add(new Vector2(x, y)); //add to list of tiles, regardless of properties
                         }
                         else if (type.Equals("diggable", StringComparison.OrdinalIgnoreCase)) //if the tile's "Diggable" property matches (case-insensitive)
                         {
-                            if (location.doesTileHaveProperty(x, y, "Diggable", "Back") == "T") //NOTE: the string "T" means "true" for several tile property checks
+                            string diggable = location.doesTileHavePropertyNoNull(x, y, "Diggable", "Back"); //get the current "Diggable" property of this tile (empty if null)
+
+                            if (diggable == "T") //NOTE: the string "T" means "true" for several tile property checks
                             {
-                                tiles.Add(tile); //add to list of tiles
+                                tiles.Add(new Vector2(x, y)); //add to list of tiles
                             }
                         }
                         else //assumed to be checking for a specific value in the tile's "Type" property, e.g. "Grass" or "Dirt"
                         {
-                            string currentType = location.doesTileHaveProperty(x, y, "Type", "Back") ?? ""; //get the current "Type" property of this tile (or if null, an empty string)
+                            string currentType = location.doesTileHavePropertyNoNull(x, y, "Type", "Back"); //get the current "Type" property of this tile (empty if null)
 
                             if (currentType.Equals(type, StringComparison.OrdinalIgnoreCase)) //if the tile's "Type" property matches (case-insensitive)
                             {
-                                tiles.Add(tile); //add to list of tiles
+                                tiles.Add(new Vector2(x, y)); //add to list of tiles
                             }
                         }
                     }

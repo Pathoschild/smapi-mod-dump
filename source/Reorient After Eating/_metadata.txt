@@ -1,5 +1,6 @@
-url:
-   https://github.com/amconners/ReorientAfterEating.git
+urls:
+   web: https://github.com/amconners/ReorientAfterEating
+   Git: https://github.com/amconners/ReorientAfterEating.git
 
 mods:
    Reorient After Eating

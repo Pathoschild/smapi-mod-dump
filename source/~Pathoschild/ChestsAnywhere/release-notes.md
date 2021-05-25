@@ -9,6 +9,9 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Improved translations. Thanks to randomC0der (updated German)!
+
 ## 1.20.13
 Released 17 April 2021.
 

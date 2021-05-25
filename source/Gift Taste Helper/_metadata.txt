@@ -1,5 +1,6 @@
-url:
-   https://github.com/tstaples/GiftTasteHelper.git
+urls:
+   web: https://github.com/tstaples/GiftTasteHelper
+   Git: https://github.com/tstaples/GiftTasteHelper.git
 
 mods:
    Gift Taste Helper

@@ -1,5 +1,6 @@
-url:
-   https://github.com/kevinforrestconnors/ProfessionAdjustments.git
+urls:
+   web: https://github.com/kevinforrestconnors/ProfessionAdjustments
+   Git: https://github.com/kevinforrestconnors/ProfessionAdjustments.git
 
 mods:
    Profession Adjustments

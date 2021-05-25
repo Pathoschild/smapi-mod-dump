@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/CarryChest.git
+urls:
+   web: https://github.com/spacechase0/CarryChest
+   Git: https://github.com/spacechase0/CarryChest.git
 
 mods:
    Carry Chest

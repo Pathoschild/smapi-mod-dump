@@ -1,5 +1,6 @@
-url:
-   https://github.com/rei2hu/stardewvalley-esp.git
+urls:
+   web: https://github.com/rei2hu/stardewvalley-esp
+   Git: https://github.com/rei2hu/stardewvalley-esp.git
 
 mods:
    Stardew Valley ESP

@@ -1,18 +1,16 @@
-url:
-   https://github.com/Gathouria/Adopt-Skin.git
+urls:
+   web: https://github.com/Gathouria/Adopt-Skin
+   Git: https://github.com/Gathouria/Adopt-Skin.git
 
 mods:
    Adopt 'n Skin
 
 latest commit:
-   commit 43c5401c26a3231d922dc2c51da869f0ac335583
+   commit ba599e7842ac2dccf6003bc1fddbca9914516761
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Mon Dec 21 19:09:56 2020 -0800
+   Date:   Thu May 20 16:33:38 2021 -0700
    
-       Updates for SDV 1.5
+       (Unofficial) SDV 1.5 Update
        
-       Updated to SMAPI 3.8.0 and SDV 1.5
-       
-       - Hover box and interaction code has been changed to use SDV's new version of the functions for sprite positions. This seems to be the only change necessary at the moment.
-       - One-line hotfix attempt for errors in MP, where farmhands receive error code when a stray or wild horse spawns
+       Modifications for SDV 1.5. Not thourghly tested, procede with caution.
    

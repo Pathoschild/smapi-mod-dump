@@ -1,5 +1,6 @@
-url:
-   https://github.com/remybach/stardew-valley-forecaster.git
+urls:
+   web: https://github.com/remybach/stardew-valley-forecaster
+   Git: https://github.com/remybach/stardew-valley-forecaster.git
 
 mods:
    Forecaster

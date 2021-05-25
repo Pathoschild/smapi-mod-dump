@@ -1,5 +1,6 @@
-url:
-   https://github.com/KDERazorback/SvFishingMod.git
+urls:
+   web: https://github.com/KDERazorback/SvFishingMod
+   Git: https://github.com/KDERazorback/SvFishingMod.git
 
 mods:
    SvFishingMod

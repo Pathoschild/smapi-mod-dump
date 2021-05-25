@@ -1,0 +1,15 @@
+urls:
+   web: https://sourceforge.net/projects/sdvmod-grandfather-s-gift-re/
+   Mercurial: http://hg.code.sf.net/p/sdvmod-grandfather-s-gift-re/code
+
+mods:
+   Grandfather's Gift Remade
+
+latest commit:
+   changeset:   25:0a2185e6f8cb
+   tag:         tip
+   user:        Pandu POLUAN <pepoluan@gmail.com>
+   date:        Sat Dec 14 13:48:21 2019 +0700
+   summary:     v1.2.5 - Versioning fix
+   
+   

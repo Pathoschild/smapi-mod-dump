@@ -1,5 +1,6 @@
-url:
-   https://github.com/pomepome/AdjustableStaminaHealing.git
+urls:
+   web: https://github.com/pomepome/AdjustableStaminaHealing
+   Git: https://github.com/pomepome/AdjustableStaminaHealing.git
 
 mods:
    Adjustable Stamina Healing

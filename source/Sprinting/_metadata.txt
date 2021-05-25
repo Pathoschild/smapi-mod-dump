@@ -1,5 +1,6 @@
-url:
-   https://github.com/oliverpl/SprintingMod.git
+urls:
+   web: https://github.com/oliverpl/SprintingMod
+   Git: https://github.com/oliverpl/SprintingMod.git
 
 mods:
    Sprinting

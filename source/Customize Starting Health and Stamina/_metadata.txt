@@ -1,5 +1,6 @@
-url:
-   https://github.com/MissCoriel/Customize-Health-and-Stamina.git
+urls:
+   web: https://github.com/MissCoriel/Customize-Health-and-Stamina
+   Git: https://github.com/MissCoriel/Customize-Health-and-Stamina.git
 
 mods:
    Customize Starting Health and Stamina

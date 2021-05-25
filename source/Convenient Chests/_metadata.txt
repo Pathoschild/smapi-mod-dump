@@ -1,5 +1,6 @@
-url:
-   https://github.com/aEnigmatic/StardewValley.git
+urls:
+   web: https://github.com/aEnigmatic/StardewValley
+   Git: https://github.com/aEnigmatic/StardewValley.git
 
 mods:
    Convenient Chests

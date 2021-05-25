@@ -1,5 +1,6 @@
-url:
-   https://github.com/isaacs-dev/Minidew-Mods.git
+urls:
+   web: https://github.com/isaacs-dev/Minidew-Mods
+   Git: https://github.com/isaacs-dev/Minidew-Mods.git
 
 mods:
    Friends Forever

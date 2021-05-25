@@ -1,5 +1,6 @@
-url:
-   https://github.com/vgperson/RangedTools.git
+urls:
+   web: https://github.com/vgperson/RangedTools
+   Git: https://github.com/vgperson/RangedTools.git
 
 mods:
    Ranged Tools

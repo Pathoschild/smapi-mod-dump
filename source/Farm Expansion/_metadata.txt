@@ -1,5 +1,6 @@
-url:
-   https://github.com/AdvizeGH/FarmExpansion.git
+urls:
+   web: https://github.com/AdvizeGH/FarmExpansion
+   Git: https://github.com/AdvizeGH/FarmExpansion.git
 
 mods:
    Farm Expansion

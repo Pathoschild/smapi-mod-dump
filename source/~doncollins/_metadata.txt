@@ -1,5 +1,6 @@
-url:
-   https://github.com/doncollins/StardewValleyMods.git
+urls:
+   web: https://github.com/doncollins/StardewValleyMods
+   Git: https://github.com/doncollins/StardewValleyMods.git
 
 mods:
    Categorize Chests

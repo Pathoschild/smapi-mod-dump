@@ -1,16 +1,17 @@
-url:
-   https://github.com/Enaium-StardewValleyMods/ModMenu.git
+urls:
+   web: https://github.com/Enaium-StardewValleyMods/ModMenu
+   Git: https://github.com/Enaium-StardewValleyMods/ModMenu.git
 
 mods:
    Mod Menu
 
 latest commit:
-   commit cba95ddd7155b94ef62588673260ae88998d035a
-   Merge: 7062c79 2b37769
+   commit feafdc9506b11c05cb15c419060485a84e068f51
+   Merge: 1895a19 e66488f
    Author: Enaium <32991121+Enaium@users.noreply.github.com>
-   Date:   Sun Jan 17 06:51:44 2021 -0600
+   Date:   Tue May 4 15:08:41 2021 +0800
    
-       Merge pull request #1 from Enaium-StardewValleyMods/develop
+       Merge pull request #3 from Enaium-StardewValleyMods/develop
        
-       Develop
+       Fix
    

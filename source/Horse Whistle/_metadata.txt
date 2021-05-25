@@ -1,5 +1,6 @@
-url:
-   https://github.com/icepuente/StardewValleyMods.git
+urls:
+   web: https://github.com/icepuente/StardewValleyMods
+   Git: https://github.com/icepuente/StardewValleyMods.git
 
 mods:
    Horse Whistle

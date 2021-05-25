@@ -1,5 +1,6 @@
-url:
-   https://github.com/Floogen/GreenhouseGatherers.git
+urls:
+   web: https://github.com/Floogen/GreenhouseGatherers
+   Git: https://github.com/Floogen/GreenhouseGatherers.git
 
 mods:
    Greenhouse Gatherers

@@ -1,5 +1,6 @@
-url:
-   https://github.com/LeonBlade/TreeTransplant.git
+urls:
+   web: https://github.com/LeonBlade/TreeTransplant
+   Git: https://github.com/LeonBlade/TreeTransplant.git
 
 mods:
    Tree Transplant

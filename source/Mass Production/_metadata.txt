@@ -1,5 +1,6 @@
-url:
-   https://github.com/JacquePott/StardewValleyMods.git
+urls:
+   web: https://github.com/JacquePott/StardewValleyMods
+   Git: https://github.com/JacquePott/StardewValleyMods.git
 
 mods:
    Mass Production

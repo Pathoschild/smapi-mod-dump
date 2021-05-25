@@ -1,5 +1,6 @@
-url:
-   https://github.com/Kodfod/BetterHitboxStardew.git
+urls:
+   web: https://github.com/Kodfod/BetterHitboxStardew
+   Git: https://github.com/Kodfod/BetterHitboxStardew.git
 
 mods:
    Better Hitbox

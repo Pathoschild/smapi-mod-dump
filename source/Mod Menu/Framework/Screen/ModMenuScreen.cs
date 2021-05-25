@@ -17,15 +17,21 @@ using EnaiumToolKit.Framework.Screen.Components;
 using EnaiumToolKit.Framework.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ModMenu.Framework.Entity;
+using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Menus;
 
 namespace ModMenu.Framework.Screen
 {
     public class ModMenuScreen : GuiScreen
     {
         private Slot<ModInfoSlot> _slot;
-        private Button _websiteButton;
+        private Button _updateButton;
+        private Button _settingButton;
+        private Button _homePageButton;
+        private Button _issuesButton;
 
         protected override void Init()
         {
@@ -39,15 +45,35 @@ namespace ModMenu.Framework.Screen
 
             foreach (var variable in ModEntry.GetInstance().Helper.ModRegistry.GetAll())
             {
-                _slot.AddEntry(new ModInfoSlot(variable));
+                ModMenuEntity modMenuEntity = null;
+
+                var manifestExtraFields = variable.Manifest.ExtraFields;
+                if (manifestExtraFields != null &&
+                    manifestExtraFields.ContainsKey("Custom"))
+                {
+                    var custom =
+                        JsonConvert.DeserializeObject<CustomEntity>(manifestExtraFields["Custom"].ToString());
+                    if (custom != null)
+                    {
+                        modMenuEntity = custom.ModMenu;
+                    }
+                }
+
+
+                _slot.AddEntry(new ModInfoSlot(variable, modMenuEntity));
             }
 
             _slot.SelectedEntry = _slot.Entries[0];
 
-            _websiteButton = new Button(GetTranslation("button.website"), "", Game1.viewport.Width - _slot.X - 220,
+            _homePageButton = new Button(GetTranslation("button.homePage"), "", Game1.viewport.Width - _slot.X - 220,
                 _slot.Height - 80, 200, 80);
-            AddComponent(_websiteButton);
-            AddComponent(_slot);
+            _issuesButton = new Button(GetTranslation("button.issues"), "", Game1.viewport.Width - _slot.X - 440,
+                _slot.Height - 80, 200, 80);
+            _updateButton = new Button(GetTranslation("button.update"), "", Game1.viewport.Width - _slot.X - 440,
+                80, 200, 80);
+            _settingButton = new Button(GetTranslation("button.setting"), "", Game1.viewport.Width - _slot.X - 220,
+                80, 200, 80);
+            AddComponentRange(_homePageButton, _issuesButton, _updateButton, _settingButton, _slot);
             base.Init();
         }
 
@@ -96,27 +122,95 @@ namespace ModMenu.Framework.Screen
                 var updateUrls = _slot.SelectedEntry.ModInfo.Manifest.UpdateKeys;
                 if (updateUrls != null)
                 {
-                    var updateUrl = GetUpdateUrl(updateUrls);
+                    var updateUrl = GetPageUrl(updateUrls);
                     if (updateUrl != null)
                     {
-                        _websiteButton.OnLeftClicked = () => { Process.Start(updateUrl); };
-                        _websiteButton.Visibled = true;
+                        _updateButton.OnLeftClicked = () => { Process.Start(updateUrl); };
+                        _updateButton.Visibled = true;
                     }
                     else
                     {
-                        _websiteButton.Visibled = false;
+                        _updateButton.Visibled = false;
                     }
                 }
                 else
                 {
-                    _websiteButton.Visibled = false;
+                    _updateButton.Visibled = false;
+                }
+
+                var selectedEntryModMenu = _slot.SelectedEntry.ModMenu;
+
+                if (selectedEntryModMenu != null)
+                {
+                    if (selectedEntryModMenu.Setting != null)
+                    {
+                        _settingButton.OnLeftClicked = () =>
+                        {
+                            var type = AppDomain.CurrentDomain.GetAssemblies()
+                                .SelectMany(t => t.GetTypes()).Where(t =>
+                                    t.IsClass && selectedEntryModMenu.Setting.Equals(t.FullName)).ToArray();
+
+                            if (type.Length == 1)
+                            {
+                                OpenScreenGui(Activator.CreateInstance(type[0]) as IClickableMenu);
+                            }
+                            else
+                            {
+                                ModEntry.GetInstance().Monitor.Log("Not Found Setting:" + selectedEntryModMenu.Setting,
+                                    LogLevel.Error);
+                            }
+                        };
+                        _settingButton.Visibled = true;
+                    }
+                    else
+                    {
+                        _settingButton.Visibled = false;
+                    }
+
+                    if (selectedEntryModMenu.Contact != null)
+                    {
+                        if (selectedEntryModMenu.Contact.HomePage != null)
+                        {
+                            _homePageButton.OnLeftClicked = () =>
+                            {
+                                Process.Start(selectedEntryModMenu.Contact.HomePage);
+                            };
+                            _homePageButton.Visibled = true;
+                        }
+                        else
+                        {
+                            _homePageButton.Visibled = false;
+                        }
+
+
+                        if (selectedEntryModMenu.Contact.Issues != null)
+                        {
+                            _issuesButton.OnLeftClicked = () => { Process.Start(selectedEntryModMenu.Contact.Issues); };
+                            _issuesButton.Visibled = true;
+                        }
+                        else
+                        {
+                            _issuesButton.Visibled = false;
+                        }
+                    }
+                    else
+                    {
+                        _homePageButton.Visibled = false;
+                        _issuesButton.Visibled = false;
+                    }
+                }
+                else
+                {
+                    _settingButton.Visibled = false;
+                    _homePageButton.Visibled = false;
+                    _issuesButton.Visibled = false;
                 }
             }
 
             base.draw(b);
         }
 
-        private string GetUpdateUrl(IEnumerable<string> updateKeys)
+        private string GetPageUrl(IEnumerable<string> updateKeys)
         {
             foreach (var updateKey in updateKeys)
             {
@@ -139,10 +233,12 @@ namespace ModMenu.Framework.Screen
         private class ModInfoSlot : Slot<ModInfoSlot>.Entry
         {
             public IModInfo ModInfo;
+            public ModMenuEntity ModMenu;
 
-            public ModInfoSlot(IModInfo modInfo)
+            public ModInfoSlot(IModInfo modInfo, ModMenuEntity modMenu)
             {
                 ModInfo = modInfo;
+                ModMenu = modMenu;
             }
 
             public override void Render(SpriteBatch b, int x, int y)
@@ -155,6 +251,18 @@ namespace ModMenu.Framework.Screen
                     new Vector2(x + 15, y + 10 + 30), Game1.textColor, 1f,
                     -1f,
                     -1, -1, 0.0f);
+            }
+        }
+
+        public void OpenScreenGui(IClickableMenu clickableMenu)
+        {
+            if (Game1.activeClickableMenu is TitleMenu)
+            {
+                TitleMenu.subMenu = clickableMenu;
+            }
+            else
+            {
+                Game1.activeClickableMenu = clickableMenu;
             }
         }
     }

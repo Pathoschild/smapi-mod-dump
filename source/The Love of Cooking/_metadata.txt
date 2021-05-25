@@ -1,5 +1,6 @@
-url:
-   https://github.com/b-b-blueberry/CooksAssistant.git
+urls:
+   web: https://github.com/b-b-blueberry/CooksAssistant
+   Git: https://github.com/b-b-blueberry/CooksAssistant.git
 
 mods:
    The Love of Cooking

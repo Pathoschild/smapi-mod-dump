@@ -1,10 +1,11 @@
-url:
-   https://github.com/Sakorona/SDVMods.git
+urls:
+   web: https://github.com/Sakorona/SDVMods
+   Git: https://github.com/Sakorona/SDVMods.git
 
 mods:
+   Climates of Ferngill
    Customizable Cart Redux
    Dynamic Night Time
-   Ferngill Custom Weather
    Ferngill Dynamic Rain
    Happy Fish Jump
    Lunar Disturbances

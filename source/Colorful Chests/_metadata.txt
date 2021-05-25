@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/ColorfulChests.git
+urls:
+   web: https://github.com/spacechase0/ColorfulChests
+   Git: https://github.com/spacechase0/ColorfulChests.git
 
 mods:
    Colorful Chests

@@ -1,5 +1,6 @@
-url:
-   https://github.com/AustinYQM/ImprovedMill.git
+urls:
+   web: https://github.com/AustinYQM/ImprovedMill
+   Git: https://github.com/AustinYQM/ImprovedMill.git
 
 mods:
    Improved Mill

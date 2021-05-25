@@ -1,5 +1,6 @@
-url:
-   https://github.com/Quipex/ExperienceUpdates.git
+urls:
+   web: https://github.com/Quipex/ExperienceUpdates
+   Git: https://github.com/Quipex/ExperienceUpdates.git
 
 mods:
    Experience Updates

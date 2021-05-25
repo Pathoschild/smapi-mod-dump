@@ -1,5 +1,6 @@
-url:
-   https://github.com/RedstoneBoy/BetterCrafting.git
+urls:
+   web: https://github.com/RedstoneBoy/BetterCrafting
+   Git: https://github.com/RedstoneBoy/BetterCrafting.git
 
 mods:
    Better Crafting

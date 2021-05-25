@@ -93,7 +93,9 @@ namespace FarmTypeManager
                         //find the locations any existing objects (of the listed types)
                         if (area.FindExistingObjectLocations == true //if enabled
                             && locations.Count == 1 //AND only one location was found (building interiors not currently supported)
-                            && !locations[0].StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase)) //AND this is NOT a mineshaft level (temporary maps not supported)
+                            && !locations[0].StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase) //AND it's not a mine level
+                            && !locations[0].StartsWith("VolcanoDungeon", StringComparison.OrdinalIgnoreCase) //AND it's not a volcano level
+                            )
                         {
                             if (data.Save.ExistingObjectLocations.ContainsKey(area.UniqueAreaID)) //if this area already has a list of existing objects (even if it's blank)
                             {

@@ -1,5 +1,6 @@
-url:
-   https://github.com/IrregularPorygon/SMAPIGenericShopMod.git
+urls:
+   web: https://github.com/IrregularPorygon/SMAPIGenericShopMod
+   Git: https://github.com/IrregularPorygon/SMAPIGenericShopMod.git
 
 mods:
    Generic Shop Extender

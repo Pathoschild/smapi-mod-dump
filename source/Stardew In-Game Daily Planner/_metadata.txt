@@ -1,5 +1,6 @@
-url:
-   https://github.com/BuildABuddha/StardewDailyPlanner.git
+urls:
+   web: https://github.com/BuildABuddha/StardewDailyPlanner
+   Git: https://github.com/BuildABuddha/StardewDailyPlanner.git
 
 mods:
    Stardew In-Game Daily Planner

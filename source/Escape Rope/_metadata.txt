@@ -1,13 +1,14 @@
-url:
-   https://github.com/Bifibi/SDVEscapeRope.git
+urls:
+   web: https://github.com/Bifibi/SDVEscapeRope
+   Git: https://github.com/Bifibi/SDVEscapeRope.git
 
 mods:
    Escape Rope
 
 latest commit:
-   commit d82c08c759c5ee5ec1e72dcc0cbf8e4117011dd7
+   commit 8e6eee9727144ea7c5b99629d323b4caf2b86c16
    Author: Lestoph Wuwald <lc.wuwald@gmail.com>
-   Date:   Sat Apr 24 12:07:11 2021 +0200
+   Date:   Mon May 3 20:38:35 2021 +0200
    
-       Update readme
+       increase version; add check that farmer is holding an item
    

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8775
+IDs: StultusV.EasyPathDestruction
+update keys: Nexus:8775, GitHub:JudeRV/Stardew-EasyPathDestruction

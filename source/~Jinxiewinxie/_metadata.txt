@@ -1,5 +1,6 @@
-url:
-   https://github.com/Jinxiewinxie/StardewValleyMods.git
+urls:
+   web: https://github.com/Jinxiewinxie/StardewValleyMods
+   Git: https://github.com/Jinxiewinxie/StardewValleyMods.git
 
 mods:
    Stone Bridge Over Pond

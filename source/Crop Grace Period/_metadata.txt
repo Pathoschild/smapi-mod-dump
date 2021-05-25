@@ -1,5 +1,6 @@
-url:
-   https://github.com/stoobinator/Stardew-Valley-Grace-Period.git
+urls:
+   web: https://github.com/stoobinator/Stardew-Valley-Grace-Period
+   Git: https://github.com/stoobinator/Stardew-Valley-Grace-Period.git
 
 mods:
    Crop Grace Period

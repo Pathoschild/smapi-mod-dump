@@ -1,5 +1,6 @@
-url:
-   https://github.com/jacksonkimball/AVerySpecialBlueChicken.git
+urls:
+   web: https://github.com/jacksonkimball/AVerySpecialBlueChicken
+   Git: https://github.com/jacksonkimball/AVerySpecialBlueChicken.git
 
 mods:
    A Very Special Blue Chicken

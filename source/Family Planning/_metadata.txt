@@ -1,5 +1,6 @@
-url:
-   https://github.com/loe2run/FamilyPlanningMod.git
+urls:
+   web: https://github.com/loe2run/FamilyPlanningMod
+   Git: https://github.com/loe2run/FamilyPlanningMod.git
 
 mods:
    Family Planning

@@ -1,5 +1,6 @@
-url:
-   https://github.com/JustCylon/stardew-brewery.git
+urls:
+   web: https://github.com/JustCylon/stardew-brewery
+   Git: https://github.com/JustCylon/stardew-brewery.git
 
 mods:
    Stardew Brewery

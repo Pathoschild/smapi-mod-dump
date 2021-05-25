@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8774
+IDs: chawol.HaltEventTime
+update keys: Nexus:8774, GitHub:chawolbaka/HaltEventTime

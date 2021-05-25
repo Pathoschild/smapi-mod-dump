@@ -1,0 +1,25 @@
+{
+  "Name": "24-Hour Clock Harmony",
+  "Author": "pepoluan",
+  "Version": "0.3.1",
+  "Description": "Replace clock with 24-hour one, using harmony framework",
+  "UniqueID": "pepoluan.24h",
+  "EntryDLL": "24H-Harmony.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:8759" ],
+  "Meta:Repository": "https://sourceforge.net/projects/sdvmod-24h-harmony/",
+  "Meta:License": "MPL-2.0",
+  "Meta:Changelog": {
+    "0.0.1": "Proof of concept",
+    "0.0.2": "Metadata fixening",
+    "0.0.3": "No longer overloads == and !=, more metadata fixening, apply MPL-2.0",
+    "0.0.4": "More informative ModEntry.Entry",
+    "0.0.5": "Removal of disassembly artefacts",
+    "0.1.0": "Also patches getTimeOfDayString, and LOTS of internal improvements",
+    "0.2.0": "LOTS of internal optimization",
+    "0.2.1": "Remove dead/unreachable code",
+    "0.2.2": "Simplify ModEntry",
+    "0.3.0": "Use more robust patching",
+    "0.3.1": "Internal optimizations"
+  }
+}

@@ -1,5 +1,6 @@
-url:
-   https://github.com/OfficialRenny/PrairieKingPrizes.git
+urls:
+   web: https://github.com/OfficialRenny/PrairieKingPrizes
+   Git: https://github.com/OfficialRenny/PrairieKingPrizes.git
 
 mods:
    Prairie King Prizes (Lootboxes)

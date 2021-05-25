@@ -1,5 +1,6 @@
-url:
-   https://github.com/Speshkitty/SlimeWaterFiller.git
+urls:
+   web: https://github.com/Speshkitty/SlimeWaterFiller
+   Git: https://github.com/Speshkitty/SlimeWaterFiller.git
 
 mods:
    Slime Water Filler

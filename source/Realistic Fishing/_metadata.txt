@@ -1,5 +1,6 @@
-url:
-   https://github.com/kevinforrestconnors/RealisticFishing.git
+urls:
+   web: https://github.com/kevinforrestconnors/RealisticFishing
+   Git: https://github.com/kevinforrestconnors/RealisticFishing.git
 
 mods:
    Realistic Fishing

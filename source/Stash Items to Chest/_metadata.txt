@@ -1,5 +1,6 @@
-url:
-   https://github.com/lambui/StardewValleyMod_StashItemsToChest.git
+urls:
+   web: https://github.com/lambui/StardewValleyMod_StashItemsToChest
+   Git: https://github.com/lambui/StardewValleyMod_StashItemsToChest.git
 
 mods:
    Stash Items to Chest

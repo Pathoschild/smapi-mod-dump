@@ -1,5 +1,6 @@
-url:
-   https://github.com/MissCoriel/Investment.git
+urls:
+   web: https://github.com/MissCoriel/Investment
+   Git: https://github.com/MissCoriel/Investment.git
 
 mods:
    Investment

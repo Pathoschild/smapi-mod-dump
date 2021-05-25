@@ -1,5 +1,6 @@
-url:
-   https://github.com/ninthworld/HDSprites.git
+urls:
+   web: https://github.com/ninthworld/HDSprites
+   Git: https://github.com/ninthworld/HDSprites.git
 
 mods:
    HD Sprites

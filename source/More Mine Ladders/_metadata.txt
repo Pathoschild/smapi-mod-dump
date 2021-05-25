@@ -1,5 +1,6 @@
-url:
-   https://github.com/JadeTheavas/MoreMineLadders.git
+urls:
+   web: https://github.com/JadeTheavas/MoreMineLadders
+   Git: https://github.com/JadeTheavas/MoreMineLadders.git
 
 mods:
    More Mine Ladders

@@ -1,5 +1,6 @@
-url:
-   https://github.com/Stardew-Valley-Modding/HealthBars.git
+urls:
+   web: https://github.com/Stardew-Valley-Modding/HealthBars
+   Git: https://github.com/Stardew-Valley-Modding/HealthBars.git
 
 mods:
    Health Bars (Darkhax)

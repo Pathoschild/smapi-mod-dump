@@ -1,5 +1,6 @@
-url:
-   https://github.com/instafluff/SleeplessInStardew.git
+urls:
+   web: https://github.com/instafluff/SleeplessInStardew
+   Git: https://github.com/instafluff/SleeplessInStardew.git
 
 mods:
    Sleepless in Stardew

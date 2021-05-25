@@ -1,0 +1,16 @@
+﻿[*.cs]
+
+# Default severity for analyzer diagnostics with category 'Style'
+dotnet_analyzer_diagnostic.category-Style.severity = suggestion
+
+# IDE0011: Add braces
+dotnet_diagnostic.IDE0011.severity = silent
+
+# IDE0046: Convert to conditional expression
+dotnet_diagnostic.IDE0046.severity = silent
+
+# IDE0022: Use block body for methods
+dotnet_diagnostic.IDE0022.severity = silent
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = silent

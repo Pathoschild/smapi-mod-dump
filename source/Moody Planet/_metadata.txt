@@ -1,5 +1,6 @@
-url:
-   https://github.com/F1r3w477/TheseModsAintLoyal.git
+urls:
+   web: https://github.com/F1r3w477/TheseModsAintLoyal
+   Git: https://github.com/F1r3w477/TheseModsAintLoyal.git
 
 mods:
    Moody Planet

@@ -1,5 +1,6 @@
-url:
-   https://github.com/AdvizeGH/GetDressed.git
+urls:
+   web: https://github.com/AdvizeGH/GetDressed
+   Git: https://github.com/AdvizeGH/GetDressed.git
 
 mods:
    Get Dressed

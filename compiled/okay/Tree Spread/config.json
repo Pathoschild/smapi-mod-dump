@@ -1,4 +1,5 @@
 {
   "SeedChance": 0.15,
-  "OnlyPreventTapped": false
+  "OnlyPreventTapped": false,
+  "RetainSeed": true
 }

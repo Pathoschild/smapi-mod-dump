@@ -1,5 +1,6 @@
-url:
-   https://github.com/desto-git/sdv-mods.git
+urls:
+   web: https://github.com/desto-git/sdv-mods
+   Git: https://github.com/desto-git/sdv-mods.git
 
 mods:
    Billboard Profit Margin

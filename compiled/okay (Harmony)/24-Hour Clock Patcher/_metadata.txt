@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8759
+IDs: pepoluan.24h
+update keys: Nexus:8759

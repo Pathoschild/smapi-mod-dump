@@ -1,5 +1,6 @@
-url:
-   https://github.com/Esca-MMC/BuildOnAnyTile.git
+urls:
+   web: https://github.com/Esca-MMC/BuildOnAnyTile
+   Git: https://github.com/Esca-MMC/BuildOnAnyTile.git
 
 mods:
    Build On Any Tile

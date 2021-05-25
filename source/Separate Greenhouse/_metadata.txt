@@ -1,5 +1,6 @@
-url:
-   https://github.com/MaciejMarkuszewski/StardewValleySeparateGreenhouse.git
+urls:
+   web: https://github.com/MaciejMarkuszewski/StardewValleySeparateGreenhouse
+   Git: https://github.com/MaciejMarkuszewski/StardewValleySeparateGreenhouse.git
 
 mods:
    Separate Greenhouse

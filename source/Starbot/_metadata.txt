@@ -1,5 +1,6 @@
-url:
-   https://github.com/bwdymods/SDV-Starbot.git
+urls:
+   web: https://github.com/bwdymods/SDV-Starbot
+   Git: https://github.com/bwdymods/SDV-Starbot.git
 
 mods:
    Starbot

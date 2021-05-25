@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SkillfulClothes.Types;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace SkillfulClothes.Effects
     public interface IEffect
     {
         List<EffectDescriptionLine> EffectDescription { get; }
-        void Apply(Farmer farmer);
-        void Remove(Farmer farmer);
+        void Apply(Item sourceItem, EffectChangeReason reason);
+        void Remove(Item sourceItem, EffectChangeReason reason);
     }
 }

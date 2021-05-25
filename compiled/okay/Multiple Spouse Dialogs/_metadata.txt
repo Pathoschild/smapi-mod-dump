@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8711
+IDs: ceruleandeep.multiplespousedialog
+update keys: Nexus:8711

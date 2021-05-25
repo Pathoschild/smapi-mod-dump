@@ -1,5 +1,6 @@
-url:
-   https://github.com/OfficialRenny/StardewVoidEffects.git
+urls:
+   web: https://github.com/OfficialRenny/StardewVoidEffects
+   Git: https://github.com/OfficialRenny/StardewVoidEffects.git
 
 mods:
    Void Effects

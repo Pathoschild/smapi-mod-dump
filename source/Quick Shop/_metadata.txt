@@ -1,5 +1,6 @@
-url:
-   https://github.com/Enaium-StardewValleyMods/QuickShop.git
+urls:
+   web: https://github.com/Enaium-StardewValleyMods/QuickShop
+   Git: https://github.com/Enaium-StardewValleyMods/QuickShop.git
 
 mods:
    Quick Shop

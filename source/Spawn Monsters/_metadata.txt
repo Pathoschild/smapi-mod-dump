@@ -1,13 +1,14 @@
-url:
-   https://github.com/Berisan/SpawnMonsters.git
+urls:
+   web: https://github.com/Berisan/SpawnMonsters
+   Git: https://github.com/Berisan/SpawnMonsters.git
 
 mods:
    Spawn Monsters
 
 latest commit:
-   commit ed0e2bbe1e91ca3949ab73cef1b90f09260d1c52
+   commit e02fa05b91a9e7bcfb2ba4118b1945d4c8dc9895
    Author: Berisan <berisan@berisan.dev>
-   Date:   Tue Jan 19 15:54:30 2021 +0100
+   Date:   Fri May 21 15:02:06 2021 +0000
    
-       Version 3.2.0
+       Use dotnet 4.5
    

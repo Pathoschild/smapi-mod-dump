@@ -1,0 +1,54 @@
+﻿[
+  {
+    "Call": "Hi, @!",
+    "Response": "O hey, @!"
+  },
+  {
+    "Call": "Hey babe!",
+    "Response": "*mwah*!"
+  },
+  {
+    "Call": "Hey babe!",
+    "Response": "Hi @!"
+  },
+  {
+    "Call": "You hungry?",
+    "Response": "I could eat!"
+  },
+  {
+    "Call": "Big day?",
+    "Response": "Big fun day!"
+  },
+  {
+    "Call": "Love this house",
+    "Response": "So cozy"
+  },
+  {
+    "Call": "What's up?",
+    "Response": "Your smile :)"
+  },
+  {
+    "Call": "Mmm, hey you...",
+    "Response": "Hey yourself <"
+  },
+  {
+    "Call": "Looking good!",
+    "Response": "Thanks babe!"
+  },
+  {
+    "Call": "< u @",
+    "Response": "< u more!"
+  },
+  {
+    "Call": "< u Sebby",
+    "Response": "< u more Abby!",
+    "Callers": "Abigail",
+    "Responders": "Sebastian"
+  },
+  {
+    "Call": "< u Abby",
+    "Response": "< u more Sebby!",
+    "Callers": "Sebastian",
+    "Responders": "Abigail"
+  }
+]

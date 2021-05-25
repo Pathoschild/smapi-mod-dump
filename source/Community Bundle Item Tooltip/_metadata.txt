@@ -1,5 +1,6 @@
-url:
-   https://github.com/musbah/StardewValleyMod.git
+urls:
+   web: https://github.com/musbah/StardewValleyMod
+   Git: https://github.com/musbah/StardewValleyMod.git
 
 mods:
    Community Bundle Item Tooltip

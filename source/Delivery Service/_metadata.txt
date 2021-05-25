@@ -1,5 +1,6 @@
-url:
-   https://github.com/AxesOfEvil/SV_DeliveryService.git
+urls:
+   web: https://github.com/AxesOfEvil/SV_DeliveryService
+   Git: https://github.com/AxesOfEvil/SV_DeliveryService.git
 
 mods:
    Delivery Service

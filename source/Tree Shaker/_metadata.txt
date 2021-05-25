@@ -1,5 +1,6 @@
-url:
-   https://github.com/TyoAtrosa/TreeShaker.git
+urls:
+   web: https://github.com/TyoAtrosa/TreeShaker
+   Git: https://github.com/TyoAtrosa/TreeShaker.git
 
 mods:
    Tree Shaker

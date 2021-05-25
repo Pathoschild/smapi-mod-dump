@@ -1,5 +1,6 @@
-url:
-   https://github.com/ManApart/RetroActiveAchievements.git
+urls:
+   web: https://github.com/ManApart/RetroActiveAchievements
+   Git: https://github.com/ManApart/RetroActiveAchievements.git
 
 mods:
    Retro Active Achievements

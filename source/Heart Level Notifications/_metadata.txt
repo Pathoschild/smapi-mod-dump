@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/JudeRV/Stardew-HeartLevelNotifier
+   Git: https://github.com/JudeRV/Stardew-HeartLevelNotifier.git
+
+mods:
+   Heart Level Notifications
+
+latest commit:
+   commit 11d1a3627bc13d8697944501873b7bdecfad62b4
+   Author: Jude Vargas <judevargas222@gmail.com>
+   Date:   Wed May 5 16:15:53 2021 -0400
+   
+       Create README.md
+   

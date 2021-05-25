@@ -1,0 +1,8 @@
+{
+  "MaxShopliftsPerDay": 1,
+  "MaxShopliftsPerStore": 1,
+  "MaxFine": 1000,
+  "FriendshipPenalty": 500,
+  "DaysBannedFor": 3,
+  "CatchesBeforeBan": 3
+}

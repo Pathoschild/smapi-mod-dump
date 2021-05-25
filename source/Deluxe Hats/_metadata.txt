@@ -1,5 +1,6 @@
-url:
-   https://github.com/domsim1/stardew-valley-deluxe-hats-mod.git
+urls:
+   web: https://github.com/domsim1/stardew-valley-deluxe-hats-mod
+   Git: https://github.com/domsim1/stardew-valley-deluxe-hats-mod.git
 
 mods:
    Deluxe Hats

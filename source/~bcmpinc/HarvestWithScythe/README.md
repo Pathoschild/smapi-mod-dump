@@ -69,4 +69,5 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
 * Added option to limit harvesting with scythe to the golden scythe.
 * Added option to allow harvesting with sword.
-* Add 64-bit support
+* Add 64-bit support.
+* Fix issue with harvesting forage using the [Tractor Mod](https://www.nexusmods.com/stardewvalley/mods/1401).

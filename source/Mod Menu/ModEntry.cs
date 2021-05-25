@@ -29,7 +29,18 @@ namespace ModMenu
 
         private Button _modMenuButton = new Button("", "", 20, 80, 200, 80)
         {
-            OnLeftClicked = () => { TitleMenu.subMenu = new ModMenuScreen(); }
+            OnLeftClicked = () =>
+            {
+                if (Game1.activeClickableMenu is TitleMenu)
+                {
+                    TitleMenu.subMenu = new ModMenuScreen();
+                }
+                else
+                {
+                    Game1.activeClickableMenu = new ModMenuScreen();
+                }
+                Game1.playSound("drumkit6");
+            }
         };
 
         public override void Entry(IModHelper helper)
@@ -43,7 +54,7 @@ namespace ModMenu
             if (Game1.activeClickableMenu is TitleMenu titleMenu && TitleMenu.subMenu == null &&
                 !GetBool(titleMenu, "isTransitioningButtons") &&
                 GetBool(titleMenu, "titleInPosition") &&
-                !GetBool(titleMenu, "transitioningCharacterCreationMenu"))
+                !GetBool(titleMenu, "transitioningCharacterCreationMenu") || Game1.activeClickableMenu is GameMenu)
             {
                 _modMenuButton.Title = Helper.Translation.Get("modMenu.button.modMenu");
                 _modMenuButton.Render(args.SpriteBatch);

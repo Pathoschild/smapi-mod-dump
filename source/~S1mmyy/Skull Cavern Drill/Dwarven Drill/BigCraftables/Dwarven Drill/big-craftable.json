@@ -1,0 +1,52 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/S1mmyy/StardewMods
+**
+*************************************************/
+
+{
+    "Name": "Dwarven Drill",
+    "Description": "A high-tech drill that makes shafts in the Skull Cavern.",
+    "Price": 1,
+    "ProvidesLight": false,
+    "Recipe":
+    {
+        "ResultCount": 2,
+        "Ingredients": [
+        {
+			//Dwarven Gadget for the drill computer
+            "Object": 122,
+            "Count": 1,
+        },
+        {
+			//Diamonds for the drill bit
+            "Object": 72,
+            "Count": 1,
+        },
+        {
+			//Battery Packs for power
+            "Object": 787,
+            "Count": 3,
+        },
+		{
+			//Copper Bar for wiring
+            "Object": 334,
+            "Count": 10,
+        },
+		{
+			//Gold Bar for wiring
+            "Object": 336,
+            "Count": 10,
+        }, ],
+        "SkillUnlockName": "Mining",
+		"SkillUnlockLevel": 8,
+    },
+	"CanPurchase": true,
+	"PurchaseFrom": "Dwarf",
+	"PurchasePrice": 30000,
+	"PurchaseRequirements": [ "Hn ccVault", "b 1", "f Dwarf 2000" ],
+}

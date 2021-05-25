@@ -1,5 +1,6 @@
-url:
-   https://github.com/spacechase0/ShipAnywhere.git
+urls:
+   web: https://github.com/spacechase0/ShipAnywhere
+   Git: https://github.com/spacechase0/ShipAnywhere.git
 
 mods:
    Ship Anywhere

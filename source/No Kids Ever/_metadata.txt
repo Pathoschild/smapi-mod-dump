@@ -1,5 +1,6 @@
-url:
-   https://github.com/L3thal1ty/No-Kids-Ever.git
+urls:
+   web: https://github.com/L3thal1ty/No-Kids-Ever
+   Git: https://github.com/L3thal1ty/No-Kids-Ever.git
 
 mods:
    No Kids Ever

@@ -1,0 +1,16 @@
+urls:
+   web: https://sourceforge.net/p/sdvmod-even-better-rng/
+   Mercurial: http://hg.code.sf.net/p/sdvmod-even-better-rng/code
+
+mods:
+   Even Better RNG
+
+latest commit:
+   changeset:   282:1a4329df702c
+   branch:      v2
+   tag:         tip
+   user:        Pandu POLUAN <pepoluan@gmail.com>
+   date:        Tue May 25 01:17:30 2021 +0700
+   summary:     BUGFIX: Tree.tickUpdate patch
+   
+   

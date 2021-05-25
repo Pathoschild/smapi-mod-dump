@@ -1,5 +1,6 @@
-url:
-   https://github.com/pomepome/JoysOfEfficiency.git
+urls:
+   web: https://github.com/pomepome/JoysOfEfficiency
+   Git: https://github.com/pomepome/JoysOfEfficiency.git
 
 mods:
    Joys of Efficiency

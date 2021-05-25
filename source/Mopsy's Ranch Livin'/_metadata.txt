@@ -1,5 +1,6 @@
-url:
-   https://github.com/mopquill/Mopsys-Ranch-Livin.git
+urls:
+   web: https://github.com/mopquill/Mopsys-Ranch-Livin
+   Git: https://github.com/mopquill/Mopsys-Ranch-Livin.git
 
 mods:
    Mopsy's Ranch Livin'

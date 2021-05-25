@@ -39,6 +39,9 @@ namespace FarmTypeManager
                 //include terrain types
                 foreach (string includeType in area.IncludeTerrainTypes) //loop to auto-detect valid tiles based on various types of terrain
                 {
+                    if (includeType == null) //if this terrain type is null
+                        continue; //skip it
+
                     if (includeType.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "quarry" tile index list
                     {
                         validTiles.UnionWith(GetTilesByIndex(location, quarryTileIndex));

@@ -1,5 +1,6 @@
-url:
-   https://github.com/miketweaver/BashNinja_SDV_Mods.git
+urls:
+   web: https://github.com/miketweaver/BashNinja_SDV_Mods
+   Git: https://github.com/miketweaver/BashNinja_SDV_Mods.git
 
 mods:
    Dynamic NPC Sprites

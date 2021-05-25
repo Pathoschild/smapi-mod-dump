@@ -1,5 +1,6 @@
-url:
-   https://github.com/FlashShifter/StardewValleyExpanded.git
+urls:
+   web: https://github.com/FlashShifter/StardewValleyExpanded
+   Git: https://github.com/FlashShifter/StardewValleyExpanded.git
 
 mods:
    Stardew Valley Expanded

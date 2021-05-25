@@ -1,0 +1,11 @@
+﻿{
+    "Name": "FriendshipWithoutTalk",
+    "Author": "HunterMYT",
+    "Version": "1.1.0",
+    "Description": "Friendship Without Talk will not Decay!",
+    "UniqueID": "HunterMYT.FriendshipWithoutTalk",
+    "EntryDll": "FriendshipWithoutTalk.dll",
+    "MinimumApiVersion": "3.9.5",
+    "UpdateKeys": []
+}
+
