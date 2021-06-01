@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8819
+IDs: pepoluan.SiloSize
+update keys: Nexus:8819

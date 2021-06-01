@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://sourceforge.net/p/sdvmod-silo-size/
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/i18n.json",
+    "tv_tip": "Зима уже почти наступила. Не забудьте заготовить на зиму достаточно сена на корм своим животным. В одной силосной башне можно хранить до {{size}} снопов сена, так что посчитайте сами и подумайте, не нужно ли построить ещe башен!"
+}

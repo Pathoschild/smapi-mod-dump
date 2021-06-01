@@ -10,9 +10,15 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* You can now open the search UI when another menu is open, similar to the lookup UI.
+* Fixed some fish pond drops shown as requiring zero fish instead of one.
+
+## 1.34.2
+Released 25 May 2021.
+
 * Improved the drop list in monster lookups:
-  * Fixed issue where an item has multiple chances to drop and every chance was marked guaranteed if any of them was.
-  * Fixed issue where a guaranteed drop that's not in the monster's list of possible drops wasn't listed.
+  * Fixed every possible drop for an item marked guaranteed if at least one of them is.
+  * Fixed guaranteed drops not shown if they're not in the monster's possible drop list.
 * Fixed some items with duplicate names (like the many `Shirt` items) not shown in the search UI.
 
 ## 1.34.1

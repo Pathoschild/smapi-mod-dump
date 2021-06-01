@@ -17,7 +17,9 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace MoreGrass
@@ -202,7 +204,7 @@ namespace MoreGrass
                         continue;
 
                     this.Monitor.Log($"Loading {season} files");
-                    LoadSpritesFromDirectory(seasonFolder, contentPack, season);
+                    LoadSpritesFromDirectory(seasonFolder, contentPack, contentPackConfig, season);
                 }
             }
 
@@ -216,7 +218,7 @@ namespace MoreGrass
         /// <param name="directory">The absolute directory containing the sprites.</param>
         /// <param name="contentPack">The content pack currently being loaded.</param>
         /// <param name="season">The season to load the images into.</param>
-        private void LoadSpritesFromDirectory(string directory, IContentPack contentPack, string season)
+        private void LoadSpritesFromDirectory(string directory, IContentPack contentPack, ContentPackConfig contentPackConfig, string season)
         {
             foreach (var file in Directory.GetFiles(directory))
             {
@@ -244,12 +246,18 @@ namespace MoreGrass
                 }
 
                 // add the texture to the correct sprite pool
+                var whiteListedLocations = contentPackConfig.WhiteListedLocations ?? new List<string>();
+                whiteListedLocations.AddRange(contentPackConfig.WhiteListedGrass.FirstOrDefault(whiteListedGrass => whiteListedGrass.Key.ToLower() == new FileInfo(file).Name.ToLower()).Value ?? new List<string>());
+                
+                var blackListedLocations = contentPackConfig.BlackListedLocations ?? new List<string>();
+                blackListedLocations.AddRange(contentPackConfig.BlackListedGrass.FirstOrDefault(blackListedGrass => blackListedGrass.Key.ToLower() == new FileInfo(file).Name.ToLower()).Value ?? new List<string>());
+
                 switch (season)
                 {
-                    case "spring": SpringSpritePool.AddCustomGrass(grassTexture); break;
-                    case "summer": SummerSpritePool.AddCustomGrass(grassTexture); break;
-                    case "fall": FallSpritePool.AddCustomGrass(grassTexture); break;
-                    case "winter": WinterSpritePool.AddCustomGrass(grassTexture); break;
+                    case "spring": SpringSpritePool.AddCustomGrass(grassTexture, whiteListedLocations, blackListedLocations); break;
+                    case "summer": SummerSpritePool.AddCustomGrass(grassTexture, whiteListedLocations, blackListedLocations); break;
+                    case "fall": FallSpritePool.AddCustomGrass(grassTexture, whiteListedLocations, blackListedLocations); break;
+                    case "winter": WinterSpritePool.AddCustomGrass(grassTexture, whiteListedLocations, blackListedLocations); break;
                 }
             }
         }

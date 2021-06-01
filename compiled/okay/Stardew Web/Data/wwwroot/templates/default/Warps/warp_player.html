@@ -1,0 +1,31 @@
+﻿<table class="stardew_table">
+    <tr>
+        <td style="vertical-align:top;border: 2px solid black; padding:20px;">
+            <table style="">
+                <tr><td>Warp To</td></tr>
+                <tr><td><select name="plocs" id="plocs">#PLOCS#</select> X: <input type="text" size="4" name="xploc" id="xploc" value="0" /> Y: <input type="text" size="4" name="yploc" id="yploc" value="0" /></td></tr>
+                <tr><td></td></tr>
+            </table>
+        </td>
+        <td style="padding:20px;border: 2px solid black;">
+            <table>
+                <tr><td>Warp</td></tr>
+                <tr>
+                    <td>
+                        <input type="radio" id="mts" name="playerwarp" value="mts" checked /> <label for="mts">Me to my spouse</label><br />
+                        <input type="radio" id="stm" name="playerwarp" value="stm" /> <label for="stm">My spouse to me</label><br />
+                    </td>
+                </tr>
+                <tr><td></td></tr>
+            </table>
+        </td>
+        <td style="padding:20px;border: 2px solid black;">
+            <table>
+                <tr><td></td><td><button onclick="WarpStudio(4,'u')">Up</button></td><td></td></tr>
+                <tr><td><button onclick="WarpStudio(4,'l')">Left</button></td><td></td><td><button onclick="WarpStudio(4,'r')">Right</button></td></tr>
+                <tr><td></td><td><button onclick="WarpStudio(4,'d')">Down</button></td><td></td></tr>
+            </table>
+        </td>
+    </tr>
+    <tr><td><button onclick="WarpStudio(2);">Warp</button></td><td><button>Warp</button></td></tr>
+</table>

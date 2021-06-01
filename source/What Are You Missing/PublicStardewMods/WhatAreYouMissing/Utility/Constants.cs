@@ -175,6 +175,8 @@ namespace WhatAreYouMissing
         public const int PEACH_SAPLING = 631;
         public const int POMEGRANATE_SAPLING = 632;
         public const int APPLE_SAPLING = 633;
+        public const int BANANA_SAPLING = 69;
+        public const int MANGO_SAPLING = 835;
 
         //Other Items from the community center bundles
         public const int WOOD = 388;
@@ -202,6 +204,8 @@ namespace WhatAreYouMissing
         public const int ORANGE = 635;
         public const int PEACH = 636;
         public const int POMEGRANATE = 637;
+        public const int BANANA = 91;
+        public const int MANGO = 834;
         public const int CHERRY = 638;
         public const int LARGEMOUTH_BASS = 136;
         public const int CARP = 142;

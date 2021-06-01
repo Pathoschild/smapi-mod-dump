@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/SlivaStari/CombineManyRings
+   Git: https://github.com/SlivaStari/CombineManyRings.git
+
+mods:
+   Combine Many Rings
+
+latest commit:
+   commit a7bb9729c269e6d1dbd6d15457be5e55f789cc23
+   Author: sliva <sliva@DESKTOP-7M27B1J>
+   Date:   Sat May 29 19:53:20 2021 -0400
+   
+       Update Version
+   

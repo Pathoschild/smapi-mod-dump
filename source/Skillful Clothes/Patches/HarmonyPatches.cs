@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SkillfulClothes.Effects;
 using SkillfulClothes.Effects.Buffs;
 using SkillfulClothes.Types;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Monsters;
@@ -20,8 +21,10 @@ using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static StardewValley.Menus.ForgeMenu;
 
 namespace SkillfulClothes.Patches
 {
@@ -29,6 +32,22 @@ namespace SkillfulClothes.Patches
     {
         static HatDrawWrapper hatDrawWrapper = new HatDrawWrapper();
         static ClothingDrawWrapper clothingDrawWrapper = new ClothingDrawWrapper();
+
+        static FieldInfo craftStateFieldInfo;
+        static FieldInfo craftDisplayedDescriptionFieldInfo;
+
+        static Clothing shimTrimmedLuckPurpleShorts;
+        static Clothing ShimTrimmedLuckPurpleShorts
+        {
+            get
+            {
+                if (shimTrimmedLuckPurpleShorts == null)
+                {
+                    shimTrimmedLuckPurpleShorts = new Clothing((int)Pants.TrimmedLuckyPurpleShorts);
+                }
+                return shimTrimmedLuckPurpleShorts;
+            }
+        }
 
         public static void Apply(String modId)
         {
@@ -74,10 +93,20 @@ namespace SkillfulClothes.Patches
                   prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.clearAllBuffs))
                 );
 
+            // Patches for tailoring
+            craftStateFieldInfo = typeof(TailoringMenu).GetField("_craftState", BindingFlags.Instance | BindingFlags.NonPublic);
+            craftDisplayedDescriptionFieldInfo = typeof(TailoringMenu).GetField("displayedDescription", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            harmony.Patch(
+                  original: AccessTools.Method(typeof(TailoringMenu), "_ValidateCraft"),
+                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.ValidateCraft))
+                );
+
             // Patches for GameLocation events
 
             // patch GameLocation.damageMonster as pre- and postfix which monsters are gone and thus must have been slain
-            harmony.Patch(
+            // not needed atm
+          /*  harmony.Patch(
                   original: typeof(GameLocation).GetMethod(nameof(GameLocation.damageMonster), new Type[] { typeof(Microsoft.Xna.Framework.Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float), typeof(int), typeof(float), typeof(float), typeof(bool), typeof(Farmer) }),
                   prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.prefix_damageMonster))
                 );
@@ -85,6 +114,12 @@ namespace SkillfulClothes.Patches
             harmony.Patch(
                   original: typeof(GameLocation).GetMethod(nameof(GameLocation.damageMonster), new Type[] { typeof(Microsoft.Xna.Framework.Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float), typeof(int), typeof(float), typeof(float), typeof(bool), typeof(Farmer) }),
                   postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.postfix_damageMonster))
+                );*/
+
+            // Patches for NPC
+            harmony.Patch(
+                 original: AccessTools.Method(typeof(NPC), nameof(NPC.checkAction)),
+                 postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.NPC_checkAction))
                 );
         }
 
@@ -92,6 +127,16 @@ namespace SkillfulClothes.Patches
         {
             // replace the hoveredItem with a wrapper class which allows us to
             // control Item.getExtraSpaceNeededForTooltipSpecialIcons
+
+            if (hoveredItem != null)
+            {
+                // The "Trimmed Lucky Purple Shorts" from Major Lewis's quest are not an actual clothing item
+                if (hoveredItem.Category == 0 && hoveredItem.ParentSheetIndex == 71)
+                {
+                    hoveredItem = ShimTrimmedLuckPurpleShorts;
+                }
+            }
+
             if (ItemDefinitions.GetEffect(hoveredItem, out IEffect effect))
             {
                 if (hoveredItem is Clothing clothing)
@@ -167,17 +212,59 @@ namespace SkillfulClothes.Patches
             return __result || EffectHelper.ClothingObserver.HasRingEffect(ringIndex);
         }
 
-        static void prefix_damageMonster(GameLocation __instance, out List<Monster> __state)
+        static void prefix_damageMonster(GameLocation __instance, Farmer who, out List<Monster> __state)
         {
-            __state = __instance.characters.OfType<Monster>().ToList();            
+            if (who == null)
+            {
+                __state = null;
+            } else
+            {
+                __state = __instance.characters.OfType<Monster>().ToList();
+            }
         }
 
         static void postfix_damageMonster(GameLocation __instance, List<Monster> __state)
         {
-            List<Monster> slainMonsters = __state.Except(__instance.characters.OfType<Monster>().Where(x => x.health <= 0)).ToList();
-            foreach(var m in slainMonsters)
-            {                                
-                EffectHelper.Events.RaiseMonsterSlain(Game1.player, m);
+            if (__state != null)
+            {
+                List<Monster> slainMonsters = __state.Except(__instance.characters.OfType<Monster>().Where(x => x.health <= 0)).ToList();
+                foreach (var m in slainMonsters)
+                {
+                    EffectHelper.Events.RaiseMonsterSlain(Game1.player, m);
+                }
+            }
+        }
+
+        static void ValidateCraft(TailoringMenu __instance)
+        {                        
+            // TODO: HUD message is displayed behind tailoring menu -> store once and show when tailoring menu gets closed
+            if (__instance.craftResultDisplay.item != null && ItemDefinitions.GetExtInfo(__instance.craftResultDisplay.item, out ExtItemInfo extInfo))
+            {
+                if (extInfo.IsCraftingDisabled)
+                {
+                    if (extInfo.SoldBy != Shop.None)
+                    {
+                        // display a hint after closing the menu where the player might buy the item
+                        TailoringPatches.AddTailoringMessage($"Hm, that did not quite work out. Maybe {extInfo.SoldBy.GetShopReferral()} sells something similar.", __instance.craftResultDisplay.item);
+                    }
+
+                    // indicate to the player that this is an invalid recipe now
+                    int itemId = __instance.craftResultDisplay.item.parentSheetIndex;
+                    __instance.craftResultDisplay.item = null;
+                    craftStateFieldInfo.SetValue(__instance, CraftState.InvalidRecipe);
+                    craftDisplayedDescriptionFieldInfo.SetValue(__instance, Game1.content.LoadString("Strings\\UI:Tailor_InvalidRecipe"));                    
+
+                    // delete the recipe, so that the player cannot craft the item
+                    __instance._tailoringRecipes.RemoveAll(x => x.CraftedItemID == itemId);
+                }
+            }
+        }
+
+        static void NPC_checkAction(bool __result, NPC __instance)
+        {            
+            if (__result)
+            {
+                EffectHelper.Events.RaiseInteractedWithNPC(__instance);
             }
         }
     }

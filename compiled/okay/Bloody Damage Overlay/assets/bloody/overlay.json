@@ -1,0 +1,38 @@
+{
+  "images": {
+    // left side of colon = arbitrary label (to be used in "textures")
+    // right side of colon = graphics file (preferably PNG with proper transparent area in middle) in _same_ directory as this file (no path traversal!)
+    "fisrt": "bloody1.png",
+    "secnod": "bloody2.png"
+  },
+  "textures": {
+    // left side of colon = arbitrary label (to be used in "thresholds")
+    // right side of colon = mapping of:
+    //    "image" (MANDATORY) = a label defined in "images" above
+    //    "transparency" (Optional)
+    //    "crop" (Optional) = mapping of "X", "Y", "W"(idth), "H"(eight)
+    "ouch": {
+      "image": "fisrt",
+      "transparency": 0.6
+    },
+    // Can drop any or all of Optional fields
+    "more ouch": {
+      "image": "fisrt",
+      "transparency": 0.3
+    },
+    "am dyin": {
+      "image": "secnod",
+      "transparency": 0.4
+    },
+    "can haz ded": {
+      "image": "secnod"
+    }
+  },
+  "thresholds": {
+    // left side of colon: integer percentage of health. Because of JSON limitation, they must be double-quoted
+    "40": "ouch",
+    "30": "more ouch",
+    "20": "am dyin",
+    "10": "can haz ded"
+  }
+}

@@ -38,6 +38,12 @@ namespace HardyGrass
             var config = ModEntry.config;
 
             var api = helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+
+            if (api == null)
+            {
+                return;
+            }
+
             api.RegisterModConfig(manifest, () => config = ModEntry.config = new ModConfig(), () => helper.WriteConfig(config));
 
             api.RegisterClampedOption(manifest, "Vanilla Grass Hardiness", "Chance for vanilla grass to survive reaping or eating. Set to 0 for unmodded behavior. 1 recommended (for 100% chance).", () => config.vanillaHardiness, (float val) => config.vanillaHardiness = val, 0, 1);

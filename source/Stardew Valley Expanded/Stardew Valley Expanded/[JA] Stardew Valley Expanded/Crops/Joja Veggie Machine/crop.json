@@ -26,7 +26,7 @@
 		"MaxIncreasePerFarmLevel": 2,
 		"ExtraChance": 0.1,
 	},
-	"SeedPurchasePrice": 600,
+	"SeedPurchasePrice": 200,
 	"SeedPurchaseFrom": "Zoey",
 	"SeedPurchaseRequirements": ["e 5553210"]
 }

@@ -18,20 +18,33 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 -->
 ## Upcoming release
+* Added [`patch invalidate` console command](docs/author-guide.md#patch-invalidate).
+* Fixed issue where editing a list field using `EditData` and `Fields` would append the values instead of replacing them.
+* Fixed broken custom locations also preventing valid custom locations from loading.
+
+## 1.23.1
+Released 25 May 2021.
+
+* `EditMap` patches with `FromFile` no longer require `ToArea`. (It now defaults defaults to an area starting from the the top-left.)
+* Fixed 'unknown reserved argument' errors in Content Patcher 1.23.0 for content packs which use `inputSeparator`.
+
+## 1.23.0
+Released 25 May 2021. See the [release highlights](https://www.patreon.com/posts/51685726).
+
+* Added [`valueAt` argument](docs/author-tokens-guide.md#valueat) to get one value from any token.
 * Added `TextOperations` support for `EditData` fields.
-* Added [`valueAt` argument](docs/author-tokens-guide.md#valueat) to get one value from a list token.
 * Added new tokens:
   * [`ChildGenders`](docs/author-tokens-guide.md#ChildGenders) and [`ChildNames`](docs/author-tokens-guide.md#ChildNames) to get the genders/names of a given player's children.
   * [`Count`](docs/author-tokens-guide.md#Count) to get the number of values in a token (e.g. `{{Count: {{HasActiveQuest}} }}` for the number of active quests).
-  * [`HasCaughtFish`](docs/author-tokens-guide.md#HasCaughtFish) to check fish caught by a player.
+  * [`HasCaughtFish`](docs/author-tokens-guide.md#HasCaughtFish) to get fish caught by a player.
 * Improved sort order used in token values, patch commands, and error messages.
 * Fixed patches not applied correctly in some cases when added by a conditional `Include` patch.
 * Fixed error if `EnableDebugFeatures` is enabled and a debug overlay navigation key is pressed without a debug overlay open.
 * Fixed tokens which accept a [`PlayerType`](docs/author-tokens-guide.md#playertype) argument always marked as returning multiple values for input arguments.
 
-**Update note for SMAPI mod authors:**  
+**Note for SMAPI mod authors:**  
 If you use the [extensibility API](docs/extensibility.md) to add custom tokens, the order of values
-they return affects new features like `valueAt`.
+they return affects the `valueAt` argument.
 
 ## 1.22
 Released 17 April 2021. See the [release highlights](https://www.patreon.com/posts/50144071).

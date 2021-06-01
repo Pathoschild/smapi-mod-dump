@@ -11,7 +11,7 @@
 {
   "Name": "Remind to Exit",
   "Author": "pepoluan",
-  "Version": "0.1.3",
+  "Version": "0.1.4",
   "Description": "Remind to exit (on DayStarted)",
   "UniqueID": "pepoluan.RemindToExit",
   "EntryDLL": "RemindToExit.dll",
@@ -26,6 +26,7 @@
     "0.1.0": "Implement custom reminder message",
     "0.1.1": "Fix custom reminder message menu not autoclosing, fix vertical positioning of buttons",
     "0.1.2": "Fix reminder with custom message not automatically activated",
-    "0.1.3": "Continually suppress MenuButton inside custom message menu"
+    "0.1.3": "Continually suppress MenuButton inside custom message menu",
+    "0.1.4": "Reduce level of some logs"
   }
 }

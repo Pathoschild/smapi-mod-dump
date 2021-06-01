@@ -1,0 +1,11 @@
+﻿<table class="stardew_table">
+    <tr><td>NPC</td></tr>
+    <tr><td><select name="npcs" id="npcs">#NPCS#</select> </td></tr>
+    <tr><td>
+        <input type="radio" id="wntm" name="npcwarp" value="wntm" checked /> <label for="wntm">Warp NPC to Me</label><br />
+        <input type="radio" id="wmtn" name="npcwarp" value="wmtn" /> <label for="wmtn">Warp Me to the NPC</label><br />
+        <input type="radio" id="wnt" name="npcwarp" value="wnt" /> <label for="wnt">Warp NPC to location</label><br />
+</td></tr>
+    <tr><td style="padding-left:20px;"><select name="locs" id="locs">#LOCS#</select> X: <input type="text" size="4" name="xloc" id="xloc" value="-1" /> Y: <input type="text" size="4" name="yloc" id="yloc" value="-1" /></td></tr>
+    <tr><td><button onclick="WarpStudio(0);">Warp</button> </td></tr>
+</table>

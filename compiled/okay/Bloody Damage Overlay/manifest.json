@@ -1,13 +1,22 @@
 {
   "Name": "Damage Overlay",
   "Author": "pepoluan",
-  "Version": "0.1.0",
+  "Version": "0.8.1",
   "Description": "Damage overlay on low health",
   "UniqueID": "pepoluan.DamageOverlay",
   "EntryDll": "DamageOverlay.dll",
-  "UpdateKeys": [],
+  "UpdateKeys": [ "Nexus:8796" ],
   "Meta:Changelog": {
     "0.0.1": "Proof of Concept",
-    "0.1.0": "Prototype"
+    "0.1.0": "Prototype",
+    "0.2.0": "Folder-based overlay 'sets'",
+    "0.3.0": "Respond to WindowResized event",
+    "0.3.1": "Add UpdateKeys",
+    "0.4.0": "Attach to GameLaunched, perform scale calculation outside drawing routine",
+    "0.5.0": "Totally new overlay.json format, change loading & make more robust",
+    "0.6.0": "Preliminary support for content packs, optimize more things",
+    "0.7.0": "Implement temporary hiding of overlay",
+    "0.8.0": "Add support for GMCM",
+    "0.8.1": "Fix for zoom, Add 'dover' command to help debugging, Internal optimizations"
   }
 }

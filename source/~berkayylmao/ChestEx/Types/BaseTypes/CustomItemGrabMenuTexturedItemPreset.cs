@@ -60,19 +60,17 @@ namespace ChestEx.Types.BaseTypes {
     // Constructors:
   #region Constructors
 
-    public CustomItemGrabMenuTexturedItemPreset(CustomItemGrabMenu hostMenu, ButtonType buttonType, Rectangle bounds) : base(hostMenu,
-                                                                                                                             buttonType switch {
-                                                                                                                               ButtonType.FillStacks => TexturePresets
-                                                                                                                                 .gFillStacksPickerButtonTexture,
-                                                                                                                               ButtonType.Organize => TexturePresets
-                                                                                                                                 .gOrganizeButtonTexture,
-                                                                                                                               ButtonType.OK => TexturePresets.gOKButtonTexture,
-                                                                                                                               ButtonType.Cancel => TexturePresets
-                                                                                                                                 .gCancelButtonTexture,
-                                                                                                                               _ => TexturePresets.gButtonBackgroundTexture
-                                                                                                                             },
-                                                                                                                             bounds,
-                                                                                                                             Colours.gDefault) {
+    public CustomItemGrabMenuTexturedItemPreset(CustomItemGrabMenu hostMenu, ButtonType buttonType, Rectangle bounds)
+      : base(hostMenu,
+             buttonType switch {
+               ButtonType.FillStacks => TexturePresets.gFillStacksPickerButtonTexture,
+               ButtonType.Organize   => TexturePresets.gOrganizeButtonTexture,
+               ButtonType.OK         => TexturePresets.gOKButtonTexture,
+               ButtonType.Cancel     => TexturePresets.gCancelButtonTexture,
+               _                     => TexturePresets.gButtonBackgroundTexture
+             },
+             bounds,
+             Colours.gDefault) {
       this.hoverText = buttonType switch {
         ButtonType.FillStacks => Game1.content.LoadString("Strings\\UI:ItemGrab_FillStacks"),
         ButtonType.Organize   => Game1.content.LoadString("Strings\\UI:ItemGrab_Organize"),
@@ -80,7 +78,8 @@ namespace ChestEx.Types.BaseTypes {
       };
     }
 
-    public CustomItemGrabMenuTexturedItemPreset(CustomItemGrabMenuItem hostMenuItem, ButtonType buttonType, Rectangle bounds) : this(hostMenuItem.mHostMenu, buttonType, bounds) { }
+    public CustomItemGrabMenuTexturedItemPreset(CustomItemGrabMenuItem hostMenuItem, ButtonType buttonType, Rectangle bounds)
+      : this(hostMenuItem.mHostMenu, buttonType, bounds) { }
 
   #endregion
   }

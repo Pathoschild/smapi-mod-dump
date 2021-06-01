@@ -1,9 +1,9 @@
 ﻿{
-  "Name": "Multiple Spouse Dialog",
+  "Name": "Multiple Spouse Dialogs",
   "Author": "ceruleandeep",
-  "Version": "1.1.4",
+  "Version": "1.2.1",
   "Description": "Cute conversations between spouses",
-  "UniqueID": "ceruleandeep.multiplespousedialog",
+  "UniqueID": "ceruleandeep.multiplespousedialogs",
   "EntryDll": "MultipleSpouseDialog.dll",
   "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:8711" ],

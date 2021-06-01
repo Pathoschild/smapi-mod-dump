@@ -26,19 +26,26 @@ namespace SkillfulClothes.Effects.Special
     /// </summary>
     class GlowEffect : SingleEffect
     {
-        const float drawXOffset = 21f;
+        const float drawXOffset = 26f;
+        const float drawYOffset = -6f;
 
         public float Radius { get; }
-        public Color Color { get; }
+        public Color Color { get; set; }
 
         protected int? lightSourceID;        
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.None, "Emits a constant light");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Glow, "Emits a constant light");
 
         public GlowEffect(float radius = 5f, Color? color = null)
         {
             Radius = radius;
-            Color = color ?? new Color(0, 30, 150);
+            if (color == null)
+            {
+                color = new Color(0, 30, 150);
+            }
+
+            // tint color so that the target colro is correct
+            Color = new Color(255 - color.Value.R, 255 - color.Value.G, 255 - color.Value.B, 155);            
         }
 
         private int GetUniqueId(GameLocation location)
@@ -61,31 +68,23 @@ namespace SkillfulClothes.Effects.Special
             EffectHelper.Events.LocationChanged -= Events_LocationChanged;
             EffectHelper.Events.LocationChanged += Events_LocationChanged;
 
-            EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking1;
-            EffectHelper.ModHelper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking1;
+            EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;
+            EffectHelper.ModHelper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
         }
 
-        private void GameLoop_UpdateTicking1(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e)
+        private void GameLoop_UpdateTicking(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e)
         {
             GameLocation environment = Game1.currentLocation;
             Farmer who = Game1.player;
 
             if (lightSourceID.HasValue)
-            {
+            {                               
                 Vector2 offset = Vector2.Zero;
                 if (who.shouldShadowBeOffset)
                 {
                     offset += (Vector2)who.drawOffset;
                 }                
-                environment.repositionLightSource(lightSourceID.Value, new Vector2(who.Position.X + drawXOffset, who.Position.Y) + offset);
-                if (!environment.isOutdoors && !(environment is MineShaft) && !(environment is VolcanoDungeon))
-                {
-                    LightSource i = environment.getLightSource(lightSourceID.Value);
-                    if (i != null)
-                    {
-                        i.radius.Value = Math.Min(Radius, 3f);
-                    }
-                }
+                environment.repositionLightSource(lightSourceID.Value, new Vector2(who.Position.X + drawXOffset, who.Position.Y + drawYOffset) + offset);                
             }
         }
 
@@ -97,7 +96,7 @@ namespace SkillfulClothes.Effects.Special
 
         public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
-            EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking1;
+            EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;
             EffectHelper.Events.LocationChanged -= Events_LocationChanged;
 
             RemoveLightSource(Game1.currentLocation);
@@ -107,7 +106,7 @@ namespace SkillfulClothes.Effects.Special
         {
             Farmer who = Game1.player;
             lightSourceID = GetUniqueId(Game1.currentLocation);
-            Game1.currentLocation.sharedLights[lightSourceID.Value] = new LightSource(1, new Vector2(who.Position.X + drawXOffset, who.Position.Y + 64f), Radius, Color, lightSourceID.Value, LightSource.LightContext.None, who.UniqueMultiplayerID);
+            Game1.currentLocation.sharedLights[lightSourceID.Value] = new LightSource(4, new Vector2(who.Position.X + drawXOffset, who.Position.Y + drawYOffset), Radius, Color, lightSourceID.Value, LightSource.LightContext.None, who.UniqueMultiplayerID);
         }
 
         private void RemoveLightSource(GameLocation location)

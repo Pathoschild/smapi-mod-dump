@@ -1,0 +1,15 @@
+urls:
+   web: https://sourceforge.net/p/sdvmod-damage-overlay/
+   Mercurial: http://hg.code.sf.net/p/sdvmod-damage-overlay/code
+
+mods:
+   Bloody Damage Overlay
+
+latest commit:
+   changeset:   48:211fc11c0599
+   tag:         tip
+   user:        Pandu POLUAN <pepoluan@gmail.com>
+   date:        Fri May 28 15:37:47 2021 +0700
+   summary:     Added tag 0.8.1 for changeset e1f517d7085f
+   
+   

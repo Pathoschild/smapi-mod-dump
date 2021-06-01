@@ -1,0 +1,10 @@
+﻿{
+   "Name": "petChoicePerks",
+   "Author": "skuldomg",
+   "Version": "1.1.1-unofficial.3-strobe",
+   "Description": "Player receives buffs/bonuses based on his pet choice.",
+   "UniqueID": "skuldomg.petChoicePerks",
+   "EntryDll": "petChoicePerks.dll",
+   "MinimumApiVersion": "3.3.0",
+   "UpdateKeys": ["Nexus:3313"]    
+}

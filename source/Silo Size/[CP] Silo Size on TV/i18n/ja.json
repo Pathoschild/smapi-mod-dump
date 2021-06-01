@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://sourceforge.net/p/sdvmod-silo-size/
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/i18n.json",
+    "tv_tip": "もうすぐ冬だね。干し草をたくわえるのを忘れずにね。冬は牧草が枯れてしまうから、動物たちのエサにする干し草が必要だ。サイロひとつで干し草を{{size}}までストックできる。冬をこすのに必要な量を計算して、足りなければあたらしく建てておこう！"
+}

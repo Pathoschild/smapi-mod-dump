@@ -37,7 +37,7 @@ namespace SkillfulClothes.Effects.Special
                 Logger.Debug("Grant MaxEnergy buff");
 
                 // create & give buff to player
-                MaxHealthBuff healthBuff = new MaxHealthBuff(amount, 360, sourceItem?.DisplayName ?? "");
+                MaxHealthBuff healthBuff = new MaxHealthBuff(amount, 1080, sourceItem?.DisplayName ?? "");
                 Game1.buffsDisplay.addOtherBuff(healthBuff);
 
                 // Game1.addHUDMessage(new HUDMessage("You awake eager to get to work."));

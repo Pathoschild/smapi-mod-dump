@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8715
+IDs: prism99.stardewweb
+update keys: Nexus:8715

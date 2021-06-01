@@ -6,10 +6,9 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit 515ef0f5544fb15d6f8daff55861928d95cb2771
+   commit b587635f0e43c09e82f54d3c1de7c4d9a74b4821
    Author: LunaticShade <lunaticshade@googlemail.com>
-   Date:   Thu May 13 22:07:53 2021 +0200
+   Date:   Mon May 31 13:08:31 2021 +0200
    
-       Added GlowEffect
-       Refactored RingEffect (now only realizes isWearingRing shim, other effects should be implemented as separate effects)
+       Added support for locational and seasonal effects
    

@@ -51,9 +51,26 @@ for queries and analysis.**
 #### Config.json example
     {
         "EnableDefaultGrass": true
+        "WhiteListedGrass": {
+            "1.png": [ "town" ]
+        },
+        "BlackListedGrass": {
+            "2.png": [ "s:farm" ]
+        },
+        "WhiteListedLocations": [ "farm" ],
+        "BlackListedLocations": []
     }
 
-Only **true** and **false** are accepted, this specifies whether the default grass sprites can also be drawn. If no config.json is present, true is the default. If this config option is set to false and after loading all content packs there is a season with no sprites, then the default game sprites will be added for that season.
+Property             | Default value | Description
+------------------   | :-----------: | -----------
+EnableDefaultGrass   | `true`        | Whether default grass sprites can also be drawn with the content pack. If this options is set to `false` and there are no available sprites for a given location, then the default sprites will be added.
+WhiteListedGrass     | `{}`          | The locations that each specified grass is allowed to be in. See below for special syntax for location names.
+BlackListedGrass     | `{}`          | The locations that each specified grass isn't allowed to be in. See below for special syntax for location names.
+WhiteListedLocations | `[]`          | The locations that this pack is allowed to retexture grass in. See below for special syntax for location names.
+BlackListedLocations | `[]`          | The locations that this pack isn't allowed to retexture grass is. See below for special syntax for location names.
+
+##### Location Name Prefixes
+Location names can have special prefixes that will change how the name is interpreted. The three prefixes are `s:`, `c:`, and `e:`. If the location name starts with `s:`, then it'll check if the current location name *starts* with the specified value, for example `s:farm` will apply to both the `farm` and `farmhouse` locations. The `c:` prefix will check if the current location name *contains* the specified value, for example `c:mine` will apply to both the `mine` and all `undergroundmine` locations. Finally, the `e:` prefix will check if the current location name *ends* eith the specified value.
 
 ## Install
 1. Install the latest version of [SMAPI](https://www.nexusmods.com/stardewvalley/mods/2400).

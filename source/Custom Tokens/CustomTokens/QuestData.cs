@@ -47,7 +47,7 @@ namespace CustomTokens
             catch (Exception ex)
             {
                 monitor.Log($"Failed in {nameof(questComplete_Postfix)}, quest tokens may not work:\n{ex}", LogLevel.Error);
-            }           
+            }                      
         }
 
         internal void CheckForCompletedSpecialOrders(PerScreen<PlayerData> data, IMonitor monitor)

@@ -28,23 +28,38 @@ namespace SkillfulClothes.Types
         /// <summary>
         /// Replaces the item's original description with the given text
         /// </summary>
-        public string NewItemDescription { get; private set; }
+        public string NewItemDescription { get; }
 
         /// <summary>
         /// If true, the player can no longer craft the clothing item on a sewing machine
         /// </summary>
-        public bool IsCraftingDisabled { get; private set; }
+        public bool IsCraftingDisabled { get; }
+
+        public Shop SoldBy { get; }
+
+        /// <summary>
+        /// The price the shop sells this item for
+        /// </summary>
+        public int Price { get; }
+
+        /// <summary>
+        /// The condition(s) under which the item gets listed at the shop
+        /// </summary>
+        public SellingCondition SellingCondition { get; }
 
         /// <summary>
         /// The items effect
         /// </summary>
         public IEffect Effect { get; private set; }
 
-        internal ExtItemInfo(string newDescription, bool disableCrafting, IEffect effect)
+        internal ExtItemInfo(string newDescription, bool disableCrafting, IEffect effect, Shop soldBy, int price, SellingCondition sellingCondition)
         {
             NewItemDescription = newDescription;
             IsCraftingDisabled = disableCrafting;
             Effect = effect;
+            SoldBy = soldBy;
+            Price = price;
+            SellingCondition = sellingCondition;
         }
     }
 
@@ -56,6 +71,10 @@ namespace SkillfulClothes.Types
         bool cannotCraft = false;
         string newItemDescription;
         IEffect effect;
+
+        Shop soldBy = Shop.None;
+        int price = 0;
+        SellingCondition sellingCondition;
 
         public static ExtendItem With => new ExtendItem();
 
@@ -83,15 +102,23 @@ namespace SkillfulClothes.Types
             return this;
         }
 
+        public ExtendItem SoldBy(Shop shop, int price, SellingCondition sellingCondition = SellingCondition.None)
+        {
+            soldBy = shop;
+            this.price = price;
+            this.sellingCondition = sellingCondition;
+            return this;
+        }
+
         public ExtendItem CannotCraft
         {
             get
             {
-                cannotCraft = false;
+                cannotCraft = true;
                 return this;
             }
         }
 
-        public static implicit operator ExtItemInfo(ExtendItem item) => new ExtItemInfo(item.newItemDescription, item.cannotCraft, item.effect);        
+        public static implicit operator ExtItemInfo(ExtendItem item) => new ExtItemInfo(item.newItemDescription, item.cannotCraft, item.effect, item.soldBy, item.price, item.sellingCondition);        
     }
 }

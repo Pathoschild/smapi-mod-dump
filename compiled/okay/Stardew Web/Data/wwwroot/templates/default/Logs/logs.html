@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+#HEAD#
+
+</head>
+<body onload="PageLoaded('');">
+    #MENUBAR#
+    <div class="stardew_container top_margin_50 med_bottom_pad">
+        <div class="message_board_title_lg">Logs</div>
+        <div class="message_board_lg">
+            <div style="height:500px;overflow:auto;">
+                #PAGEBODY#
+            </div>
+            <div style="width:100%;padding:5px 0 0 10px;border-top:2px solid black;"><button onclick="window.location = '/Log?dl=1';">Download Stardew Web Log</button> #SMAPI# <button onclick="window.location = '/Log?dl=library';">Download Stardew Catalog</button></div>
+        </div>
+    </div>
+</body>
+</html>

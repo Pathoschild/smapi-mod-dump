@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+#HEAD#
+    <script>
+
+        function LocalPageLoaded() {
+            var input = document.getElementById("dcom");
+
+            input.addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    SendDebug();
+                }
+            });
+            PageLoaded('Utils');
+         }
+
+        function SendDebug() {
+         var sQuery=document.getElementById("dcom").value
+
+            RunDebugCommand(sQuery,'dout');
+  
+        /*    fetch(sUrl).then(function(response) {
+                return response.text();
+                }).then(function(string) {
+                     document.getElementById('dout').innerHTML =string;
+                }).catch(function(err) {  
+                     document.getElementById('dout').innerHTML ='Fetch Error'+ err;  
+                });
+                */
+            /*
+
+            fetch(sUrl)
+                .then(response => {
+                    if (response.ok) {
+
+                        document.getElementById('dout').innerHTML = response.text();
+                       
+                    } else document.getElementById('dout').innerHTML = 'Network response was not ok.';
+                })
+                .catch(error =>
+                    document.getElementById('dout').innerHTML = 'Fetch error: ' + error
+                );
+
+*/
+        }
+
+    </script>
+</head>
+<body onload="LocalPageLoaded();">
+    #MENUBAR#
+
+    <div class="stardew_container top_margin_50 med_bottom_pad">
+         #CONTENT#
+    </div>
+
+</body>
+</html>

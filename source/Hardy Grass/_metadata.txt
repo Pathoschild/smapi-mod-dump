@@ -6,9 +6,9 @@ mods:
    Hardy Grass
 
 latest commit:
-   commit eae34b84b613f7995b41785137ec9372855cd921
-   Author: DiscipleOfEris <45589381+DiscipleOfEris@users.noreply.github.com>
-   Date:   Sun May 23 14:22:39 2021 -0700
+   commit 9bfa6160041b2f9addffba9d4614f484dff9bb46
+   Author: DiscipleOfEris <discipleoferis1@gmail.com>
+   Date:   Mon May 24 22:57:51 2021 -0700
    
-       Create README.md
+       Change version to 1.0.2
    

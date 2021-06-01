@@ -91,7 +91,7 @@ namespace _24H_Harmony
             var replacer1 = new CodeInstruction(OpCodes.Ldc_I4, (int)LocalizedContentManager.LanguageCode.ru);
             walker
                 .GoFind(target1)
-                .ReplaceAt(relative_pos: 6, replace_with: replacer1, assert_previous: wopc.ldloc_s);
+                .ReplaceAt(relative_pos: 6, with: replacer1, assert_previous: wopc.ldloc_s);
 
             /*
                 // [260 7 - 260 46]
@@ -154,7 +154,7 @@ namespace _24H_Harmony
                 wopc.ldloca_s,
                 wopc.ldarg_0,
                 new WantOp(OpCodes.Ldflda, value: "sourceRect"),
-                new WantOp(OpCodes.Ldfld, value: "X"),
+                wopc.fld_X,
                 wopc.conv_r4,
                 wopc.ldc_r4,
                 wopc.mul
@@ -167,7 +167,7 @@ namespace _24H_Harmony
             //    Monitor.Log(l.ToString(), LogLevel.Warn);
             //    }
             var replacer2 = new CodeInstruction(OpCodes.Br, target2_targetop.labels[0]);
-            walker.ReplaceAt(absolute_pos: patch2_pos, replace_with: replacer2, assert_previous: new WantOp(patch2_orig_op));
+            walker.ReplaceAt(absolute_pos: patch2_pos, with: replacer2, assert_previous: new WantOp(patch2_orig_op));
 
             return walker.Instructions;
             }

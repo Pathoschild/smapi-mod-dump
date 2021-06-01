@@ -108,6 +108,29 @@ namespace FarmAnimalVarietyRedux
             RegisteredAssets.Add(newManagedAsset);
         }
 
+        /// <summary>Updates the properties of an asset.</summary>
+        /// <param name="internalAnimalName">The internal name of the animal the sprite sheet is for.</param>
+        /// <param name="internalAnimalSubtypeName">The internal name of the subtype the sprite sheet is for.</param>
+        /// <param name="sourceIsBaby">The original <see cref="ManagedAsset.IsBaby"/> value.</param>
+        /// <param name="sourceIsHarvested">The original <see cref="ManagedAsset.IsHarvested"/> value.</param>
+        /// <param name="sourceSeason">The original <see cref="ManagedAsset.Season"/> value.</param>
+        /// <param name="destinationIsBaby">The new <see cref="ManagedAsset.IsBaby"/> value.</param>
+        /// <param name="destinationIsHarvested">The new <see cref="ManagedAsset.IsHarvested"/> value.</param>
+        /// <param name="destinationSeason">The new <see cref="ManagedAsset.Season"/>.</param>
+        public void UpdateAsset(string internalAnimalName, string internalAnimalSubtypeName, bool sourceIsBaby, bool sourceIsHarvested, string sourceSeason, bool destinationIsBaby, bool destinationIsHarvested, string destinationSeason)
+        {
+            var oldManagedAsset = new ManagedAsset(internalAnimalName, internalAnimalSubtypeName, sourceIsBaby, sourceIsHarvested, sourceSeason, null);
+
+            // remove a preexisting asset and add the new one
+            var managedAssetEqualityComparer = new ManagedAssetEqualityComparer();
+            var registedAsset = RegisteredAssets.FirstOrDefault(ra => managedAssetEqualityComparer.Equals(ra, oldManagedAsset));
+            if (registedAsset != null)
+            {
+                RegisteredAssets.Remove(registedAsset);
+                RegisteredAssets.Add(new ManagedAsset(internalAnimalName, internalAnimalSubtypeName, destinationIsBaby, destinationIsHarvested, destinationSeason, registedAsset.RelativeTexturePath, registedAsset.ContentPackAssetOwner));
+            }
+        }
+
         /// <summary>Determines whether an animal subtype has valid spritesheets for harvested versions.</summary>
         /// <param name="internalAnimalName">The internal name of the animal that contains the subtype.</param>
         /// <param name="internalAnimalSubtypeName">The internal name of the subtype to determine whether it has different spritesheets for harvested versions.</param>

@@ -64,7 +64,7 @@ namespace PatcherHelper
     {
     public static class Meta
         {
-        public static string Revision = "R38";
+        public static string Revision = "R41";
         }
 
     /// <summary>
@@ -357,6 +357,17 @@ namespace PatcherHelper
         }
 
     /// <summary>
+    /// Used by some methods of InstructionsWalker to determine what op attribute(s) to copy.
+    /// <para>This is a Flags enum, so to combine you can use the <c>|</c> operator</para>
+    /// </summary>
+    [Flags]
+    public enum OpCopy
+        {
+        Labels = 1,
+        Blocks = 2
+        }
+
+    /// <summary>
     /// 'Walks' over an array of CodeInstruction[] by maintaining an internal pointer.
     /// Speeds up searching for opcode patterns by not having to search from the start again,
     /// and simplifies coding by not having to maintain a pointer yourself.
@@ -395,6 +406,33 @@ namespace PatcherHelper
                 if (assert_op.NotMatches(Instructions[fetchedCurLoc]))
                     throw new AssertionFailure($"Op at {fetchedCurLoc} is <{op}> does not match assertion {assert_op}");
                 }
+            return this;
+            }
+
+        /// <summary>
+        /// Search forward in Instructions array for an op that matches <c><paramref name="to_match"/></c>
+        /// <para>Does <b>NOT</b> advance instruction pointer.</para>
+        /// </summary>
+        /// <param name="where">Variable to hold the match position. If not found, will be set to <c>-1</c></param>
+        /// <param name="to_match">WantOp to search for</param>
+        /// <param name="relative_pos">If <c>true</c> (default), outputs the offset compared to CurrentLocation.
+        /// <para>If <c>false</c>, outputs the absolute position within the Instructions array.</para></param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        public InstructionsWalker FindNextMatch(out int where, WantOp to_match, bool relative_pos = true, int? assert_where = null) {
+            int? findloc = null;
+            for (int i = CurrentLocation; i < Instructions.Length; i++) {
+                if (to_match.Matches(Instructions[i])) {
+                    findloc = i;
+                    break;
+                    }
+                }
+            if (findloc is null)
+                where = -1;
+            else
+                where = relative_pos ? findloc.Value - CurrentLocation : findloc.Value;
+            if (!(assert_where is null))
+                if (where != assert_where)
+                    throw new AssertionFailure($"{to_match} found at {where} does not match assertion {assert_where}");
             return this;
             }
 
@@ -520,7 +558,9 @@ namespace PatcherHelper
         /// <param name="relative_end_pos">Where to stop NOPification, relative to CurrentLocation. Identical to 'length' if begin location is CurrentLocation. <b>See Note on method description.</b></param>
         /// <param name="length">How many instructions to NOPify. <b>See Note on method description.</b></param>
         /// <param name="move_pos">If true (explicit), then move CurrentPos to the instruction following the sequence of NOPs</param>
-        /// <param name="copy_labels">If true (explicit), then for each NOP replacement, copy the original's labels</param>
+        /// <param name="copy">Combination of OpCopy flags to specify what metaop to copy</param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        /// <exception cref="ArgumentException">Thrown if none or more than one of {<c>absolute_end_pos</c> or <c>relative_end_pos</c> or <c>length</c>} are specified</exception>
         /// <remarks><b>NOTE:</b> ONE and ONLY ONE of <c>absolute_end_pos</c> or <c>relative_end_pos</c> or <c>length</c> must be specified!</remarks>
         public InstructionsWalker NOPify(
             int? absolute_begin_pos = null,
@@ -529,8 +569,9 @@ namespace PatcherHelper
             int? relative_end_pos = null,
             int? length = null,
             bool move_pos = true,
-            bool copy_labels = false
+            OpCopy copy = 0
             ) {
+            bool copy_labels = copy.HasFlag(OpCopy.Labels);
             int endnulls = (absolute_end_pos is null) ? 1 : 0;
             endnulls += (relative_end_pos is null) ? 1 : 0;
             endnulls += (length is null) ? 1 : 0;
@@ -556,34 +597,69 @@ namespace PatcherHelper
             }
 
         /// <summary>
+        /// Replace instructions from CurrentLocation with NOPs until we find a certain WantOp (which itself will not be replaced)
+        /// </summary>
+        /// <param name="until">Stop NOPifying when this WantOp is encountered (itself won't be replaced)</param>
+        /// <param name="move_pos">If true (explicit), then move CurrentPos to the instruction following the sequence of NOPs</param>
+        /// <param name="copy">Combination of OpCopy flags to specify what metaop to copy</param>
+        /// <param name="assert_count">Assert how many replacements were made</param>
+        /// <param name="assert_next">Assert the next op following the NOPified block</param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        /// <exception cref="AssertionFailure">Thrown if any of the assertions (if provided) fails</exception>
+        public InstructionsWalker NOPify(WantOp until, bool move_pos = true, OpCopy copy = 0, int? assert_count = null, WantOp assert_next = null) {
+            FindNextMatch(out int stop_pos, relative_pos: false, to_match: until);
+            if (stop_pos < 0) {
+                throw new PatchingFailureException($"Cannot find {until} in rest of Instructions");
+                }
+            bool copy_labels = copy.HasFlag(OpCopy.Labels);
+            CodeInstruction orig_op, new_op;
+            int count = 0;
+            for (int loc = CurrentLocation; loc < stop_pos; loc++) {
+                orig_op = Instructions[loc];
+                new_op = new CodeInstruction(OpCodes.Nop);
+                if (copy_labels) new_op.labels = orig_op.labels;
+                Instructions[loc] = new_op;
+                count++;
+                }
+            if (assert_count.HasValue && count != assert_count.Value)
+                throw new AssertionFailure($"Performed {count} NOPing does not match assertion {assert_count}");
+            if (!(assert_next is null) && assert_next.NotMatches(Instructions[stop_pos]))
+                throw new AssertionFailure($"Next op after NOPified <{Instructions[stop_pos]}> does not match assertion {assert_next}");
+            if (move_pos)
+                CurrentLocation = stop_pos;
+            return this;
+            }
+
+        /// <summary>
         /// Replace CodeInstruction at a position with a new CodeInstruction.
         /// <para>Position is calculated as absolute_pos + relative_pos (see param description on null handling)</para>
         /// <para><b>WARNING:</b> Pointer will advance to 1 instruction after the replaced instruction! (Unless <c>move_pos = false</c>)</para>
         /// </summary>
         /// <param name="absolute_pos">Location to replace. If null, use CurrentLocation</param>
         /// <param name="relative_pos">Add this to wanted location</param>
-        /// <param name="replace_with">CodeInstruction that will replace</param>
+        /// <param name="with">CodeInstruction that will replace</param>
         /// <param name="mutator">(Optional) mutate CodeInstruction before replacing</param>
         /// <param name="assert_previous">If given, assert that the to-be-replaced op is the given WantOp</param>
-        /// <param name="copy_labels">Copy labels from to-be-replaced instruction</param>
+        /// <param name="copy">Combination of OpCopy flags to specify what metaop to copy</param>
         /// <param name="move_pos">If false, do not advance pointer after replacement.</param>
         public InstructionsWalker ReplaceAt(
             int? absolute_pos = null,
             int relative_pos = 0,
-            CodeInstruction replace_with = null,
+            CodeInstruction with = null,
             Func<CodeInstruction, CodeInstruction> mutator = null,
-            bool copy_labels = false,
+            OpCopy copy = 0,
             bool move_pos = true,
             WantOp assert_previous = null
             ) {
-            if (replace_with is null)
-                throw new ArgumentNullException(nameof(replace_with));
+            if (with is null)
+                throw new ArgumentNullException(nameof(with));
             int pos = (absolute_pos ?? CurrentLocation) + relative_pos;
             CodeInstruction orig_op = Instructions[pos];
             if (assert_previous?.NotMatches(orig_op) ?? false)
                 throw new AssertionFailure($"Previous op is <{orig_op}> does not match assertion {assert_previous}");
-            CodeInstruction replacer_op = (mutator is null) ? replace_with : mutator(replace_with);
-            if (copy_labels) replacer_op.labels = orig_op.labels;
+            CodeInstruction replacer_op = (mutator is null) ? with : mutator(with);
+            if (copy.HasFlag(OpCopy.Labels)) replacer_op.labels = orig_op.labels;
+            if (copy.HasFlag(OpCopy.Blocks)) replacer_op.blocks = orig_op.blocks;
             Instructions[pos] = replacer_op;
             if (move_pos) CurrentLocation = pos + 1;
             return this;
@@ -637,6 +713,7 @@ namespace PatcherHelper
             ldc_i4_2 = new WantOp(OpCodes.Ldc_I4_2),
             ldc_i4_3 = new WantOp(OpCodes.Ldc_I4_3),
             ldc_i4_4 = new WantOp(OpCodes.Ldc_I4_4),
+            ldc_i4_7 = new WantOp(OpCodes.Ldc_I4_7),
             ldc_r4 = new WantOp(OpCodes.Ldc_R4),
             ldloc_0 = new WantOp(OpCodes.Ldloc_0),
             ldloc_1 = new WantOp(OpCodes.Ldloc_1),

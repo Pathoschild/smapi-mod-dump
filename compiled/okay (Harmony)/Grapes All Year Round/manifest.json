@@ -1,7 +1,7 @@
 {
   "Name": "GrapesAllYearRound",
   "Author": "GZhynko",
-  "Version": "1.0.4",
+  "Version": "1.0.5",
   "Description": "Allows grapes to grow all year round, but produce only in fall.",
   "UniqueID": "GZhynko.GrapesAllYearRound",
   "EntryDll": "GrapesAllYearRound.dll",

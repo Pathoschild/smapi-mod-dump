@@ -413,20 +413,18 @@ namespace BetterMixedSeeds
                             .Select(objectInfo => objectInfo.Key)
                             .FirstOrDefault();
 
+                        seedId = cropData
+                                .Where(cropInfo => cropInfo.Value.Split('/')[3] == cropId.ToString())
+                                .Select(cropInfo => cropInfo.Key)
+                                .FirstOrDefault();
+
                         // if the crop doesn't exist in the data file, try to get it from JA directly
                         var jaApi = this.Helper.ModRegistry.GetApi("SpaceChase0.JsonAssets");
-                        if (cropId <= 0 && jaApi != null)
+                        if ((seedId <= 0 || cropId <= 0) && jaApi != null)
                         {
                             cropId = (int)jaApi.GetType().GetMethod("GetCropId", BindingFlags.Public | BindingFlags.Instance).Invoke(jaApi, new object[] { crop.Name });
                             seedId = cropData
                                 .Where(cropInfo => cropInfo.Value.Split('/')[2] == cropId.ToString())
-                                .Select(cropInfo => cropInfo.Key)
-                                .FirstOrDefault();
-                        }
-                        else
-                        {
-                            seedId = cropData
-                                .Where(cropInfo => cropInfo.Value.Split('/')[3] == cropId.ToString())
                                 .Select(cropInfo => cropInfo.Key)
                                 .FirstOrDefault();
                         }

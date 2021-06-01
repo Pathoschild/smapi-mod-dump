@@ -72,7 +72,7 @@ namespace WhatAreYouMissing
             FallItems = new FallSpecificItems().GetItems();
             WinterItems = new WinterSpecificItems().GetItems();
             CCItems = new CommonCCItems().GetItems();
-            AvailableMerchentStock = new AvailableMerchantStock(SpringItems, SummerItems, FallItems, WinterItems, CCItems).GetItems();
+            AvailableMerchentStock = new AvailableMerchantStock(SpringItems, SummerItems, FallItems, WinterItems).GetItems();
             AvailableRecipes = new Recipes().GetItems();
             AllRecipeIngredients = new RecipeIngredients().GetRecipeAndIngredients();
             AllFish = new AllFish().GetItems();
@@ -194,7 +194,7 @@ namespace WhatAreYouMissing
 
         private Dictionary<int, int[][]> ProcessCCBundles()
         {
-            Dictionary<string, string> rawBundleData = Game1.content.Load<Dictionary<string, string>>("Data\\Bundles");
+            Dictionary<string, string> rawBundleData = Game1.netWorldState.Value.BundleData;
             Dictionary<int, int[][]> processedBundleData = new Dictionary<int, int[][]>(); //the key will be the bundleId, the int[] is index from parent sheet, howMany, and quality
 
             //In the bundles.json file it appears that the key is RoomName/BundleID
@@ -237,7 +237,7 @@ namespace WhatAreYouMissing
 
         private void AddMissingItemToProperList(SObject missingItem)
         {
-            if (IsItemSeasonSpecific(missingItem.ParentSheetIndex))
+            if (IsItemCurrentSeasonSpecific(missingItem.ParentSheetIndex))
             {
                 MissingSpecificCCItems.Add(missingItem);
             }
@@ -245,13 +245,17 @@ namespace WhatAreYouMissing
             {
                 MissingMerchantCCItems.Add(missingItem);
             }
-            else
+            else if (!IsItemSeasonSpecific(missingItem.ParentSheetIndex))
             {
                 MissingCommonCCItems.Add(missingItem);
             }
+            else
+            {
+                ModEntry.Logger.LogWarning($"Not adding {missingItem.Name} to any list (parent sheet index: {missingItem.ParentSheetIndex})");
+            }
         }
 
-        private bool IsItemSeasonSpecific(int parentSheetIndex)
+        private bool IsItemCurrentSeasonSpecific(int parentSheetIndex)
         {
             return CurrentSeasonSpecifics.ContainsKey(parentSheetIndex) && !CCItems.ContainsKey(parentSheetIndex);
         }
@@ -259,6 +263,24 @@ namespace WhatAreYouMissing
         private bool IsItemMerchantSpecific(int parentSheetIndex)
         {
             return AvailableMerchentStock.ContainsKey(parentSheetIndex) && !CCItems.ContainsKey(parentSheetIndex);
+        }
+
+        private bool IsItemSeasonSpecific(int parentSheetIndex)
+        {
+            bool inSpring = SpringItems.ContainsKey(parentSheetIndex);
+            bool inSummer = SummerItems.ContainsKey(parentSheetIndex);
+            bool inFall = FallItems.ContainsKey(parentSheetIndex);
+            bool inWinter = WinterItems.ContainsKey(parentSheetIndex);
+
+            if (!inSpring && !inSummer && !inFall && !inWinter)
+            {
+                //if its not in any season specific items then its not season specific
+                return false;
+            }
+            else
+            {
+                return !(inSpring && inSummer && inFall && inWinter);
+            }
         }
 
         private bool IsBundleCompleted(int bundleID)

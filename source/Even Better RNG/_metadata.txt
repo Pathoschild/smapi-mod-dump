@@ -6,11 +6,11 @@ mods:
    Even Better RNG
 
 latest commit:
-   changeset:   282:1a4329df702c
-   branch:      v2
+   changeset:   315:020840bb6ba8
    tag:         tip
+   parent:      306:e9e17a58d314
    user:        Pandu POLUAN <pepoluan@gmail.com>
-   date:        Tue May 25 01:17:30 2021 +0700
-   summary:     BUGFIX: Tree.tickUpdate patch
+   date:        Sun May 30 19:51:19 2021 +0700
+   summary:     Close default branch
    
    

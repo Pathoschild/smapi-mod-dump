@@ -1,25 +1,4 @@
 {
-  "Enabled": true,
-  "Overlays": {
-    "first": "assets/bloody1.png",
-    "second": "assets/bloody2.png"
-  },
-  "Thresholds": {
-    "40": {
-      "Overlay": "first",
-      "Transparency": 0.6
-    },
-    "30": {
-      "Overlay": "first",
-      "Transparency": 0.3
-    },
-    "20": {
-      "Overlay": "second",
-      "Transparency": 0.4
-    },
-    "10": {
-      "Overlay": "second",
-      "Transparency": 0.0
-    }
-  }
+  "overlay": "bloody",
+  "temp_hide_hotkey": "OemSemicolon"
 }

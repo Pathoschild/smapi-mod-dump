@@ -6,12 +6,12 @@ mods:
    Dynamic Checklist
 
 latest commit:
-   commit 6a7d2b3a9d4d85f08c63a676305f5c7b9b051da7
-   Merge: ae39af2 e702e11
+   commit 4dc2768151f8155c4d8c6c66962cc4c97fbac89e
+   Merge: 6a7d2b3 65d84e0
    Author: gunnargolf <gunnargolf@gmail.com>
-   Date:   Sat Mar 28 21:58:53 2020 +0000
+   Date:   Sun May 30 17:43:51 2021 +0000
    
-       Merge pull request #8 from stash/readme-and-license
+       Merge pull request #10 from Bisa/fix/unknown-draw-method-override
        
-       Readme and license
+       add missing IClickableMenu (Stardew 1.5.4)
    

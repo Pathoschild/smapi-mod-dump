@@ -1,0 +1,38 @@
+{
+  "images": {
+    // left side of colon = arbitrary label (to be used in "textures")
+    // right side of colon = graphics file (preferably PNG with proper transparent area in middle) in _same_ directory as this file (no path traversal!)
+    "asdf": "redborder.png"
+  },
+  "textures": {
+    // left side of colon = arbitrary label (to be used in "thresholds")
+    // right side of colon = mapping of:
+    //    "image" (MANDATORY) = a label defined in "images" above
+    //    "transparency" (Optional)
+    //    "crop" (Optional) = mapping of "X", "Y", "W"(idth), "H"(eight)
+    "ghjk": {
+      "image": "asdf",
+      "transparency": 0.3,
+      "crop": {
+        "X": 31,
+        "Y": 35,
+        "W": 891,
+        "H": 545
+      }
+    },
+    // Can drop any or all of Optional fields
+    "qwer": {
+      "image": "asdf",
+      "transparency": 0.2
+    },
+    "zxcv": {
+      "image": "asdf"
+    }
+  },
+  "thresholds": {
+    // left side of colon: integer percentage of health. Because of JSON limitation, they must be double-quoted
+    "45": "ghjk",
+    "30": "qwer",
+    "15": "zxcv"
+  }
+}

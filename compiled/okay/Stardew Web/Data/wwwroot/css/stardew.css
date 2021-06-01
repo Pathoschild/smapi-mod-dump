@@ -1,0 +1,839 @@
+﻿@font-face {
+    font-family: chango;
+    src: url(../fonts/Chango-Regular.ttf);
+}
+
+@font-face {
+    font-family: stardew;
+    src: url(../fonts/Stardew_Valley.ttf);
+}
+
+@font-face {
+    font-family: stardewwood;
+    src: url(../fonts/Stardew_Valley_Wood-Regular.ttf);
+}
+
+body {
+    padding-top: 50px;
+    background-image: url('/images/stardewbackground.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    height: 100%;
+    margin: 0px;
+    line-height: normal;
+    min-width: 1400px;
+}
+
+html {
+}
+
+.stardew_container {
+    width: 90%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.friend_td {
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.58);
+    border: 2px solid transparent;
+    margin: 2px;
+    background-clip: padding-box;
+}
+
+.taste_div {
+    height: 120px;
+    width: 100%;
+    overflow: auto;
+}
+
+.med_top_pad {
+    padding-top: 30px;
+}
+
+.med_bottom_pad {
+    padding-bottom: 30px;
+}
+
+.data_td {
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.58);
+    border: 2px solid transparent;
+    margin: 2px;
+    background-clip: padding-box;
+}
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.top {
+    vertical-align: top;
+}
+
+.right {
+    text-align: right;
+}
+
+.center_table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.friend_th {
+    font-family: Tahoma;
+    font-size: 14pt;
+    font-weight: 500;
+    background-color: #03A007;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.brown1 {
+    color: #a24d10;
+}
+
+.shipping_red {
+    color: red;
+}
+
+.shipping_green {
+    color: green;
+}
+
+.shipping_blue {
+    color: blue;
+}
+
+.gamedetails_td {
+    padding: 5px;
+}
+
+.sectionhead {
+    font-family: "Open Sans", sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    border-bottom: 1px solid rgb(170, 170, 170);
+    margin-bottom: 7px;
+    color: white;
+}
+
+.backgroundoverlay {
+    background: rgba(255,255,255,0.3);
+    height: 100%;
+}
+
+.top_margin_50 {
+    margin-top: 50px;
+}
+
+.task_type {
+    font-family: stardew;
+    font-size: 24pt;
+    width: 100%;
+    padding: 5px 5px 0px 5px;
+    border-bottom: 1px solid black;
+}
+
+.task_list {
+    width: 100%;
+    height: 200px;
+    overflow: auto;
+    font-family: stardew;
+    font-size: 20pt;
+    padding-top: 5px;
+}
+
+.base_font {
+    font-family: stardew,'Times New Roman', Times, serif;
+    font-size: 20pt;
+}
+
+.no_border {
+    border: none !important;
+}
+
+.stardew_table {
+    /* background-color: #fa9305;*/
+    border-spacing: 4px;
+    border-collapse: separate;
+    /*  border: 3px solid #ab3b00;*/
+}
+
+.stardew_furniture_td {
+    width: 300px;
+    height: 200px;
+}
+
+.stardew_furniture_img {
+    margin: auto;
+}
+
+.stardew_number {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.stardew_table_filled {
+    background-color: #fa9305;
+    border-spacing: 4px;
+    border-collapse: separate;
+    border: 3px solid #ab3b00;
+}
+
+.stardew_header {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16pt;
+    color: #5c4402;
+    background-color: #fa9305;
+    font-weight: 600;
+    padding: 5px;
+}
+
+.stardew_row {
+    border: 2px solid #ab3b00;
+    padding: 5px;
+    background-color: #f5b565;
+    font-family: stardew,'Times New Roman', Times, serif;
+    font-size: 18pt;
+}
+
+.stardew_data {
+    padding: 2px 5px 2px 5px;
+    background: rgba(245, 181, 101, 0.78);
+    font-family: stardew,'Times New Roman', Times, serif;
+    border: 2px solid #ab3b00;
+    font-size: 20pt;
+}
+
+.stardew_label {
+    padding: 2px 5px 2px 5px;
+    border: 2px solid transparent;
+    margin: 2px;
+    background-clip: padding-box;
+    font-size: 20pt;
+    font-family: stardew,'Times New Roman', Times, serif;
+    color: #5c4402;
+    font-weight: 400;
+    background-color: #fa9305;
+}
+
+.stardew_border {
+    border: 2px solid #ab3b00;
+}
+
+.status_bar {
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 5px 5px 5px 20px;
+}
+
+.hud_label {
+    padding: 0px 5px 0px 15px;
+    text-align: center;
+    box-sizing: content-box;
+}
+
+.hud_label_inline {
+    padding: 0px 5px 0px 15px;
+    text-align: center;
+    box-sizing: content-box;
+    display: inline-block;
+}
+
+.hud_label_inline_right {
+    padding: 0px 5px 0px 15px;
+    text-align: center;
+    box-sizing: content-box;
+    display: block;
+    float: right;
+}
+
+.hud_data {
+    padding: 0px 5px 0px 5px;
+    height: 20px;
+    text-align: center;
+    min-width: 30px;
+    background-color: #595959;
+    border-top: 1px solid #737373;
+    border-right: 1px solid #737373;
+    border-bottom: 1px solid #999999;
+    border-left: 1px solid #999999;
+    box-sizing: content-box;
+}
+
+.hud_data_inline {
+    padding: 0px 5px 0px 5px;
+    height: 20px;
+    text-align: center;
+    min-width: 30px;
+    background-color: #595959;
+    border-top: 1px solid #737373;
+    border-right: 1px solid #737373;
+    border-bottom: 1px solid #999999;
+    border-left: 1px solid #999999;
+    box-sizing: content-box;
+    display: inline-block;
+}
+
+.hud_warp_button {
+    padding-right: 10px;
+    color: #f7ef7c;
+}
+
+    .hud_warp_button:hover {
+        cursor: pointer;
+        color: #8aaff2;
+    }
+
+.submenu-bar {
+    width: 100%;
+    overflow: hidden
+}
+
+.submenu-black {
+    color: #fff !important;
+    background-color: #000 !important
+}
+
+.submenu-bar .submenu-bar-item {
+    padding: 8px 16px;
+    float: left;
+    width: auto;
+    border: none;
+    display: block;
+    outline: 0
+}
+
+.submenu-bar-button {
+    width: 100%;
+    text-align: left;
+    padding: 8px 16px;
+    white-space: normal;
+    border: none;
+    display: inline-block;
+    padding: 8px 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+    .submenu-bar-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.3
+    }
+
+.w3-disabled *, :disabled * {
+    pointer-events: none
+}
+
+.submenu-bar-button:hover {
+    color: #000 !important;
+    background-color: #ccc !important
+}
+
+.submenu-bar-container {
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.58);
+    border: 2px solid transparent;
+    margin: 2px;
+    background-clip: padding-box;
+}
+
+    .submenu-bar-container:after, .submenu-bar-container:before {
+        content: "";
+        display: table;
+        clear: both
+    }
+
+.shipping-sub-header {
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.check_box {
+    width: 24px;
+    height: 24px;
+}
+
+.wallet_content {
+    width: 24px;
+    height: 24px;
+}
+
+.skill_icon {
+    width: 24px;
+    height: 24px;
+}
+
+.skills_data {
+    padding-left: 10px;
+    vertical-align: middle;
+}
+.shipping_banner{
+    padding-bottom:10px;
+    padding-top:10px;
+}
+.bundle_div {
+}
+
+.fixed_header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+.item_link {
+    color: black;
+}
+
+.warp_button {
+    width: 140px;
+    text-align: center;
+}
+
+.warp_link {
+    text-decoration: underline;
+    cursor: zoom-in;
+}
+
+    .warp_link:hover {
+        color: cadetblue;
+        cursor: zoom-in;
+    }
+
+.popup {
+    position: absolute;
+    top: 48%;
+    left: 45%;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.chicken_image {
+    height: 64px;
+    width: 64px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+}
+.animal_image {
+    height: 96px;
+    width: 96px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 10px 20px 30px;
+}
+
+.lookup_data {
+    border: 1px solid black;
+}
+
+.popuptext {
+    visibility: hidden;
+    width: 400px;
+    height: 200px;
+    background-color: #555;
+    color: black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 100000;
+    background-image: url('/images/popup_message_board.png');
+    background-size: auto;
+    /*
+    top: 48%;
+    left: 45%;
+        */
+    cursor: pointer;
+}
+
+.popup1 .popuptext1::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.search_close_button {
+  position:absolute;
+  top:25px;
+  left:710px;
+}
+
+.search_banner {
+    position: absolute;
+    left: 35px;
+    top: 29px;
+    width: 758px;
+    display: block;
+    opacity: 0.6;
+    margin-top: -7px;
+}
+
+.search_container {
+    width: 758px;
+    padding-top: 55px;
+    margin-left: 15px;
+    background-color: azure;
+    padding-bottom: 10px;
+    margin-top: -10px;
+}
+
+.search_title {
+    position: absolute;
+    top: 42px;
+    left: 50px;
+    color: coral;
+    font-size: 24pt;
+    margin-top: -15px;
+}
+
+.search_text {
+    text-align: left;
+    padding-left: 5px;
+}
+
+.search_busy {
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    position: relative;
+    z-index: 20;
+}
+
+.search_results {
+    position: absolute;
+    top: 125px;
+    height: 430px;
+    width: 740px;
+    overflow: auto;
+    border: 1px solid black;
+    background-color: white;
+    padding: 0px;
+    margin: 5px 20px 5px 20px;
+}
+
+.lookuptext {
+    visibility: hidden;
+    width: 820px;
+    height: 620px;
+    background-color: transparent;
+    color: black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 10000;
+    background-image: url('/images/lookup.png');
+    background-size: cover;
+    top: 100px;
+    left: 100px;
+    cursor: pointer;
+}
+
+.showpop {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+
+.collection_fish {
+    padding-left: 10px;
+    width: 32px;
+    height: 32px;
+}
+
+.showlookup {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+
+.config_table_details {
+    border: 2px solid black;
+    padding: 3px;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.config_setting_details {
+    text-align: center;
+    padding: 4px;
+    border: 1px solid black;
+    vertical-align: top;
+}
+
+.config_value_details {
+    text-align: left;
+    padding: 4px;
+    border: 1px solid black;
+}
+
+.config_width {
+}
+
+.config_table {
+    padding: 5px;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.config_section_head {
+    text-align: center;
+    padding: 4px;
+    vertical-align: top;
+    font-size: 24pt;
+    border-bottom: 1px solid black;
+}
+
+.config_products {
+    padding: 5px;
+    text-align: right;
+}
+
+.config_setting {
+    text-align: right;
+    padding: 4px;
+    vertical-align: top;
+    width: 35%;
+}
+
+.config_value {
+    text-align: left;
+    padding: 4px;
+    width: 15%;
+}
+
+.stardew_alpha_header {
+    width: 100%;
+    border-bottom: 1px solid black;
+    font-family: stardew,'Times New Roman', Times, serif;
+    font-size: 20pt;
+}
+
+
+.export_key {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.export_value {
+    border: 1px solid black;
+    padding: 5px;
+    width: 600px;
+}
+
+.message_board {
+    background-image: url('/images/message_board.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 35px 35px 30px 50px;
+    display: inline-flex;
+    width: 600px;
+}
+
+.message_board_lg {
+    background-image: url('/images/message_board.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 40px 60px 30px 60px;
+    display: inline-block;
+    width: 1230px;
+}
+
+.message_board_full {
+    background-image: url('/images/message_board.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 60px 80px 60px 80px;
+    display: inline-block;
+    width: 100%;
+}
+
+.message_board_list {
+    background-image: url('/images/message_board.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 35px 35px 30px 50px;
+    font-family: stardew,'Times New Roman', Times, serif;
+    font-size: 20pt;
+    width: 600px;
+    display: inline-flex;
+}
+
+.message_board_list_lg {
+    background-image: url('/images/message_board.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 35px 55px 30px 55px;
+    font-family: stardew,'Times New Roman', Times, serif;
+    font-size: 20pt;
+    width: 1230px;
+    display: inline-flex;
+}
+
+.message_board_title {
+    background-image: url('/images/title_box.png');
+    margin: 5px 5px 5px 5px;
+    background-size: 100% 100%;
+    padding: 10px 5px 10px 5px;
+    font-family: stardew,'Times New Roman', Times, serif;
+    text-align: center;
+    font-size: 28pt;
+    display: inline-block;
+    width: 600px;
+}
+
+.message_board_title_lg {
+    background-image: url('/images/title_box.png');
+    margin: 5px 5px 5px 0px;
+    background-size: 100% 100%;
+    padding: 10px 5px 10px 0px;
+    font-family: stardew,'Times New Roman', Times, serif;
+    text-align: center;
+    font-size: 28pt;
+    display: inline-block;
+    width: 1230px;
+}
+
+.message_board_title_full {
+    background-image: url('/images/title_box.png');
+    margin: 5px 5px 5px 0px;
+    background-size: 100% 100%;
+    padding: 20px 80px 30px 80px;
+    font-family: stardew,'Times New Roman', Times, serif;
+    text-align: center;
+    font-size: 28pt;
+    display: inline-block;
+    width: 100%;
+}
+
+
+html {
+    scroll-padding-top: 111px; /* height of sticky header */
+}
+
+.event_details_data {
+    border: 1px solid black;
+    padding: 4px;
+}
+
+.jojacolor {
+    color: cornflowerblue;
+}
+
+.jojoa_cd_table {
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid purple;
+}
+
+.joja_cd_td {
+    border: 2px solid purple;
+    padding: 4px 4px 10px 4px;
+    width: 300px;
+    font-size: 20px;
+}
+
+.joja_cd_projname {
+    padding: 4px 4px 4px 10px;
+    width: 150px;
+    font-size: 20px;
+}
+
+.joja_cd_space {
+    padding: 4px 4px 4px 4px;
+    width: 50px;
+    font-size: 20px;
+}
+
+.joja_cd_bottom {
+    border-bottom: 2px solid cornflowerblue;
+}
+
+.joja_cd_checkbox {
+    border: 2px solid cornflowerblue;
+    padding: 0px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    color: lawngreen;
+    font-size: 20pt;
+    display: inline-block;
+}

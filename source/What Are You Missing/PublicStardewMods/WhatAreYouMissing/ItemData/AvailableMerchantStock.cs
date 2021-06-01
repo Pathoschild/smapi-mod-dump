@@ -20,15 +20,13 @@ namespace WhatAreYouMissing
         private Dictionary<int, SObject> SummerItems;
         private Dictionary<int, SObject> FallItems;
         private Dictionary<int, SObject> WinterItems;
-        private Dictionary<int, SObject> CommonCCItems;
         private Dictionary<int, SObject> AllPossibleMerchantItems;
-        public AvailableMerchantStock(Dictionary<int, SObject> spring, Dictionary<int, SObject> summer, Dictionary<int, SObject> fall, Dictionary<int, SObject> winter, Dictionary<int, SObject> cc) : base()
+        public AvailableMerchantStock(Dictionary<int, SObject> spring, Dictionary<int, SObject> summer, Dictionary<int, SObject> fall, Dictionary<int, SObject> winter) : base()
         {
             SpringItems = spring;
             SummerItems = summer;
             FallItems = fall;
             WinterItems = winter;
-            CommonCCItems = cc;
             AllPossibleMerchantItems = new Dictionary<int, SObject>();
             AddPossibleItems();
             AddMissingItems();

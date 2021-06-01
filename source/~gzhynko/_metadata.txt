@@ -12,9 +12,10 @@ mods:
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit a0fe0c997d9fb090839fa751f6722873d4acd017
+   commit 164226e02777fd3830834c4b10a02a3599e40a3e
    Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Fri May 21 22:35:17 2021 +0300
+   Date:   Tue Jun 1 00:44:13 2021 +0300
    
-       fix: fix grapes not working properly in the greenhouse
+       fix: update pathfinding logic to SDV 1.5
+       (fix animals not drinking water outside)
    

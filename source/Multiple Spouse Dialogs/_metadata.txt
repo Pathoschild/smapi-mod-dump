@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ceruleandeep/MultipleSpouseDialogs
+   Git: https://github.com/ceruleandeep/MultipleSpouseDialogs.git
+
+mods:
+   Multiple Spouse Dialogs
+
+latest commit:
+   commit e21a007a57d7c2f29f085dfdeb68d88a88d34f02
+   Author: ceruleandeep <ceruleandeep>
+   Date:   Tue Jun 1 13:16:47 2021 +1000
+   
+       Add support for dialog content packs
+   

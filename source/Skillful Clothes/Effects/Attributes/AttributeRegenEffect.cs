@@ -31,6 +31,7 @@ namespace SkillfulClothes.Effects.Attributes
         int regenAmount;
 
         Vector2? previousLocation;
+        Color glowColor;
 
         protected abstract string AttributeName { get; }
 
@@ -44,8 +45,9 @@ namespace SkillfulClothes.Effects.Attributes
 
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"Regenerate {AttributeName} when standing still");
 
-        public AttributeRegenEffect(int secondsToStandStill, int regenIntervalSeconds = 1, int regenAmount = 1)
+        public AttributeRegenEffect(Color glowColor, int secondsToStandStill, int regenIntervalSeconds = 1, int regenAmount = 1)
         {
+            this.glowColor = glowColor;
             this.secondsToStandStill = secondsToStandStill;
             this.regenIntervalSeconds = regenIntervalSeconds;
             this.regenAmount = regenAmount;
@@ -80,12 +82,17 @@ namespace SkillfulClothes.Effects.Attributes
                     {
                         if ((standingStillForSeconds - secondsToStandStill) % regenIntervalSeconds == 0)
                         {
+                            if (!Game1.player.isGlowing)
+                            {
+                                Game1.player.startGlowing(glowColor, true, 0.5f);
+                            }
+
                             int currValue = GetCurrentValue(Game1.player);
                             int max = GetMaxValue(Game1.player);
                             if (currValue < max)
                             {
                                 Logger.Debug($"{AttributeName} regen +{regenAmount}");
-                                SetCurrentValue(Game1.player, Math.Min(currValue + regenAmount, max));
+                                SetCurrentValue(Game1.player, Math.Min(currValue + regenAmount, max));                                
                             }
                         }
                     }
@@ -93,6 +100,11 @@ namespace SkillfulClothes.Effects.Attributes
             }
             else
             {
+                if (standingStillForSeconds > 0 && Game1.player.isGlowing && Game1.player.glowingColor == glowColor)
+                {
+                    Game1.player.stopGlowing();
+                }
+
                 standingStillForSeconds = 0;
             }
         }

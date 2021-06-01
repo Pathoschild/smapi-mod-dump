@@ -6,9 +6,9 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit 193c5d617ad3fd636b859f1b7d5edab4f0d25b8d
+   commit 7cf9f622815fa4f46e9df10062139cf1d158e227
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Tue Dec 22 22:15:19 2020 -0500
+   Date:   Wed Dec 30 18:32:47 2020 -0500
    
-       Updated some legendary fish info, made it so the clam shows up in the fish tab, recompiled so it doesn't crash on stardew 1.5
+       Some quick stuff so that its a bit better for stardew 1.5, should work for dynamic bundles and not show so many things in the common tab
    

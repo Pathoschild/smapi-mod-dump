@@ -34,7 +34,7 @@ namespace EvenBetterRNG
             helper.Events.Input.ButtonsChanged += NewRNG.OnButtonsChanged;
             
             if (EvenBetterRNG.Config.ExperimentalForcePerTick) {
-                Monitor.Log("Experimental Force Per Tick enabled");
+                Monitor.Log("Experimental Force Per Tick enabled", LogLevel.Debug);
                 helper.Events.GameLoop.UpdateTicking += NewRNG.OnUpdateTicking;
                 }
             }

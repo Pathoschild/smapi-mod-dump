@@ -1,0 +1,39 @@
+﻿<div class="message_board_title_full">Seen Events</div>
+<div class="message_board_full">
+    <div style="max-height:300px;width:100%; overflow:auto;">
+        <table class="stardew_table" id="seenevents">
+            <thead>
+                <tr>
+                    <th class="stardew_header fixed_header" style="cursor:pointer;" onclick="sortTable('seenevents',0);">Id</th>
+                    <th class="stardew_header fixed_header">Name</th>
+                    <th class="stardew_header fixed_header" style="cursor:pointer;" onclick="sortTable('seenevents',2);">NPC</th>
+                    <th class="stardew_header fixed_header" style="cursor:pointer;" onclick="sortTable('seenevents',3);">Location</th>
+                    <th class="stardew_header fixed_header">Resuults</th>
+                </tr>
+            </thead>
+            <tbody>
+                #SEENROWS#
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="message_board_title_full">Un-Seen Events</div>
+<div class="message_board_full">
+    <div style="max-height:300px;width:100%; overflow:auto;">
+        <table class="stardew_table" id="events">
+            <thead>
+                <tr>
+                    <th class="stardew_header fixed_header" style="cursor:pointer;" onclick="sortTable('events',0);">Id</th>
+                    <th class="stardew_header fixed_header">Name</th>
+                    <th class="stardew_header fixed_header" style="cursor:pointer;" onclick="sortTable('events',2);">NPC</th>
+                    <th class="stardew_header fixed_header" style="cursor:pointer;" onclick="sortTable('events',3);">Location</th>
+                    <th class="stardew_header fixed_header" style="cursor:pointer;" onclick="sortTable('events',4);">Seen</th>
+                    <th class="stardew_header fixed_header">Preconditions</th>
+                </tr>
+            </thead>
+            <tbody>
+                #ROWS#
+            </tbody>
+        </table>
+    </div>
+</div>

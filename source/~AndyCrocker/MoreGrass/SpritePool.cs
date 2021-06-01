@@ -9,8 +9,8 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+using MoreGrass.Models;
 using StardewValley;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,23 +26,23 @@ namespace MoreGrass
         private bool _IncludeDefaultGrass;
 
         /// <summary>The default grass sprites in the sprite pool.</summary>
-        private List<Texture2D> DefaultGrassSprites = new List<Texture2D>();
+        private readonly List<Texture2D> DefaultGrassSprites = new List<Texture2D>();
 
         /// <summary>The custom grass sprites in the sprite pool.</summary>
-        private List<Texture2D> CustomGrassSprites = new List<Texture2D>();
+        private readonly List<GrassSprite> CustomGrassSprites = new List<GrassSprite>();
+
+        /// <summary>The cached results of <see cref="GetSprites(string)"/>.</summary>
+        private readonly Dictionary<string, List<Texture2D>> GetSpriteCache = new Dictionary<string, List<Texture2D>>();
 
 
         /*********
         ** Accessors
         *********/
         /// <summary>Gets the number of sprites in the sprite pool.</summary>
-        public int Count => Sprites.Count;
+        public int Count => IncludeDefaultGrass ? DefaultGrassSprites.Count + CustomGrassSprites.Count : CustomGrassSprites.Count;
 
         /// <summary>The default grass sprites in the sprite pool.</summary>
         public List<Texture2D> DefaultSprites => new List<Texture2D>(DefaultGrassSprites);
-
-        /// <summary>The currently active sprites in the sprite pool.</summary>
-        public List<Texture2D> Sprites => (IncludeDefaultGrass) ? AllGrassSprites : new List<Texture2D>(CustomGrassSprites);
 
         /// <summary>Whether the default sprites should be including in the resulting sprite collection.</summary>
         public bool IncludeDefaultGrass
@@ -50,9 +50,6 @@ namespace MoreGrass
             get => _IncludeDefaultGrass || CustomGrassSprites.Count == 0;
             set => _IncludeDefaultGrass = value;
         }
-
-        /// <summary>The <see cref="DefaultGrassSprites"/> and <see cref="CustomGrassSprites"/> concatenated.</summary>
-        private List<Texture2D> AllGrassSprites => DefaultGrassSprites.Concat(CustomGrassSprites).ToList();
 
 
         /*********
@@ -62,32 +59,56 @@ namespace MoreGrass
         public void ClearDefaultGrass() => DefaultGrassSprites.Clear();
 
         /// <summary>Adds grass to the default part of the sprite pool.</summary>
-        /// <param name="sprites">The sprites to add to the sprite pool.</param>
-        public void AddDefaultGrass(params Texture2D[] sprites)
+        /// <param name="sprite">The sprite to add to the sprite pool.</param>
+        public void AddDefaultGrass(Texture2D sprite)
         {
-            var grassSprites = sprites.Where(sprite => sprite != null);
-            DefaultGrassSprites.AddRange(grassSprites);
+            if (sprite != null)
+                DefaultGrassSprites.Add(sprite);
         }
 
         /// <summary>Adds grass to the custom part of the sprite pool.</summary>
-        /// <param name="sprites">The sprites to add to the sprite pool.</param>
-        public void AddCustomGrass(params Texture2D[] sprites)
+        /// <param name="sprite">The sprite to add to the sprite pool.</param>
+        public void AddCustomGrass(Texture2D sprite, List<string> whiteListedLocations, List<string> blackListedLocations)
         {
-            var grassSprites = sprites.Where(sprite => sprite != null);
-            CustomGrassSprites.AddRange(grassSprites);
+            if (sprite != null)
+                CustomGrassSprites.Add(new GrassSprite(sprite, whiteListedLocations, blackListedLocations));
         }
 
-        /// <summary>Gets a random sprite from the sprite pool.</summary>
-        /// <param name="random">The <see cref="Random"/> object to use (if <see langword="null"/> is specified, then the <see cref="Game1.random"/> instance will be used).</param>
-        /// <returns>A random sprite from the sprite pool.</returns>
-        public Texture2D GetRandomSprite(Random random = null)
+        /// <summary>Gets the sprites from the sprite pool for a specified location.</summary>
+        /// <param name="locationName">The name of the location the grass is in.</param>
+        /// <returns>The sprites from the sprite pool that can show up in the specified location.</returns>
+        public List<Texture2D> GetSprites(string locationName)
         {
-            random ??= Game1.random;
+            if (locationName == null)
+                return DefaultSprites;
 
-            if (IncludeDefaultGrass)
-                return AllGrassSprites[random.Next(AllGrassSprites.Count)];
-            else
-                return CustomGrassSprites[random.Next(CustomGrassSprites.Count)];
+            // check if the result has been cached
+            locationName = locationName.ToLower();
+            if (GetSpriteCache.TryGetValue(locationName, out var sprites))
+                return sprites;
+
+            // calculate result and cache it
+            sprites = CustomGrassSprites.Where(grassSprite =>
+                    (grassSprite.WhiteListedLocations.Count == 0 || Utilities.ContainsLocation(locationName, grassSprite.WhiteListedLocations))       
+                 && (grassSprite.BlackListedLocations.Count == 0 || !Utilities.ContainsLocation(locationName, grassSprite.BlackListedLocations)))
+                .Select(grassSprite => grassSprite.Sprite)
+                .ToList();
+
+            if (IncludeDefaultGrass || sprites.Count == 0)
+                sprites.AddRange(DefaultGrassSprites);
+
+            GetSpriteCache[locationName] = sprites;
+
+            return sprites;
+        }
+
+        /// <summary>Gets a random sprite from the sprite pool for a specified location.</summary>
+        /// <param name="locationName">The name of the location the grass is in.</param>
+        /// <returns>A random sprite from the sprite pool that can show up in the specified location.</returns>
+        public Texture2D GetRandomSprite(string locationName)
+        {
+            var sprites = GetSprites(locationName);
+            return sprites[Game1.random.Next(sprites.Count)];
         }
     }
 }

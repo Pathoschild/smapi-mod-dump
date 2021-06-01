@@ -766,21 +766,70 @@ namespace FarmAnimalVarietyRedux
             var internalAnimalName = $"{animalUniqueModId}.{animalName}";
             var internalSubtypeName = $"{subtypeUniqueModId}.{animalSubtypeName}";
 
-            RegisterAsset(Path.Combine(animalName, "assets", $"{animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, false, null, contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, null, contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, null, contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "spring", $"{animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, false, "spring", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "spring", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, "spring", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "spring", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, "spring", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "summer", $"{animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, false, "summer", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "summer", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, "summer", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "summer", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, "summer", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "fall", $"{animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, false, "fall", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "fall", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, "fall", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "fall", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, "fall", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "winter", $"{animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, false, "winter", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "winter", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, "winter", contentPack);
-            RegisterAsset(Path.Combine(animalName, "assets", "winter", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, "winter", contentPack);
+            { // non seasonal
+                var adultPath = Path.Combine(animalName, "assets", $"{animalSubtypeName}.png");
+                var harvestablePath = Path.Combine(animalName, "assets", $"Harvestable {animalSubtypeName}.png");
+                RegisterAsset(adultPath, internalAnimalName, internalSubtypeName, false, false, null, contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, null, contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, null, contentPack);
+                if (File.Exists(Path.Combine(contentPack.DirectoryPath, harvestablePath)))
+                {
+                    AssetManager.UpdateAsset(internalAnimalName, internalSubtypeName, false, false, null, false, true, null); // update the adult sprite sheet to be harvested
+                    RegisterAsset(harvestablePath, internalAnimalName, internalSubtypeName, false, false, null, contentPack); // set the harvestable to the adult sheet
+                }
+            }
+
+            { // spring
+                var adultPath = Path.Combine(animalName, "assets", "spring", $"{animalSubtypeName}.png");
+                var harvestablePath = Path.Combine(animalName, "assets", "spring", $"Harvestable {animalSubtypeName}.png");
+                RegisterAsset(adultPath, internalAnimalName, internalSubtypeName, false, false, "spring", contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", "spring", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, "spring", contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", "spring", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, "spring", contentPack);
+                if (File.Exists(Path.Combine(contentPack.DirectoryPath, harvestablePath)))
+                {
+                    AssetManager.UpdateAsset(internalAnimalName, internalSubtypeName, false, false, "spring", false, true, "spring"); // update the adult sprite sheet to be harvested
+                    RegisterAsset(harvestablePath, internalAnimalName, internalSubtypeName, false, false, "spring", contentPack); // set the harvestable to the adult sheet
+                }
+            }
+
+            { // summer
+                var adultPath = Path.Combine(animalName, "assets", "summer", $"{animalSubtypeName}.png");
+                var harvestablePath = Path.Combine(animalName, "assets", "summer", $"Harvestable {animalSubtypeName}.png");
+                RegisterAsset(adultPath, internalAnimalName, internalSubtypeName, false, false, "summer", contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", "summer", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, "summer", contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", "summer", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, "summer", contentPack);
+                if (File.Exists(Path.Combine(contentPack.DirectoryPath, harvestablePath)))
+                {
+                    AssetManager.UpdateAsset(internalAnimalName, internalSubtypeName, false, false, "summer", false, true, "summer"); // update the adult sprite sheet to be harvested
+                    RegisterAsset(harvestablePath, internalAnimalName, internalSubtypeName, false, false, "summer", contentPack); // set the harvestable to the adult sheet
+                }
+            }
+
+            { // fall
+                var adultPath = Path.Combine(animalName, "assets", "fall", $"{animalSubtypeName}.png");
+                var harvestablePath = Path.Combine(animalName, "assets", "fall", $"Harvestable {animalSubtypeName}.png");
+                RegisterAsset(adultPath, internalAnimalName, internalSubtypeName, false, false, "fall", contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", "fall", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, "fall", contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", "fall", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, "fall", contentPack);
+                if (File.Exists(Path.Combine(contentPack.DirectoryPath, harvestablePath)))
+                {
+                    AssetManager.UpdateAsset(internalAnimalName, internalSubtypeName, false, false, "fall", false, true, "fall"); // update the adult sprite sheet to be harvested
+                    RegisterAsset(harvestablePath, internalAnimalName, internalSubtypeName, false, false, "fall", contentPack); // set the harvestable to the adult sheet
+                }
+            }
+
+            { // winter
+                var adultPath = Path.Combine(animalName, "assets", "winter", $"{animalSubtypeName}.png");
+                var harvestablePath = Path.Combine(animalName, "assets", "winter", $"Harvestable {animalSubtypeName}.png");
+                RegisterAsset(adultPath, internalAnimalName, internalSubtypeName, false, false, "winter", contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", "winter", $"Harvested {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, false, true, "winter", contentPack);
+                RegisterAsset(Path.Combine(animalName, "assets", "winter", $"Baby {animalSubtypeName}.png"), internalAnimalName, internalSubtypeName, true, false, "winter", contentPack);
+                if (File.Exists(Path.Combine(contentPack.DirectoryPath, harvestablePath)))
+                {
+                    AssetManager.UpdateAsset(internalAnimalName, internalSubtypeName, false, false, "winter", false, true, "winter"); // update the adult sprite sheet to be harvested
+                    RegisterAsset(harvestablePath, internalAnimalName, internalSubtypeName, false, false, "winter", contentPack); // set the harvestable to the adult sheet
+                }
+            }
         }
 
         /// <summary>Registers an aniaml shop icon.</summary>

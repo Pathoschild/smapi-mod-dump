@@ -69,30 +69,27 @@ namespace ChestEx.Types.BaseTypes {
   #region Constructors
 
     public CustomItemGrabMenuItem(CustomItemGrabMenu hostMenu, Rectangle bounds, Boolean raiseMouseClickEventOnRelease, Colours colours,
-                                  Item               svItem) : base(null, bounds, raiseMouseClickEventOnRelease, colours, svItem) {
+                                  Item               svItem)
+      : base(null, bounds, raiseMouseClickEventOnRelease, colours, svItem) {
       this.mHostMenu   = hostMenu;
       this.mComponents = new List<BasicComponent>();
     }
 
     public CustomItemGrabMenuItem(CustomItemGrabMenu hostMenu,   Rectangle bounds, Boolean raiseMouseClickEventOnRelease, Colours colours,
-                                  String             svItemName, String    svItemLabel) : base(null, bounds, raiseMouseClickEventOnRelease, colours, svItemName, svItemLabel) {
+                                  String             svItemName, String    svItemLabel)
+      : base(null, bounds, raiseMouseClickEventOnRelease, colours, svItemName, svItemLabel) {
       this.mHostMenu   = hostMenu;
       this.mComponents = new List<BasicComponent>();
     }
 
-    public CustomItemGrabMenuItem(CustomItemGrabMenu hostMenu, Rectangle bounds, Boolean raiseMouseClickEventOnRelease, Colours colours) : this(hostMenu,
-                                                                                                                                                bounds,
-                                                                                                                                                raiseMouseClickEventOnRelease,
-                                                                                                                                                colours,
-                                                                                                                                                String.Empty,
-                                                                                                                                                String.Empty) { }
+    public CustomItemGrabMenuItem(CustomItemGrabMenu hostMenu, Rectangle bounds, Boolean raiseMouseClickEventOnRelease, Colours colours)
+      : this(hostMenu, bounds, raiseMouseClickEventOnRelease, colours, String.Empty, String.Empty) { }
 
-    public CustomItemGrabMenuItem(CustomItemGrabMenu hostMenu, Rectangle bounds, Boolean raiseMouseClickEventOnRelease) : this(hostMenu,
-                                                                                                                               bounds,
-                                                                                                                               raiseMouseClickEventOnRelease,
-                                                                                                                               Colours.gDefault) { }
+    public CustomItemGrabMenuItem(CustomItemGrabMenu hostMenu, Rectangle bounds, Boolean raiseMouseClickEventOnRelease)
+      : this(hostMenu, bounds, raiseMouseClickEventOnRelease, Colours.gDefault) { }
 
-    public CustomItemGrabMenuItem(CustomItemGrabMenu hostMenu, Rectangle bounds) : this(hostMenu, bounds, true) { }
+    public CustomItemGrabMenuItem(CustomItemGrabMenu hostMenu, Rectangle bounds)
+      : this(hostMenu, bounds, true) { }
 
   #endregion
 

@@ -10,16 +10,12 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using StardewModdingAPI;
 using Harmony;
 
 namespace Su226.ContentPatcherHD {
   class SpriteBatchOverrides {
-    private static ICollection<string> LoadedAssets = new HashSet<string>();
-
     public static void PatchAll(HarmonyInstance harmony) {
       foreach (MethodInfo method in typeof(SpriteBatchOverrides).GetMember("Draw")) {
         harmony.Patch(
@@ -31,10 +27,6 @@ namespace Su226.ContentPatcherHD {
 
     public static bool DoDraw(SpriteBatch __instance, Texture2D texture, Rectangle destinationRectangle, Rectangle sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth) {
       if (texture is Texture2DWrapper wrapper) {
-        if (!LoadedAssets.Contains(wrapper.Path)) {
-          LoadedAssets.Add(wrapper.Path);
-          M.Helper.Content.Load<Texture2D>(wrapper.Path, ContentSource.GameContent);
-        }
         sourceRectangle = Texture2DWrapper.MultiplyRect(sourceRectangle, wrapper.Scale);
         __instance.Draw(wrapper.Wrapped, destinationRectangle, sourceRectangle, color, rotation, origin * wrapper.Scale, effects, layerDepth);
         return false;

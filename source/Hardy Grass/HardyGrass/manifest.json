@@ -11,7 +11,7 @@
 {
   "Name": "Hardy Grass",
   "Author": "DiscipleOfEris",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Animals won't completely destroy grass when they eat it, allowing it to grow back.",
   "UniqueID": "DiscipleOfEris.HardyGrass",
   "EntryDll": "HardyGrass.dll",

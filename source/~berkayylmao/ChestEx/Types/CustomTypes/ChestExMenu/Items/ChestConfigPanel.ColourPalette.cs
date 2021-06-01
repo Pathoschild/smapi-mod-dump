@@ -692,7 +692,8 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
     #region Constructors
 
       public ColourPalette(CustomItemGrabMenuItem                hostMenuItem, Rectangle bounds, ExtendedChest chestToPaint, String componentName = "",
-                           EventHandler<CustomMenu.MouseStateEx> onMouseClick = null) : base(hostMenuItem, bounds, true, componentName, onMouseClick) {
+                           EventHandler<CustomMenu.MouseStateEx> onMouseClick = null)
+        : base(hostMenuItem, bounds, true, componentName, onMouseClick) {
         this.chest                     = chestToPaint;
         this.originalChestColour       = chestToPaint.mChestColour;
         this.originalChestHingesColour = chestToPaint.mHingesColour;

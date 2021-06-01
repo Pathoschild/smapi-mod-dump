@@ -11,6 +11,7 @@
 using BetterMixedSeeds.Models;
 using Harmony;
 using StardewValley;
+using StardewValley.Locations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -29,19 +30,31 @@ namespace BetterMixedSeeds.Patches
         /// <remarks>Used for removing the id shifting if green beans were picked (which resulted in never finding green beans).</remarks>
         internal static IEnumerable<CodeInstruction> ConstructorTranspiler(IEnumerable<CodeInstruction> instructions)
         {
-            var patchApplied = false;
+            var greenBeanPatchApplied = false;
+            var gingerIslandPatchApplied = false;
 
-            foreach (var instruction in instructions)
+            for (int i = 0; i < instructions.Count(); i++)
             {
+                var instruction = instructions.ElementAt(i);
+
                 // check if this instruction is the one responsible for the condition to id shift green beans
-                if (!patchApplied && ModEntry.Instance.Config.EnableTrellisCrops && instruction.opcode == OpCodes.Ldc_I4 && (int)instruction.operand == 473) // ensure trillis crops are allowed (green beans is a trellis crop)
+                if (!greenBeanPatchApplied && ModEntry.Instance.Config.EnableTrellisCrops && instruction.opcode == OpCodes.Ldc_I4 && (int)instruction.operand == 473) // ensure trillis crops are allowed (green beans is a trellis crop)
                 {
-                    patchApplied = true;
+                    greenBeanPatchApplied = true;
 
                     // change the id shift condition to 1 (which won't ever be true) so grean beans can be dropped
                     instruction.operand = 1;
-                    yield return instruction;
-                    continue;
+                }
+
+                // check if this instruction is the one responsible for checking if the curent location is ginger island
+                if (!gingerIslandPatchApplied && instruction.opcode == OpCodes.Isinst && instruction.operand == typeof(IslandLocation))
+                {
+                    gingerIslandPatchApplied = true;
+
+                    // this will change the code: Game1.currentLocation is IslandLocation
+                    // to be                    : Game1.currentLocation is int
+                    // this will always be false meaning the game won't change the id of seeds planted in ginger island
+                    instruction.operand = typeof(int);
                 }
 
                 yield return instruction;
@@ -58,7 +71,7 @@ namespace BetterMixedSeeds.Patches
             List<Seed> possibleSeeds;
 
             // get possible seeds, determined from season and whether they are in the greenhouse
-            if (Game1.currentLocation.IsGreenhouse)
+            if (Game1.currentLocation.IsGreenhouse || Game1.currentLocation is IslandLocation)
                 possibleSeeds = ModEntry.Instance.Seeds
                     .ToList();
             else

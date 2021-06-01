@@ -10,7 +10,6 @@
 
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using System;
 
 namespace FarmAnimalVarietyRedux.Models
 {
@@ -85,34 +84,10 @@ namespace FarmAnimalVarietyRedux.Models
         /// <param name="isBaby">Whether the sprite sheet is for the baby version of the animal.</param>
         /// <param name="isHarvested">Whether the sprite sheet is for the harvested version of the animal.</param>
         /// <param name="season">The season the sprite sheet is for of the animal.</param>
-        /// <param name="relativeTexturePath">The path to the sprite sheet relative to the game content folder.</param>
-        public ManagedAsset(string internalAnimalName, string internalAnimalSubtypeName, bool isBaby, bool isHarvested, string season, string relativeTexturePath)
-        {
-            InternalAnimalName = internalAnimalName;
-            InternalAnimalSubtypeName = internalAnimalSubtypeName;
-            IsBaby = isBaby;
-            IsHarvested = isHarvested;
-            Season = season;
-            RelativeTexturePath = relativeTexturePath;
-            IsGameContent = true;
-        }
-
-        /// <summary>Constructs an instance.</summary>
-        /// <param name="internalAnimalName">The internal name of the animal the sprite sheet is for.</param>
-        /// <param name="internalAnimalSubtypeName">The internal name of the subtype the sprite sheet is for.</param>
-        /// <param name="isBaby">Whether the sprite sheet is for the baby version of the animal.</param>
-        /// <param name="isHarvested">Whether the sprite sheet is for the harvested version of the animal.</param>
-        /// <param name="season">The season the sprite sheet is for of the animal.</param>
         /// <param name="relativeTexturePath">The path to the sprite sheet relative to <paramref name="contentPackAssetOwner"/>.</param>
         /// <param name="contentPackAssetOwner">The content pack that owns the asset.</param>
-        public ManagedAsset(string internalAnimalName, string internalAnimalSubtypeName, bool isBaby, bool isHarvested, string season, string relativeTexturePath, IContentPack contentPackAssetOwner)
+        public ManagedAsset(string internalAnimalName, string internalAnimalSubtypeName, bool isBaby, bool isHarvested, string season, string relativeTexturePath, IContentPack contentPackAssetOwner = null)
         {
-            if (string.IsNullOrEmpty(internalAnimalName))
-                throw new ArgumentException("Cannot be null or empty", nameof(internalAnimalName));
-
-            if (string.IsNullOrEmpty(internalAnimalSubtypeName))
-                throw new ArgumentException("Cannot be null or empty", nameof(internalAnimalSubtypeName));
-
             InternalAnimalName = internalAnimalName;
             InternalAnimalSubtypeName = internalAnimalSubtypeName;
             IsBaby = isBaby;
@@ -120,6 +95,7 @@ namespace FarmAnimalVarietyRedux.Models
             Season = season;
             RelativeTexturePath = relativeTexturePath;
             ContentPackAssetOwner = contentPackAssetOwner;
+            IsGameContent = ContentPackAssetOwner == null;
         }
     }
 }

@@ -14,9 +14,9 @@ mods:
    More Grass
 
 latest commit:
-   commit d37c5983f0f2b0d31d46cbdaf3eb3e1fdaa59d47
+   commit 55fd1967b0b943ac50c4cb6301c5cff18c508d3c
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Mon May 24 16:03:49 2021 +0100
+   Date:   Tue Jun 1 02:18:21 2021 +0100
    
-       [FarmAnimalVarietyRedux] Fix flash when opening animal purchase menu
+       [Outerwear] Add final icons
    

@@ -24,6 +24,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>9</LangVersion>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -81,12 +83,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomChestConfigHelpers.cs" />
-    <Compile Include="LanguageExtensions\LanguageExtensions.cs" />
+    <Compile Include="CompatibilityPatches\ChestsAnywhere.cs" />
+    <Compile Include="CompatibilityPatches\Automate.cs" />
+    <Compile Include="CompatibilityPatches\CompatibilityPatch.cs" />
+    <Compile Include="CompatibilityPatches\ConvenientChests.cs" />
+    <Compile Include="CompatibilityPatches\RemoteFridgeStorage.cs" />
+    <Compile Include="LanguageExtensions\HarmonyExtensions.cs" />
+    <Compile Include="LanguageExtensions\DotNetExtensions.cs" />
     <Compile Include="GlobalVars.cs" />
-    <Compile Include="CustomChestConfig.cs" />
+    <Compile Include="LanguageExtensions\SVExtensions.cs" />
+    <Compile Include="LanguageExtensions\XNAExtensions.cs" />
+    <Compile Include="Patches\Chest.cs" />
+    <Compile Include="Patches\ItemGrabMenu.cs" />
+    <Compile Include="Types\BaseTypes\CustomChestConfig.cs" />
     <Compile Include="Types\BaseTypes\Colours.cs" />
     <Compile Include="Types\BaseTypes\CustomButton.cs" />
+    <Compile Include="Types\BaseTypes\CustomChestConfigHelpers.cs" />
     <Compile Include="Types\BaseTypes\CustomItemGrabMenu.cs" />
     <Compile Include="Types\BaseTypes\CustomItemGrabMenu.MenuWithInventoryCtorParams.cs" />
     <Compile Include="Types\BaseTypes\CustomItemGrabMenuTexturedItemPreset.cs" />

@@ -55,28 +55,26 @@ namespace ChestEx.Types.BaseTypes {
     #region Constructors
 
       public BasicComponent(CustomItemGrabMenuItem                hostMenuItem, Rectangle bounds, Boolean raiseMouseClickEventOnRelease = true, String componentName = "",
-                            EventHandler<CustomMenu.MouseStateEx> onMouseClickHandler = null, String hoverText = "", Colours textureTintColours = null) : base(hostMenuItem,
-                                                                                                                                                               bounds,
-                                                                                                                                                               raiseMouseClickEventOnRelease,
-                                                                                                                                                               componentName,
-                                                                                                                                                               onMouseClickHandler,
-                                                                                                                                                               hoverText,
-                                                                                                                                                               textureTintColours) {
+                            EventHandler<CustomMenu.MouseStateEx> onMouseClickHandler = null, String hoverText = "", Colours textureTintColours = null)
+        : base(hostMenuItem,
+               bounds,
+               raiseMouseClickEventOnRelease,
+               componentName,
+               onMouseClickHandler,
+               hoverText,
+               textureTintColours) {
         this.mHostMenuItem = hostMenuItem;
       }
 
       public BasicComponent(CustomItemGrabMenuItem                hostMenuItem,               Point  point, Boolean raiseMouseClickEventOnRelease = true, String componentName = "",
-                            EventHandler<CustomMenu.MouseStateEx> onMouseClickHandler = null, String hoverText = "", Colours textureTintColours = null) : this(hostMenuItem,
-                                                                                                                                                               new
-                                                                                                                                                                 Rectangle(point.X,
-                                                                                                                                                                           point.Y,
-                                                                                                                                                                           -1,
-                                                                                                                                                                           -1),
-                                                                                                                                                               raiseMouseClickEventOnRelease,
-                                                                                                                                                               componentName,
-                                                                                                                                                               onMouseClickHandler,
-                                                                                                                                                               hoverText,
-                                                                                                                                                               textureTintColours) { }
+                            EventHandler<CustomMenu.MouseStateEx> onMouseClickHandler = null, String hoverText = "", Colours textureTintColours = null)
+        : this(hostMenuItem,
+               new Rectangle(point.X, point.Y, -1, -1),
+               raiseMouseClickEventOnRelease,
+               componentName,
+               onMouseClickHandler,
+               hoverText,
+               textureTintColours) { }
 
     #endregion
     }

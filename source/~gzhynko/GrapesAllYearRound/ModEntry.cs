@@ -29,7 +29,6 @@ namespace GrapesAllYearRound
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            helper.Events.GameLoop.DayStarted += HandleDayStart;
         }
 
         /// <summary>Get whether this instance can edit the given asset.</summary>
@@ -39,7 +38,7 @@ namespace GrapesAllYearRound
             return asset.AssetNameEquals("Data/Crops") || asset.AssetNameEquals("TileSheets/crops");
         }
 
-        /// <summary>Edit crop data to make grapes grow all year round.</summary>
+        /// <summary>Edit crop data to make grapes grow all year round and the crop spritesheet to add winter textures.</summary>
         /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
         public void Edit<T>(IAssetData asset)
         {
@@ -47,12 +46,22 @@ namespace GrapesAllYearRound
 
             if (asset.AssetNameEquals("TileSheets/crops"))
             {
-                if (Game1.currentSeason != "winter") return;
-
                 var editor = asset.AsImage();
-                var sourceImage = Helper.Content.Load<Texture2D>("assets/grape_winter.png");
+                Texture2D sourceImage;
+
+                try
+                {
+                    sourceImage = Helper.Content.Load<Texture2D>("assets/grape_winter.png");
+                }
+                catch (Microsoft.Xna.Framework.Content.ContentLoadException)
+                {
+                    Monitor.Log("Couldn't load the winter sprites. The mod will work incorrectly.", LogLevel.Error);
+                    return;
+                }
                 
-                editor.PatchImage(sourceImage, targetArea: new Rectangle(0, 610, 128, 32));
+                // Expand the spritesheet to the bottom to fit the winter sprites. They should be on row 48.
+                editor.ExtendImage(0, 800);
+                editor.PatchImage(sourceImage, targetArea: new Rectangle(0, 768, 128, 32));
 
                 return;
             }
@@ -81,16 +90,16 @@ namespace GrapesAllYearRound
                 AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.dayUpdate)),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.HoeDirtDayUpdate))
             );
-            
+
+            harmony.Patch(
+                AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.draw)), 
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.HoeDirtDraw))
+            );
+
             harmony.Patch(
                 AccessTools.Method(typeof(Crop), nameof(Crop.newDay)),
                 postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.CropNewDay))
             );
-        }
-
-        private void HandleDayStart(object sender, DayStartedEventArgs e)
-        {
-            Helper.Content.InvalidateCache("TileSheets/crops");
         }
 
         /// <summary> Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations. </summary>

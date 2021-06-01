@@ -1,0 +1,10 @@
+{
+  "Name": "Ancient Fruit Won't Die in Winter",
+  "Author": "cindyexe",
+  "Version": "1.0.0",
+  "Description": "Ancient fruit won't die winter, but won't grow or produce fruit.",
+  "UniqueID": "cindyexe.afddiw",
+  "EntryDll": "AncientFruitWontDieInWinter.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8823" ]
+}

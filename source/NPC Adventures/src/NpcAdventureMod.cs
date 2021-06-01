@@ -128,6 +128,13 @@ namespace NpcAdventure
                 this.firstTick = false;
             }
 
+            if (Context.IsMultiplayer && Context.IsWorldReady)
+            {
+                this.Monitor.Log("Detected unexpected multiplayer mode. NPC Adventures may cause some issues with multiplayer because it's not (and never be) compatible.", LogLevel.Warn);
+                this.Monitor.LogOnce("Never play NPC Adventures in multiplayer - It's not compatible! (Don't report this as bug)", LogLevel.Error);
+
+            }
+
             if (Context.IsWorldReady && this.CompanionHud != null)
                 this.CompanionHud.Update(e);
         }

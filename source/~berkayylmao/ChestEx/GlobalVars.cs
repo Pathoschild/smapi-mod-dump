@@ -34,6 +34,8 @@
 
 using System;
 
+using Harmony;
+
 using Microsoft.Xna.Framework;
 
 using StardewModdingAPI;
@@ -45,6 +47,8 @@ namespace ChestEx {
   #region Mod
 
     public const String CONST_MOD_UID = "berkayylmao.ChestEx";
+
+    public static HarmonyInstance gHarmony;
 
   #endregion
 
@@ -62,12 +66,12 @@ namespace ChestEx {
 
   #region Events
 
-    public delegate void             ObjectAction(GameLocation location, Vector2 tile);
-    public static event ObjectAction ObjectPlaced;
-    public static event ObjectAction ObjectRemoved;
-
-    public static void OnObjectPlaced(GameLocation  location, Vector2 tile) { ObjectPlaced?.Invoke(location, tile); }
-    public static void OnObjectRemoved(GameLocation location, Vector2 tile) { ObjectRemoved?.Invoke(location, tile); }
+    // public delegate void             ObjectAction(GameLocation location, Vector2 tile);
+    // public static event ObjectAction ObjectPlaced;
+    // public static event ObjectAction ObjectRemoved;
+    // 
+    // public static void OnObjectPlaced(GameLocation  location, Vector2 tile) { ObjectPlaced?.Invoke(location, tile); }
+    // public static void OnObjectRemoved(GameLocation location, Vector2 tile) { ObjectRemoved?.Invoke(location, tile); }
 
   #endregion
 
@@ -84,8 +88,11 @@ namespace ChestEx {
 
     public static Boolean gIgnoreInput = false;
 
-    public static Boolean gIsAutomateLoaded       = false;
-    public static Boolean gIsChestsAnywhereLoaded = false;
+    public static Boolean gIsAutomateLoaded            = false;
+    public static Boolean gIsChestsAnywhereLoaded      = false;
+    public static Boolean gIsConvenientChestsLoaded    = false;
+    public static Boolean gIsExpandedStorageLoaded     = false;
+    public static Boolean gIsRemoteFridgeStorageLoaded = false;
 
   #endregion
   }

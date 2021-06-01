@@ -109,7 +109,7 @@ namespace RemindToExit
         private void OnDayStarted(object sender, DayStartedEventArgs args) {
             if (!Config.Enabled) return;
             if (!RemindOnDayStart) {
-                Monitor.Log("Reminder not active. Continuing", LogLevel.Info);
+                Monitor.Log("Reminder not active. Continuing", LogLevel.Trace);
                 return;
                 }
             Monitor.Log("Reminder is active, popping up message", LogLevel.Info);

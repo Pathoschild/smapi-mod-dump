@@ -37,6 +37,8 @@ using System.Linq;
 
 using ChestEx.LanguageExtensions;
 
+using Harmony;
+
 using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;
@@ -73,6 +75,11 @@ namespace ChestEx.Types.BaseTypes {
     protected Color mTextColour {
       get => this._textColor;
       set => this._textColor = value;
+    }
+
+    protected Boolean mShowKeyboard {
+      get => Traverse.Create(this).Field<Boolean>("_showKeyboard").Value;
+      set => Traverse.Create(this).Field<Boolean>("_showKeyboard").Value = value;
     }
 
   #endregion
@@ -134,7 +141,13 @@ namespace ChestEx.Types.BaseTypes {
       if (this.Selected) GlobalVars.gSMAPIHelper.Input.Suppress(e.Button);
 
       if (e.Button != SButton.MouseLeft) return;
-      this.Update();
+      //this.Update(); ->
+      Point pos = Utility.ModifyCoordinatesForUIScale(e.Cursor.ScreenPixels).AsXNAPoint();
+      this.Selected = this.mBounds.Contains(pos);
+      if (this.mShowKeyboard) {
+        if (Game1.options.gamepadControls && !Game1.lastCursorMotionWasMouse) Game1.showTextEntry(this);
+        this.mShowKeyboard = false;
+      }
     }
 
   #endregion
@@ -205,7 +218,8 @@ namespace ChestEx.Types.BaseTypes {
 
     public CustomTextBox(Rectangle           bounds,                     Color          textColour,                Color  textBoxColour, String text        = "",
                          String              preText             = "",   Int32          maxLength            = -1, String label = "",    Color  labelColour = default,
-                         Func<Char, Boolean> inputFilterFunction = null, Action<String> onTextChangedHandler = null) : base(null, null, Game1.smallFont, textColour) {
+                         Func<Char, Boolean> inputFilterFunction = null, Action<String> onTextChangedHandler = null)
+      : base(null, null, Game1.smallFont, textColour) {
       this.limitWidth = false;
 
       this.mLabelColour   = labelColour == default ? textBoxColour : labelColour;

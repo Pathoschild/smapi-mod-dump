@@ -25,10 +25,16 @@ namespace SkillfulClothes
     class ModTextures
     {
         public Texture2D LooseSprites { get; private set; }
+        
+        /// <summary>
+        /// The game's emoji tilesheet as used by the CHatBox
+        /// </summary>
+        public Texture2D Emojis { get; private set; }
 
         public void Init()
         {
             LooseSprites = LoadFromResource("SkillfulClothes.Textures.loose_sprites.png");
+            Emojis = Game1.content.Load<Texture2D>("LooseSprites\\emojis");
         }   
         
         private Texture2D LoadFromResource(string name)

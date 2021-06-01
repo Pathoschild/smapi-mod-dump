@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://sourceforge.net/p/sdvmod-silo-size/
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/i18n.json",
+    "tv_tip": "Der Winter ist schon fast da. Lege einen Vorrat Heu für die Tiere im Winter an, da das Gras in der Jahreszeit verschwindet. Jeder Silo kann bis zu {{size}} Stücke Heu lagern, also rechne aus, wie viele du bauen solltest!"
+}

@@ -11,11 +11,11 @@
 {
   "Name": "Even Better RNG",
   "Author": "pepoluan",
-  "Version": "1.8.0",
+  "Version": "1.8.1",
   "Description": "Replace SDV RNG with high-performance XoShiRo(128|256)**",
   "UniqueID": "pepoluan.EvenBetterRNG",
   "EntryDLL": "EvenBetterRNG.dll",
-  "MinimumApiVersion": "3.8.0",
+  "MinimumApiVersion": "3.7.0",
   "UpdateKeys": [ "Chucklefish:6117", "Nexus:8680" ],
   "Meta:Repository": "https://sourceforge.net/p/sdvmod-even-better-rng/",
   "Meta:License": "MPL-2.0",
@@ -30,6 +30,7 @@
     "1.7.1": "Add GetNamedRandom API, remove premature capping in GaussianLuck, optimize GaussianLuck calculation",
     "1.7.2": "Periodic forcing is now enforced, experimental per-tick forcing implemented",
     "1.7.3": "Log original Game1.random Type and source, lock NamedPRNG dict before mutating",
-    "1.8.0": "Periodic forcing is now every second, some properties made static"
+    "1.8.0": "Periodic forcing is now every second, some properties made static",
+    "1.8.1": "Lower SMAPI requirement to hopefully run on Android"
   }
 }

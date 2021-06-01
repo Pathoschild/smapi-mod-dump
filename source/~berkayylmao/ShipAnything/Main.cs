@@ -95,15 +95,22 @@ namespace ShipAnything {
 
           public override void drawInMenu(SpriteBatch spriteBatch, Vector2       location,        Single scaleSize, Single  transparency,
                                           Single      layerDepth,  StackDrawType drawStackNumber, Color  color,     Boolean drawShadow) {
-            this.orgCall(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
+            this.orgCall(spriteBatch,
+                         location,
+                         scaleSize,
+                         transparency,
+                         layerDepth,
+                         drawStackNumber,
+                         color,
+                         drawShadow);
           }
         }
 
         [HarmonyPostfix]
         [UsedImplicitly]
         // ReSharper disable once InconsistentNaming
-        public static void postfix_parseItems(IList<Item>         items, ref List<List<Item>> ___categoryItems, ref List<Int32> ___categoryTotals,
-                                              ref List<MoneyDial> ___categoryDials, ref Dictionary<Item, Int32> ___itemValues) {
+        public static void postfix_parseItems(IList<Item> items, ref List<List<Item>> ___categoryItems, ref List<Int32> ___categoryTotals, ref List<MoneyDial> ___categoryDials,
+                                              ref Dictionary<Item, Int32> ___itemValues) {
           Int32 gained_money = 0;
           foreach (Item item in items) {
             if (item is StardewValley.Object) continue;
@@ -127,15 +134,11 @@ namespace ShipAnything {
 
     public override void Entry(IModHelper helper) {
       var harmony = HarmonyInstance.Create("mod.berkayylmao.ShipAnything");
-      harmony.Patch(AccessTools.Method(typeof(StardewValley.Object), "canBeShipped"),
-                    new HarmonyMethod(AccessTools.Method(typeof(Extensions.SVObject), "prefix_canBeShipped"))
-                   );
+      harmony.Patch(AccessTools.Method(typeof(StardewValley.Object), "canBeShipped"), new HarmonyMethod(AccessTools.Method(typeof(Extensions.SVObject), "prefix_canBeShipped")));
       harmony.Patch(AccessTools.Method(typeof(Utility), "highlightShippableObjects"),
-                    new HarmonyMethod(AccessTools.Method(typeof(Extensions.SVUtility), "prefix_highlightShippableObjects"))
-                   );
+                    new HarmonyMethod(AccessTools.Method(typeof(Extensions.SVUtility), "prefix_highlightShippableObjects")));
       harmony.Patch(AccessTools.Method(typeof(StardewValley.Menus.ShippingMenu), "parseItems"),
-                    postfix: new HarmonyMethod(AccessTools.Method(typeof(Extensions.SVShippingMenu), "postfix_parseItems"))
-                   );
+                    postfix: new HarmonyMethod(AccessTools.Method(typeof(Extensions.SVShippingMenu), "postfix_parseItems")));
     }
   }
 }

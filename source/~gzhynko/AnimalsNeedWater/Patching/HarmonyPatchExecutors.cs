@@ -57,7 +57,7 @@ namespace AnimalsNeedWater.Patching
             {
                 if (__instance.controller != null)
                     __result = true;
-                if (location.IsOutdoors && !ModData.FullAnimals.Contains(__instance) && __instance.controller == null && (Game1.random.NextDouble() < 0.001 && FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick) && ModEntry.Instance.Config.AnimalsCanDrinkOutside)
+                if (!__instance.isSwimming.Value && location.IsOutdoors && !ModData.FullAnimals.Contains(__instance) && __instance.controller == null && (Game1.random.NextDouble() < 0.005 && FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick) && ModEntry.Instance.Config.AnimalsCanDrinkOutside)
                 {
                     // pathfind to the closest water tile
                     ++FarmAnimal.NumPathfindingThisTick;
@@ -79,17 +79,17 @@ namespace AnimalsNeedWater.Patching
             {
                 return location.CanRefillWateringCanOnTile(currentPoint.x - 1, currentPoint.y) || location.CanRefillWateringCanOnTile(currentPoint.x, currentPoint.y - 1) || location.CanRefillWateringCanOnTile(currentPoint.x, currentPoint.y + 1) || location.CanRefillWateringCanOnTile(currentPoint.x + 1, currentPoint.y);
             }
-
+            
             return location.isOpenWater(currentPoint.x - 1, currentPoint.y) || location.isOpenWater(currentPoint.x, currentPoint.y - 1) || location.isOpenWater(currentPoint.x, currentPoint.y + 1) || location.isOpenWater(currentPoint.x + 1, currentPoint.y);
         }
 
-        /// <summary> Animal behavior after finding water tile. </summary>
+        /// <summary> Animal behavior after finding a water tile and pathfinding to it. </summary>
         private static void BehaviorAfterFindingWater(Character c, GameLocation environment)
         {
             // return if the animal is already on the list
             if (ModData.FullAnimals.Contains(c as FarmAnimal))
                 return;
-
+            
             // do the 'happy' emote and add the animal to the Full Animals list
             c.doEmote(32);
             ModData.FullAnimals.Add(c as FarmAnimal);

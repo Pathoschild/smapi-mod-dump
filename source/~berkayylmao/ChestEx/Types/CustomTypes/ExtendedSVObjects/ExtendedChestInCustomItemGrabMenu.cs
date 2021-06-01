@@ -86,16 +86,16 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
   #region Constructors
 
     public ExtendedChestInCustomItemGrabMenu(CustomItemGrabMenuItem                hostMenuItem,        Rectangle bounds,         String  componentName      = "",
-                                             EventHandler<CustomMenu.MouseStateEx> onMouseClick = null, String    hoverText = "", Colours textureTintColours = null) :
-      base(hostMenuItem,
-           new Rectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height * 2),
-           new ExtendedChest(bounds, hostMenuItem.mHostMenu.GetSourceAs<Chest>().GetCustomConfigHingesColour(), hostMenuItem.mHostMenu.GetSourceAs<Chest>().GetChestType()),
-           false,
-           -1.0f,
-           componentName,
-           onMouseClick,
-           hoverText,
-           textureTintColours) {
+                                             EventHandler<CustomMenu.MouseStateEx> onMouseClick = null, String    hoverText = "", Colours textureTintColours = null)
+      : base(hostMenuItem,
+             new Rectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height * 2),
+             new ExtendedChest(bounds, hostMenuItem.mHostMenu.GetSourceAs<Chest>().GetCustomConfigHingesColour(), hostMenuItem.mHostMenu.GetSourceAs<Chest>().GetChestType()),
+             false,
+             -1.0f,
+             componentName,
+             onMouseClick,
+             hoverText,
+             textureTintColours) {
       // sync dummy chest
       this.mMenuChest.playerChoiceColor.Value = this.mHostMenuItem.mHostMenu.GetSourceAs<Chest>().playerChoiceColor.Value;
     }

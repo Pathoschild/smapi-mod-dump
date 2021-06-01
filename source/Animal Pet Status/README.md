@@ -14,7 +14,7 @@ This project is a mod for a game [Stardew Valley](https://www.stardewvalley.net/
 You have to have [SMAPI](https://smapi.io/) installed to run this mod.
 
 ## How to install it
-You can download the mode via [latest release page](https://github.com/Hakej/Animal-Pet-Status/releases) or [nexus page](https://github.com/Hakej/Animal-Pet-Status/releases). After you download the archive, go into your Stardew Valley installation folder and unpack the archive into **Mods** directory.
+You can download the mode via [latest release page](https://github.com/Hakej/Animal-Pet-Status/releases) or [nexus page](https://www.nexusmods.com/stardewvalley/mods/8725/). After you download the archive, go into your Stardew Valley installation folder and unpack the archive into **Mods** directory.
 
 ## How to use it
 You can toggle the mod on/off by pressing a key (default **P**) and move it by holding down a key (default **L**) and moving your cursor to a desired place.

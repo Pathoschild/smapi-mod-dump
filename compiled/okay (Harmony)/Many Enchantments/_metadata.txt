@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8824
+IDs: Stari.ManyEnchantments
+update keys: Nexus:8824, GitHub:SlivaStari/ManyEnchantments

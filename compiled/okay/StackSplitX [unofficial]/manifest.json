@@ -1,7 +1,7 @@
 {
   "Name": "StackSplitX",
   "Author": "tstaples (aka Catman)",
-  "Version": "1.5.1-unofficial.4-mizzion",
+  "Version": "1.5.1-unofficial.5-pepoluan",
   "Description": "Custom Stack splitting.",
   "UniqueID": "tstaples.StackSplitX",
   "EntryDll": "StackSplitX.dll",

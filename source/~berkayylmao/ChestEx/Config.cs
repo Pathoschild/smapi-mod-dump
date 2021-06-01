@@ -115,6 +115,7 @@ namespace ChestEx {
     }
 
     public static void MPDataReceived(Object sender, ModMessageReceivedEventArgs e) {
+      if (Context.IsMainPlayer) return;
       if (e.FromModID != GlobalVars.CONST_MOD_UID) return;
       if (e.Type != "ConfigMP") return;
 

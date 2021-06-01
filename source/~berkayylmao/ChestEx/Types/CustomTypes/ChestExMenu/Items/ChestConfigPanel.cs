@@ -101,7 +101,8 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
 
     // Constructors:
 
-    public ChestConfigPanel(CustomItemGrabMenu hostMenu) : base(hostMenu, GlobalVars.gUIViewport, true, Colours.GenerateFrom(Color.FromNonPremultiplied(50, 60, 70, 255))) {
+    public ChestConfigPanel(CustomItemGrabMenu hostMenu)
+      : base(hostMenu, GlobalVars.gUIViewport, true, Colours.GenerateFrom(Color.FromNonPremultiplied(50, 60, 70, 255))) {
       Rectangle source_menu_bounds         = this.mHostMenu.mSourceInventoryOptions.mBounds;
       Rectangle player_menu_content_bounds = this.mHostMenu.inventory.GetContentRectangle();
 

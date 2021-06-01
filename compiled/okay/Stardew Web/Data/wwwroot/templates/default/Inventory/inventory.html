@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+#HEAD#
+    <script>
+
+        function LocalPageLoaded() {
+            var input = document.getElementById("searchbox");
+
+            input.addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    Search();
+                }
+            });
+            PageLoaded('Inventory');
+            FetchData('');
+        }
+
+
+        function FetchData(sQuery) {
+
+            var sUrl = '/Inventory?query=' + sQuery;
+            fetch(sUrl)
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            document.getElementById('results').innerHTML = data.HTML;
+                            document.getElementById('alphabar').innerHTML = data.AlphaBar;
+                        });
+                    } else document.getElementById('results').innerHTML = 'Network response was not ok.';
+                })
+                .catch(error =>
+                    document.getElementById('results').innerHTML = 'Fetch error: ' + error
+                );
+
+
+        }
+
+        function Search() {
+            FetchData(document.getElementById("searchbox").value)
+        }
+
+
+    </script>
+</head>
+<body onload="LocalPageLoaded('Inventory');">
+    #MENUBAR#
+
+    <div class="stardew_container top_margin_50 med_bottom_pad">
+
+        #CONTENT#
+    </div>
+
+</body>
+</html>

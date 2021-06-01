@@ -1,0 +1,215 @@
+﻿<div class="message_board_title_lg">Configuration</div>
+<div class="message_board_lg base_font">
+    <form action="/Config" method="post">
+        <div style="height:650px;overflow:auto;">
+
+            <table class="config_table" style="width:100%">
+                <!-- Web Server Options-->
+                <tr><td colspan="4" class="config_section_head"><img src="/images/banners/web-server-options.png" class="center_table" /></td></tr>
+                <tr><td class="config_setting">Server Address</td><td colspan="3" class="config_value"><input type="text" name="servaddr" value="#SERVADDR#" size="50" /></td></tr>
+                <!-- Mod Options -->
+                <tr><td colspan="4" class="config_section_head"><img src="/images/banners/mod-options.png" class="center_table" /></td></tr>
+                <tr>
+                    <td class="config_setting config_width">Cache Web Templates</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="tempcache" #TEMPCACHE# /></td>
+                    <td class="config_setting config_width">Debug Enabled</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="debug" #DEBUG# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Take Location Screenshot</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="shot" #SHOT# /></td>
+                    <td class="config_setting config_width">Server Cache Images</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="cacheimg" #CACHEIMG# /></td>
+                </tr>
+                <!-- Button Options -->
+                <tr><td colspan="4" class="config_section_head"><img src="/images/banners/button-options.png" class="center_table" /></td></tr>
+                <tr>
+                    <td class="config_setting config_width">Show Sleep Button</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="sleep" name="sleep" #SLEEP# /></td>
+                    <td class="config_setting config_width">Show 'Stardew Search' Button</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="search" name="search" #SEARCH# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show 'Stop Time' Button</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="pause" name="pause" #PAUSE# /></td>
+                    <td class="config_setting config_width"></td>
+                    <td class="config_value config_width center"></td>
+                </tr>
+                <!-- Tab Options -->
+                <tr><td colspan="4" class="config_section_head"><img src="/images/banners/tab-options.png" class="center_table" /></td></tr>
+                <tr>
+                    <td class="config_setting config_width">Show Warp Tab</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="warptab" name="warptab" #WARPTAB# /></td>
+                    <td class="config_setting config_width">Show Modder Tabs</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="modtab" name="modtab" #MODTAB# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Locations Tab</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="locationtab" name="locationtab" #LOCATIONTAB# /></td>
+                    <td class="config_setting config_width">Show Events Tab</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="eventtab" name="eventtab" #EVENTTAB# /></td>
+                </tr>
+                <!-- Thumbnail Options -->
+                <tr><td colspan="4" class="config_section_head"><img src="/images/banners/thumbnail-options.png" class="center_table" /></td></tr>
+                <tr>
+                    <td colspan="4" class="config_section_head no_border">
+                        Thumbnails can be hard on your CPU and may slow things downs.  You can select which amount of thumbnails suits your system.  The first
+                        time a page loads, the images may load slowly.  Stardew Web is configured for browser caching, so for the remainder of the game the images should be cached by your browser and appear
+                        in a more timely manner.<br /><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Prooduction Tab Thumbnails</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="tnprodtab" name="tnprodtab" #TNPROODTAB# /></td>
+                    <td class="config_setting config_width">Social Tab Thumbnails</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="tnsocialtab" name="tnsocialtab" #TNSOCIALTAB# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Invetory Tab Thumbnails</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="tninventtab" name="tninventtab" #TNINVENTTAB# /></td>
+                    <td class="config_setting config_width">Collections Tab Thumbnails</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="tncollecttab" name="tncollecttab" #TNCOLLECTTAB# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Shipping Tab Thumbnails</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="tnshippingtab" name="tnshippingtab" #TNSHIPPINGTAB# /></td>
+                    <td class="config_setting config_width"></td>
+                    <td class="config_value config_width center"></td>
+                </tr>
+
+                <!-- Cheat options -->
+                <tr><td colspan="4" class="config_section_head"><img src="/images/banners/cheat-type-options.png" class="center_table" /></td></tr>
+                <tr>
+                    <td class="config_setting config_width">Warping Enabled</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="warping" name="warping" #WARPING# /></td>
+                    <td class="config_setting config_width">Show Unseen Event Details</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="events" name="events" #EVENTS# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show NPC Tastes</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="tastes" name="tastes" #TASTES# /></td>
+                    <td class="config_setting config_width">Show Unknown Recipes</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="recipes" name="recipes" #RECIPES# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Unmet NPCs</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="npcmet" name="npcmet" #NPCMET# /></td>
+                    <td class="config_setting config_width">Show Unknown Artifacts</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="arti" name="arti" #ARTI# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Unknown Fish</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="fish" name="fish" #FISH# /></td>
+                    <td class="config_setting config_width">Show Stardrop Details</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="stardrop" name="stardrop" #STARDROP# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Potential Events List</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="potential" name="potential" #POTENTIAL# /></td>
+                    <td class="config_setting config_width">Show Unknown Locations</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="unlocs" name="unlocs" #UNLOCS# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show NPC Daily Schedule</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="schedule" name="schedule" #SCHEDULE# /></td>
+                    <td class="config_setting config_width">Show 'Add To Inventory' in Search</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="packad" name="packadd" #PACKADD# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show NPC Event List</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="npcevents" name="npcevents" #NPCEVENTS# /></td>
+                    <td class="config_setting config_width"></td>
+                    <td class="config_value config_width center"></td>
+                </tr>
+                <!-- Daily Task Parameters-->
+                <tr><td colspan="4" class="config_section_head"><img src="/images/banners/daily-task-report-options.png" class="center_table" /></td></tr>
+                <tr>
+                    <td class="config_setting config_width">Show Birthdays</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="bday" #BDAY# /></td>
+                    <td class="config_setting config_width">Show TV Recipe</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="recipe" #RECIPE# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Traveling Merchant</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="merchant" #MERCHANT# /></td>
+                    <td class="config_setting config_width">Show Detailed Info</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="detail" #DETAIL# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Unpetted Animals</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="petted" #PETTED# /></td>
+                    <td class="config_setting config_width">Show Unwatered Crops</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="watered" #WATERED# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Unharvested Crops</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="harvest" #HARVEST# /></td>
+                    <td class="config_setting config_width">Show Dead Crops</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="dead" #DEAD# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Missing Hay</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="hay" #HAY# /></td>
+                    <td class="config_setting config_width">Show Fruit Trees</td>
+                    <td class="config_value config_width center"><select name="fruit">#FRUIT#</select></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Unpetted Pet</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="petpet" #PETPET# /></td>
+                    <td class="config_setting config_width">Show Unfilled Pet Bowl</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="petbowl" #PETBOWL# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Farm Cave</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="cave" #CAVE# /></td>
+                    <td class="config_setting config_width">Show Broken Fences</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="fence" #FENCE# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Uncollected Crab Pots</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="pots" #POTS# /></td>
+                    <td class="config_setting config_width">Show Not Baited Crab Pots</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="bait" #BAIT# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Casks of Quality</td>
+                    <td class="config_value config_width center"><select name="caskqual">#CASKQUAL#</select></td>
+                    <td class="config_setting config_width">Skip Flowers In Harvest Report</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="flowers" #FLOWERS# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Ponds that have Items to collect</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="pondcollect" #PONDCOLLECT# /></td>
+                    <td class="config_setting config_width">Report Flowers on the 28th</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="lastday" #LASTDAY# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Ponds that want something</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="pondwant" #PONDWANT# /></td>
+                    <td class="config_setting config_width"></td>
+                    <td class="config_value config_width center"></td>
+                </tr>
+                <!-- machine and product details-->
+                <tr><td colspan="2" class="config_section_head"><img src="/images/banners/animal-products.png" class="center_table" /></td><td colspan="2" class="config_section_head"><img src="/images/banners/machines.png" class="center_table" /></td></tr>
+                <tr>
+                    <td colspan="2" style="vertical-align:top; padding-left:200px;">
+                        <table>
+                            #PRODROW#
+                        </table>
+                    </td>
+                    <td colspan="2" style="vertical-align:top; padding-left:50px;">
+                        <table>
+                            #MACHINEROWS#
+                        </table>
+                    </td>
+                </tr>
+                <tr><td colspan="4"></td></tr>
+            </table>
+
+        </div>
+        <div style="padding-top:5px;"><button type="submit">Save</button> <button onclick="SetCheats(false); return false;">Disable All Cheats</button></div>
+    </form>
+
+
+
+</div>

@@ -1,0 +1,10 @@
+﻿{
+	"Name": "InfiniteZoom",
+	"Author": "berkayylmao",
+	"Version": "1.0.0",
+	"Description": "Unlock zoom and UI scale levels!",
+	"UniqueID": "berkayylmao.InfiniteZoom",
+	"EntryDll": "InfiniteZoom.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": ["Nexus:8808"]
+}

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/SlivaStari/ManyEnchantments
+   Git: https://github.com/SlivaStari/ManyEnchantments.git
+
+mods:
+   Many Enchantments
+
+latest commit:
+   commit 387966a0723ff01c5aa5206a35363cfdab645162
+   Author: SlivaStari <52631488+SlivaStari@users.noreply.github.com>
+   Date:   Sat May 29 17:53:28 2021 -0400
+   
+       Create LICENSE
+   

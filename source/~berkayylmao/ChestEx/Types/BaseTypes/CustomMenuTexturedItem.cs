@@ -106,15 +106,14 @@ namespace ChestEx.Types.BaseTypes {
     // Constructors:
   #region Constructors
 
-    public CustomMenuTexturedItem(CustomMenu hostMenu, Texture2D texture, Rectangle bounds, Colours colours) : base(bounds,
-                                                                                                                    texture,
-                                                                                                                    texture.Bounds,
-                                                                                                                    Convert.ToSingle(bounds.Width) / texture.Bounds.Width) {
+    public CustomMenuTexturedItem(CustomMenu hostMenu, Texture2D texture, Rectangle bounds, Colours colours)
+      : base(bounds, texture, texture.Bounds, Convert.ToSingle(bounds.Width) / texture.Bounds.Width) {
       this.mColours  = colours;
       this.mHostMenu = hostMenu;
     }
 
-    public CustomMenuTexturedItem(CustomMenu hostMenu, Texture2D texture, Rectangle bounds) : this(hostMenu, texture, bounds, Colours.gDefault) { }
+    public CustomMenuTexturedItem(CustomMenu hostMenu, Texture2D texture, Rectangle bounds)
+      : this(hostMenu, texture, bounds, Colours.gDefault) { }
 
   #endregion
 

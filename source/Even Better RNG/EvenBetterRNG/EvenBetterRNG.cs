@@ -96,21 +96,21 @@ namespace EvenBetterRNG
             }
 
         private void LogOriginalRNG() {
-            Monitor.Log("Original Game1.random is:", LogLevel.Info);
+            Monitor.Log("Original Game1.random is:");
             Type rT = Game1.random.GetType();
-            Monitor.Log($"  {rT.AssemblyQualifiedName}", LogLevel.Info);
-            Monitor.Log($"  from {rT.Assembly.CodeBase}", LogLevel.Info);
+            Monitor.Log($"  {rT.AssemblyQualifiedName}");
+            Monitor.Log($"  from {rT.Assembly.CodeBase}");
             }
 
         private void InstallRNG() {
             BlockOverwritingTemporarily = true;
             var prng_name = PRNG_Class.Name.Replace("starstar", "**");
             if (Config.RNGSeed == 0) {
-                Monitor.Log($"{prng_name} seed is lib default", LogLevel.Info);
+                Monitor.Log($"{prng_name} seed is lib default", LogLevel.Debug);
                 RandGen = (Random)Activator.CreateInstance(EvenBetterRNG.PRNG_Class);
                 }
             else {
-                Monitor.Log($"{prng_name} seed is {Config.RNGSeed}", LogLevel.Info);
+                Monitor.Log($"{prng_name} seed is {Config.RNGSeed}", LogLevel.Debug);
                 RandGen = (Random)Activator.CreateInstance(EvenBetterRNG.PRNG_Class, (long)Config.RNGSeed);
                 }
             Game1.random = RandGen;
@@ -126,7 +126,7 @@ namespace EvenBetterRNG
                 sb.Append(RandGen.Next().ToString())
                   .Append(" ");
                 }
-            this.Monitor.Log(sb.ToString(), LogLevel.Info);
+            this.Monitor.Log(sb.ToString(), LogLevel.Debug);
             }
 
         /**************************************************
@@ -137,7 +137,7 @@ namespace EvenBetterRNG
             if (Config.OverrideDailyLuck) {
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                Monitor.Log("Re-randomizing Luck on day start", LogLevel.Info);
+                Monitor.Log("Re-randomizing Luck on day start", LogLevel.Trace);
                 RandomizeDailyLuck();
                 stopwatch.Stop();
                 Monitor.Log($"Rerandomization takes {stopwatch.ElapsedMilliseconds}ms to complete");
@@ -304,18 +304,18 @@ namespace EvenBetterRNG
             double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(TAU * u2); // gaussian distrib around 0
             double randNormal = (double)Config.GaussianLuckStdDev * randStdNormal;      // stretch horizontally to get wanted curve
             double newLuckValue = randNormal / 1000.0;
-            Monitor.Log($"Gaussian NewLuck: {newLuckValue}", LogLevel.Info);
+            Monitor.Log($"Gaussian NewLuck: {newLuckValue}", LogLevel.Trace);
             return newLuckValue;
             }
 
         private double UniformLuck() {
             double newLuckValue = RandGen.Next(-100, 101) / 1000.0;  // The range is [-100, 101) (inclusive left, exclusive right)
-            Monitor.Log($"Uniform NewLuck: {newLuckValue}", LogLevel.Info);
+            Monitor.Log($"Uniform NewLuck: {newLuckValue}", LogLevel.Trace);
             return newLuckValue;
             }
 
         private void RandomizeDailyLuck() {
-            Monitor.Log($"Original luck: {Game1.player.team.sharedDailyLuck.Value}", LogLevel.Info);
+            Monitor.Log($"Original luck: {Game1.player.team.sharedDailyLuck.Value}", LogLevel.Trace);
             double newLuckValue = Config.GaussianLuck ? GaussianLuck() : UniformLuck();
             // Clamp the values, this is due to we calculating using double but the game seems to want float (single) instead
             Game1.player.team.sharedDailyLuck.Value = Math.Min(ONE_TENTH_POS, Math.Max(ONE_TENTH_NEG, newLuckValue));

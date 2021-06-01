@@ -6,9 +6,9 @@ mods:
    Stay Up
 
 latest commit:
-   commit 99ae566a43dcd65a411575c18993fc201673fe3e
+   commit b99db58777dc7cc0588accbbffecc4ae6d0568ff
    Author: su226 <1368981939@qq.com>
-   Date:   Sun Apr 4 13:21:35 2021 +0800
+   Date:   Sun May 30 18:47:20 2021 +0800
    
-       [AnySave] Fix out of bound in mines
+       Fix readme.
    

@@ -165,7 +165,7 @@
           535
         ],
         "UniqueAreaID": "Geode Spawns",
-        "MapName": "DeepCave",
+        "MapName": "Custom_DeepCave",
         "MinimumSpawnsPerDay": 1,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [],
@@ -212,7 +212,7 @@
           535
         ],
         "UniqueAreaID": "DeepCave forage area 1",
-        "MapName": "DeepCave",
+        "MapName": "Custom_DeepCave",
         "MinimumSpawnsPerDay": 1,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [],
@@ -297,7 +297,7 @@
           549
         ],
         "UniqueAreaID": "Geode Mineral Spawns",
-        "MapName": "DeepCave",
+        "MapName": "Custom_DeepCave",
         "MinimumSpawnsPerDay": 0,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [],
@@ -360,7 +360,7 @@
           541
         ],
         "UniqueAreaID": "Frozen Geode Mineral Spawns",
-        "MapName": "DeepCave",
+        "MapName": "Custom_DeepCave",
         "MinimumSpawnsPerDay": 0,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [],
@@ -423,7 +423,7 @@
           541
         ],
         "UniqueAreaID": "Frozen Geode Mineral Spawns 2",
-        "MapName": "DeepCave",
+        "MapName": "Custom_DeepCave",
         "MinimumSpawnsPerDay": 0,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [],
@@ -484,7 +484,7 @@
           554
         ],
         "UniqueAreaID": "Magma Geode Mineral Spawns",
-        "MapName": "DeepCave",
+        "MapName": "Custom_DeepCave",
         "MinimumSpawnsPerDay": 0,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [],
@@ -545,7 +545,7 @@
           554
         ],
         "UniqueAreaID": "Magma Geode Mineral Spawns 2",
-        "MapName": "DeepCave",
+        "MapName": "Custom_DeepCave",
         "MinimumSpawnsPerDay": 0,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [],
@@ -594,7 +594,7 @@
           74
         ],
         "UniqueAreaID": "Prismatic Shard Spawn",
-        "MapName": "DeepCave",
+        "MapName": "Custom_DeepCave",
         "MinimumSpawnsPerDay": 0,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [],
@@ -640,7 +640,7 @@
           74
         ],
         "UniqueAreaID": "DeepCave forage area 2",
-        "MapName": "DeepCave",
+        "MapName": "Custom_DeepCave",
         "MinimumSpawnsPerDay": 0,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [],

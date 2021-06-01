@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/purrplingcat/StardewMods
+   Git: https://github.com/purrplingcat/StardewMods.git
+
+mods:
+   Custom Gift Dialogue
+   Quest Essentials
+
+latest commit:
+   commit 56164cd17fec1c844bc6be3de792eeb4ce10afbe
+   Author: PurrplingCat <ellenfawkes@gmail.com>
+   Date:   Mon May 31 09:27:50 2021 +0200
+   
+       Extracted interface IStoryMessage for class StoryMessage
+   

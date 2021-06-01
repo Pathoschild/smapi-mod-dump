@@ -106,8 +106,8 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
       // Constructors:
     #region Constructors
 
-      public ChestSettings(CustomItemGrabMenuItem hostMenuItem, Rectangle bounds, String componentName = "", EventHandler<CustomMenu.MouseStateEx> onMouseClick = null) :
-        base(hostMenuItem, bounds, true, componentName, onMouseClick) {
+      public ChestSettings(CustomItemGrabMenuItem hostMenuItem, Rectangle bounds, String componentName = "", EventHandler<CustomMenu.MouseStateEx> onMouseClick = null)
+        : base(hostMenuItem, bounds, true, componentName, onMouseClick) {
         this.nameTextBox = new CustomTextBox(new Rectangle(bounds.X + 12, bounds.Y + 8, 394, -1),
                                              hostMenuItem.mColours.mForegroundColour,
                                              hostMenuItem.mColours.mBackgroundColour,

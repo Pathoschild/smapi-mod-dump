@@ -10,21 +10,18 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using System.IO;
 
 namespace Su226.ContentPatcherHD {
   class Texture2DWrapper : Texture2D {
-    public readonly Texture2D Wrapped;
+    public Texture2D Wrapped;
     public readonly int Scale;
     public readonly string Path;
-    public readonly string Locale;
+    public string Locale;
 
-    public Texture2DWrapper(Texture2D wrapped, int scale, string path, string locale) : base(wrapped.GraphicsDevice, wrapped.Width, wrapped.Height) {
-      Wrapped = ScaleUp(wrapped, scale);
+    public Texture2DWrapper(Texture2D wrapped, int scale, string path) : base(wrapped.GraphicsDevice, wrapped.Width, wrapped.Height) {
       Scale = scale;
       Path = path;
-      Locale = locale;
     }
 
     public static Texture2D ScaleUp(Texture2D texture, int scale) {

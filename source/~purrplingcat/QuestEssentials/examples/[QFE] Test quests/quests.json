@@ -1,0 +1,219 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/StardewMods
+**
+*************************************************/
+
+{
+  "Format": "1.0",
+  "Quests": [
+    {
+      "Name": "TestSellQuest",
+      "Type": "PurrplingCat.QuestEssentials/SellItem",
+      "Title": "Sell some parsnips",
+      "Description": "Sell 10 pieces of parsnip in shipping bin or in any shop in the town.",
+      "Objective": "Sell 10 pieces of parsnip",
+      "Reward": 1500,
+      "Cancelable": true,
+      "Trigger": "24 10"
+    },
+    {
+      "Name": "TestEarnQuest",
+      "Type": "PurrplingCat.QuestEssentials/EarnMoney",
+      "Title": "Grow up!",
+      "Description": "Earn lot of money! Earn a package of 10000g.",
+      "Reward": 1500,
+      "Cancelable": false,
+      "Trigger": "10000"
+    },
+    {
+      "Name": "TestTalkQuest",
+      "Type": "PurrplingCat.QuestEssentials/Talk",
+      "Title": "Talk with Abby",
+      "Description": "Abigail wants talk with you.",
+      "Objective": "Talk to Abigail",
+      "Cancelable": true,
+      "Trigger": "Abigail"
+    },
+    {
+      "Name": "TestTalkQuest2",
+      "Type": "PurrplingCat.QuestEssentials/Talk",
+      "Title": "Talk with Abby again",
+      "Description": "Abigail wants talk with you. Again.",
+      "Objective": "Talk to Abigail",
+      "ReactionText": "I want to eat Amethyst!$h",
+      "Cancelable": true,
+      "Trigger": "Abigail"
+    },
+    {
+      "Name": "TestStoryQuest",
+      "Type": "PurrplingCat.QuestEssentials/Special",
+      "Title": "Testing story quest",
+      "Description": "This is an testing story quest",
+      "Tasks": [
+        /*{
+          "Name": "TestTask1",
+          "Type": "EnterSpot",
+          "Data": {
+            "Tile": "14,15",
+            "Location": "FarmHouse",
+            "EventOnComplete": "4725065 Strings\\Locations:IslandSecret_Event_BirdieIntro"
+          },
+          "Description": "%i18n:story_quest.TestTask1.description"
+        },
+        {
+          "Name": "TestTask2",
+          "Type": "EnterSpot",
+          "Description": "Enter your kitchen",
+          "Data": {
+            "Area": "64,768,576,704",
+            "Location": "FarmHouse"
+          }
+        },*/
+        {
+          "Name": "TestTask3",
+          "Type": "Collect",
+          "Description": "Gather bug meat",
+          "Data": {
+            "AcceptedContextTags": "item_bug_meat" // same format as for Special Orders
+          },
+          //"RequiredTasks": [ "TestTask1", "TestTask2" ],
+          "Goal": 10
+        },
+        {
+          "Name": "TestTask4",
+          "Type": "Craft",
+          "Description": "Bake a cake",
+          "Data": {
+            // Cook any cake
+            "AcceptedContextTags": "food_sweet, food_bakery"
+          },
+          "RequiredTasks": [ "TestTask3" ],
+          "Goal": 7
+        },
+        {
+          "Name": "TestTask5",
+          "Type": "Deliver",
+          "Description": "Bring baked cake to Abigail",
+          "Data": {
+            // Deliver any cake to Abigail
+            "NpcName": "Abigail",
+            "AcceptedContextTags": "food_sweet, food_bakery",
+            "Message": "Thank you for this delicious cake you made for me!$l",
+            "NotEnoughMessage": "Thank you! I still need {0} more of these, though!$h"
+          },
+          "RequiredTasks": [ "TestTask3" ],
+          "Goal": 7
+        },
+        {
+          "Name": "TestTask6",
+          "Type": "Talk",
+          "Description": "Talk with Abigail",
+          "Data": {
+            // Talk to abby and then see an event
+            "NpcName": "Abigail",
+            "DialogueText": "I am thinking about go to an adventure in mines. Can I go with you if you go to the mines some day?#$b#Take an ancient fruit from me",
+            "StartEvent": "44017601 Data\\Events\\FarmHouse:3917601/f Emily 3500/O Emily/n emilyFiber/A emilyFiber/t 2000 2400/p Emily",
+            "ReceiveItems": "object_ancient_fruit" // And get ancient fruit from Abby when talk
+          },
+          "RequiredTasks": [ "TestTask5", "TestTask4" ]
+        },
+        {
+          "Name": "TestTask7",
+          "Type": "Slay",
+          "Description": "Kill some slimes or bats",
+          "Data": {
+            "TargetName": "Slime, Bat, Jelly, Sludge"
+          },
+          "Goal": 20,
+          "RequiredTasks": [ "TestTask6" ]
+        },
+        {
+          "Name": "TestTask8",
+          "Type": "Fish",
+          "Description": "Catch any ocean summer fish",
+          "Data": {
+            "AcceptedContextTags": "fish_ocean, season_summer"
+          },
+          "RequiredTasks": [ "TestTask7" ],
+          "Goal": 5
+        },
+        {
+          "Name": "TestTask9",
+          "Type": "Gift",
+          "Description": "Give a someone gift",
+          "Data": {
+            "MinimumLikeLevel": "Liked"
+          },
+          "RequiredTasks": [ "TestTask8" ],
+          "Goal": 5
+        }
+      ],
+      "AddMailOnComplete": "happy_abby noletter",
+      "FriendshipGain": {
+        "Abigail": 320
+      },
+      "Reward": 6000,
+      "Cancelable": true
+    },
+    {
+      "Name": "TestStoryQuest2",
+      "Type": "PurrplingCat.QuestEssentials/Special",
+      "Title": "Testing story quest",
+      "Description": "This is an testing story quest",
+      "Tasks": [
+        {
+          "Name": "TileActionTest",
+          "Type": "TileAction",
+          "Data": {
+            "Tile": "14,15",
+            "Location": "FarmHouse",
+            "Message": "You did it! Winner!"
+          },
+          "Description": "%i18n:story_quest.TestTask1.description"
+        }
+      ],
+      "AddMailOnComplete": "explorer noletter, guildQuest tomorrow",
+      "Reward": 6000,
+      "Cancelable": true
+    }
+  ],
+  "Offers": [
+    {
+      "QuestName": "TestStoryQuest",
+      "OfferedBy": "NPC",
+      "OfferDetails": {
+        "NpcName": "Abigail", // Speak with Abigail to get this quest
+        "DialogueText": "%i18n:abigail_adventure.offer.dialogueText"
+      },
+      "When": {
+        "Seasons": "spring summer fall",
+        "Days": "1 8 10 14 20",
+        "not:QuestAcceptedInPeriod": "season year"
+      }
+    },
+    {
+      "QuestName": "TestStoryQuest",
+      "OfferedBy": "Item",
+      "OfferDetails": {
+        "ItemContextTags": "item_amethyst",
+        "FoundMessage": "You found magic purple one"
+      },
+      "When": {
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "TestEarnQuest",
+      "OfferedBy": "Board:MyBoard",
+      "When": {
+        "Seasons": "summer fall",
+        "not:QuestAcceptedInPeriod": "season year"
+      }
+    }
+  ]
+}

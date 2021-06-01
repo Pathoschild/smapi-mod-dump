@@ -1,4 +1,11 @@
 {
+  "LocationsWhiteList": [],
+  "LocationsBlackList": [
+    "mine",
+    "skullcave",
+    "s:undergroundmine"
+  ],
+  "PercentConverageOfDefaultGrass": 0,
   "CanAnimalsEatGrass": true,
   "CanGrassLiveInSpring": true,
   "CanGrassLiveInSummer": true,

@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://sourceforge.net/p/sdvmod-damage-overlay/
+**
+*************************************************/
+
+{
+  "Name": "Damage Overlay",
+  "Author": "pepoluan",
+  "Version": "0.8.1",
+  "Description": "Damage overlay on low health",
+  "UniqueID": "pepoluan.DamageOverlay",
+  "EntryDll": "DamageOverlay.dll",
+  "UpdateKeys": [ "Nexus:8796" ],
+  "Meta:Changelog": {
+    "0.0.1": "Proof of Concept",
+    "0.1.0": "Prototype",
+    "0.2.0": "Folder-based overlay 'sets'",
+    "0.3.0": "Respond to WindowResized event",
+    "0.3.1": "Add UpdateKeys",
+    "0.4.0": "Attach to GameLaunched, perform scale calculation outside drawing routine",
+    "0.5.0": "Totally new overlay.json format, change loading & make more robust",
+    "0.6.0": "Preliminary support for content packs, optimize more things",
+    "0.7.0": "Implement temporary hiding of overlay",
+    "0.8.0": "Add support for GMCM",
+    "0.8.1": "Fix for zoom, Add 'dover' command to help debugging, Internal optimizations",
+    "0.9.0": "Add more console commands"
+  }
+}

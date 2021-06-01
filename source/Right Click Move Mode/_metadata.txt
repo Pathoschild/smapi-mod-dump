@@ -6,10 +6,9 @@ mods:
    Right Click Move Mode
 
 latest commit:
-   commit 59b1cb24b271412827385900acd788d8a88d5793
-   Merge: f96cd60 d01aa5d
+   commit bac843aef0dfbdf47bcd320a579e0b599c06a581
    Author: DucNghia <ducnghia.tin47@gmail.com>
-   Date:   Wed Apr 3 14:51:50 2019 +0700
+   Date:   Wed Mar 10 18:26:55 2021 +0700
    
-       Merge branch 'In-Beta'
+       Fix 10/03 add isExtendedModeOn = this.config.ExtendedModeDefault;
    

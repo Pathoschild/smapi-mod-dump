@@ -52,11 +52,13 @@ namespace ChestEx.Types.BaseTypes {
     // Constructors:
   #region Constructors
 
-    public CustomItemGrabMenuTexturedItem(CustomItemGrabMenu hostMenu, Texture2D texture, Rectangle bounds, Colours colours) : base(null, texture, bounds, colours) {
+    public CustomItemGrabMenuTexturedItem(CustomItemGrabMenu hostMenu, Texture2D texture, Rectangle bounds, Colours colours)
+      : base(null, texture, bounds, colours) {
       this.mHostMenu = hostMenu;
     }
 
-    public CustomItemGrabMenuTexturedItem(CustomItemGrabMenu hostMenu, Texture2D texture, Rectangle bounds) : this(hostMenu, texture, bounds, Colours.gDefault) { }
+    public CustomItemGrabMenuTexturedItem(CustomItemGrabMenu hostMenu, Texture2D texture, Rectangle bounds)
+      : this(hostMenu, texture, bounds, Colours.gDefault) { }
 
   #endregion
   }

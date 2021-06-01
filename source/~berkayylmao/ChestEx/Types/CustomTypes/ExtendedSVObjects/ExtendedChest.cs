@@ -277,7 +277,8 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
     // Constructors:
   #region Constructors
 
-    public ExtendedChest(Single chestScale, Color hingesColour, ChestType chestType) : base(false) {
+    public ExtendedChest(Single chestScale, Color hingesColour, ChestType chestType)
+      : base(false) {
       this.mChestScale      = chestScale;
       this.mChestType       = chestType;
       this.mHingesColour    = hingesColour == default ? Color.Black : hingesColour;
@@ -287,9 +288,8 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
       this.resetLidFrame();
     }
 
-    public ExtendedChest(Rectangle bounds, Color hingesColour = default, ChestType chestType = ChestType.WoodenChest) : this((Single)bounds.Width / CONST_CHEST_SPRITE_SIZE,
-                                                                                                                             hingesColour,
-                                                                                                                             chestType) { }
+    public ExtendedChest(Rectangle bounds, Color hingesColour = default, ChestType chestType = ChestType.WoodenChest)
+      : this((Single)bounds.Width / CONST_CHEST_SPRITE_SIZE, hingesColour, chestType) { }
 
   #endregion
   }

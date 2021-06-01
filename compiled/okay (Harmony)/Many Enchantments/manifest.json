@@ -1,0 +1,10 @@
+﻿{
+  "Name": "ManyEnchantments",
+  "Author": "Stari",
+  "Version": "1.0.0",
+  "Description": "Allows you to have more enchantments on your tools and weapons.",
+  "UniqueID": "Stari.ManyEnchantments",
+  "EntryDll": "ManyEnchantments.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8824" ]
+}

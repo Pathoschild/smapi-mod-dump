@@ -6,10 +6,10 @@ mods:
    24-Hour Clock Patcher
 
 latest commit:
-   changeset:   63:1f11e91d1b98
+   changeset:   69:c96948794e6e
    tag:         tip
    user:        Pandu POLUAN <pepoluan@gmail.com>
-   date:        Mon May 24 23:49:56 2021 +0700
-   summary:     Change subrepo from SSH-authenticated to HTTP RO
+   date:        Wed May 26 18:16:58 2021 +0700
+   summary:     Additional R41 adoption
    
    

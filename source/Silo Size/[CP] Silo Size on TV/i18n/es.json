@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://sourceforge.net/p/sdvmod-silo-size/
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/i18n.json",
+    "tv_tip": "¡El invierno está a la vuelta de la esquina! Asegúrate de almacenar suficiente heno para tus animales, ya que con la llegada del invierno toda la hierba morirá. Cada silo puede almacenar {{size}} pilas de heno, ¡así que haz las cuentas y comprueba si necesitas construir alguno más!"
+}

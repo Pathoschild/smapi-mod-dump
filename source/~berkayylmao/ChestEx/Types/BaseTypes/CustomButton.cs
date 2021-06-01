@@ -180,10 +180,11 @@ namespace ChestEx.Types.BaseTypes {
   #region Constructors
 
     public CustomButton(Rectangle bounds, Color backgroundColour, Action onClickHandler, String text,
-                        Texture2D overlayTexture) : base(bounds,
-                                                         TexturePresets.gButtonBackgroundTexture,
-                                                         TexturePresets.gButtonBackgroundTexture.Bounds,
-                                                         Convert.ToSingle(bounds.Width) / TexturePresets.gButtonBackgroundTexture.Bounds.Width) {
+                        Texture2D overlayTexture)
+      : base(bounds,
+             TexturePresets.gButtonBackgroundTexture,
+             TexturePresets.gButtonBackgroundTexture.Bounds,
+             Convert.ToSingle(bounds.Width) / TexturePresets.gButtonBackgroundTexture.Bounds.Width) {
       this.currentTint = backgroundColour;
 
       this.mColours        = Colours.GenerateFrom(backgroundColour);
@@ -192,11 +193,8 @@ namespace ChestEx.Types.BaseTypes {
       this.mOverlayTexture = overlayTexture;
     }
 
-    public CustomButton(Rectangle bounds, Action onClickHandler = null, String text = "", Texture2D overlayTexture = null) : this(bounds,
-                                                                                                                                  Color.White,
-                                                                                                                                  onClickHandler,
-                                                                                                                                  text,
-                                                                                                                                  overlayTexture) { }
+    public CustomButton(Rectangle bounds, Action onClickHandler = null, String text = "", Texture2D overlayTexture = null)
+      : this(bounds, Color.White, onClickHandler, text, overlayTexture) { }
 
   #endregion
 

@@ -94,7 +94,10 @@ namespace ChestEx.Types.BaseTypes {
 
     public Object mSVObject { get; set; }
 
-    public T GetSVObjectAs<T>() where T : Object { return this.mSVObject as T; }
+    public T GetSVObjectAs<T>()
+      where T : Object {
+      return this.mSVObject as T;
+    }
 
     // Overrides:
   #region Overrides
@@ -134,13 +137,14 @@ namespace ChestEx.Types.BaseTypes {
 
     public SVObjectInCustomItemGrabMenu(CustomItemGrabMenuItem hostMenuItem, Rectangle bounds, Object svObject, Boolean svObjectDrawShadow = false,
                                         Single svObjectScale = -1.0f, String componentName = "", EventHandler<CustomMenu.MouseStateEx> onMouseClick = null, String hoverText = "",
-                                        Colours textureTintColours = null) : base(hostMenuItem,
-                                                                                  bounds,
-                                                                                  true,
-                                                                                  componentName,
-                                                                                  onMouseClick,
-                                                                                  hoverText,
-                                                                                  textureTintColours) {
+                                        Colours textureTintColours = null)
+      : base(hostMenuItem,
+             bounds,
+             true,
+             componentName,
+             onMouseClick,
+             hoverText,
+             textureTintColours) {
       this.mObjectDrawShadow = svObjectDrawShadow;
       this.mObjectScale      = svObjectScale;
 

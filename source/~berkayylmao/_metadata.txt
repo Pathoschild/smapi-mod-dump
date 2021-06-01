@@ -4,12 +4,13 @@ urls:
 
 mods:
    ChestEx
+   Infinite Zoom
    Ship Anything
 
 latest commit:
-   commit aa5c5e10c8d9743f964d2272ef2a9a60b120d318
+   commit 6d6d7a16069c0513377e6addd3cc574c5d95753e
    Author: Berkay YiÄŸit <berkaytgy@gmail.com>
-   Date:   Sun May 23 18:09:00 2021 +0300
+   Date:   Thu May 27 18:48:19 2021 +0300
    
-       [ChestEx] Remove leftover code
+       Update .editorconfig + Reformat all
    

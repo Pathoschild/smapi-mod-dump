@@ -1,0 +1,20 @@
+﻿{
+  "Name": "Hardy Grass",
+  "Author": "DiscipleOfEris",
+  "Version": "1.0.2",
+  "Description": "Animals won't completely destroy grass when they eat it, allowing it to grow back.",
+  "UniqueID": "DiscipleOfEris.HardyGrass",
+  "EntryDll": "HardyGrass.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8772" ],
+  "Dependencies": [
+		{
+			"UniqueID": "spacechase0.JsonAssets",
+			"isRequired": "true"
+		},
+		{
+			"UniqueID": "spacechase0.GenericModConfigMenu",
+			"isRequired": "false"
+		}
+  ]
+}

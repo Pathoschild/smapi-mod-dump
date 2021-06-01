@@ -1229,7 +1229,8 @@ namespace ChestEx.Types.BaseTypes {
     // Constructors:
   #region Constructors
 
-    public CustomMenu(Color menuBackgroundColour, Rectangle bounds) : base(bounds.X, bounds.Y, bounds.Width, bounds.Height) {
+    public CustomMenu(Color menuBackgroundColour, Rectangle bounds)
+      : base(bounds.X, bounds.Y, bounds.Width, bounds.Height) {
       this.lastMouseStates = new MouseStateData(new MouseStateEx(SButton.MouseLeft), new MouseStateEx(SButton.MouseRight), new MouseStateEx(SButton.MouseMiddle));
 
       this.mColMenuBackground = menuBackgroundColour;

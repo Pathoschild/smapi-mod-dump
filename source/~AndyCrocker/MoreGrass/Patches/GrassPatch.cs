@@ -76,10 +76,10 @@ namespace MoreGrass.Patches
             Texture2D grassTexture = null;
             switch (Game1.currentSeason)
             {
-                case "spring": grassTexture = ModEntry.Instance.SpringSpritePool.GetRandomSprite(); break;
-                case "summer": grassTexture = ModEntry.Instance.SummerSpritePool.GetRandomSprite(); break;
-                case "fall": grassTexture = ModEntry.Instance.FallSpritePool.GetRandomSprite(); break;
-                case "winter": grassTexture = ModEntry.Instance.WinterSpritePool.GetRandomSprite(); break;
+                case "spring": grassTexture = ModEntry.Instance.SpringSpritePool.GetRandomSprite(__instance.currentLocation?.Name); break;
+                case "summer": grassTexture = ModEntry.Instance.SummerSpritePool.GetRandomSprite(__instance.currentLocation?.Name); break;
+                case "fall": grassTexture = ModEntry.Instance.FallSpritePool.GetRandomSprite(__instance.currentLocation?.Name); break;
+                case "winter": grassTexture = ModEntry.Instance.WinterSpritePool.GetRandomSprite(__instance.currentLocation?.Name); break;
             }
 
             __instance.texture = new Lazy<Texture2D>(() => grassTexture);
@@ -114,10 +114,10 @@ namespace MoreGrass.Patches
             {
                 switch (Game1.currentSeason)
                 {
-                    case "spring": newWhichWeed[i] = random.Next(ModEntry.Instance.SpringSpritePool.Count); break;
-                    case "summer": newWhichWeed[i] = random.Next(ModEntry.Instance.SummerSpritePool.Count); break;
-                    case "fall": newWhichWeed[i] = random.Next(ModEntry.Instance.FallSpritePool.Count); break;
-                    case "winter": newWhichWeed[i] = random.Next(ModEntry.Instance.WinterSpritePool.Count); break;
+                    case "spring": newWhichWeed[i] = random.Next(ModEntry.Instance.SpringSpritePool.GetSprites(__instance.currentLocation.Name).Count); break;
+                    case "summer": newWhichWeed[i] = random.Next(ModEntry.Instance.SummerSpritePool.GetSprites(__instance.currentLocation.Name).Count); break;
+                    case "fall": newWhichWeed[i] = random.Next(ModEntry.Instance.FallSpritePool.GetSprites(__instance.currentLocation.Name).Count); break;
+                    case "winter": newWhichWeed[i] = random.Next(ModEntry.Instance.WinterSpritePool.GetSprites(__instance.currentLocation.Name).Count); break;
                 }
             }
 
@@ -148,32 +148,33 @@ namespace MoreGrass.Patches
             var textures = new List<Texture2D>();
             switch (Game1.currentSeason)
             {
-                case "spring": textures = ModEntry.Instance.SpringSpritePool.Sprites; defaultTextures = ModEntry.Instance.SpringSpritePool.DefaultSprites; break;
-                case "summer": textures = ModEntry.Instance.SummerSpritePool.Sprites; defaultTextures = ModEntry.Instance.SummerSpritePool.DefaultSprites; break;
-                case "fall":   textures = ModEntry.Instance.FallSpritePool.Sprites;   defaultTextures = ModEntry.Instance.FallSpritePool.DefaultSprites;   break;
-                case "winter": textures = ModEntry.Instance.WinterSpritePool.Sprites; defaultTextures = ModEntry.Instance.WinterSpritePool.DefaultSprites; break;
+                case "spring": textures = ModEntry.Instance.SpringSpritePool.GetSprites(__instance.currentLocation.Name); defaultTextures = ModEntry.Instance.SpringSpritePool.DefaultSprites; break;
+                case "summer": textures = ModEntry.Instance.SummerSpritePool.GetSprites(__instance.currentLocation.Name); defaultTextures = ModEntry.Instance.SummerSpritePool.DefaultSprites; break;
+                case "fall":   textures = ModEntry.Instance.FallSpritePool.GetSprites(__instance.currentLocation.Name);   defaultTextures = ModEntry.Instance.FallSpritePool.DefaultSprites;   break;
+                case "winter": textures = ModEntry.Instance.WinterSpritePool.GetSprites(__instance.currentLocation.Name); defaultTextures = ModEntry.Instance.WinterSpritePool.DefaultSprites; break;
             }
 
+            // force default grass based on user specified white/black list configuration
+            var forceDefaultGrass = Utilities.ShouldForceGrassToDefault(__instance.currentLocation.Name);
+
             // draw the grass
+            var random = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed / 28 + (int)tileLocation.X * 7 * (int)tileLocation.Y * 11);
             for (int i = 0; i < __instance.numberOfWeeds; i++)
             {
-                var useDefaultGrass = false;
                 var grassId = whichWeed[i];
 
-                // force default grass based on configuration
-                var random = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed / 28 + (int)tileLocation.X * 7 * (int)tileLocation.Y * 11 + i);
-                if (random.NextDouble() < (ModEntry.Instance.Config.PercentConverageOfDefaultGrass / 100f))
-                {
-                    useDefaultGrass = true;
+                // force default grass based on coverage configuration
+                if (random.NextDouble() < (ModEntry.Instance.Config.PercentConverageOfDefaultGrass / 100f)
+                    || forceDefaultGrass)
                     grassId = random.Next(defaultTextures.Count);
-                }
 
+                // draw grass
                 var globalPosition = i != 4
                     ? tileLocation * 64f + new Vector2(x: i % 2 * 64 / 2 + offset3[i] * 4 - 4 + 30, y: i / 2 * 64 / 2 + offset4[i] * 4 + 40)
                     : tileLocation * 64f + new Vector2(x: 16 + offset1[i] * 4 - 4 + 30, y: 16 + offset2[i] * 4 + 40);
                 
                 spriteBatch.Draw(
-                    texture: useDefaultGrass ? defaultTextures[grassId] : textures[grassId],
+                    texture: forceDefaultGrass ? defaultTextures[grassId] : textures[grassId],
                     position: Game1.GlobalToLocal(Game1.viewport, globalPosition),
                     sourceRectangle: new Rectangle(0, 0, 15, 20),
                     color: Color.White,
