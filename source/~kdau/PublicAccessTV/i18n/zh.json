@@ -9,7 +9,10 @@
 *************************************************/
 
 {
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
 
 	"garbage.event.linus01": "找到什么好东西了吗？",
 	"garbage.event.linus02": "嗨 @. 我很高兴看到你对垃圾桶仍感兴趣。",
@@ -54,6 +57,7 @@
 	"mining.opening": "嘿，冒险家们。吉尔和我有一些关于今天矿井内部的消息。",
 	"mining.opening.none": "嘿，冒险家们。今天矿井里没什么可报告的。。",
 	"mining.floor": "第{{num}}层",
+	"mining.floorAndItem": "第{{num}}层: {{itemName}}",
 	"mining.floors": "第 {{nums}}和{{lastNum}}层",
 	"mining.prediction.Mushroom": "蘑菇出没！我们的侦察兵发现蘑菇突然出现在{{floors}}。",
 	"mining.prediction.MonsterInfested": "追踪到大量怪物活动在{{floors}}，武装好自己！",
@@ -79,9 +83,9 @@
 	"nightEvents.Meteorite.reaction": "我们敦促你整夜呆在室内，从你的窗户可以欣赏风景。请向当地政府报告任何陨石撞击事件。",
 	"nightEvents.Meteorite.closing": "祝大家度过一个安全愉快的夜晚。",
 	"nightEvents.StrangeCapsule.opening": "市民朋友们，关于今晚我们地区上空外星活动的谣言一直在流传。",
-	"//Note on nightEvents.StrangeCapsule.reaction": "The next line is a joke about the Governor supposedly being an alien himself. During the line, he turns green and the background becomes distorted. The last sentence is meant to suggest that he has accidentally started talking about alien larvae being bred on Earth.",
+	// The next line is a joke about the Governor supposedly being an alien himself. During the line, he turns green and the background becomes distorted. The last sentence is meant to suggest that he has accidentally started talking about alien larvae being bred on Earth.
 	"nightEvents.StrangeCapsule.reaction": "我可以向你保证这是胡说八道。外星人不存在，他们还不在我们中间，一切都很好，孩子们也繁殖得很好。",
-	"//Note on nightEvents.StrangeCapsule.closing": "For this line, the Governor and the background return to normal. The word 'human' here is a joke because he obviously isn't human.",
+	// For the next line, the Governor and the background return to normal. The word 'human' here is a joke because he obviously isn't human.
 	"nightEvents.StrangeCapsule.closing": "*嗯哼*祝大家度过一个正常的人类的夜晚。",
 	"nightEvents.NewYear.opening": "各位市民朋友，我们已经结束了我们地区和整个费尔吉尔共和国又一个成功的一年。",
 	"nightEvents.NewYear.reaction": "祝贺我们的各项产业不断提高产量，特别是来自星露谷的优质作物。",
@@ -114,13 +118,13 @@
 	"trains.later": "再往下看时间表，我发现火车也计划在{{date1}}和{{date2}}通过。",
 	"trains.closing": "记住，如果你离开山谷过夜，你可能会错过火车。目击火车快乐！",
 
-	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+	// The remaining strings are the names and descriptions of options in the mod's config menu.
 
-	"InaccuratePredictions.name": "Inaccurate Predictions",
-	"InaccuratePredictions.description": "Reveal channels whose information is inaccurate due to the presence of conflicting mods. For entertainment purposes only.",
+	"InaccuratePredictions.name": "Inaccurate Predictions", // TODO
+	"InaccuratePredictions.description": "Reveal channels whose information is inaccurate due to game version mismatch and/or conflicting mods. For entertainment purposes only.", // TODO
 
-	"Cheats.name": "Cheat Options",
+	"Cheats.name": "Cheat Options", // TODO
 
-	"BypassFriendships.name": "Bypass Friendships",
-	"BypassFriendships.description": "Put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player."
+	"BypassFriendships.name": "Bypass Friendships", // TODO
+	"BypassFriendships.description": "Put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player." // TODO
 }

@@ -130,6 +130,11 @@
 	"item.vegetable.label": "Vegetable (Any)",
 	"item.meat.label": "Meat (Any)",
 	"item.forage.label": "Forage (Any)",
+	"item.cooking.label": "Cooking (Any)",
+	"item.mineral.label": "Mineral (Any)",
+	"item.seed.label": "Seeds (Any)",
+	"item.metal.label": "Metal (Any)",
+	"item.gem.label": "Gems (Any)",
 
 	// Kebab item interactions
 	"buff.kebab.quality_worst": "Rotten ",

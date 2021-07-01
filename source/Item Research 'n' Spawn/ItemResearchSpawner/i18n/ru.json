@@ -1,0 +1,52 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TSlex/StardewValley
+**
+*************************************************/
+
+{
+    //sort buttons
+    "sort.by-name": "Имя",
+    "sort.by-category": "Категория",
+    "sort.by-id": "ID",
+
+    //categories
+    "category.all": "Все",
+    "category.ammo": "Бомбы",
+    "category.animal-products": "Животный продукт",
+    "category.artifacts": "Артифакты",
+    "category.artisan": "Товары собств. пр-ва",
+    "category.big-craftable": "Постройки",
+    "category.boots": "Ботинки",
+    "category.clothes": "Одежда",
+    "category.craftable": "Ремесло",
+    "category.crops": "Урожай",
+    "category.decor": "Декор",
+    "category.fish": "Рыба",
+    "category.flowers": "Цветы",
+    "category.forage": "Дикие растения",
+    "category.furniture": "Мебель",
+    "category.geodes": "Жеоды",
+    "category.hats": "Шляпы",
+    "category.legendary-fish": "Легендарная рыба",
+    "category.minerals": "Минералы",
+    "category.monster-loot": "От чудовища",
+    "category.non-craftable": "Постройки из магазина",
+    "category.rare-minerals": "Редкие минералы",
+    "category.resources": "Ресурсы",
+    "category.rings": "Кольца",
+    "category.saplings": "Саженцы",
+    "category.seeds": "Семена",
+    "category.tools": "Инструменты",
+    "category.tree-fruits": "Фрукты с деревьев",
+    "category.unique-crops": "Уникальный урожай",
+    "category.usable": "Расходники",
+    "category.weapons": "Оружие",
+    "category.cooking": "Готовка",
+    "category.misc": "Разное",
+    "category.junk": "Мусор"
+}

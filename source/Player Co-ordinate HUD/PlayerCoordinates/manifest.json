@@ -4,14 +4,14 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://github.com/DecidedlyHuman/StardewMods
+** Source repository: https://github.com/DecidedlyHuman/PlayerCoordinates
 **
 *************************************************/
 
 {
   "Name": "Player Co-ordinate Display",
   "Author": "DecidedlyHuman",
-  "Version": "0.4.0",
+  "Version": "0.7.0",
   "Description": "A simple mod to draw the player's co-ordinates to the screen. Also allows you to log them to a file in the mod directory.",
   "UniqueID": "DecidedlyHuman.PlayerCoordinates",
   "EntryDll": "PlayerCoordinates.dll",

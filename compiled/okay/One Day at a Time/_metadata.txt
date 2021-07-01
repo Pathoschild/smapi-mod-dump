@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8870
+IDs: Miome.OneDayAtATime
+update keys: Nexus:8870, GitHub:miome/OneDayAtATime

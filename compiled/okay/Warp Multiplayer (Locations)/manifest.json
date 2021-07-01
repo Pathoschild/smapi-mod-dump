@@ -1,0 +1,16 @@
+﻿{
+    "Name": "WarpMultiplayer_Locations",
+    "Author": "Shaklin",
+    "Version": "1.0",
+    "Description": "Add more Warps into WarpMultiplayer",
+    "UniqueID": "shaklin.warpmultiplayer_locations",
+    "EntryDll": "WarpMultiplayer_Locations.dll",
+    "UpdateKeys": [ "Nexus: 8950" ],
+    "MinimumApiVersion": "3.8.0",
+    "Dependencies": [
+        {
+            "UniqueID": "Strato35.WarpMultiplayer",
+            "IsRequired": true
+        }
+    ]
+}

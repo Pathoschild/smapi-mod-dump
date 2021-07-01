@@ -25,7 +25,7 @@ namespace Cropbeasts.Beasts
 		private long jumpCooldown = 0L;
 
 		public GiantCropbeast ()
-		{}
+		{ }
 
 		public GiantCropbeast (CropTile cropTile, bool primary)
 		: base (cropTile, primary, primary, primary)
@@ -79,13 +79,17 @@ namespace Cropbeasts.Beasts
 			currentLocation.localSound ("stumpCrack");
 
 			Utility.makeTemporarySpriteJuicier (new TemporaryAnimatedSprite (44,
-				Position, primaryColor.Value, 10) { holdLastFrame = true,
-				interval = 70f, alpha = 0.8f, alphaFade = 0.008f },
+				Position, primaryColor.Value, 10)
+			{
+				holdLastFrame = true,
+				interval = 70f,
+				alpha = 0.8f,
+				alphaFade = 0.008f
+			},
 				currentLocation, 8, 96, 96);
 		}
 
-		internal static readonly Dictionary<int, int> StockWhich =
-			new Dictionary<int, int>
+		internal static readonly Dictionary<int, int> StockWhich = new ()
 		{
 			{ 190, GiantCrop.cauliflower },
 			{ 254, GiantCrop.melon },
@@ -187,7 +191,7 @@ namespace Cropbeasts.Beasts
 			jumpCooldown = updateTimer + 3000L;
 			currentLocation.playSoundPitched ("batScreech", -200);
 			Vector2 awayFromPlayerTrajectory =
-				Utility.getAwayFromPlayerTrajectory (GetBoundingBox(), Player);
+				Utility.getAwayFromPlayerTrajectory (GetBoundingBox (), Player);
 			setTrajectory (awayFromPlayerTrajectory * (toward ? -2f : 2f));
 			jumpWithoutSound (2f);
 			DelayedAction.playSoundAfterDelay ("stumpCrack", 100,

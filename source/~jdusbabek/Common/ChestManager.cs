@@ -35,204 +35,178 @@ namespace StardewLib
         *********/
         public ChestManager(IMonitor monitor)
         {
-            this.Monitor = monitor;
+            Monitor = monitor;
         }
 
         public void ParseChests(string chestString)
         {
-            this.Chests = new Dictionary<int, ChestDef>();
+            Chests = new Dictionary<int, ChestDef>();
 
-            string[] chestDefinitions = chestString.Split('|');
+            var chestDefinitions = chestString.Split('|');
 
-            foreach (string def in chestDefinitions)
+            foreach (var def in chestDefinitions)
             {
-                string[] chestInfo = def.Split(',');
+                var chestInfo = def.Split(',');
                 if (chestInfo.Length == 3)
                 {
                     // A Farm chest
-                    ChestDef cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), "Farm");
-                    this.Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
-                    this.Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}", LogLevel.Trace);
+                    var cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), "Farm");
+                    Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
+                    Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}");
                 }
                 else if (chestInfo.Length == 4)
                 {
                     // A farm house chest
-                    ChestDef cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), chestInfo[3]);
-                    this.Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
-                    this.Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}", LogLevel.Trace);
+                    var cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), chestInfo[3]);
+                    Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
+                    Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}");
                 }
             }
         }
 
         public void ParseChests(string[] chestList)
         {
-            this.Chests = new Dictionary<int, ChestDef>();
+            Chests = new Dictionary<int, ChestDef>();
 
-            foreach (string def in chestList)
+            foreach (var def in chestList)
             {
-                string[] chestInfo = def.Split(',');
+                var chestInfo = def.Split(',');
                 if (chestInfo.Length == 3)
                 {
                     // A Farm chest
-                    ChestDef cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), "Farm");
-                    this.Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
-                    this.Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}", LogLevel.Trace);
+                    var cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), "Farm");
+                    Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
+                    Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}");
                 }
                 else if (chestInfo.Length == 4)
                 {
                     // Another location.
-                    ChestDef cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), chestInfo[3]);
-                    this.Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
-                    this.Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}", LogLevel.Trace);
+                    var cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), chestInfo[3]);
+                    Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
+                    Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}");
                 }
             }
         }
 
         public void ParseChests(List<string> chestList)
         {
-            this.Chests = new Dictionary<int, ChestDef>();
+            Chests = new Dictionary<int, ChestDef>();
 
-            foreach (string def in chestList)
+            foreach (var def in chestList)
             {
-                string[] chestInfo = def.Split(',');
+                var chestInfo = def.Split(',');
                 if (chestInfo.Length == 3)
                 {
                     // A Farm chest
-                    ChestDef cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), "Farm");
-                    this.Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
-                    this.Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}", LogLevel.Trace);
+                    var cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), "Farm");
+                    Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
+                    Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}");
                 }
                 else if (chestInfo.Length == 4)
                 {
                     // Another location.
-                    ChestDef cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), chestInfo[3]);
-                    this.Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
-                    this.Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}", LogLevel.Trace);
+                    var cd = new ChestDef(Convert.ToInt32(chestInfo[1]), Convert.ToInt32(chestInfo[2]), chestInfo[3]);
+                    Chests.Add(Convert.ToInt32(chestInfo[0]), cd);
+                    Monitor.Log($"Parsing chest: {cd.X},{cd.Y} for item: {chestInfo[0]}, location: {cd.Location}");
                 }
             }
         }
 
         public void SetDefault(Vector2 v)
         {
-            this.DefaultChest = new ChestDef((int)v.X, (int)v.Y);
+            DefaultChest = new ChestDef((int) v.X, (int) v.Y);
         }
 
         public Object GetDefaultChest()
         {
-            return this.GetChest(-999999);
+            return GetChest(-999999);
         }
 
         public Object GetChest(int itemId)
         {
-            ChestDef def = this.GetChestDef(itemId);
+            var def = GetChestDef(itemId);
             if (def == null)
                 return null;
 
-            GameLocation loc = Game1.getLocationFromName(def.Location);
+            var loc = Game1.getLocationFromName(def.Location);
 
             if (loc == null)
                 return null;
 
-            loc.objects.TryGetValue(def.Tile, out Object chest);
+            loc.objects.TryGetValue(def.Tile, out var chest);
             return chest as Chest;
         }
 
         public SortedDictionary<int, ChestDef> ParseAllChests()
         {
-            SortedDictionary<int, ChestDef> bestGuessChest = new SortedDictionary<int, ChestDef>();
+            var bestGuessChest = new SortedDictionary<int, ChestDef>();
 
-            foreach (GameLocation loc in Game1.locations)
+            foreach (var loc in Game1.locations)
+            foreach (var o in loc.Objects.Pairs)
             {
-                foreach (KeyValuePair<Vector2, Object> o in loc.Objects.Pairs)
+                if (o.Value is Chest)
                 {
-                    if (o.Value is Chest)
-                    {
-                        Chest c = (Chest)o.Value;
-                        Dictionary<int, int> itemCounts = new Dictionary<int, int>();
+                    var c = (Chest) o.Value;
+                    var itemCounts = new Dictionary<int, int>();
 
-                        foreach (Item i in ((Chest)o.Value).items)
+                    foreach (var i in ((Chest) o.Value).items)
+                        if (i != null)
                         {
-                            if (i != null)
-                            {
-                                if (itemCounts.ContainsKey(i.ParentSheetIndex))
-                                {
-                                    itemCounts[i.ParentSheetIndex] += i.Stack;
-                                }
-                                else
-                                {
-                                    itemCounts.Add(i.ParentSheetIndex, i.Stack);
-                                }
-                            }
-                        }
-
-                        foreach (KeyValuePair<int, int> item in itemCounts)
-                        {
-                            if (bestGuessChest.ContainsKey(item.Key))
-                            {
-                                if (bestGuessChest[item.Key].Count < item.Value)
-                                {
-                                    bestGuessChest[item.Key] = new ChestDef((int)o.Key.X, (int)o.Key.Y, loc.Name, item.Value, c);
-                                }
-                            }
+                            if (itemCounts.ContainsKey(i.ParentSheetIndex))
+                                itemCounts[i.ParentSheetIndex] += i.Stack;
                             else
-                            {
-                                bestGuessChest.Add(item.Key, new ChestDef((int)o.Key.X, (int)o.Key.Y, loc.Name, item.Value, c));
-                            }
+                                itemCounts.Add(i.ParentSheetIndex, i.Stack);
                         }
-                    }
 
-
-                    if (loc.Name.Equals("Farm"))
-                    {
-                        foreach (Building bgl in Game1.getFarm().buildings)
+                    foreach (var item in itemCounts)
+                        if (bestGuessChest.ContainsKey(item.Key))
                         {
-                            if (bgl.indoors.Value?.Objects != null && bgl.indoors.Value.Objects.Any())
-                            {
-                                foreach (KeyValuePair<Vector2, Object> o2 in bgl.indoors.Value.objects.Pairs)
-                                {
-                                    if (o2.Value is Chest)
-                                    {
-                                        Chest c = (Chest)o2.Value;
-                                        Dictionary<int, int> itemCounts = new Dictionary<int, int>();
-
-                                        foreach (Item i in ((Chest)o2.Value).items)
-                                        {
-                                            if (i != null)
-                                            {
-                                                if (itemCounts.ContainsKey(i.ParentSheetIndex))
-                                                {
-                                                    itemCounts[i.ParentSheetIndex] += i.Stack;
-                                                }
-                                                else
-                                                {
-                                                    itemCounts.Add(i.ParentSheetIndex, i.Stack);
-                                                }
-                                            }
-                                        }
-
-                                        foreach (KeyValuePair<int, int> item2 in itemCounts)
-                                        {
-                                            if (bestGuessChest.ContainsKey(item2.Key))
-                                            {
-                                                if (bestGuessChest[item2.Key].Count < item2.Value)
-                                                {
-                                                    bestGuessChest[item2.Key] = new ChestDef((int)o2.Key.X, (int)o2.Key.Y, bgl.indoors.Value.Name, item2.Value, c);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                bestGuessChest.Add(item2.Key, new ChestDef((int)o2.Key.X, (int)o2.Key.Y, bgl.indoors.Value.Name, item2.Value, c));
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
+                            if (bestGuessChest[item.Key].Count < item.Value)
+                                bestGuessChest[item.Key] =
+                                    new ChestDef((int) o.Key.X, (int) o.Key.Y, loc.Name, item.Value, c);
                         }
-
-                    }
+                        else
+                        {
+                            bestGuessChest.Add(item.Key,
+                                new ChestDef((int) o.Key.X, (int) o.Key.Y, loc.Name, item.Value, c));
+                        }
                 }
+
+
+                if (loc.Name.Equals("Farm"))
+                    foreach (var bgl in Game1.getFarm().buildings)
+                        if (bgl.indoors.Value?.Objects != null && bgl.indoors.Value.Objects.Any())
+                            foreach (var o2 in bgl.indoors.Value.objects.Pairs)
+                                if (o2.Value is Chest)
+                                {
+                                    var c = (Chest) o2.Value;
+                                    var itemCounts = new Dictionary<int, int>();
+
+                                    foreach (var i in ((Chest) o2.Value).items)
+                                        if (i != null)
+                                        {
+                                            if (itemCounts.ContainsKey(i.ParentSheetIndex))
+                                                itemCounts[i.ParentSheetIndex] += i.Stack;
+                                            else
+                                                itemCounts.Add(i.ParentSheetIndex, i.Stack);
+                                        }
+
+                                    foreach (var item2 in itemCounts)
+                                        if (bestGuessChest.ContainsKey(item2.Key))
+                                        {
+                                            if (bestGuessChest[item2.Key].Count < item2.Value)
+                                                bestGuessChest[item2.Key] = new ChestDef((int) o2.Key.X, (int) o2.Key.Y,
+                                                    bgl.indoors.Value.Name, item2.Value, c);
+                                        }
+                                        else
+                                        {
+                                            bestGuessChest.Add(item2.Key,
+                                                new ChestDef((int) o2.Key.X, (int) o2.Key.Y, bgl.indoors.Value.Name,
+                                                    item2.Value, c));
+                                        }
+                                }
             }
+
             return bestGuessChest;
         }
 
@@ -242,8 +216,8 @@ namespace StardewLib
         *********/
         private ChestDef GetChestDef(int itemId)
         {
-            this.Chests.TryGetValue(itemId, out ChestDef def);
-            return def ?? this.DefaultChest;
+            Chests.TryGetValue(itemId, out var def);
+            return def ?? DefaultChest;
         }
     }
 }

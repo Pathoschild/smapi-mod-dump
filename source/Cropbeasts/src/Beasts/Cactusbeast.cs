@@ -19,19 +19,19 @@ namespace Cropbeasts.Beasts
 	// Much of this class is based on StardewValley.Monsters.DinoMonster.
 	public class Cactusbeast : Cropbeast
 	{
-		public readonly NetBool attacking = new NetBool (false);
+		public readonly NetBool attacking = new (false);
 		public int timeUntilNextAttack = 0;
 
-		public readonly NetBool firing = new NetBool (false);
+		public readonly NetBool firing = new (false);
 		public int nextFireTime = 0;
 		public int totalFireTime = 0;
 
-		public readonly NetBool wandering = new NetBool (false);
+		public readonly NetBool wandering = new (false);
 		public int nextWanderTime = 0;
 		public int nextChangeDirectionTime = 0;
 
 		public Cactusbeast ()
-		{}
+		{ }
 
 		public Cactusbeast (CropTile cropTile, bool primary)
 		: base (cropTile, primary, primary, !primary)
@@ -76,8 +76,12 @@ namespace Cropbeasts.Beasts
 			currentLocation.localSound ("grunt");
 
 			Utility.makeTemporarySpriteJuicier (new TemporaryAnimatedSprite (44,
-				Position, primaryColor.Value, 10) { holdLastFrame = true,
-				alphaFade = 0.01f, interval = 70f }, currentLocation, 8, 96);
+				Position, primaryColor.Value, 10)
+			{
+				holdLastFrame = true,
+				alphaFade = 0.01f,
+				interval = 70f,
+			}, currentLocation, 8, 96);
 		}
 
 		public override void draw (SpriteBatch b)
@@ -130,7 +134,7 @@ namespace Cropbeasts.Beasts
 				{
 					nextChangeDirectionTime = Game1.random.Next (500, 1000);
 					facingDirection.Value = (facingDirection.Value +
-						(Game1.random.Next(0, 3) - 1) + 4) % 4;
+						(Game1.random.Next (0, 3) - 1) + 4) % 4;
 				}
 				if (nextWanderTime < 0)
 				{

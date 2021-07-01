@@ -98,6 +98,11 @@
 	"item.vegetable.label": "Vegetale (Qualsiasi)",
 	"item.meat.label": "Carne (Qualsiasi)",
 	"item.forage.label": "Foraggio (Qualsiasi)",
+	"item.cooking.label": "Cucina (Qualsiasi)",
+	"item.mineral.label": "Minerale (Qualsiasi)",
+	"item.seed.label": "Seme (Qualsiasi)",
+	"item.metal.label": "Metallo (Qualsiasi)",
+	"item.gem.label": "Gemma (Qualsiasi)",
 
 	// Kebab item interactions
 	"buff.kebab.quality_worst": " Marcio",

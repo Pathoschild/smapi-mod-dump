@@ -1,0 +1,6 @@
+{
+  "ToggleUIKey": "LeftShift + OemPipe",
+  "AlreadyPettedMessage": "Already Petted",
+  "NeedsPettingMessage": "Needs Petting",
+  "IsUIEnabled": true
+}

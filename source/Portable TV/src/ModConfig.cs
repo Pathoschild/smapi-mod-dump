@@ -19,6 +19,8 @@ namespace PortableTV
 
 		internal static ModConfig Instance { get; private set; }
 
+#pragma warning disable IDE1006
+
 		public bool Animate { get; set; } = true;
 
 		public bool Static { get; set; } = true;
@@ -26,6 +28,8 @@ namespace PortableTV
 		public bool Music { get; set; } = true;
 
 		public SButton ActivateKey { get; set; } = SButton.R;
+
+#pragma warning restore IDE1006
 
 		internal static void Load ()
 		{
@@ -48,9 +52,10 @@ namespace PortableTV
 				("spacechase0.GenericModConfigMenu");
 			if (api == null)
 				return;
-			
+
 			var manifest = ModEntry.Instance.ModManifest;
 			api.RegisterModConfig (manifest, Reset, Save);
+			api.SetDefaultIngameOptinValue (manifest, true);
 
 			api.RegisterSimpleOption (manifest,
 				Helper.Translation.Get ("Animate.name"),

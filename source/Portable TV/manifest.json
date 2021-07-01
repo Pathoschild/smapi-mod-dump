@@ -11,16 +11,18 @@
 {
 	"Name": "Portable TV",
 	"Author": "kdau",
-	"Version": "1.2.0",
+	"Version": "2.0.1",
 	"Description": "Craftable inventory item that lets you watch TV channels from anywhere in the Valley",
 	"UniqueID": "kdau.PortableTV",
 	"EntryDll": "PortableTV.dll",
-	"MinimumApiVersion": "3.5.0",
-	"Dependencies": [
+	"MinimumApiVersion": "3.8.0",
+	"Dependencies":
+	[
 		{ "UniqueID": "spacechase0.JsonAssets" },
 		{ "UniqueID": "spacechase0.GenericModConfigMenu", "IsRequired": false }
 	],
-	"UpdateKeys": [
+	"UpdateKeys":
+	[
 		"Nexus:5674",
 		"ModDrop:761325"
 	]

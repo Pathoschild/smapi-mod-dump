@@ -35,6 +35,7 @@ namespace ToDew {
             All = -1
         };
 
+        #pragma warning disable format
         [Flags]
         public enum DayVisibility {
             None = 0,
@@ -55,6 +56,7 @@ namespace ToDew {
             Week4     = 0b1000_0000_00000000,
             All = -1
         }
+        #pragma warning restore format
 
         /// <summary>
         /// The data model for an item on the to-do list.
@@ -92,7 +94,7 @@ namespace ToDew {
             internal void RefreshVisibility(bool farmRaining, bool islandRaining) {
                 DayVisibility dayOfWeek = (DayVisibility)(1 << (Game1.dayOfMonth % 7));
                 DayVisibility season = (DayVisibility)((int)DayVisibility.Spring << Utility.getSeasonNumber(Game1.currentSeason));
-                DayVisibility week = (DayVisibility)((int)DayVisibility.Week1 << ((Game1.dayOfMonth-1) / 7));
+                DayVisibility week = (DayVisibility)((int)DayVisibility.Week1 << ((Game1.dayOfMonth - 1) / 7));
                 bool dateVisibility = DayOfWeekVisibility.HasFlag(dayOfWeek | week | season);
                 bool weatherVisibility = false;
                 weatherVisibility |= FarmWeatherVisiblity.HasFlag(farmRaining ? WeatherVisiblity.Raining : WeatherVisiblity.NotRaining);
@@ -641,6 +643,132 @@ namespace ToDew {
                         LogLevel.Warn);
                 }
             }
+        }
+
+        /// <summary>
+        /// Export the list to a file
+        /// </summary>
+        /// <param name="path">the file path relative to the mod directory</param>
+        public void Export(string path) {
+            theMod.Helper.Data.WriteJsonFile(path, new NetworkListData(this.theList));
+            theMod.Monitor.Log($"Wrote file {System.IO.Path.Combine(theMod.Helper.DirectoryPath, path)}", LogLevel.Info);
+        }
+
+        /// <summary>
+        /// Print info about a previously exported file
+        /// </summary>
+        /// <param name="theMod">the ModEntry object</param>
+        /// <param name="path">the file path relative to the mod directory</param>
+        /// <param name="printContents">print a line for each item when true</param>
+        public static void PrintFileInfo(ModEntry theMod, string path, bool printContents) {
+            var ndList = theMod.Helper.Data.ReadJsonFile<NetworkListData>(path);
+            if (ndList == null) {
+                theMod.Monitor.Log("File does not exist", LogLevel.Info);
+                return;
+            }
+            ListData newList = new ListData(ndList);
+            theMod.Monitor.Log($"File is data format version {newList.DataFormatVersion} and contains {newList.Items.Count} items.", LogLevel.Info);
+            if (!newList.DataFormatVersion.Equals(CurrentDataFormatVersion)) {
+                theMod.Monitor.Log($"The current data format version is {CurrentDataFormatVersion}.");
+            }
+            if (printContents) {
+                theMod.Monitor.Log("Contents:", LogLevel.Info);
+                foreach (var item in newList.Items) {
+                    theMod.Monitor.Log(item.Text, LogLevel.Info);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The different ways that a list can be imported and merged with the current list
+        /// </summary>
+        public enum ImportType {
+            Replace,
+            UpdateOnly,
+            AppendUpdate,
+            PrependUpdate,
+            AppendNew,
+            PrependNew
+        }
+
+        /// <summary>
+        /// Import a previously exported file
+        /// </summary>
+        /// <param name="path">the file path relative to the mod directory</param>
+        /// <param name="importType">how to merge the imported list with the current list</param>
+        /// <param name="force">allow import even if the file has a newer major version number</param>
+        /// <param name="verbose">enable more verbose output</param>
+        public void Import(string path, ImportType importType, bool force, bool verbose) {
+            if (!Context.IsMainPlayer) {
+                theMod.Monitor.Log("Import command is only available to the host player.", LogLevel.Error);
+                return;
+            }
+            var ndList = theMod.Helper.Data.ReadJsonFile<NetworkListData>(path);
+            if (ndList == null) {
+                theMod.Monitor.Log("File does not exist", LogLevel.Info);
+                return;
+            }
+            ListData newList = new ListData(ndList);
+            if (!newList.DataFormatVersion.Equals(CurrentDataFormatVersion)) {
+                theMod.Monitor.Log($"File is data format version {newList.DataFormatVersion}, which is different from the current version {CurrentDataFormatVersion}.", LogLevel.Info);
+                if (newList.DataFormatVersion.MajorVersion > CurrentDataFormatVersion.MajorVersion) {
+                    if (force) {
+                        theMod.Monitor.Log("File format is a newer major version, but continuing with forced import.", LogLevel.Warn);
+                    } else {
+                        theMod.Monitor.Log("Aborting import because file format is a newer major version.", LogLevel.Warn);
+                        return;
+                    }
+                }
+            }
+
+            List<ListItem> newItems;
+            if (importType == ImportType.Replace) {
+                if (verbose) {
+                    theMod.Monitor.Log($"Replacing old list ({theList.Items.Count} items) with new list ({newList.Items.Count} items).", LogLevel.Info);
+                } else {
+                    theMod.Monitor.Log($"Replacing to-do list.", LogLevel.Info);
+                }
+                theList = newList;
+            } else {
+                int updateCount = 0;
+                if (importType == ImportType.AppendNew || importType == ImportType.PrependNew) {
+                    newItems = newList.Items;
+                    foreach (var item in newItems) {
+                        item.Id = theMod.Helper.Multiplayer.GetNewID();
+                    }
+                } else {
+                    var itemDict = new Dictionary<long, int>();
+                    for (int i = 0; i < theList.Items.Count; i++) {
+                        itemDict[theList.Items[i].Id] = i;
+                    }
+                    newItems = new List<ListItem>();
+                    int idx;
+                    foreach (var item in newList.Items) {
+                        if (itemDict.TryGetValue(item.Id, out idx)) {
+                            theList.Items[idx] = item;
+                            updateCount++;
+                        } else {
+                            newItems.Add(item);
+                        }
+                    }
+                }
+                if (importType == ImportType.AppendUpdate || importType == ImportType.AppendNew) {
+                    theList.Items.AddRange(newItems);
+                } else if (importType == ImportType.PrependUpdate || importType == ImportType.PrependNew) {
+                    theList.Items.InsertRange(0, newItems);
+                }
+                if (updateCount > 0) {
+                    theMod.Monitor.Log($"Updated {updateCount} existing items.", LogLevel.Info);
+                }
+                if (newItems.Count > 0) {
+                    if (importType == ImportType.UpdateOnly) {
+                        theMod.Monitor.Log($"Ignored {newItems.Count} other items.", LogLevel.Info);
+                    } else {
+                        theMod.Monitor.Log($"Added {newItems.Count} new items.", LogLevel.Info);
+                    }
+                }
+            }
+            RefreshVisibility();
         }
     }
 }

@@ -21,15 +21,13 @@ namespace ScryingOrb
 {
 	public class GeodesExperience : Experience
 	{
-		public static readonly Dictionary<int, int> StackedOfferings =
-			new Dictionary<int, int>
+		public static readonly Dictionary<int, int> StackedOfferings = new ()
 		{
 			{ 571, 3 }, // Limestone
 			{ 574, 2 }, // Mudstone
 		};
 
-		public static readonly Dictionary<string, Geodes.GeodeType?> Types =
-			new Dictionary<string, Geodes.GeodeType?>
+		public static readonly Dictionary<string, Geodes.GeodeType?> Types = new ()
 		{
 			{ "any", null },
 			{ "Regular", Geodes.GeodeType.Regular },
@@ -37,14 +35,14 @@ namespace ScryingOrb
 			{ "Magma", Geodes.GeodeType.Magma },
 			{ "Omni", Geodes.GeodeType.Omni },
 			{ "Trove", Geodes.GeodeType.Trove },
-			{ "leave", null }
+			{ "Coconut", Geodes.GeodeType.Coconut },
+			{ "leave", null },
 		};
 
 		public static readonly uint TypedCount =
 			(Constants.TargetPlatform == GamePlatform.Android) ? 8u : 10u;
 
-		public override bool isAvailable =>
-			base.isAvailable && Geodes.IsAvailable;
+		public override bool isAvailable => Geodes.IsAvailable;
 
 		protected override bool check ()
 		{
@@ -103,7 +101,7 @@ namespace ScryingOrb
 					throw new Exception ("Could not predict geode treasures.");
 				}
 
-				List<string> pages = new List<string> ();
+				List<string> pages = new ();
 				string footer = unbreak (Helper.Translation.Get ("geodes.footer"));
 
 				// For the next geode of any type, build a page for each geode

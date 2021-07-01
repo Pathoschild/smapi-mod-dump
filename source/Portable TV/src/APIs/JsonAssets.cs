@@ -14,11 +14,13 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 
+#pragma warning disable IDE1006
+
 namespace JsonAssets
 {
 	public interface IApi
 	{
-		void LoadAssets (string path);
+		// void LoadAssets (string path);
 
 		int GetObjectId (string name);
 		// int GetCropId (string name);
@@ -43,9 +45,10 @@ namespace JsonAssets
 		// List<string> GetAllHatsFromContentPack (string cp);
 		// List<string> GetAllWeaponsFromContentPack (string cp);
 		// List<string> GetAllClothingFromContentPack (string cp);
+		// List<string> GetAllBootsFromContentPack (string cp);
 
 		// event EventHandler ItemsRegistered;
-		// event EventHandler IdsAssigned;
+		event EventHandler IdsAssigned;
 		// event EventHandler AddedItemsToShop;
 		// event EventHandler IdsFixed;
 
@@ -53,9 +56,7 @@ namespace JsonAssets
 		// void FixIdsInItemList (List<Item> items);
 		// void FixIdsInLocation (GameLocation location);
 
-		// bool TryGetCustomSprite (object entity, out Texture2D texture,
-		// 	out Rectangle sourceRect);
-		// bool TryGetCustomSpriteSheet (object entity, out Texture2D texture,
-		// 	out Rectangle sourceRect);
+		// bool TryGetCustomSprite (object entity, out Texture2D texture, out Rectangle sourceRect);
+		// bool TryGetCustomSpriteSheet (object entity, out Texture2D texture, out Rectangle sourceRect);
 	}
 }

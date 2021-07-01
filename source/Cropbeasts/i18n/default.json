@@ -9,27 +9,33 @@
 *************************************************/
 
 {
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
 
 	"SandblastDebuff.name": "Sandblasted",
 	"SandblastDebuff.description": "There is sand in your eyes.",
 
 	"Spawning.name": "Spawning",
 
-	"SpawnOnAnyFarm.name": "Spawn on Any Farm",
+	"SpawnOnAnyFarm.name": "Bypass Magi-Seal of Protection",
 	"SpawnOnAnyFarm.description": "Whether to spawn cropbeasts on farms that don't otherwise have monsters,\ndisregarding the Wilderness Farm type and the Dark Statue of Night Terrors.",
+
+	"DailyChance.name": "Daily Chance",
+	"DailyChance.description": "How likely it is for any cropbeasts to spawn on any given day. This chance does not guarantee spawns.",
 
 	"AllowSimultaneous.name": "Allow Simultaneous Cropbeasts",
 	"AllowSimultaneous.description": "Whether additional cropbeasts can spawn while another cropbeast is still active.",
 
 	"OutdoorSpawnLimit.name": "Outdoor Spawn Limit",
-	"OutdoorSpawnLimit.description": "How many times per day cropbeasts can spawn outdoors on the farm.\nSet to -1 for unlimited spawns. Set to 0 to disable outdoor cropbeasts.",
+	"OutdoorSpawnLimit.description": "How many times per day cropbeasts can spawn outdoors on a farm.\nSet to -1 for unlimited spawns. Set to 0 to prevent outdoor cropbeasts.",
 
 	"IndoorSpawnLimit.name": "Indoor Spawn Limit",
-	"IndoorSpawnLimit.description": "How many times per day cropbeasts can spawn indoors in the greenhouse.\nSet to -1 for unlimited spawns. Set to 0 to disable indoor cropbeasts.",
+	"IndoorSpawnLimit.description": "How many times per day cropbeasts can spawn indoors in a greenhouse.\nSet to -1 for unlimited spawns. Set to 0 to prevent indoor cropbeasts.",
 
 	"WickedStatueRange.name": "Wicked Statue Range",
-	"WickedStatueRange.description": "The radius (in tiles) around a Wicked Statue where crops are protected from becoming cropbeasts.\nSet to -1 for infinite range. Set to 0 to disable the statues. (Scarecrows have a range of 9 tiles.)",
+	"WickedStatueRange.description": "The radius (in tiles) around a Wicked Statue where crops are protected from becoming cropbeasts.\nSet to -1 for infinite range. Set to 0 to ignore the statues. (Scarecrows have a range of 9 tiles.)",
 
 	"WitchFlyovers.name": "Witch Flyovers",
 	"WitchFlyovers.description": "Whether the witch should fly over the first outdoor cropbeast crop\nof each day and cast a spell to start the process.",
@@ -68,16 +74,17 @@
 	"Ancient Beast":   "Ancient Beast",
 	"Cactusbeast":     "Cactusbeast",
 	"Coffeebeast":     "Coffeebeast",
+	"Qi Beast":        "Qi Beast",
 	"Starbeast":       "Starbeast",
 
 	"giantModifier":   "Giant {{crop}}",
-	"//Note on giantModifier": "This string is used on names of crops, not cropbeasts, e.g., 'Giant Pumpkin'. The base game surprisingly doesn't have translatable strings for these. If your language's adjective inflection (gender or similar) makes this awkward, it would be okay to translate as something meaning approximately '{{crop}} of Great Size'.",
+	// giantModifier is used on names of crops, not cropbeasts, e.g., 'Giant Pumpkin'. The base game surprisingly doesn't have translatable strings for these. If your language's adjective inflection (gender or similar) makes this awkward, it would be okay to translate as something meaning approximately '{{crop}} of Great Size'.
 
 	"achievement.name": "Tamer of Beasts",
 	"achievement.description": "Slay every type of cropbeast.",
 	"achievement.progress": "{{playerName}} slayed {{beastName}}! {{slainCount}} of {{totalCount}} types slain",
 
 	"hat.name": "Beast Mask",
-	"//Note on hat.description": "The mask looks like a Starbeast, which is the beast form of a Starfruit, so the description refers to fruit juice.",
+	// The mask looks like a Starbeast, which is the beast form of a Starfruit, so the description refers to fruit juice.
 	"hat.description": "It's still juicy. Yum!"
 }

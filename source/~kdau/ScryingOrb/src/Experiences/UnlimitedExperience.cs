@@ -9,8 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Utilities;
+using PredictiveCore;
 using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +23,8 @@ namespace ScryingOrb
 		{
 			get
 			{
-				return Game1.player.activeDialogueEvents.TryGetValue
-					(Topic, out int days)
-						? days
-						: -1;
+				return Game1.player.activeDialogueEvents.TryGetValue (Topic, out int days)
+					? days : -1;
 			}
 
 			private set
@@ -38,17 +35,31 @@ namespace ScryingOrb
 			}
 		}
 
-		public static readonly List<int> AcceptedOfferings = new List<int>
+		public static bool IsActive => Config.UnlimitedUse || DaysRemaining >= 0;
+
+		public static readonly List<int> AcceptedOfferings = new ()
 		{
 			373, // Golden Pumpkin
 			279, // Magic Rock Candy
 			797, // Pearl
-			 74, // Prismatic Shard
+			74, // Prismatic Shard
 			166, // Treasure Chest
 		};
 
 		protected override bool check ()
 		{
+			// In order for EnchantmentsExperience to work, tools have to be
+			// skipped here.
+			if (Enchantments.IsAvailable && Game1.player.CurrentTool != null)
+				return false;
+
+			// If using the cheat, proceed directly to run.
+			if (Config.UnlimitedUse)
+			{
+				run ();
+				return true;
+			}
+
 			// If currently in an unlimited period, ignore the offering, react
 			// to the ongoing period, then proceed to run.
 			if (DaysRemaining >= 0)
@@ -87,15 +98,13 @@ namespace ScryingOrb
 			illuminate ();
 
 			// Show the menu of experiences.
-			Dictionary<string, Experience> experiences =
-				new Dictionary<string, Experience>
+			Dictionary<string, Experience> experiences = new ()
 			{
 				{ "mining", new MiningExperience { orb = orb } },
 				{ "geodes", new GeodesExperience { orb = orb } },
+				{ "enchantments", new EnchantmentsExperience { orb = orb } },
 				{ "nightEvents", new NightEventsExperience { orb = orb } },
-				// TODO: { "shopping", new ShoppingExperience { Orb = Orb } },
 				{ "garbage", new GarbageExperience { orb = orb } },
-				// TODO: { "itemFinder", new ItemFinderExperience { Orb = Orb } },
 				{ "leave", null }
 			};
 			List<Response> choices = experiences
@@ -113,6 +122,15 @@ namespace ScryingOrb
 				DelayedAction.functionAfterDelay (() =>
 			{
 				Game1.currentLocation.afterQuestion = null;
+
+				// For EnchantmentsExperience, direct the player to offer the tool.
+				if (response == "enchantments")
+				{
+					showMessage ("unlimited.enchantments");
+					Game1.afterDialogues = extinguish;
+					return;
+				}
+
 				Experience experience = experiences[response];
 				if (experience != null)
 				{
@@ -129,27 +147,6 @@ namespace ScryingOrb
 		internal static void Reset ()
 		{
 			DaysRemaining = -1;
-		}
-
-		internal static void MigrateData ()
-		{
-			// Carry over any unlimited period from the old persistence format.
-			if (Context.IsMainPlayer && DaysRemaining == -1)
-			{
-				var old = Helper.Data.ReadSaveData<OldData> ("Unlimited");
-				if (old != null)
-				{
-					int days = old.ExpirationDay - (SDate.Now ().DaysSinceStart - 1);
-					if (days >= 0)
-						DaysRemaining = days;
-					Helper.Data.WriteSaveData<OldData> ("Unlimited", null);
-				}
-			}
-		}
-
-		private class OldData
-		{
-			public int ExpirationDay { get; set; } = -1;
 		}
 	}
 }

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/6577
 IDs: spacechase0.HybridCropEngine
-update keys: Nexus:6577, GitHub:spacechase0/HybridCropEngine
+update keys: Nexus:6577, GitHub:spacechase0/StardewValleyMods

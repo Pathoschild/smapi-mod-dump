@@ -1,0 +1,21 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <GamePath>C:\Development\Stardew Valley\Stardew Valley-1.5.4_SMAPI-3.10.1</GamePath>
+        <GameModsPath>C:\Development\Stardew Valley\Stardew Valley-1.5.4_SMAPI-3.10.1\Mods</GameModsPath>
+        <ModZipPath>$(SolutionDir)\Release\Zip</ModZipPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)'=='Android' ">
+        <DefineConstants>ANDROID</DefineConstants>
+        <GamePath>C:\Development\Stardew Valley\Stardew Valley-1.5.4_SMAPI-3.10.1</GamePath>
+        <GameModsPath>$(SolutionDir)Release\Android</GameModsPath>
+        <ModZipPath>$(SolutionDir)Release\Zip</ModZipPath>
+
+        <PostBuildEvent> 
+            echo Pushing to Android device: "$(GameModsPath)"            
+        </PostBuildEvent> 
+        <PostBuildEvent>
+            adb push "$(GameModsPath)"\PlayerCoordinates /sdcard/StardewValley/Mods
+        </PostBuildEvent>
+    </PropertyGroup>
+</Project>

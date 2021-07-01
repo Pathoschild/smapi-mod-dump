@@ -6,9 +6,9 @@ mods:
    Seeds Unpacked
 
 latest commit:
-   commit 09c479179792888c838e1eefde85db2a4f34b27c
-   Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Mon Nov 30 21:12:50 2020 +1100
+   commit 6f79eecffc7e501ff0078426805f463ee47dc8ff
+   Author: blueberry <36073351+b-b-blueberry@users.noreply.github.com>
+   Date:   Sat Jun 5 17:09:22 2021 +1000
    
-       Renamed mod and added release media.
+       Create README.md
    

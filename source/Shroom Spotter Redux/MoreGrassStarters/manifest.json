@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/strobel1ght/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "More Grass Starters",
+  "Author": "spacechase0, eemie",
+  "Version": "1.0.4",
+  "Description": "Lets you place more types of grass.",
+  "UniqueID": "spacechase0.MoreGrassStarters",
+  "EntryDll": "MoreGrassStarters.dll",
+  "MinimumApiVersion": "2.9.0",
+  "UpdateKeys": [ "Nexus:1702", "Chucklefish:5129" ],
+  "Dependencies": [
+    { "UniqueID": "Platonymous.Toolkit" }
+  ],
+  "spacechase0": "more-grass-starters"
+}

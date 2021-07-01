@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Skill Rings",
     "Author": "AlphaMeece",
-    "Version": "1.6.2",
+    "Version": "1.7.0",
     "Description": "Adds rings that boost a skill or experience gain",
     "UniqueID": "AlphaMeece.SkillRings",
     "EntryDll": "SkillRings.dll",

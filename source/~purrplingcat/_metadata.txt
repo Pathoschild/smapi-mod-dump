@@ -7,9 +7,9 @@ mods:
    Quest Essentials
 
 latest commit:
-   commit 56164cd17fec1c844bc6be3de792eeb4ce10afbe
+   commit 4ea73da6778c72bcfa494312bac7f1dc48813726
    Author: PurrplingCat <ellenfawkes@gmail.com>
-   Date:   Mon May 31 09:27:50 2021 +0200
+   Date:   Mon Jun 7 20:55:41 2021 +0200
    
-       Extracted interface IStoryMessage for class StoryMessage
+       QE: Some fixes
    

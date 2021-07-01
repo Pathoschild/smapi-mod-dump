@@ -6,9 +6,9 @@ mods:
    Cropbeasts
 
 latest commit:
-   commit 7ee1ebf78d7e6b3a527915e883dd44ed38767786
+   commit 6d3e4b2300175b03b7ad5e7a83a252d21ae338ba
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Tue Jun 16 14:41:40 2020 -0700
+   Date:   Mon Jun 28 21:03:32 2021 -0700
    
-       rename default branch to main
+       v2.0.0
    

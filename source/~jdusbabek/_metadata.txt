@@ -11,12 +11,12 @@ mods:
    Replanter
 
 latest commit:
-   commit e6cf1f3cfb3e33b3c9ade8d6fddb3d055966a6af
-   Merge: 48cc7e7 eeb3470
+   commit 0bc85e7bfe2d94328e3cb87a1569bfc2736719e3
+   Merge: e6cf1f3 a627426
    Author: John Dusbabek <jdusbabek@gmail.com>
-   Date:   Sun Apr 25 11:33:41 2021 -0600
+   Date:   Fri Jun 11 08:45:04 2021 -0600
    
-       Merge pull request #17 from strobel1ght/master
+       Merge pull request #18 from strobel1ght/master
        
-       Updating prices for 1.5 (Mail Order Pigs)
+       Pelican Fiber for 64-bit and 1.5
    

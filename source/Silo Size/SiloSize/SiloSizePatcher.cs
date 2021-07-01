@@ -14,12 +14,7 @@ using PatcherHelper;
 using StardewModdingAPI;
 using StardewValley;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SiloSize
     {
@@ -171,9 +166,9 @@ namespace SiloSize
                 if (
                     who.IsLocalPlayer
                     && tileLocX >= tileX
-                    && tileLocX < (double)(tileX + __instance.tilesWide.Value)
+                    && tileLocX < (tileX + __instance.tilesWide.Value)
                     && tileLocY >= tileY
-                    && tileLocY < (double)(tileY + __instance.tilesHigh.Value)
+                    && tileLocY < (tileY + __instance.tilesHigh.Value)
                     && __instance.daysOfConstructionLeft.Value > 0
                     )
                     // Hand over to original
@@ -181,12 +176,12 @@ namespace SiloSize
                 Point humanDoor = __instance.humanDoor.Value;
                 if (!(
                     who.IsLocalPlayer
-                    && tileLocX == (double)(humanDoor.X + tileX)
-                    && tileLocY == (double)(humanDoor.Y + tileY)
+                    && tileLocX == (humanDoor.X + tileX)
+                    && tileLocY == (humanDoor.Y + tileY)
                     && __instance.indoors.Value != null
                     ))
                     if (who.IsLocalPlayer && __instance.buildingType.Equals("Silo") && !__instance.isTilePassable(tileLocation)) {
-                        if (!(who.ActiveObject != null && who.ActiveObject.parentSheetIndex.Value == 178)) {
+                        if (who.ActiveObject is null || who.ActiveObject.parentSheetIndex.Value != 178) {
                             Game1.drawObjectDialogue(
                                 Game1.content.LoadString(
                                     "Strings\\Buildings:PiecesOfHay",
@@ -291,6 +286,7 @@ namespace SiloSize
         //    }
 
         [HarmonyBefore(new string[] { "Digus.ProducerFrameworkMod" })]
+        [HarmonyAfter(new string[] { "pepoluan.EvenBetterRNG" })]
         public static bool Object_checkForAction_prefix(StardewValley.Object __instance, ref bool __result, Farmer who, bool justCheckingForActivity = false) {
             try {
                 if (__instance.isTemporarilyInvisible)
@@ -346,12 +342,11 @@ namespace SiloSize
                             strbldr
                                 .AppendLoadStr("Strings\\StringsFromCSFiles:FarmComputer_MachinesReady", machinesReadyForHarvest)
                                 .AppendLoadStr(
-                                    "Strings\\StringsFromCSFiles:FarmComputer_FarmCave"
-                                    ,
+                                    "Strings\\StringsFromCSFiles:FarmComputer_FarmCave",
                                     flag
                                         ? Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_Yes")
                                         : Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No")
-                                    ,
+                                        ,
                                     end: "  "
                                 )
                                 ;

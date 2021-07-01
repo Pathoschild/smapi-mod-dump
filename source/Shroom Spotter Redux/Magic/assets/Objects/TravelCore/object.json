@@ -1,0 +1,43 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/strobel1ght/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Travel Core",
+  "Description": "Catalyst.",
+  "Category": "MonsterLoot",
+  "Edibility": 80,
+  "Price": 100,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 768,
+        "Count": 1,
+      },
+      {
+        "Object": 769,
+        "Count": 1,
+      }
+    ],
+    "CanPurchase": true,
+    "PurchaseFrom": "Marlon",
+    "PurchasePrice": 250
+  },
+  "NameLocalization": { //Korean localisation
+  	"ko": "트래블 코어",
+	"zh": "传送核心", //Chinese (Simplified)
+	"pt": "Centro de Teleporte", //Portuguese Brazilian  
+  },
+  "DescriptionLocalization": {
+  	"ko": "마법 주문의 촉매제입니다.",
+	"zh": "触媒之一。", //Chinese (Simplified)
+	"pt": "Catalizador." //Portuguese Brazilian  
+  }
+}

@@ -98,6 +98,11 @@
 	"item.vegetable.label": "蔬菜(任意)",
 	"item.meat.label": "肉类(任意)",
 	"item.forage.label": "采集(任意)",
+	"item.cooking.label": "烹饪 (任意)",
+	"item.mineral.label": "矿物 (任意)",
+	"item.seed.label": "种子 (任意)",
+	"item.metal.label": "金属 (任意)",
+	"item.gem.label": "宝石 (任意)",
 
 	// Kebab item interactions
 	"buff.kebab.quality_worst": "腐烂",

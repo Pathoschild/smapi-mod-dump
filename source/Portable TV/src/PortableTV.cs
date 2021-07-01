@@ -21,21 +21,24 @@ using System.Runtime.CompilerServices;
 
 namespace PortableTV
 {
+	// This furniture item isn't actually made or handled by the player; it only
+	// handles running the TV on screen when the "Portable TV" inventory object
+	// is interacted with or the activation key is pressed.
 	public class PortableTV : TV
 	{
 		protected static IModHelper Helper => ModEntry.Instance.Helper;
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
 		protected static ModConfig Config => ModConfig.Instance;
 
-		private IReflectedField<TemporaryAnimatedSprite> screenField;
-		private IReflectedField<TemporaryAnimatedSprite> screenOverlayField;
+		private readonly IReflectedField<TemporaryAnimatedSprite> screenField;
+		private readonly IReflectedField<TemporaryAnimatedSprite> screenOverlayField;
 
 		protected TemporaryAnimatedSprite deviceSprite;
 		protected TemporaryAnimatedSprite lightSprite;
 		protected TemporaryAnimatedSprite staticSprite;
 
 		private bool hasWrappedAfterDialogues;
-	
+
 		public PortableTV ()
 		{
 			screenField = Helper.Reflection.GetField<TemporaryAnimatedSprite>
@@ -43,7 +46,7 @@ namespace PortableTV
 
 			screenOverlayField = Helper.Reflection.GetField<TemporaryAnimatedSprite>
 				(this, "screenOverlay");
-			
+
 			deviceSprite = createSprite ("device.png", 128, 196,
 				getDevicePosition ());
 
@@ -105,21 +108,23 @@ namespace PortableTV
 
 				DelayedAction.functionAfterDelay (() =>
 				{
-					// Show the channel list. PyTK's CustomTVMod works through
-					// a Harmony patch of TV.checkForAction, so this works with
-					// or without PyTK.
+					// Show the channel list. PyTK and PlatoTK add custom
+					// channels through Harmony patches of TV.checkForAction,
+					// so this works with or without those mods installed.
 					checkForAction (Game1.player, false);
 				}, 500);
 			}, Config.Animate ? 1000 : 100);
 		}
 
-		protected static Dictionary<string, string> ChannelMusic
-			{ get; private set; } = new Dictionary<string, string>
+		protected static readonly Dictionary<string, string> ChannelMusic = new ()
 		{
+			// base game
 			{ "Weather", "aerobics" },
 			{ "Fortune", "WizardSong" },
 			{ "Livin'", "event1" },
 			{ "The", "playful" },
+			{ "???", "Cowboy_undead" },
+			{ "Fishing", "submarine_song" },
 		};
 
 		public override void selectChannel (Farmer who, string answer)
@@ -143,6 +148,10 @@ namespace PortableTV
 			}
 
 			base.selectChannel (who, answer);
+
+			// Fix scaling of the cursed doll for the secret channel.
+			if (answer == "???")
+				screen.scale = getScreenSizeModifier ();
 		}
 
 		public override void turnOffTV ()
@@ -179,7 +188,7 @@ namespace PortableTV
 				deviceSprite.motion = new Vector2 (0f, 1f);
 				deviceSprite.acceleration = new Vector2 (0f, 4f);
 				deviceSprite.yStopCoordinate =
-					(int) getDeviceOffscreenPosition ().Y;
+					(int) getDeviceOffscreenPosition ().Y + 100;
 
 				// Make a swishing sound.
 				Game1.playSound ("swordswipe");
@@ -283,7 +292,7 @@ namespace PortableTV
 				if (staticSprite.alpha > 0.05f)
 					staticSprite.alpha = 0.05f;
 			}
-			
+
 			// Draw the static over the screen.
 			if (Config.Static && (Config.Animate || screen != null))
 			{
@@ -300,8 +309,9 @@ namespace PortableTV
 			string assetKey = Helper.Content.GetActualAssetKey
 				(Path.Combine ("assets", textureFilename));
 			return new TemporaryAnimatedSprite (assetKey,
-				new Rectangle (0, 0, width, height), rate, frames, 999999, position,
-				flicker: false, flipped: false) { scale = scaleFactor };
+				new Rectangle (0, 0, width, height), rate, frames, 999999,
+				position, flicker: false, flipped: false)
+			{ scale = scaleFactor };
 		}
 
 		protected void playCustomSound (string filename)
@@ -317,7 +327,7 @@ namespace PortableTV
 			}
 		}
 
-		[MethodImplAttribute(MethodImplOptions.NoInlining)] 
+		[MethodImplAttribute (MethodImplOptions.NoInlining)]
 		private void playSoundWithSoundPlayer (string path)
 		{
 			var sound = new SoundPlayer (path);

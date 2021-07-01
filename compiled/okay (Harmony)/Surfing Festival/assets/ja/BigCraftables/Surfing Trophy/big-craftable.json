@@ -1,32 +1,4 @@
-{
-	"Name": "Surfing Trophy",
-	"Description": "A trophy for winning the surfing festival.",
-	"NameLocalization":
-    {
-        // "es": "",
-		"ko": "서핑 트로피",
-        // "de": "",
-        // "fr": "",
-        //"hu": "",
-        //"it": "",
-        // "ja": "",
-         "pt": "Troféu de Surf",
-        // "ru": "",
-        //"tr": "",
-        "zh": "冲浪奖杯"
-    },
-    "DescriptionLocalization":
-    {
-        // "es": "",
-		"ko": "서핑 페스티벌 우승 트로피.",
-        // "de": "",
-        // "fr": "",
-        //"hu": "",
-        //"it": "",
-        // "ja": "",
-         "pt": "Um troféu por vencer o festival de surf.",
-        // "ru": "",
-        //"tr": "",
-        "zh": "冲浪节获胜的奖杯。"
-    },
+﻿{
+    "Name": "Surfing Trophy",
+    "Description": "A trophy for winning the surfing festival."
 }

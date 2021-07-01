@@ -1,0 +1,61 @@
+urls:
+   web: https://github.com/spacechase0/StardewValleyMods
+   Git: https://github.com/spacechase0/StardewValleyMods.git
+
+mods:
+   Animal Social Menu
+   Another Hunger Mod
+   Better Meteorites
+   Better Shop Menu
+   Bigger Craftables
+   Bug Net
+   Capstone Professions
+   Carry Chest
+   Combat Level Damage Scaler
+   Console Code
+   Content Patcher Animations
+   Cooking Skill
+   Custom Critters
+   Custom NPC Fixes
+   Customize Exterior
+   Displays
+   Experience Bars
+   Extended Reach
+   Flower Color Picker
+   Flower Rain
+   Generic Mod Config Menu
+   Hybrid Crop Engine
+   Json Assets
+   Jump Over
+   Junimos Accept Cash
+   Luck Skill
+   Magic
+   Mana Bar
+   More Buildings
+   More Giant Crops
+   More Grass Starters
+   More Rings
+   Multi Fertilizer
+   Object Time Left
+   Preexisting Relationship
+   Profit Calculator
+   Pyromancer's Journey
+   Rush Orders
+   Sleepy Eye
+   SpaceCore
+   Spenny
+   Statue of Generosity
+   Surfing Festival
+   Theft of the Winter Star
+   Three-Heart Dance Partner
+   Throwable Axe
+
+latest commit:
+   commit 87eb19c51e73808ac7068189da13a93612eb9bc9
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Wed Jun 30 15:33:34 2021 -0400
+   
+       migrate Another Hunger Mod to modData
+       
+       The mod now stores player data in their Farmer.modData fields, which removes the need for custom network sync and simplifies troubleshooting. Previous data will migrated automatically when the player loads a save.
+   

@@ -10,9 +10,22 @@ for queries and analysis.**
 
 [Cropbeasts](../)
 
+## 2.0.0
+
+*Released 2021 June 28.*
+
+* Require, and fix compatibility with, Stardew 1.5 or higher
+* Support new crops for 1.5
+* Support a new farm area for 1.5
+* Add configurable daily chance of any cropbeasts (thanks to SansModowanie for suggestion)
+* Adjust minimum crops in a location for cropbeast spawning
+* Fix rare audio errors for Leafbeasts
+* Replace `revert_cropbeasts` console command with broader `reset_cropbeasts`
+* Move Json Assets pack to separate directory
+
 ## 1.0.1
 
-*Released June 8, 2020.*
+*Released 2020 June 8.*
 
 * Fix rare slowdowns due to sound timing problem
 * Fix blank name and description for Beast Hat in some languages
@@ -21,7 +34,7 @@ for queries and analysis.**
 
 ## 1.0.0
 
-*Released May 10, 2020.*
+*Released 2020 May 10.*
 
 * Initial production release
 * Changes since last beta:
@@ -32,19 +45,19 @@ for queries and analysis.**
 
 ## 0.3.1
 
-*Released May 4, 2020.*
+*Released 2020 May 4.*
 
 * Fix regression in 0.3.0 that prevented automatic spawning
 
 ## 0.3.0
 
-*Released May 4, 2020.*
+*Released 2020 May 4.*
 
 * Finish multiplayer compatibility
 
 ## 0.2.0
 
-*Released April 27, 2020.*
+*Released 2020 April 27.*
 
 * Add "High Contrast" option for higher visibility
 * Add "Tracking Arrows" option for easier tracking
@@ -56,6 +69,6 @@ for queries and analysis.**
 
 ## 0.1.0
 
-*Released April 21, 2020.*
+*Released 2020 April 21.*
 
 * Limited-release beta version

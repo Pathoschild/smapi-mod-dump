@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/7532
 IDs: spacechase0.StatueOfGenerosity
-update keys: Nexus:7532, GitHub:spacechase0/StatueOfGenerosity
+update keys: Nexus:7532, GitHub:spacechase0/StardewValleyMods

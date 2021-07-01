@@ -18,9 +18,9 @@ namespace Cropbeasts.Assets
 {
 	internal static class HatEditor
 	{
-		private static IModHelper Helper => ModEntry.Instance.Helper;
-		private static IMonitor Monitor => ModEntry.Instance.Monitor;
-		private static ModConfig Config => ModConfig.Instance;
+		// private static IModHelper Helper => ModEntry.Instance.Helper;
+		// private static IMonitor Monitor => ModEntry.Instance.Monitor;
+		// private static ModConfig Config => ModConfig.Instance;
 		private static JsonAssets.IApi JsonAssets => ModEntry.Instance.jsonAssets;
 
 		public static readonly string Name = "Beast Mask";

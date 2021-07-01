@@ -67,7 +67,7 @@ namespace PregnancyRole
 
 			// Update the bounds of the expanded menu through reflection, since
 			// the Android port makes this field private for some reason.
-			Rectangle bounds = new Rectangle (dropdown.bounds.X, dropdown.bounds.Y,
+			Rectangle bounds = new (dropdown.bounds.X, dropdown.bounds.Y,
 				dropdown.bounds.Width + (IsAndroid ? 0 : -48),
 				dropdown.bounds.Height * dropdown.dropDownOptions.Count);
 			Helper.Reflection.GetField<Rectangle>
@@ -106,8 +106,8 @@ namespace PregnancyRole
 
 			// Draw the label.
 			string label = Helper.Translation.Get ("PregnancyRole");
-			Vector2 position = new Vector2
-				(trueMenu.xPositionOnScreen + offset.X -
+			Vector2 position = new (
+				trueMenu.xPositionOnScreen + offset.X -
 					Game1.smallFont.MeasureString (label).X + 4 - 64,
 				trueMenu.yPositionOnScreen + offset.Y + 8);
 			e.SpriteBatch.DrawString (Game1.smallFont, label, position,
@@ -194,10 +194,11 @@ namespace PregnancyRole
 			ICursorPosition cursor, out int x, out int y)
 		{
 			cursor ??= Helper.Input.GetCursorPosition ();
+			var coords = Utility.ModifyCoordinatesForUIScale (cursor.ScreenPixels);
 			var trueMenu = this.trueMenu;
 
-			x = (int) cursor.ScreenPixels.X - trueMenu?.xPositionOnScreen ?? 0;
-			y = (int) cursor.ScreenPixels.Y - trueMenu?.yPositionOnScreen ?? 0;
+			x = (int) coords.X - trueMenu?.xPositionOnScreen ?? 0;
+			y = (int) coords.Y - trueMenu?.yPositionOnScreen ?? 0;
 
 			if (button != SButton.MouseLeft &&
 					button != SButton.ControllerA &&

@@ -56,8 +56,8 @@ namespace FlowerBombs
 
 			Vector2 position = Game1.GlobalToLocal (Game1.viewport,
 				new Vector2 (x * 64 + 32, y * 64 + 32));
-			Vector2 origin = new Vector2 (8f, 8f);
-			float scale = (this.scale.Y > 1f) ? getScale().Y : 4f;
+			Vector2 origin = new (8f, 8f);
+			float scale = (this.scale.Y > 1f) ? getScale ().Y : 4f;
 			float layerDepth = getBoundingBox (new Vector2 (x, y)).Bottom / 10000f;
 			var fx = flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
@@ -78,7 +78,7 @@ namespace FlowerBombs
 			if (color.Value != Color.White)
 				return base.getOne ();
 
-			SObject @object = new SObject (ParentSheetIndex, 1);
+			SObject @object = new (ParentSheetIndex, 1);
 			@object.Quality = Quality;
 			@object.Price = Price;
 			@object.HasBeenInInventory = HasBeenInInventory;
@@ -103,11 +103,9 @@ namespace FlowerBombs
 				foreach (var kvp in location.objects.Pairs.ToArray ())
 				{
 					if (kvp.Value is ColoredObject co &&
-						(co.SpecialVariable == SpecialFlag ||
-							// TODO: Remove legacy unflagged support here.
-							co.Category == SObject.flowersCategory))
+						co.SpecialVariable == SpecialFlag)
 					{
-						Flower flower = new Flower (co.ParentSheetIndex,
+						Flower flower = new (co.ParentSheetIndex,
 							co.Stack, co.color?.Value ?? Color.White);
 						flower.IsSpawnedObject = co.IsSpawnedObject;
 						flower.CanBeGrabbed = co.CanBeGrabbed;

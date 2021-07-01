@@ -21,7 +21,7 @@ namespace Cropbeasts.Beasts
 		private int startStopCooldown = 0;
 
 		public Rootbeast ()
-		{}
+		{ }
 
 		public Rootbeast (CropTile cropTile, bool primary)
 		: base (cropTile, primary, primary, !primary)
@@ -68,8 +68,11 @@ namespace Cropbeasts.Beasts
 			currentLocation.localSound ("monsterdead");
 
 			Utility.makeTemporarySpriteJuicier (new TemporaryAnimatedSprite (44,
-				Position, primaryColor.Value, 10) { holdLastFrame = true,
-				alphaFade = 0.01f }, currentLocation);
+				Position, primaryColor.Value, 10)
+			{
+				holdLastFrame = true,
+				alphaFade = 0.01f
+			}, currentLocation);
 		}
 
 		public bool isHiding => Sprite.currentFrame < 16 &&
@@ -100,12 +103,12 @@ namespace Cropbeasts.Beasts
 					Sprite.SpriteHeight * 0.75f),
 				Math.Max (0.2f, Scale) * 4f,
 				flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-				Math.Max (0f, drawOnTop ? 0.991f : getStandingY() / 10000f));
+				Math.Max (0f, drawOnTop ? 0.991f : getStandingY () / 10000f));
 
 			// Draw any glow, but only on the base sprite.
 			if (isGlowing)
 			{
-				b.Draw (Sprite.Texture, getLocalPosition(Game1.viewport) +
+				b.Draw (Sprite.Texture, getLocalPosition (Game1.viewport) +
 					new Vector2 (Sprite.SpriteWidth * 2f,
 						GetBoundingBox ().Height / 2f),
 					Sprite.SourceRect, glowingColor * glowingTransparency,
@@ -118,16 +121,18 @@ namespace Cropbeasts.Beasts
 			}
 
 			// Draw the crop itself.
+			Color tint = Color.Lerp (ContrastTint, Color.Goldenrod,
+				wateringCharges.Value * 1f / MaxWateringCharges);
 			b.Draw (cropTile.cropTexture, getLocalPosition (Game1.viewport) +
 				new Vector2 (Sprite.SpriteWidth * 2f +
 					0.5f * (Sprite.SpriteWidth - cropTile.cropSourceRect.Width),
 					GetBoundingBox ().Height / 2 - (isHiding ? 0f : 28f)),
-				cropTile.cropSourceRect, ContrastTint, rotation,
+				cropTile.cropSourceRect, tint, rotation,
 				new Vector2 (cropTile.cropSourceRect.Width * 0.5f,
 					cropTile.cropSourceRect.Height * 0.75f),
 				Math.Max (0.2f, Scale) * 4f,
 				flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-				Math.Max (0f, drawOnTop ? 0.992f : getStandingY() / 10000f + 0.002f));
+				Math.Max (0f, drawOnTop ? 0.992f : getStandingY () / 10000f + 0.002f));
 		}
 
 		public override void behaviorAtGameTick (GameTime time)
@@ -156,7 +161,7 @@ namespace Cropbeasts.Beasts
 				glowingColor = secondaryColor.Value;
 				invincibleCountdown -= time.ElapsedGameTime.Milliseconds;
 				if (invincibleCountdown <= 0)
-					stopGlowing();
+					stopGlowing ();
 			}
 
 			// When health is critical, flee from player.
@@ -178,7 +183,7 @@ namespace Cropbeasts.Beasts
 
 		protected override void updateMonsterSlaveAnimation (GameTime time)
 		{
-			if (isMoving())
+			if (isMoving ())
 			{
 				switch (FacingDirection)
 				{

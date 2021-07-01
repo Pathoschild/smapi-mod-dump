@@ -98,6 +98,7 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="i18n\es.json" />
+    <None Include="i18n\hu.json" />
     <None Include="i18n\it.json" />
     <None Include="i18n\ko.json" />
     <None Include="i18n\ru.json" />

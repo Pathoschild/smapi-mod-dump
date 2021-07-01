@@ -1,0 +1,53 @@
+{
+	"Subway":{
+		"Question":"Where should you travel using the underground?",
+		"Cancel": "Stay here",
+		"Destination":{
+			"Promenade": "Promenade East",
+			"PromenadeWest": "Promenade West",
+			"PlazaCenter": "City Plaza Central",
+			"PlazaNorth": "City Plaza North",
+			"Park": "The Park",
+			"ResidentialNorth": "Residential District North",
+			"ResidentialSouth": "Residential District South",
+			"Dock": "The Docks",
+			"ShoppingNorth": "Shopping District North",
+			"ShoppingSouth": "Shopping District South"
+		}
+	},
+	"Apartments":{
+		"Empty":"You do not know anyone who lives here.",
+		"Home":"Currently Home",
+		"Away":"Currently Away",
+		"FriendshipTitle":"Door Locked",
+		"FriendshipText":"You need level {{Friendship}} friendship to visit."
+	},
+	"SundropHQ":{
+		"Question":"Which floor would you like to visit?",
+		"Cancel": "Stay here",
+		"Floor":{
+			"Lobby": "Lobby",
+			"TeamOffices": "General Team Offices",
+			"SeniorTeamOffices": "Senior Team Member Offices",
+			"AdministratorOffices": "Administrator Offices",
+		}
+	},
+	"Minimap":{
+		"Hover":{
+			"Pelican":"Pelican Town",
+			"Island":"Ginger Island",
+			"Train":"Train Station",
+			"Diner":"??? Diner\nOpen 9:00AM to 8:00 PM",
+			"Hotel":"Sundrop Grand Hotel",
+			"Joja":"JojaSD\nOpen 24/7",
+			"Beach":"Sundrop Beach",
+			"JoeShack":"Joe's Shack\nHome to Joe and his 'children'.",
+			"TwentyfourSeven":"Twenty-Four Seven\nOpen 24/7",
+			"SaltySailor":"Ye Olde Salty Sailor\nOpen 1:00PM to 2:00AM",
+			"Arcade":"The Arcade\nOpen 10:00AM to 10:00PM",
+			"Boardwalk":"The Boardwalk",
+			"Docks":"The Old Docks",
+			"Seals":"The Sealed Docks",
+		}
+	}
+}

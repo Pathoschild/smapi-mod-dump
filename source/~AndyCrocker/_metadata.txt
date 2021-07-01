@@ -14,9 +14,9 @@ mods:
    More Grass
 
 latest commit:
-   commit 55fd1967b0b943ac50c4cb6301c5cff18c508d3c
+   commit 34382a8d4e53849bedbf98f25984eeca96ce3503
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Tue Jun 1 02:18:21 2021 +0100
+   Date:   Wed Jun 2 05:48:28 2021 +0100
    
-       [Outerwear] Add final icons
+       [FarmAnimalVarietyRedux] Fix bug that caused save to 'forget' the type of custom animals when they're packs are uninstalled
    

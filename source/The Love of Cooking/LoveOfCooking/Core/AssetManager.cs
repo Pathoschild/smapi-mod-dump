@@ -149,6 +149,7 @@ namespace LoveOfCooking
 			else if (asset.AssetNameEquals(@"Data/CookingRecipes"))
 			{
 				// Edit fields of vanilla recipes to use new ingredients
+				// Do NOT call RebuildBuffs from within this block
 
 				if (ModEntry.JsonAssets == null || Game1.currentLocation == null)
 					return;
@@ -320,7 +321,7 @@ namespace LoveOfCooking
 							},
 						};
 						if (recipeData != null)
-							foreach (var recipe in recipeData)
+							foreach (var recipe in recipeData.Where(r => data.ContainsKey(r.Key)))
 								data[recipe.Key] = ModEntry.UpdateEntry(data[recipe.Key], new[] { recipe.Value });
 					}
 					
@@ -340,20 +341,46 @@ namespace LoveOfCooking
 						data[recipe.Key] = ModEntry.UpdateEntry(data[recipe.Key], recipeSplit, false, true);
 					}
 
+					// Strip recipes with invalid, missing, or duplicate ingredients from the recipe data list
+					var badRecipes = data.Where(
+						pair => pair.Value.Split('/')[0].Split(' ').ToList() is List<string> ingredients
+							&& ingredients.Any(i => i == "-1" || i == "0" || (ingredients.IndexOf(i) % 2 == 0 && ingredients.Count(x => x == i) > 1)));
+					if (badRecipes.Count() > 0)
+					{
+						string str = badRecipes.Aggregate($"Removing {badRecipes.Count()} malformed recipes:",
+							(str, cur) => $"{str}\n{cur.Key}: {cur.Value.Split('/')[0]}");
+						if (Game1.activeClickableMenu is StardewValley.Menus.TitleMenu)
+						{
+							Log.D("At TitleMenu: " + str,
+								Config.DebugMode);
+						}
+						else
+						{
+							Log.W(str);
+						}
+						foreach (var recipe in badRecipes.ToList())
+						{
+							data.Remove(recipe);
+						}
+					}
+
 					asset.AsDictionary<string, string>().ReplaceWith(data);
 
-					if (ModEntry.PrintRename && recipeData != null)
-						Log.D(data.Where(pair => recipeData.ContainsKey(pair.Key))
-								.Aggregate($"Edited {asset.AssetName}:", (s, pair) => $"{s}\n{pair.Key}: {pair.Value}"),
-							ModEntry.Instance.Config.DebugMode);
-
-					Log.D(data.Aggregate("", (str, recipe) => $"{str}\n{recipe.Key}: {recipe.Value}"),
-						Config.DebugMode);
+					if (ModEntry.PrintRename)
+					{
+						if (recipeData != null)
+						{
+							Log.D(data.Where(pair => recipeData.ContainsKey(pair.Key))
+									.Aggregate($"Edited {asset.AssetName}:", (s, pair) => $"{s}\n{pair.Key}: {pair.Value}"),
+								ModEntry.Instance.Config.DebugMode);
+						}
+						Log.D(data.Aggregate("", (str, recipe) => $"{str}\n{recipe.Key}: {recipe.Value}"),
+							Config.DebugMode);
+					}
 				}
 				catch (Exception e) when (e is ArgumentException || e is NullReferenceException || e is KeyNotFoundException)
 				{
-					Log.D($"Did not patch {asset.AssetName}: {(!Config.DebugMode ? e.Message : e.ToString())}",
-						Config.DebugMode);
+					Log.E($"Did not patch {asset.AssetName}: {(!Config.DebugMode ? e.Message : e.ToString())}");
 				}
 
 				return;

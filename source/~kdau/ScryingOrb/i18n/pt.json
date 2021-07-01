@@ -9,7 +9,10 @@
 *************************************************/
 
 {
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
 
 	"scryingOrb.displayName": "Orbe Vidente",
 	"scryingOrb.description": "Faça uma oferta apropriada para prever o futuro.",
@@ -28,24 +31,27 @@
 	"unlimited.experience.question": "Que sabedoria você procura dos espíritos?",
 	"unlimited.experience.mining": "Minas e cavernas",
 	"unlimited.experience.geodes": "Tesouros de geodos",
+	"unlimited.experience.enchantments": "Enchanted implements", // TODO
 	"unlimited.experience.nightEvents": "Ocorrências noturnas",
 	"unlimited.experience.shopping": "Ofertas de mercado",
 	"unlimited.experience.garbage": "Localizações de lixo",
 	"unlimited.experience.itemFinder": "Busque um item específico",
 	"unlimited.experience.leave": "(Deixe o conselho deles ignorado)",
+	"unlimited.enchantments": "Present a tool or weapon to the spirits to know more.", // TODO
 
 	"luckyPurple.initial": "O orbe parece olhar para você com reprovação.^Não tente novamente.",
 	"luckyPurple.following": "Os espíritos não se divertem.^O orbe não é uma gaveta de roupas íntimas!^Hoje não será seu dia de sorte.",
 
-	"//Note on meta.initial": "Sorry about this next line. It's a joke referencing an English meme about putting something on itself. It is shown when you try to give one Scrying Orb to another Scrying Orb. A simpler form to translate would be: You're giving the Scrying Orb another Scrying Orb? The spirits think you must really like scrying!",
+	// Sorry about this next line. It's a joke referencing an English meme about putting something on itself. It is shown when you try to give one Scrying Orb to another Scrying Orb. A simpler form to translate would be: "You're giving the Scrying Orb another Scrying Orb? The spirits think you must really like scrying!"
 	"meta.initial": "Os espíritos ouviram que você gosta de prever, então eles permitiram que você coloque uma orbe vidente na outra para que você evite a máquina de moer do sistema.",
 	"meta.following": "Nada acontece, mas você sente uma estranha sensação ao olhar por fora.",
 
-	"mining.opening": "Os espíritos das profundezas infernais aceitam sua oferta lustrosa.",
+	"mining.opening": "Os espíritos das profundezas infernais aceitam sua oferta lustrosa.", // TODO: molten chasms -> thundering chasms
 	"mining.date.question": "Que condições do dia você deseja prever?",
 	"mining.header.today": "Neste dia, nas minas e cavernas:",
 	"mining.header.later": "Quando no mundo ocorrerá em {{date}}:",
 	"mining.floor": "andar {{num}}",
+	"mining.floorAndItem": "^  andar {{num}}: {{itemName}}",
 	"mining.floors": "^  andares {{nums}} e {{lastNum}}",
 	"mining.prediction.Mushroom": "> Cogumelos irão brotar por toda parte nos {{floors}}.",
 	"mining.prediction.MonsterInfested": "> Hordas de monstros irão reinar nos {{floors}}.",
@@ -65,6 +71,7 @@
 	"geodes.type.Magma": "Próximo {{count}} geodos de Magma",
 	"geodes.type.Omni": "Próximo {{count}} Omnigeodos",
 	"geodes.type.Trove": "Próximo {{count}} grupos de artefatos",
+	"geodes.type.Coconut": "Next {{count}} Golden Coconuts", // TODO
 	"geodes.type.leave": "(Deixe essas pedras intactas)",
 	"geodes.header.any1": "O próximo geodo rachado deverá conter:",
 	"geodes.header.any2": "O seguinte geodo aberto fornecerá:",
@@ -74,9 +81,18 @@
 	"geodes.header.Magma": "Se forem geodos de magma, os próximos {{count}} geodos^prometem revelar:",
 	"geodes.header.Omni": "Se forem Omnigeodos, a próxima divisão de {{count}} geodos^certamente oferecerá:",
 	"geodes.header.Trove": "Se forem artefatos, os próximos {{count}} geodos^quebrados devem se apresentar:",
-	"// Note on geodes.footer": "The $ and = symbols in the next line are turned into coin and star icons by the game. Treat them as adjectives modifying the word 'treasures'. The 'another' being referred to is Gunther in the museum.",
+	"geodes.header.Coconut": "If they be Golden Coconuts, the next {{count}} geodes^burst will unleash:", // TODO
+	// The $ and = symbols in the next line are turned into coin and star icons by the game. Leave them as is, treating them like adjectives modifying the word 'treasures'. The 'another' being referred to is Gunther in the museum.
 	"geodes.footer": "$ tesouros são considerados mais valiosos pelos mortais. = tesouros são procurados por outro em sua aldeia.",
 	"geodes.closing.progress": "Sua jornada para as profundezas das minas está^incompleta, jovem. Se você explorar mais,^essas pedras podem revelar tesouros diferentes e melhores.",
+
+	"enchantments.opening": "The spirits of the molten pools accept your ashen offering.", // TODO
+	"enchantments.cumulative.question": "How shall you cast any intervening enchantments?", // TODO
+	"enchantments.cumulative.yes": "All of them on this tool", // TODO
+	"enchantments.cumulative.no": "One on this tool, the rest on others", // TODO
+	"enchantments.header.yes": "Onto your {{toolName}} shall be cast these enchantments in this order:", // TODO
+	"enchantments.header.no": "One of the next several enchantments, when cast upon your {{toolName}}, shall be:", // TODO
+	"enchantments.prediction": "{{num}}. {{name}}", // TODO
 
 	"nightEvents.opening": "Os espíritos da noite mais escura aceitam sua oferta arcana.",
 	"nightEvents.type.question": "Que ocorrências noturnas você deseja prever?",
@@ -94,7 +110,7 @@
 	"nightEvents.prediction.StrangeCapsule": "> Um extraterrestre pode colidir-se em seu planeta^em {{date}}.",
 	"nightEvents.prediction.StoneOwl": "> Um pássaro pode virar pedra em sua fazenda^em {{date}}.",
 	"nightEvents.closing": "Saiba que os seres das sombras são caprichosos.^Nenhuma ocorrência pode ser prevista com certeza.",
- 
+
 	"garbage.opening": "Os espíritos dos desolados aceitam a sua oferta suja.",
 	"garbage.mode.question": "Como você deseja examinar os detritos?",
 	"garbage.mode.today": "Lixeira por hoje",
@@ -126,19 +142,19 @@
 	"rejection.unrecognized": "Os espíritos não reconhecem sua estranha oferta.",
 	"rejection.insufficient": "Os espíritos exigem uma oferta mais generosa.",
 
-	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+	// The remaining strings are the names and descriptions of options in the mod's config menu.
 
-	"InaccuratePredictions.name": "Inaccurate Predictions",
-	"InaccuratePredictions.description": "Let the spirits make predictions that are inaccurate due to the presence of conflicting mods. For entertainment purposes only.",
+	"InaccuratePredictions.name": "Inaccurate Predictions", // TODO
+	"InaccuratePredictions.description": "Let the spirits make predictions that are inaccurate due to game version mismatch and/or conflicting mods. For entertainment purposes only.", // TODO
 
-	"Cheats.name": "Cheat Options",
+	"Cheats.name": "Cheat Options", // TODO
 
-	"InstantRecipe.name": "Instant Recipe",
-	"InstantRecipe.description": "Give the Scrying Orb crafting recipe immediately instead of needing two hearts with the Wizard.",
+	"InstantRecipe.name": "Instant Recipe", // TODO
+	"InstantRecipe.description": "Give the Scrying Orb crafting recipe immediately instead of needing two hearts with the Wizard.", // TODO
 
-	"UnlimitedUse.name": "Unlimited Use",
-	"UnlimitedUse.description": "Have the Scrying Orb work without taking offerings permanently.",
+	"UnlimitedUse.name": "Unlimited Use", // TODO
+	"UnlimitedUse.description": "Have the Scrying Orb work without taking offerings permanently.", // TODO
 
-	"ActivateKey.name": "Activate Key",
-	"ActivateKey.description": "A key to activate the Scrying Orb unlimited use menu without any orb or offering."
+	"ActivateKey.name": "Activate Key", // TODO
+	"ActivateKey.description": "A key to activate the Scrying Orb unlimited use menu without any orb or offering." // TODO
 }

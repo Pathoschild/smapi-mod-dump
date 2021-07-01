@@ -29,6 +29,8 @@ namespace ToDew {
         public int maxItems = 10;
         public Color backgroundColor = Color.Black * 0.2f;
         public Color textColor = Color.White * 0.8f;
+        public int offsetX = 0;
+        public int offsetY = 0;
         public static void RegisterConfigMenuOptions(Func<OverlayConfig> getThis, GenericModConfigMenuAPI api, IManifest modManifest) {
             api.RegisterLabel(modManifest, I18n.Config_Overlay(), I18n.Config_Overlay_Desc());
             api.RegisterSimpleOption(modManifest, I18n.Config_Overlay_Enabled(), I18n.Config_Overlay_Enabled_Desc(), () => getThis().enabled, (bool val) => getThis().enabled = val);
@@ -102,7 +104,7 @@ namespace ToDew {
                 lineBold.Add(item.IsBold);
                 topPx += lineSize.Y;
             }
-            bounds = new Rectangle(0, 0, (int)(usedWidth + marginLeft + marginRight), (int)topPx + marginBottom);
+            bounds = new Rectangle(config.offsetX, config.offsetY, (int)(usedWidth + marginLeft + marginRight), (int)topPx + marginBottom);
         }
         private void OnListChanged(object sender, List<ToDoList.ListItem> e) {
             syncMenuItemList();
@@ -120,22 +122,22 @@ namespace ToDew {
             if (Game1.eventUp || Game1.farmEvent != null) return;
             if (config.hideAtFestivals && Game1.isFestival()) return;
             var spriteBatch = e.SpriteBatch;
-            float topPx = marginTop;
             Rectangle effectiveBounds = bounds;
             if (Game1.CurrentMineLevel > 0 || Game1.currentLocation is VolcanoDungeon vd && vd.level > 0) {
-                topPx += 80;
                 effectiveBounds.Y += 80;
             }
+            float topPx = effectiveBounds.Y + marginTop;
+            float leftPx = effectiveBounds.X + marginLeft;
             spriteBatch.Draw(Game1.fadeToBlackRect, effectiveBounds, config.backgroundColor);
-            Utility.drawBoldText(spriteBatch, ListHeader, font, new Vector2(marginLeft, topPx), config.textColor);
+            Utility.drawBoldText(spriteBatch, ListHeader, font, new Vector2(leftPx, topPx), config.textColor);
             topPx += ListHeaderSize.Y;
-            spriteBatch.DrawLine(marginLeft, topPx, new Vector2(ListHeaderSize.X - 3, 1), config.textColor);
+            spriteBatch.DrawLine(leftPx, topPx, new Vector2(ListHeaderSize.X - 3, 1), config.textColor);
             for (int i = 0; i < lines.Count; i++) {
                 topPx += lineSpacing;
                 if (lineBold[i]) {
-                    Utility.drawBoldText(spriteBatch, lines[i], font, new Vector2(marginLeft, topPx), config.textColor);
+                    Utility.drawBoldText(spriteBatch, lines[i], font, new Vector2(leftPx, topPx), config.textColor);
                 } else {
-                    spriteBatch.DrawString(font, lines[i], new Vector2(marginLeft, topPx), config.textColor);
+                    spriteBatch.DrawString(font, lines[i], new Vector2(leftPx, topPx), config.textColor);
                 }
                 topPx += lineHeights[i];
             }

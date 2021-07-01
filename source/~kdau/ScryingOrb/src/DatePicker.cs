@@ -39,10 +39,9 @@ namespace ScryingOrb
 		private string hoverText;
 		private int hoverButton = -999;
 		private int selectedDay = -1;
-		private List<TemporaryAnimatedSprite> daySparkles =
-			new List<TemporaryAnimatedSprite> ();
-		private List<int> seasonSpriteHits = new List<int> { 0, 0, 0, 0 };
-		private List<WeatherDebris> seasonDebris = new List<WeatherDebris> ();
+		private readonly List<TemporaryAnimatedSprite> daySparkles = new ();
+		private readonly List<int> seasonSpriteHits = new () { 0, 0, 0, 0 };
+		private readonly List<WeatherDebris> seasonDebris = new ();
 
 		private ClickableComponent promptLabel;
 		private ClickableComponent dateLabel;
@@ -79,9 +78,9 @@ namespace ScryingOrb
 			spaceToClearTopBorder - (Mobile ? 40 : 0) +
 			spaceToClearSideBorder * (Mobile ? 3 : 6);
 
-		private static int X => (Game1.viewport.Width - Width) / 2;
+		private static int X => (Game1.uiViewport.Width - Width) / 2;
 
-		private static int Y => (Game1.viewport.Height - Height -
+		private static int Y => (Game1.uiViewport.Height - Height -
 			(Mobile ? 60 : 0)) / 2;
 
 		private struct SeasonDatum
@@ -103,12 +102,12 @@ namespace ScryingOrb
 			}
 		}
 
-		private static readonly List<SeasonDatum> SeasonData = new List<SeasonDatum>
+		private static readonly List<SeasonDatum> SeasonData = new ()
 		{
-			new SeasonDatum (new Color ( 54, 179,  67), new Rectangle ( 191, -242, 48, 54), "TileSheets\\crops", new Rectangle (112, 522, 48, 54), SpriteText.color_Green),
-			new SeasonDatum (new Color (143,  63, 204), new Rectangle ( 191,  194, 48, 54), "TileSheets\\crops", new Rectangle (160, 518, 48, 54), SpriteText.color_Purple),
-			new SeasonDatum (new Color (212,  50,   0), new Rectangle (-239,  194, 48, 54), "TileSheets\\crops", new Rectangle (208, 518, 48, 54), SpriteText.color_Red),
-			new SeasonDatum (new Color ( 12, 130, 181), new Rectangle (-239, -239, 48, 48), "Maps\\winter_town", new Rectangle (288, 384, 48, 48), SpriteText.color_Blue),
+			new SeasonDatum (new Color (54, 179, 67), new Rectangle (191, -242, 48, 54), "TileSheets\\crops", new Rectangle (112, 522, 48, 54), SpriteText.color_Green),
+			new SeasonDatum (new Color (143, 63, 204), new Rectangle (191, 194, 48, 54), "TileSheets\\crops", new Rectangle (160, 518, 48, 54), SpriteText.color_Purple),
+			new SeasonDatum (new Color (212, 50, 0), new Rectangle (-239, 194, 48, 54), "TileSheets\\crops", new Rectangle (208, 518, 48, 54), SpriteText.color_Red),
+			new SeasonDatum (new Color (12, 130, 181), new Rectangle (-239, -239, 48, 48), "Maps\\winter_town", new Rectangle (288, 384, 48, 48), SpriteText.color_Blue),
 		};
 
 		public DatePicker (SDate initialDate, string promptMessage,
@@ -204,8 +203,8 @@ namespace ScryingOrb
 				Texture2D texture = Helper.Content.Load<Texture2D>
 					(SeasonData[i].spriteAsset, ContentSource.GameContent);
 				Rectangle sb = SeasonData[i].spriteBounds;
-				Rectangle bounds = new Rectangle
-					((int) (sb.X + xCenter), // not scaling
+				Rectangle bounds = new (
+					sb.X + xCenter, // not scaling
 					(int) (sb.Y * CalendarScale + yCenter),
 					(int) (sb.Width * CalendarScale),
 					(int) (sb.Height * CalendarScale));
@@ -315,11 +314,10 @@ namespace ScryingOrb
 		{
 			selectedDay = day;
 			date = dayToSDate (day);
-			Rectangle bounds = new Rectangle (
-				dayButtons[day].bounds.X - 30,
+			Rectangle bounds = new (dayButtons[day].bounds.X - 30,
 				dayButtons[day].bounds.Y - 10, 20, 20);
-			daySparkles = Utility.sparkleWithinArea (bounds, 2,
-				SeasonData[day / 28].mainColor, 50);
+			daySparkles.AddRange (Utility.sparkleWithinArea (bounds, 2,
+				SeasonData[day / 28].mainColor, 50));
 		}
 
 		private SDate dayToSDate (int day)
@@ -352,13 +350,13 @@ namespace ScryingOrb
 				return;
 			seasonSpriteHits[seasonIndex] = 0;
 
-			Random rng = new Random ();
+			Random rng = new ();
 			Rectangle spriteBounds = seasonSprites[seasonIndex].bounds;
 
 			int debrisCount = ((seasonIndex == 3) ? 3 : 1) * (5 + rng.Next (0, 5));
 			for (int i = 0; i < debrisCount; ++i)
 			{
-				Vector2 position = new Vector2 (spriteBounds.X + rng.Next (0, 48),
+				Vector2 position = new (spriteBounds.X + rng.Next (0, 48),
 					spriteBounds.Y + rng.Next (0, 48));
 				seasonDebris.Add (new WeatherDebris (position, seasonIndex,
 					rng.Next (15) / 500f,
@@ -466,12 +464,12 @@ namespace ScryingOrb
 			for (int i = 0; i < dayButtons.Count; ++i)
 			{
 				ClickableTextureComponent button = dayButtons[i];
-				Vector2 position = new Vector2 (button.bounds.X, button.bounds.Y);
-				Rectangle sourceRect = new Rectangle (button.sourceRect.X +
+				Vector2 position = new (button.bounds.X, button.bounds.Y);
+				Rectangle sourceRect = new (button.sourceRect.X +
 					((i == selectedDay) ? 24 : (i == hoverButton) ? 12 : 0),
 					button.sourceRect.Y, button.sourceRect.Width,
 					button.sourceRect.Height);
-				Vector2 origin = new Vector2 (button.sourceRect.Width / 2,
+				Vector2 origin = new (button.sourceRect.Width / 2,
 					button.sourceRect.Height / 2);
 				double angle = 2 * Math.PI * (i + 0.5) / 112.0;
 				b.Draw (button.texture, position, sourceRect, Color.White,

@@ -25,16 +25,14 @@ namespace PublicAccessTV
 	{
 		internal static readonly int EventID = 79400102;
 		internal static readonly string EventMap = "Town";
-		internal static readonly Dictionary<string,string> Events =
-			new Dictionary<string, string>
+		internal static readonly Dictionary<string, string> Events = new ()
 		{
 			{ "79400102/n kdau.never", "echos/<<viewport>>/farmer <<farmerstart>> Linus <<linusstart>>/move Linus <<linusmove1>> true/playSound dirtyHit/pause 1000/playSound dirtyHit/pause 1000/textAboveHead Linus \"{{linus01}}\"/pause 250/jump farmer/pause 750/faceDirection farmer <<farmerface>>/pause 250/emote farmer 16/move Linus <<linusmove2>>/pause 500/speak Linus \"{{linus02}}#$b#{{linus03}}$h\"/emote farmer 32/speak Linus \"{{linus04}}#$b#{{linus05}}\"/emote farmer 40/speak Linus \"$q -1 null#{{linus06}}#$r -1 50 kdau.PublicAccessTV.garbage1#{{farmer01}}#$r -1 0 kdau.PublicAccessTV.garbage2#{{farmer02}}#$r -1 -50 kdau.PublicAccessTV.garbage3#{{farmer03}}\"/pause 500/speak Linus \"{{linus08}}\"/move Linus <<linusmove3>> 2 true/viewport move <<linusmove3>> 6000/fade/viewport -1000 -1000/fork 79400102_Reject/mail kdau.PublicAccessTV.garbage%&NL&%/end dialogue Linus \"{{linus09}}\"" },
 			{ "79400102_Reject", "end invisible Linus" },
 		};
-		internal static readonly Dictionary<Garbage.Can, string> EventPositions =
-			new Dictionary<Garbage.Can, string>
+		internal static readonly Dictionary<Garbage.Can, string> EventPositions = new ()
 		{
-			// "linusstart(X Y F)/linusmove1(X Y F)/(linusmove2(X Y F)/farmerface(F)/linusmove3(X Y)"
+			// "linusstart(X Y F)/linusmove1(X Y F)/linusmove2(X Y F)/farmerface(F)/linusmove3(X Y)"
 			{ Garbage.Can.SamHouse, "6 87 1/3 0 1/2 0 1/3/0 6" },
 			{ Garbage.Can.HaleyHouse, "24 93 0/0 -3 3/-4 0 3/1/0 6" },
 			{ Garbage.Can.ManorHouse, "51 83 1/3 0 2/0 2 1/3/0 6" },
@@ -47,23 +45,23 @@ namespace PublicAccessTV
 			// alternate event positions for SVE
 			{ Garbage.Can.SVE_SamHouse, "14 87 3/-5 0 2/0 3 3/1/6 0" },
 			{ Garbage.Can.SVE_HaleyHouse, "33 85 3/-3 0 3/-2 0 3/1/0 6" },
-			{ Garbage.Can.SVE_AdventureGuild, "26 93 1/2 0 2/0 3 2/0/0 -6" },
+			{ Garbage.Can.SVE_ArchaeologyHouse, "97 83 3/-3 0 2/0 9 1/3/-6 0" },
 			{ Garbage.Can.SVE_JoshHouse, "44 65 1/6 0 0/0 -1 1/3/0 6" },
 			{ Garbage.Can.SVE_Saloon, "44 65 1/5 0 2/0 6 3/1/0 6" },
 			{ Garbage.Can.SVE_JenkinsHouse, "65 59 0/0 -4 0/0 -2 1/3/0 6" },
 			{ Garbage.Can.SVE_ManorHouse, "52 90 0/0 -4 1/0 0 1/3/0 4" },
+			{ Garbage.Can.SVE_Blacksmith, "109 83 3/-3 0 3/-7 0 3/1/6 0" },
 		};
 
 		internal static readonly string DialogueCharacter = "Linus";
-		internal static readonly Dictionary<string,string> Dialogue =
-			new Dictionary<string, string>
+		internal static readonly Dictionary<string, string> Dialogue = new ()
 		{
 			{ "kdau.PublicAccessTV.garbage1", "{{linus07a}}$h" },
 			{ "kdau.PublicAccessTV.garbage2", "{{linus07b}}" },
 			{ "kdau.PublicAccessTV.garbage3", "{{linus07c}}%fork$s" },
 		};
 
-		private static bool[] garbageChecked;
+		private static readonly PerScreen<bool[]> GarbageChecked = new ();
 
 		public GarbageChannel ()
 			: base ("garbage")
@@ -73,13 +71,13 @@ namespace PublicAccessTV
 		}
 
 		internal override bool isAvailable =>
-			base.isAvailable && Garbage.IsAvailable &&
+			Garbage.IsAvailable &&
 			(Config.BypassFriendships ||
 				Game1.player.mailReceived.Contains ("kdau.PublicAccessTV.garbage"));
 
 		internal override void update ()
 		{
-			garbageChecked = GetCurrentCansChecked ();
+			GarbageChecked.Value = GetCurrentCansChecked ();
 			base.update ();
 		}
 
@@ -88,7 +86,7 @@ namespace PublicAccessTV
 			Game1.player.mailReceived.Remove ("kdau.PublicAccessTV.garbage");
 			Game1.player.mailForTomorrow.Remove ("kdau.PublicAccessTV.garbage%&NL&%");
 			Game1.player.eventsSeen.Remove (EventID);
-			garbageChecked = GetCurrentCansChecked ();
+			GarbageChecked.Value = GetCurrentCansChecked ();
 		}
 
 		private static bool[] GetCurrentCansChecked ()
@@ -105,7 +103,7 @@ namespace PublicAccessTV
 		public static void CheckEvent ()
 		{
 			// Must be during a game day.
-			if (!Context.IsWorldReady || garbageChecked == null ||
+			if (!Context.IsWorldReady || GarbageChecked.Value == null ||
 					// If bypassing friendships, no need for the event.
 					Config.BypassFriendships ||
 					// Must be on the Town map.
@@ -119,11 +117,11 @@ namespace PublicAccessTV
 			Garbage.Can? can = null;
 			for (int i = 0; i < 8; ++i)
 			{
-				if (!garbageChecked[i] && current[i])
+				if (!GarbageChecked.Value[i] && current[i])
 				{
-					garbageChecked[i] = true;
+					GarbageChecked.Value[i] = true;
 					bool sve = Helper.ModRegistry.IsLoaded
-						("FlashShifter.StardewValleyExpandedALL");
+						("FlashShifter.StardewValleyExpandedCP");
 					can = (Garbage.Can) i + (sve ? 100 : 0);
 					// Don't break, in the unlikely event that multiple cans
 					// were checked since last run and need to be updated.
@@ -141,7 +139,7 @@ namespace PublicAccessTV
 				return;
 
 			// Stop further runs of this method immediately.
-			garbageChecked = null;
+			GarbageChecked.Value = null;
 
 			// Build event script based on the can that was checked.
 			int viewportX = Game1.viewportCenter.X / Game1.tileSize;
@@ -149,8 +147,7 @@ namespace PublicAccessTV
 			Location canLoc = Garbage.CanLocations[can.Value];
 			string[] canPos = EventPositions[can.Value].Split ('/');
 			bool canObstructed = can == Garbage.Can.ManorHouse ||
-				can == Garbage.Can.SVE_ManorHouse ||
-				can == Garbage.Can.SVE_AdventureGuild;
+				can == Garbage.Can.SVE_ManorHouse;
 			string eventScript = Events["79400102/n kdau.never"]
 				.Replace ("<<viewport>>", $"{viewportX} {viewportY}")
 				.Replace ("<<farmerstart>>", canObstructed
@@ -168,8 +165,7 @@ namespace PublicAccessTV
 				500);
 		}
 
-		private static readonly Dictionary<Garbage.Can, int> CanScenes =
-			new Dictionary<Garbage.Can, int>
+		private static readonly Dictionary<Garbage.Can, int> CanScenes = new ()
 		{
 			{ Garbage.Can.SamHouse, 1 },
 			{ Garbage.Can.HaleyHouse, 2 },
@@ -183,11 +179,12 @@ namespace PublicAccessTV
 			// alternate can scenes for SVE (reuse vanilla or just show tent)
 			{ Garbage.Can.SVE_SamHouse, 1 },
 			{ Garbage.Can.SVE_HaleyHouse, 2 },
-			{ Garbage.Can.SVE_AdventureGuild, 0 },
+			{ Garbage.Can.SVE_ArchaeologyHouse, 4 },
 			{ Garbage.Can.SVE_JoshHouse, 7 },
 			{ Garbage.Can.SVE_Saloon, 6 },
 			{ Garbage.Can.SVE_JenkinsHouse, 0 },
 			{ Garbage.Can.SVE_ManorHouse, 3 },
+			{ Garbage.Can.SVE_Blacksmith, 5 },
 		};
 
 		internal override void show (TV tv)
@@ -200,17 +197,15 @@ namespace PublicAccessTV
 			TemporaryAnimatedSprite portrait = loadPortrait (tv, "Linus");
 
 			// Opening scene: Linus greets the viewer.
-			queueScene (new Scene (Helper.Translation.Get ("garbage.opening", new
-				{
-					playerName = Game1.player.Name,
-				}), background, portrait) { musicTrack = "echos" });
+			queueScene (new Scene (Helper.Translation.Get ("garbage.opening", new { playerName = Game1.player.Name }), background, portrait)
+			{ musicTrack = "echos" });
 
 			// Linus sadly notes that the cans are empty today.
 			if (predictions.Count < 1)
 			{
 				queueScene (new Scene (Helper.Translation.Get ("garbage.none"),
 					background, loadPortrait (tv, "Linus", 0, 1))
-					{ musicTrack = "echos" });
+				{ musicTrack = "echos" });
 			}
 
 			// Linus reports on the content of each non-empty can.
@@ -249,16 +244,17 @@ namespace PublicAccessTV
 						}),
 					loadBackground (tv, CanScenes[prediction.can], seasonIndex),
 					reactionPortrait)
-					{ musicTrack = "echos" });
+				{ musicTrack = "echos" });
 			}
 
 			// Closing scene: Linus signs off.
 			bool progress = Garbage.IsProgressDependent;
 			queueScene (new Scene
-				(Helper.Translation.Get ($"garbage.closing.{(progress? "progress" : "standard")}"),
-				background, portrait) { musicTrack = "echos" });
+				(Helper.Translation.Get ($"garbage.closing.{(progress ? "progress" : "standard")}"),
+				background, portrait)
+			{ musicTrack = "echos" });
 
-			runProgram (tv);
+			runNextScene (tv);
 		}
 	}
 }

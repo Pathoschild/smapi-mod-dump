@@ -22,8 +22,7 @@ namespace PublicAccessTV
 {
 	public class MiningChannel : Channel
 	{
-		public static readonly List<Mining.FloorType> GilTypes =
-			new List<Mining.FloorType>
+		public static readonly List<Mining.FloorType> GilTypes = new ()
 		{
 			Mining.FloorType.Mushroom,
 			Mining.FloorType.Treasure,
@@ -38,18 +37,18 @@ namespace PublicAccessTV
 		}
 
 		internal override bool isAvailable =>
-			base.isAvailable && Mining.IsAvailable &&
+			Mining.IsAvailable &&
 			(Game1.player.mailReceived.Contains ("kdau.PublicAccessTV.mining") ||
 				Game1.player.mailbox.Contains ("kdau.PublicAccessTV.mining"));
 
 		internal override void update ()
 		{
-			if (base.isAvailable && Mining.IsAvailable &&
+			if (Mining.IsAvailable &&
 				!Game1.player.mailReceived.Contains ("kdau.PublicAccessTV.mining") &&
 				!Game1.player.mailbox.Contains ("kdau.PublicAccessTV.mining") &&
 				Game1.player.mailReceived.Contains ("guildMember") &&
 				(Config.BypassFriendships ||
-					!Helper.ModRegistry.IsLoaded ("FlashShifter.MarlonSVE") ||
+					!Helper.ModRegistry.IsLoaded ("FlashShifter.StardewValleyExpandedCP") ||
 					Game1.player.getFriendshipHeartLevelForNPC ("MarlonFay") >= 2))
 			{
 				Game1.player.mailbox.Add ("kdau.PublicAccessTV.mining");
@@ -76,45 +75,57 @@ namespace PublicAccessTV
 			// Opening scene: Marlon greets the viewer.
 			queueScene (new Scene (Helper.Translation.Get ((predictions.Count == 0)
 				? "mining.opening.none" : "mining.opening"),
-				background, marlon) { musicTrack = "MarlonsTheme" });
+				background, marlon)
+			{ musicTrack = "MarlonsTheme" });
 
 			// Marlon or Gil reports on each type of special floor.
 			string joiner = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
-			foreach (Mining.FloorType type in predictions
-				.Select ((p) => p.type).Distinct ().ToList ())
+			foreach (var typeGroup in predictions.GroupBy ((p) => p.type))
 			{
-				List<int> floors = predictions
-					.Where ((p) => p.type == type)
-					.Select ((p) => p.floor)
-					.ToList ();
 				string floorsText;
-				if (floors.Count == 1)
+				if (typeGroup.Key == Mining.FloorType.Treasure &&
+					typeGroup.First ().item != null)
 				{
-					floorsText = Helper.Translation.Get ("mining.floor",
-						new { num = floors[0] });
+					floorsText = Helper.Translation.Get ("mining.floorAndItem", new
+					{
+						num = typeGroup.First ().floor,
+						itemName = typeGroup.First ().item.DisplayName,
+					});
 				}
 				else
 				{
-					int lastNum = floors[floors.Count - 1];
-					floors.RemoveAt (floors.Count - 1);
-					floorsText = Helper.Translation.Get ("mining.floors",
-						new { nums = string.Join (joiner, floors), lastNum = lastNum });
+					List<int> floors = typeGroup
+						.Select ((p) => p.floor)
+						.ToList ();
+					if (floors.Count == 1)
+					{
+						floorsText = Helper.Translation.Get ("mining.floor",
+							new { num = floors[0] });
+					}
+					else
+					{
+						int lastNum = floors[floors.Count - 1];
+						floors.RemoveAt (floors.Count - 1);
+						floorsText = Helper.Translation.Get ("mining.floors",
+							new { nums = string.Join (joiner, floors), lastNum });
+					}
 				}
 
-				queueScene (new Scene (Helper.Translation.Get ($"mining.prediction.{type}",
+				queueScene (new Scene (Helper.Translation.Get ($"mining.prediction.{typeGroup.Key}",
 						new { floors = floorsText, }),
-					loadBackground (tv, (int) type + 1),
-					GilTypes.Contains (type) ? gil : marlon)
-					{ musicTrack = "MarlonsTheme" });
+					loadBackground (tv, (int) typeGroup.Key + 1),
+					GilTypes.Contains (typeGroup.Key) ? gil : marlon)
+				{ musicTrack = "MarlonsTheme" });
 			}
 
 			// Closing scene: Marlon signs off.
 			bool progress = Mining.IsProgressDependent;
 			queueScene (new Scene
-				(Helper.Translation.Get ($"mining.closing.{(progress? "progress" : "standard")}"),
-				background, marlon) { musicTrack = "MarlonsTheme" });
+				(Helper.Translation.Get ($"mining.closing.{(progress ? "progress" : "standard")}"),
+				background, marlon)
+			{ musicTrack = "MarlonsTheme" });
 
-			runProgram (tv);
+			runNextScene (tv);
 		}
 	}
 }

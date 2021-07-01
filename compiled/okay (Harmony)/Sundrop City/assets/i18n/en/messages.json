@@ -1,0 +1,279 @@
+{
+	"SundropPromenade":{
+		"DancingBush": "This bush seems to move suspiciously, even though there is no breeze... ",
+		"JojaWindow": "Looking inside, you can see the bored receptionist playing on their phone.",
+		"SeafoodSign": "Crab, lobster... all of these meals contain seafood.",
+		"Grill": "The meat on the grill smells heavenly.",
+		"Lounge1": "Someone has kicked sand all over this chair. How rude!",
+		"Lounge2": "Uh oh! Someone lost their sunglasses under this chair!",
+		"Lounge3": "A few of the straps on this chair are starting to stretch from use",
+		"Lounge4": "This looks like a relaxing place to take a nap!",
+		"Lounge5": "The sun has warmed this lounge chair invitingly... ",
+		"Lounge6": "What a great place to relax and get a sun tan! ",
+		"Lounge7": "This looks like a relaxing place to take a nap!",
+		"Surfboard1": "The lifeguard's surfboard. The red finish is sleek and smooth to the touch. ",
+		"Surfboard2": "The lifeguard's surfboard. Are those... tooth marks?! ",
+		"Surfboard": "The lifeguard's surfboard. Sand has been kicked up on it. ",
+		"FirstAid": "This must be the lifeguard's first-aid kit. Hopefully they don't have to use it often!",
+		"TideSign": "The sign says, \"DANGER! RIP TIDE WARNING! SWIM AT YOUR OWN RISK.\" ",
+		"JoeBoat": "There's still some water on the inside from the boat's last excursion.",
+		"Window1": "You can see people moving around inside, but it's none of your business. ",
+		"247": "The sign on the door says, \"Out to lunch. Be back soon!\" ",
+		"Bench1": "A nice shady place to sit and take in the sights! ",
+		"Trash": "What a shame that someone threw this trash on the ground. We have to respect our planet! ",
+		
+	},
+
+	"SundropDiner":{
+		"DinerSeating": "The sign says, \"Please have a seat anywhere you'd like!\" ",
+		"DinerMenu": "It's a menu... they serve a wide variety of delicious sounding dishes! ",
+	},
+
+	"SundropHotelLobby":{
+		"Clock": "One clock is still ticking, but just as motionless as the others.",
+		"Coffee": "There's coffee in the pot. I don't want to know how long it's been sitting here.",
+		"Board": "There are notices and fliers posted on this board, but they're all very old. ",
+		"Safe": "The safe may have deteriorated naturally over time, but someone has definitely tried to break in.",
+	},
+
+	"SundropJoja":{
+		"Expired": "These have been expired for... several years!? ",
+		"Cheap": "Cheap, unpleasant, and overpriced. That's the Joja way. ",
+		"Oil": "There's something floating in the oil... ",
+		"Water": "A six pack of tap water... for 2,000G!?",
+		"Happy": "\"Happy Juice\" - There's no ingredients list. ",
+		"Candy": "A selection of cheap candy that nobody really likes to eat "
+
+		},
+
+	"SundropSeafood":{
+		},
+
+	"SundropJoeShack":{
+		"PalmTree": "This tree is obviously not real, but you can't help but be charmed by it.",
+		"Hammock": "This hammock looks very comfortable to sleep in.",
+		"Shellphone": "There's a piece of tape on this seashell... it reads, \"Shellphone\"",
+		"FishTank1": "There is a nametag taped to the outside of the tank: \"Joe Jr.\"",
+		"FishTank2": "The fish looks at you knowingly.",
+		"FishTank3": "The tank is meticulously well maintained.",
+		"Fridge": "An odd smell is coming from the fridge. Better not open it!",
+		"Pincer1": "A large crab skitters menacingly across the table! It might be best to leave it alone.",
+		"Pincer2": "Sergeant Pincher glares at you sternly.",
+	},
+
+	"SundropDocks":{
+	},
+
+	"SundropArcade":{
+	},
+
+	"SundropSaltySailor":{
+	},
+
+	"SundropPlaza":{
+		"Flowerbed1": "There's not a single weed in the flowerbeds, but the same can't be said for the lawn.",
+		"Flowerbed2": "The fragrance of these flowers can be smelled from the street!",
+		"Flowerbed3": "These flowers look to be carefully maintained.",
+		"Flowerbed4": "I wonder what kind of flower this is? I've never seen one before!",
+		"Flowerbed5": "Bees buzz faintly as they move from flower to flower.",
+		"Flowerbed6": "These flowers are growing beautifully!",
+		"Fountain": "\"In honor of those who fought in the Gotoro War\"",
+		"Grave1": "\"In loving memory...\" the message on this stone is old and faded.",
+		"Grave2": "These flowers seem fresh. Someone must have left them here recently.",
+		"Grave3": "\"In Loving Memory... \" ",
+		"Tree": "This tree has stood silent watch over many peoples' grief.",
+		"Grave4": "The birth and death dates on this stone match... How sad to lose someone on their birthday...",
+		"Grave5": "\"Rest in Peace\"",
+		"Grave6": "Moss covers most of this gravestone. ",
+		"Grave7": "This gravestone is cracked on one corner. It seems to be from natural causes.",
+		"Grave8": "The flowers are starting to wilt. ",
+		"Grave9": "\"Beloved grandma, mother, friend.\"",
+		"Grave10": "A husband and wife are buried side by side, according to this stone. It reads \"Together again at last.\"",
+		"Grave11": "The stone's death date is blank. This person must still be alive. ",
+		"Grave12": "\"Rest in Yoba's light\"",
+		"Bench1": "The bench is inscribed with a dedication from Lady Stardew",
+	},
+
+	"SundropFlowerShop":{
+	},
+
+	"SundropChurch":{
+	},
+
+
+	"SundropChurchUpper":{
+	},
+
+	"SundropCityHall":{
+		"Book1": "\"Ten Ways to Improve Your Job Performance\" ",
+		"Book2": "\"Finding the Work-Life Balance!\" ",
+		"Book3": "\"The Little Book of Calm\" ",
+		"Book4": "A stack of law books. Mostly. ",
+		"Water": "\"Out of Order. Have some coffee instead.\" ",
+		"Coffee":"Quintuple shot espresso... Isn't that illegal?! ",
+
+		"Book5": "\"Pets vs. Career. Can they mix?\" ",
+		"Book6": "\"The Official Book of Political Law - Edition XVIII\" ",
+		"Book7": "\"Pets vs. Career. Can they mix?\" ",
+		"Book8": "\"The History of Chew Toys\" ",
+		"Book9": "\"The Science of Fetch\" ",
+		"Bed": "This looks like a nice place for a good boy to take a nap. ",
+		"Desk1": "There's a pawpring on the signature line. ",
+		"Desk2": "\"Mr. Cake - Mayor of Sundrop\" is engraved on the plaque. ",
+		"Bulletin1": "There's a schedule for taking Mr. Cake on walks posted here. ",
+		"Bulletin2": "A flier about food that's healthy for dogs to eat is pinned to the board. ",
+		"Bulletin3": "\"5 Tips for bonding with your dog!\" ",
+	},
+
+	"SundropPark":{
+	},
+
+	"SundropShoppingDistrict":{
+	},
+
+	"SundropMall":{
+	},
+
+	"SundropFurniture":{
+	},
+
+	"SundropTheatre":{
+	},
+
+	"SundropShearDesign":{
+		"Color":"Infinite color possibilities!",
+		"Hairspray":"\"Now with four times the volume!!!\" It must be some kind of hair product. ",
+		"Photos":"Photos of models with trendy hair styles are taped to the mirror",
+		"Magazines":"All of these magazines are about hair or fashion.",
+	},
+
+	"SundropJewelryStore":{
+		"Expensive": "You feel less rich when you stand next to this display case. ",
+		"PrismaticShard": "Pairs of glittery earrings, each adorned with small pieces of prismatic shard",
+		"Shiny": "So shiny... want... to touch... NO I really shouldn't! ",
+		"Ruby": "A well-polished ruby sits inside the glass. You can almost see your own face in its luster.",
+		"Amethyst": "Different colored sets of hoop earrings are on a black display stand.",
+		"Calcite": "What kind of jewelry could this calcite mineral be used for?",
+		"Studs": "Assorted pairs of stud earrings. Each pair is silver and adorned with different types of minerals.",
+		"Mermaid": "A rack of metal earrings rest atop the glass case, but your eyes are drawn to the sparkling deep blue mermaid pendant inside the case.",
+		"IridiumBand": "A glowing iridium band.... You don't even want to know how expensive it is.",
+		"Ring": "A very well crafted ring.",
+		"WeddingRing": "It is unusual to see such a glamorous and expensive wedding ring outside of Zuzu City.",
+		"Necklace1": "Inside is a flashy necklace with a gold chain and dangling small ruby gems.",
+		"Necklace2": "The glass case is so brightly cleaned that you can see your own face in its reflection.",
+		"Rings1": "Rings made from miscellaneous ore and mineral. Each ring is of a different, vibrant hue.",
+		"Jewelry": "A glass case filled with an array of glimmering jewelry.",
+		"Bracelets2": "Each bracelet has several charms attached, ranging from plants and animals to symbols of Yoba.",
+		"Necklace3": "A silver necklace holds a tear-shaped emerald pendant.",
+		"Necklace4": "What a beautiful necklace.",
+		"Bracelet": "Delicate bracelets sit on black velvet.",
+		"Rings2": "Matching bands in silver and gold, brilliant diamonds rings… this must be the marital section.",
+		"Bracelets1": "These bracelets can be personalized with messages or symbols.",
+		"Necklace5": "The necklace is adorned with a sparkling silver locket. An amethyst gemstone is studded in the center of the locket.",
+		"Necklace6": "A heart-shaped iridium pendant hangs from a beaded, silver necklace.",
+		"Rings3": "These simple but refined rings are almost too shiny...",
+		"Copper": "A plain copper bar; likely ordered for use in custom-made jewelry.",
+		"Gold": "This glossy bar of gold has an almost amber hue.",
+		"Quartz": "Using refined quartz is a great low-cost alternative to gemstones.",
+		"Cushion": "This posh cream-colored pleather cushion looks firm but inviting.",
+		"Plant": "Even the plants look expensive.",
+		
+		"Forge": "It doesn't seem wise to touch a hot furnace.",
+		"Hammer": "What's a jeweler without his trusty hammer?",
+		"Lovely": "A lovely ring.",
+		"Vault": "This vault is comically large.",
+		
+		"PoppyNote": "It's a note signed by Poppy... It appears to be instructions on how to care for the plant, with a plea to not let this one die...",
+		"SpencerSucculent": "Looks to be a succulent of some type. It has a name tag that says \"Frank\" on it.",
+		"SpencerAlbums": "There are photo albums and old worn out textbooks about metalworking on the shelf",
+		"SpencerPhotos": "Photos of Spencer and his sister are on the wall beside some photos of him with his old army crew.",
+		"SpencerClock": "This antique cuckoo clock appears to be in great shape despite its age.",
+		"SpencerPalm": "The leaves and tree are fake but it definitely adds needed color to the room.",
+		"SpencerTable": "Huh, these potted forget-me-nots are very well cared for. They must be his favorite.",
+		"SpencerFicas": "A live tree! It looks like it desperately needs some water. ",
+
+		"PinkBook": "This appears to be a romance novel. "
+	},
+
+	"SundropHQLobby":{
+		"Coffee1": "There's a note attached... \"No Caffeine until your work is done, Chef! -Ento\" ",
+		"Coffee2": "There's a note attached... \"Joke's on you, Ento. I don't even like coffee! -ChefRude\" ",
+		"SparklingWater": "Sparkling Water... How fancy.",
+		"Fountain": "There appear to be cake crumbs floating in the water... ",
+	},
+
+	"SundropHQTeam":{
+	},
+
+	"SundropHQSpecial":{
+	},
+
+	"SundropHQAdmin":{
+	},
+
+	"SundropResidential":{
+	},
+
+	"SundropApartmentLobby":{
+	},
+
+	"SundropTownhouse1":{
+	},
+
+	"SundropTownhouse2":{
+	},
+
+	"SundropTownhouse3":{
+	},
+
+	"SundropTownhouse4":{
+	},
+
+	"SundropTownhouse5":{
+	},
+
+	"SundropTownhouse6":{
+	},
+
+	"SundropTownhouse7":{
+	},
+
+	"SundropTownhouse8":{
+	},
+
+	"SundropTownhouse9":{
+	},
+
+	"SundropTownhouse10":{
+	},
+
+	"SundropBones":{
+	},
+
+	"SundropStardewManor":{
+	},
+
+	"SundropStardewFoyer":{
+	},
+
+	"SundropStardewAttic":{
+	},	
+
+	"SundropStardewBedroom":{
+	},
+
+	"SundropSecretAreas":{
+		"ZeldaChest": "There’s a note attached to the chest: \"I'm old. I didn't want to die here, buuut it's dangerous to go alone, so take this.\"",
+		"ZeldaPot1": "Filled with strange little green stones, all precisely uniform.",
+		"ZeldaPot2": "A single black jewel shines from inside the pot.",
+		"ZeldaPot3": "An image of a large, golden jewel is painted on this empty thing.",
+		"ZeldaPot4": "This old pot is so thin, it's practically begging to be broken...",
+		"ZeldaBrazier": "It is too dark to see properly without all of these lit.",
+
+		"UndertalePlant": "Weird... You could have sworn you heard a voice come from here.",
+		"UndertalePatchL": "There's a blue switch hidden behind this pillar. It won't budge.",
+		"UndertalePatchR": "Mmm... these flowers would make a delicious tea.",
+		"UndertaleHalfPillar": "Ew, now your hands are covered in super sticky seeds.",
+		"UndertalePillar": "There's a red switch behind this pillar. Looks like it's stuck, though.",
+	},
+}

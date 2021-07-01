@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/CrunchyDuck/OwO-Stawdew-Vawwey
+   Git: https://github.com/CrunchyDuck/OwO-Stawdew-Vawwey.git
+
+mods:
+   OwO Stawdew Vawwey
+
+latest commit:
+   commit f8ef8c852bac997c85b7ecf98682c126e987bb3f
+   Author: CrunchyDuck <43281440+CrunchyDuck@users.noreply.github.com>
+   Date:   Fri Jun 18 01:27:32 2021 +0100
+   
+       Fixes issue with empty string
+   

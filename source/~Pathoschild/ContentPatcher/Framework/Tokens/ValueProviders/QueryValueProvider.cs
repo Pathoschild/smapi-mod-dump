@@ -38,7 +38,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             : base(ConditionType.Query, mayReturnMultipleValuesForRoot: false)
         {
             this.BypassesContextValidation = true;
-            this.EnableInputArguments(required: true, mayReturnMultipleValues: false, maxPositionalArgs: 1);
+            this.EnableInputArguments(required: true, mayReturnMultipleValues: false, maxPositionalArgs: null);
             this.MarkReady(true);
         }
 
@@ -54,7 +54,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             this.AssertInput(input);
 
-            yield return this.TryCalculate(input.GetFirstPositionalArg(), out object result, out _)
+            yield return this.TryCalculate(input.GetPositionalSegment(), out object result, out _)
                 ? (result is IConvertible convertible ? convertible.ToString(CultureInfo.InvariantCulture) : result.ToString())
                 : "0";
         }
@@ -66,7 +66,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                 return false;
 
             if (input.IsReady)
-                return this.TryCalculate(input.GetFirstPositionalArg(), out _, out error);
+                return this.TryCalculate(input.GetPositionalSegment(), out _, out error);
 
             return true;
         }

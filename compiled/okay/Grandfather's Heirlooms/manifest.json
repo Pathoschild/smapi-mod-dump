@@ -1,7 +1,7 @@
 {
   "Name": "Grandfather's Heirlooms",
   "Author": "rikai",
-  "Version": "2.0.1",
+  "Version": "2.0.2",
   "Description": "A continuation of the Grandfather's Gift Remade",
   "UniqueID": "rikai.GrandfathersHeirlooms",
   "EntryDll": "GrandfathersHeirlooms.dll",
@@ -18,7 +18,8 @@
     "1.2.3": "Behind-the-scenes optimization",
     "1.2.4": "Change weapon log to Info level; suppress warning of unused const",
     "1.2.5": "Revert skipping mod after triggered once because state is game-wide instead of per-save",
-    "2.0.0": "Set positioning based on marriage state, code cleanup/modernization, more detailed logging, rename project, ipdate copyright, GUID & description",
+    "2.0.0": "Set positioning based on marriage state, code cleanup/modernization, more detailed logging, rename project, update copyright, GUID & description",
     "2.0.1": "Fix an issue with EntryDLL naming.",
+    "2.0.2": "Made console output a bit less spammy by moving Debug and Info level logs to Trace."
   }
 }

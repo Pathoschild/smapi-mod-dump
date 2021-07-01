@@ -9,6 +9,12 @@ namespace EvenBetterRNG
     public interface IEvenBetterRNGAPI
         {
         /// <summary>
+        /// Get the main XoShiRo PRNG instance that continually replace Game1.random
+        /// </summary>
+        /// <returns>Main XoShiRo PRNG that adheres to System.Random interface</returns>
+        Random GetMainRandom();
+
+        /// <summary>
         /// Get a new XoShiRo PRNG. Seed will be automatically determined by the XoShiRoPRNG.Net library
         /// </summary>
         /// <returns>New PRNG that adheres to System.Random interface</returns>
@@ -43,6 +49,17 @@ namespace EvenBetterRNG
         /// <returns>A PRNG object associated with the name</returns>
         Random GetNamedRandom(string name, long seed);
 
+        /// <summary>
+        /// Try registering a callback to be invoked when EBRNG has finished overriding Daily Luck
+        /// </summary>
+        /// <param name="callback">A void function with null parameters</param>
+        /// <returns>True if successful, false if otherwise</returns>
+        bool TryRegisterDailyLuckOverrideCallback(Action callback);
 
+        /// <summary>
+        /// Try advancing internal RNG state in a secure, unpredictable way.
+        /// </summary>
+        /// <param name="rng">RNG to advance</param>
+        void SecurelyAdvanceRNGState(Random rng);
         }
     }

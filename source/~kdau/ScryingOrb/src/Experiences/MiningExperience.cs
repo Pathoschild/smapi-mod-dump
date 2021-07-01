@@ -20,8 +20,7 @@ namespace ScryingOrb
 {
 	public class MiningExperience : Experience
 	{
-		public static readonly Dictionary<int, int> AcceptedOfferings =
-			new Dictionary<int, int>
+		public static readonly Dictionary<int, int> AcceptedOfferings = new ()
 		{
 			{ 378, 5 }, // Copper Ore
 			{ 380, 3 }, // Iron Ore
@@ -30,8 +29,7 @@ namespace ScryingOrb
 			{ 382, 2 }, // Coal
 		};
 
-		public override bool isAvailable =>
-			base.isAvailable && Mining.IsAvailable;
+		public override bool isAvailable => Mining.IsAvailable;
 
 		protected override bool check ()
 		{
@@ -62,17 +60,17 @@ namespace ScryingOrb
 			Game1.activeClickableMenu = new DatePicker (SDate.Now (),
 				Helper.Translation.Get ("mining.date.question"), onDateChosen);
 		}
-		
+
 		private void onDateChosen (SDate date)
 		{
 			// Gather the appropriate predictions.
 			List<Mining.Prediction> predictions = Mining.ListFloorsForDate (date);
 
 			bool today = date == SDate.Now ();
-			List<string> pages = new List<string> ();
+			List<string> pages = new ();
 
 			// Build the list of predictions.
-			List<string> lines = new List<string>
+			List<string> lines = new ()
 			{
 				Helper.Translation.Get ($"mining.header.{(today ? "today" : "later")}", new
 				{
@@ -81,29 +79,39 @@ namespace ScryingOrb
 			};
 
 			string joiner = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
-			foreach (Mining.FloorType type in predictions
-				.Select ((p) => p.type).Distinct ().ToList ())
+			foreach (var typeGroup in predictions.GroupBy ((p) => p.type))
 			{
-				List<int> floors = predictions
-					.Where ((p) => p.type == type)
-					.Select ((p) => p.floor)
-					.ToList ();
 				string floorsText;
-				if (floors.Count == 1)
+				if (typeGroup.Key == Mining.FloorType.Treasure &&
+					typeGroup.First ().item != null)
 				{
-					floorsText = Helper.Translation.Get ("mining.floor",
-						new { num = floors[0] });
+					floorsText = Helper.Translation.Get ("mining.floorAndItem", new
+					{
+						num = typeGroup.First ().floor,
+						itemName = typeGroup.First ().item.DisplayName,
+					});
 				}
 				else
 				{
-					int lastNum = floors[floors.Count - 1];
-					floors.RemoveAt (floors.Count - 1);
-					floorsText = unbreak (Helper.Translation.Get ("mining.floors",
-						new { nums = string.Join (joiner, floors), lastNum = lastNum }));
+					List<int> floors = typeGroup
+						.Select ((p) => p.floor)
+						.ToList ();
+					if (floors.Count == 1)
+					{
+						floorsText = Helper.Translation.Get ("mining.floor",
+							new { num = floors[0] });
+					}
+					else
+					{
+						int lastNum = floors[floors.Count - 1];
+						floors.RemoveAt (floors.Count - 1);
+						floorsText = Helper.Translation.Get ("mining.floors",
+							new { nums = string.Join (joiner, floors), lastNum });
+					}
 				}
 
-				lines.Add (Helper.Translation.Get ($"mining.prediction.{type}",
-					new { floors = floorsText }));
+				lines.Add (Helper.Translation.Get ($"mining.prediction.{typeGroup.Key}",
+					new { floors = unbreak (floorsText) }));
 			}
 			if (predictions.Count == 0)
 				lines.Add (Helper.Translation.Get ("mining.prediction.none"));

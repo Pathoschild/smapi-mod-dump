@@ -15,7 +15,6 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
 
 namespace EventBlackBars
 {
@@ -27,10 +26,11 @@ namespace EventBlackBars
 
         private bool _barsMovingIn;
         private bool _barsMovingOut;
+        private bool _renderBars;
         
         private Texture2D _blackRectangle;
         private GraphicsDevice _graphicsDevice;
-        private ModConfig _config;
+        public ModConfig Config;
 
         private float _barHeight;
 
@@ -46,9 +46,15 @@ namespace EventBlackBars
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             
-            _config = Helper.ReadConfig<ModConfig>();
+            Config = Helper.ReadConfig<ModConfig>();
             _graphicsDevice = Game1.graphics.GraphicsDevice;
             PrepareAssets(_graphicsDevice);
+        }
+
+        public void SaveConfig(ModConfig newConfig)
+        {
+            Config = newConfig;
+            Helper.WriteConfig(newConfig);
         }
 
         /// <summary>
@@ -57,7 +63,9 @@ namespace EventBlackBars
         /// <param name="direction">The direction. True for up, false for down.</param>
         public void StartMovingBars(bool direction)
         {
-            if (_config.MoveBarsInSmoothly)
+            _renderBars = true;
+            
+            if (Config.MoveBarsInSmoothly)
             {
                 _barHeight = direction ? 0 : GetMaxBarHeight(_graphicsDevice);
 
@@ -84,7 +92,7 @@ namespace EventBlackBars
         /// </summary>
         private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
         {
-            if (!Game1.eventUp) return;
+            if (!_renderBars) return;
             
             var viewportWidth = _graphicsDevice.Viewport.Width;
             var viewportHeight = _graphicsDevice.Viewport.Height;
@@ -105,7 +113,7 @@ namespace EventBlackBars
         /// </summary>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!_barsMovingIn && !_barsMovingOut || !_config.MoveBarsInSmoothly) return;
+            if (!_barsMovingIn && !_barsMovingOut || !Config.MoveBarsInSmoothly) return;
 
             var maxBarHeight = GetMaxBarHeight(_graphicsDevice);
             var desiredBarHeight = _barsMovingIn ? maxBarHeight : 0;
@@ -116,6 +124,8 @@ namespace EventBlackBars
             {
                 _barsMovingIn = _barsMovingOut = false;
                 _barHeight = desiredBarHeight;
+
+                _renderBars = desiredBarHeight != 0;
                 
                 return;
             }
@@ -155,6 +165,7 @@ namespace EventBlackBars
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             ApplyHarmonyPatches();
+            ModConfig.SetUpModConfigMenu(Config, this);
         }
 
         /// <summary>
@@ -163,7 +174,7 @@ namespace EventBlackBars
         private int GetMaxBarHeight(GraphicsDevice graphicsDevice)
         {
             return Convert.ToInt16(graphicsDevice.Viewport.Height *
-                                   MathHelper.Clamp((float) (_config.BarHeightPercentage / 100), 0f, 1f));
+                                   MathHelper.Clamp((float)Config.BarHeightPercentage / 100f, 0f, 1f));
         }
     }
 }

@@ -20,15 +20,15 @@ namespace Cropbeasts.Beasts
 	// Much of this class is based on StardewValley.Monsters.Ghost.
 	public class AncientBeast : Cropbeast
 	{
-		private readonly NetInt wasHitCounter = new NetInt (0);
-		private readonly NetBool turningRight = new NetBool ();
+		private readonly NetInt wasHitCounter = new (0);
+		private readonly NetBool turningRight = new ();
 
-		private int identifier = Game1.random.Next (-99999, 99999);
+		private readonly int identifier = Game1.random.Next (-99999, 99999);
 
 		private new int yOffset = 0;
 
 		public AncientBeast ()
-		{}
+		{ }
 
 		public AncientBeast (CropTile cropTile, bool primary)
 		: base (cropTile, primary, primary, !primary)

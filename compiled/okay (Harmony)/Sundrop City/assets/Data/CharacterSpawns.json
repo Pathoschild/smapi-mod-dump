@@ -1,0 +1,86 @@
+[
+	{
+		"Texture":"FatherEric",
+		"Name":"Father Eric",
+		"Map":"SundropPlaza",
+		"Position":[49, 18],
+		"Message":"$hGood day my child, may the light of Yoba shine upon you."
+	},
+	{
+		"Texture":"Joe",
+		"Name":"Joe",
+		"Map":"SundropPromenade",
+		"Position":[24, 20],
+		"Message":"Mr. Bones wanted me to take care of Mr. Cake for him while he deals with a corruption claim by this guy called Stubbs...$b#$hNo idea why the cat even bothers, everyone knows Mr. Cake is best doggo!"
+	},
+	{
+		"Texture":"June",
+		"Name":"June",
+		"Map":"SundropShoppingDistrict",
+		"Position":[30, 17],
+		"Message":"Shhh, just, keep it a secret okay? I'll explain it later..."
+	},
+	{
+		"Texture":"LadyStardew",
+		"Name":"Lady Agness",
+		"Map":"SundropPlaza",
+		"Position":[50, 60],
+		"Message":"Ah, hello @, enjoying a stroll around the city are you?"
+	},
+	{
+		"Texture":"Lillith",
+		"Name":"Lillith",
+		"Map":"SundropPlaza",
+		"Position":[6, 15],
+		"Message":"$sSorry love, but the store is closed right now, some bees got in and built a hive."
+	},
+	{
+		"Texture":"Lincoln",
+		"Name":"Lincoln",
+		"Map":"SundropJoja",
+		"Position":[2, 5],
+		"Message":"Welcome to the Sundrop Joja Mart. If you can't find something, we don't have it."
+	},
+	{
+		"Texture":"Bones",
+		"Name":"Mr. Atticus Bones",
+		"Map":"SundropCityHall",
+		"Position":[2, 5],
+		"Message":"Oh, hi there. Sorry, I can't talk now. I'm doing some legal ressearch."
+	},
+	{
+		"Texture":"Oleander",
+		"Name":"Oleander",
+		"Map":"SundropMall",
+		"Position":[35, 25],
+		"Message":"I was hoping to do some shopping before heading over to the Park, but all the stores seem to be closed for now..."
+	},
+	{
+		"Texture":"PearlJin",
+		"Name":"Pearl Jin",
+		"Map":"SundropJewelryStore",
+		"Position":[5, 54],
+		"Message":"$hAh, a customer! Welcome, please have a look around!"
+	},
+	{
+		"Texture":"Poppy",
+		"Name":"Poppy",
+		"Map":"SundropPlaza",
+		"Position":[15, 5],
+		"Message":"Oh hi, just watering my flowers, they need a lot of care you know?"
+	},
+	{
+		"Texture":"Spencer_EyepatchApron",
+		"Name":"Spencer",
+		"Map":"SundropJewelryStore",
+		"Position":[12, 35],
+		"Message":"Sorry, cant talk right now, have to get this ring just right..."
+	},
+	{
+		"Texture":"Willow",
+		"Name":"Willow",
+		"Map":"SundropWillowApartment",
+		"Position":[6, 14],
+		"Message":"Oh, hello. I have to leave for an audition soon, but you're welcome to hang out for a while if you want..."
+	},
+]

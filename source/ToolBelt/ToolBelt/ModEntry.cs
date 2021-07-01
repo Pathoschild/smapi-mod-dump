@@ -114,7 +114,7 @@ namespace ToolBelt
         private SortedDictionary<Item, int> getToolMap(List<Item> inventory)
         {
             Monitor.Log("calling toolmap search", LogLevel.Trace);
-            SortedDictionary<Item, int> toolMap = new SortedDictionary<Item, int>();
+            SortedDictionary<Item, int> toolMap = new SortedDictionary<Item, int>(new DuplicateKeyComparer<Item>());
             int count = 0;
             foreach (Item item in inventory)
             {

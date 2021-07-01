@@ -1,0 +1,582 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TSlex/StardewValley
+**
+*************************************************/
+
+[
+  {
+    "Label": "category.usable",
+    "When": {
+      "ObjCategory": [
+        -19,
+        -21
+      ]
+    },
+    "ResearchCount": 10,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.ammo",
+    "When": {
+      "ItemId": [
+        "Object:286",
+        "Object:287",
+        "Object:288",
+        "Object:441"
+      ]
+    },
+    "ResearchCount": 10,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.tools",
+    "When": {
+      "ObjCategory": [
+        -22,
+        -99
+      ],
+      "ItemId": [
+        "Object:261",
+        "Object:297",
+        "Object:681",
+        "Object:688",
+        "Object:689",
+        "Object:690",
+        "Object:886"
+      ]
+    },
+    "Except": {
+      "Class": [
+        "StardewValley.Tools.Slingshot"
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 1000
+  },
+  {
+    "Label": "category.weapons",
+    "When": {
+      "ObjCategory": [
+        -98
+      ],
+      "Class": [
+        "StardewValley.Tools.Slingshot"
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 1000
+  },
+  {
+    "Label": "category.hats",
+    "When": {
+      "ObjCategory": [
+        -95
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.clothes",
+    "When": {
+      "ObjCategory": [
+        -100
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.boots",
+    "When": {
+      "ObjCategory": [
+        -97
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 500
+  },
+  {
+    "Label": "category.rings",
+    "When": {
+      "ObjCategory": [
+        -96
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 500
+  },
+  {
+    "Label": "category.unique-crops",
+    "When": {
+      "UniqueKey": [
+        "Qi Fruit:889",
+        "Ancient Fruit:454"
+      ],
+      "ItemId": [
+        "Object:417"
+      ]
+    },
+    "ResearchCount": 100,
+    "BaseCost": 1000
+  },
+  {
+    "Label": "category.tree-fruits",
+    "When": {
+      "UniqueKey": [
+        "Apple:613",
+        "Apricot:634",
+        "Orange:635",
+        "Peach:636",
+        "Pomegranate:637",
+        "Cherry:638",
+        "Banana:91",
+        "Mango:834"
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.forage",
+    "When": {
+      "ObjCategory": [
+        -81
+      ],
+      "UniqueKey": [
+        "Coconut:88",
+        "Cactus Fruit:90",
+        "Salmonberry:296",
+        "Blackberry:410",
+        "Wild Plum:406",
+        "Crystal Fruit:414",
+        "Fiddlehead Fern:259",
+        "Grape:398",
+        "Spice Berry:396",
+        "Hay:178"
+      ]
+    },
+    "Except": {
+      "ItemId": [
+        "Object:92"
+      ]
+    },
+    "ResearchCount": 5,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.flowers",
+    "When": {
+      "ObjCategory": [
+        -80
+      ],
+      "UniqueKey": [
+      ]
+    },
+    "ResearchCount": 5,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.crops",
+    "When": {
+      "ObjCategory": [
+        -75,
+        -79
+      ]
+    },
+    "ResearchCount": 30,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.saplings",
+    "When": {
+      "ItemId": [
+        "Object:69",
+        "Object:251",
+        "Object:628",
+        "Object:629",
+        "Object:630",
+        "Object:631",
+        "Object:632",
+        "Object:633",
+        "Object:835"
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.seeds",
+    "When": {
+      "ObjCategory": [
+        -74
+      ]
+    },
+    "ResearchCount": 10,
+    "BaseCost": 50
+  },
+  {
+    "Label": "category.monster-loot",
+    "When": {
+      "ObjCategory": [
+        -28
+      ],
+      "ItemId": [
+        "Object:413",
+        "Object:437",
+        "Object:439",
+        "Object:680",
+        "Object:857"
+      ]
+    },
+    "ResearchCount": 25,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.animal-products",
+    "When": {
+      "ObjCategory": [
+        -5,
+        -6,
+        -14,
+        -17,
+        -18
+      ]
+    },
+    "ResearchCount": 25,
+    "BaseCost": 150
+  },
+  {
+    "Label": "category.legendary-fish",
+    "When": {
+      "UniqueKey": [
+        "Glacierfish Jr.:902",
+        "Radioactive Carp:901",
+        "Legend II:900",
+        "Ms. Angler:899",
+        "Son of Crimsonfish:898",
+        "Glacierfish:775",
+        "Mutant Carp:682",
+        "Angler:160",
+        "Legend:163",
+        "Crimsonfish:159"
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 1000
+  },
+  {
+    "Label": "category.fish",
+    "When": {
+      "ObjCategory": [
+        -4,
+        -23
+      ],
+      "ObjType": [
+        "Fish"
+      ]
+    },
+    "Except": {
+      "ObjCategory": [
+        -20
+      ]
+    },
+    "ResearchCount": 5,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.geodes",
+    "When": {
+      "ItemId": [
+        "Object:535",
+        "Object:536",
+        "Object:537",
+        "Object:749",
+        "Object:791"
+      ],
+      "UniqueKey": [
+        "Artifact Trove:275"
+      ]
+    },
+    "ResearchCount": 5,
+    "BaseCost": 50
+  },
+  {
+    "Label": "category.rare-minerals",
+    "When": {
+      "ObjCategory": [
+        -2
+      ]
+    },
+    "ResearchCount": 10,
+    "BaseCost": 500
+  },
+  {
+    "Label": "category.minerals",
+    "When": {
+      "ObjCategory": [
+        -12
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 50
+  },
+  {
+    "Label": "category.artifacts",
+    "When": {
+      "ObjType": [
+        "Arch"
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 50
+  },
+  {
+    "Label": "category.resources",
+    "When": {
+      "ObjCategory": [
+        -15,
+        -16
+      ],
+      "ItemId": [
+        "Object:92"
+      ],
+      "UniqueKey": [
+        "Dragon Tooth:852"
+      ]
+    },
+    "ResearchCount": 45,
+    "BaseCost": 50
+  },
+  {
+    "Label": "category.non-craftable",
+    "When": {
+      "UniqueKey": [
+        "Statue Of True Perfection:280",
+        "Campfire:278",
+        "Auto-Petter:272",
+        "Deconstructor:265",
+        "Junimo Chest:256",
+        "Sewing Machine:247",
+        "Coffee Maker:246",
+        "Mini-Shipping Bin:248",
+        "Cursed P.K. Arcade System:219",
+        "Mini-Fridge:216",
+        "Telephone:214",
+        "Workbench:208",
+        "Seasonal Plant:204",
+        "Seasonal Plant:200",
+        "Seasonal Plant:196",
+        "Seasonal Plant:192",
+        "Seasonal Plant:188",
+        "Seasonal Plant:184",
+        "Crate:175",
+        "Crate:174",
+        "Auto-Grabber:165",
+        "Solid Gold Lewis:164",
+        "??Foroguemon??:162",
+        "??Pinky Lemon??:161",
+        "Statue Of Perfection:160",
+        "Rarecrow:140",
+        "Rarecrow:139",
+        "Rarecrow:138",
+        "Rarecrow:137",
+        "Rarecrow:136",
+        "Statue Of Endless Fortune:127",
+        "Rarecrow:126",
+        "Crate:125",
+        "Barrel:124",
+        "Crate:123",
+        "Barrel:122",
+        "Crate:121",
+        "Barrel:120",
+        "Crate:119",
+        "Barrel:118",
+        "Soda Machine:117",
+        "Stardew Hero Trophy:116",
+        "Rarecrow:113",
+        "Dried Sunflowers:112",
+        "Decorative Pitcher:111",
+        "Rarecrow:110",
+        "Tub o' Flowers:109",
+        "Plush Bunny:107",
+        "Camera:106",
+        "Heater:104",
+        "Feed Hopper:99",
+        "Empty Capsule:98",
+        "Strange Capsule:96",
+        "Stone Owl:95",
+        "Singing Stone:94",
+        "Obsidian Vase:89",
+        "Standing Geode:88",
+        "Sloth Skeleton R:87",
+        "Sloth Skeleton M:86",
+        "Sloth Skeleton L:85",
+        "Door:80",
+        "Door:79",
+        "Boulder:78",
+        "Decorative Spears:76",
+        "Bongo:75",
+        "Bonfire:74",
+        "Ritual Mask:73",
+        "Tall Torch:72",
+        "Dead Tree:70",
+        "Teddy Timer:69",
+        "Grandfather Clock:68",
+        "Ancient Stool:67",
+        "Ancient Table:66",
+        "House Plant:0",
+        "House Plant:1",
+        "House Plant:2",
+        "House Plant:3",
+        "House Plant:4",
+        "House Plant:5",
+        "House Plant:6",
+        "House Plant:7",
+        "Table Piece L:22",
+        "Table Piece R:23",
+        "Wood Chair:26",
+        "Wood Chair:27",
+        "Skeleton Model:28",
+        "Chicken Statue:31",
+        "Stone Cairn:32",
+        "Suit Of Armor:33",
+        "Sign Of The Vessel:34",
+        "Basic Log:35",
+        "Lawn Flamingo:36",
+        "Big Green Cane:40",
+        "Green Canes:41",
+        "Mixed Cane:42",
+        "Red Canes:43",
+        "Big Red Cane:44",
+        "Ornamental Hay Bale:45",
+        "Log Section:46",
+        "Grave Stone:47",
+        "Seasonal Decor:48",
+        "Stone Frog:52",
+        "Stone Parrot:53",
+        "Stone Owl:54",
+        "Stone Junimo:55",
+        "Slime Ball:56",
+        "Bookcase:64",
+        "Fancy Table:65",
+        "Prairie King Arcade System:141",
+        "??HMTGF??:155",
+        "Junimo Kart Arcade System:159",
+        "Barrel:174",
+        "Hedge:929"
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 1000
+  },
+  {
+    "Label": "category.craftable",
+    "When": {
+      "ObjCategory": [
+        -8
+      ],
+      "ItemId": [
+        "Object:710",
+        "Object:463",
+        "Object:464"
+      ],
+      "UniqueKey": [
+        "Staircase:71",
+        "Fairy Dust:872",
+        "Cookout Kit:926",
+        "Monster Musk:879"
+      ]
+    },
+    "ResearchCount": 5,
+    "BaseCost": 500
+  },
+  {
+    "Label": "category.big-craftable",
+    "When": {
+      "ObjCategory": [
+        -9
+      ]
+    },
+    "ResearchCount": 2,
+    "BaseCost": 500
+  },
+  {
+    "Label": "category.artisan",
+    "When": {
+      "ObjCategory": [
+        -26,
+        -27
+      ],
+      "ItemId": [
+      ]
+    },
+    "ResearchCount": 10,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.cooking",
+    "When": {
+      "ObjCategory": [
+        -26,
+        -27,
+        -7
+      ],
+      "ItemId": [
+        "Object:245",
+        "Object:246",
+        "Object:247",
+        "Object:349",
+        "Object:395",
+        "Object:403",
+        "Object:419",
+        "Object:423"
+      ],
+      "UniqueKey": [
+        "Bug Steak:874"
+      ]
+    },
+    "ResearchCount": 5,
+    "BaseCost": 100
+  },
+  {
+    "Label": "category.furniture",
+    "When": {
+      "Class": [
+        "StardewValley.Objects.Furniture"
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 50
+  },
+  {
+    "Label": "category.decor",
+    "When": {
+      "ObjCategory": [
+        -24
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 10
+  },
+  {
+    "Label": "category.junk",
+    "When": {
+      "UniqueKey": [
+        "Joja Cola:167",
+        "Trash:168",
+        "Driftwood:169",
+        "Broken Glasses:170",
+        "Broken CD:171",
+        "Soggy Newspaper:172"
+      ]
+    },
+    "ResearchCount": 1,
+    "BaseCost": 10
+  }
+]

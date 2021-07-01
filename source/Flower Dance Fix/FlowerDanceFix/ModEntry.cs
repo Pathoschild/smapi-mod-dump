@@ -9,12 +9,14 @@
 *************************************************/
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Harmony;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -28,6 +30,8 @@ namespace FlowerDanceFix
         public override void Entry(IModHelper helper)
         {
             Helper.Events.GameLoop.GameLaunched += onLaunched;
+            Helper.Events.GameLoop.DayStarted += onDayStarted;
+
             Config = Helper.ReadConfig<ModConfig>();
 
             // Initialize Patches
@@ -41,9 +45,12 @@ namespace FlowerDanceFix
             );
 
             Monitor.Log("Flower Dance Fix started using Harmony.", LogLevel.Trace);
+
         }
         private void onLaunched(object sender, GameLaunchedEventArgs e)
         {
+            Dictionary<string, string> SpriteDictionary = new Dictionary<string, string>();
+
             Config = Helper.ReadConfig<ModConfig>();
             var api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
 
@@ -58,7 +65,6 @@ namespace FlowerDanceFix
             api.RegisterParagraph(ModManifest, "Removes some of the hard-coded details of the flower dance festival main event, allowing for altered vanilla NPCs and custom NPCs to participate. Contains configurable options for dance pair generation. Only ''datable'' NPCs are considered valid for selection.");
             api.RegisterSimpleOption(ModManifest, "Maximum Dance Pairs (WIP)", "(WIP) Changes number of pairs dancing ***WILL NOT WORK FOR MORE THAN 6 PAIRS***", () => Config.MaxDancePairs, (int val) => Config.MaxDancePairs = val);
 
-
             api.RegisterSimpleOption(ModManifest, "NPCs Have Random Partners", "Pairs of NPCs dancing are arranged at random", () => Config.NPCsHaveRandomPartners, (bool val) => Config.NPCsHaveRandomPartners = val);
             api.RegisterSimpleOption(ModManifest, "Allow Mixed-Gendered Dance Lines (WIP)", "(WIP) Pairs of NPCs dancing are random pairs of random genders- will require additional sprites", () => Config.ForceHeteroPartners, (bool val) => Config.ForceHeteroPartners = val);
             api.RegisterSimpleOption(ModManifest, "Allow Non-Binary Dancers (WIP)", "(WIP) Allows NPCs that are not male or female (ie secret or unknown; gender is 2)- will require additional sprites.", () => Config.AllowNonBinaryPartners, (bool val) => Config.AllowNonBinaryPartners = val);
@@ -66,6 +72,12 @@ namespace FlowerDanceFix
             api.RegisterSimpleOption(ModManifest, "NPC Blacklist", "Configureable blacklist of NPCs preventing them from dancing- enclose NPC base name in quotes, deliniated by a forward slash, with no spaces.", () => Config.DancerBlackList, (string val) => Config.DancerBlackList = val);
             api.RegisterSimpleOption(ModManifest, "Allow Custom Crowd Animations", "Spectators in the crowd perform special animations during the dance. May shuffle NPCs around.", () => Config.AllowCrowdAnimation, (bool val) => Config.AllowCrowdAnimation = val);
         }
+
+        private void onDayStarted(object sender, DayStartedEventArgs e)
+        {
+            Helper.ReadConfig<ModConfig>();
+        }
     }
+
 }
 

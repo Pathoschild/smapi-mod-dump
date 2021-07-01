@@ -1,5 +1,9 @@
 ﻿{
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work. In line with the purpose of this mod, please avoid gender-specific words and inflection where possible.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
+	// - In line with the purpose of this mod, please avoid gender-specific words and inflection where possible.
 
 	"PregnancyRole": "Pregnancy Role",
 
@@ -7,7 +11,7 @@
 	"role_make": "Can Make Pregnant",
 	"role_adopt": "Always Adopt",
 
-	"NPC.cs.4442": "Ugh... I was up late childproofing the cabinets.",  
+	"NPC.cs.4442": "Ugh... I was up late childproofing the cabinets.",
 	"NPC.cs.4443": "We won't get much sleep when the baby arrives. Better sleep while we can.",
 	"NPC.cs.4445": "{0}, we're pregnant. Isn't it wonderful?",
 	"NPC.cs.4446": "Let's just sleep in today. We need a day off.",

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/5098
 IDs: spacechase0.GenericModConfigMenu
-update keys: Nexus:5098, Chucklefish:5898, GitHub:spacechase0/GenericModConfigMenu
+update keys: Nexus:5098, GitHub:spacechase0/StardewValleyMods

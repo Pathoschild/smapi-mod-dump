@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Surfing Festival for CP-A",
+    "Author": "spacechase0",
+    "Version": "1.0.6",
+    "Description": "Adds the animated prize for winning the surfing competition.",
+    "UniqueID": "spacechase0.SurfingFestival.CP-A",
+    "ContentPackFor": {
+        "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.ContentPatcherAnimations"
+        },
+        {
+            "UniqueID": "spacechase0.JsonAssets"
+        }
+    ],
+    "UpdateKeys": [ "Nexus:6688" ]
+}

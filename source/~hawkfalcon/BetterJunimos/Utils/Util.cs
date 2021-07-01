@@ -39,6 +39,7 @@ namespace BetterJunimos.Utils {
         internal static IReflectionHelper Reflection;
         internal static JunimoAbilities Abilities;
         internal static JunimoPayments Payments;
+        internal static JunimoProgression Progression;
 
         public static Guid GetHutIdFromHut(JunimoHut hut) {
             return Game1.getFarm().buildings.GuidOf(hut);

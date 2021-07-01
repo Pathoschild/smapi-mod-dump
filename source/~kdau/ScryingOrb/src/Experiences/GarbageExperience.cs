@@ -23,17 +23,16 @@ namespace ScryingOrb
 {
 	public class GarbageExperience : Experience
 	{
-		public override bool isAvailable =>
-			base.isAvailable && Garbage.IsAvailable;
+		public override bool isAvailable => Garbage.IsAvailable;
 
 		protected override bool check ()
 		{
 			// Require an appropriate offering.
 			if (!checkOffering (category: SObject.junkCategory))
 				return false;
-			
+
 			// Consume a total of 3 trash, combining across stacks in inventory.
-			Queue<Item> offerings = new Queue<Item> ();
+			Queue<Item> offerings = new ();
 			offerings.Enqueue (offering);
 			int stack = Math.Min (3, offering.Stack);
 			foreach (Item item in Game1.player.Items)
@@ -99,8 +98,7 @@ namespace ScryingOrb
 					break;
 				case "hat":
 					Garbage.Prediction? hat = Garbage.FindGarbageHat (today);
-					List<Garbage.Prediction> predictions =
-						new List<Garbage.Prediction> ();
+					List<Garbage.Prediction> predictions = new ();
 					if (hat.HasValue)
 						predictions.Add (hat.Value);
 					showPredictions (hat.HasValue ? hat.Value.date : today,
@@ -118,7 +116,7 @@ namespace ScryingOrb
 			List<Garbage.Prediction> predictions, string mode)
 		{
 			bool today = date == SDate.Now ();
-			List<string> pages = new List<string> ();
+			List<string> pages = new ();
 
 			// Show a special message for all cans being empty.
 			if (predictions.Count == 0)
@@ -131,7 +129,7 @@ namespace ScryingOrb
 			else
 			{
 				// Build the list of predictions.
-				List<string> lines = new List<string>
+				List<string> lines = new ()
 				{
 					Helper.Translation.Get ($"garbage.header.{(today ? "today" : "later")}", new
 					{
@@ -140,8 +138,7 @@ namespace ScryingOrb
 				};
 
 				// Randomize the order of predictions for variety.
-				Random rng = new Random ((int) Game1.uniqueIDForThisGame +
-					date.DaysSinceStart);
+				Random rng = new ((int) Game1.uniqueIDForThisGame + date.DaysSinceStart);
 
 				foreach (Garbage.Prediction prediction in
 					predictions.OrderBy ((Garbage.Prediction a) => rng.Next ()))

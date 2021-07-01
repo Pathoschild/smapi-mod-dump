@@ -1,7 +1,7 @@
 {
   "Name": "Silo Size",
   "Author": "pepoluan",
-  "Version": "0.2.0",
+  "Version": "0.3.0",
   "Description": "Change size of silo",
   "UniqueID": "pepoluan.SiloSize",
   "EntryDll": "SiloSize.dll",
@@ -19,6 +19,7 @@
     "0.0.1": "Proof of concept",
     "0.1.0": "Provide token for ContentPatcher to be used in CP content packs",
     "0.1.1": "Lower API version requirement to try to cater for the Android folks",
-    "0.2.0": "Change patching strategy for Object.checkForAction and improve compatibility with PFM"
+    "0.2.0": "Change patching strategy for Object.checkForAction and improve compatibility with PFM",
+    "0.3.0": "Change patching strategy for Buildings.Building.doAction, add low hay warning"
   }
 }

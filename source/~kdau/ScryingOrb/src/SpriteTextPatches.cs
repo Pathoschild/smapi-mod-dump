@@ -43,11 +43,13 @@ namespace ScryingOrb
 			);
 		}
 
+#pragma warning disable IDE1006
+
 		public static void FixFontPixelZoom ()
 		{
 			try
 			{
-				if (ModEntry.Instance.OrbsIlluminated > 0)
+				if (ModEntry.Instance.orbsIlluminated > 0)
 				{
 					float altZoom = 2.5f;
 					if (Game1.activeClickableMenu is DialogueBox db &&

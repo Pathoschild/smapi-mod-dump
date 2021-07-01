@@ -9,7 +9,10 @@
 *************************************************/
 
 {
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
 
 	"garbage.event.linus01": "Vous avez trouvé quelque chose de bien ?",
 	"garbage.event.linus02": "Salut @. Je suis heureux de voir que les poubelles vous interesse encore.",
@@ -54,6 +57,7 @@
 	"mining.opening": "Salut, les aventuriers. Gil et moi avons des nouvelles sur ce qui se passe dans les mines aujourd'hui.",
 	"mining.opening.none": "Salut, les aventuriers. Rien à signaler dans les mines aujourd'hui.",
 	"mining.floor": "étage {{num}}",
+	"mining.floorAndItem": "étage {{num}}: {{itemName}}",
 	"mining.floors": "étages {{nums}} et {{lastNum}}",
 	"mining.prediction.Mushroom": "Il y a des champignons parmi nous ! Nos éclaireurs ont repéré des champignons qui poussent à l'étage {{floors}}.",
 	"mining.prediction.MonsterInfested": "Suivi de l'activité des monstres lourds au {{floors}}. Armez-vous.",
@@ -79,9 +83,9 @@
 	"nightEvents.Meteorite.reaction": "Nous vous conseillons vivement de rester à l'intérieur toute la nuit. La vue peut être appréciée depuis vos fenêtres. Veuillez signaler tout impact de météorite aux autorités locales.",
 	"nightEvents.Meteorite.closing": "Je vous souhaite à tous une soirée agréable et sûre.",
 	"nightEvents.StrangeCapsule.opening": "Chers concitoyens, des rumeurs ont circulé sur l'activité extraterrestre dans le ciel de notre région ce soir.",
-	"//Note on nightEvents.StrangeCapsule.reaction": "The next line is a joke about the Governor supposedly being an alien himself. During the line, he turns green and the background becomes distorted. The last sentence is meant to suggest that he has accidentally started talking about alien larvae being bred on Earth.",
+	// The next line is a joke about the Governor supposedly being an alien himself. During the line, he turns green and the background becomes distorted. The last sentence is meant to suggest that he has accidentally started talking about alien larvae being bred on Earth.
 	"nightEvents.StrangeCapsule.reaction": "Je peux vous assurer que cela n'a aucun sens. Les extraterrestres n'existent pas. Ils ne sont pas déjà parmi nous. Tout va bien. LA PROGÉNITURE EST EN BONNE SANTÉ.",
-	"//Note on nightEvents.StrangeCapsule.closing": "For this line, the Governor and the background return to normal. The word 'human' here is a joke because he obviously isn't human.",
+	// For the next line, the Governor and the background return to normal. The word 'human' here is a joke because he obviously isn't human.
 	"nightEvents.StrangeCapsule.closing": "*soupir* Je vous souhaite à tous une soirée normale et humaine.",
 	"nightEvents.NewYear.opening": "Chers concitoyens, nous sommes arrivés à la fin d'une année fructueuse pour notre région et pour toute la République de Ferngill.",
 	"nightEvents.NewYear.reaction": "Félicitations à nos industries pour leur production en constante amélioration, en particulier les excellentes récoltes de Stardew Valley.",
@@ -114,13 +118,13 @@
 	"trains.later": "En regardant plus loin dans le trafic, je vois que des trains sont également prévus pour passer le {{date1}}, et le {{date2}}.",
 	"trains.closing": "N'oubliez pas que vous manquerez probablement le train si vous avez passé la nuit loin de la vallée. Bonne chasses aux trains !",
 
-	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+	// The remaining strings are the names and descriptions of options in the mod's config menu.
 
-	"InaccuratePredictions.name": "Inaccurate Predictions",
-	"InaccuratePredictions.description": "Reveal channels whose information is inaccurate due to the presence of conflicting mods. For entertainment purposes only.",
+	"InaccuratePredictions.name": "Inaccurate Predictions", // TODO
+	"InaccuratePredictions.description": "Reveal channels whose information is inaccurate due to game version mismatch and/or conflicting mods. For entertainment purposes only.", // TODO
 
-	"Cheats.name": "Cheat Options",
+	"Cheats.name": "Cheat Options", // TODO
 
-	"BypassFriendships.name": "Bypass Friendships",
-	"BypassFriendships.description": "Put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player."
+	"BypassFriendships.name": "Bypass Friendships", // TODO
+	"BypassFriendships.description": "Put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player." // TODO
 }

@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/kdau/prismaticpride
+   Git: https://gitlab.com/kdau/prismaticpride.git
+
+mods:
+   Prismatic Pride
+
+latest commit:
+   commit 9877121ec28dcacd9ca7aeedcba9145e52900bda
+   Author: Kevin Daughtridge <kevin@kdau.com>
+   Date:   Sat Jun 26 23:15:18 2021 -0700
+   
+       v1.0.1
+   

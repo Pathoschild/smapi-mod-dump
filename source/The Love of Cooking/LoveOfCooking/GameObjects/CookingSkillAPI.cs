@@ -25,13 +25,15 @@ namespace LoveOfCooking.GameObjects
 			GiftBoost,
 			SalePrice,
 			ExtraPortion,
-			BuffDuration
+			BuffDuration,
+			COUNT
 		}
 
 		bool IsEnabled();
 		CookingSkill GetSkill();
 		int GetLevel();
-		bool HasProfession(Profession profession, long playerID = -1L);
+		Dictionary<ICookingSkillAPI.Profession, bool> GetCurrentProfessions(long playerID = -1L);
+		bool HasProfession(ICookingSkillAPI.Profession profession, long playerID = -1L);
 		bool AddExperienceDirectly(int experience);
 		void AddCookingBuffToItem(string name, int value);
 		int GetTotalCurrentExperience();
@@ -69,6 +71,18 @@ namespace LoveOfCooking.GameObjects
 		public int GetLevel()
 		{
 			return Skills.GetSkillLevel(Game1.player, CookingSkill.InternalName);
+		}
+
+		/// <returns>A dictionary of all possible Cooking professions and whether each is active.</returns>
+		public Dictionary<ICookingSkillAPI.Profession, bool> GetCurrentProfessions(long playerID = -1L)
+		{
+			var dict = new Dictionary<ICookingSkillAPI.Profession, bool>();
+			for (int i = 0; i < (int)ICookingSkillAPI.Profession.COUNT; ++i)
+			{
+				var profession = (ICookingSkillAPI.Profession)i;
+				dict.Add(profession, this.HasProfession(profession: profession, playerID: playerID));
+			}
+			return dict;
 		}
 
 		/// <returns>Whether the player has unlocked and chosen the given profession.</returns>
@@ -115,12 +129,14 @@ namespace LoveOfCooking.GameObjects
 		public int GetExperienceRequiredForLevel(int level)
 		{
 			CookingSkill skill = this.GetSkill();
-			return level switch
-			{
-				0 => 0,
-				1 => skill.ExperienceCurve[level - 1],
-				_ => skill.ExperienceCurve[level - 1] - skill.ExperienceCurve[level - 2]
-			};
+			return level > 0 && level <= skill.ExperienceCurve.Length
+				? level switch
+				{
+					0 => 0,
+					1 => skill.ExperienceCurve[level - 1],
+					_ => skill.ExperienceCurve[level - 1] - skill.ExperienceCurve[level - 2]
+				}
+				: 0;
 		}
 
 		/// <returns>Accumulated experience required to reach this level from zero.</returns>

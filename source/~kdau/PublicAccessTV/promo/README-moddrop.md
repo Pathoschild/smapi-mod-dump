@@ -6,39 +6,36 @@ for queries and analysis.**
 
 ----
 
-![[icon]](https://kdau.gitlab.io/PublicAccessTV/icon.png) Your friends in the valley take to the airwaves to keep you apprised of today's mining conditions, garbage loot, train schedules, rare events and more.
+![[icon]](https://www.kdau.com/PublicAccessTV/icon.png) Your friends in the valley take to the airwaves to keep you apprised of today's mining conditions, garbage loot, train schedules, rare events and more.
 
 This mod is largely based on the [Stardew Predictor](https://mouseypounds.github.io/stardew-predictor/) web app by MouseyPounds, whose tools are all worth a look. Its companion mod, [Scrying Orb](https://www.moddrop.com/stardew-valley/mods/756553-scrying-orb), offers a different route to some of the same information and more, but looks well beyond the current game day.
 
-## ![[Compatibility]](https://kdau.gitlab.io/headers/compatibility.png)
+## ![[Compatibility]](https://www.kdau.com/headers/compatibility.png)
 
-This version of Public Access TV is compatible with **Stardew Valley 1.4.x**. When SDV 1.5 is released, some of this mod's predictions will start being wrong. I'll put out a new version at that point.
+**Game:** Stardew Valley 1.5.x (predictions may be wrong for any future 1.6)
 
-This mod should work on **Linux, macOS, Windows and Android**.
+**Platform:** Linux, macOS or Windows (Android: use 1.4 version)
 
-There are no known problems with multiplayer use. Only players with the mod installed will see the new channels.
+**Multiplayer:** works; only players wanting the new channels need to install
 
-There are no known conflicts with other mods. Public Access TV fully supports the following:
+**Other mods:** There are no known outright conflicts. These mods are handled specially:
 
-* [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753) (different arrangement of garbage cans)
+* [Better Garbage Cans](https://www.nexusmods.com/stardewvalley/mods/4171): This mod's "In the Cans" channel is hidden.
+* [Better Train Loot](https://www.nexusmods.com/stardewvalley/mods/4234): This mod's "Train Timetable" channel is hidden.
+* [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753): This mod's "In the Cans" channel correctly reflects the different arrangement of garbage cans.
 
-When one of the following mods is installed, the related channel is hidden because it would not be accurate:
+If any of your other mods affect the areas this mod covers, the TV may make incorrect predictions. If you would like me to add support for another mod, please open an issue [on GitLab](https://gitlab.com/kdau/predictivemods/-/issues) or in the Bugs tab above.
 
-* [Better Garbage Cans](https://www.nexusmods.com/stardewvalley/mods/4171)
-* [Better Train Loot](https://www.nexusmods.com/stardewvalley/mods/4234)
+## ![[Installation]](https://www.kdau.com/headers/installation.png)
 
-If any of your other mods affect the areas this mod covers, the TV may make incorrect predictions. If you would like me to add support for another mod,please open an issue [on GitLab](https://gitlab.com/kdau/predictivemods/-/issues) or in the Bugs tab above.
+1. Install [SMAPI](https://smapi.io/)
+1. Install [PlatoTK](https://www.nexusmods.com/stardewvalley/mods/6589) (This is different from PyTK!)
+1. Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) (optional, for easier configuration)
+1. Download this mod from the link in the header above
+1. Unzip the mod and place the `PublicAccessTV` folder inside your `Mods` folder
+1. Run the game using SMAPI
 
-## ![[Installation]](https://kdau.gitlab.io/headers/installation.png)
-
-1. Install the latest version of [SMAPI](https://smapi.io/).
-1. Install the latest version of the [PyTK](https://www.nexusmods.com/stardewvalley/mods/1726) mod.
-1. To configure this mod without editing a JSON file, optionally install the [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) mod.
-1. Download this mod from the link in the header above.
-1. Unzip the mod and place the `PublicAccessTV` folder inside your `Mods` folder.
-1. Run the game using SMAPI.
-
-## ![[Use]](https://kdau.gitlab.io/headers/use.png)
+## ![[Use]](https://www.kdau.com/headers/use.png)
 
 Generally, you will need to befriend the host of a program and see a special event with them to get them to start broadcasting. After that, simply turn on any TV and choose the program you want to see.
 
@@ -64,26 +61,25 @@ Each day, Demetrius comes to you from his lab with a look at the trains schedule
 
 **(Spoiler for late-game 1.4 content)** Movie Sneak Preview: Once the movie theater opens, your friendly concessionaire will announce the featured and coming attraction daily. She'll also tip you off on whether there's a line for the ever-popular crane game.
 
-## ![[Configuration]](https://kdau.gitlab.io/headers/configuration.png)
+## ![[Configuration]](https://www.kdau.com/headers/configuration.png)
 
 If you have installed Generic Mod Config Menu, you can access this mod's configuration by clicking the cogwheel button at the lower left corner of the Stardew Valley title screen and then choosing "Public Access TV".
 
-Otherwise, you can edit the mod's `config.json` file; it will be generated in the mod's main folder (`Mods/PublicAccessTV`) the first time you run it. These options are available:
+Otherwise, you can edit this mod's `config.json` file. It will be created in the mod's main folder (`Mods/PublicAccessTV`) the first time you run the game with the mod installed. These options are available:
 
-* `InaccuratePredictions`: Set this to `true` to enable channels whose information is inaccurate due to the presence of conflicting mods. For entertainment purposes only.
+* `InaccuratePredictions`: Set this to `true` to enable channels whose information is inaccurate due to game version mismatch and/or conflicting mods. For entertainment purposes only.
 * `BypassFriendships`: Set this to `true` to put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player.
 
-## ![[Translation]](https://kdau.gitlab.io/headers/translation.png)
+## ![[Translation]](https://www.kdau.com/headers/translation.png)
 
 This mod can be translated into any language supported by Stardew Valley. It is currently available in English, French, Korean, Portuguese, Russian and Simplified Chinese.
 
-Your contribution would be welcome. Please see the [details on the wiki](https://stardewvalleywiki.com/Modding:Translations) for help. You can send me your work in an issue [on GitLab](https://gitlab.com/kdau/predictivemods/-/issues), in the Bugs tab above or by DM on Discord.
+Your contribution would be welcome. Please see the [details on the wiki](https://stardewvalleywiki.com/Modding:Translations) for help. You can send me your work in [a GitLab issue](https://gitlab.com/kdau/predictivemods/-/issues) or the Comments tab above.
 
-## ![[Acknowledgments]](https://kdau.gitlab.io/headers/acknowledgments.png)
+## ![[Acknowledgments]](https://www.kdau.com/headers/acknowledgments.png)
 
-* Like all mods, this one is indebted to ConcernedApe, particularly for the vanilla assets it adapts.
+* Like all mods, this one is indebted to ConcernedApe, Pathoschild and the various framework modders.
 * The prediction logic behind this mod is largely ported from the [Stardew Predictor](https://mouseypounds.github.io/stardew-predictor/) web app by MouseyPounds.
-* This mod would not function without [SMAPI](https://smapi.io/) by Pathoschild and [PyTK](https://www.nexusmods.com/stardewvalley/mods/1726) by Platonymous.
 * Coding of this mod relied on [Climates of Ferngill](https://www.moddrop.com/stardew-valley/mods/664033-climates-of-ferngill) by Sakorona as a key example.
 * The #making-mods channel on the [Stardew Valley Discord](https://discordapp.com/invite/StardewValley) offered valuable guidance and feedback.
 * The French translation was prepared by Inu'tile.
@@ -94,25 +90,21 @@ Your contribution would be welcome. Please see the [details on the wiki](https:/
 * The "Governor's Message" channel's opening jingles are clipped from [News jingle](https://freesound.org/people/jobro/sounds/169214/) by [jobro](https://freesound.org/people/jobro/), used under [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/), and [jingle news](https://freesound.org/people/Jay_You/sounds/460424/) by [Stonefree](http://www.stonefree.de/), used under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 * **(Spoiler for late-game 1.4 content)** The "Movie Sneak Preview" channel's concessions ambient is assembled from [Popcorn Machine.mp3](https://freesound.org/people/kentdavies959/sounds/466661/) by [kentdavies959](https://freesound.org/people/kentdavies959/), used under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), and [Pouring Carbonated Beverage Fizz.wav](https://freesound.org/people/baidonovan/sounds/187355/) by [baidonovan](https://freesound.org/people/baidonovan/), in the public domain.
 
-## ![[See also]](https://kdau.gitlab.io/headers/see-also.png)
+## ![[See also]](https://www.kdau.com/headers/see-also.png)
 
-* [Release notes](https://gitlab.com/kdau/predictivemods/-/blob/master/PublicAccessTV/RELEASE-NOTES.md) for existing versions
-* [Discord channel](https://discord.gg/vUGR4Y4) to discuss this mod
-* [Issue tracker](https://gitlab.com/kdau/predictivemods/-/issues) for bug reports and feature plans
-* [MIT license](https://gitlab.com/kdau/predictivemods/-/blob/master/LICENSE) (TLDR: do whatever, but credit me)
-* [My other mods](https://kdau.gitlab.io)
-
-Mirrors:
-
-* [This mod on GitLab](https://gitlab.com/kdau/predictivemods/-/tree/master/PublicAccessTV)
-* [This mod on Nexus](https://www.nexusmods.com/stardewvalley/mods/5605)
-* **This mod on ModDrop**
-* [This mod on the forums](https://forums.stardewvalley.net/index.php?resources/public-access-tv.55/)
+* [Release notes](https://gitlab.com/kdau/predictivemods/-/blob/master/PublicAccessTV/RELEASE-NOTES.md)
+* [Source code](https://gitlab.com/kdau/predictivemods/-/tree/master/PublicAccessTV)
+* [Report bugs](https://gitlab.com/kdau/predictivemods/-/issues)
+* [My other Stardew stuff](https://www.kdau.com/stardew)
+* Mirrors:
+	* [Nexus](https://www.nexusmods.com/stardewvalley/mods/5605),
+	* **ModDrop**,
+	* [forums](https://forums.stardewvalley.net/resources/public-access-tv.55/)
 
 Other things you may enjoy:
 
-* ![[icon]](https://kdau.gitlab.io/PortableTV/icon.png) [Portable TV](https://www.moddrop.com/stardew-valley/mods/761325-portable-tv) mod to watch these channels on the go
-* ![[icon]](https://kdau.gitlab.io/ScryingOrb/icon.png) [Scrying Orb](https://www.moddrop.com/stardew-valley/mods/756553-scrying-orb) mod for mystical, forward-looking predictions
+* ![[icon]](https://www.kdau.com/PortableTV/icon.png) [Portable TV](https://www.moddrop.com/stardew-valley/mods/761325-portable-tv) mod to watch these channels on the go
+* ![[icon]](https://www.kdau.com/ScryingOrb/icon.png) [Scrying Orb](https://www.moddrop.com/stardew-valley/mods/756553-scrying-orb) mod for mystical, forward-looking predictions
 * ![[icon]](https://mouseypounds.github.io/stardew-predictor/favicon_p.png) [Stardew Predictor](https://mouseypounds.github.io/stardew-predictor/) web app to see all the predictions at once
 * [Gardening with Hisame](https://www.nexusmods.com/stardewvalley/mods/5485) mod for farm beautification tips via TV
 * [Monthly Mail](https://www.nexusmods.com/stardewvalley/mods/4523) mod for more periodic content themed around your game activity

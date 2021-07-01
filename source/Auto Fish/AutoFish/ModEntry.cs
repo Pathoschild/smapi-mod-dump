@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -16,37 +17,30 @@ using StardewValley.Tools;
 
 namespace AutoFish
 {
-    /// <summary>The mod entry class.</summary>
     public class ModEntry : Mod
     {
         private ModConfig Config;
         private bool catching = false;
 
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            Config = Helper.ReadConfig<ModConfig>();
-
-            //Events
+            Config = this.Helper.ReadConfig<ModConfig>();
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
         }
 
-        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (Game1.player == null)
+            Farmer player = Game1.player;
+            if (!Context.IsWorldReady || player == null)
                 return;
 
-            if (Game1.player.CurrentTool is FishingRod currentTool)
+            if (player.CurrentTool is FishingRod currentTool)
             {
                 if (Config.fastBite && currentTool.timeUntilFishingBite > 0)
                     currentTool.timeUntilFishingBite /= 2; // 快速咬钩
 
                 if (Config.autoHit && currentTool.isNibbling && !currentTool.isReeling && !currentTool.hit && !currentTool.pullingOutOfWater && !currentTool.fishCaught)
-                    currentTool.DoFunction(Game1.player.currentLocation, 1, 1, 1, Game1.player); // 自动咬钩
+                    currentTool.DoFunction(player.currentLocation, 1, 1, 1, player); // 自动咬钩
 
                 if (Config.maxCastPower)
                     currentTool.castingPower = 1;
@@ -83,11 +77,13 @@ namespace AutoFish
                 {
                     bobberBarSpeed -= 0.35f + (min - fishPos) / 20;
                     Helper.Reflection.GetField<float>(bar, "bobberBarSpeed").SetValue(bobberBarSpeed);
-                } else if (fishPos > max)
+                }
+                else if (fishPos > max)
                 {
                     bobberBarSpeed += 0.35f + (fishPos - max) / 20;
                     Helper.Reflection.GetField<float>(bar, "bobberBarSpeed").SetValue(bobberBarSpeed);
-                } else
+                }
+                else
                 {
                     float target = 0.1f;
                     if (bobberBarSpeed > target)
@@ -97,7 +93,8 @@ namespace AutoFish
                             bobberBarSpeed /= 2; // 减小触底反弹
                         if (bobberBarSpeed < target)
                             bobberBarSpeed = target;
-                    } else
+                    }
+                    else
                     {
                         bobberBarSpeed += 0.1f + (target - bobberBarSpeed) / 25;
                         if (barPos + bobberBarSpeed < 0)

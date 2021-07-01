@@ -24,8 +24,7 @@ namespace PregnancyRole
 		private static HarmonyInstance Harmony => ModEntry.Instance.harmony;
 		private static ModConfig Config => ModConfig.Instance;
 
-		private static Dictionary<Farmer, bool> GenderOverrides =
-			new Dictionary<Farmer, bool> ();
+		private static readonly Dictionary<Farmer, bool> GenderOverrides = new ();
 
 		public static void Apply ()
 		{
@@ -63,6 +62,8 @@ namespace PregnancyRole
 					nameof (PregnancyRolePatches.Postfix))
 			);
 		}
+
+#pragma warning disable IDE1006
 
 		public static bool Prefix ()
 		{
@@ -116,6 +117,8 @@ namespace PregnancyRole
 				return true;
 			}
 		}
+
+#pragma warning restore IDE1006
 
 		private static void OverrideFarmers (Farmer farmer1, Farmer farmer2)
 		{

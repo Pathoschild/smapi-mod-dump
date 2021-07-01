@@ -5,34 +5,33 @@
     "Edibility": -300,
     "EdibleIsDrink": false,
     "Price": 50,
+    "HideFromShippingCollection": true,
     "IsColored": false,
-    "Recipe": null,    
-    "NameLocalization":
-    {
+    "Recipe": null,
+    "NameLocalization": {
         // "es": "",
-		"ko": "값싼 부적?",
+        // "ko": "",
         // "de": "",
         // "fr": "",
         //"hu": "",
         //"it": "",
         // "ja": "",
-         "pt": "Amuleto Barato",
+        // "pt": "",
         // "ru": "",
         //"tr": "",
-        "zh": "便宜的护身符？"
+        // "zh": ""
     },
-    "DescriptionLocalization":
-    {
+    "DescriptionLocalization": {
         // "es": "",
-		"ko": "이 부적에 문제가 있는 것 같습니다. 왜 이렇게 싼지 궁금하네요.", 
+        // "ko": "",
         // "de": "",
         // "fr": "",
         //"hu": "",
         //"it": "",
         // "ja": "",
-         "pt": "Parece que há algo errado com este amuleto. Me pergunto porque é tão barato",
+        // "pt": "",
         // "ru": "",
         //"tr": "",
-        "zh": "这个护身符好像有点不对劲。不知道为什么这么便宜。"
-    },
+        // "zh": ""
+    }
 }

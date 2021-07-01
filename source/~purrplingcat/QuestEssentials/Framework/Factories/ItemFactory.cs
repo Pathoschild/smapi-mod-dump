@@ -359,24 +359,32 @@ namespace QuestEssentials.Framework.Factories
         {
             string[] descSplit = description.Trim().Split(' ');
             string[] tagSplit = descSplit[0].Trim().Split('_');
-            ItemType type = (ItemType)Enum.Parse(typeof(ItemType), tagSplit[0], ignoreCase: true);
-            string nameTag = "item_" + string.Join("_", tagSplit.Skip(1));
-            SearchableItem match = factory.GetAll()
-                .Where(p => p.Type == type && p.NameTag == nameTag)
-                .FirstOrDefault();
 
-            if (match != null && match.Item != null)
+            try
             {
-                if (descSplit.Contains("special"))
-                    match.Item.specialItem = true;
+                ItemType type = (ItemType)Enum.Parse(typeof(ItemType), tagSplit[0], ignoreCase: true);
+                string nameTag = "item_" + string.Join("_", tagSplit.Skip(1));
+                SearchableItem match = factory.GetAll()
+                    .Where(p => p.Type == type && p.NameTag == nameTag)
+                    .FirstOrDefault();
 
-                if (descSplit.Contains("quest") && match.Item is SObject obj)
-                    obj.questItem.Value = true;
+                if (match != null && match.Item != null)
+                {
+                    if (descSplit.Contains("special"))
+                        match.Item.specialItem = true;
 
-                if (descSplit.Contains("lost"))
-                    match.Item.isLostItem = true;
+                    if (descSplit.Contains("quest") && match.Item is SObject obj)
+                        obj.questItem.Value = true;
 
-                return match.Item;
+                    if (descSplit.Contains("lost"))
+                        match.Item.isLostItem = true;
+
+                    return match.Item;
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException($"Invalid item type '{tagSplit[0]}': {ex.Message}");
             }
 
             return null;

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8891
+IDs: Esca.TransparencySettings
+update keys: Nexus:8891, GitHub:Esca-MMC/TransparencySettings, ModDrop:971985

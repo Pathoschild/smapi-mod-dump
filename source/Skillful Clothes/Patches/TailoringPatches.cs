@@ -44,7 +44,7 @@ namespace SkillfulClothes.Patches
                 // Tailoring menu got closed
                 if (!String.IsNullOrEmpty(DeferredMessage))
                 {                    
-                    Game1.addHUDMessage(new CustomHUDMessage(DeferredMessage, FailedItem, Color.Black, TimeSpan.FromSeconds(10)));                    
+                    Game1.addHUDMessage(new CustomHUDMessage(DeferredMessage, FailedItem, Color.DarkGray, TimeSpan.FromSeconds(3)));                    
                     DeferredMessage = null;
                 }
             }

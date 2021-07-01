@@ -1,7 +1,7 @@
 {
   "Name": "FishExclusions",
   "Author": "GZhynko",
-  "Version": "1.1.2",
+  "Version": "1.1.4",
   "Description": "Allows user to exclude certain fish or items from catchable fish types.",
   "UniqueID": "GZhynko.FishExclusions",
   "EntryDll": "FishExclusions.dll",

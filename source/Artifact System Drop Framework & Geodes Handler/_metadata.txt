@@ -1,0 +1,15 @@
+urls:
+   web: https://sourceforge.net/p/sdvmods-artifact-fix-redux/
+   Mercurial: http://hg.code.sf.net/p/sdvmods-artifact-fix-redux/code
+
+mods:
+   Artifact System Drop Framework & Geodes Handler
+
+latest commit:
+   changeset:   39:2035cba06c69
+   tag:         tip
+   user:        Pandu POLUAN <pepoluan@gmail.com>
+   date:        Tue Jun 29 19:19:39 2021 +0700
+   summary:     Added tag 0.3.0 for changeset 5cc001c4d814
+   
+   

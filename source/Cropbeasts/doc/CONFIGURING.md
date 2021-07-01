@@ -10,15 +10,21 @@ for queries and analysis.**
 
 If you have installed Generic Mod Config Menu, you can access this mod's configuration by clicking the cogwheel button at the lower left corner of the Stardew Valley title screen and then choosing "Cropbeasts".
 
-If you have not installed GMCM, or if you need to make direct edits, you can configure this mod by editing its `config.json` file. That file will be generated in the mod's main folder (`Mods/Cropbeasts`) the first time you run it.
+If you have not installed GMCM, or if you need to make direct edits, you can configure this mod by editing its `config.json` file. That file will be create in the mod's main folder (`Mods/Cropbeasts`) the first time you run the game with the mod installed.
 
 ## Spawning
 
-### Spawn on Any Farm
+### Bypass Magi-Seal of Protection
 
 Whether to spawn cropbeasts on farms that don't otherwise have monsters, disregarding the Wilderness Farm type and the Dark Statue of Night Terrors.
 
 `"SpawnOnAnyFarm"`: `true`, `false` (default)
+
+### Daily Chance
+
+How likely it is for any cropbeasts to spawn on any given day. This chance does not guarantee spawns.
+
+`"DailyChance"`: number between `0.0` (0%) and `1.0` (100%); default is `1.0`
 
 ### Allow Simultaneous Cropbeasts
 
@@ -28,17 +34,22 @@ Whether additional cropbeasts can spawn while another cropbeast is still active.
 
 ### Outdoor Spawn Limit
 
-How many times per day cropbeasts can spawn outdoors on the farm.
+How many times per day cropbeasts can spawn outdoors on a farm.
 
-Set to `-1` for unlimited spawns. Set to `0` to disable outdoor cropbeasts.
+<details>
+<summary>Spoiler for late-game 1.5 content</summary>
+The farm on Ginger Island uses this number too, but counts towards a separate limit.
+</details>
+
+Set to `-1` for unlimited spawns. Set to `0` to prevent outdoor cropbeasts.
 
 `"OutdoorSpawnLimit"`: integer; default is `5`
 
 ### Indoor Spawn Limit
 
-How many times per day cropbeasts can spawn indoors in the greenhouse.
+How many times per day cropbeasts can spawn indoors in a greenhouse.
 
-Set to `-1` for unlimited spawns. Set to `0` to disable indoor cropbeasts.
+Set to `-1` for unlimited spawns. Set to `0` to prevent indoor cropbeasts.
 
 `"IndoorSpawnLimit"`: integer; default is `2`
 
@@ -46,7 +57,7 @@ Set to `-1` for unlimited spawns. Set to `0` to disable indoor cropbeasts.
 
 The radius (in tiles) around a Wicked Statue where crops are protected from becoming cropbeasts.
 
-Set to `-1` for infinite range. Set to `0` to disable the statues. (Scarecrows have a range of 9 tiles.)
+Set to `-1` for infinite range. Set to `0` to ignore the statues. (Scarecrows have a range of 9 tiles.)
 
 `"WickedStatueRange"`: integer; default is `9`
 
@@ -105,4 +116,5 @@ A list of cropbeasts that should *not* be spawned. Add names to the list if cert
 * `"Ancient Beast"`
 * `"Cactusbeast"`
 * `"Coffeebeast"`
+* `"Qi Beast"`
 * `"Starbeast"`

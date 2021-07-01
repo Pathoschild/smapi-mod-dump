@@ -100,6 +100,11 @@
 	"item.vegetable.label": "Овощи (Любые)",
 	"item.meat.label": "Мясо (Любое)",
 	"item.forage.label": "Корм (Любой)",
+	"item.cooking.label": "Готовка (любая)",
+	"item.mineral.label": "Минерал (Любой)",
+	"item.seed.label": "Семена (Любое)",
+	"item.metal.label": "металл/руды (Любой)",
+	"item.gem.label": "Драгоценный камень (любой)",
 
 	// Kebab item interactions
 	"buff.kebab.quality_worst": "Гнилой ",

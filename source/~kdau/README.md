@@ -16,10 +16,10 @@ Both mods are crafted by kdau and proffered under an [MIT license](LICENSE). The
 
 * ![[icon]](PublicAccessTV/promo/icon.png) **[Public Access TV](PublicAccessTV)**
 
-	*Your friends in the valley take to the airwaves to keep you apprised of today's mining conditions<!-- TODO: , shopping opportunities -->, garbage loot, train schedules, rare events and more.*
+	*Your friends in the valley take to the airwaves to keep you apprised of today's mining conditions, garbage loot, train schedules, rare events and more.*
 
 * ![[icon]](ScryingOrb/promo/icon.png) **[Scrying Orb](ScryingOrb)**
 
-	*Craft a Scrying Orb with a recipe from Welwick and you too can peer into the future. Make an offering to the spirits to scry mining conditions, geode contents, rare events<!-- TODO: , shopping opportunities --> or garbage loot.*
+	*Craft a Scrying Orb with a recipe from Welwick and you too can peer into the future. Make an offering to the spirits to scry mining conditions, geode contents, rare events, garbage loot and more.*
 
-## [My other mods](https://kdau.gitlab.io)
+## [My other Stardew stuff](https://www.kdau.com/stardew)

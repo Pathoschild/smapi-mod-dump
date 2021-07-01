@@ -6,9 +6,9 @@ mods:
    Expanded Fridge
 
 latest commit:
-   commit 0e2e510c6524c0c6d0d38200159e604ab8c55aa1
+   commit 10f7936a7ecd4089525a7d6279075a7c3492a287
    Author: Emil SundstrÃ¶m <flash_port@hotmail.com>
-   Date:   Thu Jul 30 12:17:30 2020 +0200
+   Date:   Sat Jun 12 16:11:47 2021 +0200
    
-       Individual mutex calls for mini fridge tabs and better arrow placement for symmetry.
+       adjusting the color picker in fridge tab grab menus
    

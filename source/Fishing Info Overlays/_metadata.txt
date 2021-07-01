@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/barteke22/StardewMods
+   Git: https://github.com/barteke22/StardewMods.git
+
+mods:
+   Fishing Info Overlays
+
+latest commit:
+   commit e58c6c7b8b37c0702d6c46fadede855521624b59
+   Author: barteke22 <bartosz2008@hotmail.com>
+   Date:   Thu Jul 1 01:09:14 2021 +0200
+   
+       EndMinigame1 V0.5
+   

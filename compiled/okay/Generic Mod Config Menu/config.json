@@ -1,12 +1,12 @@
 {
-  "dummyBool": true,
-  "dummyInt1": 50,
-  "dummyInt2": 50,
-  "dummyFloat1": 0.5,
-  "dummyFloat2": 0.5,
-  "dummyString1": "Kirby",
-  "dummyString2": "Default",
-  "dummyKeybinding": "K",
-  "dummyKeybinding2": "LeftShift + S",
-  "dummyColor": "255, 255, 255, 255"
+  "DummyBool": true,
+  "DummyInt1": 50,
+  "DummyInt2": 50,
+  "DummyFloat1": 0.5,
+  "DummyFloat2": 0.5,
+  "DummyString1": "Kirby",
+  "DummyString2": "Default",
+  "DummyKeybinding": "K",
+  "DummyKeybinding2": "LeftShift + S",
+  "DummyColor": "255, 255, 255, 255"
 }

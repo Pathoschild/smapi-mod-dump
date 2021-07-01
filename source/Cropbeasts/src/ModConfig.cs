@@ -23,7 +23,11 @@ namespace Cropbeasts
 
 		internal static ModConfig Instance { get; private set; }
 
+#pragma warning disable IDE1006
+
 		public bool SpawnOnAnyFarm { get; set; } = false;
+
+		public float DailyChance { get; set; } = 1f;
 
 		public bool AllowSimultaneous { get; set; } = false;
 
@@ -39,9 +43,7 @@ namespace Cropbeasts
 
 		public bool TrackingArrows { get; set; } = false;
 
-#if DEBUG
-		public bool BoundingBoxes { get; set; } = false;
-#endif
+		public bool Testing { get; set; } = false;
 
 		public List<string> ExcludedBeasts { get; } = new List<string> ();
 
@@ -51,6 +53,8 @@ namespace Cropbeasts
 		public bool CactusbeastSandblast { get; set; } = true;
 
 		public bool RootbeastHiding { get; set; } = true;
+
+#pragma warning restore IDE1006
 
 		internal static void Load ()
 		{
@@ -76,6 +80,7 @@ namespace Cropbeasts
 
 			var manifest = ModEntry.Instance.ModManifest;
 			api.RegisterModConfig (manifest, Reset, Save);
+			api.SetDefaultIngameOptinValue (manifest, true);
 
 			api.RegisterLabel (manifest,
 				Helper.Translation.Get ("Spawning.name"),
@@ -86,6 +91,13 @@ namespace Cropbeasts
 				Helper.Translation.Get ("SpawnOnAnyFarm.description"),
 				() => Instance.SpawnOnAnyFarm,
 				(bool value) => Instance.SpawnOnAnyFarm = value);
+
+			api.RegisterClampedOption (manifest,
+				Helper.Translation.Get ("DailyChance.name"),
+				Helper.Translation.Get ("DailyChance.description"),
+				() => Instance.DailyChance,
+				(float value) => Instance.DailyChance = value,
+				0f, 1f);
 
 			api.RegisterSimpleOption (manifest,
 				Helper.Translation.Get ("AllowSimultaneous.name"),
@@ -136,13 +148,11 @@ namespace Cropbeasts
 				() => Instance.TrackingArrows,
 				(bool value) => Instance.TrackingArrows = value);
 
-#if DEBUG
 			api.RegisterSimpleOption (manifest,
-				"Bounding Boxes",
-				"Draw bounding boxes around cropbeasts for debugging purposes.",
-				() => Instance.BoundingBoxes,
-				(bool value) => Instance.BoundingBoxes = value);
-#endif
+				"Testing Features",
+				"Activate features intended for testing of the mod.",
+				() => Instance.Testing,
+				(bool value) => Instance.Testing = value);
 
 			api.RegisterLabel (manifest,
 				Helper.Translation.Get ("ExcludedBeasts.name"),
@@ -168,8 +178,7 @@ namespace Cropbeasts
 				{
 				case "Berrybeast":
 					Type type = typeof (BerrybeastFaceType);
-					Dictionary<string, BerrybeastFaceType> options =
-						new Dictionary<string, BerrybeastFaceType> ();
+					Dictionary<string, BerrybeastFaceType> options = new ();
 					foreach (BerrybeastFaceType option in Enum.GetValues (type))
 					{
 						var message = Helper.Translation.Get

@@ -127,11 +127,13 @@ namespace FarmAnimalVarietyRedux.Patches
             // ensure the object attempted to be dropped into is an incubator
             if (__instance.Name != "Incubator" && __instance.Name != "Ostrich Incubator")
                 return;
-
+            
             // ensure incubator is empty and player is holding an item
             if (__instance.heldObject.Value != null || dropInItem == null)
                 return;
             var dropInObject = dropInItem.getOne() as Object;
+            if (dropInObject == null) // this is the case when trying to drop in a ring, or tool etc
+                return;
 
             // ensure the object is an incubator recipe
             var incubatorType = __instance.Name == "Incubator" ? IncubatorType.Regular : IncubatorType.Ostrich;

@@ -56,12 +56,12 @@ namespace BetterJunimos.Patches {
                     time = 0;
                 } else {
                     // succeeded, shake
-                    time = Util.Config.JunimoImprovements.WorkFaster ? 300 : 998;
+                    time = Util.Progression.WorkFaster ? 300 : 998;
                 }
             }
             else {
                 // nothing to do, wait a moment
-                time = Util.Config.JunimoImprovements.WorkFaster ? 5 : 200;
+                time = Util.Progression.WorkFaster ? 5 : 200;
                 __instance.pokeToHarvest();
             }
             ___harvestTimer = time;
@@ -74,11 +74,11 @@ namespace BetterJunimos.Patches {
     // Animate & handle action timer 
     public class PatchJunimoShake {
         public static void Postfix(JunimoHarvester __instance, ref int ___harvestTimer) {
-            if (Util.Config.JunimoImprovements.WorkFaster && ___harvestTimer == 999) {
+            if (Util.Progression.WorkFaster && ___harvestTimer == 999) {
                 // skip last second of harvesting if faster
                 ___harvestTimer = 0;
             }
-            else if (___harvestTimer > 500 && ___harvestTimer < 1000 || (Util.Config.JunimoImprovements.WorkFaster && ___harvestTimer > 5)) {
+            else if (___harvestTimer > 500 && ___harvestTimer < 1000 || (Util.Progression.WorkFaster && ___harvestTimer > 5)) {
                 __instance.shake(50);
             }
         }
@@ -107,8 +107,9 @@ namespace BetterJunimos.Patches {
         
         public static bool Prefix(JunimoHarvester __instance, ref NetGuid ___netHome, ref NetEvent1Field<int, NetInt> ___netAnimationEvent) {
             JunimoHut hut = Util.GetHutFromId(___netHome.Value);
-            int time = Util.Config.JunimoImprovements.CanWorkInEvenings ? 2400 : 1900;
+            int time = Util.Progression.CanWorkInEvenings ? 2400 : 1900;
             if (Game1.timeOfDay > time) {
+                Util.Progression.PromptForCanWorkInEvenings();
                 if (__instance.controller != null)
                     return false;
                 __instance.returnToJunimoHut(__instance.currentLocation);

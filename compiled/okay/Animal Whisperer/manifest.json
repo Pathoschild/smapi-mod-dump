@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Animal Whisperer",
+    "Author": "Shaklin",
+    "Version": "1.2",
+    "Description": "Animals follow you with hay",
+    "UniqueID": "shaklin.animalwhisperer",
+    "EntryDll": "AnimalWhisperer.dll",
+    "MinimumApiVersion": "2.10.1",
+    "UpdateKeys": [ "Nexus: 8885" ]
+}

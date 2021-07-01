@@ -7,9 +7,9 @@ mods:
    Skull Cavern Drill
 
 latest commit:
-   commit f3b94ff0dc5e93d5a3e656c563284b2fb3d9a8e6
-   Author: S1mmyy <58746715+S1mmyy@users.noreply.github.com>
-   Date:   Thu May 20 17:08:20 2021 -0400
+   commit cfce4ed71f84d8888550d1a79a0423b22853e797
+   Author: S1mmyy <simmypoo385@gmail.com>
+   Date:   Mon Jun 14 17:46:08 2021 -0400
    
-       Delete Skull Cavern Drill.sln
+       Removed unnecessary files from being tracked
    

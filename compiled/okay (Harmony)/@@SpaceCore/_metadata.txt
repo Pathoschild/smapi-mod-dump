@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/1348
 IDs: spacechase0.SpaceCore
-update keys: Nexus:1348, Chucklefish:4868, GitHub:spacechase0/SpaceCore_SDV
+update keys: Nexus:1348, GitHub:spacechase0/StardewValleyMods

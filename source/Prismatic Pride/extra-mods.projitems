@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<UsingTask
+		TaskName="AddExtraMods"
+		TaskFactory="CodeTaskFactory"
+		AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll"
+	>
+		<ParameterGroup>
+			<ModsPath ParameterType="System.String" Required="true" />
+			<ZipPath ParameterType="System.String" Required="true" />
+			<Items ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Reference Include="System.IO.Compression" />
+			<Reference Include="System.IO.Compression.FileSystem" />
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.IO.Compression" />
+			<Code Type="Fragment" Language="cs"><![CDATA[
+try
+{
+	Log.LogMessage (MessageImportance.High, "Adding extra mod items...");
+
+	if (!File.Exists (ZipPath))
+		throw new Exception ($"The ZIP file {ZipPath} does not exist.");
+	ZipArchive zip = ZipFile.Open (ZipPath, ZipArchiveMode.Update);
+
+	foreach (var item in Items)
+	{
+		string source = item.ItemSpec;
+		string target = item.GetMetadata ("Link");
+		Log.LogMessage (MessageImportance.Low, $"...{source} -> {target}");
+
+		string modsTarget = Path.Combine (ModsPath, target);
+		new FileInfo (modsTarget).Directory.Create ();
+
+		ZipArchiveEntry entry = zip.CreateEntry (target, CompressionLevel.Optimal);
+
+		using (var fromStream = new FileStream (source, FileMode.Open))
+		{
+			using (var toStream = new FileStream (modsTarget, FileMode.Create))
+				fromStream.CopyTo (toStream);
+		}
+		using (var fromStream = new FileStream (source, FileMode.Open))
+		{
+			using (var toStream = entry.Open ())
+				fromStream.CopyTo (toStream);
+		}
+	}
+	zip.Dispose ();
+}
+catch (Exception ex)
+{
+	Log.LogErrorFromException (ex);
+}
+			]]></Code>
+		</Task>
+	</UsingTask>
+	<Target Name="ExtraMods" AfterTargets="AfterBuild">
+		<AddExtraMods
+			ModsPath="$(GameModsPath)"
+			ZipPath="$(ModZipPath)$(ModFolderName) $(Version).zip"
+			Items="@(ExtraModItem)"
+		/>
+	</Target>
+</Project>

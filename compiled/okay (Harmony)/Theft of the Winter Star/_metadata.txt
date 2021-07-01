@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/5062
 IDs: spacechase0.TheftOfTheWinterStar
-update keys: Nexus:5062, Chucklefish:5915, GitHub:spacechase0/TheftOfTheWinterStar
+update keys: Nexus:5062, GitHub:spacechase0/StardewValleyMods

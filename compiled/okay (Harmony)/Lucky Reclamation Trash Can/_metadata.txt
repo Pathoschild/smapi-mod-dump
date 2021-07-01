@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8971
+IDs: kiranmurmu.LuckyReclamationTrashCan
+update keys: Nexus:8971, GitHub:kiranmurmu/StardewValleyMods/tree/master/LuckyReclamationTrashCan

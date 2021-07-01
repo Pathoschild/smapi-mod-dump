@@ -14,9 +14,12 @@
  - Requires xnb mode to be enabled by providing a Func<string, Texture2D> to handle the actual xnb loading
 
 
-# 0.5.0
+# 0.4.1
 - New API function `SanitizeMap`
  - Sanitizes and error-checks map properties that often have issues, also whitelists a few characters to enable easier readability of these properties
 - Improved artisan object handling by adding a new id syntax `sdv.artisan:TYPE,SUBID` where `TYPE` is the type of artisan object, and `SUBID` is the full TypeId of a non-artisan item
  - This removes any collision issues where multiple typeId's might have the same id and thus the wrong type of artisan object being generated
-- 
+
+# 0.4.1
+- Fixed an issue with how pathing support was handled for `FarBack` and `MidBack` layers
+    - Animated tiles on these layers without a tile on the `Back` layer above them now remain animated

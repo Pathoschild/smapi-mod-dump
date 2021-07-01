@@ -8,13 +8,15 @@
 **
 *************************************************/
 
-using System.IO;
 using Harmony;
 using Microsoft.Xna.Framework;
 using PredictiveCore;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
+using System;
+using System.IO;
 using SObject = StardewValley.Object;
 
 namespace ScryingOrb
@@ -26,10 +28,11 @@ namespace ScryingOrb
 		internal HarmonyInstance harmony { get; private set; }
 		internal JsonAssets.IApi jsonAssets { get; private set; }
 
-		protected ModConfig Config => ModConfig.Instance;
+		protected static ModConfig Config => ModConfig.Instance;
 
-		internal int parentSheetIndex = -1;
-		public bool IsScryingOrb (Item item)
+		internal int parentSheetIndex { get; private set; } = -1;
+
+		public bool isScryingOrb (Item item)
 		{
 			if (item?.GetType () != typeof (SObject))
 				return false;
@@ -38,14 +41,14 @@ namespace ScryingOrb
 				obj.ParentSheetIndex == parentSheetIndex;
 		}
 
-		private bool orbHovered;
-		internal bool OrbHovered
+		private readonly PerScreen<bool> orbHovered_ = new ();
+		internal bool orbHovered
 		{
-			get => orbHovered;
+			get => orbHovered_.Value;
 			set
 			{
-				bool oldValue = orbHovered;
-				orbHovered = value;
+				bool oldValue = orbHovered_.Value;
+				orbHovered_.Value = value;
 
 				// Let the cursor editor know to do its thing.
 				if (cursorEditor != null && oldValue != value)
@@ -53,14 +56,14 @@ namespace ScryingOrb
 			}
 		}
 
-		private uint orbsIlluminated;
-		internal uint OrbsIlluminated
+		private readonly PerScreen<uint> orbsIlluminated_ = new ();
+		internal uint orbsIlluminated
 		{
-			get => orbsIlluminated;
+			get => orbsIlluminated_.Value;
 			set
 			{
-				uint oldValue = orbsIlluminated;
-				orbsIlluminated = value;
+				uint oldValue = orbsIlluminated_.Value;
+				orbsIlluminated_.Value = value;
 
 				// Let the cursor editor know to do its thing.
 				if (cursorEditor != null &&
@@ -101,7 +104,6 @@ namespace ScryingOrb
 
 			// Listen for game events.
 			Helper.Events.GameLoop.GameLaunched += onGameLaunched;
-			Helper.Events.GameLoop.SaveLoaded += onSaveLoaded;
 			Helper.Events.GameLoop.DayStarted += onDayStarted;
 			Helper.Events.Input.CursorMoved += onCursorMoved;
 			Helper.Events.Input.ButtonPressed += onButtonPressed;
@@ -109,13 +111,12 @@ namespace ScryingOrb
 
 		private void onGameLaunched (object _sender, GameLaunchedEventArgs _e)
 		{
-			// Load the Json Assets content pack.
+			// Set up Json Assets, if it is available.
 			jsonAssets = Helper.ModRegistry.GetApi<JsonAssets.IApi>
 				("spacechase0.JsonAssets");
 			if (jsonAssets != null)
 			{
-				jsonAssets.LoadAssets (Path.Combine (Helper.DirectoryPath,
-					"assets", "JA"));
+				jsonAssets.IdsAssigned += onIdsAssigned;
 			}
 			else
 			{
@@ -127,24 +128,23 @@ namespace ScryingOrb
 			ModConfig.SetUpMenu ();
 		}
 
-		private void onSaveLoaded (object _sender, SaveLoadedEventArgs _e)
+		private void onIdsAssigned (object _sender, EventArgs _e)
 		{
 			// Discover the object ID of the "Scrying Orb" inventory object.
-			if (jsonAssets != null)
+			parentSheetIndex = jsonAssets.GetBigCraftableId ("Scrying Orb");
+			if (parentSheetIndex == -1)
 			{
-				parentSheetIndex = jsonAssets.GetBigCraftableId ("Scrying Orb");
-				if (parentSheetIndex == -1)
-				{
-					Monitor.Log ("Could not find the ID of the Scrying Orb big craftable. The Json Assets content pack may not have loaded correctly.",
-						(Config.ActivateKey != SButton.None) ? LogLevel.Warn : LogLevel.Error);
-				}
+				Monitor.Log ("Could not find the ID of the Scrying Orb big craftable. The Json Assets content pack may not have loaded correctly.",
+					(Config.ActivateKey != SButton.None) ? LogLevel.Warn : LogLevel.Error);
 			}
-
-			// Migrate data from older formats.
-			UnlimitedExperience.MigrateData ();
 		}
 
 		private void onDayStarted (object _sender, DayStartedEventArgs _e)
+		{
+			checkRecipe ();
+		}
+
+		internal void checkRecipe ()
 		{
 			// If the recipe is already given, nothing else to do.
 			if (Game1.player.craftingRecipes.ContainsKey ("Scrying Orb"))
@@ -169,12 +169,12 @@ namespace ScryingOrb
 			// interact with an orb.
 			if (!Context.IsWorldReady || !Context.IsPlayerFree)
 			{
-				OrbHovered = false;
+				orbHovered = false;
 				return;
 			}
 
 			// Only hovering when a Scrying Orb is pointed at.
-			OrbHovered = getScryingOrbAt (Game1.currentLocation,
+			orbHovered = getScryingOrbAt (Game1.currentLocation,
 				e.NewPosition.Tile) != null;
 		}
 
@@ -214,24 +214,16 @@ namespace ScryingOrb
 			// Suppress the button so it won't cause any other effects.
 			Helper.Input.Suppress (e.Button);
 
-			// If the unlimited use cheat is active, skip to the menu.
-			if (Config.UnlimitedUse)
-			{
-				Experience.Run<UnlimitedExperience> (orb);
-				return;
-			}
-
-			// Otherwise, try each of the experiences in turn.
+			// Try each of the experiences in turn.
 			if (!Experience.Check<UnlimitedExperience> (orb) &&
 				!Experience.Check<NothingExperience> (orb) &&
 				!Experience.Check<LuckyPurpleExperience> (orb) &&
 				!Experience.Check<MetaExperience> (orb) &&
 				!Experience.Check<MiningExperience> (orb) &&
 				!Experience.Check<GeodesExperience> (orb) &&
+				!Experience.Check<EnchantmentsExperience> (orb) &&
 				!Experience.Check<NightEventsExperience> (orb) &&
-				// TODO: !Experience.Try<ShoppingExperience> (orb) &&
 				!Experience.Check<GarbageExperience> (orb))
-				// TODO: !Experience.Try<ItemFinderExperience> (orb)
 			{
 				Experience.Run<FallbackExperience> (orb);
 			}
@@ -249,18 +241,18 @@ namespace ScryingOrb
 						== "z_untitled tile sheet" &&
 					location.getTileIndexAt (tilePoint.X, tilePoint.Y, "Front")
 						== 244)
-					return new SObject (tileLocation + new Vector2 (0f, 1f), 0); // FIXME: ???
+					return new SObject (tileLocation + new Vector2 (0f, 1f), parentSheetIndex);
 				if (location.getTileSheetIDAt (tilePoint.X, tilePoint.Y, "Buildings")
 						== "z_untitled tile sheet" &&
 					location.getTileIndexAt (tilePoint.X, tilePoint.Y, "Buildings")
 						== 269)
-					return new SObject (tileLocation, 0); // FIXME: ???
+					return new SObject (tileLocation, parentSheetIndex);
 			}
 
 			// Check for a regular Scrying Orb object on the tile.
 			SObject @object = location.getObjectAtTile
 				((int) tileLocation.X, (int) tileLocation.Y);
-			if (IsScryingOrb (@object))
+			if (isScryingOrb (@object))
 				return @object;
 
 			return null;

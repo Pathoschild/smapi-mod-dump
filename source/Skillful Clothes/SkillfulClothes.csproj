@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClothingObserver.cs" />
+    <Compile Include="CustomOverlays.cs" />
     <Compile Include="EffectHelperEvents.cs" />
     <Compile Include="Effects\Buffs\ICustomBuff.cs" />
     <Compile Include="Effects\Buffs\CustomBuff.cs" />

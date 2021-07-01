@@ -24,7 +24,7 @@ namespace ScryingOrb
 
 		public static readonly int TilePosition = 49;
 
-		protected Texture2D cursor;
+		protected readonly Texture2D cursor;
 
 		public CursorEditor ()
 		{
@@ -52,7 +52,7 @@ namespace ScryingOrb
 		}
 
 		public bool active =>
-			ModEntry.Instance.OrbHovered || ModEntry.Instance.OrbsIlluminated > 0;
+			ModEntry.Instance.orbHovered || ModEntry.Instance.orbsIlluminated > 0;
 
 		public void apply ()
 		{

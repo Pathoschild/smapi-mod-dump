@@ -1,0 +1,10 @@
+{
+	"Name": "Lucky Reclamation Trash Can",
+	"Author": "kiranmurmu",
+	"Version": "1.0.0",
+	"Description": "Item's reclamation monetary value depends on Player's Luck and Trash Can Upgrades.",
+	"UniqueID": "kiranmurmu.LuckyReclamationTrashCan",
+	"EntryDll": "LuckyReclamationTrashCan.dll",
+	"MinimumApiVersion": "3.10.1",
+	"UpdateKeys": [ "Nexus:8971" ]
+}

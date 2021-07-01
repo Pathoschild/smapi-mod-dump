@@ -29,7 +29,7 @@ namespace PublicAccessTV
 		public HeritageTrain ()
 		{
 			NetFields.AddFields (cars, type, position.NetFields);
-			Random random = new Random ();
+			Random random = new ();
 			type.Value = Train.uniformColorPlainTrain;
 			speed = 0.1f;
 			smokeTimer = speed * 2000f;
@@ -46,16 +46,14 @@ namespace PublicAccessTV
 	{
 		internal static readonly int EventID = 79400101;
 		internal static readonly string EventMap = "Railroad";
-		internal static readonly Dictionary<string,string> Events =
-			new Dictionary<string, string>
+		internal static readonly Dictionary<string, string> Events = new ()
 		{
-			{ "79400101/n kdau.never", "<<musicTrack>>/39 46/farmer 30 55 0 Demetrius 28 46 1/addBigProp 29 46 106/move farmer 0 -9 3 true/pause 750/animate Demetrius true false 500 24/pause 250/playSound openBox/pause 1000/faceDirection Demetrius 2/jump Demetrius 4/pause 1250/faceDirection Demetrius 1/speak Demetrius \"{{demetrius01}}\"/animate Demetrius true false 1000 24/pause 750/playSound woodyHit/removeObject 29 46/pause 250/move Demetrius 1 0 1/speak Demetrius \"{{demetrius02}}$h#$b#{{demetrius03}}$n\"/viewport move -4 4 1500/advancedMove Demetrius false 0 4/advancedMove farmer false 0 4/pause 1450/stopAdvancedMoves/pause 50/faceDirection Demetrius 1 true/faceDirection farmer 3/pause 50/speak Demetrius \"{{demetrius04}}$s#$b#{{demetrius05}}\"/emote farmer 16/speak Demetrius \"$q -1 null#{{demetrius06}}#$r -1 30 kdau.PublicAccessTV.trains1#{{farmer01}}#$r -1 0 kdau.PublicAccessTV.trains2#{{farmer02}}#$r -1 -30 kdau.PublicAccessTV.trains3#{{farmer03}}\"/fork 79400101_Reject/pause 500/speak Demetrius \"{{demetrius08}}\"/advancedMove farmer false 0 10/advancedMove Demetrius false 0 10/pause 1500/stopAdvancedMoves/mail kdau.PublicAccessTV.trains%&NL&%/end dialogue Demetrius \"{{demetrius09}}\"" },
+			{ "79400101/n kdau.never", "archaeo/39 46/farmer 30 55 0 Demetrius 28 46 1/addBigProp 29 46 106/move farmer 0 -9 3 true/pause 750/animate Demetrius true false 500 24/pause 250/playSound openBox/pause 1000/faceDirection Demetrius 2/jump Demetrius 4/pause 1250/faceDirection Demetrius 1/speak Demetrius \"{{demetrius01}}\"/animate Demetrius true false 1000 24/pause 750/playSound woodyHit/removeObject 29 46/pause 250/move Demetrius 1 0 1/speak Demetrius \"{{demetrius02}}$h#$b#{{demetrius03}}$n\"/viewport move -4 4 1500/advancedMove Demetrius false 0 4/advancedMove farmer false 0 4/pause 1450/stopAdvancedMoves/pause 50/faceDirection Demetrius 1 true/faceDirection farmer 3/pause 50/speak Demetrius \"{{demetrius04}}$s#$b#{{demetrius05}}\"/emote farmer 16/speak Demetrius \"$q -1 null#{{demetrius06}}#$r -1 30 kdau.PublicAccessTV.trains1#{{farmer01}}#$r -1 0 kdau.PublicAccessTV.trains2#{{farmer02}}#$r -1 -30 kdau.PublicAccessTV.trains3#{{farmer03}}\"/fork 79400101_Reject/pause 500/speak Demetrius \"{{demetrius08}}\"/advancedMove farmer false 0 10/advancedMove Demetrius false 0 10/pause 1500/stopAdvancedMoves/mail kdau.PublicAccessTV.trains%&NL&%/end dialogue Demetrius \"{{demetrius09}}\"" },
 			{ "79400101_Reject", "stopMusic/pause 1000/speak Demetrius \"{{demetrius08}}$s\"/advancedMove Demetrius false 0 10/pause 1500/stopAdvancedMoves/end invisible Demetrius" },
 		};
 
 		internal static readonly string DialogueCharacter = "Demetrius";
-		internal static readonly Dictionary<string, string> Dialogue =
-			new Dictionary<string, string>
+		internal static readonly Dictionary<string, string> Dialogue = new ()
 		{
 			{ "kdau.PublicAccessTV.trains1", "{{demetrius07a}}$h" },
 			{ "kdau.PublicAccessTV.trains2", "{{demetrius07b}}" },
@@ -70,7 +68,7 @@ namespace PublicAccessTV
 		}
 
 		internal override bool isAvailable =>
-			base.isAvailable && Trains.IsAvailable &&
+			Trains.IsAvailable &&
 			(Config.BypassFriendships ||
 				Game1.player.mailReceived.Contains ("kdau.PublicAccessTV.trains"));
 
@@ -80,10 +78,6 @@ namespace PublicAccessTV
 			Game1.player.mailForTomorrow.Remove ("kdau.PublicAccessTV.trains%&NL&%");
 			Game1.player.eventsSeen.Remove (EventID);
 		}
-
-		public static string MusicTrack =>
-			Helper.ModRegistry.IsLoaded ("FlashShifter.SVEMusic")
-				? "distantBanjo" : "archaeo";
 
 		public static void CheckEvent ()
 		{
@@ -97,7 +91,7 @@ namespace PublicAccessTV
 					Game1.player.getFriendshipHeartLevelForNPC ("Demetrius") < 2 ||
 					// Must be on the Railroad map.
 					Game1.currentLocation?.Name != "Railroad" ||
-					!(Game1.currentLocation is Railroad rr) ||
+					Game1.currentLocation is not Railroad rr ||
 					// Must be before sunset.
 					Game1.timeOfDay >= 1900 ||
 					// Must not have another event starting.
@@ -112,11 +106,8 @@ namespace PublicAccessTV
 			rr.train.Value = train;
 			Helper.Events.Display.RenderedWorld += ForceDrawTrain;
 
-			// Build and run the event script.
-			string eventScript = Events["79400101/n kdau.never"]
-				.Replace ("<<musicTrack>>", MusicTrack)
-			;
-			Game1.currentLocation.startEvent (new Event (eventScript, EventID));
+			// Run the event script.
+			Game1.currentLocation.startEvent (new Event (Events["79400101/n kdau.never"], EventID));
 		}
 
 		private static void ForceDrawTrain (object _sender,
@@ -137,14 +128,15 @@ namespace PublicAccessTV
 				throw new Exception ("No trains found.");
 			}
 
+			GameLocation location = Game1.getLocationFromName ("Mountain");
 			TemporaryAnimatedSprite background = loadBackground (tv, 0,
-				(Game1.isRaining || Game1.isDarkOut ()) ? 1 : 0);
+				(Game1.IsRainingHere (location) || Game1.isDarkOut ()) ? 1 : 0);
 			TemporaryAnimatedSprite portrait = loadPortrait (tv, "Demetrius");
-			string musicTrack = MusicTrack;
 
 			// Opening scene: Demetrius greets the viewer.
 			queueScene (new Scene (Helper.Translation.Get ("trains.opening"),
-				background, portrait) { musicTrack = musicTrack });
+				background, portrait)
+			{ musicTrack = "archaeo" });
 
 			// Next scheduled train. Demetrius's reaction depends on whether the
 			// train is today, later in the next 7 days, or later than that.
@@ -170,13 +162,13 @@ namespace PublicAccessTV
 				nextPortrait = loadPortrait (tv, "Demetrius", 0, 1);
 			}
 			queueScene (new Scene (Helper.Translation.Get ($"trains.next.{nextMessage}", new
-				{
-					date = predictions[0].date.ToLocaleString (),
-					dayOfWeek = Utilities.GetLocalizedDayOfWeek (predictions[0].date),
-					time = Game1.getTimeOfDayString (predictions[0].time),
-				}),
+			{
+				date = predictions[0].date.ToLocaleString (),
+				dayOfWeek = Utilities.GetLocalizedDayOfWeek (predictions[0].date),
+				time = Game1.getTimeOfDayString (predictions[0].time),
+			}),
 				background, nextPortrait)
-				{ musicTrack = musicTrack, soundCue = nextSound });
+			{ musicTrack = "archaeo", soundCue = nextSound });
 
 			// Second and third scheduled trains.
 			if (predictions.Count >= 3)
@@ -186,14 +178,15 @@ namespace PublicAccessTV
 					date1 = predictions[1].date.ToLocaleString (),
 					date2 = predictions[2].date.ToLocaleString (),
 				}), background, loadPortrait (tv, "Demetrius", 1, 1))
-				{ musicTrack = musicTrack });
+				{ musicTrack = "archaeo" });
 			}
 
 			// Closing scene: Demetrius signs off.
 			queueScene (new Scene (Helper.Translation.Get ("trains.closing"),
-				background, portrait) { musicTrack = musicTrack });
+				background, portrait)
+			{ musicTrack = "archaeo" });
 
-			runProgram (tv);
+			runNextScene (tv);
 		}
 	}
 }

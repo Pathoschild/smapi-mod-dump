@@ -6,15 +6,15 @@ for queries and analysis.**
 
 ----
 
-![[icon]](https://kdau.gitlab.io/PregnancyRole/icon.png) People of all genders may or may not be able to become pregnant. This mod gives Stardew Valley farmers and NPCs the full range of possibilities.
+![[icon]](https://www.kdau.com/PregnancyRole/icon.png) People of all genders may or may not be able to become pregnant. This mod gives Stardew Valley farmers and NPCs the full range of possibilities.
 
 Pregnancy Role does not change the chance or timing of baby proposals between spouses. However, if and when a proposal for a new baby is made, whether the spouse is an NPC or another player, this mod will affect what happens. There will be a pregnancy only if one of the spouses can become pregnant and the other spouse can make pregnant. In any other combination, there will be an adoption instead.
 
-## ![Compatibility](https://kdau.gitlab.io/headers/compatibility.png)
+## ![Compatibility](https://www.kdau.com/headers/compatibility.png)
 
-**Game:** Stardew Valley 1.4+
+**Game:** Stardew Valley 1.5+
 
-**Platform:** Linux, macOS, Windows or Android
+**Platform:** Linux, macOS or Windows (Android: use 1.4 version)
 
 **Multiplayer:** Only applies to players with the mod installed and their spouses. If two players marry in-game, they must both have the mod installed.
 
@@ -23,14 +23,14 @@ Pregnancy Role does not change the chance or timing of baby proposals between sp
 * Mods affecting the pregnancy and adoption features may or may not be compatible.
 * If custom skill mods are installed, the dropdown on the Skills tab will be adjusted to fit.
 
-## ![Installation](https://kdau.gitlab.io/headers/installation.png)
+## ![Installation](https://www.kdau.com/headers/installation.png)
 
 1. Install [SMAPI](https://smapi.io/)
 1. Download this mod from the link in the header above
 1. Unzip and put the `PregnancyRole` folder inside your `Mods` folder
 1. Run the game using SMAPI
 
-## ![Use](https://kdau.gitlab.io/headers/use.png)
+## ![Use](https://www.kdau.com/headers/use.png)
 
 For **farmers and farmhands** (players), you can change the pregnancy role as follows:
 
@@ -56,7 +56,7 @@ For **custom NPCs** and modded vanilla NPCs, modders can use Pregnancy Role as f
 	* `PregnancyRole make` (can make pregnant)
 	* `PregnancyRole adopt` (always adopt)
 
-## ![Configuration](https://kdau.gitlab.io/headers/configuration.png)
+## ![Configuration](https://www.kdau.com/headers/configuration.png)
 
 If you need to hide or reposition the "Pregnancy Role" dropdown on the Skills tab and/or the Social tab detail page, you can edit this mod's `config.json` file. It will be created in the mod's main folder (`Mods/PregnancyRole`) the first time you run the game with the mod installed. These options are available:
 
@@ -65,32 +65,32 @@ If you need to hide or reposition the "Pregnancy Role" dropdown on the Skills ta
 * `ShowSpouseDropdown`: Set to `false` to hide the "Pregnancy Role" dropdown for the spouse on the Social tab detail page.
 * `SpouseDropdownOrigin`: Set the `X` and `Y` values to pixel coordinates, relative to the top left of the detail page, where the dropdown should appear. Coordinates (0,0) mean that the position will be calculated automatically.
 
-## ![Translation](https://kdau.gitlab.io/headers/translation.png)
+## ![Translation](https://www.kdau.com/headers/translation.png)
 
-No translations are available yet.
+This mod can be translated into any language supported by Stardew Valley. It is currently available in English and Russian.
 
-This mod can be translated into any language supported by the game. Your contribution would be welcome. Please see the [instructions on the wiki](https://stardewvalleywiki.com/Modding:Translations). You can send me your work in the Bugs tab above, [a GitLab issue](https://gitlab.com/kdau/pregnancyrole/-/issues) or [the Discord channel](https://discord.gg/Bs8fQYW).
+Your contribution would be welcome. Please see the [instructions on the wiki](https://stardewvalleywiki.com/Modding:Translations). You can send me your work in [a GitLab issue](https://gitlab.com/kdau/pregnancyrole/-/issues) or the Comments tab above.
 
-## ![Acknowledgments](https://kdau.gitlab.io/headers/acknowledgments.png)
+## ![Acknowledgments](https://www.kdau.com/headers/acknowledgments.png)
 
 * This mod is based on ideas and advice from [EssGee](https://www.nexusmods.com/stardewvalley/users/83595503).
 * Like all mods, this one is indebted to ConcernedApe, Pathoschild and the various framework modders.
+* The Russian translation was prepared by BANANJI.
 
-## ![See also](https://kdau.gitlab.io/headers/see-also.png)
+## ![See also](https://www.kdau.com/headers/see-also.png)
 
 * [Release notes](https://gitlab.com/kdau/pregnancyrole/-/blob/main/doc/RELEASE-NOTES.md)
 * [Source code](https://gitlab.com/kdau/pregnancyrole)
-* [Discuss on Discord](https://discord.gg/Bs8fQYW)
 * [Report bugs](https://gitlab.com/kdau/pregnancyrole/-/issues)
-* [My other mods](https://kdau.gitlab.io)
+* [My other Stardew stuff](https://www.kdau.com/stardew)
 * Mirrors:
 	[Nexus](https://www.nexusmods.com/stardewvalley/mods/5762),
 	**ModDrop**,
-	[forums](https://forums.stardewvalley.net/index.php?resources/pregnancy-role.53/)
+	[forums](https://forums.stardewvalley.net/resources/pregnancy-role.53/)
 
 Other mods to consider:
 
-* [Diverse Stardew Valley with SVO](https://www.moddrop.com/stardew-valley/mods/580603-diverse-stardew-valley-with-seasonal-villager-outfits-dsvo)
+* [Diverse Stardew Valley - Seasonal](https://www.moddrop.com/stardew-valley/mods/580603-diverse-stardew-valley-dsv-seasonal)
 * [Gender Neutrality Mod](https://www.nexusmods.com/stardewvalley/mods/722)
-* [Mx. Qi](https://www.nexusmods.com/stardewvalley/mods/4310)
-* [No More Dialogue Differences](https://www.nexusmods.com/stardewvalley/mods/4459)
+* [Mx. Qi](https://www.nexusmods.com/stardewvalley/mods/4310) (not updated for 1.5)
+* [No More Dialogue Differences](https://www.nexusmods.com/stardewvalley/mods/4459) (not updated for 1.5)

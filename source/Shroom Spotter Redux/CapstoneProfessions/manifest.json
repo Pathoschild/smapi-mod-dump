@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/strobel1ght/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Capstone Professions",
+  "Author": "spacechase0",
+  "Version": "1.0.1",
+  "Description": "Once you max out all your skills, a new profession choice arrives...",
+  "UniqueID": "spacechase0.CapstoneProfessions",
+  "EntryDll": "CapstoneProfessions.dll",
+  "MinimumApiVersion": "2.9.0",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+  ],
+  "UpdateKeys": [ "Nexus:7636" ],
+  "spacechase0": "capstone-professions"
+}

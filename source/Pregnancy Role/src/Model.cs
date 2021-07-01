@@ -21,7 +21,7 @@ namespace PregnancyRole
 		private static IMonitor Monitor => ModEntry.Instance.Monitor;
 		private static ModConfig Config => ModConfig.Instance;
 
-		public static readonly List<string> BaseGameNPCs = new List<string>
+		public static readonly List<string> BaseGameNPCs = new ()
 		{
 			"Abigail",
 			"Alex",
@@ -41,6 +41,7 @@ namespace PregnancyRole
 			"Kent",
 			"Krobus",
 			"Leah",
+			"Leo",
 			"Lewis",
 			"Linus",
 			"Marlon",
@@ -116,10 +117,10 @@ namespace PregnancyRole
 
 			return npc.Gender switch
 			{
-				NPC.male      => Role.Make,
-				NPC.female    => Role.Become,
+				NPC.male => Role.Make,
+				NPC.female => Role.Become,
 				NPC.undefined => Role.Adopt,
-				_             => Role.Adopt,
+				_ => Role.Adopt,
 			};
 		}
 
@@ -209,8 +210,8 @@ namespace PregnancyRole
 				("Data\\NPCDispositions", ContentSource.GameContent);
 			foreach (string key in dictionary.Keys)
 			{
-				List<string> relationships = new List<string>
-					(dictionary[key].Split('/') [9].Split (' '));
+				List<string> relationships =
+					new (dictionary[key].Split ('/')[9].Split (' '));
 
 				int index = relationships.IndexOf ("PregnancyRole");
 				if (index == -1 || index + 1 >= relationships.Count)

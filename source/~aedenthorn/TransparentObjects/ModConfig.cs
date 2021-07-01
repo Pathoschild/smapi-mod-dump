@@ -26,5 +26,6 @@ namespace TransparentObjects
             "Log Section",
             "Campfire",
         };
+        public string[] Allowed { get; set; } = new string[0];
     }
 }

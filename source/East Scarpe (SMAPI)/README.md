@@ -10,54 +10,73 @@ for queries and analysis.**
 
 This is the SMAPI (C#) component of LemurKat's East Scarpe mod. This component is written by kdau.
 
-## Specification
+## Features
 
-### Water
+### Ambient sounds
 
-Tidepool water should not shimmer like other water does.
+For each `Sound` listed in the `AmbientSounds` data field, when the given `Conditions` apply and a player is in the given `Area` of the given `Location`, at each tick there should be the given `Chance` for the sound to play. At most one sound shoiuld play for a given player at any time.
 
-The water should turn green on Summer 12, Summer 13 and Summer 14.
+### Crab Pot catches
 
-### Grass
+For each entry in the `CrabPotCatches` data field, when the given `Conditions` apply, a Crab Pot on a tile in the given `Area` and `FishingArea` of the given `Location` should have the given `ExtraTrashChance` and should have ocean catches only if `OceanCatches` is true.
 
-The grass should survive through the winter with appropriate seasonal sprites.
+### Critter spawns
 
-### Fishing
+For each entry in the `CritterSpawns` data field:
 
-Divide the map into three fishing subareas: freshwater pond, tidepools and ocean. Freshwater pond and ocean are separated by a Y coordinate threshold. Tidepools are distinguished by using specific tile indexes.
+* When the given `Conditions` apply and a player enters the given `Location`, there should be the given `ChanceOnEntry` for spawning to occur.
+* When the given `Conditions` apply and a player is in the given `Location`, at each tick there should be the given `ChanceOnTick` for spawning to occur.
+* When spawning occurs, a number of clusters between the given `MinClusters` and `MaxClusters` inclusive should spawn. Each cluster should be centered around a tile in the given `Area` and include a number of critters between the given `MinPerCluster` and `MaxPerCluster`.
+* Each critter in a cluster should be of the given `Type` and spawn within a few tiles of the center on a clear tile. If a critter's tile has water, the critter should only have the given `ChanceOnWater` of spawning.
 
-### Crab Pots
+This feature only contemplates base game critters, inclusive of any reskinning done via content patches; for custom behaviors, see the Custom Critters mod.
 
-Crab Pots placed in the tidepool and ocean subareas should yield saltwater rather than freshwater catches.
+### Fishing areas
 
-### Critters
+For each entry in the `FishingAreas` data field, when the given `Conditions` apply and a player fishes on a tile in the given `Area` of the given `Location`, it should be treated as belonging to the fishing area with the given `Index`. This first matching entry should apply.
 
-Seagulls should spawn in a cluster of zero to three, with the same logic as on the vanilla beach map, but only on the beach portion of the map (same as the ocean fishing portion). Reskinning to pelicans will be accomplished through CP instead.
+### Fruit trees
+
+In locations listed in the `FruitTreeLocations` data field, there should be a one-time spawn of fruit trees based on the sapling indexes given as values of the `FruitTree` property on the `Back` layer. The trees should spawn as fully mature, with in-season trees already bearing one fruit. If a number is given for the `FruitLimit` property on the `Back` layer, the corresponding fruit tree will be limited to bearing that many fruit at any time.
 
 ### Sea Monster
 
-The Sea Monster should make occasional appearances in the ocean, with the same probability and logic as on the vanilla beach map.
+For each entry in the `SeaMonsterSpawns` data field, when the given `Conditions` apply and a player is in the given `Location`, at each tick there should be the given `Chance` for the Sea Monster to spawn somewhere within the given `Area`. At most one Sea Monster should be present on a particular map at any time.
 
-### Orchard
+### Water color
 
-On the `ESOrchard` map, there should be a one-time spawn of fruit trees based on the sapling indexes given as values of the `FruitTree` property on the `Back` layer. The trees should spawn as fully mature, with in-season trees already bearing one fruit. Fruit trees on this map should not be allowed to bear more than on fruit at a time.
+For each entry in the `WaterColors` data field, when the given `Conditions` apply upon a player entering the given `Location`, the given `Color` should be applied to all water.
+
+### Water effects
+
+For each entry in the `WaterEffects` data field, when the given `Conditions` apply upon a player entering the given `Location`, tiles in the given `Area` should receive or not receive effects associated with water tiles based on the `Apply` value. (Although this is mainly limited to the visual shimmering effect, note that non-water tiles with effects applied may behave like water in some ways, particularly with other water-based mods.)
+
+### Winter grass
+
+For each entry in the `WinterGrasses` data field, grass in the given `Area` of the given `Location` should survive through the winter with a seasonally appropriate appearance.
 
 ## Release notes
 
+### Version 2.0.0
+
+* Require Stardew 1.5 or higher
+* Redesign all features to be generic and fully configurable
+* Remove dependency on TMXL for loading of main East Scarpe map
+
 ### Version 1.4.0
 
-* Add Crab Pot fishing area support.
-* Add Orchard fruit tree spawns.
+* Add Crab Pot fishing area support
+* Add Orchard fruit tree spawns
 
 ### Version 1.1.3
 
-* Avoid additional errors when map fails to load.
+* Avoid additional errors when map fails to load
 
 ### Version 1.1.0
 
-* All constants are now in a `data.json` file for easier editing.
-* Any grass on the map is now preserved through the winter with appropraite sprites.
+* All constants are now in a `data.json` file for easier editing
+* Any grass on the map is now preserved through the winter with appropraite sprites
 
 ### Version 1.0.0
 
-* Initial release.
+* Initial release

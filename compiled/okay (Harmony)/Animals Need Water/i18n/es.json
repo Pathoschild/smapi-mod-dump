@@ -1,0 +1,8 @@
+{
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Male": "{{firstAnimalName}} se quedó con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Female": "{{firstAnimalName}} se quedó con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_UnknownGender": "{{firstAnimalName}} se quedó con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.twoAnimals": "{{firstAnimalName}} y {{secondAnimalName}} se quedaron con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.threeAnimals": "{{firstAnimalName}}, {{secondAnimalName}} y {{thirdAnimalName}} se quedaron con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.multipleAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} y {{totalAmountExcludingFirstThree}} animales más se quedaron con sed."
+}

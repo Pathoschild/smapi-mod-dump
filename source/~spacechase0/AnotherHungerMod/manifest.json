@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Another Hunger Mod",
+    "Author": "spacechase0",
+    "Version": "1.1.1",
+    "MinimumApiVersion": "3.9.5",
+    "Description": "Adds a hunger system to the game.",
+    "UniqueID": "spacechase0.AnotherHungerMod",
+    "EntryDll": "AnotherHungerMod.dll",
+    "UpdateKeys": [ "Nexus:3379" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.SpaceCore",
+            "MinimumVersion": "1.5.7"
+        }
+    ]
+}

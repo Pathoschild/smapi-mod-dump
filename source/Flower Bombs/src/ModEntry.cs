@@ -27,7 +27,7 @@ namespace FlowerBombs
 		internal static ModEntry Instance { get; private set; }
 		protected static ModConfig Config => ModConfig.Instance;
 
-		public static readonly List<int> Crystals = new List<int> { 319, 320, 321 };
+		public static readonly List<int> Crystals = new () { 319, 320, 321 };
 
 		public override void Entry (IModHelper helper)
 		{
@@ -66,9 +66,6 @@ namespace FlowerBombs
 			catch (Exception e)
 			{
 				Monitor.Log ($"detonate_flower_bombs failed: {e.Message}", LogLevel.Error);
-#if DEBUG
-                Monitor.Log (e.StackTrace, LogLevel.Trace);
-#endif
 			}
 		}
 
@@ -119,17 +116,15 @@ namespace FlowerBombs
 			if (Context.IsMainPlayer)
 			{
 				// Melt any crystals left over from winter.
-				if (Game1.currentSeason != "winter")
+				foreach (GameLocation location in Game1.locations)
 				{
-					foreach (GameLocation location in Game1.locations)
+					if (location is MineShaft ||
+							Game1.GetSeasonForLocation (location) == "winter")
+						continue;
+					foreach (var kvp in location.objects.Pairs.ToArray ())
 					{
-						if (location is MineShaft)
-							continue;
-						foreach (var kvp in location.objects.Pairs.ToArray ())
-						{
-							if (Crystals.Contains (kvp.Value.ParentSheetIndex))
-								location.objects.Remove (kvp.Key);
-						}
+						if (Crystals.Contains (kvp.Value.ParentSheetIndex))
+							location.objects.Remove (kvp.Key);
 					}
 				}
 

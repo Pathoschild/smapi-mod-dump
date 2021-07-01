@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="api\GenericModConfigMenuAPI.cs" />
+    <Compile Include="DuplicatedComparer.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ToolBeltButton.cs" />
     <Compile Include="ToolBeltMenu.cs" />

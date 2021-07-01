@@ -20,55 +20,38 @@ using System.Reflection;
 
 namespace PublicAccessTV
 {
-	public class Channel
+	public abstract class Channel
 	{
 		protected static IModHelper Helper => ModEntry.Instance.Helper;
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
 		protected static ModConfig Config => ModConfig.Instance;
-
-		protected static Type CustomTVMod => ModEntry.CustomTVMod;
 
 		public readonly string localID;
 		public readonly string globalID;
 
 		public string title => Helper.Translation.Get ($"{localID}.title");
 
-		private readonly Action<TV, TemporaryAnimatedSprite, Farmer, string> callback;
-		private Queue<Scene> scenes = new Queue<Scene> ();
+		private readonly Queue<Scene> scenes = new ();
 
 		protected Channel (string localID)
 		{
 			this.localID = localID ?? throw new ArgumentNullException (nameof (localID));
 			globalID = $"kdau.PublicAccessTV.{localID}";
-			callback = (tv, _sprite, _who, _response) => show (tv);
-			callCustomTVMod ("addChannel", globalID, title, callback);
 		}
 
 		// Whether the channel should be available to players at present.
-		internal virtual bool isAvailable => true;
+		internal abstract bool isAvailable { get; }
 
-		// Add or remove the channel based on its availability for the day.
+		// Perform any updates needed for a new day.
 		internal virtual void update ()
-		{
-			if (isAvailable)
-			{
-				callCustomTVMod ("addChannel", globalID, title, callback);
-			}
-			else
-			{
-				callCustomTVMod ("removeChannel", globalID);
-			}
-		}
+		{ }
 
 		// Reset any persistent state for the channel.
 		internal virtual void reset ()
-		{}
+		{ }
 
-		// Called by CustomTVMod to start the program. Override to implement.
-		internal virtual void show (TV tv)
-		{
-			callCustomTVMod ("showProgram", globalID);
-		}
+		// Implement to perform the program.
+		internal abstract void show (TV tv);
 
 		// Add a scene to the queue for display on TV.
 		protected void queueScene (Scene scene)
@@ -76,8 +59,8 @@ namespace PublicAccessTV
 			scenes.Enqueue (scene);
 		}
 
-		// Run a program of all the queued scenes on the TV in order.
-		public void runProgram (TV tv)
+		// Run the next scene in the queue.
+		public void runNextScene (TV tv)
 		{
 			if (scenes.Count == 0)
 			{
@@ -134,19 +117,6 @@ namespace PublicAccessTV
 		{
 			Point _index = index ?? new Point (0, 0);
 			return loadPortrait (tv, npc, _index.X, _index.Y);
-		}
-
-		protected void callCustomTVMod (string methodName, params object[] arguments)
-		{
-			callCustomTVModTyped (methodName, arguments,
-				arguments.Select (arg => arg.GetType ()).ToArray ());
-		}
-
-		private void callCustomTVModTyped (string methodName, object[] arguments, Type[] types)
-		{
-			MethodInfo method = CustomTVMod.GetMethod (methodName, types)
-				?? throw new NotImplementedException ($"CustomTVMod.{methodName} not found.");
-			method.Invoke (null, arguments);
 		}
 	}
 }

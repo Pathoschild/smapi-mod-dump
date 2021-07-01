@@ -30,7 +30,7 @@ namespace PublicAccessTV
 		}
 
 		internal override bool isAvailable =>
-			base.isAvailable && NightEvents.IsAvailable &&
+			NightEvents.IsAvailable &&
 			getCurrentEvent () != NightEvents.Event.None;
 
 		internal override void show (TV tv)
@@ -49,13 +49,16 @@ namespace PublicAccessTV
 			queueScene (new Scene
 				(Helper.Translation.Get ($"nightEvents.{currentEvent}.opening"),
 				background, portrait)
-				{ soundCue = "Cowboy_Secret", soundAsset = newYear
-					? "nightEvents_newYear" : "nightEvents_opening" });
+			{
+				soundCue = "Cowboy_Secret",
+				soundAsset = newYear
+					? "nightEvents_newYear" : "nightEvents_opening"
+			});
 
 			// The governor reacts to the event.
 			TemporaryAnimatedSprite reactionBackground = background;
 			string reactionSound = null;
-			Point reactionIndex = new Point (0, newYear ? 0 : 1);
+			Point reactionIndex = new (0, newYear ? 0 : 1);
 			if (currentEvent == NightEvents.Event.StrangeCapsule)
 			{
 				reactionBackground = loadBackground (tv, 0, 1);
@@ -64,13 +67,13 @@ namespace PublicAccessTV
 			}
 			queueScene (new Scene (Helper.Translation.Get ($"nightEvents.{currentEvent}.reaction"),
 				reactionBackground, loadPortrait (tv, "Governor", reactionIndex))
-				{ soundCue = reactionSound });
+			{ soundCue = reactionSound });
 
 			// Closing scene: the governor signs off.
 			queueScene (new Scene (Helper.Translation.Get ($"nightEvents.{currentEvent}.closing"),
 				background, portrait));
 
-			runProgram (tv);
+			runNextScene (tv);
 		}
 
 		private NightEvents.Event getCurrentEvent ()

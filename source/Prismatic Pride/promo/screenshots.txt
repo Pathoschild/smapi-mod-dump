@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/kdau/prismaticpride
+**
+*************************************************/
+
+A variety of pride flag color sets can be selected from the mod's menu.
+
+Prismatic clothing and boots can be tailored at the sewing machine.
+
+An optional shop offers specific prismatic clothing for purchase.

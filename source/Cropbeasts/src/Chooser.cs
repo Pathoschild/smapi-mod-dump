@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,35 +28,46 @@ namespace Cropbeasts
 
 		public int outdoorSpawnCount { get; protected set; }
 		public int indoorSpawnCount { get; protected set; }
-		public int spawnCount => outdoorSpawnCount + indoorSpawnCount;
+		public int islandSpawnCount { get; protected set; }
+		public int spawnCount => outdoorSpawnCount + indoorSpawnCount + islandSpawnCount;
 
 		public bool witchFlyoverShown { get; set; }
 
-		protected Dictionary<Point, CropTile> chosenTiles { get; private set; }
+		protected readonly Dictionary<Point, CropTile> chosenTiles = new ();
 
 		public Chooser ()
+		{ }
+
+		public void reset ()
 		{
-			chosenTiles = new Dictionary<Point, CropTile> ();
+			outdoorSpawnCount = 0;
+			indoorSpawnCount = 0;
+			islandSpawnCount = 0;
+			witchFlyoverShown = false;
+			chosenTiles.Clear ();
 		}
 
 		// Chooses a crop tile to become a cropbeast.
-		public virtual CropTile choose (bool console = false,
+		public CropTile choose (bool console = false,
 			bool force = false, string filter = null)
 		{
 			// Use a predictable RNG seeded by game, day and time.
-			Random rng = new Random ((int) Game1.uniqueIDForThisGame / 2 +
+			Random rng = new ((int) Game1.uniqueIDForThisGame / 2 +
 				(int) Game1.stats.DaysPlayed + Game1.timeOfDay);
 
 			// Choose the location to evaluate.
-			GameLocation location = Game1.currentLocation;
-			if (!(location.IsFarm && location.IsOutdoors) && !location.IsGreenhouse)
+			var location = Game1.currentLocation;
+			if (!IsSuitableLocation (location))
 			{
-				GameLocation farm = Game1.getLocationFromName ("Farm");
-				GameLocation greenhouse = Game1.getLocationFromName ("Greenhouse");
-				if (farm != null && farm.farmers.Count () > 0)
+				var farm = Game1.getLocationFromName ("Farm");
+				var greenhouse = Game1.getLocationFromName ("Greenhouse");
+				var islandFarm = Game1.getLocationFromName ("IslandWest");
+				if (farm != null && farm.farmers.Count > 0)
 					location = farm;
-				else if (greenhouse != null && greenhouse.farmers.Count () > 0)
+				else if (greenhouse != null && greenhouse.farmers.Count > 0)
 					location = greenhouse;
+				else if (islandFarm != null && islandFarm.farmers.Count > 0)
+					location = islandFarm;
 			}
 
 			// Check preconditions unless forced.
@@ -70,8 +82,7 @@ namespace Cropbeasts
 			// Find all candidate crop tiles, sort pseudorandomly with
 			// weighting based on type and towards those closer to a farmer.
 			SortedList<double, CropTile> candidates =
-				new SortedList<double, CropTile>
-					(findCandidateCropTiles (location, filter, console)
+				new (findCandidateCropTiles (location, filter, console)
 						.ToDictionary ((tile) =>
 				{
 					Utilities.FindNearestFarmer (tile.location, tile.tileLocation,
@@ -94,8 +105,10 @@ namespace Cropbeasts
 			Monitor.Log ($"At {Game1.getTimeOfDayString (Game1.timeOfDay)}, chose {winner.logDescription} to become {winner.mapping.beastName}.",
 				console ? LogLevel.Info : LogLevel.Debug);
 
-			// Record progress towards daily limit for location.
-			if (location.IsOutdoors)
+			// Record progress towards the daily limit for the location type.
+			if (location is IslandLocation)
+				++islandSpawnCount;
+			else if (location.IsOutdoors)
 				++outdoorSpawnCount;
 			else
 				++indoorSpawnCount;
@@ -108,12 +121,14 @@ namespace Cropbeasts
 		}
 
 		// Alters records as if the given crop tile had never been chosen.
-		public virtual void unchoose (CropTile tile)
+		public void unchoose (CropTile tile)
 		{
 			if (!chosenTiles.ContainsKey (tile.tileLocation))
 				return;
 
-			if (tile.location.IsOutdoors)
+			if (tile.location is IslandLocation)
+				--islandSpawnCount;
+			else if (tile.location.IsOutdoors)
 				--outdoorSpawnCount;
 			else
 				--indoorSpawnCount;
@@ -121,10 +136,30 @@ namespace Cropbeasts
 			chosenTiles.Remove (tile.tileLocation);
 		}
 
+		protected static bool IsSuitableLocation (GameLocation location)
+		{
+			return (location.IsFarm && location.IsOutdoors) ||
+				location.IsGreenhouse ||
+				// NOTE: Might need to accommodate more island maps eventually.
+				(location is IslandLocation && location.Name == "IslandWest");
+		}
+
 		// Checks whether an attempt to spawn a cropbeast should be made now.
-		protected virtual bool shouldChoose (Random rng, GameLocation location,
+		protected bool shouldChoose (Random rng, GameLocation location,
 			bool console = false)
 		{
+			// Only spawn if the daily chance roll succeeds. This uses a separate
+			// RNG seeded by the game and day only.
+			Random dayRNG = new ((int) Game1.uniqueIDForThisGame / 2 +
+				(int) Game1.stats.DaysPlayed);
+			if (!(dayRNG.NextDouble () < Config.DailyChance))
+			{
+				if (console)
+					Monitor.Log ($"If not by console command, wouldn't have spawned a cropbeast because the daily chance roll failed.", LogLevel.Info);
+				else
+					return false;
+			}
+
 			// Only spawn in daytime. Nighttime is for the regular Wilderness
 			// Farm monsters. The dusk hour is left as a buffer period.
 			if (Game1.timeOfDay >= 1800)
@@ -135,7 +170,7 @@ namespace Cropbeasts
 			}
 
 			// Don't spawn on a festival or wedding day.
-			if (Utility.isFestivalDay (Game1.dayOfMonth, Game1.currentSeason) ||
+			if (Utility.isFestivalDay (Game1.Date.DayOfMonth, Game1.Date.Season) ||
 					Game1.weddingToday)
 			{
 				if (console)
@@ -160,34 +195,48 @@ namespace Cropbeasts
 				return false;
 			}
 
-			// Only spawn outdoors on the farm or in the greenhouse.
-			if (!(location.IsFarm && location.IsOutdoors) && !location.IsGreenhouse)
+			// Only spawn outdoors on a farm or indoors in a greenhouse.
+			if (!IsSuitableLocation (location))
 			{
 				if (console)
-					Monitor.Log ($"Not spawning a cropbeast because {location.Name} is not on outdoors on the farm or in the greenhouse.", LogLevel.Info);
+					Monitor.Log ($"Not spawning a cropbeast because {location.Name} is not outdoors on a farm or indoors in a greenhouse.", LogLevel.Info);
 				return false;
 			}
 
+			// Check for location type.
 			bool outdoors = location.IsOutdoors;
+			bool island = location is IslandLocation;
 
-			// Only spawn outdoors if there are at least 16 crops.
+			// Only spawn if there are a minimum number of crops in the location.
 			int totalCount = CropTile.CountAll (location);
-			if (outdoors && totalCount < 16)
+			int minTotalCount = island ? 8 : outdoors ? 16 : 4;
+			if (totalCount < minTotalCount)
 			{
 				if (console)
-					Monitor.Log ($"Not spawning a cropbeast because there are only {totalCount} crop(s) on {location.Name}.", LogLevel.Info);
+					Monitor.Log ($"Not spawning a cropbeast because there are only {totalCount} crop(s) on {location.Name} (minimum {minTotalCount}).", LogLevel.Info);
 				return false;
 			}
 
 			// Only spawn if the applicable daily limit has not been hit.
 			int limit = outdoors
-				? Config.OutdoorSpawnLimit : Config.IndoorSpawnLimit;
-			int count = outdoors
-				? outdoorSpawnCount : indoorSpawnCount;
+				? Config.OutdoorSpawnLimit
+				: Config.IndoorSpawnLimit;
+			int count = island
+				? islandSpawnCount
+				: outdoors
+					? outdoorSpawnCount
+					: indoorSpawnCount;
 			if (limit >= 0 && count >= limit)
 			{
 				if (console)
-					Monitor.Log ($"Not spawning a cropbeast because we have already spawned {count} out of a limit of {limit} {(outdoors ? "outdoors" : "indoors")}.", LogLevel.Info);
+				{
+					string locationType = island
+						? "on the island"
+						: outdoors
+							? "outdoors"
+							: "indoors";
+					Monitor.Log ($"Not spawning a cropbeast because we have already spawned {count} out of a limit of {limit} {locationType}.", LogLevel.Info);
+				}
 				return false;
 			}
 
@@ -203,14 +252,14 @@ namespace Cropbeasts
 			if (dayProgress > spawnProgress)
 				chance *= 5.0;
 
-			// Roll the die. Always succeed for no RNG or the console command.
+			// Roll for chance. Always succeed when no RNG or for the console command.
 			if (rng == null)
 				return true;
 			else if (rng.NextDouble () < chance)
 				return true;
 			else if (console)
 			{
-				Monitor.Log ($"If not by console command, wouldn't have spawned a cropbeast due to the chance roll.", LogLevel.Info);
+				Monitor.Log ($"If not by console command, wouldn't have spawned a cropbeast because the individual chance roll failed.", LogLevel.Info);
 				return true;
 			}
 			else
@@ -219,7 +268,7 @@ namespace Cropbeasts
 
 		// Lists all the tiles in the given location with crops
 		// on them that are candidates for becoming cropbeasts.
-		protected virtual List<CropTile> findCandidateCropTiles (GameLocation location,
+		protected List<CropTile> findCandidateCropTiles (GameLocation location,
 			string filter = null, bool console = false)
 		{
 			List<SObject> wickedStatues = Utilities.FindWickedStatues (location);
@@ -227,7 +276,7 @@ namespace Cropbeasts
 
 			// For IF2R, avoid cropbeast-spawning special giant crops in an area
 			// of the map that is initially inaccessible.
-			List<Point> exemptTiles = new List<Point> ();
+			List<Point> exemptTiles = new ();
 			if (location is Farm && Game1.whichFarm == Farm.default_layout &&
 					Helper.ModRegistry.IsLoaded ("flashshifter.immersivefarm2remastered"))
 				exemptTiles.Add (new Point (79, 99));

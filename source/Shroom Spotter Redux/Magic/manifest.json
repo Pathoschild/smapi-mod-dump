@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/strobel1ght/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Magic",
+  "Author": "spacechase0",
+  "Version": "0.3.2",
+  "Description": "Magic!",
+  "UniqueID": "spacechase0.Magic",
+  "EntryDll": "Magic.dll",
+  "MinimumApiVersion": "2.9.0",
+  "UpdateKeys": [ "Nexus:2007", "Chucklefish:5242" ],
+  "Dependencies": [
+    { "UniqueID": "spacechase0.SpaceCore" },
+    { "UniqueID": "spacechase0.JsonAssets" },
+    { "UniqueID": "Platonymous.Toolkit" },
+    { "UniqueID": "spacechase0.ManaBar" }
+  ],
+  "spacechase0": "magic"
+}

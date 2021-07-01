@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\Desktop\Flower Dance fix Test Builds\</OutputPath>
+    <OutputPath>..\..\..\..\..\Desktop\Stardew Mod Files\Flower Dance Fix Development Files\Flower Dance fix Test Builds\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -60,6 +60,7 @@
     <Compile Include="GenericModConfigMenuAPI.cs" />
     <Compile Include="ImportantMethodsCopiedForReference.cs" />
     <Compile Include="ModConfig.cs" />
+    <Compile Include="Models.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="OriginalMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

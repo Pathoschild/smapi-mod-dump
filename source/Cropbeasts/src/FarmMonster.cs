@@ -28,8 +28,8 @@ namespace Cropbeasts
 		protected TimeSpan spawnTime { get; private set; }
 
 		protected TimeSpan dieTime { get; private set; }
-		protected readonly NetInt hitsTaken = new NetInt (0);
-		protected readonly NetInt damageDealt = new NetInt (0);
+		protected readonly NetInt hitsTaken = new (0);
+		protected readonly NetInt damageDealt = new (0);
 
 		protected long updateTimer { get; private set; }
 		private bool registered;
@@ -42,7 +42,7 @@ namespace Cropbeasts
 		private int fleeDirectionOffset;
 
 		protected FarmMonster ()
-		{}
+		{ }
 
 		protected FarmMonster (string name, GameLocation location,
 			Vector2 tileLocation)
@@ -76,7 +76,7 @@ namespace Cropbeasts
 			Monitor.Log ($"Rating combat performance against {Name}...");
 			double rating = (rateHitsToKill () * 1.5 + rateTimeToKill () +
 				rateDamageDealt () * 2.0) / 4.5;
-			Monitor.Log ($"...weighted score of {rating.ToString ("P0")}.");
+			Monitor.Log ($"...weighted score of {(long) (rating * 100)}.");
 			return rating;
 		}
 
@@ -84,7 +84,7 @@ namespace Cropbeasts
 		{
 			// Top score for one-hit kill, bottom score for five or more hits.
 			double rating = Math.Max (0.0, Math.Min (1.0, 1.0 - (hitsTaken.Value - 1.0) / 4.0));
-			Monitor.Log ($"- {hitsTaken.Value} hits to kill; score: {rating.ToString ("P0")}");
+			Monitor.Log ($"- {hitsTaken.Value} hits to kill; score: {(long) (rating * 100)}");
 			return rating;
 		}
 
@@ -93,7 +93,7 @@ namespace Cropbeasts
 			// Top score for 10 seconds or less, bottom score for 20+ seconds.
 			double secondsToKill = (dieTime - spawnTime).Ticks / TimeSpan.TicksPerSecond;
 			double rating = Math.Max (0.0, Math.Min (1.0, 1.0 - (secondsToKill - 10.0) / 10.0));
-			Monitor.Log ($"- {secondsToKill} seconds to kill; score: {rating.ToString ("P0")}");
+			Monitor.Log ($"- {secondsToKill} seconds to kill; score: {(long) (rating * 100)}");
 			return rating;
 		}
 
@@ -104,7 +104,7 @@ namespace Cropbeasts
 			// That is intentional since multiplayer combat is at an advantage.
 			double ceiling = 0.33 * Game1.player.maxHealth;
 			double rating = Math.Max (0.0, Math.Min (1.0, 1.0 - damageDealt.Value / ceiling));
-			Monitor.Log ($"- {damageDealt.Value} damage to player(s); score: {rating.ToString ("P0")}");
+			Monitor.Log ($"- {damageDealt.Value} damage to player(s); score: {(long) (rating * 100)}");
 			return rating;
 		}
 
@@ -117,7 +117,7 @@ namespace Cropbeasts
 		}
 
 		protected int takeDamage (int damage, int xTrajectory,
-			int yTrajectory, bool isBomb, double addedPrecision, Farmer who,
+			int yTrajectory, bool isBomb, double addedPrecision, Farmer _,
 			string hitSound)
 		{
 			if (currentLocation == null) return -1;
@@ -154,7 +154,7 @@ namespace Cropbeasts
 		// processDeath, which must in turn be called from cleanUpMonsters.
 
 		protected new virtual void localDeathAnimation ()
-		{}
+		{ }
 
 		public override void update (GameTime time, GameLocation location)
 		{
@@ -243,7 +243,7 @@ namespace Cropbeasts
 				return;
 
 			Rectangle bounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
-			Vector2 renderPos = new Vector2 ();
+			Vector2 renderPos = new ();
 			float rotation = 0f;
 
 			if (Position.X > Game1.viewport.MaxCorner.X - 64f)
@@ -284,7 +284,7 @@ namespace Cropbeasts
 			if (renderPos.X == bounds.Right - 8f && renderPos.Y == bounds.Bottom - 8f)
 				rotation -= (float) Math.PI / 4f;
 
-			Rectangle sourceRect = new Rectangle (421, 459, 12, 12);
+			Rectangle sourceRect = new (421, 459, 12, 12);
 			float scale = 2f;
 			Vector2 position = Utility.makeSafe (renderPos, new Vector2
 				(sourceRect.Width * scale, sourceRect.Height * scale));

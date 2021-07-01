@@ -1,0 +1,25 @@
+{
+  //Levelek
+  "mail.Wizard1": "@,^^   Érzem a Junimok örömét a völgyben tett közösségi hozzájárulásod miatt.^ Van egy ötletük, hogy hogyan lehetne javítani az üvegházadon. Lefordítom ezeket a terveket Robinnak, hogy használni tudja.^ Beszélj vele, ha szertnéd ezt a fejlesztést.^^   -M. Rasmodius, varázsló",
+  "mail.Wizard1b": "@,^^   Annak ellenére, hogy a Junimok eltűntek a közösségi házból, érzem az örömüket a völgyben tett közösségi hozzájárulásod miatt.^ Van egy ötletük, hogy hogyan lehetne javítani az üvegházadon. Lefordítom ezeket a terveket Robinnak, hogy használni tudja.^ Beszélj vele, ha szertnéd ezt a fejlesztést.^^   -M. Rasmodius, varázsló",
+  "mail.Wizard2": "@,^^   A Junimokat továbbra is lenyűgözi a gazdaságod.^ Van egy ötletük, hogy hogyan lehetne tovább javítani az üvegházadat. Lefordítom ezeket a terveket Robinnak, hogy használni tudja.^ Beszélj vele, ha szertnéd ezt az újabb fejlesztést.^^   -M. Rasmodius, varázsló",
+  "mail.Wizard3": "@,^^   A Junimok el vannak ragadtatva a gazdaságodtól.^ Egy utolsó ötletük támadt a farm üntözőrendszerének a frissítésére. Lefordítom ezeket a terveket Robinnak, hogy használni tudja.^ Beszélj vele, ha szertnéd ezt a végső fejlesztést.^^   -M. Rasmodius, varázsló",
+
+  //Üzlet leírások
+  "CarpenterShop.BluePrintName": "Öntözőrendszer frissítés",
+  "CarpenterShop.FirstUpgradeDescription": "Automatikus öntözőrendszer az üvegház mennyezetére, minden reggel öntözi meg a földet.",
+  "CarpenterShop.SecondUpgradeDescription": "Automatikus öntözőrendszer az üvegház mennyezetére, minden reggel és este öntözi meg a földet.",
+  "CarpenterShop.FinalUpgradeDescription": "Rejtett földalatti öntözőrendszer az egész farmodra, minden reggel és este öntözi meg a földet.",
+
+  //Menü elemek
+  //Jelenleg nem használt, soha nem használható
+  //Ha használják kibővül
+
+  "menu.diff": "Nehézség",
+  "menu.diff-Easy": "Könnyű",
+  "menu.diff-Medium": "Közepes",
+  "menu.diff-Hard": "Nehéz",
+  "menu.diff-Custom": "Egyedi"
+
+
+}

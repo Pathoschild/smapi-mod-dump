@@ -21,8 +21,7 @@ namespace ScryingOrb
 {
 	public class NightEventsExperience : Experience
 	{
-		public static readonly Dictionary<int, int> AcceptedOfferings =
-			new Dictionary<int, int>
+		public static readonly Dictionary<int, int> AcceptedOfferings = new ()
 		{
 			{ 767, 3 }, // Bat Wing
 			{ 305, 1 }, // Void Egg
@@ -31,8 +30,7 @@ namespace ScryingOrb
 			{ 795, 1 }, // Void Salmon
 		};
 
-		public static readonly Dictionary<string, NightEvents.Event?> Types =
-			new Dictionary<string, NightEvents.Event?>
+		public static readonly Dictionary<string, NightEvents.Event?> Types = new ()
 		{
 			{ "any", null },
 			{ "Fairy", NightEvents.Event.Fairy },
@@ -40,8 +38,10 @@ namespace ScryingOrb
 			{ "Meteorite", NightEvents.Event.Meteorite },
 			{ "StrangeCapsule", NightEvents.Event.StrangeCapsule },
 			{ "StoneOwl", NightEvents.Event.StoneOwl },
-			{ "leave", NightEvents.Event.None }
+			{ "leave", NightEvents.Event.None },
 		};
+
+		public override bool isAvailable => NightEvents.IsAvailable;
 
 		protected override bool check ()
 		{

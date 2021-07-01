@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/1333
 IDs: spacechase0.CarryChest
-update keys: Nexus:1333, Chucklefish:4851, GitHub:spacechase0/CarryChest
+update keys: Nexus:1333, GitHub:spacechase0/StardewValleyMods

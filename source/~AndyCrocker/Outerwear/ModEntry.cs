@@ -77,7 +77,12 @@ namespace Outerwear
         public void Edit<T>(IAssetData asset)
         {
             var customBuffIconsTexture = this.Helper.Content.Load<Texture2D>("assets/CustomBuffIcons.png");
-            asset.AsImage().PatchImage(customBuffIconsTexture, targetArea: new Rectangle(80, 32, 96, 16));
+
+            // replace the max stamina icon
+            asset.AsImage().PatchImage(customBuffIconsTexture, sourceArea: new Rectangle(0, 0, 16, 16), targetArea: new Rectangle(64, 16, 16, 16));
+
+            // add the custom icons
+            asset.AsImage().PatchImage(customBuffIconsTexture, sourceArea: new Rectangle(16, 0, 96, 16), targetArea: new Rectangle(80, 32, 96, 16));
         }
 
 

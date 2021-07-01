@@ -1,0 +1,274 @@
+[
+  {
+    "Dialog": "work work work",
+    "Emotion": "Grumpy"
+  },
+  {
+    "Dialog": "ok boss",
+    "Emotion": "Grumpy"
+  },
+  {
+    "Dialog": "*grumble*",
+    "Emotion": "Grumpy"
+  },
+  {
+    "Dialog": "< plants",
+    "Emotion": "Happy"
+  },
+  {
+    "Dialog": "< sunshine",
+    "Emotion": "Happy",
+    "When": {
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Dialog": "bored now",
+    "Emotion": "Grumpy",
+    "Situation": "Idle"
+  },
+  {
+    "Dialog": "nothing to do",
+    "Situation": "Idle"
+  },
+  {
+    "Dialog": "chill time",
+    "Emotion": "Happy",
+    "Situation": "Idle"
+  },
+  {
+    "Dialog": "break time",
+    "Emotion": "Happy",
+    "Situation": "Idle"
+  },
+  {
+    "Dialog": "snow angels",
+    "Situation": "Idle",
+    "Emotion": "Happy",
+    "When": {
+      "Weather": "Snow"
+    }
+  },
+  {
+    "Dialog": "fingers frozen",
+    "Situation": "Idle",
+    "Emotion": "Grumpy",
+    "When": {
+      "Season": "Winter"
+    }
+  },
+  {
+    "Dialog": "brr so cold",
+    "When": {
+      "Season": "Winter"
+    }
+  },
+  {
+    "Dialog": "lovely weather",
+    "Emotion": "Happy",
+    "When": {
+      "Season": "Spring",
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Dialog": "< rain",
+    "Emotion": "Happy",
+    "When": {
+      "Weather": "Rain"
+    }
+  },
+  {
+    "Dialog": "ugh, rain",
+    "Emotion": "Grumpy",
+    "When": {
+      "Weather": "Rain"
+    }
+  },
+  {
+    "Dialog": "getting dark",
+    "When": {
+      "Time": "{{Range: 1800, 2000}}"
+    }
+  },
+  {
+    "Dialog": "lunchtime boss",
+    "When": {
+      "Time": "{{Range: 1200, 1330}}"
+    }
+  },
+  {
+    "Dialog": "hungry",
+    "Emotion": "Grumpy",
+    "When": {
+      "Time": "{{Range: 1200, 1330}}"
+    }
+  },
+  {
+    "Dialog": "want dinner",
+    "Emotion": "Grumpy",
+    "When": {
+      "Time": "{{Range: 1800, 2000}}"
+    }
+  },
+  {
+    "Dialog": "bedtime?",
+    "When": {
+      "Time": "{{Range: 2000, 2600}}"
+    }
+  },
+  {
+    "Dialog": "@ so lazy",
+    "Emotion": "Grumpy"
+  },
+  {
+    "Dialog": "so tired!",
+    "Emotion": "Grumpy",
+    "When": {
+      "Time": "{{Range: 2000, 2600}}"
+    }
+  },
+  {
+    "Dialog": "sleepy",
+    "Emotion": "Grumpy",
+    "When": {
+      "Time": "{{Range: 1900, 2600}}"
+    }
+  },
+  {
+    "Dialog": "too dark",
+    "Emotion": "Grumpy",
+    "When": {
+      "Time": "{{Range: 2000, 2600}}"
+    }
+  },
+  {
+    "Dialog": "ick pollen",
+    "When": {
+      "Season": "Spring",
+      "Weather": "Wind"
+    }
+  },
+  {
+    "Dialog": "*achoo*",
+    "When": {
+      "Season": "Spring",
+      "Weather": "Wind"
+    }
+  },
+  {
+    "Dialog": "ugh sweaty",
+    "Emotion": "Grumpy",
+    "Situation": "Working",
+    "When": {
+      "Season": "Summer"
+    }
+  },
+  {
+    "Dialog": "too hot",
+    "Emotion": "Grumpy",
+    "Situation": "Working",
+    "When": {
+      "Season": "Spring",
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Dialog": "too hot",
+    "Emotion": "Grumpy",
+    "Situation": "Working",
+    "When": {
+      "Season": "Summer",
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Dialog": "so crisp",
+    "Emotion": "Happy",
+    "Situation": "Idle",
+    "When": {
+      "Season": "Fall"
+    }
+  },
+  {
+    "Dialog": "leaves everywhere",
+    "Emotion": "Grumpy",
+    "When": {
+      "Season": "Fall",
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Dialog": "lightning?",
+    "When": {
+      "Weather": "Storm"
+    }
+  },
+  {
+    "Dialog": "yipes!",
+    "When": {
+      "Weather": "Storm"
+    }
+  },
+  {
+    "Dialog": "last day",
+    "When": {
+      "Day": "28"
+    }
+  },
+  {
+    "Dialog": "get those crops in",
+    "When": {
+      "Day": "28"
+    }
+  },
+  {
+    "Dialog": "fall crops?",
+    "When": {
+      "Season": "Summer",
+      "Day": "{{Range: 26, 28}}"
+    }
+  },
+  {
+    "Dialog": "winter coming",
+    "Situation": "Idle",
+    "When": {
+      "Season": "Fall",
+      "Day": "{{Range: 26, 28}}"
+    }
+  },
+  {
+    "Dialog": "winter holiday!",
+    "Situation": "Idle",
+    "Emotion": "Happy",
+    "When": {
+      "Season": "Fall",
+      "Day": "{{Range: 26, 28}}"
+    }
+  },
+  {
+    "Dialog": "what planting next?",
+    "Situation": "Idle",
+    "When": {
+      "Season": "Winter",
+      "Day": "{{Range: 26, 28}}"
+    }
+  },
+  {
+    "Dialog": "something need doing?",
+    "Situation": "Idle"
+  },
+  {
+    "Dialog": "help help being repressed",
+    "Emotion": "Grumpy",
+    "Situation": "Working"
+  },
+  {
+    "Dialog": "[pretending to work]",
+    "Situation": "Idle"
+  },
+  {
+    "Dialog": "look busy!",
+    "Situation": "Idle"
+  }
+]

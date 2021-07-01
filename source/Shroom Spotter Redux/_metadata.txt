@@ -6,9 +6,9 @@ mods:
    Shroom Spotter Redux
 
 latest commit:
-   commit 5429d52b9dd9848705f8a9b2c0789e6bc9ff029f
-   Author: TehPers <tehperz@gmail.com>
-   Date:   Sat Feb 16 14:31:05 2019 -0600
+   commit b8231c6d089fd9533a1873a00ccca1131c675d3b
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Sun Jun 6 00:37:30 2021 -0400
    
-       Added cooking recipes, food, and pufferchick slimes
+       add missing release notes + credits per merged PRs
    

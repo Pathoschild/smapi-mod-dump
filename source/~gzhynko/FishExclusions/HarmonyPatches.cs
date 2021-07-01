@@ -10,7 +10,6 @@
 
 using System.Linq;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using Object = StardewValley.Object;
 // ReSharper disable InconsistentNaming
@@ -32,7 +31,7 @@ namespace FishExclusions
 #endif
             
             var bannedIds = Utils.GetExcludedFish(ModEntry.Config, Game1.currentSeason, __instance.Name, Game1.IsRainingHere(__instance));
-            
+
             // This method has a neat unused (yet?) parameter 'baitPotency'. Why not to use it to avoid recursion?
             if ((int) baitPotency == 909 || !bannedIds.Contains(__result.parentSheetIndex)) return;
             

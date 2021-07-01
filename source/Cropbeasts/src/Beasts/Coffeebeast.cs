@@ -22,8 +22,8 @@ namespace Cropbeasts.Beasts
 		private bool runningAwayFromFarmer = false;
 		private bool chargingFarmer = false;
 
-		public NetByte voice = new NetByte ();
-		private ICue meep;
+		public NetByte voice = new ();
+		private readonly ICue meep;
 
 		public Coffeebeast ()
 		{
@@ -65,11 +65,11 @@ namespace Cropbeasts.Beasts
 					(Scale + (float) Math.Max (-0.1, (yJumpOffset + 32) / 128.0),
 					Scale - Math.Max (-0.1f, yJumpOffset / 256f)) * 4f,
 				SpriteEffects.None, Math.Max (0f, drawOnTop ? 0.991f
-					: getStandingY() / 10000f));
+					: getStandingY () / 10000f));
 
 			if (isGlowing)
 			{
-				b.Draw (Sprite.Texture, getLocalPosition(Game1.viewport) +
+				b.Draw (Sprite.Texture, getLocalPosition (Game1.viewport) +
 					new Vector2 (32f, 64 + yJumpOffset), Sprite.SourceRect,
 					glowingColor * glowingTransparency, rotation,
 					new Vector2 (8f, 16f), Math.Max (0.2f, Scale) * 4f,
@@ -96,24 +96,24 @@ namespace Cropbeasts.Beasts
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(44, Position + new Vector2 (Game1.random.Next (-32, 32),
 					Game1.random.Next (-32, 32)), secondaryColor.Value, 10)
-				{
-					delayBeforeAnimationStart = 150,
-					scale = 0.5f,
-				});
+			{
+				delayBeforeAnimationStart = 150,
+				scale = 0.5f,
+			});
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(44, Position + new Vector2 (Game1.random.Next (-32, 32),
 					Game1.random.Next (-32, 32)), primaryColor.Value, 10)
-				{
-					delayBeforeAnimationStart = 300,
-					scale = 0.5f,
-				});
+			{
+				delayBeforeAnimationStart = 300,
+				scale = 0.5f,
+			});
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(44, Position + new Vector2 (Game1.random.Next (-32, 32),
 					Game1.random.Next (-32, 32)), secondaryColor.Value, 10)
-				{
-					delayBeforeAnimationStart = 450,
-					scale = 0.5f,
-				});
+			{
+				delayBeforeAnimationStart = 450,
+				scale = 0.5f,
+			});
 		}
 
 		protected override void updateAnimation (GameTime time)
@@ -147,7 +147,7 @@ namespace Cropbeasts.Beasts
 						new TemporaryAnimatedSprite ("TileSheets\\animations",
 							new Rectangle (0, 128, 64, 64), 40f, 4, 0,
 							getStandingPosition (), false, false)
-							{ color = primaryColor.Value });
+						{ color = primaryColor.Value });
 					yJumpVelocity *= 2f;
 				}
 				if (!chargingFarmer)
@@ -157,19 +157,19 @@ namespace Cropbeasts.Beasts
 			{
 				Slipperiness = 10;
 				Vector2 trajectory = Utility.getAwayFromPlayerTrajectory
-					(GetBoundingBox(), Player);
+					(GetBoundingBox (), Player);
 
 				xVelocity += (0f - trajectory.X) / 150f +
 					((Game1.random.NextDouble () < 0.01)
 						? Game1.random.Next (-50, 50) / 10f : 0f);
 				if (Math.Abs (xVelocity) > 5f)
-					xVelocity = Math.Sign(xVelocity) * 5;
+					xVelocity = Math.Sign (xVelocity) * 5;
 
 				yVelocity += (0f - trajectory.Y) / 150f +
 					((Game1.random.NextDouble () < 0.01)
 						? Game1.random.Next (-50, 50) / 10f : 0f);
-				if (Math.Abs(yVelocity) > 5f)
-					yVelocity = Math.Sign(yVelocity) * 5;
+				if (Math.Abs (yVelocity) > 5f)
+					yVelocity = Math.Sign (yVelocity) * 5;
 
 				if (Game1.random.NextDouble () < 0.0001)
 				{
@@ -195,7 +195,7 @@ namespace Cropbeasts.Beasts
 			addedSpeed = 2;
 			controller = new PathFindController (this, currentLocation,
 				Utility.isOffScreenEndFunction, -1,
-				eraseOldPathController: false, delegate {}, 350,
+				eraseOldPathController: false, delegate { }, 350,
 				Point.Zero);
 			chargingFarmer = false;
 			runningAwayFromFarmer = true;

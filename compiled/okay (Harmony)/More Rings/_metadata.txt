@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2054
+IDs: spacechase0.MoreRings
+update keys: Nexus:2054, GitHub:spacechase0/StardewValleyMods

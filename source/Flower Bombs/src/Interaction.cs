@@ -68,10 +68,10 @@ namespace FlowerBombs
 				return false;
 
 			// The seed must be a wild or flower seed.
-			Crop testCrop = new Crop (seed.ParentSheetIndex, 0, 0);
+			Crop testCrop = new (seed.ParentSheetIndex, 0, 0);
 			if (testCrop.whichForageCrop.Value == 0)
 			{
-				SObject harvest = new SObject (testCrop.indexOfHarvest.Value, 1);
+				SObject harvest = new (testCrop.indexOfHarvest.Value, 1);
 				if (harvest.Category != SObject.flowersCategory)
 					return false;
 			}
@@ -88,18 +88,18 @@ namespace FlowerBombs
 
 		private static InventoryMenu GetActiveInventoryMenu () =>
 			Game1.activeClickableMenu switch
-		{
-			MenuWithInventory mwi => mwi.inventory,
-			GameMenu gm => gm.GetCurrentPage () switch
 			{
-				CraftingPage cp => cp.inventory,
-				InventoryPage ip => ip.inventory,
+				MenuWithInventory mwi => mwi.inventory,
+				GameMenu gm => gm.GetCurrentPage () switch
+				{
+					CraftingPage cp => cp.inventory,
+					InventoryPage ip => ip.inventory,
+					_ => null,
+				},
+				JunimoNoteMenu jnm => jnm.inventory,
+				ShopMenu sm => sm.inventory,
 				_ => null,
-			},
-			JunimoNoteMenu jnm => jnm.inventory,
-			ShopMenu sm => sm.inventory,
-			_ => null,
-		};
+			};
 
 		private static Item GetPointedItem (InventoryMenu menu,
 			ICursorPosition cursor)

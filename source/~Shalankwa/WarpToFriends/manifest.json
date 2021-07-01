@@ -11,7 +11,7 @@
 {
 	"Name": "Warp To Friends",
 	"Author": "Shalankwa",
-	"Version": "1.2.0",
+	"Version": "1.2.1-unofficial.1-Nightly",
 	"Description": "Warp to friend locations",
 	"UniqueID": "Shalankwa.WarpToFriends",
 	"EntryDll": "WarpToFriends.dll",

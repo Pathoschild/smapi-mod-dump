@@ -1,8 +1,0 @@
-﻿{
-	"Name": "Cropbeasts (Json Assets pack)",
-	"Author": "kdau",
-	"Version": "1.0.1",
-	"Description": "Json Assets content pack for Cropbeasts mod",
-	"UniqueID": "kdau.Cropbeasts.JA",
-	"ContentPackFor": { "UniqueID": "spacechase0.JsonAssets" }
-}

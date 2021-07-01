@@ -39,7 +39,7 @@ namespace SkillfulClothes.Effects.Special
         {
             Location = location;
             ActualEffect = effect;
-            effectDescription = ActualEffect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + $" {Location.GetEffectDescriptionSuffix()}")).ToList();
+            effectDescription = ActualEffect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + $"{Location.GetEffectDescriptionSuffix()}")).ToList();
         }
 
         public void Apply(Item sourceItem, EffectChangeReason reason)

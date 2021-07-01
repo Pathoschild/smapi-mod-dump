@@ -28,7 +28,7 @@ namespace Cropbeasts.Beasts
 			Random
 		}
 
-		public readonly NetEnum<FaceType> faceType = new NetEnum<FaceType> ();
+		public readonly NetEnum<FaceType> faceType = new ();
 
 		private struct SpriteFrame
 		{
@@ -59,10 +59,14 @@ namespace Cropbeasts.Beasts
 		private int rollDirection = 0;
 
 		public Berrybeast ()
-		{}
+		{ }
 
 		public Berrybeast (CropTile cropTile, bool primary)
-		: base (cropTile, primary, primary, !primary, "Berrybeast")
+		: this (cropTile, primary, "Berrybeast")
+		{ }
+
+		protected Berrybeast (CropTile cropTile, bool primary, string beastName)
+		: base (cropTile, primary, primary, !primary, beastName)
 		{
 			// Choose what facial features will appear on the beast.
 			faceType.Value = (Config.BerrybeastFace == FaceType.Random)
@@ -99,7 +103,7 @@ namespace Cropbeasts.Beasts
 		}
 
 		public override void shedChunks (int _number, float _scale)
-		{}
+		{ }
 
 		public override void draw (SpriteBatch b)
 		{
@@ -136,13 +140,15 @@ namespace Cropbeasts.Beasts
 				(44, Position, primaryColor.Value, 10, flipped: false, 70f));
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(44, Position + new Vector2 (-16f, 0f), primaryColor.Value, 10,
-				flipped: false, 70f) { delayBeforeAnimationStart = 100 });
+				flipped: false, 70f)
+			{ delayBeforeAnimationStart = 100 });
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(44, Position + new Vector2 (16f, 0f), primaryColor.Value, 10,
-				flipped: false, 70f) { delayBeforeAnimationStart = 200 });
+				flipped: false, 70f)
+			{ delayBeforeAnimationStart = 200 });
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(44, Position + new Vector2 (0f, -16f), primaryColor.Value, 10)
-				{ delayBeforeAnimationStart = 300 });
+			{ delayBeforeAnimationStart = 300 });
 		}
 
 		protected override void updateAnimation (GameTime time)

@@ -6,9 +6,9 @@ mods:
    Portable TV
 
 latest commit:
-   commit 105987d433b4ff07ecd106aecd335fda0230260f
+   commit c46f72459199e4d09f27d2c0af72c74b9f22a214
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Sat May 23 21:55:05 2020 -0700
+   Date:   Sat Jun 26 23:23:05 2021 -0700
    
-       s/Mac/macOS/g
+       v2.0.1
    

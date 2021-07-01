@@ -1,5 +1,9 @@
 {
   "CoordinateHUDToggle": "F5",
   "LogCoordinates": "F6",
-  "SwitchToCursorCoords": "F7"
+  "SwitchToCursorCoords": "F7",
+  "HudUnlock": "F8",
+  "LogTrackingTarget": true,
+  "HudXCoord": 0,
+  "HudYCoord": 0
 }

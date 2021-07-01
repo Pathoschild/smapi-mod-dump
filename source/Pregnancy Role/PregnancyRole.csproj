@@ -3,8 +3,16 @@
 	<PropertyGroup>
 		<AssemblyName>PregnancyRole</AssemblyName>
 		<RootNamespace>PregnancyRole</RootNamespace>
-		<Version>1.2.0</Version>
+		<Version>2.0.0</Version>
 		<EnableHarmony>true</EnableHarmony>
 	</PropertyGroup>
-	<Import Project="common.projitems" Label="Shared" />
+	<PropertyGroup>
+		<LangVersion>9.0</LangVersion>
+		<TargetFramework>net452</TargetFramework>
+		<IgnoreModFilePatterns>[.](svg|xcf)$</IgnoreModFilePatterns>
+		<GameModsPath>bin/Mods</GameModsPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+	</ItemGroup>
 </Project>

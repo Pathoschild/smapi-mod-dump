@@ -20,19 +20,17 @@ namespace PregnancyRole
 
 		internal static ModConfig Instance { get; private set; }
 
+#pragma warning disable IDE1006
+
 		public bool ShowPlayerDropdown { get; set; } = true;
 		public Point PlayerDropdownOrigin { get; set; } = Point.Zero;
 
 		public bool ShowSpouseDropdown { get; set; } = true;
 		public Point SpouseDropdownOrigin { get; set; } = Point.Zero;
 
-		public bool VerboseLogging { get; set; } =
-#if DEBUG
-			true
-#else
-			false
-#endif
-;
+		public bool VerboseLogging { get; set; } = false;
+
+#pragma warning restore IDE1006
 
 		internal static void Load ()
 		{

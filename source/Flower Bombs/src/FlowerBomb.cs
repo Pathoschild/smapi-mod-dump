@@ -38,7 +38,7 @@ namespace FlowerBombs
 			if (EmptyData != null)
 				return;
 
-			CraftingData recipe = new CraftingData ("Flower Bomb",
+			CraftingData recipe = new ("Flower Bomb",
 				"330 4 574 1", delivery: "none"); // 4 Clay, 1 Mudstone
 
 			string displayName = Helper.Translation.Get ("FlowerBomb.name");
@@ -71,8 +71,13 @@ namespace FlowerBombs
 
 		public override Item getOne ()
 		{
-			FlowerBomb one = new FlowerBomb (data) { TileLocation = Vector2.Zero,
-				name = name, Price = price, Quality = quality };
+			FlowerBomb one = new (data)
+			{
+				TileLocation = Vector2.Zero,
+				name = name,
+				Price = price,
+				Quality = quality
+			};
 			if (heldObject.Value != null)
 				one.heldObject.Value = (SObject) heldObject.Value.getOne ();
 			return one;
@@ -112,7 +117,7 @@ namespace FlowerBombs
 		public override ICustomObject recreate (Dictionary<string, string> additionalSaveData,
 			object replacement)
 		{
-			FlowerBomb self = new FlowerBomb (CustomObjectData
+			FlowerBomb self = new (CustomObjectData
 				.collection[additionalSaveData["id"]]);
 			if (additionalSaveData.ContainsKey ("seed"))
 			{

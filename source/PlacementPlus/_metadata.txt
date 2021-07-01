@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/2Retr0/PlacementPlus
+   Git: https://github.com/2Retr0/PlacementPlus.git
+
+mods:
+   PlacementPlus
+
+latest commit:
+   commit ee048d1565b63f9d5f1652124f12169c6feb4e48
+   Author: 2Retr0 <18603664+2Retr0@users.noreply.github.com>
+   Date:   Fri Jun 4 18:20:33 2021 -0700
+   
+       Update README.md
+   

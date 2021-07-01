@@ -9,38 +9,97 @@
 *************************************************/
 
 {
-	"ForestBeachYLine": 85,
-	"SeabirdSoundChance": 0.003,
-	"MaxSeabirdCount": 3,
-	"TidepoolTiles": [
-		60,
-		61,
-		62,
-		63,
-		77,
-		78,
-		79,
-		80,
-		94,
-		95,
-		96,
-		97,
-		111,
-		112,
-		113,
-		114,
-		253,
-		254,
-		270,
-		271,
-		287,
-		288
-	  ],
-	  "SeaMonsterChance": 1E-06,
-	  "SeaMonsterRange": {
-		"X": 40,
-		"Y": 120,
-		"Width": 12,
-		"Height": 9
-	}
+	"AmbientSounds":
+	[
+		{
+			"Conditions":
+			[
+				"t 600 1900"
+			],
+			"Location": "Custom_EastScarpe",
+			"Area": { "X": 0, "Y": 85, "Width": -1, "Height": -1 },
+			"Chance": 0.003,
+			"Sound": "seagulls"
+		}
+	],
+	"CrabPotCatches":
+	[
+		{
+			"Location": "Custom_EastScarpe",
+			"FishingArea": 1, // tidepools
+			"OceanCatches": true
+		},
+		{
+			"Location": "Custom_EastScarpe",
+			"FishingArea": 2, // ocean
+			"OceanCatches": true
+		}
+	],
+	"CritterSpawns":
+	[
+		{
+			"Location": "Custom_EastScarpe",
+			"Area": { "X": 0, "Y": 85, "Width": -1, "Height": -1 },
+			"ChanceOnEntry": 1,
+			"MinPerCluster": 0,
+			"MaxPerCluster": 3,
+			"ChanceOnWater": 0.5,
+			"Type": "Seagull"
+		}
+	],
+	"FishingAreas":
+	[
+		{
+			"Location": "Custom_EastScarpe",
+			"Area": { "X": 0, "Y": 0, "Width": -1, "Height": 85 },
+			"Index": 0 // pond
+		},
+		{
+			"Location": "Custom_EastScarpe",
+			"Area": { "X": 41, "Y": 88, "Width": 22, "Height": 24 },
+			"Index": 1 // tidepools
+		},
+		{
+			"Location": "Custom_EastScarpe",
+			"Index": 2 // ocean
+		}
+	],
+	"FruitTreeLocations":
+	[
+		"Custom_ESOrchard"
+	],
+	"SeaMonsterSpawns":
+	[
+		{
+			"Location": "Custom_EastScarpe",
+			"Area": { "X": 40, "Y": 121, "Width": 14, "Height": 9 },
+			"Chance": 1E-05
+		}
+	],
+	"WaterColors":
+	[
+		{
+			"Conditions":
+			[
+				"z spring fall winter/u 12 13 14"
+			],
+			"Location": "Custom_EastScarpe",
+			"Color": { "R": 0, "G": 102, "B": 0, "A": 102 }
+		}
+	],
+	"WaterEffects":
+	[
+		{
+			"Location": "Custom_EastScarpe",
+			"Area": { "X": 41, "Y": 88, "Width": 22, "Height": 24 },
+			"Apply": false
+		}
+	],
+	"WinterGrasses":
+	[
+		{ "Location": "Custom_EastScarpe" },
+		{ "Location": "Custom_ESOrchard" },
+		{ "Location": "Custom_ESVineyard" },
+		{ "Location": "Custom_ESClearingHouse" }
+	]
 }

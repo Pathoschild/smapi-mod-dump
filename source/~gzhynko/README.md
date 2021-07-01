@@ -13,6 +13,9 @@ My mods for Stardew Valley.
  - [Animals Need Water](https://www.nexusmods.com/stardewvalley/mods/6196/) ([source](https://github.com/gzhynko/StardewMods/tree/master/AnimalsNeedWater))  
    Adds functionality to water troughs located in animal houses. Water them and your animals will be happy!  
 
+ - [Dialogue Box Redesign](https://www.nexusmods.com/stardewvalley/mods/8853/) ([source](https://github.com/gzhynko/StardewMods/tree/master/DialogueBoxRedesign))  
+   Makes the dialogue box a bit lighter.  
+
  - [Event Black Bars](https://www.nexusmods.com/stardewvalley/mods/7962/) ([source](https://github.com/gzhynko/StardewMods/tree/master/EventBlackBars))  
    Adds cutscene-like black bars to the top and the bottom of the screen during an event.  
 

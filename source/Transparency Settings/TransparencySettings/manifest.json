@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Esca-MMC/TransparencySettings
+**
+*************************************************/
+
+{
+  "Name": "Transparency Settings",
+  "Author": "Esca",
+  "Version": "1.0.0",
+  "Description": "Adds settings to control the transparency of trees and other large objects.",
+  "UniqueID": "Esca.TransparencySettings",
+  "EntryDll": "TransparencySettings.dll",
+  "MinimumApiVersion": "3.0.0-beta",
+  "UpdateKeys": [ "Nexus:8891", "GitHub:Esca-MMC/TransparencySettings", "ModDrop:971985" ]
+}

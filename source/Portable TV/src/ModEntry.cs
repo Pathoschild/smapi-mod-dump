@@ -10,6 +10,7 @@
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using System;
@@ -27,11 +28,10 @@ namespace PortableTV
 
 		protected static ModConfig Config => ModConfig.Instance;
 
-		public PortableTV tv { get; private set; }
 		public int parentSheetIndex { get; private set; } = -1;
 
-		private WeakReference<Toolbar> toolbar;
-		private IReflectedField<List<ClickableComponent>> toolbarButtons;
+		private readonly PerScreen<PortableTV> tv_ = new (() => new ());
+		public PortableTV tv => tv_.Value;
 
 		public override void Entry (IModHelper helper)
 		{
@@ -42,156 +42,152 @@ namespace PortableTV
 			// Add console commands.
 			Helper.ConsoleCommands.Add ("portable_tv",
 				"Starts a Portable TV, regardless of whether one is in inventory.",
-				cmdPortableTV);
+				(string _command, string[] _args) => show ());
 			Helper.ConsoleCommands.Add ("reset_portable_tv",
 				"Resets a Portable TV in case it gets stuck.",
-				cmdResetPortableTV);
+				(string _command, string[] _args) => reset ());
 
 			// Listen for game events.
 			Helper.Events.GameLoop.GameLaunched += onGameLaunched;
-			Helper.Events.GameLoop.SaveLoaded += onSaveLoaded;
 			Helper.Events.GameLoop.DayStarted += onDayStarted;
 			Helper.Events.Input.ButtonPressed += onButtonPressed;
 			Helper.Events.Display.RenderedWorld += onRenderedWorld;
+
+			// Set up asset loaders/editors.
+			Helper.Content.AssetEditors.Add (new ObjectEditor ());
 		}
 
 		private void onGameLaunched (object _sender, GameLaunchedEventArgs _e)
 		{
-			// Load the Json Assets content pack.
+			// Set up Json Assets, if it is available.
 			jsonAssets = Helper.ModRegistry.GetApi<JsonAssets.IApi>
 				("spacechase0.JsonAssets");
-			if (jsonAssets == null)
+			if (jsonAssets != null)
+			{
+				jsonAssets.IdsAssigned += onIdsAssigned;
+			}
+			else
 			{
 				Monitor.LogOnce ("Could not connect to Json Assets. It may not be installed or working properly.",
 					LogLevel.Error);
-				return;
 			}
-			jsonAssets.LoadAssets (Path.Combine (Helper.DirectoryPath,
-				"assets", "JA"));
 
 			// Set up Generic Mod Config Menu, if it is available.
 			ModConfig.SetUpMenu ();
 		}
 
-		private void onSaveLoaded (object _sender, SaveLoadedEventArgs _e)
+		private void onIdsAssigned (object _sender, EventArgs _e)
 		{
 			// Discover the object ID of the "Portable TV" inventory object.
-			if (jsonAssets != null)
+			parentSheetIndex = jsonAssets.GetObjectId ("Portable TV");
+			if (parentSheetIndex == -1)
 			{
-				parentSheetIndex = jsonAssets.GetObjectId ("Portable TV");
-				if (parentSheetIndex == -1)
-				{
-					Monitor.Log ("Could not find the ID of the Portable TV inventory object. The Json Assets content pack may not have loaded correctly.",
-						LogLevel.Error);
-				}
+				Monitor.Log ("Could not find the ID of the Portable TV inventory object. The Json Assets content pack may not have loaded correctly.",
+					LogLevel.Error);
 			}
 		}
 
 		private void onDayStarted (object _sender, DayStartedEventArgs _e)
 		{
-			// Set up the PortableTV. This furniture item isn't actually made or
-			// handled by the player; it only handles running the TV on screen
-			// when the "Portable TV" inventory object is interacted with.
-			tv = new PortableTV ();
-
-			// Have the the inventory toolbar and its buttons ready for checking
-			// in onButtonPressed.
-			var toolbar = Game1.onScreenMenus.First ((m) => m is Toolbar) as Toolbar;
-			this.toolbar = new WeakReference<Toolbar> (toolbar);
-			toolbarButtons = Helper.Reflection.GetField<List<ClickableComponent>>
-				(toolbar, "buttons");
+			// Reset the Portable TV furniture item to avoid possible issues.
+			reset ();
 		}
 
 		private void onButtonPressed (object _sender, ButtonPressedEventArgs e)
 		{
-			// Only respond if the TV and the world are ready and the player is
-			// free to interact with a TV.
-			if (tv == null || !Context.IsWorldReady || !Context.IsPlayerFree ||
-					Game1.player.UsingTool || Game1.IsChatting)
+			// Only respond if the player is free to interact with a TV.
+			if (!Context.IsWorldReady || Game1.player.IsBusyDoingSomething () ||
+					Game1.IsChatting)
 				return;
 
-			// On any platform, accept the configured keybinding if a Portable
+			// Only respond if the button press is relevant to a Portable TV.
+			if (!isRelevantPress (e))
+				return;
+
+			Helper.Input.Suppress (e.Button);
+			show ();
+		}
+
+		private bool isRelevantPress (ButtonPressedEventArgs e)
+		{
+			// On any platform, accept the configured keybinding iff a Portable
 			// TV is in inventory.
 			if (e.Button == Config.ActivateKey)
 			{
-				if (!Game1.player.hasItemInInventory (parentSheetIndex, 1))
-					return;
+				return Game1.player.hasItemInInventory (parentSheetIndex, 1);
 			}
+
+			// Get the cursor coordinates on screen in UI scaling.
+			var coords = Utility.ModifyCoordinatesForUIScale (e.Cursor.ScreenPixels);
+			int x = (int) coords.X;
+			int y = (int) coords.Y;
+
+			// Get relevant UI elements.
+			var toolbar = Game1.onScreenMenus.First ((m) => m is Toolbar) as Toolbar;
+			var toolbarButtons = (toolbar != null)
+				? Helper.Reflection.GetField<List<ClickableComponent>> (toolbar, "buttons")
+				: null;
+
 			// On Android, must be tapping in the world while the Portable TV
 			// is the current item.
-			else if (Constants.TargetPlatform == GamePlatform.Android)
+			if (Constants.TargetPlatform == GamePlatform.Android)
 			{
 				if (e.Button != SButton.MouseLeft)
-					return;
-
-				int x = (int) e.Cursor.ScreenPixels.X;
-				int y = (int) e.Cursor.ScreenPixels.Y;
+					return false;
 
 				// Allow a fixed area for the right-edge HUD elements.
 				if (x > Game1.viewport.Width - 80)
-					return;
+					return false;
 
-				this.toolbar.TryGetTarget (out Toolbar toolbar);
 				if (toolbar?.isWithinBounds (x, y) ?? false)
-					return;
+					return false;
 
-				if (!Utility.IsNormalObjectAtParentSheetIndex
-						(Game1.player.CurrentItem, parentSheetIndex))
-					return;
+				return Utility.IsNormalObjectAtParentSheetIndex (Game1.player.CurrentItem,
+					parentSheetIndex);
 			}
-			else
+
+			// On other platforms, must be clicking the use button.
+			if (!e.Button.IsActionButton ())
+				return false;
+
+			// If clicking on a toolbar button, must be a Portable TV item.
+			Item toolbarItem = null;
+			foreach (ClickableComponent button in toolbarButtons?.GetValue () ?? new ())
 			{
-				// On Linux/macOS/Windows, only respond to the use button.
-				if (!e.Button.IsActionButton ())
-					return;
-
-				// If clicking on the toolbar, must be clicking on a Portable TV.
-				Item toolbarItem = null;
-				foreach (ClickableComponent button in toolbarButtons.GetValue ())
+				if (button.containsPoint (x, y))
 				{
-					if (button.containsPoint ((int) e.Cursor.ScreenPixels.X,
-						(int) e.Cursor.ScreenPixels.Y))
-					{
-						toolbarItem = Game1.player.Items[Convert.ToInt32 (button.name)];
-						break;
-					}
-				}
-				if (toolbarItem != null &&
-						!Utility.IsNormalObjectAtParentSheetIndex
-							(toolbarItem, parentSheetIndex))
-					return;
-
-				// If not clicking on a toolbar button, must be holding the TV
-				// and have no interaction at the grab tile.
-				if (toolbarItem == null)
-				{
-					if (!Utility.IsNormalObjectAtParentSheetIndex
-							(Game1.player.CurrentItem, parentSheetIndex))
-						return;
-					if (Game1.currentLocation.isActionableTile
-							((int) e.Cursor.GrabTile.X, (int) e.Cursor.GrabTile.Y,
-								Game1.player))
-						return;
+					toolbarItem = Game1.player.Items[Convert.ToInt32 (button.name)];
+					break;
 				}
 			}
+			if (toolbarItem != null)
+			{
+				return Utility.IsNormalObjectAtParentSheetIndex (toolbarItem,
+					parentSheetIndex);
+			}
 
-			// Activate the TV. Don't do anything else with this click.
-			tv.turnOnTV ();
-			Helper.Input.Suppress (e.Button);
+			// Otherwise, must have no interaction at the grab tile.
+			if (Game1.currentLocation.isActionableTile
+					((int) e.Cursor.GrabTile.X, (int) e.Cursor.GrabTile.Y,
+						Game1.player))
+				return false;
+
+			// And finally must be holding a Portable TV.
+			return Utility.IsNormalObjectAtParentSheetIndex (Game1.player.CurrentItem,
+				parentSheetIndex);
 		}
 
 		private void onRenderedWorld (object sender, RenderedWorldEventArgs e)
 		{
-			if (tv != null)
-				tv.draw (e.SpriteBatch, 0, 0);
+			tv?.draw (e.SpriteBatch, 0, 0);
 		}
 
-		private void cmdPortableTV (string _command, string[] _args)
+		private void show ()
 		{
 			try
 			{
-				if (tv == null || !Context.IsWorldReady || !Context.IsPlayerFree ||
-						Game1.player.UsingTool || Game1.IsChatting)
+				if (tv == null || !Context.IsWorldReady ||
+						Game1.player.IsBusyDoingSomething () || Game1.IsChatting)
 					throw new Exception ("Not ready to show Portable TV right now.");
 				tv.turnOnTV ();
 			}
@@ -201,13 +197,13 @@ namespace PortableTV
 			}
 		}
 
-		private void cmdResetPortableTV (string _command, string[] _args)
+		private void reset ()
 		{
 			try
 			{
 				if (!Context.IsWorldReady)
 					throw new Exception ("Cannot reset Portable TV without an active save.");
-				tv = new PortableTV ();
+				tv_.Value = new PortableTV ();
 			}
 			catch (Exception e)
 			{

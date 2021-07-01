@@ -1,0 +1,55 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/kdau/portabletv
+**
+*************************************************/
+
+{
+	"Name": "Portable TV",
+	"Description": "Shows TV programs anywhere in the valley.",
+	"Category": "Metal",
+	"Price": 50,
+	"CanSell": false,
+	"Recipe":
+	{
+		"ResultCount": 1,
+		"Ingredients":
+		[
+			{
+				"Object": 336, // Gold Bar
+				"Count": 1
+			},
+			{
+				"Object": 338, // Refined Quartz
+				"Count": 2
+			},
+			{
+				"Object": 787, // Battery Pack
+				"Count": 1
+			}
+		],
+		"IsDefault": true
+	},
+	"NameLocalization":
+	{
+		"de": "Taschenfernseher",
+		"es": "Televisor portátil",
+		"fr": "TV portative",
+		"hu": "Hordozható televízió",
+		"it": "TV portatile",
+		"pt": "Televisor portátil"
+	},
+	"DescriptionLocalization":
+	{
+		"de": "Zeigt Fernsehsendungen überall im Tal.",
+		"es": "Muestra programas de televisión en cualquier parte del valle.",
+		"fr": "Diffusion de programmes télévisés dans toute la vallée.",
+		"hu": "TV műsorokat nézhet vele a völgyben bárhol.",
+		"it": "Mostra i programmi televisivi ovunque nella valle.",
+		"pt": "Mostra programas de televisão em qualquer lugar do vale."
+	}
+}

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Experience Bars",
+    "Author": "spacechase0",
+    "Version": "1.2.2",
+    "MinimumApiVersion": "3.9.5",
+    "Description": "Shows experience bars in the top-left corner.",
+    "UniqueID": "spacechase0.ExperienceBars",
+    "EntryDll": "ExperienceBars.dll",
+    "UpdateKeys": [ "Nexus:509" ]
+}

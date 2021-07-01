@@ -8,10 +8,12 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit cb80d7ce94eed3c72a41d38e2c7ff169d0fcd246
-   Merge: 857babf 492bcd4
-   Author: hawkfalcon <hello@tristenmiller.me>
-   Date:   Mon Dec 21 16:56:34 2020 -0800
+   commit 56624fd0c70bc502dd2e9b7f528f69d1d1b68c97
+   Merge: cb80d7c 7e6c851
+   Author: hawkfalcon <contact@hawkfalcon.com>
+   Date:   Tue Jun 1 11:10:14 2021 -1000
    
-       Merge branch 'master' of https://github.com/hawkfalcon/Stardew-Mods
+       Merge pull request #10 from ceruleandeep/master
+       
+       Implement Junimo progression, add Generic Mod Config Menu support
    

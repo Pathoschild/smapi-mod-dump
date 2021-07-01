@@ -1,0 +1,18 @@
+{
+  "EndlessHugs": true,
+  "CustomNPCsAreHuggers": true,
+  "HuggingNPCs": [
+    "Abigail",
+    "Alex",
+    "Elliott",
+    "Emily",
+    "Haley",
+    "Harvey",
+    "Leah",
+    "Maru",
+    "Penny",
+    "Sam",
+    "Sebastian",
+    "Shane"
+  ]
+}

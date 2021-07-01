@@ -21,7 +21,7 @@ namespace Cropbeasts.Assets
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
 		protected static ModConfig Config => ModConfig.Instance;
 
-		private Texture2D icon;
+		private readonly Texture2D icon;
 
 		public BuffsEditor ()
 		{

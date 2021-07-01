@@ -53,7 +53,6 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 // TODO: UPDATE: Cooked food has a chance (scaling with Cooking level) of taking the quality of its ingredients,
 //		Final quality is decided by random choice from list of qualities of each ingredient
-// TODO: UPDATE: Finish the cookbook sprite bottom + spine and have the cookbook + inventory space outwards vertically on large resolutions
 // TODO: UPDATE: Quests, events, and scripts
 // TODO: UPDATE: Hot chocolate at the ice festival
 
@@ -168,7 +167,7 @@ namespace LoveOfCooking
 			Luck
 		}
 		// safe item names
-		internal static string ChocolateName { get { return UsingPPJACrops ? "Chocolate Bar" : ObjectPrefix + "chocolate"; } }
+		internal static string ChocolateName { get { return UsingPPJACrops ? "Chocolate" : ObjectPrefix + "chocolate"; } }
 		internal static string CabbageName { get { return UsingPPJACrops ? "Cabbage" : ObjectPrefix + "cabbage"; } }
 		internal static string OnionName { get { return UsingPPJACrops ? "Onion" : ObjectPrefix + "onion"; } }
 		internal static string CarrotName { get { return UsingPPJACrops ? "Carrot" : ObjectPrefix + "carrot"; } }
@@ -179,6 +178,7 @@ namespace LoveOfCooking
 		{
 			498, 499, 631, 632, 633
 		};
+		internal static readonly List<int> IndoorsTileIndexesOfFridges = new List<int>{ 173, 258, 500, 634 };
 		// kebab
 		private const string KebabBuffSource = AssetPrefix + "kebab";
 		private const int KebabBonusDuration = 220;
@@ -187,7 +187,7 @@ namespace LoveOfCooking
 		private const int KebabNonCombatBonus = 2;
 
 		// Mail titles
-		internal static readonly string MailKitchenCompleted = $"cc{Bundles.CommunityCentreAreaName}";
+		internal static readonly string MailKitchenCompleted = "cc" + Bundles.CommunityCentreAreaName;
 		internal static readonly string MailCookbookUnlocked = MailPrefix + "cookbook_unlocked";
 		internal static readonly string MailKitchenCompletedFollowup = MailPrefix + "kitchen_completed_followup";
 		internal static readonly string MailKitchenLastBundleCompleteRewardDelivery = MailPrefix + "kitchen_reward_guarantee";
@@ -333,12 +333,13 @@ namespace LoveOfCooking
 			Helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
 			Helper.Events.GameLoop.Saving += GameLoop_Saving;
 			Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
-			helper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
+			Helper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
 			Helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
 			Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
 			Helper.Events.Player.InventoryChanged += Player_InventoryChanged;
 			Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
 			Helper.Events.Display.MenuChanged += Display_MenuChanged;
+			Helper.Events.Display.Rendered += Display_Rendered;
 			Helper.Events.Multiplayer.PeerContextReceived += Multiplayer_PeerContextReceived;
 			Helper.Events.Multiplayer.PeerConnected += Multiplayer_PeerConnected;
 			Bundles.RegisterEvents();
@@ -357,7 +358,8 @@ namespace LoveOfCooking
 		private void GameLoop_DayEnding(object sender, DayEndingEventArgs e)
 		{
 			// Clear existing nettles at the start of each season
-			if (NettlesEnabled && Game1.dayOfMonth == 28)
+			if (NettlesEnabled && Game1.dayOfMonth == 28
+				|| Helper.ModRegistry.IsLoaded("Entoarox.EntoaroxFramework"))
 			{
 				CustomBush.ClearNettlesGlobally();
 			}
@@ -396,7 +398,6 @@ namespace LoveOfCooking
 			if (!Config.AddNewCropsAndStuff)
 			{
 				Log.W("Did not add new objects: New stuff is disabled in config file.");
-				return;
 			}
 			else if (UsingPPJACrops)
 			{
@@ -408,7 +409,7 @@ namespace LoveOfCooking
 					Log.W("Loading New Crops Pack.");
 				JsonAssets.LoadAssets(Path.Combine(Helper.DirectoryPath, NewCropsPackPath));
 			}
-
+			
 			if (Helper.ModRegistry.IsLoaded("uberkwefty.wintercrops"))
 			{
 				Log.I("Did not add nettles: Winter Crops is enabled.");
@@ -659,6 +660,10 @@ namespace LoveOfCooking
 			{
 				Game1.activeClickableMenu = new NotificationMenu();
 			});
+			Helper.ConsoleCommands.Add(cmd + "nettles", "Add nettle bushes to the world. No spawn limit.", (s, p) =>
+			{
+				CustomBush.SpawnNettles(force: true);
+			});
 			Helper.ConsoleCommands.Add(cmd + "unstuck", "Unlocks player movement if stuck in animations.", (s, args) =>
 			{
 				if (Game1.activeClickableMenu is CookingMenu || Game1.activeClickableMenu is NotificationMenu)
@@ -688,6 +693,20 @@ namespace LoveOfCooking
 		private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
 		{
 			LoadSpaceCoreAPI();
+
+			// Entoarox Framework save serialiser overrides SpaceCore save serialiser and causes errors when saving
+			// with registered [XmlType] objects (eg. CustomBush) in the world.
+			const string entoSafeVersion = "2.5.4";
+			if (Helper.ModRegistry.IsLoaded("Entoarox.EntoaroxFramework")
+				&& Helper.ModRegistry.Get("Entoarox.EntoaroxFramework") is IModInfo entoInfo
+				&& entoInfo.Manifest.Version.IsOlderThan(entoSafeVersion))
+			{
+				ISemanticVersion entoCurrentVersion = entoInfo.Manifest.Version;
+				Log.W("This version of Entoarox Framework doesn't allow for persistent custom bushes."
+					+ "\nNettles will be cleared at the end of each day to prevent errors."
+					+ "\nIf you have a save with nettle bushes, you will need to remove Ento " + entoCurrentVersion + " to load the game."
+					+ "\nCheck your SMAPI console for an update notice to Ento " + entoSafeVersion + " or higher.");
+			}
 
 			// Load assets after mods and asset editors have been registered to allow for patches, correct load orders
 			Helper.Events.GameLoop.OneSecondUpdateTicked += Event_LoadAssetsLate;
@@ -736,7 +755,7 @@ namespace LoveOfCooking
 				var reachedMailDate = (Game1.year == year && gameMonth == month && Game1.dayOfMonth >= day);
 				if (reachedNextYear || reachedNextMonth || reachedMailDate)
 				{
-					Game1.player.mailbox.Add(MailCookbookUnlocked);
+					Game1.addMail(MailCookbookUnlocked);
 				}
 			}
 		}
@@ -853,6 +872,9 @@ namespace LoveOfCooking
 
 		private void Event_ReplaceCraftingMenu(object sender, UpdateTickedEventArgs e)
 		{
+			// We replace the menu on the next tick to give the game a chance to close the existing menu
+			// This does, however, cause a 1-frame flash of the original menu before it closes
+			// Solvable with harmony by blocking the draw call, but not a safe option?
 			Helper.Events.GameLoop.UpdateTicked -= Event_ReplaceCraftingMenu;
 			OpenNewCookingMenu();
 		}
@@ -905,12 +927,12 @@ namespace LoveOfCooking
 			{
 				switch (e.Button)
 				{
-					case SButton.G:
+					case SButton.F3:
 						Game1.player.warpFarmer(Game1.currentLocation is CommunityCenter
 							? new Warp(0, 0, "FarmHouse", 0, 0, false)
 							: new Warp(0, 0, "CommunityCenter", 7, 7, false));
 						return;
-					case SButton.H:
+					case SButton.F4:
 						if (Game1.activeClickableMenu is CookingMenu cookingMenu)
 							cookingMenu.exitThisMenu();
 						else
@@ -927,6 +949,10 @@ namespace LoveOfCooking
 					case SButton.F7:
 						Game1.currentLocation.largeTerrainFeatures.Add(
 							new CustomBush(e.Cursor.GrabTile, Game1.currentLocation, CustomBush.BushVariety.Redberry));
+						return;
+					case SButton.F8:
+						Log.D(CookingSkillApi.GetCurrentProfessions().Aggregate("Current professions:", (str, pair) 
+							=> $"{str}\n{pair.Key}: {pair.Value}"));
 						return;
 				}
 			}
@@ -948,32 +974,38 @@ namespace LoveOfCooking
 			if (e.Button.IsActionButton())
 			{
 				// Tile actions
-				var tile = Game1.currentLocation.Map.GetLayer("Buildings")
-					.Tiles[(int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y];
+				var openFridge = false;
+				var tile = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[(int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y];
+				var action = Game1.currentLocation.doesTileHaveProperty((int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y, "Action", "Buildings");
 				if (tile != null)
 				{
-					// Try to open a cooking menu when nearby to cooking stations (ie. kitchen, range)
-					if (tile.Properties.Any(p => p.Key == "Action") && tile.Properties.FirstOrDefault(p => p.Key == "Action").Value == "kitchen")
+					var isCookingStationTile = IndoorsTileIndexesThatActAsCookingStations.Contains(tile.TileIndex);
+					var isFridgeTile = IndoorsTileIndexesOfFridges.Contains(tile.TileIndex);
+					if (Game1.currentLocation is FarmHouse || Game1.currentLocation is IslandFarmHouse)
 					{
-						OpenNewCookingMenu();
-						Helper.Input.Suppress(e.Button);
+						// Try to open a cooking menu when nearby to cooking stations (ie. kitchen, range)
+						if (!isFridgeTile)
+						{
+							if (action == "kitchen" || action == "drawer")
+							{
+								openFridge = true;
+							}
+						}
 					}
-					else if (!Game1.currentLocation.IsOutdoors && IndoorsTileIndexesThatActAsCookingStations.Contains(tile.TileIndex))
+					else if (!Game1.currentLocation.IsOutdoors && isCookingStationTile)
 					{
+						// Try to open a new cooking menu when in NPC homes
 						if (NpcHomeLocations.Any(pair => pair.Value == Game1.currentLocation.Name
 								&& Game1.player.getFriendshipHeartLevelForNPC(pair.Key) >= int.Parse(ItemDefinitions["NpcKitchenFriendshipRequired"][0]))
 							|| NpcHomeLocations.All(pair => pair.Value != Game1.currentLocation.Name))
 						{
-							Log.D($"Clicked the kitchen at {Game1.currentLocation.Name}",
-								Config.DebugMode);
 							if (Game1.player.team.specialOrders.Any(order => order != null && order.objectives.Any(
 								obj => obj is DonateObjective dobj && dobj.dropBox.Value.EndsWith("Kitchen"))))
 							{
 								// Avoid blocking the player from submitting items to special order dropboxes
 								return;
 							}
-							OpenNewCookingMenu();
-							Helper.Input.Suppress(e.Button);
+							openFridge = true;
 						}
 						else
 						{
@@ -988,8 +1020,14 @@ namespace LoveOfCooking
 					&& Game1.currentLocation.Objects[e.Cursor.GrabTile].Name == CookingCraftableName)
 				{
 					Game1.playSound("bigSelect");
+					openFridge = true;
+				}
+
+				if (openFridge)
+				{
 					OpenNewCookingMenu();
 					Helper.Input.Suppress(e.Button);
+					return;
 				}
 
 				// Use tile actions in maps
@@ -1020,6 +1058,9 @@ namespace LoveOfCooking
 
 		private void Display_Rendered(object sender, RenderedEventArgs e)
 		{
+			if (Game1.currentLocation == null)
+				return;
+
 			// Draw cooking animation sprites
 			if (Config.PlayCookingAnimation)
 			{
@@ -1055,11 +1096,12 @@ namespace LoveOfCooking
 			var lastCookingHover = Helper.Reflection.GetField<Item>(craftingMenu, "lastCookingHover").GetValue();
 			if (lastCookingHover != null && hoverRecipe != null && hoverRecipe.name.StartsWith(ObjectPrefix))
 			{
-				var displayName = lastCookingHover.DisplayName + ((hoverRecipe.numberProducedPerCraft > 1)
-					? (" x" + hoverRecipe.numberProducedPerCraft)
-					: "");
+				var displayName = lastCookingHover.DisplayName
+					+ ((hoverRecipe.numberProducedPerCraft > 1)
+						? (" x" + hoverRecipe.numberProducedPerCraft)
+						: "");
 				var originalWidthHeight = Game1.dialogueFont.MeasureString(hoverRecipe.name);
-				var coverupWidth = (int)Math.Max(384f - 8f, originalWidthHeight.X + 4);
+				var coverupWidth = (int)originalWidthHeight.X + 4;
 				var x = Game1.getOldMouseX() + 44 + (heldItem != null ? 48 : 0);
 
 				// Check to show advanced crafting info
@@ -1543,19 +1585,11 @@ namespace LoveOfCooking
 				}
 			}
 
-			// Add or remove vanilla campfire recipe
-			if (CookingSkillApi.IsEnabled())
+			// Ensure vanilla campfire recipe is added
+			if (!Game1.player.craftingRecipes.ContainsKey("Campfire"))
 			{
-				if (CookingSkillApi.GetLevel() < CookingSkill.CraftCampfireLevel)
-				{
-					// Campfire is added on level-up for cooking skill users
-					Game1.player.craftingRecipes.Remove("Campfire");
-				}
-				else if (!Game1.player.craftingRecipes.ContainsKey("Campfire"))
-				{
-					// Re-add campfire to the player's recipe list if it's otherwise missing
-					Game1.player.craftingRecipes["Campfire"] = 0;
-				}
+				// Re-add campfire to the player's recipe list if it's otherwise missing
+				Game1.player.craftingRecipes["Campfire"] = 0;
 			}
 
 			if (Config.AddCookingSkillAndRecipes)
@@ -1568,6 +1602,7 @@ namespace LoveOfCooking
 				var recipes = CookingSkillApi.GetAllLevelUpRecipes();
 				var missingRecipes = recipes.TakeWhile(pair => pair.Key < level) // Take all recipe lists up to the current level
 					.SelectMany(pair => pair.Value) // Flatten recipe lists into their recipes
+					.Select(r => ObjectPrefix + r) // Add item prefixes
 					.Where(r => !Game1.player.cookingRecipes.ContainsKey(r)); // Take recipes not known by the player
 				foreach (var recipe in missingRecipes)
 				{
@@ -1715,7 +1750,7 @@ namespace LoveOfCooking
 
 				var topLeftPositionForCenteringOnScreen = Utility.getTopLeftPositionForCenteringOnScreen(
 					800 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2);
-
+				
 				var craftingMenu = new CraftingPage(
 					(int)topLeftPositionForCenteringOnScreen.X, (int)topLeftPositionForCenteringOnScreen.Y,
 					800 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2,
@@ -1735,7 +1770,7 @@ namespace LoveOfCooking
 				}
 			}
 
-			if (Game1.player.hasOrWillReceiveMail(MailCookbookUnlocked))
+			if (CanUseKitchens())
 			{
 				var ccFridge = Game1.currentLocation is CommunityCenter ? Bundles.GetCommunityCentreFridge() : null;
 				var fridge = new NetRef<Chest>();
@@ -1744,7 +1779,9 @@ namespace LoveOfCooking
 
 				fridge.Set(Game1.currentLocation is FarmHouse farmHouse && GetFarmhouseKitchenLevel(farmHouse) > 0
 					? farmHouse.fridge
-					: ccFridge != null ? new NetRef<Chest>(ccFridge) : null);
+					: Game1.currentLocation is IslandFarmHouse islandFarmHouse
+						? islandFarmHouse.fridge
+						: ccFridge != null ? new NetRef<Chest>(ccFridge) : null);
 
 				foreach (var item in Game1.currentLocation.Objects.Values.Where(
 					i => i != null && i.bigCraftable.Value && i is Chest && i.ParentSheetIndex == 216))
@@ -1832,15 +1869,7 @@ namespace LoveOfCooking
 
 			// Add crafting recipes
 			var craftingRecipes = new List<CraftingRecipe>();
-			if (level == CookingSkill.CraftCampfireLevel)
-			{
-				var recipe = new CraftingRecipe("Campfire", false);
-				craftingRecipes.Add(recipe);
-				if (!Game1.player.craftingRecipes.ContainsKey(recipe.name))
-				{
-					Game1.player.craftingRecipes[recipe.name] = 0;
-				}
-			}
+			// No new crafting recipes currently.
 
 			// Apply new recipes
 			var combinedRecipes = craftingRecipes.Concat(cookingRecipes).ToList();
@@ -1868,6 +1897,15 @@ namespace LoveOfCooking
 				return recipePages.SelectMany(page => page.Values).ToList();
 			}
 			return null;
+		}
+
+		/// <summary>
+		/// Checks for if the player meets conditions to open the new cooking menu.
+		/// Always true if using the default cooking menu.
+		/// </summary>
+		public bool CanUseKitchens()
+		{
+			return !Config.AddCookingMenu || Game1.player.hasOrWillReceiveMail(MailCookbookUnlocked);
 		}
 
 		/// <summary>

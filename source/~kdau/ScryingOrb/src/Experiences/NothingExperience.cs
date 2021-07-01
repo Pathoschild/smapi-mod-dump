@@ -18,9 +18,8 @@ namespace ScryingOrb
 		{
 			if (!isAvailable)
 				return false;
-			
-			if (Game1.player.CurrentItem != null &&
-					!(Game1.player.CurrentItem is Tool))
+
+			if (Game1.player.CurrentItem != null)
 				return false;
 
 			showMessage ("rejection.nothing");
@@ -28,6 +27,6 @@ namespace ScryingOrb
 		}
 
 		protected override void doRun ()
-		{}
+		{ }
 	}
 }

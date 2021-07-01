@@ -113,7 +113,7 @@ namespace Outerwear.Patches
                     drawLayerDepth = layerDepth + 2.9E-05f;
                     break;
                 case OuterwearType.Hair:
-                    drawPosition = position + origin + positionOffset + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 4 + (who.IsMale ? -4 : 0));
+                    drawPosition = position + origin + positionOffset + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (facingDirection != 0 ? 4 : 0) + (who.IsMale ? -4 : 0));
                     drawSourceRectangle = SourceRectangles[OuterwearType.Hair][facingDirection];
                     drawEffects = IsFlipped[OuterwearType.Hair][facingDirection] ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
                     drawLayerDepth = layerDepth + 2.21E-05f;

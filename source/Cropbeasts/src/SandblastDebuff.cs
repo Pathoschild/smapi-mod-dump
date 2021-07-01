@@ -32,11 +32,11 @@ namespace Cropbeasts
 		public static readonly int MaxBatches = 120;
 		public static readonly int SpritesPerBatch = 5;
 
-		private Texture2D texture;
+		private readonly Texture2D texture;
 		private static readonly int TextureSize = 128;
 		private static readonly int TextureCount = 4;
 
-		private int randomSeed;
+		private readonly int randomSeed;
 
 		protected SandblastDebuff (int duration)
 		: base (Helper.Translation.Get ("SandblastDebuff.name") +
@@ -87,13 +87,12 @@ namespace Cropbeasts
 				lastOpacity = millisecondsDuration % BatchIncrement /
 					(float) BatchIncrement;
 
-			Random rng = new Random (randomSeed);
+			Random rng = new (randomSeed);
 			for (int i = 0; i < SpritesPerBatch * batches; ++i)
 			{
-				Vector2 position = new Vector2
-					(rng.Next (0, Game1.viewport.Width),
+				Vector2 position = new (rng.Next (0, Game1.viewport.Width),
 					rng.Next (0, Game1.viewport.Height));
-				Rectangle sourceRect = new Rectangle (rng.Next (0, TextureCount)
+				Rectangle sourceRect = new (rng.Next (0, TextureCount)
 					* TextureSize, 0, TextureSize, TextureSize);
 				float opacity = (i >= SpritesPerBatch * (batches - 1))
 					? lastOpacity : 1f;

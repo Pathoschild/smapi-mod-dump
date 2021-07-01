@@ -16,7 +16,8 @@
 	"UniqueID": "kdau.PregnancyRole.Test",
 	"ContentPackFor": { "UniqueId": "Pathoschild.ContentPatcher" },
 	"MinimumApiVersion": "3.4.0",
-	"Dependencies": [
+	"Dependencies":
+	[
 		{ "UniqueId": "kdau.PregnancyRole" }
 	]
 }

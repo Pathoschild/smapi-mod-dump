@@ -708,7 +708,7 @@ namespace LoveOfCooking
 					// World state cannot be added to: it has an expected length once set
 					var bundles = new Dictionary<int, bool[]>();
 					var bundleRewards = new Dictionary<int, bool>();
-
+					// TODO: BUNDLES: NetArray.SetCount()
 					// Fetch vanilla GW bundle data
 					for (var i = 0; i < BundleStartIndex; ++i)
 					{

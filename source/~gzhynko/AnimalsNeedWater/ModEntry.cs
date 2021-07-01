@@ -60,6 +60,12 @@ namespace AnimalsNeedWater
 
             DetermineTroughPlacementProfile();
         }
+        
+        public void SaveConfig(ModConfig newConfig)
+        {
+            Config = newConfig;
+            Helper.WriteConfig(newConfig);
+        }
 
         /// <summary> Get ANW's API </summary>
         /// <returns> API instance </returns>
@@ -515,6 +521,8 @@ namespace AnimalsNeedWater
             );
             
             ModMonitor.VerboseLog("Done patching.");
+            
+            ModConfig.SetUpModConfigMenu(Config, this);
         }
 
         private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)

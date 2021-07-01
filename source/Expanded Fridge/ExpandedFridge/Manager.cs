@@ -151,7 +151,7 @@ namespace ExpandedFridge
             // get multimutex from mini friges
             var farmHouse = Utilities.CurrentLocation as FarmHouse;
             var miniFridges = Utilities.GetAllMiniFridgesInLocation(farmHouse);
-
+            
             _menu = menu;
             _fridges.Add(farmHouse.fridge);
             _fridges.AddRange(miniFridges);
@@ -306,9 +306,11 @@ namespace ExpandedFridge
         /// Draws the custom overlay for the inventory menu.
         private void DrawBeforeActiveMenu(object sender, RenderingActiveMenuEventArgs e)
         {
+            var igm = (Game1.activeClickableMenu as ItemGrabMenu);
+
             // never allow an ItemGrabMenu to render its background while we are drawing FridgeMenu, it will do it instead.
-            if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is ItemGrabMenu && (Game1.activeClickableMenu as ItemGrabMenu).drawBG)
-                (Game1.activeClickableMenu as ItemGrabMenu).drawBG = false;
+            if (igm != null && igm.drawBG)
+                igm.drawBG = false;
             e.SpriteBatch.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), Color.Black * 0.5f);
 
             // if flagged, update tabs colors

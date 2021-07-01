@@ -41,13 +41,12 @@ namespace Cropbeasts
 		private readonly GameLocation location;
 		private readonly int baseQuantity;
 
-		private readonly List<Cropbeast> beasts;
-		private readonly bool showWitchFlyover;
+		private readonly List<Cropbeast> beasts = new ();
 
 		private Texture2D cropTexture;
 		private Rectangle cropSourceRect;
 		private Vector2 cropPosition;
-		private List<Vector2> cropOffsets;
+		private readonly List<Vector2> cropOffsets = new ();
 		private float cropTint;
 		private float cropRotation;
 		private Vector2 cropOrigin;
@@ -74,9 +73,9 @@ namespace Cropbeasts
 				throw new Exception ($"Invalid cropbeast type '{cropTile.mapping.beastName}'.");
 
 			// Create the beast(s).
-			List<Cropbeast> beasts = new List<Cropbeast> ();
+			List<Cropbeast> beasts = new ();
 			beasts.Add (ctor.Invoke (new object[] { cropTile, true }) as Cropbeast);
-			if (cropTile.baseQuantity > 1 && !cropTile.giantCrop)
+			if (cropTile.baseQuantity > 1 && cropTile.spawnSecondaries)
 			{
 				for (int i = 1; i < cropTile.baseQuantity; ++i)
 					beasts.Add (ctor.Invoke (new object[] { cropTile, false }) as Cropbeast);
@@ -97,7 +96,7 @@ namespace Cropbeasts
 				beasts, showWitchFlyover);
 
 			// Signal farmhands to create guest spawners.
-			Message message = new Message
+			Message message = new ()
 			{
 				locationName = cropTile.location.Name,
 				tileLocation = cropTile.tileLocation,
@@ -126,13 +125,12 @@ namespace Cropbeasts
 		}
 
 		private Spawner (GuestCropTile cropTile, GameLocation location,
-			int baseQuantity, List<Cropbeast> beasts, bool showWitchFlyover)
+			int baseQuantity, IEnumerable<Cropbeast> beasts, bool showWitchFlyover)
 		{
 			this.cropTile = cropTile;
 			this.location = location;
 			this.baseQuantity = baseQuantity;
-			this.beasts = beasts;
-			this.showWitchFlyover = showWitchFlyover;
+			this.beasts.AddRange (beasts);
 
 			if (showWitchFlyover)
 				witchFlyover ();
@@ -150,14 +148,14 @@ namespace Cropbeasts
 				(Game1.mouseCursorsName, new Rectangle (276, 1886, 35, 29),
 				9999f, 1, 999999, new Vector2 (Game1.viewport.Width, 192f),
 				flicker: false, flipped: false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f)
-				{
-					motion = new Vector2 (-4f, 0f),
-					acceleration = new Vector2 (-0.025f, 0f),
-					yPeriodic = true,
-					yPeriodicLoopTime = 2000f,
-					yPeriodicRange = 64f,
-					local = true
-				});
+			{
+				motion = new Vector2 (-4f, 0f),
+				acceleration = new Vector2 (-0.025f, 0f),
+				yPeriodic = true,
+				yPeriodicLoopTime = 2000f,
+				yPeriodicRange = 64f,
+				local = true
+			});
 
 			// She cackles (from WitchEvent).
 			DelayedAction.playSoundAfterDelay ("cacklingWitch", 1250);
@@ -194,7 +192,7 @@ namespace Cropbeasts
 				(cropTile as CropTile).spawn ();
 
 			// Shake twice...
-			DelayedAction.functionAfterDelay (shakeCrop,  750);
+			DelayedAction.functionAfterDelay (shakeCrop, 750);
 			DelayedAction.functionAfterDelay (shakeCrop, 1750);
 
 			// Then levitate and corrupt the crop with a building sound...
@@ -214,7 +212,8 @@ namespace Cropbeasts
 			cropTint = 0f;
 			cropRotation = 0f;
 			cropScale = 4f;
-			cropOffsets = new List<Vector2> { Vector2.Zero };
+			cropOffsets.Clear ();
+			cropOffsets.Add (Vector2.Zero);
 			levitateRate = new Vector2 ();
 
 			if (cropTile.giantCrop)
@@ -314,7 +313,7 @@ namespace Cropbeasts
 			RenderedWorldEventArgs e)
 		{
 			Color color = Color.Lerp (Color.White, Color.Orange, cropTint);
-			if (Game1.isRaining && location.IsOutdoors)
+			if (Game1.IsRainingHere (location) && location.IsOutdoors)
 				color = Color.Lerp (color, Color.LightSlateGray, 0.45f);
 			foreach (Vector2 offset in cropOffsets)
 			{
@@ -334,7 +333,7 @@ namespace Cropbeasts
 			Vector2 center = cropPosition +
 				new Vector2 (-radius + (cropTile.giantCrop ? 64f : 0f), -radius);
 			int count = (big ? 12 : 3) * (cropTile.giantCrop ? 6 : 1);
-			Color color = Color.Lerp (beasts?.First ()?.primaryColor ?? Color.White,
+			Color color = Color.Lerp (beasts.First ()?.primaryColor ?? Color.White,
 				Color.Orange, big ? 0f : 0.5f);
 			Utilities.MagicPoof (location, center, radius, count,
 				color, soundCue);
@@ -347,11 +346,8 @@ namespace Cropbeasts
 			Helper.Events.Display.RenderedWorld -= drawCrop;
 
 			// Release the beasts.
-			if (beasts != null)
-			{
-				foreach (Cropbeast beast in beasts)
-					beast.spawn ();
-			}
+			foreach (Cropbeast beast in beasts)
+				beast.spawn ();
 		}
 	}
 }

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/miome/OneDayAtATime
+   Git: https://github.com/miome/OneDayAtATime.git
+
+mods:
+   One Day at a Time
+
+latest commit:
+   commit 997f08f20a024471cf8fef9fb903c5d968ce45b3
+   Author: Miome <miome.geo@yahoo.com>
+   Date:   Sat Jun 5 17:21:16 2021 -0400
+   
+       Use Game1.quit instead of exit and trigger at start of day to make sure save has completed.
+   

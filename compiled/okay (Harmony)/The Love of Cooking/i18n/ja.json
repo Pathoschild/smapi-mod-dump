@@ -98,6 +98,11 @@
 	"item.vegetable.label": "野菜 (なんでも)",
 	"item.meat.label": "肉 (なんでも)",
 	"item.forage.label": "採取アイテム (なんでも)",
+	"item.cooking.label": "料理 (なんでも)",
+	"item.mineral.label": "鉱物 (なんでも)",
+	"item.seed.label": "タネ (なんでも)",
+	"item.metal.label": "金属 (なんでも)",
+	"item.gem.label": "宝石 (なんでも)",
 
 	// Kebab item interactions
 	"buff.kebab.quality_worst": "腐った ",

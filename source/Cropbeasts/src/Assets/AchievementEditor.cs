@@ -70,7 +70,7 @@ namespace Cropbeasts.Assets
 
 		public static bool CheckAchievement ()
 		{
-			return CheckAchievement (out int _slain, out int _total);
+			return CheckAchievement (out int _, out int _);
 		}
 	}
 }

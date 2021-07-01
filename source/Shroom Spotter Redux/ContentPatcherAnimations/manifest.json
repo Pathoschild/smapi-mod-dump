@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/strobel1ght/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Content Patcher Animations",
+  "Author": "spacechase0",
+  "Version": "1.1.9",
+  "Description": "Animations for content patcher",
+  "UniqueID": "spacechase0.ContentPatcherAnimations",
+  "EntryDll": "ContentPatcherAnimations.dll",
+  "UpdateKeys": [ "Nexus:3853", "Chucklefish:5740" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "Version": "1.11"
+    },
+    {
+      "UniqueID": "Platonymous.ScaleUp",
+      "IsRequired": false
+    }
+  ],
+  "spacechase0": "content-patcher-animations"
+}

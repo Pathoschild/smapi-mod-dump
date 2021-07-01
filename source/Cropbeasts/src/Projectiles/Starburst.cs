@@ -13,7 +13,7 @@ namespace Cropbeasts.Projectiles
 	public class Starburst : BeastProjectile
 	{
 		public Starburst ()
-		{}
+		{ }
 
 		public Starburst (int damage)
 		{

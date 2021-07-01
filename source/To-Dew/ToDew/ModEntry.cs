@@ -10,6 +10,7 @@
 
 // Copyright 2020 Jamie Taylor
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -76,6 +77,11 @@ namespace ToDew {
 
                 phoneApi.AddApp(Helper.ModRegistry.ModID, "To-Dew", () => { Game1.activeClickableMenu = new ToDoMenu(this, this.list.Value); } , cropTexture);
             }
+
+            // add console commands
+            Helper.ConsoleCommands.Add("todo-export", "Export the todo list to a file\n\n" + GetCommandExportHelp(), this.CommandExport);
+            Helper.ConsoleCommands.Add("todo-import", "Import the todo list from a previously exported file\n\n" + GetCommandImportHelp(), this.CommandImport);
+            Helper.ConsoleCommands.Add("todo-file-info", "Get information about a previously exported file\n\n" + GetCommandFileInfoHelp(), this.CommandFileInfo);
         }
 
         private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e) {
@@ -139,6 +145,153 @@ namespace ToDew {
                 }
             }
         }
+
+        private string GetCommandExportHelp() {
+            return $@"Usage: todo-export [<path>]
+Exports the current to-do list to a file path specified
+relative to the mod's installation directory,
+{Helper.DirectoryPath}.
+If <path> is not specified then a default value of
+list-exports/<farm save name>.json will be used
+";
+        }
+        private void CommandExport(string command, string[] args) {
+            if (list.Value != null) {
+                if (args.Length == 0) {
+                    list.Value.Export($"list-exports/{Constants.SaveFolderName}.json");
+                } else if (args.Length == 1) {
+                    list.Value.Export(args[0]);
+                } else {
+                    this.Monitor.Log(GetCommandExportHelp(), LogLevel.Info);
+                }
+            } else {
+                this.Monitor.Log("Export command is only available while a game is loaded.", LogLevel.Info);
+                if (args.Length == 1) {
+                    this.Monitor.Log($"Filename that would have been used: {args[0]}", LogLevel.Debug);
+                }
+            }
+        }
+
+        private string GetCommandFileInfoHelp() {
+            return $@"Usage: todo-file-info [-v|--verbose] <path>
+Attempts to read the given file (specified as a path
+relative to the mod's installation directory,
+{Helper.DirectoryPath})
+and print some basic information about it.
+If the -v or --verbose flag is specified then also
+print the text of each item in the file.
+";
+        }
+        private void CommandFileInfo(string command, string[] args) {
+            bool verbose = false;
+            string path;
+
+            if (args.Length < 1 || args.Length > 2) {
+                this.Monitor.Log(GetCommandFileInfoHelp(), LogLevel.Info);
+                return;
+            }
+            if (args.Length == 1) {
+                path = args[0];
+            } else {
+                if (args[0] == "-v" || args[0] == "--verbose") {
+                    verbose = true;
+                } else {
+                    this.Monitor.Log(GetCommandFileInfoHelp(), LogLevel.Info);
+                    return;
+                }
+                path = args[1];
+            }
+            ToDoList.PrintFileInfo(this, path, verbose);
+        }
+
+        private string GetCommandImportHelp() {
+            return $@"Usage: todo-import [<flag> ...] <path>
+Import the given file (specified as a path
+relative to the mod's installation directory,
+{Helper.DirectoryPath})
+The specific behavior of the import depends on the flags given.
+
+Import type flag:  Only one of the following flags my be specified.  In the
+following descriptions, ""current list"" means the to-do list in the currently
+loaded game, and ""new list"" means the list read from <path>.
+  --replace
+    The current list is replaced by the new list.
+  --update-only
+    The current list is retained, but with each item replaced by the item
+    of the same ID in the new list (if such an item exists).
+  --append-update
+    The current list is retained, but with each item replaced by the item
+    of the same ID in the new list (if such an item exists), and any items in
+    the new list that have an ID that does not match an item in the current
+    list are appended to the current list.  This is the default import type.
+  --prepend-update
+    The current list is retained, but with each item replaced by the item
+    of the same ID in the new list (if such an item exists), and any items in
+    the new list that have an ID that does not match an item in the current
+    list are prepended to the current list.
+  --append-new
+    The current list is retained, and the new list is appended, with each item
+    in the new list receiving a new ID
+  --prepend-new
+    The current list is retained and the new list is prepended, with each item
+    in the new list receiving a new ID
+
+Other flags:
+  -v, --verbose
+    Print more verbose output about the import
+  --force
+    Force the import even if the data format used by the file has a newer
+    major version number.
+";
+        }
+        private static Dictionary<string, ToDoList.ImportType> importTypeMap = new Dictionary<string, ToDoList.ImportType> {
+            ["--replace"] = ToDoList.ImportType.Replace,
+            ["--update-only"] = ToDoList.ImportType.UpdateOnly,
+            ["--append-update"] = ToDoList.ImportType.AppendUpdate,
+            ["--prepend-update"] = ToDoList.ImportType.PrependUpdate,
+            ["--append-new"] = ToDoList.ImportType.AppendNew,
+            ["--prepend-new"] = ToDoList.ImportType.PrependNew
+        };
+        private void CommandImport(string command, string[] args) {
+            if (list.Value == null) {
+                this.Monitor.Log("Import command is only available while a game is loaded.", LogLevel.Info);
+                return;
+            }
+            if (!Context.IsMainPlayer) {
+                this.Monitor.Log("Import command is only available to the host player.", LogLevel.Info);
+                return;
+            }
+            ToDoList.ImportType importType = ToDoList.ImportType.AppendUpdate;
+            bool verbose = false;
+            bool force = false;
+            bool importTypeSet = false;
+            for(int i=0; i<args.Length; i++) {
+                ToDoList.ImportType importTypeOut;
+                if (args[i] == "-v" || args[i] == "--verbose") {
+                    verbose = true;
+                } else if (args[i] == "--force") {
+                    force = true;
+                } else if (importTypeMap.TryGetValue(args[i], out importTypeOut)) {
+                    if (importTypeSet) {
+                        this.Monitor.Log("Multiple import type flags specified; ignoring command", LogLevel.Warn);
+                        this.Monitor.Log(GetCommandImportHelp(), LogLevel.Info);
+                        return;
+                    }
+                    importType = importTypeOut;
+                    importTypeSet = true;
+                } else {
+                    if (i == args.Length - 1) {
+                        list.Value.Import(args[i], importType, force, verbose);
+                        return;
+                    } else {
+                        this.Monitor.Log(GetCommandImportHelp(), LogLevel.Info);
+                        return;
+                    }
+                }
+            }
+            this.Monitor.Log(GetCommandImportHelp(), LogLevel.Info);
+        }
+
     }
     // See https://github.com/spacechase0/GenericModConfigMenu/blob/master/Api.cs for full API
     public interface GenericModConfigMenuAPI {

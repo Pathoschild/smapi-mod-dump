@@ -7,9 +7,9 @@ mods:
    Scrying Orb
 
 latest commit:
-   commit 9a1f1e560ab6e08c856dd3f94c4ad54699824feb
+   commit eb09689ab06c34ff82d117240fd711d18e068919
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Fri May 29 16:37:22 2020 -0700
+   Date:   Mon Jun 28 11:28:29 2021 -0700
    
-       PATV: TrainsChannel: Don't run event during a real train passage
+       v2.0.1
    

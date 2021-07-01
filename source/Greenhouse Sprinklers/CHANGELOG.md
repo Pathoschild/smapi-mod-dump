@@ -9,6 +9,7 @@ for queries and analysis.**
 
 <!-- TOC -->
 
+- [v1.4.3](#v143)
 - [v1.4.2](#v142)
 - [v1.4.1](#v141)
 - [v1.4.0 - Translations Update](#v140---translations-update)
@@ -22,6 +23,9 @@ for queries and analysis.**
 - [v1.0.0](#v100)
 
 <!-- /TOC -->
+
+## v1.4.3
+* Added Hungarian Translation from [Martin66789](https://www.nexusmods.com/stardewvalley/users/27323031)
 ## v1.4.2
 * Added Korean Translation from [Wally232](https://github.com/Wally232)
 * Added Russian Translation from  [CatMartin](https://github.com/CatMartin)

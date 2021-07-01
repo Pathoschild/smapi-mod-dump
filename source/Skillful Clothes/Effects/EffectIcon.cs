@@ -44,7 +44,8 @@ namespace SkillfulClothes.Effects
         Animal_Chicken,
         Animal_Cow,
         Glow,
-        Person_Lewis
+        Person_Lewis,
+        Money
     }
 
     static class EffectIconExtensions
@@ -73,6 +74,7 @@ namespace SkillfulClothes.Effects
                 case EffectIcon.SkillCombat: rect = new Rectangle(40, 428, 10, 10); break;
                 case EffectIcon.SkillLuck: rect = new Rectangle(50, 428, 10, 10); break;
                 case EffectIcon.SkillForaging: rect = new Rectangle(60, 428, 10, 10); break;
+                case EffectIcon.Money: rect = new Rectangle(193, 373, 9, 9); break;
                 case EffectIcon.Popularity:
                     // draw smiley (which is actualy 13x13, so we use a smaller scaling factor)
                     Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new Vector2(location.X, location.Y + 2), new Rectangle(157, 515, 13, 13), Color.White, 0f, Vector2.Zero, 2f, flipped: false, 0.95f);

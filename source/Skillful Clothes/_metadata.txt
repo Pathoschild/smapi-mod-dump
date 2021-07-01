@@ -6,9 +6,10 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit b587635f0e43c09e82f54d3c1de7c4d9a74b4821
+   commit 74f1561d69b13e53f7e3c37a9f8a3cbd4f5461f8
    Author: LunaticShade <lunaticshade@googlemail.com>
-   Date:   Mon May 31 13:08:31 2021 +0200
+   Date:   Fri Jun 18 15:10:05 2021 +0200
    
-       Added support for locational and seasonal effects
+       Fix: ShopPatches for adventure guild not executed correctly
+       Fix: in Multiplayer mode ShopPatches could not be applied by NPC id (always -1), now using NPC name as identifier
    

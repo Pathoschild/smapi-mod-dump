@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8930
+IDs: Maze
+update keys: Nexus:8930

@@ -19,12 +19,12 @@ namespace Cropbeasts.Beasts
 	// Much of this class is based on StardewValley.Monsters.Fly.
 	public class Leafbeast : Cropbeast
 	{
-		public const float maxSpeed = 7f;
+		public const float MaxSpeed = 7f;
 
-		private readonly NetInt wasHitCounter = new NetInt (0);
-		private readonly NetBool turningRight = new NetBool ();
+		private readonly NetInt wasHitCounter = new (0);
+		private readonly NetBool turningRight = new ();
 
-		private ICue sound;
+		private readonly ICue sound;
 
 		public Leafbeast ()
 		{
@@ -69,8 +69,13 @@ namespace Cropbeasts.Beasts
 			currentLocation.localSound ("monsterdead");
 
 			Utility.makeTemporarySpriteJuicier (new TemporaryAnimatedSprite (50,
-				Position, primaryColor.Value, 8) { holdLastFrame = true,
-				interval = 70f, alpha = 0.8f, alphaFade = 0.01f },
+				Position, primaryColor.Value, 8)
+			{
+				holdLastFrame = true,
+				interval = 70f,
+				alpha = 0.8f,
+				alphaFade = 0.01f
+			},
 				currentLocation, 2, 32, 32);
 		}
 
@@ -126,7 +131,7 @@ namespace Cropbeasts.Beasts
 					Math.Max (0f, sound.GetVariable ("Volume") - 1f));
 				float max = Math.Max (0f, 400f - Vector2.Distance (Position,
 					Player.Position) / 64f / 16f * 150f);
-				if (max > sound.GetVariable("Volume"))
+				if (max > sound.GetVariable ("Volume"))
 					sound.SetVariable ("Volume", max);
 			}
 
@@ -150,9 +155,9 @@ namespace Cropbeasts.Beasts
 
 				if (xyDistance < 64f)
 				{
-					xVelocity = Math.Max (-maxSpeed, Math.Min (maxSpeed,
+					xVelocity = Math.Max (-MaxSpeed, Math.Min (MaxSpeed,
 						xVelocity * 1.1f));
-					yVelocity = Math.Max (-maxSpeed, Math.Min (maxSpeed,
+					yVelocity = Math.Max (-MaxSpeed, Math.Min (MaxSpeed,
 						yVelocity * 1.1f));
 				}
 
@@ -182,25 +187,25 @@ namespace Cropbeasts.Beasts
 					wasHitCounter.Value = 5 + Game1.random.Next (-1, 2);
 				}
 
-				float factor = Math.Min (maxSpeed, Math.Max (2f, maxSpeed -
+				float factor = Math.Min (MaxSpeed, Math.Max (2f, MaxSpeed -
 					xyDistance / 64f / 2f));
 				xDistance = (float) Math.Cos ((double) rotation + Math.PI / 2.0);
 				yDistance = 0f - (float) Math.Sin ((double) rotation + Math.PI / 2.0);
 
 				xVelocity += (0f - xDistance) * factor / 6f +
 					(float) Game1.random.Next (-10, 10) / 100f;
-				if (Math.Abs (xVelocity) > Math.Abs ((0f - xDistance) * maxSpeed))
+				if (Math.Abs (xVelocity) > Math.Abs ((0f - xDistance) * MaxSpeed))
 					xVelocity -= (0f - xDistance) * factor / 6f;
 
 				yVelocity += (0f - yDistance) * factor / 6f +
 					(float) Game1.random.Next (-10, 10) / 100f;
-				if (Math.Abs (yVelocity) > Math.Abs ((0f - yDistance) * maxSpeed))
+				if (Math.Abs (yVelocity) > Math.Abs ((0f - yDistance) * MaxSpeed))
 					yVelocity -= (0f - yDistance) * factor / 6f;
 			}
 			resetAnimationSpeed ();
 		}
 
-		public override void behaviorAtGameTick(GameTime time)
+		public override void behaviorAtGameTick (GameTime time)
 		{
 			base.behaviorAtGameTick (time);
 

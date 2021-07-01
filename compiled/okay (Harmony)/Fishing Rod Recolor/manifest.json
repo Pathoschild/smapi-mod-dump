@@ -1,7 +1,7 @@
 {
     "Name": "Fishing Rod Recolor",
     "Author": "Stashek",
-    "Version": "1.0.0",
+    "Version": "1.2.0",
     "Description": "Simple Harmony script that allows modders to change the color of fishing rods",
     "UniqueID": "Stashek.FishingRodRecolor",
 	"UpdateKeys": ["Nexus:8835"],

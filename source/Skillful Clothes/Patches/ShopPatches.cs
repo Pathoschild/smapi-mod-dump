@@ -42,7 +42,7 @@ namespace SkillfulClothes.Patches
         {
             if (e.NewMenu is ShopMenu shopMenu)
             {
-                Logger.Info($"Opened shop of {shopMenu.portraitPerson?.name} ({shopMenu.portraitPerson?.id})");
+                Logger.Info($"Opened shop of {shopMenu.portraitPerson?.name}");
 
                 var shop = shopMenu.GetShop();
                 if (shop != Shop.None)
@@ -58,28 +58,28 @@ namespace SkillfulClothes.Patches
 
             if (soldShirts.TryGetValue(shop, out List<Shirt> shirts))
             {
-                AddItems(shopMenu, shirts);                
+                AddItems(shop, shopMenu, shirts);                
             }
 
             if (soldPants.TryGetValue(shop, out List<Pants> pants))
             {
-                AddItems(shopMenu, pants);
+                AddItems(shop, shopMenu, pants);
             }
 
             if (soldHats.TryGetValue(shop, out List<Hat> hats))
             {
-                AddItems(shopMenu, shirts);
+                AddItems(shop, shopMenu, shirts);
             }
 
             // Todo: add tab buttons for clothing
             // see ShopMenu.setUpStoreForContext
         }
 
-        private static void AddItems<T>(ShopMenu shopMenu, List<T> items)
+        private static void AddItems<T>(Shop shop, ShopMenu shopMenu, List<T> items)
         {
             foreach (var item in items)
             {
-                if (ItemDefinitions.GetExtInfo(item, out ExtItemInfo extInfo))
+                if (ItemDefinitions.GetExtInfo(item, out ExtItemInfo extInfo) && extInfo.SellingCondition.IsFulfilled(shop)) 
                 {
                     Item saleItem = CreateItemInstance(item);
                     shopMenu.forSale.Add(saleItem);

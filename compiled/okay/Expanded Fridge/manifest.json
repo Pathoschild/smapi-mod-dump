@@ -1,0 +1,10 @@
+{
+  "Name": "ExpandedFridge",
+  "Author": "Uwazouri",
+  "Version": "3.0.2",
+  "Description": "Hide mini fridges and access them from the house fridge.",
+  "UniqueID": "Uwazouri.ExpandedFridge",
+  "EntryDll": "ExpandedFridge.dll",
+  "MinimumApiVersion": "3.3.0",
+  "UpdateKeys": [ "Nexus:1191" ]
+}

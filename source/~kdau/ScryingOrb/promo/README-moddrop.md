@@ -6,41 +6,36 @@ for queries and analysis.**
 
 ----
 
-![[icon]](https://kdau.gitlab.io/ScryingOrb/icon.png) Craft a Scrying Orb with a recipe from Welwick and you too can peer into the future. Make an offering to the spirits to scry mining conditions, geode contents, rare events or garbage loot.
+![[icon]](https://www.kdau.com/ScryingOrb/icon.png) Craft a Scrying Orb with a recipe from Welwick and you too can peer into the future. Make an offering to the spirits to scry mining conditions, geode contents, rare events, garbage loot and more.
 
 This mod is based on the [Stardew Predictor](https://mouseypounds.github.io/stardew-predictor/) web app by MouseyPounds, whose tools are all worth a look. Its companion mod, [Public Access TV](https://www.moddrop.com/stardew-valley/mods/757967-public-access-tv), offers a different route to much of the same information for the current game day.
 
-## ![[Compatibility]](https://kdau.gitlab.io/headers/compatibility.png)
+## ![[Compatibility]](https://www.kdau.com/headers/compatibility.png)
 
-This version of Scrying Orb is compatible with **Stardew Valley 1.4.x**. When SDV 1.5 is released, some of this mod's predictions will start being wrong. I'll put out a new version at that point.
+**Game:** Stardew Valley 1.5.3+ (predictions may be wrong for any future 1.6)
 
-This mod should work on **Linux, macOS, Windows and Android**.
+**Platform:** Linux, macOS or Windows (Android: use 1.4 version)
 
-There are no known problems with multiplayer use. Every player should install the mod, even if they are not using the Scrying Orb.
+**Multiplayer:** works; every player must install
 
-There are no known conflicts with other mods. Scrying Orb fully supports the following:
+**Other mods:** There are no known outright conflicts. These mods are handled specially:
 
-* [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753) (different arrangement of garbage cans)
-* [Witchy Crystal Farm 2.0](https://www.nexusmods.com/stardewvalley/mods/4330) (sculpture on farm is a working Scrying Orb)
-
-When one of the following mods is installed, the related predictions are hidden because they would not be accurate:
-
-* [Better Garbage Cans](https://www.nexusmods.com/stardewvalley/mods/4171)
-* [Better Train Loot](https://www.nexusmods.com/stardewvalley/mods/4234)
+* [Better Garbage Cans](https://www.nexusmods.com/stardewvalley/mods/4171): This mod's garbage predictions are hidden.
+* [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753): This mod correctly reflects the different arrangement of garbage cans.
+* [Witchy Crystal Farm 2.0](https://www.nexusmods.com/stardewvalley/mods/4330): This mod makes the sculpture on the farm a working Scrying Orb.
 
 If any of your other mods affect the areas this mod covers, the orb may make incorrect predictions. If you would like me to add support for another mod, please open an issue [on GitLab](https://gitlab.com/kdau/predictivemods/-/issues) or in the Bugs tab above.
 
-## ![[Installation]](https://kdau.gitlab.io/headers/installation.png)
+## ![[Installation]](https://www.kdau.com/headers/installation.png)
 
-1. Install the latest version of [SMAPI](https://smapi.io/).
-1. Install the [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) mod.
-1. To configure this mod without editing a JSON file, optionally install the [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) mod.
-1. Download this mod from the link in the header above.
-1. Unzip the mod and place the `ScryingOrb` folder inside your `Mods` folder.
-1. If upgrading from 1.3.0 or earlier, remove the `[JA]ScryingOrb` folder from your `Mods` folder.
-1. Run the game using SMAPI.
+1. Install [SMAPI](https://smapi.io/)
+1. Install [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720)
+1. Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) (optional, for easier configuration)
+1. Download this mod from the link in the header above
+1. Unzip the mod and place the `ScryingOrb` folder inside your `Mods` folder
+1. Run the game using SMAPI
 
-## ![[Use]](https://kdau.gitlab.io/headers/use.png)
+## ![[Use]](https://www.kdau.com/headers/use.png)
 
 The day after you reach two hearts of friendship with the Wizard, you will receive a letter in the mail from his colleague Welwick the diviner (from the "Fortune Teller" TV channel). If you already have two or more hearts of friendship with the Wizard, the letter will arrive the first day you play with the mod installed.
 
@@ -73,6 +68,12 @@ Learn what will be found inside the next three geodes of any type, or the next 1
 * 3 Limestone
 * 2 Mudstone
 * any other [Mineral item found in geodes](https://stardewvalleywiki.com/Minerals#Geode_Minerals)
+
+### Enchanted implements
+
+**(Spoiler for late-game 1.4 content)** Learn what next few enchantments will be cast upon your weapons and tools. *Must have reached the Caldera.*
+
+Offer the spirits the weapon or tool whose enchantments you wish to use; the implement will be returned to you. You must also be holding at least 5 Cinder Shard, which will be consumed as the offering.
 
 ### Nocturnal occurrences
 
@@ -117,52 +118,47 @@ Learn what items will be found in garbage cans on any day in the next year. *Mus
 
 There is a particular item which will get a special reaction from the spirits. You probably know which one I mean.
 
-## ![[Configuration]](https://kdau.gitlab.io/headers/configuration.png)
+## ![[Configuration]](https://www.kdau.com/headers/configuration.png)
 
 If you have installed Generic Mod Config Menu, you can access this mod's configuration by clicking the cogwheel button at the lower left corner of the Stardew Valley title screen and then choosing "Scrying Orb".
 
-Otherwise, you can edit the mod's `config.json` file; it will be generated in the mod's main folder (`Mods/ScryingOrb`) the first time you run it. These options are available:
+Otherwise, you can edit this mod's `config.json` file. It will be created in the mod's main folder (`Mods/ScryingOrb`) the first time you run the game with the mod installed. These options are available:
 
-* `InaccuratePredictions`: Set this to `true` to let the spirits make predictions that are inaccurate due to the presence of conflicting mods. For entertainment purposes only.
+* `InaccuratePredictions`: Set this to `true` to let the spirits make predictions that are inaccurate due to game version mismatch and/or conflicting mods. For entertainment purposes only.
 * `InstantRecipe`: Set this to `true` to give the Scrying Orb crafting recipe immediately instead of needing two hearts with the Wizard.
 * `UnlimitedUse`: Set this to `true` to have the Scrying Orb work without taking offerings permanently.
 * `ActivateKey`: Set this to any valid keybinding that will then activate the Scrying Orb unlimited use menu without any orb or offering. [See the list of keybindings here.](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Available_bindings)
 
-## ![[Translation]](https://kdau.gitlab.io/headers/translation.png)
+## ![[Translation]](https://www.kdau.com/headers/translation.png)
 
 This mod can be translated into any language supported by Stardew Valley. It is currently available in English, French, Portuguese, Russian and Simplified Chinese.
 
-Your contribution would be welcome. Please see the [details on the wiki](https://stardewvalleywiki.com/Modding:Translations) for help. You can send me your work in an issue [on GitLab](https://gitlab.com/kdau/predictivemods/-/issues), in the Bugs tab above or by DM on Discord.
+Your contribution would be welcome. Please see the [details on the wiki](https://stardewvalleywiki.com/Modding:Translations) for help. You can send me your work in [a GitLab issue](https://gitlab.com/kdau/predictivemods/-/issues) or the Comments tab above.
 
-## ![[Acknowledgments]](https://kdau.gitlab.io/headers/acknowledgments.png)
+## ![[Acknowledgments]](https://www.kdau.com/headers/acknowledgments.png)
 
-* Like all mods, this one is indebted to ConcernedApe, particularly for the vanilla assets it adapts.
+* Like all mods, this one is indebted to ConcernedApe, Pathoschild and the various framework modders.
 * The prediction logic behind this mod is largely ported from the [Stardew Predictor](https://mouseypounds.github.io/stardew-predictor/) web app by MouseyPounds.
-* This mod would not function without [SMAPI](https://smapi.io/) by Pathoschild and [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) by spacechase0.
 * Coding of this mod relied on [Producer Framework Mod](https://www.nexusmods.com/stardewvalley/mods/4970) by Digus as a key example.
 * The #making-mods channel on the [Stardew Valley Discord](https://discordapp.com/invite/StardewValley) offered valuable guidance and feedback.
-* The date picker is based on a concept from @blueberry on Discord and the aesthetic of [Goethe's color wheel](https://commons.wikimedia.org/wiki/File:Goethe,_Farbenkreis_zur_Symbolisierung_des_menschlichen_Geistes-_und_Seelenlebens,_1809.jpg), with notes from #creative-discussion.
+* The date picker is based on a concept from [blueberry](https://www.nexusmods.com/stardewvalley/users/71169863?tab=user+files) and the aesthetic of [Goethe's color wheel](https://commons.wikimedia.org/wiki/File:Goethe,_Farbenkreis_zur_Symbolisierung_des_menschlichen_Geistes-_und_Seelenlebens,_1809.jpg), with notes from the #creative-discussion channel on the Discord.
 * The French translation was prepared by Inu'tile.
 * The Portuguese translation was prepared by Ertila007.
 * The Russian translation was prepared by DanyaKirichenko1.
 * The Simplified Chinese translation was prepared by liayyMK.
 
-## ![[See also]](https://kdau.gitlab.io/headers/see-also.png)
+## ![[See also]](https://www.kdau.com/headers/see-also.png)
 
-* [Release notes](https://gitlab.com/kdau/predictivemods/-/blob/master/ScryingOrb/RELEASE-NOTES.md) from existing versions
-* [Discord channel](https://discord.gg/Vqrc726) to discuss this mod
-* [Issue tracker](https://gitlab.com/kdau/predictivemods/-/issues) for bug reports and feature plans
-* [MIT license](https://gitlab.com/kdau/predictivemods/-/blob/master/LICENSE) (TLDR: do whatever, but credit me)
-* [My other mods](https://kdau.gitlab.io)
-
-Mirrors:
-
-* [This mod on GitLab](https://gitlab.com/kdau/predictivemods/-/tree/master/ScryingOrb)
-* [This mod on Nexus](https://www.nexusmods.com/stardewvalley/mods/5603)
-* **This mod on ModDrop**
-* [This mod on the forums](https://forums.stardewvalley.net/index.php?resources/scrying-orb.54/)
+* [Release notes](https://gitlab.com/kdau/predictivemods/-/blob/master/ScryingOrb/RELEASE-NOTES.md)
+* [Source code](https://gitlab.com/kdau/predictivemods/-/tree/master/ScryingOrb)
+* [Report bugs](https://gitlab.com/kdau/predictivemods/-/issues)
+* [My other Stardew stuff](https://www.kdau.com/stardew)
+* Mirrors:
+	* [Nexus](https://www.nexusmods.com/stardewvalley/mods/5603),
+	* **ModDrop**,
+	* [forums](https://forums.stardewvalley.net/resources/scrying-orb.54/)
 
 Other things you may enjoy:
 
-* ![[icon]](https://kdau.gitlab.io/PublicAccessTV/icon.png) [Public Access TV](https://www.moddrop.com/stardew-valley/mods/757967-public-access-tv) for friendship-based, same-day predictions
+* ![[icon]](https://www.kdau.com/PublicAccessTV/icon.png) [Public Access TV](https://www.moddrop.com/stardew-valley/mods/757967-public-access-tv) for friendship-based, same-day predictions
 * ![[icon]](https://mouseypounds.github.io/stardew-predictor/favicon_p.png) [Stardew Predictor](https://mouseypounds.github.io/stardew-predictor/) web app to see all the predictions at once

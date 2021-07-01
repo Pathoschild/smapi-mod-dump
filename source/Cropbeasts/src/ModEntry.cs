@@ -11,11 +11,11 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Cropbeasts
@@ -29,17 +29,19 @@ namespace Cropbeasts
 
 		protected static ModConfig Config => ModConfig.Instance;
 
-		public Chooser chooser { get; private set; }
+		private readonly PerScreen<Chooser> chooser_ = new (() => null);
+		public Chooser chooser => chooser_.Value;
 
-		private List<FarmMonster> currentMonsters;
+		private readonly PerScreen<HashSet<FarmMonster>> currentMonsters =
+			new (() => new ());
 		private IEnumerable<Cropbeast> currentBeasts =>
-			currentMonsters?.OfType<Cropbeast> ();
-		public int currentBeastCount => currentBeasts?.Count () ?? 0;
+			currentMonsters.Value.OfType<Cropbeast> ();
+		public int currentBeastCount =>
+			currentBeasts.Count ();
 
 		public void registerMonster (FarmMonster monster)
 		{
-			if (!currentMonsters.Contains (monster))
-				currentMonsters.Add (monster);
+			currentMonsters.Value.Add (monster);
 		}
 
 		public override void Entry (IModHelper helper)
@@ -100,7 +102,7 @@ namespace Cropbeasts
 			return true;
 		}
 
-		internal void revertCropbeasts (bool console = false)
+		internal void resetCropbeasts (bool console = false)
 		{
 			// Check preconditions.
 			if (!Context.IsWorldReady)
@@ -111,39 +113,38 @@ namespace Cropbeasts
 			// Clean up dead beasts and check if any remain.
 			cleanUpMonsters ();
 			int count = currentBeastCount;
-			if (count == 0)
+			if (count > 0)
 			{
-				if (console)
-				{
-					Monitor.Log ("There are no cropbeasts active to be reverted.",
-						LogLevel.Warn);
-				}
-				return;
+				// Revert the remaining beasts and clear the list.
+				foreach (Cropbeast beast in currentBeasts)
+					beast.revert ();
+				cleanUpMonsters ();
+
+				Monitor.Log ($"Reverted {count} cropbeast(s) to their original crops.",
+					console ? LogLevel.Info : LogLevel.Debug);
 			}
 
-			// Revert the remaining beasts and clear the list.
-			foreach (Cropbeast beast in currentBeasts)
-				beast.revert ();
-			cleanUpMonsters ();
-
-			Monitor.Log ($"Reverted {count} cropbeast(s) to their original crops.",
-				console ? LogLevel.Info : LogLevel.Debug);
+			// Reset the spawning statistics for the day.
+			if (chooser != null)
+			{
+				chooser.reset ();
+				Monitor.Log ($"Reset spawning statistics for the current day.",
+					console ? LogLevel.Info : LogLevel.Debug);
+			}
 		}
 
 		internal void cleanUpMonsters ()
 		{
-			if (currentMonsters == null)
-				return;
-
-			for (int i = currentMonsters.Count - 1; i >= 0; --i)
-			{
-				FarmMonster monster = currentMonsters[i];
-				if (monster.Health <= 0 || (monster.currentLocation != null &&
+			var deadMonsters = currentMonsters.Value.Where ((monster) =>
+				monster.Health <= 0 ||
+				(monster.currentLocation != null &&
 					!monster.currentLocation.characters.Contains (monster)))
-				{
-					monster.processDeath ();
-					currentMonsters.RemoveAt (i);
-				}
+				.ToList ();
+
+			foreach (var monster in deadMonsters)
+			{
+				monster.processDeath ();
+				currentMonsters.Value.Remove (monster);
 			}
 		}
 
@@ -152,17 +153,13 @@ namespace Cropbeasts
 			// Set up Generic Mod Config Menu, if it is available.
 			ModConfig.SetUpMenu ();
 
-			// Access the Json Assets API and mod instance, if they are available.
+			// Set up Json Assets, if it is available.
 			jsonAssets = Helper.ModRegistry.GetApi<JsonAssets.IApi>
 				("spacechase0.JsonAssets");
 			Type jaModType = jsonAssets?.GetType ()?.Assembly
 				?.GetType ("JsonAssets.Mod");
 			jsonAssetsMod = jaModType?.GetField ("instance")
 				?.GetValue (jaModType);
-
-			// Load the Json Assets content pack, if JA is available.
-			jsonAssets?.LoadAssets (Path.Combine (Helper.DirectoryPath,
-				"assets", "JA"));
 		}
 
 		private void prepareSave ()
@@ -174,9 +171,8 @@ namespace Cropbeasts
 		private void onDayStarted (object _sender, DayStartedEventArgs _e)
 		{
 			Mappings.Load (true);
-			currentMonsters = new List<FarmMonster> ();
 			if (Context.IsMainPlayer)
-				chooser = new Chooser ();
+				chooser_.Value = new Chooser ();
 
 			// Check whether the achievement was attained previously but missed.
 			Assets.AchievementEditor.CheckAchievement ();
@@ -185,14 +181,14 @@ namespace Cropbeasts
 		private void onDayEnding (object _sender, DayEndingEventArgs _e)
 		{
 			if (Context.IsMainPlayer)
-				revertCropbeasts ();
-			currentMonsters = null;
-			chooser = null;
+				resetCropbeasts ();
+			currentMonsters.Value.Clear ();
+			chooser_.Value = null;
 		}
 
 		private void onTimeChanged (object _sender, TimeChangedEventArgs _e)
 		{
-			if (chooser != null && currentMonsters != null)
+			if (chooser != null)
 			{
 				cleanUpMonsters ();
 				spawnCropbeast ();
@@ -212,8 +208,7 @@ namespace Cropbeasts
 			if (!Context.IsWorldReady)
 				return;
 
-#if DEBUG
-			if (Config.BoundingBoxes)
+			if (Config.Testing)
 			{
 				// Draw the bounding boxes, compliments of spacechase0.
 				foreach (NPC character in Game1.currentLocation.characters)
@@ -231,7 +226,6 @@ namespace Cropbeasts
 						(box.X, box.Y + box.Height, box.Width, 1), Color.Red);
 				}
 			}
-#endif
 
 			if (Config.CactusbeastSandblast)
 				SandblastDebuff.Draw (e.SpriteBatch);
@@ -258,7 +252,7 @@ namespace Cropbeasts
 			if (e.NewMenu is ShopMenu menu && menu.potraitPersonDialogue ==
 				Game1.parseText (Game1.content.LoadString ("Strings\\StringsFromCSFiles:ShopMenu.cs.11494"),
 					Game1.dialogueFont, Game1.tileSize * 5 - Game1.pixelZoom * 4))
-            {
+			{
 				Assets.HatEditor.FixShopMenu (menu);
 			}
 		}

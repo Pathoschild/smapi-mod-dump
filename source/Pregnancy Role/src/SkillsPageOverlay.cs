@@ -71,7 +71,7 @@ namespace PregnancyRole
 		{
 			get
 			{
-				if (!(Game1.activeClickableMenu is GameMenu gm))
+				if (Game1.activeClickableMenu is not GameMenu gm)
 					return null;
 				return gm.pages[gm.currentTab];
 			}

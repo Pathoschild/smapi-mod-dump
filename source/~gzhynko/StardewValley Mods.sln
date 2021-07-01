@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishExclusions", "FishExclu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBlackBars", "EventBlackBars\EventBlackBars.csproj", "{741A952A-D974-4206-A517-81CF50C05AD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogueBoxRedesign", "DialogueBoxRedesign\DialogueBoxRedesign.csproj", "{03C1DD48-D61A-451D-8780-A87E78BB401D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{741A952A-D974-4206-A517-81CF50C05AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{741A952A-D974-4206-A517-81CF50C05AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{741A952A-D974-4206-A517-81CF50C05AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03C1DD48-D61A-451D-8780-A87E78BB401D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03C1DD48-D61A-451D-8780-A87E78BB401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03C1DD48-D61A-451D-8780-A87E78BB401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03C1DD48-D61A-451D-8780-A87E78BB401D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

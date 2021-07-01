@@ -143,5 +143,6 @@ If you want to see visual updates in other mods/content packs, please ask those 
 * Spanish - [ManHeII](https://github.com/ManHeII)
 * Korean - [Wally232](https://github.com/Wally232)
 * Russian - [CatMartin](https://github.com/CatMartin)
+* Hungarian - [Martin66789](https://www.nexusmods.com/stardewvalley/users/27323031)
 
 To help with translating this mod please see [this issue](https://github.com/StardewModders/mod-translations/issues/38) at the `StardewModders/mod-translations` repo

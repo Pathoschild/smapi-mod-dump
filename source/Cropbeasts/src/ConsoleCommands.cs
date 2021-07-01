@@ -19,28 +19,30 @@ namespace Cropbeasts
 	{
 		private static IModHelper Helper => ModEntry.Instance.Helper;
 		private static IMonitor Monitor => ModEntry.Instance.Monitor;
+		private static ModConfig Config => ModConfig.Instance;
 
 		public static void Initialize ()
 		{
 			Helper.ConsoleCommands.Add ("spawn_cropbeast",
 				"Spawns cropbeast(s) from crop(s) in the current location.\n\nUsage: spawn_cropbeast [B:force] [I:count] [S:filter]\n- force: whether to ignore the usual preconditions (default true)\n- count: how many cropbeasts to spawn (default 1).\n- filter: fuzzy-matched name of a cropbeast to spawn or crop to spawn it from (default any)",
-				cmdSpawnCropbeast);
-#if DEBUG
-			Helper.ConsoleCommands.Add ("fake_cropbeast",
-				"Spawns a cropbeast for the given crop without affecting the crops in the current location.\n\nUsage: fake_cropbeast [I:count] <S:harvest> [B:giant]\n- count: how many cropbeasts to spawn (default 1).\n- harvest: the fuzzy-matched name of the harvest to create a cropbeast for\n- giant: whether to treat the crop as giant (default false)",
-				cmdFakeCropbeast);
-#endif
-			Helper.ConsoleCommands.Add ("revert_cropbeasts",
-				"Reverts all active cropbeasts to the harvestable crops they came from.",
-				cmdRevertCropbeasts);
+				SpawnCropbeast);
+			if (Config.Testing)
+			{
+				Helper.ConsoleCommands.Add ("fake_cropbeast",
+					"Spawns a cropbeast for the given crop without affecting the crops in the current location.\n\nUsage: fake_cropbeast [I:count] <S:harvest> [B:giant]\n- count: how many cropbeasts to spawn (default 1).\n- harvest: the fuzzy-matched name of the harvest to create a cropbeast for\n- giant: whether to treat the crop as giant (default false)",
+					FakeCropbeast);
+			}
+			Helper.ConsoleCommands.Add ("reset_cropbeasts",
+				"Reverts all active cropbeasts to the harvestable crops they came from and resets spawn statistics for the day.",
+				ResetCropbeasts);
 			Helper.ConsoleCommands.Add ("farm_monsters",
-				"Gets or sets whether monsters should spawn on the farm.\n\nUsage: farm_monsters [B:value]\n- value: whether to enable (true) or disable (false); if omitted, shows the current setting.",
-				cmdFarmMonsters);
+				"Gets or sets whether monsters should spawn on the farm.\n\nUsage: farm_monsters [B:value]\n- value: whether to allow (true) or prevent (false); if omitted, shows the current setting.",
+				FarmMonsters);
 		}
 
-		private static void cmdSpawnCropbeast (string _command, string[] args)
+		private static void SpawnCropbeast (string _command, string[] args)
 		{
-			Queue<string> argq = new Queue<string> (args);
+			Queue<string> argq = new (args);
 			bool force = true;
 			uint count = 1u;
 			string filter = null;
@@ -79,16 +81,12 @@ namespace Cropbeasts
 			catch (Exception e)
 			{
 				Monitor.Log ($"spawn_cropbeast failed: {e.Message}", LogLevel.Error);
-#if DEBUG
-				Monitor.Log (e.StackTrace, LogLevel.Trace);
-#endif
 			}
 		}
 
-#if DEBUG
-		private static void cmdFakeCropbeast (string _command, string[] args)
+		private static void FakeCropbeast (string _command, string[] args)
 		{
-			Queue<string> argq = new Queue<string> (args);
+			Queue<string> argq = new (args);
 			uint count = 1u;
 
 			if (argq.Count > 0 && UInt32.TryParse (argq.Peek (), out uint Count))
@@ -116,32 +114,27 @@ namespace Cropbeasts
 
 			try
 			{
-				Faker.fake (harvestName, giant, count);
+				Faker.Fake (harvestName, giant, count);
 			}
 			catch (Exception e)
 			{
 				Monitor.Log ($"fake_cropbeast failed: {e.Message}", LogLevel.Error);
-				Monitor.Log (e.StackTrace, LogLevel.Trace);
 			}
 		}
-#endif
 
-		private static void cmdRevertCropbeasts (string _command, string[] _args)
+		private static void ResetCropbeasts (string _command, string[] _args)
 		{
 			try
 			{
-				ModEntry.Instance.revertCropbeasts (console: true);
+				ModEntry.Instance.resetCropbeasts (console: true);
 			}
 			catch (Exception e)
 			{
-				Monitor.Log ($"revert_cropbeasts failed: {e.Message}", LogLevel.Error);
-#if DEBUG
-				Monitor.Log (e.StackTrace, LogLevel.Trace);
-#endif
+				Monitor.Log ($"reset_cropbeasts failed: {e.Message}", LogLevel.Error);
 			}
 		}
 
-		private static void cmdFarmMonsters (string _command, string[] args)
+		private static void FarmMonsters (string _command, string[] args)
 		{
 			if (!Context.IsWorldReady)
 			{

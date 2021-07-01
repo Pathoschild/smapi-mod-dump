@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/7635
 IDs: spacechase0.Displays
-update keys: Nexus:7635, GitHub:spacechase0/Displays
+update keys: Nexus:7635, GitHub:spacechase0/StardewValleyMods

@@ -64,7 +64,65 @@ namespace PatcherHelper
     {
     public static class Meta
         {
-        public static string Revision = "R43";
+        public static string Revision = "R61";
+        }
+
+    /// <summary>
+    /// <para>If you install the NuGet package "RequireNamedArgs", this class enables you to mark methods with the
+    /// <c>[RequireNamedArgs]</c> attribute, resulting in VS forcing you to specify parameters using keywords.</para>
+    /// <para>See <see href="https://github.com/mykolav/require-named-args-fs"/> for more info.</para>
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    public class RequireNamedArgsAttribute : Attribute { }
+
+    /// <summary>
+    /// <para>Type of patch. Mainly to assist <c>HarmonyPatcherQueue.QueuePatchA</c>.</para>
+    /// <para>See also the <seealso cref="PatchTypeAttribute.FromPatch(HarmonyMethod)"/> method.</para>
+    /// </summary>
+    public enum PatchType
+        {
+        Prefix,
+        Postfix,
+        Transpiler,
+        UNKNOWN
+        }
+
+    /// <summary>
+    /// <para>A custom attribute to specify the type of a patch. Mainly to assist <c>HarmonyPatcherQueue.QueuePatchA</c> methods</para>
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    public class PatchTypeAttribute : Attribute
+        {
+        public static readonly Dictionary<string, PatchType> TypeFromSuffix = new Dictionary<string, PatchType>() {
+                {"prefix", PatchType.Prefix},
+                {"pre", PatchType.Prefix},
+                {"postfix", PatchType.Postfix },
+                {"post", PatchType.Postfix },
+                {"transpiler", PatchType.Transpiler },
+                {"transp", PatchType.Transpiler },
+            };
+
+        public PatchType PType { get; private set; }
+
+        public PatchTypeAttribute(PatchType ptype) {
+            PType = ptype;
+            }
+
+        /// <summary>
+        /// Given a HarmonyMethod, try to determine type of patch based on attribute,
+        /// but if attribute not set, try to deduce based on method's prefix.
+        /// </summary>
+        /// <param name="patch">A HarmonyMethod to inspect</param>
+        /// <returns>The type of the patch, or <c>PatchType.UNKNOWN</c> if function cannot deduce the type</returns>
+        public static PatchType FromPatch(HarmonyMethod patch) {
+            PatchTypeAttribute pt_attr = patch.method.GetCustomAttribute<PatchTypeAttribute>();
+            if (pt_attr != null) return pt_attr.PType;
+            string suffix = patch.method.Name.Split('_').Last();
+            if (TypeFromSuffix.TryGetValue(suffix, out PatchType pt))
+                return pt;
+            else
+                return PatchType.UNKNOWN;
+            }
         }
 
     /// <summary>
@@ -100,6 +158,229 @@ namespace PatcherHelper
         public PatchingFailureException() : base() { }
         public PatchingFailureException(string message) : base(message) { }
         public PatchingFailureException(string message, Exception innerException) : base(message, innerException) { }
+        }
+
+    /// <summary>
+    /// <para>This convenience class allows you to first gather a whole bunch of parameters for HarmonyPatcherHelper.TryPatching,
+    /// and execute them in one go.</para>
+    /// <para>This allows you to determine how many patches will take place before actually doing them.</para>
+    /// </summary>
+    public class HarmonyPatcherQueue
+        {
+        public readonly string UniqueID;
+        public readonly IMonitor Monitor;
+        public HarmonyPatcherHelper HarPH;
+
+        /// <summary>
+        /// <para>If true (default), then immediately abort queue processing upon patching failure.</para>
+        /// <para>If false, then continue patching even if a patch failed, gathering the failures into an output dictionary.</para>
+        /// </summary>
+        public bool FailFast { get; set; } = true;
+
+        public bool? ExceptionOnFail = null;
+        public bool Silent = false;
+        public int Stats_Success = 0;
+
+        public class QueueEntry
+            {
+            public MethodBase original = null;
+            public HarmonyMethod prefix = null;
+            public HarmonyMethod postfix = null;
+            public HarmonyMethod transpiler = null;
+            public bool enabled = true;
+            }
+
+        public List<QueueEntry> PatchQueue = new List<QueueEntry>();
+
+        public HarmonyPatcherQueue(string uniqueID, IMonitor monitor, bool failFast = true) : this(new HarmonyPatcherHelper(uniqueID, monitor), failFast) { }
+        public HarmonyPatcherQueue(HarmonyPatcherHelper patcherHelper, bool failFast = true) {
+            Monitor = patcherHelper.Monitor;
+            HarPH = patcherHelper;
+            FailFast = failFast;
+            }
+
+        /// <summary>
+        /// <para>Release potentially expensive references.</para>
+        /// <para><b>WARNING:</b> Once you invoke this method, the instance will no longer be usable!</para>
+        /// </summary>
+        public void Cleanup() {
+            PatchQueue.Clear();
+            PatchQueue = null;
+            HarPH = null;
+            }
+
+        public int Length { get => PatchQueue.Count; }
+
+        public int Count { get => PatchQueue.Count; }
+
+        /// <summary>
+        /// A count of how many queued patches are enabled
+        /// </summary>
+        public int Enableds { get => PatchQueue.Where(i => i.enabled).Count(); }
+        public void Clear() {
+            PatchQueue.Clear();
+            }
+        /// <summary>
+        /// Perform patching
+        /// </summary>
+        /// <param name="failures">Outputs a dictionary of failed patches</param>
+        /// <returns>The number of successful patches</returns>
+        public int Execute(out Dictionary<string, Exception> failures) {
+            failures = new Dictionary<string, Exception>();
+            Stats_Success = 0;
+            string culprit;
+            foreach (var i in PatchQueue.Where(i => i.enabled)) {
+                try {
+                    if (HarPH.TryPatching(i.original, i.prefix, i.postfix, i.transpiler, ExceptionOnFail, Silent))
+                        Stats_Success++;
+                    }
+                catch (Exception ex) {
+                    if (FailFast) throw;
+                    culprit = (i.prefix ?? i.postfix ?? i.transpiler).methodName;
+                    failures[culprit] = ex;
+                    }
+                }
+            return Stats_Success;
+            }
+
+        /// <summary>
+        /// Perform patching
+        /// </summary>
+        /// <returns>The number of successful patches</returns>
+        public int Execute() => Execute(out _);
+
+        /// <summary>
+        /// Queue exactly one patch
+        /// </summary>
+        /// <param name="original">The method to patch</param>
+        /// <param name="prefix">Prefix-type patch</param>
+        /// <param name="postfix">Postfix-type patch</param>
+        /// <param name="transpiler">Transpiler-type patch</param>
+        /// <param name="enabled">Whether to actually perform the patch when .Execute is invoked</param>
+        /// <remarks><b>Note:</b> One (and only one!) of prefix, postfix, or transpiler must be provided.</remarks>
+        public void QueuePatch(
+            MethodBase original,
+            HarmonyMethod prefix = null,
+            HarmonyMethod postfix = null,
+            HarmonyMethod transpiler = null,
+            bool enabled = true
+            ) {
+            if (original is null)
+                throw new ArgumentNullException("original");
+            if (Util.CountNull(prefix, postfix, transpiler) == 3)
+                throw new PatchingFailureException("At least one of prefix/postfix/transpiler must be specified!");
+            PatchQueue.Add(new QueueEntry { original = original, prefix = prefix, postfix = postfix, transpiler = transpiler, enabled = enabled });
+            }
+
+        /// <summary>
+        /// Queue patching against several methods using the same patcher
+        /// </summary>
+        /// <param name="originals">The original methods to patch in the same way</param>
+        /// <param name="prefix">Prefix-type patch</param>
+        /// <param name="postfix">Postfix-type patch</param>
+        /// <param name="transpiler">Transpiler-type patch</param>
+        /// <param name="enabled">Whether to actually perform the patch when .Execute is invoked</param>
+        /// <remarks><b>Note:</b> One (and only one!) of prefix, postfix, or transpiler must be provided.</remarks>
+        public void QueuePatch(
+            IEnumerable<MethodBase> originals,
+            HarmonyMethod prefix = null,
+            HarmonyMethod postfix = null,
+            HarmonyMethod transpiler = null,
+            bool enabled = true
+            ) {
+            foreach (var mb in originals) QueuePatch(mb, prefix, postfix, transpiler, enabled);
+            }
+
+        /// <summary>
+        /// Queue exactly one patch. MethodInfo will be retrieved using originalType and originalName
+        /// </summary>
+        /// <param name="originalType">The Type containing the method to patch</param>
+        /// <param name="originalName">The name of the method to patch</param>
+        /// <param name="prefix">Prefix-type patch</param>
+        /// <param name="postfix">Postfix-type patch</param>
+        /// <param name="transpiler">Transpiler-type patch</param>
+        /// <param name="targetParams">(Optional) used to select between methods of the same name but different signatures</param>
+        /// <param name="targetGenerics">(Optional) used to select between generic methods of the same signature but different Generic</param>
+        /// <param name="enabled">Whether to actually perform the patch when .Execute is invoked</param>
+        /// <remarks><b>Note:</b> One (and only one!) of prefix, postfix, or transpiler must be provided.</remarks>
+        public void QueuePatch(
+            Type originalType,
+            string originalName,
+            HarmonyMethod prefix = null,
+            HarmonyMethod postfix = null,
+            HarmonyMethod transpiler = null,
+            Type[] targetParams = null,
+            Type[] targetGenerics = null,
+            bool enabled = true
+            ) {
+            MethodInfo original = AccessTools.Method(originalType, originalName, targetParams, targetGenerics);
+            if (original is null) throw new PatchingFailureException("Unable to retrieve method to patch");
+            QueuePatch(original, prefix, postfix, transpiler, enabled);
+            }
+
+        /// <summary>
+        /// Queue exactly one patch, type of patch will be auto-deduced using <c>PatchType.FromPatch</c> static method.
+        /// </summary>
+        /// <param name="originalType">The Type containing the method to patch</param>
+        /// <param name="originalName">The name of the method to patch</param>
+        /// <param name="patch">The patch to queue</param>
+        /// <param name="enabled">Whether to actually perform the patch when .Execute is invoked</param>
+        public void QueuePatchA(
+            Type originalType,
+            string originalName,
+            HarmonyMethod patch,
+            bool enabled = true
+            ) {
+            HarmonyMethod prefix = null;
+            HarmonyMethod postfix = null;
+            HarmonyMethod transpiler = null;
+
+            switch (PatchTypeAttribute.FromPatch(patch)) {
+                case PatchType.Prefix:
+                    prefix = patch;
+                    break;
+                case PatchType.Postfix:
+                    postfix = patch;
+                    break;
+                case PatchType.Transpiler:
+                    transpiler = patch;
+                    break;
+                default:
+                    throw new PatchingFailureException($"Cannot determine patching method for {patch.method.Name}");
+                }
+            QueuePatch(originalType, originalName, prefix, postfix, transpiler, enabled: enabled);
+            }
+
+        /// <summary>
+        /// Queue several patches using the same patch, type of patch will be auto-deduced using <c>PatchType.FromPatch</c> static method.
+        /// </summary>
+        /// <param name="originals">A collection of methods to patch</param>
+        /// <param name="patch">The patch method</param>
+        /// <param name="enabled">Whether to actually perform the patch when .Execute is invoked</param>
+        public void QueuePatchA(
+            IEnumerable<MethodBase> originals,
+            HarmonyMethod patch,
+            bool enabled = true
+            ) {
+            HarmonyMethod prefix = null;
+            HarmonyMethod postfix = null;
+            HarmonyMethod transpiler = null;
+
+            switch (PatchTypeAttribute.FromPatch(patch)) {
+                case PatchType.Prefix:
+                    prefix = patch;
+                    break;
+                case PatchType.Postfix:
+                    postfix = patch;
+                    break;
+                case PatchType.Transpiler:
+                    transpiler = patch;
+                    break;
+                default:
+                    throw new PatchingFailureException($"Cannot determine patching method for {patch.method.Name}");
+                }
+            QueuePatch(originals, prefix, postfix, transpiler, enabled: enabled);
+            }
         }
 
     /// <summary>
@@ -150,7 +431,8 @@ namespace PatcherHelper
                 }
             string poi = $"{original.DeclaringType.Namespace}.{original.DeclaringType.Name}.{original.Name}";
             try {
-                if (!silent) Monitor.Log($"Patching {poi} ...", BeginPatchingLogLevel);
+                string patch_type = prefix is null ? (postfix is null ? (transpiler is null ? "null!": "transpiler") : "postfix") : "prefix";
+                if (!silent) Monitor.Log($"Patching {poi} [{patch_type}]...", BeginPatchingLogLevel);
                 harmony.Patch(original: original, prefix: prefix, postfix: postfix, transpiler: transpiler);
                 Stats_Success++;
                 if (!silent) Monitor.Log($"Succesful patching {poi}", SuccessLogLevel);
@@ -164,6 +446,7 @@ namespace PatcherHelper
                 return false;
                 }
             }
+
         public bool TryPatching(
             Type originalType,
             string originalName,
@@ -215,6 +498,395 @@ namespace PatcherHelper
         }
 
     /// <summary>
+    /// Custom exception that can be raised by HarmonyPatcherHelper
+    /// </summary>
+    public class AssertionFailure : Exception
+        {
+        public AssertionFailure() : base() { }
+        public AssertionFailure(string message) : base(message) { }
+        public AssertionFailure(string message, Exception innerException) : base(message, innerException) { }
+        }
+
+    /// <summary>
+    /// Used by some methods of InstructionsWalker to determine what op attribute(s) to copy.
+    /// <para>This is a <b><c>Flags</c></b> enum, so to combine you can use the <c>|</c> (binary OR) operator</para>
+    /// </summary>
+    [Flags]
+    public enum OpCopy
+        {
+        Labels = 1,
+        Blocks = 2
+        }
+
+    /// <summary>
+    /// <para>'Walks' over an array of <c>CodeInstruction[]</c> by maintaining an internal pointer.
+    /// Speeds up searching for opcode patterns by not having to search from the start again,
+    /// and simplifies coding by not having to maintain a pointer yourself.
+    /// Use this in conjunction with the <b><c>WantOp</c></b> class.</para>
+    /// </summary>
+    public class InstructionsWalker
+        {
+        public readonly CodeInstruction[] Instructions;
+        public int CurrentLocation { get; private set; } = 0;
+        public readonly Dictionary<string, int> Bookmarks = new Dictionary<string, int>();
+
+        public InstructionsWalker(IEnumerable<CodeInstruction> instructions) {
+            Instructions = instructions.ToArray();
+            }
+
+        public CodeInstruction CurrentOp(WantOp assert_op = null) {
+            CodeInstruction op = Instructions[CurrentLocation];
+            if (!(assert_op is null))
+                if (assert_op.NotMatches(op))
+                    throw new AssertionFailure($"CurrentOp <{op}> does not match assertion {assert_op}");
+            return op;
+            }
+
+        /// <summary>
+        /// Fetch the current location, but do NOT advance
+        /// </summary>
+        /// <param name="fetchedCurLoc">Variable to hold the fetched CurrentLocation</param>
+        /// <param name="offset">Add this to the fetched location</param>
+        /// <param name="assert_op">If given, asserts that instruction at location+offset matches a <c>WantOp</c> criteria</param>
+        /// <returns><c>this</c> for Fluent chaining.</returns>
+        public InstructionsWalker FetchLocation(out int fetchedCurLoc, int offset = 0, WantOp assert_op = null) {
+            fetchedCurLoc = CurrentLocation + offset;
+            if (!(assert_op is null)) {
+                CodeInstruction op = Instructions[fetchedCurLoc];
+                if (assert_op.NotMatches(Instructions[fetchedCurLoc]))
+                    throw new AssertionFailure($"Op at {fetchedCurLoc} is <{op}> does not match assertion {assert_op}");
+                }
+            return this;
+            }
+
+        /// <summary>
+        /// Search forward in Instructions array for an op that matches <c><paramref name="to_match"/></c>
+        /// <para>Does <b>NOT</b> advance instruction pointer.</para>
+        /// </summary>
+        /// <param name="where">Variable to hold the match position. If not found, will be set to <c>-1</c></param>
+        /// <param name="to_match">WantOp to search for</param>
+        /// <param name="relative_pos">If <c>true</c> (default), outputs the offset compared to CurrentLocation.
+        /// <para>If <c>false</c>, outputs the absolute position within the Instructions array.</para></param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        public InstructionsWalker FindNextMatch(out int where, WantOp to_match, bool relative_pos = true, int? assert_where = null) {
+            int? findloc = null;
+            for (int i = CurrentLocation; i < Instructions.Length; i++) {
+                if (to_match.Matches(Instructions[i])) {
+                    findloc = i;
+                    break;
+                    }
+                }
+            if (findloc is null)
+                where = -1;
+            else
+                where = relative_pos ? findloc.Value - CurrentLocation : findloc.Value;
+            if (!(assert_where is null))
+                if (where != assert_where)
+                    throw new AssertionFailure($"{to_match} found at {where} does not match assertion {assert_where}");
+            return this;
+            }
+
+        /// <summary>
+        /// Save the current location as bookmark. Will NOT advance pointer.
+        /// </summary>
+        /// <param name="bookmarkName">Bookmark's name</param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        public InstructionsWalker Mark(string bookmarkName) {
+            Bookmarks[bookmarkName] = CurrentLocation;
+            return this;
+            }
+
+        /// <summary>
+        /// Fetch the instruction currently pointed at, and advance.
+        /// </summary>
+        /// <param name="fetchedOp">A <c>CodeInstruction</c> variable to store the fetched instruction</param>
+        /// <param name="assert_op">Assert that instruction matches a <c>WantOp</c> criteria</param>
+        /// <param name="move_pos">If <c>false</c>, don't advance pointer after fetching</param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        public InstructionsWalker GoFetchOp(out CodeInstruction fetchedOp, WantOp assert_op = null, bool move_pos = true) {
+            fetchedOp = CurrentOp(assert_op);
+            if (move_pos) CurrentLocation++;
+            return this;
+            }
+
+        /// <summary>
+        /// Advance pointer forward by N. If N is negative, move backwards instead.
+        /// </summary>
+        /// <param name="N">How many instructions to advance. Can be negative.</param>
+        /// <param name="assert_op">If given, then will assert that instruction at destination matches provided WantOp</param>
+        /// <returns><c>this</c> to allow Fluent chaining.</returns>
+        public InstructionsWalker GoForward(int N, WantOp assert_op = null) {
+            int newpos = CurrentLocation + N;
+            if (!(assert_op is null)) {
+                CodeInstruction op = Instructions[newpos];
+                if (assert_op.NotMatches(Instructions[newpos]))
+                    throw new AssertionFailure($"Op at {newpos} is <{op}> does not match assertion {assert_op}");
+                }
+            CurrentLocation = newpos;
+            return this;
+            }
+
+        /// <summary>
+        /// Sets the pointer to a certain position
+        /// </summary>
+        /// <param name="pos">New position</param>
+        /// <param name="assert_op">If given, then will assert that instruction at location 'pos' matches provided WantOp</param>
+        /// <returns><c>this</c> to allow Fluent chaining.</returns>
+        /// <remarks>Some code (especially within switch..case structure) can get shuffled around by the compiler during optimization.
+        /// <para>This method allows returning to a certain point in the instruction chain,
+        /// e.g., to the start of a switch structure.</para></remarks>
+        public InstructionsWalker GoTo(int pos, WantOp assert_op = null) {
+            if (!(assert_op is null)) {
+                CodeInstruction op = Instructions[pos];
+                if (assert_op.NotMatches(Instructions[pos]))
+                    throw new AssertionFailure($"Op at {pos} is <{op}> does not match assertion {assert_op}");
+                }
+            CurrentLocation = pos;
+            return this;
+            }
+
+        /// <summary>
+        /// <para>Move pointer to a specified bookmark (created beforehand using <c>Mark()</c>).</para>
+        /// </summary>
+        /// <param name="bookmark">Bookmark name to move to</param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        public InstructionsWalker GoTo(string bookmark, WantOp assert_op = null) => GoTo(Bookmarks[bookmark], assert_op);
+
+        /// <summary>
+        /// Restart walker from the very beginning (i.e., set pointer to 0)
+        /// </summary>
+        /// <returns><c>this</c> to allow Fluent chaining.</returns>
+        public InstructionsWalker Restart() {
+            return GoTo(0);
+            }
+
+        /// <summary>
+        /// Given an array of WantOp, this method tries to find where that array is inside the bigger array of CodeInstruction
+        /// </summary>
+        /// <param name="wantOps">Array of WantOp's to search for</param>
+        /// <param name="pos_after">If false (default), CurrentLocation will point to first op that matches the array.
+        /// <para>If true (explicit), CurrentLocation will point to the first op after the found array.</para></param>
+        /// <param name="exception_on_notfound">Raise exception instead of returning null if not found.</param>
+        /// <returns><c>null</c> if <c>wantOps</c> is not found (and <c>exception_on_notfound = false</c>).
+        /// <para>If <c>wantOps</c> is found, it will return <c>this</c> to allow Fluent chaining of commands.</para>
+        /// <para>Finding position can be retrieved using <c>CurrentLocation</c></para></returns>
+        public InstructionsWalker GoFind(WantOp[] wantOps, bool pos_after = false, bool exception_on_notfound = true) {
+            int maxLoc = Instructions.Length - wantOps.Length;
+            int? foundAt = null;
+            for (int i = CurrentLocation; i <= maxLoc; ++i) {
+                foundAt = i;
+                for (int j = 0; j < wantOps.Length; ++j) {
+                    if (wantOps[j].NotMatches(Instructions[i + j])) {
+                        foundAt = null;
+                        break;
+                        }
+                    }
+                if (foundAt.HasValue)
+                    break;
+                }
+            if (foundAt is null) {
+                if (exception_on_notfound)
+                    throw new EntryPointNotFoundException("wantOps not found!");
+                else
+                    return null;
+                }
+            CurrentLocation = foundAt.Value;
+            if (pos_after) CurrentLocation += wantOps.Length;
+            return this;
+            }
+
+        /// <summary>
+        /// Given a single WantOp, this method tries to move the pointer to the first occurrence of that WantOp on or after the current location
+        /// </summary>
+        /// <param name="wantop">A WantOp to search for</param>
+        /// <param name="pos_after">If false (default), CurrentLocation will point to first op that matches the array.
+        /// <para>If true (explicit), CurrentLocation will point to the first op after the found array.</para></param>
+        /// <param name="exception_on_notfound">Raise exception instead of returning null if not found.</param>
+        /// <returns><c>null</c> if <c>wantOps</c> is not found (and <c>exception_on_notfound = false</c>).
+        /// <para>If <c>wantOps</c> is found, it will return <c>this</c> to allow Fluent chaining of commands.</para>
+        /// <para>Finding position can be retrieved using <c>CurrentLocation</c></para></returns>
+        public InstructionsWalker GoFind(WantOp wantop, bool pos_after = false, bool exception_on_notfound = true) =>
+            GoFind(new WantOp[] { wantop }, pos_after, exception_on_notfound);
+
+        /// <summary>
+        /// Given two arrays of WantOp[], this method tries to find where the positions of the 1st array and the second array
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="beginOps"></param>
+        /// <param name="endOps"></param>
+        /// <param name="beginOffset"></param>
+        /// <param name="endOffset"></param>
+        /// <returns>A Tuple(int, int), Item1 is the startpos of 1st array, Item2 is the startpos of 2nd array</returns>
+        public Tuple<int, int> GoFindBeginEnd(
+          string label,
+          WantOp[] beginOps,
+          WantOp[] endOps
+            ) {
+            _ = GoFind(beginOps, exception_on_notfound: false) ?? throw new EntryPointNotFoundException($"Cannot find begin point of '{label}'");
+            int beginpos = CurrentLocation;
+            CurrentLocation += beginOps.Length;
+            _ = GoFind(endOps, exception_on_notfound: false) ?? throw new EntryPointNotFoundException($"Cannot find ending point of '{label}'");
+            int endpos = CurrentLocation;
+            return new Tuple<int, int>(beginpos, endpos);
+            }
+
+        /// <summary>
+        /// Replace a range of CodeInstruction's to NOP
+        /// </summary>
+        /// <param name="absolute_begin_pos">Where to begin NOPification. If null, start from CurrentLocation</param>
+        /// <param name="relative_begin_pos">Add this to the starting point of NOPification</param>
+        /// <param name="absolute_end_pos">Where to stop NOPification. Instruction at this position <b>will NOT</b> be NOPified. <para><b>See Note on method description.</b></para></param>
+        /// <param name="relative_end_pos">Where to stop NOPification, relative to CurrentLocation. Identical to 'length' if begin location is CurrentLocation. <b>See Note on method description.</b></param>
+        /// <param name="length">How many instructions to NOPify. <b>See Note on method description.</b></param>
+        /// <param name="move_pos">If true (explicit), then move CurrentPos to the instruction following the sequence of NOPs</param>
+        /// <param name="copy">Combination of OpCopy flags to specify what metaop to copy</param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        /// <exception cref="ArgumentException">Thrown if none or more than one of {<c>absolute_end_pos</c> or <c>relative_end_pos</c> or <c>length</c>} are specified</exception>
+        /// <remarks><b>NOTE:</b> ONE and ONLY ONE of <c>absolute_end_pos</c> or <c>relative_end_pos</c> or <c>length</c> must be specified!</remarks>
+        public InstructionsWalker NOPify(
+            int? absolute_begin_pos = null,
+            int relative_begin_pos = 0,
+            int? absolute_end_pos = null,
+            int? relative_end_pos = null,
+            int? length = null,
+            bool move_pos = true,
+            OpCopy copy = 0
+            ) {
+            bool copy_labels = copy.HasFlag(OpCopy.Labels);
+            if (Util.CountNull(absolute_end_pos, relative_end_pos, length) != 2)
+                throw new ArgumentException("ONE AND ONLY ONE OF absolute_end_pos or relative_end_pos or length must be given!");
+            int begin_pos = absolute_begin_pos ?? CurrentLocation;
+            begin_pos += relative_begin_pos;
+            int end_pos = begin_pos;
+            if (!(length is null))
+                end_pos += length.Value;
+            else if (!(relative_end_pos is null))
+                end_pos += CurrentLocation + relative_end_pos.Value;
+            else if (!(absolute_end_pos is null))
+                end_pos = absolute_end_pos.Value;
+            if (end_pos <= begin_pos) throw new IndexOutOfRangeException("end_pos <= begin_pos");
+            List<Label> orig_labels = null;
+            for (int i = begin_pos; i < end_pos; i++) {
+                if (copy_labels) orig_labels = Instructions[i].labels;
+                Instructions[i] = new CodeInstruction(OpCodes.Nop);
+                if (copy_labels) Instructions[i].labels = orig_labels;
+                }
+            if (move_pos) CurrentLocation = end_pos;
+            return this;
+            }
+
+        /// <summary>
+        /// Replace instructions from CurrentLocation with NOPs until we find a certain WantOp (which itself will not be replaced)
+        /// </summary>
+        /// <param name="until">Stop NOPifying when this WantOp is encountered (itself won't be replaced)</param>
+        /// <param name="move_pos">If true (explicit), then move CurrentPos to the instruction following the sequence of NOPs</param>
+        /// <param name="copy">Combination of OpCopy flags to specify what metaop to copy</param>
+        /// <param name="assert_count">Assert how many replacements were made</param>
+        /// <param name="assert_next">Assert the next op following the NOPified block</param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        /// <exception cref="AssertionFailure">Thrown if any of the assertions (if provided) fails</exception>
+        public InstructionsWalker NOPify(WantOp until, bool move_pos = true, OpCopy copy = 0, int? assert_count = null, WantOp assert_next = null) {
+            FindNextMatch(out int stop_pos, relative_pos: false, to_match: until);
+            if (stop_pos < 0) {
+                throw new PatchingFailureException($"Cannot find {until} in rest of Instructions");
+                }
+            bool copy_labels = copy.HasFlag(OpCopy.Labels);
+            CodeInstruction orig_op, new_op;
+            int count = 0;
+            for (int loc = CurrentLocation; loc < stop_pos; loc++) {
+                orig_op = Instructions[loc];
+                new_op = new CodeInstruction(OpCodes.Nop);
+                if (copy_labels) new_op.labels = orig_op.labels;
+                Instructions[loc] = new_op;
+                count++;
+                }
+            if (assert_count.HasValue && count != assert_count.Value)
+                throw new AssertionFailure($"Performed {count} NOPing does not match assertion {assert_count}");
+            if (!(assert_next is null) && assert_next.NotMatches(Instructions[stop_pos]))
+                throw new AssertionFailure($"Next op after NOPified <{Instructions[stop_pos]}> does not match assertion {assert_next}");
+            if (move_pos)
+                CurrentLocation = stop_pos;
+            return this;
+            }
+
+        /// <summary>
+        /// Replace CodeInstruction at a position with a new CodeInstruction.
+        /// <para>Position is calculated as absolute_pos + relative_pos (see param description on null handling)</para>
+        /// <para><b>WARNING:</b> Pointer will advance to 1 instruction after the replaced instruction! (Unless <c>move_pos = false</c>)</para>
+        /// </summary>
+        /// <param name="absolute_pos">Location to replace. If null, use CurrentLocation</param>
+        /// <param name="relative_pos">Add this to wanted location</param>
+        /// <param name="with">CodeInstruction that will replace</param>
+        /// <param name="mutator">(Optional) mutate CodeInstruction before replacing</param>
+        /// <param name="assert_previous">If given, assert that the to-be-replaced op is the given WantOp</param>
+        /// <param name="copy">Combination of OpCopy flags to specify what metaop to copy</param>
+        /// <param name="move_pos">If false, do not advance pointer after replacement.</param>
+        public InstructionsWalker ReplaceAt(
+            int? absolute_pos = null,
+            int relative_pos = 0,
+            CodeInstruction with = null,
+            Func<CodeInstruction, CodeInstruction> mutator = null,
+            OpCopy copy = 0,
+            bool move_pos = true,
+            WantOp assert_previous = null
+            ) {
+            if (with is null)
+                throw new ArgumentNullException(nameof(with));
+            int pos = (absolute_pos ?? CurrentLocation) + relative_pos;
+            CodeInstruction orig_op = Instructions[pos];
+            if (assert_previous?.NotMatches(orig_op) ?? false)
+                throw new AssertionFailure($"Previous op is <{orig_op}> does not match assertion {assert_previous}");
+            CodeInstruction replacer_op = (mutator is null) ? with : mutator(with);
+            if (copy.HasFlag(OpCopy.Labels)) replacer_op.labels = orig_op.labels;
+            if (copy.HasFlag(OpCopy.Blocks)) replacer_op.blocks = orig_op.blocks;
+            Instructions[pos] = replacer_op;
+            if (move_pos) CurrentLocation = pos + 1;
+            return this;
+            }
+
+        /// <summary>
+        /// Set the <c>labels</c> property of the op at pointer location
+        /// </summary>
+        /// <param name="newLabels">Labels to apply</param>
+        /// <param name="move_pos">If true (default), advances pointer after setting label</param>
+        /// <param name="assert_op">If given, assert that the to-be-mutated op is the given WantOp</param>
+        /// <returns></returns>
+        public InstructionsWalker SetLabels(List<Label> newLabels, bool move_pos = true, WantOp assert_op = null) {
+            CodeInstruction op = Instructions[CurrentLocation];
+            if (!(assert_op is null))
+                if (assert_op.NotMatches(op))
+                    throw new AssertionFailure($"Op <{op.Repr()}> does not match assertion {assert_op}");
+            Instructions[CurrentLocation].labels = newLabels;
+            if (move_pos) CurrentLocation++;
+            return this;
+            }
+
+
+        /// <summary>
+        /// Fluently dumps several instructions into their Repr() representation.
+        /// </summary>
+        /// <param name="result">A <c>List&lt;string&gt;</c> variable to contain the dump result</param>
+        /// <param name="N">How many instructions to Repr</param>
+        /// <param name="move_pos">If true, advance pointer by <c>N</c> after dumping</param>
+        /// <returns><c>this</c> for Fluent chaining</returns>
+        public InstructionsWalker GoDump(out List<string> result, int N, bool move_pos = true) {
+            result = new List<string>(
+                Instructions
+                    .Skip(CurrentLocation)
+                    .Take(N)
+                    .Select(i => i.Repr())
+                );
+            if (move_pos) CurrentLocation += N;
+            return this;
+            }
+        }
+
+    internal static class Util
+        {
+        internal static int CountNull(params object[] args) => args.Where(i => i is null).Count();
+        }
+
+    /// <summary>
     /// This is a convenience class that can be compared directly to CodeInstruction when transpiling.
     /// </summary>
     public class WantOp
@@ -235,6 +907,7 @@ namespace PatcherHelper
             {OpCodes.Ldsfld,   typeof(FieldInfo) },
             {OpCodes.Ldc_I4,   typeof(int) },
             {OpCodes.Ldc_I4_S, typeof(sbyte) },
+            {OpCodes.Ldc_R4,   typeof(float) },
             {OpCodes.Newobj,   typeof(ConstructorInfo) },
             {OpCodes.Ldarg_S,  typeof(byte) },
             {OpCodes.Stfld,    typeof(FieldInfo) },
@@ -324,10 +997,16 @@ namespace PatcherHelper
                 return false;
             if (OperandValue is null)
                 return true;
+            // Using .IsValueType + .ChangeType does NOT work, I don't know why.
+            // So please do not try to 'optimize' this because I've been there, done that, got the exception
+            //if (OperandType.IsValueType)
+            //    return Convert.ChangeType(inst.operand, OperandType) == Convert.ChangeType(OperandValue, OperandType);
             if (OperandType == typeof(sbyte))
                 return (sbyte)inst.operand == (sbyte)OperandValue;
             if (OperandType == typeof(int))
                 return (int)inst.operand == (int)OperandValue;
+            if (OperandType == typeof(float))
+                return (float)inst.operand == (float)OperandValue;
             string operandStr = (string)OperandValue;
             if (OperandType == typeof(string))
                 return (inst.operand as string) == operandStr;
@@ -346,344 +1025,18 @@ namespace PatcherHelper
         /// Negation of Matches(). Just to make things easier to read
         /// </summary>
         public bool NotMatches(CodeInstruction inst) => !Matches(inst);
-        }
 
-    /// <summary>
-    /// Custom exception that can be raised by HarmonyPatcherHelper
-    /// </summary>
-    public class AssertionFailure : Exception
-        {
-        public AssertionFailure() : base() { }
-        public AssertionFailure(string message) : base(message) { }
-        public AssertionFailure(string message, Exception innerException) : base(message, innerException) { }
-        }
-
-    /// <summary>
-    /// Used by some methods of InstructionsWalker to determine what op attribute(s) to copy.
-    /// <para>This is a Flags enum, so to combine you can use the <c>|</c> operator</para>
-    /// </summary>
-    [Flags]
-    public enum OpCopy
-        {
-        Labels = 1,
-        Blocks = 2
-        }
-
-    /// <summary>
-    /// 'Walks' over an array of CodeInstruction[] by maintaining an internal pointer.
-    /// Speeds up searching for opcode patterns by not having to search from the start again,
-    /// and simplifies coding by not having to maintain a pointer yourself.
-    /// </summary>
-    public class InstructionsWalker
-        {
-        public readonly CodeInstruction[] Instructions;
-        public int CurrentLocation { get; private set; } = 0;
-
-        public InstructionsWalker(CodeInstruction[] instructions) {
-            Instructions = instructions;
-            }
-        public InstructionsWalker(IEnumerable<CodeInstruction> instructions) {
-            Instructions = instructions.ToArray();
-            }
-
-        public CodeInstruction CurrentOp(WantOp assert_op = null) {
-            CodeInstruction op = Instructions[CurrentLocation];
-            if (!(assert_op is null))
-                if (assert_op.NotMatches(op))
-                    throw new AssertionFailure($"CurrentOp <{op}> does not match assertion {assert_op}");
-            return op;
-            }
-
-        /// <summary>
-        /// Fetch the current location, but do NOT advance
-        /// </summary>
-        /// <param name="fetchedCurLoc">Variable to hold the fetched CurrentLocation</param>
-        /// <param name="offset">Add this to the fetched location</param>
-        /// <param name="assert_op">If given, asserts that instruction at location+offset matches a <c>WantOp</c> criteria</param>
-        /// <returns><c>this</c> for Fluent chaining.</returns>
-        public InstructionsWalker FetchLocation(out int fetchedCurLoc, int offset = 0, WantOp assert_op = null) {
-            fetchedCurLoc = CurrentLocation + offset;
-            if (!(assert_op is null)) {
-                CodeInstruction op = Instructions[fetchedCurLoc];
-                if (assert_op.NotMatches(Instructions[fetchedCurLoc]))
-                    throw new AssertionFailure($"Op at {fetchedCurLoc} is <{op}> does not match assertion {assert_op}");
-                }
-            return this;
-            }
-
-        /// <summary>
-        /// Search forward in Instructions array for an op that matches <c><paramref name="to_match"/></c>
-        /// <para>Does <b>NOT</b> advance instruction pointer.</para>
-        /// </summary>
-        /// <param name="where">Variable to hold the match position. If not found, will be set to <c>-1</c></param>
-        /// <param name="to_match">WantOp to search for</param>
-        /// <param name="relative_pos">If <c>true</c> (default), outputs the offset compared to CurrentLocation.
-        /// <para>If <c>false</c>, outputs the absolute position within the Instructions array.</para></param>
-        /// <returns><c>this</c> for Fluent chaining</returns>
-        public InstructionsWalker FindNextMatch(out int where, WantOp to_match, bool relative_pos = true, int? assert_where = null) {
-            int? findloc = null;
-            for (int i = CurrentLocation; i < Instructions.Length; i++) {
-                if (to_match.Matches(Instructions[i])) {
-                    findloc = i;
-                    break;
-                    }
-                }
-            if (findloc is null)
-                where = -1;
-            else
-                where = relative_pos ? findloc.Value - CurrentLocation : findloc.Value;
-            if (!(assert_where is null))
-                if (where != assert_where)
-                    throw new AssertionFailure($"{to_match} found at {where} does not match assertion {assert_where}");
-            return this;
-            }
-
-        /// <summary>
-        /// Fetch the instruction currently pointed at, and advance.
-        /// </summary>
-        /// <param name="fetchedOp">A <c>CodeInstruction</c> variable to store the fetched instruction</param>
-        /// <param name="assert_op">Assert that instruction matches a <c>WantOp</c> criteria</param>
-        /// <param name="move_pos">If <c>false</c>, don't advance pointer after fetching</param>
-        /// <returns><c>this</c> for Fluent chaining</returns>
-        public InstructionsWalker GoFetchOp(out CodeInstruction fetchedOp, WantOp assert_op = null, bool move_pos = true) {
-            fetchedOp = CurrentOp(assert_op);
-            if (move_pos) CurrentLocation++;
-            return this;
-            }
-
-        /// <summary>
-        /// Advance pointer forward by N. If N is negative, move backwards instead.
-        /// </summary>
-        /// <param name="N">How many instructions to advance. Can be negative.</param>
-        /// <param name="assert_op">If given, then will assert that instruction at destination matches provided WantOp</param>
-        /// <returns><c>this</c> to allow Fluent chaining.</returns>
-        public InstructionsWalker GoForward(int N, WantOp assert_op = null) {
-            int newpos = CurrentLocation + N;
-            if (!(assert_op is null)) {
-                CodeInstruction op = Instructions[newpos];
-                if (assert_op.NotMatches(Instructions[newpos]))
-                    throw new AssertionFailure($"Op at {newpos} is <{op}> does not match assertion {assert_op}");
-                }
-            CurrentLocation = newpos;
-            return this;
-            }
-
-        /// <summary>
-        /// Sets the pointer to a certain position
-        /// </summary>
-        /// <param name="pos">New position</param>
-        /// <param name="assert_op">If given, then will assert that instruction at location 'pos' matches provided WantOp</param>
-        /// <returns><c>this</c> to allow Fluent chaining.</returns>
-        /// <remarks>Some code (especially within switch..case structure) can get shuffled around by the compiler during optimization.
-        /// <para>This method allows returning to a certain point in the instruction chain,
-        /// e.g., to the start of a switch structure.</para></remarks>
-        public InstructionsWalker GoTo(int pos, WantOp assert_op = null) {
-            if (!(assert_op is null)) {
-                CodeInstruction op = Instructions[pos];
-                if (assert_op.NotMatches(Instructions[pos]))
-                    throw new AssertionFailure($"Op at {pos} is <{op}> does not match assertion {assert_op}");
-                }
-            CurrentLocation = pos;
-            return this;
-            }
-
-        /// <summary>
-        /// Restart walker from the very beginning (i.e., set pointer to 0)
-        /// </summary>
-        /// <returns><c>this</c> to allow Fluent chaining.</returns>
-        public InstructionsWalker Restart() {
-            return GoTo(0);
-            }
-
-        /// <summary>
-        /// Given an array of WantOp, this method tries to find where that array is inside the bigger array of CodeInstruction
-        /// </summary>
-        /// <param name="wantOps">Array of WantOp's to search for</param>
-        /// <param name="pos_after">If false (default), CurrentLocation will point to first op that matches the array.
-        /// <para>If true (explicit), CurrentLocation will point to the first op after the found array.</para></param>
-        /// <param name="exception_on_notfound">Raise exception instead of returning null if not found.</param>
-        /// <returns><c>null</c> if <c>wantOps</c> is not found (unless <c>exception_on_notfound = true</c>).
-        /// <para>If <c>wantOps</c> is found, it will return <c>this</c> to allow Fluent chaining of commands. Finding position can be retrieved using <c>CurrentLocation</c></para></returns>
-        public InstructionsWalker GoFind(WantOp[] wantOps, bool pos_after = false, bool exception_on_notfound = true) {
-            int maxLoc = Instructions.Length - wantOps.Length;
-            int? foundAt = null;
-            for (int i = CurrentLocation; i <= maxLoc; ++i) {
-                foundAt = i;
-                for (int j = 0; j < wantOps.Length; ++j) {
-                    if (wantOps[j].NotMatches(Instructions[i + j])) {
-                        foundAt = null;
-                        break;
-                        }
-                    }
-                if (foundAt.HasValue)
-                    break;
-                }
-            if (foundAt is null) {
-                if (exception_on_notfound)
-                    throw new EntryPointNotFoundException("wantOps not found!");
-                else
-                    return null;
-                }
-            CurrentLocation = foundAt.Value;
-            if (pos_after) CurrentLocation += wantOps.Length;
-            return this;
-            }
-
-        /// <summary>
-        /// Given two arrays of WantOp[], this method tries to find where the positions of the 1st array and the second array
-        /// </summary>
-        /// <param name="label"></param>
-        /// <param name="beginOps"></param>
-        /// <param name="endOps"></param>
-        /// <param name="beginOffset"></param>
-        /// <param name="endOffset"></param>
-        /// <returns>A Tuple(int, int), Item1 is the startpos of 1st array, Item2 is the startpos of 2nd array</returns>
-        public Tuple<int, int> GoFindBeginEnd(
-          string label,
-          WantOp[] beginOps,
-          WantOp[] endOps
-            ) {
-            _ = GoFind(beginOps, exception_on_notfound: false) ?? throw new EntryPointNotFoundException($"Cannot find begin point of '{label}'");
-            int beginpos = CurrentLocation;
-            CurrentLocation += beginOps.Length;
-            _ = GoFind(endOps, exception_on_notfound: false) ?? throw new EntryPointNotFoundException($"Cannot find ending point of '{label}'");
-            int endpos = CurrentLocation;
-            return new Tuple<int, int>(beginpos, endpos);
-            }
-
-        /// <summary>
-        /// Replace a range of CodeInstruction's to NOP
-        /// </summary>
-        /// <param name="absolute_begin_pos">Where to begin NOPification. If null, start from CurrentLocation</param>
-        /// <param name="relative_begin_pos">Add this to the starting point of NOPification</param>
-        /// <param name="absolute_end_pos">Where to stop NOPification. Instruction at this position <b>will NOT</b> be NOPified. <para><b>See Note on method description.</b></para></param>
-        /// <param name="relative_end_pos">Where to stop NOPification, relative to CurrentLocation. Identical to 'length' if begin location is CurrentLocation. <b>See Note on method description.</b></param>
-        /// <param name="length">How many instructions to NOPify. <b>See Note on method description.</b></param>
-        /// <param name="move_pos">If true (explicit), then move CurrentPos to the instruction following the sequence of NOPs</param>
-        /// <param name="copy">Combination of OpCopy flags to specify what metaop to copy</param>
-        /// <returns><c>this</c> for Fluent chaining</returns>
-        /// <exception cref="ArgumentException">Thrown if none or more than one of {<c>absolute_end_pos</c> or <c>relative_end_pos</c> or <c>length</c>} are specified</exception>
-        /// <remarks><b>NOTE:</b> ONE and ONLY ONE of <c>absolute_end_pos</c> or <c>relative_end_pos</c> or <c>length</c> must be specified!</remarks>
-        public InstructionsWalker NOPify(
-            int? absolute_begin_pos = null,
-            int relative_begin_pos = 0,
-            int? absolute_end_pos = null,
-            int? relative_end_pos = null,
-            int? length = null,
-            bool move_pos = true,
-            OpCopy copy = 0
-            ) {
-            bool copy_labels = copy.HasFlag(OpCopy.Labels);
-            int endnulls = (absolute_end_pos is null) ? 1 : 0;
-            endnulls += (relative_end_pos is null) ? 1 : 0;
-            endnulls += (length is null) ? 1 : 0;
-            if (endnulls != 2)
-                throw new ArgumentException("ONE AND ONLY ONE OF absolute_end_pos or relative_end_pos or length must be given!");
-            int begin_pos = absolute_begin_pos ?? CurrentLocation;
-            begin_pos += relative_begin_pos;
-            int end_pos = begin_pos;
-            if (!(length is null))
-                end_pos += length.Value;
-            else if (!(relative_end_pos is null))
-                end_pos += CurrentLocation + relative_end_pos.Value;
-            else if (!(absolute_end_pos is null))
-                end_pos = absolute_end_pos.Value;
-            List<Label> orig_labels = null;
-            for (int i = begin_pos; i < end_pos; i++) {
-                if (copy_labels) orig_labels = Instructions[i].labels;
-                Instructions[i] = new CodeInstruction(OpCodes.Nop);
-                if (copy_labels) Instructions[i].labels = orig_labels;
-                }
-            if (move_pos) CurrentLocation = end_pos;
-            return this;
-            }
-
-        /// <summary>
-        /// Replace instructions from CurrentLocation with NOPs until we find a certain WantOp (which itself will not be replaced)
-        /// </summary>
-        /// <param name="until">Stop NOPifying when this WantOp is encountered (itself won't be replaced)</param>
-        /// <param name="move_pos">If true (explicit), then move CurrentPos to the instruction following the sequence of NOPs</param>
-        /// <param name="copy">Combination of OpCopy flags to specify what metaop to copy</param>
-        /// <param name="assert_count">Assert how many replacements were made</param>
-        /// <param name="assert_next">Assert the next op following the NOPified block</param>
-        /// <returns><c>this</c> for Fluent chaining</returns>
-        /// <exception cref="AssertionFailure">Thrown if any of the assertions (if provided) fails</exception>
-        public InstructionsWalker NOPify(WantOp until, bool move_pos = true, OpCopy copy = 0, int? assert_count = null, WantOp assert_next = null) {
-            FindNextMatch(out int stop_pos, relative_pos: false, to_match: until);
-            if (stop_pos < 0) {
-                throw new PatchingFailureException($"Cannot find {until} in rest of Instructions");
-                }
-            bool copy_labels = copy.HasFlag(OpCopy.Labels);
-            CodeInstruction orig_op, new_op;
-            int count = 0;
-            for (int loc = CurrentLocation; loc < stop_pos; loc++) {
-                orig_op = Instructions[loc];
-                new_op = new CodeInstruction(OpCodes.Nop);
-                if (copy_labels) new_op.labels = orig_op.labels;
-                Instructions[loc] = new_op;
-                count++;
-                }
-            if (assert_count.HasValue && count != assert_count.Value)
-                throw new AssertionFailure($"Performed {count} NOPing does not match assertion {assert_count}");
-            if (!(assert_next is null) && assert_next.NotMatches(Instructions[stop_pos]))
-                throw new AssertionFailure($"Next op after NOPified <{Instructions[stop_pos]}> does not match assertion {assert_next}");
-            if (move_pos)
-                CurrentLocation = stop_pos;
-            return this;
-            }
-
-        /// <summary>
-        /// Replace CodeInstruction at a position with a new CodeInstruction.
-        /// <para>Position is calculated as absolute_pos + relative_pos (see param description on null handling)</para>
-        /// <para><b>WARNING:</b> Pointer will advance to 1 instruction after the replaced instruction! (Unless <c>move_pos = false</c>)</para>
-        /// </summary>
-        /// <param name="absolute_pos">Location to replace. If null, use CurrentLocation</param>
-        /// <param name="relative_pos">Add this to wanted location</param>
-        /// <param name="with">CodeInstruction that will replace</param>
-        /// <param name="mutator">(Optional) mutate CodeInstruction before replacing</param>
-        /// <param name="assert_previous">If given, assert that the to-be-replaced op is the given WantOp</param>
-        /// <param name="copy">Combination of OpCopy flags to specify what metaop to copy</param>
-        /// <param name="move_pos">If false, do not advance pointer after replacement.</param>
-        public InstructionsWalker ReplaceAt(
-            int? absolute_pos = null,
-            int relative_pos = 0,
-            CodeInstruction with = null,
-            Func<CodeInstruction, CodeInstruction> mutator = null,
-            OpCopy copy = 0,
-            bool move_pos = true,
-            WantOp assert_previous = null
-            ) {
-            if (with is null)
-                throw new ArgumentNullException(nameof(with));
-            int pos = (absolute_pos ?? CurrentLocation) + relative_pos;
-            CodeInstruction orig_op = Instructions[pos];
-            if (assert_previous?.NotMatches(orig_op) ?? false)
-                throw new AssertionFailure($"Previous op is <{orig_op}> does not match assertion {assert_previous}");
-            CodeInstruction replacer_op = (mutator is null) ? with : mutator(with);
-            if (copy.HasFlag(OpCopy.Labels)) replacer_op.labels = orig_op.labels;
-            if (copy.HasFlag(OpCopy.Blocks)) replacer_op.blocks = orig_op.blocks;
-            Instructions[pos] = replacer_op;
-            if (move_pos) CurrentLocation = pos + 1;
-            return this;
-            }
-
-        /// <summary>
-        /// Fluently dumps several instructions into their Repr() representation.
-        /// </summary>
-        /// <param name="result">A <c>List&lt;string&gt;</c> variable to contain the dump result</param>
-        /// <param name="N">How many instructions to Repr</param>
-        /// <param name="move_pos">If true, advance pointer by <c>N</c> after dumping</param>
-        /// <returns><c>this</c> for Fluent chaining</returns>
-        public InstructionsWalker GoDump(out List<string> result, int N, bool move_pos = true) {
-            result = new List<string>(
-                Instructions
-                    .Skip(CurrentLocation)
-                    .Take(N)
-                    .Select(i => i.Repr())
-                );
-            if (move_pos) CurrentLocation += N;
-            return this;
-            }
+        #region convenience static methods for common OpCodes
+        internal static WantOp Call(string target) => new WantOp(OpCodes.Call, target);
+        internal static WantOp CallVirt(string target) => new WantOp(OpCodes.Callvirt, target);
+        internal static WantOp Ldfld(string fieldname) => new WantOp(OpCodes.Ldfld, fieldname);
+        internal static WantOp Ldsfld(string fieldname) => new WantOp(OpCodes.Ldsfld, fieldname);
+        internal static WantOp Ldc_I4(int value) => new WantOp(OpCodes.Ldc_I4, value);
+        internal static WantOp Ldc_I4_S(sbyte value) => new WantOp(OpCodes.Ldc_I4_S, value);
+        internal static WantOp Ldc_R4(float value) => new WantOp(OpCodes.Ldc_R4, value);
+        internal static WantOp Ldstr(string value) => new WantOp(OpCodes.Ldstr, value);
+        internal static WantOp Stfld(string fieldname) => new WantOp(OpCodes.Stfld, fieldname);
+        #endregion
         }
 
     /// <summary>
@@ -694,6 +1047,8 @@ namespace PatcherHelper
     internal class WantOpCache
         {
         internal WantOp
+
+            // null operand
             box = new WantOp(OpCodes.Box),
             ble_s = new WantOp(OpCodes.Ble_S),
             br = new WantOp(OpCodes.Br),
@@ -705,17 +1060,23 @@ namespace PatcherHelper
             conv_i4 = new WantOp(OpCodes.Conv_I4),
             conv_i8 = new WantOp(OpCodes.Conv_I8),
             conv_r4 = new WantOp(OpCodes.Conv_R4),
+            conv_r_un = new WantOp(OpCodes.Conv_R_Un),
+            div_un = new WantOp(OpCodes.Div_Un),
+            isinst = new WantOp(OpCodes.Isinst),
             ldarg_0 = new WantOp(OpCodes.Ldarg_0),
             ldarg_1 = new WantOp(OpCodes.Ldarg_1),
             ldarg_2 = new WantOp(OpCodes.Ldarg_2),
             ldarg_3 = new WantOp(OpCodes.Ldarg_3),
             ldarg_s = new WantOp(OpCodes.Ldarg_S),
+            ldarga_s = new WantOp(OpCodes.Ldarga_S),
             ldc_i4_0 = new WantOp(OpCodes.Ldc_I4_0),
             ldc_i4_1 = new WantOp(OpCodes.Ldc_I4_1),
             ldc_i4_2 = new WantOp(OpCodes.Ldc_I4_2),
             ldc_i4_3 = new WantOp(OpCodes.Ldc_I4_3),
             ldc_i4_4 = new WantOp(OpCodes.Ldc_I4_4),
+            ldc_i4_5 = new WantOp(OpCodes.Ldc_I4_5),
             ldc_i4_7 = new WantOp(OpCodes.Ldc_I4_7),
+            ldc_i4_s = new WantOp(OpCodes.Ldc_I4_S),
             ldc_r4 = new WantOp(OpCodes.Ldc_R4),
             ldloc_0 = new WantOp(OpCodes.Ldloc_0),
             ldloc_1 = new WantOp(OpCodes.Ldloc_1),
@@ -728,6 +1089,7 @@ namespace PatcherHelper
             ldflda = new WantOp(OpCodes.Ldflda),
             ldftn = new WantOp(OpCodes.Ldftn),
             ldlen = new WantOp(OpCodes.Ldlen),
+            ldnull = new WantOp(OpCodes.Ldnull),
             ldsfld = new WantOp(OpCodes.Ldsfld),
             stelem_i2 = new WantOp(OpCodes.Stelem_I2),
             stelem_ref = new WantOp(OpCodes.Stelem_Ref),
@@ -743,35 +1105,41 @@ namespace PatcherHelper
             div = new WantOp(OpCodes.Div),
             dup = new WantOp(OpCodes.Dup),
             mul = new WantOp(OpCodes.Mul),
+            nop = new WantOp(OpCodes.Nop),
             pop = new WantOp(OpCodes.Pop),
             rem = new WantOp(OpCodes.Rem),
             ret = new WantOp(OpCodes.Ret),
-            new_random = new WantOp(OpCodes.Newobj, "System.Random"),
+            xor = new WantOp(OpCodes.Xor),
             newarr = new WantOp(OpCodes.Newarr),
             newobj = new WantOp(OpCodes.Newobj),
             call = new WantOp(OpCodes.Call),
-            call_AppendEx = new WantOp(OpCodes.Call, value: "AppendEx"),
-            call_getminelevel = new WantOp(OpCodes.Call, "get_mineLevel"),
-            call_getstats = new WantOp(OpCodes.Call, value: "get_stats"),
-            call_op_implicit = new WantOp(OpCodes.Call, "op_Implicit"),
-            call_ToInt32 = new WantOp(OpCodes.Call, "ToInt32"),
-            call_ToString = new WantOp(OpCodes.Call, "ToString"),
             callvirt = new WantOp(OpCodes.Callvirt),
-            callv_Append = new WantOp(OpCodes.Callvirt, value: "Append"),
-            callv_Clear = new WantOp(OpCodes.Callvirt, value: "Clear"),
-            callv_getCount = new WantOp(OpCodes.Callvirt, "get_Count"),
-            callv_getDaysPlayed = new WantOp(OpCodes.Callvirt, value: "get_DaysPlayed"),
-            callv_Next = new WantOp(OpCodes.Callvirt, "Next"),
-            callv_NextDouble = new WantOp(OpCodes.Callvirt, "NextDouble"),
-            fld_uidThisGame = new WantOp(OpCodes.Ldsfld, value: "uniqueIDForThisGame"),
-            fld_myID = new WantOp(OpCodes.Ldfld, "myID"),
-            fld__temp = new WantOp(OpCodes.Ldfld, value: "_temp"),
-            fld_timeOfDay = new WantOp(OpCodes.Ldsfld, "timeOfDay"),
-            fld_tileLocation = new WantOp(OpCodes.Ldfld, "tileLocation"),
-            fld_tileX = new WantOp(OpCodes.Ldfld, "tileX"),
-            fld_tileY = new WantOp(OpCodes.Ldfld, "tileY"),
-            fld_X = new WantOp(OpCodes.Ldfld, "X"),
-            fld_Y = new WantOp(OpCodes.Ldfld, "Y")
+
+            // Non-null operand
+            call_AppendEx = WantOp.Call("AppendEx"),
+            call_getminelevel = WantOp.Call("get_mineLevel"),
+            call_getstats = WantOp.Call("get_stats"),
+            call_op_implicit = WantOp.Call("op_Implicit"),
+            call_ToInt32 = WantOp.Call("ToInt32"),
+            call_ToString = WantOp.Call("ToString"),
+            callv_Append = WantOp.CallVirt("Append"),
+            callv_Clear = WantOp.CallVirt("Clear"),
+            callv_getCount = WantOp.CallVirt("get_Count"),
+            callv_getDaysPlayed = WantOp.CallVirt("get_DaysPlayed"),
+            callv_getX = WantOp.CallVirt("get_X"),
+            callv_getY = WantOp.CallVirt("get_Y"),
+            callv_Next = WantOp.CallVirt("Next"),
+            callv_NextDouble = WantOp.CallVirt("NextDouble"),
+            fld_uidThisGame = WantOp.Ldsfld("uniqueIDForThisGame"),
+            fld_myID = WantOp.Ldfld("myID"),
+            fld__temp = WantOp.Ldfld("_temp"),
+            fld_timeOfDay = WantOp.Ldsfld("timeOfDay"),
+            fld_tileLocation = WantOp.Ldfld("tileLocation"),
+            fld_tileX = WantOp.Ldfld("tileX"),
+            fld_tileY = WantOp.Ldfld("tileY"),
+            fld_X = WantOp.Ldfld("X"),
+            fld_Y = WantOp.Ldfld("Y"),
+            new_random = new WantOp(OpCodes.Newobj, "System.Random")
             ;
         }
 

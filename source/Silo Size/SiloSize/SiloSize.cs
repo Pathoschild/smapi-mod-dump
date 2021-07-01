@@ -17,12 +17,9 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 
-using PatcherHelper;
-using Harmony;
-using System.Reflection.Emit;
 using StardewModdingAPI.Events;
-using System.Reflection;
 using ContentPatcher;
+using System.Linq;
 
 namespace SiloSize
     {
@@ -36,6 +33,7 @@ namespace SiloSize
         private readonly ModConfig Config;
 
         private readonly int Capacity;
+        private readonly HashSet<string> AutoHayBuildings = new HashSet<string>();
 
         public SiloSize(Mod mod) {
             Helper = mod.Helper;
@@ -43,6 +41,7 @@ namespace SiloSize
             Manifest = mod.ModManifest;
             Config = Helper.ReadConfig<ModConfig>();
 
+            AutoHayBuildings.UnionWith(Config.AutoHayBuildings);
             Capacity = Math.Max(1, Config.SiloSize);
             try {
                 SiloSizePatcher.Initialize(mod, Capacity);
@@ -61,8 +60,29 @@ namespace SiloSize
             var silos = Utility.numSilos();
             if (silos < 1) return;
             var farm = Game1.getFarm();
-            string stored_hay = Helper.Translation.Get("stored_hay");
-            var msg = $"{stored_hay}: {farm.piecesOfHay}/{silos * Capacity}";
+            int pieces_of_hay = farm.piecesOfHay;
+            int maxtotal_hay = silos * Capacity;
+            string msg = Helper.Translation.Get("stored_hay") + $": {pieces_of_hay}/{maxtotal_hay}";
+
+            int autohay_consumers = farm.buildings.Where(b => AutoHayBuildings.Contains(b.buildingType.Value)).Sum(b => b.currentOccupants.Value);
+            //foreach (var building in farm.buildings) {
+            //    if (!AutoHayBuildings.Contains(building.buildingType.Value)) continue;
+            //    autohay_consumers += building.currentOccupants.Value;
+            //    }
+#if DEBUG
+            Monitor.Log($"autohay_consumers == {autohay_consumers}");
+#endif
+            if (autohay_consumers > 0) {
+                int hay_days_left = pieces_of_hay / autohay_consumers;
+                if (hay_days_left <= Config.LowWarning) {
+                    string warning = Helper.Translation.Get("low_warning");
+                    msg += $" {warning}";
+#if DEBUG
+                    Monitor.Log($"Low Warning: {warning}");
+#endif
+                    }
+                }
+
             Game1.addHUDMessage(new HUDMessage(msg, ""));
             Monitor.Log($"HUD Message: {msg}");
             }

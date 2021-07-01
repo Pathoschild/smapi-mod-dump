@@ -1,7 +1,7 @@
 {
   "Name": "Damage Overlay",
   "Author": "pepoluan",
-  "Version": "0.8.1",
+  "Version": "0.10.0",
   "Description": "Damage overlay on low health",
   "UniqueID": "pepoluan.DamageOverlay",
   "EntryDll": "DamageOverlay.dll",
@@ -17,6 +17,8 @@
     "0.6.0": "Preliminary support for content packs, optimize more things",
     "0.7.0": "Implement temporary hiding of overlay",
     "0.8.0": "Add support for GMCM",
-    "0.8.1": "Fix for zoom, Add 'dover' command to help debugging, Internal optimizations"
+    "0.8.1": "Fix for zoom, Add 'dover' command to help debugging, Internal optimizations",
+    "0.9.0": "Add more console commands, add support for internationalization",
+    "0.10.0": "Resize overlay on Window Resize event"
   }
 }

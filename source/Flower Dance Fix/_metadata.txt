@@ -6,9 +6,9 @@ mods:
    Flower Dance Fix
 
 latest commit:
-   commit 90a0210756f7782bd373231a3045b2039e3d2194
-   Author: Meghan Emily Griffiths <megriffi@uwaterloo.ca>
-   Date:   Mon May 3 00:55:17 2021 -0400
+   commit 012a9928a445eb27686e22ff2fe72be4997984b5
+   Author: elfuun <82302724+elfuun1@users.noreply.github.com>
+   Date:   Thu Jun 24 13:13:07 2021 -0400
    
-       1.1.0 Release
+       Update README.md
    

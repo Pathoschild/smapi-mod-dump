@@ -12,8 +12,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
 using System;
 
 namespace Cropbeasts.Beasts
@@ -21,36 +19,27 @@ namespace Cropbeasts.Beasts
 	// Much of this class is based on StardewValley.Monsters.Skeleton.
 	public class Grainbeast : Cropbeast
 	{
-		private readonly NetBool canWater = new NetBool (false);
-		private readonly NetInt wateringCharges = new NetInt (0);
+		private readonly NetBool throwing = new (false);
 
-		private readonly NetBool throwing = new NetBool (false);
-
-		private readonly NetFloat legRotation = new NetFloat (0f);
+		private readonly NetFloat legRotation = new (0f);
 
 		private long stepSoundCooldown = 0L;
 
 		public Grainbeast ()
-		{}
+		{ }
 
 		public Grainbeast (CropTile cropTile, bool primary)
-		: base (cropTile, primary, primary, !primary)
+		: base (cropTile, primary, primary, cropTile.spawnSecondaries ? !primary : primary)
 		{
 			Sprite.SpriteWidth = 18;
 			Sprite.SpriteHeight = 48;
 			Sprite.UpdateSourceRect ();
-
-			if (cropTile.crop.isPaddyCrop ())
-			{
-				canWater.Value = true;
-				wateringCharges.Value = 40;
-			}
 		}
 
 		protected override void initNetFields ()
 		{
 			base.initNetFields ();
-			NetFields.AddFields (canWater, wateringCharges, throwing, legRotation);
+			NetFields.AddFields (throwing, legRotation);
 			position.Field.AxisAlignedMovement = true;
 		}
 
@@ -89,41 +78,40 @@ namespace Cropbeasts.Beasts
 
 			Rectangle csr = cropTile.cropSourceRect;
 			Color tint = Color.Lerp (ContrastTint, Color.Goldenrod,
-				wateringCharges.Value / 40f);
+				wateringCharges.Value * 1f / MaxWateringCharges);
 
 			int shakeMag = Math.Max ((shakeTimer > 0) ? 1 : 0, shakeTimer / 187);
-			Vector2 shakeOffset = new Vector2
-				(Game1.random.Next (-2 * shakeMag, 2 * shakeMag + 1),
+			Vector2 shakeOffset = new (Game1.random.Next (-2 * shakeMag, 2 * shakeMag + 1),
 				Game1.random.Next (-shakeMag, shakeMag + 1));
 
 			// Draw the "head".
-			Rectangle head = new Rectangle (csr.X, csr.Y, csr.Width, csr.Height / 4);
+			Rectangle head = new (csr.X, csr.Y, csr.Width, csr.Height / 4);
 			b.Draw (cropTile.cropTexture, getLocalPosition (Game1.viewport) +
 				new Vector2 (Sprite.SpriteWidth * 2f, GetBoundingBox ().Height / 2) +
 				shakeOffset, head, tint, 0f, new Vector2 (csr.Width * 0.5f,
 				csr.Height * 1.25f), Math.Max (0.2f, Scale) * 4f * new Vector2 (1.1f, 1f),
 				(FacingDirection < 2) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-				Math.Max (0f, drawOnTop ? 0.992f : getStandingY() / 10000f + 0.002f));
+				Math.Max (0f, drawOnTop ? 0.992f : getStandingY () / 10000f + 0.002f));
 
 			// Draw the "body".
-			Rectangle body = new Rectangle (csr.X, csr.Y + csr.Height / 4,
+			Rectangle body = new (csr.X, csr.Y + csr.Height / 4,
 				csr.Width, csr.Height / 2);
 			b.Draw (cropTile.cropTexture, getLocalPosition (Game1.viewport) +
 				new Vector2 (Sprite.SpriteWidth * 2f, GetBoundingBox ().Height / 2) +
 				shakeOffset, body, tint, 0f, new Vector2 (csr.Width * 0.5f,
 				csr.Height / 2f), Math.Max (0.2f, Scale) * 4f * new Vector2 (1.1f, 2f),
 				(FacingDirection < 2) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-				Math.Max (0f, drawOnTop ? 0.992f : getStandingY() / 10000f + 0.002f));
+				Math.Max (0f, drawOnTop ? 0.992f : getStandingY () / 10000f + 0.002f));
 
 			// Draw the "legs".
-			Rectangle legs = new Rectangle (csr.X, csr.Y + csr.Height * 5 / 8,
+			Rectangle legs = new (csr.X, csr.Y + csr.Height * 5 / 8,
 				csr.Width, csr.Height * 3 / 8);
 			b.Draw (cropTile.cropTexture, getLocalPosition (Game1.viewport) +
 				new Vector2 (Sprite.SpriteWidth * 2f, GetBoundingBox ().Height / 2) +
 				shakeOffset, legs, tint, legRotation, new Vector2 (csr.Width * 0.5f,
 				csr.Height / 8f), Math.Max (0.2f, Scale) * 4f * new Vector2 (1.1f, 1f),
 				(FacingDirection < 2) ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-				Math.Max (0f, drawOnTop ? 0.992f : getStandingY() / 10000f + 0.002f));
+				Math.Max (0f, drawOnTop ? 0.992f : getStandingY () / 10000f + 0.002f));
 		}
 
 		public override void MovePosition (GameTime time,
@@ -201,57 +189,9 @@ namespace Cropbeasts.Beasts
 			}
 		}
 
-		private static bool isNearWater (GameLocation location, int x, int y)
-		{
-			for (int dx = -2; dx <= 2; ++dx)
-			{
-				for (int dy = -2; dy <= 2; ++dy)
-				{
-					if (Math.Abs (dx) + Math.Abs (dy) < 4 &&
-							location.isOpenWater (x + dx, y + dy))
-						return true;
-				}
-			}
-			return false;
-		}
-
-		private void waterHoeDirt (HoeDirt hd)
-		{
-			--wateringCharges.Value;
-			hd.state.Value = HoeDirt.watered;
-			currentLocation.playSound ("waterSlosh");
-		}
-
 		public override void behaviorAtGameTick (GameTime time)
 		{
 			base.behaviorAtGameTick (time);
-
-			// If derived from a paddy crop, act like an automatic watering can.
-			if (canWater.Value)
-			{
-				Point tileLoc = getTileLocationPoint ();
-				if (wateringCharges.Value == 0 &&
-					isNearWater (currentLocation, tileLoc.X, tileLoc.Y))
-				{
-					wateringCharges.Value = 40;
-					currentLocation.playSound ("glug");
-				}
-				if (wateringCharges.Value > 0)
-				{
-					if (currentLocation.terrainFeatures
-						.TryGetValue (getTileLocation (), out TerrainFeature tf) &&
-						tf is HoeDirt hd && hd.state.Value == HoeDirt.dry)
-					{
-						waterHoeDirt (hd);
-					}
-					else if (currentLocation.getObjectAtTile (tileLoc.X, tileLoc.Y)
-						is IndoorPot ip && ip.hoeDirt.Value != null &&
-						ip.hoeDirt.Value.state.Value == HoeDirt.dry)
-					{
-						waterHoeDirt (ip.hoeDirt.Value);
-					}
-				}
-			}
 
 			// Advance an in-progress throwing animation.
 			if (throwing.Value)

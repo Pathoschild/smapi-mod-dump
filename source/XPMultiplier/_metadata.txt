@@ -6,9 +6,11 @@ mods:
    XPMultiplier
 
 latest commit:
-   commit 58ef66527d534ca5524d8469981b49d36893e01a
+   commit 2251e574f3e1978e16284cb22061c821e5a084fa
    Author: nofilenamed <nofilenamed@gmail.com>
-   Date:   Mon May 3 16:01:11 2021 +0200
+   Date:   Sat Jun 19 14:23:39 2021 +0200
    
-       Delete XPMultiplier.csproj
+       Update manifest.json
+       
+       Added updatekey
    

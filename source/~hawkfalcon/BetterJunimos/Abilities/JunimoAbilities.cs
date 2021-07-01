@@ -72,7 +72,12 @@ namespace BetterJunimos.Utils {
                 if (junimoAbility.IsActionAvailable(farm, pos)) {
                     int requiredItem = junimoAbility.RequiredItem();
                     if (requiredItem == 0 || ItemInHut(id, requiredItem)) {
-                        return junimoAbility;
+
+                        // is this ability available in current progression?
+                        // CanUseAbility also has side-effect of prompting user to unlock needed abilities
+                        if (Util.Progression.CanUseAbility(junimoAbility)) {
+                            return junimoAbility;
+                        }
                     }
                 }
             }

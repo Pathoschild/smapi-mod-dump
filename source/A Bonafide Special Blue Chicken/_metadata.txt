@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/rikai/ABonafideSpecialBlueChicken
+   Git: https://github.com/rikai/ABonafideSpecialBlueChicken.git
+
+mods:
+   A Bonafide Special Blue Chicken
+
+latest commit:
+   commit 30b7da780c9d9a5a958e9c675cc76441d44a98f6
+   Author: Richard Korman <winter.blood@gmail.com>
+   Date:   Tue Jun 22 23:05:51 2021 -0700
+   
+       Add the updatekey
+   

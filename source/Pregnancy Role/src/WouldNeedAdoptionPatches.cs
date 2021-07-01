@@ -32,6 +32,8 @@ namespace PregnancyRole
 			);
 		}
 
+#pragma warning disable IDE1006
+
 		public static bool NPC_isGaySpouse_Prefix (NPC __instance,
 			ref bool __result)
 		{

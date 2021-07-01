@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7636
-IDs: spacechase0.CapstoneProfessions
-update keys: Nexus:7636, GitHub:spacechase0/CapstoneProfessions

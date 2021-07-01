@@ -6,9 +6,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit 73aefffe6da84eefcc0fc78a472a259f21d2d95b
+   commit 40484ab3714eb5b8d5d6f7e3f32406cf5e543fb3
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sat Apr 3 20:03:17 2021 -0400
+   Date:   Wed Jun 23 19:32:46 2021 -0400
    
-       Make weeks start on Monday (not Sunday) to match the game calendar; v1.8.4
+       Add offset{X,Y} config properties for overlay
    

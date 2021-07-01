@@ -93,11 +93,16 @@
 	// Cooking ingredients descriptions
 	"item.oil.description": "Óleo de cozinha multifuncional. Melhora a qualidade de um prato.",
 	"item.truffleoil.description": "Um ingrediente de cozinha gourmet. Melhora bastante a qualidade de um prato.",
-	"item.fruit.label": "Fruta (Any)",
-	"item.flower.label": "Flor (Any)",
-	"item.vegetable.label": "Vegetal (Any)",
-	"item.meat.label": "Carne (Any)",
-	"item.forage.label": "Coleta (Any)",
+	"item.fruit.label": "Fruta (Qualquer)",
+	"item.flower.label": "Flor (Qualquer)",
+	"item.vegetable.label": "Vegetal (Qualquer)",
+	"item.meat.label": "Carne (Qualquer)",
+	"item.forage.label": "Coleta (Qualquer)",
+	"item.cooking.label": "Culinária (Qualquer)",
+	"item.mineral.label": "Mineral (Qualquer)",
+	"item.seed.label": "Sementes (Qualquer)",
+	"item.metal.label": "Metal (Qualquer)",
+	"item.gem.label": "Pedra preciosa (Qualquer)",
 
 	// Kebab item interactions
 	"buff.kebab.quality_worst": "Podre",

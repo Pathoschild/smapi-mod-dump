@@ -79,16 +79,16 @@ namespace BetterJunimos.Patches {
             if (Game1.farmEvent != null)
                 return;
             // Winter
-            if (Game1.IsWinter && !Util.Config.JunimoImprovements.CanWorkInWinter)
+            if (Game1.IsWinter && !Util.Progression.CanWorkInWinter)
                 return;
             // Rain
-            if (Game1.isRaining && !Util.Config.JunimoImprovements.CanWorkInRain) 
+            if (Game1.isRaining && !Util.Progression.CanWorkInRain) 
                 return;
             // Currently sending out a junimo
             if (___junimoSendOutTimer > 0) 
                 return;
             // Already enough junimos
-            if (__instance.myJunimos.Count() >= Util.Config.JunimoHuts.MaxJunimos)
+            if (__instance.myJunimos.Count() >= Util.Progression.MaxJunimosUnlocked)
                 return;
             // Nothing to do
             if (!__instance.areThereMatureCropsWithinRadius())
@@ -107,8 +107,8 @@ namespace BetterJunimos.Patches {
     [HarmonyPriority(Priority.Low)]
     internal class ReplaceJunimoTimerNumber {
         public static void Postfix(JunimoHut __instance, ref int ___junimoSendOutTimer) {
-            int time = Util.Config.JunimoImprovements.CanWorkInEvenings ? 2400 : 1900;
-            if (__instance.myJunimos.Count() < Util.Config.JunimoHuts.MaxJunimos && 
+            int time = Util.Progression.CanWorkInEvenings ? 2400 : 1900;
+            if (__instance.myJunimos.Count() < Util.Progression.MaxJunimosUnlocked && 
                 Game1.timeOfDay < time) {
                 ___junimoSendOutTimer = 1;
             }
@@ -123,7 +123,7 @@ namespace BetterJunimos.Patches {
     [HarmonyPriority(Priority.Low)]
     internal class ReplaceJunimoHutNumber {
         public static bool Prefix(JunimoHut __instance, ref int __result) {
-            for (int index = 0; index < Util.Config.JunimoHuts.MaxJunimos; ++index) {
+            for (int index = 0; index < Util.Progression.MaxJunimosUnlocked; ++index) {
                 if (index >= __instance.myJunimos.Count()) {
                     __result = index;
                     return false;

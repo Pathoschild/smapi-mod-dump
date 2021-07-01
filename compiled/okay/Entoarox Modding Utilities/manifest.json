@@ -1,7 +1,7 @@
 {
     "Name": "Entoarox Modding Utilities",
     "Author": "Entoarox",
-    "Version": "0.4.1",
+    "Version": "0.4.2",
     "Description": "Contains utilities to help make modding easier and provide cross-mod support for common things.",
     "UniqueID": "Entoarox.Utilities",
     "MinimumApiVersion": "3.8",

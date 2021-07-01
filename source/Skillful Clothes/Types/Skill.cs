@@ -9,6 +9,7 @@
 *************************************************/
 
 using SkillfulClothes.Effects;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-	enum Skill
+	public enum Skill
 	{
 		Farming = 0,
 		Fishing = 1,
@@ -27,7 +28,7 @@ namespace SkillfulClothes.Types
 		Luck = 5,
     }
 
-	static class SkilLExtensions
+    public static class SkilLExtensions
     {
 		public static EffectIcon GetIcon(this Skill skill)
         {
@@ -40,6 +41,19 @@ namespace SkillfulClothes.Types
                 case Skill.Combat: return EffectIcon.SkillCombat;
                 case Skill.Luck: return EffectIcon.SkillLuck;
                 default: return EffectIcon.None;
+            }
+        }
+
+        public static int GetCurrentLevel(this Skill skill)
+        {
+            switch (skill)
+            {
+                case Skill.Combat: return Game1.player.CombatLevel;
+                case Skill.Fishing: return Game1.player.FishingLevel;
+                case Skill.Farming: return Game1.player.FarmingLevel;
+                case Skill.Mining: return Game1.player.MiningLevel;
+                case Skill.Foraging: return Game1.player.ForagingLevel;
+                default: return 0;
             }
         }
     }

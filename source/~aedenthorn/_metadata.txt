@@ -29,6 +29,7 @@ mods:
    Here Fishy
    Instant Growth Powder
    Loose Audio Files
+   Map Editor
    Map Teleport
    Mobile Arcade
    Mobile Audio Player
@@ -65,9 +66,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 690a185df72e70faec55bc5474fed3ed7c521639
+   commit 7608bf42df2a48499a6e675c4f4486c30bdb48b7
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Wed May 19 20:29:50 2021 -0400
+   Date:   Sun Jun 20 12:37:45 2021 -0400
    
        etc
    

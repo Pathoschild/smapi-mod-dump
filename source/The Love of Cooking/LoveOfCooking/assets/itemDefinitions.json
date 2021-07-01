@@ -33,6 +33,7 @@
 	"NettlesLocations": [
 		"Farm",
 		"Forest",
+		"Mountain",
 		"Railroad"
 	],
 	"NettlesAddedRange": [

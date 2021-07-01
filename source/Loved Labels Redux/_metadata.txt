@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/thespbgamer/LovedLabelsRedux
+   Git: https://github.com/thespbgamer/LovedLabelsRedux.git
+
+mods:
+   Loved Labels Redux
+
+latest commit:
+   commit 2fc64b4b1512d81bf74ecf93b8db7f5d4de10622
+   Merge: ba6dc10 7345077
+   Author: thespbgamer <thespbgamer@outlook.com>
+   Date:   Tue Jun 15 11:04:37 2021 +0100
+   
+       Merge branch 'main' of https://github.com/thespbgamer/LovedLabelsRedux into main
+   

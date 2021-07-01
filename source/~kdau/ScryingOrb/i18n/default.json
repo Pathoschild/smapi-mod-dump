@@ -9,7 +9,10 @@
 *************************************************/
 
 {
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
 
 	"scryingOrb.displayName": "Scrying Orb",
 	"scryingOrb.description": "Make an appropriate offering to predict the future.",
@@ -28,24 +31,27 @@
 	"unlimited.experience.question": "What wisdom do you seek from the spirits?",
 	"unlimited.experience.mining": "Mines and caverns",
 	"unlimited.experience.geodes": "Geode treasures",
+	"unlimited.experience.enchantments": "Enchanted implements",
 	"unlimited.experience.nightEvents": "Nocturnal occurrences",
 	"unlimited.experience.shopping": "Market offerings",
 	"unlimited.experience.garbage": "Garbage finds",
 	"unlimited.experience.itemFinder": "Seek a particular item",
 	"unlimited.experience.leave": "(Leave their counsel unheeded)",
+	"unlimited.enchantments": "Present a tool or weapon to the spirits to know more.",
 
 	"luckyPurple.initial": "The orb seems to peer back at you reproachfully.^Do not try that again.",
 	"luckyPurple.following": "The spirits are not amused.^The orb is not an underwear drawer!^Today will not be your lucky day.",
 
-	"//Note on meta.initial": "Sorry about this next line. It's a joke referencing an English meme about putting something on itself. It is shown when you try to give one Scrying Orb to another Scrying Orb. A simpler form to translate would be: You're giving the Scrying Orb another Scrying Orb? The spirits think you must really like scrying!",
+	// Sorry about this next line. It's a joke referencing an English meme about putting something on itself. It is shown when you try to give one Scrying Orb to another Scrying Orb. A simpler form to translate would be: "You're giving the Scrying Orb another Scrying Orb? The spirits think you must really like scrying!"
 	"meta.initial": "The spirits heard you like scrying, so they'll let you put a Scrying Orb on your Scrying Orb so you can scry while you scry.",
 	"meta.following": "Nothing happens, but you feel a strange sense of looking in on yourself from the outside.",
 
-	"mining.opening": "The spirits of the molten chasms accept your lustrous offering.",
+	"mining.opening": "The spirits of the thundering chasms accept your lustrous offering.",
 	"mining.date.question": "What day's conditions do you wish to presage?",
 	"mining.header.today": "On this day in the mines and caverns:",
 	"mining.header.later": "When in the overworld it shall be {{date}}:",
 	"mining.floor": "floor {{num}}",
+	"mining.floorAndItem": "^  floor {{num}}: {{itemName}}",
 	"mining.floors": "^  floors {{nums}} and {{lastNum}}",
 	"mining.prediction.Mushroom": "> Mushrooms will sprout forth throughout {{floors}}.",
 	"mining.prediction.MonsterInfested": "> Hordes of beasts will reign over {{floors}}.",
@@ -56,7 +62,7 @@
 	"mining.prediction.PepperRex": "> Beneath the shifting sands, ancient reptiles may roam {{floors}}.",
 	"mining.prediction.none": "> No particular phenomena will reveal themselves.",
 	"mining.closing.progress": "You have not yet reached the end of your^subterranean quest, apprentice. More surprises await you in the murky depths.",
-	
+
 	"geodes.opening": "The spirits of the crystal spires accept your stony offering.",
 	"geodes.type.question": "Which strange rocks do you wish to peek inside?",
 	"geodes.type.any": "Next three geodes of any type",
@@ -65,6 +71,7 @@
 	"geodes.type.Magma": "Next {{count}} Magma Geodes",
 	"geodes.type.Omni": "Next {{count}} Omni Geodes",
 	"geodes.type.Trove": "Next {{count}} Artifact Troves",
+	"geodes.type.Coconut": "Next {{count}} Golden Coconuts",
 	"geodes.type.leave": "(Leave these stones unturned)",
 	"geodes.header.any1": "The very next geode cracked shall contain:",
 	"geodes.header.any2": "The following geode opened will provide:",
@@ -74,9 +81,18 @@
 	"geodes.header.Magma": "If they be Magma Geodes, the next {{count}} geodes^rived promise to reveal:",
 	"geodes.header.Omni": "If they be Omni Geodes, the next {{count}} geodes^split are sure to offer:",
 	"geodes.header.Trove": "If they be Artifact Troves, the next {{count}} geodes^shattered shall manifest:",
-	"// Note on geodes.footer": "The $ and = symbols in the next line are turned into coin and star icons by the game. Treat them as adjectives modifying the word 'treasures'. The 'another' being referred to is Gunther in the museum.",
+	"geodes.header.Coconut": "If they be Golden Coconuts, the next {{count}} geodes^burst will unleash:",
+	// The $ and = symbols in the next line are turned into coin and star icons by the game. Leave them as is, treating them like adjectives modifying the word 'treasures'. The 'another' being referred to is Gunther in the museum.
 	"geodes.footer": "$ treasures are deemed more valuable by mortals.^= treasures are sought by another in your village.",
 	"geodes.closing.progress": "Your journey to the depths of the mines is^incomplete, child. Should you explore further,^these rocks may reveal different, greater treasures.",
+
+	"enchantments.opening": "The spirits of the molten pools accept your ashen offering.",
+	"enchantments.cumulative.question": "How shall you cast any intervening enchantments?",
+	"enchantments.cumulative.yes": "All of them on this tool",
+	"enchantments.cumulative.no": "One on this tool, the rest on others",
+	"enchantments.header.yes": "Onto your {{toolName}} shall be cast these enchantments in this order:",
+	"enchantments.header.no": "One of the next several enchantments, when cast upon your {{toolName}}, shall be:",
+	"enchantments.prediction": "{{num}}. {{name}}",
 
 	"nightEvents.opening": "The spirits of the darkest night accept your arcane offering.",
 	"nightEvents.type.question": "What nocturnal occurrences do you wish to scry?",
@@ -126,10 +142,10 @@
 	"rejection.unrecognized": "The spirits do not recognize your strange offering.",
 	"rejection.insufficient": "The spirits require a more generous offering.",
 
-	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+	// The remaining strings are the names and descriptions of options in the mod's config menu.
 
 	"InaccuratePredictions.name": "Inaccurate Predictions",
-	"InaccuratePredictions.description": "Let the spirits make predictions that are inaccurate due to the presence of conflicting mods. For entertainment purposes only.",
+	"InaccuratePredictions.description": "Let the spirits make predictions that are inaccurate due to game version mismatch and/or conflicting mods. For entertainment purposes only.",
 
 	"Cheats.name": "Cheat Options",
 

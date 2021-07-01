@@ -1,0 +1,10 @@
+{
+  "Name": "StackSplitX",
+  "Author": "tstaples (aka Catman)",
+  "Version": "1.5.0",
+  "Description": "Custom Stack splitting.",
+  "UniqueID": "tstaples.StackSplitX",
+  "EntryDll": "StackSplitX.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Nexus:798", "GitHub:tstaples/StackSplitX" ]
+}

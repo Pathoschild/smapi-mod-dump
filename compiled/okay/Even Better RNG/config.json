@@ -1,7 +1,5 @@
 {
-  "RNGSeed": 0,
   "ReloadHotkey": "RightShift + F5",
-  "ReseedOnReload": false,
   "OverrideDailyLuck": true,
   "GaussianLuck": true,
   "GaussianLuckStdDev": 30.3,

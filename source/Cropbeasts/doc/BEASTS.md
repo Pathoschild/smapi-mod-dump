@@ -48,7 +48,7 @@ They’re a curse upon agronomy.* 🎶
 <table>
 	<tr>
 		<td rowspan="5"><img src="beasts/Grainbeast.png" width="274" height="225"/></td>
-		<th style="text-align: right">Crops:</th><td colspan="3">Amaranth, Corn, Unmilled Rice, Wheat</td>
+		<th style="text-align: right">Crops:</th><td colspan="3">Amaranth, Corn, Fiber, Unmilled Rice, Wheat</td>
 	</tr>
 	<tr>
 		<th style="text-align: right">Hit Points:</th><td>27 – 351</td>
@@ -75,7 +75,7 @@ They’re a curse upon agronomy.* 🎶
 <table>
 	<tr>
 		<td rowspan="5"><img src="beasts/Leafbeast.png" width="165" height="138"/></td>
-		<th style="text-align: right">Crops:</th><td colspan="3">Artichoke, Bok Choy, Kale, Red Cabbage</td>
+		<th style="text-align: right">Crops:</th><td colspan="3">Artichoke, Bok Choy, Kale, Pineapple, Red Cabbage</td>
 	</tr>
 	<tr>
 		<th style="text-align: right">Hit Points:</th><td>22 – 286</td>
@@ -100,7 +100,7 @@ They’re a curse upon agronomy.* 🎶
 <table>
 	<tr>
 		<td rowspan="5"><img src="beasts/Rootbeast.png" width="136" height="224"/></td>
-		<th style="text-align: right">Crops:</th><td colspan="3">Beet, Garlic, Parsnip, Potato, Radish, Rhubarb, Yam</td>
+		<th style="text-align: right">Crops:</th><td colspan="3">Beet, Garlic, Parsnip, Potato, Radish, Rhubarb, Taro Root, Yam</td>
 	</tr>
 	<tr>
 		<th style="text-align: right">Hit Points:</th><td>30 – 390</td>
@@ -116,7 +116,8 @@ They’re a curse upon agronomy.* 🎶
 	<tr>
 		<th style="text-align: right">Behaviors:</th><td colspan="3">
 			hides in dirt until player approaches<br/>
-			scurries away when health is low
+			scurries away when health is low<br/>
+			in Taro Root form, waters crops as it passes over them
 		</td>
 	</tr>
 </table>
@@ -251,6 +252,37 @@ They’re a curse upon agronomy.* 🎶
 		</td>
 	</tr>
 </table>
+
+### Qi Beast
+
+<details>
+<summary>Spoiler for late-game 1.5 content</summary>
+
+<table>
+	<tr>
+		<td rowspan="5"><img src="beasts/QiBeast.png" width="64" height="64"/></td>
+		<th style="text-align: right">Crops:</th><td colspan="3">Qi Bean</td>
+	</tr>
+	<tr>
+		<th style="text-align: right">Hit Points:</th><td>24 – 312</td>
+		<th style="text-align: right">Attack:</th><td>6 – 18</td>
+	</tr>
+	<tr>
+		<th style="text-align: right">Speed:</th><td>2 – 5</td>
+		<th style="text-align: right">Defense:</th><td>3</td>
+	</tr>
+	<tr>
+		<th style="text-align: right">Special Drops:</th><td colspan="3">Qi Gem (20% when slain)</td>
+	</tr>
+	<tr>
+		<th style="text-align: right">Behaviors:</th><td colspan="3">
+			bounces towards the player<br/>
+			does cartwheels to speed up or slow down
+		</td>
+	</tr>
+</table>
+
+</details>
 
 ### Starbeast
 

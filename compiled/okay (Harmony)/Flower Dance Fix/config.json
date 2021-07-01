@@ -1,10 +1,10 @@
 {
   "Config": null,
-  "MaxDancePairs": 6,
+  "MaxDancePairs": 9,
   "NPCsHaveRandomPartners": false,
-  "ForceHeteroPartners": true,
+  "ForceHeteroPartners": false,
   "AllowNonBinaryPartners": false,
-  "AllowTouristPartners": false,
+  "AllowTouristPartners": true,
   "DancerBlackList": "",
   "AllowCrowdAnimation": false
 }

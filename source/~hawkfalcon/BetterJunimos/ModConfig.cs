@@ -60,5 +60,76 @@ namespace BetterJunimos {
             public SButton SpawnJunimoKeybind { get; set; } = SButton.J;
             public bool ReceiveMessages { get; set; } = true;
         }
+
+        public JunimoProgression Progression { get; set; } = new JunimoProgression();
+        internal class JunimoProgression {
+            public bool Enabled { get; set; } = true;
+
+            public MoreJunimosPT MoreJunimos { get; set; } = new MoreJunimosPT();
+            internal class MoreJunimosPT {
+                public int Item { get; set; } = 268; // starfruit
+                public int Stack { get; set; } = 3;
+            }
+            public UnlimitedJunimosPT UnlimitedJunimos { get; set; } = new UnlimitedJunimosPT();
+            internal class UnlimitedJunimosPT {
+                public int Item { get; set; } = 268; // starfruit
+                public int Stack { get; set; } = 5;
+            }
+            public WorkInRainPT CanWorkInRain { get; set; } = new WorkInRainPT();
+            internal class WorkInRainPT {
+                public int Item { get; set; } = 771; // fiber
+                public int Stack { get; set; } = 40;
+            }
+            public WorkInWinterPT CanWorkInWinter { get; set; } = new WorkInWinterPT();
+            internal class WorkInWinterPT {
+                public int Item { get; set; } = 440; // wool
+                public int Stack { get; set; } = 6;
+            }
+            public WorkInEveningsPT CanWorkInEvenings { get; set; } = new WorkInEveningsPT();
+            internal class WorkInEveningsPT {
+                public int Item { get; set; } = 768; // solar essence
+                public int Stack { get; set; } = 2;
+            }
+            public WorkFasterPT WorkFaster { get; set; } = new WorkFasterPT();
+            internal class WorkFasterPT {
+                public int Item { get; set; } = 771; // fiber
+                public int Stack { get; set; } = 40;
+            }
+            public ReducedCostToConstructPT ReducedCostToConstruct { get; set; } = new ReducedCostToConstructPT();
+            internal class ReducedCostToConstructPT {
+                public int Item { get; set; } = 336; // gold bar
+                public int Stack { get; set; } = 5;
+            }
+            public PlantPT PlantCrops { get; set; } = new PlantPT();
+            internal class PlantPT {
+                public int Item { get; set; } = 335; // iron bar
+                public int Stack { get; set; } = 5;
+            }
+            public WaterPT Water { get; set; } = new WaterPT();
+            internal class WaterPT {
+                public int Item { get; set; } = 88; // coconut
+                public int Stack { get; set; } = 10;
+            }
+            public FertilizePT Fertilize { get; set; } = new FertilizePT();
+            internal class FertilizePT {
+                public int Item { get; set; } = 330; // clay
+                public int Stack { get; set; } = 20;
+            }
+            public HarvestForageCropsPT HarvestForageCrops { get; set; } = new HarvestForageCropsPT();
+            internal class HarvestForageCropsPT {
+                public int Item { get; set; } = 372; // clam
+                public int Stack { get; set; } = 6;
+            }
+            public HarvestBushesPT HarvestBushes { get; set; } = new HarvestBushesPT();
+            internal class HarvestBushesPT {
+                public int Item { get; set; } = 709; // hardwood
+                public int Stack { get; set; } = 6;
+            }
+            public ClearDeadCropsPT ClearDeadCrops { get; set; } = new ClearDeadCropsPT();
+            internal class ClearDeadCropsPT {
+                public int Item { get; set; } = 769; // void essence
+                public int Stack { get; set; } = 2;
+            }
+        }
     }
 }

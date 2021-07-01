@@ -1,0 +1,41 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Ring of Diamond Booze",
+    "Description": "Negates the tipsy effect of lighter alcohol.",
+    "Category": "Ring",
+    "Edibility": -300,
+    "Price": 1000,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 72,
+                "Count": 1
+            },
+            {
+                "Object": 336,
+                "Count": 3
+            }
+        ],
+        "CanPurchase": true,
+        "PurchaseFrom": "Dwarf",
+        "PurchasePrice": 1000
+    },
+    "NameLocalization": {
+        "hu": "Gyémánt borgyűrű",
+        "zh": "钻石酒戒"
+    },
+    "DescriptionLocalization": {
+        "hu": "Ellensúlyozza az enyhe alkohol hatását.",
+        "zh": "抵消了轻度酒精的微醺效果。"
+    }
+}

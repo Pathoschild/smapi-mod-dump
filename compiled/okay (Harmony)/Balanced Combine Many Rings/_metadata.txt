@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8981
+IDs: Arruda.BalancedCombineManyRings
+update keys: Nexus:8981, GitHub:arruda/BalancedCombineManyRings/tree/master/BalancedCombineManyRings

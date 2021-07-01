@@ -6,11 +6,10 @@ mods:
    Greenhouse Sprinklers
 
 latest commit:
-   commit 12f786d16d9b3d1934b98f255abfb68f845a1692
+   commit 938b74ef2ebadd7edebfe6714555049e8d13e117
+   Merge: f5002d0 12f786d
    Author: David Camp <Bpendragon@users.noreply.github.com>
-   Date:   Sat Mar 13 11:02:03 2021 -0800
+   Date:   Sat Jun 5 20:57:46 2021 -0700
    
-       Update README.md
-       
-       Adds uninstallation instructions
+       Merge branch 'main' of github.com:Bpendragon/GreenhouseSprinklers
    

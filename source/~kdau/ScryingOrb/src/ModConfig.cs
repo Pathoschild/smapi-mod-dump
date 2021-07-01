@@ -20,6 +20,8 @@ namespace ScryingOrb
 
 		internal static ModConfig Instance { get; private set; }
 
+#pragma warning disable IDE1006
+
 		public bool InaccuratePredictions { get; set; } = false;
 
 		public bool InstantRecipe { get; set; } = false;
@@ -27,6 +29,8 @@ namespace ScryingOrb
 		public bool UnlimitedUse { get; set; } = false;
 
 		public SButton ActivateKey { get; set; } = SButton.None;
+
+#pragma warning restore IDE1006
 
 		internal static void Load ()
 		{
@@ -49,9 +53,10 @@ namespace ScryingOrb
 				("spacechase0.GenericModConfigMenu");
 			if (api == null)
 				return;
-			
+
 			var manifest = ModEntry.Instance.ModManifest;
 			api.RegisterModConfig (manifest, Reset, Save);
+			api.SetDefaultIngameOptinValue (manifest, true);
 
 			api.RegisterSimpleOption (manifest,
 				Helper.Translation.Get ("InaccuratePredictions.name"),
@@ -67,7 +72,12 @@ namespace ScryingOrb
 				Helper.Translation.Get ("InstantRecipe.name"),
 				Helper.Translation.Get ("InstantRecipe.description"),
 				() => Instance.InstantRecipe,
-				(bool value) => Instance.InstantRecipe = value);
+				(bool value) =>
+				{
+					Instance.InstantRecipe = value;
+					if (Context.IsWorldReady)
+						ModEntry.Instance.checkRecipe ();
+				});
 
 			api.RegisterSimpleOption (manifest,
 				Helper.Translation.Get ("UnlimitedUse.name"),

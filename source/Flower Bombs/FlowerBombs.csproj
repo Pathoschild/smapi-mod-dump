@@ -3,13 +3,21 @@
 	<PropertyGroup>
 		<AssemblyName>FlowerBombs</AssemblyName>
 		<RootNamespace>FlowerBombs</RootNamespace>
-		<Version>1.0.1</Version>
+		<Version>2.0.0</Version>
+	</PropertyGroup>
+	<PropertyGroup>
+		<LangVersion>9.0</LangVersion>
+		<TargetFramework>net452</TargetFramework>
+		<IgnoreModFilePatterns>[.](svg|xcf)$</IgnoreModFilePatterns>
+		<GameModsPath>bin/Mods</GameModsPath>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+	</ItemGroup>
+	<ItemGroup>
 		<Reference Include="PyTK">
-			<HintPath>$(GamePath)\Mods\PyTK\PyTK.dll</HintPath>
+			<HintPath>$(GamePath)/Mods/PyTK/PyTK.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>
-	<Import Project="common.projitems" Label="Shared"/>
 </Project>

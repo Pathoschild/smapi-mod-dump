@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using SkillfulClothes.Types;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -48,14 +50,16 @@ namespace SkillfulClothes.Effects.Special
                         arr[0] = (int)Math.Max(0, arr[0] * (1 - discount));
                     }
                 }
+
+                EffectHelper.Overlays.AddSparklingText(new SparklingText(Game1.dialogueFont, $"You received a discount ({discount*100:0}%)", Color.LimeGreen, Color.Azure), new Vector2(64f, Game1.uiViewport.Height - 64));                
             }
-        }
+        }      
 
         public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
             EffectHelper.ModHelper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.None, $"Get a slight discount when buying from {shop.GetShopReferral()}");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Money, $"Get a slight discount when buying from {shop.GetShopReferral()} ({discount * 100:0}%)");
     }
 }

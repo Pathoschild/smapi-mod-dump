@@ -1,0 +1,10 @@
+﻿{
+  "Name": "BuildableForge",
+  "Author": "Stari",
+  "Version": "1.0.0",
+  "Description": "Allows building a magical forge that allows forging like Ginger Island's Caldera Forge'",
+  "UniqueID": "Start.BuildableForge",
+  "EntryDll": "BuildableForge.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:8893" ]
+}

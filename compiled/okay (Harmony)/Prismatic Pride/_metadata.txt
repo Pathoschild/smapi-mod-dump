@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9019
+IDs: kdau.PrismaticPride
+update keys: Nexus:9019, ModDrop:978503

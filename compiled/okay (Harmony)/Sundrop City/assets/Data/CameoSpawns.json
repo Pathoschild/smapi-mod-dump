@@ -1,0 +1,38 @@
+[
+	{
+		"Name":"ChefRude",
+		"Map":"SundropPromenade",
+		"Position":[29, 50],
+		"Message":"So much work to do... I just cant keep up...$b#$sI'm melting, out here. It sucks. But it sucks less than being at HQ with Ento screaming at me..."
+	},
+	{
+		"Name":"Minerva",
+		"Map":"SundropPlaza",
+		"Position":[32, 2],
+		"Message":"$uAugh, why is this city always so hot?#$b#$lI miss having PROPER seasons"
+	},
+	{
+		"Name":"Entoarox",
+		"Map":"SundropShoppingDistrict",
+		"Position":[55, 46],
+		"Message":"$uExploring our little slice of creation are you? Eeeeeeeexcellent...#$b#$aCHEF! WE NEED MORE ART! GET BACK HERE AND WORK!"
+	},
+  {
+    "Name": "Froststar11",
+    "Map": "SundropHQAdmin",
+    "Position": [ 39, 28 ],
+    "Message": "Oh, hi! Welcome to our Admin offices!$1#$b#Our staff is hard at work making Sundrop come alive for you.$3#$b#Now, where did I put that tilesheet...$5"
+  },
+  {
+    "Name": "Rose",
+    "Map": "SundropPark",
+    "Position": [ 58, 43 ],
+    "Message": "$hHello! I'm Rose, everyone likes to pet me for some reason.#$b#$9Not you too!"
+  },
+    {
+    "Name": "Efa",
+    "Map": "SundropHQSpecial",
+    "Position": [ 4, 12 ],
+    "Message": "Hmm... If I put this there... and then...$2#$b#Oh, sorry! I'm just trying to decide how to set up my office!$1" 
+  },
+]

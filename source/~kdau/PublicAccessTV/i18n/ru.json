@@ -9,7 +9,10 @@
 *************************************************/
 
 {
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
 
 	"garbage.event.linus01": "Ищешь что-нибудь?",
 	"garbage.event.linus02": "Привет @. Я рад видеть, что мусорные баки все еще тебе небезразличны.",
@@ -54,6 +57,7 @@
 	"mining.opening": "Эй, искатели приключений. У нас с Гилом есть кое-какие новости о том, что сегодня происходит в шахтах.",
 	"mining.opening.none": "Искатели приключений. Сегодня в шахтах не о чем докладывать.",
 	"mining.floor": "на этаже {{num}}",
+	"mining.floorAndItem": "на этаже {{num}}: {{itemName}}",
 	"mining.floors": "на этаже {{nums}} и {{lastNum}}",
 	"mining.prediction.Mushroom": "Сейчас можно найти грибы! Наши разведчики засекли грибы, на {{floors}}.",
 	"mining.prediction.MonsterInfested": "Отслежена активность сильных монстров на {{floors}}. Будьте аккуратны.",
@@ -79,7 +83,9 @@
 	"nightEvents.Meteorite.reaction": "Мы настоятельно рекомендуем вам оставаться дома всю ночь. Из окон открывается прекрасный вид. Пожалуйста, сообщайте о любых падениях метеоритов вашим местным властям.",
 	"nightEvents.Meteorite.closing": "Я желаю вам всем безопасного и приятного вечера.",
 	"nightEvents.StrangeCapsule.opening": "Сограждане, сегодня ночью в небе над нашим регионом распространились слухи о внеземной активности.",
+	// The next line is a joke about the Governor supposedly being an alien himself. During the line, he turns green and the background becomes distorted. The last sentence is meant to suggest that he has accidentally started talking about alien larvae being bred on Earth.
 	"nightEvents.StrangeCapsule.reaction": "Я могу заверить вас, что это полная чушь. Инопланетян не существуют. Их уже нет среди нас. Все хорошо. С ПОТОМСТВОМ ВСЕ В ПОРЯДКЕ.",
+	// For the next line, the Governor and the background return to normal. The word 'human' here is a joke because he obviously isn't human.
 	"nightEvents.StrangeCapsule.closing": "*кхм* Я желаю вам всем нормального и человеческого вечера.",
 	"nightEvents.NewYear.opening": "Сограждане, мы подошли к концу очередного успешного года для нашего региона и всей республики Фернгилл.",
 	"nightEvents.NewYear.reaction": "Поздравим нашу промышленность с постоянно улучшающимся производством, особенно с превосходными урожаями из Долины Стардью.",
@@ -112,13 +118,13 @@
 	"trains.later": "Заглядывая дальше по расписанию, я вижу, что поезда также запланированы к проезду к {{date1}}, и {{date2}}.",
 	"trains.closing": "Помните, что вы, вероятно, опоздаете на поезд, если будете отсутствовать в долине всю ночь. Счастливый поездки!",
 
-	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+	// The remaining strings are the names and descriptions of options in the mod's config menu.
 
-	"InaccuratePredictions.name": "Inaccurate Predictions",
-	"InaccuratePredictions.description": "Reveal channels whose information is inaccurate due to the presence of conflicting mods. For entertainment purposes only.",
+	"InaccuratePredictions.name": "Inaccurate Predictions", // TODO
+	"InaccuratePredictions.description": "Reveal channels whose information is inaccurate due to game version mismatch and/or conflicting mods. For entertainment purposes only.", // TODO
 
-	"Cheats.name": "Cheat Options",
+	"Cheats.name": "Cheat Options", // TODO
 
-	"BypassFriendships.name": "Bypass Friendships",
-	"BypassFriendships.description": "Put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player."
+	"BypassFriendships.name": "Bypass Friendships", // TODO
+	"BypassFriendships.description": "Put all TV hosts on the job as soon as applicable, regardless of their friendship level with the player." // TODO
 }

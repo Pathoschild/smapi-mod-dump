@@ -1,0 +1,10 @@
+﻿{
+	"Name": "OwO Stawdew Vawwey",
+	"Author": "CrunchyDuck",
+	"Version": "1.0.1",
+	"Description": "d-dis mod m-makes text UwUy~ | This mod changes text to be UwU-ified.",
+	"UniqueID": "CrunchyDuck.OwOMod",
+	"EntryDll": "OwOMod.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": ["Nexus:8923", "GitHub:CrunchyDuck/OwO-Stawdew-Vawwey"]
+}

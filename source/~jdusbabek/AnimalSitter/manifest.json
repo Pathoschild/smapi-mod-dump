@@ -11,7 +11,7 @@
 {
   "Name": "Animal Sitter",
   "Author": "jwdred",
-  "Version": "1.1.2-unofficial.3-strobe",
+  "Version": "1.1.1-unofficial.6-strobe",
   "Description": "Let someone else pet all those pesky animals!",
   "UniqueID": "jwdred.AnimalSitter",
   "EntryDll": "AnimalSitter.dll",

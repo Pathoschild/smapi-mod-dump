@@ -10,9 +10,16 @@ for queries and analysis.**
 
 [Pregnancy Role](../)
 
+## 2.0.0
+
+*Released 2021 June 26.*
+
+* Require, and fix compatibility with, Stardew 1.5 or higher
+* Add Russian translation by BANANJI
+
 ## 1.2.0
 
-*Released June 10, 2020.*
+*Released 2020 June 10.*
 
 * Adjust dropdown positions to accommodate custom skill mods
 * Allow manual configuration of dropdown positions
@@ -20,12 +27,12 @@ for queries and analysis.**
 
 ## 1.1.0
 
-*Released April 21, 2020.*
+*Released 2020 April 21.*
 
 * Players can now set the pregnancy role of their vanilla NPC spouses
 
 ## 1.0.0
 
-*Released April 8, 2020.*
+*Released 2020 April 8.*
 
 * Initial version

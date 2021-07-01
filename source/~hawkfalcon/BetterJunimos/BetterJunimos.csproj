@@ -58,6 +58,8 @@
     <Compile Include="Abilities\Base\PlantCropsAbility.cs" />
     <Compile Include="Abilities\Base\WaterAbility.cs" />
     <Compile Include="Abilities\Base\HarvestBushesAbility.cs" />
+    <Compile Include="GMCM_API.cs" />
+    <Compile Include="Utils\JunimoProgression.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="i18n\pt.json" />

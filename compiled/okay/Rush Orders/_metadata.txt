@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/605
 IDs: spacechase0.RushOrders, RushOrders
-update keys: Nexus:605, Chucklefish:4274, GitHub:spacechase0/RushOrders
+update keys: Nexus:605, GitHub:spacechase0/StardewValleyMods

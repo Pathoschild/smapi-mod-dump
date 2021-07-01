@@ -93,8 +93,7 @@ namespace Cropbeasts
 
 			if (giantCrop)
 			{
-				(location as Farm).resourceClumps.Remove
-					(feature as ResourceClump);
+				location.resourceClumps.Remove (feature as ResourceClump);
 			}
 			else
 			{
@@ -150,7 +149,7 @@ namespace Cropbeasts
 				GiantCrop gc = feature as GiantCrop;
 				Helper.Reflection.GetField<NetVector2> (gc, "tile").SetValue
 					(new NetVector2 (Utility.PointToVector2 (tileLocation)));
-				(location as Farm).resourceClumps.Add (gc);
+				location.resourceClumps.Add (gc);
 			}
 			else
 			{
@@ -181,7 +180,7 @@ namespace Cropbeasts
 		// whether or not they are cropbeast candidates.
 		public static List<CropTile> FindAll (GameLocation location)
 		{
-			List<CropTile> tiles = new List<CropTile> ();
+			List<CropTile> tiles = new ();
 
 			foreach (TerrainFeature feature in location.terrainFeatures.Values)
 			{
@@ -216,7 +215,7 @@ namespace Cropbeasts
 		}
 
 		internal static readonly Dictionary<int, double> Fertilizers =
-			new Dictionary<int, double> { { 368, 1.0 }, { 369, 2.0 } };
+			new () { { 368, 1.0 }, { 369, 2.0 }, { 919, 3.0 } };
 
 		private Random createRandom ()
 		{
@@ -238,9 +237,11 @@ namespace Cropbeasts
 				0.2 * fertilizerBoost * ((farmingLevel + 2.0) / 12.0) + 0.01;
 			double silverChance = Math.Min (0.75, goldChance * 2.0);
 
-			if (rng.NextDouble () < goldChance)
+			if (fertilizerBoost >= 3.0 && rng.NextDouble () < goldChance / 2.0)
+				return 4;
+			else if (rng.NextDouble () < goldChance)
 				return 2;
-			else if (rng.NextDouble () < silverChance)
+			else if (rng.NextDouble () < silverChance || fertilizerBoost >= 3.0)
 				return 1;
 			else
 				return 0;

@@ -19,13 +19,13 @@ namespace Cropbeasts.Beasts
 	// Much of this class is based on StardewValley.Monsters.Bat.
 	public class Trellisbeast : Cropbeast
 	{
-		public const float rotationIncrement = (float) Math.PI / 64f;
-		public const float maxSpeed = 5f;
+		public const float RotationIncrement = (float) Math.PI / 64f;
+		public const float MaxSpeed = 5f;
 
-		private readonly NetInt wasHitCounter = new NetInt (0);
-		private readonly NetBool turningRight = new NetBool ();
+		private readonly NetInt wasHitCounter = new (0);
+		private readonly NetBool turningRight = new ();
 
-		private ICue sound;
+		private readonly ICue sound;
 
 		public Trellisbeast ()
 		{
@@ -82,10 +82,10 @@ namespace Cropbeasts.Beasts
 			// Draw the harvest itself.
 			float yOffset = (Sprite.currentFrame % 4) switch
 			{
-				1 =>  -8f,
+				1 => -8f,
 				2 => -10f,
-				3 =>  -8f,
-				_ =>  -4f,
+				3 => -8f,
+				_ => -4f,
 			};
 			b.Draw (cropTile.mapping.harvestTexture, getLocalPosition (Game1.viewport) +
 				new Vector2 (32f, 32f + yOffset), cropTile.mapping.harvestSourceRect,
@@ -140,9 +140,9 @@ namespace Cropbeasts.Beasts
 
 			if (xyDistance < 64f)
 			{
-				xVelocity = Math.Max (-maxSpeed, Math.Min (maxSpeed,
+				xVelocity = Math.Max (-MaxSpeed, Math.Min (MaxSpeed,
 					xVelocity * 1.05f));
-				yVelocity = Math.Max (-maxSpeed, Math.Min (maxSpeed,
+				yVelocity = Math.Max (-MaxSpeed, Math.Min (MaxSpeed,
 					yVelocity * 1.05f));
 			}
 
@@ -162,7 +162,7 @@ namespace Cropbeasts.Beasts
 					turningRight.Value = false;
 
 				float rotationChange = (float) Math.Sign (targetRotation -
-					rotation) * ((float) Math.PI / 64f);
+					rotation) * RotationIncrement;
 				if (turningRight.Value)
 					rotation -= rotationChange;
 				else
@@ -172,19 +172,19 @@ namespace Cropbeasts.Beasts
 				wasHitCounter.Value = 0;
 			}
 
-			float factor = Math.Min (maxSpeed, Math.Max (1f, maxSpeed -
+			float factor = Math.Min (MaxSpeed, Math.Max (1f, MaxSpeed -
 				xyDistance / 64f / 2f));
 			xDistance = (float) Math.Cos ((double) rotation + Math.PI / 2.0);
 			yDistance = 0f - (float) Math.Sin ((double) rotation + Math.PI / 2.0);
 
 			xVelocity += (0f - xDistance) * factor / 6f +
 				(float) Game1.random.Next (-10, 10) / 100f;
-			if (Math.Abs (xVelocity) > Math.Abs ((0f - xDistance) * maxSpeed))
+			if (Math.Abs (xVelocity) > Math.Abs ((0f - xDistance) * MaxSpeed))
 				xVelocity -= (0f - xDistance) * factor / 6f;
 
 			yVelocity += (0f - yDistance) * factor / 6f +
 				(float) Game1.random.Next (-10, 10) / 100f;
-			if (Math.Abs (yVelocity) > Math.Abs ((0f - yDistance) * maxSpeed))
+			if (Math.Abs (yVelocity) > Math.Abs ((0f - yDistance) * MaxSpeed))
 				yVelocity -= (0f - yDistance) * factor / 6f;
 		}
 

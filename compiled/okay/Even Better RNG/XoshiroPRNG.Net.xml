@@ -105,6 +105,12 @@
             Returns an unsigned 64-bit integer in the range of [minValue, maxValue)
             </summary>
         </member>
+        <member name="M:Xoshiro.Base.IRandomU.GetRandomCompatible">
+            <summary>
+            Get a System.Random-compatible interface
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Xoshiro.Base.IRandom64U">
             <summary>
             The "Unleashed" interface for 64-bit PRNGs: This interface enables
@@ -457,6 +463,12 @@
             <para>WARNING: Only 24 bits of randomness!</para>
             </summary>
         </member>
+        <member name="M:Xoshiro.PRNG64.Xoshiro64Base.GetRandomCompatible">
+            <summary>
+            Get a System.Random-compatible interface.
+            <para>Do note that System.Random-compatible interface does not provide 64-bit values!</para>
+            </summary>
+        </member>
         <member name="T:Xoshiro.PRNG32.XoShiRo128plus">
             <summary>
             A very fast PRNG with 128-bit state, suitable for generating random
@@ -567,6 +579,11 @@
             <summary>
             Fetch an Unsigned 64-bit integer by appending two consecutive 32-bit integers from the PRNG.
             <para>Note: This is full range of [0, UInt64.MaxValue]</para>
+            </summary>
+        </member>
+        <member name="M:Xoshiro.PRNG32.Xoshiro32Base.GetRandomCompatible">
+            <summary>
+            Get a System.Random-compatible interface
             </summary>
         </member>
     </members>

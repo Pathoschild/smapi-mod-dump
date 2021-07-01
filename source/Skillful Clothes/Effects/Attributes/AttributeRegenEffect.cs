@@ -82,17 +82,23 @@ namespace SkillfulClothes.Effects.Attributes
                     {
                         if ((standingStillForSeconds - secondsToStandStill) % regenIntervalSeconds == 0)
                         {
-                            if (!Game1.player.isGlowing)
-                            {
-                                Game1.player.startGlowing(glowColor, true, 0.5f);
-                            }
-
                             int currValue = GetCurrentValue(Game1.player);
                             int max = GetMaxValue(Game1.player);
+
+                            if (!Game1.player.isGlowing && currValue < max)
+                            {
+                                Game1.player.startGlowing(glowColor, false, 1 / 60.0f);
+                            }                            
+                            
                             if (currValue < max)
                             {
                                 Logger.Debug($"{AttributeName} regen +{regenAmount}");
                                 SetCurrentValue(Game1.player, Math.Min(currValue + regenAmount, max));                                
+                            }
+
+                            if (currValue >= max && Game1.player.isGlowing && Game1.player.glowingColor == glowColor)
+                            {
+                                Game1.player.stopGlowing();
                             }
                         }
                     }
@@ -106,6 +112,7 @@ namespace SkillfulClothes.Effects.Attributes
                 }
 
                 standingStillForSeconds = 0;
+                previousLocation = Game1.player.getStandingPosition();
             }
         }
 

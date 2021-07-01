@@ -8,9 +8,12 @@
 **
 *************************************************/
 
+using PlatoTK.Events;
 using PredictiveCore;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 
@@ -19,11 +22,11 @@ namespace PublicAccessTV
 	public class ModEntry : Mod
 	{
 		internal static ModEntry Instance { get; private set; }
-		internal static Type CustomTVMod { get; private set; }
 
-		protected ModConfig Config => ModConfig.Instance;
+		protected static ModConfig Config => ModConfig.Instance;
 
-		internal List<Channel> channels { get; private set; }
+		private readonly PerScreen<List<Channel>> channels_ = new (() => new ());
+		internal List<Channel> channels => channels_.Value;
 
 		public override void Entry (IModHelper helper)
 		{
@@ -40,9 +43,6 @@ namespace PublicAccessTV
 			Helper.Content.AssetEditors.Add (new MailEditor ());
 
 			// Add console commands.
-			Helper.ConsoleCommands.Add ("update_patv_channels",
-				"Updates the availability of the custom channels to reflect current conditions.",
-				(_command, _args) => updateChannels (true));
 			Helper.ConsoleCommands.Add ("reset_patv_channels",
 				"Resets the custom channels to their unlaunched states (before letters, events, etc.).",
 				(_command, _args) => resetChannels (true));
@@ -55,58 +55,55 @@ namespace PublicAccessTV
 				(_sender, _e) => GarbageChannel.CheckEvent ();
 			Helper.Events.Player.Warped +=
 				(_sender, _e) => TrainsChannel.CheckEvent ();
+
+			// Listen for PlatoTK events.
+			var plato = PlatoTK.HelperExtension.GetPlatoHelper (this);
+			plato.Events.QuestionRaised += onQuestionRaised;
+			plato.Events.TVChannelSelected += onTVChannelSelected;
 		}
 
 		private void onGameLaunched (object _sender, GameLaunchedEventArgs _e)
 		{
-			// Access CustomTVMod in PyTK. Using reflection to work around the
-			// base game's cross-platform assembly name inconsistency.
-			CustomTVMod = Helper.ModRegistry.GetApi ("Platonymous.Toolkit")
-				?.GetType ()?.Assembly?.GetType ("PyTK.CustomTV.CustomTVMod");
-			if (CustomTVMod == null)
-			{
-				Monitor.Log ("PyTK's CustomTVMod not found, so cannot create TV channels.",
-					LogLevel.Alert);
-				return;
-			}
-
 			// Create the channels.
-			channels = new List<Channel>
-			{
-				new NightEventsChannel (),
-				new MiningChannel (),
-				// TODO: new ShoppingChannel (),
-				new GarbageChannel (),
-				// TODO: new TailoringChannel (),
-				new TrainsChannel (),
-				new MoviesChannel (),
-			};
+			channels.Add (new NightEventsChannel ());
+			channels.Add (new MiningChannel ());
+			channels.Add (new GarbageChannel ());
+			channels.Add (new TrainsChannel ());
+			channels.Add (new MoviesChannel ());
 
 			// Set up Generic Mod Config Menu, if it is available.
 			ModConfig.SetUpMenu ();
 		}
 
-		private void updateChannels (bool isCommand = false)
+		internal void updateChannels ()
 		{
-			try
+			foreach (Channel channel in channels)
+				channel.update ();
+		}
+
+		private void onQuestionRaised (object _sender, IQuestionRaisedEventArgs e)
+		{
+			if (e.IsTV)
 			{
-				Utilities.CheckWorldReady ();
 				foreach (Channel channel in channels)
-					channel.update ();
-				if (isCommand)
 				{
-					Monitor.Log ("Channel availability updated to reflect current conditions.",
-						LogLevel.Info);
+					if (channel.isAvailable)
+						e.AddResponse (new Response (channel.globalID, channel.title));
 				}
-			}
-			catch (Exception e)
-			{
-				Monitor.Log ($"Could not update channels: {e.Message}",
-					LogLevel.Error);
 			}
 		}
 
-		private void resetChannels (bool isCommand = false)
+		private void onTVChannelSelected (object _sender, ITVChannelSelectedEventArgs e)
+		{
+			var channel = channels.Find (channel => channel.globalID == e.ChannelName);
+			if (channel != null)
+			{
+				e.PreventDefault ();
+				channel.show (e.TVInstance);
+			}
+		}
+
+		internal void resetChannels (bool isCommand = false)
 		{
 			try
 			{

@@ -11,16 +11,18 @@
 {
 	"Name": "Cropbeasts",
 	"Author": "kdau",
-	"Version": "1.0.1",
+	"Version": "2.0.0",
 	"Description": "Why just harvest your crops when you could do battle with them?",
 	"UniqueID": "kdau.Cropbeasts",
 	"EntryDll": "Cropbeasts.dll",
-	"MinimumApiVersion": "3.5.0",
-	"Dependencies": [
+	"MinimumApiVersion": "3.8.0",
+	"Dependencies":
+	[
 		{ "UniqueID": "spacechase0.JsonAssets", "IsRequired": false },
 		{ "UniqueID": "spacechase0.GenericModConfigMenu", "IsRequired": false }
 	],
-	"UpdateKeys": [
+	"UpdateKeys":
+	[
 		"Nexus:6030",
 		"ModDrop:784523"
 	]

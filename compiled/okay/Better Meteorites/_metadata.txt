@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/5096
 IDs: spacechase0.BetterMeteorites
-update keys: Nexus:5096, GitHub:spacechase0/BetterMeteorites
+update keys: Nexus:5096, GitHub:spacechase0/StardewValleyMods

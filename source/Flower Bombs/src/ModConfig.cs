@@ -19,11 +19,15 @@ namespace FlowerBombs
 
 		internal static ModConfig Instance { get; private set; }
 
+#pragma warning disable IDE1006
+
 		public bool ClintMudstone { get; set; } = true;
 
 		public bool KentGifts { get; set; } = true;
 
 		public bool LeahRecipe { get; set; } = true;
+
+#pragma warning restore IDE1006
 
 		internal static void Load ()
 		{
@@ -49,6 +53,7 @@ namespace FlowerBombs
 
 			var manifest = ModEntry.Instance.ModManifest;
 			api.RegisterModConfig (manifest, Reset, Save);
+			api.SetDefaultIngameOptinValue (manifest, true);
 
 			api.RegisterSimpleOption (manifest,
 				Helper.Translation.Get ("ClintMudstone.name"),
@@ -60,13 +65,21 @@ namespace FlowerBombs
 				Helper.Translation.Get ("KentGifts.name"),
 				Helper.Translation.Get ("KentGifts.description"),
 				() => Instance.KentGifts,
-				(bool value) => Instance.KentGifts = value);
+				(bool value) =>
+				{
+					Instance.KentGifts = value;
+					MailEditor.Invalidate ();
+				});
 
 			api.RegisterSimpleOption (manifest,
 				Helper.Translation.Get ("LeahRecipe.name"),
 				Helper.Translation.Get ("LeahRecipe.description"),
 				() => Instance.LeahRecipe,
-				(bool value) => Instance.LeahRecipe = value);
+				(bool value) =>
+				{
+					Instance.LeahRecipe = value;
+					MailEditor.Invalidate ();
+				});
 		}
 	}
 }

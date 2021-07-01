@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Esca-MMC/TransparencySettings
+   Git: https://github.com/Esca-MMC/TransparencySettings.git
+
+mods:
+   Transparency Settings
+
+latest commit:
+   commit 405d302730dadae7d2ae2aee0bcd6587e1a226fc
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Wed Jun 9 16:22:07 2021 -0500
+   
+       Switch build mode to Any CPU
+   

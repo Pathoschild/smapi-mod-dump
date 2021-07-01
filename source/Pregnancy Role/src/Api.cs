@@ -24,6 +24,8 @@ namespace PregnancyRole
 		Adopt,
 	}
 
+#pragma warning disable IDE1006
+
 	public interface IApi
 	{
 		Role GetPregnancyRole (Farmer farmer);
@@ -38,6 +40,8 @@ namespace PregnancyRole
 		// their current farmer spouse.
 		bool WouldNeedAdoption (NPC npc);
 	}
+
+#pragma warning restore IDE1006
 
 	public class Api : IApi
 	{

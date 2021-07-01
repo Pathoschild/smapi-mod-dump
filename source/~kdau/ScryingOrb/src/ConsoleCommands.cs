@@ -28,21 +28,19 @@ namespace ScryingOrb
 		{
 			Helper.ConsoleCommands.Add ("scrying_orb",
 				"Shows the Scrying Orb unlimited use interface, even if one is not present in the world.",
-				cmdScryingOrb);
+				ScryingOrb);
 			Helper.ConsoleCommands.Add ("reset_scrying_orbs",
 				"Resets the state of Scrying Orbs to default values.",
-				cmdResetScryingOrbs);
-#if DEBUG
+				ResetScryingOrbs);
 			Helper.ConsoleCommands.Add ("test_scrying_orb",
 				"Puts a Scrying Orb and all types of offering into inventory.",
-				cmdTestScryingOrb);
+				TestScryingOrb);
 			Helper.ConsoleCommands.Add ("test_date_picker",
 				"Runs a DatePicker dialog for testing use.",
-				cmdTestDatePicker);
-#endif
+				TestDatePicker);
 		}
 
-		private static void cmdScryingOrb (string _command, string[] _args)
+		private static void ScryingOrb (string _command, string[] _args)
 		{
 			try
 			{
@@ -54,7 +52,7 @@ namespace ScryingOrb
 			}
 		}
 
-		private static void cmdResetScryingOrbs (string _command, string[] _args)
+		private static void ResetScryingOrbs (string _command, string[] _args)
 		{
 			try
 			{
@@ -71,8 +69,7 @@ namespace ScryingOrb
 			}
 		}
 
-#if DEBUG
-		private static void cmdTestScryingOrb (string _command, string[] _args)
+		private static void TestScryingOrb (string _command, string[] _args)
 		{
 			try
 			{
@@ -80,14 +77,12 @@ namespace ScryingOrb
 				{
 					new SObject ( 74,  50), // 50 Prismatic Shard for UnlimitedExperience
 					new SObject (789,   1), // Lucky Purple Shorts for LuckyPurpleExperience
-					// TODO: item for ItemFinderExperience
 					new SObject (168, 150), // 50*3 Trash for GarbageExperience
-					// TODO: item for ShoppingExperience
 					new SObject (767, 150), // 50*3 Bat Wing for NightEventsExperience
 					new SObject (541,  50), // 50 Aerinite for GeodesExperience
 					new SObject (382, 100), // 50*2 Coal for MiningExperience
 					// 3 Scrying Orb:
-					new SObject (Vector2.Zero, ModEntry.Instance.parentSheetIndex), 
+					new SObject (Vector2.Zero, ModEntry.Instance.parentSheetIndex),
 					new SObject (Vector2.Zero, ModEntry.Instance.parentSheetIndex),
 					new SObject (Vector2.Zero, ModEntry.Instance.parentSheetIndex),
 				});
@@ -101,19 +96,19 @@ namespace ScryingOrb
 			}
 		}
 
-		private static void cmdTestDatePicker (string _command, string[] _args)
+		private static void TestDatePicker (string _command, string[] _args)
 		{
 			try
 			{
-				SDate initialDate = new SDate (2, "spring", 15);
+				SDate initialDate = new (2, "spring", 15);
 				string prompt = "Where on the wheel of the year do you seek?";
 				if (Context.IsWorldReady)
-					++ModEntry.Instance.OrbsIlluminated; // use the special cursor in the dialog
+					++ModEntry.Instance.orbsIlluminated; // use the special cursor in the dialog
 				Game1.activeClickableMenu = new DatePicker (initialDate, prompt,
 					(date) =>
 					{
 						if (Context.IsWorldReady)
-							--ModEntry.Instance.OrbsIlluminated;
+							--ModEntry.Instance.orbsIlluminated;
 						Monitor.Log ($"DatePicker chose {date}", LogLevel.Info);
 					});
 			}
@@ -122,6 +117,5 @@ namespace ScryingOrb
 				Monitor.Log ($"Could not test date picker: {e.Message}", LogLevel.Error);
 			}
 		}
-#endif
 	}
 }

@@ -22,12 +22,12 @@ namespace Cropbeasts.Beasts
 
 		private new int yOffset = 0;
 
-		private readonly NetEvent0 firedEvent = new NetEvent0 ();
+		private readonly NetEvent0 firedEvent = new ();
 
-		private readonly NetEvent0 hurtAnimationEvent = new NetEvent0 ();
+		private readonly NetEvent0 hurtAnimationEvent = new ();
 
 		public Starbeast ()
-		{}
+		{ }
 
 		public Starbeast (CropTile cropTile, bool primary)
 		: base (cropTile, primary, primary, !primary)
@@ -77,27 +77,28 @@ namespace Cropbeasts.Beasts
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(Sprite.textureName.Value, new Rectangle (0, 64, 16, 16), 200f,
 				4, 0, Position + new Vector2 (0f, -32f), flicker: false,
-				flipped: false) { scale = 4f });
+				flipped: false)
+			{ scale = 4f });
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(362, 30f, 6, 1, Position + new Vector2 (-16 + Game1.random.Next (64),
-					Game1.random.Next (64) - 32), flicker: false,
-				(Game1.random.NextDouble () < 0.5) ? true : false)
-				{ delayBeforeAnimationStart = 100, color = primaryColor.Value });
+					Game1.random.Next (64) - 32),
+				flicker: false, Game1.random.NextDouble () < 0.5)
+			{ delayBeforeAnimationStart = 100, color = primaryColor.Value });
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(362, 30f, 6, 1, Position + new Vector2 (-16 + Game1.random.Next (64),
-					Game1.random.Next (64) - 32), flicker: false,
-				(Game1.random.NextDouble () < 0.5) ? true : false)
-				{ delayBeforeAnimationStart = 200, color = primaryColor.Value });
+					Game1.random.Next (64) - 32),
+				flicker: false, Game1.random.NextDouble () < 0.5)
+			{ delayBeforeAnimationStart = 200, color = primaryColor.Value });
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(362, 30f, 6, 1, Position + new Vector2 (-16 + Game1.random.Next (64),
-					Game1.random.Next (64) - 32), flicker: false,
-				(Game1.random.NextDouble () < 0.5) ? true : false)
-				{ delayBeforeAnimationStart = 300, color = primaryColor.Value });
+					Game1.random.Next (64) - 32),
+				flicker: false, Game1.random.NextDouble () < 0.5)
+			{ delayBeforeAnimationStart = 300, color = primaryColor.Value });
 			currentLocation.temporarySprites.Add (new TemporaryAnimatedSprite
 				(362, 30f, 6, 1, Position + new Vector2 (-16 + Game1.random.Next (64),
-					Game1.random.Next (64) - 32), flicker: false,
-				(Game1.random.NextDouble () < 0.5) ? true : false)
-				{ delayBeforeAnimationStart = 400, color = primaryColor.Value });
+					Game1.random.Next (64) - 32),
+				flicker: false, Game1.random.NextDouble () < 0.5)
+			{ delayBeforeAnimationStart = 400, color = primaryColor.Value });
 		}
 
 		public override void drawAboveAllLayers (SpriteBatch b)
@@ -216,7 +217,7 @@ namespace Cropbeasts.Beasts
 			else if (withinPlayerThreshold (2) && Game1.random.NextDouble () < 0.05)
 			{
 				Vector2 trajectory = Utility.getAwayFromPlayerTrajectory
-					(GetBoundingBox(), Player) / 4f;
+					(GetBoundingBox (), Player) / 4f;
 				setTrajectory ((int) trajectory.X, (int) trajectory.Y);
 			}
 			else if (Game1.random.NextDouble () < ((firingCooldown > 0) ? 0.05 : 0.01))

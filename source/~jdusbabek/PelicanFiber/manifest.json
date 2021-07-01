@@ -11,7 +11,7 @@
 {
   "Name": "PelicanFiber",
   "Author": "jwdred",
-  "Version": "3.1.1",
+  "Version": "3.1.2-unofficial.11-strobe",
   "Description": "Order stuff over the internet, and save all kinds of money!",
   "UniqueID": "jwdred.PelicanFiber",
   "EntryDll": "PelicanFiber.dll",

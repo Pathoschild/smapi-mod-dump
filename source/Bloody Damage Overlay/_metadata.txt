@@ -6,10 +6,10 @@ mods:
    Bloody Damage Overlay
 
 latest commit:
-   changeset:   48:211fc11c0599
+   changeset:   57:f0014a4875f5
    tag:         tip
    user:        Pandu POLUAN <pepoluan@gmail.com>
-   date:        Fri May 28 15:37:47 2021 +0700
-   summary:     Added tag 0.8.1 for changeset e1f517d7085f
+   date:        Sun Jun 27 02:39:47 2021 +0700
+   summary:     Added tag 0.10.0 for changeset 9208cecf7951
    
    

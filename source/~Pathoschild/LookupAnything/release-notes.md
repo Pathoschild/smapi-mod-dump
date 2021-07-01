@@ -11,7 +11,9 @@ for queries and analysis.**
 # Release notes
 ## Upcoming release
 * You can now open the search UI when another menu is open, similar to the lookup UI.
+* Fixed lookups for custom seeds added via Json Assets not showing crop info.
 * Fixed some fish pond drops shown as requiring zero fish instead of one.
+* Fixed monster drop list showing 'Error Item' in some special cases.
 
 ## 1.34.2
 Released 25 May 2021.

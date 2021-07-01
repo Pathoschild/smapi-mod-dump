@@ -136,11 +136,23 @@ namespace ExpandedFridge
         /// Creates a new inventory menu from a chest with option for showing the color picker.
         public static ItemGrabMenu GetNewItemGrabMenuFromChest(Chest chest, bool showColorPicker)
         {
-            return new ItemGrabMenu((IList<Item>)chest.items, false, true, new
+            var igm = new ItemGrabMenu((IList<Item>)chest.items, false, true, new
                     InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems),
                     new ItemGrabMenu.behaviorOnItemSelect(chest.grabItemFromInventory), (string)null,
                     new ItemGrabMenu.behaviorOnItemSelect(chest.grabItemFromChest), false, true, true, true, true, 1,
                     !showColorPicker ? (Item)null : (Item)chest, !showColorPicker ? -1 : 1, (object)chest);
+            if (igm.chestColorPicker != null)
+            {
+                var r = igm.colorPickerToggleButton.bounds;
+                r.Y -= 128+32;
+                igm.colorPickerToggleButton.bounds = r;
+                igm.chestColorPicker.itemToDrawColored = null;
+            }
+            if (igm.fillStacksButton != null)
+            {
+                igm.fillStacksButton.bounds = new Rectangle(igm.xPositionOnScreen + igm.width, igm.yPositionOnScreen + igm.height / 3 - 64 - 64 - 16, 64, 64);
+            }
+            return igm;
         }
 
         /// Moves all mini fridges in all farmhouses out of the map bounds.

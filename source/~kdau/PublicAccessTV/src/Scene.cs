@@ -22,7 +22,6 @@ namespace PublicAccessTV
 	{
 		protected static IModHelper Helper => ModEntry.Instance.Helper;
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
-		protected static Type CustomTVMod => ModEntry.CustomTVMod;
 
 		public string message;
 		public TemporaryAnimatedSprite background;
@@ -74,7 +73,6 @@ namespace PublicAccessTV
 				cue.Play ();
 			}
 
-
 			Helper.Reflection.GetField<TemporaryAnimatedSprite> (tv, "screen")
 				.SetValue (background);
 			Helper.Reflection.GetField<TemporaryAnimatedSprite> (tv, "screenOverlay")
@@ -88,8 +86,8 @@ namespace PublicAccessTV
 		{
 			if (afterAction != null)
 				afterAction.Invoke ();
-			
-			currentChannel.runProgram (currentTV);
+
+			currentChannel.runNextScene (currentTV);
 		}
 
 		protected void playCustomSound (string filename)
@@ -105,10 +103,10 @@ namespace PublicAccessTV
 			}
 		}
 
-		[MethodImplAttribute(MethodImplOptions.NoInlining)] 
+		[MethodImpl (MethodImplOptions.NoInlining)]
 		private void playSoundWithSoundPlayer (string path)
 		{
-			SoundPlayer sound = new SoundPlayer (path);
+			SoundPlayer sound = new (path);
 			sound.Play ();
 		}
 	}

@@ -1,0 +1,13 @@
+{
+	"SundropPark":[
+		{
+			"Texture":"MajesticOak",
+			"Position":[19, 68],
+			"Regions":{
+				"Default":[0, 0, 10, 9],
+				"Winter":[10, 0, 10, 9]
+			}
+		}
+	],
+	
+}

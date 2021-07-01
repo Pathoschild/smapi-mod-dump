@@ -23,8 +23,8 @@ namespace Cropbeasts
 	public static class Utilities
 	{
 		private static IModHelper Helper => ModEntry.Instance.Helper;
-		private static IMonitor Monitor => ModEntry.Instance.Monitor;
-		private static ModConfig Config => ModConfig.Instance;
+		// private static IMonitor Monitor => ModEntry.Instance.Monitor;
+		// private static ModConfig Config => ModConfig.Instance;
 
 		// Accesses Game1.multiplayer.
 		public static Multiplayer MP => Helper.Reflection.GetField<Multiplayer>
@@ -34,10 +34,10 @@ namespace Cropbeasts
 		// given crop harvest object.
 		public static Crop MakeNonceCrop (int harvestIndex, Point tileLocation)
 		{
-			Crop seedLookup = new Crop ();
+			Crop seedLookup = new ();
 			seedLookup.indexOfHarvest.Value = harvestIndex;
 			seedLookup.InferSeedIndex ();
-			Crop crop = new Crop (seedLookup.netSeedIndex.Value,
+			Crop crop = new (seedLookup.netSeedIndex.Value,
 				tileLocation.X, tileLocation.Y);
 			crop.growCompletely ();
 			return crop;
@@ -56,15 +56,16 @@ namespace Cropbeasts
 		// (not turned off, not rainy/stormy, not winter).
 		public static List<JunimoHut> FindActiveJunimoHuts (GameLocation location)
 		{
+			// StardewValley.JunimoHut still uses these non-locational checks.
 			if (Game1.IsWinter || Game1.isRaining)
 				return new List<JunimoHut> ();
 
-			if (!(location is Farm farm))
+			if (location is not Farm farm)
 				return new List<JunimoHut> ();
 
 			return farm.buildings
 				.Where ((bldg) => bldg is JunimoHut jh && !jh.noHarvest.Value)
-				.Select ((bldg => bldg as JunimoHut))
+				.Select (bldg => bldg as JunimoHut)
 				.ToList ();
 		}
 
@@ -134,18 +135,24 @@ namespace Cropbeasts
 				cue.Play ();
 			}
 			catch (InvalidOperationException)
-			{}
+			{ }
 		}
 
-		// Tries to stop a sound cue, but uses reflection and ignores the
+		// Tries to stop a sound cue, but uses reflection and allows for the
 		// nonexistence of the method since some players have a version of the
-		// game and/or XNA that doesn't like this.
+		// game and/or XNA that doesn't like this. Also intercepts and discards
+		// TypeLoadException which some players were getting that anyway.
 		public static void TryStopCue (ICue cue)
 		{
-			IReflectedMethod stop =
-				Helper.Reflection.GetMethod (cue, "Stop", false);
-			if (stop != null)
-				stop.Invoke (AudioStopOptions.AsAuthored);
+			try
+			{
+				IReflectedMethod stop =
+					Helper.Reflection.GetMethod (cue, "Stop", false);
+				if (stop != null)
+					stop.Invoke (AudioStopOptions.AsAuthored);
+			}
+			catch (TypeLoadException)
+			{ }
 		}
 	}
 }

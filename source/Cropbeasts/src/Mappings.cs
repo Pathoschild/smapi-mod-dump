@@ -79,8 +79,7 @@ namespace Cropbeasts
 
 		public bool matchesFilter (string filter)
 		{
-			List<string> identifiers = new List<string>
-				{ "any", harvestName, beastName };
+			List<string> identifiers = new () { "any", harvestName, beastName };
 			return filter == null ||
 				Utility.fuzzySearch (filter, identifiers) != null;
 		}
@@ -97,11 +96,11 @@ namespace Cropbeasts
 	{
 		private static IModHelper Helper => ModEntry.Instance.Helper;
 		private static IMonitor Monitor => ModEntry.Instance.Monitor;
-		private static ModConfig Config => ModConfig.Instance;
+		// private static ModConfig Config => ModConfig.Instance;
 
-		private static Dictionary<string, string> rawData;
-		private static Dictionary<int, Mapping> regularMappings;
-		private static Dictionary<int, Mapping> giantMappings;
+		private static Dictionary<string, string> RawData;
+		private static Dictionary<int, Mapping> RegularMappings;
+		private static Dictionary<int, Mapping> GiantMappings;
 
 		public static Mapping Get (int harvestIndex, bool giantCrop)
 		{
@@ -109,8 +108,8 @@ namespace Cropbeasts
 			try
 			{
 				return giantCrop
-					? giantMappings[harvestIndex]
-					: regularMappings[harvestIndex];
+					? GiantMappings[harvestIndex]
+					: RegularMappings[harvestIndex];
 			}
 			catch (KeyNotFoundException)
 			{
@@ -122,16 +121,16 @@ namespace Cropbeasts
 		{
 			Load ();
 			if (mapping.giantCrop)
-				giantMappings[mapping.harvestIndex] = mapping;
+				GiantMappings[mapping.harvestIndex] = mapping;
 			else
-				regularMappings[mapping.harvestIndex] = mapping;
+				RegularMappings[mapping.harvestIndex] = mapping;
 		}
 
 		public static List<Mapping> GetAll ()
 		{
 			Load ();
-			var regular = regularMappings.Values;
-			var giant = giantMappings.Values;
+			var regular = RegularMappings.Values;
+			var giant = GiantMappings.Values;
 			return new IEnumerable<Mapping>[] { regular, giant }
 				.SelectMany ((m) => m).ToList ();
 		}
@@ -139,27 +138,27 @@ namespace Cropbeasts
 		public static List<Mapping> GetForBeast (string name)
 		{
 			Load ();
-			var regular = regularMappings.Values.Where ((m) => m.beastName == name);
-			var giant = giantMappings.Values.Where ((m) => m.beastName == name);
+			var regular = RegularMappings.Values.Where ((m) => m.beastName == name);
+			var giant = GiantMappings.Values.Where ((m) => m.beastName == name);
 			return new IEnumerable<Mapping>[] { regular, giant }
 				.SelectMany ((m) => m).ToList ();
 		}
 
 		internal static void Load (bool reload = false)
 		{
-			if (!reload && regularMappings != null) return;
+			if (!reload && RegularMappings != null) return;
 
-			rawData = Helper.Content.Load<Dictionary<string, string>>
+			RawData = Helper.Content.Load<Dictionary<string, string>>
 				("Data\\Cropbeasts", ContentSource.GameContent);
-			regularMappings = new Dictionary<int, Mapping> ();
-			giantMappings = new Dictionary<int, Mapping> ();
+			RegularMappings = new Dictionary<int, Mapping> ();
+			GiantMappings = new Dictionary<int, Mapping> ();
 
-			foreach (string key in rawData.Keys)
+			foreach (string key in RawData.Keys)
 			{
 				try
 				{
 					string[] keyFields = key.Split ('/');
-					string[] valueFields = rawData[key].Split ('/');
+					string[] valueFields = RawData[key].Split ('/');
 
 					int harvestIndex = Convert.ToInt32 (keyFields[0]);
 					bool giantCrop = keyFields.Length > 1 &&
@@ -170,9 +169,9 @@ namespace Cropbeasts
 						? Convert.ToDouble (valueFields[1]) : 0.0;
 
 					Color? primaryColor = (valueFields.Length > 2)
-						? convertToColor (valueFields[2]) : null;
+						? ConvertToColor (valueFields[2]) : null;
 					Color? secondaryColor = (valueFields.Length > 3)
-						? convertToColor (valueFields[3]) : null;
+						? ConvertToColor (valueFields[3]) : null;
 
 					Add (new Mapping (harvestIndex, giantCrop, beastName,
 						choiceWeight, primaryColor, secondaryColor));
@@ -185,7 +184,7 @@ namespace Cropbeasts
 			}
 		}
 
-		private static Color? convertToColor (string field)
+		private static Color? ConvertToColor (string field)
 		{
 			var converter = System.ComponentModel.TypeDescriptor
 				.GetConverter (System.Drawing.Color.White);

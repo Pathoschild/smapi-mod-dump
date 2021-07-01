@@ -9,14 +9,12 @@
 *************************************************/
 
 using System;
-using System.IO;
+using FishExclusions.Types;
 using Harmony;
-using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
-using StardewValley.Tools;
 
 namespace FishExclusions
 {
@@ -29,6 +27,8 @@ namespace FishExclusions
         public static ModConfig Config;
         
         public static bool ExclusionsEnabled = true;
+
+        public static IJsonAssetsApi JsonAssetsApi;
         
         #endregion
         #region Public methods
@@ -45,59 +45,25 @@ namespace FishExclusions
             }
             catch (Exception exception)
             {
-                if (!TryConvertConfig(Helper.DirectoryPath))
-                {
-                    // Notify user and exit.
-                    ModMonitor.Log($"Config file is formatted incorrectly, exiting. Details: {exception.Message}",
-                        LogLevel.Warn);
-
-                    return;
-                }
-
-                ModMonitor.Log("Converted legacy config to the new format successfully.", LogLevel.Debug);
+                // Notify user and exit.
+                ModMonitor.Log($"Config file is formatted incorrectly, exiting. Details: {exception.Message}",
+                    LogLevel.Warn);
             }
             
             CommandManager.RegisterCommands(helper);
+            
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+        }
+        
+        public void SaveConfig(ModConfig newConfig)
+        {
+            Config = newConfig;
+            Helper.WriteConfig(newConfig);
         }
 
         #endregion
         #region Private methods
-        
-        /// <summary>
-        /// Try to convert legacy config from v1.0.0 to the new format.
-        /// </summary>
-        /// <returns>Whether the conversion went successfully.</returns>
-        private bool TryConvertConfig(string directoryPath)
-        {
-            LegacyModConfig legacyConfig;
-            var newConfig = new ModConfig();
-            
-            using (var reader = new StreamReader(Path.Combine(directoryPath, "config.json")))
-            {
-                var json = reader.ReadToEnd();
 
-                try
-                {
-                    legacyConfig = JsonConvert.DeserializeObject<LegacyModConfig>(json);
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-
-            if (legacyConfig.ItemsToExclude is null) return false;
-
-            newConfig.ItemsToExclude.CommonExclusions = legacyConfig.ItemsToExclude;
-            newConfig.TimesToRetry = legacyConfig.TimesToRetry;
-            newConfig.ItemToCatchIfAllFishIsExcluded = legacyConfig.ItemToCatchIfAllFishIsExcluded;
-            
-            Helper.WriteConfig(newConfig);
-
-            return true;
-        }
-        
         private void ApplyHarmonyPatches()
         {
             var harmony = HarmonyInstance.Create("GZhynko.FishExclusions");
@@ -119,6 +85,9 @@ namespace FishExclusions
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             ApplyHarmonyPatches();
+            ModConfig.SetUpModConfigMenu(Config, this);
+            
+            JsonAssetsApi = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
         }
         
         #endregion

@@ -51,10 +51,10 @@
     <ItemGroup>
         <Compile Include="CommandManager.cs" />
         <Compile Include="HarmonyPatches.cs" />
-        <Compile Include="LegacyModConfig.cs" />
-        <Compile Include="ModConfig.cs" />
         <Compile Include="ModEntry.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Types\IJsonAssetsApi.cs" />
+        <Compile Include="Types\ModConfig.cs" />
         <Compile Include="Utils.cs" />
     </ItemGroup>
     <ItemGroup>

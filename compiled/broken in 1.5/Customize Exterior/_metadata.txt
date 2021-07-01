@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1099
-IDs: spacechase0.CustomizeExterior, CustomizeExterior
-update keys: Nexus:1099, Chucklefish:4675, GitHub:spacechase0/CustomizeExterior

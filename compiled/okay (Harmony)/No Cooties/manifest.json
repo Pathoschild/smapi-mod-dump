@@ -1,0 +1,10 @@
+{
+  "Name": "No Cooties",
+  "Author": "ceruleandeep",
+  "Version": "1.0.1",
+  "Description": "Spouses hug instead of kissing",
+  "UniqueID": "ceruleandeep.nocooties",
+  "EntryDll": "NoCooties.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:9000"]
+}

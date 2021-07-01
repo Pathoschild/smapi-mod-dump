@@ -7,9 +7,9 @@ mods:
    Mushroom Propagator Automation
 
 latest commit:
-   commit ac4eb538a8fb261580b6a56461388ad5442f9811
-   Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Wed Dec 23 02:16:44 2020 +1100
+   commit 64945026098cc6e427bf72be6412b36f40c5a178
+   Author: blueberry <36073351+b-b-blueberry@users.noreply.github.com>
+   Date:   Sat Jun 5 16:28:05 2021 +1000
    
-       Release 2.0.1: Fixed Automate support, mod is now split into BlueberryMushroomMachine and BlueberryMushroomAutomation in the main file.
+       Update README.md
    

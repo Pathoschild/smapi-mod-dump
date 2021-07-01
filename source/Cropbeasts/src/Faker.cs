@@ -17,14 +17,13 @@ using System.Linq;
 
 namespace Cropbeasts
 {
-#if DEBUG
 	internal static class Faker
 	{
-		private static IModHelper Helper => ModEntry.Instance.Helper;
+		// private static IModHelper Helper => ModEntry.Instance.Helper;
 		private static IMonitor Monitor => ModEntry.Instance.Monitor;
-		private static ModConfig Config => ModConfig.Instance;
+		// private static ModConfig Config => ModConfig.Instance;
 
-		public static void fake (string harvestName, bool giantCrop, uint count,
+		public static void Fake (string harvestName, bool giantCrop, uint count,
 			Farmer near = null)
 		{
 			// Check preconditions.
@@ -39,17 +38,16 @@ namespace Cropbeasts
 				foreach (Mapping mapping in Mappings.GetAll ())
 				{
 					if (mapping.available)
-						fakeOne (mapping.harvestIndex, mapping.giantCrop, near);
+						FakeOne (mapping.harvestIndex, mapping.giantCrop, near);
 				}
 				return;
 			}
 
-			int harvestIndex;
-			if (tryParseHarvestItem (harvestName, out harvestIndex) &&
+			if (TryParseHarvestItem (harvestName, out int harvestIndex) &&
 				Mappings.Get (harvestIndex, giantCrop) != null)
 			{
 				for (uint i = 0; i < count; ++i)
-					fakeOne (harvestIndex, giantCrop, near);
+					FakeOne (harvestIndex, giantCrop, near);
 				return;
 			}
 
@@ -62,14 +60,14 @@ namespace Cropbeasts
 				if (count == 1u)
 				{
 					foreach (Mapping mapping in mappings)
-						fakeOne (mapping.harvestIndex, mapping.giantCrop, near);
+						FakeOne (mapping.harvestIndex, mapping.giantCrop, near);
 				}
 				else
 				{
 					for (uint i = 0; i < count; ++i)
 					{
 						var mapping = mappings[i % mappings.Length];
-						fakeOne (mapping.harvestIndex, mapping.giantCrop, near);
+						FakeOne (mapping.harvestIndex, mapping.giantCrop, near);
 					}
 				}
 				return;
@@ -78,7 +76,7 @@ namespace Cropbeasts
 			Monitor.Log ($"Harvest \"{harvestName}\" not recognized for fake_cropbeast.", LogLevel.Error);
 		}
 
-		private static void fakeOne (int harvestIndex, bool giantCrop,
+		private static void FakeOne (int harvestIndex, bool giantCrop,
 			Farmer near = null)
 		{
 			near ??= Game1.player;
@@ -96,15 +94,8 @@ namespace Cropbeasts
 			TerrainFeature feature;
 			if (giantCrop)
 			{
-				if (location is Farm farm)
-				{
-					feature = new GiantCrop (harvestIndex, tileLocation);
-					farm.resourceClumps.Add (feature as ResourceClump);
-				}
-				else
-				{
-					throw new Exception ($"Cannot fake a Giant Cropbeast in {location.Name}.");
-				}
+				feature = new GiantCrop (harvestIndex, tileLocation);
+				location.resourceClumps.Add (feature as ResourceClump);
 			}
 			else
 			{
@@ -112,7 +103,7 @@ namespace Cropbeasts
 				location.terrainFeatures.Add (tileLocation, feature);
 			}
 
-			CropTile cropTile = new CropTile (feature, crop, giantCrop, location,
+			CropTile cropTile = new (feature, crop, giantCrop, location,
 				Utility.Vector2ToPoint (tileLocation), fake: true);
 			if (cropTile.state != CropTile.State.Available)
 			{
@@ -124,7 +115,7 @@ namespace Cropbeasts
 			DelayedAction.functionAfterDelay (() => Spawner.Spawn (cropTile), 0);
 		}
 
-		private static bool tryParseHarvestItem (string harvest, out int harvestIndex)
+		private static bool TryParseHarvestItem (string harvest, out int harvestIndex)
 		{
 			Item harvestItem = Utility.fuzzyItemSearch
 				(harvest.Replace ('_', ' '));
@@ -140,5 +131,4 @@ namespace Cropbeasts
 			}
 		}
 	}
-#endif
 }

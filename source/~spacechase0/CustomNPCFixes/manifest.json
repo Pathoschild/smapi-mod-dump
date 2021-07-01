@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Custom NPC Fixes",
+    "Author": "spacechase0",
+    "Version": "1.2.3",
+    "MinimumApiVersion": "3.9.5",
+    "Description": "Fixes NPC spawning in custom locations, pathing to custom locations, and schedules for new NPCs.",
+    "UniqueID": "spacechase0.CustomNPCFixes",
+    "EntryDll": "CustomNPCFixes.dll",
+    "UpdateKeys": [ "Nexus:3849" ],
+    "Dependencies": [
+        {
+            "UniqueID": "Platonymous.TMXLoader",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "Pathoschild.ContentPatcher",
+            "IsRequired": false
+        }
+    ]
+}

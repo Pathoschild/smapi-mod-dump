@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/TSlex/StardewValley
+   Git: https://github.com/TSlex/StardewValley.git
+
+mods:
+   Item Research 'n' Spawn
+
+latest commit:
+   commit 8c5bec19acec67b73d3627ebf83b13452bf60210
+   Author: aleksi_ttu <aleksi@ttu.ee>
+   Date:   Thu Jun 24 11:04:37 2021 +0300
+   
+       Prepare for release
+   

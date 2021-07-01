@@ -6,9 +6,9 @@ mods:
    XPMultiplier.Space
 
 latest commit:
-   commit abde01f8e23cb25227fd014ed84c94e2bee5cd2e
+   commit 6deba9b24f4bc416108fe1955341c986594c14af
    Author: nofilenamed <nofilenamed@gmail.com>
-   Date:   Tue May 18 14:05:15 2021 +0200
+   Date:   Sat Jun 26 09:11:27 2021 +0200
    
-       initial
+       Update manifest.json
    

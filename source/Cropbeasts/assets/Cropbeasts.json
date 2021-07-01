@@ -17,11 +17,13 @@
 	"256/false/Tomato       ": "Berrybeast     /0.0/#c60000/#420000",
 	"300/false/Amaranth     ": "Grainbeast     /0.0/#930a8c/#b1456b",
 	"270/false/Corn         ": "Grainbeast     /0.0/#d8b51e/#20731d",
+	"771/false/Fiber        ": "Grainbeast     /0.0/#44a318/#0d4441",
 	"271/false/Unmilled Rice": "Grainbeast     /0.0/#7fa12e/#965837",
 	"262/false/Wheat        ": "Grainbeast     /0.0/#ecde52/#b49909",
 	"274/false/Artichoke    ": "Leafbeast      /0.0/#429a05/#3c8d3e",
 	"278/false/Bok Choy     ": "Leafbeast      /0.0/#bae395/#4da343",
 	"250/false/Kale         ": "Leafbeast      /0.0/#2b8f54/#2b8f54",
+	"832/false/Pineapple    ": "Leafbeast      /0.0/#bb6a0d/#9aea10",
 	"266/false/Red Cabbage  ": "Leafbeast      /0.0/#bc218a/#58b614",
 	"284/false/Beet         ": "Rootbeast      /0.0/#6f0000/#7f9a01",
 	"248/false/Garlic       ": "Rootbeast      /0.0/#ead397/#50cf29",
@@ -29,6 +31,7 @@
 	"192/false/Potato       ": "Rootbeast      /0.0/#d99f16/#4aa414",
 	"264/false/Radish       ": "Rootbeast      /0.0/#c72323/#49b003",
 	"252/false/Rhubarb      ": "Rootbeast      /0.0/#cd3100/#368a18",
+	"830/false/Taro Root    ": "Rootbeast      /0.0/#d1a733/#037000",
 	"280/false/Yam          ": "Rootbeast      /0.0/#d88031/#52ad03",
 	"398/false/Grape        ": "Trellisbeast   /0.0/#7c1a99/#0c0051",
 	"188/false/Green Bean   ": "Trellisbeast   /0.0/#71ed5b/#006d4a",
@@ -39,5 +42,6 @@
 	"454/false/Ancient Fruit": "Ancient Beast  /0.4/#23bbcc/#175ce8",
 	 "90/false/Cactus Fruit ": "Cactusbeast    /0.2/#ff0400/#009911",
 	"433/false/Coffee Bean  ": "Coffeebeast    /0.1/#d7b142/#8b5916",
+	"889/false/Qi Fruit     ": "Qi Beast       /0.3/#3d54fb/#0d0d70",
 	"268/false/Starfruit    ": "Starbeast      /0.6/#ffa31c/#b2552b"
 }

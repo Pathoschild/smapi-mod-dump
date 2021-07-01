@@ -27,8 +27,6 @@ namespace PublicAccessTV
 				return false;
 
 			return asset.AssetNameEquals ($"Data\\Events\\{GarbageChannel.EventMap}") ||
-				// TODO: asset.AssetNameEquals ($"Data\\Events\\{ShoppingChannel.EventMap}") ||
-				// TODO: asset.AssetNameEquals ($"Data\\Events\\{TailoringChannel.EventMap}") ||
 				asset.AssetNameEquals ($"Data\\Events\\{TrainsChannel.EventMap}");
 		}
 
@@ -38,16 +36,6 @@ namespace PublicAccessTV
 
 			if (asset.AssetNameEquals ($"Data\\Events\\{GarbageChannel.EventMap}"))
 				applyEvents ("garbage", data, GarbageChannel.Events);
-
-			/* TODO:
-			if (asset.AssetNameEquals ($"Data\\Events\\{ShoppingChannel.EventMap}"))
-				ApplyEvents ("shopping", data, ShoppingChannel.Events);
-			*/
-
-			/* TODO:
-			if (asset.AssetNameEquals ($"Data\\Events\\{TailoringChannel.EventMap}"))
-				ApplyEvents ("tailoring", data, TailoringChannel.Events);
-			*/
 
 			if (asset.AssetNameEquals ($"Data\\Events\\{TrainsChannel.EventMap}"))
 				applyEvents ("trains", data, TrainsChannel.Events);

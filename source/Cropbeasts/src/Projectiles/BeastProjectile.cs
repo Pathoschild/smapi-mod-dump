@@ -20,7 +20,7 @@ using SObject = StardewValley.Object;
 namespace Cropbeasts.Projectiles
 {
 	internal class FakeDamager : Monster
-	{}
+	{ }
 
 	public abstract class BeastProjectile : Projectile
 	{
@@ -28,15 +28,15 @@ namespace Cropbeasts.Projectiles
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
 		protected static ModConfig Config => ModConfig.Instance;
 
-		public readonly NetInt damageToFarmer = new NetInt (0);
+		public readonly NetInt damageToFarmer = new (0);
 
 		// parryCatchIndex defaults to currentTileSheetIndex if spriteFromObjectSheet, else none
-		protected readonly NetInt parryCatchIndex = new NetInt (-1);
-		protected readonly NetDouble parryCatchChance = new NetDouble (0.0);
+		protected readonly NetInt parryCatchIndex = new (-1);
+		protected readonly NetDouble parryCatchChance = new (0.0);
 
-		protected readonly NetString firingSound = new NetString ();
-		protected readonly NetString collisionSound = new NetString ();
-		protected readonly NetBool shouldExplode = new NetBool (false);
+		protected readonly NetString firingSound = new ();
+		protected readonly NetString collisionSound = new ();
+		protected readonly NetBool shouldExplode = new (false);
 
 		protected BeastProjectile ()
 		{
@@ -102,7 +102,7 @@ namespace Cropbeasts.Projectiles
 
 		public override void behaviorOnCollisionWithMineWall (int _tileX,
 			int _tileY)
-		{}
+		{ }
 
 		public override void behaviorOnCollisionWithOther (GameLocation location)
 		{
@@ -113,7 +113,7 @@ namespace Cropbeasts.Projectiles
 
 		public override void behaviorOnCollisionWithMonster (NPC _npc,
 			GameLocation _location)
-		{}
+		{ }
 
 		public override void updatePosition (GameTime time)
 		{

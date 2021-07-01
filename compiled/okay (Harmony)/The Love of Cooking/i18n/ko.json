@@ -1,7 +1,39 @@
 ﻿{
+	// Config options
+	"config.option.addcookingmenu_name": "새로운 요리 메뉴",
+	"config.option.addcookingmenu_description": "새 농장에서 2주 후에 우편으로 배달되는 엄마의 요리책을 추가하세요!\n레시피는 요리책에 저장되며 검색, 필터링 및 즐겨찾기가 가능합니다.\n재료는 수동으로 추가되며, 큰 스택은 한 번에 조리할 수 있습니다.",
+	"config.option.addcookingcommunitycentrebundles_name": "새로운 마을회관 꾸러미",
+	"config.option.addcookingcommunitycentrebundles_description": "마을회관에 3개의 새로운 부엌 꾸러미를 추가하세요!\n설치한 모드에 따라 기본게임, PPJA, 또는 LOC의 새 작물에서 추출됩니다.\n\n현재 멀티플레이어에선 사용할 수 없습니다.",
+	"config.option.addcookingskillandrecipes_name": "새로운 요리 스킬과 메뉴",
+	"config.option.addcookingskillandrecipes_description": "새로운 요리 스킬은 요리를 하거나 NPC들과 친구가 되면서 레벨업할 수 있습니다!\n새로운 레시피가 해금되고, 새로운 부스트가 적용되는 직업을 선택할 수 있습니다.\n\n변경사항은 게임을 다시 켜야 적용됩니다.",
+	"config.option.addcookingtoolprogression_name": "새로운 요리도구",
+	"config.option.addcookingtoolprogression_description": "후라이팬의 등급으로 요리할 때 사용할 수 있는 재료의 수가 결정됩니다!\n구리 후라이팬은 2개, 이리듐 후라이팬은 6개의 재료를 사용할 수 있습니다.\n클린트에게서 후라이팬을 업그레이드 할 수 있는데, 다른 도구에 비해 저렴하게 작업해줄겁니다.\n쓰레기통과 비슷하게 인벤토리 슬롯을 차지하지 않습니다. 요리 메뉴에서 찾을 수 있습니다.\n\n새로운 요리 메뉴에 필요합니다.",
+	"config.option.addnewcropsandstuff_name": "새로운 작물",
+	"config.option.addnewcropsandstuff_description": "양파, 당근, 양배추는 2년차부터 피에르의 가게에서 판매합니다!\n마늘, 아티초크, 붉은 양배추와 함께 나타나기 시작합니다.\n추가된 새로운 작물은 일부 요리의 재료로도 요구됩니다.\n\nPPJA's Fruit and Veggies모드와 함께 사용할 수 없습니다.",
+	"config.option.addcookingquestline_name": "요리 퀘스트라인 추가",
+	"config.option.addcookingquestline_description": "...",
+	"config.option.addreciperebalancing_name": "레시피 버프 값 재조정",
+	"config.option.addreciperebalancing_description": "음식 상태 버프의 양과 기간은 각각의 레시피에 따라 재조정됩니다!\n버프 값이 재조정되었습니다.\n지속 시간은 edibility에 따라 감소하고 골드 값에 따라 증가합니다.\n버프 대신 체력회복을 더하는 재료도 있습니다.",
+	"config.option.addbuffreassigning_name": "재료에 따른 레시피 버프",
+	"config.option.addbuffreassigning_description": "버프 상태 선택은 사용된 재료에 따라 레시피에 재할당됩니다!\n일반적으로 큰 변화를 일으키지 않으며, 대신 레시피 효과를 조금 더 예측할 수 있습니다.",
+	"config.option.playcookinganimation_name": "요리 애니메이션",
+	"config.option.playcookinganimation_description": "농부가 부엌에서 요리할 때  음식과 그 재료에 따라 약간의 애니메이션을 재생합니다.",
+	"config.option.hidefoodbuffsuntileaten_name": "먹어볼 때까지 음식 버프 숨기기",
+	"config.option.hidefoodbuffsuntileaten_description": "해당 레시피를 먹어보기 전까지 요리 메뉴에서 상태값과 버프를 숨깁니다!\n비활성화하면 요리책은 항상 회복량과 버프를 보여줍니다.\n\n새로운 요리 메뉴에 필요합니다.",
+	"config.option.foodhealingtakestime_name": "음식섭취 후 시간이 지나야 회복",
+	"config.option.foodhealingtakestime_description": "음식을 먹는 즉시 모든 체력과 에너지를 회복하지 않고 시간이 지나며 점차 체력을 회복합니다!\n체력과 기력이 낮을 때는 더 빨리 재생됩니다.\n재생율은 체력바가 가득 찼을 때 가장 느리게 체크되어 더 오래 연장됩니다.\n체력 재생 속도는 전투, 요리 및 채집과 같은 기술 레벨에 따라 조절됩니다.\n다른 음식을 먹으면 마지막으로 먹었던 음식에서 남은 체력을 더합니다.\n\n버프와 에너지를 더 잘 사용할 수도 있지만,\n위험에 처했을 때 즉시 체력을 회복할 수 없습니다.",
+	"config.option.foodcanburn_name": "음식이 탈 수 있음",
+	"config.option.foodcanburn_description": "요리할 때 음식을 완전히 태워버릴 수도 있습니다!\n탄 음식은 여전히 먹거나 약간의 돈을 위해 팔 수 있습니다.\n여러 개의 요리를 할 때는 한 개씩 판정합니다.\n탈 확률는 요리 레벨에 따라 줄어듭니다.\n\n실패를 즐기지 않으면 권장되지 않습니다.",
+	"config.option.resizekoreanfonts_name": "한글 글꼴 크기 조정",
+	"config.option.resizekoreanfonts_description": "기본 글꼴로 한국어로 재생하는 경우 이 설정을 계속 사용하도록 설정합니다.\n이미 FixFontOption 모드 또는 다른 폰트 리텍을 사용하여 글꼴 크기를 조정하는 경우 이 기능을 사용하지 않도록 설정할 수 있습니다.",
+	"config.features_label": "특징",
+	"config.changes_label": "변경하기",
+	"config.others_label": "기타",
+
 	// General strings
 	"world.range_gus.rejected": "거스의 조리대를 사용할 수 있을 정도로 친하지 않아요.",
 	"world.range_npc.rejected": "{{name}}의 부엌을 사용할 수 있을 정도로 친하지 않아요.",
+	"world.cooking_craftable.rejected_indoors": "실내에 둘 수 없습니다.",
 
 	"menu.cooking_equipment.name": "후라이팬",
 	"menu.cooking_equipment.description": "조리 시 재료를 {{level}} 종류 사용할 수 있습니다.",
@@ -24,6 +56,8 @@
 	"menu.cooking_recipe.favourite_label": "즐겨찾기",
 	"menu.cooking_recipe.quantity_label": "얼마나 많이 만들겠습니까?",
 	"menu.cooking_recipe.which_label": "어떤 것을 만들겠습니까?",
+	"menu.cooking_recipe.autofill_label": "재료 자동 채우기",
+
 
 	"menu.cooking_recipe.buff.0": "농사",
 	"menu.cooking_recipe.buff.1": "낚시",
@@ -58,9 +92,10 @@
 
 	// Cooking skill
 	"menu.cooking_skill.levelupbonus": "최대 {{Number}} 종류의 재료로 요리할 수 있게 되었습니다.",
-	"menu.cooking_skill.levelupbonus.2": "이제 {{Name}}을/를 양조할 수 있습니다.",
-	//"menu.cooking_skill.levelupbonus.3": "You can now craft {{Name}}.",
-	"menu.cooking_skill.levelupbonus.3": "이제 {{Name}}을/를 만들 수 있습니다.",
+	"menu.cooking_skill.levelupbonus.2": "쐐기풀 차를 만들 수 있습니다.",
+	//"menu.cooking_skill.levelupbonus.3": "이제 {{Name}}을/를 만들 수 있습니다.",
+	"menu.cooking_skill.levelup_burn": "음식이 탈 확률이 {{Number}}% 낮아집니다.",
+	
 
 	// Tier 1:
 	// Path 1: Cooking
@@ -97,6 +132,11 @@
 	"item.vegetable.label": "채소 (아무거나)",
 	"item.meat.label": "고기 (아무거나)",
 	"item.forage.label": "채집물 (아무거나)",
+	"item.cooking.label": "요리 (아무거나)",
+	"item.mineral.label": "광물 (아무거나)",
+	"item.seed.label": "씨앗 (아무거나)",
+	"item.metal.label": "금속이 (아무거나)",
+	"item.gem.label": "보석 (아무거나)",
 
 	// Kebab item interactions
 	"buff.kebab.quality_worst": "썩은 ",
@@ -112,6 +152,20 @@
 	"world.fisherman.inspect_1": "낚시하기 좋은 밤이지?$b#자, 꼬맹아. 이번엔 잘 잡았다.[{{id}}]",
 	"world.fisherman.inspect_2": "강 괴물을 본 적 있니, 꼬마야? 헤헤...$b#아, 동화를 믿는 나이는 아니구나.",
 	"world.fisherman.inspect_3": "만에서 여행하고 있는 시장 사람들한테는 썩 좋은 물건이 없어....",
+
+	// Notifications strings
+	"notification.icon.inspect": "Love of Cooking 알림",
+	"notification.dismiss.inspect": "알림 해제",
+	"notification.empty.inspect": "모든 알림을 읽었다!",
+	"notification.bundlemultiplayerwarning.inspect": "마을회관 꾸러미 비활성화되었다.",
+	"notification.bundlemultiplayerwarning.message": "멀티 플레이어 게임에서 발생하는 문제를 방지하기 위해, 새로운 마을회관 번들은 당분간 객실이 있는 환경에서 사용할 수 없습니다!\n\n멀티 플레이어용 농장을 호스팅하는 경우, 부엌 꾸러미를 비활성화해야 합니다.\n\n싱글 플레이의 경우, OK버튼을 눌러 부엌 꾸러미 진행상황을 불러올 수 있습니다.\n\n\n\n이전에 저장된 부엌 꾸러미 진행상황을 불러오겠습니까?",
+	"notification.cabinbuiltwarning.inspect": "새 플레이어가 가입하기 전에 저장 다시 불러오기",
+	"notification.cabinbuiltwarning.message": "멀티 플레이어 게임에서 발생하는 문제를 방지하기 위해, 새로운 마을회관 번들은 당분간 객실이 있는 환경에서 사용할 수 없습니다!\n\n멀티 플레이어용 농장을 호스팅하는 경우, 새로 온 플레이어가 잠을 자고 하루를 마감한 후 저장을 다시 불러올 때까지 기다리도록 하십시오.\n\n요리 꾸러미 진행 상황이 저장되며, 그 후 농장주가 안전하게 가입할 수 있습니다. 단일 플레이어 게임에서도 새 꾸러미를 불러올 수 있습니다.!",
+	"menu.yes_option": "예",
+	"menu.no_option": "아니오",
+	"menu.accept_option": "승인",
+	"menu.decline_option": "거절",
+	"menu.cancel_option": "돌아가기",
 
 	// Community Centre edits when using the Cooking bundle
 	"world.community_centre.kitchen": "부엌",

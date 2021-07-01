@@ -23,8 +23,7 @@ namespace ScryingOrb
 		protected override bool check ()
 		{
 			// Only accept a Scrying Orb. Don't consume it.
-			List<int> accepted = new List<int>
-				{ ModEntry.Instance.parentSheetIndex };
+			List<int> accepted = new () { ModEntry.Instance.parentSheetIndex };
 			if (!checkOffering (accepted: accepted, bigCraftable: true))
 				return false;
 
@@ -46,7 +45,7 @@ namespace ScryingOrb
 		}
 
 		protected override void doRun ()
-		{}
+		{ }
 
 		internal static void Reset ()
 		{

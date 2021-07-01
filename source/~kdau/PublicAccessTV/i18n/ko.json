@@ -9,7 +9,10 @@
 *************************************************/
 
 {
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
 
 	"garbage.event.linus01": "좋은 거 좀 찾았나?",
 	"garbage.event.linus02": "안녕, @. 여전히 쓰레기통들이 널 부르고 있는 것 같아서 기쁘군.",
@@ -54,6 +57,7 @@
 	"mining.opening": "모험가 친구들, 안녕하신가. 길과 내가 오늘 광산에 무슨 일이 있는지 당신들에게 알려줄 거야.",
 	"mining.opening.none": "이봐, 친구들. 오늘은 광산에 특별한 일이 없어.",
 	"mining.floor": "{{num}}층",
+	"mining.floorAndItem": "{{num}}층: {{itemName}}",
 	"mining.floors": "{{nums}}층과 {{lastNum}}층",
 	"mining.prediction.Mushroom": "우리 사이에 곰팡이가 피었구만! 우리 정찰대가 {{floors}}에서 버섯이 발견됐다고 보고했네.",
 	"mining.prediction.MonsterInfested": "{{floors}}에서 괴물들이 많이 움직이고 있단 사실이 포착됐으니까 충분히 무장하고 가도록 해.",
@@ -79,9 +83,9 @@
 	"nightEvents.Meteorite.reaction": "시민 여러분들께선 밤 동안은 실내에 계시기를 권고합니다. 창문으로 밖을 바라보면 멋진 광경이 펼쳐질 거예요. 만일 운석 충돌 사고가 일어난다면 지역 당국에 신고하시길 바랍니다.",
 	"nightEvents.Meteorite.closing": "모두들 안전하고 즐거운 저녁을 보내시길 바라겠습니다.",
 	"nightEvents.StrangeCapsule.opening": "존경하는 시민 여러분들께 알려드립니다. 오늘 밤 저희 지역 상공에서 외계 활동이 일어난다는 소문이 떠돌고 있습니다.",
-	"//Note on nightEvents.StrangeCapsule.reaction": "The next line is a joke about the Governor supposedly being an alien himself. During the line, he turns green and the background becomes distorted. The last sentence is meant to suggest that he has accidentally started talking about alien larvae being bred on Earth.",
+	// The next line is a joke about the Governor supposedly being an alien himself. During the line, he turns green and the background becomes distorted. The last sentence is meant to suggest that he has accidentally started talking about alien larvae being bred on Earth.
 	"nightEvents.StrangeCapsule.reaction": "저는 이것이 모두 그저 농담에 불과하다고 단언할 수 있습니다. 외계인은 존재하지 않습니다. 그들은 우리 사이에 이미 존재하고 있지도 않으며, 모든 것이 괜찮습니다. 그 자손들 역시 잘 지내고 있죠.",
-	"//Note on nightEvents.StrangeCapsule.closing": "For this line, the Governor and the background return to normal. The word 'human' here is a joke because he obviously isn't human.",
+	// For the next line, the Governor and the background return to normal. The word 'human' here is a joke because he obviously isn't human.
 	"nightEvents.StrangeCapsule.closing": "*에헴* 여러분 모두가 평범하고 인간다운 저녁을 보내시길 바라겠습니다.",
 	"nightEvents.NewYear.opening": "존경하는 시민 여러분들께 알려드립니다. 저희는 이 지역과 펀길 공화국 전체가 성공적으로 보낸 올 한해의 마지막 날을 맞이하게 됐습니다.",
 	"nightEvents.NewYear.reaction": "올해 우리 지역 산업체들의 생산량이 더 늘었다고 하더군요. 축하합니다. 특히 스타듀 밸리 농장에서 멋진 작물들의 생산량이 더 늘었다고 하던데, 정말 축하드립니다.",
@@ -114,13 +118,13 @@
 	"trains.later": "일정표를 더 살펴보자면, 기차가 {{date1}}, {{date2}}날에도 여길 지나간다고 합니다.",
 	"trains.closing": "그리고 밤새 계곡에서 떨어져 지내면 기차를 놓칠 수도 있단 걸 잊지 마세요! 행복한 기차 영접 되시길 바랍니다!",
 
-	"//Note on config strings": "The remaining strings are the names and descriptions of options in the mod's config menu.",
+	// The remaining strings are the names and descriptions of options in the mod's config menu.
 
-	"InaccuratePredictions.name": "Inaccurate Predictions",
-	"InaccuratePredictions.description": "이 모드와 충돌하는 모드가 있어서 TV 채널에서 부정확한 정보라도 송출하게 합니다. 단순 오락 목적으로만 즐겨주세요.",
+	"InaccuratePredictions.name": "Inaccurate Predictions", // TODO
+	"InaccuratePredictions.description": "이 모드와 충돌하는 모드가 있어서 TV 채널에서 부정확한 정보라도 송출하게 합니다. 단순 오락 목적으로만 즐겨주세요.", // TODO: "due to the presence of conflicting mods" -> "due to game version mismatch and/or conflicting mods"
 
-	"Cheats.name": "Cheat Options",
+	"Cheats.name": "Cheat Options", // TODO
 
-	"BypassFriendships.name": "Bypass Friendships",
+	"BypassFriendships.name": "Bypass Friendships", // TODO
 	"BypassFriendships.description": "플레이어와의 호감도와 관계없이, 모든 TV 프로그램 진행자들이 방송을 송출하게 합니다."
 }

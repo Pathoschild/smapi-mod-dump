@@ -18,15 +18,13 @@ namespace PregnancyRole
 		protected static IModHelper Helper => ModEntry.Instance.Helper;
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
 
-		public static readonly List<string> Events =
-			new List<string>
+		public static readonly List<string> Events = new ()
 		{
 			"BirthMessage_PlayerMother",
 			"BirthMessage_SpouseMother",
 		};
 
-		public static readonly List<string> StringsFromCSFiles =
-			new List<string>
+		public static readonly List<string> StringsFromCSFiles = new ()
 		{
 			"NPC.cs.4442",
 			"NPC.cs.4443",

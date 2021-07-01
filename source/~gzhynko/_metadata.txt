@@ -4,6 +4,7 @@ urls:
 
 mods:
    Animals Need Water
+   Dialogue Box Redesign
    Event Black Bars
    Fish Exclusions
    Grapes All Year Round
@@ -12,10 +13,9 @@ mods:
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit 164226e02777fd3830834c4b10a02a3599e40a3e
+   commit c83e70f9f92e1c74237dbfdb5bd5c93e6c5df18c
    Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Tue Jun 1 00:44:13 2021 +0300
+   Date:   Sun Jun 13 22:42:21 2021 +0200
    
-       fix: update pathfinding logic to SDV 1.5
-       (fix animals not drinking water outside)
+       fix: fix bars being rendered during some festivals
    

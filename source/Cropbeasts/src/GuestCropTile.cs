@@ -36,6 +36,7 @@ namespace Cropbeasts
 		public readonly Point tileLocation;
 
 		public Mapping mapping => Mappings.Get (harvestIndex, giantCrop);
+		public readonly bool spawnSecondaries;
 
 		public virtual string logDescription =>
 			$"{mapping?.harvestName ?? "Crop"} (#{harvestIndex}) at ({tileLocation.X},{tileLocation.Y})";
@@ -71,6 +72,9 @@ namespace Cropbeasts
 			repeatingCrop = !giantCrop && crop.regrowAfterHarvest.Value != -1;
 
 			this.tileLocation = tileLocation;
+
+			// Giant crops and Fiber yield their full quantity on the primary beast.
+			spawnSecondaries = !giantCrop && harvestIndex != 771;
 		}
 
 		public static GuestCropTile Create (int harvestIndex, bool giantCrop,

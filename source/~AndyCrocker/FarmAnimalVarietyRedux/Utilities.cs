@@ -8,11 +8,10 @@
 **
 *************************************************/
 
-using FarmAnimalVarietyRedux.Models.BfavSaveData;
 using FarmAnimalVarietyRedux.Models.Converted;
-using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +75,10 @@ namespace FarmAnimalVarietyRedux
 
             // ensure animal is actually custom
             if (!animal.type.Value.Contains('.'))
+                return;
+
+            // don't override the type if one exists, this will result in custom animals from uninstalled packs being converted to chickens in a way that's not reversible
+            if (animal.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/type"))
                 return;
 
             animal.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/type"] = animal.type;
@@ -176,7 +179,46 @@ namespace FarmAnimalVarietyRedux
             else if (canDropUpgradedProduct) // make sure to return true if only the upgraded product is able to be dropped
                 dropUpgradedProduct = true;
 
+            // ensure product can be dropped based off of duplicates property
+            if (produce.DoNotAllowDuplicates)
+                if (Utilities.IsObjectInPlayerPossession(dropUpgradedProduct ? produce.UpgradedProductId : produce.DefaultProductId))
+                    return null;
+
             return dropUpgradedProduct;
+        }
+
+        /// <summary>Gets whether a specified object is in the players possession.</summary>
+        /// <param name="objectId">The object to check.</param>
+        /// <returns><see langword="true"/>, if the object is in the players possession; otherwise, <see langword="false"/>.</returns>
+        /// <remarks>An object is in the players possession if it placed in an animal building or on the farm, in a farmer's inventory, or in a chest.</remarks>
+        public static bool IsObjectInPlayerPossession(int objectId)
+        {
+            // check placed objects and chests in the animal buildings
+            if (Game1.getFarm().buildings
+                .Where(building => building.indoors.Value is AnimalHouse)
+                .Select(building => building.indoors.Value)
+                .Cast<AnimalHouse>()
+                .SelectMany(animalHouse => animalHouse.Objects.Values)
+                .Any(@object => @object.ParentSheetIndex == objectId || (@object is Chest chest && chest.items.Any(item => item.ParentSheetIndex == objectId))))
+                return true;
+
+            // check placed objects in the farm
+            if (Game1.getFarm().Objects.Values.Any(@object => @object.ParentSheetIndex == objectId))
+                return true;
+
+            // check player inventories
+            if (Game1.getAllFarmers().Any(farmer => farmer.hasItemInInventory(objectId, 1)))
+                return true;
+
+            // check chests
+            if (Game1.locations.SelectMany(location => location.Objects.Values)
+                    .Where(@object => @object is Chest)
+                    .Cast<Chest>()
+                    .SelectMany(chest => chest.items)
+                    .Any(item => item.ParentSheetIndex == objectId))
+                return true;
+
+            return false;
         }
 
         /// <summary>Determines the quality that the produce should be.</summary>

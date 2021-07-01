@@ -171,6 +171,8 @@ namespace LoveOfCooking.GameObjects
 		public int GetAmountCraftable(CraftingRecipe recipe, List<IList<Item>> sourceItems, bool limitToCurrentIngredients)
 		{
 			int count = -1;
+			if (recipe == null)
+				return 0;
 			foreach (KeyValuePair<int, int> itemAndQuantity in recipe.recipeList)
 			{
 				int countForThisIngredient = 0;
@@ -234,7 +236,10 @@ namespace LoveOfCooking.GameObjects
 				{
 					Item item = this.GetItemForIngredient(index: i, sourceItems: sourceItems);
 					if (item == null)
+					{
+						CurrentIngredients[i] = null; // No items were found for this ingredient, prevent it being checked later
 						return null;
+					}
 					if (IsMatchingIngredient(id: itemAndQuantity.Key, item: item))
 					{
 						// Mark ingredient for consumption and check remaining count before consuming other ingredients
@@ -262,7 +267,7 @@ namespace LoveOfCooking.GameObjects
 			for (int i = 0; i < quantity && ingredientsToConsume != null; ++i)
 			{
 				// Consume ingredients from source lists
-				foreach (KeyValuePair<int, int> indexAndQuantity in ingredientsToConsume)
+				foreach (KeyValuePair<int, int> indexAndQuantity in ingredientsToConsume.ToList())
 				{
 					Ingredient ingredient = CurrentIngredients[indexAndQuantity.Key].Value;
 					if ((sourceItems[ingredient.InventoryId][ingredient.ItemIndex].Stack -= indexAndQuantity.Value) < 1)
@@ -276,6 +281,16 @@ namespace LoveOfCooking.GameObjects
 						{
 							// Clear item and ensure no gaps are left in inventory for fridges and chests
 							sourceItems[ingredient.InventoryId].RemoveAt(ingredient.ItemIndex);
+							// Adjust other ingredients accordingly
+							for (int j = 0; j < CurrentIngredients.Count; ++j)
+							{
+								if (CurrentIngredients[j].HasValue
+									&& CurrentIngredients[j].Value.InventoryId == ingredient.InventoryId
+									&& CurrentIngredients[j].Value.ItemIndex > ingredient.ItemIndex)
+								{
+									CurrentIngredients[j] = new Ingredient(CurrentIngredients[j].Value.InventoryId, CurrentIngredients[j].Value.ItemIndex - 1);
+								}
+							}
 						}
 					}
 				}
@@ -289,6 +304,7 @@ namespace LoveOfCooking.GameObjects
 					qualityStacks[0] += numPerCraft;
 				}
 
+				// Choose new ingredients until none are found
 				ingredientsToConsume = this.ChooseIngredientsForCrafting(recipe: recipe, sourceItems: sourceItems);
 			}
 
@@ -396,7 +412,7 @@ namespace LoveOfCooking.GameObjects
 		internal int CookRecipe(CraftingRecipe recipe, List<IList<Item>> sourceItems, int quantity)
 		{
 			// Craft items to be cooked from recipe
-			List<StardewValley.Object> itemsCooked = CraftItemAndConsumeIngredients(recipe, sourceItems, quantity);
+			List<StardewValley.Object> itemsCooked = this.CraftItemAndConsumeIngredients(recipe, sourceItems, quantity);
 			int quantityCooked = Math.Max(0, (itemsCooked.Sum(item => item.Stack) / recipe.numberProducedPerCraft) - CookingMenu.LastBurntCount);
 			Item item = recipe.createItem();
 
@@ -466,7 +482,7 @@ namespace LoveOfCooking.GameObjects
 		internal void AutoFillIngredients(CraftingRecipe recipe, List<IList<Item>> sourceItems)
 		{
 			// Don't fill slots if the player isn't able to cook the recipe
-			if (MaxIngredients < recipe.recipeList.Count || this.GetAmountCraftable(recipe: recipe, sourceItems: sourceItems, limitToCurrentIngredients: false) < 1)
+			if (recipe == null || MaxIngredients < recipe.recipeList.Count || this.GetAmountCraftable(recipe: recipe, sourceItems: sourceItems, limitToCurrentIngredients: false) < 1)
 				return;
 
 			// Fill slots with ingredients
@@ -491,7 +507,7 @@ namespace LoveOfCooking.GameObjects
 
 		internal Item GetItemForIngredient(int index, List<IList<Item>> sourceItems)
 		{
-			Item item = CurrentIngredients[index].HasValue
+			Item item = CurrentIngredients.Count > index && CurrentIngredients[index].HasValue
 				? this.GetItemForIngredient(ingredient: CurrentIngredients[index].Value, sourceItems: sourceItems)
 				: null;
 			return item;
@@ -499,7 +515,10 @@ namespace LoveOfCooking.GameObjects
 
 		internal Item GetItemForIngredient(Ingredient ingredient, List<IList<Item>> sourceItems)
 		{
-			Item item = sourceItems[ingredient.InventoryId][ingredient.ItemIndex];
+			Item item = ingredient.InventoryId >= 0 && sourceItems.Count > ingredient.InventoryId 
+					&& ingredient.ItemIndex >= 0 && sourceItems[ingredient.InventoryId].Count > ingredient.ItemIndex
+				? sourceItems[ingredient.InventoryId][ingredient.ItemIndex]
+				: null;
 			return item;
 		}
 

@@ -12,11 +12,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+using System.Collections.Generic;
+
 namespace SiloSize
     {
     public class ModConfig
         {
         public int SiloSize = 1000;
         public bool MorningReport = true;
+        public int LowWarning = 3;
+        public HashSet<string> AutoHayBuildings = new HashSet<string>() { "Deluxe Barn", "Deluxe Coop" };
         }
     }

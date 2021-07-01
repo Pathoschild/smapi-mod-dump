@@ -1,0 +1,22 @@
+{
+  "EnableMod": true,
+  "UseSaveSpecificEdits": true,
+  "IncludeGlobalEdits": true,
+  "ExistsColor": "255, 0, 0, 255",
+  "ActiveColor": "0, 0, 255, 255",
+  "CopiedColor": "0, 255, 0, 255",
+  "BorderThickness": 4,
+  "ToggleButton": "F10",
+  "RefreshButton": "F5",
+  "CopyButton": "MouseRight",
+  "PasteButton": "MouseLeft",
+  "RevertButton": "Delete",
+  "RevertModButton": "LeftShift",
+  "ScrollUpButton": "Up",
+  "ScrollDownButton": "Down",
+  "LayerModButton": "LeftShift",
+  "SheetModButton": "LeftAlt",
+  "CopySound": "bigSelect",
+  "PasteSound": "hoeHit",
+  "ScrollSound": "toolSwap"
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8933
+IDs: TSlex.ItemResearchSpawner
+update keys: Nexus:8933, GitHub:TSlex/StardewValley/tree/item-research-spawner-v1.0.0-alpha-r2/ItemResearchSpawner

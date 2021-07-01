@@ -25,7 +25,7 @@ namespace Cropbeasts.Projectiles
 			new Rectangle (189, 481, 16, 16),
 		};
 
-		private readonly NetRectangle sourceRect = new NetRectangle ();
+		private readonly NetRectangle sourceRect = new ();
 
 		public Sandblast ()
 		{
@@ -69,6 +69,6 @@ namespace Cropbeasts.Projectiles
 		}
 
 		protected override void explode (GameLocation _location)
-		{}
+		{ }
 	}
 }

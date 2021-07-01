@@ -61,7 +61,7 @@ namespace PregnancyRole
 
 		private NPC getTarget ()
 		{
-			if (!(Game1.activeClickableMenu is ProfileMenu pm))
+			if (Game1.activeClickableMenu is not ProfileMenu pm)
 				return null;
 			return pm.GetCharacter () as NPC;
 		}

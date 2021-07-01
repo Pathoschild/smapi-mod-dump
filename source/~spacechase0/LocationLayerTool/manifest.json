@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Location Layer Tool",
+    "Author": "spacechase0",
+    "Version": "1.0.0",
+    "Description": "Lets you layer one map under another, so the 'lower' map shows through transparent areas in the 'upper' map.",
+    "UniqueID": "spacechase0.LocationLayerTool",
+    "EntryDll": "LocationLayerTool.dll",
+    "UpdateKeys": []
+}

@@ -9,18 +9,21 @@
 *************************************************/
 
 {
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
 
-	"//Note on PortableTV.*": "These two strings are the name and description of the TV object that the player crafts and keeps in their inventory.",
+	// These two strings are the name and description of the TV object that the player crafts and keeps in their inventory.
 	"PortableTV.name": "Televisor portátil",
 	"PortableTV.description": "Muestra programas de televisión en cualquier parte del valle.",
 
-	"//Note on remaining strings": "The remaining strings are the names and explanations of options that appear on a configuration screen.",
+	// The remaining strings are the names and explanations of options that appear on a configuration screen.
 
 	"Animate.name": "Animar el televisor",
 	"Animate.description": "Si se anima el televisor portátil cuando se enciende y se apaga",
 
-	"//Note on Static.*": "'Static' as in the visual noise that appears on old analogue TVs that aren't tuned properly. 'Light' as in 'not very much'. 'Show' as in 'to make visible'.",
+	// 'Static' as in the visual noise that appears on old analogue TVs that aren't tuned properly. 'Light' as in 'not very much'. 'Show' as in 'to make visible'.
 	"Static.name": "Mostrar interferencia",
 	"Static.description": "Si se muestra interferencia ligera en pantalla encima de los programas",
 

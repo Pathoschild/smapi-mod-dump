@@ -26,6 +26,7 @@ namespace ScryingOrb
 	{
 		protected static IModHelper Helper => ModEntry.Instance.Helper;
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
+		protected static ModConfig Config => ModConfig.Instance;
 
 		public SObject orb { get; internal set; }
 		public bool illuminated { get; private set; }
@@ -39,7 +40,7 @@ namespace ScryingOrb
 		{
 			try
 			{
-				T experience = new T { orb = orb };
+				T experience = new () { orb = orb };
 				return experience.check ();
 			}
 			catch (Exception e)
@@ -54,7 +55,7 @@ namespace ScryingOrb
 		public static void Run<T> (SObject orb)
 			where T : Experience, new()
 		{
-			T experience = new T { orb = orb };
+			T experience = new () { orb = orb };
 			experience.run ();
 		}
 
@@ -101,17 +102,17 @@ namespace ScryingOrb
 			type ??= typeof (SObject);
 			if (item?.GetType () != type)
 				return false;
-			
+
 			if (type == typeof (SObject) &&
 					(item as SObject).bigCraftable.Value != bigCraftable)
 				return false;
-			
+
 			if (rejected != null && rejected.Contains (item.ParentSheetIndex))
 				return false;
-			
+
 			if (accepted != null && accepted.Contains (item.ParentSheetIndex))
 				return true;
-			
+
 			if (category < 0 && item.Category != category)
 				return false;
 
@@ -180,7 +181,7 @@ namespace ScryingOrb
 			DelayedAction.functionAfterDelay (() =>
 			{
 				// Display the dialogues.
-				DialogueBox box = new DialogueBox (dialogues);
+				DialogueBox box = new (dialogues);
 				Game1.activeClickableMenu = box;
 
 				// Fix the first page height being too *short* on Android.
@@ -207,17 +208,16 @@ namespace ScryingOrb
 		{
 			if (orb == null) return null;
 
-			Vector2 position = new Vector2 (orb.TileLocation.X,
+			Vector2 position = new (orb.TileLocation.X,
 				orb.TileLocation.Y - (sourceRect.Height / (float) sourceRect.Width));
 			position *= Game1.tileSize;
 
 			float layerDepth = (float) (((orb.TileLocation.Y + 1.0) * 64.0 / 10000.0)
 				+ 9.99999974737875E-05);
 
-			TemporaryAnimatedSprite sprite = new TemporaryAnimatedSprite
-				(textureName, sourceRect, interval, length, loops, position,
-				false, false, layerDepth, 0f, Color.White, 64f / sourceRect.Width,
-				0f, 0f, 0f, false);
+			TemporaryAnimatedSprite sprite = new (textureName, sourceRect,
+				interval, length, loops, position, false, false, layerDepth, 0f,
+				Color.White, 64f / sourceRect.Width, 0f, 0f, 0f, false);
 			DelayedAction.addTemporarySpriteAfterDelay (sprite,
 				Game1.currentLocation, delay);
 
@@ -232,7 +232,7 @@ namespace ScryingOrb
 			illuminated = true;
 
 			// Switch to the special mouse cursor.
-			++ModEntry.Instance.OrbsIlluminated;
+			++ModEntry.Instance.orbsIlluminated;
 
 			// The rest requires an actual orb positioned in the world.
 			if (orb == null || orb.TileLocation.Equals (Vector2.Zero))
@@ -242,7 +242,7 @@ namespace ScryingOrb
 			removeLightSource ();
 
 			// Calculate and create the light source.
-			Vector2 position = new Vector2 ((orb.TileLocation.X * 64f) + 32f,
+			Vector2 position = new ((orb.TileLocation.X * 64f) + 32f,
 				(orb.TileLocation.Y * 64f) - 32f);
 			Color color = new Color (255 - r, 255 - g, 255 - b) * 2f;
 			int identifier = (int) ((orb.TileLocation.X * 2000f) +
@@ -251,7 +251,7 @@ namespace ScryingOrb
 				position, 1f, color, identifier);
 
 			// If a real Scrying Orb, the light source is now effective.
-			if (ModEntry.Instance.IsScryingOrb (orb))
+			if (ModEntry.Instance.isScryingOrb (orb))
 			{
 				// Switch the orb to its illuminated sprite, unless the lighting
 				// is not in the blue range.
@@ -281,7 +281,7 @@ namespace ScryingOrb
 			illuminated = false;
 
 			// Restore the regular mouse cursor.
-			--ModEntry.Instance.OrbsIlluminated;
+			--ModEntry.Instance.orbsIlluminated;
 
 			// Remove any light source from any actual orb.
 			removeLightSource ();
@@ -299,7 +299,7 @@ namespace ScryingOrb
 		{
 			if (orb?.lightSource == null)
 				return;
-			if (ModEntry.Instance.IsScryingOrb (orb))
+			if (ModEntry.Instance.isScryingOrb (orb))
 			{
 				Game1.currentLocation.removeTemporarySpritesWithID
 					(orb.lightSource.Identifier);

@@ -31,52 +31,52 @@ namespace StardewLib
         *********/
         public ChestDef()
         {
-            this.X = -1;
-            this.Y = -1;
+            X = -1;
+            Y = -1;
         }
 
         public ChestDef(int x, int y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
 
-            this.Tile = new Vector2(x, y);
+            Tile = new Vector2(x, y);
 
-            this.Location = "Farm";
+            Location = "Farm";
         }
 
         public ChestDef(int x, int y, string location)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
 
-            this.Tile = new Vector2(x, y);
+            Tile = new Vector2(x, y);
 
-            this.Location = location;
+            Location = location;
         }
 
         public ChestDef(int x, int y, string location, int count)
         {
-            this.X = x;
-            this.Y = y;
-            this.Tile = new Vector2(x, y);
-            this.Location = location;
-            this.Count = count;
+            X = x;
+            Y = y;
+            Tile = new Vector2(x, y);
+            Location = location;
+            Count = count;
         }
 
         public ChestDef(int x, int y, string location, int count, Chest chest)
         {
-            this.X = x;
-            this.Y = y;
-            this.Tile = new Vector2(x, y);
-            this.Location = location;
-            this.Count = count;
-            this.Chest = chest;
+            X = x;
+            Y = y;
+            Tile = new Vector2(x, y);
+            Location = location;
+            Count = count;
+            Chest = chest;
         }
 
         public override string ToString()
         {
-            return $"{this.Location} {this.Tile} #{this.Count}";
+            return $"{Location} {Tile} #{Count}";
         }
     }
 }

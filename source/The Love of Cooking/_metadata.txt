@@ -6,19 +6,9 @@ mods:
    The Love of Cooking
 
 latest commit:
-   commit 29e2d647090f60e576a570151d0989702ab2f061
-   Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Thu Apr 1 11:06:15 2021 +1100
+   commit 8d4626dd0f1629583d3e01db32d98d1682c0148f
+   Author: blueberry <36073351+b-b-blueberry@users.noreply.github.com>
+   Date:   Sat Jun 5 18:50:05 2021 +1000
    
-       RELEASE 1.0.12+:
-       Reworked nettle bush spawn logic to have a greater consistency in adding nettles to the world.
-       Nettle bushes are now globally cleared after each season.
-       Nettle bushes no longer check to spawn at Mountain, given no weeds spawn there.
-       Nettle bushes once again correctly drop nettles, usable with the keg.
-       Nettle bush sprite reworked.
-       Custom bushes now use SpaceCore serialisation rather than PyTK.
-       Community centre kitchen usable fridge no longer causes visual bugs when using Stardew Valley Expanded.
-       Community centre no longer scrambles custom tiles when using other mods which add new tilesets to the map.
-       Corrected bug in i18n token for SaleValue cooking skill profession.
-       Increased food health/energy regeneration speed by 2.5x.
+       Create README.md
    

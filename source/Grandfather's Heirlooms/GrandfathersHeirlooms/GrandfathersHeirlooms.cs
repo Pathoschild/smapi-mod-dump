@@ -75,7 +75,7 @@ namespace GrandfathersHeirlooms
             string wStat = Config.weaponStats;
             string wData = $"{wName}/{wDesc}/{wStat}";
             data[WEAP_ID] = wData;
-            Log($"weapon {WEAP_ID} set to {wName} - {wDesc} - Stats: {wStat}!", LogLevel.Info);
+            Log($"weapon {WEAP_ID} set to {wName} - {wDesc} - Stats: {wStat}!", LogLevel.Trace);
         }
 
         public override void Entry(IModHelper helper)
@@ -135,15 +135,15 @@ namespace GrandfathersHeirlooms
         private void OnDayStarted(object sender, DayStartedEventArgs e) {
             var curDate = SDate.Now();
             if (curDate < triggerDate) {
-                Log($"new day {curDate.ToString()}, our day is coming.", LogLevel.Debug);
+                Log($"new day {curDate.ToString()}, our day is coming.", LogLevel.Trace);
                 return;
             }
             else if (curDate > triggerDate)
             {
-                Log($"new day {curDate.ToString()}, our day has passed.", LogLevel.Debug);
+                Log($"new day {curDate.ToString()}, our day has passed.", LogLevel.Trace);
                 return;
             }
-            Log($"new day {curDate.ToString()}, is our day", LogLevel.Debug);
+            Log($"new day {curDate.ToString()}, is our day", LogLevel.Trace);
 
             farmer = Game1.player;
             weapon = new MeleeWeapon(WEAP_ID);

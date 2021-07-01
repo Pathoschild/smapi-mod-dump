@@ -17,16 +17,17 @@ using StardewModdingAPI;
 namespace DamageOverlay
     {
 
-    class ModEntry : Mod
+    public class ModEntry : Mod
         {
         DamageOverlay damageOverlay;
 
         public override void Entry(IModHelper helper) {
+            Log.Monitor = this.Monitor;
             damageOverlay = new DamageOverlay(this);
 
             helper.Events.GameLoop.GameLaunched += damageOverlay.OnGameLaunched;
             helper.Events.Display.RenderedWorld += damageOverlay.OnRenderedWorld;
-            //helper.Events.Display.WindowResized += damageOverlay.OnWindowResized;
+            helper.Events.Display.WindowResized += damageOverlay.OnWindowResized;
             helper.Events.Input.ButtonsChanged += damageOverlay.OnButtonsChanged;
 
             helper.ConsoleCommands.Add("dover", "Damage Overlay debug commands.\nSyntax: dover <subcommand> <args>", damageOverlay.OnCommand);

@@ -10,18 +10,25 @@ for queries and analysis.**
 
 [Scrying Orb](./)
 
-## 1.4.0
+## 2.0.1
 
-*Release pending.*
+*Released 2021 June 28.*
 
-* Consolidate mod folders, removing `[JA]ScryingOrb`
+* Fix Json Assets pack not loading
+
+## 2.0.0
+
+*Released 2021 June 26.*
+
+* Require, and fix compatibility with, Stardew 1.5 or higher
+* Remove support for legacy serialized data format
 * Fix visual glitch with recolor mods that modify game cursors
 * More natural format for dates thanks to Pathoschild
 * Update to Russian translation by DanyaKirichenko1
 
 ## 1.3.0
 
-*Released April 23, 2020.*
+*Released 2020 April 23.*
 
 * Add support for Scrying Orb on Witchy Crystal Farm by TerraBubbles
 * Add optional activation keybinding and `scrying_orb` console command
@@ -31,7 +38,7 @@ for queries and analysis.**
 
 ## 1.2.0
 
-*Released April 8, 2020.*
+*Released 2020 April 8.*
 
 * Support Android platform
 * Allow full week of unlimited use for farmhands as well as farmers
@@ -39,7 +46,7 @@ for queries and analysis.**
 
 ## 1.1.0
 
-*Released March 23, 2020.*
+*Released 2020 March 23.*
 
 * Fix lagging/low FPS when moving cursor over the orb
 * Add Simplified Chinese translation by liayyMK
@@ -48,6 +55,6 @@ for queries and analysis.**
 
 ## 1.0.0
 
-*Released March 20, 2020.*
+*Released 2020 March 20.*
 
 * Initial version

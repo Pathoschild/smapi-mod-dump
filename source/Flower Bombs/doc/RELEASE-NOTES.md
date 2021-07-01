@@ -10,6 +10,13 @@ for queries and analysis.**
 
 [Flower Bombs](../)
 
+## 2.0.0
+
+*Release pending.*
+
+* Require Stardew 1.5 or higher
+* Remove support for legacy serialized object format
+
 ## 1.0.1
 
 *Released June 5, 2020.*

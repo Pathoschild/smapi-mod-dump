@@ -93,6 +93,11 @@ example, there are configuration options to allow multi-key bindings
 (introduced in SMAPI 3.9) for the hotkey and overlay hotkey, but these are
 not available in the in-game config menu.
 
+## Import and Export
+
+The to-do list for the current game can be exported to or imported from an
+external file via SMAPI console commands.  Type `help todo-export` or
+`help todo-import` in the console for detailed usage information.
 
 ## Compatibility
 

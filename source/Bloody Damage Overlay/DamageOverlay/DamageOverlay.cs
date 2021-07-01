@@ -89,7 +89,6 @@ namespace DamageOverlay
 
     class DamageOverlay {
         private readonly IModHelper Helper;
-        private readonly IMonitor Monitor;
         private readonly IManifest ModManifest;
         private ModConfig Config;
 
@@ -116,7 +115,6 @@ namespace DamageOverlay
         public DamageOverlay(Mod mod) {
             OverlaySource.Helper = mod.Helper;
             Helper = mod.Helper;
-            Monitor = mod.Monitor;
             ModManifest = mod.ModManifest;
             Config = mod.Helper.ReadConfig<ModConfig>();
             GetSources();
@@ -129,7 +127,7 @@ namespace DamageOverlay
 
         public void OnButtonsChanged(object sender, ButtonsChangedEventArgs args) {
             if (!DisableUntilHPChanges && Config.temp_hide_hotkey.JustPressed()) {
-                var hudmsg = new HUDMessage("Damage Overlay hidden until next HP change", "");
+                var hudmsg = new HUDMessage(Helper.Translation.Get("do_hidden_temp"), "");
                 Game1.addHUDMessage(hudmsg);
                 DisableUntilHPChanges = true;
                 }
@@ -159,80 +157,82 @@ namespace DamageOverlay
             if (args.Length < 1) return;
             switch (args[0]) {
                 case "sethp":
-                    Monitor.Log($"setting player's Health Percentage to {args[1]}", LogLevel.Info);
+                    Log.Info($"setting player's Health Percentage to {args[1]}");
                     Game1.player.health = Convert.ToInt32(args[1]) * Game1.player.maxHealth / 100;
                     return;
                 case "calcscale":
-                    Monitor.Log($"Forcing scale recalculation, CurrentDispSize = {CurrentDispSize}", LogLevel.Info);
+                    Log.Info($"Forcing scale recalculation, CurrentDispSize = {CurrentDispSize}");
                     CalculateScales();
                     return;
                 case "reload":
-                    Monitor.Log($"Reloading current overlay set '{Config.overlay}'", LogLevel.Info);
+                    Log.Info($"Reloading current overlay set '{Config.overlay}'");
                     LoadOverlay();
                     return;
                 case "loadset":
                     if (args.Length < 2) {
-                        Monitor.Log("Not enough args", LogLevel.Error);
+                        Log.Error("Not enough args");
                         return;
                         }
                     if (!OverlaySources.ContainsKey(args[1])) {
-                        Monitor.Log($"Overlay set '{args[1]}' not defined! Maybe you should run 'rescanpacks' first?", LogLevel.Error);
+                        Log.Error($"Overlay set '{args[1]}' not defined! Maybe you should run 'rescanpacks' first?");
                         return;
                         }
-                    Monitor.Log($"Changing overlay set to '{args[1]}', loading immediately", LogLevel.Info);
+                    Log.Info($"Changing overlay set to '{args[1]}', loading immediately");
                     Config.overlay = args[1];
                     LoadOverlay();
-                    Monitor.Log("This change is not yet written to config.json, and thus is NOT permanent!", LogLevel.Warn);
+                    Log.Warn("This change is not yet written to config.json, and thus is NOT permanent!");
                     return;
                 case "rescanpacks":
-                    Monitor.Log("Rescanning Content Packs", LogLevel.Info);
-                    Monitor.Log("This won't affect currently-loaded overlay set; use 'reload' or 'loadset' to effect changes.", LogLevel.Warn);
-                    GetSources(quiet: false);
+                    Log.Info("Rescanning Content Packs");
+                    Log.Warn("This won't affect currently-loaded overlay set; use 'reload' or 'loadset' to effect changes.");
+                    GetSources();
                     return;
                 }
             }
 
+        public void OnWindowResized(object semder, WindowResizedEventArgs args) {
+            UpdateDispSizes();
+            }
 
         /**************************************************
          * Data Structure initialization logic
          **************************************************/
 
-        private void GetSources(bool quiet = true) {
-            LogLevel lvl = quiet ? LogLevel.Trace : LogLevel.Info;
+        private void GetSources() {
             OverlaySources.Clear();
 
             foreach (IContentPack cp in Helper.ContentPacks.GetOwned()) {
-                Monitor.Log($"Reading content pack: {cp.Manifest.UniqueID}|v{cp.Manifest.Version} from {cp.DirectoryPath}", lvl);
-                Monitor.Log($"  Friendly name: {cp.Manifest.Name}", lvl);
+                Log.Debug($"Reading content pack: {cp.Manifest.UniqueID}|v{cp.Manifest.Version} from {cp.DirectoryPath}");
+                Log.Trace($"  Friendly name: {cp.Manifest.Name}");
                 if (!cp.HasFile("content.json")) {
-                    Monitor.Log("  Does not have content.json, skipping", lvl);
+                    Log.Trace("  Does not have content.json, skipping");
                     continue;
                     }
                 ContentPackContent cp_content = cp.ReadJsonFile<ContentPackContent>("content.json");
                 if (cp_content is null) {
-                    Monitor.Log("  Error parsing content.json, skipping", lvl);
+                    Log.Trace("  Error parsing content.json, skipping");
                     continue;
                     }
                 foreach (var kvp in cp_content.overlays) {
                     if (BuiltInOverlaySets.Contains(kvp.Key)) {
-                        Monitor.Log($"  Overwriting built-in overlay set '{kvp.Key}' is forbidden, skipping!");
+                        Log.Trace($"  Overwriting built-in overlay set '{kvp.Key}' is forbidden, skipping!");
                         continue;
                         }
                     if (OverlaySources.ContainsKey(kvp.Key))
-                        Monitor.Log($"  Overwriting previous overlay set '{kvp.Key}'", lvl);
+                        Log.Trace($"  Overwriting previous overlay set '{kvp.Key}'");
                     OverlaySources[kvp.Key] = new OverlaySource(cp, kvp.Value);
                     }
-                Monitor.Log($"  Added {cp_content.overlays.Count} overlays from {cp.Manifest.UniqueID}", lvl);
+                Log.Trace($"  Added {cp_content.overlays.Count} overlays from {cp.Manifest.UniqueID}");
                 }
 
             foreach(var nm in BuiltInOverlaySets) {
-                Monitor.Log($"Adding built-in overlay set '{nm}'");
+                Log.Debug($"Adding built-in overlay set '{nm}'");
                 OverlaySources[nm] = new OverlaySource(nm);
                 }
             }
 
         private void LoadOverlay() {
-            Monitor.Log($"Loading overlay '{Config.overlay}' from assets", LogLevel.Info);
+            Log.Info($"Loading overlay '{Config.overlay}' from assets");
 
             Thresholds.Clear();
             Textures.Clear();
@@ -243,34 +243,34 @@ namespace DamageOverlay
 
             OverlayDefinition data = source.GetDefinition();
             if (data is null) {
-                Monitor.Log($"Cannot load overlay definition file {source.OverlayJsonFullPath}", LogLevel.Error);
-                Monitor.Log("Mod will not run!", LogLevel.Warn);
+                Log.Error($"Cannot load overlay definition file {source.OverlayJsonFullPath}");
+                Log.Warn("Mod will not run!");
                 return;
                 }
 
             foreach(var kvp in data.images) {
                 string image_label = kvp.Key;
                 string image_filename = kvp.Value;
-                Monitor.Log($"Loading image {image_label} => {source.AssetFullPath(image_filename)}");
+                Log.Trace($"Loading image {image_label} => {source.AssetFullPath(image_filename)}");
                 try {
                     images.Add(image_label, source.GetAsset<Texture2D>(image_filename));
                     }
                 catch (Exception ex) {
-                    Monitor.Log($"Failed loading image {image_label} ; technical details:\n{ex}", LogLevel.Error);
+                    Log.Error($"Failed loading image {image_label} ; technical details:\n{ex}");
                     }
                 }
-            Monitor.Log("Images loaded");
+            Log.Trace("Images loaded");
 
             foreach (var kvp in data.textures) {
                 string texture_label = kvp.Key.Trim();
                 if (texture_label == "") {
-                    Monitor.Log($"Invalid texture label, skipping!", LogLevel.Error);
+                    Log.Error($"Invalid texture label, skipping!");
                     continue;
                     }
                 TextureDefinition texture_data = kvp.Value;
-                Monitor.Log($"Processing texture {texture_label} => {texture_data}");
+                Log.Trace($"Processing texture {texture_label} => {texture_data}");
                 if (!images.TryGetValue(texture_data.image, out Texture2D texturr)) {
-                    Monitor.Log($"Texture '{texture_label}' referring to non-existent image '{texture_data.image}', skipping!", LogLevel.Error);
+                    Log.Error($"Texture '{texture_label}' referring to non-existent image '{texture_data.image}', skipping!");
                     continue;
                     }
                 Rectangle _crop = texture_data.crop?.ToRectangle() ?? texturr.Bounds;
@@ -286,18 +286,18 @@ namespace DamageOverlay
                     // _Scale depends on viewport size, so it will be calculated in CalculateScales()
                     });
                 }
-            Monitor.Log("Textures post-processing loaded");
+            Log.Trace("Textures post-processing loaded");
 
             foreach(var kvp in data.thresholds) {
                 int hp = kvp.Key;
                 string texture_label = kvp.Value;
                 if (!Textures.TryGetValue(texture_label, out TextureWithPost twp)) {
-                    Monitor.Log($"Threshold {hp} refers to non-existent texture '{texture_label}', skipping!", LogLevel.Error);
+                    Log.Error($"Threshold {hp} refers to non-existent texture '{texture_label}', skipping!");
                     continue;
                     }
                 Thresholds.Add(hp, twp);
                 }
-            Monitor.Log($"Sorted thresholds: {string.Join(", ", Thresholds.Keys)}", LogLevel.Debug);
+            Log.Debug($"Sorted thresholds: {string.Join(", ", Thresholds.Keys)}");
             }
 
         public void CalculateScales() {
@@ -307,7 +307,7 @@ namespace DamageOverlay
                 texture_name = kvp.Key;
                 post_process = kvp.Value;
                 post_process.UpScaleTo(CurrentDispSize);
-                Monitor.Log($"Calculated scale for '{texture_name}' : {post_process._Scale}");
+                Log.Trace($"Calculated scale for '{texture_name}' : {post_process._Scale}");
                 }
             }
 
@@ -315,7 +315,7 @@ namespace DamageOverlay
             var uirect = Game1.viewport;
             CurrentDispSize = new Point(uirect.Width, uirect.Height);
             if (CurrentDispSize == PreviousDispSize) return;
-            Monitor.Log($"DispSize changed {PreviousDispSize} -> {CurrentDispSize}");
+            Log.Trace($"DispSize changed {PreviousDispSize} -> {CurrentDispSize}");
             CalculateScales();
             ScreenCenter = new Vector2(CurrentDispSize.X >> 1, CurrentDispSize.Y >> 1);
             PreviousDispSize = CurrentDispSize;
@@ -361,7 +361,7 @@ namespace DamageOverlay
         public void RegisterMenu() {
             var api = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
             if (api == null) {
-                Monitor.Log("GenericModConfigMenu not installed, skipping menu registry.");
+                Log.Debug("GenericModConfigMenu not installed, skipping menu registry.");
                 return;
                 }
 
@@ -376,13 +376,14 @@ namespace DamageOverlay
             api.RegisterChoiceOption(ModManifest,
                 "Overlay set to use", "",
                 () => Config.overlay,
-                (string val) => Config.overlay = val, OverlaySources.Keys.ToArray()
+                (string val) => Config.overlay = val,
+                OverlaySources.Keys.ToArray()
                 );
             api.RegisterParagraph(ModManifest,
                 "IMPORTANT:\nClicking Save or Save & Close _immediately_ (re)loads the chosen overlay, even if the overlay set is not changed!"
                 );
 
-            Monitor.Log("Menu registered");
+            Log.Trace("Menu registered");
             }
 
         public void CommitConfig() {

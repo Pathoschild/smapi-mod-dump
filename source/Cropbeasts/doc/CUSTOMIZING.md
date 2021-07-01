@@ -22,7 +22,7 @@ The cropbeast data file is a JSON dictionary. The keys and values are both strin
 |value |0    |cropbeast name    |yes     |—      |`Giant Cropbeast`    |
 |value |1    |choice weight     |no      |`0.0`  |`0.3`                |
 |value |2    |primary color     |no      |*      |`#f3f0c0` *(flesh)*  |
-|value |3    |primary color     |no      |*      |`#4e8a1e` *(leaves)* |
+|value |3    |secondary color   |no      |*      |`#4e8a1e` *(leaves)* |
 
 The last field in the key is ignored, but can be used to annotate entries with the corresponding crop names for easy reference.
 
@@ -31,7 +31,7 @@ The cropbeast name must be one of the following:
 * `Berrybeast`, `Leafbeast`, `Trellisbeast`: These work with non-giant crops and use the texture of the harvested crop object.
 * `Grainbeast`, `Rootbeast`: These work with non-giant crops and use the texture of the fully grown crop.
 * `Giant Cropbeast`: This works with giant crops and uses the giant crop texture.
-* `Ancient Beast`, `Cactusbeast`, `Coffeebeast`, `Starbeast`: These are intended for specific stock crops and may have unexpected results with other crops.
+* `Ancient Beast`, `Cactusbeast`, `Coffeebeast`, `Qi Beast`, `Starbeast`: These are intended for specific stock crops and may have unexpected results with other crops.
 
 The choice weight biases the pseudorandom algorithm that spawns cropbeasts towards (if positive) or away from (if negative) choosing a crop of this type. Values of `5.0` and higher should effectively guarantee that a crop of this type will be chosen if one is present.
 

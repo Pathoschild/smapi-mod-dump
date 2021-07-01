@@ -8,9 +8,10 @@
 **
 *************************************************/
 
+using System;
 namespace AutoFish
 {
-    class ModConfig
+    public class ModConfig
     {
         public bool maxCastPower { get; set; } = true;
         public bool autoHit { get; set; } = true;

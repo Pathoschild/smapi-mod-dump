@@ -3,7 +3,27 @@
 	<PropertyGroup>
 		<AssemblyName>PortableTV</AssemblyName>
 		<RootNamespace>PortableTV</RootNamespace>
-		<Version>1.2.0</Version>
+		<Version>2.0.1</Version>
 	</PropertyGroup>
-	<Import Project="common.projitems" Label="Shared" />
+	<PropertyGroup>
+		<LangVersion>9.0</LangVersion>
+		<TargetFramework>net452</TargetFramework>
+		<IgnoreModFilePatterns>[.](svg|xcf)$</IgnoreModFilePatterns>
+		<GameModsPath>bin/Mods</GameModsPath>
+	</PropertyGroup>
+	<ItemGroup Label="extra-mods">
+		<ExtraModItem Include="packs/JA/manifest.json">
+			<Link>[JA]PortableTV/manifest.json</Link>
+		</ExtraModItem>
+		<ExtraModItem Include="packs/JA/Objects/PortableTV/object.json">
+			<Link>[JA]PortableTV/Objects/PortableTV/object.json</Link>
+		</ExtraModItem>
+		<ExtraModItem Include="packs/JA/Objects/PortableTV/object.png">
+			<Link>[JA]PortableTV/Objects/PortableTV/object.png</Link>
+		</ExtraModItem>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+	</ItemGroup>
+	<Import Project="extra-mods.projitems" Label="Shared" />
 </Project>

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Better Mixed Seeds",
   "Author": "Satozaki",
-  "Version": "3.0.4",
+  "Version": "3.0.5",
   "Description": "Adds ability for mixed seeds to drop anything",
   "UniqueID": "Satozaki.BetterMixedSeeds",
   "EntryDll": "BetterMixedSeeds.dll",

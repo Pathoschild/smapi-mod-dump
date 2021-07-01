@@ -14,6 +14,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
 using System;
 using System.Reflection;
 using SObject = StardewValley.Object;
@@ -24,16 +25,16 @@ namespace Cropbeasts
 	{
 		private GuestCropTile cropTile_;
 
-		private readonly NetInt harvestIndex = new NetInt ();
-		private readonly NetBool giantCrop = new NetBool ();
-		private readonly NetPoint tileLocation = new NetPoint ();
+		private readonly NetInt harvestIndex = new ();
+		private readonly NetBool giantCrop = new ();
+		private readonly NetPoint tileLocation = new ();
 
-		public readonly NetBool containsPlant = new NetBool ();
-		public readonly NetBool containsPrimaryHarvest = new NetBool ();
-		public readonly NetBool containsSecondaryHarvest = new NetBool ();
+		public readonly NetBool containsPlant = new ();
+		public readonly NetBool containsPrimaryHarvest = new ();
+		public readonly NetBool containsSecondaryHarvest = new ();
 
-		public readonly NetColor primaryColor = new NetColor ();
-		public readonly NetColor secondaryColor = new NetColor ();
+		public readonly NetColor primaryColor = new ();
+		public readonly NetColor secondaryColor = new ();
 
 		public static Color ContrastTint => Config.HighContrast
 			? Color.Goldenrod : Color.LightYellow;
@@ -45,12 +46,16 @@ namespace Cropbeasts
 		public SObject secondaryHarvest { get; protected set; }
 		public SObject tertiaryHarvest { get; protected set; }
 
-		private new readonly NetInt experienceGained = new NetInt ();
+		private new readonly NetInt experienceGained = new ();
+
+		protected readonly NetBool canWater = new (false);
+		protected readonly NetInt wateringCharges = new (0);
+		public static readonly int MaxWateringCharges = 40;
 
 		protected bool reverted { get; private set; }
 
 		protected Cropbeast ()
-		{}
+		{ }
 
 		protected Cropbeast (CropTile cropTile, bool containsPlant,
 			bool containsPrimaryHarvest, bool containsSecondaryHarvest,
@@ -68,12 +73,28 @@ namespace Cropbeasts
 			this.containsPrimaryHarvest.Value = containsPrimaryHarvest;
 			this.containsSecondaryHarvest.Value = containsSecondaryHarvest;
 
-			// Calculate the beast's coloration.
-			primaryColor.Value = cropTile.mapping.primaryColor
-				?? TailoringMenu.GetDyeColor (cropTile.mapping.harvestObject)
-				?? Color.White;
-			secondaryColor.Value = cropTile.mapping.secondaryColor
-				?? primaryColor.Value;
+			// Calculate the beast's coloration, making special provision for
+			// seasonal color changes in Fiber.
+			if (harvestIndex.Value == 771 &&
+				Game1.GetSeasonForLocation (cropTile.location) == "fall")
+			{
+				primaryColor.Value = new Color (222, 155, 70); // #de9b46
+				secondaryColor.Value = new Color (124, 30, 51); // #7c1e33
+			}
+			else if (harvestIndex.Value == 771 &&
+				Game1.GetSeasonForLocation (cropTile.location) == "winter")
+			{
+				primaryColor.Value = new Color (65, 222, 178); // #41deb2
+				secondaryColor.Value = new Color (45, 107, 199); // #2d6bc7
+			}
+			else
+			{
+				primaryColor.Value = cropTile.mapping.primaryColor
+					?? TailoringMenu.GetDyeColor (cropTile.mapping.harvestObject)
+					?? Color.White;
+				secondaryColor.Value = cropTile.mapping.secondaryColor
+					?? primaryColor.Value;
+			}
 
 			// Scale health and damage based on combat skill of players present.
 			// Base values in Monsters.json are for level zero.
@@ -84,6 +105,13 @@ namespace Cropbeasts
 			int price = cropTile.mapping.harvestObject.Price;
 			experienceGained.Value = (int) Math.Ceiling (8.0 *
 				Math.Log (0.018 * (double) price + 1.0, Math.E));
+
+			// If a paddy crop, set up for watering.
+			if (cropTile.crop.isPaddyCrop ())
+			{
+				canWater.Value = true;
+				wateringCharges.Value = MaxWateringCharges;
+			}
 		}
 
 		protected override void initNetFields ()
@@ -91,7 +119,8 @@ namespace Cropbeasts
 			base.initNetFields ();
 			NetFields.AddFields (harvestIndex, giantCrop, tileLocation,
 				containsPlant, containsPrimaryHarvest, containsSecondaryHarvest,
-				primaryColor, secondaryColor, experienceGained);
+				primaryColor, secondaryColor, experienceGained, canWater,
+				wateringCharges);
 		}
 
 		protected GuestCropTile cropTile
@@ -122,8 +151,7 @@ namespace Cropbeasts
 			calculatedHarvest = true;
 
 			// This can only be run from the host.
-			CropTile cropTile = cropTile_ as CropTile;
-			if (cropTile == null)
+			if (cropTile_ is not CropTile cropTile)
 				throw new Exception ("Cannot calculate harvest without true CropTile.");
 
 			// Start with nothing.
@@ -148,7 +176,7 @@ namespace Cropbeasts
 			// Secondary harvests always have regular quality.
 			if (containsSecondaryHarvest.Value)
 			{
-				int secondaryQuantity = (cropTile.giantCrop && containsPrimaryHarvest.Value)
+				int secondaryQuantity = (!cropTile.spawnSecondaries && containsPrimaryHarvest.Value)
 					? cropTile.baseQuantity - 1 : 1;
 				secondaryHarvest = tintColor.HasValue
 					? new ColoredObject (cropTile.harvestIndex, secondaryQuantity,
@@ -169,9 +197,11 @@ namespace Cropbeasts
 				: cropTile.baseQuality + qualityBonus;
 			if (quality == 3)
 				quality = 4;
+			if (cropTile.harvestIndex == 771 || cropTile.harvestIndex == 889)
+				quality = 0;
 			primaryHarvest = tintColor.HasValue
 				? new ColoredObject (cropTile.harvestIndex, 1, tintColor.Value)
-					{ Quality = quality }
+				{ Quality = quality }
 				: new SObject (cropTile.harvestIndex, 1, quality: quality);
 
 			// Add any tertiary harvest. The special seed drop for Sunflowers is
@@ -270,18 +300,39 @@ namespace Cropbeasts
 						// not been attained, show a progress message.
 						string message = Helper.Translation.Get
 							("achievement.progress", new
-						{
-							playerName = Game1.player.Name,
-							beastName = displayName,
-							slainCount = slain,
-							totalCount = total,
-						});
+							{
+								playerName = Game1.player.Name,
+								beastName = displayName,
+								slainCount = slain,
+								totalCount = total,
+							});
 						Game1.playSound ("reward");
 						Game1.addHUDMessage (new HUDMessage (message,
 							HUDMessage.achievement_type));
 					}
 				}
 			}
+		}
+
+		private static bool IsNearWater (GameLocation location, int x, int y)
+		{
+			for (int dx = -3; dx <= 3; ++dx)
+			{
+				for (int dy = -3; dy <= 3; ++dy)
+				{
+					if (Math.Abs (dx) + Math.Abs (dy) < 4 &&
+							location.isOpenWater (x + dx, y + dy))
+						return true;
+				}
+			}
+			return false;
+		}
+
+		private void waterHoeDirt (HoeDirt hd)
+		{
+			--wateringCharges.Value;
+			hd.state.Value = HoeDirt.watered;
+			currentLocation.playSound ("waterSlosh");
 		}
 
 		public override void behaviorAtGameTick (GameTime time)
@@ -293,6 +344,33 @@ namespace Cropbeasts
 					Position.X >= (float) (currentLocation.Map.Layers[0].LayerWidth * 64 + 640) ||
 					Position.Y >= (float) (currentLocation.Map.Layers[0].LayerHeight * 64 + 640))
 				revert ();
+
+			// If derived from a paddy crop, act like an automatic watering can.
+			if (canWater.Value)
+			{
+				Point tileLoc = getTileLocationPoint ();
+				if (wateringCharges.Value == 0 &&
+					IsNearWater (currentLocation, tileLoc.X, tileLoc.Y))
+				{
+					wateringCharges.Value = MaxWateringCharges;
+					currentLocation.playSound ("glug");
+				}
+				if (wateringCharges.Value > 0)
+				{
+					if (currentLocation.terrainFeatures
+						.TryGetValue (getTileLocation (), out TerrainFeature tf) &&
+						tf is HoeDirt hd && hd.state.Value == HoeDirt.dry)
+					{
+						waterHoeDirt (hd);
+					}
+					else if (currentLocation.getObjectAtTile (tileLoc.X, tileLoc.Y)
+						is IndoorPot ip && ip.hoeDirt.Value != null &&
+						ip.hoeDirt.Value.state.Value == HoeDirt.dry)
+					{
+						waterHoeDirt (ip.hoeDirt.Value);
+					}
+				}
+			}
 		}
 
 		public virtual void revert ()
@@ -300,8 +378,7 @@ namespace Cropbeasts
 			if (reverted)
 				return;
 
-			CropTile cropTile = cropTile_ as CropTile;
-			if (cropTile == null)
+			if (cropTile_ is not CropTile cropTile)
 				throw new Exception ("Cannot revert cropbeast without true CropTile.");
 
 			reverted = true;

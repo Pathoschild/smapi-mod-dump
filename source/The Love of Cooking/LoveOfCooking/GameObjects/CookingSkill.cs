@@ -26,7 +26,6 @@ namespace LoveOfCooking.GameObjects
 		public static double GlobalExperienceRate;
 		public static int MaxFoodStackPerDayForExperienceGains;
 		public static int CraftNettleTeaLevel;
-		public static int CraftCampfireLevel;
 
 		public static int GiftBoostValue;
 		public static float SalePriceModifier;
@@ -88,7 +87,6 @@ namespace LoveOfCooking.GameObjects
 			var experienceBarColourSplit = cookingSkillValues["ExperienceBarColor"].Split(' ').ToList().ConvertAll(int.Parse);
 			ExperienceBarColor = new Color(experienceBarColourSplit[0], experienceBarColourSplit[1], experienceBarColourSplit[2]);
 			ExperienceCurve = new[] { 100, 380, 770, 1300, 2150, 3300, 4800, 6900, 10000, 15000 }; // default
-
 			// Set the skills page icon (cookpot)
 			var size = 10;
 			var texture = new Texture2D(Game1.graphics.GraphicsDevice, size, size);
@@ -126,8 +124,8 @@ namespace LoveOfCooking.GameObjects
 					Icon = textures[i], // <-- Skill profession icon is applied here
 					Name = i18n.Get($"{id}{extra}.name"),
 					Description = i18n.Get($"{id}{extra}.description",
-					new {
-						SaleValue = SalePriceModifier,
+					new { // v-- Skill profession description values are tokenised here
+						SaleValue = (SalePriceModifier - 1) * 100,
 						RestorationAltValue = RestorationAltValue,
 					})
 				};

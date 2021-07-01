@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/gzhynko/StardewMods
+**
+*************************************************/
+
+{
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Male": "{{firstAnimalName}} se quedó con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Female": "{{firstAnimalName}} se quedó con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_UnknownGender": "{{firstAnimalName}} se quedó con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.twoAnimals": "{{firstAnimalName}} y {{secondAnimalName}} se quedaron con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.threeAnimals": "{{firstAnimalName}}, {{secondAnimalName}} y {{thirdAnimalName}} se quedaron con sed.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.multipleAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} y {{totalAmountExcludingFirstThree}} animales más se quedaron con sed."
+}

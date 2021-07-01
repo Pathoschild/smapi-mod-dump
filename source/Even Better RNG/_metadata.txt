@@ -6,11 +6,13 @@ mods:
    Even Better RNG
 
 latest commit:
-   changeset:   315:020840bb6ba8
+   changeset:   555:f7cbf457611d
+   branch:      v1-android
    tag:         tip
-   parent:      306:e9e17a58d314
+   parent:      402:03a58a4f120d
+   parent:      552:c88e685b26f1
    user:        Pandu POLUAN <pepoluan@gmail.com>
-   date:        Sun May 30 19:51:19 2021 +0700
-   summary:     Close default branch
+   date:        Mon Jun 28 21:01:02 2021 +0700
+   summary:     Merge with v1-PC
    
    

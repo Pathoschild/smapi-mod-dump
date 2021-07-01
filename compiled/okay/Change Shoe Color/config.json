@@ -1,6 +1,7 @@
 {
   "Shoe_Color_Extras": true,
-  "Shoe_Color": 0,
-  "Shoe_Color_Key_Next": "Add",
-  "Shoe_Color_Key_Previous": "Subtract"
+  "Show_in_InventoryPage": true,
+  "Show_in_Wizard_CharacterCustomization": true,
+  "Show_in_GetGlam": true,
+  "Show_in_CustomizeAnywhere": true
 }

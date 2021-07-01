@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/strobel1ght/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Sleepy Eye",
+  "Author": "spacechase0",
+  "Version": "1.0.4",
+  "Description": "Sleep here. Sleep there. Sleep anywhere!",
+  "UniqueID": "spacechase0.SleepyEye",
+  "EntryDll": "SleepyEye.dll",
+  "MinimumApiVersion": "2.9.0",
+  "UpdateKeys": [ "Nexus:1152", "Chucklefish:4709" ],
+  "Dependencies": [
+    { "UniqueID": "spacechase0.SpaceCore" },
+    { "UniqueID": "Platonymous.Toolkit" }
+  ],
+  "spacechase0": "sleepy-eye"
+}

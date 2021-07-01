@@ -180,7 +180,7 @@ namespace LoveOfCooking.GameObjects
 		private readonly List<CraftingRecipe> _recipesAvailable;
 		private List<CraftingRecipe> _recipesFiltered;
 		private List<CraftingRecipe> _recipeSearchResults;
-		private CraftingRecipe CurrentRecipe => _recipesFiltered[_recipeIndex];
+		private CraftingRecipe CurrentRecipe => _recipesFiltered.Count > _recipeIndex ? _recipesFiltered[_recipeIndex] : null;
 		private int _recipeIndex;
 		private Item _recipeAsItem;
 		private List<int> _recipeBuffs;
@@ -238,6 +238,8 @@ namespace LoveOfCooking.GameObjects
 			set
 			{
 				Game1.player.modData[ModEntry.AssetPrefix + "autofill"] = value.ToString();
+				Log.D($"Autofill set to {value}",
+					Config.DebugMode);
 			}
 		}
 
@@ -276,6 +278,8 @@ namespace LoveOfCooking.GameObjects
 			{
 				IsUsingAutofill = false;
 			}
+			Log.D($"Autofill on startup: {IsUsingAutofill}",
+				Config.DebugMode);
 
 			// Apply default filter to the default recipe list
 			bool reverseDefaultFilter = ModEntry.Instance.States.Value.LastFilterReversed;
@@ -419,23 +423,26 @@ namespace LoveOfCooking.GameObjects
 					_allInventories.Add(((Chest)(cc.Objects[Bundles.FridgeChestPosition])).items);
 				}
 			}
-			if (Game1.currentLocation is FarmHouse farmHouse)
+			if (Game1.currentLocation is FarmHouse farmHouse && ModEntry.Instance.GetFarmhouseKitchenLevel(farmHouse) > 0)
 			{
 				// Recognise farmhouse fridge
-				if (ModEntry.Instance.GetFarmhouseKitchenLevel(farmHouse) > 0)
+				_allInventories.Add(farmHouse.fridge.Value.items);
+			}
+			if (Game1.currentLocation is IslandFarmHouse islandFarmHouse)
+			{
+				// Recognise island farmhouse fridge
+				_allInventories.Add(islandFarmHouse.fridge.Value.items);
+			}
+			if (_allInventories.Count > 0)
+			{
+				// Check for minifridges
+				_allInventories.AddRange(Game1.currentLocation.Objects.Values.Where(o => o != null && o.bigCraftable.Value && o is Chest && o.ParentSheetIndex == 216)
+					.Select(o => ((Chest)o).items).Take(MaximumMiniFridges).Cast<IList<Item>>().ToList());
+				for (int i = 0; i < _allInventories.Count - InventoryIdsBeforeMinifridges; ++i)
 				{
-					// Add fridge inventory
-					_allInventories.Add(farmHouse.fridge.Value.items);
-
-					// Check for minifridges
-					_allInventories.AddRange(farmHouse.Objects.Values.Where(o => o != null && o.bigCraftable.Value && o is Chest && o.ParentSheetIndex == 216)
-						.Select(o => ((Chest)o).items).Take(MaximumMiniFridges).Cast<IList<Item>>().ToList());
-					for (int i = 0; i < _allInventories.Count - InventoryIdsBeforeMinifridges; ++i)
-					{
-						_inventorySelectButtons.Add(new ClickableTextureComponent($"minifridgeSelect{i}",
-							new Rectangle(-1, -1, 16 * Scale, 16 * Scale), null, null,
-							ModEntry.SpriteSheet, new Rectangle(243, 114, 11, 14), Scale, false));
-					}
+					_inventorySelectButtons.Add(new ClickableTextureComponent($"minifridgeSelect{i}",
+						new Rectangle(-1, -1, 16 * Scale, 16 * Scale), null, null,
+						ModEntry.SpriteSheet, new Rectangle(243, 114, 11, 14), Scale, false));
 				}
 			}
 			// Populate list of inventories
@@ -1220,6 +1227,7 @@ namespace LoveOfCooking.GameObjects
 
 			_searchTabButton.sourceRect.X = SearchTabButtonSource.X;
 			_ingredientsTabButton.sourceRect.X = IngredientsTabButtonSource.X;
+			this.ToggleFilterPopup(playSound: false, forceToggleTo: false);
 
 			if (Game1.options.SnappyMenus)
 			{
@@ -1257,6 +1265,7 @@ namespace LoveOfCooking.GameObjects
 			
 			_searchTabButton.sourceRect.X = SearchTabButtonSource.X;
 			_ingredientsTabButton.sourceRect.X = SearchTabButtonSource.X + SearchTabButtonSource.Width;
+			this.ToggleFilterPopup(playSound: false, forceToggleTo: false);
 		}
 
 		private void CloseIngredientsPage()
@@ -1351,7 +1360,6 @@ namespace LoveOfCooking.GameObjects
 			return recipes;
 		}
 
-		// TODO: POLISH: Find a very suitable position for UpdateSearchRecipes() call, rather than in draw()
 		private void UpdateSearchRecipes()
 		{
 			_navUpButton.bounds.Y = _showSearchFilters
@@ -1393,9 +1401,12 @@ namespace LoveOfCooking.GameObjects
 			}
 		}
 
-		private void ToggleFilterPopup(bool playSound)
+		private void ToggleFilterPopup(bool playSound, bool? forceToggleTo = null)
 		{
-			_showSearchFilters = !_showSearchFilters;
+			if (forceToggleTo.HasValue && forceToggleTo.Value == _showSearchFilters)
+				return;
+
+			_showSearchFilters = forceToggleTo ?? !_showSearchFilters;
 			if (playSound)
 				Game1.playSound(PageChangeCue);
 
@@ -1443,12 +1454,16 @@ namespace LoveOfCooking.GameObjects
 
 		private void ChangeCurrentRecipe(int index)
 		{
+			if (_recipesFiltered.Count == 0)
+				return;
 			index = Math.Max(0, Math.Min(_recipesFiltered.Count - 1, index));
 			this.ChangeCurrentRecipe(_recipesFiltered[index].name);
 		}
 
 		private void ChangeCurrentRecipe(string name)
 		{
+			if (_recipesFiltered.Count == 0)
+				return;
 			CraftingRecipe recipe = new CraftingRecipe(name, isCookingRecipe: true);
 			_recipeIndex = _recipesFiltered.FindIndex(recipe => recipe.name == name);
 			_recipeAsItem = recipe.createItem();
@@ -1469,7 +1484,7 @@ namespace LoveOfCooking.GameObjects
 		private void UpdateCraftableCounts(CraftingRecipe recipe)
 		{
 			_recipeIngredientQuantitiesHeld.Clear();
-			for (int i = 0; i < CurrentRecipe.getNumberOfIngredients(); ++i)
+			for (int i = 0; i < CurrentRecipe?.getNumberOfIngredients(); ++i)
 			{
 				int id = CurrentRecipe.recipeList.Keys.ElementAt(i);
 				int requiredQuantity = CurrentRecipe.recipeList.Values.ElementAt(i);
@@ -1686,9 +1701,10 @@ namespace LoveOfCooking.GameObjects
 			else
 			{
 				if (item != null)
+				{
 					inventory.ShakeItem(item);
-				Game1.playSound(CancelCue);
-				return false;
+					Game1.playSound(CancelCue);
+				}
 			}
 			return itemWasMoved;
 		}
@@ -1914,9 +1930,9 @@ namespace LoveOfCooking.GameObjects
 			hoverText = null;
 			hoveredItem = null;
 			Item obj = inventory.getItemAt(x, y);
+			inventory.hover(x, y, heldItem);
 			if (CookingManager.CanBeCooked(item: obj))
 			{
-				inventory.hover(x, y, heldItem);
 				hoveredItem = obj;
 			}
 
@@ -2057,6 +2073,7 @@ namespace LoveOfCooking.GameObjects
 						Game1.keyboardDispatcher.Subscriber = _searchBarTextBox;
 						_searchBarTextBox.SelectMe();
 						_showSearchFilters = false;
+						this.ToggleFilterPopup(playSound: false, forceToggleTo: false);
 					}
 					else if (_searchBarTextBox.Selected)
 					{
@@ -2090,7 +2107,7 @@ namespace LoveOfCooking.GameObjects
 								ModEntry.Instance.States.Value.LastFilterThisSession = which;
 							}
 						}
-					
+						
 						// Search filter toggles
 						if (_toggleFilterButton.containsPoint(x, y))
 						{
@@ -2153,11 +2170,12 @@ namespace LoveOfCooking.GameObjects
 			{
 				Game1.playSound(ClickCue);
 				IsUsingAutofill = !IsUsingAutofill;
-				_autofillButton.sourceRect.X = IsUsingAutofill
+				_autofillButton.sourceRect.X = IsUsingAutofill // Update toggled button appearance
 					? AutofillButtonSource.X + AutofillButtonSource.Width
 					: AutofillButtonSource.X;
-				_cookingManager.ClearCurrentIngredients();
-				this.TryAutoFillIngredients();
+				_cookingManager.ClearCurrentIngredients(); // Remove current ingredients from slots
+				this.TryAutoFillIngredients(); // Actually auto-add ingredients to cooking slots
+				this.ChangeCurrentRecipe(_recipeIndex); // Refresh check for ready-to-cook recipe
 			}
 			// Search tab
 			else if (state != State.Search && _searchTabButton.containsPoint(x, y))
@@ -2536,10 +2554,6 @@ namespace LoveOfCooking.GameObjects
 
 			base.receiveKeyPress(key);
 
-			Log.D($"KY CSC: {(currentlySnappedComponent != null ? currentlySnappedComponent.myID : -1)}"
-				+ $" | ACC: {(allClickableComponents != null ? allClickableComponents.Count().ToString() : "null")}",
-				Config.DebugMode);
-			
 			switch (state)
 			{
 				case State.Search:
@@ -2797,6 +2811,7 @@ namespace LoveOfCooking.GameObjects
 
 		private void DrawRecipePage(SpriteBatch b)
 		{
+			bool knowsRecipe = CurrentRecipe != null && Game1.player.knowsRecipe(CurrentRecipe.name);
 			float xScale = _locale == "ko" && _resizeKoreanFonts ? KoWidthScale : 1f;
 			float yScale = _locale == "ko" && _resizeKoreanFonts ? KoHeightScale : 1f;
 			float textHeightCheck = 0f;
@@ -2827,7 +2842,7 @@ namespace LoveOfCooking.GameObjects
 			}
 			float titleScale = 1f;
 			textWidth = (int)(162 * xScale);
-			text = Game1.player.knowsRecipe(CurrentRecipe.name)
+			text = knowsRecipe
 				? CurrentRecipe.DisplayName
 				: i18n.Get("menu.cooking_recipe.title_unknown");
 			textPosition.X = _navLeftButton.bounds.Width + 56;
@@ -2855,7 +2870,7 @@ namespace LoveOfCooking.GameObjects
 			if (textHeightCheck > 60)
 				textPosition.Y += textHeightCheck - 50 * xScale;
 			textWidth = (int)(_textWidth * xScale);
-			text = Game1.player.knowsRecipe(CurrentRecipe.name)
+			text = knowsRecipe
 				? CurrentRecipe.description
 				: i18n.Get("menu.cooking_recipe.title_unknown");
 			this.DrawText(b, text, 1f, textPosition.X, textPosition.Y, textWidth, isLeftSide);
@@ -2867,7 +2882,7 @@ namespace LoveOfCooking.GameObjects
 			textHeightCheck = Game1.smallFont.MeasureString(Game1.parseText(text, Game1.smallFont, textWidth)).Y * yScale;
 			if (textHeightCheck > 120) 
 				textPosition.Y += 6 * Scale;
-			if (textHeightCheck > 100 && CurrentRecipe.getNumberOfIngredients() < 6)
+			if (textHeightCheck > 100 && CurrentRecipe?.getNumberOfIngredients() < 6)
 				textPosition.Y += 6 * Scale;
 			textPosition.Y += TextDividerGap + Game1.smallFont.MeasureString(
 				Game1.parseText(yScale < 1 ? "Hoplite!\nHoplite!" : "Hoplite!\nHoplite!\nHoplite!", Game1.smallFont, textWidth)).Y * yScale;
@@ -2880,7 +2895,7 @@ namespace LoveOfCooking.GameObjects
 			this.DrawHorizontalDivider(b, 0, textPosition.Y, _lineWidth, isLeftSide);
 			textPosition.Y += TextDividerGap - 64 / 2 + 4;
 
-			if (Game1.player.knowsRecipe(CurrentRecipe.name))
+			if (knowsRecipe)
 			{
 				for (int i = 0; i < CurrentRecipe.getNumberOfIngredients(); ++i)
 				{
@@ -2890,29 +2905,50 @@ namespace LoveOfCooking.GameObjects
 					string ingredientNameText = CurrentRecipe.getNameFromIndex(id);
 					
 					// Show category-specific information for general category ingredient rules
+					// Icons are furnished with some recognisable stereotypes of items from each category
 					if (id < 0)
 					{
 						switch (id)
 						{
 							case -81:
 								ingredientNameText = i18n.Get("item.forage.label");
-								id = 22;
+								id = 22; // Dandelion
 								break;
 							case -80:
 								ingredientNameText = i18n.Get("item.flower.label");
-								id = 591;
+								id = 591; // Tulip
 								break;
 							case -79:
 								ingredientNameText = i18n.Get("item.fruit.label");
-								id = 406;
+								id = 406; // Wild Plum
 								break;
 							case -75:
 								ingredientNameText = i18n.Get("item.vegetable.label");
-								id = 278;
+								id = 278; // Bok Choy
 								break;
 							case -14:
 								ingredientNameText = i18n.Get("item.meat.label");
-								id = 640;
+								id = 640; // Unused meat (white steak, raw)
+								break;
+							case -7:
+								ingredientNameText = i18n.Get("item.cooking.label");
+								id = 662; // Unused cooking (nice bowl of red sauce)
+								break;
+							case -2:
+								ingredientNameText = i18n.Get("item.gem.label");
+								id = 60; // Emerald
+								break;
+							case -12:
+								ingredientNameText = i18n.Get("item.mineral.label");
+								id = 546; // Geminite
+								break;
+							case -15:
+								ingredientNameText = i18n.Get("item.metal.label");
+								id = 380; // Iron Ore (variant A)
+								break;
+							case -74:
+								ingredientNameText = i18n.Get("item.seed.label");
+								id = 770; // Mixed Seeds
 								break;
 						}
 					}
@@ -3006,7 +3042,7 @@ namespace LoveOfCooking.GameObjects
 
 				// Contextual cooking popup
 				Game1.DrawBox(x: _cookIconBounds.X, y: _cookIconBounds.Y, width: _cookIconBounds.Width, height: _cookIconBounds.Height);
-				CurrentRecipe.drawMenuView(b, x: _cookIconBounds.X + 14, y: _cookIconBounds.Y + 14);
+				CurrentRecipe?.drawMenuView(b, x: _cookIconBounds.X + 14, y: _cookIconBounds.Y + 14);
 
 				_cookQuantityUpButton.draw(b);
 				_quantityTextBox.Draw(b);
@@ -3316,10 +3352,11 @@ namespace LoveOfCooking.GameObjects
 				if (inventory.actualInventory.Count <= i || inventory.actualInventory.ElementAt(i) == null)
 					continue;
 
-				Color colour = (CookingManager.CanBeCooked(item: inventory.actualInventory[i])
-					&& !_cookingManager.IsInventoryItemInCurrentIngredients(inventoryIndex: _inventoryId, itemIndex: i))
-					? Color.White
-					: Color.Gray * 0.25f;
+				Color colour = !_cookingManager.IsInventoryItemInCurrentIngredients(inventoryIndex: _inventoryId, itemIndex: i)
+					? CookingManager.CanBeCooked(item: inventory.actualInventory[i])
+						? Color.White
+						: Color.Gray * 0.25f
+					: Color.White * 0.35f;
 				bool drawShadow = inventory.highlightMethod(inventory.actualInventory[i]);
 				if (iconShakeTimer.ContainsKey(i))
 					location += 1f * new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2));

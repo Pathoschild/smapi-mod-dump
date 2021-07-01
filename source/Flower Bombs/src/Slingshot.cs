@@ -43,7 +43,7 @@ namespace FlowerBombs
 		{
 			// If a tile near the collision point is suitable, place the Flower
 			// Bomb on that tile.
-			FlowerBomb bomb = new FlowerBomb (EmptyData);
+			FlowerBomb bomb = new (EmptyData);
 			List<Vector2> tiles = Utility.recursiveFindOpenTiles (location,
 				new Vector2 (xPosition / 64, yPosition / 64), maxIterations: 2);
 			Vector2 tile = tiles.FirstOrDefault ((tile) =>

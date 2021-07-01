@@ -1,0 +1,18 @@
+urls:
+   web: https://github.com/Binarynova/MyStardewMods
+   Git: https://github.com/Binarynova/MyStardewMods.git
+
+mods:
+   Instant Tool Upgrades
+
+latest commit:
+   commit 84ca97fc50e0d39675cad652d7a429d437d12ea2
+   Author: Thomas <binarynova@gmail.com>
+   Date:   Sun Jun 13 21:50:34 2021 -0500
+   
+       Translation Support Cleanup
+       
+       Currently translation support is not working for non-English json files due to a SMAPI bug.
+       
+       I believe these changes get my mod close to where it needs to be when the bug is fixed.
+   

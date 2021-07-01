@@ -31,6 +31,8 @@ namespace SkillfulClothes
 
         public static SkillfulClothesConfig Config { get; private set; }
 
+        public static CustomOverlays Overlays { get; private set; }
+
         public static ClothingObserver ClothingObserver { get; private set; }
 
         public static Random Random { get; } = new Random();
@@ -45,6 +47,7 @@ namespace SkillfulClothes
             Config = config;
             Textures.Init();
             ClothingObserver = new ClothingObserver();
+            Overlays = new CustomOverlays(modHelper);
 
             Events.Watch(modHelper);            
         }

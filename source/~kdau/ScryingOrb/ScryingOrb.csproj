@@ -3,9 +3,21 @@
 	<PropertyGroup>
 		<AssemblyName>ScryingOrb</AssemblyName>
 		<RootNamespace>ScryingOrb</RootNamespace>
-		<Version>1.3.0</Version>
+		<Version>2.0.1</Version>
 		<EnableHarmony>true</EnableHarmony>
 		<ProjectGuid>{6B2D3929-4EFB-46AC-88C1-D0FAEED7AAC0}</ProjectGuid>
 	</PropertyGroup>
-	<Import Project="..\Common\PredictiveCore.projitems" Label="Shared" />
+	<ItemGroup Label="extra-mods">
+		<ExtraModItem Include="packs/JA/manifest.json">
+			<Link>[JA]ScryingOrb/manifest.json</Link>
+		</ExtraModItem>
+		<ExtraModItem Include="packs/JA/BigCraftables/ScryingOrb/big-craftable.json">
+			<Link>[JA]ScryingOrb/BigCraftables/ScryingOrb/big-craftable.json</Link>
+		</ExtraModItem>
+		<ExtraModItem Include="packs/JA/BigCraftables/ScryingOrb/big-craftable.png">
+			<Link>[JA]ScryingOrb/BigCraftables/ScryingOrb/big-craftable.png</Link>
+		</ExtraModItem>
+	</ItemGroup>
+	<Import Project="../PredictiveCore/PredictiveCore.projitems" Label="Shared" />
+	<Import Project="../PredictiveCore/extra-mods.projitems" Label="Shared" />
 </Project>

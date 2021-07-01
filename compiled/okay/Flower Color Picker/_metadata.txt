@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/1229
 IDs: spacechase0.FlowerColorPicker
-update keys: Nexus:1229, Chucklefish:4765, GitHub:spacechase0/FlowerColorPicker
+update keys: Nexus:1229, GitHub:spacechase0/StardewValleyMods

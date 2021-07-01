@@ -11,7 +11,7 @@
 {
   "Name": "Point-and-Plant",
   "Author": "jwdred",
-  "Version": "1.1.2-unofficial.3-strobe",
+  "Version": "1.1.1-unofficial.5-strobe",
   "Description": "Plant and harvest from the comfort of your front porch!",
   "UniqueID": "jwdred.PointAndPlant",
   "EntryDll": "PointAndPlant.dll",

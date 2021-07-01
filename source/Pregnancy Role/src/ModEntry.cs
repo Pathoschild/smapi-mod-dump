@@ -11,6 +11,7 @@
 using Harmony;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 
 namespace PregnancyRole
 {
@@ -20,8 +21,8 @@ namespace PregnancyRole
 
 		internal HarmonyInstance harmony { get; private set; }
 
-		private SkillsPageOverlay skillsPageOverlay;
-		private ProfileMenuOverlay profileMenuOverlay;
+		private readonly PerScreen<SkillsPageOverlay> skillsPageOverlay = new ();
+		private readonly PerScreen<ProfileMenuOverlay> profileMenuOverlay = new ();
 
 		public override void Entry (IModHelper helper)
 		{
@@ -50,13 +51,13 @@ namespace PregnancyRole
 		{
 			// Set up the Pregnancy Role dropdowns in the pause menu.
 
-			if (skillsPageOverlay != null)
-				skillsPageOverlay.Dispose ();
-			skillsPageOverlay = new SkillsPageOverlay ();
+			if (skillsPageOverlay.Value != null)
+				skillsPageOverlay.Value.Dispose ();
+			skillsPageOverlay.Value = new SkillsPageOverlay ();
 
-			if (profileMenuOverlay != null)
-				profileMenuOverlay.Dispose ();
-			profileMenuOverlay = new ProfileMenuOverlay ();
+			if (profileMenuOverlay.Value != null)
+				profileMenuOverlay.Value.Dispose ();
+			profileMenuOverlay.Value = new ProfileMenuOverlay ();
 		}
 	}
 }

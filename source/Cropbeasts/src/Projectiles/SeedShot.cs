@@ -13,7 +13,7 @@ namespace Cropbeasts.Projectiles
 	public class SeedShot : BeastProjectile
 	{
 		public SeedShot ()
-		{}
+		{ }
 
 		public SeedShot (int damage, int seedIndex)
 		{

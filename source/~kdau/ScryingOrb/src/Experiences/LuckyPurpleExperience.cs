@@ -17,10 +17,10 @@ namespace ScryingOrb
 {
 	public class LuckyPurpleExperience : Experience
 	{
-		public static readonly List<int> AcceptedOfferings = new List<int>
+		public static readonly List<int> AcceptedOfferings = new ()
 		{
 			789, // Lucky Purple Shorts
-			 71, // Trimmed Lucky Purple Shorts (object version)
+			71, // Trimmed Lucky Purple Shorts (object version)
 		};
 
 		private const string TriedFlag =
@@ -61,7 +61,7 @@ namespace ScryingOrb
 		}
 
 		protected override void doRun ()
-		{}
+		{ }
 
 		internal static void Reset ()
 		{

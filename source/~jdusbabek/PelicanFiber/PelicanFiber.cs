@@ -44,36 +44,37 @@ namespace PelicanFiber
         public override void Entry(IModHelper helper)
         {
             // load config
-            ModConfig config = PelicanFiber.Config = this.Helper.ReadConfig<ModConfig>();
-            if (!Enum.TryParse(config.KeyBind, true, out this.MenuKey))
+            var config = Config = Helper.ReadConfig<ModConfig>();
+            if (!Enum.TryParse(config.KeyBind, true, out MenuKey))
             {
-                this.MenuKey = SButton.PageDown;
-                this.Monitor.Log($"404 Not Found: Error parsing key binding; defaulted to {this.MenuKey}.");
+                MenuKey = SButton.PageDown;
+                Monitor.Log($"404 Not Found: Error parsing key binding; defaulted to {MenuKey}.");
             }
-            this.Unfiltered = !config.InternetFilter;
+
+            Unfiltered = !config.InternetFilter;
 
             // load textures
             try
             {
-                this.Websites = helper.Content.Load<Texture2D>("assets/websites.png");
+                Websites = helper.Content.Load<Texture2D>("assets/websites.png");
             }
             catch (Exception ex)
             {
-                this.Monitor.Log($"400 Bad Request: Could not load image content. {ex}", LogLevel.Error);
+                Monitor.Log($"400 Bad Request: Could not load image content. {ex}", LogLevel.Error);
             }
 
             // load utils
-            PelicanFiber.ItemUtils = new ItemUtils(helper.Content, helper.Data, this.Monitor);
+            ItemUtils = new ItemUtils(helper.Content, helper.Data, Monitor);
 
             // hook events
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            helper.Events.Display.MenuChanged += this.OnMenuChanged;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
 
             // hook Harmony patches
-            HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
             harmony.Patch(
-                original: AccessTools.Method(typeof(ShopMenu), "tryToPurchaseItem"),
-                postfix: new HarmonyMethod(this.GetType(), nameof(PelicanFiber.After_TryPurchaseItem))
+                AccessTools.Method(typeof(ShopMenu), "tryToPurchaseItem"),
+                postfix: new HarmonyMethod(GetType(), nameof(After_TryPurchaseItem))
             );
         }
 
@@ -89,8 +90,8 @@ namespace PelicanFiber
             if (!Context.IsPlayerFree)
                 return;
 
-            if (e.Button == this.MenuKey)
-                this.OpenMainMenu();
+            if (e.Button == MenuKey)
+                OpenMainMenu();
         }
 
         /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
@@ -98,10 +99,10 @@ namespace PelicanFiber
         /// <param name="e">The event arguments.</param>
         private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if (this.LastLinkOpened != null && e.NewMenu == null && object.ReferenceEquals(e.OldMenu, this.LastLinkOpened))
+            if (LastLinkOpened != null && e.NewMenu == null && ReferenceEquals(e.OldMenu, LastLinkOpened))
             {
-                this.OpenMainMenu();
-                this.LastLinkOpened = null;
+                OpenMainMenu();
+                LastLinkOpened = null;
             }
         }
 
@@ -111,46 +112,47 @@ namespace PelicanFiber
         {
             try
             {
-                float scale = 1.0f;
-                if (Game1.viewport.Height < 1325)
-                    scale = Game1.viewport.Height / 1325f;
+                var scale = 1.0f;
+                if (Game1.uiViewport.Height < 1325)
+                    scale = Game1.uiViewport.Height / 1325f;
 
-                Game1.activeClickableMenu = new PelicanFiberMenu(this.Websites, this.Helper.Reflection, PelicanFiber.ItemUtils, this.Helper.Multiplayer.GetNewID, this.OnLinkOpened, scale, this.Unfiltered);
+                Game1.activeClickableMenu = new PelicanFiberMenu(Websites, Helper.Reflection, ItemUtils,
+                    Helper.Multiplayer.GetNewID, OnLinkOpened, scale, Unfiltered);
             }
             catch (Exception ex)
             {
-                this.Monitor.Log($"500 Internal Error: {ex}", LogLevel.Error);
+                Monitor.Log($"500 Internal Error: {ex}", LogLevel.Error);
             }
         }
 
         /// <summary>Track the last link menu opened.</summary>
         private void OnLinkOpened()
         {
-            this.LastLinkOpened = Game1.activeClickableMenu;
+            LastLinkOpened = Game1.activeClickableMenu;
         }
 
         /// <summary>Called by Harmony after the <c>ShopMenu.TryToPurchaseItem</c> method.</summary>
         /// <param name="__result">The return value of the original method.</param>
         /// <param name="item">The item being purchased.</param>
         /// <param name="numberToBuy">The number of items to purchase.</param>
-        [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "The argument names must match those expected by Harmony.")]
+        [SuppressMessage("ReSharper", "InconsistentNaming",
+            Justification = "The argument names must match those expected by Harmony.")]
         private static void After_TryPurchaseItem(bool __result, Item item, int numberToBuy)
         {
             // if purchased
             if (__result)
             {
-                SObject obj = item as SObject;
+                var obj = item as SObject;
 
                 // add bundle
                 if (obj?.Category == -425 && item.Name.Contains("Bundle"))
                 {
-                    PelicanFiber.ItemUtils.AddBundle(item.SpecialVariable);
+                    ItemUtils.AddBundle(item.SpecialVariable);
                     Game1.player.craftingRecipes.Remove(obj.name); // don't use .Name, since that includes 'Recipe'
                 }
 
                 // update achievements if item was purchased
-                if (PelicanFiber.Config.GiveAchievements)
-                {
+                if (Config.GiveAchievements)
                     switch (item.Category)
                     {
                         // recipes cooked
@@ -175,7 +177,6 @@ namespace PelicanFiber
                             Game1.player.foundArtifact(item.ParentSheetIndex, numberToBuy);
                             break;
                     }
-                }
             }
         }
     }

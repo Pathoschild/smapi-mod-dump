@@ -1,4 +1,9 @@
 {
   "SiloSize": 1000,
-  "MorningReport": true
+  "MorningReport": true,
+  "LowWarning": 3,
+  "AutoHayBuildings": [
+    "Deluxe Barn",
+    "Deluxe Coop"
+  ]
 }

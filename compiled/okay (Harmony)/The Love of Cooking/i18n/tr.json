@@ -97,6 +97,11 @@
 	"item.vegetable.label": "Sebze (Herhangibir)",
 	"item.meat.label": "Et (Herhangibir)",
 	"item.forage.label": "Yem (Herhangibir)",
+	"item.cooking.label": "Yemek (Herhangibir)",
+	"item.mineral.label": "Mineral (Herhangibir)",
+	"item.seed.label": "Tohum (Herhangibir)",
+	"item.metal.label": "Metal (Herhangibir)",
+	"item.gem.label": "Değerli Taş (Herhangibir)",
 
 	// Kebab item interactions
 	"buff.kebab.quality_worst": "Çürük ",

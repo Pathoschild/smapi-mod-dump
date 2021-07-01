@@ -46,5 +46,10 @@ namespace FlowerBombs
 				data[RecipeKey] = leah;
 			}
 		}
+
+		public static void Invalidate ()
+		{
+			Helper.Content.InvalidateCache ("Data\\mail");
+		}
 	}
 }

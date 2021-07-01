@@ -6,10 +6,10 @@ mods:
    Silo Size
 
 latest commit:
-   changeset:   32:59be20189768
+   changeset:   43:f9ea12baef08
    tag:         tip
    user:        Pandu POLUAN <pepoluan@gmail.com>
-   date:        Sun May 30 14:45:11 2021 +0700
-   summary:     Another wee bit optimization
+   date:        Tue Jun 08 23:24:53 2021 +0700
+   summary:     Specify order of patching
    
    

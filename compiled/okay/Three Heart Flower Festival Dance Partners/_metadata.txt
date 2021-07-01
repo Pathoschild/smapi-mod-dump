@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/500
-IDs: ThreeHeartDancePartner
-update keys: Nexus:500, Chucklefish:3767, GitHub:spacechase0/ThreeHeartDancePartner

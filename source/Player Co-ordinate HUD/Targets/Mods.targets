@@ -1,6 +1,0 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <PropertyGroup>
-        <GamePath>C:\Development\Stardew Valley\Stardew Valley-1.5.4_SMAPI-3.10.1</GamePath>
-        <ModZipPath>$(SolutionDir)\ReleaseZip</ModZipPath>
-    </PropertyGroup>
-</Project>
