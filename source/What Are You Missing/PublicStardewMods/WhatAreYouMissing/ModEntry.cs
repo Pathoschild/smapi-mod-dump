@@ -16,7 +16,8 @@ namespace WhatAreYouMissing
 {
     public class ModEntry : Mod
     {
-        private SButton buttonToBringUpInterface;
+        private SButton ButtonToBringUpInterface;
+        private IReflectionHelper Reflection;
         public static ModConfig modConfig;
         public static Logger Logger;
         public static ITranslationHelper Translator;
@@ -33,10 +34,11 @@ namespace WhatAreYouMissing
             //ModEntry is called once before SDV loads.In 3.0 its called even earlier than 2.x - things like Game1.objectInformation 
             //aren't ready yet. If you need to run stuff when a save is ready use the save loaded event
             Translator = helper.Translation;
+            Reflection = Helper.Reflection;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             HelperInstance = Helper;
             modConfig = Helper.ReadConfig<ModConfig>();
-            buttonToBringUpInterface = modConfig.button;
+            ButtonToBringUpInterface = modConfig.button;
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -45,12 +47,12 @@ namespace WhatAreYouMissing
             if (!Context.IsWorldReady)
                 return;
 
-            if (e.Button.Equals(buttonToBringUpInterface))
+            if (e.Button.Equals(ButtonToBringUpInterface))
             {
                 Logger = new Logger(this);
 
                 //Initialize the performance heavy operations
-                MissingItems = new MissingItems();
+                MissingItems = new MissingItems(Reflection);
                 RecipesIngredients = new RecipeIngredients();
 
                 Menu whatIsMissingMenu = new Menu();

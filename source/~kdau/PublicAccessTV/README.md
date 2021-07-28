@@ -108,8 +108,8 @@ Your contribution would be welcome. Please see the [instructions on the wiki](ht
 
 ## ![See also](https://www.kdau.com/headers/see-also.png)
 
-* [Release notes](RELEASE-NOTES.md)
-* [Source code](https://gitlab.com/kdau/predictivemods/-/tree/master/PublicAccessTV)
+* [Release notes](doc/RELEASE-NOTES.md)
+* [Source code](https://gitlab.com/kdau/predictivemods/-/tree/main/PublicAccessTV)
 * [Report bugs](https://gitlab.com/kdau/predictivemods/-/issues)
 * [My other Stardew stuff](https://www.kdau.com/stardew)
 * Mirrors:

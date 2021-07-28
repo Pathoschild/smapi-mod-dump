@@ -61,7 +61,7 @@ namespace EconomyMod.Interface.Submenu
                     InterfaceHelper.Draw(btnPosition, InterfaceHelper.InterfaceHelperType.Red);
                 }
             };
-            this.LeftClickAction += Leftclick;
+            ui.OnLeftClick += Leftclick;
         }
 
         private void Leftclick(object sender, Coordinate e)

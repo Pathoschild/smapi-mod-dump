@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+   "Name": "Content Patcher for Barn Incubator Support",
+   "Author": "elbe",
+   "Description": "Renames \"Ostrich Incubator\" to \"Large Incubator\"",
+   "Version": "1.0.1",
+   "UniqueID": "elbe.BarnIncubatorSupportCP",
+   "ContentPackFor": {
+       "UniqueID": "Pathoschild.ContentPatcher"
+    },
+   "UpdateKeys": [ "Nexus:2596" ],
+}

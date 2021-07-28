@@ -18,7 +18,7 @@ Make blooms, not war. Craft a Flower Bomb, fill it with wild or flower seeds, an
 
 [list=1]
 [*]Install [url=https://smapi.io/]SMAPI[/url]
-[*]Install [url=https://www.nexusmods.com/stardewvalley/mods/1726]PyTK[/url]
+[*]Install [url=https://www.nexusmods.com/stardewvalley/mods/6589]PlatoTK[/url] (This is different from PyTK!)
 [*]Install [url=https://www.nexusmods.com/stardewvalley/mods/5098]Generic Mod Config Menu[/url] (optional, for easier configuration)
 [*]Download this mod from the link in the header above
 [*]Unzip the mod and place the [icode]FlowerBombs[/icode] folder inside your [icode]Mods[/icode] folder
@@ -35,7 +35,9 @@ You can load any [b]wild or flower seeds[/b], including custom flower seeds, int
 
 You can place a Flower Bomb directly in the world on [b]any dirt or grass[/b]. To pick it up again, strike it with a tool. You can also load empty Flower Bombs into a Slingshot and fire them. If they land on or near dirt or grass, they will stick in that area.
 
-All Flower Bombs in the world will [b]"detonate" overnight[/b]. If a Flower Bomb held in-season flower seeds, the explosion will consist mainly of that flower, with some seasonal wildflowers and weeds at the edges. If it held in-season wild seeds, the explosion will consist mainly of seasonal wildflowers with weeds at the edges. Otherwise, the explosion will consist entirely of weeds. (In winter, weeds are replaced with crystals.)
+By default, all Flower Bombs placed in the world will [b]germinate overnight[/b]. If so configured, they will not germinate until the next rainy or snowy day (or if in the range of a sprinkler). Any Flower Bomb can also be germinated immediately by watering it ten times.
+
+When a Flower Bomb germinates that held in-season flower seeds, the growth will consist mainly of that flower, with some seasonal wildflowers and weeds at the edges. If it held in-season wild seeds, the growth will consist mainly of seasonal wildflowers with weeds at the edges. Otherwise, the growth will consist entirely of weeds. (In winter, weeds are replaced with crystals.)
 
 [size=4][b][img alt="Configuration"]https://www.kdau.com/headers/configuration.png[/img][/b][/size]
 
@@ -44,6 +46,7 @@ If you have installed Generic Mod Config Menu, you can access this mod's configu
 Otherwise, you can edit this mod's [icode]config.json[/icode] file. It will be created in the mod's main folder ([icode]Mods/FlowerBombs[/icode]) the first time you run the game with the mod installed. These options are available:
 
 [list]
+[*][icode]WaterToGerminate[/icode]: Set this to [icode]true[/icode] to wait for the next rainy or snowy day (or sprinkler spray) to germinate Flower Bombs.
 [*][icode]ClintMudstone[/icode]: Set this to [icode]false[/icode] to prevent Clint from offering Mudstone in his shop inventory.
 [*][icode]KentGifts[/icode]: Set this to [icode]false[/icode] to allow Kent to keep sending regular Bombs in the mail.
 [*][icode]LeahRecipe[/icode]: Set this to [icode]false[/icode] to unlock the Flower Bomb crafting recipe instantly instead of involving Leah.
@@ -67,7 +70,7 @@ Your contribution would be welcome. Please see the [url=https://stardewvalleywik
 [size=4][b][img alt="See also"]https://www.kdau.com/headers/see-also.png[/img][/b][/size]
 
 [list]
-[*][url=https://gitlab.com/kdau/flowerbombs/-/blob/master/doc/RELEASE-NOTES.md]Release notes[/url]
+[*][url=https://gitlab.com/kdau/flowerbombs/-/blob/main/doc/RELEASE-NOTES.md]Release notes[/url]
 [*][url=https://gitlab.com/kdau/flowerbombs]Source code[/url]
 [*][url=https://gitlab.com/kdau/flowerbombs/-/issues]Report bugs[/url]
 [*][url=https://www.kdau.com/stardew]My other Stardew stuff[/url]
@@ -76,6 +79,6 @@ Your contribution would be welcome. Please see the [url=https://stardewvalleywik
 Other mods to consider:
 
 [list]
-[*][url=https://forums.stardewvalley.net/index.php?resources/ppja-mizus-flowers.14/]Mizu's Flowers[/url] offers more flower seeds you can use with the Flower Bomb.
+[*][url=https://forums.stardewvalley.net/resources/ppja-mizus-flowers.14/]Mizu's Flowers[/url] offers more flower seeds you can use with the Flower Bomb.
 [*]For florally-themed fun, check out the other mods from the Spring 2020 event.
 [/list]

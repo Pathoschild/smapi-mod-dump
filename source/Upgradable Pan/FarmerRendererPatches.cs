@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Tools;
 using StardewValley;
-using System.Reflection;
 
 namespace UpgradablePan
 {
@@ -27,7 +26,6 @@ namespace UpgradablePan
 			if (who.hat.Value != null && who.hat.Value is PanHat panHat)
 			{
 				__state = panHat;
-				who.hat.Set(null);
 			}
 			return true;
 		}
@@ -64,7 +62,7 @@ namespace UpgradablePan
 				Rectangle hatSourceRect = new Rectangle(20 * (__state.UpgradeLevel - 2), 20 * (__state.UpgradeLevel - 2) / PanHat.panHatTexture.Width * 20 * 4, 20, 20);
 
 				b.Draw(PanHat.panHatTexture, position + origin + ___positionOffset + new Vector2(-8 + ((!flip) ? 1 : (-1)) * FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, -16 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((!__state.ignoreHairstyleOffset) ? FarmerRenderer.hairstyleHatOffset[(int)who.hair % 16] : 0) + 4 + __instance.heightOffset.Value), hatSourceRect, __state.isPrismatic ? Utility.GetPrismaticColor() : Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + layer_offset2);
-				who.hat.Set(__state);
+				//who.hat.Set(__state);
 			}
 		}
 	}

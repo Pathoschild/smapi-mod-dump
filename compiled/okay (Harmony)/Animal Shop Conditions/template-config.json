@@ -1,0 +1,11 @@
+﻿{
+  "AnimalConditions": [
+    {
+      "AnimalName": "Dairy Cow", // Called a category in BFAV. Vanilla options: 'Dairy Cow', 'Chicken', and the animal names for everyone else
+      "Conditions": [
+        "f Marnie 2000",
+        "y 2"
+      ]
+    }
+  ]
+}

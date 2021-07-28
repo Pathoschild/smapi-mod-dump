@@ -9,6 +9,7 @@
 *************************************************/
 
 using Magic.Framework.Schools;
+using Magic.Framework.Skills;
 using Magic.Framework.Spells;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,13 +21,16 @@ namespace Magic.Framework.Game.Interface
 {
     internal class MagicMenu : IClickableMenu
     {
-        public const int WindowWidth = 800;
-        public const int WindowHeight = 600;
-        public const int SchoolIconSize = 32;
-        public const int SpellIconSize = 64;
-        public const int SelIconSize = 192;
-        public const int HotbarIconSize = 48;
-
+        /*********
+        ** Fields
+        *********/
+        private const int WindowWidth = 800;
+        private const int WindowHeight = 600;
+        private const int SchoolIconSize = 32;
+        private const int SpellIconSize = 64;
+        private const int SelIconSize = 192;
+        private const int HotbarIconSize = 48;
+        
         private readonly School School;
         private School Active;
         private Spell Sel;
@@ -35,18 +39,22 @@ namespace Magic.Framework.Game.Interface
         private bool JustLeftClicked;
         private bool JustRightClicked;
 
-        public MagicMenu(School theSchool = null)
+
+        /*********
+        ** Public methods
+        *********/
+        public MagicMenu(School school = null)
             : base((Game1.viewport.Size.Width - MagicMenu.WindowWidth) / 2, (Game1.viewport.Size.Height - MagicMenu.WindowHeight) / 2, MagicMenu.WindowWidth, MagicMenu.WindowHeight, true)
         {
-            this.School = theSchool;
-            if (this.School != null)
-                this.Active = this.School;
+            this.School = school;
+            this.Active = school;
         }
 
         public override void draw(SpriteBatch b)
         {
             var spellBook = Game1.player.GetSpellBook();
-            bool hasFifthSpellSlot = Game1.player.HasCustomProfession(Skill.ProfessionFifthSpellSlot);
+
+            bool hasFifthSpellSlot = Game1.player.HasCustomProfession(Skill.MemoryProfession);
 
             int hotbarH = 12 + 48 * (hasFifthSpellSlot ? 5 : 4) + 12 * (hasFifthSpellSlot ? 4 : 3) + 12;
             int gap = (MagicMenu.WindowHeight - hotbarH * 2) / 3 + (hasFifthSpellSlot ? 25 : 0);
@@ -162,9 +170,9 @@ namespace Magic.Framework.Game.Interface
                         else if (i == 0 || spellBook.KnowsSpell(this.Sel, i - 1))
                         {
                             if (this.JustLeftClicked)
-                                spellBook.LearnSpell(this.Sel, i);
+                                spellBook.Mutate(_ => spellBook.LearnSpell(this.Sel, i));
                             else if (this.JustRightClicked && i != 0)
-                                spellBook.ForgetSpell(this.Sel, i);
+                                spellBook.Mutate(_ => spellBook.ForgetSpell(this.Sel, i));
                         }
                     }
                 }
@@ -184,10 +192,10 @@ namespace Magic.Framework.Game.Interface
                         if (r.Contains(Game1.getOldMouseX(), Game1.getOldMouseY()))
                         {
                             if (this.JustRightClicked)
-                                spellBar.SetSlot(i, prep = null);
+                                spellBook.Mutate(_ => spellBar.SetSlot(i, prep = null));
                             else if (this.JustLeftClicked)
                             {
-                                spellBar.SetSlot(i, prep = this.Dragging);
+                                spellBook.Mutate(_ => spellBar.SetSlot(i, prep = this.Dragging));
                                 this.Dragging = null;
                                 this.JustLeftClicked = false;
                             }
@@ -245,6 +253,10 @@ namespace Magic.Framework.Game.Interface
             this.JustRightClicked = true;
         }
 
+
+        /*********
+        ** Private methods
+        *********/
         // https://gist.github.com/Sankra/5585584
         // TODO: A better version that handles me doing newlines correctly
         private string WrapText(string text, int maxLineWidth)

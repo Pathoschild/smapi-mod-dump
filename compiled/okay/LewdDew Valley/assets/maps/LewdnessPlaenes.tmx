@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" name="z_volcano_dungeon" tilewidth="16" tileheight="16" tilecount="576" columns="16">
+  <image source="volcano_dungeon.png" width="256" height="576"/>
+ </tileset>
+ <layer id="7" name="Back" width="128" height="128">
+  <data encoding="base64" compression="zstd">
+   KLUv/WAA/20FAEBBAQAAAgBBAYCLqPAFAfAFHRJgEBAQkBG4CVQCjQAggAgcgoDAIXAgCqtPCoGle9+p4zrnf7UUskmTupHSL+2lSl3qwKtCBVqTa8STmgob1DMUdDIGPWYoc0hocnxorxElqOaUvCaVoMaXvkZW0ppsaHJ8KHPIThoEyXhQX5lFVDmT0EakaUlUVU6gsmDKreyLpor7VY9An6ISLzraS5P4YR7gefSH/4fR/O8D
+  </data>
+ </layer>
+ <objectgroup id="8" name="Back"/>
+ <layer id="5" name="Buildings" width="128" height="128">
+  <data encoding="base64" compression="zstd">
+   KLUv/WAA//0LAGQDAAAjASQBIiIUJCILFCIkChIMAAAAGhwiHBIZIhIbACUBAAAELCoCAQAANTwrABQ8FAMSJQICgIaggNsCcIISAEBgWQCBI/Tee6qPvwB9Ruj+Ug/FveBpghFojf9U+eWuCZpiBP6ntgdOodf9o/YFTYGk/VOdeCBqWtb/1CkHSsGB6p9quTQvkHFADC1V/1EHXYECJ+k/VCPzLomYrD4gVNMAqOF4IP0bFwgcpp4miv5HpXmvbTYLdAKuRA5EYkSqD6CMB6DmWgekihdUNAcwmdU24OouwjRJxKXPQQ/AvyJobb4azgWpgVZ7IAdv/B+Nb8DUmZDn3uLaf0kVHZDUP+gB4X9lAFL+U0o6IOo8EGlBeQ/Z/3TOhCoPTD5S8L9ljANWgwVDpSP3/9JQB1YrJA/iqSH1v1LWgap+AXjgv6iu1GLWoiA7YDXK25SyqQU6RROnAlL+ExXxgqqwS9PBNGUKL+STFNIJVcfN85YSf1iVEsflRks1a6cx6V0K
+  </data>
+ </layer>
+ <objectgroup id="6" name="Buildings"/>
+ <layer id="3" name="Front" width="128" height="128">
+  <data encoding="base64" compression="zstd">
+   KLUv/WAA/1UAABAAAAEA+38dYAE=
+  </data>
+ </layer>
+ <objectgroup id="4" name="Front"/>
+</map>

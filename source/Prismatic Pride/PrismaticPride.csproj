@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>PrismaticPride</AssemblyName>
 		<RootNamespace>PrismaticPride</RootNamespace>
-		<Version>1.0.1</Version>
+		<Version>1.1.0</Version>
 		<EnableHarmony>true</EnableHarmony>
 	</PropertyGroup>
 	<PropertyGroup>

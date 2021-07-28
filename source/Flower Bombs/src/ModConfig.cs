@@ -21,6 +21,8 @@ namespace FlowerBombs
 
 #pragma warning disable IDE1006
 
+		public bool WaterToGerminate { get; set; } = false;
+
 		public bool ClintMudstone { get; set; } = true;
 
 		public bool KentGifts { get; set; } = true;
@@ -54,6 +56,12 @@ namespace FlowerBombs
 			var manifest = ModEntry.Instance.ModManifest;
 			api.RegisterModConfig (manifest, Reset, Save);
 			api.SetDefaultIngameOptinValue (manifest, true);
+
+			api.RegisterSimpleOption (manifest,
+				Helper.Translation.Get ("WaterToGerminate.name"),
+				Helper.Translation.Get ("WaterToGerminate.description"),
+				() => Instance.WaterToGerminate,
+				(bool value) => Instance.WaterToGerminate = value);
 
 			api.RegisterSimpleOption (manifest,
 				Helper.Translation.Get ("ClintMudstone.name"),

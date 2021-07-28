@@ -187,8 +187,8 @@ namespace BetterMixedSeeds
             var jaSeeds = new List<Seed>();
 
             // get crop data directly from Json Assets
-            var jaCropMods = (Dictionary<IManifest, List<string>>)jaInstance.GetType().GetField("cropsByContentPack", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(jaInstance);
-            var jaCrops = jaInstance.GetType().GetField("crops", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(jaInstance);
+            var jaCropMods = (Dictionary<IManifest, List<string>>)jaInstance.GetType().GetField("CropsByContentPack", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(jaInstance);
+            var jaCrops = jaInstance.GetType().GetField("Crops", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(jaInstance);
 
             // convert to local type then convert to seeds
             JACropMods = ConvertJACropMods(jaCropMods, jaCrops);

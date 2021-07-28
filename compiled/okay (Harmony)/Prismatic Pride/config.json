@@ -1,4 +1,6 @@
 {
+  "ApplyColors": true,
+  "ColorDuration": 1.5,
   "DefaultColorSet": "progress",
   "ColorSetMenuKey": "U"
 }

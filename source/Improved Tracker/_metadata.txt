@@ -6,9 +6,9 @@ mods:
    Improved Tracker
 
 latest commit:
-   commit 3fad5d265b9a622874fca014d45d5192ce0983da
+   commit b440a7c17868c220f551e18597f8ef98515c0a35
    Author: Anthony Hilyard <anthony.hilyard@gmail.com>
-   Date:   Sat Feb 13 16:47:06 2021 -0800
+   Date:   Thu Jul 1 10:21:53 2021 -0700
    
-       Updated icon.png, since it was ugly.
+       Added config file to modify what is tracked.
    

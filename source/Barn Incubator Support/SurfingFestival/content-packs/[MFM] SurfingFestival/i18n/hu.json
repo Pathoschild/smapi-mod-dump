@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "SurfingFestival.title": "Szörf fesztivál levél",
+    "SurfingFestival.text": "Kedves @,^Ezen a héten egy Szörf fesztivált rendezünk lent a tengerparton reggel 9 órakor. Gus egy kis pénzdíjat állított össze a Szalon bevételéből a nyertes számára.^ Arra is kérem a városlakókat, hogy hozzanak 50 fát a máglyához.^Ha érdekel a verseny várjuk részvételedet.^-Lewis polgármester"
+}

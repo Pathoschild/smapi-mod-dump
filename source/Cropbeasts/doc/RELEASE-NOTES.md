@@ -10,6 +10,12 @@ for queries and analysis.**
 
 [Cropbeasts](../)
 
+## 2.0.1
+
+*Release pending.*
+
+* Fix error message on new save creation
+
 ## 2.0.0
 
 *Released 2021 June 28.*

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9061
+IDs: phroureo.BarberSV
+update keys: Nexus:9061

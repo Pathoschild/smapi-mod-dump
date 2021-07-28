@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using ItemResearchSpawner.Models;
+using ItemResearchSpawner.Models.Enums;
+using ItemResearchSpawner.Models.Messages;
 using ItemResearchSpawner.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -24,11 +26,12 @@ namespace ItemResearchSpawner.Components
 
         private readonly IMonitor _monitor;
         private readonly IModHelper _helper;
+        private readonly IManifest _modManifest;
 
         public readonly Dictionary<string, SpawnableItem> ItemRegistry =
             new Dictionary<string, SpawnableItem>();
 
-        public Dictionary<string, int> CustomItemPriceList =
+        public Dictionary<string, int> Pricelist =
             new Dictionary<string, int>();
 
         #region Proprerties
@@ -95,7 +98,7 @@ namespace ItemResearchSpawner.Components
 
         public event UpdateMenuView OnUpdateMenuView;
 
-        public ModManager(IMonitor monitor, IModHelper helper)
+        public ModManager(IMonitor monitor, IModHelper helper, IManifest modManifest)
         {
             Instance ??= this;
 
@@ -107,9 +110,11 @@ namespace ItemResearchSpawner.Components
 
             _monitor = monitor;
             _helper = helper;
+            _modManifest = modManifest;
 
-            _helper.Events.GameLoop.Saving += OnSave;
+            _helper.Events.GameLoop.DayEnding += OnSave;
             _helper.Events.GameLoop.DayStarted += OnLoad;
+            _helper.Events.Multiplayer.ModMessageReceived += OnMessageReceived;
         }
 
         public void InitRegistry(SpawnableItem[] items)
@@ -117,6 +122,12 @@ namespace ItemResearchSpawner.Components
             foreach (var spawnableItem in items)
             {
                 var key = Helpers.GetItemUniqueKey(spawnableItem.Item);
+
+                // fix copper pan
+                if (key.Equals("Copper Pan:-1") && spawnableItem.Type == ItemType.Hat)
+                {
+                    continue;
+                }
 
                 ItemRegistry[key] = spawnableItem;
             }
@@ -153,9 +164,9 @@ namespace ItemResearchSpawner.Components
             var spawnableItem = GetSpawnableItem(item, out var key);
             var price = -1;
 
-            if (CustomItemPriceList.ContainsKey(key))
+            if (Pricelist.ContainsKey(key))
             {
-                price = CustomItemPriceList[key];
+                price = Pricelist[key];
             }
 
             if (price < 0)
@@ -163,7 +174,7 @@ namespace ItemResearchSpawner.Components
                 price = Utility.getSellToStorePriceOfItem(item, false);
             }
 
-            if (price <= 0 && !CustomItemPriceList.ContainsKey(key))
+            if (price <= 0 && !Pricelist.ContainsKey(key))
             {
                 price = spawnableItem.CategoryPrice;
             }
@@ -180,16 +191,16 @@ namespace ItemResearchSpawner.Components
         {
             var key = Helpers.GetItemUniqueKey(activeItem);
 
-            if (price < 0 && CustomItemPriceList.ContainsKey(key))
+            if (price < 0 && Pricelist.ContainsKey(key))
             {
-                CustomItemPriceList.Remove(key);
+                Pricelist.Remove(key);
             }
             else
             {
-                CustomItemPriceList[key] = price;
+                Pricelist[key] = price;
             }
 
-            _helper.Data.WriteJsonFile($"price-config.json", CustomItemPriceList);
+            _helper.Data.WriteJsonFile($"price-config.json", Pricelist);
         }
 
         public SpawnableItem GetSpawnableItem(Item item, out string key)
@@ -205,10 +216,65 @@ namespace ItemResearchSpawner.Components
 
             return spawnableItem;
         }
+        
+        public void DumpPricelist(){
+        
+        }
+        
+        public void LoadPricelist(){
+        
+        }
+        
+        public void DumpCategories(){
+        
+        }
+        
+        public void LoadCategories(){
+        
+        }
 
         #region Save/Load
 
-        private void OnSave(object sender, SavingEventArgs e)
+        private void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
+            if (e.FromModID == _modManifest.UniqueID)
+            {
+                ModStateMessage message;
+                switch (e.Type)
+                {
+                    case "ModState:SaveRequired":
+                        if (!Context.IsMainPlayer)
+                        {
+                            break;
+                        }
+
+                        message = e.ReadAs<ModStateMessage>();
+                        SaveManager.Instance.CommitModState(message.PlayerID, message.ModState);
+                        break;
+                    case "ModState:LoadRequired":
+                        if (!Context.IsMainPlayer)
+                        {
+                            break;
+                        }
+
+                        var playerID = e.ReadAs<string>();
+                        message = new ModStateMessage
+                        {
+                            ModState = SaveManager.Instance.GetModState(playerID),
+                            PlayerID = playerID
+                        };
+                        _helper.Multiplayer.SendMessage(message, "ModState:LoadAccepted",
+                            new[] {_modManifest.UniqueID}, new[] {long.Parse(message.PlayerID)});
+                        break;
+                    case "ModState:LoadAccepted":
+                        message = e.ReadAs<ModStateMessage>();
+                        OnLoadState(message.ModState);
+                        break;
+                }
+            }
+        }
+
+        private void OnSave(object sender, DayEndingEventArgs dayEndingEventArgs)
         {
             var state = new ModState
             {
@@ -219,34 +285,57 @@ namespace ItemResearchSpawner.Components
                 Category = Category
             };
 
-            _helper.Data.WriteJsonFile($"save/{SaveHelper.DirectoryName}/state.json", state);
-            _helper.Data.WriteJsonFile($"price-config.json", CustomItemPriceList);
+            if (Context.IsMainPlayer)
+            {
+                SaveManager.Instance.CommitModState(Game1.player.uniqueMultiplayerID.ToString(), state);
+            }
+            else
+            {
+                var message = new ModStateMessage
+                {
+                    ModState = state,
+                    PlayerID = Game1.player.uniqueMultiplayerID.ToString()
+                };
+
+                _helper.Multiplayer.SendMessage(message, "ModState:SaveRequired", new[] {_modManifest.UniqueID});
+            }
+
+            if (Context.IsMainPlayer)
+            {
+                SaveManager.Instance.CommitPricelist(Pricelist);
+            }
         }
 
         private void OnLoad(object sender, DayStartedEventArgs e)
         {
-            var state = _helper.Data.ReadJsonFile<ModState>(
-                $"save/{SaveHelper.DirectoryName}/state.json") ?? new ModState
+            if (Context.IsMainPlayer)
             {
-                ActiveMode = _helper.ReadConfig<ModConfig>().DefaultMode
-            };
+                var state = SaveManager.Instance.GetModState(Game1.player.uniqueMultiplayerID.ToString());
+                OnLoadState(state);
+            }
+            else
+            {
+                _helper.Multiplayer.SendMessage(Game1.player.uniqueMultiplayerID, "ModState:LoadRequired",
+                    new[] {_modManifest.UniqueID});
+            }
 
+            OnLoadPrices();
+        }
+
+        private void OnLoadState(ModState state)
+        {
             ModMode = state.ActiveMode;
             Quality = state.Quality;
             SortOption = state.SortOption;
             SearchText = state.SearchText;
             Category = state.Category;
+        }
 
-            CustomItemPriceList = _helper.Data.ReadJsonFile<Dictionary<string, int>>(
-                $"price-config.json") ?? new Dictionary<string, int>();
+        private void OnLoadPrices()
+        {
+            Pricelist = SaveManager.Instance.GetPricelist();
         }
 
         #endregion
-
-        public void ReloadPriceList()
-        {
-            CustomItemPriceList = _helper.Data.ReadJsonFile<Dictionary<string, int>>(
-                $"price-config.json") ?? new Dictionary<string, int>();
-        }
     }
 }

@@ -1,4 +1,20 @@
 {
-  "ShowInternalID": false,
-  "ShowAmbientTracks": false
+  "ShowMenu": true,
+  "AmbientTracks": 1,
+  "Blacklist": "",
+  "Whitelist": "",
+  "ShowLockedSongs": false,
+  "ShowUnheardTracks": false,
+  "UnheardSoundtrack": true,
+  "UnheardNamed": true,
+  "UnheardRandom": false,
+  "UnheardMisc": false,
+  "UnheardDupes": false,
+  "UnheardMusical": false,
+  "PermanentUnheard": false,
+  "PermanentBlacklist": "",
+  "TrueRandom": false,
+  "ShowAlternateSorts": true,
+  "ShowInternalId": false,
+  "ShowBandcampNames": true
 }

@@ -1,0 +1,10 @@
+{
+  "Name": "HypnoValley",
+  "Author": "Kryspur",
+  "Version": "0.1.0",
+  "Description": "Entrance the citizens of Stardew Valley with the help of a new hypnotist visiting the town.",
+  "UniqueID": "Kryspur.HypnoValley",
+  "EntryDll": "HypnoValley.dll",
+  "MinimumApiVersion": "3.10.0",
+  "UpdateKeys": ["Nexus:9052"]
+}

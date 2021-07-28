@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ImprovedTracker.cs"/>
+    <Compile Include="ImprovedTrackerConfig.cs"/>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build" />

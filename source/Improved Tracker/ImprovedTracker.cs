@@ -23,6 +23,7 @@ namespace ImprovedTracker
 	public class ModEntry : Mod
 	{
 		private const int COCONUT_TREE = 9;
+		private ImprovedTrackerConfig Config;
 
 		/*********
 		** Public methods
@@ -31,7 +32,7 @@ namespace ImprovedTracker
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
-			//StardewValley.Game1.draw
+			Config = Helper.ReadConfig<ImprovedTrackerConfig>();
 			helper.Events.Display.RenderedHud += this.OnRenderedHud;
 		}
 
@@ -58,53 +59,64 @@ namespace ImprovedTracker
 			List<KeyValuePair<Vector2, Color>> trackables = new List<KeyValuePair<Vector2, Color>>();
 
 			// Track forageables underground...
-			if (!Game1.currentLocation.IsOutdoors)
+			if (Config.Underground)
 			{
-				foreach (KeyValuePair<Vector2, StardewValley.Object> obj in Game1.currentLocation.objects.Pairs)
+				if (!Game1.currentLocation.IsOutdoors)
 				{
-					if (obj.Value.IsSpawnedObject)
+					foreach (KeyValuePair<Vector2, StardewValley.Object> obj in Game1.currentLocation.objects.Pairs)
 					{
-						trackables.Add(new KeyValuePair<Vector2, Color>(obj.Key * 64f + new Vector2(32f, 32f), Color.Yellow));
+						if (obj.Value.IsSpawnedObject)
+						{
+							trackables.Add(new KeyValuePair<Vector2, Color>(obj.Key * 64f + new Vector2(32f, 32f), Color.Yellow));
+						}
 					}
 				}
 			}
 
 			// Track "Fish splash point" in blue...
-			if (Game1.currentLocation.fishSplashPoint.Value != null && !Game1.currentLocation.fishSplashPoint.Value.Equals(Point.Zero))
+			if (Config.FishingSpots)
 			{
-				trackables.Add(new KeyValuePair<Vector2, Color>(new Vector2(Game1.currentLocation.fishSplashPoint.X, Game1.currentLocation.fishSplashPoint.Y) * 64f + new Vector2(32f, 32f), Color.Cyan));
+				if (Game1.currentLocation.fishSplashPoint.Value != null && !Game1.currentLocation.fishSplashPoint.Value.Equals(Point.Zero))
+				{
+					trackables.Add(new KeyValuePair<Vector2, Color>(new Vector2(Game1.currentLocation.fishSplashPoint.X, Game1.currentLocation.fishSplashPoint.Y) * 64f + new Vector2(32f, 32f), Color.Cyan));
+				}
 			}
 
 			// Track berry bushes in purple...
-			foreach (TerrainFeature feature in Game1.currentLocation.largeTerrainFeatures)
+			if (Config.Berries)
 			{
-				switch (feature)
+				foreach (TerrainFeature feature in Game1.currentLocation.largeTerrainFeatures)
 				{
-					case Bush bush:
-						// If this bush has something to shake off and it's not a tea bush nor a golden walnut bush...
-						if (bush.tileSheetOffset.Value == 1 && bush.size.Value != Bush.greenTeaBush && bush.size.Value != Bush.walnutBush)
-						{
-							// Add it for tracking.
-							trackables.Add(new KeyValuePair<Vector2, Color>(bush.tilePosition.Value * 64f + new Vector2(64f, 32f), Color.DarkViolet));
-						}
-						break;
-
+					switch (feature)
+					{
+						case Bush bush:
+							// If this bush has something to shake off and it's not a tea bush nor a golden walnut bush...
+							if (bush.tileSheetOffset.Value == 1 && bush.size.Value != Bush.greenTeaBush && bush.size.Value != Bush.walnutBush)
+							{
+								// Add it for tracking.
+								trackables.Add(new KeyValuePair<Vector2, Color>(bush.tilePosition.Value * 64f + new Vector2(64f, 32f), Color.DarkViolet));
+							}
+							break;
+					}
 				}
 			}
 
 			// Also track coconut trees in purple...
-			foreach (TerrainFeature feature in Game1.currentLocation.terrainFeatures.Values)
+			if (Config.CoconutTrees)
 			{
-				switch (feature)
+				foreach (TerrainFeature feature in Game1.currentLocation.terrainFeatures.Values)
 				{
-					case Tree tree:
-						// If this is a coconut tree with a visible seed...
-						if (tree.treeType.Value == Tree.palmTree2 && tree.hasSeed.Value && !tree.stump.Value && tree.growthStage.Value >= 5)
-						{
-							// Add it for tracking.
-							trackables.Add(new KeyValuePair<Vector2, Color>(new Vector2(tree.currentTileLocation.X, tree.currentTileLocation.Y) * 64f + new Vector2(32f, 32f), Color.DarkViolet));
-						}
-						break;
+					switch (feature)
+					{
+						case Tree tree:
+							// If this is a coconut tree with a visible seed...
+							if (tree.treeType.Value == Tree.palmTree2 && tree.hasSeed.Value && !tree.stump.Value && tree.growthStage.Value >= 5)
+							{
+								// Add it for tracking.
+								trackables.Add(new KeyValuePair<Vector2, Color>(new Vector2(tree.currentTileLocation.X, tree.currentTileLocation.Y) * 64f + new Vector2(32f, 32f), Color.DarkViolet));
+							}
+							break;
+					}
 				}
 			}
 

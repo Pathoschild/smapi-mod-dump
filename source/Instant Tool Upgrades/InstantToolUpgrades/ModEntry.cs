@@ -43,16 +43,19 @@ namespace InstantToolUpgrades
             // Any time the player submits a tool to be upgraded...
             if (Game1.player.daysLeftForToolUpgrade.Value > 0)
             {
-                // Check to see if it's the trash can.
-                if(Game1.player.toolBeingUpgraded.Value.BaseName.Contains("Trash"))
+                // Check to see if it's the trash can...
+                if (Game1.player.toolBeingUpgraded.Value is StardewValley.Tools.GenericTool)
                 {
-                    // If so upgrade it.
-                    Game1.player.trashCanLevel++;
+                    if (Game1.player.toolBeingUpgraded.Value.CurrentParentTileIndex >= 13 && Game1.player.toolBeingUpgraded.Value.CurrentParentTileIndex < 17)
+                    {
+                        // ...and upgrade it.
+                        Game1.player.trashCanLevel++;
+                    }
                 }
                 else
                 {
-                    // Otherwise, give the player their new tool.
-                    Game1.player.addItemToInventory(Game1.player.toolBeingUpgraded.Value);
+                    // Otherwise give the player their new tool.
+                    Game1.player.addItemToInventory(Game1.player.toolBeingUpgraded.Value);                    
                 }
                 
                 // Finally, cancel the queued upgrade.

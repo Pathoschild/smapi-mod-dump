@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlatoTK", "PlatoTK\PlatoTK.csproj", "{064DD1EB-BA99-4B5C-884D-2FA946DFD76D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapTK", "MapTK\MapTK.csproj", "{33362911-958C-4A34-A958-8A55459CAF7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6C6207E8-5A5F-43B0-99D8-134A393E31B1}"
+	ProjectSection(SolutionItems) = preProject
+		common.targets = common.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Android|Any CPU = Android|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{064DD1EB-BA99-4B5C-884D-2FA946DFD76D}.Android|Any CPU.ActiveCfg = Android|Any CPU
+		{064DD1EB-BA99-4B5C-884D-2FA946DFD76D}.Android|Any CPU.Build.0 = Android|Any CPU
+		{064DD1EB-BA99-4B5C-884D-2FA946DFD76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{064DD1EB-BA99-4B5C-884D-2FA946DFD76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{064DD1EB-BA99-4B5C-884D-2FA946DFD76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{064DD1EB-BA99-4B5C-884D-2FA946DFD76D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33362911-958C-4A34-A958-8A55459CAF7F}.Android|Any CPU.ActiveCfg = Android|Any CPU
+		{33362911-958C-4A34-A958-8A55459CAF7F}.Android|Any CPU.Build.0 = Android|Any CPU
+		{33362911-958C-4A34-A958-8A55459CAF7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33362911-958C-4A34-A958-8A55459CAF7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33362911-958C-4A34-A958-8A55459CAF7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33362911-958C-4A34-A958-8A55459CAF7F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9107EB51-FE64-41D5-A764-C126807ACB89}
+	EndGlobalSection
+EndGlobal

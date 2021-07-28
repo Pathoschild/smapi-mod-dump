@@ -17,8 +17,15 @@ namespace Magic.Framework.Spells
 {
     internal class LanternSpell : Spell
     {
+        /*********
+        ** Fields
+        *********/
         private readonly Func<long> GetNewId;
 
+
+        /*********
+        ** Public methods
+        *********/
         public LanternSpell(Func<long> getNewId)
             : base(SchoolId.Nature, "lantern")
         {
@@ -48,6 +55,10 @@ namespace Magic.Framework.Spells
             return null;
         }
 
+
+        /*********
+        ** Private methods
+        *********/
         private int GetUnusedLightSourceId(GameLocation location)
         {
             while (true)

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\common.targets" />
+  <Import Project="..\SpaceShared\SpaceShared.projitems" Label="Shared" />
+  <Import Project="..\SpaceSharedHarmony\SpaceSharedHarmony.projitems" Label="Shared" />
+
+  <PropertyGroup>
+    <AssemblyName>TheftOfTheWinterStar</AssemblyName>
+    <RootNamespace>TheftOfTheWinterStar</RootNamespace>
+    <Version>1.0.2</Version>
+    <TargetFramework>net452</TargetFramework>
+
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpaceCore\SpaceCore.csproj" Private="False" />
+  </ItemGroup>
+</Project>

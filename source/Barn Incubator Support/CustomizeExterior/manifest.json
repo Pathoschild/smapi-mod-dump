@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Customize Exterior",
+    "Author": "spacechase0",
+    "Version": "1.0.8",
+    "MinimumApiVersion": "3.9.5",
+    "Description": "Lets you change the exterior of your buildings individually.",
+    "UniqueID": "spacechase0.CustomizeExterior",
+    "EntryDll": "CustomizeExterior.dll",
+    "UpdateKeys": [ "Nexus:1099" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.SpaceCore",
+            "MinimumVersion": "1.5.7"
+        },
+        {
+            "UniqueID": "Entoarox.SeasonalImmersion",
+            "IsRequired": false
+        }
+    ]
+}

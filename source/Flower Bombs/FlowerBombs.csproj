@@ -3,7 +3,8 @@
 	<PropertyGroup>
 		<AssemblyName>FlowerBombs</AssemblyName>
 		<RootNamespace>FlowerBombs</RootNamespace>
-		<Version>2.0.0</Version>
+		<Version>2.0.2</Version>
+		<EnableHarmony>true</EnableHarmony>
 	</PropertyGroup>
 	<PropertyGroup>
 		<LangVersion>9.0</LangVersion>
@@ -15,8 +16,8 @@
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<Reference Include="PyTK">
-			<HintPath>$(GamePath)/Mods/PyTK/PyTK.dll</HintPath>
+		<Reference Include="PlatoTK">
+			<HintPath>$(GamePath)/Mods/PlatoTK/PlatoTK.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>

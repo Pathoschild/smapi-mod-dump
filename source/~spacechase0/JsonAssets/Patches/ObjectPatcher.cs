@@ -15,7 +15,7 @@ using System.Linq;
 using Harmony;
 using JsonAssets.Data;
 using Microsoft.Xna.Framework;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewValley;
@@ -278,7 +278,7 @@ namespace JsonAssets.Patches
                 if (!__instance.bigCraftable.Value && Mod.instance.ObjectIds.Values.Contains(__instance.ParentSheetIndex))
                 {
                     var obj = new List<ObjectData>(Mod.instance.Objects).Find(od => od.GetObjectId() == __instance.ParentSheetIndex);
-                    if (obj != null && !obj.CanBeGifted)
+                    if (obj?.CanBeGifted == false)
                         __result = false;
                 }
             }
@@ -296,7 +296,7 @@ namespace JsonAssets.Patches
 
             if (__instance.Category == SObject.CraftingCategory && Mod.instance.ObjectIds.Values.Contains(__instance.ParentSheetIndex))
             {
-                if (!Mod.instance.Fences.Any(f => f.correspondingObject.Id == __instance.ParentSheetIndex))
+                if (Mod.instance.Fences.All(f => f.CorrespondingObject.Id != __instance.ParentSheetIndex))
                 {
                     __result = false;
                     return false;
@@ -314,14 +314,14 @@ namespace JsonAssets.Patches
             {
                 foreach (var fence in Mod.instance.Fences)
                 {
-                    if (__instance.ParentSheetIndex == fence.correspondingObject.GetObjectId())
+                    if (__instance.ParentSheetIndex == fence.CorrespondingObject.GetObjectId())
                     {
                         if (location.objects.ContainsKey(pos))
                         {
                             __result = false;
                             return false;
                         }
-                        location.objects.Add(pos, new Fence(pos, fence.correspondingObject.GetObjectId(), false));
+                        location.objects.Add(pos, new Fence(pos, fence.CorrespondingObject.GetObjectId(), false));
                         location.playSound(fence.PlacementSound);
                         __result = true;
                         return false;

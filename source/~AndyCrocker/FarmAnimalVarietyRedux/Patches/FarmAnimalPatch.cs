@@ -523,43 +523,8 @@ namespace FarmAnimalVarietyRedux.Patches
             var animalSubtype = ModEntry.Instance.Api.GetAnimalSubtypeByInternalName(__instance.type);
             if (animalSubtype != null && location.IsOutdoors && !Game1.isRaining && !__instance.isBaby() && Game1.random.NextDouble() < .0002f) // the random is so the animals don't produce all foragables instantly
             {
-                var animalProduces = animalSubtype.Produce.Where(product => product.HarvestType == HarvestType.Forage);
-
-                // get all modData products
-                var parsedProduces = new List<SavedProduceData>();
-                if (__instance.modData.TryGetValue($"{ModEntry.Instance.ModManifest.UniqueID}/produces", out var productsString))
-                    parsedProduces = JsonConvert.DeserializeObject<List<SavedProduceData>>(productsString);
-
-                // get the modData products that are valid to be dropped
-                var validProduces = Utilities.GetValidAnimalProduce(animalProduces, __instance);
-                var produces = parsedProduces.Where(product => product.DaysLeft <= 0 && validProduces.Any(animalProduct => animalProduct.UniqueName.ToLower() == product.UniqueName.ToLower()));
-
-                // ensure there was a produce that could be dropped
-                if (produces.Count() == 0)
-                {
-                    __result = false;
-                    return false;
-                }
-
-                // choose the product to drop
-                var parsedProduceToDrop = produces.ElementAt(Game1.random.Next(produces.Count()));
-                var produceToDrop = validProduces.First(produce => produce.UniqueName.ToLower() == parsedProduceToDrop.UniqueName.ToLower());
-                var forageId = -1;
-                var shouldDropUpgraded = Utilities.ShouldDropUpgradedProduct(produceToDrop, __instance);
-                if (shouldDropUpgraded != null)
-                {
-                    if (shouldDropUpgraded.Value)
-                        forageId = produceToDrop.UpgradedProductId;
-                    else
-                        forageId = produceToDrop.DefaultProductId;
-                }
-
-                // ensure there is atleast one foragable item that is pending to be found
-                if (forageId == -1)
-                {
-                    __result = false;
-                    return false;
-                }
+                var pendingForageProduces = Utilities.GetPendingProduceDrops(__instance, HarvestType.Lay);
+                var pendingForageProduce = pendingForageProduces.ElementAt(Game1.random.Next(pendingForageProduces.Count()));
 
                 // make sure the place is blank for spawning the foraged item
                 var boundingBox = __instance.GetBoundingBox();
@@ -583,23 +548,32 @@ namespace FarmAnimalVarietyRedux.Patches
                 }
 
                 // spawn the forage, animate the animal if the player is in the location
-                var amount = Utilities.DetermineDropAmount(produceToDrop);
-                var quality = Utilities.DetermineProductQuality(__instance, produceToDrop);
-
-                var shouldSpawnAgain = true;
                 if (location == Game1.currentLocation)
-                    AnimateForage(__instance, (Farmer farmer) => { shouldSpawnAgain = SpawnForagedItem(forageId, amount, quality, produceToDrop.StandardQualityOnly, __instance); });
+                    AnimateForage(__instance, (Farmer farmer) =>
+                    {
+                        if (!SpawnForagedItem(pendingForageProduce.Value, pendingForageProduce.Key.StandardQualityOnly, pendingForageProduce.Key.DoNotAllowDuplicates, __instance))
+                            UpdateParsedProduce(__instance, pendingForageProduce.Key);
+                    });
                 else
-                    shouldSpawnAgain = SpawnForagedItem(forageId, amount, quality, produceToDrop.StandardQualityOnly, __instance);
-
-                // update parsed products to reset object
-                if (!shouldSpawnAgain)
-                    parsedProduces.First(produce => produce.UniqueName.ToLower() == produceToDrop.UniqueName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(produceToDrop);
-                __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(parsedProduces);
+                {
+                    if (!SpawnForagedItem(pendingForageProduce.Value, pendingForageProduce.Key.StandardQualityOnly, pendingForageProduce.Key.DoNotAllowDuplicates, __instance))
+                        UpdateParsedProduce(__instance, pendingForageProduce.Key);
+                }
             }
 
             __result = false;
             return false;
+
+            // Updates a produce in the saved produce data
+            void UpdateParsedProduce(FarmAnimal animal, AnimalProduce produceToDrop)
+            {
+                var parsedProduces = new List<SavedProduceData>();
+                if (animal.modData.TryGetValue($"{ModEntry.Instance.ModManifest.UniqueID}/produces", out var producesString))
+                    parsedProduces = JsonConvert.DeserializeObject<List<SavedProduceData>>(producesString);
+
+                parsedProduces.First(produce => produce.UniqueName.ToLower() == produceToDrop.UniqueName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(produceToDrop);
+                __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(parsedProduces);
+            }
         }
 
         /// <summary>The prefix for the <see cref="FarmAnimal.CanSwim()"/> method.</summary>
@@ -754,22 +728,16 @@ namespace FarmAnimalVarietyRedux.Patches
                 if (int.TryParse(adultSellPriceString, out var adultSellPriceParsed))
                     adultSellPrice = adultSellPriceParsed;
 
-            // try to determine the sell price based on the baby / adult sell prices
+            // retrieve base sell price
             int sellPrice;
             if (__instance.isBaby())
-                sellPrice = babySellPrice ?? adultSellPrice ?? 0;
+                sellPrice = babySellPrice ?? adultSellPrice ?? __instance.price;
             else
-                sellPrice = adultSellPrice ?? babySellPrice ?? 0;
+                sellPrice = adultSellPrice ?? babySellPrice ?? __instance.price;
 
-            if (sellPrice > 0)
-            {
-                __result = sellPrice;
-                return false;
-            }
-
-            // fallback to the default game method of calculating sell price
+            // calculate sell price
             var friendshipModifier = __instance.friendshipTowardFarmer / 1000f + .3f;
-            __result = (int)(__instance.price * friendshipModifier);
+            __result = (int)(sellPrice * friendshipModifier);
             return false;
         }
 
@@ -1069,45 +1037,38 @@ namespace FarmAnimalVarietyRedux.Patches
                     }
                 }
 
+                // update modData
+                // this is done here despite it being done at the end so the days remaining changges have been applied for the Utilities.GetPendingProduceDrops calls
+                __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(parsedProduces);
+
+                // try to add all pending 'tool' produce into auto grabbers
+                var pendingToolProduces = Utilities.GetPendingProduceDrops(__instance, HarvestType.Tool);
+                for (int i = 0; i < pendingToolProduces.Count; i++)
+                {
+                    var pendingToolProduce = pendingToolProduces.ElementAt(i);
+                    var @object = pendingToolProduce.Value;
+                    TryToAddObjectToAutoGrabbers(__instance.home.indoors.Value, ref @object);
+                    if (@object != null)
+                        continue;
+
+                    // update parsed products to reset object
+                    var uniqueProduceName = pendingToolProduce.Value.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/uniqueProduceName"];
+                    pendingToolProduce.Value.modData.Remove($"{ModEntry.Instance.ModManifest.UniqueID}/uniqueProduceName");
+                    parsedProduces.First(produce => produce.UniqueName.ToLower() == uniqueProduceName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(pendingToolProduce.Key);
+                }
+
                 // spawn all pending 'lay' produce
-                var animalProduces = subtype.Produce.Where(product => product.HarvestType == HarvestType.Lay);
+                var pendingLayProduces = Utilities.GetPendingProduceDrops(__instance, HarvestType.Lay);
+                foreach (var pendingLayProduce in pendingLayProduces)
+                {
+                    if (!SpawnLaidItem(pendingLayProduce.Value, __instance))
+                        continue;
 
-                // get the modData products that have a lay harvest type, and that is pending to drop (zero 'days till next produce' in modData)
-                var validProduces = Utilities.GetValidAnimalProduce(animalProduces, __instance);
-                var produces = parsedProduces
-                    .Where(product => product.DaysLeft <= 0 && validProduces.Any(animalProduct => animalProduct.UniqueName.ToLower() == product.UniqueName.ToLower()));
-
-                // spawn objects
-                if (produces.Count() > 0)
-                    foreach (var produce in produces)
-                    {
-                        var animalProduce = animalProduces.FirstOrDefault(ap => ap.UniqueName.ToLower() == produce.UniqueName.ToLower());
-                        if (animalProduce == null)
-                            continue;
-
-                        // determine item to drop (default or upgraded)
-                        var uniqueProduceName = ""; // unique name is kept track to update the saved data
-                        var productId = -1;
-                        var shouldDropUpgraded = Utilities.ShouldDropUpgradedProduct(animalProduce, __instance);
-                        if (shouldDropUpgraded != null)
-                        {
-                            if (shouldDropUpgraded.Value)
-                                (uniqueProduceName, productId) = (animalProduce.UniqueName, animalProduce.UpgradedProductId);
-                            else
-                                (uniqueProduceName, productId) = (animalProduce.UniqueName, animalProduce.DefaultProductId);
-                        }
-
-                        if (productId == -1)
-                            continue;
-
-                        // try to spawn the object
-                        var amount = Utilities.DetermineDropAmount(animalProduce);
-                        if (!SpawnLaidItem(productId, amount, Utilities.DetermineProductQuality(__instance, animalProduce), __instance))
-                            continue;
-
-                        // update parsed productss to reset object
-                        parsedProduces.First(produce => produce.UniqueName.ToLower() == uniqueProduceName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(animalProduce);
-                    }
+                    // update parsed products to reset object
+                    var uniqueProduceName = pendingLayProduce.Value.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/uniqueProduceName"];
+                    pendingLayProduce.Value.modData.Remove($"{ModEntry.Instance.ModManifest.UniqueID}/uniqueProduceName");
+                    parsedProduces.First(produce => produce.UniqueName.ToLower() == uniqueProduceName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(pendingLayProduce.Key);
+                }
 
                 // update modData
                 __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(parsedProduces);
@@ -1137,6 +1098,8 @@ namespace FarmAnimalVarietyRedux.Patches
             __instance.reload(__instance.home);
 
             return false;
+
+
         }
 
         /// <summary>The prefix for the <see cref="FarmAnimal.Eat(GameLocation)"/> method.</summary>
@@ -1262,20 +1225,26 @@ namespace FarmAnimalVarietyRedux.Patches
         /// <param name="stackSize">The stack size of the object.</param>
         /// <param name="quality">The quality of the product being produced (4 = iridium, 2 = gold, 1 = silver, 0 = normal)</param>
         /// <param name="standardQualityOnly">Whether the spawned object should have it's quality forced to be normal (this is used to counter the botanist profession).</param>
+        /// <param name="doNotAllowDuplicates">Whether the spawned object should have no duplicates (this is used to counter the gatherer profession, and AllowForageRepeats).</param>
         /// <param name="animal">The animal to spawn forage produce for.</param>
         /// <returns><see langword="true"/> if the object should be able to spawned again in the same day; otherwise, <see langword="false"/>.</returns>
         /// <remarks>This also updates the modData with the resetted DaysToProduce, this is because the method can be delayed if it's a callback from an animation, this resulted in the modData not being updated and animals endlessly producing forage produce.</remarks>
-        private static bool SpawnForagedItem(int id, int stackSize, int quality, bool standardQualityOnly, FarmAnimal animal)
+        private static bool SpawnForagedItem(StardewValley.Object @object, bool standardQualityOnly, bool doNotAllowDuplicates, FarmAnimal animal)
         {
-            var objectToSpawn = new StardewValley.Object(animal.getTileLocation(), id, stackSize) { Quality = quality };
-            objectToSpawn.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"] = ""; // this is used so we can tell if this object should keep it's stack size when being picked up (no value is expected, just the keys presence)
+            @object.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"] = ""; // this is used so we can tell if this object should keep it's stack size when being picked up (no value is expected, just the keys presence)
             if (standardQualityOnly)
-                objectToSpawn.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/producedShouldBeStandardQuality"] = "";
+                @object.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/producedShouldBeStandardQuality"] = "";
+            if (doNotAllowDuplicates)
+                @object.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/doNotAllowDuplicates"] = "";
 
-            if (Utility.spawnObjectAround(Utility.getTranslatedVector2(animal.getTileLocation(), animal.FacingDirection, 1), objectToSpawn, Game1.getFarm()))
+            if (Utility.spawnObjectAround(Utility.getTranslatedVector2(animal.getTileLocation(), animal.FacingDirection, 1), @object, Game1.getFarm()))
             {
-                if (id == 430)
+                if (@object.ParentSheetIndex == 430)
                     Game1.stats.TrufflesFound++;
+
+                // ensure the object is allowed duplicates before determining if repeats are allowed
+                if (doNotAllowDuplicates)
+                    return false;
 
                 // check if animal should skip resetting product's DaysLeft
                 var allowForageRepeats = true;
@@ -1293,42 +1262,46 @@ namespace FarmAnimalVarietyRedux.Patches
         }
 
         /// <summary>Spawns a laid item.</summary>
-        /// <param name="id">The id of the object to spawn.</param>
-        /// <param name="stackSize">The stack size of the object.</param>
-        /// <param name="quality">The quality of the product being produced (4 = iridium, 2 = gold, 1 = silver, 0 = normal).</param>
+        /// <param name="object">The object to lay.</param>
         /// <param name="animal">The animal to spawn lay produce for.</param>
         /// <returns><see langword="true"/> if the object was successfully spawned; otherwise, <see langword="false"/>.</returns>
-        public static bool SpawnLaidItem(int id, int stackSize, int quality, FarmAnimal animal)
+        public static bool SpawnLaidItem(StardewValley.Object @object, FarmAnimal animal)
         {
-            var needToPlaceProduce = true;
-            var objectToSpawn = new StardewValley.Object(Vector2.Zero, id, null, false, true, false, true) { Stack = stackSize, Quality = quality };
+            @object.IsSpawnedObject = true;
 
-            // check if the product can be put in an autograbber
-            foreach (var environmentObject in animal.home.indoors.Value.Objects.Values)
-            {
-                // ensure object is an auto grabber
-                if (!environmentObject.bigCraftable || environmentObject.ParentSheetIndex != 165 || environmentObject.heldObject != null)
-                    continue;
-
-                // try to place the full object in the auto grabber
-                if ((objectToSpawn = (environmentObject.heldObject.Value as Chest).addItem(objectToSpawn) as StardewValley.Object) == null)
-                {
-                    environmentObject.showNextIndex.Value = true;
-                    needToPlaceProduce = false;
-                    return true;
-                }
-            }
+            // try to add the object into an auto grabber
+            TryToAddObjectToAutoGrabbers(animal.home.indoors.Value, ref @object);
 
             // spawn the object if there was no valid auto grabber and there is a valid space under the animal
             animal.setRandomPosition(animal.home.indoors.Value); // set a random position so if there are multiple 'lay' produce, they can all spawn
-            if (needToPlaceProduce && !animal.home.indoors.Value.Objects.ContainsKey(animal.getTileLocation()))
+            if (@object != null && !animal.home.indoors.Value.Objects.ContainsKey(animal.getTileLocation()))
             {
-                objectToSpawn.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"] = ""; // this is used so we can tell if this object should keep it's stack size when being picked up (no value is expected, just the keys presence)
-                animal.home.indoors.Value.Objects.Add(animal.getTileLocation(), objectToSpawn);
+                @object.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"] = ""; // this is used so we can tell if this object should keep it's stack size when being picked up (no value is expected, just the keys presence)
+                animal.home.indoors.Value.Objects.Add(animal.getTileLocation(), @object);
                 return true;
             }
 
             return false;
+        }
+
+        /// <summary>Tries to add an object to any available auto grabbers.</summary>
+        /// <param name="location">The location of the auto grabber(s) to populate.</param>
+        /// <param name="object">The item to add to the auto grabber(s), and the item left over which couldn't fit in any auto grabbers.</param>
+        public static void TryToAddObjectToAutoGrabbers(GameLocation location, ref StardewValley.Object @object)
+        {
+            foreach (var environmentObject in location.Objects.Values)
+            {
+                // ensure object is an auto grabber
+                if (!environmentObject.bigCraftable || environmentObject.ParentSheetIndex != 165 || environmentObject.heldObject == null)
+                    continue;
+
+                // try to place the full object in the auto grabber
+                if ((@object = (environmentObject.heldObject.Value as Chest).addItem(@object) as StardewValley.Object) == null)
+                {
+                    environmentObject.showNextIndex.Value = true;
+                    break;
+                }
+            }
         }
     }
 }

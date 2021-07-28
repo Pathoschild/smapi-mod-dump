@@ -6,9 +6,9 @@ mods:
    Pregnancy Role
 
 latest commit:
-   commit 6d78d3978d8deacf2a89bd9b342cf2ed7f1bb535
+   commit f02ae4ccf75c26a2adbcb71d2ad85cda2ab6879b
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Sat Jun 26 21:10:27 2021 -0700
+   Date:   Wed Jul 21 10:36:04 2021 -0700
    
-       Update forums URL
+       Add Spanish translation by Monicuchi
    

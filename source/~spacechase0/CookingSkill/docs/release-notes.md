@@ -9,7 +9,27 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.3.3
+Released 17 July 2021. Updated by Pathoschild.
+
+* Fixed Intense Flavors profession not applied for foods which also have a food quality bonus.
+
+## 1.3.2
+Released 12 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Fixed non-cooking recipes no longer consuming ingredients.
+
+## 1.3.1
+Released 11 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Fixed multiplied recipes in Cooking SKill 1.3.0.
+* Fixed Secret Spices profession always replacing drink buffs.
+* Fixed Intense Flavors profession applying drink defense bonus to attack.
+* Internal refactoring.
+
+## 1.3.0
+Released 10 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
 * The mod no longer replaces the entire `CookingPage` menu, for better compatibility with other mods or future game versions.
 * Fixed semi-transparent menu issue.
 * Fixed some gamepad improvements in Stardew Valley 1.5 not applied to cooking menu.

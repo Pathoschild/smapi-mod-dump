@@ -105,8 +105,6 @@ namespace Cropbeasts
 		internal void resetCropbeasts (bool console = false)
 		{
 			// Check preconditions.
-			if (!Context.IsWorldReady)
-				throw new Exception ("The world is not ready.");
 			if (!Context.IsMainPlayer)
 				throw new InvalidOperationException ("Only the host can do that.");
 

@@ -18,6 +18,9 @@ namespace Magic.Framework.Spells
 {
     internal class LuckStealSpell : Spell
     {
+        /*********
+        ** Public methods
+        *********/
         public LuckStealSpell()
             : base(SchoolId.Eldritch, "lucksteal") { }
 

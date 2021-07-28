@@ -1,7 +1,7 @@
 {
-  "JunimoAbilites": {
-    "Fertilize": true,
+  "JunimoAbilities": {
     "Water": true,
+    "Fertilize": true,
     "PlantCrops": true,
     "HarvestCrops": true,
     "HarvestBushes": true,
@@ -22,6 +22,7 @@
     "CanWorkInEvenings": false,
     "WorkFaster": false,
     "AvoidHarvestingFlowers": true,
+    "AvoidHarvestingGiants": true,
     "AvoidPlantingCoffee": true
   },
   "JunimoPayment": {
@@ -42,5 +43,9 @@
   "Other": {
     "SpawnJunimoKeybind": "J",
     "ReceiveMessages": true
+  },
+  "Progression": {
+    "Enabled": true,
+    "UnlockCosts": {}
   }
 }

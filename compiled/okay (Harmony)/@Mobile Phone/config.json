@@ -19,7 +19,8 @@
   "AppList": [
     "aedenthorn.MobilePhone",
     "aedenthorn.MobilePhone_themes",
-    "aedenthorn.MobilePhone_Rotate"
+    "aedenthorn.MobilePhone_Rotate",
+    "PeacefulEnd.JojaOnline"
   ],
   "PhoneWidth": 286,
   "PhoneHeight": 503,

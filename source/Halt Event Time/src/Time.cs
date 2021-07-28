@@ -39,9 +39,10 @@ namespace HaltEventTime
                     return false;
                 State = Status.Run;
             }
-
-            TemporarySpritesUp();
-            MonsterUp();
+            if (ModConfig.Instance.PauseTemporarySprite)
+                TemporarySpritesUp();
+            if (ModConfig.Instance.PauseMonster)
+                MonsterUp();
             Game1.gameTimeInterval = orginalTimeInterval;
             return true;
         }
@@ -57,18 +58,19 @@ namespace HaltEventTime
                 if (State == Status.Stop)
                 {
                     Game1.gameTimeInterval = 0;
-                    TemporarySpritesDown(); //基本上是0，非0的时候基本上也是个位数，也没必要异步。
-                    if (Async)
+                    if (ModConfig.Instance.PauseTemporarySprite)
+                        TemporarySpritesDown(); //基本上是0，非0的时候基本上也是个位数，也没必要异步。
+                    if (Async && ModConfig.Instance.PauseNPC && ModConfig.Instance.PauseMonster)
                     {
-                        Task.WaitAll(new Task[] {
-                            Task.Run(MonsterDown),
-                            Task.Run(NPCDownAsync)
-                        });
+                        if (ModConfig.Instance.PauseNPC && ModConfig.Instance.PauseMonster)
+                            Task.WaitAll(new Task[] { Task.Run(MonsterDown), Task.Run(NPCDownAsync) });
                     }
                     else
                     {
-                        MonsterDown();
-                        NPCDown();
+                        if (ModConfig.Instance.PauseMonster)
+                            MonsterDown();
+                        if (ModConfig.Instance.PauseNPC)
+                            NPCDown();
                     }
                     return false;
                 }
@@ -98,13 +100,17 @@ namespace HaltEventTime
         {
             foreach (GameLocation location in Game1.locations)
             {
-                foreach (Character character in location.characters)
+                foreach (Character character in location?.characters)
                 {
-                    if(character is NPC npc)
+                    if(character != null && character is NPC npc)
                         npc.movementPause = 1;
                 }
             }
         }
+
+        /// <summary>
+        /// 异步停止所有NPC的行动
+        /// </summary>
         private static void NPCDownAsync()
         {
             Task.WaitAll(
@@ -112,9 +118,9 @@ namespace HaltEventTime
                 {
                     for (int i = 0; i < Game1.locations.Count / 2; i++)
                     {
-                        foreach (Character character in Game1.locations[i].characters)
+                        foreach (Character character in Game1.locations[i]?.characters)
                         {
-                            if (character is NPC npc)
+                            if (character != null && character is NPC npc)
                                 npc.movementPause = 1;
                         }
                     }
@@ -123,9 +129,9 @@ namespace HaltEventTime
                 {
                     for (int i = Game1.locations.Count - 1; i > Game1.locations.Count / 2; i--)
                     {
-                        foreach (Character character in Game1.locations[i].characters)
+                        foreach (Character character in Game1.locations[i]?.characters)
                         {
-                            if (character is NPC npc)
+                            if (character != null && character is NPC npc)
                                 npc.movementPause = 1;
                         }
                     }
@@ -139,9 +145,9 @@ namespace HaltEventTime
         {
             foreach (var farmer in Game1.getOnlineFarmers())
             {
-                foreach (Character character in farmer.currentLocation.characters)
+                foreach (Character character in farmer.currentLocation?.characters)
                 {
-                    if (character is Monster monster && monster.Speed == 0 && orginalMonsterSpeed.TryGetValue(monster.getName(), out int speed))
+                    if (character != null && character is Monster monster && monster.Speed == 0 && orginalMonsterSpeed.TryGetValue(monster.getName(), out int speed))
                     {
                         monster.speed = speed;
                     }
@@ -157,9 +163,9 @@ namespace HaltEventTime
         {
             foreach (var farmer in Game1.getOnlineFarmers())
             {
-                foreach (Character character in farmer.currentLocation.characters)
+                foreach (Character character in farmer.currentLocation?.characters)
                 {
-                    if (character is Monster monster)
+                    if (character != null && character is Monster monster)
                     {
                         string name = monster.getName();
                         if (!orginalMonsterSpeed.ContainsKey(name))
@@ -181,9 +187,9 @@ namespace HaltEventTime
         {
             foreach (var farmer in Game1.getOnlineFarmers())
             {
-                foreach (var sprites in farmer.currentLocation.TemporarySprites)
+                foreach (var sprites in farmer.currentLocation?.TemporarySprites)
                 {
-                    if (sprites.bombRadius > 0)
+                    if (sprites != null && sprites.bombRadius > 0)
                         sprites.paused = false;
                 }
             }
@@ -196,7 +202,7 @@ namespace HaltEventTime
         {
             foreach (var farmer in Game1.getOnlineFarmers())
             {
-                foreach (var sprites in farmer.currentLocation.TemporarySprites)
+                foreach (var sprites in farmer.currentLocation?.TemporarySprites)
                 {
                     if (sprites.bombRadius > 0)
                         sprites.paused = true;

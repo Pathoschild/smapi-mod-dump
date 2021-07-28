@@ -7,9 +7,10 @@ mods:
    Retroactive Stardew
 
 latest commit:
-   commit f34f581f54e81b42ffe98c17f76ebf70c3a79a2f
+   commit c4d026744b3c51590059527c3e3ae1382f5c684f
+   Merge: 628a29b 194182a
    Author: Marcos Miller Dantas <mmillerdantas@outlook.com>
-   Date:   Sun Mar 7 18:32:20 2021 -0300
+   Date:   Thu Jul 22 19:40:53 2021 -0300
    
-       version Bump
+       Merge branch 'master' of github.com:millerscout/StardewMillerMods
    

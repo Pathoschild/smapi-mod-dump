@@ -79,7 +79,13 @@ namespace ContentPatcher.Framework.Conditions
         }
 
         /// <inheritdoc />
-        public bool UsesTokens(params ConditionType[] tokens)
+        public bool UsesToken(ConditionType token)
+        {
+            return false;
+        }
+
+        /// <inheritdoc />
+        public bool UsesTokens(IEnumerable<ConditionType> tokens)
         {
             return false;
         }

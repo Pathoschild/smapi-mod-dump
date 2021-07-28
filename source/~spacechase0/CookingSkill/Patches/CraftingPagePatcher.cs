@@ -10,7 +10,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Harmony;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceCore;
 using SpaceShared;
 using StardewModdingAPI;
@@ -41,7 +41,7 @@ namespace CookingSkill.Patches
         ** Private methods
         *********/
         /// <summary>The method to call before <see cref="CraftingPage.clickCraftingRecipe"/>.</summary>
-        /// <returns>Returns whether to skip the original method.</returns>
+        /// <returns>Returns whether to run the original method.</returns>
         /// <remarks>This is copied verbatim from the original method with some changes (marked with comments).</remarks>
         public static bool Before_ClickCraftingRecipe(CraftingPage __instance, ClickableTextureComponent c, bool playSound, ref int ___currentCraftingPage, ref Item ___heldItem, ref bool ___cooking)
         {
@@ -50,6 +50,8 @@ namespace CookingSkill.Patches
             // - compare with latest game code to see if anything else changed
 
             CraftingPage menu = __instance;
+            if (!menu.pagesOfCraftingRecipes[___currentCraftingPage][c].isCookingRecipe)
+                return true;
 
             Item crafted = menu.pagesOfCraftingRecipes[___currentCraftingPage][c].createItem();
 
@@ -88,7 +90,7 @@ namespace CookingSkill.Patches
 
             // custom code begins
             if (!didCraft)
-                return true;
+                return false;
             // custom code ends
 
             if (!___cooking && Game1.player.craftingRecipes.ContainsKey(menu.pagesOfCraftingRecipes[___currentCraftingPage][c].name))
@@ -106,11 +108,11 @@ namespace CookingSkill.Patches
             else
                 Game1.stats.checkForCookingAchievements();
             if (!Game1.options.gamepadControls || ___heldItem == null || !Game1.player.couldInventoryAcceptThisItem(___heldItem))
-                return true;
+                return false;
             Game1.player.addItemToInventoryBool(___heldItem);
             ___heldItem = null;
 
-            return true;
+            return false;
         }
     }
 }

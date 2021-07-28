@@ -24,7 +24,7 @@ for queries and analysis.**
 1. Install [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720)
 1. Install [Generic Mod Config Menu](https://www.moddrop.com/stardew-valley/mods/771692-generic-mod-config-menu) (optional, for easier configuration)
 1. Download this mod from the link in the header above
-1. Unzip the mod and place the `PortableTV` folder inside your `Mods` folder
+1. Unzip the mod and place the `PortableTV` and `[JA]PortableTV` folders inside your `Mods` folder
 1. Run the game using SMAPI
 
 ## ![[Use]](https://www.kdau.com/headers/use.png)
@@ -68,7 +68,7 @@ Your contribution would be welcome. Please see the [instructions on the wiki](ht
 
 ## ![[See also]](https://www.kdau.com/headers/see-also.png)
 
-* [Release notes](https://gitlab.com/kdau/portabletv/-/blob/master/doc/RELEASE-NOTES.md)
+* [Release notes](https://gitlab.com/kdau/portabletv/-/blob/main/doc/RELEASE-NOTES.md)
 * [Source code](https://gitlab.com/kdau/portabletv)
 * [Report bugs](https://gitlab.com/kdau/portabletv/-/issues)
 * [My other Stardew stuff](https://www.kdau.com/stardew)

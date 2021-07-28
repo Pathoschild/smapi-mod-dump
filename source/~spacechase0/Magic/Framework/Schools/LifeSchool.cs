@@ -14,6 +14,9 @@ namespace Magic.Framework.Schools
 {
     internal class LifeSchool : School
     {
+        /*********
+        ** Public methods
+        *********/
         public LifeSchool()
             : base(SchoolId.Life) { }
 

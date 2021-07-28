@@ -14,9 +14,9 @@ mods:
    More Grass
 
 latest commit:
-   commit 34382a8d4e53849bedbf98f25984eeca96ce3503
+   commit 38e7c0b501248d795dfd1f1c3b0856e8c9b3e1f9
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Wed Jun 2 05:48:28 2021 +0100
+   Date:   Thu Jul 15 10:26:30 2021 +0100
    
-       [FarmAnimalVarietyRedux] Fix bug that caused save to 'forget' the type of custom animals when they're packs are uninstalled
+       [MasterFisher] Add bait loading
    

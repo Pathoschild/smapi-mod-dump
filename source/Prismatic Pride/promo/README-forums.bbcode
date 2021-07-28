@@ -2,7 +2,7 @@
 
 [i]a [url=http://stardewvalley.net/]Stardew Valley[/url] mod by [url=https://www.kdau.com]kdau[/url][/i]
 
-Let’s see your true colors shining through! With this mod, you can deck your Stardew Valley farmer out in a full set of prismatic clothing, then choose from a variety of pride flags to rotate through the colors of.
+Change prismatic items to rotate through the colors of the pride flag of your choice, then deck your farmer out in a wider selection of prismatic clothing to show it off. Let’s see your true colors shining through!
 
 [size=4][b][img alt="Compatibility"]https://www.kdau.com/headers/compatibility.png[/img][/b][/size]
 
@@ -12,7 +12,7 @@ Let’s see your true colors shining through! With this mod, you can deck your S
 
 [b]Multiplayer:[/b] works; every player must install
 
-[b]Other mods:[/b] no known conflicts
+[b]Other mods:[/b] Works with Get Glam and Change Shoe Color. Other clothing-related SMAPI mods (but not content packs) might cause lag or visual glitches.
 
 [size=4][b][img alt="Installation"]https://www.kdau.com/headers/installation.png[/img][/b][/size]
 
@@ -22,7 +22,7 @@ Let’s see your true colors shining through! With this mod, you can deck your S
 [*]Install [url=https://www.nexusmods.com/stardewvalley/mods/5005]Shop Tile Framework[/url] (optional, for buying the clothing items)
 [*]Install [url=https://www.nexusmods.com/stardewvalley/mods/5098]Generic Mod Config Menu[/url] (optional, for easier configuration)
 [*]Download this mod from the link in the header above
-[*]Unzip and put the [icode]PrismaticPride[/icode] folder inside your [icode]Mods[/icode] folder
+[*]Unzip and put the [icode]PrismaticPride[/icode], [icode]PrismaticPride.JA[/icode] and [icode]PrismaticPride.STF[/icode] folders inside your [icode]Mods[/icode] folder
 [*]Run the game using SMAPI
 [/list]
 
@@ -32,11 +32,11 @@ When this mod is installed, all prismatic things in the game - clothing, Junimo 
 
 To [b]change the pride flag[/b] whose colors are used, [b]press the [icode]U[/icode] key[/b] to bring up the menu (key configurable; see below). This menu works like the one for the Jukebox: use the arrows to cycle through the options; press the green play button to apply the option shown; and press the red "no" button to close the menu. See under Acknowledgments below for all the flags and their origins.
 
-This mod adds [b]10 shirts and 5 pants[/b] to the game. Together with the [url=https://stardewvalleywiki.com/Prismatic_Shard#Tailoring]prismatic clothing from the base game[/url] and the [url=https://forums.stardewvalley.net/index.php?resources/prismatic-skirts-dresses-for-content-patcher.44/]Prismatic Skirts and Dresses[/url] mod, this is a complete collection matching the base game's dyeable clothing collection. To [b][url=https://stardewvalleywiki.com/Tailoring]tailor[/url] a random one[/b] of all these items, use one [b]Cloth and a Prismatic Shard[/b] at the sewing machine.
+This mod adds [b]10 shirts and 5 pants[/b] to the game. Together with the [url=https://stardewvalleywiki.com/Prismatic_Shard#Tailoring]prismatic clothing from the base game[/url] and the [url=https://forums.stardewvalley.net/resources/prismatic-skirts-dresses-for-content-patcher.44/]Prismatic Skirts and Dresses[/url] mod, this is a complete collection matching the base game's dyeable clothing collection. To [b][url=https://stardewvalleywiki.com/Tailoring]tailor[/url] a random one[/b] of all these items, use one [b]Cloth and a Prismatic Shard[/b] at the sewing machine.
 
 This mod also adds [b]Prismatic Boots[/b] which rotate through colors while worn, just like other prismatic items. To tailor an [b]existing pair[/b] into Prismatic Boots, use the boots (on the left) and a [b]Prismatic Shard[/b] (on the right) at the sewing machine. The machine will [b]preserve the stats[/b] from the existing pair.
 
-If you have installed Shop Tile Framework, you can also [b]purchase specific items[/b] of prismatic clothing instead of leaving it up to chance. Interact with the [b]left side of Emily's fabric shelves[/b] (just to the right of the sewing machine) to bring up the [b]shop menu[/b]. On any given day, you will be able to choose from five prismatic shirts, five prismatic pants and the Prismatic Boots, including items from the base game, this mod and (if installed) Prismatic Skirts and Dresses. Each item [b]costs one Prismatic Shard[/b].
+If you have installed Shop Tile Framework, you can also [b]purchase specific items[/b] of prismatic clothing instead of leaving it up to chance. Interact with [b]Emily's fabric shelves[/b] (just to the right of the sewing machine) to bring up the [b]shop menu[/b]. On any given day, you will be able to choose from five prismatic shirts, five prismatic pants and the Prismatic Boots, including items from the base game, this mod and (if installed) Prismatic Skirts and Dresses. Each item [b]costs one Prismatic Shard[/b].
 
 [size=4][b][img alt="Configuration"]https://www.kdau.com/headers/configuration.png[/img][/b][/size]
 
@@ -45,6 +45,8 @@ If you have installed Generic Mod Config Menu, you can access this mod's configu
 Otherwise, you can edit this mod's [icode]config.json[/icode] file. It will be created in the mod's main folder ([icode]Mods/PrismaticPride[/icode]) the first time you run the game with the mod installed. These options are available:
 
 [list]
+[*][icode]ApplyColors[/icode]: Set this to [icode]false[/icode] to leave the existing prismatic color rotation unaffected, whether for compatibility with another mod or to restore the base game colors.
+[*][icode]ColorDuration[/icode]: Set this to the number of seconds (decimals OK) that each color should appear in rotation; the default is [icode]1.5[/icode].
 [*][icode]DefaultColorSet[/icode]: Set this to the prismatic color set that should be chosen by default for new players. The available options are [icode]"original"[/icode], [icode]"rainbow"[/icode], [icode]"philadelphia"[/icode], [icode]"progress"[/icode], [icode]"lesbian"[/icode], [icode]"genderfluid"[/icode], [icode]"genderqueer"[/icode], [icode]"bisexual"[/icode], [icode]"pansexual"[/icode], [icode]"polysexual"[/icode], [icode]"trans"[/icode], [icode]"nonbinary"[/icode], [icode]"intersex"[/icode], [icode]"agender"[/icode], [icode]"aromantic"[/icode] and [icode]"asexual"[/icode]; the default is [icode]"progress"[/icode].
 [*][icode]ColorSetMenuKey[/icode]: Set this to any valid keybinding that will open the menu of prismatic color sets; the default is the [icode]U[/icode] key. [url=https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Available_bindings]See the list of keybindings here[/url].
 [/list]
@@ -90,6 +92,6 @@ This mod can be translated into any language supported by the game. Your contrib
 Other mods to consider:
 
 [list]
-[*][url=https://forums.stardewvalley.net/index.php?resources/prismatic-skirts-dresses-for-content-patcher.44/]Prismatic Skirts and Dresses[/url] for a complete set of prismatic clothing choices
+[*][url=https://forums.stardewvalley.net/resources/prismatic-skirts-dresses-for-content-patcher.44/]Prismatic Skirts and Dresses[/url] for a complete set of prismatic clothing choices
 [*][url=https://www.nexusmods.com/stardewvalley/mods/8916]Prismatic Hair Bow[/url] for an alternate hat option
 [/list]

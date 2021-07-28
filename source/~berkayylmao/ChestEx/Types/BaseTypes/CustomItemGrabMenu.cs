@@ -10,7 +10,6 @@
 
 #region License
 
-// clang-format off
 // 
 //    ChestEx (StardewValleyMods)
 //    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
@@ -21,14 +20,12 @@
 //    (at your option) any later version.
 // 
 //    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    but WITHOUT ANY WARRANTY, without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //    GNU Affero General Public License for more details.
 // 
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program. If not, see <https://www.gnu.org/licenses/>.
-// 
-// clang-format on
 
 #endregion
 
@@ -59,9 +56,9 @@ using Object = System.Object;
 namespace ChestEx.Types.BaseTypes {
   /// <summary>
   /// This class is probably created and handled by the game.
-  /// Normally, this would derive from <see cref="CustomMenu"/> but the <see cref="ItemGrabMenu"/> inheritance is crucial for compatibility with other community-made content. This is practically 1:1 with <see cref="CustomMenu"/>.
   /// </summary>
   /// <remarks>However, this class requires a patch to the '<see cref="ItemGrabMenu(System.Collections.Generic.IList{StardewValley.Item}, object)"/>' constructor so that <see cref="ItemGrabMenu"/> itself is never initialized.</remarks>
+  [UsedImplicitly]
   public partial class CustomItemGrabMenu : ItemGrabMenu {
     // Private:
   #region Private
@@ -69,118 +66,70 @@ namespace ChestEx.Types.BaseTypes {
     // Input events:
   #region Input events
 
-    private readonly struct MouseStateData {
-      public readonly CustomMenu.MouseStateEx mLeft;
-      public readonly CustomMenu.MouseStateEx mRight;
-      public readonly CustomMenu.MouseStateEx mMiddle;
-
-      public MouseStateData(CustomMenu.MouseStateEx left, CustomMenu.MouseStateEx right, CustomMenu.MouseStateEx middle) {
-        this.mLeft   = left;
-        this.mRight  = right;
-        this.mMiddle = middle;
-      }
-    }
-
-    private MouseStateData lastMouseStates;
+    private readonly Dictionary<SButton, InputStateEx> inputStates = new();
 
     private void _eventCursorMoved(Object sender, CursorMovedEventArgs e) {
-      try {
-        if (this.OnCursorMoved(e) == CustomMenu.InformStatus.InformItems) {
-          this.mMenuItems.ForEach(i => {
-            if (!i.mIsVisible) return;
+      Vector2 cursor_pos = Utility.ModifyCoordinatesForUIScale(e.NewPosition.ScreenPixels);
+      // Update cursor position
+      InputStateEx.gCursorPos = cursor_pos;
 
-            Vector2 correct_pos = Utility.ModifyCoordinatesForUIScale(e.NewPosition.ScreenPixels);
-            i.OnCursorMoved(correct_pos);
-            i.mComponents.ForEach(c => {
-              if (c.mIsVisible) c.OnCursorMoved(correct_pos);
-            });
-          });
-        }
-      }
-      catch (InvalidOperationException) { }
+      // Inform items of CursorMoved event if they are interactable
+      this.mComponents.IgnoreExceptions(o => o.ForEach(i => {
+        if (!i.mData.mIsEnabled || !i.mIsVisible) return;
+        // Update cursor status of item
+        i.mData.UpdateCursorStatus(i.mBounds.Contains(cursor_pos));
+        // Inform
+        i.OnCursorMoved(cursor_pos);
+      }));
     }
-
     private void _eventButtonPressed(Object sender, ButtonPressedEventArgs e) {
-      try {
-        if (this.OnButtonPressed(e) == CustomMenu.InformStatus.InformItems) {
-          this.mMenuItems.ForEach(i => {
-            i.OnButtonPressed(e);
-            i.mComponents.ForEach(c => c.OnButtonPressed(e));
-          });
-        }
+      Vector2 cursor_pos = Utility.ModifyCoordinatesForUIScale(e.Cursor.ScreenPixels);
+      // Update cursor position
+      InputStateEx.gCursorPos = cursor_pos;
+      // Get input
+      InputStateEx input_state = this.inputStates[e.Button];
+      input_state.mButtonState = SButtonState.Pressed;
 
-        CustomMenu.MouseStateEx last_mouse_state = e.Button switch {
-          SButton.MouseLeft   => this.lastMouseStates.mLeft,
-          SButton.MouseRight  => this.lastMouseStates.mRight,
-          SButton.MouseMiddle => this.lastMouseStates.mMiddle,
-          _                   => CustomMenu.MouseStateEx.gDefault
-        };
+      // Inform items of ButtonPressed event if they are interactable
+      this.mComponents.IgnoreExceptions(o => o.ForEach(i => {
+        if (!i.mData.mIsEnabled || !i.mIsVisible) return;
 
-        if (last_mouse_state.Equals(CustomMenu.MouseStateEx.gDefault)) return;
-
-        Vector2 correct_pos    = Utility.ModifyCoordinatesForUIScale(e.Cursor.ScreenPixels);
-        Point   xna_cursor_pos = correct_pos.AsXNAPoint();
-
-        last_mouse_state.mPos         = correct_pos;
-        last_mouse_state.mButtonState = SButtonState.Pressed;
-
-        // Call OnMouseClick for items
-        this.mMenuItems.ForEach(i => {
-          if (!i.mIsVisible || !i.mBounds.Contains(xna_cursor_pos)) return;
-
-          if (!i.mRaiseMouseClickEventOnRelease) i.OnMouseClick(last_mouse_state);
-          i.mComponents.ForEach(c => {
-            if (!c.mIsVisible || !c.mBounds.Contains(xna_cursor_pos)) return;
-
-            if (!c.mRaiseMouseClickEventOnRelease) c.OnMouseClick(last_mouse_state);
-          });
-        });
-      }
-      catch (InvalidOperationException) { }
+        // Update cursor status of item
+        i.mData.UpdateCursorStatus(i.mBounds.Contains(cursor_pos), input_state);
+        // Inform
+        i.OnButtonPressed(input_state);
+      }));
     }
-
     private void _eventButtonReleased(Object sender, ButtonReleasedEventArgs e) {
-      try {
-        if (this.OnButtonReleased(e) == CustomMenu.InformStatus.InformItems) {
-          this.mMenuItems.ForEach(i => {
-            i.OnButtonReleased(e);
-            i.mComponents.ForEach(c => c.OnButtonReleased(e));
-          });
-        }
+      Vector2 cursor_pos = Utility.ModifyCoordinatesForUIScale(e.Cursor.ScreenPixels);
+      // Update cursor position
+      InputStateEx.gCursorPos = cursor_pos;
+      // Get input
+      InputStateEx input_state = this.inputStates[e.Button];
+      input_state.mButtonState = SButtonState.Released;
 
-        // check data for _eventMouseClick
-        CustomMenu.MouseStateEx last_mouse_state = e.Button switch {
-          SButton.MouseLeft   => this.lastMouseStates.mLeft,
-          SButton.MouseRight  => this.lastMouseStates.mRight,
-          SButton.MouseMiddle => this.lastMouseStates.mMiddle,
-          _                   => CustomMenu.MouseStateEx.gDefault
-        };
+      // Inform items of MouseClick event if needed
+      if (e.Button is SButton.MouseLeft or SButton.MouseRight or SButton.MouseMiddle && input_state.mLastButtonState == SButtonState.Pressed) {
+        this.mComponents.IgnoreExceptions(o => o.ForEach(i => {
+          if (!i.mData.mIsEnabled || !i.mIsVisible) return;
+          if (!i.mBounds.Contains(InputStateEx.gLastCursorPos) || !i.mBounds.Contains(cursor_pos)) return;
 
-        if (last_mouse_state.Equals(CustomMenu.MouseStateEx.gDefault)) return;
-
-        if (last_mouse_state.mButtonState == SButtonState.Pressed) {
-          Vector2 correct_pos       = Utility.ModifyCoordinatesForUIScale(e.Cursor.ScreenPixels);
-          Point   xna_cursor_pos    = correct_pos.AsXNAPoint();
-          Point   mouse_pressed_pos = last_mouse_state.mPos.AsXNAPoint();
-
-          last_mouse_state.mPos = correct_pos;
-
-          // Call OnMouseClick for items
-          this.mMenuItems.ForEach(i => {
-            if (!i.mIsVisible || !i.mBounds.Contains(mouse_pressed_pos) || !i.mBounds.Contains(xna_cursor_pos)) return;
-
-            if (i.mRaiseMouseClickEventOnRelease) i.OnMouseClick(last_mouse_state);
-            i.mComponents.ForEach(c => {
-              if (!c.mIsVisible || !c.mBounds.Contains(mouse_pressed_pos) || !c.mBounds.Contains(xna_cursor_pos)) return;
-
-              if (c.mRaiseMouseClickEventOnRelease) c.OnMouseClick(last_mouse_state);
-            });
-          });
-        }
-
-        last_mouse_state.mButtonState = SButtonState.Released;
+          // Update cursor status of item
+          i.mData.UpdateCursorStatus(true, input_state);
+          // Inform
+          i.OnMouseClick(input_state);
+        }));
       }
-      catch (InvalidOperationException) { }
+
+      // Inform items of ButtonReleased event if they are interactable
+      this.mComponents.IgnoreExceptions(o => o.ForEach(i => {
+        if (!i.mData.mIsEnabled || !i.mIsVisible) return;
+
+        // Update cursor status of item
+        i.mData.UpdateCursorStatus(i.mBounds.Contains(cursor_pos), input_state);
+        // Inform
+        i.OnButtonReleased(input_state);
+      }));
     }
 
   #endregion
@@ -193,50 +142,15 @@ namespace ChestEx.Types.BaseTypes {
     // Input event handlers:
   #region Input event handlers
 
-    /// <summary>
-    /// Base implementation informs this menu's items if '<see cref="mIsVisible"/>' is true.
-    /// </summary>
-    /// <returns>Whether this menu's items are informed of this event.</returns>
-    protected virtual CustomMenu.InformStatus OnMouseClick(CustomMenu.MouseStateEx mouseState) {
-      return this.mIsVisible ? CustomMenu.InformStatus.InformItems : CustomMenu.InformStatus.DontInformItems;
-    }
-
-    /// <summary>
-    /// Base implementation informs this menu's items if '<see cref="mIsVisible"/>' is true.
-    /// </summary>
-    /// <returns>Whether this menu's items are informed of this event.</returns>
-    protected virtual CustomMenu.InformStatus OnCursorMoved(CursorMovedEventArgs e) {
-      return this.mIsVisible ? CustomMenu.InformStatus.InformItems : CustomMenu.InformStatus.DontInformItems;
-    }
-
-    /// <summary>
-    /// Base implementation informs this menu's items if '<see cref="mIsVisible"/>' is true.
-    /// </summary>
-    /// <returns>Whether this menu's items are informed of this event.</returns>
-    protected virtual CustomMenu.InformStatus OnButtonPressed(ButtonPressedEventArgs e) {
-      return this.mIsVisible ? CustomMenu.InformStatus.InformItems : CustomMenu.InformStatus.DontInformItems;
-    }
-
-    /// <summary>
-    /// Base implementation informs this menu's items if '<see cref="mIsVisible"/>' is true.
-    /// </summary>
-    /// <returns>Whether this menu's items are informed of this event.</returns>
-    protected virtual CustomMenu.InformStatus OnButtonReleased(ButtonReleasedEventArgs e) {
-      return this.mIsVisible ? CustomMenu.InformStatus.InformItems : CustomMenu.InformStatus.DontInformItems;
-    }
-
-    protected virtual void RegisterInputEvents() {
-      // init mouse states
-      this.lastMouseStates = new MouseStateData(new CustomMenu.MouseStateEx(SButton.MouseLeft),
-                                                new CustomMenu.MouseStateEx(SButton.MouseRight),
-                                                new CustomMenu.MouseStateEx(SButton.MouseMiddle));
+    protected void RegisterInputEvents() {
+      // init input states
+      foreach (SButton btn in (SButton[])Enum.GetValues(typeof(SButton))) { this.inputStates[btn] = new InputStateEx(btn); }
 
       GlobalVars.gSMAPIHelper.Events.Input.CursorMoved    += this._eventCursorMoved;
       GlobalVars.gSMAPIHelper.Events.Input.ButtonPressed  += this._eventButtonPressed;
       GlobalVars.gSMAPIHelper.Events.Input.ButtonReleased += this._eventButtonReleased;
     }
-
-    protected virtual void UnregisterInputEvents() {
+    protected void UnregisterInputEvents() {
       GlobalVars.gSMAPIHelper.Events.Input.CursorMoved    -= this._eventCursorMoved;
       GlobalVars.gSMAPIHelper.Events.Input.ButtonPressed  -= this._eventButtonPressed;
       GlobalVars.gSMAPIHelper.Events.Input.ButtonReleased -= this._eventButtonReleased;
@@ -254,13 +168,13 @@ namespace ChestEx.Types.BaseTypes {
     /// <param name="createOrganizeButton">Whether to create the organize button.</param>
     /// <param name="createFillStacksButton">Whether to create the fill stacks button.</param>
     protected virtual void CreateOrganizationButtons(Boolean createChestColorPicker, Boolean createOrganizeButton, Boolean createFillStacksButton) {
-      Rectangle source_menu_bounds = this.mSourceInventoryOptions.mBounds;
-      Rectangle player_menu_bounds = this.mPlayerInventoryOptions.mBounds;
+      Rectangle source_menu_bounds = this.mSourceInventoryOptions.mDialogueBoxBounds;
 
       if (createChestColorPicker) {
-        this.chestColorPicker = new DiscreteColorPicker(source_menu_bounds.X + 16, source_menu_bounds.Y - 16, 0, new Chest(true));
+        this.chestColorPicker                = new DiscreteColorPicker(source_menu_bounds.X + 16, source_menu_bounds.Y - 16, 0, new Chest(true));
         this.chestColorPicker.colorSelection = this.chestColorPicker.getSelectionFromColor(this.GetSourceAs<Chest>().playerChoiceColor);
-        (this.chestColorPicker.itemToDrawColored as Chest).playerChoiceColor.Value = this.chestColorPicker.getColorFromSelection(this.chestColorPicker.colorSelection);
+        // TODO: this crashes?
+        ((Chest)this.chestColorPicker.itemToDrawColored).playerChoiceColor.Value = this.chestColorPicker.getColorFromSelection(this.chestColorPicker.colorSelection);
 
         this.colorPickerToggleButton =
           new ClickableTextureComponent("",
@@ -343,60 +257,43 @@ namespace ChestEx.Types.BaseTypes {
   #region Public
 
     /// <summary>
-    /// The underlying <see cref="ItemGrabMenu"/>'s bound values wrapped in a <see cref="Rectangle"/>.
-    /// </summary>
-    public Rectangle mBounds {
-      get => new(this.xPositionOnScreen, this.yPositionOnScreen, this.width, this.height);
-      private set {
-        this.xPositionOnScreen = value.X;
-        this.yPositionOnScreen = value.Y;
-        this.width             = value.Width;
-        this.height            = value.Height;
-      }
-    }
-
-    /// <summary>
     /// The <see cref="ItemGrabMenu"/>'s bound calculated by custom properties.
     /// </summary>
-    [UsedImplicitly]
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
     public Rectangle mRealBounds =>
-      new(Math.Min(this.mSourceInventoryOptions.mBounds.X, this.mPlayerInventoryOptions.mBounds.X),
-          this.mSourceInventoryOptions.mBounds.Y,
-          Math.Max(this.mSourceInventoryOptions.mBounds.Width, this.mPlayerInventoryOptions.mBounds.Width),
-          this.mPlayerInventoryOptions.mBounds.Bottom - this.mSourceInventoryOptions.mBounds.Y);
+      new(Math.Min(this.mSourceInventoryOptions.mDialogueBoxBounds.X, this.mPlayerInventoryOptions.mDialogueBoxBounds.X),
+          this.mSourceInventoryOptions.mDialogueBoxBounds.Y,
+          Math.Max(this.mSourceInventoryOptions.mDialogueBoxBounds.Width, this.mPlayerInventoryOptions.mDialogueBoxBounds.Width),
+          this.mPlayerInventoryOptions.mDialogueBoxBounds.Bottom - this.mSourceInventoryOptions.mDialogueBoxBounds.Y);
 
-    public Boolean mIsVisible { get; protected set; }
+    public Boolean mIsVisible { get; private set; } = true;
 
-    public List<CustomItemGrabMenuItem> mMenuItems { get; set; }
+    public List<ICustomComponent> mComponents { get; } = new();
 
-    public Vector2                 mSourceTile { get; private set; }
-    public ExtendedChest.ChestType mSourceType { get; private set; }
-
+    public ExtendedChest.ChestType mSourceType { get; }
     public T GetSourceAs<T>()
       where T : Item {
-      return this.mSVSourceItem is T ? this.mSVSourceItem as T : null;
+      return this.mSVSourceItem as T;
     }
 
     // Virtuals:
   #region Virtuals
 
     /// <summary>
-    /// Base implementation sets '<see cref="mIsVisible"/>' and this menu's items' visibility to '<paramref name="isVisible"/>'.
+    /// Sets '<see cref="mIsVisible"/>' and this menu's components' visibility to '<paramref name="isVisible"/>'.
     /// </summary>
     /// <param name="isVisible">Whether this menu should be visible.</param>
-    public virtual void SetVisible(Boolean isVisible) {
+    public void SetVisible(Boolean isVisible) {
       this.mIsVisible = isVisible;
-      this.mMenuItems.ForEach(i => i.SetVisible(isVisible));
+      this.mComponents.ForEach(i => i.SetVisible(isVisible));
     }
-
     /// <summary>
-    /// <para>Base implementation:</para>
     /// <para>1. Unregisters '<see cref="IClickableMenu.exitFunction"/>'.</para>
     /// <para>2. Calls '<see cref="SetVisible(Boolean)"/>' with 'false'.</para>
     /// <para>3. Disposes of this menu's items.</para>
     /// <para>4. Unregisters SMAPI input events.</para>
     /// </summary>
-    public virtual void OnClose() {
+    public void OnClose() {
       // unregister menu exit function
       this.exitFunction = null;
 
@@ -404,8 +301,8 @@ namespace ChestEx.Types.BaseTypes {
       this.SetVisible(false);
 
       // dispose items
-      this.mMenuItems?.ForEach(i => i?.Dispose());
-      this.mMenuItems?.Clear();
+      this.mComponents?.ForEach(i => i?.Dispose());
+      this.mComponents?.Clear();
 
       this.UnregisterInputEvents();
     }
@@ -427,36 +324,18 @@ namespace ChestEx.Types.BaseTypes {
     public override void draw(SpriteBatch b) {
       if (!this.mIsVisible) return;
 
-      Color chest_bg_colour    = this.mSourceInventoryOptions.mBackgroundColour;
-      Color backpack_bg_colour = this.mPlayerInventoryOptions.mBackgroundColour;
-      Point mouse_pos          = Game1.getMousePosition();
+      var   chest_colours    = Colours.GenerateFrom(this.mSourceInventoryOptions.mBackgroundColour);
+      var   backpack_colours = Colours.GenerateFrom(this.mPlayerInventoryOptions.mBackgroundColour);
+      Point mouse_pos        = InputStateEx.gCursorPos.AsXNAPoint();
 
       if (this.mSourceInventoryOptions.mIsVisible) {
-        Rectangle wrap_rectangle = this.mSourceInventoryOptions.mBounds;
-        Game1.drawDialogueBox(wrap_rectangle.X,
-                              wrap_rectangle.Y,
-                              wrap_rectangle.Width,
-                              wrap_rectangle.Height,
-                              false,
-                              true,
-                              r: chest_bg_colour.R,
-                              g: chest_bg_colour.G,
-                              b: chest_bg_colour.B);
-        this.ItemsToGrabMenu.DrawEx(b, chest_bg_colour);
+        b.DrawTextureBox(this.mSourceInventoryOptions.mDialogueBoxBounds, chest_colours);
+        this.ItemsToGrabMenu.DrawEx(b, chest_colours.mActiveColour);
       }
 
       if (this.mPlayerInventoryOptions.mIsVisible) {
-        Rectangle wrap_rectangle = this.mPlayerInventoryOptions.mBounds;
-        Game1.drawDialogueBox(wrap_rectangle.X,
-                              wrap_rectangle.Y,
-                              wrap_rectangle.Width,
-                              wrap_rectangle.Height,
-                              false,
-                              true,
-                              r: backpack_bg_colour.R,
-                              g: backpack_bg_colour.G,
-                              b: backpack_bg_colour.B);
-        this.inventory.DrawEx(b, backpack_bg_colour);
+        b.DrawTextureBox(this.mPlayerInventoryOptions.mDialogueBoxBounds, backpack_colours);
+        this.inventory.DrawEx(b, backpack_colours.mActiveColour);
       }
 
       // Game code, slightly modified
@@ -485,52 +364,54 @@ namespace ChestEx.Types.BaseTypes {
                  0.872f);
         }
 
-        this.mMenuItems.ForEach(i => {
+        this.mComponents.ForEach(i => {
           if (i.mIsVisible) i.Draw(b);
         });
 
         // draw hover tooltip/text
-        Color target_colour = this.mSourceInventoryOptions.mBounds.Contains(mouse_pos.X, mouse_pos.Y) ? chest_bg_colour : backpack_bg_colour;
+        Colours tooltip_colours = this.mPlayerInventoryOptions.mDialogueBoxBounds.Contains(mouse_pos.X, mouse_pos.Y) ? backpack_colours : chest_colours;
 
         if (this.hoveredItem is not null) {
-          CustomMenu.DrawToolTip(b,
-                                 Game1.smallFont,
-                                 target_colour,
-                                 this.hoveredItem.getDescription(),
-                                 this.hoveredItem.DisplayName,
-                                 this.hoveredItem,
-                                 this.heldItem is not null);
+          b.DrawToolTip(Game1.smallFont,
+                        this.hoveredItem.getDescription(),
+                        this.hoveredItem.DisplayName,
+                        this.hoveredItem,
+                        this.heldItem is not null,
+                        colours: tooltip_colours,
+                        contentPadding: 8,
+                        borderScale: 0.5f);
         }
         else if (!String.IsNullOrEmpty(this.hoverText)) {
-          if (this.hoverAmount > 0)
-            CustomMenu.DrawToolTip(b,
-                                   Game1.smallFont,
-                                   target_colour,
-                                   this.hoverText,
-                                   "",
-                                   null,
-                                   true,
-                                   0,
-                                   this.hoverAmount);
-          else
-            CustomMenu.DrawHoverText(b, Game1.smallFont, this.hoverText, backgroundColour: target_colour, textColour: target_colour.ContrastColour());
+          if (this.hoverAmount > 0) {
+            b.DrawToolTip(Game1.smallFont,
+                          this.hoverText,
+                          "",
+                          null,
+                          true,
+                          0,
+                          this.hoverAmount,
+                          colours: tooltip_colours,
+                          contentPadding: 8,
+                          borderScale: 0.5f);
+          }
+          else { b.DrawHoverText(Game1.smallFont, this.hoverText, colours: tooltip_colours, borderScale: 0.5f); }
         }
 
         // draw held item
         this.heldItem?.drawInMenu(b, mouse_pos.AsXNAVector2() + new Vector2(8.0f), 1f);
       }
     }
-
     /// <summary>
     /// Base implementation calls '<see cref="IClickableMenu.draw(SpriteBatch, Int32, Int32, Int32)"/>' if '<see cref="mIsVisible"/>' is true.
     /// </summary>
+    [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter", Justification = "Game code")]
     public override void draw(SpriteBatch b, Int32 red = -1, Int32 green = -1, Int32 blue = -1) {
       if (this.mIsVisible) base.draw(b, red, green, blue);
     }
-
     /// <summary>
     /// Base implementation calls '<see cref="MenuWithInventory.draw(SpriteBatch, Boolean, Boolean, Int32, Int32, Int32)"/>' if '<see cref="mIsVisible"/>' is true.
     /// </summary>
+    [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter", Justification = "Game code")]
     public override void draw(SpriteBatch b,          Boolean drawUpperPortion = true, Boolean drawDescriptionArea = true, Int32 red = -1,
                               Int32       green = -1, Int32   blue             = -1) {
       if (this.mIsVisible) base.draw(b, drawUpperPortion, drawDescriptionArea, red, green, blue);
@@ -560,15 +441,34 @@ namespace ChestEx.Types.BaseTypes {
       this.ItemsToGrabMenu.gameWindowSizeChanged(oldBounds, newBounds);
       // inform inventory
       this.inventory.gameWindowSizeChanged(oldBounds, newBounds);
-      // reset bounds
-      this.mSourceInventoryOptions.mBounds = this.ItemsToGrabMenu.GetDialogueBoxRectangle();
-      this.mPlayerInventoryOptions.mBounds = this.inventory.GetDialogueBoxRectangle();
+      // reset dialogue box bounds
+      this.mSourceInventoryOptions.mDialogueBoxBounds = this.ItemsToGrabMenu.GetTextureBoxRectangle();
+      this.mPlayerInventoryOptions.mDialogueBoxBounds = this.inventory.GetTextureBoxRectangle();
       // inform items
-      this.mMenuItems.ForEach(i => i.OnGameWindowSizeChanged(oldBounds, newBounds));
+      this.mComponents.ForEach(i => i.OnGameWindowSizeChanged(oldBounds, newBounds));
       // re-create organization buttons
-      this.CreateOrganizationButtons(this.source == source_chest && this.mSVSourceItem is Chest chest && chest.SpecialChestType == Chest.SpecialChestTypes.None,
+      this.CreateOrganizationButtons(this.source == source_chest && this.mSVSourceItem is Chest { SpecialChestType: Chest.SpecialChestTypes.None },
                                      this.organizeButton is not null,
                                      this.fillStacksButton is not null);
+    }
+
+    public override void performHoverAction(Int32 x, Int32 y) {
+      this.hoveredItem = this.inventory.hover(x, y, this.heldItem);
+      this.hoverText   = this.inventory.hoverText;
+      this.hoverAmount = 0;
+
+      if (this.trashCan is not null && this.trashCan.containsPoint(x, y)) {
+        if (this.trashCanLidRotation <= 0.0f) Game1.playSound("trashcanlid");
+
+        this.trashCanLidRotation = Convert.ToSingle(Math.Min(this.trashCanLidRotation + Math.PI / 48.0f, Math.PI / 2.0f));
+        if (this.heldItem is not null && Utility.getTrashReclamationPrice(this.heldItem, Game1.player) > 0) {
+          this.hoverText   = Game1.content.LoadString("Strings\\UI:TrashCanSale");
+          this.hoverAmount = Utility.getTrashReclamationPrice(this.heldItem, Game1.player);
+        }
+      }
+      else { this.trashCanLidRotation = Convert.ToSingle(Math.Max(this.trashCanLidRotation - Math.PI / 48.0f, 0.0f)); }
+
+      if (this.showReceivingMenu) this.hoveredItem ??= this.ItemsToGrabMenu.hover(x, y, this.heldItem);
     }
 
     /// <summary>
@@ -616,14 +516,13 @@ namespace ChestEx.Types.BaseTypes {
       }
 
       // Handle default chest colour picker
-      if (this.chestColorPicker is DiscreteColorPicker) {
-        this.chestColorPicker.receiveLeftClick(x, y);
-        if (this.mSVSourceItem is Chest chest && this.chestColorPicker.visible && this.chestColorPicker.isWithinBounds(x, y))
-          chest.playerChoiceColor.Value = this.chestColorPicker.getColorFromSelection(this.chestColorPicker.colorSelection);
+      if (this.chestColorPicker is DiscreteColorPicker picker) {
+        picker.receiveLeftClick(x, y);
+        if (this.mSVSourceItem is Chest chest && picker.visible && picker.isWithinBounds(x, y)) chest.playerChoiceColor.Value = picker.getColorFromSelection(picker.colorSelection);
 
         if (this.colorPickerToggleButton is not null && this.colorPickerToggleButton.containsPoint(x, y)) {
           Game1.player.showChestColorPicker.Flip();
-          this.chestColorPicker.visible = Game1.player.showChestColorPicker;
+          picker.visible = Game1.player.showChestColorPicker;
           Game1.playSound("drumkit6");
 
           this.SetupBorderNeighbors();
@@ -693,20 +592,23 @@ namespace ChestEx.Types.BaseTypes {
       private readonly Action<Boolean> fnSetVisibleExtra;
 
       public Color     mBackgroundColour;
-      public Rectangle mBounds;
+      public Rectangle mDialogueBoxBounds;
       public Boolean   mIsVisible;
+      public Single    mBorderScale;
 
       public void SetVisible(Boolean isVisible) {
         this.mIsVisible = isVisible;
         this.fnSetVisibleExtra?.Invoke(isVisible);
       }
 
-      public InventoryMenuOptions(Rectangle bounds, Color backgroundColour, Boolean isVisible = true, Action<Boolean> setVisibleExtraFunctionality = null) {
+      public InventoryMenuOptions(Rectangle dialogueBoxBounds, Color backgroundColour, Boolean isVisible = true, Action<Boolean> setVisibleExtraFunctionality = null,
+                                  Single    borderScale = 1.0f) {
         this.fnSetVisibleExtra = setVisibleExtraFunctionality;
 
-        this.mBackgroundColour = backgroundColour;
-        this.mBounds           = bounds;
-        this.mIsVisible        = !isVisible;
+        this.mBackgroundColour  = backgroundColour;
+        this.mDialogueBoxBounds = dialogueBoxBounds;
+        this.mIsVisible         = !isVisible;
+        this.mBorderScale       = borderScale;
 
         this.SetVisible(isVisible);
       }
@@ -726,7 +628,6 @@ namespace ChestEx.Types.BaseTypes {
 
       return this;
     }
-
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public new void setSourceItem(Item item) {
       this.mSVSourceItem = item;
@@ -792,20 +693,12 @@ namespace ChestEx.Types.BaseTypes {
       : base(null, new MenuWithInventoryCtorParams(highlightFunction, true, true, 0, 0, 64)) {
       // Set custom values
       {
-        this.mMenuItems = new List<CustomItemGrabMenuItem>();
         this.SetVisible(true);
 
         Object source_real = sourceItem is Chest ? sourceItem : context;
 
         // set SourceType
-        if (source_real is Chest source_item) {
-          // set SourceTile
-          this.mSourceTile = new Vector2((Single)source_item.boundingBox.Value.X / Game1.tileSize, (Single)source_item.boundingBox.Value.Y / Game1.tileSize);
-
-          this.mSourceType = source_item.GetChestType();
-        }
-        else
-          this.mSourceType = ExtendedChest.ChestType.None;
+        this.mSourceType = source_real is Chest source_item ? source_item.GetChestType() : ExtendedChest.ChestType.None;
 
         // register menu exit function
         this.exitFunction = this.OnClose;
@@ -838,8 +731,9 @@ namespace ChestEx.Types.BaseTypes {
                                                    highlightFunction,
                                                    Config.Get().GetCapacity(),
                                                    Config.Get().mRows,
-                                                   1,
-                                                   1);
+                                                   6,
+                                                   2,
+                                                   false);
           this.ItemsToGrabMenu.populateClickableComponentList();
 
           foreach (ClickableComponent cc in this.ItemsToGrabMenu.inventory.Where(cc => cc != null)) {
@@ -869,21 +763,27 @@ namespace ChestEx.Types.BaseTypes {
         }
 
         this.populateClickableComponentList();
+        // ReSharper disable once VirtualMemberCallInConstructor
         if (Game1.options.SnappyMenus) this.snapToDefaultClickableComponent();
         this.SetupBorderNeighbors();
       }
 
       // construct options
       {
-        Color bg_col = Color.White;
-
+        Color bg_col                                                                                                                  = Color.White;
         if (this.mSourceType == ExtendedChest.ChestType.WoodenChest || this.mSourceType == ExtendedChest.ChestType.StoneChest) bg_col = this.GetSourceAs<Chest>().GetActualColour();
 
-        this.mPlayerInventoryOptions = new InventoryMenuOptions(this.inventory.GetDialogueBoxRectangle(), Color.White, true, isVisible => this.inventory.SetVisibleEx(isVisible));
-
+        this.mPlayerInventoryOptions = new InventoryMenuOptions(this.inventory.GetTextureBoxRectangle(), Color.White, true, isVisible => this.inventory.SetVisibleEx(isVisible));
         this.mSourceInventoryOptions =
-          new InventoryMenuOptions(this.ItemsToGrabMenu.GetDialogueBoxRectangle(), bg_col, true, isVisible => this.ItemsToGrabMenu.SetVisibleEx(isVisible));
+          new InventoryMenuOptions(this.ItemsToGrabMenu.GetTextureBoxRectangle(), bg_col, true, isVisible => this.ItemsToGrabMenu.SetVisibleEx(isVisible));
       }
+
+      GlobalVars.gSMAPIHelper.Events.GameLoop.UpdateTicked += (_, _) => {
+        // Inform items of GameTick event if they are interactable
+        this.mComponents.IgnoreExceptions(o => o.ForEach(i => {
+          if (i.mData.mIsEnabled && i.mIsVisible) i.OnGameTick();
+        }));
+      };
     }
 
   #endregion

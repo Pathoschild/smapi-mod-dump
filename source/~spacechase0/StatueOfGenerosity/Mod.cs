@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.IO;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceShared;
 using SpaceShared.APIs;
 using StardewModdingAPI;

@@ -9,6 +9,34 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.3.1
+Released 22 Jul 2021.
+
+* Fixed minor bug with snappy menus when option count is equal to maximum displayable
+
+## 1.3.0
+Released 21 Jul 2021.
+
+* Added sort by soundtrack order
+* Added reverse current sort
+* Added settings to:
+    * show unheard tracks from various different categories
+        * optionally unlock unheard tracks permanently on a save file
+        * disable menu to use only permanent additions
+    * show or hide tracks from the list using a combination of presets/a blacklist/a whitelist
+    * show unheard songs as locked
+    * choose random songs from the displayed list instead of heard tracks
+    * use Bandcamp song names
+    * hide alternate sorts
+* Moved a large number of strings to i18n for potential translation support
+* Update redraw on window size change (again)
+
+## 1.2.1
+Released 05 Jul 2021.
+
+* Added support for [GenericModConfigMenu](https://www.nexusmods.com/stardewvalley/mods/5098)
+* Properly fixed selecting `random` for the first time on a save file
+
 ## 1.2
 Released 28 Dec 2020.
 

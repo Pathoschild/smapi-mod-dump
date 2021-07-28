@@ -22,6 +22,7 @@
 	<Compile Include="FurniturePatches.cs"/>
 	<Compile Include="GameLocationPatches.cs"/>
 	<Compile Include="WeaponProxy.cs"/>
+	<Compile Include="SlingshotProxy.cs"/>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build"/>

@@ -11,7 +11,7 @@
 {
 	"Name": "ChestEx",
 	"Author": "berkayylmao",
-	"Version": "2.0.1",
+	"Version": "2.0.2",
 	"Description": "Get more out of your chests and fridges! Set custom sizes, colours, names and more...",
 	"UniqueID": "berkayylmao.ChestEx",
 	"EntryDll": "ChestEx.dll",
@@ -24,6 +24,14 @@
 		},
 		{
 			"UniqueID": "Pathoschild.ChestsAnywhere",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "aEnigma.ConvenientChests",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "EternalSoap.RemoteFridgeStorage",
 			"IsRequired": false
 		}
 	]

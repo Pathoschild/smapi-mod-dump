@@ -28,7 +28,7 @@ for queries and analysis.**
 1. Install [Json Assets](https://www.moddrop.com/stardew-valley/mods/399895-json-assets) (optional, to unlock the Beast Mask with the achievement)
 1. Install [Generic Mod Config Menu](https://www.moddrop.com/stardew-valley/mods/771692-generic-mod-config-menu) (optional, for easier configuration)
 1. Download this mod from the link in the header above
-1. Unzip and put the `Cropbeasts` folder inside your `Mods` folder
+1. Unzip and put the `Cropbeasts` and `Cropbeasts.JA` folders inside your `Mods` folder
 1. Run the game using SMAPI
 
 ## ![Use](https://www.kdau.com/headers/use.png)

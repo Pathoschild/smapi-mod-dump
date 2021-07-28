@@ -8,7 +8,9 @@
 **
 *************************************************/
 
+using Harmony;
 using Microsoft.Xna.Framework;
+using PlatoTK;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -27,24 +29,27 @@ namespace FlowerBombs
 		internal static ModEntry Instance { get; private set; }
 		protected static ModConfig Config => ModConfig.Instance;
 
+		internal HarmonyInstance harmony { get; private set; }
+		internal IPlatoHelper platoHelper { get; private set; }
+
 		public static readonly List<int> Crystals = new () { 319, 320, 321 };
 
 		public override void Entry (IModHelper helper)
 		{
 			// Make resources available.
 			Instance = this;
+            harmony = HarmonyInstance.Create (ModManifest.UniqueID);
+			platoHelper = HelperExtension.GetPlatoHelper (this);
 			ModConfig.Load ();
 
 			// Add console commands.
-			Helper.ConsoleCommands.Add ("detonate_flower_bombs",
-				"Detonates all Flower Bombs currently placed in the world.",
-				cmdDetonateFlowerBombs);
+			Helper.ConsoleCommands.Add ("germinate_flower_bombs",
+				"Germinates all Flower Bombs currently placed in the world.\n\nUsage: germinate_flower_bombs [B:force]\n- force: whether to ignore any water requirement (default true)",
+				cmdGerminateFlowerBombs);
 
 			// Listen for game events.
 			Helper.Events.GameLoop.GameLaunched += onGameLaunched;
 			Helper.Events.GameLoop.DayStarted += onDayStarted;
-			Helper.Events.GameLoop.Saving += onSaving;
-			Helper.Events.GameLoop.Saved += onSaved;
 			Helper.Events.GameLoop.SaveLoaded += onSaveLoaded;
 			Helper.Events.GameLoop.UpdateTicked += onUpdateTicked;
 			Helper.Events.Input.ButtonPressed += onButtonPressed;
@@ -55,17 +60,29 @@ namespace FlowerBombs
 			Helper.Content.AssetEditors.Add (new MailEditor ());
 		}
 
-		private void cmdDetonateFlowerBombs (string _command, string[] _args)
+		private void cmdGerminateFlowerBombs (string _command, string[] args)
 		{
 			try
 			{
+				if (!Context.IsWorldReady)
+					throw new Exception ("Cannot germinate Flower Bombs without an active save.");
 				if (!Context.IsMainPlayer)
-					throw new Exception ("Cannot detonate Flower Bombs without an active save as host.");
-				FlowerBomb.DetonateAll ();
+					throw new Exception ("Cannot germinate all Flower Bombs as a farmhand.");
+
+				Queue<string> argq = new (args);
+				bool force = true;
+
+				if (argq.Count > 0 && bool.TryParse (argq.Peek (), out bool force_))
+				{
+					force = force_;
+					argq.Dequeue ();
+				}
+
+				FlowerBomb.GerminateAll (force: force);
 			}
 			catch (Exception e)
 			{
-				Monitor.Log ($"detonate_flower_bombs failed: {e.Message}", LogLevel.Error);
+				Monitor.Log ($"germinate_flower_bombs failed: {e.Message}", LogLevel.Error);
 			}
 		}
 
@@ -74,18 +91,17 @@ namespace FlowerBombs
 			// Set up Generic Mod Config Menu, if it is available.
 			ModConfig.SetUpMenu ();
 
-			// Register PyTK custom objects.
+			// Register custom objects.
 			FlowerBomb.Register ();
+			Wildflower.Register ();
+		}
 
-			// Hook into Save Anywhere for compatibility with it.
-			var SaveAnywhere = Helper.ModRegistry.GetApi
-				<Omegasis.SaveAnywhere.Framework.ISaveAnywhereAPI>
-				("Omegasis.SaveAnywhere");
-			if (SaveAnywhere != null)
+		private void onSaveLoaded (object _sender, EventArgs _e)
+		{
+			if (Context.IsMainPlayer)
 			{
-				SaveAnywhere.BeforeSave += onSaving;
-				SaveAnywhere.AfterSave += onSaved;
-				SaveAnywhere.AfterLoad += onSaveLoaded;
+				FlowerBomb.MigrateV1 ();
+				Wildflower.MigrateV1 ();
 			}
 		}
 
@@ -108,7 +124,7 @@ namespace FlowerBombs
 					// Deliver the letter if Leah befriended and not winter.
 					if (!Game1.player.hasOrWillReceiveMail (MailEditor.RecipeKey) &&
 							Game1.player.getFriendshipHeartLevelForNPC ("Leah") >= 2 &&
-							Game1.currentSeason != "winter")
+							Game1.Date.Season != "winter")
 						Game1.player.mailbox.Add (MailEditor.RecipeKey);
 				}
 			}
@@ -121,31 +137,16 @@ namespace FlowerBombs
 					if (location is MineShaft ||
 							Game1.GetSeasonForLocation (location) == "winter")
 						continue;
-					foreach (var kvp in location.objects.Pairs.ToArray ())
+					foreach (var pair in location.objects.Pairs.ToArray ())
 					{
-						if (Crystals.Contains (kvp.Value.ParentSheetIndex))
-							location.objects.Remove (kvp.Key);
+						if (Crystals.Contains (pair.Value.ParentSheetIndex))
+							location.objects.Remove (pair.Key);
 					}
 				}
 
-				// Detonate the Flower Bombs.
-				FlowerBomb.DetonateAll ();
+				// Germinate the Flower Bombs. Delay to allow for PlatoTK linking.
+				DelayedAction.functionAfterDelay (() => FlowerBomb.GerminateAll (), 1);
 			}
-		}
-
-		private void onSaving (object _sender, EventArgs _e)
-		{
-			Flower.RevertAll ();
-		}
-
-		private void onSaved (object _sender, EventArgs _e)
-		{
-			Flower.ConvertAll ();
-		}
-
-		private void onSaveLoaded (object _sender, EventArgs _e)
-		{
-			Flower.ConvertAll ();
 		}
 
 		private void onUpdateTicked (object _sender, UpdateTickedEventArgs e)

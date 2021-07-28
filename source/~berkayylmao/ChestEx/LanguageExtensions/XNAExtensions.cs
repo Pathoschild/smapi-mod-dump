@@ -10,7 +10,6 @@
 
 #region License
 
-// clang-format off
 // 
 //    ChestEx (StardewValleyMods)
 //    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
@@ -21,18 +20,17 @@
 //    (at your option) any later version.
 // 
 //    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    but WITHOUT ANY WARRANTY, without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //    GNU Affero General Public License for more details.
 // 
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program. If not, see <https://www.gnu.org/licenses/>.
-// 
-// clang-format on
 
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 using Microsoft.Xna.Framework;
@@ -40,6 +38,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ChestEx.LanguageExtensions {
   public static class XNAExtensions {
+    public static Boolean NearlyEquals(this Vector2 lhs, Vector2 rhs) { return lhs.X.NearlyEquals(rhs.X) && lhs.Y.NearlyEquals(rhs.Y); }
+
+    public static Boolean Contains(this Rectangle rect, Vector2 vector2) { return rect.Contains(vector2.AsXNAPoint()); }
+
+    public static Rectangle Scale(this Rectangle rect, Single scale) {
+      Int32 width_diff  = (Int32)(rect.Width * (scale - 1.0f));
+      Int32 height_diff = (Int32)(rect.Height * (scale - 1.0f));
+      return new Rectangle(rect.X - width_diff / 2, rect.Y - height_diff / 2, rect.Width + width_diff, rect.Height + height_diff);
+    }
+
     /// <summary>
     /// Constructs and returns a <see cref="Point"/> from the given <see cref="Vector2"/>.
     /// </summary>
@@ -58,6 +66,14 @@ namespace ChestEx.LanguageExtensions {
 
     public static Vector2 ExtractXYAsXNAVector2(this Rectangle rectangle) { return new(Convert.ToSingle(rectangle.X), Convert.ToSingle(rectangle.Y)); }
 
+    private static readonly Dictionary<SpriteFont, Point> sFontSizeCache = new();
+    public static Point GetSize(this SpriteFont font) {
+      if (sFontSizeCache.TryGetValue(font, out Point val)) return val;
+
+      sFontSizeCache[font] = font.MeasureString("T").AsXNAPoint();
+      return sFontSizeCache[font];
+    }
+
     public static System.Drawing.Color AsDotNetColor(this Color colour) { return System.Drawing.Color.FromArgb(colour.A, colour.R, colour.G, colour.B); }
 
     public static String AsHexCode(this Color colour) { return $"{colour.R:X2}{colour.G:X2}{colour.B:X2}"; }
@@ -70,10 +86,17 @@ namespace ChestEx.LanguageExtensions {
     }
 
     // https://stackoverflow.com/a/1855903
-    public static Color ContrastColour(this Color colour) { return (0.299 * colour.R + 0.587 * colour.G + 0.114 * colour.B) / 255 > 0.5 ? Color.Black : Color.White; }
+    public static Color ContrastColour(this Color colour) { return (0.375 * colour.R + 0.587 * colour.G + 0.114 * colour.B) / 255 > 0.5 ? Color.Black : Color.White; }
 
-    public static Color MultKeepAlpha(this Color colour, Single multiplier) {
-      return Color.FromNonPremultiplied((Int32)(colour.R * multiplier), (Int32)(colour.G * multiplier), (Int32)(colour.B * multiplier), colour.A);
+    public static Color MultRGB(this Color colour, Single multiplier) {
+      return Color.FromNonPremultiplied(Math.Min(255, Math.Max(0, (Int32)(colour.R * multiplier))),
+                                        Math.Min(255, Math.Max(0, (Int32)(colour.G * multiplier))),
+                                        Math.Min(255, Math.Max(0, (Int32)(colour.B * multiplier))),
+                                        colour.A);
+    }
+
+    public static Color MultAlpha(this Color colour, Single multiplier) {
+      return Color.FromNonPremultiplied(colour.R, colour.G, colour.B, Math.Min(255, Math.Max(0, (Int32)(colour.A * multiplier))));
     }
 
     public static Texture2D ToGrayScale(this Texture2D texture, GraphicsDevice device) {
@@ -98,81 +121,60 @@ namespace ChestEx.LanguageExtensions {
       return new_texture;
     }
 
-    public static void DrawStringEx(this SpriteBatch spriteBatch,               SpriteFont font,                       String text, Point position,
-                                    Color            textColour,                Single     textAlpha        = 1.0f,    Single layerDepth      = -1.0f, Boolean drawShadow = false,
-                                    Single           shadowDistance     = 1.0f, Color      textShadowColour = default, Single textShadowAlpha = 1.0f, Boolean drawUnderline = false,
-                                    Single           textUnderlineAlpha = 0.5f) {
-      Vector2 pos                                    = position.AsXNAVector2();
-      if (layerDepth.NearlyEquals(-1.0f)) layerDepth = pos.Y / 10000f;
-
-      if (drawUnderline) {
-        Color underline_colour = Color.FromNonPremultiplied(textColour.R, textColour.G, textColour.B, Convert.ToInt32(textColour.A * textUnderlineAlpha));
-
-        Vector2 size            = font.MeasureString(text);
-        Vector2 underscore_size = font.MeasureString("_");
-        Single  x               = 0.0f;
-
-        while (x < size.X) {
-          spriteBatch.DrawString(font,
-                                 "_",
-                                 pos + new Vector2(x, 0.0f),
-                                 underline_colour,
-                                 0f,
-                                 Vector2.Zero,
-                                 1.0f,
-                                 SpriteEffects.None,
-                                 layerDepth - 0.0005f);
-          x += underscore_size.X - 4f;
-        }
-      }
+    public static void DrawStringEx(this SpriteBatch spriteBatch,           SpriteFont font,                       String text,                    Vector2 position,
+                                    Color            textColour,            Single     textAlpha        = 1.0f,    Single layerDepth      = -1.0f, Boolean drawShadow = false,
+                                    Single           shadowDistance = 2.0f, Color      textShadowColour = default, Single textShadowAlpha = 0.45f, Single  scale      = 1.0f) {
+      if (layerDepth.Equals(-1.0f)) layerDepth = position.Y / 20000.0f;
+      Vector2 origin                           = font.MeasureString(text) * 0.5f;
+      position += origin;
 
       if (drawShadow) {
-        if (textShadowColour == default) textShadowColour = Color.Multiply(textColour, 0.5f);
-        Color shadow_colour = Color.FromNonPremultiplied(textShadowColour.R, textShadowColour.G, textShadowColour.B, Convert.ToInt32(textShadowColour.A * textShadowAlpha));
+        if (textShadowColour == default) textShadowColour = textColour.MultRGB(0.5f);
+        Color shadow_colour                               = textShadowColour.MultAlpha(textShadowAlpha);
+
         spriteBatch.DrawString(font,
                                text,
-                               pos + new Vector2(shadowDistance),
+                               position + new Vector2(-shadowDistance, shadowDistance),
                                shadow_colour,
-                               0f,
-                               Vector2.Zero,
-                               1.0f,
+                               0.0f,
+                               origin,
+                               scale,
                                SpriteEffects.None,
                                layerDepth - 0.0001f);
         spriteBatch.DrawString(font,
                                text,
-                               pos + new Vector2(0.0f, shadowDistance),
+                               position + new Vector2(0.0f, shadowDistance),
                                shadow_colour,
-                               0f,
-                               Vector2.Zero,
-                               1.0f,
+                               0.0f,
+                               origin,
+                               scale,
                                SpriteEffects.None,
                                layerDepth - 0.0002f);
         spriteBatch.DrawString(font,
                                text,
-                               pos + new Vector2(shadowDistance, 0.0f),
+                               position + new Vector2(-shadowDistance, 0.0f),
                                shadow_colour,
-                               0f,
-                               Vector2.Zero,
-                               1.0f,
+                               0.0f,
+                               origin,
+                               scale,
                                SpriteEffects.None,
                                layerDepth - 0.0003f);
       }
 
       spriteBatch.DrawString(font,
                              text,
-                             pos,
-                             Color.FromNonPremultiplied(textColour.R, textColour.G, textColour.B, Convert.ToInt32(textColour.A * textAlpha)),
-                             0f,
-                             Vector2.Zero,
-                             1.0f,
+                             position,
+                             textColour.MultAlpha(textAlpha),
+                             0.0f,
+                             origin,
+                             scale,
                              SpriteEffects.None,
                              layerDepth);
     }
 
-    public static void DrawStringEx(this SpriteBatch spriteBatch,               SpriteFont font,                       StringBuilder text, Point position,
-                                    Color            textColour,                Single     textAlpha        = 1.0f,    Single layerDepth = -1.0f, Boolean drawShadow = false,
-                                    Single           shadowDistance     = 1.0f, Color      textShadowColour = default, Single textShadowAlpha = 1.0f, Boolean drawUnderline = false,
-                                    Single           textUnderlineAlpha = 0.5f) {
+    public static void DrawStringEx(this SpriteBatch spriteBatch,           SpriteFont font,                       StringBuilder text, Vector2 position,
+                                    Color            textColour,            Single     textAlpha        = 1.0f,    Single        layerDepth = -1.0f, Boolean drawShadow = false,
+                                    Single           shadowDistance = 2.0f, Color      textShadowColour = default, Single        textShadowAlpha = 0.45f, Single scale = 1.0f) {
       DrawStringEx(spriteBatch,
                    font,
                    text.ToString(),
@@ -184,8 +186,7 @@ namespace ChestEx.LanguageExtensions {
                    shadowDistance,
                    textShadowColour,
                    textShadowAlpha,
-                   drawUnderline,
-                   textUnderlineAlpha);
+                   scale);
     }
   }
 }

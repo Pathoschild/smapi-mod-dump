@@ -5,5 +5,6 @@
   "trashOutside": true,
   "trashFarm": true,
   "disableTrashLvl10": true,
-  "DrawItemShadows": true
+  "DrawItemShadows": true,
+  "showTreasure": true
 }

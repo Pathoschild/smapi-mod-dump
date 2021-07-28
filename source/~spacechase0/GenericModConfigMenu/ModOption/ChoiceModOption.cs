@@ -10,7 +10,7 @@
 
 using System;
 using System.Linq;
-using StardewModdingAPI;
+using GenericModConfigMenu.Framework;
 
 namespace GenericModConfigMenu.ModOption
 {
@@ -24,7 +24,7 @@ namespace GenericModConfigMenu.ModOption
             set { if (this.Choices.Contains(value)) base.Value = value; }
         }
 
-        public ChoiceModOption(string name, string desc, Type type, Func<T> theGetter, Action<T> theSetter, T[] choices, string id, IManifest mod)
+        public ChoiceModOption(string name, string desc, Type type, Func<T> theGetter, Action<T> theSetter, T[] choices, string id, ModConfig mod)
             : base(name, desc, type, theGetter, theSetter, id, mod)
         {
             this.Choices = choices;

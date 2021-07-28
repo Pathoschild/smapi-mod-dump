@@ -12,7 +12,7 @@
     "Name": "blueberry.cac.fritters",
     "Description": "...",
     "Category": "Cooking",
-    "Edibility": 23,
+    "Edibility": 26,
     "EdibleIsDrink": false,
     "EdibleBuffs": null,
     "Price": 40,
@@ -26,7 +26,7 @@
         "Ingredients": [
             {
                 "Object": 190,
-                "Count": 2
+                "Count": 1
             },
             {
                 "Object": 399,

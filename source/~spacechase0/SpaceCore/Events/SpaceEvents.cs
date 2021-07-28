@@ -14,6 +14,7 @@ using SpaceShared;
 using StardewValley;
 using StardewValley.Events;
 using StardewValley.Network;
+using SObject = StardewValley.Object;
 
 namespace SpaceCore.Events
 {
@@ -123,7 +124,7 @@ namespace SpaceCore.Events
             Util.InvokeEvent("SpaceEvents.ServerGotClient", SpaceEvents.ServerGotClient.GetInvocationList(), server, args);
         }
 
-        internal static bool InvokeBeforeReceiveObject(NPC npc, StardewValley.Object obj, Farmer farmer)
+        internal static bool InvokeBeforeReceiveObject(NPC npc, SObject obj, Farmer farmer)
         {
             Log.Trace("Event: BeforeReceiveObject");
             if (SpaceEvents.BeforeGiftGiven == null)
@@ -132,7 +133,7 @@ namespace SpaceCore.Events
             return Util.InvokeEventCancelable("SpaceEvents.BeforeReceiveObject", SpaceEvents.BeforeGiftGiven.GetInvocationList(), farmer, arg);
         }
 
-        internal static void InvokeAfterGiftGiven(NPC npc, StardewValley.Object obj, Farmer farmer)
+        internal static void InvokeAfterGiftGiven(NPC npc, SObject obj, Farmer farmer)
         {
             Log.Trace("Event: AfterGiftGiven");
             if (SpaceEvents.AfterGiftGiven == null)

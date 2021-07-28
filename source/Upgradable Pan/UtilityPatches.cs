@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using StardewValley;
 using StardewValley.Tools;
-using StardewValley.Objects;
 
 namespace UpgradablePan
 {

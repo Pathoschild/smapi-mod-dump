@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using ItemResearchSpawner.Models.Enums;
 using StardewValley;
 using Object = StardewValley.Object;
 

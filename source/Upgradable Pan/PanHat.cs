@@ -33,9 +33,10 @@ namespace UpgradablePan
 			}
 		}
 
-		public PanHat(Pan pan) : base(71)
+		public PanHat(Pan pan) : base(13)
 		{
 			UpgradeLevel = pan.UpgradeLevel;
+			hairDrawType.Set((int)HairDrawType.DrawObscuredHair);
 		}
 
 		public override string getDescription()

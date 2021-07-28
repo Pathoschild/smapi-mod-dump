@@ -1,14 +1,14 @@
 ﻿{
 	"Name": "Prismatic Pride",
 	"Author": "kdau",
-	"Version": "1.0.1",
+	"Version": "1.1.0",
 	"Description": "Get more prismatic clothing items and color them with your choice of pride flag",
 	"UniqueID": "kdau.PrismaticPride",
 	"EntryDll": "PrismaticPride.dll",
 	"MinimumApiVersion": "3.8.0",
 	"Dependencies":
 	[
-		//{ "UniqueID": "spacechase0.JsonAssets" }, // disabled locally
+		{ "UniqueID": "spacechase0.JsonAssets" },
 		{ "UniqueID": "spacechase0.GenericModConfigMenu", "IsRequired": false }
 	],
 	"UpdateKeys":

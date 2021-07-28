@@ -1,4 +1,3 @@
 {
-  "KeyBind": "PageUp",
-  "AllowOvercrowding": false
+  "ToggleKey": "PageUp"
 }

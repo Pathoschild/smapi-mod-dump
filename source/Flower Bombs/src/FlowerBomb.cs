@@ -8,123 +8,151 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
+using Harmony;
 using Microsoft.Xna.Framework.Graphics;
-using PyTK.CustomElementHandler;
+using PlatoTK;
+using PlatoTK.Content;
+using PlatoTK.Objects;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Objects;
-using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using SObject = StardewValley.Object;
 
 namespace FlowerBombs
 {
-	public partial class FlowerBomb : PySObject
+	public partial class FlowerBomb : PlatoSObject<SObject>
 	{
-		internal protected static IModHelper Helper => ModEntry.Instance.Helper;
+		internal new protected static IModHelper Helper => ModEntry.Instance.Helper;
 		internal protected static IMonitor Monitor => ModEntry.Instance.Monitor;
 		internal protected static ModConfig Config => ModConfig.Instance;
+		internal protected static HarmonyInstance Harmony => ModEntry.Instance.harmony;
+		internal protected static IPlatoHelper PlatoHelper => ModEntry.Instance.platoHelper;
+		internal protected static Multiplayer MP => Helper.Reflection.GetField<Multiplayer>
+			(typeof (Game1), "multiplayer").GetValue ();
 
-		private static CustomObjectData EmptyData;
-		public static int EmptyID => EmptyData?.sdvId ?? -1;
+		private static ISaveIndex EmptySaveIndex;
+		private static ISaveIndex FullSaveIndex;
+		public static int TileIndex => EmptySaveIndex?.Index ?? -1;
 
-		private static CustomObjectData FullData;
-		public static int FullID => FullData?.sdvId ?? -1;
+		private static Texture2D EmptyTexture;
+		private static Texture2D FullTexture;
 
 		internal static void Register ()
 		{
-			if (EmptyData != null)
-				return;
-
-			CraftingData recipe = new ("Flower Bomb",
-				"330 4 574 1", delivery: "none"); // 4 Clay, 1 Mudstone
-
-			string displayName = Helper.Translation.Get ("FlowerBomb.name");
-			string description = Helper.Translation.Get ("FlowerBomb.description");
-
-			Texture2D emptyTexture = Helper.Content.Load<Texture2D> (
+			// Load the textures for an empty (seedless) and full (seeded) bomb.
+			EmptyTexture = Helper.Content.Load<Texture2D> (
 				Path.Combine ("assets", "FlowerBomb-empty.png"));
-			EmptyData = new CustomObjectData ("kdau.FlowerBombs.FlowerBomb",
-				$"Flower Bomb/50/-300/Crafting -8/{displayName}/{description}",
-				emptyTexture, Color.White, type: typeof (FlowerBomb),
-				craftingData: recipe);
-
-			Texture2D fullTexture = Helper.Content.Load<Texture2D> (
+			FullTexture = Helper.Content.Load<Texture2D> (
 				Path.Combine ("assets", "FlowerBomb-full.png"));
-			FullData = new CustomObjectData ("kdau.FlowerBombs.FlowerBombFull",
-				$"Flower Bomb (full)/50/-300/Crafting -8/{displayName}/{description}",
-				fullTexture, Color.White, type: typeof (FlowerBomb));
+
+			// Request the regular object ID for the Flower Bomb.
+			EmptySaveIndex = PlatoHelper.Content.GetSaveIndex ("kdau.FlowerBombs.FlowerBomb",
+				() => Game1.objectInformation,
+				(handle) => handle.Value.StartsWith ("Flower Bomb/"),
+				(handle) =>
+				{
+					// Inject the object information.
+					string displayName = Helper.Translation.Get ("FlowerBomb.name");
+					string description = Helper.Translation.Get ("FlowerBomb.description");
+					PlatoHelper.Content.Injections.InjectDataInsert ("Data/ObjectInformation",
+						handle.Index, $"Flower Bomb/50/-300/Crafting -8/{displayName}/{description}");
+					Helper.Content.InvalidateCache ("Data/ObjectInformation");
+
+					// Inject the crafting recipe: 4 Clay and 1 Mudstone.
+					PlatoHelper.Content.Injections.InjectDataInsert ("Data/CraftingRecipes",
+						"Flower Bomb", $"330 4 574 1/Field/{handle.Index}/false/none/{displayName}");
+					Helper.Content.InvalidateCache ("Data/CraftingRecipes");
+
+					// Draw the empty texture by default.
+					PlatoHelper.Harmony.PatchTileDraw ("kdau.FlowerBombs.FlowerBomb",
+						Game1.objectSpriteSheet,
+						(t) => t.Equals (Game1.objectSpriteSheet) ||
+							(t.Name != null && Regex.IsMatch (t.Name, @"^Maps.springobjects$")),
+						EmptyTexture, null,
+						handle.Index);
+				});
+
+			// Request an additional object ID for the full (with-seed) state.
+			FullSaveIndex = PlatoHelper.Content.GetSaveIndex ("kdau.FlowerBombs.FlowerBomb.full",
+				() => Game1.objectInformation,
+				(_handle) => true,
+				(handle) =>
+				{
+					// Draw the full texture when requested.
+					PlatoHelper.Harmony.PatchTileDraw ("kdau.FlowerBombs.FlowerBomb.full",
+						Game1.objectSpriteSheet,
+						(t) => t.Equals (Game1.objectSpriteSheet) ||
+							(t.Name != null && Regex.IsMatch (t.Name, @"^Maps.springobjects$")),
+						FullTexture, null,
+						handle.Index);
+				});
+
+			// Make the magic happen.
+			PlatoHelper.Harmony.LinkContruction<SObject, FlowerBomb> ();
+			PlatoHelper.Harmony.LinkTypes (typeof (SObject), typeof (FlowerBomb));
+
+			// Draw the seed attachment. Patching this through PlatoTK crashes
+			// the game, so patch it manually with a postfix instead.
+			Harmony.Patch (
+				original: AccessTools.Method (typeof (Item),
+					nameof (Item.drawAttachments)),
+				postfix: new HarmonyMethod (typeof (FlowerBomb),
+					nameof (FlowerBomb.DrawAttachments_Postfix))
+			);
+
+			// Hook onto the sprinkler code to ensure germination. This runs on
+			// the sprinkler object, not the target object.
+			Harmony.Patch (
+				original: AccessTools.Method (typeof (SObject),
+					nameof (SObject.ApplySprinkler)),
+				postfix: new HarmonyMethod (typeof (FlowerBomb),
+					nameof (FlowerBomb.ApplySprinkler_Postfix))
+			);
 		}
 
-		public FlowerBomb ()
+		public override bool CanLinkWith (object linkedObject)
 		{
-			setUpDataTracking ();
+			return base.CanLinkWith (linkedObject) ||
+				(linkedObject is Item item &&
+					Utility.IsNormalObjectAtParentSheetIndex (item, TileIndex));
 		}
 
-		public FlowerBomb (CustomObjectData data)
-		: base (data)
+		private static bool TryGetLinked (object linkedObject, out FlowerBomb linked)
 		{
-			setUpDataTracking ();
+			if (!PlatoHelper.Harmony.TryGetLink (linkedObject, out object trace) ||
+				Helper.Reflection.GetField<object> (trace, "Target").GetValue () is not FlowerBomb bomb)
+			{
+				linked = null;
+				return false;
+			}
+			linked = bomb;
+			return true;
+		}
+
+		public override void OnConstruction (IPlatoHelper helper, object linkedObject)
+		{
+			base.OnConstruction (helper, linkedObject);
+			EmptySaveIndex.ValidateIndex ();
+			if (Base != null && Base.ParentSheetIndex != TileIndex)
+				Base.ParentSheetIndex = TileIndex;
 		}
 
 		public override Item getOne ()
 		{
-			FlowerBomb one = new (data)
-			{
-				TileLocation = Vector2.Zero,
-				name = name,
-				Price = price,
-				Quality = quality
-			};
-			if (heldObject.Value != null)
-				one.heldObject.Value = (SObject) heldObject.Value.getOne ();
-			return one;
+			return GetNew (seed);
 		}
 
-		public override object getReplacement ()
+		public static SObject GetNew (SObject seed = null, int stack = 1)
 		{
-			Chest chest = (Chest) base.getReplacement ();
-			if (heldObject.Value != null)
-				chest.addItem (heldObject.Value);
-			return chest;
-		}
-
-		public override Dictionary<string, string> getAdditionalSaveData ()
-		{
-			Dictionary<string, string> additionalSaveData =
-				base.getAdditionalSaveData ();
-			if (heldObject.Value != null)
-			{
-				additionalSaveData["seed"] =
-					heldObject.Value.ParentSheetIndex.ToString ();
-			}
-			return additionalSaveData;
-		}
-
-		public override void rebuild (Dictionary<string, string> additionalSaveData,
-			object replacement)
-		{
-			base.rebuild (additionalSaveData, replacement);
-			if (additionalSaveData.ContainsKey ("seed"))
-			{
-				heldObject.Value = new SObject (Int32
-					.Parse (additionalSaveData["seed"]), 1);
-			}
-		}
-
-		public override ICustomObject recreate (Dictionary<string, string> additionalSaveData,
-			object replacement)
-		{
-			FlowerBomb self = new (CustomObjectData
-				.collection[additionalSaveData["id"]]);
-			if (additionalSaveData.ContainsKey ("seed"))
-			{
-				self.heldObject.Value = new SObject (Int32
-					.Parse (additionalSaveData["seed"]), 1);
-			}
-			return self;
+			EmptySaveIndex.ValidateIndex ();
+			if (seed != null)
+				stack = 1;
+			var newObject = new SObject (TileIndex, stack);
+			PlatoObject<SObject>.SetIdentifier (newObject, typeof (FlowerBomb));
+			if (seed != null)
+				newObject.heldObject.Value = seed.getOne () as SObject;
+			return newObject;
 		}
 	}
 }

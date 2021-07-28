@@ -84,18 +84,27 @@ namespace FarmAnimalVarietyRedux.Patches
         /// <remarks>This is used to retain the stack size of the object if it was produced by an animal and to ensure the Botanist profession doesn't increase the quality of foraged or laid produce that should be standard quality.</remarks>
         internal static void GetOnePostFix(Object __instance, ref Item __result)
         {
+            // ensure the object is allowed to be duplicated
+            if (__instance.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/hasSpawnedBefore")
+                && __instance.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/doNotAllowDuplicates"))
+            {
+                __result = null;
+                return;
+            }
+            __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/hasSpawnedBefore"] = "";
+
             // ensure the stack size is correct
-            if (__instance.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"))
+            if (__result.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/producedItem"))
             {
                 __result.Stack = __instance.Stack;
-                __instance.modData.Remove($"{ModEntry.Instance.ModManifest.UniqueID}/producedItem");
+                __result.modData.Remove($"{ModEntry.Instance.ModManifest.UniqueID}/producedItem");
             }
 
             // ensure the quality is correct
-            if (__instance.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/producedShouldBeStandardQuality"))
+            if (__result.modData.ContainsKey($"{ModEntry.Instance.ModManifest.UniqueID}/producedShouldBeStandardQuality"))
             {
                 (__result as Object).Quality = 0;
-                __instance.modData.Remove($"{ModEntry.Instance.ModManifest.UniqueID}/producedShouldBeStandardQuality");
+                __result.modData.Remove($"{ModEntry.Instance.ModManifest.UniqueID}/producedShouldBeStandardQuality");
             }
         }
 
@@ -127,7 +136,7 @@ namespace FarmAnimalVarietyRedux.Patches
             // ensure the object attempted to be dropped into is an incubator
             if (__instance.Name != "Incubator" && __instance.Name != "Ostrich Incubator")
                 return;
-            
+
             // ensure incubator is empty and player is holding an item
             if (__instance.heldObject.Value != null || dropInItem == null)
                 return;

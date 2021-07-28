@@ -21,7 +21,7 @@ namespace LoveOfCooking
 	public static class Tools
 	{
 		private static IModHelper Helper => ModEntry.Instance.Helper;
-		private static Config Config => ModEntry.Instance.Config;
+		private static Config Config => ModEntry.Config;
 		private static IReflectionHelper Reflection => ModEntry.Instance.Helper.Reflection;
 		private static ITranslationHelper i18n => ModEntry.Instance.Helper.Translation;
 

@@ -10,7 +10,7 @@
 
 using System;
 using System.Linq;
-using ItemResearchSpawner.Models;
+using ItemResearchSpawner.Models.Enums;
 using ItemResearchSpawner.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +18,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace ItemResearchSpawner.Components
+namespace ItemResearchSpawner.Components.UI
 {
     /**
         MIT License
@@ -52,7 +52,7 @@ namespace ItemResearchSpawner.Components
 
         public ItemSortTab(IContentHelper content, IMonitor monitor, int x, int y)
         {
-            _sortTexture = content.Load<Texture2D>("assets/sort-icon.png");
+            _sortTexture = content.Load<Texture2D>("assets/images/sort-icon.png");
             
             _sortButton =
                 new ClickableComponent(

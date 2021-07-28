@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "menu.title": "Szakmaválasztás",
+    "menu.extra": "Minden képességedet kihasználtad... Válassz szakmát.",
+    "profession.time.name": "Idő múlás",
+    "profession.time.description": "A nap 20%-kal hosszabb.",
+    "profession.profit.name": "Márkanév",
+    "profession.profit.description": "Minden 5%-kal többet ér."
+}

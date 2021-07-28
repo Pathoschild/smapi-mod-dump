@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Barn Incubator Support",
+   "Author": "elbe",
+   "Version": "1.0.1",
+   "Description": "Allows the ostrich incubator in the barn to hatch mod added animals",
+   "UniqueID": "elbe.BarnIncubatorSupport",
+   "EntryDll": "BarnIncubatorSupport.dll",
+   "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:9049" ]
+}

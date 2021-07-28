@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/6589
 IDs: Platonymous.PlatoTK
-update keys: Nexus:6589, GitHub:Platonymous/Stardew-Valley-Mods
+update keys: Nexus:6589, GitHub:Platonymous/PlatoTK

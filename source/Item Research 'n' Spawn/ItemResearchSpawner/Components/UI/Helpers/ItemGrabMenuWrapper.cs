@@ -16,7 +16,7 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-namespace ItemResearchSpawner.Components
+namespace ItemResearchSpawner.Components.UI.Helpers
 {
     public class ItemGrabMenuWrapper : ItemGrabMenu
     {

@@ -6,9 +6,9 @@ mods:
    Quality Smash
 
 latest commit:
-   commit 45c6201100bf926c9a69baf5df91142edc4a0b61
+   commit dcea5ce72aaa926196b92cc11fe452a93a143312
    Author: BuildTools <unconfigured@null.spigotmc.org>
-   Date:   Sun Apr 18 14:27:50 2021 -0400
+   Date:   Mon Jul 26 15:55:25 2021 -0400
    
-       Fix description typo in ModConfig
+       sync
    

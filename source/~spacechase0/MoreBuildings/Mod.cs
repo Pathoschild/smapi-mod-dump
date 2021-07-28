@@ -19,7 +19,7 @@ using MoreBuildings.Buildings.MiniSpa;
 using MoreBuildings.Buildings.SpookyShed;
 using MoreBuildings.Patches;
 using PyTK.CustomElementHandler;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;

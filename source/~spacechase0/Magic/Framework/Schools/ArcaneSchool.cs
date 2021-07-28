@@ -14,6 +14,9 @@ namespace Magic.Framework.Schools
 {
     internal class ArcaneSchool : School
     {
+        /*********
+        ** Public methods
+        *********/
         public ArcaneSchool()
             : base(SchoolId.Arcane) { }
 

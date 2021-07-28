@@ -13,15 +13,27 @@
 	"tasks": [
 		{
 			"label": "mybuild",
-			"command": "C:/progra~2/micros~3/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe",
+			"command": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\MSBuild\\Current\\Bin\\MSBuild.exe",
 			"type": "shell",
 			"args": [
 				"ImprovedTracker.csproj",
 				"/t:Build",
 				"/p:Configuration=Debug",
-				"/p:Platform=\"AnyCPU\""
+				"/p:Platform=AnyCPU"
 			],
-			"problemMatcher": [],
+			"problemMatcher": {
+				"fileLocation": "absolute",
+				"applyTo": "allDocuments",
+				"pattern":[
+					{
+						"regexp": "^\\s*([^\\s].*)\\((\\d+,\\d+)\\):\\s*([^\\s]*)\\s(.*)$",
+						"file": 1,
+						"location": 2,
+						"severity": 3,
+						"message": 4
+					}
+				]
+			},
 			"group": {
 				"kind": "build",
 				"isDefault": true

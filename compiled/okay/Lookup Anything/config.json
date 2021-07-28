@@ -4,6 +4,8 @@
     "ToggleSearch": "LeftShift + F1",
     "ScrollUp": "Up",
     "ScrollDown": "Down",
+    "PageUp": "PageUp",
+    "PageDown": "PageDown",
     "ToggleDebug": "None"
   },
   "ProgressionMode": false,

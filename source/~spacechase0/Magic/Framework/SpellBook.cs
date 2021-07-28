@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Magic.Framework.Spells;
 using Microsoft.Xna.Framework;
 using SpaceShared;
@@ -81,8 +82,11 @@ namespace Magic.Framework
         {
             var data = this.GetUpdatedData();
 
-            data.SelectedPrepared = (data.SelectedPrepared + 1) % data.Prepared.Count;
-            data.Save();
+            if (data.Prepared.Any())
+            {
+                data.SelectedPrepared = (data.SelectedPrepared + 1) % data.Prepared.Count;
+                data.Save();
+            }
         }
 
         /// <summary>Forget a known spell.</summary>
@@ -169,6 +173,7 @@ namespace Magic.Framework
             {
                 if (!free)
                     data.FreePoints = Math.Max(0, data.FreePoints - diff);
+                data.KnownSpells[spellId].Level = level;
 
                 Log.Debug($"Learned spell {spellId}, level {level + 1}");
             }

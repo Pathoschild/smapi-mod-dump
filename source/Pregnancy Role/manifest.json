@@ -11,7 +11,7 @@
 {
 	"Name": "Pregnancy Role",
 	"Author": "kdau",
-	"Version": "2.0.0",
+	"Version": "2.1.0",
 	"Description": "Set pregnancy role for farmers and NPCs separate from gender",
 	"UniqueID": "kdau.PregnancyRole",
 	"EntryDll": "PregnancyRole.dll",

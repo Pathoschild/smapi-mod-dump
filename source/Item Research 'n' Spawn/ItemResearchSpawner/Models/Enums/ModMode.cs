@@ -8,9 +8,7 @@
 **
 *************************************************/
 
-using System;
-
-namespace ItemResearchSpawner.Models
+namespace ItemResearchSpawner.Models.Enums
 {
     public enum ModMode
     {

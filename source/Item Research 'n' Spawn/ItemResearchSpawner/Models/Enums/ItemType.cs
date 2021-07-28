@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace ItemResearchSpawner.Models
+namespace ItemResearchSpawner.Models.Enums
 {
     public enum ItemType
     {

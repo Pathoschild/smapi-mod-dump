@@ -23,8 +23,6 @@ namespace PrismaticPride
 		internal protected static IMonitor Monitor => ModEntry.Instance.Monitor;
 		internal protected static ModConfig Config => ModConfig.Instance;
 
-		public static readonly int ColorDuration = 1500;
-
 		public Dictionary<string, ColorSet> sets { get; set; }
 
 		public ColorSet initialSet;
@@ -74,18 +72,10 @@ namespace PrismaticPride
 			}
 		}
 
-		public Color getCurrentColor (float asTintOn,
-			int offset = 0, float speedMultiplier = 1)
-		{
-			return getCurrentColor (offset, speedMultiplier,
-				new Color (asTintOn, asTintOn, asTintOn));
-		}
-
-		public Color getCurrentColor (int offset = 0, float speedMultiplier = 1,
-			Color? asTintOn = null)
+		public Color getCurrentColor (int offset = 0, float speedMultiplier = 1)
 		{
 			double phases = Game1.currentGameTime.TotalGameTime.TotalMilliseconds
-				* speedMultiplier / ColorDuration;
+				* speedMultiplier / (Config.ColorDuration * 1000.0);
 			float phase = (float) (phases % 1.0);
 			if (phase < 0.25f)
 				phase = 0f;
@@ -94,7 +84,22 @@ namespace PrismaticPride
 			else
 				phase = 0.5f + 2f * (phase - 0.5f);
 			int index = ((int) phases + offset) % currentSet.count;
-			return currentSet.getColor (index, phase, asTintOn);
+			return currentSet.getColor (index, phase);
+		}
+
+		public static Color Tint (Color baseColor, float tint)
+		{
+			return Tint (baseColor, new Color (tint, tint, tint));
+		}
+
+		public static Color Tint (Color baseColor, Color tint)
+		{
+			return new Color (
+				baseColor.R * tint.R / 255,
+				baseColor.G * tint.G / 255,
+				baseColor.B * tint.B / 255,
+				baseColor.A
+			);
 		}
 	}
 }

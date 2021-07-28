@@ -35,12 +35,22 @@ namespace CustomCompanions.Framework.Models.Companion
         public float MaxDistanceBeforeTeleport { get; set; } = 512f;
         public float DirectionChangeChanceWhileMoving { get; set; } = 0.007f;
         public float DirectionChangeChanceWhileIdle { get; set; } = 0.1f;
+        public bool CanHalt { get; set; } = true;
         public float ChanceForHalting { get; set; } = 1.0f;
         public int MinHaltTime { get; set; } = 2000;
         public int MaxHaltTime { get; set; } = 10000;
+        public PortraitModel Portrait { get; set; }
         public string InspectionDialogue { get; set; }
+        public int OverheadTextCheckInterval { get; set; } = 5000;
+        public float OverheadTextChance { get; set; } = 0.5f;
+        public List<OverheadTextModel> OverheadTexts { get; set; } = new List<OverheadTextModel>();
+        public int[] DespawnOnTile { get; set; }
+        public int DespawnOnTimer { get; set; } = -1;
+        public bool Respawn { get; set; }
         public string IdleBehavior { get; set; } = "NOTHING";
         public float[] IdleArguments { get; set; }
+        public int MinTilesForNearby { get; set; } = 1;
+        public CompanionModel UpdateWhenPlayerNearby { get; set; }
         public List<int[]> Colors { get; set; } = new List<int[]>();
         public bool IsPrismatic { get; set; } = false;
         public LightModel Light { get; set; }
@@ -49,6 +59,10 @@ namespace CustomCompanions.Framework.Models.Companion
         public bool AppearUnderwater { get; set; }
         public int FrameSizeWidth { get; set; }
         public int FrameSizeHeight { get; set; }
+        public int CollisionPositionX { get; set; }
+        public int CollisionPositionY { get; set; }
+        public int CollisionPositionWidth { get; set; }
+        public int CollisionPositionHeight { get; set; }
         public string TileSheetPath { get; set; }
         public AnimationModel UniformAnimation { get; set; }
         public AnimationModel UpAnimation { get; set; }

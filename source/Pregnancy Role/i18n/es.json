@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/kdau/pregnancyrole
+**
+*************************************************/
+
+{
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
+	// - In line with the purpose of this mod, please avoid gender-specific words and inflection where possible.
+
+	"PregnancyRole": "Papel del Embarazo",
+
+	"role_become": "Puede Embarazarse",
+	"role_make": "Puede Embarazar",
+	"role_adopt": "Adoptar Siempre",
+
+	"NPC.cs.4442": "Ugh...Estuve hasta tarde haciendo los gabinetes a prueba de niños.",
+	"NPC.cs.4443": "No dormiremos mucho cuando llegue el bebé. Mejor dormir mientras podamos.",
+	"NPC.cs.4445": "{0}, seremos padres. ¿No es maravilloso?",
+	"NPC.cs.4446": "Vamos a dormir por hoy. Necesitamos un día libre.",
+	"NPC.cs.4448": "{0}, adivina qué. Tendremos un bebé.",
+
+	"BirthMessage_PlayerMother": "Durante la noche, nació tu bebé {0}.",
+	"BirthMessage_SpouseMother": "Durante la noche, nació tu bebé {0}."
+}

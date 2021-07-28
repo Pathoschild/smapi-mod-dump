@@ -9,17 +9,16 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PyTK.CustomElementHandler;
 using StardewModdingAPI;
 using StardewValley;
-using SFarmer = StardewValley.Farmer;
 
 namespace SleepyEye
 {
-    public class TentTool : Tool, ISaveElement
+    [XmlType("Mods_spacechase0_SleepyEye")]
+    public class TentTool : Tool
     {
         /*********
         ** Fields
@@ -74,7 +73,7 @@ namespace SleepyEye
         }
 
         /// <inheritdoc />
-        public override bool beginUsing(GameLocation location, int x, int y, SFarmer who)
+        public override bool beginUsing(GameLocation location, int x, int y, Farmer who)
         {
             if (!this.IsSaving)
             {
@@ -87,7 +86,7 @@ namespace SleepyEye
         }
 
         /// <inheritdoc />
-        public override bool onRelease(GameLocation location, int x, int y, SFarmer who)
+        public override bool onRelease(GameLocation location, int x, int y, Farmer who)
         {
             if (this.IsUsing && !this.IsSaving)
                 this.CancelUse(who);
@@ -95,7 +94,7 @@ namespace SleepyEye
             return true;
         }
 
-        public override void tickUpdate(GameTime time, SFarmer who)
+        public override void tickUpdate(GameTime time, Farmer who)
         {
             // cancel save mode
             if (this.IsSaving)
@@ -205,26 +204,6 @@ namespace SleepyEye
         public override Item getOne()
         {
             return new TentTool();
-        }
-
-        /// <inheritdoc />
-        public object getReplacement()
-        {
-            return new StardewValley.Object();
-        }
-
-        public Dictionary<string, string> getAdditionalSaveData()
-        {
-            return new();
-        }
-
-        public void rebuild(Dictionary<string, string> additionalSaveData, object replacement)
-        {
-            this.Name = "Tent";
-            this.description = this.loadDescription();
-
-            this.numAttachmentSlots.Value = 0;
-            this.IndexOfMenuItemView = 0;
         }
 
 

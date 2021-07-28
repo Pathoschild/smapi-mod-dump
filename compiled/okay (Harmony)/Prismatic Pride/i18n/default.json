@@ -24,6 +24,12 @@
 	"ColorSet.aromantic": "Aromantic",
 	"ColorSet.asexual": "Asexual",
 
+	"ApplyColors.name": "Apply Colors",
+	"ApplyColors.description": "Whether to apply prismatic pride colors; turn off if needed for mod compatibility",
+
+	"ColorDuration.name": "Color Duration",
+	"ColorDuration.description": "How long each color should appear in rotation, in seconds",
+
 	"DefaultColorSet.name": "Default Color Set",
 	"DefaultColorSet.description": "Which set of prismatic pride colors will be used by default in new games",
 

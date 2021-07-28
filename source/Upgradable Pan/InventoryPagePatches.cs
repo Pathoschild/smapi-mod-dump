@@ -12,6 +12,7 @@ using StardewValley;
 using StardewValley.Tools;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using Microsoft.Xna.Framework.Input;
 
 namespace UpgradablePan
 {
@@ -19,48 +20,96 @@ namespace UpgradablePan
 	{
 		public static bool receiveLeftClick_Prefix(ref InventoryPage __instance, int x, int y, bool playSound)
 		{
-			bool specialFunctionalityHandled = false;
+			bool performedSpecialFunctionality = false;
+			bool heldItemWasNull = Game1.player.CursorSlotItem == null;
 			foreach (ClickableComponent c in __instance.equipmentIcons)
 			{
-				bool heldItemWasNull = Game1.player.CursorSlotItem == null;
-				if (c.containsPoint(x, y) && c.name == "Hat")
+				if (c.containsPoint(x, y))
 				{
-					if ((Game1.player.CursorSlotItem == null && Game1.player.hat.Value.which == 71) || (Game1.player.CursorSlotItem is Pan pan && pan.UpgradeLevel > 1))
+					if (c.name == "Hat" && !performedSpecialFunctionality)
 					{
-						Hat tmp = null;
-						
-						if (Game1.player.CursorSlotItem is Pan p)
+						// Unequipping hat...
+						if ((Game1.player.CursorSlotItem == null && (Game1.player.hat.Value != null && (Game1.player.hat.Value.which == 71 || Game1.player.hat.Value is PanHat))))
 						{
-							tmp = new PanHat(p);
+							Item heldItem = Utility.PerformSpecialItemGrabReplacement(Game1.player.hat.Value);
+							if (heldItem != null)
+							{
+								heldItem.NetFields.Parent = null;
+							}
+							Game1.player.hat.Value = null;
+							Game1.player.CursorSlotItem = heldItem;
+							Game1.playSound("dwop");
+
+							// Hack to allow compatibility with WearMoreRings mod.
+							Game1.exitActiveMenu();
+							Game1.activeClickableMenu = new GameMenu(false);
+							performedSpecialFunctionality = true;
+						}
+						// Equipping
+						else if (Game1.player.CursorSlotItem is Pan pan && pan.UpgradeLevel > 1)
+						{
+							Game1.player.CursorSlotItem = Utility.PerformSpecialItemGrabReplacement(Game1.player.hat.Value);
+							Game1.player.hat.Value = new PanHat(pan);
+							Game1.playSound("grassyStep");
+
+							// Hack to allow compatibility with WearMoreRings mod.
+							Game1.exitActiveMenu();
+							Game1.activeClickableMenu = new GameMenu(false);
+							performedSpecialFunctionality = true;
+						}
+					}
+
+					if (heldItemWasNull && performedSpecialFunctionality && Game1.oldKBState.IsKeyDown(Keys.LeftShift))
+					{
+						for (int i = 0; i < Game1.player.items.Count; i++)
+						{
+							if (Game1.player.items[i] == null)
+							{
+								Item cursorSlotItem = Game1.player.CursorSlotItem;
+								Game1.player.CursorSlotItem = null;
+
+								Utility.addItemToInventory(cursorSlotItem, i, __instance.inventory.actualInventory);
+								Game1.playSound("stoneStep");
+								break;
+							}
+						}
+					}
+				}
+
+				if (heldItemWasNull && !performedSpecialFunctionality && Game1.oldKBState.IsKeyDown(Keys.LeftShift))
+				{
+					int inventorySlot = __instance.inventory.getInventoryPositionOfClick(x, y);
+					if (inventorySlot != -1 && Game1.player.items[inventorySlot] is Pan pan)
+					{
+						__instance.inventory.leftClick(x, y, null, false);
+						pan.NetFields.Parent = null;
+						
+						if (Game1.player.hat.Value != null)
+						{
+							Game1.player.items[inventorySlot] = Utility.PerformSpecialItemGrabReplacement(Game1.player.hat.Value);
+						}
+
+						if (pan.UpgradeLevel > 1)
+						{
+							Game1.player.hat.Value = new PanHat(pan);
+							Game1.playSound("grassyStep");
 						}
 						else
 						{
-							tmp = Game1.player.CursorSlotItem as Hat;
-							Game1.player.CursorSlotItem = null;
-						}
-
-						Item heldItem2 = Game1.player.hat.Value;
-						heldItem2 = Utility.PerformSpecialItemGrabReplacement(heldItem2);
-						if (heldItem2 != null)
-						{
-							heldItem2.NetFields.Parent = null;
-						}
-						Game1.player.CursorSlotItem = heldItem2;
-						Game1.player.hat.Value = tmp;
-						if (Game1.player.hat.Value != null)
-						{
+							Game1.player.hat.Value = new Hat(71);
 							Game1.playSound("grassyStep");
 						}
-						else if (Game1.player.CursorSlotItem != null)
-						{
-							Game1.playSound("dwop");
-						}
-						specialFunctionalityHandled = true;
+
+						// Hack to allow compatibility with WearMoreRings mod.
+						Game1.exitActiveMenu();
+						Game1.activeClickableMenu = new GameMenu(false);
+						performedSpecialFunctionality = true;
 					}
 				}
+
 			}
 
-			return !specialFunctionalityHandled;
+			return !performedSpecialFunctionality;
 		}
 	}
 }

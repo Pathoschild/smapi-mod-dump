@@ -46,6 +46,11 @@ namespace EconomyMod
 
             taxation.OnTaxScheduleListUpdated += (object sender, IEnumerable<Model.TaxSchedule> collection) => framework.UpdateListDataList(collection);
 
+            framework.AddNewPage(() => new ConfigurationPage(framework), 0, new SidetabData(Util.Helper.Content.Load<Texture2D>($"assets/Interface/sidebarButtonGear.png"), "Configuration", 0));
+            Util.Helper.Events.Display.WindowResized += Display_WindowResized;
+            //}
+
+
             //framework.AddNewPage(() => new LoanPage(framework, taxation), 0, new SidetabData(Util.Helper.Content.Load<Texture2D>($"assets/Interface/LoanButton.png"), "Loan", 0));
 
 
@@ -74,6 +79,10 @@ namespace EconomyMod
                  }
              };
 #endif
+        }
+        private void Display_WindowResized(object sender, StardewModdingAPI.Events.WindowResizedEventArgs e)
+        {
+            ///TODO: fix properly the zoom window.
         }
 
     }

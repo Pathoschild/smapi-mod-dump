@@ -9,6 +9,13 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 2.8.0
+
+### User-visible Changes
+
+* Show sprinkler range for the Radioactive Sprinkler from the
+  Radioactive Tools mod (if installed)
+
 ## Version 2.7.0
 
 ### User-visible Changes

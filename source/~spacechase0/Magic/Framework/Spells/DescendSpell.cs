@@ -17,6 +17,9 @@ namespace Magic.Framework.Spells
 {
     internal class DescendSpell : Spell
     {
+        /*********
+        ** Public methods
+        *********/
         public DescendSpell()
             : base(SchoolId.Elemental, "descend") { }
 

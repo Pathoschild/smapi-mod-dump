@@ -7,9 +7,9 @@ mods:
    Scrying Orb
 
 latest commit:
-   commit eb09689ab06c34ff82d117240fd711d18e068919
+   commit 2310919161599724b4e161261f73757eedfba8b0
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Mon Jun 28 11:28:29 2021 -0700
+   Date:   Sun Jul 11 14:27:11 2021 -0700
    
-       v2.0.1
+       Fix install instructions for two folders
    

@@ -10,16 +10,33 @@ for queries and analysis.**
 
 [Flower Bombs](../)
 
+## 2.0.2
+
+*Released 2021 July 10.*
+
+* Fix flower seeds disappearing from Flower Bombs for some players
+
+## 2.0.1
+
+*Released 2021 July 3.*
+
+* Fix errors in game menus under some circumstances
+
 ## 2.0.0
 
-*Release pending.*
+*Released 2021 July 1.*
 
-* Require Stardew 1.5 or higher
-* Remove support for legacy serialized object format
+* Require, and fix compatibility with, Stardew 1.5 or higher
+* Switch from PyTK to PlatoTK
+* Allow Flower Bombs on the beach and other sandy areas
+* Say "germinate" instead of "detonate" or "explode" throughout
+* Optionally wait for next rainy or snowy day (or sprinkler) to germinate
+* Germinate immediately when watered ten times
+* Fix colored Wildflowers not being shown during events
 
 ## 1.0.1
 
-*Released June 5, 2020.*
+*Released 2020 June 5.*
 
 * Fix recipe unlocking instantly even when not configured to do so
 * Fix forage quality and experience being applied to bomb flowers
@@ -29,6 +46,6 @@ for queries and analysis.**
 
 ## 1.0.0
 
-*Released June 3, 2020.*
+*Released 2020 June 3.*
 
 * Initial version

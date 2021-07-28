@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceCore.Events;
 using SpaceShared;
 using SpaceShared.APIs;
@@ -27,6 +27,7 @@ using SurfingFestival.Patches;
 using xTile;
 using xTile.Layers;
 using xTile.Tiles;
+using SObject = StardewValley.Object;
 
 namespace SurfingFestival
 {
@@ -435,14 +436,14 @@ namespace SurfingFestival
                 {
                     if (racer == Game1.player)
                     {
-                        int opposite = 0;
-                        switch (state.Facing)
+                        int opposite = state.Facing switch
                         {
-                            case Game1.up: opposite = Game1.down; break;
-                            case Game1.down: opposite = Game1.up; break;
-                            case Game1.left: opposite = Game1.right; break;
-                            case Game1.right: opposite = Game1.left; break;
-                        }
+                            Game1.up => Game1.down,
+                            Game1.down => Game1.up,
+                            Game1.left => Game1.right,
+                            Game1.right => Game1.left,
+                            _ => 0
+                        };
 
                         if (Game1.player.FacingDirection != state.Facing && Game1.player.FacingDirection != opposite)
                         {
@@ -889,7 +890,7 @@ namespace SurfingFestival
 
             if (e.Action == "SurfingBonfire" && Mod.PlayerDidBonfire == BonfireState.NotDone)
             {
-                bool Highlight(StardewValley.Item item) => (item is StardewValley.Object obj && !obj.bigCraftable.Value && ((obj.ParentSheetIndex == 388 && obj.Stack >= 50) || obj.ParentSheetIndex == 71 || obj.ParentSheetIndex == 789));
+                bool Highlight(StardewValley.Item item) => (item is SObject obj && !obj.bigCraftable.Value && ((obj.ParentSheetIndex == 388 && obj.Stack >= 50) || obj.ParentSheetIndex == 71 || obj.ParentSheetIndex == 789));
                 void BehaviorOnSelect(StardewValley.Item item, Farmer farmer)
                 {
                     if (item == null)
@@ -1195,7 +1196,7 @@ namespace SurfingFestival
                 if (!Game1.player.mailReceived.Contains("SurfingFestivalWinner"))
                 {
                     Game1.player.mailReceived.Add("SurfingFestivalWinner");
-                    Game1.player.addItemByMenuIfNecessary(new StardewValley.Object(Vector2.Zero, Mod.Ja.GetBigCraftableId("Surfing Trophy")));
+                    Game1.player.addItemByMenuIfNecessary(new SObject(Vector2.Zero, Mod.Ja.GetBigCraftableId("Surfing Trophy")));
                 }
 
                 Game1.playSound("money");
@@ -1233,26 +1234,26 @@ namespace SurfingFestival
 
             private int DirectionToProgress(int dir)
             {
-                switch (dir)
+                return dir switch
                 {
-                    case Game1.up: return 3;
-                    case Game1.down: return 1;
-                    case Game1.left: return 2;
-                    case Game1.right: return 0;
-                }
-                throw new ArgumentException("Bad facing direction");
+                    Game1.up => 3,
+                    Game1.down => 1,
+                    Game1.left => 2,
+                    Game1.right => 0,
+                    _ => throw new ArgumentException("Bad facing direction")
+                };
             }
 
             private float GetProgressCoordinate(string racerName)
             {
-                switch (Mod.RacerState[racerName].Facing)
+                return Mod.RacerState[racerName].Facing switch
                 {
-                    case Game1.up: return -Game1.CurrentEvent.getCharacterByName(racerName).Position.Y;
-                    case Game1.down: return Game1.CurrentEvent.getCharacterByName(racerName).Position.Y;
-                    case Game1.left: return -Game1.CurrentEvent.getCharacterByName(racerName).Position.X;
-                    case Game1.right: return Game1.CurrentEvent.getCharacterByName(racerName).Position.X;
-                }
-                throw new ArgumentException("Bad facing direction");
+                    Game1.up => -Game1.CurrentEvent.getCharacterByName(racerName).Position.Y,
+                    Game1.down => Game1.CurrentEvent.getCharacterByName(racerName).Position.Y,
+                    Game1.left => -Game1.CurrentEvent.getCharacterByName(racerName).Position.X,
+                    Game1.right => Game1.CurrentEvent.getCharacterByName(racerName).Position.X,
+                    _ => throw new ArgumentException("Bad facing direction")
+                };
             }
         };
 

@@ -6,9 +6,9 @@ mods:
    Portable TV
 
 latest commit:
-   commit c46f72459199e4d09f27d2c0af72c74b9f22a214
+   commit d8bff12fd4ce684c81e2bfd2138e43c303368a06
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Sat Jun 26 23:23:05 2021 -0700
+   Date:   Sun Jul 11 14:17:54 2021 -0700
    
-       v2.0.1
+       Fix install instructions for two folders
    

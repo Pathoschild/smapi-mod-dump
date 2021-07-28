@@ -10,7 +10,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Harmony;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceCore.Framework;
 using SpaceShared;
 using StardewModdingAPI;

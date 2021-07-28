@@ -6,9 +6,9 @@ mods:
    ToolBelt
 
 latest commit:
-   commit aa2d76707ee9b9aac9b3881ba248fdc9d786a0b7
+   commit 70e97473d1966709359b1462c2ba280628546284
    Author: yuri0r <macktrinz@gmail.com>
-   Date:   Fri Jun 11 08:17:33 2021 +0200
+   Date:   Sun Jul 18 02:08:46 2021 +0200
    
-       fix error on duplicated items
+       added blacklist options
    

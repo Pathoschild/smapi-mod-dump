@@ -15,7 +15,7 @@ using BiggerCraftables.Framework;
 using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewValley;
@@ -175,7 +175,7 @@ namespace BiggerCraftables.Patches
             return false;
         }
 
-        /// <summary>The method to call before <see cref="StardewValley.Object.drawInMenu(SpriteBatch,Vector2,float,float,float,StackDrawType,Color,bool)"/>.</summary>
+        /// <summary>The method to call before <see cref="SObject.drawInMenu(SpriteBatch,Vector2,float,float,float,StackDrawType,Color,bool)"/>.</summary>
         private static bool Before_DrawInMenu(SObject __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
         {
             if (!__instance.bigCraftable.Value)

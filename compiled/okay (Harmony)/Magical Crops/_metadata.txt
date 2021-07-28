@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8762
+IDs: shekurika.MagicalCropsCode
+update keys: Nexus:8762

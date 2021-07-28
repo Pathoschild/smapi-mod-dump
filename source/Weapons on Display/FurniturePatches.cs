@@ -32,9 +32,13 @@ namespace WeaponsOnDisplay
 				Object item = __instance.heldObject.Value;
 				__instance.heldObject.Value = null;
 				bool result = false;
-				if (item is WeaponProxy proxy)
+				if (item is WeaponProxy weaponProxy)
 				{
-					result = who.addItemToInventoryBool(proxy.Weapon);
+					result = who.addItemToInventoryBool(weaponProxy.Weapon);
+				}
+				else if (item is SlingshotProxy slingshotProxy)
+				{
+					result = who.addItemToInventoryBool(slingshotProxy.Weapon);
 				}
 				else
 				{
@@ -56,27 +60,43 @@ namespace WeaponsOnDisplay
 
 		public static void performObjectDropInAction_Postfix(ref Furniture __instance, Item dropInItem, bool probe, Farmer who, ref bool __result)
 		{
-			MeleeWeapon dropIn = dropInItem as MeleeWeapon;
-			if (dropIn == null)
+			if (dropInItem is MeleeWeapon dropInWeapon)
 			{
-				return;
-			}
-
-			// If this is a table and it doesn't have any items on it...
-			if (((int)__instance.furniture_type == 11 || (int)__instance.furniture_type == 5) && __instance.heldObject.Value == null)
-			{
-				__instance.heldObject.Value = new WeaponProxy(dropIn);
-				__instance.heldObject.Value.tileLocation.Value = __instance.tileLocation;
-				__instance.heldObject.Value.boundingBox.X = __instance.boundingBox.X;
-				__instance.heldObject.Value.boundingBox.Y = __instance.boundingBox.Y;
-				__instance.heldObject.Value.performDropDownAction(who);
-				if (!probe)
+				// If this is a table and it doesn't have any items on it...
+				if (((int)__instance.furniture_type == 11 || (int)__instance.furniture_type == 5) && __instance.heldObject.Value == null)
 				{
-					who.currentLocation.playSound("woodyStep");
-					who?.reduceActiveItemByOne();
-					who.CurrentTool = null;
+					__instance.heldObject.Value = new WeaponProxy(dropInWeapon);
+					__instance.heldObject.Value.tileLocation.Value = __instance.tileLocation;
+					__instance.heldObject.Value.boundingBox.X = __instance.boundingBox.X;
+					__instance.heldObject.Value.boundingBox.Y = __instance.boundingBox.Y;
+					__instance.heldObject.Value.performDropDownAction(who);
+					if (!probe)
+					{
+						who.currentLocation.playSound("woodyStep");
+						who?.reduceActiveItemByOne();
+						who.CurrentTool = null;
+					}
+					__result = true;
 				}
-				__result = true;
+			}
+			else if (dropInItem is Slingshot dropInSlingshot)
+			{
+				// If this is a table and it doesn't have any items on it...
+				if (((int)__instance.furniture_type == 11 || (int)__instance.furniture_type == 5) && __instance.heldObject.Value == null)
+				{
+					__instance.heldObject.Value = new SlingshotProxy(dropInSlingshot);
+					__instance.heldObject.Value.tileLocation.Value = __instance.tileLocation;
+					__instance.heldObject.Value.boundingBox.X = __instance.boundingBox.X;
+					__instance.heldObject.Value.boundingBox.Y = __instance.boundingBox.Y;
+					__instance.heldObject.Value.performDropDownAction(who);
+					if (!probe)
+					{
+						who.currentLocation.playSound("woodyStep");
+						who?.reduceActiveItemByOne();
+						who.CurrentTool = null;
+					}
+					__result = true;
+				}
 			}
 		}
 
@@ -120,6 +140,13 @@ namespace WeaponsOnDisplay
 						spriteBatch.Draw(Tool.weaponsTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(__instance.boundingBox.Center.X - 32,
 						__instance.boundingBox.Center.Y - (__instance.drawHeldObjectLow ? 32 : 85))),
 						MeleeWeapon.getSourceRect(weapon.Weapon.IndexOfMenuItemView), Color.White * alpha, 0f, Vector2.Zero,
+						4f, SpriteEffects.None, (float)(__instance.boundingBox.Bottom + 1) / 10000f);
+					}
+					else if (__instance.heldObject.Value is SlingshotProxy slingshot)
+					{
+						spriteBatch.Draw(Tool.weaponsTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(__instance.boundingBox.Center.X - 32,
+						__instance.boundingBox.Center.Y - (__instance.drawHeldObjectLow ? 32 : 85))),
+						MeleeWeapon.getSourceRect(slingshot.Weapon.IndexOfMenuItemView), Color.White * alpha, 0f, Vector2.Zero,
 						4f, SpriteEffects.None, (float)(__instance.boundingBox.Bottom + 1) / 10000f);
 					}
 					else

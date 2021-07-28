@@ -26,18 +26,12 @@ namespace PrismaticPride
 		public List<Color> colors { get; set; }
 		public int count => colors.Count;
 
-		public Color getColor (int index, float phase, Color? asTintOn = null)
+		public Color getColor (int index, float phase)
 		{
 			int index2 = (index + 1) % count;
 			Color result = (Demo.IndexOverride != -1)
 				? colors[Demo.IndexOverride]
 				: Color.Lerp (colors[index], colors[index2], phase);
-			if (asTintOn != null)
-			{
-				result.R = (byte) (result.R * asTintOn.Value.R / 255);
-				result.G = (byte) (result.G * asTintOn.Value.G / 255);
-				result.B = (byte) (result.B * asTintOn.Value.B / 255);
-			}
 			result.A = 255;
 			return result;
 		}

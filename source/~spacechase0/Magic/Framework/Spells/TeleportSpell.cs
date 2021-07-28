@@ -16,6 +16,9 @@ namespace Magic.Framework.Spells
 {
     internal class TeleportSpell : Spell
     {
+        /*********
+        ** Public methods
+        *********/
         public TeleportSpell()
             : base(SchoolId.Elemental, "teleport") { }
 
@@ -36,7 +39,9 @@ namespace Magic.Framework.Spells
 
         public override IActiveEffect OnCast(Farmer player, int level, int targetX, int targetY)
         {
-            Game1.activeClickableMenu = new TeleportMenu();
+            if (player.IsLocalPlayer)
+                Game1.activeClickableMenu = new TeleportMenu();
+
             return null;
         }
     }

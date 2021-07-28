@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/FletcherGoss/FQTweaks
+   Git: https://github.com/FletcherGoss/FQTweaks.git
+
+mods:
+   FQ Festival Tweaks
+
+latest commit:
+   commit 391e489c6339a6a4c2be44593a073966ab1bd6a9
+   Author: Fletcher Goss <85819519+FletcherGoss@users.noreply.github.com>
+   Date:   Sun Jul 4 07:37:39 2021 +0100
+   
+       add LICENSE
+   

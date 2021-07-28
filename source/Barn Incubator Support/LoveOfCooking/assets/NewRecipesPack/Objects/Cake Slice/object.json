@@ -1,0 +1,71 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "blueberry.cac.cake_half",
+    "Description": "...",
+    "Category": "Junk",
+    "CategoryTextOverride": "",
+    "CategoryColorOverride": "0, 0, 0, 0",
+    "Edibility": 35,
+    "EdibleIsDrink": false,
+    "EdibleBuffs": null,
+    "Price": 40,
+    "IsColored": false,
+    "Recipe": null,
+    "CanPurchase": false,
+    "PurchaseFrom": "Gus",
+    "PurchasePrice": 405,
+    "PurchaseRequirements": null,
+    "GiftTastes": {
+        "Like": [
+            "Haley",
+            "Sandy",
+            "Vincent",
+            "Jas",
+            "Gus",
+            "Penny",
+            "Shane",
+            "Marnie",
+            "Clint",
+            "Sebastian",
+            "Abigail",
+            "Alex",
+            "Caroline",
+            "Elliott",
+            "Emily",
+            "Evelyn",
+            "Haley",
+            "Harvey",
+            "Jodi",
+            "Lewis",
+            "Linus",
+            "Maru",
+            "Pierre",
+            "Robin",
+            "Sam",
+            "Willy"
+        ],
+        "Neutral": [
+            "Krobus",
+            "Dwarf",
+            "Demetrius",
+            "Wizard"
+        ],
+        "Dislike": [
+            "Kent",
+            "George",
+            "Leah"
+        ]
+    },
+    "NameLocalization": {
+        "en": "Cake Slice"
+    }
+}

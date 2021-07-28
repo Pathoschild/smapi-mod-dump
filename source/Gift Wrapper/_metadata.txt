@@ -6,9 +6,10 @@ mods:
    Gift Wrapper
 
 latest commit:
-   commit 179058266bf5d876c91ede9843e645c5d1fac5c3
-   Author: blueberry <36073351+b-b-blueberry@users.noreply.github.com>
-   Date:   Sat Jun 5 16:56:11 2021 +1000
+   commit ac1a82708530a783f02d58601ccb21dd39df15aa
+   Merge: 489fe2b 1790582
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Sun Jul 4 13:43:10 2021 +1000
    
-       Create README.md
+       Merge branch 'master' of https://github.com/b-b-blueberry/GiftWrapper
    

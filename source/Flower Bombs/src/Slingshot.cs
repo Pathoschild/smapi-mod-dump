@@ -14,6 +14,7 @@ using StardewValley;
 using StardewValley.Projectiles;
 using System.Collections.Generic;
 using System.Linq;
+using SObject = StardewValley.Object;
 
 namespace FlowerBombs
 {
@@ -23,7 +24,7 @@ namespace FlowerBombs
 		{
 			// Only handle projectiles that are Flower Bombs.
 			if (Helper.Reflection.GetField<NetInt> (projectile,
-					"currentTileSheetIndex").GetValue ().Value != EmptyID)
+					"currentTileSheetIndex").GetValue ().Value != TileIndex)
 				return;
 
 			// Make an appropriate sound for dirt hitting dirt/grass.
@@ -43,9 +44,9 @@ namespace FlowerBombs
 		{
 			// If a tile near the collision point is suitable, place the Flower
 			// Bomb on that tile.
-			FlowerBomb bomb = new (EmptyData);
+			SObject bomb = GetNew ();
 			List<Vector2> tiles = Utility.recursiveFindOpenTiles (location,
-				new Vector2 (xPosition / 64, yPosition / 64), maxIterations: 2);
+				new Vector2 (xPosition / 64, yPosition / 64), maxIterations: 3);
 			Vector2 tile = tiles.FirstOrDefault ((tile) =>
 				IsSuitableTile (location, tile, bomb));
 			if (tile != Vector2.Zero)

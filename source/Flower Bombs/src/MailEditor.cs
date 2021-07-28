@@ -30,11 +30,11 @@ namespace FlowerBombs
 			var data = asset.AsDictionary<string, string> ().Data;
 
 			// Replace Kent's letterbombs with Flower Bombs if so configured.
-			if (Config.KentGifts && FlowerBomb.EmptyID != -1 &&
+			if (Config.KentGifts && FlowerBomb.TileIndex != -1 &&
 				data.TryGetValue ("Kent", out string kent))
 			{
 				data["Kent"] = kent.Replace (" 286 1 287 1 288 1 ",
-					$" {FlowerBomb.EmptyID} 1 ");
+					$" {FlowerBomb.TileIndex} 1 ");
 			}
 
 			// Add Leah's letter with the Flower Bomb recipe if so configured.

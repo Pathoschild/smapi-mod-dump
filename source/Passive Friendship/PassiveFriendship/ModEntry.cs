@@ -24,7 +24,7 @@ namespace PassiveFriendship
 
         GameLocation gameLocation;
 
-        readonly Dictionary<string, string> disposition = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions");
+        Dictionary<string, string> disposition;
 
         //Config bools
         int radius;
@@ -63,9 +63,8 @@ namespace PassiveFriendship
         {
             //Stops if world isn't ready, then resets lists for next time interval
             if (!Context.IsWorldReady) return;
+            disposition = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions");
             SetListsForNewTime();
-
-            //
             Vector2 playerLocation = Game1.player.getTileLocation();
             foreach (NPC character in gameLocation.characters)
             {

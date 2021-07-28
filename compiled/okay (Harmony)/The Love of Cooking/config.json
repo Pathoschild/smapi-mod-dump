@@ -10,6 +10,8 @@
   "HideFoodBuffsUntilEaten": true,
   "FoodHealingTakesTime": false,
   "FoodCanBurn": false,
+  "RememberLastSearchFilter": true,
+  "DefaultSearchFilter": "None",
   "DebugMode": false,
   "DebugRegenTracker": false,
   "ConsoleCommandPrefix": "cac",

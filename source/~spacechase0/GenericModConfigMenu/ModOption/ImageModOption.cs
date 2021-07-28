@@ -8,8 +8,8 @@
 **
 *************************************************/
 
+using GenericModConfigMenu.Framework;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 
 namespace GenericModConfigMenu.ModOption
 {
@@ -27,7 +27,7 @@ namespace GenericModConfigMenu.ModOption
         {
         }
 
-        public ImageModOption(string texPath, Rectangle? texRect, int scale, IManifest mod)
+        public ImageModOption(string texPath, Rectangle? texRect, int scale, ModConfig mod)
             : base(texPath, "", texPath, mod)
         {
             this.TexturePath = texPath;

@@ -1,0 +1,63 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceruleandeep/CeruleanStardewMods
+**
+*************************************************/
+
+{
+    "Name": "Robin's Underpants",
+    "Description": "I wonder if he made these.",
+    "Category": "-23",
+    "Edibility": -300,
+    "Price": 33,
+    "IsColored": false,
+    "GiftTastes": {
+        "Love": [
+            "Demetrius",
+            "Pierre"
+        ],
+        "Like": [
+            "Robin"
+        ],
+        "Dislike": [
+            "Abigail",
+            "Alex",
+            "Caroline",
+            "Clint",
+            "Dwarf",
+            "Elliott",
+            "Emily",
+            "Evelyn",
+            "George",
+            "Gus",
+            "Haley",
+            "Harvey",
+            "Jas",
+            "Jodi",
+            "Kent",
+            "Krobus",
+            "Leah",
+            "Lewis",
+            "Linus",
+            "Marnie",
+            "Maru",
+            "Pam",
+            "Penny",
+            "Robin",
+            "Sam",
+            "Sandy",
+            "Shane",
+            "Vincent",
+            "Willy",
+            "Wizard"
+        ],
+        "Hate": [
+            "Sebastian"
+        ]
+    },
+    "CanPurchase": false
+}

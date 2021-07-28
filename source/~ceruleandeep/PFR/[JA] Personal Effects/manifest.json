@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceruleandeep/CeruleanStardewMods
+**
+*************************************************/
+
+{
+    "Name": "Personal Effects for JsonAssets",
+    "Author": "ceruleandeep",
+    "Description": "A port of bwdy's Personal Effects for JsonAssets.",
+    "Version": "1.0.3",
+    "MinimumApiVersion": "3.7.0",
+    "UniqueID": "ceruleandeep.ja.personaleffects",
+    "ContentPackFor":
+    {
+        "UniqueID": "spacechase0.JsonAssets"
+    },
+    "UpdateKeys": ["Nexus:???"],
+}

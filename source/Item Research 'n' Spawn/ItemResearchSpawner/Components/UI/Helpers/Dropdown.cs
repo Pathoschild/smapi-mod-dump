@@ -12,10 +12,9 @@ using System;
 using ItemResearchSpawner.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley.Menus;
 
-namespace ItemResearchSpawner.Components
+namespace ItemResearchSpawner.Components.UI.Helpers
 {
     /**
     This code is copied from Pathoschild.Stardew.Common.UI in https://github.com/Pathoschild/StardewMods,

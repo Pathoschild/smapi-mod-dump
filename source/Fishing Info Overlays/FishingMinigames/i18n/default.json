@@ -1,0 +1,82 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/barteke22/StardewMods
+**
+*************************************************/
+
+{
+    "GenericMC.MainLabel": "Fishing Minigame Options",
+    "GenericMC.MainDesc": "Options for the alternative Fishing Minigames. Here you can pick your minigame style, or completely disable a minigame part.",
+    "GenericMC.MainDesc2": "The fish size and quality is determined by the combined score of Start and End minigames, depending on which ones are enabled.",
+    "GenericMC.MainDescPC": "Saving and hitting F5, sleeping, or reloading the save will update saved config changes without restarting.",
+    "GenericMC.MainDescOther": "Sleeping, or reloading the save will update saved config changes without restarting the game.",
+    "GenericMC.MainDesc3": "If you changed your voice settings it will also play a preview of your current voice. You can hover over the variable names for more info.",
+
+    "GenericMC.Volume": "Voice Volume",
+    "GenericMC.VolumeDesc": "Allows fine tuning of the \"Here Fishy!\" volume. Press F5 after Saving to preview.",
+    "GenericMC.Pitch": "Voice Pitch",
+    "GenericMC.PitchDesc": "Changes the pitch of your \"Here Fishy!\" voice. Starts randomized for multiplayer diversity. Press F5 after Saving to preview.",
+
+    "GenericMC.KeyBinds": "Keybinds",
+    "GenericMC.KeyBindsDesc": "Button(s) used to trigger the minigame. If the same as Tool Use buttons, the Vanilla Fishing Minigame will be overwritten by this. \nSupports Mouse, Keyboard and Controller. Individual keys are separated by commas, combos are separated by the + sign. \nExample of 3 keys: MouseRight, Shift + K, ControllerX \nFor key names, see: https://stardewcommunitywiki.com/Modding:Player_Guide/Key_Bindings",
+
+    "GenericMC.StartMinigameStyle": "Minigame Style (Start)",
+    "GenericMC.StartMinigameStyleDesc": "This minigame determines whether you catch the fish at all (non-fish catches skip this part), and contributes to total score. \nDDR Arrows: The classic rhythm game where you match arrow directions with your Movement buttons as they reach a specific area. \n??? \n???",
+    "GenericMC.StartMinigameStyle1": "DDR Arrows",
+    "GenericMC.StartMinigameStyle2": "todo",
+    "GenericMC.StartMinigameStyle3": "todo",
+
+    "GenericMC.EndMinigameStyle": "Minigame Style (End)",
+    "GenericMC.EndMinigameStyleDesc": "This minigame determines whether you take damage (if failed) when scooping up any fishable item/fish, and contributes to total score. \nMinigame Button: At the right time, press the button you use for fishing, keybind must be single button (no + combos). \nMatching Arrow:  At the right time, match the direction of the displayed arrow with WASD, Arrow Keys, or DPad. \nMatching Key:    At the right time, press the displayed button. Keyboard only, will use a letter from the fish/item name, if it can find any English ones - otherwise defaults to Arrows. Buttons might conflict with other mods. If you're getting arrows even when the name contains English letters, set Controller Option to 'Force Off'.",
+    "GenericMC.EndMinigameStyle1": "Minigame Button",
+    "GenericMC.EndMinigameStyle2": "Matching Arrow",
+    "GenericMC.EndMinigameStyle3": "Matching Letter",
+
+    "GenericMC.EndDamage": "Minigame Damage (End)",
+    "GenericMC.EndDamageDesc": "If you fail the end minigame, you'll get damaged based on the fish/item difficulty, size, and this multiplier. This is a straight up multiplier, so 0 means no damage, less than 1 means less, more means more.",
+    "GenericMC.Difficulty": "Minigame Difficulty (Both)",
+    "GenericMC.DifficultyDesc": "Minigame difficulty (timers) is based on your equipment, fish difficulty and size. The negatives are multiplied by this number - the higher the harder.",
+
+    "GenericMC.StartMinigameScale": "Minigame Scale (Start)",
+    "GenericMC.StartMinigameScaleDesc": "The Start Minigame sclaes along with the zoom level, and can be fine-tuned here.",
+
+    "GenericMC.ConvertToMetric": "Convert to Metric",
+    "GenericMC.ConvertToMetricDesc": "WARNING: If using together with 'Inches To Metric System' Mod, delete all fish data from its 'content.json' (line 4-74), or they'll be double converted. \nWARNING: This will convert fish sizes as they're caught, and previous records won't be reversed to inches if you disable this. \nDoes not affect Festival Minigames, or regular fishing minigame - as their mechanics are based on fish size. Will work with modded fish caught via this mod.",
+
+    "GenericMC.RealisticSizes": "Realistic Sizes",
+    "GenericMC.RealisticSizesDesc": "Enabled: The fish shown off at the end will have a realistic size VS player size, assuming the player holds them at a perspective that makes them a tiny bit bigger. Keep in mind that most of the time the fish are still pretty tiny, around hand size, with perspective making them 20% bigger.",
+
+    "GenericMC.FestivalLabel": "Festival Minigames",
+    "GenericMC.FestivalDesc": "This only matters for Fall 16 and Winter 8 festivals, as they have fishing minigames that happen inside events.",
+    "GenericMC.FestivalDesc2": "Meaning that the animation mode and fishing override can't be fully hijacked, so it doesn't work/is janky. So here are the options for those.",
+    "GenericMC.FestivalMode": "Festival Mode",
+    "GenericMC.FestivalModeDesc": "Vanilla: Use the regular fishing minigame for both festivals. OTHERWISE: \n\nFall 16: Click (or hold for auto) rod-use button to catch a fish with random delay between attempts. \nWinter 8 (Simple): Only does the End Minigame (if enabled), any non-trash counts. \nWinter 8 (Perfect Only): Only does the End Minigame (if enabled), only perfect catch fish count (better balance).",
+    "GenericMC.FestivalModeVanilla": "Vanilla",
+    "GenericMC.FestivalModeSimple": "Simple",
+    "GenericMC.FestivalModePerfectOnly": "Perfect Only",
+
+    "GenericMC.Disabled": "Disabled",
+
+
+    "GenericMC.SplitScreenDesc": "Split Screen-specific settings, these only matter for Split Screen players. Only the main player should change these.",
+    "GenericMC.SplitScreen2": "Split Screen 2: (Top) Right",
+    "GenericMC.SplitScreen3": "Split Screen 3: Bottom Left",
+    "GenericMC.SplitScreen4": "Split Screen 4: Bottom Right",
+
+
+    "Minigame.Score": "Score",
+    "Minigame.InfoDDR": "Match Arrow direction when inside the circle \n with Arrow Keys, WASD, or DPad. \n\n Your final score will decide \n if you manage to get the fish's attention.",
+
+
+    "net.fishing": "Fishing Net",
+    "net.bamboo": "Bamboo Net",
+    "net.training": "Training Net",
+    "net.traningDesc": "It's a lot easier to use than other nets, but can only catch basic fish.",
+    "net.fiberglass": "Fiberglass Net",
+    "net.iridium": "Iridium Net",
+    "net.skill": "+{0} Fishing Net Efficiency"
+}

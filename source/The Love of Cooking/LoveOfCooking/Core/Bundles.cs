@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using LoveOfCooking.GameObjects;
+using LoveOfCooking.Objects;
 using Microsoft.Xna.Framework;
 using Netcode;
 using PyTK.Extensions;
@@ -30,7 +30,7 @@ namespace LoveOfCooking
 	public static class Bundles
 	{
 		private static IModHelper Helper => ModEntry.Instance.Helper;
-		private static Config Config => ModEntry.Instance.Config;
+		private static Config Config => ModEntry.Config;
 		private static IReflectionHelper Reflection => ModEntry.Instance.Helper.Reflection;
 		private static ITranslationHelper i18n => ModEntry.Instance.Helper.Translation;
 
@@ -66,7 +66,7 @@ namespace LoveOfCooking
 		{
 			Helper.ConsoleCommands.Add(cmd + "printcc", "Print Community Centre bundle states.", (s, args) =>
 			{
-				var cc = GetCommunityCentre();
+				CommunityCenter cc = GetCommunityCentre();
 				PrintBundleData(cc);
 			});
 			Helper.ConsoleCommands.Add(cmd + "loadcc", "Load custom bundle data into the game.", (s, args) =>
@@ -79,14 +79,16 @@ namespace LoveOfCooking
 			});
 			Helper.ConsoleCommands.Add(cmd + "listcc", "List all bundle IDs currently loaded.", (s, args) =>
 			{
-				var bad = Helper.Reflection.GetField<Dictionary<int, int>>(GetCommunityCentre(), "bundleToAreaDictionary").GetValue();
-				var msg = Game1.netWorldState.Value.BundleData.Aggregate("", (str, pair)
+				var bad = Helper.Reflection.GetField
+					<Dictionary<int, int>>
+					(GetCommunityCentre(), "bundleToAreaDictionary").GetValue();
+				string msg = Game1.netWorldState.Value.BundleData.Aggregate("", (str, pair)
 					=> $"{str}\n[Area {bad[int.Parse(pair.Key.Split('/')[1])]}] {pair.Key}: {pair.Value.Split('/')[0]} bundle");
 				Log.D(msg);
 			});
 			Helper.ConsoleCommands.Add(cmd + "bundle", "Give items needed for the given bundle.", (s, args) =>
 			{
-				if (args.Length == 0 || !int.TryParse(args[0], out var bundle) || !Game1.netWorldState.Value.Bundles.ContainsKey(bundle))
+				if (args.Length == 0 || !int.TryParse(args[0], out int bundle) || !Game1.netWorldState.Value.Bundles.ContainsKey(bundle))
 				{
 					Log.D("No bundle found.");
 					return;
@@ -96,14 +98,16 @@ namespace LoveOfCooking
 			});
 			Helper.ConsoleCommands.Add(cmd + "area", "Give items needed for all bundles in the given area.", (s, args) =>
 			{
-				var abd = Helper.Reflection.GetField<Dictionary<int, List<int>>>(GetCommunityCentre(), "areaToBundleDictionary").GetValue();
-				if (args.Length == 0 || !int.TryParse(args[0], out var area) || !abd.ContainsKey(area))
+				var abd = Helper.Reflection.GetField
+					<Dictionary<int, List<int>>>
+					(GetCommunityCentre(), "areaToBundleDictionary").GetValue();
+				if (args.Length == 0 || !int.TryParse(args[0], out int area) || !abd.ContainsKey(area))
 				{
 					Log.D("No area found.");
 					return;
 				}
 
-				foreach (var bundle in abd[area])
+				foreach (int bundle in abd[area])
 				{
 					if (area == CommunityCentreAreaNumber)
 					{
@@ -119,7 +123,8 @@ namespace LoveOfCooking
 			});
 			Helper.ConsoleCommands.Add(cmd + "bundlereset", "Reset a bundle's saved progress to entirely incomplete.", (s, args) =>
 			{
-				if (args.Length == 0 || !int.TryParse(args[0], out var bundle) || !Game1.netWorldState.Value.Bundles.ContainsKey(bundle))
+				if (args.Length == 0 || !int.TryParse(args[0], out int bundle)
+					|| !Game1.netWorldState.Value.Bundles.ContainsKey(bundle))
 				{
 					Log.D("No bundle found.");
 					return;
@@ -134,8 +139,10 @@ namespace LoveOfCooking
 			});
 			Helper.ConsoleCommands.Add(cmd + "areareset", "Reset all bundle progress for an area to entirely incomplete.", (s, args) =>
 			{
-				var abd = Helper.Reflection.GetField<Dictionary<int, List<int>>>(GetCommunityCentre(), "areaToBundleDictionary").GetValue();
-				if (args.Length == 0 || !int.TryParse(args[0], out var area) || !abd.ContainsKey(area))
+				var abd = Helper.Reflection.GetField
+					<Dictionary<int, List<int>>>
+					(GetCommunityCentre(), "areaToBundleDictionary").GetValue();
+				if (args.Length == 0 || !int.TryParse(args[0], out int area) || !abd.ContainsKey(area))
 				{
 					Log.D("No area found.");
 					return;
@@ -146,7 +153,7 @@ namespace LoveOfCooking
 					return;
 				}
 
-				foreach (var bundle in abd[area])
+				foreach (int bundle in abd[area])
 				{
 					ResetBundleProgress(bundle, print: true);
 				}
@@ -155,12 +162,12 @@ namespace LoveOfCooking
 
 		internal static void SaveLoadedBehaviours()
 		{
-			FridgeTilesToUse = Helper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP") ? "SVE" : "Vanilla";
+			FridgeTilesToUse = Interface.Interfaces.UsingSVE ? "SVE" : "Vanilla";
 
 			try
 			{
 				// Reset per-world config values
-				var savedConfig = Helper.ReadConfig<Config>();
+				Config savedConfig = Helper.ReadConfig<Config>();
 				Config.AddCookingCommunityCentreBundles = savedConfig.AddCookingCommunityCentreBundles;
 			}
 			catch (Exception e)
@@ -168,13 +175,13 @@ namespace LoveOfCooking
 				Log.E("" + e);
 			}
 
-			var cc = GetCommunityCentre();
+			CommunityCenter cc = GetCommunityCentre();
 
 			// Check for sending warnings re: multiplayer and bundles
 			_debugLastCabinsCount = GetNumberOfCabinsBuilt();
 
 			// Handle custom bundle data unloading and loading
-			var customBundleData = ParseBundleData();
+			Dictionary<int, string> customBundleData = ParseBundleData();
 			BundleCount = customBundleData.Count;
 			Log.D($"Bundles identified: [{BundleCount}]: {string.Join(", ", customBundleData.Keys)}",
 				Config.DebugMode);
@@ -240,13 +247,13 @@ namespace LoveOfCooking
 			if (e.OldMenu is JunimoNoteMenu junimoNoteMenu && e.NewMenu == null && !IsCommunityCentreComplete())
 			{
 				// Counteract the silly check for (whichArea == 6) in JunimoNoteMenu.setUpMenu(whichArea, bundlesComplete)
-				foreach (var player in Game1.getAllFarmers())
+				foreach (Farmer player in Game1.getAllFarmers())
 				{
-					var mailToRemove = new[]
+					string[] mailToRemove = new[]
 					{
 						"abandonedJojaMartAccessible", "hasSeenAbandonedJunimoNote", "ccMovieTheater", "ccMovieTheater%&NL&%", "ccMovieTheaterJoja", "ccMovieTheaterJoja%&NL&%"
 					};
-					foreach (var mail in mailToRemove)
+					foreach (string mail in mailToRemove)
 					{
 						if (player.mailForTomorrow.Contains(mail))
 						{
@@ -264,8 +271,11 @@ namespace LoveOfCooking
 				}
 
 				// Play kitchen area complete cutscene on closing the completed junimo note menu, rather than after re-entering and closing it
-				var cc = GetCommunityCentre();
-				var area = Reflection.GetField<int>(junimoNoteMenu, "whichArea").GetValue();
+				CommunityCenter cc = GetCommunityCentre();
+				int area = Reflection.GetField
+					<int>
+					(junimoNoteMenu, "whichArea")
+					.GetValue();
 				if (area == CommunityCentreAreaNumber && cc.bundles.Keys.Where(key => key >= BundleStartIndex).All(key => cc.bundles[key].All(value => value)))
 				{
 					cc.restoreAreaCutscene(CommunityCentreAreaNumber);
@@ -275,7 +285,7 @@ namespace LoveOfCooking
 			// Check to send multiplayer bundle warning mail when building new cabins
 			if (IsCommunityCentreKitchenEnabledByHost())
 			{
-				var currentCabinsCount = GetNumberOfCabinsBuilt();
+				int currentCabinsCount = GetNumberOfCabinsBuilt();
 				if (e.OldMenu is CarpenterMenu && currentCabinsCount > _debugLastCabinsCount)
 				{
 					_debugLastCabinsCount = currentCabinsCount;
@@ -305,7 +315,7 @@ namespace LoveOfCooking
 		private static void Player_Warped(object sender, WarpedEventArgs e)
 		{
 			if ((!(e.NewLocation is CommunityCenter) && e.OldLocation is CommunityCenter)
-				|| !(e.OldLocation is CommunityCenter) && e.NewLocation is CommunityCenter)
+				|| (!(e.OldLocation is CommunityCenter) && e.NewLocation is CommunityCenter))
 			{
 				Helper.Content.InvalidateCache(@"Maps/townInterior");
 			}
@@ -353,13 +363,13 @@ namespace LoveOfCooking
 						return;
 					}
 
-					var cursor = Utility.Vector2ToPoint(e.Cursor.ScreenPixels);
+					Point cursor = Utility.Vector2ToPoint(e.Cursor.ScreenPixels);
 					NavigateJunimoNoteMenuAroundKitchen(cc, menu, cursor.X, cursor.Y);
 				}
 			}
 
 			// World interactions
-			if (ModEntry.PlayerAgencyLostCheck()
+			if (Utils.PlayerAgencyLostCheck()
 				|| Game1.currentBillboard != 0 || Game1.activeClickableMenu != null || Game1.menuUp // No menus
 				|| !Game1.player.CanMove) // Player agency enabled
 			{
@@ -369,7 +379,7 @@ namespace LoveOfCooking
 			if (e.Button.IsActionButton())
 			{
 				// Tile actions
-				var tile = Game1.currentLocation.Map.GetLayer("Buildings")
+				Tile tile = Game1.currentLocation.Map.GetLayer("Buildings")
 					.Tiles[(int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y];
 
 				// Open Community Centre fridge door
@@ -426,38 +436,38 @@ namespace LoveOfCooking
 
 		public static bool IsCommunityCentreComplete()
 		{
-			var cc = GetCommunityCentre();
+			CommunityCenter cc = GetCommunityCentre();
 			if (cc == null)
 				return false;
 
-			var masterPlayerComplete = Game1.MasterPlayer.hasCompletedCommunityCenter();
-			var cutsceneSeen = Utility.HasAnyPlayerSeenEvent(191393);
+			bool masterPlayerComplete = Game1.MasterPlayer.hasCompletedCommunityCenter();
+			bool cutsceneSeen = Utility.HasAnyPlayerSeenEvent(191393);
 			return masterPlayerComplete || cutsceneSeen;
 		}
 
 		public static bool IsCommunityCentreKitchenEnabledByHost()
 		{
-			var cc = GetCommunityCentre();
+			CommunityCenter cc = GetCommunityCentre();
 			if (cc == null)
 				return false;
 
-			var hostEnabled = Game1.IsMasterGame && Config.AddCookingCommunityCentreBundles;
-			var bundlesExist = Game1.netWorldState.Value.Bundles.Keys.Any(key => key > BundleStartIndex);
-			var areasCompleteEntriesExist = cc.areasComplete.Count > CommunityCentreAreaNumber;
-			var clientEnabled = !Game1.IsMasterGame && (bundlesExist || areasCompleteEntriesExist);
+			bool hostEnabled = Game1.IsMasterGame && Config.AddCookingCommunityCentreBundles;
+			bool bundlesExist = Game1.netWorldState.Value.Bundles.Keys.Any(key => key > BundleStartIndex);
+			bool areasCompleteEntriesExist = cc.areasComplete.Count > CommunityCentreAreaNumber;
+			bool clientEnabled = !Game1.IsMasterGame && (bundlesExist || areasCompleteEntriesExist);
 			return hostEnabled || clientEnabled;
 		}
 
 		public static bool IsCommunityCentreKitchenComplete()
 		{
-			var cc = GetCommunityCentre();
+			CommunityCenter cc = GetCommunityCentre();
 			if (cc == null)
 				return false;
 
-			var receivedMail = Game1.MasterPlayer != null && Game1.MasterPlayer.hasOrWillReceiveMail(ModEntry.MailKitchenCompleted);
-			var missingAreasCompleteEntries = cc.areasComplete.Count <= CommunityCentreAreaNumber;
-			var areaIsComplete = missingAreasCompleteEntries || cc.areasComplete[CommunityCentreAreaNumber];
-			var ccIsComplete = IsCommunityCentreComplete();
+			bool receivedMail = Game1.MasterPlayer != null && Game1.MasterPlayer.hasOrWillReceiveMail(ModEntry.MailKitchenCompleted);
+			bool missingAreasCompleteEntries = cc.areasComplete.Count <= CommunityCentreAreaNumber;
+			bool areaIsComplete = missingAreasCompleteEntries || cc.areasComplete[CommunityCentreAreaNumber];
+			bool ccIsComplete = IsCommunityCentreComplete();
 			Log.T($"IsCommunityCentreKitchenCompleted: (mail: {receivedMail}), (entries: {missingAreasCompleteEntries}) || (areas: {areaIsComplete})");
 			return receivedMail || missingAreasCompleteEntries || areaIsComplete || ccIsComplete;
 		}
@@ -477,7 +487,7 @@ namespace LoveOfCooking
 			Log.D($"Checking to unrenovate area for kitchen",
 				Config.DebugMode);
 
-			var cc = GetCommunityCentre();
+			CommunityCenter cc = GetCommunityCentre();
 			if (cc.areasComplete.Count <= CommunityCentreAreaNumber || cc.areasComplete[CommunityCentreAreaNumber])
 				return;
 
@@ -494,8 +504,8 @@ namespace LoveOfCooking
 				light.position.X / 64 < CommunityCentreArea.Width && light.position.Y / 64 < CommunityCentreArea.Height);
 
 			// Add junimo note
-			var c1 = cc.isJunimoNoteAtArea(CommunityCentreAreaNumber);
-			var c2 = cc.shouldNoteAppearInArea(CommunityCentreAreaNumber);
+			bool c1 = cc.isJunimoNoteAtArea(CommunityCentreAreaNumber);
+			bool c2 = cc.shouldNoteAppearInArea(CommunityCentreAreaNumber);
 			if (!c1 && c2)
 			{
 				Log.D("Adding junimo note manually",
@@ -515,8 +525,8 @@ namespace LoveOfCooking
 
 		public static Chest GetCommunityCentreFridge()
 		{
-			var cc = GetCommunityCentre();
-			var fridge = IsCommunityCentreKitchenComplete()
+			CommunityCenter cc = GetCommunityCentre();
+			Chest fridge = IsCommunityCentreKitchenComplete()
 					? cc.Objects.ContainsKey(FridgeChestPosition)
 						? (Chest)cc.Objects[FridgeChestPosition]
 						: null
@@ -526,12 +536,12 @@ namespace LoveOfCooking
 
 		private static Vector2 FindCommunityCentreFridge()
 		{
-			var cc = GetCommunityCentre();
-			var w = cc.Map.GetLayer("Buildings").LayerWidth;
-			var h = cc.Map.GetLayer("Buildings").LayerHeight;
-			for (var x = 0; x < w; x++)
+			CommunityCenter cc = GetCommunityCentre();
+			int w = cc.Map.GetLayer("Buildings").LayerWidth;
+			int h = cc.Map.GetLayer("Buildings").LayerHeight;
+			for (int x = 0; x < w; ++x)
 			{
-				for (var y = 0; y < h; y++)
+				for (int y = 0; y < h; ++y)
 				{
 					if (cc.Map.GetLayer("Buildings").Tiles[x, y] != null
 						&& cc.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == FridgeTileIndexes[FridgeTilesToUse][1])
@@ -549,7 +559,9 @@ namespace LoveOfCooking
 			if (cc.getTemporarySpriteByID(id) != null)
 				return;
 
-			var multiplayer = Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+			Multiplayer multiplayer = Reflection.GetField
+				<Multiplayer>
+				(typeof(Game1), "multiplayer").GetValue();
 			multiplayer.broadcastSprites(cc,
 				new TemporaryAnimatedSprite(
 					"LooseSprites\\Cursors",
@@ -566,14 +578,16 @@ namespace LoveOfCooking
 
 		internal static void NavigateJunimoNoteMenuAroundKitchen(CommunityCenter cc, JunimoNoteMenu menu, int x, int y)
 		{
-			var whichArea = Reflection.GetField<int>(menu, "whichArea").GetValue();
-			var lowestArea = -1;
-			var highestArea = -1;
+			int whichArea = Reflection.GetField
+				<int>
+				(menu, "whichArea").GetValue();
+			int lowestArea = -1;
+			int highestArea = -1;
 			_menuTab = -1;
 
 			// Fetch the bounds of the menu, exclusive of our new area since we're assuming we start there
 			// Exclude any already-completed areas from this search, since we're looking for unfinished areas
-			for (var i = CommunityCentreAreaNumber - 1; i >= 0; --i)
+			for (int i = CommunityCentreAreaNumber - 1; i >= 0; --i)
 			{
 				if (cc.areasComplete[i] || !cc.shouldNoteAppearInArea(i))
 					continue;
@@ -584,8 +598,8 @@ namespace LoveOfCooking
 					lowestArea = i;
 			}
 
-			var backButton = menu.areaBackButton != null && menu.areaBackButton.visible && menu.areaBackButton.containsPoint(x, y);
-			var nextButton = menu.areaNextButton != null && menu.areaNextButton.visible && menu.areaNextButton.containsPoint(x, y);
+			bool backButton = menu.areaBackButton != null && menu.areaBackButton.visible && menu.areaBackButton.containsPoint(x, y);
+			bool nextButton = menu.areaNextButton != null && menu.areaNextButton.visible && menu.areaNextButton.containsPoint(x, y);
 			// When on either the highest or lowest bounds, clicking towards our area will change to it
 			if ((whichArea == lowestArea && backButton) || (whichArea == highestArea && nextButton))
 			{
@@ -610,19 +624,20 @@ namespace LoveOfCooking
 
 		private static void GiveBundleItems(int whichBundle, bool print)
 		{
-			var bundle = Game1.netWorldState.Value.BundleData.FirstOrDefault(pair => pair.Key.Split('/')[1] == whichBundle.ToString());
-			var split = bundle.Value.Split('/');
-			var itemData = split[2].Split(' ');
-			var itemLimit = split.Length < 5 ? 99 : int.Parse(split[4]);
-			for (var i = 0; i < itemData.Length && i < itemLimit * 3; ++i)
+			KeyValuePair<string, string> bundle = Game1.netWorldState.Value.BundleData
+				.FirstOrDefault(pair => pair.Key.Split('/')[1] == whichBundle.ToString());
+			string[] split = bundle.Value.Split('/');
+			string[] itemData = split[2].Split(' ');
+			int itemLimit = split.Length < 5 ? 99 : int.Parse(split[4]);
+			for (int i = 0; i < itemData.Length && i < itemLimit * 3; ++i)
 			{
-				var index = int.Parse(itemData[i]);
-				var quantity = int.Parse(itemData[++i]);
-				var quality = int.Parse(itemData[++i]);
+				int index = int.Parse(itemData[i]);
+				int quantity = int.Parse(itemData[++i]);
+				int quality = int.Parse(itemData[++i]);
 				if (index == -1)
 					Game1.player.addUnearnedMoney(quantity);
 				else
-					ModEntry.AddOrDropItem(new StardewValley.Object(index, quantity, isRecipe: false, price: -1, quality: quality));
+					Utils.AddOrDropItem(new StardewValley.Object(index, quantity, isRecipe: false, price: -1, quality: quality));
 			}
 			Log.D($"Giving items for {bundle.Key}: {bundle.Value.Split('/')[0]} bundle.",
 				print);
@@ -630,8 +645,11 @@ namespace LoveOfCooking
 
 		private static void ResetBundleProgress(int whichBundle, bool print)
 		{
-			var bad = Reflection.GetField<Dictionary<int, int>>(GetCommunityCentre(), "bundleToAreaDictionary").GetValue();
-			var cc = GetCommunityCentre();
+			Dictionary<int, int> bad = Reflection.GetField
+				<Dictionary<int, int>>
+				(GetCommunityCentre(), "bundleToAreaDictionary")
+				.GetValue();
+			CommunityCenter cc = GetCommunityCentre();
 
 			cc.bundleRewards[whichBundle] = false;
 			cc.bundles[whichBundle] = new bool[cc.bundles[whichBundle].Length];
@@ -644,7 +662,8 @@ namespace LoveOfCooking
 				cc.loadMap(cc.Map.assetPath, force_reload: true);
 			}
 
-			var bundle = Game1.netWorldState.Value.BundleData.FirstOrDefault(pair => pair.Key.Split('/')[1] == whichBundle.ToString());
+			KeyValuePair<string, string> bundle = Game1.netWorldState.Value.BundleData
+				.FirstOrDefault(pair => pair.Key.Split('/')[1] == whichBundle.ToString());
 			Log.D($"Reset progress for {bundle.Key}: {bundle.Value.Split('/')[0]} bundle.",
 				print);
 		}
@@ -659,8 +678,8 @@ namespace LoveOfCooking
 
 		internal static void LoadBundleData()
 		{
-			var cc = GetCommunityCentre();
-			var customBundleData = ParseBundleData();
+			CommunityCenter cc = GetCommunityCentre();
+			Dictionary<int, string> customBundleData = ParseBundleData();
 
 			Log.D(customBundleData.Aggregate("CACB customBundleData: ", (s, pair) => $"{s}\n{pair.Key}: {pair.Value}"),
 				Config.DebugMode);
@@ -668,36 +687,40 @@ namespace LoveOfCooking
 			// Load custom bundle data from persistent world data if it exists, else default to false (bundles not yet started by player)
 			var customBundleValues = new Dictionary<int, bool[]>();
 			var customBundleRewards = new Dictionary<int, bool>();
-			var isAreaComplete = cc.modData.ContainsKey(ModEntry.AssetPrefix + "area_completed") && !string.IsNullOrEmpty(cc.modData[ModEntry.AssetPrefix + "area_completed"])
+			bool isAreaComplete = cc.modData.ContainsKey(ModEntry.AssetPrefix + "area_completed")
+				&& !string.IsNullOrEmpty(cc.modData[ModEntry.AssetPrefix + "area_completed"])
 				? bool.Parse(cc.modData[ModEntry.AssetPrefix + "area_completed"])
 				: false;
 
-			for (var i = 0; i < BundleCount; ++i)
+			for (int i = 0; i < BundleCount; ++i)
 			{
 				// Bundle metadata, not synced by multiplayer.broadcastWorldState
-				var key = BundleStartIndex + i;
+				int key = BundleStartIndex + i;
 				Game1.netWorldState.Value.BundleData[$"{CommunityCentreAreaName}/{key}"] = customBundleData[key];
 			}
 
 			if (Game1.IsMasterGame)
 			{
 				// Add GW custom bundle data
-				for (var i = 0; i < BundleCount; ++i)
+				for (int i = 0; i < BundleCount; ++i)
 				{
-					var key = BundleStartIndex + i;
+					int key = BundleStartIndex + i;
 					// Bundle progress
-					var dataKey = ModEntry.AssetPrefix + "bundle_values_" + i;
-					customBundleValues.Add(key, cc.modData.ContainsKey(dataKey) && !string.IsNullOrEmpty(cc.modData[dataKey])
+					string dataKey = ModEntry.AssetPrefix + "bundle_values_" + i;
+					customBundleValues.Add(key, cc.modData.ContainsKey(dataKey)
+						&& !string.IsNullOrEmpty(cc.modData[dataKey])
 						? cc.modData[dataKey].Split(',').ToList().ConvertAll(bool.Parse).ToArray()
 						: new bool[customBundleData[key].Split('/')[2].Split(' ').Length]);
 
 					// Bundle saved rewards
 					dataKey = ModEntry.AssetPrefix + "bundle_rewards_" + i;
-					customBundleRewards.Add(key, cc.modData.ContainsKey(dataKey) && !string.IsNullOrEmpty(cc.modData[dataKey])
+					customBundleRewards.Add(key, cc.modData.ContainsKey(dataKey)
+						&& !string.IsNullOrEmpty(cc.modData[dataKey])
 						? bool.Parse(cc.modData[dataKey])
 						: false);
 
-					Log.D($"CACB Added custom bundle value ({key} [{customBundleRewards[key]}]: {customBundleValues[key].Aggregate("", (str, value) => $"{str} {value}")})",
+					string msg = $"CACB Added custom bundle value ({key} [{customBundleRewards[key]}]: ";
+					Log.D(customBundleValues[key].Aggregate(msg, (str, value) => $"{str} {value}") + ")",
 						Config.DebugMode);
 				}
 
@@ -710,7 +733,7 @@ namespace LoveOfCooking
 					var bundleRewards = new Dictionary<int, bool>();
 					// TODO: BUNDLES: NetArray.SetCount()
 					// Fetch vanilla GW bundle data
-					for (var i = 0; i < BundleStartIndex; ++i)
+					for (int i = 0; i < BundleStartIndex; ++i)
 					{
 						if (Game1.netWorldState.Value.Bundles.ContainsKey(i))
 							bundles.Add(i, Game1.netWorldState.Value.Bundles[i]);
@@ -738,7 +761,10 @@ namespace LoveOfCooking
 						Game1.netWorldState.Value.BundleRewards.Set(bundleRewards);
 					}
 
-					var multiplayer = Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+					Multiplayer multiplayer = Reflection.GetField
+						<Multiplayer>
+						(typeof(Game1), "multiplayer")
+						.GetValue();
 					multiplayer.broadcastWorldStateDeltas();
 					multiplayer.broadcastLocationDelta(GetCommunityCentre());
 
@@ -765,16 +791,18 @@ namespace LoveOfCooking
 						Config.DebugMode);
 
 					// Add a new entry to areas complete game data
-					var oldAreas = cc.areasComplete;
+					NetArray<bool, NetBool> oldAreas = cc.areasComplete;
 					var newAreas = new NetArray<bool, NetBool>(CommunityCentreAreaNumber + 1);
-					for (var i = 0; i < oldAreas.Count; ++i)
+					for (int i = 0; i < oldAreas.Count; ++i)
 						newAreas[i] = oldAreas[i];
 					newAreas[newAreas.Length - 1] = Game1.MasterPlayer.hasOrWillReceiveMail(ModEntry.MailKitchenCompleted);
 					cc.areasComplete.Clear();
 					cc.areasComplete.Set(newAreas);
 				}
 
-				var badField = Reflection.GetField<Dictionary<int, int>>(cc, "bundleToAreaDictionary");
+				var badField = Reflection.GetField
+					<Dictionary<int, int>>
+					(cc, "bundleToAreaDictionary");
 				var bad = badField.GetValue();
 				if (customBundleData.Keys.Any(key => !bad.ContainsKey(key)))
 				{
@@ -782,14 +810,16 @@ namespace LoveOfCooking
 						Config.DebugMode);
 
 					// Add a reference to the new community centre kitchen area to the reference dictionary
-					for (var i = 0; i < BundleCount; ++i)
+					for (int i = 0; i < BundleCount; ++i)
 					{
 						bad[BundleStartIndex + i] = CommunityCentreAreaNumber;
 					}
 					badField.SetValue(bad);
 				}
 
-				var abdField = Reflection.GetField<Dictionary<int, List<int>>>(cc, "areaToBundleDictionary");
+				var abdField = Reflection.GetField
+					<Dictionary<int, List<int>>>
+					(cc, "areaToBundleDictionary");
 				var abd = abdField.GetValue();
 				if (customBundleData.Keys.Any(key => !abd[CommunityCentreAreaNumber].Contains(key)))
 				{
@@ -797,7 +827,7 @@ namespace LoveOfCooking
 						Config.DebugMode);
 
 					// Add references to the new community centre bundles to the reference dictionary
-					foreach (var bundle in customBundleData.Keys)
+					foreach (int bundle in customBundleData.Keys)
 					{
 						if (!abd[CommunityCentreAreaNumber].Contains(bundle))
 							abd[CommunityCentreAreaNumber].Add(bundle);
@@ -824,23 +854,27 @@ namespace LoveOfCooking
 
 		internal static void SaveAndUnloadBundleData()
 		{
-			var cc = GetCommunityCentre();
+			CommunityCenter cc = GetCommunityCentre();
 			if (Game1.IsMasterGame)
 			{
 				// Save GW bundle data to persistent data in community centre
-				if (Game1.netWorldState.Value != null && Game1.netWorldState.Value.Bundles != null && Game1.netWorldState.Value.BundleRewards != null)
+				if (Game1.netWorldState.Value != null
+					&& Game1.netWorldState.Value.Bundles != null
+					&& Game1.netWorldState.Value.BundleRewards != null)
 				{
-					for (var i = 0; i < Math.Max(3, BundleCount); ++i)
+					for (int i = 0; i < Math.Max(3, BundleCount); ++i)
 					{
-						var key = Math.Max(37, BundleStartIndex) + i;
+						int key = Math.Max(37, BundleStartIndex) + i;
 
 						if (Game1.netWorldState.Value.Bundles.ContainsKey(key))
 						{
-							cc.modData[ModEntry.AssetPrefix + "bundle_values_" + i] = string.Join(",", Game1.netWorldState.Value.Bundles[key]);
+							cc.modData[ModEntry.AssetPrefix + "bundle_values_" + i]
+								= string.Join(",", Game1.netWorldState.Value.Bundles[key]);
 						}
 						if (Game1.netWorldState.Value.BundleRewards.ContainsKey(key))
 						{
-							cc.modData[ModEntry.AssetPrefix + "bundle_rewards_" + i] = Game1.netWorldState.Value.BundleRewards[key].ToString();
+							cc.modData[ModEntry.AssetPrefix + "bundle_rewards_" + i]
+								= Game1.netWorldState.Value.BundleRewards[key].ToString();
 						}
 
 						// Remove custom bundle data from GW data to avoid failed save loading under various circumstances
@@ -869,9 +903,9 @@ namespace LoveOfCooking
 					Reflection.GetMethod(cc, "initAreaBundleConversions").Invoke();
 
 					// Remove new areasComplete entry
-					var oldAreas = cc.areasComplete;
+					NetArray<bool, NetBool> oldAreas = cc.areasComplete;
 					var newAreas = new NetArray<bool, NetBool>(CommunityCentreAreaNumber);
-					for (var i = 0; i < newAreas.Count; ++i)
+					for (int i = 0; i < newAreas.Count; ++i)
 						newAreas[i] = oldAreas[i];
 					cc.areasComplete.Clear();
 					cc.areasComplete.Set(newAreas);
@@ -900,8 +934,14 @@ namespace LoveOfCooking
 			// aauugh
 
 			// Community centre data (LOCAL)
-			var bad = Reflection.GetField<Dictionary<int, int>>(cc, "bundleToAreaDictionary").GetValue();
-			var abd = Reflection.GetField<Dictionary<int, List<int>>>(cc, "areaToBundleDictionary").GetValue();
+			var bad = Reflection.GetField
+				<Dictionary<int, int>>
+				(cc, "bundleToAreaDictionary")
+				.GetValue();
+			var abd = Reflection.GetField
+				<Dictionary<int, List<int>>>
+				(cc, "areaToBundleDictionary")
+				.GetValue();
 
 			Log.D($"StartIndex: {BundleStartIndex}, Count: {BundleCount}", Config.DebugMode);
 			Log.D($"CACB Multiplayer: ({Game1.IsMultiplayer}-{IsMultiplayer()}), Host game: ({Game1.IsMasterGame}), Host player: ({Game1.MasterPlayer.UniqueMultiplayerID == Game1.player.UniqueMultiplayerID})", Config.DebugMode);
@@ -924,36 +964,38 @@ namespace LoveOfCooking
 
 		internal static Dictionary<int, string> ParseBundleData()
 		{
-			var sourceBundleList = Game1.content.Load<Dictionary<string, Dictionary<string, List<string>>>>(ModEntry.GameContentBundleDataPath);
-			var whichBundleList = ModEntry.JsonAssets == null
+			var sourceBundleList = Game1.content.Load
+				<Dictionary<string, Dictionary<string, List<string>>>>
+				(AssetManager.GameContentBundleDataPath);
+			string whichBundleList = Interface.Interfaces.JsonAssets == null
 				? "Vanilla"
-				: ModEntry.UsingPPJACrops
+				: Interface.Interfaces.UsingPPJACrops
 					? "PPJA"
 					: Config.AddNewCropsAndStuff
 						? "Custom"
 						: "Vanilla";
-			var sourceBundles = sourceBundleList[whichBundleList];
+			Dictionary<string, List<string>> sourceBundles = sourceBundleList[whichBundleList];
 			var newData = new Dictionary<int, string>();
 
 			// Iterate over each custom bundle to add their data to game Bundles dictionary
-			var index = 0;
-			var keys = sourceBundles.Keys.ToList();
+			int index = 0;
+			List<string> keys = sourceBundles.Keys.ToList();
 			keys.Sort();
-			foreach (var key in keys)
+			foreach (string key in keys)
 			{
 				// Bundle data
 				var parsedBundle = new List<List<string>>();
 
 				// Parse the bundle metadata
-				var displayName = i18n.Get($"world.community_centre.bundle.{index + 1}");
-				var itemsToComplete = sourceBundles[key][2];
-				var colour = sourceBundles[key][3];
+				Translation displayName = i18n.Get($"world.community_centre.bundle.{index + 1}");
+				string itemsToComplete = sourceBundles[key][2];
+				string colour = sourceBundles[key][3];
 				parsedBundle.Add(new List<string> { key });
 
 				// Fill in rewardsData section of the new bundle data
-				var rewardsData = sourceBundles[key][0].Split(' ');
-				var rewardName = string.Join(" ", rewardsData.Skip(1).Take(rewardsData.Length - 2));
-				var rewardId = ModEntry.JsonAssets.GetObjectId(rewardName);
+				string[] rewardsData = sourceBundles[key][0].Split(' ');
+				string rewardName = string.Join(" ", rewardsData.Skip(1).Take(rewardsData.Length - 2));
+				int rewardId = Interface.Interfaces.JsonAssets.GetObjectId(rewardName);
 				if (rewardId < 0)
 				{
 					rewardId = rewardsData[0] == "BO"
@@ -962,15 +1004,19 @@ namespace LoveOfCooking
 				}
 
 				// Add parsed rewards
-				var parsedRewards = new List<string> { rewardsData[0], rewardId.ToString(), rewardsData[rewardsData.Length - 1] };
+				List<string> parsedRewards = new List<string> 
+					{ rewardsData[0], rewardId.ToString(), rewardsData[rewardsData.Length - 1] };
 				parsedBundle.Add(parsedRewards);
 
 				// Parse and add item requirements for this bundle
-				var parsedItems = ParseBundleItems(sourceBundles[key][1].Split(' '));
+				List<int> parsedItems = ParseBundleItems(sourceBundles[key][1].Split(' '));
 				parsedBundle.Add(parsedItems.ConvertAll(o => o.ToString()));
 
 				// Patch new data into the target bundle dictionary, including mininmum completion count and display name
-				var value = string.Join("/", parsedBundle.Select(list => string.Join(" ", list))) + $"/{colour}/{itemsToComplete}";
+				string value = string.Join("/",
+						parsedBundle
+							.Select(list => string.Join(" ", list)))
+					+ $"/{colour}/{itemsToComplete}";
 				if (LocalizedContentManager.CurrentLanguageCode.ToString() != "en")
 				{
 					value += $"/{displayName}";
@@ -986,15 +1032,15 @@ namespace LoveOfCooking
 			var parsedItems = new List<int>();
 
 			// Iterate over each word in the items list, formatted as [<Name With Spaces> <Quantity> <Quality>]
-			var startIndex = 0;
-			for (var j = 0; j < sourceItems.Length; ++j)
+			int startIndex = 0;
+			for (int j = 0; j < sourceItems.Length; ++j)
 			{
 				// Group and parse each [name quantity quality] cluster
-				if (j != startIndex && int.TryParse(sourceItems[j], out var itemQuantity))
+				if (j != startIndex && int.TryParse(sourceItems[j], out int itemQuantity))
 				{
-					var itemName = string.Join(" ", sourceItems.Skip(startIndex).Take(j - startIndex).ToArray());
-					var itemQuality = int.Parse(sourceItems[++j]);
-					var itemId = ModEntry.JsonAssets.GetObjectId(itemName);
+					string itemName = string.Join(" ", sourceItems.Skip(startIndex).Take(j - startIndex).ToArray());
+					int itemQuality = int.Parse(sourceItems[++j]);
+					int itemId = Interface.Interfaces.JsonAssets.GetObjectId(itemName);
 
 					// Add parsed item data to the requiredItems section of the new bundle data
 					if (itemId < 0)
@@ -1027,8 +1073,8 @@ namespace LoveOfCooking
 		private static void Event_MoveJunimo(object sender, UpdateTickedEventArgs e)
 		{
 			Helper.Events.GameLoop.UpdateTicked -= Event_MoveJunimo;
-			var cc = GetCommunityCentre();
-			var p = CommunityCentreNotePosition;
+			CommunityCenter cc = GetCommunityCentre();
+			Point p = CommunityCentreNotePosition;
 			if (cc.characters.FirstOrDefault(c => c is Junimo j && j.whichArea.Value == CommunityCentreAreaNumber) == null)
 			{
 				Log.D($"No junimo in area {CommunityCentreAreaNumber} to move!",

@@ -9,8 +9,32 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming changes
-* Updated for Json Assets 1.5.8.
+## 1.8.2
+Released 24 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Fixed items added to Krobus' shop not added when he's not there.
+
+## 1.8.1
+Released 18 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Fixed error patching the forge menu.
+
+## 1.8.0
+Released 17 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* You can now add items to any shop in the game, including custom shops. See [_shops_ in the author guide](author-guide.md#shops).
+* Shop IDs for `PurchaseFrom` fields are no longer case-sensitive.
+* Fixed "couldn't find destroyCrop call in the HoeDirt.dayUpdate method" error for some players.
+* Internal refactoring.
+
+## 1.7.8
+Released 10 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Updated for SpaceCore 1.5.8.
+* Fixed `AdditionalData` for saplings adding recipe instead of sapling to the shop (thanks to lshtech!).
+* Fixed crash in some cases when two custom items have the same name and type.
+* Fixed many cases that would cause `NullReferenceException` errors or crashes.
+* Internal refactoring.
 
 ## 1.7.7
 Released 19 June 2021 for Stardew Valley 1.5. Updated by Pathoschild.

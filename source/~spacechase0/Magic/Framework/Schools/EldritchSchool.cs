@@ -14,6 +14,9 @@ namespace Magic.Framework.Schools
 {
     internal class EldritchSchool : School
     {
+        /*********
+        ** Public methods
+        *********/
         public EldritchSchool()
             : base(SchoolId.Eldritch) { }
 

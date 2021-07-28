@@ -56,7 +56,6 @@ namespace EconomyMod.Helpers
 
         }
 
-
         public static Rectangle GetSideTabSizeForPage(IClickableMenu menu, int count)
         {
             return new Rectangle(menu.xPositionOnScreen - 48 + (count == 0 ? Constants.sideTab_widthToMoveActiveTab : 0), menu.yPositionOnScreen + 64 * (2 + count), 64, 64);
@@ -99,6 +98,10 @@ namespace EconomyMod.Helpers
             PrepareDraw();
             if (!DrawGuidelines) return;
             batch.Draw(texture, new Rectangle(Convert.ToInt32(btnPosition.X), Convert.ToInt32(btnPosition.Y), 5, 5), GetColorByType(type));
+        }
+        public static bool ClickOnTriggerArea(int x, int y, Rectangle bound) {
+
+            return (x >= bound.X && x <= bound.X + bound.Width && y >= bound.Y && y <= bound.Y + bound.Height);
         }
     }
 }

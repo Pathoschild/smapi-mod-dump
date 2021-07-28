@@ -121,8 +121,8 @@ namespace BugNet
             {
                 Name = $"Critter Cage: {getLocalizedName()}",
                 Description = "It's a critter! In a cage!",
-                texture = jaTex,
-                Category = JsonAssets.Data.ObjectData.Category_.MonsterLoot,
+                Texture = jaTex,
+                Category = JsonAssets.Data.ObjectCategory.MonsterLoot,
                 CategoryTextOverride = "Critter",
                 Price = critterId.Contains("Butterfly") ? 50 : 100,
                 ContextTags = new List<string>(new[] { "critter" }),

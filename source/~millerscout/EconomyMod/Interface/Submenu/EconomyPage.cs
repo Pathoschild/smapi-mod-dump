@@ -61,18 +61,9 @@ namespace EconomyMod.Interface.Submenu
 
             payButton = new ClickableComponent(new Rectangle(xPositionOnScreen + 64, Game1.activeClickableMenu.height + 50, (int)Game1.dialogueFont.MeasureString("_____________").X, 96), "", "_____________");
 
-            for (int i = 0; i < Elements.Count; ++i)
-                Slots.Add(new ClickableComponent(
-                    new Rectangle(
-                        xPositionOnScreen + Game1.tileSize / 4,
-                        yPositionOnScreen + Game1.tileSize * 5 / 4 + Game1.pixelZoom + i * (height - Game1.tileSize * 2) / 7,
-                        width - Game1.tileSize / 2,
-                        (height - Game1.tileSize * 2) / 7 + Game1.pixelZoom),
-                    i.ToString()));
-
             this.Draw = DrawContent;
             this.DrawHover = DrawHoverContent;
-            this.LeftClickAction += Leftclick;
+            ui.OnLeftClick += Leftclick;
 
 
         }

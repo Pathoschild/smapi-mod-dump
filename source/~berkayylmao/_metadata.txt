@@ -8,9 +8,9 @@ mods:
    Ship Anything
 
 latest commit:
-   commit 6d6d7a16069c0513377e6addd3cc574c5d95753e
+   commit c47b615fcccf6487fde2213ad71b14bdb1731fc7
    Author: Berkay YiÄŸit <berkaytgy@gmail.com>
-   Date:   Thu May 27 18:48:19 2021 +0300
+   Date:   Fri Jul 9 09:45:20 2021 +0300
    
-       Update .editorconfig + Reformat all
+       [ChestEx] Fix NaN HSV space exception
    

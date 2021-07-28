@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Pyromancer's Journey",
+    "Author": "spacechase0",
+    "Version": "1.0.1",
+    "MinimumApiVersion": "3.9.5",
+    "Description": "Adds a new Doom-style arcade game.",
+    "UniqueID": "spacechase0.PyromancersJourney",
+    "EntryDll": "PyromancersJourney.dll",
+    "UpdateKeys": [ "Nexus:7455" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.SpaceCore",
+            "MinimumVersion": "1.5.7"
+        }
+    ]
+}

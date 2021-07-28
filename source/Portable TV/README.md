@@ -28,7 +28,7 @@ It's little! It's lovely! It shows Livin' Off The Land! The Portable TV is a cra
 1. Install [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720)
 1. Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) (optional, for easier configuration)
 1. Download this mod from its [Nexus page](https://www.nexusmods.com/stardewvalley/mods/5674?tab=files) or [ModDrop page](https://www.moddrop.com/stardew-valley/mods/761325-portable-tv)
-1. Unzip the mod and place the `PortableTV` folder inside your `Mods` folder
+1. Unzip the mod and place the `PortableTV` and `[JA]PortableTV` folders inside your `Mods` folder
 1. Run the game using SMAPI
 
 ## ![[Use]](https://www.kdau.com/headers/use.png)

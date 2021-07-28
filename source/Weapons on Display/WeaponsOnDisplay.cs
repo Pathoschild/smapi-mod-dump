@@ -77,18 +77,24 @@ namespace WeaponsOnDisplay
 			}
 		}
 
-		/// <summary>Replaces all instances of WeaponProxy with placeholder objects.</summary>
+		/// <summary>Replaces all instances of WeaponProxy and SlingshotProxy with placeholder objects.</summary>
 		private void makePlaceholderObjects()
 		{
-			// Find all instances of WeaponProxy objects and replace them with standard placeholder objects.
+			// Find all instances of WeaponProxy and SlingshotProxy objects and replace them with standard placeholder objects.
 			foreach (GameLocation location in Game1.locations)
 			{
 				foreach (Furniture furniture in location.furniture)
 				{
-					if (furniture.heldObject.Value is WeaponProxy proxy)
+					if (furniture.heldObject.Value is WeaponProxy weaponProxy)
 					{
 						StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, 0);
-						placeholder.Name = $"WeaponProxy:{XmlSerialize(proxy.Weapon)}";
+						placeholder.Name = $"WeaponProxy:{XmlSerialize(weaponProxy.Weapon)}";
+						furniture.heldObject.Set(placeholder);
+					}
+					else if (furniture.heldObject.Value is SlingshotProxy slingshotProxy)
+					{
+						StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, 0);
+						placeholder.Name = $"SlingshotProxy:{XmlSerialize(slingshotProxy.Weapon)}";
 						furniture.heldObject.Set(placeholder);
 					}
 				}
@@ -97,16 +103,37 @@ namespace WeaponsOnDisplay
 			// Ensure we check additional buildings like sheds and cabins.
 			foreach (Building building in Game1.getFarm().buildings)
 			{
-				foreach (Furniture furniture in building.indoors.Value.furniture)
+				if (building.indoors.Value != null && building.indoors.Value.furniture != null)
 				{
-					if (furniture.heldObject.Value is WeaponProxy proxy)
+					foreach (Furniture furniture in building.indoors.Value.furniture)
 					{
-						StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, 0);
-						placeholder.Name = $"WeaponProxy:{XmlSerialize(proxy.Weapon)}";
-						furniture.heldObject.Set(placeholder);
+						if (furniture.heldObject.Value is WeaponProxy weaponProxy)
+						{
+							StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, 0);
+							placeholder.Name = $"WeaponProxy:{XmlSerialize(weaponProxy.Weapon)}";
+							furniture.heldObject.Set(placeholder);
+						}
+						else if (furniture.heldObject.Value is SlingshotProxy slingshotProxy)
+						{
+							StardewValley.Object placeholder = new StardewValley.Object(furniture.heldObject.Value.TileLocation, 0);
+							placeholder.Name = $"SlingshotProxy:{XmlSerialize(slingshotProxy.Weapon)}";
+							furniture.heldObject.Set(placeholder);
+						}
 					}
 				}
 			}
+		}
+
+		private void restoreMeleeWeapon(Furniture furniture, string xmlString)
+		{
+			MeleeWeapon weapon = XmlDeserialize<MeleeWeapon>(xmlString);
+			furniture.heldObject.Set(new WeaponProxy(weapon));
+		}
+
+		private void restoreSlingshot(Furniture furniture, string xmlString)
+		{
+			Slingshot slingshot = XmlDeserialize<Slingshot>(xmlString);
+			furniture.heldObject.Set(new SlingshotProxy(slingshot));
 		}
 
 		/// <summary>Replaces all placeholder objects with their WeaponProxy counterparts.</summary>
@@ -117,11 +144,24 @@ namespace WeaponsOnDisplay
 			{
 				foreach (Furniture furniture in location.furniture)
 				{
-					if (furniture.heldObject.Value != null && furniture.heldObject.Value.Name.StartsWith("WeaponProxy:"))
+					if (furniture.heldObject.Value != null && furniture.heldObject.Value.Name.Contains("Proxy:"))
 					{
-						string xmlString = furniture.heldObject.Value.Name.Substring("WeaponProxy:".Length);
-						MeleeWeapon weapon = XmlDeserialize<MeleeWeapon>(xmlString);
-						furniture.heldObject.Set(new WeaponProxy(weapon));
+						string xmlString = furniture.heldObject.Value.Name;
+						if (xmlString.StartsWith("WeaponProxy:"))
+						{
+							try
+							{
+								restoreMeleeWeapon(furniture, xmlString.Substring("WeaponProxy:".Length));
+							}
+							catch (InvalidOperationException) // An exception may indicate a slingshot was stored in an older version of the mod.
+							{
+								restoreSlingshot(furniture, xmlString.Substring("WeaponProxy:".Length));
+							}
+						}
+						else if (xmlString.StartsWith("SlingshotProxy:"))
+						{
+							restoreSlingshot(furniture, xmlString.Substring("SlingshotProxy:".Length));
+						}
 					}
 				}
 			}
@@ -131,11 +171,24 @@ namespace WeaponsOnDisplay
 			{
 				foreach (Furniture furniture in building.indoors.Value.furniture)
 				{
-					if (furniture.heldObject.Value != null && furniture.heldObject.Value.Name.StartsWith("WeaponProxy:"))
+					if (furniture.heldObject.Value != null && furniture.heldObject.Value.Name.Contains("Proxy:"))
 					{
-						string xmlString = furniture.heldObject.Value.Name.Substring("WeaponProxy:".Length);
-						MeleeWeapon weapon = XmlDeserialize<MeleeWeapon>(xmlString);
-						furniture.heldObject.Set(new WeaponProxy(weapon));
+						string xmlString = furniture.heldObject.Value.Name;
+						if (xmlString.StartsWith("WeaponProxy:"))
+						{
+							try
+							{
+								restoreMeleeWeapon(furniture, xmlString.Substring("WeaponProxy:".Length));
+							}
+							catch (InvalidOperationException) // An exception may indicate a slingshot was stored in an older version of the mod.
+							{
+								restoreSlingshot(furniture, xmlString.Substring("WeaponProxy:".Length));
+							}
+						}
+						else if (xmlString.StartsWith("SlingshotProxy:"))
+						{
+							restoreSlingshot(furniture, xmlString.Substring("SlingshotProxy:".Length));
+						}
 					}
 				}
 			}

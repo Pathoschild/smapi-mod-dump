@@ -56,8 +56,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\CommandManager.cs" />
+    <Compile Include="Components\ItemRepository.cs" />
     <Compile Include="Components\ModManager.cs" />
     <Compile Include="Components\ProgressionManager.cs" />
+    <Compile Include="Components\SaveManager.cs" />
     <Compile Include="Components\UI\CashTab.cs" />
     <Compile Include="Components\UI\Helpers\Dropdown.cs" />
     <Compile Include="Components\UI\Helpers\DropdownList.cs" />
@@ -80,8 +83,9 @@
     <Compile Include="Models\Enums\ItemType.cs" />
     <Compile Include="Models\Enums\ModMode.cs" />
     <Compile Include="Models\GenericModConfigMenuAPI.cs" />
-    <Compile Include="Models\ItemRepository.cs" />
     <Compile Include="Models\MenuSettings.cs" />
+    <Compile Include="Models\Messages\ModStateMessage.cs" />
+    <Compile Include="Models\Messages\ResearchProgressionMessage.cs" />
     <Compile Include="Models\ModDataCategory.cs" />
     <Compile Include="Models\ModDataCategoryRule.cs" />
     <Compile Include="Models\ModItemData.cs" />
@@ -100,13 +104,13 @@
     <Compile Include="Utils\MenuSprites.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\categories-progress.json" />
-    <Content Include="Assets\coin-icon.png" />
-    <Content Include="Assets\empty-quality-icon.png" />
-    <Content Include="Assets\item-data.json" />
-    <Content Include="Assets\search-button.png" />
-    <Content Include="Assets\sell-button.png" />
-    <Content Include="Assets\sort-icon.png" />
+    <Content Include="Assets\config\categories.json" />
+    <Content Include="Assets\config\banlist.json" />
+    <Content Include="Assets\images\coin-icon.png" />
+    <Content Include="Assets\images\empty-quality-icon.png" />
+    <Content Include="Assets\images\search-button.png" />
+    <Content Include="Assets\images\sell-button.png" />
+    <Content Include="Assets\images\sort-icon.png" />
     <Content Include="I18n.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>I18n.cs</LastGenOutput>

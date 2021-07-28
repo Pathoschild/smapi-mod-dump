@@ -5,7 +5,7 @@
   "GrowCropsKey": "NumPad2",
   "GrowRadius": 1,
   "DefaultTab": "PlayerAndTools",
-  "MoveSpeed": 1,
+  "MoveSpeed": 0,
   "InfiniteHealth": false,
   "InfiniteStamina": false,
   "InstantCooldowns": false,
@@ -60,6 +60,7 @@
   "DurableFences": false,
   "InstantBuild": false,
   "AutoFeed": false,
+  "AutoPetAnimals": false,
   "AutoWater": false,
   "InfiniteHay": false
 }

@@ -6,9 +6,9 @@ mods:
    Prismatic Pride
 
 latest commit:
-   commit 9877121ec28dcacd9ca7aeedcba9145e52900bda
+   commit 619843c2524debe2b491b5cc5083da73d68925d7
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Sat Jun 26 23:15:18 2021 -0700
+   Date:   Sun Jul 11 14:23:26 2021 -0700
    
-       v1.0.1
+       Fix install instructions for three folders
    

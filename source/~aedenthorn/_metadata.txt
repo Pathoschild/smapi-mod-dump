@@ -23,6 +23,7 @@ mods:
    Familiars
    Fire Breath
    Fishing Chests Expanded
+   Flowing Mine Rocks
    Friendly Divorce
    Fruit Tree Shaker
    Gem Isles
@@ -66,9 +67,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 7608bf42df2a48499a6e675c4f4486c30bdb48b7
+   commit b8672167ea2c86bbf6d35e64b93319352d69209e
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sun Jun 20 12:37:45 2021 -0400
+   Date:   Thu Jul 1 15:06:29 2021 -0400
    
        etc
    

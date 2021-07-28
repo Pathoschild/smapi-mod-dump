@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
+using GenericModConfigMenu.Framework;
 
 namespace GenericModConfigMenu.ModOption
 {
@@ -23,7 +23,7 @@ namespace GenericModConfigMenu.ModOption
         {
         }
 
-        public LabelModOption(string name, string desc, IManifest mod)
+        public LabelModOption(string name, string desc, ModConfig mod)
             : base(name, desc, name, mod) { }
     }
 }

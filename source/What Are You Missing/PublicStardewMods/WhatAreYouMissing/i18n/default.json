@@ -41,6 +41,14 @@
   "SEWER_DISPLAY_NAME": "Sewer",
   "MUTANT_BUG_LAIR_DISPLAY_NAME": "Mutant Bug Lair",
   "WITCHS_SWAMP_DISPLAY_NAME": "Witch's Swamp",
+  "GINGER_ISLAND_N": "Ginger Island North",
+  "GINGER_ISLAND_S": "Ginger Island South",
+  "GINGER_ISLAND_W_OCEAN": "Ginger Island West Ocean",
+  "GINGER_ISLAND_W_FRESHWATER": "Ginger Island West Freshwater",
+  "GINGER_ISLAND_SE": "Ginger Island South East",
+  "GINGER_ISLAND_SE_CAVE": "Ginger Island South East Cave",
+  "GINGER_ISLAND_SECRET": "Ginger Island Pirate Cove",
+  "GINGER_ISLAND_N_CAVE": "Ginger Island North Cave",
 
   "NIGHT_MARKET": "Night Market Sub",
 
@@ -68,6 +76,12 @@
   "CRIMSONFISH_INFO": "In summer, fish at the second Beach Pier. Requires fishing lvl 5.",
   "ANGLER_INFO": "In fall, fish upwards on the small bridge near JoJo Mart. Requires fishing lvl 3.",
   "MUTANT_CARP_INFO": "In any season, fish in the Sewers (in the open room with Krobus)",
+
+  "LEGEND2_INFO": "Qi special order must be active, fish close to the giant log in the Mountain Lake",
+  "GLACIERFISH_JR_INFO": "Qi special order must be active, fish at the southern most point of the island just above the hat mouse",
+  "SON_OF_CRIMSONFISH_INFO": "Qi special order must be active, fish at the second Beach Pier.",
+  "MRS_ANGLER_INFO": "Qi special order must be active, fish upwards on the small bridge near JoJo Mart.",
+  "RADIOACTIVE_CARP_INFO": "Qi special order must be active, fish in the Sewers (in the open room with Krobus)",
 
   "STONEFISH_INFO": "Found in the Mines on floor 20",
   "ICE_PIP_INFO": "Found in the Mines on floor 60",

@@ -9,10 +9,6 @@
 *************************************************/
 
 using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Menus;
-using StardewValley.Objects;
-using System.Linq;
 
 namespace PortableTV
 {
@@ -36,8 +32,11 @@ namespace PortableTV
 			// switch here from the placeholder category metalResources (-15)
 			// used in the JA pack to the real one.
 			var data = asset.AsDictionary<int, string> ().Data;
-			data[ParentSheetIndex] = data[ParentSheetIndex]
-				.Replace ("/Basic -15/", "/Basic -29/");
+			if (data.ContainsKey (ParentSheetIndex))
+			{
+				data[ParentSheetIndex] = data[ParentSheetIndex]
+					.Replace ("/Basic -15/", "/Basic -29/");
+			}
 		}
 	}
 }

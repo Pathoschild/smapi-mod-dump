@@ -6,9 +6,9 @@ mods:
    Cropbeasts
 
 latest commit:
-   commit 6d3e4b2300175b03b7ad5e7a83a252d21ae338ba
+   commit 0212bc4ac21a04af66376e3a870e809faa80bcd8
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Mon Jun 28 21:03:32 2021 -0700
+   Date:   Sun Jul 11 14:15:30 2021 -0700
    
-       v2.0.0
+       Fix install instructions for two folders
    

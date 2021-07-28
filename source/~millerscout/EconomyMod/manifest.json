@@ -11,7 +11,7 @@
 {
     "Name": "EconomyMod",
     "Author": "millerscout",
-    "Version": "1.0.9",
+    "Version": "1.0.11",
     "Description": "WIP - EconomyMod (wannabe)",
     "UniqueID": "Millerscout.EconomyMod",
     "EntryDll": "EconomyMod.dll",

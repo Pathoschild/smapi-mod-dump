@@ -10,7 +10,7 @@
 
 using MoreEnchantments.Enchantments;
 using MoreEnchantments.Patches;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewValley;

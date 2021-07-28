@@ -8,7 +8,6 @@
     "Workbench"
   ],
   "ModCompatibility": {
-    "AutoGrabberMod": true,
     "BetterJunimos": true,
     "WarnForMissingBridgeMod": true
   },

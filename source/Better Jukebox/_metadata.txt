@@ -6,12 +6,9 @@ mods:
    Better Jukebox
 
 latest commit:
-   commit 5c7c1d87835e0ffa6d72a68e8446f0253ccda9d6
-   Merge: 858212f 428657a
+   commit 35e9420ea52c3dc583fba1f0d38fcb7aa4f528f9
    Author: Gaphodil <56048441+Gaphodil@users.noreply.github.com>
-   Date:   Mon Dec 28 19:12:33 2020 -0800
+   Date:   Thu Jul 22 02:27:11 2021 -0700
    
-       Merge pull request #4 from Gaphodil/dev
-       
-       Version 1.2.0
+       oops
    

@@ -38,11 +38,14 @@ using System.Reflection;
 namespace FarmAnimalVarietyRedux
 {
     /// <summary>The mod entry point.</summary>
-    public class ModEntry : Mod
+    public class ModEntry : Mod, IAssetEditor
     {
         /*********
         ** Fields
         *********/
+        /// <summary>Whether the 8 heart Shane event has been seen (used to determine if blue chickens should be buyable.)</summary>
+        private bool PreviousBlueChickenEventState;
+
         /// <summary>Contains all recipes that were parsed from the content packs, these are stored and then done all at once to ensure all animals have been loaded first.</summary>
         private List<ParsedIncubatorRecipe> ParsedRecipes = new List<ParsedIncubatorRecipe>();
 
@@ -99,6 +102,7 @@ namespace FarmAnimalVarietyRedux
             this.Helper.Content.AssetLoaders.Add(AssetManager);
 
             this.Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            this.Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             this.Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             this.Helper.Events.GameLoop.Saving += OnSaving;
             this.Helper.Events.GameLoop.Saved += OnSaved;
@@ -118,6 +122,8 @@ namespace FarmAnimalVarietyRedux
             CustomAnimals.Clear();
             ParsedRecipes.Clear();
             CustomIncubatorRecipes.Clear();
+
+            PreviousBlueChickenEventState = Game1.player.eventsSeen.Contains(3900074);
 
             LoadDefaultAnimals();
             LoadDefaultRecipes();
@@ -145,6 +151,18 @@ namespace FarmAnimalVarietyRedux
         }
 
         /// <inheritdoc/>
+        public bool CanEdit<T>(IAssetInfo asset) => asset.AssetNameEquals("data/bigcraftablesinformation");
+
+        /// <inheritdoc/>
+        public void Edit<T>(IAssetData asset)
+        {
+            // TODO: i18n
+            var data = asset.AsDictionary<int, string>();
+            data.Data[101] = "Incubator/0/-300/Crafting -9/Hatches eggs into baby animals./true/false/2/Incubator";
+            data.Data[254] = "Ostrich Incubator/0/-300/Crafting -9/Hatches eggs into baby animals. Place in a barn./true/true/0/Ostrich Incubator";
+        }
+
+        /// <inheritdoc/>
         public override object GetApi() => Api;
 
 
@@ -154,9 +172,10 @@ namespace FarmAnimalVarietyRedux
         /// <summary>Invoked when the game has launched.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        /// <remarks>This is used to create Content Patcher tokens so FAVR assets can be edited from Content Patcher content packs.</remarks>
+        /// <remarks>This is used to record the initial blue chicken event state and to create Content Patcher tokens so FAVR assets can be edited from Content Patcher content packs.</remarks>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            // create CP tokens
             if (!this.Helper.ModRegistry.IsLoaded("Pathoschild.ContentPatcher"))
                 return;
 
@@ -165,6 +184,26 @@ namespace FarmAnimalVarietyRedux
             registerToken.Invoke(cpApi, new object[] { this.ModManifest, "GetAssetPath", new GetAssetPathToken() });
             registerToken.Invoke(cpApi, new object[] { this.ModManifest, "GetSourceX", new GetSourceXToken() });
             registerToken.Invoke(cpApi, new object[] { this.ModManifest, "GetSourceY", new GetSourceYToken() });
+        }
+
+        /// <summary>Invoked each tick, approximately 60 times a second.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        /// <remarks>This is used to set the blue chicken to be buyable once the 8 heart Shane event has been seen.</remarks>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            var currentBlueChickenEventState = Game1.player.eventsSeen.Contains(3900074);
+            if (!PreviousBlueChickenEventState && currentBlueChickenEventState)
+            {
+                PreviousBlueChickenEventState = currentBlueChickenEventState;
+
+                var blueChicken = Api.GetAnimalByInternalName("game.Blue Chicken");
+                blueChicken.IsBuyable = true;
+                Api.AddIncubatorRecipe(new ParsedIncubatorRecipe(IncubatorType.Regular, "176", .25f, 9000, "game.Blue Chicken")); // white egg
+                Api.AddIncubatorRecipe(new ParsedIncubatorRecipe(IncubatorType.Regular, "174", .25f, 9000, "game.Blue Chicken")); // large white egg
+                Api.AddIncubatorRecipe(new ParsedIncubatorRecipe(IncubatorType.Regular, "180", .25f, 9000, "game.Blue Chicken")); // brown egg
+                Api.AddIncubatorRecipe(new ParsedIncubatorRecipe(IncubatorType.Regular, "182", .25f, 9000, "game.Blue Chicken")); // large brown egg
+            }
         }
 
         /// <summary>Invoked when the player loads a save.</summary>
@@ -281,93 +320,68 @@ namespace FarmAnimalVarietyRedux
             if (subtype == null)
                 return;
 
-            // get produce that animal has that uses the uses the tool
-            var animalProduces = subtype.Produce.Where(product => product.HarvestType == HarvestType.Tool && product.ToolName.ToLower() == Game1.player.CurrentTool.BaseName.ToLower());
-
-            // get all modData products
-            var parsedProduces = new List<SavedProduceData>();
-            if (hitAnimal.modData.TryGetValue($"{this.ModManifest.UniqueID}/produces", out var productsString))
-                parsedProduces = JsonConvert.DeserializeObject<List<SavedProduceData>>(productsString);
-
-            // get the modData products that are valid to be dropped
-            var validProduces = Utilities.GetValidAnimalProduce(animalProduces, hitAnimal);
-            var produces = parsedProduces
-                .Where(product => product.DaysLeft <= 0 && validProduces.Any(animalProduct => animalProduct.UniqueName.ToLower() == product.UniqueName.ToLower()));
-
-            // handle producing item
             var ignoreErrorMessage = SkipErrorMessagesForTools.Any(toolName => toolName.ToLower() == Game1.player.CurrentTool.BaseName.ToLower());
-
-            if (hitAnimal.isBaby()) // animal is too young
+            
+            // ensure animal is an adult
+            if (hitAnimal.isBaby())
             {
                 if (!ignoreErrorMessage)
                     Game1.showRedMessage($"{hitAnimal.displayName} is too young to produce.");
+                return;
             }
-            else if (produces.Count() == 0) // there is no produce for the animal right now
+
+            // ensure animal can be harvested
+            var pendingToolProduces = Utilities.GetPendingProduceDrops(hitAnimal, HarvestType.Tool, product => product.ToolName.ToLower() == Game1.player.CurrentTool.BaseName.ToLower());
+            if (pendingToolProduces.Count == 0)
             {
                 if (!ignoreErrorMessage)
-                    if (animalProduces.Count() == 0) // check if there is *ever* any produce using the tool for the animal
+                    // TODO: having this check separate here is kinda hacky, perhaps have an out of how many got filtered?
+                    if (subtype.Produce.Where(product => product.HarvestType == HarvestType.Tool && product.ToolName.ToLower() == Game1.player.CurrentTool.BaseName.ToLower()).Count() == 0) // check if there is *ever* any produce using the tool for the animal
                         Game1.showRedMessage($"Cannot use the {Game1.player.CurrentTool.BaseName} to harvest produce from {hitAnimal.displayName}.");
                     else
                         Game1.showRedMessage($"{hitAnimal.displayName} has no produce to harvest with the {Game1.player.CurrentTool.BaseName} right now.");
+                return;
             }
-            else // animal can produce
+
+            // set necessary animal state
+            hitAnimal.doEmote(FarmAnimal.heartEmote);
+            hitAnimal.friendshipTowardFarmer.Value = Math.Min(1000, (int)hitAnimal.friendshipTowardFarmer + 5);
+            hitAnimal.pauseTimer = 1500;
+            if (hitAnimal.showDifferentTextureWhenReadyForHarvest)
+                hitAnimal.Sprite.LoadTexture(Path.Combine("Animals", "Sheared") + hitAnimal.type);
+
+            Game1.playSound("coin");
+            Game1.player.gainExperience(Farmer.farmingSkill, 5);
+
+            // get all modData products
+            var parsedProduces = new List<SavedProduceData>();
+            if (hitAnimal.modData.TryGetValue($"{this.ModManifest.UniqueID}/produces", out var producesString))
+                parsedProduces = JsonConvert.DeserializeObject<List<SavedProduceData>>(producesString);
+
+            // drop products
+            foreach (var pendingToolProduce in pendingToolProduces)
             {
-                // set necessary animal state
-                hitAnimal.doEmote(FarmAnimal.heartEmote);
-                hitAnimal.friendshipTowardFarmer.Value = Math.Min(1000, (int)hitAnimal.friendshipTowardFarmer + 5);
-                hitAnimal.pauseTimer = 1500;
-                if (hitAnimal.showDifferentTextureWhenReadyForHarvest)
-                    hitAnimal.Sprite.LoadTexture(Path.Combine("Animals", "Sheared") + hitAnimal.type);
+                // make tool harvest sound
+                if (pendingToolProduce.Key.ToolHarvestSound != null && pendingToolProduce.Key.ToolHarvestSound.ToLower() != "none")
+                    Game1.player.currentLocation.localSound(pendingToolProduce.Key.ToolHarvestSound);
 
-                Game1.playSound("coin");
-                Game1.player.gainExperience(Farmer.farmingSkill, 5);
-
-                // drop products
-                foreach (var produce in produces)
+                if (!Game1.player.couldInventoryAcceptThisObject(pendingToolProduce.Value.ParentSheetIndex, pendingToolProduce.Value.Stack, pendingToolProduce.Value.Quality))
                 {
-                    var animalProduce = animalProduces.FirstOrDefault(ap => ap.UniqueName.ToLower() == produce.UniqueName.ToLower());
-                    if (animalProduce == null)
-                        continue;
-
-                    // make tool harvest sound
-                    if (animalProduce.ToolHarvestSound != null && animalProduce.ToolHarvestSound.ToLower() != "none")
-                        Game1.player.currentLocation.localSound(animalProduce.ToolHarvestSound);
-
-                    // determine item to drop (default or upgraded)
-                    var uniqueProduceName = ""; // unique name is kept track to update the saved data
-                    var productId = -1;
-                    var shouldDropUpgraded = Utilities.ShouldDropUpgradedProduct(animalProduce, hitAnimal);
-                    if (shouldDropUpgraded != null)
-                    {
-                        if (shouldDropUpgraded.Value)
-                            (uniqueProduceName, productId) = (animalProduce.UniqueName, animalProduce.UpgradedProductId);
-                        else
-                            (uniqueProduceName, productId) = (animalProduce.UniqueName, animalProduce.DefaultProductId);
-                    }
-
-                    if (productId == -1)
-                        continue;
-
-                    // try to add the item to the player inventory
-                    var amount = Utilities.DetermineDropAmount(animalProduce);
-                    var quality = Utilities.DetermineProductQuality(hitAnimal, animalProduce);
-                    if (!Game1.player.couldInventoryAcceptThisObject(productId, amount, quality))
-                    {
-                        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
-                        continue;
-                    }
-
-                    var item = new StardewValley.Object(productId, amount) { Quality = quality };
-                    Game1.player.addItemToInventory(item);
-                    Game1.addHUDMessage(new HUDMessage(item.DisplayName, item.Stack, true, Color.WhiteSmoke, item));
-
-                    // update parsed products to reset object
-                    parsedProduces.First(produce => produce.UniqueName.ToLower() == uniqueProduceName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(animalProduce);
+                    Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
+                    continue;
                 }
 
-                // update modData
-                hitAnimal.modData[$"{this.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(parsedProduces);
+                Game1.player.addItemToInventory(pendingToolProduce.Value);
+                Game1.addHUDMessage(new HUDMessage(pendingToolProduce.Value.DisplayName, pendingToolProduce.Value.Stack, true, Color.WhiteSmoke, pendingToolProduce.Value));
+
+                // update parsed products to reset object
+                var uniqueProduceName = pendingToolProduce.Value.modData[$"{this.ModManifest.UniqueID}/uniqueProduceName"];
+                pendingToolProduce.Value.modData.Remove($"{this.ModManifest.UniqueID}/uniqueProduceName");
+                parsedProduces.First(produce => produce.UniqueName.ToLower() == uniqueProduceName.ToLower()).DaysLeft = Utilities.DetermineDaysToProduce(pendingToolProduce.Key);
             }
+
+            // update modData
+            hitAnimal.modData[$"{this.ModManifest.UniqueID}/produces"] = JsonConvert.SerializeObject(parsedProduces);
         }
 
         /// <summary>Applies the harmony patches.</summary>
@@ -589,7 +603,7 @@ namespace FarmAnimalVarietyRedux
             // force JA to initialise early
             var jaModData = this.Helper.ModRegistry.Get("spacechase0.JsonAssets");
             var jaInstance = (Mod)jaModData.GetType().GetProperty("Mod", BindingFlags.Public | BindingFlags.Instance).GetValue(jaModData);
-            jaInstance.GetType().GetMethod("initStuff", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(jaInstance, new object[] { false });
+            jaInstance.GetType().GetMethod("InitStuff", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(jaInstance, new object[] { false });
         }
 
         /// <summary>Loads a content pack.</summary>
@@ -871,7 +885,7 @@ namespace FarmAnimalVarietyRedux
             {
                 new ParsedCustomAnimalType(Action.Add, "", "White Chicken", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "176", upgradedProductId: "174") }, 3, "cluck", 16, 16, 16, 16, "641", 4, isMale: false),
                 new ParsedCustomAnimalType(Action.Add, "", "Brown Chicken", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "180", upgradedProductId: "182") }, 3, "cluck", 16, 16, 16, 16, "641", 7, isMale: false),
-                new ParsedCustomAnimalType(Action.Add, "", "Blue Chicken", Game1.player.eventsSeen.Contains(3900074), false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "176", upgradedProductId: "174") }, 3, "cluck", 16, 16, 16, 16, "641", 7, isMale: false),
+                new ParsedCustomAnimalType(Action.Add, "", "Blue Chicken", PreviousBlueChickenEventState, false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "176", upgradedProductId: "174") }, 3, "cluck", 16, 16, 16, 16, "641", 7, isMale: false),
                 new ParsedCustomAnimalType(Action.Add, "", "Void Chicken", false, false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "305") }, 3, "cluck", 16, 16, 16, 16, "641", 4, isMale: false),
                 new ParsedCustomAnimalType(Action.Add, "", "Golden Chicken", false, false, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "928") }, 3, "cluck", 16, 16, 16, 16, "641", 7, isMale: false),
                 new ParsedCustomAnimalType(Action.Add, "", "Duck", true, true, new List<ParsedAnimalProduce> { new ParsedAnimalProduce(Action.Add, "0", "442", upgradedProductId: "444", upgradedProductIsRare: true, daysToProduce: 2) }, 5, "Duck", 16, 16, 16, 16, "642", 3, isMale: false),
@@ -943,6 +957,14 @@ namespace FarmAnimalVarietyRedux
         /// <summary>Loads all the default incubator recipes.</summary>
         private void LoadDefaultRecipes()
         {
+            if (PreviousBlueChickenEventState) // blue chicken recipes
+            {
+                ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "176", .25f, 9000, "game.Blue Chicken")); // white egg
+                ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "174", .25f, 9000, "game.Blue Chicken")); // large white egg
+                ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "180", .25f, 9000, "game.Blue Chicken")); // brown egg
+                ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "182", .25f, 9000, "game.Blue Chicken")); // large brown egg
+            }
+
             ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "176", 1, 9000, "game.White Chicken")); // white egg
             ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "174", 1, 9000, "game.White Chicken")); // large white egg
             ParsedRecipes.Add(new ParsedIncubatorRecipe(IncubatorType.Regular, "180", 1, 9000, "game.Brown Chicken")); // brown egg

@@ -1,3 +1,5 @@
 {
-  "ToggleKey": "L"
+  "ToggleKey": "L",
+  "TextScale": 1.0,
+  "ShowOnStart": true
 }

@@ -6,6 +6,8 @@ for queries and analysis.**
 
 ----
 
+This mod is no longer active; feel free to fork it and re-distribute!
+
 # Quick_Start
 When starting a new farm with this mod installed, it will automatically add a few items to your inventory when you start and add some gold. Below is the list of things which it adds by default.
 

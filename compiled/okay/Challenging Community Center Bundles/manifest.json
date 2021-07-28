@@ -14,11 +14,11 @@
 {
    "Name": "Challenging Community Center Bundles",
    "Author": "alvadea & jaksha",
-   "Version": "2.2.0",
+   "Version": "2.2.1",
    "Description": "Challenging Community Center Bundles - Main Files",
    "UniqueID": "alja.CCCB",
    "EntryDll": "ChallengingCommunityCenterBundles.dll",
-   "MinimumApiVersion": "3.9.0",
+   "MinimumApiVersion": "3.8.0",
    "UpdateKeys": ["Nexus:6361"],
    "Dependencies": [
 		{

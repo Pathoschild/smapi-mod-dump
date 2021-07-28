@@ -1,7 +1,7 @@
 ﻿{
   "Name": "PassiveFriendship",
   "Author": "StultusV",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Description": "Passively gains friendship with villagers you hang out with",
   "UniqueID": "StultusV.PassiveFriendship",
   "EntryDll": "PassiveFriendship.dll",

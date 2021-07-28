@@ -14,6 +14,9 @@ namespace Magic.Framework.Schools
 {
     internal class NatureSchool : School
     {
+        /*********
+        ** Public methods
+        *********/
         public NatureSchool()
             : base(SchoolId.Nature) { }
 

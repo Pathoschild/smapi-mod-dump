@@ -6,9 +6,9 @@ mods:
    Quick Start
 
 latest commit:
-   commit 5f835b4ec0cf85d02cf069dfef1662dbbcb519e0
+   commit 5fa88d3cb30a865475b625ace15db737fe00ba33
    Author: Brian Wuest <brian.wuest@outlook.com>
-   Date:   Sat Dec 26 13:27:54 2020 -0600
+   Date:   Sat Jul 10 10:01:07 2021 -0500
    
-       Update to use latest SMAPI version
+       Update README.md
    

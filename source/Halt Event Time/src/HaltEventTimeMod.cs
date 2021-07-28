@@ -57,6 +57,7 @@ namespace HaltEventTime
             HarmonyInstance harmony = HarmonyInstance.Create("StardewValley");
             harmony.Patch(typeof(Buff).GetMethod("update"), new HarmonyMethod(typeof(BuffUpdatePatch).GetMethod(nameof(BuffUpdatePatch.Prefix))));
 #endif
+
         }
 
         public void ConsoleCommand(string command, string[] args)
@@ -129,8 +130,11 @@ namespace HaltEventTime
                 //由事件发起人开启，让所有玩家的TaskList都有该任务
                 Utils.UpdateTaskOperate(Config.Limit, TaskOperation.Run, Game1.player.Name);
                 Helper.Multiplayer.SendMessage(new TaskPacket(Config.Limit, TaskOperation.Run), nameof(TaskPacket));
-                Utils.UpdateTaskOperate(TaskType.BuffControl, TaskOperation.Run, Game1.player.Name);
-                Helper.Multiplayer.SendMessage(new TaskPacket(TaskType.BuffControl, TaskOperation.Run), nameof(TaskPacket));
+                if(Config.PauseBuff)
+                {
+                    Utils.UpdateTaskOperate(TaskType.BuffControl, TaskOperation.Run, Game1.player.Name);
+                    Helper.Multiplayer.SendMessage(new TaskPacket(TaskType.BuffControl, TaskOperation.Run), nameof(TaskPacket));
+                }
             }
         }
 
@@ -148,7 +152,7 @@ namespace HaltEventTime
                 Helper.Multiplayer.SendMessage(new TaskPacket(Config.Limit, TaskOperation.Stop), nameof(TaskPacket));
                 Utils.UpdateTaskOperate(Config.Limit, TaskOperation.Stop, Game1.player.Name);
             }
-            if (TaskList.Count > 0 && TaskList.ContainsKey(TaskType.BuffControl) && TaskList[TaskType.BuffControl].Operate == TaskOperation.Run && TaskList[TaskType.BuffControl].Sender.Any(x => x == Game1.player.Name))
+            if (TaskList.Count > 0 && Config.PauseBuff && TaskList.ContainsKey(TaskType.BuffControl) && TaskList[TaskType.BuffControl].Operate == TaskOperation.Run && TaskList[TaskType.BuffControl].Sender.Any(x => x == Game1.player.Name))
             {
                 Helper.Multiplayer.SendMessage(new TaskPacket(TaskType.BuffControl, TaskOperation.Stop), nameof(TaskPacket));
                 Utils.UpdateTaskOperate(TaskType.BuffControl, TaskOperation.Stop, Game1.player.Name);
@@ -163,7 +167,7 @@ namespace HaltEventTime
                 if (e.Peer.GetMod(ModManifest.UniqueID) == null)
                 {
                     string playerName = Utils.GetFarmerNameFromID(e.Peer.PlayerID);
-                    Utils.SendMessage($"{playerName} 没有安装 {ModManifest.Name} Mod", Color.Red);
+                    Utils.SendMessage(Helper.Translation.Get("message.less.mod", new { playerName = playerName, ModManifestName = ModManifest.Name }), Color.Red);
                 }
                 else
                 {
@@ -223,7 +227,6 @@ namespace HaltEventTime
                 }
                 Monitor.Log($"Task {type} stop operate executed successfully", LogLevel);
                 Utils.UpdateTaskOperate(type, TaskOperation.Remove, sender);
-                //Helper.Multiplayer.SendMessage(new TaskPacket(type, TaskOperation.Remove), nameof(TaskPacket));
             }
         }
 

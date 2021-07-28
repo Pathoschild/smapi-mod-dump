@@ -62,6 +62,9 @@ Custom NPCs in the screenshot are from [Ridgeside Village](https://www.nexusmods
 
 ## Update Logs
 
+### Version [1.2.1] - July 2 2021
+* Adds ModDrop update key in preparation for move to hosting on ModDrop
+
 ### Version [1.2.0] - June 22 2021
 * Adds expanded dance capacity, up to 17 pairs (34 NPCs total)
 * Outlines code for custom animation insertion.

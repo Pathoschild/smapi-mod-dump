@@ -47,6 +47,7 @@ namespace WhatAreYouMissing
         public const int SHAD = 706;
         public const int HALIBUT = 708;
         public const int LEGEND = 163;
+        public const int LEGEND2 = 900;
 
         //Summer minus common crops from spring
         public const int MELON = 254;
@@ -82,6 +83,7 @@ namespace WhatAreYouMissing
         public const int TILAPIA = 701;
         public const int DORADO = 704;
         public const int CRIMSONFISH = 159;
+        public const int SON_OF_CRIMSONFISH = 898;
 
         //Fall 
         public const int AMARANTH = 300;
@@ -106,6 +108,7 @@ namespace WhatAreYouMissing
         public const int TIGER_TROUT = 699;
         public const int ALBACORE = 705;
         public const int ANGLER = 160;
+        public const int MRS_ANGLER = 899;
 
         //Winter
         public const int NAUTILUS_SHELL = 392;
@@ -119,6 +122,7 @@ namespace WhatAreYouMissing
         public const int SQUID = 151;
         public const int LINGCOD = 707;
         public const int GLACIERFISH = 775;
+        public const int GLACIERFISH_JR = 902;
         public const int MIDNIGHT_SQUID = 798;
         public const int SPOOK_FISH = 799;
         public const int BLOBFISH = 800;
@@ -260,6 +264,8 @@ namespace WhatAreYouMissing
 
         public const int CINDERSAP_POND_AREA_CODE = 1;
         public const int CINDERSAP_RIVER_AREA_CODE = 0;
+        public const int GINGER_ILSAND_WEST_OCEAN_CODE = 1;
+        public const int GINGER_ISLAND_WEST_FRESHWATER_CODE = 2;
         public const int DEFAULT_AREA_CODE = -1;
 
         public const int SPRITE_SIZE = 64;
@@ -276,8 +282,16 @@ namespace WhatAreYouMissing
         public const string GAME_NAME_SEWER = "Sewer";
         public const string GAME_NAME_MUTANT_BUG_LAIR = "BugLand";
         public const string GAME_NAME_WITCHS_SWAMP = "WitchSwamp";
+        public const string GAME_NAME_GINGER_ISLAND_N = "IslandNorth";
+        public const string GAME_NAME_GINGER_ISLAND_S = "IslandSouth";
+        public const string GAME_NAME_GINGER_ISLAND_W = "IslandWest";
+        public const string GAME_NAME_GINGER_ISLAND_SE = "IslandSouthEast";
+        public const string GAME_NAME_GINGER_ISLAND_SE_CAVE = "IslandSouthEastCave";
+        public const string GAME_NAME_GINGER_ISLAND_SECRET = "IslandSecret";
+        public const string GAME_NAME_GINGER_ISLAND_N_CAVE = "IslandNorthCave1";
 
         public const int MUTANT_CARP = 682;
+        public const int RADIOACTIVE_CARP = 901;
 
         public const int STONEFISH = 158;
         public const int ICE_PIP = 161;
@@ -294,7 +308,12 @@ namespace WhatAreYouMissing
                                                     [GLACIERFISH] = Utilities.GetTranslation("GLACIERFISH_INFO"),
                                                     [CRIMSONFISH] = Utilities.GetTranslation("CRIMSONFISH_INFO"),
                                                     [ANGLER] = Utilities.GetTranslation("ANGLER_INFO"),
-                                                    [MUTANT_CARP] = Utilities.GetTranslation("MUTANT_CARP_INFO")
+                                                    [MUTANT_CARP] = Utilities.GetTranslation("MUTANT_CARP_INFO"),
+                                                    [LEGEND2] = Utilities.GetTranslation("LEGEND2_INFO"),
+                                                    [GLACIERFISH_JR] = Utilities.GetTranslation("GLACIERFISH_JR_INFO"),
+                                                    [SON_OF_CRIMSONFISH] = Utilities.GetTranslation("SON_OF_CRIMSONFISH_INFO"),
+                                                    [MRS_ANGLER] = Utilities.GetTranslation("MRS_ANGLER_INFO"),
+                                                    [RADIOACTIVE_CARP] = Utilities.GetTranslation("RADIOACTIVE_CARP_INFO")
                                                 });
 
         public readonly ReadOnlyDictionary<int, string> SPECIAL_MINE_FISH_INFO = new ReadOnlyDictionary<int, string>(
@@ -306,7 +325,8 @@ namespace WhatAreYouMissing
                                                 });
 
         public readonly ReadOnlyCollection<int> LEGENDARY_FISH = new ReadOnlyCollection<int>(
-                                                new List<int> { LEGEND, GLACIERFISH, CRIMSONFISH, ANGLER, MUTANT_CARP });
+                                                new List<int> { LEGEND, GLACIERFISH, CRIMSONFISH, ANGLER, MUTANT_CARP,
+                                                                LEGEND2, GLACIERFISH_JR, SON_OF_CRIMSONFISH, MRS_ANGLER, RADIOACTIVE_CARP });
 
         public readonly ReadOnlyCollection<int> SPECIAL_MINE_FISH = new ReadOnlyCollection<int>(
                                                 new List<int> { STONEFISH, ICE_PIP, LAVA_EEL });
@@ -321,7 +341,8 @@ namespace WhatAreYouMissing
                                                                 WINTER_SEEDS });
 
         public readonly ReadOnlyCollection<int> ITEMS_PLAYER_CAN_ONLY_HAVE_ONE_OF = new ReadOnlyCollection<int>(
-                                                new List<int> { LEGEND, GLACIERFISH, CRIMSONFISH, ANGLER, MUTANT_CARP });
+                                                new List<int> { LEGEND, GLACIERFISH, CRIMSONFISH, ANGLER, MUTANT_CARP,
+                                                                LEGEND2, GLACIERFISH_JR, SON_OF_CRIMSONFISH, MRS_ANGLER, RADIOACTIVE_CARP });
 
         public readonly ReadOnlyCollection<int> NIGHT_MARKET_FISH = new ReadOnlyCollection<int>(
                                                 new List<int> { MIDNIGHT_SQUID, SPOOK_FISH, BLOBFISH });

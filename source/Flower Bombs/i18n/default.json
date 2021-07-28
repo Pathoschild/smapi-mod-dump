@@ -9,11 +9,17 @@
 *************************************************/
 
 {
-	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work. In line with the purpose of this mod, please avoid gender-specific words and inflection where possible.",
+	// Translators: Your contribution is welcome! Please note:
+	// - I would prefer to publish translations as part of the main mod to keep everything up to date.
+	// - Please see README.md for how to prepare the translation and send me your work.
+	// - This and other comments (beginning with //) are for your reference and should not be translated.
 
 	"FlowerBomb.name": "Flower Bomb",
 	"FlowerBomb.description": "Generates an explosion of seasonal color overnight. Have fun!",
 	"FlowerBomb.empty": "No seeds (Weeds only)",
+
+	"WaterToGerminate.name": "Water Required to Germinate",
+	"WaterToGerminate.description": "Whether to wait for the next rainy or snowy day (or sprinkler spray) to germinate Flower Bombs",
 
 	"ClintMudstone.name": "Mudstone Sold by Clint",
 	"ClintMudstone.description": "Whether to add some Mudstone to Clint's shop to make crafting easier",

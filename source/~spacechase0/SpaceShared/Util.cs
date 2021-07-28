@@ -17,7 +17,7 @@ using StardewValley;
 
 namespace SpaceShared
 {
-    internal class Util
+    internal static class Util
     {
         public static bool UsingMono => Type.GetType("Mono.Runtime") != null;
 

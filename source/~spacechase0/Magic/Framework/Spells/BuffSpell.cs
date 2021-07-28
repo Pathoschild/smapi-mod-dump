@@ -9,7 +9,6 @@
 *************************************************/
 
 using Magic.Framework.Schools;
-using Netcode;
 using SpaceCore;
 using StardewValley;
 
@@ -17,6 +16,9 @@ namespace Magic.Framework.Spells
 {
     internal class BuffSpell : Spell
     {
+        /*********
+        ** Public methods
+        *********/
         public BuffSpell()
             : base(SchoolId.Life, "buff") { }
 
@@ -50,8 +52,7 @@ namespace Magic.Framework.Spells
                     return null;
             }
 
-            //Game1.buffsDisplay.clearAllBuffs();
-            Mod.Instance.Helper.Reflection.GetField<NetArray<int, NetInt>>(Game1.player, "appliedBuffs").GetValue().Clear();
+            Game1.player.removeBuffAttributes();
             Game1.player.attack = 0;
 
             int l = level + 1;

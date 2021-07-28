@@ -29,21 +29,23 @@ namespace ToolBelt
         protected float animProgress = 0f;
 
         protected bool gamepadMode;
+        protected bool moved = false;
+        protected int moveAge = 0;
+        protected int delay = 250;
 
-        protected ToolBeltButton selectedButton;
         protected int wheelIndex = -1;
 
         IModHelper Helper;
+        IMonitor Monitor;
         ModConfig Config;
         ModEntry Mod;
 
-
-
-        public ToolBeltMenu(IModHelper helper, ModEntry mod, ModConfig config)
+        public ToolBeltMenu(IModHelper helper, ModEntry mod, ModConfig config, IMonitor Monitor)
         {
             Helper = helper;
             Mod = mod;
             Config = config;
+            this.Monitor = Monitor;
 
             animtime = Config.AnimationMilliseconds;
             buttonRadius = 26;
@@ -58,17 +60,21 @@ namespace ToolBelt
         public void updateToolList(SortedDictionary<Item, int> dict)
         {
             //essentially re init the menu
-            int count = 0;
             gamepadMode = false;
             buttons.Clear();
-            selectedButton = null;
             age = 0;
             animProgress = 0f;
+            delay = 250;
+            moved = false;
 
             foreach (KeyValuePair<Item, int> kv in dict)
             {
                 buttons.Add(new ToolBeltButton(kv.Value, kv.Key, Helper));
-                count++;
+                if (kv.Value == Game1.player.CurrentToolIndex)
+                {
+                    wheelIndex = buttons.Count - 1;
+                    buttons[wheelIndex].select();
+                }
             }
 
             snapToPlayerPosition();
@@ -86,16 +92,13 @@ namespace ToolBelt
             age += time.ElapsedGameTime.Milliseconds;
             if (age > animtime)
             {
-                age = animtime;
+                animProgress = 1f;
             }
-            if (animtime > 0)
+            else if (animtime > 0)
             {
                 animProgress = (float)age / (float)animtime;
             }
-            else
-            {
-                animProgress = 1f;
-            }
+            if (wheelIndex >= 0) buttons[wheelIndex].select();
 
             snapToPlayerPosition();
             Vector2 offset = default(Vector2);
@@ -120,30 +123,73 @@ namespace ToolBelt
 
             if (gamepadMode)
             {
-
-
-                if (Math.Abs(xState) > 0.5f || Math.Abs(yState) > 0.5f)
+                if (Config.HorizontalSelect)
                 {
-                    offset = new Vector2(xState, yState);
-                    offset.Y *= -1f;
-                    offset.Normalize();
-                    float highest_dot = -1f;
-                    for (int j = 0; j < buttons.Count; j++)
+                    //horizontal selection style
+                    if (wheelIndex <= 0) wheelIndex = 0;
+                    if (!moved && xState > 0.7f)
                     {
-                        buttons[j].deSelect();
-                        float dot = Vector2.Dot(value2: new Vector2((float)buttons[j].bounds.Center.X - ((float)xPositionOnScreen + (float)width / 2f), (float)buttons[j].bounds.Center.Y - ((float)yPositionOnScreen + (float)height / 2f)), value1: offset);
-                        if (dot > highest_dot)
-                        {
-                            highest_dot = dot;
-                            wheelIndex = j;
-                        }
+                        moved = true;
+                        moveAge = age;
+                        buttons[wheelIndex].deSelect();
+                        wheelIndex = (wheelIndex + 1) % buttons.Count;
+
                     }
-                    selectedButton = buttons[wheelIndex];
-                    selectedButton.select();
+                    if (!moved && xState < -0.7f)
+                    {
+                        moved = true;
+                        moveAge = age;
+                        buttons[wheelIndex].deSelect();
+                        wheelIndex = wheelIndex == 0 ? buttons.Count - 1 : wheelIndex - 1;
+                    }
+                    if (moved && age - moveAge > delay)
+                    {
+                        moved = false;
+                        delay = 80;
+                    }
+
+                    if (Math.Abs(xState) < 0.3f)
+                    {
+                        moved = false;
+                        delay = 250;
+                    }
+
+                    Monitor.Log(
+                        "\n update" +
+                        "\n age - move age = " + (age - moveAge) +
+                        "\n age = " + age +
+                        "\n delay = " + delay, LogLevel.Trace);
+
                 }
                 else
                 {
-                    Mod.swapItem(closeAndReturnSelected());
+                    //radial selection style
+                    if (Math.Abs(xState) > 0.5f || Math.Abs(yState) > 0.5f)
+                    {
+                        offset = new Vector2(xState, yState);
+                        offset.Y *= -1f;
+                        offset.Normalize();
+                        float highest_dot = -1f;
+                        int tempIndex = 0;
+                        for (int j = 0; j < buttons.Count; j++)
+                        {
+                            float dot = Vector2.Dot(value2: new Vector2((float)buttons[j].bounds.Center.X - ((float)xPositionOnScreen + (float)width / 2f), (float)buttons[j].bounds.Center.Y - ((float)yPositionOnScreen + (float)height / 2f)), value1: offset);
+
+                            if (dot > highest_dot)
+                            {
+                                highest_dot = dot;
+                                tempIndex = j;
+
+                            }
+                        }
+                        buttons[wheelIndex].deSelect();
+                        wheelIndex = tempIndex;
+                        buttons[wheelIndex].select();
+                    }
+                    else
+                    {
+                        Mod.swapItem(closeAndReturnSelected());
+                    }
                 }
             }
 
@@ -164,17 +210,15 @@ namespace ToolBelt
                 if (buttons[i].containsPoint(x, y))
                 {
                     wheelIndex = i;
-                    selectedButton = buttons[i];
-                    selectedButton.select();
+                    buttons[wheelIndex].select();
                     return;
                 }
                 else
                 {
                     buttons[i].deSelect();
+                    wheelIndex = -1;
                 }
             }
-            selectedButton = null;
-            wheelIndex = -1;
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -187,6 +231,7 @@ namespace ToolBelt
 
         public override void receiveRightClick(int x, int y, bool playSound = true)
         {
+            wheelIndex = -1;
             receiveLeftClick(x, y, playSound);
         }
 
@@ -213,11 +258,28 @@ namespace ToolBelt
                 {
                     yPositionOnScreen -= yPositionOnScreen;
                 }
+
+                if (Config.HorizontalSelect)
+                {
+                    yPositionOnScreen -= 3 * Game1.player.GetBoundingBox().Height;
+                }
                 repositionButtons();
             }
         }
 
         protected void repositionButtons()
+        {
+            if (Config.HorizontalSelect)
+            {
+                positionHorizontal();
+            }
+            else
+            {
+                positionRadial();
+            }
+        }
+
+        private void positionRadial()
         {
             updateButtonRadius();
             lowestButtonY = -1;
@@ -232,6 +294,23 @@ namespace ToolBelt
                 button.bounds.X = x;
                 button.bounds.Y = y;
                 if (lowestButtonY < y) lowestButtonY = y;
+            }
+        }
+        private void positionHorizontal()
+        {
+            int x;
+            int y = (yPositionOnScreen + height / 2);
+            int buttonCount = buttons.Count;
+            int spacing = 15;
+
+            for (int i = 0; i < buttonCount; i++)
+            {
+                ClickableTextureComponent button = buttons[i];
+                x = (xPositionOnScreen + width / 2) + (spacing + button.bounds.Width) * i;
+                x = x - (((buttonCount * (button.bounds.Width + spacing)) - spacing) / 2);
+
+                button.bounds.X = x;
+                button.bounds.Y = y;
             }
         }
 
@@ -267,9 +346,17 @@ namespace ToolBelt
             }
 
 
-            if (selectedButton != null)
+            if (animProgress >= 1 && wheelIndex >= 0)
             {
-                SpriteText.drawStringWithScrollCenteredAt(b, selectedButton.toolName(), xPositionOnScreen + width / 2, lowestButtonY + selectedButton.bounds.Height + 20); ;
+                if (Config.HorizontalSelect)
+                {
+                    SpriteText.drawStringWithScrollCenteredAt(b, buttons[wheelIndex].toolName(), xPositionOnScreen + width / 2, (yPositionOnScreen + height / 2) - buttons[wheelIndex].bounds.Height); ;
+                }
+                else
+                {
+                    SpriteText.drawStringWithScrollCenteredAt(b, buttons[wheelIndex].toolName(), xPositionOnScreen + width / 2, lowestButtonY + buttons[wheelIndex].bounds.Height + 20); ;
+                }
+
             }
             Game1.EndWorldDrawInUI(b);
         }

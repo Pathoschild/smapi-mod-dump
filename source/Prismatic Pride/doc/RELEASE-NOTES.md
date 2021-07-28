@@ -10,6 +10,17 @@ for queries and analysis.**
 
 [Prismatic Pride](../)
 
+## 1.1.0
+
+*Released 2021 July 10.*
+
+* Add option for duration of each color in rotation
+* Add option to turn off pride colors for mod compatibility
+* Open the shop from either side of Emily's fabric shelf
+* Fix invalid shirts being sold when Prismatic Skirts and Dresses not present
+* Improve performance of Prismatic Boots on slower devices
+* Compensate for lag when Get Glam or Change Shoe Color is also present
+
 ## 1.0.1
 
 *Released 2021 June 26.*

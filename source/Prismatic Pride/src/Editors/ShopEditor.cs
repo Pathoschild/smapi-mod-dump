@@ -14,12 +14,17 @@ using xTile.Dimensions;
 
 namespace PrismaticPride
 {
-	// This editor adds the shop tile to the left side of Emily's fabric shelves,
-	// if STF is present to support the shop.
+	// This editor adds the shop to Emily's fabric shelves, if STF is present.
 	internal class ShopEditor : IAssetEditor
 	{
 		protected static IModHelper Helper => ModEntry.Instance.Helper;
 		protected static IMonitor Monitor => ModEntry.Instance.Monitor;
+
+		private static readonly Location[] TileLocations = new Location[]
+		{
+			new (16, 23),
+			new (17, 23),
+		};
 
 		public bool CanEdit<_T> (IAssetInfo asset)
 		{
@@ -31,10 +36,13 @@ namespace PrismaticPride
 		{
 			var data = asset.AsMap ().Data;
 			var layer = data.GetLayer ("Buildings");
-			var tile = layer.PickTile (new Location (16, 23) * Game1.tileSize,
-				Game1.viewport.Size);
-			tile.Properties["Action"] = "";
-			tile.Properties["Shop"] = "kdau.PrismaticPride.shop";
+			foreach (var tileLocation in TileLocations)
+			{
+				var tile = layer.PickTile (tileLocation * Game1.tileSize,
+					Game1.viewport.Size);
+				tile.Properties["Action"] = "";
+				tile.Properties["Shop"] = "kdau.PrismaticPride.shop";
+			}
 		}
 	}
 }

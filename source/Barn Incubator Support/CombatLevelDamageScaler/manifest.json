@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Combat Level Damage Scaler",
+    "Author": "spacechase0",
+    "Version": "1.0.2",
+    "MinimumApiVersion": "3.9.5",
+    "Description": "Scales damage up based on your combat level.",
+    "UniqueID": "spacechase0.CombatLevelDamageScaler",
+    "EntryDll": "CombatLevelDamageScaler.dll",
+    "UpdateKeys": [ "Nexus:3905" ]
+}

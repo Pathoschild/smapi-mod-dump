@@ -31,7 +31,10 @@
 
     "BalanceReportText": "Relatório Econômico",
     "CurrentTaxBalance": "Montante de imposto pendente",
-	
-	"NextScheduledTaxText": "Próximo imposto agendado:",
-    "NoBillsForYouText": "Não há contas para você no momento :)"
+
+    "NextScheduledTaxText": "Próximo imposto agendado:",
+    "NoBillsForYouText": "Não há contas para você no momento :)",
+
+    ///Options
+    "ChkTaxAfterFirstYear":  "Taxas somente depois do primeiro ano"
 }

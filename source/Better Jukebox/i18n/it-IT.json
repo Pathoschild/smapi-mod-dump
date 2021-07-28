@@ -1,0 +1,106 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Gaphodil/BetterJukebox
+**
+*************************************************/
+
+{
+    // in-game - high priority!
+    "BetterJukebox:CurrentlyPlaying":        "Currently playing:",
+    "BetterJukebox:HeardOrderDefault":       "Heard order (default)",
+    "BetterJukebox:SoundtrackOrder":         "Soundtrack order",
+    "BetterJukebox:AlphabeticalSongName":    "Alphabetical (song name)",
+    "BetterJukebox:AlphabeticalCueName":     "Alphabetical (cue name)",
+    
+    // config menu - low priority!
+    "BetterJukebox:ShowMenu":                               "Show Menu",
+    "BetterJukebox:ShowMenuDescription":                    "Show the menu. When disabled, only permanent list settings will apply.",
+
+    "BetterJukebox:ListSettings":                           "List Settings",
+    "BetterJukebox:ListSettingsDescription":                "Settings that affect the list of tracks.",
+    "BetterJukebox:FunctionalSettings":                     "Functional Settings",
+    "BetterJukebox:FunctionalSettingsDescription":          "Settings that affect menu functionality.",
+    "BetterJukebox:VisualSettings":                         "Visual Settings",
+    "BetterJukebox:VisualSettingsDescription":              "Settings that affect menu and track name appearance.",
+    
+    "BetterJukebox:AmbientTracks":                          "Ambient Tracks",
+    "BetterJukebox:AmbientTracksDescription":               "Addresses ambient and other non-musical tracks normally hidden from the player. 0 performs no removal, 1 uses the default removal, and 2 removes additional non-music items not removed normally, whether due to bugs or mod interference. Applied after adding unheard tracks. Does not affect vanilla random choice",
+    "BetterJukebox:Blacklist":                              "Blacklist",
+    "BetterJukebox:BlacklistDescription":                   "Comma-separated list of music cues to hide from the list in addition to the above.",
+    "BetterJukebox:Whitelist":                              "Whitelist",
+    "BetterJukebox:WhitelistDescription":                   "Comma-separated list of music cues to unhide from the list in addition to the above. Does not add tracks, only applies if heard or added with \"Show Unheard Tracks\".",
+    "BetterJukebox:ShowLockedSongs":                        "Show Locked Songs",
+    "BetterJukebox:ShowLockedSongsDescription":             "Shows locked icons in place of unheard songs from the soundtrack. Ignored if \"Show Unheard Tracks\" is enabled. Due to mutually exclusive tracks, you may not be able to hear them all.",
+    "BetterJukebox:ShowUnheardTracks":                      "Show Unheard Tracks",
+    "BetterJukebox:ShowUnheardTracksDescription":           "Songs not yet heard on the current save file can be found in the jukebox. WARNING: Will permanently add songs to the farmer's \"heard songs\" list when played in the Saloon.",
+    "BetterJukebox:UnheardSoundtrack":                      "Unheard Soundtrack",
+    "BetterJukebox:UnheardSoundtrackDescription":           "If \"Show Unheard Tracks\" is enabled, adds unheard Steam soundtrack tracks (plus a few extra).",
+    "BetterJukebox:UnheardNamed":                           "Unheard Named",
+    "BetterJukebox:UnheardNamedDescription":                "If \"Show Unheard Tracks\" is enabled, adds unheard named, non-soundtrack tracks.",
+    "BetterJukebox:UnheardRandom":                          "Unheard Random",
+    "BetterJukebox:UnheardRandomDescription":               "If \"Show Unheard Tracks\" is enabled, adds situational random-choice tracks.",
+    "BetterJukebox:UnheardMisc":                            "Unheard Misc",
+    "BetterJukebox:UnheardMiscDescription":                 "If \"Show Unheard Tracks\" is enabled, adds unheard ambient tracks, unnamed unused songs, and a couple musical sound effects.",
+    "BetterJukebox:UnheardDupes":                           "Unheard Dupes",
+    "BetterJukebox:UnheardDupesDescription":                "If \"Show Unheard Tracks\" is enabled, adds unused duplicate cues.",
+    "BetterJukebox:UnheardMusical":                         "Unheard Musical",
+    "BetterJukebox:UnheardMusicalDescription":              "If \"Show Unheard Tracks\" is enabled, adds a subset of Unheard Named and Misc tracks that could be considered music. Adding both and setting \"Ambient Tracks\" to 2 will display the same tracks.",
+    "BetterJukebox:PermanentUnheard":                       "Add Unheard Permanently",
+    "BetterJukebox:PermanentUnheardDescription":            "If \"Show Unheard Tracks\" is enabled, any selected unheard tracks are added to the farmer's \"heard songs\" list. This allows the default jukebox \"random\" to choose these songs. This will be permanent after the game is saved. Applied on loading a save.",
+    "BetterJukebox:PermanentBlacklist":                     "Permanent Blacklist",
+    "BetterJukebox:PermanentBlacklistDescription":          "Comma-separated list of music cues to remove from the farmer's \"heard songs\" list. Applied on loading a save. May be undone by hearing the song again.",
+    
+    "BetterJukebox:TrueRandom":                             "True Random",
+    "BetterJukebox:TrueRandomDescription":                  "Replace random function with menu items instead of only heard songs, but lose automatic shuffle on warp.",
+    "BetterJukebox:ShowAlternateSorts":                     "Show Alternate Sorts",
+    "BetterJukebox:ShowAlternateSortsDescription":          "Non-default sorting options are enabled.",
+    
+    "BetterJukebox:ShowInternalID":                         "Show Internal ID",
+    "BetterJukebox:ShowInternalIDDescription":              "Internal music identifiers are displayed alongside the regular music name.",
+    "BetterJukebox:ShowBandcampNames":                      "Show Bandcamp Names",
+    "BetterJukebox:ShowBandcampNamesDescription":           "Replaces (sometimes incorrect) track names with the full Bandcamp names.",
+    
+    // bandcamp names - non-english filled with in-game original translation! "i don't know" priority!
+    "BetterJukebox:mermaidsong":                    "Sirena",
+    "BetterJukebox:submarine_song":                 "Sottomarino",
+    "BetterJukebox:50s":                            "Bel ricordo",
+    "BetterJukebox:abigailflute":                   "L'Immobile nella pioggia, Assolo",
+    "BetterJukebox:breezy":                         "Terra di verde e oro",
+    "BetterJukebox:wizardsong":                     "Un barlume dell'altro mondo",
+    "BetterJukebox:wedding":                        "Tema nuziale",
+    "BetterJukebox:tinymusicbox":                   "Canzone del carillon",
+    "BetterJukebox:spacemusic":                     "Osservatore di stelle",
+    "BetterJukebox:shimmeringbastion":              "La band di Sam (Elettronico)",
+    "BetterJukebox:heavy":                          "La band di Sam (Heavy)",
+    "BetterJukebox:poppy":                          "La band di Sam (Pop)",
+    "BetterJukebox:marlonstheme":                   "Tema di Marlon",
+    "BetterJukebox:title_night":                    "Tema di caricamento",
+    "BetterJukebox:librarytheme":                   "Biblioteca e museo",
+    "BetterJukebox:kindadumbautumn":                "Cielo d'uva",
+    "BetterJukebox:honkytonky":                     "La band di Sam (Country)",
+    "BetterJukebox:elliottpiano":                   "Assolo di piano",
+    "BetterJukebox:echos":                          "Echi",
+    "BetterJukebox:desolate":                       "Una triste storia",
+    "BetterJukebox:cowboy_overworld":               "Viaggio del Re della Prateria (Mondo base)",
+    "BetterJukebox:cowboy_outlawsong":              "Viaggio del Re della Prateria (Fuorilegge)",
+    "BetterJukebox:cowboy_undead":                  "Viaggio del Re della Prateria (Non morti)",
+    "BetterJukebox:cowboy_boss":                    "Viaggio del Re della Prateria (Boss)",
+    "BetterJukebox:cowboy_singing":                 "Viaggio del Re della Prateria (Finale)",
+    "BetterJukebox:ragtime":                        "Rag del barattolo di sottaceti",
+    "BetterJukebox:shanetheme":                     "Tema di Shane",
+    "BetterJukebox:emilytheme":                     "Canzone di piume",
+    "BetterJukebox:movie_classic":                  "Tema dell'Espresso per Zuzu City",
+    "BetterJukebox:movie_nature":                   "Esplorare il Nostro Mondo Rigoglioso",
+    "BetterJukebox:movie_wumbus":                   "Tema di Wumbus",
+    "BetterJukebox:junimokart":                     "Junimo Kart (Tema Principale)",
+    "BetterJukebox:junimokart_whalemusic":          "Junimo Kart (Gigante del Mar di Gemme)",
+    "BetterJukebox:junimokart_mushroommusic":       "Junimo Kart (Spelonca degli Splendifunghi)",
+    "BetterJukebox:junimokart_ghostmusic":          "Junimo Kart (Fregata Fantasmagorica)",
+    "BetterJukebox:junimokart_slimemusic":          "Junimo Kart (Pestonatore Pazzo)",
+    "BetterJukebox:sunroom":                        "Da soli con un tè rilassante",
+    "BetterJukebox:end_credits":                    "Stardew Valley Per Sempre"
+}

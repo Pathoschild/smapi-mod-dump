@@ -51,11 +51,10 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 87eb19c51e73808ac7068189da13a93612eb9bc9
+   commit fd8b6b7772af1c8a9599375629acc734e9ef1679
+   Merge: b09608c 0086de6
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Jun 30 15:33:34 2021 -0400
+   Date:   Sat Jul 24 23:39:52 2021 -0400
    
-       migrate Another Hunger Mod to modData
-       
-       The mod now stores player data in their Farmer.modData fields, which removes the need for custom network sync and simplifies troubleshooting. Previous data will migrated automatically when the player loads a save.
+       Merge branch 'develop'
    

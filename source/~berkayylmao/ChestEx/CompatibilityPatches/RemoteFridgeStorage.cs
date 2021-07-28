@@ -10,7 +10,6 @@
 
 #region License
 
-// clang-format off
 // 
 //    ChestEx (StardewValleyMods)
 //    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
@@ -21,14 +20,12 @@
 //    (at your option) any later version.
 // 
 //    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    but WITHOUT ANY WARRANTY, without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //    GNU Affero General Public License for more details.
 // 
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program. If not, see <https://www.gnu.org/licenses/>.
-// 
-// clang-format on
 
 #endregion
 
@@ -68,8 +65,8 @@ namespace ChestEx.CompatibilityPatches {
         if (Game1.activeClickableMenu is not CustomItemGrabMenu menu) return;
 
         Traverse.Create(____config).Property<Boolean>("OverrideOffset").Value = true;
-        Traverse.Create(____config).Property<Int32>("XOffset").Value          = menu.mSourceInventoryOptions.mBounds.X - 48;
-        Traverse.Create(____config).Property<Int32>("YOffset").Value          = menu.mSourceInventoryOptions.mBounds.Y + 96;
+        Traverse.Create(____config).Property<Int32>("XOffset").Value          = menu.mSourceInventoryOptions.mDialogueBoxBounds.X - 64;
+        Traverse.Create(____config).Property<Int32>("YOffset").Value          = menu.mSourceInventoryOptions.mDialogueBoxBounds.Y + 96;
       }
 
       [HarmonyTranspiler]

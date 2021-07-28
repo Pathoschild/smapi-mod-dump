@@ -65,12 +65,31 @@ namespace WhatAreYouMissing
             AddName(Constants.GAME_NAME_DESERT, Constants.DEFAULT_AREA_CODE, Utilities.GetTranslation("DESERT_DISPLAY_NAME"));
             AddName(Constants.GAME_NAME_WITCHS_SWAMP, Constants.DEFAULT_AREA_CODE, Utilities.GetTranslation("WITCHS_SWAMP_DISPLAY_NAME"));
 
+            AddName(Constants.GAME_NAME_GINGER_ISLAND_N, Constants.DEFAULT_AREA_CODE, Utilities.GetTranslation("GINGER_ISLAND_N"));
+            AddName(Constants.GAME_NAME_GINGER_ISLAND_S, Constants.DEFAULT_AREA_CODE, Utilities.GetTranslation("GINGER_ISLAND_S"));
+            AddName(Constants.GAME_NAME_GINGER_ISLAND_SE, Constants.DEFAULT_AREA_CODE, Utilities.GetTranslation("GINGER_ISLAND_SE"));
+            AddName(Constants.GAME_NAME_GINGER_ISLAND_SE_CAVE, Constants.DEFAULT_AREA_CODE, Utilities.GetTranslation("GINGER_ISLAND_SE_CAVE"));
+            AddName(Constants.GAME_NAME_GINGER_ISLAND_SECRET, Constants.DEFAULT_AREA_CODE, Utilities.GetTranslation("GINGER_ISLAND_SECRET"));
+            AddName(Constants.GAME_NAME_GINGER_ISLAND_N_CAVE, Constants.DEFAULT_AREA_CODE, Utilities.GetTranslation("GINGER_ISLAND_N_CAVE"));
+
             AddCindersapForestNames();
+            AddGingerIslandWestNames();
         }
 
         private void AddName(string gameName, int areaCode, string displayName)
         {
             PossibleLocationDisplayNames.Add(gameName, new Dictionary<int, string[]> { [areaCode] = new string[1] { displayName } });
+        }
+
+        private void AddGingerIslandWestNames()
+        {
+            Dictionary<int, string[]> gingerIslandWest = new Dictionary<int, string[]>
+            {
+                [Constants.GINGER_ILSAND_WEST_OCEAN_CODE] = new string[1] { Utilities.GetTranslation("GINGER_ISLAND_W_OCEAN") },
+                [Constants.GINGER_ISLAND_WEST_FRESHWATER_CODE] = new string[1] { Utilities.GetTranslation("GINGER_ISLAND_W_FRESHWATER") },
+            };
+
+            PossibleLocationDisplayNames.Add(Constants.GAME_NAME_GINGER_ISLAND_W, gingerIslandWest);
         }
 
         private void AddCindersapForestNames()

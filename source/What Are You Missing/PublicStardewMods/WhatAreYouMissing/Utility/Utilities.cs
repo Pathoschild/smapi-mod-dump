@@ -40,6 +40,25 @@ namespace WhatAreYouMissing
         {
             return Game1.player.mailReceived.Contains("ccPantry");
         }
+        public static bool IsGingerIslandNorthUnlocked()
+        {
+            return Game1.player.mailReceived.Contains("Island_FirstParrot");
+        }
+
+        public static bool IsGingerIslandSouthUnlocked()
+        {
+            return Game1.player.mailReceived.Contains("willyBoatFixed");
+        }
+
+        public static bool IsGingerIslandWestUnlocked()
+        {
+            return Game1.player.mailReceived.Contains("Island_Turtle");
+        }
+
+        public static bool IsGingerIslandSouthEastUnlocked()
+        {
+            return Game1.player.mailReceived.Contains("Island_Resort");
+        }
 
         public static bool IsSecretWoodsUnlocked()
         {
@@ -65,6 +84,11 @@ namespace WhatAreYouMissing
         public static bool IsWitchsSwampUnlocked()
         {
             return Game1.player.hasDarkTalisman;
+        }
+
+        public static bool IsExtendedFamilyQuestActive()
+        {
+            return Game1.player.team.SpecialOrderActive("QiChallenge8");
         }
 
         public static bool CheckMerchantForItemAndSeed(int item)
@@ -93,7 +117,7 @@ namespace WhatAreYouMissing
                 int totalDaysNeeded = GetTotalDaysToGrowNewSeed(seedIndex);
                 string[] growthSeasons = new string[data[seedIndex].Split('/')[1].Split(' ').Length];
                 growthSeasons = data[seedIndex].Split('/')[1].Split(' ');
-                if (IsGreenHouseUnlocked())
+                if (IsGreenHouseUnlocked() || IsGingerIslandWestUnlocked())
                 {
                     return true;
                 }

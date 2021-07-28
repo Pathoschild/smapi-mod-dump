@@ -47,7 +47,7 @@ namespace GenericModConfigMenu.Framework
         /// <summary>Whether a keybinding UI is open.</summary>
         private bool IsBindingKey => this.KeybindingOpt != null || this.Keybinding2Opt != null;
 
-        public readonly IManifest Manifest;
+        public IManifest Manifest => this.ModConfig.ModManifest;
         public readonly string CurrPage;
         public static IClickableMenu ActiveConfigMenu;
 
@@ -72,18 +72,17 @@ namespace GenericModConfigMenu.Framework
             }
         }
 
-        public SpecificModConfigMenu(IManifest modManifest, bool inGame, int scrollSpeed, string page, Action<string> openPage, Action returnToList)
+        public SpecificModConfigMenu(ModConfig config, bool inGame, int scrollSpeed, string page, Action<string> openPage, Action returnToList)
         {
-            this.Manifest = modManifest;
+            this.ModConfig = config;
             this.InGame = inGame;
             this.ScrollSpeed = scrollSpeed;
             this.OpenPage = openPage;
             this.ReturnToList = returnToList;
 
-            this.ModConfig = Mod.Instance.Configs[this.Manifest];
             this.CurrPage = page ?? "";
 
-            Mod.Instance.Configs[this.Manifest].ActiveDisplayPage = this.ModConfig.Options[this.CurrPage];
+            this.ModConfig.ActiveDisplayPage = this.ModConfig.Options[this.CurrPage];
 
             this.Table = new Table
             {
@@ -270,38 +269,48 @@ namespace GenericModConfigMenu.Framework
 
                     case ParagraphModOption option:
                         {
-                            label.NonBoldScale = 0.75f;
-                            label.NonBoldShadow = false;
+                            label = null;
                             other = null;
 
-                            string[] text = option.Name.Split(' ');
-                            label.String = text[0] + " ";
-                            for (int it = 1; it < text.Length; ++it)
+                            List<string> lines = new();
                             {
-                                string oldStr = label.String;
-                                label.String += text[it];
-                                if (label.Measure().X >= this.Table.Size.X)
+                                string nextLine = "";
+                                foreach (string word in option.Name.Split(' '))
                                 {
-                                    label.String = oldStr + "\n" + text[it];
+                                    // always add at least one word
+                                    if (nextLine == "")
+                                    {
+                                        nextLine = word;
+                                        continue;
+                                    }
+
+                                    // else append if it fits
+                                    string possibleLine = $"{nextLine} {word}".Trim();
+                                    if (Label.MeasureString(possibleLine).X <= this.Table.Size.X)
+                                    {
+                                        nextLine = possibleLine;
+                                        continue;
+                                    }
+
+                                    // else start new line
+                                    lines.Add(nextLine);
+                                    nextLine = word;
                                 }
-                                if (it < text.Length - 1)
-                                    label.String += " ";
+
+                                if (nextLine != "")
+                                    lines.Add(nextLine);
                             }
 
-                            string[] lines = label.String.Split('\n');
-                            for (int il = 0; il < lines.Length; il += 2)
+                            this.Table.AddRow(new Element[]
                             {
-                                this.Table.AddRow(new Element[]
+                                new Label
                                 {
-                                    new Label
-                                    {
-                                        UserData = opt.Description,
-                                        NonBoldScale = 0.75f,
-                                        NonBoldShadow = false,
-                                        String = lines[ il + 0 ] + "\n" + (il + 1 >= lines.Length ? "" : lines[ il + 1 ])
-                                    }
-                                });
-                            }
+                                    UserData = opt.Description,
+                                    NonBoldScale = 0.75f,
+                                    NonBoldShadow = false,
+                                    String = string.Join("\n", lines)
+                                }
+                            });
                             break;
                         }
 
@@ -352,7 +361,7 @@ namespace GenericModConfigMenu.Framework
                 this.Table.AddRow(new[] { label, other, other2 }.Where(p => p != null).ToArray());
             }
             this.Ui.AddChild(this.Table);
-            this.AddDefaultLabels(modManifest);
+            this.AddDefaultLabels(this.Manifest);
 
             // We need to update widgets at least once so ComplexModOptionWidget's get initialized
             this.Table.ForceUpdateEvenHidden();

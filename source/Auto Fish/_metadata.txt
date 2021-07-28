@@ -6,9 +6,9 @@ mods:
    Auto Fish
 
 latest commit:
-   commit 03c4d4dc832b89402b06a296ab49ebdbf5b0dae9
-   Author: å‘¨é¹ <zhoupeng@nutstore.net>
-   Date:   Thu Jul 1 14:07:14 2021 +0800
+   commit bd22972ac55f4e2a120a21baa1324d0d4e8dc5b2
+   Author: WhiteMind <WhiteMind@qq.com>
+   Date:   Sat Jul 3 16:39:48 2021 +0800
    
        feat: Update SMAPI version to 3.0+
    

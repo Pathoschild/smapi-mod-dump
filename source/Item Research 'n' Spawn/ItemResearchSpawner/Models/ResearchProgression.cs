@@ -10,7 +10,7 @@
 
 namespace ItemResearchSpawner.Models
 {
-    internal class ResearchProgression
+    public class ResearchProgression
     {
         public int ResearchCount { get; set; }
         public int ResearchCountGold { get; set; }

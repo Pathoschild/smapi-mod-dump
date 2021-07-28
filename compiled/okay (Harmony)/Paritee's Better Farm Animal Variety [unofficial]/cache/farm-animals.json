@@ -4,48 +4,59 @@
       "Category": "Chicken",
       "Types": [
         {
-          "Type": "White Chicken",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "White Chicken"
         },
         {
-          "Type": "Brown Chicken",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Brown Chicken"
         },
         {
-          "Type": "Blue Chicken",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Blue Chicken"
         },
         {
-          "Type": "Void Chicken",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Void Chicken"
+        },
+        {
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Localization": {},
+          "Sprites": {
+            "Adult": null,
+            "Baby": null,
+            "ReadyForHarvest": null
+          },
+          "Type": "Golden Chicken"
         }
       ],
       "Buildings": [
@@ -66,26 +77,26 @@
       "Category": "Dairy Cow",
       "Types": [
         {
-          "Type": "White Cow",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "White Cow"
         },
         {
-          "Type": "Brown Cow",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Brown Cow"
         }
       ],
       "Buildings": [
@@ -104,15 +115,15 @@
       "Category": "Goat",
       "Types": [
         {
-          "Type": "Goat",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Goat"
         }
       ],
       "Buildings": [
@@ -130,15 +141,15 @@
       "Category": "Duck",
       "Types": [
         {
-          "Type": "Duck",
           "Data": null,
           "DeluxeProduceLuck": 0.01,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Duck"
         }
       ],
       "Buildings": [
@@ -156,15 +167,15 @@
       "Category": "Sheep",
       "Types": [
         {
-          "Type": "Sheep",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Sheep"
         }
       ],
       "Buildings": [
@@ -181,15 +192,15 @@
       "Category": "Rabbit",
       "Types": [
         {
-          "Type": "Rabbit",
           "Data": null,
           "DeluxeProduceLuck": 0.02,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Rabbit"
         }
       ],
       "Buildings": [
@@ -206,15 +217,15 @@
       "Category": "Pig",
       "Types": [
         {
-          "Type": "Pig",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Pig"
         }
       ],
       "Buildings": [
@@ -231,20 +242,42 @@
       "Category": "Dinosaur",
       "Types": [
         {
-          "Type": "Dinosaur",
           "Data": null,
           "DeluxeProduceLuck": 0.0,
+          "Localization": {},
           "Sprites": {
-            "Baby": null,
             "Adult": null,
+            "Baby": null,
             "ReadyForHarvest": null
           },
-          "Localization": {}
+          "Type": "Dinosaur"
         }
       ],
       "Buildings": [
         "Big Coop",
         "Deluxe Coop"
+      ],
+      "AnimalShop": null
+    },
+    {
+      "Category": "Ostrich",
+      "Types": [
+        {
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Localization": {},
+          "Sprites": {
+            "Adult": null,
+            "Baby": null,
+            "ReadyForHarvest": null
+          },
+          "Type": "Ostrich"
+        }
+      ],
+      "Buildings": [
+        "Barn",
+        "Big Barn",
+        "Deluxe Barn"
       ],
       "AnimalShop": null
     }

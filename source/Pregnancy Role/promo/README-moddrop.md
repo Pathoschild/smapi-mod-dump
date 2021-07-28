@@ -67,7 +67,7 @@ If you need to hide or reposition the "Pregnancy Role" dropdown on the Skills ta
 
 ## ![Translation](https://www.kdau.com/headers/translation.png)
 
-This mod can be translated into any language supported by Stardew Valley. It is currently available in English and Russian.
+This mod can be translated into any language supported by Stardew Valley. It is currently available in English, Russian and Spanish.
 
 Your contribution would be welcome. Please see the [instructions on the wiki](https://stardewvalleywiki.com/Modding:Translations). You can send me your work in [a GitLab issue](https://gitlab.com/kdau/pregnancyrole/-/issues) or the Comments tab above.
 
@@ -76,6 +76,7 @@ Your contribution would be welcome. Please see the [instructions on the wiki](ht
 * This mod is based on ideas and advice from [EssGee](https://www.nexusmods.com/stardewvalley/users/83595503).
 * Like all mods, this one is indebted to ConcernedApe, Pathoschild and the various framework modders.
 * The Russian translation was prepared by BANANJI.
+* The Spanish translation was prepared by Monicuchi.
 
 ## ![See also](https://www.kdau.com/headers/see-also.png)
 

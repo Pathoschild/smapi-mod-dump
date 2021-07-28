@@ -9,8 +9,20 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Migrated player data into the `Farmer.modData` field to simplify synchronization and reduce edge cases.
+## 1.2.2
+Released 12 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Fixed fullness starting at zero in new saves.
+
+## 1.2.1
+Released 11 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Fixed fullness over 100% allowed in 1.2.0.
+
+## 1.2.0
+Released 10 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Reworked how player data is stored to simplify multiplayer sync and reduce edge cases.
 
 ## 1.1.1
 Released 19 June 2021 for Stardew Valley 1.5. Updated by Pathoschild.

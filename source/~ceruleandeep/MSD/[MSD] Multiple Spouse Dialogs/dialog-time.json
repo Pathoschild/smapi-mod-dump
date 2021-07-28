@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceruleandeep/CeruleanStardewMods
+**
+*************************************************/
+
+[
+  {
+    "Call": "Good morning babe!",
+    "Response": "Good morning @ <",
+    "When": {
+      "Time": "{{Range: 0600, 1200}}"
+    }
+  },
+  {
+    "Call": "Big day ahead",
+    "Response": "Have fun!",
+    "When": {
+      "Time": "{{Range: 0600, 1200}}"
+    }
+  },
+  {
+    "Call": "Sweet dreams @",
+    "Response": "Sleep well honey",
+    "When": {
+      "Time": "{{Range: 2000, 2600}}"
+    }
+  },
+  {
+    "Call": "Ready for bed?",
+    "Response": "Ready for snuggles~",
+    "When": {
+      "Time": "{{Range: 2000, 2600}}"
+    }
+  }
+]

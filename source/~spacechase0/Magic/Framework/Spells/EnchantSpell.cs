@@ -15,8 +15,15 @@ namespace Magic.Framework.Spells
 {
     internal class EnchantSpell : Spell
     {
+        /*********
+        ** Accessors
+        *********/
         public bool DoesDisenchant { get; }
 
+
+        /*********
+        ** Public methods
+        *********/
         public EnchantSpell(bool dis)
             : base(SchoolId.Arcane, dis ? "disenchant" : "enchant")
         {

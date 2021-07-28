@@ -6,9 +6,9 @@ mods:
    Flower Bombs
 
 latest commit:
-   commit 3f0455eba5bfd6e534c81e901e3c5aa14432f619
+   commit ca005023134f3ee9a482c27ab93f9413999a2e38
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Tue Jun 22 10:34:03 2021 -0700
+   Date:   Sat Jul 10 19:39:47 2021 -0700
    
-       Further 1.5 migration; linting fixes
+       v2.0.2
    

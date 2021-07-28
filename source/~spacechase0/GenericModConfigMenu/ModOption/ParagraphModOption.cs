@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
+using GenericModConfigMenu.Framework;
 
 namespace GenericModConfigMenu.ModOption
 {
@@ -23,7 +23,7 @@ namespace GenericModConfigMenu.ModOption
         {
         }
 
-        public ParagraphModOption(string paragraph, IManifest mod)
+        public ParagraphModOption(string paragraph, ModConfig mod)
             : base(paragraph, "", paragraph, mod)
         {
         }

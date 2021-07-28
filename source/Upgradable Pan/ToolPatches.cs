@@ -97,7 +97,7 @@ namespace UpgradablePan
 					}
 				}
 			}
-			__result = __instance.actionWhenPurchased();
+			__result = (bool) ModEntry.actionWhenPurchasedOriginal.Invoke(__instance, new object[] { __instance });
 			return false;
 		}
 	}

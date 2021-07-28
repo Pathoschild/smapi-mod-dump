@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <Reference Include="SpaceCore">
-      <HintPath>$(GamePath)\Mods\SpaceCore\SpaceCore.dll</HintPath>
+      <HintPath>$(GamePath)\Mods\[CORE]\SpaceCore\SpaceCore.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

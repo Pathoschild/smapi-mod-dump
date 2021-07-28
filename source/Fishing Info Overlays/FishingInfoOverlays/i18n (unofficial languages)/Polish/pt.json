@@ -10,7 +10,11 @@
 
 {
 	"GenericMC.barLabel": "Pasek Info (miejsce)",
-	"GenericMC.barDescription": "Pasek pokazujący informacje o miejscu przy trzymaniu wędki (przynęta/spławik/śmieci/ryby tutaj) lub pułapki na kraby (śmieci/skorupiaki tutaj). Możesz najechać kursorem na nazwę pozycji aby uzyskać więcej informacji o niej. Naciśnięcie F5 zaktualizuje zapisane zmiany bez ponownego uruchamiania gry. Jeśli trzymasz wędkę, możesz nawet zobaczyć resultat aktualizacji w tym menu: Zapisz, i naciśnij F5.",
+	"GenericMC.barDescription": "Pasek pokazujący informacje o miejscu przy trzymaniu wędki (przynęta/spławik/śmieci/ryby tutaj) lub pułapki na kraby (śmieci/skorupiaki tutaj).",
+	"GenericMC.barDescription2": "Możesz najechać kursorem na nazwę pozycji, aby uzyskać więcej informacji o niej.",
+	"GenericMC.barDescriptionPC": "Naciśnięcie F5, spanie, lub przeładowanie stanu gry zaktualizuje zapisane tutaj zmiany bez restartowania gry.",
+	"GenericMC.barDescriptionPC2": "Jeśli trzymasz teraz wędkę, możesz nawet zobaczyć rezultat aktualizacji w tym menu: Zapisz, i naciśnij F5.",
+	"GenericMC.barDescriptionOther": "Spanie, lub przeładowanie stanu gry zaktualizuje zapisane tutaj zmiany bez restartowania gry.",
 
 	"GenericMC.barIconMode": "Tryb ikon",
 	"GenericMC.barIconModeDesc": "Kierunek, w którym będą podróżować ikony przynęty/spławika/śmieci/ryb, zanim zostaną podzielone na rzędy/kolumny.",
@@ -28,9 +32,9 @@
 	"GenericMC.barScale": "Skala",
 	"GenericMC.barScaleDesc": "Pasek Info skaluje się wraz z interfejsem gry, i z tym numerem (dla dokładniejszej regulacji). Wartości od 0.1 do 10.",
 
-	"GenericMC.barMaxIcons": "Maksymalna liczba ikon (razem)",
+	"GenericMC.barMaxIcons": "Maks ikon (razem)",
 	"GenericMC.barMaxIconsDesc": "Ile ikon Pasek Info może maksymalnie wyświetlić. Wartości od 4 do 500. Zbyt wiele może powodować spowolnienia.",
-	"GenericMC.barMaxIconsPerRow": "Maksymalna liczba ikon (na kolumnę/rząd)",
+	"GenericMC.barMaxIconsPerRow": "Maks ikon (na kolumnę/rząd)",
 	"GenericMC.barMaxIconsPerRowDesc": "Ile ikon Pasek Info może wyświetlić przed zmianą kolumny (tryb poziomy) lub rzędu (tryb pionowy). Wartości od 4 do 500. Najlepiej liczbę, przez którą można podzielić liczbę Maksymalną.",
 
 	"GenericMC.barBackgroundMode": "Tryb tła",
@@ -42,33 +46,42 @@
 	"GenericMC.barShowBaitTackleDesc": "Włącza ikony, które pokazują status przynęty i spławika twojej wędki (jeśli je ma).",
 
 	"GenericMC.barShowPercentages": "Pokaż Procenty",
-	"GenericMC.barShowPercentagesDesc": "Pokazuje symulowaną szansę złapania danej ryby pod jej ikoną. Dokładność bardzo zależy od Częstotliwości Ekstra Testów, im większa tym lepiej.",
+	"GenericMC.barShowPercentagesDesc": "Pokazuje symulowaną szansę złapania danej ryby pod jej ikoną. Dokładność bardzo zależy od Częstotliwości Ekstra Testów, im większa, tym lepiej.",
 
 	"GenericMC.barSortMode": "Tryb Sortowania",
-	"GenericMC.barSortModeDesc": "Sortowanie według Nazwy aranżuje ikony alfabetycznie.\nSortowanie według Szansy Złapania bardzo zależy od Częstotliwości Ekstra Testów, im większa tym lepiej, lecz i tak rachej będzie powodować skakanie ikon.\nBez sortowania ikony mają daną kolejność: Śmieci, według ID, i ekstra.",
+	"GenericMC.barSortModeDesc": "Sortowanie według Nazwy aranżuje ikony alfabetycznie.\nSortowanie według Szansy Złapania bardzo zależy od Częstotliwości Ekstra Testów, im większa, tym lepiej.\nBez sortowania ikony mają daną kolejność: Śmieci, według ID, i ekstra.",
 	"GenericMC.barSortModeName": "Nazwa",
 	"GenericMC.barSortModeChance": "Szansa Złapania",
 
 	"GenericMC.barExtraCheckFrequency": "Częstotliwość Ekstra Testów",
-	"GenericMC.barExtraCheckFrequencyDesc": "Testy intensywnej wydajności które symulują łowienie w tym miejscu. Im wyższa liczba, tym więcej testuw (tym większa dokładność i mniej migotania ikon). Powinno być najdokładniejszą metodą (szczegulnie jeśli masz inne mody), ale wysokie numery mogą spowolnić grę.",
+	"GenericMC.barExtraCheckFrequencyDesc": "Testy intensywnej wydajności, które symulują łowienie w tym miejscu. Im wyższa liczba, tym więcej testów (tym większa dokładność i mniej migotania ikon). Dokładne nawet jeśli masz inne mody, ale wysoka liczba testów może spowolnić grę. W trybie podzielonego ekranu ta liczba jest podzielona przez ilość ekranów, aby nie powodować spowolnień.",
 
 	"GenericMC.barScanRadius": "Radius skanowania",
-	"GenericMC.barScanRadiusDesc": "Jeśli 0 Pasek Info tylko sprawdza czy można tu łowić (niezbyt dokładne). Powyżej 0 skanuje X kafelek wokół gracza, i pokazuje info o rybach tylko gdy znalaziono wodę.",
+	"GenericMC.barScanRadiusDesc": "Pasek Info będzie skanować X kafelek wokół gracza w poszukiwaniu wody i wyświetli informacje o rybach tylko dla najbliższej - jeśli istnieje.",
 
-	"GenericMC.barCrabPotEnabled": "Pasek Pułapkek na Kraby Włączony",
-	"GenericMC.barCrabPotEnabledDesc": "Sprawia że Pasek Info również działa gdy trzymasz pułapke na kraby.",
+	"GenericMC.barCrabPotEnabled": "Pułapki na Kraby Też",
+	"GenericMC.barCrabPotEnabledDesc": "Sprawia, że Pasek Info również działa gdy trzymasz pułapkę na kraby.",
 
 	"GenericMC.barUncaughtDarker": "Niezłowione ryby są ciemniejsze",
-	"GenericMC.barUncaughtDarkerDesc": "Sprawia że ​​ikony niezłapanych ryb są ciemne, tak jak w Menu Kolekcji (dotyczy również minigry). Tryb ikon z tekstem pokazuje je również jako \"???\".",
+	"GenericMC.barUncaughtDarkerDesc": "Sprawia, że ​​ikony niezłapanych ryb są ciemne, tak jak w Menu Kolekcji (dotyczy również minigry). Tryb ikon z tekstem pokazuje je również jako \"???\".",
+
+	"GenericMC.barOnlyFish": "Tylko Ryby",
+	"GenericMC.barOnlyFishDesc": "Pasek pokaże tylko rzeczy z oficjalnej listy ryb (i śmieci), pomijając rzeczy takie jak meble bądź notatki. Nadal będą przyczyniać się do obliczeń procentowych. Opcja dodana głównie ze względu na spójność, ponieważ niektóre z tych przedmiotów są już na czarnej liście (ukryte). Ostrzegam: Jest minimalna szansa, że jakiś mod nie dodał swoich ryb to tej listy, lecz nie liczyłyby się w tym przypadku jako ryby.",
 
 	"GenericMC.MinigameLabel": "Podgląd (minigra)",
-	"GenericMC.MinigameDescription": "Jeśli ta opcja jest włączona, minigra wędkarska pokaże podgląd ryby którą właśnie łapiesz zamiast ikony standardowej. Dopóki inny mod przwidłowo zmienia pozycje BobberBar, powinno to z nim działać. W przeciwnym razie możesz wypróbować inny tryb, lub wyłączyć podgląd tutaj.",
+	"GenericMC.MinigameDescription": "Jeśli ta opcja jest włączona, minigra wędkarska pokaże podgląd ryby, którą właśnie łapiesz zamiast ikony standardowej.",
+	"GenericMC.MinigameDescription2": "Dopóki inny mod prawidłowo zmienia pozycje BobberBar, powinno to z nim działać. W przeciwnym razie możesz wypróbować inny tryb, lub wyłączyć podgląd tutaj.",
 
 	"GenericMC.MinigameMode": "Tryb minigry",
-	"GenericMC.MinigameModeDesc": "Pełny: Kopiuje wiele warstw minigry, aby wyglądać lepiej.\nProsty: Kopiuje tylko rybę. Wygląda gorzej, ale może działać lepiej.\nTylko pasek (równierz zawarty w powyższych dwóch trybach): Wyróżnia rybę w Pasky Info (jeśli jest włączony).",
+	"GenericMC.MinigameModeDesc": "Pełny: Kopiuje wiele warstw minigry, aby wyglądać lepiej.\nProsty: Kopiuje tylko rybę. Wygląda gorzej, ale może działać lepiej.\nTylko pasek (również zawarty w powyższych dwóch trybach): Wyróżnia rybę w Pasky Info (jeśli jest włączony).",
 	"GenericMC.MinigameModeFull": "Pełny",
 	"GenericMC.MinigameModeSimple": "Prosty",
 	"GenericMC.MinigameModeBarOnly": "Tylko pasek",
+
+	"GenericMC.SplitScreenDesc": "Opcje dla trybu dzielonego ekranu, nie są ważne w innych trybach. Tylko główny użytkownik powinien je zmieniać.",
+	"GenericMC.SplitScreen2": "Podzielony Ekran 2: Prawy (Górny)",
+	"GenericMC.SplitScreen3": "Podzielony Ekran 3: Lewy Dolny",
+	"GenericMC.SplitScreen4": "Podzielony Ekran 4: Prawy Dolny",
 
 	"Bar.CrabMineWarning": "Zły pomysł: Pułapki na kraby umieszczone w kopalniach, zostaną utracone po wyjściu."
 }

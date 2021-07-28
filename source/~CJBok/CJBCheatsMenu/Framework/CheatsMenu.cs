@@ -434,7 +434,8 @@ namespace CJBCheatsMenu.Framework
                         cheats.AutoWater,
                         cheats.DurableFences,
                         cheats.InstantBuild,
-                        cheats.AlwaysAutoFeed,
+                        cheats.AutoFeedAnimals,
+                        cheats.AutoPetAnimals,
                         cheats.InfiniteHay
                     );
 
@@ -498,10 +499,20 @@ namespace CJBCheatsMenu.Framework
                     break;
 
                 case MenuTab.Time:
+                    // time of day
                     this.AddOptions(
                         $"{I18n.Time_Title()}:",
                         cheats.FreezeTime,
                         cheats.SetTime
+                    );
+
+                    // date
+                    this.AddTitle($"{I18n.Date_Title()}:");
+                    this.AddDescription(I18n.Date_Warning());
+                    this.AddOptions(
+                        cheats.SetDay,
+                        cheats.SetSeason,
+                        cheats.SetYear
                     );
                     break;
 

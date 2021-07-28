@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ItemResearchSpawner.Components.UI.Helpers;
 using ItemResearchSpawner.Models;
 using ItemResearchSpawner.Utils;
 using Microsoft.Xna.Framework;
@@ -18,7 +19,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 
-namespace ItemResearchSpawner.Components
+namespace ItemResearchSpawner.Components.UI
 {
     /**
         MIT License

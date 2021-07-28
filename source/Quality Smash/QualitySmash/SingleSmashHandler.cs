@@ -53,8 +53,6 @@ namespace QualitySmash
             if (menu == null || !config.EnableSingleItemSmashKeybinds)
                 return;
 
-            ClickableComponent cursorHoverItem;
-
             ModEntry.SmashType smashType;
             if (modEntry.helper.Input.IsDown(config.ColorSmashKeybind))
                 smashType = ModEntry.SmashType.Color;
@@ -69,7 +67,7 @@ namespace QualitySmash
             Game1.uiMode = oldUiMode;
 
             // If the cursor was over a valid item when left clicked, initiate smash
-            cursorHoverItem = CheckInventoriesForCursorHoverItem(menu, cursorPos);
+            var cursorHoverItem = CheckInventoriesForCursorHoverItem(menu, cursorPos);
 
             if (cursorHoverItem == null)
                 return;

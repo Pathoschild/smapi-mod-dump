@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,12 @@ namespace QualitySmash
     {
         public bool EnableUISmashButtons { get; set; }
 
+        public bool EnableUIColorSmashButton { get; set; }
+
+        public bool EnableUIQualitySmashButton { get; set; }
+
+        public bool EnableEggColorSmashing { get; set; }
+
         public bool EnableSingleItemSmashKeybinds { get; set; }
 
         public SButton ColorSmashKeybind { get; set; }
@@ -30,33 +37,39 @@ namespace QualitySmash
 
         public string ItemIDReference { get; set; }
         
-        public List<string> IgnoreIridiumDescription { get; }
+        public List<string> IgnoreIridiumDescription { get; set; }
         public bool IgnoreIridium { get; set; }
 
-        public List<string> IgnoreIridiumItemExceptionsDescription { get; }
+        public List<string> IgnoreIridiumItemExceptionsDescription { get; set; }
         public List<int> IgnoreIridiumItemExceptions { get; set; }
 
-        public List<string> IgnoreIridiumCategoryExceptionsDescription { get; }
+        public List<string> IgnoreIridiumCategoryExceptionsDescription { get; set; }
         public List<int> IgnoreIridiumCategoryExceptions { get; set; }
 
         public List<string> IgnoreGoldDescription { get; set; }
         public bool IgnoreGold { get; set; }
 
-        public List<string> IgnoreSilverDescription { get; }
+        public List<string> IgnoreSilverDescription { get; set; }
         public bool IgnoreSilver { get; set; }
 
-        public List<string> IgnoreItemsColorDescription { get; }
+        public List<string> IgnoreItemsColorDescription { get; set; }
         public List<int> IgnoreItemsColor { get; set; }
 
-        public List<string> IgnoreItemsQualityDescription { get; }
+        public List<string> IgnoreItemsQualityDescription { get; set; }
         public List<int> IgnoreItemsQuality { get; set; }
 
-        public List<string> IgnoreItemsCategoryDescription { get; }
+        public List<string> IgnoreItemsCategoryDescription { get; set; }
         public List<int> IgnoreItemsCategory { get; set; }
 
         public ModConfig()
         {
             this.EnableUISmashButtons = true;
+
+            this.EnableUIColorSmashButton = true;
+
+            this.EnableUIQualitySmashButton = true;
+
+            this.EnableEggColorSmashing = true;
             
             this.EnableSingleItemSmashKeybinds = false;
 
@@ -76,7 +89,7 @@ namespace QualitySmash
             this.IgnoreIridiumItemExceptionsDescription = new List<string>()
             {
                 "Items IDs listed here will still be",
-                "converted to basic quality even if",
+                "converted to lowest present quality even if",
                 "IgnoreIridium is set to true.",
                 "Defaults:",
                 "   296: Salmonberry",
@@ -89,7 +102,7 @@ namespace QualitySmash
             this.IgnoreIridiumCategoryExceptionsDescription = new List<string>()
             {
                 "Items IDs listed here will still be",
-                "converted to basic quality even if",
+                "converted to lowest present quality even if",
                 "IgnoreIridium is set to true.",
                 "Defaults:",
                 "   -4: Fish",

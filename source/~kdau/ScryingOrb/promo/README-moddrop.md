@@ -32,7 +32,7 @@ If any of your other mods affect the areas this mod covers, the orb may make inc
 1. Install [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720)
 1. Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) (optional, for easier configuration)
 1. Download this mod from the link in the header above
-1. Unzip the mod and place the `ScryingOrb` folder inside your `Mods` folder
+1. Unzip the mod and place the `ScryingOrb` and `[JA]ScryingOrb` folders inside your `Mods` folder
 1. Run the game using SMAPI
 
 ## ![[Use]](https://www.kdau.com/headers/use.png)
@@ -149,8 +149,8 @@ Your contribution would be welcome. Please see the [details on the wiki](https:/
 
 ## ![[See also]](https://www.kdau.com/headers/see-also.png)
 
-* [Release notes](https://gitlab.com/kdau/predictivemods/-/blob/master/ScryingOrb/RELEASE-NOTES.md)
-* [Source code](https://gitlab.com/kdau/predictivemods/-/tree/master/ScryingOrb)
+* [Release notes](https://gitlab.com/kdau/predictivemods/-/blob/main/ScryingOrb/doc/RELEASE-NOTES.md)
+* [Source code](https://gitlab.com/kdau/predictivemods/-/tree/main/ScryingOrb)
 * [Report bugs](https://gitlab.com/kdau/predictivemods/-/issues)
 * [My other Stardew stuff](https://www.kdau.com/stardew)
 * Mirrors:

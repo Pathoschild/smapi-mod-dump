@@ -1,5 +1,18 @@
 {
-  "X": 10,
-  "Y": 10,
-  "ToggleBars": "X"
+  "ToggleBars": "X",
+  "Position": "10, 10",
+  "BaseColors": {
+    "BarBorder": "184, 134, 11, 255",
+    "BarBackground": "0, 0, 0, 255",
+    "BarBackgroundTick": "50, 50, 50, 255",
+    "BarForegroundTick": "120, 120, 120, 255"
+  },
+  "SkillColors": {
+    "Combat": "178, 255, 211, 255",
+    "Farming": "115, 255, 56, 255",
+    "Fishing": "117, 225, 255, 255",
+    "Foraging": "205, 127, 50, 255",
+    "Luck": "255, 255, 84, 255",
+    "Mining": "247, 31, 0, 255"
+  }
 }

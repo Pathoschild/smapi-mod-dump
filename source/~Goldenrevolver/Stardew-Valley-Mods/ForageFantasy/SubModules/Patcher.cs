@@ -273,11 +273,11 @@ namespace ForageFantasy
             }
         }
 
-        public static bool PatchSummerWildSeedResult(ref int __result)
+        public static bool PatchSummerWildSeedResult(ref int __result, ref string season)
         {
             try
             {
-                if (mod.Config.CommonFiddleheadFern && Game1.currentSeason == "summer")
+                if (mod.Config.CommonFiddleheadFern && season == "summer")
                 {
                     __result = FernAndBurgerLogic.GetWildSeedSummerForage();
 

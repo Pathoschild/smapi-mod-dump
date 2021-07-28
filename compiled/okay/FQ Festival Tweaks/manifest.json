@@ -1,0 +1,10 @@
+{
+  "Name": "FQ Festival Tweaks",
+  "Author": "FletcherQuest",
+  "Version": "1.0.0",
+  "Description": "Festivals end at their advertised time.",
+  "UniqueID": "FletcherQuest.FQFestivalTweaks",
+  "EntryDll": "FQFestivalTweaks.dll",
+  "MinimumApiVersion": "3.10.0",
+  "UpdateKeys": [ "Nexus:9062" ]
+}

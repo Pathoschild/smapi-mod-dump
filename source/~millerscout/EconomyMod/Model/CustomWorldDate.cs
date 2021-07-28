@@ -30,7 +30,7 @@ namespace EconomyMod.Model
         private Season CalculateMonth()
         {
             var wholeYearMonths = Math.Floor(DaysCount / 28f / 4);
-            var ignoredDays = 112 * wholeYearMonths / DaysCount == 1 ? 112 * (wholeYearMonths - 1) : 112 * wholeYearMonths;
+            var ignoredDays = Constants.WholeYearDaysCount * wholeYearMonths / DaysCount == 1 ? Constants.WholeYearDaysCount * (wholeYearMonths - 1) : Constants.WholeYearDaysCount * wholeYearMonths;
             return (Season)Convert.ToInt32(Math.Ceiling((DaysCount - ignoredDays) / 28f));
 
         }
@@ -90,7 +90,7 @@ namespace EconomyMod.Model
             }
             //var wholeYearMonths = Math.Floor(DaysCount / 28f / 4);
             //var wholeMonth = 28f;
-            //var ignoredDays = 112 * wholeYearMonths / DaysCount == 1 ? 112 * (wholeYearMonths - 1) : 112 * wholeYearMonths;
+            //var ignoredDays = Constants.WholeYearDaysCount * wholeYearMonths / DaysCount == 1 ? Constants.WholeYearDaysCount * (wholeYearMonths - 1) : Constants.WholeYearDaysCount * wholeYearMonths;
             //ignoredDays += ((DaysCount - ignoredDays) / 28 > 1 ? wholeMonth : 0);
             //return Convert.ToInt32(DaysCount - ignoredDays);
         }

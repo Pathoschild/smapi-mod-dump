@@ -5,6 +5,8 @@
   "ForagesNeededForBestQuality": 500,
   "MineralsNeededForBestQuality": 500,
   "ChanceToStartTreasureHunt": 0.2,
-  "TreasureTileDetectionDistance": 3.0,
-  "TrashNeededForNextTaxLevel": 100
+  "TreasureHuntHandicap": 1.0,
+  "TreasureDetectionDistance": 3.0,
+  "TrashNeededForNextTaxLevel": 100,
+  "TaxBonusCeiling": 0.37
 }

@@ -56,6 +56,7 @@ namespace RangeHighlight {
             public readonly bool[,] iridiumSprinkler;
             public readonly bool[,] iridiumSprinklerWithNozzle;
             public bool[,] prismaticSprinkler;
+            public bool[,] radioactiveSprinkler;
             public readonly bool[,] beehouse;
             public readonly bool[,] scarecrow;
             public readonly bool[,] deluxeScarecrow;
@@ -81,6 +82,7 @@ namespace RangeHighlight {
                 iridiumSprinkler = api.GetSquareCircle(2);
                 iridiumSprinklerWithNozzle = api.GetSquareCircle(3);
                 prismaticSprinkler = api.GetSquareCircle(3);
+                radioactiveSprinkler = api.GetSquareCircle(3);
                 beehouse = api.GetManhattanCircle(5);
                 scarecrow = api.GetCartesianCircleWithTruncate(8);
                 deluxeScarecrow = api.GetCartesianCircleWithTruncate(16);
@@ -117,6 +119,7 @@ namespace RangeHighlight {
                 if (name.Contains("iridium")) return hasPressureNozzleAttached ? iridiumSprinklerWithNozzle : iridiumSprinkler;
                 if (name.Contains("quality")) return hasPressureNozzleAttached ? iridiumSprinkler : qualitySprinkler;
                 if (name.Contains("prismatic")) return prismaticSprinkler;
+                if (name.Contains("radioactive")) return radioactiveSprinkler;
                 return hasPressureNozzleAttached ? qualitySprinkler : sprinkler;
             }
 

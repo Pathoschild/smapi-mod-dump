@@ -10,7 +10,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Harmony;
-using Spacechase.Shared.Harmony;
+using MultiFertilizer.Framework;
+using Spacechase.Shared.Patching;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewValley;
@@ -43,18 +44,10 @@ namespace MultiFertilizer.Patches
         /// <summary>The method to call before <see cref="Crop.harvest"/>.</summary>
         private static void Before_Harvest(Crop __instance, int xTile, int yTile, HoeDirt soil, JunimoHarvester junimoHarvester)
         {
-            if (!soil.modData.TryGetValue(Mod.KeyFert, out string fertilizerData))
+            if (!soil.TryGetFertilizer(Mod.KeyFert, out FertilizerData fertilizer))
                 return;
 
-            int index = 0;
-            switch (int.Parse(fertilizerData))
-            {
-                case 1: index = 368; break;
-                case 2: index = 369; break;
-                case 3: index = 919; break;
-            }
-
-            soil.fertilizer.Value = index;
+            soil.fertilizer.Value = fertilizer.Id;
         }
 
         /// <summary>The method to call after <see cref="Crop.harvest"/>.</summary>

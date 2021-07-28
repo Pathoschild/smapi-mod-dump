@@ -10,7 +10,6 @@
 
 #region License
 
-// clang-format off
 // 
 //    ChestEx (StardewValleyMods)
 //    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
@@ -21,14 +20,12 @@
 //    (at your option) any later version.
 // 
 //    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    but WITHOUT ANY WARRANTY, without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //    GNU Affero General Public License for more details.
 // 
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program. If not, see <https://www.gnu.org/licenses/>.
-// 
-// clang-format on
 
 #endregion
 
@@ -102,7 +99,7 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
   #endregion
 
     public void Draw(SpriteBatch b, Vector2 position, Single alpha = 1.0f) {
-      if (this.playerChoiceColor.Value.Equals(Color.Black)) {
+      if (this.playerChoiceColor.Value == Color.Black) {
         b.Draw(Game1.bigCraftableSpriteSheet,
                position,
                Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, this.ParentSheetIndex, 16, 32),
@@ -121,38 +118,35 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
                this.mChestScale,
                SpriteEffects.None,
                0.91f);
+      }
+      else {
+        Color chest_colour = this.mChestColour.MultAlpha(alpha);
 
-        return;
+        // bottom half
+        b.Draw(Game1.bigCraftableSpriteSheet,
+               position,
+               Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, this.mChestType == ChestType.WoodenChest ? 168 : 232, 16, 32),
+               chest_colour,
+               0.0f,
+               Vector2.Zero,
+               this.mChestScale,
+               SpriteEffects.None,
+               0.9f);
+
+        // top half
+        b.Draw(Game1.bigCraftableSpriteSheet,
+               position,
+               Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, this.mSVCurrentLidFrame + (this.mChestType == ChestType.WoodenChest ? 38 : 0), 16, 32),
+               chest_colour,
+               0.0f,
+               Vector2.Zero,
+               this.mChestScale,
+               SpriteEffects.None,
+               0.9f);
       }
 
-      Color chest_colour = Color.FromNonPremultiplied(this.mChestColour.R, this.mChestColour.G, this.mChestColour.B, (Int32)(this.mChestColour.A * alpha));
-
-      // bottom half
-      b.Draw(Game1.bigCraftableSpriteSheet,
-             position,
-             Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, this.mChestType == ChestType.WoodenChest ? 168 : 232, 16, 32),
-             chest_colour,
-             0f,
-             Vector2.Zero,
-             this.mChestScale,
-             SpriteEffects.None,
-             0.9f);
-
-      // top half
-      b.Draw(Game1.bigCraftableSpriteSheet,
-             position,
-             Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, this.mSVCurrentLidFrame + (this.mChestType == ChestType.WoodenChest ? 38 : 0), 16, 32),
-             chest_colour,
-             0f,
-             Vector2.Zero,
-             this.mChestScale,
-             SpriteEffects.None,
-             0.9f);
-
       Texture2D hinges_texture = this.mHingesColour == Color.Black ? Game1.bigCraftableSpriteSheet : TexturePresets.gBigCraftableSpriteSheetGrayScale;
-      Color hinges_colour = this.mHingesColour == Color.Black ?
-        Color.White :
-        Color.FromNonPremultiplied(this.mHingesColour.R, this.mHingesColour.G, this.mHingesColour.B, (Int32)(this.mHingesColour.A * alpha));
+      Color     hinges_colour  = this.mHingesColour == Color.Black ? Color.White : this.mHingesColour.MultAlpha(alpha);
 
       // bottom 'metal hinge'
       b.Draw(hinges_texture,
@@ -186,17 +180,11 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public static Boolean BeforeDraw(SpriteBatch spriteBatch, Int32 x, Int32 y, Single alpha,
                                      Chest       __instance,  Int32 ___currentLidFrame) {
-      if (__instance.playerChoiceColor.Value == Color.Black) return true;
-      if (__instance.GetCustomConfigHingesColour() == Color.Black) return true;
+      if (__instance.SpecialChestType != SpecialChestTypes.None || __instance.fridge.Value) return true;
       if (!__instance.playerChest.Value && (__instance.ParentSheetIndex != 130 || __instance.ParentSheetIndex != 232)) return true;
 
       // original game code, albeit slightly modified
       {
-        Color chest_colour = __instance.playerChoiceColor.Value;
-        chest_colour = Color.FromNonPremultiplied(chest_colour.R, chest_colour.G, chest_colour.B, (Int32)(chest_colour.A * alpha));
-        Color hinges_colour = __instance.GetCustomConfigHingesColour();
-        hinges_colour = Color.FromNonPremultiplied(hinges_colour.R, hinges_colour.G, hinges_colour.B, (Int32)(hinges_colour.A * alpha));
-
         Single draw_x = x;
         Single draw_y = y;
         if (__instance.localKickStartTile.HasValue) {
@@ -217,42 +205,91 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
           draw_y -= (Single)Math.Sin(__instance.kickProgress * Math.PI) * 0.5f;
         }
 
-        spriteBatch.Draw(Game1.bigCraftableSpriteSheet,
-                         Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, (draw_y - 1f) * 64f + (__instance.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))),
-                         Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, __instance.ParentSheetIndex == 130 ? 168 : __instance.ParentSheetIndex, 16, 32),
-                         chest_colour,
-                         0f,
-                         Vector2.Zero,
-                         4f,
-                         SpriteEffects.None,
-                         base_sort_order);
-        spriteBatch.Draw(TexturePresets.gBigCraftableSpriteSheetGrayScale,
-                         Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, draw_y * 64f + 20f)),
-                         new Rectangle(0, (__instance.ParentSheetIndex == 130 ? 168 : __instance.ParentSheetIndex) / 8 * 32 + 53, 16, 11),
-                         hinges_colour,
-                         0f,
-                         Vector2.Zero,
-                         4f,
-                         SpriteEffects.None,
-                         base_sort_order + 2E-05f);
-        spriteBatch.Draw(TexturePresets.gBigCraftableSpriteSheetGrayScale,
-                         Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, (draw_y - 1f) * 64f + (__instance.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))),
-                         Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, ___currentLidFrame + (__instance.ParentSheetIndex == 130 ? 46 : 8), 16, 32),
-                         hinges_colour,
-                         0f,
-                         Vector2.Zero,
-                         4f,
-                         SpriteEffects.None,
-                         base_sort_order + 2E-05f);
-        spriteBatch.Draw(Game1.bigCraftableSpriteSheet,
-                         Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, (draw_y - 1f) * 64f + (__instance.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))),
-                         Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, ___currentLidFrame + (__instance.ParentSheetIndex == 130 ? 38 : 0), 16, 32),
-                         chest_colour,
-                         0f,
-                         Vector2.Zero,
-                         4f,
-                         SpriteEffects.None,
-                         base_sort_order + 1E-05f);
+        if (__instance.playerChoiceColor.Value == Color.Black) {
+          spriteBatch.Draw(Game1.bigCraftableSpriteSheet,
+                           Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, (draw_y - 1f) * 64f + (__instance.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))),
+                           Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, __instance.ParentSheetIndex, 16, 32),
+                           Color.White * alpha,
+                           0f,
+                           Vector2.Zero,
+                           4f,
+                           SpriteEffects.None,
+                           base_sort_order);
+          spriteBatch.Draw(Game1.bigCraftableSpriteSheet,
+                           Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, (draw_y - 1f) * 64f + (__instance.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))),
+                           Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, ___currentLidFrame, 16, 32),
+                           Color.White * alpha * alpha,
+                           0f,
+                           Vector2.Zero,
+                           4f,
+                           SpriteEffects.None,
+                           base_sort_order + 1E-05f);
+        }
+        else {
+          Color chest_colour = __instance.playerChoiceColor.Value.MultAlpha(alpha);
+
+          spriteBatch.Draw(Game1.bigCraftableSpriteSheet,
+                           Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, (draw_y - 1f) * 64f + (__instance.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))),
+                           Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, __instance.ParentSheetIndex == 130 ? 168 : __instance.ParentSheetIndex, 16, 32),
+                           chest_colour,
+                           0f,
+                           Vector2.Zero,
+                           4f,
+                           SpriteEffects.None,
+                           base_sort_order);
+          spriteBatch.Draw(Game1.bigCraftableSpriteSheet,
+                           Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, (draw_y - 1f) * 64f + (__instance.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))),
+                           Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, ___currentLidFrame + (__instance.ParentSheetIndex == 130 ? 38 : 0), 16, 32),
+                           chest_colour,
+                           0f,
+                           Vector2.Zero,
+                           4f,
+                           SpriteEffects.None,
+                           base_sort_order + 1E-05f);
+        }
+
+        if (__instance.GetCustomConfigHingesColour() == Color.Black) {
+          spriteBatch.Draw(Game1.bigCraftableSpriteSheet,
+                           Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, draw_y * 64f + 20f)),
+                           new Rectangle(0, (__instance.ParentSheetIndex == 130 ? 168 : __instance.ParentSheetIndex) / 8 * 32 + 53, 16, 11),
+                           Color.White,
+                           0f,
+                           Vector2.Zero,
+                           4f,
+                           SpriteEffects.None,
+                           base_sort_order + 2E-05f);
+          spriteBatch.Draw(Game1.bigCraftableSpriteSheet,
+                           Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, (draw_y - 1f) * 64f + (__instance.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))),
+                           Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, ___currentLidFrame + (__instance.ParentSheetIndex == 130 ? 46 : 8), 16, 32),
+                           Color.White,
+                           0f,
+                           Vector2.Zero,
+                           4f,
+                           SpriteEffects.None,
+                           base_sort_order + 2E-05f);
+        }
+        else {
+          Color hinges_colour = __instance.GetCustomConfigHingesColour().MultAlpha(alpha);
+
+          spriteBatch.Draw(TexturePresets.gBigCraftableSpriteSheetGrayScale,
+                           Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, draw_y * 64f + 20f)),
+                           new Rectangle(0, (__instance.ParentSheetIndex == 130 ? 168 : __instance.ParentSheetIndex) / 8 * 32 + 53, 16, 11),
+                           hinges_colour,
+                           0f,
+                           Vector2.Zero,
+                           4f,
+                           SpriteEffects.None,
+                           base_sort_order + 2E-05f);
+          spriteBatch.Draw(TexturePresets.gBigCraftableSpriteSheetGrayScale,
+                           Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f, (draw_y - 1f) * 64f + (__instance.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))),
+                           Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, ___currentLidFrame + (__instance.ParentSheetIndex == 130 ? 46 : 8), 16, 32),
+                           hinges_colour,
+                           0f,
+                           Vector2.Zero,
+                           4f,
+                           SpriteEffects.None,
+                           base_sort_order + 2E-05f);
+        }
       }
       return false;
     }
@@ -262,12 +299,19 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
       if (!Config.Get().mShowChestHoverTooltip) return;
       if (Game1.activeClickableMenu is not null) return;
       if (!Game1.currentLocation.Objects.TryGetValue(Game1.currentCursorTile, out StardewValley.Object obj) || obj is not Chest chest) return;
+      if (chest.SpecialChestType != SpecialChestTypes.None || chest.fridge.Value) return;
 
       Color  chest_colour = chest.GetActualColour();
-      String info_text    = String.IsNullOrWhiteSpace(chest.GetCustomConfigDescription()) ? "" : $"{chest.GetCustomConfigDescription()}\r\n\r\n";
+      String info_text    = String.IsNullOrWhiteSpace(chest.GetCustomConfigDescription()) ? "" : $"{chest.GetCustomConfigDescription()}{Environment.NewLine}{Environment.NewLine}";
       info_text += $"{chest.GetItemsForPlayer(Game1.player.UniqueMultiplayerID).Count} / {chest.GetActualCapacity()} items";
 
-      CustomMenu.DrawHoverText(e.SpriteBatch, Game1.smallFont, info_text, chest.GetCustomConfigName(), backgroundColour: chest_colour, textColour: chest_colour.ContrastColour());
+      e.SpriteBatch.DrawHoverText(Game1.smallFont,
+                                  info_text,
+                                  chest.GetCustomConfigName(),
+                                  colours: Colours.GenerateFrom(chest_colour),
+                                  drawShadow: false,
+                                  alpha: 0.9f,
+                                  borderScale: 0.75f);
     }
 
   #endregion

@@ -1,5 +1,8 @@
 {
   "EnableUISmashButtons": true,
+  "EnableUIColorSmashButton": true,
+  "EnableUIQualitySmashButton": true,
+  "EnableEggColorSmashing": true,
   "EnableSingleItemSmashKeybinds": false,
   "ColorSmashKeybind": "C",
   "QualitySmashKeybind": "Q",
@@ -11,7 +14,7 @@
   "IgnoreIridium": true,
   "IgnoreIridiumItemExceptionsDescription": [
     "Items IDs listed here will still be",
-    "converted to basic quality even if",
+    "converted to lowest present quality even if",
     "IgnoreIridium is set to true.",
     "Defaults:",
     "   296: Salmonberry"
@@ -21,7 +24,7 @@
   ],
   "IgnoreIridiumCategoryExceptionsDescription": [
     "Items IDs listed here will still be",
-    "converted to basic quality even if",
+    "converted to lowest present quality even if",
     "IgnoreIridium is set to true.",
     "Defaults:",
     "   -4: Fish"
@@ -44,7 +47,7 @@
     "be affected by 'Smash Colors'",
     "Defaults:",
     "    591 = Tulip",
-    "    597 = Summer Spangle",
+    "    593 = Summer Spangle",
     "",
     "Flowers not used in recipes"
   ],

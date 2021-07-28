@@ -1,0 +1,99 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceruleandeep/CeruleanStardewMods
+**
+*************************************************/
+
+[
+  {
+    "Call": "Baked something yum for you!",
+    "Response": "Mmm! *slurp*",
+    "Callers": "Haley"
+  },
+  {
+    "Call": "Let's hang out at the beach",
+    "Response": "Can we bring snacks?",
+    "Callers": "Haley",
+    "When": {
+      "Season": "Summer",
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Call": "Today is so hot!",
+    "Response": "You're the hottest though!",
+    "Callers": "Haley",
+    "When": {
+      "Season": "Summer",
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Call": "Flowers are starting to bloom",
+    "Response": "Spring is so pretty",
+    "Callers": "Haley",
+    "When": {
+      "Season": "Spring",
+    }
+  },
+  {
+    "Call": "I could really go for a cupcake",
+    "Response": "You're making me hungry!",
+    "Callers": "Haley"
+  },
+  {
+    "Call": "I've messed up the kitchen",
+    "Response": "You'll get the hang of it",
+    "Callers": "Haley"
+  },
+  {
+    "Call": "Going to take pics of the farm today",
+    "Response": "Show me how they turn out",
+    "Callers": "Haley",
+    "When": {
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Call": "So hot today! I want ice cream",
+    "Response": "You could make some!",
+    "Callers": "Haley",
+    "When": {
+      "Season": "Summer",
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Call": "I was just thinking about you",
+    "Response": "Tell me more...",
+    "Callers": "Haley"
+  },
+  {
+    "Call": "I want to take pics but my fingers would freeze",
+    "Response": "What about gloves?",
+    "Callers": "Haley",
+    "When": {
+      "Weather": "Snow"
+    }
+  },
+  {
+    "Call": "Good day to work on my tan",
+    "Response": "Looking great already <",
+    "Callers": "Haley",
+    "When": {
+      "Weather": "Sun"
+    }
+  },
+  {
+    "Call": "Let's turn the lights down",
+    "Response": "Rowr!",
+    "Callers": "Haley",
+    "When": {
+      "Time": "{{Range: 1900, 2600}}"
+    }
+  },
+]

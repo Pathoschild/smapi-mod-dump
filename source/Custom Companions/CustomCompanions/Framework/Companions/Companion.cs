@@ -211,7 +211,17 @@ namespace CustomCompanions.Framework.Companions
                     dialogueText = this.model.Translations.Get(this.model.InspectionDialogue);
                 }
 
-                Game1.drawObjectDialogue(dialogueText);
+                // Check if displaying a portrait is required
+                if (this.Portrait != null)
+                {
+                    this.CurrentDialogue.Push(new Dialogue(dialogueText, this));
+                    Game1.drawDialogue(this);
+                }
+                else
+                {
+                    Game1.drawObjectDialogue(dialogueText);
+                }
+
                 return true;
             }
             return false;
@@ -258,6 +268,22 @@ namespace CustomCompanions.Framework.Companions
             base.farmerPassesThrough = this.owner is null && this.model.EnableFarmerCollision ? false : true;
         }
 
+        public override Rectangle GetBoundingBox()
+        {
+            if (!this.HasCustomCollisionBox())
+            {
+                return base.GetBoundingBox();
+            }
+
+            if (this.Sprite == null)
+            {
+                return Rectangle.Empty;
+            }
+
+            Vector2 position = this.Position;
+            return new Rectangle((int)position.X + this.model.CollisionPositionX, (int)position.Y + this.model.CollisionPositionY, this.model.CollisionPositionWidth, this.model.CollisionPositionHeight);
+        }
+
         public override void draw(SpriteBatch b, float alpha = 1f)
         {
             if (this.model is null || this.model.AppearUnderwater)
@@ -271,8 +297,9 @@ namespace CustomCompanions.Framework.Companions
         internal void DoDraw(SpriteBatch b, float alpha = 1f)
         {
             var spriteLayerDepth = this.IsFlying() ? 0.991f : Math.Max(0f, base.drawOnTop ? 0.991f : ((float)base.getStandingY() / 10000f));
+            float layer_depth = ((float)(this.GetBoundingBox().Center.Y + 4) + base.Position.X / 20000f) / 10000f;
 
-            b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + new Vector2(this.GetSpriteWidthForPositioning() * 4 / 2, this.GetBoundingBox().Height / 2) + ((this.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero), this.Sprite.SourceRect, this.isPrismatic ? Utility.GetPrismaticColor(348 + (int)this.specialNumber, 5f) : color, this.rotation, new Vector2(this.Sprite.SpriteWidth / 2, (float)this.Sprite.SpriteHeight * 3f / 4f), Math.Max(0.2f, base.scale) * 4f, (base.flip || (this.Sprite.CurrentAnimation != null && this.Sprite.CurrentAnimation[this.Sprite.currentAnimationIndex].flip)) ? SpriteEffects.FlipHorizontally : SpriteEffects.None, spriteLayerDepth);
+            b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + new Vector2(this.GetSpriteWidthForPositioning() * 4 / 2, this.Sprite.getHeight() / 2) + ((this.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero), this.Sprite.SourceRect, this.isPrismatic ? Utility.GetPrismaticColor(348 + (int)this.specialNumber, 5f) : color, this.rotation, new Vector2(this.Sprite.SpriteWidth / 2, (float)this.Sprite.SpriteHeight * 3f / 4f), Math.Max(0.2f, base.scale) * 4f, (base.flip || (this.Sprite.CurrentAnimation != null && this.Sprite.CurrentAnimation[this.Sprite.currentAnimationIndex].flip)) ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layer_depth);
             if (this.Breather && this.shakeTimer <= 0 && !this.isMoving())
             {
                 Rectangle chestBox = this.Sprite.SourceRect;
@@ -282,7 +309,7 @@ namespace CustomCompanions.Framework.Companions
                 chestBox.Width = this.Sprite.SpriteWidth / 2;
                 Vector2 chestPosition = new Vector2(this.Sprite.SpriteWidth * 4 / 2, 8f);
                 float breathScale = Math.Max(0f, (float)Math.Ceiling(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 600.0 + (double)(base.DefaultPosition.X * 20f))) / 4f);
-                b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + chestPosition + ((this.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero), chestBox, Color.White * alpha, this.rotation, new Vector2(chestBox.Width / 2, chestBox.Height / 2 + 1), Math.Max(0.2f, base.scale) * 4f + breathScale, base.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, spriteLayerDepth + 0.001f);
+                b.Draw(this.Sprite.Texture, base.getLocalPosition(Game1.viewport) + chestPosition + ((this.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero), chestBox, this.isPrismatic ? Utility.GetPrismaticColor(348 + (int)this.specialNumber, 5f) : color.Value * alpha, this.rotation, new Vector2(chestBox.Width / 2, chestBox.Height / 2 + 1), Math.Max(0.2f, base.scale) * 4f + breathScale, base.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, spriteLayerDepth + 0.001f);
             }
 
             var shadowLayerDepth = spriteLayerDepth - 0.001f;
@@ -290,12 +317,12 @@ namespace CustomCompanions.Framework.Companions
             {
                 if (this.model.Shadow != null)
                 {
-                    Game1.spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(this.model.Shadow.OffsetX, this.model.Shadow.OffsetY) + this.Position + new Vector2((float)(this.GetSpriteWidthForPositioning() * 4) / 2f, this.GetBoundingBox().Height + 12)), Game1.shadowTexture.Bounds, new Color(255, 255, 255, this.model.Shadow.Alpha), 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), Math.Max(0f, (4f + (float)this.yJumpOffset / 40f) * this.model.Shadow.Scale), SpriteEffects.None, shadowLayerDepth);
+                    Game1.spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(this.model.Shadow.OffsetX, this.model.Shadow.OffsetY) + this.Position + new Vector2((float)(this.GetSpriteWidthForPositioning() * 4) / 2f, this.Sprite.getHeight())), Game1.shadowTexture.Bounds, new Color(255, 255, 255, this.model.Shadow.Alpha), 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), Math.Max(0f, (4f + (float)this.yJumpOffset / 40f) * this.model.Shadow.Scale), SpriteEffects.None, shadowLayerDepth);
                 }
                 else
                 {
                     // Default game shadow
-                    Game1.spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, this.GetShadowOffset() + this.Position + new Vector2((float)(this.GetSpriteWidthForPositioning() * 4) / 2f, this.GetBoundingBox().Height + 12)), Game1.shadowTexture.Bounds, Color.White, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), Math.Max(0f, (4f + (float)this.yJumpOffset / 40f) * (float)this.scale), SpriteEffects.None, shadowLayerDepth);
+                    Game1.spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, this.GetShadowOffset() + this.Position + new Vector2((float)(this.GetSpriteWidthForPositioning() * 4) / 2f, this.Sprite.getHeight())), Game1.shadowTexture.Bounds, Color.White, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), Math.Max(0f, (4f + (float)this.yJumpOffset / 40f) * (float)this.scale), SpriteEffects.None, shadowLayerDepth);
                 }
             }
         }
@@ -303,6 +330,21 @@ namespace CustomCompanions.Framework.Companions
         internal void DrawUnderwater(SpriteBatch b)
         {
             this.DoDraw(b, 1f);
+        }
+
+        internal bool HasCustomCollisionBox()
+        {
+            if (this.model is null)
+            {
+                return false;
+            }
+
+            if (this.model.CollisionPositionHeight == 0 && this.model.CollisionPositionWidth == 0 && this.model.CollisionPositionX == 0 && this.model.CollisionPositionY == 0)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         internal void SetUpCompanion()

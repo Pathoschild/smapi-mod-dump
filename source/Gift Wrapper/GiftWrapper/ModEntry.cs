@@ -152,18 +152,21 @@ namespace GiftWrapper
 
 		private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
 		{
-			if (ModEntry.PlayerAgencyLostCheck())
+			if (!Context.CanPlayerMove)
 				return;
 
 			// Menu interactions
-			if (Game1.activeClickableMenu is GameMenu gameMenu && gameMenu.GetCurrentPage() is InventoryPage inventoryPage && e.Button.IsActionButton())
+			if (Game1.activeClickableMenu is GameMenu gameMenu
+				&& gameMenu.GetCurrentPage() is InventoryPage inventoryPage
+				&& e.Button.IsActionButton())
 			{
 				Item hoverItem = inventoryPage.inventory.hover(Game1.getOldMouseX(), Game1.getOldMouseY(), Game1.player.CursorSlotItem);
 				if (Game1.player.CursorSlotItem != null
 					&& (Game1.player.CursorSlotItem.Name == AssetPrefix + WrappedGiftName
 						|| Game1.player.CursorSlotItem.Name == i18n.Get("item." + WrappedGiftName + ".name"))
 					&& Game1.player.CursorSlotItem.Category == -22
-					&& hoverItem != null && hoverItem is FishingRod)
+					&& hoverItem != null
+					&& hoverItem is FishingRod)
 				{
 					// Prevent tackle-method wrapped gifts from being attached to fishing rods with a tackle attachment slot
 					Helper.Input.Suppress(e.Button);
@@ -172,8 +175,10 @@ namespace GiftWrapper
 				}
 			}
 
-			if (Game1.player.isRidingHorse() || Game1.player.isInBed.Value
-				|| Game1.player.temporarilyInvincible || Game1.IsFading())
+			if (Game1.player.isRidingHorse()
+				|| Game1.player.isInBed.Value
+				|| Game1.player.temporarilyInvincible
+				|| Game1.IsFading())
 				return;
 
 			Vector2 screenPos = new Vector2(e.Cursor.ScreenPixels.X, e.Cursor.ScreenPixels.Y);
@@ -210,7 +215,8 @@ namespace GiftWrapper
 						}
 					}
 				}
-				else if (o.Name == AssetPrefix + WrappedGiftName || o.Name == i18n.Get("item." + WrappedGiftName + ".name"))
+				else if (o.Name == AssetPrefix + WrappedGiftName
+					|| o.Name == i18n.Get("item." + WrappedGiftName + ".name"))
 				{
 					// Unwrap the placed gift and pop out the actual gift when left-clicking
 					if (this.IsInteractButton(e.Button))
@@ -259,8 +265,18 @@ namespace GiftWrapper
 				// Place held gift wrap and wrapped gifts on the ground when left-clicking
 				bool isPlaceableTile = Game1.currentLocation.isTileLocationTotallyClearAndPlaceableIgnoreFloors(e.Cursor.GrabTile)
 					&& !Game1.currentLocation.Objects.ContainsKey(e.Cursor.GrabTile);
-				bool isPlaceableLocation = !(Game1.currentLocation is Mine || Game1.currentLocation.Name.StartsWith("UndergroundMine") || Game1.currentLocation.isTemp());
-				if (this.IsPlacementButton(e.Button) && isPlaceableTile)
+				bool isPlaceableLocation =
+					!(Game1.currentLocation is Mine
+						|| Game1.currentLocation.Name.StartsWith("UndergroundMine")
+						|| Game1.currentLocation.isTemp());
+				bool isGiftWrapActive = Game1.player.ActiveObject != null
+						&& Game1.player.ActiveObject.Name == AssetPrefix + GiftWrapName;
+				bool isWrappedGiftActive = Game1.player.CurrentItem != null
+						&& (Game1.player.CurrentItem.Name == AssetPrefix + WrappedGiftName
+							|| Game1.player.CurrentItem.Name == i18n.Get("item." + WrappedGiftName + ".name"));
+				if (this.IsPlacementButton(e.Button)
+					&& isPlaceableTile
+					&& (isGiftWrapActive || isWrappedGiftActive))
 				{
 					if (!isPlaceableLocation)
 					{
@@ -268,7 +284,7 @@ namespace GiftWrapper
 						return;
 					}
 					const string placementSound = "throwDownITem"; // not a typo
-					if (Game1.player.ActiveObject != null && Game1.player.ActiveObject.Name == AssetPrefix + GiftWrapName)
+					if (isGiftWrapActive)
 					{
 						Helper.Input.Suppress(e.Button);
 						Game1.playSound(placementSound); 
@@ -279,9 +295,7 @@ namespace GiftWrapper
 							Game1.player.removeItemFromInventory(Game1.player.ActiveObject);
 						}
 					}
-					else if (Game1.player.CurrentItem != null
-						&& (Game1.player.CurrentItem.Name == AssetPrefix + WrappedGiftName
-							|| Game1.player.CurrentItem.Name == i18n.Get("item." + WrappedGiftName + ".name")))
+					else if (isWrappedGiftActive)
 					{
 						Helper.Input.Suppress(e.Button);
 						this.PlaceWrappedGift(

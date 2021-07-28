@@ -15,6 +15,9 @@ namespace Magic.Framework.Spells
 {
     internal class DummySpell : Spell
     {
+        /*********
+        ** Public methods
+        *********/
         public DummySpell(string school, string id)
             : base(school, id) { }
 

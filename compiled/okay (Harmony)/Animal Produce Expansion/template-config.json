@@ -1,0 +1,24 @@
+﻿{
+  "AnimalDrops": [
+    {
+      "Animal": "White Chicken",  // Name of animal
+      "Drops": [
+        {
+          "Item": "176",          // Item number or name
+          "Weight": 10.0          // Weight given to this drop in the collection
+        },
+        {
+          "Item": "174",
+          "Weight": 2.0
+        }
+      ],
+      "ChanceForExtraDrops": 0.2, // value between 0 (no chance) and 1 (100% chance) 
+      "ExtraDrops": [             // Optional, if ChanceForExtraDrops is > 0 and this list is empty it will pick from Drops
+        {
+          "Item": "Blue Egg",
+          "Weight": 10.0
+        }
+      ]
+    }
+  ] 
+}

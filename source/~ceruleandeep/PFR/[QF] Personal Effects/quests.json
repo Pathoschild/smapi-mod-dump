@@ -1,0 +1,579 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceruleandeep/CeruleanStardewMods
+**
+*************************************************/
+
+{
+  "Format": "1.0",
+  "Quests": [
+    {
+      "Name": "abigail_lost",
+      "Type": "LostItem",
+      "Title": "What Would Yoba Do?",
+      "Description": "Abigail's lost her lucky purple panties, and her mojo. If you find them and bring them back, maybe they'll be lucky for you too.",
+      "Objective": "Bring purple panties to Abigail",
+      "Reward": "Eggplant",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Abigail {{ja:Abigail's Panties}} SeedShop 40 17",
+      "ReactionText": "They still feel lucky! Thank you so much!$h#$b#Here's something else I love, @.",
+      "FriendshipGain": {
+        "Abigail": 100
+      }
+    },
+    {
+      "Name": "haley_lost",
+      "Type": "LostItem",
+      "Title": "Artist At Work",
+      "Description": "Haley's been doing some artistic photography in the backwoods, and now her pale blue panties are missing.\n\nSome details of the story are also missing, but focus on returning the panties.",
+      "Objective": "Bring blue panties to Haley",
+      "Reward": "Pink Cake",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Haley {{ja:Haley's Panties}} Backwoods 27 27",
+      "ReactionText": "I hope you didn't sniff them, @! Or touch them.$k#$b#I guess you can think of them when you eat this.$h",
+      "FriendshipGain": {
+        "Haley": 100
+      }
+    },
+    {
+      "Name": "emily_lost",
+      "Type": "LostItem",
+      "Title": "Full Moon",
+      "Description": "Emily didn't want anything to come between her and nature for her moonlight swim. But she lost her panties in the dark and had to run home bottomless. They must still be out there somewhere.",
+      "Objective": "Return Emily's lost panties",
+      "Reward": "Cloth",
+      "RewardType": "Object",
+      "RewardAmount": 3,
+      "Cancelable": true,
+      "Trigger": "Emily {{ja:Emily's Panties}} Beach 4 7",
+      "ReactionText": "Thanks @! Luckily it's just a short jog back to my house *blush*$h#$b#You know, if you craft me something nice I'll wear it for you...",
+      "FriendshipGain": {
+        "Emily": 100
+      }
+    },
+    {
+      "Name": "penny_lost",
+      "Type": "LostItem",
+      "Title": "A Pretty Penny",
+      "Description": "Where are Penny's panties? You only have two clues: they're an amazing shade of blue, and you saw her at the playground with Seb. After dark. On the horse.",
+      "Objective": "Bring Penny her panties",
+      "Reward": "Poppy",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Penny {{ja:Penny's Panties}} Town 59 18",
+      "ReactionText": "Quick, give those back!#$b#Here, smell this instead.$a",
+      "FriendshipGain": {
+        "Penny": 100
+      }
+    },
+    {
+      "Name": "maru_lost",
+      "Type": "LostItem",
+      "Title": "Medical Emergency",
+      "Description": "Quick, find Maru's panties. If Harvey gets his hands on them, they'll never be seen again.",
+      "Objective": "Return panties to Maru",
+      "Reward": "Battery Pack",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Maru {{ja:Maru's Panties}} Hospital 20 11",
+      "ReactionText": "You've saved the day, @!$h#$b#Take this and make something wonderful with it. I sure did *blush*$h",
+      "FriendshipGain": {
+        "Maru": 100
+      }
+    },
+    {
+      "Name": "leah_lost",
+      "Type": "LostItem",
+      "Title": "Her Secret Spot",
+      "Description": "Leah's been in the forest, exploring secret areas and becoming one with nature. She's left more than footprints behind though.",
+      "Objective": "Return Leah's lost panties",
+      "Reward": "Sweet Gem Berry",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Leah {{ja:Leah's Panties}} Forest 10 7",
+      "ReactionText": "You've taken good care of these!$h#$b#I think you deserve to taste some forest sweetness...",
+      "FriendshipGain": {
+        "Leah": 100
+      }
+    },
+    {
+      "Name": "sam_lost",
+      "Type": "LostItem",
+      "Title": "Star-Crossed Lovers",
+      "Description": "Sam has a lot to learn about sneaky late-night booty calls. If Demetrius finds the evidence, he's in big trouble!",
+      "Objective": "Return Sam's briefs",
+      "Reward": "Maple Bar",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Sam {{ja:Sam's Underpants}} ScienceHouse 3 6",
+      "ReactionText": "You've saved me, @!$h#$b#Take this, all the girls seem to love it.",
+      "FriendshipGain": {
+        "Sam": 100
+      }
+    },
+    {
+      "Name": "sebastian_lost",
+      "Type": "LostItem",
+      "Title": "The Color Purple",
+      "Description": "Get Sebastian's purple shorts back before it's too late. If Caroline thinks they're Seb's, there's going to be trouble. If she thinks they're Lewis's? Hoo boy...",
+      "Objective": "Get Sebastian's shorts back to him",
+      "Reward": "Obsidian",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Sebastian {{ja:Sebastian's Underpants}} SeedShop 3 8",
+      "ReactionText": "Phew! Thanks, @.$h#$b$You didn't happen to also find any of her panties?#$b#Anyway, it means a lot to me... have this.",
+      "FriendshipGain": {
+        "Sebastian": 100
+      }
+    },
+    {
+      "Name": "shane_lost",
+      "Type": "LostItem",
+      "Title": "Join him. Thrive.",
+      "Description": "Shane went on a bender after work, and woke up to find the morning breeze tickling his privates. Where did his undies go?\n\nYou'd rather not know, but Shane can't afford to lose his jocks or his job.",
+      "Objective": "Reunite Shane with his underwear",
+      "Reward": "Pizza",
+      "RewardType": "Object",
+      "RewardAmount": 3,
+      "Cancelable": true,
+      "Trigger": "Shane {{ja:Shane's Underpants}} Town 101 24",
+      "ReactionText": "They're not much, but they're mine.$h#$b#Take these, @, you've earned them!",
+      "FriendshipGain": {
+        "Shane": 100
+      }
+    },
+    {
+      "Name": "alex_lost",
+      "Type": "LostItem",
+      "Title": "Smells Like Team Spirit",
+      "Description": "It's one thing for her to wear Alex's team jersey around the house, that's kinda cute. But his lucky underpants? No way. He needs those back.",
+      "Objective": "Rescue Alex's lucky underpants",
+      "Reward": "Purple Mushroom",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Alex {{ja:Alex's Underpants}} HaleyHouse 4 8",
+      "ReactionText": "Thanks, champ! The squad will thank you too.$h#$b#You know what this thing reminds me of? Hehe, anyways...",
+      "FriendshipGain": {
+        "Alex": 100
+      }
+    },
+    {
+      "Name": "elliott_lost",
+      "Type": "LostItem",
+      "Title": "A Literary Cover-Up",
+      "Description": "The moonlight picnic would have been majestic. Elliott wearing nothing but his hair, what a vision!\n\nNot a vision the whole town needs to see though, so get his briefs back to him.",
+      "Objective": "Bring Elliott's shorts back",
+      "Reward": "Duck Feather",
+      "RewardType": "Object",
+      "RewardAmount": 2,
+      "Cancelable": true,
+      "Trigger": "Elliott {{ja:Elliott's Underpants}} Town 31 38",
+      "ReactionText": "Thank you so much, good sir!^Thank you so much, kind lady!$h#$b#Now if you ever want to tantalise that special someone, here's my secret weapon...",
+      "FriendshipGain": {
+        "Elliott": 100
+      }
+    },
+    {
+      "Name": "harvey_lost",
+      "Type": "LostItem",
+      "Title": "Not Safe For Work",
+      "Description": "Harvey's been browsing some websites that are Not Safe For Work. He's promised to keep his bachelor urges under control, if you could help him get rid of the evidence.",
+      "Objective": "Get Harvey's boxers back",
+      "Reward": "Truffle Oil",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Harvey {{ja:Harvey's Underpants}} Hospital 4 14",
+      "ReactionText": "That's the last time, I swear!$k#$b#Take this, I don't need it any more.$s",
+      "FriendshipGain": {
+        "Harvey": 100
+      }
+    },
+    {
+      "Name": "caroline_lost",
+      "Type": "LostItem",
+      "Title": "Not For Sale",
+      "Description": "Caroline's been stocking up on some of the finest seed in Stardew Valley. Her little veggie garden has never looked more lush and fertile. But something's out of place in the produce section.",
+      "Objective": "Bring Caroline's panties back",
+      "Reward": "Fish Taco",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Caroline {{ja:Caroline's Panties}} SeedShop 13 28",
+      "ReactionText": "This means a lot to me, @. These panties were a gift from the father of my child.$h#$b#They're his favorite color...#$b#Now here's a little something-something in return!$h",
+      "FriendshipGain": {
+        "Caroline": 100
+      }
+    },
+    {
+      "Name": "jodi_lost",
+      "Type": "LostItem",
+      "Title": "Stardrop Panty Drop",
+      "Description": "A few drinks, one thing led to another. In the back alley, no less.\n\nIt's been a while for Jodi but she's got her mojo back. Now she just needs her panties back...",
+      "Objective": "Bring panties to Jodi",
+      "Reward": "Chocolate Cake",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Jodi {{ja:Jodi's Panties}} Town 46 67",
+      "ReactionText": "Thank you, @!$h#$b#Now here's something sweet and gooey for you to enjoy...",
+      "FriendshipGain": {
+        "Jodi": 100
+      }
+    },
+    {
+      "Name": "marnie_lost",
+      "Type": "LostItem",
+      "Title": "Ain't Nuthin' But Mammals",
+      "Description": "Apparently Marnie's done it like they do on the Discovery Channel. The other mammals don't need underwear, but Marnie would like her wooly undies back before the snows.",
+      "Objective": "Bring panties to Marnie",
+      "Reward": "Farmer's Lunch",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Marnie {{ja:Marnie's Panties}} Forest 83 16",
+      "ReactionText": "I sure appreciate this, @!$h#$b#I know what a man like you likes to munch on...^I know what a gal like you likes to munch on...",
+      "FriendshipGain": {
+        "Marnie": 100
+      }
+    },
+    {
+      "Name": "sandy_lost",
+      "Type": "LostItem",
+      "Title": "Jewel of the Desert",
+      "Description": "Rumor has it that Sandy's panties are made with actual desert rubies.\n\nIf you find out for sure, remember a gentleperson never tells...",
+      "Objective": "Find Sandy's panties",
+      "Reward": "Mango Sticky Rice",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Sandy {{ja:Sandy's Panties}} Desert 2 51",
+      "ReactionText": "You're fabulous, @!$h#$b#Here's a sweet sticky treat for you to savor on the ride back...",
+      "FriendshipGain": {
+        "Sandy": 100
+      }
+    },
+    {
+      "Name": "wizard_lost",
+      "Type": "LostItem",
+      "Title": "Lost in the Ether",
+      "Description": "Rasmodius is in a bit of a jam. His ex has his underwear. Who knew that was the source of his mojo?",
+      "Objective": "Return the Wizard's jocks",
+      "Reward": "Super Cucumber",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Wizard {{ja:Wizard's Underpants}} WitchHut 5 8",
+      "ReactionText": "I feel my power surging, @!$h#$b#Take this and go. It's imbued with occult powers that you will find most useful.",
+      "FriendshipGain": {
+        "Wizard": 100
+      }
+    },
+    {
+      "Name": "robin_lost",
+      "Type": "LostItem",
+      "Title": "Reasonable Explanation",
+      "Description": "Robin hasn't seen her panties since laundry day. They probably just blew away, right? It's not like someone with a thing for pre-worn items lives right nearby...",
+      "Objective": "Get Robin's panties back",
+      "Reward": "Hardwood",
+      "RewardType": "Object",
+      "RewardAmount": 3,
+      "Cancelable": true,
+      "Trigger": "Robin {{ja:Robin's Panties}} Tent 1 3",
+      "ReactionText": "I don't know where you found these, @, and I don't want to know.$k#$b#You deserve a reward though... this is my favorite thing! *giggle*$h",
+      "FriendshipGain": {
+        "Robin": 100
+      }
+    },
+    {
+      "Name": "willy_lost",
+      "Type": "LostItem",
+      "Title": "Free Willy",
+      "Description": "Willy's lost his seafarer's pants. They're not at home, they're not on the boat. Where could they be?\n\nHe has been hanging around the docks a lot recently. And that would explain why his pants were down in the first place...",
+      "Objective": "Get Willy his pants back",
+      "Reward": "Catfish",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Willy {{ja:Willy's Underwear}} Beach 43 35",
+      "ReactionText": "Arr, these'll keep me warm on those lonely nights at sea.$h#$b#Something for your trouble, matey. Same salt crust, same whiff of the sea.",
+      "FriendshipGain": {
+        "Willy": 100
+      }
+    },
+    {
+      "Name": "gus_lost",
+      "Type": "LostItem",
+      "Title": "Stardrop Waistline Expanded",
+      "Description": "The last thing Gus remembers is, eating his fifth bowl of spaghetti washed down with his twelfth pint of beer. Where are his pants? Forget it, that's not the priority here. Where are his underpants?",
+      "Objective": "Reunite Gus with his underpants",
+      "Reward": "Mead",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Gus {{ja:Gus's Underpants}} Saloon 6 6",
+      "ReactionText": "Hoo boy, @, I'm glad to have these back!$h#$b#Here, get you some of the good stuff.",
+      "FriendshipGain": {
+        "Gus": 100
+      }
+    }
+  ],
+  "Offers": [
+    {
+      "QuestName": "abigail_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Abigail",
+        "Text": "Hey @,^^You know my body is a temple, right?^^Well right now my altar is feeling a bit... shall we say... laid bare before Yoba. Halp!^^Abigail"
+      },
+      "When": {
+        "FriendshipLevel": "Abigail 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "emily_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Emily",
+        "Text": "I need your help with something. It's about clothes, but also about... not clothes. Does that make sense? I can't say too much.^^Emily <"
+      },
+      "When": {
+        "FriendshipLevel": "Emily 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "haley_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Haley",
+        "Text": "Help me with something, and don't be weird about it. I've been doing some very artistic photography, and now my panties are missing. I know what you're like, so I know you'll help.^^Haley"
+      },
+      "When": {
+        "FriendshipLevel": "Haley 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "leah_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Leah",
+        "Text": "Hi @,^    On one of my nature walks I've managed to lose my panties. They must be well-hidden, I can't find them anywhere. You're good at foraging and I know you want to get into my panties, maybe now's your chance?^^  - L."
+      },
+      "When": {
+        "FriendshipLevel": "Leah 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "maru_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Maru",
+        "Text": "From the desk of Nurse Maru^^Can you help me test the Clinic's security? A very important and very confidential green, strappy item has been left somewhere on the premises. As part of the very legitimate test of our security, find the item WITHOUT HARVEY NOTICING and return to me.^ -Maru ^^(p.s. Please burn after reading. For security.)"
+      },
+      "When": {
+        "FriendshipLevel": "Maru 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "penny_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Penny",
+        "Text": "REWARD^^For return of my thingies. Don't ask what. Don't ask where.^^Penny"
+      },
+      "When": {
+        "FriendshipLevel": "Penny 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "sam_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Sam",
+        "Text": "You know your way around, right? You gotta help me. If the old man finds out I've been sneaking around there I'm history. It's almost freaky how attached to her he is.^^       Sam"
+      },
+      "When": {
+        "FriendshipLevel": "Sam 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "sebastian_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Sebastian",
+        "Text": "I lost two things last night. I need your help to get one of them back. The other one? I never thought anything could be funner than programming, but I was so wrong.^^  Seb"
+      },
+      "When": {
+        "FriendshipLevel": "Sebastian 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "shane_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Shane",
+        "Text": "TO ALL STAFF^^I have received a report of an employee loitering around the store after hours, behaving in a most unbecoming manner.^^I will investigate! If I find any evidence of misbehavior, I will not hesitate to act.^^^This is the note I got, @. You gotta help me! Shane"
+      },
+      "When": {
+        "FriendshipLevel": "Shane 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "alex_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Alex",
+        "Text": "Hey @, I got lucky last night. But I left my lucky green shorts there! I need them back or that's it for the season. Help me out?^^Alex"
+      },
+      "When": {
+        "FriendshipLevel": "Alex 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "elliott_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Elliott",
+        "Text": "The morning after^suffused with icy breath of loss--^where are my undies?^^ -E."
+      },
+      "When": {
+        "FriendshipLevel": "Elliott 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "harvey_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Harvey",
+        "Text": "Dear @,^^I've done something I shouldn't have and I need a favor.^^Can you help me out? I'll send you the details.^^    - Harvey"
+      },
+      "When": {
+        "FriendshipLevel": "Harvey 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "caroline_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Caroline",
+        "Text": "@ I've misplaced something very precious to me. I know I can trust you to get it back. Or is it, get them back? I don't even know. Anyway, I'm too embarrassed to do it myself...^^Caroline^^p.s. I'm talking about my p a - - - e s."
+      },
+      "When": {
+        "FriendshipLevel": "Caroline 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "jodi_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Jodi",
+        "Text": "I feel like I can trust you, @. I've done something naughty, I can't even bear to write it...^^Help!^^           Jodi"
+      },
+      "When": {
+        "FriendshipLevel": "Jodi 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "marnie_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Marnie",
+        "Text": "I've lost something, @. It's wooly, but it's not a sheep. If you get what I mean. Shhh.^^     - Marnie"
+      },
+      "When": {
+        "FriendshipLevel": "Marnie 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "sandy_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Sandy",
+        "Text": "I need a visit, and a big favor!^^My, uh, desert rose has gone missing. Come over and I'll explain everything...^^^Sandy"
+      },
+      "When": {
+        "FriendshipLevel": "Sandy 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "robin_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Robin",
+        "Text": "I heard you're good at mysteries, @.^^Well, now I need you!^^Something strange has happened. It's probably just a co-incidence, but...^^^                         Robin"
+      },
+      "When": {
+        "FriendshipLevel": "Robin 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "willy_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Willy",
+        "Text": "I need you to find something for me.^^And not judge.^^Help an old sea dog out?^^^  - Your friend, Willy"
+      },
+      "When": {
+        "FriendshipLevel": "Willy 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "gus_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Gus",
+        "Text": "What a night, @! Can you pop by the saloon and help me get back into my eating pants? Starting with, what happened to my underpants?^^Thanks, friend!^ -Gus"
+      },
+      "When": {
+        "FriendshipLevel": "Gus 2",
+        "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "wizard_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Rasmodius",
+        "Text": "My ex is at it again.^^Well --technically-- my ex and I were at it again.^^Now that witch has my Underpants of Power and she won't return them.^^She has me by the short and curlies, @. For the good of the valley, do something!^                     -M. Rasmodius, Wizard"
+      },
+      "When": {
+        "FriendshipLevel": "Wizard 2",
+        "QuestNeverAccepted": "yes"
+      }
+    }
+  ],
+  "CustomBoards": [],
+  "CustomDropBoxes": []
+}

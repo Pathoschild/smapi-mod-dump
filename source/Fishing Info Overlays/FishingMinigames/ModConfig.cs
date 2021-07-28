@@ -8,20 +8,36 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using Netcode;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StardewModdingAPI.Utilities;
 
 namespace FishingMinigames
 {
     public class ModConfig
     {
-        public bool EnableMod { get; set; } = true;
-        public bool playSound { get; set; } = true;
+        public int VoiceVolume { get; set; } = 100;
+        public int[] VoicePitch { get; set; }
+        public string[] Voice_Test_Ignore_Me { get; set; }//internal for voice setting change check
+        public string[] KeyBinds { get; set; } = { "MouseLeft, Space, ControllerX", "MouseLeft, Space, ControllerX", "MouseLeft, Space, ControllerX", "MouseLeft, Space, ControllerX" };
+        public int[] StartMinigameStyle { get; set; } = { 1, 1, 1, 1 };
+        public int[] EndMinigameStyle { get; set; } = { 2, 2, 2, 2 };
+        public float StartMinigameScale { get; set; } = 1f;
+        public float[] EndMinigameDamage { get; set; } = { 1f, 1f, 1f, 1f };
+        public float[] MinigameDifficulty { get; set; } = { 1f, 1f, 1f, 1f };
+        public bool ConvertToMetric { get; set; } = false;
+        public bool RealisticSizes { get; set; } = true;
+        public int[] FestivalMode { get; set; } = { 2, 2, 2, 2 };
 
+
+        public ModConfig()
+        {
+            VoicePitch = new int[4];
+            Voice_Test_Ignore_Me = new string[4];
+            for (int i = 0; i < 4; i++)
+            {
+                int rnd = StardewValley.Game1.random.Next(-70, 71);
+                VoicePitch[i] = rnd;
+                Voice_Test_Ignore_Me[i] = "100/" + rnd;
+            }
+        }
     }
 }

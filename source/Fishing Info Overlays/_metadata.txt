@@ -6,9 +6,9 @@ mods:
    Fishing Info Overlays
 
 latest commit:
-   commit e58c6c7b8b37c0702d6c46fadede855521624b59
+   commit 4de7d277e7b28ba2618bcebdf3efa2242a9b1e92
    Author: barteke22 <bartosz2008@hotmail.com>
-   Date:   Thu Jul 1 01:09:14 2021 +0200
+   Date:   Mon Jul 26 01:04:46 2021 +0200
    
-       EndMinigame1 V0.5
+       Ginger & Ponds
    

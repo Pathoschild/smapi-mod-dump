@@ -19,6 +19,7 @@ namespace EconomyMod.Model
 {
     public class SaveState
     {
+        private const int DaysToTotalizeOneYear = Constants.WholeYearDaysCount;
         public uint ReferenceDaysPlayed = 0;
         public bool CalculatedUsableSoil = false;
         public byte PostPoneDaysLeftDefault = 3;
@@ -48,9 +49,15 @@ namespace EconomyMod.Model
 
 
             var scheduledTaxCount = 0;
-            if (Util.Config.TaxAfterFirstYear && date.DaysCount <= 112)
+            if (Util.Config.TaxAfterFirstYear && date.DaysCount <= DaysToTotalizeOneYear)
             {
-                date.AddDays(112 - date.DaysCount);
+                date.AddDays(Constants.WholeYearDaysCount - date.DaysCount);
+
+                foreach (var item in ScheduledTax.Where(c => !c.Paid).ToList())
+                {
+                    ScheduledTax.Remove(item);
+                }
+
             }
 
             switch (Util.Config.TaxPaymentType)

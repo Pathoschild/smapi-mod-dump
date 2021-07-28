@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/lshtech/AnimalProduceExpansion
+   Git: https://github.com/lshtech/AnimalProduceExpansion.git
+
+mods:
+   Animal Produce Expansion
+
+latest commit:
+   commit 031aeb7519354aa57c9fa90a35f4203046eecd35
+   Author: Elbe <elbe@notanemail.com>
+   Date:   Thu Jul 15 20:31:18 2021 -0500
+   
+       Add project files.
+   

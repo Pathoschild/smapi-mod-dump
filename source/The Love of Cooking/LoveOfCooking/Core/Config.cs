@@ -24,6 +24,8 @@ namespace LoveOfCooking
 		public bool HideFoodBuffsUntilEaten { get; set; } = true;
 		public bool FoodHealingTakesTime { get; set; } = false;
 		public bool FoodCanBurn { get; set; } = false;
+		public bool RememberLastSearchFilter { get; set; } = true;
+		public string DefaultSearchFilter { get; set; } = "None";
 		public bool DebugMode { get; set; } = false;
 		public bool DebugRegenTracker { get; set; } = false;
 		public string ConsoleCommandPrefix { get; set; } = "cac";

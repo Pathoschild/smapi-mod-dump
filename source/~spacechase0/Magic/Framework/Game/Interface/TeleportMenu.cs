@@ -20,11 +20,14 @@ namespace Magic.Framework.Game.Interface
 {
     internal class TeleportMenu : IClickableMenu
     {
-        public const int WindowWidth = 640;
-        public const int WindowHeight = 480;
+        /*********
+        ** Fields
+        *********/
+        private const int WindowWidth = 640;
+        private const int WindowHeight = 480;
 
-        public const int ElemHeight = 50;
-        public const int EdgePad = 16;
+        private const int ElemHeight = 50;
+        private const int EdgePad = 16;
 
         private readonly List<string> Locs = new();
         private string WarpTo;
@@ -34,7 +37,12 @@ namespace Magic.Framework.Game.Interface
         private Rectangle Scrollbar;
 
         private bool DragScroll;
+        private bool JustClicked;
 
+
+        /*********
+        ** Public methods
+        *********/
         public TeleportMenu()
             : base((Game1.viewport.Width - TeleportMenu.WindowWidth) / 2, (Game1.viewport.Height - TeleportMenu.WindowHeight) / 2, TeleportMenu.WindowWidth, TeleportMenu.WindowHeight)
         {
@@ -139,8 +147,6 @@ namespace Magic.Framework.Game.Interface
             base.draw(b);
             this.drawMouse(b);
         }
-
-        private bool JustClicked;
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {

@@ -6,11 +6,11 @@ for queries and analysis.**
 
 ----
 
-← [README](../README.md) • [author guide](author-guide.md)
+← [README](README.md) • [author guide](author-guide.md)
 
 This document lists the tokens available in Content Patcher packs.
 
-**See the [main README](../README.md) for other info**.
+**See the [main README](README.md) for other info**.
 
 ## Contents
 * [Introduction](#introduction)
@@ -1653,5 +1653,5 @@ example | meaning
 `{{HasFlag: currentPlayer, hostPlayer}}` | Get flags for the current _and_ host player(s).
 
 ## See also
-* [README](../README.md) for other info
+* [README](README.md) for other info
 * [Author guide](author-guide.md)

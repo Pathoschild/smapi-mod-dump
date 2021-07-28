@@ -1,0 +1,12 @@
+{
+  "Name": "Warp Snitch",
+  "Author": "ceruleandeep",
+  "Version": "1.0.7",
+  "Description": "Log all NPC warps, detect attempts to warp NPCs to locations that don't exist",
+  "UniqueID": "ceruleandeep.warpsnitch",
+  "EntryDll": "WarpSnitch.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+    "Nexus:????"
+  ]
+}

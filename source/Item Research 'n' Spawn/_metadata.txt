@@ -6,9 +6,9 @@ mods:
    Item Research 'n' Spawn
 
 latest commit:
-   commit 8c5bec19acec67b73d3627ebf83b13452bf60210
+   commit 2ce3d0c114ef7918917f9eb7fdbd3a5974920236
    Author: aleksi_ttu <aleksi@ttu.ee>
-   Date:   Thu Jun 24 11:04:37 2021 +0300
+   Date:   Tue Jul 27 14:30:13 2021 +0300
    
-       Prepare for release
+       single player progression dumping and loading
    

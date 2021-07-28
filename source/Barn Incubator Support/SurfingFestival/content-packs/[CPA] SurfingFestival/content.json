@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Format": "1.23.0",
+    "Changes": [
+        {
+            "LogName": "Surfing Trophy Animation",
+            "Action": "EditImage",
+            "Target": "{{spacechase0.JsonAssets/BigCraftableSpriteTilesheet:Surfing Trophy}}",
+            "FromFile": "SurfingTrophy_Animated.png",
+            "FromArea": {
+                "X": "0",
+                "Y": "0",
+                "Width": "16",
+                "Height": "32"
+            },
+            "ToArea": {
+                "X": "{{spacechase0.JsonAssets/BigCraftableSpriteX:Surfing Trophy}}",
+                "Y": "{{spacechase0.JsonAssets/BigCraftableSpriteY:Surfing Trophy}}",
+                "Width": "16",
+                "Height": "32"
+            },
+            "AnimationFrameTime": 5,
+            "AnimationFrameCount": 16
+        }
+    ]
+}

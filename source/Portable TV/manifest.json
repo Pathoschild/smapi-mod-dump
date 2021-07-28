@@ -11,7 +11,7 @@
 {
 	"Name": "Portable TV",
 	"Author": "kdau",
-	"Version": "2.0.1",
+	"Version": "2.0.2",
 	"Description": "Craftable inventory item that lets you watch TV channels from anywhere in the Valley",
 	"UniqueID": "kdau.PortableTV",
 	"EntryDll": "PortableTV.dll",

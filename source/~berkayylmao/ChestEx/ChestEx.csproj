@@ -95,22 +95,23 @@
     <Compile Include="LanguageExtensions\XNAExtensions.cs" />
     <Compile Include="Patches\Chest.cs" />
     <Compile Include="Patches\ItemGrabMenu.cs" />
+    <Compile Include="Types\BaseTypes\ColouringHSVMenu.ColourPicker.cs" />
+    <Compile Include="Types\BaseTypes\ColouringHSVMenu.HueSlider.cs" />
+    <Compile Include="Types\BaseTypes\ColouringMenuSwitcher.cs" />
     <Compile Include="Types\BaseTypes\CustomChestConfig.cs" />
     <Compile Include="Types\BaseTypes\Colours.cs" />
     <Compile Include="Types\BaseTypes\CustomButton.cs" />
     <Compile Include="Types\BaseTypes\CustomChestConfigHelpers.cs" />
+    <Compile Include="Types\BaseTypes\CustomClickableMenu.cs" />
+    <Compile Include="Types\BaseTypes\CustomClickableTextureComponent.cs" />
+    <Compile Include="Types\BaseTypes\CustomTextBox.Data.cs" />
+    <Compile Include="Types\BaseTypes\CustomComponentData.cs" />
     <Compile Include="Types\BaseTypes\CustomItemGrabMenu.cs" />
     <Compile Include="Types\BaseTypes\CustomItemGrabMenu.MenuWithInventoryCtorParams.cs" />
-    <Compile Include="Types\BaseTypes\CustomItemGrabMenuTexturedItemPreset.cs" />
-    <Compile Include="Types\BaseTypes\CustomItemGrabMenuItem.BasicComponent.cs" />
-    <Compile Include="Types\BaseTypes\CustomItemGrabMenuItem.cs" />
-    <Compile Include="Types\BaseTypes\CustomMenu.cs" />
-    <Compile Include="Types\BaseTypes\CustomMenu.EventHandlerResult.cs" />
-    <Compile Include="Types\BaseTypes\CustomMenu.MouseStateEx.cs" />
-    <Compile Include="Types\BaseTypes\CustomItemGrabMenuTexturedItem.cs" />
-    <Compile Include="Types\BaseTypes\CustomMenuTexturedItem.cs" />
-    <Compile Include="Types\BaseTypes\CustomMenuItem.BasicComponent.cs" />
-    <Compile Include="Types\BaseTypes\CustomMenuItem.cs" />
+    <Compile Include="Types\BaseTypes\CustomTextureButton.cs" />
+    <Compile Include="Types\BaseTypes\ICustomComponent.cs" />
+    <Compile Include="Types\BaseTypes\InputStateEx.cs" />
+    <Compile Include="Types\BaseTypes\CustomClickableComponent.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -121,19 +122,17 @@
     </Compile>
     <Compile Include="Types\BaseTypes\CustomNumericUpDownBox.cs" />
     <Compile Include="Types\BaseTypes\CustomTextBox.cs" />
-    <Compile Include="Types\BaseTypes\SVObjectInCustomItemGrabMenu.cs" />
-    <Compile Include="Types\BaseTypes\SVObjectInCustomMenu.cs" />
     <Compile Include="Types\BaseTypes\TexturePresets.cs" />
-    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ChestConfigPanel.ColourPalette.cs" />
     <Compile Include="Types\CustomTypes\ChestExMenu\Items\ChestConfigPanel.cs" />
     <Compile Include="Types\CustomTypes\ChestExMenu\MainMenu.cs" />
-    <Compile Include="Types\CustomTypes\ExtendedSVObjects\ExtendedChestInCustomItemGrabMenu.cs" />
     <Compile Include="Types\CustomTypes\ExtendedSVObjects\ExtendedChest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />
     <None Include="packages.config" />
-    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ChestConfigPanel.ChestSettings.cs" />
+    <Compile Include="Types\CustomTypes\ChestExMenu\Items\ChestSettings.cs" />
+    <Compile Include="Types\BaseTypes\ColouringHSVMenu.cs" />
+    <Compile Include="Types\BaseTypes\ColouringHEXMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

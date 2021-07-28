@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/8808
 IDs: berkayylmao.InfiniteZoom
-update keys: Nexus:8808, GitHub:berkayylmao/StardewValleyMods/tree/master/InfiniteZoom
+update keys: Nexus:8808, GitHub:berkayylmao/StardewValleyMods

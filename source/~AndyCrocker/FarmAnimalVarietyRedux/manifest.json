@@ -18,6 +18,6 @@
   "MinimumApiVersion": "3.8.0",
   "UpdateKeys": [ "Nexus:" ],
   "Dependencies": [
-    { "UniqueID": "Pathoschild.ContentPatcher", "Required": false }
+    { "UniqueID": "Pathoschild.ContentPatcher", "IsRequired": false }
   ]
 }

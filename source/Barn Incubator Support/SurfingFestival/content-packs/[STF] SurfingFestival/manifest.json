@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Surfing Festival for STF",
+    "Author": "spacechase0, ParadigmNomad",
+    "Version": "1.0.6",
+    "Description": "Adds the vendor data for the Surfing Festival",
+    "UniqueID": "spacechase0.SurfingFestival.STF",
+    "ContentPackFor": {
+        "UniqueID": "Cherry.ShopTileFramework",
+        "MinimumVersion": "1.0.8"
+    },
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.SurfingFestival"
+        }
+    ],
+    "UpdateKeys": [ "Nexus:6688" ]
+}

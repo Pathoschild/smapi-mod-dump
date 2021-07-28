@@ -6,9 +6,9 @@ mods:
    Cellar Available
 
 latest commit:
-   commit 51136d8a73bdea669b78db3d5643f6aafbf472ba
+   commit 40f08581da55f379d9f0f00da6f7cb2f7b1009e0
    Author: Candidus <candidus@xmail.net>
-   Date:   Sun Dec 27 18:58:49 2020 +0100
+   Date:   Wed Jul 7 21:56:45 2021 +0200
    
-       Fix for SDV 1.5: All front tiles must be removed.
+       Fix issue with aedenthorn.MultipleSpouses
    

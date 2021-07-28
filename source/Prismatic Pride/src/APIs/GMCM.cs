@@ -40,10 +40,10 @@ namespace GenericModConfigMenu
 		void RegisterSimpleOption (IManifest mod, string optionName, string optionDesc, Func<SButton> optionGet, Action<SButton> optionSet);
 		void RegisterSimpleOption (IManifest mod, string optionName, string optionDesc, Func<KeybindList> optionGet, Action<KeybindList> optionSet);
 
-		// void RegisterClampedOption (IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max);
-		// void RegisterClampedOption (IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet, float min, float max);
-		// void RegisterClampedOption (IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max, int interval);
-		// void RegisterClampedOption (IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet, float min, float max, float interval);
+		void RegisterClampedOption (IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max);
+		void RegisterClampedOption (IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet, float min, float max);
+		void RegisterClampedOption (IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max, int interval);
+		void RegisterClampedOption (IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet, float min, float max, float interval);
 
 		void RegisterChoiceOption (IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet, string[] choices);
 

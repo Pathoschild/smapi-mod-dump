@@ -33,7 +33,6 @@ mods:
    Pelican TTS
    Plan Importer
    Plato Warp Menu
-   PlatoTK
    Portraiture
    PyTK
    Ring of Fire

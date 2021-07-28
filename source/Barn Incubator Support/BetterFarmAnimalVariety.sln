@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterFarmAnimalVariety", "BetterFarmAnimalVariety\BetterFarmAnimalVariety.csproj", "{6AEBEEB2-E842-4532-A9C1-3C589B5A87E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paritee.StardewValley.Core", "Paritee.StardewValley.Core\Paritee.StardewValley.Core.csproj", "{754197C8-DEAB-4CE1-947D-138321581F4C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6AEBEEB2-E842-4532-A9C1-3C589B5A87E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AEBEEB2-E842-4532-A9C1-3C589B5A87E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AEBEEB2-E842-4532-A9C1-3C589B5A87E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AEBEEB2-E842-4532-A9C1-3C589B5A87E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{754197C8-DEAB-4CE1-947D-138321581F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{754197C8-DEAB-4CE1-947D-138321581F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{754197C8-DEAB-4CE1-947D-138321581F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{754197C8-DEAB-4CE1-947D-138321581F4C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C19787C3-EC97-422C-8ADA-3A4D11DF36DA}
+	EndGlobalSection
+EndGlobal

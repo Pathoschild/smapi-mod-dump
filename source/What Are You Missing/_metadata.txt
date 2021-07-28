@@ -6,9 +6,9 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit 7cf9f622815fa4f46e9df10062139cf1d158e227
+   commit 71e1813731619365923ba9410163db15c79223e5
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Wed Dec 30 18:32:47 2020 -0500
+   Date:   Tue Jul 13 18:32:42 2021 -0400
    
-       Some quick stuff so that its a bit better for stardew 1.5, should work for dynamic bundles and not show so many things in the common tab
+       Fixed issue with Json Assets 1.7.8
    

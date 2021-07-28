@@ -10,7 +10,6 @@
 
 #region License
 
-// clang-format off
 // 
 //    ChestEx (StardewValleyMods)
 //    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
@@ -21,14 +20,12 @@
 //    (at your option) any later version.
 // 
 //    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    but WITHOUT ANY WARRANTY, without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //    GNU Affero General Public License for more details.
 // 
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program. If not, see <https://www.gnu.org/licenses/>.
-// 
-// clang-format on
 
 #endregion
 
@@ -153,7 +150,7 @@ namespace ChestEx.CompatibilityPatches {
             yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(sType, "Menu"));
             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(CustomItemGrabMenu), "get_mRealBounds"));
             yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Rectangle), "Y"));
-            yield return new CodeInstruction(OpCodes.Ldc_I4, 132);
+            yield return new CodeInstruction(OpCodes.Ldc_I4, 64);
             yield return new CodeInstruction(OpCodes.Add);
             yield return new CodeInstruction(OpCodes.Ldarg_0);
             yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(sType, "Menu"));
@@ -240,20 +237,23 @@ namespace ChestEx.CompatibilityPatches {
     private static class ChestContainer {
       private static Type sType => Type.GetType("Pathoschild.Stardew.ChestsAnywhere.Framework.Containers.ChestContainer, ChestsAnywhere");
 
-      [HarmonyPrefix]
+      [HarmonyPostfix]
       [UsedImplicitly]
       [SuppressMessage("ReSharper", "InconsistentNaming")]
-      private static Boolean prefixOpenMenu(Chest ___Chest, Object ___Context, ref IClickableMenu __result) {
+      private static Boolean prefixOpenMenu(Object __instance, Chest ___Chest, Object ___Context, ref IClickableMenu __result) {
         if (Game1.activeClickableMenu is CustomItemGrabMenu menu) menu.exitThisMenu(false);
         if (___Chest.SpecialChestType != Chest.SpecialChestTypes.None || ___Chest.playerChest is null || !___Chest.playerChest.Value) return true;
 
-        __result = new MainMenu(___Chest.GetItemsForPlayer(Game1.player.UniqueMultiplayerID),
+        __result = new MainMenu(Traverse.Create(__instance).Property<IList<Item>>("Inventory").Value,
                                 false,
                                 true,
-                                (__result as ItemGrabMenu)?.inventory.highlightMethod,
-                                Traverse.Create(__result).Field<ItemGrabMenu.behaviorOnItemSelect>("behaviorFunction")?.Value,
+                                (InventoryMenu.highlightThisItem)AccessTools.Method(sType, "CanAcceptItem", new[] { typeof(Item) })
+                                                                            .CreateDelegate(typeof(InventoryMenu.highlightThisItem), __instance),
+                                (ItemGrabMenu.behaviorOnItemSelect)AccessTools.Method(sType, "GrabItemFromPlayer", new[] { typeof(Item), typeof(Farmer) })
+                                                                              .CreateDelegate(typeof(ItemGrabMenu.behaviorOnItemSelect), __instance),
                                 null,
-                                (__result as ItemGrabMenu)?.behaviorOnItemGrab,
+                                (ItemGrabMenu.behaviorOnItemSelect)AccessTools.Method(sType, "GrabItemFromContainer", new[] { typeof(Item), typeof(Farmer) })
+                                                                              .CreateDelegate(typeof(ItemGrabMenu.behaviorOnItemSelect), __instance),
                                 false,
                                 true,
                                 true,
@@ -339,7 +339,7 @@ namespace ChestEx.CompatibilityPatches {
   #region Constructors
 
     internal ChestsAnywhere()
-      : base("Pathoschild.ChestsAnywhere", new SemanticVersion("1.20.13")) { }
+      : base("Pathoschild.ChestsAnywhere", new SemanticVersion("1.20.14")) { }
 
   #endregion
   }

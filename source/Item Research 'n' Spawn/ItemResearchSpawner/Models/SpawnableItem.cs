@@ -9,6 +9,7 @@
 *************************************************/
 
 using ItemResearchSpawner.Components;
+using ItemResearchSpawner.Models.Enums;
 
 namespace ItemResearchSpawner.Models
 {

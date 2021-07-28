@@ -11,7 +11,7 @@
 {
 	"Name": "Prismatic Pride (Shop Tile Framework pack)",
 	"Author": "kdau",
-	"Version": "1.0.1",
+	"Version": "1.1.0",
 	"Description": "Shop Tile Framework content pack for Prismatic Pride mod",
 	"UniqueID": "kdau.PrismaticPride.STF",
 	"ContentPackFor": { "UniqueID": "Cherry.ShopTileFramework" },

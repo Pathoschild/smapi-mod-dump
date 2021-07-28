@@ -60,9 +60,11 @@
     <Compile Include="Interface\IContentElement.cs" />
     <Compile Include="Interface\InterfaceFramework.cs" />
     <Compile Include="Helpers\InterfaceHelper.cs" />
+    <Compile Include="Interface\PageContent\ContentElementSlider.cs" />
     <Compile Include="Interface\PageContent\ContentElementText.cs" />
     <Compile Include="Interface\PageContent\ContentElementHeaderText.cs" />
     <Compile Include="Interface\PageContent\ContentElementCheckbox.cs" />
+    <Compile Include="Interface\Submenu\ConfigurationPage.cs" />
     <Compile Include="Interface\Submenu\EconomyPage.cs" />
     <Compile Include="Interface\Submenu\LoanPage.cs" />
     <Compile Include="ModConfig.cs" />
@@ -98,6 +100,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="assets\Interface\Billboard-taxDay.png" />
+    <Content Include="assets\Interface\gear.png" />
     <Content Include="assets\Interface\LoanButton.png" />
     <Content Include="assets\Interface\sidebarButtonReport.png" />
     <Content Include="assets\Interface\sidebarEmpty.png" />

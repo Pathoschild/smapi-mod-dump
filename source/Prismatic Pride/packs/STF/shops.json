@@ -47,6 +47,7 @@
 					]
 				},
 				{
+					"When": [ "HasMod SurfingMimikyu.PrismaticSkirt" ],
 					"ItemType": "Clothing", // (pants)
 					"StockPrice": 0,
 					"StockItemCurrency": "Prismatic Shard",
@@ -63,6 +64,29 @@
 						1995, // Prismatic Pleated Skirt
 						1996, // Prismatic Long Dress
 						1993 // Prismatic Simple Dress
+					],
+					"ItemNames":
+					[
+						// this mod
+						"Prismatic Shorts",
+						"Prismatic Tight Pants",
+						"Prismatic Baggy Pants",
+						"Prismatic Relaxed Fit Pants",
+						"Prismatic Relaxed Fit Shorts"
+					]
+				},
+				{
+					"When": [ "!HasMod SurfingMimikyu.PrismaticSkirt" ],
+					"ItemType": "Clothing", // (pants)
+					"StockPrice": 0,
+					"StockItemCurrency": "Prismatic Shard",
+					"StockCurrencyStack": 1,
+					"MaxNumItemsSoldInItemStock": 5,
+					"ItemIDs":
+					[
+						// base game
+						998, // Prismatic Pants
+						999 // Prismatic Genie Pants
 					],
 					"ItemNames":
 					[

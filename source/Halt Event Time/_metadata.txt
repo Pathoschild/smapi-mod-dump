@@ -6,9 +6,9 @@ mods:
    Halt Event Time
 
 latest commit:
-   commit b73c4924aa784966504a8aec57c0ef237b3f5164
+   commit 3c7442dbc89ea637b58a851459084c8ebfbc46a3
    Author: chawol <chawolbaka@hotmail.com>
-   Date:   Fri May 21 15:41:42 2021 +0800
+   Date:   Mon Jul 5 12:47:41 2021 +0800
    
-       Add UpdateKey
+       Add more config
    

@@ -101,7 +101,7 @@ namespace PrismaticPride
 
 		private void onButtonPressed (object _sender, ButtonPressedEventArgs e)
 		{
-			if (!Context.IsWorldReady || !Context.IsPlayerFree)
+			if (!Context.IsWorldReady || !Context.IsPlayerFree || !Config.ApplyColors)
 				return;
 
 			// Handle the configured key by opening the color set menu.
@@ -113,7 +113,7 @@ namespace PrismaticPride
 
 			// Demonstrate the mod by cycling through the color set with
 			// random farmer appearance and random prismatic clothing items.
-			// if (e.Button == SButton.M)
+			// if (e.Button == SButton.Z)
 			// {
 			// 	Demo.Demonstrate ();
 			// 	Helper.Input.Suppress (e.Button);

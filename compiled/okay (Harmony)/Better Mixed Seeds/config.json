@@ -62,6 +62,11 @@
           "DropChance": 1.0
         },
         {
+          "Name": "Grape",
+          "Enabled": true,
+          "DropChance": 1.0
+        },
+        {
           "Name": "Ancient Fruit",
           "Enabled": true,
           "DropChance": 1.0
@@ -162,6 +167,11 @@
         },
         {
           "Name": "Hops",
+          "Enabled": true,
+          "DropChance": 1.0
+        },
+        {
+          "Name": "Grape",
           "Enabled": true,
           "DropChance": 1.0
         },
@@ -309,6 +319,16 @@
           "DropChance": 1.0
         },
         {
+          "Name": "Grape",
+          "Enabled": true,
+          "DropChance": 1.0
+        },
+        {
+          "Name": "Ancient Fruit",
+          "Enabled": true,
+          "DropChance": 1.0
+        },
+        {
           "Name": "Winter Root",
           "Enabled": true,
           "DropChance": 1.0
@@ -326,39 +346,5 @@
       ]
     }
   },
-  "CropModSettings": {
-    "blueberry.LoveOfCooking.NewCropsPack": {
-      "Enabled": true,
-      "Spring": {
-        "Crops": [
-          {
-            "Name": "blueberry.cac.onion",
-            "Enabled": true,
-            "DropChance": 1.0
-          }
-        ]
-      },
-      "Summer": {
-        "Crops": [
-          {
-            "Name": "blueberry.cac.cabbage",
-            "Enabled": true,
-            "DropChance": 1.0
-          }
-        ]
-      },
-      "Fall": {
-        "Crops": [
-          {
-            "Name": "blueberry.cac.carrot",
-            "Enabled": true,
-            "DropChance": 1.0
-          }
-        ]
-      },
-      "Winter": {
-        "Crops": []
-      }
-    }
-  }
+  "CropModSettings": {}
 }

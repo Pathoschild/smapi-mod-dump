@@ -32,7 +32,7 @@ Why just harvest your crops when you could do battle with them? Cropbeasts are c
 1. Install [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) (optional, to unlock the Beast Mask with the achievement)
 1. Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) (optional, for easier configuration)
 1. Download this mod from [Nexus](https://www.nexusmods.com/stardewvalley/mods/6030?tab=files) or [ModDrop](https://www.moddrop.com/stardew-valley/mods/784523-cropbeasts)
-1. Unzip and put the `Cropbeasts` folder inside your `Mods` folder
+1. Unzip and put the `Cropbeasts` and `Cropbeasts.JA` folders inside your `Mods` folder
 1. Run the game using SMAPI
 
 ## ![Use](https://www.kdau.com/headers/use.png)

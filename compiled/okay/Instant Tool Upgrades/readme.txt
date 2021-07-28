@@ -1,4 +1,4 @@
-INSTANT TOOL UPGRADES - 1.1.0
+INSTANT TOOL UPGRADES - 1.3.0
 
 REQUIREMENTS
 * Latest version of Stardew Valley
@@ -11,7 +11,7 @@ OTHER
 * Added support for other languages.
 
 KNOWN ISSUES
-* None so far.
+* Do not use this mod on the moblie version of the game.
 
 CREDITS
 * Everyone who wrote and edited the Stardew Valley Wiki's modding pages.

@@ -83,7 +83,7 @@ namespace BetterShopMenu
                 var obj = item as SObject;
                 if (!this.Categories.Contains(item?.Category ?? 0) && (obj == null || !obj.IsRecipe))
                     this.Categories.Add(item?.Category ?? 0);
-                if (obj != null && obj.IsRecipe)
+                if (obj?.IsRecipe == true)
                     this.HasRecipes = true;
             }
             this.CurrCategory = -1;
@@ -399,7 +399,7 @@ namespace BetterShopMenu
                         this.DoGridLayoutLeftClick(e);
                 }
             }
-            else if ((e.Button >= SButton.A && e.Button <= SButton.Z || e.Button == SButton.Space || e.Button == SButton.Back) && this.Search.Selected)
+            else if ((e.Button is (>= SButton.A and <= SButton.Z) or SButton.Space or SButton.Back) && this.Search.Selected)
             {
                 this.Helper.Input.Suppress(e.Button);
                 this.SyncStock();
@@ -550,7 +550,7 @@ namespace BetterShopMenu
                         Game1.dayTimeMoneyBox.moneyShakeTimer = 1000;
                         Game1.playSound("cancel");
                     }
-                    if (heldItem != null && Game1.options.SnappyMenus && (Game1.activeClickableMenu != null && Game1.activeClickableMenu is ShopMenu) && Game1.player.addItemToInventoryBool((Item)heldItem))
+                    if (heldItem != null && Game1.options.SnappyMenus && Game1.activeClickableMenu is ShopMenu && Game1.player.addItemToInventoryBool((Item)heldItem))
                     {
                         heldItem = null;
                         this.Shop.heldItem = heldItem;
@@ -677,7 +677,7 @@ namespace BetterShopMenu
             if (cat == -1)
                 return true;
             if (cat == this.Categories.Count)
-                return obj != null && obj.IsRecipe;
+                return obj?.IsRecipe == true;
             if (this.Categories[cat] == ((item as Item)?.Category ?? 0))
                 return (obj == null || !obj.IsRecipe);
             return false;

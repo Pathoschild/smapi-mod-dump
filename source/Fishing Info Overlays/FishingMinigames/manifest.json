@@ -15,6 +15,12 @@
   "Description": "Alternative fishing minigames, including Here Fishy Fishy.",
   "UniqueID": "barteke22.FishingMinigames",
   "EntryDll": "FishingMinigames.dll",
-  "MinimumApiVersion": "3.10.0",
-  "UpdateKeys": ["Nexus:6586"]
+  "MinimumApiVersion": "3.8.0",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ],
+  "UpdateKeys": [ "Nexus:" ]
 }

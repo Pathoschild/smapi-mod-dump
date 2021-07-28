@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using StardewValley;
 
 namespace AnotherHungerMod.Framework
@@ -19,7 +20,7 @@ namespace AnotherHungerMod.Framework
             if (player != Game1.player)
                 return -1;
 
-            return ModDataManager.GetFullness(player);
+            return Math.Min(ModDataManager.GetFullness(player), Mod.Config.MaxFullness);
         }
 
         public static void UseFullness(this Farmer player, float amt)
@@ -31,7 +32,7 @@ namespace AnotherHungerMod.Framework
             ModDataManager.SetFullness(player, fullness - amt);
         }
 
-        public static int GetMaxFullness(this Farmer player)
+        public static int GetMaxFullness(this Farmer _)
         {
             return Mod.Config.MaxFullness;
         }

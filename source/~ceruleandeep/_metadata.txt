@@ -1,0 +1,18 @@
+urls:
+   web: https://github.com/ceruleandeep/CeruleanStardewMods
+   Git: https://github.com/ceruleandeep/CeruleanStardewMods.git
+
+mods:
+   Junimo Dialog
+   Multiple Spouse Dialogs
+   No Cooties
+   Personal Effects Redux
+   Warp Snitch
+
+latest commit:
+   commit 063c0a18d71a4312a99ef55ff9b164d0e6d6bf9b
+   Author: ceruleandeep <ceruleandeep>
+   Date:   Sat Jul 10 20:17:44 2021 +1000
+   
+       Initial commit
+   

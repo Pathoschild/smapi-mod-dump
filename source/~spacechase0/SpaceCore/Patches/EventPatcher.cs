@@ -13,7 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Harmony;
 using Microsoft.Xna.Framework;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceCore.Events;
 using SpaceShared;
 using StardewModdingAPI;

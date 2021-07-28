@@ -64,6 +64,7 @@ namespace CustomCompanions.Framework.Managers
         internal static List<CompanionModel> companionModels;
         internal static List<BoundCompanions> activeCompanions;
         internal static List<SceneryCompanions> sceneryCompanions;
+        internal static List<SceneryCompanions> denyRespawnCompanions;
 
         internal static void SummonCompanions(CompanionModel model, int numberToSummon, RingModel summoningRing, Farmer who, GameLocation location)
         {
@@ -170,6 +171,11 @@ namespace CustomCompanions.Framework.Managers
             {
                 sceneryCompanions.Remove(sceneryCompanion);
             }
+        }
+
+        internal static void DenyCompanionFromRespawning(GameLocation location, Vector2 tile, Companion companion)
+        {
+            denyRespawnCompanions.Add(new SceneryCompanions(location, tile, new List<Companion>() { companion }));
         }
 
         internal static bool UpdateCompanionModel(CompanionModel model)

@@ -9,7 +9,9 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.0.2
+Released 10 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
 * Added support for Ginger Island weather.
 
 ## 1.0.1

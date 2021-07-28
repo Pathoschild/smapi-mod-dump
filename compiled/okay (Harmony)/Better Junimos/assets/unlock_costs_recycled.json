@@ -1,0 +1,67 @@
+{
+  "MoreJunimos": {
+    "Item": 268,
+    "Stack": 3,
+    "Remarks": "starfruit"
+  },
+  "UnlimitedJunimos": {
+    "Item": 268,
+    "Stack": 5,
+    "Remarks": "starfruit"
+  },
+  "CanWorkInRain": {
+    "Item": 771,
+    "Stack": 40,
+    "Remarks": "fiber"
+  },
+  "CanWorkInEvenings": {
+    "Item": 768,
+    "Stack": 2,
+    "Remarks": "solar essence"
+  },
+  "ReducedCostToConstruct": {
+    "Item": 336,
+    "Stack": 5,
+    "Remarks": "gold bar"
+  },
+  "WorkFaster": {
+    "Item": 260,
+    "Stack": 10,
+    "Remarks": "hot pepper"
+  },
+  "CanWorkInWinter": {
+    "Item": 440,
+    "Stack": 6,
+    "Remarks": "wool"
+  },
+  "Fertilize": {
+    "Item": 330,
+    "Stack": 20,
+    "Remarks": "clay"
+  },
+  "ClearDeadCrops": {
+    "Item": 769,
+    "Stack": 2,
+    "Remarks": "void essence"
+  },
+  "HarvestBushes": {
+    "Item": 709,
+    "Stack": 6,
+    "Remarks": "hardwood"
+  },
+  "HarvestForageCrops": {
+    "Item": 372,
+    "Stack": 6,
+    "Remarks": "clam"
+  },
+  "PlantCrops": {
+    "Item": 335,
+    "Stack": 5,
+    "Remarks": "iron bar"
+  },
+  "Water": {
+    "Item": 88,
+    "Stack": 10,
+    "Remarks": "coconut"
+  }
+}

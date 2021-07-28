@@ -23,6 +23,10 @@ namespace PrismaticPride
 
 #pragma warning disable IDE1006
 
+		public bool ApplyColors { get; set; } = true;
+
+		public float ColorDuration { get; set; } = 1.5f;
+
 		public string DefaultColorSet { get; set; } = "progress";
 
 		public SButton ColorSetMenuKey { get; set; } = SButton.U;
@@ -53,6 +57,21 @@ namespace PrismaticPride
 
 			var manifest = ModEntry.Instance.ModManifest;
 			api.RegisterModConfig (manifest, Reset, Save);
+
+			api.SetDefaultIngameOptinValue (manifest, true);
+			api.RegisterSimpleOption (manifest,
+				Helper.Translation.Get ("ApplyColors.name"),
+				Helper.Translation.Get ("ApplyColors.description"),
+				() => Instance.ApplyColors,
+				(bool value) => Instance.ApplyColors = value);
+
+			api.SetDefaultIngameOptinValue (manifest, true);
+			api.RegisterClampedOption (manifest,
+				Helper.Translation.Get ("ColorDuration.name"),
+				Helper.Translation.Get ("ColorDuration.description"),
+				() => Instance.ColorDuration,
+				(float value) => Instance.ColorDuration = value,
+				0.1f, 10f, 0.1f);
 
 			api.SetDefaultIngameOptinValue (manifest, false);
 			var sets = ColorData.sets.Values;

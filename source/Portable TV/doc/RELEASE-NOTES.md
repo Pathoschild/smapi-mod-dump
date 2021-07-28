@@ -10,6 +10,12 @@ for queries and analysis.**
 
 [Portable TV](../)
 
+## 2.0.2
+
+*Release pending.*
+
+* Fix error message when returning to title screen
+
 ## 2.0.1
 
 *Released 2021 June 26.*

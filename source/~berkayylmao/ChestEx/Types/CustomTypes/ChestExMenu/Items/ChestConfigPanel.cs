@@ -10,7 +10,6 @@
 
 #region License
 
-// clang-format off
 // 
 //    ChestEx (StardewValleyMods)
 //    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
@@ -21,14 +20,12 @@
 //    (at your option) any later version.
 // 
 //    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    but WITHOUT ANY WARRANTY, without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //    GNU Affero General Public License for more details.
 // 
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program. If not, see <https://www.gnu.org/licenses/>.
-// 
-// clang-format on
 
 #endregion
 
@@ -41,31 +38,98 @@ using ChestEx.Types.CustomTypes.ExtendedSVObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using StardewValley;
-
-using Object = System.Object;
+using StardewValley.Objects;
 
 namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
-  public partial class ChestConfigPanel : CustomItemGrabMenuItem {
+  public class ChestConfigPanel : CustomClickableMenu {
     // Private:
+  #region Private
 
-    private ExtendedChestInCustomItemGrabMenu chestAsPanelButton;
-    private ColourPalette                     colourPalette;
-    private ChestSettings                     chestSettings;
+    // Consts:
+  #region Consts
 
-    private Boolean isShowingConfigPanel;
+    private const String CONST_MODE_HEX        = "COLOURS_HEX";
+    private const String CONST_MODE_HSV_CHEST  = "CHEST_HSV";
+    private const String CONST_MODE_HSV_HINGES = "HINGES_HSV";
+    private const String CONST_MODE_RESET      = "COLOURS_RESET";
 
-    // Component event handlers:
-  #region Component event handlers
+  #endregion
 
-    private void _componentOnClick(Object sender, CustomMenu.MouseStateEx mouseState) {
-      switch ((sender as BasicComponent)?.mName) {
-        case "openPanelBTN":
-          this.isShowingConfigPanel.Flip();
-          this.colourPalette.SetVisible(this.isShowingConfigPanel);
-          this.chestSettings.SetVisible(this.isShowingConfigPanel);
-          this.mHostMenu.mPlayerInventoryOptions.SetVisible(!this.isShowingConfigPanel);
+    private readonly CustomItemGrabMenu hostMenu;
+    private          Chest              hostMenuChest => this.hostMenu.GetSourceAs<Chest>();
 
+    private          Boolean       colouringChestNeedsReset;
+    private readonly ExtendedChest colouringChest;
+
+    private readonly ColouringHEXMenu      colouringHEXMenu;
+    private readonly ColouringHSVMenu      colouringHSVMenu;
+    private readonly ColouringMenuSwitcher colouringModeSwitcher;
+
+    private String activeColouringMode = CONST_MODE_HSV_CHEST;
+
+    private void switchColouringMode(String newMode) {
+      switch (newMode) {
+        case CONST_MODE_HSV_CHEST:
+        case CONST_MODE_HSV_HINGES:
+          this.colouringHEXMenu.SetVisible(false);
+
+          this.colouringHSVMenu.SetVisible(true);
+          this.colouringHSVMenu.SetColour(newMode == CONST_MODE_HSV_CHEST ? this.hostMenuChest.playerChoiceColor.Value : this.hostMenuChest.GetCustomConfigHingesColour(), false);
+          break;
+        case CONST_MODE_HEX:
+          this.colouringHSVMenu.SetVisible(false);
+
+          this.colouringHEXMenu.SetColours(this.hostMenuChest.playerChoiceColor.Value, this.hostMenuChest.GetCustomConfigHingesColour());
+          this.colouringHEXMenu.SetVisible(true);
+          break;
+        case CONST_MODE_RESET:
+          this.hostMenuChest.playerChoiceColor.Value  = Color.Black;
+          this.colouringChest.playerChoiceColor.Value = Color.Black;
+          this.colouringChest.mHingesColour           = Color.Black;
+
+          this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.hostMenuChest.GetActualColour();
+          this.hostMenuChest.SetCustomConfigHingesColour(Color.Black);
+
+          this.colouringModeSwitcher.ForceSwitch(0, CONST_MODE_HSV_CHEST);
+          return;
+      }
+
+      this.activeColouringMode = newMode;
+    }
+
+    private void onHEXFinalColour(Color chestColour, Color hingesColour) {
+      if (this.activeColouringMode != CONST_MODE_HEX) return;
+
+      this.hostMenuChest.playerChoiceColor.Value  = chestColour;
+      this.colouringChest.playerChoiceColor.Value = chestColour;
+      this.colouringChest.mHingesColour           = hingesColour;
+
+      this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.hostMenuChest.GetActualColour();
+      this.hostMenuChest.SetCustomConfigHingesColour(hingesColour);
+    }
+
+    private void onHSVTryColour(Color colour) {
+      this.colouringChestNeedsReset = true;
+
+      switch (this.activeColouringMode) {
+        case CONST_MODE_HSV_CHEST:
+          this.colouringChest.playerChoiceColor.Value             = colour;
+          this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.colouringChest.GetActualColour();
+          break;
+        case CONST_MODE_HSV_HINGES:
+          this.colouringChest.mHingesColour = colour;
+          break;
+      }
+    }
+
+    private void onHSVFinalColour(Color colour) {
+      switch (this.activeColouringMode) {
+        case CONST_MODE_HSV_CHEST:
+          this.hostMenuChest.playerChoiceColor.Value              = colour;
+          this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.hostMenuChest.GetActualColour();
+          break;
+        case CONST_MODE_HSV_HINGES:
+          this.hostMenuChest.SetCustomConfigHingesColour(colour);
           break;
       }
     }
@@ -73,70 +137,94 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
   #endregion
 
     // Public:
+  #region Public
 
     // Overrides:
+  #region Overrides
 
-    public override void Draw(SpriteBatch b) {
-      if (!this.mIsVisible) return;
+    public override void SetVisible(Boolean isVisible) {
+      base.SetVisible(isVisible);
 
-      if (this.isShowingConfigPanel) {
-        Rectangle wrap_rect = this.mHostMenu.inventory.GetDialogueBoxRectangle();
-        Game1.drawDialogueBox(wrap_rect.X,
-                              wrap_rect.Y,
-                              wrap_rect.Width,
-                              wrap_rect.Height,
-                              false,
-                              true,
-                              r: this.mColours.mBackgroundColour.R,
-                              g: this.mColours.mBackgroundColour.G,
-                              b: this.mColours.mBackgroundColour.B);
-      }
-
-      this.mComponents.ForEach(c => {
-        if (c.mIsVisible) c.Draw(b);
-      });
+      this.hostMenu.mPlayerInventoryOptions.SetVisible(!isVisible);
     }
 
-    public override void SetVisible(Boolean isVisible) { this.mIsVisible = isVisible; }
+    public override void Draw(SpriteBatch spriteBatch) {
+      this.mComponents.ForEach(c => {
+        if (c.mIsVisible) c.Draw(spriteBatch);
+      });
+
+      Rectangle inv_bounds = this.hostMenu.inventory.GetBounds();
+      this.colouringChest.Draw(spriteBatch, new Vector2(inv_bounds.X - 118, inv_bounds.Center.Y - 76));
+    }
+
+    public override void OnCursorMoved(Vector2 cursorPos) {
+      base.OnCursorMoved(cursorPos);
+
+      if (this.colouringChestNeedsReset && (!this.colouringHEXMenu.mBounds.Contains(cursorPos) || !this.colouringHSVMenu.mBounds.Contains(cursorPos))) {
+        this.colouringChestNeedsReset = false;
+
+        this.colouringChest.playerChoiceColor.Value             = this.hostMenuChest.playerChoiceColor.Value;
+        this.colouringChest.mHingesColour                       = this.hostMenuChest.GetCustomConfigHingesColour();
+        this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.colouringChest.GetActualColour();
+      }
+    }
+
+  #endregion
+
+  #endregion
 
     // Constructors:
+  #region Constructors
 
     public ChestConfigPanel(CustomItemGrabMenu hostMenu)
-      : base(hostMenu, GlobalVars.gUIViewport, true, Colours.GenerateFrom(Color.FromNonPremultiplied(50, 60, 70, 255))) {
-      Rectangle source_menu_bounds         = this.mHostMenu.mSourceInventoryOptions.mBounds;
-      Rectangle player_menu_content_bounds = this.mHostMenu.inventory.GetContentRectangle();
+      : base(GlobalVars.gUIViewport, Colours.gTransparent) {
+      var       menu_colour                = Colours.GenerateFromMenuTiles();
+      var       player_chest               = hostMenu.GetSourceAs<Chest>();
+      Rectangle player_menu_content_bounds = hostMenu.inventory.GetBounds();
 
-      this.chestAsPanelButton = new ExtendedChestInCustomItemGrabMenu(this,
-                                                                      new Rectangle(source_menu_bounds.X - 64 - 28,
-                                                                                    source_menu_bounds.Y + (source_menu_bounds.Height / 2 - 64 / 2),
-                                                                                    64,
-                                                                                    64),
-                                                                      "openPanelBTN",
-                                                                      this._componentOnClick,
-                                                                      "Toggle configuration panel",
-                                                                      Colours.gTurnTranslucentOnAction);
-      this.chestAsPanelButton.SetVisible(true);
+      this.colouringChest = new ExtendedChest(new Rectangle(player_menu_content_bounds.X - 24 - 64, player_menu_content_bounds.Center.Y - 32, 64, 64),
+                                              player_chest.GetCustomConfigHingesColour(),
+                                              hostMenu.mSourceType);
+      this.colouringChest.playerChoiceColor.Value = player_chest.playerChoiceColor.Value;
 
-      this.colourPalette = new ColourPalette(this,
-                                             new Rectangle(player_menu_content_bounds.X,
-                                                           player_menu_content_bounds.Y,
-                                                           ColourPalette.ColourPicker.CONST_X + player_menu_content_bounds.Height + ColourPalette.CONST_BORDER_WIDTH,
-                                                           player_menu_content_bounds.Height),
-                                             this.chestAsPanelButton.mMenuChest,
-                                             "palette",
-                                             this._componentOnClick);
-      this.colourPalette.SetVisible(false);
+      this.colouringModeSwitcher = new ColouringMenuSwitcher(new Rectangle(player_menu_content_bounds.X - 8,
+                                                                           player_menu_content_bounds.Y - 8,
+                                                                           48,
+                                                                           player_menu_content_bounds.Height + 16),
+                                                             menu_colour * 0.75f,
+                                                             this.switchColouringMode);
+      this.colouringModeSwitcher.AddSwitcher(CONST_MODE_HSV_CHEST, menu_colour, TexturePresets.gChestColouringModeTexture, "Chest colour");
+      this.colouringModeSwitcher.AddSwitcher(CONST_MODE_HSV_HINGES, menu_colour, TexturePresets.gChestHingesColouringModeTexture, "Chest hinges colour");
+      this.colouringModeSwitcher.AddSwitcher(CONST_MODE_RESET, menu_colour, "R", "Reset colours");
+      this.colouringModeSwitcher.AddSwitcher(CONST_MODE_HEX, menu_colour, "#", "Chest colours (HEX)");
 
-      this.chestSettings = new ChestSettings(this,
-                                             new Rectangle(player_menu_content_bounds.X + this.colourPalette.mBounds.Width,
-                                                           player_menu_content_bounds.Y,
-                                                           player_menu_content_bounds.Width - this.colourPalette.mBounds.Width,
-                                                           player_menu_content_bounds.Height));
-      this.chestSettings.SetVisible(false);
+      this.colouringHEXMenu = new ColouringHEXMenu(new Rectangle(this.colouringModeSwitcher.mBounds.GetTextureBoxRectangle().Right - 8,
+                                                                 player_menu_content_bounds.Y - 8,
+                                                                 player_menu_content_bounds.Width / 4,
+                                                                 player_menu_content_bounds.Height + 16),
+                                                   menu_colour * 0.75f,
+                                                   this.onHEXFinalColour);
+      this.colouringHEXMenu.SetVisible(false);
 
-      this.mComponents.Add(this.chestSettings);
-      this.mComponents.Add(this.colourPalette);
-      this.mComponents.Add(this.chestAsPanelButton);
+      this.colouringHSVMenu = new ColouringHSVMenu(new Rectangle(this.colouringModeSwitcher.mBounds.GetTextureBoxRectangle().Right - 8,
+                                                                 player_menu_content_bounds.Y - 8,
+                                                                 player_menu_content_bounds.Width / 4,
+                                                                 player_menu_content_bounds.Height + 16),
+                                                   menu_colour * 0.75f,
+                                                   player_chest.playerChoiceColor.Value,
+                                                   this.onHSVTryColour,
+                                                   this.onHSVFinalColour);
+      var chest_settings = new ChestSettings(new Rectangle(this.colouringHSVMenu.mBounds.GetTextureBoxRectangle().Right - 12,
+                                                           player_menu_content_bounds.Y + 14,
+                                                           player_menu_content_bounds.Width - this.colouringHSVMenu.mBounds.Width - this.colouringModeSwitcher.mBounds.Width,
+                                                           player_menu_content_bounds.Height - 28),
+                                             menu_colour,
+                                             player_chest);
+
+      this.hostMenu = hostMenu;
+      this.mComponents.AddRange(new ICustomComponent[] { chest_settings, this.colouringHEXMenu, this.colouringHSVMenu, this.colouringModeSwitcher });
     }
+
+  #endregion
   }
 }

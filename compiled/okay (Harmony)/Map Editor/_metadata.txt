@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8876
+IDs: aedenthorn.MapEdit
+update keys: Nexus:8876, GitHub:aedenthorn/StardewValleyMods

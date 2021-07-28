@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/lshtech/StardewValleyMods
+   Git: https://github.com/lshtech/StardewValleyMods.git
+
+mods:
+   Barn Incubator Support
+
+latest commit:
+   commit e882bbb009f8db23f2b5bb880675348d84ac8bdb
+   Author: lshtech <elbebeta@gmail.com>
+   Date:   Sat Jul 3 15:29:43 2021 -0500
+   
+       Golden chickens wouldn't hatch
+   

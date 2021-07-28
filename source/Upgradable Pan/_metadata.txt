@@ -6,9 +6,11 @@ mods:
    Upgradable Pan
 
 latest commit:
-   commit 140787a94669ffe74cd9144e999ae1d30a01778f
+   commit b7bf1a0697ada0a6ea08995a56fe49edaabdf6aa
    Author: Anthony Hilyard <anthony.hilyard@gmail.com>
-   Date:   Sat Feb 13 16:46:38 2021 -0800
+   Date:   Mon Jul 19 11:13:42 2021 -0700
    
-       Added media to repository.
+       Fixed a bug that caused copper pans to be invisible after shift-clicking
+       them.  Fixed a bug that caused upgraded pans to disappear if you
+       tried to equip them while wearing a different hat.
    

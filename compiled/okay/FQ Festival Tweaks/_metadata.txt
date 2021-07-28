@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9062
+IDs: FletcherQuest.FQFestivalTweaks
+update keys: Nexus:9062, GitHub:FletcherGoss/FQTweaks

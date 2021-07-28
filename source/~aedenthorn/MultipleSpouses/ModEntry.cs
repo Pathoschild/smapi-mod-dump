@@ -681,7 +681,8 @@ namespace MultipleSpouses
                 List<string> keys = new List<string>(data.Keys);
                 foreach (string key in keys)
                 {
-                    data[$"marriage_{key}"] = data[key]; 
+                    if(!data.ContainsKey($"marriage_{key}"))
+                        data[$"marriage_{key}"] = data[key]; 
                 }
             }
         }

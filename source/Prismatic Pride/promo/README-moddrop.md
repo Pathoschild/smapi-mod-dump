@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-![[icon]](https://www.kdau.com/PrismaticPride/icon.png) Let’s see your true colors shining through! With this mod, you can deck your Stardew Valley farmer out in a full set of prismatic clothing, then choose from a variety of pride flags to rotate through the colors of.
+![[icon]](https://www.kdau.com/PrismaticPride/icon.png) Change prismatic items to rotate through the colors of the pride flag of your choice, then deck your farmer out in a wider selection of prismatic clothing to show it off. Let’s see your true colors shining through!
 
 ## ![Compatibility](https://www.kdau.com/headers/compatibility.png)
 
@@ -16,7 +16,7 @@ for queries and analysis.**
 
 **Multiplayer:** works; every player must install
 
-**Other mods:** no known conflicts
+**Other mods:** Works with Get Glam and Change Shoe Color. Other clothing-related SMAPI mods (but not content packs) might cause lag or visual glitches.
 
 ## ![Installation](https://www.kdau.com/headers/installation.png)
 
@@ -25,7 +25,7 @@ for queries and analysis.**
 1. Install [Shop Tile Framework](https://www.moddrop.com/stardew-valley/mods/716384-shop-tile-framework) (optional, for buying the clothing items)
 1. Install [Generic Mod Config Menu](https://www.moddrop.com/stardew-valley/mods/771692-generic-mod-config-menu) (optional, for easier configuration)
 1. Download this mod from the link in the header above
-1. Unzip and put the `PrismaticPride` folder inside your `Mods` folder
+1. Unzip and put the `PrismaticPride`, `PrismaticPride.JA` and `PrismaticPride.STF` folders inside your `Mods` folder
 1. Run the game using SMAPI
 
 ## ![Use](https://www.kdau.com/headers/use.png)
@@ -38,7 +38,7 @@ This mod adds **10 shirts and 5 pants** to the game. Together with the [prismati
 
 This mod also adds **Prismatic Boots** which rotate through colors while worn, just like other prismatic items. To tailor an **existing pair** into Prismatic Boots, use the boots (on the left) and a **Prismatic Shard** (on the right) at the sewing machine. The machine will **preserve the stats** from the existing pair.
 
-If you have installed Shop Tile Framework, you can also **purchase specific items** of prismatic clothing instead of leaving it up to chance. Interact with the **left side of Emily's fabric shelves** (just to the right of the sewing machine) to bring up the **shop menu**. On any given day, you will be able to choose from five prismatic shirts, five prismatic pants and the Prismatic Boots, including items from the base game, this mod and (if installed) Prismatic Skirts and Dresses. Each item **costs one Prismatic Shard**.
+If you have installed Shop Tile Framework, you can also **purchase specific items** of prismatic clothing instead of leaving it up to chance. Interact with **Emily's fabric shelves** (just to the right of the sewing machine) to bring up the **shop menu**. On any given day, you will be able to choose from five prismatic shirts, five prismatic pants and the Prismatic Boots, including items from the base game, this mod and (if installed) Prismatic Skirts and Dresses. Each item **costs one Prismatic Shard**.
 
 ## ![[Configuration]](https://www.kdau.com/headers/configuration.png)
 
@@ -46,6 +46,8 @@ If you have installed Generic Mod Config Menu, you can access this mod's configu
 
 Otherwise, you can edit this mod's `config.json` file. It will be created in the mod's main folder (`Mods/PrismaticPride`) the first time you run the game with the mod installed. These options are available:
 
+* `ApplyColors`: Set this to `false` to leave the existing prismatic color rotation unaffected, whether for compatibility with another mod or to restore the base game colors.
+* `ColorDuration`: Set this to the number of seconds (decimals OK) that each color should appear in rotation; the default is `1.5`.
 * `DefaultColorSet`: Set this to the prismatic color set that should be chosen by default for new players. The available options are `"original"`, `"rainbow"`, `"philadelphia"`, `"progress"`, `"lesbian"`, `"genderfluid"`, `"genderqueer"`, `"bisexual"`, `"pansexual"`, `"polysexual"`, `"trans"`, `"nonbinary"`, `"intersex"`, `"agender"`, `"aromantic"` and `"asexual"`; the default is `"progress"`.
 * `ColorSetMenuKey`: Set this to any valid keybinding that will open the menu of prismatic color sets; the default is the `U` key. [See the list of keybindings here.](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Available_bindings)
 

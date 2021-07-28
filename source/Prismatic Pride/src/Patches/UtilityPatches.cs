@@ -20,6 +20,7 @@ namespace PrismaticPride
 	{
 		private static IModHelper Helper => ModEntry.Instance.Helper;
 		private static IMonitor Monitor => ModEntry.Instance.Monitor;
+		private static ModConfig Config => ModConfig.Instance;
 		private static ColorData ColorData => ModEntry.Instance.colorData;
 		private static HarmonyInstance Harmony => ModEntry.Instance.harmony;
 
@@ -40,7 +41,8 @@ namespace PrismaticPride
 		{
 			try
 			{
-				__result = ColorData.getCurrentColor (offset, speedMultiplier);
+				if (Config.ApplyColors)
+					__result = ColorData.getCurrentColor (offset, speedMultiplier);
 			}
 			catch (Exception e)
 			{

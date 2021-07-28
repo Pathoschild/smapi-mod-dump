@@ -6,9 +6,9 @@ mods:
    Range Highlight
 
 latest commit:
-   commit 67cd5ea6237a871ad57f50c42e15161fed883b58
+   commit d70aee9c53d02755369b0db6a47384a015c4f181
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Thu Feb 18 20:46:33 2021 -0500
+   Date:   Thu Jul 8 21:51:51 2021 -0400
    
-       Switch from simple SButton to KeybindList for hotkeys
+       Integrate with Radioactive Tools sprinkler; v2.8.0
    

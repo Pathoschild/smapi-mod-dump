@@ -1,7 +1,7 @@
 {
   "Name": "ToolBelt",
   "Author": "yuri0r",
-  "Version": "2.0.2",
+  "Version": "2.0.3",
   "Description": "select any of your tools on the press of a button",
   "UniqueID": "yuri0r.ToolBelt",
   "EntryDll": "ToolBelt.dll",

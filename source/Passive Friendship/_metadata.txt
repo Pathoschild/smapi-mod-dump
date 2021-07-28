@@ -6,10 +6,9 @@ mods:
    Passive Friendship
 
 latest commit:
-   commit 037a522de2ee7e7bae5dc6bf474187b61ce03fec
-   Merge: 51cdabd bc07c4b
+   commit d914ead074c8438ebdf2bd865d1076781c366db9
    Author: Jude Vargas <judevargas222@gmail.com>
-   Date:   Sun May 23 00:26:33 2021 -0400
+   Date:   Thu Jul 22 02:08:53 2021 -0400
    
-       Merge branch 'master' of https://github.com/JudeRV/PassiveFriendship
+       Potentially fixed a bug to allow player to gain friendship with non-vanilla NPCs
    

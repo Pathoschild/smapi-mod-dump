@@ -6,9 +6,9 @@ mods:
    Daily Farm Photo
 
 latest commit:
-   commit fe9b0466dbb86c03eb7695ec03f8eed1528b7518
+   commit a4003b5c7b41f96f50f8cb739b83fcb3a93e214f
    Author: Seawolf <sean.klomparens@gmail.com>
-   Date:   Thu Dec 5 01:14:34 2019 -0800
+   Date:   Sat Jul 24 22:44:52 2021 -0700
    
-       Update manifest with nexus ID
+       Update manafest
    

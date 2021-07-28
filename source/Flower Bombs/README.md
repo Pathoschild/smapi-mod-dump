@@ -25,7 +25,7 @@ Make blooms, not war. Craft a Flower Bomb, fill it with wild or flower seeds, an
 ## ![Installation](https://www.kdau.com/headers/installation.png)
 
 1. Install [SMAPI](https://smapi.io/)
-1. Install [PyTK](https://www.nexusmods.com/stardewvalley/mods/1726)
+1. Install [PlatoTK](https://www.nexusmods.com/stardewvalley/mods/6589) (This is different from PyTK!)
 1. Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) (optional, for easier configuration)
 1. Download this mod from its [Nexus page](https://www.nexusmods.com/stardewvalley/mods/6228?tab=files) or [ModDrop page](https://www.moddrop.com/stardew-valley/mods/794657)
 1. Unzip the mod and place the `FlowerBombs` folder inside your `Mods` folder
@@ -41,7 +41,9 @@ You can load any **wild or flower seeds**, including custom flower seeds, into a
 
 You can place a Flower Bomb directly in the world on **any dirt or grass**. To pick it up again, strike it with a tool. You can also load empty Flower Bombs into a Slingshot and fire them. If they land on or near dirt or grass, they will stick in that area.
 
-All Flower Bombs in the world will **"detonate" overnight**. If a Flower Bomb held in-season flower seeds, the explosion will consist mainly of that flower, with some seasonal wildflowers and weeds at the edges. If it held in-season wild seeds, the explosion will consist mainly of seasonal wildflowers with weeds at the edges. Otherwise, the explosion will consist entirely of weeds. (In winter, weeds are replaced with crystals.)
+By default, all Flower Bombs placed in the world will **germinate overnight**. If so configured, they will not germinate until the next rainy or snowy day (or if in the range of a sprinkler). Any Flower Bomb can also be germinated immediately by watering it ten times.
+
+When a Flower Bomb germinates that held in-season flower seeds, the growth will consist mainly of that flower, with some seasonal wildflowers and weeds at the edges. If it held in-season wild seeds, the growth will consist mainly of seasonal wildflowers with weeds at the edges. Otherwise, the growth will consist entirely of weeds. (In winter, weeds are replaced with crystals.)
 
 ## ![Configuration](https://www.kdau.com/headers/configuration.png)
 
@@ -49,6 +51,7 @@ If you have installed Generic Mod Config Menu, you can access this mod's configu
 
 Otherwise, you can edit this mod's `config.json` file. It will be created in the mod's main folder (`Mods/FlowerBombs`) the first time you run the game with the mod installed. These options are available:
 
+* `WaterToGerminate`: Set this to `true` to wait for the next rainy or snowy day (or sprinkler spray) to germinate Flower Bombs.
 * `ClintMudstone`: Set this to `false` to prevent Clint from offering Mudstone in his shop inventory.
 * `KentGifts`: Set this to `false` to allow Kent to keep sending regular Bombs in the mail.
 * `LeahRecipe`: Set this to `false` to unlock the Flower Bomb crafting recipe instantly instead of involving Leah.
@@ -75,7 +78,7 @@ Your contribution would be welcome. Please see the [instructions on the wiki](ht
 * Mirrors:
 	[Nexus](https://www.nexusmods.com/stardewvalley/mods/6228),
 	[ModDrop](https://www.moddrop.com/stardew-valley/mods/794657),
-	[forums](https://forums.stardewvalley.net/index.php?resources/flower-bombs.58/)
+	[forums](https://forums.stardewvalley.net/resources/flower-bombs.58/)
 
 Other mods to consider:
 

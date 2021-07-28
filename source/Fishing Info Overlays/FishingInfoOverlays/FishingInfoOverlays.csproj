@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <GameModsPath>D:\Programs\Steam\steamapps\common\Stardew Valley\ModsTesting</GameModsPath>
+    <GameModsPath>D:\Programs\Steam\steamapps\common\Stardew Valley x64\ModsTesting</GameModsPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="APIs.cs" />
     <Compile Include="ModConfig.cs" />
+    <Compile Include="Overlay.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

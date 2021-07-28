@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Junimos Accept Cash",
+    "Author": "spacechase0",
+    "Version": "1.0.1",
+    "MinimumApiVersion": "3.9.5",
+    "Description": "Purchase community center bundles with gold.",
+    "UniqueID": "spacechase0.JunimosAcceptCash",
+    "EntryDll": "JunimosAcceptCash.dll",
+    "UpdateKeys": [ "Nexus:7437" ]
+}

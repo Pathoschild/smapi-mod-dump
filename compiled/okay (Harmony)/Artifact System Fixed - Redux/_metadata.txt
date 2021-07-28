@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/9023
-IDs: pepoluan.ArtifactSystemFixedRedux
-update keys: Nexus:9023

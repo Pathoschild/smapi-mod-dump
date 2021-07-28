@@ -9,15 +9,57 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 0.5.4
+Released 24 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Fixed altar broken when other mods edit Pierre's shop map.
+* Fixed players having one spellbar instead of two.
+
+## 0.5.3
+Released 18 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Fixed some changes through the altar not persisted when you save and reload.
+* Fixed teleport spell opening the menu for all players.
+* Fixed error using buff spell in multiplayer (possibly).
+* Fixed typos.
+
+## 0.5.2
+Released 17 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* PyTK is now optional. If it's not installed, the Magic TV channel won't be added in-game.
+
+## 0.5.1
+Released 12 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Added professions to the `magic_summary` console command output.
+* Fixed spell selection UI not showing hotbar in some cases.
+* Fixed `magic_summary` showing max spell levels one higher than they are.
+
+## 0.5.0
+Released 11 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
+* Added `magic_summary` console command to show troubleshooting info.
+* Added `help` documentation for console commands.
+* Fixed upgrading spells in Magic 0.4.0.
+* Fixed error when pressing the swap key when no spell bars are prepared.
+* Fixed error with multiplayer projectiles in some cases.
+* Fixed typo in Magic Missile spell name.
+
+## 0.4.0
+Released 10 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+
 * Added API methods to support Skill Prestige.
 * Magic sounds are now localized, so only nearby players in multiplayer will hear them.
-* You now get 100 mana points immediately after the Wizard event, so you can start using magic on the same day.
-* Made Wizard event skippable.
-* Migrated player data into the `Farmer.modData` field to simplify synchronization and reduce edge cases.
+* Balance changes:
+  * You now get the initial 100 mana points immediately after the Wizard event, so you can start using magic on the same day.
+  * The _clear debris_ spell no longer clears non-debris objects.
+* Reworked how player data is stored to simplify multiplayer sync and reduce edge cases.
+* Fixed Wizard event not being skippable.
 * Fixed Wizard event broken if another mod changes the location in an incompatible way.
+* Fixed Wizard event needing 3.004 hearts instead of 3 (which mainly affected players using CJB Cheats Menu to set the relationship).
 * Fixed magic UI rendered before learning magic if another mod added mana points.
 * Fixed players sometimes having no mana points despite learning magic.
+* Fixed multiplayer issues with _clear debris_ spell.
 
 ## 0.3.3
 Released 19 June 2021 for Stardew Valley 1.5. Updated by Pathoschild.

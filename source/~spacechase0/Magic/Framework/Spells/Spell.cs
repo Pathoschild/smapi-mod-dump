@@ -18,23 +18,20 @@ namespace Magic.Framework.Spells
 {
     internal abstract class Spell
     {
+        /*********
+        ** Accessors
+        *********/
         public string ParentSchoolId { get; }
         public School ParentSchool => School.GetSchool(this.ParentSchoolId);
         public string Id { get; }
         public string FullId => this.ParentSchoolId + ":" + this.Id;
 
-        public Texture2D[] Icons
-        {
-            get;
-            protected set;
-        }
+        public Texture2D[] Icons { get; protected set; }
 
-        protected Spell(string school, string id)
-        {
-            this.ParentSchoolId = school;
-            this.Id = id;
-        }
 
+        /*********
+        ** Public methods
+        *********/
         public virtual int GetMaxCastingLevel()
         {
             return 3;
@@ -75,5 +72,16 @@ namespace Magic.Framework.Spells
                 Log.Warn("Failed to load icon for spell " + this.FullId + ": " + e);
             }
         }
+
+
+        /*********
+        ** Protected methods
+        *********/
+        protected Spell(string school, string id)
+        {
+            this.ParentSchoolId = school;
+            this.Id = id;
+        }
+
     }
 }

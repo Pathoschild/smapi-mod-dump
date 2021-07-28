@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 
@@ -25,8 +26,18 @@ namespace PrismaticPride
 		private static ColorData ColorData => ModEntry.Instance.colorData;
 		private static HarmonyInstance Harmony => ModEntry.Instance.harmony;
 
+		private static uint Throttle = 5;
+		private static readonly PerScreen<uint> Calls = new (() => 0);
+
 		public static void Apply ()
 		{
+			// These other mods also patch the shoe texture, leading to lag when
+			// combined with the Prismatic Boots. Throttle the prismatic effect
+			// even more to compensate.
+			if (Helper.ModRegistry.IsLoaded ("MartyrPher.GetGlam") ||
+					Helper.ModRegistry.IsLoaded ("shaklin.changeshoecolor"))
+				Throttle = 50;
+
 			Harmony.Patch (
 				original: AccessTools.Method (typeof (FarmerRenderer),
 					"executeRecolorActions"),
@@ -37,31 +48,39 @@ namespace PrismaticPride
 
 #pragma warning disable IDE1006
 
-		public static void executeRecolorActions_Postfix (FarmerRenderer __instance)
+		public static void executeRecolorActions_Postfix (FarmerRenderer __instance,
+			NetInt ___shoes, Texture2D ___baseTexture)
 		{
 			try
 			{
-				if (Helper.Reflection.GetField<NetInt> (__instance, "shoes").GetValue ().Value
-						!= ModEntry.Instance.bootsColorIndex)
+				// Throttle calls to this patch for performance.
+				if (++Calls.Value >= Throttle)
+					Calls.Value = 0;
+				if (Calls.Value != 0)
 					return;
 
-				var baseTexture = Helper.Reflection.GetField<Texture2D> (__instance,
-					"baseTexture").GetValue ();
-				Color[] pixels = new Color[baseTexture.Width * baseTexture.Height];
-				baseTexture.GetData (pixels);
+				// Must be wearing Prismatic Boots.
+				if (___shoes.Value != ModEntry.Instance.bootsColorIndex)
+					return;
 
-				Color color1 = ColorData.getCurrentColor (asTintOn: 0.13f);
-				Color color2 = ColorData.getCurrentColor (asTintOn: 0.57f);
-				Color color3 = ColorData.getCurrentColor (asTintOn: 0.86f);
-				Color color4 = ColorData.getCurrentColor (asTintOn: 0.95f);
+				Color[] pixels = new Color[___baseTexture.Width * ___baseTexture.Height];
+				___baseTexture.GetData (pixels);
 
+				// This will come from the current set iff ApplyColors is true.
+				Color baseColor = Utility.GetPrismaticColor ();
+
+				// Tint the base color for each of the four shoe shades.
 				var _SwapColor = Helper.Reflection.GetMethod (__instance, "_SwapColor");
-				_SwapColor.Invoke (__instance.textureName.Value, pixels, 268, color1);
-				_SwapColor.Invoke (__instance.textureName.Value, pixels, 269, color2);
-				_SwapColor.Invoke (__instance.textureName.Value, pixels, 270, color3);
-				_SwapColor.Invoke (__instance.textureName.Value, pixels, 271, color4);
+				_SwapColor.Invoke (__instance.textureName.Value, pixels, 268,
+					ColorData.Tint (baseColor, 0.13f));
+				_SwapColor.Invoke (__instance.textureName.Value, pixels, 269,
+					ColorData.Tint (baseColor, 0.57f));
+				_SwapColor.Invoke (__instance.textureName.Value, pixels, 270,
+					ColorData.Tint (baseColor, 0.86f));
+				_SwapColor.Invoke (__instance.textureName.Value, pixels, 271,
+					ColorData.Tint (baseColor, 0.95f));
 
-				baseTexture.SetData (pixels);
+				___baseTexture.SetData (pixels);
 			}
 			catch (Exception e)
 			{

@@ -10,6 +10,12 @@ for queries and analysis.**
 
 [Pregnancy Role](../)
 
+## 2.1.0
+
+*Release pending.*
+
+* Add Spanish translation by Monicuchi
+
 ## 2.0.0
 
 *Released 2021 June 26.*

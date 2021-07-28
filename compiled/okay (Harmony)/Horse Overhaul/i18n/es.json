@@ -11,5 +11,5 @@
   "Friendship": "Amistad: {{value}}",
   "AteEnough": "{{name}} ha comido suficiente por hoy.",
   "AteFood": "{{name}} se ha comido tu {{foodName}}.",
-  "HorseWarning": "You cannot do that while riding a horse!"
+  "HorseWarning": "¡No puedes hacer eso mientras montas un caballo!"
 }

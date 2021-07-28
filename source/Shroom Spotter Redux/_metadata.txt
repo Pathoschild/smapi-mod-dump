@@ -1,14 +1,14 @@
 urls:
-   web: https://github.com/strobel1ght/StardewValleyMods
-   Git: https://github.com/strobel1ght/StardewValleyMods.git
+   web: https://github.com/strobel1ght/ShroomSpotterRedux
+   Git: https://github.com/strobel1ght/ShroomSpotterRedux.git
 
 mods:
    Shroom Spotter Redux
 
 latest commit:
-   commit b8231c6d089fd9533a1873a00ccca1131c675d3b
-   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Jun 6 00:37:30 2021 -0400
+   commit a8fb9dc38aafb22bd1117bffcdcc6b36754d8b78
+   Author: Ishan Jalan <ishan1337@gmail.com>
+   Date:   Fri Jun 4 02:44:52 2021 +0530
    
-       add missing release notes + credits per merged PRs
+       Cleaning up Shroom Spotter
    

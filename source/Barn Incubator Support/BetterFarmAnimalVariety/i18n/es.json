@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Strings.Events.AnimalBirth": "Durante la noche {0} ha dado a luz a un bebé.",
+    "Strings.Locations.AnimalHouse_Incubator_Hatch": "¡Un nuevo bebé ha nacido!",
+}

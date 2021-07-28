@@ -6,6 +6,8 @@ for queries and analysis.**
 
 ----
 
+This repository is archived. Feel Free to fork it and re-distribute.
+
 # Instacrops
 A Stardew Valley mod to instantly grow crops on the farm or green house.
 

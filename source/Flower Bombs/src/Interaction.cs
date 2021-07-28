@@ -33,18 +33,20 @@ namespace FlowerBombs
 			if (menu == null)
 				return false;
 
-			// Respond to clicking on a Flower Bomb.
+			// Determine the inventory item being pointed at.
 			Item pointedItem = GetPointedItem (menu, e.Cursor);
-			if (pointedItem is FlowerBomb bomb)
+
+			// Respond to clicking on a Flower Bomb.
+			if (TryGetLinked (pointedItem, out FlowerBomb bomb))
 				return bomb.handleInventoryRightClick ();
 
 			// Make an empty Flower Bomb suitable as ammo for a Slingshot.
 			if (pointedItem is Slingshot &&
-				Game1.player.CursorSlotItem is FlowerBomb ammo &&
-				ammo.heldObject.Value == null)
+				TryGetLinked (Game1.player.CursorSlotItem, out FlowerBomb ammoBomb) &&
+				ammoBomb.seed == null)
 			{
-				ammo.Category = -75;
-				DelayedAction.functionAfterDelay (() => ammo.Category = -8, 1);
+				ammoBomb.Base.Category = -75;
+				DelayedAction.functionAfterDelay (() => ammoBomb.Base.Category = -8, 1);
 				// The base game action should still occur too.
 			}
 
@@ -54,21 +56,20 @@ namespace FlowerBombs
 		private bool handleInventoryRightClick ()
 		{
 			// If interacting empty-handed with a loaded bomb, detach the seed.
-			if (heldObject.Value != null &&
-				Game1.player.CursorSlotItem == null)
+			if (seed != null && Game1.player.CursorSlotItem == null)
 			{
 				Game1.player.CursorSlotItem = detach ();
 				return true;
 			}
 
 			// If holding an object, that object must be a seed.
-			SObject seed = Game1.player.CursorSlotItem as SObject;
-			if (seed?.GetType () != typeof (SObject) ||
-					seed.Category != SObject.SeedsCategory)
+			SObject newSeed = Game1.player.CursorSlotItem as SObject;
+			if (newSeed?.GetType () != typeof (SObject) ||
+					newSeed.Category != SObject.SeedsCategory)
 				return false;
 
 			// The seed must be a wild or flower seed.
-			Crop testCrop = new (seed.ParentSheetIndex, 0, 0);
+			Crop testCrop = new (newSeed.ParentSheetIndex, 0, 0);
 			if (testCrop.whichForageCrop.Value == 0)
 			{
 				SObject harvest = new (testCrop.indexOfHarvest.Value, 1);
@@ -77,12 +78,17 @@ namespace FlowerBombs
 			}
 
 			// Attach the new seed and detach any old seed.
-			SObject oldSeed = null;
-			if (heldObject.Value != null)
-				oldSeed = detach (false);
-			Game1.player.CursorSlotItem = attach (seed);
+			SObject oldSeed = detach (playSound: false);
+			Game1.player.CursorSlotItem = attach (newSeed);
 			if (oldSeed != null)
-				Game1.player.CursorSlotItem = oldSeed;
+			{
+				if (Game1.player.CursorSlotItem?.canStackWith (oldSeed) ?? false)
+					Game1.player.CursorSlotItem.Stack += oldSeed.Stack;
+				else if (Game1.player.CursorSlotItem != null)
+					Game1.player.addItemToInventory (oldSeed);
+				else
+					Game1.player.CursorSlotItem = oldSeed;
+			}
 			return true;
 		}
 
@@ -104,10 +110,13 @@ namespace FlowerBombs
 		private static Item GetPointedItem (InventoryMenu menu,
 			ICursorPosition cursor)
 		{
+			var coords = Utility.ModifyCoordinatesForUIScale (cursor.ScreenPixels);
+			int x = (int) coords.X;
+			int y = (int) coords.Y;
+
 			foreach (ClickableComponent item in menu.inventory)
 			{
-				if (!item.containsPoint ((int) cursor.ScreenPixels.X,
-						(int) cursor.ScreenPixels.Y))
+				if (!item.containsPoint (x, y))
 					continue;
 				int index = Convert.ToInt32 (item.name);
 				if (index < menu.actualInventory.Count &&

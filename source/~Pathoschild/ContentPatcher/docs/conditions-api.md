@@ -6,12 +6,12 @@ for queries and analysis.**
 
 ----
 
-← [README](../README.md)
+← [README](README.md)
 
 This doc helps SMAPI mod authors use Content Patcher's condition system in their own mods.
 
 **To add custom tokens for content packs to use, see the [extensibility API](extensibility.md). See
-the [main README](../README.md) for other info**.
+the [main README](README.md) for other info**.
 
 ## Contents
 * [Overview](#overview)
@@ -244,4 +244,4 @@ For example, `IsMatch` returns whether it matches the _current screen's_ context
 </dl>
 
 ## See also
-* [README](../README.md) for other info
+* [README](README.md) for other info

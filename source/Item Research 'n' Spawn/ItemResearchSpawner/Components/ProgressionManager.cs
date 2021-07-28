@@ -12,8 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Force.DeepCloner;
 using ItemResearchSpawner.Models;
+using ItemResearchSpawner.Models.Enums;
+using ItemResearchSpawner.Models.Messages;
 using ItemResearchSpawner.Utils;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -29,6 +30,7 @@ namespace ItemResearchSpawner.Components
 
         private readonly IMonitor _monitor;
         private readonly IModHelper _helper;
+        private readonly IManifest _modManifest;
 
         private readonly ModDataCategory[] _categories;
 
@@ -39,7 +41,7 @@ namespace ItemResearchSpawner.Components
 
         public static event StackChanged OnStackChanged;
 
-        public ProgressionManager(IMonitor monitor, IModHelper helper)
+        public ProgressionManager(IMonitor monitor, IModHelper helper, IManifest modManifest)
         {
             Instance ??= this;
 
@@ -51,11 +53,13 @@ namespace ItemResearchSpawner.Components
 
             _monitor = monitor;
             _helper = helper;
+            _modManifest = modManifest;
 
             _categories = helper.Data.ReadJsonFile<ModDataCategory[]>("assets/categories-progress.json");
 
-            _helper.Events.GameLoop.Saving += OnSaveProgression;
-            _helper.Events.GameLoop.DayStarted += OnLoadProgression;
+            _helper.Events.GameLoop.DayEnding += OnSave;
+            _helper.Events.GameLoop.DayStarted += OnLoad;
+            _helper.Events.Multiplayer.ModMessageReceived += OnMessageReceived;
         }
 
         public void ResearchItem(Item item)
@@ -247,31 +251,116 @@ namespace ItemResearchSpawner.Components
             return progressionItem;
         }
 
+        public void DumpPlayersProgression()
+        {
+            var progressions = SaveManager.Instance.GetProgressions();
+            var players = Game1.getAllFarmers()
+                .Where(farmer => progressions.Keys.Contains(farmer.uniqueMultiplayerID.ToString()))
+                .ToDictionary(farmer => farmer.uniqueMultiplayerID.ToString());
+            
+            foreach (var playerID in progressions.Keys)
+            {
+                _monitor.Log($"Dumping progression - player: {players[playerID].name}, location: {SaveHelper.ProgressionDumpPath(playerID)}", LogLevel.Info);
+                _helper.Data.WriteJsonFile(SaveHelper.ProgressionDumpPath(playerID), progressions[playerID]);
+            }
+        }
+
+        public void LoadPlayersProgression()
+        {
+            var progressions = SaveManager.Instance.GetProgressions();
+            var progressToLoad = new Dictionary<string, Dictionary<string, ResearchProgression>>();
+            
+            foreach (var playerID in progressions.Keys)
+            {
+                var playerData = _helper.Data.ReadJsonFile<Dictionary<string, ResearchProgression>>(
+                    SaveHelper.ProgressionDumpPath(playerID));
+
+                if (playerData != null)
+                {
+                    progressToLoad[playerID] = playerData;
+                }
+                else
+                {
+                    progressToLoad[playerID] = progressions[playerID];
+                }
+            }
+            
+            SaveManager.Instance.LoadProgressions(progressToLoad);
+        }
+
         #region SaveLoad
 
-        private void OnSaveProgression(object sender, SavingEventArgs e)
+        private void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
-            SaveProgression();
+            if (e.FromModID == _modManifest.UniqueID)
+            {
+                ResearchProgressionMessage message;
+                switch (e.Type)
+                {
+                    case "Progression:SaveRequired":
+                        if (!Context.IsMainPlayer)
+                        {
+                            break;
+                        }
+
+                        message = e.ReadAs<ResearchProgressionMessage>();
+                        SaveManager.Instance.CommitProgression(message.PlayerID, message.Progression);
+                        break;
+                    case "Progression:LoadRequired":
+                        if (!Context.IsMainPlayer)
+                        {
+                            break;
+                        }
+
+                        var playerID = e.ReadAs<string>();
+                        message = new ResearchProgressionMessage
+                        {
+                            Progression = SaveManager.Instance.GetProgression(playerID),
+                            PlayerID = playerID
+                        };
+                        _helper.Multiplayer.SendMessage(message, "Progression:LoadAccepted",
+                            new[] {_modManifest.UniqueID}, new[] {long.Parse(message.PlayerID)});
+                        break;
+                    case "Progression:LoadAccepted":
+                        message = e.ReadAs<ResearchProgressionMessage>();
+                        OnLoadProgression(message.Progression);
+                        break;
+                }
+            }
         }
 
-        private void OnLoadProgression(object sender, DayStartedEventArgs e)
+        private void OnSave(object sender, DayEndingEventArgs dayEndingEventArgs)
         {
-            LoadProgression();
+            if (Context.IsMainPlayer)
+            {
+                SaveManager.Instance.CommitProgression(Game1.player.uniqueMultiplayerID.ToString(), _progression);
+            }
+            else
+            {
+                var message = new ResearchProgressionMessage()
+                {
+                    Progression = _progression,
+                    PlayerID = Game1.player.uniqueMultiplayerID.ToString()
+                };
+
+                _helper.Multiplayer.SendMessage(message, "Progression:SaveRequired", new[] {_modManifest.UniqueID});
+            }
         }
 
-        private void SaveProgression()
+        private void OnLoad(object sender, DayStartedEventArgs e)
         {
-            _helper.Data.WriteJsonFile($"save/{SaveHelper.DirectoryName}/progress.json", _progression);
-            _monitor.Log("Progression saved! :)", LogLevel.Debug);
-        }
+            if (Context.IsMainPlayer)
+            {
+                var progression = SaveManager.Instance.GetProgression(Game1.player.uniqueMultiplayerID.ToString());
+                OnLoadProgression(progression);
+            }
+            else
+            {
+                _helper.Multiplayer.SendMessage(Game1.player.uniqueMultiplayerID, "Progression:LoadRequired",
+                    new[] {_modManifest.UniqueID});
+            }
 
-        private void LoadProgression()
-        {
-            var progressions =
-                _helper.Data.ReadJsonFile<Dictionary<string, ResearchProgression>>(
-                    $"save/{SaveHelper.DirectoryName}/progress.json") ?? new Dictionary<string, ResearchProgression>();
-
-            //save backward compatibility
+            /*//save backward compatibility
             _progression = new Dictionary<string, ResearchProgression>();
 
             var regex = new Regex(@"([\d+-]+):(.+):([\d+-]+)", RegexOptions.IgnoreCase);
@@ -287,9 +376,12 @@ namespace ItemResearchSpawner.Components
                 }
 
                 _progression[key] = pair.Value;
-            }
+            }*/
+        }
 
-            _monitor.Log("Progression loaded! :)", LogLevel.Debug);
+        private void OnLoadProgression(Dictionary<string, ResearchProgression> progression)
+        {
+            _progression = progression;
         }
 
         #endregion

@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -147,7 +148,7 @@ namespace ContentPatcher.Framework.Commands.Commands
             Type type = asset.GetType();
             type = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 
-            return type == typeof(Dictionary<,>) || type == typeof(List<>);
+            return type == typeof(Dictionary<,>) || type == typeof(List<>) || type == typeof(JArray);
         }
 
         /// <summary>Load an asset from a content manager using the given type.</summary>

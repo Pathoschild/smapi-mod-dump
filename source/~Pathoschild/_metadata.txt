@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 9dff2c08afa160de4d4ffd0f808a39a454fa5ff0
+   commit 95fb2c67c91aa7a0dba4a36d73b3aaea0c40610d
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon Jun 28 21:34:02 2021 -0400
+   Date:   Sun Jul 25 19:07:09 2021 -0400
    
-       fix lookups for custom JA seeds not showing crop info
+        add ModDrop links in mod list
    

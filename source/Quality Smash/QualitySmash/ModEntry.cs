@@ -8,6 +8,9 @@
 **
 *************************************************/
 
+using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -21,10 +24,17 @@ namespace QualitySmash
         internal enum SmashType
         {
             Color,
-            Quality
+            Quality,
+            None
         }
 
-        private QualitySmashHandler handlerUiButtons;
+        internal static Dictionary<SmashType, string> TranslationMapping = new Dictionary<SmashType, string>()
+        {
+            { SmashType.Color, "hoverTextColor" },
+            { SmashType.Quality, "hoverTextQuality" },
+        };
+
+        private ButtonSmashHandler buttonSmashHandler;
         private SingleSmashHandler handlerKeybinds;
         private ModConfig config;
 
@@ -37,16 +47,28 @@ namespace QualitySmash
             var buttonColor = helper.Content.Load<Texture2D>("assets/buttonColor.png");
             var buttonQuality = helper.Content.Load<Texture2D>("assets/buttonQuality.png");
 
-            this.helper = helper;
-            this.handlerUiButtons = new QualitySmashHandler(this, this.config, buttonColor, buttonQuality);
+            this.buttonSmashHandler = new ButtonSmashHandler(this, this.config);
+
+            if (config.EnableUIColorSmashButton)
+                this.buttonSmashHandler.AddButton(ModEntry.SmashType.Color, buttonColor, new Rectangle(0, 0, 16, 16));
+
+            if (config.EnableUIQualitySmashButton)
+                this.buttonSmashHandler.AddButton(ModEntry.SmashType.Quality, buttonQuality, new Rectangle(0, 0, 16, 16));
+
             this.handlerKeybinds = new SingleSmashHandler(this, this.config, buttonColor, buttonQuality);
 
+            this.helper = helper;
+
             AddEvents(helper);
+
+            //this.buttonHandler.AddButton(ModEntry.SmashType.Color, imageColor, new Rectangle(0, 0, 16, 16));
+            //this.buttonHandler.AddButton(ModEntry.SmashType.Quality, imageQuality, new Rectangle(0, 0, 16, 16));
 
         }
 
         private void AddEvents(IModHelper helper)
         {
+            helper.Events.GameLoop.UpdateTicking += OnUpdateTicking;
             helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Input.ButtonReleased += OnButtonReleased;
@@ -95,9 +117,24 @@ namespace QualitySmash
             var scaledMousePos = Game1.getMousePosition(true);
 
             if (config.EnableUISmashButtons)
-                handlerUiButtons.TryHover(scaledMousePos.X, scaledMousePos.Y);
+                buttonSmashHandler.TryHover(scaledMousePos.X, scaledMousePos.Y);
             if (config.EnableSingleItemSmashKeybinds)
                 handlerKeybinds.TryHover(scaledMousePos.X, scaledMousePos.Y);
+        }
+
+
+        //Attempt to smooth out button animations
+        private void OnUpdateTicking(object sender, UpdateTickingEventArgs e)
+        {
+            if (!Context.IsWorldReady) return;
+
+            var menu = GetValidButtonSmashMenu();
+            if (menu == null || !config.EnableUISmashButtons)
+                return;
+
+            var scaledMousePos = Game1.getMousePosition(true);
+
+            buttonSmashHandler.TryHover(scaledMousePos.X, scaledMousePos.Y);
         }
 
         /// <summary>
@@ -120,7 +157,7 @@ namespace QualitySmash
 
             if (config.EnableUISmashButtons && GetValidButtonSmashMenu() != null)
             {
-                handlerUiButtons.HandleClick(e);
+                buttonSmashHandler.HandleClick(e);
             }
 
             if (config.EnableSingleItemSmashKeybinds && GetValidKeybindSmashMenu() != null)
@@ -147,12 +184,9 @@ namespace QualitySmash
         private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
         {
             if (!Context.IsWorldReady) return;
-            if (GetValidButtonSmashMenu() is ItemGrabMenu grabmenu)
+            if (GetValidButtonSmashMenu() is ItemGrabMenu)
                 if (config.EnableUISmashButtons)
-                {
-                    handlerUiButtons.DrawButtons();
-                    handlerUiButtons.PopulateIds(grabmenu);
-                }
+                    buttonSmashHandler.DrawButtons();
 
             if (GetValidKeybindSmashMenu() != null)
                 if (config.EnableSingleItemSmashKeybinds)

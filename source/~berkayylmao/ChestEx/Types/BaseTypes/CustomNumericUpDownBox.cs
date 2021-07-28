@@ -10,7 +10,6 @@
 
 #region License
 
-// clang-format off
 // 
 //    ChestEx (StardewValleyMods)
 //    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
@@ -21,14 +20,12 @@
 //    (at your option) any later version.
 // 
 //    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    but WITHOUT ANY WARRANTY, without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //    GNU Affero General Public License for more details.
 // 
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program. If not, see <https://www.gnu.org/licenses/>.
-// 
-// clang-format on
 
 #endregion
 
@@ -40,147 +37,155 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-
-using StardewValley;
 
 namespace ChestEx.Types.BaseTypes {
-  public class CustomNumericUpDownBox : IDisposable {
+  public sealed class CustomNumericUpDownBox : CustomTextBox {
     // Private:
   #region Private
 
-    private Int32 curValue;
+    private Int32 minValue { get; }
+    private Int32 maxValue { get; }
+    private Int32 curValue { get; set; }
 
-  #endregion
+    private Action<Int32> onValueChangedHandler { get; }
 
-    // Protected:
-  #region Protected
+    private CustomButton upButton   { get; }
+    private CustomButton downButton { get; }
 
-    protected SpriteFont mFont => Game1.smallFont;
-    protected Color      mBoxColour;
-    protected Color      mTextColour;
-
-    protected CustomTextBox mTextBox;
-    protected CustomButton  mUpButton;
-    protected CustomButton  mDownButton;
-
-    protected Int32         mMinValue;
-    protected Int32         mMaxValue;
-    protected Action<Int32> mOnValueChangedHandler;
+    /// <summary>Executes <paramref name="action"/> if the button is visible and enabled.</summary>
+    private void delegateToUpDownButtons(Action<CustomButton> action) {
+      if (this.upButton.mIsVisible && this.upButton.mData.mIsEnabled) action(this.upButton);
+      if (this.downButton.mIsVisible && this.downButton.mData.mIsEnabled) action(this.downButton);
+    }
 
   #endregion
 
     // Public:
   #region Public
 
+    /// <summary>Current value</summary>
     public Int32 mValue {
       get => this.curValue;
-      set {
+      private set {
         if (this.curValue == value) return;
-        this.curValue      = Math.Min(this.mMaxValue, Math.Max(this.mMinValue, value));
-        this.mTextBox.Text = this.curValue.ToString();
-        this.mOnValueChangedHandler?.Invoke(this.curValue);
+        this.curValue = Math.Min(this.maxValue, Math.Max(this.minValue, value));
+        this.mText    = this.curValue.ToString();
+        this.onValueChangedHandler?.Invoke(this.curValue);
       }
     }
 
-    public Rectangle mBounds    { get; private set; }
-    public Boolean   mIsVisible { get; private set; }
+    // Overrides:
+  #region Overrides
 
-    // Virtuals
-  #region Virtuals
-
-    /// <summary>
-    /// Base implementation sets '<see cref="mIsVisible"/>' to '<paramref name="isVisible"/>'.
-    /// </summary>
-    /// <param name="isVisible">Whether this item should be visible.</param>
-    public virtual void SetVisible(Boolean isVisible) {
-      this.mIsVisible = isVisible;
-      this.mTextBox.SetVisible(isVisible);
+    /// <inheritdoc path="//*[not(self::remarks)]"/>
+    /// <remarks>
+    /// <see cref="CustomNumericUpDownBox"/> implementation:
+    /// <para>1. Calls <see cref="CustomTextBox.SetVisible(Boolean)"/>.</para>
+    /// <para>2. Calls <see cref="CustomButton.SetVisible(Boolean)"/> on the up/down buttons.</para>
+    /// </remarks>
+    public override void SetVisible(Boolean isVisible) {
+      base.SetVisible(isVisible);
+      this.upButton.SetVisible(isVisible);
+      this.downButton.SetVisible(isVisible);
     }
 
-    /// <summary>
-    /// Must be called on each event to function.
-    /// </summary>
-    /// <param name="e">SMAPI generated EventArgs.</param>
-    public virtual void OnButtonPressed(ButtonPressedEventArgs e) {
-      if (!this.mIsVisible) return;
-      this.mTextBox.OnButtonPressed(e);
+    /// <inheritdoc path="//*[not(self::remarks)]"/>
+    /// <remarks>
+    /// <see cref="CustomNumericUpDownBox"/> implementation:
+    /// <para>1. Calls <see cref="CustomTextBox.Draw(SpriteBatch)"/>.</para>
+    /// <para>2. Calls <see cref="CustomButton.Draw(SpriteBatch)"/> on the up/down buttons.</para>
+    /// </remarks>
+    public override void Draw(SpriteBatch spriteBatch) {
+      base.Draw(spriteBatch);
+      this.upButton.Draw(spriteBatch);
+      this.downButton.Draw(spriteBatch);
+    }
 
-      if (this.mTextBox.Selected) {
-        if (!String.IsNullOrWhiteSpace(this.mTextBox.Text)) this.mValue = !Int32.TryParse(this.mTextBox.Text, out Int32 value) ? this.mMinValue : value;
+    /// <inheritdoc path="//*[not(self::remarks)]"/>
+    /// <remarks>
+    /// <see cref="CustomNumericUpDownBox"/> implementation:
+    /// <para>1. Calls <see cref="CustomTextBox.OnButtonPressed(InputStateEx)"/>.</para>
+    /// <para>2. Calls <see cref="CustomButton.OnButtonPressed(InputStateEx)"/> on the up/down buttons.</para>
+    /// </remarks>
+    public override void OnButtonPressed(InputStateEx inputState) {
+      base.OnButtonPressed(inputState);
+      if (this.Selected && !String.IsNullOrWhiteSpace(this.mText)) this.mValue = !Int32.TryParse(this.mText, out Int32 value) ? this.minValue : value;
 
-        switch (e.Button) {
-          case SButton.OemPlus or SButton.Add: {
-            this.mValue++;
+      this.delegateToUpDownButtons(b => b.OnButtonPressed(inputState));
+    }
 
-            break;
-          }
-          case SButton.OemMinus or SButton.Subtract: {
-            this.mValue--;
+    /// <inheritdoc path="//*[not(self::remarks)]"/>
+    /// <remarks>
+    /// <see cref="CustomNumericUpDownBox"/> implementation:
+    /// <para>1. Calls <see cref="CustomTextBox.OnCursorMoved(Vector2)"/>.</para>
+    /// <para>2. Calls <see cref="CustomButton.OnCursorMoved(Vector2)"/> on the up/down buttons.</para>
+    /// </remarks>
+    public override void OnCursorMoved(Vector2 cursorPos) {
+      base.OnCursorMoved(cursorPos);
+      this.delegateToUpDownButtons(b => {
+        b.mData.UpdateCursorStatus(b.mBounds.Contains(cursorPos));
+        b.OnCursorMoved(cursorPos);
+      });
+    }
 
-            break;
-          }
-        }
-      }
-
-      if (e.Button != SButton.MouseLeft) return;
-
-      Point xna_cursor_pos = Utility.ModifyCoordinatesForUIScale(e.Cursor.ScreenPixels).AsXNAPoint();
-
-      if (this.mBounds.Contains(xna_cursor_pos)) GlobalVars.gSMAPIHelper.Input.Suppress(e.Button);
-
-      if (this.mUpButton.mBounds.Contains(xna_cursor_pos)) {
-        if (String.IsNullOrWhiteSpace(this.mTextBox.Text)) this.mValue = this.mMinValue;
-        this.mValue++;
-        this.mTextBox.SelectMe();
-      }
-      else if (this.mDownButton.mBounds.Contains(xna_cursor_pos)) {
-        if (String.IsNullOrWhiteSpace(this.mTextBox.Text)) this.mValue = this.mMinValue;
-        this.mValue--;
-        this.mTextBox.SelectMe();
-      }
+    /// <inheritdoc path="//*[not(self::remarks)]"/>
+    /// <remarks>
+    /// <see cref="CustomNumericUpDownBox"/> implementation:
+    /// <para>1. Calls <see cref="CustomTextBox.OnMouseClick(InputStateEx)"/>.</para>
+    /// <para>2. Calls <see cref="CustomButton.OnMouseClick(InputStateEx)"/> on the up/down buttons.</para>
+    /// </remarks>
+    public override void OnMouseClick(InputStateEx inputState) {
+      base.OnMouseClick(inputState);
+      this.delegateToUpDownButtons(b => {
+        b.mData.UpdateCursorStatus(b.mBounds.Contains(inputState.mCursorPos));
+        if (inputState.mButton == SButton.MouseLeft && b.mBounds.Contains(inputState.mLastCursorPos) && b.mBounds.Contains(inputState.mCursorPos)) b.OnMouseClick(inputState);
+      });
     }
 
   #endregion
-
-    public void Draw(SpriteBatch spriteBatch) {
-      if (!this.mIsVisible) return;
-      this.mTextBox.Draw(spriteBatch);
-      this.mUpButton.draw(spriteBatch);
-      this.mDownButton.draw(spriteBatch);
-    }
 
   #endregion
 
     // Constructors:
   #region Constructors
 
-    public CustomNumericUpDownBox(Point         position, Color textColour,       Color  boxColour,  Int32 minValue,
-                                  Int32         maxValue, Int32 initialValue = 0, String label = "", Color labelColour = default,
-                                  Action<Int32> onValueChangedHandler = null) {
-      this.mTextBox = new CustomTextBox(new Rectangle(position.X, position.Y, -1, 50),
-                                        textColour,
-                                        boxColour,
-                                        initialValue.ToString(),
-                                        "",
-                                        Math.Max(minValue.ToString().Length, maxValue.ToString().Length),
-                                        label,
-                                        labelColour,
-                                        CustomTextBox.gAcceptNumbersOnly);
-      this.mUpButton = new CustomButton(new Rectangle(this.mTextBox.mBounds.Right + 2, this.mTextBox.mBounds.Y, 24, 24), boxColour, null, "+", null);
-      this.mUpButton.SetVisible(true);
-      this.mUpButton.SetEnabled(true);
-      this.mDownButton = new CustomButton(new Rectangle(this.mUpButton.mBounds.X, this.mUpButton.mBounds.Bottom + 2, 24, 24), boxColour, null, "-", null);
-      this.mDownButton.SetVisible(true);
-      this.mDownButton.SetEnabled(true);
+    public CustomNumericUpDownBox(Rectangle bounds,   Colours colours,      String        label, Int32 minValue,
+                                  Int32     maxValue, Int32   initialValue, Action<Int32> onValueChangedHandler = null)
+      : base(bounds,
+             colours,
+             label,
+             String.Empty,
+             initialValue.ToString(),
+             Math.Max(minValue.ToString().Length, maxValue.ToString().Length) + 1,
+             gAcceptNumbersOnly) {
+      Int32 button_size = this.GetData().mDetailedBounds.mTextBoxContentBounds.Height / 2;
 
-      this.mBounds                = new Rectangle(position.X, position.Y, this.mDownButton.mBounds.Right - position.X, this.mDownButton.mBounds.Bottom - position.Y);
-      this.mBoxColour             = boxColour;
-      this.mTextColour            = textColour;
-      this.mMinValue              = minValue;
-      this.mMaxValue              = maxValue;
-      this.mValue                 = initialValue;
-      this.mOnValueChangedHandler = onValueChangedHandler;
+      this.upButton = new CustomButton(new Rectangle(this.GetData().mDetailedBounds.mTextBoxContentBounds.Right - button_size,
+                                                     this.GetData().mDetailedBounds.mTextBoxContentBounds.Y,
+                                                     button_size,
+                                                     button_size),
+                                       colours,
+                                       "+",
+                                       "Increase",
+                                       () => {
+                                         if (String.IsNullOrWhiteSpace(this.mText)) this.mValue = this.minValue;
+                                         this.mValue++;
+                                         this.SelectMe();
+                                       });
+      this.downButton = new CustomButton(new Rectangle(this.upButton.mBounds.X, this.upButton.mBounds.Bottom, button_size, button_size),
+                                         colours,
+                                         "-",
+                                         "Decrease",
+                                         () => {
+                                           if (String.IsNullOrWhiteSpace(this.mText)) this.mValue = this.minValue;
+                                           this.mValue--;
+                                           this.SelectMe();
+                                         });
+
+      this.minValue              = minValue;
+      this.maxValue              = maxValue;
+      this.mValue                = initialValue;
+      this.onValueChangedHandler = onValueChangedHandler;
     }
 
   #endregion
@@ -188,12 +193,16 @@ namespace ChestEx.Types.BaseTypes {
     // IDisposable:
   #region IDisposable
 
-    public void Dispose() {
-      this.SetVisible(false);
-
-      this.mTextBox?.Dispose();
-      this.mUpButton?.Dispose();
-      this.mDownButton?.Dispose();
+    /// <inheritdoc path="//*[not(self::remarks)]"/>
+    /// <remarks>
+    /// <see cref="CustomNumericUpDownBox"/> implementation:
+    /// 1. Calls <see cref="CustomTextBox.Dispose"/>
+    /// 2. Disposes of the up/down buttons.
+    /// </remarks>
+    public override void Dispose() {
+      base.Dispose();
+      this.upButton?.Dispose();
+      this.downButton?.Dispose();
     }
 
   #endregion

@@ -10,8 +10,9 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Harmony;
+using JsonAssets.Data;
 using Microsoft.Xna.Framework;
-using Spacechase.Shared.Harmony;
+using Spacechase.Shared.Patching;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewValley;
@@ -70,7 +71,7 @@ namespace JsonAssets.Patches
         {
             foreach (var fence in Mod.instance.Fences)
             {
-                if (whichType == fence.correspondingObject.GetObjectId())
+                if (whichType == fence.CorrespondingObject.GetObjectId())
                 {
                     __instance.health.Value = (float)(fence.MaxHealth + Game1.random.Next(-100, 101) / 100.0);
                     __instance.name = fence.Name;
@@ -88,7 +89,7 @@ namespace JsonAssets.Patches
         {
             foreach (var fence in Mod.instance.Fences)
             {
-                if (__instance.whichType.Value == fence.correspondingObject.GetObjectId())
+                if (__instance.whichType.Value == fence.CorrespondingObject.GetObjectId())
                 {
                     __instance.health.Value = (float)(fence.MaxHealth + Game1.random.Next(-100, 101) / 100.0);
                     __instance.name = fence.Name;
@@ -108,9 +109,9 @@ namespace JsonAssets.Patches
 
             foreach (var fence in Mod.instance.Fences)
             {
-                if (__instance.whichType.Value == fence.correspondingObject.GetObjectId())
+                if (__instance.whichType.Value == fence.CorrespondingObject.GetObjectId())
                 {
-                    location.debris.Add(new Debris(fence.correspondingObject.GetObjectId(), origin, destination));
+                    location.debris.Add(new Debris(fence.CorrespondingObject.GetObjectId(), origin, destination));
                     return false;
                 }
             }
@@ -128,12 +129,12 @@ namespace JsonAssets.Patches
 
             foreach (var fence in Mod.instance.Fences)
             {
-                if (__instance.whichType.Value == fence.correspondingObject.GetObjectId())
+                if (__instance.whichType.Value == fence.CorrespondingObject.GetObjectId())
                 {
                     __result = false;
 
-                    if (fence.BreakTool == Data.FenceData.ToolType.Pickaxe && t is Pickaxe ||
-                         fence.BreakTool == Data.FenceData.ToolType.Axe && t is Axe)
+                    if (fence.BreakTool == FenceBreakToolType.Pickaxe && t is Pickaxe ||
+                         fence.BreakTool == FenceBreakToolType.Axe && t is Axe)
                     {
                     }
                     else return false;
@@ -163,7 +164,7 @@ namespace JsonAssets.Patches
                         .broadcastSprites(location, new TemporaryAnimatedSprite(12, new Vector2(__instance.TileLocation.X * 64, __instance.TileLocation.Y * 64), Color.White, 8, Game1.random.NextDouble() < 0.5, 50));
 
                     if (__instance.maxHealth.Value - __instance.health.Value < 0.5)
-                        location.debris.Add(new Debris(new SObject(fence.correspondingObject.GetObjectId(), 1), __instance.TileLocation * 64 + new Vector2(32, 32)));
+                        location.debris.Add(new Debris(new SObject(fence.CorrespondingObject.GetObjectId(), 1), __instance.TileLocation * 64 + new Vector2(32, 32)));
                     return false;
                 }
             }
@@ -179,7 +180,7 @@ namespace JsonAssets.Patches
 
             foreach (var fence in Mod.instance.Fences)
             {
-                if (__instance.whichType.Value == fence.correspondingObject.GetObjectId())
+                if (__instance.whichType.Value == fence.CorrespondingObject.GetObjectId())
                 {
                     if (probe)
                     {
@@ -187,7 +188,7 @@ namespace JsonAssets.Patches
                         return false;
                     }
 
-                    if (dropIn.ParentSheetIndex == fence.correspondingObject.GetObjectId())
+                    if (dropIn.ParentSheetIndex == fence.CorrespondingObject.GetObjectId())
                     {
                         __instance.health.Value = fence.MaxHealth + Game1.random.Next(-1000, 1000) / 100f; // Technically I should add a field to the json to make this changeable, but meh.
                         who.currentLocation.playSound(fence.RepairSound);
@@ -208,9 +209,9 @@ namespace JsonAssets.Patches
 
             foreach (var fence in Mod.instance.Fences)
             {
-                if (__instance.whichType.Value == fence.correspondingObject.GetObjectId())
+                if (__instance.whichType.Value == fence.CorrespondingObject.GetObjectId())
                 {
-                    __result = Utility.IsNormalObjectAtParentSheetIndex(item, fence.correspondingObject.GetObjectId());
+                    __result = Utility.IsNormalObjectAtParentSheetIndex(item, fence.CorrespondingObject.GetObjectId());
                     return false;
                 }
             }

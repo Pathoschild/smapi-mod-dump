@@ -1,0 +1,51 @@
+{
+	"Introduction": 
+		"So you're the new farmer, huh?#$b#
+		Nice to meet you!$h#$e#
+		You should stop by one of my shows sometime!#$b#
+		You'll leave wishing you could remember it.$u",
+		
+	"Town_29_26": 
+		"It's so nice in town this time of year.#$b#
+		It almost makes me want to stay here forever!",
+	"Beach_31_20": 
+		"The beach is such a nice place to relax in this hot weather.#$e#
+		I can imagine the beach so much more clearly now that I've visited myself.",
+	"Forest_68_50": 
+		"The changing leaves are very beautiful this time of year.#$b#
+		It makes me jealous how easily they can relax and drop down gently and deeply.",
+	"KrisHouse_3_7": 
+		"Cold weather like today makes for the perfect time to practice my trances.#$b#
+		If it works out I can even save some money on my heating bill!$h",
+	"Saloon_24_17": 
+		"Thank you for coming, but my shows aren't quite ready just yet.#$b#
+		Please just wait a little bit longer. I promise it'll be worth the wait!#$e#
+		%This feature is currently unavailable in this version. Please look forward to this in future updates. Thank you!",
+	"SeedShop_Fri": 
+		"Don't mind me, just getting some groceries.#$b#
+		I have to make sure my energy is high for tonight.",
+		
+	"Mon": 
+		"Happy Monday, @!$h#$e#
+		I'm always free to help relieve that Monday tension if you need.$u",
+	"Tue": 
+		"Some of my luggage got stuck back in Zuzu City.$s#$b#
+		So my store stock may be a bit small for a while.$s#$e#
+		But keep checking back in, I'm sure I'll have more to sell soon!",
+	"Wed": 
+		"I don't get as much business here in this town compared to the city.#$b#
+		But something about this place makes me want to stay a while longer.",
+	"Thu":
+		"I've been coming up with some new ideas for my show tomorrow.#$b#
+		I'd be very happy to try them out on you if you want.$u",
+	"Fri": 
+		"Sorry, but the shop is closed for today.#$b#
+		I have to get ready for my show tonight.#",
+	"Sat": 
+		"My show was a big success last night!$h#$e#
+		I'll leave it up to you to figure out if you volunteered or not.#$b#
+		It's hard to remember what I make you forget.$u",
+	"Sun": 
+		"I'm always trying out new ideas for new trances.#$b#
+		I'll update my available lessons once I've mastered some new ideas."
+}

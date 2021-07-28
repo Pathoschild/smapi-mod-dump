@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/popska/UsefulHats
+   Git: https://gitlab.com/popska/UsefulHats.git
+
+mods:
+   Hat Buffs
+
+latest commit:
+   commit 37fe4b6322d7b74e34ca61b3e43a44c180bac02c
+   Author: popska <popska@tuta.io>
+   Date:   Thu Jul 1 17:40:07 2021 -0600
+   
+       added many hats; renamed to 'HatBuffs'
+   
