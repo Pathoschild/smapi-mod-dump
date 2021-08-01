@@ -6,11 +6,11 @@ mods:
    Instant Tool Upgrades
 
 latest commit:
-   commit 390463891b028f69540165fe3cce37471bee7ef3
+   commit 24c763b046d73a1253b18a311fb306cc1e1ad439
    Author: Thomas <binarynova@gmail.com>
-   Date:   Tue Jul 27 07:06:30 2021 -0500
+   Date:   Wed Jul 28 01:11:59 2021 -0500
    
-       Trash Can Bug Fixed
+       1.4.0 - genericTool
        
-       Think we finally fixed it.
+       Added support for genericTool.
    

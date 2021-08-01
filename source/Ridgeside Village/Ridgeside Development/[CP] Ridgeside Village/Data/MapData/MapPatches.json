@@ -1,0 +1,43 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		
+	{
+		"Action": "Load",
+		"Target": "Maps/Forest-FlowerFestival",
+		"FromFile": "Assets/Maps/FestivalMaps/FlowerFestival-Patch.tmx",
+		"When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP, DaisyNiko.SVR2": false },
+	},
+	
+		/*********
+		** Add Map Merges
+		*********/
+		{
+			"Action": "EditMap",
+			"Target": "Maps/BusStop",
+			"FromFile": "Assets/Maps/MapPatches/RSVBusStop.tmx",
+			"FromArea": { "X": 23, "Y": 0, "Width": 12, "Height": 6 },
+			"ToArea": { "X": 23, "Y": 0, "Width": 12, "Height": 6 },
+			"PatchMode": "Replace"
+		},
+		{
+			"Action": "EditMap",
+			"Target": "Maps/Backwoods",
+			"FromFile": "Assets/Maps/MapPatches/RSVLine.tmx",
+			"FromArea": { "X": 0, "Y": 0, "Width": 50, "Height": 12 },
+			"ToArea": { "X": 0, "Y": 0, "Width": 50, "Height": 12 },
+			"PatchMode": "Overlay",
+			"When": { "HasMod: |contains=DaisyNiko.SVR2": false}
+		},
+
+	]
+}

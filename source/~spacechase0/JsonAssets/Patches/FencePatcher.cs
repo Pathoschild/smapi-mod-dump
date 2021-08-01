@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.Diagnostics.CodeAnalysis;
-using Harmony;
+using HarmonyLib;
 using JsonAssets.Data;
 using Microsoft.Xna.Framework;
 using Spacechase.Shared.Patching;
@@ -29,7 +29,7 @@ namespace JsonAssets.Patches
         ** Public methods
         *********/
         /// <inheritdoc />
-        public override void Apply(HarmonyInstance harmony, IMonitor monitor)
+        public override void Apply(Harmony harmony, IMonitor monitor)
         {
             harmony.Patch(
                 original: this.RequireConstructor<Fence>(typeof(Vector2), typeof(int), typeof(bool)),

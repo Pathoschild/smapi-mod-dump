@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.Diagnostics.CodeAnalysis;
-using Harmony;
+using HarmonyLib;
 using MultiFertilizer.Framework;
 using Spacechase.Shared.Patching;
 using SpaceShared;
@@ -28,7 +28,7 @@ namespace MultiFertilizer.Patches
         ** Public methods
         *********/
         /// <inheritdoc />
-        public override void Apply(HarmonyInstance harmony, IMonitor monitor)
+        public override void Apply(Harmony harmony, IMonitor monitor)
         {
             harmony.Patch(
                 original: this.RequireMethod<Crop>(nameof(Crop.harvest)),

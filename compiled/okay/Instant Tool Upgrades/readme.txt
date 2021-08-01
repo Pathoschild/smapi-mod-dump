@@ -1,10 +1,13 @@
-INSTANT TOOL UPGRADES - 1.3.0
+INSTANT TOOL UPGRADES - 1.4.0
 
 REQUIREMENTS
-* Latest version of Stardew Valley
+* PC version of Stardew Valley
 
 FEATURES
 * Clint gives your your upgraded tool immediately!
+
+MOD COMPATIBILITY
+* As of version 1.4.0: Compatible with "Love of Cooking"!
 
 OTHER
 * Clint's shop window and dialogue text are changed to leave out the reference to waiting a few days.

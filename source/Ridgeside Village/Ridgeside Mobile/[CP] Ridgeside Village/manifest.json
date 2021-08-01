@@ -1,0 +1,56 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Name": "[CP] Ridgeside Mobile",
+	"Author": "Rafseazz",
+	"Version": "1.1.2",
+	"Description": "Adds a new village in the west. Along with lots more!",
+	"UniqueID": "Rafseazz.RidgesideMobileCP",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus::???" ],
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher"
+	},
+   "Dependencies": [
+	   {
+		"UniqueID": "Esca.CustomNPCExclusions",
+		"IsRequired": true,
+	   },
+	   {
+		"UniqueID": "spacechase0.CustomNPCFixes",
+		"IsRequired": true,
+	   },
+	   {
+        "UniqueID": "spacechase0.JsonAssets",
+        "IsRequired": true,
+	   },
+	   {
+		"UniqueID": "MoreFish",
+		"IsRequired": false,
+	   },
+	   {
+		"UniqueID": "FlashShifter.StardewValleyExpandedCP",
+		"IsRequired": false,
+	   },
+	   {
+		"UniqueID": "misscoriel.eventrepeater",
+		"IsRequired": true,
+	   },
+	   {
+		"UniqueID": "SuperAardvark.AntiSocial",
+		"IsRequired": true,
+	   },
+	   {
+		"UniqueID": "flashshifter.immersivefarm2remastered",
+		"IsRequired": false,
+	   },
+   ]
+}

@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+"Changes": [
+	
+//Special Characters
+	{	
+		"LogName": "Monsters",
+		"Action": "Load",
+		"Target": "Characters/Monsters/RSVBeast1, Characters/Monsters/RSVBeast2, Characters/Monsters/RSVBeast3, Characters/Monsters/RSVCorruptSpirit",
+		"FromFile": "Assets/MonsterFiles/{{TargetWithoutPath}}.png",
+	},
+	
+]
+}

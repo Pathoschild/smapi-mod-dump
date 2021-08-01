@@ -1,0 +1,48 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+"Changes": [
+	
+//Aquarium Data
+	{
+		"Action": "EditData",
+		"Target": "Data/AquariumFish",
+		"Entries": {
+			"{{spacechase0.JsonAssets/ObjectId:Bladetail Sturgeon}}": "129/fish",
+			"{{spacechase0.JsonAssets/ObjectId:Caped Tree Frog}}": "130/crawl",
+			"{{spacechase0.JsonAssets/ObjectId:Cardia Septal Jellyfish}}": "131/float",
+			"{{spacechase0.JsonAssets/ObjectId:Crimson Spiked Clam}}": "132/static",
+			"{{spacechase0.JsonAssets/ObjectId:Fairytale Lionfish}}": "133/fish",
+			"{{spacechase0.JsonAssets/ObjectId:Fixer Eel}}": "134/fish",
+			"{{spacechase0.JsonAssets/ObjectId:Golden Rose Fin}}": "135/fish",
+			"{{spacechase0.JsonAssets/ObjectId:Harvester Trout}}": "136/fish",
+			"{{spacechase0.JsonAssets/ObjectId:Lullaby Carp}}": "137/fish",
+			"{{spacechase0.JsonAssets/ObjectId:Pebble Back Crab}}": "138/crawl",
+
+			"{{spacechase0.JsonAssets/ObjectId:Ridgeside Bass}}": "139/fish",
+		},
+	},
+
+	{
+		"Action": "EditImage",
+		"Target": "LooseSprites/AquariumFish",
+		"FromFile": "assets/LooseSprites/RSVFishesAquarium.png",
+		"ToArea": {
+				"X": 216,
+				"Y": 288,
+				"Width": 264,
+				"Height": 48
+			}
+
+	},
+
+]
+}

@@ -12,7 +12,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using BiggerCraftables.Framework;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Spacechase.Shared.Patching;
@@ -31,7 +31,7 @@ namespace BiggerCraftables.Patches
         ** Public methods
         *********/
         /// <inheritdoc />
-        public override void Apply(HarmonyInstance harmony, IMonitor monitor)
+        public override void Apply(Harmony harmony, IMonitor monitor)
         {
             harmony.Patch(
                 original: this.RequireMethod<SObject>(nameof(SObject.placementAction)),

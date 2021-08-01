@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.IO;
 using ItemResearchSpawner.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,7 +23,9 @@ namespace ItemResearchSpawner.Components.UI
 
         public ItemMoneyTooltip(IContentHelper content, IMonitor monitor)
         {
-            _coinTexture = content.Load<Texture2D>("assets/images/coin-icon.png");
+            // _coinTexture = content.Load<Texture2D>("assets/images/coin-icon.png");
+            _coinTexture = content.Load<Texture2D>(Path.Combine("assets", "images", "coin-icon.png"));
+            
         }
 
         public void Draw(SpriteBatch spriteBatch, Item hoveredItem)

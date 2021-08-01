@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+
+	"spring": "610 RidgesideVillage 19 27 3 square_1_5_3/900 JericHouse 2 13 2/1800 RidgesideVillage 38 28 0 square_3_1_0/2000 JericHouse 18 5 0 jeric_sleep",
+	"summer": "610 RidgesideVillage 19 27 3 square_1_5_3/900 JericHouse 2 13 2/1800 RidgesideVillage 38 28 0 square_3_1_0/2000 JericHouse 18 5 0 jeric_sleep",
+	"fall": "610 RidgesideVillage 19 27 3 square_1_5_3/900 JericHouse 2 13 2/1800 RidgesideVillage 38 28 0 square_3_1_0/2000 JericHouse 18 5 0 jeric_sleep",
+	"winter": "610 RidgesideVillage 11 26 3/900 JericHouse 2 13 2/1800 RidgesideVillage 39 20 3/2000 JericHouse 18 5 0 jeric_sleep",
+	"rain": "610 RidgesideVillage 39 20 3/900 JericHouse 2 13 2/1800 JericHouse 12 5 0/2000 JericHouse 18 5 0 jeric_sleep",
+	"Sat": "800 Town 27 23 2/1500 Beach 41 8 2/1900 JericHouse 18 5 0 jeric_sleep",
+	"Tue": "GOTO Sat",
+	"Thu": "610 RidgesideVillage 19 27 3 square_1_5_3/800 SeedShop 6 19 0/1300 RidgesideVillage 38 28 0 square_3_1_0/2000 JericHouse 18 5 0 jeric_sleep",
+
+	//Marriage Schedule
+	"marriage_Mon": "800 JericHouse 2 13 2/1800 RidgesideVillage 38 28 0 square_3_1_0/2200 BusStop -1 23 3",
+	"marriage_Tue": "GOTO marriage_Mon",
+	"marriage_Thu": "GOTO marriage_Mon",
+	"marriage_Fri": "GOTO marriage_Mon",
+	"marriage_Sat": "1000 Town 27 23 2/1300 Beach 41 8 2/1800 BusStop -1 23 3",
+}

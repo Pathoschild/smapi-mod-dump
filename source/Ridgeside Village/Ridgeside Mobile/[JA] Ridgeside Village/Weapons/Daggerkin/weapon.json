@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Name": "Daggerkin",
+	"Description": "A long dagger almost considered as a sword. It seems to be a popular weapon choice used for assassinations by skilled professionals.",
+	"Type": "dagger",
+	"PurchasePrice": 50000,
+	"MinimumDamage": 40,
+	"MaximumDamage": 80,
+	"Knockback": 0.2,
+	"Speed": 30,
+	"Accuracy": 90,
+	"Defense": 10,
+	"MineDropVar": 0,
+	"MineDropMinimumLevel": -1,
+	"ExtraSwingArea": -1,
+	"CritChance": 0.30,
+	"CritMultiplier": 5,
+	"NameLocalization":
+	{
+		/*Information goes here*/
+	},
+	"DescriptionLocalization":
+	{
+		/*Information goes here*/
+	}
+}

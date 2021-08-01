@@ -33,7 +33,7 @@ namespace ItemResearchSpawner.Models
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         SOFTWARE.
      **/
-    internal class ModDataCategory
+    public class ModDataCategory
     {
         public string Label { get; set; }
 

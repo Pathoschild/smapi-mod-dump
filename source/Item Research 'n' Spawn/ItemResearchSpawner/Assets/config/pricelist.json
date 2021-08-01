@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TSlex/StardewValley
+**
+*************************************************/
+
+{
+  "Solar Essence:768": 40,
+  "Hay:178": 2,
+  "Chest:130": 100,
+  "Calendar:1402": 0,
+  "Recycling Machine:20": 220,
+  "Crab Pot:710": 440,
+  "Tapper:105": 200,
+  "Staircase:71": 100,
+  "Torch:93": 4,
+  "Spring Seeds:495": 10,
+  "Charcoal Kiln:114": 150,
+  "Preserves Jar:15": 300,
+  "Mayonnaise Machine:24": 170,
+  "Crystalarium:21": 2500,
+  "Lightning Rod:9": 240,
+  "Cheese Press:16": 390,
+  "Omni Geode:749": 300,
+  "Artifact Trove:275": 500,
+  "Warp Totem: Desert:261": 500,
+  "Quality Sprinkler:621": 400,
+  "Mega Bomb:288": 150,
+  "Seed Maker:25": 500,
+  "Warp Totem: Farm:688": 100,
+  "Warp Totem: Beach:690": 150,
+  "Keg:12": 350,
+  "Cherry Bomb:286": 35,
+  "Oil Maker:19": 800,
+  "Cask:163": 50,
+  "Modern Rug:2875": 4000,
+  "Statue Of Endless Fortune:127": 1000000,
+  "Return Scepter:-1": 1000,
+  "Bee House:10": 500
+}

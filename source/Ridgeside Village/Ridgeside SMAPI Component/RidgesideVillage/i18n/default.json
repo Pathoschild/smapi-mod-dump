@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Gathering.location": "in Ridgeside's town square.",
+	"EoR.location": "at the Ridge.",
+	"HotelCounter.Booking.Question" : "Would you like to book a room?",
+	"HotelCounter.Booking.Yes" : "Yes, I'd like to rent a room for 500$.",
+	"HotelCounter.Booking.No" : "No thanks.",
+	"HotelCounter.Booking.AfterBooking" : "Your room is 2d. I hope you enjoy your stay here.",
+	"HotelCounter.Booking.AlreadyBooked" : "You have already booked a room.",
+	"HotelCounter.Booking.NotEnoughMoney" : "You don't have enough money to book a room.",
+}

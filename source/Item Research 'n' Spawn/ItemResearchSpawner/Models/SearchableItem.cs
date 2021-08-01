@@ -38,7 +38,7 @@ namespace ItemResearchSpawner.Models
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         SOFTWARE.
      **/
-    internal class SearchableItem
+    public class SearchableItem
     {
         public ItemType Type { get; }
         public Item Item { get; }

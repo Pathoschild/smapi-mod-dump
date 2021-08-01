@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+"Changes": [
+
+	/*********
+	** Disposition Changes
+	*********/
+
+	// Yuuma stays with Lenny when Farmer is married to Shiro
+	{
+		"LogName": "NPC Dispositions",
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"Entries": {
+			"Yuuma": "child/neutral/neutral/neutral/male/non-datable/null/Town/fall 4/Shiro 'brother'/Custom_Ridgeside_LennyHouse 21 6/{{i18n:Name.Yuuma}}",
+		},
+		"When": {   "Relationship:Shiro": "Married" },
+	},	
+
+
+]
+}

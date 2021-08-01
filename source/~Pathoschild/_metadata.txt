@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 95fb2c67c91aa7a0dba4a36d73b3aaea0c40610d
+   commit 0c0c971424b5a018e0075ccf1457f9cfb38d0da0
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Jul 25 19:07:09 2021 -0400
+   Date:   Fri Jul 30 18:38:25 2021 -0400
    
-        add ModDrop links in mod list
+       add support for looking up bushes in indoor pots
    

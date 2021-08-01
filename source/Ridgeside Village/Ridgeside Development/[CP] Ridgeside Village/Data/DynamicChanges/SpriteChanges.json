@@ -1,0 +1,45 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+"Changes": [
+
+	/*********
+	** Sprite Changes
+	*********/	
+		//Corine Ninja Change
+	{
+		"LogName": "Corine Ninja Outfit Sprite",
+		"Action": "EditImage",
+		"Target": "Characters/Corine",
+		"FromFile": "Assets/{{Target}}_Ninja.png",
+		"Update": "OnLocationChange",
+		"When": {
+			"HasSeenEvent: hostPlayer": 75160125,
+			"LocationName": "Custom_Ridgeside_RidgesideVillage, Custom_Ridgeside_Ridge, Farm, FarmHouse",
+			"DayOfWeek": "Thursday",
+		},
+	},
+
+		//Undreya SPRITE RANDOMIZE
+		{
+			"Action": "EditImage",
+			"Target": "Characters/Undreya",
+			"FromFile": "Assets/LooseSprites/Undreya/Undreya{{Random:1, 2, 3, 4, 5, 6, 7, 8}}.png",
+			"When": {
+				"HasSeenEvent: hostPlayer": 75160182,
+				"DayOfWeek: |contains=Thursday": false
+			},
+		},
+
+
+
+]
+}

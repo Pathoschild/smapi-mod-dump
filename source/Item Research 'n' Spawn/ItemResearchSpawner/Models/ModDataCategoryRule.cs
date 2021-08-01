@@ -40,7 +40,7 @@ namespace ItemResearchSpawner.Models
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         SOFTWARE.
      **/
-    internal class ModDataCategoryRule
+    public class ModDataCategoryRule
     {
         public ISet<string> Class { get; set; }
         public ISet<string> ObjType { get; set; }

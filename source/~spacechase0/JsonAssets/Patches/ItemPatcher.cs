@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Harmony;
+using HarmonyLib;
 using JsonAssets.Data;
 using Spacechase.Shared.Patching;
 using SpaceShared;
@@ -30,7 +30,7 @@ namespace JsonAssets.Patches
         ** Public methods
         *********/
         /// <inheritdoc />
-        public override void Apply(HarmonyInstance harmony, IMonitor monitor)
+        public override void Apply(Harmony harmony, IMonitor monitor)
         {
             harmony.Patch(
                 original: this.RequireMethod<Item>(nameof(Item.canBeDropped)),

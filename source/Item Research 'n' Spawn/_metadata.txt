@@ -6,9 +6,9 @@ mods:
    Item Research 'n' Spawn
 
 latest commit:
-   commit 2ce3d0c114ef7918917f9eb7fdbd3a5974920236
+   commit a0b58ea53eb0652237f34695523afb5784911c7f
    Author: aleksi_ttu <aleksi@ttu.ee>
-   Date:   Tue Jul 27 14:30:13 2021 +0300
+   Date:   Sat Jul 31 16:21:23 2021 +0300
    
-       single player progression dumping and loading
+       still not working
    

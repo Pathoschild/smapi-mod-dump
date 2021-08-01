@@ -9,6 +9,10 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Switching spell bar now requires holding the cast key, and no longer rotates your toolbar too (thanks to AWolters-ru!).
+* Fixed initial spells not learned if you bypass the learn-magic event.
+
 ## 0.5.4
 Released 24 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
 

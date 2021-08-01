@@ -10,7 +10,7 @@
 
 using System;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 
 namespace Pathoschild.Stardew.Common.Patching
@@ -22,7 +22,7 @@ namespace Pathoschild.Stardew.Common.Patching
         ** Public methods
         *********/
         /// <inheritdoc />
-        public abstract void Apply(HarmonyInstance harmony, IMonitor monitor);
+        public abstract void Apply(Harmony harmony, IMonitor monitor);
 
 
         /*********
@@ -57,7 +57,7 @@ namespace Pathoschild.Stardew.Common.Patching
             );
 
             if (priority.HasValue)
-                method.prioritiy = priority.Value;
+                method.priority = priority.Value;
 
             return method;
         }

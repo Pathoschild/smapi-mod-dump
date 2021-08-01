@@ -11,7 +11,7 @@
 {
   "Name": "Plato Warp Menu",
   "Author": "Platonymous",
-  "Version": "1.9.0",
+  "Version": "1.9.1",
   "Description": "Platonymous Warp Menu",
   "UniqueID": "Platonymous.PlatoWarpMenu",
   "EntryDll": "PlatoWarpMenu.dll",

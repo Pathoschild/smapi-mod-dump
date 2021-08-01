@@ -43,14 +43,11 @@ namespace InstantToolUpgrades
             // Any time the player submits a tool to be upgraded...
             if (Game1.player.daysLeftForToolUpgrade.Value > 0)
             {
-                // Check to see if it's the trash can...
-                if (Game1.player.toolBeingUpgraded.Value is StardewValley.Tools.GenericTool)
+                // Check to see if it's a genericTool...
+                if (Game1.player.toolBeingUpgraded.Value is StardewValley.Tools.GenericTool genericTool)
                 {
-                    if (Game1.player.toolBeingUpgraded.Value.CurrentParentTileIndex >= 13 && Game1.player.toolBeingUpgraded.Value.CurrentParentTileIndex < 17)
-                    {
-                        // ...and upgrade it.
-                        Game1.player.trashCanLevel++;
-                    }
+                    // ...and upgrade it.
+                    genericTool.actionWhenClaimed();
                 }
                 else
                 {

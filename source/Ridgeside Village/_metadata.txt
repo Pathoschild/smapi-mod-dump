@@ -1,0 +1,21 @@
+urls:
+   web: https://github.com/Rafseazz/Ridgeside-Village-Mod
+   Git: https://github.com/Rafseazz/Ridgeside-Village-Mod.git
+
+mods:
+   Ridgeside Village
+
+latest commit:
+   commit 1036e0b55b4fe23faa70971201396b040e2646e8
+   Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
+   Date:   Sat Jul 31 22:59:15 2021 +0800
+   
+       A lot of new changes! See description!
+       
+       > Added new fish: 'Ridgeside Bass'
+       > Added recipes for all dishes pre 1.3
+       > Added Ridgeside Bass to aquariums
+       > Added new recipe shop at Pika's
+       > Added some decorations to Pika's Shop
+       > Rework Arugula Roll's sprite
+   

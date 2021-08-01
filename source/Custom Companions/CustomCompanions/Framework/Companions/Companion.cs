@@ -745,15 +745,62 @@ namespace CustomCompanions.Framework.Companions
             this.FacingDirection = Utility.GetOppositeFacingDirection(this.FacingDirection);
         }
 
-        internal void PlaceInEmptyTile()
+        internal void PlaceInEmptyTile(int attempts = 5)
         {
-            foreach (var character in this.currentLocation.characters.Where(c => c != this))
+            var currentTile = this.getTileLocation();
+            for (int iteration = 0; iteration < attempts; iteration++)
             {
-                if (character.GetBoundingBox().Intersects(this.GetBoundingBox()))
+                if (!String.IsNullOrEmpty(this.currentLocation.doesTileHaveProperty((int)currentTile.X, (int)currentTile.Y, "NPCBarrier", "Back")))
                 {
-                    base.Position = Utility.getRandomAdjacentOpenTile(this.getTileLocation(), this.currentLocation) * 64f;
+                    base.Position = this.GetRandomAdjacentOpenTile(currentTile, this.currentLocation) * 64f;
                 }
+                else
+                {
+                    foreach (var character in this.currentLocation.characters.Where(c => c != this))
+                    {
+                        if (character.GetBoundingBox().Intersects(this.GetBoundingBox()))
+                        {
+                            base.Position = this.GetRandomAdjacentOpenTile(currentTile, this.currentLocation) * 64f;
+                        }
+                    }
+                }
+
+
+                if (base.Position != Vector2.Zero)
+                {
+                    break;
+                }
+
+
+                // Select a random adjacent tile as our next checking point
+                var adjacentTiles = Utility.getAdjacentTileLocations(currentTile);
+                currentTile = adjacentTiles[Game1.random.Next(adjacentTiles.Count)];
             }
+        }
+
+        internal Vector2 GetRandomAdjacentOpenTile(Vector2 tile, GameLocation location)
+        {
+            // Using a mostly modified version of Utility.getRandomAdjacentOpenTile
+            List<Vector2> i = Utility.getAdjacentTileLocations(tile);
+            int iter = 0;
+            int which = Game1.random.Next(i.Count);
+
+            Vector2 v = i[which];
+            for (; iter < 4; iter++)
+            {
+                if (!location.isTileOccupiedForPlacement(v) && location.isTilePassable(new xTile.Dimensions.Location((int)v.X, (int)v.Y), Game1.viewport) && String.IsNullOrEmpty(location.doesTileHaveProperty((int)v.X, (int)v.Y, "NPCBarrier", "Back")))
+                {
+                    break;
+                }
+                which = (which + 1) % i.Count;
+                v = i[which];
+            }
+            if (iter >= 4)
+            {
+                return Vector2.Zero;
+            }
+
+            return v;
         }
 
         internal bool IsHovering()

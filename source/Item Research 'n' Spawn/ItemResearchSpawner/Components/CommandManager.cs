@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using ItemResearchSpawner.Models;
 using ItemResearchSpawner.Models.Enums;
 using ItemResearchSpawner.Utils;
 using StardewModdingAPI;
@@ -75,6 +74,23 @@ namespace ItemResearchSpawner.Components
             helper.ConsoleCommands.Add("research_load_categories", "load categories from file",
                 LoadCategories
             );
+
+            // helper.ConsoleCommands.Add("research_use_defaults", "change config option of uning default configuration" +
+            //                                                     "\n0 - false" +
+            //                                                     "\n1 - true",
+            //     (_, args) =>
+            //     {
+            //         var config = _helper.ReadConfig<ModConfig>();
+            //
+            //         config.UseDefaultConfig = args[0] switch
+            //         {
+            //             "0" => false,
+            //             "1" => true,
+            //             _ => config.UseDefaultConfig
+            //         };
+            //
+            //         _helper.WriteConfig(config);
+            //     });
         }
 
         private void UnlockAllProgression(string command, string[] args)
@@ -121,6 +137,7 @@ namespace ItemResearchSpawner.Components
         private void SetPrice(string command, string[] args)
         {
             if (!CheckIsHostPlayer()) return;
+            if (!CheckIsForceDefaults()) return;
 
             var activeItem = Game1.player.CurrentItem;
 
@@ -152,6 +169,7 @@ namespace ItemResearchSpawner.Components
         private void ResetPrice(string command, string[] args)
         {
             if (!CheckIsHostPlayer()) return;
+            if (!CheckIsForceDefaults()) return;
 
             var activeItem = Game1.player.CurrentItem;
 
@@ -188,7 +206,7 @@ namespace ItemResearchSpawner.Components
             
             ProgressionManager.Instance.DumpPlayersProgression();
             
-            _monitor.Log($"Progressions were dumped", LogLevel.Info);
+            _monitor.Log($"Player(s) Progressions were dumped", LogLevel.Info);
         }
 
         private void LoadProgression(string command, string[] args)
@@ -197,9 +215,7 @@ namespace ItemResearchSpawner.Components
             
             ProgressionManager.Instance.LoadPlayersProgression();
             
-            _monitor.Log($"Player(s) progression was loaded", LogLevel.Info);
-            _monitor.Log($"Note: all changes will be applied next day", LogLevel.Info);
-            _monitor.Log($"All changes made in game will be ignored", LogLevel.Info);
+            _monitor.Log($"Player(s) progressions was loaded", LogLevel.Info);
         }
 
         private void DumpPricelist(string command, string[] args)
@@ -214,6 +230,7 @@ namespace ItemResearchSpawner.Components
         private void LoadPricelist(string command, string[] args)
         {
             if (!CheckIsHostPlayer()) return;
+            if (!CheckIsForceDefaults()) return;
             
             ModManager.Instance.LoadPricelist();
             
@@ -232,7 +249,8 @@ namespace ItemResearchSpawner.Components
         private void LoadCategories(string command, string[] args)
         {
             if (!CheckIsHostPlayer()) return;
-            
+            if (!CheckIsForceDefaults()) return;
+
             ModManager.Instance.LoadCategories();
             
             _monitor.Log($"Categories was loaded", LogLevel.Info);
@@ -254,6 +272,17 @@ namespace ItemResearchSpawner.Components
             if (!CheckCommandInGame() && Context.IsMainPlayer)
             {
                 _monitor.Log($"This command is for host player only ", LogLevel.Info);
+                return false;
+            }
+
+            return true;
+        }
+        
+        private bool CheckIsForceDefaults()
+        {
+            if (_helper.ReadConfig<ModConfig>().UseDefaultConfig)
+            {
+                _monitor.Log($"Currently default config is used for prices and categories. Please turn that off in config first :O", LogLevel.Warn);
                 return false;
             }
 

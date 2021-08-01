@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.Diagnostics.CodeAnalysis;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Spacechase.Shared.Patching;
 using SpaceCore.Events;
@@ -28,7 +28,7 @@ namespace SpaceCore.Patches
         ** Public methods
         *********/
         /// <inheritdoc />
-        public override void Apply(HarmonyInstance harmony, IMonitor monitor)
+        public override void Apply(Harmony harmony, IMonitor monitor)
         {
             harmony.Patch(
                 original: this.RequireMethod<GameLocation>(nameof(GameLocation.performAction)),

@@ -1,0 +1,342 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+"Changes": [
+	// Custom Companions - Content Patcher
+	{
+		"LogName": "Ridgeside Village Custom Companions",
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_RidgesideVillage",
+		"MapTiles": [
+            {
+               "Position": { "X": 21, "Y": 36 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.BrownChicken"
+               }
+            },
+            {
+               "Position": { "X": 23, "Y": 38 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.BrownChicken"
+               }
+            },
+            {
+               "Position": { "X": 30, "Y": 38 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.BrownChicken"
+               }
+            },
+            {
+               "Position": { "X": 37, "Y": 38 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.BrownChicken"
+               }
+            },
+            {
+               "Position": { "X": 37, "Y": 41 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.BrownChicken"
+               }
+            },
+            {
+               "Position": { "X": 26, "Y": 40 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.WhiteChicken"
+               }
+            },
+            {
+               "Position": { "X": 30, "Y": 36 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.WhiteChicken"
+               }
+            },
+            {
+               "Position": { "X": 39, "Y": 42 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.WhiteChicken"
+               }
+            },
+            {
+               "Position": { "X": 40, "Y": 38 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.WhiteChicken"
+               }
+            },
+            {
+               "Position": { "X": 32, "Y": 99 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.BrownCow"
+               }
+            },
+            {
+               "Position": { "X": 37, "Y": 100 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.BrownCow"
+               }
+            },
+            {
+               "Position": { "X": 35, "Y": 105 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.BrownCow"
+               }
+            },
+            {
+               "Position": { "X": 43, "Y": 106 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.BrownCow"
+               }
+            },
+            {
+               "Position": { "X": 32, "Y": 103 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.WhiteCow"
+               }
+            },
+            {
+               "Position": { "X": 34, "Y": 107 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.WhiteCow"
+               }
+            },
+            {
+               "Position": { "X": 49, "Y": 106 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.WhiteCow"
+               }
+            },
+            {
+               "Position": { "X": 22, "Y": 27 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 PeacefulEnd.CustomCompanions.RidgesideVillage.WanderingChicken"
+               }
+            },
+         ],
+		"When": {
+			"Weather": "Sun, Wind",
+			},
+		"Update": "OnDayStart"
+	},
+	{
+		"LogName": "Ridgeside Village Custom Companions",
+		"Action": "EditMap",
+		"Target": "Maps/RidgesideVillage",
+		"MapTiles": [
+            {
+               "Position": { "X": 21, "Y": 36 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 23, "Y": 38 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 30, "Y": 38 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 37, "Y": 38 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 37, "Y": 41 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 26, "Y": 40 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 30, "Y": 36 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 39, "Y": 42 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 40, "Y": 38 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 32, "Y": 99 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 37, "Y": 100 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 35, "Y": 105 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 43, "Y": 106 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 32, "Y": 103 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 34, "Y": 107 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 49, "Y": 106 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+            {
+               "Position": { "X": 22, "Y": 27 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": null
+               }
+            },
+         ],
+		"When": {
+			"Weather: |contains=Sun,Wind": false,
+			},
+		"Update": "OnDayStart"
+	},
+   {
+      "LogName": "Ridgeside Village Custom Companions",
+      "Action": "EditData",
+      "Target": "{{PeacefulEnd.CustomCompanions/Companions:PeacefulEnd.CustomCompanions.RidgesideVillage.WhiteCow}}",
+      "Entries": {
+        "Companion": {
+          "DespawnOnTile": [ 44, 105, 0 ],
+          "IdleBehavior": "Simple_Path",
+          "IdleArguments": [ 44, 105, 0 ]
+        }
+      },
+      "When": {
+         "Time": "{{Range: 2000, 2600}}",
+      },
+      "Update": "OnLocationChange, OnTimeChange"
+   },
+   {
+      "LogName": "Ridgeside Village Custom Companions",
+      "Action": "EditData",
+      "Target": "{{PeacefulEnd.CustomCompanions/Companions:PeacefulEnd.CustomCompanions.RidgesideVillage.BrownCow}}",
+      "Entries": {
+        "Companion": {
+          "Respawn": false,
+          "DespawnOnTile": [ 37, 98, 100 ],
+          "IdleBehavior": "Simple_Path",
+          "IdleArguments": [ 37, 98, 100 ]
+        }
+      },
+      "When": {
+         "Time": "{{Range: 2000, 2600}}",
+      },
+      "Update": "OnLocationChange, OnTimeChange"
+   },
+   {
+      "LogName": "Ridgeside Village Custom Companions",
+      "Action": "EditData",
+      "Target": "{{PeacefulEnd.CustomCompanions/Companions:PeacefulEnd.CustomCompanions.RidgesideVillage.WhiteChicken}}",
+      "Entries": {
+        "Companion": {
+          "Respawn": false,
+          "DespawnOnTile": [ 26, 38, 100 ],
+          "IdleBehavior": "Simple_Path",
+          "IdleArguments": [ 26, 38, 100 ]
+        }
+      },
+      "When": {
+         "Time": "{{Range: 2000, 2600}}",
+      },
+      "Update": "OnLocationChange, OnTimeChange"
+   },
+   {
+      "LogName": "Ridgeside Village Custom Companions",
+      "Action": "EditData",
+      "Target": "{{PeacefulEnd.CustomCompanions/Companions:PeacefulEnd.CustomCompanions.RidgesideVillage.BrownChicken}}",
+      "Entries": {
+        "Companion": {
+          "Respawn": false,
+          "DespawnOnTile": [ 35, 38, 100 ],
+          "IdleBehavior": "Simple_Path",
+          "IdleArguments": [ 35, 38, 100 ]
+        }
+      },
+      "When": {
+         "Time": "{{Range: 2000, 2600}}",
+      },
+      "Update": "OnLocationChange, OnTimeChange"
+   }
+]
+}
